@@ -1,53 +1,54 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 21 Oct 2021 16:40:41 -0700
-Message-Id: <20211021234044.3071069-6-John.C.Harrison@Intel.com>
+Date: Thu, 21 Oct 2021 16:40:38 -0700
+Message-Id: <20211021234044.3071069-3-John.C.Harrison@Intel.com>
 In-Reply-To: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
 References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [Intel-gfx] [PATCH i-g-t 5/8] tests/i915/gem_exec_capture: Check
- for memory allocation failure
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Subject: [igt-dev] [PATCH i-g-t 2/8] tests/i915/gem_exec_capture: Cope with
+ larger page sizes
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: Intel-GFX@Lists.FreeDesktop.Org, John Harrison <John.C.Harrison@Intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The sysfs file read helper does not actually report any errors if a
-realloc fails. It just silently returns a 'valid' but truncated
-buffer. This then leads to the decode of the buffer failing in random
-ways. So, add a check for ENOMEM being generated during the read.
+At some point, larger than 4KB page sizes were added to the i915
+driver. This included adding an informational line to the buffer
+entries in error capture logs. However, the error capture test was not
+updated to skip this string, thus it would silently abort processing.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- tests/i915/gem_exec_capture.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/i915/gem_exec_capture.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index e373d24ed..8997125ee 100644
+index 53649cdb2..47ca64dd6 100644
 --- a/tests/i915/gem_exec_capture.c
 +++ b/tests/i915/gem_exec_capture.c
-@@ -131,9 +131,11 @@ static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
- 	char *error, *str;
- 	int blobs = 0;
+@@ -484,6 +484,12 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ 		addr |= strtoul(str + 1, &str, 16);
+ 		igt_assert(*str++ == '\n');
  
-+	errno = 0;
- 	error = igt_sysfs_get(dir, "error");
- 	igt_sysfs_set(dir, "error", "Begone!");
- 	igt_assert(error);
-+	igt_assert(errno != ENOMEM);
- 	igt_debug("%s\n", error);
++		/* gtt_page_sizes = 0x00010000 */
++		if (strncmp(str, "gtt_page_sizes = 0x", 19) == 0) {
++			str += 19 + 8;
++			igt_assert(*str++ == '\n');
++		}
++
+ 		if (!(*str == ':' || *str == '~'))
+ 			continue;
  
- 	/* render ring --- user = 0x00000000 ffffd000 */
 -- 
 2.25.1
