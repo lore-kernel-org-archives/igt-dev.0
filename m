@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 690076E422
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83FCF6E425
  for <igt-dev@lists.freedesktop.org>; Thu, 21 Oct 2021 09:21:57 +0000 (UTC)
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Thu, 21 Oct 2021 11:21:52 +0200
-Message-Id: <20211021092152.8643-3-tzimmermann@suse.de>
-In-Reply-To: <20211021092152.8643-1-tzimmermann@suse.de>
-References: <20211021092152.8643-1-tzimmermann@suse.de>
+Date: Thu, 21 Oct 2021 11:21:50 +0200
+Message-Id: <20211021092152.8643-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 2/2] tests/fbdev: Add tests for display panning
+Subject: [igt-dev] [PATCH v3 0/2] tests/fbdev: Additional tests for
+ resolution and panning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,146 +23,34 @@ To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
 Cc: Thomas Zimmermann <tzimmermann@suse.de>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tests that perform panning / page flip operations on an fbdev
-device. Panning should work when the viewport wi within the virtual
-screen and fail otherwise.
+Add addtional tests for resolution and panning operations on fbdev
+devices. Succeed on successful operations. Fail on invalid operations
+or state.
+
+DRM's simpledrm driver exposed a bug in DRM's fbdev overallocation code,
+[1] which is required for fbdev page flipping. The new test cases intent
+to test panning and page flipping, and detect such issues early.
+
+Tested with the current simpledrm and a hacked version that supports fbdev
+overallocation. This will also help to implement the panning functionality
+for real in simpledrm and other drivers.
 
 v3:
-	* moved ioctls and assertions into helper (Ville)
-	* set FB_VMODE_YWRAP for rsp tests
-	* additional comments on YWRAP
+	* move pan-test logic into helper function (Ville)
+	* fixes and comments for FB_VMODE_YWRAP
 v2:
-	* set offset to respect panning offsets (Ville)
+	* test horizontal resolution against line length (Ville)
 	* respect FB_VMODE_YWRAP (Ville)
+	* respect {x,y}panstep (Ville)
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/fbdev.c | 105 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 105 insertions(+)
+[1] https://lore.kernel.org/dri-devel/20211005070355.7680-1-tzimmermann@suse.de/
 
-diff --git a/tests/fbdev.c b/tests/fbdev.c
-index 2cf137d2..ca6fc923 100644
---- a/tests/fbdev.c
-+++ b/tests/fbdev.c
-@@ -39,6 +39,38 @@
- 
- #include "igt.h"
- 
-+#define PANSTEP(panstep_) \
-+	((panstep_) ? (panstep_) : 1)
-+
-+static unsigned int __panoffset(unsigned int offset, unsigned int panstep)
-+{
-+	return offset - (offset % PANSTEP(panstep));
-+}
-+
-+#define XOFFSET(offset_) \
-+	__panoffset(offset_, fix_info.xpanstep)
-+
-+#define YOFFSET(offset_) \
-+	__panoffset(offset_, fix_info.ypanstep)
-+
-+static void pan_test(int fd, const struct fb_var_screeninfo *var, int expected_ret)
-+{
-+	struct fb_var_screeninfo pan_var, new_var;
-+	int ret;
-+
-+	memcpy(&pan_var, var, sizeof(pan_var));
-+
-+	ret = ioctl(fd, FBIOPAN_DISPLAY, &pan_var);
-+	igt_assert_f(ret == expected_ret,
-+		     "ioctl(FBIOPAN_DISPLAY) returned ret=%d, expected %d\n", ret, expected_ret);
-+
-+	ret = ioctl(fd, FBIOGET_VSCREENINFO, &new_var);
-+	igt_assert_f(ret == 0, "ioctl(FBIOGET_VSCREENINFO) failed, ret=%d\n", ret);
-+	igt_assert_f(pan_var.xoffset == new_var.xoffset && pan_var.yoffset == new_var.yoffset,
-+		     "panning to (%u, %u) moved to (%u, %u)\n",
-+		     pan_var.xoffset, pan_var.yoffset, new_var.xoffset, new_var.yoffset);
-+}
-+
- static void mode_tests(int fd)
- {
- 	struct fb_var_screeninfo var_info;
-@@ -92,6 +124,79 @@ static void mode_tests(int fd)
- 			     "vertical virtual resolution (%u) with line length %u exceeds available video memory\n",
- 			     var_info.yres_virtual, fix_info.line_length);
- 	}
-+
-+	igt_describe("Check panning / page flipping");
-+	igt_subtest("pan") {
-+		struct fb_var_screeninfo pan_var;
-+		int expected_ret;
-+
-+		memset(&pan_var, 0, sizeof(pan_var));
-+
-+		/*
-+		 * Tests that are expected to succeed.
-+		 */
-+
-+		/* jump to opposite end of virtual screen */
-+		pan_var.xoffset = XOFFSET(var_info.xres_virtual - var_info.xres - var_info.xoffset);
-+		pan_var.yoffset = YOFFSET(var_info.yres_virtual - var_info.yres - var_info.yoffset);
-+		pan_test(fd, &pan_var, 0);
-+		/* jump to (0, 0) */
-+		pan_var.xoffset = XOFFSET(0);
-+		pan_var.yoffset = YOFFSET(0);
-+		pan_test(fd, &pan_var, 0);
-+		/* jump to maximum extend */
-+		pan_var.xoffset = XOFFSET(var_info.xres_virtual - var_info.xres);
-+		pan_var.yoffset = YOFFSET(var_info.yres_virtual - var_info.yres);
-+		pan_test(fd, &pan_var, 0);
-+
-+		/*
-+		 * Tests that are expected to fail.
-+		 */
-+
-+		/* jump beyond maximum horizontal extend */
-+		pan_var.xoffset = XOFFSET(var_info.xres_virtual - var_info.xres + PANSTEP(fix_info.xpanstep));
-+		pan_var.yoffset = YOFFSET(0);
-+		pan_test(fd, &pan_var, -1);
-+		/* jump beyond horizontal virtual resolution */
-+		pan_var.xoffset = XOFFSET(var_info.xres_virtual);
-+		pan_var.yoffset = YOFFSET(0);
-+		pan_test(fd, &pan_var, -1);
-+
-+		/*
-+		 * The FB_VMODE_YWRAP flag is configurable as part of ioctl(FBIOPAN_DISPLAY),
-+		 * but it's hard to know which drivers support it and which don't. Testing for
-+		 * FBINFO_HWACCEL_YWRAP does not produce meaningful results. So we got with the
-+		 * device's current setting.
-+		 *
-+		 * With FB_VMODE_YWRAP set, the display is expected to wrap around when
-+		 * reaching the limits of the vertical resolution. Otherwise, this should
-+		 * fail.
-+		 *
-+		 */
-+
-+		if (var_info.vmode & FB_VMODE_YWRAP) {
-+			pan_var.vmode |= FB_VMODE_YWRAP;
-+			expected_ret = 0;
-+		} else {
-+			expected_ret = -1;
-+		}
-+
-+		/* jump beyond maximum vertical extend */
-+		pan_var.xoffset = XOFFSET(0);
-+		pan_var.yoffset = YOFFSET(var_info.yres_virtual - var_info.yres + PANSTEP(fix_info.ypanstep));
-+		pan_test(fd, &pan_var, expected_ret);
-+		/* jump beyond vertical virtual resolution */
-+		pan_var.xoffset = XOFFSET(0);
-+		pan_var.yoffset = YOFFSET(var_info.yres_virtual);
-+		pan_test(fd, &pan_var, expected_ret);
-+
-+		pan_var.vmode &= ~FB_VMODE_YWRAP;
-+	}
-+
-+	igt_fixture {
-+		/* restore original panning offsets */
-+		ioctl(fd, FBIOPAN_DISPLAY, &var_info);
-+	}
- }
- 
- static void framebuffer_tests(int fd)
--- 
+Thomas Zimmermann (2):
+  tests/fbdev: Test for validity of video mode settings
+  tests/fbdev: Add tests for display panning
+
+ tests/fbdev.c | 154 +++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 146 insertions(+), 8 deletions(-)
+
+--
 2.33.0
