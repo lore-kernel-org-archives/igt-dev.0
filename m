@@ -1,9 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4F7F6E02F
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Oct 2021 23:36:11 +0000 (UTC)
-Date: Fri, 22 Oct 2021 16:36:06 -0700
-Message-ID: <87mtn0k4yh.wl-ashutosh.dixit@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1F5A6E4DD
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Oct 2021 00:15:25 +0000 (UTC)
+Date: Fri, 22 Oct 2021 17:15:24 -0700
+Message-ID: <87lf2kk34z.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 In-Reply-To: <eb1fbef5-32b9-f76d-73f6-de5071fc954e@linux.intel.com>
 References: <20211021043508.1158148-1-priyanka.dandamudi@intel.com>	<20211021043508.1158148-4-priyanka.dandamudi@intel.com>	<20211021073321.GC3640@zkempczy-mobl2>	<87y26l9atx.wl-ashutosh.dixit@intel.com>	<87wnm59a0x.wl-ashutosh.dixit@intel.com>	<20211022044032.GA8290@zkempczy-mobl2>	<eb1fbef5-32b9-f76d-73f6-de5071fc954e@linux.intel.com>
@@ -23,8 +23,6 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 Cc: Zbigniew =?ISO-8859-2?Q?Kempczy=F1ski?= <zbigniew.kempczynski@intel.com>, priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, John Harrison <john.c.harrison@intel.com>, Jason Ekstrand <jason@jlekstrand.net>
 List-ID: <igt-dev@lists.freedesktop.org>
-
-+Jason for this thoughts.
 
 On Fri, 22 Oct 2021 05:07:41 -0700, Tvrtko Ursulin wrote:
 > On 22/10/2021 05:40, Zbigniew Kempczy=F1ski wrote:
@@ -93,10 +91,33 @@ GT.
 >
 > As such CCS would go to intel_execution_engines2 with "-1" for flags, as
 > above patch had it. In other words in the past it was supposed to contain
-> all engines i915 engine query could possibly return. The array would then
-> also be used from elsewhere in the code to map class and instance to name
-> and similar.
->
+> all engines i915 engine query could possibly return.
+
+Thanks Tvrtko, still looking at it but considering that future products may
+have different number of engines of different classes there are two options
+here (a) list every possible engine of every possible class of every
+possible product here, or (b) list only a minimum set of engines which
+every product is guaranteed to have (if some engines of this minimum set
+are missing in a product this list may even have to be pruned).
+
+I believe Jason's assumption during the i915 context mutation changes was
+that context 0 is created with only this minimum (or legacy) set of
+engines. But is that context 0 engine-set also what
+intel_execution_engines2 is referring to? This is what my assumption is as
+I was saying above. Hoping Jason responds with his thoughts.
+
+> The array would then also be used from elsewhere in the code to map class
+> and instance to name and similar.
+
+Engine names are dynamically generated (from class name and engine
+instance) in init_engine() since:
+
+commit 6fa36c0233afb2cf98ed41c2b2255ab484e79add
+Author: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Date:   Wed Jan 22 15:23:48 2020 +0000
+
+    i915/gem_engine_topology: Generate engine names based on class
+
 > Whether or not all this changed in the intel_ctx_t rewrite I have no
 > idea. I see the "legacy" comment was added in:
 >
