@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58F1089DED
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Oct 2021 14:58:01 +0000 (UTC)
-Received: by mail-lf1-x12d.google.com with SMTP id u11so12133502lfs.1
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Oct 2021 07:58:01 -0700 (PDT)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F5DD89F3C
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Oct 2021 17:13:09 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 26 Oct 2021 17:13:04 +0000
+Message-ID: <f0538d9d621a944ae76baf9501abb29c711554e2.camel@intel.com>
+References: <20211021085153.10444-1-jouni.hogander@intel.com>
+In-Reply-To: <20211021085153.10444-1-jouni.hogander@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <0691C455A77DCA44A93EC5EFCC445D79@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20210728171616.2242447-1-markyacoub@chromium.org>
- <20210924183929.508631-1-markyacoub@chromium.org>
- <YXe+z9KDNBtbxN3g@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YXe+z9KDNBtbxN3g@platvala-desk.ger.corp.intel.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Tue, 26 Oct 2021 10:57:48 -0400
-Message-ID: <CAJUqKUqkyYhz6ckyHKCKv=eZ09+etTGF8A9X1tN4AkTdZgjbrQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH v2] tests/kms_flip: Discard any stale event at
- each retry
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_su: add biplanar
+ selective update tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,89 +23,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, arek@hiler.eu, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
+ Petri" <petri.latvala@intel.com>, "Hogander, Jouni" <jouni.hogander@intel.com>
+Cc: "Kahola, Mika" <mika.kahola@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Applied. thanks!
-
-On Tue, Oct 26, 2021 at 4:41 AM Petri Latvala <petri.latvala@intel.com> wrote:
->
-> On Fri, Sep 24, 2021 at 02:39:29PM -0400, Mark Yacoub wrote:
-> > From: Mark Yacoub <markyacoub@google.com>
-> >
-> > [Why]
-> > On slower devices, non blocking do_page_flip followed by wait_for_events
-> > does not finish fast enough to send an event to be consumed by wait_for_events.
-> > Instead, wait_for_events ends up finding an unconsumed event from a
-> > previous do_page_flip (i.e. a skipped preceding subtest) and signals
-> > that the userspace is ready to do another do_page_flip while the first
-> > one hasn't finished yet, resulting in an EBUSY.
-> >
-> > [How]
-> > At the beginning of every test running on crtc set, check for any stale
-> > events and consume them so the kernel has no pending events.
-> >
-> > Fixes: flip-vs-suspend and flip-vs-suspend-interruptible.
-> > Tested on ChromeOS Volteer(i915-TGL) and Trogdor(msm)
-> >
-> > Changes since v1:
-> > 1. Update the discard_any_stale_events timeout
-> > 2. Correct a debug message
-> > 3. use C-style comments
-> >
-> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
->
-> Looks like Arek's comments have been addressed, and this LGTM.
->
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
->
->
-> > ---
-> >  tests/kms_flip.c | 23 +++++++++++++++++++++++
-> >  1 file changed, 23 insertions(+)
-> >
-> > diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> > index b4836a44..73a8e636 100755
-> > --- a/tests/kms_flip.c
-> > +++ b/tests/kms_flip.c
-> > @@ -1265,6 +1265,26 @@ static bool needs_retry_after_link_reset(struct udev_monitor *mon)
-> >       return hotplug_detected;
-> >  }
-> >
-> > +static void discard_any_stale_events() {
-> > +     fd_set fds;
-> > +     FD_ZERO(&fds);
-> > +     FD_SET(drm_fd, &fds);
-> > +     struct timeval timeout = { .tv_sec = 0, .tv_usec = 20000 };
-> > +     int ret = select(drm_fd + 1, &fds, NULL, NULL, &timeout);
-> > +
-> > +     if (ret > 0) {
-> > +             drmEventContext evctx;
-> > +             memset(&evctx, 0, sizeof evctx);
-> > +             evctx.version = 2;
-> > +             igt_info("Stale Event found - Discarding now\n");
-> > +             drmHandleEvent(drm_fd, &evctx);
-> > +     }
-> > +     else {
-> > +             igt_debug("No stale events found\n");
-> > +     }
-> > +}
-> > +
-> > +
-> >  static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
-> >                                  int crtc_count, int duration_ms)
-> >  {
-> > @@ -1315,6 +1335,9 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
-> >               kmstest_dump_mode(&o->kmode[i]);
-> >
-> >  retry:
-> > +     /* Discard any pending event that hasn't been consumed from a previous retry or subtest. */
-> > +     discard_any_stale_events();
-> > +
-> >       memset(&o->vblank_state, 0, sizeof(o->vblank_state));
-> >       memset(&o->flip_state, 0, sizeof(o->flip_state));
-> >       o->flip_state.name = "flip";
-> > --
-> > 2.33.0.685.g46640cef36-goog
-> >
+T24gVGh1LCAyMDIxLTEwLTIxIGF0IDExOjUxICswMzAwLCBKb3VuaSBIw7ZnYW5kZXIgd3JvdGU6
+DQo+IEFkZCBiaXBsYW5hciBmb3JtYXRzIChOVjEyLCBwMDEwKSBpbnRvIHNlbGVjdGl2ZSB1cGRh
+dGUgdGVzdC4NCj4gVXNlIGFsc28gb2Zmc2V0IGZvciB3aGl0ZSByZWN0YW5nbGUgYXMgdGhpcyBy
+ZXZlYWxzIGJldHRlcg0KPiBwb3NzaWJsZSBpc3N1ZXMgd2l0aCBvZmZzZXQgY2FsY3VsYXRpb24v
+Y29uZmlndXJhdGlvbi4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEpvdW5pIEjDtmdhbmRlciA8am91
+bmkuaG9nYW5kZXJAaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRlc3RzL2k5MTUva21zX3BzcjJfc3Uu
+YyB8IDcxICsrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0NCj4gIDEgZmls
+ZSBjaGFuZ2VkLCA0MiBpbnNlcnRpb25zKCspLCAyOSBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYg
+LS1naXQgYS90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMgYi90ZXN0cy9pOTE1L2ttc19wc3IyX3N1
+LmMNCj4gaW5kZXggOTFkZTliYWQuLjFmYmVjYjQ0IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9pOTE1
+L2ttc19wc3IyX3N1LmMNCj4gKysrIGIvdGVzdHMvaTkxNS9rbXNfcHNyMl9zdS5jDQo+IEBAIC0z
+Myw3ICszMyw4IEBADQo+ICANCj4gIElHVF9URVNUX0RFU0NSSVBUSU9OKCJUZXN0IFBTUjIgc2Vs
+ZWN0aXZlIHVwZGF0ZSIpOw0KPiAgDQo+IC0jZGVmaW5lIFNRVUFSRV9TSVpFIDEwMA0KPiArI2Rl
+ZmluZSBTUVVBUkVfU0laRSAgIDEwMA0KPiArI2RlZmluZSBTUVVBUkVfT0ZGU0VUIDEwMA0KPiAg
+LyogZWFjaCBzZWxlY3RpdmUgdXBkYXRlIGJsb2NrIGlzIDQgbGluZXMgdGFsbCAqLw0KPiAgI2Rl
+ZmluZSBFWFBFQ1RFRF9OVU1fU1VfQkxPQ0tTICgoU1FVQVJFX1NJWkUgLyA0KSArIChTUVVBUkVf
+U0laRSAlIDQgPyAxIDogMCkpDQo+ICANCj4gQEAgLTUwLDYgKzUxLDIzIEBAIGVudW0gb3BlcmF0
+aW9ucyB7DQo+ICAJTEFTVA0KPiAgfTsNCj4gIA0KPiArc3RhdGljIGNvbnN0IHVpbnQzMl90IGZv
+cm1hdHNfcGFnZV9mbGlwW10gPSB7DQo+ICsJRFJNX0ZPUk1BVF9YUkdCODg4OCwNCj4gKwlEUk1f
+Rk9STUFUX05WMTIsDQo+ICsJRFJNX0ZPUk1BVF9QMDEwLA0KPiArCURSTV9GT1JNQVRfSU5WQUxJ
+RCwNCj4gK307DQo+ICsNCj4gK3N0YXRpYyBjb25zdCB1aW50MzJfdCBmb3JtYXRzX2Zyb250YnVm
+ZmVyW10gPSB7DQo+ICsJRFJNX0ZPUk1BVF9YUkdCODg4OCwNCj4gKwlEUk1fRk9STUFUX0lOVkFM
+SUQsDQo+ICt9Ow0KPiArDQo+ICtzdGF0aWMgY29uc3QgdWludDMyX3QgKmZvcm1hdHNbXSA9IHsN
+Cj4gKwkJCQkgICAgW1BBR0VfRkxJUF0gPSBmb3JtYXRzX3BhZ2VfZmxpcCwNCj4gKwkJCQkgICAg
+W0ZST05UQlVGRkVSXSA9IGZvcm1hdHNfZnJvbnRidWZmZXIsDQo+ICt9Ow0KPiArDQo+ICBzdGF0
+aWMgY29uc3QgY2hhciAqb3Bfc3RyKGVudW0gb3BlcmF0aW9ucyBvcCkNCj4gIHsNCj4gIAlzdGF0
+aWMgY29uc3QgY2hhciAqIGNvbnN0IG5hbWVbXSA9IHsNCj4gQEAgLTY4LDYgKzg2LDcgQEAgdHlw
+ZWRlZiBzdHJ1Y3Qgew0KPiAgCWlndF9vdXRwdXRfdCAqb3V0cHV0Ow0KPiAgCXN0cnVjdCBpZ3Rf
+ZmIgZmJbMl07DQo+ICAJZW51bSBvcGVyYXRpb25zIG9wOw0KPiArCXVpbnQzMl90IGZvcm1hdDsN
+Cj4gIAljYWlyb190ICpjcjsNCj4gIAlpbnQgY2hhbmdlX3NjcmVlbl90aW1lcmZkOw0KPiAgCXVp
+bnQzMl90IHNjcmVlbl9jaGFuZ2VzOw0KPiBAQCAtMTExLDcgKzEzMCw3IEBAIHN0YXRpYyB2b2lk
+IHByZXBhcmUoZGF0YV90ICpkYXRhKQ0KPiAgCS8qIGFsbCBncmVlbiBmcmFtZSAqLw0KPiAgCWln
+dF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLA0KPiAgCQkJICAgIGRhdGEtPm1vZGUtPmhk
+aXNwbGF5LCBkYXRhLT5tb2RlLT52ZGlzcGxheSwNCj4gLQkJCSAgICBEUk1fRk9STUFUX1hSR0I4
+ODg4LA0KPiArCQkJICAgIGRhdGEtPmZvcm1hdCwNCj4gIAkJCSAgICBEUk1fRk9STUFUX01PRF9M
+SU5FQVIsDQo+ICAJCQkgICAgMC4wLCAxLjAsIDAuMCwNCj4gIAkJCSAgICAmZGF0YS0+ZmJbMF0p
+Ow0KPiBAQCAtMTIxLDE0ICsxNDAsMTQgQEAgc3RhdGljIHZvaWQgcHJlcGFyZShkYXRhX3QgKmRh
+dGEpDQo+ICANCj4gIAkJaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsDQo+ICAJCQkJ
+ICAgIGRhdGEtPm1vZGUtPmhkaXNwbGF5LCBkYXRhLT5tb2RlLT52ZGlzcGxheSwNCj4gLQkJCQkg
+ICAgRFJNX0ZPUk1BVF9YUkdCODg4OCwNCj4gKwkJCQkgICAgZGF0YS0+Zm9ybWF0LA0KPiAgCQkJ
+CSAgICBEUk1fRk9STUFUX01PRF9MSU5FQVIsDQo+ICAJCQkJICAgIDAuMCwgMS4wLCAwLjAsDQo+
+ICAJCQkJICAgICZkYXRhLT5mYlsxXSk7DQo+ICANCj4gIAkJY3IgPSBpZ3RfZ2V0X2NhaXJvX2N0
+eChkYXRhLT5kcm1fZmQsICZkYXRhLT5mYlsxXSk7DQo+ICAJCS8qIHBhaW50IGEgd2hpdGUgc3F1
+YXJlICovDQo+IC0JCWlndF9wYWludF9jb2xvcl9hbHBoYShjciwgMCwgMCwgU1FVQVJFX1NJWkUs
+IFNRVUFSRV9TSVpFLA0KPiArCQlpZ3RfcGFpbnRfY29sb3JfYWxwaGEoY3IsIFNRVUFSRV9PRkZT
+RVQsIFNRVUFSRV9PRkZTRVQsIFNRVUFSRV9TSVpFLCBTUVVBUkVfU0laRSwNCj4gIAkJCQkgICAg
+ICAxLjAsIDEuMCwgMS4wLCAxLjApOw0KPiAgCQlpZ3RfcHV0X2NhaXJvX2N0eChjcik7DQo+ICAJ
+fSBlbHNlIGlmIChkYXRhLT5vcCA9PSBGUk9OVEJVRkZFUikgew0KPiBAQCAtMTUyLDggKzE3MSw4
+IEBAIHN0YXRpYyBib29sIHVwZGF0ZV9zY3JlZW5fYW5kX3Rlc3QoZGF0YV90ICpkYXRhKQ0KPiAg
+CQlzdHJ1Y3QgZHJtX21vZGVfcmVjdCBjbGlwOw0KPiAgCQlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsN
+Cj4gIA0KPiAtCQljbGlwLngxID0gY2xpcC55MSA9IDA7DQo+IC0JCWNsaXAueDIgPSBjbGlwLnky
+ID0gU1FVQVJFX1NJWkU7DQo+ICsJCWNsaXAueDEgPSBjbGlwLnkxID0gU1FVQVJFX09GRlNFVDsN
+Cj4gKwkJY2xpcC54MiA9IGNsaXAueTIgPSBTUVVBUkVfT0ZGU0VUICsgU1FVQVJFX1NJWkU7DQo+
+ICANCj4gIAkJcHJpbWFyeSA9IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUoZGF0YS0+b3V0cHV0
+LA0KPiAgCQkJCQkJICAgIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiBAQCAtMTY3LDE2ICsx
+ODYsMTggQEAgc3RhdGljIGJvb2wgdXBkYXRlX3NjcmVlbl9hbmRfdGVzdChkYXRhX3QgKmRhdGEp
+DQo+ICAJY2FzZSBGUk9OVEJVRkZFUjogew0KPiAgCQlkcm1Nb2RlQ2xpcCBjbGlwOw0KPiAgDQo+
+IC0JCWNsaXAueDEgPSBjbGlwLnkxID0gMDsNCj4gLQkJY2xpcC54MiA9IGNsaXAueTIgPSBTUVVB
+UkVfU0laRTsNCj4gKwkJY2xpcC54MSA9IGNsaXAueTEgPSBTUVVBUkVfT0ZGU0VUOw0KPiArCQlj
+bGlwLngyID0gY2xpcC55MiA9IFNRVUFSRV9PRkZTRVQgKyBTUVVBUkVfU0laRTsNCj4gIA0KPiAg
+CQlpZiAoZGF0YS0+c2NyZWVuX2NoYW5nZXMgJiAxKSB7DQo+ICAJCQkvKiBnbyBiYWNrIHRvIGFs
+bCBncmVlbiBmcmFtZSB3aXRoIGEgc3F1YXJlICovDQo+IC0JCQlpZ3RfcGFpbnRfY29sb3JfYWxw
+aGEoZGF0YS0+Y3IsIDAsIDAsIFNRVUFSRV9TSVpFLA0KPiArCQkJaWd0X3BhaW50X2NvbG9yX2Fs
+cGhhKGRhdGEtPmNyLCBTUVVBUkVfT0ZGU0VULA0KPiArCQkJCQkgICAgICBTUVVBUkVfT0ZGU0VU
+LCBTUVVBUkVfU0laRSwNCj4gIAkJCQkJICAgICAgU1FVQVJFX1NJWkUsIDEuMCwgMS4wLCAxLjAs
+IDEuMCk7DQo+ICAJCX0gZWxzZSB7DQo+ICAJCQkvKiBnbyBiYWNrIHRvIGFsbCBncmVlbiBmcmFt
+ZSAqLw0KPiAtCQkJaWd0X3BhaW50X2NvbG9yX2FscGhhKGRhdGEtPmNyLCAwLCAwLCBTUVVBUkVf
+U0laRSwNCj4gKwkJCWlndF9wYWludF9jb2xvcl9hbHBoYShkYXRhLT5jciwgU1FVQVJFX09GRlNF
+VCwNCj4gKwkJCQkJICAgICAgU1FVQVJFX09GRlNFVCwgU1FVQVJFX1NJWkUsDQo+ICAJCQkJCSAg
+ICAgIFNRVUFSRV9TSVpFLCAwLCAxLjAsIDAsIDEuMCk7DQo+ICAJCX0NCj4gIA0KPiBAQCAtMjYx
+LDYgKzI4Miw3IEBAIGlndF9tYWluDQo+ICAJCQkJCSBkYXRhLmRlYnVnZnNfZmQsIFBTUl9NT0RF
+XzIpLA0KPiAgCQkJICAgICAgIkVycm9yIGVuYWJsaW5nIFBTUjJcbiIpOw0KPiAgCQlkYXRhLm9w
+ID0gRlJPTlRCVUZGRVI7DQo+ICsJCWRhdGEuZm9ybWF0ID0gRFJNX0ZPUk1BVF9YUkdCODg4ODsN
+Cj4gIAkJcHJlcGFyZSgmZGF0YSk7DQo+ICAJCXIgPSBwc3Jfd2FpdF9lbnRyeShkYXRhLmRlYnVn
+ZnNfZmQsIFBTUl9NT0RFXzIpOw0KPiAgCQljbGVhbnVwKCZkYXRhKTsNCj4gQEAgLTI4MSwyNiAr
+MzAzLDE3IEBAIGlndF9tYWluDQo+ICAJfQ0KPiAgDQo+ICAJZm9yIChkYXRhLm9wID0gUEFHRV9G
+TElQOyBkYXRhLm9wIDwgTEFTVDsgZGF0YS5vcCsrKSB7DQo+IC0JCWlndF9kZXNjcmliZSgiVGVz
+dCB0aGF0IHNlbGVjdGl2ZSB1cGRhdGUgd29ya3Mgd2hlbiBzY3JlZW4gY2hhbmdlcyIpOw0KPiAt
+CQlpZ3Rfc3VidGVzdF9mKCIlcyIsIG9wX3N0cihkYXRhLm9wKSkgew0KPiAtDQo+IC0JCQlpZiAo
+ZGF0YS5vcCA9PSBGUk9OVEJVRkZFUiAmJg0KPiAtCQkJICAgIGludGVsX2Rpc3BsYXlfdmVyKGlu
+dGVsX2dldF9kcm1fZGV2aWQoZGF0YS5kcm1fZmQpKSA+PSAxMikgew0KPiAtCQkJCS8qDQo+IC0J
+CQkJICogRklYTUU6IERpc3BsYXkgMTIrIHBsYXRmb3JtcyBub3cgaGF2ZSBQU1IyDQo+IC0JCQkJ
+ICogc2VsZWN0aXZlIGZldGNoIGVuYWJsZWQgYnkgZGVmYXVsdCBidXQgd2UNCj4gLQkJCQkgKiBz
+dGlsbCBjYW4ndCBwcm9wZXJseSBoYW5kbGUgZnJvbnRidWZmZXINCj4gLQkJCQkgKiByZW5kZXJp
+bmcsIHNvIHJpZ2h0IGl0IGRvZXMgZnVsbCBmcmFtZQ0KPiAtCQkJCSAqIGZldGNoZXMgYXQgZXZl
+cnkgZnJvbnRidWZmZXIgcmVuZGVyaW5nLg0KPiAtCQkJCSAqIFNvIGl0IGlzIGV4cGVjdGVkIHRo
+YXQgdGhpcyB0ZXN0IHdpbGwgZmFpbA0KPiAtCQkJCSAqIGluIGRpc3BsYXkgMTIrIHBsYXRmb3Jt
+IGZvdyBub3cuDQo+IC0JCQkJICovDQo+IC0JCQkJaWd0X3NraXAoIlBTUjIgc2VsZWN0aXZlIGZl
+dGNoIGlzIGRvaW5nIGZ1bGwgZnJhbWUgZmV0Y2hlcyBmb3IgZnJvbnRidWZmZXIgcmVuZGVyaW5n
+XG4iKTsNCg0KSXMgdGhlIGFib3ZlIGZpeGVkPyBJIGRvbid0IHRoaW5rIHNvLg0KRXZlbiBpZiBp
+cywgdGhpcyBjaGFuZ2UgbmVlZHMgdG8gZ28gaW50byBhIHNlcGFyYXRlZCBwYXRjaC4NCg0KPiAr
+CQljb25zdCB1aW50MzJfdCAqZm9ybWF0ID0gZm9ybWF0c1tkYXRhLm9wXTsNCj4gKw0KPiArCQl3
+aGlsZSAoKmZvcm1hdCAhPSBEUk1fRk9STUFUX0lOVkFMSUQpIHsNCj4gKwkJCWRhdGEuZm9ybWF0
+ID0gKmZvcm1hdDsNCj4gKwkJCWlndF9kZXNjcmliZSgiVGVzdCB0aGF0IHNlbGVjdGl2ZSB1cGRh
+dGUgd29ya3Mgd2hlbiBzY3JlZW4gY2hhbmdlcyIpOw0KPiArCQkJaWd0X3N1YnRlc3RfZigiJXNf
+JXMiLCBvcF9zdHIoZGF0YS5vcCksIGlndF9mb3JtYXRfc3RyKGRhdGEuZm9ybWF0KSkgew0KDQpD
+SSBmb2xrcyBuZWVkcyB0byBiZSBhd2FyZSBhbmQgYWNrIHRlc3RzIHJlbmFtZXMuDQoNCkNDOiBQ
+ZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NCg0KT3RoYW4gdGhhbiBhYm92
+ZSBsZ3RtLg0KDQo+ICsJCQkJcHJlcGFyZSgmZGF0YSk7DQo+ICsJCQkJcnVuKCZkYXRhKTsNCj4g
+KwkJCQljbGVhbnVwKCZkYXRhKTsNCj4gIAkJCX0NCj4gLQ0KPiAtCQkJcHJlcGFyZSgmZGF0YSk7
+DQo+IC0JCQlydW4oJmRhdGEpOw0KPiAtCQkJY2xlYW51cCgmZGF0YSk7DQo+ICsJCQlmb3JtYXQr
+KzsNCj4gIAkJfQ0KPiAgCX0NCj4gIA0KDQo=
