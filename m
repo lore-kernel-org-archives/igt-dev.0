@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D8FE6E49B
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Oct 2021 21:26:25 +0000 (UTC)
-From: Imre Deak <imre.deak@intel.com>
-Date: Wed, 27 Oct 2021 00:26:18 +0300
-Message-Id: <20211026212620.2718277-3-imre.deak@intel.com>
-In-Reply-To: <20211026212620.2718277-1-imre.deak@intel.com>
-References: <20211026212620.2718277-1-imre.deak@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5949013780514890221=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] lib/igt_fb/tgl+: Prevent CCS FB UV
- surface offset overalignment
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 26 Oct 2021 22:11:30 -0000
+Message-ID: <163528629011.9775.1715185254837589807@emeril.freedesktop.org>
+References: <20211026212620.2718277-1-imre.deak@intel.com>
+In-Reply-To: <20211026212620.2718277-1-imre.deak@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Ffb/tgl+=3A_Remove_CCS_FB_layout_restrictions?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,106 +16,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Imre Deak <imre.deak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The offset of semiplanar UV surfaces in CCS FBs must be 64 kbyte aligned
-as required by the Vebox engine which IGT uses to convert between tiling
-formats. At the same time the display engine requires the offset to be
-tile-row aligned. So far we ensured both of these alignment requirements
-by aligning all color surface widths/heights to 4x4 tiles. This however
-wastes memory in case the number of tiles in one tile-row modulo 16 is 0
-or 8 where 1 or 2 tile-row alignment correspondingly would be enough.
+--===============5949013780514890221==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The next patch removes the 4x4 tile alignment, here prepare for that by
-aligning TGL+ UV surface offsets to LCM(tile-row size, 64 kbyte)
-ensuring the minimum tile-row size and 64 kbyte alignment.
+== Series Details ==
 
-Signed-off-by: Imre Deak <imre.deak@intel.com>
----
- lib/igt_fb.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+Series: lib/igt_fb/tgl+: Remove CCS FB layout restrictions
+URL   : https://patchwork.freedesktop.org/series/96316/
+State : success
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index b8b2396d3..86d0ae426 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -392,6 +392,12 @@ bool igt_format_is_yuv_semiplanar(uint32_t format)
- 	return igt_format_is_yuv(format) && f->num_planes == 2;
- }
- 
-+static bool is_yuv_semiplanar_plane(const struct igt_fb *fb, int color_plane)
-+{
-+	return igt_format_is_yuv_semiplanar(fb->drm_format) &&
-+	       color_plane == 1;
-+}
-+
- /**
-  * igt_get_fb_tile_size:
-  * @fd: the DRM file descriptor
-@@ -843,16 +849,61 @@ static uint64_t calc_plane_size(struct igt_fb *fb, int plane)
- 	}
- }
- 
-+static unsigned int gcd(unsigned int a, unsigned int b)
-+{
-+	if (b == 0)
-+		return a;
-+
-+	return gcd(b, a % b);
-+}
-+
-+static unsigned int lcm(unsigned int a, unsigned int b)
-+{
-+	unsigned int g = gcd(a, b);
-+
-+	if (g == 0 || b == 0)
-+		return 0;
-+
-+	return a / g * b;
-+}
-+
-+static unsigned int get_plane_alignment(struct igt_fb *fb, int color_plane)
-+{
-+	unsigned int tile_width, tile_height;
-+	unsigned int tile_row_size;
-+	unsigned int alignment;
-+
-+	if (!(is_i915_device(fb->fd) &&
-+	      is_gen12_ccs_modifier(fb->modifier) &&
-+	      is_yuv_semiplanar_plane(fb, color_plane)))
-+		return 0;
-+
-+	igt_get_fb_tile_size(fb->fd, fb->modifier, fb->plane_bpp[color_plane],
-+			     &tile_width, &tile_height);
-+
-+	tile_row_size = fb->strides[color_plane] * tile_height;
-+
-+	alignment = lcm(tile_row_size, 64 * 1024);
-+
-+	return alignment;
-+}
-+
- static uint64_t calc_fb_size(struct igt_fb *fb)
- {
- 	uint64_t size = 0;
- 	int plane;
- 
- 	for (plane = 0; plane < fb->num_planes; plane++) {
-+		unsigned int align;
-+
- 		/* respect the stride requested by the caller */
- 		if (!fb->strides[plane])
- 			fb->strides[plane] = calc_plane_stride(fb, plane);
- 
-+		align = get_plane_alignment(fb, plane);
-+		if (align)
-+			size += align - (size % align);
-+
- 		fb->offsets[plane] = size;
- 
- 		size += calc_plane_size(fb, plane);
--- 
-2.27.0
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10792 -> IGTPW_6353
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/index.html
+
+Participating hosts (38 -> 33)
+------------------------------
+
+  Additional (1): fi-ilk-650 
+  Missing    (6): bat-dg1-6 bat-dg1-5 fi-icl-u2 bat-adlp-4 fi-ctg-p8600 fi-elk-e7500 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6353 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@nop-compute0:
+    - fi-ilk-650:         NOTRUN -> [SKIP][1] ([fdo#109271]) +35 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-ilk-650/igt@amdgpu/amd_cs_nop@nop-compute0.html
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-bdw-5557u:       [PASS][2] -> [INCOMPLETE][3] ([i915#146])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10792/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-11600:       [PASS][4] -> [DMESG-FAIL][5] ([i915#2373])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10792/fi-rkl-11600/igt@i915_selftest@live@gt_lrc.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-rkl-11600/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_chamelium@dp-hpd-fast:
+    - fi-ilk-650:         NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][7] ([i915#4269]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10792/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+    - {fi-hsw-gt1}:       [DMESG-WARN][9] ([i915#4290]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10792/fi-hsw-gt1/igt@kms_frontbuffer_tracking@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-hsw-gt1/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#2373]: https://gitlab.freedesktop.org/drm/intel/issues/2373
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4290]: https://gitlab.freedesktop.org/drm/intel/issues/4290
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6262 -> IGTPW_6353
+
+  CI-20190529: 20190529
+  CI_DRM_10792: 299777ddcc06c9a0ea7b95a0823ccaca268d16b8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6353: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/index.html
+  IGT_6262: d1c793b26e31cc6ae3f9fa3239805a9bbcc749fb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/index.html
+
+--===============5949013780514890221==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_fb/tgl+: Remove CCS FB layout restrictions</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96316/">https://patchwork.freedesktop.org/series/96316/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10792 -&gt; IGTPW_6353</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/index.html</p>
+<h2>Participating hosts (38 -&gt; 33)</h2>
+<p>Additional (1): fi-ilk-650 <br />
+  Missing    (6): bat-dg1-6 bat-dg1-5 fi-icl-u2 bat-adlp-4 fi-ctg-p8600 fi-elk-e7500 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6353 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-compute0:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-ilk-650/igt@amdgpu/amd_cs_nop@nop-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +35 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10792/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10792/fi-rkl-11600/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-rkl-11600/igt@i915_selftest@live@gt_lrc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2373">i915#2373</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-hpd-fast:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>
+<p>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10792/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></p>
+</li>
+<li>
+<p>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10792/fi-hsw-gt1/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4290">i915#4290</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/fi-hsw-gt1/igt@kms_frontbuffer_tracking@basic.html">PASS</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6262 -&gt; IGTPW_6353</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10792: 299777ddcc06c9a0ea7b95a0823ccaca268d16b8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6353: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6353/index.html<br />
+  IGT_6262: d1c793b26e31cc6ae3f9fa3239805a9bbcc749fb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5949013780514890221==--
