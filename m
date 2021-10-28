@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59FE66E948
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Oct 2021 10:18:52 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F4646E949
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Oct 2021 10:18:56 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Thu, 28 Oct 2021 12:18:18 +0200
-Message-Id: <20211028101819.17967-3-kamil.konieczny@linux.intel.com>
+Date: Thu, 28 Oct 2021 12:18:19 +0200
+Message-Id: <20211028101819.17967-4-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20211028101819.17967-1-kamil.konieczny@linux.intel.com>
 References: <20211028101819.17967-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/gem_exec_whisper: Change
- duplicated test names
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/igt_command_line.sh: Check for
+ duplicate subtest names
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,29 +21,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add suffix "-engine" for testing specific engines and avoid tests
-name duplication.
+From: Petri Latvala <petri.latvala@intel.com>
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+A test having multiple subtests with the same name is always an error
+and a couple of such cases had already crept in. Keep them out.
+
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/i915/gem_exec_whisper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/igt_command_line.sh | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tests/i915/gem_exec_whisper.c b/tests/i915/gem_exec_whisper.c
-index 104f0a16..c93134db 100644
---- a/tests/i915/gem_exec_whisper.c
-+++ b/tests/i915/gem_exec_whisper.c
-@@ -630,7 +630,7 @@ igt_main
- 		if (m->flags & CHAIN)
- 			continue;
+diff --git a/tests/igt_command_line.sh b/tests/igt_command_line.sh
+index 5356877c..fb8f2e2a 100755
+--- a/tests/igt_command_line.sh
++++ b/tests/igt_command_line.sh
+@@ -92,6 +92,17 @@ check_test ()
+ 		echo "    test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!"
+ 		fail $test
+ 	fi
++
++	# check for duplicate subtests
++	echo "  Checking subtest uniqueness..."
++	if [ $RET -eq 0 ]; then
++	    DUPLICATES="`./$test --list-subtests | sort | uniq -d`"
++	    if [ -n "$DUPLICATES" ]; then
++		echo "    test has duplicate subtest names!"
++		echo $DUPLICATES
++		fail $test
++	    fi
++	fi
+ }
  
--		igt_subtest_with_dynamic_f("%s", m->name) {
-+		igt_subtest_with_dynamic_f("%s-engine", m->name) {
- 			for_each_ctx_engine(fd, ctx, e) {
- 				if (!gem_class_can_store_dword(fd, e->class))
- 					continue;
+ TESTLISTFILE="$tests_dir/test-list.txt"
 -- 
 2.30.2
