@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 127E16E84A
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Oct 2021 18:23:41 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 841B86E849
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Oct 2021 18:23:37 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 28 Oct 2021 20:23:22 +0200
-Message-Id: <20211028182322.34133-3-zbigniew.kempczynski@intel.com>
+Date: Thu, 28 Oct 2021 20:23:21 +0200
+Message-Id: <20211028182322.34133-2-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20211028182322.34133-1-zbigniew.kempczynski@intel.com>
 References: <20211028182322.34133-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/gem_sync: Use softpin path for
- no-reloc gens
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/gem_sync: Use timeouts
+ definitions instead hardcoded value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,303 +25,126 @@ To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Migrate to softpin with pre-warming batch or an allocator. Some tests
-which don't fork can use pre-warming batch which establishes offsets in
-the kernel before real work is performed. For such adding pinned flag
-+ zeroing relocation is enough. For multiprocess scenarios we need to
-arbitrate and an allocator need to be used instead.
-
-v2: fix also tests which are not running on CI (Ashutosh)
+Make developer life easier and use definitions which are useful
+to shorten time during work on some subtest.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_sync.c | 60 +++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 55 insertions(+), 5 deletions(-)
+ tests/i915/gem_sync.c | 68 +++++++++++++++++++++++--------------------
+ 1 file changed, 37 insertions(+), 31 deletions(-)
 
 diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-index 3b9f9889c..a25a1a239 100644
+index 0093ca25f..3b9f9889c 100644
 --- a/tests/i915/gem_sync.c
 +++ b/tests/i915/gem_sync.c
-@@ -237,6 +237,7 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 	    int timeout, int wlen)
- {
- 	struct intel_engine_data ied;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 	ied = list_store_engines(fd, ctx, ring);
- 	igt_require(ied.nengines);
-@@ -250,8 +251,13 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		unsigned long cycles;
- 		igt_spin_t *spin;
- 
-+		ahnd = get_reloc_ahnd(fd, ctx->id);
-+
- 		memset(&object, 0, sizeof(object));
- 		object.handle = gem_create(fd, 4096);
-+		object.offset = get_offset(ahnd, object.handle, 4096, 0);
-+		if (ahnd)
-+			object.flags = EXEC_OBJECT_PINNED;
- 		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
- 
- 		memset(&execbuf, 0, sizeof(execbuf));
-@@ -261,6 +267,7 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		execbuf.rsvd1 = ctx->id;
- 
- 		spin = __igt_spin_new(fd,
-+				      .ahnd = ahnd,
- 				      .ctx = ctx,
- 				      .engine = execbuf.flags,
- 				      .flags = (IGT_SPIN_POLL_RUN |
-@@ -323,8 +330,11 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 
- 		igt_spin_free(fd, spin);
- 		gem_close(fd, object.handle);
-+		put_offset(ahnd, object.handle);
-+		put_ahnd(ahnd);
- 	}
- 	igt_waitchildren_timeout(2*timeout, NULL);
-+	put_ahnd(ahnd);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+@@ -1150,6 +1150,11 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 	intel_ctx_destroy(fd, tmp_ctx[0]);
  }
  
-@@ -332,6 +342,7 @@ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 			int num_children, int timeout)
- {
- 	struct intel_engine_data ied;
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 	ied = list_store_engines(fd, ctx, ring);
- 	igt_require(ied.nengines);
-@@ -342,12 +353,16 @@ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 		unsigned long cycles;
- 		igt_spin_t *spin[2];
- 
-+		ahnd = get_reloc_ahnd(fd, ctx->id);
++/* small / medium / large */
++#define STIMEOUT 1
++#define MTIMEOUT 2
++#define LTIMEOUT 20
 +
- 		spin[0] = __igt_spin_new(fd,
-+					 .ahnd = ahnd,
- 					 .ctx = ctx,
- 					 .engine = ied_flags(&ied, child),
- 					 .flags = IGT_SPIN_FAST);
- 
- 		spin[1] = __igt_spin_new(fd,
-+					 .ahnd = ahnd,
- 					 .ctx = ctx,
- 					 .engine = ied_flags(&ied, child),
- 					 .flags = IGT_SPIN_FAST);
-@@ -370,12 +385,14 @@ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 		} while ((elapsed = gettime()) < end);
- 		igt_spin_free(fd, spin[1]);
- 		igt_spin_free(fd, spin[0]);
-+		put_ahnd(ahnd);
- 
- 		igt_info("%s %ld cycles: %.3f us\n",
- 			 ied_name(&ied, child),
- 			 cycles, (elapsed - start) * 1e6 / cycles);
- 	}
- 	igt_waitchildren_timeout(2*timeout, NULL);
-+	put_ahnd(ahnd);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
- 
-@@ -384,6 +401,8 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		   int timeout, int wlen)
+ igt_main
  {
- 	struct intel_engine_data ied;
-+	uint64_t ahnd0 = get_reloc_ahnd(fd, 0);
-+	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 	ied = list_store_engines(fd, ctx, ring);
- 	igt_require(ied.nengines);
-@@ -397,8 +416,14 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		unsigned long cycles;
- 		igt_spin_t *spin[2];
- 
-+		ahnd0 = get_reloc_ahnd(fd, 0);
-+		ahnd = get_reloc_ahnd(fd, ctx->id);
-+
- 		memset(&object, 0, sizeof(object));
- 		object.handle = gem_create(fd, 4096);
-+		object.offset = get_offset(ahnd, object.handle, 4096, 0);
-+		if (ahnd)
-+			object.offset = EXEC_OBJECT_PINNED;
- 		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
- 
- 		memset(&execbuf, 0, sizeof(execbuf));
-@@ -408,12 +433,14 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		execbuf.rsvd1 = ctx->id;
- 
- 		spin[0] = __igt_spin_new(fd,
-+					 .ahnd = ahnd,
- 					 .engine = execbuf.flags,
- 					 .flags = (IGT_SPIN_POLL_RUN |
- 						   IGT_SPIN_FAST));
- 		igt_assert(igt_spin_has_poll(spin[0]));
- 
- 		spin[1] = __igt_spin_new(fd,
-+					 .ahnd = ahnd,
- 					 .engine = execbuf.flags,
- 					 .flags = (IGT_SPIN_POLL_RUN |
- 						   IGT_SPIN_FAST));
-@@ -490,8 +517,13 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		igt_spin_free(fd, spin[1]);
- 		igt_spin_free(fd, spin[0]);
- 		gem_close(fd, object.handle);
-+		put_offset(ahnd, object.handle);
-+		put_ahnd(ahnd);
-+		put_ahnd(ahnd0);
- 	}
- 	igt_waitchildren_timeout(2*timeout, NULL);
-+	put_ahnd(ahnd);
-+	put_ahnd(ahnd0);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
- 
-@@ -501,6 +533,7 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct intel_engine_data ied;
-+	bool has_relocs = gem_has_relocations(fd);
- 
- 	ied = list_store_engines(fd, ctx, ring);
- 	igt_require(ied.nengines);
-@@ -532,10 +565,11 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		gem_execbuf(fd, &execbuf);
- 
- 		object[0].flags |= EXEC_OBJECT_WRITE;
-+		object[0].flags |= has_relocs ? 0 : EXEC_OBJECT_PINNED;
- 		object[1].handle = gem_create(fd, 20*1024);
- 
- 		object[1].relocs_ptr = to_user_pointer(reloc);
--		object[1].relocation_count = 1024;
-+		object[1].relocation_count = has_relocs ? 1024 : 0;
- 
- 		batch = gem_mmap__cpu(fd, object[1].handle, 0, 20*1024,
- 				      PROT_WRITE | PROT_READ);
-@@ -599,6 +633,7 @@ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct intel_engine_data ied;
-+	bool has_relocs = gem_has_relocations(fd);
- 
- 	gem_require_contexts(fd);
- 
-@@ -644,7 +679,7 @@ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 			c->object[1].handle = gem_create(fd, sz);
- 
- 			c->object[1].relocs_ptr = to_user_pointer(c->reloc);
--			c->object[1].relocation_count = 1024 * i;
-+			c->object[1].relocation_count = has_relocs ? 1024 * i : 0;
- 
- 			batch = gem_mmap__cpu(fd, c->object[1].handle, 0, sz,
- 					      PROT_WRITE | PROT_READ);
-@@ -789,6 +824,7 @@ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
- 	int order[64];
- 	uint32_t *batch, *b;
- 	int done;
-+	bool has_relocs = gem_has_relocations(fd);
- 
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(object);
-@@ -805,9 +841,10 @@ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
- 	execbuf.buffer_count = 1;
- 	gem_execbuf(fd, &execbuf);
- 	object[0].flags |= EXEC_OBJECT_WRITE;
-+	object[0].flags |= has_relocs ? 0 : EXEC_OBJECT_PINNED;
- 
- 	object[1].relocs_ptr = to_user_pointer(reloc);
--	object[1].relocation_count = 1024;
-+	object[1].relocation_count = has_relocs ? 1024 : 0;
- 	execbuf.buffer_count = 2;
- 
- 	memset(reloc, 0, sizeof(reloc));
-@@ -990,6 +1027,7 @@ store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct intel_engine_data ied;
-+	bool has_relocs = gem_has_relocations(fd);
- 
- 	ied = list_store_engines(fd, ctx, ALL_ENGINES);
- 	igt_require(ied.nengines);
-@@ -1019,10 +1057,11 @@ store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
- 		gem_execbuf(fd, &execbuf);
- 
- 		object[0].flags |= EXEC_OBJECT_WRITE;
-+		object[0].flags |= has_relocs ? 0 : EXEC_OBJECT_PINNED;
- 		object[1].handle = gem_create(fd, 1024*16 + 4096);
- 
- 		object[1].relocs_ptr = to_user_pointer(reloc);
--		object[1].relocation_count = 1024;
-+		object[1].relocation_count = has_relocs ? 1024 : 0;
- 
- 		batch = gem_mmap__cpu(fd, object[1].handle, 0, 16*1024 + 4096,
- 				      PROT_WRITE | PROT_READ);
-@@ -1091,6 +1130,7 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
- {
- 	struct intel_engine_data ied;
- 	const intel_ctx_t *tmp_ctx[2];
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0); /* just offset provider */
- 
- 	ied = list_engines(fd, ctx, ALL_ENGINES);
- 	igt_require(ied.nengines);
-@@ -1110,8 +1150,13 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		double start, elapsed;
- 		unsigned long cycles;
- 
-+		ahnd = get_reloc_ahnd(fd, 0);
-+
- 		memset(&object, 0, sizeof(object));
- 		object.handle = gem_create(fd, 4096);
-+		object.offset = get_offset(ahnd, object.handle, 4096, 0);
-+		if (ahnd)
-+			object.flags = EXEC_OBJECT_PINNED;
- 		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
- 
- 		memset(&execbuf, 0, sizeof(execbuf));
-@@ -1127,6 +1172,7 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		do {
- 			igt_spin_t *spin =
- 				__igt_spin_new(fd,
-+					       .ahnd = ahnd,
- 					       .ctx = tmp_ctx[0],
- 					       .engine = execbuf.flags);
- 
-@@ -1142,8 +1188,11 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
- 			 ied_name(&ied, child), cycles, elapsed * 1e6/cycles);
- 
- 		gem_close(fd, object.handle);
-+		put_offset(ahnd, object.handle);
-+		put_ahnd(ahnd);
- 	}
- 	igt_waitchildren_timeout(timeout+10, NULL);
-+	put_ahnd(ahnd);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- 
- 	intel_ctx_destroy(fd, tmp_ctx[1]);
-@@ -1206,6 +1255,7 @@ igt_main
- 		ctx = intel_ctx_create_all_physical(fd);
- 
- 		igt_fork_hang_detector(fd);
-+		intel_allocator_multiprocess_start();
- 	}
- 
- 	/* Legacy for selecting rings. */
-@@ -1220,7 +1270,6 @@ igt_main
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+@@ -1160,31 +1165,31 @@ igt_main
+ 		int num_children;
+ 		int timeout;
+ 	} all[] = {
+-		{ "basic-each", sync_ring, 1, 2 },
+-		{ "basic-store-each", store_ring, 1, 2 },
+-		{ "basic-many-each", store_many, 0, 2 },
+-		{ "switch-each", switch_ring, 1, 20 },
+-		{ "forked-switch-each", switch_ring, ncpus, 20 },
+-		{ "forked-each", sync_ring, ncpus, 20 },
+-		{ "forked-store-each", store_ring, ncpus, 20 },
+-		{ "active-each", active_ring, 0, 20 },
+-		{ "wakeup-each", wakeup_ring, 20, 1 },
+-		{ "active-wakeup-each", active_wakeup_ring, 20, 1 },
+-		{ "double-wakeup-each", wakeup_ring, 20, 2 },
++		{ "basic-each", sync_ring, 1, MTIMEOUT },
++		{ "basic-store-each", store_ring, 1, MTIMEOUT },
++		{ "basic-many-each", store_many, 0, MTIMEOUT },
++		{ "switch-each", switch_ring, 1, LTIMEOUT },
++		{ "forked-switch-each", switch_ring, ncpus, LTIMEOUT },
++		{ "forked-each", sync_ring, ncpus, LTIMEOUT },
++		{ "forked-store-each", store_ring, ncpus, LTIMEOUT },
++		{ "active-each", active_ring, 0, LTIMEOUT },
++		{ "wakeup-each", wakeup_ring, 20, STIMEOUT },
++		{ "active-wakeup-each", active_wakeup_ring, 20, STIMEOUT },
++		{ "double-wakeup-each", wakeup_ring, 20, MTIMEOUT },
+ 		{}
+ 	}, individual[] = {
+-		{ "default", sync_ring, 1, 20 },
+-		{ "idle", idle_ring, 0, 20 },
+-		{ "active", active_ring, 0, 20 },
+-		{ "wakeup", wakeup_ring, 20, 1 },
+-		{ "active-wakeup", active_wakeup_ring, 20, 1 },
+-		{ "double-wakeup", wakeup_ring, 20, 2 },
+-		{ "store", store_ring, 1, 20 },
+-		{ "switch", switch_ring, 1, 20 },
+-		{ "forked-switch", switch_ring, ncpus, 20 },
+-		{ "many", store_many, 0, 20 },
+-		{ "forked", sync_ring, ncpus, 20 },
+-		{ "forked-store", store_ring, ncpus, 20 },
++		{ "default", sync_ring, 1, LTIMEOUT },
++		{ "idle", idle_ring, 0, LTIMEOUT },
++		{ "active", active_ring, 0, LTIMEOUT },
++		{ "wakeup", wakeup_ring, 20, STIMEOUT },
++		{ "active-wakeup", active_wakeup_ring, 20, STIMEOUT },
++		{ "double-wakeup", wakeup_ring, 20, MTIMEOUT },
++		{ "store", store_ring, 1, LTIMEOUT },
++		{ "switch", switch_ring, 1, LTIMEOUT },
++		{ "forked-switch", switch_ring, ncpus, LTIMEOUT },
++		{ "many", store_many, 0, LTIMEOUT },
++		{ "forked", sync_ring, ncpus, LTIMEOUT },
++		{ "forked-store", store_ring, ncpus, LTIMEOUT },
+ 		{}
+ 	};
+ #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
+@@ -1215,19 +1220,20 @@ igt_main
  		}
  	}
  
--
++
  	igt_subtest("basic-all")
- 		sync_all(fd, ctx, 1, MTIMEOUT);
+-		sync_all(fd, ctx, 1, 2);
++		sync_all(fd, ctx, 1, MTIMEOUT);
  	igt_subtest("basic-store-all")
-@@ -1270,6 +1319,7 @@ igt_main
- 	}
+-		store_all(fd, ctx, 1, 2);
++		store_all(fd, ctx, 1, MTIMEOUT);
  
- 	igt_fixture {
-+		intel_allocator_multiprocess_stop();
- 		igt_stop_hang_detector();
- 		intel_ctx_destroy(fd, ctx);
- 		close(fd);
+ 	igt_subtest("all")
+-		sync_all(fd, ctx, 1, 20);
++		sync_all(fd, ctx, 1, LTIMEOUT);
+ 	igt_subtest("store-all")
+-		store_all(fd, ctx, 1, 20);
++		store_all(fd, ctx, 1, LTIMEOUT);
+ 	igt_subtest("forked-all")
+-		sync_all(fd, ctx, ncpus, 20);
++		sync_all(fd, ctx, ncpus, LTIMEOUT);
+ 	igt_subtest("forked-store-all")
+-		store_all(fd, ctx, ncpus, 20);
++		store_all(fd, ctx, ncpus, LTIMEOUT);
+ 
+ 	for_each_test(t, all) {
+ 		igt_subtest_f("%s", t->name)
+@@ -1254,11 +1260,11 @@ igt_main
+ 		}
+ 
+ 		igt_subtest("preempt-all")
+-			preempt(fd, ctx, ALL_ENGINES, 1, 20);
++			preempt(fd, ctx, ALL_ENGINES, 1, LTIMEOUT);
+ 		igt_subtest_with_dynamic("preempt") {
+ 			for_each_ctx_engine(fd, ctx, e) {
+ 				igt_dynamic_f("%s", e->name)
+-					preempt(fd, ctx, e->flags, ncpus, 20);
++					preempt(fd, ctx, e->flags, ncpus, LTIMEOUT);
+ 			}
+ 		}
+ 	}
 -- 
 2.26.0
