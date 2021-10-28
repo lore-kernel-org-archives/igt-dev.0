@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 841B86E849
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Oct 2021 18:23:37 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA35C6E077
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Oct 2021 19:14:23 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 28 Oct 2021 20:23:21 +0200
-Message-Id: <20211028182322.34133-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20211028182322.34133-1-zbigniew.kempczynski@intel.com>
-References: <20211028182322.34133-1-zbigniew.kempczynski@intel.com>
+Date: Thu, 28 Oct 2021 20:23:20 +0200
+Message-Id: <20211028182322.34133-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/gem_sync: Use timeouts
- definitions instead hardcoded value
+Subject: [igt-dev] [PATCH i-g-t 0/2] Change gem_sync to no-reloc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,129 +19,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Make developer life easier and use definitions which are useful
-to shorten time during work on some subtest.
+Add timeout definitions + change gem_sync test
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/gem_sync.c | 68 +++++++++++++++++++++++--------------------
- 1 file changed, 37 insertions(+), 31 deletions(-)
+Zbigniew Kempczyński (2):
+  tests/gem_sync: Use timeouts definitions instead hardcoded value
+  tests/gem_sync: Use softpin path for no-reloc gens
 
-diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-index 0093ca25f..3b9f9889c 100644
---- a/tests/i915/gem_sync.c
-+++ b/tests/i915/gem_sync.c
-@@ -1150,6 +1150,11 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
- 	intel_ctx_destroy(fd, tmp_ctx[0]);
- }
- 
-+/* small / medium / large */
-+#define STIMEOUT 1
-+#define MTIMEOUT 2
-+#define LTIMEOUT 20
-+
- igt_main
- {
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-@@ -1160,31 +1165,31 @@ igt_main
- 		int num_children;
- 		int timeout;
- 	} all[] = {
--		{ "basic-each", sync_ring, 1, 2 },
--		{ "basic-store-each", store_ring, 1, 2 },
--		{ "basic-many-each", store_many, 0, 2 },
--		{ "switch-each", switch_ring, 1, 20 },
--		{ "forked-switch-each", switch_ring, ncpus, 20 },
--		{ "forked-each", sync_ring, ncpus, 20 },
--		{ "forked-store-each", store_ring, ncpus, 20 },
--		{ "active-each", active_ring, 0, 20 },
--		{ "wakeup-each", wakeup_ring, 20, 1 },
--		{ "active-wakeup-each", active_wakeup_ring, 20, 1 },
--		{ "double-wakeup-each", wakeup_ring, 20, 2 },
-+		{ "basic-each", sync_ring, 1, MTIMEOUT },
-+		{ "basic-store-each", store_ring, 1, MTIMEOUT },
-+		{ "basic-many-each", store_many, 0, MTIMEOUT },
-+		{ "switch-each", switch_ring, 1, LTIMEOUT },
-+		{ "forked-switch-each", switch_ring, ncpus, LTIMEOUT },
-+		{ "forked-each", sync_ring, ncpus, LTIMEOUT },
-+		{ "forked-store-each", store_ring, ncpus, LTIMEOUT },
-+		{ "active-each", active_ring, 0, LTIMEOUT },
-+		{ "wakeup-each", wakeup_ring, 20, STIMEOUT },
-+		{ "active-wakeup-each", active_wakeup_ring, 20, STIMEOUT },
-+		{ "double-wakeup-each", wakeup_ring, 20, MTIMEOUT },
- 		{}
- 	}, individual[] = {
--		{ "default", sync_ring, 1, 20 },
--		{ "idle", idle_ring, 0, 20 },
--		{ "active", active_ring, 0, 20 },
--		{ "wakeup", wakeup_ring, 20, 1 },
--		{ "active-wakeup", active_wakeup_ring, 20, 1 },
--		{ "double-wakeup", wakeup_ring, 20, 2 },
--		{ "store", store_ring, 1, 20 },
--		{ "switch", switch_ring, 1, 20 },
--		{ "forked-switch", switch_ring, ncpus, 20 },
--		{ "many", store_many, 0, 20 },
--		{ "forked", sync_ring, ncpus, 20 },
--		{ "forked-store", store_ring, ncpus, 20 },
-+		{ "default", sync_ring, 1, LTIMEOUT },
-+		{ "idle", idle_ring, 0, LTIMEOUT },
-+		{ "active", active_ring, 0, LTIMEOUT },
-+		{ "wakeup", wakeup_ring, 20, STIMEOUT },
-+		{ "active-wakeup", active_wakeup_ring, 20, STIMEOUT },
-+		{ "double-wakeup", wakeup_ring, 20, MTIMEOUT },
-+		{ "store", store_ring, 1, LTIMEOUT },
-+		{ "switch", switch_ring, 1, LTIMEOUT },
-+		{ "forked-switch", switch_ring, ncpus, LTIMEOUT },
-+		{ "many", store_many, 0, LTIMEOUT },
-+		{ "forked", sync_ring, ncpus, LTIMEOUT },
-+		{ "forked-store", store_ring, ncpus, LTIMEOUT },
- 		{}
- 	};
- #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
-@@ -1215,19 +1220,20 @@ igt_main
- 		}
- 	}
- 
-+
- 	igt_subtest("basic-all")
--		sync_all(fd, ctx, 1, 2);
-+		sync_all(fd, ctx, 1, MTIMEOUT);
- 	igt_subtest("basic-store-all")
--		store_all(fd, ctx, 1, 2);
-+		store_all(fd, ctx, 1, MTIMEOUT);
- 
- 	igt_subtest("all")
--		sync_all(fd, ctx, 1, 20);
-+		sync_all(fd, ctx, 1, LTIMEOUT);
- 	igt_subtest("store-all")
--		store_all(fd, ctx, 1, 20);
-+		store_all(fd, ctx, 1, LTIMEOUT);
- 	igt_subtest("forked-all")
--		sync_all(fd, ctx, ncpus, 20);
-+		sync_all(fd, ctx, ncpus, LTIMEOUT);
- 	igt_subtest("forked-store-all")
--		store_all(fd, ctx, ncpus, 20);
-+		store_all(fd, ctx, ncpus, LTIMEOUT);
- 
- 	for_each_test(t, all) {
- 		igt_subtest_f("%s", t->name)
-@@ -1254,11 +1260,11 @@ igt_main
- 		}
- 
- 		igt_subtest("preempt-all")
--			preempt(fd, ctx, ALL_ENGINES, 1, 20);
-+			preempt(fd, ctx, ALL_ENGINES, 1, LTIMEOUT);
- 		igt_subtest_with_dynamic("preempt") {
- 			for_each_ctx_engine(fd, ctx, e) {
- 				igt_dynamic_f("%s", e->name)
--					preempt(fd, ctx, e->flags, ncpus, 20);
-+					preempt(fd, ctx, e->flags, ncpus, LTIMEOUT);
- 			}
- 		}
- 	}
+ tests/i915/gem_sync.c | 126 ++++++++++++++++++++++++++++++------------
+ 1 file changed, 91 insertions(+), 35 deletions(-)
+
 -- 
 2.26.0
