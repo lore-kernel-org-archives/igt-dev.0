@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 011E789B8F
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Oct 2021 04:41:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A54F6E04A
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Oct 2021 04:41:04 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Wed, 27 Oct 2021 21:40:54 -0700
-Message-Id: <cover.1635395331.git.ashutosh.dixit@intel.com>
+Date: Wed, 27 Oct 2021 21:40:57 -0700
+Message-Id: <a37a07d818420cb136e182b767e8302c476caf4a.1635395331.git.ashutosh.dixit@intel.com>
+In-Reply-To: <cover.1635395331.git.ashutosh.dixit@intel.com>
+References: <cover.1635395331.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/3] Return actual submission methods from
- submission method functions
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/gem_ctx_shared: Fix
+ disjoint_timelines test requirements
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,23 +24,27 @@ To: igt-dev@lists.freedesktop.org
 Cc: John Harrison <john.c.harrison@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Change submission method functions to return actual submission method in
-use in the kernel. Also change these function names to reflect this change
-in functionality. While at this also fix gem_ctx_shared/disjoint_timelines
-test requirements.
+Use gem_uses_ppgtt() for create vm and gem_scheduler_enabled() for
+context re-ordering.
 
-Ashutosh Dixit (3):
-  lib/i915: Return actual submission method from gem_submission_method
-  lib/i915: Clarify gem_submission function names
-  tests/gem_ctx_shared: Fix disjoint_timelines test requirements
+Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_ctx_shared.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- lib/i915/gem_scheduler.c    |  2 +-
- lib/i915/gem_submission.c   | 16 ++++++++--------
- lib/i915/gem_submission.h   |  6 +++---
- tests/i915/gem_ctx_shared.c |  2 +-
- tests/i915/gem_exec_fair.c  |  2 +-
- tests/i915/gem_watchdog.c   |  2 +-
- 6 files changed, 15 insertions(+), 15 deletions(-)
-
+diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
+index 849713ff32f..670452f97fd 100644
+--- a/tests/i915/gem_ctx_shared.c
++++ b/tests/i915/gem_ctx_shared.c
+@@ -159,7 +159,7 @@ static void disjoint_timelines(int i915, const intel_ctx_cfg_t *cfg)
+ 	uint32_t plug;
+ 	uint64_t ahnd;
+ 
+-	igt_require(gem_using_execlists(i915) || gem_using_guc_submission(i915));
++	igt_require(gem_uses_ppgtt(i915) && gem_scheduler_enabled(i915));
+ 
+ 	/*
+ 	 * Each context, although they share a vm, are expected to be
 -- 
 2.33.0
