@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============6947403791245965414=="
+ boundary="===============2470855197541719469=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 29 Oct 2021 05:33:44 -0000
-Message-ID: <163548562412.1911.9314428019249959045@emeril.freedesktop.org>
+Date: Fri, 29 Oct 2021 05:53:16 -0000
+Message-ID: <163548679645.1909.4477038647265918266@emeril.freedesktop.org>
 References: <20211028182322.34133-1-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20211028182322.34133-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQ2hhbmdl?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQ2hhbmdl?=
  =?utf-8?q?_gem=5Fsync_to_no-reloc?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,7 +23,7 @@ To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6947403791245965414==
+--===============2470855197541719469==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -32,7 +32,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: Change gem_sync to no-reloc
 URL   : https://patchwork.freedesktop.org/series/96401/
-State : failure
+State : success
 
 == Summary ==
 
@@ -42,14 +42,9 @@ CI Bug Log - changes from CI_DRM_10809 -> IGTPW_6362
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_6362 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6362, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/index.html
 
@@ -59,21 +54,6 @@ Participating hosts (36 -> 34)
   Additional (1): fi-pnv-d510 
   Missing    (3): bat-adlp-4 bat-dg1-6 bat-dg1-5 
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6362:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_addfb_basic@bad-pitch-65536:
-    - fi-kbl-8809g:       [PASS][1] -> [FAIL][2] +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_addfb_basic@bad-pitch-65536.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_addfb_basic@bad-pitch-65536.html
-
-  
 Known issues
 ------------
 
@@ -84,55 +64,55 @@ Known issues
 #### Issues hit ####
 
   * igt@core_hotunplug@unbind-rebind:
-    - fi-kbl-8809g:       [PASS][3] -> [INCOMPLETE][4] ([i915#4404])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@core_hotunplug@unbind-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@core_hotunplug@unbind-rebind.html
+    - fi-kbl-8809g:       [PASS][1] -> [INCOMPLETE][2] ([i915#4404])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@core_hotunplug@unbind-rebind.html
 
   * igt@kms_addfb_basic@too-high:
-    - fi-kbl-8809g:       [PASS][5] -> [FAIL][6] ([i915#4405])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html
+    - fi-kbl-8809g:       [PASS][3] -> [FAIL][4] ([i915#4405]) +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html
 
   * igt@kms_addfb_basic@unused-modifier:
-    - fi-kbl-8809g:       [PASS][7] -> [SKIP][8] ([fdo#109271]) +18 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_addfb_basic@unused-modifier.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_addfb_basic@unused-modifier.html
+    - fi-kbl-8809g:       [PASS][5] -> [SKIP][6] ([fdo#109271]) +18 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_addfb_basic@unused-modifier.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_addfb_basic@unused-modifier.html
 
   * igt@kms_force_connector_basic@force-connector-state:
-    - fi-kbl-8809g:       [PASS][9] -> [DMESG-FAIL][10] ([i915#4406])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_force_connector_basic@force-connector-state.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_force_connector_basic@force-connector-state.html
+    - fi-kbl-8809g:       [PASS][7] -> [DMESG-FAIL][8] ([i915#4406])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_force_connector_basic@force-connector-state.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_force_connector_basic@force-connector-state.html
 
   * igt@kms_force_connector_basic@force-edid:
-    - fi-kbl-8809g:       [PASS][11] -> [CRASH][12] ([i915#4406])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_force_connector_basic@force-edid.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_force_connector_basic@force-edid.html
+    - fi-kbl-8809g:       [PASS][9] -> [CRASH][10] ([i915#4406])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_force_connector_basic@force-edid.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_force_connector_basic@force-edid.html
 
   * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][13] ([fdo#109271]) +53 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+    - fi-pnv-d510:        NOTRUN -> [SKIP][11] ([fdo#109271]) +53 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
 
   * igt@runner@aborted:
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][14] ([i915#2283] / [i915#2426] / [i915#3363] / [i915#4312])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@runner@aborted.html
+    - fi-kbl-8809g:       NOTRUN -> [FAIL][12] ([i915#2283] / [i915#2426] / [i915#3363] / [i915#4312])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@runner@aborted.html
 
   
 #### Possible fixes ####
 
   * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-1115g4:      [FAIL][15] ([i915#1888]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+    - fi-tgl-1115g4:      [FAIL][13] ([i915#1888]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
 
   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-    - fi-kbl-8809g:       [SKIP][17] ([fdo#109271]) -> [PASS][18] +15 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+    - fi-kbl-8809g:       [SKIP][15] ([fdo#109271]) -> [PASS][16] +15 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
 
   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-8809g:       [SKIP][19] ([fdo#109271] / [i915#533]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+    - fi-kbl-8809g:       [SKIP][17] ([fdo#109271] / [i915#533]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
 
   
   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
@@ -162,7 +142,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/index.html
 
---===============6947403791245965414==
+--===============2470855197541719469==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -184,7 +164,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>Change gem_sync to no-reloc</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96401/">https://patchwork.freedesktop.org/series/96401/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/index.html</a></td></tr>
 
@@ -193,26 +173,12 @@ Content-Transfer-Encoding: 7bit
 
     <h1>CI Bug Log - changes from CI_DRM_10809 -&gt; IGTPW_6362</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6362 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6362, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
 <p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/index.html</p>
 <h2>Participating hosts (36 -&gt; 34)</h2>
 <p>Additional (1): fi-pnv-d510 <br />
   Missing    (3): bat-adlp-4 bat-dg1-6 bat-dg1-5 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6362:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_addfb_basic@bad-pitch-65536:<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_addfb_basic@bad-pitch-65536.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_addfb_basic@bad-pitch-65536.html">FAIL</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
 <h2>Known issues</h2>
 <p>Here are the changes found in IGTPW_6362 that come from known issues:</p>
 <h3>IGT changes</h3>
@@ -227,7 +193,7 @@ Content-Transfer-Encoding: 7bit
 <li>
 <p>igt@kms_addfb_basic@too-high:</p>
 <ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4405">i915#4405</a>)</li>
+<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10809/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6362/fi-kbl-8809g/igt@kms_addfb_basic@too-high.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4405">i915#4405</a>) +2 similar issues</li>
 </ul>
 </li>
 <li>
@@ -295,4 +261,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============6947403791245965414==--
+--===============2470855197541719469==--
