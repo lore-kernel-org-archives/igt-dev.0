@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21DEB6EA97
- for <igt-dev@lists.freedesktop.org>; Sat, 30 Oct 2021 00:42:28 +0000 (UTC)
-Message-ID: <688f0a5a-c1c1-97d8-1f75-e8a69a0fa8e2@intel.com>
-Date: Fri, 29 Oct 2021 17:42:19 -0700
+Message-ID: <98fe41ea-75fc-463c-23fd-25156a975b53@intel.com>
+Date: Fri, 29 Oct 2021 17:32:40 -0700
 Content-Language: en-GB
-References: <cover.1635395331.git.ashutosh.dixit@intel.com>
- <8da5f8f799245a0dac45ea96c0a3f992a285352e.1635395331.git.ashutosh.dixit@intel.com>
- <ef87d355-d5da-7c80-5c84-2c521d0d3f19@intel.com>
- <87pmrosmc6.wl-ashutosh.dixit@intel.com>
+References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
+ <20211021234044.3071069-3-John.C.Harrison@Intel.com>
+ <20211029173905.GA35332@jons-linux-dev-box>
 From: John Harrison <john.c.harrison@intel.com>
-In-Reply-To: <87pmrosmc6.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <20211029173905.GA35332@jons-linux-dev-box>
 Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/i915: Return actual submission
- method from gem_submission_method
+Subject: Re: [igt-dev] [PATCH i-g-t 2/8] tests/i915/gem_exec_capture: Cope
+ with larger page sizes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,78 +21,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: IGT-Dev@Lists.FreeDesktop.Org, Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 10/28/2021 17:31, Dixit, Ashutosh wrote:
-> On Thu, 28 Oct 2021 16:55:32 -0700, John Harrison wrote:
->> On 10/27/2021 21:40, Ashutosh Dixit wrote:
->>> gem_submission_method() purports to return the currently used submission
->>> method by the kernel, as evidenced by its callers. Therefore remove the
->>> GEM_SUBMISSION_EXECLISTS flag when GuC submission is detected.
->>>
->>> This also fixes gem_has_execlists() to match its description, previously
->>> gem_has_execlists() would return true even if GuC submission was actually
->>> being used in the driver.
->>>
->>> v2: Or gem_has_execlists call-sites with gem_has_guc_submission to make the
->>>       new code equivalent to the previous code.
->>> v3: Clarify that submission method is either guc (0x4), execlists (0x2) or
->>>       legacy without semaphores (0x0) or legacy with semaphores (0x1)
->> What about GuC with semaphores vs GuC without semaphores? Likewise execlist.
+On 10/29/2021 10:39, Matthew Brost wrote:
+> On Thu, Oct 21, 2021 at 04:40:38PM -0700, John.C.Harrison@Intel.com wrote:
+>> From: John Harrison <John.C.Harrison@Intel.com>
 >>
->> Semaphores is not a submission method. They are a submission feature whose
->> support or lack there of is independent of the submission method.
-> Sorry I didn't know that. But if you see gem_submission_method() in current
-> upstream IGT (pasted below) it doesn't return "GuC with semaphores' or
-> "execlist with semaphores" either. Anyway, let me do this in the next
-> rev. Thanks.
-I mean that in the old code:
-     "GuC with semaphores" == is_guc_submission() && has_semaphores()
+>> At some point, larger than 4KB page sizes were added to the i915
+>> driver. This included adding an informational line to the buffer
+>> entries in error capture logs. However, the error capture test was not
+>> updated to skip this string, thus it would silently abort processing.
+>>
+>> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+>> ---
+>>   tests/i915/gem_exec_capture.c | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+>> index 53649cdb2..47ca64dd6 100644
+>> --- a/tests/i915/gem_exec_capture.c
+>> +++ b/tests/i915/gem_exec_capture.c
+>> @@ -484,6 +484,12 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+>>   		addr |= strtoul(str + 1, &str, 16);
+>>   		igt_assert(*str++ == '\n');
+>>   
+>> +		/* gtt_page_sizes = 0x00010000 */
+>> +		if (strncmp(str, "gtt_page_sizes = 0x", 19) == 0) {
+>> +			str += 19 + 8;
+>> +			igt_assert(*str++ == '\n');
+>> +		}
+> Can you explain this logic to me, for the life of me I can't figure out
+> what this doing. That probably warrent's a more detailed comment too.
+It's no different to the rest of the processing that this code was 
+already doing.
 
-But if you conflate semaphores with the submission method then you have 
-to explicitly enumerate all combinations.
+if( start_of_current_line == "gtt_page_sizes = 0x") {
+     current_line += strlen(above_string) + strlen(8-digit hex string);
+     assert( next_character_of_current_line == end_of_line);
+}
 
-Hmm, okay. Just realised that the old code did indeed have 
-GEM_SUBMISSION_SEMAPHORES. Not sure what that was about!? You can 
-definitely have semaphores with GuC/execlists and you can definitely 
-have GuC/execlists without semaphores. I don't see why ring buffer 
-submission would be any different but I admit it's been a while since 
-I've looked at any ring buffer code.
-
-It doesn't look like anything was actually using 'gem_has_semaphores()' 
-at all, though. So nothing would notice if it was removed ;).
+I.e. skip over any line that just contains the page size message.
 
 John.
 
-
 >
-> unsigned gem_submission_method(int fd)
-> {
-> 	const int gen = intel_gen(intel_get_drm_devid(fd));
-> 	unsigned flags = 0;
+> Matt
 >
-> 	int dir;
->
-> 	dir = igt_params_open(fd);
-> 	if (dir < 0)
-> 		return 0;
->
-> 	if (igt_sysfs_get_u32(dir, "enable_guc") & 1) {
-> 		flags |= GEM_SUBMISSION_GUC | GEM_SUBMISSION_EXECLISTS;
-> 		goto out;
-> 	}
->
-> 	if (gen >= 8) {
-> 		flags |= GEM_SUBMISSION_EXECLISTS;
-> 		goto out;
-> 	}
->
-> 	if (has_semaphores(fd, dir))
-> 		flags |= GEM_SUBMISSION_SEMAPHORES;
->
-> out:
-> 	close(dir);
-> 	return flags;
-> }
+>> +
+>>   		if (!(*str == ':' || *str == '~'))
+>>   			continue;
+>>   
+>> -- 
+>> 2.25.1
+>>
