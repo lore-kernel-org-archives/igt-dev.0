@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56BD689B78
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Nov 2021 09:29:11 +0000 (UTC)
-Date: Mon, 1 Nov 2021 11:27:51 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YX+zF4gVGP8EjMWR@platvala-desk.ger.corp.intel.com>
-References: <20211030000744.231762-1-jose.souza@intel.com>
- <20211030000744.231762-2-jose.souza@intel.com>
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com
+ [IPv6:2607:f8b0:4864:20::f2c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1B4989C54
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Nov 2021 12:01:35 +0000 (UTC)
+Received: by mail-qv1-xf2c.google.com with SMTP id u16so6077450qvk.4
+ for <igt-dev@lists.freedesktop.org>; Mon, 01 Nov 2021 05:01:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20211030000744.231762-2-jose.souza@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_async_flips: Skip test
- when running with Intel's PSR2 selective fetch enabled
+References: <20211022103150.1172603-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20211022103150.1172603-1-priyanka.dandamudi@intel.com>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Mon, 1 Nov 2021 12:01:08 +0000
+Message-ID: <CAM0jSHOHF8XTi9ofD1+MbEoQpS6QBxabGMctpJmyq3YEbiZa1Q@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_userptr_blits: Update
+ for discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,101 +23,88 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: priyanka.dandamudi@intel.com
+Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 29, 2021 at 05:07:44PM -0700, Jos=E9 Roberto de Souza wrote:
-> Intel's PSR2 selective fetch adds other planes to state when
-> necessary, causing the async flip to fail because async flip is not
-> supported in cursor plane.
->=20
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
-> Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
+On Fri, 22 Oct 2021 at 11:41, <priyanka.dandamudi@intel.com> wrote:
+>
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>
+> The set_caching ioctl returns -ENODEV for discrete.
+> Update the relocations and set-cache-level subtest.
+>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
 > ---
->  lib/igt_psr.c           | 16 ++++++++++++++++
->  lib/igt_psr.h           |  2 ++
->  tests/kms_async_flips.c |  8 ++++++++
->  3 files changed, 26 insertions(+)
->=20
-> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-> index 857eb591c..8fa8b192f 100644
-> --- a/lib/igt_psr.c
-> +++ b/lib/igt_psr.c
-> @@ -21,6 +21,7 @@
->   * IN THE SOFTWARE.
->   */
-> =20
-> +#include "drmtest.h"
->  #include "igt_params.h"
->  #include "igt_psr.h"
->  #include "igt_sysfs.h"
-> @@ -264,3 +265,18 @@ void psr_print_debugfs(int debugfs_fd)
-> =20
->  	igt_info("%s", buf);
->  }
-> +
-> +bool i915_psr2_selective_fetch_check(int drm_fd)
-> +{
-> +	int debugfs_fd;
-> +	bool ret;
-> +
-> +	if (!is_i915_device(drm_fd))
-> +		return false;
-> +
-> +	debugfs_fd =3D igt_debugfs_dir(drm_fd);
-> +	ret =3D psr2_selective_fetch_check(debugfs_fd);
-> +	close(debugfs_fd);
-> +
-> +	return ret;
-> +}
-> diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-> index c47b197b1..a075f336d 100644
-> --- a/lib/igt_psr.h
-> +++ b/lib/igt_psr.h
-> @@ -47,4 +47,6 @@ bool psr_sink_support(int device, int debugfs_fd, enum =
-psr_mode mode);
->  bool psr2_wait_su(int debugfs_fd, uint16_t *num_su_blocks);
->  void psr_print_debugfs(int debugfs_fd);
-> =20
-> +bool i915_psr2_selective_fetch_check(int drm_fd);
-> +
->  #endif
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index 4ff7a196a..c35565f69 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -27,6 +27,7 @@
-> =20
->  #include "igt.h"
->  #include "igt_aux.h"
-> +#include "igt_psr.h"
->  #include <sys/ioctl.h>
->  #include <sys/time.h>
->  #include <poll.h>
-> @@ -299,6 +300,13 @@ static void test_cursor(data_t *data)
->  	struct igt_fb cursor_fb;
->  	struct drm_mode_cursor cur;
-> =20
-> +	/*
-> +	 * Intel's PSR2 selective fetch adds other planes to state when
-> +	 * necessary, causing the async flip to fail because async flip is not
-> +	 * supported in cursor plane.
-> +	 */
-> +	igt_skip_on(i915_psr2_selective_fetch_check(data->drm_fd));
-> +
+>  tests/i915/gem_userptr_blits.c | 20 +++++++++++++++-----
+>  1 file changed, 15 insertions(+), 5 deletions(-)
+>
+> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+> index 93e4b25b..3d99aa2e 100644
+> --- a/tests/i915/gem_userptr_blits.c
+> +++ b/tests/i915/gem_userptr_blits.c
+> @@ -1111,8 +1111,12 @@ static void test_relocations(int fd)
+>         memset(&obj, 0, sizeof(obj));
+>         igt_assert(posix_memalign(&ptr, PAGE_SIZE, size) == 0);
+>         gem_userptr(fd, ptr, size, 0, userptr_flags, &obj.handle);
+> -       if (!gem_has_llc(fd))
+> -               gem_set_caching(fd, obj.handle, 0);
+> +       if (!gem_has_llc(fd)){
+> +               int err;
+> +               int expect = gem_has_lmem(fd) ? -ENODEV : 0;
 
-Please use the _f variant of this function and add a descriptive
-message to this skip.
+Newline needed here AFAIK, as per kernel coding style.
 
-How does real userspace fare with this stuff? What even are the
-implications, I'm not sure I get this fully. I think I saw you and
-Ville discuss this on IRC but I missed the conclusion and what X does
-on PSR2. Fall back to synchronous flips with some effect on
-performance?
+> +               err = __gem_set_caching(fd, obj.handle, 0);
+> +               igt_require(err == expect);
+> +               }
 
+Alignment looks off for the curly brace.
 
---=20
-Petri Latvala
+Anyway, we can drop the changes here for test_relocations, since
+discrete doesn't support the feature, and so should skip on the
+gem_has_relocations().
+
+For the below changes,
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+
+>         *(uint32_t *)ptr = MI_BATCH_BUFFER_END;
+>
+>         reloc = (typeof(reloc))((char *)ptr + PAGE_SIZE);
+> @@ -2064,7 +2068,9 @@ static void test_set_caching(int i915)
+>         for (int idx = 0; idx < ARRAY_SIZE(levels); idx++) {
+>                 gem_userptr(i915, page, 4096, 0, 0, &handle);
+>                 ret = __gem_set_caching(i915, handle, levels[idx]);
+> -               if (levels[idx] == I915_CACHING_NONE) {
+> +               if (gem_has_lmem(i915))
+> +                       igt_assert_eq(ret, -ENODEV);
+> +               else if (levels[idx] == I915_CACHING_NONE) {
+>                         if(ret != 0)
+>                                 igt_assert_eq(ret, -ENXIO);
+>                         else
+> @@ -2078,7 +2084,9 @@ static void test_set_caching(int i915)
+>         gem_userptr(i915, page, 4096, 0, 0, &handle);
+>         for (int idx = 0; idx < ARRAY_SIZE(levels); idx++) {
+>                 ret = __gem_set_caching(i915, handle, levels[idx]);
+> -               if (levels[idx] == I915_CACHING_NONE) {
+> +               if (gem_has_lmem(i915))
+> +                        igt_assert_eq(ret, -ENODEV);
+> +               else if (levels[idx] == I915_CACHING_NONE) {
+>                         if (ret != 0)
+>                                 igt_assert_eq(ret, -ENXIO);
+>                 } else {
+> @@ -2087,7 +2095,9 @@ static void test_set_caching(int i915)
+>         }
+>         for (int idx = 0; idx < ARRAY_SIZE(levels); idx++) {
+>                 ret = __gem_set_caching(i915, handle, levels[idx]);
+> -               if (levels[idx] == I915_CACHING_NONE) {
+> +               if (gem_has_lmem(i915))
+> +                        igt_assert_eq(ret, -ENODEV);
+> +               else if (levels[idx] == I915_CACHING_NONE) {
+>                         if (ret != 0)
+>                                 igt_assert_eq(ret, -ENXIO);
+>                 } else {
+> --
+> 2.25.1
+>
