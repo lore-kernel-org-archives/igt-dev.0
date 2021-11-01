@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com
- [IPv6:2607:f8b0:4864:20::835])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AECFB6E1ED
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Nov 2021 16:37:35 +0000 (UTC)
-Received: by mail-qt1-x835.google.com with SMTP id v4so1923818qtw.8
- for <igt-dev@lists.freedesktop.org>; Mon, 01 Nov 2021 09:37:35 -0700 (PDT)
+Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com
+ [IPv6:2607:f8b0:4864:20::72f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C69B76E83C
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Nov 2021 16:58:28 +0000 (UTC)
+Received: by mail-qk1-x72f.google.com with SMTP id ay20so1831464qkb.7
+ for <igt-dev@lists.freedesktop.org>; Mon, 01 Nov 2021 09:58:28 -0700 (PDT)
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon,  1 Nov 2021 12:37:30 -0400
-Message-Id: <20211101163730.2769897-1-markyacoub@chromium.org>
+Date: Mon,  1 Nov 2021 12:58:24 -0400
+Message-Id: <20211101165824.2810805-1-markyacoub@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/kms_cursor_legacy: igt_require_pipe_crc for
- flip_vs_cursor_crc
+Subject: [igt-dev] [PATCH] tests/kms_cursor_legacy: Use igt_require_intel
+ before get_reloc_ahnd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,30 +28,49 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Mark Yacoub <markyacoub@google.com>
 
 [Why]
-test_init uses CRC in debugfs which is not supported by some drivers.
+get_reloc_ahnd uses the intel allocator, which is not supported on
+non-intel devices.
 
 [How]
-igt_require_pipe_crc before igt_pipe_crc_new is called.
+Call igt_require_intel before any call to get_reloc_ahnd.
 
-Test: igt@kms_cursor_legacy@flip-vs-cursor-crc-{atomic,legacy} on
+Test: igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-{atomic,legacy} on
 ChromeOS Jacuzzi (MTK)
 
 Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 ---
- tests/kms_cursor_legacy.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_cursor_legacy.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 81362807..b006e566 100644
+index 81362807..e48cdf6c 100644
 --- a/tests/kms_cursor_legacy.c
 +++ b/tests/kms_cursor_legacy.c
-@@ -1281,6 +1281,7 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+@@ -522,10 +522,16 @@ static void basic_flip_cursor(igt_display_t *display,
+ 	struct igt_fb fb_info, cursor_fb, cursor_fb2, argb_fb;
+ 	unsigned vblank_start;
+ 	enum pipe pipe = find_connected_pipe(display, false);
+-	uint64_t ahnd = (flags & BASIC_BUSY) ? get_reloc_ahnd(display->drm_fd, 0) : 0;
++	uint64_t ahnd = 0;
+ 	igt_spin_t *spin;
+ 	int i, miss1 = 0, miss2 = 0, delta;
  
- 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++	if (flags & BASIC_BUSY)
++	{
++		igt_require_intel(display->drm_fd);
++		ahnd = get_reloc_ahnd(display->drm_fd, 0);
++	}
++
+ 	if (mode >= flip_test_atomic)
+ 		igt_require(display->is_atomic);
  
-+	igt_require_pipe_crc(display->drm_fd);
- 	pipe_crc = igt_pipe_crc_new(display->drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
+@@ -1327,6 +1333,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	igt_pipe_t *pipe_connected = &display->pipes[pipe];
+ 	igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe_connected, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_crc_t crcs[2], test_crc;
++	igt_require_intel(display->drm_fd);
+ 	uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
  
- 	set_cursor_on_pipe(display, pipe, &cursor_fb);
+ 	if (atomic)
 -- 
 2.33.1.1089.g2158813163f-goog
