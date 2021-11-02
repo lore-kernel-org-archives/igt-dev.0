@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 509806E851
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 349146E83D
  for <igt-dev@lists.freedesktop.org>; Tue,  2 Nov 2021 23:30:48 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Tue,  2 Nov 2021 16:30:40 -0700
-Message-Id: <247012b2502789db5a2d171fb84c33e257b02021.1635895537.git.ashutosh.dixit@intel.com>
-In-Reply-To: <cover.1635895537.git.ashutosh.dixit@intel.com>
-References: <cover.1635895537.git.ashutosh.dixit@intel.com>
+Date: Tue,  2 Nov 2021 16:30:39 -0700
+Message-Id: <cover.1635895537.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/4] Remove "semaphores" submission method
+Subject: [igt-dev] [PATCH i-g-t 0/4] Return actual submission methods from
+ submission method functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,97 +21,25 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As part of cleaning up the submission library functions, remove the
-"semaphores" submission method. Semaphores are not a "submission method",
-semaphores can be used with GuC, execlists or legacy ring buffer submission.
+Change submission method functions to return actual submission method in
+use in the kernel. Also change these function names to reflect this change
+in functionality. Remove the "semaphores submission method" since it is not
+a real submission method. While at this also fix
+gem_ctx_shared/disjoint_timelines test requirements.
 
-Suggested-by: John Harrison <john.c.harrison@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/i915/gem_submission.c | 36 ++----------------------------------
- lib/i915/gem_submission.h |  2 --
- 2 files changed, 2 insertions(+), 36 deletions(-)
+Ashutosh Dixit (4):
+  Remove "semaphores" submission method
+  lib/i915: Return actual submission method from gem_submission_method
+  lib/i915: Clarify gem_submission function names
+  tests/gem_ctx_shared: Fix disjoint_timelines test requirements
 
-diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
-index 2627b802cfb..a84a5d3eda8 100644
---- a/lib/i915/gem_submission.c
-+++ b/lib/i915/gem_submission.c
-@@ -52,22 +52,8 @@
-  * currently used hardware submission method. Different generations of hardware
-  * support different submission backends, currently we're distinguishing 3
-  * different methods: legacy ringbuffer submission, execlists, GuC submission.
-- * For legacy ringbuffer submission, there's also a variation where we're using
-- * semaphores for synchronization between engines.
-  */
- 
--static bool has_semaphores(int fd, int dir)
--{
--	int val = 0;
--	struct drm_i915_getparam gp = {
--		gp.param = I915_PARAM_HAS_SEMAPHORES,
--		gp.value = &val,
--	};
--	if (ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp) < 0)
--		val = igt_sysfs_get_boolean(dir, "semaphores");
--	return val;
--}
--
- /**
-  * gem_submission_method:
-  * @fd: open i915 drm file descriptor
-@@ -90,13 +76,8 @@ unsigned gem_submission_method(int fd)
- 		goto out;
- 	}
- 
--	if (gen >= 8) {
-+	if (gen >= 8)
- 		flags |= GEM_SUBMISSION_EXECLISTS;
--		goto out;
--	}
--
--	if (has_semaphores(fd, dir))
--		flags |= GEM_SUBMISSION_SEMAPHORES;
- 
- out:
- 	close(dir);
-@@ -128,20 +109,7 @@ void gem_submission_print_method(int fd)
- 		return;
- 	}
- 
--	igt_info("Using Legacy submission%s\n",
--		 flags & GEM_SUBMISSION_SEMAPHORES ? ", with semaphores" : "");
--}
--
--/**
-- * gem_has_semaphores:
-- * @fd: open i915 drm file descriptor
-- *
-- * Feature test macro to query whether the driver is using semaphores for
-- * synchronization between engines.
-- */
--bool gem_has_semaphores(int fd)
--{
--	return gem_submission_method(fd) & GEM_SUBMISSION_SEMAPHORES;
-+	igt_info("Using Legacy submission\n");
- }
- 
- /**
-diff --git a/lib/i915/gem_submission.h b/lib/i915/gem_submission.h
-index 38dd24a99a4..55bcfc09965 100644
---- a/lib/i915/gem_submission.h
-+++ b/lib/i915/gem_submission.h
-@@ -28,12 +28,10 @@
- 
- #include "intel_ctx.h"
- 
--#define GEM_SUBMISSION_SEMAPHORES	(1 << 0)
- #define GEM_SUBMISSION_EXECLISTS	(1 << 1)
- #define GEM_SUBMISSION_GUC		(1 << 2)
- unsigned gem_submission_method(int fd);
- void gem_submission_print_method(int fd);
--bool gem_has_semaphores(int fd);
- bool gem_has_execlists(int fd);
- bool gem_has_guc_submission(int fd);
- bool gem_engine_has_mutable_submission(int fd, unsigned int engine);
+ lib/i915/gem_scheduler.c    |  2 +-
+ lib/i915/gem_submission.c   | 62 ++++++++-----------------------------
+ lib/i915/gem_submission.h   | 11 +++----
+ tests/i915/gem_ctx_shared.c |  2 +-
+ tests/i915/gem_exec_fair.c  |  2 +-
+ tests/i915/gem_watchdog.c   |  2 +-
+ 6 files changed, 22 insertions(+), 59 deletions(-)
+
 -- 
 2.33.0
