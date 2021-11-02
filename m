@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 2 Nov 2021 16:18:31 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-Message-ID: <20211102231831.GA16278@jons-linux-dev-box>
-References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
- <20211021234044.3071069-3-John.C.Harrison@Intel.com>
- <20211029173905.GA35332@jons-linux-dev-box>
- <98fe41ea-75fc-463c-23fd-25156a975b53@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 509806E851
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Nov 2021 23:30:48 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Tue,  2 Nov 2021 16:30:40 -0700
+Message-Id: <247012b2502789db5a2d171fb84c33e257b02021.1635895537.git.ashutosh.dixit@intel.com>
+In-Reply-To: <cover.1635895537.git.ashutosh.dixit@intel.com>
+References: <cover.1635895537.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <98fe41ea-75fc-463c-23fd-25156a975b53@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/8] tests/i915/gem_exec_capture: Cope
- with larger page sizes
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/4] Remove "semaphores" submission method
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,69 +19,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John Harrison <john.c.harrison@intel.com>
-Cc: IGT-Dev@Lists.FreeDesktop.Org, Intel-GFX@Lists.FreeDesktop.Org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 29, 2021 at 05:32:40PM -0700, John Harrison wrote:
-> On 10/29/2021 10:39, Matthew Brost wrote:
-> > On Thu, Oct 21, 2021 at 04:40:38PM -0700, John.C.Harrison@Intel.com wro=
-te:
-> > > From: John Harrison <John.C.Harrison@Intel.com>
-> > >=20
-> > > At some point, larger than 4KB page sizes were added to the i915
-> > > driver. This included adding an informational line to the buffer
-> > > entries in error capture logs. However, the error capture test was not
-> > > updated to skip this string, thus it would silently abort processing.
-> > >=20
-> > > Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> > > ---
-> > >   tests/i915/gem_exec_capture.c | 6 ++++++
-> > >   1 file changed, 6 insertions(+)
-> > >=20
-> > > diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capt=
-ure.c
-> > > index 53649cdb2..47ca64dd6 100644
-> > > --- a/tests/i915/gem_exec_capture.c
-> > > +++ b/tests/i915/gem_exec_capture.c
-> > > @@ -484,6 +484,12 @@ static void many(int fd, int dir, uint64_t size,=
- unsigned int flags)
-> > >   		addr |=3D strtoul(str + 1, &str, 16);
-> > >   		igt_assert(*str++ =3D=3D '\n');
-> > > +		/* gtt_page_sizes =3D 0x00010000 */
-> > > +		if (strncmp(str, "gtt_page_sizes =3D 0x", 19) =3D=3D 0) {
-> > > +			str +=3D 19 + 8;
-> > > +			igt_assert(*str++ =3D=3D '\n');
-> > > +		}
-> > Can you explain this logic to me, for the life of me I can't figure out
-> > what this doing. That probably warrent's a more detailed comment too.
-> It's no different to the rest of the processing that this code was already
-> doing.
->=20
-> if( start_of_current_line =3D=3D "gtt_page_sizes =3D 0x") {
-> =A0=A0=A0 current_line +=3D strlen(above_string) + strlen(8-digit hex str=
-ing);
-> =A0=A0=A0 assert( next_character_of_current_line =3D=3D end_of_line);
-> }
->=20
-> I.e. skip over any line that just contains the page size message.
->=20
+As part of cleaning up the submission library functions, remove the
+"semaphores" submission method. Semaphores are not a "submission method",
+semaphores can be used with GuC, execlists or legacy ring buffer submission.
 
-Ok, got it. Not sure I missed that. The magic numbers 19 and 8 where
-confusing me but I understand this now.
+Suggested-by: John Harrison <john.c.harrison@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/i915/gem_submission.c | 36 ++----------------------------------
+ lib/i915/gem_submission.h |  2 --
+ 2 files changed, 2 insertions(+), 36 deletions(-)
 
-With that:
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-
-> John.
->=20
-> >=20
-> > Matt
-> >=20
-> > > +
-> > >   		if (!(*str =3D=3D ':' || *str =3D=3D '~'))
-> > >   			continue;
-> > > --=20
-> > > 2.25.1
-> > >=20
->=20
+diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+index 2627b802cfb..a84a5d3eda8 100644
+--- a/lib/i915/gem_submission.c
++++ b/lib/i915/gem_submission.c
+@@ -52,22 +52,8 @@
+  * currently used hardware submission method. Different generations of hardware
+  * support different submission backends, currently we're distinguishing 3
+  * different methods: legacy ringbuffer submission, execlists, GuC submission.
+- * For legacy ringbuffer submission, there's also a variation where we're using
+- * semaphores for synchronization between engines.
+  */
+ 
+-static bool has_semaphores(int fd, int dir)
+-{
+-	int val = 0;
+-	struct drm_i915_getparam gp = {
+-		gp.param = I915_PARAM_HAS_SEMAPHORES,
+-		gp.value = &val,
+-	};
+-	if (ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp) < 0)
+-		val = igt_sysfs_get_boolean(dir, "semaphores");
+-	return val;
+-}
+-
+ /**
+  * gem_submission_method:
+  * @fd: open i915 drm file descriptor
+@@ -90,13 +76,8 @@ unsigned gem_submission_method(int fd)
+ 		goto out;
+ 	}
+ 
+-	if (gen >= 8) {
++	if (gen >= 8)
+ 		flags |= GEM_SUBMISSION_EXECLISTS;
+-		goto out;
+-	}
+-
+-	if (has_semaphores(fd, dir))
+-		flags |= GEM_SUBMISSION_SEMAPHORES;
+ 
+ out:
+ 	close(dir);
+@@ -128,20 +109,7 @@ void gem_submission_print_method(int fd)
+ 		return;
+ 	}
+ 
+-	igt_info("Using Legacy submission%s\n",
+-		 flags & GEM_SUBMISSION_SEMAPHORES ? ", with semaphores" : "");
+-}
+-
+-/**
+- * gem_has_semaphores:
+- * @fd: open i915 drm file descriptor
+- *
+- * Feature test macro to query whether the driver is using semaphores for
+- * synchronization between engines.
+- */
+-bool gem_has_semaphores(int fd)
+-{
+-	return gem_submission_method(fd) & GEM_SUBMISSION_SEMAPHORES;
++	igt_info("Using Legacy submission\n");
+ }
+ 
+ /**
+diff --git a/lib/i915/gem_submission.h b/lib/i915/gem_submission.h
+index 38dd24a99a4..55bcfc09965 100644
+--- a/lib/i915/gem_submission.h
++++ b/lib/i915/gem_submission.h
+@@ -28,12 +28,10 @@
+ 
+ #include "intel_ctx.h"
+ 
+-#define GEM_SUBMISSION_SEMAPHORES	(1 << 0)
+ #define GEM_SUBMISSION_EXECLISTS	(1 << 1)
+ #define GEM_SUBMISSION_GUC		(1 << 2)
+ unsigned gem_submission_method(int fd);
+ void gem_submission_print_method(int fd);
+-bool gem_has_semaphores(int fd);
+ bool gem_has_execlists(int fd);
+ bool gem_has_guc_submission(int fd);
+ bool gem_engine_has_mutable_submission(int fd, unsigned int engine);
+-- 
+2.33.0
