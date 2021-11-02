@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8230C6F94E
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Nov 2021 03:17:15 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Tue, 2 Nov 2021 03:17:10 +0000
-Message-ID: <e157a5049ed3c123520e3f6f60005aa9d8a7b1cf.camel@intel.com>
-References: <20211030000744.231762-1-jose.souza@intel.com>
- <20211030000744.231762-2-jose.souza@intel.com>
- <YX+zF4gVGP8EjMWR@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YX+zF4gVGP8EjMWR@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BB4EF21996449D40870B11EA027B7F8F@intel.com>
-Content-Transfer-Encoding: base64
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E59F46E918
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Nov 2021 07:40:56 +0000 (UTC)
+Date: Tue, 2 Nov 2021 08:40:46 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20211102074046.GB3830@zkempczy-mobl2>
+References: <20211028182322.34133-1-zbigniew.kempczynski@intel.com>
+ <20211028182322.34133-2-zbigniew.kempczynski@intel.com>
+ <87h7czsein.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_async_flips: Skip test
- when running with Intel's PSR2 selective fetch enabled
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87h7czsein.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/gem_sync: Use timeouts
+ definitions instead hardcoded value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,74 +24,151 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDIxLTExLTAxIGF0IDExOjI3ICswMjAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOg0K
-PiBPbiBGcmksIE9jdCAyOSwgMjAyMSBhdCAwNTowNzo0NFBNIC0wNzAwLCBKb3PDqSBSb2JlcnRv
-IGRlIFNvdXphIHdyb3RlOg0KPiA+IEludGVsJ3MgUFNSMiBzZWxlY3RpdmUgZmV0Y2ggYWRkcyBv
-dGhlciBwbGFuZXMgdG8gc3RhdGUgd2hlbg0KPiA+IG5lY2Vzc2FyeSwgY2F1c2luZyB0aGUgYXN5
-bmMgZmxpcCB0byBmYWlsIGJlY2F1c2UgYXN5bmMgZmxpcCBpcyBub3QNCj4gPiBzdXBwb3J0ZWQg
-aW4gY3Vyc29yIHBsYW5lLg0KPiA+IA0KPiA+IENjOiBLYXJ0aGlrIEIgUyA8a2FydGhpay5iLnNA
-aW50ZWwuY29tPg0KPiA+IENjOiBWYW5kaXRhIEt1bGthcm5pIDx2YW5kaXRhLmt1bGthcm5pQGlu
-dGVsLmNvbT4NCj4gPiBDYzogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4Lmlu
-dGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3Nl
-LnNvdXphQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgbGliL2lndF9wc3IuYyAgICAgICAgICAg
-fCAxNiArKysrKysrKysrKysrKysrDQo+ID4gIGxpYi9pZ3RfcHNyLmggICAgICAgICAgIHwgIDIg
-KysNCj4gPiAgdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMgfCAgOCArKysrKysrKw0KPiA+ICAzIGZp
-bGVzIGNoYW5nZWQsIDI2IGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvbGli
-L2lndF9wc3IuYyBiL2xpYi9pZ3RfcHNyLmMNCj4gPiBpbmRleCA4NTdlYjU5MWMuLjhmYThiMTky
-ZiAxMDA2NDQNCj4gPiAtLS0gYS9saWIvaWd0X3Bzci5jDQo+ID4gKysrIGIvbGliL2lndF9wc3Iu
-Yw0KPiA+IEBAIC0yMSw2ICsyMSw3IEBADQo+ID4gICAqIElOIFRIRSBTT0ZUV0FSRS4NCj4gPiAg
-ICovDQo+ID4gIA0KPiA+ICsjaW5jbHVkZSAiZHJtdGVzdC5oIg0KPiA+ICAjaW5jbHVkZSAiaWd0
-X3BhcmFtcy5oIg0KPiA+ICAjaW5jbHVkZSAiaWd0X3Bzci5oIg0KPiA+ICAjaW5jbHVkZSAiaWd0
-X3N5c2ZzLmgiDQo+ID4gQEAgLTI2NCwzICsyNjUsMTggQEAgdm9pZCBwc3JfcHJpbnRfZGVidWdm
-cyhpbnQgZGVidWdmc19mZCkNCj4gPiAgDQo+ID4gIAlpZ3RfaW5mbygiJXMiLCBidWYpOw0KPiA+
-ICB9DQo+ID4gKw0KPiA+ICtib29sIGk5MTVfcHNyMl9zZWxlY3RpdmVfZmV0Y2hfY2hlY2soaW50
-IGRybV9mZCkNCj4gPiArew0KPiA+ICsJaW50IGRlYnVnZnNfZmQ7DQo+ID4gKwlib29sIHJldDsN
-Cj4gPiArDQo+ID4gKwlpZiAoIWlzX2k5MTVfZGV2aWNlKGRybV9mZCkpDQo+ID4gKwkJcmV0dXJu
-IGZhbHNlOw0KPiA+ICsNCj4gPiArCWRlYnVnZnNfZmQgPSBpZ3RfZGVidWdmc19kaXIoZHJtX2Zk
-KTsNCj4gPiArCXJldCA9IHBzcjJfc2VsZWN0aXZlX2ZldGNoX2NoZWNrKGRlYnVnZnNfZmQpOw0K
-PiA+ICsJY2xvc2UoZGVidWdmc19mZCk7DQo+ID4gKw0KPiA+ICsJcmV0dXJuIHJldDsNCj4gPiAr
-fQ0KPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0X3Bzci5oIGIvbGliL2lndF9wc3IuaA0KPiA+IGlu
-ZGV4IGM0N2IxOTdiMS4uYTA3NWYzMzZkIDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfcHNyLmgN
-Cj4gPiArKysgYi9saWIvaWd0X3Bzci5oDQo+ID4gQEAgLTQ3LDQgKzQ3LDYgQEAgYm9vbCBwc3Jf
-c2lua19zdXBwb3J0KGludCBkZXZpY2UsIGludCBkZWJ1Z2ZzX2ZkLCBlbnVtIHBzcl9tb2RlIG1v
-ZGUpOw0KPiA+ICBib29sIHBzcjJfd2FpdF9zdShpbnQgZGVidWdmc19mZCwgdWludDE2X3QgKm51
-bV9zdV9ibG9ja3MpOw0KPiA+ICB2b2lkIHBzcl9wcmludF9kZWJ1Z2ZzKGludCBkZWJ1Z2ZzX2Zk
-KTsNCj4gPiAgDQo+ID4gK2Jvb2wgaTkxNV9wc3IyX3NlbGVjdGl2ZV9mZXRjaF9jaGVjayhpbnQg
-ZHJtX2ZkKTsNCj4gPiArDQo+ID4gICNlbmRpZg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNf
-YXN5bmNfZmxpcHMuYyBiL3Rlc3RzL2ttc19hc3luY19mbGlwcy5jDQo+ID4gaW5kZXggNGZmN2Ex
-OTZhLi5jMzU1NjVmNjkgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMN
-Cj4gPiArKysgYi90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYw0KPiA+IEBAIC0yNyw2ICsyNyw3IEBA
-DQo+ID4gIA0KPiA+ICAjaW5jbHVkZSAiaWd0LmgiDQo+ID4gICNpbmNsdWRlICJpZ3RfYXV4Lmgi
-DQo+ID4gKyNpbmNsdWRlICJpZ3RfcHNyLmgiDQo+ID4gICNpbmNsdWRlIDxzeXMvaW9jdGwuaD4N
-Cj4gPiAgI2luY2x1ZGUgPHN5cy90aW1lLmg+DQo+ID4gICNpbmNsdWRlIDxwb2xsLmg+DQo+ID4g
-QEAgLTI5OSw2ICszMDAsMTMgQEAgc3RhdGljIHZvaWQgdGVzdF9jdXJzb3IoZGF0YV90ICpkYXRh
-KQ0KPiA+ICAJc3RydWN0IGlndF9mYiBjdXJzb3JfZmI7DQo+ID4gIAlzdHJ1Y3QgZHJtX21vZGVf
-Y3Vyc29yIGN1cjsNCj4gPiAgDQo+ID4gKwkvKg0KPiA+ICsJICogSW50ZWwncyBQU1IyIHNlbGVj
-dGl2ZSBmZXRjaCBhZGRzIG90aGVyIHBsYW5lcyB0byBzdGF0ZSB3aGVuDQo+ID4gKwkgKiBuZWNl
-c3NhcnksIGNhdXNpbmcgdGhlIGFzeW5jIGZsaXAgdG8gZmFpbCBiZWNhdXNlIGFzeW5jIGZsaXAg
-aXMgbm90DQo+ID4gKwkgKiBzdXBwb3J0ZWQgaW4gY3Vyc29yIHBsYW5lLg0KPiA+ICsJICovDQo+
-ID4gKwlpZ3Rfc2tpcF9vbihpOTE1X3BzcjJfc2VsZWN0aXZlX2ZldGNoX2NoZWNrKGRhdGEtPmRy
-bV9mZCkpOw0KPiA+ICsNCj4gDQo+IFBsZWFzZSB1c2UgdGhlIF9mIHZhcmlhbnQgb2YgdGhpcyBm
-dW5jdGlvbiBhbmQgYWRkIGEgZGVzY3JpcHRpdmUNCj4gbWVzc2FnZSB0byB0aGlzIHNraXAuDQoN
-Ck9rYXkNCg0KPiANCj4gSG93IGRvZXMgcmVhbCB1c2Vyc3BhY2UgZmFyZSB3aXRoIHRoaXMgc3R1
-ZmY/IFdoYXQgZXZlbiBhcmUgdGhlDQo+IGltcGxpY2F0aW9ucywgSSdtIG5vdCBzdXJlIEkgZ2V0
-IHRoaXMgZnVsbHkuIEkgdGhpbmsgSSBzYXcgeW91IGFuZA0KPiBWaWxsZSBkaXNjdXNzIHRoaXMg
-b24gSVJDIGJ1dCBJIG1pc3NlZCB0aGUgY29uY2x1c2lvbiBhbmQgd2hhdCBYIGRvZXMNCj4gb24g
-UFNSMi4gRmFsbCBiYWNrIHRvIHN5bmNocm9ub3VzIGZsaXBzIHdpdGggc29tZSBlZmZlY3Qgb24N
-Cj4gcGVyZm9ybWFuY2U/DQoNCldlIHdlcmUgZGlzY3Vzc2luZyBvbiBJUkMgYWJvdXQgZmFpbHVy
-ZXMgaW4ga21zX2N1cnNvcl9sZWdhY3kuDQoNCkFib3V0IGFzeW5jIGZsaXAsIHdlIHdpbGwgaW5h
-Y3RpdmF0ZSBhbmQgYWN0aXZhdGUgUFNSIGFyb3VuZCBhc3luYyBmbGlwcyB3aXRoIGEga2VybmVs
-IHBhdGNoIHRvIGF2b2lkIHZpc3VhbCBjb3JydXB0aW9uOg0KaHR0cHM6Ly9wYXRjaHdvcmsuZnJl
-ZWRlc2t0b3Aub3JnL3Nlcmllcy85NjQ0MC8NCg0KQnV0IGV2ZW4gd2l0aCB0aGlzIGtlcm5lbCBw
-YXRjaCB0aGlzIHRlc3Qgd2lsbCBmYWlsIHdoZW4gUFNSMiBzZWxlY3RpdmUgZmV0Y2ggaXMgc3Vw
-cG9ydGVkIGJlY2F1c2UgZXZlbiB3aXRoIFBTUjIgaW5hY3RpdmUsIGk5MTUgd2lsbCBzdGlsbCBj
-b21wdXRlDQphbmQgYWRkIG90aGVyIHBsYW5lcyB0aGF0IGludGVyc2VjdCB3aXRoIGRhbWFnZWQg
-YXJlYXMuDQpTbyBhIHBhZ2UgZmxpcCBpbiB0aGUgcHJpbWFyeSBwbGFuZSB3aWxsIGFkZCB0aGUg
-Y3Vyc29yIHBsYW5lKGFzIGl0IG92ZXJsYXBzKSBhbmQgdGhlIGN1cnNvciBwbGFuZSBkbyBub3Qg
-c3VwcG9ydCBhc3luYyBmbGlwIGNhdXNpbmcgdGhlIGNvbW1pdCBjaGVjaw0KdG8gZmFpbCBhbmQg
-YnkgY29uc2VxdWVuY2UgdGhpcyB0ZXN0IHdpbGwgZmFpbCBpbiAnaWd0X2Fzc2VydChyZXQgPT0g
-MCk7Jy4NCg0KPiANCj4gDQoNCg==
+On Fri, Oct 29, 2021 at 02:32:48PM -0700, Dixit, Ashutosh wrote:
+> On Thu, 28 Oct 2021 11:23:21 -0700, Zbigniew Kempczyński wrote:
+> >
+> > Make developer life easier and use definitions which are useful
+> > to shorten time during work on some subtest.
+> 
+> Hmm, I don't know about this one. If we want to increase 2 to 5 say for
+> some tests or reduce 20 to 10 for some others, previously we could just
+> change the numbers and here we need to go and #define some more
+> short-short, short-medium etc. Can we leave what we have as is? Unless you
+> have a strong preference. Thanks.
+
+No, I have no strong preference about this. I can leave it as it is -
+I've added these defines because testing during rewrite was very time
+consuming and I wanted to shorten it. And increase code readibilty a
+bit on the first look.
+
+I'm going to remove this in next series.
+
+--
+Zbigniew
+
+> 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  tests/i915/gem_sync.c | 68 +++++++++++++++++++++++--------------------
+> >  1 file changed, 37 insertions(+), 31 deletions(-)
+> >
+> > diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
+> > index 0093ca25f..3b9f9889c 100644
+> > --- a/tests/i915/gem_sync.c
+> > +++ b/tests/i915/gem_sync.c
+> > @@ -1150,6 +1150,11 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
+> >	intel_ctx_destroy(fd, tmp_ctx[0]);
+> >  }
+> >
+> > +/* small / medium / large */
+> > +#define STIMEOUT 1
+> > +#define MTIMEOUT 2
+> > +#define LTIMEOUT 20
+> > +
+> >  igt_main
+> >  {
+> >	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> > @@ -1160,31 +1165,31 @@ igt_main
+> >		int num_children;
+> >		int timeout;
+> >	} all[] = {
+> > -		{ "basic-each", sync_ring, 1, 2 },
+> > -		{ "basic-store-each", store_ring, 1, 2 },
+> > -		{ "basic-many-each", store_many, 0, 2 },
+> > -		{ "switch-each", switch_ring, 1, 20 },
+> > -		{ "forked-switch-each", switch_ring, ncpus, 20 },
+> > -		{ "forked-each", sync_ring, ncpus, 20 },
+> > -		{ "forked-store-each", store_ring, ncpus, 20 },
+> > -		{ "active-each", active_ring, 0, 20 },
+> > -		{ "wakeup-each", wakeup_ring, 20, 1 },
+> > -		{ "active-wakeup-each", active_wakeup_ring, 20, 1 },
+> > -		{ "double-wakeup-each", wakeup_ring, 20, 2 },
+> > +		{ "basic-each", sync_ring, 1, MTIMEOUT },
+> > +		{ "basic-store-each", store_ring, 1, MTIMEOUT },
+> > +		{ "basic-many-each", store_many, 0, MTIMEOUT },
+> > +		{ "switch-each", switch_ring, 1, LTIMEOUT },
+> > +		{ "forked-switch-each", switch_ring, ncpus, LTIMEOUT },
+> > +		{ "forked-each", sync_ring, ncpus, LTIMEOUT },
+> > +		{ "forked-store-each", store_ring, ncpus, LTIMEOUT },
+> > +		{ "active-each", active_ring, 0, LTIMEOUT },
+> > +		{ "wakeup-each", wakeup_ring, 20, STIMEOUT },
+> > +		{ "active-wakeup-each", active_wakeup_ring, 20, STIMEOUT },
+> > +		{ "double-wakeup-each", wakeup_ring, 20, MTIMEOUT },
+> >		{}
+> >	}, individual[] = {
+> > -		{ "default", sync_ring, 1, 20 },
+> > -		{ "idle", idle_ring, 0, 20 },
+> > -		{ "active", active_ring, 0, 20 },
+> > -		{ "wakeup", wakeup_ring, 20, 1 },
+> > -		{ "active-wakeup", active_wakeup_ring, 20, 1 },
+> > -		{ "double-wakeup", wakeup_ring, 20, 2 },
+> > -		{ "store", store_ring, 1, 20 },
+> > -		{ "switch", switch_ring, 1, 20 },
+> > -		{ "forked-switch", switch_ring, ncpus, 20 },
+> > -		{ "many", store_many, 0, 20 },
+> > -		{ "forked", sync_ring, ncpus, 20 },
+> > -		{ "forked-store", store_ring, ncpus, 20 },
+> > +		{ "default", sync_ring, 1, LTIMEOUT },
+> > +		{ "idle", idle_ring, 0, LTIMEOUT },
+> > +		{ "active", active_ring, 0, LTIMEOUT },
+> > +		{ "wakeup", wakeup_ring, 20, STIMEOUT },
+> > +		{ "active-wakeup", active_wakeup_ring, 20, STIMEOUT },
+> > +		{ "double-wakeup", wakeup_ring, 20, MTIMEOUT },
+> > +		{ "store", store_ring, 1, LTIMEOUT },
+> > +		{ "switch", switch_ring, 1, LTIMEOUT },
+> > +		{ "forked-switch", switch_ring, ncpus, LTIMEOUT },
+> > +		{ "many", store_many, 0, LTIMEOUT },
+> > +		{ "forked", sync_ring, ncpus, LTIMEOUT },
+> > +		{ "forked-store", store_ring, ncpus, LTIMEOUT },
+> >		{}
+> >	};
+> >  #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
+> > @@ -1215,19 +1220,20 @@ igt_main
+> >		}
+> >	}
+> >
+> > +
+> >	igt_subtest("basic-all")
+> > -		sync_all(fd, ctx, 1, 2);
+> > +		sync_all(fd, ctx, 1, MTIMEOUT);
+> >	igt_subtest("basic-store-all")
+> > -		store_all(fd, ctx, 1, 2);
+> > +		store_all(fd, ctx, 1, MTIMEOUT);
+> >
+> >	igt_subtest("all")
+> > -		sync_all(fd, ctx, 1, 20);
+> > +		sync_all(fd, ctx, 1, LTIMEOUT);
+> >	igt_subtest("store-all")
+> > -		store_all(fd, ctx, 1, 20);
+> > +		store_all(fd, ctx, 1, LTIMEOUT);
+> >	igt_subtest("forked-all")
+> > -		sync_all(fd, ctx, ncpus, 20);
+> > +		sync_all(fd, ctx, ncpus, LTIMEOUT);
+> >	igt_subtest("forked-store-all")
+> > -		store_all(fd, ctx, ncpus, 20);
+> > +		store_all(fd, ctx, ncpus, LTIMEOUT);
+> >
+> >	for_each_test(t, all) {
+> >		igt_subtest_f("%s", t->name)
+> > @@ -1254,11 +1260,11 @@ igt_main
+> >		}
+> >
+> >		igt_subtest("preempt-all")
+> > -			preempt(fd, ctx, ALL_ENGINES, 1, 20);
+> > +			preempt(fd, ctx, ALL_ENGINES, 1, LTIMEOUT);
+> >		igt_subtest_with_dynamic("preempt") {
+> >			for_each_ctx_engine(fd, ctx, e) {
+> >				igt_dynamic_f("%s", e->name)
+> > -					preempt(fd, ctx, e->flags, ncpus, 20);
+> > +					preempt(fd, ctx, e->flags, ncpus, LTIMEOUT);
+> >			}
+> >		}
+> >	}
+> > --
+> > 2.26.0
+> >
