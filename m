@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Wed,  3 Nov 2021 10:04:48 -0700
-Message-Id: <20211103170449.1614314-8-John.C.Harrison@Intel.com>
+Date: Wed,  3 Nov 2021 10:04:45 -0700
+Message-Id: <20211103170449.1614314-5-John.C.Harrison@Intel.com>
 In-Reply-To: <20211103170449.1614314-1-John.C.Harrison@Intel.com>
 References: <20211103170449.1614314-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 i-g-t 7/8] lib/igt_gt: Allow per engine reset
- testing
+Subject: [igt-dev] [PATCH v2 i-g-t 4/8] tests/i915/gem_exec_capture: Use
+ contexts and engines properly
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,108 +23,247 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-With GuC submission, engine resets are handled entirely within GuC
-rather than within i915. Traditionally, IGT has disallowed engine
-based resets becuase they don't send the uevent which IGT uses to
-check for unexpected resets. However, it is important to be able to
-test all reset mechanisms that can be used, so allow engine based
-resets to be enabled.
+Some of the capture tests were using explicit contexts, some not. Some
+were poking the per engine pre-emption timeout, some not. This would
+lead to sporadic failures due to random timeouts, contexts being
+banned depending upon how many subtests were run and/or how many
+engines a given platform has, and other such failures.
+
+So, update all tests to be conistent.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- lib/igt_gt.c | 44 +++++++++++++++++++++++++++++---------------
- lib/igt_gt.h |  1 +
- 2 files changed, 30 insertions(+), 15 deletions(-)
+ tests/i915/gem_exec_capture.c | 79 +++++++++++++++++++++++++----------
+ 1 file changed, 57 insertions(+), 22 deletions(-)
 
-diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index a0ba04cc1..7c7df95ee 100644
---- a/lib/igt_gt.c
-+++ b/lib/igt_gt.c
-@@ -56,23 +56,28 @@
-  * engines.
-  */
- 
-+static int reset_query_once = -1;
-+
- static bool has_gpu_reset(int fd)
- {
--	static int once = -1;
--	if (once < 0) {
--		struct drm_i915_getparam gp;
--		int val = 0;
--
--		memset(&gp, 0, sizeof(gp));
--		gp.param = 35; /* HAS_GPU_RESET */
--		gp.value = &val;
--
--		if (ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp))
--			once = intel_gen(intel_get_drm_devid(fd)) >= 5;
--		else
--			once = val > 0;
-+	if (reset_query_once < 0) {
-+		reset_query_once = gem_gpu_reset_type(fd);
-+
-+		/* Very old kernels did not support the query */
-+		if (reset_query_once == -1)
-+			reset_query_once =
-+			      (intel_gen(intel_get_drm_devid(fd)) >= 5) ? 1 : 0;
- 	}
--	return once;
-+
-+	return reset_query_once > 0;
-+}
-+
-+static bool has_engine_reset(int fd)
-+{
-+	if (reset_query_once < 0)
-+		has_gpu_reset(fd);
-+
-+	return reset_query_once > 1;
+diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+index c85c198f7..11c348d3b 100644
+--- a/tests/i915/gem_exec_capture.c
++++ b/tests/i915/gem_exec_capture.c
+@@ -204,8 +204,19 @@ static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
+ 	return blobs;
  }
  
- static void eat_error_state(int dev)
-@@ -176,7 +181,11 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
- 		igt_skip("hang injection disabled by user [IGT_HANG=0]\n");
- 	gem_context_require_bannable(fd);
- 
--	allow_reset = 1;
-+	if (flags & HANG_WANT_ENGINE_RESET)
-+		allow_reset = 2;
-+	else
-+		allow_reset = 1;
++static void configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctxt_id)
++{
++	/* Ensure fast hang detection */
++	gem_engine_property_printf(fd, e->name, "preempt_timeout_ms", "%d", 250);
++	gem_engine_property_printf(fd, e->name, "heartbeat_interval_ms", "%d", 500);
 +
- 	if ((flags & HANG_ALLOW_CAPTURE) == 0) {
- 		param.param = I915_CONTEXT_PARAM_NO_ERROR_CAPTURE;
- 		param.value = 1;
-@@ -187,11 +196,16 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
- 		__gem_context_set_param(fd, &param);
- 		allow_reset = INT_MAX; /* any reset method */
++	/* Allow engine based resets and disable banning */
++	igt_allow_hang(fd, ctxt_id, HANG_ALLOW_CAPTURE);
++}
++
+ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+-		       unsigned ring, uint32_t target, uint64_t target_size)
++		       const struct intel_execution_engine2 *e,
++		       uint32_t target, uint64_t target_size)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	struct drm_i915_gem_exec_object2 obj[4];
+@@ -219,6 +230,8 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	struct offset offset;
+ 	int i;
+ 
++	configure_hangs(fd, e, ctx->id);
++
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[SCRATCH].handle = gem_create(fd, 4096);
+ 	obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
+@@ -297,7 +310,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = (uintptr_t)obj;
+ 	execbuf.buffer_count = ARRAY_SIZE(obj);
+-	execbuf.flags = ring;
++	execbuf.flags = e->flags;
+ 	if (gen > 3 && gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
+ 	execbuf.rsvd1 = ctx->id;
+@@ -326,7 +339,8 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	gem_close(fd, obj[SCRATCH].handle);
+ }
+ 
+-static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
++static void capture(int fd, int dir, const intel_ctx_t *ctx,
++		    const struct intel_execution_engine2 *e)
+ {
+ 	uint32_t handle;
+ 	uint64_t ahnd;
+@@ -335,7 +349,7 @@ static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
+ 	handle = gem_create(fd, obj_size);
+ 	ahnd = get_reloc_ahnd(fd, ctx->id);
+ 
+-	__capture1(fd, dir, ahnd, ctx, ring, handle, obj_size);
++	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size);
+ 
+ 	gem_close(fd, handle);
+ 	put_ahnd(ahnd);
+@@ -355,9 +369,9 @@ static int cmp(const void *A, const void *B)
+ }
+ 
+ static struct offset *
+-__captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
+-	      unsigned int size, int count,
+-	      unsigned int flags)
++__captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
++	   const struct intel_execution_engine2 *e,
++	   unsigned int size, int count, unsigned int flags)
+ #define INCREMENTAL 0x1
+ #define ASYNC 0x2
+ {
+@@ -369,6 +383,8 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
+ 	struct offset *offsets;
+ 	int i;
+ 
++	configure_hangs(fd, e, ctx->id);
++
+ 	offsets = calloc(count, sizeof(*offsets));
+ 	igt_assert(offsets);
+ 
+@@ -470,9 +486,10 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = (uintptr_t)obj;
+ 	execbuf.buffer_count = count + 2;
+-	execbuf.flags = ring;
++	execbuf.flags = e->flags;
+ 	if (gen > 3 && gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
++	execbuf.rsvd1 = ctx->id;
+ 
+ 	igt_assert(!READ_ONCE(*seqno));
+ 	gem_execbuf(fd, &execbuf);
+@@ -503,12 +520,27 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
+ 	return offsets;
+ }
+ 
++#define find_first_available_engine(fd, ctx, e) \
++	do { \
++		ctx = intel_ctx_create_all_physical(fd); \
++		igt_assert(ctx); \
++		for_each_ctx_engine(fd, ctx, e) \
++			for_each_if(gem_class_can_store_dword(fd, e->class)) \
++				break; \
++		igt_assert(e); \
++		configure_hangs(fd, e, ctx->id); \
++	} while(0)
++
+ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ {
++	const struct intel_execution_engine2 *e;
++	const intel_ctx_t *ctx;
+ 	uint64_t ram, gtt, ahnd;
+ 	unsigned long count, blobs;
+ 	struct offset *offsets;
+ 
++	find_first_available_engine(fd, ctx, e);
++
+ 	gtt = gem_aperture_size(fd) / size;
+ 	ram = (intel_get_avail_ram_mb() << 20) / size;
+ 	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
+@@ -518,9 +550,9 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ 	igt_require(count > 1);
+ 
+ 	intel_require_memory(count, size, CHECK_RAM);
+-	ahnd = get_reloc_ahnd(fd, 0);
++	ahnd = get_reloc_ahnd(fd, ctx->id);
+ 
+-	offsets = __captureN(fd, dir, ahnd, 0, size, count, flags);
++	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags);
+ 
+ 	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
+ 	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
+@@ -531,7 +563,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ }
+ 
+ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+-		    unsigned ring, const char *name)
++		    const struct intel_execution_engine2 *e)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct drm_i915_gem_exec_object2 obj = {
+@@ -540,7 +572,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+ 	struct drm_i915_gem_execbuffer2 execbuf = {
+ 		.buffers_ptr = to_user_pointer(&obj),
+ 		.buffer_count = 1,
+-		.flags = ring,
++		.flags = e->flags,
+ 		.rsvd1 = ctx->id,
+ 	};
+ 	int64_t timeout = NSEC_PER_SEC; /* 1s, feeling generous, blame debug */
+@@ -555,10 +587,6 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+ 	igt_require(igt_params_set(fd, "reset", "%u", -1)); /* engine resets! */
+ 	igt_require(gem_gpu_reset_type(fd) > 1);
+ 
+-	/* Needs to be fast enough for the hangcheck to return within 1s */
+-	igt_require(gem_engine_property_printf(fd, name, "preempt_timeout_ms", "%d", 0) > 0);
+-	gem_engine_property_printf(fd, name, "preempt_timeout_ms", "%d", 500);
+-
+ 	gtt = gem_aperture_size(fd) / size;
+ 	ram = (intel_get_avail_ram_mb() << 20) / size;
+ 	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
+@@ -576,15 +604,19 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+ 
+ 	igt_assert(pipe(link) == 0);
+ 	igt_fork(child, 1) {
++		const intel_ctx_t *ctx2;
+ 		fd = gem_reopen_driver(fd);
+ 		igt_debug("Submitting large capture [%ld x %dMiB objects]\n",
+ 			  count, (int)(size >> 20));
+ 
++		ctx2 = intel_ctx_create_all_physical(fd);
++		igt_assert(ctx2);
++
+ 		intel_allocator_init();
+ 		/* Reopen the allocator in the new process. */
+-		ahnd = get_reloc_ahnd(fd, 0);
++		ahnd = get_reloc_ahnd(fd, ctx2->id);
+ 
+-		free(__captureN(fd, dir, ahnd, ring, size, count, ASYNC));
++		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC));
+ 		put_ahnd(ahnd);
+ 
+ 		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
+@@ -615,18 +647,21 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+ 
+ static void userptr(int fd, int dir)
+ {
+-	const intel_ctx_t *ctx = intel_ctx_0(fd);
++	const struct intel_execution_engine2 *e;
++	const intel_ctx_t *ctx;
+ 	uint32_t handle;
+ 	uint64_t ahnd;
+ 	void *ptr;
+ 	int obj_size = 4096;
+ 
++	find_first_available_engine(fd, ctx, e);
++
+ 	igt_assert(posix_memalign(&ptr, obj_size, obj_size) == 0);
+ 	memset(ptr, 0, obj_size);
+ 	igt_require(__gem_userptr(fd, ptr, obj_size, 0, 0, &handle) == 0);
+ 	ahnd = get_reloc_ahnd(fd, ctx->id);
+ 
+-	__capture1(fd, dir, ahnd, intel_ctx_0(fd), 0, handle, obj_size);
++	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size);
+ 
+ 	gem_close(fd, handle);
+ 	put_ahnd(ahnd);
+@@ -684,7 +719,7 @@ igt_main
  	}
-+
- 	igt_require(igt_params_set(fd, "reset", "%d", allow_reset));
-+	reset_query_once = -1;  /* Re-query after changing param */
  
- 	if (!igt_check_boolean_env_var("IGT_HANG_WITHOUT_RESET", false))
- 		igt_require(has_gpu_reset(fd));
+ 	test_each_engine("capture", fd, ctx, e)
+-		capture(fd, dir, ctx, e->flags);
++		capture(fd, dir, ctx, e);
  
-+	if (flags & HANG_WANT_ENGINE_RESET)
-+		igt_require(has_engine_reset(fd));
-+
- 	ban = context_get_ban(fd, ctx);
- 	if ((flags & HANG_ALLOW_BAN) == 0)
- 		context_set_ban(fd, ctx, 0);
-diff --git a/lib/igt_gt.h b/lib/igt_gt.h
-index ceb044b86..c5059817b 100644
---- a/lib/igt_gt.h
-+++ b/lib/igt_gt.h
-@@ -51,6 +51,7 @@ igt_hang_t igt_hang_ctx_with_ahnd(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+ 	igt_subtest_f("many-4K-zero") {
+ 		igt_require(gem_can_store_dword(fd, 0));
+@@ -719,7 +754,7 @@ igt_main
+ 	}
  
- #define HANG_ALLOW_BAN 1
- #define HANG_ALLOW_CAPTURE 2
-+#define HANG_WANT_ENGINE_RESET 4
+ 	test_each_engine("pi", fd, ctx, e)
+-		prioinv(fd, dir, ctx, e->flags, e->name);
++		prioinv(fd, dir, ctx, e);
  
- igt_hang_t igt_hang_ring(int fd, int ring);
- igt_hang_t igt_hang_ring_with_ahnd(int fd, int ring, uint64_t ahnd);
+ 	igt_fixture {
+ 		close(dir);
 -- 
 2.25.1
