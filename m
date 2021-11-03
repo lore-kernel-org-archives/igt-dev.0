@@ -1,224 +1,473 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Wed,  3 Nov 2021 10:04:49 -0700
-Message-Id: <20211103170449.1614314-9-John.C.Harrison@Intel.com>
+Date: Wed,  3 Nov 2021 10:04:44 -0700
+Message-Id: <20211103170449.1614314-4-John.C.Harrison@Intel.com>
 In-Reply-To: <20211103170449.1614314-1-John.C.Harrison@Intel.com>
 References: <20211103170449.1614314-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 i-g-t 8/8] tests/i915/gem_exec_capture: Update
- to support GuC based resets
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Subject: [Intel-gfx] [PATCH v2 i-g-t 3/8] tests/i915/gem_exec_capture: Make
+ the error decode a common helper
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-When GuC submission is enabled, GuC itself manages hang detection and
-recovery. Therefore, any test that relies on being able to trigger an
-engine reset in the driver will fail. Full GT resets can still be
-triggered by the driver. However, in that situation detecting the
-specific context that caused a hang is not possible as the driver has
-no information about what is actually running on the hardware at any
-given time. Plus of course, there was no context that caused the hang
-because the hang was triggered manually, so it's basically a bogus
-mechanism in the first place!
-
-Update the capture test to cause a reset via a the hangcheck mechanism
-by submitting a hanging batch and waiting. That way it is guaranteed to
-be testing the correct reset code paths for the current platform,
-whether that is GuC enabled or not.
+The decode of the error capture contents was happening in two
+different sub-tests with two very different pieces of code. One being
+much more extensive than the other (actually decodes and verifies the
+contents of the captured buffers rather than just the address). So,
+move the code into a common helper function and use that in both
+places.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/gem_exec_capture.c | 65 ++++++++++++++++++++++++++++-------
- 1 file changed, 53 insertions(+), 12 deletions(-)
+ tests/i915/gem_exec_capture.c | 344 +++++++++++++++++-----------------
+ 1 file changed, 170 insertions(+), 174 deletions(-)
 
 diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index e924d0a30..143d97ad4 100644
+index 47ca64dd6..c85c198f7 100644
 --- a/tests/i915/gem_exec_capture.c
 +++ b/tests/i915/gem_exec_capture.c
-@@ -23,6 +23,7 @@
+@@ -33,32 +33,175 @@
  
- #include <sys/poll.h>
- #include <zlib.h>
-+#include <sched.h>
- 
- #include "i915/gem.h"
- #include "i915/gem_create.h"
-@@ -31,6 +32,8 @@
- #include "igt_rand.h"
- #include "igt_sysfs.h"
- 
-+#define MAX_RESET_TIME	600
-+
  IGT_TEST_DESCRIPTION("Check that we capture the user specified objects on a hang");
  
- struct offset {
-@@ -213,7 +216,29 @@ static void configure_hangs(int fd, const struct intel_execution_engine2 *e, int
- 	gem_engine_property_printf(fd, e->name, "heartbeat_interval_ms", "%d", 500);
- 
- 	/* Allow engine based resets and disable banning */
--	igt_allow_hang(fd, ctxt_id, HANG_ALLOW_CAPTURE);
-+	igt_allow_hang(fd, ctxt_id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
+-static void check_error_state(int dir, struct drm_i915_gem_exec_object2 *obj)
++struct offset {
++	uint64_t addr;
++	unsigned long idx;
++	bool found;
++};
++
++static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
++{
++	struct z_stream_s zstream;
++	void *out;
++
++	memset(&zstream, 0, sizeof(zstream));
++
++	zstream.next_in = (unsigned char *)*ptr;
++	zstream.avail_in = 4*len;
++
++	if (inflateInit(&zstream) != Z_OK)
++		return 0;
++
++	out = malloc(128*4096); /* approximate obj size */
++	zstream.next_out = out;
++	zstream.avail_out = 128*4096;
++
++	do {
++		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
++		case Z_STREAM_END:
++			goto end;
++		case Z_OK:
++			break;
++		default:
++			inflateEnd(&zstream);
++			return 0;
++		}
++
++		if (zstream.avail_out)
++			break;
++
++		out = realloc(out, 2*zstream.total_out);
++		if (out == NULL) {
++			inflateEnd(&zstream);
++			return 0;
++		}
++
++		zstream.next_out = (unsigned char *)out + zstream.total_out;
++		zstream.avail_out = zstream.total_out;
++	} while (1);
++end:
++	inflateEnd(&zstream);
++	free(*ptr);
++	*ptr = out;
++	return zstream.total_out / 4;
 +}
 +
-+static bool fence_busy(int fence)
++static unsigned long
++ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
 +{
-+	return poll(&(struct pollfd){fence, POLLIN}, 1, 0) == 0;
-+}
++	unsigned long len = 0, size = 1024;
 +
-+static void wait_to_die(int fence_out)
-+{
-+	struct timeval before, after, delta;
++	*out = realloc(*out, sizeof(uint32_t)*size);
++	if (*out == NULL)
++		return 0;
 +
-+	/* Wait for a reset to occur */
-+	gettimeofday(&before, NULL);
-+	while (fence_busy(fence_out)) {
-+		gettimeofday(&after, NULL);
-+		timersub(&after, &before, &delta);
-+		igt_assert(delta.tv_sec < MAX_RESET_TIME);
-+		sched_yield();
++	while (*in >= '!' && *in <= 'z') {
++		uint32_t v = 0;
++
++		if (len == size) {
++			size *= 2;
++			*out = realloc(*out, sizeof(uint32_t)*size);
++			if (*out == NULL)
++				return 0;
++		}
++
++		if (*in == 'z') {
++			in++;
++		} else {
++			v += in[0] - 33; v *= 85;
++			v += in[1] - 33; v *= 85;
++			v += in[2] - 33; v *= 85;
++			v += in[3] - 33; v *= 85;
++			v += in[4] - 33;
++			in += 5;
++		}
++		(*out)[len++] = v;
 +	}
-+	gettimeofday(&after, NULL);
-+	timersub(&after, &before, &delta);
-+	igt_info("Target died after %ld.%06lds\n", delta.tv_sec, delta.tv_usec);
++	*end = in;
++
++	if (!inflate)
++		return len;
++
++	return zlib_inflate(out, len);
++}
++
++static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
++			     uint64_t obj_size, bool incremental)
+ {
+ 	char *error, *str;
+-	bool found = false;
++	int blobs = 0;
+ 
+ 	error = igt_sysfs_get(dir, "error");
+ 	igt_sysfs_set(dir, "error", "Begone!");
+-
+ 	igt_assert(error);
+ 	igt_debug("%s\n", error);
+ 
+ 	/* render ring --- user = 0x00000000 ffffd000 */
+-	for (str = error; (str = strstr(str, "--- user = ")); str++) {
++	for (str = error; (str = strstr(str, "--- user = ")); ) {
++		uint32_t *data = NULL;
+ 		uint64_t addr;
+-		uint32_t hi, lo;
++		unsigned long i, sz;
++		unsigned long start;
++		unsigned long end;
+ 
+-		igt_assert(sscanf(str, "--- user = 0x%x %x", &hi, &lo) == 2);
+-		addr = hi;
++		if (strncmp(str, "--- user = 0x", 13))
++			break;
++		str += 13;
++		addr = strtoul(str, &str, 16);
+ 		addr <<= 32;
+-		addr |= lo;
+-		igt_assert_eq_u64(addr, obj->offset);
+-		found = true;
++		addr |= strtoul(str + 1, &str, 16);
++		igt_assert(*str++ == '\n');
++
++		start = 0;
++		end = obj_count;
++		while (end > start) {
++			i = (end - start) / 2 + start;
++			if (obj_offsets[i].addr < addr)
++				start = i + 1;
++			else if (obj_offsets[i].addr > addr)
++				end = i;
++			else
++				break;
++		}
++		igt_assert(obj_offsets[i].addr == addr);
++		igt_assert(!obj_offsets[i].found);
++		obj_offsets[i].found = true;
++		igt_debug("offset:%"PRIx64", index:%ld\n",
++			  addr, obj_offsets[i].idx);
++
++		/* gtt_page_sizes = 0x00010000 */
++		if (strncmp(str, "gtt_page_sizes = 0x", 19) == 0) {
++			str += 19 + 8;
++			igt_assert(*str++ == '\n');
++		}
++
++		if (!(*str == ':' || *str == '~'))
++			continue;
++
++		igt_debug("blob:%.64s\n", str);
++		sz = ascii85_decode(str + 1, &data, *str == ':', &str);
++
++		igt_assert_eq(4 * sz, obj_size);
++		igt_assert(*str++ == '\n');
++		str = strchr(str, '-');
++
++		if (incremental) {
++			uint32_t expect;
++
++			expect = obj_offsets[i].idx * obj_size;
++			for (i = 0; i < sz; i++)
++				igt_assert_eq(data[i], expect++);
++		} else {
++			for (i = 0; i < sz; i++)
++				igt_assert_eq(data[i], 0);
++		}
++
++		blobs++;
++		free(data);
+ 	}
+ 
+ 	free(error);
+-	igt_assert(found);
++	return blobs;
  }
  
  static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
-@@ -230,7 +255,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+@@ -73,6 +216,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	struct drm_i915_gem_relocation_entry reloc[2];
  	struct drm_i915_gem_execbuffer2 execbuf;
  	uint32_t *batch, *seqno;
- 	struct offset offset;
--	int i;
-+	int i, fence_out;
++	struct offset offset;
+ 	int i;
  
- 	configure_hangs(fd, e, ctx->id);
+ 	memset(obj, 0, sizeof(obj));
+@@ -168,7 +312,10 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
  
-@@ -315,18 +340,25 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	execbuf.flags = e->flags;
- 	if (gen > 3 && gen < 6)
- 		execbuf.flags |= I915_EXEC_SECURE;
-+	execbuf.flags |= I915_EXEC_FENCE_OUT;
- 	execbuf.rsvd1 = ctx->id;
-+	execbuf.rsvd2 = ~0UL;
- 
- 	igt_assert(!READ_ONCE(*seqno));
--	gem_execbuf(fd, &execbuf);
-+	gem_execbuf_wr(fd, &execbuf);
-+
-+	fence_out = execbuf.rsvd2 >> 32;
-+	igt_assert(fence_out >= 0);
- 
- 	/* Wait for the request to start */
- 	while (READ_ONCE(*seqno) != 0xc0ffee)
- 		igt_assert(gem_bo_busy(fd, obj[SCRATCH].handle));
- 	munmap(seqno, 4096);
- 
-+	/* Wait for a reset to occur */
-+	wait_to_die(fence_out);
-+
  	/* Check that only the buffer we marked is reported in the error */
--	igt_force_gpu_reset(fd);
- 	memset(&offset, 0, sizeof(offset));
- 	offset.addr = obj[CAPTURE].offset;
- 	igt_assert_eq(check_error_state(dir, &offset, 1, target_size, false), 1);
-@@ -373,7 +405,8 @@ static int cmp(const void *A, const void *B)
- static struct offset *
- __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	   const struct intel_execution_engine2 *e,
--	   unsigned int size, int count, unsigned int flags)
-+	   unsigned int size, int count,
-+	   unsigned int flags, int *_fence_out)
- #define INCREMENTAL 0x1
- #define ASYNC 0x2
+ 	igt_force_gpu_reset(fd);
+-	check_error_state(dir, &obj[CAPTURE]);
++	memset(&offset, 0, sizeof(offset));
++	offset.addr = obj[CAPTURE].offset;
++	igt_assert_eq(check_error_state(dir, &offset, 1, target_size, false), 1);
++	igt_assert(offset.found);
+ 
+ 	gem_sync(fd, obj[BATCH].handle);
+ 
+@@ -183,11 +330,12 @@ static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
  {
-@@ -383,7 +416,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	uint32_t *batch, *seqno;
- 	struct offset *offsets;
--	int i;
-+	int i, fence_out;
+ 	uint32_t handle;
+ 	uint64_t ahnd;
++	int obj_size = 4096;
  
- 	configure_hangs(fd, e, ctx->id);
- 
-@@ -491,10 +524,17 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	execbuf.flags = e->flags;
- 	if (gen > 3 && gen < 6)
- 		execbuf.flags |= I915_EXEC_SECURE;
-+	execbuf.flags |= I915_EXEC_FENCE_OUT;
- 	execbuf.rsvd1 = ctx->id;
-+	execbuf.rsvd2 = ~0UL;
- 
- 	igt_assert(!READ_ONCE(*seqno));
--	gem_execbuf(fd, &execbuf);
-+	gem_execbuf_wr(fd, &execbuf);
-+
-+	fence_out = execbuf.rsvd2 >> 32;
-+	igt_assert(fence_out >= 0);
-+	if (_fence_out)
-+		*_fence_out = fence_out;
- 
- 	/* Wait for the request to start */
- 	while (READ_ONCE(*seqno) != 0xc0ffee)
-@@ -502,7 +542,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	munmap(seqno, 4096);
- 
- 	if (!(flags & ASYNC)) {
--		igt_force_gpu_reset(fd);
-+		wait_to_die(fence_out);
- 		gem_sync(fd, obj[count + 1].handle);
- 	}
- 
-@@ -554,7 +594,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	intel_require_memory(count, size, CHECK_RAM);
+-	handle = gem_create(fd, 4096);
++	handle = gem_create(fd, obj_size);
  	ahnd = get_reloc_ahnd(fd, ctx->id);
  
--	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags);
-+	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
+-	__capture1(fd, dir, ahnd, ctx, ring, handle, 4096);
++	__capture1(fd, dir, ahnd, ctx, ring, handle, obj_size);
  
- 	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
+ 	gem_close(fd, handle);
+ 	put_ahnd(ahnd);
+@@ -206,10 +354,8 @@ static int cmp(const void *A, const void *B)
+ 	return 0;
+ }
+ 
+-static struct offset {
+-	uint64_t addr;
+-	unsigned long idx;
+-} *__captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
++static struct offset *
++__captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
+ 	      unsigned int size, int count,
+ 	      unsigned int flags)
+ #define INCREMENTAL 0x1
+@@ -357,98 +503,11 @@ static struct offset {
+ 	return offsets;
+ }
+ 
+-static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
+-{
+-	struct z_stream_s zstream;
+-	void *out;
+-
+-	memset(&zstream, 0, sizeof(zstream));
+-
+-	zstream.next_in = (unsigned char *)*ptr;
+-	zstream.avail_in = 4*len;
+-
+-	if (inflateInit(&zstream) != Z_OK)
+-		return 0;
+-
+-	out = malloc(128*4096); /* approximate obj size */
+-	zstream.next_out = out;
+-	zstream.avail_out = 128*4096;
+-
+-	do {
+-		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
+-		case Z_STREAM_END:
+-			goto end;
+-		case Z_OK:
+-			break;
+-		default:
+-			inflateEnd(&zstream);
+-			return 0;
+-		}
+-
+-		if (zstream.avail_out)
+-			break;
+-
+-		out = realloc(out, 2*zstream.total_out);
+-		if (out == NULL) {
+-			inflateEnd(&zstream);
+-			return 0;
+-		}
+-
+-		zstream.next_out = (unsigned char *)out + zstream.total_out;
+-		zstream.avail_out = zstream.total_out;
+-	} while (1);
+-end:
+-	inflateEnd(&zstream);
+-	free(*ptr);
+-	*ptr = out;
+-	return zstream.total_out / 4;
+-}
+-
+-static unsigned long
+-ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
+-{
+-	unsigned long len = 0, size = 1024;
+-
+-	*out = realloc(*out, sizeof(uint32_t)*size);
+-	if (*out == NULL)
+-		return 0;
+-
+-	while (*in >= '!' && *in <= 'z') {
+-		uint32_t v = 0;
+-
+-		if (len == size) {
+-			size *= 2;
+-			*out = realloc(*out, sizeof(uint32_t)*size);
+-			if (*out == NULL)
+-				return 0;
+-		}
+-
+-		if (*in == 'z') {
+-			in++;
+-		} else {
+-			v += in[0] - 33; v *= 85;
+-			v += in[1] - 33; v *= 85;
+-			v += in[2] - 33; v *= 85;
+-			v += in[3] - 33; v *= 85;
+-			v += in[4] - 33;
+-			in += 5;
+-		}
+-		(*out)[len++] = v;
+-	}
+-	*end = in;
+-
+-	if (!inflate)
+-		return len;
+-
+-	return zlib_inflate(out, len);
+-}
+-
+ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ {
+ 	uint64_t ram, gtt, ahnd;
+ 	unsigned long count, blobs;
+ 	struct offset *offsets;
+-	char *error, *str;
+ 
+ 	gtt = gem_aperture_size(fd) / size;
+ 	ram = (intel_get_avail_ram_mb() << 20) / size;
+@@ -463,75 +522,10 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ 
+ 	offsets = __captureN(fd, dir, ahnd, 0, size, count, flags);
+ 
+-	error = igt_sysfs_get(dir, "error");
+-	igt_sysfs_set(dir, "error", "Begone!");
+-	igt_assert(error);
+-
+-	blobs = 0;
+-	/* render ring --- user = 0x00000000 ffffd000 */
+-	str = strstr(error, "--- user = ");
+-	while (str) {
+-		uint32_t *data = NULL;
+-		unsigned long i, sz;
+-		uint64_t addr;
+-
+-		if (strncmp(str, "--- user = 0x", 13))
+-			break;
+-
+-		str += 13;
+-		addr = strtoul(str, &str, 16);
+-		addr <<= 32;
+-		addr |= strtoul(str + 1, &str, 16);
+-		igt_assert(*str++ == '\n');
+-
+-		/* gtt_page_sizes = 0x00010000 */
+-		if (strncmp(str, "gtt_page_sizes = 0x", 19) == 0) {
+-			str += 19 + 8;
+-			igt_assert(*str++ == '\n');
+-		}
+-
+-		if (!(*str == ':' || *str == '~'))
+-			continue;
+-
+-		igt_debug("blob:%.64s\n", str);
+-		sz = ascii85_decode(str + 1, &data, *str == ':', &str);
+-		igt_assert_eq(4 * sz, size);
+-		igt_assert(*str++ == '\n');
+-		str = strchr(str, '-');
+-
+-		if (flags & INCREMENTAL) {
+-			unsigned long start = 0;
+-			unsigned long end = count;
+-			uint32_t expect;
+-
+-			while (end > start) {
+-				i = (end - start) / 2 + start;
+-				if (offsets[i].addr < addr)
+-					start = i + 1;
+-				else if (offsets[i].addr > addr)
+-					end = i;
+-				else
+-					break;
+-			}
+-			igt_assert(offsets[i].addr == addr);
+-			igt_debug("offset:%"PRIx64", index:%ld\n",
+-				  addr, offsets[i].idx);
+-
+-			expect = offsets[i].idx * size;
+-			for (i = 0; i < sz; i++)
+-				igt_assert_eq(data[i], expect++);
+-		} else {
+-			for (i = 0; i < sz; i++)
+-				igt_assert_eq(data[i], 0);
+-		}
+-
+-		blobs++;
+-		free(data);
+-	}
++	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
  	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-@@ -607,6 +647,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
- 	igt_assert(pipe(link) == 0);
- 	igt_fork(child, 1) {
- 		const intel_ctx_t *ctx2;
-+		int fence_out;
- 		fd = gem_reopen_driver(fd);
- 		igt_debug("Submitting large capture [%ld x %dMiB objects]\n",
- 			  count, (int)(size >> 20));
-@@ -618,11 +659,11 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
- 		/* Reopen the allocator in the new process. */
- 		ahnd = get_reloc_ahnd(fd, ctx2->id);
+ 		 blobs, size >> 12, count);
  
--		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC));
-+		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
- 		put_ahnd(ahnd);
+-	free(error);
+ 	free(offsets);
+ 	put_ahnd(ahnd);
+ }
+@@ -625,12 +619,14 @@ static void userptr(int fd, int dir)
+ 	uint32_t handle;
+ 	uint64_t ahnd;
+ 	void *ptr;
++	int obj_size = 4096;
  
- 		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
--		igt_force_gpu_reset(fd);
-+		wait_to_die(fence_out);
- 		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
- 	}
- 	read(link[0], &dummy, sizeof(dummy));
-@@ -713,7 +754,7 @@ igt_main
- 		gem_require_mmap_wc(fd);
- 		igt_require(has_capture(fd));
- 		ctx = intel_ctx_create_all_physical(fd);
--		igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE);
-+		igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
+-	igt_assert(posix_memalign(&ptr, 4096, 4096) == 0);
+-	igt_require(__gem_userptr(fd, ptr, 4096, 0, 0, &handle) == 0);
++	igt_assert(posix_memalign(&ptr, obj_size, obj_size) == 0);
++	memset(ptr, 0, obj_size);
++	igt_require(__gem_userptr(fd, ptr, obj_size, 0, 0, &handle) == 0);
+ 	ahnd = get_reloc_ahnd(fd, ctx->id);
  
- 		dir = igt_sysfs_open(fd);
- 		igt_require(igt_sysfs_set(dir, "error", "Begone!"));
+-	__capture1(fd, dir, ahnd, intel_ctx_0(fd), 0, handle, 4096);
++	__capture1(fd, dir, ahnd, intel_ctx_0(fd), 0, handle, obj_size);
+ 
+ 	gem_close(fd, handle);
+ 	put_ahnd(ahnd);
 -- 
 2.25.1
