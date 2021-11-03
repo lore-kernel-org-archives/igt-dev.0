@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43EC86E9E6
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Nov 2021 10:26:46 +0000 (UTC)
-Date: Wed, 3 Nov 2021 12:25:26 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YYJjlvTGU25WMT2E@platvala-desk.ger.corp.intel.com>
-References: <20211101165824.2810805-1-markyacoub@chromium.org>
+References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
+ <20211021234044.3071069-2-John.C.Harrison@Intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <426daa00-746e-31d5-d90b-9cf161738b9d@linux.intel.com>
+Date: Wed, 3 Nov 2021 13:50:37 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211101165824.2810805-1-markyacoub@chromium.org>
-Subject: Re: [igt-dev] [PATCH] tests/kms_cursor_legacy: Use
- igt_require_intel before get_reloc_ahnd
+In-Reply-To: <20211021234044.3071069-2-John.C.Harrison@Intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/8]
+ tests/i915/gem_exec_capture: Remove pointless assert
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,61 +20,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>
-Cc: chunkuang.hu@kernel.org, igt-dev@lists.freedesktop.org, seanpaul@chromium.org, p.zabel@pengutronix.de, matthias.bgg@gmail.com, Mark Yacoub <markyacoub@google.com>
+To: John.C.Harrison@Intel.com, IGT-Dev@Lists.FreeDesktop.Org
+Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 01, 2021 at 12:58:24PM -0400, Mark Yacoub wrote:
-> From: Mark Yacoub <markyacoub@google.com>
-> 
-> [Why]
-> get_reloc_ahnd uses the intel allocator, which is not supported on
-> non-intel devices.
-> 
-> [How]
-> Call igt_require_intel before any call to get_reloc_ahnd.
-> 
-> Test: igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-{atomic,legacy} on
-> ChromeOS Jacuzzi (MTK)
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+On 22/10/2021 00:40, John.C.Harrison@Intel.com wrote:
+> From: John Harrison <John.C.Harrison@Intel.com>
+> 
+> The 'many' test ended with an 'assert(count)', presumably meaning to
+> ensure that some objects were actually captured. However, 'count' is
+> the number of objects created not how many were captured. Plus, there
+> is already a 'require(count > 1)' at the start and count is invarient
+> so the final assert is basically pointless.
+> 
+> General concensus appears to be that the test should not fail
+> irrespective of how many blobs are captured as low memory situations
+> could cause the capture to be abbreviated. So just remove the
+> pointless assert completely.
 
+Hm the test appears to be using intel_get_avail_ram_mb() to size the 
+working set. Suggesting problems with low memory situations should not 
+apply unless bugs. In which case would a better fix be improving the 
+sizing logic and changing the assert to igt_assert(blobs)?
+
+Regards,
+
+Tvrtko
+
+> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 > ---
->  tests/kms_cursor_legacy.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>   tests/i915/gem_exec_capture.c | 1 -
+>   1 file changed, 1 deletion(-)
 > 
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 81362807..e48cdf6c 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -522,10 +522,16 @@ static void basic_flip_cursor(igt_display_t *display,
->  	struct igt_fb fb_info, cursor_fb, cursor_fb2, argb_fb;
->  	unsigned vblank_start;
->  	enum pipe pipe = find_connected_pipe(display, false);
-> -	uint64_t ahnd = (flags & BASIC_BUSY) ? get_reloc_ahnd(display->drm_fd, 0) : 0;
-> +	uint64_t ahnd = 0;
->  	igt_spin_t *spin;
->  	int i, miss1 = 0, miss2 = 0, delta;
->  
-> +	if (flags & BASIC_BUSY)
-> +	{
-> +		igt_require_intel(display->drm_fd);
-> +		ahnd = get_reloc_ahnd(display->drm_fd, 0);
-> +	}
-> +
->  	if (mode >= flip_test_atomic)
->  		igt_require(display->is_atomic);
->  
-> @@ -1327,6 +1333,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
->  	igt_pipe_t *pipe_connected = &display->pipes[pipe];
->  	igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe_connected, DRM_PLANE_TYPE_PRIMARY);
->  	igt_crc_t crcs[2], test_crc;
-> +	igt_require_intel(display->drm_fd);
->  	uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
->  
->  	if (atomic)
-> -- 
-> 2.33.1.1089.g2158813163f-goog
+> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+> index 7e0a8b8ad..53649cdb2 100644
+> --- a/tests/i915/gem_exec_capture.c
+> +++ b/tests/i915/gem_exec_capture.c
+> @@ -524,7 +524,6 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+>   	}
+>   	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
+>   		 blobs, size >> 12, count);
+> -	igt_assert(count);
+>   
+>   	free(error);
+>   	free(offsets);
 > 
