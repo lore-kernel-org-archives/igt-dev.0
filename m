@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 107C373B77
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Nov 2021 18:23:49 +0000 (UTC)
-Message-ID: <f8387c55-190e-360e-b838-b61047460501@intel.com>
-Date: Wed, 3 Nov 2021 11:23:40 -0700
+Message-ID: <dac6e857-1a8d-3140-c07c-2f6f7a06eb87@intel.com>
+Date: Wed, 3 Nov 2021 11:36:11 -0700
 Content-Language: en-GB
-References: <cover.1635895537.git.ashutosh.dixit@intel.com>
- <376c418d5c5a245a4cf80e3e2a7d83b6b76e3c67.1635895538.git.ashutosh.dixit@intel.com>
+References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
+ <20211021234044.3071069-6-John.C.Harrison@Intel.com>
+ <9f929931-a782-7cfa-dbe0-1e7080eb75c8@linux.intel.com>
 From: John Harrison <john.c.harrison@intel.com>
-In-Reply-To: <376c418d5c5a245a4cf80e3e2a7d83b6b76e3c67.1635895538.git.ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <9f929931-a782-7cfa-dbe0-1e7080eb75c8@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/gem_ctx_shared: Fix
- disjoint_timelines test requirements
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 5/8]
+ tests/i915/gem_exec_capture: Check for memory allocation failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,31 +21,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, IGT-Dev@Lists.FreeDesktop.Org
+Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 11/2/2021 16:30, Ashutosh Dixit wrote:
-> Use gem_uses_ppgtt() for create vm and gem_scheduler_enabled() for
-> context re-ordering.
+On 11/3/2021 07:00, Tvrtko Ursulin wrote:
+> On 22/10/2021 00:40, John.C.Harrison@Intel.com wrote:
+>> From: John Harrison <John.C.Harrison@Intel.com>
+>>
+>> The sysfs file read helper does not actually report any errors if a
+>> realloc fails. It just silently returns a 'valid' but truncated
+>> buffer. This then leads to the decode of the buffer failing in random
+>> ways. So, add a check for ENOMEM being generated during the read.
+>>
+>> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+>> ---
+>>   tests/i915/gem_exec_capture.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/tests/i915/gem_exec_capture.c 
+>> b/tests/i915/gem_exec_capture.c
+>> index e373d24ed..8997125ee 100644
+>> --- a/tests/i915/gem_exec_capture.c
+>> +++ b/tests/i915/gem_exec_capture.c
+>> @@ -131,9 +131,11 @@ static int check_error_state(int dir, struct 
+>> offset *obj_offsets, int obj_count,
+>>       char *error, *str;
+>>       int blobs = 0;
+>>   +    errno = 0;
+>>       error = igt_sysfs_get(dir, "error");
+>>       igt_sysfs_set(dir, "error", "Begone!");
+>>       igt_assert(error);
+>> +    igt_assert(errno != ENOMEM);
 >
-> Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+> igt_sysfs_get:
+>
+>     len = 64;
+> ...
+>                 newbuf = realloc(buf, 2*len);
+>
+> Maybe the problem is doubling goes out of hand. How big are your 
+> buffers? Perhaps you could improve the library function instead to 
+> grow less aggressively.
+The buffers are generally ending at 2GB in size with the capture being 
+about 1.8GB (on the particular system I happen to be testing on).
 
-> ---
->   tests/i915/gem_ctx_shared.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+I considered various options such as doubling until a given size and 
+then just incrementing by fixed amounts. But where do you draw the line? 
+1MB, 128MB, 1GB, 128GB? If the final result needs to be 128GB (which you 
+cannot know until you have finished reading and resizing) and you are 
+allocating in 1MB chunks then it is going to take a very long time to 
+get there. I ended up leaving it as a straight double on the grounds 
+that it is the best compromise between overallocation and taking 
+ridiculous numbers of steps.
+
+
+
 >
-> diff --git a/tests/i915/gem_ctx_shared.c b/tests/i915/gem_ctx_shared.c
-> index 7e3a2617b21..2f7ee69b1d3 100644
-> --- a/tests/i915/gem_ctx_shared.c
-> +++ b/tests/i915/gem_ctx_shared.c
-> @@ -159,7 +159,7 @@ static void disjoint_timelines(int i915, const intel_ctx_cfg_t *cfg)
->   	uint32_t plug;
->   	uint64_t ahnd;
->   
-> -	igt_require(gem_using_execlists(i915) || gem_using_guc_submission(i915));
-> +	igt_require(gem_uses_ppgtt(i915) && gem_scheduler_enabled(i915));
->   
->   	/*
->   	 * Each context, although they share a vm, are expected to be
+> And at the same time perhaps the bug is this:
+>
+>                 if (igt_debug_on(!newbuf))
+>                         break;
+> ...
+>         return buf;
+>
+> So failures to grow the buffer are ignored, while failure to allocate 
+> the initial one are not. Perhaps both should return NULL and then 
+> callers would not be surprised.
+>
+> Or you think someone relies on this current odd behaviour?
+>
+As per the commit description, this is exactly the problem. However, I 
+do not know for certain this is not intentional behaviour and something 
+somewhere is relying on it. And I really do not have the time to audit 
+this. The vast majority of uses are reading teeny tiny files and don't 
+care but who knows what might not be in some particular 
+test/config/platform/etc. The fact that it is explicitly saying 
+'igt_debug_on' means that someone must have made a conscious decision to 
+not assert. It's not like they just forgot to check for null being 
+returned. Which implies it is intentional and required.
+
+John.
+
+
+> Regards,
+>
+> Tvrtko
+>
+>>       igt_debug("%s\n", error);
+>>         /* render ring --- user = 0x00000000 ffffd000 */
+>>
