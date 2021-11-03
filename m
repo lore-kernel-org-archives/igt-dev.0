@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 3 Nov 2021 11:36:29 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9665E6EA17
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Nov 2021 09:55:19 +0000 (UTC)
+Date: Wed, 3 Nov 2021 11:53:59 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YYJYHYT1YrwVikLo@platvala-desk.ger.corp.intel.com>
-References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
- <20211021234044.3071069-5-John.C.Harrison@Intel.com>
- <20211102233442.GA16356@jons-linux-dev-box>
- <4adc8d9a-8393-2774-2c67-a93083240795@intel.com>
+Message-ID: <YYJcN4//SrpOwoJg@platvala-desk.ger.corp.intel.com>
+References: <20211101163730.2769897-1-markyacoub@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4adc8d9a-8393-2774-2c67-a93083240795@intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 4/8]
- tests/i915/gem_exec_capture: Use contexts and engines properly
+In-Reply-To: <20211101163730.2769897-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH] tests/kms_cursor_legacy: igt_require_pipe_crc
+ for flip_vs_cursor_crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,258 +21,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John Harrison <john.c.harrison@intel.com>
-Cc: IGT-Dev@lists.freedesktop.org, Intel-GFX@lists.freedesktop.org
+To: Mark Yacoub <markyacoub@chromium.org>
+Cc: chunkuang.hu@kernel.org, igt-dev@lists.freedesktop.org, seanpaul@chromium.org, p.zabel@pengutronix.de, matthias.bgg@gmail.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 02, 2021 at 06:45:38PM -0700, John Harrison wrote:
-> On 11/2/2021 16:34, Matthew Brost wrote:
-> > On Thu, Oct 21, 2021 at 04:40:40PM -0700, John.C.Harrison@Intel.com wrote:
-> > > From: John Harrison <John.C.Harrison@Intel.com>
-> > > 
-> > > Some of the capture tests were using explicit contexts, some not. Some
-> > > were poking the per engine pre-emption timeout, some not. This would
-> > > lead to sporadic failures due to random timeouts, contexts being
-> > > banned depending upon how many subtests were run and/or how many
-> > > engines a given platform has, and other such failures.
-> > > 
-> > > So, update all tests to be conistent.
-> > > 
-> > > Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> > > ---
-> > >   tests/i915/gem_exec_capture.c | 80 +++++++++++++++++++++++++----------
-> > >   1 file changed, 58 insertions(+), 22 deletions(-)
-> > > 
-> > > diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-> > > index c85c198f7..e373d24ed 100644
-> > > --- a/tests/i915/gem_exec_capture.c
-> > > +++ b/tests/i915/gem_exec_capture.c
-> > > @@ -204,8 +204,19 @@ static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
-> > >   	return blobs;
-> > >   }
-> > > +static void configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctxt_id)
-> > > +{
-> > > +	/* Ensure fast hang detection */
-> > > +	gem_engine_property_printf(fd, e->name, "preempt_timeout_ms", "%d", 250);
-> > > +	gem_engine_property_printf(fd, e->name, "heartbeat_interval_ms", "%d", 500);
-> > #define for 250, 500?
-> Is there any point? There is no special reason for the values other than
-> small enough to be fast and long enough to not be too small to be usable. So
-> there isn't really any particular name to give them beyond
-> 'SHORT_PREEMPT_TIMEOUT' or some such. And the whole point of the helper
-> function is that the values are programmed in one place only and not used
-> anywhere else. So there is no worry about repetition of magic numbers.
+On Mon, Nov 01, 2021 at 12:37:30PM -0400, Mark Yacoub wrote:
+> From: Mark Yacoub <markyacoub@google.com>
+> 
+> [Why]
+> test_init uses CRC in debugfs which is not supported by some drivers.
+> 
+> [How]
+> igt_require_pipe_crc before igt_pipe_crc_new is called.
+> 
+> Test: igt@kms_cursor_legacy@flip-vs-cursor-crc-{atomic,legacy} on
+> ChromeOS Jacuzzi (MTK)
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> ---
+>  tests/kms_cursor_legacy.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> index 81362807..b006e566 100644
+> --- a/tests/kms_cursor_legacy.c
+> +++ b/tests/kms_cursor_legacy.c
+> @@ -1281,6 +1281,7 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+>  
+>  	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>  
+> +	igt_require_pipe_crc(display->drm_fd);
+>  	pipe_crc = igt_pipe_crc_new(display->drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
 
-In about one year everyone has forgotten this explanation and will
-wonder if it's related to some in-kernel behaviour or if there's some
-other reason these values have been chosen.
+These requirement checks should be done before doing anything to the
+system state, even from the context lines of this diff I see a commit
+being done. So this require call should be at the very beginning of
+this function, or in the igt_subtest() block, or in an igt_fixture
+preferrably.
 
-So at least a comment why the values are these, please.
+What about flip_vs_cursor_busy_crc?
+
+flip_vs_cursor_crc and flip_vs_cursor_busy_crc are both called in neat
+subtest groups already so I suppose the most elegant solution for both
+is to add
+
+igt_fixture {
+  igt_require_pipe_crc(display.drm_fd);
+}
+
+to the beginning of both those groups.
 
 
 -- 
 Petri Latvala
-
-
-> 
-> 
-> > 
-> > > +
-> > > +	/* Allow engine based resets and disable banning */
-> > > +	igt_allow_hang(fd, ctxt_id, HANG_ALLOW_CAPTURE);
-> > > +}
-> > > +
-> > >   static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
-> > > -		       unsigned ring, uint32_t target, uint64_t target_size)
-> > > +		       const struct intel_execution_engine2 *e,
-> > > +		       uint32_t target, uint64_t target_size)
-> > >   {
-> > >   	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
-> > >   	struct drm_i915_gem_exec_object2 obj[4];
-> > > @@ -219,6 +230,8 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
-> > >   	struct offset offset;
-> > >   	int i;
-> > > +	configure_hangs(fd, e, ctx->id);
-> > > +
-> > >   	memset(obj, 0, sizeof(obj));
-> > >   	obj[SCRATCH].handle = gem_create(fd, 4096);
-> > >   	obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
-> > > @@ -297,7 +310,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
-> > >   	memset(&execbuf, 0, sizeof(execbuf));
-> > >   	execbuf.buffers_ptr = (uintptr_t)obj;
-> > >   	execbuf.buffer_count = ARRAY_SIZE(obj);
-> > > -	execbuf.flags = ring;
-> > > +	execbuf.flags = e->flags;
-> > >   	if (gen > 3 && gen < 6)
-> > >   		execbuf.flags |= I915_EXEC_SECURE;
-> > >   	execbuf.rsvd1 = ctx->id;
-> > > @@ -326,7 +339,8 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
-> > >   	gem_close(fd, obj[SCRATCH].handle);
-> > >   }
-> > > -static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
-> > > +static void capture(int fd, int dir, const intel_ctx_t *ctx,
-> > > +		    const struct intel_execution_engine2 *e)
-> > >   {
-> > >   	uint32_t handle;
-> > >   	uint64_t ahnd;
-> > > @@ -335,7 +349,7 @@ static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
-> > >   	handle = gem_create(fd, obj_size);
-> > >   	ahnd = get_reloc_ahnd(fd, ctx->id);
-> > > -	__capture1(fd, dir, ahnd, ctx, ring, handle, obj_size);
-> > > +	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size);
-> > >   	gem_close(fd, handle);
-> > >   	put_ahnd(ahnd);
-> > > @@ -355,9 +369,9 @@ static int cmp(const void *A, const void *B)
-> > >   }
-> > >   static struct offset *
-> > > -__captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
-> > > -	      unsigned int size, int count,
-> > > -	      unsigned int flags)
-> > > +__captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
-> > > +	   const struct intel_execution_engine2 *e,
-> > > +	   unsigned int size, int count, unsigned int flags)
-> > >   #define INCREMENTAL 0x1
-> > >   #define ASYNC 0x2
-> > >   {
-> > > @@ -369,6 +383,8 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
-> > >   	struct offset *offsets;
-> > >   	int i;
-> > > +	configure_hangs(fd, e, ctx->id);
-> > > +
-> > >   	offsets = calloc(count, sizeof(*offsets));
-> > >   	igt_assert(offsets);
-> > > @@ -470,9 +486,10 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
-> > >   	memset(&execbuf, 0, sizeof(execbuf));
-> > >   	execbuf.buffers_ptr = (uintptr_t)obj;
-> > >   	execbuf.buffer_count = count + 2;
-> > > -	execbuf.flags = ring;
-> > > +	execbuf.flags = e->flags;
-> > >   	if (gen > 3 && gen < 6)
-> > >   		execbuf.flags |= I915_EXEC_SECURE;
-> > > +	execbuf.rsvd1 = ctx->id;
-> > >   	igt_assert(!READ_ONCE(*seqno));
-> > >   	gem_execbuf(fd, &execbuf);
-> > > @@ -505,10 +522,20 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
-> > >   static void many(int fd, int dir, uint64_t size, unsigned int flags)
-> > >   {
-> > > +	const struct intel_execution_engine2 *e;
-> > > +	const intel_ctx_t *ctx;
-> > >   	uint64_t ram, gtt, ahnd;
-> > >   	unsigned long count, blobs;
-> > >   	struct offset *offsets;
-> > > +	/* Find the first available engine: */
-> > > +	ctx = intel_ctx_create_all_physical(fd);
-> > > +	igt_assert(ctx);
-> > > +	for_each_ctx_engine(fd, ctx, e)
-> > > +		for_each_if(gem_class_can_store_dword(fd, e->class))
-> > > +			break;
-> > > +	igt_assert(e);
-> > Duplicated below. Helper for this?
-> > 
-> > Matt
-> Sure.
-> 
-> John.
-> 
-> > > +
-> > >   	gtt = gem_aperture_size(fd) / size;
-> > >   	ram = (intel_get_avail_ram_mb() << 20) / size;
-> > >   	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
-> > > @@ -518,9 +545,9 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
-> > >   	igt_require(count > 1);
-> > >   	intel_require_memory(count, size, CHECK_RAM);
-> > > -	ahnd = get_reloc_ahnd(fd, 0);
-> > > +	ahnd = get_reloc_ahnd(fd, ctx->id);
-> > > -	offsets = __captureN(fd, dir, ahnd, 0, size, count, flags);
-> > > +	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags);
-> > >   	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
-> > >   	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-> > > @@ -531,7 +558,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
-> > >   }
-> > >   static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> > > -		    unsigned ring, const char *name)
-> > > +		    const struct intel_execution_engine2 *e)
-> > >   {
-> > >   	const uint32_t bbe = MI_BATCH_BUFFER_END;
-> > >   	struct drm_i915_gem_exec_object2 obj = {
-> > > @@ -540,7 +567,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> > >   	struct drm_i915_gem_execbuffer2 execbuf = {
-> > >   		.buffers_ptr = to_user_pointer(&obj),
-> > >   		.buffer_count = 1,
-> > > -		.flags = ring,
-> > > +		.flags = e->flags,
-> > >   		.rsvd1 = ctx->id,
-> > >   	};
-> > >   	int64_t timeout = NSEC_PER_SEC; /* 1s, feeling generous, blame debug */
-> > > @@ -555,10 +582,6 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> > >   	igt_require(igt_params_set(fd, "reset", "%u", -1)); /* engine resets! */
-> > >   	igt_require(gem_gpu_reset_type(fd) > 1);
-> > > -	/* Needs to be fast enough for the hangcheck to return within 1s */
-> > > -	igt_require(gem_engine_property_printf(fd, name, "preempt_timeout_ms", "%d", 0) > 0);
-> > > -	gem_engine_property_printf(fd, name, "preempt_timeout_ms", "%d", 500);
-> > > -
-> > >   	gtt = gem_aperture_size(fd) / size;
-> > >   	ram = (intel_get_avail_ram_mb() << 20) / size;
-> > >   	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
-> > > @@ -576,15 +599,19 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> > >   	igt_assert(pipe(link) == 0);
-> > >   	igt_fork(child, 1) {
-> > > +		const intel_ctx_t *ctx2;
-> > >   		fd = gem_reopen_driver(fd);
-> > >   		igt_debug("Submitting large capture [%ld x %dMiB objects]\n",
-> > >   			  count, (int)(size >> 20));
-> > > +		ctx2 = intel_ctx_create_all_physical(fd);
-> > > +		igt_assert(ctx2);
-> > > +
-> > >   		intel_allocator_init();
-> > >   		/* Reopen the allocator in the new process. */
-> > > -		ahnd = get_reloc_ahnd(fd, 0);
-> > > +		ahnd = get_reloc_ahnd(fd, ctx2->id);
-> > > -		free(__captureN(fd, dir, ahnd, ring, size, count, ASYNC));
-> > > +		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC));
-> > >   		put_ahnd(ahnd);
-> > >   		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-> > > @@ -615,18 +642,27 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> > >   static void userptr(int fd, int dir)
-> > >   {
-> > > -	const intel_ctx_t *ctx = intel_ctx_0(fd);
-> > > +	const struct intel_execution_engine2 *e;
-> > > +	const intel_ctx_t *ctx;
-> > >   	uint32_t handle;
-> > >   	uint64_t ahnd;
-> > >   	void *ptr;
-> > >   	int obj_size = 4096;
-> > > +	/* Find the first available engine: */
-> > > +	ctx = intel_ctx_create_all_physical(fd);
-> > > +	igt_assert(ctx);
-> > > +	for_each_ctx_engine(fd, ctx, e)
-> > > +		for_each_if(gem_class_can_store_dword(fd, e->class))
-> > > +			break;
-> > > +	igt_assert(e);
-> > > +
-> > >   	igt_assert(posix_memalign(&ptr, obj_size, obj_size) == 0);
-> > >   	memset(ptr, 0, obj_size);
-> > >   	igt_require(__gem_userptr(fd, ptr, obj_size, 0, 0, &handle) == 0);
-> > >   	ahnd = get_reloc_ahnd(fd, ctx->id);
-> > > -	__capture1(fd, dir, ahnd, intel_ctx_0(fd), 0, handle, obj_size);
-> > > +	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size);
-> > >   	gem_close(fd, handle);
-> > >   	put_ahnd(ahnd);
-> > > @@ -684,7 +720,7 @@ igt_main
-> > >   	}
-> > >   	test_each_engine("capture", fd, ctx, e)
-> > > -		capture(fd, dir, ctx, e->flags);
-> > > +		capture(fd, dir, ctx, e);
-> > >   	igt_subtest_f("many-4K-zero") {
-> > >   		igt_require(gem_can_store_dword(fd, 0));
-> > > @@ -719,7 +755,7 @@ igt_main
-> > >   	}
-> > >   	test_each_engine("pi", fd, ctx, e)
-> > > -		prioinv(fd, dir, ctx, e->flags, e->name);
-> > > +		prioinv(fd, dir, ctx, e);
-> > >   	igt_fixture {
-> > >   		close(dir);
-> > > -- 
-> > > 2.25.1
-> > > 
-> 
