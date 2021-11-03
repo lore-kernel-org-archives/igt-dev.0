@@ -1,56 +1,81 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Wed,  3 Nov 2021 10:04:42 -0700
-Message-Id: <20211103170449.1614314-2-John.C.Harrison@Intel.com>
+Date: Wed,  3 Nov 2021 10:04:47 -0700
+Message-Id: <20211103170449.1614314-7-John.C.Harrison@Intel.com>
 In-Reply-To: <20211103170449.1614314-1-John.C.Harrison@Intel.com>
 References: <20211103170449.1614314-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 i-g-t 1/8] tests/i915/gem_exec_capture: Remove
- pointless assert
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Subject: [Intel-gfx] [PATCH v2 i-g-t 6/8] lib/igt_sysfs: Support large files
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The 'many' test ended with an 'assert(count)', presumably meaning to
-ensure that some objects were actually captured. However, 'count' is
-the number of objects created not how many were captured. Plus, there
-is already a 'require(count > 1)' at the start and count is invarient
-so the final assert is basically pointless.
-
-General concensus appears to be that the test should not fail
-irrespective of how many blobs are captured as low memory situations
-could cause the capture to be abbreviated. So just remove the
-pointless assert completely.
+The syfs helper functions were all using basic 'int' data types for
+sizs, offsets, etc. when reading from sysfs. This works fine for
+little files, but not for large error capture logs (which can be
+gigabytes in sizes).
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/gem_exec_capture.c | 1 -
- 1 file changed, 1 deletion(-)
+ lib/igt_sysfs.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 7e0a8b8ad..53649cdb2 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -524,7 +524,6 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	}
- 	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
- 		 blobs, size >> 12, count);
--	igt_assert(count);
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 6919ac361..ee75e3ef1 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -53,9 +53,11 @@
+  * provides basic support for like igt_sysfs_open().
+  */
  
- 	free(error);
- 	free(offsets);
+-static int readN(int fd, char *buf, int len)
++static ssize_t readN(int fd, char *buf, size_t len)
+ {
+-	int ret, total = 0;
++	ssize_t ret;
++	size_t total = 0;
++
+ 	do {
+ 		ret = read(fd, buf + total, len - total);
+ 		if (ret < 0)
+@@ -69,9 +71,11 @@ static int readN(int fd, char *buf, int len)
+ 	return total ?: ret;
+ }
+ 
+-static int writeN(int fd, const char *buf, int len)
++static ssize_t writeN(int fd, const char *buf, size_t len)
+ {
+-	int ret, total = 0;
++	ssize_t ret;
++	size_t total = 0;
++
+ 	do {
+ 		ret = write(fd, buf + total, len - total);
+ 		if (ret < 0)
+@@ -218,8 +222,9 @@ bool igt_sysfs_set(int dir, const char *attr, const char *value)
+ char *igt_sysfs_get(int dir, const char *attr)
+ {
+ 	char *buf;
+-	int len, offset, rem;
+-	int ret, fd;
++	size_t len, offset, rem;
++	ssize_t ret;
++	int fd;
+ 
+ 	fd = openat(dir, attr, O_RDONLY);
+ 	if (igt_debug_on(fd < 0))
 -- 
 2.25.1
