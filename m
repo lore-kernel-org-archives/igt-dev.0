@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 2 Nov 2021 16:34:42 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-Message-ID: <20211102233442.GA16356@jons-linux-dev-box>
-References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
- <20211021234044.3071069-5-John.C.Harrison@Intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7748730511125972173=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211021234044.3071069-5-John.C.Harrison@Intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 4/8]
- tests/i915/gem_exec_capture: Use contexts and engines properly
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 03 Nov 2021 00:13:23 -0000
+Message-ID: <163589840361.11279.3083520776874756303@emeril.freedesktop.org>
+References: <cover.1635895537.git.ashutosh.dixit@intel.com>
+In-Reply-To: <cover.1635895537.git.ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUmV0dXJu?=
+ =?utf-8?q?_actual_submission_methods_from_submission_method_functions_=28?=
+ =?utf-8?q?rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,264 +17,310 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John.C.Harrison@Intel.com
-Cc: IGT-Dev@Lists.FreeDesktop.Org, Intel-GFX@Lists.FreeDesktop.Org
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 21, 2021 at 04:40:40PM -0700, John.C.Harrison@Intel.com wrote:
-> From: John Harrison <John.C.Harrison@Intel.com>
-> 
-> Some of the capture tests were using explicit contexts, some not. Some
-> were poking the per engine pre-emption timeout, some not. This would
-> lead to sporadic failures due to random timeouts, contexts being
-> banned depending upon how many subtests were run and/or how many
-> engines a given platform has, and other such failures.
-> 
-> So, update all tests to be conistent.
-> 
-> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> ---
->  tests/i915/gem_exec_capture.c | 80 +++++++++++++++++++++++++----------
->  1 file changed, 58 insertions(+), 22 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-> index c85c198f7..e373d24ed 100644
-> --- a/tests/i915/gem_exec_capture.c
-> +++ b/tests/i915/gem_exec_capture.c
-> @@ -204,8 +204,19 @@ static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
->  	return blobs;
->  }
->  
-> +static void configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctxt_id)
-> +{
-> +	/* Ensure fast hang detection */
-> +	gem_engine_property_printf(fd, e->name, "preempt_timeout_ms", "%d", 250);
-> +	gem_engine_property_printf(fd, e->name, "heartbeat_interval_ms", "%d", 500);
+--===============7748730511125972173==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-#define for 250, 500?
+== Series Details ==
 
-> +
-> +	/* Allow engine based resets and disable banning */
-> +	igt_allow_hang(fd, ctxt_id, HANG_ALLOW_CAPTURE);
-> +}
-> +
->  static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
-> -		       unsigned ring, uint32_t target, uint64_t target_size)
-> +		       const struct intel_execution_engine2 *e,
-> +		       uint32_t target, uint64_t target_size)
->  {
->  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
->  	struct drm_i915_gem_exec_object2 obj[4];
-> @@ -219,6 +230,8 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	struct offset offset;
->  	int i;
->  
-> +	configure_hangs(fd, e, ctx->id);
-> +
->  	memset(obj, 0, sizeof(obj));
->  	obj[SCRATCH].handle = gem_create(fd, 4096);
->  	obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
-> @@ -297,7 +310,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	memset(&execbuf, 0, sizeof(execbuf));
->  	execbuf.buffers_ptr = (uintptr_t)obj;
->  	execbuf.buffer_count = ARRAY_SIZE(obj);
-> -	execbuf.flags = ring;
-> +	execbuf.flags = e->flags;
->  	if (gen > 3 && gen < 6)
->  		execbuf.flags |= I915_EXEC_SECURE;
->  	execbuf.rsvd1 = ctx->id;
-> @@ -326,7 +339,8 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	gem_close(fd, obj[SCRATCH].handle);
->  }
->  
-> -static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
-> +static void capture(int fd, int dir, const intel_ctx_t *ctx,
-> +		    const struct intel_execution_engine2 *e)
->  {
->  	uint32_t handle;
->  	uint64_t ahnd;
-> @@ -335,7 +349,7 @@ static void capture(int fd, int dir, const intel_ctx_t *ctx, unsigned ring)
->  	handle = gem_create(fd, obj_size);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	__capture1(fd, dir, ahnd, ctx, ring, handle, obj_size);
-> +	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size);
->  
->  	gem_close(fd, handle);
->  	put_ahnd(ahnd);
-> @@ -355,9 +369,9 @@ static int cmp(const void *A, const void *B)
->  }
->  
->  static struct offset *
-> -__captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
-> -	      unsigned int size, int count,
-> -	      unsigned int flags)
-> +__captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
-> +	   const struct intel_execution_engine2 *e,
-> +	   unsigned int size, int count, unsigned int flags)
->  #define INCREMENTAL 0x1
->  #define ASYNC 0x2
->  {
-> @@ -369,6 +383,8 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
->  	struct offset *offsets;
->  	int i;
->  
-> +	configure_hangs(fd, e, ctx->id);
-> +
->  	offsets = calloc(count, sizeof(*offsets));
->  	igt_assert(offsets);
->  
-> @@ -470,9 +486,10 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
->  	memset(&execbuf, 0, sizeof(execbuf));
->  	execbuf.buffers_ptr = (uintptr_t)obj;
->  	execbuf.buffer_count = count + 2;
-> -	execbuf.flags = ring;
-> +	execbuf.flags = e->flags;
->  	if (gen > 3 && gen < 6)
->  		execbuf.flags |= I915_EXEC_SECURE;
-> +	execbuf.rsvd1 = ctx->id;
->  
->  	igt_assert(!READ_ONCE(*seqno));
->  	gem_execbuf(fd, &execbuf);
-> @@ -505,10 +522,20 @@ __captureN(int fd, int dir, uint64_t ahnd, unsigned ring,
->  
->  static void many(int fd, int dir, uint64_t size, unsigned int flags)
->  {
-> +	const struct intel_execution_engine2 *e;
-> +	const intel_ctx_t *ctx;
->  	uint64_t ram, gtt, ahnd;
->  	unsigned long count, blobs;
->  	struct offset *offsets;
->  
-> +	/* Find the first available engine: */
-> +	ctx = intel_ctx_create_all_physical(fd);
-> +	igt_assert(ctx);
-> +	for_each_ctx_engine(fd, ctx, e)
-> +		for_each_if(gem_class_can_store_dword(fd, e->class))
-> +			break;
-> +	igt_assert(e);
+Series: Return actual submission methods from submission method functions (rev2)
+URL   : https://patchwork.freedesktop.org/series/96370/
+State : success
 
-Duplicated below. Helper for this?
+== Summary ==
 
-Matt
+CI Bug Log - changes from CI_DRM_10830 -> IGTPW_6371
+====================================================
 
-> +
->  	gtt = gem_aperture_size(fd) / size;
->  	ram = (intel_get_avail_ram_mb() << 20) / size;
->  	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
-> @@ -518,9 +545,9 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
->  	igt_require(count > 1);
->  
->  	intel_require_memory(count, size, CHECK_RAM);
-> -	ahnd = get_reloc_ahnd(fd, 0);
-> +	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	offsets = __captureN(fd, dir, ahnd, 0, size, count, flags);
-> +	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags);
->  
->  	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
->  	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-> @@ -531,7 +558,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
->  }
->  
->  static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> -		    unsigned ring, const char *name)
-> +		    const struct intel_execution_engine2 *e)
->  {
->  	const uint32_t bbe = MI_BATCH_BUFFER_END;
->  	struct drm_i915_gem_exec_object2 obj = {
-> @@ -540,7 +567,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  	struct drm_i915_gem_execbuffer2 execbuf = {
->  		.buffers_ptr = to_user_pointer(&obj),
->  		.buffer_count = 1,
-> -		.flags = ring,
-> +		.flags = e->flags,
->  		.rsvd1 = ctx->id,
->  	};
->  	int64_t timeout = NSEC_PER_SEC; /* 1s, feeling generous, blame debug */
-> @@ -555,10 +582,6 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  	igt_require(igt_params_set(fd, "reset", "%u", -1)); /* engine resets! */
->  	igt_require(gem_gpu_reset_type(fd) > 1);
->  
-> -	/* Needs to be fast enough for the hangcheck to return within 1s */
-> -	igt_require(gem_engine_property_printf(fd, name, "preempt_timeout_ms", "%d", 0) > 0);
-> -	gem_engine_property_printf(fd, name, "preempt_timeout_ms", "%d", 500);
-> -
->  	gtt = gem_aperture_size(fd) / size;
->  	ram = (intel_get_avail_ram_mb() << 20) / size;
->  	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
-> @@ -576,15 +599,19 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  
->  	igt_assert(pipe(link) == 0);
->  	igt_fork(child, 1) {
-> +		const intel_ctx_t *ctx2;
->  		fd = gem_reopen_driver(fd);
->  		igt_debug("Submitting large capture [%ld x %dMiB objects]\n",
->  			  count, (int)(size >> 20));
->  
-> +		ctx2 = intel_ctx_create_all_physical(fd);
-> +		igt_assert(ctx2);
-> +
->  		intel_allocator_init();
->  		/* Reopen the allocator in the new process. */
-> -		ahnd = get_reloc_ahnd(fd, 0);
-> +		ahnd = get_reloc_ahnd(fd, ctx2->id);
->  
-> -		free(__captureN(fd, dir, ahnd, ring, size, count, ASYNC));
-> +		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC));
->  		put_ahnd(ahnd);
->  
->  		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-> @@ -615,18 +642,27 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  
->  static void userptr(int fd, int dir)
->  {
-> -	const intel_ctx_t *ctx = intel_ctx_0(fd);
-> +	const struct intel_execution_engine2 *e;
-> +	const intel_ctx_t *ctx;
->  	uint32_t handle;
->  	uint64_t ahnd;
->  	void *ptr;
->  	int obj_size = 4096;
->  
-> +	/* Find the first available engine: */
-> +	ctx = intel_ctx_create_all_physical(fd);
-> +	igt_assert(ctx);
-> +	for_each_ctx_engine(fd, ctx, e)
-> +		for_each_if(gem_class_can_store_dword(fd, e->class))
-> +			break;
-> +	igt_assert(e);
-> +
->  	igt_assert(posix_memalign(&ptr, obj_size, obj_size) == 0);
->  	memset(ptr, 0, obj_size);
->  	igt_require(__gem_userptr(fd, ptr, obj_size, 0, 0, &handle) == 0);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	__capture1(fd, dir, ahnd, intel_ctx_0(fd), 0, handle, obj_size);
-> +	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size);
->  
->  	gem_close(fd, handle);
->  	put_ahnd(ahnd);
-> @@ -684,7 +720,7 @@ igt_main
->  	}
->  
->  	test_each_engine("capture", fd, ctx, e)
-> -		capture(fd, dir, ctx, e->flags);
-> +		capture(fd, dir, ctx, e);
->  
->  	igt_subtest_f("many-4K-zero") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> @@ -719,7 +755,7 @@ igt_main
->  	}
->  
->  	test_each_engine("pi", fd, ctx, e)
-> -		prioinv(fd, dir, ctx, e->flags, e->name);
-> +		prioinv(fd, dir, ctx, e);
->  
->  	igt_fixture {
->  		close(dir);
-> -- 
-> 2.25.1
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/index.html
+
+Participating hosts (36 -> 34)
+------------------------------
+
+  Additional (2): fi-kbl-soraka fi-tgl-1115g4 
+  Missing    (4): fi-bsw-cyan fi-icl-u2 bat-dg1-6 bat-adlp-4 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6371 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][1] ([fdo#109315])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][2] ([fdo#109315] / [i915#2575]) +16 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][3] ([fdo#109271]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271]) +8 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#2190])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][6] ([i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7] ([i915#1155])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][8] ([i915#1886] / [i915#2291])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][9] ([fdo#111827]) +8 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][11] ([i915#4103]) +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][12] ([fdo#109285])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [PASS][13] -> [DMESG-WARN][14] ([i915#4269])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10830/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][15] ([fdo#109271] / [i915#533])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][16] ([i915#1072]) +3 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][17] ([i915#3301])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][18] ([i915#3921]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10830/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6268 -> IGTPW_6371
+
+  CI-20190529: 20190529
+  CI_DRM_10830: 551447131277b251d76fa8db11e5a045bf9d853d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6371: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/index.html
+  IGT_6268: c712ecac599add7e877883a7c8e2857d3c19836f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/index.html
+
+--===============7748730511125972173==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Return actual submission methods from submission method functions (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96370/">https://patchwork.freedesktop.org/series/96370/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10830 -&gt; IGTPW_6371</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/index.html</p>
+<h2>Participating hosts (36 -&gt; 34)</h2>
+<p>Additional (2): fi-kbl-soraka fi-tgl-1115g4 <br />
+  Missing    (4): fi-bsw-cyan fi-icl-u2 bat-dg1-6 bat-adlp-4 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6371 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10830/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10830/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6268 -&gt; IGTPW_6371</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10830: 551447131277b251d76fa8db11e5a045bf9d853d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6371: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6371/index.html<br />
+  IGT_6268: c712ecac599add7e877883a7c8e2857d3c19836f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7748730511125972173==--
