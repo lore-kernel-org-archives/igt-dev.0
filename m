@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA8836EDD0
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Nov 2021 09:00:11 +0000 (UTC)
-Date: Thu, 4 Nov 2021 10:58:53 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YYOgzZ29rDGXaF1K@platvala-desk.ger.corp.intel.com>
-References: <20211104064848.15968-1-petri.latvala@intel.com>
- <20211104072544.GA9460@zkempczy-mobl2>
+References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
+ <20211021234044.3071069-2-John.C.Harrison@Intel.com>
+ <426daa00-746e-31d5-d90b-9cf161738b9d@linux.intel.com>
+ <45336ecd-4d94-b8eb-c9f3-889b1411c937@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <f18d1f2e-296a-c82d-f5ca-6d6cbf1dfafe@linux.intel.com>
+Date: Thu, 4 Nov 2021 09:14:56 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211104072544.GA9460@zkempczy-mobl2>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/kms_cursor_legacy: Fix build
- warning
+In-Reply-To: <45336ecd-4d94-b8eb-c9f3-889b1411c937@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/8]
+ tests/i915/gem_exec_capture: Remove pointless assert
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,42 +22,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: John Harrison <john.c.harrison@intel.com>, IGT-Dev@Lists.FreeDesktop.Org
+Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 04, 2021 at 08:25:44AM +0100, Zbigniew Kempczyński wrote:
-> On Thu, Nov 04, 2021 at 08:48:48AM +0200, Petri Latvala wrote:
-> > ../tests/kms_cursor_legacy.c: In function ‘flip_vs_cursor_busy_crc’:
-> > ../tests/kms_cursor_legacy.c:1337:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-> >  1337 |  uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
-> >        |  ^~~~~~~~
-> > 
-> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Mark Yacoub <markyacoub@chromium.org>
-> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > ---
-> >  tests/kms_cursor_legacy.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> > index e48cdf6c..cd2f8498 100644
-> > --- a/tests/kms_cursor_legacy.c
-> > +++ b/tests/kms_cursor_legacy.c
-> > @@ -1333,8 +1333,10 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
-> >  	igt_pipe_t *pipe_connected = &display->pipes[pipe];
-> >  	igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe_connected, DRM_PLANE_TYPE_PRIMARY);
-> >  	igt_crc_t crcs[2], test_crc;
-> > +	uint64_t ahnd;
-> > +
-> >  	igt_require_intel(display->drm_fd);
-> > -	uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
-> > +	ahnd = get_reloc_ahnd(display->drm_fd, 0);
-> 
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-And merged, thanks.
+On 03/11/2021 18:44, John Harrison wrote:
+> On 11/3/2021 06:50, Tvrtko Ursulin wrote:
+>> On 22/10/2021 00:40, John.C.Harrison@Intel.com wrote:
+>>> From: John Harrison <John.C.Harrison@Intel.com>
+>>>
+>>> The 'many' test ended with an 'assert(count)', presumably meaning to
+>>> ensure that some objects were actually captured. However, 'count' is
+>>> the number of objects created not how many were captured. Plus, there
+>>> is already a 'require(count > 1)' at the start and count is invarient
+>>> so the final assert is basically pointless.
+>>>
+>>> General concensus appears to be that the test should not fail
+>>> irrespective of how many blobs are captured as low memory situations
+>>> could cause the capture to be abbreviated. So just remove the
+>>> pointless assert completely.
+>>
+>> Hm the test appears to be using intel_get_avail_ram_mb() to size the 
+>> working set. Suggesting problems with low memory situations should not 
+>> apply unless bugs. In which case would a better fix be improving the 
+>> sizing logic and changing the assert to igt_assert(blobs)?
+> After fixing the sysfs read code to cope with large files, I don't ever 
+> see abbreviated captures any more. However, other reviewers objected to 
+> asserting anything at all about the final count (whether full size, zero 
+> or whatever) on the grounds that low memory issues *might* still occur. 
+> And some in quite blunt language as I recall. If you think different, 
+> feel free to start your own patch set.
 
+Do you have a link so I can understand the discussion? Because from the 
+top of my head I can't imagine what were the objections, I mean what is 
+the point of keeping the test but not asserting at the end at least 
+something was captured?
 
--- 
-Petri Latvala
+Regards,
+
+Tvrtko
