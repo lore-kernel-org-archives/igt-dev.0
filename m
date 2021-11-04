@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 4 Nov 2021 08:40:53 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33A186E167
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Nov 2021 06:50:11 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YYOAdYfoH6mu3oMU@platvala-desk.ger.corp.intel.com>
-References: <20211021234044.3071069-1-John.C.Harrison@Intel.com>
- <20211021234044.3071069-5-John.C.Harrison@Intel.com>
- <20211102233442.GA16356@jons-linux-dev-box>
- <4adc8d9a-8393-2774-2c67-a93083240795@intel.com>
- <YYJYHYT1YrwVikLo@platvala-desk.ger.corp.intel.com>
- <f859ebab-8b3a-ef1e-3387-33808282e420@intel.com>
+Date: Thu,  4 Nov 2021 08:48:48 +0200
+Message-Id: <20211104064848.15968-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f859ebab-8b3a-ef1e-3387-33808282e420@intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 4/8]
- tests/i915/gem_exec_capture: Use contexts and engines properly
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/1] tests/kms_cursor_legacy: Fix build
+ warning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,60 +19,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John Harrison <john.c.harrison@intel.com>
-Cc: IGT-Dev@lists.freedesktop.org, Intel-GFX@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Nov 03, 2021 at 11:49:47AM -0700, John Harrison wrote:
-> On 11/3/2021 02:36, Petri Latvala wrote:
-> > On Tue, Nov 02, 2021 at 06:45:38PM -0700, John Harrison wrote:
-> > > On 11/2/2021 16:34, Matthew Brost wrote:
-> > > > On Thu, Oct 21, 2021 at 04:40:40PM -0700, John.C.Harrison@Intel.com wrote:
-> > > > > From: John Harrison <John.C.Harrison@Intel.com>
-> > > > > 
-> > > > > Some of the capture tests were using explicit contexts, some not. Some
-> > > > > were poking the per engine pre-emption timeout, some not. This would
-> > > > > lead to sporadic failures due to random timeouts, contexts being
-> > > > > banned depending upon how many subtests were run and/or how many
-> > > > > engines a given platform has, and other such failures.
-> > > > > 
-> > > > > So, update all tests to be conistent.
-> > > > > 
-> > > > > Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> > > > > ---
-> > > > >    tests/i915/gem_exec_capture.c | 80 +++++++++++++++++++++++++----------
-> > > > >    1 file changed, 58 insertions(+), 22 deletions(-)
-> > > > > 
-> > > > > diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-> > > > > index c85c198f7..e373d24ed 100644
-> > > > > --- a/tests/i915/gem_exec_capture.c
-> > > > > +++ b/tests/i915/gem_exec_capture.c
-> > > > > @@ -204,8 +204,19 @@ static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
-> > > > >    	return blobs;
-> > > > >    }
-> > > > > +static void configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctxt_id)
-> > > > > +{
-> > > > > +	/* Ensure fast hang detection */
-> > > > > +	gem_engine_property_printf(fd, e->name, "preempt_timeout_ms", "%d", 250);
-> > > > > +	gem_engine_property_printf(fd, e->name, "heartbeat_interval_ms", "%d", 500);
-> > > > #define for 250, 500?
-> > > Is there any point? There is no special reason for the values other than
-> > > small enough to be fast and long enough to not be too small to be usable. So
-> > > there isn't really any particular name to give them beyond
-> > > 'SHORT_PREEMPT_TIMEOUT' or some such. And the whole point of the helper
-> > > function is that the values are programmed in one place only and not used
-> > > anywhere else. So there is no worry about repetition of magic numbers.
-> > In about one year everyone has forgotten this explanation and will
-> > wonder if it's related to some in-kernel behaviour or if there's some
-> > other reason these values have been chosen.
-> > 
-> > So at least a comment why the values are these, please.
-> There is a comment already. Not sure what more can be added that is
-> meaningful other than changing it to "Ensure fast hang detection by picking
-> some random numbers out of the air that seem to be vaguely plausible".
+../tests/kms_cursor_legacy.c: In function ‘flip_vs_cursor_busy_crc’:
+../tests/kms_cursor_legacy.c:1337:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1337 |  uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
+       |  ^~~~~~~~
 
-Fair enough.
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Mark Yacoub <markyacoub@chromium.org>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/kms_cursor_legacy.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index e48cdf6c..cd2f8498 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -1333,8 +1333,10 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 	igt_pipe_t *pipe_connected = &display->pipes[pipe];
+ 	igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe_connected, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_crc_t crcs[2], test_crc;
++	uint64_t ahnd;
++
+ 	igt_require_intel(display->drm_fd);
+-	uint64_t ahnd = get_reloc_ahnd(display->drm_fd, 0);
++	ahnd = get_reloc_ahnd(display->drm_fd, 0);
+ 
+ 	if (atomic)
+ 		igt_require(display->is_atomic);
 -- 
-Petri Latvala
+2.29.2
