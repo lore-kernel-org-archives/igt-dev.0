@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75AB56E422
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Nov 2021 14:40:20 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-Date: Mon, 8 Nov 2021 14:40:17 +0000
-Message-ID: <222be4ea82b1b2764f52ab640cb16be75853ec24.camel@intel.com>
-References: <20211027105530.6570-1-jouni.hogander@intel.com>
- <51bcd0a30b965a4f4ca1d8163f7db1684c9ac6b7.camel@intel.com>
-In-Reply-To: <51bcd0a30b965a4f4ca1d8163f7db1684c9ac6b7.camel@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F501763129A34244930D74ACACBE2738@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D97076E442
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Nov 2021 14:44:27 +0000 (UTC)
+Date: Mon, 8 Nov 2021 16:43:13 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YYk3gR3IVVjvnPzm@platvala-desk.ger.corp.intel.com>
+References: <20211013171051.26287-1-jeevan.b@intel.com>
+ <20211013171051.26287-2-jeevan.b@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_psr2_su: add biplanar
- selective update tests
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211013171051.26287-2-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_aux: Rename
+ igt_debug_manual_check and assert check if all is supplied
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,139 +22,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
- Jose" <jose.souza@intel.com>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org, daniel@ffwll.ch
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIxLTEwLTI5IGF0IDE4OjEyICswMDAwLCBTb3V6YSwgSm9zZSB3cm90ZToNCj4g
-T24gV2VkLCAyMDIxLTEwLTI3IGF0IDEzOjU1ICswMzAwLCBKb3VuaSBIw7ZnYW5kZXIgd3JvdGU6
-DQo+ID4gQWRkIGJpcGxhbmFyIGZvcm1hdHMgKE5WMTIsIHAwMTApIGludG8gc2VsZWN0aXZlIHVw
-ZGF0ZSB0ZXN0Lg0KPiA+IFVzZSBhbHNvIG9mZnNldCBmb3Igd2hpdGUgcmVjdGFuZ2xlIGFzIHRo
-aXMgcmV2ZWFscyBiZXR0ZXINCj4gPiBwb3NzaWJsZSBpc3N1ZXMgd2l0aCBvZmZzZXQgY2FsY3Vs
-YXRpb24vY29uZmlndXJhdGlvbi4NCj4gPiANCj4gPiB2MjogQWRkIGJhY2sgc2tpcHBpbmcgb2Yg
-ZnJvbnRidWZmZXIgcmVuZGVyaW5nIHRlc3RzDQo+ID4gdjM6IFVzZSBoeXBoZW4gaW5zdGVhZCBv
-ZiB1bmRlcnNjb3JlIGluIHRlc3RuYW1lcw0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IEpvdW5p
-IEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICB0ZXN0
-cy9pOTE1L2ttc19wc3IyX3N1LmMgfCA5MSArKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0t
-LS0tLS0NCj4gPiAtLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA1OCBpbnNlcnRpb25zKCspLCAz
-MyBkZWxldGlvbnMoLSkNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9rbXNfcHNy
-Ml9zdS5jIGIvdGVzdHMvaTkxNS9rbXNfcHNyMl9zdS5jDQo+ID4gaW5kZXggOTFkZTliYWQuLmQ3
-OWExZTU4IDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYw0KPiA+ICsr
-KyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYw0KPiANCj4gSSBkb24ndCB0aGluayB0aGlzIHRl
-c3QgaXMgdGhlIGJlc3Qgb25lIHRvIGFkZCB0ZXN0cyBmb3IgYmlwbGFuYXINCj4gZm9ybWF0cy4N
-Cj4gQXMgUFNSMl9TVV9TVEFUVVMgZG8gbm90IHdvcmsgb24gZGlzcGxheSAxMyB0aGlzIHRlc3Qg
-aXMgc2tpcHBpbmcgaW4NCj4gZGlzcGxheSAxMyBhbmQgbmV3ZXIgc28gd2Ugd2lsbCBub3QgaGF2
-ZSB0ZXN0IGNvdmVyYWdlIGZvciBuZXdlcg0KPiBwbGF0Zm9ybXMuDQo+IA0KPiBrbXNfcHNyMl9z
-Zi5jIGlzIGEgYmV0dGVyIG9uZSBidXQgSSB3b3VsZCBub3QgYWRkIG9uZSBhZGRpdGlvbmFsIHRl
-c3QNCj4gZm9yIGVhY2ggZm9ybWF0IHRvIGVhY2ggdGVzdCBpbiB0aGF0IGZpbGUsIHdvdWxkIGJl
-IGJldHRlciBjcmVhdGUNCj4gc29tZXRoaW5nIG5ldy4NCj4gQ291bGQgZXZlbiBkbyB0aGUgc2Ft
-ZSB0aGF0IHRoaXMgb25lIGlzIGRvaW5nIGJ1dCBpbiBvbmUgcGFnZSBmbGlwDQo+IHNlbmRpbmcg
-dGhlIGRhbWFnZWQgYXJlYXMgYW5kIGluIHRoZSBuZXh0IGZsaXAgbm90IHNlbmRpbmcgdGhlDQo+
-IGRhbWFnZWQgYXJlYS4NCj4gU29tZXRoaW5nIGxpa2UgdGhhdCBzdHJlc3NpbmcgY29ybmVyIGNh
-c2VzLg0KDQpUaGlzIHNvdW5kcyB0byBtZSBsaWtlIGFuIGFkZGl0aW9uYWwgdGVzdGNhc2U/IERv
-ZXNuJ3QgaXQgc3RpbGwgbWFrZQ0Kc2Vuc2UgdG8gaGF2ZSBhdXRvbWF0ZWQgdGVzdGNhc2UgY2hl
-Y2tpbmcgdGhhdCBzZWxlY3RpdmUgdXBkYXRlDQphY3R1YWxseSBoYXBwZW5zIGZvciBiaXBsYW5h
-ciBwbGFuZT8gRXNwZWNpYWxseSBhcyB3ZSBrbm93IHRoZXJlIGFyZQ0Kc2VwYXJhdGUgaG9vayBp
-biB0aGUgY29kZSBmb3IgYmlwbGFuYXIgcGxhbmUuIEV2ZW4gdGhvdWdodA0KUFNSMl9TVV9TVEFU
-VVMgaXMgbm90IHdvcmtpbmcgaW4gYWxsIEhXcz8gDQoNCj4gQEAgLTMzLDcgKzMzLDggQEANCj4g
-PiANCj4gPiAgSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3QgUFNSMiBzZWxlY3RpdmUgdXBkYXRl
-Iik7DQo+ID4gDQo+ID4gLSNkZWZpbmUgU1FVQVJFX1NJWkUgMTAwDQo+ID4gKyNkZWZpbmUgU1FV
-QVJFX1NJWkUgICAxMDANCj4gPiArI2RlZmluZSBTUVVBUkVfT0ZGU0VUIDEwMA0KPiA+ICAvKiBl
-YWNoIHNlbGVjdGl2ZSB1cGRhdGUgYmxvY2sgaXMgNCBsaW5lcyB0YWxsICovDQo+ID4gICNkZWZp
-bmUgRVhQRUNURURfTlVNX1NVX0JMT0NLUyAoKFNRVUFSRV9TSVpFIC8gNCkgKyAoU1FVQVJFX1NJ
-WkUgJQ0KPiA+IDQgPyAxIDogMCkpDQo+ID4gDQo+ID4gQEAgLTUwLDYgKzUxLDIzIEBAIGVudW0g
-b3BlcmF0aW9ucyB7DQo+ID4gIExBU1QNCj4gPiAgfTsNCj4gPiANCj4gPiArc3RhdGljIGNvbnN0
-IHVpbnQzMl90IGZvcm1hdHNfcGFnZV9mbGlwW10gPSB7DQo+ID4gK0RSTV9GT1JNQVRfWFJHQjg4
-ODgsDQo+ID4gK0RSTV9GT1JNQVRfTlYxMiwNCj4gPiArRFJNX0ZPUk1BVF9QMDEwLA0KPiA+ICtE
-Uk1fRk9STUFUX0lOVkFMSUQsDQo+ID4gK307DQo+ID4gKw0KPiA+ICtzdGF0aWMgY29uc3QgdWlu
-dDMyX3QgZm9ybWF0c19mcm9udGJ1ZmZlcltdID0gew0KPiA+ICtEUk1fRk9STUFUX1hSR0I4ODg4
-LA0KPiA+ICtEUk1fRk9STUFUX0lOVkFMSUQsDQo+ID4gK307DQo+ID4gKw0KPiA+ICtzdGF0aWMg
-Y29uc3QgdWludDMyX3QgKmZvcm1hdHNbXSA9IHsNCj4gPiArICAgIFtQQUdFX0ZMSVBdID0gZm9y
-bWF0c19wYWdlX2ZsaXAsDQo+ID4gKyAgICBbRlJPTlRCVUZGRVJdID0gZm9ybWF0c19mcm9udGJ1
-ZmZlciwNCj4gPiArfTsNCj4gPiArDQo+ID4gIHN0YXRpYyBjb25zdCBjaGFyICpvcF9zdHIoZW51
-bSBvcGVyYXRpb25zIG9wKQ0KPiA+ICB7DQo+ID4gIHN0YXRpYyBjb25zdCBjaGFyICogY29uc3Qg
-bmFtZVtdID0gew0KPiA+IEBAIC02OCw2ICs4Niw3IEBAIHR5cGVkZWYgc3RydWN0IHsNCj4gPiAg
-aWd0X291dHB1dF90ICpvdXRwdXQ7DQo+ID4gIHN0cnVjdCBpZ3RfZmIgZmJbMl07DQo+ID4gIGVu
-dW0gb3BlcmF0aW9ucyBvcDsNCj4gPiArdWludDMyX3QgZm9ybWF0Ow0KPiA+ICBjYWlyb190ICpj
-cjsNCj4gPiAgaW50IGNoYW5nZV9zY3JlZW5fdGltZXJmZDsNCj4gPiAgdWludDMyX3Qgc2NyZWVu
-X2NoYW5nZXM7DQo+ID4gQEAgLTExMSw3ICsxMzAsNyBAQCBzdGF0aWMgdm9pZCBwcmVwYXJlKGRh
-dGFfdCAqZGF0YSkNCj4gPiAgLyogYWxsIGdyZWVuIGZyYW1lICovDQo+ID4gIGlndF9jcmVhdGVf
-Y29sb3JfZmIoZGF0YS0+ZHJtX2ZkLA0KPiA+ICAgICAgZGF0YS0+bW9kZS0+aGRpc3BsYXksIGRh
-dGEtPm1vZGUtPnZkaXNwbGF5LA0KPiA+IC0gICAgRFJNX0ZPUk1BVF9YUkdCODg4OCwNCj4gPiAr
-ICAgIGRhdGEtPmZvcm1hdCwNCj4gPiAgICAgIERSTV9GT1JNQVRfTU9EX0xJTkVBUiwNCj4gPiAg
-ICAgIDAuMCwgMS4wLCAwLjAsDQo+ID4gICAgICAmZGF0YS0+ZmJbMF0pOw0KPiA+IEBAIC0xMjEs
-MTQgKzE0MCwxNCBAQCBzdGF0aWMgdm9pZCBwcmVwYXJlKGRhdGFfdCAqZGF0YSkNCj4gPiANCj4g
-PiAgaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsDQo+ID4gICAgICBkYXRhLT5tb2Rl
-LT5oZGlzcGxheSwgZGF0YS0+bW9kZS0+dmRpc3BsYXksDQo+ID4gLSAgICBEUk1fRk9STUFUX1hS
-R0I4ODg4LA0KPiA+ICsgICAgZGF0YS0+Zm9ybWF0LA0KPiA+ICAgICAgRFJNX0ZPUk1BVF9NT0Rf
-TElORUFSLA0KPiA+ICAgICAgMC4wLCAxLjAsIDAuMCwNCj4gPiAgICAgICZkYXRhLT5mYlsxXSk7
-DQo+ID4gDQo+ID4gIGNyID0gaWd0X2dldF9jYWlyb19jdHgoZGF0YS0+ZHJtX2ZkLCAmZGF0YS0+
-ZmJbMV0pOw0KPiA+ICAvKiBwYWludCBhIHdoaXRlIHNxdWFyZSAqLw0KPiA+IC1pZ3RfcGFpbnRf
-Y29sb3JfYWxwaGEoY3IsIDAsIDAsIFNRVUFSRV9TSVpFLCBTUVVBUkVfU0laRSwNCj4gPiAraWd0
-X3BhaW50X2NvbG9yX2FscGhhKGNyLCBTUVVBUkVfT0ZGU0VULCBTUVVBUkVfT0ZGU0VULA0KPiA+
-IFNRVUFSRV9TSVpFLCBTUVVBUkVfU0laRSwNCj4gPiAgICAgICAgMS4wLCAxLjAsIDEuMCwgMS4w
-KTsNCj4gPiAgaWd0X3B1dF9jYWlyb19jdHgoY3IpOw0KPiA+ICB9IGVsc2UgaWYgKGRhdGEtPm9w
-ID09IEZST05UQlVGRkVSKSB7DQo+ID4gQEAgLTE1Miw4ICsxNzEsOCBAQCBzdGF0aWMgYm9vbCB1
-cGRhdGVfc2NyZWVuX2FuZF90ZXN0KGRhdGFfdA0KPiA+ICpkYXRhKQ0KPiA+ICBzdHJ1Y3QgZHJt
-X21vZGVfcmVjdCBjbGlwOw0KPiA+ICBpZ3RfcGxhbmVfdCAqcHJpbWFyeTsNCj4gPiANCj4gPiAt
-Y2xpcC54MSA9IGNsaXAueTEgPSAwOw0KPiA+IC1jbGlwLngyID0gY2xpcC55MiA9IFNRVUFSRV9T
-SVpFOw0KPiA+ICtjbGlwLngxID0gY2xpcC55MSA9IFNRVUFSRV9PRkZTRVQ7DQo+ID4gK2NsaXAu
-eDIgPSBjbGlwLnkyID0gU1FVQVJFX09GRlNFVCArIFNRVUFSRV9TSVpFOw0KPiA+IA0KPiA+ICBw
-cmltYXJ5ID0gaWd0X291dHB1dF9nZXRfcGxhbmVfdHlwZShkYXRhLT5vdXRwdXQsDQo+ID4gICAg
-ICBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsNCj4gPiBAQCAtMTY3LDE2ICsxODYsMTggQEAgc3Rh
-dGljIGJvb2wgdXBkYXRlX3NjcmVlbl9hbmRfdGVzdChkYXRhX3QNCj4gPiAqZGF0YSkNCj4gPiAg
-Y2FzZSBGUk9OVEJVRkZFUjogew0KPiA+ICBkcm1Nb2RlQ2xpcCBjbGlwOw0KPiA+IA0KPiA+IC1j
-bGlwLngxID0gY2xpcC55MSA9IDA7DQo+ID4gLWNsaXAueDIgPSBjbGlwLnkyID0gU1FVQVJFX1NJ
-WkU7DQo+ID4gK2NsaXAueDEgPSBjbGlwLnkxID0gU1FVQVJFX09GRlNFVDsNCj4gPiArY2xpcC54
-MiA9IGNsaXAueTIgPSBTUVVBUkVfT0ZGU0VUICsgU1FVQVJFX1NJWkU7DQo+ID4gDQo+ID4gIGlm
-IChkYXRhLT5zY3JlZW5fY2hhbmdlcyAmIDEpIHsNCj4gPiAgLyogZ28gYmFjayB0byBhbGwgZ3Jl
-ZW4gZnJhbWUgd2l0aCBhIHNxdWFyZSAqLw0KPiA+IC1pZ3RfcGFpbnRfY29sb3JfYWxwaGEoZGF0
-YS0+Y3IsIDAsIDAsIFNRVUFSRV9TSVpFLA0KPiA+ICtpZ3RfcGFpbnRfY29sb3JfYWxwaGEoZGF0
-YS0+Y3IsIFNRVUFSRV9PRkZTRVQsDQo+ID4gKyAgICAgIFNRVUFSRV9PRkZTRVQsIFNRVUFSRV9T
-SVpFLA0KPiA+ICAgICAgICBTUVVBUkVfU0laRSwgMS4wLCAxLjAsIDEuMCwgMS4wKTsNCj4gPiAg
-fSBlbHNlIHsNCj4gPiAgLyogZ28gYmFjayB0byBhbGwgZ3JlZW4gZnJhbWUgKi8NCj4gPiAtaWd0
-X3BhaW50X2NvbG9yX2FscGhhKGRhdGEtPmNyLCAwLCAwLCBTUVVBUkVfU0laRSwNCj4gPiAraWd0
-X3BhaW50X2NvbG9yX2FscGhhKGRhdGEtPmNyLCBTUVVBUkVfT0ZGU0VULA0KPiA+ICsgICAgICBT
-UVVBUkVfT0ZGU0VULCBTUVVBUkVfU0laRSwNCj4gPiAgICAgICAgU1FVQVJFX1NJWkUsIDAsIDEu
-MCwgMCwgMS4wKTsNCj4gPiAgfQ0KPiA+IA0KPiA+IEBAIC0yNjEsNiArMjgyLDcgQEAgaWd0X21h
-aW4NCj4gPiAgIGRhdGEuZGVidWdmc19mZCwgUFNSX01PREVfMiksDQo+ID4gICAgICAgICJFcnJv
-ciBlbmFibGluZyBQU1IyXG4iKTsNCj4gPiAgZGF0YS5vcCA9IEZST05UQlVGRkVSOw0KPiA+ICtk
-YXRhLmZvcm1hdCA9IERSTV9GT1JNQVRfWFJHQjg4ODg7DQo+ID4gIHByZXBhcmUoJmRhdGEpOw0K
-PiA+ICByID0gcHNyX3dhaXRfZW50cnkoZGF0YS5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8yKTsNCj4g
-PiAgY2xlYW51cCgmZGF0YSk7DQo+ID4gQEAgLTI4MSwzMSArMzAzLDM0IEBAIGlndF9tYWluDQo+
-ID4gIH0NCj4gPiANCj4gPiAgZm9yIChkYXRhLm9wID0gUEFHRV9GTElQOyBkYXRhLm9wIDwgTEFT
-VDsgZGF0YS5vcCsrKSB7DQo+ID4gLWlndF9kZXNjcmliZSgiVGVzdCB0aGF0IHNlbGVjdGl2ZSB1
-cGRhdGUgd29ya3Mgd2hlbiBzY3JlZW4NCj4gPiBjaGFuZ2VzIik7DQo+ID4gLWlndF9zdWJ0ZXN0
-X2YoIiVzIiwgb3Bfc3RyKGRhdGEub3ApKSB7DQo+ID4gLQ0KPiA+IC1pZiAoZGF0YS5vcCA9PSBG
-Uk9OVEJVRkZFUiAmJg0KPiA+IC0gICAgaW50ZWxfZGlzcGxheV92ZXIoaW50ZWxfZ2V0X2RybV9k
-ZXZpZChkYXRhLmRybV9mZCkpID49IDEyKSB7DQo+ID4gLS8qDQo+ID4gLSAqIEZJWE1FOiBEaXNw
-bGF5IDEyKyBwbGF0Zm9ybXMgbm93IGhhdmUgUFNSMg0KPiA+IC0gKiBzZWxlY3RpdmUgZmV0Y2gg
-ZW5hYmxlZCBieSBkZWZhdWx0IGJ1dCB3ZQ0KPiA+IC0gKiBzdGlsbCBjYW4ndCBwcm9wZXJseSBo
-YW5kbGUgZnJvbnRidWZmZXINCj4gPiAtICogcmVuZGVyaW5nLCBzbyByaWdodCBpdCBkb2VzIGZ1
-bGwgZnJhbWUNCj4gPiAtICogZmV0Y2hlcyBhdCBldmVyeSBmcm9udGJ1ZmZlciByZW5kZXJpbmcu
-DQo+ID4gLSAqIFNvIGl0IGlzIGV4cGVjdGVkIHRoYXQgdGhpcyB0ZXN0IHdpbGwgZmFpbA0KPiA+
-IC0gKiBpbiBkaXNwbGF5IDEyKyBwbGF0Zm9ybSBmb3cgbm93Lg0KPiA+IC0gKi8NCj4gPiAtaWd0
-X3NraXAoIlBTUjIgc2VsZWN0aXZlIGZldGNoIGlzIGRvaW5nIGZ1bGwgZnJhbWUgZmV0Y2hlcyBm
-b3INCj4gPiBmcm9udGJ1ZmZlciByZW5kZXJpbmdcbiIpOw0KPiA+ICtjb25zdCB1aW50MzJfdCAq
-Zm9ybWF0ID0gZm9ybWF0c1tkYXRhLm9wXTsNCj4gPiArDQo+ID4gK3doaWxlICgqZm9ybWF0ICE9
-IERSTV9GT1JNQVRfSU5WQUxJRCkgew0KPiA+ICtkYXRhLmZvcm1hdCA9ICpmb3JtYXQrKzsNCj4g
-PiAraWd0X2Rlc2NyaWJlKCJUZXN0IHRoYXQgc2VsZWN0aXZlIHVwZGF0ZSB3b3JrcyB3aGVuIHNj
-cmVlbg0KPiA+IGNoYW5nZXMiKTsNCj4gPiAraWd0X3N1YnRlc3RfZigiJXMtJXMiLCBvcF9zdHIo
-ZGF0YS5vcCksDQo+ID4gaWd0X2Zvcm1hdF9zdHIoZGF0YS5mb3JtYXQpKSB7DQo+ID4gK2lmIChk
-YXRhLm9wID09IEZST05UQlVGRkVSICYmDQo+ID4gKyAgICBpbnRlbF9kaXNwbGF5X3ZlcihpbnRl
-bF9nZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKSkgPj0gMTIpIHsNCj4gPiArLyoNCj4gPiArICog
-RklYTUU6IERpc3BsYXkgMTIrIHBsYXRmb3JtcyBub3cgaGF2ZSBQU1IyDQo+ID4gKyAqIHNlbGVj
-dGl2ZSBmZXRjaCBlbmFibGVkIGJ5IGRlZmF1bHQgYnV0IHdlDQo+ID4gKyAqIHN0aWxsIGNhbid0
-IHByb3Blcmx5IGhhbmRsZSBmcm9udGJ1ZmZlcg0KPiA+ICsgKiByZW5kZXJpbmcsIHNvIHJpZ2h0
-IGl0IGRvZXMgZnVsbCBmcmFtZQ0KPiA+ICsgKiBmZXRjaGVzIGF0IGV2ZXJ5IGZyb250YnVmZmVy
-IHJlbmRlcmluZy4NCj4gPiArICogU28gaXQgaXMgZXhwZWN0ZWQgdGhhdCB0aGlzIHRlc3Qgd2ls
-bCBmYWlsDQo+ID4gKyAqIGluIGRpc3BsYXkgMTIrIHBsYXRmb3JtIGZvciBub3cuDQo+ID4gKyAq
-Lw0KPiA+ICtpZ3Rfc2tpcCgiUFNSMiBzZWxlY3RpdmUgZmV0Y2ggaXMgZG9pbmcgZnVsbCBmcmFt
-ZSBmZXRjaGVzIGZvcg0KPiA+IGZyb250YnVmZmVyIHJlbmRlcmluZ1xuIik7DQo+ID4gK30NCj4g
-PiArcHJlcGFyZSgmZGF0YSk7DQo+ID4gK3J1bigmZGF0YSk7DQo+ID4gK2NsZWFudXAoJmRhdGEp
-Ow0KPiA+ICB9DQo+ID4gLQ0KPiA+IC1wcmVwYXJlKCZkYXRhKTsNCj4gPiAtcnVuKCZkYXRhKTsN
-Cj4gPiAtY2xlYW51cCgmZGF0YSk7DQo+ID4gIH0NCj4gPiAtfQ0KPiA+IA0KPiA+IC1pZ3RfZml4
-dHVyZSB7DQo+ID4gLWNsb3NlKGRhdGEuZGVidWdmc19mZCk7DQo+ID4gLWRpc3BsYXlfZmluaSgm
-ZGF0YSk7DQo+ID4gK2lndF9maXh0dXJlIHsNCj4gPiArY2xvc2UoZGF0YS5kZWJ1Z2ZzX2ZkKTsN
-Cj4gPiArZGlzcGxheV9maW5pKCZkYXRhKTsNCj4gPiArfQ0KPiA+ICB9DQo+ID4gIH0NCg0K
+On Wed, Oct 13, 2021 at 10:40:49PM +0530, Jeevan B wrote:
+> rename igt_debug_manual_check and patch the igt function
+> igt_debug_wait_for_keypress() to assert if "all" is supplied.
+> 
+> v2: calling igt_debug_wait_for_keypress() with "all" will assert.
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  lib/igt_aux.c            | 9 ++++++---
+>  lib/igt_aux.h            | 2 +-
+>  tests/i915/kms_dsc.c     | 2 +-
+>  tests/i915/kms_psr.c     | 2 +-
+>  tests/i915/kms_psr2_sf.c | 2 +-
+>  5 files changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+> index 1217f5e8..78798287 100644
+> --- a/lib/igt_aux.c
+> +++ b/lib/igt_aux.c
+> @@ -972,7 +972,7 @@ void igt_drop_root(void)
+>   * Waits for a key press when run interactively and when the corresponding debug
+>   * var is set in the --interactive-debug=$var variable. Multiple keys
+>   * can be specified as a comma-separated list or alternatively "all" if a wait
+> - * should happen for all cases.
+> + * should happen for all cases. Calling this fucntion with "all" will assert.
+>   *
+>   * When not connected to a terminal interactive_debug is ignored
+>   * and execution immediately continues.
+> @@ -993,6 +993,9 @@ void igt_debug_wait_for_keypress(const char *var)
+>  	if (!igt_interactive_debug)
+>  		return;
+>  
+> +	if (strstr(var, "all"))
+> +		igt_assert(false);
+
+I'd prefer this to have a clear message for the logs.
+
+igt_assert_f(false, "Bug in test: Do not call igt_debug_wait_for_keypress with \"all\"\n");
+
+
+-- 
+Petri Latvala
+
+> +
+>  	if (!strstr(igt_interactive_debug, var) &&
+>  	    !strstr(igt_interactive_debug, "all"))
+>  		return;
+> @@ -1008,7 +1011,7 @@ void igt_debug_wait_for_keypress(const char *var)
+>  }
+>  
+>  /**
+> - * igt_debug_manual_check:
+> + * igt_debug_interactive_mode_check:
+>   * @var: var lookup to to enable this wait
+>   * @expected: message to be printed as expected behaviour before wait for keys Y/n
+>   *
+> @@ -1028,7 +1031,7 @@ void igt_debug_wait_for_keypress(const char *var)
+>   *
+>   * Force test fail when N/n is pressed.
+>   */
+> -void igt_debug_manual_check(const char *var, const char *expected)
+> +void igt_debug_interactive_mode_check(const char *var, const char *expected)
+>  {
+>  	struct termios oldt, newt;
+>  	char key;
+> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+> index 30b175d7..cfa68be3 100644
+> --- a/lib/igt_aux.h
+> +++ b/lib/igt_aux.h
+> @@ -195,7 +195,7 @@ int igt_get_autoresume_delay(enum igt_suspend_state state);
+>  void igt_drop_root(void);
+>  
+>  void igt_debug_wait_for_keypress(const char *var);
+> -void igt_debug_manual_check(const char *var, const char *expected);
+> +void igt_debug_interactive_mode_check(const char *var, const char *expected);
+>  
+>  /* sysinfo cross-arch wrappers from intel_os.c */
+>  
+> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+> index 3e450207..772687f4 100644
+> --- a/tests/i915/kms_dsc.c
+> +++ b/tests/i915/kms_dsc.c
+> @@ -72,7 +72,7 @@ int force_dsc_restore_fd = -1;
+>  
+>  static inline void manual(const char *expected)
+>  {
+> -	igt_debug_manual_check("all", expected);
+> +	igt_debug_interactive_mode_check("all", expected);
+>  }
+>  
+>  static void force_dsc_enable(data_t *data)
+> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+> index c65b3c80..e7dbf8b7 100644
+> --- a/tests/i915/kms_psr.c
+> +++ b/tests/i915/kms_psr.c
+> @@ -246,7 +246,7 @@ static bool psr_enable_if_enabled(data_t *data)
+>  
+>  static inline void manual(const char *expected)
+>  {
+> -	igt_debug_manual_check("all", expected);
+> +	igt_debug_interactive_mode_check("all", expected);
+>  }
+>  
+>  static bool drrs_disabled(data_t *data)
+> diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+> index 1be8c3da..93347327 100644
+> --- a/tests/i915/kms_psr2_sf.c
+> +++ b/tests/i915/kms_psr2_sf.c
+> @@ -331,7 +331,7 @@ static void prepare(data_t *data)
+>  
+>  static inline void manual(const char *expected)
+>  {
+> -	igt_debug_manual_check("all", expected);
+> +	igt_debug_interactive_mode_check("all", expected);
+>  }
+>  
+>  static void plane_update_expected_output(int plane_type, int box_count)
+> -- 
+> 2.19.1
+> 
