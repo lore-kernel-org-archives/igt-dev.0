@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19F336E05F
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Nov 2021 05:32:39 +0000 (UTC)
-From: Ananya Sharma <ananya.sharma@intel.com>
-Date: Mon,  8 Nov 2021 10:58:36 +0530
-Message-Id: <20211108052836.374567-1-ananya.sharma@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FFAE6E0EE
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Nov 2021 05:46:35 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Mon,  8 Nov 2021 11:21:47 +0530
+Message-Id: <20211108055149.47185-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: MPO subtest- mixing
- pixel formats and tiling on different planes.
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add testing for CCS
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,29 +18,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com
+To: apoorva1.singh@intel.com, igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
- Added P010 pixel format with already existing pixel formats like RGB565, XRGB8888, NV12.
+From: Apoorva Singh <apoorva1.singh@intel.com>
 
-Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
----
- tests/kms_rotation_crc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- Add new libraries i915_blt and intel_mocs for various blt
+  commands and mocs settings.
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 1497120c..9c208315 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -666,7 +666,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 	 * case with tiling are 2 bpp, 4 bpp and NV12.
- 	 */
- 	static const uint32_t formatlist[] = {DRM_FORMAT_RGB565,
--		DRM_FORMAT_XRGB8888, DRM_FORMAT_NV12};
-+		DRM_FORMAT_XRGB8888, DRM_FORMAT_NV12, DRM_FORMAT_P010};
- 
- 	static struct {
- 		igt_rotation_t rotation;
+- Add gem_ccs test for CCS testing.
+  Commands are constructed with XY_BLOCK_COPY_BLT
+  and XY_CTRL_SURF_COPY_BLT instructions.
+
+Apoorva Singh (1):
+  lib/i915: Introduce libraries i915_blt and intel_mocs
+
+CQ Tang (1):
+  i915/gem_ccs: Add testing for CCS
+
+ lib/i915/gem_engine_topology.c |  38 ++
+ lib/i915/gem_engine_topology.h |   5 +
+ lib/i915/i915_blt.c            | 419 +++++++++++++++++++++
+ lib/i915/i915_blt.h            |  93 +++++
+ lib/i915/intel_mocs.c          |  75 ++++
+ lib/i915/intel_mocs.h          |  43 +++
+ lib/meson.build                |   2 +
+ tests/i915/gem_ccs.c           | 639 +++++++++++++++++++++++++++++++++
+ tests/meson.build              |   1 +
+ 9 files changed, 1315 insertions(+)
+ create mode 100644 lib/i915/i915_blt.c
+ create mode 100644 lib/i915/i915_blt.h
+ create mode 100644 lib/i915/intel_mocs.c
+ create mode 100644 lib/i915/intel_mocs.h
+ create mode 100644 tests/i915/gem_ccs.c
+
 -- 
 2.25.1
