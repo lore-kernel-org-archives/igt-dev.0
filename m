@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84C9D6E0F0
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Nov 2021 05:46:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 500146E0F0
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Nov 2021 05:46:40 +0000 (UTC)
 From: apoorva1.singh@intel.com
-Date: Mon,  8 Nov 2021 11:21:48 +0530
-Message-Id: <20211108055149.47185-2-apoorva1.singh@intel.com>
+Date: Mon,  8 Nov 2021 11:21:49 +0530
+Message-Id: <20211108055149.47185-3-apoorva1.singh@intel.com>
 In-Reply-To: <20211108055149.47185-1-apoorva1.singh@intel.com>
 References: <20211108055149.47185-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/i915: Introduce libraries i915_blt
- and intel_mocs
+Subject: [igt-dev] [PATCH i-g-t 2/2] i915/gem_ccs: Add testing for CCS
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,34 +23,96 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: apoorva1.singh@intel.com, igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Apoorva Singh <apoorva1.singh@intel.com>
+From: CQ Tang <cq.tang@intel.com>
 
-Add new libraries i915_blt and intel_mocs for various blt
-commands and mocs settings.
+Add gem_ccs test for CCS testing.
+Commands are constructed with XY_BLOCK_COPY_BLT
+and XY_CTRL_SURF_COPY_BLT instructions.
 
+Signed-off-by: CQ Tang <cq.tang@intel.com>
 Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
 ---
- lib/i915/i915_blt.c   | 419 ++++++++++++++++++++++++++++++++++++++++++
- lib/i915/i915_blt.h   |  93 ++++++++++
- lib/i915/intel_mocs.c |  75 ++++++++
- lib/i915/intel_mocs.h |  43 +++++
- lib/meson.build       |   2 +
- 5 files changed, 632 insertions(+)
- create mode 100644 lib/i915/i915_blt.c
- create mode 100644 lib/i915/i915_blt.h
- create mode 100644 lib/i915/intel_mocs.c
- create mode 100644 lib/i915/intel_mocs.h
+ lib/i915/gem_engine_topology.c |  38 ++
+ lib/i915/gem_engine_topology.h |   5 +
+ tests/i915/gem_ccs.c           | 639 +++++++++++++++++++++++++++++++++
+ tests/meson.build              |   1 +
+ 4 files changed, 683 insertions(+)
+ create mode 100644 tests/i915/gem_ccs.c
 
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index 729f42b0..37b5875e 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -488,6 +488,44 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+ 	return ret;
+ }
+ 
++static bool
++__gem_engine_has_capability(int i915, const char *engine,
++			    const char *attr, const char *cap)
++{
++	char buf[4096] = {};
++	FILE *file;
++
++	file = __open_attr(igt_sysfs_open(i915), "r",
++			   "engine", engine, attr, NULL);
++	if (file) {
++		fread(buf, 1, sizeof(buf) - 1, file);
++		fclose(file);
++	}
++
++	return strstr(buf, cap);
++}
++
++bool gem_engine_has_capability(int i915, const char *engine, const char *cap)
++{
++	return __gem_engine_has_capability(i915, engine, "capabilities", cap);
++}
++
++bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap)
++{
++	return __gem_engine_has_capability(i915, engine, "known_capabilities", cap);
++}
++
++bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine)
++{
++	if (engine->class != I915_ENGINE_CLASS_COPY)
++		return false;
++
++	if (!gem_engine_has_known_capability(i915, engine->name, "block_copy"))
++		return intel_gen(intel_get_drm_devid(i915)) >= 12;
++
++	return gem_engine_has_capability(i915, engine->name, "block_copy");
++}
++
+ uint32_t gem_engine_mmio_base(int i915, const char *engine)
+ {
+ 	unsigned int mmio = 0;
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index 4cfab560..d24bc9e8 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -124,6 +124,11 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+ 
+ uint32_t gem_engine_mmio_base(int i915, const char *engine);
+ 
++bool gem_engine_has_capability(int i915, const char *engine, const char *cap);
++bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap);
++
++bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine);
++
+ void dyn_sysfs_engines(int i915, int engines, const char *file,
+ 		       void (*test)(int i915, int engine));
+ 
+diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
 new file mode 100644
-index 00000000..a3771f40
+index 00000000..d144a6d0
 --- /dev/null
-+++ b/lib/i915/i915_blt.c
-@@ -0,0 +1,419 @@
++++ b/tests/i915/gem_ccs.c
+@@ -0,0 +1,639 @@
 +/*
 + * Copyright © 2020 Intel Corporation
 + *
@@ -75,7 +136,8 @@ index 00000000..a3771f40
 + * IN THE SOFTWARE.
 + *
 + * Authors:
-+ *	Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
++ *	CQ Tang <cq.tang@intel.com>
++ *	Neel Desai <neel.desai@intel.com>
 + *
 + */
 +
@@ -84,634 +146,623 @@ index 00000000..a3771f40
 +#include <sys/time.h>
 +#include <malloc.h>
 +#include "drm.h"
-+#include "igt.h"
-+#include "i915_blt.h"
-+#include "i915/intel_mocs.h"
-+
-+/*
-+ * make_block_copy_batch:
-+ * @fd: open i915 drm file descriptor
-+ * @batch_buf: the batch buffer to populate with the command
-+ * @src: fd of the source BO
-+ * @dst: fd of the destination BO
-+ * @length: size of the src and dest BOs
-+ * @reloc: pointer to the relocation entyr for this command
-+ * @src_mem_type: source memory type (denotes direct or indirect
-+ *			addressing)
-+ * @dst_mem_type: destination memory type (denotes direct or indirect
-+ *			addressing)
-+ * @src_compression: flag to enable uncompressed read of compressed data
-+ *			at the source
-+ * @dst_compression: flag to enable compressed write at the destination
-+ * @resolve: flag to enable resolve of compressed data
-+ */
-+static int make_block_copy_batch(int fd, uint32_t *batch_buf,
-+				 uint32_t src, uint32_t dst, uint32_t length,
-+				 struct drm_i915_gem_relocation_entry *reloc,
-+				 int src_mem_type, int dst_mem_type,
-+				 int src_compression, int dst_compression,
-+				 int resolve)
-+{
-+	uint32_t *b = batch_buf;
-+	uint8_t src_mocs = intel_get_uc_mocs(fd);
-+	uint8_t dst_mocs = src_mocs;
-+
-+	/* BG 0 */
-+	b[0] = BLOCK_COPY_BLT_CMD | resolve;
-+
-+	/* BG 1
-+	 *
-+	 * Using Tile 4 dimensions.  Height = 32 rows
-+	 * Width = 128 bytes
-+	 */
-+	b[1] = dst_compression | TILE_4_FORMAT | TILE_4_WIDTH_DWORD |
-+		dst_mocs << XY_BLOCK_COPY_BLT_MOCS_SHIFT;
-+
-+	/* BG 3
-+	 *
-+	 * X2 = TILE_4_WIDTH
-+	 * Y2 = (length / TILE_4_WIDTH) << 16:
-+	 */
-+	b[3] = TILE_4_WIDTH | (length >> 7) << DEST_Y2_COORDINATE_SHIFT;
-+
-+	/* relocate address in b[4] and b[5] */
-+	reloc->offset = 4 * (sizeof(uint32_t));
-+	reloc->delta = 0;
-+	reloc->target_handle = dst;
-+	reloc->read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc->write_domain = I915_GEM_DOMAIN_RENDER;
-+	reloc->presumed_offset = 0;
-+	reloc++;
-+
-+	/* BG 6 */
-+	b[6] = dst_mem_type << DEST_MEM_TYPE_SHIFT;
-+
-+	/* BG 8 */
-+	b[8] = src_compression | TILE_4_WIDTH_DWORD | TILE_4_FORMAT |
-+		src_mocs << XY_BLOCK_COPY_BLT_MOCS_SHIFT;
-+
-+	/* relocate address in b[9] and b[10] */
-+	reloc->offset = 9 * sizeof(uint32_t);
-+	reloc->delta = 0;
-+	reloc->target_handle = src;
-+	reloc->read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc->write_domain = 0;
-+	reloc->presumed_offset = 0;
-+	reloc++;
-+
-+	/* BG 11 */
-+	b[11] = src_mem_type << SRC_MEM_TYPE_SHIFT;
-+
-+	/* BG 16  */
-+	b[16] = SURFACE_TYPE_2D |
-+		((TILE_4_WIDTH - 1) << DEST_SURF_WIDTH_SHIFT) |
-+		(TILE_4_HEIGHT - 1);
-+
-+	/* BG 19 */
-+	b[19] = SURFACE_TYPE_2D |
-+		((TILE_4_WIDTH - 1) << SRC_SURF_WIDTH_SHIFT) |
-+		(TILE_4_HEIGHT - 1);
-+
-+	b += XY_BLOCK_COPY_BLT_LEN_DWORD;
-+
-+	b[0] = MI_FLUSH_DW | MI_FLUSH_LLC | MI_INVALIDATE_TLB;
-+	reloc->offset = 23 * sizeof(uint32_t);
-+	reloc->delta = 0;
-+	reloc->target_handle = dst_compression > 0 ? dst : src;
-+	reloc->read_domains = 0;
-+	reloc->write_domain = 0;
-+	reloc->presumed_offset = 0;
-+	reloc++;
-+	b[3] = 0;
-+
-+	b[4] = MI_FLUSH_DW | MI_FLUSH_CCS;
-+	reloc->offset = 27 * sizeof(uint32_t);
-+	reloc->delta = 0;
-+	reloc->target_handle = dst_compression > 0 ? dst : src;
-+	reloc->read_domains = 0;
-+	reloc->write_domain = 0;
-+	reloc->presumed_offset = 0;
-+	reloc++;
-+	b[7] = 0;
-+
-+	b[8] = MI_BATCH_BUFFER_END;
-+	b[9] = 0;
-+
-+	b += 10;
-+
-+	return (b - batch_buf) * sizeof(uint32_t);
-+}
-+
-+static int __xy_block_copy_blt(int fd, uint32_t cmd,
-+			       uint32_t *batch_buf,
-+			       uint32_t src, uint32_t dst,
-+			       uint32_t length, int mode, uint32_t ctx,
-+			       struct intel_execution_engine2 *e)
-+{
-+	struct drm_i915_gem_relocation_entry reloc[4];
-+	struct drm_i915_gem_exec_object2 exec[3];
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	int len;
-+	int src_mem_type, dst_mem_type;
-+	int dst_compression, src_compression;
-+	int resolve;
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0);
-+
-+	if (mode == 2) { /* in-place decompress */
-+		src_mem_type = MEM_TYPE_LOCAL;
-+		dst_mem_type = MEM_TYPE_LOCAL;
-+		src_compression = COMPRESSION_ENABLE | AUX_CCS_E;
-+		dst_compression = COMPRESSION_ENABLE | AUX_CCS_E;
-+		resolve = FULL_RESOLVE;
-+	} else if (mode == 1) { /* copy from smem to lmem */
-+		src_mem_type = MEM_TYPE_SYS;
-+		dst_mem_type = MEM_TYPE_LOCAL;
-+		src_compression = 0;
-+		dst_compression = COMPRESSION_ENABLE | AUX_CCS_E;
-+		resolve = 0;
-+	} else { /* copy from lmem to smem */
-+		src_mem_type = MEM_TYPE_LOCAL;
-+		dst_mem_type = MEM_TYPE_SYS;
-+		src_compression = COMPRESSION_ENABLE | AUX_CCS_E;
-+		dst_compression = 0;
-+		resolve = 0;
-+	}
-+
-+	/* construct the batch buffer */
-+	memset(reloc, 0, sizeof(reloc));
-+	memset(batch_buf, 0, BATCH_SIZE);
-+	len = make_block_copy_batch(fd, batch_buf,
-+				    src, dst, length, reloc,
-+				    src_mem_type, dst_mem_type,
-+				    src_compression, dst_compression,
-+				    resolve);
-+	igt_assert(len > 0);
-+
-+	/* write batch buffer to 'cmd' BO */
-+	gem_write(fd, cmd, 0, batch_buf, len);
-+
-+	/* Execute the batch buffer */
-+	memset(exec, 0, sizeof(exec));
-+	if (mode == 2) {
-+		exec[0].handle = dst;
-+		exec[1].handle = cmd;
-+		exec[1].relocation_count = !ahnd ? 4 : 0;
-+		exec[1].relocs_ptr = to_user_pointer(reloc);
-+		if (ahnd) {
-+			exec[0].offset = get_offset(ahnd, exec[0].handle, length * CCS_RATIO, 0);
-+			exec[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+			exec[1].offset = get_offset(ahnd, exec[1].handle, BATCH_SIZE, 0);
-+			exec[1].flags |= EXEC_OBJECT_PINNED;
-+		}
-+	} else {
-+		exec[0].handle = src;
-+		exec[1].handle = dst;
-+		exec[2].handle = cmd;
-+		exec[2].relocation_count = !ahnd ? 4 : 0;
-+		exec[2].relocs_ptr = to_user_pointer(reloc);
-+		if (ahnd) {
-+			exec[0].offset = get_offset(ahnd, exec[0].handle, length * CCS_RATIO, 0);
-+			exec[0].flags |= EXEC_OBJECT_PINNED;
-+			exec[1].offset = get_offset(ahnd, exec[1].handle, length * CCS_RATIO, 0);
-+			exec[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+			exec[2].offset = get_offset(ahnd, exec[2].handle, BATCH_SIZE, 0);
-+			exec[2].flags |= EXEC_OBJECT_PINNED;
-+		}
-+	}
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(exec);
-+	if (mode == 2)
-+		execbuf.buffer_count = 2;
-+	else
-+		execbuf.buffer_count = 3;
-+	execbuf.batch_len = len;
-+
-+	if (ctx)
-+		execbuf.rsvd1 = ctx;
-+
-+	execbuf.flags = I915_EXEC_BLT;
-+	if (e)
-+		execbuf.flags = e->flags;
-+
-+	gem_execbuf(fd, &execbuf);
-+	gem_sync(fd, cmd);
-+
-+	return 0;
-+}
-+
-+int xy_block_copy_blt(int fd, uint32_t cmd,
-+		      uint32_t *batch_buf,
-+		      uint32_t src, uint32_t dst,
-+		      uint32_t length, int mode,
-+		      struct intel_execution_engine2 *e)
-+{
-+	return __xy_block_copy_blt(fd, cmd, batch_buf, src,
-+			dst, length, mode, 0, e);
-+}
-+
-+int xy_block_copy_blt_ctx(int fd, uint32_t cmd,
-+			  uint32_t *batch_buf,
-+			  uint32_t src, uint32_t dst,
-+			  uint32_t length, int mode, uint32_t ctx)
-+{
-+	return __xy_block_copy_blt(fd, cmd, batch_buf, src,
-+			dst, length, mode, ctx, 0);
-+}
-+
-+/*
-+ * make_ctrl_surf_batch:
-+ * @fd: open i915 drm file descriptor
-+ * @batch_buf: the batch buffer to populate with the command
-+ * @src: fd of the source BO
-+ * @dst: fd of the destination BO
-+ * @length: size of the ctrl surf in bytes
-+ * @reloc: pointer to the relocation entyr for this command
-+ * @src_mem_access: source memory type (denotes direct or indirect
-+ *			addressing)
-+ * @dst_mem_acdcess: destination memory type (denotes direct or indirect
-+ *			addressing)
-+ */
-+static int make_ctrl_surf_batch(int fd, uint32_t *batch_buf,
-+				uint32_t src, uint32_t dst, uint32_t length,
-+				struct drm_i915_gem_relocation_entry *reloc,
-+				int src_mem_access, int dst_mem_access)
-+{
-+	int num_ccs_blocks;
-+	uint32_t *b = batch_buf;
-+	uint8_t src_mocs = intel_get_uc_mocs(fd);
-+	uint8_t dst_mocs = src_mocs;
-+
-+	num_ccs_blocks = length / CCS_RATIO;
-+	if (num_ccs_blocks < 1)
-+		num_ccs_blocks = 1;
-+	if (num_ccs_blocks > NUM_CCS_BLKS_PER_XFER)
-+		return 0;
-+
-+	/*
-+	 * We use logical AND with 1023 since the size field
-+	 * takes values which is in the range of 0 - 1023
-+	 */
-+	b[0] = ((XY_CTRL_SURF_COPY_BLT) |
-+		(src_mem_access << SRC_ACCESS_TYPE_SHIFT) |
-+		(dst_mem_access << DST_ACCESS_TYPE_SHIFT) |
-+		(((num_ccs_blocks - 1) & 1023) << CCS_SIZE_SHIFT));
-+
-+	b[2] = src_mocs << XY_CTRL_SURF_COPY_BLT_MOCS_SHIFT;
-+
-+	/* relocate address in b[1] and b[2] */
-+	reloc->offset = 1 * sizeof(uint32_t);
-+	reloc->delta = 0;
-+	reloc->target_handle = src;
-+	reloc->read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc->write_domain = 0;
-+	reloc->presumed_offset = 0;
-+	reloc++;
-+
-+	b[4] = dst_mocs << XY_CTRL_SURF_COPY_BLT_MOCS_SHIFT;
-+
-+	/* relocate address in b[3] and b[4] */
-+	reloc->offset = 3 * (sizeof(uint32_t));
-+	reloc->delta = 0;
-+	reloc->target_handle = dst;
-+	reloc->read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc->write_domain = I915_GEM_DOMAIN_RENDER;
-+	reloc->presumed_offset = 0;
-+	reloc++;
-+
-+	b[5] = 0;
-+
-+	b[6] = MI_FLUSH_DW | MI_FLUSH_LLC | MI_INVALIDATE_TLB;
-+	reloc->offset = 7 * sizeof(uint32_t);
-+	reloc->delta = 0;
-+	reloc->target_handle =
-+	dst_mem_access == INDIRECT_ACCESS ? dst : src;
-+	reloc->read_domains = 0;
-+	reloc->write_domain = 0;
-+	reloc->presumed_offset = 0;
-+	reloc++;
-+	b[9] = 0;
-+
-+	b[10] = MI_FLUSH_DW | MI_FLUSH_CCS;
-+	reloc->offset = 11 * sizeof(uint32_t);
-+	reloc->delta = 0;
-+	reloc->target_handle =
-+	dst_mem_access == INDIRECT_ACCESS ? dst : src;
-+	reloc->read_domains = 0;
-+	reloc->write_domain = 0;
-+	reloc->presumed_offset = 0;
-+	reloc++;
-+	b[13] = 0;
-+
-+	b[14] = MI_BATCH_BUFFER_END;
-+	b[15] = 0;
-+
-+	b += 16;
-+
-+	return (b - batch_buf) * sizeof(uint32_t);
-+}
-+
-+int xy_ctrl_surf_copy_blt(int fd, uint32_t cmd,
-+			  uint32_t *batch_buf,
-+			  uint32_t src, uint32_t dst,
-+			  uint32_t length, bool writetodev,
-+			  struct intel_execution_engine2 *e)
-+{
-+	struct drm_i915_gem_relocation_entry reloc[4];
-+	struct drm_i915_gem_exec_object2 exec[3];
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	int len, src_mem_access, dst_mem_access;
-+	uint64_t ahnd = get_reloc_ahnd(fd, 0);
-+
-+	if (writetodev) {
-+		src_mem_access = DIRECT_ACCESS;
-+		dst_mem_access = INDIRECT_ACCESS;
-+	} else {
-+		src_mem_access = INDIRECT_ACCESS;
-+		dst_mem_access = DIRECT_ACCESS;
-+	}
-+
-+	/* construct batch command buffer */
-+	memset(reloc, 0, sizeof(reloc));
-+	memset(batch_buf, 0, BATCH_SIZE);
-+	len = make_ctrl_surf_batch(fd, batch_buf,
-+				   src, dst, length, reloc,
-+				   src_mem_access, dst_mem_access);
-+	igt_assert(len > 0);
-+
-+	/* Copy the batch buff to BO cmd */
-+	gem_write(fd, cmd, 0, batch_buf, len);
-+
-+	/* Execute the batch buffer */
-+	memset(exec, 0, sizeof(exec));
-+	exec[0].handle = src;
-+	exec[1].handle = dst;
-+	exec[2].handle = cmd;
-+	exec[2].relocation_count = !ahnd ? 4 : 0;
-+	exec[2].relocs_ptr = to_user_pointer(reloc);
-+	if (ahnd) {
-+		exec[0].offset = get_offset(ahnd, exec[0].handle, length * CCS_RATIO, 0);
-+		exec[0].flags |= EXEC_OBJECT_PINNED;
-+		exec[1].offset = get_offset(ahnd, exec[1].handle, length * CCS_RATIO, 0);
-+		exec[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		exec[2].offset = get_offset(ahnd, exec[2].handle, BATCH_SIZE, 0);
-+		exec[2].flags |= EXEC_OBJECT_PINNED;
-+	}
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(exec);
-+	execbuf.buffer_count = 3;
-+	execbuf.batch_len = len;
-+	execbuf.flags = I915_EXEC_BLT;
-+	if (e)
-+		execbuf.flags = e->flags;
-+
-+	gem_execbuf(fd, &execbuf);
-+	gem_sync(fd, cmd);
-+
-+	return 0;
-+}
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-new file mode 100644
-index 00000000..f091c46a
---- /dev/null
-+++ b/lib/i915/i915_blt.h
-@@ -0,0 +1,93 @@
-+/*
-+ * Copyright © 2020 Intel Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ *
-+ * Authors:
-+ *	Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-+ *
-+ */
-+
-+#include <errno.h>
-+#include <sys/ioctl.h>
-+#include <sys/time.h>
-+#include <malloc.h>
-+#include "drm.h"
-+#include "igt.h"
-+
-+#define MI_FLUSH_DW_LEN_DWORD	4
-+#define MI_FLUSH_DW		(0x26 << 23 | 1)
-+#define MI_FLUSH_CCS		(1 << 16)
-+#define MI_FLUSH_LLC		(1 << 9)
-+#define MI_INVALIDATE_TLB	(1 << 18)
-+
-+/* XY_BLOCK_COPY_BLT instruction has 22 bit groups 1 DWORD each */
-+#define XY_BLOCK_COPY_BLT_LEN_DWORD	22
-+#define BLOCK_COPY_BLT_CMD		(2 << 29 | 0x41 << 22 | 0x14)
-+#define COMPRESSION_ENABLE		(1 << 29)
-+#define AUX_CCS_E			(5 << 18)
-+#define FULL_RESOLVE			(1 << 12)
-+#define PARTIAL_RESOLVE			(2 << 12)
-+#define TILE_4_FORMAT			(2 << 30)
-+#define TILE_4_WIDTH			(128)
-+#define TILE_4_WIDTH_DWORD		((128 >> 2) - 1)
-+#define TILE_4_HEIGHT			(32)
-+#define SURFACE_TYPE_2D			(1 << 29)
-+
-+#define DEST_Y2_COORDINATE_SHIFT	(16)
-+#define DEST_MEM_TYPE_SHIFT		(31)
-+#define SRC_MEM_TYPE_SHIFT		(31)
-+#define DEST_SURF_WIDTH_SHIFT		(14)
-+#define SRC_SURF_WIDTH_SHIFT		(14)
-+
-+#define XY_CTRL_SURF_COPY_BLT		(2 << 29 | 0x48 << 22 | 3)
-+#define SRC_ACCESS_TYPE_SHIFT		21
-+#define DST_ACCESS_TYPE_SHIFT		20
-+#define CCS_SIZE_SHIFT			8
-+#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
-+#define MI_ARB_CHECK			MI_INSTR(0x05, 0)
-+#define NUM_CCS_BLKS_PER_XFER		1024
-+#define INDIRECT_ACCESS                 0
-+#define DIRECT_ACCESS                   1
-+
-+#define BATCH_SIZE			4096
-+#define BOSIZE_MIN			(4 * 1024)
-+#define BOSIZE_MAX			(4 * 1024 * 1024)
-+#define CCS_RATIO			256
-+
-+#define MEM_TYPE_SYS			1
-+#define MEM_TYPE_LOCAL			0
-+
-+int xy_block_copy_blt(int fd, uint32_t cmd,
-+		      uint32_t *batch_buf,
-+		      uint32_t src, uint32_t dst,
-+		      uint32_t length, int mode,
-+		      struct intel_execution_engine2 *e);
-+
-+int xy_ctrl_surf_copy_blt(int fd, uint32_t cmd,
-+			  uint32_t *batch_buf,
-+			  uint32_t src, uint32_t dst,
-+			  uint32_t length, bool writetodev,
-+			  struct intel_execution_engine2 *e);
-+
-+int xy_block_copy_blt_ctx(int fd, uint32_t cmd,
-+			  uint32_t *batch_buf,
-+			  uint32_t src, uint32_t dst,
-+			  uint32_t length, int mode, uint32_t ctx);
-diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
-new file mode 100644
-index 00000000..cbb1cc69
---- /dev/null
-+++ b/lib/i915/intel_mocs.c
-@@ -0,0 +1,75 @@
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ *
-+ * Authors:
-+ *      Apoorva Singh <apoorva1.singh@intel.com>
-+ *
-+ */
 +#include "igt.h"
 +#include "i915/gem.h"
-+#include "intel_mocs.h"
++#include "i915/gem_create.h"
++#include "lib/intel_chipset.h"
++#include "i915/i915_blt.h"
 +
-+static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
++IGT_TEST_DESCRIPTION("Exercise the memory bandwidth compression and "
++		     "decompression when copying data between "
++		     "system and local memory");
++
++static void igt_wr_xy_ctrl_surf_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
++					 uint32_t src, uint32_t dst, uint32_t out,
++					 int ccssize, uint8_t *pattern_buf,
++					 uint8_t *read_buf, int bosize,
++					 struct intel_execution_engine2 *e)
 +{
-+	uint16_t devid = intel_get_drm_devid(fd);
++	int ret, i;
++
++	/* set 'src' to random pattern */
++	gem_write(fd, src, 0, pattern_buf, bosize);
 +
 +	/*
-+	 * Gen >= 12 onwards don't have a setting for PTE,
-+	 * so using I915_MOCS_PTE as mocs index may leads to
-+	 * some undefined MOCS behavior.
-+	 * Correct MOCS index should be referred from BSPCES
-+	 * and programmed accordingly.
-+	 * This helper function is providing current UC as well
-+	 * as WB MOCS index based on platform.
-+
++	 * 'dst' is lmem BO with ccs, directly
++	 * copy content in 'src' BO to 'dst' BO's ccs
 +	 */
-+	if (IS_DG1(devid)) {
-+		mocs->uc_index = 1;
-+		mocs->wb_index = 5;
-+	} else if (IS_GEN12(devid)) {
-+		mocs->uc_index = 3;
-+		mocs->wb_index = 2;
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    src, dst, ccssize, true, e);
++
++	igt_assert(!ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, ccssize);
++	gem_write(fd, out, 0, read_buf, ccssize);
++
++	/* copy 'dst' BO's ccs into 'out' BO */
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    dst, out, ccssize, false, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, ccssize);
++	/*
++	 * check 'read_buf',
++	 * it should have original pattern
++	 */
++	for (i = 0; i < ccssize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(!ret);
++}
++
++static void igt_overwritten_xy_block_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
++					      uint32_t src, uint32_t dst, uint32_t out,
++					      int ccssize, uint8_t *pattern_buf, uint8_t *read_buf,
++					      int bosize, struct intel_execution_engine2 *e)
++{
++	int ret, i;
++
++	/************************************************/
++	/* #2 CCS is overwritten by XY_BLOCK_COPY_BLT   */
++	/************************************************/
++	igt_info("copy random pattern to lmem BO with compression\n");
++
++	/* set 'src' to random pattern */
++	gem_write(fd, src, 0, pattern_buf, bosize);
++	/* set 'dst' to random pattern */
++	gem_write(fd, dst, 0, pattern_buf, bosize);
++
++	/*
++	 * 'dst' is lmem BO with ccs,
++	 * copy content in 'src' BO to 'dst' BO
++	 */
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				src, dst, bosize, 1, e);
++	igt_assert(!ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, ccssize);
++	gem_write(fd, out, 0, read_buf, ccssize);
++
++	/* copy 'dst' BO's ccs into 'out' BO */
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    dst, out, ccssize, false, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, ccssize);
++
++	/*
++	 * check 'read_buf',
++	 * it should NOT have original pattern
++	 * (overwrite by XY_BLOCK_COPY_BLT)
++	 */
++	for (i = 0; i < ccssize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(ret);
++
++	/* read 'dst' BO into read_buf */
++	memset(read_buf, 0, bosize);
++	gem_read(fd, dst, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should not have original pattern
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, bosize);
++	gem_write(fd, out, 0, read_buf, bosize);
++
++	/* copy 'dst' BO into 'out' BO */
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				dst, out, bosize, 0, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have original pattern
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(!ret);
++
++	/* decompress 'dst' in place */
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				dst, dst, bosize, 2, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	memset(read_buf, 0, bosize);
++	gem_read(fd, dst, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have original pattern
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(!ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, bosize);
++	gem_write(fd, out, 0, read_buf, bosize);
++
++	/* copy decompressed 'dst' to 'out' */
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				dst, out, bosize, 0, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have original pattern
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++
++	igt_assert(!ret);
++}
++
++static void igt_corrupted_xy_ctrl_surf_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
++						uint32_t src, uint32_t dst, uint32_t out,
++						int ccssize, uint8_t *pattern_buf, uint8_t *read_buf,
++						int bosize, struct intel_execution_engine2 *e)
++{
++	int ret, i;
++
++	/* set 'src' to random pattern */
++	gem_write(fd, src, 0, pattern_buf, bosize);
++
++	/************************************************/
++	/* #3 CCS is corrupted by XY_CTRL_SURF_COPY_BLT */
++	/************************************************/
++	igt_info("corrupt CCS via XY_CTRL_SURF_COPY_BLT\n");
++
++	/*
++	 * corrupt 'dst' BO's ccs by writing directly
++	 */
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    src, dst, ccssize, true, e);
++	igt_assert(!ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, bosize);
++	gem_write(fd, out, 0, read_buf, bosize);
++
++	/* copy 'dst' BO into 'out' BO */
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				dst, out, bosize, 0, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have corrupted pattern
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, ccssize);
++	gem_write(fd, out, 0, read_buf, ccssize);
++
++	/* copy 'dst' BO's ccs into 'out' BO */
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    dst, out, ccssize, false, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, ccssize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have original pattern
++	 */
++	for (i = 0; i < ccssize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(!ret);
++}
++
++static void igt_copy_zero_pattern_xy_block_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
++						    uint32_t src, uint32_t dst, uint32_t out,
++						    int ccssize, uint8_t *pattern_buf, uint8_t *read_buf,
++						    uint8_t *input_buf, int bosize,
++						    struct intel_execution_engine2 *e)
++{
++	int ret, i;
++
++	/************************************************/
++	/* #4 Copy zeros pattern with XY_BLOCK_COPY_BLT */
++	/************************************************/
++	igt_info("copy zeros pattern to lmem BO with compression\n");
++
++	/* set src BO to random pattern */
++	gem_write(fd, src, 0, pattern_buf, bosize);
++	/* set dst BO to random pattern */
++	gem_write(fd, dst, 0, pattern_buf, bosize);
++	/* set ccs to random pattern */
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    src, dst, ccssize, true, e);
++	igt_assert(!ret);
++
++	/* clear 'src' BO */
++	memset(input_buf, 0, bosize);
++	gem_write(fd, src, 0, input_buf, bosize);
++
++	/* copy 'src' to 'dst' with compression */
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				src, dst, bosize, 1, e);
++	igt_assert(!ret);
++
++	/* set out BO to random pattern */
++	gem_write(fd, out, 0, pattern_buf, bosize);
++
++	/* copy 'dst' BO back into 'out' BO */
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				dst, out, bosize, 0, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have same zero pattern
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != input_buf[i])
++			ret++;
++	}
++	igt_assert(!ret);
++
++	/* clear read_buf */
++	memset(read_buf, 0, bosize);
++	/* read 'dst' BO into read_buf */
++	gem_read(fd, dst, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have the same pattern
++	 * as zero pattern compression won't change
++	 * target pages, only change ccs.
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(!ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, ccssize);
++	gem_write(fd, out, 0, read_buf, ccssize);
++
++	/* copy 'dst' BO's ccs into 'out' BO */
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    dst, out, ccssize, false, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, ccssize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have different pattern
++	 */
++	for (i = 0; i < ccssize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(ret);
++}
++
++static void igt_copy_repeat_pattern_xy_block_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
++						      uint32_t src, uint32_t dst, uint32_t out,
++						      int ccssize, uint8_t *pattern_buf, uint8_t *read_buf,
++						      uint8_t *input_buf, int bosize,
++						      struct intel_execution_engine2 *e)
++{
++	int ret, i;
++
++	/************************************************/
++	/* #5 Copy repeat pattern with XY_BLOCK_COPY_BLT*/
++	/************************************************/
++	igt_info("copy repeat pattern to lmem BO with compression\n");
++
++	/* Set 'src' to random pattern */
++	gem_write(fd, src, 0, pattern_buf, bosize);
++	/* Set 'dst' and 'ccs' to random pattern */
++	gem_write(fd, src, 0, pattern_buf, ccssize);
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    src, dst, ccssize, true, e);
++	igt_assert(!ret);
++	gem_write(fd, dst, 0, pattern_buf, bosize);
++
++	/* generate repeating pattern */
++	input_buf[0] = (uint8_t)rand();
++	input_buf[1] = (uint8_t)rand();
++	input_buf[2] = (uint8_t)rand();
++	input_buf[3] = (uint8_t)rand();
++	for (i = 4; i < bosize; i++)
++		input_buf[i] = input_buf[i - 4];
++	gem_write(fd, src, 0, input_buf, bosize);
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				src, dst, bosize, 1, e);
++	igt_assert(!ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, bosize);
++	gem_write(fd, out, 0, read_buf, bosize);
++
++	/* copy 'dst' BO back into 'out' BO */
++	ret = xy_block_copy_blt(fd, cmd, batch_buf,
++				dst, out, bosize, 0, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have same pattern
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != input_buf[i])
++			ret++;
++	}
++	igt_assert(!ret);
++
++	/* clear read_buf */
++	memset(read_buf, 0, bosize);
++	/* read 'dst' BO into read_buf */
++	gem_read(fd, dst, 0, read_buf, bosize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have different pattern
++	 */
++	for (i = 0; i < bosize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(ret);
++
++	/* clear out BO */
++	memset(read_buf, 0, ccssize);
++	gem_write(fd, out, 0, read_buf, ccssize);
++
++	/* copy 'dst' BO's ccs into 'out' BO */
++	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++				    dst, out, ccssize, false, e);
++	igt_assert(!ret);
++
++	/* read 'out' BO into read_buf */
++	gem_read(fd, out, 0, read_buf, ccssize);
++
++	/*
++	 * check 'read_buf',
++	 * it should have different pattern
++	 */
++	for (i = 0; i < ccssize; i++) {
++		if (read_buf[i] != pattern_buf[i])
++			ret++;
++	}
++	igt_assert(ret);
++}
++
++/*
++ * Allocate a BO in SMEM.
++ * Fill a pattern
++ * Use XY_BLOCK_COPY_BLT to copy it to LMEM with compression enabled
++ * Clear the BO in SMEM, and the pattern_buf in which the pattern was
++ * stored
++ * Use XY_BLOCK_COPY_BLT to copy it back to the BO in SMEM with
++ * resolve
++ * Compare the value in the BO in SMEM matches the pattern
++ */
++static void test_ccs(int fd, int size, uint32_t region, char *sub_name,
++		     struct intel_execution_engine2 *e)
++{
++	int bosize, ccssize, ret, i;
++	int start, end;
++	uint32_t cmd, src, dst, out;
++	uint32_t batch_buf[BATCH_SIZE / sizeof(uint32_t)];
++	uint8_t *pattern_buf, *input_buf, *read_buf;
++	struct timeval tv;
++
++	if (size > 0) {
++		start = size;
++		end = start + 1;
 +	} else {
-+		mocs->uc_index = I915_MOCS_PTE;
-+		mocs->wb_index = I915_MOCS_CACHED;
++		start = BOSIZE_MIN;
++		end = BOSIZE_MAX;
++	}
++
++	/*
++	 * create batch BO in smem for execution.
++	 */
++	cmd = gem_create(fd, BATCH_SIZE);
++
++	for (bosize = start; bosize < end; bosize *= 2) {
++		/* allocate working buffers */
++		pattern_buf = malloc(bosize);
++		igt_assert(pattern_buf);
++		input_buf = malloc(bosize);
++		igt_assert(input_buf);
++		read_buf = malloc(bosize);
++		igt_assert(read_buf);
++
++		ccssize = bosize / CCS_RATIO;
++
++		/* allocate working BOs in the right location */
++		src = gem_create_in_memory_regions(fd, bosize,
++						   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
++		dst = gem_create_in_memory_regions(fd, bosize, region);
++		out = gem_create_in_memory_regions(fd, bosize,
++						   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
++
++		/* fill in random pattern */
++		ret = gettimeofday(&tv, NULL);
++		igt_assert(!ret);
++		srandom((int)tv.tv_usec);
++
++		for (i = 0; i < bosize; i++)
++			pattern_buf[i] = (uint8_t)rand();
++
++		igt_info("progress: bosize %d, ccssize %d\n", bosize, ccssize);
++
++		igt_dynamic_f("write_read_in_ccs_surface-%s-%s", sub_name, e->name)
++			igt_wr_xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++						     src, dst, out, ccssize,
++						     pattern_buf, read_buf, bosize, e);
++		igt_dynamic_f("verify_compression_of_random_data-%s-%s", sub_name, e->name)
++			igt_overwritten_xy_block_copy_blt(fd, cmd, batch_buf,
++							  src, dst, out, ccssize,
++							  pattern_buf, read_buf, bosize, e);
++		igt_dynamic_f("verify_corrupted_pattern_in_ccs_surface-%s-%s", sub_name, e->name)
++			igt_corrupted_xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
++							    src, dst, out, ccssize,
++							    pattern_buf, read_buf, bosize, e);
++		igt_dynamic_f("copy_zero_pattern_with_compression-%s-%s", sub_name, e->name)
++			igt_copy_zero_pattern_xy_block_copy_blt(fd, cmd, batch_buf,
++								src, dst, out, ccssize, pattern_buf,
++								read_buf, input_buf, bosize, e);
++		igt_dynamic_f("copy_repeat_pattern_with_compression-%s-%s", sub_name, e->name)
++			igt_copy_repeat_pattern_xy_block_copy_blt(fd, cmd, batch_buf,
++								  src, dst, out, ccssize, pattern_buf,
++								  read_buf, input_buf, bosize, e);
++
++		/* cleanup... */
++		gem_close(fd, out);
++		gem_close(fd, dst);
++		gem_close(fd, src);
++		free(read_buf);
++		free(input_buf);
++		free(pattern_buf);
++	}
++
++	gem_close(fd, cmd);
++}
++
++igt_main
++{
++	struct drm_i915_query_memory_regions *query_info;
++	struct intel_execution_engine2 *e;
++	struct igt_collection *regions, *set;
++	char *sub_name;
++	uint32_t region;
++	int drm_fd;
++
++	igt_fixture {
++		drm_fd = drm_open_driver(DRIVER_INTEL);
++		igt_require_gem(drm_fd);
++		igt_require(AT_LEAST_GEN(intel_get_drm_devid(drm_fd), 12) > 0);
++
++		query_info = gem_get_query_memory_regions(drm_fd);
++		igt_require(query_info);
++
++		set = get_memory_region_set(query_info, I915_DEVICE_MEMORY);
++	}
++
++	igt_subtest_with_dynamic("basic-gem-ccs-4K") {
++		for_each_physical_engine(drm_fd, e) {
++			if (!gem_engine_can_block_copy(drm_fd, e))
++				continue;
++
++			for_each_combination(regions, 1, set) {
++				sub_name = memregion_dynamic_subtest_name(regions);
++				region = igt_collection_get_value(regions, 0);
++				test_ccs(drm_fd, 4 * 1024, region, sub_name, e);
++				free(sub_name);
++			}
++		}
++	}
++
++	igt_subtest_with_dynamic("basic-gem-ccs-64K") {
++		for_each_physical_engine(drm_fd, e) {
++			if (!gem_engine_can_block_copy(drm_fd, e))
++				continue;
++
++			for_each_combination(regions, 1, set) {
++				sub_name = memregion_dynamic_subtest_name(regions);
++				region = igt_collection_get_value(regions, 0);
++				test_ccs(drm_fd, 64 * 1024, region, sub_name, e);
++				free(sub_name);
++			}
++		}
++	}
++
++	igt_subtest_with_dynamic("basic-gem-ccs-1M") {
++		for_each_physical_engine(drm_fd, e) {
++			if (!gem_engine_can_block_copy(drm_fd, e))
++				continue;
++
++			for_each_combination(regions, 1, set) {
++				sub_name = memregion_dynamic_subtest_name(regions);
++				region = igt_collection_get_value(regions, 0);
++				test_ccs(drm_fd, 1024 * 1024, region, sub_name, e);
++				free(sub_name);
++			}
++		}
++	}
++
++	igt_subtest_with_dynamic("basic-gem-ccs-all") {
++		for_each_physical_engine(drm_fd, e) {
++			if (!gem_engine_can_block_copy(drm_fd, e))
++				continue;
++
++			for_each_combination(regions, 1, set) {
++				sub_name = memregion_dynamic_subtest_name(regions);
++				region = igt_collection_get_value(regions, 0);
++				test_ccs(drm_fd, 0, region, sub_name, e);
++				free(sub_name);
++			}
++		}
++	}
++
++	igt_fixture {
++		close(drm_fd);
 +	}
 +}
-+
-+/* BitField [6:1] represents index to MOCS Tables
-+ * BitField [0] represents Encryption/Decryption
-+ */
-+
-+uint8_t intel_get_wb_mocs(int fd)
-+{
-+	struct drm_i915_mocs_index mocs;
-+
-+	get_mocs_index(fd, &mocs);
-+	return mocs.wb_index << 1;
-+}
-+
-+uint8_t intel_get_uc_mocs(int fd)
-+{
-+	struct drm_i915_mocs_index mocs;
-+
-+	get_mocs_index(fd, &mocs);
-+	return mocs.uc_index << 1;
-+}
-diff --git a/lib/i915/intel_mocs.h b/lib/i915/intel_mocs.h
-new file mode 100644
-index 00000000..8289ab1f
---- /dev/null
-+++ b/lib/i915/intel_mocs.h
-@@ -0,0 +1,43 @@
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ *
-+ * Authors:
-+ *      Apoorva Singh <apoorva1.singh@intel.com>
-+ *
-+ */
-+#ifndef _INTEL_MOCS_H
-+#define _INTEL_MOCS_H
-+
-+#define XY_FAST_COLOR_BLT_MOCS_SHIFT		21
-+#define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
-+#define XY_FAST_COPY_BLT_MOCS_SHIFT		17
-+#define XY_CTRL_SURF_COPY_BLT_MOCS_SHIFT	25
-+#define MEM_COPY_MOCS_SHIFT			25
-+
-+struct drm_i915_mocs_index {
-+	uint8_t uc_index;
-+	uint8_t wb_index;
-+};
-+
-+uint8_t intel_get_wb_mocs(int fd);
-+uint8_t intel_get_uc_mocs(int fd);
-+#endif /* _INTEL_MOCS_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index 297b0ad2..525d62f9 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -11,6 +11,8 @@ lib_sources = [
- 	'i915/gem_mman.c',
- 	'i915/gem_vm.c',
- 	'i915/intel_memory_region.c',
-+	'i915/intel_mocs.c',
-+	'i915/i915_blt.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
- 	'igt_debugfs.c',
+diff --git a/tests/meson.build b/tests/meson.build
+index 0af3e03a..d3e76122 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -105,6 +105,7 @@ i915_progs = [
+ 	'gem_blits',
+ 	'gem_busy',
+ 	'gem_caching',
++	'gem_ccs',
+ 	'gem_close',
+ 	'gem_close_race',
+ 	'gem_concurrent_blit',
 -- 
 2.25.1
