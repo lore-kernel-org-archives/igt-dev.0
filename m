@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D97076E442
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Nov 2021 14:44:27 +0000 (UTC)
-Date: Mon, 8 Nov 2021 16:43:13 +0200
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 298A16E11E
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Nov 2021 14:49:01 +0000 (UTC)
+Date: Mon, 8 Nov 2021 16:47:47 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YYk3gR3IVVjvnPzm@platvala-desk.ger.corp.intel.com>
+Message-ID: <YYk4k+EDP8lo+IE7@platvala-desk.ger.corp.intel.com>
 References: <20211013171051.26287-1-jeevan.b@intel.com>
- <20211013171051.26287-2-jeevan.b@intel.com>
+ <20211013171051.26287-3-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211013171051.26287-2-jeevan.b@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_aux: Rename
- igt_debug_manual_check and assert check if all is supplied
+In-Reply-To: <20211013171051.26287-3-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] tests/kms_psr2_sf: Make this a
+ generic test and change testcase design
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,123 +26,91 @@ To: Jeevan B <jeevan.b@intel.com>
 Cc: igt-dev@lists.freedesktop.org, daniel@ffwll.ch
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 13, 2021 at 10:40:49PM +0530, Jeevan B wrote:
-> rename igt_debug_manual_check and patch the igt function
-> igt_debug_wait_for_keypress() to assert if "all" is supplied.
-> 
-> v2: calling igt_debug_wait_for_keypress() with "all" will assert.
+On Wed, Oct 13, 2021 at 10:40:50PM +0530, Jeevan B wrote:
+> Make this a generic kms test and change testcase design so that it avoids
+> new subtest for each block position
 > 
 > Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  lib/igt_aux.c            | 9 ++++++---
->  lib/igt_aux.h            | 2 +-
->  tests/i915/kms_dsc.c     | 2 +-
->  tests/i915/kms_psr.c     | 2 +-
->  tests/i915/kms_psr2_sf.c | 2 +-
->  5 files changed, 10 insertions(+), 7 deletions(-)
+>  tests/i915/kms_psr2_sf.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
 > 
-> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> index 1217f5e8..78798287 100644
-> --- a/lib/igt_aux.c
-> +++ b/lib/igt_aux.c
-> @@ -972,7 +972,7 @@ void igt_drop_root(void)
->   * Waits for a key press when run interactively and when the corresponding debug
->   * var is set in the --interactive-debug=$var variable. Multiple keys
->   * can be specified as a comma-separated list or alternatively "all" if a wait
-> - * should happen for all cases.
-> + * should happen for all cases. Calling this fucntion with "all" will assert.
->   *
->   * When not connected to a terminal interactive_debug is ignored
->   * and execution immediately continues.
-> @@ -993,6 +993,9 @@ void igt_debug_wait_for_keypress(const char *var)
->  	if (!igt_interactive_debug)
->  		return;
+> diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+> index 93347327..c83120c4 100644
+> --- a/tests/i915/kms_psr2_sf.c
+> +++ b/tests/i915/kms_psr2_sf.c
+> @@ -550,7 +550,7 @@ igt_main
+>  	igt_fixture {
+>  		int r;
 >  
-> +	if (strstr(var, "all"))
-> +		igt_assert(false);
+> -		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
 
-I'd prefer this to have a clear message for the logs.
-
-igt_assert_f(false, "Bug in test: Do not call igt_debug_wait_for_keypress with \"all\"\n");
+Does that make it generic though? The psr functions in lib/igt_psr.c
+do stuff on i915_edp_psr_status which pretty much is i915-specific.
 
 
 -- 
 Petri Latvala
 
-> +
->  	if (!strstr(igt_interactive_debug, var) &&
->  	    !strstr(igt_interactive_debug, "all"))
->  		return;
-> @@ -1008,7 +1011,7 @@ void igt_debug_wait_for_keypress(const char *var)
->  }
+
+>  		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+>  		kmstest_set_vt_graphics_mode();
 >  
->  /**
-> - * igt_debug_manual_check:
-> + * igt_debug_interactive_mode_check:
->   * @var: var lookup to to enable this wait
->   * @expected: message to be printed as expected behaviour before wait for keys Y/n
->   *
-> @@ -1028,7 +1031,7 @@ void igt_debug_wait_for_keypress(const char *var)
->   *
->   * Force test fail when N/n is pressed.
->   */
-> -void igt_debug_manual_check(const char *var, const char *expected)
-> +void igt_debug_interactive_mode_check(const char *var, const char *expected)
->  {
->  	struct termios oldt, newt;
->  	char key;
-> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-> index 30b175d7..cfa68be3 100644
-> --- a/lib/igt_aux.h
-> +++ b/lib/igt_aux.h
-> @@ -195,7 +195,7 @@ int igt_get_autoresume_delay(enum igt_suspend_state state);
->  void igt_drop_root(void);
+> @@ -582,9 +582,9 @@ igt_main
+>  	}
 >  
->  void igt_debug_wait_for_keypress(const char *var);
-> -void igt_debug_manual_check(const char *var, const char *expected);
-> +void igt_debug_interactive_mode_check(const char *var, const char *expected);
+>  	/* Verify primary plane selective fetch */
+> -	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+> -		igt_describe("Test that selective fetch works on primary plane");
+> -		igt_subtest_f("primary-%s-sf-dmg-area-%d", op_str(data.op), i) {
+> +	igt_describe("Test that selective fetch works on primary plane");
+> +	igt_subtest_f("primary-%s-sf-dmg-area", op_str(data.op)) {
+> +		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+>  			data.damage_area_count = i;
+>  			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+>  			prepare(&data);
+> @@ -594,9 +594,9 @@ igt_main
+>  	}
 >  
->  /* sysinfo cross-arch wrappers from intel_os.c */
+>  	/* Verify overlay plane selective fetch */
+> -	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+> -		igt_describe("Test that selective fetch works on overlay plane");
+> -		igt_subtest_f("overlay-%s-sf-dmg-area-%d", op_str(data.op), i) {
+> +	igt_describe("Test that selective fetch works on overlay plane");
+> +	igt_subtest_f("overlay-%s-sf-dmg-area", op_str(data.op)) {
+> +		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+>  			data.damage_area_count = i;
+>  			data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+>  			prepare(&data);
+> @@ -618,9 +618,9 @@ igt_main
+>  	/* Only for overlay plane */
+>  	data.op = PLANE_MOVE;
+>  	/* Verify overlay plane move selective fetch */
+> -	for (i = POS_TOP_LEFT; i <= POS_BOTTOM_RIGHT ; i++) {
+> -		igt_describe("Test that selective fetch works on moving overlay plane");
+> -		igt_subtest_f("%s-sf-dmg-area-%d", op_str(data.op), i) {
+> +	igt_describe("Test that selective fetch works on moving overlay plane");
+> +	igt_subtest_f("%s-sf-dmg-area", op_str(data.op)) {
+> +		for (i = POS_TOP_LEFT; i <= POS_BOTTOM_RIGHT ; i++) {
+>  			data.pos = i;
+>  			data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+>  			prepare(&data);
+> @@ -631,10 +631,10 @@ igt_main
 >  
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index 3e450207..772687f4 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -72,7 +72,7 @@ int force_dsc_restore_fd = -1;
->  
->  static inline void manual(const char *expected)
->  {
-> -	igt_debug_manual_check("all", expected);
-> +	igt_debug_interactive_mode_check("all", expected);
->  }
->  
->  static void force_dsc_enable(data_t *data)
-> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-> index c65b3c80..e7dbf8b7 100644
-> --- a/tests/i915/kms_psr.c
-> +++ b/tests/i915/kms_psr.c
-> @@ -246,7 +246,7 @@ static bool psr_enable_if_enabled(data_t *data)
->  
->  static inline void manual(const char *expected)
->  {
-> -	igt_debug_manual_check("all", expected);
-> +	igt_debug_interactive_mode_check("all", expected);
->  }
->  
->  static bool drrs_disabled(data_t *data)
-> diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-> index 1be8c3da..93347327 100644
-> --- a/tests/i915/kms_psr2_sf.c
-> +++ b/tests/i915/kms_psr2_sf.c
-> @@ -331,7 +331,7 @@ static void prepare(data_t *data)
->  
->  static inline void manual(const char *expected)
->  {
-> -	igt_debug_manual_check("all", expected);
-> +	igt_debug_interactive_mode_check("all", expected);
->  }
->  
->  static void plane_update_expected_output(int plane_type, int box_count)
+>  	/* Verify primary plane selective fetch with overplay plane blended */
+>  	data.op = OVERLAY_PRIM_UPDATE;
+> -	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+> -		igt_describe("Test that selective fetch works on primary plane "
+> -			     "with blended overlay plane");
+> -		igt_subtest_f("%s-sf-dmg-area-%d", op_str(data.op), i) {
+> +	igt_describe("Test that selective fetch works on primary plane "
+> +		     "with blended overlay plane");
+> +	igt_subtest_f("%s-sf-dmg-area", op_str(data.op)) {
+> +		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
+>  			data.damage_area_count = i;
+>  			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
+>  			prepare(&data);
 > -- 
 > 2.19.1
 > 
