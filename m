@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Rob Clark <robdclark@gmail.com>
-Date: Tue,  9 Nov 2021 10:09:03 -0800
-Message-Id: <20211109180905.590773-2-robdclark@gmail.com>
+Date: Tue,  9 Nov 2021 10:09:05 -0800
+Message-Id: <20211109180905.590773-4-robdclark@gmail.com>
 In-Reply-To: <20211109180905.590773-1-robdclark@gmail.com>
 References: <20211109180905.590773-1-robdclark@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt 1/3] lib/igt_debugfs: Add helper for writing
- debugfs files
+Subject: [igt-dev] [PATCH igt 3/3] msm: Add recovery tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,68 +23,223 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rob Clark <robdclark@chromium.org>
 
+Add tests to exercise:
+
+1. sw hangcheck timeout
+2. gpu fault (hang) recovery
+3. iova fault recovery
+
 Signed-off-by: Rob Clark <robdclark@chromium.org>
 ---
- lib/igt_debugfs.c | 16 ++++++++++++++++
- lib/igt_debugfs.h | 12 ++++++++++++
- 2 files changed, 28 insertions(+)
+ lib/igt_msm.h        |   3 +
+ tests/meson.build    |   1 +
+ tests/msm_recovery.c | 172 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 176 insertions(+)
+ create mode 100644 tests/msm_recovery.c
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index a5bb95ca..39431068 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -351,6 +351,22 @@ void __igt_debugfs_read(int fd, const char *filename, char *buf, int size)
- 	close(dir);
- }
+diff --git a/lib/igt_msm.h b/lib/igt_msm.h
+index 1a66c806..421d23ed 100644
+--- a/lib/igt_msm.h
++++ b/lib/igt_msm.h
+@@ -97,6 +97,9 @@ enum adreno_pm4_packet_type {
  
-+/**
-+ * __igt_debugfs_write:
-+ * @filename: file name
-+ * @buf: buffer to be written to the debugfs file
-+ * @size: size of the buffer
+ enum adreno_pm4_type3_packets {
+ 	CP_NOP = 16,
++	CP_WAIT_MEM_GTE = 20,
++	CP_WAIT_REG_MEM = 60,
++	CP_MEM_WRITE = 61,
+ };
+ 
+ static inline unsigned
+diff --git a/tests/meson.build b/tests/meson.build
+index 0af3e03a..166e3494 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -60,6 +60,7 @@ test_progs = [
+ 	'kms_vrr',
+ 	'kms_writeback',
+ 	'meta_test',
++	'msm_recovery',
+ 	'msm_submit',
+ 	'panfrost_get_param',
+ 	'panfrost_gem_new',
+diff --git a/tests/msm_recovery.c b/tests/msm_recovery.c
+new file mode 100644
+index 00000000..b71326b8
+--- /dev/null
++++ b/tests/msm_recovery.c
+@@ -0,0 +1,172 @@
++/*
++ * Copyright © 2021 Google, Inc.
 + *
-+ * This function opens the debugfs file, writes it, then closes the file.
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
 + */
-+void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size)
-+{
-+	int dir = igt_debugfs_dir(fd);
 +
-+	igt_sysfs_write(dir, filename, buf, size);
-+	close(dir);
++#include <sys/poll.h>
++
++#include "igt.h"
++#include "igt_msm.h"
++
++static struct msm_device *dev;
++static struct msm_bo *scratch_bo;
++static uint32_t *scratch;
++
++/*
++ * Helpers for cmdstream packet building:
++ */
++
++static void
++wait_mem_gte(struct msm_cmd *cmd, uint32_t offset_dwords, uint32_t ref)
++{
++	msm_cmd_pkt7(cmd, CP_WAIT_MEM_GTE, 4);
++	msm_cmd_emit(cmd, 0);                              /* RESERVED */
++	msm_cmd_bo  (cmd, scratch_bo, offset_dwords * 4);  /* POLL_ADDR_LO/HI */
++	msm_cmd_emit(cmd, ref);                            /* REF */
 +}
 +
- /**
-  * igt_debugfs_search:
-  * @filename: file name
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index d43ba6c6..249eb56a 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -40,6 +40,7 @@ int igt_debugfs_pipe_dir(int device, int pipe, int mode);
- 
- int igt_debugfs_open(int fd, const char *filename, int mode);
- void __igt_debugfs_read(int fd, const char *filename, char *buf, int size);
-+void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size);
- int igt_debugfs_simple_read(int dir, const char *filename, char *buf, int size);
- bool igt_debugfs_search(int fd, const char *filename, const char *substring);
- 
-@@ -54,6 +55,17 @@ bool igt_debugfs_search(int fd, const char *filename, const char *substring);
- #define igt_debugfs_read(fd, filename, buf) \
- 		__igt_debugfs_read(fd, (filename), (buf), sizeof(buf))
- 
-+/**
-+ * igt_debugfs_write:
-+ * @filename: name of the debugfs file
-+ * @buf: buffer to be written to the debugfs file
-+ *
-+ * This is just a convenience wrapper for __igt_debugfs_read. See its
-+ * documentation.
-+ */
-+#define igt_debugfs_write(fd, filename, buf) \
-+		__igt_debugfs_write(fd, (filename), (buf), sizeof(buf))
++static void
++mem_write(struct msm_cmd *cmd, uint32_t offset_dwords, uint32_t val)
++{
++	msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
++	msm_cmd_bo  (cmd, scratch_bo, offset_dwords * 4);  /* ADDR_LO/HI */
++	msm_cmd_emit(cmd, val);                            /* VAL */
++}
 +
- /*
-  * Pipe CRC
-  */
++/*
++ * Helper to wait on a fence-fd:
++ */
++static void
++wait_and_close(int fence_fd)
++{
++	poll(&(struct pollfd){fence_fd, POLLIN}, 1, -1);
++	close(fence_fd);
++}
++
++/*
++ * Helper for hang tests.  Emits multiple submits, with one in the middle
++ * that triggers a fault, and confirms that the submits before and after
++ * the faulting one execute properly, ie. that the driver properly manages
++ * to recover and re-queue the submits after the faulting submit;
++ */
++static void
++do_hang_test(struct msm_pipe *pipe)
++{
++	struct msm_cmd *cmds[16];
++	int fence_fds[ARRAY_SIZE(cmds)];
++
++	memset(scratch, 0, 0x1000);
++
++	for (unsigned i = 0; i < ARRAY_SIZE(cmds); i++) {
++		struct msm_cmd *cmd = igt_msm_cmd_new(pipe, 0x1000);
++
++		cmds[i] = cmd;
++
++		/*
++		 * Emit a packet to wait for scratch[0] to be >= 1
++		 *
++		 * This lets us force the GPU to wait until all the cmdstream is
++		 * queued up.
++		 */
++		wait_mem_gte(cmd, 0, 1);
++
++		if (i == 10) {
++			msm_cmd_emit(cmd, 0xdeaddead);
++		}
++
++		/* Emit a packet to write scratch[1+i] = 2+i: */
++		mem_write(cmd, 1+i, 2+i);
++	}
++
++	for (unsigned i = 0; i < ARRAY_SIZE(cmds); i++) {
++		fence_fds[i] = igt_msm_cmd_submit(cmds[i]);
++	}
++
++	usleep(10000);
++
++	/* Let the WAIT_MEM_GTE complete: */
++	scratch[0] = 1;
++
++	for (unsigned i = 0; i < ARRAY_SIZE(cmds); i++) {
++		wait_and_close(fence_fds[i]);
++		igt_msm_cmd_free(cmds[i]);
++		if (i == 10)
++			continue;
++		igt_assert_eq(scratch[1+i], 2+i);
++	}
++}
++
++/*
++ * Tests for drm/msm hangcheck, recovery, and fault handling
++ */
++
++igt_main
++{
++	static struct msm_pipe *pipe = NULL;
++
++	igt_fixture {
++		dev = igt_msm_dev_open();
++		pipe = igt_msm_pipe_open(dev, 0);
++		scratch_bo = igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
++		scratch = igt_msm_bo_map(scratch_bo);
++	}
++
++	igt_describe("Test sw hangcheck handling");
++	igt_subtest("hangcheck") {
++		igt_require(dev->gen >= 6);
++
++		/* Disable hw hang detection to force fallback to sw hangcheck: */
++		igt_debugfs_write(dev->fd, "disable_err_irq", "Y");
++
++		do_hang_test(pipe);
++
++		igt_debugfs_write(dev->fd, "disable_err_irq", "N");
++	}
++
++	igt_describe("Test hw fault handling");
++	igt_subtest("gpu-fault") {
++		igt_require(dev->gen >= 6);
++
++		do_hang_test(pipe);
++	}
++
++	igt_describe("Test iova fault handling");
++	igt_subtest("iova-fault") {
++		struct msm_cmd *cmd;
++
++		igt_require(dev->gen >= 6);
++
++		cmd = igt_msm_cmd_new(pipe, 0x1000);
++
++		msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
++		msm_cmd_emit(cmd, 0xdeaddead);           /* ADDR_LO */
++		msm_cmd_emit(cmd, 0x1);                  /* ADDR_HI */
++		msm_cmd_emit(cmd, 0x123);                /* VAL */
++
++		wait_and_close(igt_msm_cmd_submit(cmd));
++	}
++
++	igt_fixture {
++		igt_msm_bo_free(scratch_bo);
++		igt_msm_pipe_close(pipe);
++		igt_msm_dev_close(dev);
++	}
++}
 -- 
 2.31.1
