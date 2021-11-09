@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CB556E5A3
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Nov 2021 17:40:31 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Tue, 9 Nov 2021 17:00:37 +0000
-Message-ID: <836037356a9641b8ac6e5b5dffb86134@intel.com>
-References: <20211104142212.3098989-1-Rodrigo.Siqueira@amd.com>
- <YD9g7MincmSpHKokI9Hxv8LRxCcqmJieUwB_QqxG3lDLAAo8dqQTt0POThWwrYYVIlXby4q2S7CfuTsTgB6WlureHfe_Irct-a41bKvxzIk=@emersion.fr>
- <04b490f7-edbb-f536-995d-5b185a62181a@amd.com>
-In-Reply-To: <04b490f7-edbb-f536-995d-5b185a62181a@amd.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: Rob Clark <robdclark@gmail.com>
+Date: Tue,  9 Nov 2021 10:09:04 -0800
+Message-Id: <20211109180905.590773-3-robdclark@gmail.com>
+In-Reply-To: <20211109180905.590773-1-robdclark@gmail.com>
+References: <20211109180905.590773-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] Revert "test/kms_atomic: Skip plane
- overlay test for amdgpu"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH igt 2/3] msm: Add helper for cmdstream building
+ and submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,28 +17,225 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>, Simon Ser <contact@emersion.fr>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Hayden Goodfellow <Hayden.Goodfellow@amd.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, Akhil P Oommen <akhilpo@codeaurora.org>, Jordan Crouse <jordan@cosmicpenguin.net>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCldlIGhhdmUgYW4gaXNzdWUgYWxyZWFkeSBmb3IgdGhlIHJlZ3Jlc3Npb24gZmFpbHVy
-ZS4gSnVzdCByZS1yZXBvcnRlZCB0aGUgcmVzdWx0cy4NCmh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNr
-dG9wLm9yZy9kcm0vaW50ZWwvLS9pc3N1ZXMvMjg2Nw0KQWxsIHRlc3RzIC0gZG1lc2ctd2FybiAt
-ICpFUlJPUiogcG93ZXIgd2VsbCBBVVggKEcpPyBUQlRcZCBzdGF0ZSBtaXNtYXRjaCAocmVmY291
-bnQgMS9lbmFibGVkIDApDQoNClRoYW5rcywNCkxha3NobWkuDQotLS0tLU9yaWdpbmFsIE1lc3Nh
-Z2UtLS0tLQ0KRnJvbTogUm9kcmlnbyBTaXF1ZWlyYSBKb3JkYW8gPHJqb3Jkcmlnb0BhbWQuY29t
-PiANClNlbnQ6IFR1ZXNkYXksIE5vdmVtYmVyIDksIDIwMjEgNzo1MiBBTQ0KVG86IFNpbW9uIFNl
-ciA8Y29udGFjdEBlbWVyc2lvbi5mcj47IFJvZHJpZ28gU2lxdWVpcmEgPFJvZHJpZ28uU2lxdWVp
-cmFAYW1kLmNvbT47IFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1
-bUBpbnRlbC5jb20+DQpDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IEhhcnJ5IFdl
-bnRsYW5kIDxoYXJyeS53ZW50bGFuZEBhbWQuY29tPjsgTmljaG9sYXMgQ2hvaSA8TmljaG9sYXMu
-Q2hvaUBhbWQuY29tPjsgSGF5ZGVuIEdvb2RmZWxsb3cgPEhheWRlbi5Hb29kZmVsbG93QGFtZC5j
-b20+OyBNYXJrIFlhY291YiA8bWFya3lhY291YkBjaHJvbWl1bS5vcmc+DQpTdWJqZWN0OiBSZTog
-W1BBVENIIGktZy10XSBSZXZlcnQgInRlc3Qva21zX2F0b21pYzogU2tpcCBwbGFuZSBvdmVybGF5
-IHRlc3QgZm9yIGFtZGdwdSINCg0KSGkgTGFrc2htaW5hcmF5YW5hLA0KDQpJdCBsb29rcyBsaWtl
-IHRoYXQgSSBnb3QgYSBmYWxzZS1wb3NpdGl2ZSBmcm9tIHRoZSBDSS4gSGVyZSBpcyB0aGUgcGF0
-Y2h3b3JrIGxpbms6DQoNCmh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMv
-OTY1NzMvDQoNCk5vdGljZSB0aGF0IHRoaXMgcGF0Y2ggaXMgc3BlY2lmaWMgdG8gQU1ELg0KDQpP
-biAyMDIxLTExLTA0IDEwOjM4IGEubS4sIFNpbW9uIFNlciB3cm90ZToNCj4gUmV2aWV3ZWQtYnk6
-IFNpbW9uIFNlciA8Y29udGFjdEBlbWVyc2lvbi5mcj4NCj4gDQoNClRoYW5rcyBTaW1vbiA6KQ0K
-DQpCZXN0IFJlZ2FyZHMNClNpcXVlaXJhDQoNCg==
+From: Rob Clark <robdclark@chromium.org>
+
+A pretty minimal subset compared to what a full gallium driver would
+need, but OTOH for igt tests we should only need to emit fairly basic
+command stream.
+
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+---
+ lib/igt_msm.c | 102 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_msm.h |  48 ++++++++++++++++++++++++
+ 2 files changed, 150 insertions(+)
+
+diff --git a/lib/igt_msm.c b/lib/igt_msm.c
+index b9534164..e9cf588f 100644
+--- a/lib/igt_msm.c
++++ b/lib/igt_msm.c
+@@ -91,6 +91,19 @@ igt_msm_dev_close(struct msm_device *dev)
+ 	free(dev);
+ }
+ 
++static uint64_t
++get_iova(struct msm_bo *bo)
++{
++	struct drm_msm_gem_info req = {
++			.handle = bo->handle,
++			.info = MSM_INFO_GET_IOVA,
++	};
++
++	do_ioctl(bo->dev->fd, DRM_IOCTL_MSM_GEM_INFO, &req);
++
++	return req.value;
++}
++
+ /**
+  * igt_msm_bo_new:
+  * @dev: the device to allocate the BO from
+@@ -115,6 +128,7 @@ igt_msm_bo_new(struct msm_device *dev, size_t size, uint32_t flags)
+ 	do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_NEW, &req);
+ 
+ 	bo->handle = req.handle;
++	bo->iova = get_iova(bo);
+ 
+ 	return bo;
+ }
+@@ -209,3 +223,91 @@ igt_msm_pipe_close(struct msm_pipe *pipe)
+ 	do_ioctl(pipe->dev->fd, DRM_IOCTL_MSM_SUBMITQUEUE_CLOSE, &pipe->submitqueue_id);
+ 	free(pipe);
+ }
++
++/**
++ * igt_msm_cmd_new:
++ * @pipe: the submitqueue to submit cmdstream against
++ * @size: the size of requested cmdstream buffer
++ */
++struct msm_cmd *
++igt_msm_cmd_new(struct msm_pipe *pipe, size_t size)
++{
++	struct msm_cmd *cmd = calloc(1, sizeof(*cmd));
++
++	cmd->pipe = pipe;
++	cmd->cmdstream_bo = igt_msm_bo_new(pipe->dev, size, MSM_BO_WC);
++	cmd->cur = igt_msm_bo_map(cmd->cmdstream_bo);
++
++	__igt_msm_append_bo(cmd, cmd->cmdstream_bo);
++
++	return cmd;
++}
++
++static uint32_t
++cmdstream_size(struct msm_cmd *cmd)
++{
++	uint8_t *start = igt_msm_bo_map(cmd->cmdstream_bo);
++	return (uint8_t *)cmd->cur - start;
++}
++
++/**
++ * igt_msm_cmd_submit:
++ * @cmd: the command stream object to submit
++ *
++ * Returns dma-fence fd
++ */
++int
++igt_msm_cmd_submit(struct msm_cmd *cmd)
++{
++	struct drm_msm_gem_submit_bo bos[cmd->nr_bos];
++	struct drm_msm_gem_submit_cmd cmds[] = {
++		[0] = {
++			.type       = MSM_SUBMIT_CMD_BUF,
++			.submit_idx = 0,
++			.size       = cmdstream_size(cmd),
++		},
++	};
++	struct drm_msm_gem_submit req = {
++			.flags   = cmd->pipe->pipe | MSM_SUBMIT_FENCE_FD_OUT,
++			.queueid = cmd->pipe->submitqueue_id,
++			.nr_cmds = ARRAY_SIZE(cmds),
++			.cmds    = VOID2U64(cmds),
++			.nr_bos  = ARRAY_SIZE(bos),
++			.bos     = VOID2U64(bos),
++	};
++
++	for (unsigned i = 0; i < cmd->nr_bos; i++) {
++		bos[i] = (struct drm_msm_gem_submit_bo) {
++			.handle  = cmd->bos[i]->handle,
++			.flags   = MSM_SUBMIT_BO_READ | MSM_SUBMIT_BO_WRITE,
++		};
++	}
++
++	do_ioctl(cmd->pipe->dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
++
++	return req.fence_fd;
++}
++
++void
++__igt_msm_append_bo(struct msm_cmd *cmd, struct msm_bo *bo)
++{
++	for (unsigned i = 0; i < cmd->nr_bos; i++)
++		if (cmd->bos[i] == bo)
++			return;
++
++	assert((cmd->nr_bos + 1) < ARRAY_SIZE(cmd->bos));
++	cmd->bos[cmd->nr_bos++] = bo;
++}
++
++/**
++ * igt_msm_cmd_free:
++ * @cmd: the command stream object to free
++ *
++ * Free a command stream object
++ */
++void
++igt_msm_cmd_free(struct msm_cmd *cmd)
++{
++	igt_msm_bo_free(cmd->cmdstream_bo);
++	free(cmd);
++}
+diff --git a/lib/igt_msm.h b/lib/igt_msm.h
+index 99a099c1..1a66c806 100644
+--- a/lib/igt_msm.h
++++ b/lib/igt_msm.h
+@@ -24,6 +24,8 @@
+ #ifndef IGT_MSM_H
+ #define IGT_MSM_H
+ 
++#include "ioctl_wrappers.h"
++
+ #include "msm_drm.h"
+ 
+ /**
+@@ -47,6 +49,7 @@ void igt_msm_dev_close(struct msm_device *dev);
+  * @handle: the BO's GEM handle
+  * @size: the BO's size
+  * @map: the BO's memory mapping (if mapped)
++ * @iova: the BO's GPU address
+  *
+  * Helper wrapper for a GEM buffer object.
+  */
+@@ -55,6 +58,7 @@ struct msm_bo {
+ 	int handle;
+ 	uint32_t size;
+ 	void *map;
++	uint64_t iova;
+ };
+ 
+ struct msm_bo *igt_msm_bo_new(struct msm_device *dev, size_t size, uint32_t flags);
+@@ -136,6 +140,50 @@ pm4_pkt7_hdr(uint8_t opcode, uint16_t cnt)
+ 			((pm4_odd_parity_bit(opcode) << 23));
+ }
+ 
++/**
++ * msm_cmd:
++ * @pipe: the submitqueue to submit cmdstream against
++ * @cmdstream_bo: the backing cmdstream buffer object
++ * @cur: pointer to current position in cmdstream
++ *
++ * Helper for building cmdstream and cmdstream submission
++ */
++struct msm_cmd {
++	struct msm_pipe *pipe;
++	struct msm_bo *cmdstream_bo;
++	uint32_t *cur;
++	uint32_t nr_bos;
++	struct msm_bo *bos[8];
++};
++
++struct msm_cmd *igt_msm_cmd_new(struct msm_pipe *pipe, size_t size);
++int igt_msm_cmd_submit(struct msm_cmd *cmd);
++void igt_msm_cmd_free(struct msm_cmd *cmd);
++
++static inline void
++msm_cmd_emit(struct msm_cmd *cmd, uint32_t dword)
++{
++	*(cmd->cur++) = dword;
++}
++
++static inline void
++msm_cmd_pkt7(struct msm_cmd *cmd, uint8_t opcode, uint16_t cnt)
++{
++	msm_cmd_emit(cmd, pm4_pkt7_hdr(opcode, cnt));
++}
++
++void __igt_msm_append_bo(struct msm_cmd *cmd, struct msm_bo *bo);
++
++static inline void
++msm_cmd_bo(struct msm_cmd *cmd, struct msm_bo *bo, uint32_t offset)
++{
++	uint64_t addr = bo->iova + offset;
++
++	__igt_msm_append_bo(cmd, bo);
++	msm_cmd_emit(cmd, lower_32_bits(addr));
++	msm_cmd_emit(cmd, upper_32_bits(addr));
++}
++
+ #define U642VOID(x) ((void *)(uintptr_t)(x))
+ #define VOID2U64(x) ((uint64_t)(uintptr_t)(x))
+ 
+-- 
+2.31.1
