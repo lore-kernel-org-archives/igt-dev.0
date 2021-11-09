@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C19789BBE
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Nov 2021 22:16:29 +0000 (UTC)
-Date: Tue, 09 Nov 2021 22:16:25 +0000
-From: Simon Ser <contact@emersion.fr>
-Message-ID: <j9ATssWsNa_3rHgW5tZwsfuBva61xhhN3WdTP5hdEhzJQb6CU0MAm534ns0P7Gvi-099Q37QPyNlDUtihQmGsjEhB-UHty1d4IWpSGJCpoo=@emersion.fr>
-In-Reply-To: <5abc06ee-c974-d924-3687-59a02427b77f@amd.com>
-References: <20211104162742.174363-1-contact@emersion.fr>
- <5abc06ee-c974-d924-3687-59a02427b77f@amd.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E068E6E88B
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Nov 2021 23:04:05 +0000 (UTC)
+From: Matthew Brost <matthew.brost@intel.com>
+Date: Tue,  9 Nov 2021 14:59:25 -0800
+Message-Id: <20211109225928.23711-5-matthew.brost@intel.com>
+In-Reply-To: <20211109225928.23711-1-matthew.brost@intel.com>
+References: <20211109225928.23711-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH] tests/kms_plane_alpha_blend: skip coverage
- tests on missing enum
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH 4/7] drm/i915/guc: Relax CTB response timeout
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,31 +17,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: Simon Ser <contact@emersion.fr>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Harry Wentland <harry.wentland@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Pekka Paalanen <ppaalanen@gmail.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tuesday, November 9th, 2021 at 19:14, Harry Wentland <harry.wentland@amd=
-.com> wrote:
+In upcoming patch we will allow more CTB requests to be sent in
+parallel to the GuC for processing, so we shouldn't assume any more
+that GuC will always reply without 10ms.
 
-> On 2021-11-04 12:27, Simon Ser wrote:
-> > Some KMS drivers support the KMS "pixel blend mode" plane property,
-> > but don't support the "Coverage" mode. This enum entry is missing
-> > to indicate lack of support as seen in this drm_info exerpt:
-> >
-> >     "pixel blend mode": enum {None, Pre-multiplied} =3D Pre-multiplied
-> >
-> > Skip the coverage tests in this case.
->
-> Is "coverage" interesting for compositors? We have the ability to do
-> pre-multiplied or coverage in HW but it's not hooked up currently.
+Use bigger value hardcoded value of 1s instead.
 
-I _think_ it'll be useful with the WIP color management Wayland protocol,
-because clients will be able to submit straight (non-premult) buffers?
+v2: Add CONFIG_DRM_I915_GUC_CTB_TIMEOUT config option
+v3:
+ (Daniel Vetter)
+  - Use hardcoded value of 1s rather than config option
+v4:
+ (Michal)
+  - Use defines for timeout values
 
-CC Pekka
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20210708162055.129996-2-matthew.brost@intel.com
+(cherry picked from commit 1ccf7294b76d28d5151f024351c747ccf101d66e)
+---
+ drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-(In any case, it's good to have the skip since it's not AMD-specific.)
+diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
+index 937c4cb413f1..2b0c61e769f9 100644
+--- a/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c
+@@ -475,14 +475,18 @@ static int wait_for_ct_request_update(struct ct_request *req, u32 *status)
+ 	/*
+ 	 * Fast commands should complete in less than 10us, so sample quickly
+ 	 * up to that length of time, then switch to a slower sleep-wait loop.
+-	 * No GuC command should ever take longer than 10ms.
++	 * No GuC command should ever take longer than 10ms but many GuC
++	 * commands can be inflight at time, so use a 1s timeout on the slower
++	 * sleep-wait loop.
+ 	 */
++#define GUC_CTB_RESPONSE_TIMEOUT_SHORT_MS 10
++#define GUC_CTB_RESPONSE_TIMEOUT_LONG_MS 1000
+ #define done \
+ 	(FIELD_GET(GUC_HXG_MSG_0_ORIGIN, READ_ONCE(req->status)) == \
+ 	 GUC_HXG_ORIGIN_GUC)
+-	err = wait_for_us(done, 10);
++	err = wait_for_us(done, GUC_CTB_RESPONSE_TIMEOUT_SHORT_MS);
+ 	if (err)
+-		err = wait_for(done, 10);
++		err = wait_for(done, GUC_CTB_RESPONSE_TIMEOUT_LONG_MS);
+ #undef done
+ 
+ 	if (unlikely(err))
