@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam08on2059.outbound.protection.outlook.com [40.107.101.59])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B89889CAA
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Nov 2021 15:52:28 +0000 (UTC)
-References: <20211104142212.3098989-1-Rodrigo.Siqueira@amd.com>
- <YD9g7MincmSpHKokI9Hxv8LRxCcqmJieUwB_QqxG3lDLAAo8dqQTt0POThWwrYYVIlXby4q2S7CfuTsTgB6WlureHfe_Irct-a41bKvxzIk=@emersion.fr>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 313DC6E11C
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Nov 2021 15:53:54 +0000 (UTC)
+References: <20211104162742.174363-1-contact@emersion.fr>
 From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
-Message-ID: <04b490f7-edbb-f536-995d-5b185a62181a@amd.com>
-Date: Tue, 9 Nov 2021 10:52:23 -0500
-In-Reply-To: <YD9g7MincmSpHKokI9Hxv8LRxCcqmJieUwB_QqxG3lDLAAo8dqQTt0POThWwrYYVIlXby4q2S7CfuTsTgB6WlureHfe_Irct-a41bKvxzIk=@emersion.fr>
+Message-ID: <e1d2b47b-96bb-2ab9-8880-c7af90c9b609@amd.com>
+Date: Tue, 9 Nov 2021 10:53:49 -0500
+In-Reply-To: <20211104162742.174363-1-contact@emersion.fr>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] Revert "test/kms_atomic: Skip plane
- overlay test for amdgpu"
+Subject: Re: [igt-dev] [PATCH] tests/kms_plane_alpha_blend: skip coverage
+ tests on missing enum
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,24 +23,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Simon Ser <contact@emersion.fr>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, lakshminarayana.vudum@intel.com
-Cc: igt-dev@lists.freedesktop.org, Hayden Goodfellow <Hayden.Goodfellow@amd.com>
+To: Simon Ser <contact@emersion.fr>, igt-dev@lists.freedesktop.org
+Cc: Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lakshminarayana,
 
-It looks like that I got a false-positive from the CI. Here is the 
-patchwork link:
 
-https://patchwork.freedesktop.org/series/96573/
-
-Notice that this patch is specific to AMD.
-
-On 2021-11-04 10:38 a.m., Simon Ser wrote:
-> Reviewed-by: Simon Ser <contact@emersion.fr>
+On 2021-11-04 12:27 p.m., Simon Ser wrote:
+> Some KMS drivers support the KMS "pixel blend mode" plane property,
+> but don't support the "Coverage" mode. This enum entry is missing
+> to indicate lack of support as seen in this drm_info exerpt:
+> 
+>      "pixel blend mode": enum {None, Pre-multiplied} = Pre-multiplied
+> 
+> Skip the coverage tests in this case.
+> 
+> Signed-off-by: Simon Ser <contact@emersion.fr>
+> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> ---
+>   tests/kms_plane_alpha_blend.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index 9e4ee22b43af..d061262da196 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -419,7 +419,7 @@ static void coverage_7efc(data_t *data, enum pipe pipe, igt_plane_t *plane)
+>   	igt_crc_t ref_crc = {}, crc = {};
+>   	int i;
+>   
+> -	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
+> +	igt_require(igt_plane_try_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage"));
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>   	igt_pipe_crc_start(data->pipe_crc);
+>   
+> @@ -451,7 +451,7 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+>   	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+>   		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
+>   
+> -	igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
+> +	igt_require(igt_plane_try_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage"));
+>   	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>   	igt_pipe_crc_start(data->pipe_crc);
 > 
 
-Thanks Simon :)
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-Best Regards
-Siqueira
+Thanks
