@@ -1,21 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
- [IPv6:2a00:1450:4864:20::534])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B17046EDC0
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Nov 2021 18:04:01 +0000 (UTC)
-Received: by mail-ed1-x534.google.com with SMTP id b15so13724677edd.7
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Nov 2021 10:04:01 -0800 (PST)
-Message-ID: <503fac1f-57a7-9b63-c059-fb64deb98410@gmail.com>
-Date: Wed, 10 Nov 2021 20:03:52 +0200
+From: Rob Clark <robdclark@gmail.com>
+Date: Wed, 10 Nov 2021 10:42:12 -0800
+Message-Id: <20211110184213.649787-3-robdclark@gmail.com>
+In-Reply-To: <20211110184213.649787-1-robdclark@gmail.com>
+References: <20211110184213.649787-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Content-Language: en-US
-References: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20210909153047.16729-1-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 00/11] kms: Clean up the supported
- rotations mess
+Subject: [igt-dev] [PATCH igt v2 2/3] msm: Add helper for cmdstream building
+ and submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,50 +15,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>, Petri Latvala <petri.latvala@intel.com>, linux-arm-msm@vger.kernel.org, Akhil P Oommen <akhilpo@codeaurora.org>, Jordan Crouse <jordan@cosmicpenguin.net>, freedreno@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Patches 6..11 look all ok.
+From: Rob Clark <robdclark@chromium.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+A pretty minimal subset compared to what a full gallium driver would
+need, but OTOH for igt tests we should only need to emit fairly basic
+command stream.
 
-On 9.9.2021 18.30, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Full repost due to Ci getting confused by bogus patch numbering :/
-> 
-> Reposting of igt_plane_has_rotation() + a few other remaining
-> bits and bobs from the previous series. The main idea here is
-> to remove most of the hardcoded platform checks for supported
-> rotations. Sadly not quite 100% due to a few exceptional cases.
-> 
-> I left out the kms_big_fb fliptab[] nukage for the moment so that
-> the CI results will be less noisy.
-> 
-> v2: keep some gen9+ checks in kms_rotation_crc
-> 
-> Ville Syrjälä (11):
->    lib/kms: Add igt_plane_has_rotation()
->    tests/kms_rotation_crc: Use igt_plane_has_rotation()
->    tests/kms_plane_scaling: Use igt_plane_has_rotation()
->    tests/kms_big_fb: Use igt_plane_has_rotation()
->    tests/kms_big_fb: Use igt_has_drm_cap()
->    tests/kms_big_fb: Move batch creation into lower level functions
->    tests/kms_big_fb: Move format/modifier checks lower
->    tests/kms_big_fb: Nuke the stride/format overrides
->    tests/kms_big_fb: Check whether the rotation is supposed in the async
->      flip test
->    tests/kms_plane: Abstract single vs. multiple crsc better
->    tests/kms_plane: Use single colors during extended test
-> 
->   lib/igt_kms.c             | 41 ++++++++++++++++++++++++
->   lib/igt_kms.h             | 16 ++++++++++
->   tests/kms_big_fb.c        | 67 +++++++++++----------------------------
->   tests/kms_plane.c         | 61 +++++++++++++++++++----------------
->   tests/kms_plane_scaling.c |  5 +--
->   tests/kms_rotation_crc.c  | 32 +++++++------------
->   6 files changed, 123 insertions(+), 99 deletions(-)
-> 
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+---
+ lib/igt_msm.c | 102 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_msm.h |  48 ++++++++++++++++++++++++
+ 2 files changed, 150 insertions(+)
+
+diff --git a/lib/igt_msm.c b/lib/igt_msm.c
+index b9534164..e9cf588f 100644
+--- a/lib/igt_msm.c
++++ b/lib/igt_msm.c
+@@ -91,6 +91,19 @@ igt_msm_dev_close(struct msm_device *dev)
+ 	free(dev);
+ }
+ 
++static uint64_t
++get_iova(struct msm_bo *bo)
++{
++	struct drm_msm_gem_info req = {
++			.handle = bo->handle,
++			.info = MSM_INFO_GET_IOVA,
++	};
++
++	do_ioctl(bo->dev->fd, DRM_IOCTL_MSM_GEM_INFO, &req);
++
++	return req.value;
++}
++
+ /**
+  * igt_msm_bo_new:
+  * @dev: the device to allocate the BO from
+@@ -115,6 +128,7 @@ igt_msm_bo_new(struct msm_device *dev, size_t size, uint32_t flags)
+ 	do_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_NEW, &req);
+ 
+ 	bo->handle = req.handle;
++	bo->iova = get_iova(bo);
+ 
+ 	return bo;
+ }
+@@ -209,3 +223,91 @@ igt_msm_pipe_close(struct msm_pipe *pipe)
+ 	do_ioctl(pipe->dev->fd, DRM_IOCTL_MSM_SUBMITQUEUE_CLOSE, &pipe->submitqueue_id);
+ 	free(pipe);
+ }
++
++/**
++ * igt_msm_cmd_new:
++ * @pipe: the submitqueue to submit cmdstream against
++ * @size: the size of requested cmdstream buffer
++ */
++struct msm_cmd *
++igt_msm_cmd_new(struct msm_pipe *pipe, size_t size)
++{
++	struct msm_cmd *cmd = calloc(1, sizeof(*cmd));
++
++	cmd->pipe = pipe;
++	cmd->cmdstream_bo = igt_msm_bo_new(pipe->dev, size, MSM_BO_WC);
++	cmd->cur = igt_msm_bo_map(cmd->cmdstream_bo);
++
++	__igt_msm_append_bo(cmd, cmd->cmdstream_bo);
++
++	return cmd;
++}
++
++static uint32_t
++cmdstream_size(struct msm_cmd *cmd)
++{
++	uint8_t *start = igt_msm_bo_map(cmd->cmdstream_bo);
++	return (uint8_t *)cmd->cur - start;
++}
++
++/**
++ * igt_msm_cmd_submit:
++ * @cmd: the command stream object to submit
++ *
++ * Returns dma-fence fd
++ */
++int
++igt_msm_cmd_submit(struct msm_cmd *cmd)
++{
++	struct drm_msm_gem_submit_bo bos[cmd->nr_bos];
++	struct drm_msm_gem_submit_cmd cmds[] = {
++		[0] = {
++			.type       = MSM_SUBMIT_CMD_BUF,
++			.submit_idx = 0,
++			.size       = cmdstream_size(cmd),
++		},
++	};
++	struct drm_msm_gem_submit req = {
++			.flags   = cmd->pipe->pipe | MSM_SUBMIT_FENCE_FD_OUT,
++			.queueid = cmd->pipe->submitqueue_id,
++			.nr_cmds = ARRAY_SIZE(cmds),
++			.cmds    = VOID2U64(cmds),
++			.nr_bos  = ARRAY_SIZE(bos),
++			.bos     = VOID2U64(bos),
++	};
++
++	for (unsigned i = 0; i < cmd->nr_bos; i++) {
++		bos[i] = (struct drm_msm_gem_submit_bo) {
++			.handle  = cmd->bos[i]->handle,
++			.flags   = MSM_SUBMIT_BO_READ | MSM_SUBMIT_BO_WRITE,
++		};
++	}
++
++	do_ioctl(cmd->pipe->dev->fd, DRM_IOCTL_MSM_GEM_SUBMIT, &req);
++
++	return req.fence_fd;
++}
++
++void
++__igt_msm_append_bo(struct msm_cmd *cmd, struct msm_bo *bo)
++{
++	for (unsigned i = 0; i < cmd->nr_bos; i++)
++		if (cmd->bos[i] == bo)
++			return;
++
++	assert((cmd->nr_bos + 1) < ARRAY_SIZE(cmd->bos));
++	cmd->bos[cmd->nr_bos++] = bo;
++}
++
++/**
++ * igt_msm_cmd_free:
++ * @cmd: the command stream object to free
++ *
++ * Free a command stream object
++ */
++void
++igt_msm_cmd_free(struct msm_cmd *cmd)
++{
++	igt_msm_bo_free(cmd->cmdstream_bo);
++	free(cmd);
++}
+diff --git a/lib/igt_msm.h b/lib/igt_msm.h
+index 99a099c1..1a66c806 100644
+--- a/lib/igt_msm.h
++++ b/lib/igt_msm.h
+@@ -24,6 +24,8 @@
+ #ifndef IGT_MSM_H
+ #define IGT_MSM_H
+ 
++#include "ioctl_wrappers.h"
++
+ #include "msm_drm.h"
+ 
+ /**
+@@ -47,6 +49,7 @@ void igt_msm_dev_close(struct msm_device *dev);
+  * @handle: the BO's GEM handle
+  * @size: the BO's size
+  * @map: the BO's memory mapping (if mapped)
++ * @iova: the BO's GPU address
+  *
+  * Helper wrapper for a GEM buffer object.
+  */
+@@ -55,6 +58,7 @@ struct msm_bo {
+ 	int handle;
+ 	uint32_t size;
+ 	void *map;
++	uint64_t iova;
+ };
+ 
+ struct msm_bo *igt_msm_bo_new(struct msm_device *dev, size_t size, uint32_t flags);
+@@ -136,6 +140,50 @@ pm4_pkt7_hdr(uint8_t opcode, uint16_t cnt)
+ 			((pm4_odd_parity_bit(opcode) << 23));
+ }
+ 
++/**
++ * msm_cmd:
++ * @pipe: the submitqueue to submit cmdstream against
++ * @cmdstream_bo: the backing cmdstream buffer object
++ * @cur: pointer to current position in cmdstream
++ *
++ * Helper for building cmdstream and cmdstream submission
++ */
++struct msm_cmd {
++	struct msm_pipe *pipe;
++	struct msm_bo *cmdstream_bo;
++	uint32_t *cur;
++	uint32_t nr_bos;
++	struct msm_bo *bos[8];
++};
++
++struct msm_cmd *igt_msm_cmd_new(struct msm_pipe *pipe, size_t size);
++int igt_msm_cmd_submit(struct msm_cmd *cmd);
++void igt_msm_cmd_free(struct msm_cmd *cmd);
++
++static inline void
++msm_cmd_emit(struct msm_cmd *cmd, uint32_t dword)
++{
++	*(cmd->cur++) = dword;
++}
++
++static inline void
++msm_cmd_pkt7(struct msm_cmd *cmd, uint8_t opcode, uint16_t cnt)
++{
++	msm_cmd_emit(cmd, pm4_pkt7_hdr(opcode, cnt));
++}
++
++void __igt_msm_append_bo(struct msm_cmd *cmd, struct msm_bo *bo);
++
++static inline void
++msm_cmd_bo(struct msm_cmd *cmd, struct msm_bo *bo, uint32_t offset)
++{
++	uint64_t addr = bo->iova + offset;
++
++	__igt_msm_append_bo(cmd, bo);
++	msm_cmd_emit(cmd, lower_32_bits(addr));
++	msm_cmd_emit(cmd, upper_32_bits(addr));
++}
++
+ #define U642VOID(x) ((void *)(uintptr_t)(x))
+ #define VOID2U64(x) ((uint64_t)(uintptr_t)(x))
+ 
+-- 
+2.31.1
