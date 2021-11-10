@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA1C76E88B
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Nov 2021 23:04:33 +0000 (UTC)
-From: Matthew Brost <matthew.brost@intel.com>
-Date: Tue,  9 Nov 2021 14:59:54 -0800
-Message-Id: <20211109225954.24248-3-matthew.brost@intel.com>
-In-Reply-To: <20211109225954.24248-1-matthew.brost@intel.com>
-References: <20211109225954.24248-1-matthew.brost@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5975590581127570072=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] i915/gem_exec_balancer: Test parallel execbuf
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 10 Nov 2021 01:45:07 -0000
+Message-ID: <163650870720.15662.11789805090930202699@emeril.freedesktop.org>
+References: <20211109225954.24248-1-matthew.brost@intel.com>
+In-Reply-To: <20211109225954.24248-1-matthew.brost@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVGVzdCBw?=
+ =?utf-8?q?arallel_execbuf?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,651 +16,287 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic parallel execbuf submission test which more or less just
-submits the same BB in loop a which does an atomic increment to a memory
-location. The memory location is checked at the end for the correct
-value. Different sections use various IOCTL options (e.g. fences,
-location of BBs, etc...).
+--===============5975590581127570072==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-In addition to above sections, an additional section ensure the ordering
-of parallel submission by submitting a spinning batch to 1 individual
-engine, submit a parallel execbuf to all engines instances within the
-class, verify none on parallel execbuf make to hardware, release
-spinner, and finally verify everything has completed.
+== Series Details ==
 
-The parallel-ordering section assumes default timeslice / preemption
-timeout values. If these values are changed the test may fail.
+Series: Test parallel execbuf
+URL   : https://patchwork.freedesktop.org/series/96734/
+State : success
 
-v2:
- (Daniele)
-  - Add assert to ensure parallel & load_balance both not set in ctx lib
-  - s/count/expected/g in check_bo()
-  - use existing query library functions
-  - clean up bb_per_execbuf / count usage
-  - drop dead loop
-  - add comment for parallel-ordering
-  - don't declare loop variables inside loop
-v3:
- (Daniele)
-  - Read timeslice from sysfs
+== Summary ==
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- lib/intel_ctx.c                |  30 +-
- lib/intel_ctx.h                |   2 +
- lib/intel_reg.h                |   5 +
- tests/i915/gem_exec_balancer.c | 486 +++++++++++++++++++++++++++++++++
- 4 files changed, 522 insertions(+), 1 deletion(-)
+CI Bug Log - changes from CI_DRM_10859 -> IGTPW_6387
+====================================================
 
-diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
-index f28c15544..e19a54a89 100644
---- a/lib/intel_ctx.c
-+++ b/lib/intel_ctx.c
-@@ -83,6 +83,7 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
- {
- 	uint64_t ext_root = 0;
- 	I915_DEFINE_CONTEXT_ENGINES_LOAD_BALANCE(balance, GEM_MAX_ENGINES);
-+	I915_DEFINE_CONTEXT_ENGINES_PARALLEL_SUBMIT(parallel, GEM_MAX_ENGINES);
- 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, GEM_MAX_ENGINES);
- 	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
- 	struct drm_i915_gem_context_create_ext_setparam persist_param;
-@@ -117,7 +118,31 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
- 		unsigned num_logical_engines;
- 		memset(&engines, 0, sizeof(engines));
- 
--		if (cfg->load_balance) {
-+		igt_assert(!(cfg->parallel && cfg->load_balance));
-+
-+		if (cfg->parallel) {
-+			memset(&parallel, 0, sizeof(parallel));
-+
-+			num_logical_engines = 1;
-+
-+			parallel.base.name =
-+				I915_CONTEXT_ENGINES_EXT_PARALLEL_SUBMIT;
-+
-+			engines.engines[0].engine_class =
-+				I915_ENGINE_CLASS_INVALID;
-+			engines.engines[0].engine_instance =
-+				I915_ENGINE_CLASS_INVALID_NONE;
-+
-+			parallel.num_siblings = cfg->num_engines;
-+			parallel.width = cfg->width;
-+			for (i = 0; i < cfg->num_engines * cfg->width; i++) {
-+				igt_assert_eq(cfg->engines[0].engine_class,
-+					      cfg->engines[i].engine_class);
-+				parallel.engines[i] = cfg->engines[i];
-+			}
-+
-+			engines.extensions = to_user_pointer(&parallel);
-+		} else if (cfg->load_balance) {
- 			memset(&balance, 0, sizeof(balance));
- 
- 			/* In this case, the first engine is the virtual
-@@ -127,6 +152,9 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
- 			igt_assert(cfg->num_engines + 1 <= GEM_MAX_ENGINES);
- 			num_logical_engines = cfg->num_engines + 1;
- 
-+			balance.base.name =
-+				I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE;
-+
- 			engines.engines[0].engine_class =
- 				I915_ENGINE_CLASS_INVALID;
- 			engines.engines[0].engine_instance =
-diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
-index 9649f6d96..89c65fcd3 100644
---- a/lib/intel_ctx.h
-+++ b/lib/intel_ctx.h
-@@ -46,7 +46,9 @@ typedef struct intel_ctx_cfg {
- 	uint32_t vm;
- 	bool nopersist;
- 	bool load_balance;
-+	bool parallel;
- 	unsigned int num_engines;
-+	unsigned int width;
- 	struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
- } intel_ctx_cfg_t;
- 
-diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index c447525a0..44b0d480f 100644
---- a/lib/intel_reg.h
-+++ b/lib/intel_reg.h
-@@ -2642,6 +2642,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- 
- #define STATE3D_COLOR_FACTOR	((0x3<<29)|(0x1d<<24)|(0x01<<16))
- 
-+/* Atomics */
-+#define MI_ATOMIC			((0x2f << 23) | 2)
-+#define   MI_ATOMIC_INLINE_DATA         (1 << 18)
-+#define   MI_ATOMIC_ADD                 (0x7 << 8)
-+
- /* Batch */
- #define MI_BATCH_BUFFER		((0x30 << 23) | 1)
- #define MI_BATCH_BUFFER_START	(0x31 << 23)
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index e4e5cda4a..0e7703a0d 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -25,8 +25,10 @@
- #include <sched.h>
- #include <sys/ioctl.h>
- #include <sys/signal.h>
-+#include <poll.h>
- 
- #include "i915/gem.h"
-+#include "i915/gem_engine_topology.h"
- #include "i915/gem_create.h"
- #include "i915/gem_vm.h"
- #include "igt.h"
-@@ -2752,6 +2754,403 @@ static void nohangcheck(int i915)
- 	close(params);
- }
- 
-+static void check_bo(int i915, uint32_t handle, unsigned int expected,
-+		     bool wait)
-+{
-+	uint32_t *map;
-+
-+	map = gem_mmap__cpu(i915, handle, 0, 4096, PROT_READ);
-+	if (wait)
-+		gem_set_domain(i915, handle, I915_GEM_DOMAIN_CPU,
-+			       I915_GEM_DOMAIN_CPU);
-+	igt_assert_eq(map[0], expected);
-+	munmap(map, 4096);
-+}
-+
-+static struct drm_i915_query_engine_info *query_engine_info(int i915)
-+{
-+	struct drm_i915_query_engine_info *engines;
-+
-+#define QUERY_SIZE	0x4000
-+	engines = malloc(QUERY_SIZE);
-+	igt_assert(engines);
-+	memset(engines, 0, QUERY_SIZE);
-+	igt_assert(!__gem_query_engines(i915, engines, QUERY_SIZE));
-+#undef QUERY_SIZE
-+
-+	return engines;
-+}
-+
-+/* This function only works if siblings contains all instances of a class */
-+static void logical_sort_siblings(int i915,
-+				  struct i915_engine_class_instance *siblings,
-+				  unsigned int count)
-+{
-+	struct i915_engine_class_instance *sorted;
-+	struct drm_i915_query_engine_info *engines;
-+	unsigned int i, j;
-+
-+	sorted = calloc(count, sizeof(*sorted));
-+	igt_assert(sorted);
-+
-+	engines = query_engine_info(i915);
-+
-+	for (j = 0; j < count; ++j) {
-+		for (i = 0; i < engines->num_engines; ++i) {
-+			if (siblings[j].engine_class ==
-+			    engines->engines[i].engine.engine_class &&
-+			    siblings[j].engine_instance ==
-+			    engines->engines[i].engine.engine_instance) {
-+				uint16_t logical_instance =
-+					engines->engines[i].logical_instance;
-+
-+				igt_assert(logical_instance < count);
-+				igt_assert(!sorted[logical_instance].engine_class);
-+				igt_assert(!sorted[logical_instance].engine_instance);
-+
-+				sorted[logical_instance] = siblings[j];
-+				break;
-+			}
-+		}
-+		igt_assert(i != engines->num_engines);
-+	}
-+
-+	memcpy(siblings, sorted, sizeof(*sorted) * count);
-+	free(sorted);
-+	free(engines);
-+}
-+
-+#define PARALLEL_BB_FIRST		(0x1 << 0)
-+#define PARALLEL_OUT_FENCE		(0x1 << 1)
-+#define PARALLEL_IN_FENCE		(0x1 << 2)
-+#define PARALLEL_SUBMIT_FENCE		(0x1 << 3)
-+#define PARALLEL_CONTEXTS		(0x1 << 4)
-+#define PARALLEL_VIRTUAL		(0x1 << 5)
-+
-+static void parallel_thread(int i915, unsigned int flags,
-+			    struct i915_engine_class_instance *siblings,
-+			    unsigned int count, unsigned int bb_per_execbuf)
-+{
-+	const intel_ctx_t *ctx = NULL;
-+	int n, i, j, fence = 0;
-+	uint32_t batch[16];
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	struct drm_i915_gem_exec_object2 obj[32];
-+#define PARALLEL_BB_LOOP_COUNT	512
-+	const intel_ctx_t *ctxs[PARALLEL_BB_LOOP_COUNT];
-+	uint32_t target_bo_idx = 0;
-+	uint32_t first_bb_idx = 1;
-+	intel_ctx_cfg_t cfg;
-+
-+	igt_assert(bb_per_execbuf < 32);
-+
-+	if (flags & PARALLEL_BB_FIRST) {
-+		target_bo_idx = bb_per_execbuf;
-+		first_bb_idx = 0;
-+	}
-+
-+	igt_assert(count >= bb_per_execbuf &&
-+		   count % bb_per_execbuf == 0);
-+	memset(&cfg, 0, sizeof(cfg));
-+	cfg.parallel = true;
-+	cfg.num_engines = count / bb_per_execbuf;
-+	cfg.width = bb_per_execbuf;
-+	if (flags & PARALLEL_VIRTUAL) {
-+		for (i = 0; i < cfg.width; ++i)
-+			for (j = 0; j < cfg.num_engines; ++j)
-+				memcpy(cfg.engines + i * cfg.num_engines + j,
-+				       siblings + j * cfg.width + i,
-+				       sizeof(*siblings));
-+	} else {
-+		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
-+	}
-+	ctx = intel_ctx_create(i915, &cfg);
-+
-+	i = 0;
-+	batch[i] = MI_ATOMIC | MI_ATOMIC_INLINE_DATA |
-+		MI_ATOMIC_ADD;
-+#define TARGET_BO_OFFSET	(0x1 << 16)
-+	batch[++i] = TARGET_BO_OFFSET;
-+	batch[++i] = 0;
-+	batch[++i] = 1;
-+	batch[++i] = MI_BATCH_BUFFER_END;
-+
-+	memset(obj, 0, sizeof(obj));
-+	obj[target_bo_idx].offset = TARGET_BO_OFFSET;
-+	obj[target_bo_idx].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+	obj[target_bo_idx].handle = gem_create(i915, 4096);
-+
-+	for (i = first_bb_idx; i < bb_per_execbuf + first_bb_idx; ++i) {
-+		obj[i].handle = gem_create(i915, 4096);
-+		gem_write(i915, obj[i].handle, 0, batch,
-+			  sizeof(batch));
-+	}
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.buffer_count = bb_per_execbuf + 1;
-+	execbuf.flags |= I915_EXEC_HANDLE_LUT;
-+	if (flags & PARALLEL_BB_FIRST)
-+		execbuf.flags |= I915_EXEC_BATCH_FIRST;
-+	if (flags & PARALLEL_OUT_FENCE)
-+		execbuf.flags |= I915_EXEC_FENCE_OUT;
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.rsvd1 = ctx->id;
-+
-+	for (n = 0; n < PARALLEL_BB_LOOP_COUNT; ++n) {
-+		execbuf.flags &= ~0x3full;
-+		gem_execbuf_wr(i915, &execbuf);
-+
-+		if (flags & PARALLEL_OUT_FENCE) {
-+			igt_assert_eq(sync_fence_wait(execbuf.rsvd2 >> 32,
-+						      1000), 0);
-+			igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
-+
-+			if (fence)
-+				close(fence);
-+			fence = execbuf.rsvd2 >> 32;
-+
-+			if (flags & PARALLEL_SUBMIT_FENCE) {
-+				execbuf.flags |=
-+					I915_EXEC_FENCE_SUBMIT;
-+				execbuf.rsvd2 >>= 32;
-+			} else if (flags &  PARALLEL_IN_FENCE) {
-+				execbuf.flags |=
-+					I915_EXEC_FENCE_IN;
-+				execbuf.rsvd2 >>= 32;
-+			} else {
-+				execbuf.rsvd2 = 0;
-+			}
-+		}
-+
-+		if (flags & PARALLEL_CONTEXTS) {
-+			ctxs[n] = ctx;
-+			ctx = intel_ctx_create(i915, &cfg);
-+			execbuf.rsvd1 = ctx->id;
-+		}
-+	}
-+	if (fence)
-+		close(fence);
-+
-+	check_bo(i915, obj[target_bo_idx].handle,
-+		 bb_per_execbuf * PARALLEL_BB_LOOP_COUNT, true);
-+
-+	intel_ctx_destroy(i915, ctx);
-+	for (i = 0; flags & PARALLEL_CONTEXTS &&
-+	     i < PARALLEL_BB_LOOP_COUNT; ++i) {
-+		intel_ctx_destroy(i915, ctxs[i]);
-+	}
-+	for (i = 0; i < bb_per_execbuf + 1; ++i)
-+		gem_close(i915, obj[i].handle);
-+}
-+
-+static void parallel(int i915, unsigned int flags)
-+{
-+	int class;
-+
-+	for (class = 0; class < 32; class++) {
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int count, bb_per_execbuf;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (!siblings)
-+			continue;
-+
-+		if (count < 2) {
-+			free(siblings);
-+			continue;
-+		}
-+
-+		logical_sort_siblings(i915, siblings, count);
-+		bb_per_execbuf = count;
-+
-+		parallel_thread(i915, flags, siblings,
-+				count, bb_per_execbuf);
-+
-+		free(siblings);
-+	}
-+}
-+
-+static void parallel_balancer(int i915, unsigned int flags)
-+{
-+	int class;
-+
-+	for (class = 0; class < 32; class++) {
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int bb_per_execbuf;
-+		unsigned int count;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (!siblings)
-+			continue;
-+
-+		if (count < 4) {
-+			free(siblings);
-+			continue;
-+		}
-+
-+		logical_sort_siblings(i915, siblings, count);
-+
-+		for (bb_per_execbuf = 2; count / bb_per_execbuf > 1;
-+		     ++bb_per_execbuf) {
-+			igt_fork(child, count / bb_per_execbuf)
-+				parallel_thread(i915,
-+						flags | PARALLEL_VIRTUAL,
-+						siblings,
-+						count,
-+						bb_per_execbuf);
-+			igt_waitchildren();
-+		}
-+
-+		free(siblings);
-+	}
-+}
-+
-+static bool fence_busy(int fence)
-+{
-+	return poll(&(struct pollfd){fence, POLLIN}, 1, 0) == 0;
-+}
-+
-+static unsigned int get_timeslice(int i915,
-+				  struct i915_engine_class_instance engine)
-+{
-+	unsigned int val;
-+
-+	switch (engine.engine_class) {
-+	case I915_ENGINE_CLASS_RENDER:
-+		gem_engine_property_scanf(i915, "rcs0", "timeslice_duration_ms",
-+					  "%d", &val);
-+		break;
-+	case I915_ENGINE_CLASS_COPY:
-+		gem_engine_property_scanf(i915, "bcs0", "timeslice_duration_ms",
-+					  "%d", &val);
-+		break;
-+	case I915_ENGINE_CLASS_VIDEO:
-+		gem_engine_property_scanf(i915, "vcs0", "timeslice_duration_ms",
-+					  "%d", &val);
-+		break;
-+	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
-+		gem_engine_property_scanf(i915, "vecs0", "timeslice_duration_ms",
-+					  "%d", &val);
-+		break;
-+	}
-+
-+	return val;
-+}
-+
-+/*
-+ * Ensure a parallel submit actually runs on HW in parallel by putting on a
-+ * spinner on 1 engine, doing a parallel submit, and parallel submit is blocked
-+ * behind spinner.
-+ */
-+static void parallel_ordering(int i915, unsigned int flags)
-+{
-+	int class;
-+
-+	for (class = 0; class < 32; class++) {
-+		const intel_ctx_t *ctx = NULL, *spin_ctx = NULL;
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int count;
-+		int i = 0, fence = 0;
-+		uint32_t batch[16];
-+		struct drm_i915_gem_execbuffer2 execbuf;
-+		struct drm_i915_gem_exec_object2 obj[32];
-+		igt_spin_t *spin;
-+		intel_ctx_cfg_t cfg;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (!siblings)
-+			continue;
-+
-+		if (count < 2) {
-+			free(siblings);
-+			continue;
-+		}
-+
-+		logical_sort_siblings(i915, siblings, count);
-+
-+		memset(&cfg, 0, sizeof(cfg));
-+		cfg.parallel = true;
-+		cfg.num_engines = 1;
-+		cfg.width = count;
-+		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
-+
-+		ctx = intel_ctx_create(i915, &cfg);
-+
-+		batch[i] = MI_ATOMIC | MI_ATOMIC_INLINE_DATA |
-+			MI_ATOMIC_ADD;
-+		batch[++i] = TARGET_BO_OFFSET;
-+		batch[++i] = 0;
-+		batch[++i] = 1;
-+		batch[++i] = MI_BATCH_BUFFER_END;
-+
-+		memset(obj, 0, sizeof(obj));
-+		obj[0].offset = TARGET_BO_OFFSET;
-+		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[0].handle = gem_create(i915, 4096);
-+
-+		for (i = 1; i < count + 1; ++i) {
-+			obj[i].handle = gem_create(i915, 4096);
-+			gem_write(i915, obj[i].handle, 0, batch,
-+				  sizeof(batch));
-+		}
-+
-+		memset(&execbuf, 0, sizeof(execbuf));
-+		execbuf.buffers_ptr = to_user_pointer(obj);
-+		execbuf.buffer_count = count + 1;
-+		execbuf.flags |= I915_EXEC_HANDLE_LUT;
-+		execbuf.flags |= I915_EXEC_NO_RELOC;
-+		execbuf.flags |= I915_EXEC_FENCE_OUT;
-+		execbuf.buffers_ptr = to_user_pointer(obj);
-+		execbuf.rsvd1 = ctx->id;
-+
-+		/* Block parallel submission */
-+		spin_ctx = ctx_create_engines(i915, siblings, count);
-+		spin = __igt_spin_new(i915,
-+				      .ctx = spin_ctx,
-+				      .engine = 0,
-+				      .flags = IGT_SPIN_FENCE_OUT |
-+				      IGT_SPIN_NO_PREEMPTION);
-+
-+		/* Wait for spinners to start */
-+		usleep(5 * 10000);
-+		igt_assert(fence_busy(spin->out_fence));
-+
-+		/* Submit parallel execbuf */
-+		gem_execbuf_wr(i915, &execbuf);
-+		fence = execbuf.rsvd2 >> 32;
-+
-+		/*
-+		 * Wait long enough for timeslcing to kick in but not
-+		 * preemption. Spinner + parallel execbuf should be
-+		 * active. Assuming default timeslice / preemption values, if
-+		 * these are changed it is possible for the test to fail.
-+		 */
-+		usleep(get_timeslice(i915, siblings[0]) * 2);
-+		igt_assert(fence_busy(spin->out_fence));
-+		igt_assert(fence_busy(fence));
-+		check_bo(i915, obj[0].handle, 0, false);
-+
-+		/*
-+		 * End spinner and wait for spinner + parallel execbuf
-+		 * to compelte.
-+		 */
-+		igt_spin_end(spin);
-+		igt_assert_eq(sync_fence_wait(fence, 1000), 0);
-+		igt_assert_eq(sync_fence_status(fence), 1);
-+		check_bo(i915, obj[0].handle, count, true);
-+		close(fence);
-+
-+		/* Clean up */
-+		intel_ctx_destroy(i915, ctx);
-+		intel_ctx_destroy(i915, spin_ctx);
-+		for (i = 0; i < count + 1; ++i)
-+			gem_close(i915, obj[i].handle);
-+		free(siblings);
-+		igt_spin_free(i915, spin);
-+	}
-+}
-+
- static bool has_persistence(int i915)
- {
- 	struct drm_i915_gem_context_param p = {
-@@ -2786,6 +3185,61 @@ static bool has_load_balancer(int i915)
- 	return err == 0;
- }
- 
-+static bool has_logical_mapping(int i915)
-+{
-+	struct drm_i915_query_engine_info *engines;
-+	unsigned int i;
-+
-+	engines = query_engine_info(i915);
-+
-+	for (i = 0; i < engines->num_engines; ++i)
-+		if (!(engines->engines[i].flags &
-+		     I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE)) {
-+			free(engines);
-+			return false;
-+		}
-+
-+	free(engines);
-+	return true;
-+}
-+
-+static bool has_parallel_execbuf(int i915)
-+{
-+	intel_ctx_cfg_t cfg = {
-+		.parallel = true,
-+		.num_engines = 1,
-+	};
-+	const intel_ctx_t *ctx = NULL;
-+	int err;
-+
-+	for (int class = 0; class < 32; class++) {
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int count;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (!siblings)
-+			continue;
-+
-+		if (count < 2) {
-+			free(siblings);
-+			continue;
-+		}
-+
-+		logical_sort_siblings(i915, siblings, count);
-+
-+		cfg.width = count;
-+		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
-+		free(siblings);
-+
-+		err = __intel_ctx_create(i915, &cfg, &ctx);
-+		intel_ctx_destroy(i915, ctx);
-+
-+		return err == 0;
-+	}
-+
-+	return false;
-+}
-+
- igt_main
- {
- 	int i915 = -1;
-@@ -2886,6 +3340,38 @@ igt_main
- 		igt_stop_hang_detector();
- 	}
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(has_logical_mapping(i915));
-+			igt_require(has_parallel_execbuf(i915));
-+		}
-+
-+		igt_subtest("parallel-ordering")
-+			parallel_ordering(i915, 0);
-+
-+		igt_subtest("parallel")
-+			parallel(i915, 0);
-+
-+		igt_subtest("parallel-bb-first")
-+			parallel(i915, PARALLEL_BB_FIRST);
-+
-+		igt_subtest("parallel-out-fence")
-+			parallel(i915, PARALLEL_OUT_FENCE);
-+
-+		igt_subtest("parallel-keep-in-fence")
-+			parallel(i915, PARALLEL_OUT_FENCE | PARALLEL_IN_FENCE);
-+
-+		igt_subtest("parallel-keep-submit-fence")
-+			parallel(i915, PARALLEL_OUT_FENCE |
-+				 PARALLEL_SUBMIT_FENCE);
-+
-+		igt_subtest("parallel-contexts")
-+			parallel(i915, PARALLEL_CONTEXTS);
-+
-+		igt_subtest("parallel-balancer")
-+			parallel_balancer(i915, 0);
-+	}
-+
- 	igt_subtest_group {
- 		igt_hang_t  hang;
- 
--- 
-2.32.0
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/index.html
+
+Participating hosts (37 -> 32)
+------------------------------
+
+  Additional (2): fi-tgl-1115g4 fi-pnv-d510 
+  Missing    (7): fi-bdw-5557u bat-dg1-6 fi-tgl-u2 fi-icl-u2 fi-bsw-cyan bat-adlp-4 fi-ctg-p8600 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6387 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][1] ([fdo#109315])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][2] ([fdo#109315] / [i915#2575]) +16 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][3] ([i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] ([i915#1155])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][5] ([fdo#111827]) +8 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][6] ([i915#4103]) +1 similar issue
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7] ([fdo#109285])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][8] ([i915#1072]) +3 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][9] ([fdo#109271]) +53 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([i915#3301])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-bxt-dsi:         NOTRUN -> [FAIL][11] ([i915#2426] / [i915#3363])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-bxt-dsi/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-hsw-gt1}:       [DMESG-WARN][12] ([i915#3303]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10859/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6275 -> IGTPW_6387
+
+  CI-20190529: 20190529
+  CI_DRM_10859: b6a4397b540c326ddaf8ccc1d2c14096702900f6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6387: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/index.html
+  IGT_6275: 6d172a5cf51ffff5f2780e2837860d613db5067f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_balancer@parallel
++igt@gem_exec_balancer@parallel-balancer
++igt@gem_exec_balancer@parallel-bb-first
++igt@gem_exec_balancer@parallel-contexts
++igt@gem_exec_balancer@parallel-keep-in-fence
++igt@gem_exec_balancer@parallel-keep-submit-fence
++igt@gem_exec_balancer@parallel-ordering
++igt@gem_exec_balancer@parallel-out-fence
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/index.html
+
+--===============5975590581127570072==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Test parallel execbuf</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96734/">https://patchwork.freedesktop.org/series/96734/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10859 -&gt; IGTPW_6387</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/index.html</p>
+<h2>Participating hosts (37 -&gt; 32)</h2>
+<p>Additional (2): fi-tgl-1115g4 fi-pnv-d510 <br />
+  Missing    (7): fi-bdw-5557u bat-dg1-6 fi-tgl-u2 fi-icl-u2 fi-bsw-cyan bat-adlp-4 fi-ctg-p8600 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6387 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +53 similar issues</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-bxt-dsi/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10859/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6275 -&gt; IGTPW_6387</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10859: b6a4397b540c326ddaf8ccc1d2c14096702900f6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6387: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6387/index.html<br />
+  IGT_6275: 6d172a5cf51ffff5f2780e2837860d613db5067f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_exec_balancer@parallel<br />
++igt@gem_exec_balancer@parallel-balancer<br />
++igt@gem_exec_balancer@parallel-bb-first<br />
++igt@gem_exec_balancer@parallel-contexts<br />
++igt@gem_exec_balancer@parallel-keep-in-fence<br />
++igt@gem_exec_balancer@parallel-keep-submit-fence<br />
++igt@gem_exec_balancer@parallel-ordering<br />
++igt@gem_exec_balancer@parallel-out-fence</p>
+
+</body>
+</html>
+
+--===============5975590581127570072==--
