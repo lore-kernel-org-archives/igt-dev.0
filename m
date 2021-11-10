@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Content-Type: multipart/alternative;
+ boundary="===============0019431236066810818=="
 MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 10 Nov 2021 19:23:53 -0000
+Message-ID: <163657223361.15664.5833089943244882689@emeril.freedesktop.org>
 References: <20211110184213.649787-1-robdclark@gmail.com>
- <20211110184213.649787-4-robdclark@gmail.com>
-In-Reply-To: <20211110184213.649787-4-robdclark@gmail.com>
-From: Rob Clark <robdclark@gmail.com>
-Date: Wed, 10 Nov 2021 11:00:41 -0800
-Message-ID: <CAF6AEGsh4ow448Y5xtt2rnX=zcFCQvqk9Mf59AB_ifmw9mm0Lw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH igt v2 3/3] msm: Add recovery tests
+In-Reply-To: <20211110184213.649787-1-robdclark@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbXNtOiBB?=
+ =?utf-8?q?dd_tests_for_gpu_fault_handling_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,262 +16,295 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Rob Clark <robdclark@chromium.org>, Petri Latvala <petri.latvala@intel.com>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, Akhil P Oommen <akhilpo@codeaurora.org>, Jordan Crouse <jordan@cosmicpenguin.net>, freedreno <freedreno@lists.freedesktop.org>
+To: Rob Clark <robdclark@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Nov 10, 2021 at 10:37 AM Rob Clark <robdclark@gmail.com> wrote:
->
-> From: Rob Clark <robdclark@chromium.org>
->
-> Add tests to exercise:
->
-> 1. sw hangcheck timeout
-> 2. gpu fault (hang) recovery
-> 3. iova fault recovery
->
-> Signed-off-by: Rob Clark <robdclark@chromium.org>
-> ---
->  lib/igt_msm.h        |   3 +
->  tests/meson.build    |   1 +
->  tests/msm_recovery.c | 172 +++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 176 insertions(+)
->  create mode 100644 tests/msm_recovery.c
->
-> diff --git a/lib/igt_msm.h b/lib/igt_msm.h
-> index 1a66c806..421d23ed 100644
-> --- a/lib/igt_msm.h
-> +++ b/lib/igt_msm.h
-> @@ -97,6 +97,9 @@ enum adreno_pm4_packet_type {
->
->  enum adreno_pm4_type3_packets {
->         CP_NOP =3D 16,
-> +       CP_WAIT_MEM_GTE =3D 20,
-> +       CP_WAIT_REG_MEM =3D 60,
-> +       CP_MEM_WRITE =3D 61,
->  };
->
->  static inline unsigned
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 0af3e03a..166e3494 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -60,6 +60,7 @@ test_progs =3D [
->         'kms_vrr',
->         'kms_writeback',
->         'meta_test',
-> +       'msm_recovery',
->         'msm_submit',
->         'panfrost_get_param',
->         'panfrost_gem_new',
-> diff --git a/tests/msm_recovery.c b/tests/msm_recovery.c
-> new file mode 100644
-> index 00000000..b71326b8
-> --- /dev/null
-> +++ b/tests/msm_recovery.c
-> @@ -0,0 +1,172 @@
-> +/*
-> + * Copyright =C2=A9 2021 Google, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +
-> +#include <sys/poll.h>
-> +
-> +#include "igt.h"
-> +#include "igt_msm.h"
-> +
-> +static struct msm_device *dev;
-> +static struct msm_bo *scratch_bo;
-> +static uint32_t *scratch;
-> +
-> +/*
-> + * Helpers for cmdstream packet building:
-> + */
-> +
-> +static void
-> +wait_mem_gte(struct msm_cmd *cmd, uint32_t offset_dwords, uint32_t ref)
-> +{
-> +       msm_cmd_pkt7(cmd, CP_WAIT_MEM_GTE, 4);
-> +       msm_cmd_emit(cmd, 0);                              /* RESERVED */
-> +       msm_cmd_bo  (cmd, scratch_bo, offset_dwords * 4);  /* POLL_ADDR_L=
-O/HI */
-> +       msm_cmd_emit(cmd, ref);                            /* REF */
-> +}
-> +
-> +static void
-> +mem_write(struct msm_cmd *cmd, uint32_t offset_dwords, uint32_t val)
-> +{
-> +       msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
-> +       msm_cmd_bo  (cmd, scratch_bo, offset_dwords * 4);  /* ADDR_LO/HI =
-*/
-> +       msm_cmd_emit(cmd, val);                            /* VAL */
-> +}
-> +
-> +/*
-> + * Helper to wait on a fence-fd:
-> + */
-> +static void
-> +wait_and_close(int fence_fd)
-> +{
-> +       poll(&(struct pollfd){fence_fd, POLLIN}, 1, -1);
-> +       close(fence_fd);
-> +}
-> +
-> +/*
-> + * Helper for hang tests.  Emits multiple submits, with one in the middl=
-e
-> + * that triggers a fault, and confirms that the submits before and after
-> + * the faulting one execute properly, ie. that the driver properly manag=
-es
-> + * to recover and re-queue the submits after the faulting submit;
-> + */
-> +static void
-> +do_hang_test(struct msm_pipe *pipe)
-> +{
-> +       struct msm_cmd *cmds[16];
-> +       int fence_fds[ARRAY_SIZE(cmds)];
-> +
-> +       memset(scratch, 0, 0x1000);
-> +
-> +       for (unsigned i =3D 0; i < ARRAY_SIZE(cmds); i++) {
-> +               struct msm_cmd *cmd =3D igt_msm_cmd_new(pipe, 0x1000);
-> +
-> +               cmds[i] =3D cmd;
-> +
-> +               /*
-> +                * Emit a packet to wait for scratch[0] to be >=3D 1
-> +                *
-> +                * This lets us force the GPU to wait until all the cmdst=
-ream is
-> +                * queued up.
-> +                */
-> +               wait_mem_gte(cmd, 0, 1);
-> +
-> +               if (i =3D=3D 10) {
-> +                       msm_cmd_emit(cmd, 0xdeaddead);
-> +               }
-> +
-> +               /* Emit a packet to write scratch[1+i] =3D 2+i: */
-> +               mem_write(cmd, 1+i, 2+i);
-> +       }
-> +
-> +       for (unsigned i =3D 0; i < ARRAY_SIZE(cmds); i++) {
-> +               fence_fds[i] =3D igt_msm_cmd_submit(cmds[i]);
-> +       }
-> +
-> +       usleep(10000);
-> +
-> +       /* Let the WAIT_MEM_GTE complete: */
-> +       scratch[0] =3D 1;
-> +
-> +       for (unsigned i =3D 0; i < ARRAY_SIZE(cmds); i++) {
-> +               wait_and_close(fence_fds[i]);
-> +               igt_msm_cmd_free(cmds[i]);
-> +               if (i =3D=3D 10)
-> +                       continue;
-> +               igt_assert_eq(scratch[1+i], 2+i);
-> +       }
-> +}
-> +
-> +/*
-> + * Tests for drm/msm hangcheck, recovery, and fault handling
-> + */
-> +
-> +igt_main
-> +{
-> +       static struct msm_pipe *pipe =3D NULL;
-> +
-> +       igt_fixture {
-> +               dev =3D igt_msm_dev_open();
-> +               pipe =3D igt_msm_pipe_open(dev, 0);
-> +               scratch_bo =3D igt_msm_bo_new(dev, 0x1000, MSM_BO_WC);
-> +               scratch =3D igt_msm_bo_map(scratch_bo);
-> +       }
-> +
-> +       igt_describe("Test sw hangcheck handling");
-> +       igt_subtest("hangcheck") {
-> +               igt_require(dev->gen >=3D 6);
-> +
-> +               /* Disable hw hang detection to force fallback to sw hang=
-check: */
-> +               igt_debugfs_write(dev->fd, "disable_err_irq", "Y");
+--===============0019431236066810818==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-note that this depends on [1].. not sure if there is any constraint
-about landing igt tests before some debugfs they depend on lands
-upstream on the kernel side?
+== Series Details ==
 
-[1] https://patchwork.freedesktop.org/patch/462625/?series=3D96725&rev=3D1
+Series: msm: Add tests for gpu fault handling (rev2)
+URL   : https://patchwork.freedesktop.org/series/96721/
+State : success
 
-BR,
--R
+== Summary ==
 
-> +
-> +               do_hang_test(pipe);
-> +
-> +               igt_debugfs_write(dev->fd, "disable_err_irq", "N");
-> +       }
-> +
-> +       igt_describe("Test hw fault handling");
-> +       igt_subtest("gpu-fault") {
-> +               igt_require(dev->gen >=3D 6);
-> +
-> +               do_hang_test(pipe);
-> +       }
-> +
-> +       igt_describe("Test iova fault handling");
-> +       igt_subtest("iova-fault") {
-> +               struct msm_cmd *cmd;
-> +
-> +               igt_require(dev->gen >=3D 6);
-> +
-> +               cmd =3D igt_msm_cmd_new(pipe, 0x1000);
-> +
-> +               msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
-> +               msm_cmd_emit(cmd, 0xdeaddead);           /* ADDR_LO */
-> +               msm_cmd_emit(cmd, 0x1);                  /* ADDR_HI */
-> +               msm_cmd_emit(cmd, 0x123);                /* VAL */
-> +
-> +               wait_and_close(igt_msm_cmd_submit(cmd));
-> +       }
-> +
-> +       igt_fixture {
-> +               igt_msm_bo_free(scratch_bo);
-> +               igt_msm_pipe_close(pipe);
-> +               igt_msm_dev_close(dev);
-> +       }
-> +}
-> --
-> 2.31.1
->
+CI Bug Log - changes from IGT_6277 -> IGTPW_6390
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/index.html
+
+Participating hosts (34 -> 35)
+------------------------------
+
+  Additional (2): fi-kbl-soraka fi-icl-u2 
+  Missing    (1): fi-bsw-cyan 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6390 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][1] ([fdo#109271]) +27 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@amdgpu/amd_cs_nop@fork-gfx0:
+    - fi-icl-u2:          NOTRUN -> [SKIP][2] ([fdo#109315]) +17 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@amdgpu/amd_cs_nop@fork-gfx0.html
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][4] ([i915#4221])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-icl-u2:          NOTRUN -> [SKIP][5] ([i915#2190])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][6] -> [INCOMPLETE][7] ([i915#3921])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6277/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          NOTRUN -> [SKIP][9] ([fdo#111827]) +8 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - fi-icl-u2:          NOTRUN -> [SKIP][10] ([fdo#109278]) +2 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-icl-u2:          NOTRUN -> [SKIP][11] ([fdo#109285])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-icl-u2:          NOTRUN -> [SKIP][12] ([i915#3301])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-1115g4:      [FAIL][13] ([i915#1888]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6277/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [SKIP][15] ([fdo#109271]) -> [FAIL][16] ([i915#579])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6277/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4221]: https://gitlab.freedesktop.org/drm/intel/issues/4221
+  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
+  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6277 -> IGTPW_6390
+
+  CI-20190529: 20190529
+  CI_DRM_10863: de2d87964c398bd4de93d264192e7f69928cf9c8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6390: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/index.html
+  IGT_6277: 7201d343fced07a1951feea119480d55bce787e4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@msm_recovery@gpu-fault
++igt@msm_recovery@hangcheck
++igt@msm_recovery@iova-fault
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/index.html
+
+--===============0019431236066810818==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>msm: Add tests for gpu fault handling (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96721/">https://patchwork.freedesktop.org/series/96721/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6277 -&gt; IGTPW_6390</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/index.html</p>
+<h2>Participating hosts (34 -&gt; 35)</h2>
+<p>Additional (2): fi-kbl-soraka fi-icl-u2 <br />
+  Missing    (1): fi-bsw-cyan </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6390 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +27 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@fork-gfx0:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@amdgpu/amd_cs_nop@fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4221">i915#4221</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6277/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-icl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s0:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6277/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_pm_rpm@basic-rte:<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6277/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6277 -&gt; IGTPW_6390</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10863: de2d87964c398bd4de93d264192e7f69928cf9c8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6390: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6390/index.html<br />
+  IGT_6277: 7201d343fced07a1951feea119480d55bce787e4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@msm_recovery@gpu-fault<br />
++igt@msm_recovery@hangcheck<br />
++igt@msm_recovery@iova-fault</p>
+
+</body>
+</html>
+
+--===============0019431236066810818==--
