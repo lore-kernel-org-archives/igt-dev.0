@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42BD26E112
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Nov 2021 12:05:28 +0000 (UTC)
-Date: Wed, 10 Nov 2021 14:04:11 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8543D6E0F2
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Nov 2021 12:16:27 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YYu1O9vXq6QCRU0Z@platvala-desk.ger.corp.intel.com>
-References: <20211109195551.10452-1-jeevan.b@intel.com>
- <20211109195551.10452-3-jeevan.b@intel.com>
+Date: Wed, 10 Nov 2021 14:15:13 +0200
+Message-Id: <20211110121513.29932-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211109195551.10452-3-jeevan.b@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] tests/kms_psr2_sf: Change
- testcase design
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_debugfs: Fixup docs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,80 +17,164 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jeevan B <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org, daniel@ffwll.ch
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Nov 10, 2021 at 01:25:50AM +0530, Jeevan B wrote:
-> Change testcase design so that it avoids new subtest for each block position.
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+When IGT was made multi-device-aware, various functions had the device
+fd parameter added, but that didn't get added to documentation.
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Also clean a couple of typos.
 
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+---
+ lib/igt_debugfs.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-> ---
->  tests/i915/kms_psr2_sf.c | 26 +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
-> 
-> diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-> index dca2d030..7f88b514 100644
-> --- a/tests/i915/kms_psr2_sf.c
-> +++ b/tests/i915/kms_psr2_sf.c
-> @@ -582,9 +582,9 @@ igt_main
->  	}
->  
->  	/* Verify primary plane selective fetch */
-> -	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
-> -		igt_describe("Test that selective fetch works on primary plane");
-> -		igt_subtest_f("primary-%s-sf-dmg-area-%d", op_str(data.op), i) {
-> +	igt_describe("Test that selective fetch works on primary plane");
-> +	igt_subtest_f("primary-%s-sf-dmg-area", op_str(data.op)) {
-> +		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
->  			data.damage_area_count = i;
->  			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
->  			prepare(&data);
-> @@ -594,9 +594,9 @@ igt_main
->  	}
->  
->  	/* Verify overlay plane selective fetch */
-> -	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
-> -		igt_describe("Test that selective fetch works on overlay plane");
-> -		igt_subtest_f("overlay-%s-sf-dmg-area-%d", op_str(data.op), i) {
-> +	igt_describe("Test that selective fetch works on overlay plane");
-> +	igt_subtest_f("overlay-%s-sf-dmg-area", op_str(data.op)) {
-> +		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
->  			data.damage_area_count = i;
->  			data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
->  			prepare(&data);
-> @@ -618,9 +618,9 @@ igt_main
->  	/* Only for overlay plane */
->  	data.op = PLANE_MOVE;
->  	/* Verify overlay plane move selective fetch */
-> -	for (i = POS_TOP_LEFT; i <= POS_BOTTOM_RIGHT ; i++) {
-> -		igt_describe("Test that selective fetch works on moving overlay plane");
-> -		igt_subtest_f("%s-sf-dmg-area-%d", op_str(data.op), i) {
-> +	igt_describe("Test that selective fetch works on moving overlay plane");
-> +	igt_subtest_f("%s-sf-dmg-area", op_str(data.op)) {
-> +		for (i = POS_TOP_LEFT; i <= POS_BOTTOM_RIGHT ; i++) {
->  			data.pos = i;
->  			data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
->  			prepare(&data);
-> @@ -631,10 +631,10 @@ igt_main
->  
->  	/* Verify primary plane selective fetch with overplay plane blended */
->  	data.op = OVERLAY_PRIM_UPDATE;
-> -	for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
-> -		igt_describe("Test that selective fetch works on primary plane "
-> -			     "with blended overlay plane");
-> -		igt_subtest_f("%s-sf-dmg-area-%d", op_str(data.op), i) {
-> +	igt_describe("Test that selective fetch works on primary plane "
-> +		     "with blended overlay plane");
-> +	igt_subtest_f("%s-sf-dmg-area", op_str(data.op)) {
-> +		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
->  			data.damage_area_count = i;
->  			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
->  			prepare(&data);
-> -- 
-> 2.19.1
-> 
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index a5bb95ca..e6301f18 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -236,7 +236,7 @@ int igt_debugfs_dir(int device)
+ /**
+  * igt_debugfs_connector_dir:
+  * @device: fd of the device
+- * @conn_name: conenctor name
++ * @conn_name: connector name
+  * @mode: mode bits as used by open()
+  *
+  * This opens the debugfs directory corresponding to connector on the device
+@@ -283,6 +283,7 @@ int igt_debugfs_pipe_dir(int device, int pipe, int mode)
+ 
+ /**
+  * igt_debugfs_open:
++ * @device: fd of the device
+  * @filename: name of the debugfs node to open
+  * @mode: mode bits as used by open()
+  *
+@@ -309,6 +310,7 @@ int igt_debugfs_open(int device, const char *filename, int mode)
+ 
+ /**
+  * igt_debugfs_simple_read:
++ * @dir: fd of the debugfs directory
+  * @filename: file name
+  * @buf: buffer where the contents will be stored, allocated by the caller
+  * @size: size of the buffer
+@@ -318,7 +320,7 @@ int igt_debugfs_open(int device, const char *filename, int mode)
+  * first argument.
+  *
+  * Returns:
+- * -errorno on failure or bytes read on success
++ * -errno on failure or bytes read on success
+  */
+ int igt_debugfs_simple_read(int dir, const char *filename, char *buf, int size)
+ {
+@@ -335,6 +337,7 @@ int igt_debugfs_simple_read(int dir, const char *filename, char *buf, int size)
+ 
+ /**
+  * __igt_debugfs_read:
++ * @fd: fd of the device
+  * @filename: file name
+  * @buf: buffer where the contents will be stored, allocated by the caller
+  * @size: size of the buffer
+@@ -353,6 +356,7 @@ void __igt_debugfs_read(int fd, const char *filename, char *buf, int size)
+ 
+ /**
+  * igt_debugfs_search:
++ * @device: fd of the device
+  * @filename: file name
+  * @substring: string to search for in @filename
+  *
+@@ -536,6 +540,7 @@ struct _igt_pipe_crc {
+ 
+ /**
+  * igt_require_pipe_crc:
++ * @fd: fd of the device
+  *
+  * Convenience helper to check whether pipe CRC capturing is supported by the
+  * kernel. Uses igt_skip to automatically skip the test/subtest if this isn't
+@@ -566,6 +571,7 @@ static void igt_hpd_storm_exit_handler(int sig)
+ 
+ /**
+  * igt_hpd_storm_set_threshold:
++ * @drm_fd: fd of the device
+  * @threshold: How many hotplugs per second required to trigger an HPD storm,
+  * or 0 to disable storm detection.
+  *
+@@ -596,6 +602,7 @@ void igt_hpd_storm_set_threshold(int drm_fd, unsigned int threshold)
+ 
+ /**
+  * igt_hpd_storm_reset:
++ * @drm_fd: fd of the device
+  *
+  * Convienence helper to reset HPD storm detection to it's default settings.
+  * If hotplug detection was disabled on any ports due to an HPD storm, it will
+@@ -623,6 +630,7 @@ void igt_hpd_storm_reset(int drm_fd)
+ 
+ /**
+  * igt_hpd_storm_detected:
++ * @drm_fd: fd of the device
+  *
+  * Checks whether or not i915 has detected an HPD interrupt storm on any of the
+  * system's ports.
+@@ -662,6 +670,7 @@ bool igt_hpd_storm_detected(int drm_fd)
+ 
+ /**
+  * igt_require_hpd_storm_ctl:
++ * @drm_fd: fd of the device
+  *
+  * Skips the current test if the system does not have HPD storm detection.
+  *
+@@ -707,6 +716,7 @@ pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
+ 
+ /**
+  * igt_pipe_crc_new:
++ * @fd: fd of the device
+  * @pipe: display pipe to use as source
+  * @source: CRC tap point to use as source
+  *
+@@ -725,6 +735,7 @@ igt_pipe_crc_new(int fd, enum pipe pipe, const char *source)
+ 
+ /**
+  * igt_pipe_crc_new_nonblock:
++ * @fd: fd of the device
+  * @pipe: display pipe to use as source
+  * @source: CRC tap point to use as source
+  *
+@@ -974,7 +985,7 @@ void igt_pipe_crc_get_single(igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+ 
+ /**
+  * igt_pipe_crc_get_current:
+- * @drm_fd: Pointer to drm fd for vblank counter
++ * @drm_fd: drm fd for vblank counter
+  * @pipe_crc: pipe CRC object
+  * @vblank: frame counter value we're looking for
+  * @crc: buffer pointer for the captured CRC value
+@@ -1002,7 +1013,7 @@ igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
+ 
+ /**
+  * igt_pipe_crc_get_current:
+- * @drm_fd: Pointer to drm fd for vblank counter
++ * @drm_fd: drm fd for vblank counter
+  * @pipe_crc: pipe CRC object
+  * @crc: buffer pointer for the captured CRC value
+  *
+@@ -1071,6 +1082,7 @@ void igt_reset_fifo_underrun_reporting(int drm_fd)
+ 
+ /**
+  * igt_drop_caches_has:
++ * @drm_fd: fd of the device
+  * @val: bitmask for DROP_* values
+  *
+  * This queries the debugfs to see if it supports the full set of desired
+@@ -1091,6 +1103,7 @@ bool igt_drop_caches_has(int drm_fd, uint64_t val)
+ 
+ /**
+  * igt_drop_caches_set:
++ * @drm_fd: fd of the device
+  * @val: bitmask for DROP_* values
+  *
+  * This calls the debugfs interface the drm/i915 GEM driver exposes to drop or
+-- 
+2.29.2
