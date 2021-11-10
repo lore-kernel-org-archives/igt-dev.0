@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C751B6EDF0
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Nov 2021 10:35:40 +0000 (UTC)
-Date: Wed, 10 Nov 2021 11:35:36 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211110103536.GA46415@zkempczy-mobl2>
-References: <20211108134746.595247-1-marcin.bernatowicz@linux.intel.com>
+Date: Wed, 10 Nov 2021 13:58:45 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YYuz9dMFO4g/shU4@platvala-desk.ger.corp.intel.com>
+References: <20211109180905.590773-1-robdclark@gmail.com>
+ <20211109180905.590773-2-robdclark@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211108134746.595247-1-marcin.bernatowicz@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/device_reset: remove artificial
- timeout
+In-Reply-To: <20211109180905.590773-2-robdclark@gmail.com>
+Subject: Re: [igt-dev] [PATCH igt 1/3] lib/igt_debugfs: Add helper for
+ writing debugfs files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,48 +19,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com
+To: Rob Clark <robdclark@gmail.com>
+Cc: Rob Clark <robdclark@chromium.org>, linux-arm-msm@vger.kernel.org, Akhil P Oommen <akhilpo@codeaurora.org>, Jordan Crouse <jordan@cosmicpenguin.net>, igt-dev@lists.freedesktop.org, freedreno@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 08, 2021 at 01:47:46PM +0000, Marcin Bernatowicz wrote:
-> Do not use artificial timeout. Let the test fail or finish.
+On Tue, Nov 09, 2021 at 10:09:03AM -0800, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
 > 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
 > ---
->  tests/device_reset.c | 3 ---
->  1 file changed, 3 deletions(-)
+>  lib/igt_debugfs.c | 16 ++++++++++++++++
+>  lib/igt_debugfs.h | 12 ++++++++++++
+>  2 files changed, 28 insertions(+)
 > 
-> diff --git a/tests/device_reset.c b/tests/device_reset.c
-> index 982ba5ef2a..e60d4c7fde 100644
-> --- a/tests/device_reset.c
-> +++ b/tests/device_reset.c
-> @@ -301,8 +301,6 @@ igt_main
->  		set_device_filter(dev_path);
->  
->  		igt_skip_on(!is_sysfs_reset_supported(dev.fds.dev));
-> -
-> -		igt_set_timeout(60, "device reset tests timed out after 60s");
->  	}
->  
->  	igt_describe("Unbinds driver from device, initiates reset"
-> @@ -319,7 +317,6 @@ igt_main
->  	}
->  
->  	igt_fixture {
-> -		igt_reset_timeout();
->  		cleanup_device_fds(&dev);
->  	}
+> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+> index a5bb95ca..39431068 100644
+> --- a/lib/igt_debugfs.c
+> +++ b/lib/igt_debugfs.c
+> @@ -351,6 +351,22 @@ void __igt_debugfs_read(int fd, const char *filename, char *buf, int size)
+>  	close(dir);
 >  }
+>  
+> +/**
+> + * __igt_debugfs_write:
+> + * @filename: file name
+> + * @buf: buffer to be written to the debugfs file
+> + * @size: size of the buffer
+
+I see that we have this mistake in __igt_debugfs_read already but no
+reason to repeat mistakes: Also document the fd parameter.
+
+
+> + *
+> + * This function opens the debugfs file, writes it, then closes the file.
+> + */
+> +void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size)
+> +{
+> +	int dir = igt_debugfs_dir(fd);
+> +
+> +	igt_sysfs_write(dir, filename, buf, size);
+> +	close(dir);
+> +}
+> +
+>  /**
+>   * igt_debugfs_search:
+>   * @filename: file name
+> diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+> index d43ba6c6..249eb56a 100644
+> --- a/lib/igt_debugfs.h
+> +++ b/lib/igt_debugfs.h
+> @@ -40,6 +40,7 @@ int igt_debugfs_pipe_dir(int device, int pipe, int mode);
+>  
+>  int igt_debugfs_open(int fd, const char *filename, int mode);
+>  void __igt_debugfs_read(int fd, const char *filename, char *buf, int size);
+> +void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size);
+>  int igt_debugfs_simple_read(int dir, const char *filename, char *buf, int size);
+>  bool igt_debugfs_search(int fd, const char *filename, const char *substring);
+>  
+> @@ -54,6 +55,17 @@ bool igt_debugfs_search(int fd, const char *filename, const char *substring);
+>  #define igt_debugfs_read(fd, filename, buf) \
+>  		__igt_debugfs_read(fd, (filename), (buf), sizeof(buf))
+>  
+> +/**
+> + * igt_debugfs_write:
+> + * @filename: name of the debugfs file
+> + * @buf: buffer to be written to the debugfs file
+> + *
+> + * This is just a convenience wrapper for __igt_debugfs_read. See its
+> + * documentation.
+
+Same here regarding the fd parameter as above. Also copypaste mistake
+with s/debugfs_read/debugfs_write/.
+
+
+-- 
+Petri Latvala
+
+
+> + */
+> +#define igt_debugfs_write(fd, filename, buf) \
+> +		__igt_debugfs_write(fd, (filename), (buf), sizeof(buf))
+> +
+>  /*
+>   * Pipe CRC
+>   */
 > -- 
-> 2.30.2
+> 2.31.1
 > 
-
-Ok, we've discussed about this - if other vendors will complain 
-in the future we will revert and skip setting this timeout on i915.
-So:
-
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
