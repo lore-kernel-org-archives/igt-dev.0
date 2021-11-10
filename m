@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DDDF6E15E
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Nov 2021 13:18:00 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 296066E15E
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Nov 2021 13:17:47 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Wed, 10 Nov 2021 14:17:29 +0100
-Message-Id: <20211110131729.54135-3-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20211110131729.54135-1-zbigniew.kempczynski@intel.com>
-References: <20211110131729.54135-1-zbigniew.kempczynski@intel.com>
+Date: Wed, 10 Nov 2021 14:17:27 +0100
+Message-Id: <20211110131729.54135-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/intel-ci/fast-feedback: Add
- gem_lmem_swapping@basic to BAT
+Subject: [igt-dev] [PATCH i-g-t 0/2] Upstream gem_lmem_swapping
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,26 +21,23 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add "basic" subtest to BAT to verify early lmem swapping is working
-on discrete.
+Address review comments from Maarten + add "basic" to BAT
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+v2: fix seed handling when more process are involved in creating
+    and filling objects
+    add igt_describe()
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index fa5006d2e..eac6d1b38 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -34,6 +34,7 @@ igt@gem_flink_basic@double-flink
- igt@gem_flink_basic@flink-lifetime
- igt@gem_huc_copy@huc-copy
- igt@gem_linear_blits@basic
-+igt@gem_lmem_swapping@basic
- igt@gem_mmap@basic
- igt@gem_mmap_gtt@basic
- igt@gem_render_linear_blits@basic
+CQ Tang (1):
+  tests/i915/gem_lmem_swapping: Add the gem_lmem_swapping test
+
+Zbigniew Kempczyński (1):
+  tests/intel-ci/fast-feedback: Add gem_lmem_swapping@basic to BAT
+
+ tests/i915/gem_lmem_swapping.c        | 551 ++++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   1 +
+ tests/meson.build                     |   1 +
+ 3 files changed, 553 insertions(+)
+ create mode 100644 tests/i915/gem_lmem_swapping.c
+
 -- 
 2.26.0
