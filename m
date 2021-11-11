@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE8496E1BD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7A6B6E0EF
  for <igt-dev@lists.freedesktop.org>; Thu, 11 Nov 2021 21:37:06 +0000 (UTC)
 From: Matthew Brost <matthew.brost@intel.com>
-Date: Thu, 11 Nov 2021 13:31:24 -0800
-Message-Id: <20211111213124.2433-3-matthew.brost@intel.com>
+Date: Thu, 11 Nov 2021 13:31:23 -0800
+Message-Id: <20211111213124.2433-2-matthew.brost@intel.com>
 In-Reply-To: <20211111213124.2433-1-matthew.brost@intel.com>
 References: <20211111213124.2433-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] i915/gem_exec_balancer: Test parallel execbuf
+Subject: [igt-dev] [PATCH 1/2] i915_drm.h sync with drm-next
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,654 +22,351 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic parallel execbuf submission test which more or less just
-submits the same BB in loop a which does an atomic increment to a memory
-location. The memory location is checked at the end for the correct
-value. Different sections use various IOCTL options (e.g. fences,
-location of BBs, etc...).
+Also delete PXP defines / structures from i915_drm_local.h.
 
-In addition to above sections, an additional section ensure the ordering
-of parallel submission by submitting a spinning batch to 1 individual
-engine, submit a parallel execbuf to all engines instances within the
-class, verify none on parallel execbuf make to hardware, release
-spinner, and finally verify everything has completed.
-
-The parallel-ordering section assumes default timeslice / preemption
-timeout values. If these values are changed the test may fail.
-
-v2:
- (Daniele)
-  - Add assert to ensure parallel & load_balance both not set in ctx lib
-  - s/count/expected/g in check_bo()
-  - use existing query library functions
-  - clean up bb_per_execbuf / count usage
-  - drop dead loop
-  - add comment for parallel-ordering
-  - don't declare loop variables inside loop
-v3:
- (Daniele)
-  - Read timeslice from sysfs
-v4:
- (Daniele)
-  - Add comment in timeslice sysfs function
+Taken from 806acd381960 ("Merge tag 'amd-drm-fixes-5.16-2021-11-03' of https://gitlab.freedesktop.org/agd5f/linux into drm-next")
 
 Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- lib/intel_ctx.c                |  30 +-
- lib/intel_ctx.h                |   2 +
- lib/intel_reg.h                |   5 +
- tests/i915/gem_exec_balancer.c | 490 +++++++++++++++++++++++++++++++++
- 4 files changed, 526 insertions(+), 1 deletion(-)
+ include/drm-uapi/i915_drm.h | 242 +++++++++++++++++++++++++++++++++++-
+ lib/i915/i915_drm_local.h   |  13 --
+ 2 files changed, 241 insertions(+), 14 deletions(-)
 
-diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
-index f28c15544..e19a54a89 100644
---- a/lib/intel_ctx.c
-+++ b/lib/intel_ctx.c
-@@ -83,6 +83,7 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
- {
- 	uint64_t ext_root = 0;
- 	I915_DEFINE_CONTEXT_ENGINES_LOAD_BALANCE(balance, GEM_MAX_ENGINES);
-+	I915_DEFINE_CONTEXT_ENGINES_PARALLEL_SUBMIT(parallel, GEM_MAX_ENGINES);
- 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, GEM_MAX_ENGINES);
- 	struct drm_i915_gem_context_create_ext_setparam engines_param, vm_param;
- 	struct drm_i915_gem_context_create_ext_setparam persist_param;
-@@ -117,7 +118,31 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
- 		unsigned num_logical_engines;
- 		memset(&engines, 0, sizeof(engines));
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index c788a1ab4..9c9e1afa6 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -1522,6 +1522,12 @@ struct drm_i915_gem_caching {
+ #define I915_TILING_NONE	0
+ #define I915_TILING_X		1
+ #define I915_TILING_Y		2
++/*
++ * Do not add new tiling types here.  The I915_TILING_* values are for
++ * de-tiling fence registers that no longer exist on modern platforms.  Although
++ * the hardware may support new types of tiling in general (e.g., Tile4), we
++ * do not need to add them to the uapi that is specific to now-defunct ioctls.
++ */
+ #define I915_TILING_LAST	I915_TILING_Y
  
--		if (cfg->load_balance) {
-+		igt_assert(!(cfg->parallel && cfg->load_balance));
-+
-+		if (cfg->parallel) {
-+			memset(&parallel, 0, sizeof(parallel));
-+
-+			num_logical_engines = 1;
-+
-+			parallel.base.name =
-+				I915_CONTEXT_ENGINES_EXT_PARALLEL_SUBMIT;
-+
-+			engines.engines[0].engine_class =
-+				I915_ENGINE_CLASS_INVALID;
-+			engines.engines[0].engine_instance =
-+				I915_ENGINE_CLASS_INVALID_NONE;
-+
-+			parallel.num_siblings = cfg->num_engines;
-+			parallel.width = cfg->width;
-+			for (i = 0; i < cfg->num_engines * cfg->width; i++) {
-+				igt_assert_eq(cfg->engines[0].engine_class,
-+					      cfg->engines[i].engine_class);
-+				parallel.engines[i] = cfg->engines[i];
-+			}
-+
-+			engines.extensions = to_user_pointer(&parallel);
-+		} else if (cfg->load_balance) {
- 			memset(&balance, 0, sizeof(balance));
+ #define I915_BIT_6_SWIZZLE_NONE		0
+@@ -1824,6 +1830,7 @@ struct drm_i915_gem_context_param {
+  * Extensions:
+  *   i915_context_engines_load_balance (I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE)
+  *   i915_context_engines_bond (I915_CONTEXT_ENGINES_EXT_BOND)
++ *   i915_context_engines_parallel_submit (I915_CONTEXT_ENGINES_EXT_PARALLEL_SUBMIT)
+  */
+ #define I915_CONTEXT_PARAM_ENGINES	0xa
  
- 			/* In this case, the first engine is the virtual
-@@ -127,6 +152,9 @@ __context_create_cfg(int fd, const intel_ctx_cfg_t *cfg, uint32_t *ctx_id)
- 			igt_assert(cfg->num_engines + 1 <= GEM_MAX_ENGINES);
- 			num_logical_engines = cfg->num_engines + 1;
- 
-+			balance.base.name =
-+				I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE;
-+
- 			engines.engines[0].engine_class =
- 				I915_ENGINE_CLASS_INVALID;
- 			engines.engines[0].engine_instance =
-diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
-index 9649f6d96..89c65fcd3 100644
---- a/lib/intel_ctx.h
-+++ b/lib/intel_ctx.h
-@@ -46,7 +46,9 @@ typedef struct intel_ctx_cfg {
- 	uint32_t vm;
- 	bool nopersist;
- 	bool load_balance;
-+	bool parallel;
- 	unsigned int num_engines;
-+	unsigned int width;
- 	struct i915_engine_class_instance engines[GEM_MAX_ENGINES];
- } intel_ctx_cfg_t;
- 
-diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index c447525a0..44b0d480f 100644
---- a/lib/intel_reg.h
-+++ b/lib/intel_reg.h
-@@ -2642,6 +2642,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- 
- #define STATE3D_COLOR_FACTOR	((0x3<<29)|(0x1d<<24)|(0x01<<16))
- 
-+/* Atomics */
-+#define MI_ATOMIC			((0x2f << 23) | 2)
-+#define   MI_ATOMIC_INLINE_DATA         (1 << 18)
-+#define   MI_ATOMIC_ADD                 (0x7 << 8)
-+
- /* Batch */
- #define MI_BATCH_BUFFER		((0x30 << 23) | 1)
- #define MI_BATCH_BUFFER_START	(0x31 << 23)
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index e4e5cda4a..cc07a5a99 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -25,8 +25,10 @@
- #include <sched.h>
- #include <sys/ioctl.h>
- #include <sys/signal.h>
-+#include <poll.h>
- 
- #include "i915/gem.h"
-+#include "i915/gem_engine_topology.h"
- #include "i915/gem_create.h"
- #include "i915/gem_vm.h"
- #include "igt.h"
-@@ -2752,6 +2754,407 @@ static void nohangcheck(int i915)
- 	close(params);
- }
- 
-+static void check_bo(int i915, uint32_t handle, unsigned int expected,
-+		     bool wait)
-+{
-+	uint32_t *map;
-+
-+	map = gem_mmap__cpu(i915, handle, 0, 4096, PROT_READ);
-+	if (wait)
-+		gem_set_domain(i915, handle, I915_GEM_DOMAIN_CPU,
-+			       I915_GEM_DOMAIN_CPU);
-+	igt_assert_eq(map[0], expected);
-+	munmap(map, 4096);
-+}
-+
-+static struct drm_i915_query_engine_info *query_engine_info(int i915)
-+{
-+	struct drm_i915_query_engine_info *engines;
-+
-+#define QUERY_SIZE	0x4000
-+	engines = malloc(QUERY_SIZE);
-+	igt_assert(engines);
-+	memset(engines, 0, QUERY_SIZE);
-+	igt_assert(!__gem_query_engines(i915, engines, QUERY_SIZE));
-+#undef QUERY_SIZE
-+
-+	return engines;
-+}
-+
-+/* This function only works if siblings contains all instances of a class */
-+static void logical_sort_siblings(int i915,
-+				  struct i915_engine_class_instance *siblings,
-+				  unsigned int count)
-+{
-+	struct i915_engine_class_instance *sorted;
-+	struct drm_i915_query_engine_info *engines;
-+	unsigned int i, j;
-+
-+	sorted = calloc(count, sizeof(*sorted));
-+	igt_assert(sorted);
-+
-+	engines = query_engine_info(i915);
-+
-+	for (j = 0; j < count; ++j) {
-+		for (i = 0; i < engines->num_engines; ++i) {
-+			if (siblings[j].engine_class ==
-+			    engines->engines[i].engine.engine_class &&
-+			    siblings[j].engine_instance ==
-+			    engines->engines[i].engine.engine_instance) {
-+				uint16_t logical_instance =
-+					engines->engines[i].logical_instance;
-+
-+				igt_assert(logical_instance < count);
-+				igt_assert(!sorted[logical_instance].engine_class);
-+				igt_assert(!sorted[logical_instance].engine_instance);
-+
-+				sorted[logical_instance] = siblings[j];
-+				break;
-+			}
-+		}
-+		igt_assert(i != engines->num_engines);
-+	}
-+
-+	memcpy(siblings, sorted, sizeof(*sorted) * count);
-+	free(sorted);
-+	free(engines);
-+}
-+
-+#define PARALLEL_BB_FIRST		(0x1 << 0)
-+#define PARALLEL_OUT_FENCE		(0x1 << 1)
-+#define PARALLEL_IN_FENCE		(0x1 << 2)
-+#define PARALLEL_SUBMIT_FENCE		(0x1 << 3)
-+#define PARALLEL_CONTEXTS		(0x1 << 4)
-+#define PARALLEL_VIRTUAL		(0x1 << 5)
-+
-+static void parallel_thread(int i915, unsigned int flags,
-+			    struct i915_engine_class_instance *siblings,
-+			    unsigned int count, unsigned int bb_per_execbuf)
-+{
-+	const intel_ctx_t *ctx = NULL;
-+	int n, i, j, fence = 0;
-+	uint32_t batch[16];
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	struct drm_i915_gem_exec_object2 obj[32];
-+#define PARALLEL_BB_LOOP_COUNT	512
-+	const intel_ctx_t *ctxs[PARALLEL_BB_LOOP_COUNT];
-+	uint32_t target_bo_idx = 0;
-+	uint32_t first_bb_idx = 1;
-+	intel_ctx_cfg_t cfg;
-+
-+	igt_assert(bb_per_execbuf < 32);
-+
-+	if (flags & PARALLEL_BB_FIRST) {
-+		target_bo_idx = bb_per_execbuf;
-+		first_bb_idx = 0;
-+	}
-+
-+	igt_assert(count >= bb_per_execbuf);
-+	memset(&cfg, 0, sizeof(cfg));
-+	cfg.parallel = true;
-+	cfg.num_engines = count / bb_per_execbuf;
-+	cfg.width = bb_per_execbuf;
-+	if (flags & PARALLEL_VIRTUAL) {
-+		for (i = 0; i < cfg.width; ++i)
-+			for (j = 0; j < cfg.num_engines; ++j)
-+				memcpy(cfg.engines + i * cfg.num_engines + j,
-+				       siblings + j * cfg.width + i,
-+				       sizeof(*siblings));
-+	} else {
-+		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
-+	}
-+	ctx = intel_ctx_create(i915, &cfg);
-+
-+	i = 0;
-+	batch[i] = MI_ATOMIC | MI_ATOMIC_INLINE_DATA |
-+		MI_ATOMIC_ADD;
-+#define TARGET_BO_OFFSET	(0x1 << 16)
-+	batch[++i] = TARGET_BO_OFFSET;
-+	batch[++i] = 0;
-+	batch[++i] = 1;
-+	batch[++i] = MI_BATCH_BUFFER_END;
-+
-+	memset(obj, 0, sizeof(obj));
-+	obj[target_bo_idx].offset = TARGET_BO_OFFSET;
-+	obj[target_bo_idx].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+	obj[target_bo_idx].handle = gem_create(i915, 4096);
-+
-+	for (i = first_bb_idx; i < bb_per_execbuf + first_bb_idx; ++i) {
-+		obj[i].handle = gem_create(i915, 4096);
-+		gem_write(i915, obj[i].handle, 0, batch,
-+			  sizeof(batch));
-+	}
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.buffer_count = bb_per_execbuf + 1;
-+	execbuf.flags |= I915_EXEC_HANDLE_LUT;
-+	if (flags & PARALLEL_BB_FIRST)
-+		execbuf.flags |= I915_EXEC_BATCH_FIRST;
-+	if (flags & PARALLEL_OUT_FENCE)
-+		execbuf.flags |= I915_EXEC_FENCE_OUT;
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.rsvd1 = ctx->id;
-+
-+	for (n = 0; n < PARALLEL_BB_LOOP_COUNT; ++n) {
-+		execbuf.flags &= ~0x3full;
-+		gem_execbuf_wr(i915, &execbuf);
-+
-+		if (flags & PARALLEL_OUT_FENCE) {
-+			igt_assert_eq(sync_fence_wait(execbuf.rsvd2 >> 32,
-+						      1000), 0);
-+			igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
-+
-+			if (fence)
-+				close(fence);
-+			fence = execbuf.rsvd2 >> 32;
-+
-+			if (flags & PARALLEL_SUBMIT_FENCE) {
-+				execbuf.flags |=
-+					I915_EXEC_FENCE_SUBMIT;
-+				execbuf.rsvd2 >>= 32;
-+			} else if (flags &  PARALLEL_IN_FENCE) {
-+				execbuf.flags |=
-+					I915_EXEC_FENCE_IN;
-+				execbuf.rsvd2 >>= 32;
-+			} else {
-+				execbuf.rsvd2 = 0;
-+			}
-+		}
-+
-+		if (flags & PARALLEL_CONTEXTS) {
-+			ctxs[n] = ctx;
-+			ctx = intel_ctx_create(i915, &cfg);
-+			execbuf.rsvd1 = ctx->id;
-+		}
-+	}
-+	if (fence)
-+		close(fence);
-+
-+	check_bo(i915, obj[target_bo_idx].handle,
-+		 bb_per_execbuf * PARALLEL_BB_LOOP_COUNT, true);
-+
-+	intel_ctx_destroy(i915, ctx);
-+	for (i = 0; flags & PARALLEL_CONTEXTS &&
-+	     i < PARALLEL_BB_LOOP_COUNT; ++i) {
-+		intel_ctx_destroy(i915, ctxs[i]);
-+	}
-+	for (i = 0; i < bb_per_execbuf + 1; ++i)
-+		gem_close(i915, obj[i].handle);
-+}
-+
-+static void parallel(int i915, unsigned int flags)
-+{
-+	int class;
-+
-+	for (class = 0; class < 32; class++) {
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int count, bb_per_execbuf;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (!siblings)
-+			continue;
-+
-+		if (count < 2) {
-+			free(siblings);
-+			continue;
-+		}
-+
-+		logical_sort_siblings(i915, siblings, count);
-+		bb_per_execbuf = count;
-+
-+		parallel_thread(i915, flags, siblings,
-+				count, bb_per_execbuf);
-+
-+		free(siblings);
-+	}
-+}
-+
-+static void parallel_balancer(int i915, unsigned int flags)
-+{
-+	int class;
-+
-+	for (class = 0; class < 32; class++) {
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int bb_per_execbuf;
-+		unsigned int count;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (!siblings)
-+			continue;
-+
-+		if (count < 4) {
-+			free(siblings);
-+			continue;
-+		}
-+
-+		logical_sort_siblings(i915, siblings, count);
-+
-+		for (bb_per_execbuf = 2; count / bb_per_execbuf > 1;
-+		     ++bb_per_execbuf) {
-+			igt_fork(child, count / bb_per_execbuf)
-+				parallel_thread(i915,
-+						flags | PARALLEL_VIRTUAL,
-+						siblings,
-+						count,
-+						bb_per_execbuf);
-+			igt_waitchildren();
-+		}
-+
-+		free(siblings);
-+	}
-+}
-+
-+static bool fence_busy(int fence)
-+{
-+	return poll(&(struct pollfd){fence, POLLIN}, 1, 0) == 0;
-+}
+@@ -1846,6 +1853,55 @@ struct drm_i915_gem_context_param {
+  * attempted to use it, never re-use this context param number.
+  */
+ #define I915_CONTEXT_PARAM_RINGSIZE	0xc
 +
 +/*
-+ * Always reading from engine instance 0, with GuC submission the values are the
-+ * same across all instances. Execlists they may differ but quite unlikely they
-+ * would be and if they are we can live with this.
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT:
++ *
++ * Mark that the context makes use of protected content, which will result
++ * in the context being invalidated when the protected content session is.
++ * Given that the protected content session is killed on suspend, the device
++ * is kept awake for the lifetime of a protected context, so the user should
++ * make sure to dispose of them once done.
++ * This flag can only be set at context creation time and, when set to true,
++ * must be preceded by an explicit setting of I915_CONTEXT_PARAM_RECOVERABLE
++ * to false. This flag can't be set to true in conjunction with setting the
++ * I915_CONTEXT_PARAM_BANNABLE flag to false. Creation example:
++ *
++ * .. code-block:: C
++ *
++ *	struct drm_i915_gem_context_create_ext_setparam p_protected = {
++ *		.base = {
++ *			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++ *		},
++ *		.param = {
++ *			.param = I915_CONTEXT_PARAM_PROTECTED_CONTENT,
++ *			.value = 1,
++ *		}
++ *	};
++ *	struct drm_i915_gem_context_create_ext_setparam p_norecover = {
++ *		.base = {
++ *			.name = I915_CONTEXT_CREATE_EXT_SETPARAM,
++ *			.next_extension = to_user_pointer(&p_protected),
++ *		},
++ *		.param = {
++ *			.param = I915_CONTEXT_PARAM_RECOVERABLE,
++ *			.value = 0,
++ *		}
++ *	};
++ *	struct drm_i915_gem_context_create_ext create = {
++ *		.flags = I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
++ *		.extensions = to_user_pointer(&p_norecover);
++ *	};
++ *
++ *	ctx_id = gem_context_create_ext(drm_fd, &create);
++ *
++ * In addition to the normal failure cases, setting this flag during context
++ * creation can result in the following errors:
++ *
++ * -ENODEV: feature not available
++ * -EPERM: trying to mark a recoverable or not bannable context as protected
 + */
-+static unsigned int get_timeslice(int i915,
-+				  struct i915_engine_class_instance engine)
-+{
-+	unsigned int val;
-+
-+	switch (engine.engine_class) {
-+	case I915_ENGINE_CLASS_RENDER:
-+		gem_engine_property_scanf(i915, "rcs0", "timeslice_duration_ms",
-+					  "%d", &val);
-+		break;
-+	case I915_ENGINE_CLASS_COPY:
-+		gem_engine_property_scanf(i915, "bcs0", "timeslice_duration_ms",
-+					  "%d", &val);
-+		break;
-+	case I915_ENGINE_CLASS_VIDEO:
-+		gem_engine_property_scanf(i915, "vcs0", "timeslice_duration_ms",
-+					  "%d", &val);
-+		break;
-+	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
-+		gem_engine_property_scanf(i915, "vecs0", "timeslice_duration_ms",
-+					  "%d", &val);
-+		break;
-+	}
-+
-+	return val;
-+}
-+
-+/*
-+ * Ensure a parallel submit actually runs on HW in parallel by putting on a
-+ * spinner on 1 engine, doing a parallel submit, and parallel submit is blocked
-+ * behind spinner.
++#define I915_CONTEXT_PARAM_PROTECTED_CONTENT    0xd
+ /* Must be kept compact -- no holes and well documented */
+ 
+ 	__u64 value;
+@@ -2049,6 +2105,135 @@ struct i915_context_engines_bond {
+ 	struct i915_engine_class_instance engines[N__]; \
+ } __attribute__((packed)) name__
+ 
++/**
++ * struct i915_context_engines_parallel_submit - Configure engine for
++ * parallel submission.
++ *
++ * Setup a slot in the context engine map to allow multiple BBs to be submitted
++ * in a single execbuf IOCTL. Those BBs will then be scheduled to run on the GPU
++ * in parallel. Multiple hardware contexts are created internally in the i915 to
++ * run these BBs. Once a slot is configured for N BBs only N BBs can be
++ * submitted in each execbuf IOCTL and this is implicit behavior e.g. The user
++ * doesn't tell the execbuf IOCTL there are N BBs, the execbuf IOCTL knows how
++ * many BBs there are based on the slot's configuration. The N BBs are the last
++ * N buffer objects or first N if I915_EXEC_BATCH_FIRST is set.
++ *
++ * The default placement behavior is to create implicit bonds between each
++ * context if each context maps to more than 1 physical engine (e.g. context is
++ * a virtual engine). Also we only allow contexts of same engine class and these
++ * contexts must be in logically contiguous order. Examples of the placement
++ * behavior are described below. Lastly, the default is to not allow BBs to be
++ * preempted mid-batch. Rather insert coordinated preemption points on all
++ * hardware contexts between each set of BBs. Flags could be added in the future
++ * to change both of these default behaviors.
++ *
++ * Returns -EINVAL if hardware context placement configuration is invalid or if
++ * the placement configuration isn't supported on the platform / submission
++ * interface.
++ * Returns -ENODEV if extension isn't supported on the platform / submission
++ * interface.
++ *
++ * .. code-block:: none
++ *
++ *	Examples syntax:
++ *	CS[X] = generic engine of same class, logical instance X
++ *	INVALID = I915_ENGINE_CLASS_INVALID, I915_ENGINE_CLASS_INVALID_NONE
++ *
++ *	Example 1 pseudo code:
++ *	set_engines(INVALID)
++ *	set_parallel(engine_index=0, width=2, num_siblings=1,
++ *		     engines=CS[0],CS[1])
++ *
++ *	Results in the following valid placement:
++ *	CS[0], CS[1]
++ *
++ *	Example 2 pseudo code:
++ *	set_engines(INVALID)
++ *	set_parallel(engine_index=0, width=2, num_siblings=2,
++ *		     engines=CS[0],CS[2],CS[1],CS[3])
++ *
++ *	Results in the following valid placements:
++ *	CS[0], CS[1]
++ *	CS[2], CS[3]
++ *
++ *	This can be thought of as two virtual engines, each containing two
++ *	engines thereby making a 2D array. However, there are bonds tying the
++ *	entries together and placing restrictions on how they can be scheduled.
++ *	Specifically, the scheduler can choose only vertical columns from the 2D
++ *	array. That is, CS[0] is bonded to CS[1] and CS[2] to CS[3]. So if the
++ *	scheduler wants to submit to CS[0], it must also choose CS[1] and vice
++ *	versa. Same for CS[2] requires also using CS[3].
++ *	VE[0] = CS[0], CS[2]
++ *	VE[1] = CS[1], CS[3]
++ *
++ *	Example 3 pseudo code:
++ *	set_engines(INVALID)
++ *	set_parallel(engine_index=0, width=2, num_siblings=2,
++ *		     engines=CS[0],CS[1],CS[1],CS[3])
++ *
++ *	Results in the following valid and invalid placements:
++ *	CS[0], CS[1]
++ *	CS[1], CS[3] - Not logically contiguous, return -EINVAL
 + */
-+static void parallel_ordering(int i915, unsigned int flags)
-+{
-+	int class;
++struct i915_context_engines_parallel_submit {
++	/**
++	 * @base: base user extension.
++	 */
++	struct i915_user_extension base;
 +
-+	for (class = 0; class < 32; class++) {
-+		const intel_ctx_t *ctx = NULL, *spin_ctx = NULL;
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int count;
-+		int i = 0, fence = 0;
-+		uint32_t batch[16];
-+		struct drm_i915_gem_execbuffer2 execbuf;
-+		struct drm_i915_gem_exec_object2 obj[32];
-+		igt_spin_t *spin;
-+		intel_ctx_cfg_t cfg;
++	/**
++	 * @engine_index: slot for parallel engine
++	 */
++	__u16 engine_index;
 +
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (!siblings)
-+			continue;
++	/**
++	 * @width: number of contexts per parallel engine or in other words the
++	 * number of batches in each submission
++	 */
++	__u16 width;
 +
-+		if (count < 2) {
-+			free(siblings);
-+			continue;
-+		}
++	/**
++	 * @num_siblings: number of siblings per context or in other words the
++	 * number of possible placements for each submission
++	 */
++	__u16 num_siblings;
 +
-+		logical_sort_siblings(i915, siblings, count);
++	/**
++	 * @mbz16: reserved for future use; must be zero
++	 */
++	__u16 mbz16;
 +
-+		memset(&cfg, 0, sizeof(cfg));
-+		cfg.parallel = true;
-+		cfg.num_engines = 1;
-+		cfg.width = count;
-+		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
++	/**
++	 * @flags: all undefined flags must be zero, currently not defined flags
++	 */
++	__u64 flags;
 +
-+		ctx = intel_ctx_create(i915, &cfg);
++	/**
++	 * @mbz64: reserved for future use; must be zero
++	 */
++	__u64 mbz64[3];
 +
-+		batch[i] = MI_ATOMIC | MI_ATOMIC_INLINE_DATA |
-+			MI_ATOMIC_ADD;
-+		batch[++i] = TARGET_BO_OFFSET;
-+		batch[++i] = 0;
-+		batch[++i] = 1;
-+		batch[++i] = MI_BATCH_BUFFER_END;
++	/**
++	 * @engines: 2-d array of engine instances to configure parallel engine
++	 *
++	 * length = width (i) * num_siblings (j)
++	 * index = j + i * num_siblings
++	 */
++	struct i915_engine_class_instance engines[0];
 +
-+		memset(obj, 0, sizeof(obj));
-+		obj[0].offset = TARGET_BO_OFFSET;
-+		obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[0].handle = gem_create(i915, 4096);
++} __attribute__((packed));
 +
-+		for (i = 1; i < count + 1; ++i) {
-+			obj[i].handle = gem_create(i915, 4096);
-+			gem_write(i915, obj[i].handle, 0, batch,
-+				  sizeof(batch));
-+		}
++#define I915_DEFINE_CONTEXT_ENGINES_PARALLEL_SUBMIT(name__, N__) struct { \
++	struct i915_user_extension base; \
++	__u16 engine_index; \
++	__u16 width; \
++	__u16 num_siblings; \
++	__u16 mbz16; \
++	__u64 flags; \
++	__u64 mbz64[3]; \
++	struct i915_engine_class_instance engines[N__]; \
++} __attribute__((packed)) name__
 +
-+		memset(&execbuf, 0, sizeof(execbuf));
-+		execbuf.buffers_ptr = to_user_pointer(obj);
-+		execbuf.buffer_count = count + 1;
-+		execbuf.flags |= I915_EXEC_HANDLE_LUT;
-+		execbuf.flags |= I915_EXEC_NO_RELOC;
-+		execbuf.flags |= I915_EXEC_FENCE_OUT;
-+		execbuf.buffers_ptr = to_user_pointer(obj);
-+		execbuf.rsvd1 = ctx->id;
+ /**
+  * DOC: Context Engine Map uAPI
+  *
+@@ -2108,6 +2293,7 @@ struct i915_context_param_engines {
+ 	__u64 extensions; /* linked chain of extension blocks, 0 terminates */
+ #define I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE 0 /* see i915_context_engines_load_balance */
+ #define I915_CONTEXT_ENGINES_EXT_BOND 1 /* see i915_context_engines_bond */
++#define I915_CONTEXT_ENGINES_EXT_PARALLEL_SUBMIT 2 /* see i915_context_engines_parallel_submit */
+ 	struct i915_engine_class_instance engines[0];
+ } __attribute__((packed));
+ 
+@@ -2726,14 +2912,20 @@ struct drm_i915_engine_info {
+ 
+ 	/** @flags: Engine flags. */
+ 	__u64 flags;
++#define I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE		(1 << 0)
+ 
+ 	/** @capabilities: Capabilities of this engine. */
+ 	__u64 capabilities;
+ #define I915_VIDEO_CLASS_CAPABILITY_HEVC		(1 << 0)
+ #define I915_VIDEO_AND_ENHANCE_CLASS_CAPABILITY_SFC	(1 << 1)
+ 
++	/** @logical_instance: Logical instance of engine */
++	__u16 logical_instance;
 +
-+		/* Block parallel submission */
-+		spin_ctx = ctx_create_engines(i915, siblings, count);
-+		spin = __igt_spin_new(i915,
-+				      .ctx = spin_ctx,
-+				      .engine = 0,
-+				      .flags = IGT_SPIN_FENCE_OUT |
-+				      IGT_SPIN_NO_PREEMPTION);
+ 	/** @rsvd1: Reserved fields. */
+-	__u64 rsvd1[4];
++	__u16 rsvd1[3];
++	/** @rsvd2: Reserved fields. */
++	__u64 rsvd2[3];
+ };
+ 
+ /**
+@@ -2979,8 +3171,12 @@ struct drm_i915_gem_create_ext {
+ 	 *
+ 	 * For I915_GEM_CREATE_EXT_MEMORY_REGIONS usage see
+ 	 * struct drm_i915_gem_create_ext_memory_regions.
++	 *
++	 * For I915_GEM_CREATE_EXT_PROTECTED_CONTENT usage see
++	 * struct drm_i915_gem_create_ext_protected_content.
+ 	 */
+ #define I915_GEM_CREATE_EXT_MEMORY_REGIONS 0
++#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT 1
+ 	__u64 extensions;
+ };
+ 
+@@ -3038,6 +3234,50 @@ struct drm_i915_gem_create_ext_memory_regions {
+ 	__u64 regions;
+ };
+ 
++/**
++ * struct drm_i915_gem_create_ext_protected_content - The
++ * I915_OBJECT_PARAM_PROTECTED_CONTENT extension.
++ *
++ * If this extension is provided, buffer contents are expected to be protected
++ * by PXP encryption and require decryption for scan out and processing. This
++ * is only possible on platforms that have PXP enabled, on all other scenarios
++ * using this extension will cause the ioctl to fail and return -ENODEV. The
++ * flags parameter is reserved for future expansion and must currently be set
++ * to zero.
++ *
++ * The buffer contents are considered invalid after a PXP session teardown.
++ *
++ * The encryption is guaranteed to be processed correctly only if the object
++ * is submitted with a context created using the
++ * I915_CONTEXT_PARAM_PROTECTED_CONTENT flag. This will also enable extra checks
++ * at submission time on the validity of the objects involved.
++ *
++ * Below is an example on how to create a protected object:
++ *
++ * .. code-block:: C
++ *
++ *      struct drm_i915_gem_create_ext_protected_content protected_ext = {
++ *              .base = { .name = I915_GEM_CREATE_EXT_PROTECTED_CONTENT },
++ *              .flags = 0,
++ *      };
++ *      struct drm_i915_gem_create_ext create_ext = {
++ *              .size = PAGE_SIZE,
++ *              .extensions = (uintptr_t)&protected_ext,
++ *      };
++ *
++ *      int err = ioctl(fd, DRM_IOCTL_I915_GEM_CREATE_EXT, &create_ext);
++ *      if (err) ...
++ */
++struct drm_i915_gem_create_ext_protected_content {
++	/** @base: Extension link. See struct i915_user_extension. */
++	struct i915_user_extension base;
++	/** @flags: reserved for future usage, currently MBZ */
++	__u32 flags;
++};
 +
-+		/* Wait for spinners to start */
-+		usleep(5 * 10000);
-+		igt_assert(fence_busy(spin->out_fence));
++/* ID of the protected content session managed by i915 when PXP is active */
++#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
 +
-+		/* Submit parallel execbuf */
-+		gem_execbuf_wr(i915, &execbuf);
-+		fence = execbuf.rsvd2 >> 32;
-+
-+		/*
-+		 * Wait long enough for timeslcing to kick in but not
-+		 * preemption. Spinner + parallel execbuf should be
-+		 * active. Assuming default timeslice / preemption values, if
-+		 * these are changed it is possible for the test to fail.
-+		 */
-+		usleep(get_timeslice(i915, siblings[0]) * 2);
-+		igt_assert(fence_busy(spin->out_fence));
-+		igt_assert(fence_busy(fence));
-+		check_bo(i915, obj[0].handle, 0, false);
-+
-+		/*
-+		 * End spinner and wait for spinner + parallel execbuf
-+		 * to compelte.
-+		 */
-+		igt_spin_end(spin);
-+		igt_assert_eq(sync_fence_wait(fence, 1000), 0);
-+		igt_assert_eq(sync_fence_status(fence), 1);
-+		check_bo(i915, obj[0].handle, count, true);
-+		close(fence);
-+
-+		/* Clean up */
-+		intel_ctx_destroy(i915, ctx);
-+		intel_ctx_destroy(i915, spin_ctx);
-+		for (i = 0; i < count + 1; ++i)
-+			gem_close(i915, obj[i].handle);
-+		free(siblings);
-+		igt_spin_free(i915, spin);
-+	}
-+}
-+
- static bool has_persistence(int i915)
- {
- 	struct drm_i915_gem_context_param p = {
-@@ -2786,6 +3189,61 @@ static bool has_load_balancer(int i915)
- 	return err == 0;
+ #if defined(__cplusplus)
  }
+ #endif
+diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
+index 74b85c853..9e82c9688 100644
+--- a/lib/i915/i915_drm_local.h
++++ b/lib/i915/i915_drm_local.h
+@@ -21,19 +21,6 @@ extern "C" {
+  */
+ #define I915_ENGINE_CLASS_COMPUTE 4
  
-+static bool has_logical_mapping(int i915)
-+{
-+	struct drm_i915_query_engine_info *engines;
-+	unsigned int i;
-+
-+	engines = query_engine_info(i915);
-+
-+	for (i = 0; i < engines->num_engines; ++i)
-+		if (!(engines->engines[i].flags &
-+		     I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE)) {
-+			free(engines);
-+			return false;
-+		}
-+
-+	free(engines);
-+	return true;
-+}
-+
-+static bool has_parallel_execbuf(int i915)
-+{
-+	intel_ctx_cfg_t cfg = {
-+		.parallel = true,
-+		.num_engines = 1,
-+	};
-+	const intel_ctx_t *ctx = NULL;
-+	int err;
-+
-+	for (int class = 0; class < 32; class++) {
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int count;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (!siblings)
-+			continue;
-+
-+		if (count < 2) {
-+			free(siblings);
-+			continue;
-+		}
-+
-+		logical_sort_siblings(i915, siblings, count);
-+
-+		cfg.width = count;
-+		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
-+		free(siblings);
-+
-+		err = __intel_ctx_create(i915, &cfg, &ctx);
-+		intel_ctx_destroy(i915, ctx);
-+
-+		return err == 0;
-+	}
-+
-+	return false;
-+}
-+
- igt_main
- {
- 	int i915 = -1;
-@@ -2886,6 +3344,38 @@ igt_main
- 		igt_stop_hang_detector();
- 	}
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(has_logical_mapping(i915));
-+			igt_require(has_parallel_execbuf(i915));
-+		}
-+
-+		igt_subtest("parallel-ordering")
-+			parallel_ordering(i915, 0);
-+
-+		igt_subtest("parallel")
-+			parallel(i915, 0);
-+
-+		igt_subtest("parallel-bb-first")
-+			parallel(i915, PARALLEL_BB_FIRST);
-+
-+		igt_subtest("parallel-out-fence")
-+			parallel(i915, PARALLEL_OUT_FENCE);
-+
-+		igt_subtest("parallel-keep-in-fence")
-+			parallel(i915, PARALLEL_OUT_FENCE | PARALLEL_IN_FENCE);
-+
-+		igt_subtest("parallel-keep-submit-fence")
-+			parallel(i915, PARALLEL_OUT_FENCE |
-+				 PARALLEL_SUBMIT_FENCE);
-+
-+		igt_subtest("parallel-contexts")
-+			parallel(i915, PARALLEL_CONTEXTS);
-+
-+		igt_subtest("parallel-balancer")
-+			parallel_balancer(i915, 0);
-+	}
-+
- 	igt_subtest_group {
- 		igt_hang_t  hang;
- 
+-/* Needed for PXP */
+-#define I915_GEM_CREATE_EXT_PROTECTED_CONTENT  1
+-#define I915_CONTEXT_PARAM_PROTECTED_CONTENT   0xd
+-#define I915_PROTECTED_CONTENT_DEFAULT_SESSION 0xf
+-
+-/* Needed for PXP */
+-struct drm_i915_gem_create_ext_protected_content {
+-	/** @base: Extension link. See struct i915_user_extension. */
+-	struct i915_user_extension base;
+-	/** @flags: reserved for future usage, currently MBZ */
+-	__u32 flags;
+-};
+-
+ #if defined(__cplusplus)
+ }
+ #endif
 -- 
 2.33.1
