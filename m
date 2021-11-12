@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 12 Nov 2021 12:10:49 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YY49qR9ZqHCxbMSh@platvala-desk.ger.corp.intel.com>
-References: <20211110184213.649787-1-robdclark@gmail.com>
- <20211110184213.649787-4-robdclark@gmail.com>
- <CAF6AEGsh4ow448Y5xtt2rnX=zcFCQvqk9Mf59AB_ifmw9mm0Lw@mail.gmail.com>
- <YY0IrRC0ZtkQvxJd@platvala-desk.ger.corp.intel.com>
- <CAF6AEGtn+Y_nQj6GYQrhc+8RyR+NNc5778DsMUrtqPsvetanzQ@mail.gmail.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BFB16ECC6
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Nov 2021 12:43:44 +0000 (UTC)
+From: venkata.sai.patnana@intel.com
+Date: Fri, 12 Nov 2021 17:57:52 +0530
+Message-Id: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAF6AEGtn+Y_nQj6GYQrhc+8RyR+NNc5778DsMUrtqPsvetanzQ@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH igt v2 3/3] msm: Add recovery tests
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc: To test modeset on
+ highest mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,316 +18,311 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rob Clark <robdclark@gmail.com>
-Cc: Rob Clark <robdclark@chromium.org>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, Akhil P Oommen <akhilpo@codeaurora.org>, Jordan Crouse <jordan@cosmicpenguin.net>, igt-dev@lists.freedesktop.org, freedreno <freedreno@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 11, 2021 at 09:35:16AM -0800, Rob Clark wrote:
-> On Thu, Nov 11, 2021 at 4:13 AM Petri Latvala <petri.latvala@intel.com> w=
-rote:
-> >
-> > On Wed, Nov 10, 2021 at 11:00:41AM -0800, Rob Clark wrote:
-> > > On Wed, Nov 10, 2021 at 10:37 AM Rob Clark <robdclark@gmail.com> wrot=
-e:
-> > > >
-> > > > From: Rob Clark <robdclark@chromium.org>
-> > > >
-> > > > Add tests to exercise:
-> > > >
-> > > > 1. sw hangcheck timeout
-> > > > 2. gpu fault (hang) recovery
-> > > > 3. iova fault recovery
-> > > >
-> > > > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > > > ---
-> > > >  lib/igt_msm.h        |   3 +
-> > > >  tests/meson.build    |   1 +
-> > > >  tests/msm_recovery.c | 172 +++++++++++++++++++++++++++++++++++++++=
-++++
-> > > >  3 files changed, 176 insertions(+)
-> > > >  create mode 100644 tests/msm_recovery.c
-> > > >
-> > > > diff --git a/lib/igt_msm.h b/lib/igt_msm.h
-> > > > index 1a66c806..421d23ed 100644
-> > > > --- a/lib/igt_msm.h
-> > > > +++ b/lib/igt_msm.h
-> > > > @@ -97,6 +97,9 @@ enum adreno_pm4_packet_type {
-> > > >
-> > > >  enum adreno_pm4_type3_packets {
-> > > >         CP_NOP =3D 16,
-> > > > +       CP_WAIT_MEM_GTE =3D 20,
-> > > > +       CP_WAIT_REG_MEM =3D 60,
-> > > > +       CP_MEM_WRITE =3D 61,
-> > > >  };
-> > > >
-> > > >  static inline unsigned
-> > > > diff --git a/tests/meson.build b/tests/meson.build
-> > > > index 0af3e03a..166e3494 100644
-> > > > --- a/tests/meson.build
-> > > > +++ b/tests/meson.build
-> > > > @@ -60,6 +60,7 @@ test_progs =3D [
-> > > >         'kms_vrr',
-> > > >         'kms_writeback',
-> > > >         'meta_test',
-> > > > +       'msm_recovery',
-> > > >         'msm_submit',
-> > > >         'panfrost_get_param',
-> > > >         'panfrost_gem_new',
-> > > > diff --git a/tests/msm_recovery.c b/tests/msm_recovery.c
-> > > > new file mode 100644
-> > > > index 00000000..b71326b8
-> > > > --- /dev/null
-> > > > +++ b/tests/msm_recovery.c
-> > > > @@ -0,0 +1,172 @@
-> > > > +/*
-> > > > + * Copyright =A9 2021 Google, Inc.
-> > > > + *
-> > > > + * Permission is hereby granted, free of charge, to any person obt=
-aining a
-> > > > + * copy of this software and associated documentation files (the "=
-Software"),
-> > > > + * to deal in the Software without restriction, including without =
-limitation
-> > > > + * the rights to use, copy, modify, merge, publish, distribute, su=
-blicense,
-> > > > + * and/or sell copies of the Software, and to permit persons to wh=
-om the
-> > > > + * Software is furnished to do so, subject to the following condit=
-ions:
-> > > > + *
-> > > > + * The above copyright notice and this permission notice (includin=
-g the next
-> > > > + * paragraph) shall be included in all copies or substantial porti=
-ons of the
-> > > > + * Software.
-> > > > + *
-> > > > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,=
- EXPRESS OR
-> > > > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHAN=
-TABILITY,
-> > > > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EV=
-ENT SHALL
-> > > > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAG=
-ES OR OTHER
-> > > > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,=
- ARISING
-> > > > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR O=
-THER DEALINGS
-> > > > + * IN THE SOFTWARE.
-> > > > + */
-> > > > +
-> > > > +#include <sys/poll.h>
-> > > > +
-> > > > +#include "igt.h"
-> > > > +#include "igt_msm.h"
-> > > > +
-> > > > +static struct msm_device *dev;
-> > > > +static struct msm_bo *scratch_bo;
-> > > > +static uint32_t *scratch;
-> > > > +
-> > > > +/*
-> > > > + * Helpers for cmdstream packet building:
-> > > > + */
-> > > > +
-> > > > +static void
-> > > > +wait_mem_gte(struct msm_cmd *cmd, uint32_t offset_dwords, uint32_t=
- ref)
-> > > > +{
-> > > > +       msm_cmd_pkt7(cmd, CP_WAIT_MEM_GTE, 4);
-> > > > +       msm_cmd_emit(cmd, 0);                              /* RESER=
-VED */
-> > > > +       msm_cmd_bo  (cmd, scratch_bo, offset_dwords * 4);  /* POLL_=
-ADDR_LO/HI */
-> > > > +       msm_cmd_emit(cmd, ref);                            /* REF */
-> > > > +}
-> > > > +
-> > > > +static void
-> > > > +mem_write(struct msm_cmd *cmd, uint32_t offset_dwords, uint32_t va=
-l)
-> > > > +{
-> > > > +       msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
-> > > > +       msm_cmd_bo  (cmd, scratch_bo, offset_dwords * 4);  /* ADDR_=
-LO/HI */
-> > > > +       msm_cmd_emit(cmd, val);                            /* VAL */
-> > > > +}
-> > > > +
-> > > > +/*
-> > > > + * Helper to wait on a fence-fd:
-> > > > + */
-> > > > +static void
-> > > > +wait_and_close(int fence_fd)
-> > > > +{
-> > > > +       poll(&(struct pollfd){fence_fd, POLLIN}, 1, -1);
-> > > > +       close(fence_fd);
-> > > > +}
-> > > > +
-> > > > +/*
-> > > > + * Helper for hang tests.  Emits multiple submits, with one in the=
- middle
-> > > > + * that triggers a fault, and confirms that the submits before and=
- after
-> > > > + * the faulting one execute properly, ie. that the driver properly=
- manages
-> > > > + * to recover and re-queue the submits after the faulting submit;
-> > > > + */
-> > > > +static void
-> > > > +do_hang_test(struct msm_pipe *pipe)
-> > > > +{
-> > > > +       struct msm_cmd *cmds[16];
-> > > > +       int fence_fds[ARRAY_SIZE(cmds)];
-> > > > +
-> > > > +       memset(scratch, 0, 0x1000);
-> > > > +
-> > > > +       for (unsigned i =3D 0; i < ARRAY_SIZE(cmds); i++) {
-> > > > +               struct msm_cmd *cmd =3D igt_msm_cmd_new(pipe, 0x100=
-0);
-> > > > +
-> > > > +               cmds[i] =3D cmd;
-> > > > +
-> > > > +               /*
-> > > > +                * Emit a packet to wait for scratch[0] to be >=3D 1
-> > > > +                *
-> > > > +                * This lets us force the GPU to wait until all the=
- cmdstream is
-> > > > +                * queued up.
-> > > > +                */
-> > > > +               wait_mem_gte(cmd, 0, 1);
-> > > > +
-> > > > +               if (i =3D=3D 10) {
-> > > > +                       msm_cmd_emit(cmd, 0xdeaddead);
-> > > > +               }
-> > > > +
-> > > > +               /* Emit a packet to write scratch[1+i] =3D 2+i: */
-> > > > +               mem_write(cmd, 1+i, 2+i);
-> > > > +       }
-> > > > +
-> > > > +       for (unsigned i =3D 0; i < ARRAY_SIZE(cmds); i++) {
-> > > > +               fence_fds[i] =3D igt_msm_cmd_submit(cmds[i]);
-> > > > +       }
-> > > > +
-> > > > +       usleep(10000);
-> > > > +
-> > > > +       /* Let the WAIT_MEM_GTE complete: */
-> > > > +       scratch[0] =3D 1;
-> > > > +
-> > > > +       for (unsigned i =3D 0; i < ARRAY_SIZE(cmds); i++) {
-> > > > +               wait_and_close(fence_fds[i]);
-> > > > +               igt_msm_cmd_free(cmds[i]);
-> > > > +               if (i =3D=3D 10)
-> > > > +                       continue;
-> > > > +               igt_assert_eq(scratch[1+i], 2+i);
-> > > > +       }
-> > > > +}
-> > > > +
-> > > > +/*
-> > > > + * Tests for drm/msm hangcheck, recovery, and fault handling
-> > > > + */
-> > > > +
-> > > > +igt_main
-> > > > +{
-> > > > +       static struct msm_pipe *pipe =3D NULL;
-> > > > +
-> > > > +       igt_fixture {
-> > > > +               dev =3D igt_msm_dev_open();
-> > > > +               pipe =3D igt_msm_pipe_open(dev, 0);
-> > > > +               scratch_bo =3D igt_msm_bo_new(dev, 0x1000, MSM_BO_W=
-C);
-> > > > +               scratch =3D igt_msm_bo_map(scratch_bo);
-> > > > +       }
-> > > > +
-> > > > +       igt_describe("Test sw hangcheck handling");
-> > > > +       igt_subtest("hangcheck") {
-> > > > +               igt_require(dev->gen >=3D 6);
-> > > > +
-> > > > +               /* Disable hw hang detection to force fallback to s=
-w hangcheck: */
-> > > > +               igt_debugfs_write(dev->fd, "disable_err_irq", "Y");
-> > >
-> > > note that this depends on [1].. not sure if there is any constraint
-> > > about landing igt tests before some debugfs they depend on lands
-> > > upstream on the kernel side?
-> > >
-> > > [1] https://patchwork.freedesktop.org/patch/462625/?series=3D96725&re=
-v=3D1
-> >
-> > The usual ordering dependency of kernel vs userspace, where both sides
-> > are reviewed and ready to go before anything lands. But then the
-> > actual merging with IGT is not so strict, IGT can go in first as long
-> > as there's a consensus that the required kernel changes are going in
-> > in finite time.
-> >
-> > That said, IGT is supposed to do the right thing for kernels some time
-> > back, especially LTS kernels, so this test needs to properly handle
-> > the debugfs file missing regardless of merging order.
-> >
-> > Some kind of igt_require check for the debugfs file takes care of
-> > that.
-> >
->=20
-> Hmm, unless I'm overlooking something, I guess we need a helper to
-> check for the existence of a debugfs file?
+From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
 
-Yeah =3D(
+force dsc enable supports 5k abvoe resoultions on DP.
+Bigjoiner does not support force bpp.
+Update to pick the highest mode rather the default mode.
 
-Unless the file supports reading.
+Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
 
+Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+---
+ tests/i915/kms_dsc.c | 165 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 109 insertions(+), 56 deletions(-)
 
---=20
-Petri Latvala
-
-
->=20
-> BR,
-> -R
->=20
-> >
-> > --
-> > Petri Latvala
-> >
-> >
-> >
-> >
-> > >
-> > > BR,
-> > > -R
-> > >
-> > > > +
-> > > > +               do_hang_test(pipe);
-> > > > +
-> > > > +               igt_debugfs_write(dev->fd, "disable_err_irq", "N");
-> > > > +       }
-> > > > +
-> > > > +       igt_describe("Test hw fault handling");
-> > > > +       igt_subtest("gpu-fault") {
-> > > > +               igt_require(dev->gen >=3D 6);
-> > > > +
-> > > > +               do_hang_test(pipe);
-> > > > +       }
-> > > > +
-> > > > +       igt_describe("Test iova fault handling");
-> > > > +       igt_subtest("iova-fault") {
-> > > > +               struct msm_cmd *cmd;
-> > > > +
-> > > > +               igt_require(dev->gen >=3D 6);
-> > > > +
-> > > > +               cmd =3D igt_msm_cmd_new(pipe, 0x1000);
-> > > > +
-> > > > +               msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
-> > > > +               msm_cmd_emit(cmd, 0xdeaddead);           /* ADDR_LO=
- */
-> > > > +               msm_cmd_emit(cmd, 0x1);                  /* ADDR_HI=
- */
-> > > > +               msm_cmd_emit(cmd, 0x123);                /* VAL */
-> > > > +
-> > > > +               wait_and_close(igt_msm_cmd_submit(cmd));
-> > > > +       }
-> > > > +
-> > > > +       igt_fixture {
-> > > > +               igt_msm_bo_free(scratch_bo);
-> > > > +               igt_msm_pipe_close(pipe);
-> > > > +               igt_msm_dev_close(dev);
-> > > > +       }
-> > > > +}
-> > > > --
-> > > > 2.31.1
-> > > >
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index dcfe8b9669..a257ffa930 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -63,8 +63,8 @@ typedef struct {
+ 	drmModeEncoder *encoder;
+ 	int crtc;
+ 	int compression_bpp;
++	int n_pipes;
+ 	enum pipe pipe;
+-	char conn_name[128];
+ } data_t;
+ 
+ bool force_dsc_en_orig;
+@@ -79,7 +79,7 @@ static void force_dsc_enable(data_t *data)
+ {
+ 	int ret;
+ 
+-	igt_debug ("Forcing DSC enable on %s\n", data->conn_name);
++	igt_debug ("Forcing DSC enable on %s\n", data->output->name);
+ 	ret = igt_force_dsc_enable(data->drm_fd,
+ 				      data->output->config.connector);
+ 	igt_assert_f(ret > 0, "debugfs_write failed");
+@@ -90,7 +90,7 @@ static void force_dsc_enable_bpp(data_t *data)
+ 	int ret;
+ 
+ 	igt_debug("Forcing DSC BPP to %d on %s\n",
+-		  data->compression_bpp, data->conn_name);
++		  data->compression_bpp, data->output->name);
+ 	ret = igt_force_dsc_enable_bpp(data->drm_fd,
+ 					  data->output->config.connector,
+ 					  data->compression_bpp);
+@@ -151,41 +151,55 @@ static bool is_external_panel(drmModeConnector *connector)
+ 	}
+ }
+ 
+-static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
++static int sort_drm_modes(const void *a, const void *b)
++{
++	const drmModeModeInfo *mode1 = a, *mode2 = b;
++
++	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
++}
++
++static igt_output_t *check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+ {
+ 	drmModeConnector *connector;
+ 	igt_output_t *output;
+-
+ 	connector = drmModeGetConnectorCurrent(data->drm_fd,
+ 					       drmConnector);
+ 	if (connector->connection != DRM_MODE_CONNECTED)
+-		return false;
++		return NULL;
+ 
+ 	output = igt_output_from_connector(&data->display, connector);
+-	sprintf(data->conn_name, "%s-%d",
+-		kmstest_connector_type_str(connector->connector_type),
+-		connector->connector_type_id);
+ 
++        /* As dsc supports >= 5k modes, we need to supress lower
++         * resolutions.
++	 */
++	qsort(output->config.connector->modes,
++			output->config.connector->count_modes,
++			sizeof(drmModeModeInfo),
++			sort_drm_modes);
++	if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
++			output->config.connector->modes[0].hdisplay < 5120) {
++		return NULL;
++	}
+ 	if (!igt_is_dsc_supported(data->drm_fd, connector)) {
+ 		igt_debug("DSC not supported on connector %s\n",
+-			  data->conn_name);
+-		return false;
++			  output->name);
++		return NULL;
+ 	}
+ 	if (is_external_panel(connector) &&
+ 	    !igt_is_fec_supported(data->drm_fd, connector)) {
+ 		igt_debug("DSC cannot be enabled without FEC on %s\n",
+-			  data->conn_name);
+-		return false;
++			  output->name);
++		return NULL;
+ 	}
+-	data->output = output;
+-	return true;
++	return output;
+ }
+ 
+ /*
+  * Re-probe connectors and do a modeset with DSC
+  *
+  */
+-static void update_display(data_t *data, enum dsc_test_type test_type)
++static void update_display(data_t *data, enum dsc_test_type test_type,
++			   unsigned int drm_format)
+ {
+ 	bool enabled;
+ 	igt_plane_t *primary;
+@@ -194,7 +208,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 	igt_output_set_pipe(data->output, PIPE_NONE);
+ 	igt_display_commit(&data->display);
+ 
+-	igt_debug("DSC is supported on %s\n", data->conn_name);
++	igt_debug("DSC is supported on %s\n", data->output->name);
+ 	save_force_dsc_en(data);
+ 	force_dsc_enable(data);
+ 	if (test_type == test_dsc_compression_bpp) {
+@@ -203,8 +217,15 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 	}
+ 
+ 	igt_output_set_pipe(data->output, data->pipe);
++	qsort(data->output->config.connector->modes,
++			data->output->config.connector->count_modes,
++			sizeof(drmModeModeInfo),
++			sort_drm_modes);
++	igt_output_override_mode(data->output, &data->output->config.connector->modes[0]);
+ 	primary = igt_output_get_plane_type(data->output,
+ 					    DRM_PLANE_TYPE_PRIMARY);
++	igt_skip_on_f(!igt_plane_has_format_mod(primary, drm_format, DRM_FORMAT_MOD_LINEAR),
++		      "plane %s format does not have support \n", igt_format_str(drm_format));
+ 
+ 	/* Now set the output to the desired mode */
+ 	igt_plane_set_fb(primary, &data->fb_test_pattern);
+@@ -219,52 +240,59 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 	enabled = igt_is_dsc_enabled(data->drm_fd,
+ 					data->output->config.connector);
+ 	restore_force_dsc_en();
+-	if (test_type == test_dsc_compression_bpp) {
+-		igt_debug("Rest compression BPP \n");
+-		data->compression_bpp = 0;
+-		force_dsc_enable_bpp(data);
+-	}
++
++	igt_debug("Reset compression BPP \n");
++	data->compression_bpp = 0;
++	force_dsc_enable_bpp(data);
+ 
+ 	igt_assert_f(enabled,
+ 		     "Default DSC enable failed on Connector: %s Pipe: %s\n",
+-		     data->conn_name,
++		     data->output->name,
+ 		     kmstest_pipe_name(data->pipe));
+ }
+ 
+-static void run_test(data_t *data, enum dsc_test_type test_type)
++static void run_test(data_t *data, enum dsc_test_type test_type,
++		     unsigned int drm_format)
+ {
+ 	enum pipe pipe;
++	int i=0;
+ 	char test_name[10];
+-	drmModeModeInfo *mode = igt_output_get_mode(data->output);
+ 
+-	igt_create_pattern_fb(data->drm_fd, mode->hdisplay,
+-			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
++	igt_skip_on_f (test_type == test_dsc_compression_bpp &&
++			data->output->config.connector->modes[0].hdisplay >= 5120,
++			"bigjoiner does not support force bpp\n");
++
++	igt_create_pattern_fb(data->drm_fd,
++			      data->output->config.connector->modes[0].hdisplay,
++			      data->output->config.connector->modes[0].vdisplay,
++			      drm_format,
+ 			      DRM_FORMAT_MOD_LINEAR,
+ 			      &data->fb_test_pattern);
+ 
+ 	for_each_pipe(&data->display, pipe) {
+-		uint32_t devid = intel_get_drm_devid(data->drm_fd);
++		if (i++ < (data->n_pipes - 1)) {
++			uint32_t devid = intel_get_drm_devid(data->drm_fd);
+ 
+-		if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+-		    pipe == PIPE_A && IS_GEN11(devid)) {
+-			igt_debug("DSC not supported on Pipe A on external DP in Gen11 platforms\n");
+-			continue;
+-		}
++			if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
++			    pipe == PIPE_A && IS_GEN11(devid)) {
++				igt_debug("DSC not supported on Pipe A on external DP in Gen11 platforms\n");
++				continue;
++			}
+ 
+-		snprintf(test_name, sizeof(test_name), "-%dbpp", data->compression_bpp);
+-		if (igt_pipe_connector_valid(pipe, data->output)) {
+-			data->pipe = pipe;
++			snprintf(test_name, sizeof(test_name), "-%dbpp", data->compression_bpp);
++			if (igt_pipe_connector_valid(pipe, data->output)) {
++				data->pipe = pipe;
+ 
+-			igt_dynamic_f("%s-pipe-%s%s", data->output->name,
+-					kmstest_pipe_name(pipe),
+-					(test_type == test_dsc_compression_bpp) ?
+-					 test_name : "")
+-				update_display(data, test_type);
+-		}
++				igt_dynamic_f("%s-pipe-%s%s", data->output->name,
++						kmstest_pipe_name(pipe),
++						(test_type == test_dsc_compression_bpp) ?
++						test_name : "")
++				update_display(data, test_type, drm_format);
++			}
+ 
+-		if (test_type == test_dsc_compression_bpp)
+-			break;
++			if (test_type == test_dsc_compression_bpp)
++				break;
++		}
+ 	}
+ 
+ 	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
+@@ -275,7 +303,17 @@ igt_main
+ 	data_t data = {};
+ 	drmModeRes *res;
+ 	drmModeConnector *connector = NULL;
+-	int i, j;
++	igt_output_t *outputs[IGT_MAX_PIPES] = {};
++	igt_output_t *output;
++	int i, j, supported_connectors = 0;
++	struct {
++		unsigned int bpc;
++		int format;
++		char format_str[20];
++	} test_list[] = {
++		{8, DRM_FORMAT_XRGB8888, "XRGB8888"},
++		{10, DRM_FORMAT_XRGB2101010, "XRGB2101010"},
++	};
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
+@@ -283,14 +321,30 @@ igt_main
+ 		igt_install_exit_handler(kms_dsc_exit_handler);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_require(res = drmModeGetResources(data.drm_fd));
+-	}
+-	igt_subtest_with_dynamic("basic-dsc-enable") {
+ 		for (j = 0; j < res->count_connectors; j++) {
+-			if (!check_dsc_on_connector(&data, res->connectors[j]))
+-				continue;
+-			run_test(&data, test_basic_dsc_enable);
++			output = check_dsc_on_connector(&data, res->connectors[j]);
++
++			if (output)
++				outputs[supported_connectors++] = output;
+ 		}
++		igt_require_f(supported_connectors, "No DSC supported panel connected.\n");
++		data.n_pipes = 0;
++		for_each_pipe(&data.display, i)
++			data.n_pipes++;
++
+ 	}
++
++	for (i=0; i < ARRAY_SIZE(test_list); i++) {
++		igt_subtest_with_dynamic_f("basic-dsc-enable-%s",
++					   test_list[i].format_str) {
++			for (j = 0; j < supported_connectors; j++) {
++				data.output = outputs[j];
++				run_test(&data, test_basic_dsc_enable,
++					 test_list[i].format);
++			}
++		}
++	}
++
+ 	/* currently we are validating compression bpp on XRGB8888 format only */
+ 	igt_subtest_with_dynamic("XRGB8888-dsc-compression") {
+ 		uint32_t bpp_list[] = {
+@@ -302,13 +356,12 @@ igt_main
+ 
+ 		igt_require(intel_display_ver(data.devid) >= 13);
+ 
+-		for (j = 0; j < res->count_connectors; j++) {
+-			if (!check_dsc_on_connector(&data, res->connectors[j]))
+-				continue;
+-
++		for (j = 0; j < supported_connectors; j++) {
++			data.output = outputs[j];
+ 			for (i = 0; i < ARRAY_SIZE(bpp_list); i++) {
+ 				data.compression_bpp = bpp_list[i];
+-				run_test(&data, test_dsc_compression_bpp);
++				run_test(&data, test_dsc_compression_bpp,
++					 DRM_FORMAT_XRGB8888);
+ 			}
+ 		}
+ 	}
+-- 
+2.25.1
