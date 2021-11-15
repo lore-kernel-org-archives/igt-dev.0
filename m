@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FBE76E087
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Nov 2021 15:24:18 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B515E6E120
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Nov 2021 15:45:37 +0000 (UTC)
 From: venkata.sai.patnana@intel.com
-Date: Mon, 15 Nov 2021 20:38:17 +0530
-Message-Id: <20211115150817.14831-1-venkata.sai.patnana@intel.com>
+Date: Mon, 15 Nov 2021 20:59:38 +0530
+Message-Id: <20211115152938.21269-1-venkata.sai.patnana@intel.com>
 In-Reply-To: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
 References: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc: To test modeset on dsc
- with highest mode
+Subject: [igt-dev] [PATCH v2 i-g-t] tests/i915/kms_dsc: To test modeset on
+ dsc with highest mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,6 +30,8 @@ Bigjoiner does not support force bpp also due to bigjoiner
 limitation pipe D we are skipping. In this patch,
 changes are done to pick the highest mode rather the default mode.
 
+v2: Updated indentation
+
 Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
 Cc: Karthik B S <karthik.b.s@intel.com>
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
@@ -37,11 +39,11 @@ Cc: Swati Sharma <swati2.sharma@intel.com>
 
 Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
 ---
- tests/i915/kms_dsc.c | 147 +++++++++++++++++++++++++++++--------------
- 1 file changed, 101 insertions(+), 46 deletions(-)
+ tests/i915/kms_dsc.c | 149 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 102 insertions(+), 47 deletions(-)
 
 diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index dcfe8b9669..a8824ed17d 100644
+index dcfe8b9669..dff5ce29d2 100644
 --- a/tests/i915/kms_dsc.c
 +++ b/tests/i915/kms_dsc.c
 @@ -63,8 +63,8 @@ typedef struct {
@@ -99,18 +101,18 @@ index dcfe8b9669..a8824ed17d 100644
 -	sprintf(data->conn_name, "%s-%d",
 -		kmstest_connector_type_str(connector->connector_type),
 -		connector->connector_type_id);
- 
++
 +        /* As dsc supports >= 5k modes, we need to supress lower
 +         * resolutions.
 +	 */
 +	qsort(output->config.connector->modes,
-+			output->config.connector->count_modes,
-+			sizeof(drmModeModeInfo),
-+			sort_drm_modes);
++	      output->config.connector->count_modes,
++	      sizeof(drmModeModeInfo),
++	      sort_drm_modes);
 +	if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
-+			output->config.connector->modes[0].hdisplay < 5120) {
++	    output->config.connector->modes[0].hdisplay < 5120)
 +		return NULL;
-+	}
+ 
  	if (!igt_is_dsc_supported(data->drm_fd, connector)) {
  		igt_debug("DSC not supported on connector %s\n",
 -			  data->conn_name);
@@ -155,9 +157,9 @@ index dcfe8b9669..a8824ed17d 100644
  
  	igt_output_set_pipe(data->output, data->pipe);
 +	qsort(data->output->config.connector->modes,
-+			data->output->config.connector->count_modes,
-+			sizeof(drmModeModeInfo),
-+			sort_drm_modes);
++	      data->output->config.connector->count_modes,
++	      sizeof(drmModeModeInfo),
++	      sort_drm_modes);
 +	igt_output_override_mode(data->output, &data->output->config.connector->modes[0]);
  	primary = igt_output_get_plane_type(data->output,
  					    DRM_PLANE_TYPE_PRIMARY);
@@ -166,9 +168,12 @@ index dcfe8b9669..a8824ed17d 100644
  
  	/* Now set the output to the desired mode */
  	igt_plane_set_fb(primary, &data->fb_test_pattern);
-@@ -219,27 +240,31 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+@@ -217,29 +238,33 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+ 	manual("RGB test pattern without corruption");
+ 
  	enabled = igt_is_dsc_enabled(data->drm_fd,
- 					data->output->config.connector);
+-					data->output->config.connector);
++				     data->output->config.connector);
  	restore_force_dsc_en();
 -	if (test_type == test_dsc_compression_bpp) {
 -		igt_debug("Rest compression BPP \n");
@@ -199,8 +204,8 @@ index dcfe8b9669..a8824ed17d 100644
 -			      mode->vdisplay,
 -			      DRM_FORMAT_XRGB8888,
 +	igt_skip_on_f (test_type == test_dsc_compression_bpp &&
-+			data->output->config.connector->modes[0].hdisplay >= 5120,
-+			"Bigjoiner does not support force bpp\n");
++		       data->output->config.connector->modes[0].hdisplay >= 5120,
++		       "Bigjoiner does not support force bpp\n");
 +
 +	igt_create_pattern_fb(data->drm_fd,
 +			      data->output->config.connector->modes[0].hdisplay,
@@ -224,9 +229,9 @@ index dcfe8b9669..a8824ed17d 100644
 -					 test_name : "")
 -				update_display(data, test_type);
 +		igt_dynamic_f("%s-pipe-%s%s", data->output->name,
-+				kmstest_pipe_name(pipe),
-+				(test_type == test_dsc_compression_bpp) ?
-+				test_name : "") {
++			      kmstest_pipe_name(pipe),
++			      (test_type == test_dsc_compression_bpp) ?
++			      test_name : "") {
 +			igt_require_f((data->output->config.connector->modes[0].hdisplay >= 5120) &&
 +				      (pipe < (data->n_pipes - 1)),
 +				      "pipe-%s not supported due to bigjoiner limitation\n",
