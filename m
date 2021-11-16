@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 476AE6EE45
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Nov 2021 07:41:50 +0000 (UTC)
-From: venkata.sai.patnana@intel.com
-Date: Tue, 16 Nov 2021 12:55:42 +0530
-Message-Id: <20211116072542.11370-1-venkata.sai.patnana@intel.com>
-In-Reply-To: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
-References: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6347821282025981146=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 i-g-t] tests/i915/kms_dsc: To test modeset on
- dsc with highest mode
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 16 Nov 2021 08:33:11 -0000
+Message-ID: <163705159115.28808.8216054703702038133@emeril.freedesktop.org>
+References: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/kms=5Fdsc=3A_To_test_modeset_on_highest_mode_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,163 +16,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: venkata.sai.patnana@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+--===============6347821282025981146==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Force dsc enable supports resolutions above 5K in DP.
-Bigjoiner does not support dsc force bpp, also due to 
-this bigjoiner limitation we need to skip all subtests
-on pipe D. 
+== Series Details ==
 
-This patch will pick the mode with highest resolution 
-rather the default mode.
+Series: tests/i915/kms_dsc: To test modeset on highest mode (rev5)
+URL   : https://patchwork.freedesktop.org/series/96854/
+State : success
 
-v2: Updated indentation
-v3: Split the restructuring the subtests logic. 
+== Summary ==
 
-Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
+CI Bug Log - changes from CI_DRM_10882 -> IGTPW_6401
+====================================================
 
-Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
----
- tests/i915/kms_dsc.c | 66 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 51 insertions(+), 15 deletions(-)
+Summary
+-------
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index dcfe8b9669..a394e81c43 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -63,6 +63,7 @@ typedef struct {
- 	drmModeEncoder *encoder;
- 	int crtc;
- 	int compression_bpp;
-+	int n_pipes;
- 	enum pipe pipe;
- 	char conn_name[128];
- } data_t;
-@@ -151,6 +152,13 @@ static bool is_external_panel(drmModeConnector *connector)
- 	}
- }
- 
-+static int sort_drm_modes(const void *a, const void *b)
-+{
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
-+
-+	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
-+}
-+
- static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
- {
- 	drmModeConnector *connector;
-@@ -162,6 +170,19 @@ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
- 		return false;
- 
- 	output = igt_output_from_connector(&data->display, connector);
-+
-+	/*
-+	 * As dsc supports >= 5k modes, we need to suppress lower
-+	 * resolutions.
-+	 */
-+	qsort(output->config.connector->modes,
-+	      output->config.connector->count_modes,
-+	      sizeof(drmModeModeInfo),
-+	      sort_drm_modes);
-+	if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
-+	    output->config.connector->modes[0].hdisplay < 5120)
-+		return NULL;
-+
- 	sprintf(data->conn_name, "%s-%d",
- 		kmstest_connector_type_str(connector->connector_type),
- 		connector->connector_type_id);
-@@ -203,6 +224,11 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	}
- 
- 	igt_output_set_pipe(data->output, data->pipe);
-+	qsort(data->output->config.connector->modes,
-+			data->output->config.connector->count_modes,
-+			sizeof(drmModeModeInfo),
-+			sort_drm_modes);
-+	igt_output_override_mode(data->output, &data->output->config.connector->modes[0]);
- 	primary = igt_output_get_plane_type(data->output,
- 					    DRM_PLANE_TYPE_PRIMARY);
- 
-@@ -219,11 +245,9 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	enabled = igt_is_dsc_enabled(data->drm_fd,
- 					data->output->config.connector);
- 	restore_force_dsc_en();
--	if (test_type == test_dsc_compression_bpp) {
--		igt_debug("Rest compression BPP \n");
--		data->compression_bpp = 0;
--		force_dsc_enable_bpp(data);
--	}
-+	igt_debug("Reset compression BPP\n");
-+	data->compression_bpp = 0;
-+	force_dsc_enable_bpp(data);
- 
- 	igt_assert_f(enabled,
- 		     "Default DSC enable failed on Connector: %s Pipe: %s\n",
-@@ -235,10 +259,14 @@ static void run_test(data_t *data, enum dsc_test_type test_type)
- {
- 	enum pipe pipe;
- 	char test_name[10];
--	drmModeModeInfo *mode = igt_output_get_mode(data->output);
- 
--	igt_create_pattern_fb(data->drm_fd, mode->hdisplay,
--			      mode->vdisplay,
-+	igt_skip_on_f(test_type == test_dsc_compression_bpp &&
-+		      data->output->config.connector->modes[0].hdisplay >= 5120,
-+		      "bigjoiner does not support force bpp\n");
-+
-+	igt_create_pattern_fb(data->drm_fd,
-+			      data->output->config.connector->modes[0].hdisplay,
-+			      data->output->config.connector->modes[0].vdisplay,
- 			      DRM_FORMAT_XRGB8888,
- 			      DRM_FORMAT_MOD_LINEAR,
- 			      &data->fb_test_pattern);
-@@ -253,16 +281,21 @@ static void run_test(data_t *data, enum dsc_test_type test_type)
- 		}
- 
- 		snprintf(test_name, sizeof(test_name), "-%dbpp", data->compression_bpp);
--		if (igt_pipe_connector_valid(pipe, data->output)) {
-+		if (!igt_pipe_connector_valid(pipe, data->output))
-+			continue;
-+
-+		igt_dynamic_f("%s-pipe-%s%s", data->output->name,
-+			      kmstest_pipe_name(pipe),
-+			      (test_type == test_dsc_compression_bpp) ?
-+			      test_name : "") {
- 			data->pipe = pipe;
-+			update_display(data, test_type);
-+			igt_skip_on_f((data->output->config.connector->modes[0].hdisplay >= 5120) &&
-+				      (pipe  == (data->n_pipes - 1)),
-+				      "pipe-%s not supported due to bigjoiner limitation\n",
-+				      kmstest_pipe_name(pipe));
- 
--			igt_dynamic_f("%s-pipe-%s%s", data->output->name,
--					kmstest_pipe_name(pipe),
--					(test_type == test_dsc_compression_bpp) ?
--					 test_name : "")
--				update_display(data, test_type);
- 		}
--
- 		if (test_type == test_dsc_compression_bpp)
- 			break;
- 	}
-@@ -283,6 +316,9 @@ igt_main
- 		igt_install_exit_handler(kms_dsc_exit_handler);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(res = drmModeGetResources(data.drm_fd));
-+		data.n_pipes = 0;
-+		for_each_pipe(&data.display, i)
-+			data.n_pipes++;
- 	}
- 	igt_subtest_with_dynamic("basic-dsc-enable") {
- 		for (j = 0; j < res->count_connectors; j++) {
--- 
-2.25.1
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/index.html
+
+Participating hosts (37 -> 33)
+------------------------------
+
+  Missing    (4): fi-bsw-cyan fi-icl-u2 bat-dg1-6 bat-dg1-5 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6401 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-1115g4:      [FAIL][1] ([i915#1888]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10882/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [DMESG-WARN][3] ([i915#295]) -> [PASS][4] +12 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10882/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3970]: https://gitlab.freedesktop.org/drm/intel/issues/3970
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6280 -> IGTPW_6401
+
+  CI-20190529: 20190529
+  CI_DRM_10882: f25d09e143c2cdcfdf3de6e17862db8d7296a718 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6401: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/index.html
+  IGT_6280: 246bfd31dba6bf184b26b170d91d72c90a54be6b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/index.html
+
+--===============6347821282025981146==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/kms_dsc: To test modeset on highest mode (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96854/">https://patchwork.freedesktop.org/series/96854/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10882 -&gt; IGTPW_6401</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/index.html</p>
+<h2>Participating hosts (37 -&gt; 33)</h2>
+<p>Missing    (4): fi-bsw-cyan fi-icl-u2 bat-dg1-6 bat-dg1-5 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6401 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10882/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10882/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +12 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6280 -&gt; IGTPW_6401</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10882: f25d09e143c2cdcfdf3de6e17862db8d7296a718 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6401: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6401/index.html<br />
+  IGT_6280: 246bfd31dba6bf184b26b170d91d72c90a54be6b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6347821282025981146==--
