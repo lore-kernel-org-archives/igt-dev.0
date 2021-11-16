@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
- [IPv6:2a00:1450:4864:20::12b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6C076E1BA
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Nov 2021 22:05:48 +0000 (UTC)
-Received: by mail-lf1-x12b.google.com with SMTP id c32so1382530lfv.4
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Nov 2021 14:05:48 -0800 (PST)
-References: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
- <CAJUqKUo8CCxMyxJj5cfKT2DW2yOSU-qiDmn4420e8vuOSi7b3A@mail.gmail.com>
-From: =?UTF-8?Q?Juha-Pekka_Heikkil=c3=a4?= <juhapekka.heikkila@gmail.com>
-Message-ID: <fcf0eaf3-72b0-7b48-5a90-d4c2b244e271@gmail.com>
-Date: Wed, 17 Nov 2021 00:05:45 +0200
+Content-Type: multipart/alternative;
+ boundary="===============4838070973808258592=="
 MIME-Version: 1.0
-In-Reply-To: <CAJUqKUo8CCxMyxJj5cfKT2DW2yOSU-qiDmn4420e8vuOSi7b3A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] amdgpu/amd_mode_switch: Introduce mode
- switch test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 16 Nov 2021 23:28:09 -0000
+Message-ID: <163710528944.28809.7017461850229622019@emeril.freedesktop.org>
+References: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgYW1kZ3B1?=
+ =?utf-8?q?/amd=5Fmode=5Fswitch=3A_Introduce_mode_switch_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,267 +16,304 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
+To: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-I was wondering how is this different from kms_plane_lowres? On 
-kms_plane_lowres is also used crc to check also what's on screen stay good.
+--===============4838070973808258592==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-/Juha-Pekka
+== Series Details ==
 
-Mark Yacoub kirjoitti 16.11.2021 klo 23.29:
-> The test looks pretty generic to me, can we make it a kms_ instead of AMD only?
-> 
-> On Tue, Nov 16, 2021 at 4:00 PM Rodrigo Siqueira
-> <Rodrigo.Siqueira@amd.com> wrote:
->>
->> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
->>
->> Switching between different modes could potentially create pstate
->> warnings if clocks are not being set correctly.
->>
->> The subtest gets the highest and lowest mode supported on the connector
->> and switch between them.
->>
->> Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
->> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
->> ---
->>   tests/amdgpu/amd_mode_switch.c | 210 +++++++++++++++++++++++++++++++++
->>   tests/amdgpu/meson.build       |   1 +
->>   2 files changed, 211 insertions(+)
->>   create mode 100644 tests/amdgpu/amd_mode_switch.c
->>
->> diff --git a/tests/amdgpu/amd_mode_switch.c b/tests/amdgpu/amd_mode_switch.c
->> new file mode 100644
->> index 00000000..270b1b9f
->> --- /dev/null
->> +++ b/tests/amdgpu/amd_mode_switch.c
->> @@ -0,0 +1,210 @@
->> +/*
->> + * Copyright 2021 Advanced Micro Devices, Inc.
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaining a
->> + * copy of this software and associated documentation files (the "Software"),
->> + * to deal in the Software without restriction, including without limitation
->> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
->> + * and/or sell copies of the Software, and to permit persons to whom the
->> + * Software is furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be included in
->> + * all copies or substantial portions of the Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
->> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
->> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
->> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
->> + * OTHER DEALINGS IN THE SOFTWARE.
->> + */
->> +
->> +#include "igt.h"
->> +#include <xf86drmMode.h>
->> +
->> +#define MAX_PIPES 6
->> +
->> +/* Common test data. */
->> +typedef struct data {
->> +       igt_display_t display;
->> +       igt_plane_t *primary[MAX_PIPES];
->> +       igt_output_t *output[MAX_PIPES];
->> +       int fd;
->> +} data_t;
->> +
->> +static void test_init(data_t *data)
->> +{
->> +       igt_display_t *display = &data->display;
->> +       int i;
->> +
->> +       for_each_pipe(display, i) {
->> +               igt_output_t *output = &display->outputs[i];
->> +
->> +               data->primary[i] = igt_pipe_get_plane_type(
->> +                       &data->display.pipes[i], DRM_PLANE_TYPE_PRIMARY);
->> +
->> +               data->output[i] = output;
->> +       }
->> +
->> +       igt_require(data->output[0]);
->> +       igt_display_reset(display);
->> +}
->> +
->> +static void test_fini(data_t *data)
->> +{
->> +       igt_display_t *display = &data->display;
->> +
->> +       igt_display_reset(display);
->> +       igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
->> +}
->> +
->> +/* Forces a mode for a connector. */
->> +static void force_output_mode(data_t *d, igt_output_t *output,
->> +                             const drmModeModeInfo *mode)
->> +{
->> +       /* This allows us to create a virtual sink. */
->> +       if (!igt_output_is_connected(output)) {
->> +               kmstest_force_edid(d->fd, output->config.connector,
->> +                                  igt_kms_get_4k_edid());
->> +
->> +               kmstest_force_connector(d->fd, output->config.connector,
->> +                                       FORCE_CONNECTOR_DIGITAL);
->> +       }
->> +
->> +       igt_output_override_mode(output, mode);
->> +}
->> +
->> +static void run_mode_switch_first_last(data_t *data, int num_pipes)
->> +{
->> +       igt_output_t *output;
->> +       struct igt_fb *buffer1[MAX_PIPES] = { NULL };
->> +       struct igt_fb *buffer2[MAX_PIPES] = { NULL };
->> +       drmModeConnectorPtr conn;
->> +       drmModeModeInfoPtr kmode;
->> +       void *user_data = NULL;
->> +       int i = 0;
->> +       int j = 0;
->> +
->> +       test_init(data);
->> +
->> +       igt_skip_on_f(num_pipes > igt_display_get_n_pipes(&data->display) ||
->> +                             num_pipes > data->display.n_outputs,
->> +                     "ASIC does not have %d outputs/pipes\n", num_pipes);
->> +
->> +       /* First supported mode */
->> +
->> +       for (j = 0; j < num_pipes; j++) {
->> +               output = data->output[j];
->> +               if (!igt_output_is_connected(output))
->> +                       continue;
->> +
->> +               conn = drmModeGetConnector(
->> +                       data->fd, output->config.connector->connector_id);
->> +
->> +               kmode = &conn->modes[0];
->> +               if (buffer1[j] == NULL) {
->> +                       igt_fb_t fb;
->> +                       buffer1[j] = &fb;
->> +                       igt_create_color_fb(data->fd, kmode->hdisplay,
->> +                                           kmode->vdisplay,
->> +                                           DRM_FORMAT_XRGB8888,
->> +                                           DRM_FORMAT_MOD_NONE, 1.f, 0.f,
->> +                                           0.f, buffer1[j]);
->> +               }
->> +               igt_output_set_pipe(output, j);
->> +               force_output_mode(data, output, kmode);
->> +               igt_plane_set_fb(data->primary[j], buffer1[j]);
->> +               drmModeFreeConnector(conn);
->> +       }
->> +
->> +       igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +                                 user_data);
->> +
->> +       /* Last supported mode */
->> +
->> +       for (j = 0; j < num_pipes; j++) {
->> +               output = data->output[j];
->> +               if (!igt_output_is_connected(output))
->> +                       continue;
->> +
->> +               conn = drmModeGetConnector(
->> +                       data->fd, output->config.connector->connector_id);
->> +
->> +               kmode = &conn->modes[conn->count_modes - 1];
->> +               if (buffer2[j] == NULL) {
->> +                       igt_fb_t fb;
->> +                       buffer2[j] = &fb;
->> +                       igt_create_color_fb(data->fd, kmode->hdisplay,
->> +                                           kmode->vdisplay,
->> +                                           DRM_FORMAT_XRGB8888,
->> +                                           DRM_FORMAT_MOD_NONE, 1.f, 0.f,
->> +                                           0.f, buffer2[j]);
->> +               }
->> +               force_output_mode(data, output, kmode);
->> +               igt_plane_set_fb(data->primary[j], buffer2[j]);
->> +               drmModeFreeConnector(conn);
->> +       }
->> +
->> +       igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +                                 user_data);
->> +
->> +       /* First supported again */
->> +       for (j = 0; j < num_pipes; j++) {
->> +               output = data->output[j];
->> +               if (!igt_output_is_connected(output))
->> +                       continue;
->> +
->> +               conn = drmModeGetConnector(
->> +                       data->fd, output->config.connector->connector_id);
->> +
->> +               kmode = &conn->modes[0];
->> +               force_output_mode(data, output, kmode);
->> +               igt_plane_set_fb(data->primary[j], buffer1[j]);
->> +               drmModeFreeConnector(conn);
->> +       }
->> +
->> +       igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +                                 user_data);
->> +
->> +       test_fini(data);
->> +
->> +       for (i = 0; i <= num_pipes; i++) {
->> +               igt_remove_fb(data->fd, buffer1[i]);
->> +               igt_remove_fb(data->fd, buffer2[i]);
->> +       }
->> +}
->> +
->> +IGT_TEST_DESCRIPTION("Test switching between supported modes");
->> +igt_main
->> +{
->> +       data_t data;
->> +       int i = 0;
->> +
->> +       igt_skip_on_simulation();
->> +
->> +       memset(&data, 0, sizeof(data));
->> +
->> +       igt_fixture
->> +       {
->> +               data.fd = drm_open_driver_master(DRIVER_AMDGPU);
->> +
->> +               kmstest_set_vt_graphics_mode();
->> +
->> +               igt_display_require(&data.display, data.fd);
->> +               igt_require(&data.display.is_atomic);
->> +               igt_display_require_output(&data.display);
->> +       }
->> +
->> +       for (i = 0; i < MAX_PIPES; i++) {
->> +               igt_describe(
->> +                       "Test between switching highest and lowest supported mode");
->> +               igt_subtest_f("mode-switch-first-last-pipe-%d", i)
->> +                       run_mode_switch_first_last(&data, i + 1);
->> +       }
->> +
->> +       igt_fixture
->> +       {
->> +               igt_display_fini(&data.display);
->> +       }
->> +}
->> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
->> index b736c456..5216e194 100644
->> --- a/tests/amdgpu/meson.build
->> +++ b/tests/amdgpu/meson.build
->> @@ -16,6 +16,7 @@ if libdrm_amdgpu.found()
->>                            'amd_mem_leak',
->>                            'amd_link_settings',
->>                            'amd_vrr_range',
->> +                         'amd_mode_switch',
->>                          ]
->>          amdgpu_deps += libdrm_amdgpu
->>   endif
->> --
->> 2.25.1
->>
+Series: amdgpu/amd_mode_switch: Introduce mode switch test
+URL   : https://patchwork.freedesktop.org/series/96996/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10888 -> IGTPW_6408
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6408 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6408, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
+
+Participating hosts (39 -> 33)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (7): fi-ilk-m540 bat-dg1-6 fi-tgl-u2 fi-hsw-4200u fi-icl-u2 fi-bsw-cyan fi-ctg-p8600 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6408:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-skl-6600u:       [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6408 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +8 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-1115g4:      [PASS][4] -> [FAIL][5] ([i915#1888])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886] / [i915#2291])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#533])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
+    - fi-bdw-5557u:       [PASS][10] -> [INCOMPLETE][11] ([i915#146])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][12] ([i915#3363] / [i915#4312])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-skl-6600u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-hsw-gt1}:       [DMESG-WARN][13] ([i915#3303]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][15] ([i915#4269]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6281 -> IGTPW_6408
+
+  CI-20190529: 20190529
+  CI_DRM_10888: d4a23275467825243fea6f50938fc89711b9a53c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6408: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
+  IGT_6281: 551f33d68fc780e3d264abd69ec59fe1af1bb65b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-0
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-1
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-2
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-3
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-4
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-5
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
+
+--===============4838070973808258592==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>amdgpu/amd_mode_switch: Introduce mode switch test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96996/">https://patchwork.freedesktop.org/series/96996/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10888 -&gt; IGTPW_6408</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6408 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6408, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html</p>
+<h2>Participating hosts (39 -&gt; 33)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (7): fi-ilk-m540 bat-dg1-6 fi-tgl-u2 fi-hsw-4200u fi-icl-u2 fi-bsw-cyan fi-ctg-p8600 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6408:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s3:<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6408 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6281 -&gt; IGTPW_6408</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10888: d4a23275467825243fea6f50938fc89711b9a53c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6408: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html<br />
+  IGT_6281: 551f33d68fc780e3d264abd69ec59fe1af1bb65b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-0<br />
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-1<br />
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-2<br />
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-3<br />
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-4<br />
++igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-5</p>
+
+</body>
+</html>
+
+--===============4838070973808258592==--
