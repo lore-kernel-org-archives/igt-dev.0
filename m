@@ -1,13 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Rob Clark <robdclark@gmail.com>
-Date: Mon, 15 Nov 2021 16:30:39 -0800
-Message-Id: <20211116003042.439107-2-robdclark@gmail.com>
-In-Reply-To: <20211116003042.439107-1-robdclark@gmail.com>
-References: <20211116003042.439107-1-robdclark@gmail.com>
+Date: Mon, 15 Nov 2021 16:30:38 -0800
+Message-Id: <20211116003042.439107-1-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt v3 1/4] lib/igt_debugfs: Add helper for
- writing debugfs files
+Subject: [igt-dev] [PATCH igt v3 0/4] msm: Add tests for gpu fault handling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,71 +20,30 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rob Clark <robdclark@chromium.org>
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
----
- lib/igt_debugfs.c | 17 +++++++++++++++++
- lib/igt_debugfs.h | 13 +++++++++++++
- 2 files changed, 30 insertions(+)
+The first patch adds a easy way to write debugfs files (needed to
+disable hw fault detection, so we can test the sw timeout fallback).
+The second adds some helpers for cmdstream building.  And the third
+adds the new tests.
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index a5bb95ca..dd6f2995 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -351,6 +351,23 @@ void __igt_debugfs_read(int fd, const char *filename, char *buf, int size)
- 	close(dir);
- }
- 
-+/**
-+ * __igt_debugfs_write:
-+ * @fd: the drm device file fd
-+ * @filename: file name
-+ * @buf: buffer to be written to the debugfs file
-+ * @size: size of the buffer
-+ *
-+ * This function opens the debugfs file, writes it, then closes the file.
-+ */
-+void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size)
-+{
-+	int dir = igt_debugfs_dir(fd);
-+
-+	igt_sysfs_write(dir, filename, buf, size);
-+	close(dir);
-+}
-+
- /**
-  * igt_debugfs_search:
-  * @filename: file name
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index d43ba6c6..b4867681 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -40,6 +40,7 @@ int igt_debugfs_pipe_dir(int device, int pipe, int mode);
- 
- int igt_debugfs_open(int fd, const char *filename, int mode);
- void __igt_debugfs_read(int fd, const char *filename, char *buf, int size);
-+void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size);
- int igt_debugfs_simple_read(int dir, const char *filename, char *buf, int size);
- bool igt_debugfs_search(int fd, const char *filename, const char *substring);
- 
-@@ -54,6 +55,18 @@ bool igt_debugfs_search(int fd, const char *filename, const char *substring);
- #define igt_debugfs_read(fd, filename, buf) \
- 		__igt_debugfs_read(fd, (filename), (buf), sizeof(buf))
- 
-+/**
-+ * igt_debugfs_write:
-+ * @fd: the drm device file fd
-+ * @filename: name of the debugfs file
-+ * @buf: buffer to be written to the debugfs file
-+ *
-+ * This is just a convenience wrapper for __igt_debugfs_write. See its
-+ * documentation.
-+ */
-+#define igt_debugfs_write(fd, filename, buf) \
-+		__igt_debugfs_write(fd, (filename), (buf), sizeof(buf))
-+
- /*
-  * Pipe CRC
-  */
+v2: Fix headerdoc comments in first patch
+v3: Add helper to detect debugfs files and updated last patch
+    to skip the one sub-test that depends on new debugfs when
+    running on older kernels
+
+Rob Clark (4):
+  lib/igt_debugfs: Add helper for writing debugfs files
+  lib/igt_debugfs: Add helper for detecting debugfs files
+  msm: Add helper for cmdstream building and submission
+  msm: Add recovery tests
+
+ lib/igt_debugfs.c    |  38 ++++++++++
+ lib/igt_debugfs.h    |  14 ++++
+ lib/igt_msm.c        | 102 +++++++++++++++++++++++++
+ lib/igt_msm.h        |  51 +++++++++++++
+ tests/meson.build    |   1 +
+ tests/msm_recovery.c | 174 +++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 380 insertions(+)
+ create mode 100644 tests/msm_recovery.c
+
 -- 
 2.33.1
