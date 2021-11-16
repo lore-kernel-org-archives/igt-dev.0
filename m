@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4976A6F460
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Nov 2021 08:41:06 +0000 (UTC)
-From: venkata.sai.patnana@intel.com
-Date: Tue, 16 Nov 2021 13:54:56 +0530
-Message-Id: <20211116082456.14899-1-venkata.sai.patnana@intel.com>
-In-Reply-To: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
-References: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 i-g-t] tests/i915/kms_dsc: To test modeset on
- dsc with highest mode
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 16 Nov 2021 08:58:27 -0000
+Message-ID: <163705310738.28808.11670151961839263927@emeril.freedesktop.org>
+References: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/i915/kms=5Fdsc=3A_To_test_modeset_on_highest_mode_=28rev6?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,164 +17,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: venkata.sai.patnana@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+== Series Details ==
 
-Force dsc enable supports resolutions above 5K in DP.
-Bigjoiner does not support dsc force bpp, also due to
-this bigjoiner limitation we need to skip all subtests
-on pipe D.
+Series: tests/i915/kms_dsc: To test modeset on highest mode (rev6)
+URL   : https://patchwork.freedesktop.org/series/96854/
+State : warning
 
-This patch will pick the mode with highest resolution
-rather the default mode.
+== Summary ==
 
-v2: Updated indentation.
-v3: Split the restructuring the subtests logic.
-v4: Updated igt_skip_on_f condition.
+Pipeline status: FAILED.
 
-Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/447284 for the overview.
 
-Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
----
- tests/i915/kms_dsc.c | 66 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 51 insertions(+), 15 deletions(-)
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/15855831):
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 4da6e2d9 as intel/IGTPW_6402...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1637052718:get_sources
+  section_start:1637052718:step_script
+  Executing "step_script" stage of the job script
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-4da6e2d96a6dfb79ccffdfcb1c819ff007dcc4d9 ...
+  Using docker image sha256:cc55efdc667be826910d414a562c76ce1130a9c15255a0dd115431bc42f83448 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-4da6e2d96a6dfb79ccffdfcb1c819ff007dcc4d9 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips@sha256:c829c44880da4782b7a72626c259ac6904b4bd5f08601e66b3be889ca1c0cf79 ...
+  section_end:1637052896:step_script
+  section_start:1637052896:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1637052919:cleanup_file_variables
+  ERROR: Job failed (system failure): Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running? (docker.go:647:120s)
+  
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index dcfe8b9669..25f7676a4c 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -63,6 +63,7 @@ typedef struct {
- 	drmModeEncoder *encoder;
- 	int crtc;
- 	int compression_bpp;
-+	int n_pipes;
- 	enum pipe pipe;
- 	char conn_name[128];
- } data_t;
-@@ -151,6 +152,13 @@ static bool is_external_panel(drmModeConnector *connector)
- 	}
- }
- 
-+static int sort_drm_modes(const void *a, const void *b)
-+{
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
-+
-+	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
-+}
-+
- static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
- {
- 	drmModeConnector *connector;
-@@ -162,6 +170,19 @@ static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
- 		return false;
- 
- 	output = igt_output_from_connector(&data->display, connector);
-+
-+	/*
-+	 * As dsc supports >= 5k modes, we need to suppress lower
-+	 * resolutions.
-+	 */
-+	qsort(output->config.connector->modes,
-+	      output->config.connector->count_modes,
-+	      sizeof(drmModeModeInfo),
-+	      sort_drm_modes);
-+	if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
-+	    output->config.connector->modes[0].hdisplay < 5120)
-+		return NULL;
-+
- 	sprintf(data->conn_name, "%s-%d",
- 		kmstest_connector_type_str(connector->connector_type),
- 		connector->connector_type_id);
-@@ -203,6 +224,11 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	}
- 
- 	igt_output_set_pipe(data->output, data->pipe);
-+	qsort(data->output->config.connector->modes,
-+			data->output->config.connector->count_modes,
-+			sizeof(drmModeModeInfo),
-+			sort_drm_modes);
-+	igt_output_override_mode(data->output, &data->output->config.connector->modes[0]);
- 	primary = igt_output_get_plane_type(data->output,
- 					    DRM_PLANE_TYPE_PRIMARY);
- 
-@@ -219,11 +245,9 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	enabled = igt_is_dsc_enabled(data->drm_fd,
- 					data->output->config.connector);
- 	restore_force_dsc_en();
--	if (test_type == test_dsc_compression_bpp) {
--		igt_debug("Rest compression BPP \n");
--		data->compression_bpp = 0;
--		force_dsc_enable_bpp(data);
--	}
-+	igt_debug("Reset compression BPP\n");
-+	data->compression_bpp = 0;
-+	force_dsc_enable_bpp(data);
- 
- 	igt_assert_f(enabled,
- 		     "Default DSC enable failed on Connector: %s Pipe: %s\n",
-@@ -235,10 +259,14 @@ static void run_test(data_t *data, enum dsc_test_type test_type)
- {
- 	enum pipe pipe;
- 	char test_name[10];
--	drmModeModeInfo *mode = igt_output_get_mode(data->output);
- 
--	igt_create_pattern_fb(data->drm_fd, mode->hdisplay,
--			      mode->vdisplay,
-+	igt_skip_on_f(test_type == test_dsc_compression_bpp &&
-+		      data->output->config.connector->modes[0].hdisplay >= 5120,
-+		      "bigjoiner does not support force bpp\n");
-+
-+	igt_create_pattern_fb(data->drm_fd,
-+			      data->output->config.connector->modes[0].hdisplay,
-+			      data->output->config.connector->modes[0].vdisplay,
- 			      DRM_FORMAT_XRGB8888,
- 			      DRM_FORMAT_MOD_LINEAR,
- 			      &data->fb_test_pattern);
-@@ -253,16 +281,21 @@ static void run_test(data_t *data, enum dsc_test_type test_type)
- 		}
- 
- 		snprintf(test_name, sizeof(test_name), "-%dbpp", data->compression_bpp);
--		if (igt_pipe_connector_valid(pipe, data->output)) {
-+		if (!igt_pipe_connector_valid(pipe, data->output))
-+			continue;
-+
-+		igt_dynamic_f("%s-pipe-%s%s", data->output->name,
-+			      kmstest_pipe_name(pipe),
-+			      (test_type == test_dsc_compression_bpp) ?
-+			      test_name : "") {
- 			data->pipe = pipe;
-+			igt_skip_on_f((data->output->config.connector->modes[0].hdisplay >= 5120) &&
-+				      (pipe  == (data->n_pipes - 1)),
-+				      "pipe-%s not supported due to bigjoiner limitation\n",
-+				      kmstest_pipe_name(pipe));
-+			update_display(data, test_type);
- 
--			igt_dynamic_f("%s-pipe-%s%s", data->output->name,
--					kmstest_pipe_name(pipe),
--					(test_type == test_dsc_compression_bpp) ?
--					 test_name : "")
--				update_display(data, test_type);
- 		}
--
- 		if (test_type == test_dsc_compression_bpp)
- 			break;
- 	}
-@@ -283,6 +316,9 @@ igt_main
- 		igt_install_exit_handler(kms_dsc_exit_handler);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(res = drmModeGetResources(data.drm_fd));
-+		data.n_pipes = 0;
-+		for_each_pipe(&data.display, i)
-+			data.n_pipes++;
- 	}
- 	igt_subtest_with_dynamic("basic-dsc-enable") {
- 		for (j = 0; j < res->count_connectors; j++) {
--- 
-2.25.1
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/15855822):
+  section_start:1637052710:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 4da6e2d9 as intel/IGTPW_6402...
+  
+  Skipping Git submodules setup
+  section_end:1637052718:get_sources
+  section_start:1637052718:step_script
+  Executing "step_script" stage of the job script
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-4da6e2d96a6dfb79ccffdfcb1c819ff007dcc4d9 ...
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-4da6e2d96a6dfb79ccffdfcb1c819ff007dcc4d9 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1637052885:step_script
+  section_start:1637052885:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1637052918:cleanup_file_variables
+  ERROR: Job failed (system failure): Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running? (docker.go:647:120s)
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/15855823):
+  section_start:1637052710:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 4da6e2d9 as intel/IGTPW_6402...
+  
+  Skipping Git submodules setup
+  section_end:1637052719:get_sources
+  section_start:1637052719:step_script
+  Executing "step_script" stage of the job script
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-4da6e2d96a6dfb79ccffdfcb1c819ff007dcc4d9 ...
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-4da6e2d96a6dfb79ccffdfcb1c819ff007dcc4d9 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1637052885:step_script
+  section_start:1637052885:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1637052918:cleanup_file_variables
+  ERROR: Job failed (system failure): Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running? (docker.go:647:120s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/447284
