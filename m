@@ -1,17 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com
- [IPv6:2607:f8b0:4864:20::735])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AAB86E0DF
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Nov 2021 17:31:40 +0000 (UTC)
-Received: by mail-qk1-x735.google.com with SMTP id 132so21324090qkj.11
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Nov 2021 09:31:40 -0800 (PST)
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Tue, 16 Nov 2021 12:31:31 -0500
-Message-Id: <20211116173131.240657-1-markyacoub@chromium.org>
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com
+ [IPv6:2a00:1450:4864:20::235])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09AFD8986D
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Nov 2021 18:23:48 +0000 (UTC)
+Received: by mail-lj1-x235.google.com with SMTP id 1so428533ljv.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Nov 2021 10:23:47 -0800 (PST)
+Received: from localhost.localdomain (87-94-108-27.bb.dnainternet.fi.
+ [87.94.108.27])
+ by smtp.gmail.com with ESMTPSA id h17sm1840717lfv.62.2021.11.16.10.23.44
+ for <igt-dev@lists.freedesktop.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Nov 2021 10:23:45 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Tue, 16 Nov 2021 20:23:42 +0200
+Message-Id: <20211116182342.6801-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests: Skip tests using LUTs when the driver
- doesn't support it.
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: Use same modifier
+ for reference crc as for test crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,108 +29,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: robdclark@chromium.org, petri.latvala@intel.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@google.com>
+Create reference crc with same modifier as is used for testing. This
+will reduce non test related anomalies.
 
-[Why]
-Some drivers such as msm do not support CTM and their CRTC doesn't have
-LUT props. Tests should skip relevant tests when it's not supported.
-
-[How]
-Check for the LUT pipe prop before starting relevant subtest.
-
-Tested on Trogdor (msm)
-
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_color.c |  8 ++++++++
- tests/kms_plane.c | 52 ++++++++++++++++++++++++++++-------------------
- 2 files changed, 39 insertions(+), 21 deletions(-)
+ tests/kms_plane_multiple.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 775f3596..99a59cd8 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -905,6 +905,14 @@ igt_main
- 	}
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index 95e0d72ab..ebadc14be 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -109,9 +109,12 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
  
- 	for_each_pipe_static(pipe) {
-+		igt_fixture {
-+			igt_require_f(igt_pipe_has_prop(&data.display, pipe,
-+											IGT_CRTC_GAMMA_LUT) &&
-+								igt_pipe_has_prop(&data.display, pipe,
-+												IGT_CRTC_DEGAMMA_LUT),
-+							"Driver doesn't support CTM.\n");
-+		}
+ 	mode = igt_output_get_mode(output);
+ 
++	igt_skip_on(!igt_plane_has_format_mod(data->plane[primary->index],
++		    DRM_FORMAT_XRGB8888, modifier));
 +
- 		igt_subtest_group
- 			run_tests_for_pipe(&data, pipe);
+ 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 			    DRM_FORMAT_XRGB8888,
+-			    DRM_FORMAT_MOD_LINEAR,
++			    modifier,
+ 			    color->red, color->green, color->blue,
+ 			    &data->fb[primary->index]);
  
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 405d4c21..d82214ed 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1090,28 +1090,38 @@ run_tests_for_pipe_plane(data_t *data)
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 	}
- 
--	igt_describe("verify the pixel formats for given plane and pipe");
--	igt_subtest_with_dynamic_f("pixel-format") {
--		count = 0;
--		for_each_pipe(&data->display, pipe) {
--			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
--				test_pixel_formats(data, pipe);
--			if (is_pipe_limit_reached(++count))
--				break;
--		}
--	}
--	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
--	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
--		count = 0;
--		for_each_pipe(&data->display, pipe) {
--			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
--				data->crop = 4;
--				test_pixel_formats(data, pipe);
-+		igt_describe("Verify the pixel formats for given plane and pipe");
-+		igt_subtest_group {
-+			igt_fixture {
-+				igt_require_f(igt_pipe_has_prop(&data->display, pipe,
-+												IGT_CRTC_GAMMA_LUT) &&
-+								  igt_pipe_has_prop(&data->display, pipe,
-+													IGT_CRTC_DEGAMMA_LUT),
-+							  "Driver doesn't support CTM.\n");
- 			}
--			if (is_pipe_limit_reached(++count))
--				break;
--		}
--	}
-+
-+			igt_subtest_with_dynamic_f("pixel-format") {
-+				count = 0;
-+				for_each_pipe(&data->display, pipe) {
-+					igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-+						test_pixel_formats(data, pipe);
-+					if (is_pipe_limit_reached(++count))
-+						break;
-+				}
-+			}
-+		    igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
-+				count = 0;
-+				for_each_pipe(&data->display, pipe) {
-+				    igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
-+						data->crop = 4;
-+						test_pixel_formats(data, pipe);
-+				    }
-+				    if (is_pipe_limit_reached(++count))
-+						break;
-+				}
-+		    }
-+        }
-+
- 
- 	data->crop = 0;
- 	igt_describe("verify plane position using two planes to create a fully covered screen");
 -- 
-2.34.0.rc1.387.gb447b232ab-goog
+2.28.0
