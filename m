@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3659116727147483919=="
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FB286E8EB
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Nov 2021 12:11:36 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Date: Wed, 17 Nov 2021 13:11:29 +0100
+Message-Id: <20211117121129.11532-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 17 Nov 2021 11:59:08 -0000
-Message-ID: <163715034843.18222.17946022506063507216@emeril.freedesktop.org>
-References: <20211117104229.18663-1-petri.latvala@intel.com>
-In-Reply-To: <20211117104229.18663-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaWd0X2Nv?=
- =?utf-8?q?re=3A_Fix_docs_for_SLOW=5FQUICK?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 1/1] tests/gem_blits: Add no-reloc
+ capability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,359 +16,238 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3659116727147483919==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add no-relocation mode for GPU gens without relocations. In WC
+mode on discrete dg1 we need to use device_coherent mmap.
 
-== Series Details ==
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: igt_core: Fix docs for SLOW_QUICK
-URL   : https://patchwork.freedesktop.org/series/97014/
-State : success
+---
+v3: moved flag set EXEC_OBJECT_WRITE inside no-reloc block as it
+  is alraedy added if relocations were to apply, removed var name
+  change, removed checks for ahnd != 0 for put functions (Zbyszek
+  review) and change commit message
+v2: Address Zbyszek Kempczynski review: removed has_relocs as it
+  is sufficient to test if ahnd variable is non-zero, removed if-s
+  blocks around relocations to make patch smaller for review.
+---
+ tests/i915/gem_blits.c | 81 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 69 insertions(+), 12 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10891 -> IGTPW_6409
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/index.html
-
-Participating hosts (39 -> 35)
-------------------------------
-
-  Additional (2): fi-tgl-1115g4 fi-tgl-u2 
-  Missing    (6): bat-dg1-6 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 bat-jsl-2 bat-jsl-1 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6409:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * {igt@gem_lmem_swapping@verify-random}:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][1] +3 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@gem_lmem_swapping@verify-random.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][2] +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@gem_lmem_swapping@verify-random.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6409 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@query-info:
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][3] ([fdo#109315])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html
-
-  * igt@amdgpu/amd_cs_nop@nop-gfx0:
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] ([fdo#109315] / [i915#2575]) +16 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-tgl-u2:          NOTRUN -> [INCOMPLETE][5] ([i915#4006])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-bdw-5557u:       [PASS][6] -> [INCOMPLETE][7] ([i915#146])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10891/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][8] ([i915#2190])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][9] ([i915#2190])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([i915#1155])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][11] ([fdo#111827]) +8 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_chamelium@dp-hpd-fast:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][12] ([fdo#109284] / [fdo#111827]) +8 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@kms_chamelium@dp-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][13] ([i915#4103]) +1 similar issue
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][14] ([i915#4103]) +1 similar issue
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][15] ([fdo#109285])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-tgl-u2:          NOTRUN -> [SKIP][16] ([fdo#109285])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_psr@primary_mmap_gtt:
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][17] ([i915#1072]) +3 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][18] ([i915#3301])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@prime_vgem@basic-userptr.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][19] ([i915#3301])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-tgl-u2:          NOTRUN -> [FAIL][20] ([i915#1602] / [i915#2722] / [i915#4312])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-guc:         [SKIP][21] ([fdo#109271]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10891/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#4006]: https://gitlab.freedesktop.org/drm/intel/issues/4006
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6283 -> IGTPW_6409
-
-  CI-20190529: 20190529
-  CI_DRM_10891: 1b2151d5158279cfc215ca61f6e9c64213d46c04 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6409: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/index.html
-  IGT_6283: a2cd90a7c24bb7a4c19ca74c75ed8c950820dee2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/index.html
-
---===============3659116727147483919==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>igt_core: Fix docs for SLOW_QUICK</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97014/">https://patchwork.freedesktop.org/series/97014/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10891 -&gt; IGTPW_6409</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/index.html</p>
-<h2>Participating hosts (39 -&gt; 35)</h2>
-<p>Additional (2): fi-tgl-1115g4 fi-tgl-u2 <br />
-  Missing    (6): bat-dg1-6 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 bat-jsl-2 bat-jsl-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6409:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>{igt@gem_lmem_swapping@verify-random}:</p>
-<ul>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@gem_lmem_swapping@verify-random.html">SKIP</a> +3 similar issues</p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@gem_lmem_swapping@verify-random.html">SKIP</a> +3 similar issues</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6409 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@query-info:</p>
-<ul>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
-<ul>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4006">i915#4006</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10891/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-hpd-fast:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109284">fdo#109284</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</p>
-</li>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_mmap_gtt:</p>
-<ul>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-1115g4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-tgl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10891/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6283 -&gt; IGTPW_6409</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10891: 1b2151d5158279cfc215ca61f6e9c64213d46c04 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6409: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6409/index.html<br />
-  IGT_6283: a2cd90a7c24bb7a4c19ca74c75ed8c950820dee2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3659116727147483919==--
+diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
+index 21dcee68..72dc3ac4 100644
+--- a/tests/i915/gem_blits.c
++++ b/tests/i915/gem_blits.c
+@@ -38,6 +38,7 @@ struct device {
+ 	int gen;
+ 	int pciid;
+ 	int llc;
++	uint64_t ahnd; /* ahnd != 0 if no-relocs */
+ };
+ 
+ struct buffer {
+@@ -119,8 +120,10 @@ static struct buffer *buffer_create(const struct device *device,
+ 	buffer->size = ALIGN(buffer->stride * height, 4096);
+ 	buffer->handle = gem_create(device->fd, buffer->size);
+ 	buffer->caching = device->llc;
+-
+-	buffer->gtt_offset = buffer->handle * buffer->size;
++	if (device->ahnd)
++		buffer->gtt_offset = get_offset(device->ahnd, buffer->handle, buffer->size, 0);
++	else
++		buffer->gtt_offset = buffer->handle * buffer->size;
+ 
+ 	for (int y = 0; y < height; y++) {
+ 		uint32_t *row = buffer->model + y * width;
+@@ -160,20 +163,34 @@ static void buffer_set_tiling(const struct device *device,
+ 	execbuf.buffer_count = ARRAY_SIZE(obj);
+ 	if (device->gen >= 6)
+ 		execbuf.flags = I915_EXEC_BLT;
++	if (device->ahnd)
++		execbuf.flags |= I915_EXEC_NO_RELOC;
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].handle = gem_create(device->fd, size);
+ 	if (__gem_set_tiling(device->fd, obj[0].handle, tiling, stride) == 0)
+ 		obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
++	if (device->ahnd) {
++		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		obj[0].offset = get_offset(device->ahnd, obj[0].handle, size, 0);
++	}
+ 
+ 	obj[1].handle = buffer->handle;
+ 	obj[1].offset = buffer->gtt_offset;
+ 	if (buffer->fenced)
+ 		obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
++	if (device->ahnd)
++		obj[1].flags |= EXEC_OBJECT_PINNED;
+ 
+ 	obj[2].handle = gem_create(device->fd, 4096);
+-	obj[2].relocs_ptr = to_user_pointer(memset(reloc, 0, sizeof(reloc)));
+-	obj[2].relocation_count = 2;
++	if (device->ahnd) {
++		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
++		obj[2].flags |= EXEC_OBJECT_PINNED;
++	} else {
++		obj[2].relocs_ptr = to_user_pointer(memset(reloc, 0, sizeof(reloc)));
++		obj[2].relocation_count = 2;
++	}
++
+ 	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
+ 
+ 	i = 0;
+@@ -247,6 +264,8 @@ static void buffer_set_tiling(const struct device *device,
+ 	gem_execbuf(device->fd, &execbuf);
+ 
+ 	gem_close(device->fd, obj[2].handle);
++	put_offset(device->ahnd, obj[2].offset);
++
+ 	gem_close(device->fd, obj[1].handle);
+ 
+ 	buffer->gtt_offset = obj[0].offset;
+@@ -292,19 +311,34 @@ static bool blit_to_linear(const struct device *device,
+ 	execbuf.buffer_count = ARRAY_SIZE(obj);
+ 	if (device->gen >= 6)
+ 		execbuf.flags = I915_EXEC_BLT;
++	if (device->ahnd)
++		execbuf.flags |= I915_EXEC_NO_RELOC;
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	if (__gem_userptr(device->fd, linear, buffer->size, 0, 0, &obj[0].handle))
+ 		return false;
+ 
++	if (device->ahnd) {
++		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
++		obj[0].offset = get_offset(device->ahnd, obj[0].handle, buffer->size, 0);
++	}
++
+ 	obj[1].handle = buffer->handle;
+ 	obj[1].offset = buffer->gtt_offset;
+ 	obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
++	if (device->ahnd)
++		obj[1].flags |= EXEC_OBJECT_PINNED;
+ 
+ 	memset(reloc, 0, sizeof(reloc));
+ 	obj[2].handle = gem_create(device->fd, 4096);
+-	obj[2].relocs_ptr = to_user_pointer(reloc);
+-	obj[2].relocation_count = ARRAY_SIZE(reloc);
++	if (device->ahnd) {
++		obj[2].flags |= EXEC_OBJECT_PINNED;
++		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
++	} else {
++		obj[2].relocs_ptr = to_user_pointer(reloc);
++		obj[2].relocation_count = ARRAY_SIZE(reloc);
++	}
++
+ 	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
+ 
+ 	if (buffer->tiling >= I915_TILING_Y) {
+@@ -368,6 +402,7 @@ static bool blit_to_linear(const struct device *device,
+ 
+ 	gem_execbuf(device->fd, &execbuf);
+ 	gem_close(device->fd, obj[2].handle);
++	put_offset(device->ahnd, obj[2].offset);
+ 
+ 	gem_sync(device->fd, obj[0].handle);
+ 	gem_close(device->fd, obj[0].handle);
+@@ -399,7 +434,8 @@ static void *download(const struct device *device,
+ 		break;
+ 
+ 	case WC:
+-		if (!gem_mmap__has_wc(device->fd) || buffer->tiling)
++		if (!(gem_mmap__has_wc(device->fd) || gem_mmap__has_device_coherent(device->fd))
++		    || buffer->tiling)
+ 			mode = GTT;
+ 		break;
+ 
+@@ -425,9 +461,12 @@ static void *download(const struct device *device,
+ 		break;
+ 
+ 	case WC:
+-		src = gem_mmap__wc(device->fd, buffer->handle,
+-				   0, buffer->size,
+-				   PROT_READ);
++		src = __gem_mmap__wc(device->fd, buffer->handle,
++				     0, buffer->size,
++				     PROT_READ);
++		if (!src)
++			src = gem_mmap__device_coherent(device->fd, buffer->handle, 0,
++							buffer->size, PROT_READ);
+ 
+ 		gem_set_domain(device->fd, buffer->handle,
+ 			       I915_GEM_DOMAIN_WC, 0);
+@@ -490,6 +529,7 @@ static void buffer_free(const struct device *device, struct buffer *buffer)
+ {
+ 	igt_assert(buffer_check(device, buffer, GTT));
+ 	gem_close(device->fd, buffer->handle);
++	put_offset(device->ahnd, buffer->gtt_offset);
+ 	free(buffer);
+ }
+ 
+@@ -604,22 +644,33 @@ blit(const struct device *device,
+ 	execbuf.buffer_count = ARRAY_SIZE(obj);
+ 	if (device->gen >= 6)
+ 		execbuf.flags = I915_EXEC_BLT;
++	if (device->ahnd)
++		execbuf.flags |= I915_EXEC_NO_RELOC;
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].handle = dst->handle;
+ 	obj[0].offset = dst->gtt_offset;
+ 	if (dst->tiling)
+ 		obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
++	if (device->ahnd)
++		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
+ 
+ 	obj[1].handle = src->handle;
+ 	obj[1].offset = src->gtt_offset;
+ 	if (src->tiling)
+ 		obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
++	if (device->ahnd)
++		obj[1].flags |= EXEC_OBJECT_PINNED;
+ 
+ 	memset(reloc, 0, sizeof(reloc));
+ 	obj[2].handle = gem_create(device->fd, 4096);
+-	obj[2].relocs_ptr = to_user_pointer(reloc);
+-	obj[2].relocation_count = ARRAY_SIZE(reloc);
++	if (device->ahnd) {
++		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
++		obj[2].flags |= EXEC_OBJECT_PINNED;
++	} else {
++		obj[2].relocs_ptr = to_user_pointer(reloc);
++		obj[2].relocation_count = ARRAY_SIZE(reloc);
++	}
+ 	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
+ 
+ 	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
+@@ -691,6 +742,7 @@ blit(const struct device *device,
+ 
+ 	gem_execbuf(device->fd, &execbuf);
+ 	gem_close(device->fd, obj[2].handle);
++	put_offset(device->ahnd, obj[2].offset);
+ 
+ 	dst->gtt_offset = obj[0].offset;
+ 	src->gtt_offset = obj[1].offset;
+@@ -733,6 +785,7 @@ igt_main
+ 		device.pciid = intel_get_drm_devid(device.fd);
+ 		device.gen = intel_gen(device.pciid);
+ 		device.llc = gem_has_llc(device.fd);
++		device.ahnd = get_reloc_ahnd(device.fd, 0);
+ 	}
+ 
+ 	igt_subtest("basic") {
+@@ -794,4 +847,8 @@ igt_main
+ 			}
+ 		}
+ 	}
++
++	igt_fixture {
++		put_ahnd(device.ahnd);
++	}
+ }
+-- 
+2.32.0
