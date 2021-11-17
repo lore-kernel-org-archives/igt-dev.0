@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7348A6E54C
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Nov 2021 07:11:37 +0000 (UTC)
-Date: Wed, 17 Nov 2021 08:11:33 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211117071133.GA3385@zkempczy-mobl2>
-References: <20211116111945.12577-1-kamil.konieczny@linux.intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0ADBD6E992
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Nov 2021 07:31:15 +0000 (UTC)
+Message-ID: <57ff849e-8513-ab8d-be2f-b13e81ac678a@intel.com>
+Date: Wed, 17 Nov 2021 13:01:10 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211116111945.12577-1-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] tests/gem_blits: Add no-reloc
- capability
+Content-Language: en-US
+References: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
+ <20211116082456.14899-1-venkata.sai.patnana@intel.com>
+ <0d77074ed995449aac806ee077bc8672@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <0d77074ed995449aac806ee077bc8672@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH v4 i-g-t] tests/i915/kms_dsc: To test modeset
+ on dsc with highest mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,384 +24,198 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Kulkarni, Vandita" <vandita.kulkarni@intel.com>, "Patnana, Venkata Sai" <venkata.sai.patnana@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 16, 2021 at 12:19:45PM +0100, Kamil Konieczny wrote:
-> Add no-relocation mode for GPU gens without relocations. In WC
-> mode on discrete dg1 we need to use device_coherent mmap. Also
-> while at this, change var name from has_64b_relocs to
-> has_64b_addresses, as it is related to offset size in both modes.
+Reviewed-by:
+Swati Sharma <swati2.sharma@intel.com>
+
+On 17-Nov-21 10:05 AM, Kulkarni, Vandita wrote:
+>> -----Original Message-----
+>> From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
+>> Sent: Tuesday, November 16, 2021 1:55 PM
+>> To: igt-dev@lists.freedesktop.org
+>> Cc: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>; Kulkarni,
+>> Vandita <vandita.kulkarni@intel.com>; B S, Karthik <karthik.b.s@intel.com>;
+>> Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Sharma,
+>> Swati2 <swati2.sharma@intel.com>
+>> Subject: [PATCH v4 i-g-t] tests/i915/kms_dsc: To test modeset on dsc with
+>> highest mode
+>>
+>> From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+>>
+>> Force dsc enable supports resolutions above 5K in DP.
+>> Bigjoiner does not support dsc force bpp, also due to this bigjoiner limitation
+>> we need to skip all subtests on pipe D.
+>>
+>> This patch will pick the mode with highest resolution rather the default
+>> mode.
+> It looks ok to me wrt the functionality.
+> Acked-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+>>
+>> v2: Updated indentation.
+>> v3: Split the restructuring the subtests logic.
+>> v4: Updated igt_skip_on_f condition.
+>>
+>> Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
+>> Cc: Karthik B S <karthik.b.s@intel.com>
+>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> Cc: Swati Sharma <swati2.sharma@intel.com>
+>>
+>> Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+>> ---
+>>   tests/i915/kms_dsc.c | 66 ++++++++++++++++++++++++++++++++++-------
+>> ---
+>>   1 file changed, 51 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c index
+>> dcfe8b9669..25f7676a4c 100644
+>> --- a/tests/i915/kms_dsc.c
+>> +++ b/tests/i915/kms_dsc.c
+>> @@ -63,6 +63,7 @@ typedef struct {
+>>   drmModeEncoder *encoder;
+>>   int crtc;
+>>   int compression_bpp;
+>> +int n_pipes;
+>>   enum pipe pipe;
+>>   char conn_name[128];
+>>   } data_t;
+>> @@ -151,6 +152,13 @@ static bool is_external_panel(drmModeConnector
+>> *connector)
+>>   }
+>>   }
+>>
+>> +static int sort_drm_modes(const void *a, const void *b) {
+>> +const drmModeModeInfo *mode1 = a, *mode2 = b;
+>> +
+>> +return (mode1->clock < mode2->clock) - (mode2->clock < mode1-
+>>> clock);
+>> +}
+>> +
+>>   static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+>> {
+>>   drmModeConnector *connector;
+>> @@ -162,6 +170,19 @@ static bool check_dsc_on_connector(data_t *data,
+>> uint32_t drmConnector)
+>>   return false;
+>>
+>>   output = igt_output_from_connector(&data->display, connector);
+>> +
+>> +/*
+>> + * As dsc supports >= 5k modes, we need to suppress lower
+>> + * resolutions.
+>> + */
+>> +qsort(output->config.connector->modes,
+>> +      output->config.connector->count_modes,
+>> +      sizeof(drmModeModeInfo),
+>> +      sort_drm_modes);
+>> +if (output->config.connector->connector_type ==
+>> DRM_MODE_CONNECTOR_DisplayPort &&
+>> +    output->config.connector->modes[0].hdisplay < 5120)
+>> +return NULL;
+>> +
+>>   sprintf(data->conn_name, "%s-%d",
+>>   kmstest_connector_type_str(connector->connector_type),
+>>   connector->connector_type_id);
+>> @@ -203,6 +224,11 @@ static void update_display(data_t *data, enum
+>> dsc_test_type test_type)
+>>   }
+>>
+>>   igt_output_set_pipe(data->output, data->pipe);
+>> +qsort(data->output->config.connector->modes,
+>> +data->output->config.connector->count_modes,
+>> +sizeof(drmModeModeInfo),
+>> +sort_drm_modes);
+>> +igt_output_override_mode(data->output,
+>> +&data->output->config.connector->modes[0]);
+>>   primary = igt_output_get_plane_type(data->output,
+>>       DRM_PLANE_TYPE_PRIMARY);
+>>
+>> @@ -219,11 +245,9 @@ static void update_display(data_t *data, enum
+>> dsc_test_type test_type)
+>>   enabled = igt_is_dsc_enabled(data->drm_fd,
+>>   data->output->config.connector);
+>>   restore_force_dsc_en();
+>> -if (test_type == test_dsc_compression_bpp) {
+>> -igt_debug("Rest compression BPP \n");
+>> -data->compression_bpp = 0;
+>> -force_dsc_enable_bpp(data);
+>> -}
+>> +igt_debug("Reset compression BPP\n");
+>> +data->compression_bpp = 0;
+>> +force_dsc_enable_bpp(data);
+>>
+>>   igt_assert_f(enabled,
+>>        "Default DSC enable failed on Connector: %s Pipe: %s\n",
+>> @@ -235,10 +259,14 @@ static void run_test(data_t *data, enum
+>> dsc_test_type test_type)  {
+>>   enum pipe pipe;
+>>   char test_name[10];
+>> -drmModeModeInfo *mode = igt_output_get_mode(data->output);
+>>
+>> -igt_create_pattern_fb(data->drm_fd, mode->hdisplay,
+>> -      mode->vdisplay,
+>> +igt_skip_on_f(test_type == test_dsc_compression_bpp &&
+>> +      data->output->config.connector->modes[0].hdisplay >=
+>> 5120,
+>> +      "bigjoiner does not support force bpp\n");
+>> +
+>> +igt_create_pattern_fb(data->drm_fd,
+>> +      data->output->config.connector-
+>>> modes[0].hdisplay,
+>> +      data->output->config.connector-
+>>> modes[0].vdisplay,
+>>         DRM_FORMAT_XRGB8888,
+>>         DRM_FORMAT_MOD_LINEAR,
+>>         &data->fb_test_pattern);
+>> @@ -253,16 +281,21 @@ static void run_test(data_t *data, enum
+>> dsc_test_type test_type)
+>>   }
+>>
+>>   snprintf(test_name, sizeof(test_name), "-%dbpp", data-
+>>> compression_bpp);
+>> -if (igt_pipe_connector_valid(pipe, data->output)) {
+>> +if (!igt_pipe_connector_valid(pipe, data->output))
+>> +continue;
+>> +
+>> +igt_dynamic_f("%s-pipe-%s%s", data->output->name,
+>> +      kmstest_pipe_name(pipe),
+>> +      (test_type == test_dsc_compression_bpp) ?
+>> +      test_name : "") {
+>>   data->pipe = pipe;
+>> +igt_skip_on_f((data->output->config.connector-
+>>> modes[0].hdisplay >= 5120) &&
+>> +      (pipe  == (data->n_pipes - 1)),
+>> +      "pipe-%s not supported due to bigjoiner
+>> limitation\n",
+>> +      kmstest_pipe_name(pipe));
+>> +update_display(data, test_type);
+>>
+>> -igt_dynamic_f("%s-pipe-%s%s", data->output-
+>>> name,
+>> -kmstest_pipe_name(pipe),
+>> -(test_type ==
+>> test_dsc_compression_bpp) ?
+>> - test_name : "")
+>> -update_display(data, test_type);
+>>   }
+>> -
+>>   if (test_type == test_dsc_compression_bpp)
+>>   break;
+>>   }
+>> @@ -283,6 +316,9 @@ igt_main
+>>   igt_install_exit_handler(kms_dsc_exit_handler);
+>>   igt_display_require(&data.display, data.drm_fd);
+>>   igt_require(res = drmModeGetResources(data.drm_fd));
+>> +data.n_pipes = 0;
+>> +for_each_pipe(&data.display, i)
+>> +data.n_pipes++;
+>>   }
+>>   igt_subtest_with_dynamic("basic-dsc-enable") {
+>>   for (j = 0; j < res->count_connectors; j++) {
+>> --
+>> 2.25.1
 > 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> ---
-> v2: Address Zbyszek Kempczynski review: removed has_relocs as it
->   is sufficient to test if ahnd variable is non-zero, removed if-s
->   blocks around relocations to make patch smaller for review.
-> ---
->  tests/i915/gem_blits.c | 112 ++++++++++++++++++++++++++++++++---------
->  1 file changed, 88 insertions(+), 24 deletions(-)
-> 
-> diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
-> index 21dcee68..1a8c1989 100644
-> --- a/tests/i915/gem_blits.c
-> +++ b/tests/i915/gem_blits.c
-> @@ -38,6 +38,7 @@ struct device {
->  	int gen;
->  	int pciid;
->  	int llc;
-> +	uint64_t ahnd; /* ahnd != 0 if no-relocs */
->  };
->  
->  struct buffer {
-> @@ -119,8 +120,10 @@ static struct buffer *buffer_create(const struct device *device,
->  	buffer->size = ALIGN(buffer->stride * height, 4096);
->  	buffer->handle = gem_create(device->fd, buffer->size);
->  	buffer->caching = device->llc;
-> -
-> -	buffer->gtt_offset = buffer->handle * buffer->size;
-> +	if (device->ahnd)
-> +		buffer->gtt_offset = get_offset(device->ahnd, buffer->handle, buffer->size, 0);
-> +	else
-> +		buffer->gtt_offset = buffer->handle * buffer->size;
->  
->  	for (int y = 0; y < height; y++) {
->  		uint32_t *row = buffer->model + y * width;
-> @@ -143,7 +146,7 @@ static void buffer_set_tiling(const struct device *device,
->  	struct drm_i915_gem_exec_object2 obj[3];
->  	struct drm_i915_gem_relocation_entry reloc[2];
->  	struct drm_i915_gem_execbuffer2 execbuf;
-> -	const bool has_64b_reloc = device->gen >= 8;
-> +	const bool has_64b_addresses = device->gen >= 8;
 
-Unnecessary change, adds noise to the change.
-
->  	uint32_t stride, size, pitch;
->  	uint32_t *batch;
->  	int i;
-> @@ -160,20 +163,35 @@ static void buffer_set_tiling(const struct device *device,
->  	execbuf.buffer_count = ARRAY_SIZE(obj);
->  	if (device->gen >= 6)
->  		execbuf.flags = I915_EXEC_BLT;
-> +	if (device->ahnd)
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(device->fd, size);
->  	if (__gem_set_tiling(device->fd, obj[0].handle, tiling, stride) == 0)
->  		obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
-> +	obj[0].flags |= EXEC_OBJECT_WRITE;
-
-Move to conditional below. Let relocation part will take care for setting
-this flag in the kernel.
-
-> +	if (device->ahnd) {
-> +		obj[0].flags |= EXEC_OBJECT_PINNED;
-> +		obj[0].offset = get_offset(device->ahnd, obj[0].handle, size, 0);
-> +	}
->  
->  	obj[1].handle = buffer->handle;
->  	obj[1].offset = buffer->gtt_offset;
->  	if (buffer->fenced)
->  		obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
-> +	if (device->ahnd)
-> +		obj[1].flags |= EXEC_OBJECT_PINNED;
->  
->  	obj[2].handle = gem_create(device->fd, 4096);
-> -	obj[2].relocs_ptr = to_user_pointer(memset(reloc, 0, sizeof(reloc)));
-> -	obj[2].relocation_count = 2;
-> +	if (device->ahnd) {
-> +		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
-> +		obj[2].flags |= EXEC_OBJECT_PINNED;
-> +	} else {
-> +		obj[2].relocs_ptr = to_user_pointer(memset(reloc, 0, sizeof(reloc)));
-> +		obj[2].relocation_count = 2;
-> +	}
-> +
->  	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
->  
->  	i = 0;
-> @@ -199,7 +217,7 @@ static void buffer_set_tiling(const struct device *device,
->  		batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
->  	if (device->gen >= 4 && tiling)
->  		batch[i] |= XY_SRC_COPY_BLT_DST_TILED;
-> -	batch[i++] |= 6 + 2 * has_64b_reloc;
-> +	batch[i++] |= 6 + 2 * has_64b_addresses;
->  
->  	pitch = stride;
->  	if (device->gen >= 4 && tiling)
-> @@ -213,7 +231,7 @@ static void buffer_set_tiling(const struct device *device,
->  	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
->  	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
->  	batch[i++] = obj[0].offset;
-> -	if (has_64b_reloc)
-> +	if (has_64b_addresses)
->  		batch[i++] = obj[0].offset >> 32;
->  
->  	batch[i++] = 0;
-> @@ -226,7 +244,7 @@ static void buffer_set_tiling(const struct device *device,
->  	reloc[1].offset = sizeof(*batch) * i;
->  	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
->  	batch[i++] = obj[1].offset;
-> -	if (has_64b_reloc)
-> +	if (has_64b_addresses)
->  		batch[i++] = obj[1].offset >> 32;
->  
->  	if ((tiling | buffer->tiling) >= I915_TILING_Y) {
-> @@ -247,6 +265,9 @@ static void buffer_set_tiling(const struct device *device,
->  	gem_execbuf(device->fd, &execbuf);
->  
->  	gem_close(device->fd, obj[2].handle);
-> +	if (device->ahnd)
-> +		put_offset(device->ahnd, obj[2].offset);
-
-Remove conditional - check put_offset() implementation.
-
-> +
->  	gem_close(device->fd, obj[1].handle);
->  
->  	buffer->gtt_offset = obj[0].offset;
-> @@ -277,7 +298,7 @@ static bool blit_to_linear(const struct device *device,
->  	struct drm_i915_gem_exec_object2 obj[3];
->  	struct drm_i915_gem_relocation_entry reloc[2];
->  	struct drm_i915_gem_execbuffer2 execbuf;
-> -	const bool has_64b_reloc = device->gen >= 8;
-> +	const bool has_64b_addresses = device->gen >= 8;
->  	uint32_t *batch;
->  	uint32_t pitch;
->  	int i = 0;
-> @@ -292,19 +313,34 @@ static bool blit_to_linear(const struct device *device,
->  	execbuf.buffer_count = ARRAY_SIZE(obj);
->  	if (device->gen >= 6)
->  		execbuf.flags = I915_EXEC_BLT;
-> +	if (device->ahnd)
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
->  
->  	memset(obj, 0, sizeof(obj));
->  	if (__gem_userptr(device->fd, linear, buffer->size, 0, 0, &obj[0].handle))
->  		return false;
-> +	obj[0].flags |= EXEC_OBJECT_WRITE;
-
-Same as above, move to conditional.
-
-> +	if (device->ahnd) {
-> +		obj[0].flags |= EXEC_OBJECT_PINNED;
-> +		obj[0].offset = get_offset(device->ahnd, obj[0].handle, buffer->size, 0);
-> +	}
->  
->  	obj[1].handle = buffer->handle;
->  	obj[1].offset = buffer->gtt_offset;
->  	obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
-> +	if (device->ahnd)
-> +		obj[1].flags |= EXEC_OBJECT_PINNED;
->  
->  	memset(reloc, 0, sizeof(reloc));
->  	obj[2].handle = gem_create(device->fd, 4096);
-> -	obj[2].relocs_ptr = to_user_pointer(reloc);
-> -	obj[2].relocation_count = ARRAY_SIZE(reloc);
-> +	if (device->ahnd) {
-> +		obj[2].flags |= EXEC_OBJECT_PINNED;
-> +		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
-> +	} else {
-> +		obj[2].relocs_ptr = to_user_pointer(reloc);
-> +		obj[2].relocation_count = ARRAY_SIZE(reloc);
-> +	}
-> +
->  	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
->  
->  	if (buffer->tiling >= I915_TILING_Y) {
-> @@ -324,7 +360,7 @@ static bool blit_to_linear(const struct device *device,
->  		    XY_SRC_COPY_BLT_WRITE_RGB);
->  	if (device->gen >= 4 && buffer->tiling)
->  		batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
-> -	batch[i++] |= 6 + 2 * has_64b_reloc;
-> +	batch[i++] |= 6 + 2 * has_64b_addresses;
->  
->  	batch[i++] = 3 << 24 | 0xcc << 16 | buffer->stride;
->  	batch[i++] = 0;
-> @@ -335,7 +371,7 @@ static bool blit_to_linear(const struct device *device,
->  	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
->  	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
->  	batch[i++] = obj[0].offset;
-> -	if (has_64b_reloc)
-> +	if (has_64b_addresses)
->  		batch[i++] = obj[0].offset >> 32;
->  
->  	batch[i++] = 0;
-> @@ -348,7 +384,7 @@ static bool blit_to_linear(const struct device *device,
->  	reloc[1].offset = sizeof(*batch) * i;
->  	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
->  	batch[i++] = obj[1].offset;
-> -	if (has_64b_reloc)
-> +	if (has_64b_addresses)
->  		batch[i++] = obj[1].offset >> 32;
->  
->  	if (buffer->tiling >= I915_TILING_Y) {
-> @@ -368,6 +404,8 @@ static bool blit_to_linear(const struct device *device,
->  
->  	gem_execbuf(device->fd, &execbuf);
->  	gem_close(device->fd, obj[2].handle);
-> +	if (device->ahnd)
-> +		put_offset(device->ahnd, obj[2].offset);
-
-Remove conditional.
-
->  
->  	gem_sync(device->fd, obj[0].handle);
->  	gem_close(device->fd, obj[0].handle);
-> @@ -399,7 +437,8 @@ static void *download(const struct device *device,
->  		break;
->  
->  	case WC:
-> -		if (!gem_mmap__has_wc(device->fd) || buffer->tiling)
-> +		if (!(gem_mmap__has_wc(device->fd) || gem_mmap__has_device_coherent(device->fd))
-> +		    || buffer->tiling)
->  			mode = GTT;
->  		break;
->  
-> @@ -425,9 +464,12 @@ static void *download(const struct device *device,
->  		break;
->  
->  	case WC:
-> -		src = gem_mmap__wc(device->fd, buffer->handle,
-> -				   0, buffer->size,
-> -				   PROT_READ);
-> +		src = __gem_mmap__wc(device->fd, buffer->handle,
-> +				     0, buffer->size,
-> +				     PROT_READ);
-> +		if (!src)
-> +			src = gem_mmap__device_coherent(device->fd, buffer->handle, 0,
-> +							buffer->size, PROT_READ);
->  
->  		gem_set_domain(device->fd, buffer->handle,
->  			       I915_GEM_DOMAIN_WC, 0);
-> @@ -490,6 +532,8 @@ static void buffer_free(const struct device *device, struct buffer *buffer)
->  {
->  	igt_assert(buffer_check(device, buffer, GTT));
->  	gem_close(device->fd, buffer->handle);
-> +	if (device->ahnd)
-> +		put_offset(device->ahnd, buffer->gtt_offset);
-
-Remove conditional.
-
->  	free(buffer);
->  }
->  
-> @@ -557,7 +601,7 @@ blit(const struct device *device,
->  	struct drm_i915_gem_exec_object2 obj[3];
->  	struct drm_i915_gem_relocation_entry reloc[2];
->  	struct drm_i915_gem_execbuffer2 execbuf;
-> -	const bool has_64b_reloc = device->gen >= 8;
-> +	const bool has_64b_addresses = device->gen >= 8;
->  	uint32_t *batch;
->  	uint32_t pitch;
->  	int i = 0;
-> @@ -604,22 +648,34 @@ blit(const struct device *device,
->  	execbuf.buffer_count = ARRAY_SIZE(obj);
->  	if (device->gen >= 6)
->  		execbuf.flags = I915_EXEC_BLT;
-> +	if (device->ahnd)
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = dst->handle;
->  	obj[0].offset = dst->gtt_offset;
->  	if (dst->tiling)
->  		obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
-> +	obj[0].flags |= EXEC_OBJECT_WRITE;
-
-Same as above regarding marking for write.
-
-> +	if (device->ahnd)
-> +		obj[0].flags |= EXEC_OBJECT_PINNED;
->  
->  	obj[1].handle = src->handle;
->  	obj[1].offset = src->gtt_offset;
->  	if (src->tiling)
->  		obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
-> +	if (device->ahnd)
-> +		obj[1].flags |= EXEC_OBJECT_PINNED;
->  
->  	memset(reloc, 0, sizeof(reloc));
->  	obj[2].handle = gem_create(device->fd, 4096);
-> -	obj[2].relocs_ptr = to_user_pointer(reloc);
-> -	obj[2].relocation_count = ARRAY_SIZE(reloc);
-> +	if (device->ahnd) {
-> +		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
-> +		obj[2].flags |= EXEC_OBJECT_PINNED;
-> +	} else {
-> +		obj[2].relocs_ptr = to_user_pointer(reloc);
-> +		obj[2].relocation_count = ARRAY_SIZE(reloc);
-> +	}
->  	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
->  
->  	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
-> @@ -643,7 +699,7 @@ blit(const struct device *device,
->  		batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
->  	if (device->gen >= 4 && dst->tiling)
->  		batch[i] |= XY_SRC_COPY_BLT_DST_TILED;
-> -	batch[i++] |= 6 + 2 * has_64b_reloc;
-> +	batch[i++] |= 6 + 2 * has_64b_addresses;
->  
->  	pitch = dst->stride;
->  	if (device->gen >= 4 && dst->tiling)
-> @@ -658,7 +714,7 @@ blit(const struct device *device,
->  	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
->  	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
->  	batch[i++] = obj[0].offset;
-> -	if (has_64b_reloc)
-> +	if (has_64b_addresses)
->  		batch[i++] = obj[0].offset >> 32;
->  
->  	batch[i++] = src_y << 16 | src_x;
-> @@ -671,7 +727,7 @@ blit(const struct device *device,
->  	reloc[1].offset = sizeof(*batch) * i;
->  	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
->  	batch[i++] = obj[1].offset;
-> -	if (has_64b_reloc)
-> +	if (has_64b_addresses)
->  		batch[i++] = obj[1].offset >> 32;
->  
->  	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
-> @@ -691,6 +747,8 @@ blit(const struct device *device,
->  
->  	gem_execbuf(device->fd, &execbuf);
->  	gem_close(device->fd, obj[2].handle);
-> +	if (device->ahnd)
-> +		put_offset(device->ahnd, obj[2].offset);
-
-Remove conditional.
-
->  
->  	dst->gtt_offset = obj[0].offset;
->  	src->gtt_offset = obj[1].offset;
-> @@ -733,6 +791,7 @@ igt_main
->  		device.pciid = intel_get_drm_devid(device.fd);
->  		device.gen = intel_gen(device.pciid);
->  		device.llc = gem_has_llc(device.fd);
-> +		device.ahnd = get_reloc_ahnd(device.fd, 0);
->  	}
->  
->  	igt_subtest("basic") {
-> @@ -794,4 +853,9 @@ igt_main
->  			}
->  		}
->  	}
-> +
-> +	igt_fixture {
-> +		if (device.ahnd)
-> +			put_ahnd(device.ahnd);
-
-Remove conditional - put_ahnd() is checking allocator handle
-argument.
-
---
-Zbigniew
-
-> +	}
->  }
-> -- 
-> 2.32.0
-> 
+-- 
+~Swati Sharma
