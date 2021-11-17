@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EF6B6E0EF
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Nov 2021 01:09:57 +0000 (UTC)
-Message-ID: <6aca8bf2-3f0b-b4ae-9c80-1b0354731f72@quicinc.com>
-Date: Tue, 16 Nov 2021 17:03:49 -0800
-MIME-Version: 1.0
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15C8F89FE8
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Nov 2021 04:35:31 +0000 (UTC)
+From: "Kulkarni, Vandita" <vandita.kulkarni@intel.com>
+Date: Wed, 17 Nov 2021 04:35:26 +0000
+Message-ID: <0d77074ed995449aac806ee077bc8672@intel.com>
+References: <20211112122752.29241-1-venkata.sai.patnana@intel.com>
+ <20211116082456.14899-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20211116082456.14899-1-venkata.sai.patnana@intel.com>
 Content-Language: en-US
-References: <20211116173131.240657-1-markyacoub@chromium.org>
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-In-Reply-To: <20211116173131.240657-1-markyacoub@chromium.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH] tests: Skip tests using LUTs when the driver
- doesn't support it.
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH v4 i-g-t] tests/i915/kms_dsc: To test modeset
+ on dsc with highest mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,119 +23,192 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>, igt-dev@lists.freedesktop.org
-Cc: robdclark@chromium.org, petri.latvala@intel.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+To: "Patnana, Venkata Sai" <venkata.sai.patnana@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mark,
-
-On 11/16/2021 9:31 AM, Mark Yacoub wrote:
-> From: Mark Yacoub <markyacoub@google.com>
->
-> [Why]
-> Some drivers such as msm do not support CTM and their CRTC doesn't have
-> LUT props. Tests should skip relevant tests when it's not supported.
->
-> [How]
-> Check for the LUT pipe prop before starting relevant subtest.
->
-> Tested on Trogdor (msm)
->
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> -----Original Message-----
+> From: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>
+> Sent: Tuesday, November 16, 2021 1:55 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Patnana, Venkata Sai <venkata.sai.patnana@intel.com>; Kulkarni,
+> Vandita <vandita.kulkarni@intel.com>; B S, Karthik <karthik.b.s@intel.com=
+>;
+> Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Sharma,
+> Swati2 <swati2.sharma@intel.com>
+> Subject: [PATCH v4 i-g-t] tests/i915/kms_dsc: To test modeset on dsc with
+> highest mode
+>=20
+> From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+>=20
+> Force dsc enable supports resolutions above 5K in DP.
+> Bigjoiner does not support dsc force bpp, also due to this bigjoiner limi=
+tation
+> we need to skip all subtests on pipe D.
+>=20
+> This patch will pick the mode with highest resolution rather the default
+> mode.
+It looks ok to me wrt the functionality.
+Acked-by: Vandita Kulkarni <vandita.kulkarni@intel.com>
+>=20
+> v2: Updated indentation.
+> v3: Split the restructuring the subtests logic.
+> v4: Updated igt_skip_on_f condition.
+>=20
+> Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+>=20
+> Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
 > ---
->   tests/kms_color.c |  8 ++++++++
->   tests/kms_plane.c | 52 ++++++++++++++++++++++++++++-------------------
->   2 files changed, 39 insertions(+), 21 deletions(-)
->
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index 775f3596..99a59cd8 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -905,6 +905,14 @@ igt_main
->   	}
->   
->   	for_each_pipe_static(pipe) {
-> +		igt_fixture {
-> +			igt_require_f(igt_pipe_has_prop(&data.display, pipe,
-> +											IGT_CRTC_GAMMA_LUT) &&
-> +								igt_pipe_has_prop(&data.display, pipe,
-> +												IGT_CRTC_DEGAMMA_LUT),
-> +							"Driver doesn't support CTM.\n");
-> +		}
+>  tests/i915/kms_dsc.c | 66 ++++++++++++++++++++++++++++++++++-------
+> ---
+>  1 file changed, 51 insertions(+), 15 deletions(-)
+>=20
+> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c index
+> dcfe8b9669..25f7676a4c 100644
+> --- a/tests/i915/kms_dsc.c
+> +++ b/tests/i915/kms_dsc.c
+> @@ -63,6 +63,7 @@ typedef struct {
+>  	drmModeEncoder *encoder;
+>  	int crtc;
+>  	int compression_bpp;
+> +	int n_pipes;
+>  	enum pipe pipe;
+>  	char conn_name[128];
+>  } data_t;
+> @@ -151,6 +152,13 @@ static bool is_external_panel(drmModeConnector
+> *connector)
+>  	}
+>  }
+>=20
+> +static int sort_drm_modes(const void *a, const void *b) {
+> +	const drmModeModeInfo *mode1 =3D a, *mode2 =3D b;
 > +
-Spacing looks a little messy and makes the code hard to read. Please 
-reformat to something more legible.
->   		igt_subtest_group
->   			run_tests_for_pipe(&data, pipe);
->   
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 405d4c21..d82214ed 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -1090,28 +1090,38 @@ run_tests_for_pipe_plane(data_t *data)
->   		igt_require(data->display.pipes[pipe].n_planes > 0);
->   	}
->   
-> -	igt_describe("verify the pixel formats for given plane and pipe");
-> -	igt_subtest_with_dynamic_f("pixel-format") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> -				test_pixel_formats(data, pipe);
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
+> +	return (mode1->clock < mode2->clock) - (mode2->clock < mode1-
+> >clock);
+> +}
+> +
+>  static bool check_dsc_on_connector(data_t *data, uint32_t drmConnector)
+> {
+>  	drmModeConnector *connector;
+> @@ -162,6 +170,19 @@ static bool check_dsc_on_connector(data_t *data,
+> uint32_t drmConnector)
+>  		return false;
+>=20
+>  	output =3D igt_output_from_connector(&data->display, connector);
+> +
+> +	/*
+> +	 * As dsc supports >=3D 5k modes, we need to suppress lower
+> +	 * resolutions.
+> +	 */
+> +	qsort(output->config.connector->modes,
+> +	      output->config.connector->count_modes,
+> +	      sizeof(drmModeModeInfo),
+> +	      sort_drm_modes);
+> +	if (output->config.connector->connector_type =3D=3D
+> DRM_MODE_CONNECTOR_DisplayPort &&
+> +	    output->config.connector->modes[0].hdisplay < 5120)
+> +		return NULL;
+> +
+>  	sprintf(data->conn_name, "%s-%d",
+>  		kmstest_connector_type_str(connector->connector_type),
+>  		connector->connector_type_id);
+> @@ -203,6 +224,11 @@ static void update_display(data_t *data, enum
+> dsc_test_type test_type)
+>  	}
+>=20
+>  	igt_output_set_pipe(data->output, data->pipe);
+> +	qsort(data->output->config.connector->modes,
+> +			data->output->config.connector->count_modes,
+> +			sizeof(drmModeModeInfo),
+> +			sort_drm_modes);
+> +	igt_output_override_mode(data->output,
+> +&data->output->config.connector->modes[0]);
+>  	primary =3D igt_output_get_plane_type(data->output,
+>  					    DRM_PLANE_TYPE_PRIMARY);
+>=20
+> @@ -219,11 +245,9 @@ static void update_display(data_t *data, enum
+> dsc_test_type test_type)
+>  	enabled =3D igt_is_dsc_enabled(data->drm_fd,
+>  					data->output->config.connector);
+>  	restore_force_dsc_en();
+> -	if (test_type =3D=3D test_dsc_compression_bpp) {
+> -		igt_debug("Rest compression BPP \n");
+> -		data->compression_bpp =3D 0;
+> -		force_dsc_enable_bpp(data);
 > -	}
-> -	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
-> -	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
-> -				data->crop = 4;
-> -				test_pixel_formats(data, pipe);
-> +		igt_describe("Verify the pixel formats for given plane and pipe");
-> +		igt_subtest_group {
-> +			igt_fixture {
-> +				igt_require_f(igt_pipe_has_prop(&data->display, pipe,
-> +												IGT_CRTC_GAMMA_LUT) &&
-> +								  igt_pipe_has_prop(&data->display, pipe,
-> +													IGT_CRTC_DEGAMMA_LUT),
-> +							  "Driver doesn't support CTM.\n");
-
-Same here.
-
-Thanks,
-
-Jessica Zhang
-
->   			}
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> -	}
+> +	igt_debug("Reset compression BPP\n");
+> +	data->compression_bpp =3D 0;
+> +	force_dsc_enable_bpp(data);
+>=20
+>  	igt_assert_f(enabled,
+>  		     "Default DSC enable failed on Connector: %s Pipe: %s\n",
+> @@ -235,10 +259,14 @@ static void run_test(data_t *data, enum
+> dsc_test_type test_type)  {
+>  	enum pipe pipe;
+>  	char test_name[10];
+> -	drmModeModeInfo *mode =3D igt_output_get_mode(data->output);
+>=20
+> -	igt_create_pattern_fb(data->drm_fd, mode->hdisplay,
+> -			      mode->vdisplay,
+> +	igt_skip_on_f(test_type =3D=3D test_dsc_compression_bpp &&
+> +		      data->output->config.connector->modes[0].hdisplay >=3D
+> 5120,
+> +		      "bigjoiner does not support force bpp\n");
 > +
-> +			igt_subtest_with_dynamic_f("pixel-format") {
-> +				count = 0;
-> +				for_each_pipe(&data->display, pipe) {
-> +					igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +						test_pixel_formats(data, pipe);
-> +					if (is_pipe_limit_reached(++count))
-> +						break;
-> +				}
-> +			}
-> +		    igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
-> +				count = 0;
-> +				for_each_pipe(&data->display, pipe) {
-> +				    igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
-> +						data->crop = 4;
-> +						test_pixel_formats(data, pipe);
-> +				    }
-> +				    if (is_pipe_limit_reached(++count))
-> +						break;
-> +				}
-> +		    }
-> +        }
+> +	igt_create_pattern_fb(data->drm_fd,
+> +			      data->output->config.connector-
+> >modes[0].hdisplay,
+> +			      data->output->config.connector-
+> >modes[0].vdisplay,
+>  			      DRM_FORMAT_XRGB8888,
+>  			      DRM_FORMAT_MOD_LINEAR,
+>  			      &data->fb_test_pattern);
+> @@ -253,16 +281,21 @@ static void run_test(data_t *data, enum
+> dsc_test_type test_type)
+>  		}
+>=20
+>  		snprintf(test_name, sizeof(test_name), "-%dbpp", data-
+> >compression_bpp);
+> -		if (igt_pipe_connector_valid(pipe, data->output)) {
+> +		if (!igt_pipe_connector_valid(pipe, data->output))
+> +			continue;
 > +
->   
->   	data->crop = 0;
->   	igt_describe("verify plane position using two planes to create a fully covered screen");
+> +		igt_dynamic_f("%s-pipe-%s%s", data->output->name,
+> +			      kmstest_pipe_name(pipe),
+> +			      (test_type =3D=3D test_dsc_compression_bpp) ?
+> +			      test_name : "") {
+>  			data->pipe =3D pipe;
+> +			igt_skip_on_f((data->output->config.connector-
+> >modes[0].hdisplay >=3D 5120) &&
+> +				      (pipe  =3D=3D (data->n_pipes - 1)),
+> +				      "pipe-%s not supported due to bigjoiner
+> limitation\n",
+> +				      kmstest_pipe_name(pipe));
+> +			update_display(data, test_type);
+>=20
+> -			igt_dynamic_f("%s-pipe-%s%s", data->output-
+> >name,
+> -					kmstest_pipe_name(pipe),
+> -					(test_type =3D=3D
+> test_dsc_compression_bpp) ?
+> -					 test_name : "")
+> -				update_display(data, test_type);
+>  		}
+> -
+>  		if (test_type =3D=3D test_dsc_compression_bpp)
+>  			break;
+>  	}
+> @@ -283,6 +316,9 @@ igt_main
+>  		igt_install_exit_handler(kms_dsc_exit_handler);
+>  		igt_display_require(&data.display, data.drm_fd);
+>  		igt_require(res =3D drmModeGetResources(data.drm_fd));
+> +		data.n_pipes =3D 0;
+> +		for_each_pipe(&data.display, i)
+> +			data.n_pipes++;
+>  	}
+>  	igt_subtest_with_dynamic("basic-dsc-enable") {
+>  		for (j =3D 0; j < res->count_connectors; j++) {
+> --
+> 2.25.1
