@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4838070973808258592=="
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
+ [199.106.114.39])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EF6B6E0EF
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Nov 2021 01:09:57 +0000 (UTC)
+Message-ID: <6aca8bf2-3f0b-b4ae-9c80-1b0354731f72@quicinc.com>
+Date: Tue, 16 Nov 2021 17:03:49 -0800
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 16 Nov 2021 23:28:09 -0000
-Message-ID: <163710528944.28809.7017461850229622019@emeril.freedesktop.org>
-References: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgYW1kZ3B1?=
- =?utf-8?q?/amd=5Fmode=5Fswitch=3A_Introduce_mode_switch_test?=
+Content-Language: en-US
+References: <20211116173131.240657-1-markyacoub@chromium.org>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <20211116173131.240657-1-markyacoub@chromium.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH] tests: Skip tests using LUTs when the driver
+ doesn't support it.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,304 +21,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Mark Yacoub <markyacoub@chromium.org>, igt-dev@lists.freedesktop.org
+Cc: robdclark@chromium.org, petri.latvala@intel.com, seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4838070973808258592==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mark,
 
-== Series Details ==
+On 11/16/2021 9:31 AM, Mark Yacoub wrote:
+> From: Mark Yacoub <markyacoub@google.com>
+>
+> [Why]
+> Some drivers such as msm do not support CTM and their CRTC doesn't have
+> LUT props. Tests should skip relevant tests when it's not supported.
+>
+> [How]
+> Check for the LUT pipe prop before starting relevant subtest.
+>
+> Tested on Trogdor (msm)
+>
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> ---
+>   tests/kms_color.c |  8 ++++++++
+>   tests/kms_plane.c | 52 ++++++++++++++++++++++++++++-------------------
+>   2 files changed, 39 insertions(+), 21 deletions(-)
+>
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index 775f3596..99a59cd8 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -905,6 +905,14 @@ igt_main
+>   	}
+>   
+>   	for_each_pipe_static(pipe) {
+> +		igt_fixture {
+> +			igt_require_f(igt_pipe_has_prop(&data.display, pipe,
+> +											IGT_CRTC_GAMMA_LUT) &&
+> +								igt_pipe_has_prop(&data.display, pipe,
+> +												IGT_CRTC_DEGAMMA_LUT),
+> +							"Driver doesn't support CTM.\n");
+> +		}
+> +
+Spacing looks a little messy and makes the code hard to read. Please 
+reformat to something more legible.
+>   		igt_subtest_group
+>   			run_tests_for_pipe(&data, pipe);
+>   
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 405d4c21..d82214ed 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1090,28 +1090,38 @@ run_tests_for_pipe_plane(data_t *data)
+>   		igt_require(data->display.pipes[pipe].n_planes > 0);
+>   	}
+>   
+> -	igt_describe("verify the pixel formats for given plane and pipe");
+> -	igt_subtest_with_dynamic_f("pixel-format") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> -				test_pixel_formats(data, pipe);
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> -	}
+> -	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
+> -	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
+> -				data->crop = 4;
+> -				test_pixel_formats(data, pipe);
+> +		igt_describe("Verify the pixel formats for given plane and pipe");
+> +		igt_subtest_group {
+> +			igt_fixture {
+> +				igt_require_f(igt_pipe_has_prop(&data->display, pipe,
+> +												IGT_CRTC_GAMMA_LUT) &&
+> +								  igt_pipe_has_prop(&data->display, pipe,
+> +													IGT_CRTC_DEGAMMA_LUT),
+> +							  "Driver doesn't support CTM.\n");
 
-Series: amdgpu/amd_mode_switch: Introduce mode switch test
-URL   : https://patchwork.freedesktop.org/series/96996/
-State : failure
+Same here.
 
-== Summary ==
+Thanks,
 
-CI Bug Log - changes from CI_DRM_10888 -> IGTPW_6408
-====================================================
+Jessica Zhang
 
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6408 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6408, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
-
-Participating hosts (39 -> 33)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (7): fi-ilk-m540 bat-dg1-6 fi-tgl-u2 fi-hsw-4200u fi-icl-u2 fi-bsw-cyan fi-ctg-p8600 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6408:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-skl-6600u:       [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6408 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +8 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-tgl-1115g4:      [PASS][4] -> [FAIL][5] ([i915#1888])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][7] ([i915#1886] / [i915#2291])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#533])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
-    - fi-bdw-5557u:       [PASS][10] -> [INCOMPLETE][11] ([i915#146])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-
-  * igt@runner@aborted:
-    - fi-skl-6600u:       NOTRUN -> [FAIL][12] ([i915#3363] / [i915#4312])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-skl-6600u/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - {fi-hsw-gt1}:       [DMESG-WARN][13] ([i915#3303]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-cml-u2:          [DMESG-WARN][15] ([i915#4269]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
-  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6281 -> IGTPW_6408
-
-  CI-20190529: 20190529
-  CI_DRM_10888: d4a23275467825243fea6f50938fc89711b9a53c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6408: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
-  IGT_6281: 551f33d68fc780e3d264abd69ec59fe1af1bb65b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-0
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-1
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-2
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-3
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-4
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-5
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
-
---===============4838070973808258592==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>amdgpu/amd_mode_switch: Introduce mode switch test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96996/">https://patchwork.freedesktop.org/series/96996/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10888 -&gt; IGTPW_6408</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6408 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6408, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html</p>
-<h2>Participating hosts (39 -&gt; 33)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (7): fi-ilk-m540 bat-dg1-6 fi-tgl-u2 fi-hsw-4200u fi-icl-u2 fi-bsw-cyan fi-ctg-p8600 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6408:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s3:<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6408 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:</p>
-<ul>
-<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>{fi-hsw-gt1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-hsw-gt1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10888/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6281 -&gt; IGTPW_6408</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10888: d4a23275467825243fea6f50938fc89711b9a53c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6408: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html<br />
-  IGT_6281: 551f33d68fc780e3d264abd69ec59fe1af1bb65b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-0<br />
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-1<br />
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-2<br />
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-3<br />
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-4<br />
-+igt@amdgpu/amd_mode_switch@mode-switch-first-last-pipe-5</p>
-
-</body>
-</html>
-
---===============4838070973808258592==--
+>   			}
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> -	}
+> +
+> +			igt_subtest_with_dynamic_f("pixel-format") {
+> +				count = 0;
+> +				for_each_pipe(&data->display, pipe) {
+> +					igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> +						test_pixel_formats(data, pipe);
+> +					if (is_pipe_limit_reached(++count))
+> +						break;
+> +				}
+> +			}
+> +		    igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
+> +				count = 0;
+> +				for_each_pipe(&data->display, pipe) {
+> +				    igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
+> +						data->crop = 4;
+> +						test_pixel_formats(data, pipe);
+> +				    }
+> +				    if (is_pipe_limit_reached(++count))
+> +						break;
+> +				}
+> +		    }
+> +        }
+> +
+>   
+>   	data->crop = 0;
+>   	igt_describe("verify plane position using two planes to create a fully covered screen");
