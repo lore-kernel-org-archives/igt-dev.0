@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FB286E8EB
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Nov 2021 12:11:36 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Wed, 17 Nov 2021 13:11:29 +0100
-Message-Id: <20211117121129.11532-1-kamil.konieczny@linux.intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0915F6E5BF
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Nov 2021 12:53:37 +0000 (UTC)
+Date: Wed, 17 Nov 2021 13:53:33 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20211117125333.GA10454@zkempczy-mobl2>
+References: <20211117121129.11532-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/1] tests/gem_blits: Add no-reloc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211117121129.11532-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] tests/gem_blits: Add no-reloc
  capability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -18,236 +21,264 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add no-relocation mode for GPU gens without relocations. In WC
-mode on discrete dg1 we need to use device_coherent mmap.
+On Wed, Nov 17, 2021 at 01:11:29PM +0100, Kamil Konieczny wrote:
+> Add no-relocation mode for GPU gens without relocations. In WC
+> mode on discrete dg1 we need to use device_coherent mmap.
+> 
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> ---
+> v3: moved flag set EXEC_OBJECT_WRITE inside no-reloc block as it
+>   is alraedy added if relocations were to apply, removed var name
+       ^-- typo
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>   change, removed checks for ahnd != 0 for put functions (Zbyszek
+>   review) and change commit message
 
----
-v3: moved flag set EXEC_OBJECT_WRITE inside no-reloc block as it
-  is alraedy added if relocations were to apply, removed var name
-  change, removed checks for ahnd != 0 for put functions (Zbyszek
-  review) and change commit message
-v2: Address Zbyszek Kempczynski review: removed has_relocs as it
-  is sufficient to test if ahnd variable is non-zero, removed if-s
-  blocks around relocations to make patch smaller for review.
----
- tests/i915/gem_blits.c | 81 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 69 insertions(+), 12 deletions(-)
+Maybe instead of long story:
 
-diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
-index 21dcee68..72dc3ac4 100644
---- a/tests/i915/gem_blits.c
-+++ b/tests/i915/gem_blits.c
-@@ -38,6 +38,7 @@ struct device {
- 	int gen;
- 	int pciid;
- 	int llc;
-+	uint64_t ahnd; /* ahnd != 0 if no-relocs */
- };
- 
- struct buffer {
-@@ -119,8 +120,10 @@ static struct buffer *buffer_create(const struct device *device,
- 	buffer->size = ALIGN(buffer->stride * height, 4096);
- 	buffer->handle = gem_create(device->fd, buffer->size);
- 	buffer->caching = device->llc;
--
--	buffer->gtt_offset = buffer->handle * buffer->size;
-+	if (device->ahnd)
-+		buffer->gtt_offset = get_offset(device->ahnd, buffer->handle, buffer->size, 0);
-+	else
-+		buffer->gtt_offset = buffer->handle * buffer->size;
- 
- 	for (int y = 0; y < height; y++) {
- 		uint32_t *row = buffer->model + y * width;
-@@ -160,20 +163,34 @@ static void buffer_set_tiling(const struct device *device,
- 	execbuf.buffer_count = ARRAY_SIZE(obj);
- 	if (device->gen >= 6)
- 		execbuf.flags = I915_EXEC_BLT;
-+	if (device->ahnd)
-+		execbuf.flags |= I915_EXEC_NO_RELOC;
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].handle = gem_create(device->fd, size);
- 	if (__gem_set_tiling(device->fd, obj[0].handle, tiling, stride) == 0)
- 		obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
-+	if (device->ahnd) {
-+		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[0].offset = get_offset(device->ahnd, obj[0].handle, size, 0);
-+	}
- 
- 	obj[1].handle = buffer->handle;
- 	obj[1].offset = buffer->gtt_offset;
- 	if (buffer->fenced)
- 		obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
-+	if (device->ahnd)
-+		obj[1].flags |= EXEC_OBJECT_PINNED;
- 
- 	obj[2].handle = gem_create(device->fd, 4096);
--	obj[2].relocs_ptr = to_user_pointer(memset(reloc, 0, sizeof(reloc)));
--	obj[2].relocation_count = 2;
-+	if (device->ahnd) {
-+		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
-+		obj[2].flags |= EXEC_OBJECT_PINNED;
-+	} else {
-+		obj[2].relocs_ptr = to_user_pointer(memset(reloc, 0, sizeof(reloc)));
-+		obj[2].relocation_count = 2;
-+	}
-+
- 	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
- 
- 	i = 0;
-@@ -247,6 +264,8 @@ static void buffer_set_tiling(const struct device *device,
- 	gem_execbuf(device->fd, &execbuf);
- 
- 	gem_close(device->fd, obj[2].handle);
-+	put_offset(device->ahnd, obj[2].offset);
-+
- 	gem_close(device->fd, obj[1].handle);
- 
- 	buffer->gtt_offset = obj[0].offset;
-@@ -292,19 +311,34 @@ static bool blit_to_linear(const struct device *device,
- 	execbuf.buffer_count = ARRAY_SIZE(obj);
- 	if (device->gen >= 6)
- 		execbuf.flags = I915_EXEC_BLT;
-+	if (device->ahnd)
-+		execbuf.flags |= I915_EXEC_NO_RELOC;
- 
- 	memset(obj, 0, sizeof(obj));
- 	if (__gem_userptr(device->fd, linear, buffer->size, 0, 0, &obj[0].handle))
- 		return false;
- 
-+	if (device->ahnd) {
-+		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+		obj[0].offset = get_offset(device->ahnd, obj[0].handle, buffer->size, 0);
-+	}
-+
- 	obj[1].handle = buffer->handle;
- 	obj[1].offset = buffer->gtt_offset;
- 	obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
-+	if (device->ahnd)
-+		obj[1].flags |= EXEC_OBJECT_PINNED;
- 
- 	memset(reloc, 0, sizeof(reloc));
- 	obj[2].handle = gem_create(device->fd, 4096);
--	obj[2].relocs_ptr = to_user_pointer(reloc);
--	obj[2].relocation_count = ARRAY_SIZE(reloc);
-+	if (device->ahnd) {
-+		obj[2].flags |= EXEC_OBJECT_PINNED;
-+		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
-+	} else {
-+		obj[2].relocs_ptr = to_user_pointer(reloc);
-+		obj[2].relocation_count = ARRAY_SIZE(reloc);
-+	}
-+
- 	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
- 
- 	if (buffer->tiling >= I915_TILING_Y) {
-@@ -368,6 +402,7 @@ static bool blit_to_linear(const struct device *device,
- 
- 	gem_execbuf(device->fd, &execbuf);
- 	gem_close(device->fd, obj[2].handle);
-+	put_offset(device->ahnd, obj[2].offset);
- 
- 	gem_sync(device->fd, obj[0].handle);
- 	gem_close(device->fd, obj[0].handle);
-@@ -399,7 +434,8 @@ static void *download(const struct device *device,
- 		break;
- 
- 	case WC:
--		if (!gem_mmap__has_wc(device->fd) || buffer->tiling)
-+		if (!(gem_mmap__has_wc(device->fd) || gem_mmap__has_device_coherent(device->fd))
-+		    || buffer->tiling)
- 			mode = GTT;
- 		break;
- 
-@@ -425,9 +461,12 @@ static void *download(const struct device *device,
- 		break;
- 
- 	case WC:
--		src = gem_mmap__wc(device->fd, buffer->handle,
--				   0, buffer->size,
--				   PROT_READ);
-+		src = __gem_mmap__wc(device->fd, buffer->handle,
-+				     0, buffer->size,
-+				     PROT_READ);
-+		if (!src)
-+			src = gem_mmap__device_coherent(device->fd, buffer->handle, 0,
-+							buffer->size, PROT_READ);
- 
- 		gem_set_domain(device->fd, buffer->handle,
- 			       I915_GEM_DOMAIN_WC, 0);
-@@ -490,6 +529,7 @@ static void buffer_free(const struct device *device, struct buffer *buffer)
- {
- 	igt_assert(buffer_check(device, buffer, GTT));
- 	gem_close(device->fd, buffer->handle);
-+	put_offset(device->ahnd, buffer->gtt_offset);
- 	free(buffer);
- }
- 
-@@ -604,22 +644,33 @@ blit(const struct device *device,
- 	execbuf.buffer_count = ARRAY_SIZE(obj);
- 	if (device->gen >= 6)
- 		execbuf.flags = I915_EXEC_BLT;
-+	if (device->ahnd)
-+		execbuf.flags |= I915_EXEC_NO_RELOC;
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].handle = dst->handle;
- 	obj[0].offset = dst->gtt_offset;
- 	if (dst->tiling)
- 		obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
-+	if (device->ahnd)
-+		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
- 
- 	obj[1].handle = src->handle;
- 	obj[1].offset = src->gtt_offset;
- 	if (src->tiling)
- 		obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
-+	if (device->ahnd)
-+		obj[1].flags |= EXEC_OBJECT_PINNED;
- 
- 	memset(reloc, 0, sizeof(reloc));
- 	obj[2].handle = gem_create(device->fd, 4096);
--	obj[2].relocs_ptr = to_user_pointer(reloc);
--	obj[2].relocation_count = ARRAY_SIZE(reloc);
-+	if (device->ahnd) {
-+		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
-+		obj[2].flags |= EXEC_OBJECT_PINNED;
-+	} else {
-+		obj[2].relocs_ptr = to_user_pointer(reloc);
-+		obj[2].relocation_count = ARRAY_SIZE(reloc);
-+	}
- 	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
- 
- 	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
-@@ -691,6 +742,7 @@ blit(const struct device *device,
- 
- 	gem_execbuf(device->fd, &execbuf);
- 	gem_close(device->fd, obj[2].handle);
-+	put_offset(device->ahnd, obj[2].offset);
- 
- 	dst->gtt_offset = obj[0].offset;
- 	src->gtt_offset = obj[1].offset;
-@@ -733,6 +785,7 @@ igt_main
- 		device.pciid = intel_get_drm_devid(device.fd);
- 		device.gen = intel_gen(device.pciid);
- 		device.llc = gem_has_llc(device.fd);
-+		device.ahnd = get_reloc_ahnd(device.fd, 0);
- 	}
- 
- 	igt_subtest("basic") {
-@@ -794,4 +847,8 @@ igt_main
- 			}
- 		}
- 	}
-+
-+	igt_fixture {
-+		put_ahnd(device.ahnd);
-+	}
- }
--- 
-2.32.0
+v3: set EXEC_OBJECT_WRITE for no-reloc path only (Zbigniew)
+
+> v2: Address Zbyszek Kempczynski review: removed has_relocs as it
+>   is sufficient to test if ahnd variable is non-zero, removed if-s
+>   blocks around relocations to make patch smaller for review.
+
+v2: remove unnecessary variable rename and use allocator handle 
+    as conditional to diverge reloc and no-reloc paths (Zbigniew) 
+
+> ---
+>  tests/i915/gem_blits.c | 81 +++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 69 insertions(+), 12 deletions(-)
+> 
+> diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
+> index 21dcee68..72dc3ac4 100644
+> --- a/tests/i915/gem_blits.c
+> +++ b/tests/i915/gem_blits.c
+> @@ -38,6 +38,7 @@ struct device {
+>  	int gen;
+>  	int pciid;
+>  	int llc;
+> +	uint64_t ahnd; /* ahnd != 0 if no-relocs */
+>  };
+>  
+>  struct buffer {
+> @@ -119,8 +120,10 @@ static struct buffer *buffer_create(const struct device *device,
+>  	buffer->size = ALIGN(buffer->stride * height, 4096);
+>  	buffer->handle = gem_create(device->fd, buffer->size);
+>  	buffer->caching = device->llc;
+> -
+> -	buffer->gtt_offset = buffer->handle * buffer->size;
+> +	if (device->ahnd)
+> +		buffer->gtt_offset = get_offset(device->ahnd, buffer->handle, buffer->size, 0);
+> +	else
+> +		buffer->gtt_offset = buffer->handle * buffer->size;
+>  
+>  	for (int y = 0; y < height; y++) {
+>  		uint32_t *row = buffer->model + y * width;
+> @@ -160,20 +163,34 @@ static void buffer_set_tiling(const struct device *device,
+>  	execbuf.buffer_count = ARRAY_SIZE(obj);
+>  	if (device->gen >= 6)
+>  		execbuf.flags = I915_EXEC_BLT;
+> +	if (device->ahnd)
+> +		execbuf.flags |= I915_EXEC_NO_RELOC;
+>  
+>  	memset(obj, 0, sizeof(obj));
+>  	obj[0].handle = gem_create(device->fd, size);
+>  	if (__gem_set_tiling(device->fd, obj[0].handle, tiling, stride) == 0)
+>  		obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
+> +	if (device->ahnd) {
+> +		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
+> +		obj[0].offset = get_offset(device->ahnd, obj[0].handle, size, 0);
+> +	}
+>  
+>  	obj[1].handle = buffer->handle;
+>  	obj[1].offset = buffer->gtt_offset;
+>  	if (buffer->fenced)
+>  		obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
+> +	if (device->ahnd)
+> +		obj[1].flags |= EXEC_OBJECT_PINNED;
+>  
+>  	obj[2].handle = gem_create(device->fd, 4096);
+> -	obj[2].relocs_ptr = to_user_pointer(memset(reloc, 0, sizeof(reloc)));
+> -	obj[2].relocation_count = 2;
+> +	if (device->ahnd) {
+> +		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
+> +		obj[2].flags |= EXEC_OBJECT_PINNED;
+> +	} else {
+> +		obj[2].relocs_ptr = to_user_pointer(memset(reloc, 0, sizeof(reloc)));
+> +		obj[2].relocation_count = 2;
+> +	}
+> +
+>  	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
+>  
+>  	i = 0;
+> @@ -247,6 +264,8 @@ static void buffer_set_tiling(const struct device *device,
+>  	gem_execbuf(device->fd, &execbuf);
+>  
+>  	gem_close(device->fd, obj[2].handle);
+> +	put_offset(device->ahnd, obj[2].offset);
+> +
+
+It seems you're getting offsets twice (for obj[0] and obj[2]) but putting
+is only for obj[2]. At the moment reloc doesn't keep object offset tracking
+so now there's no-op here, but this may change in the future. Then we would
+have a offset leak.
+
+Be aware of offset shuffling so put appropriate offset here :)
+
+>  	gem_close(device->fd, obj[1].handle);
+>  
+>  	buffer->gtt_offset = obj[0].offset;
+> @@ -292,19 +311,34 @@ static bool blit_to_linear(const struct device *device,
+>  	execbuf.buffer_count = ARRAY_SIZE(obj);
+>  	if (device->gen >= 6)
+>  		execbuf.flags = I915_EXEC_BLT;
+> +	if (device->ahnd)
+> +		execbuf.flags |= I915_EXEC_NO_RELOC;
+>  
+>  	memset(obj, 0, sizeof(obj));
+>  	if (__gem_userptr(device->fd, linear, buffer->size, 0, 0, &obj[0].handle))
+>  		return false;
+>  
+> +	if (device->ahnd) {
+> +		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
+> +		obj[0].offset = get_offset(device->ahnd, obj[0].handle, buffer->size, 0);
+> +	}
+> +
+>  	obj[1].handle = buffer->handle;
+>  	obj[1].offset = buffer->gtt_offset;
+>  	obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
+> +	if (device->ahnd)
+> +		obj[1].flags |= EXEC_OBJECT_PINNED;
+>  
+>  	memset(reloc, 0, sizeof(reloc));
+>  	obj[2].handle = gem_create(device->fd, 4096);
+> -	obj[2].relocs_ptr = to_user_pointer(reloc);
+> -	obj[2].relocation_count = ARRAY_SIZE(reloc);
+> +	if (device->ahnd) {
+> +		obj[2].flags |= EXEC_OBJECT_PINNED;
+> +		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
+> +	} else {
+> +		obj[2].relocs_ptr = to_user_pointer(reloc);
+> +		obj[2].relocation_count = ARRAY_SIZE(reloc);
+> +	}
+> +
+>  	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
+>  
+>  	if (buffer->tiling >= I915_TILING_Y) {
+> @@ -368,6 +402,7 @@ static bool blit_to_linear(const struct device *device,
+>  
+>  	gem_execbuf(device->fd, &execbuf);
+>  	gem_close(device->fd, obj[2].handle);
+> +	put_offset(device->ahnd, obj[2].offset);
+>  
+>  	gem_sync(device->fd, obj[0].handle);
+>  	gem_close(device->fd, obj[0].handle);
+
+Same as above.
+
+--
+Zbigniew
+
+> @@ -399,7 +434,8 @@ static void *download(const struct device *device,
+>  		break;
+>  
+>  	case WC:
+> -		if (!gem_mmap__has_wc(device->fd) || buffer->tiling)
+> +		if (!(gem_mmap__has_wc(device->fd) || gem_mmap__has_device_coherent(device->fd))
+> +		    || buffer->tiling)
+>  			mode = GTT;
+>  		break;
+>  
+> @@ -425,9 +461,12 @@ static void *download(const struct device *device,
+>  		break;
+>  
+>  	case WC:
+> -		src = gem_mmap__wc(device->fd, buffer->handle,
+> -				   0, buffer->size,
+> -				   PROT_READ);
+> +		src = __gem_mmap__wc(device->fd, buffer->handle,
+> +				     0, buffer->size,
+> +				     PROT_READ);
+> +		if (!src)
+> +			src = gem_mmap__device_coherent(device->fd, buffer->handle, 0,
+> +							buffer->size, PROT_READ);
+>  
+>  		gem_set_domain(device->fd, buffer->handle,
+>  			       I915_GEM_DOMAIN_WC, 0);
+> @@ -490,6 +529,7 @@ static void buffer_free(const struct device *device, struct buffer *buffer)
+>  {
+>  	igt_assert(buffer_check(device, buffer, GTT));
+>  	gem_close(device->fd, buffer->handle);
+> +	put_offset(device->ahnd, buffer->gtt_offset);
+>  	free(buffer);
+>  }
+>  
+> @@ -604,22 +644,33 @@ blit(const struct device *device,
+>  	execbuf.buffer_count = ARRAY_SIZE(obj);
+>  	if (device->gen >= 6)
+>  		execbuf.flags = I915_EXEC_BLT;
+> +	if (device->ahnd)
+> +		execbuf.flags |= I915_EXEC_NO_RELOC;
+>  
+>  	memset(obj, 0, sizeof(obj));
+>  	obj[0].handle = dst->handle;
+>  	obj[0].offset = dst->gtt_offset;
+>  	if (dst->tiling)
+>  		obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
+> +	if (device->ahnd)
+> +		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
+>  
+>  	obj[1].handle = src->handle;
+>  	obj[1].offset = src->gtt_offset;
+>  	if (src->tiling)
+>  		obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
+> +	if (device->ahnd)
+> +		obj[1].flags |= EXEC_OBJECT_PINNED;
+>  
+>  	memset(reloc, 0, sizeof(reloc));
+>  	obj[2].handle = gem_create(device->fd, 4096);
+> -	obj[2].relocs_ptr = to_user_pointer(reloc);
+> -	obj[2].relocation_count = ARRAY_SIZE(reloc);
+> +	if (device->ahnd) {
+> +		obj[2].offset = get_offset(device->ahnd, obj[2].handle, 4096, 0);
+> +		obj[2].flags |= EXEC_OBJECT_PINNED;
+> +	} else {
+> +		obj[2].relocs_ptr = to_user_pointer(reloc);
+> +		obj[2].relocation_count = ARRAY_SIZE(reloc);
+> +	}
+>  	batch = gem_mmap__cpu(device->fd, obj[2].handle, 0, 4096, PROT_WRITE);
+>  
+>  	if ((src->tiling | dst->tiling) >= I915_TILING_Y) {
+> @@ -691,6 +742,7 @@ blit(const struct device *device,
+>  
+>  	gem_execbuf(device->fd, &execbuf);
+>  	gem_close(device->fd, obj[2].handle);
+> +	put_offset(device->ahnd, obj[2].offset);
+>  
+>  	dst->gtt_offset = obj[0].offset;
+>  	src->gtt_offset = obj[1].offset;
+> @@ -733,6 +785,7 @@ igt_main
+>  		device.pciid = intel_get_drm_devid(device.fd);
+>  		device.gen = intel_gen(device.pciid);
+>  		device.llc = gem_has_llc(device.fd);
+> +		device.ahnd = get_reloc_ahnd(device.fd, 0);
+>  	}
+>  
+>  	igt_subtest("basic") {
+> @@ -794,4 +847,8 @@ igt_main
+>  			}
+>  		}
+>  	}
+> +
+> +	igt_fixture {
+> +		put_ahnd(device.ahnd);
+> +	}
+>  }
+> -- 
+> 2.32.0
+> 
