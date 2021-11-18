@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 18 Nov 2021 11:19:41 +0200
+Date: Thu, 18 Nov 2021 11:32:02 +0200
 From: Pekka Paalanen <ppaalanen@gmail.com>
-Message-ID: <20211118111941.764737fb@eldfell>
-In-Reply-To: <20211115094759.520955-8-bhanuprakash.modem@intel.com>
+Message-ID: <20211118113202.0ff5dcae@eldfell>
+In-Reply-To: <20211115094759.520955-9-bhanuprakash.modem@intel.com>
 References: <20211115094759.520955-1-bhanuprakash.modem@intel.com>
- <20211115094759.520955-8-bhanuprakash.modem@intel.com>
+ <20211115094759.520955-9-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/6wSi2wncVoIw06chR.cibzR";
+Content-Type: multipart/signed; boundary="Sig_//DM7Ix.e0MwQe2XWOMdbvF+";
  protocol="application/pgp-signature"; micalg=pgp-sha256
-Subject: Re: [igt-dev] [i-g-t 07/14] tests/kms_color: New negative tests for
- plane level color mgmt
+Subject: Re: [igt-dev] [i-g-t 08/14] tests/kms_color_chamelium: New subtests
+ for Plane gamma
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,227 +20,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>, dri-devel@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---Sig_/6wSi2wncVoIw06chR.cibzR
+--Sig_//DM7Ix.e0MwQe2XWOMdbvF+
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 15 Nov 2021 15:17:52 +0530
+On Mon, 15 Nov 2021 15:17:53 +0530
 Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
 
-> Negative check for:
->  * plane gamma lut sizes
->  * plane degamma lut sizes
->  * plane ctm matrix sizes
+> To verify Plane gamma, draw 3 gradient rectangles in red, green and blue,
+> with a maxed out gamma LUT and verify we have the same frame dump as
+> drawing solid color rectangles.
 >=20
 > Cc: Harry Wentland <harry.wentland@amd.com>
 > Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > Cc: Uma Shankar <uma.shankar@intel.com>
+> Cc: Kunal Joshi <kunal1.joshi@intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  tests/kms_color.c | 127 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 127 insertions(+)
+>  tests/kms_color_chamelium.c | 188 +++++++++++++++++++++++++++++++++++-
+>  1 file changed, 187 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index e14b37cb6f..d9fe417ba9 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -736,6 +736,118 @@ static void test_pipe_limited_range_ctm(data_t *dat=
-a,
->  }
->  #endif
+> diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
+> index 76f82d6d35..b506109271 100644
+> --- a/tests/kms_color_chamelium.c
+> +++ b/tests/kms_color_chamelium.c
+> @@ -24,7 +24,34 @@
 > =20
-> +static bool invalid_plane_gamma_test(data_t *data, igt_plane_t *plane)
+>  #include "kms_color_helper.h"
+> =20
+> -IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium =
+to verify instead of CRC");
+> +IGT_TEST_DESCRIPTION("Test Color Features at Pipe & Plane level using Ch=
+amelium to verify instead of CRC");
+
+Now that you actually can get a captured image of the result with
+Chamelium, I think the tests should be more ambitious. Do not rely on
+identity curves or matrices, nor max LUT, because now you can use a
+difference threshold per pixel when comparing the result with the
+reference.
+
+Use various non-trivial curves, different for each of red, green and
+blue. Use non-trivial matrices that actually compute mixtures instead
+of just moving red value to the green channel. Use multiple planes
+simultaneously. Use different framebuffer formats, particularly with
+higher than 8 bits per channel, and check the capture has the same
+precision and not truncated to 8 bit.
+
+That kind of tests would have much more proving power, and they also
+help assess the precision of the hardware. Precision is important to
+userspace.
+
+These are also tests that userspace projects cannot really execute, they
+do not have labs with Chamelium boards and not all drivers/hardware
+support writeback connectors.
+
+> +
+> +#define MAX_SUPPORTED_PLANES 7
+> +#define SDR_PLANE_BASE 3
+> +
+> +typedef bool (*test_t)(data_t*, igt_plane_t*);
+> +
+> +static bool is_hdr_plane(const igt_plane_t *plane)
 > +{
-> +	igt_display_t *display =3D &data->display;
-> +	drmModePropertyPtr gamma_mode =3D NULL;
-> +	uint32_t i;
-> +
-> +	igt_info("Plane invalid gamma test is running on pipe-%s plane-%s(%s)\n=
-",
-> +			kmstest_pipe_name(plane->pipe->pipe),
-> +			kmstest_plane_type_name(plane->type),
-> +			is_hdr_plane(plane) ? "hdr":"sdr");
-> +
-> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_MODE));
-> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_LUT));
-> +
-> +	gamma_mode =3D get_plane_gamma_degamma_mode(plane, IGT_PLANE_GAMMA_MODE=
-);
-> +
-> +	/* Iterate all supported gamma modes. */
-> +	for (i =3D 0; i < gamma_mode->count_enums; i++) {
-> +		segment_data_t *segment_info =3D NULL;
-> +		size_t lut_size =3D 0;
-> +
-> +		/* Ignore 'no gamma' from enum list. */
-> +		if (!strcmp(gamma_mode->enums[i].name, "no gamma"))
-> +			continue;
-> +
-> +		igt_info("Trying to use gamma mode: \'%s\'\n", gamma_mode->enums[i].na=
-me);
-> +
-> +		segment_info =3D get_segment_data(data, gamma_mode->enums[i].value,
-> +				gamma_mode->enums[i].name);
-> +		lut_size =3D sizeof(struct drm_color_lut_ext) * segment_info->entries_=
-count;
-> +
-> +		igt_plane_set_prop_enum(plane, IGT_PLANE_GAMMA_MODE, gamma_mode->enums=
-[i].name);
-> +		invalid_plane_lut_sizes(display, plane,
-> +					IGT_PLANE_GAMMA_LUT,
-> +					lut_size);
-> +
-> +		clear_segment_data(segment_info);
-> +
-> +		/* One enum is enough. */
-> +		break;
-> +	}
-> +
-> +	drmModeFreeProperty(gamma_mode);
-> +
-> +	return true;
+> +	return plane->index >=3D 0 && plane->index < SDR_PLANE_BASE;
+
+This here again. I guess the previous definition of this function was
+never used?
+
+The same questions.
+
 > +}
 > +
-> +static bool invalid_plane_degamma_test(data_t *data, igt_plane_t *plane)
+> +static bool is_valid_plane(igt_plane_t *plane)
 > +{
-> +	igt_display_t *display =3D &data->display;
-> +	drmModePropertyPtr degamma_mode =3D NULL;
-> +	uint32_t i;
+> +	int index =3D plane->index;
 > +
-> +	igt_info("Plane invalid degamma test is running on pipe-%s plane-%s(%s)=
-\n",
-> +			kmstest_pipe_name(plane->pipe->pipe),
-> +			kmstest_plane_type_name(plane->type),
-> +			is_hdr_plane(plane) ? "hdr":"sdr");
+> +	if (plane->type !=3D DRM_PLANE_TYPE_PRIMARY)
+> +		return false;
 > +
-> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_DEGAMMA_MODE));
-> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_DEGAMMA_LUT));
-> +
-> +	degamma_mode =3D get_plane_gamma_degamma_mode(plane, IGT_PLANE_DEGAMMA_=
-MODE);
-> +
-> +	/* Iterate all supported degamma modes. */
-> +	for (i =3D 0; i < degamma_mode->count_enums; i++) {
-> +		segment_data_t *segment_info =3D NULL;
-> +		size_t lut_size =3D 0;
-> +
-> +		/* Ignore 'no degamma' from enum list. */
-> +		if (!strcmp(degamma_mode->enums[i].name, "no degamma"))
-> +			continue;
-> +
-> +		igt_info("Trying to use degamma mode: \'%s\'\n", degamma_mode->enums[i=
-].name);
-> +
-> +		segment_info =3D get_segment_data(data,
-> +						degamma_mode->enums[i].value,
-> +						degamma_mode->enums[i].name);
-> +		lut_size =3D sizeof(struct drm_color_lut_ext) * segment_info->entries_=
-count * 2;
-> +
-> +		igt_plane_set_prop_enum(plane,
-> +					IGT_PLANE_DEGAMMA_MODE,
-> +					degamma_mode->enums[i].name);
-> +		invalid_plane_lut_sizes(display, plane,
-> +					IGT_PLANE_DEGAMMA_LUT,
-> +					lut_size);
-> +
-> +		clear_segment_data(segment_info);
-> +
-> +		/* One enum is enough. */
-> +		break;
-
-Why is one enum enough?
-
-The same question for the other case in this patch.
-
-
-> +	}
-> +
-> +	drmModeFreeProperty(degamma_mode);
-> +
-> +	return true;
+> +	/*
+> +	 * Test 1 HDR plane, 1 SDR plane.
+> +	 *
+> +	 * 0,1,2 HDR planes
+> +	 * 3,4,5,6 SDR planes
+> +	 *
+> +	 */
+> +	return index >=3D 0 && index < MAX_SUPPORTED_PLANES;
 > +}
-> +
-> +static bool invalid_plane_ctm_test(data_t *data, igt_plane_t *plane)
-> +{
-> +	igt_info("Plane invalid CTM test is running on pipe-%s plane-%s(%s)\n",
-> +			kmstest_pipe_name(plane->pipe->pipe),
-> +			kmstest_plane_type_name(plane->type),
-> +			is_hdr_plane(plane) ? "hdr":"sdr");
-> +
-> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_CTM));
-> +	invalid_plane_lut_sizes(&data->display, plane,
-> +				IGT_PLANE_CTM,
-> +				sizeof(struct drm_color_ctm));
-
-The code says you're trying shove a LUT into a CTM blob. I understand
-that mechanically this is test you want to do, feed a wrong sized blob,
-and in this case the contents do not matter (unlike with actual LUTs),
-but reading this code is completely misleading and does not make sense.
-It takes a while to think about what you actually want to test here,
-and then reverse-engineer the code to understand that that is what
-actually happens, too. That is too much mental burden for the reader to
-realize that this piece of code actually works.
 
 
 Thanks,
 pq
 
-> +
-> +	return true;
-> +}
-> +
->  static bool plane_gamma_test(data_t *data, igt_plane_t *plane)
->  {
->  	igt_output_t *output;
-> @@ -1411,6 +1523,21 @@ static void run_tests_for_plane(data_t *data, enum=
- pipe pipe)
->  					ctm_tests[i].iter);
->  		}
->  	}
-> +
-> +	igt_describe("Negative check for invalid plane gamma lut sizes");
-> +	igt_subtest_f("pipe-%s-invalid-plane-gamma-lut-sizes",
-> +			kmstest_pipe_name(pipe))
-> +		run_plane_color_test(data, pipe, invalid_plane_gamma_test);
-> +
-> +	igt_describe("Negative check for invalid plane degamma lut sizes");
-> +	igt_subtest_f("pipe-%s-invalid-plane-degamma-lut-sizes",
-> +			kmstest_pipe_name(pipe))
-> +		run_plane_color_test(data, pipe, invalid_plane_degamma_test);
-> +
-> +	igt_describe("Negative check for invalid plane ctm matrix sizes");
-> +	igt_subtest_f("pipe-%s-invalid-plane-ctm-matrix-sizes",
-> +			kmstest_pipe_name(pipe))
-> +		run_plane_color_test(data, pipe, invalid_plane_ctm_test);
->  }
-> =20
->  igt_main
-
-
---Sig_/6wSi2wncVoIw06chR.cibzR
+--Sig_//DM7Ix.e0MwQe2XWOMdbvF+
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmGWGq0ACgkQI1/ltBGq
-qqcV1A//ZW1h9slYJ0YGb0gkYB5EoCVK8jOtZ/hNt/TV4aot2qNRxGCgQl7JkVe9
-ok1qYrxpC31tOWrO6Bi6j5YSnRf6jQwqQHLlpED5IQJQRTvrECWRfH27yQsX37aw
-lD6zgJXcJCA3kJiYLxT3Rsmgq/PL7iQ3u903EwO364QnDsLEaSSZ2hdTj1sVueg5
-jLb8ec/vZQGILL//zZPYQX8o3IIkUO1hbyRbkLCalVgRWfTL+YwSlrmeH8PRBSHt
-BgvZ64M6y1Q70yB5s+uav/CxQQyHUqnB+UHUyfhM0L7Kh/6VkTND2I34wLKqO7yI
-iIRehxLYuw8hwALfGnVakml28NoDGaqRORkxM6rw1oroErPM5Skk6sHRDOff4CE8
-86ODb+Vg84guXjq3d5PIlE3EoCitx5S8I8/x6rjx6vMwdJKElvT2PqznLmFT+R6P
-T8R/JPh80YpzHsU1XI/f5HRLOTe5EoYmmmpe6mQLnMo2+YR1TrYeCisYdca7OOyT
-y2E8x/QBWbQLrnaqxvfuB+BsX5/zkWy8cmUkhoZhQanb/v5AA/3lVFYU3aKh0Dly
-6xSWrM276mawC6kvKvsilZAzgnbJagyAo079jMwO/JaF1xAfpej+DIx0Xx+G8YoA
-sQ1mIM+ojXwJq3pfPYPPoRHfTZC7I6GTZ+7DbW1EKSOidXCgWew=
-=lh3s
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmGWHZIACgkQI1/ltBGq
+qqc3oA//WMsVhJnTNCInZE3ySlFI9iv64HiqC6Zgpy6UBkycCvi/Ugk9LRp9X3CW
+AVAGQ3WkNMNdBCo+CxiGrp0zD8ueiKXYg2SScAm97I/YaY6Umiwu/jNJr+fbY+4a
++STLE4vJtUjcVqtpq32Nh5pUHSb/aJTy6sW3gObTHAYSLBmTa6khtTaIlDcbhPAZ
+4l1Ybk8nGttlkhAwcDpRRA/nJsk72T5nMOD0wS/0Apk2tWus55Us1nhUsCvoMCkr
+gmBIH88f5JsHDG1VAbvPybLu5yBaT+Fscozk0VW53kH08T/VcyvOaUzD83oRz7kT
+rZKZWGeM0QARQss7du9rIKcol2RneTmAD04u5Lyq6PuXM3uiDC/jAJK5EAXJjFFv
+WY4ygMNcpmg+xwc1gyAQYAz6VycqE3dVPE4QTyD5sX8AancX6SUUrlETUKu+4mQ1
+YK/lPoyyBAQDUfrV8LFPmRKlIvxHSGfaA4fwFSZcqAZBNlMiqslkBC7dZaU/LN/G
+Cagp4srRU9ksHJrQFEzAANKdVcmJqbYVEPQMqkptMuWIebXqhGT+y9HJm98IZMS4
++hRrr8EonyYOafbP48Q12xYARrBfXb4L3zRfvmyokuTKgMJOlm1zFlVQmcWvqqch
+je+imQJh2M54UsC1jnjj6H5pE7HlXUlGkn+XGgWMtoKTAsPc2LU=
+=BEwu
 -----END PGP SIGNATURE-----
 
---Sig_/6wSi2wncVoIw06chR.cibzR--
+--Sig_//DM7Ix.e0MwQe2XWOMdbvF+--
