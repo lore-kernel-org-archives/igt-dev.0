@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2040.outbound.protection.outlook.com [40.107.93.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88B546E20F
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Nov 2021 14:47:47 +0000 (UTC)
+References: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
+ <CAJUqKUo8CCxMyxJj5cfKT2DW2yOSU-qiDmn4420e8vuOSi7b3A@mail.gmail.com>
+ <fcf0eaf3-72b0-7b48-5a90-d4c2b244e271@gmail.com>
+From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+Message-ID: <f4f4e959-d43a-dc07-e0bc-08bc7f635f3b@amd.com>
+Date: Fri, 19 Nov 2021 09:47:43 -0500
+In-Reply-To: <fcf0eaf3-72b0-7b48-5a90-d4c2b244e271@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 19 Nov 2021 13:56:45 -0000
-Message-ID: <163733020571.2299.15100800322688920773@emeril.freedesktop.org>
-References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/6=5D_tests/api=5Fintel=5Falloc?=
- =?utf-8?q?ator=3A_Fix_build_warning?=
+Subject: Re: [igt-dev] [PATCH i-g-t] amdgpu/amd_mode_switch: Introduce mode
+ switch test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,156 +23,320 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: =?UTF-8?Q?Juha-Pekka_Heikkil=c3=a4?= <juhapekka.heikkila@gmail.com>, Mark Yacoub <markyacoub@chromium.org>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi,
 
-Series: series starting with [i-g-t,1/6] tests/api_intel_allocator: Fix build warning
-URL   : https://patchwork.freedesktop.org/series/97101/
-State : warning
+On 2021-11-16 5:05 p.m., Juha-Pekka Heikkilä wrote:
+> I was wondering how is this different from kms_plane_lowres? On 
+> kms_plane_lowres is also used crc to check also what's on screen stay good.
 
-== Summary ==
+Afaik, we ignore kms_plane_lowres since most tests look related to 
+tiling-[x|y], which I think is an Intel modifier (again, maybe I'm 
+wrong). Anyway, I tried to run it on an AMD device, and most 
+kms_plane_lowres subtest skips.
 
-Pipeline status: FAILED.
+> /Juha-Pekka
+> 
+> Mark Yacoub kirjoitti 16.11.2021 klo 23.29:
+>> The test looks pretty generic to me, can we make it a kms_ instead of 
+>> AMD only?
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/449803 for the overview.
+Mark, Juha-Pekka,
 
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002336):
-  311/315 assembler test/rnde-intsrc              OK       0.02 s 
-  312/315 assembler test/rndz                     OK       0.01 s 
-  313/315 assembler test/lzd                      OK       0.02 s 
-  314/315 assembler test/not                      OK       0.02 s 
-  315/315 assembler test/immediate                OK       0.02 s 
-  
-  Ok:                  311
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1637330018:step_script
-  section_start:1637330018:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1637330018:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Tbh, right now, I prefer to keep this test as AMD-specific because we 
+are trying to fully upstream all of our tests, so we can rely on igt 
+from the upstream. I can create a README file for amdgpu tests and 
+create a TODO section where I can highlight that we can make this test 
+and other generic; how about that?
 
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002335):
-  Ok:                  297
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1637329911:step_script
-  section_start:1637329911:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1661 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... ok  id=16002335 responseStatus=201 Created token=F4gSR22q
-  section_end:1637329925:upload_artifacts_on_failure
-  section_start:1637329925:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1637329927:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Hi Lakshmi,
 
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002337):
-  Ok:                  297
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1637329927:step_script
-  section_start:1637329927:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1661 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... ok  id=16002337 responseStatus=201 Created token=FeWN7Cg4
-  section_end:1637329939:upload_artifacts_on_failure
-  section_start:1637329939:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1637329940:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+This test is specific to AMD, but CI is failing. I think it is another 
+false-positive. Here is the patch:
 
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002334):
-  311/315 assembler test/rnde-intsrc              OK       0.03 s 
-  312/315 assembler test/rndz                     OK       0.03 s 
-  313/315 assembler test/lzd                      OK       0.05 s 
-  314/315 assembler test/not                      OK       0.04 s 
-  315/315 assembler test/immediate                OK       0.03 s 
-  
-  Ok:                  311
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1637329854:step_script
-  section_start:1637329854:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1637329855:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+https://patchwork.freedesktop.org/series/96996/
 
-test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002333):
-  20/24 lib igt_thread                          OK       0.05 s 
-  21/24 lib i915_perf_data_alignment            OK       0.03 s 
-  22/24 lib igt_no_subtest                      EXPECTEDFAIL 0.03 s 
-  23/24 lib igt_simple_test_subtests            EXPECTEDFAIL 0.02 s 
-  24/24 lib igt_timeout                         EXPECTEDFAIL 1.03 s 
-  
-  Ok:                   20
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1637329811:step_script
-  section_start:1637329811:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1637329811:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Thanks
+Siqueira
 
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002332):
-  Ok:                  297
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1637329830:step_script
-  section_start:1637329830:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1661 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... ok  id=16002332 responseStatus=201 Created token=xQFk6g_R
-  section_end:1637329843:upload_artifacts_on_failure
-  section_start:1637329843:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1637329845:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/449803
+>> On Tue, Nov 16, 2021 at 4:00 PM Rodrigo Siqueira
+>> <Rodrigo.Siqueira@amd.com> wrote:
+>>>
+>>> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+>>>
+>>> Switching between different modes could potentially create pstate
+>>> warnings if clocks are not being set correctly.
+>>>
+>>> The subtest gets the highest and lowest mode supported on the connector
+>>> and switch between them.
+>>>
+>>> Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+>>> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+>>> ---
+>>>   tests/amdgpu/amd_mode_switch.c | 210 +++++++++++++++++++++++++++++++++
+>>>   tests/amdgpu/meson.build       |   1 +
+>>>   2 files changed, 211 insertions(+)
+>>>   create mode 100644 tests/amdgpu/amd_mode_switch.c
+>>>
+>>> diff --git a/tests/amdgpu/amd_mode_switch.c 
+>>> b/tests/amdgpu/amd_mode_switch.c
+>>> new file mode 100644
+>>> index 00000000..270b1b9f
+>>> --- /dev/null
+>>> +++ b/tests/amdgpu/amd_mode_switch.c
+>>> @@ -0,0 +1,210 @@
+>>> +/*
+>>> + * Copyright 2021 Advanced Micro Devices, Inc.
+>>> + *
+>>> + * Permission is hereby granted, free of charge, to any person 
+>>> obtaining a
+>>> + * copy of this software and associated documentation files (the 
+>>> "Software"),
+>>> + * to deal in the Software without restriction, including without 
+>>> limitation
+>>> + * the rights to use, copy, modify, merge, publish, distribute, 
+>>> sublicense,
+>>> + * and/or sell copies of the Software, and to permit persons to whom 
+>>> the
+>>> + * Software is furnished to do so, subject to the following conditions:
+>>> + *
+>>> + * The above copyright notice and this permission notice shall be 
+>>> included in
+>>> + * all copies or substantial portions of the Software.
+>>> + *
+>>> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+>>> EXPRESS OR
+>>> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+>>> MERCHANTABILITY,
+>>> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO 
+>>> EVENT SHALL
+>>> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, 
+>>> DAMAGES OR
+>>> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+>>> OTHERWISE,
+>>> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE 
+>>> USE OR
+>>> + * OTHER DEALINGS IN THE SOFTWARE.
+>>> + */
+>>> +
+>>> +#include "igt.h"
+>>> +#include <xf86drmMode.h>
+>>> +
+>>> +#define MAX_PIPES 6
+>>> +
+>>> +/* Common test data. */
+>>> +typedef struct data {
+>>> +       igt_display_t display;
+>>> +       igt_plane_t *primary[MAX_PIPES];
+>>> +       igt_output_t *output[MAX_PIPES];
+>>> +       int fd;
+>>> +} data_t;
+>>> +
+>>> +static void test_init(data_t *data)
+>>> +{
+>>> +       igt_display_t *display = &data->display;
+>>> +       int i;
+>>> +
+>>> +       for_each_pipe(display, i) {
+>>> +               igt_output_t *output = &display->outputs[i];
+>>> +
+>>> +               data->primary[i] = igt_pipe_get_plane_type(
+>>> +                       &data->display.pipes[i], 
+>>> DRM_PLANE_TYPE_PRIMARY);
+>>> +
+>>> +               data->output[i] = output;
+>>> +       }
+>>> +
+>>> +       igt_require(data->output[0]);
+>>> +       igt_display_reset(display);
+>>> +}
+>>> +
+>>> +static void test_fini(data_t *data)
+>>> +{
+>>> +       igt_display_t *display = &data->display;
+>>> +
+>>> +       igt_display_reset(display);
+>>> +       igt_display_commit_atomic(display, 
+>>> DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+>>> +}
+>>> +
+>>> +/* Forces a mode for a connector. */
+>>> +static void force_output_mode(data_t *d, igt_output_t *output,
+>>> +                             const drmModeModeInfo *mode)
+>>> +{
+>>> +       /* This allows us to create a virtual sink. */
+>>> +       if (!igt_output_is_connected(output)) {
+>>> +               kmstest_force_edid(d->fd, output->config.connector,
+>>> +                                  igt_kms_get_4k_edid());
+>>> +
+>>> +               kmstest_force_connector(d->fd, output->config.connector,
+>>> +                                       FORCE_CONNECTOR_DIGITAL);
+>>> +       }
+>>> +
+>>> +       igt_output_override_mode(output, mode);
+>>> +}
+>>> +
+>>> +static void run_mode_switch_first_last(data_t *data, int num_pipes)
+>>> +{
+>>> +       igt_output_t *output;
+>>> +       struct igt_fb *buffer1[MAX_PIPES] = { NULL };
+>>> +       struct igt_fb *buffer2[MAX_PIPES] = { NULL };
+>>> +       drmModeConnectorPtr conn;
+>>> +       drmModeModeInfoPtr kmode;
+>>> +       void *user_data = NULL;
+>>> +       int i = 0;
+>>> +       int j = 0;
+>>> +
+>>> +       test_init(data);
+>>> +
+>>> +       igt_skip_on_f(num_pipes > 
+>>> igt_display_get_n_pipes(&data->display) ||
+>>> +                             num_pipes > data->display.n_outputs,
+>>> +                     "ASIC does not have %d outputs/pipes\n", 
+>>> num_pipes);
+>>> +
+>>> +       /* First supported mode */
+>>> +
+>>> +       for (j = 0; j < num_pipes; j++) {
+>>> +               output = data->output[j];
+>>> +               if (!igt_output_is_connected(output))
+>>> +                       continue;
+>>> +
+>>> +               conn = drmModeGetConnector(
+>>> +                       data->fd, 
+>>> output->config.connector->connector_id);
+>>> +
+>>> +               kmode = &conn->modes[0];
+>>> +               if (buffer1[j] == NULL) {
+>>> +                       igt_fb_t fb;
+>>> +                       buffer1[j] = &fb;
+>>> +                       igt_create_color_fb(data->fd, kmode->hdisplay,
+>>> +                                           kmode->vdisplay,
+>>> +                                           DRM_FORMAT_XRGB8888,
+>>> +                                           DRM_FORMAT_MOD_NONE, 1.f, 
+>>> 0.f,
+>>> +                                           0.f, buffer1[j]);
+>>> +               }
+>>> +               igt_output_set_pipe(output, j);
+>>> +               force_output_mode(data, output, kmode);
+>>> +               igt_plane_set_fb(data->primary[j], buffer1[j]);
+>>> +               drmModeFreeConnector(conn);
+>>> +       }
+>>> +
+>>> +       igt_display_commit_atomic(&data->display, 
+>>> DRM_MODE_ATOMIC_ALLOW_MODESET,
+>>> +                                 user_data);
+>>> +
+>>> +       /* Last supported mode */
+>>> +
+>>> +       for (j = 0; j < num_pipes; j++) {
+>>> +               output = data->output[j];
+>>> +               if (!igt_output_is_connected(output))
+>>> +                       continue;
+>>> +
+>>> +               conn = drmModeGetConnector(
+>>> +                       data->fd, 
+>>> output->config.connector->connector_id);
+>>> +
+>>> +               kmode = &conn->modes[conn->count_modes - 1];
+>>> +               if (buffer2[j] == NULL) {
+>>> +                       igt_fb_t fb;
+>>> +                       buffer2[j] = &fb;
+>>> +                       igt_create_color_fb(data->fd, kmode->hdisplay,
+>>> +                                           kmode->vdisplay,
+>>> +                                           DRM_FORMAT_XRGB8888,
+>>> +                                           DRM_FORMAT_MOD_NONE, 1.f, 
+>>> 0.f,
+>>> +                                           0.f, buffer2[j]);
+>>> +               }
+>>> +               force_output_mode(data, output, kmode);
+>>> +               igt_plane_set_fb(data->primary[j], buffer2[j]);
+>>> +               drmModeFreeConnector(conn);
+>>> +       }
+>>> +
+>>> +       igt_display_commit_atomic(&data->display, 
+>>> DRM_MODE_ATOMIC_ALLOW_MODESET,
+>>> +                                 user_data);
+>>> +
+>>> +       /* First supported again */
+>>> +       for (j = 0; j < num_pipes; j++) {
+>>> +               output = data->output[j];
+>>> +               if (!igt_output_is_connected(output))
+>>> +                       continue;
+>>> +
+>>> +               conn = drmModeGetConnector(
+>>> +                       data->fd, 
+>>> output->config.connector->connector_id);
+>>> +
+>>> +               kmode = &conn->modes[0];
+>>> +               force_output_mode(data, output, kmode);
+>>> +               igt_plane_set_fb(data->primary[j], buffer1[j]);
+>>> +               drmModeFreeConnector(conn);
+>>> +       }
+>>> +
+>>> +       igt_display_commit_atomic(&data->display, 
+>>> DRM_MODE_ATOMIC_ALLOW_MODESET,
+>>> +                                 user_data);
+>>> +
+>>> +       test_fini(data);
+>>> +
+>>> +       for (i = 0; i <= num_pipes; i++) {
+>>> +               igt_remove_fb(data->fd, buffer1[i]);
+>>> +               igt_remove_fb(data->fd, buffer2[i]);
+>>> +       }
+>>> +}
+>>> +
+>>> +IGT_TEST_DESCRIPTION("Test switching between supported modes");
+>>> +igt_main
+>>> +{
+>>> +       data_t data;
+>>> +       int i = 0;
+>>> +
+>>> +       igt_skip_on_simulation();
+>>> +
+>>> +       memset(&data, 0, sizeof(data));
+>>> +
+>>> +       igt_fixture
+>>> +       {
+>>> +               data.fd = drm_open_driver_master(DRIVER_AMDGPU);
+>>> +
+>>> +               kmstest_set_vt_graphics_mode();
+>>> +
+>>> +               igt_display_require(&data.display, data.fd);
+>>> +               igt_require(&data.display.is_atomic);
+>>> +               igt_display_require_output(&data.display);
+>>> +       }
+>>> +
+>>> +       for (i = 0; i < MAX_PIPES; i++) {
+>>> +               igt_describe(
+>>> +                       "Test between switching highest and lowest 
+>>> supported mode");
+>>> +               igt_subtest_f("mode-switch-first-last-pipe-%d", i)
+>>> +                       run_mode_switch_first_last(&data, i + 1);
+>>> +       }
+>>> +
+>>> +       igt_fixture
+>>> +       {
+>>> +               igt_display_fini(&data.display);
+>>> +       }
+>>> +}
+>>> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+>>> index b736c456..5216e194 100644
+>>> --- a/tests/amdgpu/meson.build
+>>> +++ b/tests/amdgpu/meson.build
+>>> @@ -16,6 +16,7 @@ if libdrm_amdgpu.found()
+>>>                            'amd_mem_leak',
+>>>                            'amd_link_settings',
+>>>                            'amd_vrr_range',
+>>> +                         'amd_mode_switch',
+>>>                          ]
+>>>          amdgpu_deps += libdrm_amdgpu
+>>>   endif
+>>> -- 
+>>> 2.25.1
+>>>
