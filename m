@@ -1,101 +1,172 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Fri, 19 Nov 2021 15:53:47 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YZesawet06wfQ1SG@platvala-desk.ger.corp.intel.com>
-References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
- <20211119125945.55056-3-tvrtko.ursulin@linux.intel.com>
-MIME-Version: 1.0
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211119125945.55056-3-tvrtko.ursulin@linux.intel.com>
-Subject: Re: [Intel-gfx] [PATCH i-g-t 3/6] igt/core: Fix build warning
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 19 Nov 2021 13:56:45 -0000
+Message-ID: <163733020571.2299.15100800322688920773@emeril.freedesktop.org>
+References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/6=5D_tests/api=5Fintel=5Falloc?=
+ =?utf-8?q?ator=3A_Fix_build_warning?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 19, 2021 at 12:59:42PM +0000, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> .../lib/igt_thread.c: In function ‘__igt_unique____igt_constructor_l66’:
-> .../lib/igt_thread.c:68:9: warning: ‘pthread_setspecific’ expecting 1 byte in a region of size 0 [-Wstringop-overread]
->    68 |         pthread_setspecific(__igt_is_main_thread, (void*) 0x1);
->       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> ---
->  lib/igt_core.c   | 6 ++++--
->  lib/igt_thread.c | 4 +++-
->  2 files changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index ec05535cd56e..acb9743c4a24 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -2752,6 +2752,8 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
->  	char *line, *formatted_line;
->  	char *thread_id;
->  	const char *program_name;
-> +	const uintptr_t false_key = 0;
-> +	const uintptr_t true_key = 1;
->  	const char *igt_log_level_str[] = {
->  		"DEBUG",
->  		"INFO",
-> @@ -2796,9 +2798,9 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
->  	}
->  
->  	if (line[strlen(line) - 1] == '\n')
-> -		pthread_setspecific(__vlog_line_continuation, (void*) false);
-> +		pthread_setspecific(__vlog_line_continuation, &false_key);
->  	else
-> -		pthread_setspecific(__vlog_line_continuation, (void*) true);
-> +		pthread_setspecific(__vlog_line_continuation, &true_key);
+== Series Details ==
 
-Quoting the usage of this:
-        if (pthread_getspecific(__vlog_line_continuation)) {
+Series: series starting with [i-g-t,1/6] tests/api_intel_allocator: Fix build warning
+URL   : https://patchwork.freedesktop.org/series/97101/
+State : warning
 
-That's going to give a non-null pointer in both cases.
+== Summary ==
 
+Pipeline status: FAILED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/449803 for the overview.
 
->  
->  	/* append log buffer */
->  	_igt_log_buffer_append(formatted_line);
-> diff --git a/lib/igt_thread.c b/lib/igt_thread.c
-> index 5bdda4102def..f5de2d57eaaa 100644
-> --- a/lib/igt_thread.c
-> +++ b/lib/igt_thread.c
-> @@ -64,6 +64,8 @@ bool igt_thread_is_main(void)
->  }
->  
->  igt_constructor {
-> +	const uintptr_t key = 1;
-> +
->  	pthread_key_create(&__igt_is_main_thread, NULL);
-> -	pthread_setspecific(__igt_is_main_thread, (void*) 0x1);
-> +	pthread_setspecific(__igt_is_main_thread, &key);
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002336):
+  311/315 assembler test/rnde-intsrc              OK       0.02 s 
+  312/315 assembler test/rndz                     OK       0.01 s 
+  313/315 assembler test/lzd                      OK       0.02 s 
+  314/315 assembler test/not                      OK       0.02 s 
+  315/315 assembler test/immediate                OK       0.02 s 
+  
+  Ok:                  311
+  Expected Fail:         3
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1637330018:step_script
+  section_start:1637330018:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1637330018:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-This is fine, __igt_is_main_thread key will have non-null only on the
-main thread. But still a bit sus slapping the address of a
-function-local variable to setspecific, we might just be trading a
-compiler warning for a new future one.
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002335):
+  Ok:                  297
+  Expected Fail:         3
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1637329911:step_script
+  section_start:1637329911:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1661 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... ok  id=16002335 responseStatus=201 Created token=F4gSR22q
+  section_end:1637329925:upload_artifacts_on_failure
+  section_start:1637329925:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1637329927:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002337):
+  Ok:                  297
+  Expected Fail:         3
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1637329927:step_script
+  section_start:1637329927:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1661 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... ok  id=16002337 responseStatus=201 Created token=FeWN7Cg4
+  section_end:1637329939:upload_artifacts_on_failure
+  section_start:1637329939:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1637329940:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
--- 
-Petri Latvala
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002334):
+  311/315 assembler test/rnde-intsrc              OK       0.03 s 
+  312/315 assembler test/rndz                     OK       0.03 s 
+  313/315 assembler test/lzd                      OK       0.05 s 
+  314/315 assembler test/not                      OK       0.04 s 
+  315/315 assembler test/immediate                OK       0.03 s 
+  
+  Ok:                  311
+  Expected Fail:         3
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1637329854:step_script
+  section_start:1637329854:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1637329855:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
+test:ninja-test-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002333):
+  20/24 lib igt_thread                          OK       0.05 s 
+  21/24 lib i915_perf_data_alignment            OK       0.03 s 
+  22/24 lib igt_no_subtest                      EXPECTEDFAIL 0.03 s 
+  23/24 lib igt_simple_test_subtests            EXPECTEDFAIL 0.02 s 
+  24/24 lib igt_timeout                         EXPECTEDFAIL 1.03 s 
+  
+  Ok:                   20
+  Expected Fail:         3
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1637329811:step_script
+  section_start:1637329811:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1637329811:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
->  }
-> -- 
-> 2.32.0
-> 
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16002332):
+  Ok:                  297
+  Expected Fail:         3
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1637329830:step_script
+  section_start:1637329830:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1661 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... ok  id=16002332 responseStatus=201 Created token=xQFk6g_R
+  section_end:1637329843:upload_artifacts_on_failure
+  section_start:1637329843:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1637329845:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/449803
