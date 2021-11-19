@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 19 Nov 2021 13:55:00 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YZeQlGUMhb0RLiU1@platvala-desk.ger.corp.intel.com>
-References: <20211116003042.439107-1-robdclark@gmail.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Fri, 19 Nov 2021 12:59:40 +0000
+Message-Id: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211116003042.439107-1-robdclark@gmail.com>
-Subject: Re: [igt-dev] [PATCH igt v3 0/4] msm: Add tests for gpu fault
- handling
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/6] tests/api_intel_allocator: Fix build
+ warning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,35 +16,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rob Clark <robdclark@gmail.com>
-Cc: Rob Clark <robdclark@chromium.org>, linux-arm-msm@vger.kernel.org, Akhil P Oommen <akhilpo@codeaurora.org>, Jordan Crouse <jordan@cosmicpenguin.net>, igt-dev@lists.freedesktop.org, freedreno@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 15, 2021 at 04:30:38PM -0800, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
-> 
-> The first patch adds a easy way to write debugfs files (needed to
-> disable hw fault detection, so we can test the sw timeout fallback).
-> The second adds some helpers for cmdstream building.  And the third
-> adds the new tests.
-> 
-> v2: Fix headerdoc comments in first patch
-> v3: Add helper to detect debugfs files and updated last patch
->     to skip the one sub-test that depends on new debugfs when
->     running on older kernels
-> 
-> Rob Clark (4):
->   lib/igt_debugfs: Add helper for writing debugfs files
->   lib/igt_debugfs: Add helper for detecting debugfs files
->   msm: Add helper for cmdstream building and submission
->   msm: Add recovery tests
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-For patches 3+4, in case you're waiting for this:
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+.../tests/i915/api_intel_allocator.c: In function ‘basic_alloc’:
+.../tests/i915/api_intel_allocator.c:158:25: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  158 |                         if (j == i)
+      |                         ^~
 
-For the record, msm-specific test case changes don't need to wait for
-review (see single contributor exception in CONTRIBUTING.md).
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/api_intel_allocator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
+diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
+index 4b74317ed3d0..6d7764ca3f51 100644
+--- a/tests/i915/api_intel_allocator.c
++++ b/tests/i915/api_intel_allocator.c
+@@ -157,7 +157,7 @@ static void basic_alloc(int fd, int cnt, uint8_t type)
+ 		for (j = 0; j < cnt; j++) {
+ 			if (j == i)
+ 				continue;
+-				igt_assert(!overlaps(&obj[i], &obj[j]));
++			igt_assert(!overlaps(&obj[i], &obj[j]));
+ 		}
+ 	}
+ 
 -- 
-Petri Latvala
+2.32.0
