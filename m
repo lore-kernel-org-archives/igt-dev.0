@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 660EB6E0E5
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Nov 2021 09:03:36 +0000 (UTC)
-Date: Mon, 22 Nov 2021 10:03:31 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211122090331.GC7458@zkempczy-mobl2>
-References: <20211122064849.785894-1-apoorva1.singh@intel.com>
- <20211122064849.785894-2-apoorva1.singh@intel.com>
+Message-ID: <88dca452-9cbb-b99f-0567-519c665736b1@linux.intel.com>
+Date: Mon, 22 Nov 2021 09:03:23 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20211122064849.785894-2-apoorva1.singh@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t,
- v2 1/3] lib/i915: Introduce libraries i915_blt and intel_mocs
+Content-Language: en-US
+References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
+ <20211119125945.55056-3-tvrtko.ursulin@linux.intel.com>
+ <YZesawet06wfQ1SG@platvala-desk.ger.corp.intel.com>
+ <8b1bdb41-fe31-8482-655d-724a6937d2c7@linux.intel.com>
+ <YZfFlI/cB2OyXZeE@platvala-desk.ger.corp.intel.com>
+ <YZfIwtCEqbqs1dIz@platvala-desk.ger.corp.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <YZfIwtCEqbqs1dIz@platvala-desk.ger.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 3/6] igt/core: Fix build warning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,186 +23,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: apoorva1.singh@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 22, 2021 at 12:18:47PM +0530, apoorva1.singh@intel.com wrote:
 
-<cut>
+On 19/11/2021 15:54, Petri Latvala wrote:
+> On Fri, Nov 19, 2021 at 05:41:08PM +0200, Petri Latvala wrote:
+>> On Fri, Nov 19, 2021 at 03:34:54PM +0000, Tvrtko Ursulin wrote:
+>>> On 19/11/2021 13:53, Petri Latvala wrote:
+>>>> On Fri, Nov 19, 2021 at 12:59:42PM +0000, Tvrtko Ursulin wrote:
+>>> Okay I wasn't sufficiently focused while trying to fix this. No idea then
+>>> apart for playing with pragmas.
+> 
+> 
+> How's this:
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index ec05535c..6a4d0270 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -2727,6 +2727,8 @@ void igt_log(const char *domain, enum igt_log_level level, const char *format, .
+>   }
+>   
+>   static pthread_key_t __vlog_line_continuation;
+> +static const bool __dummy_true = true;
+> +static const bool __dummy_false = false;
+>   
+>   igt_constructor {
+>   	pthread_key_create(&__vlog_line_continuation, NULL);
+> @@ -2751,6 +2753,7 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
+>   	FILE *file;
+>   	char *line, *formatted_line;
+>   	char *thread_id;
+> +	void *line_continuation;
+>   	const char *program_name;
+>   	const char *igt_log_level_str[] = {
+>   		"DEBUG",
+> @@ -2785,7 +2788,8 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
+>   	if (vasprintf(&line, format, args) == -1)
+>   		return;
+>   
+> -	if (pthread_getspecific(__vlog_line_continuation)) {
+> +	line_continuation = pthread_getspecific(__vlog_line_continuation);
+> +	if (line_continuation != NULL && *(bool *)line_continuation) {
+>   		formatted_line = strdup(line);
+>   		if (!formatted_line)
+>   			goto out;
+> @@ -2796,9 +2800,9 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
+>   	}
+>   
+>   	if (line[strlen(line) - 1] == '\n')
+> -		pthread_setspecific(__vlog_line_continuation, (void*) false);
+> +		pthread_setspecific(__vlog_line_continuation, &__dummy_false);
+>   	else
+> -		pthread_setspecific(__vlog_line_continuation, (void*) true);
+> +		pthread_setspecific(__vlog_line_continuation, &__dummy_true);
+>   
+>   	/* append log buffer */
+>   	_igt_log_buffer_append(formatted_line);
+> diff --git a/lib/igt_thread.c b/lib/igt_thread.c
+> index 5bdda410..0d7bce80 100644
+> --- a/lib/igt_thread.c
+> +++ b/lib/igt_thread.c
+> @@ -29,6 +29,7 @@
+>   #include "igt_thread.h"
+>   
+>   static pthread_key_t __igt_is_main_thread;
+> +static const bool __dummy_true = true;
+>   
+>   static _Atomic(bool) __thread_failed = false;
+>   
+> @@ -65,5 +66,5 @@ bool igt_thread_is_main(void)
+>   
+>   igt_constructor {
+>   	pthread_key_create(&__igt_is_main_thread, NULL);
+> -	pthread_setspecific(__igt_is_main_thread, (void*) 0x1);
+> +	pthread_setspecific(__igt_is_main_thread, &__dummy_true);
 
-I've also wondered - should be the code below part of separate patch?
+LGTM.
 
---
-Zbigniew
+Regards,
 
-> diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
-> new file mode 100644
-> index 00000000..cbb1cc69
-> --- /dev/null
-> +++ b/lib/i915/intel_mocs.c
-> @@ -0,0 +1,75 @@
-> +/*
-> + * Copyright =A9 2021 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + * Authors:
-> + *      Apoorva Singh <apoorva1.singh@intel.com>
-> + *
-> + */
-> +#include "igt.h"
-> +#include "i915/gem.h"
-> +#include "intel_mocs.h"
-> +
-> +static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
-> +{
-> +	uint16_t devid =3D intel_get_drm_devid(fd);
-> +
-> +	/*
-> +	 * Gen >=3D 12 onwards don't have a setting for PTE,
-> +	 * so using I915_MOCS_PTE as mocs index may leads to
-> +	 * some undefined MOCS behavior.
-> +	 * Correct MOCS index should be referred from BSPCES
-> +	 * and programmed accordingly.
-> +	 * This helper function is providing current UC as well
-> +	 * as WB MOCS index based on platform.
-> +
-> +	 */
-> +	if (IS_DG1(devid)) {
-> +		mocs->uc_index =3D 1;
-> +		mocs->wb_index =3D 5;
-> +	} else if (IS_GEN12(devid)) {
-> +		mocs->uc_index =3D 3;
-> +		mocs->wb_index =3D 2;
-> +	} else {
-> +		mocs->uc_index =3D I915_MOCS_PTE;
-> +		mocs->wb_index =3D I915_MOCS_CACHED;
-> +	}
-> +}
-> +
-> +/* BitField [6:1] represents index to MOCS Tables
-> + * BitField [0] represents Encryption/Decryption
-> + */
-> +
-> +uint8_t intel_get_wb_mocs(int fd)
-> +{
-> +	struct drm_i915_mocs_index mocs;
-> +
-> +	get_mocs_index(fd, &mocs);
-> +	return mocs.wb_index << 1;
-> +}
-> +
-> +uint8_t intel_get_uc_mocs(int fd)
-> +{
-> +	struct drm_i915_mocs_index mocs;
-> +
-> +	get_mocs_index(fd, &mocs);
-> +	return mocs.uc_index << 1;
-> +}
-> diff --git a/lib/i915/intel_mocs.h b/lib/i915/intel_mocs.h
-> new file mode 100644
-> index 00000000..8289ab1f
-> --- /dev/null
-> +++ b/lib/i915/intel_mocs.h
-> @@ -0,0 +1,43 @@
-> +/*
-> + * Copyright =A9 2021 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + * Authors:
-> + *      Apoorva Singh <apoorva1.singh@intel.com>
-> + *
-> + */
-> +#ifndef _INTEL_MOCS_H
-> +#define _INTEL_MOCS_H
-> +
-> +#define XY_FAST_COLOR_BLT_MOCS_SHIFT		21
-> +#define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
-> +#define XY_FAST_COPY_BLT_MOCS_SHIFT		17
-> +#define XY_CTRL_SURF_COPY_BLT_MOCS_SHIFT	25
-> +#define MEM_COPY_MOCS_SHIFT			25
-> +
-> +struct drm_i915_mocs_index {
-> +	uint8_t uc_index;
-> +	uint8_t wb_index;
-> +};
-> +
-> +uint8_t intel_get_wb_mocs(int fd);
-> +uint8_t intel_get_uc_mocs(int fd);
-> +#endif /* _INTEL_MOCS_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 297b0ad2..525d62f9 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -11,6 +11,8 @@ lib_sources =3D [
->  	'i915/gem_mman.c',
->  	'i915/gem_vm.c',
->  	'i915/intel_memory_region.c',
-> +	'i915/intel_mocs.c',
-> +	'i915/i915_blt.c',
->  	'igt_collection.c',
->  	'igt_color_encoding.c',
->  	'igt_debugfs.c',
-> --=20
-> 2.25.1
->=20
+Tvrtko
