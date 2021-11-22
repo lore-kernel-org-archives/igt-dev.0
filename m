@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 22 Nov 2021 06:58:41 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211122055841.GA4959@zkempczy-mobl2>
-References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DACCE89F2D
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Nov 2021 06:43:43 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Mon, 22 Nov 2021 12:18:46 +0530
+Message-Id: <20211122064849.785894-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/6] tests/api_intel_allocator: Fix
- build warning
+Subject: [igt-dev] [PATCH i-g-t,v2 0/3] Add testing for CCS
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,46 +18,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: apoorva1.singh@intel.com, igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 19, 2021 at 12:59:40PM +0000, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> .../tests/i915/api_intel_allocator.c: In function ‘basic_alloc’:
-> .../tests/i915/api_intel_allocator.c:158:25: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
->   158 |                         if (j == i)
->       |                         ^~
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+From: Apoorva Singh <apoorva1.singh@intel.com>
 
-I've already seen this on gcc 11.2.0 (Ubuntu 21.10) and got
-locally same fix, so:
+- Add new libraries i915_blt and intel_mocs for various blt
+  commands and mocs settings.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+- Add a new platform flag, has_flat_ccs, for platforms
+  supporting Flat CCS.
 
---
-Zbigniew
+- Add gem_ccs test for CCS testing.
+  Commands are constructed with XY_BLOCK_COPY_BLT
+  and XY_CTRL_SURF_COPY_BLT instructions.
 
-> ---
->  tests/i915/api_intel_allocator.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
-> index 4b74317ed3d0..6d7764ca3f51 100644
-> --- a/tests/i915/api_intel_allocator.c
-> +++ b/tests/i915/api_intel_allocator.c
-> @@ -157,7 +157,7 @@ static void basic_alloc(int fd, int cnt, uint8_t type)
->  		for (j = 0; j < cnt; j++) {
->  			if (j == i)
->  				continue;
-> -				igt_assert(!overlaps(&obj[i], &obj[j]));
-> +			igt_assert(!overlaps(&obj[i], &obj[j]));
->  		}
->  	}
->  
-> -- 
-> 2.32.0
-> 
+Apoorva Singh (2):
+  lib/i915: Introduce libraries i915_blt and intel_mocs
+  lib/intel_chipset.h: Add has_flat_ccs flag
+
+CQ Tang (1):
+  i915/gem_ccs: Add testing for CCS
+
+ lib/i915/gem_engine_topology.c |  38 ++
+ lib/i915/gem_engine_topology.h |   5 +
+ lib/i915/i915_blt.c            | 419 +++++++++++++++++++++
+ lib/i915/i915_blt.h            |  93 +++++
+ lib/i915/intel_mocs.c          |  75 ++++
+ lib/i915/intel_mocs.h          |  43 +++
+ lib/intel_chipset.h            |   3 +
+ lib/meson.build                |   2 +
+ tests/i915/gem_ccs.c           | 640 +++++++++++++++++++++++++++++++++
+ tests/meson.build              |   1 +
+ 10 files changed, 1319 insertions(+)
+ create mode 100644 lib/i915/i915_blt.c
+ create mode 100644 lib/i915/i915_blt.h
+ create mode 100644 lib/i915/intel_mocs.c
+ create mode 100644 lib/i915/intel_mocs.h
+ create mode 100644 tests/i915/gem_ccs.c
+
+-- 
+2.25.1
