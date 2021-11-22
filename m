@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5458954596088564829=="
+Date: Mon, 22 Nov 2021 06:58:41 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20211122055841.GA4959@zkempczy-mobl2>
+References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 19 Nov 2021 23:15:51 -0000
-Message-ID: <163736375151.2301.11824138588566299506@emeril.freedesktop.org>
-References: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgYW1kZ3B1?=
- =?utf-8?q?/amd=5Fmode=5Fswitch=3A_Introduce_mode_switch_test?=
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/6] tests/api_intel_allocator: Fix
+ build warning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,106 +17,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5458954596088564829==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Nov 19, 2021 at 12:59:40PM +0000, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> .../tests/i915/api_intel_allocator.c: In function ‘basic_alloc’:
+> .../tests/i915/api_intel_allocator.c:158:25: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+>   158 |                         if (j == i)
+>       |                         ^~
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-== Series Details ==
+I've already seen this on gcc 11.2.0 (Ubuntu 21.10) and got
+locally same fix, so:
 
-Series: amdgpu/amd_mode_switch: Introduce mode switch test
-URL   : https://patchwork.freedesktop.org/series/96996/
-State : success
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-== Summary ==
+--
+Zbigniew
 
-CI Bug Log - changes from IGTPW_6408_full -> IGTPW_6408_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  No differences in builds
-
-  CI_DRM_10888: d4a23275467825243fea6f50938fc89711b9a53c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6408: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html
-
---===============5458954596088564829==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>amdgpu/amd_mode_switch: Introduce mode switch test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96996/">https://patchwork.freedesktop.org/series/96996/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGTPW_6408_full -&gt; IGTPW_6408_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<p>No differences in builds</p>
-<p>CI_DRM_10888: d4a23275467825243fea6f50938fc89711b9a53c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6408: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6408/index.html</p>
-
-</body>
-</html>
-
---===============5458954596088564829==--
+> ---
+>  tests/i915/api_intel_allocator.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
+> index 4b74317ed3d0..6d7764ca3f51 100644
+> --- a/tests/i915/api_intel_allocator.c
+> +++ b/tests/i915/api_intel_allocator.c
+> @@ -157,7 +157,7 @@ static void basic_alloc(int fd, int cnt, uint8_t type)
+>  		for (j = 0; j < cnt; j++) {
+>  			if (j == i)
+>  				continue;
+> -				igt_assert(!overlaps(&obj[i], &obj[j]));
+> +			igt_assert(!overlaps(&obj[i], &obj[j]));
+>  		}
+>  	}
+>  
+> -- 
+> 2.32.0
+> 
