@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE4AE6F60C
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Nov 2021 12:36:18 +0000 (UTC)
-Date: Tue, 23 Nov 2021 13:34:27 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B0EA6E997
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Nov 2021 13:23:33 +0000 (UTC)
+Date: Tue, 23 Nov 2021 14:23:25 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211123123427.GA12436@zkempczy-mobl2>
+Message-ID: <20211123132325.GB12436@zkempczy-mobl2>
 References: <20211122064849.785894-1-apoorva1.singh@intel.com>
  <20211122064849.785894-2-apoorva1.singh@intel.com>
 MIME-Version: 1.0
@@ -30,49 +30,87 @@ On Mon, Nov 22, 2021 at 12:18:47PM +0530, apoorva1.singh@intel.com wrote:
 
 <cut>
 
-> +/*
-> + * make_ctrl_surf_batch:
-> + * @fd: open i915 drm file descriptor
-> + * @batch_buf: the batch buffer to populate with the command
-> + * @src: fd of the source BO
-> + * @dst: fd of the destination BO
-> + * @length: size of the ctrl surf in bytes
-> + * @reloc: pointer to the relocation entyr for this command
-> + * @src_mem_access: source memory type (denotes direct or indirect
-> + *			addressing)
-> + * @dst_mem_acdcess: destination memory type (denotes direct or indirect
-> + *			addressing)
-> + */
-> +static int make_ctrl_surf_batch(int fd, uint32_t *batch_buf,
-> +				uint32_t src, uint32_t dst, uint32_t length,
-> +				struct drm_i915_gem_relocation_entry *reloc,
-> +				int src_mem_access, int dst_mem_access)
-> +{
-> +	int num_ccs_blocks;
-> +	uint32_t *b = batch_buf;
-> +	uint8_t src_mocs = intel_get_uc_mocs(fd);
-> +	uint8_t dst_mocs = src_mocs;
-> +
-> +	num_ccs_blocks = length / CCS_RATIO;
-> +	if (num_ccs_blocks < 1)
-> +		num_ccs_blocks = 1;
-> +	if (num_ccs_blocks > NUM_CCS_BLKS_PER_XFER)
-> +		return 0;
-> +
-> +	/*
-> +	 * We use logical AND with 1023 since the size field
-> +	 * takes values which is in the range of 0 - 1023
-> +	 */
-> +	b[0] = ((XY_CTRL_SURF_COPY_BLT) |
+> +int xy_ctrl_surf_copy_blt(int fd, uint32_t cmd,
+> +			  uint32_t *batch_buf,
+> +			  uint32_t src, uint32_t dst,
+> +			  uint32_t length, bool writetodev,
+> +			  struct intel_execution_engine2 *e)
 
-I've just realized myself this command is not available for gens where
-relocations are enabled so all reloc stuff below can be removed.
+If we pass engine likely it won't be in default context, so it necessary
+to pass ctx here.
+
+What I don't like here is to pass cmd and batch_buf here. If you want to
+reuse cmd in the caller you need to synchronize on this handle so you
+won't achieve pipelining.
+
+> +{
+> +	struct drm_i915_gem_relocation_entry reloc[4];
+> +	struct drm_i915_gem_exec_object2 exec[3];
+> +	struct drm_i915_gem_execbuffer2 execbuf;
+> +	int len, src_mem_access, dst_mem_access;
+> +	uint64_t ahnd = get_reloc_ahnd(fd, 0);
+
+This is a little bit tricky, if caller will create different allocator on 
+same context we would get assert. Better way is to pass ahnd from the caller
+and do get_offset/put_offset using strategy it choose.
+
+> +
+> +	if (writetodev) {
+> +		src_mem_access = DIRECT_ACCESS;
+> +		dst_mem_access = INDIRECT_ACCESS;
+> +	} else {
+> +		src_mem_access = INDIRECT_ACCESS;
+> +		dst_mem_access = DIRECT_ACCESS;
+> +	}
+> +
+> +	/* construct batch command buffer */
+> +	memset(reloc, 0, sizeof(reloc));
+> +	memset(batch_buf, 0, BATCH_SIZE);
+
+So we assume batch_buf at least is BATCH_SIZE length, it will be bigger
+we will survive, if smaller heap corruption will occur. I can only guess
+cmd is created outside to allow creating it in any memory region.
+
+> +	len = make_ctrl_surf_batch(fd, batch_buf,
+> +				   src, dst, length, reloc,
+> +				   src_mem_access, dst_mem_access);
+> +	igt_assert(len > 0);
+> +
+> +	/* Copy the batch buff to BO cmd */
+> +	gem_write(fd, cmd, 0, batch_buf, len);
+> +
+> +	/* Execute the batch buffer */
+> +	memset(exec, 0, sizeof(exec));
+> +	exec[0].handle = src;
+> +	exec[1].handle = dst;
+> +	exec[2].handle = cmd;
+> +	exec[2].relocation_count = !ahnd ? 4 : 0;
+> +	exec[2].relocs_ptr = to_user_pointer(reloc);
+> +	if (ahnd) {
+> +		exec[0].offset = get_offset(ahnd, exec[0].handle, length * CCS_RATIO, 0);
+> +		exec[0].flags |= EXEC_OBJECT_PINNED;
+> +		exec[1].offset = get_offset(ahnd, exec[1].handle, length * CCS_RATIO, 0);
+> +		exec[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
+> +		exec[2].offset = get_offset(ahnd, exec[2].handle, BATCH_SIZE, 0);
+> +		exec[2].flags |= EXEC_OBJECT_PINNED;
+> +	}
+> +
+> +	memset(&execbuf, 0, sizeof(execbuf));
+> +	execbuf.buffers_ptr = to_user_pointer(exec);
+> +	execbuf.buffer_count = 3;
+> +	execbuf.batch_len = len;
+> +	execbuf.flags = I915_EXEC_BLT;
+> +	if (e)
+> +		execbuf.flags = e->flags;
+> +
+> +	gem_execbuf(fd, &execbuf);
+> +	gem_sync(fd, cmd);
+> +
+> +	return 0;
+> +}
+
+I'm sorry for couple of email regarding same code, but I catched wider
+context in third patch (gem_ccs test).
 
 --
-Zbigniew
-
-> +		(src_mem_access << SRC_ACCESS_TYPE_SHIFT) |
-> +		(dst_mem_access << DST_ACCESS_TYPE_SHIFT) |
-> +		(((num_ccs_blocks - 1) & 1023) << CCS_SIZE_SHIFT));
-> +
- 
+Zbigniew 
