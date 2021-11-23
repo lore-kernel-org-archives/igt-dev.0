@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B0EA6E997
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Nov 2021 13:23:33 +0000 (UTC)
-Date: Tue, 23 Nov 2021 14:23:25 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211123132325.GB12436@zkempczy-mobl2>
-References: <20211122064849.785894-1-apoorva1.singh@intel.com>
- <20211122064849.785894-2-apoorva1.singh@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3198862618527170710=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211122064849.785894-2-apoorva1.singh@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t,
- v2 1/3] lib/i915: Introduce libraries i915_blt and intel_mocs
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 23 Nov 2021 17:10:43 -0000
+Message-ID: <163768744346.2117.7406921653975807648@emeril.freedesktop.org>
+References: <20211118111703.9723-1-venkata.sai.patnana@intel.com>
+In-Reply-To: <20211118111703.9723-1-venkata.sai.patnana@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/kms=5Fdsc=3A_Add_a_new_subtest_to_validate_10bpc_format?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,97 +16,583 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: apoorva1.singh@intel.com
+To: venkata.sai.patnana@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 22, 2021 at 12:18:47PM +0530, apoorva1.singh@intel.com wrote:
+--===============3198862618527170710==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-<cut>
+== Series Details ==
 
-> +int xy_ctrl_surf_copy_blt(int fd, uint32_t cmd,
-> +			  uint32_t *batch_buf,
-> +			  uint32_t src, uint32_t dst,
-> +			  uint32_t length, bool writetodev,
-> +			  struct intel_execution_engine2 *e)
+Series: tests/i915/kms_dsc: Add a new subtest to validate 10bpc format
+URL   : https://patchwork.freedesktop.org/series/97074/
+State : success
 
-If we pass engine likely it won't be in default context, so it necessary
-to pass ctx here.
+== Summary ==
 
-What I don't like here is to pass cmd and batch_buf here. If you want to
-reuse cmd in the caller you need to synchronize on this handle so you
-won't achieve pipelining.
+CI Bug Log - changes from CI_DRM_10900 -> IGTPW_6415
+====================================================
 
-> +{
-> +	struct drm_i915_gem_relocation_entry reloc[4];
-> +	struct drm_i915_gem_exec_object2 exec[3];
-> +	struct drm_i915_gem_execbuffer2 execbuf;
-> +	int len, src_mem_access, dst_mem_access;
-> +	uint64_t ahnd = get_reloc_ahnd(fd, 0);
+Summary
+-------
 
-This is a little bit tricky, if caller will create different allocator on 
-same context we would get assert. Better way is to pass ahnd from the caller
-and do get_offset/put_offset using strategy it choose.
+  **SUCCESS**
 
-> +
-> +	if (writetodev) {
-> +		src_mem_access = DIRECT_ACCESS;
-> +		dst_mem_access = INDIRECT_ACCESS;
-> +	} else {
-> +		src_mem_access = INDIRECT_ACCESS;
-> +		dst_mem_access = DIRECT_ACCESS;
-> +	}
-> +
-> +	/* construct batch command buffer */
-> +	memset(reloc, 0, sizeof(reloc));
-> +	memset(batch_buf, 0, BATCH_SIZE);
+  No regressions found.
 
-So we assume batch_buf at least is BATCH_SIZE length, it will be bigger
-we will survive, if smaller heap corruption will occur. I can only guess
-cmd is created outside to allow creating it in any memory region.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/index.html
 
-> +	len = make_ctrl_surf_batch(fd, batch_buf,
-> +				   src, dst, length, reloc,
-> +				   src_mem_access, dst_mem_access);
-> +	igt_assert(len > 0);
-> +
-> +	/* Copy the batch buff to BO cmd */
-> +	gem_write(fd, cmd, 0, batch_buf, len);
-> +
-> +	/* Execute the batch buffer */
-> +	memset(exec, 0, sizeof(exec));
-> +	exec[0].handle = src;
-> +	exec[1].handle = dst;
-> +	exec[2].handle = cmd;
-> +	exec[2].relocation_count = !ahnd ? 4 : 0;
-> +	exec[2].relocs_ptr = to_user_pointer(reloc);
-> +	if (ahnd) {
-> +		exec[0].offset = get_offset(ahnd, exec[0].handle, length * CCS_RATIO, 0);
-> +		exec[0].flags |= EXEC_OBJECT_PINNED;
-> +		exec[1].offset = get_offset(ahnd, exec[1].handle, length * CCS_RATIO, 0);
-> +		exec[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-> +		exec[2].offset = get_offset(ahnd, exec[2].handle, BATCH_SIZE, 0);
-> +		exec[2].flags |= EXEC_OBJECT_PINNED;
-> +	}
-> +
-> +	memset(&execbuf, 0, sizeof(execbuf));
-> +	execbuf.buffers_ptr = to_user_pointer(exec);
-> +	execbuf.buffer_count = 3;
-> +	execbuf.batch_len = len;
-> +	execbuf.flags = I915_EXEC_BLT;
-> +	if (e)
-> +		execbuf.flags = e->flags;
-> +
-> +	gem_execbuf(fd, &execbuf);
-> +	gem_sync(fd, cmd);
-> +
-> +	return 0;
-> +}
+Participating hosts (38 -> 33)
+------------------------------
 
-I'm sorry for couple of email regarding same code, but I catched wider
-context in third patch (gem_ccs test).
+  Additional (1): fi-tgl-1115g4 
+  Missing    (6): fi-hsw-4200u fi-tgl-u2 fi-bsw-cyan fi-ctg-p8600 bat-jsl-2 bat-jsl-1 
 
---
-Zbigniew 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6415:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_dsc@basic-dsc-enable-xrgb2101010} (NEW):
+    - fi-cml-u2:          NOTRUN -> [SKIP][1] +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cml-u2/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+    - fi-rkl-guc:         NOTRUN -> [SKIP][2] +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-rkl-guc/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+    - {fi-tgl-dsi}:       NOTRUN -> [SKIP][3] +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-dsi/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+
+  * {igt@kms_dsc@basic-dsc-enable-xrgb8888} (NEW):
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_dsc@basic-dsc-enable-xrgb8888.html
+    - fi-rkl-11600:       NOTRUN -> [SKIP][5] +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-rkl-11600/igt@kms_dsc@basic-dsc-enable-xrgb8888.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_10900 and IGTPW_6415:
+
+### New IGT tests (8) ###
+
+  * igt@kms_dsc@basic-dsc-enable-xrgb2101010:
+    - Statuses : 28 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_dsc@basic-dsc-enable-xrgb2101010@edp-1-pipe-a:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.23, 1.24] s
+
+  * igt@kms_dsc@basic-dsc-enable-xrgb2101010@edp-1-pipe-b:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.15, 1.19] s
+
+  * igt@kms_dsc@basic-dsc-enable-xrgb2101010@edp-1-pipe-c:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.15, 1.22] s
+
+  * igt@kms_dsc@basic-dsc-enable-xrgb8888:
+    - Statuses : 28 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_dsc@basic-dsc-enable-xrgb8888@edp-1-pipe-a:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.19, 1.25] s
+
+  * igt@kms_dsc@basic-dsc-enable-xrgb8888@edp-1-pipe-b:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.15, 1.19] s
+
+  * igt@kms_dsc@basic-dsc-enable-xrgb8888@edp-1-pipe-c:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.15, 1.21] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6415 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-sdma:
+    - fi-kbl-guc:         NOTRUN -> [SKIP][6] ([fdo#109271]) +20 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-guc/igt@amdgpu/amd_basic@cs-sdma.html
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7] ([fdo#109315])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][8] ([fdo#109315] / [i915#2575]) +16 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-gfx0:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][9] ([fdo#109271]) +23 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-6600u/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][10] ([i915#1155])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][11] ([fdo#111827]) +8 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][12] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][13] ([i915#4103]) +1 similar issue
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * {igt@kms_dsc@basic-dsc-enable-xrgb2101010} (NEW):
+    - fi-ilk-650:         NOTRUN -> [SKIP][14] ([fdo#109271]) +2 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-ilk-650/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+    - fi-ivb-3770:        NOTRUN -> [SKIP][15] ([fdo#109271]) +2 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-ivb-3770/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+    - fi-bsw-kefka:       NOTRUN -> [SKIP][16] ([fdo#109271]) +2 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-bsw-kefka/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][17] ([fdo#109271]) +2 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-x1275/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+    - fi-blb-e6850:       NOTRUN -> [SKIP][18] ([fdo#109271]) +2 similar issues
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-blb-e6850/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+    - fi-kbl-7500u:       NOTRUN -> [SKIP][19] ([fdo#109271]) +2 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-7500u/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html
+
+  * {igt@kms_dsc@basic-dsc-enable-xrgb8888} (NEW):
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][20] ([fdo#109271]) +2 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cfl-8109u/igt@kms_dsc@basic-dsc-enable-xrgb8888.html
+    - fi-bwr-2160:        NOTRUN -> [SKIP][21] ([fdo#109271]) +2 similar issues
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-bwr-2160/igt@kms_dsc@basic-dsc-enable-xrgb8888.html
+    - fi-snb-2600:        NOTRUN -> [SKIP][22] ([fdo#109271]) +20 similar issues
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-snb-2600/igt@kms_dsc@basic-dsc-enable-xrgb8888.html
+    - fi-elk-e7500:       NOTRUN -> [SKIP][23] ([fdo#109271]) +2 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-elk-e7500/igt@kms_dsc@basic-dsc-enable-xrgb8888.html
+    - {fi-hsw-gt1}:       NOTRUN -> [SKIP][24] ([fdo#109271]) +1 similar issue
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-hsw-gt1/igt@kms_dsc@basic-dsc-enable-xrgb8888.html
+
+  * igt@kms_dsc@xrgb8888-dsc-compression:
+    - fi-cfl-guc:         NOTRUN -> [SKIP][25] ([fdo#109271]) +2 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cfl-guc/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][26] ([fdo#109271]) +20 similar issues
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-soraka/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-hsw-4770:        NOTRUN -> [SKIP][27] ([fdo#109271]) +2 similar issues
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-hsw-4770/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-skl-6700k2:      NOTRUN -> [SKIP][28] ([fdo#109271]) +2 similar issues
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-6700k2/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-cml-u2:          NOTRUN -> [SKIP][29] ([i915#4611])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cml-u2/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][30] ([fdo#109271]) +2 similar issues
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cfl-8700k/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][31] ([i915#4611])
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-bsw-nick:        NOTRUN -> [SKIP][32] ([fdo#109271]) +2 similar issues
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-bsw-nick/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][33] ([fdo#109271]) +2 similar issues
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-8809g/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-snb-2520m:       NOTRUN -> [SKIP][34] ([fdo#109271]) +2 similar issues
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-snb-2520m/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][35] ([fdo#109271]) +2 similar issues
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-7567u/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-skl-guc:         NOTRUN -> [SKIP][36] ([fdo#109271]) +2 similar issues
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-guc/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-rkl-11600:       NOTRUN -> [SKIP][37] ([i915#4611])
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-rkl-11600/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - fi-rkl-guc:         NOTRUN -> [SKIP][38] ([i915#4611])
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-rkl-guc/igt@kms_dsc@xrgb8888-dsc-compression.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][39] ([fdo#109285])
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [PASS][40] -> [DMESG-WARN][41] ([i915#295]) +12 similar issues
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10900/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][42] ([fdo#109271] / [i915#533])
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][43] ([i915#4269]) -> [PASS][44]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10900/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3828]: https://gitlab.freedesktop.org/drm/intel/issues/3828
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4611]: https://gitlab.freedesktop.org/drm/intel/issues/4611
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6285 -> IGTPW_6415
+
+  CI-20190529: 20190529
+  CI_DRM_10900: b50839f33180500c64a505623ab77829b869a57c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6415: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/index.html
+  IGT_6285: 2e0355faad5c2e81cd6705b76e529ce526c7c9bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_dsc@basic-dsc-enable-xrgb8888
++igt@kms_dsc@basic-dsc-enable-xrgb2101010
+-igt@kms_dsc@basic-dsc-enable
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/index.html
+
+--===============3198862618527170710==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/kms_dsc: Add a new subtest to validate 10bpc format</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97074/">https://patchwork.freedesktop.org/series/97074/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10900 -&gt; IGTPW_6415</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/index.html</p>
+<h2>Participating hosts (38 -&gt; 33)</h2>
+<p>Additional (1): fi-tgl-1115g4 <br />
+  Missing    (6): fi-hsw-4200u fi-tgl-u2 fi-bsw-cyan fi-ctg-p8600 bat-jsl-2 bat-jsl-1 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6415:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>{igt@kms_dsc@basic-dsc-enable-xrgb2101010} (NEW):</p>
+<ul>
+<li>
+<p>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cml-u2/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-rkl-guc/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> +1 similar issue</p>
+</li>
+<li>
+<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-dsi/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_dsc@basic-dsc-enable-xrgb8888} (NEW):</p>
+<ul>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_dsc@basic-dsc-enable-xrgb8888.html">SKIP</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-rkl-11600/igt@kms_dsc@basic-dsc-enable-xrgb8888.html">SKIP</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_10900 and IGTPW_6415:</p>
+<h3>New IGT tests (8)</h3>
+<ul>
+<li>
+<p>igt@kms_dsc@basic-dsc-enable-xrgb2101010:</p>
+<ul>
+<li>Statuses : 28 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@basic-dsc-enable-xrgb2101010@edp-1-pipe-a:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.23, 1.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@basic-dsc-enable-xrgb2101010@edp-1-pipe-b:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.15, 1.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@basic-dsc-enable-xrgb2101010@edp-1-pipe-c:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.15, 1.22] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@basic-dsc-enable-xrgb8888:</p>
+<ul>
+<li>Statuses : 28 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@basic-dsc-enable-xrgb8888@edp-1-pipe-a:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.19, 1.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@basic-dsc-enable-xrgb8888@edp-1-pipe-b:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.15, 1.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@basic-dsc-enable-xrgb8888@edp-1-pipe-c:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.15, 1.21] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6415 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-sdma:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-guc/igt@amdgpu/amd_basic@cs-sdma.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +20 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-gfx0:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-6600u/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +23 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_dsc@basic-dsc-enable-xrgb2101010} (NEW):</p>
+<ul>
+<li>
+<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-ilk-650/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-ivb-3770/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-bsw-kefka/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-x1275/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-blb-e6850/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-7500u/igt@kms_dsc@basic-dsc-enable-xrgb2101010.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_dsc@basic-dsc-enable-xrgb8888} (NEW):</p>
+<ul>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cfl-8109u/igt@kms_dsc@basic-dsc-enable-xrgb8888.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-bwr-2160/igt@kms_dsc@basic-dsc-enable-xrgb8888.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-snb-2600/igt@kms_dsc@basic-dsc-enable-xrgb8888.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +20 similar issues</p>
+</li>
+<li>
+<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-elk-e7500/igt@kms_dsc@basic-dsc-enable-xrgb8888.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>{fi-hsw-gt1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-hsw-gt1/igt@kms_dsc@basic-dsc-enable-xrgb8888.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@xrgb8888-dsc-compression:</p>
+<ul>
+<li>
+<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cfl-guc/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-soraka/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +20 similar issues</p>
+</li>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-hsw-4770/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-6700k2/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cml-u2/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4611">i915#4611</a>)</p>
+</li>
+<li>
+<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cfl-8700k/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4611">i915#4611</a>)</p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-bsw-nick/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-8809g/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-snb-2520m/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-kbl-7567u/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-guc/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-rkl-11600/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4611">i915#4611</a>)</p>
+</li>
+<li>
+<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-rkl-guc/igt@kms_dsc@xrgb8888-dsc-compression.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4611">i915#4611</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10900/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +12 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10900/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6285 -&gt; IGTPW_6415</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10900: b50839f33180500c64a505623ab77829b869a57c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6415: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6415/index.html<br />
+  IGT_6285: 2e0355faad5c2e81cd6705b76e529ce526c7c9bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_dsc@basic-dsc-enable-xrgb8888<br />
++igt@kms_dsc@basic-dsc-enable-xrgb2101010<br />
+-igt@kms_dsc@basic-dsc-enable</p>
+
+</body>
+</html>
+
+--===============3198862618527170710==--
