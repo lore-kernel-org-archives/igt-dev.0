@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81D506EB0E
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Nov 2021 21:01:20 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Wed, 24 Nov 2021 21:01:16 +0000
-Message-ID: <4162677b6b5245538a1ed813378ce9ef@intel.com>
-References: <20211119155344.2709274-1-Rodrigo.Siqueira@amd.com>
- <56aecdcb-1269-2271-4890-c5f358a7c03c@amd.com>
-In-Reply-To: <56aecdcb-1269-2271-4890-c5f358a7c03c@amd.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B9206E4A5
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Nov 2021 21:09:26 +0000 (UTC)
+From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
+Date: Wed, 24 Nov 2021 13:10:02 -0800
+Message-Id: <20211124211002.114989-1-jose.souza@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] test/amdgpu: Add multi-eDP support
- to ABM test
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_cursor_legacy: Disable Intel's
+ PSR2 selective fetch in this test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,34 +19,140 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
-Cc: Roman Li <romli@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Mikita Lipski <mikita.lipski@amd.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SCwgRmlsZWQgYSBuZXcgYnVnIGFuZCByZS1yZXBvcnRlZC4NCmh0dHBzOi8vZ2l0bGFiLmZyZWVk
-ZXNrdG9wLm9yZy9kcm0vaW50ZWwvLS9pc3N1ZXMvNDYzNA0KaWd0QGttc192YmxhbmtAcGlwZS1j
-LXdhaXQtZm9ya2VkLWhhbmcgLSBpbmNvbXBsZXRlIC0gTm8gd2FybmluZ3MvZXJyb3JzDQoNCg0K
-TGFrc2htaS4NCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBSb2RyaWdvIFNpcXVl
-aXJhIEpvcmRhbyA8cmpvcmRyaWdvQGFtZC5jb20+IA0KU2VudDogV2VkbmVzZGF5LCBOb3ZlbWJl
-ciAyNCwgMjAyMSA3OjI3IEFNDQpUbzogVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5h
-cmF5YW5hLnZ1ZHVtQGludGVsLmNvbT4NCkNjOiBNaWtpdGEgTGlwc2tpIDxtaWtpdGEubGlwc2tp
-QGFtZC5jb20+OyBSb21hbiBMaSA8cm9tbGlAYW1kLmNvbT47IFJvZHJpZ28gU2lxdWVpcmEgPFJv
-ZHJpZ28uU2lxdWVpcmFAYW1kLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBo
-YXJyeS53ZW50bGFuZEBhbWQuY29tOyBOaWNob2xhcy5DaG9pQGFtZC5jb207IG1hcmt5YWNvdWJA
-Y2hyb21pdW0ub3JnDQpTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdCAwLzJdIHRl
-c3QvYW1kZ3B1OiBBZGQgbXVsdGktZURQIHN1cHBvcnQgdG8gQUJNIHRlc3QNCg0KSGkgTGFrc2ht
-aSwNCg0KSSB0aGluayBJIGdvdCBhIGZhbHNlLXBvc2l0aXZlIGluIHRoaXMgc2VyaWVzOg0KDQpo
-dHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzk3MTEzLw0KDQpDb3VsZCB5
-b3UgdHJpZ2dlciB0aGUgQ0kgYWdhaW4/DQoNClBzLjogVGhpcyBzZXJpZXMgaXMgZm9yIGFtZGdw
-dSBzcGVjaWZpYyB0ZXN0cy4NCg0KVGhhbmtzDQpTaXF1ZWlyYQ0KDQpPbiAyMDIxLTExLTE5IDEw
-OjUzIGEubS4sIFJvZHJpZ28gU2lxdWVpcmEgd3JvdGU6DQo+IFdlIHJlY2VudGx5IGVuYWJsZWQg
-bXVsdGlwbGUtZURQIHN1cHBvcnQgb24gYW1kZ3B1LiBBcyBhIHJlc3VsdCwgdGhpcyANCj4gcGF0
-Y2hzZXQgYWRkcyB0ZXN0cyB0byBjb3ZlciB0aGlzIGNhc2UuDQo+IA0KPiBDYzogTWlraXRhIExp
-cHNraSA8bWlraXRhLmxpcHNraUBhbWQuY29tPg0KPiBDYzogUm9tYW4gTGkgPHJvbWxpQGFtZC5j
-b20+DQo+IENjOiBIYXJyeSBXZW50bGFuZCA8aGFycnkud2VudGxhbmRAYW1kLmNvbT4NCj4gDQo+
-IE1pa2l0YSBMaXBza2kgKDEpOg0KPiAgICB0ZXN0cy9hbWRncHU6IEFkZCBtdWx0aS1lRFAgc3Vw
-cG9ydCB0byBBQk0gdGVzdA0KPiANCj4gUm9tYW4gTGkgKDEpOg0KPiAgICBhbWRncHUvYW1kX2Fi
-bTogRG91YmxlIGNvbnZlcmdlbmNlIHRpbWVvdXQNCj4gDQo+ICAgdGVzdHMvYW1kZ3B1L2FtZF9h
-Ym0uYyB8IDI2OCArKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLQ0KPiAg
-IDEgZmlsZSBjaGFuZ2VkLCAxNTQgaW5zZXJ0aW9ucygrKSwgMTE0IGRlbGV0aW9ucygtKQ0KPiAN
-Cg0K
+When doing a primary or sprite plane flip, PSR2 selective fetch code
+also adds all the planes including cursor that overlaps with the
+area being updated, so this causes legacy cursor API calls to
+wait for a pending atomic commit to finish causing tests that do
+checks with vblank counters.
+
+So here when running in an Intel platform that has PSR2 selective
+fetch enabled, it will switch to PSR1 before executing the subtests.
+Because what this whole test mostly wants to do, is check if userspace
+can do asynchronous cursors updates.
+
+v2:
+- rename functions and add documentation
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2346
+Cc: Mika Kahola <mika.kahola@intel.com>
+Cc: Jouni Hogander <jouni.hogander@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+---
+ lib/igt_psr.c             | 44 +++++++++++++++++++++++++++++++++++++++
+ lib/igt_psr.h             |  3 +++
+ tests/kms_cursor_legacy.c | 10 +++++++++
+ 3 files changed, 57 insertions(+)
+
+diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+index 8fa8b192f..98eb28b40 100644
+--- a/lib/igt_psr.c
++++ b/lib/igt_psr.c
+@@ -280,3 +280,47 @@ bool i915_psr2_selective_fetch_check(int drm_fd)
+ 
+ 	return ret;
+ }
++
++/**
++ * i915_psr2_sel_fetch_to_psr1
++ *
++ * Check if PSR2 selective fetch is enabled, if yes switch to PSR1 and returns
++ * true otherwise returns false.
++ * This function should be called from tests that are not compatible with PSR2
++ * selective fetch.
++ *
++ * Returns:
++ * True if PSR mode changed to PSR1, false otherwise.
++ */
++bool i915_psr2_sel_fetch_to_psr1(int drm_fd)
++{
++	int debugfs_fd;
++	bool ret = false;
++
++	if (!is_i915_device(drm_fd))
++		return ret;
++
++	debugfs_fd = igt_debugfs_dir(drm_fd);
++	if (psr2_selective_fetch_check(debugfs_fd)) {
++		psr_set(drm_fd, debugfs_fd, PSR_MODE_1);
++		ret = true;
++	}
++
++	close(debugfs_fd);
++	return ret;
++}
++
++/**
++ * i915_psr2_sel_fetch_restore
++ *
++ * Restore PSR2 selective fetch after tests were executed, this function should
++ * only be called if i915_psr2_sel_fetch_to_psr1() returned true.
++ */
++void i915_psr2_sel_fetch_restore(int drm_fd)
++{
++	int debugfs_fd;
++
++	debugfs_fd = igt_debugfs_dir(drm_fd);
++	psr_set(drm_fd, debugfs_fd, PSR_MODE_2_SEL_FETCH);
++	close(debugfs_fd);
++}
+diff --git a/lib/igt_psr.h b/lib/igt_psr.h
+index a075f336d..76cd26c65 100644
+--- a/lib/igt_psr.h
++++ b/lib/igt_psr.h
+@@ -49,4 +49,7 @@ void psr_print_debugfs(int debugfs_fd);
+ 
+ bool i915_psr2_selective_fetch_check(int drm_fd);
+ 
++bool i915_psr2_sel_fetch_to_psr1(int drm_fd);
++void i915_psr2_sel_fetch_restore(int drm_fd);
++
+ #endif
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index cd2f84984..d50155e89 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -27,6 +27,7 @@
+ 
+ #include "i915/gem.h"
+ #include "igt.h"
++#include "igt_psr.h"
+ #include "igt_rand.h"
+ #include "igt_stats.h"
+ 
+@@ -1421,6 +1422,7 @@ igt_main
+ {
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	igt_display_t display = { .drm_fd = -1 };
++	bool intel_psr2_restore = false;
+ 	int i;
+ 
+ 	igt_fixture {
+@@ -1428,6 +1430,12 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&display, display.drm_fd);
++		/*
++		 * Not possible to evade vblank after a primary or sprite plane
++		 * page flip with cursor legacy APIS when Intel's PSR2 selective
++		 * fetch is enabled, so switching PSR1 for this whole test.
++		 */
++		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd);
+ 	}
+ 
+ 	/*Test description for pipe-* and all-pipe-* tests*/
+@@ -1609,6 +1617,8 @@ igt_main
+ 		}
+ 
+ 	igt_fixture {
++		if (intel_psr2_restore)
++			i915_psr2_sel_fetch_restore(display.drm_fd);
+ 		igt_display_fini(&display);
+ 	}
+ }
+-- 
+2.34.0
