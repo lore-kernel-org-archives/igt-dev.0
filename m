@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B7ED6EAE3
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 07:12:00 +0000 (UTC)
-Date: Thu, 25 Nov 2021 09:11:00 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YZ83BCgRaTvnLX/j@platvala-desk.ger.corp.intel.com>
-References: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
- <f6341eaa-9815-6d49-9e69-d355581e8585@amd.com>
- <aa4d94075c5f4b64b5d753323d745ed3@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E5766E9FC
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 07:55:43 +0000 (UTC)
+Date: Thu, 25 Nov 2021 08:55:38 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20211125075538.GA4968@zkempczy-mobl2>
+References: <20211122064849.785894-1-apoorva1.singh@intel.com>
+ <20211122064849.785894-4-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <aa4d94075c5f4b64b5d753323d745ed3@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: Add test for AMD DP DSC
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211122064849.785894-4-apoorva1.singh@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t,
+ v2 3/3] i915/gem_ccs: Add testing for CCS
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,1458 +23,795 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Cc: Eryk Brol <eryk.brol@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Rodrigo Siqueira Jordao <rjordrigo@amd.com>, Mikita Lipski <mikita.lipski@amd.com>
+To: apoorva1.singh@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 25, 2021 at 01:01:04AM +0200, Vudum, Lakshminarayana wrote:
-> @Rodrigo Siqueira I don't have the possibility to re-run the series. @Latvala, Petri Can you help here?
+On Mon, Nov 22, 2021 at 12:18:49PM +0530, apoorva1.singh@intel.com wrote:
+> From: CQ Tang <cq.tang@intel.com>
 > 
-> Lakshmi.
+> Add gem_ccs test for CCS testing.
+> Commands are constructed with XY_BLOCK_COPY_BLT
+> and XY_CTRL_SURF_COPY_BLT instructions.
+> 
+> Signed-off-by: CQ Tang <cq.tang@intel.com>
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> ---
+>  lib/i915/gem_engine_topology.c |  38 ++
+>  lib/i915/gem_engine_topology.h |   5 +
+>  tests/i915/gem_ccs.c           | 640 +++++++++++++++++++++++++++++++++
+>  tests/meson.build              |   1 +
+>  4 files changed, 684 insertions(+)
+>  create mode 100644 tests/i915/gem_ccs.c
+> 
+> diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+> index 729f42b0..37b5875e 100644
+> --- a/lib/i915/gem_engine_topology.c
+> +++ b/lib/i915/gem_engine_topology.c
+> @@ -488,6 +488,44 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+>  	return ret;
+>  }
+>  
+> +static bool
+> +__gem_engine_has_capability(int i915, const char *engine,
+> +			    const char *attr, const char *cap)
+> +{
+> +	char buf[4096] = {};
+> +	FILE *file;
+> +
+> +	file = __open_attr(igt_sysfs_open(i915), "r",
+> +			   "engine", engine, attr, NULL);
+> +	if (file) {
+> +		fread(buf, 1, sizeof(buf) - 1, file);
+> +		fclose(file);
+> +	}
+> +
+> +	return strstr(buf, cap);
+> +}
+> +
+> +bool gem_engine_has_capability(int i915, const char *engine, const char *cap)
+> +{
+> +	return __gem_engine_has_capability(i915, engine, "capabilities", cap);
+> +}
+> +
+> +bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap)
+> +{
+> +	return __gem_engine_has_capability(i915, engine, "known_capabilities", cap);
+> +}
+> +
+> +bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine)
+> +{
+> +	if (engine->class != I915_ENGINE_CLASS_COPY)
+> +		return false;
+> +
+> +	if (!gem_engine_has_known_capability(i915, engine->name, "block_copy"))
+> +		return intel_gen(intel_get_drm_devid(i915)) >= 12;
+> +
+> +	return gem_engine_has_capability(i915, engine->name, "block_copy");
+> +}
+> +
+>  uint32_t gem_engine_mmio_base(int i915, const char *engine)
+>  {
+>  	unsigned int mmio = 0;
+> diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+> index 4cfab560..d24bc9e8 100644
+> --- a/lib/i915/gem_engine_topology.h
+> +++ b/lib/i915/gem_engine_topology.h
+> @@ -124,6 +124,11 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+>  
+>  uint32_t gem_engine_mmio_base(int i915, const char *engine);
+>  
+> +bool gem_engine_has_capability(int i915, const char *engine, const char *cap);
+> +bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap);
+> +
+> +bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine);
+> +
+>  void dyn_sysfs_engines(int i915, int engines, const char *file,
+>  		       void (*test)(int i915, int engine));
+>  
+> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> new file mode 100644
+> index 00000000..e4dc9139
+> --- /dev/null
+> +++ b/tests/i915/gem_ccs.c
+> @@ -0,0 +1,640 @@
+> +/*
+> + * Copyright © 2020 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + *
+> + * Authors:
+> + *	CQ Tang <cq.tang@intel.com>
+> + *	Neel Desai <neel.desai@intel.com>
+> + *
+> + */
 
-Unfortunately patchwork got confused by your emails and thinks you've
-sent a patch, so the re-run button just reattempts the incorrect
-patch.
+Use SPDX instead.
 
-Rodrigo, please re-send this patch.
+> +
+> +#include <errno.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/time.h>
+> +#include <malloc.h>
+> +#include "drm.h"
+> +#include "igt.h"
+> +#include "i915/gem.h"
+> +#include "i915/gem_create.h"
+> +#include "lib/intel_chipset.h"
+> +#include "i915/i915_blt.h"
+> +
+> +IGT_TEST_DESCRIPTION("Exercise the memory bandwidth compression and "
+> +		     "decompression when copying data between "
+> +		     "system and local memory");
+> +
+> +static void igt_wr_xy_ctrl_surf_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
+> +					 uint32_t src, uint32_t dst, uint32_t out,
+> +					 int ccssize, uint8_t *pattern_buf,
+> +					 uint8_t *read_buf, int bosize,
+> +					 struct intel_execution_engine2 *e)
+> +{
+> +	int ret, i;
+> +
+> +	/* set 'src' to random pattern */
+> +	gem_write(fd, src, 0, pattern_buf, bosize);
+> +
+> +	/*
+> +	 * 'dst' is lmem BO with ccs, directly
+> +	 * copy content in 'src' BO to 'dst' BO's ccs
+> +	 */
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    src, dst, ccssize, true, e);
+> +
+> +	igt_assert(!ret);
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, ccssize);
+> +	gem_write(fd, out, 0, read_buf, ccssize);
+> +
+> +	/* copy 'dst' BO's ccs into 'out' BO */
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    dst, out, ccssize, false, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, ccssize);
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have original pattern
+> +	 */
+> +	for (i = 0; i < ccssize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(!ret);
+> +}
 
--- 
-Petri Latvala
+Apart of unlucky batch_buf, wouldn't be more clear like this:
 
+static void igt_wr_xy_ctrl_surf_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
+					 uint32_t src, uint32_t dst, uint32_t out,
+					 int ccssize, uint8_t *pattern_buf,
+					 uint8_t *read_buf, int bosize,
+					 struct intel_execution_engine2 *e)
+{
+	gem_write(fd, src, 0, pattern_buf, bosize);
+	xy_ctrl_surf_copy_blt(fd, cmd, batch_buf, src, dst, ccssize, true, e);
 
-> 
-> -----Original Message-----
-> From: Rodrigo Siqueira Jordao <rjordrigo@amd.com> 
-> Sent: Wednesday, November 24, 2021 7:34 AM
-> To: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
-> Cc: Mikita Lipski <mikita.lipski@amd.com>; Eryk Brol <eryk.brol@amd.com>; Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>; igt-dev@lists.freedesktop.org; harry.wentland@amd.com; Nicholas.Choi@amd.com; markyacoub@chromium.org
-> Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: Add test for AMD DP DSC
-> 
-> Hi Lakshmi,
-> 
-> I noticed a CI failure in this patch which is focused on AMD, except for the below change in the igt_kms.h:
-> 
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h index e9ecd21e..5c7d7481 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -125,6 +125,7 @@  enum igt_atomic_crtc_properties {
->          IGT_CRTC_ACTIVE,
->          IGT_CRTC_OUT_FENCE_PTR,
->          IGT_CRTC_VRR_ENABLED,
-> +       IGT_CRTC_DSC_SLICE_HEIGHT,
->          IGT_NUM_CRTC_PROPS
->   };
-> 
->  From the CI results, I'm not sure if this change caused the other failures, and since we saw some false positives in the AMD tests last week, is it possible to trigger the CI test for this patch again?
-> 
-> https://patchwork.freedesktop.org/patch/463655/?series=97108&rev=1
-> 
-> Thanks
-> Siqueira
-> 
-> On 2021-11-19 10:00 a.m., Rodrigo Siqueira wrote:
-> > From: Eryk Brol <eryk.brol@amd.com>
-> > 
-> > This commit introduces a DP DSC test that checks:
-> > 
-> > * Forces DSC on/off and ensures it is reset properly
-> > * Check DSC slice height property
-> > * Verify various DSC slice dimensions
-> > * Tests various combinations of link_rate + lane_count and logs if DSC
-> >    enabled/disabled Tests different bpc settings and logs if DSC is
-> >    enabled/disabled
-> > 
-> > Cc: Harry Wentland <harry.wentland@amd.com>
-> > Cc: Nicholas Choi <Nicholas.Choi@amd.com>
-> > Cc: Mark Yacoub <markyacoub@chromium.org>
-> > Signed-off-by: Mikita Lipski <mikita.lipski@amd.com>
-> > Signed-off-by: Eryk Brol <eryk.brol@amd.com>
-> > ---
-> >   lib/igt_amd.c             | 494 +++++++++++++++++++++++++--
-> >   lib/igt_amd.h             |  35 ++
-> >   lib/igt_kms.h             |   1 +
-> >   tests/amdgpu/amd_dp_dsc.c | 685 ++++++++++++++++++++++++++++++++++++++
-> >   tests/amdgpu/meson.build  |   1 +
-> >   5 files changed, 1194 insertions(+), 22 deletions(-)
-> >   create mode 100644 tests/amdgpu/amd_dp_dsc.c
-> > 
-> > diff --git a/lib/igt_amd.c b/lib/igt_amd.c index f1bfb421..4bcfd594 
-> > 100644
-> > --- a/lib/igt_amd.c
-> > +++ b/lib/igt_amd.c
-> > @@ -251,11 +251,11 @@ bool igt_amd_is_tiled(uint64_t modifier)
-> >   }
-> >   
-> >   /**
-> > - * igt_amd_output_has_hpd: check if connector has HPD debugfs entry
-> > + * igt_amd_output_has_dsc: check if connector has dsc debugfs entry
-> >    * @drm_fd: DRM file descriptor
-> >    * @connector_name: The connector's name, on which we're reading the status
-> >    */
-> > -static bool igt_amd_output_has_hpd(int drm_fd, char *connector_name)
-> > +static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
-> >   {
-> >   	int fd;
-> >   	int res;
-> > @@ -267,9 +267,9 @@ static bool igt_amd_output_has_hpd(int drm_fd, char *connector_name)
-> >   		return false;
-> >   	}
-> >   
-> > -	res = fstatat(fd, DEBUGFS_HPD_TRIGGER, &stat, 0);
-> > +	res = fstatat(fd, DEBUGFS_DSC_CLOCK_EN , &stat, 0);
-> >   	if (res != 0) {
-> > -		igt_info("%s debugfs not supported\n", DEBUGFS_HPD_TRIGGER);
-> > +		igt_info("%s debugfs not supported\n", DEBUGFS_DSC_CLOCK_EN);
-> >   		close(fd);
-> >   		return false;
-> >   	}
-> > @@ -279,49 +279,499 @@ static bool igt_amd_output_has_hpd(int drm_fd, char *connector_name)
-> >   }
-> >   
-> >   /**
-> > - * igt_amd_require_hpd: Checks if connectors have HPD debugfs
-> > + * is_dp_dsc_supported: Checks if connector is DSC capable
-> > + * @display: A pointer to an #igt_display_t structure
-> > + * @drm_fd: DRM file descriptor
-> > + */
-> > +bool is_dp_dsc_supported(int drm_fd, char *connector_name) {
-> > +	char buf[512];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_FEC_SUPPORT, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_FEC_SUPPORT, connector_name);
-> > +
-> > +	return strstr(buf, "DSC_Sink_Support: yes"); }
-> > +
-> > +/**
-> > + * is_dp_fec_supported: Checks if connector is FEC capable
-> > + * @display: A pointer to an #igt_display_t structure
-> > + * @drm_fd: DRM file descriptor
-> > + */
-> > +bool is_dp_fec_supported(int drm_fd, char *connector_name) {
-> > +	char buf[512];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_FEC_SUPPORT, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_FEC_SUPPORT, connector_name);
-> > +
-> > +	return strstr(buf, "FEC_Sink_Support: yes"); }
-> > +
-> > +/**
-> > + * igt_amd_require_dsc: Checks if connectors have DSC debugfs
-> >    * @display: A pointer to an #igt_display_t structure
-> >    * @drm_fd: DRM file descriptor
-> >    *
-> > - * Checks if the AMDGPU driver has support the 'trigger_hotplug'
-> > - * entry for HPD. Skip test if HPD is not supported.
-> > + * Checks if the AMDGPU driver has support of debugfs entries for
-> > + * DSC. Skip test if DSC is not supported.
-> >    */
-> > -void igt_amd_require_hpd(igt_display_t *display, int drm_fd)
-> > +void igt_amd_require_dsc(igt_display_t *display, int drm_fd)
-> >   {
-> >   	igt_output_t *output;
-> >   
-> >   	for_each_connected_output(display, output) {
-> > -		if (igt_amd_output_has_hpd(drm_fd, output->name))
-> > +		if (igt_amd_output_has_dsc(drm_fd, output->name))
-> >   			return;
-> >   	}
-> >   
-> > -	igt_skip("No HPD debugfs support.\n");
-> > +	igt_skip("No DSC debugfs support.\n");
-> >   }
-> >   
-> >   /**
-> > - * igt_amd_trigger_hotplut: Triggers a debugfs HPD
-> > + * igt_amd_read_dsc_clock_status: Read the DSC Clock Enable debugfs
-> >    * @drm_fd: DRM file descriptor
-> > - * @connector_name: The connector's name, which we trigger the 
-> > hotplug on
-> > + * @connector_name: The connector's name, which we use to read status 
-> > + on
-> >    *
-> > - * igt_amd_require_hpd should be called before calling this.
-> >    */
-> > -int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
-> > +int igt_amd_read_dsc_clock_status(int drm_fd, char *connector_name) {
-> > +	char buf[4];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_CLOCK_EN, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_CLOCK_EN, connector_name);
-> > +
-> > +	return strtol(buf, NULL, 0);
-> > +}
-> > +
-> > +
-> > +/**
-> > + * igt_amd_write_dsc_clock_en: Write the DSC Clock Enable debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + * @dsc_force: DSC force parameter, 0 - DSC automatic, 1 - DSC force 
-> > +on,
-> > + * 2 - DSC force off
-> > + *
-> > + */
-> > +void igt_amd_write_dsc_clock_en(int drm_fd, char *connector_name, int 
-> > +dsc_force) {
-> > +	int fd, dsc_fd;
-> > +	char src[4];
-> > +	int wr_len;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	igt_assert(fd >= 0);
-> > +	dsc_fd = openat(fd, DEBUGFS_DSC_CLOCK_EN, O_WRONLY);
-> > +	close(fd);
-> > +	igt_assert(dsc_fd >= 0);
-> > +
-> > +	if (dsc_force == DSC_FORCE_ON)
-> > +		snprintf(src, sizeof(src), "%d", 1);
-> > +	else if (dsc_force == DSC_FORCE_OFF)
-> > +		snprintf(src, sizeof(src), "%d", 2);
-> > +	else
-> > +		snprintf(src, sizeof(src), "%d", 0);
-> > +
-> > +	igt_info("DSC Clock force, write %s > dsc_clock_en\n", src);
-> > +
-> > +	wr_len = write(dsc_fd, src, strlen(src));
-> > +	close(dsc_fd);
-> > +	igt_assert_eq(wr_len, strlen(src));
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_write_dsc_param_slice_height: Write the DSC Slice Height 
-> > +debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + * @slice_height: DSC slice height parameter, accepts any positive integer,
-> > + * 		  if parameter is negative - it will not write to debugfs.
-> > + *
-> > + */
-> > +void igt_amd_write_dsc_param_slice_height(int drm_fd, char 
-> > +*connector_name, int slice_height) {
-> > +	int fd, dsc_fd;
-> > +	char src[32];
-> > +	int wr_len;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	igt_assert(fd >= 0);
-> > +	dsc_fd = openat(fd, DEBUGFS_DSC_SLICE_HEIGHT, O_WRONLY);
-> > +	close(fd);
-> > +	igt_assert(dsc_fd >= 0);
-> > +
-> > +	if (slice_height >= 0) {
-> > +		snprintf(src, sizeof(src), "%#x", slice_height);
-> > +	} else {
-> > +		igt_warn("DSC SLICE HEIGHT, slice height parameter is invalid (%d)\n", slice_height);
-> > +		goto exit;
-> > +	}
-> > +
-> > +	igt_info("DSC SLICE HEIGHT, write %s > dsc_slice_height\n", src);
-> > +
-> > +	wr_len = write(dsc_fd, src, strlen(src));
-> > +	igt_assert_eq(wr_len, strlen(src));
-> > +exit:
-> > +	close(dsc_fd);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_read_dsc_param_slice_height: Read the DSC Slice Height 
-> > +debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + *
-> > + */
-> > +int igt_amd_read_dsc_param_slice_height(int drm_fd, char 
-> > +*connector_name) {
-> > +	char buf[32];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_SLICE_HEIGHT, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_SLICE_HEIGHT, connector_name);
-> > +
-> > +	return strtol(buf, NULL, 0);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_write_dsc_param_slice_width: Write the DSC Slice Width 
-> > +debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + * @slice_width: DSC slice width parameter, accepts any positive integer,
-> > + * 		 if parameter is negative - it will not write to debugfs.
-> > + *
-> > + */
-> > +void igt_amd_write_dsc_param_slice_width(int drm_fd, char 
-> > +*connector_name, int slice_width)
-> >   {
-> > -	int fd, hpd_fd;
-> > +	int fd, dsc_fd;
-> > +	char src[32];
-> >   	int wr_len;
-> > -	const char *enable_hpd = "1";
-> >   
-> >   	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> >   	igt_assert(fd >= 0);
-> > -	hpd_fd = openat(fd, DEBUGFS_HPD_TRIGGER, O_WRONLY);
-> > +	dsc_fd = openat(fd, DEBUGFS_DSC_SLICE_WIDTH, O_WRONLY);
-> > +	close(fd);
-> > +	igt_assert(dsc_fd >= 0);
-> > +
-> > +	if (slice_width >= 0) {
-> > +		snprintf(src, sizeof(src), "%#x", slice_width);
-> > +	} else {
-> > +		igt_warn("DSC SLICE WIDTH, slice width parameter is invalid (%d)\n", slice_width);
-> > +		goto exit;
-> > +	}
-> > +
-> > +	igt_info("DSC SLICE WIDTH, write %s > dsc_slice_width\n", src);
-> > +
-> > +	wr_len = write(dsc_fd, src, strlen(src));
-> > +	igt_assert_eq(wr_len, strlen(src));
-> > +exit:
-> > +	close(dsc_fd);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_read_dsc_param_slice_width: Read the DSC Slice Width 
-> > +debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + *
-> > + */
-> > +int igt_amd_read_dsc_param_slice_width(int drm_fd, char 
-> > +*connector_name) {
-> > +	char buf[32];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_SLICE_WIDTH, buf, 
-> > +sizeof(buf));
-> >   	close(fd);
-> > -	igt_assert(hpd_fd >= 0);
-> >   
-> > -	wr_len = write(hpd_fd, enable_hpd, strlen(enable_hpd));
-> > -	close(hpd_fd);
-> > -	igt_assert_eq(wr_len, strlen(enable_hpd));
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_SLICE_WIDTH, connector_name);
-> > +
-> > +	return strtol(buf, NULL, 0);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_write_dsc_param_bpp: Write the DSC Bits Per Pixel debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + * @bpp: DSC bits per pixel parameter, accepts any positive integer,
-> > + * 	 if parameter is negative - it will not write to debugfs.
-> > + *
-> > + */
-> > +void igt_amd_write_dsc_param_bpp(int drm_fd, char *connector_name, 
-> > +int bpp) {
-> > +	int fd, dsc_fd;
-> > +	char src[32];
-> > +	int wr_len;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	igt_assert(fd >= 0);
-> > +	dsc_fd = openat(fd, DEBUGFS_DSC_BITS_PER_PIXEL, O_WRONLY);
-> > +	close(fd);
-> > +	igt_assert(dsc_fd >= 0);
-> > +
-> > +	if (bpp >= 0) {
-> > +		snprintf(src, sizeof(src), "%#x", bpp);
-> > +	} else {
-> > +		igt_warn("DSC BITS PER PIXEL, bits per pixel parameter is invalid (%d)\n", bpp);
-> > +		goto exit;
-> > +	}
-> > +
-> > +	igt_info("DSC BITS PER PIXEL, write %s > dsc_bits_per_pixel\n", 
-> > +src);
-> > +
-> > +	wr_len = write(dsc_fd, src, strlen(src));
-> > +	igt_assert_eq(wr_len, strlen(src));
-> > +exit:
-> > +	close(dsc_fd);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_read_dsc_param_bpp: Read the DSC Bits Per Pixel debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + *
-> > + */
-> > +int igt_amd_read_dsc_param_bpp(int drm_fd, char *connector_name) {
-> > +	char buf[32];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_BITS_PER_PIXEL, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_BITS_PER_PIXEL, connector_name);
-> > +
-> > +	return strtol(buf, NULL, 0);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_read_dsc_param_pic_width: Read the DSC Picture Width 
-> > +debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + *
-> > + */
-> > +int igt_amd_read_dsc_param_pic_width(int drm_fd, char 
-> > +*connector_name) {
-> > +	char buf[4];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_PIC_WIDTH, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_PIC_WIDTH, connector_name);
-> > +
-> > +	return strtol(buf, NULL, 0);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_read_dsc_param_pic_height: Read the DSC Picture Height 
-> > +debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + *
-> > + */
-> > +int igt_amd_read_dsc_param_pic_height(int drm_fd, char 
-> > +*connector_name) {
-> > +	char buf[4];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_PIC_HEIGHT, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_PIC_HEIGHT, connector_name);
-> > +
-> > +	return strtol(buf, NULL, 0);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_read_dsc_param_chunk_size: Read the DSC Chunk Size debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + *
-> > + */
-> > +int igt_amd_read_dsc_param_chunk_size(int drm_fd, char 
-> > +*connector_name) {
-> > +	char buf[4];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_CHUNK_SIZE, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_CHUNK_SIZE, connector_name);
-> > +
-> > +	return strtol(buf, NULL, 0);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_read_dsc_param_slice_bpg: Read the DSC Slice BPG Offset 
-> > +debugfs
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we use to read status 
-> > +on
-> > + *
-> > + */
-> > +int igt_amd_read_dsc_param_slice_bpg(int drm_fd, char 
-> > +*connector_name) {
-> > +	char buf[4];
-> > +	int fd, ret;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +	if (fd < 0) {
-> > +		igt_info("Couldn't open connector %s debugfs directory\n",
-> > +			 connector_name);
-> > +		return false;
-> > +	}
-> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DSC_SLICE_BPG, buf, sizeof(buf));
-> > +	close(fd);
-> > +
-> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-> > +		     DEBUGFS_DSC_SLICE_BPG, connector_name);
-> > +
-> > +	return strtol(buf, NULL, 0);
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_output_has_hpd: check if connector has HPD debugfs entry
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, on which we're reading the 
-> > +status  */ static bool igt_amd_output_has_hpd(int drm_fd, char 
-> > +*connector_name) {
-> > +        int fd;
-> > +        int res;
-> > +        struct stat stat;
-> > +
-> > +        fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +        if (fd < 0) {
-> > +                igt_info("output %s: debugfs not found\n", connector_name);
-> > +                return false;
-> > +        }
-> > +
-> > +        res = fstatat(fd, DEBUGFS_HPD_TRIGGER, &stat, 0);
-> > +        if (res != 0) {
-> > +                igt_info("%s debugfs not supported\n", DEBUGFS_HPD_TRIGGER);
-> > +                close(fd);
-> > +                return false;
-> > +        }
-> > +
-> > +        close(fd);
-> > +        return true;
-> > +}
-> > +
-> > +/**
-> > + * igt_amd_require_hpd: Checks if connectors have HPD debugfs
-> > + * @display: A pointer to an #igt_display_t structure
-> > + * @drm_fd: DRM file descriptor
-> > + *
-> > + * Checks if the AMDGPU driver has support the 'trigger_hotplug'
-> > + * entry for HPD. Skip test if HPD is not supported.
-> > + */
-> > +void igt_amd_require_hpd(igt_display_t *display, int drm_fd) {
-> > +        igt_output_t *output;
-> > +
-> > +        for_each_connected_output(display, output) {
-> > +                if (igt_amd_output_has_hpd(drm_fd, output->name))
-> > +                        return;
-> > +        }
-> > +
-> > +        igt_skip("No HPD debugfs support.\n"); }
-> > +
-> > +/**
-> > + * igt_amd_trigger_hotplut: Triggers a debugfs HPD
-> > + * @drm_fd: DRM file descriptor
-> > + * @connector_name: The connector's name, which we trigger the 
-> > +hotplug on
-> > + *
-> > + * igt_amd_require_hpd should be called before calling this.
-> > + */
-> > +int igt_amd_trigger_hotplug(int drm_fd, char *connector_name) {
-> > +        int fd, hpd_fd;
-> > +        int wr_len;
-> > +        const char *enable_hpd = "1";
-> > +
-> > +        fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-> > +        igt_assert(fd >= 0);
-> > +        hpd_fd = openat(fd, DEBUGFS_HPD_TRIGGER, O_WRONLY);
-> > +        close(fd);
-> > +        igt_assert(hpd_fd >= 0);
-> > +
-> > +        wr_len = write(hpd_fd, enable_hpd, strlen(enable_hpd));
-> > +        close(hpd_fd);
-> > +        igt_assert_eq(wr_len, strlen(enable_hpd));
-> >   
-> > -	return 0;
-> > +        return 0;
-> >   }
-> >   
-> >   /*
-> > diff --git a/lib/igt_amd.h b/lib/igt_amd.h index e5bdbf33..7a91cbff 
-> > 100644
-> > --- a/lib/igt_amd.h
-> > +++ b/lib/igt_amd.h
-> > @@ -27,9 +27,27 @@
-> >   #include "igt.h"
-> >   #include "igt_fb.h"
-> >   
-> > +/* Read & Write DSC parameters */
-> > +#define DEBUGFS_DSC_CLOCK_EN "dsc_clock_en"
-> > +#define DEBUGFS_DSC_SLICE_WIDTH "dsc_slice_width"
-> > +#define DEBUGFS_DSC_SLICE_HEIGHT "dsc_slice_height"
-> > +#define DEBUGFS_DSC_BITS_PER_PIXEL "dsc_bits_per_pixel"
-> > +/* Read only DSC parameters */
-> > +#define DEBUGFS_DSC_PIC_WIDTH "dsc_pic_width"
-> > +#define DEBUGFS_DSC_PIC_HEIGHT "dsc_pic_height"
-> > +#define DEBUGFS_DSC_CHUNK_SIZE "dsc_chunk_size"
-> > +#define DEBUGFS_DSC_SLICE_BPG "dsc_slice_bpg"
-> > +#define DEBUGFS_DSC_FEC_SUPPORT "dp_dsc_fec_support"
-> > +
-> >   #define DEBUGFS_DP_LINK_SETTINGS "link_settings"
-> >   #define DEBUGFS_HPD_TRIGGER "trigger_hotplug"
-> >   
-> > +enum amd_dsc_clock_force {
-> > +	DSC_AUTOMATIC = 0,
-> > +	DSC_FORCE_ON,
-> > +	DSC_FORCE_OFF,
-> > +};
-> > +
-> >   enum dc_lane_count {
-> >   	LANE_COUNT_UNKNOWN = 0,
-> >   	LANE_COUNT_ONE = 1,
-> > @@ -80,6 +98,23 @@ void igt_amd_fb_convert_plane_to_tiled(struct igt_fb *dst, void *dst_buf,
-> >   				       struct igt_fb *src, void *src_buf);
-> >   bool igt_amd_is_tiled(uint64_t modifier);
-> >   
-> > +/* IGT DSC helper functions */
-> > +bool is_dp_dsc_supported(int drm_fd, char *connector_name); bool 
-> > +is_dp_fec_supported(int drm_fd, char *connector_name); void 
-> > +igt_amd_require_dsc(igt_display_t *display, int drm_fd); int 
-> > +igt_amd_read_dsc_clock_status(int drm_fd, char *connector_name); void 
-> > +igt_amd_write_dsc_clock_en(int drm_fd, char *connector_name, int 
-> > +dsc_force); void igt_amd_write_dsc_param_slice_height(int drm_fd, 
-> > +char *connector_name, int slice_height); int 
-> > +igt_amd_read_dsc_param_slice_height(int drm_fd, char 
-> > +*connector_name); void igt_amd_write_dsc_param_slice_width(int 
-> > +drm_fd, char *connector_name, int slice_width); int 
-> > +igt_amd_read_dsc_param_slice_width(int drm_fd, char *connector_name); 
-> > +void igt_amd_write_dsc_param_bpp(int drm_fd, char *connector_name, 
-> > +int bpp); int igt_amd_read_dsc_param_bpp(int drm_fd, char 
-> > +*connector_name); int igt_amd_read_dsc_param_pic_width(int drm_fd, 
-> > +char *connector_name); int igt_amd_read_dsc_param_pic_height(int 
-> > +drm_fd, char *connector_name); int 
-> > +igt_amd_read_dsc_param_chunk_size(int drm_fd, char *connector_name); 
-> > +int igt_amd_read_dsc_param_slice_bpg(int drm_fd, char 
-> > +*connector_name);
-> > +
-> >   /* IGT HPD helper functions */
-> >   void igt_amd_require_hpd(igt_display_t *display, int drm_fd);
-> >   int igt_amd_trigger_hotplug(int drm_fd, char *connector_name); diff 
-> > --git a/lib/igt_kms.h b/lib/igt_kms.h index e9ecd21e..5c7d7481 100644
-> > --- a/lib/igt_kms.h
-> > +++ b/lib/igt_kms.h
-> > @@ -125,6 +125,7 @@ enum igt_atomic_crtc_properties {
-> >          IGT_CRTC_ACTIVE,
-> >          IGT_CRTC_OUT_FENCE_PTR,
-> >          IGT_CRTC_VRR_ENABLED,
-> > +       IGT_CRTC_DSC_SLICE_HEIGHT,
-> >          IGT_NUM_CRTC_PROPS
-> >   };
-> >   
-> > diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c new 
-> > file mode 100644 index 00000000..d73425e2
-> > --- /dev/null
-> > +++ b/tests/amdgpu/amd_dp_dsc.c
-> > @@ -0,0 +1,685 @@
-> > +/*
-> > + * Copyright 2021 Advanced Micro Devices, Inc.
-> > + *
-> > + * Permission is hereby granted, free of charge, to any person 
-> > +obtaining a
-> > + * copy of this software and associated documentation files (the 
-> > +"Software"),
-> > + * to deal in the Software without restriction, including without 
-> > +limitation
-> > + * the rights to use, copy, modify, merge, publish, distribute, 
-> > +sublicense,
-> > + * and/or sell copies of the Software, and to permit persons to whom 
-> > +the
-> > + * Software is furnished to do so, subject to the following conditions:
-> > + *
-> > + * The above copyright notice and this permission notice shall be 
-> > +included in
-> > + * all copies or substantial portions of the Software.
-> > + *
-> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-> > +EXPRESS OR
-> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-> > +MERCHANTABILITY,
-> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT 
-> > +SHALL
-> > + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, 
-> > +DAMAGES OR
-> > + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
-> > +OTHERWISE,
-> > + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE 
-> > +OR
-> > + * OTHER DEALINGS IN THE SOFTWARE.
-> > + */
-> > +
-> > +#include "igt.h"
-> > +#include "igt_amd.h"
-> > +#include "sw_sync.h"
-> > +#include <fcntl.h>
-> > +#include <signal.h>
-> > +
-> > +#define NUM_SLICE_SLOTS 4
-> > +
-> > +/* Maximumm pipes on any AMD ASIC. */ #define MAX_PIPES 6
-> > +
-> > +/* Common test data. */
-> > +typedef struct data {
-> > +	igt_display_t display;
-> > +	igt_plane_t *primary[MAX_PIPES];
-> > +	igt_output_t *output[MAX_PIPES];
-> > +	igt_pipe_t *pipe[MAX_PIPES];
-> > +	igt_pipe_crc_t *pipe_crc[MAX_PIPES];
-> > +	drmModeModeInfo mode[MAX_PIPES];
-> > +	enum pipe pipe_id[MAX_PIPES];
-> > +	int fd;
-> > +} data_t;
-> > +
-> > +/* BPC connector state. */
-> > +typedef struct output_bpc {
-> > +	unsigned int current;
-> > +	unsigned int maximum;
-> > +} output_bpc_t;
-> > +
-> > +/* Common test cleanup. */
-> > +static void test_fini(data_t *data)
-> > +{
-> > +	igt_display_t *display = &data->display;
-> > +	int i;
-> > +
-> > +	for (i = 0; i < display->n_pipes; ++i) {
-> > +		igt_pipe_crc_free(data->pipe_crc[i]);
-> > +	}
-> > +
-> > +	igt_display_reset(display);
-> > +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +0); }
-> > +
-> > +/* Common test setup. */
-> > +static void test_init(data_t *data)
-> > +{
-> > +	igt_display_t *display = &data->display;
-> > +	int i, n;
-> > +
-> > +	for (i = 0; i < display->n_pipes; ++i) {
-> > +		data->pipe_id[i] = PIPE_A + i;
-> > +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-> > +		data->primary[i] = igt_pipe_get_plane_type(
-> > +				data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-> > +		data->pipe_crc[i] =
-> > +				igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
-> > +	}
-> > +
-> > +	for (i = 0, n = 0; i < display->n_outputs && n < display->n_pipes; ++i) {
-> > +		igt_output_t *output = &display->outputs[i];
-> > +		data->output[n] = output;
-> > +
-> > +		/* Only allow physically connected displays for the tests. */
-> > +		if (!igt_output_is_connected(output))
-> > +				continue;
-> > +
-> > +		/* Ensure that outpus are DP, DSC & FEC capable*/
-> > +		if (!(is_dp_fec_supported(data->fd, output->name) &&
-> > +			is_dp_dsc_supported(data->fd, output->name)))
-> > +			continue;
-> > +
-> > +		if (output->config.connector->connector_type !=
-> > +			DRM_MODE_CONNECTOR_DisplayPort)
-> > +			continue;
-> > +
-> > +		igt_assert(kmstest_get_connector_default_mode(
-> > +				data->fd, output->config.connector, &data->mode[n]));
-> > +
-> > +		n += 1;
-> > +	}
-> > +
-> > +	igt_display_reset(display);
-> > +}
-> > +
-> > +static void test_dsc_enable(data_t *data) {
-> > +	bool dsc_on, dsc_after, dsc_before;
-> > +	igt_display_t *display = &data->display;
-> > +	igt_output_t *output;
-> > +	igt_fb_t ref_fb;
-> > +	int i, test_conn_cnt = 0;
-> > +
-> > +	test_init(data);
-> > +	igt_enable_connectors(data->fd);
-> > +
-> > +	for (i = 0; i < display->n_pipes; i++) {
-> > +		/* Setup the output */
-> > +		output = data->output[i];
-> > +		if (!output || !igt_output_is_connected(output))
-> > +			continue;
-> > +
-> > +		igt_create_pattern_fb(data->fd,
-> > +					data->mode[i].hdisplay,
-> > +					data->mode[i].vdisplay,
-> > +					DRM_FORMAT_XRGB8888,
-> > +					0,
-> > +					&ref_fb);
-> > +		igt_output_set_pipe(output, data->pipe_id[i]);
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +0);
-> > +
-> > +		test_conn_cnt++;
-> > +
-> > +		/* Save pipe's initial DSC state */
-> > +		dsc_before = igt_amd_read_dsc_clock_status(data->fd, output->name);
-> > +
-> > +		/* Force enable DSC */
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_ON);
-> > +
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		/* Check if DSC is enabled */
-> > +		dsc_on = igt_amd_read_dsc_clock_status(data->fd, output->name) == 
-> > +1;
-> > +
-> > +		/* Revert DSC to automatic state */
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_OFF);
-> > +
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display,DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		dsc_after = igt_amd_read_dsc_clock_status(data->fd, output->name);
-> > +
-> > +		/* Revert DSC back to automatic mechanism by disabling state overwrites*/
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_AUTOMATIC);
-> > +
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		igt_assert_f(dsc_on, "Enabling DSC on pipe failed.\n");
-> > +		igt_assert_f(dsc_after == dsc_before, "Reverting DSC to initial 
-> > +state failed.\n");
-> > +
-> > +		/* Cleanup fb */
-> > +		igt_remove_fb(data->fd, &ref_fb);
-> > +	}
-> > +
-> > +	test_fini(data);
-> > +	igt_skip_on(test_conn_cnt == 0);
-> > +}
-> > +
-> > +static void test_dsc_slice_height_property(data_t *data) {
-> > +	bool dsc_on, dsc_after, dsc_before;
-> > +	int slice_height_on, slice_height_off;
-> > +	igt_display_t *display = &data->display;
-> > +	igt_output_t *output;
-> > +	igt_fb_t ref_fb;
-> > +	int i, test_conn_cnt = 0;
-> > +
-> > +	test_init(data);
-> > +	igt_enable_connectors(data->fd);
-> > +
-> > +	for (i = 0; i < display->n_pipes; i++) {
-> > +		/* Setup the output */
-> > +		output = data->output[i];
-> > +		if (!output || !igt_output_is_connected(output))
-> > +			continue;
-> > +
-> > +		igt_create_pattern_fb(data->fd,
-> > +					data->mode[i].hdisplay,
-> > +					data->mode[i].vdisplay,
-> > +					DRM_FORMAT_XRGB8888,
-> > +					0,
-> > +					&ref_fb);
-> > +		igt_output_set_pipe(output, data->pipe_id[i]);
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +0);
-> > +
-> > +		test_conn_cnt++;
-> > +
-> > +		/* Save pipe's initial DSC state */
-> > +		dsc_before = igt_amd_read_dsc_clock_status(data->fd, output->name);
-> > +
-> > +		/* Force enable DSC */
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_ON);
-> > +
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		/* Check if DSC is enabled */
-> > +		dsc_on = igt_amd_read_dsc_clock_status(data->fd, output->name) == 
-> > +1;
-> > +
-> > +		slice_height_on = igt_pipe_get_prop(display, data->pipe_id[i], 
-> > +IGT_CRTC_DSC_SLICE_HEIGHT);
-> > +
-> > +		/* Revert DSC to automatic state */
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_OFF);
-> > +
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		dsc_after = igt_amd_read_dsc_clock_status(data->fd, output->name);
-> > +
-> > +		slice_height_off = igt_pipe_get_prop(display, data->pipe_id[i], 
-> > +IGT_CRTC_DSC_SLICE_HEIGHT);
-> > +
-> > +		/* Revert DSC back to automatic mechanism by disabling state overwrites*/
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_AUTOMATIC);
-> > +
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		igt_assert_f(dsc_on, "Enabling DSC on pipe failed.\n");
-> > +		igt_assert_f(slice_height_on > 0, "DSC Slice property was not set properly.\n");
-> > +		igt_assert_f(dsc_after == dsc_before, "Reverting DSC to initial state failed.\n");
-> > +		igt_assert_f(slice_height_off == 0, "DSC Slice property was not 
-> > +reset properly.\n");
-> > +
-> > +		/* Cleanup fb */
-> > +		igt_remove_fb(data->fd, &ref_fb);
-> > +	}
-> > +
-> > +	test_fini(data);
-> > +	igt_skip_on(test_conn_cnt == 0);
-> > +}
-> > +
-> > +static bool update_slice_height(data_t *data, int v_addressable,
-> > +					  int *num_slices, igt_output_t *output, int conn_idx, igt_fb_t 
-> > +ref_fb) {
-> > +	int i;
-> > +	bool pass = true;
-> > +
-> > +	for(i = 0; i < NUM_SLICE_SLOTS; i++) {
-> > +		int act_slice_height;
-> > +		int slice_height = v_addressable / num_slices[i] + (v_addressable % 
-> > +num_slices[i]);
-> > +
-> > +		/* Overwrite DSC slice height */
-> > +		igt_amd_write_dsc_param_slice_height(data->fd, output->name, slice_height);
-> > +		igt_plane_set_fb(data->primary[conn_idx], &ref_fb);
-> > +		igt_display_commit_atomic(&data->display, 
-> > +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> > +
-> > +		igt_info("Forcing slice height: slice height %d num slices vertical 
-> > +%d\n", slice_height, num_slices[i]);
-> > +
-> > +		act_slice_height = igt_amd_read_dsc_param_slice_height(data->fd, 
-> > +output->name);
-> > +
-> > +		igt_info("Reading slice height: actual slice height %d VS assigned 
-> > +slice height %d\n", act_slice_height, slice_height);
-> > +
-> > +		pass = (slice_height == act_slice_height);
-> > +
-> > +		if (!pass)
-> > +			break;
-> > +	}
-> > +
-> > +	igt_amd_write_dsc_param_slice_height(data->fd, output->name, 0);
-> > +	igt_plane_set_fb(data->primary[conn_idx], &ref_fb);
-> > +	igt_display_commit_atomic(&data->display, 
-> > +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> > +
-> > +	return pass;
-> > +}
-> > +
-> > +static bool update_slice_width(data_t *data, int h_addressable,
-> > +					  int *num_slices, igt_output_t *output, int conn_idx, igt_fb_t 
-> > +ref_fb) {
-> > +	int i;
-> > +	bool pass = true;
-> > +
-> > +	for(i = 0; i < NUM_SLICE_SLOTS; i++) {
-> > +		int act_slice_width;
-> > +		int slice_width = h_addressable / num_slices[i] + (h_addressable % 
-> > +num_slices[i]);
-> > +
-> > +		/* Overwrite DSC slice width */
-> > +		igt_amd_write_dsc_param_slice_width(data->fd, output->name, slice_width);
-> > +		igt_plane_set_fb(data->primary[conn_idx], &ref_fb);
-> > +		igt_display_commit_atomic(&data->display, 
-> > +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> > +
-> > +		igt_info("Forcing slice width: slice width %d num slices horisontal 
-> > +%d\n", slice_width, num_slices[i]);
-> > +
-> > +		act_slice_width = igt_amd_read_dsc_param_slice_width(data->fd, 
-> > +output->name);
-> > +
-> > +		igt_info("Reading slice width: actual slice width %d VS assigned 
-> > +slice width %d\n", act_slice_width, slice_width);
-> > +
-> > +		pass = (slice_width == act_slice_width);
-> > +
-> > +		if (!pass)
-> > +			break;
-> > +	}
-> > +
-> > +	igt_amd_write_dsc_param_slice_width(data->fd, output->name, 0);
-> > +	igt_plane_set_fb(data->primary[conn_idx], &ref_fb);
-> > +	igt_display_commit_atomic(&data->display, 
-> > +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> > +
-> > +	return pass;
-> > +}
-> > +
-> > +static void test_dsc_slice_dimensions_change(data_t *data) {
-> > +	bool dsc_on, dsc_after, dsc_before;
-> > +	igt_output_t *output;
-> > +	igt_display_t *display = &data->display;
-> > +	igt_fb_t ref_fb;
-> > +	int num_slices [] = { 1, 2, 4, 8 };
-> > +	int h_addressable, v_addressable;
-> > +	bool ret_slice_height= false, ret_slice_width = false;
-> > +	int i, test_conn_cnt = 0;
-> > +
-> > +	test_init(data);
-> > +	igt_enable_connectors(data->fd);
-> > +
-> > +	for (i = 0; i < display->n_pipes; i++) {
-> > +		/* Setup the output */
-> > +		output = data->output[i];
-> > +		if (!output || !igt_output_is_connected(output))
-> > +			continue;
-> > +
-> > +		igt_create_pattern_fb(data->fd,
-> > +					data->mode[i].hdisplay,
-> > +					data->mode[i].vdisplay,
-> > +					DRM_FORMAT_XRGB8888,
-> > +					0,
-> > +					&ref_fb);
-> > +		igt_output_set_pipe(output, data->pipe_id[i]);
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +0);
-> > +
-> > +		test_conn_cnt++;
-> > +
-> > +		h_addressable = data->mode->hdisplay;
-> > +		v_addressable = data->mode->vdisplay;
-> > +
-> > +		igt_info("Mode info: v_ative %d  h_active %d\n", v_addressable, 
-> > +h_addressable);
-> > +
-> > +		/* Save pipe's initial DSC state */
-> > +		dsc_before = igt_amd_read_dsc_clock_status(data->fd, output->name);
-> > +
-> > +		/* Force enable DSC */
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_ON);
-> > +
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		/* Check if DSC is enabled */
-> > +		dsc_on = igt_amd_read_dsc_clock_status(data->fd, output->name) == 
-> > +1;
-> > +
-> > +		if (dsc_on) {
-> > +			ret_slice_height = update_slice_height(data, v_addressable, num_slices, output, i, ref_fb);
-> > +			ret_slice_width = update_slice_width(data, h_addressable, num_slices, output, i, ref_fb);
-> > +		}
-> > +
-> > +		/* Force disable DSC */
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_OFF);
-> > +
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		dsc_after = igt_amd_read_dsc_clock_status(data->fd, output->name);
-> > +
-> > +		/* Revert DSC back to automatic mechanism by disabling state overwrites*/
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb);
-> > +
-> > +		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_AUTOMATIC);
-> > +
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +		igt_assert_f(dsc_on, "Enabling DSC on pipe failed.\n");
-> > +		igt_assert_f(ret_slice_height, "Changing slice height failed.\n");
-> > +		igt_assert_f(ret_slice_width, "Changing slice width failed.\n");
-> > +		igt_assert_f(dsc_after == dsc_before, "Reverting DSC to initial 
-> > +state failed.\n");
-> > +
-> > +		/* Cleanup fb */
-> > +		igt_remove_fb(data->fd, &ref_fb);
-> > +	}
-> > +
-> > +	test_fini(data);
-> > +	igt_skip_on(test_conn_cnt == 0);
-> > +}
-> > +
-> > +static void test_dsc_link_settings(data_t *data) {
-> > +	igt_output_t *output;
-> > +	igt_fb_t ref_fb[MAX_PIPES];
-> > +	igt_crc_t ref_crc[MAX_PIPES], new_crc[MAX_PIPES];
-> > +    int lane_count[4], link_rate[4], link_spread[4];
-> > +	igt_display_t *display = &data->display;
-> > +	int i, lc, lr;
-> > +    bool dsc_on;
-> > +	const enum dc_lane_count lane_count_vals[] =
-> > +	{
-> > +		LANE_COUNT_TWO,
-> > +		LANE_COUNT_FOUR
-> > +	};
-> > +	const enum dc_link_rate link_rate_vals[] =
-> > +	{
-> > +		LINK_RATE_LOW,
-> > +		LINK_RATE_HIGH,
-> > +		LINK_RATE_HIGH2,
-> > +		LINK_RATE_HIGH3
-> > +	};
-> > +
-> > +    test_init(data);
-> > +
-> > +    /* Setup all outputs */
-> > +	for (i = 0; i < display->n_pipes; i++) {
-> > +		output = data->output[i];
-> > +		if (!output || !igt_output_is_connected(output))
-> > +			continue;
-> > +
-> > +        igt_create_pattern_fb(data->fd,
-> > +                    data->mode[i].hdisplay,
-> > +                    data->mode[i].vdisplay,
-> > +                    DRM_FORMAT_XRGB8888,
-> > +                    0,
-> > +                    &ref_fb[i]);
-> > +		igt_output_set_pipe(output, data->pipe_id[i]);
-> > +		igt_plane_set_fb(data->primary[i], &ref_fb[i]);
-> > +	}
-> > +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +0);
-> > +
-> > +    /* Collect reference CRCs */
-> > +	for (i = 0; i < display->n_pipes; i++) {
-> > +		output = data->output[i];
-> > +		if (!output || !igt_output_is_connected(output))
-> > +			continue;
-> > +
-> > +		igt_pipe_crc_collect_crc(data->pipe_crc[i], &ref_crc[i]);
-> > +	}
-> > +
-> > +	for (lc = 0; lc < ARRAY_SIZE(lane_count_vals); lc++) {
-> > +		for (lr = 0; lr < ARRAY_SIZE(link_rate_vals); lr++) {
-> > +			/* Write new link_settings */
-> > +			for (i = 0; i < display->n_pipes; i++) {
-> > +				output = data->output[i];
-> > +				if (!output || !igt_output_is_connected(output))
-> > +					continue;
-> > +
-> > +				/* Write lower link settings */
-> > +				igt_info("Applying lane count: %d, link rate 0x%02x, on default training\n",
-> > +						lane_count_vals[lc], link_rate_vals[lr]);
-> > +				igt_amd_write_link_settings(data->fd, output->name,
-> > +							lane_count_vals[lc],
-> > +							link_rate_vals[lr],
-> > +							LINK_TRAINING_DEFAULT);
-> > +				usleep(500 * MSEC_PER_SEC);
-> > +			}
-> > +
-> > +			/* Trigger commit after writing new link settings */
-> > +			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +NULL);
-> > +
-> > +			for (i = 0; i < display->n_pipes; i++) {
-> > +				output = data->output[i];
-> > +				if (!output || !igt_output_is_connected(output))
-> > +					continue;
-> > +
-> > +				/* Verify lower link settings */
-> > +				igt_amd_read_link_settings(data->fd, output->name,
-> > +							lane_count,
-> > +							link_rate,
-> > +							link_spread);
-> > +
-> > +				igt_assert_f(lane_count[0] == lane_count_vals[lc], "Lowering lane count settings failed\n");
-> > +				igt_assert_f(link_rate[0] == link_rate_vals[lr], "Lowering link 
-> > +rate settings failed\n");
-> > +
-> > +				/* Log current mode and DSC status */
-> > +				dsc_on = igt_amd_read_dsc_clock_status(data->fd, output->name) == 1;
-> > +				igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
-> > +							data->mode[i].hdisplay,
-> > +							data->mode[i].vdisplay,
-> > +							data->mode[i].vrefresh,
-> > +							dsc_on ? "ON" : "OFF");
-> > +
-> > +				igt_pipe_crc_collect_crc(data->pipe_crc[i], &new_crc[i]);
-> > +				igt_assert_crc_equal(&ref_crc[i], &new_crc[i]);
-> > +			}
-> > +		}
-> > +	}
-> > +
-> > +	/* Cleanup all fbs */
-> > +	for (i = 0; i < display->n_pipes; i++) {
-> > +		output = data->output[i];
-> > +		if (!output || !igt_output_is_connected(output))
-> > +			continue;
-> > +		igt_remove_fb(data->fd, &ref_fb[i]);
-> > +	}
-> > +
-> > +    test_fini(data);
-> > +}
-> > +
-> > +/* Returns the current and maximum bpc from the connector debugfs. */ 
-> > +static output_bpc_t get_output_bpc(int data_fd, char *connector_name) 
-> > +{
-> > +	char buf[256];
-> > +	char *start_loc;
-> > +	int fd, res;
-> > +	output_bpc_t info;
-> > +
-> > +	fd = igt_debugfs_connector_dir(data_fd, connector_name, O_RDONLY);
-> > +	igt_assert(fd >= 0);
-> > +
-> > +	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
-> > +
-> > +	igt_require(res > 0);
-> > +
-> > +	close(fd);
-> > +
-> > +	igt_assert(start_loc = strstr(buf, "Current: "));
-> > +	igt_assert_eq(sscanf(start_loc, "Current: %u", &info.current), 1);
-> > +
-> > +	igt_assert(start_loc = strstr(buf, "Maximum: "));
-> > +	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &info.maximum), 1);
-> > +
-> > +	return info;
-> > +}
-> > +
-> > +/* Verifies that connector has the correct output bpc */ static void 
-> > +assert_output_bpc(int data_fd, char *connector_name, unsigned int 
-> > +bpc) {
-> > +	output_bpc_t info = get_output_bpc(data_fd, connector_name);
-> > +
-> > +	igt_require_f(info.maximum >= bpc,
-> > +		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
-> > +		      info.maximum);
-> > +
-> > +	igt_assert_eq(info.current, bpc);
-> > +}
-> > +
-> > +/* Returns the highest bpc this dispaly supports */ static int 
-> > +get_max_supported_bpc(int data_fd, char *connector_name) {
-> > +	output_bpc_t info = get_output_bpc(data_fd, connector_name);
-> > +	return info.maximum;
-> > +}
-> > +
-> > +static void test_dsc_bpc(data_t *data) {
-> > +	igt_output_t *output;
-> > +	igt_fb_t ref_fb[MAX_PIPES];
-> > +	igt_crc_t test_crc;
-> > +	igt_display_t *display = &data->display;
-> > +	int i, bpc, max_supported_bpc[MAX_PIPES];
-> > +    bool dsc_on;
-> > +	const int bpc_vals[] = {12, 10, 8};
-> > +
-> > +    test_init(data);
-> > +
-> > +	/* Find max supported bpc */
-> > +	for (i = 0; i < display->n_pipes; i++) {
-> > +		output = data->output[i];
-> > +		if (!output || !igt_output_is_connected(output))
-> > +			continue;
-> > +		igt_info("Checking bpc support of conn %s\n", output->name);
-> > +		max_supported_bpc[i] = get_max_supported_bpc(data->fd, output->name);
-> > +	}
-> > +
-> > +    /* Setup all outputs */
-> > +	for (bpc = 0; bpc < ARRAY_SIZE(bpc_vals); bpc++) {
-> > +		igt_info("Testing bpc = %d\n", bpc_vals[bpc]);
-> > +
-> > +		for (i = 0; i < display->n_pipes; i++) {
-> > +			output = data->output[i];
-> > +			if (!output || !igt_output_is_connected(output))
-> > +				continue;
-> > +
-> > +			if (max_supported_bpc[i] < bpc_vals[bpc]) {
-> > +				igt_info("Display doesn't support bpc of %d, max is %d. Skipping to next bpc value.\n", bpc_vals[bpc], max_supported_bpc[i]);
-> > +				continue;
-> > +			}
-> > +			igt_info("Setting bpc = %d\n", bpc_vals[bpc]);
-> > +			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, bpc_vals[bpc]);
-> > +			igt_create_pattern_fb(data->fd,
-> > +						data->mode[i].hdisplay,
-> > +						data->mode[i].vdisplay,
-> > +						DRM_FORMAT_XRGB8888,
-> > +						0,
-> > +						&ref_fb[i]);
-> > +			igt_output_set_pipe(output, data->pipe_id[i]);
-> > +			igt_plane_set_fb(data->primary[i], &ref_fb[i]);
-> > +		}
-> > +
-> > +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 
-> > +0);
-> > +
-> > +		for (i = 0; i < display->n_pipes; i++) {
-> > +			output = data->output[i];
-> > +			if (!output || !igt_output_is_connected(output))
-> > +				continue;
-> > +
-> > +			if (max_supported_bpc[i] < bpc_vals[bpc])
-> > +				continue;
-> > +
-> > +			/* Check that crc is non-zero */
-> > +			igt_pipe_crc_collect_crc(data->pipe_crc[i], &test_crc);
-> > +			igt_assert(test_crc.crc[0] && test_crc.crc[1] && test_crc.crc[2]);
-> > +
-> > +			/* Check current bpc */
-> > +			igt_info("Verifying display %s has correct bpc\n", output->name);
-> > +			assert_output_bpc(data->fd, output->name, bpc_vals[bpc]);
-> > +
-> > +			/* Log current mode and DSC status */
-> > +			dsc_on = igt_amd_read_dsc_clock_status(data->fd, output->name) == 1;
-> > +			igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
-> > +						data->mode[i].hdisplay,
-> > +						data->mode[i].vdisplay,
-> > +						data->mode[i].vrefresh,
-> > +						dsc_on ? "ON" : "OFF");
-> > +		}
-> > +
-> > +		/* Cleanup all fbs */
-> > +		for (i = 0; i < display->n_pipes; i++) {
-> > +			output = data->output[i];
-> > +			if (!output || !igt_output_is_connected(output))
-> > +				continue;
-> > +
-> > +			if (max_supported_bpc[i] < bpc_vals[bpc])
-> > +				continue;
-> > +
-> > +			igt_remove_fb(data->fd, &ref_fb[i]);
-> > +		}
-> > +	}
-> > +
-> > +    test_fini(data);
-> > +}
-> > +
-> > +igt_main
-> > +{
-> > +	data_t data = { 0 };
-> > +
-> > +	igt_skip_on_simulation();
-> > +
-> > +	igt_fixture
-> > +	{
-> > +		data.fd = drm_open_driver_master(DRIVER_ANY);
-> > +
-> > +		igt_display_require(&data.display, data.fd);
-> > +		igt_require(data.display.is_atomic);
-> > +		igt_display_require_output(&data.display);
-> > +
-> > +		igt_amd_require_dsc(&data.display, data.fd);
-> > +		kmstest_set_vt_graphics_mode();
-> > +	}
-> > +
-> > +	igt_describe("Forces DSC on/off & ensures it is reset properly");
-> > +	igt_subtest("dsc-enable-basic")
-> > +		    test_dsc_enable(&data);
-> > +
-> > +	igt_describe("Tests DSC slice height property & ensures it is reset properly on DSC enable/disable");
-> > +	igt_subtest("dsc-slice-height-property")
-> > +		    test_dsc_slice_height_property(&data);
-> > +
-> > +	igt_describe("Tests various DSC slice dimensions");
-> > +	igt_subtest("dsc-slice-dimensions-change")
-> > +		    test_dsc_slice_dimensions_change(&data);
-> > +
-> > +	igt_describe("Tests various combinations of link_rate + lane_count and logs if DSC enabled/disabled");
-> > +	igt_subtest("dsc-link-settings")
-> > +		    test_dsc_link_settings(&data);
-> > +
-> > +	igt_describe("Tests different bpc settings and logs if DSC is enabled/disabled");
-> > +	igt_subtest("dsc-bpc")
-> > +			test_dsc_bpc(&data);
-> > +
-> > +	igt_fixture
-> > +	{
-> > +		igt_reset_connectors();
-> > +		igt_display_fini(&data.display);
-> > +	}
-> > +}
-> > diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build index 
-> > b736c456..001e37ef 100644
-> > --- a/tests/amdgpu/meson.build
-> > +++ b/tests/amdgpu/meson.build
-> > @@ -16,6 +16,7 @@ if libdrm_amdgpu.found()
-> >   			  'amd_mem_leak',
-> >   			  'amd_link_settings',
-> >   			  'amd_vrr_range',
-> > +			  'amd_dp_dsc',
-> >   			]
-> >   	amdgpu_deps += libdrm_amdgpu
-> >   endif
-> > 
+	memset(read_buf, 0, ccssize);
+	gem_write(fd, out, 0, read_buf, ccssize);
+	xy_ctrl_surf_copy_blt(fd, cmd, batch_buf, dst, out, ccssize, false, e);
+
+	gem_read(fd, out, 0, read_buf, ccssize);
+
+	igt_assert_f(memcmp(read_buf, pattern_buf, ccssize), 0);
+}
+
+I also wonder do we need memset() and gem_write() in the middle, imo two subsequent
+blits then memcmp() should be enough. Especially if we would remove gem_sync() within
+xy_ctrl_surf_copy_blt().
+
+> +
+> +static void igt_overwritten_xy_block_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
+> +					      uint32_t src, uint32_t dst, uint32_t out,
+> +					      int ccssize, uint8_t *pattern_buf, uint8_t *read_buf,
+> +					      int bosize, struct intel_execution_engine2 *e)
+> +{
+> +	int ret, i;
+> +
+> +	/************************************************/
+> +	/* #2 CCS is overwritten by XY_BLOCK_COPY_BLT   */
+> +	/************************************************/
+
+This comment style looks odd, use /* */ instead of multiple stars.
+
+> +	igt_info("copy random pattern to lmem BO with compression\n");
+> +
+> +	/* set 'src' to random pattern */
+> +	gem_write(fd, src, 0, pattern_buf, bosize);
+> +	/* set 'dst' to random pattern */
+> +	gem_write(fd, dst, 0, pattern_buf, bosize);
+
+Same, all above comments are useless, code is self explanatory here.
+> +
+> +	/*
+> +	 * 'dst' is lmem BO with ccs,
+> +	 * copy content in 'src' BO to 'dst' BO
+> +	 */
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				src, dst, bosize, 1, e);
+> +	igt_assert(!ret);
+
+Same issue with ret value as in above comments, it is always 0 right now.
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, ccssize);
+> +	gem_write(fd, out, 0, read_buf, ccssize);
+> +
+> +	/* copy 'dst' BO's ccs into 'out' BO */
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    dst, out, ccssize, false, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, ccssize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should NOT have original pattern
+> +	 * (overwrite by XY_BLOCK_COPY_BLT)
+> +	 */
+> +	for (i = 0; i < ccssize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(ret);
+> +
+> +	/* read 'dst' BO into read_buf */
+> +	memset(read_buf, 0, bosize);
+> +	gem_read(fd, dst, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should not have original pattern
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(ret);
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, bosize);
+> +	gem_write(fd, out, 0, read_buf, bosize);
+> +
+> +	/* copy 'dst' BO into 'out' BO */
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				dst, out, bosize, 0, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have original pattern
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(!ret);
+> +
+> +	/* decompress 'dst' in place */
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				dst, dst, bosize, 2, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	memset(read_buf, 0, bosize);
+> +	gem_read(fd, dst, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have original pattern
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(!ret);
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, bosize);
+> +	gem_write(fd, out, 0, read_buf, bosize);
+> +
+> +	/* copy decompressed 'dst' to 'out' */
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				dst, out, bosize, 0, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have original pattern
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +
+> +	igt_assert(!ret);
+> +}
+
+Please - leave here only important comments, which describe something not obvious
+instead commenting each command. Applies to functions below too. Then resubmit.
+
+--
+Zbigniew
+
+> +
+> +static void igt_corrupted_xy_ctrl_surf_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
+> +						uint32_t src, uint32_t dst, uint32_t out,
+> +						int ccssize, uint8_t *pattern_buf, uint8_t *read_buf,
+> +						int bosize, struct intel_execution_engine2 *e)
+> +{
+> +	int ret, i;
+> +
+> +	/* set 'src' to random pattern */
+> +	gem_write(fd, src, 0, pattern_buf, bosize);
+> +
+> +	/************************************************/
+> +	/* #3 CCS is corrupted by XY_CTRL_SURF_COPY_BLT */
+> +	/************************************************/
+> +	igt_info("corrupt CCS via XY_CTRL_SURF_COPY_BLT\n");
+> +
+> +	/*
+> +	 * corrupt 'dst' BO's ccs by writing directly
+> +	 */
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    src, dst, ccssize, true, e);
+> +	igt_assert(!ret);
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, bosize);
+> +	gem_write(fd, out, 0, read_buf, bosize);
+> +
+> +	/* copy 'dst' BO into 'out' BO */
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				dst, out, bosize, 0, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have corrupted pattern
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(ret);
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, ccssize);
+> +	gem_write(fd, out, 0, read_buf, ccssize);
+> +
+> +	/* copy 'dst' BO's ccs into 'out' BO */
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    dst, out, ccssize, false, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, ccssize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have original pattern
+> +	 */
+> +	for (i = 0; i < ccssize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(!ret);
+> +}
+> +
+> +static void igt_copy_zero_pattern_xy_block_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
+> +						    uint32_t src, uint32_t dst, uint32_t out,
+> +						    int ccssize, uint8_t *pattern_buf, uint8_t *read_buf,
+> +						    uint8_t *input_buf, int bosize,
+> +						    struct intel_execution_engine2 *e)
+> +{
+> +	int ret, i;
+> +
+> +	/************************************************/
+> +	/* #4 Copy zeros pattern with XY_BLOCK_COPY_BLT */
+> +	/************************************************/
+> +	igt_info("copy zeros pattern to lmem BO with compression\n");
+> +
+> +	/* set src BO to random pattern */
+> +	gem_write(fd, src, 0, pattern_buf, bosize);
+> +	/* set dst BO to random pattern */
+> +	gem_write(fd, dst, 0, pattern_buf, bosize);
+> +	/* set ccs to random pattern */
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    src, dst, ccssize, true, e);
+> +	igt_assert(!ret);
+> +
+> +	/* clear 'src' BO */
+> +	memset(input_buf, 0, bosize);
+> +	gem_write(fd, src, 0, input_buf, bosize);
+> +
+> +	/* copy 'src' to 'dst' with compression */
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				src, dst, bosize, 1, e);
+> +	igt_assert(!ret);
+> +
+> +	/* set out BO to random pattern */
+> +	gem_write(fd, out, 0, pattern_buf, bosize);
+> +
+> +	/* copy 'dst' BO back into 'out' BO */
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				dst, out, bosize, 0, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have same zero pattern
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != input_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(!ret);
+> +
+> +	/* clear read_buf */
+> +	memset(read_buf, 0, bosize);
+> +	/* read 'dst' BO into read_buf */
+> +	gem_read(fd, dst, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have the same pattern
+> +	 * as zero pattern compression won't change
+> +	 * target pages, only change ccs.
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(!ret);
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, ccssize);
+> +	gem_write(fd, out, 0, read_buf, ccssize);
+> +
+> +	/* copy 'dst' BO's ccs into 'out' BO */
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    dst, out, ccssize, false, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, ccssize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have different pattern
+> +	 */
+> +	for (i = 0; i < ccssize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(ret);
+> +}
+> +
+> +static void igt_copy_repeat_pattern_xy_block_copy_blt(int fd, uint32_t cmd, uint32_t *batch_buf,
+> +						      uint32_t src, uint32_t dst, uint32_t out,
+> +						      int ccssize, uint8_t *pattern_buf, uint8_t *read_buf,
+> +						      uint8_t *input_buf, int bosize,
+> +						      struct intel_execution_engine2 *e)
+> +{
+> +	int ret, i;
+> +
+> +	/************************************************/
+> +	/* #5 Copy repeat pattern with XY_BLOCK_COPY_BLT*/
+> +	/************************************************/
+> +	igt_info("copy repeat pattern to lmem BO with compression\n");
+> +
+> +	/* Set 'src' to random pattern */
+> +	gem_write(fd, src, 0, pattern_buf, bosize);
+> +	/* Set 'dst' and 'ccs' to random pattern */
+> +	gem_write(fd, src, 0, pattern_buf, ccssize);
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    src, dst, ccssize, true, e);
+> +	igt_assert(!ret);
+> +	gem_write(fd, dst, 0, pattern_buf, bosize);
+> +
+> +	/* generate repeating pattern */
+> +	input_buf[0] = (uint8_t)rand();
+> +	input_buf[1] = (uint8_t)rand();
+> +	input_buf[2] = (uint8_t)rand();
+> +	input_buf[3] = (uint8_t)rand();
+> +	for (i = 4; i < bosize; i++)
+> +		input_buf[i] = input_buf[i - 4];
+> +	gem_write(fd, src, 0, input_buf, bosize);
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				src, dst, bosize, 1, e);
+> +	igt_assert(!ret);
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, bosize);
+> +	gem_write(fd, out, 0, read_buf, bosize);
+> +
+> +	/* copy 'dst' BO back into 'out' BO */
+> +	ret = xy_block_copy_blt(fd, cmd, batch_buf,
+> +				dst, out, bosize, 0, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have same pattern
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != input_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(!ret);
+> +
+> +	/* clear read_buf */
+> +	memset(read_buf, 0, bosize);
+> +	/* read 'dst' BO into read_buf */
+> +	gem_read(fd, dst, 0, read_buf, bosize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have different pattern
+> +	 */
+> +	for (i = 0; i < bosize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(ret);
+> +
+> +	/* clear out BO */
+> +	memset(read_buf, 0, ccssize);
+> +	gem_write(fd, out, 0, read_buf, ccssize);
+> +
+> +	/* copy 'dst' BO's ccs into 'out' BO */
+> +	ret = xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +				    dst, out, ccssize, false, e);
+> +	igt_assert(!ret);
+> +
+> +	/* read 'out' BO into read_buf */
+> +	gem_read(fd, out, 0, read_buf, ccssize);
+> +
+> +	/*
+> +	 * check 'read_buf',
+> +	 * it should have different pattern
+> +	 */
+> +	for (i = 0; i < ccssize; i++) {
+> +		if (read_buf[i] != pattern_buf[i])
+> +			ret++;
+> +	}
+> +	igt_assert(ret);
+> +}
+> +
+> +/*
+> + * Allocate a BO in SMEM.
+> + * Fill a pattern
+> + * Use XY_BLOCK_COPY_BLT to copy it to LMEM with compression enabled
+> + * Clear the BO in SMEM, and the pattern_buf in which the pattern was
+> + * stored
+> + * Use XY_BLOCK_COPY_BLT to copy it back to the BO in SMEM with
+> + * resolve
+> + * Compare the value in the BO in SMEM matches the pattern
+> + */
+> +static void test_ccs(int fd, int size, uint32_t region, char *sub_name,
+> +		     struct intel_execution_engine2 *e)
+> +{
+> +	int bosize, ccssize, ret, i;
+> +	int start, end;
+> +	uint32_t cmd, src, dst, out;
+> +	uint32_t batch_buf[BATCH_SIZE / sizeof(uint32_t)];
+> +	uint8_t *pattern_buf, *input_buf, *read_buf;
+> +	struct timeval tv;
+> +
+> +	if (size > 0) {
+> +		start = size;
+> +		end = start + 1;
+> +	} else {
+> +		start = BOSIZE_MIN;
+> +		end = BOSIZE_MAX;
+> +	}
+> +
+> +	/*
+> +	 * create batch BO in smem for execution.
+> +	 */
+> +	cmd = gem_create(fd, BATCH_SIZE);
+> +
+> +	for (bosize = start; bosize < end; bosize *= 2) {
+> +		/* allocate working buffers */
+> +		pattern_buf = malloc(bosize);
+> +		igt_assert(pattern_buf);
+> +		input_buf = malloc(bosize);
+> +		igt_assert(input_buf);
+> +		read_buf = malloc(bosize);
+> +		igt_assert(read_buf);
+> +
+> +		ccssize = bosize / CCS_RATIO;
+> +
+> +		/* allocate working BOs in the right location */
+> +		src = gem_create_in_memory_regions(fd, bosize,
+> +						   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
+> +		dst = gem_create_in_memory_regions(fd, bosize, region);
+> +		out = gem_create_in_memory_regions(fd, bosize,
+> +						   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
+> +
+> +		/* fill in random pattern */
+> +		ret = gettimeofday(&tv, NULL);
+> +		igt_assert(!ret);
+> +		srandom((int)tv.tv_usec);
+> +
+> +		for (i = 0; i < bosize; i++)
+> +			pattern_buf[i] = (uint8_t)rand();
+> +
+> +		igt_info("progress: bosize %d, ccssize %d\n", bosize, ccssize);
+> +
+> +		igt_dynamic_f("write_read_in_ccs_surface-%s-%s", sub_name, e->name)
+> +			igt_wr_xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +						     src, dst, out, ccssize,
+> +						     pattern_buf, read_buf, bosize, e);
+> +		igt_dynamic_f("verify_compression_of_random_data-%s-%s", sub_name, e->name)
+> +			igt_overwritten_xy_block_copy_blt(fd, cmd, batch_buf,
+> +							  src, dst, out, ccssize,
+> +							  pattern_buf, read_buf, bosize, e);
+> +		igt_dynamic_f("verify_corrupted_pattern_in_ccs_surface-%s-%s", sub_name, e->name)
+> +			igt_corrupted_xy_ctrl_surf_copy_blt(fd, cmd, batch_buf,
+> +							    src, dst, out, ccssize,
+> +							    pattern_buf, read_buf, bosize, e);
+> +		igt_dynamic_f("copy_zero_pattern_with_compression-%s-%s", sub_name, e->name)
+> +			igt_copy_zero_pattern_xy_block_copy_blt(fd, cmd, batch_buf,
+> +								src, dst, out, ccssize, pattern_buf,
+> +								read_buf, input_buf, bosize, e);
+> +		igt_dynamic_f("copy_repeat_pattern_with_compression-%s-%s", sub_name, e->name)
+> +			igt_copy_repeat_pattern_xy_block_copy_blt(fd, cmd, batch_buf,
+> +								  src, dst, out, ccssize, pattern_buf,
+> +								  read_buf, input_buf, bosize, e);
+> +
+> +		/* cleanup... */
+> +		gem_close(fd, out);
+> +		gem_close(fd, dst);
+> +		gem_close(fd, src);
+> +		free(read_buf);
+> +		free(input_buf);
+> +		free(pattern_buf);
+> +	}
+> +
+> +	gem_close(fd, cmd);
+> +}
+> +
+> +igt_main
+> +{
+> +	struct drm_i915_query_memory_regions *query_info;
+> +	struct intel_execution_engine2 *e;
+> +	struct igt_collection *regions, *set;
+> +	char *sub_name;
+> +	uint32_t region;
+> +	int drm_fd;
+> +
+> +	igt_fixture {
+> +		drm_fd = drm_open_driver(DRIVER_INTEL);
+> +		igt_require_gem(drm_fd);
+> +		igt_require(AT_LEAST_GEN(intel_get_drm_devid(drm_fd), 12) > 0);
+> +		igt_require(HAS_FLAT_CCS(intel_get_drm_devid(drm_fd)));
+> +
+> +		query_info = gem_get_query_memory_regions(drm_fd);
+> +		igt_require(query_info);
+> +
+> +		set = get_memory_region_set(query_info, I915_DEVICE_MEMORY);
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic-gem-ccs-4K") {
+> +		for_each_physical_engine(drm_fd, e) {
+> +			if (!gem_engine_can_block_copy(drm_fd, e))
+> +				continue;
+> +
+> +			for_each_combination(regions, 1, set) {
+> +				sub_name = memregion_dynamic_subtest_name(regions);
+> +				region = igt_collection_get_value(regions, 0);
+> +				test_ccs(drm_fd, 4 * 1024, region, sub_name, e);
+> +				free(sub_name);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic-gem-ccs-64K") {
+> +		for_each_physical_engine(drm_fd, e) {
+> +			if (!gem_engine_can_block_copy(drm_fd, e))
+> +				continue;
+> +
+> +			for_each_combination(regions, 1, set) {
+> +				sub_name = memregion_dynamic_subtest_name(regions);
+> +				region = igt_collection_get_value(regions, 0);
+> +				test_ccs(drm_fd, 64 * 1024, region, sub_name, e);
+> +				free(sub_name);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic-gem-ccs-1M") {
+> +		for_each_physical_engine(drm_fd, e) {
+> +			if (!gem_engine_can_block_copy(drm_fd, e))
+> +				continue;
+> +
+> +			for_each_combination(regions, 1, set) {
+> +				sub_name = memregion_dynamic_subtest_name(regions);
+> +				region = igt_collection_get_value(regions, 0);
+> +				test_ccs(drm_fd, 1024 * 1024, region, sub_name, e);
+> +				free(sub_name);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("basic-gem-ccs-all") {
+> +		for_each_physical_engine(drm_fd, e) {
+> +			if (!gem_engine_can_block_copy(drm_fd, e))
+> +				continue;
+> +
+> +			for_each_combination(regions, 1, set) {
+> +				sub_name = memregion_dynamic_subtest_name(regions);
+> +				region = igt_collection_get_value(regions, 0);
+> +				test_ccs(drm_fd, 0, region, sub_name, e);
+> +				free(sub_name);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		close(drm_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 0af3e03a..d3e76122 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -105,6 +105,7 @@ i915_progs = [
+>  	'gem_blits',
+>  	'gem_busy',
+>  	'gem_caching',
+> +	'gem_ccs',
+>  	'gem_close',
+>  	'gem_close_race',
+>  	'gem_concurrent_blit',
+> -- 
+> 2.25.1
 > 
