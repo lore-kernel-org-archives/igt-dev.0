@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86ABA6E4CB
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 08:05:39 +0000 (UTC)
-Date: Thu, 25 Nov 2021 09:05:35 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211125080535.GB4968@zkempczy-mobl2>
-References: <20211122073533.8092-1-sai.gowtham.ch@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F2D9D6E7EF
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 09:50:09 +0000 (UTC)
+Date: Thu, 25 Nov 2021 11:50:06 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <YZ9cTqJi/trhRal7@intel.com>
+References: <20211124151245.29369-1-ville.syrjala@linux.intel.com>
+ <YZ5ZUsvgAEh3U7sf@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211122073533.8092-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture: Add
- support for local memory
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <YZ5ZUsvgAEh3U7sf@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_frontbuffer_tracking: Accept
+ missing FBC debugfs files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,41 +23,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 22, 2021 at 01:05:33PM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> 
-> Add support for local memory region (Device memory)
-> 
-> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/i915/gem_exec_capture.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-> index b80f597f..a0614ad3 100644
-> --- a/tests/i915/gem_exec_capture.c
-> +++ b/tests/i915/gem_exec_capture.c
-> @@ -380,7 +380,7 @@ static void capture(int fd, int dir, const intel_ctx_t *ctx,
->  	uint64_t ahnd;
->  	int obj_size = 4096;
->  
-> -	handle = gem_create(fd, obj_size);
-> +	handle = gem_create_in_memory_regions(fd, obj_size, REGION_LMEM(0));
+On Wed, Nov 24, 2021 at 05:25:06PM +0200, Petri Latvala wrote:
+> On Wed, Nov 24, 2021 at 05:12:45PM +0200, Ville Syrjala wrote:
+> > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> >=20
+> > With multiple FBC instances becoming a thing at some point
+> > the current plan is to go with separate debugfs files for
+> > each FBC instance. Which also means that if there is no
+> > FBC there will be no debugfs files either. Adapt the test
+> > to tolerate such conditions.
+> >=20
+> > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > ---
+> >  tests/i915/kms_frontbuffer_tracking.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_fro=
+ntbuffer_tracking.c
+> > index d6a884926c48..532bfbb9b481 100644
+> > --- a/tests/i915/kms_frontbuffer_tracking.c
+> > +++ b/tests/i915/kms_frontbuffer_tracking.c
+> > @@ -724,7 +724,7 @@ static void __debugfs_read(const char *param, char =
+*buf, int len)
+> >  {
+> >  	len =3D igt_debugfs_simple_read(drm.debugfs, param, buf, len);
+> >  	if (len < 0)
+> > -		igt_assert_eq(len, -ENODEV);
+> > +		igt_assert(len =3D=3D -ENOENT || len =3D=3D -ENODEV);
+>=20
+> If this fires, we now lose the information on what the error
+> was. Although we automatically print errno in that case, is the error
+> in there?
 
-I would rather iterate over possible regions. As you've probaly seen there's
-regression on integrated because there's no such region there.
+Not quite sure what you're asking here. But at least igt_assert() will
+still print the errno here, if that's what you're asking.
 
---
-Zbigniew
-
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
->  	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size);
-> -- 
-> 2.32.0
-> 
+--=20
+Ville Syrj=E4l=E4
+Intel
