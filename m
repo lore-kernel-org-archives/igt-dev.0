@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2E2C6E91D
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 06:27:43 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-Date: Thu, 25 Nov 2021 06:27:39 +0000
-Message-ID: <41819797fa5c74abfb206523b117a5813ff440e1.camel@intel.com>
-References: <20211124211002.114989-1-jose.souza@intel.com>
-In-Reply-To: <20211124211002.114989-1-jose.souza@intel.com>
-Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <E085322C67B98A479ECCFFA53F1077CD@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_cursor_legacy: Disable
- Intel's PSR2 selective fetch in this test
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 25 Nov 2021 07:10:04 -0000
+Message-ID: <163782420459.17556.15263704125868262189@emeril.freedesktop.org>
+References: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/amdgpu=3A_Add_test_for_AMD_DP_DSC_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,85 +16,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
- Jose" <jose.souza@intel.com>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIxLTExLTI0IGF0IDEzOjEwIC0wODAwLCBKb3PDqSBSb2JlcnRvIGRlIFNvdXph
-IHdyb3RlOg0KPiBXaGVuIGRvaW5nIGEgcHJpbWFyeSBvciBzcHJpdGUgcGxhbmUgZmxpcCwgUFNS
-MiBzZWxlY3RpdmUgZmV0Y2ggY29kZQ0KPiBhbHNvIGFkZHMgYWxsIHRoZSBwbGFuZXMgaW5jbHVk
-aW5nIGN1cnNvciB0aGF0IG92ZXJsYXBzIHdpdGggdGhlDQo+IGFyZWEgYmVpbmcgdXBkYXRlZCwg
-c28gdGhpcyBjYXVzZXMgbGVnYWN5IGN1cnNvciBBUEkgY2FsbHMgdG8NCj4gd2FpdCBmb3IgYSBw
-ZW5kaW5nIGF0b21pYyBjb21taXQgdG8gZmluaXNoIGNhdXNpbmcgdGVzdHMgdGhhdCBkbw0KPiBj
-aGVja3Mgd2l0aCB2YmxhbmsgY291bnRlcnMuDQo+IA0KPiBTbyBoZXJlIHdoZW4gcnVubmluZyBp
-biBhbiBJbnRlbCBwbGF0Zm9ybSB0aGF0IGhhcyBQU1IyIHNlbGVjdGl2ZQ0KPiBmZXRjaCBlbmFi
-bGVkLCBpdCB3aWxsIHN3aXRjaCB0byBQU1IxIGJlZm9yZSBleGVjdXRpbmcgdGhlIHN1YnRlc3Rz
-Lg0KPiBCZWNhdXNlIHdoYXQgdGhpcyB3aG9sZSB0ZXN0IG1vc3RseSB3YW50cyB0byBkbywgaXMg
-Y2hlY2sgaWYNCj4gdXNlcnNwYWNlDQo+IGNhbiBkbyBhc3luY2hyb25vdXMgY3Vyc29ycyB1cGRh
-dGVzLg0KPiANCj4gdjI6DQo+IC0gcmVuYW1lIGZ1bmN0aW9ucyBhbmQgYWRkIGRvY3VtZW50YXRp
-b24NCg0KUmV2aWV3ZWQtYnk6IEpvdW5pIEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwu
-Y29tPg0KDQo+IA0KPiBDbG9zZXM6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0v
-aW50ZWwvLS9pc3N1ZXMvMjM0Ng0KPiBDYzogTWlrYSBLYWhvbGEgPG1pa2Eua2Fob2xhQGludGVs
-LmNvbT4NCj4gQ2M6IEpvdW5pIEhvZ2FuZGVyIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+DQo+
-IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NCj4gU2lnbmVkLW9m
-Zi1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQo+IC0t
-LQ0KPiAgbGliL2lndF9wc3IuYyAgICAgICAgICAgICB8IDQ0DQo+ICsrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKw0KPiAgbGliL2lndF9wc3IuaCAgICAgICAgICAgICB8ICAz
-ICsrKw0KPiAgdGVzdHMva21zX2N1cnNvcl9sZWdhY3kuYyB8IDEwICsrKysrKysrKw0KPiAgMyBm
-aWxlcyBjaGFuZ2VkLCA1NyBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2ln
-dF9wc3IuYyBiL2xpYi9pZ3RfcHNyLmMNCj4gaW5kZXggOGZhOGIxOTJmLi45OGViMjhiNDAgMTAw
-NjQ0DQo+IC0tLSBhL2xpYi9pZ3RfcHNyLmMNCj4gKysrIGIvbGliL2lndF9wc3IuYw0KPiBAQCAt
-MjgwLDMgKzI4MCw0NyBAQCBib29sIGk5MTVfcHNyMl9zZWxlY3RpdmVfZmV0Y2hfY2hlY2soaW50
-IGRybV9mZCkNCj4gIA0KPiAgCXJldHVybiByZXQ7DQo+ICB9DQo+ICsNCj4gKy8qKg0KPiArICog
-aTkxNV9wc3IyX3NlbF9mZXRjaF90b19wc3IxDQo+ICsgKg0KPiArICogQ2hlY2sgaWYgUFNSMiBz
-ZWxlY3RpdmUgZmV0Y2ggaXMgZW5hYmxlZCwgaWYgeWVzIHN3aXRjaCB0byBQU1IxDQo+IGFuZCBy
-ZXR1cm5zDQo+ICsgKiB0cnVlIG90aGVyd2lzZSByZXR1cm5zIGZhbHNlLg0KPiArICogVGhpcyBm
-dW5jdGlvbiBzaG91bGQgYmUgY2FsbGVkIGZyb20gdGVzdHMgdGhhdCBhcmUgbm90IGNvbXBhdGli
-bGUNCj4gd2l0aCBQU1IyDQo+ICsgKiBzZWxlY3RpdmUgZmV0Y2guDQo+ICsgKg0KPiArICogUmV0
-dXJuczoNCj4gKyAqIFRydWUgaWYgUFNSIG1vZGUgY2hhbmdlZCB0byBQU1IxLCBmYWxzZSBvdGhl
-cndpc2UuDQo+ICsgKi8NCj4gK2Jvb2wgaTkxNV9wc3IyX3NlbF9mZXRjaF90b19wc3IxKGludCBk
-cm1fZmQpDQo+ICt7DQo+ICsJaW50IGRlYnVnZnNfZmQ7DQo+ICsJYm9vbCByZXQgPSBmYWxzZTsN
-Cj4gKw0KPiArCWlmICghaXNfaTkxNV9kZXZpY2UoZHJtX2ZkKSkNCj4gKwkJcmV0dXJuIHJldDsN
-Cj4gKw0KPiArCWRlYnVnZnNfZmQgPSBpZ3RfZGVidWdmc19kaXIoZHJtX2ZkKTsNCj4gKwlpZiAo
-cHNyMl9zZWxlY3RpdmVfZmV0Y2hfY2hlY2soZGVidWdmc19mZCkpIHsNCj4gKwkJcHNyX3NldChk
-cm1fZmQsIGRlYnVnZnNfZmQsIFBTUl9NT0RFXzEpOw0KPiArCQlyZXQgPSB0cnVlOw0KPiArCX0N
-Cj4gKw0KPiArCWNsb3NlKGRlYnVnZnNfZmQpOw0KPiArCXJldHVybiByZXQ7DQo+ICt9DQo+ICsN
-Cj4gKy8qKg0KPiArICogaTkxNV9wc3IyX3NlbF9mZXRjaF9yZXN0b3JlDQo+ICsgKg0KPiArICog
-UmVzdG9yZSBQU1IyIHNlbGVjdGl2ZSBmZXRjaCBhZnRlciB0ZXN0cyB3ZXJlIGV4ZWN1dGVkLCB0
-aGlzDQo+IGZ1bmN0aW9uIHNob3VsZA0KPiArICogb25seSBiZSBjYWxsZWQgaWYgaTkxNV9wc3Iy
-X3NlbF9mZXRjaF90b19wc3IxKCkgcmV0dXJuZWQgdHJ1ZS4NCj4gKyAqLw0KPiArdm9pZCBpOTE1
-X3BzcjJfc2VsX2ZldGNoX3Jlc3RvcmUoaW50IGRybV9mZCkNCj4gK3sNCj4gKwlpbnQgZGVidWdm
-c19mZDsNCj4gKw0KPiArCWRlYnVnZnNfZmQgPSBpZ3RfZGVidWdmc19kaXIoZHJtX2ZkKTsNCj4g
-Kwlwc3Jfc2V0KGRybV9mZCwgZGVidWdmc19mZCwgUFNSX01PREVfMl9TRUxfRkVUQ0gpOw0KPiAr
-CWNsb3NlKGRlYnVnZnNfZmQpOw0KPiArfQ0KPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9wc3IuaCBi
-L2xpYi9pZ3RfcHNyLmgNCj4gaW5kZXggYTA3NWYzMzZkLi43NmNkMjZjNjUgMTAwNjQ0DQo+IC0t
-LSBhL2xpYi9pZ3RfcHNyLmgNCj4gKysrIGIvbGliL2lndF9wc3IuaA0KPiBAQCAtNDksNCArNDks
-NyBAQCB2b2lkIHBzcl9wcmludF9kZWJ1Z2ZzKGludCBkZWJ1Z2ZzX2ZkKTsNCj4gIA0KPiAgYm9v
-bCBpOTE1X3BzcjJfc2VsZWN0aXZlX2ZldGNoX2NoZWNrKGludCBkcm1fZmQpOw0KPiAgDQo+ICti
-b29sIGk5MTVfcHNyMl9zZWxfZmV0Y2hfdG9fcHNyMShpbnQgZHJtX2ZkKTsNCj4gK3ZvaWQgaTkx
-NV9wc3IyX3NlbF9mZXRjaF9yZXN0b3JlKGludCBkcm1fZmQpOw0KPiArDQo+ICAjZW5kaWYNCj4g
-ZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5LmMgYi90ZXN0cy9rbXNfY3Vyc29y
-X2xlZ2FjeS5jDQo+IGluZGV4IGNkMmY4NDk4NC4uZDUwMTU1ZTg5IDEwMDY0NA0KPiAtLS0gYS90
-ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jDQo+ICsrKyBiL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5
-LmMNCj4gQEAgLTI3LDYgKzI3LDcgQEANCj4gIA0KPiAgI2luY2x1ZGUgImk5MTUvZ2VtLmgiDQo+
-ICAjaW5jbHVkZSAiaWd0LmgiDQo+ICsjaW5jbHVkZSAiaWd0X3Bzci5oIg0KPiAgI2luY2x1ZGUg
-ImlndF9yYW5kLmgiDQo+ICAjaW5jbHVkZSAiaWd0X3N0YXRzLmgiDQo+ICANCj4gQEAgLTE0MjEs
-NiArMTQyMiw3IEBAIGlndF9tYWluDQo+ICB7DQo+ICAJY29uc3QgaW50IG5jcHVzID0gc3lzY29u
-ZihfU0NfTlBST0NFU1NPUlNfT05MTik7DQo+ICAJaWd0X2Rpc3BsYXlfdCBkaXNwbGF5ID0geyAu
-ZHJtX2ZkID0gLTEgfTsNCj4gKwlib29sIGludGVsX3BzcjJfcmVzdG9yZSA9IGZhbHNlOw0KPiAg
-CWludCBpOw0KPiAgDQo+ICAJaWd0X2ZpeHR1cmUgew0KPiBAQCAtMTQyOCw2ICsxNDMwLDEyIEBA
-IGlndF9tYWluDQo+ICAJCWttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKTsNCj4gIA0KPiAg
-CQlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkaXNwbGF5LCBkaXNwbGF5LmRybV9mZCk7DQo+ICsJCS8q
-DQo+ICsJCSAqIE5vdCBwb3NzaWJsZSB0byBldmFkZSB2YmxhbmsgYWZ0ZXIgYSBwcmltYXJ5IG9y
-DQo+IHNwcml0ZSBwbGFuZQ0KPiArCQkgKiBwYWdlIGZsaXAgd2l0aCBjdXJzb3IgbGVnYWN5IEFQ
-SVMgd2hlbiBJbnRlbCdzIFBTUjINCj4gc2VsZWN0aXZlDQo+ICsJCSAqIGZldGNoIGlzIGVuYWJs
-ZWQsIHNvIHN3aXRjaGluZyBQU1IxIGZvciB0aGlzIHdob2xlDQo+IHRlc3QuDQo+ICsJCSAqLw0K
-PiArCQlpbnRlbF9wc3IyX3Jlc3RvcmUgPQ0KPiBpOTE1X3BzcjJfc2VsX2ZldGNoX3RvX3BzcjEo
-ZGlzcGxheS5kcm1fZmQpOw0KPiAgCX0NCj4gIA0KPiAgCS8qVGVzdCBkZXNjcmlwdGlvbiBmb3Ig
-cGlwZS0qIGFuZCBhbGwtcGlwZS0qIHRlc3RzKi8NCj4gQEAgLTE2MDksNiArMTYxNyw4IEBAIGln
-dF9tYWluDQo+ICAJCX0NCj4gIA0KPiAgCWlndF9maXh0dXJlIHsNCj4gKwkJaWYgKGludGVsX3Bz
-cjJfcmVzdG9yZSkNCj4gKwkJCWk5MTVfcHNyMl9zZWxfZmV0Y2hfcmVzdG9yZShkaXNwbGF5LmRy
-bV9mZCk7DQo+ICAJCWlndF9kaXNwbGF5X2ZpbmkoJmRpc3BsYXkpOw0KPiAgCX0NCj4gIH0NCg0K
+== Series Details ==
+
+Series: tests/amdgpu: Add test for AMD DP DSC (rev5)
+URL   : https://patchwork.freedesktop.org/series/97108/
+State : failure
+
+== Summary ==
+
+Applying: tests/amdgpu: Add test for AMD DP DSC
+Patch failed at 0001 tests/amdgpu: Add test for AMD DP DSC
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
