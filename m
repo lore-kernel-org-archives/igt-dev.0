@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam08on2088.outbound.protection.outlook.com [40.107.101.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 052716E05C
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 18:58:18 +0000 (UTC)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2072.outbound.protection.outlook.com [40.107.92.72])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46C276E0A6
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 19:20:54 +0000 (UTC)
+References: <20211119094822.2240179-1-Perry.Yuan@amd.com>
 From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
-References: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
- <f6341eaa-9815-6d49-9e69-d355581e8585@amd.com>
- <aa4d94075c5f4b64b5d753323d745ed3@intel.com>
- <YZ83BCgRaTvnLX/j@platvala-desk.ger.corp.intel.com>
- <ab60b3f8-4739-9a59-ea52-4d5070908915@amd.com>
-Message-ID: <2f6c8166-1303-cb6d-ba6a-033a5861086b@amd.com>
-Date: Thu, 25 Nov 2021 13:58:14 -0500
-In-Reply-To: <ab60b3f8-4739-9a59-ea52-4d5070908915@amd.com>
+Message-ID: <74dc4bee-c360-21e6-fbec-3e85b84c1fcc@amd.com>
+Date: Thu, 25 Nov 2021 14:20:50 -0500
+In-Reply-To: <20211119094822.2240179-1-Perry.Yuan@amd.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: Add test for AMD DP DSC
+Subject: Re: [igt-dev] [PATCH i-g-t v1] amdgpu/amd_bypass: add check for the
+ connection type of the CRC source
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,111 +23,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Cc: Eryk Brol <eryk.brol@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Mikita Lipski <mikita.lipski@amd.com>
+To: Perry Yuan <Perry.Yuan@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Perry,
 
+Recently you submitted the below patch to amdgfx that address this 
+issue. Just for curiosity, do we still need this patch in the IGT?
 
-On 2021-11-25 10:57 a.m., Rodrigo Siqueira Jordao wrote:
-> 
-> 
-> On 2021-11-25 2:11 a.m., Petri Latvala wrote:
->> On Thu, Nov 25, 2021 at 01:01:04AM +0200, Vudum, Lakshminarayana wrote:
->>> @Rodrigo Siqueira I don't have the possibility to re-run the series. 
->>> @Latvala, Petri Can you help here?
->>>
->>> Lakshmi.
->>
->> Unfortunately patchwork got confused by your emails and thinks you've
->> sent a patch, so the re-run button just reattempts the incorrect
->> patch.
->>
->> Rodrigo, please re-send this patch.
->>
-> 
-> 
-> Hi Petri/Lakshmi,
-> 
-> Thanks a lot for your help.
-> 
-> I submitted a V2:
-> https://patchwork.freedesktop.org/series/97108/
-> 
-> Thanks.
-
-Lakshmi/Petri,
-
-For some reason, it looks like that the new version is still assigned to 
-Lakshmi in the patchwork, and it has some weird failures (see below). 
-Any idea? Do I need to resubmit the patch with a different subject?
+https://patchwork.freedesktop.org/series/97096/
 
 Thanks
 
-Gitlab.Pipeline:
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/453561 
-for the overview.
-
-containers:igt has failed 
-(https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16168063):
-   STEP 2: COPY installdir/opt/igt /opt/igt
-   1895d20f5469210af8281acac7769fa51efbde5ca3931bd457af2c2834e1f7ee
-   STEP 3: COPY .gitlab-ci/docker-help.sh /usr/local/bin/docker-help.sh
-   b743d155d30d20100edf9b2df89664275b2ea33d402f9df69cf5a1824a781b01
-   STEP 4: ENV PATH="/opt/igt/bin:${PATH}"
-   5eb0330fdfca164d1ef769d62f1d3c1a539a09a81da3ca01273c4e7afe2ee974
-   STEP 5: ENV 
-LD_LIBRARY_PATH="/opt/igt/lib:/opt/igt/lib64:${LD_LIBRARY_PATH}"
-   b4ea9d4538270ad267ff798de51f4b7bed3e1ae27f9d3df8cea163e78acc9d3e
-   STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
-   ae060122c9eeab50d82bbafa097e8cd72bccdc8e8cb00b42de1b38531854d099
-   STEP 7: CMD docker-help.sh
-   STEP 8: COMMIT 
-registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-dcfa579ba0a38131881dfd441d558b54d4cd3183
-   fcc29304314f515e7c8612f480ef56419de32ac5b5917000b434768cf94b6793
-   Getting image source signatures
-   Copying blob 
-sha256:508381dd82aeb851da958db0528f2893285a9392bd0787020d3569a61fcdd513
-   Copying blob 
-sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079
-   Copying blob 
-sha256:f3f4119da36f8525b923a310c4b1f15579ca311a753c9973ef966cdb2a71a4e8
-   section_end:1637863318:step_script
-   ERROR: Job failed: execution took longer than 1h0m0s seconds
-
-CI.BAT
-
-IGT changes
-Possible regressions
-igt@kms_addfb_basic@addfb25-bad-modifier:
-
-fi-rkl-11600: PASS -> FAIL +36 similar issues
-igt@kms_addfb_basic@basic-x-tiled-legacy:
-
-fi-rkl-guc: PASS -> FAIL +36 similar issues
-igt@kms_addfb_basic@bo-too-small:
-
-fi-tgl-1115g4: PASS -> FAIL +37 similar issues
-igt@kms_addfb_basic@bo-too-small-due-to-tiling:
-
-fi-icl-u2: PASS -> FAIL +46 similar issues
-igt@kms_busy@basic:
-
-fi-icl-u2: NOTRUN -> FAIL
-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a:
-
-fi-tgl-u2: NOTRUN -> FAIL +53 similar issues
-igt@prime_vgem@basic-fence-flip:
-
-fi-icl-u2: PASS -> CRASH +2 similar issues
-
-fi-tgl-u2: NOTRUN -> CRASH
-
-fi-rkl-11600: PASS -> CRASH
-
-fi-rkl-guc: PASS -> CRASH
-
-fi-tgl-1115g4: PASS -> CRASH
+On 2021-11-19 4:48 a.m., Perry Yuan wrote:
+> Bypass test will set the CRC pipe source as dprx, kernel drm driver will crash because
+> of the aux->transfer function is set NULL when only HDMI cable connection.
+> This patch add connection type check and status check to avoid invalid test
+> case run ,otherwise kernel will be crash for aux transfer function is
+> null under hdmi connection case.
+> 
+> BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1546
+> Signed-off-by: Perry Yuan <Perry.Yuan@amd.com>
+> ---
+>   tests/amdgpu/amd_bypass.c | 22 ++++++++++++++++++++++
+>   1 file changed, 22 insertions(+)
+> 
+> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+> index 75ad8521..28ba848c 100644
+> --- a/tests/amdgpu/amd_bypass.c
+> +++ b/tests/amdgpu/amd_bypass.c
+> @@ -31,6 +31,7 @@ typedef struct {
+>   	int width;
+>   	int height;
+>   	enum pipe pipe_id;
+> +	bool output_valid;
+>   	igt_display_t display;
+>   	igt_plane_t *primary;
+>   	igt_output_t *output;
+> @@ -57,6 +58,24 @@ const char *ptnstr[TEST_PATTERN_MAX] = {
+>   	"DP Color Squares VESA"
+>   };
+>   
+> +static void igt_amd_require_dp_connection(data_t *data)
+> +{
+> +       igt_display_t *display = &data->display;
+> +
+> +       data->output_valid = false;
+> +       /* find connected DP or eDP outputs */
+> +       for (int i=0; i < display->n_outputs; ++i) {
+> +               drmModeConnector *connector = display->outputs[i].config.connector;
+> +               if ((connector->connector_type == DRM_MODE_CONNECTOR_eDP ||
+> +						connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort) &&
+> +						connector->connection == DRM_MODE_CONNECTED) {
+> +					data->output_valid = true;
+> +					return;
+> +               }
+> +       }
+> +       igt_skip("Requires connected DP or eDP output!\n");
+> +}
+> +
+>   /* Common test setup. */
+>   static void test_init(data_t *data)
+>   {
+> @@ -71,6 +90,9 @@ static void test_init(data_t *data)
+>   	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
+>   	igt_assert(data->output);
+>   
+> +	igt_amd_require_dp_connection(data);
+> +	igt_assert(data->output_valid);
+> +
+>   	data->mode = igt_output_get_mode(data->output);
+>   	igt_assert(data->mode);
+>   
+> 
