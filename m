@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D6696E138
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 05:54:35 +0000 (UTC)
+From: "Sharma, Ananya" <ananya.sharma@intel.com>
+Date: Thu, 25 Nov 2021 05:54:30 +0000
+Message-ID: <MW4PR11MB5909CE3EE54EC5175727A39EFD629@MW4PR11MB5909.namprd11.prod.outlook.com>
+References: <20211108052836.374567-1-ananya.sharma@intel.com>
+ <e932b0cd-d354-ac8a-b5e8-3f214e0a4c1f@gmail.com>
+In-Reply-To: <e932b0cd-d354-ac8a-b5e8-3f214e0a4c1f@gmail.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 24 Nov 2021 23:18:38 -0000
-Message-ID: <163779591847.25293.6037730672429610787@emeril.freedesktop.org>
-References: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/amdgpu=3A_Add_test_for_AMD_DP_DSC_=28rev4=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: MPO subtest-
+ mixing pixel formats and tiling on different planes.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,24 +21,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/amdgpu: Add test for AMD DP DSC (rev4)
-URL   : https://patchwork.freedesktop.org/series/97108/
-State : failure
-
-== Summary ==
-
-Applying: tests/amdgpu: Add test for AMD DP DSC
-Patch failed at 0001 tests/amdgpu: Add test for AMD DP DSC
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBKdWhhLVBla2thIEhlaWtraWxh
+IDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPiANClNlbnQ6IFdlZG5lc2RheSwgTm92ZW1i
+ZXIgMTcsIDIwMjEgMToyMCBBTQ0KVG86IFNoYXJtYSwgQW5hbnlhIDxhbmFueWEuc2hhcm1hQGlu
+dGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogSm9zaGksIEt1bmFs
+MSA8a3VuYWwxLmpvc2hpQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENI
+IGktZy10XSB0ZXN0cy9rbXNfcm90YXRpb25fY3JjOiBNUE8gc3VidGVzdC0gbWl4aW5nIHBpeGVs
+IGZvcm1hdHMgYW5kIHRpbGluZyBvbiBkaWZmZXJlbnQgcGxhbmVzLg0KDQpPbiA4LjExLjIwMjEg
+Ny4yOCwgQW5hbnlhIFNoYXJtYSB3cm90ZToNCj4gICBBZGRlZCBQMDEwIHBpeGVsIGZvcm1hdCB3
+aXRoIGFscmVhZHkgZXhpc3RpbmcgcGl4ZWwgZm9ybWF0cyBsaWtlIFJHQjU2NSwgWFJHQjg4ODgs
+IE5WMTIuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBBbmFueWEgU2hhcm1hIDxhbmFueWEuc2hhcm1h
+QGludGVsLmNvbT4NCj4gLS0tDQo+ICAgdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jIHwgMiArLQ0K
+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4g
+ZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19yb3RhdGlvbl9jcmMuYyBiL3Rlc3RzL2ttc19yb3RhdGlv
+bl9jcmMuYyBpbmRleCANCj4gMTQ5NzEyMGMuLjljMjA4MzE1IDEwMDY0NA0KPiAtLS0gYS90ZXN0
+cy9rbXNfcm90YXRpb25fY3JjLmMNCj4gKysrIGIvdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jDQo+
+IEBAIC02NjYsNyArNjY2LDcgQEAgc3RhdGljIHZvaWQgdGVzdF9tdWx0aV9wbGFuZV9yb3RhdGlv
+bihkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlKQ0KPiAgIAkgKiBjYXNlIHdpdGggdGlsaW5n
+IGFyZSAyIGJwcCwgNCBicHAgYW5kIE5WMTIuDQo+ICAgCSAqLw0KPiAgIAlzdGF0aWMgY29uc3Qg
+dWludDMyX3QgZm9ybWF0bGlzdFtdID0ge0RSTV9GT1JNQVRfUkdCNTY1LA0KPiAtCQlEUk1fRk9S
+TUFUX1hSR0I4ODg4LCBEUk1fRk9STUFUX05WMTJ9Ow0KPiArCQlEUk1fRk9STUFUX1hSR0I4ODg4
+LCBEUk1fRk9STUFUX05WMTIsIERSTV9GT1JNQVRfUDAxMH07DQoNCkkgc3VzcGVjdCBmb3IgdGhp
+cyB0byB3b3JrIHlvdSB3aWxsIGFsc28gbmVlZCB0byBjaGFuZ2UgaW4NCnRlc3RfbXVsdGlfcGxh
+bmVfcm90YXRpb24oLi4pIGluIGlubmVyIGxvb3BzIGFueXdoZXJlIGNvbXBhcmlzb24gZm9yDQpE
+Uk1fRk9STUFUX05WMTIgdGFrZSBpbnRvIGFjY291bnQgUDB4eCBmb3JtYXQgaW4gc29tZSB3YXkg
+d2l0aCBpZ3RfZm9ybWF0X2lzX3l1dl9zZW1pcGxhbmFyKC4uKS4gU29tZSBvZiB0aG9zZSBpbm5l
+ciBsb29wIHJ1bGVzIGFyZSBleGNsdWRpbmcsIHNvbWUgaW5jbHVkaW5nLg0KDQpJIHRoaW5rIG90
+aGVyd2lzZSB0aG9zZSBydW50aW1lIGNhY2hlZCBjcmNzIHdpbGwgY2F1c2UgbWlzbWF0Y2hlcw0K
+DQovSnVoYS1QZWtrYQ0KDQpUaGFuayB5b3UgZm9yIHRoZSByZXZpZXcuIEkgd2lsbCBtYWtlIHRo
+ZSBjaGFuZ2VzIGFzIHNhaWQgLg0KQW5hbnlhIFNoYXJtYQ0KPiAgIA0KPiAgIAlzdGF0aWMgc3Ry
+dWN0IHsNCj4gICAJCWlndF9yb3RhdGlvbl90IHJvdGF0aW9uOw0KDQoNCg==
