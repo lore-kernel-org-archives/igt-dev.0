@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2084.outbound.protection.outlook.com [40.107.237.84])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DE146E043
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 18:54:54 +0000 (UTC)
-Message-ID: <98bdcaa9-0e45-787d-90ef-04da1d951fbd@amd.com>
-Date: Thu, 25 Nov 2021 13:54:47 -0500
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam08on2088.outbound.protection.outlook.com [40.107.101.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 052716E05C
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Nov 2021 18:58:18 +0000 (UTC)
+From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+References: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
+ <f6341eaa-9815-6d49-9e69-d355581e8585@amd.com>
+ <aa4d94075c5f4b64b5d753323d745ed3@intel.com>
+ <YZ83BCgRaTvnLX/j@platvala-desk.ger.corp.intel.com>
+ <ab60b3f8-4739-9a59-ea52-4d5070908915@amd.com>
+Message-ID: <2f6c8166-1303-cb6d-ba6a-033a5861086b@amd.com>
+Date: Thu, 25 Nov 2021 13:58:14 -0500
+In-Reply-To: <ab60b3f8-4739-9a59-ea52-4d5070908915@amd.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-References: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
-From: Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20211116210020.2300334-1-Rodrigo.Siqueira@amd.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] amdgpu/amd_mode_switch: Introduce mode
- switch test
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: Add test for AMD DP DSC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,258 +26,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, aurabindo.pillai@amd.com, markyacoub@google.com, nicholas.choi@amd.com
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Cc: Eryk Brol <eryk.brol@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Mikita Lipski <mikita.lipski@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2021-11-16 16:00, Rodrigo Siqueira wrote:
-> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> 
-> Switching between different modes could potentially create pstate
-> warnings if clocks are not being set correctly.
-> 
-> The subtest gets the highest and lowest mode supported on the connector
-> and switch between them.
-> 
-> Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-Acked-by: Harry Wentland <harry.wentland@amd.com>
 
-Harry
+On 2021-11-25 10:57 a.m., Rodrigo Siqueira Jordao wrote:
+> 
+> 
+> On 2021-11-25 2:11 a.m., Petri Latvala wrote:
+>> On Thu, Nov 25, 2021 at 01:01:04AM +0200, Vudum, Lakshminarayana wrote:
+>>> @Rodrigo Siqueira I don't have the possibility to re-run the series. 
+>>> @Latvala, Petri Can you help here?
+>>>
+>>> Lakshmi.
+>>
+>> Unfortunately patchwork got confused by your emails and thinks you've
+>> sent a patch, so the re-run button just reattempts the incorrect
+>> patch.
+>>
+>> Rodrigo, please re-send this patch.
+>>
+> 
+> 
+> Hi Petri/Lakshmi,
+> 
+> Thanks a lot for your help.
+> 
+> I submitted a V2:
+> https://patchwork.freedesktop.org/series/97108/
+> 
+> Thanks.
 
-> ---
->  tests/amdgpu/amd_mode_switch.c | 210 +++++++++++++++++++++++++++++++++
->  tests/amdgpu/meson.build       |   1 +
->  2 files changed, 211 insertions(+)
->  create mode 100644 tests/amdgpu/amd_mode_switch.c
-> 
-> diff --git a/tests/amdgpu/amd_mode_switch.c b/tests/amdgpu/amd_mode_switch.c
-> new file mode 100644
-> index 00000000..270b1b9f
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_mode_switch.c
-> @@ -0,0 +1,210 @@
-> +/*
-> + * Copyright 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#include "igt.h"
-> +#include <xf86drmMode.h>
-> +
-> +#define MAX_PIPES 6
-> +
-> +/* Common test data. */
-> +typedef struct data {
-> +	igt_display_t display;
-> +	igt_plane_t *primary[MAX_PIPES];
-> +	igt_output_t *output[MAX_PIPES];
-> +	int fd;
-> +} data_t;
-> +
-> +static void test_init(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	int i;
-> +
-> +	for_each_pipe(display, i) {
-> +		igt_output_t *output = &display->outputs[i];
-> +
-> +		data->primary[i] = igt_pipe_get_plane_type(
-> +			&data->display.pipes[i], DRM_PLANE_TYPE_PRIMARY);
-> +
-> +		data->output[i] = output;
-> +	}
-> +
-> +	igt_require(data->output[0]);
-> +	igt_display_reset(display);
-> +}
-> +
-> +static void test_fini(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +
-> +	igt_display_reset(display);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> +}
-> +
-> +/* Forces a mode for a connector. */
-> +static void force_output_mode(data_t *d, igt_output_t *output,
-> +			      const drmModeModeInfo *mode)
-> +{
-> +	/* This allows us to create a virtual sink. */
-> +	if (!igt_output_is_connected(output)) {
-> +		kmstest_force_edid(d->fd, output->config.connector,
-> +				   igt_kms_get_4k_edid());
-> +
-> +		kmstest_force_connector(d->fd, output->config.connector,
-> +					FORCE_CONNECTOR_DIGITAL);
-> +	}
-> +
-> +	igt_output_override_mode(output, mode);
-> +}
-> +
-> +static void run_mode_switch_first_last(data_t *data, int num_pipes)
-> +{
-> +	igt_output_t *output;
-> +	struct igt_fb *buffer1[MAX_PIPES] = { NULL };
-> +	struct igt_fb *buffer2[MAX_PIPES] = { NULL };
-> +	drmModeConnectorPtr conn;
-> +	drmModeModeInfoPtr kmode;
-> +	void *user_data = NULL;
-> +	int i = 0;
-> +	int j = 0;
-> +
-> +	test_init(data);
-> +
-> +	igt_skip_on_f(num_pipes > igt_display_get_n_pipes(&data->display) ||
-> +			      num_pipes > data->display.n_outputs,
-> +		      "ASIC does not have %d outputs/pipes\n", num_pipes);
-> +
-> +	/* First supported mode */
-> +
-> +	for (j = 0; j < num_pipes; j++) {
-> +		output = data->output[j];
-> +		if (!igt_output_is_connected(output))
-> +			continue;
-> +
-> +		conn = drmModeGetConnector(
-> +			data->fd, output->config.connector->connector_id);
-> +
-> +		kmode = &conn->modes[0];
-> +		if (buffer1[j] == NULL) {
-> +			igt_fb_t fb;
-> +			buffer1[j] = &fb;
-> +			igt_create_color_fb(data->fd, kmode->hdisplay,
-> +					    kmode->vdisplay,
-> +					    DRM_FORMAT_XRGB8888,
-> +					    DRM_FORMAT_MOD_NONE, 1.f, 0.f,
-> +					    0.f, buffer1[j]);
-> +		}
-> +		igt_output_set_pipe(output, j);
-> +		force_output_mode(data, output, kmode);
-> +		igt_plane_set_fb(data->primary[j], buffer1[j]);
-> +		drmModeFreeConnector(conn);
-> +	}
-> +
-> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +				  user_data);
-> +
-> +	/* Last supported mode */
-> +
-> +	for (j = 0; j < num_pipes; j++) {
-> +		output = data->output[j];
-> +		if (!igt_output_is_connected(output))
-> +			continue;
-> +
-> +		conn = drmModeGetConnector(
-> +			data->fd, output->config.connector->connector_id);
-> +
-> +		kmode = &conn->modes[conn->count_modes - 1];
-> +		if (buffer2[j] == NULL) {
-> +			igt_fb_t fb;
-> +			buffer2[j] = &fb;
-> +			igt_create_color_fb(data->fd, kmode->hdisplay,
-> +					    kmode->vdisplay,
-> +					    DRM_FORMAT_XRGB8888,
-> +					    DRM_FORMAT_MOD_NONE, 1.f, 0.f,
-> +					    0.f, buffer2[j]);
-> +		}
-> +		force_output_mode(data, output, kmode);
-> +		igt_plane_set_fb(data->primary[j], buffer2[j]);
-> +		drmModeFreeConnector(conn);
-> +	}
-> +
-> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +				  user_data);
-> +
-> +	/* First supported again */
-> +	for (j = 0; j < num_pipes; j++) {
-> +		output = data->output[j];
-> +		if (!igt_output_is_connected(output))
-> +			continue;
-> +
-> +		conn = drmModeGetConnector(
-> +			data->fd, output->config.connector->connector_id);
-> +
-> +		kmode = &conn->modes[0];
-> +		force_output_mode(data, output, kmode);
-> +		igt_plane_set_fb(data->primary[j], buffer1[j]);
-> +		drmModeFreeConnector(conn);
-> +	}
-> +
-> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +				  user_data);
-> +
-> +	test_fini(data);
-> +
-> +	for (i = 0; i <= num_pipes; i++) {
-> +		igt_remove_fb(data->fd, buffer1[i]);
-> +		igt_remove_fb(data->fd, buffer2[i]);
-> +	}
-> +}
-> +
-> +IGT_TEST_DESCRIPTION("Test switching between supported modes");
-> +igt_main
-> +{
-> +	data_t data;
-> +	int i = 0;
-> +
-> +	igt_skip_on_simulation();
-> +
-> +	memset(&data, 0, sizeof(data));
-> +
-> +	igt_fixture
-> +	{
-> +		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.fd);
-> +		igt_require(&data.display.is_atomic);
-> +		igt_display_require_output(&data.display);
-> +	}
-> +
-> +	for (i = 0; i < MAX_PIPES; i++) {
-> +		igt_describe(
-> +			"Test between switching highest and lowest supported mode");
-> +		igt_subtest_f("mode-switch-first-last-pipe-%d", i)
-> +			run_mode_switch_first_last(&data, i + 1);
-> +	}
-> +
-> +	igt_fixture
-> +	{
-> +		igt_display_fini(&data.display);
-> +	}
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index b736c456..5216e194 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -16,6 +16,7 @@ if libdrm_amdgpu.found()
->  			  'amd_mem_leak',
->  			  'amd_link_settings',
->  			  'amd_vrr_range',
-> +			  'amd_mode_switch',
->  			]
->  	amdgpu_deps += libdrm_amdgpu
->  endif
-> 
+Lakshmi/Petri,
+
+For some reason, it looks like that the new version is still assigned to 
+Lakshmi in the patchwork, and it has some weird failures (see below). 
+Any idea? Do I need to resubmit the patch with a different subject?
+
+Thanks
+
+Gitlab.Pipeline:
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/453561 
+for the overview.
+
+containers:igt has failed 
+(https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16168063):
+   STEP 2: COPY installdir/opt/igt /opt/igt
+   1895d20f5469210af8281acac7769fa51efbde5ca3931bd457af2c2834e1f7ee
+   STEP 3: COPY .gitlab-ci/docker-help.sh /usr/local/bin/docker-help.sh
+   b743d155d30d20100edf9b2df89664275b2ea33d402f9df69cf5a1824a781b01
+   STEP 4: ENV PATH="/opt/igt/bin:${PATH}"
+   5eb0330fdfca164d1ef769d62f1d3c1a539a09a81da3ca01273c4e7afe2ee974
+   STEP 5: ENV 
+LD_LIBRARY_PATH="/opt/igt/lib:/opt/igt/lib64:${LD_LIBRARY_PATH}"
+   b4ea9d4538270ad267ff798de51f4b7bed3e1ae27f9d3df8cea163e78acc9d3e
+   STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
+   ae060122c9eeab50d82bbafa097e8cd72bccdc8e8cb00b42de1b38531854d099
+   STEP 7: CMD docker-help.sh
+   STEP 8: COMMIT 
+registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-dcfa579ba0a38131881dfd441d558b54d4cd3183
+   fcc29304314f515e7c8612f480ef56419de32ac5b5917000b434768cf94b6793
+   Getting image source signatures
+   Copying blob 
+sha256:508381dd82aeb851da958db0528f2893285a9392bd0787020d3569a61fcdd513
+   Copying blob 
+sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079
+   Copying blob 
+sha256:f3f4119da36f8525b923a310c4b1f15579ca311a753c9973ef966cdb2a71a4e8
+   section_end:1637863318:step_script
+   ERROR: Job failed: execution took longer than 1h0m0s seconds
+
+CI.BAT
+
+IGT changes
+Possible regressions
+igt@kms_addfb_basic@addfb25-bad-modifier:
+
+fi-rkl-11600: PASS -> FAIL +36 similar issues
+igt@kms_addfb_basic@basic-x-tiled-legacy:
+
+fi-rkl-guc: PASS -> FAIL +36 similar issues
+igt@kms_addfb_basic@bo-too-small:
+
+fi-tgl-1115g4: PASS -> FAIL +37 similar issues
+igt@kms_addfb_basic@bo-too-small-due-to-tiling:
+
+fi-icl-u2: PASS -> FAIL +46 similar issues
+igt@kms_busy@basic:
+
+fi-icl-u2: NOTRUN -> FAIL
+igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a:
+
+fi-tgl-u2: NOTRUN -> FAIL +53 similar issues
+igt@prime_vgem@basic-fence-flip:
+
+fi-icl-u2: PASS -> CRASH +2 similar issues
+
+fi-tgl-u2: NOTRUN -> CRASH
+
+fi-rkl-11600: PASS -> CRASH
+
+fi-rkl-guc: PASS -> CRASH
+
+fi-tgl-1115g4: PASS -> CRASH
