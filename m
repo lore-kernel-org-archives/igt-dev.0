@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7659201973289169632=="
+Message-ID: <51250bb9-8e3b-a008-e457-429759c94271@amd.com>
+Date: Fri, 26 Nov 2021 11:54:57 -0500
+Content-Language: en-US
+References: <20211115094759.520955-1-bhanuprakash.modem@intel.com>
+ <20211115094759.520955-4-bhanuprakash.modem@intel.com>
+From: Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <20211115094759.520955-4-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 26 Nov 2021 16:46:08 -0000
-Message-ID: <163794516852.11080.14545880345899567110@emeril.freedesktop.org>
-References: <20211126142017.495693-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20211126142017.495693-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5BCI=2Ci-g-t=2C1/2=5D_tests/api=5Fintel=5Falloc?=
- =?utf-8?q?ator=3A_Fix_build_warning?=
+Subject: Re: [igt-dev] [i-g-t 03/14] kms_color_helper: Add helper functions
+ for plane color mgmt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,324 +18,279 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7659201973289169632==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: series starting with [CI,i-g-t,1/2] tests/api_intel_allocator: Fix build warning
-URL   : https://patchwork.freedesktop.org/series/97328/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_10931 -> IGTPW_6443
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/index.html
-
-Participating hosts (33 -> 34)
-------------------------------
-
-  Additional (2): fi-kbl-soraka fi-tgl-u2 
-  Missing    (1): fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6443 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_cs_nop@fork-compute0:
-    - fi-rkl-guc:         NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-rkl-guc/igt@amdgpu/amd_cs_nop@fork-compute0.html
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-tgl-u2:          NOTRUN -> [INCOMPLETE][2] ([i915#4006])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +8 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-skl-6600u:       [PASS][4] -> [INCOMPLETE][5] ([i915#4547])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10931/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][6] ([i915#2190])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#2190])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][9] ([i915#4613]) +3 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][10] ([i915#1886] / [i915#2291])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][11] ([fdo#109284] / [fdo#111827]) +8 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_chamelium@dp-edid-read:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][12] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][13] ([i915#4103]) +1 similar issue
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][14] ([fdo#109285])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][15] ([fdo#109271] / [i915#533])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][16] ([i915#3301])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-skl-6600u:       NOTRUN -> [FAIL][17] ([i915#2722] / [i915#3363] / [i915#4312])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-skl-6600u/igt@runner@aborted.html
-    - fi-tgl-u2:          NOTRUN -> [FAIL][18] ([i915#1602] / [i915#2722] / [i915#4312])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_engines:
-    - fi-rkl-guc:         [INCOMPLETE][19] ([i915#4432]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10931/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
-  [i915#4006]: https://gitlab.freedesktop.org/drm/intel/issues/4006
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4432]: https://gitlab.freedesktop.org/drm/intel/issues/4432
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
 
 
-Build changes
--------------
+On 2021-11-15 04:47, Bhanuprakash Modem wrote:
+> Add helper functions to support Plane color management properties.
+> 
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Uma Shankar <uma.shankar@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/kms_color_helper.c | 173 +++++++++++++++++++++++++++++++++++++++
+>  tests/kms_color_helper.h |  29 +++++++
+>  2 files changed, 202 insertions(+)
+> 
+> diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+> index d71e7bb2e6..c65b7a0f50 100644
+> --- a/tests/kms_color_helper.c
+> +++ b/tests/kms_color_helper.c
+> @@ -241,6 +241,150 @@ void disable_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop)
+>  		igt_pipe_obj_replace_prop_blob(pipe, prop, NULL, 0);
+>  }
+>  
+> +drmModePropertyPtr get_plane_gamma_degamma_mode(igt_plane_t *plane,
+> +				enum igt_atomic_plane_properties prop)
+> +{
+> +	igt_display_t *display = plane->pipe->display;
+> +	uint32_t prop_id = plane->props[prop];
+> +	drmModePropertyPtr drmProp;
+> +
+> +	igt_assert(prop_id);
+> +
+> +	drmProp = drmModeGetProperty(display->drm_fd, prop_id);
+> +
+> +	igt_assert(drmProp);
+> +	igt_assert(drmProp->count_enums);
+> +
+> +	return drmProp;
+> +}
+> +
+> +struct drm_color_lut_ext *create_linear_lut(segment_data_t *info)
+> +{
+> +	uint32_t val, segment, entry, index = 0;
+> +	uint32_t max_val = 0xffffffff;
+> +	struct drm_color_lut_ext *lut = malloc(sizeof(struct drm_color_lut_ext) * info->entries_count);
+> +	igt_assert(lut);
+> +
+> +	for (segment = 0; segment < info->segment_count; segment++) {
+> +		uint32_t entry_count = info->segment_data[segment].count;
+> +		uint32_t start = info->segment_data[segment].start;
+> +		uint32_t end = info->segment_data[segment].end;
+> +
+> +		for (entry = 1; entry <= entry_count; entry++) {
+> +			val = (index == 0) ? /* First entry is Zero. */
+> +				0 : start + entry * ((end - start) * 1.0 / entry_count);
+> +
+> +			lut[index].red = lut[index].green = lut[index].blue = MIN(val, max_val);
+> +
+> +			index++;
+> +		}
+> +	}
+> +
+> +	return lut;
+> +}
+> +
+> +struct drm_color_lut_ext *create_max_lut(segment_data_t *info)
+> +{
+> +	int i;
+> +	struct drm_color_lut_ext *lut;
+> +	uint32_t max_val = 0xffffffff;
+> +
+> +	lut = malloc(sizeof(struct drm_color_lut_ext) * info->entries_count);
+> +	igt_assert(lut);
+> +
+> +	lut[0].red = lut[0].green = lut[0].blue = 0; /* First entry is Zero. */
+> +
+> +	for (i = 1; i < info->entries_count; i++)
+> +		lut[i].red = lut[i].green = lut[i].blue = max_val;
+> +
+> +	return lut;
+> +}
+> +
+> +void clear_segment_data(segment_data_t *info)
+> +{
+> +	if (!info)
+> +		return;
+> +
+> +	free(info->segment_data);
+> +	free(info);
+> +}
+> +
+> +segment_data_t *get_segment_data(data_t *data,
+> +				uint64_t blob_id, char *mode)
+> +{
+> +	drmModePropertyBlobPtr blob;
+> +	struct drm_color_lut_range *lut_range = NULL;
+> +	segment_data_t *info = NULL;
+> +	uint32_t i;
+> +
+> +	blob = drmModeGetPropertyBlob(data->drm_fd, blob_id);
+> +	igt_assert(blob);
+> +	igt_assert(blob->length);
+> +
+> +	info = malloc(sizeof(segment_data_t));
+> +	igt_assert(info);
+> +
+> +	lut_range = (struct drm_color_lut_range *) blob->data;
+> +	info->segment_count = blob->length / sizeof(lut_range[0]);
+> +	igt_assert(info->segment_count);
+> +
+> +	info->segment_data = malloc(sizeof(struct drm_color_lut_range) * info->segment_count);
+> +	igt_assert(info->segment_data);
+> +
+> +	for (i = 0; i < info->segment_count; i++) {
+> +		info->entries_count += lut_range[i].count;
+> +		info->segment_data[i] = lut_range[i];
+> +	}
+> +
+> +	drmModeFreePropertyBlob(blob);
+> +
+> +	return info;
+> +}
+> +
+> +void set_plane_gamma(igt_plane_t *plane,
+> +		char *mode,
+> +		struct drm_color_lut_ext *lut,
+> +		uint32_t size)
+> +{
+> +	igt_plane_set_prop_enum(plane, IGT_PLANE_GAMMA_MODE, mode);
+> +	igt_plane_replace_prop_blob(plane, IGT_PLANE_GAMMA_LUT, lut, size);
+> +}
+> +
+> +void set_plane_degamma(igt_plane_t *plane,
+> +		char *mode,
+> +		struct drm_color_lut_ext *lut,
+> +		uint32_t size)
+> +{
+> +	igt_plane_set_prop_enum(plane, IGT_PLANE_DEGAMMA_MODE, mode);
+> +	igt_plane_replace_prop_blob(plane, IGT_PLANE_DEGAMMA_LUT, lut, size);
+> +}
+> +
+> +void set_plane_ctm(igt_plane_t *plane, const double *coefficients)
+> +{
+> +	struct drm_color_ctm ctm;
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(ctm.matrix); i++) {
+> +		if (coefficients[i] < 0) {
+> +			ctm.matrix[i] =
+> +				(int64_t) (-coefficients[i] *
+> +				((int64_t) 1L << 32));
+> +			ctm.matrix[i] |= 1ULL << 63;
+> +		} else
+> +			ctm.matrix[i] =
+> +				(int64_t) (coefficients[i] *
+> +				((int64_t) 1L << 32));
+> +	}
+> +
+> +	igt_plane_replace_prop_blob(plane, IGT_PLANE_CTM, &ctm, sizeof(ctm));
+> +}
+> +
+> +void disable_plane_prop(igt_plane_t *plane, enum igt_atomic_plane_properties prop)
+> +{
+> +	if (igt_plane_has_prop(plane, prop))
+> +		igt_plane_replace_prop_blob(plane, prop, NULL, 0);
+> +}
+> +
+>  drmModePropertyBlobPtr
+>  get_blob(data_t *data, igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop)
+>  {
+> @@ -274,6 +418,19 @@ pipe_set_property_blob_id(igt_pipe_t *pipe,
+>  	return ret;
+>  }
+>  
+> +static int
+> +plane_set_property_blob(igt_display_t *display,
+> +			igt_plane_t *plane,
+> +			enum igt_atomic_plane_properties prop,
+> +			void *ptr, size_t length)
+> +{
+> +	igt_plane_replace_prop_blob(plane, prop, ptr, length);
+> +
+> +	return igt_display_try_commit2(display,
+> +				       display->is_atomic ?
+> +				       COMMIT_ATOMIC : COMMIT_LEGACY);
+> +}
+> +
+>  int
+>  pipe_set_property_blob(igt_pipe_t *pipe,
+>  		       enum igt_atomic_crtc_properties prop,
+> @@ -319,6 +476,22 @@ invalid_lut_sizes(data_t *data, enum pipe p,
+>  	free(lut);
+>  }
+>  
+> +void
+> +invalid_plane_lut_sizes(igt_display_t *display,
+> +			igt_plane_t *plane,
+> +			enum igt_atomic_plane_properties prop,
+> +			size_t lut_size)
+> +{
+> +	void *lut = malloc(lut_size * 2);
+> +	igt_assert(lut);
+> +
+> +	igt_assert_eq(plane_set_property_blob(display, plane, prop, lut, 1), -EINVAL);
+> +	igt_assert_eq(plane_set_property_blob(display, plane, prop, lut, lut_size + 1), -EINVAL);
+> +	igt_assert_eq(plane_set_property_blob(display, plane, prop, lut, lut_size - 1), -EINVAL);
+> +
+> +	free(lut);
+> +}
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6293 -> IGTPW_6443
+This might make more sense as part of patch 7, though I don't have a
+strong preference.
 
-  CI-20190529: 20190529
-  CI_DRM_10931: 8f98184bd66880e87ddf8bdf3110b970b46d42e0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6443: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/index.html
-  IGT_6293: bf11f87c27ad1cec3e60bd31c23080d19aa093f3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+Harry
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/index.html
-
---===============7659201973289169632==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [CI,i-g-t,1/2] tests/api_intel_allocator: Fix build warning</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97328/">https://patchwork.freedesktop.org/series/97328/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10931 -&gt; IGTPW_6443</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/index.html</p>
-<h2>Participating hosts (33 -&gt; 34)</h2>
-<p>Additional (2): fi-kbl-soraka fi-tgl-u2 <br />
-  Missing    (1): fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6443 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_cs_nop@fork-compute0:</p>
-<ul>
-<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-rkl-guc/igt@amdgpu/amd_cs_nop@fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4006">i915#4006</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10931/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109284">fdo#109284</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-edid-read:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-tgl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_engines:<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10931/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4432">i915#4432</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6293 -&gt; IGTPW_6443</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10931: 8f98184bd66880e87ddf8bdf3110b970b46d42e0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6443: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6443/index.html<br />
-  IGT_6293: bf11f87c27ad1cec3e60bd31c23080d19aa093f3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7659201973289169632==--
+> +
+>  void
+>  invalid_gamma_lut_sizes(data_t *data, enum pipe p)
+>  {
+> diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+> index bb6f0054f3..5a35dcaac1 100644
+> --- a/tests/kms_color_helper.h
+> +++ b/tests/kms_color_helper.h
+> @@ -64,6 +64,14 @@ typedef struct {
+>  	color_t coeffs[];
+>  } gamma_lut_t;
+>  
+> +typedef struct {
+> +	uint32_t segment_count;
+> +	struct drm_color_lut_range *segment_data;
+> +	uint32_t entries_count;
+> +} segment_data_t;
+> +
+> +#define MIN(a, b) ((a) < (b) ? (a) : (b))
+> +
+>  void paint_gradient_rectangles(data_t *data,
+>  			       drmModeModeInfo *mode,
+>  			       color_t *colors,
+> @@ -90,10 +98,31 @@ void set_gamma(data_t *data,
+>  void set_ctm(igt_pipe_t *pipe, const double *coefficients);
+>  void disable_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop);
+>  
+> +drmModePropertyPtr get_plane_gamma_degamma_mode(igt_plane_t *plane,
+> +	enum igt_atomic_plane_properties prop);
+> +void clear_segment_data(segment_data_t *info);
+> +struct drm_color_lut_ext *create_linear_lut(segment_data_t *info);
+> +struct drm_color_lut_ext *create_max_lut(segment_data_t *info);
+> +segment_data_t *get_segment_data(data_t *data, uint64_t blob_id, char *mode);
+> +void set_plane_gamma(igt_plane_t *plane,
+> +	char *mode, struct drm_color_lut_ext *lut, uint32_t size);
+> +void set_plane_degamma(igt_plane_t *plane,
+> +	char *mode, struct drm_color_lut_ext *lut, uint32_t size);
+> +void set_plane_ctm(igt_plane_t *plane, const double *coefficients);
+> +void disable_plane_prop(igt_plane_t *plane, enum igt_atomic_plane_properties prop);
+> +void invalid_plane_lut_sizes(igt_display_t *display,
+> +			   igt_plane_t *plane,
+> +			   enum igt_atomic_plane_properties prop,
+> +			   size_t lut_size);
+> +
+>  #define disable_degamma(pipe) disable_prop(pipe, IGT_CRTC_DEGAMMA_LUT)
+>  #define disable_gamma(pipe) disable_prop(pipe, IGT_CRTC_GAMMA_LUT)
+>  #define disable_ctm(pipe) disable_prop(pipe, IGT_CRTC_CTM)
+>  
+> +#define disable_plane_degamma(plane) disable_plane_prop(plane, IGT_PLANE_DEGAMMA_LUT)
+> +#define disable_plane_gamma(plane) disable_plane_prop(plane, IGT_PLANE_GAMMA_LUT)
+> +#define disable_plane_ctm(plane) disable_plane_prop(plane, IGT_PLANE_CTM)
+> +
+>  drmModePropertyBlobPtr get_blob(data_t *data, igt_pipe_t *pipe,
+>  				enum igt_atomic_crtc_properties prop);
+>  bool crc_equal(igt_crc_t *a, igt_crc_t *b);
+> 
