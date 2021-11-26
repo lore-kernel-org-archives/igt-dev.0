@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Fri, 26 Nov 2021 14:20:17 +0000
-Message-Id: <20211126142017.495693-2-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20211126142017.495693-1-tvrtko.ursulin@linux.intel.com>
-References: <20211126142017.495693-1-tvrtko.ursulin@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7501021411473884126=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [CI i-g-t 2/2] intel_gpu_top: Remove clients support
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 26 Nov 2021 15:08:07 -0000
+Message-ID: <163793928750.11078.15559582292236440457@emeril.freedesktop.org>
+References: <20211126140911.1556205-1-Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20211126140911.1556205-1-Rodrigo.Siqueira@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?amdgpu=3A_Introduces_DP_DSC_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,939 +16,848 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+To: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+--===============7501021411473884126==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-When kernel feature was removed the intel_gpu_top part was forgotten.
+== Series Details ==
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Acked-by: Petri Latvala <petri.latvala@intel.com>
----
- man/intel_gpu_top.rst |   4 -
- tools/intel_gpu_top.c | 810 +-----------------------------------------
- 2 files changed, 1 insertion(+), 813 deletions(-)
+Series: tests/amdgpu: Introduces DP DSC test
+URL   : https://patchwork.freedesktop.org/series/97325/
+State : failure
 
-diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-index f4dbfc5b44d9..b3b765b05feb 100644
---- a/man/intel_gpu_top.rst
-+++ b/man/intel_gpu_top.rst
-@@ -56,10 +56,6 @@ Supported keys:
-     'q'    Exit from the tool.
-     'h'    Show interactive help.
-     '1'    Toggle between aggregated engine class and physical engine mode.
--    'n'    Toggle display of numeric client busyness overlay.
--    's'    Toggle between sort modes (runtime, total runtime, pid, client id).
--    'i'    Toggle display of clients which used no GPU time.
--    'H'    Toggle between per PID aggregation and individual clients.
- 
- DEVICE SELECTION
- ================
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 7311038a39f4..41c59a72c09d 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -627,562 +627,6 @@ static void pmu_sample(struct engines *engines)
- 	}
- }
- 
--enum client_status {
--	FREE = 0, /* mbz */
--	ALIVE,
--	PROBE
--};
--
--struct clients;
--
--struct client {
--	struct clients *clients;
--
--	enum client_status status;
--	int sysfs_root;
--	int busy_root;
--	unsigned int id;
--	unsigned int pid;
--	char name[24];
--	char print_name[24];
--	unsigned int samples;
--	unsigned long total_runtime;
--	unsigned long last_runtime;
--	struct engines *engines;
--	unsigned long *val;
--	uint64_t *last;
--};
--
--struct clients {
--	unsigned int num_clients;
--	unsigned int active_clients;
--
--	unsigned int num_classes;
--	struct engine_class *class;
--
--	char sysfs_root[128];
--
--	struct client *client;
--};
--
--#define for_each_client(clients, c, tmp) \
--	for ((tmp) = (clients)->num_clients, c = (clients)->client; \
--	     (tmp > 0); (tmp)--, (c)++)
--
--static struct clients *init_clients(const char *drm_card)
--{
--	struct clients *clients;
--	const char *slash;
--	ssize_t ret;
--	int dir;
--
--	clients = malloc(sizeof(*clients));
--	if (!clients)
--		return NULL;
--
--	memset(clients, 0, sizeof(*clients));
--
--	if (drm_card) {
--		slash = rindex(drm_card, '/');
--		assert(slash);
--	} else {
--		slash = "card0";
--	}
--
--	ret = snprintf(clients->sysfs_root, sizeof(clients->sysfs_root),
--		       "/sys/class/drm/%s/clients/", slash);
--	assert(ret > 0 && ret < sizeof(clients->sysfs_root));
--
--	dir = open(clients->sysfs_root, O_DIRECTORY | O_RDONLY);
--	if (dir < 0) {
--		free(clients);
--		clients = NULL;
--	} else {
--		close(dir);
--	}
--
--	return clients;
--}
--
--static int __read_to_buf(int fd, char *buf, unsigned int bufsize)
--{
--	ssize_t ret;
--	int err;
--
--	ret = read(fd, buf, bufsize - 1);
--	err = errno;
--	if (ret < 1) {
--		errno = ret < 0 ? err : ENOMSG;
--
--		return -1;
--	}
--
--	if (ret > 1 && buf[ret - 1] == '\n')
--		buf[ret - 1] = '\0';
--	else
--		buf[ret] = '\0';
--
--	return 0;
--}
--
--static int
--__read_client_field(int root, const char *field, char *buf, unsigned int bufsize)
--{
--	int fd, ret;
--
--	fd = openat(root, field, O_RDONLY);
--	if (fd < 0)
--		return -1;
--
--	ret = __read_to_buf(fd, buf, bufsize);
--
--	close(fd);
--
--	return ret;
--}
--
--static uint64_t
--read_client_busy(struct client *client, unsigned int class)
--{
--	const char *class_str[] = { "0", "1", "2", "3", "4", "5", "6", "7" };
--	char buf[256], *b;
--	int ret;
--
--	assert(class < ARRAY_SIZE(class_str));
--	if (class >= ARRAY_SIZE(class_str))
--		return 0;
--
--	assert(client->sysfs_root >= 0);
--	if (client->sysfs_root < 0)
--		return 0;
--
--	if (client->busy_root < 0)
--		client->busy_root = openat(client->sysfs_root, "busy",
--					   O_RDONLY | O_DIRECTORY);
--
--	assert(client->busy_root);
--	if (client->busy_root < 0)
--		return 0;
--
--	ret = __read_client_field(client->busy_root, class_str[class], buf,
--				  sizeof(buf));
--	if (ret) {
--		close(client->busy_root);
--		client->busy_root = -1;
--		return 0;
--	}
--
--	/*
--	 * Handle both single integer and key=value formats by skipping
--	 * leading non-digits.
--	 */
--	b = buf;
--	while (*b && !isdigit(*b))
--		b++;
--
--	return strtoull(b, NULL, 10);
--}
--
--static struct client *
--find_client(struct clients *clients, enum client_status status, unsigned int id)
--{
--	unsigned int start, num;
--	struct client *c;
--
--	start = status == FREE ? clients->active_clients : 0; /* Free block at the end. */
--	num = clients->num_clients - start;
--
--	for (c = &clients->client[start]; num; c++, num--) {
--		if (status != c->status)
--			continue;
--
--		if (status == FREE || c->id == id)
--			return c;
--	}
--
--	return NULL;
--}
--
--static void update_client(struct client *c, unsigned int pid, char *name)
--{
--	uint64_t val[c->clients->num_classes];
--	unsigned int i;
--
--	if (c->pid != pid)
--		c->pid = pid;
--
--	if (strcmp(c->name, name)) {
--		char *p;
--
--		strncpy(c->name, name, sizeof(c->name) - 1);
--		strncpy(c->print_name, name, sizeof(c->print_name) - 1);
--
--		p = c->print_name;
--		while (*p) {
--			if (!isprint(*p))
--				*p = '*';
--			p++;
--		}
--	}
--
--	for (i = 0; i < c->clients->num_classes; i++)
--		val[i] = read_client_busy(c, c->clients->class[i].class);
--
--	c->last_runtime = 0;
--	c->total_runtime = 0;
--
--	for (i = 0; i < c->clients->num_classes; i++) {
--		if (val[i] < c->last[i])
--			continue; /* It will catch up soon. */
--
--		c->total_runtime += val[i];
--		c->val[i] = val[i] - c->last[i];
--		c->last_runtime += c->val[i];
--		c->last[i] = val[i];
--	}
--
--	c->samples++;
--	c->status = ALIVE;
--}
--
--static void
--add_client(struct clients *clients, unsigned int id, unsigned int pid,
--	   char *name, int sysfs_root)
--{
--	struct client *c;
--
--	assert(!find_client(clients, ALIVE, id));
--
--	c = find_client(clients, FREE, 0);
--	if (!c) {
--		unsigned int idx = clients->num_clients;
--
--		clients->num_clients += (clients->num_clients + 2) / 2;
--		clients->client = realloc(clients->client,
--					  clients->num_clients * sizeof(*c));
--		assert(clients->client);
--
--		c = &clients->client[idx];
--		memset(c, 0, (clients->num_clients - idx) * sizeof(*c));
--	}
--
--	c->sysfs_root = sysfs_root;
--	c->busy_root = -1;
--	c->id = id;
--	c->clients = clients;
--	c->val = calloc(clients->num_classes, sizeof(c->val));
--	c->last = calloc(clients->num_classes, sizeof(c->last));
--	assert(c->val && c->last);
--
--	update_client(c, pid, name);
--}
--
--static void free_client(struct client *c)
--{
--	if (c->sysfs_root >= 0)
--		close(c->sysfs_root);
--	if (c->busy_root >= 0)
--		close(c->busy_root);
--	free(c->val);
--	free(c->last);
--	memset(c, 0, sizeof(*c));
--}
--
--static int
--read_client_sysfs(char *buf, int bufsize, const char *sysfs_root,
--		  unsigned int id, const char *field, int *client_root)
--{
--	ssize_t ret;
--
--	if (*client_root < 0) {
--		char namebuf[256];
--
--		ret = snprintf(namebuf, sizeof(namebuf), "%s/%u",
--			       sysfs_root, id);
--		assert(ret > 0 && ret < sizeof(namebuf));
--		if (ret <= 0 || ret == sizeof(namebuf))
--			return -1;
--
--		*client_root = open(namebuf, O_RDONLY | O_DIRECTORY);
--	}
--
--	if (*client_root < 0)
--		return -1;
--
--	return __read_client_field(*client_root, field, buf, bufsize);
--}
--
--static int client_last_cmp(const void *_a, const void *_b)
--{
--	const struct client *a = _a;
--	const struct client *b = _b;
--	long tot_a, tot_b;
--
--	/*
--	 * Sort clients in descending order of runtime in the previous sampling
--	 * period for active ones, followed by inactive. Tie-breaker is client
--	 * id.
--	 */
--
--	tot_a = a->status == ALIVE ? a->last_runtime : -1;
--	tot_b = b->status == ALIVE ? b->last_runtime : -1;
--
--	tot_b -= tot_a;
--	if (tot_b > 0)
--		return 1;
--	if (tot_b < 0)
--		return -1;
--
--	return (int)b->id - a->id;
--}
--
--static int client_total_cmp(const void *_a, const void *_b)
--{
--	const struct client *a = _a;
--	const struct client *b = _b;
--	long tot_a, tot_b;
--
--	tot_a = a->status == ALIVE ? a->total_runtime : -1;
--	tot_b = b->status == ALIVE ? b->total_runtime : -1;
--
--	tot_b -= tot_a;
--	if (tot_b > 0)
--		return 1;
--	if (tot_b < 0)
--		return -1;
--
--	return (int)b->id - a->id;
--}
--
--static int client_id_cmp(const void *_a, const void *_b)
--{
--	const struct client *a = _a;
--	const struct client *b = _b;
--	int id_a, id_b;
--
--	id_a = a->status == ALIVE ? a->id : -1;
--	id_b = b->status == ALIVE ? b->id : -1;
--
--	id_b -= id_a;
--	if (id_b > 0)
--		return 1;
--	if (id_b < 0)
--		return -1;
--
--	return (int)b->id - a->id;
--}
--
--static int client_pid_cmp(const void *_a, const void *_b)
--{
--	const struct client *a = _a;
--	const struct client *b = _b;
--	int pid_a, pid_b;
--
--	pid_a = a->status == ALIVE ? a->pid : INT_MAX;
--	pid_b = b->status == ALIVE ? b->pid : INT_MAX;
--
--	pid_b -= pid_a;
--	if (pid_b > 0)
--		return -1;
--	if (pid_b < 0)
--		return 1;
--
--	return (int)a->id - b->id;
--}
--
--static int (*client_cmp)(const void *, const void *) = client_last_cmp;
--
--static struct clients *sort_clients(struct clients *clients,
--				    int (*cmp)(const void *, const void *))
--{
--	unsigned int active, free;
--	struct client *c;
--	int tmp;
--
--	if (!clients)
--		return clients;
--
--	qsort(clients->client, clients->num_clients, sizeof(*clients->client),
--	      cmp);
--
--	/* Trim excessive array space. */
--	active = 0;
--	for_each_client(clients, c, tmp) {
--		if (c->status != ALIVE)
--			break; /* Active clients are first in the array. */
--		active++;
--	}
--
--	clients->active_clients = active;
--
--	free = clients->num_clients - active;
--	if (free > clients->num_clients / 2) {
--		active = clients->num_clients - free / 2;
--		if (active != clients->num_clients) {
--			clients->num_clients = active;
--			clients->client = realloc(clients->client,
--						  clients->num_clients *
--						  sizeof(*c));
--		}
--	}
--
--	return clients;
--}
--
--static bool aggregate_pids = true;
--
--static struct clients *display_clients(struct clients *clients)
--{
--	struct client *ac, *c, *cp = NULL;
--	struct clients *aggregated;
--	int tmp, num = 0;
--
--	if (!aggregate_pids)
--		goto out;
--
--	/* Sort by pid first to make it easy to aggregate while walking. */
--	sort_clients(clients, client_pid_cmp);
--
--	aggregated = calloc(1, sizeof(*clients));
--	assert(aggregated);
--
--	ac = calloc(clients->num_clients, sizeof(*c));
--	assert(ac);
--
--	aggregated->num_classes = clients->num_classes;
--	aggregated->class = clients->class;
--	aggregated->client = ac;
--
--	for_each_client(clients, c, tmp) {
--		unsigned int i;
--
--		if (c->status == FREE)
--			break;
--
--		assert(c->status == ALIVE);
--
--		if ((cp && c->pid != cp->pid) || !cp) {
--			ac = &aggregated->client[num++];
--
--			/* New pid. */
--			ac->clients = aggregated;
--			ac->status = ALIVE;
--			ac->id = -c->pid;
--			ac->pid = c->pid;
--			ac->busy_root = -1;
--			ac->sysfs_root = -1;
--			strcpy(ac->name, c->name);
--			strcpy(ac->print_name, c->print_name);
--			ac->engines = c->engines;
--			ac->val = calloc(clients->num_classes,
--					 sizeof(ac->val[0]));
--			assert(ac->val);
--			ac->samples = 1;
--		}
--
--		cp = c;
--
--		if (c->samples < 2)
--			continue;
--
--		ac->samples = 2; /* All what matters for display. */
--		ac->total_runtime += c->total_runtime;
--		ac->last_runtime += c->last_runtime;
--
--		for (i = 0; i < clients->num_classes; i++)
--			ac->val[i] += c->val[i];
--	}
--
--	aggregated->num_clients = num;
--	aggregated->active_clients = num;
--
--	clients = aggregated;
--
--out:
--	return sort_clients(clients, client_cmp);
--}
--
--static void free_clients(struct clients *clients)
--{
--	struct client *c;
--	unsigned int tmp;
--
--	for_each_client(clients, c, tmp) {
--		free(c->val);
--		free(c->last);
--	}
--
--	free(clients->client);
--	free(clients);
--}
--
--static struct clients *scan_clients(struct clients *clients)
--{
--	struct dirent *dent;
--	struct client *c;
--	unsigned int id;
--	int tmp;
--	DIR *d;
--
--	if (!clients)
--		return clients;
--
--	for_each_client(clients, c, tmp) {
--		assert(c->status != PROBE);
--		if (c->status == ALIVE)
--			c->status = PROBE;
--		else
--			break; /* Free block at the end of array. */
--	}
--
--	d = opendir(clients->sysfs_root);
--	if (!d)
--		return clients;
--
--	while ((dent = readdir(d)) != NULL) {
--		char name[24], pid[24];
--		int ret, root = -1, *pr;
--
--		if (dent->d_type != DT_DIR)
--			continue;
--		if (!isdigit(dent->d_name[0]))
--			continue;
--
--		id = atoi(dent->d_name);
--
--		c = find_client(clients, PROBE, id);
--
--		if (c)
--			pr = &c->sysfs_root;
--		else
--			pr = &root;
--
--		ret = read_client_sysfs(name, sizeof(name), clients->sysfs_root,
--					id, "name", pr);
--		ret |= read_client_sysfs(pid, sizeof(pid), clients->sysfs_root,
--					id, "pid", pr);
--		if (!ret) {
--			if (!c)
--				add_client(clients, id, atoi(pid), name, root);
--			else
--				update_client(c, atoi(pid), name);
--		} else if (c) {
--			c->status = PROBE; /* Will be deleted below. */
--		}
--	}
--
--	closedir(d);
--
--	for_each_client(clients, c, tmp) {
--		if (c->status == PROBE)
--			free_client(c);
--		else if (c->status == FREE)
--			break;
--	}
--
--	return display_clients(clients);
--}
--
- static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
- 
- static void n_spaces(const unsigned int n)
-@@ -1324,18 +768,6 @@ json_close_struct(void)
- 		fflush(stdout);
- }
- 
--static void
--__json_add_member(const char *key, const char *val)
--{
--	assert(json_indent_level < ARRAY_SIZE(json_indent));
--
--	fprintf(out, "%s%s\"%s\": \"%s\"",
--		json_struct_members ? ",\n" : "",
--		json_indent[json_indent_level], key, val);
--
--	json_struct_members++;
--}
--
- static unsigned int
- json_add_member(const struct cnt_group *parent, struct cnt_item *item,
- 		unsigned int headers)
-@@ -2061,157 +1493,6 @@ print_engines(struct engines *engines, double t, int lines, int w, int h)
- 	return lines;
- }
- 
--static int
--print_clients_header(struct clients *clients, int lines,
--		     int con_w, int con_h, int *class_w)
--{
--	if (output_mode == INTERACTIVE) {
--		const char *pidname = "   PID              NAME ";
--		unsigned int num_active = 0;
--		int len = strlen(pidname);
--
--		if (lines++ >= con_h)
--			return lines;
--
--		printf("\033[7m");
--		printf("%s", pidname);
--
--		if (lines++ >= con_h || len >= con_w)
--			return lines;
--
--		if (clients->num_classes) {
--			unsigned int i;
--			int width;
--
--			for (i = 0; i < clients->num_classes; i++) {
--				if (clients->class[i].num_engines)
--					num_active++;
--			}
--
--			*class_w = width = (con_w - len) / num_active;
--
--			for (i = 0; i < clients->num_classes; i++) {
--				const char *name = clients->class[i].name;
--				int name_len = strlen(name);
--				int pad = (width - name_len) / 2;
--				int spaces = width - pad - name_len;
--
--				if (!clients->class[i].num_engines)
--					continue; /* Assert in the ideal world. */
--
--				if (pad < 0 || spaces < 0)
--					continue;
--
--				n_spaces(pad);
--				printf("%s", name);
--				n_spaces(spaces);
--				len += pad + name_len + spaces;
--			}
--		}
--
--		n_spaces(con_w - len);
--		printf("\033[0m\n");
--	} else {
--		if (clients->num_classes)
--			pops->open_struct("clients");
--	}
--
--	return lines;
--}
--
--static bool numeric_clients;
--static bool filter_idle;
--
--static int
--print_client(struct client *c, struct engines *engines, double t, int lines,
--	     int con_w, int con_h, unsigned int period_us, int *class_w)
--{
--	struct clients *clients = c->clients;
--	unsigned int i;
--
--	if (output_mode == INTERACTIVE) {
--		if (filter_idle && (!c->total_runtime || c->samples < 2))
--			return lines;
--
--		lines++;
--
--		printf("%6u %17s ", c->pid, c->print_name);
--
--		for (i = 0; c->samples > 1 && i < clients->num_classes; i++) {
--			double pct;
--
--			if (!clients->class[i].num_engines)
--				continue; /* Assert in the ideal world. */
--
--			pct = (double)c->val[i] / period_us / 1e3 * 100 /
--			      clients->class[i].num_engines;
--
--			/*
--			 * Guard against possible time-drift between sampling
--			 * client data and time we obtained our time-delta from
--			 * PMU.
--			 */
--			if (pct > 100.0)
--				pct = 100.0;
--
--			print_percentage_bar(pct, *class_w, numeric_clients);
--		}
--
--		putchar('\n');
--	} else if (output_mode == JSON) {
--		char buf[64];
--
--		snprintf(buf, sizeof(buf), "%u", c->id);
--		pops->open_struct(buf);
--
--		__json_add_member("name", c->print_name);
--
--		snprintf(buf, sizeof(buf), "%u", c->pid);
--		__json_add_member("pid", buf);
--
--		if (c->samples > 1) {
--			pops->open_struct("engine-classes");
--
--			for (i = 0; i < clients->num_classes; i++) {
--				double pct;
--
--				snprintf(buf, sizeof(buf), "%s",
--					clients->class[i].name);
--				pops->open_struct(buf);
--
--				pct = (double)c->val[i] / period_us / 1e3 * 100;
--				snprintf(buf, sizeof(buf), "%f", pct);
--				__json_add_member("busy", buf);
--
--				__json_add_member("unit", "%");
--
--				pops->close_struct();
--			}
--
--			pops->close_struct();
--		}
--
--		pops->close_struct();
--	}
--
--	return lines;
--}
--
--static int
--print_clients_footer(struct clients *clients, double t,
--		     int lines, int con_w, int con_h)
--{
--	if (output_mode == INTERACTIVE) {
--		if (lines++ < con_h)
--			printf("\n");
--	} else {
--		if (clients->num_classes)
--			pops->close_struct();
--	}
--
--	return lines;
--}
--
- static bool stop_top;
- 
- static void sigint_handler(int  sig)
-@@ -2267,31 +1548,6 @@ static void interactive_stdin(void)
- 	assert(ret == 0);
- }
- 
--static void select_client_sort(void)
--{
--	struct {
--		int (*cmp)(const void *, const void *);
--		const char *msg;
--	} cmp[] = {
--		{ client_last_cmp, "Sorting clients by current GPU usage." },
--		{ client_total_cmp, "Sorting clients by accummulated GPU usage." },
--		{ client_pid_cmp, "Sorting clients by pid." },
--		{ client_id_cmp, "Sorting clients by sysfs id." },
--	};
--	static unsigned int client_sort;
--
--bump:
--	if (++client_sort >= ARRAY_SIZE(cmp))
--		client_sort = 0;
--
--	client_cmp = cmp[client_sort].cmp;
--	header_msg = cmp[client_sort].msg;
--
--	/* Sort by client id makes no sense with pid aggregation. */
--	if (aggregate_pids && client_cmp == client_id_cmp)
--		goto bump;
--}
--
- static bool in_help;
- 
- static void process_help_stdin(void)
-@@ -2334,29 +1590,9 @@ static void process_normal_stdin(void)
- 			else
- 				header_msg = "Showing physical engines.";
- 			break;
--		case 'i':
--			filter_idle ^= true;
--			if (filter_idle)
--				header_msg = "Hiding inactive clients.";
--			else
--				header_msg = "Showing inactive clients.";
--			break;
--		case 'n':
--			numeric_clients ^= true;
--			break;
--		case 's':
--			select_client_sort();
--			break;
- 		case 'h':
- 			in_help = true;
- 			break;
--		case 'H':
--			aggregate_pids ^= true;
--			if (aggregate_pids)
--				header_msg = "Aggregating clients.";
--			else
--				header_msg = "Showing individual clients.";
--			break;
- 		};
- 	}
- }
-@@ -2384,10 +1620,6 @@ static void show_help_screen(void)
- 	printf(
- "Help for interactive commands:\n\n"
- "    '1'    Toggle between aggregated engine class and physical engine mode.\n"
--"    'n'    Toggle display of numeric client busyness overlay.\n"
--"    's'    Toggle between sort modes (runtime, total runtime, pid, client id).\n"
--"    'i'    Toggle display of clients which used no GPU time.\n"
--"    'H'    Toggle between per PID aggregation and individual clients.\n"
- "\n"
- "    'h' or 'q'    Exit interactive help.\n"
- "\n");
-@@ -2396,7 +1628,6 @@ static void show_help_screen(void)
- int main(int argc, char **argv)
- {
- 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
--	struct clients *clients = NULL;
- 	int con_w = -1, con_h = -1;
- 	char *output_path = NULL;
- 	struct engines *engines;
-@@ -2530,23 +1761,15 @@ int main(int argc, char **argv)
- 
- 	ret = EXIT_SUCCESS;
- 
--	clients = init_clients(card.pci_slot_name[0] ? card.card : NULL);
- 	init_engine_classes(engines);
--	if (clients) {
--		clients->num_classes = engines->num_classes;
--		clients->class = engines->class;
--	}
- 
- 	pmu_sample(engines);
--	scan_clients(clients);
- 	codename = igt_device_get_pretty_name(&card, false);
- 
- 	while (!stop_top) {
--		struct clients *disp_clients;
- 		bool consumed = false;
--		int j, lines = 0;
- 		struct winsize ws;
--		struct client *c;
-+		int lines = 0;
- 		double t;
- 
- 		/* Update terminal size. */
-@@ -2565,8 +1788,6 @@ int main(int argc, char **argv)
- 		pmu_sample(engines);
- 		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
- 
--		disp_clients = scan_clients(clients);
--
- 		if (stop_top)
- 			break;
- 
-@@ -2586,41 +1807,12 @@ int main(int argc, char **argv)
- 
- 			lines = print_engines(engines, t, lines, con_w, con_h);
- 
--			if (disp_clients) {
--				int class_w;
--
--				lines = print_clients_header(disp_clients, lines,
--							     con_w, con_h,
--							     &class_w);
--
--				for_each_client(disp_clients, c, j) {
--					assert(c->status != PROBE);
--					if (c->status != ALIVE)
--						break; /* Active clients are first in the array. */
--
--					if (lines >= con_h)
--						break;
--
--					lines = print_client(c, engines, t,
--							     lines, con_w,
--							     con_h, period_us,
--							     &class_w);
--				}
--
--				lines = print_clients_footer(disp_clients, t,
--							     lines, con_w,
--							     con_h);
--			}
--
- 			pops->close_struct();
- 		}
- 
- 		if (stop_top)
- 			break;
- 
--		if (disp_clients != clients)
--			free_clients(disp_clients);
--
- 		if (output_mode == INTERACTIVE)
- 			process_stdin(period_us);
- 		else
--- 
-2.32.0
+== Summary ==
+
+CI Bug Log - changes from IGT_6293 -> IGTPW_6442
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6442 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6442, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/index.html
+
+Participating hosts (33 -> 34)
+------------------------------
+
+  Additional (2): fi-kbl-soraka fi-tgl-u2 
+  Missing    (1): fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6442:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_addfb_basic@addfb25-bad-modifier:
+    - fi-rkl-11600:       [PASS][1] -> [FAIL][2] +36 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_addfb_basic@addfb25-bad-modifier.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_addfb_basic@addfb25-bad-modifier.html
+
+  * igt@kms_addfb_basic@bo-too-small:
+    - fi-tgl-1115g4:      [PASS][3] -> [FAIL][4] +37 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_addfb_basic@bo-too-small.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_addfb_basic@bo-too-small.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a:
+    - fi-tgl-u2:          NOTRUN -> [FAIL][5] +53 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+    - fi-rkl-guc:         [PASS][6] -> [FAIL][7] +36 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-rkl-11600:       [PASS][8] -> [CRASH][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@prime_vgem@basic-fence-flip.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@prime_vgem@basic-fence-flip.html
+    - fi-tgl-1115g4:      [PASS][10] -> [CRASH][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@prime_vgem@basic-fence-flip.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@prime_vgem@basic-fence-flip.html
+    - fi-tgl-u2:          NOTRUN -> [CRASH][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@prime_vgem@basic-fence-flip.html
+    - fi-rkl-guc:         [PASS][13] -> [CRASH][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@prime_vgem@basic-fence-flip.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@prime_vgem@basic-fence-flip.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      [SKIP][15] ([i915#1155]) -> [FAIL][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html
+    - fi-rkl-11600:       [SKIP][17] ([i915#3012]) -> [FAIL][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
+    - fi-rkl-guc:         [SKIP][19] ([i915#3012]) -> [FAIL][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-rkl-guc:         [SKIP][21] ([fdo#111827]) -> [FAIL][22] +8 similar issues
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_chamelium@common-hpd-after-suspend.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-rkl-11600:       [SKIP][23] ([fdo#111827]) -> [FAIL][24] +8 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_chamelium@dp-crc-fast.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_chamelium@vga-hpd-fast:
+    - fi-tgl-1115g4:      [SKIP][25] ([fdo#111827]) -> [FAIL][26] +8 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_chamelium@vga-hpd-fast.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_chamelium@vga-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-rkl-guc:         [SKIP][27] ([i915#4103]) -> [FAIL][28] +1 similar issue
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+    - fi-rkl-11600:       [SKIP][29] ([i915#4103]) -> [FAIL][30] +1 similar issue
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+    - fi-tgl-1115g4:      [SKIP][31] ([i915#4103]) -> [FAIL][32] +1 similar issue
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-rkl-11600:       [SKIP][33] ([i915#533]) -> [FAIL][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+    - fi-rkl-guc:         [SKIP][35] ([i915#533]) -> [FAIL][36]
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_rpm@basic-rte:
+    - {fi-jsl-1}:         [PASS][37] -> [CRASH][38] +2 similar issues
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@i915_pm_rpm@basic-rte.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@i915_pm_rpm@basic-rte.html
+    - {fi-ehl-2}:         [PASS][39] -> [CRASH][40] +2 similar issues
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@i915_pm_rpm@basic-rte.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling:
+    - {fi-ehl-2}:         [PASS][41] -> [FAIL][42] +46 similar issues
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling.html
+
+  * igt@kms_busy@basic:
+    - {fi-jsl-1}:         NOTRUN -> [FAIL][43]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_busy@basic.html
+    - {fi-ehl-2}:         NOTRUN -> [FAIL][44]
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_busy@basic.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - {fi-ehl-2}:         [SKIP][45] ([fdo#111827]) -> [FAIL][46] +8 similar issues
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@kms_chamelium@dp-crc-fast.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_chamelium@dp-hpd-fast:
+    - {fi-jsl-1}:         [SKIP][47] ([fdo#111827]) -> [FAIL][48] +8 similar issues
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@kms_chamelium@dp-hpd-fast.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_chamelium@dp-hpd-fast.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - {fi-tgl-dsi}:       [SKIP][49] ([fdo#109284] / [fdo#111827]) -> [FAIL][50] +8 similar issues
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-dsi/igt@kms_chamelium@hdmi-hpd-fast.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-dsi/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - {fi-ehl-2}:         [SKIP][51] ([fdo#109278]) -> [FAIL][52] +1 similar issue
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+    - {fi-jsl-1}:         [SKIP][53] ([i915#4103]) -> [FAIL][54] +1 similar issue
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - {fi-tgl-dsi}:       [SKIP][55] ([i915#4103]) -> [FAIL][56] +1 similar issue
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-dsi/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-dsi/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a:
+    - {fi-tgl-dsi}:       [PASS][57] -> [FAIL][58] +38 similar issues
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - {fi-jsl-1}:         [SKIP][59] ([i915#533]) -> [FAIL][60]
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+    - {fi-ehl-2}:         [SKIP][61] ([fdo#109278] / [i915#533]) -> [FAIL][62]
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:
+    - {fi-jsl-1}:         [PASS][63] -> [FAIL][64] +46 similar issues
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - {fi-tgl-dsi}:       [PASS][65] -> [CRASH][66]
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-dsi/igt@prime_vgem@basic-fence-flip.html
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-dsi/igt@prime_vgem@basic-fence-flip.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6442 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][67] ([fdo#109271]) +31 similar issues
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][68] ([fdo#109271]) +17 similar issues
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][69] ([fdo#109271]) +8 similar issues
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-tgl-u2:          NOTRUN -> [SKIP][70] ([i915#2190])
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][71] ([fdo#109271] / [i915#2190])
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][72] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-tgl-u2:          NOTRUN -> [SKIP][73] ([i915#4613]) +3 similar issues
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-rkl-11600:       [PASS][74] -> [FAIL][75] ([i915#4598]) +1 similar issue
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-rkl-guc:         [PASS][76] -> [CRASH][77] ([i915#4598])
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@i915_pm_rpm@basic-rte.html
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@i915_pm_rpm@basic-rte.html
+    - fi-tgl-u2:          NOTRUN -> [CRASH][78] ([i915#4598])
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@i915_pm_rpm@basic-rte.html
+    - fi-tgl-1115g4:      [PASS][79] -> [CRASH][80] ([i915#4598])
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@i915_pm_rpm@basic-rte.html
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@i915_pm_rpm@basic-rte.html
+    - fi-rkl-11600:       [PASS][81] -> [CRASH][82] ([i915#4598])
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-u2:          NOTRUN -> [FAIL][83] ([i915#4598]) +1 similar issue
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@i915_pm_rpm@module-reload.html
+    - fi-tgl-1115g4:      [PASS][84] -> [FAIL][85] ([i915#4598]) +1 similar issue
+   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+    - fi-rkl-guc:         [PASS][86] -> [FAIL][87] ([i915#4598]) +1 similar issue
+   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@i915_pm_rpm@module-reload.html
+   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][88] ([i915#1886] / [i915#2291])
+   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_addfb_basic@too-wide:
+    - fi-rkl-11600:       [PASS][89] -> [FAIL][90] ([i915#4638]) +2 similar issues
+   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_addfb_basic@too-wide.html
+   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_addfb_basic@too-wide.html
+
+  * igt@kms_busy@basic:
+    - fi-tgl-1115g4:      NOTRUN -> [FAIL][91] ([i915#4638])
+   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_busy@basic.html
+    - fi-rkl-guc:         NOTRUN -> [FAIL][92] ([i915#4638])
+   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_busy@basic.html
+    - fi-rkl-11600:       NOTRUN -> [FAIL][93] ([i915#4638])
+   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_busy@basic.html
+
+  * igt@kms_chamelium@dp-edid-read:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][94] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][95] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-bdw-5557u/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
+    - fi-tgl-u2:          NOTRUN -> [FAIL][96] ([i915#4638]) +3 similar issues
+   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+    - fi-tgl-1115g4:      [PASS][97] -> [FAIL][98] ([i915#4638]) +2 similar issues
+   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+    - fi-rkl-guc:         [PASS][99] -> [FAIL][100] ([i915#4638]) +2 similar issues
+   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - fi-tgl-u2:          NOTRUN -> [CRASH][101] ([i915#4638])
+   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@kms_force_connector_basic@force-connector-state.html
+    - fi-rkl-11600:       [PASS][102] -> [CRASH][103] ([i915#4638])
+   [102]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_force_connector_basic@force-connector-state.html
+   [103]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_force_connector_basic@force-connector-state.html
+    - fi-rkl-guc:         [PASS][104] -> [CRASH][105] ([i915#4638])
+   [104]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_force_connector_basic@force-connector-state.html
+   [105]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_force_connector_basic@force-connector-state.html
+    - fi-tgl-1115g4:      [PASS][106] -> [CRASH][107] ([i915#4638])
+   [106]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_force_connector_basic@force-connector-state.html
+   [107]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-u2:          NOTRUN -> [SKIP][108] ([fdo#109285])
+   [108]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][109] ([fdo#109271] / [i915#533])
+   [109]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+    - fi-cfl-8109u:       [PASS][110] -> [DMESG-WARN][111] ([i915#295]) +12 similar issues
+   [110]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+   [111]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-tgl-u2:          NOTRUN -> [SKIP][112] ([i915#3301])
+   [112]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gtt:
+    - fi-snb-2600:        [DMESG-FAIL][113] ([i915#4610]) -> [PASS][114]
+   [113]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-snb-2600/igt@i915_selftest@live@gtt.html
+   [114]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-snb-2600/igt@i915_selftest@live@gtt.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4598]: https://gitlab.freedesktop.org/drm/intel/issues/4598
+  [i915#4610]: https://gitlab.freedesktop.org/drm/intel/issues/4610
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4638]: https://gitlab.freedesktop.org/drm/intel/issues/4638
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6293 -> IGTPW_6442
+
+  CI-20190529: 20190529
+  CI_DRM_10930: 2c9ba65f2befe9febd864f0795227b351bd62dba @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6442: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/index.html
+  IGT_6293: bf11f87c27ad1cec3e60bd31c23080d19aa093f3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@amdgpu/amd_dp_dsc@dsc-bpc
++igt@amdgpu/amd_dp_dsc@dsc-enable-basic
++igt@amdgpu/amd_dp_dsc@dsc-link-settings
++igt@amdgpu/amd_dp_dsc@dsc-slice-dimensions-change
++igt@amdgpu/amd_dp_dsc@dsc-slice-height-property
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/index.html
+
+--===============7501021411473884126==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: Introduces DP DSC test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97325/">https://patchwork.freedesktop.org/series/97325/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6293 -&gt; IGTPW_6442</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6442 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6442, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/index.html</p>
+<h2>Participating hosts (33 -&gt; 34)</h2>
+<p>Additional (2): fi-kbl-soraka fi-tgl-u2 <br />
+  Missing    (1): fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6442:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-bad-modifier:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_addfb_basic@addfb25-bad-modifier.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_addfb_basic@addfb25-bad-modifier.html">FAIL</a> +36 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@bo-too-small:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_addfb_basic@bo-too-small.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_addfb_basic@bo-too-small.html">FAIL</a> +37 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a.html">FAIL</a> +53 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-pipe-b:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">FAIL</a> +36 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@prime_vgem@basic-fence-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@prime_vgem@basic-fence-flip.html">CRASH</a></p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@prime_vgem@basic-fence-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@prime_vgem@basic-fence-flip.html">CRASH</a></p>
+</li>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@prime_vgem@basic-fence-flip.html">CRASH</a></p>
+</li>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@prime_vgem@basic-fence-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@prime_vgem@basic-fence-flip.html">CRASH</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@i915_pm_backlight@basic-brightness.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_chamelium@common-hpd-after-suspend.html">FAIL</a> +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-hpd-fast:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_chamelium@vga-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_chamelium@vga-hpd-fast.html">FAIL</a> +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">FAIL</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">FAIL</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">FAIL</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>
+<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@i915_pm_rpm@basic-rte.html">CRASH</a> +2 similar issues</p>
+</li>
+<li>
+<p>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@i915_pm_rpm@basic-rte.html">CRASH</a> +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling:</p>
+<ul>
+<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling.html">FAIL</a> +46 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic:</p>
+<ul>
+<li>
+<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_busy@basic.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_busy@basic.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_chamelium@dp-crc-fast.html">FAIL</a> +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-hpd-fast:</p>
+<ul>
+<li>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_chamelium@dp-hpd-fast.html">FAIL</a> +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-dsi/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109284">fdo#109284</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-dsi/igt@kms_chamelium@hdmi-hpd-fast.html">FAIL</a> +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>
+<p>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">FAIL</a> +1 similar issue</p>
+</li>
+<li>
+<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">FAIL</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-dsi/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-dsi/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">FAIL</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a.html">FAIL</a> +38 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>
+<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-ehl-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-ehl-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:</p>
+<ul>
+<li>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-jsl-1/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-jsl-1/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html">FAIL</a> +46 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-dsi/igt@prime_vgem@basic-fence-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-dsi/igt@prime_vgem@basic-fence-flip.html">CRASH</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6442 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4598">i915#4598</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@i915_pm_rpm@basic-rte.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4598">i915#4598</a>)</p>
+</li>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@i915_pm_rpm@basic-rte.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4598">i915#4598</a>)</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@i915_pm_rpm@basic-rte.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4598">i915#4598</a>)</p>
+</li>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@i915_pm_rpm@basic-rte.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4598">i915#4598</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4598">i915#4598</a>) +1 similar issue</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4598">i915#4598</a>) +1 similar issue</p>
+</li>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4598">i915#4598</a>) +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@too-wide:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_addfb_basic@too-wide.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_addfb_basic@too-wide.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic:</p>
+<ul>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_busy@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>)</p>
+</li>
+<li>
+<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_busy@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>)</p>
+</li>
+<li>
+<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_busy@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-edid-read:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-bdw-5557u/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:</p>
+<ul>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>) +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@kms_force_connector_basic@force-connector-state.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>)</p>
+</li>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-11600/igt@kms_force_connector_basic@force-connector-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-11600/igt@kms_force_connector_basic@force-connector-state.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>)</p>
+</li>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-rkl-guc/igt@kms_force_connector_basic@force-connector-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-rkl-guc/igt@kms_force_connector_basic@force-connector-state.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>)</p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-tgl-1115g4/igt@kms_force_connector_basic@force-connector-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-1115g4/igt@kms_force_connector_basic@force-connector-state.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4638">i915#4638</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +12 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-tgl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gtt:<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6293/fi-snb-2600/igt@i915_selftest@live@gtt.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4610">i915#4610</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/fi-snb-2600/igt@i915_selftest@live@gtt.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6293 -&gt; IGTPW_6442</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10930: 2c9ba65f2befe9febd864f0795227b351bd62dba @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6442: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/index.html<br />
+  IGT_6293: bf11f87c27ad1cec3e60bd31c23080d19aa093f3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@amdgpu/amd_dp_dsc@dsc-bpc<br />
++igt@amdgpu/amd_dp_dsc@dsc-enable-basic<br />
++igt@amdgpu/amd_dp_dsc@dsc-link-settings<br />
++igt@amdgpu/amd_dp_dsc@dsc-slice-dimensions-change<br />
++igt@amdgpu/amd_dp_dsc@dsc-slice-height-property</p>
+
+</body>
+</html>
+
+--===============7501021411473884126==--
