@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF83C6E19A
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Nov 2021 00:31:33 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Fri, 26 Nov 2021 00:31:18 +0000
-Message-ID: <6f7e4bcce22e4bd0bdb189626a331a30@intel.com>
-References: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
- <f6341eaa-9815-6d49-9e69-d355581e8585@amd.com>
- <aa4d94075c5f4b64b5d753323d745ed3@intel.com>
- <YZ83BCgRaTvnLX/j@platvala-desk.ger.corp.intel.com>
- <ab60b3f8-4739-9a59-ea52-4d5070908915@amd.com>
- <2f6c8166-1303-cb6d-ba6a-033a5861086b@amd.com>
-In-Reply-To: <2f6c8166-1303-cb6d-ba6a-033a5861086b@amd.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 820986E3C4
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Nov 2021 01:56:45 +0000 (UTC)
+From: Mastan Katragadda <mastanx.katragadda@intel.com>
+Date: Fri, 26 Nov 2021 07:27:35 +0530
+Message-Id: <20211126015735.908681-1-mastanx.katragadda@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: Add test for AMD DP DSC
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
+ Submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,76 +18,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>, "Latvala, Petri" <petri.latvala@intel.com>
-Cc: Eryk Brol <eryk.brol@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Mikita Lipski <mikita.lipski@amd.com>
+To: igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
+Cc: mastanx.katragadda@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QFJvZHJpZ28gU2lxdWVpcmEgSm9yZGFvIEkgc2VlIHRob3NlIGZhaWx1cmVzIGFyZSBrZWVwIGNv
-bWluZy4gSSBoYXZlbid0IHNlZW4gdGhvc2UgZnJvbSBDSSBvciBmcm9tIG90aGVyIHByZS1tZXJn
-ZSB0ZXN0aW5nLiANCklzIHJldmlldyBkb25lIGZvciB0aGlzIHBhdGNoPw0KDQpMYWtzaG1pLg0K
-DQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogUm9kcmlnbyBTaXF1ZWlyYSBKb3Jk
-YW8gPHJqb3Jkcmlnb0BhbWQuY29tPiANClNlbnQ6IFRodXJzZGF5LCBOb3ZlbWJlciAyNSwgMjAy
-MSAxMDo1OCBBTQ0KVG86IExhdHZhbGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT47
-IFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+
-DQpDYzogUm9kcmlnbyBTaXF1ZWlyYSA8Um9kcmlnby5TaXF1ZWlyYUBhbWQuY29tPjsgTWlraXRh
-IExpcHNraSA8bWlraXRhLmxpcHNraUBhbWQuY29tPjsgRXJ5ayBCcm9sIDxlcnlrLmJyb2xAYW1k
-LmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBoYXJyeS53ZW50bGFuZEBhbWQu
-Y29tOyBOaWNob2xhcy5DaG9pQGFtZC5jb207IG1hcmt5YWNvdWJAY2hyb21pdW0ub3JnDQpTdWJq
-ZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMvYW1kZ3B1OiBBZGQgdGVzdCBm
-b3IgQU1EIERQIERTQw0KDQoNCg0KT24gMjAyMS0xMS0yNSAxMDo1NyBhLm0uLCBSb2RyaWdvIFNp
-cXVlaXJhIEpvcmRhbyB3cm90ZToNCj4gDQo+IA0KPiBPbiAyMDIxLTExLTI1IDI6MTEgYS5tLiwg
-UGV0cmkgTGF0dmFsYSB3cm90ZToNCj4+IE9uIFRodSwgTm92IDI1LCAyMDIxIGF0IDAxOjAxOjA0
-QU0gKzAyMDAsIFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgd3JvdGU6DQo+Pj4gQFJvZHJpZ28gU2lx
-dWVpcmEgSSBkb24ndCBoYXZlIHRoZSBwb3NzaWJpbGl0eSB0byByZS1ydW4gdGhlIHNlcmllcy4g
-DQo+Pj4gQExhdHZhbGEsIFBldHJpIENhbiB5b3UgaGVscCBoZXJlPw0KPj4+DQo+Pj4gTGFrc2ht
-aS4NCj4+DQo+PiBVbmZvcnR1bmF0ZWx5IHBhdGNod29yayBnb3QgY29uZnVzZWQgYnkgeW91ciBl
-bWFpbHMgYW5kIHRoaW5rcyB5b3UndmUgDQo+PiBzZW50IGEgcGF0Y2gsIHNvIHRoZSByZS1ydW4g
-YnV0dG9uIGp1c3QgcmVhdHRlbXB0cyB0aGUgaW5jb3JyZWN0IA0KPj4gcGF0Y2guDQo+Pg0KPj4g
-Um9kcmlnbywgcGxlYXNlIHJlLXNlbmQgdGhpcyBwYXRjaC4NCj4+DQo+IA0KPiANCj4gSGkgUGV0
-cmkvTGFrc2htaSwNCj4gDQo+IFRoYW5rcyBhIGxvdCBmb3IgeW91ciBoZWxwLg0KPiANCj4gSSBz
-dWJtaXR0ZWQgYSBWMjoNCj4gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmll
-cy85NzEwOC8NCj4gDQo+IFRoYW5rcy4NCg0KTGFrc2htaS9QZXRyaSwNCg0KRm9yIHNvbWUgcmVh
-c29uLCBpdCBsb29rcyBsaWtlIHRoYXQgdGhlIG5ldyB2ZXJzaW9uIGlzIHN0aWxsIGFzc2lnbmVk
-IHRvIExha3NobWkgaW4gdGhlIHBhdGNod29yaywgYW5kIGl0IGhhcyBzb21lIHdlaXJkIGZhaWx1
-cmVzIChzZWUgYmVsb3cpLiANCkFueSBpZGVhPyBEbyBJIG5lZWQgdG8gcmVzdWJtaXQgdGhlIHBh
-dGNoIHdpdGggYSBkaWZmZXJlbnQgc3ViamVjdD8NCg0KVGhhbmtzDQoNCkdpdGxhYi5QaXBlbGlu
-ZToNCg0KUGlwZWxpbmUgc3RhdHVzOiBGQUlMRUQuDQoNCnNlZSBodHRwczovL2dpdGxhYi5mcmVl
-ZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vcGlwZWxpbmVzLzQ1MzU2MQ0KZm9yIHRo
-ZSBvdmVydmlldy4NCg0KY29udGFpbmVyczppZ3QgaGFzIGZhaWxlZA0KKGh0dHBzOi8vZ2l0bGFi
-LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9qb2JzLzE2MTY4MDYzKToNCiAg
-IFNURVAgMjogQ09QWSBpbnN0YWxsZGlyL29wdC9pZ3QgL29wdC9pZ3QNCiAgIDE4OTVkMjBmNTQ2
-OTIxMGFmODI4MWFjYWM3NzY5ZmE1MWVmYmRlNWNhMzkzMWJkNDU3YWYyYzI4MzRlMWY3ZWUNCiAg
-IFNURVAgMzogQ09QWSAuZ2l0bGFiLWNpL2RvY2tlci1oZWxwLnNoIC91c3IvbG9jYWwvYmluL2Rv
-Y2tlci1oZWxwLnNoDQogICBiNzQzZDE1NWQzMGQyMDEwMGVkZjliMmRmODk2NjQyNzViMmVhMzNk
-NDAyZjlkZjY5Y2Y1YTE4MjRhNzgxYjAxDQogICBTVEVQIDQ6IEVOViBQQVRIPSIvb3B0L2lndC9i
-aW46JHtQQVRIfSINCiAgIDVlYjAzMzBmZGZjYTE2NGQxZWY3NjlkNjJmMWQzYzFhNTM5YTA5YTgx
-ZGEzY2EwMTI3M2M0ZTdhZmUyZWU5NzQNCiAgIFNURVAgNTogRU5WDQpMRF9MSUJSQVJZX1BBVEg9
-Ii9vcHQvaWd0L2xpYjovb3B0L2lndC9saWI2NDoke0xEX0xJQlJBUllfUEFUSH0iDQogICBiNGVh
-OWQ0NTM4MjcwYWQyNjdmZjc5OGRlNTFmNGI3YmVkM2UxYWUyN2Y5ZDNkZjhjZWExNjNlNzhhY2M5
-ZDNlDQogICBTVEVQIDY6IEVOViBJR1RfVEVTVF9ST09UPSIvb3B0L2lndC9saWJleGVjL2lndC1n
-cHUtdG9vbHMiDQogICBhZTA2MDEyMmM5ZWVhYjUwZDgyYmJhZmEwOTdlOGNkNzJiY2NkYzhlOGNi
-MDBiNDJkZTFiMzg1MzE4NTRkMDk5DQogICBTVEVQIDc6IENNRCBkb2NrZXItaGVscC5zaA0KICAg
-U1RFUCA4OiBDT01NSVQNCnJlZ2lzdHJ5LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRh
-Z3MvaWd0OmNvbW1pdC1kY2ZhNTc5YmEwYTM4MTMxODgxZGZkNDQxZDU1OGI1NGQ0Y2QzMTgzDQog
-ICBmY2MyOTMwNDMxNGY1MTVlN2M4NjEyZjQ4MGVmNTY0MTlkZTMyYWM1YjU5MTcwMDBiNDM0NzY4
-Y2Y5NGI2NzkzDQogICBHZXR0aW5nIGltYWdlIHNvdXJjZSBzaWduYXR1cmVzDQogICBDb3B5aW5n
-IGJsb2INCnNoYTI1Njo1MDgzODFkZDgyYWViODUxZGE5NThkYjA1MjhmMjg5MzI4NWE5MzkyYmQw
-Nzg3MDIwZDM1NjlhNjFmY2RkNTEzDQogICBDb3B5aW5nIGJsb2INCnNoYTI1NjozNTA0YTgzMzdk
-M2I3ZWFhYmZkMzM4ZDZhOTcxZDAyNDQxZDI4ZWJlZjhiZDgxZjczMGQ4N2Y5MzZlZDU4MDc5DQog
-ICBDb3B5aW5nIGJsb2INCnNoYTI1NjpmM2Y0MTE5ZGEzNmY4NTI1YjkyM2EzMTBjNGIxZjE1NTc5
-Y2EzMTFhNzUzYzk5NzNlZjk2NmNkYjJhNzFhNGU4DQogICBzZWN0aW9uX2VuZDoxNjM3ODYzMzE4
-OnN0ZXBfc2NyaXB0DQogICBFUlJPUjogSm9iIGZhaWxlZDogZXhlY3V0aW9uIHRvb2sgbG9uZ2Vy
-IHRoYW4gMWgwbTBzIHNlY29uZHMNCg0KQ0kuQkFUDQoNCklHVCBjaGFuZ2VzDQpQb3NzaWJsZSBy
-ZWdyZXNzaW9ucw0KaWd0QGttc19hZGRmYl9iYXNpY0BhZGRmYjI1LWJhZC1tb2RpZmllcjoNCg0K
-ZmktcmtsLTExNjAwOiBQQVNTIC0+IEZBSUwgKzM2IHNpbWlsYXIgaXNzdWVzDQppZ3RAa21zX2Fk
-ZGZiX2Jhc2ljQGJhc2ljLXgtdGlsZWQtbGVnYWN5Og0KDQpmaS1ya2wtZ3VjOiBQQVNTIC0+IEZB
-SUwgKzM2IHNpbWlsYXIgaXNzdWVzDQppZ3RAa21zX2FkZGZiX2Jhc2ljQGJvLXRvby1zbWFsbDoN
-Cg0KZmktdGdsLTExMTVnNDogUEFTUyAtPiBGQUlMICszNyBzaW1pbGFyIGlzc3Vlcw0KaWd0QGtt
-c19hZGRmYl9iYXNpY0Biby10b28tc21hbGwtZHVlLXRvLXRpbGluZzoNCg0KZmktaWNsLXUyOiBQ
-QVNTIC0+IEZBSUwgKzQ2IHNpbWlsYXIgaXNzdWVzDQppZ3RAa21zX2J1c3lAYmFzaWM6DQoNCmZp
-LWljbC11MjogTk9UUlVOIC0+IEZBSUwNCmlndEBrbXNfcGlwZV9jcmNfYmFzaWNAbm9uYmxvY2tp
-bmctY3JjLXBpcGUtYToNCg0KZmktdGdsLXUyOiBOT1RSVU4gLT4gRkFJTCArNTMgc2ltaWxhciBp
-c3N1ZXMNCmlndEBwcmltZV92Z2VtQGJhc2ljLWZlbmNlLWZsaXA6DQoNCmZpLWljbC11MjogUEFT
-UyAtPiBDUkFTSCArMiBzaW1pbGFyIGlzc3Vlcw0KDQpmaS10Z2wtdTI6IE5PVFJVTiAtPiBDUkFT
-SA0KDQpmaS1ya2wtMTE2MDA6IFBBU1MgLT4gQ1JBU0gNCg0KZmktcmtsLWd1YzogUEFTUyAtPiBD
-UkFTSA0KDQpmaS10Z2wtMTExNWc0OiBQQVNTIC0+IENSQVNIDQoNCg==
+This a known failure when running igt@gem_exec_balancer@bonded-(dual|pair|sync)
+tests with GuC submission.The hang is expected with GuC submission since the
+test was written to expect execlist scheduling hence added skip if Guc
+submission enabled.
+
+Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
+---
+ tests/i915/gem_exec_balancer.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index cc07a5a9..d58734ab 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -3320,6 +3320,7 @@ igt_main
+ 
+ 	igt_subtest_group {
+ 		igt_fixture {
++			igt_require(!gem_using_guc_submission(i915));
+ 			intel_allocator_multiprocess_start();
+ 		}
+ 
+-- 
+2.25.1
