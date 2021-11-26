@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E2846E5C3
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Nov 2021 10:08:34 +0000 (UTC)
-Date: Fri, 26 Nov 2021 12:07:25 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YaCx3VhH2sG7Ao/H@platvala-desk.ger.corp.intel.com>
-References: <20211119150024.2701531-1-Rodrigo.Siqueira@amd.com>
- <f6341eaa-9815-6d49-9e69-d355581e8585@amd.com>
- <aa4d94075c5f4b64b5d753323d745ed3@intel.com>
- <YZ83BCgRaTvnLX/j@platvala-desk.ger.corp.intel.com>
- <ab60b3f8-4739-9a59-ea52-4d5070908915@amd.com>
- <2f6c8166-1303-cb6d-ba6a-033a5861086b@amd.com>
- <YaCsWC0qXKX/N/+T@platvala-desk.ger.corp.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0335996893886676450=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YaCsWC0qXKX/N/+T@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: Add test for AMD DP DSC
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 26 Nov 2021 11:01:24 -0000
+Message-ID: <163792448405.11079.2066464048884885745@emeril.freedesktop.org>
+References: <20211124095002.130684-1-jouni.hogander@intel.com>
+In-Reply-To: <20211124095002.130684-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQmlwbGFu?=
+ =?utf-8?q?ar_testcases_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,141 +16,305 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Mikita Lipski <mikita.lipski@amd.com>, "Vudum,
- Lakshminarayana" <lakshminarayana.vudum@intel.com>, Eryk Brol <eryk.brol@amd.com>
+To: "Hogander, Jouni" <jouni.hogander@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 26, 2021 at 11:43:52AM +0200, Petri Latvala wrote:
-> On Thu, Nov 25, 2021 at 01:58:14PM -0500, Rodrigo Siqueira Jordao wrote:
-> > 
-> > 
-> > On 2021-11-25 10:57 a.m., Rodrigo Siqueira Jordao wrote:
-> > > 
-> > > 
-> > > On 2021-11-25 2:11 a.m., Petri Latvala wrote:
-> > > > On Thu, Nov 25, 2021 at 01:01:04AM +0200, Vudum, Lakshminarayana wrote:
-> > > > > @Rodrigo Siqueira I don't have the possibility to re-run the
-> > > > > series. @Latvala, Petri Can you help here?
-> > > > > 
-> > > > > Lakshmi.
-> > > > 
-> > > > Unfortunately patchwork got confused by your emails and thinks you've
-> > > > sent a patch, so the re-run button just reattempts the incorrect
-> > > > patch.
-> > > > 
-> > > > Rodrigo, please re-send this patch.
-> > > > 
-> > > 
-> > > 
-> > > Hi Petri/Lakshmi,
-> > > 
-> > > Thanks a lot for your help.
-> > > 
-> > > I submitted a V2:
-> > > https://patchwork.freedesktop.org/series/97108/
-> > > 
-> > > Thanks.
-> > 
-> > Lakshmi/Petri,
-> > 
-> > For some reason, it looks like that the new version is still assigned to
-> > Lakshmi in the patchwork
-> 
-> Is the patch data itself correct?
-> 
-> > , and it has some weird failures (see below). Any
-> > idea? Do I need to resubmit the patch with a different subject?
-> > 
-> > Thanks
-> > 
-> > Gitlab.Pipeline:
-> > 
-> > Pipeline status: FAILED.
-> > 
-> > see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/453561 for
-> > the overview.
-> > 
-> > containers:igt has failed
-> > (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/16168063):
-> >   STEP 2: COPY installdir/opt/igt /opt/igt
-> >   1895d20f5469210af8281acac7769fa51efbde5ca3931bd457af2c2834e1f7ee
-> >   STEP 3: COPY .gitlab-ci/docker-help.sh /usr/local/bin/docker-help.sh
-> >   b743d155d30d20100edf9b2df89664275b2ea33d402f9df69cf5a1824a781b01
-> >   STEP 4: ENV PATH="/opt/igt/bin:${PATH}"
-> >   5eb0330fdfca164d1ef769d62f1d3c1a539a09a81da3ca01273c4e7afe2ee974
-> >   STEP 5: ENV
-> > LD_LIBRARY_PATH="/opt/igt/lib:/opt/igt/lib64:${LD_LIBRARY_PATH}"
-> >   b4ea9d4538270ad267ff798de51f4b7bed3e1ae27f9d3df8cea163e78acc9d3e
-> >   STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
-> >   ae060122c9eeab50d82bbafa097e8cd72bccdc8e8cb00b42de1b38531854d099
-> >   STEP 7: CMD docker-help.sh
-> >   STEP 8: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-dcfa579ba0a38131881dfd441d558b54d4cd3183
-> >   fcc29304314f515e7c8612f480ef56419de32ac5b5917000b434768cf94b6793
-> >   Getting image source signatures
-> >   Copying blob
-> > sha256:508381dd82aeb851da958db0528f2893285a9392bd0787020d3569a61fcdd513
-> >   Copying blob
-> > sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079
-> >   Copying blob
-> > sha256:f3f4119da36f8525b923a310c4b1f15579ca311a753c9973ef966cdb2a71a4e8
-> >   section_end:1637863318:step_script
-> >   ERROR: Job failed: execution took longer than 1h0m0s seconds
-> 
-> You can ignore this error. gitlab had issues talking to its docker
-> registry.
-> 
-> 
-> -- 
-> Petri Latvala
-> 
-> 
-> 
-> 
-> > 
-> > CI.BAT
-> > 
-> > IGT changes
-> > Possible regressions
-> > igt@kms_addfb_basic@addfb25-bad-modifier:
-> > 
-> > fi-rkl-11600: PASS -> FAIL +36 similar issues
-> > igt@kms_addfb_basic@basic-x-tiled-legacy:
-> > 
-> > fi-rkl-guc: PASS -> FAIL +36 similar issues
-> > igt@kms_addfb_basic@bo-too-small:
-> > 
-> > fi-tgl-1115g4: PASS -> FAIL +37 similar issues
-> > igt@kms_addfb_basic@bo-too-small-due-to-tiling:
-> > 
-> > fi-icl-u2: PASS -> FAIL +46 similar issues
-> > igt@kms_busy@basic:
-> > 
-> > fi-icl-u2: NOTRUN -> FAIL
-> > igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a:
-> > 
-> > fi-tgl-u2: NOTRUN -> FAIL +53 similar issues
-> > igt@prime_vgem@basic-fence-flip:
-> > 
-> > fi-icl-u2: PASS -> CRASH +2 similar issues
-> > 
-> > fi-tgl-u2: NOTRUN -> CRASH
-> > 
-> > fi-rkl-11600: PASS -> CRASH
-> > 
-> > fi-rkl-guc: PASS -> CRASH
-> > 
-> > fi-tgl-1115g4: PASS -> CRASH
-> > 
+--===============0335996893886676450==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Biplanar testcases (rev3)
+URL   : https://patchwork.freedesktop.org/series/97232/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6292 -> IGTPW_6440
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/index.html
+
+Participating hosts (35 -> 33)
+------------------------------
+
+  Missing    (2): fi-bdw-samus fi-tgl-u2 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6440 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_prime@i915-to-amd:
+    - fi-snb-2520m:       NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - fi-rkl-guc:         [PASS][4] -> [INCOMPLETE][5] ([i915#4432])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][7] ([fdo#109271]) +2 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][8] ([fdo#109271] / [i915#533])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][9] ([i915#4547])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][10] ([i915#3363] / [i915#4312])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@runner@aborted.html
+    - fi-rkl-guc:         NOTRUN -> [FAIL][11] ([i915#3928] / [i915#4312])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-rkl-guc/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-1115g4:      [FAIL][12] ([i915#1888]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_flink_basic@bad-flink:
+    - fi-skl-6600u:       [INCOMPLETE][14] ([i915#198]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+
+  * igt@i915_selftest@live@mman:
+    - fi-snb-2520m:       [DMESG-FAIL][16] ([i915#4610]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-snb-2520m/igt@i915_selftest@live@mman.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-snb-2520m/igt@i915_selftest@live@mman.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][18] ([i915#4269]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#198]: https://gitlab.freedesktop.org/drm/intel/issues/198
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
+  [i915#3928]: https://gitlab.freedesktop.org/drm/intel/issues/3928
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4432]: https://gitlab.freedesktop.org/drm/intel/issues/4432
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4610]: https://gitlab.freedesktop.org/drm/intel/issues/4610
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
 
 
-As for these failures, they are caused by the change to
-igt_atomic_properties array in igt_kms.h. You added a prop there but
-didn't change any code that loops through the whole array. Look for
-IGT_NUM_CRTC_PROPS.
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6292 -> IGTPW_6440
+
+  CI-20190529: 20190529
+  CI_DRM_10930: 2c9ba65f2befe9febd864f0795227b351bd62dba @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6440: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/index.html
+  IGT_6292: 014b6cb631ecf3d878b7f6cc6d70bb1dc722c0c5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 
--- 
-Petri Latvala
+
+== Testlist changes ==
+
++igt@kms_psr2_sf@overlay-plane-update-continuous-sf
++igt@kms_psr2_su@frontbuffer-xrgb8888
++igt@kms_psr2_su@page_flip-nv12
++igt@kms_psr2_su@page_flip-p010
++igt@kms_psr2_su@page_flip-xrgb8888
+-igt@kms_psr2_su@frontbuffer
+-igt@kms_psr2_su@page_flip
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/index.html
+
+--===============0335996893886676450==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Biplanar testcases (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97232/">https://patchwork.freedesktop.org/series/97232/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6292 -&gt; IGTPW_6440</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/index.html</p>
+<h2>Participating hosts (35 -&gt; 33)</h2>
+<p>Missing    (2): fi-bdw-samus fi-tgl-u2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6440 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_prime@i915-to-amd:</p>
+<ul>
+<li>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4432">i915#4432</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3928">i915#3928</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@bad-flink:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/198">i915#198</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-snb-2520m/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4610">i915#4610</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-snb-2520m/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6292 -&gt; IGTPW_6440</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10930: 2c9ba65f2befe9febd864f0795227b351bd62dba @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6440: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6440/index.html<br />
+  IGT_6292: 014b6cb631ecf3d878b7f6cc6d70bb1dc722c0c5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_psr2_sf@overlay-plane-update-continuous-sf<br />
++igt@kms_psr2_su@frontbuffer-xrgb8888<br />
++igt@kms_psr2_su@page_flip-nv12<br />
++igt@kms_psr2_su@page_flip-p010<br />
++igt@kms_psr2_su@page_flip-xrgb8888<br />
+-igt@kms_psr2_su@frontbuffer<br />
+-igt@kms_psr2_su@page_flip</p>
+
+</body>
+</html>
+
+--===============0335996893886676450==--
