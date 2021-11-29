@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2273580339734564948=="
+Date: Mon, 29 Nov 2021 11:20:33 +0200
+From: Pekka Paalanen <ppaalanen@gmail.com>
+Message-ID: <20211129112033.770d1c2a@eldfell>
+In-Reply-To: <26abc3eb-c50e-8f89-ccc9-ad96f1177987@amd.com>
+References: <20211115094759.520955-1-bhanuprakash.modem@intel.com>
+ <20211118115002.14003184@eldfell>
+ <26abc3eb-c50e-8f89-ccc9-ad96f1177987@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 29 Nov 2021 08:31:25 -0000
-Message-ID: <163817468551.16118.12586319003224619859@emeril.freedesktop.org>
-References: <20211129073148.1044976-1-mastanx.katragadda@intel.com>
-In-Reply-To: <20211129073148.1044976-1-mastanx.katragadda@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/i915=5Fpm=5Fdc=3A_Fix_DC9_test_case?=
+Content-Type: multipart/signed; boundary="Sig_/o2+66=m3w=UdCvT0M1ZwXYC";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Subject: Re: [igt-dev] [i-g-t 00/14] Add IGT support for plane color
+ management
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,231 +18,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mastan Katragadda <mastanx.katragadda@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Harry Wentland <harry.wentland@amd.com>
+Cc: Mukunda Pramodh Kumar <mukunda.pramodh.kumar@intel.com>, dri-devel@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2273580339734564948==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--Sig_/o2+66=m3w=UdCvT0M1ZwXYC
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-== Series Details ==
+On Fri, 26 Nov 2021 11:54:55 -0500
+Harry Wentland <harry.wentland@amd.com> wrote:
 
-Series: tests/i915/i915_pm_dc: Fix DC9 test case
-URL   : https://patchwork.freedesktop.org/series/97361/
-State : success
+> On 2021-11-18 04:50, Pekka Paalanen wrote:
+> > On Mon, 15 Nov 2021 15:17:45 +0530
+> > Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+> >  =20
+> >> From the Plane Color Management feature design, userspace can
+> >> take the smart blending decisions based on hardware supported
+> >> plane color features to obtain an accurate color profile.
+> >>
+> >> These IGT patches extend the existing pipe color management
+> >> tests to the plane level.
+> >>
+> >> Kernel implementation:
+> >> https://patchwork.freedesktop.org/series/90825/ =20
 
-== Summary ==
+...
 
-CI Bug Log - changes from CI_DRM_10935 -> IGTPW_6446
-====================================================
+> > I also found some things that looked hardware-specific in this code
+> > that to my understanding is supposed to be generic, and some concerns
+> > about UAPI as well.
+> >  =20
+>=20
+> I left some comments on intellisms in these patches.
+>=20
+> Do you have any specifics about your concerns about UAPI?
 
-Summary
--------
+Yeah, the comments I left in the patches:
 
-  **SUCCESS**
+patch 3:
 
-  No regressions found.
+> Having to explicitly special-case index zero feels odd to me. Why does
+> it need explicit special-casing?
+>=20
+> To me it's a hint that the definitions of .start and .end are somehow
+> inconsistent.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/index.html
+patch 4 and 8:
 
-Participating hosts (36 -> 33)
-------------------------------
+> > +static bool is_hdr_plane(const igt_plane_t *plane)
+> > +{
+> > +	return plane->index >=3D 0 && plane->index < SDR_PLANE_BASE; =20
+>=20
+> How can this be right for all KMS drivers?
+>=20
+> What is a HDR plane?
 
-  Additional (1): fi-skl-6600u 
-  Missing    (4): bat-jsl-2 bat-jsl-1 bat-dg1-6 bat-adlp-6 
+patch 12:
 
-Known issues
-------------
+> > +struct drm_color_lut *coeffs_to_logarithmic_lut(data_t *data,
+> > +						const gamma_lut_t *gamma,
+> > +						uint32_t color_depth,
+> > +						int off)
+> > +{
+> > +	struct drm_color_lut *lut;
+> > +	int i, lut_size =3D gamma->size;
+> > +	/* This is the maximum value due to 16 bit precision in hardware. */ =
+=20
+>=20
+> In whose hardware?
+>=20
+> Are igt tests not supposed to be generic for everything that exposes
+> the particular KMS properties?
+>=20
+> This also hints that the UAPI design is lacking, because userspace
+> needs to know hardware specific things out of thin air. Display servers
+> are not going to have hardware-specific code. They specialise based on
+> the existence of KMS properties instead.
 
-  Here are the changes found in IGTPW_6446 that come from known issues:
+...
 
-### IGT changes ###
+> > +void set_advance_gamma(data_t *data, igt_pipe_t *pipe, enum gamma_type=
+ type)
+> > +{
+> > +	igt_display_t *display =3D &data->display;
+> > +	gamma_lut_t *gamma_log;
+> > +	drmModePropertyPtr gamma_mode =3D NULL;
+> > +	segment_data_t *segment_info =3D NULL;
+> > +	struct drm_color_lut *lut =3D NULL;
+> > +	int lut_size =3D 0;
+> > +
+> > +	drmSetClientCap(data->drm_fd, DRM_CLIENT_CAP_ADVANCE_GAMMA_MODES, 1);=
+ =20
+>=20
+> Is this how we are going to do cross-software DRM-master hand-over or
+> switching compatibility in general?
+>=20
+> Add a new client cap for every new KMS property, and if the KMS client
+> does not set the property, the kernel will magically reset it to ensure
+> the client's expectations are met? Is that how it works?
+>=20
+> Or why does this exist?
 
-#### Issues hit ####
+...
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@i915_selftest@live:
-    - fi-skl-6600u:       NOTRUN -> [FAIL][3] ([i915#4547])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_engines:
-    - fi-rkl-guc:         [PASS][4] -> [INCOMPLETE][5] ([i915#4432])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10935/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
-
-  * igt@kms_chamelium@vga-edid-read:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][7] ([fdo#109271]) +5 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][8] ([fdo#109271] / [i915#533])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@runner@aborted:
-    - fi-skl-6600u:       NOTRUN -> [FAIL][9] ([i915#1436] / [i915#3363] / [i915#4312])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@runner@aborted.html
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][10] ([i915#1602] / [i915#2426] / [i915#4312])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-bdw-5557u/igt@runner@aborted.html
-    - fi-rkl-guc:         NOTRUN -> [FAIL][11] ([i915#3928] / [i915#4312])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-rkl-guc/igt@runner@aborted.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#3363]: https://gitlab.freedesktop.org/drm/intel/issues/3363
-  [i915#3928]: https://gitlab.freedesktop.org/drm/intel/issues/3928
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4432]: https://gitlab.freedesktop.org/drm/intel/issues/4432
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6293 -> IGTPW_6446
-
-  CI-20190529: 20190529
-  CI_DRM_10935: 5c0966fffb522e45d76063065b3b915cff246b23 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6446: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/index.html
-  IGT_6293: bf11f87c27ad1cec3e60bd31c23080d19aa093f3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/index.html
-
---===============2273580339734564948==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> > +	drmSetClientCap(data->drm_fd, DRM_CLIENT_CAP_ADVANCE_GAMMA_MODES, 0);=
+ =20
+>=20
+> I've never seen this done before. I did not know client caps could be
+> reset.
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+So, patch 12 has the biggest UAPI questions, and patch 3 may need a
+UAPI change as well. The comments in patches 4 and 8 could be addressed
+with just removing that code since the concept of HDR/SDR planes does
+not exist in UAPI. Or, if that concept is needed then it's another UAPI
+problem.
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Fix DC9 test case</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97361/">https://patchwork.freedesktop.org/series/97361/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+Thanks,
+pq
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/index.html</a></td></tr>
+--Sig_/o2+66=m3w=UdCvT0M1ZwXYC
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-</table>
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmGkm2EACgkQI1/ltBGq
+qqeDAw/9GEJ1aNXAPO0xD4sH3t3fINxyrfWnsq+LtBlYcOof5K0oT5BRX5ccGoYd
+PAC5hipSQiRflcl0tr440l2AY5rt8u9XDnQsiWTVCTwkBaxdHUb9WJrhPF7e4w79
+c7av6b/zAXGN8TVsH5BaTCOH3l4Y+Mxjgx607eofR4GHyzO6cSi/EejqnxeRePne
+jM2G6SY7LD40fL9zRCOtobnnWi1PEDy/IblIhuAnCeTpUkO/IIEFTeLMPSJlBCCZ
+gfv8S+RDI1uqws0fhq5e6NphUF5ymzjAiQTsy9NVPpIyC5OFRTQFM4L6tWPcpDuw
+mpEwrni781J5kJR/cfMPkje2JQ2C2iRhrPEbm5TLSvi62KyvsFf03DRPyX/NBhLT
+m2FmqOFJar4RWOsVypp24uV9OTL4wzYETHgyaSw0dLVWMKd3ZPMibLSqm0GS8646
+zB1qpq0zsRnu9G2yMIDqr2YVMSBotUqO/BWbumbejJooscjpKw4V8eKFZ8JrQMaP
+LMT38WYylrrUD1IE9pmeNii2/W3lYKQkCbty+TSTD9x3NK05FkQbq6Luh9ftUDCI
+m1AASI033AJz0kzpDc+kK9Q5pQpLjtg7PlbS10lHqUDS9eI3NRPbdaC7Wb4Ki40A
+tx0tKEgfdTgBnqnPLw5idZP/FZz6A9tdErdrvsJjNza2DLapISo=
+=fqJV
+-----END PGP SIGNATURE-----
 
-    <h1>CI Bug Log - changes from CI_DRM_10935 -&gt; IGTPW_6446</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/index.html</p>
-<h2>Participating hosts (36 -&gt; 33)</h2>
-<p>Additional (1): fi-skl-6600u <br />
-  Missing    (4): bat-jsl-2 bat-jsl-1 bat-dg1-6 bat-adlp-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6446 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@i915_selftest@live.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10935/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4432">i915#4432</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@vga-edid-read:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +5 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3363">i915#3363</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3928">i915#3928</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6293 -&gt; IGTPW_6446</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10935: 5c0966fffb522e45d76063065b3b915cff246b23 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6446: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6446/index.html<br />
-  IGT_6293: bf11f87c27ad1cec3e60bd31c23080d19aa093f3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2273580339734564948==--
+--Sig_/o2+66=m3w=UdCvT0M1ZwXYC--
