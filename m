@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2088.outbound.protection.outlook.com [40.107.92.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67B8E6E122
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Nov 2021 19:57:37 +0000 (UTC)
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2048.outbound.protection.outlook.com [40.107.223.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BDB26E06B
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Nov 2021 19:57:24 +0000 (UTC)
 From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Date: Mon, 29 Nov 2021 14:56:57 -0500
-Message-ID: <20211129195659.1865321-4-Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20211129195659.1865321-1-Rodrigo.Siqueira@amd.com>
-References: <20211129195659.1865321-1-Rodrigo.Siqueira@amd.com>
+Date: Mon, 29 Nov 2021 14:56:54 -0500
+Message-ID: <20211129195659.1865321-1-Rodrigo.Siqueira@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 3/5] tests/amdgpu: Fix test init error on
- Baffin
+Subject: [igt-dev] [PATCH i-g-t 0/5] tests/amdgpu: Improve amd_color
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,33 +20,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: harry.wentland@amd.com, markyacoub@google.com, nicholas.choi@amd.com, hayden.goodfellow@amd.com
-Cc: igt-dev@lists.freedesktop.org, Qingqing Zhuo <qingqing.zhuo@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Qingqing Zhuo <qingqing.zhuo@amd.com>
+amd_color is part of our CI, and it covers an essential part of our
+display core features. This patchset improves amd_color by fixing issues
+in some ASICs (i.e., making it more generic across AMD devices) and
+expanding the coverage scenarios. Finally, this is part of making all of
+our internal tests available in the upstream.
 
-[why]
-Baffin does not support plane overlay.
-igt_pipe_get_plane_type would thus reports
-error.
+Qingqing Zhuo (1):
+  tests/amdgpu: Fix test init error on Baffin
 
-Signed-off-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
----
- tests/amdgpu/amd_color.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Stylon Wang (4):
+  tests/amdgpu: Test plane level CTM and degamma
+  tests/amdgpu: Test combination of plane degamma and CRTC regamma
+  test/amdgpu: Add test description to amd_max_bpc and amd_color tests
+  tests/amdgpu: fix gamma test on plane and crtc
 
-diff --git a/tests/amdgpu/amd_color.c b/tests/amdgpu/amd_color.c
-index 84f0a995..74900ba9 100644
---- a/tests/amdgpu/amd_color.c
-+++ b/tests/amdgpu/amd_color.c
-@@ -265,7 +265,7 @@ static void test_init(data_t *data)
- 	data->primary =
- 		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
- 	data->overlay =
--		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
-+		igt_pipe_get_plane_type_index(data->pipe, DRM_PLANE_TYPE_OVERLAY, 0);
- 
- 	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
- 					  INTEL_PIPE_CRC_SOURCE_AUTO);
+ lib/igt_kms.c            |  10 +
+ lib/igt_kms.h            |   3 +
+ tests/amdgpu/amd_color.c | 500 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 513 insertions(+)
+
 -- 
 2.25.1
