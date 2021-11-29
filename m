@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BF416E3F4
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Nov 2021 18:30:29 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Mon, 29 Nov 2021 18:30:23 +0000
-Message-ID: <6549adff9b4bb2c73ab9b2ce6f41bc18977f396e.camel@intel.com>
-References: <20211124095002.130684-1-jouni.hogander@intel.com>
- <20211124095002.130684-2-jouni.hogander@intel.com>
-In-Reply-To: <20211124095002.130684-2-jouni.hogander@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6FBB96771A538843BF88BEFB851E4CD1@intel.com>
-Content-Transfer-Encoding: base64
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2082.outbound.protection.outlook.com [40.107.220.82])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5C286FACE
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Nov 2021 19:39:17 +0000 (UTC)
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Date: Mon, 29 Nov 2021 14:38:56 -0500
+Message-ID: <20211129193857.1863174-1-Rodrigo.Siqueira@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_psr2_su: add biplanar
- selective update tests
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t] tests/amdgpu: add test for panel self
+ refresh
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,127 +20,268 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Hogander, Jouni" <jouni.hogander@intel.com>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: harry.wentland@amd.com, markyacoub@google.com, mikita.lipski@amd.com, aurabindo.pillai@amd.com, nicholas.choi@amd.com, hayden.goodfellow@amd.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIxLTExLTI0IGF0IDExOjUwICswMjAwLCBKb3VuaSBIw7ZnYW5kZXIgd3JvdGU6
-DQo+IEFkZCBiaXBsYW5hciBmb3JtYXRzIChOVjEyLCBwMDEwKSBpbnRvIHNlbGVjdGl2ZSB1cGRh
-dGUgdGVzdC4NCj4gVXNlIGFsc28gb2Zmc2V0IGZvciB3aGl0ZSByZWN0YW5nbGUgYXMgdGhpcyBy
-ZXZlYWxzIGJldHRlcg0KPiBwb3NzaWJsZSBpc3N1ZXMgd2l0aCBvZmZzZXQgY2FsY3VsYXRpb24v
-Y29uZmlndXJhdGlvbi4uDQoNClBsZWFzZSBzcGxpdCB0aGUgYWRkaXRpb24gb2YgbmV3IGZvcm1h
-dCB0byB0aGUgY2hhbmdlIGluIHRoZSBwb3NpdGlvbnMgb2YgdGhlIGJveC4NClRoZSBTVSBibG9j
-a3MgcmV0dXJuZWQgYXJlIGRlcGVuZGVudHMgb24gdGhlIHBvc2l0aW9uIGFuZCBzaXplIG9mIGNo
-YW5nZXMgYmV0d2VlbiBmbGlwcyBhbmQgYmVmb3JlIGRpc3BsYXkgMTMgZWFjaCBibG9jayBoYWQg
-NCBsaW5lcyBzbyBpdCBwcm9iYWJseQ0Kd2lsbCBub3QgY2F1c2UgYSBzdSBibG9jayBtaXNtYXRj
-aCBidXQgaXMgYmV0dGVyIHRvIGhhdmUgMiBkaWZmZXJlbnQgcGF0Y2hlcyBzbyB3ZSBjYW4gYmlz
-ZWN0IGFueSBmdXR1cmUgZmFpbHVyZXMgZWFzaWVyLg0KDQoNCk90aGVyIHRoYW4gdGhhdCwgTEdU
-TS4NCg0KPiANCj4gdjI6IEFkZCBiYWNrIHNraXBwaW5nIG9mIGZyb250YnVmZmVyIHJlbmRlcmlu
-ZyB0ZXN0cw0KPiB2MzogVXNlIGh5cGhlbiBpbnN0ZWFkIG9mIHVuZGVyc2NvcmUgaW4gdGVzdG5h
-bWVzDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVy
-QGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMgfCA5MSArKysr
-KysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwg
-NTggaW5zZXJ0aW9ucygrKSwgMzMgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVz
-dHMvaTkxNS9rbXNfcHNyMl9zdS5jIGIvdGVzdHMvaTkxNS9rbXNfcHNyMl9zdS5jDQo+IGluZGV4
-IDkxZGU5YmFkLi5kNzlhMWU1OCAxMDA2NDQNCj4gLS0tIGEvdGVzdHMvaTkxNS9rbXNfcHNyMl9z
-dS5jDQo+ICsrKyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYw0KPiBAQCAtMzMsNyArMzMsOCBA
-QA0KPiAgDQo+ICBJR1RfVEVTVF9ERVNDUklQVElPTigiVGVzdCBQU1IyIHNlbGVjdGl2ZSB1cGRh
-dGUiKTsNCj4gIA0KPiAtI2RlZmluZSBTUVVBUkVfU0laRSAxMDANCj4gKyNkZWZpbmUgU1FVQVJF
-X1NJWkUgICAxMDANCj4gKyNkZWZpbmUgU1FVQVJFX09GRlNFVCAxMDANCj4gIC8qIGVhY2ggc2Vs
-ZWN0aXZlIHVwZGF0ZSBibG9jayBpcyA0IGxpbmVzIHRhbGwgKi8NCj4gICNkZWZpbmUgRVhQRUNU
-RURfTlVNX1NVX0JMT0NLUyAoKFNRVUFSRV9TSVpFIC8gNCkgKyAoU1FVQVJFX1NJWkUgJSA0ID8g
-MSA6IDApKQ0KPiAgDQo+IEBAIC01MCw2ICs1MSwyMyBAQCBlbnVtIG9wZXJhdGlvbnMgew0KPiAg
-CUxBU1QNCj4gIH07DQo+ICANCj4gK3N0YXRpYyBjb25zdCB1aW50MzJfdCBmb3JtYXRzX3BhZ2Vf
-ZmxpcFtdID0gew0KPiArCURSTV9GT1JNQVRfWFJHQjg4ODgsDQo+ICsJRFJNX0ZPUk1BVF9OVjEy
-LA0KPiArCURSTV9GT1JNQVRfUDAxMCwNCj4gKwlEUk1fRk9STUFUX0lOVkFMSUQsDQo+ICt9Ow0K
-PiArDQo+ICtzdGF0aWMgY29uc3QgdWludDMyX3QgZm9ybWF0c19mcm9udGJ1ZmZlcltdID0gew0K
-PiArCURSTV9GT1JNQVRfWFJHQjg4ODgsDQo+ICsJRFJNX0ZPUk1BVF9JTlZBTElELA0KPiArfTsN
-Cj4gKw0KPiArc3RhdGljIGNvbnN0IHVpbnQzMl90ICpmb3JtYXRzW10gPSB7DQo+ICsJCQkJICAg
-IFtQQUdFX0ZMSVBdID0gZm9ybWF0c19wYWdlX2ZsaXAsDQo+ICsJCQkJICAgIFtGUk9OVEJVRkZF
-Ul0gPSBmb3JtYXRzX2Zyb250YnVmZmVyLA0KPiArfTsNCj4gKw0KPiAgc3RhdGljIGNvbnN0IGNo
-YXIgKm9wX3N0cihlbnVtIG9wZXJhdGlvbnMgb3ApDQo+ICB7DQo+ICAJc3RhdGljIGNvbnN0IGNo
-YXIgKiBjb25zdCBuYW1lW10gPSB7DQo+IEBAIC02OCw2ICs4Niw3IEBAIHR5cGVkZWYgc3RydWN0
-IHsNCj4gIAlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsNCj4gIAlzdHJ1Y3QgaWd0X2ZiIGZiWzJdOw0K
-PiAgCWVudW0gb3BlcmF0aW9ucyBvcDsNCj4gKwl1aW50MzJfdCBmb3JtYXQ7DQo+ICAJY2Fpcm9f
-dCAqY3I7DQo+ICAJaW50IGNoYW5nZV9zY3JlZW5fdGltZXJmZDsNCj4gIAl1aW50MzJfdCBzY3Jl
-ZW5fY2hhbmdlczsNCj4gQEAgLTExMSw3ICsxMzAsNyBAQCBzdGF0aWMgdm9pZCBwcmVwYXJlKGRh
-dGFfdCAqZGF0YSkNCj4gIAkvKiBhbGwgZ3JlZW4gZnJhbWUgKi8NCj4gIAlpZ3RfY3JlYXRlX2Nv
-bG9yX2ZiKGRhdGEtPmRybV9mZCwNCj4gIAkJCSAgICBkYXRhLT5tb2RlLT5oZGlzcGxheSwgZGF0
-YS0+bW9kZS0+dmRpc3BsYXksDQo+IC0JCQkgICAgRFJNX0ZPUk1BVF9YUkdCODg4OCwNCj4gKwkJ
-CSAgICBkYXRhLT5mb3JtYXQsDQo+ICAJCQkgICAgRFJNX0ZPUk1BVF9NT0RfTElORUFSLA0KPiAg
-CQkJICAgIDAuMCwgMS4wLCAwLjAsDQo+ICAJCQkgICAgJmRhdGEtPmZiWzBdKTsNCj4gQEAgLTEy
-MSwxNCArMTQwLDE0IEBAIHN0YXRpYyB2b2lkIHByZXBhcmUoZGF0YV90ICpkYXRhKQ0KPiAgDQo+
-ICAJCWlndF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLA0KPiAgCQkJCSAgICBkYXRhLT5t
-b2RlLT5oZGlzcGxheSwgZGF0YS0+bW9kZS0+dmRpc3BsYXksDQo+IC0JCQkJICAgIERSTV9GT1JN
-QVRfWFJHQjg4ODgsDQo+ICsJCQkJICAgIGRhdGEtPmZvcm1hdCwNCj4gIAkJCQkgICAgRFJNX0ZP
-Uk1BVF9NT0RfTElORUFSLA0KPiAgCQkJCSAgICAwLjAsIDEuMCwgMC4wLA0KPiAgCQkJCSAgICAm
-ZGF0YS0+ZmJbMV0pOw0KPiAgDQo+ICAJCWNyID0gaWd0X2dldF9jYWlyb19jdHgoZGF0YS0+ZHJt
-X2ZkLCAmZGF0YS0+ZmJbMV0pOw0KPiAgCQkvKiBwYWludCBhIHdoaXRlIHNxdWFyZSAqLw0KPiAt
-CQlpZ3RfcGFpbnRfY29sb3JfYWxwaGEoY3IsIDAsIDAsIFNRVUFSRV9TSVpFLCBTUVVBUkVfU0la
-RSwNCj4gKwkJaWd0X3BhaW50X2NvbG9yX2FscGhhKGNyLCBTUVVBUkVfT0ZGU0VULCBTUVVBUkVf
-T0ZGU0VULCBTUVVBUkVfU0laRSwgU1FVQVJFX1NJWkUsDQo+ICAJCQkJICAgICAgMS4wLCAxLjAs
-IDEuMCwgMS4wKTsNCj4gIAkJaWd0X3B1dF9jYWlyb19jdHgoY3IpOw0KPiAgCX0gZWxzZSBpZiAo
-ZGF0YS0+b3AgPT0gRlJPTlRCVUZGRVIpIHsNCj4gQEAgLTE1Miw4ICsxNzEsOCBAQCBzdGF0aWMg
-Ym9vbCB1cGRhdGVfc2NyZWVuX2FuZF90ZXN0KGRhdGFfdCAqZGF0YSkNCj4gIAkJc3RydWN0IGRy
-bV9tb2RlX3JlY3QgY2xpcDsNCj4gIAkJaWd0X3BsYW5lX3QgKnByaW1hcnk7DQo+ICANCj4gLQkJ
-Y2xpcC54MSA9IGNsaXAueTEgPSAwOw0KPiAtCQljbGlwLngyID0gY2xpcC55MiA9IFNRVUFSRV9T
-SVpFOw0KPiArCQljbGlwLngxID0gY2xpcC55MSA9IFNRVUFSRV9PRkZTRVQ7DQo+ICsJCWNsaXAu
-eDIgPSBjbGlwLnkyID0gU1FVQVJFX09GRlNFVCArIFNRVUFSRV9TSVpFOw0KPiAgDQo+ICAJCXBy
-aW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKGRhdGEtPm91dHB1dCwNCj4gIAkJCQkJ
-CSAgICBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsNCj4gQEAgLTE2NywxNiArMTg2LDE4IEBAIHN0
-YXRpYyBib29sIHVwZGF0ZV9zY3JlZW5fYW5kX3Rlc3QoZGF0YV90ICpkYXRhKQ0KPiAgCWNhc2Ug
-RlJPTlRCVUZGRVI6IHsNCj4gIAkJZHJtTW9kZUNsaXAgY2xpcDsNCj4gIA0KPiAtCQljbGlwLngx
-ID0gY2xpcC55MSA9IDA7DQo+IC0JCWNsaXAueDIgPSBjbGlwLnkyID0gU1FVQVJFX1NJWkU7DQo+
-ICsJCWNsaXAueDEgPSBjbGlwLnkxID0gU1FVQVJFX09GRlNFVDsNCj4gKwkJY2xpcC54MiA9IGNs
-aXAueTIgPSBTUVVBUkVfT0ZGU0VUICsgU1FVQVJFX1NJWkU7DQo+ICANCj4gIAkJaWYgKGRhdGEt
-PnNjcmVlbl9jaGFuZ2VzICYgMSkgew0KPiAgCQkJLyogZ28gYmFjayB0byBhbGwgZ3JlZW4gZnJh
-bWUgd2l0aCBhIHNxdWFyZSAqLw0KPiAtCQkJaWd0X3BhaW50X2NvbG9yX2FscGhhKGRhdGEtPmNy
-LCAwLCAwLCBTUVVBUkVfU0laRSwNCj4gKwkJCWlndF9wYWludF9jb2xvcl9hbHBoYShkYXRhLT5j
-ciwgU1FVQVJFX09GRlNFVCwNCj4gKwkJCQkJICAgICAgU1FVQVJFX09GRlNFVCwgU1FVQVJFX1NJ
-WkUsDQo+ICAJCQkJCSAgICAgIFNRVUFSRV9TSVpFLCAxLjAsIDEuMCwgMS4wLCAxLjApOw0KPiAg
-CQl9IGVsc2Ugew0KPiAgCQkJLyogZ28gYmFjayB0byBhbGwgZ3JlZW4gZnJhbWUgKi8NCj4gLQkJ
-CWlndF9wYWludF9jb2xvcl9hbHBoYShkYXRhLT5jciwgMCwgMCwgU1FVQVJFX1NJWkUsDQo+ICsJ
-CQlpZ3RfcGFpbnRfY29sb3JfYWxwaGEoZGF0YS0+Y3IsIFNRVUFSRV9PRkZTRVQsDQo+ICsJCQkJ
-CSAgICAgIFNRVUFSRV9PRkZTRVQsIFNRVUFSRV9TSVpFLA0KPiAgCQkJCQkgICAgICBTUVVBUkVf
-U0laRSwgMCwgMS4wLCAwLCAxLjApOw0KPiAgCQl9DQo+ICANCj4gQEAgLTI2MSw2ICsyODIsNyBA
-QCBpZ3RfbWFpbg0KPiAgCQkJCQkgZGF0YS5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8yKSwNCj4gIAkJ
-CSAgICAgICJFcnJvciBlbmFibGluZyBQU1IyXG4iKTsNCj4gIAkJZGF0YS5vcCA9IEZST05UQlVG
-RkVSOw0KPiArCQlkYXRhLmZvcm1hdCA9IERSTV9GT1JNQVRfWFJHQjg4ODg7DQo+ICAJCXByZXBh
-cmUoJmRhdGEpOw0KPiAgCQlyID0gcHNyX3dhaXRfZW50cnkoZGF0YS5kZWJ1Z2ZzX2ZkLCBQU1Jf
-TU9ERV8yKTsNCj4gIAkJY2xlYW51cCgmZGF0YSk7DQo+IEBAIC0yODEsMzEgKzMwMywzNCBAQCBp
-Z3RfbWFpbg0KPiAgCX0NCj4gIA0KPiAgCWZvciAoZGF0YS5vcCA9IFBBR0VfRkxJUDsgZGF0YS5v
-cCA8IExBU1Q7IGRhdGEub3ArKykgew0KPiAtCQlpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBzZWxl
-Y3RpdmUgdXBkYXRlIHdvcmtzIHdoZW4gc2NyZWVuIGNoYW5nZXMiKTsNCj4gLQkJaWd0X3N1YnRl
-c3RfZigiJXMiLCBvcF9zdHIoZGF0YS5vcCkpIHsNCj4gLQ0KPiAtCQkJaWYgKGRhdGEub3AgPT0g
-RlJPTlRCVUZGRVIgJiYNCj4gLQkJCSAgICBpbnRlbF9kaXNwbGF5X3ZlcihpbnRlbF9nZXRfZHJt
-X2RldmlkKGRhdGEuZHJtX2ZkKSkgPj0gMTIpIHsNCj4gLQkJCQkvKg0KPiAtCQkJCSAqIEZJWE1F
-OiBEaXNwbGF5IDEyKyBwbGF0Zm9ybXMgbm93IGhhdmUgUFNSMg0KPiAtCQkJCSAqIHNlbGVjdGl2
-ZSBmZXRjaCBlbmFibGVkIGJ5IGRlZmF1bHQgYnV0IHdlDQo+IC0JCQkJICogc3RpbGwgY2FuJ3Qg
-cHJvcGVybHkgaGFuZGxlIGZyb250YnVmZmVyDQo+IC0JCQkJICogcmVuZGVyaW5nLCBzbyByaWdo
-dCBpdCBkb2VzIGZ1bGwgZnJhbWUNCj4gLQkJCQkgKiBmZXRjaGVzIGF0IGV2ZXJ5IGZyb250YnVm
-ZmVyIHJlbmRlcmluZy4NCj4gLQkJCQkgKiBTbyBpdCBpcyBleHBlY3RlZCB0aGF0IHRoaXMgdGVz
-dCB3aWxsIGZhaWwNCj4gLQkJCQkgKiBpbiBkaXNwbGF5IDEyKyBwbGF0Zm9ybSBmb3cgbm93Lg0K
-PiAtCQkJCSAqLw0KPiAtCQkJCWlndF9za2lwKCJQU1IyIHNlbGVjdGl2ZSBmZXRjaCBpcyBkb2lu
-ZyBmdWxsIGZyYW1lIGZldGNoZXMgZm9yIGZyb250YnVmZmVyIHJlbmRlcmluZ1xuIik7DQo+ICsJ
-CWNvbnN0IHVpbnQzMl90ICpmb3JtYXQgPSBmb3JtYXRzW2RhdGEub3BdOw0KPiArDQo+ICsJCXdo
-aWxlICgqZm9ybWF0ICE9IERSTV9GT1JNQVRfSU5WQUxJRCkgew0KPiArCQkJZGF0YS5mb3JtYXQg
-PSAqZm9ybWF0Kys7DQo+ICsJCQlpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBzZWxlY3RpdmUgdXBk
-YXRlIHdvcmtzIHdoZW4gc2NyZWVuIGNoYW5nZXMiKTsNCj4gKwkJCWlndF9zdWJ0ZXN0X2YoIiVz
-LSVzIiwgb3Bfc3RyKGRhdGEub3ApLCBpZ3RfZm9ybWF0X3N0cihkYXRhLmZvcm1hdCkpIHsNCj4g
-KwkJCQlpZiAoZGF0YS5vcCA9PSBGUk9OVEJVRkZFUiAmJg0KPiArCQkJCSAgICBpbnRlbF9kaXNw
-bGF5X3ZlcihpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKSkgPj0gMTIpIHsNCj4gKwkJ
-CQkJLyoNCj4gKwkJCQkJICogRklYTUU6IERpc3BsYXkgMTIrIHBsYXRmb3JtcyBub3cgaGF2ZSBQ
-U1IyDQo+ICsJCQkJCSAqIHNlbGVjdGl2ZSBmZXRjaCBlbmFibGVkIGJ5IGRlZmF1bHQgYnV0IHdl
-DQo+ICsJCQkJCSAqIHN0aWxsIGNhbid0IHByb3Blcmx5IGhhbmRsZSBmcm9udGJ1ZmZlcg0KPiAr
-CQkJCQkgKiByZW5kZXJpbmcsIHNvIHJpZ2h0IGl0IGRvZXMgZnVsbCBmcmFtZQ0KPiArCQkJCQkg
-KiBmZXRjaGVzIGF0IGV2ZXJ5IGZyb250YnVmZmVyIHJlbmRlcmluZy4NCj4gKwkJCQkJICogU28g
-aXQgaXMgZXhwZWN0ZWQgdGhhdCB0aGlzIHRlc3Qgd2lsbCBmYWlsDQo+ICsJCQkJCSAqIGluIGRp
-c3BsYXkgMTIrIHBsYXRmb3JtIGZvciBub3cuDQo+ICsJCQkJCSAqLw0KPiArCQkJCQlpZ3Rfc2tp
-cCgiUFNSMiBzZWxlY3RpdmUgZmV0Y2ggaXMgZG9pbmcgZnVsbCBmcmFtZSBmZXRjaGVzIGZvciBm
-cm9udGJ1ZmZlciByZW5kZXJpbmdcbiIpOw0KPiArCQkJCX0NCj4gKwkJCQlwcmVwYXJlKCZkYXRh
-KTsNCj4gKwkJCQlydW4oJmRhdGEpOw0KPiArCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJfQ0K
-PiAtDQo+IC0JCQlwcmVwYXJlKCZkYXRhKTsNCj4gLQkJCXJ1bigmZGF0YSk7DQo+IC0JCQljbGVh
-bnVwKCZkYXRhKTsNCj4gIAkJfQ0KPiAtCX0NCj4gIA0KPiAtCWlndF9maXh0dXJlIHsNCj4gLQkJ
-Y2xvc2UoZGF0YS5kZWJ1Z2ZzX2ZkKTsNCj4gLQkJZGlzcGxheV9maW5pKCZkYXRhKTsNCj4gKwkJ
-aWd0X2ZpeHR1cmUgew0KPiArCQkJY2xvc2UoZGF0YS5kZWJ1Z2ZzX2ZkKTsNCj4gKwkJCWRpc3Bs
-YXlfZmluaSgmZGF0YSk7DQo+ICsJCX0NCj4gIAl9DQo+ICB9DQoNCg==
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+
+[Why&How]
+Test for PSR functionality. With an eDP connected, it tests whether PSR
+is enabled by commiting a static framebuffer
+
+hardware requirements:
+1. eDP panel that supports PSR (multiple panel can be connected at the
+   same time)
+2. Optional DP display for testing a regression condition (setting crtc
+   to null)
+
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+---
+ tests/amdgpu/amd_psr.c   | 221 +++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |   1 +
+ 2 files changed, 222 insertions(+)
+ create mode 100644 tests/amdgpu/amd_psr.c
+
+diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+new file mode 100644
+index 00000000..732eab25
+--- /dev/null
++++ b/tests/amdgpu/amd_psr.c
+@@ -0,0 +1,221 @@
++/*
++ * Copyright 2021 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "drm_mode.h"
++#include "igt.h"
++#include "igt_core.h"
++#include "igt_kms.h"
++#include <stdint.h>
++#include <fcntl.h>
++#include <xf86drmMode.h>
++
++/* hardware requirements:
++ * 1. eDP panel that supports PSR (multiple panel can be connected at the same time)
++ * 2. Optional DP display for testing a regression condition (setting crtc to null)
++ */
++IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP displays");
++
++#define DEBUGFS_PSR_STATE "psr_state"
++/* After a full update, a few fast updates are necessary for PSR to be enabled */
++#define N_FLIPS 6
++/* DMCUB takes some time to actually enable PSR. Worst case delay is 4 seconds */
++#define PSR_SETTLE_DELAY 4
++
++/* Common test data. */
++typedef struct data {
++        igt_display_t display;
++        igt_plane_t *primary;
++        igt_plane_t *cursor;
++        igt_output_t *output;
++        igt_pipe_t *pipe;
++        igt_pipe_crc_t *pipe_crc;
++        drmModeModeInfo *mode;
++        enum pipe pipe_id;
++        int fd;
++        int w;
++        int h;
++} data_t;
++
++/* Common test setup. */
++static void test_init(data_t *data)
++{
++        igt_display_t *display = &data->display;
++
++        /* It doesn't matter which pipe we choose on amdpgu. */
++        data->pipe_id = PIPE_A;
++        data->pipe = &data->display.pipes[data->pipe_id];
++
++        igt_display_reset(display);
++
++        data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
++        igt_require(data->output);
++
++        data->mode = igt_output_get_mode(data->output);
++        igt_assert(data->mode);
++
++        data->primary =
++                igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
++
++        data->cursor =
++                igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
++
++        data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id, "auto");
++
++        igt_output_set_pipe(data->output, data->pipe_id);
++
++        data->w = data->mode->hdisplay;
++        data->h = data->mode->vdisplay;
++}
++/* Common test cleanup. */
++static void test_fini(data_t *data)
++{
++        igt_display_t *display = &data->display;
++
++        igt_pipe_crc_free(data->pipe_crc);
++        igt_display_reset(display);
++        igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
++}
++
++static int check_conn_type(data_t *data, uint32_t type) {
++	int i;
++
++	for (i = 0; i < data->display.n_outputs; i++) {
++		uint32_t conn_type = data->display.outputs[i].config.connector->connector_type;
++		if (conn_type == type)
++			return i;
++	}
++
++	return -1;
++}
++
++static void run_check_psr(data_t *data, bool test_null_crtc) {
++	char buf[8];
++	char *connector_name;
++	int fd, edp_idx, dp_idx, ret, i, psr_state;
++	igt_fb_t ref_fb, ref_fb2;
++	igt_fb_t *flip_fb;
++	enum pipe pipe;
++	igt_output_t *output;
++
++	test_init(data);
++
++	edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
++	dp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_DisplayPort);
++	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
++
++	for_each_pipe_with_single_output(&data->display, pipe, output) {
++		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
++			continue;
++
++		igt_create_color_fb(data->fd, data->mode->hdisplay,
++				    data->mode->vdisplay, DRM_FORMAT_XRGB8888, 0, 1.0,
++				    0.0, 0.0, &ref_fb);
++		igt_create_color_fb(data->fd, data->mode->hdisplay,
++				    data->mode->vdisplay, DRM_FORMAT_XRGB8888, 0, 0.0,
++				    1.0, 0.0, &ref_fb2);
++
++		igt_plane_set_fb(data->primary, &ref_fb);
++		igt_output_set_pipe(output, pipe);
++		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
++
++		for (i = 0; i < N_FLIPS; i++) {
++			if (i % 2 == 0)
++				flip_fb = &ref_fb2;
++			else
++				flip_fb = &ref_fb;
++
++			ret = drmModePageFlip(data->fd, output->config.crtc->crtc_id,
++					      flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
++			igt_require(ret == 0);
++			kmstest_wait_for_pageflip(data->fd);
++		}
++	}
++
++	/* PSR state takes some time to settle its value on static screen */
++	sleep(PSR_SETTLE_DELAY);
++
++	for_each_pipe_with_single_output(&data->display, pipe, output) {
++		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
++			continue;
++
++		connector_name = output->name;
++		fd = igt_debugfs_connector_dir(data->fd, connector_name, O_RDONLY);
++		igt_assert(fd >= 0);
++
++		ret = igt_debugfs_simple_read(fd, DEBUGFS_PSR_STATE, buf, sizeof(buf));
++		igt_require(ret > 0);
++
++		psr_state =  (int) strtol(buf, NULL, 10);
++		igt_fail_on_f(psr_state < 1, "PSR was not enabled for connector %s\n", output->name);
++		igt_fail_on_f(psr_state == 0xff, "PSR is invalid for connector %s\n", output->name);
++		igt_fail_on_f(psr_state != 5, "PSR state is expected to be at 5 on a "
++			      "static screen for connector %s\n", output->name);
++	}
++
++	if (test_null_crtc) {
++		/* check whether settings crtc to null generated any warning (eDP+DP) */
++		igt_skip_on_f(dp_idx == -1, "no DP connector found\n");
++
++		for_each_pipe_with_single_output(&data->display, pipe, output) {
++			if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
++				continue;
++
++			igt_output_set_pipe(output, PIPE_NONE);
++			igt_display_commit2(&data->display, COMMIT_ATOMIC);
++		}
++	}
++
++	igt_remove_fb(data->fd, &ref_fb);
++	igt_remove_fb(data->fd, &ref_fb2);
++	close(fd);
++	test_fini(data);
++}
++
++igt_main
++{
++	data_t data;
++
++	igt_skip_on_simulation();
++	memset(&data, 0, sizeof(data));
++
++	igt_fixture
++	{
++		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.fd);
++		igt_require(&data.display.is_atomic);
++		igt_display_require_output(&data.display);
++	}
++
++	igt_describe("Test whether PSR can be enabled with static screen");
++	igt_subtest("psr_enable") run_check_psr(&data, false);
++
++	igt_describe("Test whether setting CRTC to null triggers any warning with PSR enabled");
++	igt_subtest("psr_enable_null_crtc") run_check_psr(&data, true);
++
++	igt_fixture
++	{
++		igt_display_fini(&data.display);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 5216e194..2bd25ad6 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -17,6 +17,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_link_settings',
+ 			  'amd_vrr_range',
+ 			  'amd_mode_switch',
++			  'amd_psr',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
+ endif
+-- 
+2.25.1
