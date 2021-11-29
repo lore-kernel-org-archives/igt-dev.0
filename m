@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BEC66F428
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Nov 2021 10:30:55 +0000 (UTC)
-Message-ID: <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
-Date: Mon, 29 Nov 2021 10:30:51 +0000
-MIME-Version: 1.0
-Content-Language: en-US
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B76D46EA78
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Nov 2021 10:58:35 +0000 (UTC)
+From: "Katragadda, MastanX" <mastanx.katragadda@intel.com>
+Date: Mon, 29 Nov 2021 10:58:33 +0000
+Message-ID: <BN9PR11MB52905C33F740FAB54340B43C97669@BN9PR11MB5290.namprd11.prod.outlook.com>
 References: <20211126015735.908681-1-mastanx.katragadda@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20211126015735.908681-1-mastanx.katragadda@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
+In-Reply-To: <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
  Submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,38 +23,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mastan Katragadda <mastanx.katragadda@intel.com>, igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 26/11/2021 01:57, Mastan Katragadda wrote:
-> This a known failure when running igt@gem_exec_balancer@bonded-(dual|pair|sync)
-> tests with GuC submission.The hang is expected with GuC submission since the
-> test was written to expect execlist scheduling hence added skip if Guc
-> submission enabled.
-
-Looking at the test I don't see anything backend specific. Can you 
-provide an explanation of how and why it hangs?
-
-Regards,
-
-Tvrtko
-
-> Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
-> ---
->   tests/i915/gem_exec_balancer.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-> index cc07a5a9..d58734ab 100644
-> --- a/tests/i915/gem_exec_balancer.c
-> +++ b/tests/i915/gem_exec_balancer.c
-> @@ -3320,6 +3320,7 @@ igt_main
->   
->   	igt_subtest_group {
->   		igt_fixture {
-> +			igt_require(!gem_using_guc_submission(i915));
->   			intel_allocator_multiprocess_start();
->   		}
->   
-> 
+SGkgICBUdnJ0a28gVXJzdWxpbiwNCiAgICAgICAgICAgICBCYXNlZCBvbiBmb2xsb3dpbmcgYmFj
+a2VuZCBpbmZvcm1hdGlvbiBhZGRlZCBza2lwIG9uIGd1YyBlbmFibGVkIHBsYXRmb3Jtcy4gICAg
+DQoNCmJhc2ljYWxseSB0aGVyZSBpcyBhIHF1aXJrIGluIEd1QyBzY2hlZHVsaW5nIHdoZXJlIGlm
+IGEgY29udGV4dCByZWFjaGVzIHRoZSBoZWFkIG9mIHRoZSBxdWV1ZSBhbmQgY2FuJ3QgYmUgc2No
+ZWR1bGVkIGl0IGJsb2NrcyB0aGUgcmVzdCBvZiB0aGUgcXVldWUuIEEgcXVldWUgaXMgYW4gZW5n
+aW5lIGNsYXNzLiBTbyBpbiB0aGlzIGNhc2UgaWYgdGhlIHVzZXIgc3VibWl0cyB0byBWQ1MwLCBW
+Q1MwLCB0aGVuIFZDUzEgYW5kIHRoZSBmaXJzdCBzdWJtaXNzaW9uIHRvIFZDUzAgaXMgc3Bpbm5l
+ciB0aGUgVkNTMSBzdWJtaXNzaW9uIGlzIGJsb2NrZWQuIFRoaXMgbW9yZSBvciBsZXNzIGlzIGV4
+YWN0bHkgd2hhdCB0aGlzIHRlc3QgaXMgZG9pbmcsIHRodXMgaXQgaGFuZ3MuIFdlIGhhdmUgYSBy
+ZXF1ZXN0IHdpdGggdGhlIEd1QyBmaXJtd2FyZSB0ZWFtIHRvIGJlIGFibGUgdG8gdHdlYWsgdGhp
+cyBoZWFkIG9mIHF1ZXVlIGJsb2NraW5nIGJlaGF2aW91ciBidXQgZG9uJ3QgZXhwZWN0IHRvIGxh
+bmQgYW55dGltZSBzb29uLiBBbHNvIGluIHRoZSByZWFsIHdvcmxkIHRoaXMgaXNuJ3QgYW4gaXNz
+dWUgYXMgdGhlIHVzZXIgc2hvdWxkIGFsd2F5cyBiZSB1c2luZyBWRXMgd2hpY2ggc2hvdWxkIG5l
+dmVyIGJsb2NrIHRoZSBoZWFkIG9mIHRoZSBxdWV1ZSB1bmxlc3MgYWxsIHRoZSBlbmdpbmVzIHdp
+dGhpbiB0aGUgY2xhc3MgYXJlIGJ1c3kuDQoNClRlc3QgaXMgZXhwZWN0ZWQgdG8gZmFpbCB3aXRo
+IEd1QyBzdWJtaXNzaW9uLCBza2lwIGl0IGluIENJLg0KDQpSZWdhcmRzLA0KTWFzdGFuDQoNCi0t
+LS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBUdnJ0a28gVXJzdWxpbiA8dHZydGtvLnVy
+c3VsaW5AbGludXguaW50ZWwuY29tPiANClNlbnQ6IDI5IE5vdmVtYmVyIDIwMjEgMTY6MDENClRv
+OiBLYXRyYWdhZGRhLCBNYXN0YW5YIDxtYXN0YW54LmthdHJhZ2FkZGFAaW50ZWwuY29tPjsgaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IFN1cmVuZHJha3VtYXIgVXBhZGh5YXksIFRlamFz
+a3VtYXJYIDx0ZWphc2t1bWFyeC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT4NClN1
+YmplY3Q6IFJlOiBbaWd0LWRldl0gW2ktZy10XSB0ZXN0cy9pOTE1L2V4ZWNfYmFsYW5jZXI6IEFk
+ZGVkIFNraXAgR3VjIFN1Ym1pc3Npb24NCg0KDQpPbiAyNi8xMS8yMDIxIDAxOjU3LCBNYXN0YW4g
+S2F0cmFnYWRkYSB3cm90ZToNCj4gVGhpcyBhIGtub3duIGZhaWx1cmUgd2hlbiBydW5uaW5nIA0K
+PiBpZ3RAZ2VtX2V4ZWNfYmFsYW5jZXJAYm9uZGVkLShkdWFsfHBhaXJ8c3luYykNCj4gdGVzdHMg
+d2l0aCBHdUMgc3VibWlzc2lvbi5UaGUgaGFuZyBpcyBleHBlY3RlZCB3aXRoIEd1QyBzdWJtaXNz
+aW9uIA0KPiBzaW5jZSB0aGUgdGVzdCB3YXMgd3JpdHRlbiB0byBleHBlY3QgZXhlY2xpc3Qgc2No
+ZWR1bGluZyBoZW5jZSBhZGRlZCANCj4gc2tpcCBpZiBHdWMgc3VibWlzc2lvbiBlbmFibGVkLg0K
+DQpMb29raW5nIGF0IHRoZSB0ZXN0IEkgZG9uJ3Qgc2VlIGFueXRoaW5nIGJhY2tlbmQgc3BlY2lm
+aWMuIENhbiB5b3UgcHJvdmlkZSBhbiBleHBsYW5hdGlvbiBvZiBob3cgYW5kIHdoeSBpdCBoYW5n
+cz8NCg0KUmVnYXJkcywNCg0KVHZydGtvDQoNCj4gU2lnbmVkLW9mZi1ieTogTWFzdGFuIEthdHJh
+Z2FkZGEgPG1hc3Rhbngua2F0cmFnYWRkYUBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgIHRlc3RzL2k5
+MTUvZ2VtX2V4ZWNfYmFsYW5jZXIuYyB8IDEgKw0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2Vy
+dGlvbigrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfYmFsYW5jZXIu
+YyANCj4gYi90ZXN0cy9pOTE1L2dlbV9leGVjX2JhbGFuY2VyLmMgaW5kZXggY2MwN2E1YTkuLmQ1
+ODczNGFiIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9leGVjX2JhbGFuY2VyLmMNCj4g
+KysrIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19iYWxhbmNlci5jDQo+IEBAIC0zMzIwLDYgKzMzMjAs
+NyBAQCBpZ3RfbWFpbg0KPiAgIA0KPiAgIAlpZ3Rfc3VidGVzdF9ncm91cCB7DQo+ICAgCQlpZ3Rf
+Zml4dHVyZSB7DQo+ICsJCQlpZ3RfcmVxdWlyZSghZ2VtX3VzaW5nX2d1Y19zdWJtaXNzaW9uKGk5
+MTUpKTsNCj4gICAJCQlpbnRlbF9hbGxvY2F0b3JfbXVsdGlwcm9jZXNzX3N0YXJ0KCk7DQo+ICAg
+CQl9DQo+ICAgDQo+IA0K
