@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <87b6d5b9-dc58-2e43-cbfe-162e4f9f467e@amd.com>
-Date: Mon, 29 Nov 2021 09:56:33 -0500
-Content-Language: en-US
-References: <20211115094759.520955-1-bhanuprakash.modem@intel.com>
- <20211115094759.520955-8-bhanuprakash.modem@intel.com>
- <20211118111941.764737fb@eldfell>
-From: Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20211118111941.764737fb@eldfell>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============4882524094290049007=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 07/14] tests/kms_color: New negative tests for
- plane level color mgmt
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 29 Nov 2021 16:26:23 -0000
+Message-ID: <163820318345.16117.5352470437335490122@emeril.freedesktop.org>
+References: <20211124095002.130684-1-jouni.hogander@intel.com>
+In-Reply-To: <20211124095002.130684-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQmlwbGFu?=
+ =?utf-8?q?ar_testcases_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,205 +16,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Pekka Paalanen <ppaalanen@gmail.com>, Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+To: "Hogander, Jouni" <jouni.hogander@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============4882524094290049007==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Biplanar testcases (rev4)
+URL   : https://patchwork.freedesktop.org/series/97232/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6292 -> IGTPW_6441
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/index.html
+
+Participating hosts (35 -> 33)
+------------------------------
+
+  Missing    (2): fi-bdw-samus fi-tgl-u2 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6441 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_prime@i915-to-amd:
+    - fi-snb-2520m:       NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-bdw-5557u:       [PASS][2] -> [INCOMPLETE][3] ([i915#146])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html
+    - fi-skl-6600u:       [PASS][4] -> [INCOMPLETE][5] ([i915#4547])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - fi-rkl-guc:         [PASS][6] -> [INCOMPLETE][7] ([i915#4432])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][8] -> [INCOMPLETE][9] ([i915#3921])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-rkl-guc:         NOTRUN -> [FAIL][10] ([i915#3928] / [i915#4312])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-rkl-guc/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@mman:
+    - fi-snb-2520m:       [DMESG-FAIL][11] ([i915#4610]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-snb-2520m/igt@i915_selftest@live@mman.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-snb-2520m/igt@i915_selftest@live@mman.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#3928]: https://gitlab.freedesktop.org/drm/intel/issues/3928
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4432]: https://gitlab.freedesktop.org/drm/intel/issues/4432
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4610]: https://gitlab.freedesktop.org/drm/intel/issues/4610
 
 
-On 2021-11-18 04:19, Pekka Paalanen wrote:
-> On Mon, 15 Nov 2021 15:17:52 +0530
-> Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
-> 
->> Negative check for:
->>  * plane gamma lut sizes
->>  * plane degamma lut sizes
->>  * plane ctm matrix sizes
->>
->> Cc: Harry Wentland <harry.wentland@amd.com>
->> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
->> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> Cc: Uma Shankar <uma.shankar@intel.com>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> ---
->>  tests/kms_color.c | 127 ++++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 127 insertions(+)
->>
->> diff --git a/tests/kms_color.c b/tests/kms_color.c
->> index e14b37cb6f..d9fe417ba9 100644
->> --- a/tests/kms_color.c
->> +++ b/tests/kms_color.c
->> @@ -736,6 +736,118 @@ static void test_pipe_limited_range_ctm(data_t *data,
->>  }
->>  #endif
->>  
->> +static bool invalid_plane_gamma_test(data_t *data, igt_plane_t *plane)
->> +{
->> +	igt_display_t *display = &data->display;
->> +	drmModePropertyPtr gamma_mode = NULL;
->> +	uint32_t i;
->> +
->> +	igt_info("Plane invalid gamma test is running on pipe-%s plane-%s(%s)\n",
->> +			kmstest_pipe_name(plane->pipe->pipe),
->> +			kmstest_plane_type_name(plane->type),
->> +			is_hdr_plane(plane) ? "hdr":"sdr");
->> +
->> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_MODE));
->> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_LUT));
->> +
->> +	gamma_mode = get_plane_gamma_degamma_mode(plane, IGT_PLANE_GAMMA_MODE);
->> +
->> +	/* Iterate all supported gamma modes. */
->> +	for (i = 0; i < gamma_mode->count_enums; i++) {
->> +		segment_data_t *segment_info = NULL;
->> +		size_t lut_size = 0;
->> +
->> +		/* Ignore 'no gamma' from enum list. */
->> +		if (!strcmp(gamma_mode->enums[i].name, "no gamma"))
->> +			continue;
->> +
->> +		igt_info("Trying to use gamma mode: \'%s\'\n", gamma_mode->enums[i].name);
->> +
->> +		segment_info = get_segment_data(data, gamma_mode->enums[i].value,
->> +				gamma_mode->enums[i].name);
->> +		lut_size = sizeof(struct drm_color_lut_ext) * segment_info->entries_count;
->> +
->> +		igt_plane_set_prop_enum(plane, IGT_PLANE_GAMMA_MODE, gamma_mode->enums[i].name);
->> +		invalid_plane_lut_sizes(display, plane,
->> +					IGT_PLANE_GAMMA_LUT,
->> +					lut_size);
->> +
->> +		clear_segment_data(segment_info);
->> +
->> +		/* One enum is enough. */
->> +		break;
->> +	}
->> +
->> +	drmModeFreeProperty(gamma_mode);
->> +
->> +	return true;
->> +}
->> +
->> +static bool invalid_plane_degamma_test(data_t *data, igt_plane_t *plane)
->> +{
->> +	igt_display_t *display = &data->display;
->> +	drmModePropertyPtr degamma_mode = NULL;
->> +	uint32_t i;
->> +
->> +	igt_info("Plane invalid degamma test is running on pipe-%s plane-%s(%s)\n",
->> +			kmstest_pipe_name(plane->pipe->pipe),
->> +			kmstest_plane_type_name(plane->type),
->> +			is_hdr_plane(plane) ? "hdr":"sdr");
->> +
->> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_DEGAMMA_MODE));
->> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_DEGAMMA_LUT));
->> +
->> +	degamma_mode = get_plane_gamma_degamma_mode(plane, IGT_PLANE_DEGAMMA_MODE);
->> +
->> +	/* Iterate all supported degamma modes. */
->> +	for (i = 0; i < degamma_mode->count_enums; i++) {
->> +		segment_data_t *segment_info = NULL;
->> +		size_t lut_size = 0;
->> +
->> +		/* Ignore 'no degamma' from enum list. */
->> +		if (!strcmp(degamma_mode->enums[i].name, "no degamma"))
->> +			continue;
->> +
->> +		igt_info("Trying to use degamma mode: \'%s\'\n", degamma_mode->enums[i].name);
->> +
->> +		segment_info = get_segment_data(data,
->> +						degamma_mode->enums[i].value,
->> +						degamma_mode->enums[i].name);
->> +		lut_size = sizeof(struct drm_color_lut_ext) * segment_info->entries_count * 2;
->> +
->> +		igt_plane_set_prop_enum(plane,
->> +					IGT_PLANE_DEGAMMA_MODE,
->> +					degamma_mode->enums[i].name);
->> +		invalid_plane_lut_sizes(display, plane,
->> +					IGT_PLANE_DEGAMMA_LUT,
->> +					lut_size);
->> +
->> +		clear_segment_data(segment_info);
->> +
->> +		/* One enum is enough. */
->> +		break;
-> 
-> Why is one enum enough?
-> 
+Build changes
+-------------
 
-I think it's another intellism since Uma's patches only
-report one enum.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6292 -> IGTPW_6441
 
-Since the API is designed to allow for multiple enums the test
-should just run on all of them. It'd be a trivial change to the
-test.
+  CI-20190529: 20190529
+  CI_DRM_10930: 2c9ba65f2befe9febd864f0795227b351bd62dba @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6441: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/index.html
+  IGT_6292: 014b6cb631ecf3d878b7f6cc6d70bb1dc722c0c5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-Harry
 
-> The same question for the other case in this patch.
-> 
-> 
->> +	}
->> +
->> +	drmModeFreeProperty(degamma_mode);
->> +
->> +	return true;
->> +}
->> +
->> +static bool invalid_plane_ctm_test(data_t *data, igt_plane_t *plane)
->> +{
->> +	igt_info("Plane invalid CTM test is running on pipe-%s plane-%s(%s)\n",
->> +			kmstest_pipe_name(plane->pipe->pipe),
->> +			kmstest_plane_type_name(plane->type),
->> +			is_hdr_plane(plane) ? "hdr":"sdr");
->> +
->> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_CTM));
->> +	invalid_plane_lut_sizes(&data->display, plane,
->> +				IGT_PLANE_CTM,
->> +				sizeof(struct drm_color_ctm));
-> 
-> The code says you're trying shove a LUT into a CTM blob. I understand
-> that mechanically this is test you want to do, feed a wrong sized blob,
-> and in this case the contents do not matter (unlike with actual LUTs),
-> but reading this code is completely misleading and does not make sense.
-> It takes a while to think about what you actually want to test here,
-> and then reverse-engineer the code to understand that that is what
-> actually happens, too. That is too much mental burden for the reader to
-> realize that this piece of code actually works.
-> 
-> 
-> Thanks,
-> pq
-> 
->> +
->> +	return true;
->> +}
->> +
->>  static bool plane_gamma_test(data_t *data, igt_plane_t *plane)
->>  {
->>  	igt_output_t *output;
->> @@ -1411,6 +1523,21 @@ static void run_tests_for_plane(data_t *data, enum pipe pipe)
->>  					ctm_tests[i].iter);
->>  		}
->>  	}
->> +
->> +	igt_describe("Negative check for invalid plane gamma lut sizes");
->> +	igt_subtest_f("pipe-%s-invalid-plane-gamma-lut-sizes",
->> +			kmstest_pipe_name(pipe))
->> +		run_plane_color_test(data, pipe, invalid_plane_gamma_test);
->> +
->> +	igt_describe("Negative check for invalid plane degamma lut sizes");
->> +	igt_subtest_f("pipe-%s-invalid-plane-degamma-lut-sizes",
->> +			kmstest_pipe_name(pipe))
->> +		run_plane_color_test(data, pipe, invalid_plane_degamma_test);
->> +
->> +	igt_describe("Negative check for invalid plane ctm matrix sizes");
->> +	igt_subtest_f("pipe-%s-invalid-plane-ctm-matrix-sizes",
->> +			kmstest_pipe_name(pipe))
->> +		run_plane_color_test(data, pipe, invalid_plane_ctm_test);
->>  }
->>  
->>  igt_main
-> 
+
+== Testlist changes ==
+
++igt@kms_psr2_sf@overlay-plane-update-continuous-sf
++igt@kms_psr2_su@frontbuffer-xrgb8888
++igt@kms_psr2_su@page_flip-nv12
++igt@kms_psr2_su@page_flip-p010
++igt@kms_psr2_su@page_flip-xrgb8888
+-igt@kms_psr2_su@frontbuffer
+-igt@kms_psr2_su@page_flip
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/index.html
+
+--===============4882524094290049007==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Biplanar testcases (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97232/">https://patchwork.freedesktop.org/series/97232/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6292 -&gt; IGTPW_6441</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/index.html</p>
+<h2>Participating hosts (35 -&gt; 33)</h2>
+<p>Missing    (2): fi-bdw-samus fi-tgl-u2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6441 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_prime@i915-to-amd:</p>
+<ul>
+<li>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>
+<p>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</p>
+</li>
+<li>
+<p>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4432">i915#4432</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3928">i915#3928</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@mman:<ul>
+<li>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6292/fi-snb-2520m/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4610">i915#4610</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/fi-snb-2520m/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6292 -&gt; IGTPW_6441</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10930: 2c9ba65f2befe9febd864f0795227b351bd62dba @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6441: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6441/index.html<br />
+  IGT_6292: 014b6cb631ecf3d878b7f6cc6d70bb1dc722c0c5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_psr2_sf@overlay-plane-update-continuous-sf<br />
++igt@kms_psr2_su@frontbuffer-xrgb8888<br />
++igt@kms_psr2_su@page_flip-nv12<br />
++igt@kms_psr2_su@page_flip-p010<br />
++igt@kms_psr2_su@page_flip-xrgb8888<br />
+-igt@kms_psr2_su@frontbuffer<br />
+-igt@kms_psr2_su@page_flip</p>
+
+</body>
+</html>
+
+--===============4882524094290049007==--
