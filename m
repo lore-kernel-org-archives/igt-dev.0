@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEF056E2B4
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Nov 2021 16:53:50 +0000 (UTC)
-Date: Tue, 30 Nov 2021 08:48:18 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-Message-ID: <20211130164818.GA12888@jons-linux-dev-box>
-References: <20211126015735.908681-1-mastanx.katragadda@intel.com>
- <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
- <BN9PR11MB52905C33F740FAB54340B43C97669@BN9PR11MB5290.namprd11.prod.outlook.com>
- <5c09cc84-7f44-969c-9a7f-8c925f077ec5@linux.intel.com>
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam08on2051.outbound.protection.outlook.com [40.107.102.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E881E6E47E
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Nov 2021 20:13:31 +0000 (UTC)
+References: <20211129193857.1863174-1-Rodrigo.Siqueira@amd.com>
+From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+Message-ID: <835eb102-aaa5-efaf-e4c2-bc0c88bb89d7@amd.com>
+Date: Tue, 30 Nov 2021 15:13:27 -0500
+In-Reply-To: <20211129193857.1863174-1-Rodrigo.Siqueira@amd.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c09cc84-7f44-969c-9a7f-8c925f077ec5@linux.intel.com>
-Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
- Submission
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: add test for panel self
+ refresh
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,114 +23,274 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Katragadda, MastanX" <mastanx.katragadda@intel.com>
+To: mikita.lipski@amd.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 29, 2021 at 11:15:22AM +0000, Tvrtko Ursulin wrote:
+Hi Mikita,
+
+Could you take a look at this test?
+
+Thanks
+
+On 2021-11-29 2:38 p.m., Rodrigo Siqueira wrote:
+> From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 > 
-> On 29/11/2021 10:58, Katragadda, MastanX wrote:
-> > Hi   Tvrtko Ursulin,
-> >               Based on following backend information added skip on guc enabled platforms.
-> > 
-> > basically there is a quirk in GuC scheduling where if a context reaches the head of the queue and can't be scheduled it blocks the rest of the queue. A queue is an engine class. So in this case if the user submits to VCS0, VCS0, then VCS1 and the first submission to VCS0 is spinner the VCS1 submission is blocked. This more or less is exactly what this test is doing, thus it hangs. We have a request with the GuC firmware team to be able to tweak this head of queue blocking behaviour but don't expect to land anytime soon. Also in the real world this isn't an issue as the user should always be using VEs which should never block the head of the queue unless all the engines within the class are busy.
-> > 
-> > Test is expected to fail with GuC submission, skip it in CI.
+> [Why&How]
+> Test for PSR functionality. With an eDP connected, it tests whether PSR
+> is enabled by commiting a static framebuffer
 > 
-> Does "blocks the rest of the queue" mean unrelated contexts submitted
-> against the same engine class?
+> hardware requirements:
+> 1. eDP panel that supports PSR (multiple panel can be connected at the
+>     same time)
+> 2. Optional DP display for testing a regression condition (setting crtc
+>     to null)
 > 
-
-Yes.
-
-> If so then it would be a DoS vector and the "user _should_ always" would not
-> be sufficient.
->
-
-This is a DoS vector but there are about a million others and this no
-worse than most. 
-
-> Or if the blockage is localised to a single context then it might be fine
-> (but unfortunate) if on top we chose to disallow submission to non-virtual
-> indices in the engine map (in case of GuC)? If the firmware bug is not
-
-We discussed this we basically land on if the UMDs want to do something
-stupid, let them as with all the other DoS in the i915. We likely can't
-disable non-virtual submission as some UMDs want to explictly place some
-contexts on certain engines (compute). In that case the UMD has to be
-smart enough to not submit contexts in a way to expose this scheduling
-quirk.
-
-> getting fixed that is. I may be on the wrong track here since I am not 100%
-
-Just because the GuC scheduling doesn't work like execlists doesn't mean
-that it is bug. Checking for the HoQ only is done for a good reason -
-performance a uC can do everything and anything like execlists as it is
-single low power CPU controling the scheduling of an entire GT. We can't
-protect against everything a user can do that is stupid.
-
-FWIW we do have an open task assigned to the GuC team to allow a KMD
-configurable search depth when the queue can't be scheduled. No idea
-when this is going to get implemented.
-
-> certain I figured out why it exactly gets stuck.
+> Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> ---
+>   tests/amdgpu/amd_psr.c   | 221 +++++++++++++++++++++++++++++++++++++++
+>   tests/amdgpu/meson.build |   1 +
+>   2 files changed, 222 insertions(+)
+>   create mode 100644 tests/amdgpu/amd_psr.c
 > 
-> Because, looking at the bonded-pair to start with, if the test is emitting a
-> pair of request on the same context, spinner first, then a another one with
-> a semaphore dependency I am not sure why it hangs. When the spinner switches
-> out after time slice expires the second request should run, cancel the
-> spinner and exit. At which point they are both complete.
->
-
-I think only the MT version of bonded-pair hangs but it has been a while
-since I looked at this.
-
-IMO this fix is 100% correct as this is a known, tracked issue. It was
-agreed upon (arch, i915, GuC team) that we just skip these tests with
-GuC submission.
-
-Matt
-
-> Regards,
+> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+> new file mode 100644
+> index 00000000..732eab25
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_psr.c
+> @@ -0,0 +1,221 @@
+> +/*
+> + * Copyright 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + */
+> +
+> +#include "drm_mode.h"
+> +#include "igt.h"
+> +#include "igt_core.h"
+> +#include "igt_kms.h"
+> +#include <stdint.h>
+> +#include <fcntl.h>
+> +#include <xf86drmMode.h>
+> +
+> +/* hardware requirements:
+> + * 1. eDP panel that supports PSR (multiple panel can be connected at the same time)
+> + * 2. Optional DP display for testing a regression condition (setting crtc to null)
+> + */
+> +IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP displays");
+> +
+> +#define DEBUGFS_PSR_STATE "psr_state"
+> +/* After a full update, a few fast updates are necessary for PSR to be enabled */
+> +#define N_FLIPS 6
+> +/* DMCUB takes some time to actually enable PSR. Worst case delay is 4 seconds */
+> +#define PSR_SETTLE_DELAY 4
+> +
+> +/* Common test data. */
+> +typedef struct data {
+> +        igt_display_t display;
+> +        igt_plane_t *primary;
+> +        igt_plane_t *cursor;
+> +        igt_output_t *output;
+> +        igt_pipe_t *pipe;
+> +        igt_pipe_crc_t *pipe_crc;
+> +        drmModeModeInfo *mode;
+> +        enum pipe pipe_id;
+> +        int fd;
+> +        int w;
+> +        int h;
+> +} data_t;
+> +
+> +/* Common test setup. */
+> +static void test_init(data_t *data)
+> +{
+> +        igt_display_t *display = &data->display;
+> +
+> +        /* It doesn't matter which pipe we choose on amdpgu. */
+> +        data->pipe_id = PIPE_A;
+> +        data->pipe = &data->display.pipes[data->pipe_id];
+> +
+> +        igt_display_reset(display);
+> +
+> +        data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
+> +        igt_require(data->output);
+> +
+> +        data->mode = igt_output_get_mode(data->output);
+> +        igt_assert(data->mode);
+> +
+> +        data->primary =
+> +                igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +        data->cursor =
+> +                igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
+> +
+> +        data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id, "auto");
+> +
+> +        igt_output_set_pipe(data->output, data->pipe_id);
+> +
+> +        data->w = data->mode->hdisplay;
+> +        data->h = data->mode->vdisplay;
+> +}
+> +/* Common test cleanup. */
+> +static void test_fini(data_t *data)
+> +{
+> +        igt_display_t *display = &data->display;
+> +
+> +        igt_pipe_crc_free(data->pipe_crc);
+> +        igt_display_reset(display);
+> +        igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> +}
+> +
+> +static int check_conn_type(data_t *data, uint32_t type) {
+> +	int i;
+> +
+> +	for (i = 0; i < data->display.n_outputs; i++) {
+> +		uint32_t conn_type = data->display.outputs[i].config.connector->connector_type;
+> +		if (conn_type == type)
+> +			return i;
+> +	}
+> +
+> +	return -1;
+> +}
+> +
+> +static void run_check_psr(data_t *data, bool test_null_crtc) {
+> +	char buf[8];
+> +	char *connector_name;
+> +	int fd, edp_idx, dp_idx, ret, i, psr_state;
+> +	igt_fb_t ref_fb, ref_fb2;
+> +	igt_fb_t *flip_fb;
+> +	enum pipe pipe;
+> +	igt_output_t *output;
+> +
+> +	test_init(data);
+> +
+> +	edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
+> +	dp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_DisplayPort);
+> +	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
+> +
+> +	for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+> +			continue;
+> +
+> +		igt_create_color_fb(data->fd, data->mode->hdisplay,
+> +				    data->mode->vdisplay, DRM_FORMAT_XRGB8888, 0, 1.0,
+> +				    0.0, 0.0, &ref_fb);
+> +		igt_create_color_fb(data->fd, data->mode->hdisplay,
+> +				    data->mode->vdisplay, DRM_FORMAT_XRGB8888, 0, 0.0,
+> +				    1.0, 0.0, &ref_fb2);
+> +
+> +		igt_plane_set_fb(data->primary, &ref_fb);
+> +		igt_output_set_pipe(output, pipe);
+> +		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> +
+> +		for (i = 0; i < N_FLIPS; i++) {
+> +			if (i % 2 == 0)
+> +				flip_fb = &ref_fb2;
+> +			else
+> +				flip_fb = &ref_fb;
+> +
+> +			ret = drmModePageFlip(data->fd, output->config.crtc->crtc_id,
+> +					      flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+> +			igt_require(ret == 0);
+> +			kmstest_wait_for_pageflip(data->fd);
+> +		}
+> +	}
+> +
+> +	/* PSR state takes some time to settle its value on static screen */
+> +	sleep(PSR_SETTLE_DELAY);
+> +
+> +	for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+> +			continue;
+> +
+> +		connector_name = output->name;
+> +		fd = igt_debugfs_connector_dir(data->fd, connector_name, O_RDONLY);
+> +		igt_assert(fd >= 0);
+> +
+> +		ret = igt_debugfs_simple_read(fd, DEBUGFS_PSR_STATE, buf, sizeof(buf));
+> +		igt_require(ret > 0);
+> +
+> +		psr_state =  (int) strtol(buf, NULL, 10);
+> +		igt_fail_on_f(psr_state < 1, "PSR was not enabled for connector %s\n", output->name);
+> +		igt_fail_on_f(psr_state == 0xff, "PSR is invalid for connector %s\n", output->name);
+> +		igt_fail_on_f(psr_state != 5, "PSR state is expected to be at 5 on a "
+> +			      "static screen for connector %s\n", output->name);
+> +	}
+> +
+> +	if (test_null_crtc) {
+> +		/* check whether settings crtc to null generated any warning (eDP+DP) */
+> +		igt_skip_on_f(dp_idx == -1, "no DP connector found\n");
+> +
+> +		for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +			if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+> +				continue;
+> +
+> +			igt_output_set_pipe(output, PIPE_NONE);
+> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +		}
+> +	}
+> +
+> +	igt_remove_fb(data->fd, &ref_fb);
+> +	igt_remove_fb(data->fd, &ref_fb2);
+> +	close(fd);
+> +	test_fini(data);
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data;
+> +
+> +	igt_skip_on_simulation();
+> +	memset(&data, 0, sizeof(data));
+> +
+> +	igt_fixture
+> +	{
+> +		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&data.display, data.fd);
+> +		igt_require(&data.display.is_atomic);
+> +		igt_display_require_output(&data.display);
+> +	}
+> +
+> +	igt_describe("Test whether PSR can be enabled with static screen");
+> +	igt_subtest("psr_enable") run_check_psr(&data, false);
+> +
+> +	igt_describe("Test whether setting CRTC to null triggers any warning with PSR enabled");
+> +	igt_subtest("psr_enable_null_crtc") run_check_psr(&data, true);
+> +
+> +	igt_fixture
+> +	{
+> +		igt_display_fini(&data.display);
+> +	}
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 5216e194..2bd25ad6 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -17,6 +17,7 @@ if libdrm_amdgpu.found()
+>   			  'amd_link_settings',
+>   			  'amd_vrr_range',
+>   			  'amd_mode_switch',
+> +			  'amd_psr',
+>   			]
+>   	amdgpu_deps += libdrm_amdgpu
+>   endif
 > 
-> Tvrtko
-> 
-> > Regards,
-> > Mastan
-> > 
-> > -----Original Message-----
-> > From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> > Sent: 29 November 2021 16:01
-> > To: Katragadda, MastanX <mastanx.katragadda@intel.com>; igt-dev@lists.freedesktop.org; Surendrakumar Upadhyay, TejaskumarX <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> > Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc Submission
-> > 
-> > 
-> > On 26/11/2021 01:57, Mastan Katragadda wrote:
-> > > This a known failure when running
-> > > igt@gem_exec_balancer@bonded-(dual|pair|sync)
-> > > tests with GuC submission.The hang is expected with GuC submission
-> > > since the test was written to expect execlist scheduling hence added
-> > > skip if Guc submission enabled.
-> > 
-> > Looking at the test I don't see anything backend specific. Can you provide an explanation of how and why it hangs?
-> > 
-> > Regards,
-> > 
-> > Tvrtko
-> > 
-> > > Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
-> > > ---
-> > >    tests/i915/gem_exec_balancer.c | 1 +
-> > >    1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/tests/i915/gem_exec_balancer.c
-> > > b/tests/i915/gem_exec_balancer.c index cc07a5a9..d58734ab 100644
-> > > --- a/tests/i915/gem_exec_balancer.c
-> > > +++ b/tests/i915/gem_exec_balancer.c
-> > > @@ -3320,6 +3320,7 @@ igt_main
-> > >    	igt_subtest_group {
-> > >    		igt_fixture {
-> > > +			igt_require(!gem_using_guc_submission(i915));
-> > >    			intel_allocator_multiprocess_start();
-> > >    		}
-> > > 
