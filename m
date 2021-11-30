@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam07on2088.outbound.protection.outlook.com [40.107.95.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABF576E9A5
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Nov 2021 08:35:51 +0000 (UTC)
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam08on2061.outbound.protection.outlook.com [40.107.101.61])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA2BA6E959
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Nov 2021 08:35:55 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Tue, 30 Nov 2021 16:35:02 +0800
-Message-ID: <20211130083503.10221-11-stylon.wang@amd.com>
+Date: Tue, 30 Nov 2021 16:35:03 +0800
+Message-ID: <20211130083503.10221-12-stylon.wang@amd.com>
 In-Reply-To: <20211130083503.10221-1-stylon.wang@amd.com>
 References: <20211130083503.10221-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 10/11] tests/amdgpu/amd_plane: Ensure pipes
- are enabled before accessing
+Subject: [igt-dev] [PATCH i-g-t 11/11] tests/amdgpu/amd_plane: Add P010
+ format to MPO tests and add test descriptions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,46 +23,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Anson Jacob <Anson.Jacob@amd.com>, Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
+Cc: anson.jacob@amd.com, Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Anson Jacob <Anson.Jacob@amd.com>
-
-Couple of tests were accessing pipe's without ensuring if they are
-enabled or not. Using for_each_pipe macro to do so.
-
-Signed-off-by: Anson Jacob <Anson.Jacob@amd.com>
+Signed-off-by: Stylon Wang <stylon.wang@amd.com>
 ---
- tests/amdgpu/amd_plane.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/amdgpu/amd_plane.c | 64 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 54 insertions(+), 10 deletions(-)
 
 diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 66302ebf..e4c7dca3 100644
+index e4c7dca3..faaa1b87 100644
 --- a/tests/amdgpu/amd_plane.c
 +++ b/tests/amdgpu/amd_plane.c
-@@ -150,9 +150,9 @@ static void test_init(data_t *data)
- 	igt_display_t *display = &data->display;
- 	int i, n, max_pipes = display->n_pipes;
+@@ -24,6 +24,8 @@
+ #include "libdrm/amdgpu.h"
+ #include "libdrm/amdgpu_drm.h"
  
--	for (i = 0; i < max_pipes; ++i) {
-+	for_each_pipe(display, i) {
- 		data->pipe_id[i] = PIPE_A + i;
--		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-+		data->pipe[i] = &display->pipes[data->pipe_id[i]];
- 		data->primary[i] = igt_pipe_get_plane_type(
- 			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
- 		data->overlay[i] = igt_pipe_get_plane_type_index(
-@@ -188,9 +188,9 @@ static void test_init(data_t *data)
- static void test_fini(data_t *data)
- {
- 	igt_display_t *display = &data->display;
--	int i, max_pipes = display->n_pipes;
-+	int i;
++IGT_TEST_DESCRIPTION("Tests for Multi Plane Overlay for single and dual displays");
++
+ /* Maximum pipes on any AMD ASIC. */
+ #define MAX_PIPES 6
+ #define DISPLAYS_TO_TEST 2
+@@ -485,7 +487,7 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
  
--	for (i = 0; i < max_pipes; ++i) {
-+	for_each_pipe(display, i) {
- 		igt_pipe_crc_free(data->pipe_crc[i]);
+ 		igt_plane_set_fb(data->primary[n], &fb[n].ref_primary);
+ 
+-		if (format == DRM_FORMAT_NV12)
++		if (format == DRM_FORMAT_NV12 || format == DRM_FORMAT_P010)
+ 			set_regamma_lut(data, &lut,  n);
  	}
  
+@@ -739,20 +741,62 @@ igt_main
+ 		igt_display_require_output(&data.display);
+ 	}
+ 
++	igt_describe("MPO with 4K planes");
+ 	igt_subtest("test-mpo-4k") test_mpo_4k(&data);
++	igt_describe("MPO with tiled and linear buffers");
+ 	igt_subtest("mpo-swizzle-toggle") test_mpo_swizzle_toggle(&data);
++	igt_describe("MPO with tiled and linear buffers on dual displays");
+ 	igt_subtest("mpo-swizzle-toggle-multihead")
+ 		test_mpo_swizzle_toggle_multihead(&data);
+-	igt_subtest("mpo-pan-rgb") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, 1);
+-	igt_subtest("mpo-pan-rgb-multihead") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
+-	igt_subtest("mpo-pan-nv12") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, 1);
+-	igt_subtest("mpo-pan-nv12-multihead") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
+-	igt_subtest("mpo-pan-multi-rgb") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
+-	igt_subtest("mpo-pan-multi-nv12") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
+-	igt_subtest("mpo-scale-rgb") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
+-	igt_subtest("mpo-scale-rgb-multihead") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
+-	igt_subtest("mpo-scale-nv12") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, 1);
++
++	igt_describe("MPO and moving RGB primary plane around");
++	igt_subtest("mpo-pan-rgb")
++		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, 1);
++	igt_describe("MPO and moving RGB primary plane around with dual displays");
++	igt_subtest("mpo-pan-rgb-multihead")
++		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
++
++	igt_describe("MPO and moving NV12 primary plane around");
++	igt_subtest("mpo-pan-nv12")
++		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, 1);
++	igt_describe("MPO and moving NV12 primary plane around with dual displays");
++	igt_subtest("mpo-pan-nv12-multihead")
++		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
++
++	igt_describe("MPO and moving P010 primary plane around");
++	igt_subtest("mpo-pan-p010")
++		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_P010, 1);
++	igt_describe("MPO and moving P010 primary plane around with dual displays");
++	igt_subtest("mpo-pan-p010-multihead")
++		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
++
++	igt_describe("MPO and moving RGB primary plane between 2 displays");
++	igt_subtest("mpo-pan-multi-rgb")
++		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
++	igt_describe("MPO and moving NV12 primary plane between 2 displays");
++	igt_subtest("mpo-pan-multi-nv12")
++		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
++	igt_describe("MPO and moving P010 primary plane between 2 displays");
++	igt_subtest("mpo-pan-multi-p010")
++		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
++
++	igt_describe("MPO and scaling RGB primary plane");
++	igt_subtest("mpo-scale-rgb")
++		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
++	igt_describe("MPO and scaling RGB primary plane with 2 displays");
++	igt_subtest("mpo-scale-rgb-multihead")
++		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
++	igt_describe("MPO and scaling NV12 primary plane");
++	igt_subtest("mpo-scale-nv12")
++		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, 1);
++	igt_describe("MPO and scaling NV12 primary plane with 2 displays");
+ 	igt_subtest("mpo-scale-nv12-multihead") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
++	igt_describe("MPO and scaling P010 primary plane");
++	igt_subtest("mpo-scale-p010")
++		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_P010, 1);
++	igt_describe("MPO and scaling P010 primary plane with 2 displays");
++	igt_subtest("mpo-scale-p010-multihead")
++		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
+ 
+ 	igt_fixture
+ 	{
 -- 
 2.33.1
