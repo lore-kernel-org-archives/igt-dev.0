@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18B3B6E5D1
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Nov 2021 12:55:31 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 30 Nov 2021 12:55:27 +0000
+Message-ID: <991a72068479cd8ce111aa538261d0872c45c4a5.camel@intel.com>
+References: <20211130073803.46388-1-jouni.hogander@intel.com>
+ <20211130073803.46388-2-jouni.hogander@intel.com>
+In-Reply-To: <20211130073803.46388-2-jouni.hogander@intel.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <8F193F998BF87F42BFD3BA391D10A957@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 30 Nov 2021 11:10:29 -0000
-Message-ID: <163827062931.20411.197053928284802724@emeril.freedesktop.org>
-References: <20211130083503.10221-1-stylon.wang@amd.com>
-In-Reply-To: <20211130083503.10221-1-stylon.wang@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBDcmVh?=
- =?utf-8?q?te_tests_for_multi-plane_overlay?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/kms_psr2_su: Add offset to
+ drawn rectangle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,29 +22,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Stylon Wang <stylon.wang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Hogander, Jouni" <jouni.hogander@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: Create tests for multi-plane overlay
-URL   : https://patchwork.freedesktop.org/series/97398/
-State : failure
-
-== Summary ==
-
-Applying: tests/amdgpu/amd_plane: Introduced 4K MPO test
-Using index info to reconstruct a base tree...
-M	tests/amdgpu/meson.build
-Falling back to patching base and 3-way merge...
-Auto-merging tests/amdgpu/meson.build
-CONFLICT (content): Merge conflict in tests/amdgpu/meson.build
-Patch failed at 0001 tests/amdgpu/amd_plane: Introduced 4K MPO test
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+T24gVHVlLCAyMDIxLTExLTMwIGF0IDA5OjM4ICswMjAwLCBKb3VuaSBIw7ZnYW5kZXIgd3JvdGU6
+DQo+IEFkZGluZyBvZmZzZXQgdG8gZHJhd24gcmVjdGFuZ2xlIHJldmVhbHMgYmV0dGVyIHByb2Js
+ZW1zIG9mZnNldA0KPiBjb25maWd1cmF0aW9uLg0KDQpSZXZpZXdlZC1ieTogSm9zw6kgUm9iZXJ0
+byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQoNCj4gDQo+IFNpZ25lZC1vZmYtYnk6
+IEpvdW5pIEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRl
+c3RzL2k5MTUva21zX3BzcjJfc3UuYyB8IDE5ICsrKysrKysrKysrLS0tLS0tLS0NCj4gIDEgZmls
+ZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAt
+LWdpdCBhL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc3Uu
+Yw0KPiBpbmRleCA5MWRlOWJhZC4uMTYzMDEwMzEgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2k5MTUv
+a21zX3BzcjJfc3UuYw0KPiArKysgYi90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMNCj4gQEAgLTMz
+LDcgKzMzLDggQEANCj4gIA0KPiAgSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3QgUFNSMiBzZWxl
+Y3RpdmUgdXBkYXRlIik7DQo+ICANCj4gLSNkZWZpbmUgU1FVQVJFX1NJWkUgMTAwDQo+ICsjZGVm
+aW5lIFNRVUFSRV9TSVpFICAgMTAwDQo+ICsjZGVmaW5lIFNRVUFSRV9PRkZTRVQgMTAwDQo+ICAv
+KiBlYWNoIHNlbGVjdGl2ZSB1cGRhdGUgYmxvY2sgaXMgNCBsaW5lcyB0YWxsICovDQo+ICAjZGVm
+aW5lIEVYUEVDVEVEX05VTV9TVV9CTE9DS1MgKChTUVVBUkVfU0laRSAvIDQpICsgKFNRVUFSRV9T
+SVpFICUgNCA/IDEgOiAwKSkNCj4gIA0KPiBAQCAtMTI4LDcgKzEyOSw3IEBAIHN0YXRpYyB2b2lk
+IHByZXBhcmUoZGF0YV90ICpkYXRhKQ0KPiAgDQo+ICAJCWNyID0gaWd0X2dldF9jYWlyb19jdHgo
+ZGF0YS0+ZHJtX2ZkLCAmZGF0YS0+ZmJbMV0pOw0KPiAgCQkvKiBwYWludCBhIHdoaXRlIHNxdWFy
+ZSAqLw0KPiAtCQlpZ3RfcGFpbnRfY29sb3JfYWxwaGEoY3IsIDAsIDAsIFNRVUFSRV9TSVpFLCBT
+UVVBUkVfU0laRSwNCj4gKwkJaWd0X3BhaW50X2NvbG9yX2FscGhhKGNyLCBTUVVBUkVfT0ZGU0VU
+LCBTUVVBUkVfT0ZGU0VULCBTUVVBUkVfU0laRSwgU1FVQVJFX1NJWkUsDQo+ICAJCQkJICAgICAg
+MS4wLCAxLjAsIDEuMCwgMS4wKTsNCj4gIAkJaWd0X3B1dF9jYWlyb19jdHgoY3IpOw0KPiAgCX0g
+ZWxzZSBpZiAoZGF0YS0+b3AgPT0gRlJPTlRCVUZGRVIpIHsNCj4gQEAgLTE1Miw4ICsxNTMsOCBA
+QCBzdGF0aWMgYm9vbCB1cGRhdGVfc2NyZWVuX2FuZF90ZXN0KGRhdGFfdCAqZGF0YSkNCj4gIAkJ
+c3RydWN0IGRybV9tb2RlX3JlY3QgY2xpcDsNCj4gIAkJaWd0X3BsYW5lX3QgKnByaW1hcnk7DQo+
+ICANCj4gLQkJY2xpcC54MSA9IGNsaXAueTEgPSAwOw0KPiAtCQljbGlwLngyID0gY2xpcC55MiA9
+IFNRVUFSRV9TSVpFOw0KPiArCQljbGlwLngxID0gY2xpcC55MSA9IFNRVUFSRV9PRkZTRVQ7DQo+
+ICsJCWNsaXAueDIgPSBjbGlwLnkyID0gU1FVQVJFX09GRlNFVCArIFNRVUFSRV9TSVpFOw0KPiAg
+DQo+ICAJCXByaW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKGRhdGEtPm91dHB1dCwN
+Cj4gIAkJCQkJCSAgICBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsNCj4gQEAgLTE2NywxNiArMTY4
+LDE4IEBAIHN0YXRpYyBib29sIHVwZGF0ZV9zY3JlZW5fYW5kX3Rlc3QoZGF0YV90ICpkYXRhKQ0K
+PiAgCWNhc2UgRlJPTlRCVUZGRVI6IHsNCj4gIAkJZHJtTW9kZUNsaXAgY2xpcDsNCj4gIA0KPiAt
+CQljbGlwLngxID0gY2xpcC55MSA9IDA7DQo+IC0JCWNsaXAueDIgPSBjbGlwLnkyID0gU1FVQVJF
+X1NJWkU7DQo+ICsJCWNsaXAueDEgPSBjbGlwLnkxID0gU1FVQVJFX09GRlNFVDsNCj4gKwkJY2xp
+cC54MiA9IGNsaXAueTIgPSBTUVVBUkVfT0ZGU0VUICsgU1FVQVJFX1NJWkU7DQo+ICANCj4gIAkJ
+aWYgKGRhdGEtPnNjcmVlbl9jaGFuZ2VzICYgMSkgew0KPiAgCQkJLyogZ28gYmFjayB0byBhbGwg
+Z3JlZW4gZnJhbWUgd2l0aCBhIHNxdWFyZSAqLw0KPiAtCQkJaWd0X3BhaW50X2NvbG9yX2FscGhh
+KGRhdGEtPmNyLCAwLCAwLCBTUVVBUkVfU0laRSwNCj4gKwkJCWlndF9wYWludF9jb2xvcl9hbHBo
+YShkYXRhLT5jciwgU1FVQVJFX09GRlNFVCwNCj4gKwkJCQkJICAgICAgU1FVQVJFX09GRlNFVCwg
+U1FVQVJFX1NJWkUsDQo+ICAJCQkJCSAgICAgIFNRVUFSRV9TSVpFLCAxLjAsIDEuMCwgMS4wLCAx
+LjApOw0KPiAgCQl9IGVsc2Ugew0KPiAgCQkJLyogZ28gYmFjayB0byBhbGwgZ3JlZW4gZnJhbWUg
+Ki8NCj4gLQkJCWlndF9wYWludF9jb2xvcl9hbHBoYShkYXRhLT5jciwgMCwgMCwgU1FVQVJFX1NJ
+WkUsDQo+ICsJCQlpZ3RfcGFpbnRfY29sb3JfYWxwaGEoZGF0YS0+Y3IsIFNRVUFSRV9PRkZTRVQs
+DQo+ICsJCQkJCSAgICAgIFNRVUFSRV9PRkZTRVQsIFNRVUFSRV9TSVpFLA0KPiAgCQkJCQkgICAg
+ICBTUVVBUkVfU0laRSwgMCwgMS4wLCAwLCAxLjApOw0KPiAgCQl9DQo+ICANCg0K
