@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFE056E81C
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Nov 2021 15:42:40 +0000 (UTC)
-Date: Tue, 30 Nov 2021 17:41:46 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YaZGOiLSNZ+XWu7d@platvala-desk.ger.corp.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2DE076E4B6
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Nov 2021 15:49:26 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Tue, 30 Nov 2021 15:49:20 +0000
+Message-ID: <e4d60b837f5641e5880e60cac41ec70a@intel.com>
 References: <20211126140911.1556205-1-Rodrigo.Siqueira@amd.com>
  <163793928750.11078.15559582292236440457@emeril.freedesktop.org>
  <1fc1d16e-4f89-f3f3-e279-7e42e83e448b@amd.com>
  <4e04b2e2c6e44718a1d7ec702626037c@intel.com>
  <YaXz1JqC6QXekQBZ@platvala-desk.ger.corp.intel.com>
  <34e4d1c9-02b5-6b44-de08-74c1661f7a6a@amd.com>
+ <YaZGOiLSNZ+XWu7d@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YaZGOiLSNZ+XWu7d@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <34e4d1c9-02b5-6b44-de08-74c1661f7a6a@amd.com>
 Subject: Re: [igt-dev]
  =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
  =?utf-8?q?amdgpu=3A_Introduces_DP_DSC_test?=
@@ -27,97 +29,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>, Rodrigo Siqueira Jordao <rjordrigo@amd.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Lipski,
- Mikita" <mikita.lipski@amd.com>, "Vudum,
- Lakshminarayana" <lakshminarayana.vudum@intel.com>
+ Mikita" <mikita.lipski@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 30, 2021 at 10:26:58AM -0500, Rodrigo Siqueira Jordao wrote:
-> Hi Petri/Lakshmi,
-> 
-> Thanks a lot for your help with this issue.
-> 
-> Petri/Lakshmi, the only generic change that this patch made is in the `enum
-> igt_atomic_crtc_properties` as described in the below diff:
-> 
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -125,6 +125,7 @@ enum igt_atomic_crtc_properties {
->         IGT_CRTC_ACTIVE,
->         IGT_CRTC_OUT_FENCE_PTR,
->         IGT_CRTC_VRR_ENABLED,
-> +       IGT_CRTC_DSC_SLICE_HEIGHT,
->         IGT_NUM_CRTC_PROPS
->  };
-> 
-> Please, correct me if I'm wrong, but from the CI report this patch might
-> cause issues in the following subtests:
-> 
-> Possible regressions
-> igt@kms_frontbuffer_tracking@fbc-tiling-y:
-> 
-> shard-iclb: PASS -> FAIL +803 similar issues
-> igt@kms_plane@plane-panning-bottom-right:
-> 
-> shard-iclb: NOTRUN -> FAIL +159 similar issues
-> igt@kms_prime@basic-crc@second-to-first:
-> 
-> shard-iclb: PASS -> CRASH +4 similar issues
-> 
-> (https://patchwork.freedesktop.org/series/97325/)
-> 
-> From the above list, the only test that I can try to reproduce on my end is
-> igt@kms_plane@plane-panning-bottom-right which works fine with this patch or
-> not. Additionally, it looks like that all failures in this shard-iclb
-> machine has:
-> 
-> 	
-> Received signal SIGSEGV.
-> Stack trace:
->  #0 [fatal_sig_handler+0xd6]
->  #1 [killpg+0x40]
->  #2 [__nss_database_lookup+0x20792]
->  #3 [igt_display_require+0x62a]
->  #4 [__igt_unique____real_main1225+0xc1]
->  #5 [main+0x3f]
->  #6 [__libc_start_main+0xf3]
->  #7 [_start+0x2a]
-> (https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6442/shard-iclb3/igt@kms_plane@plane-panning-bottom-right.html)
-> 
-> From the above error, I expected that I could reproduce this type of issue
-> on my side. Additionally, when I looked at the shard-iclb machine
-> ((https://intel-gfx-ci.01.org/hardware.html)), I noticed it is an Ice lake
-> machine connected to a single eDP display (I suppose it is a laptop). If
-> this patch introduces such a regression, I guess we have a bug in some of
-> the igt_kms functions.
-> 
-> I don't have an Ice Lake machine for trying to reproduce this issue on my
-> side; in this sense, do you have any suggestions? Is this error generic
-> across Intel devices? Or only that specific machine? I think I can try to
-> remove that property from igt_kms and make it only available inside the AMD
-> test, but I'm not sure if this is the right approach.
-
-The correct way is to add the property, and adjust all the other code
-that uses the properties. The key word to look for is
-IGT_NUM_CRTC_PROPS.
-
-For example:
-
-igt_kms.c:
-const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS]
-
-and inside igt_fill_pipe_props():
-
-                        if (strcmp(prop->name, crtc_prop_names[j]) != 0)
-			                                continue;
-
-
-You add a prop enum, increasing IGT_NUM_CRTC_PROPS, but now there's an
-uninitialized index in igt_crtc_prop_names.
-
-Etc.
-
-
--- 
-Petri Latvala
+SSBoYXZlIGFyY2hpdmVkIHRoZSBmaWx0ZXIgYXMgdGhpcyBidWcvZmlsdGVyIHdhcyBjcmVhdGVk
+IGJhc2VkIG9uIHRoZSByZXN1bHRzIGZyb20gdGhpcyBwYXRjaC4gDQoNCkxha3NobWkuDQotLS0t
+LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogTGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZh
+bGFAaW50ZWwuY29tPiANClNlbnQ6IFR1ZXNkYXksIE5vdmVtYmVyIDMwLCAyMDIxIDc6NDIgQU0N
+ClRvOiBSb2RyaWdvIFNpcXVlaXJhIEpvcmRhbyA8cmpvcmRyaWdvQGFtZC5jb20+DQpDYzogVnVk
+dW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNvbT47IFJv
+ZHJpZ28gU2lxdWVpcmEgPHJvZHJpZ28uc2lxdWVpcmFAYW1kLmNvbT47IGlndC1kZXZAbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnOyBMaXBza2ksIE1pa2l0YSA8bWlraXRhLmxpcHNraUBhbWQuY29tPjsg
+V2VudGxhbmQsIEhhcnJ5IDxIYXJyeS5XZW50bGFuZEBhbWQuY29tPg0KU3ViamVjdDogUmU6IFtp
+Z3QtZGV2XSDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciB0ZXN0cy9hbWRncHU6IEludHJvZHVj
+ZXMgRFAgRFNDIHRlc3QNCg0KT24gVHVlLCBOb3YgMzAsIDIwMjEgYXQgMTA6MjY6NThBTSAtMDUw
+MCwgUm9kcmlnbyBTaXF1ZWlyYSBKb3JkYW8gd3JvdGU6DQo+IEhpIFBldHJpL0xha3NobWksDQo+
+IA0KPiBUaGFua3MgYSBsb3QgZm9yIHlvdXIgaGVscCB3aXRoIHRoaXMgaXNzdWUuDQo+IA0KPiBQ
+ZXRyaS9MYWtzaG1pLCB0aGUgb25seSBnZW5lcmljIGNoYW5nZSB0aGF0IHRoaXMgcGF0Y2ggbWFk
+ZSBpcyBpbiB0aGUgDQo+IGBlbnVtIGlndF9hdG9taWNfY3J0Y19wcm9wZXJ0aWVzYCBhcyBkZXNj
+cmliZWQgaW4gdGhlIGJlbG93IGRpZmY6DQo+IA0KPiAtLS0gYS9saWIvaWd0X2ttcy5oDQo+ICsr
+KyBiL2xpYi9pZ3Rfa21zLmgNCj4gQEAgLTEyNSw2ICsxMjUsNyBAQCBlbnVtIGlndF9hdG9taWNf
+Y3J0Y19wcm9wZXJ0aWVzIHsNCj4gICAgICAgICBJR1RfQ1JUQ19BQ1RJVkUsDQo+ICAgICAgICAg
+SUdUX0NSVENfT1VUX0ZFTkNFX1BUUiwNCj4gICAgICAgICBJR1RfQ1JUQ19WUlJfRU5BQkxFRCwN
+Cj4gKyAgICAgICBJR1RfQ1JUQ19EU0NfU0xJQ0VfSEVJR0hULA0KPiAgICAgICAgIElHVF9OVU1f
+Q1JUQ19QUk9QUw0KPiAgfTsNCj4gDQo+IFBsZWFzZSwgY29ycmVjdCBtZSBpZiBJJ20gd3Jvbmcs
+IGJ1dCBmcm9tIHRoZSBDSSByZXBvcnQgdGhpcyBwYXRjaCANCj4gbWlnaHQgY2F1c2UgaXNzdWVz
+IGluIHRoZSBmb2xsb3dpbmcgc3VidGVzdHM6DQo+IA0KPiBQb3NzaWJsZSByZWdyZXNzaW9ucw0K
+PiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy10aWxpbmcteToNCj4gDQo+IHNoYXJk
+LWljbGI6IFBBU1MgLT4gRkFJTCArODAzIHNpbWlsYXIgaXNzdWVzDQo+IGlndEBrbXNfcGxhbmVA
+cGxhbmUtcGFubmluZy1ib3R0b20tcmlnaHQ6DQo+IA0KPiBzaGFyZC1pY2xiOiBOT1RSVU4gLT4g
+RkFJTCArMTU5IHNpbWlsYXIgaXNzdWVzDQo+IGlndEBrbXNfcHJpbWVAYmFzaWMtY3JjQHNlY29u
+ZC10by1maXJzdDoNCj4gDQo+IHNoYXJkLWljbGI6IFBBU1MgLT4gQ1JBU0ggKzQgc2ltaWxhciBp
+c3N1ZXMNCj4gDQo+IChodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzk3
+MzI1LykNCj4gDQo+IEZyb20gdGhlIGFib3ZlIGxpc3QsIHRoZSBvbmx5IHRlc3QgdGhhdCBJIGNh
+biB0cnkgdG8gcmVwcm9kdWNlIG9uIG15IA0KPiBlbmQgaXMgaWd0QGttc19wbGFuZUBwbGFuZS1w
+YW5uaW5nLWJvdHRvbS1yaWdodCB3aGljaCB3b3JrcyBmaW5lIHdpdGggDQo+IHRoaXMgcGF0Y2gg
+b3Igbm90LiBBZGRpdGlvbmFsbHksIGl0IGxvb2tzIGxpa2UgdGhhdCBhbGwgZmFpbHVyZXMgaW4g
+DQo+IHRoaXMgc2hhcmQtaWNsYiBtYWNoaW5lIGhhczoNCj4gDQo+IAkNCj4gUmVjZWl2ZWQgc2ln
+bmFsIFNJR1NFR1YuDQo+IFN0YWNrIHRyYWNlOg0KPiAgIzAgW2ZhdGFsX3NpZ19oYW5kbGVyKzB4
+ZDZdDQo+ICAjMSBba2lsbHBnKzB4NDBdDQo+ICAjMiBbX19uc3NfZGF0YWJhc2VfbG9va3VwKzB4
+MjA3OTJdDQo+ICAjMyBbaWd0X2Rpc3BsYXlfcmVxdWlyZSsweDYyYV0NCj4gICM0IFtfX2lndF91
+bmlxdWVfX19fcmVhbF9tYWluMTIyNSsweGMxXQ0KPiAgIzUgW21haW4rMHgzZl0NCj4gICM2IFtf
+X2xpYmNfc3RhcnRfbWFpbisweGYzXQ0KPiAgIzcgW19zdGFydCsweDJhXQ0KPiAoaHR0cHM6Ly9p
+bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182NDQyL3NoYXJkLWljbGIzL2ln
+dEBrDQo+IG1zX3BsYW5lQHBsYW5lLXBhbm5pbmctYm90dG9tLXJpZ2h0Lmh0bWwpDQo+IA0KPiBG
+cm9tIHRoZSBhYm92ZSBlcnJvciwgSSBleHBlY3RlZCB0aGF0IEkgY291bGQgcmVwcm9kdWNlIHRo
+aXMgdHlwZSBvZiANCj4gaXNzdWUgb24gbXkgc2lkZS4gQWRkaXRpb25hbGx5LCB3aGVuIEkgbG9v
+a2VkIGF0IHRoZSBzaGFyZC1pY2xiIA0KPiBtYWNoaW5lICgoaHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL2hhcmR3YXJlLmh0bWwpKSwgSSBub3RpY2VkIGl0IGlzIA0KPiBhbiBJY2UgbGFrZSBt
+YWNoaW5lIGNvbm5lY3RlZCB0byBhIHNpbmdsZSBlRFAgZGlzcGxheSAoSSBzdXBwb3NlIGl0IGlz
+IA0KPiBhIGxhcHRvcCkuIElmIHRoaXMgcGF0Y2ggaW50cm9kdWNlcyBzdWNoIGEgcmVncmVzc2lv
+biwgSSBndWVzcyB3ZSBoYXZlIA0KPiBhIGJ1ZyBpbiBzb21lIG9mIHRoZSBpZ3Rfa21zIGZ1bmN0
+aW9ucy4NCj4gDQo+IEkgZG9uJ3QgaGF2ZSBhbiBJY2UgTGFrZSBtYWNoaW5lIGZvciB0cnlpbmcg
+dG8gcmVwcm9kdWNlIHRoaXMgaXNzdWUgb24gDQo+IG15IHNpZGU7IGluIHRoaXMgc2Vuc2UsIGRv
+IHlvdSBoYXZlIGFueSBzdWdnZXN0aW9ucz8gSXMgdGhpcyBlcnJvciANCj4gZ2VuZXJpYyBhY3Jv
+c3MgSW50ZWwgZGV2aWNlcz8gT3Igb25seSB0aGF0IHNwZWNpZmljIG1hY2hpbmU/IEkgdGhpbmsg
+SSANCj4gY2FuIHRyeSB0byByZW1vdmUgdGhhdCBwcm9wZXJ0eSBmcm9tIGlndF9rbXMgYW5kIG1h
+a2UgaXQgb25seSANCj4gYXZhaWxhYmxlIGluc2lkZSB0aGUgQU1EIHRlc3QsIGJ1dCBJJ20gbm90
+IHN1cmUgaWYgdGhpcyBpcyB0aGUgcmlnaHQgYXBwcm9hY2guDQoNClRoZSBjb3JyZWN0IHdheSBp
+cyB0byBhZGQgdGhlIHByb3BlcnR5LCBhbmQgYWRqdXN0IGFsbCB0aGUgb3RoZXIgY29kZSB0aGF0
+IHVzZXMgdGhlIHByb3BlcnRpZXMuIFRoZSBrZXkgd29yZCB0byBsb29rIGZvciBpcyBJR1RfTlVN
+X0NSVENfUFJPUFMuDQoNCkZvciBleGFtcGxlOg0KDQppZ3Rfa21zLmM6DQpjb25zdCBjaGFyICog
+Y29uc3QgaWd0X2NydGNfcHJvcF9uYW1lc1tJR1RfTlVNX0NSVENfUFJPUFNdDQoNCmFuZCBpbnNp
+ZGUgaWd0X2ZpbGxfcGlwZV9wcm9wcygpOg0KDQogICAgICAgICAgICAgICAgICAgICAgICBpZiAo
+c3RyY21wKHByb3AtPm5hbWUsIGNydGNfcHJvcF9uYW1lc1tqXSkgIT0gMCkNCgkJCSAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgY29udGludWU7DQoNCg0KWW91IGFkZCBhIHByb3AgZW51
+bSwgaW5jcmVhc2luZyBJR1RfTlVNX0NSVENfUFJPUFMsIGJ1dCBub3cgdGhlcmUncyBhbiB1bmlu
+aXRpYWxpemVkIGluZGV4IGluIGlndF9jcnRjX3Byb3BfbmFtZXMuDQoNCkV0Yy4NCg0KDQotLQ0K
+UGV0cmkgTGF0dmFsYQ0K
