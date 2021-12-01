@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 977E96E0DC
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 03:46:07 +0000 (UTC)
-From: "Bhatt, Jigar" <jigar.bhatt@intel.com>
-Date: Wed, 1 Dec 2021 03:46:00 +0000
-Message-ID: <DM8PR11MB5608FC16E95E96405A341E74FD689@DM8PR11MB5608.namprd11.prod.outlook.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFC646E270
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 03:53:18 +0000 (UTC)
+From: "Katragadda, MastanX" <mastanx.katragadda@intel.com>
+Date: Wed, 1 Dec 2021 03:53:11 +0000
+Message-ID: <BN9PR11MB52900AC12BB5C33EAA81E3FC97689@BN9PR11MB5290.namprd11.prod.outlook.com>
 References: <20211129073148.1044976-1-mastanx.katragadda@intel.com>
-In-Reply-To: <20211129073148.1044976-1-mastanx.katragadda@intel.com>
+ <DM8PR11MB5608FC16E95E96405A341E74FD689@DM8PR11MB5608.namprd11.prod.outlook.com>
+In-Reply-To: <DM8PR11MB5608FC16E95E96405A341E74FD689@DM8PR11MB5608.namprd11.prod.outlook.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
@@ -21,8 +22,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Katragadda, MastanX" <mastanx.katragadda@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
+To: "Bhatt, Jigar" <jigar.bhatt@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
+
+Hi Jigar,=20
+	  If we  ran dc9-dpms subtest only  prev_dc counter is 0 always, compariso=
+n 0 after reset tests get failed.
+
+Thanks
+
+-----Original Message-----
+From: Bhatt, Jigar <jigar.bhatt@intel.com>=20
+Sent: 01 December 2021 09:16
+To: Katragadda, MastanX <mastanx.katragadda@intel.com>; igt-dev@lists.freed=
+esktop.org; Surendrakumar Upadhyay, TejaskumarX <tejaskumarx.surendrakumar.=
+upadhyay@intel.com>
+Subject: RE: [i-g-t] tests/i915/i915_pm_dc: Fix DC9 test case
 
 Hi Mastan,
 
