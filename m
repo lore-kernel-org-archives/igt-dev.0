@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34EA86F9C0
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 09:22:26 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-Date: Wed, 1 Dec 2021 09:22:22 +0000
-Message-ID: <b539de94f0b7483e81f72be8d8bd1444@intel.com>
-References: <20211201091506.1020905-1-jouni.hogander@intel.com>
- <20211201091506.1020905-4-jouni.hogander@intel.com>
-In-Reply-To: <20211201091506.1020905-4-jouni.hogander@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 631CC6EE70
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 09:46:06 +0000 (UTC)
+Message-ID: <400e33dd-8c5f-10ee-c5e9-631ebcf63253@linux.intel.com>
+Date: Wed, 1 Dec 2021 09:46:02 +0000
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] tests/kms_psr2_sf: Add new
- subtest for biplanar format
+Content-Language: en-US
+References: <20211126015735.908681-1-mastanx.katragadda@intel.com>
+ <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
+ <BN9PR11MB52905C33F740FAB54340B43C97669@BN9PR11MB5290.namprd11.prod.outlook.com>
+ <5c09cc84-7f44-969c-9a7f-8c925f077ec5@linux.intel.com>
+ <20211130164818.GA12888@jons-linux-dev-box>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20211130164818.GA12888@jons-linux-dev-box>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
+ Submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,142 +26,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Hogander, Jouni" <jouni.hogander@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Katragadda, MastanX" <mastanx.katragadda@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogaWd0LWRldiA8aWd0LWRldi1ib3Vu
-Y2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIEpvdW5pDQo+SMO2Z2FuZGVy
-DQo+U2VudDogV2VkbmVzZGF5LCBEZWNlbWJlciAxLCAyMDIxIDI6NDUgUE0NCj5UbzogaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj5TdWJqZWN0OiBbaWd0LWRldl0gW1BBVENIIGktZy10
-IHYyIDMvM10gdGVzdHMva21zX3BzcjJfc2Y6IEFkZCBuZXcgc3VidGVzdCBmb3INCj5iaXBsYW5h
-ciBmb3JtYXQNCj4NCj5BZGQgbmV3IHRlc3RjYXNlIHdoaWNoIHVzZXMgTlYxMiBmb3JtYXQgZm9y
-IHByaW1hcnkgcGxhbmUuIEl0IGlzIGNvbnRpbnVvdXNseQ0KPnVwZGF0aW5nIG92ZXJsYXkgcGxh
-bmUuIEl0IGlzIGFsc28gc2VuZGluZyBkYW1hZ2VkIGFyZWEgb25seSBvbiBldmVyeSBzZWNvbmQg
-ZmxpcC4NCj4NCj52MjogRml4ZWQgZXhwZWN0ZWQgb3V0cHV0IGFuZCBzZXQgZmIgb24gc2NyZWVu
-X2NoYW5nZXMgJiAxDQo+DQo+U2lnbmVkLW9mZi1ieTogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5o
-b2dhbmRlckBpbnRlbC5jb20+DQoNClJldmlld2VkLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50
-ZWwuY29tPg0KDQo+LS0tDQo+IHRlc3RzL2k5MTUva21zX3BzcjJfc2YuYyB8IDkyICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0NCj4gMSBmaWxlIGNoYW5nZWQsIDczIGlu
-c2VydGlvbnMoKyksIDE5IGRlbGV0aW9ucygtKQ0KPg0KPmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1
-L2ttc19wc3IyX3NmLmMgYi90ZXN0cy9pOTE1L2ttc19wc3IyX3NmLmMgaW5kZXgNCj5hNTBjM2Ux
-NC4uYTkxZGVmZGUgMTAwNjQ0DQo+LS0tIGEvdGVzdHMvaTkxNS9rbXNfcHNyMl9zZi5jDQo+Kysr
-IGIvdGVzdHMvaTkxNS9rbXNfcHNyMl9zZi5jDQo+QEAgLTM4LDggKzM4LDExIEBAIElHVF9URVNU
-X0RFU0NSSVBUSU9OKCJUZXN0cyB0byB2YXJpZnkgUFNSMiBzZWxlY3RpdmUNCj5mZXRjaCBieSBz
-ZW5kaW5nIG11bHRpcGxlIg0KPiAjZGVmaW5lIENVUl9TSVpFIDY0DQo+ICNkZWZpbmUgTUFYX0RB
-TUFHRV9BUkVBUyA1DQo+DQo+KyNkZWZpbmUgTUFYX1NDUkVFTl9DSEFOR0VTIDUNCj4rDQo+IGVu
-dW0gb3BlcmF0aW9ucyB7DQo+IAlQTEFORV9VUERBVEUsDQo+KwlQTEFORV9VUERBVEVfQ09OVElO
-VU9VUywNCj4gCVBMQU5FX01PVkUsDQo+IAlPVkVSTEFZX1BSSU1fVVBEQVRFDQo+IH07DQo+QEAg
-LTU5LDYgKzYyLDggQEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiAJaWd0X291dHB1dF90ICpvdXRwdXQ7
-DQo+IAlzdHJ1Y3QgaWd0X2ZiIGZiX3ByaW1hcnksIGZiX292ZXJsYXksIGZiX2N1cnNvcjsNCj4g
-CXN0cnVjdCBpZ3RfZmIgZmJfdGVzdDsNCj4rCXN0cnVjdCBpZ3RfZmIgKmZiX2NvbnRpbnVvdXM7
-DQo+Kwl1aW50MzJfdCBwcmltYXJ5X2Zvcm1hdDsNCj4gCWludCBkYW1hZ2VfYXJlYV9jb3VudDsN
-Cj4gCXN0cnVjdCBkcm1fbW9kZV9yZWN0IHBsYW5lX3VwZGF0ZV9jbGlwW01BWF9EQU1BR0VfQVJF
-QVNdOw0KPiAJc3RydWN0IGRybV9tb2RlX3JlY3QgcGxhbmVfbW92ZV9jbGlwOw0KPkBAIC02OCwx
-MiArNzMsMTQgQEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiAJaW50IHRlc3RfcGxhbmVfaWQ7DQo+IAlp
-Z3RfcGxhbmVfdCAqdGVzdF9wbGFuZTsNCj4gCWNhaXJvX3QgKmNyOw0KPisJdWludDMyX3Qgc2Ny
-ZWVuX2NoYW5nZXM7DQo+IH0gZGF0YV90Ow0KPg0KPiBzdGF0aWMgY29uc3QgY2hhciAqb3Bfc3Ry
-KGVudW0gb3BlcmF0aW9ucyBvcCkgIHsNCj4gCXN0YXRpYyBjb25zdCBjaGFyICogY29uc3QgbmFt
-ZVtdID0gew0KPiAJCVtQTEFORV9VUERBVEVdID0gInBsYW5lLXVwZGF0ZSIsDQo+KwkJW1BMQU5F
-X1VQREFURV9DT05USU5VT1VTXSA9ICJwbGFuZS11cGRhdGUtY29udGludW91cyIsDQo+IAkJW1BM
-QU5FX01PVkVdID0gInBsYW5lLW1vdmUiLA0KPiAJCVtPVkVSTEFZX1BSSU1fVVBEQVRFXSA9ICJv
-dmVybGF5LXByaW1hcnktdXBkYXRlIiwNCj4gCX07DQo+QEAgLTIyMiw3ICsyMjksNyBAQCBzdGF0
-aWMgdm9pZCBwcmVwYXJlKGRhdGFfdCAqZGF0YSkNCj4gCS8qIGFsbCBncmVlbiBmcmFtZSAqLw0K
-PiAJaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsDQo+IAkJCSAgICBkYXRhLT5tb2Rl
-LT5oZGlzcGxheSwgZGF0YS0+bW9kZS0+dmRpc3BsYXksDQo+LQkJCSAgICBEUk1fRk9STUFUX1hS
-R0I4ODg4LA0KPisJCQkgICAgZGF0YS0+cHJpbWFyeV9mb3JtYXQsDQo+IAkJCSAgICBEUk1fRk9S
-TUFUX01PRF9MSU5FQVIsDQo+IAkJCSAgICAwLjAsIDEuMCwgMC4wLA0KPiAJCQkgICAgJmRhdGEt
-PmZiX3ByaW1hcnkpOw0KPkBAIC0yNTEsNiArMjU4LDggQEAgc3RhdGljIHZvaWQgcHJlcGFyZShk
-YXRhX3QgKmRhdGEpDQo+IAkJCQkgICAgMC4wLCAwLjAsIDEuMCwNCj4gCQkJCSAgICAmZGF0YS0+
-ZmJfdGVzdCk7DQo+DQo+KwkJZGF0YS0+ZmJfY29udGludW91cyA9ICZkYXRhLT5mYl9vdmVybGF5
-Ow0KPisNCj4gCQlpZiAoZGF0YS0+b3AgPT0gUExBTkVfTU9WRSkgew0KPiAJCQlwbGFuZV9tb3Zl
-X3NldHVwX3NxdWFyZShkYXRhLCAmZGF0YS0+ZmJfdGVzdCwNCj4gCQkJCQkgICBkYXRhLT5tb2Rl
-LT5oZGlzcGxheS8yLA0KPkBAIC0yNzcsNiArMjg2LDcgQEAgc3RhdGljIHZvaWQgcHJlcGFyZShk
-YXRhX3QgKmRhdGEpDQo+IAkJcGxhbmVfdXBkYXRlX3NldHVwX3NxdWFyZXMoZGF0YSwgJmRhdGEt
-PmZiX3Rlc3QsDQo+IAkJCQkJICAgZGF0YS0+bW9kZS0+aGRpc3BsYXksDQo+IAkJCQkJICAgZGF0
-YS0+bW9kZS0+dmRpc3BsYXkpOw0KPisJCWRhdGEtPmZiX2NvbnRpbnVvdXMgPSAmZGF0YS0+ZmJf
-cHJpbWFyeTsNCj4gCQlkYXRhLT50ZXN0X3BsYW5lID0gcHJpbWFyeTsNCj4NCj4gCQlpZiAoZGF0
-YS0+b3AgPT0gT1ZFUkxBWV9QUklNX1VQREFURSkgeyBAQCAtMzEyLDYgKzMyMiw3DQo+QEAgc3Rh
-dGljIHZvaWQgcHJlcGFyZShkYXRhX3QgKmRhdGEpDQo+IAkJaWd0X2NyZWF0ZV9mYihkYXRhLT5k
-cm1fZmQsIENVUl9TSVpFLCBDVVJfU0laRSwNCj4gCQkJICAgICAgRFJNX0ZPUk1BVF9BUkdCODg4
-OCwNCj5EUk1fRk9STUFUX01PRF9MSU5FQVIsDQo+IAkJCSAgICAgICZkYXRhLT5mYl90ZXN0KTsN
-Cj4rCQlkYXRhLT5mYl9jb250aW51b3VzID0gJmRhdGEtPmZiX2N1cnNvcjsNCj4NCj4gCQlkcmF3
-X3JlY3QoZGF0YSwgJmRhdGEtPmZiX3Rlc3QsIDAsIDAsIENVUl9TSVpFLCBDVVJfU0laRSwNCj4g
-CQkJICAgIDEuMCwgMS4wLCAxLjAsIDEuMCk7DQo+QEAgLTMzNCw3ICszNDUsOCBAQCBzdGF0aWMg
-aW5saW5lIHZvaWQgbWFudWFsKGNvbnN0IGNoYXIgKmV4cGVjdGVkKQ0KPiAJaWd0X2RlYnVnX21h
-bnVhbF9jaGVjaygiYWxsIiwgZXhwZWN0ZWQpOyAgfQ0KPg0KPi1zdGF0aWMgdm9pZCBwbGFuZV91
-cGRhdGVfZXhwZWN0ZWRfb3V0cHV0KGludCBwbGFuZV90eXBlLCBpbnQgYm94X2NvdW50KQ0KPitz
-dGF0aWMgdm9pZCBwbGFuZV91cGRhdGVfZXhwZWN0ZWRfb3V0cHV0KGludCBwbGFuZV90eXBlLCBp
-bnQgYm94X2NvdW50LA0KPisJCQkJCSBpbnQgc2NyZWVuX2NoYW5nZXMpDQo+IHsNCj4gCWNoYXIg
-ZXhwZWN0ZWRbNjRdID0ge307DQo+DQo+QEAgLTM0NCw5ICszNTYsMTYgQEAgc3RhdGljIHZvaWQg
-cGxhbmVfdXBkYXRlX2V4cGVjdGVkX291dHB1dChpbnQNCj5wbGFuZV90eXBlLCBpbnQgYm94X2Nv
-dW50KQ0KPiAJCQlib3hfY291bnQpOw0KPiAJCWJyZWFrOw0KPiAJY2FzZSBEUk1fUExBTkVfVFlQ
-RV9PVkVSTEFZOg0KPi0JCXNwcmludGYoZXhwZWN0ZWQsDQo+LQkJCSJzY3JlZW4gR3JlZW4gd2l0
-aCBCbHVlIGJveCBhbmQgJWQgV2hpdGUgYm94KGVzKSIsDQo+LQkJCWJveF9jb3VudCk7DQo+KwkJ
-LyoNCj4rCQkgKiBDb250aW51b3VzIHVwZGF0ZXMgb25seSBmb3IgRFJNX1BMQU5FX1RZUEVfT1ZF
-UkxBWQ0KPisJCSAqIGZvciBub3cuDQo+KwkJICovDQo+KwkJaWYgKHNjcmVlbl9jaGFuZ2VzICYg
-MSkNCj4rCQkJc3ByaW50ZihleHBlY3RlZCwgInNjcmVlbiBHcmVlbiB3aXRoIEJsdWUgYm94Iik7
-DQo+KwkJZWxzZQ0KPisJCQlzcHJpbnRmKGV4cGVjdGVkLA0KPisJCQkJInNjcmVlbiBHcmVlbiB3
-aXRoIEJsdWUgYm94IGFuZCAlZCBXaGl0ZQ0KPmJveChlcykiLA0KPisJCQkJYm94X2NvdW50KTsN
-Cj4gCQlicmVhazsNCj4gCWNhc2UgRFJNX1BMQU5FX1RZUEVfQ1VSU09SOg0KPiAJCXNwcmludGYo
-ZXhwZWN0ZWQsICJzY3JlZW4gR3JlZW4gd2l0aCAlZCBXaGl0ZSBib3goZXMpIiwgQEAgLQ0KPjQw
-Nyw3ICs0MjYsMTMgQEAgc3RhdGljIHZvaWQgZXhwZWN0ZWRfb3V0cHV0KGRhdGFfdCAqZGF0YSkN
-Cj4gCQlicmVhazsNCj4gCWNhc2UgUExBTkVfVVBEQVRFOg0KPiAJCXBsYW5lX3VwZGF0ZV9leHBl
-Y3RlZF9vdXRwdXQoZGF0YS0+dGVzdF9wbGFuZV9pZCwNCj4tCQkJCQkgICAgIGRhdGEtPmRhbWFn
-ZV9hcmVhX2NvdW50KTsNCj4rCQkJCQkgICAgIGRhdGEtPmRhbWFnZV9hcmVhX2NvdW50LA0KPisJ
-CQkJCSAgICAgZGF0YS0+c2NyZWVuX2NoYW5nZXMpOw0KPisJCWJyZWFrOw0KPisJY2FzZSBQTEFO
-RV9VUERBVEVfQ09OVElOVU9VUzoNCj4rCQlwbGFuZV91cGRhdGVfZXhwZWN0ZWRfb3V0cHV0KGRh
-dGEtPnRlc3RfcGxhbmVfaWQsDQo+KwkJCQkJICAgICBkYXRhLT5kYW1hZ2VfYXJlYV9jb3VudCwN
-Cj4rCQkJCQkgICAgIGRhdGEtPnNjcmVlbl9jaGFuZ2VzKTsNCj4gCQlicmVhazsNCj4gCWNhc2Ug
-T1ZFUkxBWV9QUklNX1VQREFURToNCj4gCQlvdmVybGF5X3ByaW1fdXBkYXRlX2V4cGVjdGVkX291
-dHB1dChkYXRhLQ0KPj5kYW1hZ2VfYXJlYV9jb3VudCk7DQo+QEAgLTQ2OCwyNCArNDkzLDI4IEBA
-IHN0YXRpYyB2b2lkIGRhbWFnZWRfcGxhbmVfdXBkYXRlKGRhdGFfdCAqZGF0YSkNCj4gCXVpbnQz
-Ml90IGggPSBkYXRhLT5tb2RlLT5oZGlzcGxheTsNCj4gCXVpbnQzMl90IHYgPSBkYXRhLT5tb2Rl
-LT52ZGlzcGxheTsNCj4NCj4tCWlndF9wbGFuZV9zZXRfZmIodGVzdF9wbGFuZSwgJmRhdGEtPmZi
-X3Rlc3QpOw0KPi0NCj4gCWlmIChkYXRhLT50ZXN0X3BsYW5lX2lkID09IERSTV9QTEFORV9UWVBF
-X09WRVJMQVkpIHsNCj4gCQloID0gaC8yOw0KPiAJCXYgPSB2LzI7DQo+IAl9DQo+DQo+LQlpZiAo
-ZGF0YS0+dGVzdF9wbGFuZV9pZCA9PSBEUk1fUExBTkVfVFlQRV9DVVJTT1IpDQo+LQkJaWd0X3Bs
-YW5lX3JlcGxhY2VfcHJvcF9ibG9iKHRlc3RfcGxhbmUsDQo+LQkJCQkJICAgIElHVF9QTEFORV9G
-Ql9EQU1BR0VfQ0xJUFMsDQo+LQkJCQkJICAgICZkYXRhLT5jdXJzb3JfY2xpcCwNCj4tCQkJCQkg
-ICAgc2l6ZW9mKHN0cnVjdCBkcm1fbW9kZV9yZWN0KSk7DQo+LQllbHNlDQo+LQkJaWd0X3BsYW5l
-X3JlcGxhY2VfcHJvcF9ibG9iKHRlc3RfcGxhbmUsDQo+LQkJCQkJICAgIElHVF9QTEFORV9GQl9E
-QU1BR0VfQ0xJUFMsDQo+LQkJCQkJICAgICZkYXRhLT5wbGFuZV91cGRhdGVfY2xpcCwNCj4tCQkJ
-CQkgICAgc2l6ZW9mKHN0cnVjdCBkcm1fbW9kZV9yZWN0KSoNCj4tCQkJCQkgICAgZGF0YS0+ZGFt
-YWdlX2FyZWFfY291bnQpOw0KPisJaWYgKGRhdGEtPnNjcmVlbl9jaGFuZ2VzICYgMSkgew0KPisJ
-CWlndF9wbGFuZV9zZXRfZmIodGVzdF9wbGFuZSwgZGF0YS0+ZmJfY29udGludW91cyk7DQo+Kwl9
-IGVsc2Ugew0KPisJCWlndF9wbGFuZV9zZXRfZmIodGVzdF9wbGFuZSwgJmRhdGEtPmZiX3Rlc3Qp
-Ow0KPisNCj4rCQlpZiAoZGF0YS0+dGVzdF9wbGFuZV9pZCA9PSBEUk1fUExBTkVfVFlQRV9DVVJT
-T1IpDQo+KwkJCWlndF9wbGFuZV9yZXBsYWNlX3Byb3BfYmxvYih0ZXN0X3BsYW5lLA0KPisNCj5J
-R1RfUExBTkVfRkJfREFNQUdFX0NMSVBTLA0KPisJCQkJCQkgICAgJmRhdGEtPmN1cnNvcl9jbGlw
-LA0KPisJCQkJCQkgICAgc2l6ZW9mKHN0cnVjdA0KPmRybV9tb2RlX3JlY3QpKTsNCj4rCQllbHNl
-DQo+KwkJCWlndF9wbGFuZV9yZXBsYWNlX3Byb3BfYmxvYih0ZXN0X3BsYW5lLA0KPisNCj5JR1Rf
-UExBTkVfRkJfREFNQUdFX0NMSVBTLA0KPisJCQkJCQkgICAgJmRhdGEtPnBsYW5lX3VwZGF0ZV9j
-bGlwLA0KPisJCQkJCQkgICAgc2l6ZW9mKHN0cnVjdA0KPmRybV9tb2RlX3JlY3QpKg0KPisJCQkJ
-CQkgICAgZGF0YS0+ZGFtYWdlX2FyZWFfY291bnQpOw0KPisJfQ0KPg0KPiAJaWd0X3BsYW5lX3Nl
-dF9wb3NpdGlvbihkYXRhLT50ZXN0X3BsYW5lLCAwLCAwKTsNCj4gCWlndF9kaXNwbGF5X2NvbW1p
-dDIoJmRhdGEtPmRpc3BsYXksIENPTU1JVF9BVE9NSUMpOyBAQCAtNDk5LDExDQo+KzUyOCwyMCBA
-QCBzdGF0aWMgdm9pZCBydW4oZGF0YV90ICpkYXRhKSAgew0KPiAJaWd0X2Fzc2VydChwc3Jfd2Fp
-dF9lbnRyeShkYXRhLT5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8yKSk7DQo+DQo+KwlkYXRhLT5zY3Jl
-ZW5fY2hhbmdlcyA9IDA7DQo+Kw0KPiAJc3dpdGNoIChkYXRhLT5vcCkgew0KPiAJY2FzZSBQTEFO
-RV9VUERBVEU6DQo+IAljYXNlIE9WRVJMQVlfUFJJTV9VUERBVEU6DQo+IAkJZGFtYWdlZF9wbGFu
-ZV91cGRhdGUoZGF0YSk7DQo+IAkJYnJlYWs7DQo+KwljYXNlIFBMQU5FX1VQREFURV9DT05USU5V
-T1VTOg0KPisJCWZvciAoZGF0YS0+c2NyZWVuX2NoYW5nZXMgPSAwOw0KPisJCSAgICAgZGF0YS0+
-c2NyZWVuX2NoYW5nZXMgPCBNQVhfU0NSRUVOX0NIQU5HRVM7DQo+KwkJICAgICBkYXRhLT5zY3Jl
-ZW5fY2hhbmdlcysrKSB7DQo+KwkJCWRhbWFnZWRfcGxhbmVfdXBkYXRlKGRhdGEpOw0KPisJCX0N
-Cj4rCQlicmVhazsNCj4gCWNhc2UgUExBTkVfTU9WRToNCj4gCQlkYW1hZ2VkX3BsYW5lX21vdmUo
-ZGF0YSk7DQo+IAkJYnJlYWs7DQo+QEAgLTU2OCw2ICs2MDYsNyBAQCBpZ3RfbWFpbg0KPiAJCWRh
-dGEuZGFtYWdlX2FyZWFfY291bnQgPSBNQVhfREFNQUdFX0FSRUFTOw0KPiAJCWRhdGEub3AgPSBQ
-TEFORV9VUERBVEU7DQo+IAkJZGF0YS50ZXN0X3BsYW5lX2lkID0gRFJNX1BMQU5FX1RZUEVfUFJJ
-TUFSWTsNCj4rCQlkYXRhLnByaW1hcnlfZm9ybWF0ID0gRFJNX0ZPUk1BVF9YUkdCODg4ODsNCj4g
-CQlwcmVwYXJlKCZkYXRhKTsNCj4gCQlyID0gcHNyX3dhaXRfZW50cnkoZGF0YS5kZWJ1Z2ZzX2Zk
-LCBQU1JfTU9ERV8yKTsNCj4gCQlpZiAoIXIpDQo+QEAgLTY0Myw2ICs2ODIsMjEgQEAgaWd0X21h
-aW4NCj4gCQl9DQo+IAl9DQo+DQo+KwkvKg0KPisJICogVmVyaWZ5IG92ZXJsYXkgcGxhbmUgc2Vs
-ZWN0aXZlIGZldGNoIHVzaW5nIE5WMTIgcHJpbWFyeQ0KPisJICogcGxhbmUgYW5kIGNvbnRpbnVv
-dXMgdXBkYXRlcy4NCj4rCSAqLw0KPisJZGF0YS5vcCA9IFBMQU5FX1VQREFURV9DT05USU5VT1VT
-Ow0KPisJZGF0YS5wcmltYXJ5X2Zvcm1hdCA9IERSTV9GT1JNQVRfTlYxMjsNCj4rCWlndF9kZXNj
-cmliZSgiVGVzdCB0aGF0IHNlbGVjdGl2ZSBmZXRjaCB3b3JrcyBvbiBvdmVybGF5IHBsYW5lIik7
-DQo+KwlpZ3Rfc3VidGVzdF9mKCJvdmVybGF5LSVzLXNmIiwgb3Bfc3RyKGRhdGEub3ApKSB7DQo+
-KwkJCWRhdGEuZGFtYWdlX2FyZWFfY291bnQgPSAxOw0KPisJCQlkYXRhLnRlc3RfcGxhbmVfaWQg
-PSBEUk1fUExBTkVfVFlQRV9PVkVSTEFZOw0KPisJCQlwcmVwYXJlKCZkYXRhKTsNCj4rCQkJcnVu
-KCZkYXRhKTsNCj4rCQkJY2xlYW51cCgmZGF0YSk7DQo+Kwl9DQo+Kw0KPiAJaWd0X2ZpeHR1cmUg
-ew0KPiAJCWNsb3NlKGRhdGEuZGVidWdmc19mZCk7DQo+IAkJZGlzcGxheV9maW5pKCZkYXRhKTsN
-Cj4tLQ0KPjIuMjUuMQ0KDQo=
+
+On 30/11/2021 16:48, Matthew Brost wrote:
+> On Mon, Nov 29, 2021 at 11:15:22AM +0000, Tvrtko Ursulin wrote:
+>>
+>> On 29/11/2021 10:58, Katragadda, MastanX wrote:
+>>> Hi   Tvrtko Ursulin,
+>>>                Based on following backend information added skip on guc enabled platforms.
+>>>
+>>> basically there is a quirk in GuC scheduling where if a context reaches the head of the queue and can't be scheduled it blocks the rest of the queue. A queue is an engine class. So in this case if the user submits to VCS0, VCS0, then VCS1 and the first submission to VCS0 is spinner the VCS1 submission is blocked. This more or less is exactly what this test is doing, thus it hangs. We have a request with the GuC firmware team to be able to tweak this head of queue blocking behaviour but don't expect to land anytime soon. Also in the real world this isn't an issue as the user should always be using VEs which should never block the head of the queue unless all the engines within the class are busy.
+>>>
+>>> Test is expected to fail with GuC submission, skip it in CI.
+>>
+>> Does "blocks the rest of the queue" mean unrelated contexts submitted
+>> against the same engine class?
+>>
+> 
+> Yes.
+> 
+>> If so then it would be a DoS vector and the "user _should_ always" would not
+>> be sufficient.
+>>
+> 
+> This is a DoS vector but there are about a million others and this no
+> worse than most.
+
+Adding new ones should not be taken lightly.
+
+>> Or if the blockage is localised to a single context then it might be fine
+>> (but unfortunate) if on top we chose to disallow submission to non-virtual
+>> indices in the engine map (in case of GuC)? If the firmware bug is not
+> 
+> We discussed this we basically land on if the UMDs want to do something
+> stupid, let them as with all the other DoS in the i915. We likely can't
+> disable non-virtual submission as some UMDs want to explictly place some
+> contexts on certain engines (compute). In that case the UMD has to be
+> smart enough to not submit contexts in a way to expose this scheduling
+> quirk.
+
+"Quirk"... :) Why it happens though? Is the firmware scheduling with GEM 
+context granularity, and not intel_context, and that is the disconnect?
+
+>> getting fixed that is. I may be on the wrong track here since I am not 100%
+> 
+> Just because the GuC scheduling doesn't work like execlists doesn't mean
+> that it is bug. Checking for the HoQ only is done for a good reason -
+> performance a uC can do everything and anything like execlists as it is
+> single low power CPU controling the scheduling of an entire GT. We can't
+> protect against everything a user can do that is stupid.
+> 
+> FWIW we do have an open task assigned to the GuC team to allow a KMD
+> configurable search depth when the queue can't be scheduled. No idea
+> when this is going to get implemented.
+
+This maybe too specific. Question rather could be why is something not 
+runnable put at the head of the queue by the firmware. Sounds like a 
+plain bug to me.
+
+>> certain I figured out why it exactly gets stuck.
+>>
+>> Because, looking at the bonded-pair to start with, if the test is emitting a
+>> pair of request on the same context, spinner first, then a another one with
+>> a semaphore dependency I am not sure why it hangs. When the spinner switches
+>> out after time slice expires the second request should run, cancel the
+>> spinner and exit. At which point they are both complete.
+>>
+> 
+> I think only the MT version of bonded-pair hangs but it has been a while
+> since I looked at this.
+> 
+> IMO this fix is 100% correct as this is a known, tracked issue. It was
+> agreed upon (arch, i915, GuC team) that we just skip these tests with
+> GuC submission.
+
+I915 team is here on upstream as well.
+
+Record those acks publicly would be my ask. Unless some security by 
+obscurity is happening here? Until then from me it is a soft nack to 
+keep disabling tests which show genuine weaknesses in GuC mode. Soft 
+until we get a public record of exactly what is broken and in what 
+circumstances, acked by architects publicly as you say they acked it 
+somewhere. Commit message devoid of detail is not good enough.
+
+Regards,
+
+Tvrtko
