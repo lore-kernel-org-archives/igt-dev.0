@@ -1,26 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com
- [IPv6:2607:f8b0:4864:20::334])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 076D06F636
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 11:46:18 +0000 (UTC)
-Received: by mail-ot1-x334.google.com with SMTP id
- x3-20020a05683000c300b0057a5318c517so4491011oto.13
- for <igt-dev@lists.freedesktop.org>; Wed, 01 Dec 2021 03:46:18 -0800 (PST)
+Content-Type: multipart/alternative;
+ boundary="===============1072150272753196100=="
 MIME-Version: 1.0
-References: <20211126015735.908681-1-mastanx.katragadda@intel.com>
- <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
- <BN9PR11MB52905C33F740FAB54340B43C97669@BN9PR11MB5290.namprd11.prod.outlook.com>
- <5c09cc84-7f44-969c-9a7f-8c925f077ec5@linux.intel.com>
- <20211130164818.GA12888@jons-linux-dev-box>
- <400e33dd-8c5f-10ee-c5e9-631ebcf63253@linux.intel.com>
- <ccf3f049-a67a-ec5b-377d-c23abecbc94b@intel.com>
-In-Reply-To: <ccf3f049-a67a-ec5b-377d-c23abecbc94b@intel.com>
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Wed, 1 Dec 2021 12:46:06 +0100
-Message-ID: <CAKMK7uHN4k9zDEmdQyscj7MsoDFcqVp0P80uEMzHfcaZ8HxnqA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
- Submission
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 01 Dec 2021 11:53:15 -0000
+Message-ID: <163835959581.14897.4925371998622808084@emeril.freedesktop.org>
+References: <20211201091506.1020905-1-jouni.hogander@intel.com>
+In-Reply-To: <20211201091506.1020905-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQmlwbGFu?=
+ =?utf-8?q?ar_testcases_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,52 +16,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Radoslaw Szwichtenberg <radoslaw.szwichtenberg@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Katragadda, MastanX" <mastanx.katragadda@intel.com>
+To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Dec 1, 2021 at 12:37 PM Radoslaw Szwichtenberg
-<radoslaw.szwichtenberg@intel.com> wrote:
-> On 01/12/2021 10:46, Tvrtko Ursulin wrote:
-> > On 30/11/2021 16:48, Matthew Brost wrote:
-> >>
-> >> IMO this fix is 100% correct as this is a known, tracked issue. It was
-> >> agreed upon (arch, i915, GuC team) that we just skip these tests with
-> >> GuC submission.
-> This does not look like a fix to me - you just disable test to hide the
-> result. If this issue is recorded with a bug, is tracked - why cant we
-> just let this test fail till we get this issue fixed?
+--===============1072150272753196100==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This is correct in general, but sadly not for gem igts and selftests.
-The state of our validation suite is screwed up enough that
-unfortunately the safe starting point for failing tests is that the
-test is simply wrong, or too much just validating implementation
-details of the current platform/driver, while not actually validating
-stuff that should be tested for.
+== Series Details ==
 
-> > I915 team is here on upstream as well.
-> >
-> > Record those acks publicly would be my ask. Unless some security by
-> > obscurity is happening here? Until then from me it is a soft nack to
-> > keep disabling tests which show genuine weaknesses in GuC mode. Soft
-> > until we get a public record of exactly what is broken and in what
-> > circumstances, acked by architects publicly as you say they acked it
-> > somewhere. Commit message devoid of detail is not good enough.
-> This should be most probably documented in the bug, right? Here we
-> should just keep the test as is till the issue is fixed. I don't see how
-> docummenting an issue would enable us to just disable the test.
+Series: Biplanar testcases (rev6)
+URL   : https://patchwork.freedesktop.org/series/97232/
+State : success
 
-Sadly the situation is bad enough that I'm tempted to just drop a few
-thousand Acked-by: me tags in this thread for any case where a
-questionable testcase gets in the way. Unless someone can proof that
-it's a POR architectural requirement we're validating here.
+== Summary ==
 
-I do agree though that really we should just delete such tests
-outright, not hide the mess on each platform individually.
--Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+CI Bug Log - changes from IGT_6296 -> IGTPW_6460
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/index.html
+
+Participating hosts (34 -> 33)
+------------------------------
+
+  Missing    (1): fi-bsw-cyan 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6460 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-skl-6600u:       [PASS][1] -> [INCOMPLETE][2] ([i915#198])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6296/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+
+  
+  [i915#198]: https://gitlab.freedesktop.org/drm/intel/issues/198
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6296 -> IGTPW_6460
+
+  CI-20190529: 20190529
+  CI_DRM_10949: c43a205a07b34ebbf7fe9205454a422147791ef3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6460: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/index.html
+  IGT_6296: 1869d560c550ac273f495076ead46f8a337fc20b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_psr2_sf@overlay-plane-update-continuous-sf
++igt@kms_psr2_su@frontbuffer-xrgb8888
++igt@kms_psr2_su@page_flip-nv12
++igt@kms_psr2_su@page_flip-p010
++igt@kms_psr2_su@page_flip-xrgb8888
+-igt@kms_psr2_su@frontbuffer
+-igt@kms_psr2_su@page_flip
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/index.html
+
+--===============1072150272753196100==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Biplanar testcases (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97232/">https://patchwork.freedesktop.org/series/97232/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6296 -&gt; IGTPW_6460</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/index.html</p>
+<h2>Participating hosts (34 -&gt; 33)</h2>
+<p>Missing    (1): fi-bsw-cyan </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6460 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_psr@primary_page_flip:<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6296/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/198">i915#198</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6296 -&gt; IGTPW_6460</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10949: c43a205a07b34ebbf7fe9205454a422147791ef3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6460: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6460/index.html<br />
+  IGT_6296: 1869d560c550ac273f495076ead46f8a337fc20b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_psr2_sf@overlay-plane-update-continuous-sf<br />
++igt@kms_psr2_su@frontbuffer-xrgb8888<br />
++igt@kms_psr2_su@page_flip-nv12<br />
++igt@kms_psr2_su@page_flip-p010<br />
++igt@kms_psr2_su@page_flip-xrgb8888<br />
+-igt@kms_psr2_su@frontbuffer<br />
+-igt@kms_psr2_su@page_flip</p>
+
+</body>
+</html>
+
+--===============1072150272753196100==--
