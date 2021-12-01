@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8E426E0EF
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Dec 2021 19:17:05 +0000 (UTC)
-Received: by mail-pl1-x634.google.com with SMTP id z6so2182510plk.6
- for <igt-dev@lists.freedesktop.org>; Wed, 08 Dec 2021 11:17:05 -0800 (PST)
-From: Rob Clark <robdclark@gmail.com>
-Date: Wed,  8 Dec 2021 11:22:16 -0800
-Message-Id: <20211208192216.743364-3-robdclark@gmail.com>
-In-Reply-To: <20211208192216.743364-1-robdclark@gmail.com>
-References: <20211208192216.743364-1-robdclark@gmail.com>
+From: "Rogozhkin, Dmitry V" <dmitry.v.rogozhkin@intel.com>
+Date: Wed, 1 Dec 2021 02:20:14 +0000
+Message-ID: <3894f6c21d51bdd4a188f077e146d36a3d6ddb71.camel@intel.com>
+References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
+ <20211119125945.55056-6-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20211119125945.55056-6-tvrtko.ursulin@linux.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D6A783E88596CE45B947583CFF6DA486@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt 2/2] tools/msm_dp_compliance: Add arg to
- specify connector name
+Subject: Re: [igt-dev] [PATCH i-g-t 6/6] intel_gpu_top: Add a sanity check
+ discovered busy metric is per engine
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,87 +21,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Rob Clark <robdclark@chromium.org>, linux-arm-msm@vger.kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "tvrtko.ursulin@linux.intel.com" <tvrtko.ursulin@linux.intel.com>
+Cc: "Intel-gfx@lists.freedesktop.org" <Intel-gfx@lists.freedesktop.org>, "Ursulin, Tvrtko" <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
-
-To support multiple DP connectors, the debugfs files will be moving into
-a per-connector subdirectory in debugfs.  So add an arg to specify the
-appropriate connector name.
-
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- tools/msm_dp_compliance.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/tools/msm_dp_compliance.c b/tools/msm_dp_compliance.c
-index a15a8dd9..bc79a061 100644
---- a/tools/msm_dp_compliance.c
-+++ b/tools/msm_dp_compliance.c
-@@ -205,10 +205,15 @@ static FILE *fopenat(int dir, const char *name, const char *mode)
- 	return fdopen(fd, mode);
- }
- 
--static void setup_debugfs_files(void)
-+static void setup_debugfs_files(const char *connector_name)
- {
- 	int dir = igt_debugfs_dir(drm_fd);
- 
-+	if (connector_name) {
-+		dir = openat(dir, connector_name, O_RDONLY);
-+		igt_require(dir >= 0);
-+	}
-+
- 	test_type_fp = fopenat(dir, MSM_DP_TEST_TYPE_FILE, "r");
- 	igt_require(test_type_fp);
- 
-@@ -624,11 +629,12 @@ int update_display(int mode, bool is_compliance_test)
- 	return ret;
- }
- 
--static const char optstr[] = "hi";
-+static const char optstr[] = "c:hi";
- 
- static void __attribute__((noreturn)) usage(char *name, char opt)
- {
--	igt_info("usage: %s [-hi]\n", name);
-+	igt_info("usage: %s [-hi] [-c NAME]\n", name);
-+	igt_info("\t-c, --connector=NAME - specify connector name");
- 	igt_info("\t-h, --help           - print this usage message");
- 	igt_info("\t--help-description   - print test description");
- 	igt_info("\t-i, --info           - dump info\n");
-@@ -708,7 +714,9 @@ int main(int argc, char **argv)
- 	GIOChannel *stdinchannel, *testactive_channel;
- 	GMainLoop *mainloop;
- 	bool opt_dump_info = false;
-+	char *opt_connector_name = NULL;
- 	struct option long_opts[] = {
-+		{"connector", 1, 0, 'c'},
- 		{"help-description", 0, 0, HELP_DESCRIPTION},
- 		{"help", 0, 0, 'h'},
- 		{"info", 0, 0, 'i'},
-@@ -718,6 +726,9 @@ int main(int argc, char **argv)
- 
- 	while ((c = getopt_long(argc, argv, optstr, long_opts, NULL)) != -1) {
- 		switch (c) {
-+		case 'c':
-+			opt_connector_name = optarg;
-+			break;
- 		case 'i':
- 			opt_dump_info = true;
- 			break;
-@@ -739,7 +750,7 @@ int main(int argc, char **argv)
- 	drm_fd = drm_open_driver(DRIVER_ANY);
- 
- 	kmstest_set_vt_graphics_mode();
--	setup_debugfs_files();
-+	setup_debugfs_files(opt_connector_name);
- 	cleanup_test();
- 	if (opt_dump_info) {
- 		dump_info();
--- 
-2.33.1
-
-
+T24gRnJpLCAyMDIxLTExLTE5IGF0IDEyOjU5ICswMDAwLCBUdnJ0a28gVXJzdWxpbiB3cm90ZToN
+Cj4gRnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4NCj4gDQo+
+IEFkZGluZyBhIGNyb3NzLWNoZWNrIHdpdGggQUJJIGNvbmZpZyBuYW1lIHNwYWNlIGFuZCBub3Qg
+anVzdCByZWx5aW5nDQo+IG9uDQo+IHN5c2ZzIG5hbWVzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTog
+VHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4NCj4gQ2M6IERtaXRyeSBS
+b2dvemhraW4gPGRtaXRyeS52LnJvZ296aGtpbkBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgdG9vbHMv
+aW50ZWxfZ3B1X3RvcC5jIHwgNiArKysrKysNCj4gIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlv
+bnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS90b29scy9pbnRlbF9ncHVfdG9wLmMgYi90b29scy9p
+bnRlbF9ncHVfdG9wLmMNCj4gaW5kZXggNDFjNTlhNzJjMDlkLi44MWM3MjRkMWZlMWMgMTAwNjQ0
+DQo+IC0tLSBhL3Rvb2xzL2ludGVsX2dwdV90b3AuYw0KPiArKysgYi90b29scy9pbnRlbF9ncHVf
+dG9wLmMNCj4gQEAgLTM3Niw2ICszNzYsMTIgQEAgc3RhdGljIHN0cnVjdCBlbmdpbmVzICpkaXNj
+b3Zlcl9lbmdpbmVzKGNoYXINCj4gKmRldmljZSkNCj4gIAkJCWJyZWFrOw0KPiAgCQl9DQo+ICAN
+Cj4gKwkJLyogRG91YmxlIGNoZWNrIGNvbmZpZyBpcyBhbiBlbmdpbmUgY29uZmlnLiAqLw0KPiAr
+CQlpZiAoZW5naW5lLT5idXN5LmNvbmZpZyA+PSBfX0k5MTVfUE1VX09USEVSKDApKSB7DQo+ICsJ
+CQlmcmVlKCh2b2lkICopZW5naW5lLT5uYW1lKTsNCj4gKwkJCWNvbnRpbnVlOw0KPiArCQl9DQo+
+ICsNCj4gIAkJZW5naW5lLT5jbGFzcyA9IChlbmdpbmUtPmJ1c3kuY29uZmlnICYNCj4gIAkJCQkg
+KF9fSTkxNV9QTVVfT1RIRVIoMCkgLSAxKSkgPj4NCj4gIAkJCQlJOTE1X1BNVV9DTEFTU19TSElG
+VDsNCg0KVGhpcyB3b3JrcyBmb3IgbWUuDQpBY2tlZC1ieTogRG1pdHJ5IFJvZ296aGtpbiA8ZG1p
+dHJ5LnYucm9nb3poa2luQGludGVsLmNvbT4NCg0KSG93ZXZlciwgbG9va2luZyB0byB0aGUgZXhp
+c3RpbmcgY29kZSBkb3duIGJlbG93IHRoZSBwbGFjZSB3aGVyZSB5b3UndmUNCmFkZGVkIGEgZml4
+LCBpdCBzZWVtcyB0byBtZSB0aGF0ICdmcmVlKCh2b2lkICopZW5naW5lLT5uYW1lKScgbWlnaHQg
+YmUNCm1pc3Npbmcgb24gYSBudW1iZXIgb2Ygb3RoZXIgZXJyb3IgcGF0aHMgYW5kIG9uIG5vbi1l
+cnJvciBleGl0IHBhdGggYXMNCndlbGwuDQoNCg==
