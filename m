@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2075.outbound.protection.outlook.com [40.107.223.75])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD3A26E150
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 06:55:58 +0000 (UTC)
-From: Stylon Wang <stylon.wang@amd.com>
-Date: Wed, 1 Dec 2021 14:54:34 +0800
-Message-ID: <20211201065434.48827-12-stylon.wang@amd.com>
-In-Reply-To: <20211201065434.48827-1-stylon.wang@amd.com>
-References: <20211130083503.10221-1-stylon.wang@amd.com>
- <20211201065434.48827-1-stylon.wang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============8188477379808864853=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2 11/11] tests/amdgpu/amd_plane: Add P010
- format to MPO tests and add test descriptions
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 01 Dec 2021 07:24:57 -0000
+Message-ID: <163834349735.14892.12138420365715850442@emeril.freedesktop.org>
+References: <20211201062703.1047567-1-mastanx.katragadda@intel.com>
+In-Reply-To: <20211201062703.1047567-1-mastanx.katragadda@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/i915=5Fpm=5Fdc=3A_Fix_DC9_subtest?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,110 +16,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
+To: Mastan Katragadda <mastanx.katragadda@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Stylon Wang <stylon.wang@amd.com>
----
- tests/amdgpu/amd_plane.c | 64 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 54 insertions(+), 10 deletions(-)
+--===============8188477379808864853==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index e4c7dca3..faaa1b87 100644
---- a/tests/amdgpu/amd_plane.c
-+++ b/tests/amdgpu/amd_plane.c
-@@ -24,6 +24,8 @@
- #include "libdrm/amdgpu.h"
- #include "libdrm/amdgpu_drm.h"
- 
-+IGT_TEST_DESCRIPTION("Tests for Multi Plane Overlay for single and dual displays");
-+
- /* Maximum pipes on any AMD ASIC. */
- #define MAX_PIPES 6
- #define DISPLAYS_TO_TEST 2
-@@ -485,7 +487,7 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
- 
- 		igt_plane_set_fb(data->primary[n], &fb[n].ref_primary);
- 
--		if (format == DRM_FORMAT_NV12)
-+		if (format == DRM_FORMAT_NV12 || format == DRM_FORMAT_P010)
- 			set_regamma_lut(data, &lut,  n);
- 	}
- 
-@@ -739,20 +741,62 @@ igt_main
- 		igt_display_require_output(&data.display);
- 	}
- 
-+	igt_describe("MPO with 4K planes");
- 	igt_subtest("test-mpo-4k") test_mpo_4k(&data);
-+	igt_describe("MPO with tiled and linear buffers");
- 	igt_subtest("mpo-swizzle-toggle") test_mpo_swizzle_toggle(&data);
-+	igt_describe("MPO with tiled and linear buffers on dual displays");
- 	igt_subtest("mpo-swizzle-toggle-multihead")
- 		test_mpo_swizzle_toggle_multihead(&data);
--	igt_subtest("mpo-pan-rgb") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, 1);
--	igt_subtest("mpo-pan-rgb-multihead") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-pan-nv12") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, 1);
--	igt_subtest("mpo-pan-nv12-multihead") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-pan-multi-rgb") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-pan-multi-nv12") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-scale-rgb") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
--	igt_subtest("mpo-scale-rgb-multihead") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-scale-nv12") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, 1);
-+
-+	igt_describe("MPO and moving RGB primary plane around");
-+	igt_subtest("mpo-pan-rgb")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, 1);
-+	igt_describe("MPO and moving RGB primary plane around with dual displays");
-+	igt_subtest("mpo-pan-rgb-multihead")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+
-+	igt_describe("MPO and moving NV12 primary plane around");
-+	igt_subtest("mpo-pan-nv12")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, 1);
-+	igt_describe("MPO and moving NV12 primary plane around with dual displays");
-+	igt_subtest("mpo-pan-nv12-multihead")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+
-+	igt_describe("MPO and moving P010 primary plane around");
-+	igt_subtest("mpo-pan-p010")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_P010, 1);
-+	igt_describe("MPO and moving P010 primary plane around with dual displays");
-+	igt_subtest("mpo-pan-p010-multihead")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
-+
-+	igt_describe("MPO and moving RGB primary plane between 2 displays");
-+	igt_subtest("mpo-pan-multi-rgb")
-+		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+	igt_describe("MPO and moving NV12 primary plane between 2 displays");
-+	igt_subtest("mpo-pan-multi-nv12")
-+		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+	igt_describe("MPO and moving P010 primary plane between 2 displays");
-+	igt_subtest("mpo-pan-multi-p010")
-+		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
-+
-+	igt_describe("MPO and scaling RGB primary plane");
-+	igt_subtest("mpo-scale-rgb")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
-+	igt_describe("MPO and scaling RGB primary plane with 2 displays");
-+	igt_subtest("mpo-scale-rgb-multihead")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+	igt_describe("MPO and scaling NV12 primary plane");
-+	igt_subtest("mpo-scale-nv12")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, 1);
-+	igt_describe("MPO and scaling NV12 primary plane with 2 displays");
- 	igt_subtest("mpo-scale-nv12-multihead") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+	igt_describe("MPO and scaling P010 primary plane");
-+	igt_subtest("mpo-scale-p010")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_P010, 1);
-+	igt_describe("MPO and scaling P010 primary plane with 2 displays");
-+	igt_subtest("mpo-scale-p010-multihead")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
- 
- 	igt_fixture
- 	{
--- 
-2.33.1
+== Series Details ==
+
+Series: tests/i915/i915_pm_dc: Fix DC9 subtest
+URL   : https://patchwork.freedesktop.org/series/97449/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_10948 -> IGTPW_6458
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/index.html
+
+Participating hosts (39 -> 32)
+------------------------------
+
+  Missing    (7): bat-dg1-6 bat-dg1-5 fi-bsw-cyan bat-adlp-6 bat-adlp-4 bat-jsl-2 bat-jsl-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6458 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - fi-rkl-guc:         [PASS][1] -> [INCOMPLETE][2] ([i915#4432])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10948/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][3] ([i915#1602] / [i915#2426] / [i915#4312])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/fi-bdw-5557u/igt@runner@aborted.html
+    - fi-rkl-guc:         NOTRUN -> [FAIL][4] ([i915#3928] / [i915#4312])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/fi-rkl-guc/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][5] ([i915#4269]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10948/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#3928]: https://gitlab.freedesktop.org/drm/intel/issues/3928
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4432]: https://gitlab.freedesktop.org/drm/intel/issues/4432
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6295 -> IGTPW_6458
+
+  CI-20190529: 20190529
+  CI_DRM_10948: 2a3a3bac4f6f02af651626eed357bbd13117055a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6458: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/index.html
+  IGT_6295: 2d7f671b872ed856a97957051098974be2380019 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/index.html
+
+--===============8188477379808864853==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc: Fix DC9 subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97449/">https://patchwork.freedesktop.org/series/97449/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10948 -&gt; IGTPW_6458</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/index.html</p>
+<h2>Participating hosts (39 -&gt; 32)</h2>
+<p>Missing    (7): bat-dg1-6 bat-dg1-5 fi-bsw-cyan bat-adlp-6 bat-adlp-4 bat-jsl-2 bat-jsl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6458 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10948/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4432">i915#4432</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1602">i915#1602</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3928">i915#3928</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10948/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6295 -&gt; IGTPW_6458</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10948: 2a3a3bac4f6f02af651626eed357bbd13117055a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6458: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6458/index.html<br />
+  IGT_6295: 2d7f671b872ed856a97957051098974be2380019 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8188477379808864853==--
