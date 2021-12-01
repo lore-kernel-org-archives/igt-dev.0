@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5172F6F510
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 09:15:33 +0000 (UTC)
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-Date: Wed,  1 Dec 2021 11:15:06 +0200
-Message-Id: <20211201091506.1020905-4-jouni.hogander@intel.com>
-In-Reply-To: <20211201091506.1020905-1-jouni.hogander@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34EA86F9C0
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 09:22:26 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+Date: Wed, 1 Dec 2021 09:22:22 +0000
+Message-ID: <b539de94f0b7483e81f72be8d8bd1444@intel.com>
 References: <20211201091506.1020905-1-jouni.hogander@intel.com>
-MIME-Version: 1.0
+ <20211201091506.1020905-4-jouni.hogander@intel.com>
+In-Reply-To: <20211201091506.1020905-4-jouni.hogander@intel.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/kms_psr2_sf: Add new subtest
- for biplanar format
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] tests/kms_psr2_sf: Add new
+ subtest for biplanar format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,231 +23,142 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Hogander, Jouni" <jouni.hogander@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new testcase which uses NV12 format for primary plane. It is
-continuously updating overlay plane. It is also sending damaged
-area only on every second flip.
-
-v2: Fixed expected output and set fb on screen_changes & 1
-
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
----
- tests/i915/kms_psr2_sf.c | 92 +++++++++++++++++++++++++++++++---------
- 1 file changed, 73 insertions(+), 19 deletions(-)
-
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index a50c3e14..a91defde 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -38,8 +38,11 @@ IGT_TEST_DESCRIPTION("Tests to varify PSR2 selective fetch by sending multiple"
- #define CUR_SIZE 64
- #define MAX_DAMAGE_AREAS 5
- 
-+#define MAX_SCREEN_CHANGES 5
-+
- enum operations {
- 	PLANE_UPDATE,
-+	PLANE_UPDATE_CONTINUOUS,
- 	PLANE_MOVE,
- 	OVERLAY_PRIM_UPDATE
- };
-@@ -59,6 +62,8 @@ typedef struct {
- 	igt_output_t *output;
- 	struct igt_fb fb_primary, fb_overlay, fb_cursor;
- 	struct igt_fb fb_test;
-+	struct igt_fb *fb_continuous;
-+	uint32_t primary_format;
- 	int damage_area_count;
- 	struct drm_mode_rect plane_update_clip[MAX_DAMAGE_AREAS];
- 	struct drm_mode_rect plane_move_clip;
-@@ -68,12 +73,14 @@ typedef struct {
- 	int test_plane_id;
- 	igt_plane_t *test_plane;
- 	cairo_t *cr;
-+	uint32_t screen_changes;
- } data_t;
- 
- static const char *op_str(enum operations op)
- {
- 	static const char * const name[] = {
- 		[PLANE_UPDATE] = "plane-update",
-+		[PLANE_UPDATE_CONTINUOUS] = "plane-update-continuous",
- 		[PLANE_MOVE] = "plane-move",
- 		[OVERLAY_PRIM_UPDATE] = "overlay-primary-update",
- 	};
-@@ -222,7 +229,7 @@ static void prepare(data_t *data)
- 	/* all green frame */
- 	igt_create_color_fb(data->drm_fd,
- 			    data->mode->hdisplay, data->mode->vdisplay,
--			    DRM_FORMAT_XRGB8888,
-+			    data->primary_format,
- 			    DRM_FORMAT_MOD_LINEAR,
- 			    0.0, 1.0, 0.0,
- 			    &data->fb_primary);
-@@ -251,6 +258,8 @@ static void prepare(data_t *data)
- 				    0.0, 0.0, 1.0,
- 				    &data->fb_test);
- 
-+		data->fb_continuous = &data->fb_overlay;
-+
- 		if (data->op == PLANE_MOVE) {
- 			plane_move_setup_square(data, &data->fb_test,
- 					   data->mode->hdisplay/2,
-@@ -277,6 +286,7 @@ static void prepare(data_t *data)
- 		plane_update_setup_squares(data, &data->fb_test,
- 					   data->mode->hdisplay,
- 					   data->mode->vdisplay);
-+		data->fb_continuous = &data->fb_primary;
- 		data->test_plane = primary;
- 
- 		if (data->op == OVERLAY_PRIM_UPDATE) {
-@@ -312,6 +322,7 @@ static void prepare(data_t *data)
- 		igt_create_fb(data->drm_fd, CUR_SIZE, CUR_SIZE,
- 			      DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
- 			      &data->fb_test);
-+		data->fb_continuous = &data->fb_cursor;
- 
- 		draw_rect(data, &data->fb_test, 0, 0, CUR_SIZE, CUR_SIZE,
- 			    1.0, 1.0, 1.0, 1.0);
-@@ -334,7 +345,8 @@ static inline void manual(const char *expected)
- 	igt_debug_manual_check("all", expected);
- }
- 
--static void plane_update_expected_output(int plane_type, int box_count)
-+static void plane_update_expected_output(int plane_type, int box_count,
-+					 int screen_changes)
- {
- 	char expected[64] = {};
- 
-@@ -344,9 +356,16 @@ static void plane_update_expected_output(int plane_type, int box_count)
- 			box_count);
- 		break;
- 	case DRM_PLANE_TYPE_OVERLAY:
--		sprintf(expected,
--			"screen Green with Blue box and %d White box(es)",
--			box_count);
-+		/*
-+		 * Continuous updates only for DRM_PLANE_TYPE_OVERLAY
-+		 * for now.
-+		 */
-+		if (screen_changes & 1)
-+			sprintf(expected, "screen Green with Blue box");
-+		else
-+			sprintf(expected,
-+				"screen Green with Blue box and %d White box(es)",
-+				box_count);
- 		break;
- 	case DRM_PLANE_TYPE_CURSOR:
- 		sprintf(expected, "screen Green with %d White box(es)",
-@@ -407,7 +426,13 @@ static void expected_output(data_t *data)
- 		break;
- 	case PLANE_UPDATE:
- 		plane_update_expected_output(data->test_plane_id,
--					     data->damage_area_count);
-+					     data->damage_area_count,
-+					     data->screen_changes);
-+		break;
-+	case PLANE_UPDATE_CONTINUOUS:
-+		plane_update_expected_output(data->test_plane_id,
-+					     data->damage_area_count,
-+					     data->screen_changes);
- 		break;
- 	case OVERLAY_PRIM_UPDATE:
- 		overlay_prim_update_expected_output(data->damage_area_count);
-@@ -468,24 +493,28 @@ static void damaged_plane_update(data_t *data)
- 	uint32_t h = data->mode->hdisplay;
- 	uint32_t v = data->mode->vdisplay;
- 
--	igt_plane_set_fb(test_plane, &data->fb_test);
--
- 	if (data->test_plane_id == DRM_PLANE_TYPE_OVERLAY) {
- 		h = h/2;
- 		v = v/2;
- 	}
- 
--	if (data->test_plane_id == DRM_PLANE_TYPE_CURSOR)
--		igt_plane_replace_prop_blob(test_plane,
--					    IGT_PLANE_FB_DAMAGE_CLIPS,
--					    &data->cursor_clip,
--					    sizeof(struct drm_mode_rect));
--	else
--		igt_plane_replace_prop_blob(test_plane,
--					    IGT_PLANE_FB_DAMAGE_CLIPS,
--					    &data->plane_update_clip,
--					    sizeof(struct drm_mode_rect)*
--					    data->damage_area_count);
-+	if (data->screen_changes & 1) {
-+		igt_plane_set_fb(test_plane, data->fb_continuous);
-+	} else {
-+		igt_plane_set_fb(test_plane, &data->fb_test);
-+
-+		if (data->test_plane_id == DRM_PLANE_TYPE_CURSOR)
-+			igt_plane_replace_prop_blob(test_plane,
-+						    IGT_PLANE_FB_DAMAGE_CLIPS,
-+						    &data->cursor_clip,
-+						    sizeof(struct drm_mode_rect));
-+		else
-+			igt_plane_replace_prop_blob(test_plane,
-+						    IGT_PLANE_FB_DAMAGE_CLIPS,
-+						    &data->plane_update_clip,
-+						    sizeof(struct drm_mode_rect)*
-+						    data->damage_area_count);
-+	}
- 
- 	igt_plane_set_position(data->test_plane, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-@@ -499,11 +528,20 @@ static void run(data_t *data)
- {
- 	igt_assert(psr_wait_entry(data->debugfs_fd, PSR_MODE_2));
- 
-+	data->screen_changes = 0;
-+
- 	switch (data->op) {
- 	case PLANE_UPDATE:
- 	case OVERLAY_PRIM_UPDATE:
- 		damaged_plane_update(data);
- 		break;
-+	case PLANE_UPDATE_CONTINUOUS:
-+		for (data->screen_changes = 0;
-+		     data->screen_changes < MAX_SCREEN_CHANGES;
-+		     data->screen_changes++) {
-+			damaged_plane_update(data);
-+		}
-+		break;
- 	case PLANE_MOVE:
- 		damaged_plane_move(data);
- 		break;
-@@ -568,6 +606,7 @@ igt_main
- 		data.damage_area_count = MAX_DAMAGE_AREAS;
- 		data.op = PLANE_UPDATE;
- 		data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+		data.primary_format = DRM_FORMAT_XRGB8888;
- 		prepare(&data);
- 		r = psr_wait_entry(data.debugfs_fd, PSR_MODE_2);
- 		if (!r)
-@@ -643,6 +682,21 @@ igt_main
- 		}
- 	}
- 
-+	/*
-+	 * Verify overlay plane selective fetch using NV12 primary
-+	 * plane and continuous updates.
-+	 */
-+	data.op = PLANE_UPDATE_CONTINUOUS;
-+	data.primary_format = DRM_FORMAT_NV12;
-+	igt_describe("Test that selective fetch works on overlay plane");
-+	igt_subtest_f("overlay-%s-sf", op_str(data.op)) {
-+			data.damage_area_count = 1;
-+			data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-+			prepare(&data);
-+			run(&data);
-+			cleanup(&data);
-+	}
-+
- 	igt_fixture {
- 		close(data.debugfs_fd);
- 		display_fini(&data);
--- 
-2.25.1
+Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogaWd0LWRldiA8aWd0LWRldi1ib3Vu
+Y2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mIEpvdW5pDQo+SMO2Z2FuZGVy
+DQo+U2VudDogV2VkbmVzZGF5LCBEZWNlbWJlciAxLCAyMDIxIDI6NDUgUE0NCj5UbzogaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj5TdWJqZWN0OiBbaWd0LWRldl0gW1BBVENIIGktZy10
+IHYyIDMvM10gdGVzdHMva21zX3BzcjJfc2Y6IEFkZCBuZXcgc3VidGVzdCBmb3INCj5iaXBsYW5h
+ciBmb3JtYXQNCj4NCj5BZGQgbmV3IHRlc3RjYXNlIHdoaWNoIHVzZXMgTlYxMiBmb3JtYXQgZm9y
+IHByaW1hcnkgcGxhbmUuIEl0IGlzIGNvbnRpbnVvdXNseQ0KPnVwZGF0aW5nIG92ZXJsYXkgcGxh
+bmUuIEl0IGlzIGFsc28gc2VuZGluZyBkYW1hZ2VkIGFyZWEgb25seSBvbiBldmVyeSBzZWNvbmQg
+ZmxpcC4NCj4NCj52MjogRml4ZWQgZXhwZWN0ZWQgb3V0cHV0IGFuZCBzZXQgZmIgb24gc2NyZWVu
+X2NoYW5nZXMgJiAxDQo+DQo+U2lnbmVkLW9mZi1ieTogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5o
+b2dhbmRlckBpbnRlbC5jb20+DQoNClJldmlld2VkLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50
+ZWwuY29tPg0KDQo+LS0tDQo+IHRlc3RzL2k5MTUva21zX3BzcjJfc2YuYyB8IDkyICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0NCj4gMSBmaWxlIGNoYW5nZWQsIDczIGlu
+c2VydGlvbnMoKyksIDE5IGRlbGV0aW9ucygtKQ0KPg0KPmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1
+L2ttc19wc3IyX3NmLmMgYi90ZXN0cy9pOTE1L2ttc19wc3IyX3NmLmMgaW5kZXgNCj5hNTBjM2Ux
+NC4uYTkxZGVmZGUgMTAwNjQ0DQo+LS0tIGEvdGVzdHMvaTkxNS9rbXNfcHNyMl9zZi5jDQo+Kysr
+IGIvdGVzdHMvaTkxNS9rbXNfcHNyMl9zZi5jDQo+QEAgLTM4LDggKzM4LDExIEBAIElHVF9URVNU
+X0RFU0NSSVBUSU9OKCJUZXN0cyB0byB2YXJpZnkgUFNSMiBzZWxlY3RpdmUNCj5mZXRjaCBieSBz
+ZW5kaW5nIG11bHRpcGxlIg0KPiAjZGVmaW5lIENVUl9TSVpFIDY0DQo+ICNkZWZpbmUgTUFYX0RB
+TUFHRV9BUkVBUyA1DQo+DQo+KyNkZWZpbmUgTUFYX1NDUkVFTl9DSEFOR0VTIDUNCj4rDQo+IGVu
+dW0gb3BlcmF0aW9ucyB7DQo+IAlQTEFORV9VUERBVEUsDQo+KwlQTEFORV9VUERBVEVfQ09OVElO
+VU9VUywNCj4gCVBMQU5FX01PVkUsDQo+IAlPVkVSTEFZX1BSSU1fVVBEQVRFDQo+IH07DQo+QEAg
+LTU5LDYgKzYyLDggQEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiAJaWd0X291dHB1dF90ICpvdXRwdXQ7
+DQo+IAlzdHJ1Y3QgaWd0X2ZiIGZiX3ByaW1hcnksIGZiX292ZXJsYXksIGZiX2N1cnNvcjsNCj4g
+CXN0cnVjdCBpZ3RfZmIgZmJfdGVzdDsNCj4rCXN0cnVjdCBpZ3RfZmIgKmZiX2NvbnRpbnVvdXM7
+DQo+Kwl1aW50MzJfdCBwcmltYXJ5X2Zvcm1hdDsNCj4gCWludCBkYW1hZ2VfYXJlYV9jb3VudDsN
+Cj4gCXN0cnVjdCBkcm1fbW9kZV9yZWN0IHBsYW5lX3VwZGF0ZV9jbGlwW01BWF9EQU1BR0VfQVJF
+QVNdOw0KPiAJc3RydWN0IGRybV9tb2RlX3JlY3QgcGxhbmVfbW92ZV9jbGlwOw0KPkBAIC02OCwx
+MiArNzMsMTQgQEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiAJaW50IHRlc3RfcGxhbmVfaWQ7DQo+IAlp
+Z3RfcGxhbmVfdCAqdGVzdF9wbGFuZTsNCj4gCWNhaXJvX3QgKmNyOw0KPisJdWludDMyX3Qgc2Ny
+ZWVuX2NoYW5nZXM7DQo+IH0gZGF0YV90Ow0KPg0KPiBzdGF0aWMgY29uc3QgY2hhciAqb3Bfc3Ry
+KGVudW0gb3BlcmF0aW9ucyBvcCkgIHsNCj4gCXN0YXRpYyBjb25zdCBjaGFyICogY29uc3QgbmFt
+ZVtdID0gew0KPiAJCVtQTEFORV9VUERBVEVdID0gInBsYW5lLXVwZGF0ZSIsDQo+KwkJW1BMQU5F
+X1VQREFURV9DT05USU5VT1VTXSA9ICJwbGFuZS11cGRhdGUtY29udGludW91cyIsDQo+IAkJW1BM
+QU5FX01PVkVdID0gInBsYW5lLW1vdmUiLA0KPiAJCVtPVkVSTEFZX1BSSU1fVVBEQVRFXSA9ICJv
+dmVybGF5LXByaW1hcnktdXBkYXRlIiwNCj4gCX07DQo+QEAgLTIyMiw3ICsyMjksNyBAQCBzdGF0
+aWMgdm9pZCBwcmVwYXJlKGRhdGFfdCAqZGF0YSkNCj4gCS8qIGFsbCBncmVlbiBmcmFtZSAqLw0K
+PiAJaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsDQo+IAkJCSAgICBkYXRhLT5tb2Rl
+LT5oZGlzcGxheSwgZGF0YS0+bW9kZS0+dmRpc3BsYXksDQo+LQkJCSAgICBEUk1fRk9STUFUX1hS
+R0I4ODg4LA0KPisJCQkgICAgZGF0YS0+cHJpbWFyeV9mb3JtYXQsDQo+IAkJCSAgICBEUk1fRk9S
+TUFUX01PRF9MSU5FQVIsDQo+IAkJCSAgICAwLjAsIDEuMCwgMC4wLA0KPiAJCQkgICAgJmRhdGEt
+PmZiX3ByaW1hcnkpOw0KPkBAIC0yNTEsNiArMjU4LDggQEAgc3RhdGljIHZvaWQgcHJlcGFyZShk
+YXRhX3QgKmRhdGEpDQo+IAkJCQkgICAgMC4wLCAwLjAsIDEuMCwNCj4gCQkJCSAgICAmZGF0YS0+
+ZmJfdGVzdCk7DQo+DQo+KwkJZGF0YS0+ZmJfY29udGludW91cyA9ICZkYXRhLT5mYl9vdmVybGF5
+Ow0KPisNCj4gCQlpZiAoZGF0YS0+b3AgPT0gUExBTkVfTU9WRSkgew0KPiAJCQlwbGFuZV9tb3Zl
+X3NldHVwX3NxdWFyZShkYXRhLCAmZGF0YS0+ZmJfdGVzdCwNCj4gCQkJCQkgICBkYXRhLT5tb2Rl
+LT5oZGlzcGxheS8yLA0KPkBAIC0yNzcsNiArMjg2LDcgQEAgc3RhdGljIHZvaWQgcHJlcGFyZShk
+YXRhX3QgKmRhdGEpDQo+IAkJcGxhbmVfdXBkYXRlX3NldHVwX3NxdWFyZXMoZGF0YSwgJmRhdGEt
+PmZiX3Rlc3QsDQo+IAkJCQkJICAgZGF0YS0+bW9kZS0+aGRpc3BsYXksDQo+IAkJCQkJICAgZGF0
+YS0+bW9kZS0+dmRpc3BsYXkpOw0KPisJCWRhdGEtPmZiX2NvbnRpbnVvdXMgPSAmZGF0YS0+ZmJf
+cHJpbWFyeTsNCj4gCQlkYXRhLT50ZXN0X3BsYW5lID0gcHJpbWFyeTsNCj4NCj4gCQlpZiAoZGF0
+YS0+b3AgPT0gT1ZFUkxBWV9QUklNX1VQREFURSkgeyBAQCAtMzEyLDYgKzMyMiw3DQo+QEAgc3Rh
+dGljIHZvaWQgcHJlcGFyZShkYXRhX3QgKmRhdGEpDQo+IAkJaWd0X2NyZWF0ZV9mYihkYXRhLT5k
+cm1fZmQsIENVUl9TSVpFLCBDVVJfU0laRSwNCj4gCQkJICAgICAgRFJNX0ZPUk1BVF9BUkdCODg4
+OCwNCj5EUk1fRk9STUFUX01PRF9MSU5FQVIsDQo+IAkJCSAgICAgICZkYXRhLT5mYl90ZXN0KTsN
+Cj4rCQlkYXRhLT5mYl9jb250aW51b3VzID0gJmRhdGEtPmZiX2N1cnNvcjsNCj4NCj4gCQlkcmF3
+X3JlY3QoZGF0YSwgJmRhdGEtPmZiX3Rlc3QsIDAsIDAsIENVUl9TSVpFLCBDVVJfU0laRSwNCj4g
+CQkJICAgIDEuMCwgMS4wLCAxLjAsIDEuMCk7DQo+QEAgLTMzNCw3ICszNDUsOCBAQCBzdGF0aWMg
+aW5saW5lIHZvaWQgbWFudWFsKGNvbnN0IGNoYXIgKmV4cGVjdGVkKQ0KPiAJaWd0X2RlYnVnX21h
+bnVhbF9jaGVjaygiYWxsIiwgZXhwZWN0ZWQpOyAgfQ0KPg0KPi1zdGF0aWMgdm9pZCBwbGFuZV91
+cGRhdGVfZXhwZWN0ZWRfb3V0cHV0KGludCBwbGFuZV90eXBlLCBpbnQgYm94X2NvdW50KQ0KPitz
+dGF0aWMgdm9pZCBwbGFuZV91cGRhdGVfZXhwZWN0ZWRfb3V0cHV0KGludCBwbGFuZV90eXBlLCBp
+bnQgYm94X2NvdW50LA0KPisJCQkJCSBpbnQgc2NyZWVuX2NoYW5nZXMpDQo+IHsNCj4gCWNoYXIg
+ZXhwZWN0ZWRbNjRdID0ge307DQo+DQo+QEAgLTM0NCw5ICszNTYsMTYgQEAgc3RhdGljIHZvaWQg
+cGxhbmVfdXBkYXRlX2V4cGVjdGVkX291dHB1dChpbnQNCj5wbGFuZV90eXBlLCBpbnQgYm94X2Nv
+dW50KQ0KPiAJCQlib3hfY291bnQpOw0KPiAJCWJyZWFrOw0KPiAJY2FzZSBEUk1fUExBTkVfVFlQ
+RV9PVkVSTEFZOg0KPi0JCXNwcmludGYoZXhwZWN0ZWQsDQo+LQkJCSJzY3JlZW4gR3JlZW4gd2l0
+aCBCbHVlIGJveCBhbmQgJWQgV2hpdGUgYm94KGVzKSIsDQo+LQkJCWJveF9jb3VudCk7DQo+KwkJ
+LyoNCj4rCQkgKiBDb250aW51b3VzIHVwZGF0ZXMgb25seSBmb3IgRFJNX1BMQU5FX1RZUEVfT1ZF
+UkxBWQ0KPisJCSAqIGZvciBub3cuDQo+KwkJICovDQo+KwkJaWYgKHNjcmVlbl9jaGFuZ2VzICYg
+MSkNCj4rCQkJc3ByaW50ZihleHBlY3RlZCwgInNjcmVlbiBHcmVlbiB3aXRoIEJsdWUgYm94Iik7
+DQo+KwkJZWxzZQ0KPisJCQlzcHJpbnRmKGV4cGVjdGVkLA0KPisJCQkJInNjcmVlbiBHcmVlbiB3
+aXRoIEJsdWUgYm94IGFuZCAlZCBXaGl0ZQ0KPmJveChlcykiLA0KPisJCQkJYm94X2NvdW50KTsN
+Cj4gCQlicmVhazsNCj4gCWNhc2UgRFJNX1BMQU5FX1RZUEVfQ1VSU09SOg0KPiAJCXNwcmludGYo
+ZXhwZWN0ZWQsICJzY3JlZW4gR3JlZW4gd2l0aCAlZCBXaGl0ZSBib3goZXMpIiwgQEAgLQ0KPjQw
+Nyw3ICs0MjYsMTMgQEAgc3RhdGljIHZvaWQgZXhwZWN0ZWRfb3V0cHV0KGRhdGFfdCAqZGF0YSkN
+Cj4gCQlicmVhazsNCj4gCWNhc2UgUExBTkVfVVBEQVRFOg0KPiAJCXBsYW5lX3VwZGF0ZV9leHBl
+Y3RlZF9vdXRwdXQoZGF0YS0+dGVzdF9wbGFuZV9pZCwNCj4tCQkJCQkgICAgIGRhdGEtPmRhbWFn
+ZV9hcmVhX2NvdW50KTsNCj4rCQkJCQkgICAgIGRhdGEtPmRhbWFnZV9hcmVhX2NvdW50LA0KPisJ
+CQkJCSAgICAgZGF0YS0+c2NyZWVuX2NoYW5nZXMpOw0KPisJCWJyZWFrOw0KPisJY2FzZSBQTEFO
+RV9VUERBVEVfQ09OVElOVU9VUzoNCj4rCQlwbGFuZV91cGRhdGVfZXhwZWN0ZWRfb3V0cHV0KGRh
+dGEtPnRlc3RfcGxhbmVfaWQsDQo+KwkJCQkJICAgICBkYXRhLT5kYW1hZ2VfYXJlYV9jb3VudCwN
+Cj4rCQkJCQkgICAgIGRhdGEtPnNjcmVlbl9jaGFuZ2VzKTsNCj4gCQlicmVhazsNCj4gCWNhc2Ug
+T1ZFUkxBWV9QUklNX1VQREFURToNCj4gCQlvdmVybGF5X3ByaW1fdXBkYXRlX2V4cGVjdGVkX291
+dHB1dChkYXRhLQ0KPj5kYW1hZ2VfYXJlYV9jb3VudCk7DQo+QEAgLTQ2OCwyNCArNDkzLDI4IEBA
+IHN0YXRpYyB2b2lkIGRhbWFnZWRfcGxhbmVfdXBkYXRlKGRhdGFfdCAqZGF0YSkNCj4gCXVpbnQz
+Ml90IGggPSBkYXRhLT5tb2RlLT5oZGlzcGxheTsNCj4gCXVpbnQzMl90IHYgPSBkYXRhLT5tb2Rl
+LT52ZGlzcGxheTsNCj4NCj4tCWlndF9wbGFuZV9zZXRfZmIodGVzdF9wbGFuZSwgJmRhdGEtPmZi
+X3Rlc3QpOw0KPi0NCj4gCWlmIChkYXRhLT50ZXN0X3BsYW5lX2lkID09IERSTV9QTEFORV9UWVBF
+X09WRVJMQVkpIHsNCj4gCQloID0gaC8yOw0KPiAJCXYgPSB2LzI7DQo+IAl9DQo+DQo+LQlpZiAo
+ZGF0YS0+dGVzdF9wbGFuZV9pZCA9PSBEUk1fUExBTkVfVFlQRV9DVVJTT1IpDQo+LQkJaWd0X3Bs
+YW5lX3JlcGxhY2VfcHJvcF9ibG9iKHRlc3RfcGxhbmUsDQo+LQkJCQkJICAgIElHVF9QTEFORV9G
+Ql9EQU1BR0VfQ0xJUFMsDQo+LQkJCQkJICAgICZkYXRhLT5jdXJzb3JfY2xpcCwNCj4tCQkJCQkg
+ICAgc2l6ZW9mKHN0cnVjdCBkcm1fbW9kZV9yZWN0KSk7DQo+LQllbHNlDQo+LQkJaWd0X3BsYW5l
+X3JlcGxhY2VfcHJvcF9ibG9iKHRlc3RfcGxhbmUsDQo+LQkJCQkJICAgIElHVF9QTEFORV9GQl9E
+QU1BR0VfQ0xJUFMsDQo+LQkJCQkJICAgICZkYXRhLT5wbGFuZV91cGRhdGVfY2xpcCwNCj4tCQkJ
+CQkgICAgc2l6ZW9mKHN0cnVjdCBkcm1fbW9kZV9yZWN0KSoNCj4tCQkJCQkgICAgZGF0YS0+ZGFt
+YWdlX2FyZWFfY291bnQpOw0KPisJaWYgKGRhdGEtPnNjcmVlbl9jaGFuZ2VzICYgMSkgew0KPisJ
+CWlndF9wbGFuZV9zZXRfZmIodGVzdF9wbGFuZSwgZGF0YS0+ZmJfY29udGludW91cyk7DQo+Kwl9
+IGVsc2Ugew0KPisJCWlndF9wbGFuZV9zZXRfZmIodGVzdF9wbGFuZSwgJmRhdGEtPmZiX3Rlc3Qp
+Ow0KPisNCj4rCQlpZiAoZGF0YS0+dGVzdF9wbGFuZV9pZCA9PSBEUk1fUExBTkVfVFlQRV9DVVJT
+T1IpDQo+KwkJCWlndF9wbGFuZV9yZXBsYWNlX3Byb3BfYmxvYih0ZXN0X3BsYW5lLA0KPisNCj5J
+R1RfUExBTkVfRkJfREFNQUdFX0NMSVBTLA0KPisJCQkJCQkgICAgJmRhdGEtPmN1cnNvcl9jbGlw
+LA0KPisJCQkJCQkgICAgc2l6ZW9mKHN0cnVjdA0KPmRybV9tb2RlX3JlY3QpKTsNCj4rCQllbHNl
+DQo+KwkJCWlndF9wbGFuZV9yZXBsYWNlX3Byb3BfYmxvYih0ZXN0X3BsYW5lLA0KPisNCj5JR1Rf
+UExBTkVfRkJfREFNQUdFX0NMSVBTLA0KPisJCQkJCQkgICAgJmRhdGEtPnBsYW5lX3VwZGF0ZV9j
+bGlwLA0KPisJCQkJCQkgICAgc2l6ZW9mKHN0cnVjdA0KPmRybV9tb2RlX3JlY3QpKg0KPisJCQkJ
+CQkgICAgZGF0YS0+ZGFtYWdlX2FyZWFfY291bnQpOw0KPisJfQ0KPg0KPiAJaWd0X3BsYW5lX3Nl
+dF9wb3NpdGlvbihkYXRhLT50ZXN0X3BsYW5lLCAwLCAwKTsNCj4gCWlndF9kaXNwbGF5X2NvbW1p
+dDIoJmRhdGEtPmRpc3BsYXksIENPTU1JVF9BVE9NSUMpOyBAQCAtNDk5LDExDQo+KzUyOCwyMCBA
+QCBzdGF0aWMgdm9pZCBydW4oZGF0YV90ICpkYXRhKSAgew0KPiAJaWd0X2Fzc2VydChwc3Jfd2Fp
+dF9lbnRyeShkYXRhLT5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8yKSk7DQo+DQo+KwlkYXRhLT5zY3Jl
+ZW5fY2hhbmdlcyA9IDA7DQo+Kw0KPiAJc3dpdGNoIChkYXRhLT5vcCkgew0KPiAJY2FzZSBQTEFO
+RV9VUERBVEU6DQo+IAljYXNlIE9WRVJMQVlfUFJJTV9VUERBVEU6DQo+IAkJZGFtYWdlZF9wbGFu
+ZV91cGRhdGUoZGF0YSk7DQo+IAkJYnJlYWs7DQo+KwljYXNlIFBMQU5FX1VQREFURV9DT05USU5V
+T1VTOg0KPisJCWZvciAoZGF0YS0+c2NyZWVuX2NoYW5nZXMgPSAwOw0KPisJCSAgICAgZGF0YS0+
+c2NyZWVuX2NoYW5nZXMgPCBNQVhfU0NSRUVOX0NIQU5HRVM7DQo+KwkJICAgICBkYXRhLT5zY3Jl
+ZW5fY2hhbmdlcysrKSB7DQo+KwkJCWRhbWFnZWRfcGxhbmVfdXBkYXRlKGRhdGEpOw0KPisJCX0N
+Cj4rCQlicmVhazsNCj4gCWNhc2UgUExBTkVfTU9WRToNCj4gCQlkYW1hZ2VkX3BsYW5lX21vdmUo
+ZGF0YSk7DQo+IAkJYnJlYWs7DQo+QEAgLTU2OCw2ICs2MDYsNyBAQCBpZ3RfbWFpbg0KPiAJCWRh
+dGEuZGFtYWdlX2FyZWFfY291bnQgPSBNQVhfREFNQUdFX0FSRUFTOw0KPiAJCWRhdGEub3AgPSBQ
+TEFORV9VUERBVEU7DQo+IAkJZGF0YS50ZXN0X3BsYW5lX2lkID0gRFJNX1BMQU5FX1RZUEVfUFJJ
+TUFSWTsNCj4rCQlkYXRhLnByaW1hcnlfZm9ybWF0ID0gRFJNX0ZPUk1BVF9YUkdCODg4ODsNCj4g
+CQlwcmVwYXJlKCZkYXRhKTsNCj4gCQlyID0gcHNyX3dhaXRfZW50cnkoZGF0YS5kZWJ1Z2ZzX2Zk
+LCBQU1JfTU9ERV8yKTsNCj4gCQlpZiAoIXIpDQo+QEAgLTY0Myw2ICs2ODIsMjEgQEAgaWd0X21h
+aW4NCj4gCQl9DQo+IAl9DQo+DQo+KwkvKg0KPisJICogVmVyaWZ5IG92ZXJsYXkgcGxhbmUgc2Vs
+ZWN0aXZlIGZldGNoIHVzaW5nIE5WMTIgcHJpbWFyeQ0KPisJICogcGxhbmUgYW5kIGNvbnRpbnVv
+dXMgdXBkYXRlcy4NCj4rCSAqLw0KPisJZGF0YS5vcCA9IFBMQU5FX1VQREFURV9DT05USU5VT1VT
+Ow0KPisJZGF0YS5wcmltYXJ5X2Zvcm1hdCA9IERSTV9GT1JNQVRfTlYxMjsNCj4rCWlndF9kZXNj
+cmliZSgiVGVzdCB0aGF0IHNlbGVjdGl2ZSBmZXRjaCB3b3JrcyBvbiBvdmVybGF5IHBsYW5lIik7
+DQo+KwlpZ3Rfc3VidGVzdF9mKCJvdmVybGF5LSVzLXNmIiwgb3Bfc3RyKGRhdGEub3ApKSB7DQo+
+KwkJCWRhdGEuZGFtYWdlX2FyZWFfY291bnQgPSAxOw0KPisJCQlkYXRhLnRlc3RfcGxhbmVfaWQg
+PSBEUk1fUExBTkVfVFlQRV9PVkVSTEFZOw0KPisJCQlwcmVwYXJlKCZkYXRhKTsNCj4rCQkJcnVu
+KCZkYXRhKTsNCj4rCQkJY2xlYW51cCgmZGF0YSk7DQo+Kwl9DQo+Kw0KPiAJaWd0X2ZpeHR1cmUg
+ew0KPiAJCWNsb3NlKGRhdGEuZGVidWdmc19mZCk7DQo+IAkJZGlzcGxheV9maW5pKCZkYXRhKTsN
+Cj4tLQ0KPjIuMjUuMQ0KDQo=
