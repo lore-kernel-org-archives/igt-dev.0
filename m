@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8239520688223874845=="
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83FD16E887
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 18:36:51 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+Date: Wed, 1 Dec 2021 18:33:50 +0000
+Message-ID: <e4a6cf821bfa40c0b305b48e6dd6a7d2@intel.com>
+References: <20211125214650.28751-1-jeevan.b@intel.com>
+ <20211125214650.28751-4-jeevan.b@intel.com>
+In-Reply-To: <20211125214650.28751-4-jeevan.b@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 01 Dec 2021 17:14:10 -0000
-Message-ID: <163837885031.14898.15334231886376214938@emeril.freedesktop.org>
-References: <20211201161730.2085782-1-Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20211201161730.2085782-1-Rodrigo.Siqueira@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?amdgpu=3A_Introduce_DSC_tests?=
+Subject: Re: [igt-dev] [PATCH i-g-t v4 3/3] tests/kms_atomic: Add a new test
+ case for FB_DAMAGE_CLIPS plane property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,219 +21,299 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Hogander, Jouni" <jouni.hogander@intel.com>
+Cc: Deepak Rawat <drawat@vmware.com>, "Latvala,
+ Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8239520688223874845==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+>-----Original Message-----
+>From: B, Jeevan <jeevan.b@intel.com>
+>Sent: Friday, November 26, 2021 3:17 AM
+>To: igt-dev@lists.freedesktop.org
+>Cc: Hogander, Jouni <jouni.hogander@intel.com>; Latvala, Petri
+><petri.latvala@intel.com>; Deepak Rawat <drawat@vmware.com>; B, Jeevan
+><jeevan.b@intel.com>
+>Subject: [PATCH i-g-t v4 3/3] tests/kms_atomic: Add a new test case for
+>FB_DAMAGE_CLIPS plane property
+>
+>From: Deepak Rawat <drawat@vmware.com>
+>
+>Some simple test cases to use FB_DAMAGE_CLIPS plane property.
+>Issue a plane update with damage with a clips on different scenarios and v=
+erify
+>the state.
+>
+>v2: use drm_mode_rect instead of local struct and array instead of malloc.
+>
+>Signed-off-by: Deepak Rawat <drawat@vmware.com>
+>Signed-off-by: Jeevan B <jeevan.b@intel.com>
 
-== Series Details ==
+Hi Jouni,=20
 
-Series: tests/amdgpu: Introduce DSC tests
-URL   : https://patchwork.freedesktop.org/series/97470/
-State : success
+Regarding the function split. I tried to split the repeated code but as we =
+are using different cairo surface and framebuffer=20
+on each different time. Its complex and would be confusing if we split, so =
+please let me know if its ok to keep the code same.=20
 
-== Summary ==
+Thanks=20
+Jeevan B=20
 
-CI Bug Log - changes from IGT_6298 -> IGTPW_6462
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/index.html
-
-Participating hosts (35 -> 34)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (2): fi-bsw-cyan fi-icl-u2 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6462 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@query-info:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-kbl-soraka/igt@amdgpu/amd_basic@query-info.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-skl-6600u:       [PASS][2] -> [FAIL][3] ([i915#4547])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6298/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-cfl-8109u:       [PASS][4] -> [DMESG-FAIL][5] ([i915#295])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6298/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-    - fi-cfl-8109u:       [PASS][6] -> [DMESG-WARN][7] ([i915#295]) +10 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6298/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][8] ([fdo#109271]) +57 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - {fi-tgl-dsi}:       [INCOMPLETE][9] -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6298/fi-tgl-dsi/igt@i915_selftest@live@execlists.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-tgl-dsi/igt@i915_selftest@live@execlists.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6298 -> IGTPW_6462
-
-  CI-20190529: 20190529
-  CI_DRM_10949: c43a205a07b34ebbf7fe9205454a422147791ef3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6462: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/index.html
-  IGT_6298: f062f4ae60ecf47af4b037c8f9952a1360662579 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@amdgpu/amd_dp_dsc@dsc-bpc
-+igt@amdgpu/amd_dp_dsc@dsc-enable-basic
-+igt@amdgpu/amd_dp_dsc@dsc-link-settings
-+igt@amdgpu/amd_dp_dsc@dsc-slice-dimensions-change
-+igt@amdgpu/amd_dp_dsc@dsc-slice-height-property
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/index.html
-
---===============8239520688223874845==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: Introduce DSC tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97470/">https://patchwork.freedesktop.org/series/97470/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6298 -&gt; IGTPW_6462</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/index.html</p>
-<h2>Participating hosts (35 -&gt; 34)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (2): fi-bsw-cyan fi-icl-u2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6462 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@query-info:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-kbl-soraka/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6298/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6298/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6298/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +10 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@execlists:<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6298/fi-tgl-dsi/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/fi-tgl-dsi/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6298 -&gt; IGTPW_6462</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10949: c43a205a07b34ebbf7fe9205454a422147791ef3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6462: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6462/index.html<br />
-  IGT_6298: f062f4ae60ecf47af4b037c8f9952a1360662579 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@amdgpu/amd_dp_dsc@dsc-bpc<br />
-+igt@amdgpu/amd_dp_dsc@dsc-enable-basic<br />
-+igt@amdgpu/amd_dp_dsc@dsc-link-settings<br />
-+igt@amdgpu/amd_dp_dsc@dsc-slice-dimensions-change<br />
-+igt@amdgpu/amd_dp_dsc@dsc-slice-height-property</p>
-
-</body>
-</html>
-
---===============8239520688223874845==--
+>---
+> tests/kms_atomic.c | 219
+>+++++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 219 insertions(+)
+>
+>diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c index 5295c8f5..25382=
+9f2
+>100644
+>--- a/tests/kms_atomic.c
+>+++ b/tests/kms_atomic.c
+>@@ -62,6 +62,17 @@ enum kms_atomic_check_relax {
+> 	PLANE_RELAX_FB =3D (1 << 1)
+> };
+>
+>+static inline int damage_rect_width(struct drm_mode_rect *r) {
+>+	return r->x2 - r->x1;
+>+}
+>+
+>+static inline int damage_rect_height(struct drm_mode_rect *r) {
+>+	return r->y2 - r->y1;
+>+}
+>+
+>+
+> static bool plane_filter(enum igt_atomic_plane_properties prop)  {
+> 	if ((1 << prop) & IGT_PLANE_COORD_CHANGED_MASK) @@ -1053,6
+>+1064,205 @@ static void atomic_invalid_params(igt_pipe_t *pipe,
+> 	do_ioctl_err(display->drm_fd, DRM_IOCTL_MODE_ATOMIC, &ioc,
+>EFAULT);  }
+>
+>+static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane,
+>+struct igt_fb *fb) {
+>+	struct drm_mode_rect damage[2];
+>+	struct igt_fb fb_1, fb_2;
+>+	cairo_t *cr_1, *cr_2;
+>+
+>+	/* Color fb with white rect at center */
+>+	igt_create_color_fb(pipe->display->drm_fd, fb->width, fb->height,
+>+			    fb->drm_format, I915_TILING_NONE, 0.2, 0.2, 0.2,
+>+			    &fb_1);
+>+	cr_1 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
+>+	igt_paint_color(cr_1, fb->width/4, fb->height/4, fb->width/2,
+>+			fb->height/2, 1.0, 1.0, 1.0);
+>+	igt_put_cairo_ctx(cr_1);
+>+
+>+	/*
+>+	 * Flip the primary plane to new color fb using atomic API and check the
+>+	 * state.
+>+	 */
+>+	igt_plane_set_fb(plane, &fb_1);
+>+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>+
+>+	/*
+>+	 * Change the color of top left clip from center and issue plane update
+>+	 * with damage and verify the state.
+>+	 */
+>+	damage[0].x1 =3D 0;
+>+	damage[0].y1 =3D 0;
+>+	damage[0].x2 =3D fb->width/2;
+>+	damage[0].y2 =3D fb->height/2;
+>+
+>+	cr_1 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
+>+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+>+			damage_rect_width(&damage[0]),
+>+			damage_rect_height(&damage[0]), 1.0, 0, 0);
+>+	igt_put_cairo_ctx(cr_1);
+>+
+>+	igt_plane_set_fb(plane, &fb_1);
+>+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS,
+>damage,
+>+				    sizeof(*damage));
+>+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>+
+>+	/*
+>+	 * Change the color of top left and bottom right clip from center and
+>+	 * issue plane update with damage and verify the state.
+>+	 */
+>+	igt_create_color_fb(pipe->display->drm_fd, fb->width, fb->height,
+>+			    fb->drm_format, I915_TILING_NONE, 0.2, 0.2, 0.2,
+>+			    &fb_2);
+>+
+>+	damage[0].x1 =3D fb->width/2;
+>+	damage[0].y1 =3D 0;
+>+	damage[0].x2 =3D fb->width;
+>+	damage[0].y2 =3D fb->height/2;
+>+
+>+	cr_2 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_2);
+>+	cr_1 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
+>+	cairo_set_source_surface(cr_2, fb_1.cairo_surface, 0, 0);
+>+	cairo_paint(cr_2);
+>+	igt_paint_color(cr_2, damage[0].x1, damage[0].y1,
+>+			damage_rect_width(&damage[0]),
+>+			damage_rect_height(&damage[0]), 0, 1.0, 0);
+>+	igt_put_cairo_ctx(cr_1);
+>+	igt_put_cairo_ctx(cr_2);
+>+	igt_plane_set_fb(plane, &fb_2);
+>+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS,
+>damage,
+>+				    sizeof(*damage));
+>+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>+
+>+	/*
+>+	 * Issue plane update with damage with a clip outside of plane src.
+>+	 * NOTE: This will result in no update on plane as damage is outside, so
+>+	 * will see no change on the screen.
+>+	 */
+>+	/* Reszie fb_1 to be bigger than plane */
+>+	igt_remove_fb(pipe->display->drm_fd, &fb_1);
+>+	igt_create_color_fb(pipe->display->drm_fd, fb->width * 2, fb->height,
+>+			    fb->drm_format, I915_TILING_NONE, 0.2, 0.2, 0.2,
+>+			    &fb_1);
+>+
+>+	damage[0].x1 =3D fb->width;
+>+	damage[0].y1 =3D 0;
+>+	damage[0].x2 =3D fb->width + fb->width/2;
+>+	damage[0].y2 =3D fb->height/2;
+>+
+>+	cr_1 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
+>+	cr_2 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_2);
+>+	cairo_set_source_surface(cr_1, fb_2.cairo_surface, 0, 0);
+>+	cairo_paint(cr_1);
+>+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+>+			damage_rect_width(&damage[0]),
+>+			damage_rect_height(&damage[0]), 0, 1.0, 0);
+>+	igt_put_cairo_ctx(cr_2);
+>+	igt_put_cairo_ctx(cr_1);
+>+	igt_plane_set_fb(plane, &fb_1);
+>+	igt_plane_set_size(plane, fb->width, fb->height);
+>+	igt_fb_set_position(&fb_1, plane, 0, 0);
+>+	igt_fb_set_size(&fb_1, plane, fb->width, fb->height);
+>+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS,
+>damage,
+>+				    sizeof(*damage));
+>+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>+
+>+	/*
+>+	 * Issue a plane update with damage with a clip that overlap with plane
+>+	 * src (Top right from center extending outside src in below case).
+>+	 * NOTE: Here drm core should take care of intersecting the clip to
+>+	 * plane src.
+>+	 */
+>+	damage[0].x1 =3D fb->width/2;
+>+	damage[0].y1 =3D 0;
+>+	damage[0].x2 =3D fb->width/2 + fb->width;
+>+	damage[0].y2 =3D fb->height/2;
+>+
+>+	cr_1 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
+>+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+>+			damage_rect_width(&damage[0]),
+>+			damage_rect_height(&damage[0]), 1.0, 1.0, 0);
+>+	igt_put_cairo_ctx(cr_1);
+>+	igt_plane_set_fb(plane, &fb_1);
+>+	igt_plane_set_size(plane, fb->width, fb->height);
+>+	igt_fb_set_position(&fb_1, plane, 0, 0);
+>+	igt_fb_set_size(&fb_1, plane, fb->width, fb->height);
+>+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS,
+>damage,
+>+				    sizeof(*damage));
+>+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>+
+>+	/*
+>+	 * Issue a plane update with damage with two clips one inside plane src
+>+	 * and one outside
+>+	 * NOTE: This will result in plane update with clip inside plane src.
+>+	 */
+>+	damage[0].x1 =3D 0;
+>+	damage[0].y1 =3D fb->height/2;
+>+	damage[0].x2 =3D fb->width/2;
+>+	damage[0].y2 =3D fb->height;
+>+
+>+	damage[1].x1 =3D fb->width + fb->width/2;
+>+	damage[1].y1 =3D fb->height/2;
+>+	damage[1].x2 =3D fb->width * 2;
+>+	damage[1].y2 =3D fb->height;
+>+
+>+	cr_1 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
+>+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+>+			damage_rect_width(&damage[0]),
+>+			damage_rect_height(&damage[0]), 0, 1.0, 1.0);
+>+	igt_paint_color(cr_1, damage[1].x1, damage[1].y1,
+>+			damage_rect_width(&damage[1]),
+>+			damage_rect_height(&damage[1]), 0, 1.0, 0);
+>+	igt_put_cairo_ctx(cr_1);
+>+	igt_plane_set_fb(plane, &fb_1);
+>+	igt_plane_set_size(plane, fb->width, fb->height);
+>+	igt_fb_set_position(&fb_1, plane, 0, 0);
+>+	igt_fb_set_size(&fb_1, plane, fb->width, fb->height);
+>+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS,
+>damage,
+>+				    sizeof(*damage) * 2);
+>+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>+
+>+	/*
+>+	 * Issue a plane update with overlapping damage clips. White rect in
+>+	 * center overlap partially with top left red rect.
+>+	 * NOTE: Drm core does not error for overlapping damage clips so if any
+>+	 * driver does not support overlapping should have their own
+>+	 * validations.
+>+	 */
+>+	damage[0].x1 =3D 0;
+>+	damage[0].y1 =3D 0;
+>+	damage[0].x2 =3D fb->width/2;
+>+	damage[0].y2 =3D fb->height/2;
+>+
+>+	damage[1].x1 =3D fb->width/4;
+>+	damage[1].y1 =3D fb->height/4;
+>+	damage[1].x2 =3D fb->width/4 + fb->width/2;
+>+	damage[1].y2 =3D fb->height/4 + fb->height/2;
+>+
+>+	cr_1 =3D igt_get_cairo_ctx(pipe->display->drm_fd, &fb_1);
+>+	igt_paint_color(cr_1, damage[0].x1, damage[0].y1,
+>+			damage_rect_width(&damage[0]),
+>+			damage_rect_height(&damage[0]), 1.0, 0, 0);
+>+	igt_paint_color(cr_1, damage[1].x1, damage[1].y1,
+>+			damage_rect_width(&damage[1]),
+>+			damage_rect_height(&damage[1]), 1.0, 1.0, 1.0);
+>+	igt_put_cairo_ctx(cr_1);
+>+	igt_plane_set_fb(plane, &fb_1);
+>+	igt_plane_set_size(plane, fb->width, fb->height);
+>+	igt_fb_set_position(&fb_1, plane, 0, 0);
+>+	igt_fb_set_size(&fb_1, plane, fb->width, fb->height);
+>+	igt_plane_replace_prop_blob(plane, IGT_PLANE_FB_DAMAGE_CLIPS,
+>damage,
+>+				    sizeof(*damage) * 2);
+>+	crtc_commit(pipe, plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>+
+>+	/* Restore the primary plane */
+>+	igt_plane_set_fb(plane, fb);
+>+	plane_commit(plane, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>+
+>+	/* Remove the fb created for this test */
+>+	igt_remove_fb(pipe->display->drm_fd, &fb_1);
+>+	igt_remove_fb(pipe->display->drm_fd, &fb_2); }
+>+
+> static void atomic_setup(igt_display_t *display, enum pipe pipe, igt_outp=
+ut_t
+>*output, igt_plane_t *primary, struct igt_fb *fb)  {
+> 	igt_output_set_pipe(output, pipe);
+>@@ -1212,6 +1422,15 @@ igt_main
+> 		atomic_invalid_params(pipe_obj, primary, output, &fb);
+> 	}
+>
+>+	igt_describe("Simple test cases to use FB_DAMAGE_CLIPS plane
+>property");
+>+	igt_subtest("atomic_plane_damage") {
+>+		igt_require(igt_plane_has_prop(primary,
+>IGT_PLANE_FB_DAMAGE_CLIPS));
+>+
+>+		atomic_setup(&display, pipe, output, primary, &fb);
+>+
+>+		atomic_plane_damage(pipe_obj, primary, &fb);
+>+	}
+>+
+> 	igt_fixture {
+> 		atomic_clear(&display, pipe, primary, output);
+> 		igt_remove_fb(display.drm_fd, &fb);
+>--
+>2.19.1
