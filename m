@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Rogozhkin, Dmitry V" <dmitry.v.rogozhkin@intel.com>
-Date: Wed, 1 Dec 2021 02:20:14 +0000
-Message-ID: <3894f6c21d51bdd4a188f077e146d36a3d6ddb71.camel@intel.com>
-References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
- <20211119125945.55056-6-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20211119125945.55056-6-tvrtko.ursulin@linux.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 977E96E0DC
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 03:46:07 +0000 (UTC)
+From: "Bhatt, Jigar" <jigar.bhatt@intel.com>
+Date: Wed, 1 Dec 2021 03:46:00 +0000
+Message-ID: <DM8PR11MB5608FC16E95E96405A341E74FD689@DM8PR11MB5608.namprd11.prod.outlook.com>
+References: <20211129073148.1044976-1-mastanx.katragadda@intel.com>
+In-Reply-To: <20211129073148.1044976-1-mastanx.katragadda@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D6A783E88596CE45B947583CFF6DA486@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 6/6] intel_gpu_top: Add a sanity check
- discovered busy metric is per engine
+Subject: Re: [igt-dev] [i-g-t] tests/i915/i915_pm_dc: Fix DC9 test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,30 +21,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "tvrtko.ursulin@linux.intel.com" <tvrtko.ursulin@linux.intel.com>
-Cc: "Intel-gfx@lists.freedesktop.org" <Intel-gfx@lists.freedesktop.org>, "Ursulin, Tvrtko" <tvrtko.ursulin@intel.com>
+To: "Katragadda, MastanX" <mastanx.katragadda@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIxLTExLTE5IGF0IDEyOjU5ICswMDAwLCBUdnJ0a28gVXJzdWxpbiB3cm90ZToN
-Cj4gRnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4NCj4gDQo+
-IEFkZGluZyBhIGNyb3NzLWNoZWNrIHdpdGggQUJJIGNvbmZpZyBuYW1lIHNwYWNlIGFuZCBub3Qg
-anVzdCByZWx5aW5nDQo+IG9uDQo+IHN5c2ZzIG5hbWVzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTog
-VHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4NCj4gQ2M6IERtaXRyeSBS
-b2dvemhraW4gPGRtaXRyeS52LnJvZ296aGtpbkBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgdG9vbHMv
-aW50ZWxfZ3B1X3RvcC5jIHwgNiArKysrKysNCj4gIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlv
-bnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS90b29scy9pbnRlbF9ncHVfdG9wLmMgYi90b29scy9p
-bnRlbF9ncHVfdG9wLmMNCj4gaW5kZXggNDFjNTlhNzJjMDlkLi44MWM3MjRkMWZlMWMgMTAwNjQ0
-DQo+IC0tLSBhL3Rvb2xzL2ludGVsX2dwdV90b3AuYw0KPiArKysgYi90b29scy9pbnRlbF9ncHVf
-dG9wLmMNCj4gQEAgLTM3Niw2ICszNzYsMTIgQEAgc3RhdGljIHN0cnVjdCBlbmdpbmVzICpkaXNj
-b3Zlcl9lbmdpbmVzKGNoYXINCj4gKmRldmljZSkNCj4gIAkJCWJyZWFrOw0KPiAgCQl9DQo+ICAN
-Cj4gKwkJLyogRG91YmxlIGNoZWNrIGNvbmZpZyBpcyBhbiBlbmdpbmUgY29uZmlnLiAqLw0KPiAr
-CQlpZiAoZW5naW5lLT5idXN5LmNvbmZpZyA+PSBfX0k5MTVfUE1VX09USEVSKDApKSB7DQo+ICsJ
-CQlmcmVlKCh2b2lkICopZW5naW5lLT5uYW1lKTsNCj4gKwkJCWNvbnRpbnVlOw0KPiArCQl9DQo+
-ICsNCj4gIAkJZW5naW5lLT5jbGFzcyA9IChlbmdpbmUtPmJ1c3kuY29uZmlnICYNCj4gIAkJCQkg
-KF9fSTkxNV9QTVVfT1RIRVIoMCkgLSAxKSkgPj4NCj4gIAkJCQlJOTE1X1BNVV9DTEFTU19TSElG
-VDsNCg0KVGhpcyB3b3JrcyBmb3IgbWUuDQpBY2tlZC1ieTogRG1pdHJ5IFJvZ296aGtpbiA8ZG1p
-dHJ5LnYucm9nb3poa2luQGludGVsLmNvbT4NCg0KSG93ZXZlciwgbG9va2luZyB0byB0aGUgZXhp
-c3RpbmcgY29kZSBkb3duIGJlbG93IHRoZSBwbGFjZSB3aGVyZSB5b3UndmUNCmFkZGVkIGEgZml4
-LCBpdCBzZWVtcyB0byBtZSB0aGF0ICdmcmVlKCh2b2lkICopZW5naW5lLT5uYW1lKScgbWlnaHQg
-YmUNCm1pc3Npbmcgb24gYSBudW1iZXIgb2Ygb3RoZXIgZXJyb3IgcGF0aHMgYW5kIG9uIG5vbi1l
-cnJvciBleGl0IHBhdGggYXMNCndlbGwuDQoNCg==
+Hi Mastan,
+
+What's the reason to change ? If you are reading counter value in beginning=
+ of test and after checking DC states are allowed what's the different in c=
+ounter value ?
+=20
+Thanks and regards,
+Jigar Bhatt
+
+-----Original Message-----
+From: Katragadda, MastanX <mastanx.katragadda@intel.com>=20
+Sent: Monday, November 29, 2021 1:02 PM
+To: igt-dev@lists.freedesktop.org; Surendrakumar Upadhyay, TejaskumarX <tej=
+askumarx.surendrakumar.upadhyay@intel.com>
+Cc: Katragadda, MastanX <mastanx.katragadda@intel.com>; Bhatt, Jigar <jigar=
+.bhatt@intel.com>
+Subject: [i-g-t] tests/i915/i915_pm_dc: Fix DC9 test case
+
+Reading prev_dc counter is most of the times 0 after reset comparison with =
+0 test gets failed. taken prev_dc counter after enterd into shallow DC stat=
+e.
+
+Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index 4ebeb3=
+eb..074b765b 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -434,22 +434,24 @@ static void setup_dc9_dpms(data_t *data, int dc_targe=
+t)
+ 	dpms_off(data);
+ 	igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
+ 				prev_dc, 3000, 100)), "Unable to enters shallow DC states\n");
++	prev_dc =3D read_dc_counter(data->debugfs_fd, dc_target);
+ 	dpms_on(data);
+ 	cleanup_dc_dpms(data);
++	dpms_off(data);
++	sleep(1); /* wait for counters reset*/
++	check_dc9(data, dc_target, prev_dc);
++	dpms_on(data);
++
++
+ }
+=20
+ static void test_dc9_dpms(data_t *data)  {
+-	int prev_dc, dc_target;
++	int dc_target;
+=20
+ 	require_dc_counter(data->debugfs_fd, CHECK_DC5);
+ 	dc_target =3D support_dc6(data->debugfs_fd) ? CHECK_DC6 : CHECK_DC5;
+-	prev_dc =3D read_dc_counter(data->debugfs_fd, dc_target);
+ 	setup_dc9_dpms(data, dc_target);
+-	dpms_off(data);
+-	sleep(1); /* wait for counters reset*/
+-	check_dc9(data, dc_target, prev_dc);
+-	dpms_on(data);
+ }
+=20
+ static void kms_poll_state_restore(int sig)
+--
+2.25.1
