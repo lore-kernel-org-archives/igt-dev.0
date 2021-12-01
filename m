@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1anam02on2054.outbound.protection.outlook.com [40.107.96.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E8276E8F5
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2047.outbound.protection.outlook.com [40.107.92.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF8FA6E436
  for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 16:18:08 +0000 (UTC)
 From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Date: Wed, 1 Dec 2021 11:17:29 -0500
-Message-ID: <20211201161730.2085782-2-Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20211201161730.2085782-1-Rodrigo.Siqueira@amd.com>
-References: <20211201161730.2085782-1-Rodrigo.Siqueira@amd.com>
+Date: Wed, 1 Dec 2021 11:17:28 -0500
+Message-ID: <20211201161730.2085782-1-Rodrigo.Siqueira@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH V3 i-g-t 1/2] lib/kms: Add DSC_SLICE_HEIGHT to
- CRTC property
+Subject: [igt-dev] [PATCH V3 i-g-t 0/2] tests/amdgpu: Introduce DSC tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,38 +23,22 @@ To: igt-dev@lists.freedesktop.org
 Cc: Mikita Lipski <mikita.lipski@amd.com>, Hersen Wu <hersenxs.wu@amd.com>, Roman Li <roman.li@amd.com>, Hayden Goodfellow <hayden.goodfellow@amd.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This preparation work introduces a new CRTC property named
-DSC_SLICE_HEIGHT, which will be required for amdgpu DSC tests.
+This patchset introduces a set of DSC tests focused on AMDGPU.
 
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
----
- lib/igt_kms.c | 1 +
- lib/igt_kms.h | 1 +
- 2 files changed, 2 insertions(+)
+Eryk Brol (1):
+  tests/amdgpu: Introduces DP DSC test
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 34a2aa00..fdadb6d6 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -593,6 +593,7 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
- 	[IGT_CRTC_ACTIVE] = "ACTIVE",
- 	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
- 	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
-+	[IGT_CRTC_DSC_SLICE_HEIGHT] = "DSC_SLICE_HEIGHT",
- };
- 
- const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index e9ecd21e..5c7d7481 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -125,6 +125,7 @@ enum igt_atomic_crtc_properties {
-        IGT_CRTC_ACTIVE,
-        IGT_CRTC_OUT_FENCE_PTR,
-        IGT_CRTC_VRR_ENABLED,
-+       IGT_CRTC_DSC_SLICE_HEIGHT,
-        IGT_NUM_CRTC_PROPS
- };
- 
+Rodrigo Siqueira (1):
+  lib/kms: Add DSC_SLICE_HEIGHT to CRTC property
+
+ lib/igt_amd.c             | 494 +++++++++++++++++++++++++--
+ lib/igt_amd.h             |  35 ++
+ lib/igt_kms.c             |   1 +
+ lib/igt_kms.h             |   1 +
+ tests/amdgpu/amd_dp_dsc.c | 685 ++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build  |   1 +
+ 6 files changed, 1195 insertions(+), 22 deletions(-)
+ create mode 100644 tests/amdgpu/amd_dp_dsc.c
+
 -- 
 2.25.1
