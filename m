@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19EAF6ECCE
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 06:26:25 +0000 (UTC)
-From: Mastan Katragadda <mastanx.katragadda@intel.com>
-Date: Wed,  1 Dec 2021 11:57:03 +0530
-Message-Id: <20211201062703.1047567-1-mastanx.katragadda@intel.com>
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2059.outbound.protection.outlook.com [40.107.92.59])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CFB86E0FF
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 06:54:56 +0000 (UTC)
+From: Stylon Wang <stylon.wang@amd.com>
+Date: Wed, 1 Dec 2021 14:54:23 +0800
+Message-ID: <20211201065434.48827-1-stylon.wang@amd.com>
+In-Reply-To: <20211130083503.10221-1-stylon.wang@amd.com>
+References: <20211130083503.10221-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] tests/i915/i915_pm_dc: Fix DC9 subtest
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t v2 00/11] Create tests for multi-plane
+ overlay
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,54 +22,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
-Cc: mastanx.katragadda@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reading prev_dc counter is most of the times 0 after reset
-comparison with 0 test gets failed. taken prev_dc counter after
-enterd into shallow DC state.
+A series of new tests on MPO is added to tests/amdgpu/amd_plane.
 
-changes since V1:
-        - Removed new lines and warnings from checkpatch.pl
+Currently most of the sub-tests are AMD-specific and concerns with
+video use cases from projects.
 
-Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
----
- tests/i915/i915_pm_dc.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Changes from prior rev1 to now:
 
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index 4ebeb3eb..2c2c5086 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -434,22 +434,22 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
- 	dpms_off(data);
- 	igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
- 				prev_dc, 3000, 100)), "Unable to enters shallow DC states\n");
-+	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
- 	dpms_on(data);
- 	cleanup_dc_dpms(data);
-+	dpms_off(data);
-+	sleep(1); /* wait for counters reset*/
-+	check_dc9(data, dc_target, prev_dc);
-+	dpms_on(data);
- }
- 
- static void test_dc9_dpms(data_t *data)
- {
--	int prev_dc, dc_target;
-+	int dc_target;
- 
- 	require_dc_counter(data->debugfs_fd, CHECK_DC5);
- 	dc_target = support_dc6(data->debugfs_fd) ? CHECK_DC6 : CHECK_DC5;
--	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
- 	setup_dc9_dpms(data, dc_target);
--	dpms_off(data);
--	sleep(1); /* wait for counters reset*/
--	check_dc9(data, dc_target, prev_dc);
--	dpms_on(data);
- }
- 
- static void kms_poll_state_restore(int sig)
+v2: Fix conflict in meson.build
+
+Ahmad Othman (1):
+  tests/amdgpu/amd_plane: fixes for test-4k-mpo
+
+Anson Jacob (1):
+  tests/amdgpu/amd_plane: Ensure pipes are enabled before accessing
+
+Bhawanpreet Lakha (4):
+  tests/amdgpu/amd_plane: Create mpo panning test
+  tests/amdgpu/amd_plane: Create mpo swap between 2 displays test
+  tests/amdgpu/amd_plane: Create mpo scaling tests
+  tests/amdgpu/amd_plane: Add full screen scaling test case
+
+Nicholas Kazlauskas (1):
+  tests/amdgpu/amd_plane: Add MPO swizzle mode toggle test
+
+Stylon Wang (1):
+  tests/amdgpu/amd_plane: Add P010 format to MPO tests and add test
+    descriptions
+
+Victor Lu (3):
+  tests/amdgpu/amd_plane: Introduced 4K MPO test
+  tests/amdgpu/amd_plane: Switch mpo-swizzle-toggle to single-head
+  tests/amdgpu/amd_plane: Add MPO scale and pan subtest single display
+    option
+
+ tests/amdgpu/amd_plane.c | 805 +++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |   1 +
+ 2 files changed, 806 insertions(+)
+ create mode 100644 tests/amdgpu/amd_plane.c
+
 -- 
-2.25.1
+2.33.1
