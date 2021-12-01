@@ -1,78 +1,73 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Message-ID: <6ee343d6-df54-3c89-5d80-9073884805f5@linux.intel.com>
-Date: Wed, 1 Dec 2021 10:06:28 +0000
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A19206F9DB
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Dec 2021 10:36:21 +0000 (UTC)
+From: Mastan Katragadda <mastanx.katragadda@intel.com>
+Date: Wed,  1 Dec 2021 16:07:17 +0530
+Message-Id: <20211201103717.1048521-1-mastanx.katragadda@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-References: <20211119125945.55056-1-tvrtko.ursulin@linux.intel.com>
- <20211119125945.55056-6-tvrtko.ursulin@linux.intel.com>
- <3894f6c21d51bdd4a188f077e146d36a3d6ddb71.camel@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <3894f6c21d51bdd4a188f077e146d36a3d6ddb71.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [Intel-gfx] [PATCH i-g-t 6/6] intel_gpu_top: Add a sanity check
- discovered busy metric is per engine
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: "Rogozhkin, Dmitry V" <dmitry.v.rogozhkin@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Intel-gfx@lists.freedesktop.org" <Intel-gfx@lists.freedesktop.org>
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t] tests/i915/i915_pm_dc: Moved prev DC counter
+ reading logic
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
+Cc: mastanx.katragadda@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Reading of prev_dc counter in dc9-dpms subtest as 0, after reset
+comparison with 0 test gets failed. taken prev_dc counter after
+enterd into shallow DC state.fixes dc9-dpms subtest failures.
 
-On 01/12/2021 02:20, Rogozhkin, Dmitry V wrote:
-> On Fri, 2021-11-19 at 12:59 +0000, Tvrtko Ursulin wrote:
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> Adding a cross-check with ABI config name space and not just relying
->> on
->> sysfs names.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> Cc: Dmitry Rogozhkin <dmitry.v.rogozhkin@intel.com>
->> ---
->>   tools/intel_gpu_top.c | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index 41c59a72c09d..81c724d1fe1c 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -376,6 +376,12 @@ static struct engines *discover_engines(char
->> *device)
->>   			break;
->>   		}
->>   
->> +		/* Double check config is an engine config. */
->> +		if (engine->busy.config >= __I915_PMU_OTHER(0)) {
->> +			free((void *)engine->name);
->> +			continue;
->> +		}
->> +
->>   		engine->class = (engine->busy.config &
->>   				 (__I915_PMU_OTHER(0) - 1)) >>
->>   				I915_PMU_CLASS_SHIFT;
-> 
-> This works for me.
-> Acked-by: Dmitry Rogozhkin <dmitry.v.rogozhkin@intel.com>
+changes since V1:
+        - Removed new lines and warnings from checkpatch.pl
+        - Updated Subject
 
-Thanks, pushed!
+Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
+Reviewed-by: Jigar Bhatt <jigar.bhatt@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-> However, looking to the existing code down below the place where you've
-> added a fix, it seems to me that 'free((void *)engine->name)' might be
-> missing on a number of other error paths and on non-error exit path as
-> well.
-
-Error paths are all fatal (tool simply exits) so it's moot. No real 
-value to cleanup piecemeal. It is the same for normal exit if that is 
-what you mean. Would be nicer I guess but it's a task for a rainy idle day.
-
-Regards,
-
-Tvrtko
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index 4ebeb3eb..2c2c5086 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -434,22 +434,22 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
+ 	dpms_off(data);
+ 	igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
+ 				prev_dc, 3000, 100)), "Unable to enters shallow DC states\n");
++	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
+ 	dpms_on(data);
+ 	cleanup_dc_dpms(data);
++	dpms_off(data);
++	sleep(1); /* wait for counters reset*/
++	check_dc9(data, dc_target, prev_dc);
++	dpms_on(data);
+ }
+ 
+ static void test_dc9_dpms(data_t *data)
+ {
+-	int prev_dc, dc_target;
++	int dc_target;
+ 
+ 	require_dc_counter(data->debugfs_fd, CHECK_DC5);
+ 	dc_target = support_dc6(data->debugfs_fd) ? CHECK_DC6 : CHECK_DC5;
+-	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
+ 	setup_dc9_dpms(data, dc_target);
+-	dpms_off(data);
+-	sleep(1); /* wait for counters reset*/
+-	check_dc9(data, dc_target, prev_dc);
+-	dpms_on(data);
+ }
+ 
+ static void kms_poll_state_restore(int sig)
+-- 
+2.25.1
