@@ -1,21 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A9086E997
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Dec 2021 07:24:19 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-Date: Thu, 2 Dec 2021 07:23:57 +0000
-Message-ID: <7ed619638a42c6436889c1f2f67d7084a249bf41.camel@intel.com>
-References: <20211125214650.28751-1-jeevan.b@intel.com>
- <20211125214650.28751-4-jeevan.b@intel.com>
- <e4a6cf821bfa40c0b305b48e6dd6a7d2@intel.com>
-In-Reply-To: <e4a6cf821bfa40c0b305b48e6dd6a7d2@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <ECEC73B714AFF14081B861F3687FBB66@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA7D96EB0A
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Dec 2021 09:20:12 +0000 (UTC)
+Message-ID: <49ab258a-32e0-6dff-bc6c-eece0472d805@linux.intel.com>
+Date: Thu, 2 Dec 2021 09:20:08 +0000
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 3/3] tests/kms_atomic: Add a new test
- case for FB_DAMAGE_CLIPS plane property
+Content-Language: en-US
+References: <20211126015735.908681-1-mastanx.katragadda@intel.com>
+ <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
+ <BN9PR11MB52905C33F740FAB54340B43C97669@BN9PR11MB5290.namprd11.prod.outlook.com>
+ <5c09cc84-7f44-969c-9a7f-8c925f077ec5@linux.intel.com>
+ <20211130164818.GA12888@jons-linux-dev-box>
+ <400e33dd-8c5f-10ee-c5e9-631ebcf63253@linux.intel.com>
+ <20211201234234.GA36147@jons-linux-dev-box>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20211201234234.GA36147@jons-linux-dev-box>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
+ Submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,205 +28,162 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
- Jeevan" <jeevan.b@intel.com>
-Cc: "drawat@vmware.com" <drawat@vmware.com>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Katragadda, MastanX" <mastanx.katragadda@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIxLTEyLTAxIGF0IDE4OjMzICswMDAwLCBCLCBKZWV2YW4gd3JvdGU6DQo+ID4g
-LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBCLCBKZWV2YW4gPGplZXZhbi5i
-QGludGVsLmNvbT4NCj4gPiBTZW50OiBGcmlkYXksIE5vdmVtYmVyIDI2LCAyMDIxIDM6MTcgQU0N
-Cj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiBDYzogSG9nYW5kZXIs
-IEpvdW5pIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+OyBMYXR2YWxhLCBQZXRyaQ0KPiA+IDxw
-ZXRyaS5sYXR2YWxhQGludGVsLmNvbT47IERlZXBhayBSYXdhdCA8ZHJhd2F0QHZtd2FyZS5jb20+
-OyBCLA0KPiA+IEplZXZhbg0KPiA+IDxqZWV2YW4uYkBpbnRlbC5jb20+DQo+ID4gU3ViamVjdDog
-W1BBVENIIGktZy10IHY0IDMvM10gdGVzdHMva21zX2F0b21pYzogQWRkIGEgbmV3IHRlc3QgY2Fz
-ZQ0KPiA+IGZvcg0KPiA+IEZCX0RBTUFHRV9DTElQUyBwbGFuZSBwcm9wZXJ0eQ0KPiA+IA0KPiA+
-IEZyb206IERlZXBhayBSYXdhdCA8ZHJhd2F0QHZtd2FyZS5jb20+DQo+ID4gDQo+ID4gU29tZSBz
-aW1wbGUgdGVzdCBjYXNlcyB0byB1c2UgRkJfREFNQUdFX0NMSVBTIHBsYW5lIHByb3BlcnR5Lg0K
-PiA+IElzc3VlIGEgcGxhbmUgdXBkYXRlIHdpdGggZGFtYWdlIHdpdGggYSBjbGlwcyBvbiBkaWZm
-ZXJlbnQNCj4gPiBzY2VuYXJpb3MgYW5kIHZlcmlmeQ0KPiA+IHRoZSBzdGF0ZS4NCj4gPiANCj4g
-PiB2MjogdXNlIGRybV9tb2RlX3JlY3QgaW5zdGVhZCBvZiBsb2NhbCBzdHJ1Y3QgYW5kIGFycmF5
-IGluc3RlYWQgb2YNCj4gPiBtYWxsb2MuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogRGVlcGFr
-IFJhd2F0IDxkcmF3YXRAdm13YXJlLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBKZWV2YW4gQiA8
-amVldmFuLmJAaW50ZWwuY29tPg0KPiANCj4gSGkgSm91bmksDQo+IA0KPiBSZWdhcmRpbmcgdGhl
-IGZ1bmN0aW9uIHNwbGl0LiBJIHRyaWVkIHRvIHNwbGl0IHRoZSByZXBlYXRlZCBjb2RlIGJ1dA0K
-PiBhcyB3ZSBhcmUgdXNpbmcgZGlmZmVyZW50IGNhaXJvIHN1cmZhY2UgYW5kIGZyYW1lYnVmZmVy
-DQo+IG9uIGVhY2ggZGlmZmVyZW50IHRpbWUuIEl0cyBjb21wbGV4IGFuZCB3b3VsZCBiZSBjb25m
-dXNpbmcgaWYgd2UNCj4gc3BsaXQsIHNvIHBsZWFzZSBsZXQgbWUga25vdyBpZiBpdHMgb2sgdG8g
-a2VlcCB0aGUgY29kZSBzYW1lLg0KDQpUaGFuayB5b3UgZm9yIGNvbnNpZGVyaW5nIG15IGNvbW1l
-bnQ6DQoNClJldmlld2VkLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVyQGludGVs
-LmNvbT4NCg0KPiANCj4gVGhhbmtzDQo+IEplZXZhbiBCDQo+IA0KPiA+IC0tLQ0KPiA+IHRlc3Rz
-L2ttc19hdG9taWMuYyB8IDIxOQ0KPiA+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKw0KPiA+IDEgZmlsZSBjaGFuZ2VkLCAyMTkgaW5zZXJ0aW9ucygrKQ0KPiA+
-IA0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfYXRvbWljLmMgYi90ZXN0cy9rbXNfYXRvbWlj
-LmMgaW5kZXgNCj4gPiA1Mjk1YzhmNS4uMjUzODI5ZjINCj4gPiAxMDA2NDQNCj4gPiAtLS0gYS90
-ZXN0cy9rbXNfYXRvbWljLmMNCj4gPiArKysgYi90ZXN0cy9rbXNfYXRvbWljLmMNCj4gPiBAQCAt
-NjIsNiArNjIsMTcgQEAgZW51bSBrbXNfYXRvbWljX2NoZWNrX3JlbGF4IHsNCj4gPiBQTEFORV9S
-RUxBWF9GQiA9ICgxIDw8IDEpDQo+ID4gfTsNCj4gPiANCj4gPiArc3RhdGljIGlubGluZSBpbnQg
-ZGFtYWdlX3JlY3Rfd2lkdGgoc3RydWN0IGRybV9tb2RlX3JlY3QgKnIpIHsNCj4gPiArcmV0dXJu
-IHItPngyIC0gci0+eDE7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBpbmxpbmUgaW50IGRh
-bWFnZV9yZWN0X2hlaWdodChzdHJ1Y3QgZHJtX21vZGVfcmVjdCAqcikgew0KPiA+ICtyZXR1cm4g
-ci0+eTIgLSByLT55MTsNCj4gPiArfQ0KPiA+ICsNCj4gPiArDQo+ID4gc3RhdGljIGJvb2wgcGxh
-bmVfZmlsdGVyKGVudW0gaWd0X2F0b21pY19wbGFuZV9wcm9wZXJ0aWVzIHByb3ApICB7DQo+ID4g
-aWYgKCgxIDw8IHByb3ApICYgSUdUX1BMQU5FX0NPT1JEX0NIQU5HRURfTUFTSykgQEAgLTEwNTMs
-Ng0KPiA+ICsxMDY0LDIwNSBAQCBzdGF0aWMgdm9pZCBhdG9taWNfaW52YWxpZF9wYXJhbXMoaWd0
-X3BpcGVfdCAqcGlwZSwNCj4gPiBkb19pb2N0bF9lcnIoZGlzcGxheS0+ZHJtX2ZkLCBEUk1fSU9D
-VExfTU9ERV9BVE9NSUMsICZpb2MsDQo+ID4gRUZBVUxUKTsgIH0NCj4gPiANCj4gPiArc3RhdGlj
-IHZvaWQgYXRvbWljX3BsYW5lX2RhbWFnZShpZ3RfcGlwZV90ICpwaXBlLCBpZ3RfcGxhbmVfdA0K
-PiA+ICpwbGFuZSwNCj4gPiArc3RydWN0IGlndF9mYiAqZmIpIHsNCj4gPiArc3RydWN0IGRybV9t
-b2RlX3JlY3QgZGFtYWdlWzJdOw0KPiA+ICtzdHJ1Y3QgaWd0X2ZiIGZiXzEsIGZiXzI7DQo+ID4g
-K2NhaXJvX3QgKmNyXzEsICpjcl8yOw0KPiA+ICsNCj4gPiArLyogQ29sb3IgZmIgd2l0aCB3aGl0
-ZSByZWN0IGF0IGNlbnRlciAqLw0KPiA+ICtpZ3RfY3JlYXRlX2NvbG9yX2ZiKHBpcGUtPmRpc3Bs
-YXktPmRybV9mZCwgZmItPndpZHRoLCBmYi0+aGVpZ2h0LA0KPiA+ICsgICAgZmItPmRybV9mb3Jt
-YXQsIEk5MTVfVElMSU5HX05PTkUsIDAuMiwgMC4yLCAwLjIsDQo+ID4gKyAgICAmZmJfMSk7DQo+
-ID4gK2NyXzEgPSBpZ3RfZ2V0X2NhaXJvX2N0eChwaXBlLT5kaXNwbGF5LT5kcm1fZmQsICZmYl8x
-KTsNCj4gPiAraWd0X3BhaW50X2NvbG9yKGNyXzEsIGZiLT53aWR0aC80LCBmYi0+aGVpZ2h0LzQs
-IGZiLT53aWR0aC8yLA0KPiA+ICtmYi0+aGVpZ2h0LzIsIDEuMCwgMS4wLCAxLjApOw0KPiA+ICtp
-Z3RfcHV0X2NhaXJvX2N0eChjcl8xKTsNCj4gPiArDQo+ID4gKy8qDQo+ID4gKyAqIEZsaXAgdGhl
-IHByaW1hcnkgcGxhbmUgdG8gbmV3IGNvbG9yIGZiIHVzaW5nIGF0b21pYyBBUEkgYW5kDQo+ID4g
-Y2hlY2sgdGhlDQo+ID4gKyAqIHN0YXRlLg0KPiA+ICsgKi8NCj4gPiAraWd0X3BsYW5lX3NldF9m
-YihwbGFuZSwgJmZiXzEpOw0KPiA+ICtjcnRjX2NvbW1pdChwaXBlLCBwbGFuZSwgQ09NTUlUX0FU
-T01JQywgQVRPTUlDX1JFTEFYX05PTkUpOw0KPiA+ICsNCj4gPiArLyoNCj4gPiArICogQ2hhbmdl
-IHRoZSBjb2xvciBvZiB0b3AgbGVmdCBjbGlwIGZyb20gY2VudGVyIGFuZCBpc3N1ZSBwbGFuZQ0K
-PiA+IHVwZGF0ZQ0KPiA+ICsgKiB3aXRoIGRhbWFnZSBhbmQgdmVyaWZ5IHRoZSBzdGF0ZS4NCj4g
-PiArICovDQo+ID4gK2RhbWFnZVswXS54MSA9IDA7DQo+ID4gK2RhbWFnZVswXS55MSA9IDA7DQo+
-ID4gK2RhbWFnZVswXS54MiA9IGZiLT53aWR0aC8yOw0KPiA+ICtkYW1hZ2VbMF0ueTIgPSBmYi0+
-aGVpZ2h0LzI7DQo+ID4gKw0KPiA+ICtjcl8xID0gaWd0X2dldF9jYWlyb19jdHgocGlwZS0+ZGlz
-cGxheS0+ZHJtX2ZkLCAmZmJfMSk7DQo+ID4gK2lndF9wYWludF9jb2xvcihjcl8xLCBkYW1hZ2Vb
-MF0ueDEsIGRhbWFnZVswXS55MSwNCj4gPiArZGFtYWdlX3JlY3Rfd2lkdGgoJmRhbWFnZVswXSks
-DQo+ID4gK2RhbWFnZV9yZWN0X2hlaWdodCgmZGFtYWdlWzBdKSwgMS4wLCAwLCAwKTsNCj4gPiAr
-aWd0X3B1dF9jYWlyb19jdHgoY3JfMSk7DQo+ID4gKw0KPiA+ICtpZ3RfcGxhbmVfc2V0X2ZiKHBs
-YW5lLCAmZmJfMSk7DQo+ID4gK2lndF9wbGFuZV9yZXBsYWNlX3Byb3BfYmxvYihwbGFuZSwgSUdU
-X1BMQU5FX0ZCX0RBTUFHRV9DTElQUywNCj4gPiBkYW1hZ2UsDQo+ID4gKyAgICBzaXplb2YoKmRh
-bWFnZSkpOw0KPiA+ICtjcnRjX2NvbW1pdChwaXBlLCBwbGFuZSwgQ09NTUlUX0FUT01JQywgQVRP
-TUlDX1JFTEFYX05PTkUpOw0KPiA+ICsNCj4gPiArLyoNCj4gPiArICogQ2hhbmdlIHRoZSBjb2xv
-ciBvZiB0b3AgbGVmdCBhbmQgYm90dG9tIHJpZ2h0IGNsaXAgZnJvbSBjZW50ZXINCj4gPiBhbmQN
-Cj4gPiArICogaXNzdWUgcGxhbmUgdXBkYXRlIHdpdGggZGFtYWdlIGFuZCB2ZXJpZnkgdGhlIHN0
-YXRlLg0KPiA+ICsgKi8NCj4gPiAraWd0X2NyZWF0ZV9jb2xvcl9mYihwaXBlLT5kaXNwbGF5LT5k
-cm1fZmQsIGZiLT53aWR0aCwgZmItPmhlaWdodCwNCj4gPiArICAgIGZiLT5kcm1fZm9ybWF0LCBJ
-OTE1X1RJTElOR19OT05FLCAwLjIsIDAuMiwgMC4yLA0KPiA+ICsgICAgJmZiXzIpOw0KPiA+ICsN
-Cj4gPiArZGFtYWdlWzBdLngxID0gZmItPndpZHRoLzI7DQo+ID4gK2RhbWFnZVswXS55MSA9IDA7
-DQo+ID4gK2RhbWFnZVswXS54MiA9IGZiLT53aWR0aDsNCj4gPiArZGFtYWdlWzBdLnkyID0gZmIt
-PmhlaWdodC8yOw0KPiA+ICsNCj4gPiArY3JfMiA9IGlndF9nZXRfY2Fpcm9fY3R4KHBpcGUtPmRp
-c3BsYXktPmRybV9mZCwgJmZiXzIpOw0KPiA+ICtjcl8xID0gaWd0X2dldF9jYWlyb19jdHgocGlw
-ZS0+ZGlzcGxheS0+ZHJtX2ZkLCAmZmJfMSk7DQo+ID4gK2NhaXJvX3NldF9zb3VyY2Vfc3VyZmFj
-ZShjcl8yLCBmYl8xLmNhaXJvX3N1cmZhY2UsIDAsIDApOw0KPiA+ICtjYWlyb19wYWludChjcl8y
-KTsNCj4gPiAraWd0X3BhaW50X2NvbG9yKGNyXzIsIGRhbWFnZVswXS54MSwgZGFtYWdlWzBdLnkx
-LA0KPiA+ICtkYW1hZ2VfcmVjdF93aWR0aCgmZGFtYWdlWzBdKSwNCj4gPiArZGFtYWdlX3JlY3Rf
-aGVpZ2h0KCZkYW1hZ2VbMF0pLCAwLCAxLjAsIDApOw0KPiA+ICtpZ3RfcHV0X2NhaXJvX2N0eChj
-cl8xKTsNCj4gPiAraWd0X3B1dF9jYWlyb19jdHgoY3JfMik7DQo+ID4gK2lndF9wbGFuZV9zZXRf
-ZmIocGxhbmUsICZmYl8yKTsNCj4gPiAraWd0X3BsYW5lX3JlcGxhY2VfcHJvcF9ibG9iKHBsYW5l
-LCBJR1RfUExBTkVfRkJfREFNQUdFX0NMSVBTLA0KPiA+IGRhbWFnZSwNCj4gPiArICAgIHNpemVv
-ZigqZGFtYWdlKSk7DQo+ID4gK2NydGNfY29tbWl0KHBpcGUsIHBsYW5lLCBDT01NSVRfQVRPTUlD
-LCBBVE9NSUNfUkVMQVhfTk9ORSk7DQo+ID4gKw0KPiA+ICsvKg0KPiA+ICsgKiBJc3N1ZSBwbGFu
-ZSB1cGRhdGUgd2l0aCBkYW1hZ2Ugd2l0aCBhIGNsaXAgb3V0c2lkZSBvZiBwbGFuZQ0KPiA+IHNy
-Yy4NCj4gPiArICogTk9URTogVGhpcyB3aWxsIHJlc3VsdCBpbiBubyB1cGRhdGUgb24gcGxhbmUg
-YXMgZGFtYWdlIGlzDQo+ID4gb3V0c2lkZSwgc28NCj4gPiArICogd2lsbCBzZWUgbm8gY2hhbmdl
-IG9uIHRoZSBzY3JlZW4uDQo+ID4gKyAqLw0KPiA+ICsvKiBSZXN6aWUgZmJfMSB0byBiZSBiaWdn
-ZXIgdGhhbiBwbGFuZSAqLw0KPiA+ICtpZ3RfcmVtb3ZlX2ZiKHBpcGUtPmRpc3BsYXktPmRybV9m
-ZCwgJmZiXzEpOw0KPiA+ICtpZ3RfY3JlYXRlX2NvbG9yX2ZiKHBpcGUtPmRpc3BsYXktPmRybV9m
-ZCwgZmItPndpZHRoICogMiwgZmItDQo+ID4gPmhlaWdodCwNCj4gPiArICAgIGZiLT5kcm1fZm9y
-bWF0LCBJOTE1X1RJTElOR19OT05FLCAwLjIsIDAuMiwgMC4yLA0KPiA+ICsgICAgJmZiXzEpOw0K
-PiA+ICsNCj4gPiArZGFtYWdlWzBdLngxID0gZmItPndpZHRoOw0KPiA+ICtkYW1hZ2VbMF0ueTEg
-PSAwOw0KPiA+ICtkYW1hZ2VbMF0ueDIgPSBmYi0+d2lkdGggKyBmYi0+d2lkdGgvMjsNCj4gPiAr
-ZGFtYWdlWzBdLnkyID0gZmItPmhlaWdodC8yOw0KPiA+ICsNCj4gPiArY3JfMSA9IGlndF9nZXRf
-Y2Fpcm9fY3R4KHBpcGUtPmRpc3BsYXktPmRybV9mZCwgJmZiXzEpOw0KPiA+ICtjcl8yID0gaWd0
-X2dldF9jYWlyb19jdHgocGlwZS0+ZGlzcGxheS0+ZHJtX2ZkLCAmZmJfMik7DQo+ID4gK2NhaXJv
-X3NldF9zb3VyY2Vfc3VyZmFjZShjcl8xLCBmYl8yLmNhaXJvX3N1cmZhY2UsIDAsIDApOw0KPiA+
-ICtjYWlyb19wYWludChjcl8xKTsNCj4gPiAraWd0X3BhaW50X2NvbG9yKGNyXzEsIGRhbWFnZVsw
-XS54MSwgZGFtYWdlWzBdLnkxLA0KPiA+ICtkYW1hZ2VfcmVjdF93aWR0aCgmZGFtYWdlWzBdKSwN
-Cj4gPiArZGFtYWdlX3JlY3RfaGVpZ2h0KCZkYW1hZ2VbMF0pLCAwLCAxLjAsIDApOw0KPiA+ICtp
-Z3RfcHV0X2NhaXJvX2N0eChjcl8yKTsNCj4gPiAraWd0X3B1dF9jYWlyb19jdHgoY3JfMSk7DQo+
-ID4gK2lndF9wbGFuZV9zZXRfZmIocGxhbmUsICZmYl8xKTsNCj4gPiAraWd0X3BsYW5lX3NldF9z
-aXplKHBsYW5lLCBmYi0+d2lkdGgsIGZiLT5oZWlnaHQpOw0KPiA+ICtpZ3RfZmJfc2V0X3Bvc2l0
-aW9uKCZmYl8xLCBwbGFuZSwgMCwgMCk7DQo+ID4gK2lndF9mYl9zZXRfc2l6ZSgmZmJfMSwgcGxh
-bmUsIGZiLT53aWR0aCwgZmItPmhlaWdodCk7DQo+ID4gK2lndF9wbGFuZV9yZXBsYWNlX3Byb3Bf
-YmxvYihwbGFuZSwgSUdUX1BMQU5FX0ZCX0RBTUFHRV9DTElQUywNCj4gPiBkYW1hZ2UsDQo+ID4g
-KyAgICBzaXplb2YoKmRhbWFnZSkpOw0KPiA+ICtjcnRjX2NvbW1pdChwaXBlLCBwbGFuZSwgQ09N
-TUlUX0FUT01JQywgQVRPTUlDX1JFTEFYX05PTkUpOw0KPiA+ICsNCj4gPiArLyoNCj4gPiArICog
-SXNzdWUgYSBwbGFuZSB1cGRhdGUgd2l0aCBkYW1hZ2Ugd2l0aCBhIGNsaXAgdGhhdCBvdmVybGFw
-IHdpdGgNCj4gPiBwbGFuZQ0KPiA+ICsgKiBzcmMgKFRvcCByaWdodCBmcm9tIGNlbnRlciBleHRl
-bmRpbmcgb3V0c2lkZSBzcmMgaW4gYmVsb3cNCj4gPiBjYXNlKS4NCj4gPiArICogTk9URTogSGVy
-ZSBkcm0gY29yZSBzaG91bGQgdGFrZSBjYXJlIG9mIGludGVyc2VjdGluZyB0aGUgY2xpcA0KPiA+
-IHRvDQo+ID4gKyAqIHBsYW5lIHNyYy4NCj4gPiArICovDQo+ID4gK2RhbWFnZVswXS54MSA9IGZi
-LT53aWR0aC8yOw0KPiA+ICtkYW1hZ2VbMF0ueTEgPSAwOw0KPiA+ICtkYW1hZ2VbMF0ueDIgPSBm
-Yi0+d2lkdGgvMiArIGZiLT53aWR0aDsNCj4gPiArZGFtYWdlWzBdLnkyID0gZmItPmhlaWdodC8y
-Ow0KPiA+ICsNCj4gPiArY3JfMSA9IGlndF9nZXRfY2Fpcm9fY3R4KHBpcGUtPmRpc3BsYXktPmRy
-bV9mZCwgJmZiXzEpOw0KPiA+ICtpZ3RfcGFpbnRfY29sb3IoY3JfMSwgZGFtYWdlWzBdLngxLCBk
-YW1hZ2VbMF0ueTEsDQo+ID4gK2RhbWFnZV9yZWN0X3dpZHRoKCZkYW1hZ2VbMF0pLA0KPiA+ICtk
-YW1hZ2VfcmVjdF9oZWlnaHQoJmRhbWFnZVswXSksIDEuMCwgMS4wLCAwKTsNCj4gPiAraWd0X3B1
-dF9jYWlyb19jdHgoY3JfMSk7DQo+ID4gK2lndF9wbGFuZV9zZXRfZmIocGxhbmUsICZmYl8xKTsN
-Cj4gPiAraWd0X3BsYW5lX3NldF9zaXplKHBsYW5lLCBmYi0+d2lkdGgsIGZiLT5oZWlnaHQpOw0K
-PiA+ICtpZ3RfZmJfc2V0X3Bvc2l0aW9uKCZmYl8xLCBwbGFuZSwgMCwgMCk7DQo+ID4gK2lndF9m
-Yl9zZXRfc2l6ZSgmZmJfMSwgcGxhbmUsIGZiLT53aWR0aCwgZmItPmhlaWdodCk7DQo+ID4gK2ln
-dF9wbGFuZV9yZXBsYWNlX3Byb3BfYmxvYihwbGFuZSwgSUdUX1BMQU5FX0ZCX0RBTUFHRV9DTElQ
-UywNCj4gPiBkYW1hZ2UsDQo+ID4gKyAgICBzaXplb2YoKmRhbWFnZSkpOw0KPiA+ICtjcnRjX2Nv
-bW1pdChwaXBlLCBwbGFuZSwgQ09NTUlUX0FUT01JQywgQVRPTUlDX1JFTEFYX05PTkUpOw0KPiA+
-ICsNCj4gPiArLyoNCj4gPiArICogSXNzdWUgYSBwbGFuZSB1cGRhdGUgd2l0aCBkYW1hZ2Ugd2l0
-aCB0d28gY2xpcHMgb25lIGluc2lkZQ0KPiA+IHBsYW5lIHNyYw0KPiA+ICsgKiBhbmQgb25lIG91
-dHNpZGUNCj4gPiArICogTk9URTogVGhpcyB3aWxsIHJlc3VsdCBpbiBwbGFuZSB1cGRhdGUgd2l0
-aCBjbGlwIGluc2lkZSBwbGFuZQ0KPiA+IHNyYy4NCj4gPiArICovDQo+ID4gK2RhbWFnZVswXS54
-MSA9IDA7DQo+ID4gK2RhbWFnZVswXS55MSA9IGZiLT5oZWlnaHQvMjsNCj4gPiArZGFtYWdlWzBd
-LngyID0gZmItPndpZHRoLzI7DQo+ID4gK2RhbWFnZVswXS55MiA9IGZiLT5oZWlnaHQ7DQo+ID4g
-Kw0KPiA+ICtkYW1hZ2VbMV0ueDEgPSBmYi0+d2lkdGggKyBmYi0+d2lkdGgvMjsNCj4gPiArZGFt
-YWdlWzFdLnkxID0gZmItPmhlaWdodC8yOw0KPiA+ICtkYW1hZ2VbMV0ueDIgPSBmYi0+d2lkdGgg
-KiAyOw0KPiA+ICtkYW1hZ2VbMV0ueTIgPSBmYi0+aGVpZ2h0Ow0KPiA+ICsNCj4gPiArY3JfMSA9
-IGlndF9nZXRfY2Fpcm9fY3R4KHBpcGUtPmRpc3BsYXktPmRybV9mZCwgJmZiXzEpOw0KPiA+ICtp
-Z3RfcGFpbnRfY29sb3IoY3JfMSwgZGFtYWdlWzBdLngxLCBkYW1hZ2VbMF0ueTEsDQo+ID4gK2Rh
-bWFnZV9yZWN0X3dpZHRoKCZkYW1hZ2VbMF0pLA0KPiA+ICtkYW1hZ2VfcmVjdF9oZWlnaHQoJmRh
-bWFnZVswXSksIDAsIDEuMCwgMS4wKTsNCj4gPiAraWd0X3BhaW50X2NvbG9yKGNyXzEsIGRhbWFn
-ZVsxXS54MSwgZGFtYWdlWzFdLnkxLA0KPiA+ICtkYW1hZ2VfcmVjdF93aWR0aCgmZGFtYWdlWzFd
-KSwNCj4gPiArZGFtYWdlX3JlY3RfaGVpZ2h0KCZkYW1hZ2VbMV0pLCAwLCAxLjAsIDApOw0KPiA+
-ICtpZ3RfcHV0X2NhaXJvX2N0eChjcl8xKTsNCj4gPiAraWd0X3BsYW5lX3NldF9mYihwbGFuZSwg
-JmZiXzEpOw0KPiA+ICtpZ3RfcGxhbmVfc2V0X3NpemUocGxhbmUsIGZiLT53aWR0aCwgZmItPmhl
-aWdodCk7DQo+ID4gK2lndF9mYl9zZXRfcG9zaXRpb24oJmZiXzEsIHBsYW5lLCAwLCAwKTsNCj4g
-PiAraWd0X2ZiX3NldF9zaXplKCZmYl8xLCBwbGFuZSwgZmItPndpZHRoLCBmYi0+aGVpZ2h0KTsN
-Cj4gPiAraWd0X3BsYW5lX3JlcGxhY2VfcHJvcF9ibG9iKHBsYW5lLCBJR1RfUExBTkVfRkJfREFN
-QUdFX0NMSVBTLA0KPiA+IGRhbWFnZSwNCj4gPiArICAgIHNpemVvZigqZGFtYWdlKSAqIDIpOw0K
-PiA+ICtjcnRjX2NvbW1pdChwaXBlLCBwbGFuZSwgQ09NTUlUX0FUT01JQywgQVRPTUlDX1JFTEFY
-X05PTkUpOw0KPiA+ICsNCj4gPiArLyoNCj4gPiArICogSXNzdWUgYSBwbGFuZSB1cGRhdGUgd2l0
-aCBvdmVybGFwcGluZyBkYW1hZ2UgY2xpcHMuIFdoaXRlIHJlY3QNCj4gPiBpbg0KPiA+ICsgKiBj
-ZW50ZXIgb3ZlcmxhcCBwYXJ0aWFsbHkgd2l0aCB0b3AgbGVmdCByZWQgcmVjdC4NCj4gPiArICog
-Tk9URTogRHJtIGNvcmUgZG9lcyBub3QgZXJyb3IgZm9yIG92ZXJsYXBwaW5nIGRhbWFnZSBjbGlw
-cyBzbw0KPiA+IGlmIGFueQ0KPiA+ICsgKiBkcml2ZXIgZG9lcyBub3Qgc3VwcG9ydCBvdmVybGFw
-cGluZyBzaG91bGQgaGF2ZSB0aGVpciBvd24NCj4gPiArICogdmFsaWRhdGlvbnMuDQo+ID4gKyAq
-Lw0KPiA+ICtkYW1hZ2VbMF0ueDEgPSAwOw0KPiA+ICtkYW1hZ2VbMF0ueTEgPSAwOw0KPiA+ICtk
-YW1hZ2VbMF0ueDIgPSBmYi0+d2lkdGgvMjsNCj4gPiArZGFtYWdlWzBdLnkyID0gZmItPmhlaWdo
-dC8yOw0KPiA+ICsNCj4gPiArZGFtYWdlWzFdLngxID0gZmItPndpZHRoLzQ7DQo+ID4gK2RhbWFn
-ZVsxXS55MSA9IGZiLT5oZWlnaHQvNDsNCj4gPiArZGFtYWdlWzFdLngyID0gZmItPndpZHRoLzQg
-KyBmYi0+d2lkdGgvMjsNCj4gPiArZGFtYWdlWzFdLnkyID0gZmItPmhlaWdodC80ICsgZmItPmhl
-aWdodC8yOw0KPiA+ICsNCj4gPiArY3JfMSA9IGlndF9nZXRfY2Fpcm9fY3R4KHBpcGUtPmRpc3Bs
-YXktPmRybV9mZCwgJmZiXzEpOw0KPiA+ICtpZ3RfcGFpbnRfY29sb3IoY3JfMSwgZGFtYWdlWzBd
-LngxLCBkYW1hZ2VbMF0ueTEsDQo+ID4gK2RhbWFnZV9yZWN0X3dpZHRoKCZkYW1hZ2VbMF0pLA0K
-PiA+ICtkYW1hZ2VfcmVjdF9oZWlnaHQoJmRhbWFnZVswXSksIDEuMCwgMCwgMCk7DQo+ID4gK2ln
-dF9wYWludF9jb2xvcihjcl8xLCBkYW1hZ2VbMV0ueDEsIGRhbWFnZVsxXS55MSwNCj4gPiArZGFt
-YWdlX3JlY3Rfd2lkdGgoJmRhbWFnZVsxXSksDQo+ID4gK2RhbWFnZV9yZWN0X2hlaWdodCgmZGFt
-YWdlWzFdKSwgMS4wLCAxLjAsIDEuMCk7DQo+ID4gK2lndF9wdXRfY2Fpcm9fY3R4KGNyXzEpOw0K
-PiA+ICtpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCAmZmJfMSk7DQo+ID4gK2lndF9wbGFuZV9zZXRf
-c2l6ZShwbGFuZSwgZmItPndpZHRoLCBmYi0+aGVpZ2h0KTsNCj4gPiAraWd0X2ZiX3NldF9wb3Np
-dGlvbigmZmJfMSwgcGxhbmUsIDAsIDApOw0KPiA+ICtpZ3RfZmJfc2V0X3NpemUoJmZiXzEsIHBs
-YW5lLCBmYi0+d2lkdGgsIGZiLT5oZWlnaHQpOw0KPiA+ICtpZ3RfcGxhbmVfcmVwbGFjZV9wcm9w
-X2Jsb2IocGxhbmUsIElHVF9QTEFORV9GQl9EQU1BR0VfQ0xJUFMsDQo+ID4gZGFtYWdlLA0KPiA+
-ICsgICAgc2l6ZW9mKCpkYW1hZ2UpICogMik7DQo+ID4gK2NydGNfY29tbWl0KHBpcGUsIHBsYW5l
-LCBDT01NSVRfQVRPTUlDLCBBVE9NSUNfUkVMQVhfTk9ORSk7DQo+ID4gKw0KPiA+ICsvKiBSZXN0
-b3JlIHRoZSBwcmltYXJ5IHBsYW5lICovDQo+ID4gK2lndF9wbGFuZV9zZXRfZmIocGxhbmUsIGZi
-KTsNCj4gPiArcGxhbmVfY29tbWl0KHBsYW5lLCBDT01NSVRfQVRPTUlDLCBBVE9NSUNfUkVMQVhf
-Tk9ORSk7DQo+ID4gKw0KPiA+ICsvKiBSZW1vdmUgdGhlIGZiIGNyZWF0ZWQgZm9yIHRoaXMgdGVz
-dCAqLw0KPiA+ICtpZ3RfcmVtb3ZlX2ZiKHBpcGUtPmRpc3BsYXktPmRybV9mZCwgJmZiXzEpOw0K
-PiA+ICtpZ3RfcmVtb3ZlX2ZiKHBpcGUtPmRpc3BsYXktPmRybV9mZCwgJmZiXzIpOyB9DQo+ID4g
-Kw0KPiA+IHN0YXRpYyB2b2lkIGF0b21pY19zZXR1cChpZ3RfZGlzcGxheV90ICpkaXNwbGF5LCBl
-bnVtIHBpcGUgcGlwZSwNCj4gPiBpZ3Rfb3V0cHV0X3QNCj4gPiAqb3V0cHV0LCBpZ3RfcGxhbmVf
-dCAqcHJpbWFyeSwgc3RydWN0IGlndF9mYiAqZmIpICB7DQo+ID4gaWd0X291dHB1dF9zZXRfcGlw
-ZShvdXRwdXQsIHBpcGUpOw0KPiA+IEBAIC0xMjEyLDYgKzE0MjIsMTUgQEAgaWd0X21haW4NCj4g
-PiBhdG9taWNfaW52YWxpZF9wYXJhbXMocGlwZV9vYmosIHByaW1hcnksIG91dHB1dCwgJmZiKTsN
-Cj4gPiB9DQo+ID4gDQo+ID4gK2lndF9kZXNjcmliZSgiU2ltcGxlIHRlc3QgY2FzZXMgdG8gdXNl
-IEZCX0RBTUFHRV9DTElQUyBwbGFuZQ0KPiA+IHByb3BlcnR5Iik7DQo+ID4gK2lndF9zdWJ0ZXN0
-KCJhdG9taWNfcGxhbmVfZGFtYWdlIikgew0KPiA+ICtpZ3RfcmVxdWlyZShpZ3RfcGxhbmVfaGFz
-X3Byb3AocHJpbWFyeSwNCj4gPiBJR1RfUExBTkVfRkJfREFNQUdFX0NMSVBTKSk7DQo+ID4gKw0K
-PiA+ICthdG9taWNfc2V0dXAoJmRpc3BsYXksIHBpcGUsIG91dHB1dCwgcHJpbWFyeSwgJmZiKTsN
-Cj4gPiArDQo+ID4gK2F0b21pY19wbGFuZV9kYW1hZ2UocGlwZV9vYmosIHByaW1hcnksICZmYik7
-DQo+ID4gK30NCj4gPiArDQo+ID4gaWd0X2ZpeHR1cmUgew0KPiA+IGF0b21pY19jbGVhcigmZGlz
-cGxheSwgcGlwZSwgcHJpbWFyeSwgb3V0cHV0KTsNCj4gPiBpZ3RfcmVtb3ZlX2ZiKGRpc3BsYXku
-ZHJtX2ZkLCAmZmIpOw0KPiA+IC0tDQo+ID4gMi4xOS4xDQoNCg==
+
+On 01/12/2021 23:42, Matthew Brost wrote:
+> On Wed, Dec 01, 2021 at 09:46:02AM +0000, Tvrtko Ursulin wrote:
+>>
+>> On 30/11/2021 16:48, Matthew Brost wrote:
+>>> On Mon, Nov 29, 2021 at 11:15:22AM +0000, Tvrtko Ursulin wrote:
+>>>>
+>>>> On 29/11/2021 10:58, Katragadda, MastanX wrote:
+>>>>> Hi   Tvrtko Ursulin,
+>>>>>                 Based on following backend information added skip on guc enabled platforms.
+>>>>>
+>>>>> basically there is a quirk in GuC scheduling where if a context reaches the head of the queue and can't be scheduled it blocks the rest of the queue. A queue is an engine class. So in this case if the user submits to VCS0, VCS0, then VCS1 and the first submission to VCS0 is spinner the VCS1 submission is blocked. This more or less is exactly what this test is doing, thus it hangs. We have a request with the GuC firmware team to be able to tweak this head of queue blocking behaviour but don't expect to land anytime soon. Also in the real world this isn't an issue as the user should always be using VEs which should never block the head of the queue unless all the engines within the class are busy.
+>>>>>
+>>>>> Test is expected to fail with GuC submission, skip it in CI.
+>>>>
+>>>> Does "blocks the rest of the queue" mean unrelated contexts submitted
+>>>> against the same engine class?
+>>>>
+>>>
+>>> Yes.
+>>>
+>>>> If so then it would be a DoS vector and the "user _should_ always" would not
+>>>> be sufficient.
+>>>>
+>>>
+>>> This is a DoS vector but there are about a million others and this no
+>>> worse than most.
+>>
+>> Adding new ones should not be taken lightly.
+>>
+>>>> Or if the blockage is localised to a single context then it might be fine
+>>>> (but unfortunate) if on top we chose to disallow submission to non-virtual
+>>>> indices in the engine map (in case of GuC)? If the firmware bug is not
+>>>
+>>> We discussed this we basically land on if the UMDs want to do something
+>>> stupid, let them as with all the other DoS in the i915. We likely can't
+>>> disable non-virtual submission as some UMDs want to explictly place some
+>>> contexts on certain engines (compute). In that case the UMD has to be
+>>> smart enough to not submit contexts in a way to expose this scheduling
+>>> quirk.
+>>
+>> "Quirk"... :) Why it happens though? Is the firmware scheduling with GEM
+>> context granularity, and not intel_context, and that is the disconnect?
+>>
+> 
+> The firmware has no idea of GEM contexts or requests only contexts (a LRC).
+> 
+> The scheduling queue is per class, if the HoQ can't be scheduled it
+> blocks scheduling for that queue until the HoQ can be scheduled. If the
+> user is using VEs then the HoQ can't block unless all engines within the
+> class are full. This all goes back to making VEs optional to the user,
+> once we did that we have exposed ourselves to dump users.
+> 
+> Again this not a bug in the GuC firmware, this is by design and was SoB
+> by multiple architects. The i915 team doesn't control the GuC firmware
+> arch BTW. We can ask for changes, but at the end of the day we can't
+> force any changes without SoB from multiple architects, on multiple
+> teams.
+> 
+> The current proposal is add a per class KMD controlled policy which
+> controls the search depth of the queue to find a context which can be
+> scheduled (e.g. search so many entires past of the HoQ). It is likely to
+> get implemented.
+
+That's all fine and dandy as an explanation for someone who knows how 
+GuC firmware works but is not what I am asking for.
+
+Please write a commit message for this removal which explains which 
+currently possible submission scenarios cannot be handled by GuC.
+
+You can then expand into why, and GuC FW implementation details if you 
+want, but is not the primary ask.
+
+Start with the particular example of the bonded-pair subtest. As far as 
+I can see it emits two requests on two contexts. First spins until 
+second does a SDW. Second has a semaphore wait on first making SDW. So 
+execution flow should end up like this:
+
+  ctxA rq1 sdw1
+  ctxA rq1 spin
+<timeslice switches it out>
+  ctxB rq1 semaphore wait - satisfied due sdw1
+  ctxB rq1 sdw2
+  ctxB rq1 completed
+<completed - context switch>
+  ctxA rq1 completed due sdw2
+
+Please either explain that I didn't get what the test is doing, or if I 
+have, how GuC manages to not cope with it. Like what does GuC sees as 
+"head of the queue" in this case and why it is not schedulable.
+
+When the root cause is explained what is needed is to come up with all 
+possible entry points into this failure mode.
+
+>>>> getting fixed that is. I may be on the wrong track here since I am not 100%
+>>>
+>>> Just because the GuC scheduling doesn't work like execlists doesn't mean
+>>> that it is bug. Checking for the HoQ only is done for a good reason -
+>>> performance a uC can do everything and anything like execlists as it is
+>>> single low power CPU controling the scheduling of an entire GT. We can't
+>>> protect against everything a user can do that is stupid.
+>>>
+>>> FWIW we do have an open task assigned to the GuC team to allow a KMD
+>>> configurable search depth when the queue can't be scheduled. No idea
+>>> when this is going to get implemented.
+>>
+>> This maybe too specific. Question rather could be why is something not
+>> runnable put at the head of the queue by the firmware. Sounds like a plain
+>> bug to me.
+>>
+> 
+> See above. As far as I'm concerned this is not a bug.
+> 
+> Also see Daniel's comments, this is basically a broken test which
+> assumes certain scheduler behavior. It is not testing ABI or a POR
+> arch requirement.
+> 
+>>>> certain I figured out why it exactly gets stuck.
+>>>>
+>>>> Because, looking at the bonded-pair to start with, if the test is emitting a
+>>>> pair of request on the same context, spinner first, then a another one with
+>>>> a semaphore dependency I am not sure why it hangs. When the spinner switches
+>>>> out after time slice expires the second request should run, cancel the
+>>>> spinner and exit. At which point they are both complete.
+>>>>
+>>>
+>>> I think only the MT version of bonded-pair hangs but it has been a while
+>>> since I looked at this.
+>>>
+>>> IMO this fix is 100% correct as this is a known, tracked issue. It was
+>>> agreed upon (arch, i915, GuC team) that we just skip these tests with
+>>> GuC submission.
+>>
+>> I915 team is here on upstream as well.
+>>
+>> Record those acks publicly would be my ask. Unless some security by
+>> obscurity is happening here? Until then from me it is a soft nack to keep
+>> disabling tests which show genuine weaknesses in GuC mode. Soft until we get
+>> a public record of exactly what is broken and in what circumstances, acked
+>> by architects publicly as you say they acked it somewhere. Commit message
+>> devoid of detail is not good enough.
+> 
+> I'm fine with not fixing this but you'd have to ask the CI if they can
+> live with this. If they can't (it crashes CI runs) then we have to skip
+> this within the test.
+
+That's not what I said. I said we need a proper commit message to go 
+with adding skips (or removals) so it is recorded what has been swept 
+under the carpet. Only then acks make sense. Acks against a commit 
+message which says nothing mean nothing in terms of accountability and 
+process.
+
+Regards,
+
+Tvrtko
