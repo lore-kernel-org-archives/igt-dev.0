@@ -1,19 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA7E67B2A5
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Dec 2021 18:10:31 +0000 (UTC)
-Date: Fri, 3 Dec 2021 19:10:27 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211203181027.GA3646@zkempczy-mobl2>
-References: <20211203064049.9953-1-zbigniew.kempczynski@intel.com>
- <20211203064049.9953-2-zbigniew.kempczynski@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 112077BDDE
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Dec 2021 19:42:20 +0000 (UTC)
+Date: Fri, 3 Dec 2021 11:36:52 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+Message-ID: <20211203193650.GA31892@jons-linux-dev-box>
+References: <20211126015735.908681-1-mastanx.katragadda@intel.com>
+ <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
+ <BN9PR11MB52905C33F740FAB54340B43C97669@BN9PR11MB5290.namprd11.prod.outlook.com>
+ <5c09cc84-7f44-969c-9a7f-8c925f077ec5@linux.intel.com>
+ <20211130164818.GA12888@jons-linux-dev-box>
+ <400e33dd-8c5f-10ee-c5e9-631ebcf63253@linux.intel.com>
+ <20211201234234.GA36147@jons-linux-dev-box>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211203064049.9953-2-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] i915/gem_exec_fence: Allow wait_bb
- to run on !rcs
+In-Reply-To: <20211201234234.GA36147@jons-linux-dev-box>
+Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
+ Submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,280 +27,143 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris.p.wilson@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Katragadda, MastanX" <mastanx.katragadda@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 03, 2021 at 07:40:49AM +0100, Zbigniew Kempczyński wrote:
-> From: Chris Wilson <chris.p.wilson@intel.com>
-> 
-> From Haswell up until gen12, only rcs supports all the registers and MI
-> commands required to build the wait batch; before Haswell MI does not
-> support the required MATH operations nor the predication. However, after
-> gen12 we may not always have rcs available and so require to run the
-> delay on other command streamers, which requires us to use the
-> appropriate mmio base for the alternate engine.
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+On Wed, Dec 01, 2021 at 03:42:34PM -0800, Matthew Brost wrote:
+> On Wed, Dec 01, 2021 at 09:46:02AM +0000, Tvrtko Ursulin wrote:
+> > 
+> > On 30/11/2021 16:48, Matthew Brost wrote:
+> > > On Mon, Nov 29, 2021 at 11:15:22AM +0000, Tvrtko Ursulin wrote:
+> > > > 
+> > > > On 29/11/2021 10:58, Katragadda, MastanX wrote:
+> > > > > Hi   Tvrtko Ursulin,
+> > > > >                Based on following backend information added skip on guc enabled platforms.
+> > > > > 
+> > > > > basically there is a quirk in GuC scheduling where if a context reaches the head of the queue and can't be scheduled it blocks the rest of the queue. A queue is an engine class. So in this case if the user submits to VCS0, VCS0, then VCS1 and the first submission to VCS0 is spinner the VCS1 submission is blocked. This more or less is exactly what this test is doing, thus it hangs. We have a request with the GuC firmware team to be able to tweak this head of queue blocking behaviour but don't expect to land anytime soon. Also in the real world this isn't an issue as the user should always be using VEs which should never block the head of the queue unless all the engines within the class are busy.
+> > > > > 
+> > > > > Test is expected to fail with GuC submission, skip it in CI.
+> > > > 
+> > > > Does "blocks the rest of the queue" mean unrelated contexts submitted
+> > > > against the same engine class?
+> > > > 
+> > > 
+> > > Yes.
+> > > 
+> > > > If so then it would be a DoS vector and the "user _should_ always" would not
+> > > > be sufficient.
+> > > > 
+> > > 
+> > > This is a DoS vector but there are about a million others and this no
+> > > worse than most.
+> > 
+> > Adding new ones should not be taken lightly.
 
-LGTM and according to no-reloc work will make my life easier:
+I have used the wrong terminology here / didn't mean we shouldn't take
+DoS seriously. What I really meant to say there are million ways a
+malicious user can temporarily deny other users service (e.g. just
+create 1000s of contexts with hang batches to all engines), in both
+cases we have protections to eventually detect a bad user (hangcheck)
+and ban it unblocking other users. IMO a user using physical engines
+when it shouldn't and user intentionally hogging engines with hanging
+batches are basically the same thing - bad user software. This is
+non-issue for well behavied UMDs, there is not a hard DoS vector exposed
+here, nor is there a new temporary DoS vector exposed that didn't
+already exist.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Matt
 
---
-Zbigniew
-
-> ---
->  tests/i915/gem_exec_fence.c | 141 ++++++++++++++++++------------------
->  1 file changed, 72 insertions(+), 69 deletions(-)
+> > 
+> > > > Or if the blockage is localised to a single context then it might be fine
+> > > > (but unfortunate) if on top we chose to disallow submission to non-virtual
+> > > > indices in the engine map (in case of GuC)? If the firmware bug is not
+> > > 
+> > > We discussed this we basically land on if the UMDs want to do something
+> > > stupid, let them as with all the other DoS in the i915. We likely can't
+> > > disable non-virtual submission as some UMDs want to explictly place some
+> > > contexts on certain engines (compute). In that case the UMD has to be
+> > > smart enough to not submit contexts in a way to expose this scheduling
+> > > quirk.
+> > 
+> > "Quirk"... :) Why it happens though? Is the firmware scheduling with GEM
+> > context granularity, and not intel_context, and that is the disconnect?
+> > 
 > 
-> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> index 8859c81cd..9a6336ce9 100644
-> --- a/tests/i915/gem_exec_fence.c
-> +++ b/tests/i915/gem_exec_fence.c
-> @@ -2490,13 +2490,6 @@ struct inter_engine_context {
->  		void *write_ptrs[2];
->  	} *batches;
->  
-> -	void *wait_bb;
-> -	uint32_t wait_bb_len;
-> -	uint32_t wait_bb_handle;
-> -
-> -	void *jump_ptr;
-> -	void *timestamp2_ptr;
-> -
->  	const intel_ctx_t *wait_ctx;
->  	uint32_t wait_timeline;
->  
-> @@ -2549,37 +2542,73 @@ static void submit_timeline_execbuf(struct inter_engine_context *context,
->  	gem_execbuf(context->fd, execbuf);
->  }
->  
-> -static void build_wait_bb(struct inter_engine_context *context,
-> -			  uint64_t delay,
-> -			  uint64_t timestamp_frequency)
-> +static unsigned int offset_in_page(void *addr)
-> +{
-> +	return (uintptr_t)addr & 4095;
-> +}
-> +
-> +static uint64_t
-> +get_cs_timestamp_frequency(int fd)
->  {
-> -	uint32_t *bb = context->wait_bb = calloc(1, 4096);
-> +	int cs_ts_freq = 0;
-> +	drm_i915_getparam_t gp;
-> +
-> +	gp.param = I915_PARAM_CS_TIMESTAMP_FREQUENCY;
-> +	gp.value = &cs_ts_freq;
-> +	if (igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp) == 0)
-> +		return cs_ts_freq;
-> +
-> +	igt_skip("Kernel with PARAM_CS_TIMESTAMP_FREQUENCY support required\n");
-> +}
-> +
-> +static struct drm_i915_gem_exec_object2
-> +build_wait_bb(int i915,
-> +	      const struct intel_execution_engine2 *engine,
-> +	      uint64_t delay,
-> +	      struct drm_i915_gem_relocation_entry *relocs)
-> +{
-> +	const uint64_t timestamp_frequency = get_cs_timestamp_frequency(i915);
->  	uint64_t wait_value =
->  		0xffffffffffffffff - (delay * timestamp_frequency) / NSEC_PER_SEC;
-> +	struct drm_i915_gem_exec_object2 obj = {};
-> +	uint32_t mmio_base = gem_engine_mmio_base(i915, engine->name);
-> +	uint32_t *map, *bb;
-> +
-> +	igt_debug("%s wait_value=0x%"PRIx64", %x\n", engine->name, wait_value, mmio_base);
-> +	igt_assert(mmio_base);
-> +
-> +	obj.handle = gem_create(i915, 4096);
-> +	obj.relocs_ptr = to_user_pointer(memset(relocs, 0, sizeof(*relocs)));
-> +	obj.relocation_count = 1;
-> +	obj.offset = 64 << 20;
->  
-> -	igt_debug("wait_value=0x%"PRIx64"\n", wait_value);
-> +	relocs->target_handle = obj.handle;
-> +	relocs->presumed_offset = obj.offset;
-> +
-> +	map = gem_mmap__device_coherent(i915, obj.handle, 0, 4096, PROT_WRITE);
-> +	bb = map;
->  
->  	*bb++ = MI_LOAD_REGISTER_IMM;
-> -	*bb++ = 0x2000 + HSW_CS_GPR(0);
-> +	*bb++ = mmio_base + HSW_CS_GPR(0);
->  	*bb++ = wait_value & 0xffffffff;
->  	*bb++ = MI_LOAD_REGISTER_IMM;
-> -	*bb++ = 0x2000 + HSW_CS_GPR(0) + 4;
-> +	*bb++ = mmio_base + HSW_CS_GPR(0) + 4;
->  	*bb++ = wait_value >> 32;
->  
->  	*bb++ = MI_LOAD_REGISTER_REG;
-> -	*bb++ = 0x2000 + RING_TIMESTAMP;
-> -	*bb++ = 0x2000 + HSW_CS_GPR(1);
-> +	*bb++ = mmio_base + RING_TIMESTAMP;
-> +	*bb++ = mmio_base + HSW_CS_GPR(1);
->  	*bb++ = MI_LOAD_REGISTER_IMM;
-> -	*bb++ = 0x2000 + HSW_CS_GPR(1) + 4;
-> +	*bb++ = mmio_base + HSW_CS_GPR(1) + 4;
->  	*bb++ = 0;
->  
-> -	context->timestamp2_ptr = bb;
-> -	*bb++ = MI_LOAD_REGISTER_REG;
-> -	*bb++ = 0x2000 + RING_TIMESTAMP;
-> -	*bb++ = 0x2000 + HSW_CS_GPR(2);
->  	*bb++ = MI_LOAD_REGISTER_IMM;
-> -	*bb++ = 0x2000 + HSW_CS_GPR(2) + 4;
-> +	*bb++ = mmio_base + HSW_CS_GPR(2) + 4;
->  	*bb++ = 0;
-> +	relocs->delta = offset_in_page(bb);
-> +	*bb++ = MI_LOAD_REGISTER_REG;
-> +	*bb++ = mmio_base + RING_TIMESTAMP;
-> +	*bb++ = mmio_base + HSW_CS_GPR(2);
->  
->  	*bb++ = MI_MATH(4);
->  	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(2));
-> @@ -2594,52 +2623,47 @@ static void build_wait_bb(struct inter_engine_context *context,
->  	*bb++ = MI_MATH_STOREINV(MI_MATH_REG(4), MI_MATH_REG_CF);
->  
->  	*bb++ = MI_LOAD_REGISTER_REG;
-> -	*bb++ = 0x2000 + HSW_CS_GPR(4);
-> -	*bb++ = 0x2000 + MI_PREDICATE_RESULT_1;
-> +	*bb++ = mmio_base + HSW_CS_GPR(4);
-> +	*bb++ = mmio_base + MI_PREDICATE_RESULT_1;
->  
->  	*bb++ = MI_BATCH_BUFFER_START | MI_BATCH_PREDICATE | 1;
-> -	context->jump_ptr = bb;
-> -	*bb++ = 0;
-> -	*bb++ = 0;
-> +	relocs->offset = offset_in_page(bb);
-> +	*bb++ = obj.offset + relocs->delta;
-> +	*bb++ = obj.offset >> 32;
->  
->  	*bb++ = MI_BATCH_BUFFER_END;
->  
-> -	context->wait_bb_len = ALIGN((void *) bb - context->wait_bb, 8);
-> +	munmap(map, 4096);
-> +	return obj;
->  }
->  
-> -static void wait_engine(struct inter_engine_context *context,
-> +static void wait_engine(int i915,
-> +			struct inter_engine_context *context,
->  			uint32_t run_engine_idx,
->  			uint32_t signal_syncobj,
->  			uint64_t signal_value)
->  {
-> -	struct drm_i915_gem_relocation_entry relocs[1];
-> +	struct drm_i915_gem_relocation_entry reloc;
->  	struct drm_i915_gem_exec_object2 objects[2] = {
->  		context->engine_counter_object,
-> -		{
-> -			.handle = context->wait_bb_handle,
-> -			.relocs_ptr = to_user_pointer(&relocs),
-> -			.relocation_count = ARRAY_SIZE(relocs),
-> -		},
-> +		build_wait_bb(i915,
-> +			      &context->engines.engines[run_engine_idx],
-> +			      20 * 1000 * 1000ull /* 20ms */,
-> +			      &reloc),
->  	};
->  	struct drm_i915_gem_execbuffer2 execbuf = {
->  		.buffers_ptr = to_user_pointer(&objects[0]),
->  		.buffer_count = 2,
-> -		.flags = I915_EXEC_HANDLE_LUT,
->  		.rsvd1 = context->wait_ctx->id,
-> -		.batch_len = context->wait_bb_len,
-> +		.flags = I915_EXEC_NO_RELOC,
-> +		.batch_len = 4096,
->  	};
->  
-> -	memset(&relocs, 0, sizeof(relocs));
-> -
-> -	/* MI_BATCH_BUFFER_START */
-> -	relocs[0].target_handle = 1;
-> -	relocs[0].delta = context->timestamp2_ptr - context->wait_bb;
-> -	relocs[0].offset = context->jump_ptr - context->wait_bb;
-> -	relocs[0].presumed_offset = -1;
-> -
->  	submit_timeline_execbuf(context, &execbuf, run_engine_idx,
->  				0, 0,
->  				signal_syncobj, signal_value);
-> +
-> +	gem_close(i915, objects[1].handle);
->  }
->  
->  static void build_increment_engine_bb(struct inter_engine_batches *batch,
-> @@ -2775,20 +2799,6 @@ static uint64_t fib(uint32_t iters)
->  	return last_value;
->  }
->  
-> -static uint64_t
-> -get_cs_timestamp_frequency(int fd)
-> -{
-> -	int cs_ts_freq = 0;
-> -	drm_i915_getparam_t gp;
-> -
-> -	gp.param = I915_PARAM_CS_TIMESTAMP_FREQUENCY;
-> -	gp.value = &cs_ts_freq;
-> -	if (igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp) == 0)
-> -		return cs_ts_freq;
-> -
-> -	igt_skip("Kernel with PARAM_CS_TIMESTAMP_FREQUENCY support required\n");
-> -}
-> -
->  static void setup_timeline_chain_engines(struct inter_engine_context *context, int fd,
->  					 const intel_ctx_cfg_t *cfg)
->  {
-> @@ -2812,11 +2822,6 @@ static void setup_timeline_chain_engines(struct inter_engine_context *context, i
->  					 I915_CONTEXT_MAX_USER_PRIORITY - ARRAY_SIZE(context->iterations) + i);
->  	}
->  
-> -	build_wait_bb(context, 20 * 1000 * 1000ull /* 20ms */, get_cs_timestamp_frequency(fd));
-> -	context->wait_bb_handle = gem_create(fd, 4096);
-> -	gem_write(fd, context->wait_bb_handle, 0,
-> -		  context->wait_bb, context->wait_bb_len);
-> -
->  	context->batches = calloc(context->engines.nengines,
->  				  sizeof(*context->batches));
->  	for (uint32_t e = 0; e < context->engines.nengines; e++) {
-> @@ -2854,8 +2859,6 @@ static void teardown_timeline_chain_engines(struct inter_engine_context *context
->  
->  	intel_ctx_destroy(context->fd, context->wait_ctx);
->  	syncobj_destroy(context->fd, context->wait_timeline);
-> -	gem_close(context->fd, context->wait_bb_handle);
-> -	free(context->wait_bb);
->  
->  	for (uint32_t e = 0; e < context->engines.nengines; e++) {
->  		struct inter_engine_batches *batches = &context->batches[e];
-> @@ -2878,7 +2881,7 @@ static void test_syncobj_timeline_chain_engines(int fd, const intel_ctx_cfg_t *c
->  	 * Delay all the other operations by making them depend on an
->  	 * active wait on the RCS.
->  	 */
-> -	wait_engine(&ctx, 0, ctx.wait_timeline, 1);
-> +	wait_engine(fd, &ctx, 0, ctx.wait_timeline, 1);
->  
->  	for (uint32_t iter = 0; iter < ARRAY_SIZE(ctx.iterations); iter++) {
->  		for (uint32_t engine = 0; engine < ctx.engines.nengines; engine++) {
-> @@ -2938,7 +2941,7 @@ static void test_syncobj_stationary_timeline_chain_engines(int fd, const intel_c
->  	 * Delay all the other operations by making them depend on an
->  	 * active wait on the RCS.
->  	 */
-> -	wait_engine(&ctx, 0, ctx.wait_timeline, 1);
-> +	wait_engine(fd, &ctx, 0, ctx.wait_timeline, 1);
->  
->  	for (uint32_t iter = 0; iter < ARRAY_SIZE(ctx.iterations); iter++) {
->  		for (uint32_t engine = 0; engine < ctx.engines.nengines; engine++) {
-> @@ -2999,7 +3002,7 @@ static void test_syncobj_backward_timeline_chain_engines(int fd, const intel_ctx
->  	 * Delay all the other operations by making them depend on an
->  	 * active wait on the RCS.
->  	 */
-> -	wait_engine(&ctx, 0, ctx.wait_timeline, 1);
-> +	wait_engine(fd, &ctx, 0, ctx.wait_timeline, 1);
->  
->  	for (uint32_t iter = 0; iter < ARRAY_SIZE(ctx.iterations); iter++) {
->  		for (uint32_t engine = 0; engine < ctx.engines.nengines; engine++) {
-> -- 
-> 2.26.0
+> The firmware has no idea of GEM contexts or requests only contexts (a LRC).
 > 
+> The scheduling queue is per class, if the HoQ can't be scheduled it
+> blocks scheduling for that queue until the HoQ can be scheduled. If the
+> user is using VEs then the HoQ can't block unless all engines within the
+> class are full. This all goes back to making VEs optional to the user,
+> once we did that we have exposed ourselves to dump users.
+> 
+> Again this not a bug in the GuC firmware, this is by design and was SoB
+> by multiple architects. The i915 team doesn't control the GuC firmware
+> arch BTW. We can ask for changes, but at the end of the day we can't
+> force any changes without SoB from multiple architects, on multiple
+> teams.
+> 
+> The current proposal is add a per class KMD controlled policy which
+> controls the search depth of the queue to find a context which can be
+> scheduled (e.g. search so many entires past of the HoQ). It is likely to
+> get implemented.
+> 
+> > > > getting fixed that is. I may be on the wrong track here since I am not 100%
+> > > 
+> > > Just because the GuC scheduling doesn't work like execlists doesn't mean
+> > > that it is bug. Checking for the HoQ only is done for a good reason -
+> > > performance a uC can do everything and anything like execlists as it is
+> > > single low power CPU controling the scheduling of an entire GT. We can't
+> > > protect against everything a user can do that is stupid.
+> > > 
+> > > FWIW we do have an open task assigned to the GuC team to allow a KMD
+> > > configurable search depth when the queue can't be scheduled. No idea
+> > > when this is going to get implemented.
+> > 
+> > This maybe too specific. Question rather could be why is something not
+> > runnable put at the head of the queue by the firmware. Sounds like a plain
+> > bug to me.
+> > 
+> 
+> See above. As far as I'm concerned this is not a bug.
+> 
+> Also see Daniel's comments, this is basically a broken test which
+> assumes certain scheduler behavior. It is not testing ABI or a POR
+> arch requirement.
+> 
+> > > > certain I figured out why it exactly gets stuck.
+> > > > 
+> > > > Because, looking at the bonded-pair to start with, if the test is emitting a
+> > > > pair of request on the same context, spinner first, then a another one with
+> > > > a semaphore dependency I am not sure why it hangs. When the spinner switches
+> > > > out after time slice expires the second request should run, cancel the
+> > > > spinner and exit. At which point they are both complete.
+> > > > 
+> > > 
+> > > I think only the MT version of bonded-pair hangs but it has been a while
+> > > since I looked at this.
+> > > 
+> > > IMO this fix is 100% correct as this is a known, tracked issue. It was
+> > > agreed upon (arch, i915, GuC team) that we just skip these tests with
+> > > GuC submission.
+> > 
+> > I915 team is here on upstream as well.
+> > 
+> > Record those acks publicly would be my ask. Unless some security by
+> > obscurity is happening here? Until then from me it is a soft nack to keep
+> > disabling tests which show genuine weaknesses in GuC mode. Soft until we get
+> > a public record of exactly what is broken and in what circumstances, acked
+> > by architects publicly as you say they acked it somewhere. Commit message
+> > devoid of detail is not good enough.
+> 
+> I'm fine with not fixing this but you'd have to ask the CI if they can
+> live with this. If they can't (it crashes CI runs) then we have to skip
+> this within the test.
+> 
+> Matt
+> 
+> > 
+> > Regards,
+> > 
+> > Tvrtko
