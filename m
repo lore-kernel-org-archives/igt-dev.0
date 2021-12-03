@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37A976EE48
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Dec 2021 05:59:49 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7636732D7
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Dec 2021 06:40:57 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  3 Dec 2021 06:59:43 +0100
-Message-Id: <20211203055944.9183-1-zbigniew.kempczynski@intel.com>
+Date: Fri,  3 Dec 2021 07:40:48 +0100
+Message-Id: <20211203064049.9953-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -26,7 +26,7 @@ I send Chris patch in which wait bb is isolated and no additional
 fields for it in common structure are required.
 
 Chris Wilson (1):
-  INTEL_DII: i915/gem_exec_fence: Allow wait_bb to run on !rcs
+  i915/gem_exec_fence: Allow wait_bb to run on !rcs
 
  tests/i915/gem_exec_fence.c | 141 ++++++++++++++++++------------------
  1 file changed, 72 insertions(+), 69 deletions(-)
