@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 112077BDDE
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Dec 2021 19:42:20 +0000 (UTC)
-Date: Fri, 3 Dec 2021 11:36:52 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-Message-ID: <20211203193650.GA31892@jons-linux-dev-box>
-References: <20211126015735.908681-1-mastanx.katragadda@intel.com>
- <b4f66160-c947-1c47-5788-8a0d69f9bc48@linux.intel.com>
- <BN9PR11MB52905C33F740FAB54340B43C97669@BN9PR11MB5290.namprd11.prod.outlook.com>
- <5c09cc84-7f44-969c-9a7f-8c925f077ec5@linux.intel.com>
- <20211130164818.GA12888@jons-linux-dev-box>
- <400e33dd-8c5f-10ee-c5e9-631ebcf63253@linux.intel.com>
- <20211201234234.GA36147@jons-linux-dev-box>
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com
+ [IPv6:2607:f8b0:4864:20::f29])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 521777349D
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Dec 2021 19:58:31 +0000 (UTC)
+Received: by mail-qv1-xf29.google.com with SMTP id g9so3849620qvd.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 03 Dec 2021 11:58:31 -0800 (PST)
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Fri,  3 Dec 2021 14:58:24 -0500
+Message-Id: <20211203195825.3553293-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211201234234.GA36147@jons-linux-dev-box>
-Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
- Submission
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH] tests/kms_flip: Do not check for timestamp or
+ sequences on Mediatek
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,143 +21,133 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Katragadda, MastanX" <mastanx.katragadda@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: chunkuang.hu@kernel.org, petri.latvala@intel.com, jason-jh.lin@mediatek.com, tzungbi@google.com, seanpaul@chromium.org, p.zabel@pengutronix.de, matthias.bgg@gmail.com, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Dec 01, 2021 at 03:42:34PM -0800, Matthew Brost wrote:
-> On Wed, Dec 01, 2021 at 09:46:02AM +0000, Tvrtko Ursulin wrote:
-> > 
-> > On 30/11/2021 16:48, Matthew Brost wrote:
-> > > On Mon, Nov 29, 2021 at 11:15:22AM +0000, Tvrtko Ursulin wrote:
-> > > > 
-> > > > On 29/11/2021 10:58, Katragadda, MastanX wrote:
-> > > > > Hi   Tvrtko Ursulin,
-> > > > >                Based on following backend information added skip on guc enabled platforms.
-> > > > > 
-> > > > > basically there is a quirk in GuC scheduling where if a context reaches the head of the queue and can't be scheduled it blocks the rest of the queue. A queue is an engine class. So in this case if the user submits to VCS0, VCS0, then VCS1 and the first submission to VCS0 is spinner the VCS1 submission is blocked. This more or less is exactly what this test is doing, thus it hangs. We have a request with the GuC firmware team to be able to tweak this head of queue blocking behaviour but don't expect to land anytime soon. Also in the real world this isn't an issue as the user should always be using VEs which should never block the head of the queue unless all the engines within the class are busy.
-> > > > > 
-> > > > > Test is expected to fail with GuC submission, skip it in CI.
-> > > > 
-> > > > Does "blocks the rest of the queue" mean unrelated contexts submitted
-> > > > against the same engine class?
-> > > > 
-> > > 
-> > > Yes.
-> > > 
-> > > > If so then it would be a DoS vector and the "user _should_ always" would not
-> > > > be sufficient.
-> > > > 
-> > > 
-> > > This is a DoS vector but there are about a million others and this no
-> > > worse than most.
-> > 
-> > Adding new ones should not be taken lightly.
+From: Mark Yacoub <markyacoub@google.com>
 
-I have used the wrong terminology here / didn't mean we shouldn't take
-DoS seriously. What I really meant to say there are million ways a
-malicious user can temporarily deny other users service (e.g. just
-create 1000s of contexts with hang batches to all engines), in both
-cases we have protections to eventually detect a bad user (hangcheck)
-and ban it unblocking other users. IMO a user using physical engines
-when it shouldn't and user intentionally hogging engines with hanging
-batches are basically the same thing - bad user software. This is
-non-issue for well behavied UMDs, there is not a hard DoS vector exposed
-here, nor is there a new temporary DoS vector exposed that didn't
-already exist.
+[Why]
+Mediatek devices have a HW issue with sending their vblank IRQ at the same time interval
+everytime. The drift can be below or above the expected frame time, causing the
+timestamp to drift with a relatively larger standard deviation over a large sample.
 
-Matt
+[How]
+Filter out the flags TEST_CHECK_TS and TEST_VBLANK_EXPIRED_SEQ from the
+tests flags, and restrict sequence and ts checks.
 
-> > 
-> > > > Or if the blockage is localised to a single context then it might be fine
-> > > > (but unfortunate) if on top we chose to disallow submission to non-virtual
-> > > > indices in the engine map (in case of GuC)? If the firmware bug is not
-> > > 
-> > > We discussed this we basically land on if the UMDs want to do something
-> > > stupid, let them as with all the other DoS in the i915. We likely can't
-> > > disable non-virtual submission as some UMDs want to explictly place some
-> > > contexts on certain engines (compute). In that case the UMD has to be
-> > > smart enough to not submit contexts in a way to expose this scheduling
-> > > quirk.
-> > 
-> > "Quirk"... :) Why it happens though? Is the firmware scheduling with GEM
-> > context granularity, and not intel_context, and that is the disconnect?
-> > 
-> 
-> The firmware has no idea of GEM contexts or requests only contexts (a LRC).
-> 
-> The scheduling queue is per class, if the HoQ can't be scheduled it
-> blocks scheduling for that queue until the HoQ can be scheduled. If the
-> user is using VEs then the HoQ can't block unless all engines within the
-> class are full. This all goes back to making VEs optional to the user,
-> once we did that we have exposed ourselves to dump users.
-> 
-> Again this not a bug in the GuC firmware, this is by design and was SoB
-> by multiple architects. The i915 team doesn't control the GuC firmware
-> arch BTW. We can ask for changes, but at the end of the day we can't
-> force any changes without SoB from multiple architects, on multiple
-> teams.
-> 
-> The current proposal is add a per class KMD controlled policy which
-> controls the search depth of the queue to find a context which can be
-> scheduled (e.g. search so many entires past of the HoQ). It is likely to
-> get implemented.
-> 
-> > > > getting fixed that is. I may be on the wrong track here since I am not 100%
-> > > 
-> > > Just because the GuC scheduling doesn't work like execlists doesn't mean
-> > > that it is bug. Checking for the HoQ only is done for a good reason -
-> > > performance a uC can do everything and anything like execlists as it is
-> > > single low power CPU controling the scheduling of an entire GT. We can't
-> > > protect against everything a user can do that is stupid.
-> > > 
-> > > FWIW we do have an open task assigned to the GuC team to allow a KMD
-> > > configurable search depth when the queue can't be scheduled. No idea
-> > > when this is going to get implemented.
-> > 
-> > This maybe too specific. Question rather could be why is something not
-> > runnable put at the head of the queue by the firmware. Sounds like a plain
-> > bug to me.
-> > 
-> 
-> See above. As far as I'm concerned this is not a bug.
-> 
-> Also see Daniel's comments, this is basically a broken test which
-> assumes certain scheduler behavior. It is not testing ABI or a POR
-> arch requirement.
-> 
-> > > > certain I figured out why it exactly gets stuck.
-> > > > 
-> > > > Because, looking at the bonded-pair to start with, if the test is emitting a
-> > > > pair of request on the same context, spinner first, then a another one with
-> > > > a semaphore dependency I am not sure why it hangs. When the spinner switches
-> > > > out after time slice expires the second request should run, cancel the
-> > > > spinner and exit. At which point they are both complete.
-> > > > 
-> > > 
-> > > I think only the MT version of bonded-pair hangs but it has been a while
-> > > since I looked at this.
-> > > 
-> > > IMO this fix is 100% correct as this is a known, tracked issue. It was
-> > > agreed upon (arch, i915, GuC team) that we just skip these tests with
-> > > GuC submission.
-> > 
-> > I915 team is here on upstream as well.
-> > 
-> > Record those acks publicly would be my ask. Unless some security by
-> > obscurity is happening here? Until then from me it is a soft nack to keep
-> > disabling tests which show genuine weaknesses in GuC mode. Soft until we get
-> > a public record of exactly what is broken and in what circumstances, acked
-> > by architects publicly as you say they acked it somewhere. Commit message
-> > devoid of detail is not good enough.
-> 
-> I'm fine with not fixing this but you'd have to ask the CI if they can
-> live with this. If they can't (it crashes CI runs) then we have to skip
-> this within the test.
-> 
-> Matt
-> 
-> > 
-> > Regards,
-> > 
-> > Tvrtko
+Tested on Jacuzzi (MT8183)
+
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+---
+ lib/drmtest.c    |  5 +++++
+ lib/drmtest.h    |  1 +
+ tests/kms_flip.c | 44 ++++++++++++++++++++++++++++++++------------
+ 3 files changed, 38 insertions(+), 12 deletions(-)
+
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 29cb3f4c..09a9a229 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -114,6 +114,11 @@ bool is_i915_device(int fd)
+ 	return __is_device(fd, "i915");
+ }
+ 
++bool is_mtk_device(int fd)
++{
++	return __is_device(fd, "mediatek");
++}
++
+ bool is_msm_device(int fd)
+ {
+ 	return __is_device(fd, "msm");
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index a6eb60c3..b5debd44 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -103,6 +103,7 @@ void igt_require_vc4(int fd);
+ 
+ bool is_amdgpu_device(int fd);
+ bool is_i915_device(int fd);
++bool is_mtk_device(int fd);
+ bool is_msm_device(int fd);
+ bool is_nouveau_device(int fd);
+ bool is_vc4_device(int fd);
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index ccb085da..56addab8 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -129,6 +129,15 @@ struct event_state {
+ 	int seq_step;
+ };
+ 
++static bool should_skip_ts_checks() {
++	/* Mediatek devices have a HW issue with sending their vblank IRQ at the same time interval
++	 * everytime. The drift can be below or above the expected frame time, causing the
++	 * timestamp to drift with a relatively larger standard deviation over a large sample.
++	 * As it's a known issue, skip any Timestamp or Sequence checks for MTK drivers.
++	 */
++	return is_mtk_device(drm_fd);
++}
++
+ static bool vblank_dependence(int flags)
+ {
+ 	int vblank_flags = TEST_VBLANK | TEST_VBLANK_BLOCK |
+@@ -761,16 +770,19 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
+ 		start = gettime_us();
+ 		igt_assert(__wait_for_vblank(TEST_VBLANK_BLOCK, o->pipe, 2, 0, &reply) == 0);
+ 		end = gettime_us();
+-		/*
+-		 * we waited for two vblanks, so verify that
+-		 * we were blocked for ~1-2 frames. And due
+-		 * to scheduling latencies we give it an extra
+-		 * half a frame or so.
+-		 */
+-		igt_assert_f(end - start > 0.9 * actual_frame_time(o) &&
+-			     end - start < 2.6 * actual_frame_time(o),
+-			     "wait for two vblanks took %lu usec (frame time %f usec)\n",
+-			     end - start, mode_frame_time(o));
++
++		if (!should_skip_ts_checks()) {
++			/*
++			 * we waited for two vblanks, so verify that
++			 * we were blocked for ~1-2 frames. And due
++			 * to scheduling latencies we give it an extra
++			 * half a frame or so.
++			 */
++			igt_assert_f(end - start > 0.9 * actual_frame_time(o) &&
++							 end - start < 2.6 * actual_frame_time(o),
++						 "wait for two vblanks took %lu usec (frame time %f usec)\n",
++						 end - start, mode_frame_time(o));
++		}
+ 		join_vblank_wait_thread();
+ 	}
+ 
+@@ -1228,8 +1240,10 @@ static bool calibrate_ts(struct test_output *o, int crtc_idx)
+ 
+ 	igt_info("Expected frametime: %.0fus; measured %.1fus +- %.3fus accuracy %.2f%%\n",
+ 		 expected, mean, stddev, 100 * 3 * stddev / mean);
+-	/* 99.7% samples within 0.5% of the mean */
+-	igt_assert(3 * stddev / mean < 0.005);
++	if (!should_skip_ts_checks())
++		/* 99.7% samples within 0.5% of the mean */
++		igt_assert(3 * stddev / mean < 0.005);
++
+ 	/* 84% samples within 0.5% of the expected value.
+ 	 * See comments in check_timings() in kms_setmode.c
+ 	 */
+@@ -1723,6 +1737,12 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 		if (is_i915_device(drm_fd)) {
+ 			bops = buf_ops_create(drm_fd);
+ 		}
++
++		if (should_skip_ts_checks()) {
++			igt_info("Skipping timestamp checks\n");
++			for (i = 0; i < sizeof(tests) / sizeof(tests[0]); i++)
++				tests[i].flags &= ~(TEST_CHECK_TS | TEST_VBLANK_EXPIRED_SEQ);
++		}
+ 	}
+ 
+ 	igt_describe("Tests that nonblocking reading fails correctly");
+-- 
+2.34.1.400.ga245620fadb-goog
