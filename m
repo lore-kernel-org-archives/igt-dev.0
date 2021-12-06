@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2044.outbound.protection.outlook.com [40.107.243.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A47A6FCEF
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:03:10 +0000 (UTC)
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam07on2060.outbound.protection.outlook.com [40.107.95.60])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDD786FCEF
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:03:03 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 6 Dec 2021 17:02:08 +0800
-Message-ID: <20211206090208.12923-12-stylon.wang@amd.com>
+Date: Mon, 6 Dec 2021 17:02:06 +0800
+Message-ID: <20211206090208.12923-10-stylon.wang@amd.com>
 In-Reply-To: <20211206090208.12923-1-stylon.wang@amd.com>
 References: <20211206090208.12923-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v4 11/11] tests/amdgpu/amd_plane: Add P010
- format to MPO tests and add test descriptions
+Subject: [igt-dev] [PATCH i-g-t v4 09/11] tests/amdgpu/amd_plane: Add full
+ screen scaling test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,104 +26,84 @@ To: igt-dev@lists.freedesktop.org
 Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Stylon Wang <stylon.wang@amd.com>
+From: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+
+[Why]
+Full screen scaling is a common usecase
+
+[How]
+Rework the scaling tests to add a 'fullscreen' test case. Change the
+test_plane function to use "dst_w/h" instead of a scale multiplier. This
+way we can easily add a full screen scale multiplier.
+
+Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 ---
- tests/amdgpu/amd_plane.c | 64 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 54 insertions(+), 10 deletions(-)
+ tests/amdgpu/amd_plane.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
 diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index e4c7dca3..faaa1b87 100644
+index 12669239..66302ebf 100644
 --- a/tests/amdgpu/amd_plane.c
 +++ b/tests/amdgpu/amd_plane.c
-@@ -24,6 +24,8 @@
- #include "libdrm/amdgpu.h"
- #include "libdrm/amdgpu_drm.h"
+@@ -274,7 +274,7 @@ static void set_regamma_lut(data_t *data, lut_t const *lut, int n)
+  * NOTE: The reason for using White+White is to speed up the crc (reuse the ref crc for all cases vs taking
+  * a ref crc per flip)
+  */
+-static void test_plane(data_t *data, int n, int x, int y, double w, double h, double scale, int pw, int ph, struct fbc *fbc){
++static void test_plane(data_t *data, int n, int x, int y, double w, double h, double dw, double dh, int pw, int ph, struct fbc *fbc){
  
-+IGT_TEST_DESCRIPTION("Tests for Multi Plane Overlay for single and dual displays");
+ 	igt_crc_t test_crc;
+ 	igt_display_t *display = &data->display;
+@@ -291,14 +291,14 @@ static void test_plane(data_t *data, int n, int x, int y, double w, double h, do
+ 	/* Test: */
+ 	/* Draw a white overlay with a cutout */
+ 	draw_color_alpha(&fbc[n].test_overlay, 0, 0, pw, ph, 1.0, 1.0, 1.0, 1.00);
+-	draw_color_alpha(&fbc[n].test_overlay, x, y, w*scale, h*scale, 0.0, 0.0, 0.0, 0.0);
++	draw_color_alpha(&fbc[n].test_overlay, x, y, dw, dh, 0.0, 0.0, 0.0, 0.0);
+ 
+ 	igt_plane_set_fb(data->primary[n], &fbc[n].test_primary);
+ 	igt_plane_set_fb(data->overlay[n], &fbc[n].test_overlay);
+ 
+ 	/* Move the overlay to cover the cutout */
+ 	igt_plane_set_position(data->primary[n], x, y);
+-	igt_plane_set_size(data->primary[n], w*scale, h*scale);
++	igt_plane_set_size(data->primary[n], dw, dh);
+ 
+ 	igt_display_commit_atomic(display, 0, 0);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc[n], &test_crc);
+@@ -351,7 +351,7 @@ static void test_panning_1_display(data_t *data, int display_count, int w, int h
+ 				if (pw <= w && ph <= h)
+ 					break;
+ 
+-				test_plane(data, n, x, y, w, h, 1.0, pw, ph, fb);
++				test_plane(data, n, x, y, w, h, w, h, pw, ph, fb);
+ 
+ 			}
+ 		}
+@@ -390,8 +390,11 @@ static void test_scaling_planes(data_t *data, int display_count, int w, int h, s
+ 			/* No need to scale a overley that is bigger than the display */
+ 			if (pw <= w*scale[i] && ph <= h*scale[i])
+ 				break;
+-			test_plane(data, n, 0, 0, w, h, scale[i], pw, ph, fb);
++			test_plane(data, n, 0, 0, w, h, w*scale[i], h*scale[i], pw, ph, fb);
+ 		}
 +
- /* Maximum pipes on any AMD ASIC. */
- #define MAX_PIPES 6
- #define DISPLAYS_TO_TEST 2
-@@ -485,7 +487,7 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
- 
- 		igt_plane_set_fb(data->primary[n], &fb[n].ref_primary);
- 
--		if (format == DRM_FORMAT_NV12)
-+		if (format == DRM_FORMAT_NV12 || format == DRM_FORMAT_P010)
- 			set_regamma_lut(data, &lut,  n);
++		/* Test Fullscreen scale*/
++		test_plane(data, n, 0, 0, w, h, pw, ph, pw, ph, fb);
  	}
  
-@@ -739,20 +741,62 @@ igt_main
- 		igt_display_require_output(&data.display);
- 	}
+ 	return;
+@@ -425,9 +428,9 @@ static void test_panning_2_display(data_t *data, int w, int h, struct fbc *fbc)
+ 	for (int j = 0; j < ARRAY_SIZE(y); j++){
+ 		for (int i = 0; i < it; i++){
+ 			if (toggle)
+-				test_plane(data, 0, pw-w, y[j], w, h, 1.0, pw, ph, fbc);
++				test_plane(data, 0, pw-w, y[j], w, h, w, h, pw, ph, fbc);
+ 			else
+-				test_plane(data, 1, 0, y[j], w, h, 1.0, pw2, ph2, fbc);
++				test_plane(data, 1, 0, y[j], w, h, w, h, pw2, ph2, fbc);
  
-+	igt_describe("MPO with 4K planes");
- 	igt_subtest("test-mpo-4k") test_mpo_4k(&data);
-+	igt_describe("MPO with tiled and linear buffers");
- 	igt_subtest("mpo-swizzle-toggle") test_mpo_swizzle_toggle(&data);
-+	igt_describe("MPO with tiled and linear buffers on dual displays");
- 	igt_subtest("mpo-swizzle-toggle-multihead")
- 		test_mpo_swizzle_toggle_multihead(&data);
--	igt_subtest("mpo-pan-rgb") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, 1);
--	igt_subtest("mpo-pan-rgb-multihead") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-pan-nv12") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, 1);
--	igt_subtest("mpo-pan-nv12-multihead") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-pan-multi-rgb") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-pan-multi-nv12") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-scale-rgb") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
--	igt_subtest("mpo-scale-rgb-multihead") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-scale-nv12") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, 1);
-+
-+	igt_describe("MPO and moving RGB primary plane around");
-+	igt_subtest("mpo-pan-rgb")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, 1);
-+	igt_describe("MPO and moving RGB primary plane around with dual displays");
-+	igt_subtest("mpo-pan-rgb-multihead")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+
-+	igt_describe("MPO and moving NV12 primary plane around");
-+	igt_subtest("mpo-pan-nv12")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, 1);
-+	igt_describe("MPO and moving NV12 primary plane around with dual displays");
-+	igt_subtest("mpo-pan-nv12-multihead")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+
-+	igt_describe("MPO and moving P010 primary plane around");
-+	igt_subtest("mpo-pan-p010")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_P010, 1);
-+	igt_describe("MPO and moving P010 primary plane around with dual displays");
-+	igt_subtest("mpo-pan-p010-multihead")
-+		test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
-+
-+	igt_describe("MPO and moving RGB primary plane between 2 displays");
-+	igt_subtest("mpo-pan-multi-rgb")
-+		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+	igt_describe("MPO and moving NV12 primary plane between 2 displays");
-+	igt_subtest("mpo-pan-multi-nv12")
-+		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+	igt_describe("MPO and moving P010 primary plane between 2 displays");
-+	igt_subtest("mpo-pan-multi-p010")
-+		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
-+
-+	igt_describe("MPO and scaling RGB primary plane");
-+	igt_subtest("mpo-scale-rgb")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
-+	igt_describe("MPO and scaling RGB primary plane with 2 displays");
-+	igt_subtest("mpo-scale-rgb-multihead")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+	igt_describe("MPO and scaling NV12 primary plane");
-+	igt_subtest("mpo-scale-nv12")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, 1);
-+	igt_describe("MPO and scaling NV12 primary plane with 2 displays");
- 	igt_subtest("mpo-scale-nv12-multihead") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+	igt_describe("MPO and scaling P010 primary plane");
-+	igt_subtest("mpo-scale-p010")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_P010, 1);
-+	igt_describe("MPO and scaling P010 primary plane with 2 displays");
-+	igt_subtest("mpo-scale-p010-multihead")
-+		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
- 
- 	igt_fixture
- 	{
+ 			toggle = !toggle;
+ 		}
 -- 
 2.33.1
