@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam07on2060.outbound.protection.outlook.com [40.107.95.60])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDD786FCEF
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:03:03 +0000 (UTC)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2063.outbound.protection.outlook.com [40.107.92.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E81086FCEF
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:02:54 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 6 Dec 2021 17:02:06 +0800
-Message-ID: <20211206090208.12923-10-stylon.wang@amd.com>
+Date: Mon, 6 Dec 2021 17:02:03 +0800
+Message-ID: <20211206090208.12923-7-stylon.wang@amd.com>
 In-Reply-To: <20211206090208.12923-1-stylon.wang@amd.com>
 References: <20211206090208.12923-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v4 09/11] tests/amdgpu/amd_plane: Add full
- screen scaling test case
+Subject: [igt-dev] [PATCH i-g-t v4 06/11] tests/amdgpu/amd_plane: Create mpo
+ swap between 2 displays test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,81 +29,123 @@ List-ID: <igt-dev@lists.freedesktop.org>
 From: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 
 [Why]
-Full screen scaling is a common usecase
+In a multi display MPO config the MPO window is dragged from one display
+to the other. In this usecase there is an instance when the overlay is
+moved from one display to the next. This test recreates the scenario
+(MPO swap)
 
 [How]
-Rework the scaling tests to add a 'fullscreen' test case. Change the
-test_plane function to use "dst_w/h" instead of a scale multiplier. This
-way we can easily add a full screen scale multiplier.
+Overlay should switch to the display that has >50% of the video. This
+test was created with this asumption.
+
+The test creates common video sizes and swaps a window of size (w/2,h)
+between 2 displays bezzels at the top,middle and bottom of the display.
+
+CRTC#1           CRTC#2                CRTC#1           CRTC#2
++-------------+------------+           +-------------+------------+
+|             |            |           |             |            |
+|    +--------+            |           |             +--------+   |
+|    |Primary |   Primary  |    <=>    |   Primary   |Primary |   |
+|    |        |            |   Swap    |             |        |   |
+|    +--------+            |           |             +--------+   |
+|overlay      |            |           |             |Overlay     |
++-------------+------------+           +-------------+------------+
 
 Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 ---
- tests/amdgpu/amd_plane.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ tests/amdgpu/amd_plane.c | 53 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 52 insertions(+), 1 deletion(-)
 
 diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 12669239..66302ebf 100644
+index 09fcf3eb..fe2389df 100644
 --- a/tests/amdgpu/amd_plane.c
 +++ b/tests/amdgpu/amd_plane.c
-@@ -274,7 +274,7 @@ static void set_regamma_lut(data_t *data, lut_t const *lut, int n)
-  * NOTE: The reason for using White+White is to speed up the crc (reuse the ref crc for all cases vs taking
-  * a ref crc per flip)
-  */
--static void test_plane(data_t *data, int n, int x, int y, double w, double h, double scale, int pw, int ph, struct fbc *fbc){
-+static void test_plane(data_t *data, int n, int x, int y, double w, double h, double dw, double dh, int pw, int ph, struct fbc *fbc){
+@@ -140,7 +140,8 @@ static void lut_free(lut_t *lut)
+ }
  
- 	igt_crc_t test_crc;
- 	igt_display_t *display = &data->display;
-@@ -291,14 +291,14 @@ static void test_plane(data_t *data, int n, int x, int y, double w, double h, do
- 	/* Test: */
- 	/* Draw a white overlay with a cutout */
- 	draw_color_alpha(&fbc[n].test_overlay, 0, 0, pw, ph, 1.0, 1.0, 1.0, 1.00);
--	draw_color_alpha(&fbc[n].test_overlay, x, y, w*scale, h*scale, 0.0, 0.0, 0.0, 0.0);
-+	draw_color_alpha(&fbc[n].test_overlay, x, y, dw, dh, 0.0, 0.0, 0.0, 0.0);
+ enum test {
+-	MPO_SINGLE_PAN
++	MPO_SINGLE_PAN,
++	MPO_MULTI_PAN
+ };
  
- 	igt_plane_set_fb(data->primary[n], &fbc[n].test_primary);
- 	igt_plane_set_fb(data->overlay[n], &fbc[n].test_overlay);
+ static void test_init(data_t *data)
+@@ -360,6 +361,46 @@ static void test_panning_1_display(data_t *data, int display_count, int w, int h
  
- 	/* Move the overlay to cover the cutout */
- 	igt_plane_set_position(data->primary[n], x, y);
--	igt_plane_set_size(data->primary[n], w*scale, h*scale);
-+	igt_plane_set_size(data->primary[n], dw, dh);
+ }
  
- 	igt_display_commit_atomic(display, 0, 0);
- 	igt_pipe_crc_collect_crc(data->pipe_crc[n], &test_crc);
-@@ -351,7 +351,7 @@ static void test_panning_1_display(data_t *data, int display_count, int w, int h
- 				if (pw <= w && ph <= h)
- 					break;
- 
--				test_plane(data, n, x, y, w, h, 1.0, pw, ph, fb);
-+				test_plane(data, n, x, y, w, h, w, h, pw, ph, fb);
- 
- 			}
- 		}
-@@ -390,8 +390,11 @@ static void test_scaling_planes(data_t *data, int display_count, int w, int h, s
- 			/* No need to scale a overley that is bigger than the display */
- 			if (pw <= w*scale[i] && ph <= h*scale[i])
- 				break;
--			test_plane(data, n, 0, 0, w, h, scale[i], pw, ph, fb);
-+			test_plane(data, n, 0, 0, w, h, w*scale[i], h*scale[i], pw, ph, fb);
- 		}
++/*
++ * MPO_MULTI_PAN: Requires 2 displays. This test swaps a window (w,h) between 2 displays at 3 different
++ * vertical locations (top, middle, bottom)
++ *
++ * MPO will usually be the 'largest' part of the video window. Which means when a window is
++ * being dragged between 2 displays there is a instance where the MPO will jump between the displays.
++ * This test should be called with w/2 to emulate the behaviour of MPO switching between displays
++ */
++static void test_panning_2_display(data_t *data, int w, int h, struct fbc *fbc)
++{
++	bool toggle = true;
++	int pw =  data->w[0];
++	int ph =  data->h[0];
++	int pw2 =  data->w[1];
++	int ph2 =  data->h[1];
++	int smallest_h = min(ph, ph2);
++	int y[] = {0, smallest_h/2-h/2, smallest_h-h};
++	int it = 3; /* # of times to swap */
 +
-+		/* Test Fullscreen scale*/
-+		test_plane(data, n, 0, 0, w, h, pw, ph, pw, ph, fb);
- 	}
++	/* Set y to 0 if window is bigger than one of the displays
++	 * beacause y will be negative in that case
++	 */
++	if (h >= smallest_h)
++		y[0] = y[1] = y[2] = 0;
++
++
++	for (int j = 0; j < ARRAY_SIZE(y); j++){
++		for (int i = 0; i < it; i++){
++			if (toggle)
++				test_plane(data, 0, pw-w, y[j], w, h, pw, ph, fbc);
++			else
++				test_plane(data, 1, 0, y[j], w, h, pw2, ph2, fbc);
++
++			toggle = !toggle;
++		}
++	}
++
++	return;
++
++}
  
- 	return;
-@@ -425,9 +428,9 @@ static void test_panning_2_display(data_t *data, int w, int h, struct fbc *fbc)
- 	for (int j = 0; j < ARRAY_SIZE(y); j++){
- 		for (int i = 0; i < it; i++){
- 			if (toggle)
--				test_plane(data, 0, pw-w, y[j], w, h, 1.0, pw, ph, fbc);
-+				test_plane(data, 0, pw-w, y[j], w, h, w, h, pw, ph, fbc);
- 			else
--				test_plane(data, 1, 0, y[j], w, h, 1.0, pw2, ph2, fbc);
-+				test_plane(data, 1, 0, y[j], w, h, w, h, pw2, ph2, fbc);
+ /*
+  * Setup and runner for panning test. Creates common video sizes and pans them across the display
+@@ -417,12 +458,20 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
  
- 			toggle = !toggle;
- 		}
+ 	for (int i = 0; i < ARRAY_SIZE(videos); ++i) {
+ 
++		/* Video(mpo) should be in the middle when it transitions between displays. This
++		 * means MPO plane will be w/2
++		 */
++		if (test == MPO_MULTI_PAN)
++			videos[i][0] = videos[i][0]/2;
++
+ 		for (int n = 0; n < display_count; n++)
+ 			igt_create_color_fb(data->fd, videos[i][0], videos[i][1],
+ 					    format, 0, 1.0, 1.0, 1.0, &fb[n].test_primary);
+ 
+ 		if (test == MPO_SINGLE_PAN)
+ 			test_panning_1_display(data, display_count, videos[i][0], videos[i][1], fb);
++		if (test == MPO_MULTI_PAN)
++			test_panning_2_display(data, videos[i][0], videos[i][1], fb);
+ 
+ 		for (int n = 0; n < display_count; n++)
+ 			igt_remove_fb(data->fd, &fb[n].test_primary);
+@@ -656,6 +705,8 @@ igt_main
+ 		test_mpo_swizzle_toggle_multihead(&data);
+ 	igt_subtest("mpo-pan-rgb") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
+ 	igt_subtest("mpo-pan-nv12") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
++	igt_subtest("mpo-pan-multi-rgb") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
++	igt_subtest("mpo-pan-multi-nv12") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
+ 
+ 	igt_fixture
+ 	{
 -- 
 2.33.1
