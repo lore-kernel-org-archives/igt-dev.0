@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2050.outbound.protection.outlook.com [40.107.237.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C5F16FCEF
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:03:00 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2075.outbound.protection.outlook.com [40.107.236.75])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F54C730E6
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 07:20:56 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 6 Dec 2021 17:02:05 +0800
-Message-ID: <20211206090208.12923-9-stylon.wang@amd.com>
-In-Reply-To: <20211206090208.12923-1-stylon.wang@amd.com>
-References: <20211206090208.12923-1-stylon.wang@amd.com>
+Date: Mon, 6 Dec 2021 15:20:10 +0800
+Message-ID: <20211206072018.9053-4-stylon.wang@amd.com>
+In-Reply-To: <20211206072018.9053-1-stylon.wang@amd.com>
+References: <20211206072018.9053-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v4 08/11] tests/amdgpu/amd_plane: Add MPO
- scale and pan subtest single display option
+Subject: [igt-dev] [PATCH i-g-t v3 03/11] tests/amdgpu/amd_plane: fixes for
+ test-4k-mpo
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,48 +23,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Victor Lu <victorchengchi.lu@amd.com>, Hayden.Goodfellow@amd.com
+Cc: Bhawanpreet.Lakha@amd.com, Ahmad Othman <ahmad.othman@amd.com>, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Ahmad Othman <ahmad.othman@amd.com>
 
 [Why]
-The MPO scale and pan subtests is valid with one display and our current
-CI setup only has one display.
+The test wasn't working on some setups and needs fixing
 
 [How]
-Change the MPO scale and pan subtests to be single display and add
-"-multihead" subtests for the two for the original dual display config
+Added output pipe initialization
+Added checks for both 4k and 2160p
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+Signed-off-by: Ahmad Othman <ahmad.othman@amd.com>
 ---
- tests/amdgpu/amd_plane.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tests/amdgpu/amd_plane.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 9506421d..12669239 100644
+index 09fd3b08..ba29bdd4 100644
 --- a/tests/amdgpu/amd_plane.c
 +++ b/tests/amdgpu/amd_plane.c
-@@ -740,12 +740,16 @@ igt_main
- 	igt_subtest("mpo-swizzle-toggle") test_mpo_swizzle_toggle(&data);
- 	igt_subtest("mpo-swizzle-toggle-multihead")
- 		test_mpo_swizzle_toggle_multihead(&data);
--	igt_subtest("mpo-pan-rgb") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-pan-nv12") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+	igt_subtest("mpo-pan-rgb") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, 1);
-+	igt_subtest("mpo-pan-rgb-multihead") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+	igt_subtest("mpo-pan-nv12") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, 1);
-+	igt_subtest("mpo-pan-nv12-multihead") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
- 	igt_subtest("mpo-pan-multi-rgb") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
- 	igt_subtest("mpo-pan-multi-nv12") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-scale-rgb") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
--	igt_subtest("mpo-scale-nv12") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+	igt_subtest("mpo-scale-rgb") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
-+	igt_subtest("mpo-scale-rgb-multihead") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+	igt_subtest("mpo-scale-nv12") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, 1);
-+	igt_subtest("mpo-scale-nv12-multihead") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
+@@ -193,8 +193,10 @@ static void test_mpo_4k(data_t *data)
+ 	test_init(data);
  
- 	igt_fixture
- 	{
+ 	/* Skip if not 4K resolution. */
+-	igt_skip_on(!(data->mode[0].hdisplay == 3840
+-		      && data->mode[0].vdisplay == 2160));
++	igt_skip_on(!((data->mode[0].hdisplay == 4096
++		      && data->mode[0].vdisplay == 2160)||
++		      (data->mode[0].hdisplay == 3840
++		      && data->mode[0].vdisplay == 2160)));
+ 
+ 	w = data->w[0];
+ 	h = data->h[0];
+@@ -210,6 +212,7 @@ static void test_mpo_4k(data_t *data)
+ 	draw_color_alpha(&o_fb, cutout_x, cutout_y, cutout_w, cutout_h,
+ 			 0.00, 0.00, 0.00, 0.00);
+ 
++	igt_output_set_pipe(data->output[0], data->pipe_id[0]);
+ 	igt_plane_set_fb(data->primary[0], &r_fb);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
 -- 
 2.33.1
