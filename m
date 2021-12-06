@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam08on2076.outbound.protection.outlook.com [40.107.101.76])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9B176FCEF
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:02:30 +0000 (UTC)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2044.outbound.protection.outlook.com [40.107.244.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7D976FCEF
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:02:46 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 6 Dec 2021 17:01:57 +0800
-Message-ID: <20211206090208.12923-1-stylon.wang@amd.com>
+Date: Mon, 6 Dec 2021 17:02:01 +0800
+Message-ID: <20211206090208.12923-5-stylon.wang@amd.com>
+In-Reply-To: <20211206090208.12923-1-stylon.wang@amd.com>
+References: <20211206090208.12923-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v4 00/11] Create tests for multi plane
- overlay
+Subject: [igt-dev] [PATCH i-g-t v4 04/11] tests/amdgpu/amd_plane: Switch
+ mpo-swizzle-toggle to single-head
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,48 +23,118 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
+Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Victor Lu <victorchengchi.lu@amd.com>, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-A series of new tests on MPO is created in tests/amdgpu/amd_plane.
-Currently most of the sub-tests are AMD-specific and concerns with
-video use cases from projects.
+From: Victor Lu <victorchengchi.lu@amd.com>
 
-Changes from prior rev1 to now:
+[why]
+Older ASIC does not support multi-head MPO
 
-v4: Change title of cover letter
-v3: Fix conflict in meson.build
-v2: Fix conflict in meson.build
+[how]
+Rename current mpo-swizzle-toggle subtest to
+mpo-swizzle-toggle-multihead. Change mpo-swizzle-toggle to only use one
+output.
 
-Ahmad Othman (1):
-  tests/amdgpu/amd_plane: fixes for test-4k-mpo
+Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+---
+ tests/amdgpu/amd_plane.c | 70 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 69 insertions(+), 1 deletion(-)
 
-Anson Jacob (1):
-  tests/amdgpu/amd_plane: Ensure pipes are enabled before accessing
-
-Bhawanpreet Lakha (4):
-  tests/amdgpu/amd_plane: Create mpo panning test
-  tests/amdgpu/amd_plane: Create mpo swap between 2 displays test
-  tests/amdgpu/amd_plane: Create mpo scaling tests
-  tests/amdgpu/amd_plane: Add full screen scaling test case
-
-Nicholas Kazlauskas (1):
-  tests/amdgpu/amd_plane: Add MPO swizzle mode toggle test
-
-Stylon Wang (1):
-  tests/amdgpu/amd_plane: Add P010 format to MPO tests and add test
-    descriptions
-
-Victor Lu (3):
-  tests/amdgpu/amd_plane: Introduced 4K MPO test
-  tests/amdgpu/amd_plane: Switch mpo-swizzle-toggle to single-head
-  tests/amdgpu/amd_plane: Add MPO scale and pan subtest single display
-    option
-
- tests/amdgpu/amd_plane.c | 805 +++++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build |   1 +
- 2 files changed, 806 insertions(+)
- create mode 100644 tests/amdgpu/amd_plane.c
-
+diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
+index ba29bdd4..5666b9e7 100644
+--- a/tests/amdgpu/amd_plane.c
++++ b/tests/amdgpu/amd_plane.c
+@@ -232,7 +232,7 @@ static void test_mpo_4k(data_t *data)
+ 	igt_remove_fb(data->fd, &r_fb);
+ }
+ 
+-static void test_mpo_swizzle_toggle(data_t *data)
++static void test_mpo_swizzle_toggle_multihead(data_t *data)
+ {
+ 	struct amdgpu_bo_metadata meta = {};
+ 	igt_display_t *display = &data->display;
+@@ -306,6 +306,72 @@ static void test_mpo_swizzle_toggle(data_t *data)
+ 	igt_remove_fb(data->fd, &fb_1920_xr24_tiled);
+ }
+ 
++static void test_mpo_swizzle_toggle(data_t *data)
++{
++	struct amdgpu_bo_metadata meta = {};
++	igt_display_t *display = &data->display;
++	igt_fb_t fb_1280_ar24_tiled, fb_1920_xb24_tiled, fb_1920_xb24_linear,
++		 fb_1920_xr24_tiled;
++	int w, h;
++
++	w = 2400;
++	h = 1350;
++
++	igt_create_pattern_fb(data->fd, 1280, 1024, DRM_FORMAT_ARGB8888, 0,
++			      &fb_1280_ar24_tiled);
++	igt_create_pattern_fb(data->fd, 1920, 1080, DRM_FORMAT_XBGR8888, 0,
++			      &fb_1920_xb24_tiled);
++	igt_create_pattern_fb(data->fd, 1920, 1080, DRM_FORMAT_XBGR8888, 0,
++			      &fb_1920_xb24_linear);
++	igt_create_pattern_fb(data->fd, 1920, 1080, DRM_FORMAT_XRGB8888, 0,
++			      &fb_1920_xr24_tiled);
++
++	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
++	set_metadata(data, &fb_1280_ar24_tiled, &meta);
++
++	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
++	set_metadata(data, &fb_1920_xb24_tiled, &meta);
++
++	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
++	set_metadata(data, &fb_1920_xr24_tiled, &meta);
++
++	test_init(data);
++
++	/* Initial modeset */
++	igt_output_set_pipe(data->output[0], data->pipe_id[0]);
++	force_output_mode(data, data->output[0], &test_mode_1);
++
++	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_linear);
++	igt_plane_set_size(data->primary[0], w, h);
++
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
++
++	/* Enable overlay plane. */
++	igt_plane_set_fb(data->overlay[0], &fb_1280_ar24_tiled);
++	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_linear);
++	igt_plane_set_size(data->primary[0], w, h);
++	igt_display_commit_atomic(display, 0, 0);
++
++	/* Switch to tiled. */
++	igt_plane_set_fb(data->overlay[0], &fb_1280_ar24_tiled);
++	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_tiled);
++	igt_plane_set_size(data->primary[0], w, h);
++	igt_display_commit_atomic(display, 0, 0);
++
++	/* Switch to linear. */
++	igt_plane_set_fb(data->overlay[0], &fb_1280_ar24_tiled);
++	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_linear);
++	igt_plane_set_size(data->primary[0], w, h);
++	igt_display_commit_atomic(display, 0, 0);
++
++	test_fini(data);
++	igt_remove_fb(data->fd, &fb_1280_ar24_tiled);
++	igt_remove_fb(data->fd, &fb_1920_xb24_tiled);
++	igt_remove_fb(data->fd, &fb_1920_xb24_linear);
++	igt_remove_fb(data->fd, &fb_1920_xr24_tiled);
++}
++
++
+ igt_main
+ {
+ 	data_t data;
+@@ -327,6 +393,8 @@ igt_main
+ 
+ 	igt_subtest("test-mpo-4k") test_mpo_4k(&data);
+ 	igt_subtest("mpo-swizzle-toggle") test_mpo_swizzle_toggle(&data);
++	igt_subtest("mpo-swizzle-toggle-multihead")
++		test_mpo_swizzle_toggle_multihead(&data);
+ 
+ 	igt_fixture
+ 	{
 -- 
 2.33.1
