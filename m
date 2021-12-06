@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2072.outbound.protection.outlook.com [40.107.94.72])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A45DF730E6
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 07:21:17 +0000 (UTC)
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2051.outbound.protection.outlook.com [40.107.223.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93D99730E6
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 07:21:14 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 6 Dec 2021 15:20:17 +0800
-Message-ID: <20211206072018.9053-11-stylon.wang@amd.com>
+Date: Mon, 6 Dec 2021 15:20:16 +0800
+Message-ID: <20211206072018.9053-10-stylon.wang@amd.com>
 In-Reply-To: <20211206072018.9053-1-stylon.wang@amd.com>
 References: <20211206072018.9053-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v3 10/11] tests/amdgpu/amd_plane: Ensure
- pipes are enabled before accessing
+Subject: [igt-dev] [PATCH i-g-t v3 09/11] tests/amdgpu/amd_plane: Add full
+ screen scaling test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,46 +23,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Anson Jacob <Anson.Jacob@amd.com>, Hayden.Goodfellow@amd.com
+Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Anson Jacob <Anson.Jacob@amd.com>
+From: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 
-Couple of tests were accessing pipe's without ensuring if they are
-enabled or not. Using for_each_pipe macro to do so.
+[Why]
+Full screen scaling is a common usecase
 
-Signed-off-by: Anson Jacob <Anson.Jacob@amd.com>
+[How]
+Rework the scaling tests to add a 'fullscreen' test case. Change the
+test_plane function to use "dst_w/h" instead of a scale multiplier. This
+way we can easily add a full screen scale multiplier.
+
+Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 ---
- tests/amdgpu/amd_plane.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/amdgpu/amd_plane.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
 diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 66302ebf..e4c7dca3 100644
+index 12669239..66302ebf 100644
 --- a/tests/amdgpu/amd_plane.c
 +++ b/tests/amdgpu/amd_plane.c
-@@ -150,9 +150,9 @@ static void test_init(data_t *data)
- 	igt_display_t *display = &data->display;
- 	int i, n, max_pipes = display->n_pipes;
+@@ -274,7 +274,7 @@ static void set_regamma_lut(data_t *data, lut_t const *lut, int n)
+  * NOTE: The reason for using White+White is to speed up the crc (reuse the ref crc for all cases vs taking
+  * a ref crc per flip)
+  */
+-static void test_plane(data_t *data, int n, int x, int y, double w, double h, double scale, int pw, int ph, struct fbc *fbc){
++static void test_plane(data_t *data, int n, int x, int y, double w, double h, double dw, double dh, int pw, int ph, struct fbc *fbc){
  
--	for (i = 0; i < max_pipes; ++i) {
-+	for_each_pipe(display, i) {
- 		data->pipe_id[i] = PIPE_A + i;
--		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-+		data->pipe[i] = &display->pipes[data->pipe_id[i]];
- 		data->primary[i] = igt_pipe_get_plane_type(
- 			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
- 		data->overlay[i] = igt_pipe_get_plane_type_index(
-@@ -188,9 +188,9 @@ static void test_init(data_t *data)
- static void test_fini(data_t *data)
- {
+ 	igt_crc_t test_crc;
  	igt_display_t *display = &data->display;
--	int i, max_pipes = display->n_pipes;
-+	int i;
+@@ -291,14 +291,14 @@ static void test_plane(data_t *data, int n, int x, int y, double w, double h, do
+ 	/* Test: */
+ 	/* Draw a white overlay with a cutout */
+ 	draw_color_alpha(&fbc[n].test_overlay, 0, 0, pw, ph, 1.0, 1.0, 1.0, 1.00);
+-	draw_color_alpha(&fbc[n].test_overlay, x, y, w*scale, h*scale, 0.0, 0.0, 0.0, 0.0);
++	draw_color_alpha(&fbc[n].test_overlay, x, y, dw, dh, 0.0, 0.0, 0.0, 0.0);
  
--	for (i = 0; i < max_pipes; ++i) {
-+	for_each_pipe(display, i) {
- 		igt_pipe_crc_free(data->pipe_crc[i]);
+ 	igt_plane_set_fb(data->primary[n], &fbc[n].test_primary);
+ 	igt_plane_set_fb(data->overlay[n], &fbc[n].test_overlay);
+ 
+ 	/* Move the overlay to cover the cutout */
+ 	igt_plane_set_position(data->primary[n], x, y);
+-	igt_plane_set_size(data->primary[n], w*scale, h*scale);
++	igt_plane_set_size(data->primary[n], dw, dh);
+ 
+ 	igt_display_commit_atomic(display, 0, 0);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc[n], &test_crc);
+@@ -351,7 +351,7 @@ static void test_panning_1_display(data_t *data, int display_count, int w, int h
+ 				if (pw <= w && ph <= h)
+ 					break;
+ 
+-				test_plane(data, n, x, y, w, h, 1.0, pw, ph, fb);
++				test_plane(data, n, x, y, w, h, w, h, pw, ph, fb);
+ 
+ 			}
+ 		}
+@@ -390,8 +390,11 @@ static void test_scaling_planes(data_t *data, int display_count, int w, int h, s
+ 			/* No need to scale a overley that is bigger than the display */
+ 			if (pw <= w*scale[i] && ph <= h*scale[i])
+ 				break;
+-			test_plane(data, n, 0, 0, w, h, scale[i], pw, ph, fb);
++			test_plane(data, n, 0, 0, w, h, w*scale[i], h*scale[i], pw, ph, fb);
+ 		}
++
++		/* Test Fullscreen scale*/
++		test_plane(data, n, 0, 0, w, h, pw, ph, pw, ph, fb);
  	}
  
+ 	return;
+@@ -425,9 +428,9 @@ static void test_panning_2_display(data_t *data, int w, int h, struct fbc *fbc)
+ 	for (int j = 0; j < ARRAY_SIZE(y); j++){
+ 		for (int i = 0; i < it; i++){
+ 			if (toggle)
+-				test_plane(data, 0, pw-w, y[j], w, h, 1.0, pw, ph, fbc);
++				test_plane(data, 0, pw-w, y[j], w, h, w, h, pw, ph, fbc);
+ 			else
+-				test_plane(data, 1, 0, y[j], w, h, 1.0, pw2, ph2, fbc);
++				test_plane(data, 1, 0, y[j], w, h, w, h, pw2, ph2, fbc);
+ 
+ 			toggle = !toggle;
+ 		}
 -- 
 2.33.1
