@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2075.outbound.protection.outlook.com [40.107.94.75])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DD55730E6
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 07:21:04 +0000 (UTC)
+ (mail-mw2nam10on2050.outbound.protection.outlook.com [40.107.94.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDA7E6FCEF
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:02:32 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 6 Dec 2021 15:20:13 +0800
-Message-ID: <20211206072018.9053-7-stylon.wang@amd.com>
-In-Reply-To: <20211206072018.9053-1-stylon.wang@amd.com>
-References: <20211206072018.9053-1-stylon.wang@amd.com>
+Date: Mon, 6 Dec 2021 17:01:58 +0800
+Message-ID: <20211206090208.12923-2-stylon.wang@amd.com>
+In-Reply-To: <20211206090208.12923-1-stylon.wang@amd.com>
+References: <20211206090208.12923-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v3 06/11] tests/amdgpu/amd_plane: Create mpo
- swap between 2 displays test
+Subject: [igt-dev] [PATCH i-g-t v4 01/11] tests/amdgpu/amd_plane: Introduced
+ 4K MPO test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,129 +23,196 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
+Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Victor Lu <victorchengchi.lu@amd.com>, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+From: Victor Lu <victorchengchi.lu@amd.com>
 
-[Why]
-In a multi display MPO config the MPO window is dragged from one display
-to the other. In this usecase there is an instance when the overlay is
-moved from one display to the next. This test recreates the scenario
-(MPO swap)
+Tests MPO using a primary plane and an overlay plane with a transparent
+cutout.
 
-[How]
-Overlay should switch to the display that has >50% of the video. This
-test was created with this asumption.
-
-The test creates common video sizes and swaps a window of size (w/2,h)
-between 2 displays bezzels at the top,middle and bottom of the display.
-
-CRTC#1           CRTC#2                CRTC#1           CRTC#2
-+-------------+------------+           +-------------+------------+
-|             |            |           |             |            |
-|    +--------+            |           |             +--------+   |
-|    |Primary |   Primary  |    <=>    |   Primary   |Primary |   |
-|    |        |            |   Swap    |             |        |   |
-|    +--------+            |           |             +--------+   |
-|overlay      |            |           |             |Overlay     |
-+-------------+------------+           +-------------+------------+
-
-Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
 ---
- tests/amdgpu/amd_plane.c | 53 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 52 insertions(+), 1 deletion(-)
+ tests/amdgpu/amd_plane.c | 158 +++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |   1 +
+ 2 files changed, 159 insertions(+)
+ create mode 100644 tests/amdgpu/amd_plane.c
 
 diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 09fcf3eb..fe2389df 100644
---- a/tests/amdgpu/amd_plane.c
+new file mode 100644
+index 00000000..64273330
+--- /dev/null
 +++ b/tests/amdgpu/amd_plane.c
-@@ -140,7 +140,8 @@ static void lut_free(lut_t *lut)
- }
- 
- enum test {
--	MPO_SINGLE_PAN
-+	MPO_SINGLE_PAN,
-+	MPO_MULTI_PAN
- };
- 
- static void test_init(data_t *data)
-@@ -360,6 +361,46 @@ static void test_panning_1_display(data_t *data, int display_count, int w, int h
- 
- }
- 
+@@ -0,0 +1,158 @@
 +/*
-+ * MPO_MULTI_PAN: Requires 2 displays. This test swaps a window (w,h) between 2 displays at 3 different
-+ * vertical locations (top, middle, bottom)
++ * Copyright 2019 Advanced Micro Devices, Inc.
 + *
-+ * MPO will usually be the 'largest' part of the video window. Which means when a window is
-+ * being dragged between 2 displays there is a instance where the MPO will jump between the displays.
-+ * This test should be called with w/2 to emulate the behaviour of MPO switching between displays
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
 + */
-+static void test_panning_2_display(data_t *data, int w, int h, struct fbc *fbc)
++
++#include "igt.h"
++
++/* Common test data. */
++typedef struct data {
++	igt_display_t display;
++	igt_plane_t *primary;
++	igt_plane_t *overlay;
++	igt_output_t *output;
++	igt_pipe_t *pipe;
++	igt_pipe_crc_t *pipe_crc;
++	drmModeModeInfo *mode;
++	enum pipe pipe_id;
++	int fd;
++	int w;
++	int h;
++} data_t;
++
++static void test_init(data_t *data)
 +{
-+	bool toggle = true;
-+	int pw =  data->w[0];
-+	int ph =  data->h[0];
-+	int pw2 =  data->w[1];
-+	int ph2 =  data->h[1];
-+	int smallest_h = min(ph, ph2);
-+	int y[] = {0, smallest_h/2-h/2, smallest_h-h};
-+	int it = 3; /* # of times to swap */
++	igt_display_t *display = &data->display;
 +
-+	/* Set y to 0 if window is bigger than one of the displays
-+	 * beacause y will be negative in that case
-+	 */
-+	if (h >= smallest_h)
-+		y[0] = y[1] = y[2] = 0;
++	/* It doesn't matter which pipe we choose on amdpgu. */
++	data->pipe_id = PIPE_A;
++	data->pipe = &data->display.pipes[data->pipe_id];
 +
++	igt_display_reset(display);
 +
-+	for (int j = 0; j < ARRAY_SIZE(y); j++){
-+		for (int i = 0; i < it; i++){
-+			if (toggle)
-+				test_plane(data, 0, pw-w, y[j], w, h, pw, ph, fbc);
-+			else
-+				test_plane(data, 1, 0, y[j], w, h, pw2, ph2, fbc);
++	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
++	igt_require(data->output);
 +
-+			toggle = !toggle;
-+		}
++	data->mode = igt_output_get_mode(data->output);
++	igt_assert(data->mode);
++
++	data->primary =
++		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
++	data->overlay =
++		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
++
++	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
++					  INTEL_PIPE_CRC_SOURCE_AUTO);
++
++	igt_output_set_pipe(data->output, data->pipe_id);
++
++	data->w = data->mode->hdisplay;
++	data->h = data->mode->vdisplay;
++}
++
++static void test_fini(data_t *data)
++{
++	igt_pipe_crc_free(data->pipe_crc);
++	igt_display_reset(&data->display);
++}
++
++static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
++		             double r, double g, double b, double a)
++{
++	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
++	igt_paint_color_alpha(cr, x, y, w, h, r, g, b, a);
++	igt_put_cairo_ctx(cr);
++}
++
++/*
++ * Compares a white 4K reference FB against a white 4K primary FB and a
++ * white 4K overlay with an RGBA (0, 0, 0, 0) cutout in the center.
++ */
++static void test_mpo_4k(data_t *data)
++{
++	igt_fb_t r_fb, p_fb, o_fb;
++	igt_crc_t ref_crc, new_crc;
++	igt_display_t *display = &data->display;
++	int cutout_x, cutout_y, cutout_w, cutout_h;
++
++	test_init(data);
++
++	/* Skip if not 4K resolution. */
++	igt_skip_on(!(data->mode->hdisplay == 3840 &&
++		    data->mode->vdisplay == 2160));
++
++	cutout_x = cutout_w = 1280;
++	cutout_y = cutout_h = 720;
++
++	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888,
++			    0, 1.00, 1.00, 1.00, &r_fb);
++	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888,
++			    0, 1.00, 1.00, 1.00, &p_fb);
++	igt_create_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888,
++		      0, &o_fb);
++	draw_color_alpha(&o_fb, 0, 0, o_fb.width, o_fb.height, 1.00, 1.00, 1.00, 1.00);
++	draw_color_alpha(&o_fb, cutout_x, cutout_y, cutout_w, cutout_h,
++			 0.00, 0.00, 0.00, 0.00);
++
++	igt_plane_set_fb(data->primary, &r_fb);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
++
++	igt_plane_set_fb(data->primary, &p_fb);
++	igt_plane_set_fb(data->overlay, &o_fb);
++	igt_display_commit_atomic(display, 0, NULL);
++
++	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
++
++	igt_assert_crc_equal(&ref_crc, &new_crc);
++
++	test_fini(data);
++	igt_remove_fb(data->fd, &o_fb);
++	igt_remove_fb(data->fd, &p_fb);
++	igt_remove_fb(data->fd, &r_fb);
++}
++
++igt_main
++{
++	data_t data;
++
++	igt_skip_on_simulation();
++
++	memset(&data, 0, sizeof(data));
++
++	igt_fixture
++	{
++		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.fd);
++		igt_require(data.display.is_atomic);
++		igt_display_require_output(&data.display);
 +	}
 +
-+	return;
++	igt_subtest("test-mpo-4k") test_mpo_4k(&data);
 +
++	igt_fixture
++	{
++		igt_display_fini(&data.display);
++	}
 +}
- 
- /*
-  * Setup and runner for panning test. Creates common video sizes and pans them across the display
-@@ -417,12 +458,20 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
- 
- 	for (int i = 0; i < ARRAY_SIZE(videos); ++i) {
- 
-+		/* Video(mpo) should be in the middle when it transitions between displays. This
-+		 * means MPO plane will be w/2
-+		 */
-+		if (test == MPO_MULTI_PAN)
-+			videos[i][0] = videos[i][0]/2;
-+
- 		for (int n = 0; n < display_count; n++)
- 			igt_create_color_fb(data->fd, videos[i][0], videos[i][1],
- 					    format, 0, 1.0, 1.0, 1.0, &fb[n].test_primary);
- 
- 		if (test == MPO_SINGLE_PAN)
- 			test_panning_1_display(data, display_count, videos[i][0], videos[i][1], fb);
-+		if (test == MPO_MULTI_PAN)
-+			test_panning_2_display(data, videos[i][0], videos[i][1], fb);
- 
- 		for (int n = 0; n < display_count; n++)
- 			igt_remove_fb(data->fd, &fb[n].test_primary);
-@@ -656,6 +705,8 @@ igt_main
- 		test_mpo_swizzle_toggle_multihead(&data);
- 	igt_subtest("mpo-pan-rgb") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
- 	igt_subtest("mpo-pan-nv12") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
-+	igt_subtest("mpo-pan-multi-rgb") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
-+	igt_subtest("mpo-pan-multi-nv12") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
- 
- 	igt_fixture
- 	{
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 2bd25ad6..d232e490 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -18,6 +18,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_vrr_range',
+ 			  'amd_mode_switch',
+ 			  'amd_psr',
++			  'amd_plane',
+ 			]
+ 	amdgpu_deps += libdrm_amdgpu
+ endif
 -- 
 2.33.1
