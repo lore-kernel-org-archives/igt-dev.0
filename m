@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2075.outbound.protection.outlook.com [40.107.243.75])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27102730E6
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 07:20:56 +0000 (UTC)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2056.outbound.protection.outlook.com [40.107.94.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60D2D6FCEF
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 09:02:56 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 6 Dec 2021 15:20:09 +0800
-Message-ID: <20211206072018.9053-3-stylon.wang@amd.com>
-In-Reply-To: <20211206072018.9053-1-stylon.wang@amd.com>
-References: <20211206072018.9053-1-stylon.wang@amd.com>
+Date: Mon, 6 Dec 2021 17:02:04 +0800
+Message-ID: <20211206090208.12923-8-stylon.wang@amd.com>
+In-Reply-To: <20211206090208.12923-1-stylon.wang@amd.com>
+References: <20211206090208.12923-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v3 02/11] tests/amdgpu/amd_plane: Add MPO
- swizzle mode toggle test
+Subject: [igt-dev] [PATCH i-g-t v4 07/11] tests/amdgpu/amd_plane: Create mpo
+ scaling tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,347 +26,151 @@ To: igt-dev@lists.freedesktop.org
 Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 
-Sequence captured on ChromeOS - we experience underflow when toggling
-between swizzle modes on the primary plane with MPO enabled.
+[Why]
+Resizing MPO window is a common usecase (video in windowed mode)
 
-Add a new subtest replicating that sequence, "mpo-swizzle-toggle".
+Our MPO feature has scaling limitations (0.25x -> 16x). So this test
+creates a window of various reolutions and scales them between 0.25x -> 16x
 
-Converts the existing framework over to the new multi-display framework
-since that's the configuration where this was found.
+[How]
+The test creates common video sizes and scales them from (0.30x->16x).
+The lower limit is 0.25 but some combination of configs fail at 0.25x so
+0.30 is used as the starting point.
 
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+CRTC#1                            CRTC#1
++--------------------+           +---------------------+
+| +-------+          |           | +------------+      |
+| |Primary|          |           | |Primary     |      |
+| +-------+          |    -->    | |            |      |
+|                    |   scale   | |            |      |
+|                    |           | +------------+      |
+|overlay             |           |Overlay              |
++--------------------+           +---------------------+
+
+Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 ---
- tests/amdgpu/amd_plane.c | 260 ++++++++++++++++++++++++++++++++-------
- 1 file changed, 217 insertions(+), 43 deletions(-)
+ tests/amdgpu/amd_plane.c | 53 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 46 insertions(+), 7 deletions(-)
 
 diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 64273330..09fd3b08 100644
+index fe2389df..9506421d 100644
 --- a/tests/amdgpu/amd_plane.c
 +++ b/tests/amdgpu/amd_plane.c
-@@ -21,56 +21,153 @@
-  */
+@@ -141,7 +141,8 @@ static void lut_free(lut_t *lut)
  
- #include "igt.h"
-+#include "libdrm/amdgpu.h"
-+#include "libdrm/amdgpu_drm.h"
-+
-+/* Maximum pipes on any AMD ASIC. */
-+#define MAX_PIPES 6
+ enum test {
+ 	MPO_SINGLE_PAN,
+-	MPO_MULTI_PAN
++	MPO_MULTI_PAN,
++	MPO_SCALE
+ };
  
- /* Common test data. */
- typedef struct data {
--	igt_display_t display;
--	igt_plane_t *primary;
--	igt_plane_t *overlay;
--	igt_output_t *output;
--	igt_pipe_t *pipe;
--	igt_pipe_crc_t *pipe_crc;
--	drmModeModeInfo *mode;
--	enum pipe pipe_id;
--	int fd;
--	int w;
--	int h;
-+        igt_display_t display;
-+        igt_plane_t *primary[MAX_PIPES];
-+        igt_plane_t *cursor[MAX_PIPES];
-+	igt_plane_t *overlay[MAX_PIPES];
-+        igt_output_t *output[MAX_PIPES];
-+        igt_pipe_t *pipe[MAX_PIPES];
-+        igt_pipe_crc_t *pipe_crc[MAX_PIPES];
-+        drmModeModeInfo mode[MAX_PIPES];
-+        enum pipe pipe_id[MAX_PIPES];
-+        int w[MAX_PIPES];
-+        int h[MAX_PIPES];
-+        int fd;
- } data_t;
- 
-+static const drmModeModeInfo test_mode_1 = {
-+	.name = "1920x1080 Test",
-+	.vrefresh = 60,
-+	.clock = 148500,
-+	.hdisplay = 1920,
-+	.hsync_start = 2008,
-+	.hsync_end = 2052,
-+	.htotal = 2200,
-+	.vdisplay = 1080,
-+	.vsync_start = 1084,
-+	.vsync_end = 1089,
-+	.vtotal = 1125,
-+	.type = 0x40,
-+	.flags = DRM_MODE_FLAG_NHSYNC,
-+	.hskew = 0,
-+	.vscan = 0,
-+};
-+
-+static const drmModeModeInfo test_mode_2 = {
-+	.name = "1280x1024 Test",
-+	.vrefresh = 60,
-+	.clock = 148500,
-+	.hdisplay = 1280,
-+	.hsync_start = 2008,
-+	.hsync_end = 2052,
-+	.htotal = 2200,
-+	.vdisplay = 1024,
-+	.vsync_start = 1084,
-+	.vsync_end = 1089,
-+	.vtotal = 1125,
-+	.type = DRM_MODE_TYPE_DRIVER,
-+	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
-+	.hskew = 0,
-+	.vscan = 0,
-+};
-+
  static void test_init(data_t *data)
- {
+@@ -273,7 +274,7 @@ static void set_regamma_lut(data_t *data, lut_t const *lut, int n)
+  * NOTE: The reason for using White+White is to speed up the crc (reuse the ref crc for all cases vs taking
+  * a ref crc per flip)
+  */
+-static void test_plane(data_t *data, int n, int x, int y, int w, int h, int pw, int ph, struct fbc *fbc){
++static void test_plane(data_t *data, int n, int x, int y, double w, double h, double scale, int pw, int ph, struct fbc *fbc){
+ 
+ 	igt_crc_t test_crc;
  	igt_display_t *display = &data->display;
-+	int i, n, max_pipes = display->n_pipes;
-+
-+	for (i = 0; i < max_pipes; ++i) {
-+		data->pipe_id[i] = PIPE_A + i;
-+		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
-+		data->primary[i] = igt_pipe_get_plane_type(
-+			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
-+		data->overlay[i] = igt_pipe_get_plane_type_index(
-+			data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 0);
-+		data->cursor[i] = igt_pipe_get_plane_type(
-+			data->pipe[i], DRM_PLANE_TYPE_CURSOR);
-+		data->pipe_crc[i] =
-+			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
-+	}
-+
-+	for (i = 0, n = 0; i < display->n_outputs && n < max_pipes; ++i) {
-+		igt_output_t *output = &display->outputs[i];
-+
-+		data->output[n] = output;
-+
-+		/* Only allow physically connected displays for the tests. */
-+		if (!igt_output_is_connected(output))
-+			continue;
+@@ -290,14 +291,14 @@ static void test_plane(data_t *data, int n, int x, int y, int w, int h, int pw,
+ 	/* Test: */
+ 	/* Draw a white overlay with a cutout */
+ 	draw_color_alpha(&fbc[n].test_overlay, 0, 0, pw, ph, 1.0, 1.0, 1.0, 1.00);
+-	draw_color_alpha(&fbc[n].test_overlay, x, y, w, h, 0.0, 0.0, 0.0, 0.0);
++	draw_color_alpha(&fbc[n].test_overlay, x, y, w*scale, h*scale, 0.0, 0.0, 0.0, 0.0);
  
--	/* It doesn't matter which pipe we choose on amdpgu. */
--	data->pipe_id = PIPE_A;
--	data->pipe = &data->display.pipes[data->pipe_id];
-+		igt_assert(kmstest_get_connector_default_mode(
-+			data->fd, output->config.connector, &data->mode[n]));
+ 	igt_plane_set_fb(data->primary[n], &fbc[n].test_primary);
+ 	igt_plane_set_fb(data->overlay[n], &fbc[n].test_overlay);
  
-+		data->w[n] = data->mode[n].hdisplay;
-+		data->h[n] = data->mode[n].vdisplay;
-+
-+		n += 1;
-+	}
-+
-+	igt_require(data->output[0]);
- 	igt_display_reset(display);
-+}
+ 	/* Move the overlay to cover the cutout */
+ 	igt_plane_set_position(data->primary[n], x, y);
+-	igt_plane_set_size(data->primary[n], w, h);
++	igt_plane_set_size(data->primary[n], w*scale, h*scale);
  
--	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
--	igt_require(data->output);
-+static void test_fini(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	int i, max_pipes = display->n_pipes;
+ 	igt_display_commit_atomic(display, 0, 0);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc[n], &test_crc);
+@@ -350,7 +351,7 @@ static void test_panning_1_display(data_t *data, int display_count, int w, int h
+ 				if (pw <= w && ph <= h)
+ 					break;
  
--	data->mode = igt_output_get_mode(data->output);
--	igt_assert(data->mode);
-+	for (i = 0; i < max_pipes; ++i) {
-+		igt_pipe_crc_free(data->pipe_crc[i]);
-+	}
+-				test_plane(data, n, x, y, w, h, pw, ph, fb);
++				test_plane(data, n, x, y, w, h, 1.0, pw, ph, fb);
  
--	data->primary =
--		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
--	data->overlay =
--		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
-+	igt_display_reset(display);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+}
+ 			}
+ 		}
+@@ -361,6 +362,40 @@ static void test_panning_1_display(data_t *data, int display_count, int w, int h
  
--	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
--					  INTEL_PIPE_CRC_SOURCE_AUTO);
-+/* Forces a mode for a connector. */
-+static void force_output_mode(data_t *data, igt_output_t *output,
-+			      drmModeModeInfo const *mode)
-+{
-+	/* This allows us to create a virtual sink. */
-+	if (!igt_output_is_connected(output)) {
-+		kmstest_force_edid(data->fd, output->config.connector,
-+				   igt_kms_get_4k_edid());
- 
--	igt_output_set_pipe(data->output, data->pipe_id);
-+		kmstest_force_connector(data->fd, output->config.connector,
-+					FORCE_CONNECTOR_DIGITAL);
-+	}
- 
--	data->w = data->mode->hdisplay;
--	data->h = data->mode->vdisplay;
-+	igt_output_override_mode(output, mode);
  }
  
--static void test_fini(data_t *data)
++ /* MPO_SCALE: This test scales a window of size (w,h) from x1/4->x16.
++  */
++static void test_scaling_planes(data_t *data, int display_count, int w, int h, struct fbc *fb)
++{
 +
-+static int set_metadata(data_t *data, igt_fb_t *fb, struct amdgpu_bo_metadata *info)
- {
--	igt_pipe_crc_free(data->pipe_crc);
--	igt_display_reset(&data->display);
-+	struct drm_amdgpu_gem_metadata args = {};
++	/* Scale limit is x1/4 -> x16
++	 * some combinations of mode/window sizes fail for x0.25 so start from 0.30 -> 16
++	 */
++	double scale[]= {
++		0.30,
++		0.50,
++		0.75,
++		1.50,
++		3.00,
++		6.00,
++		12.00,
++		16.00
 +
-+	args.handle = fb->gem_handle;
-+	args.op = AMDGPU_GEM_METADATA_OP_SET_METADATA;
-+	args.data.flags = info->flags;
-+	args.data.tiling_info = info->tiling_info;
++	};
 +
-+	if (info->size_metadata > sizeof(args.data.data))
-+		return -EINVAL;
++	for (int n = 0; n < display_count; n++) {
++		int pw = data->w[n];
++		int ph = data->h[n];
 +
-+	if (info->size_metadata) {
-+		args.data.data_size_bytes = info->size_metadata;
-+		memcpy(args.data.data, info->umd_metadata, info->size_metadata);
++		for (int i=0;i<ARRAY_SIZE(scale);i++) {
++			/* No need to scale a overley that is bigger than the display */
++			if (pw <= w*scale[i] && ph <= h*scale[i])
++				break;
++			test_plane(data, n, 0, 0, w, h, scale[i], pw, ph, fb);
++		}
 +	}
 +
-+	return drmCommandWriteRead(data->fd, DRM_AMDGPU_GEM_METADATA, &args,
-+				   sizeof(args));
- }
- 
- static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
-@@ -91,36 +188,38 @@ static void test_mpo_4k(data_t *data)
- 	igt_crc_t ref_crc, new_crc;
- 	igt_display_t *display = &data->display;
- 	int cutout_x, cutout_y, cutout_w, cutout_h;
-+	int w, h;
- 
- 	test_init(data);
- 
- 	/* Skip if not 4K resolution. */
--	igt_skip_on(!(data->mode->hdisplay == 3840 &&
--		    data->mode->vdisplay == 2160));
-+	igt_skip_on(!(data->mode[0].hdisplay == 3840
-+		      && data->mode[0].vdisplay == 2160));
- 
-+	w = data->w[0];
-+	h = data->h[0];
- 	cutout_x = cutout_w = 1280;
- 	cutout_y = cutout_h = 720;
- 
--	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888,
--			    0, 1.00, 1.00, 1.00, &r_fb);
--	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888,
--			    0, 1.00, 1.00, 1.00, &p_fb);
--	igt_create_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888,
--		      0, &o_fb);
-+	igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.00, 1.00,
-+			    1.00, &r_fb);
-+	igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.00, 1.00,
-+			    1.00, &p_fb);
-+	igt_create_fb(data->fd, w, h, DRM_FORMAT_ARGB8888, 0, &o_fb);
- 	draw_color_alpha(&o_fb, 0, 0, o_fb.width, o_fb.height, 1.00, 1.00, 1.00, 1.00);
- 	draw_color_alpha(&o_fb, cutout_x, cutout_y, cutout_w, cutout_h,
- 			 0.00, 0.00, 0.00, 0.00);
- 
--	igt_plane_set_fb(data->primary, &r_fb);
-+	igt_plane_set_fb(data->primary[0], &r_fb);
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 
--	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
-+	igt_pipe_crc_collect_crc(data->pipe_crc[0], &ref_crc);
- 
--	igt_plane_set_fb(data->primary, &p_fb);
--	igt_plane_set_fb(data->overlay, &o_fb);
-+	igt_plane_set_fb(data->primary[0], &p_fb);
-+	igt_plane_set_fb(data->overlay[0], &o_fb);
- 	igt_display_commit_atomic(display, 0, NULL);
- 
--	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
-+	igt_pipe_crc_collect_crc(data->pipe_crc[0], &new_crc);
- 
- 	igt_assert_crc_equal(&ref_crc, &new_crc);
- 
-@@ -130,6 +229,80 @@ static void test_mpo_4k(data_t *data)
- 	igt_remove_fb(data->fd, &r_fb);
- }
- 
-+static void test_mpo_swizzle_toggle(data_t *data)
-+{
-+	struct amdgpu_bo_metadata meta = {};
-+	igt_display_t *display = &data->display;
-+	igt_fb_t fb_1280_xr24_tiled, fb_1280_ar24_tiled, fb_1920_xb24_tiled,
-+		fb_1920_xb24_linear, fb_1920_xr24_tiled;
-+	int w, h;
-+
-+	w = 2400;
-+	h = 1350;
-+
-+	igt_create_pattern_fb(data->fd, 1280, 1024, DRM_FORMAT_XRGB8888, 0,
-+			      &fb_1280_xr24_tiled);
-+	igt_create_pattern_fb(data->fd, 1280, 1024, DRM_FORMAT_ARGB8888, 0,
-+			      &fb_1280_ar24_tiled);
-+	igt_create_pattern_fb(data->fd, 1920, 1080, DRM_FORMAT_XBGR8888, 0,
-+			      &fb_1920_xb24_tiled);
-+	igt_create_pattern_fb(data->fd, 1920, 1080, DRM_FORMAT_XBGR8888, 0,
-+			      &fb_1920_xb24_linear);
-+	igt_create_pattern_fb(data->fd, 1920, 1080, DRM_FORMAT_XRGB8888, 0,
-+			      &fb_1920_xr24_tiled);
-+
-+	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
-+	set_metadata(data, &fb_1280_xr24_tiled, &meta);
-+
-+	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
-+	set_metadata(data, &fb_1280_ar24_tiled, &meta);
-+
-+	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
-+	set_metadata(data, &fb_1920_xb24_tiled, &meta);
-+
-+	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
-+	set_metadata(data, &fb_1920_xr24_tiled, &meta);
-+
-+	test_init(data);
-+
-+	/* Initial modeset */
-+	igt_output_set_pipe(data->output[0], data->pipe_id[0]);
-+	igt_output_set_pipe(data->output[1], data->pipe_id[1]);
-+	force_output_mode(data, data->output[0], &test_mode_1);
-+	force_output_mode(data, data->output[1], &test_mode_2);
-+
-+	igt_plane_set_fb(data->primary[0], &fb_1920_xr24_tiled);
-+	igt_plane_set_fb(data->primary[1], &fb_1920_xb24_linear);
-+	igt_plane_set_size(data->primary[1], w, h);
-+
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+
-+	/* Enable overlay plane. */
-+	igt_plane_set_fb(data->overlay[1], &fb_1280_ar24_tiled);
-+	igt_plane_set_fb(data->primary[1], &fb_1920_xb24_linear);
-+	igt_plane_set_size(data->primary[1], w, h);
-+	igt_display_commit_atomic(display, 0, 0);
-+
-+	/* Switch to tiled. */
-+	igt_plane_set_fb(data->overlay[1], &fb_1280_ar24_tiled);
-+	igt_plane_set_fb(data->primary[1], &fb_1920_xb24_tiled);
-+	igt_plane_set_size(data->primary[1], w, h);
-+	igt_display_commit_atomic(display, 0, 0);
-+
-+	/* Switch to linear. */
-+	igt_plane_set_fb(data->overlay[1], &fb_1280_ar24_tiled);
-+	igt_plane_set_fb(data->primary[1], &fb_1920_xb24_linear);
-+	igt_plane_set_size(data->primary[1], w, h);
-+	igt_display_commit_atomic(display, 0, 0);
-+
-+	test_fini(data);
-+	igt_remove_fb(data->fd, &fb_1280_xr24_tiled);
-+	igt_remove_fb(data->fd, &fb_1280_ar24_tiled);
-+	igt_remove_fb(data->fd, &fb_1920_xb24_tiled);
-+	igt_remove_fb(data->fd, &fb_1920_xb24_linear);
-+	igt_remove_fb(data->fd, &fb_1920_xr24_tiled);
++	return;
 +}
-+
- igt_main
- {
- 	data_t data;
-@@ -150,6 +323,7 @@ igt_main
- 	}
+ /*
+  * MPO_MULTI_PAN: Requires 2 displays. This test swaps a window (w,h) between 2 displays at 3 different
+  * vertical locations (top, middle, bottom)
+@@ -390,9 +425,9 @@ static void test_panning_2_display(data_t *data, int w, int h, struct fbc *fbc)
+ 	for (int j = 0; j < ARRAY_SIZE(y); j++){
+ 		for (int i = 0; i < it; i++){
+ 			if (toggle)
+-				test_plane(data, 0, pw-w, y[j], w, h, pw, ph, fbc);
++				test_plane(data, 0, pw-w, y[j], w, h, 1.0, pw, ph, fbc);
+ 			else
+-				test_plane(data, 1, 0, y[j], w, h, pw2, ph2, fbc);
++				test_plane(data, 1, 0, y[j], w, h, 1.0, pw2, ph2, fbc);
  
- 	igt_subtest("test-mpo-4k") test_mpo_4k(&data);
-+	igt_subtest("mpo-swizzle-toggle") test_mpo_swizzle_toggle(&data);
+ 			toggle = !toggle;
+ 		}
+@@ -472,6 +507,8 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+ 			test_panning_1_display(data, display_count, videos[i][0], videos[i][1], fb);
+ 		if (test == MPO_MULTI_PAN)
+ 			test_panning_2_display(data, videos[i][0], videos[i][1], fb);
++		if(test == MPO_SCALE)
++			test_scaling_planes(data, display_count, videos[i][0], videos[i][1], fb);
+ 
+ 		for (int n = 0; n < display_count; n++)
+ 			igt_remove_fb(data->fd, &fb[n].test_primary);
+@@ -707,6 +744,8 @@ igt_main
+ 	igt_subtest("mpo-pan-nv12") test_display_mpo(&data, MPO_SINGLE_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
+ 	igt_subtest("mpo-pan-multi-rgb") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
+ 	igt_subtest("mpo-pan-multi-nv12") test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
++	igt_subtest("mpo-scale-rgb") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, DISPLAYS_TO_TEST);
++	igt_subtest("mpo-scale-nv12") test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_NV12, DISPLAYS_TO_TEST);
  
  	igt_fixture
  	{
