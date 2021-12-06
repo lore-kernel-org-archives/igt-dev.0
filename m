@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2045.outbound.protection.outlook.com [40.107.243.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F11D3730E6
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 07:20:58 +0000 (UTC)
+ (mail-dm6nam12on2075.outbound.protection.outlook.com [40.107.243.75])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27102730E6
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Dec 2021 07:20:56 +0000 (UTC)
 From: Stylon Wang <stylon.wang@amd.com>
-Date: Mon, 6 Dec 2021 15:20:11 +0800
-Message-ID: <20211206072018.9053-5-stylon.wang@amd.com>
+Date: Mon, 6 Dec 2021 15:20:09 +0800
+Message-ID: <20211206072018.9053-3-stylon.wang@amd.com>
 In-Reply-To: <20211206072018.9053-1-stylon.wang@amd.com>
 References: <20211206072018.9053-1-stylon.wang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v3 04/11] tests/amdgpu/amd_plane: Switch
- mpo-swizzle-toggle to single-head
+Subject: [igt-dev] [PATCH i-g-t v3 02/11] tests/amdgpu/amd_plane: Add MPO
+ swizzle mode toggle test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,52 +23,281 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Victor Lu <victorchengchi.lu@amd.com>, Hayden.Goodfellow@amd.com
+Cc: Bhawanpreet.Lakha@amd.com, Ahmad.Othman@amd.com, Hayden.Goodfellow@amd.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[why]
-Older ASIC does not support multi-head MPO
+Sequence captured on ChromeOS - we experience underflow when toggling
+between swizzle modes on the primary plane with MPO enabled.
 
-[how]
-Rename current mpo-swizzle-toggle subtest to
-mpo-swizzle-toggle-multihead. Change mpo-swizzle-toggle to only use one
-output.
+Add a new subtest replicating that sequence, "mpo-swizzle-toggle".
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+Converts the existing framework over to the new multi-display framework
+since that's the configuration where this was found.
+
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 ---
- tests/amdgpu/amd_plane.c | 70 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 69 insertions(+), 1 deletion(-)
+ tests/amdgpu/amd_plane.c | 260 ++++++++++++++++++++++++++++++++-------
+ 1 file changed, 217 insertions(+), 43 deletions(-)
 
 diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index ba29bdd4..5666b9e7 100644
+index 64273330..09fd3b08 100644
 --- a/tests/amdgpu/amd_plane.c
 +++ b/tests/amdgpu/amd_plane.c
-@@ -232,7 +232,7 @@ static void test_mpo_4k(data_t *data)
- 	igt_remove_fb(data->fd, &r_fb);
+@@ -21,56 +21,153 @@
+  */
+ 
+ #include "igt.h"
++#include "libdrm/amdgpu.h"
++#include "libdrm/amdgpu_drm.h"
++
++/* Maximum pipes on any AMD ASIC. */
++#define MAX_PIPES 6
+ 
+ /* Common test data. */
+ typedef struct data {
+-	igt_display_t display;
+-	igt_plane_t *primary;
+-	igt_plane_t *overlay;
+-	igt_output_t *output;
+-	igt_pipe_t *pipe;
+-	igt_pipe_crc_t *pipe_crc;
+-	drmModeModeInfo *mode;
+-	enum pipe pipe_id;
+-	int fd;
+-	int w;
+-	int h;
++        igt_display_t display;
++        igt_plane_t *primary[MAX_PIPES];
++        igt_plane_t *cursor[MAX_PIPES];
++	igt_plane_t *overlay[MAX_PIPES];
++        igt_output_t *output[MAX_PIPES];
++        igt_pipe_t *pipe[MAX_PIPES];
++        igt_pipe_crc_t *pipe_crc[MAX_PIPES];
++        drmModeModeInfo mode[MAX_PIPES];
++        enum pipe pipe_id[MAX_PIPES];
++        int w[MAX_PIPES];
++        int h[MAX_PIPES];
++        int fd;
+ } data_t;
+ 
++static const drmModeModeInfo test_mode_1 = {
++	.name = "1920x1080 Test",
++	.vrefresh = 60,
++	.clock = 148500,
++	.hdisplay = 1920,
++	.hsync_start = 2008,
++	.hsync_end = 2052,
++	.htotal = 2200,
++	.vdisplay = 1080,
++	.vsync_start = 1084,
++	.vsync_end = 1089,
++	.vtotal = 1125,
++	.type = 0x40,
++	.flags = DRM_MODE_FLAG_NHSYNC,
++	.hskew = 0,
++	.vscan = 0,
++};
++
++static const drmModeModeInfo test_mode_2 = {
++	.name = "1280x1024 Test",
++	.vrefresh = 60,
++	.clock = 148500,
++	.hdisplay = 1280,
++	.hsync_start = 2008,
++	.hsync_end = 2052,
++	.htotal = 2200,
++	.vdisplay = 1024,
++	.vsync_start = 1084,
++	.vsync_end = 1089,
++	.vtotal = 1125,
++	.type = DRM_MODE_TYPE_DRIVER,
++	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.hskew = 0,
++	.vscan = 0,
++};
++
+ static void test_init(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
++	int i, n, max_pipes = display->n_pipes;
++
++	for (i = 0; i < max_pipes; ++i) {
++		data->pipe_id[i] = PIPE_A + i;
++		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
++		data->primary[i] = igt_pipe_get_plane_type(
++			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
++		data->overlay[i] = igt_pipe_get_plane_type_index(
++			data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 0);
++		data->cursor[i] = igt_pipe_get_plane_type(
++			data->pipe[i], DRM_PLANE_TYPE_CURSOR);
++		data->pipe_crc[i] =
++			igt_pipe_crc_new(data->fd, data->pipe_id[i], "auto");
++	}
++
++	for (i = 0, n = 0; i < display->n_outputs && n < max_pipes; ++i) {
++		igt_output_t *output = &display->outputs[i];
++
++		data->output[n] = output;
++
++		/* Only allow physically connected displays for the tests. */
++		if (!igt_output_is_connected(output))
++			continue;
+ 
+-	/* It doesn't matter which pipe we choose on amdpgu. */
+-	data->pipe_id = PIPE_A;
+-	data->pipe = &data->display.pipes[data->pipe_id];
++		igt_assert(kmstest_get_connector_default_mode(
++			data->fd, output->config.connector, &data->mode[n]));
+ 
++		data->w[n] = data->mode[n].hdisplay;
++		data->h[n] = data->mode[n].vdisplay;
++
++		n += 1;
++	}
++
++	igt_require(data->output[0]);
+ 	igt_display_reset(display);
++}
+ 
+-	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
+-	igt_require(data->output);
++static void test_fini(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	int i, max_pipes = display->n_pipes;
+ 
+-	data->mode = igt_output_get_mode(data->output);
+-	igt_assert(data->mode);
++	for (i = 0; i < max_pipes; ++i) {
++		igt_pipe_crc_free(data->pipe_crc[i]);
++	}
+ 
+-	data->primary =
+-		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+-	data->overlay =
+-		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
++	igt_display_reset(display);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
++}
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
+-					  INTEL_PIPE_CRC_SOURCE_AUTO);
++/* Forces a mode for a connector. */
++static void force_output_mode(data_t *data, igt_output_t *output,
++			      drmModeModeInfo const *mode)
++{
++	/* This allows us to create a virtual sink. */
++	if (!igt_output_is_connected(output)) {
++		kmstest_force_edid(data->fd, output->config.connector,
++				   igt_kms_get_4k_edid());
+ 
+-	igt_output_set_pipe(data->output, data->pipe_id);
++		kmstest_force_connector(data->fd, output->config.connector,
++					FORCE_CONNECTOR_DIGITAL);
++	}
+ 
+-	data->w = data->mode->hdisplay;
+-	data->h = data->mode->vdisplay;
++	igt_output_override_mode(output, mode);
  }
  
--static void test_mpo_swizzle_toggle(data_t *data)
-+static void test_mpo_swizzle_toggle_multihead(data_t *data)
+-static void test_fini(data_t *data)
++
++static int set_metadata(data_t *data, igt_fb_t *fb, struct amdgpu_bo_metadata *info)
  {
- 	struct amdgpu_bo_metadata meta = {};
+-	igt_pipe_crc_free(data->pipe_crc);
+-	igt_display_reset(&data->display);
++	struct drm_amdgpu_gem_metadata args = {};
++
++	args.handle = fb->gem_handle;
++	args.op = AMDGPU_GEM_METADATA_OP_SET_METADATA;
++	args.data.flags = info->flags;
++	args.data.tiling_info = info->tiling_info;
++
++	if (info->size_metadata > sizeof(args.data.data))
++		return -EINVAL;
++
++	if (info->size_metadata) {
++		args.data.data_size_bytes = info->size_metadata;
++		memcpy(args.data.data, info->umd_metadata, info->size_metadata);
++	}
++
++	return drmCommandWriteRead(data->fd, DRM_AMDGPU_GEM_METADATA, &args,
++				   sizeof(args));
+ }
+ 
+ static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
+@@ -91,36 +188,38 @@ static void test_mpo_4k(data_t *data)
+ 	igt_crc_t ref_crc, new_crc;
  	igt_display_t *display = &data->display;
-@@ -306,6 +306,72 @@ static void test_mpo_swizzle_toggle(data_t *data)
- 	igt_remove_fb(data->fd, &fb_1920_xr24_tiled);
+ 	int cutout_x, cutout_y, cutout_w, cutout_h;
++	int w, h;
+ 
+ 	test_init(data);
+ 
+ 	/* Skip if not 4K resolution. */
+-	igt_skip_on(!(data->mode->hdisplay == 3840 &&
+-		    data->mode->vdisplay == 2160));
++	igt_skip_on(!(data->mode[0].hdisplay == 3840
++		      && data->mode[0].vdisplay == 2160));
+ 
++	w = data->w[0];
++	h = data->h[0];
+ 	cutout_x = cutout_w = 1280;
+ 	cutout_y = cutout_h = 720;
+ 
+-	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888,
+-			    0, 1.00, 1.00, 1.00, &r_fb);
+-	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888,
+-			    0, 1.00, 1.00, 1.00, &p_fb);
+-	igt_create_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888,
+-		      0, &o_fb);
++	igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.00, 1.00,
++			    1.00, &r_fb);
++	igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.00, 1.00,
++			    1.00, &p_fb);
++	igt_create_fb(data->fd, w, h, DRM_FORMAT_ARGB8888, 0, &o_fb);
+ 	draw_color_alpha(&o_fb, 0, 0, o_fb.width, o_fb.height, 1.00, 1.00, 1.00, 1.00);
+ 	draw_color_alpha(&o_fb, cutout_x, cutout_y, cutout_w, cutout_h,
+ 			 0.00, 0.00, 0.00, 0.00);
+ 
+-	igt_plane_set_fb(data->primary, &r_fb);
++	igt_plane_set_fb(data->primary[0], &r_fb);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
+-	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
++	igt_pipe_crc_collect_crc(data->pipe_crc[0], &ref_crc);
+ 
+-	igt_plane_set_fb(data->primary, &p_fb);
+-	igt_plane_set_fb(data->overlay, &o_fb);
++	igt_plane_set_fb(data->primary[0], &p_fb);
++	igt_plane_set_fb(data->overlay[0], &o_fb);
+ 	igt_display_commit_atomic(display, 0, NULL);
+ 
+-	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
++	igt_pipe_crc_collect_crc(data->pipe_crc[0], &new_crc);
+ 
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+ 
+@@ -130,6 +229,80 @@ static void test_mpo_4k(data_t *data)
+ 	igt_remove_fb(data->fd, &r_fb);
  }
  
 +static void test_mpo_swizzle_toggle(data_t *data)
 +{
 +	struct amdgpu_bo_metadata meta = {};
 +	igt_display_t *display = &data->display;
-+	igt_fb_t fb_1280_ar24_tiled, fb_1920_xb24_tiled, fb_1920_xb24_linear,
-+		 fb_1920_xr24_tiled;
++	igt_fb_t fb_1280_xr24_tiled, fb_1280_ar24_tiled, fb_1920_xb24_tiled,
++		fb_1920_xb24_linear, fb_1920_xr24_tiled;
 +	int w, h;
 +
 +	w = 2400;
 +	h = 1350;
 +
++	igt_create_pattern_fb(data->fd, 1280, 1024, DRM_FORMAT_XRGB8888, 0,
++			      &fb_1280_xr24_tiled);
 +	igt_create_pattern_fb(data->fd, 1280, 1024, DRM_FORMAT_ARGB8888, 0,
 +			      &fb_1280_ar24_tiled);
 +	igt_create_pattern_fb(data->fd, 1920, 1080, DRM_FORMAT_XBGR8888, 0,
@@ -77,6 +306,9 @@ index ba29bdd4..5666b9e7 100644
 +			      &fb_1920_xb24_linear);
 +	igt_create_pattern_fb(data->fd, 1920, 1080, DRM_FORMAT_XRGB8888, 0,
 +			      &fb_1920_xr24_tiled);
++
++	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
++	set_metadata(data, &fb_1280_xr24_tiled, &meta);
 +
 +	meta.tiling_info = AMDGPU_TILING_SET(SWIZZLE_MODE, 0x19);
 +	set_metadata(data, &fb_1280_ar24_tiled, &meta);
@@ -91,48 +323,50 @@ index ba29bdd4..5666b9e7 100644
 +
 +	/* Initial modeset */
 +	igt_output_set_pipe(data->output[0], data->pipe_id[0]);
++	igt_output_set_pipe(data->output[1], data->pipe_id[1]);
 +	force_output_mode(data, data->output[0], &test_mode_1);
++	force_output_mode(data, data->output[1], &test_mode_2);
 +
-+	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_linear);
-+	igt_plane_set_size(data->primary[0], w, h);
++	igt_plane_set_fb(data->primary[0], &fb_1920_xr24_tiled);
++	igt_plane_set_fb(data->primary[1], &fb_1920_xb24_linear);
++	igt_plane_set_size(data->primary[1], w, h);
 +
 +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
 +
 +	/* Enable overlay plane. */
-+	igt_plane_set_fb(data->overlay[0], &fb_1280_ar24_tiled);
-+	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_linear);
-+	igt_plane_set_size(data->primary[0], w, h);
++	igt_plane_set_fb(data->overlay[1], &fb_1280_ar24_tiled);
++	igt_plane_set_fb(data->primary[1], &fb_1920_xb24_linear);
++	igt_plane_set_size(data->primary[1], w, h);
 +	igt_display_commit_atomic(display, 0, 0);
 +
 +	/* Switch to tiled. */
-+	igt_plane_set_fb(data->overlay[0], &fb_1280_ar24_tiled);
-+	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_tiled);
-+	igt_plane_set_size(data->primary[0], w, h);
++	igt_plane_set_fb(data->overlay[1], &fb_1280_ar24_tiled);
++	igt_plane_set_fb(data->primary[1], &fb_1920_xb24_tiled);
++	igt_plane_set_size(data->primary[1], w, h);
 +	igt_display_commit_atomic(display, 0, 0);
 +
 +	/* Switch to linear. */
-+	igt_plane_set_fb(data->overlay[0], &fb_1280_ar24_tiled);
-+	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_linear);
-+	igt_plane_set_size(data->primary[0], w, h);
++	igt_plane_set_fb(data->overlay[1], &fb_1280_ar24_tiled);
++	igt_plane_set_fb(data->primary[1], &fb_1920_xb24_linear);
++	igt_plane_set_size(data->primary[1], w, h);
 +	igt_display_commit_atomic(display, 0, 0);
 +
 +	test_fini(data);
++	igt_remove_fb(data->fd, &fb_1280_xr24_tiled);
 +	igt_remove_fb(data->fd, &fb_1280_ar24_tiled);
 +	igt_remove_fb(data->fd, &fb_1920_xb24_tiled);
 +	igt_remove_fb(data->fd, &fb_1920_xb24_linear);
 +	igt_remove_fb(data->fd, &fb_1920_xr24_tiled);
 +}
 +
-+
  igt_main
  {
  	data_t data;
-@@ -327,6 +393,8 @@ igt_main
+@@ -150,6 +323,7 @@ igt_main
+ 	}
  
  	igt_subtest("test-mpo-4k") test_mpo_4k(&data);
- 	igt_subtest("mpo-swizzle-toggle") test_mpo_swizzle_toggle(&data);
-+	igt_subtest("mpo-swizzle-toggle-multihead")
-+		test_mpo_swizzle_toggle_multihead(&data);
++	igt_subtest("mpo-swizzle-toggle") test_mpo_swizzle_toggle(&data);
  
  	igt_fixture
  	{
