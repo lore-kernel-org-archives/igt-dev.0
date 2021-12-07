@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F0AB6EA95
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Dec 2021 13:10:18 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue,  7 Dec 2021 14:10:13 +0100
-Message-Id: <20211207131013.27252-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4896478340196166144=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/gem_exec_fence: Adopt to use no-reloc
- in three syncobj subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 07 Dec 2021 14:14:35 -0000
+Message-ID: <163888647589.10819.15939503321743829844@emeril.freedesktop.org>
+References: <20211207131013.27252-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20211207131013.27252-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?gem=5Fexec=5Ffence=3A_Adopt_to_use_no-reloc_in_three_syncobj_su?=
+ =?utf-8?q?btests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,173 +17,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Three subtests:
-- syncobj-timeline-chain-engines
-- syncobj-stationary-timeline-chain-engines
-- syncobj-backward-timeline-chain-engines
-were not previously rewritten to use no-reloc.
+--===============4896478340196166144==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Using allocator is not necessary in this case, we need to softpin
-only counter object. Offsets for all batches are chosen by the
-kernel as they location within gpu vm doesn't matter.
+== Series Details ==
 
-Some explanation is required regarding batchbuffer updates for each
-iteration. Before introducing softpin all batchbuffers were touched by
-the relocations what introduces stalls between them during execution.
-These stalls could be removed as batchbuffers don't change their
-contents for each iteration. But I decided to keep this behavior
-intact for relocations changing it only for no-reloc mode. With
-softpinning batchbuffer for each engine is written once (for first
-iteration) so next execbuf reuses same batch. This removes stalls
-on subsequent iterations as batchbuffer for each engine is ready
-immediate after completion.
+Series: tests/gem_exec_fence: Adopt to use no-reloc in three syncobj subtests
+URL   : https://patchwork.freedesktop.org/series/97655/
+State : success
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/gem_exec_fence.c | 47 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 41 insertions(+), 6 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 9a6336ce9..b6f4f1615 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -2468,9 +2468,13 @@ static void test_syncobj_timeline_multiple_ext_nodes(int fd)
- #define RING_TIMESTAMP                  (0x358)
- #define MI_PREDICATE_RESULT_1           (0x41c)
- 
-+#define WAIT_BB_OFFSET			(64 << 20)
-+#define COUNTER_OFFSET			(65 << 20)
-+
- struct inter_engine_context {
- 	int fd;
- 	const intel_ctx_cfg_t *cfg;
-+	bool use_relocs;
- 
- 	struct {
- 		const intel_ctx_t *ctx;
-@@ -2565,6 +2569,7 @@ static struct drm_i915_gem_exec_object2
- build_wait_bb(int i915,
- 	      const struct intel_execution_engine2 *engine,
- 	      uint64_t delay,
-+	      bool use_relocs,
- 	      struct drm_i915_gem_relocation_entry *relocs)
- {
- 	const uint64_t timestamp_frequency = get_cs_timestamp_frequency(i915);
-@@ -2579,8 +2584,8 @@ build_wait_bb(int i915,
- 
- 	obj.handle = gem_create(i915, 4096);
- 	obj.relocs_ptr = to_user_pointer(memset(relocs, 0, sizeof(*relocs)));
--	obj.relocation_count = 1;
--	obj.offset = 64 << 20;
-+	obj.relocation_count = use_relocs ? 1 : 0;
-+	obj.offset = WAIT_BB_OFFSET;
- 
- 	relocs->target_handle = obj.handle;
- 	relocs->presumed_offset = obj.offset;
-@@ -2649,6 +2654,7 @@ static void wait_engine(int i915,
- 		build_wait_bb(i915,
- 			      &context->engines.engines[run_engine_idx],
- 			      20 * 1000 * 1000ull /* 20ms */,
-+			      context->use_relocs,
- 			      &reloc),
- 	};
- 	struct drm_i915_gem_execbuffer2 execbuf = {
-@@ -2717,6 +2723,7 @@ static void build_increment_engine_bb(struct inter_engine_batches *batch,
- 
- static void increment_engine(struct inter_engine_context *context,
- 			     const intel_ctx_t *ctx,
-+			     int iteration,
- 			     uint32_t read0_engine_idx,
- 			     uint32_t read1_engine_idx,
- 			     uint32_t write_engine_idx,
-@@ -2732,7 +2739,8 @@ static void increment_engine(struct inter_engine_context *context,
- 		{
- 			.handle = batch->increment_bb_handle,
- 			.relocs_ptr = to_user_pointer(relocs),
--			.relocation_count = ARRAY_SIZE(relocs),
-+			.relocation_count = context->use_relocs ?
-+						ARRAY_SIZE(relocs) : 0,
- 		},
- 	};
- 	struct drm_i915_gem_execbuffer2 execbuf = {
-@@ -2775,6 +2783,29 @@ static void increment_engine(struct inter_engine_context *context,
- 	relocs[5].offset = batch->write_ptrs[1] - batch->increment_bb;
- 	relocs[5].presumed_offset = -1;
- 
-+	/*
-+	 * For no-relocs prepare batch for dedicated write engine once
-+	 * as iteration doesn't matter for it. So we got full pipelining
-+	 * starting from the second iteration. For relocs we keep its previous
-+	 * behavior where kernel has to change offsets within bb for each round.
-+	 */
-+	if (!iteration && !context->use_relocs) {
-+		uint64_t counter_offset;
-+		uint32_t *bb;
-+
-+		counter_offset = context->engine_counter_object.offset;
-+		bb = (uint32_t *) batch->increment_bb;
-+
-+		for (int i = 0; i < ARRAY_SIZE(relocs); i++) {
-+			bb[relocs[i].offset / sizeof(uint32_t)] =
-+					counter_offset + relocs[i].delta;
-+			bb[relocs[i].offset / sizeof(uint32_t) + 1] =
-+					(counter_offset + relocs[i].delta) >> 32;
-+		}
-+		gem_write(context->fd, batch->increment_bb_handle, 0,
-+			  batch->increment_bb, batch->increment_bb_len);
-+	}
-+
- 	submit_timeline_execbuf(context, &execbuf, write_engine_idx,
- 				wait_syncobj, wait_value,
- 				signal_syncobj, signal_value);
-@@ -2808,11 +2839,15 @@ static void setup_timeline_chain_engines(struct inter_engine_context *context, i
- 	context->cfg = cfg;
- 	context->engines = intel_engine_list_for_ctx_cfg(fd, cfg);
- 	igt_require(context->engines.nengines > 1);
-+	context->use_relocs = gem_has_relocations(fd);
- 
- 	context->wait_ctx = intel_ctx_create(fd, cfg);
- 	context->wait_timeline = syncobj_create(fd, 0);
- 
- 	context->engine_counter_object.handle = gem_create(fd, 4096);
-+	context->engine_counter_object.offset = COUNTER_OFFSET;
-+	if (context->use_relocs)
-+		context->engine_counter_object.flags |= EXEC_OBJECT_PINNED;
- 
- 	for (uint32_t i = 0; i < ARRAY_SIZE(context->iterations); i++) {
- 		context->iterations[i].ctx = intel_ctx_create(fd, context->cfg);
-@@ -2901,7 +2936,7 @@ static void test_syncobj_timeline_chain_engines(int fd, const intel_ctx_cfg_t *c
- 				iter == 0 && engine == 0 ?
- 				1 : (engine == 0 ? iter : (iter + 1));
- 
--			increment_engine(&ctx, ctx.iterations[iter].ctx,
-+			increment_engine(&ctx, ctx.iterations[iter].ctx, iter,
- 					 prev_prev_engine /* read0 engine */,
- 					 prev_engine /* read1 engine */,
- 					 engine /* write engine */,
-@@ -2967,7 +3002,7 @@ static void test_syncobj_stationary_timeline_chain_engines(int fd, const intel_c
- 				iter == 0 && engine == 0 ?
- 				1 : 10;
- 
--			increment_engine(&ctx, ctx.iterations[iter].ctx,
-+			increment_engine(&ctx, ctx.iterations[iter].ctx, iter,
- 					 prev_prev_engine /* read0 engine */,
- 					 prev_engine /* read1 engine */,
- 					 engine /* write engine */,
-@@ -3028,7 +3063,7 @@ static void test_syncobj_backward_timeline_chain_engines(int fd, const intel_ctx
- 				iter == 0 && engine == 0 ?
- 				1 : 1;
- 
--			increment_engine(&ctx, ctx.iterations[iter].ctx,
-+			increment_engine(&ctx, ctx.iterations[iter].ctx, iter,
- 					 prev_prev_engine /* read0 engine */,
- 					 prev_engine /* read1 engine */,
- 					 engine /* write engine */,
--- 
-2.26.0
+CI Bug Log - changes from CI_DRM_10968 -> IGTPW_6474
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/index.html
+
+Participating hosts (43 -> 34)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (10): bat-dg1-6 bat-dg1-5 fi-hsw-4200u fi-bsw-cyan bat-adlp-6 bat-adlp-4 fi-ctg-p8600 fi-bdw-samus bat-jsl-2 bat-jsl-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6474 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-rkl-guc:         NOTRUN -> [SKIP][1] ([fdo#109315]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-gfx0:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][2] ([fdo#109271]) +21 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][5] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#533])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][7] ([fdo#109271]) +57 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-1115g4:      [FAIL][8] ([i915#1888]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10968/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_flink_basic@bad-flink:
+    - fi-skl-6600u:       [INCOMPLETE][10] ([i915#198]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10968/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - fi-rkl-guc:         [INCOMPLETE][12] ([i915#4432]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10968/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#198]: https://gitlab.freedesktop.org/drm/intel/issues/198
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4432]: https://gitlab.freedesktop.org/drm/intel/issues/4432
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6300 -> IGTPW_6474
+
+  CI-20190529: 20190529
+  CI_DRM_10968: 7be12d9fc88471b17b9c3df25215834928258b65 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6474: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/index.html
+  IGT_6300: f69bd65fa9f72b7d5e5a5a22981f16d034334761 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/index.html
+
+--===============4896478340196166144==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/gem_exec_fence: Adopt to use no-reloc in three syncobj subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97655/">https://patchwork.freedesktop.org/series/97655/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_10968 -&gt; IGTPW_6474</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/index.html</p>
+<h2>Participating hosts (43 -&gt; 34)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (10): bat-dg1-6 bat-dg1-5 fi-hsw-4200u fi-bsw-cyan bat-adlp-6 bat-adlp-4 fi-ctg-p8600 fi-bdw-samus bat-jsl-2 bat-jsl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6474 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-rkl-guc/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-gfx0:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +21 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10968/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@bad-flink:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10968/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/198">i915#198</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10968/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4432">i915#4432</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6300 -&gt; IGTPW_6474</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_10968: 7be12d9fc88471b17b9c3df25215834928258b65 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6474: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6474/index.html<br />
+  IGT_6300: f69bd65fa9f72b7d5e5a5a22981f16d034334761 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4896478340196166144==--
