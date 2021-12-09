@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BED8F10E116
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Dec 2021 08:34:39 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu,  9 Dec 2021 09:34:28 +0100
-Message-Id: <20211209083429.20441-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20211209083429.20441-1-zbigniew.kempczynski@intel.com>
-References: <20211209083429.20441-1-zbigniew.kempczynski@intel.com>
-MIME-Version: 1.0
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3397A10E116
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Dec 2021 06:23:46 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Thu, 9 Dec 2021 06:23:40 +0000
+Message-ID: <4966d639a7284064adf90ba19e7297f4@intel.com>
+References: <20211207164331.306201-1-Rodrigo.Siqueira@amd.com>
+ <20211207164331.306201-2-Rodrigo.Siqueira@amd.com>
+ <9ebea7cb-714b-e61d-10db-f356c5e5df49@amd.com>
+In-Reply-To: <9ebea7cb-714b-e61d-10db-f356c5e5df49@amd.com>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/gem_exec_predicate: Leave
- predicate set before bbe
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH v4 1/2] lib/kms: Add DSC_SLICE_HEIGHT to CRTC
+ property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,106 +24,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Kenneth Graunke <kenneth@whitecape.org>
+To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>, "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Unfortunately I'm not able to reproduce this within single igt yet
-so reproduction path is:
-
-1. start X
-2. glxgears    or     while true; do glxgears; done
-3. while true; do gem_exec_predicate; done
-
-In my case I mostly get glxgears -EIO, but to exercise Xorg abort
-glxgears must be called in a loop until X will crash.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kenneth Graunke <kenneth@whitecape.org>
----
- tests/i915/gem_exec_predicate.c | 61 +++++++++++++++++++++++++++++++++
- tests/meson.build               |  1 +
- 2 files changed, 62 insertions(+)
- create mode 100644 tests/i915/gem_exec_predicate.c
-
-diff --git a/tests/i915/gem_exec_predicate.c b/tests/i915/gem_exec_predicate.c
-new file mode 100644
-index 000000000..53ed32138
---- /dev/null
-+++ b/tests/i915/gem_exec_predicate.c
-@@ -0,0 +1,61 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include <unistd.h>
-+#include <stdlib.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <errno.h>
-+#include <sys/stat.h>
-+#include <sys/ioctl.h>
-+
-+#include "drm.h"
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+
-+#define WIDTH 512
-+#define HEIGHT 512
-+
-+static void predicate(int i915)
-+{
-+	struct drm_i915_gem_exec_object2 obj = {0};
-+	struct drm_i915_gem_execbuffer2 execbuf = {0};
-+	const uint32_t bbe[3] = {
-+		1 << 23 | 0xf,
-+		0,
-+		MI_BATCH_BUFFER_END
-+	};
-+	uint32_t bb = gem_create(i915, 4096);
-+	gem_write(i915, bb, 0, bbe, sizeof(bbe));
-+	obj.handle = bb;
-+	obj.offset = 0x100000;
-+	obj.flags = EXEC_OBJECT_PINNED;
-+	execbuf.buffers_ptr = to_user_pointer(&obj);
-+	execbuf.buffer_count = 1;
-+	execbuf.flags = I915_EXEC_RENDER;
-+
-+	__gem_execbuf(i915, &execbuf);
-+	gem_close(i915, bb);
-+}
-+
-+igt_main
-+{
-+	int i915;
-+
-+	igt_fixture {
-+		i915 = drm_open_driver(DRIVER_INTEL);
-+	}
-+
-+	igt_subtest("predicate")
-+		predicate(i915);
-+
-+	igt_fixture {
-+		close(i915);
-+
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index c14acf993..de765a017 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -139,6 +139,7 @@ i915_progs = [
- 	'gem_exec_nop',
- 	'gem_exec_parallel',
- 	'gem_exec_params',
-+	'gem_exec_predicate',
- 	'gen7_exec_parse',
- 	'gen9_exec_parse',
- 	'gem_exec_reloc',
--- 
-2.26.0
+aHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy85NzQ3MC8jcmV2Mg0KUG9z
+c2libGUgcmVncmVzc2lvbnMNCmlndEBzeXNmc19oZWFydGJlYXRfaW50ZXJ2YWxAcHJlY2lzZUB2
+ZWNzMDoNCnNoYXJkLWFwbDogUEFTUyAtPiBGQUlMDQoNClJlZ3Jlc3Npb24gZnJvbSByZXYyIGlz
+IHNhbWUgYXMgaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC8tL2lzc3Vl
+cy8xNzU1DQppZ3RAc3lzZnNfdGltZXNsaWNlX2R1cmF0aW9uQHRpbWVvdXRALip8IGlndEBzeXNm
+c19oZWFydGJlYXRfaW50ZXJ2YWxAcHJlY2lzZUB2ZWNzMCAtIGZhaWwgLSBGYWlsZWQgYXNzZXJ0
+aW9uOiB3YWl0X2Zvcl9yZXNldChzcGluWzBdLT5vdXRfZmVuY2UpID09IDAsIGVycm9yOiAtNjIg
+IT0gMCwgUmVzZXR0aW5nIHZlY3MwIGZvciBwcmVlbXB0aW9uIHRpbWUgb3V0DQoNCkkgY2FuIHJl
+LXJlcG9ydCB0aGUgcmV2MiByZXN1bHRzLg0KDQpMYWtzaG1pLg0KDQotLS0tLU9yaWdpbmFsIE1l
+c3NhZ2UtLS0tLQ0KRnJvbTogUm9kcmlnbyBTaXF1ZWlyYSBKb3JkYW8gPHJqb3Jkcmlnb0BhbWQu
+Y29tPiANClNlbnQ6IFdlZG5lc2RheSwgRGVjZW1iZXIgOCwgMjAyMSA1OjQ4IFBNDQpUbzogTGF0
+dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPg0KQ2M6IFZ1ZHVtLCBMYWtzaG1p
+bmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZw0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggdjQgMS8yXSBs
+aWIva21zOiBBZGQgRFNDX1NMSUNFX0hFSUdIVCB0byBDUlRDIHByb3BlcnR5DQoNCg0KDQpPbiAy
+MDIxLTEyLTA3IDExOjQzIGEubS4sIFJvZHJpZ28gU2lxdWVpcmEgd3JvdGU6DQo+IFRoaXMgcHJl
+cGFyYXRpb24gd29yayBpbnRyb2R1Y2VzIGEgbmV3IENSVEMgcHJvcGVydHkgbmFtZWQgDQo+IERT
+Q19TTElDRV9IRUlHSFQsIHdoaWNoIHdpbGwgYmUgcmVxdWlyZWQgZm9yIGFtZGdwdSBEU0MgdGVz
+dHMuDQo+IA0KPiBDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+DQo+
+IFNpZ25lZC1vZmYtYnk6IFJvZHJpZ28gU2lxdWVpcmEgPFJvZHJpZ28uU2lxdWVpcmFAYW1kLmNv
+bT4NCj4gLS0tDQo+ICAgbGliL2lndF9rbXMuYyB8IDEgKw0KPiAgIGxpYi9pZ3Rfa21zLmggfCAx
+ICsNCj4gICAyIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdp
+dCBhL2xpYi9pZ3Rfa21zLmMgYi9saWIvaWd0X2ttcy5jIGluZGV4IDM0YTJhYTAwLi5mZGFkYjZk
+NiANCj4gMTAwNjQ0DQo+IC0tLSBhL2xpYi9pZ3Rfa21zLmMNCj4gKysrIGIvbGliL2lndF9rbXMu
+Yw0KPiBAQCAtNTkzLDYgKzU5Myw3IEBAIGNvbnN0IGNoYXIgKiBjb25zdCBpZ3RfY3J0Y19wcm9w
+X25hbWVzW0lHVF9OVU1fQ1JUQ19QUk9QU10gPSB7DQo+ICAgCVtJR1RfQ1JUQ19BQ1RJVkVdID0g
+IkFDVElWRSIsDQo+ICAgCVtJR1RfQ1JUQ19PVVRfRkVOQ0VfUFRSXSA9ICJPVVRfRkVOQ0VfUFRS
+IiwNCj4gICAJW0lHVF9DUlRDX1ZSUl9FTkFCTEVEXSA9ICJWUlJfRU5BQkxFRCIsDQo+ICsJW0lH
+VF9DUlRDX0RTQ19TTElDRV9IRUlHSFRdID0gIkRTQ19TTElDRV9IRUlHSFQiLA0KPiAgIH07DQo+
+ICAgDQo+ICAgY29uc3QgY2hhciAqIGNvbnN0IGlndF9jb25uZWN0b3JfcHJvcF9uYW1lc1tJR1Rf
+TlVNX0NPTk5FQ1RPUl9QUk9QU10gDQo+ID0geyBkaWZmIC0tZ2l0IGEvbGliL2lndF9rbXMuaCBi
+L2xpYi9pZ3Rfa21zLmggaW5kZXggDQo+IGU5ZWNkMjFlLi41YzdkNzQ4MSAxMDA2NDQNCj4gLS0t
+IGEvbGliL2lndF9rbXMuaA0KPiArKysgYi9saWIvaWd0X2ttcy5oDQo+IEBAIC0xMjUsNiArMTI1
+LDcgQEAgZW51bSBpZ3RfYXRvbWljX2NydGNfcHJvcGVydGllcyB7DQo+ICAgICAgICAgIElHVF9D
+UlRDX0FDVElWRSwNCj4gICAgICAgICAgSUdUX0NSVENfT1VUX0ZFTkNFX1BUUiwNCj4gICAgICAg
+ICAgSUdUX0NSVENfVlJSX0VOQUJMRUQsDQo+ICsgICAgICAgSUdUX0NSVENfRFNDX1NMSUNFX0hF
+SUdIVCwNCj4gICAgICAgICAgSUdUX05VTV9DUlRDX1BST1BTDQo+ICAgfTsNCj4gICANCj4gDQoN
+CkhpIFBldHJpLA0KDQpJIGZvbGxvd2VkIHlvdXIgYWR2aWNlIHRvIHNlYXJjaCBmb3IgSUdUX05V
+TV9DUlRDX1BST1BTLCBhbmQgb25seSBpZ3Rfa21zLntoLGN9IGFuZCBrbXNfYXRvbWljIHVzZXMg
+aXQuDQoNCkluIHRoZSBsaWIvaWd0X2ttcy5jLCB0aGUgb2NjdXJyZW5jZXMgb2YgSUdUX05VTV9D
+UlRDX1BST1BTIGFwcGVhcnMgaW4gdGhlIGZ1bmN0aW9uIGlndF9maWxsX3BpcGVfcHJvcHMoKSBh
+cyBhIHBhcmFtZXRlciwgaW4gaXRzIHR1cm4sIGl0IGNhbGwgZHJtTW9kZU9iamVjdEdldFByb3Bl
+cnRpZXMgYW5kIGRybU1vZGVHZXRQcm9wZXJ0eS4gRmluYWxseSwgaXQgb25seSBwb3B1bGF0ZXMg
+dGhlIHByb3AgYXJyYXkgYmFzZWQgb24gdGhlIHJldHVybmVkIHZhbHVlIGZyb20gdGhlIGRyaXZl
+ci4gSSBzdXBwb3NlIHdlIGFyZSBzYWZlIGhlcmU7IEkgZG9uJ3Qgc2VlIGhvdyB0aGlzIHBhdGNo
+IGNvdWxkIHJlZ3Jlc3Mgc29tZXRoaW5nIGluIHRoaXMgZnVuY3Rpb24uIFRoZSBvdGhlciBwbGFj
+ZXMgd2hlcmUgdGhpcyBmdW5jdGlvbiBhcHBlYXJzIGFyZSBpbiB0aGUgbG9vcCBjb25kaXRpb24s
+IGJ1dCBhbGwgb2YgdGhlbSBsb29rIGNvcnJlY3QgdG8gbWUuDQoNCkZpbmFsbHksIHRoZSBvdGhl
+ciBwbGFjZSB3ZSBjYW4gc2VlIGl0IGlzIGluIHRoZSBrbXNfYXRvbWljLCBidXQgYWdhaW4gdGhl
+IGZvciBsb29wIGxvb2tzIGNvcnJlY3QuDQoNCkhvd2V2ZXIsIElHVCBDSSBmYWlsZWQ6DQoNCmh0
+dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvOTc0NzAvI3JldjINCg0KVGhl
+IHBvdGVudGlhbCBuZXcgaXNzdWUgcG9pbnRlZCBieSB0aGUgQ0kgaXM6DQoNCiAgUG9zc2libGUg
+bmV3IGlzc3Vlcw0KICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUg
+YmVlbiBpbnRyb2R1Y2VkIGluDQpJR1RQV182NDc1X2Z1bGw6DQoNCiAgSUdUIGNoYW5nZXMNCiAg
+UG9zc2libGUgcmVncmVzc2lvbnMNCiAgaWd0QHN5c2ZzX2hlYXJ0YmVhdF9pbnRlcnZhbEBwcmVj
+aXNlQHZlY3MwOg0KICBzaGFyZC1hcGw6IFBBU1MgLT4gRkFJTA0KDQpBbmQgdGhlIGxvZyBzYXlz
+Og0KDQpTdGFjayB0cmFjZToNCiAgICMwIC4uL2xpYi9pZ3RfY29yZS5jOjE3NDUgX19pZ3RfZmFp
+bF9hc3NlcnQoKQ0KICAgIzEgLi4vdGVzdHMvaTkxNS9zeXNmc19oZWFydGJlYXRfaW50ZXJ2YWwu
+YzoxNTYgX190ZXN0X3RpbWVvdXQoKQ0KICAgIzIgWzx1bmtub3duPisweGQwXQ0KRHluYW1pYyBz
+dWJ0ZXN0IHZlY3MwOiBGQUlMICgxLjcxM3MpDQoNCkFmdGVyIEkgcmVzdWJtaXR0ZWQgdGhpcyBw
+YXRjaCwgSSBhbHNvIG5vdGljZWQgdGhhdCBJIGdvdCBhIGRpZmZlcmVudCBDSSBlcnJvciBmcm9t
+IHRoZSBvbmUgZnJvbSB0aGUgVjEuIFRoZSByZXBvcnRlZCBlcnJvciBsb29rcyBhIGxpdHRsZSBi
+aXQgaW5jb25zaXN0ZW50Lg0KDQpQZXRyaSwgZG8geW91IHRoaW5rIHRoaXMgY2FuIGJlIGEgZmFs
+c2UtcG9zaXRpdmUsIG9yIGFtIEkgbWlzc2luZyBzb21ldGhpbmc/IE1heWJlIHJlLXRyaWdnZXIg
+SUdULkNJIGNhbiBoZWxwPw0KDQpUaGFua3MNCg==
