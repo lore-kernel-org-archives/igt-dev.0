@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44B9189154
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Dec 2021 11:27:40 +0000 (UTC)
-Date: Thu, 9 Dec 2021 13:26:53 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YbHn/Vc69yVCevzZ@platvala-desk.ger.corp.intel.com>
-References: <20211209002716.209-1-quic_jesszhan@quicinc.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76CFB89259
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Dec 2021 10:22:28 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu,  9 Dec 2021 11:22:10 +0100
+Message-Id: <20211209102211.26934-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20211209102211.26934-1-zbigniew.kempczynski@intel.com>
+References: <20211209102211.26934-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20211209002716.209-1-quic_jesszhan@quicinc.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_scaling: Increase
- buffer size if driver doesn't support larger scale factors
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/gem_exec_predicate: Leave
+ predicate set before bbe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,145 +21,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jessica Zhang <quic_jesszhan@quicinc.com>
-Cc: quic_khsieh@quicinc.com, swboyd@chromium.org, igt-dev@lists.freedesktop.org, nganji@codeaurora.org, seanpaul@chromium.org, aravindh@codeaurora.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Dec 08, 2021 at 04:27:16PM -0800, Jessica Zhang wrote:
-> Catch edge cases where driver doesn't support larger scale factors or
-> pipe doesn't support scaling.
->=20
-> Currently, a 20x20 framebuffer is passed in to be upscaled. However,
-> this will cause issues with other drivers as they may not support larger
-> scale factors or may not support scaling at all for certain planes.
->=20
-> This avoids failures due to invalid scale factor by trying
-> the original 20x20 framebuffer commit, then trying to commit larger
-> framebuffers up to and including unity scale.
->=20
-> Changes since V1:
-> - try_commit_with_fb_size: Changed igt_try_commit2 to
->   igt_display_try_commit_atomic instead to avoid redundant commits
-> - try_commit_with_fb_size: Moved calls to clear framebuffer to outside
->   of success condition and moved cleanup_crtc back to outside of method
->=20
-> Tested-on: Qualcomm RB5 (sdm845)
->=20
-> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-> ---
->  tests/kms_plane_scaling.c | 55 ++++++++++++++++++++++++++++++++-------
->  1 file changed, 46 insertions(+), 9 deletions(-)
->=20
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> index 85db11ee..971c1532 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -1,5 +1,6 @@
->  /*
->   * Copyright =A9 2013,2014 Intel Corporation
-> + * Copyright (c) 2021 Qualcomm Innovation Center, Inc. All rights reserv=
-ed.
->   *
->   * Permission is hereby granted, free of charge, to any person obtaining=
- a
->   * copy of this software and associated documentation files (the "Softwa=
-re"),
-> @@ -118,6 +119,32 @@ static void prepare_crtc(data_t *data, igt_output_t =
-*output, enum pipe pipe,
->  	igt_display_commit2(display, COMMIT_ATOMIC);
->  }
-> =20
-> +static int try_commit_with_fb_size(int width, int height, igt_rotation_t=
- rot,
-> +		                            igt_display_t *display, data_t *d,
-> +                                   igt_plane_t *plane,
-> +		                            drmModeModeInfo *mode)
-> +{
-> +	int ret;
-> +
-> +	/* Check min to full resolution upscaling */
-> +	igt_fb_set_position(&d->fb[0], plane, 0, 0);
-> +	igt_fb_set_size(&d->fb[0], plane, width, height);
-> +	igt_plane_set_position(plane, 0, 0);
-> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +	igt_plane_set_rotation(plane, rot);
-> +
-> +	ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONL=
-Y |
-> +		                                DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +
-> +	if (!ret)
-> +		igt_display_commit2(display, COMMIT_ATOMIC);
+Unfortunately I'm not able to reproduce this within single igt yet
+so reproduction path is:
 
-Now this looks more understandable but I still have one "why"
-remaining: Why test_only the commit if you're anyway going to perform
-the commit? You could just have this as one try_commit, without
-test_only, and let it perform it, as there's nothing done differently
-here based on success/failure.
+1. start X
+2. glxgears    or     while true; do glxgears; done
+3. while true; do gem_exec_predicate; done
 
+In my case I mostly get glxgears -EIO, but to exercise Xorg abort
+glxgears must be called in a loop until X will crash.
 
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kenneth Graunke <kenneth@whitecape.org>
+---
+ tests/i915/gem_exec_predicate.c | 61 +++++++++++++++++++++++++++++++++
+ tests/meson.build               |  1 +
+ 2 files changed, 62 insertions(+)
+ create mode 100644 tests/i915/gem_exec_predicate.c
 
---=20
-Petri Latvala
-
-
-> +
-> +	igt_plane_set_fb(plane, NULL);
-> +	igt_plane_set_position(plane, 0, 0);
-> +
-> +	return ret;
-> +}
-> +
->  static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
->  					 uint32_t pixel_format,
->  					 uint64_t modifier, enum pipe pipe,
-> @@ -126,6 +153,7 @@ static void check_scaling_pipe_plane_rot(data_t *d, i=
-gt_plane_t *plane,
->  {
->  	igt_display_t *display =3D &d->display;
->  	int width, height;
-> +	int commit_ret;
->  	drmModeModeInfo *mode;
-> =20
->  	cleanup_crtc(d);
-> @@ -139,16 +167,25 @@ static void check_scaling_pipe_plane_rot(data_t *d,=
- igt_plane_t *plane,
->  		       pixel_format, modifier, 0.0, 1.0, 0.0, &d->fb[0]);
->  	igt_plane_set_fb(plane, &d->fb[0]);
-> =20
-> -	/* Check min to full resolution upscaling */
-> -	igt_fb_set_position(&d->fb[0], plane, 0, 0);
-> -	igt_fb_set_size(&d->fb[0], plane, width, height);
-> -	igt_plane_set_position(plane, 0, 0);
-> -	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> -	igt_plane_set_rotation(plane, rot);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> +	commit_ret =3D try_commit_with_fb_size(width, height, rot, display,
-> +                                        d, plane, mode);
-> =20
-> -	igt_plane_set_fb(plane, NULL);
-> -	igt_plane_set_position(plane, 0, 0);
-> +	if(commit_ret =3D=3D -ERANGE) {
-> +		igt_debug("Scaling for %dx%d plane not supported, trying scale factor =
-of 4x\n", width, height);
-> +		width =3D height =3D mode->vdisplay / 4;
-> +		commit_ret =3D try_commit_with_fb_size(width, height, rot, display,
-> +                                            d, plane, mode);
-> +	}
-> +
-> +	if (commit_ret =3D=3D -ERANGE) {
-> +		igt_debug("Scale factor of 4x (or scaling in general) not supported, t=
-rying unity scale\n");
-> +		width =3D mode->hdisplay;
-> +		height =3D mode->vdisplay;
-> +		commit_ret =3D try_commit_with_fb_size(width, height, rot, display,
-> +                                            d, plane, mode);
-> +	}
-> +
-> +	igt_assert_eq(commit_ret, 0);
->  }
-> =20
->  static const igt_rotation_t rotations[] =3D {
-> --=20
-> 2.34.1
->=20
+diff --git a/tests/i915/gem_exec_predicate.c b/tests/i915/gem_exec_predicate.c
+new file mode 100644
+index 000000000..53ed32138
+--- /dev/null
++++ b/tests/i915/gem_exec_predicate.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2021 Intel Corporation
++ */
++
++#include "igt.h"
++#include <unistd.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <errno.h>
++#include <sys/stat.h>
++#include <sys/ioctl.h>
++
++#include "drm.h"
++#include "i915/gem.h"
++#include "i915/gem_create.h"
++
++#define WIDTH 512
++#define HEIGHT 512
++
++static void predicate(int i915)
++{
++	struct drm_i915_gem_exec_object2 obj = {0};
++	struct drm_i915_gem_execbuffer2 execbuf = {0};
++	const uint32_t bbe[3] = {
++		1 << 23 | 0xf,
++		0,
++		MI_BATCH_BUFFER_END
++	};
++	uint32_t bb = gem_create(i915, 4096);
++	gem_write(i915, bb, 0, bbe, sizeof(bbe));
++	obj.handle = bb;
++	obj.offset = 0x100000;
++	obj.flags = EXEC_OBJECT_PINNED;
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.flags = I915_EXEC_RENDER;
++
++	__gem_execbuf(i915, &execbuf);
++	gem_close(i915, bb);
++}
++
++igt_main
++{
++	int i915;
++
++	igt_fixture {
++		i915 = drm_open_driver(DRIVER_INTEL);
++	}
++
++	igt_subtest("predicate")
++		predicate(i915);
++
++	igt_fixture {
++		close(i915);
++
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index c14acf993..de765a017 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -139,6 +139,7 @@ i915_progs = [
+ 	'gem_exec_nop',
+ 	'gem_exec_parallel',
+ 	'gem_exec_params',
++	'gem_exec_predicate',
+ 	'gen7_exec_parse',
+ 	'gen9_exec_parse',
+ 	'gem_exec_reloc',
+-- 
+2.26.0
