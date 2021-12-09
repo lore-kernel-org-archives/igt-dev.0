@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2895410E116
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Dec 2021 06:12:24 +0000 (UTC)
-Date: Thu, 9 Dec 2021 07:12:18 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20211209061218.GA3904@zkempczy-mobl2>
-References: <20211208120738.21790-1-arjun.melkaveri@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A79A10E118
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Dec 2021 10:20:05 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu,  9 Dec 2021 11:19:28 +0100
+Message-Id: <20211209101929.26708-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20211209101929.26708-1-zbigniew.kempczynski@intel.com>
+References: <20211209101929.26708-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211208120738.21790-1-arjun.melkaveri@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_engines: Added out
- fence for execute-one subtest
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/gem_exec_predicate: Leave
+ predicate set before bbe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,74 +21,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Cc: igt-dev@lists.freedesktop.org, chris.p.wilson@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: Kenneth Graunke <kenneth@whitecape.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Dec 08, 2021 at 05:37:38PM +0530, Arjun Melkaveri wrote:
-> To make spinner to be on same context for following execbuf,
-> spin out_fence is passed to execbuf.rsvd2.
-> 
-> Used IGT_SPIN_FENCE_OUT flag in spinner, we can stop
-> using no-preemption.
-> 
-> Added I915_EXEC_FENCE_IN to the execbuf.flags so that it
-> is executed after the spinner.
-> (Suggested by Chris Wilson).
-> 
-> Cc: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> ---
->  tests/i915/gem_ctx_engines.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-> index 003dd171..0b8d5c78 100644
-> --- a/tests/i915/gem_ctx_engines.c
-> +++ b/tests/i915/gem_ctx_engines.c
-> @@ -298,7 +298,7 @@ static void execute_one(int i915)
->  			spin = igt_spin_new(i915,
->  					    .ahnd = ahnd,
->  					    .ctx = ctx,
-> -					    .flags = (IGT_SPIN_NO_PREEMPTION |
-> +					    .flags = (IGT_SPIN_FENCE_OUT |
->  						      IGT_SPIN_POLL_RUN));
->  
->  			do_ioctl(i915, DRM_IOCTL_I915_GEM_BUSY, &busy);
-> @@ -314,13 +314,13 @@ static void execute_one(int i915)
->  			}
->  			cfg.num_engines = GEM_MAX_ENGINES;
->  			ctx = intel_ctx_create(i915, &cfg);
-> +			execbuf.rsvd2 = spin->execbuf.rsvd2 >> 32;
+Unfortunately I'm not able to reproduce this within single igt yet
+so reproduction path is:
 
-Check spin->fence_out. In this case doesn't matter but for merging 
-fences it can.
+1. start X
+2. glxgears    or     while true; do glxgears; done
+3. while true; do gem_exec_predicate; done
 
->  
-> -			igt_spin_busywait_until_started(spin);
->  			for (int j = 0; j <= I915_EXEC_RING_MASK; j++) {
->  				int expected = j == i ? 0 : -EINVAL;
->  
->  				execbuf.rsvd1 = ctx->id;
-> -				execbuf.flags = j;
-> +				execbuf.flags = j | I915_EXEC_FENCE_IN;
->  				igt_assert_f(__gem_execbuf(i915, &execbuf) == expected,
->  					     "Failed to report the %s engine for slot %d (valid at %d)\n",
->  					     j == i ? "valid" : "invalid", j, i);
-> @@ -331,6 +331,7 @@ static void execute_one(int i915)
->  				      i != -1 ? 1 << e->class : 0);
->  
->  			igt_spin_free(i915, spin);
-> +			close(spin->execbuf.rsvd2 >> 32);
+In my case I mostly get glxgears -EIO, but to exercise Xorg abort
+glxgears must be called in a loop until X will crash.
 
-And look at igt_spin_free() function what it does with fence_out.
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kenneth Graunke <kenneth@whitecape.org>
+---
+ tests/i915/gem_exec_predicate.c | 61 +++++++++++++++++++++++++++++++++
+ tests/meson.build               |  1 +
+ 2 files changed, 62 insertions(+)
+ create mode 100644 tests/i915/gem_exec_predicate.c
 
---
-Zbigniew
-
->  			put_ahnd(ahnd);
->  
->  			gem_sync(i915, obj.handle);
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/i915/gem_exec_predicate.c b/tests/i915/gem_exec_predicate.c
+new file mode 100644
+index 000000000..53ed32138
+--- /dev/null
++++ b/tests/i915/gem_exec_predicate.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2021 Intel Corporation
++ */
++
++#include "igt.h"
++#include <unistd.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <errno.h>
++#include <sys/stat.h>
++#include <sys/ioctl.h>
++
++#include "drm.h"
++#include "i915/gem.h"
++#include "i915/gem_create.h"
++
++#define WIDTH 512
++#define HEIGHT 512
++
++static void predicate(int i915)
++{
++	struct drm_i915_gem_exec_object2 obj = {0};
++	struct drm_i915_gem_execbuffer2 execbuf = {0};
++	const uint32_t bbe[3] = {
++		1 << 23 | 0xf,
++		0,
++		MI_BATCH_BUFFER_END
++	};
++	uint32_t bb = gem_create(i915, 4096);
++	gem_write(i915, bb, 0, bbe, sizeof(bbe));
++	obj.handle = bb;
++	obj.offset = 0x100000;
++	obj.flags = EXEC_OBJECT_PINNED;
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.flags = I915_EXEC_RENDER;
++
++	__gem_execbuf(i915, &execbuf);
++	gem_close(i915, bb);
++}
++
++igt_main
++{
++	int i915;
++
++	igt_fixture {
++		i915 = drm_open_driver(DRIVER_INTEL);
++	}
++
++	igt_subtest("predicate")
++		predicate(i915);
++
++	igt_fixture {
++		close(i915);
++
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index c14acf993..de765a017 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -139,6 +139,7 @@ i915_progs = [
+ 	'gem_exec_nop',
+ 	'gem_exec_parallel',
+ 	'gem_exec_params',
++	'gem_exec_predicate',
+ 	'gen7_exec_parse',
+ 	'gen9_exec_parse',
+ 	'gem_exec_reloc',
+-- 
+2.26.0
