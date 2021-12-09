@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED46710E117
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Dec 2021 08:29:12 +0000 (UTC)
-Message-ID: <5643d922-616a-b02d-eb06-5fe1b40b9456@linux.intel.com>
-Date: Thu, 9 Dec 2021 09:29:08 +0100
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E43E710E118
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Dec 2021 11:20:18 +0000 (UTC)
+Date: Thu, 9 Dec 2021 13:19:34 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <YbHmRgAoJzLhb+Cu@platvala-desk.ger.corp.intel.com>
+References: <20211208172416.136412-1-zbigniew.kempczynski@intel.com>
+ <20211208172416.136412-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-References: <20211208105446.1410270-1-mastanx.katragadda@intel.com>
-From: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>
-In-Reply-To: <20211208105446.1410270-1-mastanx.katragadda@intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [i-g-t] intel-ci: balcklist
- gem_exec_alignment@pi-shared
+In-Reply-To: <20211208172416.136412-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915/intel_memory_region:
+ Provide system memory region stub
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,38 +23,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mastan Katragadda <mastanx.katragadda@intel.com>, igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
-Cc: thomas.hellstrom@intel.com
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 12/8/21 11:54, Mastan Katragadda wrote:
-> The reason for this is that it doesn't work with the dma-resv-object locking introduced
-> recently in the code,and it's not going to be fixed anytime soon.
->
-> drm/i915: Perform execbuffer object locking as a separate step
-> To help avoid evicting already resident buffers from the batch we're
-> processing, perform locking as a separate step.
->
-> Link:https://cgit.freedesktop.org/drm-tip/commit/?id=5cd57f676bb946a00275408f0dd0d75dbc466d25
->
-> Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
-
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-
+On Wed, Dec 08, 2021 at 06:24:15PM +0100, Zbigniew Kempczyński wrote:
+> For stable kernels we can currently get -ENODEV on integrated gens
+> when no CONFIG_DRM_I915_UNSTABLE_FAKE_LMEM is set.
+> 
+> Provide system memory region stub to avoid failing on querying
+> kernel for memory regions.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > ---
->   tests/intel-ci/blacklist.txt | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-> index ca361fde..0d307730 100644
-> --- a/tests/intel-ci/blacklist.txt
-> +++ b/tests/intel-ci/blacklist.txt
-> @@ -62,6 +62,7 @@ igt@sysfs_timeslice_duration@off
->   # GEM: Not worth fixing
->   ###############################################
->   igt@gen7_exec_parse@.*lri.*
-> +igt@gem_exec_alignment@pi-shared
->   ###############################################
->   # There are no DRRS capable displays in CI lab
->   ###############################################
+>  lib/i915/intel_memory_region.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+> index 058b273dc..668e39439 100644
+> --- a/lib/i915/intel_memory_region.c
+> +++ b/lib/i915/intel_memory_region.c
+> @@ -123,9 +123,18 @@ struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd)
+>  	 * Any DRM_I915_QUERY_MEMORY_REGIONS specific errors are encoded in the
+>  	 * item.length, even though the ioctl might still return success.
+>  	 */
+> +
+>  	if (item.length < 0) {
+> -		igt_critical("DRM_I915_QUERY_MEMORY_REGIONS failed with %d\n",
+> -			     item.length);
+> +		/*
+> +		 * If kernel supports query but not memory regions query
+> +		 * just return predefined system memory region only.
+> +		 */
+> +		size_t sys_qi_size =
+> +			(char *) &query_info->regions[1] - (char *) query_info;
+> +
+> +		query_info = calloc(1, sys_qi_size);
+> +		query_info->num_regions = 1;
+> +		query_info->regions[0].region.memory_class = I915_MEMORY_CLASS_SYSTEM;
+>  		goto out;
+>  	}
+>  
+> -- 
+> 2.26.0
+> 
+
+Oh wow, I thought this was stubbed "properly" (for lack of a better
+word) a long time ago...
+
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
