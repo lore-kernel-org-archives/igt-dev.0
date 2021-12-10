@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC45510E712
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Dec 2021 13:00:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01DA710E716
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Dec 2021 13:00:42 +0000 (UTC)
 From: apoorva1.singh@intel.com
-Date: Fri, 10 Dec 2021 18:35:28 +0530
-Message-Id: <20211210130533.3688728-1-apoorva1.singh@intel.com>
+Date: Fri, 10 Dec 2021 18:35:29 +0530
+Message-Id: <20211210130533.3688728-2-apoorva1.singh@intel.com>
+In-Reply-To: <20211210130533.3688728-1-apoorva1.singh@intel.com>
+References: <20211210130533.3688728-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t,v4 0/5] Add testing for CCS
+Subject: [igt-dev] [PATCH i-g-t,
+ v4 1/5] lib/i915: Introduce library intel_mocs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,52 +26,112 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Apoorva Singh <apoorva1.singh@intel.com>
 
-- Add new library intel_mocs for mocs settings.
+Add new library intel_mocs for mocs settings.
 
-- Add new library i915_blt for various blt commands.
-
-- Add a new platform flag, has_flat_ccs, for platforms
-  supporting Flat CCS.
-
-- Only use the main copy engines for XY_BLOCK_COPY.
-  XY_BLOCK_COPY blt command is used to transfer the ccs data.
-  So, we can only run the tests on those engines which have
-  support for the "block_copy" capability.
-
-- Add gem_ccs test for CCS testing.
-  Commands are constructed with XY_BLOCK_COPY_BLT
-  and XY_CTRL_SURF_COPY_BLT instructions.
-
-v4: Used macro to avoid code duplication in gem_ccs test.
-
-Apoorva Singh (3):
-  lib/i915: Introduce library intel_mocs
-  lib/i915: Introduce library i915_blt
-  lib/intel_chipset.h: Add has_flat_ccs flag
-
-CQ Tang (1):
-  i915/gem_ccs: Add testing for CCS
-
-Chris Wilson (1):
-  i915/gem_engine_topology: Only use the main copy engines for
-    XY_BLOCK_COPY
-
- lib/i915/gem_engine_topology.c |  38 +++
- lib/i915/gem_engine_topology.h |   5 +
- lib/i915/i915_blt.c            | 469 +++++++++++++++++++++++++++++++++
- lib/i915/i915_blt.h            |  82 ++++++
- lib/i915/intel_mocs.c          |  51 ++++
- lib/i915/intel_mocs.h          |  19 ++
- lib/intel_chipset.h            |   3 +
- lib/meson.build                |   2 +
- tests/i915/gem_ccs.c           | 406 ++++++++++++++++++++++++++++
- tests/meson.build              |   1 +
- 10 files changed, 1076 insertions(+)
- create mode 100644 lib/i915/i915_blt.c
- create mode 100644 lib/i915/i915_blt.h
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+---
+ lib/i915/intel_mocs.c | 51 +++++++++++++++++++++++++++++++++++++++++++
+ lib/i915/intel_mocs.h | 19 ++++++++++++++++
+ lib/meson.build       |  1 +
+ 3 files changed, 71 insertions(+)
  create mode 100644 lib/i915/intel_mocs.c
  create mode 100644 lib/i915/intel_mocs.h
- create mode 100644 tests/i915/gem_ccs.c
 
+diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
+new file mode 100644
+index 00000000..e8c19309
+--- /dev/null
++++ b/lib/i915/intel_mocs.c
+@@ -0,0 +1,51 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2021 Intel Corporation
++ */
++
++#include "igt.h"
++#include "i915/gem.h"
++#include "intel_mocs.h"
++
++static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
++{
++	uint16_t devid = intel_get_drm_devid(fd);
++
++	/*
++	 * Gen >= 12 onwards don't have a setting for PTE,
++	 * so using I915_MOCS_PTE as mocs index may leads to
++	 * some undefined MOCS behavior.
++	 * This helper function is providing current UC as well
++	 * as WB MOCS index based on platform.
++
++	 */
++	if (IS_DG1(devid)) {
++		mocs->uc_index = 1;
++		mocs->wb_index = 5;
++	} else if (IS_GEN12(devid)) {
++		mocs->uc_index = 3;
++		mocs->wb_index = 2;
++	} else {
++		mocs->uc_index = I915_MOCS_PTE;
++		mocs->wb_index = I915_MOCS_CACHED;
++	}
++}
++
++/* BitField [6:1] represents index to MOCS Tables
++ * BitField [0] represents Encryption/Decryption */
++
++uint8_t intel_get_wb_mocs(int fd)
++{
++	struct drm_i915_mocs_index mocs;
++
++	get_mocs_index(fd, &mocs);
++	return mocs.wb_index << 1;
++}
++
++uint8_t intel_get_uc_mocs(int fd)
++{
++	struct drm_i915_mocs_index mocs;
++
++	get_mocs_index(fd, &mocs);
++	return mocs.uc_index << 1;
++}
+diff --git a/lib/i915/intel_mocs.h b/lib/i915/intel_mocs.h
+new file mode 100644
+index 00000000..efd8607f
+--- /dev/null
++++ b/lib/i915/intel_mocs.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2019 Intel Corporation
++ */
++
++#ifndef _INTEL_MOCS_H
++#define _INTEL_MOCS_H
++
++#define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
++#define XY_CTRL_SURF_COPY_BLT_MOCS_SHIFT	25
++
++struct drm_i915_mocs_index {
++	uint8_t uc_index;
++	uint8_t wb_index;
++};
++
++uint8_t intel_get_wb_mocs(int fd);
++uint8_t intel_get_uc_mocs(int fd);
++#endif /* _INTEL_MOCS_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index b9568a71..f500f0f1 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -11,6 +11,7 @@ lib_sources = [
+ 	'i915/gem_mman.c',
+ 	'i915/gem_vm.c',
+ 	'i915/intel_memory_region.c',
++	'i915/intel_mocs.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
+ 	'igt_debugfs.c',
 -- 
 2.25.1
