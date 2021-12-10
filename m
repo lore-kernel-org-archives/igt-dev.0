@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F24910E422
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Dec 2021 10:02:46 +0000 (UTC)
-Message-ID: <36f819b9-8001-6087-8379-df57de5b1d73@linux.intel.com>
-Date: Fri, 10 Dec 2021 10:02:41 +0000
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC1E410E23E
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Dec 2021 12:48:14 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Fri, 10 Dec 2021 18:23:01 +0530
+Message-Id: <20211210125306.3681902-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-References: <20211209082053.1412439-1-mastanx.katragadda@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20211209082053.1412439-1-mastanx.katragadda@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
- Submission
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t,v3 0/5] Add testing for CCS
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,79 +18,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mastan Katragadda <mastanx.katragadda@intel.com>, igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
-Cc: "Bloomfield, Jon" <jon.bloomfield@intel.com>
+To: apoorva1.singh@intel.com, igt-dev@lists.freedesktop.org, ramalingam.c@intel.com, zbigniew.kempczynski@intel.com, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Apoorva Singh <apoorva1.singh@intel.com>
 
-Old commit message:
+- Add new library intel_mocs for mocs settings.
 
-"""
-This a known failure when running 
-igt@gem_exec_balancer@bonded-(dual|pair|sync)
-tests with GuC submission.The hang is expected with GuC submission since the
-test was written to expect execlist scheduling hence added skip if Guc
-submission enabled.
-"""
+- Add new library i915_blt for various blt commands.
 
-New commit message:
+- Add a new platform flag, has_flat_ccs, for platforms
+  supporting Flat CCS.
 
-On 09/12/2021 08:20, Mastan Katragadda wrote:
-> This test makes assumptions about the backend scheduling algorithm that
-> a real world UMD would never assume. This test is not testing a UMD-KMD
-> contract, rather a specific backend.It is an invalid test case thus we
-> are skipping.
-> 
-> Changes Since v1:
->               -Updated commit message
+- Only use the main copy engines for XY_BLOCK_COPY.
+  XY_BLOCK_COPY blt command is used to transfer the ccs data.
+  So, we can only run the tests on those engines which have
+  support for the "block_copy" capability.
 
-Well that hasn't been really improved at all an is still totally opaque. 
-No mention whether it is all or some subtests, no mention of what 
-assumptions, what exact usage of the ABI is discouraged, not much more 
-than pure rewording.
+- Add gem_ccs test for CCS testing.
+  Commands are constructed with XY_BLOCK_COPY_BLT
+  and XY_CTRL_SURF_COPY_BLT instructions.
 
-No desire to split into passing and non passing tests and only skip 
-latter group?
+Apoorva Singh (3):
+  lib/i915: Introduce library intel_mocs
+  lib/i915: Introduce library i915_blt
+  lib/intel_chipset.h: Add has_flat_ccs flag
 
-Or to add a twist, what about making the specific subtests which hang 
-with GuC, expect to hang and therefore pass?
+CQ Tang (1):
+  i915/gem_ccs: Add testing for CCS
 
-That would a) document the failing corner case of the ABI and more 
-importantly b) keep exercising the i915 code paths which sit between the 
-uAPI and the GuC firmware?
+Chris Wilson (1):
+  i915/gem_engine_topology: Only use the main copy engines for
+    XY_BLOCK_COPY
 
-If that is not acceptable, and I do acknowledge to the cost to CI time, 
-then architects should ack and in my mind the ack should mean one of the 
-two things. Either:
+ lib/i915/gem_engine_topology.c |  38 +++
+ lib/i915/gem_engine_topology.h |   5 +
+ lib/i915/i915_blt.c            | 469 +++++++++++++++++++++++++++++++
+ lib/i915/i915_blt.h            |  82 ++++++
+ lib/i915/intel_mocs.c          |  51 ++++
+ lib/i915/intel_mocs.h          |  19 ++
+ lib/intel_chipset.h            |   3 +
+ lib/meson.build                |   2 +
+ tests/i915/gem_ccs.c           | 492 +++++++++++++++++++++++++++++++++
+ tests/meson.build              |   1 +
+ 10 files changed, 1162 insertions(+)
+ create mode 100644 lib/i915/i915_blt.c
+ create mode 100644 lib/i915/i915_blt.h
+ create mode 100644 lib/i915/intel_mocs.c
+ create mode 100644 lib/i915/intel_mocs.h
+ create mode 100644 tests/i915/gem_ccs.c
 
-  1) We know there is coverage for the same i915 code paths elsewhere in 
-IGT. Or:
-
-  2) We are willingly dropping coverage for these i915 code paths on GuC 
-platforms with the risk that the code might unknowingly bit rot and 
-cause more serious security issues down the line.
-
-Regards,
-
-Tvrtko
-
-> 
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
-> ---
->   tests/i915/gem_exec_balancer.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-> index cc07a5a9..d58734ab 100644
-> --- a/tests/i915/gem_exec_balancer.c
-> +++ b/tests/i915/gem_exec_balancer.c
-> @@ -3320,6 +3320,7 @@ igt_main
->   
->   	igt_subtest_group {
->   		igt_fixture {
-> +			igt_require(!gem_using_guc_submission(i915));
->   			intel_allocator_multiprocess_start();
->   		}
->   
-> 
+-- 
+2.25.1
