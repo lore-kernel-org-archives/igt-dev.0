@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Mon, 13 Dec 2021 15:29:09 -0800
-Message-Id: <20211213232914.2523139-7-John.C.Harrison@Intel.com>
+Date: Mon, 13 Dec 2021 15:29:12 -0800
+Message-Id: <20211213232914.2523139-10-John.C.Harrison@Intel.com>
 In-Reply-To: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 References: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 06/11] tests/i915/i915_hangman: Use the
- correct context in hangcheck_unterminated
+Subject: [igt-dev] [PATCH i-g-t 09/11] tests/i915/i915_hangman: Remove
+ reliance on context persistance
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,26 +23,73 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The hangman framework sets up a context that is valid for all engines
-and has things like banning disabled. The 'unterminated' test then
-ignores it and uses the default context. Fix that.
+The hang test was relying on context persitence for no particular
+reason. That is, it would set a bunch of background spinners running
+then immediately destroy the active contexts but expect the spinners
+to keep spinning. With the current implementation of context
+persistence in i915, that means that super high priority pings are
+sent to each engine at the start of the test. Depending upon the
+timing and platform, one of those unexpected pings could cause test
+failures.
+
+There is no need to require context persitence in this test. So change
+to managing the contexts cleanly and only destroying them when they
+are no longer in use.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- tests/i915/i915_hangman.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/i915/i915_hangman.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 2dd4e1e9f..b77705206 100644
+index 4cb9b8b85..9bcf82dcd 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -347,6 +347,7 @@ static void hangcheck_unterminated(const intel_ctx_t *ctx)
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = (uintptr_t)&gem_exec;
- 	execbuf.buffer_count = 1;
-+	execbuf.rsvd1 = ctx->id;
+@@ -287,27 +287,29 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 		 const struct intel_execution_engine2 *e, unsigned int flags)
+ {
+ 	const struct intel_execution_engine2 *other;
+-	const intel_ctx_t *tmp_ctx;
++	const intel_ctx_t *local_ctx[GEM_MAX_ENGINES];
+ 	igt_spin_t *spin, *next;
+ 	IGT_LIST_HEAD(list);
+ 	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
++	int num_ctx;
  
- 	gem_execbuf(device, &execbuf);
- 	if (gem_wait(device, handle, &timeout_ns) != 0) {
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
+ 
+ 	/* Fill all the other engines with background load */
++	num_ctx = 0;
+ 	for_each_ctx_engine(device, ctx, other) {
+ 		if (other->flags == e->flags)
+ 			continue;
+ 
+-		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
+-		ahndN = get_reloc_ahnd(device, tmp_ctx->id);
++		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
++		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 		spin = __igt_spin_new(device,
+ 				      .ahnd = ahndN,
+-				      .ctx = tmp_ctx,
++				      .ctx = local_ctx[num_ctx],
+ 				      .engine = other->flags,
+ 				      .flags = IGT_SPIN_FENCE_OUT);
+-		intel_ctx_destroy(device, tmp_ctx);
++		num_ctx++;
+ 
+ 		igt_list_move(&spin->link, &list);
+ 	}
+@@ -337,7 +339,10 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 		igt_spin_free(device, spin);
+ 		put_ahnd(ahndN);
+ 	}
++
+ 	put_ahnd(ahnd);
++	while (num_ctx)
++		intel_ctx_destroy(device, local_ctx[--num_ctx]);
+ 
+ 	check_alive();
+ }
 -- 
 2.25.1
