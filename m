@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Mon, 13 Dec 2021 15:29:08 -0800
-Message-Id: <20211213232914.2523139-6-John.C.Harrison@Intel.com>
+Date: Mon, 13 Dec 2021 15:29:06 -0800
+Message-Id: <20211213232914.2523139-4-John.C.Harrison@Intel.com>
 In-Reply-To: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 References: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 05/11] tests/i915/i915_hangman: Add uevent
- test & fix detector
+Subject: [igt-dev] [PATCH i-g-t 03/11] tests/i915/i915_hangman: Update
+ capture test to use engine structure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,105 +23,56 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-Some of the IGT framework relies on receving a uevent when a hang
-occurs. So add a test that this actually works.
-
-While testing this, noticed that hangs could sometimes be missed
-because the uevent was (presumably) still in flight by the time the
-handler was de-registered. So add an extra delay during cleanup to
-give the uevent chance to arrive.
+The capture test was still using old style ring_id and ring_name
+(derived from the engine structure at the higher level). Update it to
+just take the engine structure directly.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- lib/igt_aux.c             |  7 +++++++
- tests/i915/i915_hangman.c | 43 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
+ tests/i915/i915_hangman.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index c247a1aa4..03cc38c93 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -523,6 +523,13 @@ void igt_fork_hang_detector(int fd)
- 
- void igt_stop_hang_detector(void)
- {
-+	/*
-+	 * Give the uevent time to arrive. No sleep at all misses about 20% of
-+	 * hangs (at least, in the i915_hangman/detector test). A sleep of 1ms
-+	 * seems to miss about 2%, 10ms loses <1%, so 100ms should be safe.
-+	 */
-+	usleep(100 * 1000);
-+
- 	igt_stop_helper(&hang_detector);
- }
- 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index f8a48337c..2dd4e1e9f 100644
+index 24d3b2739..bd787d7b4 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -31,6 +31,7 @@
- #include <sys/stat.h>
- #include <sys/types.h>
- #include <fcntl.h>
-+#include <signal.h>
- 
- #include "i915/gem.h"
- #include "i915/gem_create.h"
-@@ -289,6 +290,38 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	put_ahnd(ahnd);
+@@ -207,8 +207,8 @@ static void check_error_state(const char *expected_ring_name,
+ 	igt_assert(found);
  }
  
-+static int hang_count;
-+
-+static void sig_io(int sig)
-+{
-+	hang_count++;
-+}
-+
-+static void test_hang_detector(const intel_ctx_t *ctx,
-+			       const struct intel_execution_engine2 *e)
-+{
-+	igt_hang_t hang;
-+	uint64_t ahnd = get_reloc_ahnd(device, ctx->id);
-+
-+	hang_count = 0;
-+
-+	igt_fork_hang_detector(device);
-+
-+	/* Steal the signal handler */
-+	signal(SIGIO, sig_io);
-+
-+	/* Make a hang... */
-+	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, e->flags, 0);
-+
-+	igt_post_hang_ring(device, hang);
-+	put_ahnd(ahnd);
-+
-+	igt_stop_hang_detector();
-+
-+	/* Did it work? */
-+	igt_assert(hang_count == 1);
-+}
-+
- /* This test covers the case where we end up in an uninitialised area of the
-  * ppgtt and keep executing through it. This is particularly relevant if 48b
-  * ppgtt is enabled because the ppgtt is massively bigger compared to the 32b
-@@ -409,6 +442,16 @@ igt_main
- 	igt_subtest("hangcheck-unterminated")
- 		hangcheck_unterminated(ctx);
+-static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
+-				     const char *ring_name)
++static void test_error_state_capture(const intel_ctx_t *ctx,
++				     const struct intel_execution_engine2 *e)
+ {
+ 	uint32_t *batch;
+ 	igt_hang_t hang;
+@@ -217,7 +217,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
  
-+	igt_describe("Check that hang detector works");
-+	igt_subtest_with_dynamic("detector") {
-+		const struct intel_execution_engine2 *e;
-+
-+		for_each_ctx_engine(device, ctx, e) {
-+			igt_dynamic_f("%s", e->name)
-+				test_hang_detector(ctx, e);
-+		}
-+	}
-+
- 	do_tests("GT", "gt", ctx);
+ 	clear_error_state();
  
- 	igt_fixture {
+-	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, ring_id,
++	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, e->flags,
+ 				      HANG_ALLOW_CAPTURE);
+ 	offset = hang.spin->obj[IGT_SPIN_BATCH].offset;
+ 
+@@ -226,7 +226,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
+ 
+ 	igt_post_hang_ring(device, hang);
+ 
+-	check_error_state(ring_name, offset, batch);
++	check_error_state(e->name, offset, batch);
+ 	munmap(batch, 4096);
+ 	put_ahnd(ahnd);
+ }
+@@ -351,7 +351,7 @@ igt_main
+ 	igt_subtest_with_dynamic("error-state-capture") {
+ 		for_each_ctx_engine(device, ctx, e) {
+ 			igt_dynamic_f("%s", e->name)
+-				test_error_state_capture(ctx, e->flags, e->name);
++				test_error_state_capture(ctx, e);
+ 		}
+ 	}
+ 
 -- 
 2.25.1
