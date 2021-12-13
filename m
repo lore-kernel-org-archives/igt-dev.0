@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8509466150314138134=="
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0708A10E343
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Dec 2021 15:58:36 +0000 (UTC)
+Date: Mon, 13 Dec 2021 16:58:30 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <YbdtpgX4nAKNEsIY@zkempczy-mobl2>
+References: <20211210130533.3688728-1-apoorva1.singh@intel.com>
+ <20211210130533.3688728-2-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 13 Dec 2021 14:59:10 -0000
-Message-ID: <163940755094.29011.10280295561044868391@emeril.freedesktop.org>
-References: <20211213084806.23969-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20211213084806.23969-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fexec=5Fcapture=3A_Add_support_for_local_memory_=28re?=
- =?utf-8?b?djIp?=
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211210130533.3688728-2-apoorva1.singh@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t,
+ v4 1/5] lib/i915: Introduce library intel_mocs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,285 +21,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com
+To: apoorva1.singh@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8509466150314138134==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Dec 10, 2021 at 06:35:29PM +0530, apoorva1.singh@intel.com wrote:
+> From: Apoorva Singh <apoorva1.singh@intel.com>
+> 
+> Add new library intel_mocs for mocs settings.
+> 
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> ---
+>  lib/i915/intel_mocs.c | 51 +++++++++++++++++++++++++++++++++++++++++++
+>  lib/i915/intel_mocs.h | 19 ++++++++++++++++
+>  lib/meson.build       |  1 +
+>  3 files changed, 71 insertions(+)
+>  create mode 100644 lib/i915/intel_mocs.c
+>  create mode 100644 lib/i915/intel_mocs.h
+> 
+> diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
+> new file mode 100644
+> index 00000000..e8c19309
+> --- /dev/null
+> +++ b/lib/i915/intel_mocs.c
+> @@ -0,0 +1,51 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2021 Intel Corporation
+> + */
+> +
+> +#include "igt.h"
+> +#include "i915/gem.h"
+> +#include "intel_mocs.h"
+> +
+> +static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
+> +{
+> +	uint16_t devid = intel_get_drm_devid(fd);
+> +
+> +	/*
+> +	 * Gen >= 12 onwards don't have a setting for PTE,
+> +	 * so using I915_MOCS_PTE as mocs index may leads to
+> +	 * some undefined MOCS behavior.
+> +	 * This helper function is providing current UC as well
+> +	 * as WB MOCS index based on platform.
+> +
 
-== Series Details ==
+Empty line.
 
-Series: tests/i915/gem_exec_capture: Add support for local memory (rev2)
-URL   : https://patchwork.freedesktop.org/series/97149/
-State : success
+> +	 */
+> +	if (IS_DG1(devid)) {
+> +		mocs->uc_index = 1;
+> +		mocs->wb_index = 5;
 
-== Summary ==
+Previous uAPI defined enum i915_mocs_table_index, now I see we're
+hardcoding mocs entry index here. I see it changes regarding gen
+but I would like to ask - will we fill enum / add macros to have code
+more clear where no magic number is entered directly in the code?
 
-CI Bug Log - changes from CI_DRM_10994 -> IGTPW_6490
-====================================================
+--
+Zbigniew
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/index.html
-
-Participating hosts (40 -> 36)
-------------------------------
-
-  Missing    (4): fi-ctg-p8600 fi-bsw-cyan fi-bdw-samus fi-tgl-u2 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6490 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#109315]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html
-
-  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
-    - fi-snb-2600:        NOTRUN -> [SKIP][2] ([fdo#109271]) +17 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_tiled_blits@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271]) +5 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@gem_tiled_blits@basic.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][6] ([i915#1886] / [i915#2291])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-cml-u2:          [PASS][8] -> [DMESG-WARN][9] ([i915#4269])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#533])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-kbl-soraka:      [INCOMPLETE][11] -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@gem_flink_basic@bad-flink:
-    - fi-skl-6600u:       [FAIL][13] ([i915#4547]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [INCOMPLETE][15] ([i915#3303]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-    - fi-snb-2600:        [INCOMPLETE][17] ([i915#3921]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-    - fi-cfl-8109u:       [DMESG-WARN][19] ([i915#295]) -> [PASS][20] +11 similar issues
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6307 -> IGTPW_6490
-
-  CI-20190529: 20190529
-  CI_DRM_10994: 296874486caf4f72b09b04104479f3ea9fc7e9c2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6490: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/index.html
-  IGT_6307: be84fe4f151bc092e068cab5cd0cd19c34948b40 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/index.html
-
---===============8509466150314138134==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_capture: Add support for local memory (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/97149/">https://patchwork.freedesktop.org/series/97149/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_10994 -&gt; IGTPW_6490</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/index.html</p>
-<h2>Participating hosts (40 -&gt; 36)</h2>
-<p>Missing    (4): fi-ctg-p8600 fi-bsw-cyan fi-bdw-samus fi-tgl-u2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6490 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
-<ul>
-<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_blits@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +5 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-kbl-soraka/igt@gem_exec_suspend@basic-s0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_flink_basic@bad-flink:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-<li>
-<p>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_10994/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +11 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6307 -&gt; IGTPW_6490</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_10994: 296874486caf4f72b09b04104479f3ea9fc7e9c2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6490: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6490/index.html<br />
-  IGT_6307: be84fe4f151bc092e068cab5cd0cd19c34948b40 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8509466150314138134==--
+> +	} else if (IS_GEN12(devid)) {
+> +		mocs->uc_index = 3;
+> +		mocs->wb_index = 2;
+> +	} else {
+> +		mocs->uc_index = I915_MOCS_PTE;
+> +		mocs->wb_index = I915_MOCS_CACHED;
+> +	}
+> +}
+> +
+> +/* BitField [6:1] represents index to MOCS Tables
+> + * BitField [0] represents Encryption/Decryption */
+> +
+> +uint8_t intel_get_wb_mocs(int fd)
+> +{
+> +	struct drm_i915_mocs_index mocs;
+> +
+> +	get_mocs_index(fd, &mocs);
+> +	return mocs.wb_index << 1;
+> +}
+> +
+> +uint8_t intel_get_uc_mocs(int fd)
+> +{
+> +	struct drm_i915_mocs_index mocs;
+> +
+> +	get_mocs_index(fd, &mocs);
+> +	return mocs.uc_index << 1;
+> +}
+> diff --git a/lib/i915/intel_mocs.h b/lib/i915/intel_mocs.h
+> new file mode 100644
+> index 00000000..efd8607f
+> --- /dev/null
+> +++ b/lib/i915/intel_mocs.h
+> @@ -0,0 +1,19 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2019 Intel Corporation
+> + */
+> +
+> +#ifndef _INTEL_MOCS_H
+> +#define _INTEL_MOCS_H
+> +
+> +#define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
+> +#define XY_CTRL_SURF_COPY_BLT_MOCS_SHIFT	25
+> +
+> +struct drm_i915_mocs_index {
+> +	uint8_t uc_index;
+> +	uint8_t wb_index;
+> +};
+> +
+> +uint8_t intel_get_wb_mocs(int fd);
+> +uint8_t intel_get_uc_mocs(int fd);
+> +#endif /* _INTEL_MOCS_H */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index b9568a71..f500f0f1 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -11,6 +11,7 @@ lib_sources = [
+>  	'i915/gem_mman.c',
+>  	'i915/gem_vm.c',
+>  	'i915/intel_memory_region.c',
+> +	'i915/intel_mocs.c',
+>  	'igt_collection.c',
+>  	'igt_color_encoding.c',
+>  	'igt_debugfs.c',
+> -- 
+> 2.25.1
+> 
