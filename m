@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE72D10E7F4
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Dec 2021 17:40:10 +0000 (UTC)
-Date: Mon, 13 Dec 2021 18:38:36 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <YbeFHFzIuoF1mjp9@zkempczy-mobl2>
-References: <20211209200453.15885-1-zbigniew.kempczynski@intel.com>
- <20211209200453.15885-3-zbigniew.kempczynski@intel.com>
- <877dc8a1y3.wl-ashutosh.dixit@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AAF5710E85A
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Dec 2021 18:12:26 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Mon, 13 Dec 2021 19:12:08 +0100
+Message-Id: <20211213181208.159531-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <877dc8a1y3.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/i915/intel_memory_region: Add
- fallback for creating gem bo
+Subject: [igt-dev] [PATCH i-g-t] lib/i915/intel_memory_region: Handle
+ -ENODEV path individually
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,94 +19,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 13, 2021 at 08:45:24AM -0800, Dixit, Ashutosh wrote:
-> On Thu, 09 Dec 2021 12:04:53 -0800, Zbigniew Kempczyński wrote:
-> >
-> > diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-> > index fd29eec90..2263f1984 100644
-> > --- a/lib/i915/intel_memory_region.c
-> > +++ b/lib/i915/intel_memory_region.c
-> > @@ -197,8 +197,23 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
-> >		.num_regions = num_regions,
-> >		.regions = to_user_pointer(mem_regions),
-> >	};
-> > +	int ret;
-> >
-> > -	return __gem_create_ext(fd, size, handle, &ext_regions.base);
-> > +	ret = __gem_create_ext(fd, size, handle, &ext_regions.base);
-> > +
-> > +	/*
-> > +	 * Provide fallback for stable kernels if region passed in the array
-> > +	 * can be system memory. In this case we get -ENODEV but still
-> > +	 * we're able to allocate gem bo in system memory using legacy call.
-> > +	 */
-> > +	if (ret == -ENODEV)
-> > +		for (int i = 0; i < num_regions; i++)
-> > +			if (mem_regions[i].memory_class == I915_MEMORY_CLASS_SYSTEM) {
-> > +				ret = __gem_create(fd, size, handle);
-> > +				break;
-> > +			}
-> 
-> Shouldn't this function return success if mem_regions[] array contains only
-> a single system memory region entry (that is the sime of mem_regions[]
-> array is 1 and the only entry is system memory)? But here we are returning
-> success if /any/ of the regions passed in are system memory? Won't this
-> cause an error in the caller? I am not sure if checking for -ENODEV return
-> saves us in any way but I think the code should be changed to return
-> success if mem_regions[] array contains only a single system memory region.
+As Ashutosh noticed I've handled errors from the kernel too wide
+packing it to same error bag and returning system memory region in this
+case. That's of course is wrong and can lead to return system memory on
+discrete if invalid arguments would be passed to the query.
 
-If user want to create in one of memory region from the list 
-[device memory, system memory] I think we should create gem object in system
-memory as normally kernel would do if it couldn't create within local memory.
-That's why I decided to iterate over request regions and create within 
-system memory if it is possible.
+Return previous behavior of query memory regions handling -ENODEV path
+individually. For this error lets assume we got kernel which doesn't
+support this query yet so returning system memory region is a reasonable
+choice because this region exists for all of i915 gens.
 
-Please take a look to conditional in stable kernels:
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reported-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/i915/intel_memory_region.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-	if (!IS_ENABLED(CONFIG_DRM_I915_UNSTABLE_FAKE_LMEM))
-
-So query + create_ext should be covered to avoid failures on IGT code
-which works with not drm-tip code.
-
-> 
-> I think the previous patch "lib/i915/intel_memory_region: Provide system
-> memory region stub" is fine and serves this purpose of returning a single
-> system memory region. Do we even need this patch?
-
-Take a look to results:
-https://intel-gfx-ci.01.org/tree/linux-stable/index-alt.html?
-
-gem_exec_basic requires properly running code:
-
-static uint32_t batch_create(int fd, uint32_t batch_size, uint32_t region)
-{
-	const uint32_t bbe = MI_BATCH_BUFFER_END;
-	uint32_t handle;
-
-	handle = gem_create_in_memory_regions(fd, batch_size, region);
-	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-
-	return handle;
-}
-
-which will fail on gem_create_in_memory_regions() with -ENODEV. I just
-want to cover also creating objects globally only when system memory
-is available.
-
---
-Zbigniew
-
-> 
-> 
-> > +
-> > +	return ret;
-> >  }
-> >
-> >  /* gem_create_in_memory_region_list:
-> > --
-> > 2.26.0
-> >
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 2263f1984..dfbb8acf0 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -124,10 +124,11 @@ struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd)
+ 	 * item.length, even though the ioctl might still return success.
+ 	 */
+ 
+-	if (item.length < 0) {
++	if (item.length == -ENODEV) {
+ 		/*
+-		 * If kernel supports query but not memory regions query
+-		 * just return predefined system memory region only.
++		 * If kernel supports query but not memory regions and it
++		 * returns -ENODEV just return predefined system memory region
++		 * only.
+ 		 */
+ 		size_t sys_qi_size = offsetof(typeof(*query_info), regions[1]);
+ 
+@@ -135,6 +136,11 @@ struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd)
+ 		query_info->num_regions = 1;
+ 		query_info->regions[0].region.memory_class = I915_MEMORY_CLASS_SYSTEM;
+ 		goto out;
++	} else if (item.length < 0) {
++		/* Any other error are critial so no fallback is possible */
++		igt_critical("DRM_I915_QUERY_MEMORY_REGIONS failed with %d\n",
++			     item.length);
++		goto out;
+ 	}
+ 
+ 	query_info = calloc(1, item.length);
+-- 
+2.32.0
