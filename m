@@ -1,58 +1,95 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Mon, 13 Dec 2021 15:29:03 -0800
-Message-Id: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
+Date: Mon, 13 Dec 2021 15:29:04 -0800
+Message-Id: <20211213232914.2523139-2-John.C.Harrison@Intel.com>
+In-Reply-To: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
+References: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [Intel-gfx] [PATCH i-g-t 00/11] Fixes for i915_hangman and
- gem_exec_capture
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Subject: [igt-dev] [PATCH i-g-t 01/11] tests/i915/i915_hangman: Add
+ descriptions
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-Fix a bunch of issues with i915_hangman and gem_exec_capture with the
-ultimate aim of making them pass on GuC enabled platforms.
+Added descriptions of the various sub-tests and the test as a whole.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+---
+ tests/i915/i915_hangman.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-
-John Harrison (11):
-  tests/i915/i915_hangman: Add descriptions
-  lib/hang: Fix igt_require_hang_ring to work with all engines
-  tests/i915/i915_hangman: Update capture test to use engine structure
-  tests/i915/i915_hangman: Explicitly test per engine reset vs full GPU
-    reset
-  tests/i915/i915_hangman: Add uevent test & fix detector
-  tests/i915/i915_hangman: Use the correct context in
-    hangcheck_unterminated
-  tests/i915/i915_hangman: Add alive-ness test after error capture
-  lib/store: Refactor common store code into helper function
-  tests/i915/i915_hangman: Remove reliance on context persistance
-  tests/i915/i915_hangman: Run background task on all engines
-  tests/i915/gem_exec_fence: Configure correct context
-
- lib/igt_aux.c               |   7 ++
- lib/igt_gt.c                |   6 +-
- lib/igt_gt.h                |   2 +-
- lib/igt_store.c             | 114 ++++++++++++++++++
- lib/igt_store.h             |  30 +++++
- lib/meson.build             |   1 +
- tests/i915/gem_exec_fence.c |  79 +------------
- tests/i915/i915_hangman.c   | 223 +++++++++++++++++++++++++++++-------
- 8 files changed, 343 insertions(+), 119 deletions(-)
- create mode 100644 lib/igt_store.c
- create mode 100644 lib/igt_store.h
-
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index 4c18c22db..025bb8713 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -46,6 +46,8 @@
+ static int device = -1;
+ static int sysfs = -1;
+ 
++IGT_TEST_DESCRIPTION("Tests for hang detection and recovery");
++
+ static bool has_error_state(int dir)
+ {
+ 	bool result;
+@@ -315,9 +317,9 @@ static void hangcheck_unterminated(void)
+ 
+ 	gem_execbuf(device, &execbuf);
+ 	if (gem_wait(device, handle, &timeout_ns) != 0) {
+-		/* need to manually trigger an hang to clean before failing */
++		/* need to manually trigger a hang to clean before failing */
+ 		igt_force_gpu_reset(device);
+-		igt_assert_f(0, "unterminated batch did not trigger an hang!");
++		igt_assert_f(0, "unterminated batch did not trigger a hang!");
+ 	}
+ }
+ 
+@@ -341,9 +343,11 @@ igt_main
+ 		igt_require(has_error_state(sysfs));
+ 	}
+ 
++	igt_describe("Basic error capture");
+ 	igt_subtest("error-state-basic")
+ 		test_error_state_basic();
+ 
++	igt_describe("Per engine error capture");
+ 	igt_subtest_with_dynamic("error-state-capture") {
+ 		for_each_ctx_engine(device, ctx, e) {
+ 			igt_dynamic_f("%s", e->name)
+@@ -351,6 +355,7 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Per engine hang recovery (spin)");
+ 	igt_subtest_with_dynamic("engine-hang") {
+                 int has_gpu_reset = 0;
+ 		struct drm_i915_getparam gp = {
+@@ -369,6 +374,7 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Per engine hang recovery (invalid CS)");
+ 	igt_subtest_with_dynamic("engine-error") {
+ 		int has_gpu_reset = 0;
+ 		struct drm_i915_getparam gp = {
+@@ -386,6 +392,7 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Check that executing unintialised memory causes a hang");
+ 	igt_subtest("hangcheck-unterminated")
+ 		hangcheck_unterminated();
+ 
 -- 
 2.25.1
