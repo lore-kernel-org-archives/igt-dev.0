@@ -1,78 +1,50 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Mon, 13 Dec 2021 15:29:06 -0800
-Message-Id: <20211213232914.2523139-4-John.C.Harrison@Intel.com>
+Date: Mon, 13 Dec 2021 15:29:14 -0800
+Message-Id: <20211213232914.2523139-12-John.C.Harrison@Intel.com>
 In-Reply-To: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 References: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 03/11] tests/i915/i915_hangman: Update
- capture test to use engine structure
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Subject: [Intel-gfx] [PATCH i-g-t 11/11] tests/i915/gem_exec_fence:
+ Configure correct context
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The capture test was still using old style ring_id and ring_name
-(derived from the engine structure at the higher level). Update it to
-just take the engine structure directly.
+The update to use intel_ctx_t missed a line that configures the
+context to allow hanging. Fix that.
+
+Fixes: 09c36188b23f83ef9a7b5414e2a10100adc4291f
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- tests/i915/i915_hangman.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tests/i915/gem_exec_fence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 24d3b2739..bd787d7b4 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -207,8 +207,8 @@ static void check_error_state(const char *expected_ring_name,
- 	igt_assert(found);
- }
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index c4091a454..328a2f06e 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -3139,7 +3139,7 @@ igt_main
+ 			igt_hang_t hang;
  
--static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
--				     const char *ring_name)
-+static void test_error_state_capture(const intel_ctx_t *ctx,
-+				     const struct intel_execution_engine2 *e)
- {
- 	uint32_t *batch;
- 	igt_hang_t hang;
-@@ -217,7 +217,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
- 
- 	clear_error_state();
- 
--	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, ring_id,
-+	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, e->flags,
- 				      HANG_ALLOW_CAPTURE);
- 	offset = hang.spin->obj[IGT_SPIN_BATCH].offset;
- 
-@@ -226,7 +226,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
- 
- 	igt_post_hang_ring(device, hang);
- 
--	check_error_state(ring_name, offset, batch);
-+	check_error_state(e->name, offset, batch);
- 	munmap(batch, 4096);
- 	put_ahnd(ahnd);
- }
-@@ -351,7 +351,7 @@ igt_main
- 	igt_subtest_with_dynamic("error-state-capture") {
- 		for_each_ctx_engine(device, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				test_error_state_capture(ctx, e->flags, e->name);
-+				test_error_state_capture(ctx, e);
- 		}
- 	}
+ 			igt_fixture {
+-				hang = igt_allow_hang(i915, 0, 0);
++				hang = igt_allow_hang(i915, ctx->id, 0);
+ 				intel_allocator_multiprocess_start();
+ 			}
  
 -- 
 2.25.1
