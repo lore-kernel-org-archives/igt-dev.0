@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Mon, 13 Dec 2021 15:29:10 -0800
-Message-Id: <20211213232914.2523139-8-John.C.Harrison@Intel.com>
+Date: Mon, 13 Dec 2021 15:29:13 -0800
+Message-Id: <20211213232914.2523139-11-John.C.Harrison@Intel.com>
 In-Reply-To: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 References: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 07/11] tests/i915/i915_hangman: Add
- alive-ness test after error capture
+Subject: [igt-dev] [PATCH i-g-t 10/11] tests/i915/i915_hangman: Run
+ background task on all engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,178 +23,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-Added a an extra step to the i915_hangman tests to check that the
-system is still alive after the hang and recovery. This submits a
-simple batch to each engine which does a write to memory and checks
-that the write occurred.
+As opposed to only on the non-target engines. This means that there is
+some other workload present for the scheduler to switch between and so
+detet the hang immediately.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- tests/i915/i915_hangman.c | 115 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 115 insertions(+)
+ tests/i915/i915_hangman.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index b77705206..20653b479 100644
+index 9bcf82dcd..042100355 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -47,8 +47,113 @@
- static int device = -1;
- static int sysfs = -1;
+@@ -296,12 +296,14 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
  
-+#define OFFSET_ALIVE	10
-+
- IGT_TEST_DESCRIPTION("Tests for hang detection and recovery");
- 
-+/* Requires master for STORE_DWORD on gen4/5 */
-+static void store(int fd, const struct intel_execution_engine2 *e,
-+		  int fence, uint32_t target, unsigned offset_value)
-+{
-+	const int SCRATCH = 0;
-+	const int BATCH = 1;
-+	const int gen = intel_gen(intel_get_drm_devid(fd));
-+	struct drm_i915_gem_exec_object2 obj[2];
-+	struct drm_i915_gem_relocation_entry reloc;
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	uint32_t batch[16];
-+	int i;
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.buffer_count = ARRAY_SIZE(obj);
-+	execbuf.flags = e->flags;
-+	if (fence != -1) {
-+		execbuf.flags |= I915_EXEC_FENCE_IN;
-+		execbuf.rsvd2 = fence;
-+	}
-+	if (gen < 6)
-+		execbuf.flags |= I915_EXEC_SECURE;
-+
-+	memset(obj, 0, sizeof(obj));
-+	obj[SCRATCH].handle = target;
-+
-+	obj[BATCH].handle = gem_create(fd, 4096);
-+	obj[BATCH].relocs_ptr = to_user_pointer(&reloc);
-+	obj[BATCH].relocation_count = 1;
-+	memset(&reloc, 0, sizeof(reloc));
-+
-+	i = 0;
-+	reloc.target_handle = obj[SCRATCH].handle;
-+	reloc.presumed_offset = -1;
-+	reloc.offset = sizeof(uint32_t) * (i + 1);
-+	reloc.delta = sizeof(uint32_t) * offset_value;
-+	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
-+	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-+	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
-+	if (gen >= 8) {
-+		batch[++i] = reloc.delta;
-+		batch[++i] = 0;
-+	} else if (gen >= 4) {
-+		batch[++i] = 0;
-+		batch[++i] = reloc.delta;
-+		reloc.offset += sizeof(uint32_t);
-+	} else {
-+		batch[i]--;
-+		batch[++i] = reloc.delta;
-+	}
-+	batch[++i] = offset_value;
-+	batch[++i] = MI_BATCH_BUFFER_END;
-+	gem_write(fd, obj[BATCH].handle, 0, batch, sizeof(batch));
-+	gem_execbuf(fd, &execbuf);
-+	gem_close(fd, obj[BATCH].handle);
-+}
-+
-+static void check_alive(void)
-+{
-+	const struct intel_execution_engine2 *engine;
-+	const intel_ctx_t *ctx;
-+	uint32_t scratch, *out;
-+	int fd, i = 0;
-+	uint64_t ahnd;
-+
-+	fd = drm_open_driver(DRIVER_INTEL);
-+	igt_require(gem_class_can_store_dword(fd, 0));
-+
-+	ctx = intel_ctx_create_all_physical(fd);
-+	ahnd = get_reloc_ahnd(fd, ctx->id);
-+	scratch = gem_create(fd, 4096);
-+	out = gem_mmap__wc(fd, scratch, 0, 4096, PROT_WRITE);
-+	gem_set_domain(fd, scratch,
-+			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-+
-+	for_each_physical_engine(fd, engine) {
-+		igt_assert_eq_u32(out[i + OFFSET_ALIVE], 0);
-+		i++;
-+	}
-+
-+	i = 0;
-+	for_each_ctx_engine(fd, ctx, engine) {
-+		if (!gem_class_can_store_dword(fd, engine->class))
-+			continue;
-+
-+		/* +OFFSET_ALIVE to ensure engine zero doesn't get a false negative */
-+		store(fd, engine, -1, scratch, i + OFFSET_ALIVE);
-+		i++;
-+	}
-+
-+	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
-+
-+	while (i--)
-+		igt_assert_eq_u32(out[i + OFFSET_ALIVE], i + OFFSET_ALIVE);
-+
-+	munmap(out, 4096);
-+	gem_close(fd, scratch);
-+	put_ahnd(ahnd);
-+	intel_ctx_destroy(fd, ctx);
-+	close(fd);
-+}
-+
- static bool has_error_state(int dir)
- {
- 	bool result;
-@@ -230,6 +335,8 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
- 	check_error_state(e->name, offset, batch);
- 	munmap(batch, 4096);
- 	put_ahnd(ahnd);
-+
-+	check_alive();
- }
- 
- static void
-@@ -288,6 +395,8 @@ test_engine_hang(const intel_ctx_t *ctx,
- 		put_ahnd(ahndN);
- 	}
- 	put_ahnd(ahnd);
-+
-+	check_alive();
- }
- 
- static int hang_count;
-@@ -320,6 +429,8 @@ static void test_hang_detector(const intel_ctx_t *ctx,
- 
- 	/* Did it work? */
- 	igt_assert(hang_count == 1);
-+
-+	check_alive();
- }
- 
- /* This test covers the case where we end up in an uninitialised area of the
-@@ -355,6 +466,8 @@ static void hangcheck_unterminated(const intel_ctx_t *ctx)
- 		igt_force_gpu_reset(device);
- 		igt_assert_f(0, "unterminated batch did not trigger a hang!");
- 	}
-+
-+	check_alive();
- }
- 
- static void do_tests(const char *name, const char *prefix,
-@@ -432,6 +545,8 @@ igt_main
- 		igt_assert(sysfs != -1);
- 
- 		igt_require(has_error_state(sysfs));
-+
-+		gem_require_mmap_wc(device);
- 	}
- 
- 	igt_describe("Basic error capture");
+-	/* Fill all the other engines with background load */
++	/*
++	 * Fill all engines with background load.
++	 * This verifies that independent engines are unaffected and gives
++	 * the target engine something to switch between so it notices the
++	 * hang.
++	 */
+ 	num_ctx = 0;
+ 	for_each_ctx_engine(device, ctx, other) {
+-		if (other->flags == e->flags)
+-			continue;
+-
+ 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
+ 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 		spin = __igt_spin_new(device,
 -- 
 2.25.1
