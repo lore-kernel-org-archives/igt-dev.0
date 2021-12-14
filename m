@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29DAC10E470
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Dec 2021 12:56:59 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53E1810E476
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Dec 2021 13:04:30 +0000 (UTC)
 From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Date: Tue, 14 Dec 2021 18:21:32 +0530
-Message-Id: <20211214125132.4084470-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Tue, 14 Dec 2021 18:29:02 +0530
+Message-Id: <20211214125902.4084623-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [i-g-t,
- V2] tests/i915/gem_exec_balancer: bonding support check in
+ V3] tests/i915/gem_exec_balancer: bonding support check in
  invalid-balancer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -30,9 +30,11 @@ change they should rightly skip with proper message.
 
 Reference: https://cgit.freedesktop.org/drm-tip/commit/?id=ce7e75c7ef1bf8ea3d947da8c674d2f40fd7d734
 
+Changes since V2 :
+	- Solved checkpatch errors.
 Changes since V1 :
-	- use function to check bonding capability so that
-	  we dont skip whole test in case bonding not supported.
+        - use function to check bonding capability so that
+          we dont skip whole test in case bonding not supported.
 
 Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 ---
@@ -40,7 +42,7 @@ Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
  1 file changed, 30 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index d58734ab..ab095899 100644
+index d58734ab..0810f910 100644
 --- a/tests/i915/gem_exec_balancer.c
 +++ b/tests/i915/gem_exec_balancer.c
 @@ -180,6 +180,33 @@ __set_param_fresh_context(int i915, struct drm_i915_gem_context_param param)
@@ -49,27 +51,27 @@ index d58734ab..ab095899 100644
  
 +static bool has_bonding(int i915)
 +{
-+        I915_DEFINE_CONTEXT_ENGINES_BOND(bonds[16], 1);
-+        I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1);
-+        struct drm_i915_gem_context_param p = {
-+                .param = I915_CONTEXT_PARAM_ENGINES,
-+                .value = to_user_pointer(&engines),
-+                .size = sizeof(engines),
-+        };
-+        int ret;
++	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds[16], 1);
++	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1);
++	struct drm_i915_gem_context_param p = {
++		.param = I915_CONTEXT_PARAM_ENGINES,
++		.value = to_user_pointer(&engines),
++		.size = sizeof(engines),
++	};
++	int ret;
 +
 +	memset(&engines, 0, sizeof(engines));
 +	igt_assert_eq(__set_param_fresh_context(i915, p), 0);
 +
 +	memset(bonds, 0, sizeof(bonds));
-+        for (int n = 0; n < ARRAY_SIZE(bonds); n++) {
-+                bonds[n].base.name = I915_CONTEXT_ENGINES_EXT_BOND;
-+                bonds[n].base.next_extension =
-+                        n ? to_user_pointer(&bonds[n - 1]) : 0;
-+                bonds[n].num_bonds = 1;
-+        }
-+        engines.extensions = to_user_pointer(&bonds);
-+        ret = __set_param_fresh_context(i915, p);
++	for (int n = 0; n < ARRAY_SIZE(bonds); n++) {
++		bonds[n].base.name = I915_CONTEXT_ENGINES_EXT_BOND;
++		bonds[n].base.next_extension =
++			n ? to_user_pointer(&bonds[n - 1]) : 0;
++		bonds[n].num_bonds = 1;
++	}
++	engines.extensions = to_user_pointer(&bonds);
++	ret = __set_param_fresh_context(i915, p);
 +
 +	return ret == -ENODEV ? false : true;
 +}
