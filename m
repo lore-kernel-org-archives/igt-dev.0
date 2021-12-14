@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 14 Dec 2021 11:47:50 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YbhoRiHwnkZV3awF@platvala-desk.ger.corp.intel.com>
-References: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
- <20211213232914.2523139-2-John.C.Harrison@Intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80E3610E285
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Dec 2021 09:57:13 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Tue, 14 Dec 2021 15:21:47 +0530
+Message-Id: <20211214095147.4084117-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211213232914.2523139-2-John.C.Harrison@Intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 01/11] tests/i915/i915_hangman: Add
- descriptions
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t] tests/i915/gem_exec_balancer: bonding support
+ check in invalid-balancer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,88 +18,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John.C.Harrison@intel.com
-Cc: IGT-Dev@lists.freedesktop.org, Intel-GFX@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 13, 2021 at 03:29:04PM -0800, John.C.Harrison@Intel.com wrote:
-> From: John Harrison <John.C.Harrison@Intel.com>
-> 
-> Added descriptions of the various sub-tests and the test as a whole.
-> 
-> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> ---
->  tests/i915/i915_hangman.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-> index 4c18c22db..025bb8713 100644
-> --- a/tests/i915/i915_hangman.c
-> +++ b/tests/i915/i915_hangman.c
-> @@ -46,6 +46,8 @@
->  static int device = -1;
->  static int sysfs = -1;
->  
-> +IGT_TEST_DESCRIPTION("Tests for hang detection and recovery");
-> +
->  static bool has_error_state(int dir)
->  {
->  	bool result;
-> @@ -315,9 +317,9 @@ static void hangcheck_unterminated(void)
->  
->  	gem_execbuf(device, &execbuf);
->  	if (gem_wait(device, handle, &timeout_ns) != 0) {
-> -		/* need to manually trigger an hang to clean before failing */
-> +		/* need to manually trigger a hang to clean before failing */
->  		igt_force_gpu_reset(device);
-> -		igt_assert_f(0, "unterminated batch did not trigger an hang!");
-> +		igt_assert_f(0, "unterminated batch did not trigger a hang!");
+Bonding is disabled on GEN12+ platforms, except ones already
+supported by the i915 - TGL, RKL, and ADL-S.
 
-Ouch, this is a bug that could use a drive-by fix in this same commit:
-Add a newline after that text.
+Currently few tests are failing for same reason, with this
+change they should rightly skip with proper message.
 
-With that,
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Reference: https://cgit.freedesktop.org/drm-tip/commit/?id=ce7e75c7ef1bf8ea3d947da8c674d2f40fd7d734
 
->  	}
->  }
->  
-> @@ -341,9 +343,11 @@ igt_main
->  		igt_require(has_error_state(sysfs));
->  	}
->  
-> +	igt_describe("Basic error capture");
->  	igt_subtest("error-state-basic")
->  		test_error_state_basic();
->  
-> +	igt_describe("Per engine error capture");
->  	igt_subtest_with_dynamic("error-state-capture") {
->  		for_each_ctx_engine(device, ctx, e) {
->  			igt_dynamic_f("%s", e->name)
-> @@ -351,6 +355,7 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Per engine hang recovery (spin)");
->  	igt_subtest_with_dynamic("engine-hang") {
->                  int has_gpu_reset = 0;
->  		struct drm_i915_getparam gp = {
-> @@ -369,6 +374,7 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Per engine hang recovery (invalid CS)");
->  	igt_subtest_with_dynamic("engine-error") {
->  		int has_gpu_reset = 0;
->  		struct drm_i915_getparam gp = {
-> @@ -386,6 +392,7 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Check that executing unintialised memory causes a hang");
->  	igt_subtest("hangcheck-unterminated")
->  		hangcheck_unterminated();
->  
-> -- 
-> 2.25.1
-> 
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+---
+ tests/i915/gem_exec_balancer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index d58734ab..5be38267 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -300,6 +300,8 @@ static void invalid_balancer(int i915)
+ 		munmap(ptr + 4096, 4096);
+ 
+ 		if (count >= 2) {
++			int ret;
++
+ 			/* You can't bond to a balanced engine */
+ 			memset(&bond, 0, sizeof(bond));
+ 			bond.base.name = I915_CONTEXT_ENGINES_EXT_BOND;
+@@ -321,7 +323,9 @@ static void invalid_balancer(int i915)
+ 			p.size = (sizeof(struct i915_context_param_engines) +
+ 				  sizeof(*engines.engines));
+ 
+-			igt_assert_eq(__set_param_fresh_context(i915, p), -EINVAL);
++			ret = __set_param_fresh_context(i915, p);
++			igt_skip_on_f(ret  == -ENODEV, "Bonding not supported\n");
++			igt_assert_eq(ret, -EINVAL);
+ 		}
+ 
+ 		free(ci);
+-- 
+2.31.1
