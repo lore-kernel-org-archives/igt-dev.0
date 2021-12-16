@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88AD310FD3A
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Dec 2021 13:15:37 +0000 (UTC)
-Date: Thu, 16 Dec 2021 14:15:32 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11EDD10F6B7
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Dec 2021 13:19:09 +0000 (UTC)
+Date: Thu, 16 Dec 2021 14:19:03 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <Ybs79JOTD0RhX+HN@zkempczy-mobl2>
+Message-ID: <Ybs8x06e2CeuIQZz@zkempczy-mobl2>
 References: <20211210130533.3688728-1-apoorva1.singh@intel.com>
  <20211210130533.3688728-3-apoorva1.singh@intel.com>
 MIME-Version: 1.0
@@ -241,18 +241,15 @@ On Fri, Dec 10, 2021 at 06:35:30PM +0530, apoorva1.singh@intel.com wrote:
 > +			dst_mem_type = MEM_TYPE_LOCAL;
 > +			src_compression = enable_compression ? (COMPRESSION_ENABLE | AUX_CCS_E) : 0;
 > +			dst_compression = enable_compression ? (COMPRESSION_ENABLE | AUX_CCS_E) : 0;
+> +			resolve = FULL_RESOLVE;
+> +	}
 
-Same here - we distribute bit settings across two functions:
-__xy_block_copy_blt() and make_block_copy_batch() what I don't like.
-I think we should pass all required parameters to make_block_copy_batch
-to avoid passing already shifted values. I think we should have single point 
-(make_block_copy_batch()) which does all required bitshifts.
+Wow, I was blind before - in all 'case' there're missing breaks,
+so we catch last one if we hit any.
 
 --
 Zbigniew
- 
-> +			resolve = FULL_RESOLVE;
-> +	}
+
 > +
 > +	offset_src = get_offset(ahnd, src, src_size, 0);
 > +	offset_dst = get_offset(ahnd, dst, dst_size, 0);
