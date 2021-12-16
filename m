@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2408010EACE
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Dec 2021 13:11:58 +0000 (UTC)
-Date: Thu, 16 Dec 2021 14:11:40 +0100
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88AD310FD3A
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Dec 2021 13:15:37 +0000 (UTC)
+Date: Thu, 16 Dec 2021 14:15:32 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <Ybs7DP1VlFDwgiUD@zkempczy-mobl2>
+Message-ID: <Ybs79JOTD0RhX+HN@zkempczy-mobl2>
 References: <20211210130533.3688728-1-apoorva1.singh@intel.com>
  <20211210130533.3688728-3-apoorva1.singh@intel.com>
 MIME-Version: 1.0
@@ -102,15 +102,6 @@ On Fri, Dec 10, 2021 at 06:35:30PM +0530, apoorva1.singh@intel.com wrote:
 > +
 > +	/* BG 0 */
 > +	b[0] = BLOCK_COPY_BLT_CMD | resolve;
-
-I don't like how resolve is passed here. Caller must know at which bits
-set this what is wrong imo. 
-We should have definitions: RESOLVE_NONE = 0, RESOLVE_FULL = 1, RESOLVE_PARTIAL = 2
-and bit shift to valid position should be done here.
-
---
-Zbigniew
-
 > +
 > +	/* BG 1
 > +	 *
@@ -250,6 +241,16 @@ Zbigniew
 > +			dst_mem_type = MEM_TYPE_LOCAL;
 > +			src_compression = enable_compression ? (COMPRESSION_ENABLE | AUX_CCS_E) : 0;
 > +			dst_compression = enable_compression ? (COMPRESSION_ENABLE | AUX_CCS_E) : 0;
+
+Same here - we distribute bit settings across two functions:
+__xy_block_copy_blt() and make_block_copy_batch() what I don't like.
+I think we should pass all required parameters to make_block_copy_batch
+to avoid passing already shifted values. I think we should have single point 
+(make_block_copy_batch()) which does all required bitshifts.
+
+--
+Zbigniew
+ 
 > +			resolve = FULL_RESOLVE;
 > +	}
 > +
