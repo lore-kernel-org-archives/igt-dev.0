@@ -1,212 +1,70 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Thu, 16 Dec 2021 08:23:59 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <Ybrpj/tO+b8JsPPJ@zkempczy-mobl2>
-References: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
- <20211213232914.2523139-8-John.C.Harrison@Intel.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D522810E5D2
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Dec 2021 07:28:02 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Thu, 16 Dec 2021 07:27:57 +0000
+Message-ID: <a518d822f75f47d1a6541fcdf9592659@intel.com>
+References: <20211215103506.17273-1-petri.latvala@intel.com>
+ <163957608713.18075.11111011809903076679@emeril.freedesktop.org>
+ <YbreHoq9/14yCQCL@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YbreHoq9/14yCQCL@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211213232914.2523139-8-John.C.Harrison@Intel.com>
-Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t 07/11]
- tests/i915/i915_hangman: Add alive-ness test after error capture
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: John.C.Harrison@intel.com
-Cc: IGT-Dev@lists.freedesktop.org, Intel-GFX@lists.freedesktop.org
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fcore=3A_Ensure_subtest_result_is_skip_if_all_dynamic_subtes?=
+ =?utf-8?q?ts_skip?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: "Latvala, Petri" <petri.latvala@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 13, 2021 at 03:29:10PM -0800, John.C.Harrison@Intel.com wrote:
-> From: John Harrison <John.C.Harrison@Intel.com>
-> 
-> Added a an extra step to the i915_hangman tests to check that the
-> system is still alive after the hang and recovery. This submits a
-> simple batch to each engine which does a write to memory and checks
-> that the write occurred.
-> 
-> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> ---
->  tests/i915/i915_hangman.c | 115 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 115 insertions(+)
-> 
-> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-> index b77705206..20653b479 100644
-> --- a/tests/i915/i915_hangman.c
-> +++ b/tests/i915/i915_hangman.c
-> @@ -47,8 +47,113 @@
->  static int device = -1;
->  static int sysfs = -1;
->  
-> +#define OFFSET_ALIVE	10
-> +
->  IGT_TEST_DESCRIPTION("Tests for hang detection and recovery");
->  
-> +/* Requires master for STORE_DWORD on gen4/5 */
-> +static void store(int fd, const struct intel_execution_engine2 *e,
-> +		  int fence, uint32_t target, unsigned offset_value)
-> +{
-> +	const int SCRATCH = 0;
-> +	const int BATCH = 1;
-> +	const int gen = intel_gen(intel_get_drm_devid(fd));
-> +	struct drm_i915_gem_exec_object2 obj[2];
-> +	struct drm_i915_gem_relocation_entry reloc;
-> +	struct drm_i915_gem_execbuffer2 execbuf;
-> +	uint32_t batch[16];
-> +	int i;
-> +
-> +	memset(&execbuf, 0, sizeof(execbuf));
-> +	execbuf.buffers_ptr = to_user_pointer(obj);
-> +	execbuf.buffer_count = ARRAY_SIZE(obj);
-> +	execbuf.flags = e->flags;
-> +	if (fence != -1) {
-> +		execbuf.flags |= I915_EXEC_FENCE_IN;
-> +		execbuf.rsvd2 = fence;
-> +	}
-> +	if (gen < 6)
-> +		execbuf.flags |= I915_EXEC_SECURE;
-> +
-> +	memset(obj, 0, sizeof(obj));
-> +	obj[SCRATCH].handle = target;
-> +
-> +	obj[BATCH].handle = gem_create(fd, 4096);
-> +	obj[BATCH].relocs_ptr = to_user_pointer(&reloc);
-> +	obj[BATCH].relocation_count = 1;
-> +	memset(&reloc, 0, sizeof(reloc));
-> +
-> +	i = 0;
-> +	reloc.target_handle = obj[SCRATCH].handle;
-> +	reloc.presumed_offset = -1;
-> +	reloc.offset = sizeof(uint32_t) * (i + 1);
-> +	reloc.delta = sizeof(uint32_t) * offset_value;
-> +	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
-> +	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
-> +	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
-> +	if (gen >= 8) {
-> +		batch[++i] = reloc.delta;
-> +		batch[++i] = 0;
-> +	} else if (gen >= 4) {
-> +		batch[++i] = 0;
-> +		batch[++i] = reloc.delta;
-> +		reloc.offset += sizeof(uint32_t);
-> +	} else {
-> +		batch[i]--;
-> +		batch[++i] = reloc.delta;
-> +	}
-> +	batch[++i] = offset_value;
-> +	batch[++i] = MI_BATCH_BUFFER_END;
-> +	gem_write(fd, obj[BATCH].handle, 0, batch, sizeof(batch));
-> +	gem_execbuf(fd, &execbuf);
-> +	gem_close(fd, obj[BATCH].handle);
-> +}
-> +
-> +static void check_alive(void)
-> +{
-> +	const struct intel_execution_engine2 *engine;
-> +	const intel_ctx_t *ctx;
-> +	uint32_t scratch, *out;
-> +	int fd, i = 0;
-> +	uint64_t ahnd;
-> +
-> +	fd = drm_open_driver(DRIVER_INTEL);
-> +	igt_require(gem_class_can_store_dword(fd, 0));
-> +
-> +	ctx = intel_ctx_create_all_physical(fd);
-> +	ahnd = get_reloc_ahnd(fd, ctx->id);
-> +	scratch = gem_create(fd, 4096);
-> +	out = gem_mmap__wc(fd, scratch, 0, 4096, PROT_WRITE);
-> +	gem_set_domain(fd, scratch,
-> +			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-> +
-> +	for_each_physical_engine(fd, engine) {
-> +		igt_assert_eq_u32(out[i + OFFSET_ALIVE], 0);
-> +		i++;
-> +	}
-> +
-> +	i = 0;
-> +	for_each_ctx_engine(fd, ctx, engine) {
-> +		if (!gem_class_can_store_dword(fd, engine->class))
-> +			continue;
-> +
-> +		/* +OFFSET_ALIVE to ensure engine zero doesn't get a false negative */
-> +		store(fd, engine, -1, scratch, i + OFFSET_ALIVE);
-
-You need to pass ctx + ahnd to store() to add softpin path. Relocs
-won't work above Tigerlake.
-
---
-Zbigniew
-
-
-> +		i++;
-> +	}
-> +
-> +	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
-> +
-> +	while (i--)
-> +		igt_assert_eq_u32(out[i + OFFSET_ALIVE], i + OFFSET_ALIVE);
-> +
-> +	munmap(out, 4096);
-> +	gem_close(fd, scratch);
-> +	put_ahnd(ahnd);
-> +	intel_ctx_destroy(fd, ctx);
-> +	close(fd);
-> +}
-> +
->  static bool has_error_state(int dir)
->  {
->  	bool result;
-> @@ -230,6 +335,8 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
->  	check_error_state(e->name, offset, batch);
->  	munmap(batch, 4096);
->  	put_ahnd(ahnd);
-> +
-> +	check_alive();
->  }
->  
->  static void
-> @@ -288,6 +395,8 @@ test_engine_hang(const intel_ctx_t *ctx,
->  		put_ahnd(ahndN);
->  	}
->  	put_ahnd(ahnd);
-> +
-> +	check_alive();
->  }
->  
->  static int hang_count;
-> @@ -320,6 +429,8 @@ static void test_hang_detector(const intel_ctx_t *ctx,
->  
->  	/* Did it work? */
->  	igt_assert(hang_count == 1);
-> +
-> +	check_alive();
->  }
->  
->  /* This test covers the case where we end up in an uninitialised area of the
-> @@ -355,6 +466,8 @@ static void hangcheck_unterminated(const intel_ctx_t *ctx)
->  		igt_force_gpu_reset(device);
->  		igt_assert_f(0, "unterminated batch did not trigger a hang!");
->  	}
-> +
-> +	check_alive();
->  }
->  
->  static void do_tests(const char *name, const char *prefix,
-> @@ -432,6 +545,8 @@ igt_main
->  		igt_assert(sysfs != -1);
->  
->  		igt_require(has_error_state(sysfs));
-> +
-> +		gem_require_mmap_wc(device);
->  	}
->  
->  	igt_describe("Basic error capture");
-> -- 
-> 2.25.1
-> 
+V2UgaGF2ZSBhbiBleGlzdGluZyBidWcgZm9yIHRoZSByZWdyZXNzaW9uLCB1cGRhdGVkIHRoZSBm
+aWx0ZXIgdG8gaW5jbHVkZSB0aGUgdGVzdA0KaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
+L2RybS9pbnRlbC8tL2lzc3Vlcy8zNzc4DQppZ3RAZ2VtX2V4ZWNfZW5kbGVzc0BkaXNwYXRjaEAu
+KiAtIGluY29tcGxldGUgLSBQZXItdGVzdCB0aW1lb3V0IGV4Y2VlZGVkLiBLaWxsaW5nIHRoZSBj
+dXJyZW50IHRlc3Qgd2l0aCBTSUdRVUlULg0KDQpMYWtzaG1pLg0KLS0tLS1PcmlnaW5hbCBNZXNz
+YWdlLS0tLS0NCkZyb206IExhdHZhbGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4g
+DQpTZW50OiBXZWRuZXNkYXksIERlY2VtYmVyIDE1LCAyMDIxIDEwOjM1IFBNDQpUbzogaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWlu
+YXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQpTdWJqZWN0OiBSZTogW2lndC1kZXZdIOKclyBGaS5D
+SS5JR1Q6IGZhaWx1cmUgZm9yIGxpYi9pZ3RfY29yZTogRW5zdXJlIHN1YnRlc3QgcmVzdWx0IGlz
+IHNraXAgaWYgYWxsIGR5bmFtaWMgc3VidGVzdHMgc2tpcA0KDQpPbiBXZWQsIERlYyAxNSwgMjAy
+MSBhdCAwMTo0ODowN1BNICswMDAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+ID09IFNlcmllcyBEZXRh
+aWxzID09DQo+IA0KPiBTZXJpZXM6IGxpYi9pZ3RfY29yZTogRW5zdXJlIHN1YnRlc3QgcmVzdWx0
+IGlzIHNraXAgaWYgYWxsIGR5bmFtaWMgc3VidGVzdHMgc2tpcA0KPiBVUkwgICA6IGh0dHBzOi8v
+cGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvOTgwNTMvDQo+IFN0YXRlIDogZmFpbHVy
+ZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0KPiANCj4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBJ
+R1RfNjMwOV9mdWxsIC0+IElHVFBXXzY0OTZfZnVsbCANCj4gPT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KPiANCj4gU3VtbWFyeQ0KPiAtLS0tLS0t
+DQo+IA0KPiAgICoqRkFJTFVSRSoqDQo+IA0KPiAgIFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNv
+bWluZyB3aXRoIElHVFBXXzY0OTZfZnVsbCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUNCj4gICB2ZXJp
+ZmllZCBtYW51YWxseS4NCj4gICANCj4gICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5n
+ZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMNCj4gICBpbnRyb2R1Y2VkIGlu
+IElHVFBXXzY0OTZfZnVsbCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRo
+ZW0NCj4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVk
+dWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+ICAgRXh0ZXJuYWwgVVJMOiANCj4gaHR0
+cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182NDk2L2luZGV4Lmh0
+bWwNCj4gDQo+IFBhcnRpY2lwYXRpbmcgaG9zdHMgKDcgLT4gNykNCj4gLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tDQo+IA0KPiAgIE5vIGNoYW5nZXMgaW4gcGFydGljaXBhdGluZyBob3N0
+cw0KPiANCj4gUG9zc2libGUgbmV3IGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tDQo+IA0K
+PiAgIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJv
+ZHVjZWQgaW4gSUdUUFdfNjQ5Nl9mdWxsOg0KPiANCj4gIyMjIElHVCBjaGFuZ2VzICMjIw0KPiAN
+Cj4gIyMjIyBQb3NzaWJsZSByZWdyZXNzaW9ucyAjIyMjDQo+IA0KPiAgICogaWd0QGdlbV9leGVj
+X2VuZGxlc3NAZGlzcGF0Y2hAdmNzMToNCj4gICAgIC0gc2hhcmQtdGdsYjogICAgICAgICBbUEFT
+U11bMV0gLT4gW0lOQ09NUExFVEVdWzJdDQo+ICAgIFsxXTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RfNjMwOS9zaGFyZC10Z2xiNy9pZ3RAZ2VtX2V4ZWNfZW5k
+bGVzc0BkaXNwYXRjaEB2Y3MxLmh0bWwNCj4gICAgWzJdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngt
+Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182NDk2L3NoYXJkLXRnbGIyL2lndEBnZQ0KPiBt
+X2V4ZWNfZW5kbGVzc0BkaXNwYXRjaEB2Y3MxLmh0bWwNCj4gDQo+ICAgDQoNCkxha3NobWksIGZh
+bHNlIHBvc2l0aXZlIGhlcmUuDQoNCg0KDQotLQ0KUGV0cmkgTGF0dmFsYQ0K
