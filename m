@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A3EA12AF7B
- for <igt-dev@lists.freedesktop.org>; Sun, 19 Dec 2021 13:10:09 +0000 (UTC)
-From: apoorva1.singh@intel.com
-Date: Sun, 19 Dec 2021 18:44:43 +0530
-Message-Id: <20211219131443.472654-6-apoorva1.singh@intel.com>
-In-Reply-To: <20211219131443.472654-1-apoorva1.singh@intel.com>
-References: <20211219131443.472654-1-apoorva1.singh@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5582393906080263424=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t,v5 5/5] i915/gem_ccs: Add testing for CCS
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sun, 19 Dec 2021 13:51:56 -0000
+Message-ID: <163992191647.30765.17746506558880753885@emeril.freedesktop.org>
+References: <20211219131443.472654-1-apoorva1.singh@intel.com>
+In-Reply-To: <20211219131443.472654-1-apoorva1.singh@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIHRl?=
+ =?utf-8?q?sting_for_CCS_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,457 +16,285 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: apoorva1.singh@intel.com, igt-dev@lists.freedesktop.org, ramalingam.c@intel.com, zbigniew.kempczynski@intel.com, arjun.melkaveri@intel.com
+To: apoorva1.singh@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: CQ Tang <cq.tang@intel.com>
+--===============5582393906080263424==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add gem_ccs test for CCS testing.
-Commands are constructed with XY_BLOCK_COPY_BLT
-and XY_CTRL_SURF_COPY_BLT instructions.
+== Series Details ==
 
-Signed-off-by: CQ Tang <cq.tang@intel.com>
-Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
----
- tests/i915/gem_ccs.c | 413 +++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build    |   1 +
- 2 files changed, 414 insertions(+)
- create mode 100644 tests/i915/gem_ccs.c
+Series: Add testing for CCS (rev5)
+URL   : https://patchwork.freedesktop.org/series/96648/
+State : success
 
-diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-new file mode 100644
-index 00000000..2e2b6e3b
---- /dev/null
-+++ b/tests/i915/gem_ccs.c
-@@ -0,0 +1,413 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ */
-+
-+#include <errno.h>
-+#include <sys/ioctl.h>
-+#include <sys/time.h>
-+#include <malloc.h>
-+#include "drm.h"
-+#include "igt.h"
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+#include "lib/intel_chipset.h"
-+#include "i915/i915_blt.h"
-+
-+IGT_TEST_DESCRIPTION("Exercise the memory bandwidth compression and "
-+		     "decompression when copying data between "
-+		     "system and local memory");
-+
-+static void igt_wr_xy_ctrl_surf_copy_blt(int fd, uint32_t region, uint32_t src, uint32_t dst,
-+					 uint32_t out, uint64_t src_size, uint64_t dst_size,
-+					 uint64_t out_size, uint64_t ahnd, int ccssize,
-+					 uint8_t *pattern_buf, uint8_t *read_buf, int bosize,
-+					 struct intel_execution_engine2 *e)
-+{
-+	gem_write(fd, src, 0, pattern_buf, bosize);
-+
-+	/*
-+	 * 'dst' is lmem BO with ccs, directly
-+	 * copy content in 'src' BO to 'dst' BO's ccs
-+	 */
-+	xy_ctrl_surf_copy_blt(fd, region, src, dst, src_size, dst_size,
-+			      ahnd, ccssize, true, 0, e);
-+
-+	memset(read_buf, 0, ccssize);
-+	gem_write(fd, out, 0, read_buf, ccssize);
-+
-+	/* copy 'dst' BO's ccs into 'out' BO */
-+	xy_ctrl_surf_copy_blt(fd, region, dst, out, dst_size, out_size,
-+			      ahnd, ccssize, false, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, ccssize);
-+
-+	igt_assert_eq(memcmp(read_buf, pattern_buf, ccssize), 0);
-+}
-+
-+static void igt_overwritten_xy_block_copy_blt(int fd, uint32_t region, uint32_t src, uint32_t dst,
-+					      uint32_t out, uint64_t src_size, uint64_t dst_size,
-+					      uint64_t out_size, uint64_t ahnd, int ccssize,
-+					      uint8_t *pattern_buf, uint8_t *read_buf, int bosize,
-+					      struct intel_execution_engine2 *e)
-+{
-+	bool enable_compression = true;
-+
-+	igt_info("copy random pattern to lmem BO with compression\n");
-+
-+	gem_write(fd, src, 0, pattern_buf, bosize);
-+	gem_write(fd, dst, 0, pattern_buf, bosize);
-+
-+	/*
-+	 * 'dst' is lmem BO with ccs,
-+	 * copy content in 'src' BO to 'dst' BO
-+	 */
-+	xy_block_copy_blt(fd, region, src, dst, src_size, dst_size, ahnd,
-+			  bosize, SYS_TO_LOCAL, enable_compression, 0, e);
-+
-+	memset(read_buf, 0, ccssize);
-+	gem_write(fd, out, 0, read_buf, ccssize);
-+
-+	/* copy 'dst' BO's ccs into 'out' BO */
-+	xy_ctrl_surf_copy_blt(fd, region, dst, out, dst_size, out_size,
-+			      ahnd, ccssize, false, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, ccssize);
-+
-+	igt_assert_neq(memcmp(read_buf, pattern_buf, ccssize), 0);
-+
-+	memset(read_buf, 0, bosize);
-+	gem_read(fd, dst, 0, read_buf, bosize);
-+
-+	igt_assert_neq(memcmp(read_buf, pattern_buf, bosize), 0);
-+
-+	memset(read_buf, 0, bosize);
-+	gem_write(fd, out, 0, read_buf, bosize);
-+
-+	/* copy 'dst' BO into 'out' BO */
-+	xy_block_copy_blt(fd, region, dst, out, dst_size, out_size, ahnd,
-+			  bosize, LOCAL_TO_SYS, enable_compression, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, bosize);
-+
-+	igt_assert_eq(memcmp(read_buf, pattern_buf, bosize), 0);
-+
-+	/* decompress 'dst' in place */
-+	xy_block_copy_blt(fd, region, dst, dst, dst_size, dst_size, ahnd,
-+			  bosize, LOCAL_TO_LOCAL, enable_compression, 0, e);
-+
-+	memset(read_buf, 0, bosize);
-+	gem_read(fd, dst, 0, read_buf, bosize);
-+
-+	igt_assert_eq(memcmp(read_buf, pattern_buf, bosize), 0);
-+
-+	memset(read_buf, 0, bosize);
-+	gem_write(fd, out, 0, read_buf, bosize);
-+
-+	/* copy decompressed 'dst' to 'out' */
-+	xy_block_copy_blt(fd, region, dst, out, dst_size, out_size, ahnd,
-+			  bosize, LOCAL_TO_SYS, enable_compression, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, bosize);
-+
-+	igt_assert_eq(memcmp(read_buf, pattern_buf, bosize), 0);
-+}
-+
-+static void igt_corrupted_xy_ctrl_surf_copy_blt(int fd, uint32_t region, uint32_t src, uint32_t dst,
-+						uint32_t out, uint64_t src_size, uint64_t dst_size,
-+						uint64_t out_size, uint64_t ahnd, int ccssize,
-+						uint8_t *pattern_buf, uint8_t *read_buf, int bosize,
-+						struct intel_execution_engine2 *e)
-+{
-+	bool enable_compression = true;
-+
-+	gem_write(fd, src, 0, pattern_buf, bosize);
-+
-+	igt_info("corrupt CCS via XY_CTRL_SURF_COPY_BLT\n");
-+
-+	/* corrupt 'dst' BO's ccs by writing directly */
-+	xy_ctrl_surf_copy_blt(fd, region, src, dst, src_size, dst_size,
-+			      ahnd, ccssize, true, 0, e);
-+
-+	memset(read_buf, 0, bosize);
-+	gem_write(fd, out, 0, read_buf, bosize);
-+
-+	/* copy 'dst' BO into 'out' BO */
-+	xy_block_copy_blt(fd, region, dst, out, dst_size, out_size, ahnd,
-+			  bosize, LOCAL_TO_SYS, enable_compression, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, bosize);
-+
-+	igt_assert_neq(memcmp(read_buf, pattern_buf, bosize), 0);
-+
-+	memset(read_buf, 0, ccssize);
-+	gem_write(fd, out, 0, read_buf, ccssize);
-+
-+	/* copy 'dst' BO's ccs into 'out' BO */
-+	xy_ctrl_surf_copy_blt(fd, region, dst, out, dst_size, out_size,
-+			      ahnd, ccssize, false, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, ccssize);
-+
-+	igt_assert_eq(memcmp(read_buf, pattern_buf, ccssize), 0);
-+}
-+
-+static void igt_copy_zero_pattern_xy_block_copy_blt(int fd, uint32_t region, uint32_t src,
-+						    uint32_t dst, uint32_t out, uint64_t src_size,
-+						    uint64_t dst_size, uint64_t out_size,
-+						    uint64_t ahnd, int ccssize,
-+						    uint8_t *pattern_buf, uint8_t *read_buf,
-+						    uint8_t *input_buf, int bosize,
-+						    struct intel_execution_engine2 *e)
-+{
-+	bool enable_compression = true;
-+
-+	igt_info("copy zeros pattern to lmem BO with compression\n");
-+
-+	gem_write(fd, src, 0, pattern_buf, bosize);
-+	gem_write(fd, dst, 0, pattern_buf, bosize);
-+	/* set ccs to random pattern */
-+	xy_ctrl_surf_copy_blt(fd, region, src, dst, src_size, dst_size,
-+			      ahnd, ccssize, true, 0, e);
-+
-+	memset(input_buf, 0, bosize);
-+	gem_write(fd, src, 0, input_buf, bosize);
-+
-+	/* copy 'src' to 'dst' with compression */
-+	xy_block_copy_blt(fd, region, src, dst, src_size, dst_size, ahnd,
-+			  bosize, SYS_TO_LOCAL, enable_compression, 0, e);
-+
-+	gem_write(fd, out, 0, pattern_buf, bosize);
-+
-+	/* copy 'dst' BO back into 'out' BO */
-+	xy_block_copy_blt(fd, region, dst, out, dst_size, out_size, ahnd,
-+			  bosize, LOCAL_TO_SYS, enable_compression, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, bosize);
-+
-+	igt_assert_eq(memcmp(read_buf, input_buf, bosize), 0);
-+
-+	memset(read_buf, 0, bosize);
-+	gem_read(fd, dst, 0, read_buf, bosize);
-+
-+	igt_assert_eq(memcmp(read_buf, pattern_buf, bosize), 0);
-+
-+	memset(read_buf, 0, ccssize);
-+	gem_write(fd, out, 0, read_buf, ccssize);
-+
-+	/* copy 'dst' BO's ccs into 'out' BO */
-+	xy_ctrl_surf_copy_blt(fd, region, dst, out, dst_size, out_size,
-+			      ahnd, ccssize, false, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, ccssize);
-+
-+	igt_assert_neq(memcmp(read_buf, pattern_buf, ccssize), 0);
-+}
-+
-+static void igt_copy_repeat_pattern_xy_block_copy_blt(int fd, uint32_t region, uint32_t src,
-+						      uint32_t dst, uint32_t out, uint64_t src_size,
-+						      uint64_t dst_size, uint64_t out_size,
-+						      uint64_t ahnd, int ccssize,
-+						      uint8_t *pattern_buf, uint8_t *read_buf,
-+						      uint8_t *input_buf, int bosize,
-+						      struct intel_execution_engine2 *e)
-+{
-+	int i;
-+	bool enable_compression = true;
-+
-+	igt_info("copy repeat pattern to lmem BO with compression\n");
-+
-+	gem_write(fd, src, 0, pattern_buf, bosize);
-+	gem_write(fd, src, 0, pattern_buf, ccssize);
-+
-+	xy_ctrl_surf_copy_blt(fd, region, src, dst, src_size, dst_size,
-+			      ahnd, ccssize, true, 0, e);
-+	gem_write(fd, dst, 0, pattern_buf, bosize);
-+
-+	/* generate repeating pattern */
-+	input_buf[0] = (uint8_t)rand();
-+	input_buf[1] = (uint8_t)rand();
-+	input_buf[2] = (uint8_t)rand();
-+	input_buf[3] = (uint8_t)rand();
-+	for (i = 4; i < bosize; i++)
-+		input_buf[i] = input_buf[i - 4];
-+	gem_write(fd, src, 0, input_buf, bosize);
-+
-+	xy_block_copy_blt(fd, region, src, dst, src_size, dst_size, ahnd,
-+			  bosize, SYS_TO_LOCAL, enable_compression, 0, e);
-+
-+	memset(read_buf, 0, bosize);
-+	gem_write(fd, out, 0, read_buf, bosize);
-+
-+	/* copy 'dst' BO back into 'out' BO */
-+	xy_block_copy_blt(fd, region, dst, out, dst_size, out_size, ahnd,
-+			  bosize, LOCAL_TO_SYS, enable_compression, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, bosize);
-+
-+	igt_assert_eq(memcmp(read_buf, input_buf, bosize), 0);
-+
-+	memset(read_buf, 0, bosize);
-+	gem_read(fd, dst, 0, read_buf, bosize);
-+
-+	igt_assert_neq(memcmp(read_buf, pattern_buf, bosize), 0);
-+
-+	memset(read_buf, 0, ccssize);
-+	gem_write(fd, out, 0, read_buf, ccssize);
-+
-+	/* copy 'dst' BO's ccs into 'out' BO */
-+	xy_ctrl_surf_copy_blt(fd, region, dst, out, dst_size, out_size,
-+			      ahnd, ccssize, false, 0, e);
-+
-+	gem_read(fd, out, 0, read_buf, ccssize);
-+
-+	igt_assert_neq(memcmp(read_buf, pattern_buf, ccssize), 0);
-+}
-+
-+/*
-+ * Allocate a BO in SMEM.
-+ * Fill a pattern
-+ * Use XY_BLOCK_COPY_BLT to copy it to LMEM with compression enabled
-+ * Clear the BO in SMEM, and the pattern_buf in which the pattern was
-+ * stored
-+ * Use XY_BLOCK_COPY_BLT to copy it back to the BO in SMEM with
-+ * resolve
-+ * Compare the value in the BO in SMEM matches the pattern
-+ */
-+static void test_ccs(int fd, int size, uint32_t region, char *sub_name,
-+		     struct intel_execution_engine2 *e)
-+{
-+	int bosize, ccssize, ret, i;
-+	int start, end;
-+	uint32_t src, dst, out;
-+	uint8_t *pattern_buf, *input_buf, *read_buf;
-+	uint64_t ahnd, src_size, dst_size, out_size;
-+	struct timeval tv;
-+
-+	ahnd = get_reloc_ahnd(fd, 0);
-+
-+	if (size > 0) {
-+		start = size;
-+		end = start + 1;
-+	} else {
-+		start = BOSIZE_MIN;
-+		end = BOSIZE_MAX;
-+	}
-+
-+	for (bosize = start; bosize < end; bosize *= 2) {
-+		/* allocate working buffers */
-+		pattern_buf = malloc(bosize);
-+		igt_assert(pattern_buf);
-+		input_buf = malloc(bosize);
-+		igt_assert(input_buf);
-+		read_buf = malloc(bosize);
-+		igt_assert(read_buf);
-+
-+		ccssize = bosize / CCS_RATIO;
-+		src_size = dst_size = out_size = bosize;
-+
-+		/* allocate working BOs in the right location */
-+		ret = __gem_create_in_memory_regions(fd, &src, &src_size,
-+						     INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
-+		igt_assert_eq(ret, 0);
-+
-+		ret = __gem_create_in_memory_regions(fd, &dst, &dst_size, region);
-+		igt_assert_eq(ret, 0);
-+
-+		ret = __gem_create_in_memory_regions(fd, &out, &out_size,
-+						     INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
-+		igt_assert_eq(ret, 0);
-+
-+		/* fill in random pattern */
-+		ret = gettimeofday(&tv, NULL);
-+		igt_assert(!ret);
-+		srandom((int)tv.tv_usec);
-+
-+		for (i = 0; i < bosize; i++)
-+			pattern_buf[i] = (uint8_t)rand();
-+
-+		igt_info("progress: bosize %d, ccssize %d\n", bosize, ccssize);
-+
-+		igt_dynamic_f("write_read_in_ccs_surface-%s-%s", sub_name, e->name)
-+			igt_wr_xy_ctrl_surf_copy_blt(fd, region, src, dst, out, src_size, dst_size,
-+						     out_size, ahnd, ccssize, pattern_buf, read_buf,
-+						     bosize, e);
-+		igt_dynamic_f("verify_compression_of_random_data-%s-%s", sub_name, e->name)
-+			igt_overwritten_xy_block_copy_blt(fd, region, src, dst, out, src_size,
-+							  dst_size, out_size, ahnd, ccssize,
-+							  pattern_buf, read_buf, bosize, e);
-+		igt_dynamic_f("verify_corrupted_pattern_in_ccs_surface-%s-%s", sub_name, e->name)
-+			igt_corrupted_xy_ctrl_surf_copy_blt(fd, region, src, dst, out, src_size,
-+							    dst_size, out_size, ahnd, ccssize,
-+							    pattern_buf, read_buf, bosize, e);
-+		igt_dynamic_f("copy_zero_pattern_with_compression-%s-%s", sub_name, e->name)
-+			igt_copy_zero_pattern_xy_block_copy_blt(fd, region, src, dst, out, src_size,
-+								dst_size, out_size, ahnd, ccssize,
-+								pattern_buf, read_buf, input_buf,
-+								bosize, e);
-+		igt_dynamic_f("copy_repeat_pattern_with_compression-%s-%s", sub_name, e->name)
-+			igt_copy_repeat_pattern_xy_block_copy_blt(fd, region, src, dst, out,
-+								  src_size, dst_size, out_size,
-+								  ahnd, ccssize, pattern_buf,
-+								  read_buf, input_buf, bosize, e);
-+
-+		gem_close(fd, out);
-+		gem_close(fd, dst);
-+		gem_close(fd, src);
-+		free(read_buf);
-+		free(input_buf);
-+		free(pattern_buf);
-+	}
-+
-+	put_ahnd(ahnd);
-+}
-+
-+static void subtest_ccs(int drm_fd, struct igt_collection *set, const char *subtest, int size)
-+{
-+	struct intel_execution_engine2 *e;
-+	struct igt_collection *regions;
-+	char *sub_name;
-+	uint32_t region;
-+
-+	igt_subtest_with_dynamic(subtest) {
-+		for_each_physical_engine(drm_fd, e) {
-+			if (!gem_engine_can_block_copy(drm_fd, e))
-+				continue;
-+
-+			for_each_combination(regions, 1, set) {
-+				sub_name = memregion_dynamic_subtest_name(regions);
-+				region = igt_collection_get_value(regions, 0);
-+				test_ccs(drm_fd, size, region, sub_name, e);
-+				free(sub_name);
-+			}
-+		}
-+	}
-+}
-+
-+igt_main
-+{
-+	struct drm_i915_query_memory_regions *query_info;
-+	struct igt_collection *set;
-+	int drm_fd;
-+
-+	igt_fixture {
-+		drm_fd = drm_open_driver(DRIVER_INTEL);
-+		igt_require_gem(drm_fd);
-+		igt_require(AT_LEAST_GEN(intel_get_drm_devid(drm_fd), 12) > 0);
-+		igt_require(HAS_FLAT_CCS(intel_get_drm_devid(drm_fd)));
-+
-+		query_info = gem_get_query_memory_regions(drm_fd);
-+		igt_require(query_info);
-+
-+		set = get_memory_region_set(query_info, I915_DEVICE_MEMORY);
-+	}
-+
-+	subtest_ccs(drm_fd, set, "basic-gem-ccs-4K", 4 * 1024);
-+	subtest_ccs(drm_fd, set, "basic-gem-ccs-64K", 64 * 1024);
-+	subtest_ccs(drm_fd, set, "basic-gem-ccs-1M", 1024 * 1024);
-+	subtest_ccs(drm_fd, set, "basic-gem-ccs-all", 0);
-+
-+	igt_fixture {
-+		close(drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index c14acf99..e0b48d66 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -107,6 +107,7 @@ i915_progs = [
- 	'gem_blits',
- 	'gem_busy',
- 	'gem_caching',
-+	'gem_ccs',
- 	'gem_close',
- 	'gem_close_race',
- 	'gem_concurrent_blit',
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11014 -> IGTPW_6505
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/index.html
+
+Participating hosts (41 -> 36)
+------------------------------
+
+  Additional (2): fi-bxt-dsi fi-bdw-5557u 
+  Missing    (7): bat-dg1-6 bat-dg1-5 fi-bsw-cyan bat-adlp-6 bat-jsl-2 fi-bsw-nick fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6505 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-skl-6600u:       [PASS][1] -> [INCOMPLETE][2] ([i915#4547])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-bxt-dsi:         NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-bxt-dsi:         NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][5] -> [INCOMPLETE][6] ([i915#3921])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-bxt-dsi:         NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-bxt-dsi:         NOTRUN -> [SKIP][8] ([fdo#109271]) +30 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-bxt-dsi:         NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#533])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][10] ([i915#4312])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-skl-6600u/igt@runner@aborted.html
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][11] ([i915#2426] / [i915#4312])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gem_contexts:
+    - {fi-tgl-dsi}:       [INCOMPLETE][12] ([i915#402]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@i915_selftest@live@hugepages:
+    - {fi-tgl-dsi}:       [INCOMPLETE][14] -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-tgl-dsi/igt@i915_selftest@live@hugepages.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-tgl-dsi/igt@i915_selftest@live@hugepages.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][16] ([i915#4269]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6313 -> IGTPW_6505
+
+  CI-20190529: 20190529
+  CI_DRM_11014: c4f095f24fcdc6e85ae112052b3034328e24ae66 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6505: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/index.html
+  IGT_6313: 1793ed798cc09966c27bf478781e0c1d6bb23bad @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_ccs@basic-gem-ccs-1m
++igt@gem_ccs@basic-gem-ccs-4k
++igt@gem_ccs@basic-gem-ccs-64k
++igt@gem_ccs@basic-gem-ccs-all
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/index.html
+
+--===============5582393906080263424==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add testing for CCS (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96648/">https://patchwork.freedesktop.org/series/96648/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11014 -&gt; IGTPW_6505</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/index.html</p>
+<h2>Participating hosts (41 -&gt; 36)</h2>
+<p>Additional (2): fi-bxt-dsi fi-bdw-5557u <br />
+  Missing    (7): bat-dg1-6 bat-dg1-5 fi-bsw-cyan bat-adlp-6 bat-jsl-2 fi-bsw-nick fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6505 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +30 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bxt-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gem_contexts:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hugepages:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-tgl-dsi/igt@i915_selftest@live@hugepages.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-tgl-dsi/igt@i915_selftest@live@hugepages.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11014/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6313 -&gt; IGTPW_6505</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11014: c4f095f24fcdc6e85ae112052b3034328e24ae66 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6505: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6505/index.html<br />
+  IGT_6313: 1793ed798cc09966c27bf478781e0c1d6bb23bad @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_ccs@basic-gem-ccs-1m<br />
++igt@gem_ccs@basic-gem-ccs-4k<br />
++igt@gem_ccs@basic-gem-ccs-64k<br />
++igt@gem_ccs@basic-gem-ccs-all</p>
+
+</body>
+</html>
+
+--===============5582393906080263424==--
