@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5056B10E211
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Dec 2021 11:08:11 +0000 (UTC)
-Message-ID: <70e18482-7a14-6440-82c3-5483a71fec34@linux.intel.com>
-Date: Thu, 23 Dec 2021 11:08:06 +0000
-MIME-Version: 1.0
-Content-Language: en-US
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 863A110E211
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Dec 2021 11:16:50 +0000 (UTC)
+From: "Surendrakumar Upadhyay, TejaskumarX"
+ <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Thu, 23 Dec 2021 11:16:35 +0000
+Message-ID: <PH7PR11MB581921D27F880DAD90D249C9DF7E9@PH7PR11MB5819.namprd11.prod.outlook.com>
 References: <20211209082053.1412439-1-mastanx.katragadda@intel.com>
  <36f819b9-8001-6087-8379-df57de5b1d73@linux.intel.com>
  <a45449d0-2b52-11c2-af22-31b16accdcb3@linux.intel.com>
  <7ce26c0e-22f7-3129-3ff5-d5384e9ce620@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <7ce26c0e-22f7-3129-3ff5-d5384e9ce620@intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+ <70e18482-7a14-6440-82c3-5483a71fec34@linux.intel.com>
+In-Reply-To: <70e18482-7a14-6440-82c3-5483a71fec34@linux.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [i-g-t] tests/i915/exec_balancer: Added Skip Guc
  Submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -25,150 +27,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: John Harrison <john.c.harrison@intel.com>, Mastan Katragadda <mastanx.katragadda@intel.com>, igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, "Harrison, John C" <john.c.harrison@intel.com>, "Katragadda, MastanX" <mastanx.katragadda@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Cc: "Bloomfield, Jon" <jon.bloomfield@intel.com>, Daniel Vetter <daniel@ffwll.ch>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 22/12/2021 21:02, John Harrison wrote:
-> On 12/22/2021 01:30, Tvrtko Ursulin wrote:
->> I see this has been merged despite my complaint that the commit 
->> message is not transparent enough and without public arch level acks.
-> I would ack a revert if you want to post it...
-
-Revert and re-submit with a better/more complete explanation would be my 
-preferred choice yes.
-
->> On 10/12/2021 10:02, Tvrtko Ursulin wrote:
->>>
->>> Old commit message:
->>>
->>> """
->>> This a known failure when running 
->>> igt@gem_exec_balancer@bonded-(dual|pair|sync)
->>> tests with GuC submission.The hang is expected with GuC submission 
->>> since the
->>> test was written to expect execlist scheduling hence added skip if Guc
->>> submission enabled.
->>> """
->>>
->>> New commit message:
->>>
->>> On 09/12/2021 08:20, Mastan Katragadda wrote:
->>>> This test makes assumptions about the backend scheduling algorithm that
->>>> a real world UMD would never assume. This test is not testing a UMD-KMD
->>>> contract, rather a specific backend.It is an invalid test case thus we
->>>> are skipping.
->>>>
->>>> Changes Since v1:
->>>>               -Updated commit message
->>>
->>> Well that hasn't been really improved at all an is still totally 
->>> opaque. No mention whether it is all or some subtests, no mention of 
->>> what assumptions, what exact usage of the ABI is discouraged, not 
->>> much more than pure rewording.
->>>
->>> No desire to split into passing and non passing tests and only skip 
->>> latter group?
-> It's not clear from the patch itself, but looking at the code this 
-> change appears to only affect a specific set of subtests. Those being 
-> 'sliced' and 'bonded-(pair|dual|sync)'. It's not actually disabling the 
-> entire gem_exec_balancer suite. That is really not clear from the 
-> subject or commit description, though. And I totally agree that it 
-> should be documenting a) what the test is doing and b) why that 
-> behaviour is both backend specific and unreasonable for a UMD.
-> 
-> My understanding is that gem_exec_balancer had already been updated to 
-> support the new parallel extension as well as the old bonding extension. 
-> So any subtest with 'parallel' as the prefix is supposed to work with 
-> GuC submission. Having said that, there are odd other subtests that are 
-> not obviously related to either bonded nor parallel submission (such as 
-> persistence, noheartbeat, nohangcheck) which I recall do rely on 
-> execlist backend implementations and therefore have issues when using 
-> GuC submission.
-> 
-> I totally agree that we should not be blanket disabling an entire test 
-> suite or even sub-group with such a generic stated reason. The bonded 
-> tests (and parallel tests) are meant to check for the presence of the 
-> appropriate API and skip if not available. They should not be skipping 
-> based on arbitrary assumptions about the platform.
-> 
-> 
->>>
->>> Or to add a twist, what about making the specific subtests which hang 
->>> with GuC, expect to hang and therefore pass?
-> Seems unnecessarily complicated. Why require that something is broken? 
-> If a test is specific to a backend implementation then the behaviour is 
-> undefined on any other implementation. It may hang, it may pass, it may 
-> be random each time you run it. If a test is not relevant to a given 
-> platform, I would say that it should just be skipped.
-> 
->>> That would a) document the failing corner case of the ABI and more 
->>> importantly b) keep exercising the i915 code paths which sit between 
->>> the uAPI and the GuC firmware?
-> You can't exercise code paths which don't exist. Bonding is 
-> fundamentally an i915 only implementation. Persistence is partially 
-> implemented inside the execlist backend. So you can't get to the low 
-> level code of either when GuC submission is enabled no matter what 
-> hideousness you put in the test.
-
-Sticking to bonding-* subtests..
-
-Catch here is that even though subtests in question have bonding in 
-their names they are not using the bonding extension!
-
-They are simply using the submit fence with plain virtual engines. And I 
-am told submit fence cannot be disabled on the uAPI level (even on GuC 
-submission platforms).
-
-So my concern is for code coverage of using the two in combination. I 
-don't think it's good just to not have any (coverage), even if the 
-statement is the two /shouldn't/ be used together. If uapi _can_ be used 
-together we have to see what happens in the driver if it is. In order to 
-avoid nasty surprises if there was some unused code that bit rotted in a 
-dangerous way.
-
-That was the first thing I asked to ack in clear explicit words.
-
-Second part what the commit message should say is which of the actual 
-disabled subtests fail with GuC. Matt was saying about unpreemptable 
-spinners, but not all subtests use those. So perhaps splitting into a 
-group which passes and which is a problem for GuC would work and keep 
-the coverage.
-
->>> If that is not acceptable, and I do acknowledge to the cost to CI 
->>> time, then architects should ack and in my mind the ack should mean 
->>> one of the two things. Either:
->>>
->>>   1) We know there is coverage for the same i915 code paths elsewhere 
->>> in IGT. Or:
-> That exists when running on older platforms that support the feature 
-> being tested.
-> 
->>>
->>>   2) We are willingly dropping coverage for these i915 code paths on 
->>> GuC platforms with the risk that the code might unknowingly bit rot 
->>> and cause more serious security issues down the line.
-> But we don't care if the code rots for platforms it does not support 
-> because it doesn't support them.
-
-Hopefully I managed to explain this in the previous paragraph. If we 
-would be able to say ENODEV that would be ideal, but we are not, so 
-"doesn't support" in this case is more like "please don't use this". I 
-think we need to know what happens if someone does use it.
-
->>
->> And no acks to the effect of either 1) or 2) were given. So git 
->> history will not show what is this allegedly backend specific 
->> behavior, neither it will clarify which parts of the uapi are stopped 
->> being tested in GuC mode.
-> I agree entirely with this. And would go further to say that the test 
-> code itself should be documenting what it is doing, what it is trying to 
-> test and why it things that is not applicable to a given platform if it 
-> is going to skip that platform.
-
-Oh yes, understanding a lot of our tests is such a time sink.
-
-Regards,
-
-Tvrtko
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVHZydGtvIFVyc3VsaW4g
+PHR2cnRrby51cnN1bGluQGxpbnV4LmludGVsLmNvbT4NCj4gU2VudDogMjMgRGVjZW1iZXIgMjAy
+MSAxNjozOA0KPiBUbzogSGFycmlzb24sIEpvaG4gQyA8am9obi5jLmhhcnJpc29uQGludGVsLmNv
+bT47IEthdHJhZ2FkZGEsIE1hc3RhblgNCj4gPG1hc3Rhbngua2F0cmFnYWRkYUBpbnRlbC5jb20+
+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsNCj4gU3VyZW5kcmFrdW1hciBVcGFkaHlh
+eSwgVGVqYXNrdW1hclgNCj4gPHRlamFza3VtYXJ4LnN1cmVuZHJha3VtYXIudXBhZGh5YXlAaW50
+ZWwuY29tPg0KPiBDYzogQmxvb21maWVsZCwgSm9uIDxqb24uYmxvb21maWVsZEBpbnRlbC5jb20+
+OyBEYW5pZWwgVmV0dGVyDQo+IDxkYW5pZWxAZmZ3bGwuY2g+DQo+IFN1YmplY3Q6IFJlOiBbaWd0
+LWRldl0gW2ktZy10XSB0ZXN0cy9pOTE1L2V4ZWNfYmFsYW5jZXI6IEFkZGVkIFNraXAgR3VjDQo+
+IFN1Ym1pc3Npb24NCj4gDQo+IA0KPiBPbiAyMi8xMi8yMDIxIDIxOjAyLCBKb2huIEhhcnJpc29u
+IHdyb3RlOg0KPiA+IE9uIDEyLzIyLzIwMjEgMDE6MzAsIFR2cnRrbyBVcnN1bGluIHdyb3RlOg0K
+PiA+PiBJIHNlZSB0aGlzIGhhcyBiZWVuIG1lcmdlZCBkZXNwaXRlIG15IGNvbXBsYWludCB0aGF0
+IHRoZSBjb21taXQNCj4gPj4gbWVzc2FnZSBpcyBub3QgdHJhbnNwYXJlbnQgZW5vdWdoIGFuZCB3
+aXRob3V0IHB1YmxpYyBhcmNoIGxldmVsIGFja3MuDQo+ID4gSSB3b3VsZCBhY2sgYSByZXZlcnQg
+aWYgeW91IHdhbnQgdG8gcG9zdCBpdC4uLg0KPiANCj4gUmV2ZXJ0IGFuZCByZS1zdWJtaXQgd2l0
+aCBhIGJldHRlci9tb3JlIGNvbXBsZXRlIGV4cGxhbmF0aW9uIHdvdWxkIGJlIG15DQo+IHByZWZl
+cnJlZCBjaG9pY2UgeWVzLg0KDQorIE1hdHRoZXcNCg0KT2sgTWFzdGFuIHBsZWFzZSByZXZlcnQg
+dGhlIGNoYW5nZSBhbmQgcG9zdCBhZ2FpbiB3aXRoIGNvbXBsZXRlIGV4cGxhbmF0aW9uLg0KDQpU
+aGFua3MsDQpUZWphcw0KPiANCj4gPj4gT24gMTAvMTIvMjAyMSAxMDowMiwgVHZydGtvIFVyc3Vs
+aW4gd3JvdGU6DQo+ID4+Pg0KPiA+Pj4gT2xkIGNvbW1pdCBtZXNzYWdlOg0KPiA+Pj4NCj4gPj4+
+ICIiIg0KPiA+Pj4gVGhpcyBhIGtub3duIGZhaWx1cmUgd2hlbiBydW5uaW5nDQo+ID4+PiBpZ3RA
+Z2VtX2V4ZWNfYmFsYW5jZXJAYm9uZGVkLShkdWFsfHBhaXJ8c3luYykNCj4gPj4+IHRlc3RzIHdp
+dGggR3VDIHN1Ym1pc3Npb24uVGhlIGhhbmcgaXMgZXhwZWN0ZWQgd2l0aCBHdUMgc3VibWlzc2lv
+bg0KPiA+Pj4gc2luY2UgdGhlIHRlc3Qgd2FzIHdyaXR0ZW4gdG8gZXhwZWN0IGV4ZWNsaXN0IHNj
+aGVkdWxpbmcgaGVuY2UgYWRkZWQNCj4gPj4+IHNraXAgaWYgR3VjIHN1Ym1pc3Npb24gZW5hYmxl
+ZC4NCj4gPj4+ICIiIg0KPiA+Pj4NCj4gPj4+IE5ldyBjb21taXQgbWVzc2FnZToNCj4gPj4+DQo+
+ID4+PiBPbiAwOS8xMi8yMDIxIDA4OjIwLCBNYXN0YW4gS2F0cmFnYWRkYSB3cm90ZToNCj4gPj4+
+PiBUaGlzIHRlc3QgbWFrZXMgYXNzdW1wdGlvbnMgYWJvdXQgdGhlIGJhY2tlbmQgc2NoZWR1bGlu
+ZyBhbGdvcml0aG0NCj4gPj4+PiB0aGF0IGEgcmVhbCB3b3JsZCBVTUQgd291bGQgbmV2ZXIgYXNz
+dW1lLiBUaGlzIHRlc3QgaXMgbm90IHRlc3RpbmcNCj4gPj4+PiBhIFVNRC1LTUQgY29udHJhY3Qs
+IHJhdGhlciBhIHNwZWNpZmljIGJhY2tlbmQuSXQgaXMgYW4gaW52YWxpZCB0ZXN0DQo+ID4+Pj4g
+Y2FzZSB0aHVzIHdlIGFyZSBza2lwcGluZy4NCj4gPj4+Pg0KPiA+Pj4+IENoYW5nZXMgU2luY2Ug
+djE6DQo+ID4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLVVwZGF0ZWQgY29tbWl0IG1l
+c3NhZ2UNCj4gPj4+DQo+ID4+PiBXZWxsIHRoYXQgaGFzbid0IGJlZW4gcmVhbGx5IGltcHJvdmVk
+IGF0IGFsbCBhbiBpcyBzdGlsbCB0b3RhbGx5DQo+ID4+PiBvcGFxdWUuIE5vIG1lbnRpb24gd2hl
+dGhlciBpdCBpcyBhbGwgb3Igc29tZSBzdWJ0ZXN0cywgbm8gbWVudGlvbiBvZg0KPiA+Pj4gd2hh
+dCBhc3N1bXB0aW9ucywgd2hhdCBleGFjdCB1c2FnZSBvZiB0aGUgQUJJIGlzIGRpc2NvdXJhZ2Vk
+LCBub3QNCj4gPj4+IG11Y2ggbW9yZSB0aGFuIHB1cmUgcmV3b3JkaW5nLg0KPiA+Pj4NCj4gPj4+
+IE5vIGRlc2lyZSB0byBzcGxpdCBpbnRvIHBhc3NpbmcgYW5kIG5vbiBwYXNzaW5nIHRlc3RzIGFu
+ZCBvbmx5IHNraXANCj4gPj4+IGxhdHRlciBncm91cD8NCj4gPiBJdCdzIG5vdCBjbGVhciBmcm9t
+IHRoZSBwYXRjaCBpdHNlbGYsIGJ1dCBsb29raW5nIGF0IHRoZSBjb2RlIHRoaXMNCj4gPiBjaGFu
+Z2UgYXBwZWFycyB0byBvbmx5IGFmZmVjdCBhIHNwZWNpZmljIHNldCBvZiBzdWJ0ZXN0cy4gVGhv
+c2UgYmVpbmcNCj4gPiAnc2xpY2VkJyBhbmQgJ2JvbmRlZC0ocGFpcnxkdWFsfHN5bmMpJy4gSXQn
+cyBub3QgYWN0dWFsbHkgZGlzYWJsaW5nDQo+ID4gdGhlIGVudGlyZSBnZW1fZXhlY19iYWxhbmNl
+ciBzdWl0ZS4gVGhhdCBpcyByZWFsbHkgbm90IGNsZWFyIGZyb20gdGhlDQo+ID4gc3ViamVjdCBv
+ciBjb21taXQgZGVzY3JpcHRpb24sIHRob3VnaC4gQW5kIEkgdG90YWxseSBhZ3JlZSB0aGF0IGl0
+DQo+ID4gc2hvdWxkIGJlIGRvY3VtZW50aW5nIGEpIHdoYXQgdGhlIHRlc3QgaXMgZG9pbmcgYW5k
+IGIpIHdoeSB0aGF0DQo+ID4gYmVoYXZpb3VyIGlzIGJvdGggYmFja2VuZCBzcGVjaWZpYyBhbmQg
+dW5yZWFzb25hYmxlIGZvciBhIFVNRC4NCj4gPg0KPiA+IE15IHVuZGVyc3RhbmRpbmcgaXMgdGhh
+dCBnZW1fZXhlY19iYWxhbmNlciBoYWQgYWxyZWFkeSBiZWVuIHVwZGF0ZWQgdG8NCj4gPiBzdXBw
+b3J0IHRoZSBuZXcgcGFyYWxsZWwgZXh0ZW5zaW9uIGFzIHdlbGwgYXMgdGhlIG9sZCBib25kaW5n
+IGV4dGVuc2lvbi4NCj4gPiBTbyBhbnkgc3VidGVzdCB3aXRoICdwYXJhbGxlbCcgYXMgdGhlIHBy
+ZWZpeCBpcyBzdXBwb3NlZCB0byB3b3JrIHdpdGgNCj4gPiBHdUMgc3VibWlzc2lvbi4gSGF2aW5n
+IHNhaWQgdGhhdCwgdGhlcmUgYXJlIG9kZCBvdGhlciBzdWJ0ZXN0cyB0aGF0DQo+ID4gYXJlIG5v
+dCBvYnZpb3VzbHkgcmVsYXRlZCB0byBlaXRoZXIgYm9uZGVkIG5vciBwYXJhbGxlbCBzdWJtaXNz
+aW9uDQo+ID4gKHN1Y2ggYXMgcGVyc2lzdGVuY2UsIG5vaGVhcnRiZWF0LCBub2hhbmdjaGVjaykg
+d2hpY2ggSSByZWNhbGwgZG8gcmVseQ0KPiA+IG9uIGV4ZWNsaXN0IGJhY2tlbmQgaW1wbGVtZW50
+YXRpb25zIGFuZCB0aGVyZWZvcmUgaGF2ZSBpc3N1ZXMgd2hlbg0KPiA+IHVzaW5nIEd1QyBzdWJt
+aXNzaW9uLg0KPiA+DQo+ID4gSSB0b3RhbGx5IGFncmVlIHRoYXQgd2Ugc2hvdWxkIG5vdCBiZSBi
+bGFua2V0IGRpc2FibGluZyBhbiBlbnRpcmUgdGVzdA0KPiA+IHN1aXRlIG9yIGV2ZW4gc3ViLWdy
+b3VwIHdpdGggc3VjaCBhIGdlbmVyaWMgc3RhdGVkIHJlYXNvbi4gVGhlIGJvbmRlZA0KPiA+IHRl
+c3RzIChhbmQgcGFyYWxsZWwgdGVzdHMpIGFyZSBtZWFudCB0byBjaGVjayBmb3IgdGhlIHByZXNl
+bmNlIG9mIHRoZQ0KPiA+IGFwcHJvcHJpYXRlIEFQSSBhbmQgc2tpcCBpZiBub3QgYXZhaWxhYmxl
+LiBUaGV5IHNob3VsZCBub3QgYmUgc2tpcHBpbmcNCj4gPiBiYXNlZCBvbiBhcmJpdHJhcnkgYXNz
+dW1wdGlvbnMgYWJvdXQgdGhlIHBsYXRmb3JtLg0KPiA+DQo+ID4NCj4gPj4+DQo+ID4+PiBPciB0
+byBhZGQgYSB0d2lzdCwgd2hhdCBhYm91dCBtYWtpbmcgdGhlIHNwZWNpZmljIHN1YnRlc3RzIHdo
+aWNoDQo+ID4+PiBoYW5nIHdpdGggR3VDLCBleHBlY3QgdG8gaGFuZyBhbmQgdGhlcmVmb3JlIHBh
+c3M/DQo+ID4gU2VlbXMgdW5uZWNlc3NhcmlseSBjb21wbGljYXRlZC4gV2h5IHJlcXVpcmUgdGhh
+dCBzb21ldGhpbmcgaXMgYnJva2VuPw0KPiA+IElmIGEgdGVzdCBpcyBzcGVjaWZpYyB0byBhIGJh
+Y2tlbmQgaW1wbGVtZW50YXRpb24gdGhlbiB0aGUgYmVoYXZpb3VyDQo+ID4gaXMgdW5kZWZpbmVk
+IG9uIGFueSBvdGhlciBpbXBsZW1lbnRhdGlvbi4gSXQgbWF5IGhhbmcsIGl0IG1heSBwYXNzLCBp
+dA0KPiA+IG1heSBiZSByYW5kb20gZWFjaCB0aW1lIHlvdSBydW4gaXQuIElmIGEgdGVzdCBpcyBu
+b3QgcmVsZXZhbnQgdG8gYQ0KPiA+IGdpdmVuIHBsYXRmb3JtLCBJIHdvdWxkIHNheSB0aGF0IGl0
+IHNob3VsZCBqdXN0IGJlIHNraXBwZWQuDQo+ID4NCj4gPj4+IFRoYXQgd291bGQgYSkgZG9jdW1l
+bnQgdGhlIGZhaWxpbmcgY29ybmVyIGNhc2Ugb2YgdGhlIEFCSSBhbmQgbW9yZQ0KPiA+Pj4gaW1w
+b3J0YW50bHkgYikga2VlcCBleGVyY2lzaW5nIHRoZSBpOTE1IGNvZGUgcGF0aHMgd2hpY2ggc2l0
+IGJldHdlZW4NCj4gPj4+IHRoZSB1QVBJIGFuZCB0aGUgR3VDIGZpcm13YXJlPw0KPiA+IFlvdSBj
+YW4ndCBleGVyY2lzZSBjb2RlIHBhdGhzIHdoaWNoIGRvbid0IGV4aXN0LiBCb25kaW5nIGlzDQo+
+ID4gZnVuZGFtZW50YWxseSBhbiBpOTE1IG9ubHkgaW1wbGVtZW50YXRpb24uIFBlcnNpc3RlbmNl
+IGlzIHBhcnRpYWxseQ0KPiA+IGltcGxlbWVudGVkIGluc2lkZSB0aGUgZXhlY2xpc3QgYmFja2Vu
+ZC4gU28geW91IGNhbid0IGdldCB0byB0aGUgbG93DQo+ID4gbGV2ZWwgY29kZSBvZiBlaXRoZXIg
+d2hlbiBHdUMgc3VibWlzc2lvbiBpcyBlbmFibGVkIG5vIG1hdHRlciB3aGF0DQo+ID4gaGlkZW91
+c25lc3MgeW91IHB1dCBpbiB0aGUgdGVzdC4NCj4gDQo+IFN0aWNraW5nIHRvIGJvbmRpbmctKiBz
+dWJ0ZXN0cy4uDQo+IA0KPiBDYXRjaCBoZXJlIGlzIHRoYXQgZXZlbiB0aG91Z2ggc3VidGVzdHMg
+aW4gcXVlc3Rpb24gaGF2ZSBib25kaW5nIGluIHRoZWlyDQo+IG5hbWVzIHRoZXkgYXJlIG5vdCB1
+c2luZyB0aGUgYm9uZGluZyBleHRlbnNpb24hDQo+IA0KPiBUaGV5IGFyZSBzaW1wbHkgdXNpbmcg
+dGhlIHN1Ym1pdCBmZW5jZSB3aXRoIHBsYWluIHZpcnR1YWwgZW5naW5lcy4gQW5kIEkgYW0NCj4g
+dG9sZCBzdWJtaXQgZmVuY2UgY2Fubm90IGJlIGRpc2FibGVkIG9uIHRoZSB1QVBJIGxldmVsIChl
+dmVuIG9uIEd1Qw0KPiBzdWJtaXNzaW9uIHBsYXRmb3JtcykuDQo+IA0KPiBTbyBteSBjb25jZXJu
+IGlzIGZvciBjb2RlIGNvdmVyYWdlIG9mIHVzaW5nIHRoZSB0d28gaW4gY29tYmluYXRpb24uIEkg
+ZG9uJ3QNCj4gdGhpbmsgaXQncyBnb29kIGp1c3QgdG8gbm90IGhhdmUgYW55IChjb3ZlcmFnZSks
+IGV2ZW4gaWYgdGhlIHN0YXRlbWVudCBpcyB0aGUNCj4gdHdvIC9zaG91bGRuJ3QvIGJlIHVzZWQg
+dG9nZXRoZXIuIElmIHVhcGkgX2Nhbl8gYmUgdXNlZCB0b2dldGhlciB3ZSBoYXZlIHRvDQo+IHNl
+ZSB3aGF0IGhhcHBlbnMgaW4gdGhlIGRyaXZlciBpZiBpdCBpcy4gSW4gb3JkZXIgdG8gYXZvaWQg
+bmFzdHkgc3VycHJpc2VzIGlmDQo+IHRoZXJlIHdhcyBzb21lIHVudXNlZCBjb2RlIHRoYXQgYml0
+IHJvdHRlZCBpbiBhIGRhbmdlcm91cyB3YXkuDQo+IA0KPiBUaGF0IHdhcyB0aGUgZmlyc3QgdGhp
+bmcgSSBhc2tlZCB0byBhY2sgaW4gY2xlYXIgZXhwbGljaXQgd29yZHMuDQo+IA0KPiBTZWNvbmQg
+cGFydCB3aGF0IHRoZSBjb21taXQgbWVzc2FnZSBzaG91bGQgc2F5IGlzIHdoaWNoIG9mIHRoZSBh
+Y3R1YWwNCj4gZGlzYWJsZWQgc3VidGVzdHMgZmFpbCB3aXRoIEd1Qy4gTWF0dCB3YXMgc2F5aW5n
+IGFib3V0IHVucHJlZW1wdGFibGUNCj4gc3Bpbm5lcnMsIGJ1dCBub3QgYWxsIHN1YnRlc3RzIHVz
+ZSB0aG9zZS4gU28gcGVyaGFwcyBzcGxpdHRpbmcgaW50byBhIGdyb3VwDQo+IHdoaWNoIHBhc3Nl
+cyBhbmQgd2hpY2ggaXMgYSBwcm9ibGVtIGZvciBHdUMgd291bGQgd29yayBhbmQga2VlcCB0aGUN
+Cj4gY292ZXJhZ2UuDQo+IA0KPiA+Pj4gSWYgdGhhdCBpcyBub3QgYWNjZXB0YWJsZSwgYW5kIEkg
+ZG8gYWNrbm93bGVkZ2UgdG8gdGhlIGNvc3QgdG8gQ0kNCj4gPj4+IHRpbWUsIHRoZW4gYXJjaGl0
+ZWN0cyBzaG91bGQgYWNrIGFuZCBpbiBteSBtaW5kIHRoZSBhY2sgc2hvdWxkIG1lYW4NCj4gPj4+
+IG9uZSBvZiB0aGUgdHdvIHRoaW5ncy4gRWl0aGVyOg0KPiA+Pj4NCj4gPj4+IMKgwqAxKSBXZSBr
+bm93IHRoZXJlIGlzIGNvdmVyYWdlIGZvciB0aGUgc2FtZSBpOTE1IGNvZGUgcGF0aHMNCj4gPj4+
+IGVsc2V3aGVyZSBpbiBJR1QuIE9yOg0KPiA+IFRoYXQgZXhpc3RzIHdoZW4gcnVubmluZyBvbiBv
+bGRlciBwbGF0Zm9ybXMgdGhhdCBzdXBwb3J0IHRoZSBmZWF0dXJlDQo+ID4gYmVpbmcgdGVzdGVk
+Lg0KPiA+DQo+ID4+Pg0KPiA+Pj4gwqDCoDIpIFdlIGFyZSB3aWxsaW5nbHkgZHJvcHBpbmcgY292
+ZXJhZ2UgZm9yIHRoZXNlIGk5MTUgY29kZSBwYXRocyBvbg0KPiA+Pj4gR3VDIHBsYXRmb3JtcyB3
+aXRoIHRoZSByaXNrIHRoYXQgdGhlIGNvZGUgbWlnaHQgdW5rbm93aW5nbHkgYml0IHJvdA0KPiA+
+Pj4gYW5kIGNhdXNlIG1vcmUgc2VyaW91cyBzZWN1cml0eSBpc3N1ZXMgZG93biB0aGUgbGluZS4N
+Cj4gPiBCdXQgd2UgZG9uJ3QgY2FyZSBpZiB0aGUgY29kZSByb3RzIGZvciBwbGF0Zm9ybXMgaXQg
+ZG9lcyBub3Qgc3VwcG9ydA0KPiA+IGJlY2F1c2UgaXQgZG9lc24ndCBzdXBwb3J0IHRoZW0uDQo+
+IA0KPiBIb3BlZnVsbHkgSSBtYW5hZ2VkIHRvIGV4cGxhaW4gdGhpcyBpbiB0aGUgcHJldmlvdXMg
+cGFyYWdyYXBoLiBJZiB3ZSB3b3VsZA0KPiBiZSBhYmxlIHRvIHNheSBFTk9ERVYgdGhhdCB3b3Vs
+ZCBiZSBpZGVhbCwgYnV0IHdlIGFyZSBub3QsIHNvICJkb2Vzbid0DQo+IHN1cHBvcnQiIGluIHRo
+aXMgY2FzZSBpcyBtb3JlIGxpa2UgInBsZWFzZSBkb24ndCB1c2UgdGhpcyIuIEkgdGhpbmsgd2Ug
+bmVlZCB0bw0KPiBrbm93IHdoYXQgaGFwcGVucyBpZiBzb21lb25lIGRvZXMgdXNlIGl0Lg0KPiAN
+Cj4gPj4NCj4gPj4gQW5kIG5vIGFja3MgdG8gdGhlIGVmZmVjdCBvZiBlaXRoZXIgMSkgb3IgMikg
+d2VyZSBnaXZlbi4gU28gZ2l0DQo+ID4+IGhpc3Rvcnkgd2lsbCBub3Qgc2hvdyB3aGF0IGlzIHRo
+aXMgYWxsZWdlZGx5IGJhY2tlbmQgc3BlY2lmaWMNCj4gPj4gYmVoYXZpb3IsIG5laXRoZXIgaXQg
+d2lsbCBjbGFyaWZ5IHdoaWNoIHBhcnRzIG9mIHRoZSB1YXBpIGFyZSBzdG9wcGVkDQo+ID4+IGJl
+aW5nIHRlc3RlZCBpbiBHdUMgbW9kZS4NCj4gPiBJIGFncmVlIGVudGlyZWx5IHdpdGggdGhpcy4g
+QW5kIHdvdWxkIGdvIGZ1cnRoZXIgdG8gc2F5IHRoYXQgdGhlIHRlc3QNCj4gPiBjb2RlIGl0c2Vs
+ZiBzaG91bGQgYmUgZG9jdW1lbnRpbmcgd2hhdCBpdCBpcyBkb2luZywgd2hhdCBpdCBpcyB0cnlp
+bmcgdG8NCj4gPiB0ZXN0IGFuZCB3aHkgaXQgdGhpbmdzIHRoYXQgaXMgbm90IGFwcGxpY2FibGUg
+dG8gYSBnaXZlbiBwbGF0Zm9ybSBpZiBpdA0KPiA+IGlzIGdvaW5nIHRvIHNraXAgdGhhdCBwbGF0
+Zm9ybS4NCj4gDQo+IE9oIHllcywgdW5kZXJzdGFuZGluZyBhIGxvdCBvZiBvdXIgdGVzdHMgaXMg
+c3VjaCBhIHRpbWUgc2luay4NCj4gDQo+IFJlZ2FyZHMsDQo+IA0KPiBUdnJ0a28NCg==
