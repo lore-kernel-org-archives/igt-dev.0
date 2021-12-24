@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFEB510E49A
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Dec 2021 20:08:31 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-Date: Sat, 25 Dec 2021 01:33:10 +0530
-Message-Id: <20211224200310.10340-1-sai.gowtham.ch@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3849620246138970149=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_sync: Add support for local
- memory
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 24 Dec 2021 20:50:43 -0000
+Message-ID: <164037904373.22423.9957377882742077938@emeril.freedesktop.org>
+References: <20211224200310.10340-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20211224200310.10340-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fsync=3A_Add_support_for_local_memory_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,463 +16,199 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com, zbigniew.kempczynski@intel.com
+To: sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+--===============3849620246138970149==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add support for local memory region (Device memory)
+== Series Details ==
 
-Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_sync.c | 193 ++++++++++++++++++++++++++++--------------
- 1 file changed, 131 insertions(+), 62 deletions(-)
+Series: tests/i915/gem_sync: Add support for local memory (rev2)
+URL   : https://patchwork.freedesktop.org/series/95437/
+State : success
 
-diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-index 8c435845..8f8be2b1 100644
---- a/tests/i915/gem_sync.c
-+++ b/tests/i915/gem_sync.c
-@@ -143,9 +143,20 @@ static void xchg_engine(void *array, unsigned i, unsigned j)
- 	igt_swap(E[i], E[j]);
- }
- 
-+static uint32_t batch_create(int fd, uint32_t batch_size, uint32_t region)
-+{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t handle;
-+
-+	handle = gem_create_in_memory_regions(fd, 4096, region);
-+	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-+
-+	return handle;
-+}
-+
- static void
- sync_ring(int fd, const intel_ctx_t *ctx,
--	  unsigned ring, int num_children, int timeout)
-+	  unsigned ring, int num_children, int timeout, uint32_t region)
- {
- 	struct intel_engine_data ied;
- 
-@@ -155,15 +166,13 @@ sync_ring(int fd, const intel_ctx_t *ctx,
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
- 	igt_fork(child, num_children) {
--		const uint32_t bbe = MI_BATCH_BUFFER_END;
- 		struct drm_i915_gem_exec_object2 object;
- 		struct drm_i915_gem_execbuffer2 execbuf;
- 		double start, elapsed;
- 		unsigned long cycles;
- 
- 		memset(&object, 0, sizeof(object));
--		object.handle = gem_create(fd, 4096);
--		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
-+		object.handle = batch_create(fd, 4096, region);
- 
- 		memset(&execbuf, 0, sizeof(execbuf));
- 		execbuf.buffers_ptr = to_user_pointer(&object);
-@@ -193,9 +202,8 @@ sync_ring(int fd, const intel_ctx_t *ctx,
- 
- static void
- idle_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
--	  int num_children, int timeout)
-+	  int num_children, int timeout, uint32_t region)
- {
--	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_exec_object2 object;
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	double start, elapsed;
-@@ -204,8 +212,7 @@ idle_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 	gem_require_ring(fd, ring);
- 
- 	memset(&object, 0, sizeof(object));
--	object.handle = gem_create(fd, 4096);
--	gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
-+	object.handle = batch_create(fd, 4096, region);
- 
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(&object);
-@@ -234,7 +241,7 @@ idle_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 
- static void
- wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
--	    int timeout, int wlen)
-+	    int timeout, int wlen, uint32_t region)
- {
- 	struct intel_engine_data ied;
- 	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
-@@ -254,7 +261,7 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 		memset(&object, 0, sizeof(object));
--		object.handle = gem_create(fd, 4096);
-+		object.handle = gem_create_in_memory_regions(fd, 4096, region);
- 		object.offset = get_offset(ahnd, object.handle, 4096, 0);
- 		if (ahnd)
- 			object.flags = EXEC_OBJECT_PINNED;
-@@ -339,7 +346,7 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- }
- 
- static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
--			int num_children, int timeout)
-+			int num_children, int timeout, uint32_t region)
- {
- 	struct intel_engine_data ied;
- 	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
-@@ -398,7 +405,7 @@ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 
- static void
- active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
--		   int timeout, int wlen)
-+		   int timeout, int wlen, uint32_t region)
- {
- 	struct intel_engine_data ied;
- 	uint64_t ahnd0 = get_reloc_ahnd(fd, 0);
-@@ -420,7 +427,7 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 		memset(&object, 0, sizeof(object));
--		object.handle = gem_create(fd, 4096);
-+		object.handle = gem_create_in_memory_regions(fd, 4096, region);
- 		object.offset = get_offset(ahnd, object.handle, 4096, 0);
- 		if (ahnd)
- 			object.offset = EXEC_OBJECT_PINNED;
-@@ -529,7 +536,7 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 
- static void
- store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
--	   int num_children, int timeout)
-+	   int num_children, int timeout, uint32_t region)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct intel_engine_data ied;
-@@ -541,7 +548,6 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
- 	igt_fork(child, num_children) {
--		const uint32_t bbe = MI_BATCH_BUFFER_END;
- 		struct drm_i915_gem_exec_object2 object[2];
- 		struct drm_i915_gem_relocation_entry reloc[1024];
- 		struct drm_i915_gem_execbuffer2 execbuf;
-@@ -559,14 +565,13 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		execbuf.rsvd1 = ctx->id;
- 
- 		memset(object, 0, sizeof(object));
--		object[0].handle = gem_create(fd, 4096);
--		gem_write(fd, object[0].handle, 0, &bbe, sizeof(bbe));
-+		object[0].handle = batch_create(fd, 4096, region);
- 		execbuf.buffer_count = 1;
- 		gem_execbuf(fd, &execbuf);
- 
- 		object[0].flags |= EXEC_OBJECT_WRITE;
- 		object[0].flags |= has_relocs ? 0 : EXEC_OBJECT_PINNED;
--		object[1].handle = gem_create(fd, 20*1024);
-+		object[1].handle = gem_create_in_memory_regions(fd, 20*1024, region);
- 
- 		object[1].relocs_ptr = to_user_pointer(reloc);
- 		object[1].relocation_count = has_relocs ? 1024 : 0;
-@@ -629,7 +634,7 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 
- static void
- switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
--	    int num_children, int timeout)
-+	    int num_children, int timeout, uint32_t region)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct intel_engine_data ied;
-@@ -653,7 +658,6 @@ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 		unsigned long cycles;
- 
- 		for (int i = 0; i < ARRAY_SIZE(contexts); i++) {
--			const uint32_t bbe = MI_BATCH_BUFFER_END;
- 			const uint32_t sz = 32 << 10;
- 			struct context *c = &contexts[i];
- 			uint32_t *batch, *b;
-@@ -670,13 +674,12 @@ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
- 			c->execbuf.rsvd1 = c->ctx->id;
- 
- 			memset(c->object, 0, sizeof(c->object));
--			c->object[0].handle = gem_create(fd, 4096);
--			gem_write(fd, c->object[0].handle, 0, &bbe, sizeof(bbe));
-+			c->object[0].handle = batch_create(fd, 4096, region);
- 			c->execbuf.buffer_count = 1;
- 			gem_execbuf(fd, &c->execbuf);
- 
- 			c->object[0].flags |= EXEC_OBJECT_WRITE;
--			c->object[1].handle = gem_create(fd, sz);
-+			c->object[1].handle = gem_create_in_memory_regions(fd, sz, region);
- 
- 			c->object[1].relocs_ptr = to_user_pointer(c->reloc);
- 			c->object[1].relocation_count = has_relocs ? 1024 * i : 0;
-@@ -813,10 +816,9 @@ static void *waiter(void *arg)
- 
- static void
- __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
--	     int timeout, unsigned long *cycles)
-+	     int timeout, unsigned long *cycles, uint32_t region)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
--	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_exec_object2 object[2];
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_relocation_entry reloc[1024];
-@@ -836,8 +838,7 @@ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
- 	execbuf.rsvd1 = ctx->id;
- 
- 	memset(object, 0, sizeof(object));
--	object[0].handle = gem_create(fd, 4096);
--	gem_write(fd, object[0].handle, 0, &bbe, sizeof(bbe));
-+	object[0].handle = batch_create(fd, 4096, region);
- 	execbuf.buffer_count = 1;
- 	gem_execbuf(fd, &execbuf);
- 	object[0].flags |= EXEC_OBJECT_WRITE;
-@@ -945,7 +946,7 @@ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
- 
- static void
- store_many(int fd, const intel_ctx_t *ctx, unsigned int ring,
--	   int num_children, int timeout)
-+	   int num_children, int timeout, uint32_t region)
- {
- 	struct intel_engine_data ied;
- 	unsigned long *shared;
-@@ -963,7 +964,8 @@ store_many(int fd, const intel_ctx_t *ctx, unsigned int ring,
- 			__store_many(fd, ctx,
- 				     ied_flags(&ied, n),
- 				     timeout,
--				     &shared[n]);
-+				     &shared[n],
-+				     region);
- 	}
- 	igt_waitchildren();
- 
-@@ -976,7 +978,7 @@ store_many(int fd, const intel_ctx_t *ctx, unsigned int ring,
- }
- 
- static void
--sync_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
-+sync_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout, uint32_t region)
- {
- 	struct intel_engine_data ied;
- 
-@@ -985,15 +987,13 @@ sync_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
- 	igt_fork(child, num_children) {
--		const uint32_t bbe = MI_BATCH_BUFFER_END;
- 		struct drm_i915_gem_exec_object2 object;
- 		struct drm_i915_gem_execbuffer2 execbuf;
- 		double start, elapsed;
- 		unsigned long cycles;
- 
- 		memset(&object, 0, sizeof(object));
--		object.handle = gem_create(fd, 4096);
--		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
-+		object.handle = batch_create(fd, 4096, region);
- 
- 		memset(&execbuf, 0, sizeof(execbuf));
- 		execbuf.buffers_ptr = to_user_pointer(&object);
-@@ -1023,7 +1023,7 @@ sync_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
- }
- 
- static void
--store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
-+store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout, uint32_t region)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct intel_engine_data ied;
-@@ -1034,7 +1034,6 @@ store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
- 	igt_fork(child, num_children) {
--		const uint32_t bbe = MI_BATCH_BUFFER_END;
- 		struct drm_i915_gem_exec_object2 object[2];
- 		struct drm_i915_gem_relocation_entry reloc[1024];
- 		struct drm_i915_gem_execbuffer2 execbuf;
-@@ -1051,14 +1050,13 @@ store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
- 		execbuf.rsvd1 = ctx->id;
- 
- 		memset(object, 0, sizeof(object));
--		object[0].handle = gem_create(fd, 4096);
--		gem_write(fd, object[0].handle, 0, &bbe, sizeof(bbe));
-+		object[0].handle = batch_create(fd, 4096, region);
- 		execbuf.buffer_count = 1;
- 		gem_execbuf(fd, &execbuf);
- 
- 		object[0].flags |= EXEC_OBJECT_WRITE;
- 		object[0].flags |= has_relocs ? 0 : EXEC_OBJECT_PINNED;
--		object[1].handle = gem_create(fd, 1024*16 + 4096);
-+		object[1].handle = gem_create_in_memory_regions(fd, 1024*16 + 4096, region);
- 
- 		object[1].relocs_ptr = to_user_pointer(reloc);
- 		object[1].relocation_count = has_relocs ? 1024 : 0;
-@@ -1205,7 +1203,7 @@ igt_main
- 	const struct {
- 		const char *name;
- 		void (*func)(int fd, const intel_ctx_t *ctx, unsigned int engine,
--			     int num_children, int timeout);
-+			     int num_children, int timeout, uint32_t memregion);
- 		int num_children;
- 		int timeout;
- 	} all[] = {
-@@ -1241,6 +1239,10 @@ igt_main
- 	const struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
- 	int fd = -1;
-+	struct drm_i915_query_memory_regions *query_info;
-+	struct igt_collection *regions, *set;
-+	char *sub_name;
-+	uint32_t region;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
-@@ -1250,6 +1252,11 @@ igt_main
- 		ctx = intel_ctx_create_all_physical(fd);
- 
- 		igt_fork_hang_detector(fd);
-+		query_info = gem_get_query_memory_regions(fd);
-+		igt_assert(query_info);
-+		set = get_memory_region_set(query_info,
-+					I915_SYSTEM_MEMORY,
-+					I915_DEVICE_MEMORY);
- 		intel_allocator_multiprocess_start();
- 	}
- 
-@@ -1257,41 +1264,101 @@ igt_main
- 	for_each_test(t, individual) {
- 		igt_subtest_with_dynamic_f("legacy-%s", t->name) {
- 			for (const struct intel_execution_ring *l = intel_execution_rings; l->name; l++) {
--				igt_dynamic_f("%s", l->name) {
--					t->func(fd, intel_ctx_0(fd), eb_ring(l),
--						t->num_children, t->timeout);
-+				for_each_combination(regions, 1, set) {
-+					sub_name = memregion_dynamic_subtest_name(regions);
-+					region = igt_collection_get_value(regions, 0);
-+					igt_dynamic_f("%s-%s", l->name, sub_name) {
-+						t->func(fd, intel_ctx_0(fd), eb_ring(l),
-+								t->num_children,
-+								t->timeout,
-+								region);
-+					}
-+					free(sub_name);
- 				}
- 			}
- 		}
- 	}
- 
--	igt_subtest("basic-all")
--		sync_all(fd, ctx, 1, 2);
--	igt_subtest("basic-store-all")
--		store_all(fd, ctx, 1, 2);
--
--	igt_subtest("all")
--		sync_all(fd, ctx, 1, 20);
--	igt_subtest("store-all")
--		store_all(fd, ctx, 1, 20);
--	igt_subtest("forked-all")
--		sync_all(fd, ctx, ncpus, 20);
--	igt_subtest("forked-store-all")
--		store_all(fd, ctx, ncpus, 20);
-+	igt_subtest_with_dynamic("basic-all") {
-+		for_each_combination(regions, 1, set) {
-+			sub_name = memregion_dynamic_subtest_name(regions);
-+			region = igt_collection_get_value(regions, 0);
-+			igt_dynamic_f("%s", sub_name)
-+				sync_all(fd, ctx, 1, 2, region);
-+			free(sub_name);
-+		}
-+	}
-+	igt_subtest_with_dynamic("basic-store-all") {
-+		for_each_combination(regions, 1, set) {
-+			sub_name = memregion_dynamic_subtest_name(regions);
-+			region = igt_collection_get_value(regions, 0);
-+			igt_dynamic_f("%s", sub_name)
-+				store_all(fd, ctx, 1, 2, region);
-+			free(sub_name);
-+		}
-+	}
-+	igt_subtest_with_dynamic("all") {
-+		for_each_combination(regions, 1, set) {
-+			sub_name = memregion_dynamic_subtest_name(regions);
-+			region = igt_collection_get_value(regions, 0);
-+			igt_dynamic_f("%s", sub_name)
-+				sync_all(fd, ctx, 1, 20, region);
-+			free(sub_name);
-+		}
-+	}
-+	igt_subtest_with_dynamic("store-all") {
-+		for_each_combination(regions, 1, set) {
-+			sub_name = memregion_dynamic_subtest_name(regions);
-+			region = igt_collection_get_value(regions, 0);
-+			igt_dynamic_f("%s", sub_name)
-+				store_all(fd, ctx, 1, 20, region);
-+			free(sub_name);
-+		}
-+	}
-+	igt_subtest_with_dynamic("forked-all") {
-+		for_each_combination(regions, 1, set) {
-+			sub_name = memregion_dynamic_subtest_name(regions);
-+			region = igt_collection_get_value(regions, 0);
-+			igt_dynamic_f("%s", sub_name)
-+				sync_all(fd, ctx, ncpus, 20, region);
-+			free(sub_name);
-+		}
-+	}
-+	igt_subtest_with_dynamic("forked-store-all") {
-+		for_each_combination(regions, 1, set) {
-+			sub_name = memregion_dynamic_subtest_name(regions);
-+			region = igt_collection_get_value(regions, 0);
-+			igt_dynamic_f("%s", sub_name)
-+				store_all(fd, ctx, ncpus, 20, region);
-+			free(sub_name);
-+		}
-+	}
- 
- 	for_each_test(t, all) {
--		igt_subtest_f("%s", t->name)
--			t->func(fd, ctx, ALL_ENGINES, t->num_children, t->timeout);
-+		igt_subtest_with_dynamic_f("%s", t->name) {
-+			for_each_combination(regions, 1, set) {
-+				sub_name = memregion_dynamic_subtest_name(regions);
-+				region = igt_collection_get_value(regions, 0);
-+				igt_dynamic_f("%s", sub_name)
-+					t->func(fd, ctx, ALL_ENGINES, t->num_children,
-+							t->timeout, region);
-+				free(sub_name);
-+			}
-+		}
- 	}
- 
- 	/* New way of selecting engines. */
- 	for_each_test(t, individual) {
- 		igt_subtest_with_dynamic_f("%s", t->name) {
--			for_each_ctx_engine(fd, ctx, e) {
--				igt_dynamic_f("%s", e->name) {
--					t->func(fd, ctx, e->flags,
--						t->num_children, t->timeout);
--				}
-+			for_each_combination(regions, 1, set) {
-+				sub_name = memregion_dynamic_subtest_name(regions);
-+				region = igt_collection_get_value(regions, 0);
-+				for_each_ctx_engine(fd, ctx, e)
-+					igt_dynamic_f("%s-%s", e->name, sub_name)
-+						t->func(fd, ctx, e->flags,
-+								t->num_children,
-+								t->timeout, region);
-+				free(sub_name);
- 			}
- 		}
- 	}
-@@ -1314,6 +1381,8 @@ igt_main
- 	}
- 
- 	igt_fixture {
-+		free(query_info);
-+		igt_collection_destroy(set);
- 		intel_allocator_multiprocess_stop();
- 		igt_stop_hang_detector();
- 		intel_ctx_destroy(fd, ctx);
--- 
-2.32.0
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11037 -> IGTPW_6517
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/index.html
+
+Participating hosts (46 -> 34)
+------------------------------
+
+  Missing    (12): fi-ilk-m540 bat-dg1-6 bat-dg1-5 fi-hsw-4200u fi-icl-u2 fi-bsw-cyan bat-adlp-6 bat-adlp-4 fi-pnv-d510 bat-rpls-1 bat-jsl-2 fi-bdw-samus 
+
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_11037 and IGTPW_6517:
+
+### New IGT tests (2) ###
+
+  * igt@gem_sync@basic-all@smem:
+    - Statuses : 33 pass(s)
+    - Exec time: [2.03, 4.50] s
+
+  * igt@gem_sync@basic-each@smem:
+    - Statuses : 33 pass(s)
+    - Exec time: [2.05, 3.87] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6517 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - fi-snb-2520m:       [PASS][1] -> [DMESG-FAIL][2] ([i915#4610])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11037/fi-snb-2520m/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/fi-snb-2520m/igt@i915_selftest@live@workarounds.html
+
+  * igt@runner@aborted:
+    - fi-snb-2520m:       NOTRUN -> [FAIL][3] ([i915#2426] / [i915#4312])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/fi-snb-2520m/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][4] ([i915#4269]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11037/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4610]: https://gitlab.freedesktop.org/drm/intel/issues/4610
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6319 -> IGTPW_6517
+
+  CI-20190529: 20190529
+  CI_DRM_11037: c2c428a5d3232109b94de46042b7980bd50fb436 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6517: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/index.html
+  IGT_6319: 15df505835e60dbdb9ddcbd800a4fab3120328f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/index.html
+
+--===============3849620246138970149==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_sync: Add support for local memory (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/95437/">https://patchwork.freedesktop.org/series/95437/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11037 -&gt; IGTPW_6517</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/index.html</p>
+<h2>Participating hosts (46 -&gt; 34)</h2>
+<p>Missing    (12): fi-ilk-m540 bat-dg1-6 bat-dg1-5 fi-hsw-4200u fi-icl-u2 fi-bsw-cyan bat-adlp-6 bat-adlp-4 fi-pnv-d510 bat-rpls-1 bat-jsl-2 fi-bdw-samus </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_11037 and IGTPW_6517:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@gem_sync@basic-all@smem:</p>
+<ul>
+<li>Statuses : 33 pass(s)</li>
+<li>Exec time: [2.03, 4.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_sync@basic-each@smem:</p>
+<ul>
+<li>Statuses : 33 pass(s)</li>
+<li>Exec time: [2.05, 3.87] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6517 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11037/fi-snb-2520m/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/fi-snb-2520m/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4610">i915#4610</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/fi-snb-2520m/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11037/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6319 -&gt; IGTPW_6517</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11037: c2c428a5d3232109b94de46042b7980bd50fb436 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6517: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6517/index.html<br />
+  IGT_6319: 15df505835e60dbdb9ddcbd800a4fab3120328f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3849620246138970149==--
