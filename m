@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B18810EB22
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Dec 2021 11:48:17 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8795C10EB21
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Dec 2021 11:48:21 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Wed, 29 Dec 2021 12:48:05 +0100
-Message-Id: <20211229114806.24218-2-zbigniew.kempczynski@intel.com>
+Date: Wed, 29 Dec 2021 12:48:06 +0100
+Message-Id: <20211229114806.24218-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20211229114806.24218-1-zbigniew.kempczynski@intel.com>
 References: <20211229114806.24218-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/intel_bufops: Add fixed mapping for
- reading ccs data
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/intel_allocator: Fix invalid
+ strategy on allocator helper code
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,42 +25,28 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On discrete gem_mmap_offset__fixed() function must be used to map
-local memory. Add this case for copying of ccs data and fix
-all *ccs* subtests in gem_render_copy test.
+During write likely it was copy-pasted and was never changed to
+valid HIGH_TO_LOW strategy. Fix this overlook.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/intel_bufops.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ lib/intel_allocator.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index f13063fa9..72d729b63 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -399,11 +399,17 @@ static void __copy_ccs(struct buf_ops *bops, struct intel_buf *buf,
- 	ccs_size = CCS_SIZE(gen, buf);
- 	size = offset + ccs_size;
+diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+index e8d807f9a..068985637 100644
+--- a/lib/intel_allocator.h
++++ b/lib/intel_allocator.h
+@@ -251,7 +251,7 @@ static inline uint64_t get_simple_h2l_ahnd(int fd, uint32_t ctx)
  
--	map = __gem_mmap_offset__wc(bops->fd, buf->handle, 0, size,
--				    PROT_READ | PROT_WRITE);
-+	if (gem_has_lmem(bops->fd)) {
-+		map = gem_mmap_offset__fixed(bops->fd, buf->handle, 0, size,
-+					     PROT_READ | PROT_WRITE);
-+	}
- 	if (!map)
--		map = gem_mmap__wc(bops->fd, buf->handle, 0, size,
--				   PROT_READ | PROT_WRITE);
-+		map = __gem_mmap_offset__wc(bops->fd, buf->handle, 0, size,
-+					    PROT_READ | PROT_WRITE);
-+	if (!map)
-+		map = __gem_mmap__wc(bops->fd, buf->handle, 0, size,
-+				     PROT_READ | PROT_WRITE);
-+
+ 	return do_relocs ? 0 : intel_allocator_open_full(fd, ctx, 0, 0,
+ 							 INTEL_ALLOCATOR_SIMPLE,
+-							 ALLOC_STRATEGY_LOW_TO_HIGH);
++							 ALLOC_STRATEGY_HIGH_TO_LOW);
+ }
  
- 	switch (dir) {
- 	case CCS_LINEAR_TO_BUF:
+ static inline uint64_t get_reloc_ahnd(int fd, uint32_t ctx)
 -- 
 2.32.0
