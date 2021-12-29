@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E2F310E2BE
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Dec 2021 19:37:52 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Wed, 29 Dec 2021 20:37:34 +0100
-Message-Id: <20211229193734.57616-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20211229193734.57616-1-zbigniew.kempczynski@intel.com>
-References: <20211229193734.57616-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8151997930209683863=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] tests/fast-feedback.testlist: Add
- gem_softpin@safe-alignment subtest
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 29 Dec 2021 20:26:34 -0000
+Message-ID: <164080959411.17176.14247986235742692661@emeril.freedesktop.org>
+References: <20211229193734.57616-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20211229193734.57616-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIHN0?=
+ =?utf-8?q?art_offset_and_alignment_detection_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,34 +16,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test takes up to few hundred of milliseconds and exercises
-detecting of safe starting offset and alignment to use on discrete
-where memory regions constraints could differ on different gens.
+--===============8151997930209683863==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+== Series Details ==
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index de1c6cb46..5c867bbf7 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -45,6 +45,7 @@ igt@gem_render_tiled_blits@basic
- igt@gem_ringfill@basic-all
- igt@gem_softpin@allocator-basic
- igt@gem_softpin@allocator-basic-reserve
+Series: Add start offset and alignment detection (rev2)
+URL   : https://patchwork.freedesktop.org/series/98402/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11039 -> IGTPW_6523
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/index.html
+
+Participating hosts (42 -> 31)
+------------------------------
+
+  Missing    (11): bat-dg1-6 fi-tgl-u2 fi-tgl-dsi fi-bsw-cyan fi-apl-guc bat-adlp-6 bat-adlp-4 fi-pnv-d510 bat-rpls-1 bat-jsl-2 fi-bdw-samus 
+
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_11039 and IGTPW_6523:
+
+### New IGT tests (1) ###
+
+  * igt@gem_softpin@safe-alignment:
+    - Statuses : 29 pass(s) 1 skip(s)
+    - Exec time: [0.0, 0.04] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6523 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#109315]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * {igt@gem_softpin@safe-alignment} (NEW):
+    - fi-bwr-2160:        NOTRUN -> [SKIP][2] ([fdo#109271])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-bwr-2160/igt@gem_softpin@safe-alignment.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][3] -> [INCOMPLETE][4] ([i915#3921])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11039/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [PASS][5] -> [DMESG-WARN][6] ([i915#295]) +12 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11039/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][7] ([i915#3303]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11039/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [DMESG-WARN][9] ([i915#4269]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11039/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6321 -> IGTPW_6523
+
+  CI-20190529: 20190529
+  CI_DRM_11039: c90264924b9988493890773248bde3173a4866b4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6523: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/index.html
+  IGT_6321: 85a5938090cd3da34e4fba8f541fbe240210b47d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
 +igt@gem_softpin@safe-alignment
- igt@gem_sync@basic-all
- igt@gem_sync@basic-each
- igt@gem_tiled_blits@basic
--- 
-2.32.0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/index.html
+
+--===============8151997930209683863==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add start offset and alignment detection (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/98402/">https://patchwork.freedesktop.org/series/98402/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11039 -&gt; IGTPW_6523</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/index.html</p>
+<h2>Participating hosts (42 -&gt; 31)</h2>
+<p>Missing    (11): bat-dg1-6 fi-tgl-u2 fi-tgl-dsi fi-bsw-cyan fi-apl-guc bat-adlp-6 bat-adlp-4 fi-pnv-d510 bat-rpls-1 bat-jsl-2 fi-bdw-samus </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_11039 and IGTPW_6523:</p>
+<h3>New IGT tests (1)</h3>
+<ul>
+<li>igt@gem_softpin@safe-alignment:<ul>
+<li>Statuses : 29 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 0.04] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6523 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@gem_softpin@safe-alignment} (NEW):</p>
+<ul>
+<li>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-bwr-2160/igt@gem_softpin@safe-alignment.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11039/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11039/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +12 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11039/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11039/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6321 -&gt; IGTPW_6523</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11039: c90264924b9988493890773248bde3173a4866b4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6523: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6523/index.html<br />
+  IGT_6321: 85a5938090cd3da34e4fba8f541fbe240210b47d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_softpin@safe-alignment</p>
+
+</body>
+</html>
+
+--===============8151997930209683863==--
