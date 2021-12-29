@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C487A10E1CC
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Dec 2021 13:58:01 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Wed, 29 Dec 2021 14:57:42 +0100
-Message-Id: <20211229135742.37177-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20211229135742.37177-1-zbigniew.kempczynski@intel.com>
-References: <20211229135742.37177-1-zbigniew.kempczynski@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB14B10E146
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Dec 2021 14:41:28 +0000 (UTC)
+From: Mastan Katragadda <mastanx.katragadda@intel.com>
+Date: Wed, 29 Dec 2021 20:12:51 +0530
+Message-Id: <20211229144251.3709751-1-mastanx.katragadda@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] tests/fast-feedback.testlist: Add
- gem_softpin@safe-alignment subtest
+Subject: [igt-dev] [i-g-t] tests/i915/gem_media_vme : skip on no media
+ Samplers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,32 +18,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
+Cc: mastanx.katragadda@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test takes up to few hundred of milliseconds and exercises
-detecting of safe starting offset and alignment to use on discrete
-where memory regions constraints could differ on different gens.
+Media sampers are not present on some of Gen11 platforms adding
+skip on EHL and JSL as per Bspec.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Bspec:29151
+
+Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+ tests/i915/gem_media_vme.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index de1c6cb46..5c867bbf7 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -45,6 +45,7 @@ igt@gem_render_tiled_blits@basic
- igt@gem_ringfill@basic-all
- igt@gem_softpin@allocator-basic
- igt@gem_softpin@allocator-basic-reserve
-+igt@gem_softpin@safe-alignment
- igt@gem_sync@basic-all
- igt@gem_sync@basic-each
- igt@gem_tiled_blits@basic
+diff --git a/tests/i915/gem_media_vme.c b/tests/i915/gem_media_vme.c
+index 3ea70386..29e0fda3 100644
+--- a/tests/i915/gem_media_vme.c
++++ b/tests/i915/gem_media_vme.c
+@@ -90,6 +90,15 @@ static void shut_non_vme_subslices(int drm_fd, uint32_t ctx)
+ 
+ 	gem_context_set_param(drm_fd, &arg);
+ }
++static bool is_jsl_ehl(uint32_t devid)
++{
++	const struct intel_device_info *devinfo = intel_get_device_info(devid);
++
++	if (devinfo->is_elkhartlake || devinfo->is_jasperlake)
++		return true;
++
++	return false;
++}
+ 
+ igt_simple_main
+ {
+@@ -104,6 +113,8 @@ igt_simple_main
+ 
+ 	devid = intel_get_drm_devid(drm_fd);
+ 
++	igt_skip_on_f(is_jsl_ehl(devid), "media-vme samplers not present\n");
++
+ 	media_vme = igt_get_media_vme_func(devid);
+ 	igt_require_f(media_vme, "no media-vme function\n");
+ 
 -- 
-2.32.0
+2.25.1
