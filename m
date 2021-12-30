@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B8D710E7AE
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Dec 2021 18:26:31 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 254E210E79F
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Dec 2021 18:26:35 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 30 Dec 2021 19:26:12 +0100
-Message-Id: <20211230182613.35827-3-zbigniew.kempczynski@intel.com>
+Date: Thu, 30 Dec 2021 19:26:13 +0100
+Message-Id: <20211230182613.35827-4-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20211230182613.35827-1-zbigniew.kempczynski@intel.com>
 References: <20211230182613.35827-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/i915/gem_softpin: Add safe-start
- test
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/fast-feedback.testlist: Add
+ gem_softpin@safe-start subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,123 +25,28 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Exercise start offset and alignment detection when we start mixing
-system and local memory.
-
-v2: support integrated and check smem <-> smem alignment
-v3: iterate over engines to verify safe start is correct everywhere
+This test takes up to few hundred of milliseconds and exercises
+detecting of safe starting offset and alignment to use on discrete
+where memory regions constraints could differ on different gens.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_softpin.c | 87 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
+ tests/intel-ci/fast-feedback.testlist | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-index d085dea34..7085605bc 100644
---- a/tests/i915/gem_softpin.c
-+++ b/tests/i915/gem_softpin.c
-@@ -1072,6 +1072,89 @@ static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
- 
-+static void make_batch(int i915, uint32_t handle, uint64_t size)
-+{
-+	uint32_t *bb = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
-+	*bb = MI_BATCH_BUFFER_END;
-+	munmap(bb, size);
-+}
-+
-+static void safe_start(int i915)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[2] = {};
-+	uint32_t handle1, handle2, region1, region2;
-+	uint64_t alignment, offset1, offset2, size1 = 4096, size2 = 4096;
-+	const struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx;
-+
-+	region1 = REGION_SMEM;
-+	region2 = gem_has_lmem(i915) ? REGION_LMEM(0) : REGION_SMEM;
-+	igt_assert(__gem_create_in_memory_regions(i915, &handle1, &size1, region1) == 0);
-+	igt_assert(handle1);
-+	make_batch(i915, handle1, 4096);
-+	igt_assert(__gem_create_in_memory_regions(i915, &handle2, &size2, region2) == 0);
-+	igt_assert(handle2);
-+	make_batch(i915, handle2, 4096);
-+
-+	offset1 = gem_detect_min_start_offset_for_region(i915, region1);
-+	offset2 = gem_detect_min_start_offset_for_region(i915, region2);
-+	alignment = gem_detect_safe_alignment(i915);
-+	igt_debug("safe alignment: %llx\n", (long long) alignment);
-+	igt_debug("safe start offset: %llx\n",
-+		  (long long) gem_detect_safe_start_offset(i915));
-+	igt_debug("minimum object1 start offset: %llx\n", (long long) offset1);
-+	igt_debug("minimum object2 start offset: %llx\n", (long long) offset2);
-+
-+	execbuf.buffer_count = 2;
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+
-+	obj[0].offset = offset1;
-+	obj[0].flags = EXEC_OBJECT_PINNED;
-+	obj[0].handle = handle1;
-+	obj[1].offset = max(ALIGN(offset1 + size1, alignment), offset2);
-+	obj[1].flags = EXEC_OBJECT_PINNED;
-+	obj[1].handle = handle2;
-+	igt_debug("obj[0].offset: %llx, handle: %u\n", obj[0].offset, obj[0].handle);
-+	igt_debug("obj[1].offset: %llx, handle: %u\n", obj[1].offset, obj[1].handle);
-+
-+	gem_execbuf(i915, &execbuf);
-+	execbuf.flags = I915_EXEC_BATCH_FIRST;
-+	gem_execbuf(i915, &execbuf);
-+
-+	obj[0].offset = offset2;
-+	obj[0].flags = EXEC_OBJECT_PINNED;
-+	obj[0].handle = handle2;
-+	obj[1].offset = max(ALIGN(offset2 + size2, alignment), offset1);
-+	obj[1].flags = EXEC_OBJECT_PINNED;
-+	obj[1].handle = handle1;
-+	igt_debug("obj[0].offset: %llx, handle: %u\n", obj[0].offset, obj[0].handle);
-+	igt_debug("obj[1].offset: %llx, handle: %u\n", obj[1].offset, obj[1].handle);
-+
-+	gem_execbuf(i915, &execbuf);
-+	execbuf.flags = 0;
-+	gem_execbuf(i915, &execbuf);
-+	gem_sync(i915, handle1);
-+
-+	/* Last check, verify safe start for each engine */
-+	ctx = intel_ctx_create_all_physical(i915);
-+	execbuf.buffer_count = 1;
-+	execbuf.rsvd1 = ctx->id;
-+	obj[0].offset = gem_detect_safe_start_offset(i915);
-+	for_each_ctx_engine(i915, ctx, e) {
-+		execbuf.flags = e->flags;
-+		obj[0].handle = handle1;
-+		gem_execbuf(i915, &execbuf);
-+		obj[0].handle = handle2;
-+		gem_execbuf(i915, &execbuf);
-+	}
-+
-+	gem_sync(i915, handle1);
-+	gem_close(i915, handle1);
-+	gem_close(i915, handle2);
-+	intel_ctx_destroy(i915, ctx);
-+}
-+
- #define test_each_engine(T, i915, ctx, e) \
- 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
- 		igt_dynamic_f("%s", e->name)
-@@ -1133,6 +1216,10 @@ igt_main
- 			test_allocator_evict(fd, ctx, ALL_ENGINES, 20);
- 	}
- 
-+	igt_describe("Check start offset and alignment detection");
-+	igt_subtest("safe-start")
-+		safe_start(fd);
-+
- 	igt_subtest("softpin")
- 		test_softpin(fd);
- 	igt_subtest("overlap")
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index de1c6cb46..38a90ceb6 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -45,6 +45,7 @@ igt@gem_render_tiled_blits@basic
+ igt@gem_ringfill@basic-all
+ igt@gem_softpin@allocator-basic
+ igt@gem_softpin@allocator-basic-reserve
++igt@gem_softpin@safe-start
+ igt@gem_sync@basic-all
+ igt@gem_sync@basic-each
+ igt@gem_tiled_blits@basic
 -- 
 2.32.0
