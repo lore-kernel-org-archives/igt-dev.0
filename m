@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 685B910E32D
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Dec 2021 08:14:35 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA45A10E32A
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Dec 2021 08:14:38 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 30 Dec 2021 09:14:20 +0100
-Message-Id: <20211230081422.11703-2-zbigniew.kempczynski@intel.com>
+Date: Thu, 30 Dec 2021 09:14:21 +0100
+Message-Id: <20211230081422.11703-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20211230081422.11703-1-zbigniew.kempczynski@intel.com>
 References: <20211230081422.11703-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/intel_memory_region: Add start
- offset and alignment detection
+Subject: [igt-dev] [PATCH i-g-t 2/3] tests/i915/gem_softpin: Add
+ safe-alignment test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,443 +25,101 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With era of new gens we're enforced to use no-reloc (softpin). This
-brings few problems like vm range limitations which were well solved
-by the kernel. This can be handled also in userspace code by adding
-gen related conditionals or by trying to detect the constraints.
+Exercise start offset and alignment detection when we start mixing
+system and local memory.
 
-Lets try to do this dynamically and detect safe start offset and
-alignment for each memory region we got. This should be universal solution
-regardless hw limitations and bugs. As such detection is not lightweight
-technique add also some caching structures to handle consequtive calls
-about same data.
-
-v2: unify cache
-v3: move allocation of cache entry out of mutex
+v2: support integrated and check smem <-> smem alignment
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/i915/intel_memory_region.c | 375 +++++++++++++++++++++++++++++++++
- lib/i915/intel_memory_region.h |   5 +
- 2 files changed, 380 insertions(+)
+ tests/i915/gem_softpin.c | 66 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index dfbb8acf0..60121a603 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -28,11 +28,13 @@
- #include <sys/types.h>
- #include <sys/stat.h>
- #include <fcntl.h>
-+#include <pthread.h>
- 
- #include "i915/gem_create.h"
- #include "intel_reg.h"
- #include "drmtest.h"
- #include "ioctl_wrappers.h"
-+#include "igt_aux.h"
- #include "igt_dummyload.h"
- #include "igt_gt.h"
- #include "igt_params.h"
-@@ -40,6 +42,7 @@
- #include "intel_chipset.h"
- #include "igt_collection.h"
- #include "igt_device.h"
-+#include "gem_mman.h"
- 
- #include "i915/intel_memory_region.h"
- 
-@@ -480,3 +483,375 @@ uint64_t gpu_meminfo_region_available(const struct drm_i915_query_memory_regions
- 
- 	return 0;
+diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+index d085dea34..02a78c6a3 100644
+--- a/tests/i915/gem_softpin.c
++++ b/tests/i915/gem_softpin.c
+@@ -1072,6 +1072,68 @@ static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
  }
-+
-+#define PAGE_SIZE 4096
-+
-+enum cache_entry_type {
-+	MIN_START_OFFSET,
-+	MIN_ALIGNMENT,
-+	SAFE_START_OFFSET,
-+	SAFE_ALIGNMENT,
-+};
-+
-+struct cache_entry {
-+	uint16_t devid;
-+	enum cache_entry_type type;
-+
-+	union {
-+		/* for MIN_START_OFFSET */
-+		struct {
-+			uint64_t offset;
-+			uint32_t region;
-+		} start;
-+
-+		/* for MIN_ALIGNMENT */
-+		struct {
-+			uint64_t alignment;
-+			uint64_t region1;
-+			uint64_t region2;
-+		} minalign;
-+
-+		/* for SAFE_START_OFFSET */
-+		uint64_t safe_start_offset;
-+
-+		/* for SAFE_ALIGNMENT */
-+		uint64_t safe_alignment;
-+	};
-+	struct igt_list_head link;
-+};
-+
-+static IGT_LIST_HEAD(cache);
-+static pthread_mutex_t cache_mutex = PTHREAD_MUTEX_INITIALIZER;
-+
-+static struct cache_entry *find_entry_unlocked(enum cache_entry_type type,
-+					       uint16_t devid,
-+					       uint32_t region1,
-+					       uint32_t region2)
-+{
-+	struct cache_entry *entry;
-+
-+	igt_list_for_each_entry(entry, &cache, link) {
-+		if (entry->type != type || entry->devid != devid)
-+			continue;
-+
-+		switch (entry->type) {
-+		case MIN_START_OFFSET:
-+			if (entry->start.region == region1)
-+				return entry;
-+			continue;
-+
-+		case MIN_ALIGNMENT:
-+			if (entry->minalign.region1 == region1 &&
-+			    entry->minalign.region2 == region2)
-+				return entry;
-+			continue;
-+
-+		case SAFE_START_OFFSET:
-+		case SAFE_ALIGNMENT:
-+			return entry;
-+		}
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * gem_detect_min_start_offset_for_region:
-+ * @i915: drm fd
-+ * @region: memory region
-+ *
-+ * Returns: minimum start offset at which kernel allows placing objects
-+ *          for memory region.
-+ */
-+uint64_t gem_detect_min_start_offset_for_region(int i915, uint32_t region)
-+{
-+	struct drm_i915_gem_exec_object2 obj;
-+	struct drm_i915_gem_execbuffer2 eb;
-+	uint64_t start_offset = 0;
-+	uint64_t bb_size = PAGE_SIZE;
-+	uint32_t *batch;
-+	uint16_t devid = intel_get_drm_devid(i915);
-+	struct cache_entry *entry, *newentry;
-+
-+	pthread_mutex_lock(&cache_mutex);
-+	entry = find_entry_unlocked(MIN_START_OFFSET, devid, region, 0);
-+	if (entry)
-+		goto out;
-+	pthread_mutex_unlock(&cache_mutex);
-+
-+	memset(&obj, 0, sizeof(obj));
-+	memset(&eb, 0, sizeof(eb));
-+
-+	eb.buffers_ptr = to_user_pointer(&obj);
-+	eb.buffer_count = 1;
-+	eb.flags = I915_EXEC_DEFAULT;
-+	igt_assert(__gem_create_in_memory_regions(i915, &obj.handle, &bb_size, region) == 0);
-+	obj.flags = EXEC_OBJECT_PINNED;
-+
-+	batch = gem_mmap__device_coherent(i915, obj.handle, 0, bb_size, PROT_WRITE);
-+	*batch = MI_BATCH_BUFFER_END;
-+	munmap(batch, bb_size);
-+
-+	while (1) {
-+		obj.offset = start_offset;
-+
-+		if (__gem_execbuf(i915, &eb) == 0)
-+			break;
-+
-+		if (start_offset)
-+			start_offset <<= 1;
-+		else
-+			start_offset = PAGE_SIZE;
-+
-+		igt_assert(start_offset <= 1ull << 32);
-+	}
-+	gem_close(i915, obj.handle);
-+
-+	newentry = malloc(sizeof(*newentry));
-+	igt_assert(newentry);
-+
-+	/* Check does other thread did the job before */
-+	pthread_mutex_lock(&cache_mutex);
-+	entry = find_entry_unlocked(MIN_START_OFFSET, devid, region, 0);
-+	if (entry) {
-+		free(newentry); /* extremely rare case */
-+		goto out;
-+	}
-+
-+	entry = newentry;
-+	entry->devid = devid;
-+	entry->type = MIN_START_OFFSET;
-+	entry->start.offset = start_offset;
-+	entry->start.region = region;
-+	igt_list_add(&entry->link, &cache);
-+
-+out:
-+	pthread_mutex_unlock(&cache_mutex);
-+
-+	return entry->start.offset;
-+}
-+
-+/**
-+ * gem_detect_safe_start_offset:
-+ * @i915: drm fd
-+ *
-+ * Returns: finds start offset which can be used as first one regardless
-+ *          memory region. Useful if for some reason some regions don't allow
-+ *          starting from 0x0 offset.
-+ */
-+uint64_t gem_detect_safe_start_offset(int i915)
-+{
-+	struct drm_i915_query_memory_regions *query_info;
-+	struct igt_collection *regions, *set;
-+	uint32_t region;
-+	uint64_t offset = 0;
-+	uint16_t devid = intel_get_drm_devid(i915);
-+	struct cache_entry *entry, *newentry;
-+
-+	pthread_mutex_lock(&cache_mutex);
-+	entry = find_entry_unlocked(SAFE_START_OFFSET, devid, 0, 0);
-+	if (entry)
-+		goto out;
-+	pthread_mutex_unlock(&cache_mutex);
-+
-+	query_info = gem_get_query_memory_regions(i915);
-+	igt_assert(query_info);
-+
-+	set = get_memory_region_set(query_info,
-+				    I915_SYSTEM_MEMORY,
-+				    I915_DEVICE_MEMORY);
-+
-+	for_each_combination(regions, 1, set) {
-+		region = igt_collection_get_value(regions, 0);
-+		offset = max(offset,
-+			     gem_detect_min_start_offset_for_region(i915, region));
-+	}
-+	free(query_info);
-+	igt_collection_destroy(set);
-+
-+	newentry = malloc(sizeof(*newentry));
-+	igt_assert(newentry);
-+
-+	pthread_mutex_lock(&cache_mutex);
-+	entry = find_entry_unlocked(SAFE_START_OFFSET, devid, 0, 0);
-+	if (entry) {
-+		free(newentry);
-+		goto out;
-+	}
-+
-+	entry = newentry;
-+	entry->devid = devid;
-+	entry->type = SAFE_START_OFFSET;
-+	entry->safe_start_offset = offset;
-+	igt_list_add(&entry->link, &cache);
-+
-+out:
-+	pthread_mutex_unlock(&cache_mutex);
-+
-+	return entry->safe_start_offset;
-+}
-+
-+/**
-+ * gem_detect_min_alignment_for_regions:
-+ * @i915: drm fd
-+ * @region1: first region
-+ * @region2: second region
-+ *
-+ * Returns: minimum alignment which must be used when objects from @region1 and
-+ * @region2 are going to interact.
-+ */
-+uint64_t gem_detect_min_alignment_for_regions(int i915,
-+					      uint32_t region1,
-+					      uint32_t region2)
-+{
-+	struct drm_i915_gem_exec_object2 obj[2];
-+	struct drm_i915_gem_execbuffer2 eb;
-+	uint64_t min_alignment = PAGE_SIZE;
-+	uint64_t bb_size = PAGE_SIZE, obj_size = PAGE_SIZE;
-+	uint32_t *batch;
-+	uint16_t devid = intel_get_drm_devid(i915);
-+	struct cache_entry *entry, *newentry;
-+
-+	pthread_mutex_lock(&cache_mutex);
-+	entry = find_entry_unlocked(MIN_ALIGNMENT, devid, region1, region2);
-+	if (entry)
-+		goto out;
-+	pthread_mutex_unlock(&cache_mutex);
-+
-+	memset(obj, 0, sizeof(obj));
-+	memset(&eb, 0, sizeof(eb));
-+
-+	/* Establish bb offset first */
-+	eb.buffers_ptr = to_user_pointer(obj);
-+	eb.buffer_count = 1;
-+	eb.flags = I915_EXEC_BATCH_FIRST | I915_EXEC_DEFAULT;
-+	igt_assert(__gem_create_in_memory_regions(i915, &obj[0].handle,
-+						  &bb_size, region1) == 0);
-+	obj[0].flags = EXEC_OBJECT_PINNED;
-+
-+	batch = gem_mmap__device_coherent(i915, obj[0].handle, 0, bb_size,
-+					  PROT_WRITE);
-+	*batch = MI_BATCH_BUFFER_END;
-+	munmap(batch, bb_size);
-+
-+	obj[0].offset = gem_detect_min_start_offset_for_region(i915, region1);
-+
-+	/* Find appropriate alignment of object */
-+	eb.buffer_count = ARRAY_SIZE(obj);
-+	igt_assert(__gem_create_in_memory_regions(i915, &obj[1].handle,
-+						  &obj_size, region2) == 0);
-+	obj[1].handle = gem_create_in_memory_regions(i915, PAGE_SIZE, region2);
-+	obj[1].flags = EXEC_OBJECT_PINNED;
-+	while (1) {
-+		obj[1].offset = ALIGN(obj[0].offset + bb_size, min_alignment);
-+		igt_assert(obj[1].offset <= 1ull << 32);
-+
-+		if (__gem_execbuf(i915, &eb) == 0)
-+			break;
-+
-+		min_alignment <<= 1;
-+	}
-+
-+	gem_close(i915, obj[0].handle);
-+	gem_close(i915, obj[1].handle);
-+
-+	newentry = malloc(sizeof(*newentry));
-+	igt_assert(newentry);
-+
-+	pthread_mutex_lock(&cache_mutex);
-+	entry = find_entry_unlocked(MIN_ALIGNMENT, devid, region1, region2);
-+	if (entry) {
-+		free(newentry);
-+		goto out;
-+	}
-+
-+	entry = newentry;
-+	entry->devid = devid;
-+	entry->type = MIN_ALIGNMENT;
-+	entry->minalign.alignment = min_alignment;
-+	entry->minalign.region1 = region1;
-+	entry->minalign.region2 = region2;
-+	igt_list_add(&entry->link, &cache);
-+
-+out:
-+	pthread_mutex_unlock(&cache_mutex);
-+
-+	return entry->minalign.alignment;
-+}
-+
-+/**
-+ * gem_get_safe_alignment:
-+ * @i915: drm fd
-+ *
-+ * Returns: safe alignment for all memory regions on @i915 device.
-+ * Safe in this case means max() from all minimum alignment for each
-+ * region.
-+ */
-+uint64_t gem_detect_safe_alignment(int i915)
-+{
-+	struct drm_i915_query_memory_regions *query_info;
-+	struct igt_collection *regions, *set;
-+	uint64_t default_alignment = 0;
-+	uint32_t region_bb, region_obj;
-+	uint16_t devid = intel_get_drm_devid(i915);
-+	struct cache_entry *entry, *newentry;
-+
-+	/* non-discrete uses 4K page size */
-+	if (!gem_has_lmem(i915))
-+		return PAGE_SIZE;
-+
-+	pthread_mutex_lock(&cache_mutex);
-+	entry = find_entry_unlocked(SAFE_ALIGNMENT, devid, 0, 0);
-+	if (entry)
-+		goto out;
-+	pthread_mutex_unlock(&cache_mutex);
-+
-+	query_info = gem_get_query_memory_regions(i915);
-+	igt_assert(query_info);
-+
-+	set = get_memory_region_set(query_info,
-+				    I915_SYSTEM_MEMORY,
-+				    I915_DEVICE_MEMORY);
-+
-+	for_each_variation_r(regions, 2, set) {
-+		uint64_t alignment;
-+
-+		region_bb = igt_collection_get_value(regions, 0);
-+		region_obj = igt_collection_get_value(regions, 1);
-+
-+		/* We're interested in triangular matrix */
-+		if (region_bb > region_obj)
-+			continue;
-+
-+		alignment = gem_detect_min_alignment_for_regions(i915,
-+								 region_bb,
-+								 region_obj);
-+		if (default_alignment < alignment)
-+			default_alignment = alignment;
-+	}
-+
-+	free(query_info);
-+	igt_collection_destroy(set);
-+
-+	newentry = malloc(sizeof(*newentry));
-+	igt_assert(newentry);
-+
-+	/* Try again, check does we have cache updated in the meantime. */
-+	pthread_mutex_lock(&cache_mutex);
-+	entry = find_entry_unlocked(SAFE_ALIGNMENT, devid,  0, 0);
-+	if (entry) {
-+		free(newentry);
-+		goto out;
-+	}
-+
-+	entry = newentry;
-+	entry->devid = devid;
-+	entry->type = SAFE_ALIGNMENT;
-+	entry->safe_alignment = default_alignment;
-+	igt_list_add(&entry->link, &cache);
-+
-+out:
-+	pthread_mutex_unlock(&cache_mutex);
-+
-+	return entry->minalign.alignment;
-+}
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index 8b427b7e7..936e7d1c8 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -129,4 +129,9 @@ uint64_t gpu_meminfo_region_available(const struct drm_i915_query_memory_regions
- 				      uint16_t memory_class,
- 				      uint16_t memory_instance);
  
-+uint64_t gem_detect_min_start_offset_for_region(int i915, uint32_t region);
-+uint64_t gem_detect_safe_start_offset(int i915);
-+uint64_t gem_detect_min_alignment_for_regions(int i915, uint32_t region1, uint32_t region2);
-+uint64_t gem_detect_safe_alignment(int i915);
++static void make_batch(int i915, uint32_t handle, uint64_t size)
++{
++	uint32_t *bb = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
++	*bb = MI_BATCH_BUFFER_END;
++	munmap(bb, size);
++}
 +
- #endif /* INTEL_MEMORY_REGION_H */
++static void safe_alignment(int i915)
++{
++	struct drm_i915_gem_execbuffer2 execbuf = {};
++	struct drm_i915_gem_exec_object2 obj[2] = {};
++	uint32_t handle1, handle2, region1, region2;
++	uint64_t alignment, offset1, offset2, size1 = 4096, size2 = 4096;
++
++	region1 = REGION_SMEM;
++	region2 = gem_has_lmem(i915) ? REGION_LMEM(0) : REGION_SMEM;
++	igt_assert(__gem_create_in_memory_regions(i915, &handle1, &size1, region1) == 0);
++	igt_assert(handle1);
++	make_batch(i915, handle1, 4096);
++	igt_assert(__gem_create_in_memory_regions(i915, &handle2, &size2, region2) == 0);
++	igt_assert(handle2);
++	make_batch(i915, handle2, 4096);
++
++	offset1 = gem_detect_min_start_offset_for_region(i915, region1);
++	offset2 = gem_detect_min_start_offset_for_region(i915, region2);
++	alignment = gem_detect_safe_alignment(i915);
++	igt_debug("safe alignment: %llx\n", (long long) alignment);
++	igt_debug("safe start offset: %llx\n",
++		  (long long) gem_detect_safe_start_offset(i915));
++	igt_debug("minimum object1 start offset: %llx\n", (long long) offset1);
++	igt_debug("minimum object2 start offset: %llx\n", (long long) offset2);
++
++	execbuf.buffer_count = 2;
++	execbuf.buffers_ptr = to_user_pointer(obj);
++
++	obj[0].offset = offset1;
++	obj[0].flags = EXEC_OBJECT_PINNED;
++	obj[0].handle = handle1;
++	obj[1].offset = max(ALIGN(offset1 + size1, alignment), offset2);
++	obj[1].flags = EXEC_OBJECT_PINNED;
++	obj[1].handle = handle2;
++	igt_debug("obj[0].offset: %llx, handle: %u\n", obj[0].offset, obj[0].handle);
++	igt_debug("obj[1].offset: %llx, handle: %u\n", obj[1].offset, obj[1].handle);
++
++	gem_execbuf(i915, &execbuf);
++	execbuf.flags = I915_EXEC_BATCH_FIRST;
++	gem_execbuf(i915, &execbuf);
++
++	obj[0].offset = offset2;
++	obj[0].flags = EXEC_OBJECT_PINNED;
++	obj[0].handle = handle2;
++	obj[1].offset = max(ALIGN(offset2 + size2, alignment), offset1);
++	obj[1].flags = EXEC_OBJECT_PINNED;
++	obj[1].handle = handle1;
++	igt_debug("obj[0].offset: %llx, handle: %u\n", obj[0].offset, obj[0].handle);
++	igt_debug("obj[1].offset: %llx, handle: %u\n", obj[1].offset, obj[1].handle);
++
++	gem_execbuf(i915, &execbuf);
++	execbuf.flags = 0;
++	gem_execbuf(i915, &execbuf);
++}
++
+ #define test_each_engine(T, i915, ctx, e) \
+ 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+ 		igt_dynamic_f("%s", e->name)
+@@ -1133,6 +1195,10 @@ igt_main
+ 			test_allocator_evict(fd, ctx, ALL_ENGINES, 20);
+ 	}
+ 
++	igt_describe("Check start offset and alignment detection");
++	igt_subtest("safe-alignment")
++		safe_alignment(fd);
++
+ 	igt_subtest("softpin")
+ 		test_softpin(fd);
+ 	igt_subtest("overlap")
 -- 
 2.32.0
