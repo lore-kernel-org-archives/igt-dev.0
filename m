@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A5C410E309
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Dec 2021 05:55:31 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-Date: Fri, 31 Dec 2021 11:25:26 +0530
-Message-Id: <20211231055526.7586-1-sai.gowtham.ch@intel.com>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture: Adding Local
- memory support.
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 31 Dec 2021 11:33:16 -0000
+Message-ID: <164095039666.1550.3715354093115169858@emeril.freedesktop.org>
+References: <20211231055526.7586-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20211231055526.7586-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/i915/gem=5Fexec=5Fcapture=3A_Adding_Local_memory_support?=
+ =?utf-8?q?=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,146 +17,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com, zbigniew.kempczynski@intel.com
+To: sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+== Series Details ==
 
-Adding local memory support to many-4K-zero subtest.
+Series: tests/i915/gem_exec_capture: Adding Local memory support.
+URL   : https://patchwork.freedesktop.org/series/98439/
+State : warning
 
-Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_exec_capture.c | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 9beb36fc..19cfa53d 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -406,7 +406,7 @@ static struct offset *
- __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	   const struct intel_execution_engine2 *e,
- 	   unsigned int size, int count,
--	   unsigned int flags, int *_fence_out)
-+	   unsigned int flags, int *_fence_out, uint32_t region)
- #define INCREMENTAL 0x1
- #define ASYNC 0x2
- {
-@@ -426,7 +426,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	obj = calloc(count + 2, sizeof(*obj));
- 	igt_assert(obj);
- 
--	obj[0].handle = gem_create(fd, 4096);
-+	obj[0].handle = gem_create_in_memory_regions(fd, 4096, region);
- 	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
- 	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
- 
-@@ -449,7 +449,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 		}
- 	}
- 
--	obj[count + 1].handle = gem_create(fd, 4096);
-+	obj[count + 1].handle = gem_create_in_memory_regions(fd, 4096, region);
- 	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
- 	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
- 	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
-@@ -573,7 +573,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 		configure_hangs(fd, e, ctx->id); \
- 	} while(0)
- 
--static void many(int fd, int dir, uint64_t size, unsigned int flags)
-+static void many(int fd, int dir, uint64_t size, unsigned int flags, uint32_t region)
- {
- 	const struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
-@@ -594,7 +594,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	intel_require_memory(count, size, CHECK_RAM);
- 	ahnd = get_reloc_ahnd(fd, ctx->id);
- 
--	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
-+	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL, region);
- 
- 	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
- 	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-@@ -605,7 +605,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- }
- 
- static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
--		    const struct intel_execution_engine2 *e)
-+		    const struct intel_execution_engine2 *e, uint32_t system_region)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_exec_object2 obj = {
-@@ -659,7 +659,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
- 		/* Reopen the allocator in the new process. */
- 		ahnd = get_reloc_ahnd(fd, ctx2->id);
- 
--		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
-+		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out, system_region));
- 		put_ahnd(ahnd);
- 
- 		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-@@ -744,6 +744,7 @@ igt_main
- 	struct igt_collection *regions, *set;
- 	char *sub_name;
- 	uint32_t region;
-+	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
- 
- 	igt_fixture {
- 		int gen;
-@@ -780,29 +781,35 @@ igt_main
- 		}
- 	}
- 
--	igt_subtest_f("many-4K-zero") {
-+	igt_subtest_with_dynamic("many-4K-zero") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 1<<12, 0);
-+		for_each_combination(regions, 1, set) {
-+			sub_name = memregion_dynamic_subtest_name(regions);
-+			region = igt_collection_get_value(regions, 0);
-+			igt_dynamic_f("%s", sub_name)
-+				many(fd, dir, 1<<12, 0, region);
-+			free(sub_name);
-+		}
- 	}
- 
- 	igt_subtest_f("many-4K-incremental") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 1<<12, INCREMENTAL);
-+		many(fd, dir, 1<<12, INCREMENTAL, system_region);
- 	}
- 
- 	igt_subtest_f("many-2M-zero") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 2<<20, 0);
-+		many(fd, dir, 2<<20, 0, system_region);
- 	}
- 
- 	igt_subtest_f("many-2M-incremental") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 2<<20, INCREMENTAL);
-+		many(fd, dir, 2<<20, INCREMENTAL, system_region);
- 	}
- 
- 	igt_subtest_f("many-256M-incremental") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 256<<20, INCREMENTAL);
-+		many(fd, dir, 256<<20, INCREMENTAL, system_region);
- 	}
- 
- 	/* And check we can read from different types of objects */
-@@ -814,7 +821,7 @@ igt_main
- 
- 	test_each_engine("pi", fd, ctx, e)
- 		igt_dynamic_f("%s", (e)->name)
--			prioinv(fd, dir, ctx, e);
-+			prioinv(fd, dir, ctx, e, system_region);
- 
- 	igt_fixture {
- 		close(dir);
--- 
-2.32.0
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/474875 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/17149522):
+  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  section_end:1640948363:prepare_executor
+  section_start:1640948363:prepare_script
+  Preparing environment
+  Running on runner-ya9tm6yf-project-3185-concurrent-0 via fdo-packet-m1xl-2...
+  section_end:1640948366:prepare_script
+  section_start:1640948366:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  fatal: unable to access 'https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags.git/': The requested URL returned error: 504
+  section_end:1640950168:get_sources
+  section_start:1640950168:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1640950169:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/17149524):
+  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  section_end:1640948363:prepare_executor
+  section_start:1640948363:prepare_script
+  Preparing environment
+  Running on runner-ya9tm6yf-project-3185-concurrent-2 via fdo-packet-m1xl-2...
+  section_end:1640948366:prepare_script
+  section_start:1640948366:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  fatal: unable to access 'https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags.git/': The requested URL returned error: 504
+  section_end:1640950168:get_sources
+  section_start:1640950168:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1640950169:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/17149525):
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  section_end:1640948363:prepare_executor
+  section_start:1640948363:prepare_script
+  Preparing environment
+  Running on runner-ya9tm6yf-project-3185-concurrent-3 via fdo-packet-m1xl-2...
+  section_end:1640948366:prepare_script
+  section_start:1640948366:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  error: RPC failed; HTTP 504 curl 22 The requested URL returned error: 504
+  fatal: the remote end hung up unexpectedly
+  section_end:1640950169:get_sources
+  section_start:1640950169:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1640950171:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/474875
