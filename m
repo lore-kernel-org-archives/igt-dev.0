@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A684C10E16A
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Jan 2022 08:21:49 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57DDD10E148
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Jan 2022 08:54:50 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
-Date: Mon,  3 Jan 2022 13:51:36 +0530
-Message-Id: <20220103082136.22621-1-sai.gowtham.ch@intel.com>
+Date: Mon,  3 Jan 2022 14:24:42 +0530
+Message-Id: <20220103085442.27981-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -24,7 +24,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Adding local memory support to many-4K-zero subtest.
+Adding local memory support to many-4K-zero subtest
 
 Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
@@ -33,7 +33,7 @@ Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
  1 file changed, 22 insertions(+), 14 deletions(-)
 
 diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 9beb36fc..35cd9aa1 100644
+index 9beb36fc..26d8eb77 100644
 --- a/tests/i915/gem_exec_capture.c
 +++ b/tests/i915/gem_exec_capture.c
 @@ -406,7 +406,7 @@ static struct offset *
@@ -86,7 +86,7 @@ index 9beb36fc..35cd9aa1 100644
  
  static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
 -		    const struct intel_execution_engine2 *e)
-+		    const struct intel_execution_engine2 *e, uint32_t system_region)
++		    const struct intel_execution_engine2 *e, uint32_t region)
  {
  	const uint32_t bbe = MI_BATCH_BUFFER_END;
  	struct drm_i915_gem_exec_object2 obj = {
@@ -96,7 +96,7 @@ index 9beb36fc..35cd9aa1 100644
  
 -		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
 +		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC,
-+						&fence_out, system_region));
++						&fence_out, region));
  		put_ahnd(ahnd);
  
  		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
