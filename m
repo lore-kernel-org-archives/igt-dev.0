@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Mon, 3 Jan 2022 04:11:55 +0000
-Message-ID: <DM8PR11MB571951C2110DA00DD821CC588D499@DM8PR11MB5719.namprd11.prod.outlook.com>
-References: <20211115094759.520955-1-bhanuprakash.modem@intel.com>
- <20211118115002.14003184@eldfell>
- <26abc3eb-c50e-8f89-ccc9-ad96f1177987@amd.com>
- <20211129112033.770d1c2a@eldfell>
- <b961943f-3e92-cb93-7b2c-a1ddabb971ed@amd.com>
-In-Reply-To: <b961943f-3e92-cb93-7b2c-a1ddabb971ed@amd.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F2D8510E20D
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Jan 2022 08:09:23 +0000 (UTC)
+Date: Mon, 3 Jan 2022 09:09:19 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <YdKvL6vTA6DSKe6O@zkempczy-mobl2>
+References: <20211231055526.7586-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 00/14] Add IGT support for plane color
- management
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211231055526.7586-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture: Adding
+ Local memory support.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,104 +22,161 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Harry Wentland <harry.wentland@amd.com>, Pekka Paalanen <ppaalanen@gmail.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kumar,
- Mukunda Pramodh" <mukunda.pramodh.kumar@intel.com>, "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiBGcm9tOiBIYXJyeSBXZW50bGFuZCA8aGFycnkud2VudGxhbmRAYW1kLmNvbT4NCj4gU2VudDog
-TW9uZGF5LCBOb3ZlbWJlciAyOSwgMjAyMSA4OjUwIFBNDQo+IFRvOiBQZWtrYSBQYWFsYW5lbiA8
-cHBhYWxhbmVuQGdtYWlsLmNvbT4NCj4gQ2M6IGRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5v
-cmc7IE1vZGVtLCBCaGFudXByYWthc2gNCj4gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+
-OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgS3VtYXIsDQo+IE11a3VuZGEgUHJhbW9k
-aCA8bXVrdW5kYS5wcmFtb2RoLmt1bWFyQGludGVsLmNvbT47IEp1aGEtUGVra2EgSGVpa2tpbGEN
-Cj4gPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+OyBTaGFua2FyLCBVbWEgPHVtYS5zaGFu
-a2FyQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpLWctdCAwMC8xNF0gQWRkIElHVCBzdXBw
-b3J0IGZvciBwbGFuZSBjb2xvciBtYW5hZ2VtZW50DQo+IA0KPiBPbiAyMDIxLTExLTI5IDA0OjIw
-LCBQZWtrYSBQYWFsYW5lbiB3cm90ZToNCj4gPiBPbiBGcmksIDI2IE5vdiAyMDIxIDExOjU0OjU1
-IC0wNTAwDQo+ID4gSGFycnkgV2VudGxhbmQgPGhhcnJ5LndlbnRsYW5kQGFtZC5jb20+IHdyb3Rl
-Og0KPiA+DQo+ID4+IE9uIDIwMjEtMTEtMTggMDQ6NTAsIFBla2thIFBhYWxhbmVuIHdyb3RlOg0K
-PiA+Pj4gT24gTW9uLCAxNSBOb3YgMjAyMSAxNToxNzo0NSArMDUzMA0KPiA+Pj4gQmhhbnVwcmFr
-YXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPiB3cm90ZToNCj4gPj4+DQo+
-ID4+Pj4gRnJvbSB0aGUgUGxhbmUgQ29sb3IgTWFuYWdlbWVudCBmZWF0dXJlIGRlc2lnbiwgdXNl
-cnNwYWNlIGNhbg0KPiA+Pj4+IHRha2UgdGhlIHNtYXJ0IGJsZW5kaW5nIGRlY2lzaW9ucyBiYXNl
-ZCBvbiBoYXJkd2FyZSBzdXBwb3J0ZWQNCj4gPj4+PiBwbGFuZSBjb2xvciBmZWF0dXJlcyB0byBv
-YnRhaW4gYW4gYWNjdXJhdGUgY29sb3IgcHJvZmlsZS4NCj4gPj4+Pg0KPiA+Pj4+IFRoZXNlIElH
-VCBwYXRjaGVzIGV4dGVuZCB0aGUgZXhpc3RpbmcgcGlwZSBjb2xvciBtYW5hZ2VtZW50DQo+ID4+
-Pj4gdGVzdHMgdG8gdGhlIHBsYW5lIGxldmVsLg0KPiA+Pj4+DQo+ID4+Pj4gS2VybmVsIGltcGxl
-bWVudGF0aW9uOg0KPiA+Pj4+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJp
-ZXMvOTA4MjUvDQo+ID4NCj4gPiAuLi4NCj4gPg0KPiA+Pj4gSSBhbHNvIGZvdW5kIHNvbWUgdGhp
-bmdzIHRoYXQgbG9va2VkIGhhcmR3YXJlLXNwZWNpZmljIGluIHRoaXMgY29kZQ0KPiA+Pj4gdGhh
-dCB0byBteSB1bmRlcnN0YW5kaW5nIGlzIHN1cHBvc2VkIHRvIGJlIGdlbmVyaWMsIGFuZCBzb21l
-IGNvbmNlcm5zDQo+ID4+PiBhYm91dCBVQVBJIGFzIHdlbGwuDQo+ID4+Pg0KPiA+Pg0KPiA+PiBJ
-IGxlZnQgc29tZSBjb21tZW50cyBvbiBpbnRlbGxpc21zIGluIHRoZXNlIHBhdGNoZXMuDQo+ID4+
-DQo+ID4+IERvIHlvdSBoYXZlIGFueSBzcGVjaWZpY3MgYWJvdXQgeW91ciBjb25jZXJucyBhYm91
-dCBVQVBJPw0KPiA+DQo+ID4gWWVhaCwgdGhlIGNvbW1lbnRzIEkgbGVmdCBpbiB0aGUgcGF0Y2hl
-czoNCj4gPg0KPiA+IHBhdGNoIDM6DQo+ID4NCj4gPj4gSGF2aW5nIHRvIGV4cGxpY2l0bHkgc3Bl
-Y2lhbC1jYXNlIGluZGV4IHplcm8gZmVlbHMgb2RkIHRvIG1lLiBXaHkgZG9lcw0KPiA+PiBpdCBu
-ZWVkIGV4cGxpY2l0IHNwZWNpYWwtY2FzaW5nPw0KPiA+Pg0KPiA+PiBUbyBtZSBpdCdzIGEgaGlu
-dCB0aGF0IHRoZSBkZWZpbml0aW9ucyBvZiAuc3RhcnQgYW5kIC5lbmQgYXJlIHNvbWVob3cNCj4g
-Pj4gaW5jb25zaXN0ZW50Lg0KPiA+DQo+ID4gcGF0Y2ggNCBhbmQgODoNCj4gPg0KPiA+Pj4gK3N0
-YXRpYyBib29sIGlzX2hkcl9wbGFuZShjb25zdCBpZ3RfcGxhbmVfdCAqcGxhbmUpDQo+ID4+PiAr
-ew0KPiA+Pj4gKwlyZXR1cm4gcGxhbmUtPmluZGV4ID49IDAgJiYgcGxhbmUtPmluZGV4IDwgU0RS
-X1BMQU5FX0JBU0U7DQo+ID4+DQo+ID4+IEhvdyBjYW4gdGhpcyBiZSByaWdodCBmb3IgYWxsIEtN
-UyBkcml2ZXJzPw0KPiA+Pg0KPiA+PiBXaGF0IGlzIGEgSERSIHBsYW5lPw0KPiA+DQo+ID4gcGF0
-Y2ggMTI6DQo+ID4NCj4gPj4+ICtzdHJ1Y3QgZHJtX2NvbG9yX2x1dCAqY29lZmZzX3RvX2xvZ2Fy
-aXRobWljX2x1dChkYXRhX3QgKmRhdGEsDQo+ID4+PiArCQkJCQkJY29uc3QgZ2FtbWFfbHV0X3Qg
-KmdhbW1hLA0KPiA+Pj4gKwkJCQkJCXVpbnQzMl90IGNvbG9yX2RlcHRoLA0KPiA+Pj4gKwkJCQkJ
-CWludCBvZmYpDQo+ID4+PiArew0KPiA+Pj4gKwlzdHJ1Y3QgZHJtX2NvbG9yX2x1dCAqbHV0Ow0K
-PiA+Pj4gKwlpbnQgaSwgbHV0X3NpemUgPSBnYW1tYS0+c2l6ZTsNCj4gPj4+ICsJLyogVGhpcyBp
-cyB0aGUgbWF4aW11bSB2YWx1ZSBkdWUgdG8gMTYgYml0IHByZWNpc2lvbiBpbiBoYXJkd2FyZS4g
-Ki8NCj4gPj4NCj4gPj4gSW4gd2hvc2UgaGFyZHdhcmU/DQo+ID4+DQo+ID4+IEFyZSBpZ3QgdGVz
-dHMgbm90IHN1cHBvc2VkIHRvIGJlIGdlbmVyaWMgZm9yIGV2ZXJ5dGhpbmcgdGhhdCBleHBvc2Vz
-DQo+ID4+IHRoZSBwYXJ0aWN1bGFyIEtNUyBwcm9wZXJ0aWVzPw0KPiA+Pg0KPiA+PiBUaGlzIGFs
-c28gaGludHMgdGhhdCB0aGUgVUFQSSBkZXNpZ24gaXMgbGFja2luZywgYmVjYXVzZSB1c2Vyc3Bh
-Y2UNCj4gPj4gbmVlZHMgdG8ga25vdyBoYXJkd2FyZSBzcGVjaWZpYyB0aGluZ3Mgb3V0IG9mIHRo
-aW4gYWlyLiBEaXNwbGF5IHNlcnZlcnMNCj4gPj4gYXJlIG5vdCBnb2luZyB0byBoYXZlIGhhcmR3
-YXJlLXNwZWNpZmljIGNvZGUuIFRoZXkgc3BlY2lhbGlzZSBiYXNlZCBvbg0KPiA+PiB0aGUgZXhp
-c3RlbmNlIG9mIEtNUyBwcm9wZXJ0aWVzIGluc3RlYWQuDQo+ID4NCj4gPiAuLi4NCj4gPg0KPiA+
-Pj4gK3ZvaWQgc2V0X2FkdmFuY2VfZ2FtbWEoZGF0YV90ICpkYXRhLCBpZ3RfcGlwZV90ICpwaXBl
-LCBlbnVtIGdhbW1hX3R5cGUNCj4gdHlwZSkNCj4gPj4+ICt7DQo+ID4+PiArCWlndF9kaXNwbGF5
-X3QgKmRpc3BsYXkgPSAmZGF0YS0+ZGlzcGxheTsNCj4gPj4+ICsJZ2FtbWFfbHV0X3QgKmdhbW1h
-X2xvZzsNCj4gPj4+ICsJZHJtTW9kZVByb3BlcnR5UHRyIGdhbW1hX21vZGUgPSBOVUxMOw0KPiA+
-Pj4gKwlzZWdtZW50X2RhdGFfdCAqc2VnbWVudF9pbmZvID0gTlVMTDsNCj4gPj4+ICsJc3RydWN0
-IGRybV9jb2xvcl9sdXQgKmx1dCA9IE5VTEw7DQo+ID4+PiArCWludCBsdXRfc2l6ZSA9IDA7DQo+
-ID4+PiArDQo+ID4+PiArCWRybVNldENsaWVudENhcChkYXRhLT5kcm1fZmQsIERSTV9DTElFTlRf
-Q0FQX0FEVkFOQ0VfR0FNTUFfTU9ERVMsIDEpOw0KPiA+Pg0KPiA+PiBJcyB0aGlzIGhvdyB3ZSBh
-cmUgZ29pbmcgdG8gZG8gY3Jvc3Mtc29mdHdhcmUgRFJNLW1hc3RlciBoYW5kLW92ZXIgb3INCj4g
-Pj4gc3dpdGNoaW5nIGNvbXBhdGliaWxpdHkgaW4gZ2VuZXJhbD8NCj4gPj4NCj4gPj4gQWRkIGEg
-bmV3IGNsaWVudCBjYXAgZm9yIGV2ZXJ5IG5ldyBLTVMgcHJvcGVydHksIGFuZCBpZiB0aGUgS01T
-IGNsaWVudA0KPiA+PiBkb2VzIG5vdCBzZXQgdGhlIHByb3BlcnR5LCB0aGUga2VybmVsIHdpbGwg
-bWFnaWNhbGx5IHJlc2V0IGl0IHRvIGVuc3VyZQ0KPiA+PiB0aGUgY2xpZW50J3MgZXhwZWN0YXRp
-b25zIGFyZSBtZXQ/IElzIHRoYXQgaG93IGl0IHdvcmtzPw0KPiA+Pg0KPiA+PiBPciB3aHkgZG9l
-cyB0aGlzIGV4aXN0Pw0KPiA+DQo+ID4gLi4uDQo+ID4NCj4gPj4+ICsJZHJtU2V0Q2xpZW50Q2Fw
-KGRhdGEtPmRybV9mZCwgRFJNX0NMSUVOVF9DQVBfQURWQU5DRV9HQU1NQV9NT0RFUywgMCk7DQo+
-ID4+DQo+ID4+IEkndmUgbmV2ZXIgc2VlbiB0aGlzIGRvbmUgYmVmb3JlLiBJIGRpZCBub3Qga25v
-dyBjbGllbnQgY2FwcyBjb3VsZCBiZQ0KPiA+PiByZXNldC4NCj4gPg0KPiA+DQo+ID4gU28sIHBh
-dGNoIDEyIGhhcyB0aGUgYmlnZ2VzdCBVQVBJIHF1ZXN0aW9ucywgYW5kIHBhdGNoIDMgbWF5IG5l
-ZWQgYQ0KPiA+IFVBUEkgY2hhbmdlIGFzIHdlbGwuIFRoZSBjb21tZW50cyBpbiBwYXRjaGVzIDQg
-YW5kIDggY291bGQgYmUgYWRkcmVzc2VkDQo+ID4gd2l0aCBqdXN0IHJlbW92aW5nIHRoYXQgY29k
-ZSBzaW5jZSB0aGUgY29uY2VwdCBvZiBIRFIvU0RSIHBsYW5lcyBkb2VzDQo+ID4gbm90IGV4aXN0
-IGluIFVBUEkuIE9yLCBpZiB0aGF0IGNvbmNlcHQgaXMgbmVlZGVkIHRoZW4gaXQncyBhbm90aGVy
-IFVBUEkNCj4gPiBwcm9ibGVtLg0KPiA+DQo+IA0KPiBUaGFua3MgZm9yIHJlaXRlcmF0aW5nIHlv
-dXIgcG9pbnRzLiBJIG1pc3NlZCB5b3VyIGVhcmxpZXIgcmVwbGllcyBhbmQNCj4gZm91bmQgdGhl
-bSBpbiBteSBJR1QgZm9sZGVyIGp1c3Qgbm93Lg0KPiANCj4gTG9va3MgbGlrZSB3ZSdyZSBvbiB0
-aGUgc2FtZSBwYWdlLg0KDQpUaGFua3MgUGVra2EgJiBIYXJyeSBmb3IgdGhlIHJldmlldy4gQXBv
-bG9naWVzIGZvciBsYXRlIHJlc3BvbnNlLiBJIHRob3VnaHQNCnRoYXQgZXZlcnlvbmUgaXMgaW4g
-aG9saWRheXMg8J+Yii4gTm93IEkgYW0gcmUtaWduaXRpbmcgdGhpcyBkaXNjdXNzaW9uLg0KDQpJ
-IGhhdmUgZ29uZSB0aHJvdWdoIGFsbCByZXZpZXcgY29tbWVudHMgYW5kIGl0J3MgbWFrZSBzZW5z
-ZSB0byByZW1vdmUgaGFyZHdhcmUNCnNwZWNpZmljIHN0dWZmIGZyb20gdGhlIGhlbHBlciBmdW5j
-dGlvbnMuDQoNClBhdGNoIDM6DQpJbnRlbCBoYXJkd2FyZSBpcyBleHBlY3RpbmcgZmlyc3QgTFVU
-IHZhbHVlIGFzIDAsIHN0aWxsIHdlIGNhbiByZW1vdmUgdGhpcyBsb2dpYw0KZnJvbSBoZWxwZXIg
-JiBoYW5kbGUgaW4gdGhlIHN1YnRlc3QuDQoNClBhdGNoIDQgJiA4Og0KSW4gdGhpcyBjb250ZXh0
-LCBmb3IgeW91IEhEUiAmIFNEUiBwbGFuZSBzdHVmZiBpcyBqdXN0IGEgbWF0dGVyIG9mIHBsYW5l
-IGluZGV4Lg0KV2UgYXJlIGV4cGVjdGluZyB0byBydW4gdGVzdHMgb24gb25lIEhEUiBwbGFuZSAo
-aW5kZXggMC0zKSAmIG9uZSBTRFIgcGxhbmUNCihpbmRleCAzLTYpLiBJIHRoaW5rIHdlIGNhbiB1
-cGRhdGUgdGhlIGxvZ2ljIHRvIHJ1biB0ZXN0cyBvbiBmaXJzdCAmIGxhc3QgcGxhbmUuDQpJZiB5
-b3Ugd2FudCB0byBydW4gb24gdGVzdHMgb24gYWxsIHBsYW5lcyB3ZSBuZWVkIHRvIHBhc3MgYW4g
-ZXh0cmEgYXJndW1lbnQgdGhyb3VnaA0KY29tbWFuZCBsaW5lLiBQbGVhc2UgcmVmZXIgdGVzdHMv
-a21zX2ZsaXAuYyBmb3Igc2ltaWxhciBpbXBsZW1lbnRhdGlvbi4NCg0KUGF0Y2ggMTI6DQpJdCBz
-ZWVtcyB0aGVyZSBpcyBzb21lIGNvbmZ1c2lvbiB3aXRoIHRoZSBJR1QgY29tbWVudHMgJiB2YXJp
-YWJsZSBuYW1lcywgSSdsbA0KcmVmYWN0b3IgdGhlIGxvZ2ljICYgdXBsb2FkIGEgbmV3IHJldi4N
-Cg0KLSBCaGFudQ0KDQo+IA0KPiBIYXJyeQ0KPiANCj4gPg0KPiA+IFRoYW5rcywNCj4gPiBwcQ0K
-PiA+DQoNCg==
+On Fri, Dec 31, 2021 at 11:25:26AM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+> 
+> Adding local memory support to many-4K-zero subtest.
+> 
+> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/i915/gem_exec_capture.c | 35 +++++++++++++++++++++--------------
+>  1 file changed, 21 insertions(+), 14 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+> index 9beb36fc..19cfa53d 100644
+> --- a/tests/i915/gem_exec_capture.c
+> +++ b/tests/i915/gem_exec_capture.c
+> @@ -406,7 +406,7 @@ static struct offset *
+>  __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	   const struct intel_execution_engine2 *e,
+>  	   unsigned int size, int count,
+> -	   unsigned int flags, int *_fence_out)
+> +	   unsigned int flags, int *_fence_out, uint32_t region)
+>  #define INCREMENTAL 0x1
+>  #define ASYNC 0x2
+>  {
+> @@ -426,7 +426,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	obj = calloc(count + 2, sizeof(*obj));
+>  	igt_assert(obj);
+>  
+> -	obj[0].handle = gem_create(fd, 4096);
+> +	obj[0].handle = gem_create_in_memory_regions(fd, 4096, region);
+>  	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
+>  	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
+>  
+> @@ -449,7 +449,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  		}
+>  	}
+>  
+> -	obj[count + 1].handle = gem_create(fd, 4096);
+> +	obj[count + 1].handle = gem_create_in_memory_regions(fd, 4096, region);
+>  	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
+>  	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
+>  	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
+> @@ -573,7 +573,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  		configure_hangs(fd, e, ctx->id); \
+>  	} while(0)
+>  
+> -static void many(int fd, int dir, uint64_t size, unsigned int flags)
+> +static void many(int fd, int dir, uint64_t size, unsigned int flags, uint32_t region)
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	const intel_ctx_t *ctx;
+> @@ -594,7 +594,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+>  	intel_require_memory(count, size, CHECK_RAM);
+>  	ahnd = get_reloc_ahnd(fd, ctx->id);
+>  
+> -	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
+> +	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL, region);
+>  
+>  	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
+>  	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
+> @@ -605,7 +605,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+>  }
+>  
+>  static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+> -		    const struct intel_execution_engine2 *e)
+> +		    const struct intel_execution_engine2 *e, uint32_t system_region)
+
+Change system_region -> region, caller is passing this so suggesting name
+here is not good idea and can be confusing.
+
+>  {
+>  	const uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	struct drm_i915_gem_exec_object2 obj = {
+> @@ -659,7 +659,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+>  		/* Reopen the allocator in the new process. */
+>  		ahnd = get_reloc_ahnd(fd, ctx2->id);
+>  
+> -		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
+> +		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out, system_region));
+
+Avoid long lines, here I would break before &fence_out.
+
+With above fixed:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
+>  		put_ahnd(ahnd);
+>  
+>  		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
+> @@ -744,6 +744,7 @@ igt_main
+>  	struct igt_collection *regions, *set;
+>  	char *sub_name;
+>  	uint32_t region;
+> +	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
+>  
+>  	igt_fixture {
+>  		int gen;
+> @@ -780,29 +781,35 @@ igt_main
+>  		}
+>  	}
+>  
+> -	igt_subtest_f("many-4K-zero") {
+> +	igt_subtest_with_dynamic("many-4K-zero") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 1<<12, 0);
+> +		for_each_combination(regions, 1, set) {
+> +			sub_name = memregion_dynamic_subtest_name(regions);
+> +			region = igt_collection_get_value(regions, 0);
+> +			igt_dynamic_f("%s", sub_name)
+> +				many(fd, dir, 1<<12, 0, region);
+> +			free(sub_name);
+> +		}
+>  	}
+>  
+>  	igt_subtest_f("many-4K-incremental") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 1<<12, INCREMENTAL);
+> +		many(fd, dir, 1<<12, INCREMENTAL, system_region);
+>  	}
+>  
+>  	igt_subtest_f("many-2M-zero") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 2<<20, 0);
+> +		many(fd, dir, 2<<20, 0, system_region);
+>  	}
+>  
+>  	igt_subtest_f("many-2M-incremental") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 2<<20, INCREMENTAL);
+> +		many(fd, dir, 2<<20, INCREMENTAL, system_region);
+>  	}
+>  
+>  	igt_subtest_f("many-256M-incremental") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 256<<20, INCREMENTAL);
+> +		many(fd, dir, 256<<20, INCREMENTAL, system_region);
+>  	}
+>  
+>  	/* And check we can read from different types of objects */
+> @@ -814,7 +821,7 @@ igt_main
+>  
+>  	test_each_engine("pi", fd, ctx, e)
+>  		igt_dynamic_f("%s", (e)->name)
+> -			prioinv(fd, dir, ctx, e);
+> +			prioinv(fd, dir, ctx, e, system_region);
+>  
+>  	igt_fixture {
+>  		close(dir);
+> -- 
+> 2.32.0
+> 
