@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D066210E31B
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 08:00:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 931CC10E325
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 08:00:37 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 Jan 2022 13:27:44 +0530
-Message-Id: <20220104075745.1715316-15-bhanuprakash.modem@intel.com>
+Date: Tue,  4 Jan 2022 13:27:45 +0530
+Message-Id: <20220104075745.1715316-16-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220104075745.1715316-1-bhanuprakash.modem@intel.com>
 References: <20211115094759.520955-1-bhanuprakash.modem@intel.com>
  <20220104075745.1715316-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 i-g-t 14/15] tests/kms_color_chamelium: Extended IGT
- tests to support logarithmic gamma mode
+Subject: [igt-dev] [v2 i-g-t 15/15] HAX: Add color mgmt tests to BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,110 +21,135 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, Mukunda Pramodh Kumar <mukunda.pramodh.kumar@intel.com>, Pekka Paalanen <ppaalanen@gmail.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Extended IGT tests to support logarithmic gamma mode on pipe
-
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Pekka Paalanen <ppaalanen@gmail.com>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Mukunda Pramodh Kumar <mukunda.pramodh.kumar@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color_chamelium.c | 40 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 37 insertions(+), 3 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 112 ++++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
 
-diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
-index a9469f9827..c6cd568c29 100644
---- a/tests/kms_color_chamelium.c
-+++ b/tests/kms_color_chamelium.c
-@@ -293,10 +293,21 @@ static void test_pipe_gamma(data_t *data,
- 		igt_assert(fbref_id);
- 
- 		igt_plane_set_fb(primary, &fb_modeset);
-+
-+		/* Reset the color properties */
- 		disable_ctm(primary->pipe);
- 		disable_degamma(primary->pipe);
--		set_gamma(data, primary->pipe, gamma_full);
-+		disable_gamma(primary->pipe);
- 		igt_display_commit(&data->display);
-+		igt_wait_for_vblank(data->drm_fd,
-+				    data->display.pipes[primary->pipe->pipe].crtc_offset);
-+
-+		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_MODE)) {
-+			set_advance_gamma(data, primary->pipe, MAX_GAMMA);
-+		} else {
-+			set_gamma(data, primary->pipe, gamma_full);
-+			igt_display_commit(&data->display);
-+		}
- 
- 		/* Draw solid colors with no gamma transformation. */
- 		paint_rectangles(data, mode, red_green_blue, &fbref);
-@@ -319,6 +330,7 @@ static void test_pipe_gamma(data_t *data,
- 					      frame_fullcolors, &fbref,
- 					      CHAMELIUM_CHECK_ANALOG);
- 
-+		/* Cleanup */
- 		disable_gamma(primary->pipe);
- 		igt_plane_set_fb(primary, NULL);
- 		igt_output_set_pipe(output, PIPE_NONE);
-@@ -407,7 +419,10 @@ static bool test_pipe_ctm(data_t *data,
- 
- 		if (memcmp(before, after, sizeof(color_t))) {
- 			set_degamma(data, primary->pipe, degamma_linear);
--			set_gamma(data, primary->pipe, gamma_linear);
-+			if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_MODE))
-+				disable_gamma(primary->pipe);
-+			else
-+				set_gamma(data, primary->pipe, gamma_linear);
- 		} else {
- 			/* Disable Degamma and Gamma for ctm max test */
- 			disable_degamma(primary->pipe);
-@@ -441,6 +456,12 @@ static bool test_pipe_ctm(data_t *data,
- 		igt_output_set_pipe(output, PIPE_NONE);
- 	}
- 
-+	/* Cleanup */
-+	disable_gamma(primary->pipe);
-+	disable_degamma(primary->pipe);
-+	disable_ctm(primary->pipe);
-+	igt_display_commit(&data->display);
-+
- 	free_lut(degamma_linear);
- 	free_lut(gamma_linear);
- 
-@@ -537,7 +558,14 @@ static void test_pipe_limited_range_ctm(data_t *data,
- 		igt_plane_set_fb(primary, &fb_modeset);
- 
- 		set_degamma(data, primary->pipe, degamma_linear);
--		set_gamma(data, primary->pipe, gamma_linear);
-+		/*
-+		 * No need of linear gamma for limited range ctm test
-+		 * Not extending for new API interface.
-+		 */
-+		if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_MODE))
-+			disable_gamma(primary->pipe);
-+		else
-+			set_gamma(data, primary->pipe, gamma_linear);
- 		set_ctm(primary->pipe, ctm);
- 
- 		igt_output_set_prop_value(output,
-@@ -574,6 +602,12 @@ static void test_pipe_limited_range_ctm(data_t *data,
- 
- 	}
- 
-+	/* Cleanup */
-+	disable_gamma(primary->pipe);
-+	disable_degamma(primary->pipe);
-+	disable_ctm(primary->pipe);
-+	igt_display_commit(&data->display);
-+
- 	free_lut(gamma_linear);
- 	free_lut(degamma_linear);
- 
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index de1c6cb46c..0bdd82f9bc 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -102,6 +102,118 @@ igt@kms_chamelium@hdmi-crc-fast
+ igt@kms_chamelium@vga-hpd-fast
+ igt@kms_chamelium@vga-edid-read
+ igt@kms_chamelium@common-hpd-after-suspend
++igt@kms_color@pipe-A-ctm-red-to-blue
++igt@kms_color@pipe-A-ctm-green-to-red
++igt@kms_color@pipe-A-ctm-blue-to-red
++igt@kms_color@pipe-A-ctm-0-25
++igt@kms_color@pipe-A-ctm-0-5
++igt@kms_color@pipe-A-ctm-0-75
++igt@kms_color@pipe-A-ctm-max
++igt@kms_color@pipe-A-ctm-negative
++igt@kms_color@pipe-A-degamma
++igt@kms_color@pipe-A-gamma
++igt@kms_color@pipe-A-legacy-gamma
++igt@kms_color@pipe-A-legacy-gamma-reset
++igt@kms_color@pipe-A-invalid-gamma-lut-sizes
++igt@kms_color@pipe-A-invalid-degamma-lut-sizes
++igt@kms_color@pipe-A-invalid-ctm-matrix-sizes
++igt@kms_color@pipe-A-plane-gamma
++igt@kms_color@pipe-A-plane-degamma
++igt@kms_color@pipe-A-plane-ctm-red-to-blue
++igt@kms_color@pipe-A-plane-ctm-green-to-red
++igt@kms_color@pipe-A-plane-ctm-blue-to-red
++igt@kms_color@pipe-A-plane-ctm-max
++igt@kms_color@pipe-A-plane-ctm-negative
++igt@kms_color@pipe-A-plane-ctm-0-25
++igt@kms_color@pipe-A-plane-ctm-0-50
++igt@kms_color@pipe-A-plane-ctm-0-75
++igt@kms_color@pipe-A-invalid-plane-gamma-lut-sizes
++igt@kms_color@pipe-A-invalid-plane-degamma-lut-sizes
++igt@kms_color@pipe-A-invalid-plane-ctm-matrix-sizes
++igt@kms_color@pipe-B-ctm-red-to-blue
++igt@kms_color@pipe-B-ctm-green-to-red
++igt@kms_color@pipe-B-ctm-blue-to-red
++igt@kms_color@pipe-B-ctm-0-25
++igt@kms_color@pipe-B-ctm-0-5
++igt@kms_color@pipe-B-ctm-0-75
++igt@kms_color@pipe-B-ctm-max
++igt@kms_color@pipe-B-ctm-negative
++igt@kms_color@pipe-B-degamma
++igt@kms_color@pipe-B-gamma
++igt@kms_color@pipe-B-legacy-gamma
++igt@kms_color@pipe-B-legacy-gamma-reset
++igt@kms_color@pipe-B-invalid-gamma-lut-sizes
++igt@kms_color@pipe-B-invalid-degamma-lut-sizes
++igt@kms_color@pipe-B-invalid-ctm-matrix-sizes
++igt@kms_color@pipe-B-plane-gamma
++igt@kms_color@pipe-B-plane-degamma
++igt@kms_color@pipe-B-plane-ctm-red-to-blue
++igt@kms_color@pipe-B-plane-ctm-green-to-red
++igt@kms_color@pipe-B-plane-ctm-blue-to-red
++igt@kms_color@pipe-B-plane-ctm-max
++igt@kms_color@pipe-B-plane-ctm-negative
++igt@kms_color@pipe-B-plane-ctm-0-25
++igt@kms_color@pipe-B-plane-ctm-0-50
++igt@kms_color@pipe-B-plane-ctm-0-75
++igt@kms_color@pipe-B-invalid-plane-gamma-lut-sizes
++igt@kms_color@pipe-B-invalid-plane-degamma-lut-sizes
++igt@kms_color@pipe-B-invalid-plane-ctm-matrix-sizes
++igt@kms_color@pipe-C-ctm-red-to-blue
++igt@kms_color@pipe-C-ctm-green-to-red
++igt@kms_color@pipe-C-ctm-blue-to-red
++igt@kms_color@pipe-C-ctm-0-25
++igt@kms_color@pipe-C-ctm-0-5
++igt@kms_color@pipe-C-ctm-0-75
++igt@kms_color@pipe-C-ctm-max
++igt@kms_color@pipe-C-ctm-negative
++igt@kms_color@pipe-C-degamma
++igt@kms_color@pipe-C-gamma
++igt@kms_color@pipe-C-legacy-gamma
++igt@kms_color@pipe-C-legacy-gamma-reset
++igt@kms_color@pipe-C-invalid-gamma-lut-sizes
++igt@kms_color@pipe-C-invalid-degamma-lut-sizes
++igt@kms_color@pipe-C-invalid-ctm-matrix-sizes
++igt@kms_color@pipe-C-plane-gamma
++igt@kms_color@pipe-C-plane-degamma
++igt@kms_color@pipe-C-plane-ctm-red-to-blue
++igt@kms_color@pipe-C-plane-ctm-green-to-red
++igt@kms_color@pipe-C-plane-ctm-blue-to-red
++igt@kms_color@pipe-C-plane-ctm-max
++igt@kms_color@pipe-C-plane-ctm-negative
++igt@kms_color@pipe-C-plane-ctm-0-25
++igt@kms_color@pipe-C-plane-ctm-0-50
++igt@kms_color@pipe-C-plane-ctm-0-75
++igt@kms_color@pipe-C-invalid-plane-gamma-lut-sizes
++igt@kms_color@pipe-C-invalid-plane-degamma-lut-sizes
++igt@kms_color@pipe-C-invalid-plane-ctm-matrix-sizes
++igt@kms_color@pipe-D-ctm-red-to-blue
++igt@kms_color@pipe-D-ctm-green-to-red
++igt@kms_color@pipe-D-ctm-blue-to-red
++igt@kms_color@pipe-D-ctm-0-25
++igt@kms_color@pipe-D-ctm-0-5
++igt@kms_color@pipe-D-ctm-0-75
++igt@kms_color@pipe-D-ctm-max
++igt@kms_color@pipe-D-ctm-negative
++igt@kms_color@pipe-D-degamma
++igt@kms_color@pipe-D-gamma
++igt@kms_color@pipe-D-legacy-gamma
++igt@kms_color@pipe-D-legacy-gamma-reset
++igt@kms_color@pipe-D-invalid-gamma-lut-sizes
++igt@kms_color@pipe-D-invalid-degamma-lut-sizes
++igt@kms_color@pipe-D-invalid-ctm-matrix-sizes
++igt@kms_color@pipe-D-plane-gamma
++igt@kms_color@pipe-D-plane-degamma
++igt@kms_color@pipe-D-plane-ctm-red-to-blue
++igt@kms_color@pipe-D-plane-ctm-green-to-red
++igt@kms_color@pipe-D-plane-ctm-blue-to-red
++igt@kms_color@pipe-D-plane-ctm-max
++igt@kms_color@pipe-D-plane-ctm-negative
++igt@kms_color@pipe-D-plane-ctm-0-25
++igt@kms_color@pipe-D-plane-ctm-0-50
++igt@kms_color@pipe-D-plane-ctm-0-75
++igt@kms_color@pipe-D-invalid-plane-gamma-lut-sizes
++igt@kms_color@pipe-D-invalid-plane-degamma-lut-sizes
++igt@kms_color@pipe-D-invalid-plane-ctm-matrix-sizes
+ igt@kms_prop_blob@basic
+ igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+ igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
 -- 
 2.32.0
