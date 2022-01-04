@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E81EF10E3F0
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 08:05:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E353D10E3D4
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 08:05:08 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 Jan 2022 13:32:27 +0530
-Message-Id: <20220104080235.1715444-8-bhanuprakash.modem@intel.com>
+Date: Tue,  4 Jan 2022 13:32:29 +0530
+Message-Id: <20220104080235.1715444-10-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220104080235.1715444-1-bhanuprakash.modem@intel.com>
 References: <20220104080235.1715444-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 i-g-t 07/15] tests/kms_color: New negative tests for
- plane level color mgmt
+Subject: [igt-dev] [v2 i-g-t 09/15] tests/kms_color_chamelium: New subtests
+ for Plane degamma
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,96 +22,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Pekka Paalanen <ppaalanen@gmail.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>, Pekka Paalanen <ppaalanen@gmail.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Negative check for:
- * plane gamma lut sizes
- * plane degamma lut sizes
- * plane ctm matrix sizes
-
-v2:
-* Run subtests for all enums (Pekka)
+To verify Plane degamma, draw 3 gradient rectangles in red, green and blue,
+with a maxed out degamma LUT and verify we have the same frame dump as
+drawing solid color rectangles with linear gamma LUT.
 
 Cc: Harry Wentland <harry.wentland@amd.com>
 Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Cc: Pekka Paalanen <ppaalanen@gmail.com>
 Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color.c | 118 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 118 insertions(+)
+ tests/kms_color_chamelium.c | 131 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 7f95916ee9..638d838757 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -712,6 +712,109 @@ static void test_pipe_limited_range_ctm(data_t *data,
+diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
+index c554e78436..76d80e39ba 100644
+--- a/tests/kms_color_chamelium.c
++++ b/tests/kms_color_chamelium.c
+@@ -851,6 +851,132 @@ static bool plane_gamma_test(data_t *data, igt_plane_t *plane)
+ 	return ret;
  }
- #endif
  
-+static bool invalid_plane_gamma_test(data_t *data, igt_plane_t *plane)
++static bool plane_degamma_test(data_t *data, igt_plane_t *plane)
 +{
++	igt_output_t *output;
 +	igt_display_t *display = &data->display;
-+	drmModePropertyPtr gamma_mode = NULL;
++	drmModeModeInfo *mode;
++	drmModePropertyPtr degamma_mode;
++	struct igt_fb fb, fbref;
++	struct chamelium_port *port;
 +	uint32_t i;
++	bool ret = true;
++	color_t red_green_blue[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 }
++	};
 +
-+	igt_info("Plane invalid gamma test is running on pipe-%s plane-%d(%s)\n",
-+			kmstest_pipe_name(plane->pipe->pipe), plane->index,
-+			kmstest_plane_type_name(plane->type));
-+
-+	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_MODE));
-+	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_LUT));
-+
-+	gamma_mode = get_plane_gamma_degamma_mode(plane, IGT_PLANE_GAMMA_MODE);
-+
-+	/* Iterate all supported gamma modes. */
-+	for (i = 0; i < gamma_mode->count_enums; i++) {
-+		segment_data_t *segment_info = NULL;
-+		size_t lut_size = 0;
-+
-+		/* Ignore 'no gamma' from enum list. */
-+		if (!strcmp(gamma_mode->enums[i].name, "no gamma"))
-+			continue;
-+
-+		igt_info("Trying to use gamma mode: \'%s\'\n", gamma_mode->enums[i].name);
-+
-+		segment_info = get_segment_data(data, gamma_mode->enums[i].value,
-+				gamma_mode->enums[i].name);
-+		lut_size = sizeof(struct drm_color_lut_ext) * segment_info->entries_count;
-+
-+		igt_plane_set_prop_enum(plane, IGT_PLANE_GAMMA_MODE, gamma_mode->enums[i].name);
-+		invalid_plane_lut_sizes(display, plane,
-+					IGT_PLANE_GAMMA_LUT,
-+					lut_size);
-+
-+		clear_segment_data(segment_info);
-+	}
-+
-+	drmModeFreeProperty(gamma_mode);
-+
-+	return true;
-+}
-+
-+static bool invalid_plane_degamma_test(data_t *data, igt_plane_t *plane)
-+{
-+	igt_display_t *display = &data->display;
-+	drmModePropertyPtr degamma_mode = NULL;
-+	uint32_t i;
-+
-+	igt_info("Plane invalid degamma test is running on pipe-%s plane-%d(%s)\n",
++	igt_info("Plane degamma test is running on pipe-%s plane-%d(%s)\n",
 +			kmstest_pipe_name(plane->pipe->pipe), plane->index,
 +			kmstest_plane_type_name(plane->type));
 +
 +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_DEGAMMA_MODE));
 +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_DEGAMMA_LUT));
 +
-+	degamma_mode = get_plane_gamma_degamma_mode(plane, IGT_PLANE_DEGAMMA_MODE);
++	for_each_valid_output_on_pipe(display, plane->pipe->pipe, output) {
++		for (i = 0; i < data->port_count; i++)
++			if (strcmp(output->name, chamelium_port_get_name(data->ports[i])) == 0) {
++				port = data->ports[i];
++				break;
++			}
 +
++		if (port)
++			break;
++	}
++	igt_require(port);
++	igt_assert(output);
++
++	igt_output_set_pipe(output, plane->pipe->pipe);
++	mode = igt_output_get_mode(output);
++
++	/* Create a framebuffer at the size of the output. */
++	igt_assert(igt_create_fb(data->drm_fd,
++			      mode->hdisplay,
++			      mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      DRM_FORMAT_MOD_LINEAR,
++			      &fb));
++
++	igt_assert(igt_create_fb(data->drm_fd,
++			      mode->hdisplay,
++			      mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      DRM_FORMAT_MOD_LINEAR,
++			      &fbref));
++
++	disable_degamma(plane->pipe);
++	disable_ctm(plane->pipe);
++	disable_gamma(plane->pipe);
++
++	disable_plane_degamma(plane);
++	disable_plane_ctm(plane);
++	disable_plane_gamma(plane);
++
++	igt_plane_set_fb(plane, &fbref);
++	igt_display_commit2(display, display->is_atomic ?
++					COMMIT_ATOMIC : COMMIT_LEGACY);
++
++	/* Draw solid colors with no degamma. */
++	paint_rectangles(data, mode, red_green_blue, &fbref);
++
++	degamma_mode = get_plane_gamma_degamma_mode(plane, IGT_PLANE_DEGAMMA_MODE);
 +	/* Iterate all supported degamma modes. */
 +	for (i = 0; i < degamma_mode->count_enums; i++) {
++		struct chamelium_frame_dump *frame_fullcolors;
 +		segment_data_t *segment_info = NULL;
-+		size_t lut_size = 0;
++		struct drm_color_lut_ext *lut = NULL;
++		uint32_t lut_size = 0;
 +
 +		/* Ignore 'no degamma' from enum list. */
 +		if (!strcmp(degamma_mode->enums[i].name, "no degamma"))
@@ -119,62 +130,61 @@ index 7f95916ee9..638d838757 100644
 +
 +		igt_info("Trying to use degamma mode: \'%s\'\n", degamma_mode->enums[i].name);
 +
-+		segment_info = get_segment_data(data,
-+						degamma_mode->enums[i].value,
++		segment_info = get_segment_data(data, degamma_mode->enums[i].value,
 +						degamma_mode->enums[i].name);
-+		lut_size = sizeof(struct drm_color_lut_ext) * segment_info->entries_count * 2;
++		lut_size = sizeof(struct drm_color_lut_ext) * segment_info->entries_count;
++		lut = create_max_lut(segment_info);
++		if (is_i915_device(data->drm_fd))
++			lut[0].red = lut[0].green = lut[0].blue = 0; /* First entry is 0 for Intel h/w. */
++		set_plane_degamma(plane, degamma_mode->enums[i].name, lut, lut_size);
 +
-+		igt_plane_set_prop_enum(plane,
-+					IGT_PLANE_DEGAMMA_MODE,
-+					degamma_mode->enums[i].name);
-+		invalid_plane_lut_sizes(display, plane,
-+					IGT_PLANE_DEGAMMA_LUT,
-+					lut_size);
++		/* Draw a gradient with degamma LUT to remap all
++		 * values to max red/green/blue.
++		 */
++		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
++		igt_plane_set_fb(plane, &fb);
++		igt_display_commit2(display, display->is_atomic ?
++				COMMIT_ATOMIC : COMMIT_LEGACY);
 +
++		chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
++		frame_fullcolors =
++			chamelium_read_captured_frame(data->chamelium, 0);
++
++		/* Verify that the framebuffer reference of the software computed
++		 * output is equal to the frame dump of the gamma LUT
++		 * transformation output.
++		 */
++		ret &= chamelium_frame_match_or_dump(data->chamelium, port,
++				frame_fullcolors, &fbref,
++				CHAMELIUM_CHECK_ANALOG);
++
++		free(lut);
 +		clear_segment_data(segment_info);
 +	}
 +
++	disable_plane_degamma(plane);
++	igt_plane_set_fb(plane, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, display->is_atomic ?
++					COMMIT_ATOMIC : COMMIT_LEGACY);
++
 +	drmModeFreeProperty(degamma_mode);
 +
-+	return true;
++	return ret;
 +}
 +
-+static bool invalid_plane_ctm_test(data_t *data, igt_plane_t *plane)
-+{
-+	igt_info("Plane invalid CTM test is running on pipe-%s plane-%d(%s)\n",
-+			kmstest_pipe_name(plane->pipe->pipe), plane->index,
-+			kmstest_plane_type_name(plane->type));
-+
-+	igt_require(igt_plane_has_prop(plane, IGT_PLANE_CTM));
-+	invalid_plane_lut_sizes(&data->display, plane,
-+				IGT_PLANE_CTM,
-+				sizeof(struct drm_color_ctm));
-+
-+	return true;
-+}
-+
- static bool plane_gamma_test(data_t *data, igt_plane_t *plane)
+ static void run_plane_color_test(data_t *data, enum pipe pipe, test_t test)
  {
- 	igt_output_t *output;
-@@ -1397,6 +1500,21 @@ static void run_tests_for_plane(data_t *data, enum pipe pipe)
- 					ctm_tests[i].iter);
- 		}
- 	}
+ 	igt_plane_t *plane;
+@@ -881,6 +1007,11 @@ static void run_tests_for_plane(data_t *data, enum pipe pipe)
+ 	igt_subtest_f("pipe-%s-plane-gamma",
+ 			kmstest_pipe_name(pipe))
+ 		run_plane_color_test(data, pipe, plane_gamma_test);
 +
-+	igt_describe("Negative check for invalid plane gamma lut sizes");
-+	igt_subtest_f("pipe-%s-invalid-plane-gamma-lut-sizes",
++	igt_describe("Compare maxed out plane degamma LUT and solid color linear LUT");
++	igt_subtest_f("pipe-%s-plane-degamma",
 +			kmstest_pipe_name(pipe))
-+		run_plane_color_test(data, pipe, invalid_plane_gamma_test);
-+
-+	igt_describe("Negative check for invalid plane degamma lut sizes");
-+	igt_subtest_f("pipe-%s-invalid-plane-degamma-lut-sizes",
-+			kmstest_pipe_name(pipe))
-+		run_plane_color_test(data, pipe, invalid_plane_degamma_test);
-+
-+	igt_describe("Negative check for invalid plane ctm matrix sizes");
-+	igt_subtest_f("pipe-%s-invalid-plane-ctm-matrix-sizes",
-+			kmstest_pipe_name(pipe))
-+		run_plane_color_test(data, pipe, invalid_plane_ctm_test);
++		run_plane_color_test(data, pipe, plane_degamma_test);
  }
  
  static int opt_handler(int opt, int opt_index, void *data)
