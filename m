@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2518F10E12E
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 04:42:54 +0000 (UTC)
-Date: Tue, 4 Jan 2022 06:41:13 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YdPP6ZIltSSZsWLz@platvala-desk.ger.corp.intel.com>
-References: <20211230182613.35827-1-zbigniew.kempczynski@intel.com>
- <20211230182613.35827-4-zbigniew.kempczynski@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CAF210E314
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 07:59:57 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Tue,  4 Jan 2022 13:27:30 +0530
+Message-Id: <20220104075745.1715316-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20211115094759.520955-1-bhanuprakash.modem@intel.com>
+References: <20211115094759.520955-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211230182613.35827-4-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/fast-feedback.testlist: Add
- gem_softpin@safe-start subtest
+Subject: [igt-dev] [v2 i-g-t 00/15] Add IGT support for plane color
+ management
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,37 +21,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Dec 30, 2021 at 07:26:13PM +0100, Zbigniew Kempczyński wrote:
-> This test takes up to few hundred of milliseconds and exercises
-> detecting of safe starting offset and alignment to use on discrete
-> where memory regions constraints could differ on different gens.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+From the Plane Color Management feature design, userspace can
+take the smart blending decisions based on hardware supported
+plane color features to obtain an accurate color profile.
 
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+These IGT patches extend the existing pipe color management
+tests to the plane level.
 
-> ---
->  tests/intel-ci/fast-feedback.testlist | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index de1c6cb46..38a90ceb6 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -45,6 +45,7 @@ igt@gem_render_tiled_blits@basic
->  igt@gem_ringfill@basic-all
->  igt@gem_softpin@allocator-basic
->  igt@gem_softpin@allocator-basic-reserve
-> +igt@gem_softpin@safe-start
->  igt@gem_sync@basic-all
->  igt@gem_sync@basic-each
->  igt@gem_tiled_blits@basic
-> -- 
-> 2.32.0
-> 
+Kernel implementation:
+https://patchwork.freedesktop.org/series/90825/
+
+Bhanuprakash Modem (12):
+  HAX: Get uapi headers to compile the IGT
+  lib/igt_kms: Add plane color mgmt properties
+  kms_color_helper: Add helper functions for plane color mgmt
+  tests/kms_color: New subtests for Plane gamma
+  tests/kms_color: New subtests for Plane degamma
+  tests/kms_color: New subtests for Plane CTM
+  tests/kms_color: New negative tests for plane level color mgmt
+  tests/kms_color_chamelium: New subtests for Plane gamma
+  tests/kms_color_chamelium: New subtests for Plane degamma
+  tests/kms_color_chamelium: New subtests for Plane CTM
+  tests/kms_color_chamelium: Extended IGT tests to support logarithmic
+    gamma mode
+  HAX: Add color mgmt tests to BAT
+
+Mukunda Pramodh Kumar (3):
+  lib/igt_kms: Add pipe color mgmt properties
+  kms_color_helper: Add helper functions to support logarithmic gamma
+    mode
+  tests/kms_color: Extended IGT tests to support logarithmic gamma mode
+
+ include/drm-uapi/drm.h                |  10 +
+ include/drm-uapi/drm_mode.h           |  28 ++
+ lib/igt_kms.c                         |   6 +
+ lib/igt_kms.h                         |   6 +
+ tests/intel-ci/fast-feedback.testlist | 112 +++++
+ tests/kms_color.c                     | 663 +++++++++++++++++++++++++-
+ tests/kms_color_chamelium.c           | 583 +++++++++++++++++++++-
+ tests/kms_color_helper.c              | 301 +++++++++++-
+ tests/kms_color_helper.h              |  44 ++
+ 9 files changed, 1736 insertions(+), 17 deletions(-)
+
+--
+2.32.0
