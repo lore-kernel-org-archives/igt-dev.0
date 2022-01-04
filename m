@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1461B10E3D4
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 08:05:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80D5810E3DD
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 08:05:11 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 Jan 2022 13:32:28 +0530
-Message-Id: <20220104080235.1715444-9-bhanuprakash.modem@intel.com>
+Date: Tue,  4 Jan 2022 13:32:30 +0530
+Message-Id: <20220104080235.1715444-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220104080235.1715444-1-bhanuprakash.modem@intel.com>
 References: <20220104080235.1715444-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 i-g-t 08/15] tests/kms_color_chamelium: New subtests
- for Plane gamma
+Subject: [igt-dev] [v2 i-g-t 10/15] tests/kms_color_chamelium: New subtests
+ for Plane CTM
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,13 +25,9 @@ To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>, Pekka Paalanen <ppaalanen@gmail.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To verify Plane gamma, draw 3 gradient rectangles in red, green and blue,
-with a maxed out gamma LUT and verify we have the same frame dump as
-drawing solid color rectangles.
-
-v2:
-* Drop Intel specific logic (Pekka)
-* Add a support for extended mode (Bhanu)
+To verify plane CTM, draw 3 rectangles using before colors with the
+ctm matrix applied and verify the frame dump is equal to using after
+colors with an identify ctm matrix.
 
 Cc: Harry Wentland <harry.wentland@amd.com>
 Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
@@ -40,52 +36,115 @@ Cc: Uma Shankar <uma.shankar@intel.com>
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color_chamelium.c | 184 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 182 insertions(+), 2 deletions(-)
+ tests/kms_color_chamelium.c | 228 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 228 insertions(+)
 
 diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
-index 76f82d6d35..c554e78436 100644
+index 76d80e39ba..a9469f9827 100644
 --- a/tests/kms_color_chamelium.c
 +++ b/tests/kms_color_chamelium.c
-@@ -24,7 +24,10 @@
+@@ -29,6 +29,77 @@ IGT_TEST_DESCRIPTION("Test Color Features at Pipe & Plane level using Chamelium
+ typedef bool (*test_t)(data_t*, igt_plane_t*);
+ static bool extended = false;
  
- #include "kms_color_helper.h"
- 
--IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
-+IGT_TEST_DESCRIPTION("Test Color Features at Pipe & Plane level using Chamelium to verify instead of CRC");
++struct {
++	const char *test_name;
++	int iter;
++	color_t expected_colors[3];
++	double ctm[9];
++} ctm_tests[] = {
++	{"plane-ctm-red-to-blue", 0,
++					{{ 0.0, 0.0, 1.0 },
++					 { 0.0, 1.0, 0.0 },
++					 { 0.0, 0.0, 1.0 }},
++		{ 0.0, 0.0, 0.0,
++		  0.0, 1.0, 0.0,
++		  1.0, 0.0, 1.0 },
++	},
++	{"plane-ctm-green-to-red", 0,
++					{{ 1.0, 0.0, 0.0 },
++					 { 1.0, 0.0, 0.0 },
++					 { 0.0, 0.0, 1.0 }},
++		{ 1.0, 1.0, 0.0,
++		  0.0, 0.0, 0.0,
++		  0.0, 0.0, 1.0 },
++	},
++	{"plane-ctm-blue-to-red", 0,
++					{{ 1.0, 0.0, 0.0 },
++					 { 0.0, 1.0, 0.0 },
++					 { 1.0, 0.0, 0.0 }},
++		{ 1.0, 0.0, 1.0,
++		  0.0, 1.0, 0.0,
++		  0.0, 0.0, 0.0 },
++	},
++	{"plane-ctm-max", 0,
++					{{ 1.0, 0.0, 0.0 },
++					 { 0.0, 1.0, 0.0 },
++					 { 0.0, 0.0, 1.0 }},
++		{ 100.0, 0.0, 0.0,
++		  0.0, 100.0, 0.0,
++		  0.0, 0.0, 100.0 },
++	},
++	{"plane-ctm-negative", 0,
++					{{ 0.0, 0.0, 0.0 },
++					 { 0.0, 0.0, 0.0 },
++					 { 0.0, 0.0, 0.0 }},
++		{ -1.0, 0.0, 0.0,
++		   0.0, -1.0, 0.0,
++		   0.0, 0.0, -1.0 },
++	},
++	/* We tests a few values around the expected result because
++	 * it depends on the hardware we're dealing with, we can
++	 * either get clamped or rounded values and we also need to
++	 * account for odd number of items in the LUTs.
++	 */
++	{"plane-ctm-0-25", 5,
++					{{ 0.0, }, { 0.0, }, { 0.0, }},
++		{ 0.25, 0.0,  0.0,
++		  0.0,  0.25, 0.0,
++		  0.0,  0.0,  0.25 },
++	},
++	{"plane-ctm-0-50", 5,
++					{{ 0.0, }, { 0.0, }, { 0.0, }},
++		{ 0.5,  0.0,  0.0,
++		  0.0,  0.5,  0.0,
++		  0.0,  0.0,  0.5 },
++	},
++	{"plane-ctm-0-75", 7,
++					{{ 0.0, }, { 0.0, }, { 0.0, }},
++		{ 0.75, 0.0,  0.0,
++		  0.0,  0.75, 0.0,
++		  0.0,  0.0,  0.75 },
++	},
++};
 +
-+typedef bool (*test_t)(data_t*, igt_plane_t*);
-+static bool extended = false;
- 
  /*
   * Draw 3 gradient rectangles in red, green and blue, with a maxed out
-@@ -723,7 +726,180 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	}
+  * degamma LUT and verify we have the same frame dump as drawing solid color
+@@ -977,6 +1048,102 @@ static bool plane_degamma_test(data_t *data, igt_plane_t *plane)
+ 	return ret;
  }
  
--igt_main
-+static bool plane_gamma_test(data_t *data, igt_plane_t *plane)
++static bool test_plane_ctm(data_t *data,
++			  igt_plane_t *plane,
++			  color_t *before,
++			  color_t *after,
++			  double *ctm_matrix)
 +{
 +	igt_output_t *output;
 +	igt_display_t *display = &data->display;
 +	drmModeModeInfo *mode;
 +	struct igt_fb fb, fbref;
-+	drmModePropertyPtr gamma_mode = NULL;
++	struct chamelium_port *port;
++	struct chamelium_frame_dump *frame_hardware;
 +	uint32_t i;
 +	bool ret = true;
-+	struct chamelium_port *port = NULL;
-+	color_t red_green_blue[] = {
-+		{ 1.0, 0.0, 0.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 }
-+	};
 +
-+	igt_info("Plane gamma test is running on pipe-%s plane-%d(%s)\n",
++	igt_info("Plane CTM test is running on pipe-%s plane-%d(%s)\n",
 +			kmstest_pipe_name(plane->pipe->pipe), plane->index,
 +			kmstest_plane_type_name(plane->type));
 +
-+	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_MODE));
-+	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_LUT));
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_CTM));
 +
 +	for_each_valid_output_on_pipe(display, plane->pipe->pipe, output) {
 +		for (i = 0; i < data->port_count; i++)
@@ -128,129 +187,119 @@ index 76f82d6d35..c554e78436 100644
 +
 +	igt_plane_set_fb(plane, &fbref);
 +	igt_display_commit2(display, display->is_atomic ?
-+				COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+	/* Draw solid colors with no gamma transformation. */
-+	paint_rectangles(data, mode, red_green_blue, &fbref);
-+
-+	gamma_mode = get_plane_gamma_degamma_mode(plane, IGT_PLANE_GAMMA_MODE);
-+	/* Iterate all supported gamma modes. */
-+	for (i = 0; i < gamma_mode->count_enums; i++) {
-+		struct chamelium_frame_dump *frame_fullcolors;
-+		segment_data_t *segment_info = NULL;
-+		struct drm_color_lut_ext *lut = NULL;
-+		uint32_t lut_size = 0;
-+
-+		/* Ignore 'no gamma' from enum list. */
-+		if (!strcmp(gamma_mode->enums[i].name, "no gamma"))
-+			continue;
-+
-+		igt_info("Trying to use gamma mode: \'%s\'\n", gamma_mode->enums[i].name);
-+
-+		segment_info = get_segment_data(data, gamma_mode->enums[i].value,
-+				gamma_mode->enums[i].name);
-+		lut_size = sizeof(struct drm_color_lut_ext) * segment_info->entries_count;
-+		lut = create_max_lut(segment_info);
-+		if (is_i915_device(data->drm_fd))
-+			lut[0].red = lut[0].green = lut[0].blue = 0; /* First entry is 0 for Intel h/w. */
-+		set_plane_gamma(plane, gamma_mode->enums[i].name, lut, lut_size);
-+
-+		/* Draw a gradient with gamma LUT to remap all
-+		 * values to max red/green/blue.
-+		 */
-+		paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-+		igt_plane_set_fb(plane, &fb);
-+		igt_display_commit2(display, display->is_atomic ?
 +					COMMIT_ATOMIC : COMMIT_LEGACY);
 +
-+		chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+		frame_fullcolors =
-+			chamelium_read_captured_frame(data->chamelium, 0);
++	/* Without CTM transformation. */
++	paint_rectangles(data, mode, after, &fbref);
 +
-+		/* Verify that the framebuffer reference of the software computed
-+		 * output is equal to the frame dump of the gamma LUT
-+		 * transformation output.
-+		 */
-+		ret &= chamelium_frame_match_or_dump(data->chamelium, port,
-+					      frame_fullcolors, &fbref,
-+					      CHAMELIUM_CHECK_ANALOG);
-+		free(lut);
-+		clear_segment_data(segment_info);
-+	}
++	/* With CTM transformation. */
++	paint_rectangles(data, mode, before, &fb);
++	igt_plane_set_fb(plane, &fb);
++	set_plane_ctm(plane, ctm_matrix);
++	igt_display_commit2(display, display->is_atomic ?
++				COMMIT_ATOMIC : COMMIT_LEGACY);
 +
-+	disable_plane_gamma(plane);
++	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
++	frame_hardware =
++		chamelium_read_captured_frame(data->chamelium, 0);
++
++	/* Verify that the framebuffer reference of the software
++	 * computed output is equal to the frame dump of the CTM
++	 * matrix transformation output.
++	 */
++	ret = chamelium_frame_match_or_dump(data->chamelium, port,
++					     frame_hardware,
++					     &fbref,
++					     CHAMELIUM_CHECK_ANALOG);
++
++	disable_plane_ctm(plane);
 +	igt_plane_set_fb(plane, NULL);
 +	igt_output_set_pipe(output, PIPE_NONE);
 +	igt_display_commit2(display, display->is_atomic ?
 +					COMMIT_ATOMIC : COMMIT_LEGACY);
 +
-+	drmModeFreeProperty(gamma_mode);
-+
 +	return ret;
 +}
 +
-+static void run_plane_color_test(data_t *data, enum pipe pipe, test_t test)
+ static void run_plane_color_test(data_t *data, enum pipe pipe, test_t test)
+ {
+ 	igt_plane_t *plane;
+@@ -995,8 +1162,57 @@ static void run_plane_color_test(data_t *data, enum pipe pipe, test_t test)
+ 	igt_require_f(count, "No valid planes found.\n");
+ }
+ 
++static void run_plane_ctm_test(data_t *data,
++				enum pipe pipe,
++				color_t *expected,
++				double *ctm,
++				int iter)
 +{
 +	igt_plane_t *plane;
-+	int count = 0;
++	bool result;
++	int i, count = 0;
++	double delta = 1.0 / (1 << 8);
++	color_t red_green_blue[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 }
++	};
 +	int last_plane = (&data->display)->pipes[pipe].n_planes - 1;
 +
 +	for_each_plane_on_pipe(&data->display, pipe, plane) {
 +		if (!extended && j__ != 0 && j__ != last_plane)
 +			continue;
 +
-+		igt_assert(test(data, plane));
++		result = false;
 +
++		if (!iter)
++			result = test_plane_ctm(data, plane, red_green_blue,
++						expected, ctm);
++
++		for (i = 0; i < iter; i++) {
++			expected[0].r =
++			expected[1].g =
++			expected[2].b =
++				ctm[0] + delta * (i - (iter/2));
++
++			if (test_plane_ctm(data, plane, red_green_blue,
++						expected, ctm)) {
++				result = true;
++				break;
++			}
++		}
++
++		igt_assert(result);
 +		count++;
 +	}
 +
 +	igt_require_f(count, "No valid planes found.\n");
 +}
 +
-+static void run_tests_for_plane(data_t *data, enum pipe pipe)
-+{
-+	igt_fixture {
-+		igt_require_pipe(&data->display, pipe);
-+		igt_require(data->display.pipes[pipe].n_planes > 0);
-+		igt_display_require_output_on_pipe(&data->display, pipe);
-+	}
-+
-+	igt_describe("Compare maxed out plane gamma LUT and solid color linear LUT");
-+	igt_subtest_f("pipe-%s-plane-gamma",
-+			kmstest_pipe_name(pipe))
-+		run_plane_color_test(data, pipe, plane_gamma_test);
-+}
-+
-+static int opt_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+		case 'e':
-+			extended = true;
-+			break;
-+		default:
-+			return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -e \tExtended plane tests.\n";
-+
-+igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ static void run_tests_for_plane(data_t *data, enum pipe pipe)
  {
- 	data_t data = {};
- 	enum pipe pipe;
-@@ -755,6 +931,10 @@ igt_main
- 		igt_subtest_group
- 			run_tests_for_pipe(&data, pipe);
- 
-+	for_each_pipe_static(pipe)
-+		igt_subtest_group
-+			run_tests_for_plane(&data, pipe);
++	int i;
 +
  	igt_fixture {
- 		igt_display_fini(&data.display);
- 	}
+ 		igt_require_pipe(&data->display, pipe);
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+@@ -1012,6 +1228,18 @@ static void run_tests_for_plane(data_t *data, enum pipe pipe)
+ 	igt_subtest_f("pipe-%s-plane-degamma",
+ 			kmstest_pipe_name(pipe))
+ 		run_plane_color_test(data, pipe, plane_degamma_test);
++
++	for (i = 0; i < ARRAY_SIZE(ctm_tests); i++) {
++		igt_describe("Compare after applying ctm matrix & identity matrix");
++		igt_subtest_f("pipe-%s-%s",
++				kmstest_pipe_name(pipe),
++				ctm_tests[i].test_name) {
++			run_plane_ctm_test(data, pipe,
++					ctm_tests[i].expected_colors,
++					ctm_tests[i].ctm,
++					ctm_tests[i].iter);
++		}
++	}
+ }
+ 
+ static int opt_handler(int opt, int opt_index, void *data)
 -- 
 2.32.0
