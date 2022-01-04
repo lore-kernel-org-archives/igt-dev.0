@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E500110E3FD
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 08:05:34 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  4 Jan 2022 13:32:35 +0530
-Message-Id: <20220104080235.1715444-16-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220104080235.1715444-1-bhanuprakash.modem@intel.com>
-References: <20220104080235.1715444-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6871334122553253641=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 i-g-t 15/15] HAX: Add color mgmt tests to BAT
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 04 Jan 2022 09:42:00 -0000
+Message-ID: <164128932010.30370.7471330819238557997@emeril.freedesktop.org>
+References: <20220103161957.9458-1-swati2.sharma@intel.com>
+In-Reply-To: <20220103161957.9458-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fscaling=5Fmodes=3A_New_IGT_to_validate_scaling_modes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,138 +16,265 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Swati Sharma <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 112 ++++++++++++++++++++++++++
- 1 file changed, 112 insertions(+)
+--===============6871334122553253641==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index de1c6cb46c..0bdd82f9bc 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -102,6 +102,118 @@ igt@kms_chamelium@hdmi-crc-fast
- igt@kms_chamelium@vga-hpd-fast
- igt@kms_chamelium@vga-edid-read
- igt@kms_chamelium@common-hpd-after-suspend
-+igt@kms_color@pipe-A-ctm-red-to-blue
-+igt@kms_color@pipe-A-ctm-green-to-red
-+igt@kms_color@pipe-A-ctm-blue-to-red
-+igt@kms_color@pipe-A-ctm-0-25
-+igt@kms_color@pipe-A-ctm-0-5
-+igt@kms_color@pipe-A-ctm-0-75
-+igt@kms_color@pipe-A-ctm-max
-+igt@kms_color@pipe-A-ctm-negative
-+igt@kms_color@pipe-A-degamma
-+igt@kms_color@pipe-A-gamma
-+igt@kms_color@pipe-A-legacy-gamma
-+igt@kms_color@pipe-A-legacy-gamma-reset
-+igt@kms_color@pipe-A-invalid-gamma-lut-sizes
-+igt@kms_color@pipe-A-invalid-degamma-lut-sizes
-+igt@kms_color@pipe-A-invalid-ctm-matrix-sizes
-+igt@kms_color@pipe-A-plane-gamma
-+igt@kms_color@pipe-A-plane-degamma
-+igt@kms_color@pipe-A-plane-ctm-red-to-blue
-+igt@kms_color@pipe-A-plane-ctm-green-to-red
-+igt@kms_color@pipe-A-plane-ctm-blue-to-red
-+igt@kms_color@pipe-A-plane-ctm-max
-+igt@kms_color@pipe-A-plane-ctm-negative
-+igt@kms_color@pipe-A-plane-ctm-0-25
-+igt@kms_color@pipe-A-plane-ctm-0-50
-+igt@kms_color@pipe-A-plane-ctm-0-75
-+igt@kms_color@pipe-A-invalid-plane-gamma-lut-sizes
-+igt@kms_color@pipe-A-invalid-plane-degamma-lut-sizes
-+igt@kms_color@pipe-A-invalid-plane-ctm-matrix-sizes
-+igt@kms_color@pipe-B-ctm-red-to-blue
-+igt@kms_color@pipe-B-ctm-green-to-red
-+igt@kms_color@pipe-B-ctm-blue-to-red
-+igt@kms_color@pipe-B-ctm-0-25
-+igt@kms_color@pipe-B-ctm-0-5
-+igt@kms_color@pipe-B-ctm-0-75
-+igt@kms_color@pipe-B-ctm-max
-+igt@kms_color@pipe-B-ctm-negative
-+igt@kms_color@pipe-B-degamma
-+igt@kms_color@pipe-B-gamma
-+igt@kms_color@pipe-B-legacy-gamma
-+igt@kms_color@pipe-B-legacy-gamma-reset
-+igt@kms_color@pipe-B-invalid-gamma-lut-sizes
-+igt@kms_color@pipe-B-invalid-degamma-lut-sizes
-+igt@kms_color@pipe-B-invalid-ctm-matrix-sizes
-+igt@kms_color@pipe-B-plane-gamma
-+igt@kms_color@pipe-B-plane-degamma
-+igt@kms_color@pipe-B-plane-ctm-red-to-blue
-+igt@kms_color@pipe-B-plane-ctm-green-to-red
-+igt@kms_color@pipe-B-plane-ctm-blue-to-red
-+igt@kms_color@pipe-B-plane-ctm-max
-+igt@kms_color@pipe-B-plane-ctm-negative
-+igt@kms_color@pipe-B-plane-ctm-0-25
-+igt@kms_color@pipe-B-plane-ctm-0-50
-+igt@kms_color@pipe-B-plane-ctm-0-75
-+igt@kms_color@pipe-B-invalid-plane-gamma-lut-sizes
-+igt@kms_color@pipe-B-invalid-plane-degamma-lut-sizes
-+igt@kms_color@pipe-B-invalid-plane-ctm-matrix-sizes
-+igt@kms_color@pipe-C-ctm-red-to-blue
-+igt@kms_color@pipe-C-ctm-green-to-red
-+igt@kms_color@pipe-C-ctm-blue-to-red
-+igt@kms_color@pipe-C-ctm-0-25
-+igt@kms_color@pipe-C-ctm-0-5
-+igt@kms_color@pipe-C-ctm-0-75
-+igt@kms_color@pipe-C-ctm-max
-+igt@kms_color@pipe-C-ctm-negative
-+igt@kms_color@pipe-C-degamma
-+igt@kms_color@pipe-C-gamma
-+igt@kms_color@pipe-C-legacy-gamma
-+igt@kms_color@pipe-C-legacy-gamma-reset
-+igt@kms_color@pipe-C-invalid-gamma-lut-sizes
-+igt@kms_color@pipe-C-invalid-degamma-lut-sizes
-+igt@kms_color@pipe-C-invalid-ctm-matrix-sizes
-+igt@kms_color@pipe-C-plane-gamma
-+igt@kms_color@pipe-C-plane-degamma
-+igt@kms_color@pipe-C-plane-ctm-red-to-blue
-+igt@kms_color@pipe-C-plane-ctm-green-to-red
-+igt@kms_color@pipe-C-plane-ctm-blue-to-red
-+igt@kms_color@pipe-C-plane-ctm-max
-+igt@kms_color@pipe-C-plane-ctm-negative
-+igt@kms_color@pipe-C-plane-ctm-0-25
-+igt@kms_color@pipe-C-plane-ctm-0-50
-+igt@kms_color@pipe-C-plane-ctm-0-75
-+igt@kms_color@pipe-C-invalid-plane-gamma-lut-sizes
-+igt@kms_color@pipe-C-invalid-plane-degamma-lut-sizes
-+igt@kms_color@pipe-C-invalid-plane-ctm-matrix-sizes
-+igt@kms_color@pipe-D-ctm-red-to-blue
-+igt@kms_color@pipe-D-ctm-green-to-red
-+igt@kms_color@pipe-D-ctm-blue-to-red
-+igt@kms_color@pipe-D-ctm-0-25
-+igt@kms_color@pipe-D-ctm-0-5
-+igt@kms_color@pipe-D-ctm-0-75
-+igt@kms_color@pipe-D-ctm-max
-+igt@kms_color@pipe-D-ctm-negative
-+igt@kms_color@pipe-D-degamma
-+igt@kms_color@pipe-D-gamma
-+igt@kms_color@pipe-D-legacy-gamma
-+igt@kms_color@pipe-D-legacy-gamma-reset
-+igt@kms_color@pipe-D-invalid-gamma-lut-sizes
-+igt@kms_color@pipe-D-invalid-degamma-lut-sizes
-+igt@kms_color@pipe-D-invalid-ctm-matrix-sizes
-+igt@kms_color@pipe-D-plane-gamma
-+igt@kms_color@pipe-D-plane-degamma
-+igt@kms_color@pipe-D-plane-ctm-red-to-blue
-+igt@kms_color@pipe-D-plane-ctm-green-to-red
-+igt@kms_color@pipe-D-plane-ctm-blue-to-red
-+igt@kms_color@pipe-D-plane-ctm-max
-+igt@kms_color@pipe-D-plane-ctm-negative
-+igt@kms_color@pipe-D-plane-ctm-0-25
-+igt@kms_color@pipe-D-plane-ctm-0-50
-+igt@kms_color@pipe-D-plane-ctm-0-75
-+igt@kms_color@pipe-D-invalid-plane-gamma-lut-sizes
-+igt@kms_color@pipe-D-invalid-plane-degamma-lut-sizes
-+igt@kms_color@pipe-D-invalid-plane-ctm-matrix-sizes
- igt@kms_prop_blob@basic
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
--- 
-2.32.0
+== Series Details ==
+
+Series: tests/kms_scaling_modes: New IGT to validate scaling modes
+URL   : https://patchwork.freedesktop.org/series/98463/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11044 -> IGTPW_6532
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6532 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6532, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/index.html
+
+Participating hosts (46 -> 36)
+------------------------------
+
+  Missing    (10): fi-kbl-soraka bat-dg1-6 bat-dg1-5 fi-tgl-u2 fi-bsw-cyan bat-adlp-6 bat-rpls-1 fi-bdw-samus bat-jsl-2 bat-jsl-1 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6532:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-ivb-3770:        [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6532 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][3] ([fdo#109271]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-bsw-nick/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@gem_flink_basic@bad-flink:
+    - fi-skl-6600u:       [PASS][4] -> [FAIL][5] ([i915#4547])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][6] -> [INCOMPLETE][7] ([i915#3921])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-ivb-3770:        NOTRUN -> [FAIL][8] ([fdo#109271] / [i915#2426] / [i915#4312])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-ivb-3770/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@uncore:
+    - fi-bsw-nick:        [INCOMPLETE][9] -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-bsw-nick/igt@i915_selftest@live@uncore.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-bsw-nick/igt@i915_selftest@live@uncore.html
+
+  
+#### Warnings ####
+
+  * igt@amdgpu/amd_prime@i915-to-amd:
+    - fi-tgl-1115g4:      [SKIP][11] ([fdo#109315] / [i915#2575]) -> [SKIP][12] ([fdo#109315] / [i915#1888] / [i915#2575])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-tgl-1115g4/igt@amdgpu/amd_prime@i915-to-amd.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-tgl-1115g4/igt@amdgpu/amd_prime@i915-to-amd.html
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       [FAIL][13] ([i915#2722] / [i915#4312]) -> [FAIL][14] ([i915#4312])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-skl-6600u/igt@runner@aborted.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-skl-6600u/igt@runner@aborted.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6322 -> IGTPW_6532
+
+  CI-20190529: 20190529
+  CI_DRM_11044: 7b527a181f96f90a4c2f04d2705bdaffdd8168b6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6532: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/index.html
+  IGT_6322: b0b7679b358b300b7b6bf42c6921d0aa1fc14388 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_scaling_modes@scaling-mode-center
++igt@kms_scaling_modes@scaling-mode-full
++igt@kms_scaling_modes@scaling-mode-full-aspect
++igt@kms_scaling_modes@scaling-mode-none
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/index.html
+
+--===============6871334122553253641==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_scaling_modes: New IGT to validate scaling modes</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/98463/">https://patchwork.freedesktop.org/series/98463/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11044 -&gt; IGTPW_6532</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6532 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6532, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/index.html</p>
+<h2>Participating hosts (46 -&gt; 36)</h2>
+<p>Missing    (10): fi-kbl-soraka bat-dg1-6 bat-dg1-5 fi-tgl-u2 fi-bsw-cyan bat-adlp-6 bat-rpls-1 fi-bdw-samus bat-jsl-2 bat-jsl-1 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6532:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6532 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-bsw-nick/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@bad-flink:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-ivb-3770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@uncore:<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-bsw-nick/igt@i915_selftest@live@uncore.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-bsw-nick/igt@i915_selftest@live@uncore.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_prime@i915-to-amd:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-tgl-1115g4/igt@amdgpu/amd_prime@i915-to-amd.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-tgl-1115g4/igt@amdgpu/amd_prime@i915-to-amd.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11044/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6322 -&gt; IGTPW_6532</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11044: 7b527a181f96f90a4c2f04d2705bdaffdd8168b6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6532: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6532/index.html<br />
+  IGT_6322: b0b7679b358b300b7b6bf42c6921d0aa1fc14388 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_scaling_modes@scaling-mode-center<br />
++igt@kms_scaling_modes@scaling-mode-full<br />
++igt@kms_scaling_modes@scaling-mode-full-aspect<br />
++igt@kms_scaling_modes@scaling-mode-none</p>
+
+</body>
+</html>
+
+--===============6871334122553253641==--
