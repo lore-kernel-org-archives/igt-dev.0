@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4371B10E6D9
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jan 2022 10:21:48 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-Date: Wed,  5 Jan 2022 15:40:22 +0530
-Message-Id: <20220105101022.1604358-1-priyanka.dandamudi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4788785642127640597=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_ctx_exec: Skip test for
- RCS+CCS
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 05 Jan 2022 11:20:24 -0000
+Message-ID: <164138162470.25404.3128318571600449112@emeril.freedesktop.org>
+References: <20220105101022.1604358-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20220105101022.1604358-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fctx=5Fexec=3A_Skip_test_for_RCS+CCS_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,58 +16,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com, ashutosh.dixit@intel.com, John.C.Harrison@Intel.com, saurabhg.gupta@intel.com
+To: priyanka.dandamudi@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+--===============4788785642127640597==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The test tries to submit non-preemptible spinners to all engines,
-causes a hang and expects the non-preemptible spinners to survive
-but fails to do for RCS+CCS.
-So, updated the code to skip nohangcheck subtest for a platform with RCS+CCS.
+== Series Details ==
 
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
----
- tests/i915/gem_ctx_exec.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Series: tests/i915/gem_ctx_exec: Skip test for RCS+CCS (rev2)
+URL   : https://patchwork.freedesktop.org/series/98396/
+State : success
 
-diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-index a1270a88..7b2aa390 100644
---- a/tests/i915/gem_ctx_exec.c
-+++ b/tests/i915/gem_ctx_exec.c
-@@ -276,6 +276,8 @@ static void nohangcheck_hostile(int i915)
- 	int err = 0;
- 	int dir;
- 	uint64_t ahnd;
-+	bool rcs0 = false;
-+	bool ccs0 = false;
- 
- 	/*
- 	 * Even if the user disables hangcheck during their context,
-@@ -292,6 +294,20 @@ static void nohangcheck_hostile(int i915)
- 	ahnd = get_reloc_ahnd(i915, ctx->id);
- 
- 	igt_require(__enable_hangcheck(dir, false));
-+	/* Skips for RCS+CCS combination when nopreemption batch submitted*/
-+	for_each_ctx_engine (i915, ctx, e) {
-+		if (rcs0 && ccs0)
-+			break;
-+		else if (!rcs0) {
-+			if (e->class == I915_ENGINE_CLASS_RENDER)
-+				rcs0 = true;
-+		}
-+		else if (!ccs0) {
-+			if (e->class == I915_ENGINE_CLASS_COMPUTE)
-+				ccs0 = true;
-+		}
-+	}
-+	igt_require(!(rcs0 && ccs0));
- 
- 	for_each_ctx_engine(i915, ctx, e) {
- 		igt_spin_t *spin;
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11047 -> IGTPW_6538
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/index.html
+
+Participating hosts (48 -> 36)
+------------------------------
+
+  Missing    (12): fi-ilk-m540 bat-dg1-6 bat-dg1-5 fi-hsw-4200u fi-bsw-cyan bat-adlp-6 bat-adlp-4 fi-ctg-p8600 bat-rpls-1 fi-bdw-samus bat-jsl-2 bat-jsl-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6538 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-skl-6600u:       [PASS][1] -> [FAIL][2] ([i915#4547])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11047/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+
+  
+#### Warnings ####
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       [FAIL][3] ([i915#1436] / [i915#2722] / [i915#4312]) -> [FAIL][4] ([i915#4312])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11047/fi-skl-6600u/igt@runner@aborted.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/fi-skl-6600u/igt@runner@aborted.html
+
+  
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6323 -> IGTPW_6538
+
+  CI-20190529: 20190529
+  CI_DRM_11047: f50e5d7abd1873b3488081da88dc8412584280b9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6538: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/index.html
+  IGT_6323: 9dbaa0d5be7a859cda9b7d54c20ba96a596f43bd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/index.html
+
+--===============4788785642127640597==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_ctx_exec: Skip test for RCS+CCS (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/98396/">https://patchwork.freedesktop.org/series/98396/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11047 -&gt; IGTPW_6538</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/index.html</p>
+<h2>Participating hosts (48 -&gt; 36)</h2>
+<p>Missing    (12): fi-ilk-m540 bat-dg1-6 bat-dg1-5 fi-hsw-4200u fi-bsw-cyan bat-adlp-6 bat-adlp-4 fi-ctg-p8600 bat-rpls-1 fi-bdw-samus bat-jsl-2 bat-jsl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6538 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_psr@primary_page_flip:<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11047/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11047/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6323 -&gt; IGTPW_6538</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11047: f50e5d7abd1873b3488081da88dc8412584280b9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6538: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6538/index.html<br />
+  IGT_6323: 9dbaa0d5be7a859cda9b7d54c20ba96a596f43bd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4788785642127640597==--
