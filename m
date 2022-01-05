@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBCA410F5C1
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jan 2022 06:02:27 +0000 (UTC)
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-Date: Wed, 5 Jan 2022 06:01:54 +0000
-Message-ID: <DM6PR11MB4492D4486966DC97F4EFB1A28D4B9@DM6PR11MB4492.namprd11.prod.outlook.com>
-References: <20211229075239.1555546-1-priyanka.dandamudi@intel.com>
- <83be3bbe-7ea8-b59b-ffc1-c564ad4315f8@intel.com>
-In-Reply-To: <83be3bbe-7ea8-b59b-ffc1-c564ad4315f8@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4EFB910F91A
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jan 2022 06:44:04 +0000 (UTC)
+Date: Wed, 5 Jan 2022 07:44:00 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <YdU+MHP1gJvTPnfh@zkempczy-mobl2>
+References: <20211230182613.35827-1-zbigniew.kempczynski@intel.com>
+ <20211230182613.35827-2-zbigniew.kempczynski@intel.com>
+ <87y23ubwu5.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_exec: Skip test for
- RCS+CCS
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87y23ubwu5.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/intel_memory_region: Add start
+ offset and alignment detection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,48 +24,237 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Harrison, John C" <john.c.harrison@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Melkaveri,
- Arjun" <arjun.melkaveri@intel.com>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "Gupta, saurabhg" <saurabhg.gupta@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBIYXJyaXNvbiwgSm9obiBDIDxq
-b2huLmMuaGFycmlzb25AaW50ZWwuY29tPiANClNlbnQ6IDA1IEphbnVhcnkgMjAyMiAwMToxMyBB
-TQ0KVG86IERhbmRhbXVkaSwgUHJpeWFua2EgPHByaXlhbmthLmRhbmRhbXVkaUBpbnRlbC5jb20+
-OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgTWVsa2F2ZXJpLCBBcmp1biA8YXJqdW4u
-bWVsa2F2ZXJpQGludGVsLmNvbT47IERpeGl0LCBBc2h1dG9zaCA8YXNodXRvc2guZGl4aXRAaW50
-ZWwuY29tPjsgR3VwdGEsIHNhdXJhYmhnIDxzYXVyYWJoZy5ndXB0YUBpbnRlbC5jb20+DQpTdWJq
-ZWN0OiBSZTogW1BBVENIIGktZy10XSB0ZXN0cy9pOTE1L2dlbV9jdHhfZXhlYzogU2tpcCB0ZXN0
-IGZvciBSQ1MrQ0NTDQoNCk9uIDEyLzI4LzIwMjEgMjM6NTIsIHByaXlhbmthLmRhbmRhbXVkaUBp
-bnRlbC5jb20gd3JvdGU6DQo+IEZyb206IFByaXlhbmthIERhbmRhbXVkaSA8cHJpeWFua2EuZGFu
-ZGFtdWRpQGludGVsLmNvbT4NCj4NCj4gVXBkYXRlZCB0aGUgbm9oYW5nY2hlY2sgdGVzdCB0byBz
-a2lwIGZvciBERzIgYXMgdGVzdCBmYWlscyB3aGVuIHJlc2V0IA0KPiBpcyBhcHBsaWVkIGZvciB0
-aGUgUkNTK0NDUyBjb21iaW5hdGlvbi4NCj4NCj4gU2lnbmVkLW9mZi1ieTogUHJpeWFua2EgRGFu
-ZGFtdWRpIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPg0KPiBDYzogSm9obiBIYXJyaXNv
-biA8Sm9obi5DLkhhcnJpc29uQEludGVsLmNvbT4NCj4gQ2M6IE1lbGthdmVyaSwgQXJqdW4gPGFy
-anVuLm1lbGthdmVyaUBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgIHRlc3RzL2k5MTUvZ2VtX2N0eF9l
-eGVjLmMgfCAxNCArKysrKysrKysrKysrKw0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRp
-b25zKCspDQo+DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9jdHhfZXhlYy5jIGIvdGVz
-dHMvaTkxNS9nZW1fY3R4X2V4ZWMuYyANCj4gaW5kZXggYTEyNzBhODguLmRiYjQ2NDA0IDEwMDY0
-NA0KPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9jdHhfZXhlYy5jDQo+ICsrKyBiL3Rlc3RzL2k5MTUv
-Z2VtX2N0eF9leGVjLmMNCj4gQEAgLTI3Niw2ICsyNzYsOSBAQCBzdGF0aWMgdm9pZCBub2hhbmdj
-aGVja19ob3N0aWxlKGludCBpOTE1KQ0KPiAgIAlpbnQgZXJyID0gMDsNCj4gICAJaW50IGRpcjsN
-Cj4gICAJdWludDY0X3QgYWhuZDsNCj4gKwlib29sIHJjc19mb3VuZCA9IGZhbHNlOw0KPiArCWJv
-b2wgY2NzX2ZvdW5kID0gZmFsc2U7DQo+ICsNCj4gICANCj4gICAJLyoNCj4gICAJICogRXZlbiBp
-ZiB0aGUgdXNlciBkaXNhYmxlcyBoYW5nY2hlY2sgZHVyaW5nIHRoZWlyIGNvbnRleHQsIEBAIA0K
-PiAtMjkzLDYgKzI5NiwxNyBAQCBzdGF0aWMgdm9pZCBub2hhbmdjaGVja19ob3N0aWxlKGludCBp
-OTE1KQ0KPiAgIA0KPiAgIAlpZ3RfcmVxdWlyZShfX2VuYWJsZV9oYW5nY2hlY2soZGlyLCBmYWxz
-ZSkpOw0KPiAgIA0KPiArCWZvcl9lYWNoX2N0eF9lbmdpbmUoaTkxNSwgY3R4LCBlKSB7DQo+ICsJ
-CWlmKHJjc19mb3VuZCAmJiBjY3NfZm91bmQpDQo+ICsJCQlicmVhazsNCj4gKwkJZWxzZSBpZihl
-LT5jbGFzcyA9PSBJOTE1X0VOR0lORV9DTEFTU19SRU5ERVIgJiYgcmNzX2ZvdW5kID09IGZhbHNl
-KXsNCj4gKwkJCXJjc19mb3VuZCA9IHRydWU7DQo+ICsJCQljb250aW51ZTsNCj4gKwkJfQ0KPiAr
-CQllbHNlIGlmKGUtPmNsYXNzID09IEk5MTVfRU5HSU5FX0NMQVNTX0NPTVBVVEUgJiYgY2NzX2Zv
-dW5kID09IGZhbHNlKQ0KPiArCQkJY2NzX2ZvdW5kID0gdHJ1ZTsNCj4gKwl9DQo+ICsJaWd0X3Jl
-cXVpcmUoIShyY3NfZm91bmQgJiYgY2NzX2ZvdW5kKSk7DQpUaGlzIGlzIG5vdCB0aGUgcmlnaHQg
-YXBwcm9hY2guDQoNCkFzIHBlciB0aGUgY29tbWl0IGRlc2NyaXB0aW9uIGFib3ZlLCB0aGUgcHJv
-YmxlbSBpcyBmb3IgREcyIGFuZCBERzIgYWxvbmUuIFRoZSBza2lwIGNvbmRpdGlvbiBzaG91bGQg
-YmUgc2ltcGx5ICdpZihJU19ERzIpJy4gVGhlcmUgaXMgbm8gbmVlZCB0byBkZXRlY3QgUkNTIGFu
-ZCBDQ1MgcHJlc2VuY2UuDQoNCkpvaG4uDQoNCldpbGwgY2hhbmdlIHRoZSBjb21taXQgZGVzY3Jp
-cHRpb24gdG8gYWxsIHBsYXRmb3JtcywgYXMgdGhlIGZsYWcgc2V0IGluIHRoaXMgc3VidGVzdCBp
-cyBub19wcmVlbXB0aW9uIGFuZCB0ZXN0IHNob3VsZCBza2lwIGZvciBhbGwgcGxhdGZvcm1zIG5v
-dCBvbmx5IERHMi4NCg0KUHJpeWFua2ENCg0KPiAgIAlmb3JfZWFjaF9jdHhfZW5naW5lKGk5MTUs
-IGN0eCwgZSkgew0KPiAgIAkJaWd0X3NwaW5fdCAqc3BpbjsNCj4gICAJCWludCBuZXc7DQoNCg==
+On Tue, Jan 04, 2022 at 09:00:50PM -0800, Dixit, Ashutosh wrote:
+> On Thu, 30 Dec 2021 10:26:11 -0800, Zbigniew Kempczyński wrote:
+> >
+> 
+> I am still trying to understand this patch so just some questions/comments
+> for now.
+> 
+> I am not even looking at the caching part for now, it would have been
+> better to keep caching as a separate patch since that is performance
+> improvement but anyway leave as is. I will just review it later.
+> 
+> > With era of new gens we're enforced to use no-reloc (softpin). This
+> > brings few problems like vm range limitations which were well solved
+> > by the kernel. This can be handled also in userspace code by adding
+> > gen related conditionals or by trying to detect the constraints.
+> 
+> So why not just do this since the information is static and gen dependent?
+
+It may differ across gens/revisions regarding starting offset and alignment
+between regions so I would like to detect is kernel supporting 64K or 2M or not.
+Assuming it is constant from userspace is wrong - that's why detection code
+here. Previously such adjustments were done in relocations, but we got single
+system memory and world was a little bit simpler than now.
+
+> 
+> Also what does this offset/alignment really depend on? Is it the minimum
+> page size supported by a particular gen for a region type? Or is there more
+> to it?
+
+No, on possible regions mixing within gtt as well as supporting grouping 
+to 64K or 2M to decrease TLB eviction.
+
+> 
+> If we know the minimum page size for each region type per gen can we
+> compute the min/safe offset/alignemnt values below or do we still need this
+> dynamic detection?
+
+See above, on ATS I'm not sure but starting offset can be 0x200000.
+
+> 
+> Also, as far as I see, here we are calculating how generated offsets from
+> the allocator should be aligned. So rather than do this in the allocator
+> itself (i.e. introduce a 'region' argument to the allocator) we have these
+> functions to find the 'alignment' argument to allocator->alloc() function.
+
+Objects within same region can be aligned to smaller alignment than max
+of all regions. I would keep regioning away of allocator - it should just
+do what you request of and nothing more.
+
+On the very beginning Chris wanted to have "zones" within allocator but
+I haven't decided to add this - adding allocator + fixing all tests were
+time consuming and I skipped this request. Even now with single zone allocator
+makes tests less readable. Introducing zones would introduce another layer
+which at the moment we don't need to.
+
+> 
+> But it would be ok to do this inside the allocator itself and introduce a
+> region argument to the allocator, i.e. generate an offset for this region
+> or this set of regions? Anyway I see the allocator API at present takes the
+> alignment argument so it is probably ok as is too.
+> 
+> So at a high level do we need to add these functions here or should we add
+> them inside the allocator?
+
+No, we should feed allocator with alignment we want. If you want to mix 
+smem and lmem and you don't want to care of alignment between regions just
+take "safe alignment". If you want to verify smem objects adhere with minimum
+possible alignment use alignment for smem objects, same for lmem.
+
+> 
+> > +/**
+> > + * gem_detect_min_start_offset_for_region:
+> > + * @i915: drm fd
+> > + * @region: memory region
+> > + *
+> > + * Returns: minimum start offset at which kernel allows placing objects
+> > + *          for memory region.
+> > + */
+> > +uint64_t gem_detect_min_start_offset_for_region(int i915, uint32_t region)
+> 
+> Should this be static, that is should we only expose
+> gem_detect_safe_start_offset() to the tests? Is there any reason why any
+> test will call this directly?
+
+I think this should be exported if requester want to put object at minimum
+possible offset for region. You don't need to use allocator if you have 
+one or two objects and you're able to assign those offsets manually.
+For PPGTT this is correct attitude and there're some tests which are 
+already written this way.
+
+> 
+> Also I suggest:
+> 
+> s/detect/get/ since 'detect' is an implementation detail (and with the
+> cache we are not even detecting).
+
+I've discussed this and "detect" is correct word in this case. Get would be 
+appropriate if we would be able to have static mapping.
+
+> 
+> > +	batch = gem_mmap__device_coherent(i915, obj.handle, 0, bb_size, PROT_WRITE);
+> > +	*batch = MI_BATCH_BUFFER_END;
+> > +	munmap(batch, bb_size);
+> 
+> I prefer gem_write() everywhere since it's a single statement but ok as is too.
+> 
+> > +
+> > +	while (1) {
+> > +		obj.offset = start_offset;
+> > +
+> > +		if (__gem_execbuf(i915, &eb) == 0)
+> > +			break;
+> > +
+> > +		if (start_offset)
+> > +			start_offset <<= 1;
+> > +		else
+> > +			start_offset = PAGE_SIZE;
+> > +
+> > +		igt_assert(start_offset <= 1ull << 48);
+> 
+> s/48/GEN8_GTT_ADDRESS_WIDTH/ or something like that?
+
+That value really doesn't matter if is big enough. If we're not be able to
+place object up to 48bit I guess such HW won't work at all.
+
+> 
+> > +/**
+> > + * gem_detect_safe_start_offset:
+> > + * @i915: drm fd
+> > + *
+> > + * Returns: finds start offset which can be used as first one regardless
+> > + *          memory region. Useful if for some reason some regions don't allow
+> > + *          starting from 0x0 offset.
+> > + */
+> > +uint64_t gem_detect_safe_start_offset(int i915)
+> 
+> Overall I am ok with gem_detect_safe_start_offset() and
+> gem_detect_min_start_offset_for_region() and understand that we need them.
+> 
+> > +/**
+> > + * gem_detect_min_alignment_for_regions:
+> > + * @i915: drm fd
+> > + * @region1: first region
+> > + * @region2: second region
+> > + *
+> > + * Returns: minimum alignment which must be used when objects from @region1 and
+> > + * @region2 are going to interact.
+> > + */
+> > +uint64_t gem_detect_min_alignment_for_regions(int i915,
+> 
+> Once again can this be static, that is we don't expose to the tests?
+
+Currently probably noone will use it, but discrete are on the way so some 
+tests maybe will need it.
+
+> 
+> > +					      uint32_t region1,
+> > +					      uint32_t region2)
+> 
+> Also we can probably pass the list of all regions here (similar to what we
+> do for gem_create_in_memory_regions()) but probably ok as is too the way
+> it's done in gem_detect_safe_alignment().
+
+I decided to export this if test writer want to exercise exact interaction
+between this two regions. I would extend this to region array if it will be
+really needed. 
+
+> 
+> > +	obj[0].offset = gem_detect_min_start_offset_for_region(i915, region1);
+> > +
+> > +	/* Find appropriate alignment of object */
+> > +	eb.buffer_count = ARRAY_SIZE(obj);
+> > +	igt_assert(__gem_create_in_memory_regions(i915, &obj[1].handle,
+> > +						  &obj_size, region2) == 0);
+> > +	obj[1].handle = gem_create_in_memory_regions(i915, PAGE_SIZE, region2);
+> > +	obj[1].flags = EXEC_OBJECT_PINNED;
+> > +	while (1) {
+> > +		obj[1].offset = ALIGN(obj[0].offset + bb_size, min_alignment);
+> > +		igt_assert(obj[1].offset <= 1ull << 32);
+> > +
+> > +		if (__gem_execbuf(i915, &eb) == 0)
+> > +			break;
+> > +
+> > +		min_alignment <<= 1;
+> > +	}
+> 
+> With this loop above I get very lost and don't clearly understand the
+> reason for it (taking the regions pairwise). Why do we need to do it this
+> way? Why is the value returned by gem_detect_safe_start_offset() (that is
+> the max offset over all regions) or even
+> gem_detect_min_start_offset_for_region() sufficient? Is this algorithm
+> above always guaranteed to return a value which will work?
+
+If you're able to properly place two objects and kernel doesn't complain 
+(-ENOSPC) yes, this guarantees you got alignment which you can use for 
+both regions.
+
+Loop exercises this with left shifting the alignment until it will hit
+valid offset at which second (obj[1]) object can interact with first one.
+
+> 
+> Also, do we even need to expose gem_detect_safe_start_offset() to the tests
+> or all the tests will ever need to call is gem_detect_safe_alignment() so
+> everything else can be static?
+
+Yes, think about ATS and first 2M which is not accessible if I good remember
+(maybe something changed, but this limitation comes to my mind when I started
+writing this patch).
+
+> 
+> > +/**
+> > + * gem_get_safe_alignment:
+> 
+> Comment mismatches function name below.
+
+Good catch, I thought I've fixed all issues before.
+
+Thank you for the review.
+
+--
+Zbigniew
+
+> 
+> > + * @i915: drm fd
+> > + *
+> > + * Returns: safe alignment for all memory regions on @i915 device.
+> > + * Safe in this case means max() from all minimum alignment for each
+> > + * region.
+> > + */
+> > +uint64_t gem_detect_safe_alignment(int i915)
