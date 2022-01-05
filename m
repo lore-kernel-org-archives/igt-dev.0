@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3CCD10E25B
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jan 2022 19:43:06 +0000 (UTC)
-Message-ID: <83be3bbe-7ea8-b59b-ffc1-c564ad4315f8@intel.com>
-Date: Tue, 4 Jan 2022 11:42:58 -0800
-Content-Language: en-GB
-References: <20211229075239.1555546-1-priyanka.dandamudi@intel.com>
-From: John Harrison <john.c.harrison@intel.com>
-In-Reply-To: <20211229075239.1555546-1-priyanka.dandamudi@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59F1410E11B
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jan 2022 02:47:58 +0000 (UTC)
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Date: Wed, 5 Jan 2022 02:47:54 +0000
+Message-ID: <DM8PR11MB5719F0ACF6290DA7042A76958D4B9@DM8PR11MB5719.namprd11.prod.outlook.com>
+References: <20220103121842.1706254-1-bhanuprakash.modem@intel.com>
+ <164129921999.30370.3690594823024176700@emeril.freedesktop.org>
+In-Reply-To: <164129921999.30370.3690594823024176700@emeril.freedesktop.org>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_exec: Skip test for
- RCS+CCS
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fsetmode=3A_Add_debug_prints_for_invalid_configs_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,60 +25,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, ashutosh.dixit@intel.com, saurabhg.gupta@intel.com
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Vudum,
+ Lakshminarayana" <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 12/28/2021 23:52, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->
-> Updated the nohangcheck test to skip for DG2
-> as test fails when reset is applied for the RCS+CCS combination.
->
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> Cc: John Harrison <John.C.Harrison@Intel.com>
-> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> ---
->   tests/i915/gem_ctx_exec.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
->
-> diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-> index a1270a88..dbb46404 100644
-> --- a/tests/i915/gem_ctx_exec.c
-> +++ b/tests/i915/gem_ctx_exec.c
-> @@ -276,6 +276,9 @@ static void nohangcheck_hostile(int i915)
->   	int err = 0;
->   	int dir;
->   	uint64_t ahnd;
-> +	bool rcs_found = false;
-> +	bool ccs_found = false;
-> +
->   
->   	/*
->   	 * Even if the user disables hangcheck during their context,
-> @@ -293,6 +296,17 @@ static void nohangcheck_hostile(int i915)
->   
->   	igt_require(__enable_hangcheck(dir, false));
->   
-> +	for_each_ctx_engine(i915, ctx, e) {
-> +		if(rcs_found && ccs_found)
-> +			break;
-> +		else if(e->class == I915_ENGINE_CLASS_RENDER && rcs_found == false){
-> +			rcs_found = true;
-> +			continue;
-> +		}
-> +		else if(e->class == I915_ENGINE_CLASS_COMPUTE && ccs_found == false)
-> +			ccs_found = true;
-> +	}
-> +	igt_require(!(rcs_found && ccs_found));
-This is not the right approach.
-
-As per the commit description above, the problem is for DG2 and DG2 
-alone. The skip condition should be simply 'if(IS_DG2)'. There is no 
-need to detect RCS and CCS presence.
-
-John.
-
-
->   	for_each_ctx_engine(i915, ctx, e) {
->   		igt_spin_t *spin;
->   		int new;
+QFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgQ2FuIHlvdSBwbGVhc2UgcmUtcmVwb3J0IGJlbG93IGZh
+bHNlIHBvc2l0aXZlPw0KDQoNClRoYW5rcywNCkJoYW51DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNz
+YWdlLS0tLS0NCj4gRnJvbTogUGF0Y2h3b3JrIDxwYXRjaHdvcmtAZW1lcmlsLmZyZWVkZXNrdG9w
+Lm9yZz4NCj4gU2VudDogVHVlc2RheSwgSmFudWFyeSA0LCAyMDIyIDU6NTcgUE0NCj4gVG86IE1v
+ZGVtLCBCaGFudXByYWthc2ggPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+DQo+IENjOiBp
+Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiDinJcgRmkuQ0kuQkFUOiBm
+YWlsdXJlIGZvciB0ZXN0cy9rbXNfc2V0bW9kZTogQWRkIGRlYnVnIHByaW50cyBmb3INCj4gaW52
+YWxpZCBjb25maWdzIChyZXYyKQ0KPiANCj4gUGF0Y2ggRGV0YWlscw0KPiBTZXJpZXM6CXRlc3Rz
+L2ttc19zZXRtb2RlOiBBZGQgZGVidWcgcHJpbnRzIGZvciBpbnZhbGlkIGNvbmZpZ3MgKHJldjIp
+DQo+IFVSTDoJaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy85ODQ1OC8N
+Cj4gU3RhdGU6CWZhaWx1cmUNCj4gRGV0YWlsczoJaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3Jn
+L3RyZWUvZHJtLXRpcC9JR1RQV182NTM2L2luZGV4Lmh0bWwNCj4gDQo+IENJIEJ1ZyBMb2cgLSBj
+aGFuZ2VzIGZyb20gQ0lfRFJNXzExMDQ0IC0+IElHVFBXXzY1MzYNCj4gDQo+IA0KPiBTdW1tYXJ5
+DQo+IA0KPiANCj4gRkFJTFVSRQ0KPiANCj4gU2VyaW91cyB1bmtub3duIGNoYW5nZXMgY29taW5n
+IHdpdGggSUdUUFdfNjUzNiBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUNCj4gdmVyaWZpZWQgbWFudWFs
+bHkuDQo+IA0KPiBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5n
+IHRvIGRvIHdpdGggdGhlIGNoYW5nZXMNCj4gaW50cm9kdWNlZCBpbiBJR1RQV182NTM2LCBwbGVh
+c2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gdG8gYWxsb3cgdGhlbQ0KPiB0byBkb2N1bWVudCB0aGlz
+IG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBD
+SS4NCj4gDQo+IEV4dGVybmFsIFVSTDogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
+ZHJtLXRpcC9JR1RQV182NTM2L2luZGV4Lmh0bWwNCj4gDQo+IA0KPiBQYXJ0aWNpcGF0aW5nIGhv
+c3RzICg0NiAtPiAzNykNCj4gDQo+IA0KPiBBZGRpdGlvbmFsICgxKTogZmktZ2xrLWo0MDA1DQo+
+IE1pc3NpbmcgKDEwKTogYmF0LWRnMS02IGJhdC1kZzEtNSBmaS10Z2wtdTIgZmktYnN3LWN5YW4g
+YmF0LWFkbHAtNiBmaS1wbnYtZDUxMA0KPiBiYXQtcnBscy0xIGZpLWJkdy1zYW11cyBiYXQtanNs
+LTIgYmF0LWpzbC0xDQo+IA0KPiANCj4gUG9zc2libGUgbmV3IGlzc3Vlcw0KPiANCj4gDQo+IEhl
+cmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQg
+aW4gSUdUUFdfNjUzNjoNCj4gDQo+IA0KPiBJR1QgY2hhbmdlcw0KPiANCj4gDQo+IFBvc3NpYmxl
+IHJlZ3Jlc3Npb25zDQo+IA0KPiANCj4gKglpZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMEBz
+bWVtOg0KPiANCj4gCSoJZmktaWNsLXUyOiBQQVNTIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
+cmcvdHJlZS9kcm0tDQo+IHRpcC9DSV9EUk1fMTEwNDQvZmktaWNsLXUyL2lndEBnZW1fZXhlY19z
+dXNwZW5kQGJhc2ljLXMwQHNtZW0uaHRtbD4gIC0+IEZBSUwNCj4gPGh0dHBzOi8vaW50ZWwtZ2Z4
+LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNjUzNi9maS1pY2wtDQo+IHUyL2lndEBnZW1f
+ZXhlY19zdXNwZW5kQGJhc2ljLXMwQHNtZW0uaHRtbD4NCj4gDQo+IA0KPiBLbm93biBpc3N1ZXMN
+Cj4gDQo+IA0KPiBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV182NTM2IHRoYXQg
+Y29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gDQo+IA0KPiBJR1QgY2hhbmdlcw0KPiANCj4gDQo+
+IElzc3VlcyBoaXQNCj4gDQo+IA0KPiAqCWlndEBhbWRncHUvYW1kX2Jhc2ljQHNlbWFwaG9yZToN
+Cj4gDQo+IAkqCWZpLWJzdy1uaWNrOiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngt
+Y2kuMDEub3JnL3RyZWUvZHJtLQ0KPiB0aXAvSUdUUFdfNjUzNi9maS1ic3ctbmljay9pZ3RAYW1k
+Z3B1L2FtZF9iYXNpY0BzZW1hcGhvcmUuaHRtbD4gIChmZG8jMTA5MjcxDQo+IDxodHRwczovL2J1
+Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzE+ICkgKzE3IHNpbWlsYXIg
+aXNzdWVzDQo+IA0KPiAqCWlndEBhbWRncHUvYW1kX2NzX25vcEBzeW5jLWdmeDA6DQo+IA0KPiAJ
+KglmaS1nbGstajQwMDU6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
+cmcvdHJlZS9kcm0tDQo+IHRpcC9JR1RQV182NTM2L2ZpLWdsay1qNDAwNS9pZ3RAYW1kZ3B1L2Ft
+ZF9jc19ub3BAc3luYy1nZngwLmh0bWw+ICAoZmRvIzEwOTI3MQ0KPiA8aHR0cHM6Ly9idWdzLmZy
+ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MjcxPiApICsyOCBzaW1pbGFyIGlzc3Vl
+cw0KPiANCj4gKglpZ3RAZ2VtX2h1Y19jb3B5QGh1Yy1jb3B5Og0KPiANCj4gCSoJZmktZ2xrLWo0
+MDA1OiBOT1RSVU4gLT4gU0tJUCA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJt
+LQ0KPiB0aXAvSUdUUFdfNjUzNi9maS1nbGstajQwMDUvaWd0QGdlbV9odWNfY29weUBodWMtY29w
+eS5odG1sPiAgKGZkbyMxMDkyNzENCj4gPGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
+d19idWcuY2dpP2lkPTEwOTI3MT4gIC8gaTkxNSMyMTkwDQo+IDxodHRwczovL2dpdGxhYi5mcmVl
+ZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy8yMTkwPiApDQo+IA0KPiAqCWlndEBnZW1fbG1l
+bV9zd2FwcGluZ0BiYXNpYzoNCj4gDQo+IAkqCWZpLWdsay1qNDAwNTogTk9UUlVOIC0+IFNLSVAg
+PGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS0NCj4gdGlwL0lHVFBXXzY1MzYv
+ZmktZ2xrLWo0MDA1L2lndEBnZW1fbG1lbV9zd2FwcGluZ0BiYXNpYy5odG1sPiAgKGZkbyMxMDky
+NzENCj4gPGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3
+MT4gIC8gaTkxNSM0NjEzDQo+IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lu
+dGVsL2lzc3Vlcy80NjEzPiApICszIHNpbWlsYXIgaXNzdWVzDQo+IA0KPiAqCWlndEBrbXNfY2hh
+bWVsaXVtQGhkbWktaHBkLWZhc3Q6DQo+IA0KPiAJKglmaS1nbGstajQwMDU6IE5PVFJVTiAtPiBT
+S0lQIDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tDQo+IHRpcC9JR1RQV182
+NTM2L2ZpLWdsay1qNDAwNS9pZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWhwZC1mYXN0Lmh0bWw+ICAo
+ZmRvIzEwOTI3MQ0KPiA8aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
+aWQ9MTA5MjcxPiAgLyBmZG8jMTExODI3DQo+IDxodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3Jn
+L3Nob3dfYnVnLmNnaT9pZD0xMTE4Mjc+ICkgKzggc2ltaWxhciBpc3N1ZXMNCj4gDQo+ICoJaWd0
+QGttc19waXBlX2NyY19iYXNpY0Bjb21wYXJlLWNyYy1zYW5pdHljaGVjay1waXBlLWQ6DQo+IA0K
+PiAJKglmaS1nbGstajQwMDU6IE5PVFJVTiAtPiBTS0lQIDxodHRwczovL2ludGVsLWdmeC1jaS4w
+MS5vcmcvdHJlZS9kcm0tDQo+IHRpcC9JR1RQV182NTM2L2ZpLWdsay1qNDAwNS9pZ3RAa21zX3Bp
+cGVfY3JjX2Jhc2ljQGNvbXBhcmUtY3JjLXNhbml0eWNoZWNrLQ0KPiBwaXBlLWQuaHRtbD4gIChm
+ZG8jMTA5MjcxDQo+IDxodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
+ZD0xMDkyNzE+ICAvIGk5MTUjNTMzDQo+IDxodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcv
+ZHJtL2ludGVsL2lzc3Vlcy81MzM+ICkNCj4gDQo+IA0KPiBQb3NzaWJsZSBmaXhlcw0KPiANCj4g
+DQo+ICoJaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUB1bmNvcmU6DQo+IA0KPiAJKglmaS1ic3ctbmlj
+azogSU5DT01QTEVURSA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLQ0KPiB0
+aXAvQ0lfRFJNXzExMDQ0L2ZpLWJzdy1uaWNrL2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAdW5jb3Jl
+Lmh0bWw+ICAtPiBQQVNTDQo+IDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0t
+dGlwL0lHVFBXXzY1MzYvZmktYnN3LQ0KPiBuaWNrL2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAdW5j
+b3JlLmh0bWw+DQo+IA0KPiAqCWlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAYmFzaWM6DQo+
+IA0KPiAJKglmaS1jbWwtdTI6IERNRVNHLVdBUk4gPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
+Zy90cmVlL2RybS0NCj4gdGlwL0NJX0RSTV8xMTA0NC9maS1jbWwtdTIvaWd0QGttc19mcm9udGJ1
+ZmZlcl90cmFja2luZ0BiYXNpYy5odG1sPg0KPiAoaTkxNSM0MjY5IDxodHRwczovL2dpdGxhYi5m
+cmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy80MjY5PiApIC0+IFBBU1MNCj4gPGh0dHBz
+Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNjUzNi9maS1jbWwtDQo+
+IHUyL2lndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAYmFzaWMuaHRtbD4NCj4gDQo+IA0KPiBX
+YXJuaW5ncw0KPiANCj4gDQo+ICoJaWd0QGttc19wc3JAcHJpbWFyeV9wYWdlX2ZsaXA6DQo+IA0K
+PiAJKglmaS1za2wtNjYwMHU6IElOQ09NUExFVEUgPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
+Zy90cmVlL2RybS0NCj4gdGlwL0NJX0RSTV8xMTA0NC9maS1za2wtNjYwMHUvaWd0QGttc19wc3JA
+cHJpbWFyeV9wYWdlX2ZsaXAuaHRtbD4gIChpOTE1IzQ1NDcNCj4gPGh0dHBzOi8vZ2l0bGFiLmZy
+ZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzQ1NDc+ICAvIGk5MTUjNDgzOA0KPiA8aHR0
+cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvNDgzOD4gKSAtPiBJ
+TkNPTVBMRVRFDQo+IDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
+VFBXXzY1MzYvZmktc2tsLQ0KPiA2NjAwdS9pZ3RAa21zX3BzckBwcmltYXJ5X3BhZ2VfZmxpcC5o
+dG1sPiAgKGk5MTUjNDgzOA0KPiA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9p
+bnRlbC9pc3N1ZXMvNDgzOD4gKQ0KPiANCj4gDQo+IEJ1aWxkIGNoYW5nZXMNCj4gDQo+IA0KPiAq
+CUNJOiBDSS0yMDE5MDUyOSAtPiBOb25lDQo+ICoJSUdUOiBJR1RfNjMyMiAtPiBJR1RQV182NTM2
+DQo+IA0KPiBDSS0yMDE5MDUyOTogMjAxOTA1MjkNCj4gQ0lfRFJNXzExMDQ0OiA3YjUyN2ExODFm
+OTZmOTBhNGMyZjA0ZDI3MDViZGFmZmRkODE2OGI2IEANCj4gZ2l0Oi8vYW5vbmdpdC5mcmVlZGVz
+a3RvcC5vcmcvZ2Z4LWNpL2xpbnV4DQo+IElHVFBXXzY1MzY6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
+LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNjUzNi9pbmRleC5odG1sDQo+IElHVF82MzIyOiBi
+MGI3Njc5YjM1OGIzMDBiN2I2YmY0MmM2OTIxZDBhYTFmYzE0Mzg4IEANCj4gaHR0cHM6Ly9naXRs
+YWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pZ3QtZ3B1LXRvb2xzLmdpdA0KDQo=
