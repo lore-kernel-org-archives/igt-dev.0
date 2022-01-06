@@ -1,56 +1,47 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Thu,  6 Jan 2022 16:42:58 +0000
-Message-Id: <20220106164258.56648-1-tvrtko.ursulin@linux.intel.com>
+Date: Thu,  6 Jan 2022 16:49:12 +0000
+Message-Id: <20220106164915.56855-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [Intel-gfx] [PATCH i-g-t] tests/i915/perf_pmu: Fix allow hang
- handling
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Subject: [igt-dev] [PATCH i-g-t 0/3] Tests and intel_gpu_top with fdinfo
+ support
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Commit d7a74b959eea ("tests/i915/perf_pmu: Convert to intel_ctx_t (v3)")
-broke the test when it is run in its entirety.
+Mostly sending so I can use Test-with: but review is always welcome.
 
-Correct context id needs to be used with igt_allow_hang to avoid context
-ban preventing the test to run to completion.
+Tvrtko Ursulin (3):
+  lib: Helper library for parsing i915 fdinfo output
+  tests/i915/drm_fdinfo: Basic and functional tests for GPU busyness
+    exported via fdinfo
+  intel-gpu-top: Add support for per client stats
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Fixes: d7a74b959eea ("tests/i915/perf_pmu: Convert to intel_ctx_t (v3)")
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
----
-I haven't audited more tests apart from grep showing a lot of
-igt_allow_hang with the default context so someone needs to go through
-them and see if more are affected.
----
- tests/i915/perf_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/igt_drm_fdinfo.c    | 161 ++++++++
+ lib/igt_drm_fdinfo.h    |  47 +++
+ lib/meson.build         |   7 +
+ man/intel_gpu_top.rst   |   4 +
+ tests/i915/drm_fdinfo.c | 555 +++++++++++++++++++++++++++
+ tests/meson.build       |   8 +
+ tools/intel_gpu_top.c   | 803 +++++++++++++++++++++++++++++++++++++++-
+ tools/meson.build       |   2 +-
+ 8 files changed, 1584 insertions(+), 3 deletions(-)
+ create mode 100644 lib/igt_drm_fdinfo.c
+ create mode 100644 lib/igt_drm_fdinfo.h
+ create mode 100644 tests/i915/drm_fdinfo.c
 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 581da8483f0c..1665dc5e6317 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -2319,7 +2319,7 @@ igt_main
- 	}
- 
- 	test_each_engine("busy-hang", fd, ctx, e) {
--		igt_hang_t hang = igt_allow_hang(fd, 0, 0);
-+		igt_hang_t hang = igt_allow_hang(fd, ctx->id, 0);
- 
- 		single(fd, ctx, e, TEST_BUSY | FLAG_HANG);
- 
 -- 
 2.32.0
