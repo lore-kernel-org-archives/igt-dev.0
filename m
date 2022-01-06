@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Thu,  6 Jan 2022 16:49:15 +0000
-Message-Id: <20220106164915.56855-4-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20220106164915.56855-1-tvrtko.ursulin@linux.intel.com>
-References: <20220106164915.56855-1-tvrtko.ursulin@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7113164119812962074=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] intel-gpu-top: Add support for per
- client stats
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 06 Jan 2022 17:27:29 -0000
+Message-ID: <164149004947.20692.14914110214264712197@emeril.freedesktop.org>
+References: <20220106164258.56648-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20220106164258.56648-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/perf=5Fpmu=3A_Fix_allow_hang_handling?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,978 +16,283 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+--===============7113164119812962074==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Use the i915 exported data in /proc/<pid>/fdinfo to show GPU utilization
-per DRM client.
+== Series Details ==
 
-Example of the output:
+Series: tests/i915/perf_pmu: Fix allow hang handling
+URL   : https://patchwork.freedesktop.org/series/98554/
+State : success
 
-intel-gpu-top: Intel Tigerlake (Gen12) @ /dev/dri/card0 -  220/ 221 MHz
-    70% RC6;  0.62/ 7.08 W;      760 irqs/s
+== Summary ==
 
-         ENGINES     BUSY                                 MI_SEMA MI_WAIT
-       Render/3D   23.06% |██████▊                      |      0%      0%
-         Blitter    0.00% |                             |      0%      0%
-           Video    5.40% |█▋                           |      0%      0%
-    VideoEnhance   20.67% |██████                       |      0%      0%
+CI Bug Log - changes from CI_DRM_11052 -> IGTPW_6541
+====================================================
 
-   PID              NAME  Render/3D    Blitter      Video    VideoEnhance
-  3082               mpv |          ||          ||▌         ||██        |
-  3117         neverball |█▉        ||          ||          ||          |
-     1           systemd |▍         ||          ||          ||          |
-  2338       gnome-shell |          ||          ||          ||          |
+Summary
+-------
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- man/intel_gpu_top.rst |   4 +
- tools/intel_gpu_top.c | 803 +++++++++++++++++++++++++++++++++++++++++-
- tools/meson.build     |   2 +-
- 3 files changed, 806 insertions(+), 3 deletions(-)
+  **SUCCESS**
 
-diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-index b3b765b05feb..f4dbfc5b44d9 100644
---- a/man/intel_gpu_top.rst
-+++ b/man/intel_gpu_top.rst
-@@ -56,6 +56,10 @@ Supported keys:
-     'q'    Exit from the tool.
-     'h'    Show interactive help.
-     '1'    Toggle between aggregated engine class and physical engine mode.
-+    'n'    Toggle display of numeric client busyness overlay.
-+    's'    Toggle between sort modes (runtime, total runtime, pid, client id).
-+    'i'    Toggle display of clients which used no GPU time.
-+    'H'    Toggle between per PID aggregation and individual clients.
- 
- DEVICE SELECTION
- ================
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 81c724d1fe1c..98c73a9c85c1 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -43,8 +43,10 @@
- #include <sys/types.h>
- #include <unistd.h>
- #include <termios.h>
-+#include <sys/sysmacros.h>
- 
- #include "igt_perf.h"
-+#include "igt_drm_fdinfo.h"
- 
- #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
- 
-@@ -309,7 +311,8 @@ static int engine_cmp(const void *__a, const void *__b)
- 		return a->instance - b->instance;
- }
- 
--#define is_igpu_pci(x) (strcmp(x, "0000:00:02.0") == 0)
-+#define IGPU_PCI "0000:00:02.0"
-+#define is_igpu_pci(x) (strcmp(x, IGPU_PCI) == 0)
- #define is_igpu(x) (strcmp(x, "i915") == 0)
- 
- static struct engines *discover_engines(char *device)
-@@ -633,6 +636,549 @@ static void pmu_sample(struct engines *engines)
- 	}
- }
- 
-+enum client_status {
-+	FREE = 0, /* mbz */
-+	ALIVE,
-+	PROBE
-+};
-+
-+struct clients;
-+
-+struct client {
-+	struct clients *clients;
-+
-+	enum client_status status;
-+	unsigned int id;
-+	unsigned int pid;
-+	char name[24];
-+	char print_name[24];
-+	unsigned int samples;
-+	unsigned long total_runtime;
-+	unsigned long last_runtime;
-+	struct engines *engines;
-+	unsigned long *val;
-+	uint64_t *last;
-+};
-+
-+struct clients {
-+	unsigned int num_clients;
-+	unsigned int active_clients;
-+
-+	unsigned int num_classes;
-+	struct engine_class *class;
-+
-+	char pci_slot[64];
-+
-+	struct client *client;
-+};
-+
-+#define for_each_client(clients, c, tmp) \
-+	for ((tmp) = (clients)->num_clients, c = (clients)->client; \
-+	     (tmp > 0); (tmp)--, (c)++)
-+
-+static struct clients *init_clients(const char *pci_slot)
-+{
-+	struct clients *clients;
-+
-+	clients = malloc(sizeof(*clients));
-+	if (!clients)
-+		return NULL;
-+
-+	memset(clients, 0, sizeof(*clients));
-+
-+	strncpy(clients->pci_slot, pci_slot, sizeof(clients->pci_slot));
-+
-+	return clients;
-+}
-+
-+static struct client *
-+find_client(struct clients *clients, enum client_status status, unsigned int id)
-+{
-+	unsigned int start, num;
-+	struct client *c;
-+
-+	start = status == FREE ? clients->active_clients : 0; /* Free block at the end. */
-+	num = clients->num_clients - start;
-+
-+	for (c = &clients->client[start]; num; c++, num--) {
-+		if (status != c->status)
-+			continue;
-+
-+		if (status == FREE || c->id == id)
-+			return c;
-+	}
-+
-+	return NULL;
-+}
-+
-+static void
-+update_client(struct client *c, unsigned int pid, char *name, uint64_t val[16])
-+{
-+	unsigned int i;
-+
-+	if (c->pid != pid)
-+		c->pid = pid;
-+
-+	if (strcmp(c->name, name)) {
-+		char *p;
-+
-+		strncpy(c->name, name, sizeof(c->name) - 1);
-+		strncpy(c->print_name, name, sizeof(c->print_name) - 1);
-+
-+		p = c->print_name;
-+		while (*p) {
-+			if (!isprint(*p))
-+				*p = '*';
-+			p++;
-+		}
-+	}
-+
-+	c->last_runtime = 0;
-+	c->total_runtime = 0;
-+
-+	for (i = 0; i < c->clients->num_classes; i++) {
-+		if (val[i] < c->last[i])
-+			continue; /* It will catch up soon. */
-+
-+		c->total_runtime += val[i];
-+		c->val[i] = val[i] - c->last[i];
-+		c->last_runtime += c->val[i];
-+		c->last[i] = val[i];
-+	}
-+
-+	c->samples++;
-+	c->status = ALIVE;
-+}
-+
-+static void
-+add_client(struct clients *clients, unsigned int id, unsigned int pid,
-+	   char *name, uint64_t busy[16])
-+{
-+	struct client *c;
-+
-+	assert(!find_client(clients, ALIVE, id));
-+
-+	c = find_client(clients, FREE, 0);
-+	if (!c) {
-+		unsigned int idx = clients->num_clients;
-+
-+		clients->num_clients += (clients->num_clients + 2) / 2;
-+		clients->client = realloc(clients->client,
-+					  clients->num_clients * sizeof(*c));
-+		assert(clients->client);
-+
-+		c = &clients->client[idx];
-+		memset(c, 0, (clients->num_clients - idx) * sizeof(*c));
-+	}
-+
-+	c->id = id;
-+	c->clients = clients;
-+	c->val = calloc(clients->num_classes, sizeof(c->val));
-+	c->last = calloc(clients->num_classes, sizeof(c->last));
-+	assert(c->val && c->last);
-+
-+	update_client(c, pid, name, busy);
-+}
-+
-+static void free_client(struct client *c)
-+{
-+	free(c->val);
-+	free(c->last);
-+	memset(c, 0, sizeof(*c));
-+}
-+
-+static int client_last_cmp(const void *_a, const void *_b)
-+{
-+	const struct client *a = _a;
-+	const struct client *b = _b;
-+	long tot_a, tot_b;
-+
-+	/*
-+	 * Sort clients in descending order of runtime in the previous sampling
-+	 * period for active ones, followed by inactive. Tie-breaker is client
-+	 * id.
-+	 */
-+
-+	tot_a = a->status == ALIVE ? a->last_runtime : -1;
-+	tot_b = b->status == ALIVE ? b->last_runtime : -1;
-+
-+	tot_b -= tot_a;
-+	if (tot_b > 0)
-+		return 1;
-+	if (tot_b < 0)
-+		return -1;
-+
-+	return (int)b->id - a->id;
-+}
-+
-+static int client_total_cmp(const void *_a, const void *_b)
-+{
-+	const struct client *a = _a;
-+	const struct client *b = _b;
-+	long tot_a, tot_b;
-+
-+	tot_a = a->status == ALIVE ? a->total_runtime : -1;
-+	tot_b = b->status == ALIVE ? b->total_runtime : -1;
-+
-+	tot_b -= tot_a;
-+	if (tot_b > 0)
-+		return 1;
-+	if (tot_b < 0)
-+		return -1;
-+
-+	return (int)b->id - a->id;
-+}
-+
-+static int client_id_cmp(const void *_a, const void *_b)
-+{
-+	const struct client *a = _a;
-+	const struct client *b = _b;
-+	int id_a, id_b;
-+
-+	id_a = a->status == ALIVE ? a->id : -1;
-+	id_b = b->status == ALIVE ? b->id : -1;
-+
-+	id_b -= id_a;
-+	if (id_b > 0)
-+		return 1;
-+	if (id_b < 0)
-+		return -1;
-+
-+	return (int)b->id - a->id;
-+}
-+
-+static int client_pid_cmp(const void *_a, const void *_b)
-+{
-+	const struct client *a = _a;
-+	const struct client *b = _b;
-+	int pid_a, pid_b;
-+
-+	pid_a = a->status == ALIVE ? a->pid : INT_MAX;
-+	pid_b = b->status == ALIVE ? b->pid : INT_MAX;
-+
-+	pid_b -= pid_a;
-+	if (pid_b > 0)
-+		return -1;
-+	if (pid_b < 0)
-+		return 1;
-+
-+	return (int)a->id - b->id;
-+}
-+
-+static int (*client_cmp)(const void *, const void *) = client_last_cmp;
-+
-+static struct clients *sort_clients(struct clients *clients,
-+				    int (*cmp)(const void *, const void *))
-+{
-+	unsigned int active, free;
-+	struct client *c;
-+	int tmp;
-+
-+	if (!clients)
-+		return clients;
-+
-+	qsort(clients->client, clients->num_clients, sizeof(*clients->client),
-+	      cmp);
-+
-+	/* Trim excessive array space. */
-+	active = 0;
-+	for_each_client(clients, c, tmp) {
-+		if (c->status != ALIVE)
-+			break; /* Active clients are first in the array. */
-+		active++;
-+	}
-+
-+	clients->active_clients = active;
-+
-+	free = clients->num_clients - active;
-+	if (free > clients->num_clients / 2) {
-+		active = clients->num_clients - free / 2;
-+		if (active != clients->num_clients) {
-+			clients->num_clients = active;
-+			clients->client = realloc(clients->client,
-+						  clients->num_clients *
-+						  sizeof(*c));
-+		}
-+	}
-+
-+	return clients;
-+}
-+
-+static bool aggregate_pids = true;
-+
-+static struct clients *display_clients(struct clients *clients)
-+{
-+	struct client *ac, *c, *cp = NULL;
-+	struct clients *aggregated;
-+	int tmp, num = 0;
-+
-+	if (!aggregate_pids)
-+		goto out;
-+
-+	/* Sort by pid first to make it easy to aggregate while walking. */
-+	sort_clients(clients, client_pid_cmp);
-+
-+	aggregated = calloc(1, sizeof(*clients));
-+	assert(aggregated);
-+
-+	ac = calloc(clients->num_clients, sizeof(*c));
-+	assert(ac);
-+
-+	aggregated->num_classes = clients->num_classes;
-+	aggregated->class = clients->class;
-+	aggregated->client = ac;
-+
-+	for_each_client(clients, c, tmp) {
-+		unsigned int i;
-+
-+		if (c->status == FREE)
-+			break;
-+
-+		assert(c->status == ALIVE);
-+
-+		if ((cp && c->pid != cp->pid) || !cp) {
-+			ac = &aggregated->client[num++];
-+
-+			/* New pid. */
-+			ac->clients = aggregated;
-+			ac->status = ALIVE;
-+			ac->id = -c->pid;
-+			ac->pid = c->pid;
-+			strcpy(ac->name, c->name);
-+			strcpy(ac->print_name, c->print_name);
-+			ac->engines = c->engines;
-+			ac->val = calloc(clients->num_classes,
-+					 sizeof(ac->val[0]));
-+			assert(ac->val);
-+			ac->samples = 1;
-+		}
-+
-+		cp = c;
-+
-+		if (c->samples < 2)
-+			continue;
-+
-+		ac->samples = 2; /* All what matters for display. */
-+		ac->total_runtime += c->total_runtime;
-+		ac->last_runtime += c->last_runtime;
-+
-+		for (i = 0; i < clients->num_classes; i++)
-+			ac->val[i] += c->val[i];
-+	}
-+
-+	aggregated->num_clients = num;
-+	aggregated->active_clients = num;
-+
-+	clients = aggregated;
-+
-+out:
-+	return sort_clients(clients, client_cmp);
-+}
-+
-+static void free_clients(struct clients *clients)
-+{
-+	struct client *c;
-+	unsigned int tmp;
-+
-+	for_each_client(clients, c, tmp) {
-+		free(c->val);
-+		free(c->last);
-+	}
-+
-+	free(clients->client);
-+	free(clients);
-+}
-+
-+static bool is_drm_fd(DIR *fd_dir, const char *name)
-+{
-+	struct stat stat;
-+	int ret;
-+
-+	ret = fstatat(dirfd(fd_dir), name, &stat, 0);
-+
-+	return ret == 0 &&
-+	       (stat.st_mode & S_IFMT) == S_IFCHR &&
-+	       major(stat.st_rdev) == 226;
-+}
-+
-+static bool get_task_name(const char *buffer, char *out, unsigned long sz)
-+{
-+	char *s = index(buffer, '(');
-+	char *e = rindex(buffer, ')');
-+	unsigned int len;
-+
-+	if (!s || !e)
-+		return false;
-+
-+	len = --e - ++s + 1;
-+	if(!len || (len + 1) >= sz)
-+		return false;
-+
-+	strncpy(out, s, len);
-+	out[len] = 0;
-+
-+	return true;
-+}
-+
-+static DIR *opendirat(DIR *at, const char *name)
-+{
-+	DIR *dir;
-+	int fd;
-+
-+	fd = openat(dirfd(at), name, O_DIRECTORY);
-+	if (fd < 0)
-+		return NULL;
-+
-+	dir = fdopendir(fd);
-+	if (!dir)
-+		close(fd);
-+
-+	return dir;
-+}
-+
-+static FILE *fropenat(DIR *at, const char *name)
-+{
-+	FILE *f;
-+	int fd;
-+
-+	fd = openat(dirfd(at), name, O_RDONLY);
-+	if (fd < 0)
-+		return NULL;
-+
-+	f = fdopen(fd, "r");
-+	if (!f)
-+		close(fd);
-+
-+	return f;
-+}
-+
-+static size_t freadat2buf(char *buf, const size_t sz, DIR *at, const char *name)
-+{
-+	size_t count;
-+	FILE *f;
-+
-+	f = fropenat(at, name);
-+	if (!f)
-+		return 0;
-+
-+	memset(buf, 0, sz);
-+	count = fread(buf, 1, sz, f);
-+	fclose(f);
-+
-+	return count;
-+}
-+
-+static struct clients *scan_clients(struct clients *clients)
-+{
-+	struct dirent *proc_dent;
-+	struct client *c;
-+	DIR *proc_dir;
-+	int tmp;
-+
-+	if (!clients)
-+		return clients;
-+
-+	for_each_client(clients, c, tmp) {
-+		assert(c->status != PROBE);
-+		if (c->status == ALIVE)
-+			c->status = PROBE;
-+		else
-+			break; /* Free block at the end of array. */
-+	}
-+
-+	proc_dir = opendir("/proc");
-+	if (!proc_dir)
-+		return clients;
-+
-+	while ((proc_dent = readdir(proc_dir)) != NULL) {
-+		DIR *pid_dir = NULL, *fd_dir = NULL, *fdinfo_dir = NULL;
-+		struct dirent *fdinfo_dent;
-+		char client_name[64] = { };
-+		unsigned int client_pid;
-+		char buf[4096];
-+		size_t count;
-+
-+		if (proc_dent->d_type != DT_DIR)
-+			continue;
-+		if (!isdigit(proc_dent->d_name[0]))
-+			continue;
-+
-+		pid_dir = opendirat(proc_dir, proc_dent->d_name);
-+		if (!pid_dir)
-+			continue;
-+
-+		count = freadat2buf(buf, sizeof(buf), pid_dir, "stat");
-+		if (!count)
-+			goto next;
-+
-+		client_pid = atoi(buf);
-+		if (!client_pid)
-+			goto next;
-+
-+		if (!get_task_name(buf, client_name, sizeof(client_name)))
-+			goto next;
-+
-+		fd_dir = opendirat(pid_dir, "fd");
-+		if (!fd_dir)
-+			goto next;
-+
-+		fdinfo_dir = opendirat(pid_dir, "fdinfo");
-+		if (!fdinfo_dir)
-+			goto next;
-+
-+		while ((fdinfo_dent = readdir(fdinfo_dir)) != NULL) {
-+			struct drm_client_fdinfo info = { };
-+
-+			if (fdinfo_dent->d_type != DT_REG)
-+				continue;
-+			if (!isdigit(fdinfo_dent->d_name[0]))
-+				continue;
-+
-+			if (!is_drm_fd(fd_dir, fdinfo_dent->d_name))
-+				continue;
-+
-+			if (!__igt_parse_drm_fdinfo(fdinfo_dir,
-+						    fdinfo_dent->d_name,
-+						    &info))
-+				continue;
-+
-+			if (strcmp(info.driver, "i915"))
-+				continue;
-+			if (strcmp(info.pdev, clients->pci_slot))
-+				continue;
-+			if (find_client(clients, ALIVE, info.id))
-+				continue; /* Skip duplicate fds. */
-+
-+			c = find_client(clients, PROBE, info.id);
-+			if (!c)
-+				add_client(clients, info.id, client_pid,
-+					   client_name, info.busy);
-+			else
-+				update_client(c, client_pid, client_name,
-+					      info.busy);
-+		}
-+
-+next:
-+		if (fdinfo_dir)
-+			closedir(fdinfo_dir);
-+		if (fd_dir)
-+			closedir(fd_dir);
-+		if (pid_dir)
-+			closedir(pid_dir);
-+	}
-+
-+	closedir(proc_dir);
-+
-+	for_each_client(clients, c, tmp) {
-+		if (c->status == PROBE)
-+			free_client(c);
-+		else if (c->status == FREE)
-+			break;
-+	}
-+
-+	return display_clients(clients);
-+}
-+
- static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
- 
- static void n_spaces(const unsigned int n)
-@@ -774,6 +1320,18 @@ json_close_struct(void)
- 		fflush(stdout);
- }
- 
-+static void
-+__json_add_member(const char *key, const char *val)
-+{
-+	assert(json_indent_level < ARRAY_SIZE(json_indent));
-+
-+	fprintf(out, "%s%s\"%s\": \"%s\"",
-+		json_struct_members ? ",\n" : "",
-+		json_indent[json_indent_level], key, val);
-+
-+	json_struct_members++;
-+}
-+
- static unsigned int
- json_add_member(const struct cnt_group *parent, struct cnt_item *item,
- 		unsigned int headers)
-@@ -1499,6 +2057,157 @@ print_engines(struct engines *engines, double t, int lines, int w, int h)
- 	return lines;
- }
- 
-+static int
-+print_clients_header(struct clients *clients, int lines,
-+		     int con_w, int con_h, int *class_w)
-+{
-+	if (output_mode == INTERACTIVE) {
-+		const char *pidname = "   PID              NAME ";
-+		unsigned int num_active = 0;
-+		int len = strlen(pidname);
-+
-+		if (lines++ >= con_h)
-+			return lines;
-+
-+		printf("\033[7m");
-+		printf("%s", pidname);
-+
-+		if (lines++ >= con_h || len >= con_w)
-+			return lines;
-+
-+		if (clients->num_classes) {
-+			unsigned int i;
-+			int width;
-+
-+			for (i = 0; i < clients->num_classes; i++) {
-+				if (clients->class[i].num_engines)
-+					num_active++;
-+			}
-+
-+			*class_w = width = (con_w - len) / num_active;
-+
-+			for (i = 0; i < clients->num_classes; i++) {
-+				const char *name = clients->class[i].name;
-+				int name_len = strlen(name);
-+				int pad = (width - name_len) / 2;
-+				int spaces = width - pad - name_len;
-+
-+				if (!clients->class[i].num_engines)
-+					continue; /* Assert in the ideal world. */
-+
-+				if (pad < 0 || spaces < 0)
-+					continue;
-+
-+				n_spaces(pad);
-+				printf("%s", name);
-+				n_spaces(spaces);
-+				len += pad + name_len + spaces;
-+			}
-+		}
-+
-+		n_spaces(con_w - len);
-+		printf("\033[0m\n");
-+	} else {
-+		if (clients->num_classes)
-+			pops->open_struct("clients");
-+	}
-+
-+	return lines;
-+}
-+
-+static bool numeric_clients;
-+static bool filter_idle;
-+
-+static int
-+print_client(struct client *c, struct engines *engines, double t, int lines,
-+	     int con_w, int con_h, unsigned int period_us, int *class_w)
-+{
-+	struct clients *clients = c->clients;
-+	unsigned int i;
-+
-+	if (output_mode == INTERACTIVE) {
-+		if (filter_idle && (!c->total_runtime || c->samples < 2))
-+			return lines;
-+
-+		lines++;
-+
-+		printf("%6u %17s ", c->pid, c->print_name);
-+
-+		for (i = 0; c->samples > 1 && i < clients->num_classes; i++) {
-+			double pct;
-+
-+			if (!clients->class[i].num_engines)
-+				continue; /* Assert in the ideal world. */
-+
-+			pct = (double)c->val[i] / period_us / 1e3 * 100 /
-+			      clients->class[i].num_engines;
-+
-+			/*
-+			 * Guard against possible time-drift between sampling
-+			 * client data and time we obtained our time-delta from
-+			 * PMU.
-+			 */
-+			if (pct > 100.0)
-+				pct = 100.0;
-+
-+			print_percentage_bar(pct, *class_w, numeric_clients);
-+		}
-+
-+		putchar('\n');
-+	} else if (output_mode == JSON) {
-+		char buf[64];
-+
-+		snprintf(buf, sizeof(buf), "%u", c->id);
-+		pops->open_struct(buf);
-+
-+		__json_add_member("name", c->print_name);
-+
-+		snprintf(buf, sizeof(buf), "%u", c->pid);
-+		__json_add_member("pid", buf);
-+
-+		if (c->samples > 1) {
-+			pops->open_struct("engine-classes");
-+
-+			for (i = 0; i < clients->num_classes; i++) {
-+				double pct;
-+
-+				snprintf(buf, sizeof(buf), "%s",
-+					clients->class[i].name);
-+				pops->open_struct(buf);
-+
-+				pct = (double)c->val[i] / period_us / 1e3 * 100;
-+				snprintf(buf, sizeof(buf), "%f", pct);
-+				__json_add_member("busy", buf);
-+
-+				__json_add_member("unit", "%");
-+
-+				pops->close_struct();
-+			}
-+
-+			pops->close_struct();
-+		}
-+
-+		pops->close_struct();
-+	}
-+
-+	return lines;
-+}
-+
-+static int
-+print_clients_footer(struct clients *clients, double t,
-+		     int lines, int con_w, int con_h)
-+{
-+	if (output_mode == INTERACTIVE) {
-+		if (lines++ < con_h)
-+			printf("\n");
-+	} else {
-+		if (clients->num_classes)
-+			pops->close_struct();
-+	}
-+
-+	return lines;
-+}
-+
- static bool stop_top;
- 
- static void sigint_handler(int  sig)
-@@ -1554,6 +2263,31 @@ static void interactive_stdin(void)
- 	assert(ret == 0);
- }
- 
-+static void select_client_sort(void)
-+{
-+	struct {
-+		int (*cmp)(const void *, const void *);
-+		const char *msg;
-+	} cmp[] = {
-+		{ client_last_cmp, "Sorting clients by current GPU usage." },
-+		{ client_total_cmp, "Sorting clients by accummulated GPU usage." },
-+		{ client_pid_cmp, "Sorting clients by pid." },
-+		{ client_id_cmp, "Sorting clients by sysfs id." },
-+	};
-+	static unsigned int client_sort;
-+
-+bump:
-+	if (++client_sort >= ARRAY_SIZE(cmp))
-+		client_sort = 0;
-+
-+	client_cmp = cmp[client_sort].cmp;
-+	header_msg = cmp[client_sort].msg;
-+
-+	/* Sort by client id makes no sense with pid aggregation. */
-+	if (aggregate_pids && client_cmp == client_id_cmp)
-+		goto bump;
-+}
-+
- static bool in_help;
- 
- static void process_help_stdin(void)
-@@ -1596,9 +2330,29 @@ static void process_normal_stdin(void)
- 			else
- 				header_msg = "Showing physical engines.";
- 			break;
-+		case 'i':
-+			filter_idle ^= true;
-+			if (filter_idle)
-+				header_msg = "Hiding inactive clients.";
-+			else
-+				header_msg = "Showing inactive clients.";
-+			break;
-+		case 'n':
-+			numeric_clients ^= true;
-+			break;
-+		case 's':
-+			select_client_sort();
-+			break;
- 		case 'h':
- 			in_help = true;
- 			break;
-+		case 'H':
-+			aggregate_pids ^= true;
-+			if (aggregate_pids)
-+				header_msg = "Aggregating clients.";
-+			else
-+				header_msg = "Showing individual clients.";
-+			break;
- 		};
- 	}
- }
-@@ -1626,6 +2380,10 @@ static void show_help_screen(void)
- 	printf(
- "Help for interactive commands:\n\n"
- "    '1'    Toggle between aggregated engine class and physical engine mode.\n"
-+"    'n'    Toggle display of numeric client busyness overlay.\n"
-+"    's'    Toggle between sort modes (runtime, total runtime, pid, client id).\n"
-+"    'i'    Toggle display of clients which used no GPU time.\n"
-+"    'H'    Toggle between per PID aggregation and individual clients.\n"
- "\n"
- "    'h' or 'q'    Exit interactive help.\n"
- "\n");
-@@ -1634,6 +2392,7 @@ static void show_help_screen(void)
- int main(int argc, char **argv)
- {
- 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
-+	struct clients *clients = NULL;
- 	int con_w = -1, con_h = -1;
- 	char *output_path = NULL;
- 	struct engines *engines;
-@@ -1767,15 +2526,24 @@ int main(int argc, char **argv)
- 
- 	ret = EXIT_SUCCESS;
- 
-+	clients = init_clients(card.pci_slot_name[0] ?
-+			       card.pci_slot_name : IGPU_PCI);
- 	init_engine_classes(engines);
-+	if (clients) {
-+		clients->num_classes = engines->num_classes;
-+		clients->class = engines->class;
-+	}
- 
- 	pmu_sample(engines);
-+	scan_clients(clients);
- 	codename = igt_device_get_pretty_name(&card, false);
- 
- 	while (!stop_top) {
-+		struct clients *disp_clients;
- 		bool consumed = false;
-+		int j, lines = 0;
- 		struct winsize ws;
--		int lines = 0;
-+		struct client *c;
- 		double t;
- 
- 		/* Update terminal size. */
-@@ -1794,6 +2562,8 @@ int main(int argc, char **argv)
- 		pmu_sample(engines);
- 		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
- 
-+		disp_clients = scan_clients(clients);
-+
- 		if (stop_top)
- 			break;
- 
-@@ -1813,12 +2583,41 @@ int main(int argc, char **argv)
- 
- 			lines = print_engines(engines, t, lines, con_w, con_h);
- 
-+			if (disp_clients) {
-+				int class_w;
-+
-+				lines = print_clients_header(disp_clients, lines,
-+							     con_w, con_h,
-+							     &class_w);
-+
-+				for_each_client(disp_clients, c, j) {
-+					assert(c->status != PROBE);
-+					if (c->status != ALIVE)
-+						break; /* Active clients are first in the array. */
-+
-+					if (lines >= con_h)
-+						break;
-+
-+					lines = print_client(c, engines, t,
-+							     lines, con_w,
-+							     con_h, period_us,
-+							     &class_w);
-+				}
-+
-+				lines = print_clients_footer(disp_clients, t,
-+							     lines, con_w,
-+							     con_h);
-+			}
-+
- 			pops->close_struct();
- 		}
- 
- 		if (stop_top)
- 			break;
- 
-+		if (disp_clients != clients)
-+			free_clients(disp_clients);
-+
- 		if (output_mode == INTERACTIVE)
- 			process_stdin(period_us);
- 		else
-diff --git a/tools/meson.build b/tools/meson.build
-index b6b9753463a9..771d0b9e3d5d 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -91,7 +91,7 @@ install_subdir('registers', install_dir : datadir)
- executable('intel_gpu_top', 'intel_gpu_top.c',
- 	   install : true,
- 	   install_rpath : bindir_rpathdir,
--	   dependencies : [lib_igt_perf,lib_igt_device_scan,math])
-+	   dependencies : [lib_igt_perf,lib_igt_device_scan,lib_igt_drm_fdinfo,math])
- 
- executable('amd_hdmi_compliance', 'amd_hdmi_compliance.c',
- 	   dependencies : [tool_deps],
--- 
-2.32.0
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/index.html
+
+Participating hosts (44 -> 36)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (9): fi-kbl-soraka bat-dg1-6 bat-dg1-5 fi-icl-u2 fi-bsw-cyan bat-adlp-6 bat-rpls-1 fi-bdw-samus bat-jsl-1 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6541:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gt_timelines:
+    - {fi-ehl-2}:         [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-ehl-2/igt@i915_selftest@live@gt_timelines.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-ehl-2/igt@i915_selftest@live@gt_timelines.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6541 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#109315]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][4] ([fdo#109271]) +31 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@amdgpu/amd_prime@i915-to-amd:
+    - fi-snb-2520m:       NOTRUN -> [SKIP][5] ([fdo#109271]) +17 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][6] -> [INCOMPLETE][7] ([i915#3921])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][9] ([fdo#109271]) +57 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][10] ([i915#4312])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-skl-6600u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_contexts:
+    - fi-snb-2520m:       [DMESG-FAIL][11] ([i915#4610]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][13] ([i915#4785]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Warnings ####
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-skl-6600u:       [INCOMPLETE][15] ([i915#4838]) -> [FAIL][16] ([i915#4547])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4610]: https://gitlab.freedesktop.org/drm/intel/issues/4610
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4838]: https://gitlab.freedesktop.org/drm/intel/issues/4838
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6324 -> IGTPW_6541
+
+  CI-20190529: 20190529
+  CI_DRM_11052: 5926026a36a658f615b8a5aaa74a90a2a3c5e6c5 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6541: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/index.html
+  IGT_6324: 6e009504d5f7cc39866191e4bff813a4512c3e9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/index.html
+
+--===============7113164119812962074==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/perf_pmu: Fix allow hang handling</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/98554/">https://patchwork.freedesktop.org/series/98554/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11052 -&gt; IGTPW_6541</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/index.html</p>
+<h2>Participating hosts (44 -&gt; 36)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (9): fi-kbl-soraka bat-dg1-6 bat-dg1-5 fi-icl-u2 fi-bsw-cyan bat-adlp-6 bat-rpls-1 fi-bdw-samus bat-jsl-1 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6541:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gt_timelines:<ul>
+<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-ehl-2/igt@i915_selftest@live@gt_timelines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-ehl-2/igt@i915_selftest@live@gt_timelines.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6541 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-bdw-5557u/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_prime@i915-to-amd:</p>
+<ul>
+<li>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-snb-2520m/igt@amdgpu/amd_prime@i915-to-amd.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_contexts:</p>
+<ul>
+<li>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4610">i915#4610</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_psr@primary_page_flip:<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11052/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4838">i915#4838</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6324 -&gt; IGTPW_6541</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11052: 5926026a36a658f615b8a5aaa74a90a2a3c5e6c5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6541: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6541/index.html<br />
+  IGT_6324: 6e009504d5f7cc39866191e4bff813a4512c3e9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7113164119812962074==--
