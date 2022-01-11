@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 449CE10F055
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jan 2022 12:02:19 +0000 (UTC)
-From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Date: Tue, 11 Jan 2022 14:01:53 +0200
-Message-Id: <20220111120153.2920064-1-gwan-gyeong.mun@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3] tests/i915/gem_userptr_blits: Skip sd-probe
- test for discrete platforms
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 11 Jan 2022 12:57:03 -0000
+Message-ID: <164190582309.24977.17725092863801504904@emeril.freedesktop.org>
+References: <20220111105431.9459-1-jeevan.b@intel.com>
+In-Reply-To: <20220111105431.9459-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/i915/kms=5Fdraw=5Fcrc_=3A_check_tiling_support?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,45 +16,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.auld@intel.com, petri.latvala@intel.com
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The DRM_IOCTL_I915_GEM_SET_DOMAIN ioctl is not supported on discrete platforms.
-It skips sd-probe test for discrete platforms.
+== Series Details ==
 
-https://patchwork.freedesktop.org/patch/msgid/20210715101536.2606307-5-matthew.auld@intel.com
+Series: tests/i915/kms_draw_crc : check tiling support
+URL   : https://patchwork.freedesktop.org/series/98734/
+State : warning
 
-v2: add a newline at the end of the skip string and fix the skip string. (Petri)
-v3: update the commit message. (Petri)
+== Summary ==
 
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
----
- tests/i915/gem_userptr_blits.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Pipeline status: FAILED.
 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index a4dca4c0..ec3f2755 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -2374,8 +2374,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 		igt_subtest("forbidden-operations")
- 			test_forbidden_ops(fd);
- 
--		igt_subtest("sd-probe")
-+		igt_subtest("sd-probe") {
-+			igt_skip_on_f(gem_has_lmem(fd),
-+				      "GEM_SET_DOMAIN not supported on discrete platforms\n");
- 			test_sd_probe(fd);
-+		}
- 
- 		igt_subtest("set-cache-level")
- 			test_set_caching(fd);
--- 
-2.34.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/481347 for the overview.
+
+build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/17476501):
+  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  section_end:1641903899:prepare_executor
+  section_start:1641903899:prepare_script
+  Preparing environment
+  Running on runner-ya9tm6yf-project-3185-concurrent-0 via fdo-packet-m1xl-2...
+  section_end:1641903903:prepare_script
+  section_start:1641903903:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  fatal: unable to access 'https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags.git/': The requested URL returned error: 504
+  section_end:1641905706:get_sources
+  section_start:1641905706:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1641905708:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/17476505):
+  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  section_end:1641903946:prepare_executor
+  section_start:1641903946:prepare_script
+  Preparing environment
+  Running on runner-ya9tm6yf-project-3185-concurrent-1 via fdo-packet-m1xl-2...
+  section_end:1641903947:prepare_script
+  section_start:1641903947:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  fatal: unable to access 'https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags.git/': The requested URL returned error: 504
+  section_end:1641905748:get_sources
+  section_start:1641905748:cleanup_file_variables
+  Cleaning up file based variables
+  section_end:1641905750:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/481347
