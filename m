@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D14B212B535
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jan 2022 07:03:57 +0000 (UTC)
-Date: Tue, 11 Jan 2022 09:02:27 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <Yd0rgwiDbIXzeF/J@platvala-desk.ger.corp.intel.com>
-References: <20220110140105.2844012-1-gwan-gyeong.mun@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220110140105.2844012-1-gwan-gyeong.mun@intel.com>
-Subject: Re: [igt-dev] [PATCH v2] tests/i915/gem_userptr_blits: Skip
- sd-probe test for discrete platforms
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D4E610E6DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jan 2022 10:55:38 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+Date: Tue, 11 Jan 2022 16:24:31 +0530
+Message-Id: <20220111105431.9459-1-jeevan.b@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_draw_crc : check tiling
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,50 +16,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jan 10, 2022 at 04:01:05PM +0200, Gwan-gyeong Mun wrote:
-> The DRM_IOCTL_I915_GEM_SET_DOMAIN ioctl does not support for discrete gpu.
-> It skips sd-probe test for discrete platforms.
-> 
-> https://patchwork.freedesktop.org/patch/msgid/20210715101536.2606307-5-matthew.auld@intel.com
-> 
-> v2: add a newline at the end of the skip string and fix the skip string. (Petri)
-> 
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+We can check tiling support before executing test to avoid
+failure and smoothly skipping expected failure.
 
-But you might want to do the same grammarly edit to the commit
-message.
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+---
+ lib/intel_bufops.c        | 2 +-
+ tests/i915/kms_draw_crc.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-
-> ---
->  tests/i915/gem_userptr_blits.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index a4dca4c0..ec3f2755 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -2374,8 +2374,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
->  		igt_subtest("forbidden-operations")
->  			test_forbidden_ops(fd);
->  
-> -		igt_subtest("sd-probe")
-> +		igt_subtest("sd-probe") {
-> +			igt_skip_on_f(gem_has_lmem(fd),
-> +				      "GEM_SET_DOMAIN not supported on discrete platforms\n");
->  			test_sd_probe(fd);
-> +		}
->  
->  		igt_subtest("set-cache-level")
->  			test_set_caching(fd);
-> -- 
-> 2.34.1
-> 
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index f13063fa..4ba4271a 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -1176,7 +1176,7 @@ void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename)
+ #define DEFAULT_BUFOPS(__gen_start, __gen_end) \
+ 	.gen_start          = __gen_start, \
+ 	.gen_end            = __gen_end, \
+-	.supported_hw_tiles = TILE_X | TILE_Y, \
++	.supported_hw_tiles = TILE_NONE | TILE_X | TILE_Y, \
+ 	.linear_to          = copy_linear_to_wc, \
+ 	.linear_to_x        = copy_linear_to_gtt, \
+ 	.linear_to_y        = copy_linear_to_gtt, \
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index 82c368e1..ff1520d1 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -182,6 +182,7 @@ static void draw_method_subtest(enum igt_draw_method method,
+ 	igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
+ 		    !gem_has_mappable_ggtt(drm_fd));
+ 
++	igt_require(buf_ops_has_hw_fence(bops, modifier));
+ 	igt_require(format_is_supported(formats[format_index], modifier));
+ 
+ 	/* Use IGT_DRAW_MMAP_GTT/WC on an untiled buffer as the parameter for
+-- 
+2.17.1
