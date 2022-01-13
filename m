@@ -1,69 +1,74 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <2e41be37-fe29-36e4-b55e-d50c0b2c3948@intel.com>
-Date: Thu, 13 Jan 2022 13:23:42 -0800
-Content-Language: en-GB
-References: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
- <20220113195947.1536897-13-John.C.Harrison@Intel.com>
- <20220113210617.GA31450@jons-linux-dev-box>
-From: John Harrison <john.c.harrison@intel.com>
-In-Reply-To: <20220113210617.GA31450@jons-linux-dev-box>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: John.C.Harrison@Intel.com
+Date: Thu, 13 Jan 2022 13:26:53 -0800
+Message-Id: <20220113212653.1554786-1-John.C.Harrison@Intel.com>
+In-Reply-To: <20220113195947.1536897-12-John.C.Harrison@Intel.com>
+References: <20220113195947.1536897-12-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 i-g-t 12/15] tests/i915/gem_exec_fence:
- Configure correct context
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: IGT-Dev@Lists.FreeDesktop.Org, Intel-GFX@Lists.FreeDesktop.Org
+Content-Transfer-Encoding: 8bit
+Subject: [Intel-gfx] [PATCH i-g-t] tests/i915/i915_hangman: Don't let
+ background contexts cause a ban
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: IGT-Dev@Lists.FreeDesktop.Org
+Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 1/13/2022 13:06, Matthew Brost wrote:
-> On Thu, Jan 13, 2022 at 11:59:44AM -0800, John.C.Harrison@Intel.com wrote:
->> From: John Harrison <John.C.Harrison@Intel.com>
->>
->> The update to use intel_ctx_t missed a line that configures the
->> context to allow hanging. Fix that.
->>
->> Fixes: 09c36188b23f83ef9a7b5414e2a10100adc4291f
-> Typically I thought the Fixes comment was the sha from "git log
-> --oneline" + first line of commit message from that surrounded by ("").
->
-> So:
-> Fixes: <small sha> ("<message>")
-Oops, yeah. Not sure what happened here. Brain fart most likely ;).
+From: John Harrison <John.C.Harrison@Intel.com>
 
-John.
+The global context used by all the subtests for causing hangs is
+marked as unbannable. However, some of the subtests set background
+spinners running on all engines using a freshly created context. If
+there is a test failure for any reason, all of those spinners can be
+killed off as hanging contexts. On systems with lots of engines, that
+can result in the test being banned from creating any new contexts.
 
->
-> With that fixed:
-> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
->
->> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
->> ---
->>   tests/i915/gem_exec_fence.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
->> index 196236b27..5e45d0518 100644
->> --- a/tests/i915/gem_exec_fence.c
->> +++ b/tests/i915/gem_exec_fence.c
->> @@ -3139,7 +3139,7 @@ igt_main
->>   			igt_hang_t hang;
->>   
->>   			igt_fixture {
->> -				hang = igt_allow_hang(i915, 0, 0);
->> +				hang = igt_allow_hang(i915, ctx->id, 0);
->>   				intel_allocator_multiprocess_start();
->>   			}
->>   
->> -- 
->> 2.25.1
->>
+So make the spinner contexts unbannable as well. That way if one
+subtest fails it won't necessarily bring down all subsequent subtests.
+
+v2: Simplify anti-banning code (review feedback from Matthew Brost).
+
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+---
+ tests/i915/i915_hangman.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index 9f7f8062c..537ed35a5 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -284,6 +284,17 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
+ 	check_alive();
+ }
+ 
++static void context_unban(int fd, unsigned ctx)
++{
++	struct drm_i915_gem_context_param param = {
++		.ctx_id = ctx,
++		.param = I915_CONTEXT_PARAM_BANNABLE,
++		.value = 0,
++	};
++
++	gem_context_set_param(fd, &param);
++}
++
+ static void
+ test_engine_hang(const intel_ctx_t *ctx,
+ 		 const struct intel_execution_engine2 *e, unsigned int flags)
+@@ -307,6 +318,7 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	num_ctx = 0;
+ 	for_each_ctx_engine(device, ctx, other) {
+ 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
++		context_unban(device, local_ctx[num_ctx]->id);
+ 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 		spin = __igt_spin_new(device,
+ 				      .ahnd = ahndN,
+-- 
+2.25.1
