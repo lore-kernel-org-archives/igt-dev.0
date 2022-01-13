@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 15:51:04 -0800
-Message-Id: <20220113235118.1575410-2-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 15:51:06 -0800
+Message-Id: <20220113235118.1575410-4-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 References: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 i-g-t 01/15] tests/i915/i915_hangman: Add
- descriptions
+Subject: [igt-dev] [PATCH v4 i-g-t 03/15] tests/i915/i915_hangman: Update
+ capture test to use engine structure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,81 +18,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
-Cc: Intel-GFX@Lists.FreeDesktop.Org, Petri Latvala <petri.latvala@intel.com>
+Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-Added descriptions of the various sub-tests and the test as a whole.
-
-v2: Added missing linefeed (spotted by Petri)
+The capture test was still using old style ring_id and ring_name
+(derived from the engine structure at the higher level). Update it to
+just take the engine structure directly.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/i915_hangman.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tests/i915/i915_hangman.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 4c18c22db..b9c4d9983 100644
+index f64b8819d..280eac197 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -46,6 +46,8 @@
- static int device = -1;
- static int sysfs = -1;
- 
-+IGT_TEST_DESCRIPTION("Tests for hang detection and recovery");
-+
- static bool has_error_state(int dir)
- {
- 	bool result;
-@@ -315,9 +317,9 @@ static void hangcheck_unterminated(void)
- 
- 	gem_execbuf(device, &execbuf);
- 	if (gem_wait(device, handle, &timeout_ns) != 0) {
--		/* need to manually trigger an hang to clean before failing */
-+		/* need to manually trigger a hang to clean before failing */
- 		igt_force_gpu_reset(device);
--		igt_assert_f(0, "unterminated batch did not trigger an hang!");
-+		igt_assert_f(0, "unterminated batch did not trigger a hang!\n");
- 	}
+@@ -207,8 +207,8 @@ static void check_error_state(const char *expected_ring_name,
+ 	igt_assert(found);
  }
  
-@@ -341,9 +343,11 @@ igt_main
- 		igt_require(has_error_state(sysfs));
- 	}
+-static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
+-				     const char *ring_name)
++static void test_error_state_capture(const intel_ctx_t *ctx,
++				     const struct intel_execution_engine2 *e)
+ {
+ 	uint32_t *batch;
+ 	igt_hang_t hang;
+@@ -217,7 +217,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
  
-+	igt_describe("Basic error capture");
- 	igt_subtest("error-state-basic")
- 		test_error_state_basic();
+ 	clear_error_state();
  
-+	igt_describe("Per engine error capture");
+-	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, ring_id,
++	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, e->flags,
+ 				      HANG_ALLOW_CAPTURE);
+ 	offset = hang.spin->obj[IGT_SPIN_BATCH].offset;
+ 
+@@ -226,7 +226,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
+ 
+ 	igt_post_hang_ring(device, hang);
+ 
+-	check_error_state(ring_name, offset, batch);
++	check_error_state(e->name, offset, batch);
+ 	munmap(batch, 4096);
+ 	put_ahnd(ahnd);
+ }
+@@ -351,7 +351,7 @@ igt_main
  	igt_subtest_with_dynamic("error-state-capture") {
  		for_each_ctx_engine(device, ctx, e) {
  			igt_dynamic_f("%s", e->name)
-@@ -351,6 +355,7 @@ igt_main
+-				test_error_state_capture(ctx, e->flags, e->name);
++				test_error_state_capture(ctx, e);
  		}
  	}
- 
-+	igt_describe("Per engine hang recovery (spin)");
- 	igt_subtest_with_dynamic("engine-hang") {
-                 int has_gpu_reset = 0;
- 		struct drm_i915_getparam gp = {
-@@ -369,6 +374,7 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Per engine hang recovery (invalid CS)");
- 	igt_subtest_with_dynamic("engine-error") {
- 		int has_gpu_reset = 0;
- 		struct drm_i915_getparam gp = {
-@@ -386,6 +392,7 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check that executing unintialised memory causes a hang");
- 	igt_subtest("hangcheck-unterminated")
- 		hangcheck_unterminated();
  
 -- 
 2.25.1
