@@ -1,13 +1,13 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 08:59:40 -0800
-Message-Id: <20220113165944.1414015-12-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 08:59:38 -0800
+Message-Id: <20220113165944.1414015-10-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
 References: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [Intel-gfx] [PATCH v2 i-g-t 11/15] tests/i915/i915_hangman: Don't
- let background contexts cause a ban
+Subject: [Intel-gfx] [PATCH v2 i-g-t 09/15] tests/i915/i915_hangman: Remove
+ reliance on context persistance
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -23,54 +23,73 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The global context used by all the subtests for causing hangs is
-marked as unbannable. However, some of the subtests set background
-spinners running on all engines using a freshly created context. If
-there is a test failure for any reason, all of those spinners can be
-killed off as hanging contexts. On systems with lots of engines, that
-can result in the test being banned from creating any new contexts.
+The hang test was relying on context persitence for no particular
+reason. That is, it would set a bunch of background spinners running
+then immediately destroy the active contexts but expect the spinners
+to keep spinning. With the current implementation of context
+persistence in i915, that means that super high priority pings are
+sent to each engine at the start of the test. Depending upon the
+timing and platform, one of those unexpected pings could cause test
+failures.
 
-So make the spinner contexts unbannable as well. That way if one
-subtest fails it won't necessarily bring down all subsequent subtests.
+There is no need to require context persitence in this test. So change
+to managing the contexts cleanly and only destroying them when they
+are no longer in use.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- tests/i915/i915_hangman.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ tests/i915/i915_hangman.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 9f7f8062c..567eb71ee 100644
+index 918418760..6601db5f6 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -284,6 +284,21 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
- 	check_alive();
- }
- 
-+static void context_unban(int fd, unsigned ctx)
-+{
-+	struct drm_i915_gem_context_param param = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_BANNABLE,
-+		.value = 0,
-+	};
-+
-+	if(__gem_context_set_param(fd, &param) == -EINVAL) {
-+		igt_assert_eq(param.value, 0);
-+		param.param = I915_CONTEXT_PARAM_BAN_PERIOD;
-+		gem_context_set_param(fd, &param);
-+	}
-+}
-+
- static void
- test_engine_hang(const intel_ctx_t *ctx,
+@@ -289,27 +289,29 @@ test_engine_hang(const intel_ctx_t *ctx,
  		 const struct intel_execution_engine2 *e, unsigned int flags)
-@@ -307,6 +322,7 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	num_ctx = 0;
+ {
+ 	const struct intel_execution_engine2 *other;
+-	const intel_ctx_t *tmp_ctx;
++	const intel_ctx_t *local_ctx[GEM_MAX_ENGINES];
+ 	igt_spin_t *spin, *next;
+ 	IGT_LIST_HEAD(list);
+ 	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
++	int num_ctx;
+ 
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
+ 
+ 	/* Fill all the other engines with background load */
++	num_ctx = 0;
  	for_each_ctx_engine(device, ctx, other) {
- 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
-+		context_unban(device, local_ctx[num_ctx]->id);
- 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 		if (other->flags == e->flags)
+ 			continue;
+ 
+-		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
+-		ahndN = get_reloc_ahnd(device, tmp_ctx->id);
++		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
++		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
  		spin = __igt_spin_new(device,
  				      .ahnd = ahndN,
+-				      .ctx = tmp_ctx,
++				      .ctx = local_ctx[num_ctx],
+ 				      .engine = other->flags,
+ 				      .flags = IGT_SPIN_FENCE_OUT);
+-		intel_ctx_destroy(device, tmp_ctx);
++		num_ctx++;
+ 
+ 		igt_list_move(&spin->link, &list);
+ 	}
+@@ -339,7 +341,10 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 		igt_spin_free(device, spin);
+ 		put_ahnd(ahndN);
+ 	}
++
+ 	put_ahnd(ahnd);
++	while (num_ctx)
++		intel_ctx_destroy(device, local_ctx[--num_ctx]);
+ 
+ 	check_alive();
+ }
 -- 
 2.25.1
