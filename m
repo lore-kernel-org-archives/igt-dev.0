@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 11:59:45 -0800
-Message-Id: <20220113195947.1536897-14-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 11:59:47 -0800
+Message-Id: <20220113195947.1536897-16-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
 References: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 i-g-t 13/15] lib/i915: Add helper for
- non-destructive engine property updates
+Subject: [igt-dev] [PATCH v3 i-g-t 15/15] tests/i915/gem_exec_capture:
+ Restore engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,95 +23,138 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-Various tests want to configure engine properties such as pre-emption
-timeout and heartbeat interval. Some don't bother to restore the
-original values again afterwards. So, add a helper to make it easier
-to do this.
-
-v2: Fix for platforms with no pre-emption capability.
+The test was updated some engine properties but not restoring them
+afterwards. That would leave the system in a non-default state which
+could potentially affect subsequent tests. Fix it by using the new
+save/restore engine properties helper functions.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- lib/i915/gem_engine_topology.c | 46 ++++++++++++++++++++++++++++++++++
- lib/i915/gem_engine_topology.h |  9 +++++++
- 2 files changed, 55 insertions(+)
+ tests/i915/gem_exec_capture.c | 37 ++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index 729f42b0a..bd12d0bc9 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -488,6 +488,52 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
- 	return ret;
+diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+index 9beb36fc7..51db07c41 100644
+--- a/tests/i915/gem_exec_capture.c
++++ b/tests/i915/gem_exec_capture.c
+@@ -209,14 +209,21 @@ static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
+ 	return blobs;
  }
  
-+/* Ensure fast hang detection */
-+void gem_engine_properties_configure(int fd, struct gem_engine_properties *params)
-+{
-+	int ret;
-+	struct gem_engine_properties write = *params;
-+
-+	ret = gem_engine_property_scanf(fd, write.engine->name,
-+					"heartbeat_interval_ms",
-+					"%d", &params->heartbeat_interval);
-+	igt_assert_eq(ret, 1);
-+
-+	ret = gem_engine_property_printf(fd, write.engine->name,
-+					 "heartbeat_interval_ms", "%d",
-+					 write.heartbeat_interval);
-+	igt_assert_lt(0, ret);
-+
-+	if (gem_scheduler_has_preemption(fd)) {
-+		ret = gem_engine_property_scanf(fd, write.engine->name,
-+						"preempt_timeout_ms",
-+						"%d", &params->preempt_timeout);
-+		igt_assert_eq(ret, 1);
-+
-+		ret = gem_engine_property_printf(fd, write.engine->name,
-+						 "preempt_timeout_ms", "%d",
-+						 write.preempt_timeout);
-+		igt_assert_lt(0, ret);
-+	}
-+}
-+
-+void gem_engine_properties_restore(int fd, const struct gem_engine_properties *saved)
-+{
-+	int ret;
-+
-+	ret = gem_engine_property_printf(fd, saved->engine->name,
-+					 "heartbeat_interval_ms", "%d",
-+					 saved->heartbeat_interval);
-+	igt_assert_lt(0, ret);
-+
-+	if (gem_scheduler_has_preemption(fd)) {
-+		ret = gem_engine_property_printf(fd, saved->engine->name,
-+						 "preempt_timeout_ms", "%d",
-+						 saved->preempt_timeout);
-+		igt_assert_lt(0, ret);
-+	}
-+}
-+
- uint32_t gem_engine_mmio_base(int i915, const char *engine)
+-static void configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctxt_id)
++static struct gem_engine_properties
++configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctxt_id)
  {
- 	unsigned int mmio = 0;
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index 4cfab560b..b413aa8ab 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -115,6 +115,15 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
- 	     ((e__) = intel_get_current_physical_engine(&i__##e__)); \
- 	     intel_next_engine(&i__##e__))
++	struct gem_engine_properties props;
++
+ 	/* Ensure fast hang detection */
+-	gem_engine_property_printf(fd, e->name, "preempt_timeout_ms", "%d", 250);
+-	gem_engine_property_printf(fd, e->name, "heartbeat_interval_ms", "%d", 500);
++	props.engine = e;
++	props.preempt_timeout = 250;
++	props.heartbeat_interval = 500;
++	gem_engine_properties_configure(fd, &props);
  
-+struct gem_engine_properties {
-+	const struct intel_execution_engine2 *engine;
-+	int preempt_timeout;
-+	int heartbeat_interval;
-+};
+ 	/* Allow engine based resets and disable banning */
+ 	igt_allow_hang(fd, ctxt_id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
 +
-+void gem_engine_properties_configure(int fd, struct gem_engine_properties *params);
-+void gem_engine_properties_restore(int fd, const struct gem_engine_properties *saved);
++	return props;
+ }
+ 
+ static bool fence_busy(int fence)
+@@ -256,8 +263,9 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	uint32_t *batch, *seqno;
+ 	struct offset offset;
+ 	int i, fence_out;
++	struct gem_engine_properties saved_engine;
+ 
+-	configure_hangs(fd, e, ctx->id);
++	saved_engine = configure_hangs(fd, e, ctx->id);
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[SCRATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
+@@ -371,6 +379,8 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	gem_close(fd, obj[BATCH].handle);
+ 	gem_close(fd, obj[NOCAPTURE].handle);
+ 	gem_close(fd, obj[SCRATCH].handle);
 +
- __attribute__((format(scanf, 4, 5)))
- int gem_engine_property_scanf(int i915, const char *engine, const char *attr,
- 			      const char *fmt, ...);
++	gem_engine_properties_restore(fd, &saved_engine);
+ }
+ 
+ static void capture(int fd, int dir, const intel_ctx_t *ctx,
+@@ -417,8 +427,9 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	uint32_t *batch, *seqno;
+ 	struct offset *offsets;
+ 	int i, fence_out;
++	struct gem_engine_properties saved_engine;
+ 
+-	configure_hangs(fd, e, ctx->id);
++	saved_engine = configure_hangs(fd, e, ctx->id);
+ 
+ 	offsets = calloc(count, sizeof(*offsets));
+ 	igt_assert(offsets);
+@@ -559,10 +570,12 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 
+ 	qsort(offsets, count, sizeof(*offsets), cmp);
+ 	igt_assert(offsets[0].addr <= offsets[count-1].addr);
++
++	gem_engine_properties_restore(fd, &saved_engine);
+ 	return offsets;
+ }
+ 
+-#define find_first_available_engine(fd, ctx, e) \
++#define find_first_available_engine(fd, ctx, e, saved) \
+ 	do { \
+ 		ctx = intel_ctx_create_all_physical(fd); \
+ 		igt_assert(ctx); \
+@@ -570,7 +583,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 			for_each_if(gem_class_can_store_dword(fd, e->class)) \
+ 				break; \
+ 		igt_assert(e); \
+-		configure_hangs(fd, e, ctx->id); \
++		saved = configure_hangs(fd, e, ctx->id); \
+ 	} while(0)
+ 
+ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+@@ -580,8 +593,9 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ 	uint64_t ram, gtt, ahnd;
+ 	unsigned long count, blobs;
+ 	struct offset *offsets;
++	struct gem_engine_properties saved_engine;
+ 
+-	find_first_available_engine(fd, ctx, e);
++	find_first_available_engine(fd, ctx, e, saved_engine);
+ 
+ 	gtt = gem_aperture_size(fd) / size;
+ 	ram = (intel_get_avail_ram_mb() << 20) / size;
+@@ -602,6 +616,8 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ 
+ 	free(offsets);
+ 	put_ahnd(ahnd);
++
++	gem_engine_properties_restore(fd, &saved_engine);
+ }
+ 
+ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+@@ -697,8 +713,9 @@ static void userptr(int fd, int dir)
+ 	void *ptr;
+ 	int obj_size = 4096;
+ 	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
++	struct gem_engine_properties saved_engine;
+ 
+-	find_first_available_engine(fd, ctx, e);
++	find_first_available_engine(fd, ctx, e, saved_engine);
+ 
+ 	igt_assert(posix_memalign(&ptr, obj_size, obj_size) == 0);
+ 	memset(ptr, 0, obj_size);
+@@ -710,6 +727,8 @@ static void userptr(int fd, int dir)
+ 	gem_close(fd, handle);
+ 	put_ahnd(ahnd);
+ 	free(ptr);
++
++	gem_engine_properties_restore(fd, &saved_engine);
+ }
+ 
+ static bool has_capture(int fd)
 -- 
 2.25.1
