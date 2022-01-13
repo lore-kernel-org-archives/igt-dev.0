@@ -1,13 +1,13 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 15:51:09 -0800
-Message-Id: <20220113235118.1575410-7-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 15:51:17 -0800
+Message-Id: <20220113235118.1575410-15-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 References: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [Intel-gfx] [PATCH v4 i-g-t 06/15] tests/i915/i915_hangman: Use the
- correct context in hangcheck_unterminated
+Subject: [Intel-gfx] [PATCH v4 i-g-t 14/15] tests/i915/i915_hangman:
+ Configure engine properties for quicker hangs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -23,27 +23,59 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The hangman framework sets up a context that is valid for all engines
-and has things like banning disabled. The 'unterminated' test then
-ignores it and uses the default context. Fix that.
+Some platforms have very long timeouts configured for some engines.
+Some have them disabled completely. That makes for a very slow (or
+broken) hangman test. So explicitly configure the engines to have
+reasonable settings first.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/i915_hangman.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/i915/i915_hangman.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 354769f39..6656b3fcd 100644
+index e661b8ad0..23055c271 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -347,6 +347,7 @@ static void hangcheck_unterminated(const intel_ctx_t *ctx)
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = (uintptr_t)&gem_exec;
- 	execbuf.buffer_count = 1;
-+	execbuf.rsvd1 = ctx->id;
+@@ -496,8 +496,12 @@ igt_main
+ {
+ 	const intel_ctx_t *ctx;
+ 	igt_hang_t hang = {};
++	struct gem_engine_properties saved_params[GEM_MAX_ENGINES];
++	int num_engines = 0;
  
- 	gem_execbuf(device, &execbuf);
- 	if (gem_wait(device, handle, &timeout_ns) != 0) {
+ 	igt_fixture {
++		const struct intel_execution_engine2 *e;
++
+ 		device = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(device);
+ 
+@@ -511,6 +515,13 @@ igt_main
+ 		igt_require(has_error_state(sysfs));
+ 
+ 		gem_require_mmap_device_coherent(device);
++
++		for_each_physical_engine(device, e) {
++			saved_params[num_engines].engine = e;
++			saved_params[num_engines].preempt_timeout = 500;
++			saved_params[num_engines].heartbeat_interval = 1000;
++			gem_engine_properties_configure(device, saved_params + num_engines++);
++		}
+ 	}
+ 
+ 	igt_describe("Basic error capture");
+@@ -542,6 +553,11 @@ igt_main
+ 	do_tests("engine", "engine", ctx);
+ 
+ 	igt_fixture {
++		int i;
++
++		for (i = 0; i < num_engines; i++)
++			gem_engine_properties_restore(device, saved_params + i);
++
+ 		igt_disallow_hang(device, hang);
+ 		intel_ctx_destroy(device, ctx);
+ 		close(device);
 -- 
 2.25.1
