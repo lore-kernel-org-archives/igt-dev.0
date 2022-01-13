@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 13 Jan 2022 14:30:47 -0800
+Date: Thu, 13 Jan 2022 14:33:49 -0800
 From: Matthew Brost <matthew.brost@intel.com>
-Message-ID: <20220113223047.GA13936@jons-linux-dev-box>
-References: <20220113195947.1536897-12-John.C.Harrison@Intel.com>
- <20220113212653.1554786-1-John.C.Harrison@Intel.com>
+Message-ID: <20220113223349.GA17845@jons-linux-dev-box>
+References: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
+ <20220113195947.1536897-14-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220113212653.1554786-1-John.C.Harrison@Intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915/i915_hangman:
- Don't let background contexts cause a ban
+In-Reply-To: <20220113195947.1536897-14-John.C.Harrison@Intel.com>
+Subject: Re: [igt-dev] [PATCH v3 i-g-t 13/15] lib/i915: Add helper for
+ non-destructive engine property updates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,59 +23,102 @@ To: John.C.Harrison@Intel.com
 Cc: IGT-Dev@Lists.FreeDesktop.Org, Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jan 13, 2022 at 01:26:53PM -0800, John.C.Harrison@Intel.com wrote:
+On Thu, Jan 13, 2022 at 11:59:45AM -0800, John.C.Harrison@Intel.com wrote:
 > From: John Harrison <John.C.Harrison@Intel.com>
 > 
-> The global context used by all the subtests for causing hangs is
-> marked as unbannable. However, some of the subtests set background
-> spinners running on all engines using a freshly created context. If
-> there is a test failure for any reason, all of those spinners can be
-> killed off as hanging contexts. On systems with lots of engines, that
-> can result in the test being banned from creating any new contexts.
+> Various tests want to configure engine properties such as pre-emption
+> timeout and heartbeat interval. Some don't bother to restore the
+> original values again afterwards. So, add a helper to make it easier
+> to do this.
 > 
-> So make the spinner contexts unbannable as well. That way if one
-> subtest fails it won't necessarily bring down all subsequent subtests.
-> 
-> v2: Simplify anti-banning code (review feedback from Matthew Brost).
+> v2: Fix for platforms with no pre-emption capability.
 > 
 > Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
 > ---
->  tests/i915/i915_hangman.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  lib/i915/gem_engine_topology.c | 46 ++++++++++++++++++++++++++++++++++
+>  lib/i915/gem_engine_topology.h |  9 +++++++
+>  2 files changed, 55 insertions(+)
 > 
-> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-> index 9f7f8062c..537ed35a5 100644
-> --- a/tests/i915/i915_hangman.c
-> +++ b/tests/i915/i915_hangman.c
-> @@ -284,6 +284,17 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
->  	check_alive();
+> diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+> index 729f42b0a..bd12d0bc9 100644
+> --- a/lib/i915/gem_engine_topology.c
+> +++ b/lib/i915/gem_engine_topology.c
+> @@ -488,6 +488,52 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+>  	return ret;
 >  }
 >  
-> +static void context_unban(int fd, unsigned ctx)
+> +/* Ensure fast hang detection */
+> +void gem_engine_properties_configure(int fd, struct gem_engine_properties *params)
 > +{
-> +	struct drm_i915_gem_context_param param = {
-> +		.ctx_id = ctx,
-> +		.param = I915_CONTEXT_PARAM_BANNABLE,
-> +		.value = 0,
-> +	};
+> +	int ret;
+> +	struct gem_engine_properties write = *params;
 > +
-> +	gem_context_set_param(fd, &param);
+> +	ret = gem_engine_property_scanf(fd, write.engine->name,
+> +					"heartbeat_interval_ms",
+> +					"%d", &params->heartbeat_interval);
+> +	igt_assert_eq(ret, 1);
+> +
+> +	ret = gem_engine_property_printf(fd, write.engine->name,
+> +					 "heartbeat_interval_ms", "%d",
+> +					 write.heartbeat_interval);
+> +	igt_assert_lt(0, ret);
+> +
+> +	if (gem_scheduler_has_preemption(fd)) {
+> +		ret = gem_engine_property_scanf(fd, write.engine->name,
+> +						"preempt_timeout_ms",
+> +						"%d", &params->preempt_timeout);
+> +		igt_assert_eq(ret, 1);
+> +
+> +		ret = gem_engine_property_printf(fd, write.engine->name,
+> +						 "preempt_timeout_ms", "%d",
+> +						 write.preempt_timeout);
+> +		igt_assert_lt(0, ret);
+> +	}
 > +}
 > +
->  static void
->  test_engine_hang(const intel_ctx_t *ctx,
->  		 const struct intel_execution_engine2 *e, unsigned int flags)
-> @@ -307,6 +318,7 @@ test_engine_hang(const intel_ctx_t *ctx,
->  	num_ctx = 0;
->  	for_each_ctx_engine(device, ctx, other) {
->  		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
-> +		context_unban(device, local_ctx[num_ctx]->id);
->  		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
->  		spin = __igt_spin_new(device,
->  				      .ahnd = ahndN,
+> +void gem_engine_properties_restore(int fd, const struct gem_engine_properties *saved)
+> +{
+> +	int ret;
+> +
+> +	ret = gem_engine_property_printf(fd, saved->engine->name,
+> +					 "heartbeat_interval_ms", "%d",
+> +					 saved->heartbeat_interval);
+> +	igt_assert_lt(0, ret);
+> +
+> +	if (gem_scheduler_has_preemption(fd)) {
+> +		ret = gem_engine_property_printf(fd, saved->engine->name,
+> +						 "preempt_timeout_ms", "%d",
+> +						 saved->preempt_timeout);
+> +		igt_assert_lt(0, ret);
+> +	}
+> +}
+> +
+>  uint32_t gem_engine_mmio_base(int i915, const char *engine)
+>  {
+>  	unsigned int mmio = 0;
+> diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+> index 4cfab560b..b413aa8ab 100644
+> --- a/lib/i915/gem_engine_topology.h
+> +++ b/lib/i915/gem_engine_topology.h
+> @@ -115,6 +115,15 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
+>  	     ((e__) = intel_get_current_physical_engine(&i__##e__)); \
+>  	     intel_next_engine(&i__##e__))
+>  
+> +struct gem_engine_properties {
+> +	const struct intel_execution_engine2 *engine;
+> +	int preempt_timeout;
+> +	int heartbeat_interval;
+> +};
+> +
+> +void gem_engine_properties_configure(int fd, struct gem_engine_properties *params);
+> +void gem_engine_properties_restore(int fd, const struct gem_engine_properties *saved);
+> +
+>  __attribute__((format(scanf, 4, 5)))
+>  int gem_engine_property_scanf(int i915, const char *engine, const char *attr,
+>  			      const char *fmt, ...);
 > -- 
 > 2.25.1
 > 
