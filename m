@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 11:59:41 -0800
-Message-Id: <20220113195947.1536897-10-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 11:59:45 -0800
+Message-Id: <20220113195947.1536897-14-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
 References: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 i-g-t 09/15] tests/i915/i915_hangman: Remove
- reliance on context persistance
+Subject: [igt-dev] [PATCH v3 i-g-t 13/15] lib/i915: Add helper for
+ non-destructive engine property updates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,73 +23,95 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The hang test was relying on context persitence for no particular
-reason. That is, it would set a bunch of background spinners running
-then immediately destroy the active contexts but expect the spinners
-to keep spinning. With the current implementation of context
-persistence in i915, that means that super high priority pings are
-sent to each engine at the start of the test. Depending upon the
-timing and platform, one of those unexpected pings could cause test
-failures.
+Various tests want to configure engine properties such as pre-emption
+timeout and heartbeat interval. Some don't bother to restore the
+original values again afterwards. So, add a helper to make it easier
+to do this.
 
-There is no need to require context persitence in this test. So change
-to managing the contexts cleanly and only destroying them when they
-are no longer in use.
+v2: Fix for platforms with no pre-emption capability.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- tests/i915/i915_hangman.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ lib/i915/gem_engine_topology.c | 46 ++++++++++++++++++++++++++++++++++
+ lib/i915/gem_engine_topology.h |  9 +++++++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 918418760..6601db5f6 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -289,27 +289,29 @@ test_engine_hang(const intel_ctx_t *ctx,
- 		 const struct intel_execution_engine2 *e, unsigned int flags)
- {
- 	const struct intel_execution_engine2 *other;
--	const intel_ctx_t *tmp_ctx;
-+	const intel_ctx_t *local_ctx[GEM_MAX_ENGINES];
- 	igt_spin_t *spin, *next;
- 	IGT_LIST_HEAD(list);
- 	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
-+	int num_ctx;
- 
- 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
- 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
- 
- 	/* Fill all the other engines with background load */
-+	num_ctx = 0;
- 	for_each_ctx_engine(device, ctx, other) {
- 		if (other->flags == e->flags)
- 			continue;
- 
--		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
--		ahndN = get_reloc_ahnd(device, tmp_ctx->id);
-+		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
-+		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
- 		spin = __igt_spin_new(device,
- 				      .ahnd = ahndN,
--				      .ctx = tmp_ctx,
-+				      .ctx = local_ctx[num_ctx],
- 				      .engine = other->flags,
- 				      .flags = IGT_SPIN_FENCE_OUT);
--		intel_ctx_destroy(device, tmp_ctx);
-+		num_ctx++;
- 
- 		igt_list_move(&spin->link, &list);
- 	}
-@@ -339,7 +341,10 @@ test_engine_hang(const intel_ctx_t *ctx,
- 		igt_spin_free(device, spin);
- 		put_ahnd(ahndN);
- 	}
-+
- 	put_ahnd(ahnd);
-+	while (num_ctx)
-+		intel_ctx_destroy(device, local_ctx[--num_ctx]);
- 
- 	check_alive();
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index 729f42b0a..bd12d0bc9 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -488,6 +488,52 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+ 	return ret;
  }
+ 
++/* Ensure fast hang detection */
++void gem_engine_properties_configure(int fd, struct gem_engine_properties *params)
++{
++	int ret;
++	struct gem_engine_properties write = *params;
++
++	ret = gem_engine_property_scanf(fd, write.engine->name,
++					"heartbeat_interval_ms",
++					"%d", &params->heartbeat_interval);
++	igt_assert_eq(ret, 1);
++
++	ret = gem_engine_property_printf(fd, write.engine->name,
++					 "heartbeat_interval_ms", "%d",
++					 write.heartbeat_interval);
++	igt_assert_lt(0, ret);
++
++	if (gem_scheduler_has_preemption(fd)) {
++		ret = gem_engine_property_scanf(fd, write.engine->name,
++						"preempt_timeout_ms",
++						"%d", &params->preempt_timeout);
++		igt_assert_eq(ret, 1);
++
++		ret = gem_engine_property_printf(fd, write.engine->name,
++						 "preempt_timeout_ms", "%d",
++						 write.preempt_timeout);
++		igt_assert_lt(0, ret);
++	}
++}
++
++void gem_engine_properties_restore(int fd, const struct gem_engine_properties *saved)
++{
++	int ret;
++
++	ret = gem_engine_property_printf(fd, saved->engine->name,
++					 "heartbeat_interval_ms", "%d",
++					 saved->heartbeat_interval);
++	igt_assert_lt(0, ret);
++
++	if (gem_scheduler_has_preemption(fd)) {
++		ret = gem_engine_property_printf(fd, saved->engine->name,
++						 "preempt_timeout_ms", "%d",
++						 saved->preempt_timeout);
++		igt_assert_lt(0, ret);
++	}
++}
++
+ uint32_t gem_engine_mmio_base(int i915, const char *engine)
+ {
+ 	unsigned int mmio = 0;
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index 4cfab560b..b413aa8ab 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -115,6 +115,15 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
+ 	     ((e__) = intel_get_current_physical_engine(&i__##e__)); \
+ 	     intel_next_engine(&i__##e__))
+ 
++struct gem_engine_properties {
++	const struct intel_execution_engine2 *engine;
++	int preempt_timeout;
++	int heartbeat_interval;
++};
++
++void gem_engine_properties_configure(int fd, struct gem_engine_properties *params);
++void gem_engine_properties_restore(int fd, const struct gem_engine_properties *saved);
++
+ __attribute__((format(scanf, 4, 5)))
+ int gem_engine_property_scanf(int i915, const char *engine, const char *attr,
+ 			      const char *fmt, ...);
 -- 
 2.25.1
