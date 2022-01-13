@@ -1,13 +1,13 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 15:51:08 -0800
-Message-Id: <20220113235118.1575410-6-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 15:51:14 -0800
+Message-Id: <20220113235118.1575410-12-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 References: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [Intel-gfx] [PATCH v4 i-g-t 05/15] tests/i915/i915_hangman: Add
- uevent test & fix detector
+Subject: [Intel-gfx] [PATCH v4 i-g-t 11/15] tests/i915/i915_hangman: Don't
+ let background contexts cause a ban
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -23,105 +23,53 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-Some of the IGT framework relies on receving a uevent when a hang
-occurs. So add a test that this actually works.
+The global context used by all the subtests for causing hangs is
+marked as unbannable. However, some of the subtests set background
+spinners running on all engines using a freshly created context. If
+there is a test failure for any reason, all of those spinners can be
+killed off as hanging contexts. On systems with lots of engines, that
+can result in the test being banned from creating any new contexts.
 
-While testing this, noticed that hangs could sometimes be missed
-because the uevent was (presumably) still in flight by the time the
-handler was de-registered. So add an extra delay during cleanup to
-give the uevent chance to arrive.
+So make the spinner contexts unbannable as well. That way if one
+subtest fails it won't necessarily bring down all subsequent subtests.
+
+v2: Simplify anti-banning code (review feedback from Matthew Brost).
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- lib/igt_aux.c             |  7 +++++++
- tests/i915/i915_hangman.c | 43 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
+ tests/i915/i915_hangman.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index c247a1aa4..03cc38c93 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -523,6 +523,13 @@ void igt_fork_hang_detector(int fd)
- 
- void igt_stop_hang_detector(void)
- {
-+	/*
-+	 * Give the uevent time to arrive. No sleep at all misses about 20% of
-+	 * hangs (at least, in the i915_hangman/detector test). A sleep of 1ms
-+	 * seems to miss about 2%, 10ms loses <1%, so 100ms should be safe.
-+	 */
-+	usleep(100 * 1000);
-+
- 	igt_stop_helper(&hang_detector);
- }
- 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 7b8390a6c..354769f39 100644
+index a1aeeba6d..e661b8ad0 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -31,6 +31,7 @@
- #include <sys/stat.h>
- #include <sys/types.h>
- #include <fcntl.h>
-+#include <signal.h>
- 
- #include "i915/gem.h"
- #include "i915/gem_create.h"
-@@ -289,6 +290,38 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	put_ahnd(ahnd);
+@@ -284,6 +284,17 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
+ 	check_alive();
  }
  
-+static int hang_count;
-+
-+static void sig_io(int sig)
++static void context_unban(int fd, unsigned ctx)
 +{
-+	hang_count++;
++	struct drm_i915_gem_context_param param = {
++		.ctx_id = ctx,
++		.param = I915_CONTEXT_PARAM_BANNABLE,
++		.value = 0,
++	};
++
++	gem_context_set_param(fd, &param);
 +}
 +
-+static void test_hang_detector(const intel_ctx_t *ctx,
-+			       const struct intel_execution_engine2 *e)
-+{
-+	igt_hang_t hang;
-+	uint64_t ahnd = get_reloc_ahnd(device, ctx->id);
-+
-+	hang_count = 0;
-+
-+	igt_fork_hang_detector(device);
-+
-+	/* Steal the signal handler */
-+	signal(SIGIO, sig_io);
-+
-+	/* Make a hang... */
-+	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, e->flags, 0);
-+
-+	igt_post_hang_ring(device, hang);
-+	put_ahnd(ahnd);
-+
-+	igt_stop_hang_detector();
-+
-+	/* Did it work? */
-+	igt_assert(hang_count == 1);
-+}
-+
- /* This test covers the case where we end up in an uninitialised area of the
-  * ppgtt and keep executing through it. This is particularly relevant if 48b
-  * ppgtt is enabled because the ppgtt is massively bigger compared to the 32b
-@@ -408,6 +441,16 @@ igt_main
- 	igt_subtest("hangcheck-unterminated")
- 		hangcheck_unterminated(ctx);
- 
-+	igt_describe("Check that hang detector works");
-+	igt_subtest_with_dynamic("detector") {
-+		const struct intel_execution_engine2 *e;
-+
-+		for_each_ctx_engine(device, ctx, e) {
-+			igt_dynamic_f("%s", e->name)
-+				test_hang_detector(ctx, e);
-+		}
-+	}
-+
- 	do_tests("GT", "gt", ctx);
- 
- 	igt_fixture {
+ static void
+ test_engine_hang(const intel_ctx_t *ctx,
+ 		 const struct intel_execution_engine2 *e, unsigned int flags)
+@@ -307,6 +318,7 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	num_ctx = 0;
+ 	for_each_ctx_engine(device, ctx, other) {
+ 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
++		context_unban(device, local_ctx[num_ctx]->id);
+ 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 		spin = __igt_spin_new(device,
+ 				      .ahnd = ahndN,
 -- 
 2.25.1
