@@ -1,37 +1,32 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 11:59:43 -0800
-Message-Id: <20220113195947.1536897-12-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 11:59:46 -0800
+Message-Id: <20220113195947.1536897-15-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
 References: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 i-g-t 11/15] tests/i915/i915_hangman: Don't let
- background contexts cause a ban
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Subject: [Intel-gfx] [PATCH v3 i-g-t 14/15] tests/i915/i915_hangman:
+ Configure engine properties for quicker hangs
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The global context used by all the subtests for causing hangs is
-marked as unbannable. However, some of the subtests set background
-spinners running on all engines using a freshly created context. If
-there is a test failure for any reason, all of those spinners can be
-killed off as hanging contexts. On systems with lots of engines, that
-can result in the test being banned from creating any new contexts.
-
-So make the spinner contexts unbannable as well. That way if one
-subtest fails it won't necessarily bring down all subsequent subtests.
+Some platforms have very long timeouts configured for some engines.
+Some have them disabled completely. That makes for a very slow (or
+broken) hangman test. So explicitly configure the engines to have
+reasonable settings first.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
@@ -39,38 +34,47 @@ Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
  1 file changed, 16 insertions(+)
 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 9f7f8062c..567eb71ee 100644
+index 567eb71ee..1a2b2cf7a 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -284,6 +284,21 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
- 	check_alive();
- }
+@@ -500,8 +500,12 @@ igt_main
+ {
+ 	const intel_ctx_t *ctx;
+ 	igt_hang_t hang = {};
++	struct gem_engine_properties saved_params[GEM_MAX_ENGINES];
++	int num_engines = 0;
  
-+static void context_unban(int fd, unsigned ctx)
-+{
-+	struct drm_i915_gem_context_param param = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_BANNABLE,
-+		.value = 0,
-+	};
+ 	igt_fixture {
++		const struct intel_execution_engine2 *e;
 +
-+	if(__gem_context_set_param(fd, &param) == -EINVAL) {
-+		igt_assert_eq(param.value, 0);
-+		param.param = I915_CONTEXT_PARAM_BAN_PERIOD;
-+		gem_context_set_param(fd, &param);
-+	}
-+}
+ 		device = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(device);
+ 
+@@ -515,6 +519,13 @@ igt_main
+ 		igt_require(has_error_state(sysfs));
+ 
+ 		gem_require_mmap_wc(device);
 +
- static void
- test_engine_hang(const intel_ctx_t *ctx,
- 		 const struct intel_execution_engine2 *e, unsigned int flags)
-@@ -307,6 +322,7 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	num_ctx = 0;
- 	for_each_ctx_engine(device, ctx, other) {
- 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
-+		context_unban(device, local_ctx[num_ctx]->id);
- 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
- 		spin = __igt_spin_new(device,
- 				      .ahnd = ahndN,
++		for_each_physical_engine(device, e) {
++			saved_params[num_engines].engine = e;
++			saved_params[num_engines].preempt_timeout = 500;
++			saved_params[num_engines].heartbeat_interval = 1000;
++			gem_engine_properties_configure(device, saved_params + num_engines++);
++		}
+ 	}
+ 
+ 	igt_describe("Basic error capture");
+@@ -546,6 +557,11 @@ igt_main
+ 	do_tests("engine", "engine", ctx);
+ 
+ 	igt_fixture {
++		int i;
++
++		for (i = 0; i < num_engines; i++)
++			gem_engine_properties_restore(device, saved_params + i);
++
+ 		igt_disallow_hang(device, hang);
+ 		intel_ctx_destroy(device, ctx);
+ 		close(device);
 -- 
 2.25.1
