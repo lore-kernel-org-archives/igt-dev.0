@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 15:24:05 -0800
-Message-Id: <20220113232405.1572765-1-John.C.Harrison@Intel.com>
-In-Reply-To: <20220113195947.1536897-9-John.C.Harrison@Intel.com>
-References: <20220113195947.1536897-9-John.C.Harrison@Intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_hangman: Add alive-ness
- test after error capture
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 13 Jan 2022 23:25:07 -0000
+Message-ID: <164211630736.19001.13197236391870614894@emeril.freedesktop.org>
+References: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
+In-Reply-To: <20220113195947.1536897-1-John.C.Harrison@Intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBGaXhl?=
+ =?utf-8?q?s_for_i915=5Fhangman_and_gem=5Fexec=5Fcapture_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,134 +16,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT-Dev@Lists.FreeDesktop.Org
-Cc: Intel-GFX@Lists.FreeDesktop.Org
+To: john.c.harrison@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: John Harrison <John.C.Harrison@Intel.com>
+== Series Details ==
 
-Added a an extra step to the i915_hangman tests to check that the
-system is still alive after the hang and recovery. This submits a
-simple batch to each engine which does a write to memory and checks
-that the write occurred.
+Series: Fixes for i915_hangman and gem_exec_capture (rev7)
+URL   : https://patchwork.freedesktop.org/series/97981/
+State : failure
 
-v2: Use _device_coherent instead of _wc for mapping memory to support
-discrete boards.
+== Summary ==
 
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
----
- tests/i915/i915_hangman.c | 59 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+Applying: tests/i915/i915_hangman: Add descriptions
+Applying: lib/hang: Fix igt_require_hang_ring to work with all engines
+Applying: tests/i915/i915_hangman: Update capture test to use engine structure
+Applying: tests/i915/i915_hangman: Explicitly test per engine reset vs full GPU reset
+Applying: tests/i915/i915_hangman: Add uevent test & fix detector
+Applying: tests/i915/i915_hangman: Use the correct context in hangcheck_unterminated
+Applying: lib/store: Refactor common store code into helper function
+Applying: tests/i915/i915_hangman: Add alive-ness test after error capture
+Applying: tests/i915/i915_hangman: Remove reliance on context persistance
+Applying: tests/i915/i915_hangman: Run background task on all engines
+Applying: tests/i915/i915_hangman: Don't let background contexts cause a ban
+Applying: tests/i915/gem_exec_fence: Configure correct context
+Applying: lib/i915: Add helper for non-destructive engine property updates
+Applying: tests/i915/i915_hangman: Configure engine properties for quicker hangs
+Using index info to reconstruct a base tree...
+M	tests/i915/i915_hangman.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/i915/i915_hangman.c
+CONFLICT (content): Merge conflict in tests/i915/i915_hangman.c
+Patch failed at 0014 tests/i915/i915_hangman: Configure engine properties for quicker hangs
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 5a0c9497c..73a86ec9e 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -48,8 +48,57 @@
- static int device = -1;
- static int sysfs = -1;
- 
-+#define OFFSET_ALIVE	10
-+
- IGT_TEST_DESCRIPTION("Tests for hang detection and recovery");
- 
-+static void check_alive(void)
-+{
-+	const struct intel_execution_engine2 *engine;
-+	const intel_ctx_t *ctx;
-+	uint32_t scratch, *out;
-+	int fd, i = 0;
-+	uint64_t ahnd, scratch_addr;
-+
-+	fd = drm_open_driver(DRIVER_INTEL);
-+	igt_require(gem_class_can_store_dword(fd, 0));
-+
-+	ctx = intel_ctx_create_all_physical(fd);
-+	ahnd = get_reloc_ahnd(fd, ctx->id);
-+	scratch = gem_create(fd, 4096);
-+	scratch_addr = get_offset(ahnd, scratch, 4096, 0);
-+	out = gem_mmap__device_coherent(fd, scratch, 0, 4096, PROT_WRITE | PROT_READ);
-+	gem_set_domain(fd, scratch,
-+			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-+
-+	for_each_physical_engine(fd, engine) {
-+		igt_assert_eq_u32(out[i + OFFSET_ALIVE], 0);
-+		i++;
-+	}
-+
-+	i = 0;
-+	for_each_ctx_engine(fd, ctx, engine) {
-+		if (!gem_class_can_store_dword(fd, engine->class))
-+			continue;
-+
-+		/* +OFFSET_ALIVE to ensure engine zero doesn't get a false negative */
-+		igt_store_word(fd, ahnd, ctx, engine, -1, scratch, scratch_addr,
-+			       i + OFFSET_ALIVE, i + OFFSET_ALIVE);
-+		i++;
-+	}
-+
-+	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
-+
-+	while (i--)
-+		igt_assert_eq_u32(out[i + OFFSET_ALIVE], i + OFFSET_ALIVE);
-+
-+	munmap(out, 4096);
-+	gem_close(fd, scratch);
-+	put_ahnd(ahnd);
-+	intel_ctx_destroy(fd, ctx);
-+	close(fd);
-+}
-+
- static bool has_error_state(int dir)
- {
- 	bool result;
-@@ -231,6 +280,8 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
- 	check_error_state(e->name, offset, batch);
- 	munmap(batch, 4096);
- 	put_ahnd(ahnd);
-+
-+	check_alive();
- }
- 
- static void
-@@ -289,6 +340,8 @@ test_engine_hang(const intel_ctx_t *ctx,
- 		put_ahnd(ahndN);
- 	}
- 	put_ahnd(ahnd);
-+
-+	check_alive();
- }
- 
- static int hang_count;
-@@ -321,6 +374,8 @@ static void test_hang_detector(const intel_ctx_t *ctx,
- 
- 	/* Did it work? */
- 	igt_assert(hang_count == 1);
-+
-+	check_alive();
- }
- 
- /* This test covers the case where we end up in an uninitialised area of the
-@@ -356,6 +411,8 @@ static void hangcheck_unterminated(const intel_ctx_t *ctx)
- 		igt_force_gpu_reset(device);
- 		igt_assert_f(0, "unterminated batch did not trigger a hang!\n");
- 	}
-+
-+	check_alive();
- }
- 
- static void do_tests(const char *name, const char *prefix,
-@@ -433,6 +490,8 @@ igt_main
- 		igt_assert(sysfs != -1);
- 
- 		igt_require(has_error_state(sysfs));
-+
-+		gem_require_mmap_device_coherent(device);
- 	}
- 
- 	igt_describe("Basic error capture");
--- 
-2.25.1
