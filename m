@@ -1,78 +1,67 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 08:59:32 -0800
-Message-Id: <20220113165944.1414015-4-John.C.Harrison@Intel.com>
-In-Reply-To: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
-References: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 08:59:29 -0800
+Message-Id: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 i-g-t 03/15] tests/i915/i915_hangman: Update
- capture test to use engine structure
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Subject: [Intel-gfx] [PATCH v2 i-g-t 00/15] Fixes for i915_hangman and
+ gem_exec_capture
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The capture test was still using old style ring_id and ring_name
-(derived from the engine structure at the higher level). Update it to
-just take the engine structure directly.
+Fix a bunch of issues with i915_hangman and gem_exec_capture with the
+ultimate aim of making them pass on GuC enabled platforms.
+
+v2: Fixes to the store code. Add engine properties management.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
----
- tests/i915/i915_hangman.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index f64b8819d..280eac197 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -207,8 +207,8 @@ static void check_error_state(const char *expected_ring_name,
- 	igt_assert(found);
- }
- 
--static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
--				     const char *ring_name)
-+static void test_error_state_capture(const intel_ctx_t *ctx,
-+				     const struct intel_execution_engine2 *e)
- {
- 	uint32_t *batch;
- 	igt_hang_t hang;
-@@ -217,7 +217,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
- 
- 	clear_error_state();
- 
--	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, ring_id,
-+	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, e->flags,
- 				      HANG_ALLOW_CAPTURE);
- 	offset = hang.spin->obj[IGT_SPIN_BATCH].offset;
- 
-@@ -226,7 +226,7 @@ static void test_error_state_capture(const intel_ctx_t *ctx, unsigned ring_id,
- 
- 	igt_post_hang_ring(device, hang);
- 
--	check_error_state(ring_name, offset, batch);
-+	check_error_state(e->name, offset, batch);
- 	munmap(batch, 4096);
- 	put_ahnd(ahnd);
- }
-@@ -351,7 +351,7 @@ igt_main
- 	igt_subtest_with_dynamic("error-state-capture") {
- 		for_each_ctx_engine(device, ctx, e) {
- 			igt_dynamic_f("%s", e->name)
--				test_error_state_capture(ctx, e->flags, e->name);
-+				test_error_state_capture(ctx, e);
- 		}
- 	}
- 
+
+John Harrison (15):
+  tests/i915/i915_hangman: Add descriptions
+  lib/hang: Fix igt_require_hang_ring to work with all engines
+  tests/i915/i915_hangman: Update capture test to use engine structure
+  tests/i915/i915_hangman: Explicitly test per engine reset vs full GPU
+    reset
+  tests/i915/i915_hangman: Add uevent test & fix detector
+  tests/i915/i915_hangman: Use the correct context in
+    hangcheck_unterminated
+  lib/store: Refactor common store code into helper function
+  tests/i915/i915_hangman: Add alive-ness test after error capture
+  tests/i915/i915_hangman: Remove reliance on context persistance
+  tests/i915/i915_hangman: Run background task on all engines
+  tests/i915/i915_hangman: Don't let background contexts cause a ban
+  tests/i915/gem_exec_fence: Configure correct context
+  lib/i915: Add helper for non-destructive engine property updates
+  tests/i915/i915_hangman: Configure engine properties for quicker hangs
+  tests/i915/gem_exec_capture: Restore engines
+
+ lib/i915/gem_engine_topology.c |  39 +++++
+ lib/i915/gem_engine_topology.h |   9 ++
+ lib/igt_aux.c                  |   7 +
+ lib/igt_gt.c                   |   6 +-
+ lib/igt_gt.h                   |   2 +-
+ lib/igt_store.c                |  96 +++++++++++++
+ lib/igt_store.h                |  12 ++
+ lib/meson.build                |   1 +
+ tests/i915/gem_exec_capture.c  |  37 +++--
+ tests/i915/gem_exec_fence.c    |  79 +---------
+ tests/i915/i915_hangman.c      | 256 +++++++++++++++++++++++++++------
+ 11 files changed, 416 insertions(+), 128 deletions(-)
+ create mode 100644 lib/igt_store.c
+ create mode 100644 lib/igt_store.h
+
 -- 
 2.25.1
