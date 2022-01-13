@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 15:51:05 -0800
-Message-Id: <20220113235118.1575410-3-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 15:51:12 -0800
+Message-Id: <20220113235118.1575410-10-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 References: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 i-g-t 02/15] lib/hang: Fix
- igt_require_hang_ring to work with all engines
+Subject: [igt-dev] [PATCH v4 i-g-t 09/15] tests/i915/i915_hangman: Remove
+ reliance on context persistance
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,88 +23,74 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The above function was checking for valid rings via the old interface.
-The new scheme is to check for engines on contexts as there are now
-more engines than could be supported.
+The hang test was relying on context persitence for no particular
+reason. That is, it would set a bunch of background spinners running
+then immediately destroy the active contexts but expect the spinners
+to keep spinning. With the current implementation of context
+persistence in i915, that means that super high priority pings are
+sent to each engine at the start of the test. Depending upon the
+timing and platform, one of those unexpected pings could cause test
+failures.
+
+There is no need to require context persitence in this test. So change
+to managing the contexts cleanly and only destroying them when they
+are no longer in use.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- lib/igt_gt.c              | 6 +++---
- lib/igt_gt.h              | 2 +-
- tests/i915/i915_hangman.c | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ tests/i915/i915_hangman.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index 7c7df95ee..50da512f2 100644
---- a/lib/igt_gt.c
-+++ b/lib/igt_gt.c
-@@ -122,12 +122,12 @@ static void eat_error_state(int dev)
-  * to be done under hang injection.
-  * Default: false
-  */
--void igt_require_hang_ring(int fd, int ring)
-+void igt_require_hang_ring(int fd, uint32_t ctx, int ring)
- {
- 	if (!igt_check_boolean_env_var("IGT_HANG", true))
- 		igt_skip("hang injection disabled by user [IGT_HANG=0]\n");
- 
--	gem_require_ring(fd, ring);
-+        igt_require(gem_context_has_engine(fd, ctx, ring));
- 	gem_context_require_bannable(fd);
- 	if (!igt_check_boolean_env_var("IGT_HANG_WITHOUT_RESET", false))
- 		igt_require(has_gpu_reset(fd));
-@@ -290,7 +290,7 @@ static igt_hang_t __igt_hang_ctx(int fd, uint64_t ahnd, uint32_t ctx, int ring,
- 	igt_spin_t *spin;
- 	unsigned ban;
- 
--	igt_require_hang_ring(fd, ring);
-+	igt_require_hang_ring(fd, ctx, ring);
- 
- 	/* check if non-default ctx submission is allowed */
- 	igt_require(ctx == 0 || has_ctx_exec(fd, ring, ctx));
-diff --git a/lib/igt_gt.h b/lib/igt_gt.h
-index c5059817b..3d10349e4 100644
---- a/lib/igt_gt.h
-+++ b/lib/igt_gt.h
-@@ -31,7 +31,7 @@
- #include "i915/i915_drm_local.h"
- #include "i915_drm.h"
- 
--void igt_require_hang_ring(int fd, int ring);
-+void igt_require_hang_ring(int fd, uint32_t ctx, int ring);
- 
- typedef struct igt_hang {
- 	igt_spin_t *spin;
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index b9c4d9983..f64b8819d 100644
+index 73a86ec9e..24087931c 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -295,7 +295,7 @@ test_engine_hang(const intel_ctx_t *ctx,
-  * case and it takes a lot more time to wrap, so the acthd can potentially keep
-  * increasing for a long time
-  */
--static void hangcheck_unterminated(void)
-+static void hangcheck_unterminated(const intel_ctx_t *ctx)
+@@ -289,27 +289,29 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 		 const struct intel_execution_engine2 *e, unsigned int flags)
  {
- 	/* timeout needs to be greater than ~5*hangcheck */
- 	int64_t timeout_ns = 100ull * NSEC_PER_SEC; /* 100 seconds */
-@@ -304,7 +304,7 @@ static void hangcheck_unterminated(void)
- 	uint32_t handle;
+ 	const struct intel_execution_engine2 *other;
+-	const intel_ctx_t *tmp_ctx;
++	const intel_ctx_t *local_ctx[GEM_MAX_ENGINES];
+ 	igt_spin_t *spin, *next;
+ 	IGT_LIST_HEAD(list);
+ 	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
++	int num_ctx;
  
- 	igt_require(gem_uses_full_ppgtt(device));
--	igt_require_hang_ring(device, 0);
-+	igt_require_hang_ring(device, ctx->id, 0);
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
  
- 	handle = gem_create(device, 4096);
+ 	/* Fill all the other engines with background load */
++	num_ctx = 0;
+ 	for_each_ctx_engine(device, ctx, other) {
+ 		if (other->flags == e->flags)
+ 			continue;
  
-@@ -394,7 +394,7 @@ igt_main
+-		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
+-		ahndN = get_reloc_ahnd(device, tmp_ctx->id);
++		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
++		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 		spin = __igt_spin_new(device,
+ 				      .ahnd = ahndN,
+-				      .ctx = tmp_ctx,
++				      .ctx = local_ctx[num_ctx],
+ 				      .engine = other->flags,
+ 				      .flags = IGT_SPIN_FENCE_OUT);
+-		intel_ctx_destroy(device, tmp_ctx);
++		num_ctx++;
  
- 	igt_describe("Check that executing unintialised memory causes a hang");
- 	igt_subtest("hangcheck-unterminated")
--		hangcheck_unterminated();
-+		hangcheck_unterminated(ctx);
+ 		igt_list_move(&spin->link, &list);
+ 	}
+@@ -339,7 +341,10 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 		igt_spin_free(device, spin);
+ 		put_ahnd(ahndN);
+ 	}
++
+ 	put_ahnd(ahnd);
++	while (num_ctx)
++		intel_ctx_destroy(device, local_ctx[--num_ctx]);
  
- 	igt_fixture {
- 		igt_disallow_hang(device, hang);
+ 	check_alive();
+ }
 -- 
 2.25.1
