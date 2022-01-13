@@ -1,13 +1,13 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 15:51:17 -0800
-Message-Id: <20220113235118.1575410-15-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 15:51:13 -0800
+Message-Id: <20220113235118.1575410-11-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 References: <20220113235118.1575410-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [Intel-gfx] [PATCH v4 i-g-t 14/15] tests/i915/i915_hangman:
- Configure engine properties for quicker hangs
+Subject: [Intel-gfx] [PATCH v4 i-g-t 10/15] tests/i915/i915_hangman: Run
+ background task on all engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -23,59 +23,38 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-Some platforms have very long timeouts configured for some engines.
-Some have them disabled completely. That makes for a very slow (or
-broken) hangman test. So explicitly configure the engines to have
-reasonable settings first.
+As opposed to only on the non-target engines. This means that there is
+some other workload present for the scheduler to switch between and so
+detet the hang immediately.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/i915_hangman.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ tests/i915/i915_hangman.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index e661b8ad0..23055c271 100644
+index 24087931c..a1aeeba6d 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -496,8 +496,12 @@ igt_main
- {
- 	const intel_ctx_t *ctx;
- 	igt_hang_t hang = {};
-+	struct gem_engine_properties saved_params[GEM_MAX_ENGINES];
-+	int num_engines = 0;
+@@ -298,12 +298,14 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
  
- 	igt_fixture {
-+		const struct intel_execution_engine2 *e;
-+
- 		device = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(device);
- 
-@@ -511,6 +515,13 @@ igt_main
- 		igt_require(has_error_state(sysfs));
- 
- 		gem_require_mmap_device_coherent(device);
-+
-+		for_each_physical_engine(device, e) {
-+			saved_params[num_engines].engine = e;
-+			saved_params[num_engines].preempt_timeout = 500;
-+			saved_params[num_engines].heartbeat_interval = 1000;
-+			gem_engine_properties_configure(device, saved_params + num_engines++);
-+		}
- 	}
- 
- 	igt_describe("Basic error capture");
-@@ -542,6 +553,11 @@ igt_main
- 	do_tests("engine", "engine", ctx);
- 
- 	igt_fixture {
-+		int i;
-+
-+		for (i = 0; i < num_engines; i++)
-+			gem_engine_properties_restore(device, saved_params + i);
-+
- 		igt_disallow_hang(device, hang);
- 		intel_ctx_destroy(device, ctx);
- 		close(device);
+-	/* Fill all the other engines with background load */
++	/*
++	 * Fill all engines with background load.
++	 * This verifies that independent engines are unaffected and gives
++	 * the target engine something to switch between so it notices the
++	 * hang.
++	 */
+ 	num_ctx = 0;
+ 	for_each_ctx_engine(device, ctx, other) {
+-		if (other->flags == e->flags)
+-			continue;
+-
+ 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
+ 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 		spin = __igt_spin_new(device,
 -- 
 2.25.1
