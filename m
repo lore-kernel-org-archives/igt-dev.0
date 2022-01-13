@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Thu, 13 Jan 2022 08:59:34 -0800
-Message-Id: <20220113165944.1414015-6-John.C.Harrison@Intel.com>
+Date: Thu, 13 Jan 2022 08:59:37 -0800
+Message-Id: <20220113165944.1414015-9-John.C.Harrison@Intel.com>
 In-Reply-To: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
 References: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 i-g-t 05/15] tests/i915/i915_hangman: Add
- uevent test & fix detector
+Subject: [igt-dev] [PATCH v2 i-g-t 08/15] tests/i915/i915_hangman: Add
+ alive-ness test after error capture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,105 +23,122 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-Some of the IGT framework relies on receving a uevent when a hang
-occurs. So add a test that this actually works.
-
-While testing this, noticed that hangs could sometimes be missed
-because the uevent was (presumably) still in flight by the time the
-handler was de-registered. So add an extra delay during cleanup to
-give the uevent chance to arrive.
+Added a an extra step to the i915_hangman tests to check that the
+system is still alive after the hang and recovery. This submits a
+simple batch to each engine which does a write to memory and checks
+that the write occurred.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 ---
- lib/igt_aux.c             |  7 +++++++
- tests/i915/i915_hangman.c | 43 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
+ tests/i915/i915_hangman.c | 59 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index c247a1aa4..03cc38c93 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -523,6 +523,13 @@ void igt_fork_hang_detector(int fd)
- 
- void igt_stop_hang_detector(void)
- {
-+	/*
-+	 * Give the uevent time to arrive. No sleep at all misses about 20% of
-+	 * hangs (at least, in the i915_hangman/detector test). A sleep of 1ms
-+	 * seems to miss about 2%, 10ms loses <1%, so 100ms should be safe.
-+	 */
-+	usleep(100 * 1000);
-+
- 	igt_stop_helper(&hang_detector);
- }
- 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 7b8390a6c..354769f39 100644
+index 5a0c9497c..918418760 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -31,6 +31,7 @@
- #include <sys/stat.h>
- #include <sys/types.h>
- #include <fcntl.h>
-+#include <signal.h>
+@@ -48,8 +48,57 @@
+ static int device = -1;
+ static int sysfs = -1;
  
- #include "i915/gem.h"
- #include "i915/gem_create.h"
-@@ -289,6 +290,38 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	put_ahnd(ahnd);
- }
- 
-+static int hang_count;
++#define OFFSET_ALIVE	10
 +
-+static void sig_io(int sig)
+ IGT_TEST_DESCRIPTION("Tests for hang detection and recovery");
+ 
++static void check_alive(void)
 +{
-+	hang_count++;
-+}
++	const struct intel_execution_engine2 *engine;
++	const intel_ctx_t *ctx;
++	uint32_t scratch, *out;
++	int fd, i = 0;
++	uint64_t ahnd, scratch_addr;
 +
-+static void test_hang_detector(const intel_ctx_t *ctx,
-+			       const struct intel_execution_engine2 *e)
-+{
-+	igt_hang_t hang;
-+	uint64_t ahnd = get_reloc_ahnd(device, ctx->id);
++	fd = drm_open_driver(DRIVER_INTEL);
++	igt_require(gem_class_can_store_dword(fd, 0));
 +
-+	hang_count = 0;
++	ctx = intel_ctx_create_all_physical(fd);
++	ahnd = get_reloc_ahnd(fd, ctx->id);
++	scratch = gem_create(fd, 4096);
++	scratch_addr = get_offset(ahnd, scratch, 4096, 0);
++	out = gem_mmap__wc(fd, scratch, 0, 4096, PROT_WRITE);
++	gem_set_domain(fd, scratch,
++			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
 +
-+	igt_fork_hang_detector(device);
-+
-+	/* Steal the signal handler */
-+	signal(SIGIO, sig_io);
-+
-+	/* Make a hang... */
-+	hang = igt_hang_ctx_with_ahnd(device, ahnd, ctx->id, e->flags, 0);
-+
-+	igt_post_hang_ring(device, hang);
-+	put_ahnd(ahnd);
-+
-+	igt_stop_hang_detector();
-+
-+	/* Did it work? */
-+	igt_assert(hang_count == 1);
-+}
-+
- /* This test covers the case where we end up in an uninitialised area of the
-  * ppgtt and keep executing through it. This is particularly relevant if 48b
-  * ppgtt is enabled because the ppgtt is massively bigger compared to the 32b
-@@ -408,6 +441,16 @@ igt_main
- 	igt_subtest("hangcheck-unterminated")
- 		hangcheck_unterminated(ctx);
- 
-+	igt_describe("Check that hang detector works");
-+	igt_subtest_with_dynamic("detector") {
-+		const struct intel_execution_engine2 *e;
-+
-+		for_each_ctx_engine(device, ctx, e) {
-+			igt_dynamic_f("%s", e->name)
-+				test_hang_detector(ctx, e);
-+		}
++	for_each_physical_engine(fd, engine) {
++		igt_assert_eq_u32(out[i + OFFSET_ALIVE], 0);
++		i++;
 +	}
 +
- 	do_tests("GT", "gt", ctx);
++	i = 0;
++	for_each_ctx_engine(fd, ctx, engine) {
++		if (!gem_class_can_store_dword(fd, engine->class))
++			continue;
++
++		/* +OFFSET_ALIVE to ensure engine zero doesn't get a false negative */
++		igt_store_word(fd, ahnd, ctx, engine, -1, scratch, scratch_addr,
++			       i + OFFSET_ALIVE, i + OFFSET_ALIVE);
++		i++;
++	}
++
++	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
++
++	while (i--)
++		igt_assert_eq_u32(out[i + OFFSET_ALIVE], i + OFFSET_ALIVE);
++
++	munmap(out, 4096);
++	gem_close(fd, scratch);
++	put_ahnd(ahnd);
++	intel_ctx_destroy(fd, ctx);
++	close(fd);
++}
++
+ static bool has_error_state(int dir)
+ {
+ 	bool result;
+@@ -231,6 +280,8 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
+ 	check_error_state(e->name, offset, batch);
+ 	munmap(batch, 4096);
+ 	put_ahnd(ahnd);
++
++	check_alive();
+ }
  
- 	igt_fixture {
+ static void
+@@ -289,6 +340,8 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 		put_ahnd(ahndN);
+ 	}
+ 	put_ahnd(ahnd);
++
++	check_alive();
+ }
+ 
+ static int hang_count;
+@@ -321,6 +374,8 @@ static void test_hang_detector(const intel_ctx_t *ctx,
+ 
+ 	/* Did it work? */
+ 	igt_assert(hang_count == 1);
++
++	check_alive();
+ }
+ 
+ /* This test covers the case where we end up in an uninitialised area of the
+@@ -356,6 +411,8 @@ static void hangcheck_unterminated(const intel_ctx_t *ctx)
+ 		igt_force_gpu_reset(device);
+ 		igt_assert_f(0, "unterminated batch did not trigger a hang!\n");
+ 	}
++
++	check_alive();
+ }
+ 
+ static void do_tests(const char *name, const char *prefix,
+@@ -433,6 +490,8 @@ igt_main
+ 		igt_assert(sysfs != -1);
+ 
+ 		igt_require(has_error_state(sysfs));
++
++		gem_require_mmap_wc(device);
+ 	}
+ 
+ 	igt_describe("Basic error capture");
 -- 
 2.25.1
