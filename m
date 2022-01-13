@@ -1,21 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <b214edf8-9e16-2631-3458-8c5f4d704f44@intel.com>
-Date: Wed, 12 Jan 2022 20:05:23 -0800
-Content-Language: en-GB
-References: <20211213232914.2523139-1-John.C.Harrison@Intel.com>
- <20211213232914.2523139-9-John.C.Harrison@Intel.com>
- <YbruxWHUL7+Mrkze@zkempczy-mobl2>
- <dd455cdc-a667-b4c6-a354-d44aca4a74d9@intel.com>
- <YcDH1mQgoxOtWvAw@zkempczy-mobl2>
- <43afcf52-36b8-b400-539f-6e535b992ea5@intel.com>
- <YclXE1ntaxnJcA4b@zkempczy-mobl2>
-From: John Harrison <john.c.harrison@intel.com>
-In-Reply-To: <YclXE1ntaxnJcA4b@zkempczy-mobl2>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+From: John.C.Harrison@Intel.com
+Date: Thu, 13 Jan 2022 08:59:31 -0800
+Message-Id: <20220113165944.1414015-3-John.C.Harrison@Intel.com>
+In-Reply-To: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
+References: <20220113165944.1414015-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 08/11] lib/store: Refactor common store
- code into helper function
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 i-g-t 02/15] lib/hang: Fix
+ igt_require_hang_ring to work with all engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,499 +17,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: IGT-Dev@lists.freedesktop.org, Intel-GFX@lists.freedesktop.org
+To: IGT-Dev@Lists.FreeDesktop.Org
+Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: John Harrison <John.C.Harrison@Intel.com>
 
+The above function was checking for valid rings via the old interface.
+The new scheme is to check for engines on contexts as there are now
+more engines than could be supported.
 
-On 12/26/2021 22:02, Zbigniew Kempczyński wrote:
-> On Tue, Dec 21, 2021 at 06:22:22PM -0800, John Harrison wrote:
->> On 12/20/2021 10:13, Zbigniew Kempczyński wrote:
->>> On Thu, Dec 16, 2021 at 02:40:21PM -0800, John Harrison wrote:
->>>> On 12/15/2021 23:46, Zbigniew Kempczyński wrote:
->>>>> On Mon, Dec 13, 2021 at 03:29:11PM -0800, John.C.Harrison@Intel.com wrote:
->>>>>> From: John Harrison <John.C.Harrison@Intel.com>
->>>>>>
->>>>>> A lot of tests use almost identical code for creating a batch buffer
->>>>>> which does a single write to memory. This patch collects two such
->>>>>> instances into a common helper function. Unfortunately, the other
->>>>>> instances are all subtly different enough to make it not so trivial to
->>>>>> try to use the helper. It could be done but it is unclear if it is
->>>>>> worth the effort at this point. This patch proves the concept, if
->>>>>> people like it enough then it can be extended.
->>>>>>
->>>>>> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
->>>>>> ---
->>>>>>     lib/igt_store.c             | 114 ++++++++++++++++++++++++++++++++++++
->>>>>>     lib/igt_store.h             |  30 ++++++++++
->>>>>>     lib/meson.build             |   1 +
->>>>>>     tests/i915/gem_exec_fence.c |  77 ++----------------------
->>>>>>     tests/i915/i915_hangman.c   |  61 +------------------
->>>>>>     5 files changed, 152 insertions(+), 131 deletions(-)
->>>>>>     create mode 100644 lib/igt_store.c
->>>>>>     create mode 100644 lib/igt_store.h
->>>>>>
->>>>>> diff --git a/lib/igt_store.c b/lib/igt_store.c
->>>>>> new file mode 100644
->>>>>> index 000000000..6d9869b58
->>>>>> --- /dev/null
->>>>>> +++ b/lib/igt_store.c
->>>>>> @@ -0,0 +1,114 @@
->>>>>> +/*
->>>>>> + * Copyright © 2020 Intel Corporation
->>>>>> + *
->>>>>> + * Permission is hereby granted, free of charge, to any person obtaining a
->>>>>> + * copy of this software and associated documentation files (the "Software"),
->>>>>> + * to deal in the Software without restriction, including without limitation
->>>>>> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
->>>>>> + * and/or sell copies of the Software, and to permit persons to whom the
->>>>>> + * Software is furnished to do so, subject to the following conditions:
->>>>>> + *
->>>>>> + * The above copyright notice and this permission notice (including the next
->>>>>> + * paragraph) shall be included in all copies or substantial portions of the
->>>>>> + * Software.
->>>>>> + *
->>>>>> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->>>>>> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->>>>>> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
->>>>>> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->>>>>> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
->>>>>> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
->>>>>> + * IN THE SOFTWARE.
->>>>>> + *
->>>>>> + */
->>>>> Use SPDX. I like idea of extracting this.
->>>>>
->>>>>> +
->>>>>> +#include "i915/gem_create.h"
->>>>>> +#include "igt_core.h"
->>>>>> +#include "drmtest.h"
->>>>>> +#include "igt_store.h"
->>>>>> +#include "intel_chipset.h"
->>>>>> +#include "intel_reg.h"
->>>>>> +#include "ioctl_wrappers.h"
->>>>>> +#include "lib/intel_allocator.h"
->>>>>> +
->>>>>> +/**
->>>>>> + * SECTION:igt_store_word
->>>>>> + * @short_description: Library for writing a value to memory
->>>>>> + * @title: StoreWord
->>>>>> + * @include: igt.h
->>>>>> + *
->>>>>> + * A lot of igt testcases need some mechanism for writing a value to memory
->>>>>> + * as a test that a batch buffer has executed.
->>>>>> + *
->>>>>> + * NB: Requires master for STORE_DWORD on gen4/5.
->>>>>> + */
->>>>>> +void igt_store_word(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
->>>>>> +		    const struct intel_execution_engine2 *e,
->>>>>> +		    int fence, uint32_t target_handle,
->>>>>> +		    uint64_t target_offset, uint32_t target_value)
->>>>>> +{
->>>>>> +	const int SCRATCH = 0;
->>>>>> +	const int BATCH = 1;
->>>>>> +	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
->>>>>> +	struct drm_i915_gem_exec_object2 obj[2];
->>>>>> +	struct drm_i915_gem_relocation_entry reloc;
->>>>>> +	struct drm_i915_gem_execbuffer2 execbuf;
->>>>>> +	uint32_t batch[16], delta;
->>>>>> +	uint64_t bb_offset;
->>>>>> +	int i;
->>>>>> +
->>>>>> +	memset(&execbuf, 0, sizeof(execbuf));
->>>>>> +	execbuf.buffers_ptr = to_user_pointer(obj);
->>>>>> +	execbuf.buffer_count = ARRAY_SIZE(obj);
->>>>>> +	execbuf.flags = e->flags;
->>>>>> +	execbuf.rsvd1 = ctx->id;
->>>>>> +	if (fence != -1) {
->>>>>> +		execbuf.flags |= I915_EXEC_FENCE_IN;
->>>>>> +		execbuf.rsvd2 = fence;
->>>>>> +	}
->>>>>> +	if (gen < 6)
->>>>>> +		execbuf.flags |= I915_EXEC_SECURE;
->>>>>> +
->>>>>> +	memset(obj, 0, sizeof(obj));
->>>>>> +	obj[SCRATCH].handle = target_handle;
->>>>>> +
->>>>>> +	obj[BATCH].handle = gem_create(fd, 4096);
->>>>>> +	obj[BATCH].relocs_ptr = to_user_pointer(&reloc);
->>>>>> +	obj[BATCH].relocation_count = !ahnd ? 1 : 0;
->>>>>> +	bb_offset = get_offset(ahnd, obj[BATCH].handle, 4096, 0);
->>>>>> +	memset(&reloc, 0, sizeof(reloc));
->>>>>> +
->>>>>> +	i = 0;
->>>>>> +	delta = sizeof(uint32_t) * target_value;	/* why value not offset??? */
->>>>> I guess I know why there's problem here. target_offset is address in vm
->>>>> passed by the caller. This is regarding to some limitations of allocator
->>>>> infrastructure - for "reloc" pseudo-allocator you would get new offset
->>>>> (internally it returns offset and then add size for new "allocation").
->>>>> With this we don't need to wait for rebind offset for new execbuf.
->>>>> With "simple" allocator put will release offset so new allocation will
->>>>> reuse same offset. Ashutosh proposed how to join both functionalities
->>>>> (stepping as with reloc, stateful like in simple) but I got no time to
->>>>> code this.
->>>>>
->>>>> Regarding issue here, target_offset passed from the caller is to avoid
->>>>> rebind if get_offset() would be called for "reloc" allocator.
->>>>> So there's not real value offset within bo. I would add separate
->>>>> value_offset (shift) to allow caller to put place where it wants to
->>>>> write the value.
->>>> If you understand what is going on here and how to improve it then feel free
->>>> to either send me an updated version or post an extra patch after this is
->>>> merged. I don't get how any of the new reloc (or anti-reloc?) code is meant
->>>> to work. These patches were all written as part of the GuC support a long
->>>> time ago - before there was any such thing as an AHND (what does that stand
->>>> for?) or intel_ctx_t. All I'm doing in this patch is moving the existing
->>>> code to a helper and trying to make it generic enough to be used by another
->>>> test. And right now, the two tests are passing on both GuC and execlist
->>>> platforms for me. So the code can't be all that broken.
->>> I've added some missing parts to your code:
->>>
->>> https://patchwork.freedesktop.org/series/98242/
->>>
->>> If you think something is missing please add or fix.
->>>
->>> Previously value was used both for value and offset within bo
->>> used for example in gem_exec_fence@basic-await. I think adding
->>> separate arg for offset for value within bo makes this code
->>> more universal.
->> I don't follow. The purpose of the offset is the to say where the value is
->> written within the buffer. As in 'target_offset' is 'offset into target
->> buffer to write value'. You have added a 'value_offset' which surely would
->> be defined as 'the offset at which to write the value in the target buffer'.
->> I.e. exactly the same thing. What is the intention behind having two
->> separate offset variables?
-> No, there're not the same thing.
->
->   target_offset
->   ──────────────►┌────────────┐
->   0x201000       │ size = 8K  │
->                  │            │
-> value_offset    │            │
-> (relative to    │            │
-> target_offset)  │            │
-> ───────────────►│            │
-> 0x1100          │            │
->                  │            │
->                  │            │
->                  │            │
->                  │            │
->                  │            │
->                  └────────────┘
->
-> Target_offset is vma start address where object will be bind.
-> value_offset is delta from that vma.
-Meaning the graphics address? As in, the offset from the start of the 
-PPGTT or some such? Surely that should be a part of the object structure 
-and specified when the object is created. What is the point of the 
-object's handle if it does not specify what object to access? I mean, 
-what is an 'object' other than a start address and size / end address? 
-The memory mapping details really should not be a parameter to a helper 
-function whose purpose is to write a single word to a specific location 
-within a pre-existing object. At the very least, it should be called 
-obj_gpu_addr or similar. Calling two very different concepts 'offset' is 
-totally confusing.
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+---
+ lib/igt_gt.c              | 6 +++---
+ lib/igt_gt.h              | 2 +-
+ tests/i915/i915_hangman.c | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-Or am I still completely confused as to what the purpose is?
-
-John.
-
-
->
-> In execobj.offset you need to put 0x201000, but in bb final offset
-> is calculated as target_offset + value_offset.
->
-> --
-> Zbigniew
->
->> John.
->>
->>
->>> NB: ahnd is short version of allocator_handle
->>>
->>> --
->>> Zbigniew
->>>
->>>>>> +	if (!ahnd) {
->>>>>> +		reloc.target_handle = obj[SCRATCH].handle;
->>>>>> +		reloc.presumed_offset = -1;
->>>>>> +		reloc.offset = sizeof(uint32_t) * (i + 1);
->>>>>> +		reloc.delta = delta;
->>>>>> +		reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->>>>>> +		reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
->>>>>> +	} else {
->>>>>> +		obj[SCRATCH].offset = target_offset;
->>>>>> +		obj[SCRATCH].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
->>>>>> +		obj[BATCH].offset = bb_offset;
->>>>>> +		obj[BATCH].flags |= EXEC_OBJECT_PINNED;
->>>>>> +	}
->>>>>> +	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->>>>>> +	if (gen >= 8) {
->>>>>> +		batch[++i] = target_offset + delta;
->>>>>> +		batch[++i] = target_offset >> 32;
->>>>> Probably I've added this in previous code, for being safe I would
->>>>> add (target_offset + delta) >> 32 for avoid risk passing invalid higher
->>>>> offset part on 32b boundary.
->>>> Pretty sure we don't have any addresses larger than 32 bits yet, but yes,
->>>> delta should be added in.
->>>>
->>>> Thanks,
->>>> John.
->>>>
->>>>>> +	} else if (gen >= 4) {
->>>>>> +		batch[++i] = 0;
->>>>>> +		batch[++i] = delta;
->>>>>> +		reloc.offset += sizeof(uint32_t);
->>>>>> +	} else {
->>>>>> +		batch[i]--;
->>>>>> +		batch[++i] = delta;
->>>>>> +	}
->>>>>> +	batch[++i] = target_value;
->>>>>> +	batch[++i] = MI_BATCH_BUFFER_END;
->>>>>> +	gem_write(fd, obj[BATCH].handle, 0, batch, sizeof(batch));
->>>>>> +	gem_execbuf(fd, &execbuf);
->>>>>> +	gem_close(fd, obj[BATCH].handle);
->>>>>> +	put_offset(ahnd, obj[BATCH].handle);
->>>>>> +}
->>>>>> diff --git a/lib/igt_store.h b/lib/igt_store.h
->>>>>> new file mode 100644
->>>>>> index 000000000..4d5979e07
->>>>>> --- /dev/null
->>>>>> +++ b/lib/igt_store.h
->>>>>> @@ -0,0 +1,30 @@
->>>>>> +/*
->>>>>> + * Copyright © 2020 Intel Corporation
->>>>>> + *
->>>>>> + * Permission is hereby granted, free of charge, to any person obtaining a
->>>>>> + * copy of this software and associated documentation files (the "Software"),
->>>>>> + * to deal in the Software without restriction, including without limitation
->>>>>> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
->>>>>> + * and/or sell copies of the Software, and to permit persons to whom the
->>>>>> + * Software is furnished to do so, subject to the following conditions:
->>>>>> + *
->>>>>> + * The above copyright notice and this permission notice (including the next
->>>>>> + * paragraph) shall be included in all copies or substantial portions of the
->>>>>> + * Software.
->>>>>> + *
->>>>>> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->>>>>> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->>>>>> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
->>>>>> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->>>>>> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
->>>>>> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
->>>>>> + * IN THE SOFTWARE.
->>>>>> + *
->>>>>> + */
->>>>> Use SPDX and 2021.
->>>>>
->>>>> --
->>>>> Zbigniew
->>>>>
->>>>>> +
->>>>>> +#include "igt_gt.h"
->>>>>> +
->>>>>> +void igt_store_word(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
->>>>>> +		    const struct intel_execution_engine2 *e,
->>>>>> +		    int fence, uint32_t target_handle,
->>>>>> +		    uint64_t target_offset, uint32_t target_value);
->>>>>> diff --git a/lib/meson.build b/lib/meson.build
->>>>>> index b9568a71b..3e43316d1 100644
->>>>>> --- a/lib/meson.build
->>>>>> +++ b/lib/meson.build
->>>>>> @@ -72,6 +72,7 @@ lib_sources = [
->>>>>>     	'igt_map.c',
->>>>>>     	'igt_pm.c',
->>>>>>     	'igt_dummyload.c',
->>>>>> +	'igt_store.c',
->>>>>>     	'uwildmat/uwildmat.c',
->>>>>>     	'igt_kmod.c',
->>>>>>     	'igt_panfrost.c',
->>>>>> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
->>>>>> index 9a6336ce9..c4091a454 100644
->>>>>> --- a/tests/i915/gem_exec_fence.c
->>>>>> +++ b/tests/i915/gem_exec_fence.c
->>>>>> @@ -28,6 +28,7 @@
->>>>>>     #include "i915/gem.h"
->>>>>>     #include "i915/gem_create.h"
->>>>>>     #include "igt.h"
->>>>>> +#include "igt_store.h"
->>>>>>     #include "igt_syncobj.h"
->>>>>>     #include "igt_sysfs.h"
->>>>>>     #include "igt_vgem.h"
->>>>>> @@ -57,74 +58,6 @@ struct sync_merge_data {
->>>>>>     #define   MI_SEMAPHORE_SAD_EQ_SDD       (4 << 12)
->>>>>>     #define   MI_SEMAPHORE_SAD_NEQ_SDD      (5 << 12)
->>>>>> -static void store(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
->>>>>> -		  const struct intel_execution_engine2 *e,
->>>>>> -		  int fence, uint32_t target, uint64_t target_offset,
->>>>>> -		  unsigned offset_value)
->>>>>> -{
->>>>>> -	const int SCRATCH = 0;
->>>>>> -	const int BATCH = 1;
->>>>>> -	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
->>>>>> -	struct drm_i915_gem_exec_object2 obj[2];
->>>>>> -	struct drm_i915_gem_relocation_entry reloc;
->>>>>> -	struct drm_i915_gem_execbuffer2 execbuf;
->>>>>> -	uint32_t batch[16], delta;
->>>>>> -	uint64_t bb_offset;
->>>>>> -	int i;
->>>>>> -
->>>>>> -	memset(&execbuf, 0, sizeof(execbuf));
->>>>>> -	execbuf.buffers_ptr = to_user_pointer(obj);
->>>>>> -	execbuf.buffer_count = 2;
->>>>>> -	execbuf.flags = e->flags | I915_EXEC_FENCE_IN;
->>>>>> -	execbuf.rsvd1 = ctx->id;
->>>>>> -	execbuf.rsvd2 = fence;
->>>>>> -	if (gen < 6)
->>>>>> -		execbuf.flags |= I915_EXEC_SECURE;
->>>>>> -
->>>>>> -	memset(obj, 0, sizeof(obj));
->>>>>> -	obj[SCRATCH].handle = target;
->>>>>> -
->>>>>> -	obj[BATCH].handle = gem_create(fd, 4096);
->>>>>> -	obj[BATCH].relocs_ptr = to_user_pointer(&reloc);
->>>>>> -	obj[BATCH].relocation_count = !ahnd ? 1 : 0;
->>>>>> -	bb_offset = get_offset(ahnd, obj[BATCH].handle, 4096, 0);
->>>>>> -	memset(&reloc, 0, sizeof(reloc));
->>>>>> -
->>>>>> -	i = 0;
->>>>>> -	delta = sizeof(uint32_t) * offset_value;
->>>>>> -	if (!ahnd) {
->>>>>> -		reloc.target_handle = obj[SCRATCH].handle;
->>>>>> -		reloc.presumed_offset = -1;
->>>>>> -		reloc.offset = sizeof(uint32_t) * (i + 1);
->>>>>> -		reloc.delta = delta;
->>>>>> -		reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->>>>>> -		reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
->>>>>> -	} else {
->>>>>> -		obj[SCRATCH].offset = target_offset;
->>>>>> -		obj[SCRATCH].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
->>>>>> -		obj[BATCH].offset = bb_offset;
->>>>>> -		obj[BATCH].flags |= EXEC_OBJECT_PINNED;
->>>>>> -	}
->>>>>> -	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->>>>>> -	if (gen >= 8) {
->>>>>> -		batch[++i] = target_offset + delta;
->>>>>> -		batch[++i] = target_offset >> 32;
->>>>>> -	} else if (gen >= 4) {
->>>>>> -		batch[++i] = 0;
->>>>>> -		batch[++i] = delta;
->>>>>> -		reloc.offset += sizeof(uint32_t);
->>>>>> -	} else {
->>>>>> -		batch[i]--;
->>>>>> -		batch[++i] = delta;
->>>>>> -	}
->>>>>> -	batch[++i] = offset_value;
->>>>>> -	batch[++i] = MI_BATCH_BUFFER_END;
->>>>>> -	gem_write(fd, obj[BATCH].handle, 0, batch, sizeof(batch));
->>>>>> -	gem_execbuf(fd, &execbuf);
->>>>>> -	gem_close(fd, obj[BATCH].handle);
->>>>>> -	put_offset(ahnd, obj[BATCH].handle);
->>>>>> -}
->>>>>> -
->>>>>>     static bool fence_busy(int fence)
->>>>>>     {
->>>>>>     	return poll(&(struct pollfd){fence, POLLIN}, 1, 0) == 0;
->>>>>> @@ -400,13 +333,13 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
->>>>>>     			continue;
->>>>>>     		if (flags & NONBLOCK) {
->>>>>> -			store(fd, ahnd, ctx, e2, spin->out_fence,
->>>>>> -			      scratch, scratch_offset, i);
->>>>>> +			igt_store_word(fd, ahnd, ctx, e2, spin->out_fence,
->>>>>> +				       scratch, scratch_offset, i);
->>>>>>     		} else {
->>>>>>     			igt_fork(child, 1) {
->>>>>>     				ahnd = get_reloc_ahnd(fd, ctx->id);
->>>>>> -				store(fd, ahnd, ctx, e2, spin->out_fence,
->>>>>> -				      scratch, scratch_offset, i);
->>>>>> +				igt_store_word(fd, ahnd, ctx, e2, spin->out_fence,
->>>>>> +					       scratch, scratch_offset, i);
->>>>>>     				put_ahnd(ahnd);
->>>>>>     			}
->>>>>>     		}
->>>>>> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
->>>>>> index 20653b479..4cb9b8b85 100644
->>>>>> --- a/tests/i915/i915_hangman.c
->>>>>> +++ b/tests/i915/i915_hangman.c
->>>>>> @@ -36,6 +36,7 @@
->>>>>>     #include "i915/gem.h"
->>>>>>     #include "i915/gem_create.h"
->>>>>>     #include "igt.h"
->>>>>> +#include "igt_store.h"
->>>>>>     #include "igt_sysfs.h"
->>>>>>     #include "igt_debugfs.h"
->>>>>>     #include "sw_sync.h"
->>>>>> @@ -51,64 +52,6 @@ static int sysfs = -1;
->>>>>>     IGT_TEST_DESCRIPTION("Tests for hang detection and recovery");
->>>>>> -/* Requires master for STORE_DWORD on gen4/5 */
->>>>>> -static void store(int fd, const struct intel_execution_engine2 *e,
->>>>>> -		  int fence, uint32_t target, unsigned offset_value)
->>>>>> -{
->>>>>> -	const int SCRATCH = 0;
->>>>>> -	const int BATCH = 1;
->>>>>> -	const int gen = intel_gen(intel_get_drm_devid(fd));
->>>>>> -	struct drm_i915_gem_exec_object2 obj[2];
->>>>>> -	struct drm_i915_gem_relocation_entry reloc;
->>>>>> -	struct drm_i915_gem_execbuffer2 execbuf;
->>>>>> -	uint32_t batch[16];
->>>>>> -	int i;
->>>>>> -
->>>>>> -	memset(&execbuf, 0, sizeof(execbuf));
->>>>>> -	execbuf.buffers_ptr = to_user_pointer(obj);
->>>>>> -	execbuf.buffer_count = ARRAY_SIZE(obj);
->>>>>> -	execbuf.flags = e->flags;
->>>>>> -	if (fence != -1) {
->>>>>> -		execbuf.flags |= I915_EXEC_FENCE_IN;
->>>>>> -		execbuf.rsvd2 = fence;
->>>>>> -	}
->>>>>> -	if (gen < 6)
->>>>>> -		execbuf.flags |= I915_EXEC_SECURE;
->>>>>> -
->>>>>> -	memset(obj, 0, sizeof(obj));
->>>>>> -	obj[SCRATCH].handle = target;
->>>>>> -
->>>>>> -	obj[BATCH].handle = gem_create(fd, 4096);
->>>>>> -	obj[BATCH].relocs_ptr = to_user_pointer(&reloc);
->>>>>> -	obj[BATCH].relocation_count = 1;
->>>>>> -	memset(&reloc, 0, sizeof(reloc));
->>>>>> -
->>>>>> -	i = 0;
->>>>>> -	reloc.target_handle = obj[SCRATCH].handle;
->>>>>> -	reloc.presumed_offset = -1;
->>>>>> -	reloc.offset = sizeof(uint32_t) * (i + 1);
->>>>>> -	reloc.delta = sizeof(uint32_t) * offset_value;
->>>>>> -	reloc.read_domains = I915_GEM_DOMAIN_INSTRUCTION;
->>>>>> -	reloc.write_domain = I915_GEM_DOMAIN_INSTRUCTION;
->>>>>> -	batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
->>>>>> -	if (gen >= 8) {
->>>>>> -		batch[++i] = reloc.delta;
->>>>>> -		batch[++i] = 0;
->>>>>> -	} else if (gen >= 4) {
->>>>>> -		batch[++i] = 0;
->>>>>> -		batch[++i] = reloc.delta;
->>>>>> -		reloc.offset += sizeof(uint32_t);
->>>>>> -	} else {
->>>>>> -		batch[i]--;
->>>>>> -		batch[++i] = reloc.delta;
->>>>>> -	}
->>>>>> -	batch[++i] = offset_value;
->>>>>> -	batch[++i] = MI_BATCH_BUFFER_END;
->>>>>> -	gem_write(fd, obj[BATCH].handle, 0, batch, sizeof(batch));
->>>>>> -	gem_execbuf(fd, &execbuf);
->>>>>> -	gem_close(fd, obj[BATCH].handle);
->>>>>> -}
->>>>>> -
->>>>>>     static void check_alive(void)
->>>>>>     {
->>>>>>     	const struct intel_execution_engine2 *engine;
->>>>>> @@ -138,7 +81,7 @@ static void check_alive(void)
->>>>>>     			continue;
->>>>>>     		/* +OFFSET_ALIVE to ensure engine zero doesn't get a false negative */
->>>>>> -		store(fd, engine, -1, scratch, i + OFFSET_ALIVE);
->>>>>> +		igt_store_word(fd, ahnd, ctx, engine, -1, scratch, i + OFFSET_ALIVE, i + OFFSET_ALIVE);
->>>>>>     		i++;
->>>>>>     	}
->>>>>> -- 
->>>>>> 2.25.1
->>>>>>
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index 7c7df95ee..50da512f2 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -122,12 +122,12 @@ static void eat_error_state(int dev)
+  * to be done under hang injection.
+  * Default: false
+  */
+-void igt_require_hang_ring(int fd, int ring)
++void igt_require_hang_ring(int fd, uint32_t ctx, int ring)
+ {
+ 	if (!igt_check_boolean_env_var("IGT_HANG", true))
+ 		igt_skip("hang injection disabled by user [IGT_HANG=0]\n");
+ 
+-	gem_require_ring(fd, ring);
++        igt_require(gem_context_has_engine(fd, ctx, ring));
+ 	gem_context_require_bannable(fd);
+ 	if (!igt_check_boolean_env_var("IGT_HANG_WITHOUT_RESET", false))
+ 		igt_require(has_gpu_reset(fd));
+@@ -290,7 +290,7 @@ static igt_hang_t __igt_hang_ctx(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+ 	igt_spin_t *spin;
+ 	unsigned ban;
+ 
+-	igt_require_hang_ring(fd, ring);
++	igt_require_hang_ring(fd, ctx, ring);
+ 
+ 	/* check if non-default ctx submission is allowed */
+ 	igt_require(ctx == 0 || has_ctx_exec(fd, ring, ctx));
+diff --git a/lib/igt_gt.h b/lib/igt_gt.h
+index c5059817b..3d10349e4 100644
+--- a/lib/igt_gt.h
++++ b/lib/igt_gt.h
+@@ -31,7 +31,7 @@
+ #include "i915/i915_drm_local.h"
+ #include "i915_drm.h"
+ 
+-void igt_require_hang_ring(int fd, int ring);
++void igt_require_hang_ring(int fd, uint32_t ctx, int ring);
+ 
+ typedef struct igt_hang {
+ 	igt_spin_t *spin;
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index b9c4d9983..f64b8819d 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -295,7 +295,7 @@ test_engine_hang(const intel_ctx_t *ctx,
+  * case and it takes a lot more time to wrap, so the acthd can potentially keep
+  * increasing for a long time
+  */
+-static void hangcheck_unterminated(void)
++static void hangcheck_unterminated(const intel_ctx_t *ctx)
+ {
+ 	/* timeout needs to be greater than ~5*hangcheck */
+ 	int64_t timeout_ns = 100ull * NSEC_PER_SEC; /* 100 seconds */
+@@ -304,7 +304,7 @@ static void hangcheck_unterminated(void)
+ 	uint32_t handle;
+ 
+ 	igt_require(gem_uses_full_ppgtt(device));
+-	igt_require_hang_ring(device, 0);
++	igt_require_hang_ring(device, ctx->id, 0);
+ 
+ 	handle = gem_create(device, 4096);
+ 
+@@ -394,7 +394,7 @@ igt_main
+ 
+ 	igt_describe("Check that executing unintialised memory causes a hang");
+ 	igt_subtest("hangcheck-unterminated")
+-		hangcheck_unterminated();
++		hangcheck_unterminated(ctx);
+ 
+ 	igt_fixture {
+ 		igt_disallow_hang(device, hang);
+-- 
+2.25.1
