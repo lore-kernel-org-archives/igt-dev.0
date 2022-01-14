@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Fri, 14 Jan 2022 10:17:10 -0800
-Message-Id: <20220114181713.1798514-13-John.C.Harrison@Intel.com>
+Date: Fri, 14 Jan 2022 10:17:08 -0800
+Message-Id: <20220114181713.1798514-11-John.C.Harrison@Intel.com>
 In-Reply-To: <20220114181713.1798514-1-John.C.Harrison@Intel.com>
 References: <20220114181713.1798514-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v5 i-g-t 12/15] tests/i915/gem_exec_fence:
- Configure correct context
+Subject: [igt-dev] [PATCH v5 i-g-t 10/15] tests/i915/i915_hangman: Run
+ background task on all engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,28 +23,38 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The update to use intel_ctx_t missed a line that configures the
-context to allow hanging. Fix that.
+As opposed to only on the non-target engines. This means that there is
+some other workload present for the scheduler to switch between and so
+detet the hang immediately.
 
-Fixes: 09c36188b ("tests/i915/gem_exec_fence: Convert to intel_ctx_t (v2)")
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/gem_exec_fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/i915/i915_hangman.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 196236b27..5e45d0518 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -3139,7 +3139,7 @@ igt_main
- 			igt_hang_t hang;
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index 24087931c..a1aeeba6d 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -298,12 +298,14 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
  
- 			igt_fixture {
--				hang = igt_allow_hang(i915, 0, 0);
-+				hang = igt_allow_hang(i915, ctx->id, 0);
- 				intel_allocator_multiprocess_start();
- 			}
- 
+-	/* Fill all the other engines with background load */
++	/*
++	 * Fill all engines with background load.
++	 * This verifies that independent engines are unaffected and gives
++	 * the target engine something to switch between so it notices the
++	 * hang.
++	 */
+ 	num_ctx = 0;
+ 	for_each_ctx_engine(device, ctx, other) {
+-		if (other->flags == e->flags)
+-			continue;
+-
+ 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
+ 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 		spin = __igt_spin_new(device,
 -- 
 2.25.1
