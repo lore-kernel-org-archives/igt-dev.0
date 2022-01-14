@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Fri, 14 Jan 2022 10:17:09 -0800
-Message-Id: <20220114181713.1798514-12-John.C.Harrison@Intel.com>
+Date: Fri, 14 Jan 2022 10:17:02 -0800
+Message-Id: <20220114181713.1798514-5-John.C.Harrison@Intel.com>
 In-Reply-To: <20220114181713.1798514-1-John.C.Harrison@Intel.com>
 References: <20220114181713.1798514-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v5 i-g-t 11/15] tests/i915/i915_hangman: Don't let
- background contexts cause a ban
+Subject: [igt-dev] [PATCH v5 i-g-t 04/15] tests/i915/i915_hangman:
+ Explicitly test per engine reset vs full GPU reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,53 +23,131 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The global context used by all the subtests for causing hangs is
-marked as unbannable. However, some of the subtests set background
-spinners running on all engines using a freshly created context. If
-there is a test failure for any reason, all of those spinners can be
-killed off as hanging contexts. On systems with lots of engines, that
-can result in the test being banned from creating any new contexts.
-
-So make the spinner contexts unbannable as well. That way if one
-subtest fails it won't necessarily bring down all subsequent subtests.
-
-v2: Simplify anti-banning code (review feedback from Matthew Brost).
+Although the hangman test was ensuring that *some* reset functionality
+was enabled, it did not differentiate what kind. The infrastructure
+required to choose between per engine reset or full GT reset was
+recently added. So update this test to use it as well.
 
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/i915_hangman.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tests/i915/i915_hangman.c | 76 +++++++++++++++++++++++++--------------
+ 1 file changed, 49 insertions(+), 27 deletions(-)
 
 diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index a1aeeba6d..e661b8ad0 100644
+index 280eac197..7b8390a6c 100644
 --- a/tests/i915/i915_hangman.c
 +++ b/tests/i915/i915_hangman.c
-@@ -284,6 +284,17 @@ static void test_error_state_capture(const intel_ctx_t *ctx,
- 	check_alive();
+@@ -323,40 +323,26 @@ static void hangcheck_unterminated(const intel_ctx_t *ctx)
+ 	}
  }
  
-+static void context_unban(int fd, unsigned ctx)
-+{
-+	struct drm_i915_gem_context_param param = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_BANNABLE,
-+		.value = 0,
-+	};
-+
-+	gem_context_set_param(fd, &param);
+-igt_main
++static void do_tests(const char *name, const char *prefix,
++		     const intel_ctx_t *ctx)
+ {
+ 	const struct intel_execution_engine2 *e;
+-	const intel_ctx_t *ctx;
+-	igt_hang_t hang = {};
+-
+-	igt_fixture {
+-		device = drm_open_driver(DRIVER_INTEL);
+-		igt_require_gem(device);
+-
+-		ctx = intel_ctx_create_all_physical(device);
+-
+-		hang = igt_allow_hang(device, ctx->id, HANG_ALLOW_CAPTURE);
+-
+-		sysfs = igt_sysfs_open(device);
+-		igt_assert(sysfs != -1);
+-
+-		igt_require(has_error_state(sysfs));
+-	}
++	char buff[256];
+ 
+-	igt_describe("Basic error capture");
+-	igt_subtest("error-state-basic")
+-		test_error_state_basic();
+-
+-	igt_describe("Per engine error capture");
+-	igt_subtest_with_dynamic("error-state-capture") {
++	snprintf(buff, sizeof(buff), "Per engine error capture (%s reset)", name);
++	igt_describe(buff);
++	snprintf(buff, sizeof(buff), "%s-error-state-capture", prefix);
++	igt_subtest_with_dynamic(buff) {
+ 		for_each_ctx_engine(device, ctx, e) {
+ 			igt_dynamic_f("%s", e->name)
+ 				test_error_state_capture(ctx, e);
+ 		}
+ 	}
+ 
+-	igt_describe("Per engine hang recovery (spin)");
+-	igt_subtest_with_dynamic("engine-hang") {
++	snprintf(buff, sizeof(buff), "Per engine hang recovery (spin, %s reset)", name);
++	igt_describe(buff);
++	snprintf(buff, sizeof(buff), "%s-engine-hang", prefix);
++	igt_subtest_with_dynamic(buff) {
+                 int has_gpu_reset = 0;
+ 		struct drm_i915_getparam gp = {
+ 			.param = I915_PARAM_HAS_GPU_RESET,
+@@ -374,8 +360,10 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_describe("Per engine hang recovery (invalid CS)");
+-	igt_subtest_with_dynamic("engine-error") {
++	snprintf(buff, sizeof(buff), "Per engine hang recovery (invalid CS, %s reset)", name);
++	igt_describe(buff);
++	snprintf(buff, sizeof(buff), "%s-engine-error", prefix);
++	igt_subtest_with_dynamic(buff) {
+ 		int has_gpu_reset = 0;
+ 		struct drm_i915_getparam gp = {
+ 			.param = I915_PARAM_HAS_GPU_RESET,
+@@ -391,11 +379,45 @@ igt_main
+ 				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS);
+ 		}
+ 	}
 +}
 +
- static void
- test_engine_hang(const intel_ctx_t *ctx,
- 		 const struct intel_execution_engine2 *e, unsigned int flags)
-@@ -307,6 +318,7 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	num_ctx = 0;
- 	for_each_ctx_engine(device, ctx, other) {
- 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
-+		context_unban(device, local_ctx[num_ctx]->id);
- 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
- 		spin = __igt_spin_new(device,
- 				      .ahnd = ahndN,
++igt_main
++{
++	const intel_ctx_t *ctx;
++	igt_hang_t hang = {};
++
++	igt_fixture {
++		device = drm_open_driver(DRIVER_INTEL);
++		igt_require_gem(device);
++
++		ctx = intel_ctx_create_all_physical(device);
++
++		hang = igt_allow_hang(device, ctx->id, HANG_ALLOW_CAPTURE);
++
++		sysfs = igt_sysfs_open(device);
++		igt_assert(sysfs != -1);
++
++		igt_require(has_error_state(sysfs));
++	}
++
++	igt_describe("Basic error capture");
++	igt_subtest("error-state-basic")
++		test_error_state_basic();
+ 
+ 	igt_describe("Check that executing unintialised memory causes a hang");
+ 	igt_subtest("hangcheck-unterminated")
+ 		hangcheck_unterminated(ctx);
+ 
++	do_tests("GT", "gt", ctx);
++
++	igt_fixture {
++		igt_disallow_hang(device, hang);
++
++		hang = igt_allow_hang(device, ctx->id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
++	}
++
++	do_tests("engine", "engine", ctx);
++
+ 	igt_fixture {
+ 		igt_disallow_hang(device, hang);
+ 		intel_ctx_destroy(device, ctx);
 -- 
 2.25.1
