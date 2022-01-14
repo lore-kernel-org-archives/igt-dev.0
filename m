@@ -1,96 +1,50 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: John.C.Harrison@Intel.com
-Date: Fri, 14 Jan 2022 10:17:07 -0800
-Message-Id: <20220114181713.1798514-10-John.C.Harrison@Intel.com>
+Date: Fri, 14 Jan 2022 10:17:10 -0800
+Message-Id: <20220114181713.1798514-13-John.C.Harrison@Intel.com>
 In-Reply-To: <20220114181713.1798514-1-John.C.Harrison@Intel.com>
 References: <20220114181713.1798514-1-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [Intel-gfx] [PATCH v5 i-g-t 09/15] tests/i915/i915_hangman: Remove
- reliance on context persistance
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Subject: [igt-dev] [PATCH v5 i-g-t 12/15] tests/i915/gem_exec_fence:
+ Configure correct context
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: IGT-Dev@Lists.FreeDesktop.Org
 Cc: Intel-GFX@Lists.FreeDesktop.Org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: John Harrison <John.C.Harrison@Intel.com>
 
-The hang test was relying on context persitence for no particular
-reason. That is, it would set a bunch of background spinners running
-then immediately destroy the active contexts but expect the spinners
-to keep spinning. With the current implementation of context
-persistence in i915, that means that super high priority pings are
-sent to each engine at the start of the test. Depending upon the
-timing and platform, one of those unexpected pings could cause test
-failures.
+The update to use intel_ctx_t missed a line that configures the
+context to allow hanging. Fix that.
 
-There is no need to require context persitence in this test. So change
-to managing the contexts cleanly and only destroying them when they
-are no longer in use.
-
+Fixes: 09c36188b ("tests/i915/gem_exec_fence: Convert to intel_ctx_t (v2)")
 Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/i915/i915_hangman.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ tests/i915/gem_exec_fence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 73a86ec9e..24087931c 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -289,27 +289,29 @@ test_engine_hang(const intel_ctx_t *ctx,
- 		 const struct intel_execution_engine2 *e, unsigned int flags)
- {
- 	const struct intel_execution_engine2 *other;
--	const intel_ctx_t *tmp_ctx;
-+	const intel_ctx_t *local_ctx[GEM_MAX_ENGINES];
- 	igt_spin_t *spin, *next;
- 	IGT_LIST_HEAD(list);
- 	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
-+	int num_ctx;
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index 196236b27..5e45d0518 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -3139,7 +3139,7 @@ igt_main
+ 			igt_hang_t hang;
  
- 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
- 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
+ 			igt_fixture {
+-				hang = igt_allow_hang(i915, 0, 0);
++				hang = igt_allow_hang(i915, ctx->id, 0);
+ 				intel_allocator_multiprocess_start();
+ 			}
  
- 	/* Fill all the other engines with background load */
-+	num_ctx = 0;
- 	for_each_ctx_engine(device, ctx, other) {
- 		if (other->flags == e->flags)
- 			continue;
- 
--		tmp_ctx = intel_ctx_create(device, &ctx->cfg);
--		ahndN = get_reloc_ahnd(device, tmp_ctx->id);
-+		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
-+		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
- 		spin = __igt_spin_new(device,
- 				      .ahnd = ahndN,
--				      .ctx = tmp_ctx,
-+				      .ctx = local_ctx[num_ctx],
- 				      .engine = other->flags,
- 				      .flags = IGT_SPIN_FENCE_OUT);
--		intel_ctx_destroy(device, tmp_ctx);
-+		num_ctx++;
- 
- 		igt_list_move(&spin->link, &list);
- 	}
-@@ -339,7 +341,10 @@ test_engine_hang(const intel_ctx_t *ctx,
- 		igt_spin_free(device, spin);
- 		put_ahnd(ahndN);
- 	}
-+
- 	put_ahnd(ahnd);
-+	while (num_ctx)
-+		intel_ctx_destroy(device, local_ctx[--num_ctx]);
- 
- 	check_alive();
- }
 -- 
 2.25.1
