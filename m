@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2049.outbound.protection.outlook.com [40.107.93.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 125C510E42A
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jan 2022 16:43:13 +0000 (UTC)
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Date: Tue, 18 Jan 2022 11:42:29 -0500
-Message-ID: <20220118164229.602225-1-Rodrigo.Siqueira@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============6094035079426438230=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_cursor: Use dprx CRC for
- AMDGPU
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 18 Jan 2022 17:30:39 -0000
+Message-ID: <164252703928.25101.7717794451793093947@emeril.freedesktop.org>
+References: <20220118164229.602225-1-Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20220118164229.602225-1-Rodrigo.Siqueira@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fcursor=3A_Use_dprx_CRC_for_AMDGPU?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,58 +16,257 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mark Yacoub <markyacoub@chromium.org>, Leo Li <sunpeng.li@amd.com>, Harry
- Wentland <harry.wentland@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Hayden Goodfellow <hayden.goodfellow@amd.com>
+To: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We have some CRC errors spread around a few IGT tests related to a
-driver bug; we have a kernel fix for that [1]. However, after applying the
-kernel patch, all tests related to pipe-a-primary-size-* start to fail.
-To fix this issue, we need to make kms_plane_cursor utilize DPRX CRC;
-this commit updates this test by basically setting DPRX for amdgpu.
+--===============6094035079426438230==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-1. https://patchwork.freedesktop.org/series/98993/
+== Series Details ==
 
-Cc: Mark Yacoub <markyacoub@chromium.org>
-Cc: Hayden Goodfellow <hayden.goodfellow@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Nicholas Choi <Nicholas.Choi@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
+Series: tests/kms_plane_cursor: Use dprx CRC for AMDGPU
+URL   : https://patchwork.freedesktop.org/series/98994/
+State : success
 
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
----
- tests/kms_plane_cursor.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index 73085cc8..def282b8 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -60,6 +60,8 @@ typedef struct data {
- /* Common test setup. */
- static void test_init(data_t *data, enum pipe pipe_id)
- {
-+	const char *crc_type = INTEL_PIPE_CRC_SOURCE_AUTO;
-+
- 	igt_display_t *display = &data->display;
- 
- 	data->pipe_id = pipe_id;
-@@ -77,8 +79,11 @@ static void test_init(data_t *data, enum pipe pipe_id)
- 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
- 
- 	igt_require_pipe_crc(data->drm_fd);
--	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
--					  INTEL_PIPE_CRC_SOURCE_AUTO);
-+
-+	if (is_amdgpu_device(data->drm_fd))
-+		crc_type = AMDGPU_PIPE_CRC_SOURCE_DPRX;
-+
-+	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id, crc_type);
- 
- 	igt_output_set_pipe(data->output, data->pipe_id);
- 
--- 
-2.25.1
+CI Bug Log - changes from IGT_6328 -> IGTPW_6561
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with IGTPW_6561 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6561, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Additional (1): bat-jsl-2 
+  Missing    (2): fi-kbl-soraka fi-icl-u2 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6561:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [DMESG-FAIL][1] ([i915#4494]) -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6561 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
+    - fi-snb-2600:        NOTRUN -> [SKIP][3] ([fdo#109271]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-bdw-5557u:       [PASS][4] -> [INCOMPLETE][5] ([i915#146])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [PASS][6] -> [DMESG-WARN][7] ([i915#4269])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+    - fi-cfl-8109u:       [PASS][8] -> [DMESG-FAIL][9] ([i915#295])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [PASS][10] -> [DMESG-WARN][11] ([i915#295]) +10 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-tgl-1115g4:      [FAIL][12] ([i915#1888]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3@smem.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][14] ([i915#3921]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6328 -> IGTPW_6561
+
+  CI-20190529: 20190529
+  CI_DRM_11094: 6ce31c986ee8beaa0f98fd4e200b7a421fd4adf9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6561: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/index.html
+  IGT_6328: 7ef5166f6580491b52817930bc4bf7222d0dfe59 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/index.html
+
+--===============6094035079426438230==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_cursor: Use dprx CRC for AMDGPU</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/98994/">https://patchwork.freedesktop.org/series/98994/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6328 -&gt; IGTPW_6561</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_6561 need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6561, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Additional (1): bat-jsl-2 <br />
+  Missing    (2): fi-kbl-soraka fi-icl-u2 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6561:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6561 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-snb-2600/igt@amdgpu/amd_cs_nop@sync-fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>
+<p>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>)</p>
+</li>
+<li>
+<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +10 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3@smem.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1888">i915#1888</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6328/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6328 -&gt; IGTPW_6561</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11094: 6ce31c986ee8beaa0f98fd4e200b7a421fd4adf9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6561: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6561/index.html<br />
+  IGT_6328: 7ef5166f6580491b52817930bc4bf7222d0dfe59 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6094035079426438230==--
