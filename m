@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 333D089E8C
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Jan 2022 19:40:33 +0000 (UTC)
-Message-ID: <edac5052-869b-bba0-8f3f-d84e6082a144@intel.com>
-Date: Wed, 19 Jan 2022 11:37:44 -0800
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70FCC10E5CA
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Jan 2022 19:41:58 +0000 (UTC)
+Message-ID: <a2acc671-018d-eebf-3544-05cfe36e94a5@intel.com>
+Date: Wed, 19 Jan 2022 11:25:34 -0800
 Content-Language: en-GB
 References: <20220117085700.1723228-1-priyanka.dandamudi@intel.com>
- <20220117085700.1723228-2-priyanka.dandamudi@intel.com>
- <85czkq9krp.wl-ashutosh.dixit@intel.com>
- <YedACz8aYwPs59md@mdroper-desk1.amr.corp.intel.com>
- <b8588c68-c21c-a46d-2e38-ebb6414dd321@intel.com>
- <YehnTHp2uQ+23qaV@mdroper-desk1.amr.corp.intel.com>
+ <20220117085700.1723228-3-priyanka.dandamudi@intel.com>
+ <87fspln70d.wl-ashutosh.dixit@intel.com>
 From: John Harrison <john.c.harrison@intel.com>
-In-Reply-To: <YehnTHp2uQ+23qaV@mdroper-desk1.amr.corp.intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87fspln70d.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] lib/igt_gt: Check for shared
- reset domain
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] tests/i915/gem_ctx_exec: Skip
+ test for shared reset domain
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,122 +24,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matt Roper <matthew.d.roper@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, priyanka.dandamudi@intel.com
 Cc: igt-dev@lists.freedesktop.org, saurabhg.gupta@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 1/19/2022 11:32, Matt Roper wrote:
-> On Wed, Jan 19, 2022 at 11:09:00AM -0800, John Harrison wrote:
->> On 1/18/2022 14:32, Matt Roper wrote:
->>> On Mon, Jan 17, 2022 at 12:20:42PM -0800, Dixit, Ashutosh wrote:
->>>> On Mon, 17 Jan 2022 00:56:59 -0800, <priyanka.dandamudi@intel.com> wrote:
->>>>> +bool has_shared_reset_domain(int fd, const intel_ctx_t *ctx)
->>>>> +{
->>>>> +	const struct intel_execution_engine2 *e;
->>>>> +	bool rcs0 = false;
->>>>> +	bool ccs0 = false;
->>>>> +	int ccs_count = 0;
->>>>> +
->>>>> +	for_each_ctx_engine(fd, ctx, e) {
->>>>> +		if ((rcs0 && ccs0) || (ccs_count > 1))
->>>>> +			break;
->>>>> +		else if (e->class == I915_ENGINE_CLASS_RENDER)
->>>>> +			rcs0 = true;
->>>>> +		else if (e->class == I915_ENGINE_CLASS_COMPUTE) {
->>>>> +			ccs0 = true;
->>>>> +			ccs_count++;
->>>>> +		}
->>>>> +	}
->>>>> +	return ((rcs0 && ccs0) || (ccs_count > 1));
->>>>> +}
->>>> No need for bool, just use counts. Something like:
->>>>
->>>> bool has_shared_reset_domain(int fd, const intel_ctx_t *ctx)
->>>> {
->>>> 	const struct intel_execution_engine2 *e;
->>>> 	int rcs = 0, ccs = 0;
->>>>
->>>> 	for_each_ctx_engine(fd, ctx, e) {
->>>> 		if (e->class == I915_ENGINE_CLASS_RENDER)
->>>> 			rcs++;
->>>> 		else if (e->class == I915_ENGINE_CLASS_COMPUTE)
->>>> 			ccs++;
->>>> 	}
->>>>
->>>> 	return ((rcs && ccs) || (ccs >= 2));
->>>> }
->>>>
->>>> Hmm, this can just be:
->>>>
->>>> bool has_shared_reset_domain(int fd, const intel_ctx_t *ctx)
->>>> {
->>>> 	const struct intel_execution_engine2 *e;
->>>> 	int count = 0;
->>>>
->>>> 	for_each_ctx_engine(fd, ctx, e)
->>>> 		if (e->class == I915_ENGINE_CLASS_RENDER ||
->>>> 			e->class == I915_ENGINE_CLASS_COMPUTE)
->>>> 		count++;
->>>>
->>>> 	return count >= 2;
->>>> }
->>> Yeah, there's no reason to count RCS and CCS separately; all we care
->>> about is whether there's more than one engine in the shared reset
->>> domain.
->>>
->>> However I think any approach that involves just counting engines from
->>> userspace isn't really going to work once we start supporting multi-tile
->>> since the various RCS/CCS engines on two separate GTs do belong to
->>> separate reset domains.  E.g., if you query the engine list and see just
->>> CCS0 and CCS1 (or even RCS0 and CCS0) you don't know whether those
->>> engines are both from a single GT and thus share a reset domain, or
->>> whether they come from different GTs and each has its own reset domain.
->> There is a query API to determine which engine is on which tile, isn't
->> there? The distance thing? If CCS0 and CCS1 have a distance of zero they are
->> on the same tile and dependent, otherwise they are on different tiles and
->> independent?
-> If I recall correctly, the distance query is only for determining the
-> distance of an engine from a specific memory region.  So if you had a
-> four-tile layout like
+On 1/17/2022 17:54, Dixit, Ashutosh wrote:
+> On Mon, 17 Jan 2022 00:57:00 -0800, <priyanka.dandamudi@intel.com> wrote:
+>> @@ -292,11 +293,15 @@ static void nohangcheck_hostile(int i915)
+>> 	ahnd = get_reloc_ahnd(i915, ctx->id);
+>>
+>> 	igt_require(__enable_hangcheck(dir, false));
+>> +	has_sh_do = has_shared_reset_domain(i915, ctx);
+>>
+>> 	for_each_ctx_engine(i915, ctx, e) {
+>> 		igt_spin_t *spin;
+>> 		int new;
+>>
+>> +		if (has_sh_do && (e->class == I915_ENGINE_CLASS_RENDER ||
+>> +			    e->class == I915_ENGINE_CLASS_COMPUTE))
+>> +			continue;
+> If we need to do this, let's not try to overly optimize things (which will
+> clutter up the code since has_shared_reset_domain() may get called from
+> multiple places) and just pass the engine into the function, something
+> like:
 >
->          0 - 1
->          |   |
->          2 - 3
+> bool has_shared_reset_domain(int fd, struct intel_execution_engine2 *e2,
+> 			     const intel_ctx_t *ctx)
+> {
+> 	const struct intel_execution_engine2 *e;
+> 	int count = 0;
 >
-> some pairs of tiles would be the same distance from any single memory
-> region you choose.  You'd potentially have to compare the distance to
-> multiple memory regions to figure out whether the engines truly
-> originated from the same tile or not.  So I guess it's doable (if/when
-> the distance query arrives), but kind of ugly.  It seems like userspace
-> would rather have a more straightforward way to determine this, such as
-> a reset ID (integer) associated with every engine.  If two engines have
-> the same reset ID, userspace would know they're tied together without
-> jumping through any extra hoops.  I don't know what the UMD plans are in
-> this area though.
-Yeah, there was a policy of jumping through as many hoops as possible to 
-hide multi-tile hardware from UMDs. I think we have moved away from that 
-now? So maybe we can just report the tile id for a given engine? I think 
-there are valid UMD reasons for wanting to know that - load balancing of 
-compute workloads, for example. But maybe those usages are still tied to 
-memory regions anyway? Either way, I don't think there is a valid reason 
-for UMDs to need to know about engine reset dependencies. So I can't see 
-any API to expose that being approved. It would have to be a debugfs 
-interface only. But if we can expose the tile id, that would be sufficient.
+> 	if (!(e2->class == I915_ENGINE_CLASS_RENDER ||
+> 		e2->class == I915_ENGINE_CLASS_COMPUTE))
+> 		return false;
+>
+> 	for_each_ctx_engine(fd, ctx, e)
+> 		if (e->class == I915_ENGINE_CLASS_RENDER ||
+> 			e->class == I915_ENGINE_CLASS_COMPUTE)
+> 		count++;
+>
+> 	return count >= 2;
+> }
+>
+> And then in the loop above just have:
+>
+> 	if (has_shared_reset_domain(fd, e, ctx))
+> 		continue;
+>
+> Also, I may be wrong, but it looks to me that this test should pass even if
+> we have shared resets, the test is not even using engine resets. What
+> failure are we seeing and on which platforms and with how many gt's? Does
+> the test fail only on DG2 or also on other products with RCS + CCS? Can you
+> paste the output after running the failing test?
+>
+> Any idea anyone why this test would fail with a shared reset domain? Could
+> it be failing due to a different reason than a shared reset domain as
+> people pointed out on previous versions of the patch? In that case this
+> patch is incorrect.
+
+Presumably the test is actually testing context persistence? If so, I 
+would say the best option right now is to add an 
+'is_persistance_fixed()' helper which currently returns false on modern 
+platforms and causes any persistence related test to skip. The KMD 
+implementation of persistence is broken. It vaguely hangs together for 
+execlist mode with no dependent engines but it is totally broken for GuC 
+submission (because part of the implementation is buried deep within the 
+execlist backend) and the current design can never work for engines with 
+dependent resets.
+
+Once persistence has been completely re-written (and greatly simplified) 
+in the KMD, we can then review the persistence related IGTs and decide 
+whether each is still valid or is now pointless. I suspect this one 
+would count as pointless. It is called 'nohangcheck' and seems to be 
+testing persistence behaviour when the heartbeat is explicitly disabled. 
+Part of the persistence re-write is to remove any dependence on the 
+state of the heartbeat.
+
+Without looking at this specific test in detail, I can't say exactly 
+what might be happening here, but it seems likely that it is 
+specifically a DG2 issue (and thus should only skip on DG2). The 
+persistence implementation involves sending super high priority pings to 
+engines. Assuming the workload on the target engine is pre-emptible, the 
+ping should make it through. But if this is a DG2 and the target engine 
+is CCS# then that pre-emption requires a pre-emption on RCS as well. If 
+the test has put a non-pre-emtible background workload on RCS, then RCS 
+is never going to switch, thus CCS can't switch either. Hence 
+pre-emption timeouts, engine resets and test failures. In this case, the 
+failure is not even specifically related to dependent engine resets.
+
+One option is to make all the workloads pre-emptible but there is an 
+argument that the point of the test is to ensure no interference at all 
+including unwanted pre-emptions. Thus, the test is correctly failing 
+because the hardware cannot provide context isolation.
 
 John.
-
->
-> Matt
->
->> However, I wonder if this is the right approach at all. What should a test
->> do on a multi-tile system? Test each tile independently but skip dependent
->> engines? Test them together with RCS of one tile vs RCS of the other? Just
->> skip everything? Seems like it is likely to be a different requirement for
->> different tests. So maybe  the API is going to need to take take two engines
->> as a parameter and say whether those two specific engines are shared or not?
->> It's all getting extremely messy.
->>
->> John.
->>
->>> Matt
->>>
