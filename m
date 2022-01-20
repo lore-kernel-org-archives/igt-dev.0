@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4BED10E77F
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jan 2022 16:37:50 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2BE810E7EE
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jan 2022 17:15:18 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
-Date: Thu, 20 Jan 2022 21:55:38 +0530
-Message-Id: <20220120162540.1850941-1-priyanka.dandamudi@intel.com>
+Date: Thu, 20 Jan 2022 22:33:14 +0530
+Message-Id: <20220120170316.1854652-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t 0/2] DG2 platform definition
@@ -25,10 +25,10 @@ From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 Add DG2 platform definition and synchronize PCIIDs with kernel.
 
 Adam Miszczak (1):
-  INTEL_DII/NOT_UPSTREAM: synchronize PCI IDs with kernel
+  lib/i915_pciids: synchronize PCI IDs with kernel
 
 Matt Roper (1):
-  INTEL_DII: lib/dg2: Add DG2 platform definition
+  lib/dg2: Add DG2 platform definition
 
  lib/i915_pciids.h       | 42 +++++++++++++++++++++++++++++++++++++++++
  lib/intel_chipset.h     |  2 ++
