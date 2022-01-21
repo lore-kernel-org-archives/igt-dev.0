@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1B8D10E266
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jan 2022 19:36:49 +0000 (UTC)
-Message-ID: <2b622a97-0f7b-2be9-0fa8-0bc06d57f525@intel.com>
-Date: Sat, 22 Jan 2022 01:06:30 +0530
+Content-Type: multipart/alternative;
+ boundary="===============8317664242381487221=="
 MIME-Version: 1.0
-Content-Language: en-US
-References: <20220103161957.9458-1-swati2.sharma@intel.com>
- <8a96fe1d-bf2b-a1aa-9531-bb2194e37ebc@gmail.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <8a96fe1d-bf2b-a1aa-9531-bb2194e37ebc@gmail.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_scaling_modes: New IGT to
- validate scaling modes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 21 Jan 2022 20:04:21 -0000
+Message-ID: <164279546189.19939.6130070281500116876@emeril.freedesktop.org>
+References: <20220121193636.1413-1-swati2.sharma@intel.com>
+In-Reply-To: <20220121193636.1413-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fscaling=5Fmodes=3A_New_IGT_to_validate_scaling_modes_=28r?=
+ =?utf-8?q?ev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,279 +17,282 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks JP for the review. Addressed all the review comments
-in rev2 https://patchwork.freedesktop.org/patch/470363/?series=98463&rev=3
+--===============8317664242381487221==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 12-Jan-22 12:23 AM, Juha-Pekka Heikkila wrote:
-> Hi Swati,
-> 
-> I think this type scaling happen only on eDP with i915. What this mean 
-> is if there's on Intel CI shards boxes some with eDP and others without 
-> eDP there will be flip flopping with test skipping or running depending 
-> which box test will get to run on. If shards machines in same hw family 
-> are similar with respect to eDP then there's no issue on flip flopping 
-> for that reason.
-> 
-> Some comments below
-> 
-> On 3.1.2022 18.19, Swati Sharma wrote:
->> In this IGT, various scaling modes are validated. Scaling
->> mode is one of the connector properties. This property
->> defines how a non-native mode is upscaled to the native
->> mode of an LCD panel.
->>
->> There are basically 4 types of scaling modes defined:
->>
->>     None:
->>         No upscaling happens, scaling is left to the panel. Not all
->>         drivers expose this mode.
->>     Full:
->>         The output is upscaled to the full resolution of the panel,
->>         ignoring the aspect ratio. It will expand current image to
->>         the size of the monitor.
->>     Center:
->>         No upscaling happens, the output is centered within the native
->>         resolution the panel. As a result, black bars may appear
->>         around the image.
->>     Full aspect:
->>         The output is upscaled to maximize either the width or height
->>         while retaining the aspect ratio. It will fill the screen w/o
->>         stretching the image. Black bars are placed either on top
->>         and bottom or left and right of the picture.
->>
->> Note: This IGT is build upon kms_panel_fitting
->>
->> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
->> ---
->>   tests/kms_scaling_modes.c | 167 ++++++++++++++++++++++++++++++++++++++
->>   tests/meson.build         |   1 +
->>   2 files changed, 168 insertions(+)
->>   create mode 100644 tests/kms_scaling_modes.c
->>
->> diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
->> new file mode 100644
->> index 00000000..d90783d0
->> --- /dev/null
->> +++ b/tests/kms_scaling_modes.c
->> @@ -0,0 +1,167 @@
->> +/*
->> + * Copyright © 2022 Intel Corporation
->> + *
->> + * Permission is hereby granted, free of charge, to any person 
->> obtaining a
->> + * copy of this software and associated documentation files (the 
->> "Software"),
->> + * to deal in the Software without restriction, including without 
->> limitation
->> + * the rights to use, copy, modify, merge, publish, distribute, 
->> sublicense,
->> + * and/or sell copies of the Software, and to permit persons to whom the
->> + * Software is furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice (including 
->> the next
->> + * paragraph) shall be included in all copies or substantial portions 
->> of the
->> + * Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
->> EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
->> MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT 
->> SHALL
->> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, 
->> DAMAGES OR
->> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
->> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
->> + * OTHER DEALINGS IN THE SOFTWARE.
->> + *
->> + * Authors:
->> + *     Swati Sharma <swati2.sharma@intel.com>
->> + *
->> + */
->> +
->> +#include "igt.h"
->> +#include <fcntl.h>
->> +#include <termios.h>
->> +#include <unistd.h>
->> +
->> +IGT_TEST_DESCRIPTION("Test display scaling modes");
->> +
->> +/* Test flags */
->> +enum {
->> +    TEST_NONE = 1 << 0,
->> +    TEST_FULL = 1 << 1,
->> +    TEST_CENTER = 1 << 2,
->> +    TEST_FULLASPECT = 1 << 3,
->> +};
-> 
-> I didn't notice this enum doing anything else than code DRM_MODE_SCALE_* 
-> to different numbers which will be translated in test_cycle_flags(..), 
-> is this translation layer needed? Quickly looking it seem when calling 
-> test_scaling_mode(..) you could give DRM_MODE_SCALE_* as the flag 
-> directly and in place of calling test_cycle_flags(..) you'd just call 
-> igt_output_set_prop_value(..)
-> 
->> +
->> +/* Common test data */
->> +typedef struct data {
->> +    igt_display_t display;
->> +    int drm_fd;
->> +} data_t;
->> +
->> +static void test_cycle_flags(igt_output_t *output, uint32_t test_flags)
->> +{
->> +    if (test_flags & TEST_NONE)
->> +        igt_output_set_prop_value(output, IGT_CONNECTOR_SCALING_MODE, 
->> DRM_MODE_SCALE_NONE);
->> +    if (test_flags & TEST_FULL)
->> +        igt_output_set_prop_value(output, IGT_CONNECTOR_SCALING_MODE, 
->> DRM_MODE_SCALE_FULLSCREEN);
->> +    if (test_flags & TEST_CENTER)
->> +        igt_output_set_prop_value(output, IGT_CONNECTOR_SCALING_MODE, 
->> DRM_MODE_SCALE_CENTER);
->> +    if (test_flags & TEST_FULLASPECT)
->> +        igt_output_set_prop_value(output, IGT_CONNECTOR_SCALING_MODE, 
->> DRM_MODE_SCALE_ASPECT);
->> +}
->> +
->> +static void test_scaling_mode_on_output(igt_display_t *display, const 
->> enum pipe pipe,
->> +                    igt_output_t *output, uint32_t flags)
->> +{
->> +    igt_plane_t *primary, *sprite;
->> +    drmModeModeInfo mode;
->> +    struct igt_fb red, blue;
->> +    int ret;
->> +
->> +    igt_output_set_pipe(output, pipe);
->> +    mode = *igt_output_get_mode(output);
->> +
->> +    primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->> +    sprite = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
->> +
->> +    igt_create_color_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
->> +                DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
->> +                0.f, 0.f, 1.f, &blue);
->> +
->> +    igt_create_color_fb(display->drm_fd, 640, 480,
->> +                DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
->> +                1.f, 0.f, 0.f, &red);
->> +
->> +    igt_plane_set_fb(primary, &blue);
->> +    igt_plane_set_fb(sprite, &red);
->> +
->> +    igt_display_commit2(display, COMMIT_ATOMIC);
->> +
->> +    mode.hdisplay = 640;
->> +    mode.vdisplay = 480;
->> +    igt_output_override_mode(output, &mode);
->> +
->> +    igt_plane_set_fb(sprite, NULL);
->> +    igt_plane_set_fb(primary, &red);
->> +
->> +    test_cycle_flags(output, flags);
->> +
->> +    /* Don't pass ALLOW_MODESET with overridden mode, force fastset */
->> +    ret = igt_display_try_commit_atomic(display, 0, NULL);
->> +
->> +    if (ret != -EINVAL)
->> +        igt_display_commit_atomic(display, 0, NULL);
-> 
-> Not sure why this commit? On above igt_display_try_commit_atomic(..) 
-> actual commit happened already.
-> 
->> +    else
->> +        igt_skip_on_f(ret == -EINVAL, "Scaling mode not supported\n");
->> +
->> +        igt_remove_fb(display->drm_fd, &red);
->> +        igt_remove_fb(display->drm_fd, &blue);
-> ^^
-> indentation with spaces instead of tab cause it to look misaligned in 
-> patch.
-> 
->> +}
->> +
->> +/* Returns true if an output supports scaling mode property */
->> +static bool has_scaling_mode(igt_output_t *output)
->> +{
->> +    return igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE) &&
->> +           igt_output_get_prop(output, IGT_CONNECTOR_SCALING_MODE);
->> +}
->> +
->> +static void test_scaling_mode(data_t *data, uint32_t flags)
->> +{
->> +    igt_display_t *display = &data->display;
->> +    igt_output_t *output;
->> +    enum pipe pipe;
->> +    int valid_tests = 0;
->> +
->> +    for_each_pipe_with_valid_output(display, pipe, output) {
->> +        if (!has_scaling_mode(output))
->> +            continue;
->> +
->> +        igt_dynamic_f("%s-pipe-%s", output->name, 
->> kmstest_pipe_name(pipe));
->> +        igt_display_reset(display);
->> +        test_scaling_mode_on_output(display, pipe, output, flags);
->> +        valid_tests++;
->> +    }
->> +
->> +    igt_require_f(valid_tests, "No valid crtc/connector combinations 
->> found\n");
->> +}
->> +
->> +igt_main
->> +{
->> +    data_t data = {};
->> +
->> +    igt_fixture {
->> +        data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->> +        igt_require(data.drm_fd >= 0);
->> +
->> +        kmstest_set_vt_graphics_mode();
->> +
->> +        igt_display_require(&data.display, data.drm_fd);
->> +        igt_require(data.display.is_atomic);
->> +
->> +        igt_display_require_output(&data.display);
->> +    }
->> +
->> +    igt_describe("Tests full display scaling mode");
->> +    igt_subtest_with_dynamic("scaling-mode-full")
->> +        test_scaling_mode(&data, TEST_FULL);
->> +    igt_describe("Tests center display scaling mode");
->> +    igt_subtest_with_dynamic("scaling-mode-center")
->> +        test_scaling_mode(&data, TEST_CENTER);
->> +    igt_describe("Tests full aspect display scaling mode");
->> +    igt_subtest_with_dynamic("scaling-mode-full-aspect")
->> +        test_scaling_mode(&data, TEST_FULLASPECT);
->> +    igt_describe("Tests none display scaling mode (no scaling)");
->> +    igt_subtest_with_dynamic("scaling-mode-none")
->> +        test_scaling_mode(&data, TEST_NONE);
->> +
->> +    igt_fixture
->> +        igt_display_fini(&data.display);
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index c14acf99..7003d064 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -50,6 +50,7 @@ test_progs = [
->>       'kms_properties',
->>       'kms_rmfb',
->>       'kms_rotation_crc',
->> +    'kms_scaling_modes',
->>       'kms_selftest',
->>       'kms_sequence',
->>       'kms_setmode',
-> 
+== Series Details ==
 
--- 
-~Swati Sharma
+Series: tests/kms_scaling_modes: New IGT to validate scaling modes (rev3)
+URL   : https://patchwork.freedesktop.org/series/98463/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6330 -> IGTPW_6568
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/index.html
+
+Participating hosts (45 -> 42)
+------------------------------
+
+  Additional (3): fi-kbl-soraka fi-skl-6600u fi-pnv-d510 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-icl-u2 fi-ctg-p8600 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6568 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +8 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+    - fi-skl-6600u:       NOTRUN -> [SKIP][2] ([fdo#109271]) +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-skl-6600u/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_flink_basic@bad-flink:
+    - fi-skl-6600u:       NOTRUN -> [INCOMPLETE][3] ([i915#4547])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-5:          [PASS][6] -> [INCOMPLETE][7] ([i915#4418])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6330/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][8] ([i915#1886] / [i915#2291])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#533])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][11] ([fdo#109271]) +57 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][12] ([i915#2722] / [i915#4312])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-skl-6600u/igt@runner@aborted.html
+    - bat-dg1-5:          NOTRUN -> [FAIL][13] ([i915#4312])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/bat-dg1-5/igt@runner@aborted.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [DMESG-FAIL][14] ([i915#4494]) -> [DMESG-FAIL][15] ([i915#4494] / [i915#4957])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6330/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6330 -> IGTPW_6568
+
+  CI-20190529: 20190529
+  CI_DRM_11118: a8ae2fba8948946087ddc13ec6f4c44b6bcf3c72 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6568: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/index.html
+  IGT_6330: f73008bac9a8db0779264b170f630483e9165764 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_scaling_modes@scaling-mode-center
++igt@kms_scaling_modes@scaling-mode-full
++igt@kms_scaling_modes@scaling-mode-full-aspect
++igt@kms_scaling_modes@scaling-mode-none
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/index.html
+
+--===============8317664242381487221==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_scaling_modes: New IGT to validate scaling modes (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/98463/">https://patchwork.freedesktop.org/series/98463/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6330 -&gt; IGTPW_6568</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/index.html</p>
+<h2>Participating hosts (45 -&gt; 42)</h2>
+<p>Additional (3): fi-kbl-soraka fi-skl-6600u fi-pnv-d510 <br />
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-icl-u2 fi-ctg-p8600 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6568 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</p>
+</li>
+<li>
+<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-skl-6600u/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@bad-flink:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6330/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/bat-dg1-5/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6330/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6330 -&gt; IGTPW_6568</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11118: a8ae2fba8948946087ddc13ec6f4c44b6bcf3c72 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6568: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6568/index.html<br />
+  IGT_6330: f73008bac9a8db0779264b170f630483e9165764 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_scaling_modes@scaling-mode-center<br />
++igt@kms_scaling_modes@scaling-mode-full<br />
++igt@kms_scaling_modes@scaling-mode-full-aspect<br />
++igt@kms_scaling_modes@scaling-mode-none</p>
+
+</body>
+</html>
+
+--===============8317664242381487221==--
