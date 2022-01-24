@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6923210ED8A
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jan 2022 11:27:08 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 24 Jan 2022 16:53:51 +0530
-Message-Id: <20220124112352.1970255-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220124112352.1970255-1-bhanuprakash.modem@intel.com>
-References: <20220124112352.1970255-1-bhanuprakash.modem@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0B5D10E430
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jan 2022 12:53:58 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+Date: Mon, 24 Jan 2022 18:37:54 +0530
+Message-Id: <20220124130754.12068-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_color: Add support for
- Deep-Color
+Subject: [igt-dev] [v3] tests/kms_scaling_modes: New IGT to validate scaling
+ modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,157 +19,203 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, uma.shankar@intel.com
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new subtests to validate deep color.
+In this IGT, various scaling modes are validated. Scaling
+mode is one of the connector properties. This property
+defines how a non-native mode is upscaled to the native
+mode of an LCD panel.
 
-Cc: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+There are 4 types of scaling modes defined:
+	None:
+		No upscaling happens, scaling is left to the panel. Not all
+		drivers expose this mode.
+	Full:
+		The output is upscaled to the full resolution of the panel,
+		ignoring the aspect ratio. It will expand current image to
+		the size of the monitor.
+	Center:
+		No upscaling happens, the output is centered within the native
+		resolution the panel. As a result, black bars may appear
+		around the image.
+	Full aspect:
+		The output is upscaled to maximize either the width or height
+		while retaining the aspect ratio. It will fill the screen w/o
+		stretching the image. Black bars are placed either on top
+		and bottom or left and right of the picture.
+
+v2: -removed test flags/test_cycle_flags() (JP)
+    -removed redundant igt_display_commit_atomic() (JP)
+    -corrected indentation (JP)
+v3: -removed valid_test check, getting covered in
+     igt_subtest_with_dynamic() (Bhanu)
+    -removed redundant if statement, moved remove_fb()
+     before skip (JP)
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_color.c        | 54 +++++++++++++++++++++++++++++++++++-----
- tests/kms_color_helper.c |  2 +-
- tests/kms_color_helper.h |  1 +
- 3 files changed, 50 insertions(+), 7 deletions(-)
+ tests/kms_scaling_modes.c | 139 ++++++++++++++++++++++++++++++++++++++
+ tests/meson.build         |   1 +
+ 2 files changed, 140 insertions(+)
+ create mode 100644 tests/kms_scaling_modes.c
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 854b8f3c31..3980553e63 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -58,7 +58,7 @@ static void test_pipe_degamma(data_t *data,
- 	fb_id = igt_create_fb(data->drm_fd,
- 			      mode->hdisplay,
- 			      mode->vdisplay,
--			      DRM_FORMAT_XRGB8888,
-+			      data->drm_format,
- 			      DRM_FORMAT_MOD_LINEAR,
- 			      &fb);
- 	igt_assert(fb_id);
-@@ -66,7 +66,7 @@ static void test_pipe_degamma(data_t *data,
- 	fb_modeset_id = igt_create_fb(data->drm_fd,
- 				      mode->hdisplay,
- 				      mode->vdisplay,
--				      DRM_FORMAT_XRGB8888,
-+				      data->drm_format,
- 				      DRM_FORMAT_MOD_LINEAR,
- 				      &fb_modeset);
- 	igt_assert(fb_modeset_id);
-@@ -146,7 +146,7 @@ static void test_pipe_gamma(data_t *data,
- 	fb_id = igt_create_fb(data->drm_fd,
- 			      mode->hdisplay,
- 			      mode->vdisplay,
--			      DRM_FORMAT_XRGB8888,
-+			      data->drm_format,
- 			      DRM_FORMAT_MOD_LINEAR,
- 			      &fb);
- 	igt_assert(fb_id);
-@@ -154,7 +154,7 @@ static void test_pipe_gamma(data_t *data,
- 	fb_modeset_id = igt_create_fb(data->drm_fd,
- 				      mode->hdisplay,
- 				      mode->vdisplay,
--				      DRM_FORMAT_XRGB8888,
-+				      data->drm_format,
- 				      DRM_FORMAT_MOD_LINEAR,
- 				      &fb_modeset);
- 	igt_assert(fb_modeset_id);
-@@ -462,7 +462,7 @@ static bool test_pipe_ctm(data_t *data,
- 	fb_id = igt_create_fb(data->drm_fd,
- 			      mode->hdisplay,
- 			      mode->vdisplay,
--			      DRM_FORMAT_XRGB8888,
-+			      data->drm_format,
- 			      DRM_FORMAT_MOD_LINEAR,
- 			      &fb);
- 	igt_assert(fb_id);
-@@ -470,7 +470,7 @@ static bool test_pipe_ctm(data_t *data,
- 	fb_modeset_id = igt_create_fb(data->drm_fd,
- 				      mode->hdisplay,
- 				      mode->vdisplay,
--				      DRM_FORMAT_XRGB8888,
-+				      data->drm_format,
- 				      DRM_FORMAT_MOD_LINEAR,
- 				      &fb_modeset);
- 	igt_assert(fb_modeset_id);
-@@ -692,6 +692,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	 * for CRC checks with framebuffer references. */
- 	data->color_depth = 8;
- 	delta = 1.0 / (1 << data->color_depth);
-+	data->drm_format = DRM_FORMAT_XRGB8888;
- 
- 	igt_describe("Check the color transformation from red to blue");
- 	igt_subtest_f("pipe-%s-ctm-red-to-blue", kmstest_pipe_name(p)) {
-@@ -866,6 +867,47 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
- 		test_pipe_legacy_gamma_reset(data, primary);
- 
-+	igt_describe("Verify that deep color works correctly");
-+	igt_subtest_with_dynamic_f("pipe-%s-deep-color", kmstest_pipe_name(p)) {
-+		igt_output_t *output;
-+		color_t blue_green_blue[] = {
-+			{ 0.0, 0.0, 1.0 },
-+			{ 0.0, 1.0, 0.0 },
-+			{ 0.0, 0.0, 1.0 }
-+		};
-+		double ctm[] = { 0.0, 0.0, 0.0,
-+				0.0, 1.0, 0.0,
-+				1.0, 0.0, 1.0 };
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+new file mode 100644
+index 00000000..76286ee6
+--- /dev/null
++++ b/tests/kms_scaling_modes.c
+@@ -0,0 +1,139 @@
++/*
++ * Copyright © 2022 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Author:
++ *     Swati Sharma <swati2.sharma@intel.com>
++ */
 +
-+		for_each_valid_output_on_pipe(&data->display, p, output) {
-+			drmModeConnector *connector = output->config.connector;
++#include "igt.h"
++#include <fcntl.h>
++#include <termios.h>
++#include <unistd.h>
 +
-+			if (!is_max_bpc_supported(output))
-+				continue;
++IGT_TEST_DESCRIPTION("Test display scaling modes");
 +
-+			if (!is_panel_supports_deep_color(data->drm_fd, connector))
-+				continue;
++/* Common test data */
++typedef struct data {
++	igt_display_t display;
++	int drm_fd;
++} data_t;
 +
-+			data->color_depth = 10;
-+			data->drm_format = DRM_FORMAT_XRGB2101010;
-+			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
++static void test_scaling_mode_on_output(igt_display_t *display, const enum pipe pipe,
++					igt_output_t *output, uint32_t flags)
++{
++	igt_plane_t *primary, *sprite;
++	drmModeModeInfo mode;
++	struct igt_fb red, blue;
++	int ret;
 +
-+			igt_dynamic_f("gamma")
-+				test_pipe_gamma(data, primary);
++	igt_output_set_pipe(output, pipe);
++	mode = *igt_output_get_mode(output);
 +
-+			igt_dynamic_f("degamma")
-+				test_pipe_degamma(data, primary);
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	sprite = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
 +
-+			igt_dynamic_f("ctm")
-+				igt_assert(test_pipe_ctm(data, primary,
-+							 red_green_blue,
-+							 blue_green_blue, ctm));
++	igt_create_color_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
++			    0.f, 0.f, 1.f, &blue);
 +
-+			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 12);
-+			break;
-+		}
++	igt_create_color_fb(display->drm_fd, 640, 480,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
++			    1.f, 0.f, 0.f, &red);
++
++	igt_plane_set_fb(primary, &blue);
++	igt_plane_set_fb(sprite, &red);
++
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	mode.hdisplay = 640;
++	mode.vdisplay = 480;
++	igt_output_override_mode(output, &mode);
++
++	igt_plane_set_fb(sprite, NULL);
++	igt_plane_set_fb(primary, &red);
++
++	igt_output_set_prop_value(output, IGT_CONNECTOR_SCALING_MODE, flags);
++
++	/* Don't pass ALLOW_MODESET with overridden mode, force fastset */
++	ret = igt_display_try_commit_atomic(display, 0, NULL);
++
++	igt_remove_fb(display->drm_fd, &red);
++	igt_remove_fb(display->drm_fd, &blue);
++
++	igt_skip_on_f(ret == -EINVAL, "Scaling mode not supported\n");
++}
++
++/* Returns true if an output supports scaling mode property */
++static bool has_scaling_mode(igt_output_t *output)
++{
++	return igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE) &&
++	       igt_output_get_prop(output, IGT_CONNECTOR_SCALING_MODE);
++}
++
++static void test_scaling_mode(data_t *data, uint32_t flags)
++{
++	igt_display_t *display = &data->display;
++	igt_output_t *output;
++	enum pipe pipe;
++
++	for_each_pipe_with_valid_output(display, pipe, output) {
++		if (!has_scaling_mode(output))
++			continue;
++
++		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe));
++		igt_display_reset(display);
++		test_scaling_mode_on_output(display, pipe, output, flags);
++	}
++}
++
++igt_main
++{
++	data_t data = {};
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		igt_require(data.drm_fd >= 0);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.drm_fd);
++		igt_require(data.display.is_atomic);
++
++		igt_display_require_output(&data.display);
 +	}
 +
- 	igt_fixture {
- 		disable_degamma(primary->pipe);
- 		disable_gamma(primary->pipe);
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 1adb4644c5..0550834648 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -184,7 +184,7 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
- 	uint32_t mask;
- 
- 	if (is_i915_device(data->drm_fd))
--		mask = ((1 << color_depth) - 1) << 8;
-+		mask = ((1 << color_depth) - 1) << (16 - color_depth);
- 	else
- 		mask = max_value;
- 
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index 992087ac9c..7017d83bd5 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -50,6 +50,7 @@ typedef struct {
- 	igt_display_t display;
- 	igt_pipe_crc_t *pipe_crc;
- 
-+	uint32_t drm_format;
- 	uint32_t color_depth;
- 	uint64_t degamma_lut_size;
- 	uint64_t gamma_lut_size;
++	igt_describe("Tests full display scaling mode");
++	igt_subtest_with_dynamic("scaling-mode-full")
++		test_scaling_mode(&data, DRM_MODE_SCALE_FULLSCREEN);
++	igt_describe("Tests center display scaling mode");
++	igt_subtest_with_dynamic("scaling-mode-center")
++		test_scaling_mode(&data, DRM_MODE_SCALE_CENTER);
++	igt_describe("Tests full aspect display scaling mode");
++	igt_subtest_with_dynamic("scaling-mode-full-aspect")
++		test_scaling_mode(&data, DRM_MODE_SCALE_ASPECT);
++	igt_describe("Tests none display scaling mode (no scaling)");
++	igt_subtest_with_dynamic("scaling-mode-none")
++		test_scaling_mode(&data, DRM_MODE_SCALE_NONE);
++
++	igt_fixture
++		igt_display_fini(&data.display);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index c14acf99..7003d064 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -50,6 +50,7 @@ test_progs = [
+ 	'kms_properties',
+ 	'kms_rmfb',
+ 	'kms_rotation_crc',
++	'kms_scaling_modes',
+ 	'kms_selftest',
+ 	'kms_sequence',
+ 	'kms_setmode',
 -- 
-2.32.0
+2.25.1
