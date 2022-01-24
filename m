@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B170010ED74
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jan 2022 11:27:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DAA110ED90
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jan 2022 11:27:10 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Mon, 24 Jan 2022 16:53:50 +0530
-Message-Id: <20220124112352.1970255-2-bhanuprakash.modem@intel.com>
+Date: Mon, 24 Jan 2022 16:53:52 +0530
+Message-Id: <20220124112352.1970255-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220124112352.1970255-1-bhanuprakash.modem@intel.com>
 References: <20220124112352.1970255-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] tests/kms_color_helper: Read deep-color
- capability from EDID
+Subject: [igt-dev] [PATCH i-g-t 3/3] HAX: Add deep-color tests to BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,142 +22,25 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, uma.shankar@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a helper function to read the panel's deep-color capability
-from EDID.
-
-https://glenwing.github.io/docs/VESA-EEDID-A2.pdf
-(3.6.1 Video Input Definition: 1 Byte)
-
------------------------------------------------------------------
-| 7 | 6 5 4 3 2 1 0 | Video Signal Interface: Bit 7             |
-|---|---------------|-------------------------------------------|
-| 1 | x x x x x x x | Input is a Digital Video Signal Interface |
------------------------------------------------------------------
-
------------------------------------------------------
-| 7 | 6 5 4 | 3 2 1 0 | Color Bit Depth: Bits 6 → 4 |
-|---|-------|---------|-----------------------------|
-| 1 | 0 0 0 | x x x x | Color Bit Depth is undefined|
-| 1 | 0 0 1 | x x x x | 6 Bits per Primary Color    |
-| 1 | 0 1 0 | x x x x | 8 Bits per Primary Color    |
-| 1 | 0 1 1 | x x x x | 10 Bits per Primary Color   |
-| 1 | 1 0 0 | x x x x | 12 Bits per Primary Color   |
-| 1 | 1 0 1 | x x x x | 14 Bits per Primary Color   |
-| 1 | 1 1 0 | x x x x | 16 Bits per Primary Color   |
-| 1 | 1 1 1 | x x x x | Reserved (Do Not Use)       |
-|---|-------|---------|-----------------------------|
-
-For deep-color we need atleast 10-bits.
-
-Cc: Uma Shankar <uma.shankar@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_edid.c           | 16 ++++++++++++++++
- lib/igt_edid.h           |  1 +
- tests/kms_color_helper.c | 30 ++++++++++++++++++++++++++++++
- tests/kms_color_helper.h |  3 +++
- 4 files changed, 50 insertions(+)
+ tests/intel-ci/fast-feedback.testlist | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-index df346c4c8c..6864896977 100644
---- a/lib/igt_edid.c
-+++ b/lib/igt_edid.c
-@@ -349,6 +349,22 @@ size_t edid_get_size(const struct edid *edid)
- 	       edid->extensions_len * sizeof(struct edid_ext);
- }
- 
-+/**
-+ * edid_get_bit_depth: return the Color Bit Depth if Input is a Digital Video
-+ * Signal Interface, else return zero.
-+ */
-+uint8_t edid_get_bit_depth(const struct edid *edid)
-+{
-+	/*
-+	 * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
-+	 * Color Bit Depth: Bits 6 → 4
-+	 */
-+	if (!(edid->input & (1 << 7)))
-+		return 0;
-+
-+	return ((edid->input & (7 << 4)) >> 4);
-+}
-+
- /**
-  * cea_sad_init_pcm:
-  * @channels: the number of supported channels (max. 8)
-diff --git a/lib/igt_edid.h b/lib/igt_edid.h
-index aac2f4a208..bb328b5a89 100644
---- a/lib/igt_edid.h
-+++ b/lib/igt_edid.h
-@@ -377,6 +377,7 @@ void edid_update_checksum(struct edid *edid);
- void base_edid_update_checksum(struct edid *edid);
- size_t edid_get_size(const struct edid *edid);
- void edid_get_mfg(const struct edid *edid, char out[static 3]);
-+uint8_t edid_get_bit_depth(const struct edid *edid);
- void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
- 			      int width_mm, int height_mm);
- void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index d71e7bb2e6..1adb4644c5 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -24,6 +24,36 @@
- 
- #include "kms_color_helper.h"
- 
-+bool
-+is_panel_supports_deep_color(int fd, drmModeConnector *connector)
-+{
-+	uint64_t edid_blob_id;
-+	uint8_t bit_depth;
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+
-+	igt_assert(kmstest_get_property(fd, connector->connector_id,
-+					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-+					&edid_blob_id, NULL));
-+	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
-+	igt_require_f(edid_blob, "EDID blob is NULL\n");
-+
-+	bit_depth = edid_get_bit_depth((const struct edid *) edid_blob->data);
-+	drmModeFreePropertyBlob(edid_blob);
-+
-+	if (bit_depth > 0 && bit_depth < 7)
-+		igt_info("Max supported bit depth: %d\n", ((bit_depth << 1) + 4));
-+	else
-+		igt_info("Max supported bit depth: Undefined\n");
-+
-+	return (bit_depth >= 3);
-+}
-+
-+bool is_max_bpc_supported(igt_output_t *output)
-+{
-+	return igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC) &&
-+		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
-+}
-+
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
- 			       color_t *colors,
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index bb6f0054f3..992087ac9c 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -36,6 +36,7 @@
- #include "drm.h"
- #include "drmtest.h"
- #include "igt.h"
-+#include "igt_edid.h"
- 
- 
- /* Internal */
-@@ -64,6 +65,8 @@ typedef struct {
- 	color_t coeffs[];
- } gamma_lut_t;
- 
-+bool is_panel_supports_deep_color(int fd, drmModeConnector *connector);
-+bool is_max_bpc_supported(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
- 			       color_t *colors,
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 5c867bbf7e..88c281734f 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -104,6 +104,10 @@ igt@kms_chamelium@vga-hpd-fast
+ igt@kms_chamelium@vga-edid-read
+ igt@kms_chamelium@common-hpd-after-suspend
+ igt@kms_prop_blob@basic
++igt@kms_color@pipe-A-deep-color
++igt@kms_color@pipe-B-deep-color
++igt@kms_color@pipe-C-deep-color
++igt@kms_color@pipe-D-deep-color
+ igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+ igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+ igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
 -- 
 2.32.0
