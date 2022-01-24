@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56EDD10E1EF
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jan 2022 04:42:57 +0000 (UTC)
-Message-ID: <c28f17c8-9c67-0caf-4d2d-1136eb2a9ef5@intel.com>
-Date: Mon, 24 Jan 2022 10:12:43 +0530
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com
+ [IPv6:2a00:1450:4864:20::429])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C66BD10ED8E
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jan 2022 08:59:05 +0000 (UTC)
+Received: by mail-wr1-x429.google.com with SMTP id a13so12168759wrh.9
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jan 2022 00:59:05 -0800 (PST)
+Message-ID: <4333f801-f482-1b52-0ad9-2231116ef619@gmail.com>
+Date: Mon, 24 Jan 2022 10:58:58 +0200
+MIME-Version: 1.0
 Content-Language: en-US
 References: <20220121193636.1413-1-swati2.sharma@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 In-Reply-To: <20220121193636.1413-1-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
 Subject: Re: [igt-dev] [v2] tests/kms_scaling_modes: New IGT to validate
  scaling modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,12 +23,13 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sat-22-01-2022 01:06 am, Swati Sharma wrote:
+On 21.1.2022 21.36, Swati Sharma wrote:
 > In this IGT, various scaling modes are validated. Scaling
 > mode is one of the connector properties. This property
 > defines how a non-native mode is upscaled to the native
@@ -149,6 +153,10 @@ On Sat-22-01-2022 01:06 am, Swati Sharma wrote:
 > +
 > +	igt_remove_fb(display->drm_fd, &red);
 > +	igt_remove_fb(display->drm_fd, &blue);
+
+Above "if" statement is now redundant. Also you could remove these 
+framebuffers before deciding if skip or no.
+
 > +}
 > +
 > +/* Returns true if an output supports scaling mode property */
@@ -176,12 +184,6 @@ On Sat-22-01-2022 01:06 am, Swati Sharma wrote:
 > +	}
 > +
 > +	igt_require_f(valid_tests, "No valid crtc/connector combinations found\n");
-
-This check is not required. igt_subtest_with_dynamic() will throw a SKIP 
-automatically if no igt_dynamic() is executed.
-
-- Bhanu
-
 > +}
 > +
 > +igt_main
