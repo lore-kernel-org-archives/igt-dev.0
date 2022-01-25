@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F80410F2FF
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jan 2022 11:47:49 +0000 (UTC)
-From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
-Date: Tue, 25 Jan 2022 11:47:46 +0000
-Message-ID: <4f692a3b2f925c7df6fc00a5e9e5408952c7f4c9.camel@intel.com>
-References: <20220121150711.31407-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220121150711.31407-1-juhapekka.heikkila@gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8855035EA8178A40BAB1DC9D5F29DA05@namprd11.prod.outlook.com>
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
+ [IPv6:2a00:1450:4864:20::134])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6D1A10E31D
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jan 2022 14:29:33 +0000 (UTC)
+Received: by mail-lf1-x134.google.com with SMTP id n8so16745618lfq.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jan 2022 06:29:33 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Tue, 25 Jan 2022 16:29:20 +0200
+Message-Id: <20220125142920.3812-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_flip_tiling: Handle lost
- flip event
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_render_copy_redux: reduce
+ looping if on simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,81 +21,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIyLTAxLTIxIGF0IDE3OjA3ICswMjAwLCBKdWhhLVBla2thIEhlaWtraWxhIHdy
-b3RlOg0KPiBJZiB0ZXN0IGZhaWxzIHRvIHJlY2VpdmUgZmxpcCBldmVudCB3aXRoaW4gNTBtcyB0
-aW1lIHBlcmlvZA0KPiBydW5uaW5nIHRlc3QgYXMgd2VsbCBhcyBhbGwgZm9sbG93aW5nIHN1YnRl
-c3RzIHdpbGwgZmFpbC4NCj4gRml4IGFjdHVhbGx5IGZhaWxpbmcgdGVzdCB0byBiZSBvbmx5IG9u
-ZSB0byBiZSBmbGFnZ2VkIGFuZA0KPiBmb2xsb3dpbmcgc3VidGVzdHMgd2lsbCBub3QgYmUgYWZm
-ZWN0ZWQgYnkgcHJldmlvdXMgZmFpbHVyZS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEp1aGEtUGVr
-a2EgSGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+DQoNCkxvb2tzIGdvb2Qg
-dG8gbWUuDQoNClJldmlld2VkLWJ5OiBWaW5vZCBHb3ZpbmRhcGlsbGFpIDx2aW5vZC5nb3ZpbmRh
-cGlsbGFpQGludGVsLmNvbT4NCg0KPiAtLS0NCj4gIHRlc3RzL2k5MTUva21zX2ZsaXBfdGlsaW5n
-LmMgfCA0MCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAtLS0tDQo+ICAxIGZp
-bGUgY2hhbmdlZCwgMzYgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYg
-LS1naXQgYS90ZXN0cy9pOTE1L2ttc19mbGlwX3RpbGluZy5jDQo+IGIvdGVzdHMvaTkxNS9rbXNf
-ZmxpcF90aWxpbmcuYw0KPiBpbmRleCA5MTM2NTc5OTMuLmJhOWZmNDZlZCAxMDA2NDQNCj4gLS0t
-IGEvdGVzdHMvaTkxNS9rbXNfZmxpcF90aWxpbmcuYw0KPiArKysgYi90ZXN0cy9pOTE1L2ttc19m
-bGlwX3RpbGluZy5jDQo+IEBAIC0zOSw3ICszOSw5IEBAIHR5cGVkZWYgc3RydWN0IHsNCj4gIAlp
-bnQgZ2VuOw0KPiAgCXVpbnQzMl90IHRlc3Rmb3JtYXQ7DQo+ICAJc3RydWN0IGlndF9mYiBmYlsy
-XTsNCj4gKwlzdHJ1Y3QgaWd0X2ZiIG9sZF9mYlsyXTsNCj4gIAlpZ3RfcGlwZV9jcmNfdCAqcGlw
-ZV9jcmM7DQo+ICsJYm9vbCBmbGlwZXZlbnRfaW5fcXVldWU7IC8vIGlmIHRlc3QgZmFpbHMgbWF5
-IG5lZWQgdG8gaGFuZGxlDQo+IHJvZ3VlIGV2ZW50DQo+ICB9IGRhdGFfdDsNCj4gIA0KPiAgc3Rh
-dGljIHZvaWQgcGlwZV9jcmNfZnJlZShkYXRhX3QgKmRhdGEpDQo+IEBAIC03MSwxMiArNzMsMTMg
-QEAgc3RhdGljIGludCB0cnlfY29tbWl0KGlndF9kaXNwbGF5X3QgKmRpc3BsYXkpDQo+ICBzdGF0
-aWMgdm9pZA0KPiAgdGVzdF9mbGlwX3RpbGluZyhkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBl
-LCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwNCj4gdWludDY0X3QgbW9kaWZpZXJbMl0pDQo+ICB7DQo+
-IC0Jc3RydWN0IGlndF9mYiBvbGRfZmJbMl0gPSB7IGRhdGEtPmZiWzBdLCBkYXRhLT5mYlsxXSB9
-Ow0KPiAgCWRybU1vZGVNb2RlSW5mbyAqbW9kZTsNCj4gIAlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsN
-Cj4gIAlpZ3RfY3JjX3QgcmVmZXJlbmNlX2NyYywgY3JjOw0KPiAgCWludCBmYl9pZCwgcmV0Ow0K
-PiAgDQo+ICsJbWVtY3B5KCZkYXRhLT5vbGRfZmIsICZkYXRhLT5mYiwgc2l6ZW9mKGRhdGEtPmZi
-KSk7DQo+ICsNCj4gIAltb2RlID0gaWd0X291dHB1dF9nZXRfbW9kZShvdXRwdXQpOw0KPiAgDQo+
-ICAJcHJpbWFyeSA9IGlndF9vdXRwdXRfZ2V0X3BsYW5lKG91dHB1dCwgMCk7DQo+IEBAIC0xMTcs
-MTQgKzEyMCwxNiBAQCB0ZXN0X2ZsaXBfdGlsaW5nKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBp
-cGUsDQo+IGlndF9vdXRwdXRfdCAqb3V0cHV0LCB1aW50NjRfdCBtbw0KPiAgCSAqLw0KPiAgCWln
-dF9yZXF1aXJlKHJldCA9PSAwKTsNCj4gIA0KPiArCWRhdGEtPmZsaXBldmVudF9pbl9xdWV1ZSA9
-IHRydWU7DQo+ICAJa21zdGVzdF93YWl0X2Zvcl9wYWdlZmxpcChkYXRhLT5kcm1fZmQpOw0KPiAr
-CWRhdGEtPmZsaXBldmVudF9pbl9xdWV1ZSA9IGZhbHNlOw0KPiAgDQo+ICAJLyogR2V0IGEgY3Jj
-IGFuZCBjb21wYXJlIHdpdGggdGhlIHJlZmVyZW5jZS4gKi8NCj4gIAlpZ3RfcGlwZV9jcmNfZ2V0
-X2N1cnJlbnQoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5waXBlX2NyYywgJmNyYyk7DQo+ICAJaWd0X2Fz
-c2VydF9jcmNfZXF1YWwoJnJlZmVyZW5jZV9jcmMsICZjcmMpOw0KPiAgDQo+IC0JaWd0X3JlbW92
-ZV9mYihkYXRhLT5kcm1fZmQsICZvbGRfZmJbMF0pOw0KPiAtCWlndF9yZW1vdmVfZmIoZGF0YS0+
-ZHJtX2ZkLCAmb2xkX2ZiWzFdKTsNCj4gKwlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9mZCwgJmRh
-dGEtPm9sZF9mYlswXSk7DQo+ICsJaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZkYXRhLT5v
-bGRfZmJbMV0pOw0KPiAgfQ0KPiAgDQo+ICBzdGF0aWMgdm9pZCB0ZXN0X2NsZWFudXAoZGF0YV90
-ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwgaWd0X291dHB1dF90DQo+ICpvdXRwdXQpDQo+IEBAIC0x
-NDEsNyArMTQ2LDMxIEBAIHN0YXRpYyB2b2lkIHRlc3RfY2xlYW51cChkYXRhX3QgKmRhdGEsIGVu
-dW0gcGlwZQ0KPiBwaXBlLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkNCj4gIAlpZ3RfcmVtb3ZlX2Zi
-KGRhdGEtPmRybV9mZCwgJmRhdGEtPmZiWzFdKTsNCj4gIH0NCj4gIA0KPiAtc3RhdGljIGRhdGFf
-dCBkYXRhOw0KPiArc3RhdGljIHZvaWQgaGFuZGxlX2xvc3RfZXZlbnQoZGF0YV90ICpkYXRhKSB7
-DQo+ICsJLy8gd2FpdCBmb3IgbWF4IDUgc2Vjb25kcyBpbiBjYXNlIGhpdCBzd2FwcGluZyBvciBz
-aW1pbGFyIGluDQo+IHByb2dyZXNzLg0KPiArCWRybUV2ZW50Q29udGV4dCBldmN0eCA9IHsgLnZl
-cnNpb24gPSAyIH07DQo+ICsJc3RydWN0IHRpbWV2YWwgdGltZW91dCA9IHsgLnR2X3NlYyA9IDV9
-Ow0KPiArCWZkX3NldCBmZHM7DQo+ICsJaW50IHJldDsNCj4gKw0KPiArCUZEX1pFUk8oJmZkcyk7
-DQo+ICsJRkRfU0VUKGRhdGEtPmRybV9mZCwgJmZkcyk7DQo+ICsJZG8gew0KPiArCQllcnJubyA9
-IDA7DQo+ICsJCXJldCA9IHNlbGVjdChkYXRhLT5kcm1fZmQgKyAxLCAmZmRzLCBOVUxMLCBOVUxM
-LA0KPiAmdGltZW91dCk7DQo+ICsJfSB3aGlsZSAocmV0IDwgMCAmJiBlcnJubyA9PSBFSU5UUik7
-DQo+ICsNCj4gKwkvLyBUT0RPOiBpZiBzdGlsbCBmYWlsZWQgbWF5IG5lZWQgdG8gcmVzZXQvcmVz
-dGFydCBldmVyeXRoaW5nDQo+IHRvDQo+ICsJLy8gYXZvaWQgY29uc2VjdXRpdmUgdGVzdHMgZmFp
-bGluZy4NCj4gKw0KPiArCWlndF9hc3NlcnQoZHJtSGFuZGxlRXZlbnQoZGF0YS0+ZHJtX2ZkLCAm
-ZXZjdHgpID09IDApOw0KPiArDQo+ICsJZGF0YS0+ZmxpcGV2ZW50X2luX3F1ZXVlID0gZmFsc2U7
-DQo+ICsJaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZkYXRhLT5vbGRfZmJbMF0pOw0KPiAr
-CWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZGF0YS0+b2xkX2ZiWzFdKTsNCj4gK30NCj4g
-Kw0KPiArc3RhdGljIGRhdGFfdCBkYXRhID0ge307DQo+ICBpZ3Rfb3V0cHV0X3QgKm91dHB1dDsN
-Cj4gIA0KPiAgaWd0X21haW4NCj4gQEAgLTE4OSw2ICsyMTgsOSBAQCBpZ3RfbWFpbg0KPiAgCQkJ
-CQkJICAgICAgaWd0X2ZiX21vZGlmaWVyX24NCj4gYW1lKG1vZGlmaWVyWzBdKSwNCj4gIAkJCQkJ
-CSAgICAgIGlndF9mYl9tb2RpZmllcl9uDQo+IGFtZShtb2RpZmllclsxXSkpDQo+ICAJCQkJCQl0
-ZXN0X2ZsaXBfdGlsaW5nKCZkYXRhLA0KPiBwaXBlLCBvdXRwdXQsIG1vZGlmaWVyKTsNCj4gKw0K
-PiArCQkJCQlpZiAoZGF0YS5mbGlwZXZlbnRfaW5fcXVldWUpDQo+ICsJCQkJCQloYW5kbGVfbG9z
-dF9ldmVudCgmZGF0YQ0KPiApOw0KPiAgCQkJCX0NCj4gIAkJCX0NCj4gIAkJCXRlc3RfY2xlYW51
-cCgmZGF0YSwgcGlwZSwgb3V0cHV0KTsNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRlbCBGaW5sYW5kIE95ClJl
-Z2lzdGVyZWQgQWRkcmVzczogUEwgMjgxLCAwMDE4MSBIZWxzaW5raSAKQnVzaW5lc3MgSWRlbnRp
-dHkgQ29kZTogMDM1NzYwNiAtIDQgCkRvbWljaWxlZCBpbiBIZWxzaW5raSAKClRoaXMgZS1tYWls
-IGFuZCBhbnkgYXR0YWNobWVudHMgbWF5IGNvbnRhaW4gY29uZmlkZW50aWFsIG1hdGVyaWFsIGZv
-cgp0aGUgc29sZSB1c2Ugb2YgdGhlIGludGVuZGVkIHJlY2lwaWVudChzKS4gQW55IHJldmlldyBv
-ciBkaXN0cmlidXRpb24KYnkgb3RoZXJzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIElmIHlvdSBh
-cmUgbm90IHRoZSBpbnRlbmRlZApyZWNpcGllbnQsIHBsZWFzZSBjb250YWN0IHRoZSBzZW5kZXIg
-YW5kIGRlbGV0ZSBhbGwgY29waWVzLgo=
+On simulation it's interesting plumbing generally works and don't
+waste time executing long loops.
+
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/i915/gem_render_copy_redux.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tests/i915/gem_render_copy_redux.c b/tests/i915/gem_render_copy_redux.c
+index 6c8d7f755..0ef482b99 100644
+--- a/tests/i915/gem_render_copy_redux.c
++++ b/tests/i915/gem_render_copy_redux.c
+@@ -207,13 +207,13 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("normal") {
+-		int loop = 100;
++		int loop = igt_run_in_simulation() ? 3 : 100;
+ 		while (loop--)
+ 			copy(&data);
+ 	}
+ 
+ 	igt_subtest("interruptible") {
+-		int loop = 100;
++		int loop = igt_run_in_simulation() ? 3 : 100;
+ 		igt_fork_signal_helper();
+ 		while (loop--)
+ 			copy(&data);
+@@ -221,13 +221,13 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("flink") {
+-		int loop = 100;
++		int loop = igt_run_in_simulation() ? 3 : 100;
+ 		while (loop--)
+ 			copy_flink(&data);
+ 	}
+ 
+ 	igt_subtest("flink-interruptible") {
+-		int loop = 100;
++		int loop = igt_run_in_simulation() ? 3 : 100;
+ 		igt_fork_signal_helper();
+ 		while (loop--)
+ 			copy_flink(&data);
+-- 
+2.28.0
