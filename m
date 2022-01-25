@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5A8910EC50
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jan 2022 06:52:36 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 882F410EC52
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jan 2022 06:52:40 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 25 Jan 2022 07:52:28 +0100
-Message-Id: <20220125065231.16986-1-zbigniew.kempczynski@intel.com>
+Date: Tue, 25 Jan 2022 07:52:29 +0100
+Message-Id: <20220125065231.16986-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220125065231.16986-1-zbigniew.kempczynski@intel.com>
+References: <20220125065231.16986-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/3] Verify X and Y tilings on rcs and bcs
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/intel_bufops: Relax swizzle
+ condition to allow using software tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,28 +22,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-During my work on block-copy I've observed some phenomena with fast-copy
-and x-tiling. I was a little bit surprised it doesn't blit to expected
-x-tile surface and I want to expose that behavior. Render engine in the
-meantime behaves correctly.
+On gen8+ or VLV i915 doesn't set swizzle bits so disabling software
+tiling when we're not able to get swizzle bits (via GEM_SET_TILING)
+is not necessary.
 
-If there're some tests which uses fast-copy x-tiling we should be
-aware that some blitter commands (in this case fast-copy) cannot be
-reliable and we should be replaced or skipped.
+Software tiling is useful for detecting correctness of tiled surfaces
+produced by render-copy or fast-copy.
 
-Zbigniew Kempczyński (3):
-  lib/intel_bufops: Relax swizzle condition to allow using software
-    tiling
-  lib/intel_bufops: Add tile/linear argument during dumping to png
-  tests/api_intel_bb: Add check-xmajor and check-ymajor tests
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/intel_bufops.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- lib/intel_bufops.c           |  32 ++++++----
- lib/intel_bufops.h           |   3 +-
- tests/i915/api_intel_bb.c    | 110 +++++++++++++++++++++++++++++++----
- tests/i915/gem_render_copy.c |  16 ++---
- 4 files changed, 131 insertions(+), 30 deletions(-)
-
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index f13063fa9..e8160c823 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -1359,7 +1359,7 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+ 		bool supported = probe_hw_tiling(bops, I915_TILING_X,
+ 						 &swizzling_supported);
+ 
+-		if (!swizzling_supported) {
++		if (!swizzling_supported && bops->intel_gen < 8) {
+ 			igt_debug("Swizzling for X is not supported\n");
+ 			bops->supported_tiles &= ~TILE_X;
+ 		}
+@@ -1377,7 +1377,7 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+ 		bool supported = probe_hw_tiling(bops, I915_TILING_Y,
+ 						 &swizzling_supported);
+ 
+-		if (!swizzling_supported) {
++		if (!swizzling_supported && bops->intel_gen < 8) {
+ 			igt_debug("Swizzling for Y is not supported\n");
+ 			bops->supported_tiles &= ~TILE_Y;
+ 		}
 -- 
 2.32.0
