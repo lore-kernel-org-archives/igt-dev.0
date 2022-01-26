@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3747734378939577991=="
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
+ [199.106.114.39])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44A3F10E340
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jan 2022 17:33:33 +0000 (UTC)
+Message-ID: <9d9fc6eb-fb6c-9b9d-7d63-03e5fdded1ca@quicinc.com>
+Date: Wed, 26 Jan 2022 09:33:31 -0800
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 26 Jan 2022 16:33:07 -0000
-Message-ID: <164321478734.25407.14086400487061264052@emeril.freedesktop.org>
-References: <20220126115846.25920-1-petri.latvala@intel.com>
-In-Reply-To: <20220126115846.25920-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Iga21zX3Bs?=
- =?utf-8?q?ane=5Fscaling=3A_Add_more_scale_factor_tests_to_cover_more_driv?=
- =?utf-8?q?ers_=28rev2=29?=
+Content-Language: en-US
+References: <20220126010105.187-1-quic_jesszhan@quicinc.com>
+ <YfEgqkJDpw9ZXfLE@platvala-desk.ger.corp.intel.com>
+ <YfE3rbP2LquSeSHd@platvala-desk.ger.corp.intel.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <YfE3rbP2LquSeSHd@platvala-desk.ger.corp.intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t v5] tests/kms_plane_scaling: Increase
+ buffer size if driver doesn't support larger scale factors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,288 +23,163 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Cc: quic_khsieh@quicinc.com, swboyd@chromium.org, igt-dev@lists.freedesktop.org, nganji@codeaurora.org, seanpaul@chromium.org, aravindh@codeaurora.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3747734378939577991==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: kms_plane_scaling: Add more scale factor tests to cover more drivers (rev2)
-URL   : https://patchwork.freedesktop.org/series/99364/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11144 -> IGTPW_6581
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6581 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6581, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/index.html
-
-Participating hosts (47 -> 43)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (5): fi-hsw-4200u fi-bsw-cyan fi-icl-u2 fi-ctg-p8600 fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6581:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6581 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_cs_nop@fork-compute0:
-    - fi-ivb-3770:        NOTRUN -> [SKIP][3] ([fdo#109271]) +17 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-ivb-3770/igt@amdgpu/amd_cs_nop@fork-compute0.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-skl-6600u:       NOTRUN -> [FAIL][4] ([i915#4547])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [PASS][5] -> [INCOMPLETE][6] ([i915#3921])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][7] ([fdo#109271]) +57 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-6:          [DMESG-FAIL][8] ([i915#4494] / [i915#4957]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-    - fi-ivb-3770:        [INCOMPLETE][10] ([i915#3303]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-    - fi-cfl-8109u:       [DMESG-WARN][12] ([i915#295]) -> [PASS][13] +12 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-
-  
-#### Warnings ####
-
-  * igt@runner@aborted:
-    - fi-skl-6600u:       [FAIL][14] ([i915#2722] / [i915#4312]) -> [FAIL][15] ([i915#4312])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/fi-skl-6600u/igt@runner@aborted.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-skl-6600u/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
-  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
 
 
-Build changes
--------------
+On 1/26/2022 3:59 AM, Petri Latvala wrote:
+> On Wed, Jan 26, 2022 at 12:21:30PM +0200, Petri Latvala wrote:
+>> On Tue, Jan 25, 2022 at 05:01:05PM -0800, Jessica Zhang wrote:
+>>> Catch edge cases where driver doesn't support larger scale factors or
+>>> pipe doesn't support scaling.
+>>>
+>>> Currently, a 20x20 framebuffer is passed in to be upscaled. However,
+>>> this will cause issues with other drivers as they may not support larger
+>>> scale factors or may not support scaling at all for certain planes.
+>>>
+>>> This avoids failures due to invalid scale factor by trying
+>>> the original 20x20 framebuffer commit, then trying to commit larger
+>>> framebuffers up to and including unity scale.
+>>>
+>>> Changes since V1:
+>>> - try_commit_with_fb_size: Changed igt_try_commit2 to
+>>>    igt_display_try_commit_atomic instead to avoid redundant commits
+>>> - try_commit_with_fb_size: Moved calls to clear framebuffer to outside
+>>>    of success condition and moved cleanup_crtc back to outside of method
+>>>
+>>> Changes since V2:
+>>> - try_commit_with_fb_size: Replaced igt_display_try_commit_atomic with
+>>>    igt_display_try_commit2 and removed igt_display_try_commit2 to avoid
+>>>    redundant checks
+>>>
+>>> Changes since V3:
+>>> - try_commit_with_fb_size: Moved igt_plane_set_position to outside
+>>>    method after fallback cases
+>>>
+>>> Changes since V4:
+>>> - try_commit_with_fb_size: Moved igt_create_color_fb to inside
+>>>    display_try_commit_with_fb and moved igt_set_plane_fb out so that a
+>>>    new framebuffer is created and set for different sizes
+>>>
+>>> Tested-on: Qualcomm RB5 (sdm845), Chromebook (Lazor)
+>>>
+>>> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+>>> Change-Id: Ib6758fec0293a2ba4c4109fbf42674cf93f784dd
+>>> ---
+>>>   tests/kms_plane_scaling.c | 57 +++++++++++++++++++++++++++++++--------
+>>>   1 file changed, 46 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+>>> index 85db11ee6dbd..bbc89c23b91f 100644
+>>> --- a/tests/kms_plane_scaling.c
+>>> +++ b/tests/kms_plane_scaling.c
+>>> @@ -1,5 +1,6 @@
+>>>   /*
+>>>    * Copyright © 2013,2014 Intel Corporation
+>>> + * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
+>>>    *
+>>>    * Permission is hereby granted, free of charge, to any person obtaining a
+>>>    * copy of this software and associated documentation files (the "Software"),
+>>> @@ -118,6 +119,32 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+>>>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>>>   }
+>>>   
+>>> +static int try_commit_with_fb_size(int width, int height, igt_rotation_t rot,
+>>> +				   igt_display_t *display, data_t *d,
+>>> +				   uint32_t pixel_format,
+>>> +				   uint64_t modifier,
+>>> +				   igt_plane_t *plane,
+>>> +				   drmModeModeInfo *mode)
+>>> +{
+>>> +	int ret;
+>>> +
+>>> +	/* create buffer in the range of  min and max source side limit.*/
+>>> +	igt_create_color_fb(display->drm_fd, width, height,
+>>> +		       pixel_format, modifier, 0.0, 1.0, 0.0, &d->fb[0]);
+>>> +	igt_plane_set_fb(plane, &d->fb[0]);
+>>> +
+>>> +	/* Check min to full resolution upscaling */
+>>> +	igt_fb_set_position(&d->fb[0], plane, 0, 0);
+>>> +	igt_fb_set_size(&d->fb[0], plane, width, height);
+>>> +	igt_plane_set_position(plane, 0, 0);
+>>> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+>>> +	igt_plane_set_rotation(plane, rot);
+>>> +
+>>> +	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+>>> +
+>>> +	return ret;
+>>> +}
+>>> +
+>>>   static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+>>>   					 uint32_t pixel_format,
+>>>   					 uint64_t modifier, enum pipe pipe,
+>>> @@ -126,6 +153,7 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+>>>   {
+>>>   	igt_display_t *display = &d->display;
+>>>   	int width, height;
+>>> +	int commit_ret;
+>>>   	drmModeModeInfo *mode;
+>>>   
+>>>   	cleanup_crtc(d);
+>>> @@ -133,22 +161,29 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+>>>   	igt_output_set_pipe(output, pipe);
+>>>   	mode = igt_output_get_mode(output);
+>>>   
+>>> -	/* create buffer in the range of  min and max source side limit.*/
+>>>   	width = height = 20;
+>>> -	igt_create_color_fb(display->drm_fd, width, height,
+>>> -		       pixel_format, modifier, 0.0, 1.0, 0.0, &d->fb[0]);
+>>> -	igt_plane_set_fb(plane, &d->fb[0]);
+>>>   
+>>> -	/* Check min to full resolution upscaling */
+>>> -	igt_fb_set_position(&d->fb[0], plane, 0, 0);
+>>> -	igt_fb_set_size(&d->fb[0], plane, width, height);
+>>> -	igt_plane_set_position(plane, 0, 0);
+>>> -	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+>>> -	igt_plane_set_rotation(plane, rot);
+>>> -	igt_display_commit2(display, COMMIT_ATOMIC);
+>>> +	commit_ret = try_commit_with_fb_size(width, height, rot, display, d,
+>>> +					     pixel_format, modifier, plane, mode);
+>>> +
+>>> +	if(commit_ret == -ERANGE) {
+>>> +		igt_debug("Scaling for %dx%d plane not supported, trying scale factor of 4x\n", width, height);
+>>> +		width = height = mode->vdisplay / 4;
+>>> +		commit_ret = try_commit_with_fb_size(width, height, rot, display, d,
+>>> +						     pixel_format, modifier, plane, mode);
+>>> +	}
+>>> +
+>>> +	if (commit_ret == -ERANGE) {
+>>> +		igt_debug("Scale factor of 4x (or scaling in general) not supported, trying unity scale\n");
+>>> +		width = mode->hdisplay;
+>>> +		height = mode->vdisplay;
+>>> +		commit_ret = try_commit_with_fb_size(width, height, rot, display, d,
+>>> +						     pixel_format, modifier, plane, mode);
+>>> +	}
+>>
+>> Now the changes look good and they do what it says on the tin. But now
+>> it got me thinking if this needs to be even more complicated...
+>>
+>> If a kernel change causes the first scaling attempt to fail and this
+>> goes into the fallbacks and succeeds there, it all happens very
+>> silently. A better setup for catching that case would be to have
+>> separate dynamic subtests for the different scaling factors, where the
+>> unsupported factors do a 'SKIP' result with igt_skip_on_f(commit_ret
+>> == -ERANGE, "Unsupported scaling factor\n");
+>>
+>> What do you think? Sorry to go back and forth like this on the patch.
+> 
+> Something like this: https://patchwork.freedesktop.org/series/99364/
+> 
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6335 -> IGTPW_6581
+Good idea -- it would definitely help to make this more transparent.
 
-  CI-20190529: 20190529
-  CI_DRM_11144: 521a441e3f470159446b8126fe1adb23a863bc90 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6581: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/index.html
-  IGT_6335: 2b30115edd692b60d16cb10375730a87f51f0e37 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+Thanks,
+Jessica Zhang
 
-
-
-== Testlist changes ==
-
-+igt@kms_plane_scaling@scaler-with-pixel-format-20x20
-+igt@kms_plane_scaling@scaler-with-pixel-format-factor-4
-+igt@kms_plane_scaling@scaler-with-pixel-format-unity-scaling
-+igt@kms_plane_scaling@scaler-with-rotation-20x20
-+igt@kms_plane_scaling@scaler-with-rotation-factor-4
-+igt@kms_plane_scaling@scaler-with-rotation-unity-scaling
--igt@kms_plane_scaling@scaler-with-pixel-format
--igt@kms_plane_scaling@scaler-with-rotation
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/index.html
-
---===============3747734378939577991==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>kms_plane_scaling: Add more scale factor tests to cover more drivers (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/99364/">https://patchwork.freedesktop.org/series/99364/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11144 -&gt; IGTPW_6581</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6581 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6581, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/index.html</p>
-<h2>Participating hosts (47 -&gt; 43)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (5): fi-hsw-4200u fi-bsw-cyan fi-icl-u2 fi-ctg-p8600 fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6581:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6581 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_cs_nop@fork-compute0:</p>
-<ul>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-ivb-3770/igt@amdgpu/amd_cs_nop@fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-<li>
-<p>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +12 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11144/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6335 -&gt; IGTPW_6581</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11144: 521a441e3f470159446b8126fe1adb23a863bc90 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6581: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6581/index.html<br />
-  IGT_6335: 2b30115edd692b60d16cb10375730a87f51f0e37 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@kms_plane_scaling@scaler-with-pixel-format-20x20<br />
-+igt@kms_plane_scaling@scaler-with-pixel-format-factor-4<br />
-+igt@kms_plane_scaling@scaler-with-pixel-format-unity-scaling<br />
-+igt@kms_plane_scaling@scaler-with-rotation-20x20<br />
-+igt@kms_plane_scaling@scaler-with-rotation-factor-4<br />
-+igt@kms_plane_scaling@scaler-with-rotation-unity-scaling<br />
--igt@kms_plane_scaling@scaler-with-pixel-format<br />
--igt@kms_plane_scaling@scaler-with-rotation</p>
-
-</body>
-</html>
-
---===============3747734378939577991==--
+> 
+> -- 
+> Petri Latvala
