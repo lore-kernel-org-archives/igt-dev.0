@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com
- [IPv6:2a00:1450:4864:20::435])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3482A10E529
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jan 2022 09:31:25 +0000 (UTC)
-Received: by mail-wr1-x435.google.com with SMTP id a13so24621546wrh.9
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jan 2022 01:31:25 -0800 (PST)
-Message-ID: <b5eb32e8-9cba-1b9b-ac7b-fa1f2d71e7ce@gmail.com>
-Date: Wed, 26 Jan 2022 11:31:18 +0200
-MIME-Version: 1.0
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C77A10E5C3
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jan 2022 09:50:45 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Wed, 26 Jan 2022 09:50:43 +0000
+Message-ID: <c9b86c8568954c46a55452980a5a9449@intel.com>
+References: <20220125195849.18883-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20220125195849.18883-1-juhapekka.heikkila@gmail.com>
 Content-Language: en-US
-References: <20220126073410.11108-1-ville.syrjala@linux.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220126073410.11108-1-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Check plane
- capabilities properly in async flip tests
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_render_copy_redux:
+ reduce looping if on simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,45 +20,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-On 26.1.2022 9.34, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Currently IVB only supports 64bpp formats on the sprite planes
-> but not on the primary plane. This means
-> igt_display_has_format_mod(64bpp)->true and thus we will try to
-> run the 64bpp async flip tests. But since that test uses the
-> primary plane we will fail to actually enable the plane. Fix
-> this by making sure the plane actually supports the format (and
-> let's also check the rotation for good measure).
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   tests/i915/kms_big_fb.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-> index c997cf171a05..9ebf615512bb 100644
-> --- a/tests/i915/kms_big_fb.c
-> +++ b/tests/i915/kms_big_fb.c
-> @@ -489,7 +489,12 @@ max_hw_stride_async_flip_test(data_t *data)
->   
->   	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
->   
-> -	igt_require(igt_plane_has_rotation(primary, data->rotation));
-> +	if (!igt_plane_has_format_mod(primary, data->format, data->modifier))
-> +		return false;
-> +
-> +	if (!igt_plane_has_rotation(primary, data->rotation))
-> +		return false;
-> +
->   	igt_plane_set_rotation(primary, data->rotation);
->   
->   	igt_require_f(igt_display_try_commit2(&data->display, COMMIT_ATOMIC) == 0,
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
+dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSnVoYS0NCj4gUGVra2Eg
+SGVpa2tpbGENCj4gU2VudDogVHVlc2RheSwgSmFudWFyeSAyNSwgMjAyMiA5OjU5IFBNDQo+IFRv
+OiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiBbaWd0LWRldl0gW1BB
+VENIIGktZy10IHYyXSB0ZXN0cy9pOTE1L2dlbV9yZW5kZXJfY29weV9yZWR1eDogcmVkdWNlDQo+
+IGxvb3BpbmcgaWYgb24gc2ltdWxhdGlvbg0KPiANCj4gT24gc2ltdWxhdGlvbiBpdCdzIGludGVy
+ZXN0aW5nIHBsdW1iaW5nIGdlbmVyYWxseSB3b3JrcyBhbmQgZG9uJ3Qgd2FzdGUgdGltZQ0KPiBl
+eGVjdXRpbmcgbG9uZyBsb29wcy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEp1aGEtUGVra2EgSGVp
+a2tpbGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+DQoNClJldmlld2VkLWJ5OiBNaWth
+IEthaG9sYSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPg0KDQo+IC0tLQ0KPiB2MjogdXNlIFNMT1df
+UVVJQ0sgaW5zdGVhZCBvZiBpZ3RfcnVuX2luX3NpbXVsYXRpb24gKFBldHJpKQ0KPiANCj4gIHRl
+c3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5X3JlZHV4LmMgfCA4ICsrKystLS0tDQo+ICAxIGZpbGUg
+Y2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdp
+dCBhL3Rlc3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5X3JlZHV4LmMNCj4gYi90ZXN0cy9pOTE1L2dl
+bV9yZW5kZXJfY29weV9yZWR1eC5jDQo+IGluZGV4IDZjOGQ3Zjc1NS4uNTI1YzE0ZDE4IDEwMDY0
+NA0KPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9yZW5kZXJfY29weV9yZWR1eC5jDQo+ICsrKyBiL3Rl
+c3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5X3JlZHV4LmMNCj4gQEAgLTIwNywxMyArMjA3LDEzIEBA
+IGlndF9tYWluDQo+ICAJfQ0KPiANCj4gIAlpZ3Rfc3VidGVzdCgibm9ybWFsIikgew0KPiAtCQlp
+bnQgbG9vcCA9IDEwMDsNCj4gKwkJaW50IGxvb3AgPSBTTE9XX1FVSUNLKDEwMCwgMyk7DQo+ICAJ
+CXdoaWxlIChsb29wLS0pDQo+ICAJCQljb3B5KCZkYXRhKTsNCj4gIAl9DQo+IA0KPiAgCWlndF9z
+dWJ0ZXN0KCJpbnRlcnJ1cHRpYmxlIikgew0KPiAtCQlpbnQgbG9vcCA9IDEwMDsNCj4gKwkJaW50
+IGxvb3AgPSBTTE9XX1FVSUNLKDEwMCwgMyk7DQo+ICAJCWlndF9mb3JrX3NpZ25hbF9oZWxwZXIo
+KTsNCj4gIAkJd2hpbGUgKGxvb3AtLSkNCj4gIAkJCWNvcHkoJmRhdGEpOw0KPiBAQCAtMjIxLDEz
+ICsyMjEsMTMgQEAgaWd0X21haW4NCj4gIAl9DQo+IA0KPiAgCWlndF9zdWJ0ZXN0KCJmbGluayIp
+IHsNCj4gLQkJaW50IGxvb3AgPSAxMDA7DQo+ICsJCWludCBsb29wID0gU0xPV19RVUlDSygxMDAs
+IDMpOw0KPiAgCQl3aGlsZSAobG9vcC0tKQ0KPiAgCQkJY29weV9mbGluaygmZGF0YSk7DQo+ICAJ
+fQ0KPiANCj4gIAlpZ3Rfc3VidGVzdCgiZmxpbmstaW50ZXJydXB0aWJsZSIpIHsNCj4gLQkJaW50
+IGxvb3AgPSAxMDA7DQo+ICsJCWludCBsb29wID0gU0xPV19RVUlDSygxMDAsIDMpOw0KPiAgCQlp
+Z3RfZm9ya19zaWduYWxfaGVscGVyKCk7DQo+ICAJCXdoaWxlIChsb29wLS0pDQo+ICAJCQljb3B5
+X2ZsaW5rKCZkYXRhKTsNCj4gLS0NCj4gMi4yOC4wDQoNCg==
