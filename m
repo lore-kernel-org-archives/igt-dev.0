@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2804710E3F8
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Jan 2022 06:48:15 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu, 27 Jan 2022 12:14:43 +0530
-Message-Id: <20220127064443.2003969-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220126131512.1998101-2-bhanuprakash.modem@intel.com>
-References: <20220126131512.1998101-2-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6726301447060955650=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 i-g-t 1/3] tests/kms_color_helper: Read deep-color
- capability from EDID
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 27 Jan 2022 07:32:24 -0000
+Message-ID: <164326874415.23658.12247645192832229297@emeril.freedesktop.org>
+References: <20220124112352.1970255-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220124112352.1970255-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTmV3IHN1?=
+ =?utf-8?q?btests_for_deep_color_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,204 +16,737 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, uma.shankar@intel.com
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a helper function to read the panel's deep-color capability
-from EDID.
+--===============6726301447060955650==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This patch will try to read from deep color capability from
-Vendor Specific Data Block first, if VSDB not found then fall
-back to read from Video Input Definition.
+== Series Details ==
 
-Vendor Specific Data Block for "HDMI Licensing LLC":
----------------------------------------------------------
-| Byte|  Bit  |        Description                      |
----------------------------------------------------------
-|     | Bit 6 |   16-bit-per-channel deep color (48-bit)|
-|  6  | Bit 5 |   12-bit-per-channel deep color (36-bit)|
-|     | Bit 4 |   10-bit-per-channel deep color (30-bit)|
----------------------------------------------------------
+Series: New subtests for deep color (rev5)
+URL   : https://patchwork.freedesktop.org/series/99239/
+State : success
 
-Video Input Definition (1-byte):
-    * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
-    * Color Bit Depth: Bits 6 → 4
------------------------------------------------------
-| 7 | 6 5 4 | 3 2 1 0 | Color Bit Depth: Bits 6 → 4 |
-|---|-------|---------|-----------------------------|
-| 1 | 0 0 0 | x x x x | Color Bit Depth is undefined|
-| 1 | 0 0 1 | x x x x | 6 Bits per Primary Color    |
-| 1 | 0 1 0 | x x x x | 8 Bits per Primary Color    |
-| 1 | 0 1 1 | x x x x | 10 Bits per Primary Color   |
-| 1 | 1 0 0 | x x x x | 12 Bits per Primary Color   |
-| 1 | 1 0 1 | x x x x | 14 Bits per Primary Color   |
-| 1 | 1 1 0 | x x x x | 16 Bits per Primary Color   |
-| 1 | 1 1 1 | x x x x | Reserved (Do Not Use)       |
------------------------------------------------------
-For deep-color we need atleast 10-bits.
+== Summary ==
 
-V2:
-* Add EDID 1.3 support
-V3:
-* Fix reading VSDB flags1 for deep-color
+CI Bug Log - changes from CI_DRM_11148 -> IGTPW_6583
+====================================================
 
-Cc: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_edid.c           | 45 ++++++++++++++++++++++++++++++++++++++
- lib/igt_edid.h           |  1 +
- tests/kms_color_helper.c | 47 ++++++++++++++++++++++++++++++++++++++++
- tests/kms_color_helper.h |  3 +++
- 4 files changed, 96 insertions(+)
+Summary
+-------
 
-diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-index df346c4c8c..f06c3b9ec1 100644
---- a/lib/igt_edid.c
-+++ b/lib/igt_edid.c
-@@ -349,6 +349,51 @@ size_t edid_get_size(const struct edid *edid)
- 	       edid->extensions_len * sizeof(struct edid_ext);
- }
- 
-+/**
-+ * edid_get_bit_depth: return the Color Bit Depth if Input is a Digital Video
-+ * Signal Interface, else return zero.
-+ */
-+uint8_t edid_get_bit_depth(const struct edid *edid)
-+{
-+	const uint8_t offset = offsetof(struct edid_cea, data);
-+	uint8_t deep_color, i = 0;
-+
-+	/* Read from vendor specific data block first, if vsdb not found
-+	 * then fall back to read from Video Input Definition.
-+	 */
-+	for (i = 0; i < edid->extensions_len; i++) {
-+		uint32_t index = 0;
-+		uint8_t dtd_offset = edid->extensions[i].data.cea.dtd_start;
-+
-+		if (edid->extensions[i].tag != EDID_EXT_CEA)
-+			continue;
-+
-+		do {
-+			struct edid_cea_data_block * vsdb =
-+				(struct edid_cea_data_block *) &edid->extensions[i].data.cea.data[index];
-+			uint8_t vsdb_length = (vsdb->type_len & 0x1f);
-+			uint8_t vsdb_type = (vsdb->type_len & (7 << 5)) >> 5;
-+
-+			if (vsdb_type == EDID_CEA_DATA_VENDOR_SPECIFIC)
-+				deep_color = vsdb->data.vsdbs[0].data.hdmi.flags1;
-+
-+			if (deep_color & (7 << 4))
-+				return deep_color;
-+
-+			index += (vsdb_length + sizeof(vsdb->type_len));
-+		} while (index < dtd_offset - offset);
-+	}
-+
-+	/*
-+	 * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
-+	 * Color Bit Depth: Bits 6 → 4
-+	 */
-+	if (!(edid->input & (1 << 7)))
-+		return 0;
-+
-+	return ((edid->input & (7 << 4)) >> 4);
-+}
-+
- /**
-  * cea_sad_init_pcm:
-  * @channels: the number of supported channels (max. 8)
-diff --git a/lib/igt_edid.h b/lib/igt_edid.h
-index aac2f4a208..bb328b5a89 100644
---- a/lib/igt_edid.h
-+++ b/lib/igt_edid.h
-@@ -377,6 +377,7 @@ void edid_update_checksum(struct edid *edid);
- void base_edid_update_checksum(struct edid *edid);
- size_t edid_get_size(const struct edid *edid);
- void edid_get_mfg(const struct edid *edid, char out[static 3]);
-+uint8_t edid_get_bit_depth(const struct edid *edid);
- void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
- 			      int width_mm, int height_mm);
- void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index d71e7bb2e6..a17bd0591d 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -24,6 +24,53 @@
- 
- #include "kms_color_helper.h"
- 
-+bool
-+is_panel_supports_deep_color(int fd, drmModeConnector *connector)
-+{
-+	uint64_t edid_blob_id;
-+	uint8_t bit_depth, rev;
-+	const struct edid *edid;
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+
-+	igt_assert(kmstest_get_property(fd, connector->connector_id,
-+					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-+					&edid_blob_id, NULL));
-+	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
-+	igt_require_f(edid_blob, "EDID blob is NULL\n");
-+
-+	edid = (const struct edid *) edid_blob->data;
-+	rev = edid->revision;
-+	bit_depth = edid_get_bit_depth(edid);
-+
-+	drmModeFreePropertyBlob(edid_blob);
-+
-+	if (rev >= 4) {
-+		if (bit_depth > 0 && bit_depth < 7)
-+			igt_info("Max supported bit depth: %d\n", ((bit_depth << 1) + 4));
-+		else
-+			igt_info("Max supported bit depth: Undefined\n");
-+
-+		return (bit_depth >= 3);
-+	} else {
-+		if (bit_depth &	HDMI_VSDB_DC_48BIT)
-+			igt_info("Max supported bit depth: 16\n");
-+		else if (bit_depth & HDMI_VSDB_DC_36BIT)
-+			igt_info("Max supported bit depth: 12\n");
-+		else if (bit_depth & HDMI_VSDB_DC_30BIT)
-+			igt_info("Max supported bit depth: 10\n");
-+		else
-+			igt_info("Max supported bit depth: Undefined\n");
-+
-+		return !!(bit_depth & (7 << 4));
-+	}
-+}
-+
-+bool is_max_bpc_supported(igt_output_t *output)
-+{
-+	return igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC) &&
-+		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
-+}
-+
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
- 			       color_t *colors,
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index bb6f0054f3..992087ac9c 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -36,6 +36,7 @@
- #include "drm.h"
- #include "drmtest.h"
- #include "igt.h"
-+#include "igt_edid.h"
- 
- 
- /* Internal */
-@@ -64,6 +65,8 @@ typedef struct {
- 	color_t coeffs[];
- } gamma_lut_t;
- 
-+bool is_panel_supports_deep_color(int fd, drmModeConnector *connector);
-+bool is_max_bpc_supported(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
- 			       color_t *colors,
--- 
-2.35.0
+  **WARNING**
+
+  Minor unknown changes coming with IGTPW_6583 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6583, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/index.html
+
+Participating hosts (43 -> 39)
+------------------------------
+
+  Additional (2): fi-kbl-soraka fi-pnv-d510 
+  Missing    (6): fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-elk-e7500 bat-jsl-2 fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6583:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_color@pipe-a-deep-color} (NEW):
+    - bat-dg1-6:          NOTRUN -> [SKIP][1] +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/bat-dg1-6/igt@kms_color@pipe-a-deep-color.html
+    - {bat-jsl-1}:        NOTRUN -> [SKIP][2] +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/bat-jsl-1/igt@kms_color@pipe-a-deep-color.html
+
+  * {igt@kms_color@pipe-b-deep-color} (NEW):
+    - {fi-tgl-dsi}:       NOTRUN -> [SKIP][3] +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-tgl-dsi/igt@kms_color@pipe-b-deep-color.html
+
+  * {igt@kms_color@pipe-d-deep-color} (NEW):
+    - {fi-jsl-1}:         NOTRUN -> [SKIP][4] +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-jsl-1/igt@kms_color@pipe-d-deep-color.html
+    - fi-rkl-11600:       NOTRUN -> [SKIP][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-rkl-11600/igt@kms_color@pipe-d-deep-color.html
+    - fi-rkl-guc:         NOTRUN -> [SKIP][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-rkl-guc/igt@kms_color@pipe-d-deep-color.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][7] ([i915#4494] / [i915#4957]) -> [INCOMPLETE][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_11148 and IGTPW_6583:
+
+### New IGT tests (16) ###
+
+  * igt@kms_color@pipe-a-deep-color:
+    - Statuses : 26 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_color@pipe-a-deep-color@ctm:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 11.62] s
+
+  * igt@kms_color@pipe-a-deep-color@degamma:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 11.58] s
+
+  * igt@kms_color@pipe-a-deep-color@gamma:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.52, 11.70] s
+
+  * igt@kms_color@pipe-b-deep-color:
+    - Statuses : 26 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_color@pipe-b-deep-color@ctm:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 11.59] s
+
+  * igt@kms_color@pipe-b-deep-color@degamma:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 11.69] s
+
+  * igt@kms_color@pipe-b-deep-color@gamma:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.66, 11.68] s
+
+  * igt@kms_color@pipe-c-deep-color:
+    - Statuses : 27 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_color@pipe-c-deep-color@ctm:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.64, 11.57] s
+
+  * igt@kms_color@pipe-c-deep-color@degamma:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.63, 11.57] s
+
+  * igt@kms_color@pipe-c-deep-color@gamma:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.66, 11.65] s
+
+  * igt@kms_color@pipe-d-deep-color:
+    - Statuses : 32 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color@pipe-d-deep-color@ctm:
+    - Statuses : 1 pass(s)
+    - Exec time: [11.65] s
+
+  * igt@kms_color@pipe-d-deep-color@degamma:
+    - Statuses : 1 pass(s)
+    - Exec time: [11.69] s
+
+  * igt@kms_color@pipe-d-deep-color@gamma:
+    - Statuses : 1 pass(s)
+    - Exec time: [11.68] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6583 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-bsw-kefka:       NOTRUN -> [SKIP][9] ([fdo#109271]) +21 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-kefka/igt@amdgpu/amd_basic@query-info.html
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271]) +12 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-skl-6600u:       [PASS][11] -> [INCOMPLETE][12] ([i915#4547])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][13] ([fdo#109271] / [i915#2190])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][14] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][15] ([i915#1886] / [i915#2291])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][16] -> [DMESG-FAIL][17] ([i915#4494] / [i915#4957])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][18] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * {igt@kms_color@pipe-a-deep-color} (NEW):
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][19] ([fdo#109271]) +21 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-n3050/igt@kms_color@pipe-a-deep-color.html
+    - fi-skl-6700k2:      NOTRUN -> [SKIP][20] ([fdo#109271]) +3 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-skl-6700k2/igt@kms_color@pipe-a-deep-color.html
+    - fi-ivb-3770:        NOTRUN -> [SKIP][21] ([fdo#109271]) +3 similar issues
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-ivb-3770/igt@kms_color@pipe-a-deep-color.html
+    - fi-bwr-2160:        NOTRUN -> [SKIP][22] ([fdo#109271]) +3 similar issues
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bwr-2160/igt@kms_color@pipe-a-deep-color.html
+
+  * {igt@kms_color@pipe-a-deep-color@degamma} (NEW):
+    - fi-snb-2600:        NOTRUN -> [SKIP][23] ([fdo#109271]) +5 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-snb-2600/igt@kms_color@pipe-a-deep-color@degamma.html
+
+  * {igt@kms_color@pipe-b-deep-color} (NEW):
+    - fi-blb-e6850:       NOTRUN -> [SKIP][24] ([fdo#109271]) +3 similar issues
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-blb-e6850/igt@kms_color@pipe-b-deep-color.html
+    - fi-ilk-650:         NOTRUN -> [SKIP][25] ([fdo#109271]) +3 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-ilk-650/igt@kms_color@pipe-b-deep-color.html
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][26] ([fdo#109271]) +3 similar issues
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-x1275/igt@kms_color@pipe-b-deep-color.html
+
+  * {igt@kms_color@pipe-c-deep-color} (NEW):
+    - fi-glk-dsi:         NOTRUN -> [SKIP][27] ([fdo#109271]) +3 similar issues
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-glk-dsi/igt@kms_color@pipe-c-deep-color.html
+    - {fi-ehl-2}:         NOTRUN -> [SKIP][28] ([fdo#109278]) +3 similar issues
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-ehl-2/igt@kms_color@pipe-c-deep-color.html
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][29] ([fdo#109271]) +3 similar issues
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-7567u/igt@kms_color@pipe-c-deep-color.html
+    - fi-hsw-4770:        NOTRUN -> [SKIP][30] ([fdo#109271]) +3 similar issues
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-hsw-4770/igt@kms_color@pipe-c-deep-color.html
+
+  * {igt@kms_color@pipe-d-deep-color} (NEW):
+    - fi-cml-u2:          NOTRUN -> [SKIP][31] ([fdo#109278]) +3 similar issues
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-cml-u2/igt@kms_color@pipe-d-deep-color.html
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][32] ([fdo#109271]) +3 similar issues
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-8809g/igt@kms_color@pipe-d-deep-color.html
+    - fi-snb-2520m:       NOTRUN -> [SKIP][33] ([fdo#109271]) +3 similar issues
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-snb-2520m/igt@kms_color@pipe-d-deep-color.html
+    - fi-glk-j4005:       NOTRUN -> [SKIP][34] ([fdo#109271])
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-glk-j4005/igt@kms_color@pipe-d-deep-color.html
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][35] ([fdo#109271]) +3 similar issues
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-cfl-8700k/igt@kms_color@pipe-d-deep-color.html
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][36] ([fdo#109271])
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-cfl-8109u/igt@kms_color@pipe-d-deep-color.html
+    - fi-kbl-7500u:       NOTRUN -> [SKIP][37] ([fdo#109271]) +3 similar issues
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-7500u/igt@kms_color@pipe-d-deep-color.html
+    - fi-bsw-nick:        NOTRUN -> [SKIP][38] ([fdo#109271]) +3 similar issues
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-nick/igt@kms_color@pipe-d-deep-color.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][39] ([fdo#109271]) +3 similar issues
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-guc/igt@kms_color@pipe-d-deep-color.html
+    - fi-skl-guc:         NOTRUN -> [SKIP][40] ([fdo#109271]) +3 similar issues
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-skl-guc/igt@kms_color@pipe-d-deep-color.html
+    - fi-cfl-guc:         NOTRUN -> [SKIP][41] ([fdo#109271])
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-cfl-guc/igt@kms_color@pipe-d-deep-color.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][42] ([fdo#109271] / [i915#533])
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][43] ([fdo#109271]) +61 similar issues
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-kefka:       [INCOMPLETE][44] ([i915#2940]) -> [PASS][45]
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-kefka/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-bsw-n3050:       [DMESG-FAIL][46] ([i915#2927] / [i915#3428]) -> [PASS][47]
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/fi-bsw-n3050/igt@i915_selftest@live@late_gt_pm.html
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-n3050/igt@i915_selftest@live@late_gt_pm.html
+
+  
+#### Warnings ####
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       [FAIL][48] ([i915#2722] / [i915#4312]) -> [FAIL][49] ([i915#4312])
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/fi-skl-6600u/igt@runner@aborted.html
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-skl-6600u/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#2927]: https://gitlab.freedesktop.org/drm/intel/issues/2927
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#3428]: https://gitlab.freedesktop.org/drm/intel/issues/3428
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6335 -> IGTPW_6583
+
+  CI-20190529: 20190529
+  CI_DRM_11148: a8cba5ef0c0735a1f4867ca4c19909fd3edc388a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6583: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/index.html
+  IGT_6335: 2b30115edd692b60d16cb10375730a87f51f0e37 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_color@pipe-a-deep-color
++igt@kms_color@pipe-b-deep-color
++igt@kms_color@pipe-c-deep-color
++igt@kms_color@pipe-d-deep-color
++igt@kms_color@pipe-e-deep-color
++igt@kms_color@pipe-f-deep-color
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/index.html
+
+--===============6726301447060955650==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>New subtests for deep color (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/99239/">https://patchwork.freedesktop.org/series/99239/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11148 -&gt; IGTPW_6583</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_6583 need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6583, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/index.html</p>
+<h2>Participating hosts (43 -&gt; 39)</h2>
+<p>Additional (2): fi-kbl-soraka fi-pnv-d510 <br />
+  Missing    (6): fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-elk-e7500 bat-jsl-2 fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6583:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>{igt@kms_color@pipe-a-deep-color} (NEW):</p>
+<ul>
+<li>
+<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/bat-dg1-6/igt@kms_color@pipe-a-deep-color.html">SKIP</a> +3 similar issues</p>
+</li>
+<li>
+<p>{bat-jsl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/bat-jsl-1/igt@kms_color@pipe-a-deep-color.html">SKIP</a> +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@pipe-b-deep-color} (NEW):</p>
+<ul>
+<li>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-tgl-dsi/igt@kms_color@pipe-b-deep-color.html">SKIP</a> +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@pipe-d-deep-color} (NEW):</p>
+<ul>
+<li>
+<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-jsl-1/igt@kms_color@pipe-d-deep-color.html">SKIP</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-rkl-11600/igt@kms_color@pipe-d-deep-color.html">SKIP</a></p>
+</li>
+<li>
+<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-rkl-guc/igt@kms_color@pipe-d-deep-color.html">SKIP</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_11148 and IGTPW_6583:</p>
+<h3>New IGT tests (16)</h3>
+<ul>
+<li>
+<p>igt@kms_color@pipe-a-deep-color:</p>
+<ul>
+<li>Statuses : 26 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-a-deep-color@ctm:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 11.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-a-deep-color@degamma:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 11.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-a-deep-color@gamma:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.52, 11.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-b-deep-color:</p>
+<ul>
+<li>Statuses : 26 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-b-deep-color@ctm:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 11.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-b-deep-color@degamma:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 11.69] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-b-deep-color@gamma:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.66, 11.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-c-deep-color:</p>
+<ul>
+<li>Statuses : 27 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-c-deep-color@ctm:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.64, 11.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-c-deep-color@degamma:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.63, 11.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-c-deep-color@gamma:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.66, 11.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-d-deep-color:</p>
+<ul>
+<li>Statuses : 32 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-d-deep-color@ctm:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [11.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-d-deep-color@degamma:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [11.69] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color@pipe-d-deep-color@gamma:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [11.68] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6583 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@query-info:</p>
+<ul>
+<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-kefka/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +21 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +12 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@pipe-a-deep-color} (NEW):</p>
+<ul>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-n3050/igt@kms_color@pipe-a-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +21 similar issues</p>
+</li>
+<li>
+<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-skl-6700k2/igt@kms_color@pipe-a-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-ivb-3770/igt@kms_color@pipe-a-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bwr-2160/igt@kms_color@pipe-a-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@pipe-a-deep-color@degamma} (NEW):</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-snb-2600/igt@kms_color@pipe-a-deep-color@degamma.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +5 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@pipe-b-deep-color} (NEW):</p>
+<ul>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-blb-e6850/igt@kms_color@pipe-b-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-ilk-650/igt@kms_color@pipe-b-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-x1275/igt@kms_color@pipe-b-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@pipe-c-deep-color} (NEW):</p>
+<ul>
+<li>
+<p>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-glk-dsi/igt@kms_color@pipe-c-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-ehl-2/igt@kms_color@pipe-c-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-7567u/igt@kms_color@pipe-c-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-hsw-4770/igt@kms_color@pipe-c-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_color@pipe-d-deep-color} (NEW):</p>
+<ul>
+<li>
+<p>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-cml-u2/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-8809g/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-snb-2520m/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-glk-j4005/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-cfl-8700k/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-cfl-8109u/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-7500u/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-nick/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-guc/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-skl-guc/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-cfl-guc/igt@kms_color@pipe-d-deep-color.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +61 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-kefka/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/fi-bsw-n3050/igt@i915_selftest@live@late_gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2927">i915#2927</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-bsw-n3050/igt@i915_selftest@live@late_gt_pm.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11148/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6335 -&gt; IGTPW_6583</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11148: a8cba5ef0c0735a1f4867ca4c19909fd3edc388a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6583: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6583/index.html<br />
+  IGT_6335: 2b30115edd692b60d16cb10375730a87f51f0e37 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_color@pipe-a-deep-color<br />
++igt@kms_color@pipe-b-deep-color<br />
++igt@kms_color@pipe-c-deep-color<br />
++igt@kms_color@pipe-d-deep-color<br />
++igt@kms_color@pipe-e-deep-color<br />
++igt@kms_color@pipe-f-deep-color</p>
+
+</body>
+</html>
+
+--===============6726301447060955650==--
