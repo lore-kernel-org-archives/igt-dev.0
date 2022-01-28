@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8379610E73C
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Jan 2022 23:13:31 +0000 (UTC)
-Message-ID: <5fcb2b0c-6a61-721f-764b-2d3272734bf3@quicinc.com>
-Date: Thu, 27 Jan 2022 15:13:29 -0800
-MIME-Version: 1.0
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-References: <20220126115846.25920-1-petri.latvala@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CECD810F659
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jan 2022 09:17:16 +0000 (UTC)
+Message-ID: <a8eaf3fa-9e9d-71f2-750f-0311d45ee749@intel.com>
+Date: Fri, 28 Jan 2022 14:47:03 +0530
 Content-Language: en-US
-In-Reply-To: <20220126115846.25920-1-petri.latvala@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] kms_plane_scaling: Add more scale
- factor tests to cover more drivers
+References: <20220127100231.32422-1-swati2.sharma@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220127100231.32422-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [v4] tests/kms_scaling_modes: New IGT to validate
+ scaling modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,196 +22,209 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Petri,
-
-On 1/26/2022 3:58 AM, Petri Latvala wrote:
-> Not all drivers support all scale factors. Introduce more scale
-> factors rather than only testing scaling from a 20x20 fb.
+On Thu-27-01-2022 03:32 pm, Swati Sharma wrote:
+> In this IGT, various scaling modes are validated. Scaling
+> mode is one of the connector properties. This property
+> defines how a non-native mode is upscaled to the native
+> mode of an LCD panel.
 > 
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+> There are 4 types of scaling modes defined:
+> 	None:
+> 		No upscaling happens, scaling is left to the panel. Not all
+> 		drivers expose this mode.
+> 	Full:
+> 		The output is upscaled to the full resolution of the panel,
+> 		ignoring the aspect ratio. It will expand current image to
+> 		the size of the monitor.
+> 	Center:
+> 		No upscaling happens, the output is centered within the native
+> 		resolution the panel. As a result, black bars may appear
+> 		around the image.
+> 	Full aspect:
+> 		The output is upscaled to maximize either the width or height
+> 		while retaining the aspect ratio. It will fill the screen w/o
+> 		stretching the image. Black bars are placed either on top
+> 		and bottom or left and right of the picture.
+> 
+> v2: -removed test flags/test_cycle_flags() (JP)
+>      -removed redundant igt_display_commit_atomic() (JP)
+>      -corrected indentation (JP)
+> v3: -removed valid_test check, getting covered in
+>       igt_subtest_with_dynamic() (Bhanu)
+>      -removed redundant if statement, moved remove_fb()
+>       before skip (JP)
+> v4: -Removed unnecessary headers (JP)
+>      -Corrected usage of igt_dynamic_f() (Bhanu)
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > ---
->   tests/kms_plane_scaling.c | 81 +++++++++++++++++++++++++++++++--------
->   1 file changed, 65 insertions(+), 16 deletions(-)
+>   tests/kms_scaling_modes.c | 137 ++++++++++++++++++++++++++++++++++++++
+>   tests/meson.build         |   1 +
+>   2 files changed, 138 insertions(+)
+>   create mode 100644 tests/kms_scaling_modes.c
 > 
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> index 85db11ee..47ef4a12 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -120,12 +120,14 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
->   
->   static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
->   					 uint32_t pixel_format,
-> -					 uint64_t modifier, enum pipe pipe,
-> +					 uint64_t modifier,
-> +					 int width, int height,
-> +					 enum pipe pipe,
->   					 igt_output_t *output,
->   					 igt_rotation_t rot)
->   {
->   	igt_display_t *display = &d->display;
-> -	int width, height;
-> +	int commit_ret;
->   	drmModeModeInfo *mode;
->   
->   	cleanup_crtc(d);
-> @@ -133,22 +135,24 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
->   	igt_output_set_pipe(output, pipe);
->   	mode = igt_output_get_mode(output);
->   
-> -	/* create buffer in the range of  min and max source side limit.*/
-> -	width = height = 20;
->   	igt_create_color_fb(display->drm_fd, width, height,
->   		       pixel_format, modifier, 0.0, 1.0, 0.0, &d->fb[0]);
->   	igt_plane_set_fb(plane, &d->fb[0]);
->   
-> -	/* Check min to full resolution upscaling */
->   	igt_fb_set_position(&d->fb[0], plane, 0, 0);
->   	igt_fb_set_size(&d->fb[0], plane, width, height);
->   	igt_plane_set_position(plane, 0, 0);
->   	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
->   	igt_plane_set_rotation(plane, rot);
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> +	commit_ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
->   
->   	igt_plane_set_fb(plane, NULL);
->   	igt_plane_set_position(plane, 0, 0);
+> diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+> new file mode 100644
+> index 00000000..8e80189a
+> --- /dev/null
+> +++ b/tests/kms_scaling_modes.c
+> @@ -0,0 +1,137 @@
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + *
+> + * Author:
+> + *     Swati Sharma <swati2.sharma@intel.com>
+> + */
 > +
-> +	igt_skip_on_f(commit_ret == -ERANGE,
-> +		      "Unsupported scaling factor with fb size %dx%d\n",
-> +		      width, height);
-> +	igt_assert_eq(commit_ret, 0);
->   }
->   
->   static const igt_rotation_t rotations[] = {
-> @@ -243,6 +247,7 @@ static bool test_pipe_iteration(data_t *data, enum pipe pipe, int iteration)
->   }
->   
->   static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
-> +					   int width, int height,
+> +#include "igt.h"
+> +
+> +IGT_TEST_DESCRIPTION("Test display scaling modes");
+> +
+> +/* Common test data */
+> +typedef struct data {
+> +	igt_display_t display;
+> +	int drm_fd;
+> +} data_t;
+> +
+> +static void test_scaling_mode_on_output(igt_display_t *display, const enum pipe pipe,
+> +					igt_output_t *output, uint32_t flags)
+> +{
+> +	igt_plane_t *primary, *sprite;
+> +	drmModeModeInfo mode;
+> +	struct igt_fb red, blue;
+> +	int ret;
+> +
+> +	igt_output_set_pipe(output, pipe);
+> +	mode = *igt_output_get_mode(output);
+> +
+> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +	sprite = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
+> +
+> +	igt_create_color_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
+> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+> +			    0.f, 0.f, 1.f, &blue);
+> +
+> +	igt_create_color_fb(display->drm_fd, 640, 480,
+> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+> +			    1.f, 0.f, 0.f, &red);
+> +
+> +	igt_plane_set_fb(primary, &blue);
+> +	igt_plane_set_fb(sprite, &red);
+> +
+> +	igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+> +	mode.hdisplay = 640;
+> +	mode.vdisplay = 480;
+> +	igt_output_override_mode(output, &mode);
+> +
+> +	igt_plane_set_fb(sprite, NULL);
+> +	igt_plane_set_fb(primary, &red);
+> +
+> +	igt_output_set_prop_value(output, IGT_CONNECTOR_SCALING_MODE, flags);
+> +
+> +	/* Don't pass ALLOW_MODESET with overridden mode, force fastset */
+> +	ret = igt_display_try_commit_atomic(display, 0, NULL);
+> +
+> +	igt_remove_fb(display->drm_fd, &red);
+> +	igt_remove_fb(display->drm_fd, &blue);
+> +
+> +	igt_skip_on_f(ret == -EINVAL, "Scaling mode not supported\n");
+> +}
+> +
+> +/* Returns true if an output supports scaling mode property */
+> +static bool has_scaling_mode(igt_output_t *output)
+> +{
+> +	return igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE) &&
+> +	       igt_output_get_prop(output, IGT_CONNECTOR_SCALING_MODE);
+> +}
+> +
+> +static void test_scaling_mode(data_t *data, uint32_t flags)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	igt_output_t *output;
+> +	enum pipe pipe;
+> +
+> +	for_each_pipe_with_valid_output(display, pipe, output) {
+> +		if (!has_scaling_mode(output))
+> +			continue;
+> +
+> +		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
+> +			test_scaling_mode_on_output(display, pipe, output, flags);
 
-The ordering of the params should be consistent with that of 
-test_scaler_with_pixel_format_pipe and check_scaling_pipe_plane_rot.
+LGTM
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
->   					   igt_output_t *output)
->   {
->   	igt_display_t *display = &d->display;
-> @@ -271,9 +276,11 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
->   				    igt_plane_has_rotation(plane, rot) &&
->   				    can_rotate(d, format, modifier, rot) &&
->   				    can_scale(d, format))
-> -					check_scaling_pipe_plane_rot(d, plane, format,
-> -								     modifier, pipe,
-> -								     output, rot);
-> +					check_scaling_pipe_plane_rot(d, plane,
-> +								     format, modifier,
-> +								     width, height,
-> +								     pipe, output,
-> +								     rot);
->   			}
->   
->   			igt_vec_fini(&tested_formats);
-> @@ -288,7 +295,8 @@ static const uint64_t modifiers[] = {
->   	I915_FORMAT_MOD_Yf_TILED
->   };
->   
-> -static void test_scaler_with_pixel_format_pipe(data_t *d, enum pipe pipe, igt_output_t *output)
-> +static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height,
-> +					       enum pipe pipe, igt_output_t *output)
->   {
->   	igt_display_t *display = &d->display;
->   	igt_plane_t *plane;
-> @@ -315,6 +323,7 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, enum pipe pipe, igt_ou
->   				    can_scale(d, format))
->   					check_scaling_pipe_plane_rot(d, plane,
->   								     format, modifier,
-> +								     width, height,
->   								     pipe, output, IGT_ROTATION_0);
->   			}
->   
-> @@ -726,18 +735,58 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   					test_plane_scaling_on_pipe(&data, pipe, output);
->   		}
->   
-> -		igt_describe("Tests scaling with pixel formats.");
-> -		igt_subtest_with_dynamic("scaler-with-pixel-format") {
-> +		igt_describe("Tests scaling with pixel formats, from 20x20 fb.");
-> +		igt_subtest_with_dynamic("scaler-with-pixel-format-20x20") {
-> +			for_each_pipe_with_single_output(&data.display, pipe, output)
-> +				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
-> +					test_scaler_with_pixel_format_pipe(&data, 20, 20, pipe, output);
-> +		}
-> +
-> +		igt_describe("Tests scaling with pixel formats, scaling factor 4.");
-> +		igt_subtest_with_dynamic("scaler-with-pixel-format-factor-4") {
-> +			drmModeModeInfo *mode;
-> +
-> +			mode = igt_output_get_mode(output);
+- Bhanu
 
-Should move this inside of the for each loop since the compatible 
-outputs are populated within for_each_pipe_with_single_output. Getting 
-the mode before then will return incorrect values and cause an invalid 
-argument error for create_fb.
-
-> +			for_each_pipe_with_single_output(&data.display, pipe, output)
-> +				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
-> +					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay / 4, mode->vdisplay / 4, pipe, output);
-
-This could hit an edge case where the resolution being passed in isn't 
-32-bit aligned. Should add a check for this (maybe within 
-check_scaling_pipe_plane_rot) and possibly correct to an appropriate fb 
-size.
-
-Thanks,
-Jessica Zhang
-
-> +		}
 > +
-> +		igt_describe("Tests scaling with pixel formats, unity scaling.");
-> +		igt_subtest_with_dynamic("scaler-with-pixel-format-unity-scaling") {
-> +			drmModeModeInfo *mode;
+> +		igt_display_reset(display);
+> +	}
+> +}
 > +
-> +			mode = igt_output_get_mode(output);
->   			for_each_pipe_with_single_output(&data.display, pipe, output)
->   				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
-> -					test_scaler_with_pixel_format_pipe(&data, pipe, output);
-> +					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay, mode->vdisplay, pipe, output);
-> +		}
+> +igt_main
+> +{
+> +	data_t data = {};
 > +
-> +		igt_describe("Tests scaling with tiling rotation, from 20x20 fb.");
-> +		igt_subtest_with_dynamic("scaler-with-rotation-20x20") {
-> +			for_each_pipe_with_single_output(&data.display, pipe, output)
-> +				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
-> +					test_scaler_with_rotation_pipe(&data, 20, 20, pipe, output); >   		}
->   
-> -		igt_describe("Tests scaling with tiling rotation.");
-> -		igt_subtest_with_dynamic("scaler-with-rotation") {
-> +		igt_describe("Tests scaling with tiling rotation, scaling factor 4.");
-> +		igt_subtest_with_dynamic("scaler-with-rotation-factor-4") {
-> +			drmModeModeInfo *mode;
+> +	igt_fixture {
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +		igt_require(data.drm_fd >= 0);
 > +
-> +			mode = igt_output_get_mode(output);
-> +			for_each_pipe_with_single_output(&data.display, pipe, output)
-> +				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
-> +					test_scaler_with_rotation_pipe(&data, mode->hdisplay / 4, mode->vdisplay / 4, pipe, output);
-> +		}
+> +		kmstest_set_vt_graphics_mode();
 > +
-> +		igt_describe("Tests scaling with tiling rotation, unity scaling.");
-> +		igt_subtest_with_dynamic("scaler-with-rotation-unity-scaling") {
-> +			drmModeModeInfo *mode;
+> +		igt_display_require(&data.display, data.drm_fd);
+> +		igt_require(data.display.is_atomic);
 > +
-> +			mode = igt_output_get_mode(output);
->   			for_each_pipe_with_single_output(&data.display, pipe, output)
->   				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
-> -					test_scaler_with_rotation_pipe(&data, pipe, output);
-> +					test_scaler_with_rotation_pipe(&data, mode->hdisplay, mode->vdisplay, pipe, output);
->   		}
->   
->   		igt_describe("Tests scaling with clipping and clamping.");
-> -- 
-> 2.30.2
-> 
+> +		igt_display_require_output(&data.display);
+> +	}
+> +
+> +	igt_describe("Tests full display scaling mode");
+> +	igt_subtest_with_dynamic("scaling-mode-full")
+> +		test_scaling_mode(&data, DRM_MODE_SCALE_FULLSCREEN);
+> +	igt_describe("Tests center display scaling mode");
+> +	igt_subtest_with_dynamic("scaling-mode-center")
+> +		test_scaling_mode(&data, DRM_MODE_SCALE_CENTER);
+> +	igt_describe("Tests full aspect display scaling mode");
+> +	igt_subtest_with_dynamic("scaling-mode-full-aspect")
+> +		test_scaling_mode(&data, DRM_MODE_SCALE_ASPECT);
+> +	igt_describe("Tests none display scaling mode (no scaling)");
+> +	igt_subtest_with_dynamic("scaling-mode-none")
+> +		test_scaling_mode(&data, DRM_MODE_SCALE_NONE);
+> +
+> +	igt_fixture
+> +		igt_display_fini(&data.display);
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index c14acf99..7003d064 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -50,6 +50,7 @@ test_progs = [
+>   	'kms_properties',
+>   	'kms_rmfb',
+>   	'kms_rotation_crc',
+> +	'kms_scaling_modes',
+>   	'kms_selftest',
+>   	'kms_sequence',
+>   	'kms_setmode',
