@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CECD810F659
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jan 2022 09:17:16 +0000 (UTC)
-Message-ID: <a8eaf3fa-9e9d-71f2-750f-0311d45ee749@intel.com>
-Date: Fri, 28 Jan 2022 14:47:03 +0530
-Content-Language: en-US
-References: <20220127100231.32422-1-swati2.sharma@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220127100231.32422-1-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEA7A10EE41
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jan 2022 13:02:14 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Date: Fri, 28 Jan 2022 14:02:03 +0100
+Message-Id: <20220128130203.14790-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220128130203.14790-1-kamil.konieczny@linux.intel.com>
+References: <20220128130203.14790-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v4] tests/kms_scaling_modes: New IGT to validate
- scaling modes
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/1] lib/intel_batchbuffer: add tracking and
+ reset for allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,209 +21,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu-27-01-2022 03:32 pm, Swati Sharma wrote:
-> In this IGT, various scaling modes are validated. Scaling
-> mode is one of the connector properties. This property
-> defines how a non-native mode is upscaled to the native
-> mode of an LCD panel.
-> 
-> There are 4 types of scaling modes defined:
-> 	None:
-> 		No upscaling happens, scaling is left to the panel. Not all
-> 		drivers expose this mode.
-> 	Full:
-> 		The output is upscaled to the full resolution of the panel,
-> 		ignoring the aspect ratio. It will expand current image to
-> 		the size of the monitor.
-> 	Center:
-> 		No upscaling happens, the output is centered within the native
-> 		resolution the panel. As a result, black bars may appear
-> 		around the image.
-> 	Full aspect:
-> 		The output is upscaled to maximize either the width or height
-> 		while retaining the aspect ratio. It will fill the screen w/o
-> 		stretching the image. Black bars are placed either on top
-> 		and bottom or left and right of the picture.
-> 
-> v2: -removed test flags/test_cycle_flags() (JP)
->      -removed redundant igt_display_commit_atomic() (JP)
->      -corrected indentation (JP)
-> v3: -removed valid_test check, getting covered in
->       igt_subtest_with_dynamic() (Bhanu)
->      -removed redundant if statement, moved remove_fb()
->       before skip (JP)
-> v4: -Removed unnecessary headers (JP)
->      -Corrected usage of igt_dynamic_f() (Bhanu)
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->   tests/kms_scaling_modes.c | 137 ++++++++++++++++++++++++++++++++++++++
->   tests/meson.build         |   1 +
->   2 files changed, 138 insertions(+)
->   create mode 100644 tests/kms_scaling_modes.c
-> 
-> diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
-> new file mode 100644
-> index 00000000..8e80189a
-> --- /dev/null
-> +++ b/tests/kms_scaling_modes.c
-> @@ -0,0 +1,137 @@
-> +/*
-> + * Copyright © 2022 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + *
-> + * Author:
-> + *     Swati Sharma <swati2.sharma@intel.com>
-> + */
-> +
-> +#include "igt.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test display scaling modes");
-> +
-> +/* Common test data */
-> +typedef struct data {
-> +	igt_display_t display;
-> +	int drm_fd;
-> +} data_t;
-> +
-> +static void test_scaling_mode_on_output(igt_display_t *display, const enum pipe pipe,
-> +					igt_output_t *output, uint32_t flags)
-> +{
-> +	igt_plane_t *primary, *sprite;
-> +	drmModeModeInfo mode;
-> +	struct igt_fb red, blue;
-> +	int ret;
-> +
-> +	igt_output_set_pipe(output, pipe);
-> +	mode = *igt_output_get_mode(output);
-> +
-> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +	sprite = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
-> +
-> +	igt_create_color_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
-> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-> +			    0.f, 0.f, 1.f, &blue);
-> +
-> +	igt_create_color_fb(display->drm_fd, 640, 480,
-> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
-> +			    1.f, 0.f, 0.f, &red);
-> +
-> +	igt_plane_set_fb(primary, &blue);
-> +	igt_plane_set_fb(sprite, &red);
-> +
-> +	igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +
-> +	mode.hdisplay = 640;
-> +	mode.vdisplay = 480;
-> +	igt_output_override_mode(output, &mode);
-> +
-> +	igt_plane_set_fb(sprite, NULL);
-> +	igt_plane_set_fb(primary, &red);
-> +
-> +	igt_output_set_prop_value(output, IGT_CONNECTOR_SCALING_MODE, flags);
-> +
-> +	/* Don't pass ALLOW_MODESET with overridden mode, force fastset */
-> +	ret = igt_display_try_commit_atomic(display, 0, NULL);
-> +
-> +	igt_remove_fb(display->drm_fd, &red);
-> +	igt_remove_fb(display->drm_fd, &blue);
-> +
-> +	igt_skip_on_f(ret == -EINVAL, "Scaling mode not supported\n");
-> +}
-> +
-> +/* Returns true if an output supports scaling mode property */
-> +static bool has_scaling_mode(igt_output_t *output)
-> +{
-> +	return igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE) &&
-> +	       igt_output_get_prop(output, IGT_CONNECTOR_SCALING_MODE);
-> +}
-> +
-> +static void test_scaling_mode(data_t *data, uint32_t flags)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +
-> +	for_each_pipe_with_valid_output(display, pipe, output) {
-> +		if (!has_scaling_mode(output))
-> +			continue;
-> +
-> +		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
-> +			test_scaling_mode_on_output(display, pipe, output, flags);
+After subtest ends, due to normal flow or after fail by
+igt_assert, igt_core inits intel_allocator before next subtest,
+and this makes allocator handle keeped in intel_batchbuffer
+invalid. Moreover any call to intel_allocator can result in
+fail as there are no allocators until first allocator_open.
 
-LGTM
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Add tracking intel_butchbuffer if it is using allocator and
+recreate its allocator handle and offsets from igt_core before
+next subtest.
 
-- Bhanu
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/igt_core.c          |  2 ++
+ lib/intel_batchbuffer.c | 38 ++++++++++++++++++++++++++++++++++++++
+ lib/intel_batchbuffer.h |  6 ++++++
+ 3 files changed, 46 insertions(+)
 
-> +
-> +		igt_display_reset(display);
-> +	}
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data = {};
-> +
-> +	igt_fixture {
-> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> +		igt_require(data.drm_fd >= 0);
-> +
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.drm_fd);
-> +		igt_require(data.display.is_atomic);
-> +
-> +		igt_display_require_output(&data.display);
-> +	}
-> +
-> +	igt_describe("Tests full display scaling mode");
-> +	igt_subtest_with_dynamic("scaling-mode-full")
-> +		test_scaling_mode(&data, DRM_MODE_SCALE_FULLSCREEN);
-> +	igt_describe("Tests center display scaling mode");
-> +	igt_subtest_with_dynamic("scaling-mode-center")
-> +		test_scaling_mode(&data, DRM_MODE_SCALE_CENTER);
-> +	igt_describe("Tests full aspect display scaling mode");
-> +	igt_subtest_with_dynamic("scaling-mode-full-aspect")
-> +		test_scaling_mode(&data, DRM_MODE_SCALE_ASPECT);
-> +	igt_describe("Tests none display scaling mode (no scaling)");
-> +	igt_subtest_with_dynamic("scaling-mode-none")
-> +		test_scaling_mode(&data, DRM_MODE_SCALE_NONE);
-> +
-> +	igt_fixture
-> +		igt_display_fini(&data.display);
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index c14acf99..7003d064 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -50,6 +50,7 @@ test_progs = [
->   	'kms_properties',
->   	'kms_rmfb',
->   	'kms_rotation_crc',
-> +	'kms_scaling_modes',
->   	'kms_selftest',
->   	'kms_sequence',
->   	'kms_setmode',
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 7c906675..ab27a24d 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -59,6 +59,7 @@
+ 
+ #include "drmtest.h"
+ #include "intel_allocator.h"
++#include "intel_batchbuffer.h"
+ #include "intel_chipset.h"
+ #include "intel_io.h"
+ #include "igt_debugfs.h"
+@@ -1426,6 +1427,7 @@ __noreturn static void exit_subtest(const char *result)
+ 	 * remnants from previous allocator run (if any).
+ 	 */
+ 	intel_allocator_init();
++	intel_bb_reinit_allocator();
+ 
+ 	if (!in_dynamic_subtest)
+ 		_igt_dynamic_tests_executed = -1;
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 10d8a6e0..58b414f3 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -80,6 +80,9 @@
+  * library as a dependency.
+  */
+ 
++static IGT_LIST_HEAD(intel_bb_list);
++static pthread_mutex_t intel_bb_list_lock = PTHREAD_MUTEX_INITIALIZER;
++
+ /**
+  * intel_batchbuffer_align:
+  * @batch: batchbuffer object
+@@ -1359,6 +1362,9 @@ __intel_bb_create(int i915, uint32_t ctx, uint32_t size, bool do_relocs,
+ 								  strategy);
+ 	ibb->allocator_type = allocator_type;
+ 	ibb->allocator_strategy = strategy;
++	ibb->allocator_start = start;
++	ibb->allocator_end = end;
++
+ 	ibb->i915 = i915;
+ 	ibb->enforce_relocs = do_relocs;
+ 	ibb->handle = gem_create(i915, size);
+@@ -1384,6 +1390,12 @@ __intel_bb_create(int i915, uint32_t ctx, uint32_t size, bool do_relocs,
+ 
+ 	ibb->refcount = 1;
+ 
++	if (ibb->allocator_type != INTEL_ALLOCATOR_NONE) {
++		pthread_mutex_lock(&intel_bb_list_lock);
++		igt_list_add(&ibb->link, &intel_bb_list);
++		pthread_mutex_unlock(&intel_bb_list_lock);
++	}
++
+ 	return ibb;
+ }
+ 
+@@ -1600,6 +1612,10 @@ void intel_bb_destroy(struct intel_bb *ibb)
+ 	__intel_bb_destroy_cache(ibb);
+ 
+ 	if (ibb->allocator_type != INTEL_ALLOCATOR_NONE) {
++		pthread_mutex_lock(&intel_bb_list_lock);
++		igt_list_del(&ibb->link);
++		pthread_mutex_unlock(&intel_bb_list_lock);
++
+ 		intel_allocator_free(ibb->allocator_handle, ibb->handle);
+ 		intel_allocator_close(ibb->allocator_handle);
+ 	}
+@@ -2959,3 +2975,25 @@ igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
+ 
+ 	return copy;
+ }
++
++void __intel_bb_reinit_alloc(struct intel_bb *ibb)
++{
++	if (ibb->allocator_type == INTEL_ALLOCATOR_NONE)
++		return;
++
++	ibb->allocator_handle = intel_allocator_open_full(ibb->i915, ibb->ctx,
++							  ibb->allocator_start, ibb->allocator_end,
++							  ibb->allocator_type,
++							  ibb->allocator_strategy);
++	intel_bb_reset(ibb, true);
++}
++
++void intel_bb_reinit_allocator(void)
++{
++	struct intel_bb *iter;
++
++	pthread_mutex_lock(&intel_bb_list_lock);
++	igt_list_for_each_entry(iter, &intel_bb_list, link)
++		__intel_bb_reinit_alloc(iter);
++	pthread_mutex_unlock(&intel_bb_list_lock);
++}
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index e7606307..2265de8a 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -456,7 +456,10 @@ struct igt_pxp {
+  * Batchbuffer without libdrm dependency
+  */
+ struct intel_bb {
++	struct igt_list_head link;
++
+ 	uint64_t allocator_handle;
++	uint64_t allocator_start, allocator_end;
+ 	uint8_t allocator_type;
+ 	enum allocator_strategy allocator_strategy;
+ 
+@@ -524,6 +527,9 @@ struct intel_bb *
+ intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx, uint32_t size);
+ void intel_bb_destroy(struct intel_bb *ibb);
+ 
++// make it safe to use intel_allocator after failed test
++void intel_bb_reinit_allocator(void);
++
+ static inline void intel_bb_ref(struct intel_bb *ibb)
+ {
+ 	ibb->refcount++;
+-- 
+2.32.0
