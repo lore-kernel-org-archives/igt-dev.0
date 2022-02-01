@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BD7910F3CB
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Feb 2022 09:10:28 +0000 (UTC)
-Date: Thu, 24 Feb 2022 11:09:38 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YhdLUjqvvRfKuqwF@platvala-desk.ger.corp.intel.com>
-References: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
- <20220223111641.467123-10-mauro.chehab@linux.intel.com>
- <YhY/taVJQSNTGcV+@platvala-desk.ger.corp.intel.com>
- <20220224060547.00f754aa@maurocar-mobl2>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE02610E379
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Feb 2022 07:29:26 +0000 (UTC)
+Date: Tue, 1 Feb 2022 08:29:22 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <YfjhUtEt7G/bTZ6r@zkempczy-mobl2>
+References: <20220131164804.26165-1-zbigniew.kempczynski@intel.com>
+ <164365157812.8647.3353202405050166647@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220224060547.00f754aa@maurocar-mobl2>
-Subject: Re: [igt-dev] [PATCH 9/9] docs: add documentation for code coverage
+In-Reply-To: <164365157812.8647.3353202405050166647@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9h?=
+ =?utf-8?q?pi=5Fintel=5Fbb=3A_Correct_size_for_munmap?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,182 +23,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 24, 2022 at 06:05:47AM +0100, Mauro Carvalho Chehab wrote:
-> On Wed, 23 Feb 2022 16:07:49 +0200
-> Petri Latvala <petri.latvala@intel.com> wrote:
+On Mon, Jan 31, 2022 at 05:52:58PM +0000, Patchwork wrote:
+>    Patch Details
 > 
-> > On Wed, Feb 23, 2022 at 12:16:41PM +0100, Mauro Carvalho Chehab wrote:
-> > > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > > 
-> > > Document the IGT runner features related to code coverage data capture.
-> > > 
-> > > Acked-by: Petri Latvala <petri.latvala@intel.com>
-> > > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > > ---
-> > >  docs/code_coverage.md | 293 ++++++++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 293 insertions(+)
-> > >  create mode 100644 docs/code_coverage.md
-> > > 
-> > > diff --git a/docs/code_coverage.md b/docs/code_coverage.md
-> > > new file mode 100644
-> > > index 000000000000..b071df7437bd
-> > > --- /dev/null
-> > > +++ b/docs/code_coverage.md
-> > > @@ -0,0 +1,293 @@
-> > > +# Collecting code coverage data from IGT tests
-> > > +
-> > > +## Introduction
-> > > +
-> > > +Ensuring that a test plan covers all the driver code is not trivial. Also,
-> > > +as time goes by, changes at both the tests and drivers may badly affect
-> > > +the code coverage. So, some tools are needed in order to be able to verify
-> > > +and improve the driver test coverage. While static analyzers can help
-> > > +checking the driver's code, it is not as effective as runtime tests.
-> > > +
-> > > +Thankfully gcc has a feature which allows capturing such data in realtime,
-> > > +called gcov. LLVM/clang also has a similar feature (llvm-cov). Such feature
-> > > +is available at the Linux Kernel since 2009.
-> > > +
-> > > +## Building a Kernel with GCOV support
-> > > +
-> > > +Enabling GCOV at the Linux Kernel requires two steps:
-> > > +
-> > > +1. Enable GCOV_KERNEL:
-> > > +
-> > > +   ```
-> > > +   ./scripts/config -e DEBUG_FS -e GCOV_KERNEL
-> > > +   ```
-> > > +
-> > > +
-> > > +2. Enable per-driver or per-makefile GCOV support. In order to enable support
-> > > +   for all DRM drivers:
-> > > +
-> > > +   ```
-> > > +   for i in $(find drivers/gpu/drm/ -name Makefile); do
-> > > +       sed '1 a GCOV_PROFILE := y' -i $i
-> > > +   done
-> > > +   ```
-> > > +
-> > > +When gcov is enabled for a given driver or directory, GCC will generate
-> > > +some special object files, like:
-> > > +
-> > > +```
-> > > +...
-> > > +drivers/gpu/drm/drm_probe_helper.gcno
-> > > +drivers/gpu/drm/drm_dp_dual_mode_helper.gcno
-> > > +drivers/gpu/drm/drm_plane.gcno
-> > > +drivers/gpu/drm/drm_lease.gcno
-> > > +drivers/gpu/drm/drm_mipi_dsi.gcno
-> > > +drivers/gpu/drm/drm_dsc.gcno
-> > > +drivers/gpu/drm/drm_property.gcno
-> > > +drivers/gpu/drm/drm_dp_aux_dev.gcno
-> > > +drivers/gpu/drm/drm_blend.gcno
-> > > +...
-> > > +```
-> > > +
-> > > +Those will be stored at the Kernel object directory, which is usually
-> > > +the same as the Kernel source directory, except if the Kernel was built
-> > > +with:
-> > > +
-> > > +```
-> > > +make O=kernel_output_dir
-> > > +```
-> > > +
-> > > +Such compile-time files are compiler-dependent and they're needed in order
-> > > +to properly decode the code coverage counters that will be produced in
-> > > +runtime.
-> > > +
-> > > +## Collecting GCOV data in runtime
-> > > +
-> > > +Once a GCOV-enabled Kernel boots, the Kernel will keep track of the code
-> > > +monitored via GCOV under sysfs, at `/sys/kernel/debug/gcov/`.
-> > > +
-> > > +There is a special file there: `/sys/kernel/debug/gcov/reset`. When something
-> > > +is written to it, all counters will be cleaned.
-> > > +
-> > > +There are also driver-related counters and softlinks stored there:
-> > > +
-> > > +```
-> > > +ls -la ./home/gta/linux/drivers/gpu/drm/
-> > > +...
-> > > +-rw------- 1 root root 0 Feb 16 07:03 drm_probe_helper.gcda
-> > > +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_probe_helper.gcno -> /home/gta/linux/drivers/gpu/drm/drm_probe_helper.gcno
-> > > +-rw------- 1 root root 0 Feb 16 07:03 drm_property.gcda
-> > > +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_property.gcno -> /home/gta/linux/drivers/gpu/drm/drm_property.gcno
-> > > +-rw------- 1 root root 0 Feb 16 07:03 drm_rect.gcda
-> > > +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_rect.gcno -> /home/gta/linux/drivers/gpu/drm/drm_rect.gcno
-> > > +...
-> > > +```
-> > 
-> > This is an example path but it could be made clearer. Something like
-> > s!/home/gta/linux!/path/to/kernel/sources! or so?
+>    Series:  i915/api_intel_bb: Correct size for munmap                     
+>    URL:     https://patchwork.freedesktop.org/series/99536/                
+>    State:   failure                                                        
+>    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6589/index.html 
 > 
-> Makes sense. What about this:
+>               CI Bug Log - changes from CI_DRM_11164 -> IGTPW_6589
 > 
-> 	sed 's!/home/gta/!/basedir/!;s,\./basedir,/basedir,' -i docs/code_coverage.md 
+> Summary
 > 
-> diff --git a/docs/code_coverage.md b/docs/code_coverage.md
-> index b071df7437bd..34d56d283a75 100644
-> --- a/docs/code_coverage.md
-> +++ b/docs/code_coverage.md
-> @@ -72,14 +72,14 @@ is written to it, all counters will be cleaned.
->  There are also driver-related counters and softlinks stored there:
->  
->  ```
-> -ls -la ./home/gta/linux/drivers/gpu/drm/
-> +ls -la /basedir/linux/drivers/gpu/drm/
->  ...
->  -rw------- 1 root root 0 Feb 16 07:03 drm_probe_helper.gcda
-> -lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_probe_helper.gcno -> /home/gta/linux/drivers/gpu/drm/drm_probe_helper.gcno
-> +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_probe_helper.gcno -> /basedir/linux/drivers/gpu/drm/drm_probe_helper.gcno
->  -rw------- 1 root root 0 Feb 16 07:03 drm_property.gcda
-> -lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_property.gcno -> /home/gta/linux/drivers/gpu/drm/drm_property.gcno
-> +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_property.gcno -> /basedir/linux/drivers/gpu/drm/drm_property.gcno
->  -rw------- 1 root root 0 Feb 16 07:03 drm_rect.gcda
-> -lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_rect.gcno -> /home/gta/linux/drivers/gpu/drm/drm_rect.gcno
-> +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_rect.gcno -> /basedir/linux/drivers/gpu/drm/drm_rect.gcno
->  ...
->  ```
->  
-> @@ -168,17 +168,17 @@ parameter, e. g.:
->  ```
->  $ echo "igt@debugfs_test@read_all_entries" > my.testlist
->  $ ./scripts/run-tests.sh -T my.testlist -k ~/linux -c scripts/code_cov_capture.sh -P
-> -Found test list: "/home/gta/igt/build/tests/test-list.txt"
-> +Found test list: "/basedir/igt/build/tests/test-list.txt"
->  [31410.499969] [1/1] debugfs_test (read_all_entries)
->  [31411.060446] Storing code coverage results...
-> -[31418.01]     Code coverage wrote to /home/gta/igt/results/code_cov/debugfs_test_read_all_entries.info
-> +[31418.01]     Code coverage wrote to /basedir/igt/results/code_cov/debugfs_test_read_all_entries.info
->  Done.
->  ```
->  
->  The script will be called as:
->  
->  ```
-> -scripts/code_cov_capture.sh /home/gta/igt/results/code_cov/debugfs_test_read_all_entries
-> +scripts/code_cov_capture.sh /basedir/igt/results/code_cov/debugfs_test_read_all_entries
->  ```
->  
->  Please notice that any character that it is not a number nor a letter at the
-> @@ -198,7 +198,7 @@ An info file looks like:
->  ```
->  TN:fbdev_eof
->  ...
-> -SF:/home/gta/linux/drivers/gpu/drm/i915/intel_runtime_pm.c
-> +SF:/basedir/linux/drivers/gpu/drm/i915/intel_runtime_pm.c
->  ...
->  FN:158,__intel_runtime_pm_get
->  FNDA:2,__intel_runtime_pm_get
+>    FAILURE
 > 
+>    Serious unknown changes coming with IGTPW_6589 absolutely need to be
+>    verified manually.
+> 
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in IGTPW_6589, please notify your bug team to allow them
+>    to document this new failure mode, which will reduce false positives in
+>    CI.
+> 
+>    External URL:
+>    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6589/index.html
+> 
+> Participating hosts (46 -> 42)
+> 
+>    Missing (4): fi-bsw-cyan bat-rpls-1 fi-icl-u2 fi-bdw-samus
+> 
+> Possible new issues
+> 
+>    Here are the unknown changes that may have been introduced in IGTPW_6589:
+> 
+>   IGT changes
+> 
+>     Possible regressions
+> 
+>      * igt@core_hotunplug@unbind-rebind:
+>           * fi-blb-e6850: PASS -> FAIL
 
+Unrelated to the patch. May I ask for continue run?
 
-Looks good.
+--
+Zbigniew
 
-
--- 
-Petri Latvala
+> 
+> Known issues
+> 
+>    Here are the changes found in IGTPW_6589 that come from known issues:
+> 
+>   IGT changes
+> 
+>     Issues hit
+> 
+>      * igt@gem_huc_copy@huc-copy:
+> 
+>           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271 / i915#2190)
+>      * igt@gem_lmem_swapping@verify-random:
+> 
+>           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271 / i915#4613) +3 similar
+>             issues
+>      * igt@kms_chamelium@vga-edid-read:
+> 
+>           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +8 similar
+>             issues
+>      * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+> 
+>           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271) +2 similar issues
+>      * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+> 
+>           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271 / i915#533)
+>      * igt@kms_psr@primary_page_flip:
+> 
+>           * fi-skl-6600u: NOTRUN -> FAIL (i915#4547)
+>      * igt@runner@aborted:
+> 
+>           * fi-skl-6600u: NOTRUN -> FAIL (i915#4312)
+> 
+>           * fi-bdw-5557u: NOTRUN -> FAIL (i915#2426 / i915#4312)
+> 
+>     Possible fixes
+> 
+>      * igt@kms_frontbuffer_tracking@basic:
+> 
+>           * fi-cfl-8109u: DMESG-FAIL (i915#295) -> PASS
+>      * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+> 
+>           * fi-cfl-8109u: DMESG-WARN (i915#295) -> PASS +10 similar issues
+> 
+>     Warnings
+> 
+>      * igt@i915_selftest@live@hangcheck:
+> 
+>           * bat-dg1-5: DMESG-FAIL (i915#4494 / i915#4957) -> DMESG-FAIL
+>             (i915#4957)
+> 
+>           * bat-dg1-6: DMESG-FAIL (i915#4494 / i915#4957) -> DMESG-FAIL
+>             (i915#4957)
+> 
+> Build changes
+> 
+>      * CI: CI-20190529 -> None
+>      * IGT: IGT_6337 -> IGTPW_6589
+> 
+>    CI-20190529: 20190529
+>    CI_DRM_11164: b0839553cd93d73bf43e0949203b24044113b5e7 @
+>    git://anongit.freedesktop.org/gfx-ci/linux
+>    IGTPW_6589: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6589/index.html
+>    IGT_6337: 7c9c034619ef9dbfbfe041fbf3973a1cf1ac7a22 @
+>    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
