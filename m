@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C3D310EB0C
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Feb 2022 08:13:32 +0000 (UTC)
-Date: Tue, 1 Feb 2022 09:13:28 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <YfjrqFtVcGZ/ialq@zkempczy-mobl2>
-References: <20220128130203.14790-1-kamil.konieczny@linux.intel.com>
- <20220128130203.14790-2-kamil.konieczny@linux.intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C742810EAF7
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Feb 2022 09:06:00 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Tue,  1 Feb 2022 14:35:28 +0530
+Message-Id: <20220201090528.2105215-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220127064443.2003969-1-bhanuprakash.modem@intel.com>
+References: <20220127064443.2003969-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220128130203.14790-2-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] lib/intel_batchbuffer: add tracking
- and reset for allocator
+Subject: [igt-dev] [v4 i-g-t 1/3] tests/kms_color_helper: Read deep-color
+ capability from EDID
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,185 +21,220 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, uma.shankar@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 28, 2022 at 02:02:03PM +0100, Kamil Konieczny wrote:
-> After subtest ends, due to normal flow or after fail by
-> igt_assert, igt_core inits intel_allocator before next subtest,
-> and this makes allocator handle keeped in intel_batchbuffer
-> invalid. Moreover any call to intel_allocator can result in
-> fail as there are no allocators until first allocator_open.
-> 
-> Add tracking intel_butchbuffer if it is using allocator and
-> recreate its allocator handle and offsets from igt_core before
-> next subtest.
-> 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/igt_core.c          |  2 ++
->  lib/intel_batchbuffer.c | 38 ++++++++++++++++++++++++++++++++++++++
->  lib/intel_batchbuffer.h |  6 ++++++
->  3 files changed, 46 insertions(+)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index 7c906675..ab27a24d 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -59,6 +59,7 @@
->  
->  #include "drmtest.h"
->  #include "intel_allocator.h"
-> +#include "intel_batchbuffer.h"
->  #include "intel_chipset.h"
->  #include "intel_io.h"
->  #include "igt_debugfs.h"
-> @@ -1426,6 +1427,7 @@ __noreturn static void exit_subtest(const char *result)
->  	 * remnants from previous allocator run (if any).
->  	 */
->  	intel_allocator_init();
-> +	intel_bb_reinit_allocator();
->  
->  	if (!in_dynamic_subtest)
->  		_igt_dynamic_tests_executed = -1;
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index 10d8a6e0..58b414f3 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -80,6 +80,9 @@
->   * library as a dependency.
->   */
->  
-> +static IGT_LIST_HEAD(intel_bb_list);
+Add a helper function to read the panel's deep-color capability
+from EDID.
 
-For code flow where test passes in most cases we're doing cleanup and
-intel-bb is destroyed before test is completed. For failures we mostly
-leave the mess which for worst scenario interfere with consecutive tests
-- thus CI runs each test in separate process to avoid that noise.
+For EDID 1.3, we need to read deep color capability from Vendor
+Specific Data Block, and for EDID 1.4 read bit depth from Video
+Input Definition.
 
-Problem is then in long time runs like in gem_concurrent_blits we don't
-run it on CI but locally without process separation.
+Vendor Specific Data Block for "HDMI Licensing LLC":
+---------------------------------------------------------
+| Byte|  Bit  |        Description                      |
+---------------------------------------------------------
+|     | Bit 6 |   16-bit-per-channel deep color (48-bit)|
+|  6  | Bit 5 |   12-bit-per-channel deep color (36-bit)|
+|     | Bit 4 |   10-bit-per-channel deep color (30-bit)|
+---------------------------------------------------------
 
-I would avoid to turn on that tracking solution from default for tests
-in hope expected ibb create()/destroy() path will be implemented. Reusing 
-same bb regardless pass/fail like in gem_concurrent_blits is helpful
-but according how ibb interacts with allocator and how igt core handles
-test completion leads to fail.
+Video Input Definition (1-byte):
+    * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
+    * Color Bit Depth: Bits 6 → 4
+-----------------------------------------------------
+| 7 | 6 5 4 | 3 2 1 0 | Color Bit Depth: Bits 6 → 4 |
+|---|-------|---------|-----------------------------|
+| 1 | 0 0 0 | x x x x | Color Bit Depth is undefined|
+| 1 | 0 0 1 | x x x x | 6 Bits per Primary Color    |
+| 1 | 0 1 0 | x x x x | 8 Bits per Primary Color    |
+| 1 | 0 1 1 | x x x x | 10 Bits per Primary Color   |
+| 1 | 1 0 0 | x x x x | 12 Bits per Primary Color   |
+| 1 | 1 0 1 | x x x x | 14 Bits per Primary Color   |
+| 1 | 1 1 0 | x x x x | 16 Bits per Primary Color   |
+| 1 | 1 1 1 | x x x x | Reserved (Do Not Use)       |
+-----------------------------------------------------
+For deep-color we need atleast 10-bits.
 
-I would add additional function like:
+V2:
+* Add EDID 1.3 support
+V3:
+* Fix reading VSDB flags1 for deep-color
+V4:
+* Separate functions for EDID 1.3 & EDID 1.4
+* Other minor cleanups
 
-void intel_bb_track(bool do_tracking);
+Cc: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/igt_edid.c           | 54 ++++++++++++++++++++++++++++++++++++++++
+ lib/igt_edid.h           |  2 ++
+ tests/kms_color_helper.c | 52 ++++++++++++++++++++++++++++++++++++++
+ tests/kms_color_helper.h |  3 +++
+ 4 files changed, 111 insertions(+)
 
-and doesn't turn that static flag from default. Tracking ibb has additional
-drawback - we're not aware which ibb is in use so we recreate connection
-to allocator for all of ibbs on the list. We'll encounter disaster if 
-couple of ibbs will have same context but different allocation algorithm
-(intel_allocator doesn't allow this).
-
-Anyway - for keeping gem_concurrent_blits code simpler your code is useful
-and according to my above comments I'm ok with it.
-
---
-Zbigniew
-
-> +static pthread_mutex_t intel_bb_list_lock = PTHREAD_MUTEX_INITIALIZER;
-> +
->  /**
->   * intel_batchbuffer_align:
->   * @batch: batchbuffer object
-> @@ -1359,6 +1362,9 @@ __intel_bb_create(int i915, uint32_t ctx, uint32_t size, bool do_relocs,
->  								  strategy);
->  	ibb->allocator_type = allocator_type;
->  	ibb->allocator_strategy = strategy;
-> +	ibb->allocator_start = start;
-> +	ibb->allocator_end = end;
-> +
->  	ibb->i915 = i915;
->  	ibb->enforce_relocs = do_relocs;
->  	ibb->handle = gem_create(i915, size);
-> @@ -1384,6 +1390,12 @@ __intel_bb_create(int i915, uint32_t ctx, uint32_t size, bool do_relocs,
->  
->  	ibb->refcount = 1;
->  
-> +	if (ibb->allocator_type != INTEL_ALLOCATOR_NONE) {
-> +		pthread_mutex_lock(&intel_bb_list_lock);
-> +		igt_list_add(&ibb->link, &intel_bb_list);
-> +		pthread_mutex_unlock(&intel_bb_list_lock);
-> +	}
-> +
->  	return ibb;
->  }
->  
-> @@ -1600,6 +1612,10 @@ void intel_bb_destroy(struct intel_bb *ibb)
->  	__intel_bb_destroy_cache(ibb);
->  
->  	if (ibb->allocator_type != INTEL_ALLOCATOR_NONE) {
-> +		pthread_mutex_lock(&intel_bb_list_lock);
-> +		igt_list_del(&ibb->link);
-> +		pthread_mutex_unlock(&intel_bb_list_lock);
-> +
->  		intel_allocator_free(ibb->allocator_handle, ibb->handle);
->  		intel_allocator_close(ibb->allocator_handle);
->  	}
-> @@ -2959,3 +2975,25 @@ igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
->  
->  	return copy;
->  }
-> +
-> +void __intel_bb_reinit_alloc(struct intel_bb *ibb)
-> +{
-> +	if (ibb->allocator_type == INTEL_ALLOCATOR_NONE)
-> +		return;
-> +
-> +	ibb->allocator_handle = intel_allocator_open_full(ibb->i915, ibb->ctx,
-> +							  ibb->allocator_start, ibb->allocator_end,
-> +							  ibb->allocator_type,
-> +							  ibb->allocator_strategy);
-> +	intel_bb_reset(ibb, true);
-> +}
-> +
-
-Add documentation for this function. 
-
-> +void intel_bb_reinit_allocator(void)
-> +{
-> +	struct intel_bb *iter;
-> +
-> +	pthread_mutex_lock(&intel_bb_list_lock);
-> +	igt_list_for_each_entry(iter, &intel_bb_list, link)
-> +		__intel_bb_reinit_alloc(iter);
-> +	pthread_mutex_unlock(&intel_bb_list_lock);
-> +}
-> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-> index e7606307..2265de8a 100644
-> --- a/lib/intel_batchbuffer.h
-> +++ b/lib/intel_batchbuffer.h
-> @@ -456,7 +456,10 @@ struct igt_pxp {
->   * Batchbuffer without libdrm dependency
->   */
->  struct intel_bb {
-> +	struct igt_list_head link;
-> +
->  	uint64_t allocator_handle;
-> +	uint64_t allocator_start, allocator_end;
->  	uint8_t allocator_type;
->  	enum allocator_strategy allocator_strategy;
->  
-> @@ -524,6 +527,9 @@ struct intel_bb *
->  intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx, uint32_t size);
->  void intel_bb_destroy(struct intel_bb *ibb);
->  
-> +// make it safe to use intel_allocator after failed test
-
-Use /* and */ style comments.
-
-> +void intel_bb_reinit_allocator(void);
-> +
->  static inline void intel_bb_ref(struct intel_bb *ibb)
->  {
->  	ibb->refcount++;
-> -- 
-> 2.32.0
-> 
+diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+index df346c4c8c..8fc3d453bf 100644
+--- a/lib/igt_edid.c
++++ b/lib/igt_edid.c
+@@ -349,6 +349,60 @@ size_t edid_get_size(const struct edid *edid)
+ 	       edid->extensions_len * sizeof(struct edid_ext);
+ }
+ 
++/**
++ * edid_get_deep_color_from_vsdb: return the Deep Color info from Vender
++ * Specific Data Block (VSDB), if VSDB not found then return zero.
++ */
++uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid)
++{
++	const uint8_t offset = offsetof(struct edid_cea, data);
++	uint8_t deep_color, i = 0;
++
++	/* Read from vendor specific data block first, if vsdb not found
++	 * return 0.
++	 */
++	for (i = 0; i < edid->extensions_len; i++) {
++		uint32_t index = 0;
++		uint8_t dtd_offset = edid->extensions[i].data.cea.dtd_start;
++
++		if (edid->extensions[i].tag != EDID_EXT_CEA)
++			continue;
++
++		do {
++			struct edid_cea_data_block * vsdb =
++				(struct edid_cea_data_block *) &edid->extensions[i].data.cea.data[index];
++			uint8_t vsdb_length = (vsdb->type_len & 0x1f);
++			uint8_t vsdb_type = (vsdb->type_len & (7 << 5)) >> 5;
++
++			if (vsdb_type == EDID_CEA_DATA_VENDOR_SPECIFIC)
++				deep_color = vsdb->data.vsdbs[0].data.hdmi.flags1;
++
++			if (deep_color & (7 << 4))
++				return deep_color;
++
++			index += (vsdb_length + sizeof(vsdb->type_len));
++		} while (index < dtd_offset - offset);
++	}
++
++	return 0;
++}
++
++/**
++ * edid_get_bit_depth: Read from the Video Input Definition and return the
++ * Color Bit Depth if Input is a Digital Video, else return zero.
++ */
++uint8_t edid_get_bit_depth_from_vid(const struct edid *edid)
++{
++	/*
++	 * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
++	 * Color Bit Depth: Bits 6 → 4
++	 */
++	if (!(edid->input & (1 << 7)))
++		return 0;
++
++	return ((edid->input & (7 << 4)) >> 4);
++}
++
+ /**
+  * cea_sad_init_pcm:
+  * @channels: the number of supported channels (max. 8)
+diff --git a/lib/igt_edid.h b/lib/igt_edid.h
+index aac2f4a208..a9251d689e 100644
+--- a/lib/igt_edid.h
++++ b/lib/igt_edid.h
+@@ -377,6 +377,8 @@ void edid_update_checksum(struct edid *edid);
+ void base_edid_update_checksum(struct edid *edid);
+ size_t edid_get_size(const struct edid *edid);
+ void edid_get_mfg(const struct edid *edid, char out[static 3]);
++uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid);
++uint8_t edid_get_bit_depth_from_vid(const struct edid *edid);
+ void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
+ 			      int width_mm, int height_mm);
+ void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index d71e7bb2e6..6b3af02b00 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -24,6 +24,58 @@
+ 
+ #include "kms_color_helper.h"
+ 
++bool
++is_panel_supports_deep_color(int fd, drmModeConnector *connector)
++{
++	uint64_t edid_blob_id;
++	uint8_t bit_depth, rev;
++	const struct edid *edid;
++	bool result;
++	drmModePropertyBlobPtr edid_blob = NULL;
++
++	igt_assert(kmstest_get_property(fd, connector->connector_id,
++					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
++					&edid_blob_id, NULL));
++	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
++	igt_require_f(edid_blob, "EDID blob is NULL\n");
++
++	edid = (const struct edid *) edid_blob->data;
++	rev = edid->revision;
++
++	if (rev >= 4) {
++		bit_depth = edid_get_bit_depth_from_vid(edid);
++
++		if (bit_depth > 0 && bit_depth < 7)
++			igt_info("Max supported bit depth: %d\n", ((bit_depth << 1) + 4));
++		else
++			igt_info("Max supported bit depth: Undefined\n");
++
++		result = (bit_depth >= 3) && (bit_depth < 7);
++	} else {
++		bit_depth = edid_get_deep_color_from_vsdb(edid);
++
++		if (bit_depth &	HDMI_VSDB_DC_48BIT)
++			igt_info("Max supported bit depth: 16\n");
++		else if (bit_depth & HDMI_VSDB_DC_36BIT)
++			igt_info("Max supported bit depth: 12\n");
++		else if (bit_depth & HDMI_VSDB_DC_30BIT)
++			igt_info("Max supported bit depth: 10\n");
++		else
++			igt_info("Max supported bit depth: Undefined\n");
++
++		result = !!(bit_depth & (7 << 4));
++	}
++	drmModeFreePropertyBlob(edid_blob);
++
++	return result;
++}
++
++bool is_max_bpc_supported(igt_output_t *output)
++{
++	return igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC) &&
++		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
++}
++
+ void paint_gradient_rectangles(data_t *data,
+ 			       drmModeModeInfo *mode,
+ 			       color_t *colors,
+diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+index bb6f0054f3..992087ac9c 100644
+--- a/tests/kms_color_helper.h
++++ b/tests/kms_color_helper.h
+@@ -36,6 +36,7 @@
+ #include "drm.h"
+ #include "drmtest.h"
+ #include "igt.h"
++#include "igt_edid.h"
+ 
+ 
+ /* Internal */
+@@ -64,6 +65,8 @@ typedef struct {
+ 	color_t coeffs[];
+ } gamma_lut_t;
+ 
++bool is_panel_supports_deep_color(int fd, drmModeConnector *connector);
++bool is_max_bpc_supported(igt_output_t *output);
+ void paint_gradient_rectangles(data_t *data,
+ 			       drmModeModeInfo *mode,
+ 			       color_t *colors,
+-- 
+2.35.0
