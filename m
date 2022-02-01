@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C742810EAF7
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Feb 2022 09:06:00 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Tue,  1 Feb 2022 14:35:28 +0530
-Message-Id: <20220201090528.2105215-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220127064443.2003969-1-bhanuprakash.modem@intel.com>
-References: <20220127064443.2003969-1-bhanuprakash.modem@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E53310ECAD
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Feb 2022 09:07:57 +0000 (UTC)
+Date: Tue, 1 Feb 2022 10:07:39 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <Yfj4W4jVXoliL3wc@kamilkon-DESK1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v4 i-g-t 1/3] tests/kms_color_helper: Read deep-color
- capability from EDID
+Subject: [igt-dev] =?utf-8?b?Rnc6IFJlOiAg4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBm?=
+ =?utf-8?q?or_lib/intel=5Fbatchbuffer=3A_reset_allocator_before_subtest_?=
+ =?utf-8?b?KHJldjIp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,220 +21,172 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, uma.shankar@intel.com
+To: tejasreex.illipilli@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a helper function to read the panel's deep-color capability
-from EDID.
+Hi,
 
-For EDID 1.3, we need to read deep color capability from Vendor
-Specific Data Block, and for EDID 1.4 read bit depth from Video
-Input Definition.
+could you help me ?
 
-Vendor Specific Data Block for "HDMI Licensing LLC":
----------------------------------------------------------
-| Byte|  Bit  |        Description                      |
----------------------------------------------------------
-|     | Bit 6 |   16-bit-per-channel deep color (48-bit)|
-|  6  | Bit 5 |   12-bit-per-channel deep color (36-bit)|
-|     | Bit 4 |   10-bit-per-channel deep color (30-bit)|
----------------------------------------------------------
+thanks!
+-kamil
 
-Video Input Definition (1-byte):
-    * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
-    * Color Bit Depth: Bits 6 → 4
------------------------------------------------------
-| 7 | 6 5 4 | 3 2 1 0 | Color Bit Depth: Bits 6 → 4 |
-|---|-------|---------|-----------------------------|
-| 1 | 0 0 0 | x x x x | Color Bit Depth is undefined|
-| 1 | 0 0 1 | x x x x | 6 Bits per Primary Color    |
-| 1 | 0 1 0 | x x x x | 8 Bits per Primary Color    |
-| 1 | 0 1 1 | x x x x | 10 Bits per Primary Color   |
-| 1 | 1 0 0 | x x x x | 12 Bits per Primary Color   |
-| 1 | 1 0 1 | x x x x | 14 Bits per Primary Color   |
-| 1 | 1 1 0 | x x x x | 16 Bits per Primary Color   |
-| 1 | 1 1 1 | x x x x | Reserved (Do Not Use)       |
------------------------------------------------------
-For deep-color we need atleast 10-bits.
+----- fw from Kamil Konieczny <kamil.konieczny@linux.intel.com> -----
 
-V2:
-* Add EDID 1.3 support
-V3:
-* Fix reading VSDB flags1 for deep-color
-V4:
-* Separate functions for EDID 1.3 & EDID 1.4
-* Other minor cleanups
+Date: Mon, 31 Jan 2022 18:34:13 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Subject: Re: [igt-dev]  ✗ Fi.CI.BAT: failure for lib/intel_batchbuffer: reset allocator before subtest (rev2)
+Message-ID: <Yfgdle9BEvBHn3pa@kamilkon-DESK1>
+References: <20220128130203.14790-1-kamil.konieczny@linux.intel.com>
+	<164364012403.8649.3909813228037981909@emeril.freedesktop.org>
 
-Cc: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_edid.c           | 54 ++++++++++++++++++++++++++++++++++++++++
- lib/igt_edid.h           |  2 ++
- tests/kms_color_helper.c | 52 ++++++++++++++++++++++++++++++++++++++
- tests/kms_color_helper.h |  3 +++
- 4 files changed, 111 insertions(+)
+Hi,
 
-diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-index df346c4c8c..8fc3d453bf 100644
---- a/lib/igt_edid.c
-+++ b/lib/igt_edid.c
-@@ -349,6 +349,60 @@ size_t edid_get_size(const struct edid *edid)
- 	       edid->extensions_len * sizeof(struct edid_ext);
- }
- 
-+/**
-+ * edid_get_deep_color_from_vsdb: return the Deep Color info from Vender
-+ * Specific Data Block (VSDB), if VSDB not found then return zero.
-+ */
-+uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid)
-+{
-+	const uint8_t offset = offsetof(struct edid_cea, data);
-+	uint8_t deep_color, i = 0;
-+
-+	/* Read from vendor specific data block first, if vsdb not found
-+	 * return 0.
-+	 */
-+	for (i = 0; i < edid->extensions_len; i++) {
-+		uint32_t index = 0;
-+		uint8_t dtd_offset = edid->extensions[i].data.cea.dtd_start;
-+
-+		if (edid->extensions[i].tag != EDID_EXT_CEA)
-+			continue;
-+
-+		do {
-+			struct edid_cea_data_block * vsdb =
-+				(struct edid_cea_data_block *) &edid->extensions[i].data.cea.data[index];
-+			uint8_t vsdb_length = (vsdb->type_len & 0x1f);
-+			uint8_t vsdb_type = (vsdb->type_len & (7 << 5)) >> 5;
-+
-+			if (vsdb_type == EDID_CEA_DATA_VENDOR_SPECIFIC)
-+				deep_color = vsdb->data.vsdbs[0].data.hdmi.flags1;
-+
-+			if (deep_color & (7 << 4))
-+				return deep_color;
-+
-+			index += (vsdb_length + sizeof(vsdb->type_len));
-+		} while (index < dtd_offset - offset);
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * edid_get_bit_depth: Read from the Video Input Definition and return the
-+ * Color Bit Depth if Input is a Digital Video, else return zero.
-+ */
-+uint8_t edid_get_bit_depth_from_vid(const struct edid *edid)
-+{
-+	/*
-+	 * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
-+	 * Color Bit Depth: Bits 6 → 4
-+	 */
-+	if (!(edid->input & (1 << 7)))
-+		return 0;
-+
-+	return ((edid->input & (7 << 4)) >> 4);
-+}
-+
- /**
-  * cea_sad_init_pcm:
-  * @channels: the number of supported channels (max. 8)
-diff --git a/lib/igt_edid.h b/lib/igt_edid.h
-index aac2f4a208..a9251d689e 100644
---- a/lib/igt_edid.h
-+++ b/lib/igt_edid.h
-@@ -377,6 +377,8 @@ void edid_update_checksum(struct edid *edid);
- void base_edid_update_checksum(struct edid *edid);
- size_t edid_get_size(const struct edid *edid);
- void edid_get_mfg(const struct edid *edid, char out[static 3]);
-+uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid);
-+uint8_t edid_get_bit_depth_from_vid(const struct edid *edid);
- void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
- 			      int width_mm, int height_mm);
- void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index d71e7bb2e6..6b3af02b00 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -24,6 +24,58 @@
- 
- #include "kms_color_helper.h"
- 
-+bool
-+is_panel_supports_deep_color(int fd, drmModeConnector *connector)
-+{
-+	uint64_t edid_blob_id;
-+	uint8_t bit_depth, rev;
-+	const struct edid *edid;
-+	bool result;
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+
-+	igt_assert(kmstest_get_property(fd, connector->connector_id,
-+					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-+					&edid_blob_id, NULL));
-+	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
-+	igt_require_f(edid_blob, "EDID blob is NULL\n");
-+
-+	edid = (const struct edid *) edid_blob->data;
-+	rev = edid->revision;
-+
-+	if (rev >= 4) {
-+		bit_depth = edid_get_bit_depth_from_vid(edid);
-+
-+		if (bit_depth > 0 && bit_depth < 7)
-+			igt_info("Max supported bit depth: %d\n", ((bit_depth << 1) + 4));
-+		else
-+			igt_info("Max supported bit depth: Undefined\n");
-+
-+		result = (bit_depth >= 3) && (bit_depth < 7);
-+	} else {
-+		bit_depth = edid_get_deep_color_from_vsdb(edid);
-+
-+		if (bit_depth &	HDMI_VSDB_DC_48BIT)
-+			igt_info("Max supported bit depth: 16\n");
-+		else if (bit_depth & HDMI_VSDB_DC_36BIT)
-+			igt_info("Max supported bit depth: 12\n");
-+		else if (bit_depth & HDMI_VSDB_DC_30BIT)
-+			igt_info("Max supported bit depth: 10\n");
-+		else
-+			igt_info("Max supported bit depth: Undefined\n");
-+
-+		result = !!(bit_depth & (7 << 4));
-+	}
-+	drmModeFreePropertyBlob(edid_blob);
-+
-+	return result;
-+}
-+
-+bool is_max_bpc_supported(igt_output_t *output)
-+{
-+	return igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC) &&
-+		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
-+}
-+
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
- 			       color_t *colors,
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index bb6f0054f3..992087ac9c 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -36,6 +36,7 @@
- #include "drm.h"
- #include "drmtest.h"
- #include "igt.h"
-+#include "igt_edid.h"
- 
- 
- /* Internal */
-@@ -64,6 +65,8 @@ typedef struct {
- 	color_t coeffs[];
- } gamma_lut_t;
- 
-+bool is_panel_supports_deep_color(int fd, drmModeConnector *connector);
-+bool is_max_bpc_supported(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
- 			       color_t *colors,
--- 
-2.35.0
+I made changes to intel_butchbuffer that it should not affect
+
+igt@i915_selftest@live@hangcheck
+igt@i915_selftest@live@requests
+
+can you add this to false positives and re-run test ?
+thanks!
+
+-kamil
+
+Dnia Mon, Jan 31, 2022 at 02:42:04PM -0000, Patchwork napisał(a):
+> == Series Details ==
+> 
+> Series: lib/intel_batchbuffer: reset allocator before subtest (rev2)
+> URL   : https://patchwork.freedesktop.org/series/99478/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_11162 -> IGTPW_6587
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_6587 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_6587, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/index.html
+> 
+> Participating hosts (47 -> 42)
+> ------------------------------
+> 
+>   Missing    (5): shard-tglu fi-bsw-n3050 fi-bsw-cyan shard-rkl shard-dg1 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_6587:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live@requests:
+>     - fi-blb-e6850:       [PASS][1] -> [DMESG-FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/fi-blb-e6850/igt@i915_selftest@live@requests.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-blb-e6850/igt@i915_selftest@live@requests.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_6587 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@amdgpu/amd_basic@semaphore:
+>     - fi-hsw-4770:        NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#109315]) +17 similar issues
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
+> 
+>   * igt@gem_exec_suspend@basic-s3@smem:
+>     - fi-skl-6600u:       [PASS][4] -> [INCOMPLETE][5] ([i915#4547])
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
+>     - fi-bdw-5557u:       [PASS][6] -> [INCOMPLETE][7] ([i915#146])
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+> 
+>   * igt@kms_frontbuffer_tracking@basic:
+>     - fi-cml-u2:          [PASS][8] -> [DMESG-WARN][9] ([i915#4269])
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+> 
+>   * igt@runner@aborted:
+>     - fi-blb-e6850:       NOTRUN -> [FAIL][10] ([fdo#109271] / [i915#2403] / [i915#2426] / [i915#4312])
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-blb-e6850/igt@runner@aborted.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_module_load@reload:
+>     - {fi-tgl-dsi}:       [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/fi-tgl-dsi/igt@i915_module_load@reload.html
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-tgl-dsi/igt@i915_module_load@reload.html
+> 
+>   * igt@i915_selftest@live@hangcheck:
+>     - bat-dg1-6:          [DMESG-FAIL][13] ([i915#4494] / [i915#4957]) -> [PASS][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+>     - bat-dg1-5:          [DMESG-FAIL][15] ([i915#4494] / [i915#4957]) -> [PASS][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+>     - fi-hsw-4770:        [INCOMPLETE][17] ([i915#3303]) -> [PASS][18]
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+> 
+>   * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+>     - fi-cfl-8109u:       [DMESG-WARN][19] ([i915#295]) -> [PASS][20] +11 similar issues
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11162/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+>   [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+>   [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+>   [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+>   [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+>   [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+>   [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+>   [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+>   [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+>   [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+>   [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+>   [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+>   [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_6337 -> IGTPW_6587
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_11162: 283ae0e39a86d12ed5351314f1a6abcb2aba5c79 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_6587: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/index.html
+>   IGT_6337: 7c9c034619ef9dbfbfe041fbf3973a1cf1ac7a22 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6587/index.html
+
+----- Koniec przekierowywanego listu -----
