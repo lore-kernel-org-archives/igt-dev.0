@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0448810E318
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Feb 2022 18:11:03 +0000 (UTC)
-Date: Wed, 2 Feb 2022 19:10:58 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <YfrJMiBsUbcs3Fkk@zkempczy-mobl2>
-References: <20220202141311.18260-1-kamil.konieczny@linux.intel.com>
- <20220202141311.18260-2-kamil.konieczny@linux.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78B0C10EA79
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Feb 2022 05:25:57 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+Date: Thu,  3 Feb 2022 10:55:43 +0530
+Message-Id: <20220203052543.13995-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220202141311.18260-2-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] lib/intel_batchbuffer: add
- tracking and reset for allocator
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_sync: Add support for local
+ memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,200 +19,639 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com, zbigniew.kempczynski@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 02, 2022 at 03:13:11PM +0100, Kamil Konieczny wrote:
-> After subtest ends, due to normal flow or after fail by
-> igt_assert, igt_core inits intel_allocator before next subtest,
-> and this makes allocator handle keeped in intel_batchbuffer
-> invalid. Moreover any call to intel_allocator can result in
-> fail as there are no allocators until first allocator_open.
-> 
-> Add tracking intel_butchbuffer if it is using allocator and
-> recreate its allocator handle and offsets from igt_core before
-> next subtest.
-> 
-> Add flag for turn on tracking and a helper function for it with
-> default value off. It will not change behaviour of already used
-> tests. Use case is for standalone runs with many subtests like
-> gem_concurrent_blit.
-> 
-> v2: add tracking flag with default off (Zbigniew)
-> v3: add and correct functions descriptions (Zbigniew)
-> 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/igt_core.c          |  2 ++
->  lib/intel_batchbuffer.c | 72 +++++++++++++++++++++++++++++++++++++++++
->  lib/intel_batchbuffer.h |  7 ++++
->  3 files changed, 81 insertions(+)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index 7c906675..ab27a24d 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -59,6 +59,7 @@
->  
->  #include "drmtest.h"
->  #include "intel_allocator.h"
-> +#include "intel_batchbuffer.h"
->  #include "intel_chipset.h"
->  #include "intel_io.h"
->  #include "igt_debugfs.h"
-> @@ -1426,6 +1427,7 @@ __noreturn static void exit_subtest(const char *result)
->  	 * remnants from previous allocator run (if any).
->  	 */
->  	intel_allocator_init();
-> +	intel_bb_reinit_allocator();
->  
->  	if (!in_dynamic_subtest)
->  		_igt_dynamic_tests_executed = -1;
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index 10d8a6e0..970e3e83 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -80,6 +80,10 @@
->   * library as a dependency.
->   */
->  
-> +static bool intel_bb_do_tracking;
-> +static IGT_LIST_HEAD(intel_bb_list);
-> +static pthread_mutex_t intel_bb_list_lock = PTHREAD_MUTEX_INITIALIZER;
-> +
->  /**
->   * intel_batchbuffer_align:
->   * @batch: batchbuffer object
-> @@ -1359,6 +1363,9 @@ __intel_bb_create(int i915, uint32_t ctx, uint32_t size, bool do_relocs,
->  								  strategy);
->  	ibb->allocator_type = allocator_type;
->  	ibb->allocator_strategy = strategy;
-> +	ibb->allocator_start = start;
-> +	ibb->allocator_end = end;
-> +
->  	ibb->i915 = i915;
->  	ibb->enforce_relocs = do_relocs;
->  	ibb->handle = gem_create(i915, size);
-> @@ -1384,6 +1391,12 @@ __intel_bb_create(int i915, uint32_t ctx, uint32_t size, bool do_relocs,
->  
->  	ibb->refcount = 1;
->  
-> +	if (intel_bb_do_tracking && ibb->allocator_type != INTEL_ALLOCATOR_NONE) {
-> +		pthread_mutex_lock(&intel_bb_list_lock);
-> +		igt_list_add(&ibb->link, &intel_bb_list);
-> +		pthread_mutex_unlock(&intel_bb_list_lock);
-> +	}
-> +
->  	return ibb;
->  }
->  
-> @@ -1600,6 +1613,12 @@ void intel_bb_destroy(struct intel_bb *ibb)
->  	__intel_bb_destroy_cache(ibb);
->  
->  	if (ibb->allocator_type != INTEL_ALLOCATOR_NONE) {
-> +		if (intel_bb_do_tracking) {
-> +			pthread_mutex_lock(&intel_bb_list_lock);
-> +			igt_list_del(&ibb->link);
-> +			pthread_mutex_unlock(&intel_bb_list_lock);
-> +		}
-> +
->  		intel_allocator_free(ibb->allocator_handle, ibb->handle);
->  		intel_allocator_close(ibb->allocator_handle);
->  	}
-> @@ -2959,3 +2978,56 @@ igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
->  
->  	return copy;
->  }
-> +
-> +/**
-> + * intel_bb_track:
-> + * @do_tracking: bool
-> + *
-> + * Turn on (true) or off (false) tracking for intel_batchbuffers.
-> + */
-> +void intel_bb_track(bool do_tracking)
-> +{
-> +	if (intel_bb_do_tracking == do_tracking)
-> +		return;
-> +
-> +	if (intel_bb_do_tracking) {
-> +		struct intel_bb *entry, *tmp;
-> +
-> +		pthread_mutex_lock(&intel_bb_list_lock);
-> +		igt_list_for_each_entry_safe(entry, tmp, &intel_bb_list, link)
-> +			igt_list_del(&entry->link);
-> +		pthread_mutex_unlock(&intel_bb_list_lock);
-> +	}
-> +
-> +	intel_bb_do_tracking = do_tracking;
-> +}
-> +
-> +void __intel_bb_reinit_alloc(struct intel_bb *ibb)
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Should be static, compiler complains there's no previous prototype.
+Add support for local memory region (Device memory)
 
-With above nit fixed:
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/igt_dummyload.c   |   8 +-
+ lib/igt_dummyload.h   |   1 +
+ tests/i915/gem_sync.c | 231 ++++++++++++++++++++++++++----------------
+ 3 files changed, 147 insertions(+), 93 deletions(-)
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
---
-Zbigniew
-
-> +{
-> +	if (ibb->allocator_type == INTEL_ALLOCATOR_NONE)
-> +		return;
-> +
-> +	ibb->allocator_handle = intel_allocator_open_full(ibb->i915, ibb->ctx,
-> +							  ibb->allocator_start, ibb->allocator_end,
-> +							  ibb->allocator_type,
-> +							  ibb->allocator_strategy);
-> +	intel_bb_reset(ibb, true);
-> +}
-> +
-> +/**
-> + * intel_bb_reinit_allocator:
-> + *
-> + * Reinit allocator and get offsets in tracked intel_batchbuffers.
-> + */
-> +void intel_bb_reinit_allocator(void)
-> +{
-> +	struct intel_bb *iter;
-> +
-> +	if (!intel_bb_do_tracking)
-> +		return;
-> +
-> +	pthread_mutex_lock(&intel_bb_list_lock);
-> +	igt_list_for_each_entry(iter, &intel_bb_list, link)
-> +		__intel_bb_reinit_alloc(iter);
-> +	pthread_mutex_unlock(&intel_bb_list_lock);
-> +}
-> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-> index e7606307..a488f9cf 100644
-> --- a/lib/intel_batchbuffer.h
-> +++ b/lib/intel_batchbuffer.h
-> @@ -456,7 +456,10 @@ struct igt_pxp {
->   * Batchbuffer without libdrm dependency
->   */
->  struct intel_bb {
-> +	struct igt_list_head link;
-> +
->  	uint64_t allocator_handle;
-> +	uint64_t allocator_start, allocator_end;
->  	uint8_t allocator_type;
->  	enum allocator_strategy allocator_strategy;
->  
-> @@ -524,6 +527,10 @@ struct intel_bb *
->  intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx, uint32_t size);
->  void intel_bb_destroy(struct intel_bb *ibb);
->  
-> +/* make it safe to use intel_allocator after failed test */
-> +void intel_bb_reinit_allocator(void);
-> +void intel_bb_track(bool do_tracking);
-> +
->  static inline void intel_bb_ref(struct intel_bb *ibb)
->  {
->  	ibb->refcount++;
-> -- 
-> 2.32.0
-> 
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 645db922..97dece71 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -71,7 +71,7 @@ static IGT_LIST_HEAD(spin_list);
+ static pthread_mutex_t list_lock = PTHREAD_MUTEX_INITIALIZER;
+ 
+ static uint32_t
+-handle_create(int fd, size_t sz, unsigned long flags, uint32_t **mem)
++handle_create(int fd, size_t sz, unsigned long flags, uint32_t **mem, uint32_t region)
+ {
+ 	*mem = NULL;
+ 
+@@ -85,7 +85,7 @@ handle_create(int fd, size_t sz, unsigned long flags, uint32_t **mem)
+ 		return handle;
+ 	}
+ 
+-	return gem_create(fd, sz);
++	return gem_create_in_memory_regions(fd, sz, region);
+ }
+ 
+ static int
+@@ -157,7 +157,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	obj = memset(spin->obj, 0, sizeof(spin->obj));
+ 
+ 	obj[BATCH].handle =
+-		handle_create(fd, BATCH_SIZE, opts->flags, &spin->batch);
++		handle_create(fd, BATCH_SIZE, opts->flags, &spin->batch, opts->region);
+ 	if (!spin->batch) {
+ 		spin->batch = gem_mmap__device_coherent(fd, obj[BATCH].handle,
+ 						  0, BATCH_SIZE, PROT_WRITE);
+@@ -222,7 +222,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		}
+ 
+ 		spin->poll_handle =
+-			handle_create(fd, 4096, opts->flags, &spin->poll);
++			handle_create(fd, 4096, opts->flags, &spin->poll, opts->region);
+ 		obj[SCRATCH].handle = spin->poll_handle;
+ 
+ 		if (!spin->poll) {
+diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+index f0205261..649b6ca4 100644
+--- a/lib/igt_dummyload.h
++++ b/lib/igt_dummyload.h
+@@ -81,6 +81,7 @@ typedef struct igt_spin_factory {
+ 	unsigned int flags;
+ 	int fence;
+ 	uint64_t ahnd;
++	uint32_t region;
+ } igt_spin_factory_t;
+ 
+ #define IGT_SPIN_FENCE_IN      (1 << 0)
+diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
+index 8c435845..93d7d992 100644
+--- a/tests/i915/gem_sync.c
++++ b/tests/i915/gem_sync.c
+@@ -143,9 +143,20 @@ static void xchg_engine(void *array, unsigned i, unsigned j)
+ 	igt_swap(E[i], E[j]);
+ }
+ 
++static uint32_t batch_create(int fd, uint32_t batch_size, uint32_t region)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle;
++
++	handle = gem_create_in_memory_regions(fd, batch_size, region);
++	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
++
++	return handle;
++}
++
+ static void
+ sync_ring(int fd, const intel_ctx_t *ctx,
+-	  unsigned ring, int num_children, int timeout)
++	  unsigned ring, int num_children, int timeout, uint32_t region)
+ {
+ 	struct intel_engine_data ied;
+ 
+@@ -155,15 +166,13 @@ sync_ring(int fd, const intel_ctx_t *ctx,
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+ 	igt_fork(child, num_children) {
+-		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 object;
+ 		struct drm_i915_gem_execbuffer2 execbuf;
+ 		double start, elapsed;
+ 		unsigned long cycles;
+ 
+ 		memset(&object, 0, sizeof(object));
+-		object.handle = gem_create(fd, 4096);
+-		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
++		object.handle = batch_create(fd, 4096, region);
+ 
+ 		memset(&execbuf, 0, sizeof(execbuf));
+ 		execbuf.buffers_ptr = to_user_pointer(&object);
+@@ -193,9 +202,8 @@ sync_ring(int fd, const intel_ctx_t *ctx,
+ 
+ static void
+ idle_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
+-	  int num_children, int timeout)
++	  int num_children, int timeout, uint32_t region)
+ {
+-	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct drm_i915_gem_exec_object2 object;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	double start, elapsed;
+@@ -204,8 +212,7 @@ idle_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
+ 	gem_require_ring(fd, ring);
+ 
+ 	memset(&object, 0, sizeof(object));
+-	object.handle = gem_create(fd, 4096);
+-	gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
++	object.handle = batch_create(fd, 4096, region);
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&object);
+@@ -234,7 +241,7 @@ idle_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
+ 
+ static void
+ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+-	    int timeout, int wlen)
++	    int timeout, int wlen, uint32_t region)
+ {
+ 	struct intel_engine_data ied;
+ 	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+@@ -244,7 +251,6 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+ 	igt_fork(child, ied.nengines) {
+-		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 object;
+ 		struct drm_i915_gem_execbuffer2 execbuf;
+ 		double end, this, elapsed, now, baseline;
+@@ -254,11 +260,10 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 		ahnd = get_reloc_ahnd(fd, ctx->id);
+ 
+ 		memset(&object, 0, sizeof(object));
+-		object.handle = gem_create(fd, 4096);
++		object.handle = batch_create(fd, 4096, region);
+ 		object.offset = get_offset(ahnd, object.handle, 4096, 0);
+ 		if (ahnd)
+ 			object.flags = EXEC_OBJECT_PINNED;
+-		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
+ 
+ 		memset(&execbuf, 0, sizeof(execbuf));
+ 		execbuf.buffers_ptr = to_user_pointer(&object);
+@@ -339,7 +344,7 @@ wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ }
+ 
+ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
+-			int num_children, int timeout)
++			int num_children, int timeout, uint32_t region)
+ {
+ 	struct intel_engine_data ied;
+ 	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+@@ -359,13 +364,15 @@ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
+ 					 .ahnd = ahnd,
+ 					 .ctx = ctx,
+ 					 .engine = ied_flags(&ied, child),
+-					 .flags = IGT_SPIN_FAST);
++					 .flags = IGT_SPIN_FAST,
++					 .region = region);
+ 
+ 		spin[1] = __igt_spin_new(fd,
+ 					 .ahnd = ahnd,
+ 					 .ctx = ctx,
+ 					 .engine = ied_flags(&ied, child),
+-					 .flags = IGT_SPIN_FAST);
++					 .flags = IGT_SPIN_FAST,
++					 .region = region);
+ 
+ 		start = gettime();
+ 		end = start + timeout;
+@@ -398,7 +405,7 @@ static void active_ring(int fd, const intel_ctx_t *ctx, unsigned int ring,
+ 
+ static void
+ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+-		   int timeout, int wlen)
++		   int timeout, int wlen, uint32_t region)
+ {
+ 	struct intel_engine_data ied;
+ 	uint64_t ahnd0 = get_reloc_ahnd(fd, 0);
+@@ -409,7 +416,6 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+ 	igt_fork(child, ied.nengines) {
+-		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 object;
+ 		struct drm_i915_gem_execbuffer2 execbuf;
+ 		double end, this, elapsed, now, baseline;
+@@ -420,11 +426,10 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 		ahnd = get_reloc_ahnd(fd, ctx->id);
+ 
+ 		memset(&object, 0, sizeof(object));
+-		object.handle = gem_create(fd, 4096);
++		object.handle = batch_create(fd, 4096, region);
+ 		object.offset = get_offset(ahnd, object.handle, 4096, 0);
+ 		if (ahnd)
+ 			object.offset = EXEC_OBJECT_PINNED;
+-		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
+ 
+ 		memset(&execbuf, 0, sizeof(execbuf));
+ 		execbuf.buffers_ptr = to_user_pointer(&object);
+@@ -436,14 +441,16 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 					 .ahnd = ahnd0,
+ 					 .engine = execbuf.flags,
+ 					 .flags = (IGT_SPIN_POLL_RUN |
+-						   IGT_SPIN_FAST));
++						   IGT_SPIN_FAST),
++					 .region = region);
+ 		igt_assert(igt_spin_has_poll(spin[0]));
+ 
+ 		spin[1] = __igt_spin_new(fd,
+ 					 .ahnd = ahnd0,
+ 					 .engine = execbuf.flags,
+ 					 .flags = (IGT_SPIN_POLL_RUN |
+-						   IGT_SPIN_FAST));
++						   IGT_SPIN_FAST),
++					 .region = region);
+ 
+ 		gem_execbuf(fd, &execbuf);
+ 
+@@ -529,7 +536,7 @@ active_wakeup_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 
+ static void
+ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+-	   int num_children, int timeout)
++	   int num_children, int timeout, uint32_t region)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	struct intel_engine_data ied;
+@@ -541,7 +548,6 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+ 	igt_fork(child, num_children) {
+-		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 object[2];
+ 		struct drm_i915_gem_relocation_entry reloc[1024];
+ 		struct drm_i915_gem_execbuffer2 execbuf;
+@@ -559,14 +565,13 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 		execbuf.rsvd1 = ctx->id;
+ 
+ 		memset(object, 0, sizeof(object));
+-		object[0].handle = gem_create(fd, 4096);
+-		gem_write(fd, object[0].handle, 0, &bbe, sizeof(bbe));
++		object[0].handle = batch_create(fd, 4096, region);
+ 		execbuf.buffer_count = 1;
+ 		gem_execbuf(fd, &execbuf);
+ 
+ 		object[0].flags |= EXEC_OBJECT_WRITE;
+ 		object[0].flags |= has_relocs ? 0 : EXEC_OBJECT_PINNED;
+-		object[1].handle = gem_create(fd, 20*1024);
++		object[1].handle = gem_create_in_memory_regions(fd, 20*1024, region);
+ 
+ 		object[1].relocs_ptr = to_user_pointer(reloc);
+ 		object[1].relocation_count = has_relocs ? 1024 : 0;
+@@ -629,7 +634,7 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 
+ static void
+ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+-	    int num_children, int timeout)
++	    int num_children, int timeout, uint32_t region)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	struct intel_engine_data ied;
+@@ -653,7 +658,6 @@ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 		unsigned long cycles;
+ 
+ 		for (int i = 0; i < ARRAY_SIZE(contexts); i++) {
+-			const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 			const uint32_t sz = 32 << 10;
+ 			struct context *c = &contexts[i];
+ 			uint32_t *batch, *b;
+@@ -670,13 +674,12 @@ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 			c->execbuf.rsvd1 = c->ctx->id;
+ 
+ 			memset(c->object, 0, sizeof(c->object));
+-			c->object[0].handle = gem_create(fd, 4096);
+-			gem_write(fd, c->object[0].handle, 0, &bbe, sizeof(bbe));
++			c->object[0].handle = batch_create(fd, 4096, region);
+ 			c->execbuf.buffer_count = 1;
+ 			gem_execbuf(fd, &c->execbuf);
+ 
+ 			c->object[0].flags |= EXEC_OBJECT_WRITE;
+-			c->object[1].handle = gem_create(fd, sz);
++			c->object[1].handle = gem_create_in_memory_regions(fd, sz, region);
+ 
+ 			c->object[1].relocs_ptr = to_user_pointer(c->reloc);
+ 			c->object[1].relocation_count = has_relocs ? 1024 * i : 0;
+@@ -813,10 +816,9 @@ static void *waiter(void *arg)
+ 
+ static void
+ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
+-	     int timeout, unsigned long *cycles)
++	     int timeout, unsigned long *cycles, uint32_t region)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+-	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct drm_i915_gem_exec_object2 object[2];
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_relocation_entry reloc[1024];
+@@ -836,8 +838,7 @@ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 	execbuf.rsvd1 = ctx->id;
+ 
+ 	memset(object, 0, sizeof(object));
+-	object[0].handle = gem_create(fd, 4096);
+-	gem_write(fd, object[0].handle, 0, &bbe, sizeof(bbe));
++	object[0].handle = batch_create(fd, 4096, region);
+ 	execbuf.buffer_count = 1;
+ 	gem_execbuf(fd, &execbuf);
+ 	object[0].flags |= EXEC_OBJECT_WRITE;
+@@ -880,8 +881,12 @@ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 	for (int i = 0; i < ARRAY_SIZE(threads); i++) {
+ 		threads[i].fd = fd;
+ 		threads[i].object = object[1];
+-		threads[i].object.handle = gem_create(fd, 20*1024);
+-		gem_write(fd, threads[i].object.handle, 0, batch, 20*1024);
++		if (i%2)
++			threads[i].object.handle = batch_create(fd, 20*1024, region);
++		else {
++			threads[i].object.handle = gem_create(fd, 20*1024);
++			gem_write(fd, threads[i].object.handle, 0, batch, 20*1024);
++		}
+ 
+ 		pthread_cond_init(&threads[i].cond, NULL);
+ 		pthread_mutex_init(&threads[i].mutex, NULL);
+@@ -945,7 +950,7 @@ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 
+ static void
+ store_many(int fd, const intel_ctx_t *ctx, unsigned int ring,
+-	   int num_children, int timeout)
++	   int num_children, int timeout, uint32_t region)
+ {
+ 	struct intel_engine_data ied;
+ 	unsigned long *shared;
+@@ -963,7 +968,8 @@ store_many(int fd, const intel_ctx_t *ctx, unsigned int ring,
+ 			__store_many(fd, ctx,
+ 				     ied_flags(&ied, n),
+ 				     timeout,
+-				     &shared[n]);
++				     &shared[n],
++				     region);
+ 	}
+ 	igt_waitchildren();
+ 
+@@ -976,7 +982,7 @@ store_many(int fd, const intel_ctx_t *ctx, unsigned int ring,
+ }
+ 
+ static void
+-sync_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
++sync_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout, uint32_t region)
+ {
+ 	struct intel_engine_data ied;
+ 
+@@ -985,15 +991,13 @@ sync_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+ 	igt_fork(child, num_children) {
+-		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 object;
+ 		struct drm_i915_gem_execbuffer2 execbuf;
+ 		double start, elapsed;
+ 		unsigned long cycles;
+ 
+ 		memset(&object, 0, sizeof(object));
+-		object.handle = gem_create(fd, 4096);
+-		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
++		object.handle = batch_create(fd, 4096, region);
+ 
+ 		memset(&execbuf, 0, sizeof(execbuf));
+ 		execbuf.buffers_ptr = to_user_pointer(&object);
+@@ -1023,7 +1027,7 @@ sync_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
+ }
+ 
+ static void
+-store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
++store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout, uint32_t region)
+ {
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+ 	struct intel_engine_data ied;
+@@ -1034,7 +1038,6 @@ store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+ 	igt_fork(child, num_children) {
+-		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 object[2];
+ 		struct drm_i915_gem_relocation_entry reloc[1024];
+ 		struct drm_i915_gem_execbuffer2 execbuf;
+@@ -1051,14 +1054,13 @@ store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
+ 		execbuf.rsvd1 = ctx->id;
+ 
+ 		memset(object, 0, sizeof(object));
+-		object[0].handle = gem_create(fd, 4096);
+-		gem_write(fd, object[0].handle, 0, &bbe, sizeof(bbe));
++		object[0].handle = batch_create(fd, 4096, region);
+ 		execbuf.buffer_count = 1;
+ 		gem_execbuf(fd, &execbuf);
+ 
+ 		object[0].flags |= EXEC_OBJECT_WRITE;
+ 		object[0].flags |= has_relocs ? 0 : EXEC_OBJECT_PINNED;
+-		object[1].handle = gem_create(fd, 1024*16 + 4096);
++		object[1].handle = gem_create_in_memory_regions(fd, 1024*16 + 4096, region);
+ 
+ 		object[1].relocs_ptr = to_user_pointer(reloc);
+ 		object[1].relocation_count = has_relocs ? 1024 : 0;
+@@ -1126,7 +1128,7 @@ store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
+ 
+ static void
+ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
+-	int num_children, int timeout)
++	int num_children, int timeout, uint32_t region)
+ {
+ 	struct intel_engine_data ied;
+ 	const intel_ctx_t *tmp_ctx[2];
+@@ -1144,7 +1146,6 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 
+ 	intel_detect_and_clear_missed_interrupts(fd);
+ 	igt_fork(child, num_children) {
+-		const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 		struct drm_i915_gem_exec_object2 object;
+ 		struct drm_i915_gem_execbuffer2 execbuf;
+ 		double start, elapsed;
+@@ -1153,11 +1154,10 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
+ 		ahnd = get_reloc_ahnd(fd, 0);
+ 
+ 		memset(&object, 0, sizeof(object));
+-		object.handle = gem_create(fd, 4096);
++		object.handle = batch_create(fd, 4096, region);
+ 		object.offset = get_offset(ahnd, object.handle, 4096, 0);
+ 		if (ahnd)
+ 			object.flags = EXEC_OBJECT_PINNED;
+-		gem_write(fd, object.handle, 0, &bbe, sizeof(bbe));
+ 
+ 		memset(&execbuf, 0, sizeof(execbuf));
+ 		execbuf.buffers_ptr = to_user_pointer(&object);
+@@ -1202,13 +1202,13 @@ preempt(int fd, const intel_ctx_t *ctx, unsigned ring,
+ igt_main
+ {
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+-	const struct {
++	const struct test_each_engine{
+ 		const char *name;
+ 		void (*func)(int fd, const intel_ctx_t *ctx, unsigned int engine,
+-			     int num_children, int timeout);
++			     int num_children, int timeout, uint32_t memregion);
+ 		int num_children;
+ 		int timeout;
+-	} all[] = {
++	} *test_engine, all[] = {
+ 		{ "basic-each", sync_ring, 1, 2 },
+ 		{ "basic-store-each", store_ring, 1, 2 },
+ 		{ "basic-many-each", store_many, 0, 2 },
+@@ -1236,11 +1236,50 @@ igt_main
+ 		{ "forked-store", store_ring, ncpus, 20 },
+ 		{}
+ 	};
++	const struct test {
++		const char *name;
++		void (*func) (int, const intel_ctx_t *, int, int, uint32_t);
++		int num_children;
++		int timeout;
++	} *test, tests[] = {
++		{ "basic-all", sync_all, 1, 2},
++		{ "basic-store-all", store_all, 1, 2},
++		{ "all", sync_all, 1, 20},
++		{ "store-all", store_all, 1, 20},
++		{ "forked-all", sync_all, ncpus, 20},
++		{ "forked-store-all", store_all, ncpus, 20},
++		{}
++	};
++
++#define subtest_for_each_combination(__name, __ctx, __num_children, __timeout, __func) \
++	igt_subtest_with_dynamic(__name) { \
++		for_each_combination(regions, 1, set) { \
++			sub_name = memregion_dynamic_subtest_name(regions); \
++			region = igt_collection_get_value(regions, 0); \
++			igt_dynamic_f("%s", sub_name) \
++				(__func)(fd, ctx, (__num_children), (__timeout), region); \
++			free(sub_name); \
++		} \
++	}
++
++#define for_each_ctx_engine_combination(__e_name, __e_flags, ctx, __num_children, __timeout, __func) \
++	for_each_combination(regions, 1, set) { \
++		sub_name = memregion_dynamic_subtest_name(regions); \
++		region = igt_collection_get_value(regions, 0); \
++		igt_dynamic_f("%s-%s", (__e_name), sub_name) \
++			(__func)(fd, ctx, (__e_flags), (__num_children), (__timeout), region); \
++		free(sub_name); \
++	}
++
+ #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
+ 
+ 	const struct intel_execution_engine2 *e;
+ 	const intel_ctx_t *ctx;
+ 	int fd = -1;
++	struct drm_i915_query_memory_regions *query_info;
++	struct igt_collection *regions, *set;
++	char *sub_name;
++	uint32_t region;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
+@@ -1250,49 +1289,48 @@ igt_main
+ 		ctx = intel_ctx_create_all_physical(fd);
+ 
+ 		igt_fork_hang_detector(fd);
++		query_info = gem_get_query_memory_regions(fd);
++		igt_assert(query_info);
++		set = get_memory_region_set(query_info,
++					I915_SYSTEM_MEMORY,
++					I915_DEVICE_MEMORY);
+ 		intel_allocator_multiprocess_start();
+ 	}
+ 
+ 	/* Legacy for selecting rings. */
+-	for_each_test(t, individual) {
+-		igt_subtest_with_dynamic_f("legacy-%s", t->name) {
++	for (test_engine= individual; test_engine->name; test_engine++) {
++		igt_subtest_with_dynamic_f("legacy-%s", test_engine->name) {
+ 			for (const struct intel_execution_ring *l = intel_execution_rings; l->name; l++) {
+-				igt_dynamic_f("%s", l->name) {
+-					t->func(fd, intel_ctx_0(fd), eb_ring(l),
+-						t->num_children, t->timeout);
+-				}
++				for_each_ctx_engine_combination(l->name, eb_ring(l), intel_ctx_0(fd),
++						test_engine->num_children,
++						test_engine->timeout,
++						test_engine->func);
+ 			}
+ 		}
+ 	}
+ 
+-	igt_subtest("basic-all")
+-		sync_all(fd, ctx, 1, 2);
+-	igt_subtest("basic-store-all")
+-		store_all(fd, ctx, 1, 2);
+-
+-	igt_subtest("all")
+-		sync_all(fd, ctx, 1, 20);
+-	igt_subtest("store-all")
+-		store_all(fd, ctx, 1, 20);
+-	igt_subtest("forked-all")
+-		sync_all(fd, ctx, ncpus, 20);
+-	igt_subtest("forked-store-all")
+-		store_all(fd, ctx, ncpus, 20);
++	for (test= tests; test->name; test++)
++		subtest_for_each_combination(test->name, ctx, test->num_children, test->timeout, test->func);
+ 
+ 	for_each_test(t, all) {
+-		igt_subtest_f("%s", t->name)
+-			t->func(fd, ctx, ALL_ENGINES, t->num_children, t->timeout);
++		igt_subtest_with_dynamic_f("%s", t->name) {
++			for_each_combination(regions, 1, set) {
++				sub_name = memregion_dynamic_subtest_name(regions);
++				region = igt_collection_get_value(regions, 0);
++				igt_dynamic_f("%s", sub_name)
++					t->func(fd, ctx, ALL_ENGINES, t->num_children,
++							t->timeout, region);
++				free(sub_name);
++			}
++		}
+ 	}
+ 
+ 	/* New way of selecting engines. */
+-	for_each_test(t, individual) {
+-		igt_subtest_with_dynamic_f("%s", t->name) {
+-			for_each_ctx_engine(fd, ctx, e) {
+-				igt_dynamic_f("%s", e->name) {
+-					t->func(fd, ctx, e->flags,
+-						t->num_children, t->timeout);
+-				}
+-			}
++	for (test_engine= individual; test_engine->name; test_engine++) {
++		igt_subtest_with_dynamic_f("%s", test_engine->name) {
++			for_each_ctx_engine(fd, ctx, e)
++				for_each_ctx_engine_combination(e->name, e->flags, ctx,
++						test_engine->num_children, test_engine->timeout, test_engine->func);
+ 		}
+ 	}
+ 
+@@ -1303,17 +1341,32 @@ igt_main
+ 			igt_require(gem_scheduler_has_preemption(fd));
+ 		}
+ 
+-		igt_subtest("preempt-all")
+-			preempt(fd, ctx, ALL_ENGINES, 1, 20);
++		igt_subtest_with_dynamic("preempt-all") {
++			for_each_combination(regions, 1, set) {
++				sub_name = memregion_dynamic_subtest_name(regions);
++				region = igt_collection_get_value(regions, 0);
++				igt_dynamic_f("%s", sub_name)
++					preempt(fd, ctx, ALL_ENGINES, 1, 20, region);
++				free(sub_name);
++			}
++		}
++
+ 		igt_subtest_with_dynamic("preempt") {
+-			for_each_ctx_engine(fd, ctx, e) {
+-				igt_dynamic_f("%s", e->name)
+-					preempt(fd, ctx, e->flags, ncpus, 20);
++			for_each_combination(regions, 1, set) {
++				sub_name = memregion_dynamic_subtest_name(regions);
++				region = igt_collection_get_value(regions, 0);
++				for_each_ctx_engine(fd, ctx, e) {
++					igt_dynamic_f("%s-%s", e->name, sub_name)
++						preempt(fd, ctx, e->flags, ncpus, 20, region);
++					free(sub_name);
++				}
+ 			}
+ 		}
+ 	}
+ 
+ 	igt_fixture {
++		free(query_info);
++		igt_collection_destroy(set);
+ 		intel_allocator_multiprocess_stop();
+ 		igt_stop_hang_detector();
+ 		intel_ctx_destroy(fd, ctx);
+-- 
+2.35.0
