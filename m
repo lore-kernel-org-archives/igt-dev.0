@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam08on2042.outbound.protection.outlook.com [40.107.100.42])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF2F110FC6A
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Feb 2022 14:35:36 +0000 (UTC)
-Message-ID: <e478f056-c07a-1b90-024d-2006cac152e5@amd.com>
-Date: Thu, 3 Feb 2022 09:35:27 -0500
-Content-Language: en-US
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DFFD10EA94
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Feb 2022 18:56:36 +0000 (UTC)
 References: <20220131142818.2686782-1-Rodrigo.Siqueira@amd.com>
  <20220131142818.2686782-2-Rodrigo.Siqueira@amd.com>
  <Yfu2nPEIQQT+6l/t@platvala-desk.ger.corp.intel.com>
-From: Harry Wentland <harry.wentland@amd.com>
+From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+Message-ID: <3af10091-6a1f-0d13-944f-7f7833837e1e@amd.com>
+Date: Thu, 3 Feb 2022 13:56:26 -0500
 In-Reply-To: <Yfu2nPEIQQT+6l/t@platvala-desk.ger.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [RFC i-g-t 1/1] MAINTAINERS: Introduce MAINTAINERS
@@ -26,12 +26,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Petri Latvala <petri.latvala@intel.com>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Solomon Chiu <solomon.chiu@amd.com>, Qingqing Zhuo <qingqing.zhuo@amd.com>, igt-dev@lists.freedesktop.org, Sean Paul <seanpaul@chromium.org>, Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>, Mark Yacoub <markyacoub@google.com>
+Cc: Solomon Chiu <solomon.chiu@amd.com>, Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>, Qingqing Zhuo <qingqing.zhuo@amd.com>, igt-dev@lists.freedesktop.org, Sean Paul <seanpaul@chromium.org>, Mark Yacoub <markyacoub@google.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 2022-02-03 06:03, Petri Latvala wrote:
+On 2022-02-03 6:03 a.m., Petri Latvala wrote:
 > On Mon, Jan 31, 2022 at 09:28:18AM -0500, Rodrigo Siqueira wrote:
 >> IGT is growing in terms of new vendors actively using it. Right now, we
 >> only have Intel CI to validate new patches, which can create a situation
@@ -71,14 +71,13 @@ On 2022-02-03 06:03, Petri Latvala wrote:
 > complexity in the documentation comment like the type of version
 > control in a subtree, and things that just aren't true for IGT, like
 > asking for testing from 4 or 5 people.
-> 
 
-I tend to agree with the statement that this has too much useless
-complexity and would love if that'd be dropped/cleaned up, though
-that could come at a later time (and might be less important if
-IGT moves to gitlab MRs).
+Hi Petri,
 
-Harry
+Thanks for your feedback. I just copy-paste most parts of this kernel 
+MAINTAINERs file since this is just a prototype. I will prepare the 
+first version of this patch and submit it again; in this new version, I 
+will drop some part of the documentation which does not make sense for IGT.
 
 > (Not to mention you're using S to describe the people, whereas the
 > original usage in kernel is to describe the files)
@@ -87,5 +86,16 @@ Harry
 > IGT. get_maintainer.pl is GPL-2.0 so we could in theory just copy
 > it. It isn't used to produce binaries so IGT should still remain
 > distributable with MIT terms but IANAL...
+
+My main concern about sending the get_maintainers patch is the effort 
+duplication since this file is actively maintained under the Linux tree, 
+and we will need to sync this script manually. How about adding a link 
+to this script instead of adding it as part of IGT?
+
+Thanks
+Siqueira
+
 > 
-> 
+Hi Petri,
+
+
