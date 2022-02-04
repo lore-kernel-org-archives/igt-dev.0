@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AB5D10EDDE
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Feb 2022 06:30:36 +0000 (UTC)
-Message-ID: <fe397719-6b35-8e26-2a17-84d70b514355@intel.com>
-Date: Fri, 4 Feb 2022 12:00:23 +0530
-Content-Language: en-US
-References: <20220107053238.1760508-1-bhanuprakash.modem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220107053238.1760508-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from pio-pvt-msa2.bahnhof.se (pio-pvt-msa2.bahnhof.se [79.136.2.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8065610F5F7
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Feb 2022 10:40:47 +0000 (UTC)
+Message-ID: <a4ea1e7c-2e85-5985-0a3d-8f9dbb30fb41@shipmail.org>
+Date: Fri, 4 Feb 2022 11:33:23 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v3 i-g-t 00/15] Add IGT support for plane color
- management
+Content-Language: en-US
+References: <20211209191334.30082-1-arjun.melkaveri@intel.com>
+From: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas@shipmail.org>
+In-Reply-To: <20211209191334.30082-1-arjun.melkaveri@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [i-g-t] tests/i915/gem_ctx_engines: Added out fence
+ for execute-one subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,58 +22,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, harry.wentland@amd.com, ppaalanen@gmail.com
+To: Arjun Melkaveri <arjun.melkaveri@intel.com>, chris.p.wilson@intel.com, zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Pekka/Harry,
+Hi,
 
-Did you get a chance to review the latest patches of Plane color management?
+On 12/9/21 20:13, Arjun Melkaveri wrote:
+> To make spinner to be on same context for following execbuf,
+> spin out_fence is passed to execbuf.rsvd2.
 
-- Bhanu
+Could we add some explanation to the commit message as to why they need 
+to be on the same context, (or serialized as this patch achieves).
 
-On Fri-07-01-2022 11:02 am, Bhanuprakash Modem wrote:
->  From the Plane Color Management feature design, userspace can
-> take the smart blending decisions based on hardware supported
-> plane color features to obtain an accurate color profile.
-> 
-> These IGT patches extend the existing pipe color management
-> tests to the plane level.
-> 
-> Kernel implementation:
-> https://patchwork.freedesktop.org/series/90825/
-> 
-> Bhanuprakash Modem (12):
->    HAX: Get uapi headers to compile the IGT
->    lib/igt_kms: Add plane color mgmt properties
->    kms_color_helper: Add helper functions for plane color mgmt
->    tests/kms_color: New subtests for Plane gamma
->    tests/kms_color: New subtests for Plane degamma
->    tests/kms_color: New subtests for Plane CTM
->    tests/kms_color: New negative tests for plane level color mgmt
->    tests/kms_color_chamelium: New subtests for Plane gamma
->    tests/kms_color_chamelium: New subtests for Plane degamma
->    tests/kms_color_chamelium: New subtests for Plane CTM
->    tests/kms_color_chamelium: Extended IGT tests to support logarithmic
->      gamma mode
->    HAX: Add color mgmt tests to BAT
-> 
-> Mukunda Pramodh Kumar (3):
->    lib/igt_kms: Add pipe color mgmt properties
->    kms_color_helper: Add helper functions to support logarithmic gamma
->      mode
->    tests/kms_color: Extended IGT tests to support logarithmic gamma mode
-> 
->   include/drm-uapi/drm.h                |  10 +
->   include/drm-uapi/drm_mode.h           |  28 ++
->   lib/igt_kms.c                         |   6 +
->   lib/igt_kms.h                         |   6 +
->   tests/intel-ci/fast-feedback.testlist | 112 +++++
->   tests/kms_color.c                     | 672 +++++++++++++++++++++++++-
->   tests/kms_color_chamelium.c           | 597 ++++++++++++++++++++++-
->   tests/kms_color_helper.c              | 303 +++++++++++-
->   tests/kms_color_helper.h              |  44 ++
->   9 files changed, 1761 insertions(+), 17 deletions(-)
-> 
-> --
-> 2.32.0
-> 
+>
+> Used IGT_SPIN_FENCE_OUT flag in spinner, we can stop
+> using no-preemption.
+
+Also clarify that this is not the primary purpose of the patch but 
+rather a desirable side-effect?
+
+
+>
+> Added I915_EXEC_FENCE_IN to the execbuf.flags so that it
+> is executed after the spinner.
+>
+> v3: Restore back to original code to use igt_spin_end
+> to avoid interference with the test and to keep debugging clean.
+> (Suggested by Chris Wilson).
+>
+> Cc: Chris Wilson <chris.p.wilson@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> ---
+>   tests/i915/gem_ctx_engines.c | 9 +++++----
+>   1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+> index 003dd171..c74601c2 100644
+> --- a/tests/i915/gem_ctx_engines.c
+> +++ b/tests/i915/gem_ctx_engines.c
+> @@ -298,7 +298,7 @@ static void execute_one(int i915)
+>   			spin = igt_spin_new(i915,
+>   					    .ahnd = ahnd,
+>   					    .ctx = ctx,
+> -					    .flags = (IGT_SPIN_NO_PREEMPTION |
+> +					    .flags = (IGT_SPIN_FENCE_OUT |
+>   						      IGT_SPIN_POLL_RUN));
+>   
+>   			do_ioctl(i915, DRM_IOCTL_I915_GEM_BUSY, &busy);
+> @@ -314,13 +314,13 @@ static void execute_one(int i915)
+>   			}
+>   			cfg.num_engines = GEM_MAX_ENGINES;
+>   			ctx = intel_ctx_create(i915, &cfg);
+> +			execbuf.rsvd2 = spin->execbuf.rsvd2 >> 32;
+>   
+> -			igt_spin_busywait_until_started(spin);
+>   			for (int j = 0; j <= I915_EXEC_RING_MASK; j++) {
+>   				int expected = j == i ? 0 : -EINVAL;
+>   
+>   				execbuf.rsvd1 = ctx->id;
+> -				execbuf.flags = j;
+> +				execbuf.flags = j | I915_EXEC_FENCE_IN;
+>   				igt_assert_f(__gem_execbuf(i915, &execbuf) == expected,
+>   					     "Failed to report the %s engine for slot %d (valid at %d)\n",
+>   					     j == i ? "valid" : "invalid", j, i);
+> @@ -330,7 +330,8 @@ static void execute_one(int i915)
+>   			igt_assert_eq(batch_busy(busy.busy),
+>   				      i != -1 ? 1 << e->class : 0);
+>   
+> -			igt_spin_free(i915, spin);
+> +			igt_spin_end(spin);
+
+Wouldn't we be leaking spinners if we replace igt_spin_end() with 
+igt_spin_free()?
+
+/Thomas
+
+
+
+> +			close(spin->execbuf.rsvd2 >> 32);
+>   			put_ahnd(ahnd);
+>   
+>   			gem_sync(i915, obj.handle);
