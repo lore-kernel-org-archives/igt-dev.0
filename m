@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67CBD10F7A8
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E084A10F7A8
  for <igt-dev@lists.freedesktop.org>; Mon,  7 Feb 2022 18:22:42 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
-Date: Mon,  7 Feb 2022 23:51:36 +0530
-Message-Id: <20220207182152.31211-2-jeevan.b@intel.com>
+Date: Mon,  7 Feb 2022 23:51:37 +0530
+Message-Id: <20220207182152.31211-3-jeevan.b@intel.com>
 In-Reply-To: <20220207182152.31211-1-jeevan.b@intel.com>
 References: <20220207182152.31211-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 01/17] lib/i915_pciids: PCI IDS for DG2
+Subject: [igt-dev] [PATCH i-g-t 02/17] lib/dg2: Add DG2 platform definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,47 +18,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Melkaveri@freedesktop.org, Adam Miszczak <adam.miszczak@intel.com>
+Cc: Melkaveri@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-Adds PCI IDS for DG2.
+Added definition for DG2.
 
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Cc: Adam Miszczak <adam.miszczak@intel.com>
 Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
 ---
- lib/i915_pciids.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ lib/intel_chipset.h     | 2 ++
+ lib/intel_device_info.c | 8 ++++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-index 533890dc..b4230424 100644
---- a/lib/i915_pciids.h
-+++ b/lib/i915_pciids.h
-@@ -681,4 +681,23 @@
- 	INTEL_VGA_DEVICE(0xA788, info), \
- 	INTEL_VGA_DEVICE(0xA789, info)
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 3527cbe5..9c2f1b31 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -81,6 +81,7 @@ struct intel_device_info {
+ 	bool is_raptorlake_s : 1;
+ 	bool is_alderlake_p : 1;
+ 	bool is_alderlake_n : 1;
++	bool is_dg2 : 1;
+ 	const char *codename;
+ };
  
-+/* DG2 */
-+#define INTEL_DG2_G10_IDS(info) \
-+        INTEL_VGA_DEVICE(0x5690, info), \
-+        INTEL_VGA_DEVICE(0x5691, info), \
-+        INTEL_VGA_DEVICE(0x5692, info), \
+@@ -186,6 +187,7 @@ void intel_check_pch(void);
+ #define IS_RAPTORLAKE_S(devid)	(intel_get_device_info(devid)->is_raptorlake_s)
+ #define IS_ALDERLAKE_P(devid)	(intel_get_device_info(devid)->is_alderlake_p)
+ #define IS_ALDERLAKE_N(devid)	(intel_get_device_info(devid)->is_alderlake_n)
++#define IS_DG2(devid)          (intel_get_device_info(devid)->is_dg2)
+ 
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+ #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 40942afe..05ba2d98 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -417,6 +417,13 @@ static const struct intel_device_info intel_alderlake_n_info = {
+ 	.codename = "alderlake_n"
+ };
+ 
++static const struct intel_device_info intel_dg2_info = {
++	.graphics_ver = 12,
++	.display_ver = 13,
++	.is_dg2 = true,
++	.codename = "dg2"
++};
 +
-+#define INTEL_DG2_G11_IDS(info) \
-+        INTEL_VGA_DEVICE(0x56A5, info), \
-+        INTEL_VGA_DEVICE(0x56A6, info), \
-+        INTEL_VGA_DEVICE(0x5693, info), \
-+        INTEL_VGA_DEVICE(0x5694, info), \
-+        INTEL_VGA_DEVICE(0x5695, info), \
-+        INTEL_VGA_DEVICE(0x56B0, info), \
-+        INTEL_VGA_DEVICE(0x56B1, info)
-+
-+#define INTEL_DG2_IDS(info) \
-+        INTEL_DG2_G10_IDS(info) \
-+        INTEL_DG2_G11_IDS(info)
-+
- #endif /* _I915_PCIIDS_H */
+ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_I810_IDS(&intel_i810_info),
+ 	INTEL_I815_IDS(&intel_i815_info),
+@@ -511,6 +518,7 @@ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_RPLS_IDS(&intel_raptorlake_s_info),
+ 	INTEL_ADLP_IDS(&intel_alderlake_p_info),
+ 	INTEL_ADLN_IDS(&intel_alderlake_n_info),
++	INTEL_DG2_IDS(&intel_dg2_info),
+ 
+ 	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
+ };
 -- 
 2.17.1
