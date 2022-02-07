@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 985E110F7CE
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Feb 2022 18:23:03 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-Date: Mon,  7 Feb 2022 23:51:52 +0530
-Message-Id: <20220207182152.31211-18-jeevan.b@intel.com>
-In-Reply-To: <20220207182152.31211-1-jeevan.b@intel.com>
-References: <20220207182152.31211-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 17/17] tests/kms_plane_scaling: Use tiling 4
- if platform has support for it
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BAE810E2AD
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Feb 2022 18:34:44 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Mon,  7 Feb 2022 19:34:37 +0100
+Message-Id: <20220207183437.205388-1-zbigniew.kempczynski@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/api_intel_bb: Handle different
+ alignments in delta-check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,86 +22,82 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mika Kahola <mika.kahola@intel.com>
+As newer gens can diverge with safe alignments adopt delta-check
+to handle this.
 
-Switch using tiling 4 if a platform has support for it. For DG2 tiling 4
-is superseeds Y tiling.
+Idea of the test is to verify intel-bb delta calculation for objects,
+especially we're crossing 32bit address boundary. For example:
 
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
+1. where safe alignment == 0x1000 (page size) object size will be
+   0x3000 and it will be pinned at 0xffff_f0000. MI_STORE_DWORD_IMM
+   will be at 0x1_0000_1000
+
+2. where safe alignment == 0x200000 (discrete) object size will be
+   0x200200 and it will be pinned at 0xffe0_0000. MI_STORE_DWORD_IMM
+   will also be at 0x1_0000_1000
+
+Change should also apply to other alignments (if any).
+
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/kms_plane_scaling.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ tests/i915/api_intel_bb.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 1ab7e5ce..4baa8855 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -45,6 +45,7 @@ typedef struct {
- 	igt_plane_t *plane3;
- 	igt_plane_t *plane4;
- 	bool extended;
-+	bool has_4tile;
- } data_t;
+diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+index e37472fb4..92f44cecf 100644
+--- a/tests/i915/api_intel_bb.c
++++ b/tests/i915/api_intel_bb.c
+@@ -1127,6 +1127,9 @@ static void delta_check(struct buf_ops *bops)
+ 	struct intel_buf *buf;
+ 	struct intel_bb *ibb;
+ 	uint64_t offset;
++	uint64_t obj_size = gem_detect_safe_alignment(i915) + 0x2000;
++	uint64_t obj_offset = (1ULL << 32) - gem_detect_safe_alignment(i915);
++	uint64_t delta = gem_detect_safe_alignment(i915) + 0x1000;
+ 	bool supports_48bit;
  
- static int get_num_scalers(data_t* d, enum pipe pipe)
-@@ -250,6 +251,9 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
- 	uint64_t modifier = is_i915_device(d->drm_fd) ?
- 		I915_FORMAT_MOD_Y_TILED : DRM_FORMAT_MOD_LINEAR;
+ 	ibb = intel_bb_create_with_allocator(i915, 0, PAGE_SIZE,
+@@ -1139,8 +1142,8 @@ static void delta_check(struct buf_ops *bops)
+ 	if (debug_bb)
+ 		intel_bb_set_debug(ibb, true);
  
-+	if (d->has_4tile)
-+		modifier = I915_FORMAT_MOD_4_TILED;
-+
- 	igt_require(get_num_scalers(d, pipe) > 0);
+-	buf = create_buf(bops, 0x1000, 0x10, COLOR_CC);
+-	buf->addr.offset = 0xfffff000;
++	buf = create_buf(bops, obj_size, 0x1, COLOR_CC);
++	buf->addr.offset = obj_offset;
+ 	intel_bb_add_object(ibb, buf->handle, intel_buf_bo_size(buf),
+ 			    buf->addr.offset, 0, false);
  
- 	igt_output_set_pipe(output, pipe);
-@@ -285,7 +289,8 @@ static const uint64_t modifiers[] = {
- 	DRM_FORMAT_MOD_LINEAR,
- 	I915_FORMAT_MOD_X_TILED,
- 	I915_FORMAT_MOD_Y_TILED,
--	I915_FORMAT_MOD_Yf_TILED
-+	I915_FORMAT_MOD_Yf_TILED,
-+	I915_FORMAT_MOD_4_TILED
- };
+@@ -1148,7 +1151,7 @@ static void delta_check(struct buf_ops *bops)
+ 	intel_bb_emit_reloc(ibb, buf->handle,
+ 			    I915_GEM_DOMAIN_RENDER,
+ 			    I915_GEM_DOMAIN_RENDER,
+-			    0x2000, buf->addr.offset);
++			    delta, buf->addr.offset);
+ 	intel_bb_out(ibb, expected);
  
- static void test_scaler_with_pixel_format_pipe(data_t *d, enum pipe pipe, igt_output_t *output)
-@@ -531,6 +536,7 @@ test_scaler_with_clipping_clamping_scenario(data_t *d, enum pipe pipe, igt_outpu
- 	igt_pipe_t *pipe_obj = &d->display.pipes[pipe];
- 	drmModeModeInfo *mode;
- 	struct igt_vec tested_formats1;
-+	uint64_t modifier = d->has_4tile ? I915_FORMAT_MOD_4_TILED : I915_FORMAT_MOD_Y_TILED;
+ 	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
+@@ -1157,9 +1160,9 @@ static void delta_check(struct buf_ops *bops)
+ 	intel_bb_exec(ibb, intel_bb_offset(ibb), I915_EXEC_DEFAULT, false);
+ 	intel_bb_sync(ibb);
  
- 	igt_require(get_num_scalers(d, pipe) >= 2);
+-	/* Buffer should be @ 0xc000_0000 */
++	/* Buffer should be @ obj_offset */
+ 	offset = intel_bb_get_object_offset(ibb, buf->handle);
+-	igt_assert_eq_u64(offset, 0xfffff000);
++	igt_assert_eq_u64(offset, obj_offset);
  
-@@ -567,7 +573,7 @@ test_scaler_with_clipping_clamping_scenario(data_t *d, enum pipe pipe, igt_outpu
+ 	ptr = gem_mmap__device_coherent(i915, ibb->handle, 0, ibb->size, PROT_READ);
+ 	lo = ptr[1];
+@@ -1168,7 +1171,7 @@ static void delta_check(struct buf_ops *bops)
  
- 			igt_create_pattern_fb(d->drm_fd,
- 					      mode->hdisplay, mode->vdisplay, f2,
--					      I915_FORMAT_MOD_Y_TILED,
-+					      modifier,
- 					      &d->fb[2]);
+ 	ptr = gem_mmap__device_coherent(i915, buf->handle, 0,
+ 					intel_buf_size(buf), PROT_READ);
+-	val = ptr[0x2000 / sizeof(uint32_t)];
++	val = ptr[delta / sizeof(uint32_t)];
+ 	gem_munmap(ptr, intel_buf_size(buf));
  
- 			__test_scaler_with_clipping_clamping_scenario(d, mode);
-@@ -613,10 +619,9 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
- 	igt_output_t *output1, *output2;
- 	drmModeModeInfo *mode1, *mode2;
- 	enum pipe pipe1, pipe2;
--	bool has_4tile = intel_get_device_info(intel_get_drm_devid(d->drm_fd))->has_4tile;
- 	uint64_t modifier;
- 
--	if (is_i915_device(display->drm_fd) && has_4tile)
-+	if (is_i915_device(display->drm_fd) && d->has_4tile)
- 		modifier = I915_FORMAT_MOD_4_TILED;
- 	else if (is_i915_device(display->drm_fd))
- 		modifier = I915_FORMAT_MOD_Y_TILED;
-@@ -721,6 +726,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		data.devid = is_i915_device(data.drm_fd) ?
- 			intel_get_drm_devid(data.drm_fd) : 0;
- 		igt_require(data.display.is_atomic);
-+		data.has_4tile = is_i915_device(data.drm_fd) &&
-+				 intel_get_device_info(intel_get_drm_devid(data.drm_fd))->has_4tile;
- 	}
- 
- 	igt_subtest_group {
+ 	intel_buf_destroy(buf);
 -- 
-2.17.1
+2.32.0
