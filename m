@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEA6F10F7CE
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Feb 2022 18:22:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12CA610F7CE
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Feb 2022 18:22:43 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
-Date: Mon,  7 Feb 2022 23:51:35 +0530
-Message-Id: <20220207182152.31211-1-jeevan.b@intel.com>
+Date: Mon,  7 Feb 2022 23:51:38 +0530
+Message-Id: <20220207182152.31211-4-jeevan.b@intel.com>
+In-Reply-To: <20220207182152.31211-1-jeevan.b@intel.com>
+References: <20220207182152.31211-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 00/17] DG2 platform definition and Tile 4
- plane format support
+Subject: [igt-dev] [PATCH i-g-t 03/17] lib/intel_device_info: Add a flag to
+ indicate tiling 4 support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,62 +24,49 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added DG2 platform definition with PCI IDS.
-Also introduce support for the new Tile4 format, which is
-4K column-major tiles consisting of 64B row-major subtiles,
-with same base structure as Y Tile(16B OWords * 4)
+From: Mika Kahola <mika.kahola@intel.com>
 
-Jeevan B (6):
-  igt/tests: Add support for Tile4(TileF) format to kms_rotation_crc
-  igt/tests: Add support for Tile4(TileF) format to
-    tests/kms_plane_multiple
-  igt/tests: Add support for Tile4(TileF) format to
-    tests/kms_plane_lowres
-  igt/tests: Add support for Tile4(TileF) format to tests/kms_big_fb
-  igt/tests: Add support for Tile4(TileF) format to
-    tests/kms_addfb_basic
-  tests/kms_plane_scaling: Adding Tile-4 support
+Add tiling 4 support flag for DG2 platform. This is similar that
+we have defined in kernel i915_pci.c intel_device_info() for DG2.
 
-Matt Roper (4):
-  lib/dg2: Add DG2 platform definition
-  lib/igt_draw: Add pixel math for tile-4
-  igt/tests: Add support for Tile4(TileF) format to testdisplay
-  lib/igt_draw: Use XY_FAST_COLOR_BLT on DG2
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Juha-Pekka Heikkilä <juha-pekka.heikkila@intel.com>
+---
+ lib/intel_chipset.h     | 3 +++
+ lib/intel_device_info.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-Mika Kahola (4):
-  lib/intel_device_info: Add a flag to indicate tiling 4 support
-  tests/kms_frontbuffer_tracking: Add support for 4 tiling
-  tests/kms_draw_crc: Use 4 tiling when filling framebuffer
-  tests/kms_plane_scaling: Use tiling 4 if platform has support for it
-
-Priyanka Dandamudi (1):
-  lib/i915_pciids: PCI IDS for DG2
-
-Stanislav Lisovskiy (2):
-  igt/lib: Add tile 4(F-tile) format support
-  igt/tests: Add support for Tile4(TileF) format to kms_draw_crc
-
- include/drm-uapi/drm_fourcc.h         |  39 +++++
- include/drm-uapi/i915_drm.h           |   3 +-
- lib/gpu_cmds.c                        |   4 +-
- lib/i915_pciids.h                     |  19 +++
- lib/igt_draw.c                        | 223 ++++++++++++++++++++++----
- lib/igt_fb.c                          |  40 ++++-
- lib/intel_batchbuffer.c               |   8 +-
- lib/intel_batchbuffer.h               |   4 +-
- lib/intel_chipset.h                   |   5 +
- lib/intel_device_info.c               |   9 ++
- lib/intel_reg.h                       |   2 +
- tests/i915/kms_big_fb.c               |   1 +
- tests/i915/kms_draw_crc.c             |  20 ++-
- tests/i915/kms_frontbuffer_tracking.c |  22 ++-
- tests/kms_addfb_basic.c               |  44 ++++-
- tests/kms_plane_lowres.c              |   3 +
- tests/kms_plane_multiple.c            |   3 +
- tests/kms_plane_scaling.c             |  22 ++-
- tests/kms_rotation_crc.c              |   4 +
- tests/testdisplay.c                   |   6 +-
- 20 files changed, 426 insertions(+), 55 deletions(-)
-
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 9c2f1b31..32066439 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -40,6 +40,7 @@ struct intel_device_info {
+ 	unsigned graphics_ver;
+ 	unsigned display_ver;
+ 	unsigned gt; /* 0 if unknown */
++	bool has_4tile : 1;
+ 	bool is_mobile : 1;
+ 	bool is_whitney : 1;
+ 	bool is_almador : 1;
+@@ -215,4 +216,6 @@ void intel_check_pch(void);
+ 				   IS_CHERRYVIEW(devid) || \
+ 				   IS_BROXTON(devid)))
+ 
++#define HAS_4TILE(devid)	(intel_get_device_info(devid)->has_4tile)
++
+ #endif /* _INTEL_CHIPSET_H */
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 05ba2d98..7b1535fd 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -420,6 +420,7 @@ static const struct intel_device_info intel_alderlake_n_info = {
+ static const struct intel_device_info intel_dg2_info = {
+ 	.graphics_ver = 12,
+ 	.display_ver = 13,
++	.has_4tile = true,
+ 	.is_dg2 = true,
+ 	.codename = "dg2"
+ };
 -- 
 2.17.1
