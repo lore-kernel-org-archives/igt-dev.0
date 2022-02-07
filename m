@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14A9310F98D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86CAC10F98D
  for <igt-dev@lists.freedesktop.org>; Mon,  7 Feb 2022 18:22:48 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
-Date: Mon,  7 Feb 2022 23:51:41 +0530
-Message-Id: <20220207182152.31211-7-jeevan.b@intel.com>
+Date: Mon,  7 Feb 2022 23:51:42 +0530
+Message-Id: <20220207182152.31211-8-jeevan.b@intel.com>
 In-Reply-To: <20220207182152.31211-1-jeevan.b@intel.com>
 References: <20220207182152.31211-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 06/17] igt/tests: Add support for
- Tile4(TileF) format to kms_draw_crc
+Subject: [igt-dev] [PATCH i-g-t 07/17] igt/tests: Add support for
+ Tile4(TileF) format to kms_rotation_crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,71 +21,34 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+Adding subtest to test new tiling format.
 
-kms_draw_crc would be the first sample test to support new
-format.
-
-Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ tests/kms_rotation_crc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index 82c368e1..6348e803 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -41,25 +41,24 @@ drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
- struct buf_ops *bops;
- igt_pipe_crc_t *pipe_crc;
- 
--#define N_FORMATS 3
--static const uint32_t formats[N_FORMATS] = {
-+static const uint32_t formats[] = {
- 	DRM_FORMAT_XRGB8888,
- 	DRM_FORMAT_RGB565,
- 	DRM_FORMAT_XRGB2101010,
- };
- 
--#define N_MODIFIER_METHODS 3
--static const uint64_t modifiers[N_MODIFIER_METHODS] = {
-+static const uint64_t modifiers[] = {
- 	DRM_FORMAT_MOD_LINEAR,
- 	I915_FORMAT_MOD_X_TILED,
- 	I915_FORMAT_MOD_Y_TILED,
-+	I915_FORMAT_MOD_4_TILED,
- };
- 
- struct base_crc {
- 	bool set;
- 	igt_crc_t crc;
- };
--struct base_crc base_crcs[N_FORMATS];
-+struct base_crc base_crcs[ARRAY_SIZE(formats)];
- 
- struct modeset_params ms;
- 
-@@ -315,6 +314,8 @@ static const char *modifier_str(int modifier_index)
- 		return "xtiled";
- 	case I915_FORMAT_MOD_Y_TILED:
- 		return "ytiled";
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 3f716002..50869a08 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -983,6 +983,8 @@ static const char *modifier_test_str(uint64_t modifier)
+ 		return "y-tiled";
+ 	case I915_FORMAT_MOD_Yf_TILED:
+ 		return "yf-tiled";
 +	case I915_FORMAT_MOD_4_TILED:
-+		return "4tiled";
++		return "4-tiled";
  	default:
- 		igt_assert(false);
+ 		igt_assert(0);
  	}
-@@ -328,9 +329,9 @@ igt_main
- 	igt_fixture
- 		setup_environment();
+@@ -1041,6 +1043,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_90 },
+ 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_180 },
+ 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_270 },
++		{ I915_FORMAT_MOD_4_TILED, IGT_ROTATION_0 },
++		{ I915_FORMAT_MOD_4_TILED, IGT_ROTATION_180 },
+ 		{ 0, 0 }
+ 	};
  
--	for (format_idx = 0; format_idx < N_FORMATS; format_idx++) {
-+	for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
- 	for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
--	for (modifier_idx = 0; modifier_idx < N_MODIFIER_METHODS; modifier_idx++) {
-+	for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
- 		igt_describe("This subtest verfies igt_draw library works "
- 			     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
- 		igt_subtest_f("draw-method-%s-%s-%s",
 -- 
 2.17.1
