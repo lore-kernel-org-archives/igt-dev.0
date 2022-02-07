@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86CAC10F98D
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Feb 2022 18:22:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C6DD10F99B
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Feb 2022 18:22:50 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
-Date: Mon,  7 Feb 2022 23:51:42 +0530
-Message-Id: <20220207182152.31211-8-jeevan.b@intel.com>
+Date: Mon,  7 Feb 2022 23:51:43 +0530
+Message-Id: <20220207182152.31211-9-jeevan.b@intel.com>
 In-Reply-To: <20220207182152.31211-1-jeevan.b@intel.com>
 References: <20220207182152.31211-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 07/17] igt/tests: Add support for
- Tile4(TileF) format to kms_rotation_crc
+Subject: [igt-dev] [PATCH i-g-t 08/17] igt/tests: Add support for
+ Tile4(TileF) format to tests/kms_plane_multiple
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,30 +25,22 @@ Adding subtest to test new tiling format.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_rotation_crc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/kms_plane_multiple.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 3f716002..50869a08 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -983,6 +983,8 @@ static const char *modifier_test_str(uint64_t modifier)
- 		return "y-tiled";
- 	case I915_FORMAT_MOD_Yf_TILED:
- 		return "yf-tiled";
-+	case I915_FORMAT_MOD_4_TILED:
-+		return "4-tiled";
- 	default:
- 		igt_assert(0);
- 	}
-@@ -1041,6 +1043,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_90 },
- 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_180 },
- 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_270 },
-+		{ I915_FORMAT_MOD_4_TILED, IGT_ROTATION_0 },
-+		{ I915_FORMAT_MOD_4_TILED, IGT_ROTATION_180 },
- 		{ 0, 0 }
- 	};
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index ebadc14b..1679f7ce 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -398,6 +398,9 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 	igt_subtest_f("atomic-pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
+ 		test_plane_position(data, pipe, I915_FORMAT_MOD_Yf_TILED);
  
++	igt_subtest_f("atomic-pipe-%s-tiling-4", kmstest_pipe_name(pipe))
++		test_plane_position(data, pipe, I915_FORMAT_MOD_4_TILED);
++
+ 	igt_subtest_f("atomic-pipe-%s-tiling-none", kmstest_pipe_name(pipe))
+ 		test_plane_position(data, pipe, DRM_FORMAT_MOD_LINEAR);
+ }
 -- 
 2.17.1
