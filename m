@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A8AA10E3B6
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Feb 2022 06:36:21 +0000 (UTC)
-Date: Tue, 8 Feb 2022 08:35:16 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YgIPJNAP+zvtoU1V@platvala-desk.ger.corp.intel.com>
-References: <20220207182152.31211-1-jeevan.b@intel.com>
- <20220207182152.31211-2-jeevan.b@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2F8210E2FA
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Feb 2022 07:52:25 +0000 (UTC)
+Date: Tue, 8 Feb 2022 08:52:09 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <YgIhKUWdW8d0ZFb8@zkempczy-mobl2>
+References: <20220207183437.205388-1-zbigniew.kempczynski@intel.com>
+ <87r18efewq.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20220207182152.31211-2-jeevan.b@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 01/17] lib/i915_pciids: PCI IDS for DG2
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87r18efewq.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/api_intel_bb: Handle different
+ alignments in delta-check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,60 +23,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jeevan B <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Melkaveri@freedesktop.org, Adam Miszczak <adam.miszczak@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Feb 07, 2022 at 11:51:36PM +0530, Jeevan B wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+On Mon, Feb 07, 2022 at 03:14:13PM -0800, Dixit, Ashutosh wrote:
+> On Mon, 07 Feb 2022 10:34:37 -0800, Zbigniew Kempczyński wrote:
+> >
+> > As newer gens can diverge with safe alignments adopt delta-check
+> > to handle this.
+> >
+> > Idea of the test is to verify intel-bb delta calculation for objects,
+> > especially we're crossing 32bit address boundary. For example:
+> >
+> > 1. where safe alignment == 0x1000 (page size) object size will be
+> >    0x3000 and it will be pinned at 0xffff_f0000. MI_STORE_DWORD_IMM
+> >    will be at 0x1_0000_1000
+> >
+> > 2. where safe alignment == 0x200000 (discrete) object size will be
+> >    0x200200 and it will be pinned at 0xffe0_0000. MI_STORE_DWORD_IMM
+> >    will also be at 0x1_0000_1000
+> >
+> > Change should also apply to other alignments (if any).
 > 
-> Adds PCI IDS for DG2.
+> Tested-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > 
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> Cc: Adam Miszczak <adam.miszczak@intel.com>
-> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> ---
->  lib/i915_pciids.h | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+> Patch is correct. However shouldn't we add gem_detect_safe_alignment() to
+> intel_bb_add_object() too? Thanks.
+
+If you mean we should fix intel_bb_add_object() and __intel_bb_create()
+I'm with you.
+
+Currently it works because bb gem object is created within system memory
+and generally both offsets are page aligned. But I agree, we should change
+intel-bb alignment handling.
+
+I'm going to prepare such patch soon but I don't know should I mix this 
+with delta-check. Please decide.
+
+--
+Zbigniew
+
+
 > 
-> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-
-This file is supposed to be copied from the kernel. The kernel doesn't
-have DG2 PCI ids yet, as was pointed out the last time this change was
-sent to the mailing list.
-
-
--- 
-Petri Latvala
-
-
-> index 533890dc..b4230424 100644
-> --- a/lib/i915_pciids.h
-> +++ b/lib/i915_pciids.h
-> @@ -681,4 +681,23 @@
->  	INTEL_VGA_DEVICE(0xA788, info), \
->  	INTEL_VGA_DEVICE(0xA789, info)
->  
-> +/* DG2 */
-> +#define INTEL_DG2_G10_IDS(info) \
-> +        INTEL_VGA_DEVICE(0x5690, info), \
-> +        INTEL_VGA_DEVICE(0x5691, info), \
-> +        INTEL_VGA_DEVICE(0x5692, info), \
-> +
-> +#define INTEL_DG2_G11_IDS(info) \
-> +        INTEL_VGA_DEVICE(0x56A5, info), \
-> +        INTEL_VGA_DEVICE(0x56A6, info), \
-> +        INTEL_VGA_DEVICE(0x5693, info), \
-> +        INTEL_VGA_DEVICE(0x5694, info), \
-> +        INTEL_VGA_DEVICE(0x5695, info), \
-> +        INTEL_VGA_DEVICE(0x56B0, info), \
-> +        INTEL_VGA_DEVICE(0x56B1, info)
-> +
-> +#define INTEL_DG2_IDS(info) \
-> +        INTEL_DG2_G10_IDS(info) \
-> +        INTEL_DG2_G11_IDS(info)
-> +
->  #endif /* _I915_PCIIDS_H */
-> -- 
-> 2.17.1
-> 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  tests/i915/api_intel_bb.c | 15 +++++++++------
+> >  1 file changed, 9 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+> > index e37472fb4..92f44cecf 100644
+> > --- a/tests/i915/api_intel_bb.c
+> > +++ b/tests/i915/api_intel_bb.c
+> > @@ -1127,6 +1127,9 @@ static void delta_check(struct buf_ops *bops)
+> >	struct intel_buf *buf;
+> >	struct intel_bb *ibb;
+> >	uint64_t offset;
+> > +	uint64_t obj_size = gem_detect_safe_alignment(i915) + 0x2000;
+> > +	uint64_t obj_offset = (1ULL << 32) - gem_detect_safe_alignment(i915);
+> > +	uint64_t delta = gem_detect_safe_alignment(i915) + 0x1000;
+> >	bool supports_48bit;
+> >
+> >	ibb = intel_bb_create_with_allocator(i915, 0, PAGE_SIZE,
+> > @@ -1139,8 +1142,8 @@ static void delta_check(struct buf_ops *bops)
+> >	if (debug_bb)
+> >		intel_bb_set_debug(ibb, true);
+> >
+> > -	buf = create_buf(bops, 0x1000, 0x10, COLOR_CC);
+> > -	buf->addr.offset = 0xfffff000;
+> > +	buf = create_buf(bops, obj_size, 0x1, COLOR_CC);
+> > +	buf->addr.offset = obj_offset;
+> >	intel_bb_add_object(ibb, buf->handle, intel_buf_bo_size(buf),
+> >			    buf->addr.offset, 0, false);
+> >
+> > @@ -1148,7 +1151,7 @@ static void delta_check(struct buf_ops *bops)
+> >	intel_bb_emit_reloc(ibb, buf->handle,
+> >			    I915_GEM_DOMAIN_RENDER,
+> >			    I915_GEM_DOMAIN_RENDER,
+> > -			    0x2000, buf->addr.offset);
+> > +			    delta, buf->addr.offset);
+> >	intel_bb_out(ibb, expected);
+> >
+> >	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
+> > @@ -1157,9 +1160,9 @@ static void delta_check(struct buf_ops *bops)
+> >	intel_bb_exec(ibb, intel_bb_offset(ibb), I915_EXEC_DEFAULT, false);
+> >	intel_bb_sync(ibb);
+> >
+> > -	/* Buffer should be @ 0xc000_0000 */
+> > +	/* Buffer should be @ obj_offset */
+> >	offset = intel_bb_get_object_offset(ibb, buf->handle);
+> > -	igt_assert_eq_u64(offset, 0xfffff000);
+> > +	igt_assert_eq_u64(offset, obj_offset);
+> >
+> >	ptr = gem_mmap__device_coherent(i915, ibb->handle, 0, ibb->size, PROT_READ);
+> >	lo = ptr[1];
+> > @@ -1168,7 +1171,7 @@ static void delta_check(struct buf_ops *bops)
+> >
+> >	ptr = gem_mmap__device_coherent(i915, buf->handle, 0,
+> >					intel_buf_size(buf), PROT_READ);
+> > -	val = ptr[0x2000 / sizeof(uint32_t)];
+> > +	val = ptr[delta / sizeof(uint32_t)];
+> >	gem_munmap(ptr, intel_buf_size(buf));
+> >
+> >	intel_buf_destroy(buf);
+> > --
+> > 2.32.0
+> >
