@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CBAE10E665
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Feb 2022 05:36:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9195710E667
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Feb 2022 05:36:43 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
-Date: Tue,  8 Feb 2022 11:20:34 +0530
-Message-Id: <20220208055039.31306-5-swati2.sharma@intel.com>
+Date: Tue,  8 Feb 2022 11:20:35 +0530
+Message-Id: <20220208055039.31306-6-swati2.sharma@intel.com>
 In-Reply-To: <20220208055039.31306-1-swati2.sharma@intel.com>
 References: <20220208055039.31306-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 4/9] tests/kms_plane_scaling: Downscaling each plane
+Subject: [igt-dev] [v3 5/9] tests/kms_plane_scaling: Upscaling on 2 planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,105 +22,113 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Subtest for testing downscaling for each plane
-individually (checked 1 plane per "class" like
-we do in other tests).
+i915 driver supports 2 scalers per pipe. Added test case
+to upscale 2 overlay planes simultaneously on single pipe.
+
+v2: -add check for min 2 scalers
+    -add igt_require() for overlay planes, fixes CRASH on KBL
+
+v3: -test modified for n planes (Ville)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_plane_scaling.c | 77 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ tests/kms_plane_scaling.c | 74 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 25e91659..22563fac 100644
+index 22563fac..f813c5b4 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
-@@ -288,6 +288,76 @@ test_plane_upscaling(data_t *d, enum pipe pipe, igt_output_t *output)
+@@ -29,6 +29,11 @@
+ 
+ IGT_TEST_DESCRIPTION("Test display plane scaling");
+ 
++/* Test flags. */
++enum {
++        TEST_UP_UP_SCALING = 1 << 0,
++};
++
+ typedef struct {
+ 	uint32_t devid;
+ 	int drm_fd;
+@@ -358,6 +363,67 @@ test_plane_downscaling(data_t *d, enum pipe pipe, igt_output_t *output)
  	}
  }
  
 +static void
-+__test_plane_downscaling(data_t *d, igt_plane_t *plane,
-+		         enum pipe pipe, igt_output_t *output)
++__test_plane_up_up_scaling(data_t *d, enum pipe pipe, igt_output_t *output)
 +{
-+	igt_display_t *display = &d->display;
-+	int width, height;
 +	drmModeModeInfo *mode;
-+	bool test_complete = false;
-+	int scaling = 50;
-+	int ret;
++	int width, height;
++	igt_display_t *display = &d->display;
 +
 +	cleanup_crtc(d);
 +
 +	igt_output_set_pipe(output, pipe);
 +	mode = igt_output_get_mode(output);
-+	width = mode->hdisplay;
-+	height = mode->vdisplay;
++	width = height = 20;
 +
-+	while(!test_complete) {
++	for (int k = 0; k < display->pipes[pipe].n_planes; k++) {
++		igt_plane_t *plane1, *plane2;
++
++		plane1 = &display->pipes[pipe].planes[k];
++		igt_require(plane1);
++		plane2 = &display->pipes[pipe].planes[k+1];
++		igt_require(plane2);
++
++		if (plane1->type == DRM_PLANE_TYPE_PRIMARY  || plane1->type == DRM_PLANE_TYPE_CURSOR ||
++		    plane2->type == DRM_PLANE_TYPE_PRIMARY || plane2->type ==DRM_PLANE_TYPE_CURSOR)
++				continue;
 +
 +		igt_create_color_pattern_fb(display->drm_fd,
 +					    width, height,
 +					    DRM_FORMAT_XRGB8888,
 +					    I915_TILING_NONE,
-+					    1.0, 0.0, 0.0, &d->fb[0]);
++					    1.0, 0.0, 0.0, &d->fb[1]);
++		igt_create_color_pattern_fb(display->drm_fd,
++					    width, height,
++					    DRM_FORMAT_XRGB8888,
++					    I915_TILING_NONE,
++					    0.0, 1.0, 0.0, &d->fb[2]);
 +
-+		igt_plane_set_fb(plane, &d->fb[0]);
-+		igt_plane_set_size(plane, (width * scaling) / 100, (height * scaling) / 100);
-+		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		igt_plane_set_fb(plane1, &d->fb[1]);
++		igt_plane_set_fb(plane2, &d->fb[2]);
 +
-+		if (ret != -EINVAL)
-+			test_complete = true;
++		/* 1st overlay plane upscaling */
++		igt_plane_set_size(plane1, mode->hdisplay, mode->vdisplay);
++		/* 2nd overlay plane upscaling */
++		igt_plane_set_size(plane2, mode->hdisplay - 20, mode->vdisplay - 20);
++		igt_display_commit2(display, COMMIT_ATOMIC);
 +
-+		scaling += 5;
-+
-+		igt_plane_set_fb(plane, NULL);
-+		igt_remove_fb(display->drm_fd, &d->fb[0]);
++		igt_plane_set_fb(plane1, NULL);
++		igt_plane_set_fb(plane2, NULL);
++		igt_remove_fb(display->drm_fd, &d->fb[1]);
++		igt_remove_fb(display->drm_fd, &d->fb[2]);
 +	}
 +}
 +
 +static void
-+test_plane_downscaling(data_t *d, enum pipe pipe, igt_output_t *output)
++test_plane_scaling_combo(data_t *d, enum pipe pipe, igt_output_t *output, uint32_t flags)
 +{
-+	igt_display_t *display = &d->display;
-+	igt_plane_t *plane;
-+	uint64_t modifier = is_i915_device(d->drm_fd) ?
-+		I915_FORMAT_MOD_Y_TILED : DRM_FORMAT_MOD_LINEAR;
++	igt_require(get_num_scalers(d, pipe) >= 2);
 +
-+	igt_require(get_num_scalers(d, pipe) > 0);
-+
-+	for_each_plane_on_pipe(display, pipe, plane) {
-+		struct igt_vec tested_formats;
-+
-+		if (plane->type == DRM_PLANE_TYPE_CURSOR)
-+			continue;
-+
-+		igt_vec_init(&tested_formats, sizeof(uint32_t));
-+
-+		for (int j = 0; j < plane->drm_plane->count_formats; j++) {
-+			uint32_t format = plane->drm_plane->formats[j];
-+			if (test_format(d, &tested_formats, format) &&
-+			    igt_plane_has_format_mod(plane, format, modifier) &&
-+			    can_scale(d, format))
-+					__test_plane_downscaling(d, plane, pipe, output);
-+		}
-+
-+		igt_vec_fini(&tested_formats);
-+	}
++	if (flags & TEST_UP_UP_SCALING)
++		__test_plane_up_up_scaling(d, pipe, output);
 +}
 +
  static bool test_pipe_iteration(data_t *data, enum pipe pipe, int iteration)
  {
  	if (!is_i915_device(data->drm_fd) ||
-@@ -612,6 +682,13 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 					test_plane_upscaling(&data, pipe, output);
+@@ -689,6 +755,14 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					test_plane_downscaling(&data, pipe, output);
  		}
  
-+		igt_describe("Tests plane downscaling.");
-+		igt_subtest_with_dynamic("plane-downscaling") {
++		igt_describe("Tests upscaling of 2 overlay planes.");
++		igt_subtest_with_dynamic("plane-up-up-scaling") {
 +			for_each_pipe_with_single_output(&data.display, pipe, output)
-+				igt_dynamic_f("pipe-%s-%s-downscaling", kmstest_pipe_name(pipe), igt_output_name(output))
-+					test_plane_downscaling(&data, pipe, output);
++				igt_dynamic_f("pipe-%s-%s-plane-up-up-scaling",
++					      kmstest_pipe_name(pipe), igt_output_name(output))
++					test_plane_scaling_combo(&data, pipe, output, TEST_UP_UP_SCALING);
 +		}
 +
  		igt_describe("Tests scaling with pixel formats.");
