@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5787310E474
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Feb 2022 15:08:43 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-Date: Wed,  9 Feb 2022 20:37:59 +0530
-Message-Id: <20220209150759.4845-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_extended: Add test for extended
- mode
+Content-Type: multipart/alternative;
+ boundary="===============7934874294244742918=="
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 09 Feb 2022 15:49:08 -0000
+Message-ID: <164442174820.23773.2011511994795863747@emeril.freedesktop.org>
+References: <20220209150759.4845-1-jeevan.b@intel.com>
+In-Reply-To: <20220209150759.4845-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fextended=3A_Add_test_for_extended_mode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,281 +16,287 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add test for validation of extended mode.
+--===============7934874294244742918==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_extended.c | 244 +++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build    |   1 +
- 2 files changed, 245 insertions(+)
- create mode 100644 tests/kms_extended.c
+== Series Details ==
 
-diff --git a/tests/kms_extended.c b/tests/kms_extended.c
-new file mode 100644
-index 00000000..7d8cd85d
---- /dev/null
-+++ b/tests/kms_extended.c
-@@ -0,0 +1,244 @@
-+/*
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ *
-+ * Authors:
-+ *    Jeevan B <jeevan.b@intel.com>
-+ */
-+#include "config.h"
-+
-+#include "igt.h"
-+#include <cairo.h>
-+#include <errno.h>
-+#include <stdint.h>
-+#include <unistd.h>
-+#include <string.h>
-+#include <sys/time.h>
-+#include <math.h>
-+
-+static int drm_fd;
-+static drmModeRes *resources;
-+
-+struct test_output {
-+	int mode_valid;
-+	drmModeModeInfo kmode[4];
-+	drmModeEncoder *kencoder[4];
-+	drmModeConnector *kconnector[4];
-+	uint32_t _connector[4];
-+	uint32_t _crtc[4];
-+	int _pipe[4];
-+	int count; /* 1:1 mapping between crtc:connector */
-+	int pipe; /* primary pipe for vblank */
-+	unsigned int fb_width;
-+	unsigned int fb_height;
-+	unsigned int fb_ids[3];
-+	struct igt_fb fb_info[3];
-+};
-+
-+static void free_test_output(struct test_output *o)
-+{
-+	int i;
-+
-+	for (i = 0; i < o->count; i++) {
-+		drmModeFreeEncoder(o->kencoder[i]);
-+		drmModeFreeConnector(o->kconnector[i]);
-+	}
-+}
-+
-+static bool mode_compatible(const drmModeModeInfo *a, const drmModeModeInfo *b)
-+{
-+	int d_refresh;
-+
-+	if (a->hdisplay != b->hdisplay)
-+		return false;
-+
-+	if (a->vdisplay != b->vdisplay)
-+		return false;
-+
-+	d_refresh = a->vrefresh - b->vrefresh;
-+	if (d_refresh < -1 || d_refresh > 1)
-+		return false;
-+
-+	return true;
-+}
-+
-+static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
-+					   struct test_output *o)
-+{
-+	struct kmstest_connector_config config[2];
-+	drmModeModeInfo *mode[2];
-+	int n, m;
-+
-+	if (!kmstest_get_connector_config(drm_fd, o->_connector[0],
-+					  1 << crtc_idx0, &config[0]))
-+		return;
-+
-+	if (!kmstest_get_connector_config(drm_fd, o->_connector[1],
-+					  1 << crtc_idx1, &config[1])) {
-+		kmstest_free_connector_config(&config[0]);
-+		return;
-+	}
-+
-+	mode[0] = &config[0].default_mode;
-+	mode[1] = &config[1].default_mode;
-+	if (!mode_compatible(mode[0], mode[1])) {
-+		for (n = 0; n < config[0].connector->count_modes; n++) {
-+			mode[0] = &config[0].connector->modes[n];
-+			for (m = 0; m < config[1].connector->count_modes; m++) {
-+				mode[1] = &config[1].connector->modes[m];
-+				if (mode_compatible(mode[0], mode[1]))
-+					goto found;
-+			}
-+		}
-+
-+		mode[1] = mode[0] = &config[0].default_mode;
-+	}
-+
-+found:
-+	o->pipe = config[0].pipe;
-+	o->fb_width = mode[0]->hdisplay;
-+	o->fb_height = mode[0]->vdisplay;
-+	o->mode_valid = 1;
-+
-+	o->kconnector[0] = config[0].connector;
-+	o->kencoder[0] = config[0].encoder;
-+	o->_crtc[0] = config[0].crtc->crtc_id;
-+	o->_pipe[0] = config[0].pipe;
-+	o->kmode[0] = *mode[0];
-+
-+	o->kconnector[1] = config[1].connector;
-+	o->kencoder[1] = config[1].encoder;
-+	o->_crtc[1] = config[1].crtc->crtc_id;
-+	o->_pipe[1] = config[1].pipe;
-+	o->kmode[1] = *mode[1];
-+
-+	drmModeFreeCrtc(config[0].crtc);
-+	drmModeFreeCrtc(config[1].crtc);
-+}
-+
-+
-+static int run_extendedmode_basic(void)
-+{
-+	int i, j, m, n, modes = 0, ret = 0;
-+	struct test_output o;
-+
-+	resources = drmModeGetResources(drm_fd);
-+	igt_require(resources);
-+
-+	/* Find a pair of connected displays*/
-+	for (i = 0; i < resources->count_connectors; i++) {
-+		for (n = 0; n < resources->count_crtcs; n++) {
-+			for (j = i + 1; j < resources->count_connectors; j++) {
-+				for (m = n + 1; m < resources->count_crtcs; m++) {
-+					memset(&o, 0, sizeof(o));
-+					o.count = 2;
-+					o._connector[0] = resources->connectors[i];
-+					o._connector[1] = resources->connectors[j];
-+
-+					connector_find_compatible_mode(n, m, &o);
-+					if (o.mode_valid)
-+						modes++;
-+
-+					free_test_output(&o);
-+
-+				}
-+			}
-+		}
-+	}
-+
-+	/* If we have fewer than 2 connected outputs then we won't have any
-+	 * configuration at all. So skip in that case. */
-+	igt_require_f(modes, "At least two displays required\n");
-+
-+	/* Find a pair of connected displays */
-+	for (i = 0; i < resources->count_connectors; i++) {
-+		for (n = 0; n < resources->count_crtcs; n++) {
-+			for (j = i + 1; j < resources->count_connectors; j++) {
-+				for (m = n + 1; m < resources->count_crtcs; m++) {
-+					int crtc_idxs[2];
-+
-+					memset(&o, 0, sizeof(o));
-+					o.count = 2;
-+					o._connector[0] = resources->connectors[i];
-+					o._connector[1] = resources->connectors[j];
-+
-+					crtc_idxs[0] = n;
-+					crtc_idxs[1] = m;
-+
-+					connector_find_compatible_mode(crtc_idxs[0], crtc_idxs[1], &o);
-+					if (!o.mode_valid)
-+						return 1;
-+					igt_assert_eq(o.count, 2);
-+
-+					igt_debug("Running Extended Mode on Pipe %s & %s Connector-%s%d-%s%d\n",
-+						  kmstest_pipe_name(o._pipe[0]), kmstest_pipe_name(o._pipe[1]),
-+						  kmstest_connector_type_str(o.kconnector[0]->connector_type),
-+						  o.kconnector[0]->connector_type_id,
-+						  kmstest_connector_type_str(o.kconnector[1]->connector_type),
-+						  o.kconnector[1]->connector_type_id);
-+
-+					o.fb_ids[0] = igt_create_color_pattern_fb(drm_fd,
-+						      o.fb_width, o.fb_height, DRM_FORMAT_XRGB8888,
-+						      DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &o.fb_info[0]);
-+					igt_assert(o.fb_ids[0]);
-+
-+					o.fb_ids[1] = igt_create_color_pattern_fb(drm_fd,
-+						      o.fb_width, o.fb_height, DRM_FORMAT_XRGB8888,
-+						      DRM_FORMAT_MOD_LINEAR, 0, 0, 1, &o.fb_info[1]);
-+					igt_assert(o.fb_ids[1]);
-+
-+					ret = drmModePageFlip(drm_fd, o._crtc[0], o.fb_ids[0], DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+					igt_assert_eq(ret, 0);
-+
-+					ret = drmModePageFlip(drm_fd, o._crtc[1], o.fb_ids[1], DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+					igt_assert_eq(ret, 0);
-+
-+					igt_remove_fb(drm_fd, &o.fb_info[1]);
-+					igt_remove_fb(drm_fd, &o.fb_info[0]);
-+
-+					free_test_output(&o);
-+
-+					return 0;
-+				}
-+			}
-+		}
-+	}
-+
-+	drmModeFreeResources(resources);
-+	return 1;
-+}
-+
-+igt_main
-+{
-+
-+	igt_fixture {
-+		drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		igt_enable_connectors(drm_fd);
-+		kmstest_set_vt_graphics_mode();
-+	}
-+
-+	igt_describe("This test is to validate pageflip on extended mode");
-+	igt_subtest("extended-mode-basic") {
-+		run_extendedmode_basic();
-+	}
-+
-+	igt_fixture {
-+		drmModeFreeResources(resources);
-+		close(drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 7003d064..15825a4a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -28,6 +28,7 @@ test_progs = [
- 	'kms_dither',
- 	'kms_dp_aux_dev',
- 	'kms_dp_tiled_display',
-+	'kms_extended',
- 	'kms_flip',
- 	'kms_flip_event_leak',
- 	'kms_force_connector_basic',
--- 
-2.17.1
+Series: tests/kms_extended: Add test for extended mode
+URL   : https://patchwork.freedesktop.org/series/99904/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11207 -> IGTPW_6608
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6608 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6608, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/index.html
+
+Participating hosts (45 -> 43)
+------------------------------
+
+  Additional (1): bat-rpls-1 
+  Missing    (3): fi-bsw-cyan fi-icl-u2 shard-tglu 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6608:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@workarounds:
+    - fi-rkl-guc:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-rkl-guc/igt@i915_selftest@live@workarounds.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6608 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-bdw-5557u:       [PASS][3] -> [INCOMPLETE][4] ([i915#146])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][5] -> [DMESG-FAIL][6] ([i915#4494] / [i915#4957])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [PASS][7] -> [DMESG-FAIL][8] ([i915#5026])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [PASS][9] -> [DMESG-WARN][10] ([i915#4269])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-skl-6600u:       NOTRUN -> [SKIP][11] ([fdo#109271]) +18 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-skl-6600u/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-blb-e6850:       NOTRUN -> [FAIL][12] ([fdo#109271] / [i915#2403] / [i915#2426] / [i915#4312])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-blb-e6850/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][13] ([i915#4494] / [i915#4957]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-kbl-soraka:      [INCOMPLETE][15] -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-kbl-soraka/igt@i915_selftest@live@requests.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-kbl-soraka/igt@i915_selftest@live@requests.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-skl-6600u:       [FAIL][17] ([i915#4547]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4898]: https://gitlab.freedesktop.org/drm/intel/issues/4898
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5026]: https://gitlab.freedesktop.org/drm/intel/issues/5026
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6342 -> IGTPW_6608
+
+  CI-20190529: 20190529
+  CI_DRM_11207: 0d650d738ee924dc0c367ff1f33c61237a635933 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6608: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/index.html
+  IGT_6342: 1bd167a3af9e8f6168ac89c64c64b929694d9be7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_extended@extended-mode-basic
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/index.html
+
+--===============7934874294244742918==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_extended: Add test for extended mode</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/99904/">https://patchwork.freedesktop.org/series/99904/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11207 -&gt; IGTPW_6608</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6608 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6608, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/index.html</p>
+<h2>Participating hosts (45 -&gt; 43)</h2>
+<p>Additional (1): bat-rpls-1 <br />
+  Missing    (3): fi-bsw-cyan fi-icl-u2 shard-tglu </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6608:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-rkl-guc/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6608 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5026">i915#5026</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-skl-6600u/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +18 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-blb-e6850/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-kbl-soraka/igt@i915_selftest@live@requests.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-kbl-soraka/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6342 -&gt; IGTPW_6608</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11207: 0d650d738ee924dc0c367ff1f33c61237a635933 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6608: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6608/index.html<br />
+  IGT_6342: 1bd167a3af9e8f6168ac89c64c64b929694d9be7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_extended@extended-mode-basic</p>
+
+</body>
+</html>
+
+--===============7934874294244742918==--
