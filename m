@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6B0A10E686
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Feb 2022 23:30:55 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4ED9B10E481
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Feb 2022 23:30:54 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 10 Feb 2022 00:30:40 +0100
-Message-Id: <20220209233044.57624-1-zbigniew.kempczynski@intel.com>
+Date: Thu, 10 Feb 2022 00:30:41 +0100
+Message-Id: <20220209233044.57624-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220209233044.57624-1-zbigniew.kempczynski@intel.com>
+References: <20220209233044.57624-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/4] Add i915 blt library + gem_ccs test
+Subject: [igt-dev] [PATCH i-g-t 1/4] FIXME: Add DG2 defs to use in gem-ccs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,47 +20,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enable DG2+ testing of flatccs.
+Only for use before kernel defs will land.
+---
+ lib/i915_pciids.h       | 7 +++++++
+ lib/intel_device_info.c | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
-Idea of library comes from Ayaz, just implementation differs due
-to some reasons discovered during different tiling testing.
-
-Currently I used default (0) mocs to avoid kernel differences.
-We may change it to UC/WB when kernel interface will be stabilized
-and merged.
-
-Temporary DG2 definitions were added to allow painless review of 
-the code.
-
-Cc: Apoorva Singh <apoorva1.singh@intel.com>
-Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-
-Chris Wilson (1):
-  i915/gem_engine_topology: Only use the main copy engines for
-    XY_BLOCK_COPY
-
-Zbigniew Kempczyński (3):
-  FIXME: Add DG2 defs to use in gem-ccs
-  lib/i915_blt: Add library for blitter
-  tests/gem_ccs: Verify uncompressed and compressed blits
-
- .../igt-gpu-tools/igt-gpu-tools-docs.xml      |    1 +
- lib/i915/gem_engine_topology.c                |   38 +
- lib/i915/gem_engine_topology.h                |    5 +
- lib/i915/i915_blt.c                           | 1090 +++++++++++++++++
- lib/i915/i915_blt.h                           |  196 +++
- lib/i915_pciids.h                             |    7 +
- lib/intel_device_info.c                       |    7 +
- lib/meson.build                               |    1 +
- tests/i915/gem_ccs.c                          |  487 ++++++++
- tests/meson.build                             |    1 +
- 10 files changed, 1833 insertions(+)
- create mode 100644 lib/i915/i915_blt.c
- create mode 100644 lib/i915/i915_blt.h
- create mode 100644 tests/i915/gem_ccs.c
-
+diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+index 533890dc9..24747f462 100644
+--- a/lib/i915_pciids.h
++++ b/lib/i915_pciids.h
+@@ -635,6 +635,13 @@
+ 	INTEL_VGA_DEVICE(0x4908, info), \
+ 	INTEL_VGA_DEVICE(0x4909, info)
+ 
++/* DG2 */
++#define INTEL_DG2_IDS(info) \
++	INTEL_VGA_DEVICE(0x56A0, info), \
++	INTEL_VGA_DEVICE(0x56A2, info), \
++	INTEL_VGA_DEVICE(0x56A5, info), \
++	INTEL_VGA_DEVICE(0x56A6, info)
++
+ /* ADL-S */
+ #define INTEL_ADLS_IDS(info) \
+ 	INTEL_VGA_DEVICE(0x4680, info), \
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 40942afe7..279ae1e56 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -389,6 +389,12 @@ static const struct intel_device_info intel_dg1_info = {
+ 	.codename = "dg1"
+ };
+ 
++static const struct intel_device_info intel_dg2_info = {
++	.graphics_ver = 12,
++	.display_ver = 12,
++	.codename = "dg2"
++};
++
+ static const struct intel_device_info intel_alderlake_s_info = {
+ 	.graphics_ver = 12,
+ 	.display_ver = 12,
+@@ -506,6 +512,7 @@ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_RKL_IDS(&intel_rocketlake_info),
+ 
+ 	INTEL_DG1_IDS(&intel_dg1_info),
++	INTEL_DG2_IDS(&intel_dg2_info),
+ 
+ 	INTEL_ADLS_IDS(&intel_alderlake_s_info),
+ 	INTEL_RPLS_IDS(&intel_raptorlake_s_info),
 -- 
 2.32.0
