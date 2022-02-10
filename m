@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D81210E815
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Feb 2022 11:38:50 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3511410E815
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Feb 2022 11:38:54 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 10 Feb 2022 12:38:31 +0100
-Message-Id: <20220210113832.17590-4-zbigniew.kempczynski@intel.com>
+Date: Thu, 10 Feb 2022 12:38:32 +0100
+Message-Id: <20220210113832.17590-5-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220210113832.17590-1-zbigniew.kempczynski@intel.com>
 References: <20220210113832.17590-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] lib/i915_blt: Add library for blitter
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/gem_ccs: Verify uncompressed and
+ compressed blits
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,56 +24,30 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Blitter commands became complicated thus manual bitshifting is error
-prone and hard debugable - XY_BLOCK_COPY_BLT is the best example -
-in extended version (for DG2+) it takes 20 dwords of command data.
-To avoid mistakes and dozens of arguments for command library provides
-input data in more structured form.
+DG2 and above supports flat-ccs what means object compression lays in
+dedicated part or memory and is directly correlated with object location
+in physical memory. As no mapping is possible from CPU side to this area
+dedicated blitter command (XY_CTRL_SURF_COPY_BLT) was created to copy
+from/to ccs data.
 
-Currently supported commands:
-- XY_BLOCK_COPY_BLT:
-  a)  TGL/DG1 uses shorter version of command which doesn't support
-      compression
-  b)  DG2+ command is extended and supports compression
-- XY_CTRL_SURF_COPY_BLT
-- XY_FAST_COPY_BLT
-
-Source, destination and batchbuffer are provided to blitter functions
-as objects (structs). This increases readability and allows use same
-object in many functions. Only drawback of such attitude is some fields
-used in one function may be ignored in another. As an example is
-blt_copy_object which contains a lot of information about gem object.
-In block-copy all of data are used but in fast-copy only some of them
-(fast-copy doesn't support compression).
+Test exercises scenarios:
+1. block-copy without compression (TGL/DG1)
+2. block-copy with flat-ccs compression (DG2+) + inplace decompression
+3. ctrl-surf-copy which verifies copying ccs data to/from flat-ccs area
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- .../igt-gpu-tools/igt-gpu-tools-docs.xml      |    1 +
- lib/i915/i915_blt.c                           | 1090 +++++++++++++++++
- lib/i915/i915_blt.h                           |  196 +++
- lib/meson.build                               |    1 +
- 4 files changed, 1288 insertions(+)
- create mode 100644 lib/i915/i915_blt.c
- create mode 100644 lib/i915/i915_blt.h
+ tests/i915/gem_ccs.c | 485 +++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build    |   1 +
+ 2 files changed, 486 insertions(+)
+ create mode 100644 tests/i915/gem_ccs.c
 
-diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-index 0dc5a0b7e..3a2edbae1 100644
---- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-+++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-@@ -16,6 +16,7 @@
-   <chapter>
-     <title>API Reference</title>
-     <xi:include href="xml/drmtest.xml"/>
-+    <xi:include href="xml/i915_blt.xml"/>
-     <xi:include href="xml/igt_alsa.xml"/>
-     <xi:include href="xml/igt_audio.xml"/>
-     <xi:include href="xml/igt_aux.xml"/>
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
 new file mode 100644
-index 000000000..9c891c2f3
+index 000000000..33b79d86d
 --- /dev/null
-+++ b/lib/i915/i915_blt.c
-@@ -0,0 +1,1090 @@
++++ b/tests/i915/gem_ccs.c
+@@ -0,0 +1,485 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2022 Intel Corporation
@@ -82,1300 +57,493 @@ index 000000000..9c891c2f3
 +#include <sys/ioctl.h>
 +#include <sys/time.h>
 +#include <malloc.h>
-+#include <cairo.h>
 +#include "drm.h"
 +#include "igt.h"
-+#include "gem_create.h"
-+#include "i915_blt.h"
++#include "i915/gem.h"
++#include "i915/gem_create.h"
++#include "lib/intel_chipset.h"
++#include "i915/i915_blt.h"
 +
-+#define BITRANGE(start, end) (end - start + 1)
++IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flat ccs");
 +
-+enum blt_special_mode {
-+	SM_NONE,
-+	SM_FULL_RESOLVE,
-+	SM_PARTIAL_RESOLVE,
-+	SM_RESERVED,
++#define BPP 32
++
++static struct param {
++	int compression_format;
++	int tiling;
++	bool write_png;
++	bool print_bb;
++	bool print_surface_info;
++	int width;
++	int height;
++	uint32_t increase_mid_surf_size;
++} param = {
++	.compression_format = 0,
++	.tiling = -1,
++	.write_png = false,
++	.print_bb = false,
++	.print_surface_info = false,
++	.width = 512,
++	.height = 512,
++	.increase_mid_surf_size = 0,
 +};
 +
-+enum blt_aux_mode {
-+	AM_AUX_NONE,
-+	AM_AUX_CCS_E = 5,
++struct test_config {
++	bool compression;
++	bool inplace;
++	bool surfcopy;
 +};
 +
-+enum blt_target_mem {
-+	TM_LOCAL_MEM,
-+	TM_SYSTEM_MEM,
-+};
-+
-+struct gen12_block_copy_data {
-+	struct {
-+		uint32_t length:			BITRANGE(0, 7);
-+		uint32_t rsvd1:				BITRANGE(8, 8);
-+		uint32_t multisamples:			BITRANGE(9, 11);
-+		uint32_t special_mode:			BITRANGE(12, 13);
-+		uint32_t rsvd0:				BITRANGE(14, 18);
-+		uint32_t color_depth:			BITRANGE(19, 21);
-+		uint32_t opcode:			BITRANGE(22, 28);
-+		uint32_t client:			BITRANGE(29, 31);
-+	} dw00;
-+
-+	struct {
-+		uint32_t dst_pitch:			BITRANGE(0, 17);
-+		uint32_t dst_aux_mode:			BITRANGE(18, 20);
-+		uint32_t dst_mocs:			BITRANGE(21, 27);
-+		uint32_t dst_ctrl_surface_type:		BITRANGE(28, 28);
-+		uint32_t dst_compression:		BITRANGE(29, 29);
-+		uint32_t dst_tiling:			BITRANGE(30, 31);
-+	} dw01;
-+
-+	struct {
-+		int32_t dst_x1:				BITRANGE(0, 15);
-+		int32_t dst_y1:				BITRANGE(16, 31);
-+	} dw02;
-+
-+	struct {
-+		int32_t dst_x2:				BITRANGE(0, 15);
-+		int32_t dst_y2:				BITRANGE(16, 31);
-+	} dw03;
-+
-+	struct {
-+		uint32_t dst_address_lo;
-+	} dw04;
-+
-+	struct {
-+		uint32_t dst_address_hi;
-+	} dw05;
-+
-+	struct {
-+		uint32_t dst_x_offset:			BITRANGE(0, 13);
-+		uint32_t rsvd1:				BITRANGE(14, 15);
-+		uint32_t dst_y_offset:			BITRANGE(16, 29);
-+		uint32_t rsvd0:				BITRANGE(30, 30);
-+		uint32_t dst_target_memory:		BITRANGE(31, 31);
-+	} dw06;
-+
-+	struct {
-+		int32_t src_x1:				BITRANGE(0, 15);
-+		int32_t src_y1:				BITRANGE(16, 31);
-+	} dw07;
-+
-+	struct {
-+		uint32_t src_pitch:			BITRANGE(0, 17);
-+		uint32_t src_aux_mode:			BITRANGE(18, 20);
-+		uint32_t src_mocs:			BITRANGE(21, 27);
-+		uint32_t src_ctrl_surface_type:		BITRANGE(28, 28);
-+		uint32_t src_compression:		BITRANGE(29, 29);
-+		uint32_t src_tiling:			BITRANGE(30, 31);
-+	} dw08;
-+
-+	struct {
-+		uint32_t src_address_lo;
-+	} dw09;
-+
-+	struct {
-+		uint32_t src_address_hi;
-+	} dw10;
-+
-+	struct {
-+		uint32_t src_x_offset:			BITRANGE(0, 13);
-+		uint32_t rsvd1:				BITRANGE(14, 15);
-+		uint32_t src_y_offset:			BITRANGE(16, 29);
-+		uint32_t rsvd0:				BITRANGE(30, 30);
-+		uint32_t src_target_memory:		BITRANGE(31, 31);
-+	} dw11;
-+};
-+
-+struct gen12_block_copy_data_ext {
-+	struct {
-+		uint32_t src_compression_format:	BITRANGE(0, 4);
-+		uint32_t src_clear_value_enable:	BITRANGE(5, 5);
-+		uint32_t src_clear_address_low:		BITRANGE(6, 31);
-+	} dw12;
-+
-+	union {
-+		/* DG2, XEHP */
-+		uint32_t src_clear_address_hi0;
-+		/* Others */
-+		uint32_t src_clear_address_hi1;
-+	} dw13;
-+
-+	struct {
-+		uint32_t dst_compression_format:	BITRANGE(0, 4);
-+		uint32_t dst_clear_value_enable:	BITRANGE(5, 5);
-+		uint32_t dst_clear_address_low:		BITRANGE(6, 31);
-+	} dw14;
-+
-+	union {
-+		/* DG2, XEHP */
-+		uint32_t dst_clear_address_hi0;
-+		/* Others */
-+		uint32_t dst_clear_address_hi1;
-+	} dw15;
-+
-+	struct {
-+		uint32_t dst_surface_height:		BITRANGE(0, 13);
-+		uint32_t dst_surface_width:		BITRANGE(14, 27);
-+		uint32_t rsvd0:				BITRANGE(28, 28);
-+		uint32_t dst_surface_type:		BITRANGE(29, 31);
-+	} dw16;
-+
-+	struct {
-+		uint32_t dst_lod:			BITRANGE(0, 3);
-+		uint32_t dst_surface_qpitch:		BITRANGE(4, 18);
-+		uint32_t rsvd0:				BITRANGE(19, 20);
-+		uint32_t dst_surface_depth:		BITRANGE(21, 31);
-+	} dw17;
-+
-+	struct {
-+		uint32_t dst_horizontal_align:		BITRANGE(0, 1);
-+		uint32_t rsvd0:				BITRANGE(2, 2);
-+		uint32_t dst_vertical_align:		BITRANGE(3, 4);
-+		uint32_t rsvd1:				BITRANGE(5, 7);
-+		uint32_t dst_mip_tail_start_lod:	BITRANGE(8, 11);
-+		uint32_t rsvd2:				BITRANGE(12, 17);
-+		uint32_t dst_depth_stencil_resource:	BITRANGE(18, 18);
-+		uint32_t rsvd3:				BITRANGE(19, 20);
-+		uint32_t dst_array_index:		BITRANGE(21, 31);
-+	} dw18;
-+
-+	struct {
-+		uint32_t src_surface_height:		BITRANGE(0, 13);
-+		uint32_t src_surface_width:		BITRANGE(14, 27);
-+		uint32_t rsvd0:				BITRANGE(28, 28);
-+		uint32_t src_surface_type:		BITRANGE(29, 31);
-+	} dw19;
-+
-+	struct {
-+		uint32_t src_lod:			BITRANGE(0, 3);
-+		uint32_t src_surface_qpitch:		BITRANGE(4, 18);
-+		uint32_t rsvd0:				BITRANGE(19, 20);
-+		uint32_t src_surface_depth:		BITRANGE(21, 31);
-+	} dw20;
-+
-+	struct {
-+		uint32_t src_horizontal_align:		BITRANGE(0, 1);
-+		uint32_t rsvd0:				BITRANGE(2, 2);
-+		uint32_t src_vertical_align:		BITRANGE(3, 4);
-+		uint32_t rsvd1:				BITRANGE(5, 7);
-+		uint32_t src_mip_tail_start_lod:	BITRANGE(8, 11);
-+		uint32_t rsvd2:				BITRANGE(12, 17);
-+		uint32_t src_depth_stencil_resource:	BITRANGE(18, 18);
-+		uint32_t rsvd3:				BITRANGE(19, 20);
-+		uint32_t src_array_index:		BITRANGE(21, 31);
-+	} dw21;
-+};
-+
-+/**
-+ * blt_supports_compression:
-+ * @i915: drm fd
-+ *
-+ * Function returns does HW supports flatccs compression in blitter commands
-+ * on @i915 device.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_supports_compression(int i915)
++static void set_object(struct blt_copy_object *obj,
++		       uint32_t handle, uint64_t size, uint32_t region,
++		       uint8_t mocs, enum blt_tiling tiling,
++		       enum blt_compression compression,
++		       enum blt_compression_type compression_type)
 +{
-+	uint32_t devid = intel_get_drm_devid(i915);
-+
-+	if (IS_TIGERLAKE(devid) || IS_DG1(devid))
-+		return false;
-+
-+	return true;
++	obj->handle = handle;
++	obj->size = size;
++	obj->region = region;
++	obj->mocs = mocs;
++	obj->tiling = tiling;
++	obj->compression = compression;
++	obj->compression_type = compression_type;
 +}
 +
-+/**
-+ * blt_supports_tiling:
-+ * @i915: drm fd
-+ * @tiling: tiling id
-+ *
-+ * Function returns does blitter supports @tiling on @i915 device.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_supports_tiling(int i915, enum blt_tiling tiling)
++static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
++		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
++		     uint16_t x_offset, uint16_t y_offset)
 +{
-+	uint32_t devid = intel_get_drm_devid(i915);
-+
-+	if (tiling == T_XMAJOR) {
-+		if (IS_TIGERLAKE(devid) || IS_DG1(devid))
-+			return false;
-+		else
-+			return true;
-+	}
-+
-+	if (tiling == T_YMAJOR) {
-+		if (IS_TIGERLAKE(devid) || IS_DG1(devid))
-+			return true;
-+		else
-+			return false;
-+	}
-+
-+	return true;
++	obj->pitch = pitch;
++	obj->x1 = x1;
++	obj->y1 = y1;
++	obj->x2 = x2;
++	obj->y2 = y2;
++	obj->x_offset = x_offset;
++	obj->y_offset = y_offset;
 +}
 +
-+/**
-+ * blt_tiling_name:
-+ * @tiling: tiling id
-+ *
-+ * Returns:
-+ * name of @tiling passed. Useful to build test names or sth.
-+ */
-+const char *blt_tiling_name(enum blt_tiling tiling)
++static void set_batch(struct blt_copy_batch *batch,
++		      uint32_t handle, uint64_t size, uint32_t region)
 +{
-+	switch (tiling) {
-+	case T_LINEAR: return "linear";
-+	case T_XMAJOR: return "xmajor";
-+	case T_YMAJOR: return "ymajor";
-+	case T_TILE4:  return "tile4";
-+	case T_TILE64: return "tile64";
-+	}
-+
-+	igt_warn("invalid tiling passed: %d\n", tiling);
-+	return NULL;
++	batch->handle = handle;
++	batch->size = size;
++	batch->region = region;
 +}
 +
-+static int __block_tiling(enum blt_tiling tiling)
++static void set_object_ext(struct blt_block_copy_object_ext *obj,
++			   uint8_t compression_format,
++			   uint16_t surface_width, uint16_t surface_height,
++			   enum blt_surface_type surface_type)
 +{
-+	switch (tiling) {
-+	case T_LINEAR: return 0;
-+	case T_XMAJOR: return 1;
-+	case T_YMAJOR: return 1;
-+	case T_TILE4:  return 2;
-+	case T_TILE64: return 3;
-+	}
-+
-+	igt_warn("invalid tiling passed: %d\n", tiling);
-+	return 0;
++	obj->compression_format = compression_format;
++	obj->surface_width = surface_width;
++	obj->surface_height = surface_height;
++	obj->surface_type = surface_type;
 +}
 +
-+static int __special_mode(const struct blt_copy_data *blt)
++static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
++			    uint32_t handle, uint32_t region, uint64_t size,
++			    uint8_t mocs, enum blt_access_type access_type)
 +{
-+	if (blt->src.handle == blt->dst.handle &&
-+	    blt->src.compression && !blt->dst.compression)
-+		return SM_FULL_RESOLVE;
-+
-+
-+	return SM_NONE;
++	obj->handle = handle;
++	obj->region = region;
++	obj->size = size;
++	obj->mocs = mocs;
++	obj->access_type = access_type;
 +}
 +
-+static int __memory_type(uint32_t region)
++static struct blt_copy_object *
++create_object(int i915, uint32_t region,
++	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
++	      enum blt_tiling tiling,
++	      enum blt_compression compression,
++	      enum blt_compression_type compression_type,
++	      bool create_mapping,
++	      uint64_t increase_size)
 +{
-+	igt_assert_f(IS_DEVICE_MEMORY_REGION(region) ||
-+		     IS_SYSTEM_MEMORY_REGION(region),
-+		     "Invalid region: %x\n", region);
++	struct blt_copy_object *obj;
++	uint64_t size = width * height * bpp / 8 + increase_size;
++	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
++	uint32_t handle;
 +
-+	if (IS_DEVICE_MEMORY_REGION(region))
-+		return TM_LOCAL_MEM;
-+	return TM_SYSTEM_MEM;
++	obj = calloc(1, sizeof(*obj));
++
++	obj->size = size;
++	igt_assert(__gem_create_in_memory_regions(i915, &handle,
++						  &size, region) == 0);
++
++	set_object(obj, handle, size, region, mocs, tiling,
++		   compression, compression_type);
++	set_geom(obj, stride, 0, 0, width, height, 0, 0);
++
++	if (create_mapping)
++		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
++						     PROT_READ | PROT_WRITE);
++
++	return obj;
 +}
 +
-+static enum blt_aux_mode __aux_mode(const struct blt_copy_object *obj)
++static void destroy_object(int i915, struct blt_copy_object *obj)
 +{
-+	if (obj->compression == COMPRESSION_ENABLED) {
-+		igt_assert_f(IS_DEVICE_MEMORY_REGION(obj->region),
-+			     "XY_BLOCK_COPY_BLT supports compression "
-+			     "on device memory only\n");
-+		return AM_AUX_CCS_E;
-+	}
++	if (obj->ptr)
++		munmap(obj->ptr, obj->size);
 +
-+	return AM_AUX_NONE;
++	gem_close(i915, obj->handle);
 +}
 +
-+static void fill_data(struct gen12_block_copy_data *data,
-+		      const struct blt_copy_data *blt,
-+		      uint64_t src_offset, uint64_t dst_offset,
-+		      bool extended_command)
++static void set_blt_object(struct blt_copy_object *obj,
++			   const struct blt_copy_object *orig)
 +{
-+	data->dw00.client = 0x2;
-+	data->dw00.opcode = 0x41;
-+	data->dw00.color_depth = blt->color_depth;
-+	data->dw00.special_mode = __special_mode(blt);
-+	data->dw00.length = extended_command ? 20 : 10;
-+
-+	data->dw01.dst_pitch = blt->dst.pitch - 1;
-+	data->dw01.dst_aux_mode = __aux_mode(&blt->dst);
-+	data->dw01.dst_mocs = blt->dst.mocs;
-+	data->dw01.dst_compression = blt->dst.compression;
-+	data->dw01.dst_tiling = __block_tiling(blt->dst.tiling);
-+
-+	if (blt->dst.compression)
-+		data->dw01.dst_ctrl_surface_type = blt->dst.compression_type;
-+
-+	data->dw02.dst_x1 = blt->dst.x1;
-+	data->dw02.dst_y1 = blt->dst.y1;
-+
-+	data->dw03.dst_x2 = blt->dst.x2;
-+	data->dw03.dst_y2 = blt->dst.y2;
-+
-+	data->dw04.dst_address_lo = dst_offset;
-+	data->dw05.dst_address_hi = dst_offset >> 32;
-+
-+	data->dw06.dst_x_offset = blt->dst.x_offset;
-+	data->dw06.dst_y_offset = blt->dst.y_offset;
-+	data->dw06.dst_target_memory = __memory_type(blt->dst.region);
-+
-+	data->dw07.src_x1 = blt->src.x1;
-+	data->dw07.src_y1 = blt->src.y1;
-+
-+	data->dw08.src_pitch = blt->src.pitch - 1;
-+	data->dw08.src_aux_mode = __aux_mode(&blt->src);
-+	data->dw08.src_mocs = blt->src.mocs;
-+	data->dw08.src_compression = blt->src.compression;
-+	data->dw08.src_tiling = __block_tiling(blt->src.tiling);
-+
-+	if (blt->src.compression)
-+		data->dw08.src_ctrl_surface_type = blt->src.compression_type;
-+
-+	data->dw09.src_address_lo = src_offset;
-+	data->dw10.src_address_hi = src_offset >> 32;
-+
-+	data->dw11.src_x_offset = blt->src.x_offset;
-+	data->dw11.src_y_offset = blt->src.y_offset;
-+	data->dw11.src_target_memory = __memory_type(blt->src.region);
++	memcpy(obj, orig, sizeof(*obj));
 +}
 +
-+static void fill_data_ext(int i915,
-+			  struct gen12_block_copy_data_ext *dext,
-+			  const struct blt_block_copy_data_ext *ext)
++#define PRINT_SURFACE_INFO(name, obj) do { \
++	if (param.print_surface_info) \
++		blt_surface_info((name), (obj)); } while (0)
++
++#define WRITE_PNG(fd, id, name, obj, w, h) do { \
++	if (param.write_png) \
++		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
++
++static void surf_copy(int i915,
++		      const intel_ctx_t *ctx,
++		      const struct intel_execution_engine2 *e,
++		      uint64_t ahnd,
++		      const struct blt_copy_object *src,
++		      const struct blt_copy_object *mid,
++		      const struct blt_copy_object *dst,
++		      int run_id)
 +{
-+	dext->dw12.src_compression_format = ext->src.compression_format;
-+	dext->dw12.src_clear_value_enable = ext->src.clear_value_enable;
-+	dext->dw12.src_clear_address_low = ext->src.clear_address;
++	struct blt_copy_data blt = {};
++	struct blt_block_copy_data_ext ext = {};
++	struct blt_ctrl_surf_copy_data surf = {};
++	uint32_t bb, bb2, ccs, *ccsmap, bb_size = 4096;
++	uint64_t ccssize = mid->size / CCS_RATIO;
++	uint32_t *ccscopy;
++	int result;
 +
-+	dext->dw13.src_clear_address_hi0 = ext->src.clear_address >> 32;
++	igt_assert(mid->compression);
++	ccscopy = (uint32_t *) malloc(ccssize);
++	bb = gem_create(i915, bb_size);
++	bb2 = gem_create(i915, bb_size);
++	ccs = gem_create(i915, ccssize);
 +
-+	dext->dw14.dst_compression_format = ext->dst.compression_format;
-+	dext->dw14.dst_clear_value_enable = ext->dst.clear_value_enable;
-+	dext->dw14.dst_clear_address_low = ext->dst.clear_address;
++	surf.i915 = i915;
++	surf.print_bb = param.print_bb;
++	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
++			0, INDIRECT_ACCESS);
++	set_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
++			0, DIRECT_ACCESS);
++	set_batch(&surf.bb, bb, bb_size, REGION_SMEM);
++	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
++	gem_sync(i915, surf.dst.handle);
 +
-+	dext->dw15.dst_clear_address_hi0 = ext->dst.clear_address >> 32;
++	ccsmap = gem_mmap__device_coherent(i915, ccs, 0, surf.dst.size,
++					   PROT_READ | PROT_WRITE);
++	memcpy(ccscopy, ccsmap, ccssize);
 +
-+	dext->dw16.dst_surface_width = ext->dst.surface_width - 1;
-+	dext->dw16.dst_surface_height = ext->dst.surface_height - 1;
-+	dext->dw16.dst_surface_type = ext->dst.surface_type;
++	/* corrupt ccs */
++	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
++		ccsmap[i] = i;
++	set_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
++			0, DIRECT_ACCESS);
++	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
++			0, INDIRECT_ACCESS);
++	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
 +
-+	dext->dw17.dst_lod = ext->dst.lod;
-+	dext->dw17.dst_surface_depth = ext->dst.surface_depth;
-+	dext->dw17.dst_surface_qpitch = ext->dst.surface_qpitch;
++	memset(&blt, 0, sizeof(blt));
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	set_blt_object(&blt.src, mid);
++	set_blt_object(&blt.dst, dst);
++	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
++	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
++	set_batch(&blt.bb, bb2, bb_size, REGION_SMEM);
++	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
++	gem_sync(i915, blt.dst.handle);
++	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
++	result = memcmp(src->ptr, dst->ptr, src->size);
++	igt_assert(result != 0);
 +
-+	dext->dw18.dst_horizontal_align = ext->dst.horizontal_align;
-+	dext->dw18.dst_vertical_align = ext->dst.vertical_align;
-+	dext->dw18.dst_mip_tail_start_lod = ext->dst.mip_tail_start_lod;
-+	dext->dw18.dst_depth_stencil_resource = ext->dst.depth_stencil_resource;
-+	dext->dw18.dst_array_index = ext->dst.array_index;
++	/* retrieve back ccs */
++	memcpy(ccsmap, ccscopy, ccssize);
++	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
 +
-+	dext->dw19.src_surface_width = ext->src.surface_width - 1;
-+	dext->dw19.src_surface_height = ext->src.surface_height - 1;
++	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
++	gem_sync(i915, blt.dst.handle);
++	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
++	result = memcmp(src->ptr, dst->ptr, src->size);
++	igt_assert(result == 0);
 +
-+	dext->dw19.src_surface_type = ext->src.surface_type;
-+
-+	dext->dw20.src_lod = ext->src.lod;
-+	dext->dw20.src_surface_depth = ext->src.surface_depth;
-+	dext->dw20.src_surface_qpitch = ext->src.surface_qpitch;
-+
-+	dext->dw21.src_horizontal_align = ext->src.horizontal_align;
-+	dext->dw21.src_vertical_align = ext->src.vertical_align;
-+	dext->dw21.src_mip_tail_start_lod = ext->src.mip_tail_start_lod;
-+	dext->dw21.src_depth_stencil_resource = ext->src.depth_stencil_resource;
-+	dext->dw21.src_array_index = ext->src.array_index;
++	munmap(ccsmap, ccssize);
++	gem_close(i915, bb);
++	gem_close(i915, bb2);
++	gem_close(i915, ccs);
 +}
 +
-+static void dump_bb_cmd(struct gen12_block_copy_data *data)
-+{
-+	uint32_t *cmd = (uint32_t *) data;
-+
-+	igt_info("details:\n");
-+	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, color depth: %d, "
-+		 "special mode: %d, length: %d>\n",
-+		 cmd[0],
-+		 data->dw00.client, data->dw00.opcode, data->dw00.color_depth,
-+		 data->dw00.special_mode, data->dw00.length);
-+	igt_info(" dw01: [%08x] dst <pitch: %d, aux: %d, mocs: %d, compr: %d, "
-+		 "tiling: %d, ctrl surf type: %d>\n",
-+		 cmd[1], data->dw01.dst_pitch, data->dw01.dst_aux_mode,
-+		 data->dw01.dst_mocs, data->dw01.dst_compression,
-+		 data->dw01.dst_tiling, data->dw01.dst_ctrl_surface_type);
-+	igt_info(" dw02: [%08x] dst geom <x1: %d, y1: %d>\n",
-+		 cmd[2], data->dw02.dst_x1, data->dw02.dst_y1);
-+	igt_info(" dw03: [%08x]          <x2: %d, y2: %d>\n",
-+		 cmd[3], data->dw03.dst_x2, data->dw03.dst_y2);
-+	igt_info(" dw04: [%08x] dst offset lo (0x%x)\n",
-+		 cmd[4], data->dw04.dst_address_lo);
-+	igt_info(" dw05: [%08x] dst offset hi (0x%x)\n",
-+		 cmd[5], data->dw05.dst_address_hi);
-+	igt_info(" dw06: [%08x] dst <x offset: 0x%x, y offset: 0x%0x, target mem: %d>\n",
-+		 cmd[6], data->dw06.dst_x_offset, data->dw06.dst_y_offset,
-+		 data->dw06.dst_target_memory);
-+	igt_info(" dw07: [%08x] src geom <x1: %d, y1: %d>\n",
-+		 cmd[7], data->dw07.src_x1, data->dw07.src_y1);
-+	igt_info(" dw08: [%08x] src <pitch: %d, aux: %d, mocs: %d, compr: %d, "
-+		 "tiling: %d, ctrl surf type: %d>\n",
-+		 cmd[8], data->dw08.src_pitch, data->dw08.src_aux_mode,
-+		 data->dw08.src_mocs, data->dw08.src_compression,
-+		 data->dw08.src_tiling, data->dw08.src_ctrl_surface_type);
-+	igt_info(" dw09: [%08x] src offset lo (0x%x)\n",
-+		 cmd[9], data->dw09.src_address_lo);
-+	igt_info(" dw10: [%08x] src offset hi (0x%x)\n",
-+		 cmd[10], data->dw10.src_address_hi);
-+	igt_info(" dw11: [%08x] src <x offset: 0x%x, y offset: 0x%0x, target mem: %d>\n",
-+		 cmd[11], data->dw11.src_x_offset, data->dw11.src_y_offset,
-+		 data->dw11.src_target_memory);
-+}
-+
-+static void dump_bb_ext(struct gen12_block_copy_data_ext *data)
-+{
-+	uint32_t *cmd = (uint32_t *) data;
-+
-+	igt_info("ext details:\n");
-+	igt_info(" dw12: [%08x] src <compression fmt: %d, clear value enable: %d, "
-+		 "clear address low: 0x%x>\n",
-+		 cmd[0],
-+		 data->dw12.src_compression_format,
-+		 data->dw12.src_clear_value_enable,
-+		 data->dw12.src_clear_address_low);
-+	igt_info(" dw13: [%08x] src clear address hi: 0x%x\n",
-+		 cmd[1], data->dw13.src_clear_address_hi0);
-+	igt_info(" dw14: [%08x] dst <compression fmt: %d, clear value enable: %d, "
-+		 "clear address low: 0x%x>\n",
-+		 cmd[2],
-+		 data->dw14.dst_compression_format,
-+		 data->dw14.dst_clear_value_enable,
-+		 data->dw14.dst_clear_address_low);
-+	igt_info(" dw15: [%08x] dst clear address hi: 0x%x\n",
-+		 cmd[3], data->dw15.dst_clear_address_hi0);
-+	igt_info(" dw16: [%08x] dst surface <width: %d, height: %d, type: %d>\n",
-+		 cmd[4], data->dw16.dst_surface_width,
-+		 data->dw16.dst_surface_height, data->dw16.dst_surface_type);
-+	igt_info(" dw17: [%08x] dst surface <lod: %d, depth: %d, qpitch: %d>\n",
-+		 cmd[5], data->dw17.dst_lod,
-+		 data->dw17.dst_surface_depth, data->dw17.dst_surface_qpitch);
-+	igt_info(" dw18: [%08x] dst <halign: %d, valign: %d, mip tail: %d, "
-+		 "depth stencil: %d, array index: %d>\n",
-+		 cmd[6],
-+		 data->dw18.dst_horizontal_align,
-+		 data->dw18.dst_vertical_align,
-+		 data->dw18.dst_mip_tail_start_lod,
-+		 data->dw18.dst_depth_stencil_resource,
-+		 data->dw18.dst_array_index);
-+
-+	igt_info(" dw19: [%08x] src surface <width: %d, height: %d, type: %d>\n",
-+		 cmd[7], data->dw19.src_surface_width,
-+		 data->dw19.src_surface_height, data->dw19.src_surface_type);
-+	igt_info(" dw20: [%08x] src surface <lod: %d, depth: %d, qpitch: %d>\n",
-+		 cmd[8], data->dw20.src_lod,
-+		 data->dw20.src_surface_depth, data->dw20.src_surface_qpitch);
-+	igt_info(" dw21: [%08x] src <halign: %d, valign: %d, mip tail: %d, "
-+		 "depth stencil: %d, array index: %d>\n",
-+		 cmd[9],
-+		 data->dw21.src_horizontal_align,
-+		 data->dw21.src_vertical_align,
-+		 data->dw21.src_mip_tail_start_lod,
-+		 data->dw21.src_depth_stencil_resource,
-+		 data->dw21.src_array_index);
-+}
-+
-+/**
-+ * blt_block_copy:
-+ * @i915: drm fd
-+ * @ctx: intel_ctx_t context
-+ * @e: blitter engine for @ctx
-+ * @ahnd: allocator handle
-+ * @blt: basic blitter data (for TGL/DG1 which doesn't support ext version)
-+ * @ext: extended blitter data (for DG2+, supports flatccs compression)
-+ *
-+ * Function does blit between @src and @dst described in @blt object.
-+ *
-+ * Returns:
-+ * execbuffer status.
-+ */
-+int blt_block_copy(int i915,
-+		   const intel_ctx_t *ctx,
-+		   const struct intel_execution_engine2 *e,
-+		   uint64_t ahnd,
-+		   const struct blt_copy_data *blt,
-+		   const struct blt_block_copy_data_ext *ext)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	struct gen12_block_copy_data data = {};
-+	struct gen12_block_copy_data_ext dext = {};
-+	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	uint32_t *bb;
-+	int i, ret;
-+
-+	igt_assert_f(ahnd, "block-copy supports softpin only\n");
-+	igt_assert_f(blt, "block-copy requires data to do blit\n");
-+
-+	alignment = gem_detect_safe_alignment(i915);
-+	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-+	if (__special_mode(blt) == SM_FULL_RESOLVE)
-+		dst_offset = src_offset;
-+	else
-+		dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+
-+	fill_data(&data, blt, src_offset, dst_offset, ext);
-+
-+	i = sizeof(data) / sizeof(uint32_t);
-+	bb = gem_mmap__device_coherent(i915, blt->bb.handle, 0, blt->bb.size,
-+				       PROT_READ | PROT_WRITE);
-+	memcpy(bb, &data, sizeof(data));
-+
-+	if (ext) {
-+		fill_data_ext(i915, &dext, ext);
-+		memcpy(bb + i, &dext, sizeof(dext));
-+		i += sizeof(dext) / sizeof(uint32_t);
-+	}
-+	bb[i++] = MI_BATCH_BUFFER_END;
-+
-+	if (blt->print_bb) {
-+		igt_info("[BLOCK COPY]\n");
-+		igt_info("src offset: %llx, dst offset: %llx, bb offset: %llx\n",
-+			 (long long) src_offset, (long long) dst_offset,
-+			 (long long) bb_offset);
-+
-+		dump_bb_cmd(&data);
-+		if (ext)
-+			dump_bb_ext(&dext);
-+	}
-+
-+	munmap(bb, blt->bb.size);
-+
-+	obj[0].offset = CANONICAL(dst_offset);
-+	obj[1].offset = CANONICAL(src_offset);
-+	obj[2].offset = CANONICAL(bb_offset);
-+	obj[0].handle = blt->dst.handle;
-+	obj[1].handle = blt->src.handle;
-+	obj[2].handle = blt->bb.handle;
-+	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	execbuf.buffer_count = 3;
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.rsvd1 = ctx ? ctx->id : 0;
-+	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-+	ret = __gem_execbuf(i915, &execbuf);
-+	if (data.dw00.special_mode != SM_FULL_RESOLVE)
-+		put_offset(ahnd, blt->dst.handle);
-+	put_offset(ahnd, blt->src.handle);
-+	put_offset(ahnd, blt->bb.handle);
-+
-+	return ret;
-+}
-+
-+static uint16_t __ccs_size(const struct blt_ctrl_surf_copy_data *surf)
-+{
-+	uint32_t src_size, dst_size;
-+
-+	src_size = surf->src.access_type == DIRECT_ACCESS ?
-+				surf->src.size : surf->src.size / CCS_RATIO;
-+
-+	dst_size = surf->dst.access_type == DIRECT_ACCESS ?
-+				surf->dst.size : surf->dst.size / CCS_RATIO;
-+
-+	igt_assert_f(src_size <= dst_size, "dst size must be >= src size for CCS copy\n");
-+
-+	return src_size;
-+}
-+
-+struct gen12_ctrl_surf_copy_data {
-+	struct {
-+		uint32_t length:			BITRANGE(0, 7);
-+		uint32_t size_of_ctrl_copy:		BITRANGE(8, 17);
-+		uint32_t rsvd0:				BITRANGE(18, 19);
-+		uint32_t dst_access_type:		BITRANGE(20, 20);
-+		uint32_t src_access_type:		BITRANGE(21, 21);
-+		uint32_t opcode:			BITRANGE(22, 28);
-+		uint32_t client:			BITRANGE(29, 31);
-+	} dw00;
-+
-+	struct {
-+		uint32_t src_address_lo;
-+	} dw01;
-+
-+	struct {
-+		uint32_t src_address_hi:		BITRANGE(0, 24);
-+		uint32_t src_mocs:			BITRANGE(25, 31);
-+	} dw02;
-+
-+	struct {
-+		uint32_t dst_address_lo;
-+	} dw03;
-+
-+	struct {
-+		uint32_t dst_address_hi:		BITRANGE(0, 24);
-+		uint32_t dst_mocs:			BITRANGE(25, 31);
-+	} dw04;
-+};
-+
-+static void dump_bb_surf_ctrl_cmd(const struct gen12_ctrl_surf_copy_data *data)
-+{
-+	uint32_t *cmd = (uint32_t *) data;
-+
-+	igt_info("details:\n");
-+	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, "
-+		 "src/dst access type: <%d, %d>, size of ctrl copy: %u, length: %d>\n",
-+		 cmd[0],
-+		 data->dw00.client, data->dw00.opcode,
-+		 data->dw00.src_access_type, data->dw00.dst_access_type,
-+		 data->dw00.size_of_ctrl_copy, data->dw00.length);
-+	igt_info(" dw01: [%08x] src offset lo (0x%x)\n",
-+		 cmd[1], data->dw01.src_address_lo);
-+	igt_info(" dw02: [%08x] src offset hi (0x%x), src mocs: %u\n",
-+		 cmd[2], data->dw02.src_address_hi, data->dw02.src_mocs);
-+	igt_info(" dw03: [%08x] dst offset lo (0x%x)\n",
-+		 cmd[3], data->dw03.dst_address_lo);
-+	igt_info(" dw04: [%08x] dst offset hi (0x%x), src mocs: %u\n",
-+		 cmd[4], data->dw04.dst_address_hi, data->dw04.dst_mocs);
-+}
-+
-+/**
-+ * blt_ctrl_surf_copy:
-+ * @i915: drm fd
-+ * @ctx: intel_ctx_t context
-+ * @e: blitter engine for @ctx
-+ * @ahnd: allocator handle
-+ * @surf: blitter data for ctrl-surf-copy
-+ *
-+ * Function does ctrl-surf-copy blit between @src and @dst described in
-+ * @blt object.
-+ *
-+ * Returns:
-+ * execbuffer status.
-+ */
-+int blt_ctrl_surf_copy(int i915,
++static void block_copy(int i915,
 +		       const intel_ctx_t *ctx,
 +		       const struct intel_execution_engine2 *e,
-+		       uint64_t ahnd,
-+		       const struct blt_ctrl_surf_copy_data *surf)
++		       uint32_t region1, uint32_t region2,
++		       enum blt_tiling mid_tiling, bool compression,
++		       bool inplace,
++		       bool surfcopy)
 +{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	struct gen12_ctrl_surf_copy_data data = {};
-+	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	uint32_t *bb;
-+	int i;
++	struct blt_copy_data blt = {};
++	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
++	struct blt_copy_object *src, *mid, *dst;
++	const uint32_t bpp = BPP;
++	uint64_t add_size = param.increase_mid_surf_size;
++	uint64_t bb_size = 4096;
++	uint64_t ahnd = intel_allocator_open_full(i915, ctx->id, 0, 0,
++						  INTEL_ALLOCATOR_SIMPLE,
++						  ALLOC_STRATEGY_LOW_TO_HIGH);
++	uint32_t run_id = mid_tiling;
++	uint32_t mid_region = region2, bb;
++	uint32_t width = param.width, height = param.height;
++	enum blt_compression mid_compression = compression;
++	int mid_compression_format = param.compression_format;
++	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
++	int result;
 +
-+	igt_assert_f(ahnd, "ctrl-surf-copy supports softpin only\n");
-+	igt_assert_f(surf, "ctrl-surf-copy requires data to do ctrl-surf-copy blit\n");
++	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
 +
-+	alignment = gem_detect_safe_alignment(i915);
++	if (!blt_supports_compression(i915))
++		pext = NULL;
 +
-+	data.dw00.client = 0x2;
-+	data.dw00.opcode = 0x48;
-+	data.dw00.src_access_type = surf->src.access_type;
-+	data.dw00.dst_access_type = surf->dst.access_type;
++	src = create_object(i915, region1, width, height, bpp, 0,
++			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true, 0);
++	mid = create_object(i915, mid_region, width, height, bpp, 0,
++			    mid_tiling, mid_compression, comp_type, true, add_size);
++	dst = create_object(i915, region1, width, height, bpp, 0,
++			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true, 0);
++	igt_assert(src->size == dst->size);
++	PRINT_SURFACE_INFO("src", src);
++	PRINT_SURFACE_INFO("mid", mid);
++	PRINT_SURFACE_INFO("dst", dst);
 +
-+	/* Ensure dst has size capable to keep src ccs aux */
-+	data.dw00.size_of_ctrl_copy = __ccs_size(surf) / CCS_RATIO - 1;
-+	data.dw00.length = 0x3;
++	blt_surface_fill_rect(i915, src, width, height);
++	WRITE_PNG(i915, run_id, "src", src, width, height);
 +
-+	src_offset = get_offset(ahnd, surf->src.handle, surf->src.size,
-+				alignment);
-+	dst_offset = get_offset(ahnd, surf->dst.handle, surf->dst.size,
-+				alignment);
-+	bb_offset = get_offset(ahnd, surf->bb.handle, surf->bb.size,
-+			       alignment);
++	memset(&blt, 0, sizeof(blt));
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	set_blt_object(&blt.src, src);
++	set_blt_object(&blt.dst, mid);
++	set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
++	set_object_ext(&ext.dst, mid_compression_format, width, height, SURFACE_TYPE_2D);
++	set_batch(&blt.bb, bb, bb_size, region1);
 +
-+	data.dw01.src_address_lo = src_offset;
-+	data.dw02.src_address_hi = src_offset >> 32;
-+	data.dw02.src_mocs = surf->src.mocs;
++	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
++	gem_sync(i915, mid->handle);
 +
-+	data.dw03.dst_address_lo = dst_offset;
-+	data.dw04.dst_address_hi = dst_offset >> 32;
-+	data.dw04.dst_mocs = surf->dst.mocs;
++	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
++	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
 +
-+	i = sizeof(data) / sizeof(uint32_t);
-+	bb = gem_mmap__device_coherent(i915, surf->bb.handle, 0, surf->bb.size,
-+				       PROT_READ | PROT_WRITE);
-+	memcpy(bb, &data, sizeof(data));
-+	bb[i++] = MI_BATCH_BUFFER_END;
++	if (surfcopy && pext)
++		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
 +
-+	if (surf->print_bb) {
-+		igt_info("BB [CTRL SURF]:\n");
-+		igt_info("src offset: %llx, dst offset: %llx, bb offset: %llx\n",
-+			 (long long) src_offset, (long long) dst_offset,
-+			 (long long) bb_offset);
-+
-+		dump_bb_surf_ctrl_cmd(&data);
++	memset(&blt, 0, sizeof(blt));
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	set_blt_object(&blt.src, mid);
++	set_blt_object(&blt.dst, dst);
++	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
++	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
++	if (inplace) {
++		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
++			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
++		blt.dst.ptr = mid->ptr;
 +	}
-+	munmap(bb, surf->bb.size);
 +
-+	obj[0].offset = CANONICAL(dst_offset);
-+	obj[1].offset = CANONICAL(src_offset);
-+	obj[2].offset = CANONICAL(bb_offset);
-+	obj[0].handle = surf->dst.handle;
-+	obj[1].handle = surf->src.handle;
-+	obj[2].handle = surf->bb.handle;
-+	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	execbuf.buffer_count = 3;
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-+	execbuf.rsvd1 = ctx ? ctx->id : 0;
-+	gem_execbuf(i915, &execbuf);
-+	put_offset(ahnd, surf->dst.handle);
-+	put_offset(ahnd, surf->src.handle);
-+	put_offset(ahnd, surf->bb.handle);
++	set_batch(&blt.bb, bb, bb_size, region1);
++	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
++	gem_sync(i915, blt.dst.handle);
++	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height);
 +
-+	return 0;
++	result = memcmp(src->ptr, blt.dst.ptr, src->size);
++
++	destroy_object(i915, src);
++	destroy_object(i915, mid);
++	destroy_object(i915, dst);
++	gem_close(i915, bb);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
 +}
 +
-+struct gen12_fast_copy_data {
-+	struct {
-+		uint32_t length:			BITRANGE(0, 7);
-+		uint32_t rsvd1:				BITRANGE(8, 12);
-+		uint32_t dst_tiling:			BITRANGE(13, 14);
-+		uint32_t rsvd0:				BITRANGE(15, 19);
-+		uint32_t src_tiling:			BITRANGE(20, 21);
-+		uint32_t opcode:			BITRANGE(22, 28);
-+		uint32_t client:			BITRANGE(29, 31);
-+	} dw00;
-+
-+	struct {
-+		uint32_t dst_pitch:			BITRANGE(0, 15);
-+		uint32_t rsvd1:				BITRANGE(16, 23);
-+		uint32_t color_depth:			BITRANGE(24, 26);
-+		uint32_t rsvd0:				BITRANGE(27, 27);
-+		uint32_t dst_memory:			BITRANGE(28, 28);
-+		uint32_t src_memory:			BITRANGE(29, 29);
-+		uint32_t dst_type_y:			BITRANGE(30, 30);
-+		uint32_t src_type_y:			BITRANGE(31, 31);
-+	} dw01;
-+
-+	struct {
-+		int32_t dst_x1:				BITRANGE(0, 15);
-+		int32_t dst_y1:				BITRANGE(16, 31);
-+	} dw02;
-+
-+	struct {
-+		int32_t dst_x2:				BITRANGE(0, 15);
-+		int32_t dst_y2:				BITRANGE(16, 31);
-+	} dw03;
-+
-+	struct {
-+		uint32_t dst_address_lo;
-+	} dw04;
-+
-+	struct {
-+		uint32_t dst_address_hi;
-+	} dw05;
-+
-+	struct {
-+		int32_t src_x1:				BITRANGE(0, 15);
-+		int32_t src_y1:				BITRANGE(16, 31);
-+	} dw06;
-+
-+	struct {
-+		uint32_t src_pitch:			BITRANGE(0, 15);
-+		uint32_t rsvd0:				BITRANGE(16, 31);
-+	} dw07;
-+
-+	struct {
-+		uint32_t src_address_lo;
-+	} dw08;
-+
-+	struct {
-+		uint32_t src_address_hi;
-+	} dw09;
-+};
-+
-+static int __fast_tiling(enum blt_tiling tiling)
++static void block_copy_test(int i915,
++			    const struct test_config *config,
++			    const intel_ctx_t *ctx,
++			    struct igt_collection *set)
 +{
-+	switch (tiling) {
-+	case T_LINEAR: return 0;
-+	case T_XMAJOR: return 1;
-+	case T_YMAJOR: return 2;
-+	case T_TILE4:  return 2;
-+	case T_TILE64: return 3;
++	struct igt_collection *regions;
++	const struct intel_execution_engine2 *e;
++
++	if (config->compression && !blt_supports_compression(i915))
++		return;
++
++	if (config->inplace && !config->compression)
++		return;
++
++	for (int tiling = T_LINEAR; tiling <= T_TILE64; tiling++) {
++		if (!blt_supports_tiling(i915, tiling) ||
++		    (param.tiling >= 0 && param.tiling != tiling))
++			continue;
++
++		for_each_ctx_engine(i915, ctx, e) {
++			if (!gem_engine_can_block_copy(i915, e))
++				continue;
++
++			for_each_variation_r(regions, 2, set) {
++				uint32_t region1, region2;
++				char *regtxt;
++
++				region1 = igt_collection_get_value(regions, 0);
++				region2 = igt_collection_get_value(regions, 1);
++
++				/* Compressed surface must be in device memory */
++				if (config->compression && !IS_DEVICE_MEMORY_REGION(region2))
++					continue;
++
++				regtxt = memregion_dynamic_subtest_name(regions);
++				igt_dynamic_f("%s-%s-compfmt%d-%s",
++					      blt_tiling_name(tiling),
++					      config->compression ?
++						      "compressed" : "uncompressed",
++					      param.compression_format, regtxt) {
++					block_copy(i915, ctx, e,
++						   region1, region2,
++						   tiling,
++						   config->compression,
++						   config->inplace,
++						   config->surfcopy);
++				}
++				free(regtxt);
++			}
++		}
 +	}
-+	return 0;
 +}
 +
-+static int __fast_color_depth(enum blt_color_depth depth)
++static int opt_handler(int opt, int opt_index, void *data)
 +{
-+	switch (depth) {
-+	case CD_8bit:   return 0;
-+	case CD_16bit:  return 1;
-+	case CD_32bit:  return 3;
-+	case CD_64bit:  return 4;
-+	case CD_96bit:
-+		igt_assert_f(0, "Unsupported depth\n");
++	switch (opt) {
++	case 'b':
++		param.print_bb = true;
++		igt_debug("Print bb: %d\n", param.print_bb);
 +		break;
-+	case CD_128bit: return 5;
-+	};
-+	return 0;
-+}
-+
-+static void dump_bb_fast_cmd(struct gen12_fast_copy_data *data)
-+{
-+	uint32_t *cmd = (uint32_t *) data;
-+
-+	igt_info("BB details:\n");
-+	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, src tiling: %d, "
-+		 "dst tiling: %d, length: %d>\n",
-+		 cmd[0], data->dw00.client, data->dw00.opcode,
-+		 data->dw00.src_tiling, data->dw00.dst_tiling, data->dw00.length);
-+	igt_info(" dw01: [%08x] dst <pitch: %d, color depth: %d, dst memory: %d, "
-+		 "src memory: %d, \n"
-+		 "\t\t\tdst type tile: %d (0-legacy, 1-tile4),\n"
-+		 "\t\t\tsrc type tile: %d (0-legacy, 1-tile4)>\n",
-+		 cmd[1], data->dw01.dst_pitch, data->dw01.color_depth,
-+		 data->dw01.dst_memory, data->dw01.src_memory,
-+		 data->dw01.dst_type_y, data->dw01.src_type_y);
-+	igt_info(" dw02: [%08x] dst geom <x1: %d, y1: %d>\n",
-+		 cmd[2], data->dw02.dst_x1, data->dw02.dst_y1);
-+	igt_info(" dw03: [%08x]          <x2: %d, y2: %d>\n",
-+		 cmd[3], data->dw03.dst_x2, data->dw03.dst_y2);
-+	igt_info(" dw04: [%08x] dst offset lo (0x%x)\n",
-+		 cmd[4], data->dw04.dst_address_lo);
-+	igt_info(" dw05: [%08x] dst offset hi (0x%x)\n",
-+		 cmd[5], data->dw05.dst_address_hi);
-+	igt_info(" dw06: [%08x] src geom <x1: %d, y1: %d>\n",
-+		 cmd[6], data->dw06.src_x1, data->dw06.src_y1);
-+	igt_info(" dw07: [%08x] src <pitch: %d>\n",
-+		 cmd[7], data->dw07.src_pitch);
-+	igt_info(" dw08: [%08x] src offset lo (0x%x)\n",
-+		 cmd[8], data->dw08.src_address_lo);
-+	igt_info(" dw09: [%08x] src offset hi (0x%x)\n",
-+		 cmd[9], data->dw09.src_address_hi);
-+}
-+
-+/**
-+ * blt_fast_copy:
-+ * @i915: drm fd
-+ * @ctx: intel_ctx_t context
-+ * @e: blitter engine for @ctx
-+ * @ahnd: allocator handle
-+ * @blt: blitter data for fast-copy (same as for block-copy but doesn't use
-+ * compression fields).
-+ *
-+ * Function does fast blit between @src and @dst described in @blt object.
-+ *
-+ * Returns:
-+ * execbuffer status.
-+ */
-+int blt_fast_copy(int i915,
-+		  const intel_ctx_t *ctx,
-+		  const struct intel_execution_engine2 *e,
-+		  uint64_t ahnd,
-+		  const struct blt_copy_data *blt)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	struct gen12_fast_copy_data data = {};
-+	uint64_t dst_offset, src_offset, bb_offset, alignment;
-+	uint32_t *bb;
-+	int i, ret;
-+
-+	alignment = gem_detect_safe_alignment(i915);
-+
-+	data.dw00.client = 0x2;
-+	data.dw00.opcode = 0x42;
-+	data.dw00.dst_tiling = __fast_tiling(blt->dst.tiling);
-+	data.dw00.src_tiling = __fast_tiling(blt->src.tiling);
-+	data.dw00.length = 8;
-+
-+	data.dw01.dst_pitch = blt->dst.pitch;
-+	data.dw01.color_depth = __fast_color_depth(blt->color_depth);
-+	data.dw01.dst_memory = __memory_type(blt->dst.region);
-+	data.dw01.src_memory = __memory_type(blt->src.region);
-+	data.dw01.dst_type_y = blt->dst.tiling == T_TILE4 ? 1 : 0;
-+	data.dw01.src_type_y = blt->src.tiling == T_TILE4 ? 1 : 0;
-+
-+	data.dw02.dst_x1 = blt->dst.x1;
-+	data.dw02.dst_y1 = blt->dst.y1;
-+
-+	data.dw03.dst_x2 = blt->dst.x2;
-+	data.dw03.dst_y2 = blt->dst.y2;
-+
-+	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-+	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+
-+	data.dw04.dst_address_lo = dst_offset;
-+	data.dw05.dst_address_hi = dst_offset >> 32;
-+
-+	data.dw06.src_x1 = blt->src.x1;
-+	data.dw06.src_y1 = blt->src.y1;
-+
-+	data.dw07.src_pitch = blt->src.pitch;
-+
-+	data.dw08.src_address_lo = src_offset;
-+	data.dw09.src_address_hi = src_offset >> 32;
-+
-+	i = sizeof(data) / sizeof(uint32_t);
-+	bb = gem_mmap__device_coherent(i915, blt->bb.handle, 0, blt->bb.size,
-+				       PROT_READ | PROT_WRITE);
-+
-+	memcpy(bb, &data, sizeof(data));
-+	bb[i++] = MI_BATCH_BUFFER_END;
-+
-+	if (blt->print_bb) {
-+		igt_info("BB [FAST COPY]\n");
-+		igt_info("blit [src offset: %llx, dst offset: %llx\n",
-+			 (long long) src_offset, (long long) dst_offset);
-+		dump_bb_fast_cmd(&data);
++	case 'f':
++		param.compression_format = atoi(optarg);
++		igt_debug("Compression format: %d\n", param.compression_format);
++		igt_assert((param.compression_format & ~0x1f) == 0);
++		break;
++	case 'p':
++		param.write_png = true;
++		igt_debug("Write png: %d\n", param.write_png);
++		break;
++	case 's':
++		param.print_surface_info = true;
++		igt_debug("Print surface info: %d\n", param.print_surface_info);
++		break;
++	case 't':
++		param.tiling = atoi(optarg);
++		igt_debug("Tiling: %d\n", param.tiling);
++		break;
++	case 'W':
++		param.width = atoi(optarg);
++		igt_debug("Width: %d\n", param.width);
++		break;
++	case 'H':
++		param.height = atoi(optarg);
++		igt_debug("Height: %d\n", param.height);
++		break;
++	case 'I':
++		param.increase_mid_surf_size = atoi(optarg);
++		igt_debug("Additional mid size: %x\n", param.increase_mid_surf_size);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
 +	}
 +
-+	munmap(bb, blt->bb.size);
-+
-+	obj[0].offset = CANONICAL(dst_offset);
-+	obj[1].offset = CANONICAL(src_offset);
-+	obj[2].offset = CANONICAL(bb_offset);
-+	obj[0].handle = blt->dst.handle;
-+	obj[1].handle = blt->src.handle;
-+	obj[2].handle = blt->bb.handle;
-+	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	obj[1].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	obj[2].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	execbuf.buffer_count = 3;
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.rsvd1 = ctx ? ctx->id : 0;
-+	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-+	ret = __gem_execbuf(i915, &execbuf);
-+	put_offset(ahnd, blt->dst.handle);
-+	put_offset(ahnd, blt->src.handle);
-+	put_offset(ahnd, blt->bb.handle);
-+
-+	return ret;
++	return IGT_OPT_HANDLER_SUCCESS;
 +}
 +
-+/**
-+ * blt_surface_fill_rect:
-+ * @i915: drm fd
-+ * @obj: blitter copy object (@blt_copy_object) to fill with gradient pattern
-+ * @width: width
-+ * @height: height
-+ *
-+ * Function fills surface @width x @height * 24bpp with color gradient
-+ * (internally uses ARGB where A == 0xff, see Cairo docs).
-+ */
-+void blt_surface_fill_rect(int i915, const struct blt_copy_object *obj,
-+			   uint32_t width, uint32_t height)
++const char *help_str =
++	"  -b\tPrint bb\n"
++	"  -f\tCompression format (0-31)"
++	"  -p\tWrite PNG\n"
++	"  -s\tPrint surface info\n"
++	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
++	"  -W\tWidth (default 512)\n"
++	"  -H\tHeight (default 512)\n"
++	"  -I\tIncrease Tile64 surface size (value)"
++	;
++
++igt_main_args("bf:pst:W:H:I:", NULL, help_str, opt_handler, NULL)
 +{
-+	cairo_surface_t *surface;
-+	cairo_pattern_t *pat;
-+	cairo_t *cr;
-+	void *map = obj->ptr;
-+
-+	if (!map)
-+		map = gem_mmap__device_coherent(i915, obj->handle, 0,
-+						obj->size, PROT_READ | PROT_WRITE);
-+
-+	surface = cairo_image_surface_create_for_data(map,
-+						      CAIRO_FORMAT_RGB24,
-+						      width, height,
-+						      obj->pitch);
-+
-+	cr = cairo_create(surface);
-+
-+	cairo_rectangle(cr, 0, 0, width, height);
-+	cairo_clip(cr);
-+
-+	pat = cairo_pattern_create_mesh();
-+	cairo_mesh_pattern_begin_patch(pat);
-+	cairo_mesh_pattern_move_to(pat, 0, 0);
-+	cairo_mesh_pattern_line_to(pat, width, 0);
-+	cairo_mesh_pattern_line_to(pat, width, height);
-+	cairo_mesh_pattern_line_to(pat, 0, height);
-+	cairo_mesh_pattern_set_corner_color_rgb(pat, 0, 1.0, 0.0, 0.0);
-+	cairo_mesh_pattern_set_corner_color_rgb(pat, 1, 0.0, 1.0, 0.0);
-+	cairo_mesh_pattern_set_corner_color_rgb(pat, 2, 0.0, 0.0, 1.0);
-+	cairo_mesh_pattern_set_corner_color_rgb(pat, 3, 1.0, 1.0, 1.0);
-+	cairo_mesh_pattern_end_patch(pat);
-+
-+	cairo_rectangle(cr, 0, 0, width, height);
-+	cairo_set_source(cr, pat);
-+	cairo_fill(cr);
-+	cairo_pattern_destroy(pat);
-+
-+	cairo_destroy(cr);
-+
-+	cairo_surface_destroy(surface);
-+	if (!obj->ptr)
-+		munmap(map, obj->size);
-+}
-+
-+/**
-+ * blt_surface_info:
-+ * @info: information header
-+ * @obj: blitter copy object (@blt_copy_object) to print surface info
-+ */
-+void blt_surface_info(const char *info, const struct blt_copy_object *obj)
-+{
-+	igt_info("[%s]\n", info);
-+	igt_info("surface <handle: %u, size: %llx, region: %x, mocs: %x>\n",
-+		 obj->handle, (long long) obj->size, obj->region, obj->mocs);
-+	igt_info("        <tiling: %s, compression: %u, compression type: %d>\n",
-+		 blt_tiling_name(obj->tiling), obj->compression, obj->compression_type);
-+	igt_info("        <pitch: %u, offset [x: %u, y: %u] geom [<%d,%d> <%d,%d>]>\n",
-+		 obj->pitch, obj->x_offset, obj->y_offset,
-+		 obj->x1, obj->y1, obj->x2, obj->y2);
-+}
-+
-+/**
-+ * blt_surface_to_png:
-+ * @i915: drm fd
-+ * @run_id: prefix id to allow grouping files stored from single run
-+ * @fileid: file identifier
-+ * @obj: blitter copy object (@blt_copy_object) to save to png
-+ * @width: width
-+ * @height: height
-+ *
-+ * Function save surface to png file. Assumes ARGB format where A == 0xff.
-+ */
-+void blt_surface_to_png(int i915, uint32_t run_id, const char *fileid,
-+			const struct blt_copy_object *obj,
-+			uint32_t width, uint32_t height)
-+{
-+	cairo_surface_t *surface;
-+	cairo_status_t ret;
-+	uint8_t *map = (uint8_t *) obj->ptr;
-+	int format;
-+	int stride = obj->tiling ? obj->pitch * 4 : obj->pitch;
-+	char filename[FILENAME_MAX];
-+
-+	snprintf(filename, FILENAME_MAX-1, "%d-%s-%s-%ux%u-%s.png",
-+		 run_id, fileid, blt_tiling_name(obj->tiling), width, height,
-+		 obj->compression ? "compressed" : "uncompressed");
-+
-+	if (!map)
-+		map = gem_mmap__device_coherent(i915, obj->handle, 0,
-+						obj->size, PROT_READ);
-+	format = CAIRO_FORMAT_RGB24;
-+	surface = cairo_image_surface_create_for_data(map,
-+						      format, width, height,
-+						      stride);
-+	ret = cairo_surface_write_to_png(surface, filename);
-+	if (ret)
-+		igt_info("Cairo ret: %d (%s)\n", ret, cairo_status_to_string(ret));
-+	igt_assert(ret == CAIRO_STATUS_SUCCESS);
-+	cairo_surface_destroy(surface);
-+
-+	if (!obj->ptr)
-+		munmap(map, obj->size);
-+}
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-new file mode 100644
-index 000000000..e0e8b52bc
---- /dev/null
-+++ b/lib/i915/i915_blt.h
-@@ -0,0 +1,196 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+/**
-+ * SECTION:i915_blt
-+ * @short_description: i915 blitter library
-+ * @title: Blitter library
-+ * @include: i915_blt.h
-+ *
-+ * # Introduction
-+ *
-+ * Gen12+ blitter commands like XY_BLOCK_COPY_BLT are quite long
-+ * and if we would like to provide all arguments to function,
-+ * list would be long, unreadable and error prone to invalid argument placement.
-+ * Providing objects (structs) seems more reasonable and opens some more
-+ * opportunities to share some object data across different blitter commands.
-+ *
-+ * Blitter library supports no-reloc (softpin) mode only (apart of TGL
-+ * there's no relocations enabled) thus ahnd is mandatory. Providing NULL ctx
-+ * means we use default context with I915_EXEC_BLT as an execution engine.
-+ *
-+ * Library introduces tiling enum which distinguishes tiling formats regardless
-+ * legacy I915_TILING_... definitions. This allows to control fully what tilings
-+ * are handled by command and skip/assert ones which are not supported.
-+ *
-+ * # Supported commands
-+ *
-+ * - XY_BLOCK_COPY_BLT - (block-copy) TGL/DG1 + DG2+ (ext version)
-+ * - XY_FAST_COPY_BLT - (fast-copy)
-+ * - XY_CTRL_SURF_COPY_BLT - (ctrl-surf-copy) DG2+
-+ *
-+ * # Usage details
-+ *
-+ * For block-copy and fast-copy @blt_copy_object struct is used to collect
-+ * data about source and destination objects. It contains handle, region,
-+ * size, etc...  which are using for blits. Some fields are not used for
-+ * fast-copy copy (like compression) and command which use this exclusively
-+ * is annotated in the comment.
-+ *
-+ */
-+
-+#include <errno.h>
-+#include <sys/ioctl.h>
-+#include <sys/time.h>
-+#include <malloc.h>
-+#include "drm.h"
-+#include "igt.h"
-+
-+#define CCS_RATIO 256
-+
-+enum blt_color_depth {
-+	CD_8bit,
-+	CD_16bit,
-+	CD_32bit,
-+	CD_64bit,
-+	CD_96bit,
-+	CD_128bit,
-+};
-+
-+enum blt_tiling {
-+	T_LINEAR,
-+	T_XMAJOR,
-+	T_YMAJOR,
-+	T_TILE4,
-+	T_TILE64,
-+};
-+
-+enum blt_compression {
-+	COMPRESSION_DISABLED,
-+	COMPRESSION_ENABLED,
-+};
-+
-+enum blt_compression_type {
-+	COMPRESSION_TYPE_3D,
-+	COMPRESSION_TYPE_MEDIA,
-+};
-+
-+/* BC - block-copy */
-+struct blt_copy_object {
-+	uint32_t handle;
-+	uint32_t region;
-+	uint64_t size;
-+	uint8_t mocs;
-+	enum blt_tiling tiling;
-+	enum blt_compression compression;  /* BC only */
-+	enum blt_compression_type compression_type; /* BC only */
-+	uint32_t pitch;
-+	uint16_t x_offset, y_offset;
-+	int16_t x1, y1, x2, y2;
-+
-+	/* mapping or null */
-+	uint32_t *ptr;
-+};
-+
-+struct blt_copy_batch {
-+	uint32_t handle;
-+	uint32_t region;
-+	uint64_t size;
-+};
-+
-+/* Common for block-copy and fast-copy */
-+struct blt_copy_data {
++	struct drm_i915_query_memory_regions *query_info;
++	struct igt_collection *set;
++	const intel_ctx_t *ctx;
 +	int i915;
-+	struct blt_copy_object src;
-+	struct blt_copy_object dst;
-+	struct blt_copy_batch bb;
-+	enum blt_color_depth color_depth;
++	igt_hang_t hang;
 +
-+	/* debug stuff */
-+	bool print_bb;
-+};
++	igt_fixture {
++		i915 = drm_open_driver(DRIVER_INTEL);
++		igt_require_gem(i915);
++		igt_require(AT_LEAST_GEN(intel_get_drm_devid(i915), 12) > 0);
 +
-+enum blt_surface_type {
-+	SURFACE_TYPE_1D,
-+	SURFACE_TYPE_2D,
-+	SURFACE_TYPE_3D,
-+	SURFACE_TYPE_CUBE,
-+};
++		query_info = gem_get_query_memory_regions(i915);
++		igt_require(query_info);
 +
-+struct blt_block_copy_object_ext {
-+	uint8_t compression_format;
-+	bool clear_value_enable;
-+	uint64_t clear_address;
-+	uint16_t surface_width;
-+	uint16_t surface_height;
-+	enum blt_surface_type surface_type;
-+	uint16_t surface_qpitch;
-+	uint16_t surface_depth;
-+	uint8_t lod;
-+	uint8_t horizontal_align;
-+	uint8_t vertical_align;
-+	uint8_t mip_tail_start_lod;
-+	bool depth_stencil_resource;
-+	uint16_t array_index;
-+};
++		set = get_memory_region_set(query_info,
++					    I915_SYSTEM_MEMORY,
++					    I915_DEVICE_MEMORY);
++		ctx = intel_ctx_create_all_physical(i915);
++		hang = igt_allow_hang(i915, ctx->id, 0);
++	}
 +
-+struct blt_block_copy_data_ext {
-+	struct blt_block_copy_object_ext src;
-+	struct blt_block_copy_object_ext dst;
-+};
++	igt_subtest_with_dynamic("block-copy-uncompressed") {
++		struct test_config config = {};
 +
-+enum blt_access_type {
-+	INDIRECT_ACCESS,
-+	DIRECT_ACCESS,
-+};
++		block_copy_test(i915, &config, ctx, set);
++	}
 +
-+struct blt_ctrl_surf_copy_object {
-+	uint32_t handle;
-+	uint32_t region;
-+	uint64_t size;
-+	uint8_t mocs;
-+	enum blt_access_type access_type;
-+};
++	igt_subtest_with_dynamic("block-copy-compressed") {
++		struct test_config config = { .compression = true };
 +
-+struct blt_ctrl_surf_copy_data {
-+	int i915;
-+	struct blt_ctrl_surf_copy_object src;
-+	struct blt_ctrl_surf_copy_object dst;
-+	struct blt_copy_batch bb;
++		block_copy_test(i915, &config, ctx, set);
++	}
 +
-+	/* debug stuff */
-+	bool print_bb;
-+};
++	igt_subtest_with_dynamic("block-copy-inplace") {
++		struct test_config config = { .compression = true,
++					      .inplace = true };
 +
-+bool blt_supports_compression(int i915);
-+bool blt_supports_tiling(int i915, enum blt_tiling tiling);
-+const char *blt_tiling_name(enum blt_tiling tiling);
++		block_copy_test(i915, &config, ctx, set);
++	}
 +
-+int blt_block_copy(int i915,
-+		   const intel_ctx_t *ctx,
-+		   const struct intel_execution_engine2 *e,
-+		   uint64_t ahnd,
-+		   const struct blt_copy_data *blt,
-+		   const struct blt_block_copy_data_ext *ext);
++	igt_subtest_with_dynamic("ctrl-surf-copy") {
++		struct test_config config = { .compression = true,
++					      .surfcopy = true };
 +
-+int blt_ctrl_surf_copy(int i915,
-+		       const intel_ctx_t *ctx,
-+		       const struct intel_execution_engine2 *e,
-+		       uint64_t ahnd,
-+		       const struct blt_ctrl_surf_copy_data *surf);
++		block_copy_test(i915, &config, ctx, set);
++	}
 +
-+int blt_fast_copy(int i915,
-+		  const intel_ctx_t *ctx,
-+		  const struct intel_execution_engine2 *e,
-+		  uint64_t ahnd,
-+		  const struct blt_copy_data *blt);
-+
-+void blt_surface_info(const char *info,
-+		      const struct blt_copy_object *obj);
-+void blt_surface_fill_rect(int i915, const struct blt_copy_object *obj,
-+			   uint32_t width, uint32_t height);
-+void blt_surface_to_png(int i915, uint32_t run_id, const char *fileid,
-+		    const struct blt_copy_object *obj,
-+		    uint32_t width, uint32_t height);
-diff --git a/lib/meson.build b/lib/meson.build
-index 3e43316d1..fe035672e 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -11,6 +11,7 @@ lib_sources = [
- 	'i915/gem_mman.c',
- 	'i915/gem_vm.c',
- 	'i915/intel_memory_region.c',
-+	'i915/i915_blt.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
- 	'igt_debugfs.c',
++	igt_fixture {
++		igt_disallow_hang(i915, hang);
++		close(i915);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 7003d0641..0736732b7 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -108,6 +108,7 @@ i915_progs = [
+ 	'gem_blits',
+ 	'gem_busy',
+ 	'gem_caching',
++	'gem_ccs',
+ 	'gem_close',
+ 	'gem_close_race',
+ 	'gem_concurrent_blit',
 -- 
 2.32.0
