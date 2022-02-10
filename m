@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B2EC10E815
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Feb 2022 11:38:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 016A910E816
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Feb 2022 11:38:45 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 10 Feb 2022 12:38:29 +0100
-Message-Id: <20220210113832.17590-2-zbigniew.kempczynski@intel.com>
+Date: Thu, 10 Feb 2022 12:38:30 +0100
+Message-Id: <20220210113832.17590-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220210113832.17590-1-zbigniew.kempczynski@intel.com>
 References: <20220210113832.17590-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/4] lib/intel_device_info: Add DG2
- definition
+Subject: [igt-dev] [PATCH i-g-t 2/4] i915/gem_engine_topology: Only use the
+ main copy engines for XY_BLOCK_COPY
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,81 +22,88 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Melkaveri@freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before pciids will land in the kernel and then are merged to IGT we need
-to add them locally to unblock compilation and testing staged kernels.
-We can use some hybrid solution where intel_device_info takes official
-pciids from i915_pciids.h and not official from i915_drm_local.h. Such
-strategy allows us to decrease code changes in the libraries / tests
-especially where IS_GENx() or IS_<machine>() macros are in use.
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
+XY_BLOCK_COPY blt command is used to transfer the ccs data.
+So, we can only run the tests on those engines which have
+support for the "block_copy" capability.
+
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
 ---
- lib/i915/i915_drm_local.h | 9 +++++++++
- lib/intel_device_info.c   | 8 ++++++++
- 2 files changed, 17 insertions(+)
+ lib/i915/gem_engine_topology.c | 38 ++++++++++++++++++++++++++++++++++
+ lib/i915/gem_engine_topology.h |  5 +++++
+ 2 files changed, 43 insertions(+)
 
-diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
-index 9e82c9688..9afe9db8d 100644
---- a/lib/i915/i915_drm_local.h
-+++ b/lib/i915/i915_drm_local.h
-@@ -5,6 +5,8 @@
- #ifndef _I915_DRM_LOCAL_H_
- #define _I915_DRM_LOCAL_H_
- 
-+#include "i915_pciids.h"
-+
- #if defined(__cplusplus)
- extern "C" {
- #endif
-@@ -21,6 +23,13 @@ extern "C" {
-  */
- #define I915_ENGINE_CLASS_COMPUTE 4
- 
-+/* DG2 */
-+#define INTEL_DG2_IDS(info) \
-+	INTEL_VGA_DEVICE(0x56A0, info), \
-+	INTEL_VGA_DEVICE(0x56A2, info), \
-+	INTEL_VGA_DEVICE(0x56A5, info), \
-+	INTEL_VGA_DEVICE(0x56A6, info)
-+
- #if defined(__cplusplus)
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index bd12d0bc9..18fc00ab0 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -534,6 +534,44 @@ void gem_engine_properties_restore(int fd, const struct gem_engine_properties *s
+ 	}
  }
- #endif
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 40942afe7..fa438e1d1 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -1,5 +1,6 @@
- #include "intel_chipset.h"
- #include "i915_pciids.h"
-+#include "i915/i915_drm_local.h"
  
- #include <strings.h> /* ffs() */
- 
-@@ -389,6 +390,12 @@ static const struct intel_device_info intel_dg1_info = {
- 	.codename = "dg1"
- };
- 
-+static const struct intel_device_info intel_dg2_info = {
-+	.graphics_ver = 12,
-+	.display_ver = 12,
-+	.codename = "dg2"
-+};
++static bool
++__gem_engine_has_capability(int i915, const char *engine,
++			    const char *attr, const char *cap)
++{
++	char buf[4096] = {};
++	FILE *file;
 +
- static const struct intel_device_info intel_alderlake_s_info = {
- 	.graphics_ver = 12,
- 	.display_ver = 12,
-@@ -506,6 +513,7 @@ static const struct pci_id_match intel_device_match[] = {
- 	INTEL_RKL_IDS(&intel_rocketlake_info),
++	file = __open_attr(igt_sysfs_open(i915), "r",
++			   "engine", engine, attr, NULL);
++	if (file) {
++		fread(buf, 1, sizeof(buf) - 1, file);
++		fclose(file);
++	}
++
++	return strstr(buf, cap);
++}
++
++bool gem_engine_has_capability(int i915, const char *engine, const char *cap)
++{
++	return __gem_engine_has_capability(i915, engine, "capabilities", cap);
++}
++
++bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap)
++{
++	return __gem_engine_has_capability(i915, engine, "known_capabilities", cap);
++}
++
++bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine)
++{
++	if (engine->class != I915_ENGINE_CLASS_COPY)
++		return false;
++
++	if (!gem_engine_has_known_capability(i915, engine->name, "block_copy"))
++		return intel_gen(intel_get_drm_devid(i915)) >= 12;
++
++	return gem_engine_has_capability(i915, engine->name, "block_copy");
++}
++
+ uint32_t gem_engine_mmio_base(int i915, const char *engine)
+ {
+ 	unsigned int mmio = 0;
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index b413aa8ab..987f2bf94 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -133,6 +133,11 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
  
- 	INTEL_DG1_IDS(&intel_dg1_info),
-+	INTEL_DG2_IDS(&intel_dg2_info),
+ uint32_t gem_engine_mmio_base(int i915, const char *engine);
  
- 	INTEL_ADLS_IDS(&intel_alderlake_s_info),
- 	INTEL_RPLS_IDS(&intel_raptorlake_s_info),
++bool gem_engine_has_capability(int i915, const char *engine, const char *cap);
++bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap);
++
++bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine);
++
+ void dyn_sysfs_engines(int i915, int engines, const char *file,
+ 		       void (*test)(int i915, int engine));
+ 
 -- 
 2.32.0
