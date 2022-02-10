@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD5A710E686
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Feb 2022 23:31:18 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 10 Feb 2022 00:30:44 +0100
-Message-Id: <20220209233044.57624-5-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220209233044.57624-1-zbigniew.kempczynski@intel.com>
-References: <20220209233044.57624-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4077932481176834870=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] tests/gem_ccs: Verify uncompressed and
- compressed blits
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 10 Feb 2022 00:33:51 -0000
+Message-ID: <164445323129.24636.3315797052901223565@emeril.freedesktop.org>
+References: <20220209233044.57624-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220209233044.57624-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGk5?=
+ =?utf-8?q?15_blt_library_+_gem=5Fccs_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,533 +16,302 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DG2 and above supports flat-ccs what means object compression lays in
-dedicated part or memory and is directly correlated with object location
-in physical memory. As no mapping is possible from CPU side to this area
-dedicated blitter command (XY_CTRL_SURF_COPY_BLT) was created to copy
-from/to ccs data.
+--===============4077932481176834870==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Test exercises scenarios:
-1. block-copy without compression (TGL/DG1)
-2. block-copy with flat-ccs compression (DG2+) + inplace decompression
-3. ctrl-surf-copy which verifies copying ccs data to/from flat-ccs area
+== Series Details ==
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_ccs.c | 487 +++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build    |   1 +
- 2 files changed, 488 insertions(+)
- create mode 100644 tests/i915/gem_ccs.c
+Series: Add i915 blt library + gem_ccs test
+URL   : https://patchwork.freedesktop.org/series/99925/
+State : failure
 
-diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-new file mode 100644
-index 000000000..5e8f5ca84
---- /dev/null
-+++ b/tests/i915/gem_ccs.c
-@@ -0,0 +1,487 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+#include <errno.h>
-+#include <sys/ioctl.h>
-+#include <sys/time.h>
-+#include <malloc.h>
-+#include "drm.h"
-+#include "igt.h"
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+#include "lib/intel_chipset.h"
-+#include "i915/i915_blt.h"
-+
-+IGT_TEST_DESCRIPTION("Exercise the memory bandwidth compression and "
-+		     "decompression when copying data between "
-+		     "system and local memory");
-+
-+#define BPP 32
-+
-+static struct param {
-+	int compression_format;
-+	int tiling;
-+	bool write_png;
-+	bool print_bb;
-+	bool print_surface_info;
-+	int width;
-+	int height;
-+	uint32_t increase_mid_surf_size;
-+} param = {
-+	.compression_format = 0,
-+	.tiling = -1,
-+	.write_png = false,
-+	.print_bb = false,
-+	.print_surface_info = false,
-+	.width = 512,
-+	.height = 512,
-+	.increase_mid_surf_size = 0,
-+};
-+
-+struct test_config {
-+	bool compression;
-+	bool inplace;
-+	bool surfcopy;
-+};
-+
-+static void set_object(struct blt_copy_object *obj,
-+		       uint32_t handle, uint64_t size, uint32_t region,
-+		       uint8_t mocs, enum blt_tiling tiling,
-+		       enum blt_compression compression,
-+		       enum blt_compression_type compression_type)
-+{
-+	obj->handle = handle;
-+	obj->size = size;
-+	obj->region = region;
-+	obj->mocs = mocs;
-+	obj->tiling = tiling;
-+	obj->compression = compression;
-+	obj->compression_type = compression_type;
-+}
-+
-+static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-+		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-+		     uint16_t x_offset, uint16_t y_offset)
-+{
-+	obj->pitch = pitch;
-+	obj->x1 = x1;
-+	obj->y1 = y1;
-+	obj->x2 = x2;
-+	obj->y2 = y2;
-+	obj->x_offset = x_offset;
-+	obj->y_offset = y_offset;
-+}
-+
-+static void set_batch(struct blt_copy_batch *batch,
-+		      uint32_t handle, uint64_t size, uint32_t region)
-+{
-+	batch->handle = handle;
-+	batch->size = size;
-+	batch->region = region;
-+}
-+
-+static void set_object_ext(struct blt_block_copy_object_ext *obj,
-+			   uint8_t compression_format,
-+			   uint16_t surface_width, uint16_t surface_height,
-+			   enum blt_surface_type surface_type)
-+{
-+	obj->compression_format = compression_format;
-+	obj->surface_width = surface_width;
-+	obj->surface_height = surface_height;
-+	obj->surface_type = surface_type;
-+}
-+
-+static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
-+			    uint32_t handle, uint32_t region, uint64_t size,
-+			    uint8_t mocs, enum blt_access_type access_type)
-+{
-+	obj->handle = handle;
-+	obj->region = region;
-+	obj->size = size;
-+	obj->mocs = mocs;
-+	obj->access_type = access_type;
-+}
-+
-+static struct blt_copy_object *
-+create_object(int i915, uint32_t region,
-+	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-+	      enum blt_tiling tiling,
-+	      enum blt_compression compression,
-+	      enum blt_compression_type compression_type,
-+	      bool create_mapping,
-+	      uint64_t increase_size)
-+{
-+	struct blt_copy_object *obj;
-+	uint64_t size = width * height * bpp / 8 + increase_size;
-+	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
-+	uint32_t handle;
-+
-+	obj = calloc(1, sizeof(*obj));
-+
-+	obj->size = size;
-+	igt_assert(__gem_create_in_memory_regions(i915, &handle,
-+						  &size, region) == 0);
-+
-+	set_object(obj, handle, size, region, mocs, tiling,
-+		   compression, compression_type);
-+	set_geom(obj, stride, 0, 0, width, height, 0, 0);
-+
-+	if (create_mapping)
-+		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
-+						     PROT_READ | PROT_WRITE);
-+
-+	return obj;
-+}
-+
-+static void destroy_object(int i915, struct blt_copy_object *obj)
-+{
-+	if (obj->ptr)
-+		munmap(obj->ptr, obj->size);
-+
-+	gem_close(i915, obj->handle);
-+}
-+
-+static void set_blt_object(struct blt_copy_object *obj,
-+			   const struct blt_copy_object *orig)
-+{
-+	memcpy(obj, orig, sizeof(*obj));
-+}
-+
-+#define PRINT_SURFACE_INFO(name, obj) do { \
-+	if (param.print_surface_info) \
-+		blt_surface_info((name), (obj)); } while (0)
-+
-+#define WRITE_PNG(fd, id, name, obj, w, h) do { \
-+	if (param.write_png) \
-+		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
-+
-+static void surf_copy(int i915,
-+		      const intel_ctx_t *ctx,
-+		      const struct intel_execution_engine2 *e,
-+		      uint64_t ahnd,
-+		      const struct blt_copy_object *src,
-+		      const struct blt_copy_object *mid,
-+		      const struct blt_copy_object *dst,
-+		      int run_id)
-+{
-+	struct blt_copy_data blt = {};
-+	struct blt_block_copy_data_ext ext = {};
-+	struct blt_ctrl_surf_copy_data surf = {};
-+	uint32_t bb, ccs, *ccsmap, bb_size = 4096;
-+	uint64_t ccssize = mid->size / CCS_RATIO;
-+	uint32_t *ccscopy;
-+	int result;
-+
-+	igt_assert(mid->compression);
-+	ccscopy = (uint32_t *) malloc(ccssize);
-+	bb = gem_create(i915, bb_size);
-+	ccs = gem_create(i915, ccssize);
-+
-+	surf.i915 = i915;
-+	surf.print_bb = param.print_bb;
-+	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
-+			0, INDIRECT_ACCESS);
-+	set_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
-+			0, DIRECT_ACCESS);
-+	set_batch(&surf.bb, bb, bb_size, REGION_SMEM);
-+	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
-+	gem_sync(i915, surf.dst.handle);
-+
-+	ccsmap = gem_mmap__device_coherent(i915, ccs, 0, surf.dst.size,
-+					   PROT_READ | PROT_WRITE);
-+	memcpy(ccscopy, ccsmap, ccssize);
-+
-+	/* corrupt ccs */
-+	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
-+		ccsmap[i] = i;
-+	set_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
-+			0, DIRECT_ACCESS);
-+	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
-+			0, INDIRECT_ACCESS);
-+	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
-+
-+	memset(&blt, 0, sizeof(blt));
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	set_blt_object(&blt.src, mid);
-+	set_blt_object(&blt.dst, dst);
-+	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
-+	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
-+	set_batch(&blt.bb, bb, bb_size, REGION_SMEM);
-+	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
-+	gem_sync(i915, blt.dst.handle);
-+	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
-+	result = memcmp(src->ptr, dst->ptr, src->size);
-+	igt_assert(result != 0);
-+
-+	/* retrieve back ccs */
-+	memcpy(ccsmap, ccscopy, ccssize);
-+	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
-+
-+	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
-+	gem_sync(i915, blt.dst.handle);
-+	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
-+	result = memcmp(src->ptr, dst->ptr, src->size);
-+	igt_assert(result == 0);
-+
-+	munmap(ccsmap, ccssize);
-+	gem_close(i915, bb);
-+	gem_close(i915, ccs);
-+}
-+
-+static void block_copy(int i915,
-+		       const intel_ctx_t *ctx,
-+		       const struct intel_execution_engine2 *e,
-+		       uint32_t region1, uint32_t region2,
-+		       enum blt_tiling mid_tiling, bool compression,
-+		       bool inplace,
-+		       bool surfcopy)
-+{
-+	struct blt_copy_data blt = {};
-+	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-+	struct blt_copy_object *src, *mid, *dst;
-+	const uint32_t bpp = BPP;
-+	uint64_t add_size = param.increase_mid_surf_size;
-+	uint64_t bb_size = 4096;
-+	uint64_t ahnd = intel_allocator_open_full(i915, ctx->id, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH);
-+	uint32_t devid = intel_get_drm_devid(i915);
-+	uint32_t run_id = mid_tiling;
-+	uint32_t mid_region = region2, bb;
-+	uint32_t width = param.width, height = param.height;
-+	enum blt_compression mid_compression = compression;
-+	int mid_compression_format = param.compression_format;
-+	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-+	int result;
-+
-+	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-+
-+	if (IS_DG1(devid))
-+		pext = NULL;
-+
-+	src = create_object(i915, region1, width, height, bpp, 0,
-+			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true, 0);
-+	mid = create_object(i915, mid_region, width, height, bpp, 0,
-+			    mid_tiling, mid_compression, comp_type, true, add_size);
-+	dst = create_object(i915, region1, width, height, bpp, 0,
-+			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true, 0);
-+	igt_assert(src->size == dst->size);
-+	PRINT_SURFACE_INFO("src", src);
-+	PRINT_SURFACE_INFO("mid", mid);
-+	PRINT_SURFACE_INFO("dst", dst);
-+
-+	blt_surface_fill_rect(i915, src, width, height);
-+	WRITE_PNG(i915, run_id, "src", src, width, height);
-+
-+	memset(&blt, 0, sizeof(blt));
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	set_blt_object(&blt.src, src);
-+	set_blt_object(&blt.dst, mid);
-+	set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
-+	set_object_ext(&ext.dst, mid_compression_format, width, height, SURFACE_TYPE_2D);
-+	set_batch(&blt.bb, bb, bb_size, region1);
-+
-+	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
-+	gem_sync(i915, mid->handle);
-+
-+	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
-+	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
-+
-+	if (surfcopy && pext)
-+		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
-+
-+	memset(&blt, 0, sizeof(blt));
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	set_blt_object(&blt.src, mid);
-+	set_blt_object(&blt.dst, dst);
-+	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
-+	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
-+	if (inplace) {
-+		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
-+			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
-+		blt.dst.ptr = mid->ptr;
-+	}
-+
-+	set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
-+	gem_sync(i915, blt.dst.handle);
-+	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height);
-+
-+	result = memcmp(src->ptr, blt.dst.ptr, src->size);
-+
-+	destroy_object(i915, src);
-+	destroy_object(i915, mid);
-+	destroy_object(i915, dst);
-+	gem_close(i915, bb);
-+	put_ahnd(ahnd);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
-+
-+static void block_copy_test(int i915,
-+			    const struct test_config *config,
-+			    const intel_ctx_t *ctx,
-+			    struct igt_collection *set)
-+{
-+	struct igt_collection *regions;
-+	const struct intel_execution_engine2 *e;
-+
-+	if (config->compression && !blt_supports_compression(i915))
-+		return;
-+
-+	if (config->inplace && !config->compression)
-+		return;
-+
-+	for (int tiling = T_LINEAR; tiling <= T_TILE64; tiling++) {
-+		if (!blt_supports_tiling(i915, tiling) ||
-+		    (param.tiling >= 0 && param.tiling != tiling))
-+			continue;
-+
-+		for_each_ctx_engine(i915, ctx, e) {
-+			if (!gem_engine_can_block_copy(i915, e))
-+				continue;
-+
-+			for_each_variation_r(regions, 2, set) {
-+				uint32_t region1, region2;
-+				char *regtxt;
-+
-+				region1 = igt_collection_get_value(regions, 0);
-+				region2 = igt_collection_get_value(regions, 1);
-+
-+				/* Compressed surface must be in device memory */
-+				if (config->compression && !IS_DEVICE_MEMORY_REGION(region2))
-+					continue;
-+
-+				regtxt = memregion_dynamic_subtest_name(regions);
-+				igt_dynamic_f("%s-%s-compfmt%d-%s",
-+					      blt_tiling_name(tiling),
-+					      config->compression ?
-+						      "compressed" : "uncompressed",
-+					      param.compression_format, regtxt) {
-+					block_copy(i915, ctx, e,
-+						   region1, region2,
-+						   tiling,
-+						   config->compression,
-+						   config->inplace,
-+						   config->surfcopy);
-+				}
-+				free(regtxt);
-+			}
-+		}
-+	}
-+}
-+
-+static int opt_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+	case 'b':
-+		param.print_bb = true;
-+		igt_debug("Print bb: %d\n", param.print_bb);
-+		break;
-+	case 'f':
-+		param.compression_format = atoi(optarg);
-+		igt_debug("Compression format: %d\n", param.compression_format);
-+		igt_assert((param.compression_format & ~0x1f) == 0);
-+		break;
-+	case 'p':
-+		param.write_png = true;
-+		igt_debug("Write png: %d\n", param.write_png);
-+		break;
-+	case 's':
-+		param.print_surface_info = true;
-+		igt_debug("Print surface info: %d\n", param.print_surface_info);
-+		break;
-+	case 't':
-+		param.tiling = atoi(optarg);
-+		igt_debug("Tiling: %d\n", param.tiling);
-+		break;
-+	case 'W':
-+		param.width = atoi(optarg);
-+		igt_debug("Width: %d\n", param.width);
-+		break;
-+	case 'H':
-+		param.height = atoi(optarg);
-+		igt_debug("Height: %d\n", param.height);
-+		break;
-+	case 'I':
-+		param.increase_mid_surf_size = atoi(optarg);
-+		igt_debug("Additional mid size: %x\n", param.increase_mid_surf_size);
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -b\tPrint bb\n"
-+	"  -f\tCompression format (0-31)"
-+	"  -p\tWrite PNG\n"
-+	"  -s\tPrint surface info\n"
-+	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
-+	"  -W\tWidth (default 512)\n"
-+	"  -H\tHeight (default 512)\n"
-+	"  -I\tIncrease Tile64 surface size (value)"
-+	;
-+
-+igt_main_args("bf:pst:W:H:I:", NULL, help_str, opt_handler, NULL)
-+{
-+	struct drm_i915_query_memory_regions *query_info;
-+	struct igt_collection *set;
-+	const intel_ctx_t *ctx;
-+	int i915;
-+	igt_hang_t hang;
-+
-+	igt_fixture {
-+		i915 = drm_open_driver(DRIVER_INTEL);
-+		igt_require_gem(i915);
-+		igt_require(AT_LEAST_GEN(intel_get_drm_devid(i915), 12) > 0);
-+
-+		query_info = gem_get_query_memory_regions(i915);
-+		igt_require(query_info);
-+
-+		set = get_memory_region_set(query_info,
-+					    I915_SYSTEM_MEMORY,
-+					    I915_DEVICE_MEMORY);
-+		ctx = intel_ctx_create_all_physical(i915);
-+		hang = igt_allow_hang(i915, ctx->id, 0);
-+	}
-+
-+	igt_subtest_with_dynamic("block-copy-uncompressed") {
-+		struct test_config config = {};
-+
-+		block_copy_test(i915, &config, ctx, set);
-+	}
-+
-+	igt_subtest_with_dynamic("block-copy-compressed") {
-+		struct test_config config = { .compression = true };
-+
-+		block_copy_test(i915, &config, ctx, set);
-+	}
-+
-+	igt_subtest_with_dynamic("block-copy-inplace") {
-+		struct test_config config = { .compression = true,
-+					      .inplace = true };
-+
-+		block_copy_test(i915, &config, ctx, set);
-+	}
-+
-+	igt_subtest_with_dynamic("ctrl-surf-copy") {
-+		struct test_config config = { .compression = true,
-+					      .surfcopy = true };
-+
-+		block_copy_test(i915, &config, ctx, set);
-+	}
-+
-+	igt_fixture {
-+		igt_disallow_hang(i915, hang);
-+		close(i915);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 7003d0641..0736732b7 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -108,6 +108,7 @@ i915_progs = [
- 	'gem_blits',
- 	'gem_busy',
- 	'gem_caching',
-+	'gem_ccs',
- 	'gem_close',
- 	'gem_close_race',
- 	'gem_concurrent_blit',
--- 
-2.32.0
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11207 -> IGTPW_6609
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6609 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6609, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/index.html
+
+Participating hosts (45 -> 42)
+------------------------------
+
+  Additional (1): bat-rpls-1 
+  Missing    (4): fi-bsw-cyan fi-icl-u2 shard-tglu fi-pnv-d510 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6609:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6609 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-skl-6600u:       NOTRUN -> [INCOMPLETE][3] ([i915#4547])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][4] -> [DMESG-FAIL][5] ([i915#4494] / [i915#4957])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+    - fi-bdw-5557u:       NOTRUN -> [INCOMPLETE][6] ([i915#3921])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [PASS][7] -> [DMESG-FAIL][8] ([i915#5026])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-bdw-5557u/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][10] ([fdo#109271]) +13 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html
+
+  * igt@runner@aborted:
+    - fi-blb-e6850:       NOTRUN -> [FAIL][11] ([fdo#109271] / [i915#2403] / [i915#2426] / [i915#4312])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-blb-e6850/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - fi-kbl-soraka:      [INCOMPLETE][12] -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-kbl-soraka/igt@i915_selftest@live@requests.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-kbl-soraka/igt@i915_selftest@live@requests.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][14] ([i915#4494] / [i915#4957]) -> [DMESG-FAIL][15] ([i915#4957])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       [FAIL][16] ([i915#4312]) -> [FAIL][17] ([i915#2722] / [i915#4312])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-skl-6600u/igt@runner@aborted.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-skl-6600u/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5026]: https://gitlab.freedesktop.org/drm/intel/issues/5026
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6342 -> IGTPW_6609
+
+  CI-20190529: 20190529
+  CI_DRM_11207: 0d650d738ee924dc0c367ff1f33c61237a635933 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6609: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/index.html
+  IGT_6342: 1bd167a3af9e8f6168ac89c64c64b929694d9be7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_ccs@block-copy-compressed
++igt@gem_ccs@block-copy-inplace
++igt@gem_ccs@block-copy-uncompressed
++igt@gem_ccs@ctrl-surf-copy
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/index.html
+
+--===============4077932481176834870==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add i915 blt library + gem_ccs test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/99925/">https://patchwork.freedesktop.org/series/99925/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11207 -&gt; IGTPW_6609</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6609 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6609, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/index.html</p>
+<h2>Participating hosts (45 -&gt; 42)</h2>
+<p>Additional (1): bat-rpls-1 <br />
+  Missing    (4): fi-bsw-cyan fi-icl-u2 shard-tglu fi-pnv-d510 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6609:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6609 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
+</li>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5026">i915#5026</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-bdw-5557u/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@cursor_plane_move:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +13 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-blb-e6850/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@requests:<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-kbl-soraka/igt@i915_selftest@live@requests.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-kbl-soraka/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11207/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6342 -&gt; IGTPW_6609</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11207: 0d650d738ee924dc0c367ff1f33c61237a635933 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6609: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6609/index.html<br />
+  IGT_6342: 1bd167a3af9e8f6168ac89c64c64b929694d9be7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_ccs@block-copy-compressed<br />
++igt@gem_ccs@block-copy-inplace<br />
++igt@gem_ccs@block-copy-uncompressed<br />
++igt@gem_ccs@ctrl-surf-copy</p>
+
+</body>
+</html>
+
+--===============4077932481176834870==--
