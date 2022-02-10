@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D435A10E8B1
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Feb 2022 17:21:46 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Thu, 10 Feb 2022 22:52:36 +0530
-Message-Id: <20220210172236.29924-1-nidhi1.gupta@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4862754757172036213=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915:Extend kms_frontbuffer_tracking
- to test FBC on multiple pipes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 10 Feb 2022 18:01:04 -0000
+Message-ID: <164451606454.24640.15768985389835919859@emeril.freedesktop.org>
+References: <20220210172236.29924-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220210172236.29924-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915=3AExtend_kms=5Ffrontbuffer=5Ftracking_to_test_FBC_on_multi?=
+ =?utf-8?q?ple_pipes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,144 +17,210 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>, ville.syrjala@intel.com
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In future more platforms will support FBC on
-multiple pipes, so to validate the same extending
-the kms_frontbuffer_tracking test.
+--===============4862754757172036213==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-In kernel code now  FBC debugfs files are exposed
-for each crtc so added debugfs_read_crtc function
-to get the per pipe fbc status.
+== Series Details ==
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/i915/kms_frontbuffer_tracking.c | 42 +++++++++++++++------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+Series: tests/i915:Extend kms_frontbuffer_tracking to test FBC on multiple pipes
+URL   : https://patchwork.freedesktop.org/series/99985/
+State : success
 
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 532bfbb9..363b4c6c 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -732,8 +732,23 @@ static int __debugfs_write(const char *param, char *buf, int len)
- 	return igt_sysfs_write(drm.debugfs, param, buf, len - 1);
- }
- 
-+static void __debugfs_read_crtc(const char *param, char *buf, int len)
-+{
-+	int dir,fd;
-+	enum pipe pipe;
-+
-+	pipe = prim_mode_params.pipe;
-+	dir = igt_debugfs_pipe_dir(drm.fd, pipe, O_RDONLY);
-+	igt_require_fd(dir);
-+	fd = openat(dir, "i915_fbc_status", O_RDONLY);
-+	igt_debugfs_simple_read(fd, param, buf, len);
-+	close(fd);
-+	close(dir);
-+}
-+
- #define debugfs_read(p, arr) __debugfs_read(p, arr, sizeof(arr))
- #define debugfs_write(p, arr) __debugfs_write(p, arr, sizeof(arr))
-+#define debugfs_read_crtc(p, arr) __debugfs_read_crtc(p, arr, sizeof(arr))
- 
- static char last_fbc_buf[128];
- 
-@@ -742,7 +757,7 @@ static bool fbc_is_enabled(int lvl)
- 	char buf[128];
- 	bool print = true;
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	if (lvl != IGT_LOG_DEBUG)
- 		last_fbc_buf[0] = '\0';
- 	else if (strcmp(last_fbc_buf, buf))
-@@ -825,8 +840,8 @@ static struct timespec fbc_get_last_action(void)
- 	char *action;
- 	ssize_t n_read;
- 
--	debugfs_read("i915_fbc_status", buf);
- 
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	action = strstr(buf, "\nLast action:");
- 	igt_assert(action);
- 
-@@ -874,8 +889,8 @@ static void fbc_setup_last_action(void)
- 	char buf[128];
- 	char *action;
- 
--	debugfs_read("i915_fbc_status", buf);
- 
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	action = strstr(buf, "\nLast action:");
- 	if (!action) {
- 		igt_info("FBC last action not supported\n");
-@@ -893,7 +908,7 @@ static bool fbc_is_compressing(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(buf, "\nCompressing: yes\n") != NULL;
- }
- 
-@@ -906,7 +921,7 @@ static bool fbc_not_enough_stolen(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(buf, "FBC disabled: not enough stolen memory\n");
- }
- 
-@@ -914,7 +929,7 @@ static bool fbc_stride_not_supported(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(buf, "FBC disabled: framebuffer stride not supported\n");
- }
- 
-@@ -922,7 +937,7 @@ static bool fbc_mode_too_large(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(buf, "FBC disabled: mode too large for compression\n");
- }
- 
-@@ -1388,7 +1403,7 @@ static bool fbc_supported_on_chipset(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	if (*buf == '\0')
- 		return false;
- 
-@@ -1404,17 +1419,6 @@ static void setup_fbc(void)
- 		return;
- 	}
- 
--	/*
--	 * While some platforms do allow FBC on pipes B/C, this test suite
--	 * is not prepared for that yet.
--	 * TODO: solve this.
--	 */
--	if (prim_mode_params.pipe != PIPE_A) {
--		igt_info("Can't test FBC: primary connector doesn't support "
--			 "pipe A\n");
--		return;
--	}
--
- 	/* Early Generations are not able to report compression status. */
- 	if (!AT_LEAST_GEN(devid, 7))
- 		opt.fbc_check_compression = false;
--- 
-2.26.2
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11214 -> IGTPW_6612
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/index.html
+
+Participating hosts (46 -> 41)
+------------------------------
+
+  Additional (1): fi-adl-ddr4 
+  Missing    (6): shard-tglu fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 bat-rpls-1 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6612 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#109315]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-skl-6600u:       [PASS][2] -> [INCOMPLETE][3] ([i915#4547])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11214/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][4] -> [DMESG-FAIL][5] ([i915#4494] / [i915#4957])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11214/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][6] ([i915#2426] / [i915#4312])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][7] ([i915#4785]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11214/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-adlp-6}:       [DMESG-WARN][9] ([i915#5068]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11214/bat-adlp-6/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/bat-adlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#3138]: https://gitlab.freedesktop.org/drm/intel/issues/3138
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5068]: https://gitlab.freedesktop.org/drm/intel/issues/5068
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6342 -> IGTPW_6612
+
+  CI-20190529: 20190529
+  CI_DRM_11214: b9ddf3cdcb94017765655d8d31adc1bb70b11046 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6612: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/index.html
+  IGT_6342: 1bd167a3af9e8f6168ac89c64c64b929694d9be7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/index.html
+
+--===============4862754757172036213==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915:Extend kms_frontbuffer_tracking to test FBC on multiple pipes</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/99985/">https://patchwork.freedesktop.org/series/99985/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11214 -&gt; IGTPW_6612</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/index.html</p>
+<h2>Participating hosts (46 -&gt; 41)</h2>
+<p>Additional (1): fi-adl-ddr4 <br />
+  Missing    (6): shard-tglu fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 bat-rpls-1 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6612 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11214/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11214/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11214/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11214/bat-adlp-6/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5068">i915#5068</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/bat-adlp-6/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6342 -&gt; IGTPW_6612</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11214: b9ddf3cdcb94017765655d8d31adc1bb70b11046 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6612: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6612/index.html<br />
+  IGT_6342: 1bd167a3af9e8f6168ac89c64c64b929694d9be7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4862754757172036213==--
