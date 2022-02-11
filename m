@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CECD10EA20
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Feb 2022 08:17:57 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Fri, 11 Feb 2022 08:17:50 +0000
-Message-ID: <80db2ddb38f348f8bba7d179010f7f37@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0D4810EA5A
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Feb 2022 09:38:54 +0000 (UTC)
+Date: Fri, 11 Feb 2022 11:39:05 +0200
+From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+Message-ID: <20220211093904.GA15694@intel.com>
 References: <20220207182152.31211-1-jeevan.b@intel.com>
- <20220207182152.31211-3-jeevan.b@intel.com>
-In-Reply-To: <20220207182152.31211-3-jeevan.b@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <20220207182152.31211-7-jeevan.b@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 02/17] lib/dg2: Add DG2 platform
- definition
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220207182152.31211-7-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 06/17] igt/tests: Add support for
+ Tile4(TileF) format to kms_draw_crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,53 +22,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Melkaveri@freedesktop.org" <Melkaveri@freedesktop.org>
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
-dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSmVldmFuIEINCj4gU2Vu
-dDogTW9uZGF5LCBGZWJydWFyeSA3LCAyMDIyIDg6MjIgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBNZWxrYXZlcmlAZnJlZWRlc2t0b3Aub3JnDQo+IFN1Ympl
-Y3Q6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXQgMDIvMTddIGxpYi9kZzI6IEFkZCBERzIgcGxhdGZv
-cm0gZGVmaW5pdGlvbg0KPiANCj4gRnJvbTogTWF0dCBSb3BlciA8bWF0dGhldy5kLnJvcGVyQGlu
-dGVsLmNvbT4NCj4gDQo+IEFkZGVkIGRlZmluaXRpb24gZm9yIERHMi4NCj4gDQo+IFNpZ25lZC1v
-ZmYtYnk6IE1hdHQgUm9wZXIgPG1hdHRoZXcuZC5yb3BlckBpbnRlbC5jb20+DQo+IFNpZ25lZC1v
-ZmYtYnk6IFByaXlhbmthIERhbmRhbXVkaSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4N
-Cj4gQ2M6IE1lbGthdmVyaSwgQXJqdW4gPGFyanVuLm1lbGthdmVyaUBpbnRlbC5jb20+DQoNClJl
-dmlld2VkLWJ5OiBNaWthIEthaG9sYSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPg0KDQo+IC0tLQ0K
-PiAgbGliL2ludGVsX2NoaXBzZXQuaCAgICAgfCAyICsrDQo+ICBsaWIvaW50ZWxfZGV2aWNlX2lu
-Zm8uYyB8IDggKysrKysrKysNCj4gIDIgZmlsZXMgY2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKQ0K
-PiANCj4gZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9jaGlwc2V0LmggYi9saWIvaW50ZWxfY2hpcHNl
-dC5oIGluZGV4IDM1MjdjYmU1Li45YzJmMWIzMQ0KPiAxMDA2NDQNCj4gLS0tIGEvbGliL2ludGVs
-X2NoaXBzZXQuaA0KPiArKysgYi9saWIvaW50ZWxfY2hpcHNldC5oDQo+IEBAIC04MSw2ICs4MSw3
-IEBAIHN0cnVjdCBpbnRlbF9kZXZpY2VfaW5mbyB7DQo+ICAJYm9vbCBpc19yYXB0b3JsYWtlX3Mg
-OiAxOw0KPiAgCWJvb2wgaXNfYWxkZXJsYWtlX3AgOiAxOw0KPiAgCWJvb2wgaXNfYWxkZXJsYWtl
-X24gOiAxOw0KPiArCWJvb2wgaXNfZGcyIDogMTsNCj4gIAljb25zdCBjaGFyICpjb2RlbmFtZTsN
-Cj4gIH07DQo+IA0KPiBAQCAtMTg2LDYgKzE4Nyw3IEBAIHZvaWQgaW50ZWxfY2hlY2tfcGNoKHZv
-aWQpOw0KPiAgI2RlZmluZSBJU19SQVBUT1JMQUtFX1MoZGV2aWQpCShpbnRlbF9nZXRfZGV2aWNl
-X2luZm8oZGV2aWQpLQ0KPiA+aXNfcmFwdG9ybGFrZV9zKQ0KPiAgI2RlZmluZSBJU19BTERFUkxB
-S0VfUChkZXZpZCkJKGludGVsX2dldF9kZXZpY2VfaW5mbyhkZXZpZCktPmlzX2FsZGVybGFrZV9w
-KQ0KPiAgI2RlZmluZSBJU19BTERFUkxBS0VfTihkZXZpZCkJKGludGVsX2dldF9kZXZpY2VfaW5m
-byhkZXZpZCktDQo+ID5pc19hbGRlcmxha2VfbikNCj4gKyNkZWZpbmUgSVNfREcyKGRldmlkKSAg
-ICAgICAgICAoaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldmlkKS0+aXNfZGcyKQ0KPiANCj4gICNk
-ZWZpbmUgSVNfR0VOKGRldmlkLCB4KQkoaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldmlkKS0+Z3Jh
-cGhpY3NfdmVyID09DQo+IHgpDQo+ICAjZGVmaW5lIEFUX0xFQVNUX0dFTihkZXZpZCwgeCkJKGlu
-dGVsX2dldF9kZXZpY2VfaW5mbyhkZXZpZCktDQo+ID5ncmFwaGljc192ZXIgPj0geCkNCj4gZGlm
-ZiAtLWdpdCBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jIGIvbGliL2ludGVsX2RldmljZV9pbmZv
-LmMgaW5kZXgNCj4gNDA5NDJhZmUuLjA1YmEyZDk4IDEwMDY0NA0KPiAtLS0gYS9saWIvaW50ZWxf
-ZGV2aWNlX2luZm8uYw0KPiArKysgYi9saWIvaW50ZWxfZGV2aWNlX2luZm8uYw0KPiBAQCAtNDE3
-LDYgKzQxNywxMyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGludGVsX2RldmljZV9pbmZvDQo+IGlu
-dGVsX2FsZGVybGFrZV9uX2luZm8gPSB7DQo+ICAJLmNvZGVuYW1lID0gImFsZGVybGFrZV9uIg0K
-PiAgfTsNCj4gDQo+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGludGVsX2RldmljZV9pbmZvIGludGVs
-X2RnMl9pbmZvID0gew0KPiArCS5ncmFwaGljc192ZXIgPSAxMiwNCj4gKwkuZGlzcGxheV92ZXIg
-PSAxMywNCj4gKwkuaXNfZGcyID0gdHJ1ZSwNCj4gKwkuY29kZW5hbWUgPSAiZGcyIg0KPiArfTsN
-Cj4gKw0KPiAgc3RhdGljIGNvbnN0IHN0cnVjdCBwY2lfaWRfbWF0Y2ggaW50ZWxfZGV2aWNlX21h
-dGNoW10gPSB7DQo+ICAJSU5URUxfSTgxMF9JRFMoJmludGVsX2k4MTBfaW5mbyksDQo+ICAJSU5U
-RUxfSTgxNV9JRFMoJmludGVsX2k4MTVfaW5mbyksDQo+IEBAIC01MTEsNiArNTE4LDcgQEAgc3Rh
-dGljIGNvbnN0IHN0cnVjdCBwY2lfaWRfbWF0Y2ggaW50ZWxfZGV2aWNlX21hdGNoW10gPQ0KPiB7
-DQo+ICAJSU5URUxfUlBMU19JRFMoJmludGVsX3JhcHRvcmxha2Vfc19pbmZvKSwNCj4gIAlJTlRF
-TF9BRExQX0lEUygmaW50ZWxfYWxkZXJsYWtlX3BfaW5mbyksDQo+ICAJSU5URUxfQURMTl9JRFMo
-JmludGVsX2FsZGVybGFrZV9uX2luZm8pLA0KPiArCUlOVEVMX0RHMl9JRFMoJmludGVsX2RnMl9p
-bmZvKSwNCj4gDQo+ICAJSU5URUxfVkdBX0RFVklDRShQQ0lfTUFUQ0hfQU5ZLCAmaW50ZWxfZ2Vu
-ZXJpY19pbmZvKSwgIH07DQo+IC0tDQo+IDIuMTcuMQ0KDQo=
+On Mon, Feb 07, 2022 at 11:51:41PM +0530, Jeevan B wrote:
+> From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+> 
+> kms_draw_crc would be the first sample test to support new
+> format.
+> 
+> Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+
+Currently IGT tests are failing, because kernel doesn't support Tile 4
+yet.
+I guess it is good time to modify that test also, so that it tries to
+test Tile 4 only if it is supported.
+
+Stan
+
+> ---
+>  tests/i915/kms_draw_crc.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+> index 82c368e1..6348e803 100644
+> --- a/tests/i915/kms_draw_crc.c
+> +++ b/tests/i915/kms_draw_crc.c
+> @@ -41,25 +41,24 @@ drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
+>  struct buf_ops *bops;
+>  igt_pipe_crc_t *pipe_crc;
+>  
+> -#define N_FORMATS 3
+> -static const uint32_t formats[N_FORMATS] = {
+> +static const uint32_t formats[] = {
+>  	DRM_FORMAT_XRGB8888,
+>  	DRM_FORMAT_RGB565,
+>  	DRM_FORMAT_XRGB2101010,
+>  };
+>  
+> -#define N_MODIFIER_METHODS 3
+> -static const uint64_t modifiers[N_MODIFIER_METHODS] = {
+> +static const uint64_t modifiers[] = {
+>  	DRM_FORMAT_MOD_LINEAR,
+>  	I915_FORMAT_MOD_X_TILED,
+>  	I915_FORMAT_MOD_Y_TILED,
+> +	I915_FORMAT_MOD_4_TILED,
+>  };
+>  
+>  struct base_crc {
+>  	bool set;
+>  	igt_crc_t crc;
+>  };
+> -struct base_crc base_crcs[N_FORMATS];
+> +struct base_crc base_crcs[ARRAY_SIZE(formats)];
+>  
+>  struct modeset_params ms;
+>  
+> @@ -315,6 +314,8 @@ static const char *modifier_str(int modifier_index)
+>  		return "xtiled";
+>  	case I915_FORMAT_MOD_Y_TILED:
+>  		return "ytiled";
+> +	case I915_FORMAT_MOD_4_TILED:
+> +		return "4tiled";
+>  	default:
+>  		igt_assert(false);
+>  	}
+> @@ -328,9 +329,9 @@ igt_main
+>  	igt_fixture
+>  		setup_environment();
+>  
+> -	for (format_idx = 0; format_idx < N_FORMATS; format_idx++) {
+> +	for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+>  	for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+> -	for (modifier_idx = 0; modifier_idx < N_MODIFIER_METHODS; modifier_idx++) {
+> +	for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+>  		igt_describe("This subtest verfies igt_draw library works "
+>  			     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
+>  		igt_subtest_f("draw-method-%s-%s-%s",
+> -- 
+> 2.17.1
+> 
