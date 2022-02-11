@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7497F10EA2C
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Feb 2022 09:10:09 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Date: Thu,  9 Sep 2021 01:34:55 +0530
-Message-Id: <20210908200455.6551-1-mohammed.thasleem@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2141410EA9E
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Feb 2022 16:13:27 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Date: Fri, 11 Feb 2022 21:43:14 +0530
+Message-Id: <20220211161314.16602-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc : Add func to check
- connected panel
+Subject: [igt-dev] [PATCH i-g-t] tests: i915_pm_rpm : Dump
+ i915_runtime_pm_status
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,61 +19,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: nischal.varide@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add check_connected_panel function for checking external connected panel,
-if it's connected there is no point to check DC states. Adding this to
-igt_fixture to avoid wasting CI cycles.
+Dump i915_runtime_pm_status conditionally whenever runtime pm status
+got active and it was expected to be suspended.
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_dc.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ tests/i915/i915_pm_rpm.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index 2c2c5086..eb331be9 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -62,6 +62,7 @@ typedef struct {
- 	drmModeModeInfo *mode;
- 	igt_output_t *output;
- 	bool runtime_suspend_disabled;
-+	uint32_t external_panel;
- } data_t;
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 648b0cffb..d1ba69af4 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -201,10 +201,17 @@ static bool wait_for_pc8_status(enum pc8_status status)
  
- static bool dc_state_wait_entry(int drm_fd, int dc_flag, int prev_dc_count);
-@@ -463,6 +464,23 @@ static void kms_poll_state_restore(int sig)
- 	}
+ static bool wait_for_suspended(void)
+ {
+-	if (has_pc8 && !has_runtime_pm)
++	bool suspended = false;
++
++	if (has_pc8 && !has_runtime_pm) {
+ 		return wait_for_pc8_status(PC8_ENABLED);
+-	else
+-		return igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
++	} else {
++		suspended = igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
++		if (!suspended)
++			igt_debugfs_dump(drm_fd, "i915_runtime_pm_status");
++
++		return suspended;
++	}
  }
  
-+static void check_connected_panel(data_t *data)
-+{
-+	uint32_t count;
-+	igt_display_t *display = &data->display;
-+
-+	for (count = 0; count < display->n_outputs; count++) {
-+		if (display->outputs[count].config.connector->connection
-+			== DRM_MODE_CONNECTED) {
-+			if (display->outputs[count].config.connector->connector_type
-+				!= DRM_MODE_CONNECTOR_eDP)
-+				data->external_panel++;
-+		}
-+	}
-+	igt_skip_on_f(data->external_panel,
-+			"External panel detected skip execution\n");
-+}
-+
- IGT_TEST_DESCRIPTION("These tests validate Display Power DC states");
- int main(int argc, char *argv[])
- {
-@@ -479,6 +497,7 @@ int main(int argc, char *argv[])
- 		igt_require(igt_setup_runtime_pm(data.drm_fd));
- 		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
- 		igt_display_require(&data.display, data.drm_fd);
-+		check_connected_panel(&data);
- 		/* Make sure our Kernel supports MSR and the module is loaded */
- 		igt_require(igt_kmod_load("msr", NULL) == 0);
- 
+ static bool wait_for_active(void)
 -- 
-2.25.1
+2.26.2
