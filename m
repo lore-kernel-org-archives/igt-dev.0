@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CC07892ED
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Feb 2022 09:56:45 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-Date: Mon, 14 Feb 2022 15:26:41 +0530
-Message-Id: <20220214095641.27508-1-priyanka.dandamudi@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27D5C10E533
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Feb 2022 10:23:21 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Date: Mon, 14 Feb 2022 10:23:11 +0000
+Message-ID: <60fd1652892e4bd8908467ca74745d1b@intel.com>
+References: <20211025092305.14742-1-anshuman.gupta@intel.com>
+ <20211025092305.14742-2-anshuman.gupta@intel.com>
+ <877da01zro.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <877da01zro.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/gem_reset_stats: Test for shared
- reset domain
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib: Add silent
+ __igt_i915_driver_unload
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,182 +24,219 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com, John.C.Harrison@intel.com, matthew.d.roper@intel.com
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nilawar,
+ Badal" <badal.nilawar@intel.com>, "Wilson,
+ Chris P" <chris.p.wilson@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Added new subtest shared_reset_domain:
-The test submits non-preemptible requests to all RCS+CCS or multi CCS engines,
-kills one and expects the rest to survive.One of those engines is reset
-by submitting a hang then expects all dependent engines to be reset.
-It checks the status of victimized context after reset.
 
-v2:Modified code for all engines.
+> -----Original Message-----
+> From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
+> Sent: Saturday, February 12, 2022 9:51 AM
+> To: Gupta, Anshuman <anshuman.gupta@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Wilson, Chris P <chris.p.wilson@intel.=
+com>;
+> Nilawar, Badal <badal.nilawar@intel.com>; janusz.krzysztofik@linux.intel.=
+com
+> Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib: Add silent __igt_i915_drive=
+r_unload
+>=20
+> On Mon, 25 Oct 2021 02:23:04 -0700, Anshuman Gupta wrote:
+> >
+> > Add silent __igt_i915_driver_unload(), which will not print any
+> > warning in case of passed argument is NULL.
+>=20
+> I think we need to add a "why" to this commit message and that is "so tha=
+t we
+> can test scenarios when module unload is expected to fail".
+Thanks Ashutosh for review,  I will add reason for doing this.
+>=20
+> >
+> > Cc: Chris Wilson <chris.p.wilson@intel.com>
+> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > ---
+> >  lib/igt_kmod.c | 86
+> > ++++++++++++++++++++++++++++++--------------------
+> >  lib/igt_kmod.h |  1 +
+> >  2 files changed, 52 insertions(+), 35 deletions(-)
+> >
+> > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c index
+> > 10e983844..ce9bfc07a 100644
+> > --- a/lib/igt_kmod.c
+> > +++ b/lib/igt_kmod.c
+> > @@ -369,56 +369,72 @@ igt_i915_driver_load(const char *opts)
+> >	return IGT_EXIT_SUCCESS;
+> >  }
+> >
+> > -/**
+> > - * igt_i915_driver_unload:
+> > - *
+> > - * Unloads the i915 driver and its dependencies.
+> > - *
+> > - */
+> > -int
+> > -igt_i915_driver_unload(void)
+> > +int __igt_i915_driver_unload(const char **whom)
+>=20
+> I prefer s/whom/who/ as in "Who failed to unload?".
+I will fix this.
+>=20
+> >  {
+> > +	const char *sound[] =3D {
+> > +		"snd_hda_intel",
+> > +		"snd_hdmi_lpe_audio",
+> > +		NULL,
+> > +	};
+> > +
+> > +	const char *aux[] =3D {
+> > +		/* gen5: ips uses symbol_get() so only a soft module
+> dependency */
+> > +		"intel_ips",
+> > +		NULL,
+> > +	};
+> > +
+> >	/* unbind vt */
+> >	bind_fbcon(false);
+> >
+> > -	if (igt_kmod_is_loaded("snd_hda_intel")) {
+> > -		igt_terminate_process(SIGTERM, "alsactl");
+> > -
+> > -		/* unbind snd_hda_intel */
+> > -		kick_snd_hda_intel();
+> > -
+> > -		if (igt_kmod_unload("snd_hda_intel", 0)) {
+> > -			igt_warn("Could not unload snd_hda_intel\n");
+> > -			igt_kmod_list_loaded();
+> > -			igt_lsof("/dev/snd");
+> > -			return IGT_EXIT_FAILURE;
+> > +	for (const char **m =3D sound; *m; m++) {
+> > +		if (igt_kmod_is_loaded(*m)) {
+> > +			igt_terminate_process(SIGTERM, "alsactl");
+> > +			kick_snd_hda_intel();
+> > +			if (igt_kmod_unload(*m, 0)) {
+> > +				if (whom)
+> > +					*whom =3D *m;
+>=20
+> This seems like a bug. The sound and aux arrays above should be static
+> otherwise these strings go out of scope after the function exits.
+AFAIU all string literals (both local and global) are part of .rodata elf s=
+ection, which is ultimately=20
+a file backed read-execute-private mapping (r-xp)  in process map (/proc/pi=
+d/maps).
+This should not go out of scope. Please correct me if I am being wrong here=
+.
+>=20
+> > +				return IGT_EXIT_FAILURE;
+> > +			}
+> >		}
+> >	}
+> >
+> > -	if (igt_kmod_is_loaded("snd_hdmi_lpe_audio")) {
+> > -		igt_terminate_process(SIGTERM, "alsactl");
+> > -
+> > -		if (igt_kmod_unload("snd_hdmi_lpe_audio", 0)) {
+> > -			igt_warn("Could not unload snd_hdmi_lpe_audio\n");
+> > -			igt_kmod_list_loaded();
+> > -			igt_lsof("/dev/snd");
+> > -			return IGT_EXIT_FAILURE;
+> > -		}
+> > +	for (const char **m =3D aux; *m; m++) {
+> > +		if (igt_kmod_is_loaded(*m))
+> > +			igt_kmod_unload(*m, 0);
+>=20
+> This issue exists in previous code too but why not return an error here (=
+and also
+> populate 'whom' or 'who')?
+I will return the correct value and set the 'who' here.
+>=20
+> >	}
+> >
+> > -	/* gen5: ips uses symbol_get() so only a soft module dependency */
+> > -	if (igt_kmod_is_loaded("intel_ips"))
+> > -		igt_kmod_unload("intel_ips", 0);
+> > -
+> >	if (igt_kmod_is_loaded("i915")) {
+> >		if (igt_kmod_unload("i915", 0)) {
+> > -			igt_warn("Could not unload i915\n");
+> > -			igt_kmod_list_loaded();
+> > -			igt_lsof("/dev/dri");
+> > +			if (whom)
+> > +				*whom =3D "i915";
+> >			return IGT_EXIT_SKIP;
+> >		}
+> >	}
+> >
+> > +	return IGT_EXIT_SUCCESS;
+>=20
+> The issue exists in previous code but to me it seems highly unusual that =
+we are
+> using process exit codes as return values from these functions (both load=
+ and
+> unload).
+Not sure about this issue, this series is aimed to fix perf_pmu@module-unlo=
+ad
+Igt test by using correct library function. May by fixing this process exit=
+ code=20
+Return values can be sent as separate patch.
+>=20
+> Note that after we have introduced and populated 'whom' or 'who', we just
+> return the value retured from igt_kmod_unload() from here (and similarly =
+in
+> igt_i915_driver_load()) and let the caller figure out who failed to unloa=
+d from
+> 'whom' or 'who'. That is we don't need separate return values for other d=
+rivers
+> vs. i915. Thoughts?
+Yeah, we can use same return type either IGT_EXIT_FAILURE/ IGT_EXIT_SKIP or=
+  in case of module unload failure.=20
+I will add a separate patch in this series to address this.
 
-Issue:
-After reset of target engine, the status of the contexts of other
-engines are not consistent, they are either showing as victimized or
-noerror but expected is for dependent engines, contexts should be
-as victimized but for others as no error.
+Thanks,
+Anshuman Gupta.
 
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
----
- tests/i915/gem_reset_stats.c | 108 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 106 insertions(+), 2 deletions(-)
-
-diff --git a/tests/i915/gem_reset_stats.c b/tests/i915/gem_reset_stats.c
-index 627a10ab..cad13898 100644
---- a/tests/i915/gem_reset_stats.c
-+++ b/tests/i915/gem_reset_stats.c
-@@ -39,19 +39,19 @@
- #include <sys/mman.h>
- #include <time.h>
- #include <signal.h>
--
-+#include <poll.h>
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "i915/gem_ring.h"
- #include "igt.h"
- #include "igt_sysfs.h"
-+#include "sw_sync.h"
- 
- #define RS_NO_ERROR      0
- #define RS_BATCH_ACTIVE  (1 << 0)
- #define RS_BATCH_PENDING (1 << 1)
- #define RS_UNKNOWN       (1 << 2)
- 
--
- static uint32_t devid;
- 
- struct local_drm_i915_reset_stats {
-@@ -74,6 +74,22 @@ static void sync_gpu(void)
- 	gem_quiescent_gpu(device);
- }
- 
-+static void context_unban(int fd, unsigned ctx)
-+{
-+	struct drm_i915_gem_context_param param = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_BANNABLE,
-+		.value = 0,
-+	};
-+
-+	gem_context_set_param(fd, &param);
-+}
-+
-+static bool fence_busy(int fence)
-+{
-+	return poll(&(struct pollfd){fence, POLLIN}, 1, 0) == 0;
-+}
-+
- static int noop(int fd, uint32_t ctx, const struct intel_execution_ring *e)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -696,6 +712,63 @@ static void test_params(void)
- 	close(fd);
- }
- 
-+/* Test tries to check the status of victimised contexts when one of the dependent engines tries to reset*/
-+static void
-+test_sh_re_domain(const intel_ctx_t *base_ctx,
-+		const struct intel_execution_engine2 *e)
-+{
-+	const struct intel_execution_engine2 *e2;
-+	const intel_ctx_t *ctx[GEM_MAX_ENGINES+1];
-+	int ahnd[GEM_MAX_ENGINES+1];
-+	igt_spin_t *spin[GEM_MAX_ENGINES+1];
-+	int num_engines = 0;
-+
-+	for_each_ctx_engine(device, base_ctx, e2) {
-+		if (e2->flags == e->flags)
-+			continue;
-+
-+		ctx[num_engines] = intel_ctx_create_for_engine(device, e2->class, e2->instance);
-+		context_unban(device, ctx[num_engines]->id);
-+		ahnd[num_engines] = get_reloc_ahnd(device, ctx[num_engines]->id);
-+		spin[num_engines] = igt_spin_new(device, .ahnd = ahnd[num_engines], .ctx = ctx[num_engines],
-+				.flags = IGT_SPIN_NO_PREEMPTION | IGT_SPIN_FENCE_OUT);
-+
-+		/*Checks status of contexts*/
-+		assert_reset_status(device, device, ctx[num_engines]->id, RS_NO_ERROR);
-+		num_engines++;
-+	}
-+	ctx[num_engines] = intel_ctx_create_for_engine(device, e->class, e->instance);
-+	ahnd[num_engines] = get_reloc_ahnd(device, ctx[num_engines]->id);
-+	spin[num_engines] = igt_spin_new(device, .ahnd = ahnd[num_engines], .ctx = ctx[num_engines],
-+			.flags = IGT_SPIN_NO_PREEMPTION | IGT_SPIN_FENCE_OUT);
-+
-+	/* Status of context which is going to be reset*/
-+	assert_reset_status(device, device, ctx[num_engines]->id, RS_NO_ERROR);
-+
-+	num_engines++;
-+	usleep(50 * 1000);
-+
-+	/*Waits until engine gets reset*/
-+	sync_fence_wait(spin[num_engines-1]->out_fence, -1);
-+
-+	for (int n = 0; n < num_engines-1; n++) {
-+		if (n == num_engines-1)
-+			igt_assert(!fence_busy(spin[n]->out_fence));
-+		else {
-+			/* checks for victimized contexts*/
-+			assert_reset_status(device, device, ctx[n]->id, RS_BATCH_ACTIVE);
-+
-+			igt_assert(fence_busy(spin[n]->out_fence));
-+		}
-+	}
-+	for (int n = 0; n < num_engines; n++) {
-+		igt_spin_end(spin[n]);
-+		intel_ctx_destroy(device, ctx[n]);
-+		put_ahnd(ahnd[n]);
-+		igt_spin_free(device, spin[n]);
-+	}
-+}
-+
- static const struct intel_execution_ring *
- next_engine(int fd, const struct intel_execution_ring *e)
- {
-@@ -835,6 +908,37 @@ igt_main
- 			RUN_TEST(defer_hangcheck(e));
- 	}
- 
-+	igt_subtest_group {
-+		const struct intel_execution_engine2 *e2;
-+		const intel_ctx_t *ctx;
-+		igt_hang_t hang = {};
-+		struct gem_engine_properties saved_params[GEM_MAX_ENGINES];
-+		int num_engines = 0;
-+		intel_ctx_cfg_t cfg = {};
-+
-+		igt_fixture{
-+			gem_require_contexts(device);
-+			cfg = intel_ctx_cfg_all_physical(device);
-+			ctx = intel_ctx_create(device, &cfg);
-+
-+			igt_disallow_hang(device, hang);
-+			hang = igt_allow_hang(device, ctx->id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
-+
-+			for_each_physical_engine(device, e2) {
-+				saved_params[num_engines].engine = e2;
-+				saved_params[num_engines].preempt_timeout = 500;
-+				saved_params[num_engines].heartbeat_interval = 2500;
-+				gem_engine_properties_configure(device, saved_params + num_engines++);
-+			}
-+		}
-+
-+		igt_subtest_with_dynamic("shared-reset-domain") {
-+			for_each_ctx_engine(device, ctx, e2) {
-+				igt_dynamic_f("%s", e2->name)
-+					test_sh_re_domain(ctx, e2);
-+			}
-+		}
-+	}
- 	igt_fixture {
- 		igt_assert(igt_params_set(device, "reset", "%d", INT_MAX /* any reset method */));
- 		close(device);
--- 
-2.35.0
+>=20
+>=20
+> > +}
+> > +
+> > +/**
+> > + * igt_i915_driver_unload:
+> > + *
+> > + * Unloads the i915 driver and its dependencies.
+> > + *
+> > + */
+> > +int
+> > +igt_i915_driver_unload(void)
+> > +{
+> > +	const char *whom;
+> > +	int ret;
+> > +
+> > +	ret =3D __igt_i915_driver_unload(&whom);
+> > +	if (ret) {
+> > +		igt_warn("Could not unload %s\n", whom);
+> > +		igt_kmod_list_loaded();
+> > +		igt_lsof("/dev/dri");
+> > +		igt_lsof("/dev/snd");
+> > +		return ret;
+> > +	}
+> > +
+> >	if (igt_kmod_is_loaded("intel-gtt"))
+> >		igt_kmod_unload("intel-gtt", 0);
+> >
+> > diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h index
+> > 04c87516f..0898122b3 100644
+> > --- a/lib/igt_kmod.h
+> > +++ b/lib/igt_kmod.h
+> > @@ -38,6 +38,7 @@ int igt_kmod_unload(const char *mod_name, unsigned
+> > int flags);
+> >
+> >  int igt_i915_driver_load(const char *opts);  int
+> > igt_i915_driver_unload(void);
+> > +int __igt_i915_driver_unload(const char **whom);
+> >
+> >  int igt_amdgpu_driver_load(const char *opts);  int
+> > igt_amdgpu_driver_unload(void);
+> > --
+> > 2.26.2
+> >
