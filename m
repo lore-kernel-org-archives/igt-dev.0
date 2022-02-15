@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC777891BB
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Feb 2022 05:09:28 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-Date: Tue, 15 Feb 2022 10:38:42 +0530
-Message-Id: <20220215050842.31170-1-jeevan.b@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04D07891BB
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Feb 2022 05:12:39 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+Date: Tue, 15 Feb 2022 10:42:36 +0530
+Message-Id: <20220215051236.21202-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] RFC tests/kms_extended: Add test for
- extended mode
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_linear_blits: Added
+ description to the subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,203 +18,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: juha-pekka.heikkila@intel.com
+To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add test for validation of extended mode
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Added description to subtests.
+
+Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 ---
- tests/kms_extended.c | 167 +++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build    |   1 +
- 2 files changed, 168 insertions(+)
- create mode 100644 tests/kms_extended.c
+ tests/i915/gem_linear_blits.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_extended.c b/tests/kms_extended.c
-new file mode 100644
-index 00000000..96a847cd
---- /dev/null
-+++ b/tests/kms_extended.c
-@@ -0,0 +1,167 @@
-+/*
-+ * Copyright © 2020 Intel Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ *
-+ * Author:
-+ *  Jeevan B <jeevan.b@intel.com>
-+ */
-+
-+#include "igt.h"
-+
-+IGT_TEST_DESCRIPTION("Test extended mode");
-+
-+typedef struct {
-+	int drm_fd;
-+	igt_display_t display;
-+	struct igt_fb fb;
-+	int n_pipes;
-+
-+	struct output_data {
-+		uint32_t id;
-+		int mode_number;
-+	} extended_outputs[2];
-+} data_t;
-+
-+static void run_extendedmode_basic(data_t *data)
-+{
-+	struct igt_fb fb, fbs[2];
-+	drmModeModeInfo *mode[2];
-+	igt_output_t *output, *extended_output[2];
-+	igt_display_t *display = &data->display;
-+	igt_plane_t *plane[2];
-+	igt_pipe_crc_t *pipe_crc[2] = { 0 };
-+	igt_crc_t ref_crc[2], crc[2];
-+	int count = 0, hdisplay, vdisplay;
-+	cairo_t *cr;
-+
-+	for_each_connected_output(display, output) {
-+		if (data->extended_outputs[count].id == output->id) {
-+			extended_output[count] = output;
-+			count++;
-+		}
-+		if (count > 1)
-+			break;
-+	}
-+
-+	igt_output_set_pipe(extended_output[0], 0);
-+	igt_output_set_pipe(extended_output[1], 1);
-+
-+	mode[0] = igt_output_get_mode(extended_output[0]);
-+	mode[1] = igt_output_get_mode(extended_output[1]);
-+
-+	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[0]->vdisplay,
-+			    DRM_FORMAT_XRGB8888, 0, 1, 0, 0, &fbs[0]);
-+	igt_create_color_fb(data->drm_fd, mode[1]->hdisplay, mode[1]->vdisplay,
-+			    DRM_FORMAT_XRGB8888, 0, 0, 0, 1, &fbs[1]);
-+
-+	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, 0, INTEL_PIPE_CRC_SOURCE_AUTO);
-+	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, 1, INTEL_PIPE_CRC_SOURCE_AUTO);
-+
-+	plane[0] = igt_pipe_get_plane_type(&display->pipes[0], DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(plane[0], &fbs[0]);
-+	igt_fb_set_size(&fbs[0], plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
-+	igt_plane_set_size(plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
-+
-+	plane[1] = igt_pipe_get_plane_type(&display->pipes[1], DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(plane[1], &fbs[1]);
-+	igt_fb_set_size(&fbs[1], plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
-+	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
-+	igt_pipe_crc_collect_crc(pipe_crc[1], &ref_crc[1]);
-+
-+	/*Create a big framebuffer and display it on 2 monitors*/
-+	hdisplay = mode[0]->hdisplay + mode[1]->hdisplay;
-+	vdisplay = max(mode[0]->vdisplay, mode[1]->vdisplay);
-+
-+	igt_create_fb(data->drm_fd, hdisplay, vdisplay, DRM_FORMAT_XRGB8888, 0, &fb);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &fb);
-+	igt_paint_color(cr, 0, 0, mode[0]->hdisplay, vdisplay, 1, 0, 0);
-+	igt_paint_color(cr, mode[0]->hdisplay, 0, hdisplay, vdisplay, 0, 0, 1);
-+	igt_put_cairo_ctx(cr);
-+
-+	igt_plane_set_fb(plane[0], &fb);
-+	igt_plane_set_position(plane[0], 0, 0);
-+
-+	igt_plane_set_fb(plane[1], &fb);
-+	igt_plane_set_position(plane[1], mode[0]->hdisplay, 0);
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
-+	igt_pipe_crc_collect_crc(pipe_crc[1], &crc[1]);
-+
-+	/*Clean up*/
-+	igt_remove_fb(data->drm_fd, &fbs[0]);
-+	igt_remove_fb(data->drm_fd, &fbs[1]);
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	igt_pipe_crc_free(pipe_crc[0]);
-+	igt_pipe_crc_free(pipe_crc[1]);
-+
-+	igt_output_set_pipe(extended_output[0], PIPE_NONE);
-+	igt_output_set_pipe(extended_output[1], PIPE_NONE);
-+
-+	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[0], DRM_PLANE_TYPE_PRIMARY), NULL);
-+	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[1], DRM_PLANE_TYPE_PRIMARY), NULL);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	/*Compare CRC*/
-+	igt_assert_crc_equal(&crc[0], &ref_crc[0]);
-+	igt_assert_crc_equal(&crc[1], &ref_crc[1]);
-+}
-+
-+igt_main
-+{
-+	data_t data;
-+	igt_output_t *output;
-+	int valid_output = 0, i, count = 0;
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		kmstest_set_vt_graphics_mode();
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
-+
-+		for_each_connected_output(&data.display, output) {
-+			if (count < 2) {
-+				for (i = 0; i < output->config.connector->count_modes; i++) {
-+						data.extended_outputs[count].mode_number = i;
-+						data.extended_outputs[count].id = output->id;
-+						count++;
-+					break;
-+                                        }
-+			}
-+			valid_output++;
-+		}
-+	}
-+
-+	igt_subtest("extended_mode_basic") {
-+		igt_require_f(valid_output == 2, "No valid Second output found\n");
-+		run_extendedmode_basic(&data);
-+	}
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 7003d064..15825a4a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -28,6 +28,7 @@ test_progs = [
- 	'kms_dither',
- 	'kms_dp_aux_dev',
- 	'kms_dp_tiled_display',
-+	'kms_extended',
- 	'kms_flip',
- 	'kms_flip_event_leak',
- 	'kms_force_connector_basic',
+diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
+index 6504c9f2..b570aa76 100644
+--- a/tests/i915/gem_linear_blits.c
++++ b/tests/i915/gem_linear_blits.c
+@@ -258,9 +258,13 @@ igt_main
+ 		count = (count + ncpus - 1) / ncpus;
+ 	}
+ 
++	igt_describe("Excercise 2 buffer objects check if driver will"
++			"rearrange the buffers");
+ 	igt_subtest("basic")
+ 		run_test(fd, 2, do_relocs);
+ 
++	igt_describe("The intent is to push beyond the GTT size to force the driver"
++			"to have to rearrange the buffers");
+ 	igt_subtest("normal") {
+ 		intel_allocator_multiprocess_start();
+ 		igt_fork(child, ncpus)
+@@ -269,6 +273,8 @@ igt_main
+ 		intel_allocator_multiprocess_stop();
+ 	}
+ 
++	igt_describe("Pushes beyond the GTT size checks if driver will rearrange the"
++			"buffers, with interrupts in between the parent process");
+ 	igt_subtest("interruptible") {
+ 		intel_allocator_multiprocess_start();
+ 		igt_fork_signal_helper();
 -- 
-2.17.1
+2.35.0
