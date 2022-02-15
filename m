@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04D07891BB
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Feb 2022 05:12:39 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B79810E152
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Feb 2022 05:23:50 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
-Date: Tue, 15 Feb 2022 10:42:36 +0530
-Message-Id: <20220215051236.21202-1-sai.gowtham.ch@intel.com>
+Date: Tue, 15 Feb 2022 10:53:47 +0530
+Message-Id: <20220215052347.21306-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_linear_blits: Added
- description to the subtest
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_ringfill: Added test
+ description for test case.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,40 +23,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Added description to subtests.
+Added test description to test and subtest.
 
 Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
 Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 ---
- tests/i915/gem_linear_blits.c | 6 ++++++
+ tests/i915/gem_ringfill.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
-index 6504c9f2..b570aa76 100644
---- a/tests/i915/gem_linear_blits.c
-+++ b/tests/i915/gem_linear_blits.c
-@@ -258,9 +258,13 @@ igt_main
- 		count = (count + ncpus - 1) / ncpus;
+diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+index ecfa0bea..0d86141b 100644
+--- a/tests/i915/gem_ringfill.c
++++ b/tests/i915/gem_ringfill.c
+@@ -51,6 +51,9 @@
+ #define HIBERNATE 0x40
+ #define NEWFD 0x80
+ 
++IGT_TEST_DESCRIPTION(" This test does many tiny batchbuffer operations to catch"
++		"errors while ring is near full.");
++
+ static unsigned int ring_size;
+ 
+ static void check_bo(int fd, uint32_t handle)
+@@ -371,6 +374,9 @@ igt_main
+ 		}
  	}
  
-+	igt_describe("Excercise 2 buffer objects check if driver will"
-+			"rearrange the buffers");
- 	igt_subtest("basic")
- 		run_test(fd, 2, do_relocs);
- 
-+	igt_describe("The intent is to push beyond the GTT size to force the driver"
-+			"to have to rearrange the buffers");
- 	igt_subtest("normal") {
++
++	igt_describe("Test runs on all available engines simultaniously and"
++			" checks how the driver handles a full ring.");
+ 	igt_subtest("basic-all") {
+ 		const struct intel_execution_engine2 *e;
  		intel_allocator_multiprocess_start();
- 		igt_fork(child, ncpus)
-@@ -269,6 +273,8 @@ igt_main
- 		intel_allocator_multiprocess_stop();
- 	}
- 
-+	igt_describe("Pushes beyond the GTT size checks if driver will rearrange the"
-+			"buffers, with interrupts in between the parent process");
- 	igt_subtest("interruptible") {
- 		intel_allocator_multiprocess_start();
- 		igt_fork_signal_helper();
 -- 
 2.35.0
