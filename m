@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com
- [199.106.114.38])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C0E310E172
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Feb 2022 01:49:45 +0000 (UTC)
-Message-ID: <3a33b623-0ef2-a5d5-4b31-d9c82f9b416e@quicinc.com>
-Date: Mon, 14 Feb 2022 17:49:40 -0800
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC777891BB
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Feb 2022 05:09:28 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+Date: Tue, 15 Feb 2022 10:38:42 +0530
+Message-Id: <20220215050842.31170-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-References: <1628134823-27763-1-git-send-email-maitreye@codeaurora.org>
- <1628134823-27763-2-git-send-email-maitreye@codeaurora.org>
- <YRZYejwRAKyXO9XA@platvala-desk.ger.corp.intel.com>
- <4951ee20ab1d8446e08de1c6dc09bd93@codeaurora.org>
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <4951ee20ab1d8446e08de1c6dc09bd93@codeaurora.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_fb: add an API to support
- color square DP CTS pattern
+Subject: [igt-dev] [PATCH i-g-t v2] RFC tests/kms_extended: Add test for
+ extended mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,91 +19,203 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: quic_khsieh@quicinc.com, swboyd@chromium.org, igt-dev@lists.freedesktop.org, nganji@codeaurora.org, seanpaul@chromium.org, aravindh@codeaurora.org
+To: igt-dev@lists.freedesktop.org
+Cc: juha-pekka.heikkila@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Petri
+Add test for validation of extended mode
 
-Thanks for the comments and sorry for the late response.
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_extended.c | 167 +++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build    |   1 +
+ 2 files changed, 168 insertions(+)
+ create mode 100644 tests/kms_extended.c
 
-Once Maitreyee left, this patch got abandoned.
-
-I will take this over and address your comments.
-
-Thanks
-
-Abhinav
-
-On 2/14/2022 5:46 PM, abhinavk@codeaurora.org wrote:
-> 
-> 
-> -------- Original Message --------
-> Subject: Re: [PATCH i-g-t 2/2] lib/igt_fb: add an API to support color 
-> square DP CTS pattern
-> Date: 2021-08-13 04:33
-> From: Petri Latvala <petri.latvala@intel.com>
-> To: maitreye <maitreye@codeaurora.org>
-> Cc: igt-dev@lists.freedesktop.org, robdclark@gmail.com, 
-> seanpaul@chromium.org, swboyd@chromium.org, nganji@codeaurora.org, 
-> aravindh@codeaurora.org, abhinavk@codeaurora.org, khsieh@codeaurora.org, 
-> manasi.d.navare@intel.com
-> 
-> On Wed, Aug 04, 2021 at 08:40:23PM -0700, maitreye wrote:
->> Add an api to support the CTA range color square video test
->> pattern as explained in section 3.2.5.3 of the DP CTS
->> specification. This pattern is required for supporting
->> the CTA range for RGB formats.
->>
->> Also rename the existing api igt_fill_cts_framebuffer to
->> igt_fill_cts_color_ramp_framebuffer to higlight the
->> pattern type.
->>
->> Signed-off-by: maitreye <maitreye@codeaurora.org>
-> 
-> Can you use your real name here?
-> 
->> ---
->>  lib/igt_fb.c                | 125 
->> +++++++++++++++++++++++++++++++++++++++++++-
->>  lib/igt_fb.h                |   4 +-
->>  tools/intel_dp_compliance.c |   2 +-
->>  tools/msm_dp_compliance.c   |  43 +++++++++++----
->>  4 files changed, 160 insertions(+), 14 deletions(-)
->>
->> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->> index 583cc9e..3d34457 100644
->> --- a/lib/igt_fb.c
->> +++ b/lib/igt_fb.c
->> @@ -1396,7 +1396,128 @@ void igt_paint_color(cairo_t *cr, int x, int 
->> y, int w, int h,
->>  }
->>
->>  /**
->> - * igt_fill_cts_framebuffer:
->> + *
->> + * igt_fill_cts_color_square_framebuffer:
->> + * @pixmap: handle to mapped buffer
->> + * @video_width: required width for pattern
->> + * @video_height: required height for pattern
->> + * @bitdepth: required bitdepth fot pattern
->> + * @alpha: required alpha for the pattern
->> + *
->> + * This function draws a color square pattern for given width and height
->> + * as per the specifications mentioned in section 3.2.5.3 of DP CTS 
->> spec.
->> + */
->> +int igt_fill_cts_color_square_framebuffer(uint32_t *pixmap, uint32_t 
->> video_width,
->> +        uint32_t video_height, uint32_t bitdepth, int alpha)
->> +{
->> +    uint32_t max_color_val = 0;
->> +    uint32_t min_color_val = 0;
->> +    uint32_t* pmax = &max_color_val;
->> +    uint32_t* pmin = &min_color_val;
-> 
-> 
-> I'm not fully understanding why these pointers are used?
-> 
-> 
-> 
+diff --git a/tests/kms_extended.c b/tests/kms_extended.c
+new file mode 100644
+index 00000000..96a847cd
+--- /dev/null
++++ b/tests/kms_extended.c
+@@ -0,0 +1,167 @@
++/*
++ * Copyright © 2020 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ *
++ * Author:
++ *  Jeevan B <jeevan.b@intel.com>
++ */
++
++#include "igt.h"
++
++IGT_TEST_DESCRIPTION("Test extended mode");
++
++typedef struct {
++	int drm_fd;
++	igt_display_t display;
++	struct igt_fb fb;
++	int n_pipes;
++
++	struct output_data {
++		uint32_t id;
++		int mode_number;
++	} extended_outputs[2];
++} data_t;
++
++static void run_extendedmode_basic(data_t *data)
++{
++	struct igt_fb fb, fbs[2];
++	drmModeModeInfo *mode[2];
++	igt_output_t *output, *extended_output[2];
++	igt_display_t *display = &data->display;
++	igt_plane_t *plane[2];
++	igt_pipe_crc_t *pipe_crc[2] = { 0 };
++	igt_crc_t ref_crc[2], crc[2];
++	int count = 0, hdisplay, vdisplay;
++	cairo_t *cr;
++
++	for_each_connected_output(display, output) {
++		if (data->extended_outputs[count].id == output->id) {
++			extended_output[count] = output;
++			count++;
++		}
++		if (count > 1)
++			break;
++	}
++
++	igt_output_set_pipe(extended_output[0], 0);
++	igt_output_set_pipe(extended_output[1], 1);
++
++	mode[0] = igt_output_get_mode(extended_output[0]);
++	mode[1] = igt_output_get_mode(extended_output[1]);
++
++	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[0]->vdisplay,
++			    DRM_FORMAT_XRGB8888, 0, 1, 0, 0, &fbs[0]);
++	igt_create_color_fb(data->drm_fd, mode[1]->hdisplay, mode[1]->vdisplay,
++			    DRM_FORMAT_XRGB8888, 0, 0, 0, 1, &fbs[1]);
++
++	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, 0, INTEL_PIPE_CRC_SOURCE_AUTO);
++	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, 1, INTEL_PIPE_CRC_SOURCE_AUTO);
++
++	plane[0] = igt_pipe_get_plane_type(&display->pipes[0], DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(plane[0], &fbs[0]);
++	igt_fb_set_size(&fbs[0], plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
++	igt_plane_set_size(plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
++
++	plane[1] = igt_pipe_get_plane_type(&display->pipes[1], DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(plane[1], &fbs[1]);
++	igt_fb_set_size(&fbs[1], plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
++	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
++
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
++	igt_pipe_crc_collect_crc(pipe_crc[1], &ref_crc[1]);
++
++	/*Create a big framebuffer and display it on 2 monitors*/
++	hdisplay = mode[0]->hdisplay + mode[1]->hdisplay;
++	vdisplay = max(mode[0]->vdisplay, mode[1]->vdisplay);
++
++	igt_create_fb(data->drm_fd, hdisplay, vdisplay, DRM_FORMAT_XRGB8888, 0, &fb);
++	cr = igt_get_cairo_ctx(data->drm_fd, &fb);
++	igt_paint_color(cr, 0, 0, mode[0]->hdisplay, vdisplay, 1, 0, 0);
++	igt_paint_color(cr, mode[0]->hdisplay, 0, hdisplay, vdisplay, 0, 0, 1);
++	igt_put_cairo_ctx(cr);
++
++	igt_plane_set_fb(plane[0], &fb);
++	igt_plane_set_position(plane[0], 0, 0);
++
++	igt_plane_set_fb(plane[1], &fb);
++	igt_plane_set_position(plane[1], mode[0]->hdisplay, 0);
++
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
++	igt_pipe_crc_collect_crc(pipe_crc[1], &crc[1]);
++
++	/*Clean up*/
++	igt_remove_fb(data->drm_fd, &fbs[0]);
++	igt_remove_fb(data->drm_fd, &fbs[1]);
++	igt_remove_fb(data->drm_fd, &fb);
++
++	igt_pipe_crc_free(pipe_crc[0]);
++	igt_pipe_crc_free(pipe_crc[1]);
++
++	igt_output_set_pipe(extended_output[0], PIPE_NONE);
++	igt_output_set_pipe(extended_output[1], PIPE_NONE);
++
++	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[0], DRM_PLANE_TYPE_PRIMARY), NULL);
++	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[1], DRM_PLANE_TYPE_PRIMARY), NULL);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	/*Compare CRC*/
++	igt_assert_crc_equal(&crc[0], &ref_crc[0]);
++	igt_assert_crc_equal(&crc[1], &ref_crc[1]);
++}
++
++igt_main
++{
++	data_t data;
++	igt_output_t *output;
++	int valid_output = 0, i, count = 0;
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		kmstest_set_vt_graphics_mode();
++		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
++
++		for_each_connected_output(&data.display, output) {
++			if (count < 2) {
++				for (i = 0; i < output->config.connector->count_modes; i++) {
++						data.extended_outputs[count].mode_number = i;
++						data.extended_outputs[count].id = output->id;
++						count++;
++					break;
++                                        }
++			}
++			valid_output++;
++		}
++	}
++
++	igt_subtest("extended_mode_basic") {
++		igt_require_f(valid_output == 2, "No valid Second output found\n");
++		run_extendedmode_basic(&data);
++	}
++
++	igt_fixture {
++		igt_display_fini(&data.display);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 7003d064..15825a4a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -28,6 +28,7 @@ test_progs = [
+ 	'kms_dither',
+ 	'kms_dp_aux_dev',
+ 	'kms_dp_tiled_display',
++	'kms_extended',
+ 	'kms_flip',
+ 	'kms_flip_event_leak',
+ 	'kms_force_connector_basic',
+-- 
+2.17.1
