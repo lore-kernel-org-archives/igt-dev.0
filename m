@@ -1,16 +1,18 @@
 Return-path: <SRS0=u8tb=S7=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D9CD10E47C
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 23:10:13 +0000 (UTC)
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 16 Feb 2022 15:10:01 -0800
-Message-ID: <1645053001-29746-1-git-send-email-quic_abhinavk@quicinc.com>
+Content-Type: multipart/alternative;
+ boundary="===============9210828839986010433=="
 MIME-Version: 1.0
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2] lib/igt_fb: add an API to support color
- square DP CTS pattern
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Abhinav Kumar" <quic_abhinavk@quicinc.com>
+Date: Wed, 16 Feb 2022 23:58:40 -0000
+Message-ID: <164505592001.16094.17418851243214854855@emeril.freedesktop.org>
+References: <1645052622-23764-1-git-send-email-quic_abhinavk@quicinc.com>
+In-Reply-To: <1645052622-23764-1-git-send-email-quic_abhinavk@quicinc.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGFu?=
+ =?utf-8?q?_api_to_support_the_CTA_range_color_square_video_test_pattern_a?=
+ =?utf-8?q?s_explained_in_section_3=2E2=2E5=2E3_of_the_DP_CTS_specificatio?=
+ =?utf-8?q?n=2E_This_pattern_is_required_for_supporting_the_CTA_range_for_?=
+ =?utf-8?q?RGB_formats=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,349 +20,297 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Maitreyee Rao <maitreye@codeaurora.org>, petri.latvala@intel.com,
- quic_khsieh@quicinc.com, swboyd@chromium.org, nganji@codeaurora.org,
- seanpaul@chromium.org, aravindh@codeaurora.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Maitreyee Rao <maitreye@codeaurora.org>
+--===============9210828839986010433==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add an api to support the CTA range color square video test
-pattern as explained in section 3.2.5.3 of the DP CTS
-specification. This pattern is required for supporting
-the CTA range for RGB formats.
+== Series Details ==
 
-Also rename the existing api igt_fill_cts_framebuffer to
-igt_fill_cts_color_ramp_framebuffer to higlight the
-pattern type.
+Series: Add an api to support the CTA range color square video test pattern as explained in section 3.2.5.3 of the DP CTS specification. This pattern is required for supporting the CTA range for RGB formats.
+URL   : https://patchwork.freedesktop.org/series/100274/
+State : success
 
-changes in v2:
-	- removed redundant pointers
-	- fixed overall formatting issues
-	- Fixed author name
+== Summary ==
 
-Signed-off-by: Maitreyee Rao <maitreye@codeaurora.org>
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
----
- lib/igt_fb.c                | 128 +++++++++++++++++++++++++++++++++++++++++++-
- lib/igt_fb.h                |   5 +-
- tools/intel_dp_compliance.c |   5 +-
- tools/msm_dp_compliance.c   |  48 +++++++++++++----
- 4 files changed, 171 insertions(+), 15 deletions(-)
+CI Bug Log - changes from CI_DRM_11238 -> IGTPW_6643
+====================================================
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 1530b96..94a93f1 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -1461,7 +1461,131 @@ void igt_paint_color(cairo_t *cr, int x, int y, int w, int h,
- }
- 
- /**
-- * igt_fill_cts_framebuffer:
-+ *
-+ * igt_fill_cts_color_square_framebuffer:
-+ * @pixmap: handle to mapped buffer
-+ * @video_width: required width for pattern
-+ * @video_height: required height for pattern
-+ * @bitdepth: required bitdepth fot pattern
-+ * @alpha: required alpha for the pattern
-+ *
-+ * This function draws a color square pattern for given width and height
-+ * as per the specifications mentioned in section 3.2.5.3 of DP CTS spec.
-+ */
-+int igt_fill_cts_color_square_framebuffer(uint32_t *pixmap,
-+		uint32_t video_width, uint32_t video_height,
-+		uint32_t bitdepth, int alpha)
-+{
-+	uint32_t pmax = 0;
-+	uint32_t pmin = 0;
-+	int tile_width = 64;
-+	int tile_height = 64;
-+	int reverse = 0;
-+
-+	switch (bitdepth) {
-+	case 8:
-+		pmax  = 235;
-+		pmin  = 16;
-+		break;
-+	case 10:
-+		pmax  = 940;
-+		pmin  = 64;
-+		break;
-+	}
-+
-+	/*
-+	 * According to the requirement stated in the 3.2.5.3  DP CTS spec
-+	 * the required pattern for color square should look like below
-+	 *
-+	 *   white | yellow | cyan    | green | magenta | red    | blue  | black | white | ... | ..
-+	 *   -------------------------------------------------------------------------------
-+	 *   blue  | red    | magenta | green | cyan    | yellow | white | black | blue  | ... | ..
-+	 *   -------------------------------------------------------------------------------
-+	 *   white | yellow | cyan    | green | magenta | red    | blue  | black | white | ... | ..
-+	 *   -------------------------------------------------------------------------------
-+	 *   blue  | red    | magenta | green | cyan    | yellow | white | black | blue  | ... | ..
-+	 *   --------------------------------------------------------------------------------
-+	 *	  .    |   .      |	  .	|  .	|   .     |	.  |   .   |   .   |   .   |  .
-+	 *
-+	 *	  .    |   .      |	  .	|  .	|   .	  |	.  |   .   |   .   |   .   |  .
-+	 *
-+	 *
-+	 */
-+
-+	uint32_t colors[8][3] = {
-+		/* White Color */
-+		{pmax, pmax, pmax},
-+		/* Yellow Color */
-+		{pmax, pmax, pmin},
-+		/* Cyan Color */
-+		{pmin, pmax, pmax},
-+		/* Green Color */
-+		{pmin, pmax, pmin},
-+		/* Magenta Color */
-+		{pmax, pmin, pmax},
-+		/* Red Color */
-+		{pmax, pmin, pmin},
-+		/* Blue Color */
-+		{pmin, pmin, pmax},
-+		/* Black Color */
-+		{pmin, pmin, pmin},
-+	};
-+
-+	uint32_t reverse_colors[8][3] = {
-+		/* Blue Color */
-+		{pmin, pmin, pmax},
-+		/* Red Color */
-+		{pmax, pmin, pmin},
-+		/* Magenta Color */
-+		{pmax, pmin, pmax},
-+		/* Green Color */
-+		{pmin, pmax, pmin},
-+		/* Cyan Color */
-+		{pmin, pmax, pmax},
-+		/* Yellow Color */
-+		{pmax, pmax, pmin},
-+		/* White Color */
-+		{pmax, pmax, pmax},
-+		/* Black Color */
-+		{pmin, pmin, pmin},
-+	};
-+
-+	for (uint32_t height = 0; height < video_height; height++) {
-+		uint32_t color = 0;
-+		uint8_t *temp = pixmap;
-+		uint8_t **buf = &temp;
-+		uint32_t (*clr_arr)[3];
-+
-+		temp += (4 * video_width * height);
-+
-+		for (uint32_t width = 0; width < video_width; width++) {
-+
-+			if (reverse == 0)
-+				clr_arr = colors;
-+			else
-+				clr_arr = reverse_colors;
-+
-+			/* using BGRA8888 format */
-+			*(*buf)++ = (((uint8_t)clr_arr[color][2]) & 0xFF);
-+			*(*buf)++ = (((uint8_t)clr_arr[color][1]) & 0xFF);
-+			*(*buf)++ = (((uint8_t)clr_arr[color][0]) & 0xFF);
-+			*(*buf)++ = ((uint8_t)alpha & 0xFF);
-+
-+			if (((width + 1) % tile_width) == 0)
-+				color = (color + 1) % 8;
-+
-+		}
-+		if (((height + 1) % tile_height) == 0) {
-+			if (reverse == 0)
-+				reverse = 1;
-+			else
-+				reverse = 0;
-+		}
-+	}
-+	return 0;
-+}
-+/**
-+ * igt_fill_cts_color_ramp_framebuffer:
-  * @pixmap: handle to the mapped buffer
-  * @video_width: required width for the CTS pattern
-  * @video_height: required height for the CTS pattern
-@@ -1469,7 +1593,7 @@ void igt_paint_color(cairo_t *cr, int x, int y, int w, int h,
-  * @alpha: required alpha for the CTS pattern
-  * This functions draws the CTS test pattern for a given width, height.
-  */
--int igt_fill_cts_framebuffer(uint32_t *pixmap, uint32_t video_width,
-+int igt_fill_cts_color_ramp_framebuffer(uint32_t *pixmap, uint32_t video_width,
- 		uint32_t video_height, uint32_t bitdepth, int alpha)
- {
- 	uint32_t tile_height, tile_width;
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index c61d9e7..623a8ca 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -216,8 +216,11 @@ bool igt_format_is_fp16(uint32_t drm_format);
- int igt_format_plane_bpp(uint32_t drm_format, int plane);
- void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
- 			   bool allow_yuv);
--int igt_fill_cts_framebuffer(uint32_t *pixmap, uint32_t video_width,
-+int igt_fill_cts_color_ramp_framebuffer(uint32_t *pixmap, uint32_t video_width,
- 		uint32_t video_height, uint32_t bitdepth, int alpha);
-+int igt_fill_cts_color_square_framebuffer(uint32_t *pixmap,
-+		uint32_t video_width, uint32_t video_height,
-+		uint32_t bitdepth, int alpha);
- 
- int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc);
- const char *igt_fb_modifier_name(uint64_t modifier);
-diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
-index 39218c3..2e20d7f 100644
---- a/tools/intel_dp_compliance.c
-+++ b/tools/intel_dp_compliance.c
-@@ -452,6 +452,7 @@ static int set_test_mode(struct connector *dp_conn)
- 	bool found_std = false, found_fs = false;
- 	uint32_t alpha;
- 	drmModeConnector *c = dp_conn->connector;
-+	uint32_t *pixmap;
- 
- 	/* Ignore any disconnected devices */
- 	if (c->connection != DRM_MODE_CONNECTED) {
-@@ -532,7 +533,9 @@ static int set_test_mode(struct connector *dp_conn)
- 			return ret;
- 		}
- 
--		ret = igt_fill_cts_framebuffer(dp_conn->test_pattern.pixmap,
-+		pixmap = dp_conn->test_pattern.pixmap;
-+
-+		ret = igt_fill_cts_color_ramp_framebuffer(pixmap,
- 				dp_conn->test_pattern.hdisplay,
- 				dp_conn->test_pattern.vdisplay,
- 				dp_conn->test_pattern.bitdepth,
-diff --git a/tools/msm_dp_compliance.c b/tools/msm_dp_compliance.c
-index 5e491c8..6941d38 100644
---- a/tools/msm_dp_compliance.c
-+++ b/tools/msm_dp_compliance.c
-@@ -143,6 +143,10 @@
- /* DRM definitions - must be kept in sync with the DRM header */
- #define DP_TEST_LINK_VIDEO_PATTERN	(1 << 1)
- 
-+
-+/* DP CTS PATTERN TYPE */
-+#define PATTERN_COLOR_RAMP 1
-+#define PATTERN_COLOR_SQUARE 3
- /* Global file pointers for the sysfs files */
- FILE *test_active_fp, *test_data_fp, *test_type_fp;
- 
-@@ -153,6 +157,7 @@ uint16_t hdisplay;
- uint16_t vdisplay;
- uint8_t bitdepth;
- 
-+uint16_t pattern;
- drmModeRes *resources;
- int drm_fd, modes, gen;
- uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
-@@ -172,6 +177,7 @@ struct test_video_pattern {
- 	uint16_t hdisplay;
- 	uint16_t vdisplay;
- 	uint8_t bitdepth;
-+	uint16_t pattern;
- 	uint32_t fb;
- 	uint32_t size;
- 	struct igt_fb fb_pattern;
-@@ -244,15 +250,15 @@ static unsigned long get_test_type(void)
- static void get_test_videopattern_data(void)
- {
- 	int count = 0;
--	uint16_t video_pattern_value[3];
--	char video_pattern_attribute[15];
-+	uint16_t video_pattern_value[5];
-+	char video_pattern_attribute[20];
- 	int ret;
- 
- 	if (!test_data_fp)
- 		fprintf(stderr, "Invalid test_data file\n");
- 
- 	rewind(test_data_fp);
--	while (!feof(test_data_fp) && count < 3) {
-+	while (!feof(test_data_fp) && count < 4) {
- 		ret = fscanf(test_data_fp, "%s %u\n", video_pattern_attribute,
- 		       (unsigned int *)&video_pattern_value[count++]);
- 		if (ret < 2) {
-@@ -264,10 +270,11 @@ static void get_test_videopattern_data(void)
- 	hdisplay = video_pattern_value[0];
- 	vdisplay = video_pattern_value[1];
- 	bitdepth = video_pattern_value[2];
-+	pattern = video_pattern_value[3];
- 	igt_info("Hdisplay = %d\n", hdisplay);
- 	igt_info("Vdisplay = %d\n", vdisplay);
- 	igt_info("BitDepth = %u\n", bitdepth);
--
-+	igt_info("pattern = %d\n", pattern);
- }
- 
- static int process_test_request(int test_type)
-@@ -325,6 +332,7 @@ static int setup_video_pattern_framebuffer(struct connector *dp_conn)
- 
- 	dp_conn->test_pattern.size = dp_conn->test_pattern.fb_pattern.size;
- 	memset(dp_conn->test_pattern.pixmap, 0, dp_conn->test_pattern.size);
-+	igt_info("size: %d\n", dp_conn->test_pattern.size);
- 	return 0;
- 
- }
-@@ -334,6 +342,7 @@ static int set_test_mode(struct connector *dp_conn)
- 	int ret = 0;
- 	int i;
- 	drmModeConnector *c = dp_conn->connector;
-+	uint32_t *pixmap;
- 
- 	/* Ignore any disconnected devices */
- 	if (c->connection != DRM_MODE_CONNECTED) {
-@@ -374,6 +383,8 @@ static int set_test_mode(struct connector *dp_conn)
- 		dp_conn->test_pattern.hdisplay = hdisplay;
- 		dp_conn->test_pattern.vdisplay = vdisplay;
- 		dp_conn->test_pattern.bitdepth = bitdepth;
-+		dp_conn->test_pattern.pattern = pattern;
-+		igt_info("Pattern :%d\n", dp_conn->test_pattern.pattern);
- 
- 		ret = setup_video_pattern_framebuffer(dp_conn);
- 		if (ret) {
-@@ -382,15 +393,30 @@ static int set_test_mode(struct connector *dp_conn)
- 			return ret;
- 		}
- 
--		ret = igt_fill_cts_framebuffer(dp_conn->test_pattern.pixmap,
-+		pixmap = dp_conn->test_pattern.pixmap;
-+
-+		if (dp_conn->test_pattern.pattern == PATTERN_COLOR_RAMP) {
-+			ret = igt_fill_cts_color_ramp_framebuffer(pixmap,
- 				dp_conn->test_pattern.hdisplay,
- 				dp_conn->test_pattern.vdisplay,
--				dp_conn->test_pattern.bitdepth,
--				0);
--		if (ret) {
--			igt_warn("Filling framebuffer for connector %u failed (%d)\n",
--				 c->connector_id, ret);
--			return ret;
-+				dp_conn->test_pattern.bitdepth, 0);
-+			if (ret) {
-+				igt_warn("Filling framebuffer for connector %u failed (%d)\n",
-+					c->connector_id, ret);
-+				return ret;
-+			}
-+		}
-+
-+		if (dp_conn->test_pattern.pattern == PATTERN_COLOR_SQUARE) {
-+			ret = igt_fill_cts_color_square_framebuffer(pixmap,
-+					dp_conn->test_pattern.hdisplay,
-+					dp_conn->test_pattern.vdisplay,
-+					dp_conn->test_pattern.bitdepth, 0);
-+			if (ret) {
-+				igt_warn("Filling framebuffer for connector %u failed (%d)\n",
-+					c->connector_id, ret);
-+				return ret;
-+			}
- 		}
- 		/* unmapping the buffer previously mapped during setup */
- 		munmap(dp_conn->test_pattern.pixmap,
--- 
-2.7.4
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/index.html
+
+Participating hosts (46 -> 45)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (2): fi-bsw-cyan shard-tglu 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6643 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_prime@amd-to-i915:
+    - fi-ivb-3770:        NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-ivb-3770/igt@amdgpu/amd_prime@amd-to-i915.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-bdw-5557u:       [PASS][2] -> [INCOMPLETE][3] ([i915#146])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@gem_flink_basic@bad-flink:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][4] ([i915#4547])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][5] ([fdo#109271]) +57 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][6] -> [INCOMPLETE][7] ([i915#3921])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [PASS][8] -> [DMESG-FAIL][9] ([i915#4528] / [i915#5026])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cml-u2:          [PASS][10] -> [DMESG-WARN][11] ([i915#4269])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@runner@aborted:
+    - fi-blb-e6850:       NOTRUN -> [FAIL][12] ([fdo#109271] / [i915#2403] / [i915#2426] / [i915#4312])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-blb-e6850/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {fi-rkl-11600}:     [INCOMPLETE][13] ([i915#5127]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - {fi-tgl-dsi}:       [DMESG-WARN][15] ([i915#2867]) -> [PASS][16] +16 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-ivb-3770:        [INCOMPLETE][17] ([i915#3303]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [DMESG-FAIL][19] ([i915#4957]) -> [DMESG-FAIL][20] ([i915#4494] / [i915#4957])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4269]: https://gitlab.freedesktop.org/drm/intel/issues/4269
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5026]: https://gitlab.freedesktop.org/drm/intel/issues/5026
+  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6347 -> IGTPW_6643
+
+  CI-20190529: 20190529
+  CI_DRM_11238: e141e36b2871c529379f7ec7d5d6ebae3137a51b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6643: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/index.html
+  IGT_6347: 37ea4c86f97c0e05fcb6b04cff72ec927930536e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/index.html
+
+--===============9210828839986010433==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add an api to support the CTA range color square video test pattern as explained in section 3.2.5.3 of the DP CTS specification. This pattern is required for supporting the CTA range for RGB formats.</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100274/">https://patchwork.freedesktop.org/series/100274/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11238 -&gt; IGTPW_6643</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/index.html</p>
+<h2>Participating hosts (46 -&gt; 45)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (2): fi-bsw-cyan shard-tglu </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6643 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-ivb-3770/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@bad-flink:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5026">i915#5026</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cml-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-cml-u2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4269">i915#4269</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-blb-e6850/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>{fi-rkl-11600}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5127">i915#5127</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem_contexts:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-tgl-dsi/igt@i915_selftest@live@gem_contexts.html">PASS</a> +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11238/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6347 -&gt; IGTPW_6643</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11238: e141e36b2871c529379f7ec7d5d6ebae3137a51b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6643: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6643/index.html<br />
+  IGT_6347: 37ea4c86f97c0e05fcb6b04cff72ec927930536e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============9210828839986010433==--
