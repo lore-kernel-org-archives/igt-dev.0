@@ -1,18 +1,16 @@
 Return-path: <SRS0=u8tb=S7=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com
- [199.106.114.38])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED2B089CA8
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 23:03:59 +0000 (UTC)
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
+ [199.106.114.39])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D9CD10E47C
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 23:10:13 +0000 (UTC)
 From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 16 Feb 2022 15:03:42 -0800
-Message-ID: <1645052622-23764-1-git-send-email-quic_abhinavk@quicinc.com>
+Date: Wed, 16 Feb 2022 15:10:01 -0800
+Message-ID: <1645053001-29746-1-git-send-email-quic_abhinavk@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2] Add an api to support the CTA range
- color square video test pattern as explained in section 3.2.5.3 of the DP
- CTS specification. This pattern is required for supporting the CTA range
- for RGB formats.
+Subject: [igt-dev] [PATCH i-g-t v2] lib/igt_fb: add an API to support color
+ square DP CTS pattern
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,6 +26,11 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Maitreyee Rao <maitreye@codeaurora.org>
+
+Add an api to support the CTA range color square video test
+pattern as explained in section 3.2.5.3 of the DP CTS
+specification. This pattern is required for supporting
+the CTA range for RGB formats.
 
 Also rename the existing api igt_fill_cts_framebuffer to
 igt_fill_cts_color_ramp_framebuffer to higlight the
