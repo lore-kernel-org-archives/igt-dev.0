@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98DC510E6F3
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 07:20:47 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 355D910E70F
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 07:23:06 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
-Date: Wed, 16 Feb 2022 12:50:07 +0530
-Message-Id: <20220216072007.18230-1-jeevan.b@intel.com>
+Date: Wed, 16 Feb 2022 12:52:28 +0530
+Message-Id: <20220216072228.18363-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_extended: Add test for
+Subject: [igt-dev] [PATCH i-g-t v5] tests/kms_extended: Add test for
  extended mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,17 +26,17 @@ Add test for validation of extended mode.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_extended.c | 164 +++++++++++++++++++++++++++++++++++++++++++
+ tests/kms_extended.c | 146 +++++++++++++++++++++++++++++++++++++++++++
  tests/meson.build    |   1 +
- 2 files changed, 165 insertions(+)
+ 2 files changed, 147 insertions(+)
  create mode 100644 tests/kms_extended.c
 
 diff --git a/tests/kms_extended.c b/tests/kms_extended.c
 new file mode 100644
-index 00000000..40afbabd
+index 00000000..9ba8e27d
 --- /dev/null
 +++ b/tests/kms_extended.c
-@@ -0,0 +1,164 @@
+@@ -0,0 +1,146 @@
 +/*
 + * Copyright © 2022 Intel Corporation
 + *
@@ -72,10 +72,6 @@ index 00000000..40afbabd
 +	igt_display_t display;
 +	struct igt_fb fb;
 +	int n_pipes;
-+
-+	struct output_data {
-+		uint32_t id;
-+	} extended_outputs[2];
 +} data_t;
 +
 +static void run_extendedmode_basic(data_t *data)
@@ -91,13 +87,10 @@ index 00000000..40afbabd
 +	cairo_t *cr;
 +
 +	for_each_connected_output(display, output) {
-+		if (data->extended_outputs[count].id == output->id) {
-+			extended_output[count] = output;
-+			count++;
-+		}
-+		if (count > 1)
-+			break;
++		extended_output[count] = output;
++		count++;
 +	}
++	igt_require_f(count > 1, "No valid Second output found\n");
 +
 +	igt_output_set_pipe(extended_output[0], 0);
 +	igt_output_set_pipe(extended_output[1], 1);
@@ -174,26 +167,15 @@ index 00000000..40afbabd
 +igt_main
 +{
 +	data_t data;
-+	igt_output_t *output;
-+	int valid_output = 0, count = 0;
 +
 +	igt_fixture {
 +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
 +		kmstest_set_vt_graphics_mode();
 +		igt_display_require(&data.display, data.drm_fd);
 +		igt_display_require_output(&data.display);
-+
-+		for_each_connected_output(&data.display, output) {
-+			if (count < 2) {
-+				data.extended_outputs[count].id = output->id;
-+				count++;
-+			}
-+			valid_output++;
-+		}
 +	}
 +
 +	igt_subtest("extended_mode_basic") {
-+		igt_require_f(valid_output > 1, "No valid Second output found\n");
 +		run_extendedmode_basic(&data);
 +	}
 +
