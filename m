@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B80D910E795
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 12:08:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B948F10E77B
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 12:08:25 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
-Date: Wed, 16 Feb 2022 17:52:15 +0530
-Message-Id: <20220216122217.16507-8-swati2.sharma@intel.com>
+Date: Wed, 16 Feb 2022 17:52:16 +0530
+Message-Id: <20220216122217.16507-9-swati2.sharma@intel.com>
 In-Reply-To: <20220216122217.16507-1-swati2.sharma@intel.com>
 References: <20220216122217.16507-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v5 7/9] tests/kms_plane_scaling: Upscaling and
- downscaling scenario
+Subject: [igt-dev] [v5 8/9] tests/kms_plane_scaling: Add negative test to
+ check num of scalers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,109 +23,104 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Upscaling on first plane and downscaling on second plane.
+To validate i915 supports max of 2 scalers, applied upscaling on
+3 planes simultaneously. This is a negative test and commit is expected
+to fail.
 
 v2: -add check for min 2 scalers
     -add igt_require() for overlay planes, fixes CRASH on KBL
-v3: -test modified for n planes (Ville)
-v4: -code optimization
-v5: -limiting while loop and few other changes based on prev. patches
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_plane_scaling.c | 56 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ tests/kms_plane_scaling.c | 73 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 1262a8ee..797322c4 100644
+index 797322c4..9f148267 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
-@@ -34,6 +34,7 @@ enum scaler_test_type {
- 	TEST_DOWNSCALING,
- 	TEST_UPSCALING_UPSCALING,
- 	TEST_DOWNSCALING_DOWNSCALING,
-+	TEST_UPSCALING_DOWNSCALING,
- };
- 
- typedef struct {
-@@ -411,6 +412,45 @@ __test_planes_downscaling_downscaling(data_t *d, enum pipe pipe, igt_output_t *o
- 	igt_assert_eq(ret, 0);
+@@ -516,6 +516,71 @@ test_plane_scaling_combo(data_t *d, enum pipe pipe, igt_output_t *output, enum s
+ 	igt_remove_fb(display->drm_fd, &d->fb[2]);
  }
  
 +static void
-+__test_planes_upscaling_downscaling(data_t *d, enum pipe pipe, igt_output_t *output,
-+				    igt_plane_t *plane1, igt_plane_t *plane2,
-+				    struct igt_fb *fb1, struct igt_fb *fb2)
++test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
 +{
 +	igt_display_t *display = &d->display;
-+	bool test_complete = false;
++	igt_pipe_t *pipe_obj = &display->pipes[pipe];
++	int width, height, width1, height1;
 +	drmModeModeInfo *mode;
-+	int width, height;
-+	int scaling = 50;
-+	int ret;
 +
++	cleanup_crtc(d);
++
++	igt_output_set_pipe(output, pipe);
++
++	width = height = 20;
 +	mode = igt_output_get_mode(output);
-+	width = mode->hdisplay;
-+	height = mode->vdisplay;
++	width1 = mode->hdisplay;
++	height1 = mode->vdisplay;
 +
-+	igt_plane_set_fb(plane1, fb1);
-+	igt_plane_set_fb(plane2, fb2);
++	d->plane1 = igt_pipe_get_plane_type_index(pipe_obj, DRM_PLANE_TYPE_OVERLAY, 0);
++	igt_require(d->plane1);
++	d->plane2 = igt_pipe_get_plane_type_index(pipe_obj, DRM_PLANE_TYPE_OVERLAY, 1);
++	igt_require(d->plane2);
++	d->plane3 = igt_pipe_get_plane_type_index(pipe_obj, DRM_PLANE_TYPE_OVERLAY, 2);
++	igt_require(d->plane3);
 +
-+	while (!test_complete && scaling < 100) {
-+		/* first plane upscaling */
-+		igt_plane_set_size(plane1, width, height);
-+		/* second plane downscaling */
-+		igt_plane_set_size(plane2, (width * scaling) / 100, (height * scaling) / 100);
-+		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_create_color_pattern_fb(display->drm_fd,
++                                    width, height,
++                                    DRM_FORMAT_XRGB8888,
++                                    I915_TILING_NONE,
++                                    1.0, 0.0, 0.0, &d->fb[1]);
++	igt_create_color_pattern_fb(display->drm_fd,
++                                    width, height,
++                                    DRM_FORMAT_XRGB8888,
++                                    I915_TILING_NONE,
++                                    0.0, 1.0, 0.0, &d->fb[2]);
++	igt_create_color_pattern_fb(display->drm_fd,
++                                    width, height,
++                                    DRM_FORMAT_XRGB8888,
++                                    I915_TILING_NONE,
++                                    0.0, 0.0, 1.0, &d->fb[3]);
 +
-+		if (ret != -EINVAL)
-+			test_complete = true;
++	igt_plane_set_fb(d->plane1, &d->fb[1]);
++	igt_plane_set_fb(d->plane2, &d->fb[2]);
++	igt_plane_set_fb(d->plane3, &d->fb[3]);
 +
-+		scaling += 5;
-+	}
++	/* first plane upscaling */
++	igt_plane_set_size(d->plane1, width1, height1);
++	/* second plane upscaling */
++	igt_plane_set_size(d->plane2, width1, height1);
++	/* third plane upscaling */
++	igt_plane_set_size(d->plane3, width1, height1);
 +
-+	igt_plane_set_fb(plane1, NULL);
-+	igt_plane_set_fb(plane2, NULL);
++	/* This commit is expectd to fail as we can have max 2 scalers/pipe
++	 * In dmesg, you can find: Too many scaling requests 3 > 2
++	 * */
++	igt_assert_eq(igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL), -EINVAL);
 +
-+	igt_skip_on_f(ret == -EINVAL || ret == -ERANGE, "Scaling op not supported by driver\n");
-+	igt_assert_eq(ret, 0);
++	/* cleanup */
++	igt_plane_set_fb(d->plane1, NULL);
++	igt_plane_set_fb(d->plane2, NULL);
++	igt_plane_set_fb(d->plane3, NULL);
++	igt_remove_fb(display->drm_fd, &d->fb[1]);
++	igt_remove_fb(display->drm_fd, &d->fb[2]);
++	igt_remove_fb(display->drm_fd, &d->fb[3]);
 +}
 +
- static void setup_fb(int fd, int width, int height,
- 		     double r, double g, double b,
- 		     struct igt_fb *fb)
-@@ -443,6 +483,10 @@ test_plane_scaling_combo(data_t *d, enum pipe pipe, igt_output_t *output, enum s
- 		setup_fb(display->drm_fd, width1, height1, 1.0, 0.0, 0.0, &d->fb[1]);
- 		setup_fb(display->drm_fd, width1, height1, 0.0, 1.0, 0.0, &d->fb[2]);
- 	}
-+	if (test_type == TEST_UPSCALING_DOWNSCALING) {
-+		setup_fb(display->drm_fd, width, height, 1.0, 0.0, 0.0, &d->fb[1]);
-+		setup_fb(display->drm_fd, width1, height1, 0.0, 1.0, 0.0, &d->fb[2]);
-+	}
- 
- 	igt_output_set_pipe(output, pipe);
- 
-@@ -463,7 +507,9 @@ test_plane_scaling_combo(data_t *d, enum pipe pipe, igt_output_t *output, enum s
- 		if (test_type == TEST_DOWNSCALING_DOWNSCALING)
- 			__test_planes_downscaling_downscaling(d, pipe, output, p1, p2,
- 							      &d->fb[1], &d->fb[2]);
--
-+		if (test_type == TEST_UPSCALING_DOWNSCALING)
-+			__test_planes_upscaling_downscaling(d, pipe, output, p1, p2,
-+							    &d->fb[1], &d->fb[2]);
- 	}
- 
- 	igt_remove_fb(display->drm_fd, &d->fb[1]);
-@@ -816,6 +862,14 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 					test_plane_scaling_combo(&data, pipe, output, TEST_DOWNSCALING_DOWNSCALING);
+ static bool test_pipe_iteration(data_t *data, enum pipe pipe, int iteration)
+ {
+ 	if (!is_i915_device(data->drm_fd) ||
+@@ -870,6 +935,14 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					test_plane_scaling_combo(&data, pipe, output, TEST_UPSCALING_DOWNSCALING);
  		}
  
-+		igt_describe("Tests upscaling and downscaling of 2 planes.");
-+		igt_subtest_with_dynamic("planes-upscaling-downscaling") {
++		igt_describe("Negative test for number of scalers per pipe.");
++		igt_subtest_with_dynamic("invalid-num-scalers") {
 +			for_each_pipe_with_valid_output(&data.display, pipe, output)
-+				igt_dynamic_f("pipe-%s-%s-planes-upscaling-downscaling",
++				igt_dynamic_f("pipe-%s-%s-invalid-num-scalers",
 +					       kmstest_pipe_name(pipe), igt_output_name(output))
-+					test_plane_scaling_combo(&data, pipe, output, TEST_UPSCALING_DOWNSCALING);
++					test_invalid_num_scalers(&data, pipe, output);
 +		}
 +
  		igt_describe("Tests scaling with pixel formats.");
