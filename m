@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9866D10E74B
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 10:27:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF95410E750
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Feb 2022 10:27:25 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
-Date: Wed, 16 Feb 2022 15:56:24 +0530
-Message-Id: <20220216102633.26949-7-jeevan.b@intel.com>
+Date: Wed, 16 Feb 2022 15:56:25 +0530
+Message-Id: <20220216102633.26949-8-jeevan.b@intel.com>
 In-Reply-To: <20220216102633.26949-1-jeevan.b@intel.com>
 References: <20220216102633.26949-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v3 06/15] igt/tests: Add support for
- Tile4(TileF) format to tests/kms_plane_multiple
+Subject: [igt-dev] [PATCH i-g-t v3 07/15] igt/tests: Add support for
+ Tile4(TileF) format to tests/kms_plane_lowres
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,22 +26,22 @@ Adding subtest to test new tiling format.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_plane_multiple.c | 3 +++
+ tests/kms_plane_lowres.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index ebadc14b..1679f7ce 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -398,6 +398,9 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_subtest_f("atomic-pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
- 		test_plane_position(data, pipe, I915_FORMAT_MOD_Yf_TILED);
- 
-+	igt_subtest_f("atomic-pipe-%s-tiling-4", kmstest_pipe_name(pipe))
-+		test_plane_position(data, pipe, I915_FORMAT_MOD_4_TILED);
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index 6c0fce86..3f3f77c8 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -314,6 +314,9 @@ igt_main
+ 			     "high and low resolution with yf-tiling.");
+ 		igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
+ 			test_planes_on_pipe(&data, I915_FORMAT_MOD_Yf_TILED);
 +
- 	igt_subtest_f("atomic-pipe-%s-tiling-none", kmstest_pipe_name(pipe))
- 		test_plane_position(data, pipe, DRM_FORMAT_MOD_LINEAR);
- }
++		igt_subtest_f("pipe-%s-tiling-4", kmstest_pipe_name(pipe))
++			test_planes_on_pipe(&data, I915_FORMAT_MOD_4_TILED);
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.17.1
