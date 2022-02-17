@@ -1,19 +1,16 @@
 Return-path: <SRS0=aXFB=TA=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC10310EA08
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Feb 2022 14:09:56 +0000 (UTC)
-Date: Thu, 17 Feb 2022 15:09:52 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Yg5XMAV9L5AAO9ae@kamilkon-DESK1>
-References: <20220215051236.21202-1-sai.gowtham.ch@intel.com>
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2048.outbound.protection.outlook.com [40.107.237.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD45A10ED4F
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Feb 2022 15:27:26 +0000 (UTC)
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+To: Arkadiusz Hiler <arek@hiler.eu>, Petri Latvala <petri.latvala@intel.com>
+Date: Thu, 17 Feb 2022 10:26:44 -0500
+Message-ID: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220215051236.21202-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_linear_blits: Added
- description to the subtest
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 0/2] Introduce MAINTAINERS file to IGT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,71 +18,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>,
+ Qingqing Zhuo <qingqing.zhuo@amd.com>, Solomon
+ Chiu <solomon.chiu@amd.com>, Sean Paul <seanpaul@chromium.org>,
+ Mark Yacoub <markyacoub@google.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Dnia 2022-02-15 at 10:42:36 +0530, sai.gowtham.ch@intel.com napisał(a):
-> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> 
-> Added description to subtests.
-> 
-> Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
-> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> ---
->  tests/i915/gem_linear_blits.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
-> index 6504c9f2..b570aa76 100644
-> --- a/tests/i915/gem_linear_blits.c
-> +++ b/tests/i915/gem_linear_blits.c
-> @@ -258,9 +258,13 @@ igt_main
->  		count = (count + ncpus - 1) / ncpus;
->  	}
->  
-> +	igt_describe("Excercise 2 buffer objects check if driver will"
-> +			"rearrange the buffers");
+IGT is becoming more generic, and multiple vendors are adopting it. For
+example, AMD fully upstream all of its internal changes last year, and
+now we are relying on IGT from the upstream. Additionally, thanks to the
+ChromeOS project, we have other vendors working on the KMS tests as
+well. At this point, I believe that we need some mechanism to better
+contact developers that care about some specific tests or even provide
+an easy way for other people to find the right stakeholder for dealing
+with some particular issue.
 
-This is basic one, no rearrange will happen here, so better just:
-	Basic blitter functionality check with only 2 buffers
+Imho Linux Kernel already has a good solution codified in the
+MAINTAINERS and get_maintainers files. One of the best things about this
+approach was adding reviewers and maintainers (and other options) to the
+specific part of the code and using the get_maintainers tool to extract
+the right people to be part of the series. With this idea in mind, I
+created an RFC that introduces the MAINTAINERS file in IGT, and
+collected feedback. This series is the first version that introduces the
+MAINTAINERS and a wrapper to the get_maintainers file.
 
-Please compile your changes and check output with
-./gem_linear_blitter --description
-When you split text between lines, compiler will concatenate strings and there
-will be something like:
+For this series, I recommend:
 
-check if driver willrearrange the buffers
-No space here ------^
+1. Patch 1: It has the maintainers file. If you want to add yourself to
+some specific test, please, let me know in this patch.
+2. Patch 2: get_maintainers wrapper, see the CONTRIBUTING page on how to
+use it.
 
->  	igt_subtest("basic")
->  		run_test(fd, 2, do_relocs);
->  
-> +	igt_describe("The intent is to push beyond the GTT size to force the driver"
-> +			"to have to rearrange the buffers");
-Space needed before "to" ^
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Mark Yacoub <markyacoub@google.com>
+Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: Sean Paul <seanpaul@chromium.org>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Sun Peng Li(Leo) <sunpeng.li@amd.com>
+Cc: Chao-kai Wang (Stylon) <stylon.wang@amd.com>
+Cc: Wayne Lin <wayne.lin@amd.com>
+Cc: Nicholas Choi <nicholas.choi@amd.com>
+Cc: Martin Peres <martin.peres@mupuf.org>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
+Cc: Qingqing Zhuo (Lilian) <qingqing.zhuo@amd.com>
+Cc: Solomon Chiu <solomon.chiu@amd.com>
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: Dingchen Zhang (David) <Dingchen.Zhang@amd.com>
 
-You can add " [working] " word before "GTT size".
+Rodrigo Siqueira (2):
+  MAINTAINERS: Introduce MAINTAINERS file
+  scripts: get_maintainer: Introduce get_maintainer wrapper
 
->  	igt_subtest("normal") {
->  		intel_allocator_multiprocess_start();
->  		igt_fork(child, ncpus)
-> @@ -269,6 +273,8 @@ igt_main
->  		intel_allocator_multiprocess_stop();
->  	}
->  
-> +	igt_describe("Pushes beyond the GTT size checks if driver will rearrange the"
-> +			"buffers, with interrupts in between the parent process");
+ .gitignore                |   1 +
+ CONTRIBUTING.md           |  17 +++-
+ MAINTAINERS               | 198 +++++++++++++++++++++++++++++++++++++-
+ scripts/get_maintainer.sh | 104 ++++++++++++++++++++
+ 4 files changed, 317 insertions(+), 3 deletions(-)
+ create mode 100755 scripts/get_maintainer.sh
 
-No need to repeat whole description here, simple "Test with interrupts in between".
-
->  	igt_subtest("interruptible") {
->  		intel_allocator_multiprocess_start();
->  		igt_fork_signal_helper();
-> -- 
-> 2.35.0
-> 
-
-Regards,
-Kamil Konieczny
+-- 
+2.25.1
