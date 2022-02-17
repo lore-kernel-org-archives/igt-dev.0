@@ -1,19 +1,17 @@
 Return-path: <SRS0=aXFB=TA=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDF7C10EADE
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Feb 2022 15:56:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D78DF10EBA9
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Feb 2022 15:56:22 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	uma.shankar@intel.com
-Date: Thu, 17 Feb 2022 21:24:56 +0530
-Message-Id: <20220217155457.2427855-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220208041106.2202609-1-bhanuprakash.modem@intel.com>
-References: <20220208041106.2202609-1-bhanuprakash.modem@intel.com>
+Date: Thu, 17 Feb 2022 21:24:57 +0530
+Message-Id: <20220217155457.2427855-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220208041233.2202854-1-bhanuprakash.modem@intel.com>
+References: <20220208041233.2202854-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v6 i-g-t 1/3] tests/kms_color_helper: Read deep-color
- capability from EDID
+Subject: [igt-dev] [v4 i-g-t 2/3] tests/kms_color: Add support for Deep-Color
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,233 +23,267 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a helper function to read the panel's deep-color capability
-from EDID.
-
-For EDID 1.3, we need to read deep color capability from Vendor
-Specific Data Block, and for EDID 1.4 read bit depth from Video
-Input Definition.
-
-Vendor Specific Data Block for "HDMI Licensing LLC":
----------------------------------------------------------
-| Byte|  Bit  |        Description                      |
----------------------------------------------------------
-|     | Bit 6 |   16-bit-per-channel deep color (48-bit)|
-|  6  | Bit 5 |   12-bit-per-channel deep color (36-bit)|
-|     | Bit 4 |   10-bit-per-channel deep color (30-bit)|
----------------------------------------------------------
-
-Video Input Definition (1-byte):
-    * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
-    * Color Bit Depth: Bits 6 → 4
------------------------------------------------------
-| 7 | 6 5 4 | 3 2 1 0 | Color Bit Depth: Bits 6 → 4 |
-|---|-------|---------|-----------------------------|
-| 1 | 0 0 0 | x x x x | Color Bit Depth is undefined|
-| 1 | 0 0 1 | x x x x | 6 Bits per Primary Color    |
-| 1 | 0 1 0 | x x x x | 8 Bits per Primary Color    |
-| 1 | 0 1 1 | x x x x | 10 Bits per Primary Color   |
-| 1 | 1 0 0 | x x x x | 12 Bits per Primary Color   |
-| 1 | 1 0 1 | x x x x | 14 Bits per Primary Color   |
-| 1 | 1 1 0 | x x x x | 16 Bits per Primary Color   |
-| 1 | 1 1 1 | x x x x | Reserved (Do Not Use)       |
------------------------------------------------------
-For deep-color we need atleast 10-bits.
+Add new subtests to validate deep color.
 
 V2:
-* Add EDID 1.3 support
+* i915 needs atleast gen 11 to support deep-color
+* Add connector name to dynamic subtest
 V3:
-* Fix reading VSDB flags1 for deep-color
-V4:
-* Separate functions for EDID 1.3 & EDID 1.4
-* Other minor cleanups
-V5:
-* Fine tune the logic to identify DC support for RGB format
-V6:
-* Cleanup
+* Fix the usage of "output"
 
 Cc: Uma Shankar <uma.shankar@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_edid.c           | 66 ++++++++++++++++++++++++++++++++++++++++
- lib/igt_edid.h           |  2 ++
- tests/kms_color_helper.c | 52 +++++++++++++++++++++++++++++++
- tests/kms_color_helper.h |  3 ++
- 4 files changed, 123 insertions(+)
+ tests/kms_color.c        | 96 +++++++++++++++++++++++++++++-----------
+ tests/kms_color_helper.c |  2 +-
+ tests/kms_color_helper.h |  2 +
+ 3 files changed, 72 insertions(+), 28 deletions(-)
 
-diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-index df346c4c8c..cb31a34b7b 100644
---- a/lib/igt_edid.c
-+++ b/lib/igt_edid.c
-@@ -349,6 +349,72 @@ size_t edid_get_size(const struct edid *edid)
- 	       edid->extensions_len * sizeof(struct edid_ext);
- }
- 
-+static int ieee_oui(uint8_t oui[CEA_VSDB_HEADER_SIZE])
-+{
-+         return (oui[2] << 16) | (oui[1] << 8) | oui[0];
-+}
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 854b8f3c31..6cc4456159 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -29,7 +29,6 @@ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+ static void test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
+ {
+-	igt_output_t *output;
+ 	igt_display_t *display = &data->display;
+ 	gamma_lut_t *degamma_linear, *degamma_full;
+ 	color_t red_green_blue[] = {
+@@ -48,17 +47,14 @@ static void test_pipe_degamma(data_t *data,
+ 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	degamma_full = generate_table_max(data->degamma_lut_size);
+
+-	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
+-	igt_require(output);
+-
+-	igt_output_set_pipe(output, primary->pipe->pipe);
+-	mode = igt_output_get_mode(output);
++	igt_output_set_pipe(data->output, primary->pipe->pipe);
++	mode = igt_output_get_mode(data->output);
+
+ 	/* Create a framebuffer at the size of the output. */
+ 	fb_id = igt_create_fb(data->drm_fd,
+ 			      mode->hdisplay,
+ 			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
++			      data->drm_format,
+ 			      DRM_FORMAT_MOD_LINEAR,
+ 			      &fb);
+ 	igt_assert(fb_id);
+@@ -66,7 +62,7 @@ static void test_pipe_degamma(data_t *data,
+ 	fb_modeset_id = igt_create_fb(data->drm_fd,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+-				      DRM_FORMAT_XRGB8888,
++				      data->drm_format,
+ 				      DRM_FORMAT_MOD_LINEAR,
+ 				      &fb_modeset);
+ 	igt_assert(fb_modeset_id);
+@@ -103,7 +99,7 @@ static void test_pipe_degamma(data_t *data,
+
+ 	disable_degamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
+-	igt_output_set_pipe(output, PIPE_NONE);
++	igt_output_set_pipe(data->output, PIPE_NONE);
+ 	igt_display_commit(&data->display);
+ 	igt_remove_fb(data->drm_fd, &fb);
+ 	igt_remove_fb(data->drm_fd, &fb_modeset);
+@@ -119,7 +115,6 @@ static void test_pipe_degamma(data_t *data,
+ static void test_pipe_gamma(data_t *data,
+ 			    igt_plane_t *primary)
+ {
+-	igt_output_t *output;
+ 	igt_display_t *display = &data->display;
+ 	gamma_lut_t *gamma_full;
+ 	color_t red_green_blue[] = {
+@@ -136,17 +131,14 @@ static void test_pipe_gamma(data_t *data,
+
+ 	gamma_full = generate_table_max(data->gamma_lut_size);
+
+-	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
+-	igt_require(output);
+-
+-	igt_output_set_pipe(output, primary->pipe->pipe);
+-	mode = igt_output_get_mode(output);
++	igt_output_set_pipe(data->output, primary->pipe->pipe);
++	mode = igt_output_get_mode(data->output);
+
+ 	/* Create a framebuffer at the size of the output. */
+ 	fb_id = igt_create_fb(data->drm_fd,
+ 			      mode->hdisplay,
+ 			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
++			      data->drm_format,
+ 			      DRM_FORMAT_MOD_LINEAR,
+ 			      &fb);
+ 	igt_assert(fb_id);
+@@ -154,7 +146,7 @@ static void test_pipe_gamma(data_t *data,
+ 	fb_modeset_id = igt_create_fb(data->drm_fd,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+-				      DRM_FORMAT_XRGB8888,
++				      data->drm_format,
+ 				      DRM_FORMAT_MOD_LINEAR,
+ 				      &fb_modeset);
+ 	igt_assert(fb_modeset_id);
+@@ -190,7 +182,7 @@ static void test_pipe_gamma(data_t *data,
+
+ 	disable_gamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
+-	igt_output_set_pipe(output, PIPE_NONE);
++	igt_output_set_pipe(data->output, PIPE_NONE);
+ 	igt_display_commit(&data->display);
+ 	igt_remove_fb(data->drm_fd, &fb);
+ 	igt_remove_fb(data->drm_fd, &fb_modeset);
+@@ -439,7 +431,6 @@ static bool test_pipe_ctm(data_t *data,
+ 		0.0, 0.0, 1.0
+ 	};
+ 	gamma_lut_t *degamma_linear, *gamma_linear;
+-	igt_output_t *output;
+ 	bool ret = true;
+ 	igt_display_t *display = &data->display;
+ 	drmModeModeInfo *mode;
+@@ -452,17 +443,14 @@ static bool test_pipe_ctm(data_t *data,
+ 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+
+-	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
+-	igt_require(output);
+-
+-	igt_output_set_pipe(output, primary->pipe->pipe);
+-	mode = igt_output_get_mode(output);
++	igt_output_set_pipe(data->output, primary->pipe->pipe);
++	mode = igt_output_get_mode(data->output);
+
+ 	/* Create a framebuffer at the size of the output. */
+ 	fb_id = igt_create_fb(data->drm_fd,
+ 			      mode->hdisplay,
+ 			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
++			      data->drm_format,
+ 			      DRM_FORMAT_MOD_LINEAR,
+ 			      &fb);
+ 	igt_assert(fb_id);
+@@ -470,7 +458,7 @@ static bool test_pipe_ctm(data_t *data,
+ 	fb_modeset_id = igt_create_fb(data->drm_fd,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+-				      DRM_FORMAT_XRGB8888,
++				      data->drm_format,
+ 				      DRM_FORMAT_MOD_LINEAR,
+ 				      &fb_modeset);
+ 	igt_assert(fb_modeset_id);
+@@ -516,7 +504,7 @@ static bool test_pipe_ctm(data_t *data,
+ 	ret &= !igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
+
+ 	igt_plane_set_fb(primary, NULL);
+-	igt_output_set_pipe(output, PIPE_NONE);
++	igt_output_set_pipe(data->output, PIPE_NONE);
+ 	igt_remove_fb(data->drm_fd, &fb);
+ 	igt_remove_fb(data->drm_fd, &fb_modeset);
+
+@@ -686,12 +674,14 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 						  INTEL_PIPE_CRC_SOURCE_AUTO);
+
+ 		igt_display_require_output_on_pipe(&data->display, p);
++		data->output = igt_get_single_output_for_pipe(&data->display, p);
+ 	}
+
+ 	/* We assume an 8bits depth per color for degamma/gamma LUTs
+ 	 * for CRC checks with framebuffer references. */
+ 	data->color_depth = 8;
+ 	delta = 1.0 / (1 << data->color_depth);
++	data->drm_format = DRM_FORMAT_XRGB8888;
+
+ 	igt_describe("Check the color transformation from red to blue");
+ 	igt_subtest_f("pipe-%s-ctm-red-to-blue", kmstest_pipe_name(p)) {
+@@ -866,6 +856,58 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
+ 		test_pipe_legacy_gamma_reset(data, primary);
+
++	igt_describe("Verify that deep color works correctly");
++	igt_subtest_with_dynamic_f("pipe-%s-deep-color", kmstest_pipe_name(p)) {
++		igt_output_t *output;
++		color_t blue_green_blue[] = {
++			{ 0.0, 0.0, 1.0 },
++			{ 0.0, 1.0, 0.0 },
++			{ 0.0, 0.0, 1.0 }
++		};
++		double ctm[] = { 0.0, 0.0, 0.0,
++				0.0, 1.0, 0.0,
++				1.0, 0.0, 1.0 };
 +
-+/**
-+ * edid_get_deep_color_from_vsdb: return the Deep Color info from Vender
-+ * Specific Data Block (VSDB), if VSDB not found then return zero.
-+ */
-+uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid)
-+{
-+	const struct edid_ext *edid_ext;
-+	const struct edid_cea *edid_cea;
-+	const char *cea_data;
-+	uint8_t deep_color = 0;
-+	int offset, i, j;
++		if (is_i915_device(data->drm_fd))
++			igt_require_f((intel_display_ver(data->devid) >= 11),
++					"At least GEN 11 is required to validate Deep-color.\n");
 +
-+	/* Read from vendor specific data block first, if vsdb not found
-+	 * return 0.
-+	 */
-+	for (i = 0; i < edid->extensions_len; i++) {
-+		edid_ext = &edid->extensions[i];
-+		edid_cea = &edid_ext->data.cea;
++		for_each_valid_output_on_pipe(&data->display, p, output) {
++			drmModeConnector *connector = output->config.connector;
 +
-+		if ((edid_ext->tag != EDID_EXT_CEA) ||
-+		    (edid_cea->revision != 3))
-+			continue;
-+
-+		offset = edid_cea->dtd_start;
-+		cea_data = edid_cea->data;
-+
-+		for (j = 0; j < offset; j += (cea_data[j] & 0x1F) + 1) {
-+			struct edid_cea_data_block *vsdb =
-+				(struct edid_cea_data_block *)(cea_data + j);
-+
-+			if (((vsdb->type_len & 0xE0) >> 5) != EDID_CEA_DATA_VENDOR_SPECIFIC)
++			if (!is_max_bpc_supported(output))
 +				continue;
 +
-+			if (ieee_oui(vsdb->data.vsdbs->ieee_oui) == 0x000C03)
-+				deep_color = vsdb->data.vsdbs->data.hdmi.flags1;
++			if (!is_panel_supports_deep_color(data->drm_fd, connector))
++				continue;
 +
-+			if (deep_color & (7 << 4))
-+				return deep_color;
++			data->color_depth = 10;
++			data->drm_format = DRM_FORMAT_XRGB2101010;
++			data->output = output;
++			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
 +
++			igt_dynamic_f("gamma-%s", output->name) {
++				igt_output_set_pipe(data->output, PIPE_NONE);
++				test_pipe_gamma(data, primary);
++			}
++
++			igt_dynamic_f("degamma-%s", output->name) {
++				igt_output_set_pipe(data->output, PIPE_NONE);
++				test_pipe_degamma(data, primary);
++			}
++
++			igt_dynamic_f("ctm-%s", output->name) {
++				igt_output_set_pipe(data->output, PIPE_NONE);
++				igt_assert(test_pipe_ctm(data, primary,
++							 red_green_blue,
++							 blue_green_blue, ctm));
++			}
++
++			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 12);
++			break;
 +		}
 +	}
 +
-+	return 0;
-+}
-+
-+/**
-+ * edid_get_bit_depth: Read from the Video Input Definition and return the
-+ * Color Bit Depth if Input is a Digital Video, else return zero.
-+ */
-+uint8_t edid_get_bit_depth_from_vid(const struct edid *edid)
-+{
-+	/*
-+	 * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
-+	 * Color Bit Depth: Bits 6 → 4
-+	 */
-+	if (!(edid->input & (1 << 7)))
-+		return 0;
-+
-+	return ((edid->input & (7 << 4)) >> 4);
-+}
-+
- /**
-  * cea_sad_init_pcm:
-  * @channels: the number of supported channels (max. 8)
-diff --git a/lib/igt_edid.h b/lib/igt_edid.h
-index aac2f4a208..a9251d689e 100644
---- a/lib/igt_edid.h
-+++ b/lib/igt_edid.h
-@@ -377,6 +377,8 @@ void edid_update_checksum(struct edid *edid);
- void base_edid_update_checksum(struct edid *edid);
- size_t edid_get_size(const struct edid *edid);
- void edid_get_mfg(const struct edid *edid, char out[static 3]);
-+uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid);
-+uint8_t edid_get_bit_depth_from_vid(const struct edid *edid);
- void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
- 			      int width_mm, int height_mm);
- void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
+ 	igt_fixture {
+ 		disable_degamma(primary->pipe);
+ 		disable_gamma(primary->pipe);
 diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index d71e7bb2e6..6b3af02b00 100644
+index 6b3af02b00..b0abe5507e 100644
 --- a/tests/kms_color_helper.c
 +++ b/tests/kms_color_helper.c
-@@ -24,6 +24,58 @@
- 
- #include "kms_color_helper.h"
- 
-+bool
-+is_panel_supports_deep_color(int fd, drmModeConnector *connector)
-+{
-+	uint64_t edid_blob_id;
-+	uint8_t bit_depth, rev;
-+	const struct edid *edid;
-+	bool result;
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+
-+	igt_assert(kmstest_get_property(fd, connector->connector_id,
-+					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-+					&edid_blob_id, NULL));
-+	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
-+	igt_require_f(edid_blob, "EDID blob is NULL\n");
-+
-+	edid = (const struct edid *) edid_blob->data;
-+	rev = edid->revision;
-+
-+	if (rev >= 4) {
-+		bit_depth = edid_get_bit_depth_from_vid(edid);
-+
-+		if (bit_depth > 0 && bit_depth < 7)
-+			igt_info("Max supported bit depth: %d\n", ((bit_depth << 1) + 4));
-+		else
-+			igt_info("Max supported bit depth: Undefined\n");
-+
-+		result = (bit_depth >= 3) && (bit_depth < 7);
-+	} else {
-+		bit_depth = edid_get_deep_color_from_vsdb(edid);
-+
-+		if (bit_depth &	HDMI_VSDB_DC_48BIT)
-+			igt_info("Max supported bit depth: 16\n");
-+		else if (bit_depth & HDMI_VSDB_DC_36BIT)
-+			igt_info("Max supported bit depth: 12\n");
-+		else if (bit_depth & HDMI_VSDB_DC_30BIT)
-+			igt_info("Max supported bit depth: 10\n");
-+		else
-+			igt_info("Max supported bit depth: Undefined\n");
-+
-+		result = !!(bit_depth & (7 << 4));
-+	}
-+	drmModeFreePropertyBlob(edid_blob);
-+
-+	return result;
-+}
-+
-+bool is_max_bpc_supported(igt_output_t *output)
-+{
-+	return igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC) &&
-+		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
-+}
-+
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
- 			       color_t *colors,
+@@ -206,7 +206,7 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
+ 	uint32_t mask;
+
+ 	if (is_i915_device(data->drm_fd))
+-		mask = ((1 << color_depth) - 1) << 8;
++		mask = ((1 << color_depth) - 1) << (16 - color_depth);
+ 	else
+ 		mask = max_value;
+
 diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index bb6f0054f3..992087ac9c 100644
+index 992087ac9c..4e381a1c28 100644
 --- a/tests/kms_color_helper.h
 +++ b/tests/kms_color_helper.h
-@@ -36,6 +36,7 @@
- #include "drm.h"
- #include "drmtest.h"
- #include "igt.h"
-+#include "igt_edid.h"
- 
- 
- /* Internal */
-@@ -64,6 +65,8 @@ typedef struct {
- 	color_t coeffs[];
- } gamma_lut_t;
- 
-+bool is_panel_supports_deep_color(int fd, drmModeConnector *connector);
-+bool is_max_bpc_supported(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
- 			       color_t *colors,
--- 
+@@ -49,7 +49,9 @@ typedef struct {
+ 	uint32_t devid;
+ 	igt_display_t display;
+ 	igt_pipe_crc_t *pipe_crc;
++	igt_output_t *output;
+
++	uint32_t drm_format;
+ 	uint32_t color_depth;
+ 	uint64_t degamma_lut_size;
+ 	uint64_t gamma_lut_size;
+--
 2.35.0
