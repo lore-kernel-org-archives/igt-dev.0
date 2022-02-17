@@ -1,17 +1,15 @@
 Return-path: <SRS0=aXFB=TA=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D78DF10EBA9
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Feb 2022 15:56:22 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	uma.shankar@intel.com
-Date: Thu, 17 Feb 2022 21:24:57 +0530
-Message-Id: <20220217155457.2427855-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220208041233.2202854-1-bhanuprakash.modem@intel.com>
-References: <20220208041233.2202854-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3582662803595000375=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v4 i-g-t 2/3] tests/kms_color: Add support for Deep-Color
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Rodrigo Siqueira" <rodrigo.siqueira@amd.com>
+Date: Thu, 17 Feb 2022 16:00:38 -0000
+Message-ID: <164511363851.18053.14465344728332674651@emeril.freedesktop.org>
+References: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_MAINTAINERS_file_to_IGT_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,271 +17,359 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new subtests to validate deep color.
+--===============3582662803595000375==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-V2:
-* i915 needs atleast gen 11 to support deep-color
-* Add connector name to dynamic subtest
-V3:
-* Fix the usage of "output"
+== Series Details ==
 
-Cc: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_color.c        | 96 +++++++++++++++++++++++++++++-----------
- tests/kms_color_helper.c |  2 +-
- tests/kms_color_helper.h |  2 +
- 3 files changed, 72 insertions(+), 28 deletions(-)
+Series: Introduce MAINTAINERS file to IGT (rev2)
+URL   : https://patchwork.freedesktop.org/series/99534/
+State : success
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 854b8f3c31..6cc4456159 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -29,7 +29,6 @@ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
- static void test_pipe_degamma(data_t *data,
- 			      igt_plane_t *primary)
- {
--	igt_output_t *output;
- 	igt_display_t *display = &data->display;
- 	gamma_lut_t *degamma_linear, *degamma_full;
- 	color_t red_green_blue[] = {
-@@ -48,17 +47,14 @@ static void test_pipe_degamma(data_t *data,
- 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
- 	degamma_full = generate_table_max(data->degamma_lut_size);
+== Summary ==
 
--	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
--	igt_require(output);
--
--	igt_output_set_pipe(output, primary->pipe->pipe);
--	mode = igt_output_get_mode(output);
-+	igt_output_set_pipe(data->output, primary->pipe->pipe);
-+	mode = igt_output_get_mode(data->output);
+CI Bug Log - changes from CI_DRM_11240 -> IGTPW_6649
+====================================================
 
- 	/* Create a framebuffer at the size of the output. */
- 	fb_id = igt_create_fb(data->drm_fd,
- 			      mode->hdisplay,
- 			      mode->vdisplay,
--			      DRM_FORMAT_XRGB8888,
-+			      data->drm_format,
- 			      DRM_FORMAT_MOD_LINEAR,
- 			      &fb);
- 	igt_assert(fb_id);
-@@ -66,7 +62,7 @@ static void test_pipe_degamma(data_t *data,
- 	fb_modeset_id = igt_create_fb(data->drm_fd,
- 				      mode->hdisplay,
- 				      mode->vdisplay,
--				      DRM_FORMAT_XRGB8888,
-+				      data->drm_format,
- 				      DRM_FORMAT_MOD_LINEAR,
- 				      &fb_modeset);
- 	igt_assert(fb_modeset_id);
-@@ -103,7 +99,7 @@ static void test_pipe_degamma(data_t *data,
+Summary
+-------
 
- 	disable_degamma(primary->pipe);
- 	igt_plane_set_fb(primary, NULL);
--	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
- 	igt_display_commit(&data->display);
- 	igt_remove_fb(data->drm_fd, &fb);
- 	igt_remove_fb(data->drm_fd, &fb_modeset);
-@@ -119,7 +115,6 @@ static void test_pipe_degamma(data_t *data,
- static void test_pipe_gamma(data_t *data,
- 			    igt_plane_t *primary)
- {
--	igt_output_t *output;
- 	igt_display_t *display = &data->display;
- 	gamma_lut_t *gamma_full;
- 	color_t red_green_blue[] = {
-@@ -136,17 +131,14 @@ static void test_pipe_gamma(data_t *data,
+  **SUCCESS**
 
- 	gamma_full = generate_table_max(data->gamma_lut_size);
+  No regressions found.
 
--	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
--	igt_require(output);
--
--	igt_output_set_pipe(output, primary->pipe->pipe);
--	mode = igt_output_get_mode(output);
-+	igt_output_set_pipe(data->output, primary->pipe->pipe);
-+	mode = igt_output_get_mode(data->output);
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/index.html
 
- 	/* Create a framebuffer at the size of the output. */
- 	fb_id = igt_create_fb(data->drm_fd,
- 			      mode->hdisplay,
- 			      mode->vdisplay,
--			      DRM_FORMAT_XRGB8888,
-+			      data->drm_format,
- 			      DRM_FORMAT_MOD_LINEAR,
- 			      &fb);
- 	igt_assert(fb_id);
-@@ -154,7 +146,7 @@ static void test_pipe_gamma(data_t *data,
- 	fb_modeset_id = igt_create_fb(data->drm_fd,
- 				      mode->hdisplay,
- 				      mode->vdisplay,
--				      DRM_FORMAT_XRGB8888,
-+				      data->drm_format,
- 				      DRM_FORMAT_MOD_LINEAR,
- 				      &fb_modeset);
- 	igt_assert(fb_modeset_id);
-@@ -190,7 +182,7 @@ static void test_pipe_gamma(data_t *data,
+Participating hosts (44 -> 44)
+------------------------------
 
- 	disable_gamma(primary->pipe);
- 	igt_plane_set_fb(primary, NULL);
--	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
- 	igt_display_commit(&data->display);
- 	igt_remove_fb(data->drm_fd, &fb);
- 	igt_remove_fb(data->drm_fd, &fb_modeset);
-@@ -439,7 +431,6 @@ static bool test_pipe_ctm(data_t *data,
- 		0.0, 0.0, 1.0
- 	};
- 	gamma_lut_t *degamma_linear, *gamma_linear;
--	igt_output_t *output;
- 	bool ret = true;
- 	igt_display_t *display = &data->display;
- 	drmModeModeInfo *mode;
-@@ -452,17 +443,14 @@ static bool test_pipe_ctm(data_t *data,
- 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
- 	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+  Additional (3): fi-icl-u2 fi-kbl-8809g fi-pnv-d510 
+  Missing    (3): fi-bsw-cyan shard-tglu bat-adlp-4 
 
--	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
--	igt_require(output);
--
--	igt_output_set_pipe(output, primary->pipe->pipe);
--	mode = igt_output_get_mode(output);
-+	igt_output_set_pipe(data->output, primary->pipe->pipe);
-+	mode = igt_output_get_mode(data->output);
+Known issues
+------------
 
- 	/* Create a framebuffer at the size of the output. */
- 	fb_id = igt_create_fb(data->drm_fd,
- 			      mode->hdisplay,
- 			      mode->vdisplay,
--			      DRM_FORMAT_XRGB8888,
-+			      data->drm_format,
- 			      DRM_FORMAT_MOD_LINEAR,
- 			      &fb);
- 	igt_assert(fb_id);
-@@ -470,7 +458,7 @@ static bool test_pipe_ctm(data_t *data,
- 	fb_modeset_id = igt_create_fb(data->drm_fd,
- 				      mode->hdisplay,
- 				      mode->vdisplay,
--				      DRM_FORMAT_XRGB8888,
-+				      data->drm_format,
- 				      DRM_FORMAT_MOD_LINEAR,
- 				      &fb_modeset);
- 	igt_assert(fb_modeset_id);
-@@ -516,7 +504,7 @@ static bool test_pipe_ctm(data_t *data,
- 	ret &= !igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
+  Here are the changes found in IGTPW_6649 that come from known issues:
 
- 	igt_plane_set_fb(primary, NULL);
--	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
- 	igt_remove_fb(data->drm_fd, &fb);
- 	igt_remove_fb(data->drm_fd, &fb_modeset);
+### IGT changes ###
 
-@@ -686,12 +674,14 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 						  INTEL_PIPE_CRC_SOURCE_AUTO);
+#### Issues hit ####
 
- 		igt_display_require_output_on_pipe(&data->display, p);
-+		data->output = igt_get_single_output_for_pipe(&data->display, p);
- 	}
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#109315]) +17 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
 
- 	/* We assume an 8bits depth per color for degamma/gamma LUTs
- 	 * for CRC checks with framebuffer references. */
- 	data->color_depth = 8;
- 	delta = 1.0 / (1 << data->color_depth);
-+	data->drm_format = DRM_FORMAT_XRGB8888;
+  * igt@amdgpu/amd_cs_nop@fork-compute0:
+    - fi-rkl-guc:         NOTRUN -> [SKIP][2] ([fdo#109315]) +17 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-rkl-guc/igt@amdgpu/amd_cs_nop@fork-compute0.html
 
- 	igt_describe("Check the color transformation from red to blue");
- 	igt_subtest_f("pipe-%s-ctm-red-to-blue", kmstest_pipe_name(p)) {
-@@ -866,6 +856,58 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
- 		test_pipe_legacy_gamma_reset(data, primary);
+  * igt@amdgpu/amd_cs_nop@fork-gfx0:
+    - fi-icl-u2:          NOTRUN -> [SKIP][3] ([fdo#109315]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@amdgpu/amd_cs_nop@fork-gfx0.html
 
-+	igt_describe("Verify that deep color works correctly");
-+	igt_subtest_with_dynamic_f("pipe-%s-deep-color", kmstest_pipe_name(p)) {
-+		igt_output_t *output;
-+		color_t blue_green_blue[] = {
-+			{ 0.0, 0.0, 1.0 },
-+			{ 0.0, 1.0, 0.0 },
-+			{ 0.0, 0.0, 1.0 }
-+		};
-+		double ctm[] = { 0.0, 0.0, 0.0,
-+				0.0, 1.0, 0.0,
-+				1.0, 0.0, 1.0 };
-+
-+		if (is_i915_device(data->drm_fd))
-+			igt_require_f((intel_display_ver(data->devid) >= 11),
-+					"At least GEN 11 is required to validate Deep-color.\n");
-+
-+		for_each_valid_output_on_pipe(&data->display, p, output) {
-+			drmModeConnector *connector = output->config.connector;
-+
-+			if (!is_max_bpc_supported(output))
-+				continue;
-+
-+			if (!is_panel_supports_deep_color(data->drm_fd, connector))
-+				continue;
-+
-+			data->color_depth = 10;
-+			data->drm_format = DRM_FORMAT_XRGB2101010;
-+			data->output = output;
-+			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
-+
-+			igt_dynamic_f("gamma-%s", output->name) {
-+				igt_output_set_pipe(data->output, PIPE_NONE);
-+				test_pipe_gamma(data, primary);
-+			}
-+
-+			igt_dynamic_f("degamma-%s", output->name) {
-+				igt_output_set_pipe(data->output, PIPE_NONE);
-+				test_pipe_degamma(data, primary);
-+			}
-+
-+			igt_dynamic_f("ctm-%s", output->name) {
-+				igt_output_set_pipe(data->output, PIPE_NONE);
-+				igt_assert(test_pipe_ctm(data, primary,
-+							 red_green_blue,
-+							 blue_green_blue, ctm));
-+			}
-+
-+			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 12);
-+			break;
-+		}
-+	}
-+
- 	igt_fixture {
- 		disable_degamma(primary->pipe);
- 		disable_gamma(primary->pipe);
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 6b3af02b00..b0abe5507e 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -206,7 +206,7 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
- 	uint32_t mask;
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - fi-kbl-8809g:       NOTRUN -> [DMESG-WARN][4] ([i915#4962]) +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@gem_exec_suspend@basic-s0@smem.html
 
- 	if (is_i915_device(data->drm_fd))
--		mask = ((1 << color_depth) - 1) << 8;
-+		mask = ((1 << color_depth) - 1) << (16 - color_depth);
- 	else
- 		mask = max_value;
+  * igt@gem_huc_copy@huc-copy:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][5] ([fdo#109271]) +57 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+    - fi-icl-u2:          NOTRUN -> [SKIP][7] ([i915#2190])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
 
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index 992087ac9c..4e381a1c28 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -49,7 +49,9 @@ typedef struct {
- 	uint32_t devid;
- 	igt_display_t display;
- 	igt_pipe_crc_t *pipe_crc;
-+	igt_output_t *output;
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-icl-u2:          NOTRUN -> [SKIP][8] ([i915#4613]) +3 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@gem_lmem_swapping@parallel-random-engines.html
 
-+	uint32_t drm_format;
- 	uint32_t color_depth;
- 	uint64_t degamma_lut_size;
- 	uint64_t gamma_lut_size;
---
-2.35.0
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][10] ([fdo#109271]) +54 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [PASS][11] -> [DMESG-FAIL][12] ([i915#5026])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11240/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@kms_chamelium@hdmi-edid-read:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][13] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@kms_chamelium@hdmi-edid-read.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          NOTRUN -> [SKIP][14] ([fdo#111827]) +8 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-icl-u2:          NOTRUN -> [SKIP][15] ([fdo#109278]) +2 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-icl-u2:          NOTRUN -> [SKIP][16] ([fdo#109285])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][17] ([fdo#109271] / [i915#533])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+    - fi-cfl-8109u:       [PASS][18] -> [DMESG-WARN][19] ([i915#295]) +12 similar issues
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11240/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-icl-u2:          NOTRUN -> [SKIP][20] ([i915#3301])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-blb-e6850:       NOTRUN -> [FAIL][21] ([fdo#109271] / [i915#2403] / [i915#2426] / [i915#4312])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-blb-e6850/igt@runner@aborted.html
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][22] ([i915#2426] / [i915#4312])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [INCOMPLETE][23] -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11240/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][25] ([i915#3303]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11240/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4962]: https://gitlab.freedesktop.org/drm/intel/issues/4962
+  [i915#5026]: https://gitlab.freedesktop.org/drm/intel/issues/5026
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6347 -> IGTPW_6649
+
+  CI-20190529: 20190529
+  CI_DRM_11240: 6c7dfb9d61c43210726e569c2523ec7cb6a2e3b9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6649: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/index.html
+  IGT_6347: 37ea4c86f97c0e05fcb6b04cff72ec927930536e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/index.html
+
+--===============3582662803595000375==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce MAINTAINERS file to IGT (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/99534/">https://patchwork.freedesktop.org/series/99534/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11240 -&gt; IGTPW_6649</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/index.html</p>
+<h2>Participating hosts (44 -&gt; 44)</h2>
+<p>Additional (3): fi-icl-u2 fi-kbl-8809g fi-pnv-d510 <br />
+  Missing    (3): fi-bsw-cyan shard-tglu bat-adlp-4 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6649 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@fork-compute0:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-rkl-guc/igt@amdgpu/amd_cs_nop@fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@fork-gfx0:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@amdgpu/amd_cs_nop@fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4962">i915#4962</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +54 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11240/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5026">i915#5026</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-edid-read:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11240/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +12 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-icl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-blb-e6850/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11240/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11240/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6347 -&gt; IGTPW_6649</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11240: 6c7dfb9d61c43210726e569c2523ec7cb6a2e3b9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6649: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6649/index.html<br />
+  IGT_6347: 37ea4c86f97c0e05fcb6b04cff72ec927930536e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3582662803595000375==--
