@@ -1,19 +1,18 @@
 Return-path: <SRS0=aXFB=TA=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1anam02on2051.outbound.protection.outlook.com [40.107.96.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F99610ED52
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Feb 2022 15:27:30 +0000 (UTC)
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com
+ (mail-bn1nam07on2075.outbound.protection.outlook.com [40.107.212.75])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B14510ED52
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Feb 2022 15:27:31 +0000 (UTC)
 From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 To: Arkadiusz Hiler <arek@hiler.eu>, Petri Latvala <petri.latvala@intel.com>
-Date: Thu, 17 Feb 2022 10:26:46 -0500
-Message-ID: <20220217152646.425503-3-Rodrigo.Siqueira@amd.com>
+Date: Thu, 17 Feb 2022 10:26:45 -0500
+Message-ID: <20220217152646.425503-2-Rodrigo.Siqueira@amd.com>
 In-Reply-To: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
 References: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/2] scripts: get_maintainer: Introduce
- get_maintainer wrapper
+Subject: [igt-dev] [PATCH 1/2] MAINTAINERS: Introduce MAINTAINERS file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,28 +29,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Linux kernel has a script that parses the MAINTAINERS files, and it is
-well maintained in the upstream. Based on that, I want to avoid
-reinventing the wheel and reduce our maintenance work by not duplicating
-the kernel effort. This commit introduces a wrapper script to the
-get_maintainers.pl file; in summary, it only provides these features:
-
-* List of developers
-* Mailing list
-* List of developers and list together
-* It accepts a file path
-* It accepts a patch
-(I tried to keep this wrapper as minimal as possible).
-A simple usage example is:
-
-  scripts/get_maintainer.sh devs tests/kms_plane.c
-
-or
-
-  scripts/get_maintainer.sh list tests/kms_plane.c
-
-Notice that this script can be integrated to git-send-email (see updates
-in the CONTRIBUTING file).
+IGT is growing in terms of new vendors actively using it. Right now, we
+only have Intel CI to validate new patches, which can create a situation
+where bugs get accidentally introduced to other vendors. To alleviate
+this problem and also making easy for other developers to be aware of
+some specific changes, I'm proposing the introduction of the MAINTAINERS
+file as the one used in the Linux kernel. With this approach, we can
+have multiple enginers from different companies as reviewers for
+specific tests, and contributors should use get_maintainers script to
+find the right people to address their changes.
 
 Cc: Arkadiusz Hiler <arek@hiler.eu>
 Cc: Petri Latvala <petri.latvala@intel.com>
@@ -75,167 +61,211 @@ Cc: Dingchen Zhang (David) <Dingchen.Zhang@amd.com>
 
 Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 ---
- .gitignore                |   1 +
- CONTRIBUTING.md           |  17 ++++++-
- scripts/get_maintainer.sh | 104 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 121 insertions(+), 1 deletion(-)
- create mode 100755 scripts/get_maintainer.sh
+ MAINTAINERS | 198 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 196 insertions(+), 2 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index f81085ae..30ac6613 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -50,5 +50,6 @@ results
- build
- patches
- Makefile
-+get_maintainer.pl
- 
- .vscode
-diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index 6d1294ad..e51779b0 100644
---- a/CONTRIBUTING.md
-+++ b/CONTRIBUTING.md
-@@ -42,7 +42,7 @@ Sending Patches
- - Please submit patches formatted with git send-email/git format-patch or
-   equivalent to:
- 
--      Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-+      IGT GPU Tools <igt-dev@lists.freedesktop.org>
- 
-   For patches affecting the driver directly please "cc" the appropriate driver
-   mailing list and make sure you are using:
-@@ -57,6 +57,21 @@ Sending Patches
- 
-   on its first invocation.
- 
-+- IGT has a MAINTAINERS file which is helpful to find people to review your
-+  change; use the below command to extract the developer's name for a specific
-+  test:
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 383c327c..fac605de 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1,2 +1,196 @@
+-Petri Latvala <petri.latvala@intel.com>
+-Arkadiusz Hiler <arek@hiler.eu>
++List of maintainers/reviewers to submit IGT changes
++===================================================
 +
-+    scripts/get_maintainer.sh [all|list|devs] [file/path|patch]
++Please try to follow the guidelines below.  This will make things
++easier on the maintainers.  Not all of these guidelines matter for every
++trivial patch so apply some common sense.
 +
-+  If you have a series, the below command will automatically assign the right
-+  people in the "TO" and "CC" field:
++Tips for patch submitters
++-------------------------
 +
-+    git send-email --annotate --cover-letter --thread --no-chain-reply-to --to-cmd="bash scripts/get_maintainer.sh devs" --cc-cmd="bash scripts/get_maintainer.sh list" <SHA>
++1.	Always *test* your changes.
 +
-+  In case you have a single patch, you can use:
++2.	Make sure your changes compile correctly.
 +
-+    git send-email --annotate --to-cmd="bash scripts/get_maintainer.sh devs" --cc-cmd="bash scripts/get_maintainer.sh list" -1
++3.	When you are happy with a change make it generally available for
++	testing and await feedback.
 +
- - Patches need to be reviewed on the mailing list. Exceptions only apply for
-   testcases and tooling for drivers with just a single contributor (e.g. vc4).
-   In this case patches must still be submitted to the mailing list first.
-diff --git a/scripts/get_maintainer.sh b/scripts/get_maintainer.sh
-new file mode 100755
-index 00000000..a2d4110c
---- /dev/null
-+++ b/scripts/get_maintainer.sh
-@@ -0,0 +1,104 @@
-+#!/bin/bash
-+#
-+# SPDX-License-Identifier: MIT
-+#
-+# Copyright 2022 Advanced Micro Devices, Inc.
++4.	Make a patch available to the relevant maintainer in the list. Be prepared
++	to get your changes sent back with seemingly silly requests about
++	formatting and variable names. These aren't as silly as they seem. One job
++	the maintainers do is to keep things looking the same.
 +
-+# List of constants
-+declare -r GET_MAINTAINER_PATH='get_maintainer.pl'
-+declare -r MAINTAINER_CMD="perl $GET_MAINTAINER_PATH"
-+declare -r DEFAULT_OPTIONS='--no-tree --separator , --nokeywords --nogit --nogit-fallback --norolestats --remove-duplicates'
-+declare -r ONLY_MAILING_LIST='--no-m -no-r --no-n'
-+declare -r ONLY_DEVELOPERS='--no-l'
-+declare -a get_maintainer_url=(
-+  'https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/scripts/get_maintainer.pl'
-+  'https://raw.githubusercontent.com/torvalds/linux/master/scripts/get_maintainer.pl'
-+)
++	PLEASE CC: the maintainers and mailing lists that are generated
++	by ``scripts/get_maintainer.sh.`` The results returned by the
++	script will be best if you have git installed.
 +
-+declare -A options_values
++	PLEASE try to include any credit lines you want added with the
++	patch. It avoids people being missed off by mistake and makes
++	it easier to know who wants adding and who doesn't.
 +
-+function print_help()
-+{
-+  printf "Usage: get_maintainer.sh [all|list|devs] [file/path|patch]\n"
-+  printf "Available options:\n"
-+  printf "  -h              display this help message\n"
-+  printf ""
-+}
++	PLEASE document known bugs.
 +
-+function download_get_maintainers()
-+{
-+  for url in ${get_maintainer_url[@]}; do
-+    curl --silent "$url" --output "$GET_MAINTAINER_PATH"
-+    # If we were able to download, there is no reason to try another link
-+    [[ "$?" == 0 ]] && break
-+  done
-+}
++5.	Make sure you have the right to send any changes you make. If you
++	do changes at work you may find your employer owns the patch
++	not you.
 +
-+function parse_parameters()
-+{
-+  local parameters="$@"
++Descriptions of section entries and preferred order
++---------------------------------------------------
 +
-+  options_values['PATH']=''
++	M: *Mail* patches to: FullName <address@domain>
++	R: Designated *Reviewer*: FullName <address@domain>
++	   These reviewers should be CCed on patches.
++	L: *Mailing list* that is relevant to this area
++	S: *Status*, one of the following:
++	   Supported:	Someone is actually paid to look after this.
++	   Maintained:	Someone actually looks after it.
++	W: *Web-page* with status/info
++	Q: *Patchwork* web based patch tracking system site
++	B: URI for where to file *bugs*. A web-page with detailed bug
++	   filing info, a direct bug tracker link, or a mailto: URI.
++	C: URI for *chat* protocol, server and channel where developers
++	   usually hang out, for example irc://server/channel.
++	T: *SCM* tree type and location.
++	   Type is one of: git, hg, quilt, stgit, topgit
++	F: *Files* and directories wildcard patterns.
++	   A trailing slash includes all files and subdirectory files.
++	   F:	tests/amdgpu/	all files in and below tests/amdgpu
++	   F:	tests/*	all files in tests/, but not below
++	   One pattern per line.  Multiple F: lines acceptable.
++	X: *Excluded* files and directories that are NOT maintained, same
++	   rules as F:. Files exclusions are tested before file matches.
 +
-+  for parameter in ${parameters[@]}; do
-+    case "${parameter}" in
-+      --help | -h)
-+        print_help
-+        exit
-+        ;;
-+      list)
-+        options_values['TARGET']='list'
-+        ;;
-+      all)
-+        options_values['TARGET']='all'
-+        ;;
-+      devs)
-+        options_values['TARGET']='devs'
-+        ;;
-+      *)
-+        options_values['PATH']="${parameter}"
-+        ;;
-+    esac
-+  done
-+}
++Maintainers List
++----------------
 +
-+function main()
-+{
-+  local raw_parameters="$@"
-+  local cmd="$MAINTAINER_CMD $DEFAULT_OPTIONS"
-+  local target
++KMS Generic API tests
++R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
++R:	Qingqing Zhuo (Lilian) <Qingqing.Zhuo@amd.com@amd.com>
++R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
++F:	tests/kms_atomic.c
++F:	tests/kms_atomic_interruptible.c
++F:	tests/kms_atomic_transition.c
++F:	tests/kms_properties.c
++F:	tests/kms_setmode.c
++F:	tests/kms_concurrent.c
++F:	tests/kms_prop_blob.c
++F:	tests/kms_multipipe_modeset.c
 +
-+  if [[ "$#" -lt 1 ]]; then
-+    printf 'Invalid options\n'
-+    print_help
-+    exit 22
-+  fi
++KMS CRC API
++R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
++R:	Sunpeng Li (Leo) <Sunpeng.Li@amd.com>
++R:	Dingchen Zhang (David) <Dingchen.Zhang@amd.com>
++R:	Melissa Wen <mwen@igalia.com>
++F:	tests/kms_cursor_crc.c
++F:	tests/kms_pipe_crc_basic.c
++F:	tests/kms_rotation_crc.c
 +
-+  parse_parameters "$@"
-+  target="${options_values['TARGET']}"
++KMS HDR
++R:	Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
 +
-+  # Download get_maintainers.pl if necessary
-+  [[ ! -f "$GET_MAINTAINER_PATH" ]] && download_get_maintainers
-+  if [[ ! -f "$GET_MAINTAINER_PATH" ]]; then
-+    printf 'Unable to download get_maintainers file, please check your connection'
-+    exit 22
-+  fi
++KMS Color
++R:	Stylon Wang <stylon.wang@amd.com>
++R:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
++R:	Sunpeng Li (Leo) <Sunpeng.Li@amd.com>
++F:	tests/kms_color.c
 +
-+  case "$target" in
-+    list)
-+      cmd+=" $ONLY_MAILING_LIST"
-+      ;;
-+    devs)
-+      cmd+=" $ONLY_DEVELOPERS"
-+      ;;
-+  esac
++KMS Content protection
++R:	Dingchen Zhang (David) <Dingchen.Zhang@amd.com>
++R:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
++F:	tests/kms_content_protection.c
 +
-+  # Do we have a file as a target?
-+  if [[ -n ${options_values['PATH']} ]]; then
-+    cmd+=" -f ${options_values['PATH']}"
-+  fi
++KMS Cursor tests
++R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
++R:	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
++F:	tests/kms_cursor_legacy.c
++F:	tests/kms_cursor_edge_walk.c
++F:	tests/kms_plane_cursor.c
++F:	tests/kms_plane_alpha_blend.c
 +
-+  eval "$cmd"
-+}
++VRR tests
++R:	Stylon Wang <stylon.wang@amd.com>
++R:	Wayne Lin <Wayne.Lin@amd.com>
++R:	Solomon Chiu <Solomon.Chiu@amd.com>
++R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
++R:	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
++S:	Maintained
++F:	tests/kms_vrr.c
 +
-+main "$@"
++KMS Vblank tests
++R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
++R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
++S:	Maintained
++F:	tests/kms_vblank.c
++
++KMS Flip tests
++R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
++R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
++S:	Maintained
++F:	tests/kms_flip.c
++F:	tests/kms_flip_event_leak.c
++
++KMS plane tests
++R:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
++R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
++R:	Stylon Wang <stylon.wang@amd.com>
++S:	Maintained
++F:	tests/kms_plane.c
++F:	tests/kms_plane_scaling.c
++
++KMS Bandwidth
++R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
++F:	tests/kms_bw.c
++
++AMDGPU
++M:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
++M:	Stylon Wang <stylon.wang@amd.com>
++M:	Wayne Lin <Wayne.Lin@amd.com>
++S:	Maintained
++F:	tests/amdgpu/*
++
++AMDGPU AMD Plane
++M:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
++F:	tests/amdgpu/amd_plane.c
++
++AMDGPU AMD Link
++M:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
++F:	tests/amdgpu/amd_link_settings.c
++F:	tests/amdgpu/amd_dp_dsc.c
++F:	tests/amdgpu/amd_hotplug.c
++
++AMDGPU AMD Color
++M:	Stylon Wang <stylon.wang@amd.com>
++R:	Sunpeng Li (Leo) <Sunpeng.Li@amd.com>
++R:	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
++F:	tests/amdgpu/amd_color.c
++F:	tests/amdgpu/amd_max_bpc.c
++
++AMDGPU AMD content protection
++M:	Stylon Wang <stylon.wang@amd.com>
++R:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
++F:	tests/amdgpu/amd_assr.c
++
++AMDGPU VRR/Freesync
++M:	Stylon Wang <stylon.wang@amd.com>
++M:	Solomon Chiu <Solomon.Chiu@amd.com>
++R:	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
++R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
++F:	tests/amdgpu/amd_vrr_range.c
++
++All KMS tests
++R:	Mark Yacoub <markyacoub@chromium.org>
++F:	tests/kms_*
++
++V3D tests
++R:	Melissa Wen <mwen@igalia.com>
++F:	tests/v3d_*
++
++THE REST
++M:	Arkadiusz Hiler <arek@hiler.eu>
++M:	Petri Latvala <petri.latvala@intel.com>
++L:	igt-dev@lists.freedesktop.org
++B:	https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues
++Q:	https://patchwork.freedesktop.org/project/igt/series/?ordering=-last_updated
++T:	git@gitlab.freedesktop.org:drm/igt-gpu-tools.git
++F:	*
++F:	*/
 -- 
 2.25.1
