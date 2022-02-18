@@ -1,19 +1,19 @@
 Return-path: <SRS0=2yIq=TB=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E9BE10F07E
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 13:22:21 +0000 (UTC)
-Date: Fri, 18 Feb 2022 14:22:16 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Yg+diOZTApGLm5Es@kamilkon-DESK1>
-References: <20220215142304.120586-1-priyanka.dandamudi@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5554B10F173
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 13:28:05 +0000 (UTC)
+Message-ID: <6d5525b7-a101-84ea-0679-91a3c8a9cbcc@intel.com>
+Date: Fri, 18 Feb 2022 18:57:51 +0530
+Content-Language: en-US
+To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220217115812.4141-1-jeevan.b@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20220217115812.4141-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220215142304.120586-1-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/debugfs_test: Added test
- description for test case
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v6] tests/kms_display_modes: Add test
+ for extended mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,73 +21,215 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Melkaveri@kamilkon-desk1
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Priyanka,
-
-Dnia 2022-02-15 at 19:53:04 +0530, priyanka.dandamudi@intel.com napisał(a):
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> Added test description to all the available subtests.
-> 
-> v2:rebase
-> 
-> Cc: Katarzyna Dec <katarzyna.dec@intel.com>
-> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/debugfs_test.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
-> index e6535ccd..0aa312dc 100644
-> --- a/tests/debugfs_test.c
-> +++ b/tests/debugfs_test.c
-> @@ -29,6 +29,8 @@
->  #include <sys/types.h>
->  #include <dirent.h>
->  
-> +IGT_TEST_DESCRIPTION("Test reads entries from debugfs and sysfs path.");
-> +
-s/Test reads/Read/
-s/path/paths/
-
-Please avoid starting description with "Test" or "This test".
-
->  static void read_and_discard_sysfs_entries(int path_fd, int indent)
->  {
->  	struct dirent *dirent;
-> @@ -187,11 +189,13 @@ igt_main
->  		kmstest_set_vt_graphics_mode();
->  	}
->  
-> +	igt_describe("Test reads all entries from sysfs path.");
-
-s/Test reads/Read/
-
->  	igt_subtest("sysfs")
->  		read_and_discard_sysfs_entries(sysfs, 0);
-> +	igt_describe("Test reads all entries from debugfs path.");
-
-s/Test reads/Read/
-
->  	igt_subtest("read_all_entries")
->  		read_and_discard_sysfs_entries(debugfs, 0);
-> -
-> +	igt_describe("Test reads all debugfs entries with display on/off.");
-
-s/Test reads/Read/
-
->  	igt_subtest_group
->  		kms_tests(fd, debugfs);
->  
-> -- 
-> 2.25.1
+On 2/17/2022 5:28 PM, Jeevan B wrote:
+> Add test for validation of extended mode.
 >
+> v2: - make subtest dynamic
+>      - rename testname
+>      - rename and delete unsed variable
+>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>   tests/kms_display_modes.c | 162 ++++++++++++++++++++++++++++++++++++++
+>   tests/meson.build         |   1 +
+>   2 files changed, 163 insertions(+)
+>   create mode 100644 tests/kms_display_modes.c
+>
+> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+> new file mode 100644
+> index 00000000..0a826648
+> --- /dev/null
+> +++ b/tests/kms_display_modes.c
+> @@ -0,0 +1,162 @@
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + *
+> + * Author:
+> + *  Jeevan B <jeevan.b@intel.com>
+> + */
+> +
+> +#include "igt.h"
+> +
+> +IGT_TEST_DESCRIPTION("Test Display Modes");
+> +
+> +typedef struct {
+> +	int drm_fd;
+> +	igt_display_t display;
+> +	int n_pipes;
+> +} data_t;
+> +
+> +static void run_extendedmode_basic(data_t *data, int pipe_id)
+> +{
+> +	struct igt_fb fb, fbs[2];
+> +	drmModeModeInfo *mode[2];
+> +	igt_output_t *output, *extended_output[2];
+> +	igt_display_t *display = &data->display;
+> +	igt_plane_t *plane[2];
+> +	igt_pipe_crc_t *pipe_crc[2] = { 0 };
+> +	igt_crc_t ref_crc[2], crc[2];
+> +	int count = 0, width, height;
+> +	cairo_t *cr;
+> +
+> +	for_each_connected_output(display, output) {
+> +		extended_output[count] = output;
+> +		count++;
+> +	}
 
-Regards,
-Kamil
- 
+Hi,
+
+Please break the loop after the second output is found. It will cause an 
+issue if we have a third output connected.
+
+> +
+> +	igt_output_set_pipe(extended_output[0], pipe_id);
+> +	igt_output_set_pipe(extended_output[1], pipe_id + 1);
+> +
+> +	mode[0] = igt_output_get_mode(extended_output[0]);
+> +	mode[1] = igt_output_get_mode(extended_output[1]);
+> +
+> +	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe_id, INTEL_PIPE_CRC_SOURCE_AUTO);
+> +	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe_id + 1, INTEL_PIPE_CRC_SOURCE_AUTO);
+> +
+> +	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[0]->vdisplay,
+> +			     DRM_FORMAT_XRGB8888, 0, 1, 0, 0, &fbs[0]);
+> +	igt_create_color_fb(data->drm_fd, mode[1]->hdisplay, mode[1]->vdisplay,
+> +			     DRM_FORMAT_XRGB8888, 0, 0, 0, 1, &fbs[1]);
+> +
+> +	plane[0] = igt_pipe_get_plane_type(&display->pipes[pipe_id], DRM_PLANE_TYPE_PRIMARY);
+> +	plane[1] = igt_pipe_get_plane_type(&display->pipes[pipe_id + 1], DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	igt_plane_set_fb(plane[0], &fbs[0]);
+> +	igt_fb_set_size(&fbs[0], plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
+> +	igt_plane_set_size(plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
+> +
+> +	igt_plane_set_fb(plane[1], &fbs[1]);
+> +	igt_fb_set_size(&fbs[1], plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+> +	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+> +
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
+> +	igt_pipe_crc_collect_crc(pipe_crc[1], &ref_crc[1]);
+> +
+> +	/*Create a big framebuffer and display it on 2 monitors*/
+> +	width = mode[0]->hdisplay + mode[1]->hdisplay;
+> +	height = max(mode[0]->vdisplay, mode[1]->vdisplay);
+> +
+> +	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888, 0, &fb);
+> +	cr = igt_get_cairo_ctx(data->drm_fd, &fb);
+> +	igt_paint_color(cr, 0, 0, mode[0]->hdisplay, mode[0]->vdisplay, 1, 0, 0);
+> +	igt_paint_color(cr, mode[0]->hdisplay, 0, width, height, 0, 0, 1);
+> +	igt_put_cairo_ctx(cr);
+> +
+> +	igt_plane_set_fb(plane[0], &fb);
+> +	igt_fb_set_position(&fb, plane[0], 0, 0);
+> +	igt_fb_set_size(&fb, plane[0], mode[0]->hdisplay, mode[0]->vdisplay);
+> +
+> +	igt_plane_set_fb(plane[1], &fb);
+> +	igt_fb_set_position(&fb, plane[1], mode[0]->hdisplay, 0);
+> +	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+> +
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
+> +	igt_pipe_crc_collect_crc(pipe_crc[1], &crc[1]);
+> +
+> +	/*Clean up*/
+> +	igt_remove_fb(data->drm_fd, &fbs[0]);
+> +	igt_remove_fb(data->drm_fd, &fbs[1]);
+> +	igt_remove_fb(data->drm_fd, &fb);
+> +
+> +	igt_pipe_crc_free(pipe_crc[0]);
+> +	igt_pipe_crc_free(pipe_crc[1]);
+> +
+> +	igt_output_set_pipe(extended_output[0], PIPE_NONE);
+> +	igt_output_set_pipe(extended_output[1], PIPE_NONE);
+> +
+> +	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe_id],
+> +			  DRM_PLANE_TYPE_PRIMARY), NULL);
+> +	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe_id + 1],
+> +			  DRM_PLANE_TYPE_PRIMARY), NULL);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +	/*Compare CRC*/
+> +	igt_assert_crc_equal(&crc[0], &ref_crc[0]);
+> +	igt_assert_crc_equal(&crc[1], &ref_crc[1]);
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data;
+> +	int valid_output = 0, i;
+> +	igt_output_t *output;
+> +
+> +	igt_fixture {
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +		kmstest_set_vt_graphics_mode();
+> +		igt_display_require(&data.display, data.drm_fd);
+> +
+> +		for_each_connected_output(&data.display, output)
+> +			valid_output++;
+
+We could break here as well, as we are only looking for 2 outputs.
+
+With these updated patch looks good to me.
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+
+> +
+> +		igt_require_f(valid_output > 1, "No valid Second output found\n");
+> +
+> +		data.n_pipes = 0;
+> +		for_each_pipe(&data.display, i)
+> +			data.n_pipes++;
+> +	}
+> +
+> +	igt_describe("Test for validating display extended mode with a pair of connected displays");
+> +	igt_subtest_with_dynamic("extended-mode-basic") {
+> +		for (i = 0; i < data.n_pipes - 1; i++) {
+> +			igt_dynamic_f("pipe-%s%s", kmstest_pipe_name(i),
+> +					kmstest_pipe_name(i + 1));
+> +			run_extendedmode_basic(&data, i);
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_display_fini(&data.display);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 7003d064..3dbba7a1 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -26,6 +26,7 @@ test_progs = [
+>   	'kms_cursor_edge_walk',
+>   	'kms_cursor_legacy',
+>   	'kms_dither',
+> +	'kms_display_modes',
+>   	'kms_dp_aux_dev',
+>   	'kms_dp_tiled_display',
+>   	'kms_flip',
+
