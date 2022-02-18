@@ -1,15 +1,15 @@
 Return-path: <SRS0=2yIq=TB=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47A8410F01B
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 09:10:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A507F10F01C
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 09:10:50 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 18 Feb 2022 14:39:35 +0530
-Message-Id: <20220218090936.15857-16-jeevan.b@intel.com>
+Date: Fri, 18 Feb 2022 14:39:36 +0530
+Message-Id: <20220218090936.15857-17-jeevan.b@intel.com>
 In-Reply-To: <20220218090936.15857-1-jeevan.b@intel.com>
 References: <20220218090936.15857-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v4 15/16] tests/kms_plane_scaling: Adding
- Tile-4 support
+Subject: [igt-dev] [PATCH i-g-t v4 16/16] tests/kms_plane_scaling: Use
+ tiling 4 if platform has support for it
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,34 +22,86 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-adding tile-4 changes for 2x-scaler-multi-pipe subtest to support on dg2
+From: Mika Kahola <mika.kahola@intel.com>
 
+Switch using tiling 4 if a platform has support for it. For DG2 tiling 4
+is superseeds Y tiling.
+
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_plane_scaling.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tests/kms_plane_scaling.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 85db11ee..1ab7e5ce 100644
+index 1ab7e5ce..4baa8855 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
-@@ -613,8 +613,15 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+@@ -45,6 +45,7 @@ typedef struct {
+ 	igt_plane_t *plane3;
+ 	igt_plane_t *plane4;
+ 	bool extended;
++	bool has_4tile;
+ } data_t;
+ 
+ static int get_num_scalers(data_t* d, enum pipe pipe)
+@@ -250,6 +251,9 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
+ 	uint64_t modifier = is_i915_device(d->drm_fd) ?
+ 		I915_FORMAT_MOD_Y_TILED : DRM_FORMAT_MOD_LINEAR;
+ 
++	if (d->has_4tile)
++		modifier = I915_FORMAT_MOD_4_TILED;
++
+ 	igt_require(get_num_scalers(d, pipe) > 0);
+ 
+ 	igt_output_set_pipe(output, pipe);
+@@ -285,7 +289,8 @@ static const uint64_t modifiers[] = {
+ 	DRM_FORMAT_MOD_LINEAR,
+ 	I915_FORMAT_MOD_X_TILED,
+ 	I915_FORMAT_MOD_Y_TILED,
+-	I915_FORMAT_MOD_Yf_TILED
++	I915_FORMAT_MOD_Yf_TILED,
++	I915_FORMAT_MOD_4_TILED
+ };
+ 
+ static void test_scaler_with_pixel_format_pipe(data_t *d, enum pipe pipe, igt_output_t *output)
+@@ -531,6 +536,7 @@ test_scaler_with_clipping_clamping_scenario(data_t *d, enum pipe pipe, igt_outpu
+ 	igt_pipe_t *pipe_obj = &d->display.pipes[pipe];
+ 	drmModeModeInfo *mode;
+ 	struct igt_vec tested_formats1;
++	uint64_t modifier = d->has_4tile ? I915_FORMAT_MOD_4_TILED : I915_FORMAT_MOD_Y_TILED;
+ 
+ 	igt_require(get_num_scalers(d, pipe) >= 2);
+ 
+@@ -567,7 +573,7 @@ test_scaler_with_clipping_clamping_scenario(data_t *d, enum pipe pipe, igt_outpu
+ 
+ 			igt_create_pattern_fb(d->drm_fd,
+ 					      mode->hdisplay, mode->vdisplay, f2,
+-					      I915_FORMAT_MOD_Y_TILED,
++					      modifier,
+ 					      &d->fb[2]);
+ 
+ 			__test_scaler_with_clipping_clamping_scenario(d, mode);
+@@ -613,10 +619,9 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
  	igt_output_t *output1, *output2;
  	drmModeModeInfo *mode1, *mode2;
  	enum pipe pipe1, pipe2;
--	uint64_t modifier = is_i915_device(display->drm_fd) ?
--		I915_FORMAT_MOD_Y_TILED : DRM_FORMAT_MOD_LINEAR;
-+	bool has_4tile = intel_get_device_info(intel_get_drm_devid(d->drm_fd))->has_4tile;
-+	uint64_t modifier;
-+
-+	if (is_i915_device(display->drm_fd) && has_4tile)
-+		modifier = I915_FORMAT_MOD_4_TILED;
-+	else if (is_i915_device(display->drm_fd))
-+		modifier = I915_FORMAT_MOD_Y_TILED;
-+	else
-+		modifier = DRM_FORMAT_MOD_LINEAR;
+-	bool has_4tile = intel_get_device_info(intel_get_drm_devid(d->drm_fd))->has_4tile;
+ 	uint64_t modifier;
  
- 	cleanup_crtc(d);
+-	if (is_i915_device(display->drm_fd) && has_4tile)
++	if (is_i915_device(display->drm_fd) && d->has_4tile)
+ 		modifier = I915_FORMAT_MOD_4_TILED;
+ 	else if (is_i915_device(display->drm_fd))
+ 		modifier = I915_FORMAT_MOD_Y_TILED;
+@@ -721,6 +726,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		data.devid = is_i915_device(data.drm_fd) ?
+ 			intel_get_drm_devid(data.drm_fd) : 0;
+ 		igt_require(data.display.is_atomic);
++		data.has_4tile = is_i915_device(data.drm_fd) &&
++				 intel_get_device_info(intel_get_drm_devid(data.drm_fd))->has_4tile;
+ 	}
  
+ 	igt_subtest_group {
 -- 
 2.17.1
