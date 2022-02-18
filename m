@@ -1,15 +1,15 @@
 Return-path: <SRS0=2yIq=TB=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C6E410EF41
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 09:10:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1CAE10F01C
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 09:10:40 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 18 Feb 2022 14:39:30 +0530
-Message-Id: <20220218090936.15857-11-jeevan.b@intel.com>
+Date: Fri, 18 Feb 2022 14:39:32 +0530
+Message-Id: <20220218090936.15857-13-jeevan.b@intel.com>
 In-Reply-To: <20220218090936.15857-1-jeevan.b@intel.com>
 References: <20220218090936.15857-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v4 10/16] igt/tests: Add support for
- Tile4(TileF) format to testdisplay
+Subject: [igt-dev] [PATCH i-g-t v4 12/16] igt/tests: Add support for
+ Tile4(TileF) format to tests/kms_addfb_basic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,52 +17,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, juha-pekka.heikkila@intel.com
+Cc: juha-pekka.heikkila@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Matt Roper <matthew.d.roper@intel.com>
+Adding subtest to test new tiling format
 
-testdisplay is a great test for manual testing/debug of Tile-4; we just
-need an extra parameter to enable that tiling format.
-
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/testdisplay.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tests/kms_addfb_basic.c | 44 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/tests/testdisplay.c b/tests/testdisplay.c
-index 54327761..e9fbd260 100644
---- a/tests/testdisplay.c
-+++ b/tests/testdisplay.c
-@@ -593,7 +593,7 @@ static void set_termio_mode(void)
- 	tcsetattr(tio_fd, TCSANOW, &tio);
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index b7b3b0f2..2fc99eb4 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -155,7 +155,6 @@ static void invalid_tests(int fd)
+ 		uint64_t size;
+ 
+ 		igt_require_intel(fd);
+-		igt_require(gem_has_lmem(fd));
+ 		igt_calc_fb_size(fd, f.width, f.height,
+ 				DRM_FORMAT_XRGB8888, 0, &size, &stride);
+ 		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
+@@ -676,6 +675,47 @@ static void addfb25_ytile(int fd)
+ 	}
  }
  
--static char optstr[] = "3Aiaf:s:d:p:mrto:j:y";
-+static char optstr[] = "3Aiaf:s:d:p:mrt4o:j:y";
- static struct option long_opts[] = {
- 	{"yb", 0, 0, OPT_YB},
- 	{"yf", 0, 0, OPT_YF},
-@@ -612,6 +612,7 @@ static const char *help_str =
- 	"  -t\tuse an X-tiled framebuffer\n"
- 	"  -y, --yb\n"
- 	"  \tuse a Y-tiled framebuffer\n"
-+	"  -4\tuse an Tile-4 framebuffer\n"
- 	"  --yf\tuse a Yf-tiled framebuffer\n"
- 	"  -j\tdo dpms off, optional arg to select dpms level (1-3)\n"
- 	"  -r\tprint a QR code on the screen whose content is \"pass\" for the automatic test\n"
-@@ -680,6 +681,9 @@ static int opt_handler(int opt, int opt_index, void *data)
- 	case OPT_YF:
- 		modifier = I915_FORMAT_MOD_Yf_TILED;
- 		break;
-+	case '4':
-+		modifier = I915_FORMAT_MOD_4_TILED;
-+		break;
- 	case 'r':
- 		qr_code = 1;
- 		break;
++static void addfb25_4tile(int fd)
++{
++	struct drm_mode_fb_cmd2 f = {};
++	igt_display_t display;
++
++	igt_fixture {
++		igt_display_require(&display, fd);
++
++		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
++				DRM_FORMAT_XRGB8888, 0, 0, NULL, NULL, NULL);
++		igt_assert(gem_bo);
++
++		memset(&f, 0, sizeof(f));
++
++		f.width = 1024;
++		f.height = 1024;
++		f.pixel_format = DRM_FORMAT_XRGB8888;
++		f.pitches[0] = 1024*4;
++		f.flags = DRM_MODE_FB_MODIFIERS;
++		f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
++
++		f.handles[0] = gem_bo;
++	}
++
++	igt_subtest("addfb25-4-tiled") {
++		igt_require_fb_modifiers(fd);
++
++		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
++		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
++			   addfb_expected_ret(&display, &f));
++		if (!addfb_expected_ret(&display, &f))
++			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++		f.fb_id = 0;
++	}
++
++	igt_fixture {
++		gem_close(fd, gem_bo);
++		igt_display_fini(&display);
++	}
++}
++
+ static void prop_tests(int fd)
+ {
+ 	struct drm_mode_fb_cmd2 f = {};
+@@ -826,6 +866,8 @@ igt_main
+ 
+ 	addfb25_ytile(fd);
+ 
++	addfb25_4tile(fd);
++
+ 	tiling_tests(fd);
+ 
+ 	prop_tests(fd);
 -- 
 2.17.1
