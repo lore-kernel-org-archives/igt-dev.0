@@ -1,20 +1,21 @@
 Return-path: <SRS0=2yIq=TB=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61DAF10EC2F
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 09:50:10 +0000 (UTC)
-Date: Fri, 18 Feb 2022 11:49:11 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <Yg9rl0XJgtsYPpMF@platvala-desk.ger.corp.intel.com>
-References: <20220208041106.2202609-1-bhanuprakash.modem@intel.com>
- <20220217155457.2427855-1-bhanuprakash.modem@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05ACE10F1E7
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 10:15:45 +0000 (UTC)
+Date: Fri, 18 Feb 2022 12:16:00 +0200
+From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+To: "B, Jeevan" <jeevan.b@intel.com>
+Message-ID: <20220218101600.GA7530@intel.com>
+References: <20220216102633.26949-1-jeevan.b@intel.com>
+ <20220216102633.26949-5-jeevan.b@intel.com>
+ <20220217125118.GA3127@intel.com>
+ <f83be4eaab5f4dd9998213284929cd1f@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220217155457.2427855-1-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [v6 i-g-t 1/3] tests/kms_color_helper: Read
- deep-color capability from EDID
+In-Reply-To: <f83be4eaab5f4dd9998213284929cd1f@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 04/15] igt/tests: Add support for
+ Tile4(TileF) format to kms_draw_crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,248 +23,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
+ Juha-pekka" <juha-pekka.heikkila@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 17, 2022 at 09:24:56PM +0530, Bhanuprakash Modem wrote:
-> Add a helper function to read the panel's deep-color capability
-> from EDID.
+On Fri, Feb 18, 2022 at 10:15:31AM +0200, B, Jeevan wrote:
+> >-----Original Message-----
+> >From: Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com>
+> >Sent: Thursday, February 17, 2022 6:21 PM
+> >To: B, Jeevan <jeevan.b@intel.com>
+> >Cc: igt-dev@lists.freedesktop.org; Heikkila, Juha-pekka <juha-
+> >pekka.heikkila@intel.com>; Kahola, Mika <mika.kahola@intel.com>
+> >Subject: Re: [PATCH i-g-t v3 04/15] igt/tests: Add support for Tile4(TileF) format
+> >to kms_draw_crc
+> >
+> >On Wed, Feb 16, 2022 at 03:56:22PM +0530, Jeevan B wrote:
+> >> From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+> >>
+> >> kms_draw_crc would be the first sample test to support new format.
+> >>
+> >> v2: add check for tile-4 support
+> >>
+> >> Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+> >> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> >> ---
+> >>  tests/i915/kms_draw_crc.c | 18 +++++++++++-------
+> >>  1 file changed, 11 insertions(+), 7 deletions(-)
+> >>
+> >> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+> >> index 82c368e1..33b7bdf4 100644
+> >> --- a/tests/i915/kms_draw_crc.c
+> >> +++ b/tests/i915/kms_draw_crc.c
+> >> @@ -41,25 +41,24 @@ drmModeConnectorPtr
+> >> drm_connectors[MAX_CONNECTORS];  struct buf_ops *bops;  igt_pipe_crc_t
+> >> *pipe_crc;
+> >>
+> >> -#define N_FORMATS 3
+> >> -static const uint32_t formats[N_FORMATS] = {
+> >> +static const uint32_t formats[] = {
+> >>  	DRM_FORMAT_XRGB8888,
+> >>  	DRM_FORMAT_RGB565,
+> >>  	DRM_FORMAT_XRGB2101010,
+> >>  };
+> >>
+> >> -#define N_MODIFIER_METHODS 3
+> >> -static const uint64_t modifiers[N_MODIFIER_METHODS] = {
+> >> +static const uint64_t modifiers[] = {
+> >>  	DRM_FORMAT_MOD_LINEAR,
+> >>  	I915_FORMAT_MOD_X_TILED,
+> >>  	I915_FORMAT_MOD_Y_TILED,
+> >> +	I915_FORMAT_MOD_4_TILED,
+> >>  };
+> >>
+> >>  struct base_crc {
+> >>  	bool set;
+> >>  	igt_crc_t crc;
+> >>  };
+> >> -struct base_crc base_crcs[N_FORMATS];
+> >> +struct base_crc base_crcs[ARRAY_SIZE(formats)];
+> >>
+> >>  struct modeset_params ms;
+> >>
+> >> @@ -178,6 +177,9 @@ static void draw_method_subtest(enum
+> >> igt_draw_method method,  {
+> >>  	igt_crc_t crc;
+> >>
+> >> +	igt_skip_on(modifier == I915_FORMAT_MOD_4_TILED &&
+> >> +		    !HAS_4TILE(intel_get_drm_devid(drm_fd)));
+> >
+> >I wonder, why we don't use format_is_supported call here.
+> >We anyway call it, however its done with igt_require..
+> >
+> >Didn't we have somekind of more unified way of testing formats, only supported
+> >by current kernel/platform?
+> >
+> >I thought Ville did something about this..
 > 
-> For EDID 1.3, we need to read deep color capability from Vendor
-> Specific Data Block, and for EDID 1.4 read bit depth from Video
-> Input Definition.
-> 
-> Vendor Specific Data Block for "HDMI Licensing LLC":
-> ---------------------------------------------------------
-> | Byte|  Bit  |        Description                      |
-> ---------------------------------------------------------
-> |     | Bit 6 |   16-bit-per-channel deep color (48-bit)|
-> |  6  | Bit 5 |   12-bit-per-channel deep color (36-bit)|
-> |     | Bit 4 |   10-bit-per-channel deep color (30-bit)|
-> ---------------------------------------------------------
-> 
-> Video Input Definition (1-byte):
->     * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
->     * Color Bit Depth: Bits 6 → 4
-> -----------------------------------------------------
-> | 7 | 6 5 4 | 3 2 1 0 | Color Bit Depth: Bits 6 → 4 |
-> |---|-------|---------|-----------------------------|
-> | 1 | 0 0 0 | x x x x | Color Bit Depth is undefined|
-> | 1 | 0 0 1 | x x x x | 6 Bits per Primary Color    |
-> | 1 | 0 1 0 | x x x x | 8 Bits per Primary Color    |
-> | 1 | 0 1 1 | x x x x | 10 Bits per Primary Color   |
-> | 1 | 1 0 0 | x x x x | 12 Bits per Primary Color   |
-> | 1 | 1 0 1 | x x x x | 14 Bits per Primary Color   |
-> | 1 | 1 1 0 | x x x x | 16 Bits per Primary Color   |
-> | 1 | 1 1 1 | x x x x | Reserved (Do Not Use)       |
-> -----------------------------------------------------
-> For deep-color we need atleast 10-bits.
-> 
-> V2:
-> * Add EDID 1.3 support
-> V3:
-> * Fix reading VSDB flags1 for deep-color
-> V4:
-> * Separate functions for EDID 1.3 & EDID 1.4
-> * Other minor cleanups
-> V5:
-> * Fine tune the logic to identify DC support for RGB format
-> V6:
-> * Cleanup
-> 
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  lib/igt_edid.c           | 66 ++++++++++++++++++++++++++++++++++++++++
->  lib/igt_edid.h           |  2 ++
->  tests/kms_color_helper.c | 52 +++++++++++++++++++++++++++++++
->  tests/kms_color_helper.h |  3 ++
->  4 files changed, 123 insertions(+)
-> 
-> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-> index df346c4c8c..cb31a34b7b 100644
-> --- a/lib/igt_edid.c
-> +++ b/lib/igt_edid.c
-> @@ -349,6 +349,72 @@ size_t edid_get_size(const struct edid *edid)
->  	       edid->extensions_len * sizeof(struct edid_ext);
->  }
->  
-> +static int ieee_oui(uint8_t oui[CEA_VSDB_HEADER_SIZE])
-> +{
-> +         return (oui[2] << 16) | (oui[1] << 8) | oui[0];
-> +}
-> +
-> +/**
-> + * edid_get_deep_color_from_vsdb: return the Deep Color info from Vender
-> + * Specific Data Block (VSDB), if VSDB not found then return zero.
-> + */
-> +uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid)
-> +{
-> +	const struct edid_ext *edid_ext;
-> +	const struct edid_cea *edid_cea;
-> +	const char *cea_data;
-> +	uint8_t deep_color = 0;
-> +	int offset, i, j;
-> +
-> +	/* Read from vendor specific data block first, if vsdb not found
-> +	 * return 0.
-> +	 */
-> +	for (i = 0; i < edid->extensions_len; i++) {
-> +		edid_ext = &edid->extensions[i];
-> +		edid_cea = &edid_ext->data.cea;
-> +
-> +		if ((edid_ext->tag != EDID_EXT_CEA) ||
-> +		    (edid_cea->revision != 3))
-> +			continue;
-> +
-> +		offset = edid_cea->dtd_start;
-> +		cea_data = edid_cea->data;
-> +
-> +		for (j = 0; j < offset; j += (cea_data[j] & 0x1F) + 1) {
-> +			struct edid_cea_data_block *vsdb =
-> +				(struct edid_cea_data_block *)(cea_data + j);
-> +
-> +			if (((vsdb->type_len & 0xE0) >> 5) != EDID_CEA_DATA_VENDOR_SPECIFIC)
-> +				continue;
-> +
-> +			if (ieee_oui(vsdb->data.vsdbs->ieee_oui) == 0x000C03)
-> +				deep_color = vsdb->data.vsdbs->data.hdmi.flags1;
-> +
-> +			if (deep_color & (7 << 4))
-> +				return deep_color;
-> +
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * edid_get_bit_depth: Read from the Video Input Definition and return the
-> + * Color Bit Depth if Input is a Digital Video, else return zero.
-> + */
-> +uint8_t edid_get_bit_depth_from_vid(const struct edid *edid)
-> +{
-> +	/*
-> +	 * Video Signal Interface: Bit 7 (1:Digital, 0:Analog)
-> +	 * Color Bit Depth: Bits 6 → 4
-> +	 */
-> +	if (!(edid->input & (1 << 7)))
-> +		return 0;
-> +
-> +	return ((edid->input & (7 << 4)) >> 4);
-> +}
-> +
->  /**
->   * cea_sad_init_pcm:
->   * @channels: the number of supported channels (max. 8)
-> diff --git a/lib/igt_edid.h b/lib/igt_edid.h
-> index aac2f4a208..a9251d689e 100644
-> --- a/lib/igt_edid.h
-> +++ b/lib/igt_edid.h
-> @@ -377,6 +377,8 @@ void edid_update_checksum(struct edid *edid);
->  void base_edid_update_checksum(struct edid *edid);
->  size_t edid_get_size(const struct edid *edid);
->  void edid_get_mfg(const struct edid *edid, char out[static 3]);
-> +uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid);
-> +uint8_t edid_get_bit_depth_from_vid(const struct edid *edid);
->  void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
->  			      int width_mm, int height_mm);
->  void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
-> diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-> index d71e7bb2e6..6b3af02b00 100644
-> --- a/tests/kms_color_helper.c
-> +++ b/tests/kms_color_helper.c
-> @@ -24,6 +24,58 @@
->  
->  #include "kms_color_helper.h"
->  
-> +bool
-> +is_panel_supports_deep_color(int fd, drmModeConnector *connector)
-> +{
-> +	uint64_t edid_blob_id;
-> +	uint8_t bit_depth, rev;
-> +	const struct edid *edid;
-> +	bool result;
-> +	drmModePropertyBlobPtr edid_blob = NULL;
-> +
-> +	igt_assert(kmstest_get_property(fd, connector->connector_id,
-> +					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-> +					&edid_blob_id, NULL));
-> +	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
-> +	igt_require_f(edid_blob, "EDID blob is NULL\n");
-> +
-> +	edid = (const struct edid *) edid_blob->data;
-> +	rev = edid->revision;
-> +
-> +	if (rev >= 4) {
-> +		bit_depth = edid_get_bit_depth_from_vid(edid);
-> +
-> +		if (bit_depth > 0 && bit_depth < 7)
-> +			igt_info("Max supported bit depth: %d\n", ((bit_depth << 1) + 4));
-> +		else
-> +			igt_info("Max supported bit depth: Undefined\n");
-> +
-> +		result = (bit_depth >= 3) && (bit_depth < 7);
-> +	} else {
-> +		bit_depth = edid_get_deep_color_from_vsdb(edid);
-> +
-> +		if (bit_depth &	HDMI_VSDB_DC_48BIT)
-> +			igt_info("Max supported bit depth: 16\n");
-> +		else if (bit_depth & HDMI_VSDB_DC_36BIT)
-> +			igt_info("Max supported bit depth: 12\n");
-> +		else if (bit_depth & HDMI_VSDB_DC_30BIT)
-> +			igt_info("Max supported bit depth: 10\n");
-> +		else
-> +			igt_info("Max supported bit depth: Undefined\n");
-> +
-> +		result = !!(bit_depth & (7 << 4));
-> +	}
-> +	drmModeFreePropertyBlob(edid_blob);
-> +
-> +	return result;
-> +}
-> +
-> +bool is_max_bpc_supported(igt_output_t *output)
-> +{
-> +	return igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC) &&
-> +		igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
-> +}
-> +
->  void paint_gradient_rectangles(data_t *data,
->  			       drmModeModeInfo *mode,
->  			       color_t *colors,
-> diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-> index bb6f0054f3..992087ac9c 100644
-> --- a/tests/kms_color_helper.h
-> +++ b/tests/kms_color_helper.h
-> @@ -36,6 +36,7 @@
->  #include "drm.h"
->  #include "drmtest.h"
->  #include "igt.h"
-> +#include "igt_edid.h"
->  
->  
->  /* Internal */
-> @@ -64,6 +65,8 @@ typedef struct {
->  	color_t coeffs[];
->  } gamma_lut_t;
->  
-> +bool is_panel_supports_deep_color(int fd, drmModeConnector *connector);
+> No, we have has_4tile other than that I don't think there is other way. 
 
-Double verb here, "is" + "supports". panel_supports_deep_color()
+Can you check 87302b06b99faf42c5543908174c2606ce22443e("Generalize away copy-pasta")
+commit from Ville. I think it is possible just to iterate all the formats/mods reported
+by plane, thus all supported formats would be tested.
+Just want to make sure we are doing the things in a most optimal way.
 
+Stan
 
--- 
-Petri Latvala
-
-
-> +bool is_max_bpc_supported(igt_output_t *output);
->  void paint_gradient_rectangles(data_t *data,
->  			       drmModeModeInfo *mode,
->  			       color_t *colors,
-> -- 
-> 2.35.0
 > 
+> Thanks 
+> Jeevan B
+> >
+> >Stan
+> >
+> >> +
+> >>  	igt_skip_on(method == IGT_DRAW_MMAP_WC &&
+> >!gem_mmap__has_wc(drm_fd));
+> >>  	igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
+> >>  		    !gem_has_mappable_ggtt(drm_fd)); @@ -315,6 +317,8 @@
+> >static
+> >> const char *modifier_str(int modifier_index)
+> >>  		return "xtiled";
+> >>  	case I915_FORMAT_MOD_Y_TILED:
+> >>  		return "ytiled";
+> >> +	case I915_FORMAT_MOD_4_TILED:
+> >> +		return "4tiled";
+> >>  	default:
+> >>  		igt_assert(false);
+> >>  	}
+> >> @@ -328,9 +332,9 @@ igt_main
+> >>  	igt_fixture
+> >>  		setup_environment();
+> >>
+> >> -	for (format_idx = 0; format_idx < N_FORMATS; format_idx++) {
+> >> +	for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++)
+> >> +{
+> >>  	for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+> >> -	for (modifier_idx = 0; modifier_idx < N_MODIFIER_METHODS;
+> >modifier_idx++) {
+> >> +	for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers);
+> >> +modifier_idx++) {
+> >>  		igt_describe("This subtest verfies igt_draw library works "
+> >>  			     "with different modifiers, DRM_FORMATS,
+> >DRAW_METHODS.");
+> >>  		igt_subtest_f("draw-method-%s-%s-%s",
+> >> --
+> >> 2.17.1
+> >>
