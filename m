@@ -1,22 +1,17 @@
 Return-path: <SRS0=2yIq=TB=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B317710F283
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 10:23:20 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Date: Fri, 18 Feb 2022 10:23:15 +0000
-Message-ID: <c74e8c26ec9e4b1e900d1c23178edc7f@intel.com>
-References: <20220216102633.26949-1-jeevan.b@intel.com>
- <20220216102633.26949-5-jeevan.b@intel.com> <20220217125118.GA3127@intel.com>
- <f83be4eaab5f4dd9998213284929cd1f@intel.com>
- <20220218101600.GA7530@intel.com>
-In-Reply-To: <20220218101600.GA7530@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88B0410F093
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 10:46:45 +0000 (UTC)
+Date: Fri, 18 Feb 2022 12:45:49 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Swati Sharma <swati2.sharma@intel.com>
+Message-ID: <Yg943YCHxhRmFP67@platvala-desk.ger.corp.intel.com>
+References: <20220216122217.16507-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 04/15] igt/tests: Add support for
- Tile4(TileF) format to kms_draw_crc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220216122217.16507-1-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [v5 0/9] Addition of new plane scaling test cases
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,147 +19,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
- Juha-pekka" <juha-pekka.heikkila@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
->-----Original Message-----
->From: Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com>
->Sent: Friday, February 18, 2022 3:46 PM
->To: B, Jeevan <jeevan.b@intel.com>
->Cc: igt-dev@lists.freedesktop.org; Heikkila, Juha-pekka <juha-
->pekka.heikkila@intel.com>; Kahola, Mika <mika.kahola@intel.com>
->Subject: Re: [PATCH i-g-t v3 04/15] igt/tests: Add support for Tile4(TileF=
-) format
->to kms_draw_crc
->
->On Fri, Feb 18, 2022 at 10:15:31AM +0200, B, Jeevan wrote:
->> >-----Original Message-----
->> >From: Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com>
->> >Sent: Thursday, February 17, 2022 6:21 PM
->> >To: B, Jeevan <jeevan.b@intel.com>
->> >Cc: igt-dev@lists.freedesktop.org; Heikkila, Juha-pekka <juha-
->> >pekka.heikkila@intel.com>; Kahola, Mika <mika.kahola@intel.com>
->> >Subject: Re: [PATCH i-g-t v3 04/15] igt/tests: Add support for
->> >Tile4(TileF) format to kms_draw_crc
->> >
->> >On Wed, Feb 16, 2022 at 03:56:22PM +0530, Jeevan B wrote:
->> >> From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
->> >>
->> >> kms_draw_crc would be the first sample test to support new format.
->> >>
->> >> v2: add check for tile-4 support
->> >>
->> >> Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
->> >> Signed-off-by: Jeevan B <jeevan.b@intel.com>
->> >> ---
->> >>  tests/i915/kms_draw_crc.c | 18 +++++++++++-------
->> >>  1 file changed, 11 insertions(+), 7 deletions(-)
->> >>
->> >> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
->> >> index 82c368e1..33b7bdf4 100644
->> >> --- a/tests/i915/kms_draw_crc.c
->> >> +++ b/tests/i915/kms_draw_crc.c
->> >> @@ -41,25 +41,24 @@ drmModeConnectorPtr
->> >> drm_connectors[MAX_CONNECTORS];  struct buf_ops *bops;
->> >> igt_pipe_crc_t *pipe_crc;
->> >>
->> >> -#define N_FORMATS 3
->> >> -static const uint32_t formats[N_FORMATS] =3D {
->> >> +static const uint32_t formats[] =3D {
->> >>  	DRM_FORMAT_XRGB8888,
->> >>  	DRM_FORMAT_RGB565,
->> >>  	DRM_FORMAT_XRGB2101010,
->> >>  };
->> >>
->> >> -#define N_MODIFIER_METHODS 3
->> >> -static const uint64_t modifiers[N_MODIFIER_METHODS] =3D {
->> >> +static const uint64_t modifiers[] =3D {
->> >>  	DRM_FORMAT_MOD_LINEAR,
->> >>  	I915_FORMAT_MOD_X_TILED,
->> >>  	I915_FORMAT_MOD_Y_TILED,
->> >> +	I915_FORMAT_MOD_4_TILED,
->> >>  };
->> >>
->> >>  struct base_crc {
->> >>  	bool set;
->> >>  	igt_crc_t crc;
->> >>  };
->> >> -struct base_crc base_crcs[N_FORMATS];
->> >> +struct base_crc base_crcs[ARRAY_SIZE(formats)];
->> >>
->> >>  struct modeset_params ms;
->> >>
->> >> @@ -178,6 +177,9 @@ static void draw_method_subtest(enum
->> >> igt_draw_method method,  {
->> >>  	igt_crc_t crc;
->> >>
->> >> +	igt_skip_on(modifier =3D=3D I915_FORMAT_MOD_4_TILED &&
->> >> +		    !HAS_4TILE(intel_get_drm_devid(drm_fd)));
->> >
->> >I wonder, why we don't use format_is_supported call here.
->> >We anyway call it, however its done with igt_require..
->> >
->> >Didn't we have somekind of more unified way of testing formats, only
->> >supported by current kernel/platform?
->> >
->> >I thought Ville did something about this..
->>
->> No, we have has_4tile other than that I don't think there is other way.
->
->Can you check 87302b06b99faf42c5543908174c2606ce22443e("Generalize away
->copy-pasta") commit from Ville. I think it is possible just to iterate all=
- the
->formats/mods reported by plane, thus all supported formats would be tested=
-.
->Just want to make sure we are doing the things in a most optimal way.
->
-Ok, Got it now. Will the do the change. =20
+On Wed, Feb 16, 2022 at 05:52:08PM +0530, Swati Sharma wrote:
+> In this series, combination of downscaling and upscaling
+> testcases are added. Also, code refactoring is done for
+> existing code.
+> 
+>     v2:-minor fixes, to prevent CI crashes
+>     v3:-added subtests for testing upscaling/downscaling for
+>         each plane individually (Ville)
+>        -modified existing subtests for each N plane scaling
+>         combo (Ville)
+>     v4:-removal of i915sm (Ville)
+>        -code reusablity (Ville)
+>     v5:-use enum (Viile)
+>        -limit while loop (Ville)
+>        -add assert for fail/pass (Ville)
+>        -added primary plane for testing (Ville)
+> 
+> Swati Sharma (9):
+>   tests/kms_plane_scaling: Removal of plane-scaling subtest
+>   tests/kms_plane_scaling: Add output name in dynamic subtests
+>   tests/kms_plane_scaling: Upscaling each plane
+>   tests/kms_plane_scaling: Downscaling each plane
+>   tests/kms_plane_scaling: Upscaling on 2 planes
+>   tests/kms_plane_scaling: Downscaling on 2 planes
+>   tests/kms_plane_scaling: Upscaling and downscaling scenario
+>   tests/kms_plane_scaling: Add negative test to check num of scalers
+>   tests/kms_plane_scaling: Refactor clipping-clamping subtest
+> 
+>  tests/kms_plane_scaling.c | 720 +++++++++++++++++++++++---------------
+>  1 file changed, 445 insertions(+), 275 deletions(-)
+> 
+> -- 
+> 2.25.1
+> 
 
-Thanks=20
-Jeevan B=20
 
->Stan
->
->>
->> Thanks
->> Jeevan B
->> >
->> >Stan
->> >
->> >> +
->> >>  	igt_skip_on(method =3D=3D IGT_DRAW_MMAP_WC &&
->> >!gem_mmap__has_wc(drm_fd));
->> >>  	igt_skip_on(method =3D=3D IGT_DRAW_MMAP_GTT &&
->> >>  		    !gem_has_mappable_ggtt(drm_fd)); @@ -315,6 +317,8 @@
->> >static
->> >> const char *modifier_str(int modifier_index)
->> >>  		return "xtiled";
->> >>  	case I915_FORMAT_MOD_Y_TILED:
->> >>  		return "ytiled";
->> >> +	case I915_FORMAT_MOD_4_TILED:
->> >> +		return "4tiled";
->> >>  	default:
->> >>  		igt_assert(false);
->> >>  	}
->> >> @@ -328,9 +332,9 @@ igt_main
->> >>  	igt_fixture
->> >>  		setup_environment();
->> >>
->> >> -	for (format_idx =3D 0; format_idx < N_FORMATS; format_idx++) {
->> >> +	for (format_idx =3D 0; format_idx < ARRAY_SIZE(formats);
->> >> +format_idx++) {
->> >>  	for (method =3D 0; method < IGT_DRAW_METHOD_COUNT; method++) {
->> >> -	for (modifier_idx =3D 0; modifier_idx < N_MODIFIER_METHODS;
->> >modifier_idx++) {
->> >> +	for (modifier_idx =3D 0; modifier_idx < ARRAY_SIZE(modifiers);
->> >> +modifier_idx++) {
->> >>  		igt_describe("This subtest verfies igt_draw library works "
->> >>  			     "with different modifiers, DRM_FORMATS,
->> >DRAW_METHODS.");
->> >>  		igt_subtest_f("draw-method-%s-%s-%s",
->> >> --
->> >> 2.17.1
->> >>
+Recapping some offline discussions for the mailing list:
+
+Patches 3+4 in this series ({Upscaling,Downscaling} each plane) can be
+dropped, Jessica will send a patch series getting that functionality
+covered.
+
+With that drop done this series is green for proceeding.
+
+
+-- 
+Petri Latvala
