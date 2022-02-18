@@ -1,19 +1,19 @@
 Return-path: <SRS0=2yIq=TB=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 945C010E391
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 10:50:33 +0000 (UTC)
-Date: Fri, 18 Feb 2022 12:49:36 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <Yg95wGpP06QHIf0n@platvala-desk.ger.corp.intel.com>
-References: <20220217154434.13877-1-anshuman.gupta@intel.com>
- <20220217154434.13877-3-anshuman.gupta@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D24EB10EC3F
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 12:40:32 +0000 (UTC)
+Date: Fri, 18 Feb 2022 13:40:28 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Yg+JgIbBLT1eVQ0C@kamilkon-DESK1>
+References: <20220215052347.21306-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220217154434.13877-3-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] test/perf_pmu: Change module unload
- assertion
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220215052347.21306-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_ringfill: Added test
+ description for test case.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,61 +21,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 17, 2022 at 09:14:34PM +0530, Anshuman Gupta wrote:
-> Update the module unload assertion values according to
-> to returned values from igt_i915_driver_unload() and
-> __igt_i915_driver_unload() instead of IGT process exit
-> values.
+Hi Sai,
+
+Dnia 2022-02-15 at 10:53:47 +0530, sai.gowtham.ch@intel.com napisał(a):
+> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 > 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> Added test description to test and subtest.
+> 
+> Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
+> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 > ---
->  tests/i915/perf_pmu.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  tests/i915/gem_ringfill.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> index 4f3cb6145..a8ea914ca 100644
-> --- a/tests/i915/perf_pmu.c
-> +++ b/tests/i915/perf_pmu.c
-> @@ -2101,7 +2101,7 @@ static void test_unload(unsigned int num_engines)
+> diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+> index ecfa0bea..0d86141b 100644
+> --- a/tests/i915/gem_ringfill.c
+> +++ b/tests/i915/gem_ringfill.c
+> @@ -51,6 +51,9 @@
+>  #define HIBERNATE 0x40
+>  #define NEWFD 0x80
 >  
->  		igt_debug("Read %d events from perf and trial unload\n", count);
->  		pmu_read_multi(fd[0], count, buf);
-> -		igt_assert_eq(__igt_i915_driver_unload(NULL), IGT_EXIT_SKIP);
-> +		igt_assert(__igt_i915_driver_unload(NULL) != 0);
+> +IGT_TEST_DESCRIPTION(" This test does many tiny batchbuffer operations to catch"
 
-igt_assert_neq(__igt_i915_driver_unload(NULL), 0)
+Remove space from beginning and try to avoid starting global
+description with "This test does".  You can also reuse comment
+from begginig of this test, it is:
+ * This is a test of doing many tiny batchbuffer operations, in the hope of
+ * catching failure to manage the ring properly near full.
+so you can rephrase it like "Create many tiny ...".
 
+> +		"errors while ring is near full.");
+Space before "errors" needed.
+Please compile and run with --describe to catch missing spaces.
 
--- 
-Petri Latvala
-
-
->  		pmu_read_multi(fd[0], count, buf);
+> +
+>  static unsigned int ring_size;
 >  
->  		igt_debug("Close perf\n");
-> @@ -2114,7 +2114,7 @@ static void test_unload(unsigned int num_engines)
->  	igt_waitchildren();
->  
->  	igt_debug("Final unload\n");
-> -	igt_assert_eq(__igt_i915_driver_unload(NULL), IGT_EXIT_SUCCESS);
-> +	igt_assert_eq(__igt_i915_driver_unload(NULL), 0);
->  }
->  
->  #define test_each_engine(T, i915, ctx, e) \
-> @@ -2394,7 +2394,7 @@ igt_main
+>  static void check_bo(int fd, uint32_t handle)
+> @@ -371,6 +374,9 @@ igt_main
+>  		}
 >  	}
 >  
->  	igt_subtest("module-unload") {
-> -		igt_require(igt_i915_driver_unload() == IGT_EXIT_SUCCESS);
-> +		igt_require(igt_i915_driver_unload() == 0);
->  		for (int pass = 0; pass < 3; pass++)
->  			test_unload(num_engines);
->  	}
+> +
+> +	igt_describe("Test runs on all available engines simultaniously and"
+> +			" checks how the driver handles a full ring.");
+----------------------- ^
+Please align under previous string.
+
+Last question: may you describe also dynamic tests ?
+
+>  	igt_subtest("basic-all") {
+>  		const struct intel_execution_engine2 *e;
+>  		intel_allocator_multiprocess_start();
 > -- 
-> 2.26.2
+> 2.35.0
 > 
+
+Regards,
+Kamil
