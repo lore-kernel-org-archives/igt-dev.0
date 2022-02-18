@@ -1,15 +1,15 @@
 Return-path: <SRS0=2yIq=TB=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B2FD10F015
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 09:10:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75F6E10EED8
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Feb 2022 09:10:24 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 18 Feb 2022 14:39:27 +0530
-Message-Id: <20220218090936.15857-8-jeevan.b@intel.com>
+Date: Fri, 18 Feb 2022 14:39:22 +0530
+Message-Id: <20220218090936.15857-3-jeevan.b@intel.com>
 In-Reply-To: <20220218090936.15857-1-jeevan.b@intel.com>
 References: <20220218090936.15857-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v4 07/16] igt/tests: Add support for
- Tile4(TileF) format to tests/kms_plane_multiple
+Subject: [igt-dev] [PATCH i-g-t v4 02/16] include/drm-uapi: Introduce new
+ Tile 4 format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,26 +22,59 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding subtest to test new tiling format.
+This tiling layout uses 4KB tiles in a row-major layout. It has the same
+shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B x 4). It
+only differs from Tile Y at the 256B granularity in between. At this
+granularity, Tile Y has a shape of 16B x 32 rows, but this tiling has a shape
+of 64B x 8 rows.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_plane_multiple.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/drm-uapi/drm_fourcc.h | 11 +++++++++++
+ include/drm-uapi/i915_drm.h   |  3 ++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index ebadc14b..1679f7ce 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -398,6 +398,9 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_subtest_f("atomic-pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
- 		test_plane_position(data, pipe, I915_FORMAT_MOD_Yf_TILED);
+diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
+index 91b6a0fd..318b50fa 100644
+--- a/include/drm-uapi/drm_fourcc.h
++++ b/include/drm-uapi/drm_fourcc.h
+@@ -559,6 +559,17 @@ extern "C" {
+  */
+ #define I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC fourcc_mod_code(INTEL, 8)
  
-+	igt_subtest_f("atomic-pipe-%s-tiling-4", kmstest_pipe_name(pipe))
-+		test_plane_position(data, pipe, I915_FORMAT_MOD_4_TILED);
++/*
++ * Intel Tile 4 layout
++ *
++ * This is a tiled layout using 4KB tiles in a row-major layout. It has the same
++ * shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B x 4). It
++ * only differs from Tile Y at the 256B granularity in between. At this
++ * granularity, Tile Y has a shape of 16B x 32 rows, but this tiling has a shape
++ * of 64B x 8 rows.
++ */
++#define I915_FORMAT_MOD_4_TILED         fourcc_mod_code(INTEL, 9)
 +
- 	igt_subtest_f("atomic-pipe-%s-tiling-none", kmstest_pipe_name(pipe))
- 		test_plane_position(data, pipe, DRM_FORMAT_MOD_LINEAR);
- }
+ /*
+  * Tiled, NV12MT, grouped in 64 (pixels) x 32 (lines) -sized macroblocks
+  *
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index 9c9e1afa..75206fc3 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -1522,13 +1522,14 @@ struct drm_i915_gem_caching {
+ #define I915_TILING_NONE	0
+ #define I915_TILING_X		1
+ #define I915_TILING_Y		2
++#define I915_TILING_4		3
+ /*
+  * Do not add new tiling types here.  The I915_TILING_* values are for
+  * de-tiling fence registers that no longer exist on modern platforms.  Although
+  * the hardware may support new types of tiling in general (e.g., Tile4), we
+  * do not need to add them to the uapi that is specific to now-defunct ioctls.
+  */
+-#define I915_TILING_LAST	I915_TILING_Y
++#define I915_TILING_LAST	I915_TILING_4
+ 
+ #define I915_BIT_6_SWIZZLE_NONE		0
+ #define I915_BIT_6_SWIZZLE_9		1
 -- 
 2.17.1
