@@ -1,15 +1,13 @@
 Return-path: <SRS0=ONlT=TE=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 21 Feb 2022 14:03:42 +0000
-Message-Id: <20220221140342.2487679-2-matthew.auld@intel.com>
-In-Reply-To: <20220221140342.2487679-1-matthew.auld@intel.com>
-References: <20220221140342.2487679-1-matthew.auld@intel.com>
+Date: Mon, 21 Feb 2022 14:10:31 +0000
+Message-Id: <20220221141036.2490380-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] test/i915/gem_exec_await: prefer
- gem_mmap__device_coherent
+Subject: [igt-dev] [PATCH i-g-t 1/6] lib/i915_drm_local: Add
+ I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,28 +21,53 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Make it play nice on at least DG1.
+For now dump into i915_drm_local.h. Once the uapi on the kernel side is
+merged, and is part of drm-next, we can sync the kernel headers and
+remove this.
 
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- tests/i915/gem_exec_await.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/i915/i915_drm_local.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
-index bf8eb682..fe176595 100644
---- a/tests/i915/gem_exec_await.c
-+++ b/tests/i915/gem_exec_await.c
-@@ -126,8 +126,8 @@ static void wide(int fd, const intel_ctx_t *ctx, int ring_size,
- 		if (ahnd)
- 			exec[e].exec[0].flags = EXEC_OBJECT_PINNED;
+diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
+index 9e82c968..7b5285f3 100644
+--- a/lib/i915/i915_drm_local.h
++++ b/lib/i915/i915_drm_local.h
+@@ -21,6 +21,33 @@ extern "C" {
+  */
+ #define I915_ENGINE_CLASS_COMPUTE 4
  
--		exec[e].cmd = gem_mmap__wc(fd, exec[e].exec[0].handle,
--					   0, 4096, PROT_WRITE);
-+		exec[e].cmd = gem_mmap__device_coherent(fd, exec[e].exec[0].handle,
-+							0, 4096, PROT_WRITE);
- 
- 		gem_set_domain(fd, exec[e].exec[0].handle,
- 			       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
++/*
++ * Signal to the kernel that the object will need to be accessed via
++ * the CPU.
++ *
++ * Only valid when placing objects in I915_MEMORY_CLASS_DEVICE, and only
++ * strictly required on platforms where only some of the device memory
++ * is directly visible or mappable through the CPU, like on DG2+.
++ *
++ * One of the placements MUST also be I915_MEMORY_CLASS_SYSTEM, to
++ * ensure we can always spill the allocation to system memory, if we
++ * can't place the object in the mappable part of
++ * I915_MEMORY_CLASS_DEVICE.
++ *
++ * Note that buffers that need to be captured with EXEC_OBJECT_CAPTURE,
++ * will need to enable this hint, if the object can also be placed in
++ * I915_MEMORY_CLASS_DEVICE, starting from DG2+. The execbuf call will
++ * throw an error otherwise. This also means that such objects will need
++ * I915_MEMORY_CLASS_SYSTEM set as a possible placement.
++ *
++ * Without this hint, the kernel will assume that non-mappable
++ * I915_MEMORY_CLASS_DEVICE is preferred for this object. Note that the
++ * kernel can still migrate the object to the mappable part, as a last
++ * resort, if userspace ever CPU faults this object, but this might be
++ * expensive, and so ideally should be avoided.
++ */
++#define I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS (1 << 0)
++
+ #if defined(__cplusplus)
+ }
+ #endif
 -- 
 2.34.1
