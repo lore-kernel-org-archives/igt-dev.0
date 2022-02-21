@@ -1,15 +1,16 @@
 Return-path: <SRS0=ONlT=TE=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E959C10E2C9
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 12:09:58 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 749A510E20A
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 13:00:30 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 21 Feb 2022 17:40:57 +0530
-Message-Id: <20220221121057.6590-1-nidhi1.gupta@intel.com>
+Date: Mon, 21 Feb 2022 14:00:23 +0100
+Message-Id: <20220221130023.59748-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4] tests/i915:Extend
- kms_frontbuffer_tracking to test FBC on multiple pipes
+Subject: [igt-dev] [PATCH i-g-t] test/gem_exec_capture: Fix alignment for
+ discrete
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,141 +18,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>, ville.syrjala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In future more platforms will support FBC on
-multiple pipes, so to validate the same extending
-the kms_frontbuffer_tracking test.
+Discrete hardware like DG2 has different alignment restrictions when
+gem objects comes from system and device memory (page size is not enough
+there). Fix this as well as handle offsets > 4GiB.
 
-In kernel code now  FBC debugfs files are exposed
-for each crtc so added debugfs_read_crtc function
-to get the per pipe fbc status.
-
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/kms_frontbuffer_tracking.c | 40 ++++++++++++++-------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+ tests/i915/gem_exec_capture.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 532bfbb9..c31adc38 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -732,8 +732,21 @@ static int __debugfs_write(const char *param, char *buf, int len)
- 	return igt_sysfs_write(drm.debugfs, param, buf, len - 1);
- }
+diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+index 60f8df04c..150f98611 100644
+--- a/tests/i915/gem_exec_capture.c
++++ b/tests/i915/gem_exec_capture.c
+@@ -264,6 +264,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	struct offset offset;
+ 	int i, fence_out;
+ 	struct gem_engine_properties saved_engine;
++	uint64_t align = gem_detect_safe_alignment(fd);
  
-+static void __debugfs_read_crtc(const char *param, char *buf, int len)
-+{
-+	int dir;
-+	enum pipe pipe;
-+
-+	pipe = prim_mode_params.pipe;
-+	dir = igt_debugfs_pipe_dir(drm.fd, pipe, O_RDONLY);
-+	igt_require_fd(dir);
-+	igt_debugfs_simple_read(dir, param, buf, len);
-+	close(dir);
-+}
-+
- #define debugfs_read(p, arr) __debugfs_read(p, arr, sizeof(arr))
- #define debugfs_write(p, arr) __debugfs_write(p, arr, sizeof(arr))
-+#define debugfs_read_crtc(p, arr) __debugfs_read_crtc(p, arr, sizeof(arr))
+ 	saved_engine = configure_hangs(fd, e, ctx->id);
  
- static char last_fbc_buf[128];
+@@ -280,7 +281,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
  
-@@ -742,7 +755,7 @@ static bool fbc_is_enabled(int lvl)
- 	char buf[128];
- 	bool print = true;
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	if (lvl != IGT_LOG_DEBUG)
- 		last_fbc_buf[0] = '\0';
- 	else if (strcmp(last_fbc_buf, buf))
-@@ -825,8 +838,8 @@ static struct timespec fbc_get_last_action(void)
- 	char *action;
- 	ssize_t n_read;
- 
--	debugfs_read("i915_fbc_status", buf);
- 
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	action = strstr(buf, "\nLast action:");
- 	igt_assert(action);
- 
-@@ -874,8 +887,8 @@ static void fbc_setup_last_action(void)
- 	char buf[128];
- 	char *action;
- 
--	debugfs_read("i915_fbc_status", buf);
- 
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	action = strstr(buf, "\nLast action:");
- 	if (!action) {
- 		igt_info("FBC last action not supported\n");
-@@ -893,7 +906,7 @@ static bool fbc_is_compressing(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(buf, "\nCompressing: yes\n") != NULL;
- }
- 
-@@ -906,7 +919,7 @@ static bool fbc_not_enough_stolen(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(buf, "FBC disabled: not enough stolen memory\n");
- }
- 
-@@ -914,7 +927,7 @@ static bool fbc_stride_not_supported(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(buf, "FBC disabled: framebuffer stride not supported\n");
- }
- 
-@@ -922,7 +935,7 @@ static bool fbc_mode_too_large(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(buf, "FBC disabled: mode too large for compression\n");
- }
- 
-@@ -1388,7 +1401,7 @@ static bool fbc_supported_on_chipset(void)
- {
- 	char buf[128];
- 
--	debugfs_read("i915_fbc_status", buf);
-+	debugfs_read_crtc("i915_fbc_status", buf);
- 	if (*buf == '\0')
- 		return false;
- 
-@@ -1404,17 +1417,6 @@ static void setup_fbc(void)
- 		return;
+ 	for (i = 0; i < ARRAY_SIZE(obj); i++) {
+ 		obj[i].offset = get_offset(ahnd, obj[i].handle,
+-					   i == CAPTURE ? target_size : 4096, 0);
++					   i == CAPTURE ? target_size : 4096, align);
+ 		obj[i].flags |= ahnd ? EXEC_OBJECT_PINNED : 0;
  	}
  
--	/*
--	 * While some platforms do allow FBC on pipes B/C, this test suite
--	 * is not prepared for that yet.
--	 * TODO: solve this.
--	 */
--	if (prim_mode_params.pipe != PIPE_A) {
--		igt_info("Can't test FBC: primary connector doesn't support "
--			 "pipe A\n");
--		return;
--	}
--
- 	/* Early Generations are not able to report compression status. */
- 	if (!AT_LEAST_GEN(devid, 7))
- 		opt.fbc_check_compression = false;
+@@ -427,6 +428,8 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	struct offset *offsets;
+ 	int i, fence_out;
+ 	struct gem_engine_properties saved_engine;
++	uint64_t align = gem_detect_min_alignment_for_regions(fd, REGION_SMEM,
++							      REGION_SMEM);
+ 
+ 	saved_engine = configure_hangs(fd, e, ctx->id);
+ 
+@@ -437,12 +440,13 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	igt_assert(obj);
+ 
+ 	obj[0].handle = gem_create(fd, 4096);
+-	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
+-	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
++	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, align);
++	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0)
++			| EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 
+ 	for (i = 0; i < count; i++) {
+ 		obj[i + 1].handle = gem_create(fd, size);
+-		obj[i + 1].offset = get_offset(ahnd, obj[i + 1].handle, size, 0);
++		obj[i + 1].offset = get_offset(ahnd, obj[i + 1].handle, size, align);
+ 		obj[i + 1].flags =
+ 			EXEC_OBJECT_CAPTURE | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 		if (ahnd)
+@@ -462,8 +466,8 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	obj[count + 1].handle = gem_create(fd, 4096);
+ 	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
+ 	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
+-	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
+-	obj[count + 1].flags = ahnd ? EXEC_OBJECT_PINNED : 0;
++	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, align);
++	obj[count + 1].flags = ahnd ? EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS : 0;
+ 
+ 	memset(reloc, 0, sizeof(reloc));
+ 	reloc[0].target_handle = obj[count + 1].handle; /* recurse */
 -- 
-2.26.2
+2.32.0
