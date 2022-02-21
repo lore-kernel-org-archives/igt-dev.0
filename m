@@ -1,15 +1,17 @@
 Return-path: <SRS0=ONlT=TE=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7E3A10E4B4
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 10:24:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B5FF10E4D0
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 10:24:40 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 21 Feb 2022 15:54:21 +0530
-Message-Id: <20220221102423.8089-1-anshuman.gupta@intel.com>
+Date: Mon, 21 Feb 2022 15:54:23 +0530
+Message-Id: <20220221102423.8089-3-anshuman.gupta@intel.com>
+In-Reply-To: <20220221102423.8089-1-anshuman.gupta@intel.com>
+References: <20220221102423.8089-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/2] Avoid process exit return values in
- igt_kmod
+Subject: [igt-dev] [PATCH i-g-t v2 2/2] test/perf_pmu: Change module unload
+ assertion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,24 +24,49 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Kmod igt library functions like igt_i915_driver_{load, unload}
-uses process exit IGT_EXIT_{FAILURE, SKIP, SUCCESS} return values.
-Let these function return actual return values
-from returned igt_kmod_{load, unload} functions. 
-
-Also modify the perf_pmu test to use 
-__igt_i915_driver_unload() accordingly.
+Update the module unload assertion values according to
+to returned values from igt_i915_driver_unload() and
+__igt_i915_driver_unload() instead of IGT process exit
+values.
 
 v2:
-- Addressed review comment from petri.
+- Use igt_assert_neq(__igt_i915_driver_unload(NULL), 0). [Petri]
 
-Anshuman Gupta (2):
-  lib/igt_kmod: Don't use process exit return value
-  test/perf_pmu: Change module unload assertion
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ tests/i915/perf_pmu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- lib/igt_kmod.c        | 34 +++++++++++++++++++++-------------
- tests/i915/perf_pmu.c |  6 +++---
- 2 files changed, 24 insertions(+), 16 deletions(-)
-
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index 4f3cb6145..a7f26c80f 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -2101,7 +2101,7 @@ static void test_unload(unsigned int num_engines)
+ 
+ 		igt_debug("Read %d events from perf and trial unload\n", count);
+ 		pmu_read_multi(fd[0], count, buf);
+-		igt_assert_eq(__igt_i915_driver_unload(NULL), IGT_EXIT_SKIP);
++		igt_assert_neq(__igt_i915_driver_unload(NULL), 0);
+ 		pmu_read_multi(fd[0], count, buf);
+ 
+ 		igt_debug("Close perf\n");
+@@ -2114,7 +2114,7 @@ static void test_unload(unsigned int num_engines)
+ 	igt_waitchildren();
+ 
+ 	igt_debug("Final unload\n");
+-	igt_assert_eq(__igt_i915_driver_unload(NULL), IGT_EXIT_SUCCESS);
++	igt_assert_eq(__igt_i915_driver_unload(NULL), 0);
+ }
+ 
+ #define test_each_engine(T, i915, ctx, e) \
+@@ -2394,7 +2394,7 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("module-unload") {
+-		igt_require(igt_i915_driver_unload() == IGT_EXIT_SUCCESS);
++		igt_require(igt_i915_driver_unload() == 0);
+ 		for (int pass = 0; pass < 3; pass++)
+ 			test_unload(num_engines);
+ 	}
 -- 
 2.26.2
