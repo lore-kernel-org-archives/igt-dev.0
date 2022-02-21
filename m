@@ -1,16 +1,15 @@
 Return-path: <SRS0=ONlT=TE=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 749A510E20A
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 13:00:30 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 21 Feb 2022 14:00:23 +0100
-Message-Id: <20220221130023.59748-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2082969491044269346=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] test/gem_exec_capture: Fix alignment for
- discrete
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Mon, 21 Feb 2022 13:31:43 -0000
+Message-ID: <164545030305.21416.941135990128466791@emeril.freedesktop.org>
+References: <20220221093812.3911-1-jeevan.b@intel.com>
+In-Reply-To: <20220221093812.3911-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fdisplay=5Fmodes=3A_Add_test_for_extended_mode_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,77 +17,231 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Discrete hardware like DG2 has different alignment restrictions when
-gem objects comes from system and device memory (page size is not enough
-there). Fix this as well as handle offsets > 4GiB.
+--===============2082969491044269346==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/gem_exec_capture.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 60f8df04c..150f98611 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -264,6 +264,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	struct offset offset;
- 	int i, fence_out;
- 	struct gem_engine_properties saved_engine;
-+	uint64_t align = gem_detect_safe_alignment(fd);
- 
- 	saved_engine = configure_hangs(fd, e, ctx->id);
- 
-@@ -280,7 +281,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 
- 	for (i = 0; i < ARRAY_SIZE(obj); i++) {
- 		obj[i].offset = get_offset(ahnd, obj[i].handle,
--					   i == CAPTURE ? target_size : 4096, 0);
-+					   i == CAPTURE ? target_size : 4096, align);
- 		obj[i].flags |= ahnd ? EXEC_OBJECT_PINNED : 0;
- 	}
- 
-@@ -427,6 +428,8 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	struct offset *offsets;
- 	int i, fence_out;
- 	struct gem_engine_properties saved_engine;
-+	uint64_t align = gem_detect_min_alignment_for_regions(fd, REGION_SMEM,
-+							      REGION_SMEM);
- 
- 	saved_engine = configure_hangs(fd, e, ctx->id);
- 
-@@ -437,12 +440,13 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	igt_assert(obj);
- 
- 	obj[0].handle = gem_create(fd, 4096);
--	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
--	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
-+	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, align);
-+	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0)
-+			| EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
- 
- 	for (i = 0; i < count; i++) {
- 		obj[i + 1].handle = gem_create(fd, size);
--		obj[i + 1].offset = get_offset(ahnd, obj[i + 1].handle, size, 0);
-+		obj[i + 1].offset = get_offset(ahnd, obj[i + 1].handle, size, align);
- 		obj[i + 1].flags =
- 			EXEC_OBJECT_CAPTURE | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
- 		if (ahnd)
-@@ -462,8 +466,8 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	obj[count + 1].handle = gem_create(fd, 4096);
- 	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
- 	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
--	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
--	obj[count + 1].flags = ahnd ? EXEC_OBJECT_PINNED : 0;
-+	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, align);
-+	obj[count + 1].flags = ahnd ? EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS : 0;
- 
- 	memset(reloc, 0, sizeof(reloc));
- 	reloc[0].target_handle = obj[count + 1].handle; /* recurse */
--- 
-2.32.0
+Series: tests/kms_display_modes: Add test for extended mode (rev2)
+URL   : https://patchwork.freedesktop.org/series/100323/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11263 -> IGTPW_6661
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/index.html
+
+Participating hosts (43 -> 42)
+------------------------------
+
+  Additional (2): fi-apl-guc fi-pnv-d510 
+  Missing    (3): fi-bsw-cyan fi-icl-u2 shard-tglu 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6661 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-apl-guc:         NOTRUN -> [DMESG-WARN][1] ([i915#1610])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-apl-guc/igt@debugfs_test@read_all_entries.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][2] -> [INCOMPLETE][3] ([i915#3921])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11263/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        NOTRUN -> [DMESG-FAIL][4] ([i915#2927])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][5] ([fdo#109271]) +39 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][6] ([fdo#109271] / [i915#2403] / [i915#4312])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-pnv-d510/igt@runner@aborted.html
+    - fi-apl-guc:         NOTRUN -> [FAIL][7] ([i915#2426] / [i915#4312])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-apl-guc/igt@runner@aborted.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][8] ([i915#4785]) -> [INCOMPLETE][9] ([i915#3303])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11263/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+    - bat-dg1-6:          [DMESG-FAIL][10] ([i915#4957]) -> [DMESG-FAIL][11] ([i915#4494] / [i915#4957])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11263/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1610]: https://gitlab.freedesktop.org/drm/intel/issues/1610
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
+  [i915#2927]: https://gitlab.freedesktop.org/drm/intel/issues/2927
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6349 -> IGTPW_6661
+
+  CI-20190529: 20190529
+  CI_DRM_11263: 4f574e4e0184dfccce23b438846b95bbb4d14e39 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6661: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/index.html
+  IGT_6349: 0513032006f385f34fcd094c810b93f31cbed09d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_display_modes@extended-mode-basic
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/index.html
+
+--===============2082969491044269346==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_display_modes: Add test for extended mode (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100323/">https://patchwork.freedesktop.org/series/100323/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11263 -&gt; IGTPW_6661</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/index.html</p>
+<h2>Participating hosts (43 -&gt; 42)</h2>
+<p>Additional (2): fi-apl-guc fi-pnv-d510 <br />
+  Missing    (3): fi-bsw-cyan fi-icl-u2 shard-tglu </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6661 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@read_all_entries:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-apl-guc/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1610">i915#1610</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11263/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2927">i915#2927</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +39 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-apl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11263/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>)</p>
+</li>
+<li>
+<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11263/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6349 -&gt; IGTPW_6661</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11263: 4f574e4e0184dfccce23b438846b95bbb4d14e39 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6661: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6661/index.html<br />
+  IGT_6349: 0513032006f385f34fcd094c810b93f31cbed09d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_display_modes@extended-mode-basic</p>
+
+</body>
+</html>
+
+--===============2082969491044269346==--
