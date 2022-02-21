@@ -1,14 +1,14 @@
 Return-path: <SRS0=ONlT=TE=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F2B0F10E57A
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 12:06:29 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E959C10E2C9
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 12:09:58 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 21 Feb 2022 17:37:31 +0530
-Message-Id: <20220221120731.6493-1-nidhi1.gupta@intel.com>
+Date: Mon, 21 Feb 2022 17:40:57 +0530
+Message-Id: <20220221121057.6590-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] tests/i915:Extend
+Subject: [igt-dev] [PATCH i-g-t v4] tests/i915:Extend
  kms_frontbuffer_tracking to test FBC on multiple pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,28 +32,26 @@ to get the per pipe fbc status.
 
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/i915/kms_frontbuffer_tracking.c | 42 +++++++++++++++------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ tests/i915/kms_frontbuffer_tracking.c | 40 ++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
 
 diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 532bfbb9..363b4c6c 100644
+index 532bfbb9..c31adc38 100644
 --- a/tests/i915/kms_frontbuffer_tracking.c
 +++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -732,8 +732,23 @@ static int __debugfs_write(const char *param, char *buf, int len)
+@@ -732,8 +732,21 @@ static int __debugfs_write(const char *param, char *buf, int len)
  	return igt_sysfs_write(drm.debugfs, param, buf, len - 1);
  }
  
 +static void __debugfs_read_crtc(const char *param, char *buf, int len)
 +{
-+	int dir,fd;
++	int dir;
 +	enum pipe pipe;
 +
 +	pipe = prim_mode_params.pipe;
 +	dir = igt_debugfs_pipe_dir(drm.fd, pipe, O_RDONLY);
 +	igt_require_fd(dir);
-+	fd = openat(dir, "i915_fbc_status", O_RDONLY);
-+	igt_debugfs_simple_read(fd, param, buf, len);
-+	close(fd);
++	igt_debugfs_simple_read(dir, param, buf, len);
 +	close(dir);
 +}
 +
@@ -63,7 +61,7 @@ index 532bfbb9..363b4c6c 100644
  
  static char last_fbc_buf[128];
  
-@@ -742,7 +757,7 @@ static bool fbc_is_enabled(int lvl)
+@@ -742,7 +755,7 @@ static bool fbc_is_enabled(int lvl)
  	char buf[128];
  	bool print = true;
  
@@ -72,7 +70,7 @@ index 532bfbb9..363b4c6c 100644
  	if (lvl != IGT_LOG_DEBUG)
  		last_fbc_buf[0] = '\0';
  	else if (strcmp(last_fbc_buf, buf))
-@@ -825,8 +840,8 @@ static struct timespec fbc_get_last_action(void)
+@@ -825,8 +838,8 @@ static struct timespec fbc_get_last_action(void)
  	char *action;
  	ssize_t n_read;
  
@@ -82,7 +80,7 @@ index 532bfbb9..363b4c6c 100644
  	action = strstr(buf, "\nLast action:");
  	igt_assert(action);
  
-@@ -874,8 +889,8 @@ static void fbc_setup_last_action(void)
+@@ -874,8 +887,8 @@ static void fbc_setup_last_action(void)
  	char buf[128];
  	char *action;
  
@@ -92,7 +90,7 @@ index 532bfbb9..363b4c6c 100644
  	action = strstr(buf, "\nLast action:");
  	if (!action) {
  		igt_info("FBC last action not supported\n");
-@@ -893,7 +908,7 @@ static bool fbc_is_compressing(void)
+@@ -893,7 +906,7 @@ static bool fbc_is_compressing(void)
  {
  	char buf[128];
  
@@ -101,7 +99,7 @@ index 532bfbb9..363b4c6c 100644
  	return strstr(buf, "\nCompressing: yes\n") != NULL;
  }
  
-@@ -906,7 +921,7 @@ static bool fbc_not_enough_stolen(void)
+@@ -906,7 +919,7 @@ static bool fbc_not_enough_stolen(void)
  {
  	char buf[128];
  
@@ -110,7 +108,7 @@ index 532bfbb9..363b4c6c 100644
  	return strstr(buf, "FBC disabled: not enough stolen memory\n");
  }
  
-@@ -914,7 +929,7 @@ static bool fbc_stride_not_supported(void)
+@@ -914,7 +927,7 @@ static bool fbc_stride_not_supported(void)
  {
  	char buf[128];
  
@@ -119,7 +117,7 @@ index 532bfbb9..363b4c6c 100644
  	return strstr(buf, "FBC disabled: framebuffer stride not supported\n");
  }
  
-@@ -922,7 +937,7 @@ static bool fbc_mode_too_large(void)
+@@ -922,7 +935,7 @@ static bool fbc_mode_too_large(void)
  {
  	char buf[128];
  
@@ -128,7 +126,7 @@ index 532bfbb9..363b4c6c 100644
  	return strstr(buf, "FBC disabled: mode too large for compression\n");
  }
  
-@@ -1388,7 +1403,7 @@ static bool fbc_supported_on_chipset(void)
+@@ -1388,7 +1401,7 @@ static bool fbc_supported_on_chipset(void)
  {
  	char buf[128];
  
@@ -137,7 +135,7 @@ index 532bfbb9..363b4c6c 100644
  	if (*buf == '\0')
  		return false;
  
-@@ -1404,17 +1419,6 @@ static void setup_fbc(void)
+@@ -1404,17 +1417,6 @@ static void setup_fbc(void)
  		return;
  	}
  
