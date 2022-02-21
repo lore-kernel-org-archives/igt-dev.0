@@ -1,20 +1,16 @@
 Return-path: <SRS0=ONlT=TE=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5526310E2A0
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 11:54:52 +0000 (UTC)
-Message-ID: <f2324dc7-4d4e-1e75-a980-9d65276b6d5d@linux.intel.com>
-Date: Mon, 21 Feb 2022 11:54:48 +0000
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 986CC10E5A3
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 12:03:31 +0000 (UTC)
+From: apoorva1.singh@intel.com
+To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com,
+ kamil.konieczny@linux.intel.com
+Date: Mon, 21 Feb 2022 17:43:17 +0530
+Message-Id: <20220221121317.37054-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Jasmine Newsome <jasmine.newsome@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220219013215.3531766-1-jasmine.newsome@intel.com>
- <20220219013215.3531766-3-jasmine.newsome@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20220219013215.3531766-3-jasmine.newsome@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_spin_batch: Removing
- context persistence
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t,
+ v4] i915/gem_mmap: Added test description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,62 +22,105 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+From: Apoorva Singh <apoorva1.singh@intel.com>
 
-On 19/02/2022 01:32, Jasmine Newsome wrote:
-> The spin all test relied on context persistence unecessarily by trying
-> to destroy contexts while keeping spinners active.
-> The current implementation of context persistence in i915 can cause
-> failures, and persistence is not needed for this test.
+Added test description to all the available subtests.
 
-Could you please expand a bit on "current implementation" and "can cause 
-failures"?
+v2: Modified few descriptions to be more specific
 
-Also from the subject of "Removing context persistence" I was expecting 
-to see usage of I915_CONTEXT_PARAM_PERSISTENCE to actually change the mode.
+v3: Rebase
 
-My concern is that the pattern of destroying contexts while keeping 
-things active on the GPU is very wide spread in IGT and possibly exists 
-in userspace as well.
+v4: Incorporated minor changes as suggested in feedback
 
-Has the wider story been analysed by the architects here and what is the 
-plan? Do we actually know no userspace actually depends on it?
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
+---
+ tests/i915/gem_mmap.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-[Comes back later, after spotting the cover letter.]
-
-So it's only GuC, not i915, so please say that in this commit message 
-since cover letters are not saved in git history.
-
-Regards,
-
-Tvrtko
-
-> 
-> Moving intel_ctx_destroy after igt_spin_end.
-> 
-> Signed-off-by: Jasmine Newsome <jasmine.newsome@intel.com>
-> ---
->   tests/i915/gem_spin_batch.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/gem_spin_batch.c b/tests/i915/gem_spin_batch.c
-> index 653812c7..707d69b6 100644
-> --- a/tests/i915/gem_spin_batch.c
-> +++ b/tests/i915/gem_spin_batch.c
-> @@ -161,8 +161,6 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
->   				    .engine = e->flags,
->   				    .flags = (IGT_SPIN_POLL_RUN |
->   					      IGT_SPIN_NO_PREEMPTION));
-> -		if (flags & PARALLEL_SPIN_NEW_CTX)
-> -			intel_ctx_destroy(i915, ctx);
->   
->   		igt_spin_busywait_until_started(spin);
->   		igt_list_move(&spin->link, &list);
-> @@ -172,6 +170,8 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
->   		igt_assert(gem_bo_busy(i915, spin->handle));
->   		ahnd = spin->ahnd;
->   		igt_spin_end(spin);
-> +		if (flags & PARALLEL_SPIN_NEW_CTX)
-> +			intel_ctx_destroy(i915, spin->opts.ctx);
->   		gem_sync(i915, spin->handle);
->   		igt_spin_free(i915, spin);
->   		put_ahnd(ahnd);
+diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+index 61c9c5c1..9d72727b 100644
+--- a/tests/i915/gem_mmap.c
++++ b/tests/i915/gem_mmap.c
+@@ -39,6 +39,8 @@
+ #include "drm.h"
+ #include "i915/gem_create.h"
+ 
++IGT_TEST_DESCRIPTION("Basic MMAP IOCTL tests for memory regions.");
++
+ #define OBJECT_SIZE 16384
+ #define PAGE_SIZE 4096
+ int fd;
+@@ -161,6 +163,7 @@ igt_main
+ 		igt_require(gem_has_legacy_mmap(fd));
+ 	}
+ 
++	igt_describe("Verify mapping to invalid gem objects won't be created.");
+ 	igt_subtest("bad-object") {
+ 		uint32_t real_handle = gem_create(fd, 4096);
+ 		uint32_t handles[20];
+@@ -185,6 +188,7 @@ igt_main
+ 		gem_close(fd, real_handle);
+ 	}
+ 
++	igt_describe("Verify mapping to gem object with invalid offset won't be created.");
+ 	igt_subtest("bad-offset") {
+ 		struct bad_offset {
+ 			uint64_t size;
+@@ -212,6 +216,7 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Verify mapping to gem object with invalid size won't be created.");
+ 	igt_subtest("bad-size") {
+ 		uint64_t bad_size[] = {
+ 			0,
+@@ -242,6 +247,8 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Test basics of newly mapped gem object like default content, write and read "
++	       "coherency, mapping existence after gem_close and unmapping.");
+ 	igt_subtest("basic") {
+ 		struct drm_i915_gem_mmap arg = {
+ 			.handle = gem_create(fd, OBJECT_SIZE),
+@@ -269,6 +276,7 @@ igt_main
+ 		munmap(addr, OBJECT_SIZE);
+ 	}
+ 
++	igt_describe("Map small buffer object though direct CPU access, bypassing GPU.");
+ 	igt_subtest("short-mmap") {
+ 		uint32_t handle = gem_create(fd, OBJECT_SIZE);
+ 
+@@ -281,15 +289,28 @@ igt_main
+ 		gem_close(fd, handle);
+ 	}
+ 
++	igt_describe("Verify that GTT page faults are asynchronous to GPU rendering and "
++	       "completes within a specific time.");
+ 	igt_subtest("pf-nonblock")
+ 		test_pf_nonblock(fd);
+ 
++	igt_describe("Test the write read coherency and simultaneous access of different pages "
++	       "of a small buffer object.");
+ 	igt_subtest("basic-small-bo")
+ 		test_huge_bo(-1);
++
++	igt_describe("Test the write read coherency and simultaneous access of different pages "
++	       "of a big buffer object.");
+ 	igt_subtest("big-bo")
+ 		test_huge_bo(0);
++
++	igt_describe("Test the write read coherency and simultaneous access of different pages "
++	       "of a huge buffer object.");
+ 	igt_subtest("huge-bo")
+ 		test_huge_bo(1);
++
++	igt_describe("Test the write read coherency and simultaneous access of different pages "
++	       "while swapping buffer object.");
+ 	igt_subtest("swap-bo")
+ 		test_huge_bo(2);
+ 
+-- 
+2.25.1
