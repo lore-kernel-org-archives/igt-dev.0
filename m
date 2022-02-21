@@ -1,19 +1,20 @@
 Return-path: <SRS0=ONlT=TE=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2204D10E5A1
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 11:21:15 +0000 (UTC)
-Date: Mon, 21 Feb 2022 12:21:10 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YhN1pgH0hT03qlCU@kamilkon-DESK1>
-References: <20220221095633.5834-1-apoorva1.singh@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5526310E2A0
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 11:54:52 +0000 (UTC)
+Message-ID: <f2324dc7-4d4e-1e75-a980-9d65276b6d5d@linux.intel.com>
+Date: Mon, 21 Feb 2022 11:54:48 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220221095633.5834-1-apoorva1.singh@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t,
- v3] i915/gem_exec_store: Add test description
+Content-Language: en-US
+To: Jasmine Newsome <jasmine.newsome@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220219013215.3531766-1-jasmine.newsome@intel.com>
+ <20220219013215.3531766-3-jasmine.newsome@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20220219013215.3531766-3-jasmine.newsome@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_spin_batch: Removing
+ context persistence
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,61 +26,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Dnia 2022-02-21 at 15:26:33 +0530, apoorva1.singh@intel.com napisał(a):
-> From: Apoorva Singh <apoorva1.singh@intel.com>
-> 
-> Add description for test and all subtests
-> 
-> v2: Rebase
-> 
-> v3: Incorporated changes in description based
->     on feedback
-> 
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/i915/gem_exec_store.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/tests/i915/gem_exec_store.c b/tests/i915/gem_exec_store.c
-> index cb99f951..42e80041 100644
-> --- a/tests/i915/gem_exec_store.c
-> +++ b/tests/i915/gem_exec_store.c
-> @@ -35,6 +35,8 @@
->  #include "igt_device.h"
->  #include "igt_gt.h"
->  
-> +IGT_TEST_DESCRIPTION("Exercise the store dword functionality using execbuf-ioctl");
-> +
->  #define ENGINE_MASK  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
->  
->  /* Without alignment detection we assume the worst-case scenario. */
-> @@ -432,15 +434,21 @@ igt_main
->  		igt_fork_hang_detector(fd);
->  	}
->  
-> +	igt_describe("Verify that all capable engines can store dwords to a common buffer object");
->  	igt_subtest("basic")
->  		store_all(fd, ctx);
->  
-> +	igt_describe("Verify that each capable engine can store a dword to a buffer object");
->  	test_each_engine("dword", fd, ctx, e)
->  		store_dword(fd, ctx, e);
->  
-> +	igt_describe("Verify that each capable engine can store a dword to different cachelines "
-> +	       "of a buffer object");
->  	test_each_engine("cachelines", fd, ctx, e)
->  		store_cachelines(fd, ctx, e, 0);
->  
-> +	igt_describe("Verify that each capable engine can store a dword to various page-sized "
-> +	       "buffer objects");
->  	test_each_engine("pages", fd, ctx, e)
->  		store_cachelines(fd, ctx, e, PAGES);
->  
-> -- 
-> 2.25.1
-> 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Kamil
+On 19/02/2022 01:32, Jasmine Newsome wrote:
+> The spin all test relied on context persistence unecessarily by trying
+> to destroy contexts while keeping spinners active.
+> The current implementation of context persistence in i915 can cause
+> failures, and persistence is not needed for this test.
+
+Could you please expand a bit on "current implementation" and "can cause 
+failures"?
+
+Also from the subject of "Removing context persistence" I was expecting 
+to see usage of I915_CONTEXT_PARAM_PERSISTENCE to actually change the mode.
+
+My concern is that the pattern of destroying contexts while keeping 
+things active on the GPU is very wide spread in IGT and possibly exists 
+in userspace as well.
+
+Has the wider story been analysed by the architects here and what is the 
+plan? Do we actually know no userspace actually depends on it?
+
+[Comes back later, after spotting the cover letter.]
+
+So it's only GuC, not i915, so please say that in this commit message 
+since cover letters are not saved in git history.
+
+Regards,
+
+Tvrtko
+
+> 
+> Moving intel_ctx_destroy after igt_spin_end.
+> 
+> Signed-off-by: Jasmine Newsome <jasmine.newsome@intel.com>
+> ---
+>   tests/i915/gem_spin_batch.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/i915/gem_spin_batch.c b/tests/i915/gem_spin_batch.c
+> index 653812c7..707d69b6 100644
+> --- a/tests/i915/gem_spin_batch.c
+> +++ b/tests/i915/gem_spin_batch.c
+> @@ -161,8 +161,6 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
+>   				    .engine = e->flags,
+>   				    .flags = (IGT_SPIN_POLL_RUN |
+>   					      IGT_SPIN_NO_PREEMPTION));
+> -		if (flags & PARALLEL_SPIN_NEW_CTX)
+> -			intel_ctx_destroy(i915, ctx);
+>   
+>   		igt_spin_busywait_until_started(spin);
+>   		igt_list_move(&spin->link, &list);
+> @@ -172,6 +170,8 @@ static void spin_all(int i915, const intel_ctx_t *ctx, unsigned int flags)
+>   		igt_assert(gem_bo_busy(i915, spin->handle));
+>   		ahnd = spin->ahnd;
+>   		igt_spin_end(spin);
+> +		if (flags & PARALLEL_SPIN_NEW_CTX)
+> +			intel_ctx_destroy(i915, spin->opts.ctx);
+>   		gem_sync(i915, spin->handle);
+>   		igt_spin_free(i915, spin);
+>   		put_ahnd(ahnd);
