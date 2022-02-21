@@ -1,16 +1,19 @@
 Return-path: <SRS0=ONlT=TE=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 019BF10F70A
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 07:15:35 +0000 (UTC)
-From: apoorva1.singh@intel.com
-To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com,
- kamil.konieczny@linux.intel.com
-Date: Mon, 21 Feb 2022 12:54:59 +0530
-Message-Id: <20220221072459.4423-1-apoorva1.singh@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7EF6410F711
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Feb 2022 07:15:51 +0000 (UTC)
+Date: Mon, 21 Feb 2022 08:15:27 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jeevan B <jeevan.b@intel.com>
+Message-ID: <YhM8DzfyNHVt4sLg@zkempczy-mobl2>
+References: <20220218090936.15857-1-jeevan.b@intel.com>
+ <20220218090936.15857-3-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t,
- v4] i915/gem_ctx_create: Added test description for test case
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220218090936.15857-3-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 02/16] include/drm-uapi: Introduce
+ new Tile 4 format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,119 +21,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, juha-pekka.heikkila@intel.com,
+ petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Apoorva Singh <apoorva1.singh@intel.com>
+On Fri, Feb 18, 2022 at 02:39:22PM +0530, Jeevan B wrote:
+> This tiling layout uses 4KB tiles in a row-major layout. It has the same
+> shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B x 4). It
+> only differs from Tile Y at the 256B granularity in between. At this
+> granularity, Tile Y has a shape of 16B x 32 rows, but this tiling has a shape
+> of 64B x 8 rows.
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  include/drm-uapi/drm_fourcc.h | 11 +++++++++++
+>  include/drm-uapi/i915_drm.h   |  3 ++-
+>  2 files changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
+> index 91b6a0fd..318b50fa 100644
+> --- a/include/drm-uapi/drm_fourcc.h
+> +++ b/include/drm-uapi/drm_fourcc.h
+> @@ -559,6 +559,17 @@ extern "C" {
+>   */
+>  #define I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC fourcc_mod_code(INTEL, 8)
+>  
+> +/*
+> + * Intel Tile 4 layout
+> + *
+> + * This is a tiled layout using 4KB tiles in a row-major layout. It has the same
+> + * shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B x 4). It
+> + * only differs from Tile Y at the 256B granularity in between. At this
+> + * granularity, Tile Y has a shape of 16B x 32 rows, but this tiling has a shape
+> + * of 64B x 8 rows.
+> + */
+> +#define I915_FORMAT_MOD_4_TILED         fourcc_mod_code(INTEL, 9)
+> +
+>  /*
+>   * Tiled, NV12MT, grouped in 64 (pixels) x 32 (lines) -sized macroblocks
+>   *
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index 9c9e1afa..75206fc3 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -1522,13 +1522,14 @@ struct drm_i915_gem_caching {
+>  #define I915_TILING_NONE	0
+>  #define I915_TILING_X		1
+>  #define I915_TILING_Y		2
+> +#define I915_TILING_4		3
+>  /*
+>   * Do not add new tiling types here.  The I915_TILING_* values are for
+>   * de-tiling fence registers that no longer exist on modern platforms.  Although
+>   * the hardware may support new types of tiling in general (e.g., Tile4), we
+>   * do not need to add them to the uapi that is specific to now-defunct ioctls.
+>   */
 
-Added test and subtests description
+Looks comment + change are in a contradiction.
 
-v2: Modified description to be more precise
+I think we should rework tiling a bit in IGT to break away from I915_TILING_*.
+Newer gens supports different tilings and it would be good if we would have
+single point of information what is supported on devid we're on. 
 
-v3: Rebase
+--
+Zbigniew
 
-v4: Incorporated minor changes in description based
-    on feedback
-
-Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-Cc: Dec, Katarzyna <katarzyna.dec@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Acked-by: Katarzyna Dec <katarzyna.dec@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_ctx_create.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
-
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index 44846652..c90a2e20 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -36,6 +36,8 @@
- #include "igt_rand.h"
- #include "sw_sync.h"
- 
-+IGT_TEST_DESCRIPTION("Test the context create ioctls");
-+
- #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
- 
- static unsigned all_engines[I915_EXEC_RING_MASK + 1];
-@@ -585,6 +587,7 @@ igt_main
- 		igt_fork_hang_detector(fd);
- 	}
- 
-+	igt_describe("Test random context creation");
- 	igt_subtest("basic") {
- 		memset(&create, 0, sizeof(create));
- 		create.ctx_id = rand();
-@@ -594,41 +597,67 @@ igt_main
- 		gem_context_destroy(fd, create.ctx_id);
- 	}
- 
-+	igt_describe("Verify valid and invalid context extensions");
- 	igt_subtest("ext-param")
- 		basic_ext_param(fd);
-+
-+	igt_describe("Set, validate and execute particular context params");
- 	igt_subtest("iris-pipeline")
- 		iris_pipeline(fd);
- 
-+	igt_describe("Create contexts upto available RAM size, calculate the average "
-+	       "performance of their execution on multiple parallel processes");
- 	igt_subtest("maximum-mem")
- 		maximum(fd, &cfg, ncpus, CHECK_RAM);
-+
-+	igt_describe("Create contexts upto available RAM+SWAP size, calculate the average "
-+	       "performance of their execution on multiple parallel processes");
- 	igt_subtest("maximum-swap")
- 		maximum(fd, &cfg, ncpus, CHECK_RAM | CHECK_SWAP);
- 
-+	igt_describe("Exercise implicit per-fd context creation");
- 	igt_subtest("basic-files")
- 		files(fd, &cfg, 2, 1);
-+
-+	igt_describe("Exercise implicit per-fd context creation on 1 CPU for long duration");
- 	igt_subtest("files")
- 		files(fd, &cfg, 20, 1);
-+
-+	igt_describe("Exercise implicit per-fd context creation on all CPUs for long duration");
- 	igt_subtest("forked-files")
- 		files(fd, &cfg, 20, ncpus);
- 
-+	igt_describe("Calculate the average performance of context creation and "
-+	       "it's execution using all engines");
- 	/* NULL value means all engines */
- 	igt_subtest("active-all")
- 		active(fd, &cfg, NULL, 20, 1);
-+
-+	igt_describe("Calculate the average performance of context creation and it's execution "
-+	       "using all engines on multiple parallel processes");
- 	igt_subtest("forked-active-all")
- 		active(fd, &cfg, NULL, 20, ncpus);
- 
-+	igt_describe("For each engine calculate the average performance of context creation "
-+	       "and execution");
- 	igt_subtest_with_dynamic("active") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
- 				active(fd, &cfg, e, 20, 1);
- 		}
- 	}
-+
-+	igt_describe("For each engine calculate the average performance of context creation "
-+	       "and execution on multiple parallel processes");
- 	igt_subtest_with_dynamic("forked-active") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
- 				active(fd, &cfg, e, 20, ncpus);
- 		}
- 	}
-+
-+	igt_describe("For each engine calculate the average performance of context creation "
-+	       "and execution while all other engines are hogging the resources");
- 	igt_subtest_with_dynamic("hog") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--- 
-2.25.1
+> -#define I915_TILING_LAST	I915_TILING_Y
+> +#define I915_TILING_LAST	I915_TILING_4
+>  
+>  #define I915_BIT_6_SWIZZLE_NONE		0
+>  #define I915_BIT_6_SWIZZLE_9		1
+> -- 
+> 2.17.1
+> 
