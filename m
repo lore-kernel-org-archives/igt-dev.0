@@ -1,17 +1,17 @@
 Return-path: <SRS0=Vgj9=TF=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEDD410E893
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Feb 2022 14:08:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F075F10E882
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Feb 2022 14:08:50 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Feb 2022 19:38:38 +0530
-Message-Id: <20220222140838.21823-3-anshuman.gupta@intel.com>
+Date: Tue, 22 Feb 2022 19:38:37 +0530
+Message-Id: <20220222140838.21823-2-anshuman.gupta@intel.com>
 In-Reply-To: <20220222140838.21823-1-anshuman.gupta@intel.com>
 References: <20220222140838.21823-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/2] test/perf_pmu: Change module unload
- assertion
+Subject: [igt-dev] [PATCH i-g-t v3 1/2] lib/igt_kmod: Don't use process exit
+ return value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,62 +24,109 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update the module unload assertion values according to
-to returned values from igt_i915_driver_unload() and
-__igt_i915_driver_unload() instead of IGT process exit
-values.
+Kmod igt library functions like igt_i915_driver_{load, unload}
+uses process exit IGT_EXIT_{FAILURE, SKIP, SUCCESS} return values.
+Let these function return actual return values
+from returned igt_kmod_{load, unload} functions.
 
-v2:
-- Use igt_assert_neq(__igt_i915_driver_unload(NULL), 0). [Petri]
-v3:
-- Use igt_assert(ret !=0 && !(strcmp(who, "i915"))). [Ashutosh]
-
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Suggested-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/perf_pmu.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ lib/igt_kmod.c | 34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index 4f3cb6145..c48cc07df 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -2046,7 +2046,8 @@ static void test_unload(unsigned int num_engines)
- 		const struct intel_execution_engine2 *e;
- 		int fd[4 + num_engines * 3], i;
- 		uint64_t *buf;
--		int count = 0;
-+		int count = 0, ret;
-+		const char *who;
- 		int i915;
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index a249ea922..cf7a3b228 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -355,22 +355,26 @@ igt_kmod_list_loaded(void)
+ int
+ igt_i915_driver_load(const char *opts)
+ {
++	int ret;
++
+ 	if (opts)
+ 		igt_info("Reloading i915 with %s\n\n", opts);
  
- 		i915 = __drm_open_driver(DRIVER_INTEL);
-@@ -2101,7 +2102,8 @@ static void test_unload(unsigned int num_engines)
+-	if (igt_kmod_load("i915", opts)) {
++	ret = igt_kmod_load("i915", opts);
++	if (ret) {
+ 		igt_warn("Could not load i915\n");
+-		return IGT_EXIT_FAILURE;
++		return ret;
+ 	}
  
- 		igt_debug("Read %d events from perf and trial unload\n", count);
- 		pmu_read_multi(fd[0], count, buf);
--		igt_assert_eq(__igt_i915_driver_unload(NULL), IGT_EXIT_SKIP);
-+		ret = __igt_i915_driver_unload(&who);
-+		igt_assert(ret != 0 && !strcmp(who, "i915"));
- 		pmu_read_multi(fd[0], count, buf);
+ 	bind_fbcon(true);
+ 	igt_kmod_load("snd_hda_intel", NULL);
  
- 		igt_debug("Close perf\n");
-@@ -2114,7 +2116,7 @@ static void test_unload(unsigned int num_engines)
- 	igt_waitchildren();
- 
- 	igt_debug("Final unload\n");
--	igt_assert_eq(__igt_i915_driver_unload(NULL), IGT_EXIT_SUCCESS);
-+	igt_assert_eq(__igt_i915_driver_unload(NULL), 0);
+-	return IGT_EXIT_SUCCESS;
++	return 0;
  }
  
- #define test_each_engine(T, i915, ctx, e) \
-@@ -2394,7 +2396,7 @@ igt_main
+ int __igt_i915_driver_unload(const char **who)
+ {
++	int ret;
+ 	const char *sound[] = {
+ 		"snd_hda_intel",
+ 		"snd_hdmi_lpe_audio",
+@@ -390,32 +394,36 @@ int __igt_i915_driver_unload(const char **who)
+ 		if (igt_kmod_is_loaded(*m)) {
+ 			igt_terminate_process(SIGTERM, "alsactl");
+ 			kick_snd_hda_intel();
+-			if (igt_kmod_unload(*m, 0)) {
++			ret = igt_kmod_unload(*m, 0);
++			if (ret) {
+ 				if (who)
+ 					*who = *m;
+-				return IGT_EXIT_FAILURE;
++				return ret;
+ 			}
+ 		}
  	}
  
- 	igt_subtest("module-unload") {
--		igt_require(igt_i915_driver_unload() == IGT_EXIT_SUCCESS);
-+		igt_require(igt_i915_driver_unload() == 0);
- 		for (int pass = 0; pass < 3; pass++)
- 			test_unload(num_engines);
+ 	for (const char **m = aux; *m; m++) {
+-		if (igt_kmod_is_loaded(*m))
+-			if (igt_kmod_unload(*m, 0)) {
++		if (igt_kmod_is_loaded(*m)) {
++			ret = igt_kmod_unload(*m, 0);
++			if (ret) {
+ 				if (who)
+ 					*who = *m;
+-				return IGT_EXIT_FAILURE;
++				return ret;
+ 			}
++		}
  	}
+ 
+ 	if (igt_kmod_is_loaded("i915")) {
+-		if (igt_kmod_unload("i915", 0)) {
++		ret = igt_kmod_unload("i915", 0);
++		if (ret) {
+ 			if (who)
+ 				*who = "i915";
+-			return IGT_EXIT_FAILURE;
++			return ret;
+ 		}
+ 	}
+ 
+-	return IGT_EXIT_SUCCESS;
++	return 0;
+ }
+ 
+ /**
+@@ -447,10 +455,10 @@ igt_i915_driver_unload(void)
+ 
+ 	if (igt_kmod_is_loaded("i915")) {
+ 		igt_warn("i915.ko still loaded!\n");
+-		return IGT_EXIT_FAILURE;
++		return -EBUSY;
+ 	}
+ 
+-	return IGT_EXIT_SUCCESS;
++	return 0;
+ }
+ 
+ /**
 -- 
 2.26.2
