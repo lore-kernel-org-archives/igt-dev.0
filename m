@@ -1,19 +1,19 @@
 Return-path: <SRS0=Vgj9=TF=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D91B710E5FB
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Feb 2022 14:45:53 +0000 (UTC)
-Date: Tue, 22 Feb 2022 15:45:49 +0100
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C6D910E816
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Feb 2022 14:55:17 +0000 (UTC)
+Date: Tue, 22 Feb 2022 15:55:13 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YhT3HauyYSgl8UDQ@kamilkon-DESK1>
-References: <20220221095633.5834-1-apoorva1.singh@intel.com>
+Message-ID: <YhT5UR4chg99bZjR@kamilkon-DESK1>
+References: <20220222124536.19369-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220221095633.5834-1-apoorva1.singh@intel.com>
+In-Reply-To: <20220222124536.19369-1-priyanka.dandamudi@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t,
- v3] i915/gem_exec_store: Add test description
+ v3] tests/debugfs_test: Added test description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,70 +25,54 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Apoorva,
-
-please adjust strings to be on the same column, see below.
+Hi Priyanka,
  
-Dnia 2022-02-21 at 15:26:33 +0530, apoorva1.singh@intel.com napisał(a):
-> From: Apoorva Singh <apoorva1.singh@intel.com>
+Dnia 2022-02-22 at 18:15:36 +0530, priyanka.dandamudi@intel.com napisał(a):
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> Add description for test and all subtests
+> Added test description to all the available subtests.
 > 
-> v2: Rebase
+> v2: rebase
 > 
-> v3: Incorporated changes in description based
->     on feedback
+> v3: Updated test descriptions.
 > 
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> Cc: Melkaveri Arjun <Arjun.Melkaveri@intel.com>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  tests/i915/gem_exec_store.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  tests/debugfs_test.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/i915/gem_exec_store.c b/tests/i915/gem_exec_store.c
-> index cb99f951..42e80041 100644
-> --- a/tests/i915/gem_exec_store.c
-> +++ b/tests/i915/gem_exec_store.c
-> @@ -35,6 +35,8 @@
->  #include "igt_device.h"
->  #include "igt_gt.h"
+> diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+> index e6535ccd..deb58f10 100644
+> --- a/tests/debugfs_test.c
+> +++ b/tests/debugfs_test.c
+> @@ -29,6 +29,8 @@
+>  #include <sys/types.h>
+>  #include <dirent.h>
 >  
-> +IGT_TEST_DESCRIPTION("Exercise the store dword functionality using execbuf-ioctl");
+> +IGT_TEST_DESCRIPTION("Read entries from debugfs and sysfs paths.");
 > +
-
-imho there should be no "the" before "store dword".
-
->  #define ENGINE_MASK  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
->  
->  /* Without alignment detection we assume the worst-case scenario. */
-> @@ -432,15 +434,21 @@ igt_main
->  		igt_fork_hang_detector(fd);
+>  static void read_and_discard_sysfs_entries(int path_fd, int indent)
+>  {
+>  	struct dirent *dirent;
+> @@ -187,11 +189,13 @@ igt_main
+>  		kmstest_set_vt_graphics_mode();
 >  	}
 >  
-> +	igt_describe("Verify that all capable engines can store dwords to a common buffer object");
->  	igt_subtest("basic")
->  		store_all(fd, ctx);
->  
-> +	igt_describe("Verify that each capable engine can store a dword to a buffer object");
->  	test_each_engine("dword", fd, ctx, e)
->  		store_dword(fd, ctx, e);
->  
-> +	igt_describe("Verify that each capable engine can store a dword to different cachelines "
-> +	       "of a buffer object");
+> +	igt_describe("Read all entries from sysfs path.");
+>  	igt_subtest("sysfs")
+>  		read_and_discard_sysfs_entries(sysfs, 0);
+> +	igt_describe("Read all entries from debugfs path.");
+>  	igt_subtest("read_all_entries")
+>  		read_and_discard_sysfs_entries(debugfs, 0);
+> -
 
-adjust here
+Please keep this newline here, it separates tests from subtets group.
 
->  	test_each_engine("cachelines", fd, ctx, e)
->  		store_cachelines(fd, ctx, e, 0);
->  
-> +	igt_describe("Verify that each capable engine can store a dword to various page-sized "
-> +	       "buffer objects");
-
-adjust here
-
->  	test_each_engine("pages", fd, ctx, e)
->  		store_cachelines(fd, ctx, e, PAGES);
+> +	igt_describe("Read all debugfs entries with display on/off.");
+>  	igt_subtest_group
+>  		kms_tests(fd, debugfs);
 >  
 > -- 
 > 2.25.1
