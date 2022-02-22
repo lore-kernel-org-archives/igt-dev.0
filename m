@@ -1,19 +1,19 @@
 Return-path: <SRS0=Vgj9=TF=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5B9F10E9B3
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Feb 2022 14:33:27 +0000 (UTC)
-Date: Tue, 22 Feb 2022 15:33:22 +0100
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D91B710E5FB
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Feb 2022 14:45:53 +0000 (UTC)
+Date: Tue, 22 Feb 2022 15:45:49 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YhT0MhZzY/xbpIFK@kamilkon-DESK1>
-References: <20220221121317.37054-1-apoorva1.singh@intel.com>
+Message-ID: <YhT3HauyYSgl8UDQ@kamilkon-DESK1>
+References: <20220221095633.5834-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220221121317.37054-1-apoorva1.singh@intel.com>
+In-Reply-To: <20220221095633.5834-1-apoorva1.singh@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t,
- v4] i915/gem_mmap: Added test description for test case
+ v3] i915/gem_exec_store: Add test description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,144 +27,74 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Apoorva,
 
-please ajust strings to begin on the same column, see below.
-
-Dnia 2022-02-21 at 17:43:17 +0530, apoorva1.singh@intel.com napisał(a):
+please adjust strings to be on the same column, see below.
+ 
+Dnia 2022-02-21 at 15:26:33 +0530, apoorva1.singh@intel.com napisał(a):
 > From: Apoorva Singh <apoorva1.singh@intel.com>
 > 
-> Added test description to all the available subtests.
-
-s/test description/tests descriptions/
-
-Please use plural here, there was more than one added.
-
+> Add description for test and all subtests
 > 
-> v2: Modified few descriptions to be more specific
+> v2: Rebase
 > 
-> v3: Rebase
-> 
-> v4: Incorporated minor changes as suggested in feedback
+> v3: Incorporated changes in description based
+>     on feedback
 > 
 > Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/i915/gem_mmap.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
+>  tests/i915/gem_exec_store.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
-> index 61c9c5c1..9d72727b 100644
-> --- a/tests/i915/gem_mmap.c
-> +++ b/tests/i915/gem_mmap.c
-> @@ -39,6 +39,8 @@
->  #include "drm.h"
->  #include "i915/gem_create.h"
+> diff --git a/tests/i915/gem_exec_store.c b/tests/i915/gem_exec_store.c
+> index cb99f951..42e80041 100644
+> --- a/tests/i915/gem_exec_store.c
+> +++ b/tests/i915/gem_exec_store.c
+> @@ -35,6 +35,8 @@
+>  #include "igt_device.h"
+>  #include "igt_gt.h"
 >  
-> +IGT_TEST_DESCRIPTION("Basic MMAP IOCTL tests for memory regions.");
+> +IGT_TEST_DESCRIPTION("Exercise the store dword functionality using execbuf-ioctl");
 > +
->  #define OBJECT_SIZE 16384
->  #define PAGE_SIZE 4096
->  int fd;
-> @@ -161,6 +163,7 @@ igt_main
->  		igt_require(gem_has_legacy_mmap(fd));
->  	}
->  
-> +	igt_describe("Verify mapping to invalid gem objects won't be created.");
->  	igt_subtest("bad-object") {
->  		uint32_t real_handle = gem_create(fd, 4096);
->  		uint32_t handles[20];
-> @@ -185,6 +188,7 @@ igt_main
->  		gem_close(fd, real_handle);
->  	}
->  
-> +	igt_describe("Verify mapping to gem object with invalid offset won't be created.");
->  	igt_subtest("bad-offset") {
->  		struct bad_offset {
->  			uint64_t size;
-> @@ -212,6 +216,7 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Verify mapping to gem object with invalid size won't be created.");
->  	igt_subtest("bad-size") {
->  		uint64_t bad_size[] = {
->  			0,
-> @@ -242,6 +247,8 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Test basics of newly mapped gem object like default content, write and read "
----------------------^
-> +	       "coherency, mapping existence after gem_close and unmapping.");
----------------------^
 
-This should look like:
+imho there should be no "the" before "store dword".
 
-+	igt_describe("Test basics of newly mapped gem object like default content, write and read "
-+		     "coherency, mapping existence after gem_close and unmapping.");
-
-Please use tabs, then spaces. Please do the same edit in
-following lines.
-
->  	igt_subtest("basic") {
->  		struct drm_i915_gem_mmap arg = {
->  			.handle = gem_create(fd, OBJECT_SIZE),
-> @@ -269,6 +276,7 @@ igt_main
->  		munmap(addr, OBJECT_SIZE);
+>  #define ENGINE_MASK  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+>  
+>  /* Without alignment detection we assume the worst-case scenario. */
+> @@ -432,15 +434,21 @@ igt_main
+>  		igt_fork_hang_detector(fd);
 >  	}
 >  
-> +	igt_describe("Map small buffer object though direct CPU access, bypassing GPU.");
->  	igt_subtest("short-mmap") {
->  		uint32_t handle = gem_create(fd, OBJECT_SIZE);
+> +	igt_describe("Verify that all capable engines can store dwords to a common buffer object");
+>  	igt_subtest("basic")
+>  		store_all(fd, ctx);
 >  
-> @@ -281,15 +289,28 @@ igt_main
->  		gem_close(fd, handle);
->  	}
+> +	igt_describe("Verify that each capable engine can store a dword to a buffer object");
+>  	test_each_engine("dword", fd, ctx, e)
+>  		store_dword(fd, ctx, e);
 >  
-> +	igt_describe("Verify that GTT page faults are asynchronous to GPU rendering and "
-> +	       "completes within a specific time.");
+> +	igt_describe("Verify that each capable engine can store a dword to different cachelines "
+> +	       "of a buffer object");
 
 adjust here
 
->  	igt_subtest("pf-nonblock")
->  		test_pf_nonblock(fd);
+>  	test_each_engine("cachelines", fd, ctx, e)
+>  		store_cachelines(fd, ctx, e, 0);
 >  
-> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
-> +	       "of a small buffer object.");
+> +	igt_describe("Verify that each capable engine can store a dword to various page-sized "
+> +	       "buffer objects");
 
 adjust here
 
->  	igt_subtest("basic-small-bo")
->  		test_huge_bo(-1);
-> +
-> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
-> +	       "of a big buffer object.");
-
-adjust here
-
->  	igt_subtest("big-bo")
->  		test_huge_bo(0);
-> +
-> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
-> +	       "of a huge buffer object.");
-
-adjust here
-
->  	igt_subtest("huge-bo")
->  		test_huge_bo(1);
-> +
-> +	igt_describe("Test the write read coherency and simultaneous access of different pages "
-> +	       "while swapping buffer object.");
-
-adjust here
-
->  	igt_subtest("swap-bo")
->  		test_huge_bo(2);
+>  	test_each_engine("pages", fd, ctx, e)
+>  		store_cachelines(fd, ctx, e, PAGES);
 >  
 > -- 
 > 2.25.1
-> 
-With that fixed, you can add my r-b.
+>
+With that fixed you can add my r-b.
 
 Regards,
 Kamil
+ 
