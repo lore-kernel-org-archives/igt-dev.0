@@ -1,17 +1,17 @@
 Return-path: <SRS0=Vgj9=TF=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BAE310E36B
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Feb 2022 03:37:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97E9710E358
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Feb 2022 03:37:16 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	manasi.d.navare@intel.com
-Date: Tue, 22 Feb 2022 09:06:01 +0530
-Message-Id: <20220222033601.43925-4-bhanuprakash.modem@intel.com>
+Date: Tue, 22 Feb 2022 09:05:59 +0530
+Message-Id: <20220222033601.43925-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220222033601.43925-1-bhanuprakash.modem@intel.com>
 References: <20220222033601.43925-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 3/3] HAX: Add VRR negative tests to BAT
+Subject: [igt-dev] [i-g-t 1/3] tests/kms_vrr: Create dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,22 +23,91 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Create dynamic subtests with crtc/connector combinations
+
+Cc: Manasi Navare <manasi.d.navare@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_vrr.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 5c867bbf7e..01fc213b31 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -138,6 +138,7 @@ igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
- igt@kms_psr@primary_mmap_gtt
- igt@kms_setmode@basic-clone-single-crtc
-+igt@kms_vrr@negative-basic
- igt@i915_pm_backlight@basic-brightness
- igt@i915_pm_rpm@basic-pci-d3-state
- igt@i915_pm_rpm@basic-rte
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 55de7cb989..8976d4a6c3 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -364,7 +364,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	igt_info("VRR Test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
+ 		 output->name, kmstest_pipe_name(pipe), range.min, range.max);
+ 
+-	set_vrr_on_pipe(data, pipe, 1);
++	set_vrr_on_pipe(data, pipe, true);
+ 
+ 	/*
+ 	 * Do a short run with VRR, but don't check the result.
+@@ -414,7 +414,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+ 		     ((range.max + range.min) / 2), rate, result);
+ 
+-	set_vrr_on_pipe(data, pipe, 0);
++	set_vrr_on_pipe(data, pipe, false);
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+ 	igt_assert_f(result < 10,
+ 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR off threshold exceeded, result was %u%%\n",
+@@ -435,7 +435,6 @@ static void
+ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ {
+ 	igt_output_t *output;
+-	bool found = false;
+ 
+ 	for_each_connected_output(&data->display, output) {
+ 		enum pipe pipe;
+@@ -443,16 +442,15 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 		if (!has_vrr(output))
+ 			continue;
+ 
+-		for_each_pipe(&data->display, pipe)
++		for_each_pipe(&data->display, pipe) {
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+-				test(data, pipe, output, flags);
+-				found = true;
++				igt_dynamic_f("pipe-%s-%s",
++					      kmstest_pipe_name(pipe), output->name)
++					test(data, pipe, output, flags);
+ 				break;
+ 			}
++		}
+ 	}
+-
+-	if (!found)
+-		igt_skip("No vrr capable outputs found.\n");
+ }
+ 
+ igt_main
+@@ -471,21 +469,21 @@ igt_main
+ 
+ 	igt_describe("Tests that VRR is enabled and that the difference between flip "
+ 		     "timestamps converges to the requested rate");
+-	igt_subtest("flip-basic")
++	igt_subtest_with_dynamic("flip-basic")
+ 		run_vrr_test(&data, test_basic, 0);
+ 
+ 	igt_describe("Tests with DPMS that VRR is enabled and that the difference between flip "
+ 		     "timestamps converges to the requested rate.");
+-	igt_subtest("flip-dpms")
++	igt_subtest_with_dynamic("flip-dpms")
+ 		run_vrr_test(&data, test_basic, TEST_DPMS);
+ 
+ 	igt_describe("Tests that VRR is enabled and that the difference between flip "
+ 		     "timestamps converges to the requested rate in a suspend test");
+-	igt_subtest("flip-suspend")
++	igt_subtest_with_dynamic("flip-suspend")
+ 		run_vrr_test(&data, test_basic, TEST_SUSPEND);
+ 
+ 	igt_describe("Make sure that flips happen at flipline decision boundary.");
+-	igt_subtest("flipline")
++	igt_subtest_with_dynamic("flipline")
+ 		run_vrr_test(&data, test_basic, TEST_FLIPLINE);
+ 
+ 	igt_fixture {
 -- 
 2.35.0
