@@ -1,15 +1,17 @@
 Return-path: <SRS0=Vgj9=TF=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Content-Type: multipart/alternative;
- boundary="===============6301441573725323285=="
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+ Michal Wajdeczko <michal.wajdeczko@intel.com>
+Date: Tue, 22 Feb 2022 18:59:42 +0100
+Message-ID: <13380668.RDIVbhacDa@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <c94e00ee-967f-8dd8-8d00-e67a860c1cd9@intel.com>
+References: <20220222151100.83283-1-janusz.krzysztofik@linux.intel.com>
+ <c94e00ee-967f-8dd8-8d00-e67a860c1cd9@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Anshuman Gupta" <anshuman.gupta@intel.com>
-Date: Tue, 22 Feb 2022 17:30:21 -0000
-Message-ID: <164555102139.23042.17386553433027302397@emeril.freedesktop.org>
-References: <20220222140838.21823-1-anshuman.gupta@intel.com>
-In-Reply-To: <20220222140838.21823-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQXZvaWQg?=
- =?utf-8?q?process_exit_return_values_in_igt=5Fkmod_=28rev3=29?=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/igt_device: Add support for
+ accessing unbound VF PCI devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,234 +19,163 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6301441573725323285==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Micha=C5=82,
 
-== Series Details ==
+Thanks for review.
 
-Series: Avoid process exit return values in igt_kmod (rev3)
-URL   : https://patchwork.freedesktop.org/series/100341/
-State : success
+On Tuesday, 22 February 2022 17:16:54 CET Michal Wajdeczko wrote:
+>=20
+> On 22.02.2022 16:11, Janusz Krzysztofik wrote:
+> > The library provides igt_device_get_pci_device() function that allows to
+> > get access to a PCI device from an open DRM device file descriptor.  It
+> > can be used on VF devices as long as a DRM driver is bound to them.
+> > However, SR-IOV tests may want to exercise VF PCI devices created by a =
+PF
+> > without binding any DRM driver to them.
+> >=20
+> > While keeping the API of igt_device_get_pci_device() untouched, extend =
+API
+> > of its underlying helper __igt_device_get_pci_device() with an extra
+> > argument for specifying VF ID of the requested PCI device and expose th=
+is
+> > function as public.
+> >=20
+> > v2: refresh on top of IGT libpciaccess wrappers and drop previously add=
+ed
+> >     but no longer needed error unwind path and recommendations for users
+> >     on calling pci_system_cleanup() after use (Chris),
+> >   - fix incorrect validation of snprintf() result and misaligned
+> >     formatting of igt_warn_on_f() arguments.
+> > v3: follow VF numbering convention of Linux PCI ABI (Chris),
+> >   - fix and improve DOC.
+> >=20
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > Reviewed-by: Chris Wilson <chris.p.wilson@intel.com> # v2
+> > ---
+> >  lib/igt_device.c | 33 +++++++++++++++++++++++++++------
+> >  lib/igt_device.h |  1 +
+> >  2 files changed, 28 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/lib/igt_device.c b/lib/igt_device.c
+> > index c50bf4a1f7..46b7dbc490 100644
+> > --- a/lib/igt_device.c
+> > +++ b/lib/igt_device.c
+> > @@ -149,9 +149,9 @@ struct igt_pci_addr {
+> >  	unsigned int function;
+> >  };
+> > =20
+> > -static int igt_device_get_pci_addr(int fd, struct igt_pci_addr *pci)
+> > +static int igt_device_get_pci_addr(int fd, int vf_id, struct igt_pci_a=
+ddr *pci)
+> >  {
+> > -	char path[IGT_DEV_PATH_LEN];
+> > +	char link[20], path[IGT_DEV_PATH_LEN];
+> >  	char *buf;
+> >  	int sysfs;
+> >  	int len;
+> > @@ -159,11 +159,21 @@ static int igt_device_get_pci_addr(int fd, struct=
+ igt_pci_addr *pci)
+> >  	if (!igt_device_is_pci(fd))
+> >  		return -ENODEV;
+> > =20
+> > +	if (vf_id < 0)
+> > +		len =3D snprintf(link, sizeof(link), "device");
+> > +	else
+> > +		len =3D snprintf(link, sizeof(link), "device/virtfn%u", vf_id);
+> > +	if (igt_warn_on_f(len >=3D sizeof(link),
+> > +			  "IGT bug: insufficient buffer space for rendering PCI device link=
+ name\n"))
+> > +		return -ENOSPC;
+> > +	else if (igt_debug_on_f(len < 0, "unexpected failure from snprintf()\=
+n"))
+> > +		return len;
+> > +
+> >  	sysfs =3D igt_sysfs_open(fd);
+> >  	if (sysfs =3D=3D -1)
+> >  		return -ENOENT;
+> > =20
+> > -	len =3D readlinkat(sysfs, "device", path, sizeof(path) - 1);
+> > +	len =3D readlinkat(sysfs, link, path, sizeof(path) - 1);
+> >  	close(sysfs);
+> >  	if (len =3D=3D -1)
+> >  		return -ENOENT;
+> > @@ -183,12 +193,23 @@ static int igt_device_get_pci_addr(int fd, struct=
+ igt_pci_addr *pci)
+> >  	return 0;
+> >  }
+> > =20
+> > -static struct pci_device *__igt_device_get_pci_device(int fd)
+> > +/**
+> > + * __igt_device_get_pci_device:
+> > + *
+> > + * @fd: DRM device file descriptor
+> > + * @vf_id: PCI virtual function number or -1 if native or PF itself
+>=20
+> this param seems to be used here rather as 0-based "index" that
+> subsystem uses to list virtfn entries, while real VF "numbers" are
+> 1-based, see PCI spec which says:
+>=20
+> "VFs are numbered starting with 1 so the first VF associated with PF M
+> is VF M,1."
 
-== Summary ==
+OK, since v2 using 1-based VF numbering has been positively reviewed by Chr=
+is
+despite his comment on inconsistency with Linux PCI ABI then let's consider
+the 0-based VF numbering used in that ABI as non-standard and merge v2 of t=
+his=20
+patch with some DOC improvements from v3 if there are no more comments.
 
-CI Bug Log - changes from CI_DRM_11266 -> IGTPW_6677
-====================================================
+Thanks,
+Janusz
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/index.html
-
-Participating hosts (45 -> 41)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (5): fi-kbl-soraka fi-hsw-4200u fi-bsw-cyan fi-icl-u2 fi-ctg-p8600 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6677 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_flink_basic@bad-flink:
-    - fi-skl-6600u:       [PASS][1] -> [FAIL][2] ([i915#4547])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-tgl-1115g4:      [PASS][3] -> [DMESG-FAIL][4] ([i915#541])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-tgl-1115g4/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-tgl-1115g4/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-6:          [PASS][5] -> [DMESG-FAIL][6] ([i915#4494] / [i915#4957])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][7] ([fdo#109271]) +57 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - {fi-rkl-11600}:     [INCOMPLETE][8] ([i915#5127]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_module_load@reload:
-    - fi-bsw-kefka:       [DMESG-WARN][10] ([i915#1982]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-bsw-kefka/igt@i915_module_load@reload.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-bsw-kefka/igt@i915_module_load@reload.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-    - fi-cfl-8109u:       [DMESG-WARN][12] ([i915#295]) -> [PASS][13] +12 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
-  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
+>=20
+> maybe we should update the wording to minimize any confusions?
+>=20
+> Michal
+>=20
+> > + *
+> > + * Looks up a PCI interface of a DRM device or a VF PCI device of the =
+DRM PF using libpciaccess.
+> > + *
+> > + * Returns:
+> > + * The pci_device, NULL on any failures.
+> > + */
+> > +struct pci_device *__igt_device_get_pci_device(int fd, int vf_id)
+> >  {
+> >  	struct igt_pci_addr pci_addr;
+> >  	struct pci_device *pci_dev;
+> > =20
+> > -	if (igt_device_get_pci_addr(fd, &pci_addr)) {
+> > +	if (igt_device_get_pci_addr(fd, vf_id, &pci_addr)) {
+> >  		igt_warn("Unable to find device PCI address\n");
+> >  		return NULL;
+> >  	}
+> > @@ -231,7 +252,7 @@ struct pci_device *igt_device_get_pci_device(int fd)
+> >  {
+> >  	struct pci_device *pci_dev;
+> > =20
+> > -	pci_dev =3D __igt_device_get_pci_device(fd);
+> > +	pci_dev =3D __igt_device_get_pci_device(fd, -1);
+> >  	igt_require(pci_dev);
+> > =20
+> >  	return pci_dev;
+> > diff --git a/lib/igt_device.h b/lib/igt_device.h
+> > index 278ba7a9b3..00da853e71 100644
+> > --- a/lib/igt_device.h
+> > +++ b/lib/igt_device.h
+> > @@ -33,5 +33,6 @@ void igt_device_drop_master(int fd);
+> > =20
+> >  int igt_device_get_card_index(int fd);
+> >  struct pci_device *igt_device_get_pci_device(int fd);
+> > +struct pci_device *__igt_device_get_pci_device(int fd, int vf_id);
+> > =20
+> >  #endif /* __IGT_DEVICE_H__ */
+>=20
 
 
-Build changes
--------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6351 -> IGTPW_6677
-
-  CI-20190529: 20190529
-  CI_DRM_11266: 62ca4a90fa28434483476be736d67371671169e4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6677: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/index.html
-  IGT_6351: 5f3cfa485eb46902e55c6b96c80dc8c57ddf3b43 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/index.html
-
---===============6301441573725323285==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Avoid process exit return values in igt_kmod (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100341/">https://patchwork.freedesktop.org/series/100341/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11266 -&gt; IGTPW_6677</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/index.html</p>
-<h2>Participating hosts (45 -&gt; 41)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (5): fi-kbl-soraka fi-hsw-4200u fi-bsw-cyan fi-icl-u2 fi-ctg-p8600 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6677 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_flink_basic@bad-flink:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-tgl-1115g4/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-tgl-1115g4/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>{fi-rkl-11600}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5127">i915#5127</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-bsw-kefka/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-bsw-kefka/igt@i915_module_load@reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11266/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +12 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6351 -&gt; IGTPW_6677</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11266: 62ca4a90fa28434483476be736d67371671169e4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6677: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6677/index.html<br />
-  IGT_6351: 5f3cfa485eb46902e55c6b96c80dc8c57ddf3b43 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6301441573725323285==--
