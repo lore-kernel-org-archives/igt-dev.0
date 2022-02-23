@@ -1,16 +1,25 @@
 Return-path: <SRS0=UqwI=TG=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Content-Type: multipart/alternative;
- boundary="===============2718798653430055761=="
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76D6210E85F
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 06:46:57 +0000 (UTC)
+Message-ID: <226941ad-c1af-d856-f532-eb7f92950bc0@intel.com>
+Date: Wed, 23 Feb 2022 12:16:51 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Wed, 23 Feb 2022 05:18:00 -0000
-Message-ID: <164559348025.25286.10053151791525644987@emeril.freedesktop.org>
-References: <20220223043939.25783-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20220223043939.25783-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?prime=5Fmmap=5Fcoherency=2Ec=3A_Use_intel=5Fbb_and_intel=5Fbuf_?=
- =?utf-8?q?to_remove_libdrm_dependency?=
+Content-Language: en-US
+To: Jessica Zhang <quic_jesszhan@quicinc.com>, igt-dev@lists.freedesktop.org
+References: <20220215122344.11168-1-swati2.sharma@intel.com>
+ <20220215122344.11168-5-swati2.sharma@intel.com>
+ <a85c6701-43ad-4b25-6184-8798e8db2e2d@quicinc.com>
+ <f477c5f7-be29-bd08-41b9-ac802dc9ca30@intel.com>
+ <930f5fdf-fe63-547e-6278-81d8e344e0ef@quicinc.com>
+ <ac9b28bb-d8da-fc90-1dba-92cfecf210e5@intel.com>
+ <a8d74c6d-c8b9-f524-c797-852a18e9f075@quicinc.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <a8d74c6d-c8b9-f524-c797-852a18e9f075@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [v4 4/9] tests/kms_plane_scaling: Downscaling each
+ plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,185 +27,217 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2718798653430055761==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Jessica,
 
-== Series Details ==
+Since your patch is rb'ed. Lets get your patch merge first.
+I will rebase on top of your patches and make modifications accordingly.
 
-Series: tests/prime_mmap_coherency.c: Use intel_bb and intel_buf to remove libdrm dependency
-URL   : https://patchwork.freedesktop.org/series/100613/
-State : success
+On 23-Feb-22 1:06 AM, Jessica Zhang wrote:
+> Hi Swati,
+> 
+> Sorry for the late response -- had some access issues with my email 
+> server so didn't get your reply until now.
+> 
+> I've looked over the rest of your patches and most of them are good to 
+> be merged. The only patch I have a doubt about is "[v5,2/9] 
+> tests/kms_plane_scaling: Add output name in dynamic subtests" as it 
+> changes the output string of test_scaler_with_rotation_pipe.
+> 
+> This will conflict with our patch here [1] as we also change that output 
+> string to specify the size of the buffer being passed in.
+> 
+> Apart from that, the rest of the patches are good to merge.
+> 
+> Thanks,
+> 
+> Jessica Zhang
+> 
+> [1] https://patchwork.freedesktop.org/patch/475216/?series=99364&rev=5
+> 
+> On 2/17/2022 10:37 AM, Sharma, Swati2 wrote:
+>> Okay. Rest of the patches can be merged?
+>>
+>> On 17-Feb-22 11:52 PM, Jessica Zhang wrote:
+>>>
+>>>
+>>> On 2/17/2022 4:15 AM, Sharma, Swati2 wrote:
+>>>> Hi Jessica/Petri,
+>>>>
+>>>> Sorry missed your mail.
+>>>>
+>>>> Do you think we should drop upscaling and downscaling single plane 
+>>>> tests from
+>>>> my series
+>>>> https://patchwork.freedesktop.org/series/98333/ ?
+>>>> That should be covered by your tests?
+>>>>
+>>>> What do you think?
+>>>
+>>> Hi Swati,
+>>>
+>>> Yep, sounds good! We have upscale tests for single plane in Petri's 
+>>> patch and we can add downscale tests too.
+>>>
+>>> Thanks,
+>>>
+>>> Jessica Zhang
+>>>
+>>>>
+>>>> On 16-Feb-22 6:15 AM, Jessica Zhang wrote:
+>>>>>
+>>>>>
+>>>>> On 2/15/2022 4:23 AM, Swati Sharma wrote:
+>>>>>> Subtest for testing downscaling for each plane
+>>>>>> individually (checked 1 plane per "class" like
+>>>>>> we do in other tests).
+>>>>>>
+>>>>>> v2: -set modifier as LINEAR (Ville)
+>>>>>>      -shared code for upscaling and downscaling tests (Ville)
+>>>>>>      -removed num_scaler() check and added try_commit() (Ville)
+>>>>>>
+>>>>>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>>>>>
+>>>>> Hi Swati,
+>>>>>
+>>>>> FYI, Petri and I have been working on a similar patch: [1][2]
+>>>>>
+>>>>> For the latest version we've modified 
+>>>>> `check_scaling_pipe_plane_rot` so that it takes in a custom buffer 
+>>>>> height/width and created multiple subtests for different scaling 
+>>>>> factors.
+>>>>>
+>>>>> I see that you've added tests for both upscaling and downscaling 
+>>>>> that do something similar. Maybe our changes to 
+>>>>> `check_scaling_pipe_plane_rot` can be useful for your series to 
+>>>>> reduce redundant code in both the upscale and downscale cases? Let 
+>>>>> me know your thoughts on this.
+>>>>>
+>>>>> Thanks,
+>>>>>
+>>>>> Jessica Zhang
+>>>>>
+>>>>> [1] latest version: 
+>>>>> https://patchwork.freedesktop.org/patch/470921/?series=99364&rev=2
+>>>>> [2] earlier version: 
+>>>>> https://patchwork.freedesktop.org/patch/470856/?series=97584&rev=5
+>>>>>
+>>>>>> ---
+>>>>>>   tests/kms_plane_scaling.c | 55 
+>>>>>> ++++++++++++++++++++++++++++++++++++++-
+>>>>>>   1 file changed, 54 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+>>>>>> index 39f2de3c..e960a6c5 100644
+>>>>>> --- a/tests/kms_plane_scaling.c
+>>>>>> +++ b/tests/kms_plane_scaling.c
+>>>>>> @@ -32,6 +32,7 @@ IGT_TEST_DESCRIPTION("Test display plane scaling");
+>>>>>>   /* Test flags. */
+>>>>>>   enum {
+>>>>>>       TEST_UPSCALING = 1 << 0,
+>>>>>> +    TEST_DOWNSCALING = 1 << 1,
+>>>>>>   };
+>>>>>>   typedef struct {
+>>>>>> @@ -266,6 +267,48 @@ __test_plane_upscaling(data_t *d, igt_plane_t 
+>>>>>> *plane,
+>>>>>>       igt_skip_on_f(ret == -EINVAL, "Scaling op not supported\n");
+>>>>>>   }
+>>>>>> +static void
+>>>>>> +__test_plane_downscaling(data_t *d, igt_plane_t *plane,
+>>>>>> +                 enum pipe pipe, igt_output_t *output)
+>>>>>> +{
+>>>>>> +    igt_display_t *display = &d->display;
+>>>>>> +    int width, height;
+>>>>>> +    drmModeModeInfo *mode;
+>>>>>> +    bool test_complete = false;
+>>>>>> +    int scaling = 50;
+>>>>>> +    int ret;
+>>>>>> +
+>>>>>> +    cleanup_crtc(d);
+>>>>>> +
+>>>>>> +    igt_output_set_pipe(output, pipe);
+>>>>>> +    mode = igt_output_get_mode(output);
+>>>>>> +    width = mode->hdisplay;
+>>>>>> +    height = mode->vdisplay;
+>>>>>> +
+>>>>>> +    igt_create_color_pattern_fb(display->drm_fd,
+>>>>>> +                    width, height,
+>>>>>> +                    DRM_FORMAT_XRGB8888,
+>>>>>> +                    I915_TILING_NONE,
+>>>>>> +                    1.0, 0.0, 0.0, &d->fb[0]);
+>>>>>> +
+>>>>>> +    igt_plane_set_fb(plane, &d->fb[0]);
+>>>>>> +
+>>>>>> +    while(!test_complete) {
+>>>>>> +        igt_plane_set_size(plane, (width * scaling) / 100, 
+>>>>>> (height * scaling) / 100);
+>>>>>> +        ret = igt_display_try_commit_atomic(display, 
+>>>>>> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>>>>>> +
+>>>>>> +        if (ret != -EINVAL)
+>>>>>> +            test_complete = true;
+>>>>>> +
+>>>>>> +        scaling += 5;
+>>>>>> +    }
+>>>>>> +
+>>>>>> +    igt_plane_set_fb(plane, NULL);
+>>>>>> +    igt_remove_fb(display->drm_fd, &d->fb[0]);
+>>>>>> +
+>>>>>> +    igt_skip_on_f(ret == -EINVAL, "Scaling op not supported\n");
+>>>>>> +}
+>>>>>> +
+>>>>>>   static void
+>>>>>>   test_plane_scaling(data_t *d, enum pipe pipe, igt_output_t 
+>>>>>> *output, uint32_t flags)
+>>>>>>   {
+>>>>>> @@ -285,9 +328,12 @@ test_plane_scaling(data_t *d, enum pipe pipe, 
+>>>>>> igt_output_t *output, uint32_t fla
+>>>>>>               uint32_t format = plane->drm_plane->formats[j];
+>>>>>>               if (test_format(d, &tested_formats, format) &&
+>>>>>>                   igt_plane_has_format_mod(plane, format, 
+>>>>>> modifier) &&
+>>>>>> -                can_scale(d, format))
+>>>>>> +                can_scale(d, format)) {
+>>>>>>                   if (flags & TEST_UPSCALING)
+>>>>>>                       __test_plane_upscaling(d, plane, pipe, output);
+>>>>>> +                if (flags & TEST_DOWNSCALING)
+>>>>>> +                    __test_plane_downscaling(d, plane, pipe, 
+>>>>>> output);
+>>>>>> +                }
+>>>>>>           }
+>>>>>>           igt_vec_fini(&tested_formats);
+>>>>>> @@ -618,6 +664,13 @@ igt_main_args("", long_opts, help_str, 
+>>>>>> opt_handler, &data)
+>>>>>>                       test_plane_scaling(&data, pipe, output, 
+>>>>>> TEST_UPSCALING);
+>>>>>>           }
+>>>>>> +        igt_describe("Tests plane downscaling.");
+>>>>>> +        igt_subtest_with_dynamic("plane-downscaling") {
+>>>>>> +            for_each_pipe_with_single_output(&data.display, pipe, 
+>>>>>> output)
+>>>>>> +                igt_dynamic_f("pipe-%s-%s-downscaling", 
+>>>>>> kmstest_pipe_name(pipe), igt_output_name(output))
+>>>>>> +                    test_plane_scaling(&data, pipe, output, 
+>>>>>> TEST_DOWNSCALING);
+>>>>>> +        }
+>>>>>> +
+>>>>>>           igt_describe("Tests scaling with pixel formats.");
+>>>>>>           igt_subtest_with_dynamic("scaler-with-pixel-format") {
+>>>>>>               for_each_pipe_with_single_output(&data.display, 
+>>>>>> pipe, output)
+>>>>>> -- 
+>>>>>> 2.25.1
+>>>>>>
+>>>>
+>>>> -- 
+>>>> ~Swati Sharma
+>>
+>> -- 
+>> ~Swati Sharma
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11268 -> IGTPW_6679
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/index.html
-
-Participating hosts (20 -> 17)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (4): fi-icl-u2 shard-rkl shard-dg1 shard-tglu 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6679 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][1] ([fdo#109271]) +57 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - {fi-rkl-11600}:     [INCOMPLETE][2] ([i915#5127]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11268/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-6:          [DMESG-FAIL][4] ([i915#4957]) -> [DMESG-FAIL][5] ([i915#4494] / [i915#4957])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11268/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6352 -> IGTPW_6679
-
-  CI-20190529: 20190529
-  CI_DRM_11268: 26326bf05392ab3da8cba36642a0efec97f00da9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6679: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/index.html
-  IGT_6352: 11b4d227d8f0efad522519c8fd9525774247c8d8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/index.html
-
---===============2718798653430055761==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/prime_mmap_coherency.c: Use intel_bb and intel_buf to remove libdrm dependency</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100613/">https://patchwork.freedesktop.org/series/100613/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11268 -&gt; IGTPW_6679</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/index.html</p>
-<h2>Participating hosts (20 -&gt; 17)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (4): fi-icl-u2 shard-rkl shard-dg1 shard-tglu </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6679 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@prime_vgem@basic-userptr:<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
-<li>{fi-rkl-11600}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11268/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5127">i915#5127</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11268/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6352 -&gt; IGTPW_6679</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11268: 26326bf05392ab3da8cba36642a0efec97f00da9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6679: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6679/index.html<br />
-  IGT_6352: 11b4d227d8f0efad522519c8fd9525774247c8d8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2718798653430055761==--
+-- 
+~Swati Sharma
