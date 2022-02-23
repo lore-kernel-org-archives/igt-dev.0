@@ -1,15 +1,15 @@
 Return-path: <SRS0=UqwI=TG=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F20DB10E9F6
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 10:00:05 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EC8E10E70E
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 10:33:09 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Feb 2022 15:29:51 +0530
-Message-Id: <20220223095951.12430-1-anshuman.gupta@intel.com>
+Date: Wed, 23 Feb 2022 11:33:01 +0100
+Message-Id: <20220223103303.24510-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915_pm_rpm: Use __igt_debugfs_dump for
- i915_runtime_pm_status
+Subject: [igt-dev] [PATCH i-g-t 0/2] Use safe alignment as a default
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,33 +17,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use __igt_debugfs_dump() in wait_for_suspended() in order to
-specify explicit igt log level.
-We need to dump the i915_runtime_pm_status even in case of igt
-test's skips as well, that requires log level to be IGT_LOG_INFO.
+To avoid rewriting many tests use safe alignment as a default
+when intel-allocator open is being called.
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_rpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 6c8ffbd5d..eb4c4f4e3 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -207,7 +207,7 @@ static bool wait_for_suspended(void)
- 		bool suspended = igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
- 
- 		if (!suspended)
--			igt_debugfs_dump(drm_fd, "i915_runtime_pm_status");
-+			__igt_debugfs_dump(drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
- 
- 		return suspended;
- 	}
+Zbigniew Kempczyński (2):
+  lib/intel_allocator: Add safe alignment as a default
+  tests/api_intel_allocator: Add default-alignment test
+
+ lib/intel_allocator.c              | 64 +++++++++++++++++++++---------
+ lib/intel_allocator.h              | 13 ++++--
+ lib/intel_allocator_msgchannel.h   |  1 +
+ lib/intel_batchbuffer.c            |  5 ++-
+ tests/i915/api_intel_allocator.c   | 38 +++++++++++++++++-
+ tests/i915/gem_softpin.c           |  4 +-
+ tests/i915/gem_tiled_fence_blits.c |  2 +-
+ 7 files changed, 97 insertions(+), 30 deletions(-)
+
 -- 
-2.26.2
+2.32.0
