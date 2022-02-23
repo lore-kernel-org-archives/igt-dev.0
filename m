@@ -1,17 +1,20 @@
 Return-path: <SRS0=UqwI=TG=lists.freedesktop.org=igt-dev-bounces@kernel.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB49710E88B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 87F7810E88F
  for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 11:17:27 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nMpe7-001xZd-Je
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nMpe7-001xa4-Nk
  for igt-dev@lists.freedesktop.org; Wed, 23 Feb 2022 12:17:23 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Feb 2022 12:16:32 +0100
-Message-Id: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
+Date: Wed, 23 Feb 2022 12:16:40 +0100
+Message-Id: <20220223111641.467123-9-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
+References: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 0/9] Add support to collecr code coverage data
+Subject: [igt-dev] [PATCH 8/9] scripts:code_cov_gather_on_test: use a faster
+ script
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,99 +26,145 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Tomi Sarvela <tomi.p.sarvela@intel.com>
 
-The gcc compiler has a feature that allows collecting code coverage
-in runtime, which is already supported by the Linux Kernel, as described
-on its documentation:
+The original shell script takes too long to complete (~7-10 seconds),
+while the python version requires only ~500 ms.
 
-	https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
+As this has a relevant impact when doing the tests, use the faster
+version.
 
-Add support for it at the igt_runner and scripts/run-tests.sh.
-
-With such support, once a Kernel is compiled with:
-
-	./scripts/config -e DEBUG_FS -e GCOV_KERNEL
-
-And GCOV is enabled by one or more drivers, like doing:
-
-	for i in $(find drivers/gpu/drm/ -name Makefile); do sed '1 a GCOV_PROFILE := y' -i $i; done
-
-One can use igt_runner and/or run-tests.sh to collect the code coverage.
-
-The way the implementation works is that the igt_runner has internally
-the logic which reset the gcov usage counters. The code capture itself
-is done via an external script.
-
-There are two versions of such script:
-
-- scripts/code_cov_capture.sh:
-
-  Assumes that the Kernel was built at the same machine, and uses
-  the lcov tool to generate GCC-independent code coverage data,
-  in the form of *.info files;
-
-- scripts/code_cov_gather_on_test.py:
-
-  Generates a gzipped tarbal with the code coverage counters in
-  binary format. Such kind of output should then be parsed at
-  the same machine where the Kernel as built, as its content is not
-  ony dependent on the Kernel source, but also on the Kernel output
-  objects.
-
-Either way, both igt_runner and scripts/run-tests.sh could be used
-to generate the code coverage results.
-
-So, in order to get the code coverage results, storing results per each
-IGT test, one should run either:
-
-	./scripts/run-tests.sh -T my_tests.testlist -k ~/linux \
-		-c scripts/code_cov_gather_on_test.py -P
-
-or:
-
-	sudo ./build/runner/igt_runner -o --test-list my_tests.testlist \
-		--coverage-per-test \
-		--collect-script scripts/code_cov_gather_on_test.py \
-		build/tests results
-
-Once the data is captured, it is possible to generate HTML reports
-using scripts/code_cov_gen_report.sh:
-
-	scripts/code_cov_gen_report.sh -r results/code_cov/i915_selftest_live.info -k ~/linux -o cov_results -i -f
-
-Mauro Carvalho Chehab (8):
-  runner: check if it has root permissions
-  runner: Add support for code coverage
-  scripts/code_cov_gather*/sh: add help scripts for code coverage
-  scripts/code_cov_gather_on_build.sh: Improve the script
-  scripts/code_cov_capture.sh: add a script to use lcov on build+test
-    machine
-  scripts/code_cov_gen_report.sh: add a script to generate code coverage
-    reports
-  scripts/run-tests.sh: add code coverage support
-  docs: add documentation for code coverage
-
-Tomi Sarvela (1):
-  scripts:code_cov_gather_on_test: use a faster script
-
- docs/code_coverage.md               | 293 ++++++++++++++++++++++++++++
- runner/executor.c                   | 200 ++++++++++++++++++-
- runner/resume.c                     |   4 +-
- runner/runner_tests.c               |  30 +++
- runner/settings.c                   |  87 ++++++++-
- runner/settings.h                   |   8 +
- scripts/code_cov_capture.sh         |  25 +++
- scripts/code_cov_gather_on_build.sh |  39 ++++
- scripts/code_cov_gather_on_test.py  |  91 +++++++++
- scripts/code_cov_gen_report.sh      | 170 ++++++++++++++++
- scripts/run-tests.sh                |  52 ++++-
- 11 files changed, 979 insertions(+), 20 deletions(-)
- create mode 100644 docs/code_coverage.md
- create mode 100755 scripts/code_cov_capture.sh
- create mode 100755 scripts/code_cov_gather_on_build.sh
+Signed-off-by: Tomi Sarvela <tomi.p.sarvela@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/code_cov_gather_on_test.py | 91 ++++++++++++++++++++++++++++++
+ scripts/code_cov_gather_on_test.sh | 20 -------
+ 2 files changed, 91 insertions(+), 20 deletions(-)
  create mode 100755 scripts/code_cov_gather_on_test.py
- create mode 100755 scripts/code_cov_gen_report.sh
+ delete mode 100755 scripts/code_cov_gather_on_test.sh
 
+diff --git a/scripts/code_cov_gather_on_test.py b/scripts/code_cov_gather_on_test.py
+new file mode 100755
+index 000000000000..b4356aa1397b
+--- /dev/null
++++ b/scripts/code_cov_gather_on_test.py
+@@ -0,0 +1,91 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0 OR MIT
++#
++# Copyright (C) 2022 Intel Corporation
++#
++# gather_on_test.py
++#
++# by Tomi Sarvela <tomi.p.sarvela@intel.com>
++#
++# Faster implementation for linux kernel GCOV data collection
++# Command line compatible with original gather_on_test.sh
++#
++# Refs:
++# https://www.kernel.org/doc/html/latest/dev-tools/gcov.html
++#
++import argparse
++import errno
++import io
++import os
++import sys
++import tarfile
++
++def parse_args() -> argparse.Namespace:
++    '''Command line arguments'''
++    ap = argparse.ArgumentParser(description="Gather Linux kernel GCOV data")
++    ap.add_argument('output',
++                    help="Output file name (.tar.gz will be added)")
++    ap.add_argument('--gcov', default='/sys/kernel/debug/gcov',
++                    help="GCOV directory, default: /sys/kernel/debug/gcov")
++    return ap.parse_args()
++
++def tar_add_link(tar:tarfile.TarFile, filename:str):
++    '''Add filename as symlink to tarfile'''
++    info = tarfile.TarInfo(filename)
++    if info.name[0] == '/': info.name = info.name[1:]
++    info.type = tarfile.SYMTYPE
++    info.linkname = os.readlink(filename)
++    tar.addfile(info)
++
++def tar_add_file(tar:tarfile.TarFile, filename:str):
++    '''Add filename to tarfile, file size expected to be invalid'''
++    try:
++        with open(filename, "rb") as fp:
++            data = fp.read() # big gulp
++    except OSError as e:
++        print(f"ERROR: {filename}: {e}", file=sys.stderr)
++        return
++    info = tarfile.TarInfo(filename)
++    if info.name[0] == '/': info.name = info.name[1:]
++    info.size = len(data)
++    tar.addfile(info, io.BytesIO(data))
++
++def tar_add_tree(tar:tarfile.TarFile, tree:str):
++    '''Add gcov files in directory tree to tar'''
++    # FIXME: should dirs be added to tar for compatibility?
++    for root, _, files in os.walk(tree, followlinks=False):
++        for file in files:
++            filepath = os.path.join(root, file)
++            if file.endswith('.gcda'): tar_add_file(tar, filepath)
++            if file.endswith('.gcno'): tar_add_link(tar, filepath)
++
++def main() -> int:
++    '''MAIN'''
++    if not os.path.isdir(args.gcov):
++        print(f"ERROR: [Errno {errno.ENOTDIR}] {os.strerror(errno.ENOTDIR)}: '{args.gcov}'",
++              file=sys.stderr)
++        return errno.ENOTDIR
++    if args.output == '-':
++        # reopen stdout as bytes for tarfile
++        fp = os.fdopen(sys.stdout.fileno(), "wb", closefd=False)
++    else:
++        if not args.output.endswith('.tgz') and \
++           not args.output.endswith('.tar.gz'):
++            args.output+='.tar.gz'
++        try:
++            fp = open(args.output, 'wb')
++        except OSError as e:
++            print(f"ERROR: {e}", file=sys.stderr)
++            return e.errno
++    with tarfile.open(fileobj=fp, mode='w:gz') as tar:
++        tar_add_tree(tar, args.gcov)
++    fp.close()
++    return 0
++
++if __name__ == '__main__':
++    try:
++        args = parse_args()
++        sys.exit(main())
++    except KeyboardInterrupt:
++        print("Interrupted", file=sys.stderr)
++        sys.exit(errno.EINTR)
+diff --git a/scripts/code_cov_gather_on_test.sh b/scripts/code_cov_gather_on_test.sh
+deleted file mode 100755
+index 8834aa0d78af..000000000000
+--- a/scripts/code_cov_gather_on_test.sh
++++ /dev/null
+@@ -1,20 +0,0 @@
+-#!/bin/bash -e
+-
+-DEST=$1
+-GCDA=/sys/kernel/debug/gcov
+-
+-if [ -z "$DEST" ] ; then
+-  echo "Usage: $0 <output.tar.gz>" >&2
+-  exit 1
+-fi
+-
+-TEMPDIR=$(mktemp -d)
+-echo Collecting data..
+-find $GCDA -type d -exec mkdir -p $TEMPDIR/\{\} \;
+-find $GCDA -name '*.gcda' -exec sh -c 'cat < $0 > '$TEMPDIR'/$0' {} \;
+-find $GCDA -name '*.gcno' -exec sh -c 'cp -d $0 '$TEMPDIR'/$0' {} \;
+-tar czf $DEST -C $TEMPDIR sys
+-rm -rf $TEMPDIR
+-
+-echo "$DEST successfully created, copy to build system and unpack with:"
+-echo "  tar xfz $DEST"
 -- 
 2.35.1
