@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B60D810EDE9
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 14:08:40 +0000 (UTC)
-Date: Wed, 23 Feb 2022 16:07:49 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YhY/taVJQSNTGcV+@platvala-desk.ger.corp.intel.com>
-References: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
- <20220223111641.467123-10-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7423893049867441843=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220223111641.467123-10-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH 9/9] docs: add documentation for code coverage
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 23 Feb 2022 17:41:26 -0000
+Message-ID: <164563808613.25291.11235072746043610445@emeril.freedesktop.org>
+References: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIHN1?=
+ =?utf-8?q?pport_to_collecr_code_coverage_data?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,332 +16,266 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 23, 2022 at 12:16:41PM +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Document the IGT runner features related to code coverage data capture.
-> 
-> Acked-by: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  docs/code_coverage.md | 293 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 293 insertions(+)
->  create mode 100644 docs/code_coverage.md
-> 
-> diff --git a/docs/code_coverage.md b/docs/code_coverage.md
-> new file mode 100644
-> index 000000000000..b071df7437bd
-> --- /dev/null
-> +++ b/docs/code_coverage.md
-> @@ -0,0 +1,293 @@
-> +# Collecting code coverage data from IGT tests
-> +
-> +## Introduction
-> +
-> +Ensuring that a test plan covers all the driver code is not trivial. Also,
-> +as time goes by, changes at both the tests and drivers may badly affect
-> +the code coverage. So, some tools are needed in order to be able to verify
-> +and improve the driver test coverage. While static analyzers can help
-> +checking the driver's code, it is not as effective as runtime tests.
-> +
-> +Thankfully gcc has a feature which allows capturing such data in realtime,
-> +called gcov. LLVM/clang also has a similar feature (llvm-cov). Such feature
-> +is available at the Linux Kernel since 2009.
-> +
-> +## Building a Kernel with GCOV support
-> +
-> +Enabling GCOV at the Linux Kernel requires two steps:
-> +
-> +1. Enable GCOV_KERNEL:
-> +
-> +   ```
-> +   ./scripts/config -e DEBUG_FS -e GCOV_KERNEL
-> +   ```
-> +
-> +
-> +2. Enable per-driver or per-makefile GCOV support. In order to enable support
-> +   for all DRM drivers:
-> +
-> +   ```
-> +   for i in $(find drivers/gpu/drm/ -name Makefile); do
-> +       sed '1 a GCOV_PROFILE := y' -i $i
-> +   done
-> +   ```
-> +
-> +When gcov is enabled for a given driver or directory, GCC will generate
-> +some special object files, like:
-> +
-> +```
-> +...
-> +drivers/gpu/drm/drm_probe_helper.gcno
-> +drivers/gpu/drm/drm_dp_dual_mode_helper.gcno
-> +drivers/gpu/drm/drm_plane.gcno
-> +drivers/gpu/drm/drm_lease.gcno
-> +drivers/gpu/drm/drm_mipi_dsi.gcno
-> +drivers/gpu/drm/drm_dsc.gcno
-> +drivers/gpu/drm/drm_property.gcno
-> +drivers/gpu/drm/drm_dp_aux_dev.gcno
-> +drivers/gpu/drm/drm_blend.gcno
-> +...
-> +```
-> +
-> +Those will be stored at the Kernel object directory, which is usually
-> +the same as the Kernel source directory, except if the Kernel was built
-> +with:
-> +
-> +```
-> +make O=kernel_output_dir
-> +```
-> +
-> +Such compile-time files are compiler-dependent and they're needed in order
-> +to properly decode the code coverage counters that will be produced in
-> +runtime.
-> +
-> +## Collecting GCOV data in runtime
-> +
-> +Once a GCOV-enabled Kernel boots, the Kernel will keep track of the code
-> +monitored via GCOV under sysfs, at `/sys/kernel/debug/gcov/`.
-> +
-> +There is a special file there: `/sys/kernel/debug/gcov/reset`. When something
-> +is written to it, all counters will be cleaned.
-> +
-> +There are also driver-related counters and softlinks stored there:
-> +
-> +```
-> +ls -la ./home/gta/linux/drivers/gpu/drm/
-> +...
-> +-rw------- 1 root root 0 Feb 16 07:03 drm_probe_helper.gcda
-> +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_probe_helper.gcno -> /home/gta/linux/drivers/gpu/drm/drm_probe_helper.gcno
-> +-rw------- 1 root root 0 Feb 16 07:03 drm_property.gcda
-> +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_property.gcno -> /home/gta/linux/drivers/gpu/drm/drm_property.gcno
-> +-rw------- 1 root root 0 Feb 16 07:03 drm_rect.gcda
-> +lrwxrwxrwx 1 root root 0 Feb 16 07:03 drm_rect.gcno -> /home/gta/linux/drivers/gpu/drm/drm_rect.gcno
-> +...
-> +```
+--===============7423893049867441843==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This is an example path but it could be made clearer. Something like
-s!/home/gta/linux!/path/to/kernel/sources! or so?
+== Series Details ==
+
+Series: Add support to collecr code coverage data
+URL   : https://patchwork.freedesktop.org/series/100629/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11271 -> IGTPW_6683
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/index.html
+
+Participating hosts (51 -> 45)
+------------------------------
+
+  Missing    (6): fi-hsw-4200u fi-icl-u2 fi-bsw-cyan fi-ctg-p8600 bat-rpls-1 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6683 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-kbl-soraka:      [PASS][1] -> [INCOMPLETE][2] ([i915#794])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gem:
+    - fi-blb-e6850:       NOTRUN -> [DMESG-FAIL][3] ([i915#5026])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-blb-e6850/igt@i915_selftest@live@gem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][4] -> [DMESG-FAIL][5] ([i915#4494] / [i915#4957])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - fi-bdw-5557u:       NOTRUN -> [INCOMPLETE][6] ([i915#5170])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-bdw-5557u/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-bdw-5557u/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - bat-adlp-4:         [PASS][8] -> [DMESG-WARN][9] ([i915#3576])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][10] ([fdo#109271]) +13 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][11] ([i915#2722] / [i915#4312])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-skl-6600u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [DMESG-FAIL][12] ([i915#5026]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][14] ([i915#4957]) -> [DMESG-FAIL][15] ([i915#4494] / [i915#4957])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-skl-6600u:       [INCOMPLETE][16] ([i915#4838]) -> [INCOMPLETE][17] ([i915#4547] / [i915#4838])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4838]: https://gitlab.freedesktop.org/drm/intel/issues/4838
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5026]: https://gitlab.freedesktop.org/drm/intel/issues/5026
+  [i915#5170]: https://gitlab.freedesktop.org/drm/intel/issues/5170
+  [i915#794]: https://gitlab.freedesktop.org/drm/intel/issues/794
 
 
--- 
-Petri Latvala
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6354 -> IGTPW_6683
+
+  CI-20190529: 20190529
+  CI_DRM_11271: 5ed6be9e87d53c5c788f55d2c40f2e4f34bad8e9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6683: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/index.html
+  IGT_6354: 7146765b80919e3f134398ba433b36a56377e4c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/index.html
+
+--===============7423893049867441843==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-> +
-> +The actual counters are stored at the *.gcda files on a compiler-dependent
-> +format.
-> +
-> +### calling `igt_runner` directly
-> +
-> +When code coverage support is enabled, the `igt_runner` tool will internally
-> +clean up the counters before starting test(s). Once test(s) finish, it will
-> +also run an external script that will be responsible for collecting the data
-> +and store on some file.
-> +
-> +Enabling code coverage data collect can be done either per test or as
-> +a hole for an entire test list, by using those command line options:
-> +
-> +- `--collect-code-cov`
-> +
-> +  Enables gcov-based collect of code coverage for tests.
-> +
-> +- `--coverage-per-test`
-> +
-> +  Stores code coverage results per each test. This option implies
-> +  `--collect-code-cov`.
-> +
-> +For those options to work, it is mandatory to specifiy what script will
-> +be used to collect the data with `--collect-script` _file_name_.
-> +
-> +### calling `./scripts/run-tests.sh` script
-> +
-> +The `run-tests.sh` script can used instead as a frontend for igt_runner.
-> +It has the following options:
-> +
-> +- `-c <capture_script>`
-> +
-> +  Capture gcov code coverage using the _capture_script_
-> +
-> +- `-P`
-> +
-> +  Store code coverage results per each test.
-> +
-> +- `-k` _kernel_dir_
-> +
-> +  Linux Kernel source code directory used to generate code coverage builds.
-> +  This is passed through the capture script via the `IGT_KERNEL_TREE`
-> +  shell environment variable.
-> +
-> +So, for instance, if one wans to capture code coverage data from the
-> +Kernel that was built at the same machine, at the directory `~/linux`,
-> +and wants to capture one file per test, it would use:
-> +
-> +```
-> +./scripts/run-tests.sh -T my.testlist -k ~/linux -c scripts/code_cov_capture.sh -P
-> +```
-> +
-> +### Code Coverage Collect script
-> +
-> +While any script could in thesis be used, currently, there are two ones
-> +under `scripts/`:
-> +
-> +- `scripts/code_cov_capture.sh`:
-> +
-> +  Assumes that the Kernel was built at the same machine, and uses
-> +  the lcov tool to generate GCC-independent code coverage data,
-> +  in the form of `*.info` files. Internally, it uses an shell environment
-> +  variable (`IGT_KERNEL_TREE`), which points to the place where the Kernel
-> +  source and objects are contained.
-> +
-> +  Such script requires `lcov` tool to be installed at the test machine.
-> +
-> +- `scripts/code_cov_gather_on_test.py`:
-> +
-> +  Generates a gzipped tarbal with the code coverage counters in
-> +  binary format. Such kind of output should then be parsed at
-> +  the same machine where the Kernel as built, as its content is not
-> +  ony dependent on the Kernel source, but also on the Kernel output
-> +  objects.
-> +
-> +For each script, the igt_runner passes just one parameter: the results
-> +directory + the test name.
-> +
-> +For instance, if it is needed to run a test called
-> +`debugfs_test (read_all_entries)` using `scripts/code_cov_capture.sh`
-> +parameter, e. g.:
-> +
-> +```
-> +$ echo "igt@debugfs_test@read_all_entries" > my.testlist
-> +$ ./scripts/run-tests.sh -T my.testlist -k ~/linux -c scripts/code_cov_capture.sh -P
-> +Found test list: "/home/gta/igt/build/tests/test-list.txt"
-> +[31410.499969] [1/1] debugfs_test (read_all_entries)
-> +[31411.060446] Storing code coverage results...
-> +[31418.01]     Code coverage wrote to /home/gta/igt/results/code_cov/debugfs_test_read_all_entries.info
-> +Done.
-> +```
-> +
-> +The script will be called as:
-> +
-> +```
-> +scripts/code_cov_capture.sh /home/gta/igt/results/code_cov/debugfs_test_read_all_entries
-> +```
-> +
-> +Please notice that any character that it is not a number nor a letter at the
-> +test name will be converted into '_', as other characters are not supported
-> +as titles at the lcov files.
-> +
-> +### Passing extra arguments to the script
-> +
-> +If any extra global parameters are needed by the script, those can be sent
-> +via shell's environment var.
-> +
-> +### The `*.info` file format
-> +
-> +The `*.info` files contain several fields on it, grouped into records.
-> +An info file looks like:
-> +
-> +```
-> +TN:fbdev_eof
-> +...
-> +SF:/home/gta/linux/drivers/gpu/drm/i915/intel_runtime_pm.c
-> +...
-> +FN:158,__intel_runtime_pm_get
-> +FNDA:2,__intel_runtime_pm_get
-> +...
-> +end_of_record
-> +SF:<some other file>
-> +...
-> +end_of_record
-> +...
-> +```
-> +
-> +The main fields at the above record are:
-> +
-> +- `TN:`	Test name
-> +- `SF:`	Source file
-> +- `FN:`	line_number   function_name
-> +- `FNDA:` call_count  function_name
-> +
-> +So, the above example means that, inside
-> +`drivers/gpu/drm/i915/intel_runtime_pm.c` there's a function
-> +`__intel_runtime_pm_get()` which it was called 2 times.
-> +
-> +## Generating code coverage documentation
-> +
-> +The `lcov` package contains the needed tools to parse and generate code
-> +coverage documentation. It is used by `scripts/code_cov_capture.sh` script
-> +to convery from compiler-dependent `*.gcno` counters into a
-> +compiler-independent format (`*.info`).
-> +
-> +Grouping multiple `*.info` files is as easy as running:
-> +
-> +```
-> +cat core*.info > all_core.info
-> +```
-> +
-> +The `lcov` package also contains a tool which converts a given `*.info` file
-> +into html patches, called `genhtml`.
-> +
-> +As the output can actually show the code source file, `genhtml` need access
-> +not only to the info file, but also to the Kernel directory with the
-> +source files. Some optional arguments can be used at the command line, or
-> +can be stored at `/etc/lcovrc` or `~/.lcovrc` files.
-> +
-> +As generating the documentation depends wheather the results were generated
-> +as with a single or multiple `*.info` files by `scripts/code_cov_capture.sh`
-> +or stored in raw formats inside `*.tar.gz` file(s) by
-> +`scripts/code_cov_gather_on_test.py`, there's a script that does all the
-> +required steps to build the code coverage html reports:
-> +`scripts/code_cov_gen_report.sh`.
-> +
-> +It requires the following arguments:
-> +
-> +- `--read`  _file or dir_ (or `-r` _file or dir_)
-> +
-> +  File or directory where the code coverage capture file(s) is(are) located.
-> +
-> +- `--kernel-source` _dir_ (or `-k` _dir_)
-> +
-> +  Kernel source directory.
-> +
-> +- `--kernel-object` _dir_ (or `-O` _dir_)
-> +
-> +  Kernel object directory. Only needed when Kernel was built with `make O=dir`.
-> +
-> +- `--output-dir` _dir_ (or `-o` _dir)
-> +
-> +  Directory where the html output will be stored. By default, the script
-> +  won't let re-use an already existing directory.
-> +
-> +- `--info`
-> +
-> +  The files specified by `--read` parameter are at lcov's `*.info` format.
-> +
-> +- `--tar`
-> +
-> +  The files specified by `--read` are gzipped tarballs containing all
-> +  `*.gcno` files and all `*.gcda` softlinks from the `/sys/kernel/debug/gcov/`
-> +  directory at the test machine, created by
-> +  `scripts/code_cov_gather_on_test.py` script.
-> +
-> +- `--force-override`
-> +
-> +  Allow using a non-empty directory for `--output-dir`.
-> +
-> +`--info` and `--tar` are mutually exclusive and at least one of them should
-> +be specified.
-> +
-> +## References
-> +
-> +More information is available at Kernel gcov documentation:
-> +[Using gcov with the Linux kernel](https://www.kernel.org/doc/html/latest/dev-tools/gcov.html).
-> +
-> -- 
-> 2.35.1
-> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add support to collecr code coverage data</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100629/">https://patchwork.freedesktop.org/series/100629/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11271 -&gt; IGTPW_6683</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/index.html</p>
+<h2>Participating hosts (51 -&gt; 45)</h2>
+<p>Missing    (6): fi-hsw-4200u fi-icl-u2 fi-bsw-cyan fi-ctg-p8600 bat-rpls-1 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6683 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/794">i915#794</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-blb-e6850/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5026">i915#5026</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-bdw-5557u/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5170">i915#5170</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-bdw-5557u/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@cursor_plane_move:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +13 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@requests:<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5026">i915#5026</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11271/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4838">i915#4838</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/fi-skl-6600u/igt@kms_psr@primary_page_flip.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4838">i915#4838</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6354 -&gt; IGTPW_6683</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11271: 5ed6be9e87d53c5c788f55d2c40f2e4f34bad8e9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6683: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6683/index.html<br />
+  IGT_6354: 7146765b80919e3f134398ba433b36a56377e4c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7423893049867441843==--
