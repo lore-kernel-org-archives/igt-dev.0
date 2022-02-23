@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D54310E4D0
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Feb 2022 07:43:03 +0000 (UTC)
-Message-ID: <95b59b4e-a4a7-5590-82a2-78eeb168d574@intel.com>
-Date: Mon, 28 Feb 2022 13:12:47 +0530
-Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220228051409.9887-1-nidhi1.gupta@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220228051409.9887-1-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF1ED10F4C3
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 13:22:00 +0000 (UTC)
+Date: Wed, 23 Feb 2022 15:21:57 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Message-ID: <YhY09fYwofNN8O81@intel.com>
+References: <20220221121057.6590-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] IGT cleanup
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220221121057.6590-1-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/i915:Extend
+ kms_frontbuffer_tracking to test FBC on multiple pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,59 +21,149 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, ville.syrjala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon-28-02-2022 10:44 am, Nidhi Gupta wrote:
-> Before starting the next subtest, clean up the states to default
-> values, those are assumed by other tests.
-
-Also, before running the subtest we need to sanitize the system state to 
-default, since we can't trust the state of previous subtest.
-
-Using igt_display_reset() (or equalent) before starting the subtest is 
-the recommendation.
-
-- Bhanu
-
+On Mon, Feb 21, 2022 at 05:40:57PM +0530, Nidhi Gupta wrote:
+> In future more platforms will support FBC on
+> multiple pipes, so to validate the same extending
+> the kms_frontbuffer_tracking test.
 > 
-> Below tests are modified:
-> 	tests/kms_concurrent.c
-> 	tests/kms_sequence.c
+> In kernel code now  FBC debugfs files are exposed
+> for each crtc so added debugfs_read_crtc function
+> to get the per pipe fbc status.
 > 
 > Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 > ---
->   tests/kms_concurrent.c | 3 ++-
->   tests/kms_sequence.c   | 4 ++--
->   2 files changed, 4 insertions(+), 3 deletions(-)
+>  tests/i915/kms_frontbuffer_tracking.c | 40 ++++++++++++++-------------
+>  1 file changed, 21 insertions(+), 19 deletions(-)
 > 
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-> index 1b8f4b04..83513ff1 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
->   	}
->   
->   	/* reset the constraint on the pipe */
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> +	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   
->   	free(data->plane);
->   	data->plane = NULL;
-> diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-> index 9c287480..baa29da5 100644
-> --- a/tests/kms_sequence.c
-> +++ b/tests/kms_sequence.c
-> @@ -109,8 +109,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   	igt_plane_set_fb(primary, NULL);
->   
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> -	igt_display_commit(display);
-> +	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   }
->   
->   static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
+> diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+> index 532bfbb9..c31adc38 100644
+> --- a/tests/i915/kms_frontbuffer_tracking.c
+> +++ b/tests/i915/kms_frontbuffer_tracking.c
+> @@ -732,8 +732,21 @@ static int __debugfs_write(const char *param, char *buf, int len)
+>  	return igt_sysfs_write(drm.debugfs, param, buf, len - 1);
+>  }
+>  
+> +static void __debugfs_read_crtc(const char *param, char *buf, int len)
+> +{
+> +	int dir;
+> +	enum pipe pipe;
+> +
+> +	pipe = prim_mode_params.pipe;
+> +	dir = igt_debugfs_pipe_dir(drm.fd, pipe, O_RDONLY);
+
+Shouldn't that be O_DIRECTORY?
+
+> +	igt_require_fd(dir);
+> +	igt_debugfs_simple_read(dir, param, buf, len);
+> +	close(dir);
+> +}
+> +
+>  #define debugfs_read(p, arr) __debugfs_read(p, arr, sizeof(arr))
+>  #define debugfs_write(p, arr) __debugfs_write(p, arr, sizeof(arr))
+> +#define debugfs_read_crtc(p, arr) __debugfs_read_crtc(p, arr, sizeof(arr))
+>  
+>  static char last_fbc_buf[128];
+>  
+> @@ -742,7 +755,7 @@ static bool fbc_is_enabled(int lvl)
+>  	char buf[128];
+>  	bool print = true;
+>  
+> -	debugfs_read("i915_fbc_status", buf);
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+>  	if (lvl != IGT_LOG_DEBUG)
+>  		last_fbc_buf[0] = '\0';
+>  	else if (strcmp(last_fbc_buf, buf))
+> @@ -825,8 +838,8 @@ static struct timespec fbc_get_last_action(void)
+>  	char *action;
+>  	ssize_t n_read;
+>  
+> -	debugfs_read("i915_fbc_status", buf);
+>  
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+>  	action = strstr(buf, "\nLast action:");
+>  	igt_assert(action);
+>  
+> @@ -874,8 +887,8 @@ static void fbc_setup_last_action(void)
+>  	char buf[128];
+>  	char *action;
+>  
+> -	debugfs_read("i915_fbc_status", buf);
+>  
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+>  	action = strstr(buf, "\nLast action:");
+>  	if (!action) {
+>  		igt_info("FBC last action not supported\n");
+> @@ -893,7 +906,7 @@ static bool fbc_is_compressing(void)
+>  {
+>  	char buf[128];
+>  
+> -	debugfs_read("i915_fbc_status", buf);
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+>  	return strstr(buf, "\nCompressing: yes\n") != NULL;
+>  }
+>  
+> @@ -906,7 +919,7 @@ static bool fbc_not_enough_stolen(void)
+>  {
+>  	char buf[128];
+>  
+> -	debugfs_read("i915_fbc_status", buf);
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+>  	return strstr(buf, "FBC disabled: not enough stolen memory\n");
+>  }
+>  
+> @@ -914,7 +927,7 @@ static bool fbc_stride_not_supported(void)
+>  {
+>  	char buf[128];
+>  
+> -	debugfs_read("i915_fbc_status", buf);
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+>  	return strstr(buf, "FBC disabled: framebuffer stride not supported\n");
+>  }
+>  
+> @@ -922,7 +935,7 @@ static bool fbc_mode_too_large(void)
+>  {
+>  	char buf[128];
+>  
+> -	debugfs_read("i915_fbc_status", buf);
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+>  	return strstr(buf, "FBC disabled: mode too large for compression\n");
+>  }
+>  
+> @@ -1388,7 +1401,7 @@ static bool fbc_supported_on_chipset(void)
+>  {
+>  	char buf[128];
+>  
+> -	debugfs_read("i915_fbc_status", buf);
+> +	debugfs_read_crtc("i915_fbc_status", buf);
+>  	if (*buf == '\0')
+>  		return false;
+>  
+> @@ -1404,17 +1417,6 @@ static void setup_fbc(void)
+>  		return;
+>  	}
+>  
+> -	/*
+> -	 * While some platforms do allow FBC on pipes B/C, this test suite
+> -	 * is not prepared for that yet.
+> -	 * TODO: solve this.
+> -	 */
+> -	if (prim_mode_params.pipe != PIPE_A) {
+> -		igt_info("Can't test FBC: primary connector doesn't support "
+> -			 "pipe A\n");
+> -		return;
+> -	}
+> -
+>  	/* Early Generations are not able to report compression status. */
+>  	if (!AT_LEAST_GEN(devid, 7))
+>  		opt.fbc_check_compression = false;
+> -- 
+> 2.26.2
+
+-- 
+Ville Syrjälä
+Intel
