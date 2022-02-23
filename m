@@ -1,20 +1,17 @@
 Return-path: <SRS0=UqwI=TG=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8821510E891
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB49710E88B
  for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 11:17:27 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nMpe7-001xZt-ML
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nMpe7-001xZd-Je
  for igt-dev@lists.freedesktop.org; Wed, 23 Feb 2022 12:17:23 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Feb 2022 12:16:37 +0100
-Message-Id: <20220223111641.467123-6-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
-References: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
+Date: Wed, 23 Feb 2022 12:16:32 +0100
+Message-Id: <20220223111641.467123-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 5/9] scripts/code_cov_capture.sh: add a script to
- use lcov on build+test machine
+Subject: [igt-dev] [PATCH 0/9] Add support to collecr code coverage data
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,52 +25,97 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-When the test machine is also the build machine, it is possible to run
-lcov directly on it. That makes the IGT tests faster, as it won't need
-to generate a results tarball, and the produced results will be
-independent on the Kernel object files, making the output files more
-portable.
+The gcc compiler has a feature that allows collecting code coverage
+in runtime, which is already supported by the Linux Kernel, as described
+on its documentation:
 
-It should be noticed that, in order to generate html files, the Kernel
-source will still be needed, due to the detailed view.
+	https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
 
-Reviewed-by: Tomi Sarvela <tomi.p.sarvela@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/code_cov_capture.sh | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+Add support for it at the igt_runner and scripts/run-tests.sh.
+
+With such support, once a Kernel is compiled with:
+
+	./scripts/config -e DEBUG_FS -e GCOV_KERNEL
+
+And GCOV is enabled by one or more drivers, like doing:
+
+	for i in $(find drivers/gpu/drm/ -name Makefile); do sed '1 a GCOV_PROFILE := y' -i $i; done
+
+One can use igt_runner and/or run-tests.sh to collect the code coverage.
+
+The way the implementation works is that the igt_runner has internally
+the logic which reset the gcov usage counters. The code capture itself
+is done via an external script.
+
+There are two versions of such script:
+
+- scripts/code_cov_capture.sh:
+
+  Assumes that the Kernel was built at the same machine, and uses
+  the lcov tool to generate GCC-independent code coverage data,
+  in the form of *.info files;
+
+- scripts/code_cov_gather_on_test.py:
+
+  Generates a gzipped tarbal with the code coverage counters in
+  binary format. Such kind of output should then be parsed at
+  the same machine where the Kernel as built, as its content is not
+  ony dependent on the Kernel source, but also on the Kernel output
+  objects.
+
+Either way, both igt_runner and scripts/run-tests.sh could be used
+to generate the code coverage results.
+
+So, in order to get the code coverage results, storing results per each
+IGT test, one should run either:
+
+	./scripts/run-tests.sh -T my_tests.testlist -k ~/linux \
+		-c scripts/code_cov_gather_on_test.py -P
+
+or:
+
+	sudo ./build/runner/igt_runner -o --test-list my_tests.testlist \
+		--coverage-per-test \
+		--collect-script scripts/code_cov_gather_on_test.py \
+		build/tests results
+
+Once the data is captured, it is possible to generate HTML reports
+using scripts/code_cov_gen_report.sh:
+
+	scripts/code_cov_gen_report.sh -r results/code_cov/i915_selftest_live.info -k ~/linux -o cov_results -i -f
+
+Mauro Carvalho Chehab (8):
+  runner: check if it has root permissions
+  runner: Add support for code coverage
+  scripts/code_cov_gather*/sh: add help scripts for code coverage
+  scripts/code_cov_gather_on_build.sh: Improve the script
+  scripts/code_cov_capture.sh: add a script to use lcov on build+test
+    machine
+  scripts/code_cov_gen_report.sh: add a script to generate code coverage
+    reports
+  scripts/run-tests.sh: add code coverage support
+  docs: add documentation for code coverage
+
+Tomi Sarvela (1):
+  scripts:code_cov_gather_on_test: use a faster script
+
+ docs/code_coverage.md               | 293 ++++++++++++++++++++++++++++
+ runner/executor.c                   | 200 ++++++++++++++++++-
+ runner/resume.c                     |   4 +-
+ runner/runner_tests.c               |  30 +++
+ runner/settings.c                   |  87 ++++++++-
+ runner/settings.h                   |   8 +
+ scripts/code_cov_capture.sh         |  25 +++
+ scripts/code_cov_gather_on_build.sh |  39 ++++
+ scripts/code_cov_gather_on_test.py  |  91 +++++++++
+ scripts/code_cov_gen_report.sh      | 170 ++++++++++++++++
+ scripts/run-tests.sh                |  52 ++++-
+ 11 files changed, 979 insertions(+), 20 deletions(-)
+ create mode 100644 docs/code_coverage.md
  create mode 100755 scripts/code_cov_capture.sh
+ create mode 100755 scripts/code_cov_gather_on_build.sh
+ create mode 100755 scripts/code_cov_gather_on_test.py
+ create mode 100755 scripts/code_cov_gen_report.sh
 
-diff --git a/scripts/code_cov_capture.sh b/scripts/code_cov_capture.sh
-new file mode 100755
-index 000000000000..8662b0f145b8
---- /dev/null
-+++ b/scripts/code_cov_capture.sh
-@@ -0,0 +1,25 @@
-+#!/bin/bash
-+
-+trap 'catch $LINENO' ERR
-+catch() {
-+	echo "$0: error on line $1. Code coverage not stored." >&2
-+	exit 1
-+}
-+
-+if [ -z "$IGT_KERNEL_TREE" ] ; then
-+	echo "Error! IGT_KERNEL_TREE environment var was not defined." >&2
-+	exit 1
-+fi
-+
-+if [ -z "$1" ] ; then
-+	echo "Usage: $0 <output>" >&2
-+	echo "   Please notice that this script assumes $IGT_KERNEL_TREE is used as both Kernel source and object dir." >&2
-+	exit 1
-+fi
-+
-+lcov -q --rc lcov_branch_coverage=1 \
-+	--test-name "$(basename $1)" -b $IGT_KERNEL_TREE --capture \
-+	--output-file $1.info
-+
-+uptime=$(cat /proc/uptime|cut -d' ' -f 1)
-+echo "[$uptime]     Code coverage wrote to $1.info"
 -- 
 2.35.1
