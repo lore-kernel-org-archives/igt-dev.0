@@ -1,25 +1,19 @@
 Return-path: <SRS0=UqwI=TG=lists.freedesktop.org=igt-dev-bounces@kernel.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76D6210E85F
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 06:46:57 +0000 (UTC)
-Message-ID: <226941ad-c1af-d856-f532-eb7f92950bc0@intel.com>
-Date: Wed, 23 Feb 2022 12:16:51 +0530
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFEC210EA21
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 07:10:56 +0000 (UTC)
+Message-ID: <b7c6de7d-4689-a29a-5620-f947da0295fa@intel.com>
+Date: Wed, 23 Feb 2022 12:40:50 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Jessica Zhang <quic_jesszhan@quicinc.com>, igt-dev@lists.freedesktop.org
-References: <20220215122344.11168-1-swati2.sharma@intel.com>
- <20220215122344.11168-5-swati2.sharma@intel.com>
- <a85c6701-43ad-4b25-6184-8798e8db2e2d@quicinc.com>
- <f477c5f7-be29-bd08-41b9-ac802dc9ca30@intel.com>
- <930f5fdf-fe63-547e-6278-81d8e344e0ef@quicinc.com>
- <ac9b28bb-d8da-fc90-1dba-92cfecf210e5@intel.com>
- <a8d74c6d-c8b9-f524-c797-852a18e9f075@quicinc.com>
+References: <20220219025909.174-1-quic_jesszhan@quicinc.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <a8d74c6d-c8b9-f524-c797-852a18e9f075@quicinc.com>
+In-Reply-To: <20220219025909.174-1-quic_jesszhan@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [v4 4/9] tests/kms_plane_scaling: Downscaling each
- plane
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v4] kms_plane_scaling: Add more scale
+ factor tests to cover more drivers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,217 +21,290 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: aravindh@codeaurora.org, Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jessica,
+Pushed your patch. Thanks for the patch and review.
 
-Since your patch is rb'ed. Lets get your patch merge first.
-I will rebase on top of your patches and make modifications accordingly.
-
-On 23-Feb-22 1:06 AM, Jessica Zhang wrote:
-> Hi Swati,
+On 19-Feb-22 8:29 AM, Jessica Zhang wrote:
+> From: Petri Latvala <petri.latvala@intel.com>
 > 
-> Sorry for the late response -- had some access issues with my email 
-> server so didn't get your reply until now.
+> Not all drivers support all scale factors. Introduce more scale
+> factors rather than only testing scaling from a 20x20 fb.
 > 
-> I've looked over the rest of your patches and most of them are good to 
-> be merged. The only patch I have a doubt about is "[v5,2/9] 
-> tests/kms_plane_scaling: Add output name in dynamic subtests" as it 
-> changes the output string of test_scaler_with_rotation_pipe.
+> Changes since V3:
+> - Added skip on -EINVAL
+> - Added downscaling subtests
+> - Modified test and subtest names to distinguish between upscaling and
+>    downscaling subtests
 > 
-> This will conflict with our patch here [1] as we also change that output 
-> string to specify the size of the buffer being passed in.
+> Changes since V2:
+> - Replaced odd width/height check with ALIGN macro
 > 
-> Apart from that, the rest of the patches are good to merge.
+> Changes since V1:
+> - Fixed inconsistent parameter order
+> - Moved igt_output_get_mode to inside for_each_pipe_with_single_output
+>    for scaler-with-pixel-format-factor-4 subtest
+> - Add check to guarantee even aligned framebuffer size to avoid
+>    fractional UV component during chroma subsampling for YUV 4:2:0
+>    formats
 > 
-> Thanks,
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com> # RB3 (sdm845), RB5 (qrb5165), Chromebook (Lazor)
+> Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+> Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+> Change-Id: Ie3016a3ccbf18d6e7388ffff930bb6ccc17dcacb
+> ---
+>   tests/kms_plane_scaling.c | 173 +++++++++++++++++++++++++++++++++-----
+>   1 file changed, 153 insertions(+), 20 deletions(-)
 > 
-> Jessica Zhang
-> 
-> [1] https://patchwork.freedesktop.org/patch/475216/?series=99364&rev=5
-> 
-> On 2/17/2022 10:37 AM, Sharma, Swati2 wrote:
->> Okay. Rest of the patches can be merged?
->>
->> On 17-Feb-22 11:52 PM, Jessica Zhang wrote:
->>>
->>>
->>> On 2/17/2022 4:15 AM, Sharma, Swati2 wrote:
->>>> Hi Jessica/Petri,
->>>>
->>>> Sorry missed your mail.
->>>>
->>>> Do you think we should drop upscaling and downscaling single plane 
->>>> tests from
->>>> my series
->>>> https://patchwork.freedesktop.org/series/98333/ ?
->>>> That should be covered by your tests?
->>>>
->>>> What do you think?
->>>
->>> Hi Swati,
->>>
->>> Yep, sounds good! We have upscale tests for single plane in Petri's 
->>> patch and we can add downscale tests too.
->>>
->>> Thanks,
->>>
->>> Jessica Zhang
->>>
->>>>
->>>> On 16-Feb-22 6:15 AM, Jessica Zhang wrote:
->>>>>
->>>>>
->>>>> On 2/15/2022 4:23 AM, Swati Sharma wrote:
->>>>>> Subtest for testing downscaling for each plane
->>>>>> individually (checked 1 plane per "class" like
->>>>>> we do in other tests).
->>>>>>
->>>>>> v2: -set modifier as LINEAR (Ville)
->>>>>>      -shared code for upscaling and downscaling tests (Ville)
->>>>>>      -removed num_scaler() check and added try_commit() (Ville)
->>>>>>
->>>>>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
->>>>>
->>>>> Hi Swati,
->>>>>
->>>>> FYI, Petri and I have been working on a similar patch: [1][2]
->>>>>
->>>>> For the latest version we've modified 
->>>>> `check_scaling_pipe_plane_rot` so that it takes in a custom buffer 
->>>>> height/width and created multiple subtests for different scaling 
->>>>> factors.
->>>>>
->>>>> I see that you've added tests for both upscaling and downscaling 
->>>>> that do something similar. Maybe our changes to 
->>>>> `check_scaling_pipe_plane_rot` can be useful for your series to 
->>>>> reduce redundant code in both the upscale and downscale cases? Let 
->>>>> me know your thoughts on this.
->>>>>
->>>>> Thanks,
->>>>>
->>>>> Jessica Zhang
->>>>>
->>>>> [1] latest version: 
->>>>> https://patchwork.freedesktop.org/patch/470921/?series=99364&rev=2
->>>>> [2] earlier version: 
->>>>> https://patchwork.freedesktop.org/patch/470856/?series=97584&rev=5
->>>>>
->>>>>> ---
->>>>>>   tests/kms_plane_scaling.c | 55 
->>>>>> ++++++++++++++++++++++++++++++++++++++-
->>>>>>   1 file changed, 54 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
->>>>>> index 39f2de3c..e960a6c5 100644
->>>>>> --- a/tests/kms_plane_scaling.c
->>>>>> +++ b/tests/kms_plane_scaling.c
->>>>>> @@ -32,6 +32,7 @@ IGT_TEST_DESCRIPTION("Test display plane scaling");
->>>>>>   /* Test flags. */
->>>>>>   enum {
->>>>>>       TEST_UPSCALING = 1 << 0,
->>>>>> +    TEST_DOWNSCALING = 1 << 1,
->>>>>>   };
->>>>>>   typedef struct {
->>>>>> @@ -266,6 +267,48 @@ __test_plane_upscaling(data_t *d, igt_plane_t 
->>>>>> *plane,
->>>>>>       igt_skip_on_f(ret == -EINVAL, "Scaling op not supported\n");
->>>>>>   }
->>>>>> +static void
->>>>>> +__test_plane_downscaling(data_t *d, igt_plane_t *plane,
->>>>>> +                 enum pipe pipe, igt_output_t *output)
->>>>>> +{
->>>>>> +    igt_display_t *display = &d->display;
->>>>>> +    int width, height;
->>>>>> +    drmModeModeInfo *mode;
->>>>>> +    bool test_complete = false;
->>>>>> +    int scaling = 50;
->>>>>> +    int ret;
->>>>>> +
->>>>>> +    cleanup_crtc(d);
->>>>>> +
->>>>>> +    igt_output_set_pipe(output, pipe);
->>>>>> +    mode = igt_output_get_mode(output);
->>>>>> +    width = mode->hdisplay;
->>>>>> +    height = mode->vdisplay;
->>>>>> +
->>>>>> +    igt_create_color_pattern_fb(display->drm_fd,
->>>>>> +                    width, height,
->>>>>> +                    DRM_FORMAT_XRGB8888,
->>>>>> +                    I915_TILING_NONE,
->>>>>> +                    1.0, 0.0, 0.0, &d->fb[0]);
->>>>>> +
->>>>>> +    igt_plane_set_fb(plane, &d->fb[0]);
->>>>>> +
->>>>>> +    while(!test_complete) {
->>>>>> +        igt_plane_set_size(plane, (width * scaling) / 100, 
->>>>>> (height * scaling) / 100);
->>>>>> +        ret = igt_display_try_commit_atomic(display, 
->>>>>> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->>>>>> +
->>>>>> +        if (ret != -EINVAL)
->>>>>> +            test_complete = true;
->>>>>> +
->>>>>> +        scaling += 5;
->>>>>> +    }
->>>>>> +
->>>>>> +    igt_plane_set_fb(plane, NULL);
->>>>>> +    igt_remove_fb(display->drm_fd, &d->fb[0]);
->>>>>> +
->>>>>> +    igt_skip_on_f(ret == -EINVAL, "Scaling op not supported\n");
->>>>>> +}
->>>>>> +
->>>>>>   static void
->>>>>>   test_plane_scaling(data_t *d, enum pipe pipe, igt_output_t 
->>>>>> *output, uint32_t flags)
->>>>>>   {
->>>>>> @@ -285,9 +328,12 @@ test_plane_scaling(data_t *d, enum pipe pipe, 
->>>>>> igt_output_t *output, uint32_t fla
->>>>>>               uint32_t format = plane->drm_plane->formats[j];
->>>>>>               if (test_format(d, &tested_formats, format) &&
->>>>>>                   igt_plane_has_format_mod(plane, format, 
->>>>>> modifier) &&
->>>>>> -                can_scale(d, format))
->>>>>> +                can_scale(d, format)) {
->>>>>>                   if (flags & TEST_UPSCALING)
->>>>>>                       __test_plane_upscaling(d, plane, pipe, output);
->>>>>> +                if (flags & TEST_DOWNSCALING)
->>>>>> +                    __test_plane_downscaling(d, plane, pipe, 
->>>>>> output);
->>>>>> +                }
->>>>>>           }
->>>>>>           igt_vec_fini(&tested_formats);
->>>>>> @@ -618,6 +664,13 @@ igt_main_args("", long_opts, help_str, 
->>>>>> opt_handler, &data)
->>>>>>                       test_plane_scaling(&data, pipe, output, 
->>>>>> TEST_UPSCALING);
->>>>>>           }
->>>>>> +        igt_describe("Tests plane downscaling.");
->>>>>> +        igt_subtest_with_dynamic("plane-downscaling") {
->>>>>> +            for_each_pipe_with_single_output(&data.display, pipe, 
->>>>>> output)
->>>>>> +                igt_dynamic_f("pipe-%s-%s-downscaling", 
->>>>>> kmstest_pipe_name(pipe), igt_output_name(output))
->>>>>> +                    test_plane_scaling(&data, pipe, output, 
->>>>>> TEST_DOWNSCALING);
->>>>>> +        }
->>>>>> +
->>>>>>           igt_describe("Tests scaling with pixel formats.");
->>>>>>           igt_subtest_with_dynamic("scaler-with-pixel-format") {
->>>>>>               for_each_pipe_with_single_output(&data.display, 
->>>>>> pipe, output)
->>>>>> -- 
->>>>>> 2.25.1
->>>>>>
->>>>
->>>> -- 
->>>> ~Swati Sharma
->>
->> -- 
->> ~Swati Sharma
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index 85db11ee6dbd..bd1bc073eb87 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -120,12 +120,15 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+>   
+>   static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+>   					 uint32_t pixel_format,
+> -					 uint64_t modifier, enum pipe pipe,
+> +					 uint64_t modifier,
+> +					 int width, int height,
+> +					 bool is_upscale,
+> +					 enum pipe pipe,
+>   					 igt_output_t *output,
+>   					 igt_rotation_t rot)
+>   {
+>   	igt_display_t *display = &d->display;
+> -	int width, height;
+> +	int commit_ret;
+>   	drmModeModeInfo *mode;
+>   
+>   	cleanup_crtc(d);
+> @@ -133,22 +136,42 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+>   	igt_output_set_pipe(output, pipe);
+>   	mode = igt_output_get_mode(output);
+>   
+> -	/* create buffer in the range of  min and max source side limit.*/
+> -	width = height = 20;
+> -	igt_create_color_fb(display->drm_fd, width, height,
+> -		       pixel_format, modifier, 0.0, 1.0, 0.0, &d->fb[0]);
+> +	/*
+> +	 * Guarantee even value width/height to avoid fractional
+> +	 * UV component in chroma subsampling for YUV 4:2:0 formats
+> +	 * */
+> +	width = ALIGN(width, 2);
+> +	height = ALIGN(height, 2);
+> +
+> +	if (is_upscale)
+> +		igt_create_color_fb(display->drm_fd, width, height,
+> +		       	pixel_format, modifier, 0.0, 1.0, 0.0, &d->fb[0]);
+> +	else
+> +		igt_create_color_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
+> +		       	pixel_format, modifier, 0.0, 1.0, 0.0, &d->fb[0]);
+> +
+> +
+>   	igt_plane_set_fb(plane, &d->fb[0]);
+>   
+> -	/* Check min to full resolution upscaling */
+>   	igt_fb_set_position(&d->fb[0], plane, 0, 0);
+>   	igt_fb_set_size(&d->fb[0], plane, width, height);
+>   	igt_plane_set_position(plane, 0, 0);
+> -	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> +
+> +	if (is_upscale)
+> +		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> +	else
+> +		igt_plane_set_size(plane, width, height);
+> +
+>   	igt_plane_set_rotation(plane, rot);
+> -	igt_display_commit2(display, COMMIT_ATOMIC);
+> +	commit_ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+>   
+>   	igt_plane_set_fb(plane, NULL);
+>   	igt_plane_set_position(plane, 0, 0);
+> +
+> +	igt_skip_on_f(commit_ret == -ERANGE || commit_ret == -EINVAL,
+> +		      "Unsupported scaling factor with fb size %dx%d\n",
+> +		      width, height);
+> +	igt_assert_eq(commit_ret, 0);
+>   }
+>   
+>   static const igt_rotation_t rotations[] = {
+> @@ -242,7 +265,10 @@ static bool test_pipe_iteration(data_t *data, enum pipe pipe, int iteration)
+>   	return true;
+>   }
+>   
+> -static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
+> +static void test_scaler_with_rotation_pipe(data_t *d,
+> +					   int width, int height,
+> +					   bool is_upscale,
+> +					   enum pipe pipe,
+>   					   igt_output_t *output)
+>   {
+>   	igt_display_t *display = &d->display;
+> @@ -271,9 +297,12 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
+>   				    igt_plane_has_rotation(plane, rot) &&
+>   				    can_rotate(d, format, modifier, rot) &&
+>   				    can_scale(d, format))
+> -					check_scaling_pipe_plane_rot(d, plane, format,
+> -								     modifier, pipe,
+> -								     output, rot);
+> +					check_scaling_pipe_plane_rot(d, plane,
+> +								     format, modifier,
+> +								     width, height,
+> +								     is_upscale,
+> +								     pipe, output,
+> +								     rot);
+>   			}
+>   
+>   			igt_vec_fini(&tested_formats);
+> @@ -288,7 +317,8 @@ static const uint64_t modifiers[] = {
+>   	I915_FORMAT_MOD_Yf_TILED
+>   };
+>   
+> -static void test_scaler_with_pixel_format_pipe(data_t *d, enum pipe pipe, igt_output_t *output)
+> +static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height, bool is_upscale,
+> +					       enum pipe pipe, igt_output_t *output)
+>   {
+>   	igt_display_t *display = &d->display;
+>   	igt_plane_t *plane;
+> @@ -315,6 +345,8 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, enum pipe pipe, igt_ou
+>   				    can_scale(d, format))
+>   					check_scaling_pipe_plane_rot(d, plane,
+>   								     format, modifier,
+> +								     width, height,
+> +								     is_upscale,
+>   								     pipe, output, IGT_ROTATION_0);
+>   			}
+>   
+> @@ -726,18 +758,119 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   					test_plane_scaling_on_pipe(&data, pipe, output);
+>   		}
+>   
+> -		igt_describe("Tests scaling with pixel formats.");
+> -		igt_subtest_with_dynamic("scaler-with-pixel-format") {
+> +		igt_describe("Tests upscaling with pixel formats, from 20x20 fb.");
+> +		igt_subtest_with_dynamic("upscale-with-pixel-format-20x20") {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output)
+> +				igt_dynamic_f("pipe-%s-upscale-with-pixel-format", kmstest_pipe_name(pipe))
+> +					test_scaler_with_pixel_format_pipe(&data, 20, 20, true, pipe, output);
+> +		}
+> +
+> +		igt_describe("Tests upscaling with pixel formats, scaling factor 4.");
+> +		igt_subtest_with_dynamic("upscale-with-pixel-format-factor-4") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				drmModeModeInfo *mode;
+> +
+> +				mode = igt_output_get_mode(output);
+> +
+> +				igt_dynamic_f("pipe-%s-upscale-with-pixel-format", kmstest_pipe_name(pipe))
+> +					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay / 4,
+> +							mode->vdisplay / 4, true, pipe, output);
+> +			}
+> +		}
+> +
+> +		igt_describe("Tests downscaling with pixel formats, scaling factor 4.");
+> +		igt_subtest_with_dynamic("downscale-with-pixel-format-factor-4") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				drmModeModeInfo *mode;
+> +
+> +				mode = igt_output_get_mode(output);
+> +				igt_dynamic_f("pipe-%s-downscale-with-pixel-format", kmstest_pipe_name(pipe))
+> +					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay / 4,
+> +							mode->vdisplay / 4, false, pipe, output);
+> +			}
+> +		}
+> +
+> +		igt_describe("Tests downscaling with pixel formats, scaling factor 2.");
+> +		igt_subtest_with_dynamic("downscale-with-pixel-format-factor-2") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				drmModeModeInfo *mode;
+> +
+> +				mode = igt_output_get_mode(output);
+> +
+> +				igt_dynamic_f("pipe-%s-downscale-with-pixel-format", kmstest_pipe_name(pipe))
+> +					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay / 2,
+> +							mode->vdisplay / 2, false, pipe, output);
+> +			}
+> +		}
+> +		igt_describe("Tests scaling with pixel formats, unity scaling.");
+> +		igt_subtest_with_dynamic("scaler-with-pixel-format-unity-scaling") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				drmModeModeInfo *mode;
+> +
+> +				mode = igt_output_get_mode(output);
+> +
+>   				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
+> -					test_scaler_with_pixel_format_pipe(&data, pipe, output);
+> +					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay,
+> +							mode->vdisplay, true, pipe, output);
+> +			}
+>   		}
+>   
+> -		igt_describe("Tests scaling with tiling rotation.");
+> -		igt_subtest_with_dynamic("scaler-with-rotation") {
+> +		igt_describe("Tests upscaling with tiling rotation, from 20x20 fb.");
+> +		igt_subtest_with_dynamic("upscale-with-rotation-20x20") {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output)
+> +				igt_dynamic_f("pipe-%s-upscale-with-rotation", kmstest_pipe_name(pipe))
+> +					test_scaler_with_rotation_pipe(&data, 20, 20, true, pipe, output);
+> +		}
+> +
+> +		igt_describe("Tests upscaling with tiling rotation, scaling factor 4.");
+> +		igt_subtest_with_dynamic("upscale-with-rotation-factor-4") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				drmModeModeInfo *mode;
+> +
+> +				mode = igt_output_get_mode(output);
+> +
+> +				igt_dynamic_f("pipe-%s-upscale-with-rotation", kmstest_pipe_name(pipe))
+> +					test_scaler_with_rotation_pipe(&data, mode->hdisplay / 4,
+> +							mode->vdisplay / 4, true, pipe, output);
+> +			}
+> +		}
+> +
+> +		igt_describe("Tests downscaling with tiling rotation, scaling factor 4.");
+> +		igt_subtest_with_dynamic("downscale-with-rotation-factor-4") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				drmModeModeInfo *mode;
+> +
+> +				mode = igt_output_get_mode(output);
+> +
+> +				igt_dynamic_f("pipe-%s-downscale-with-rotation", kmstest_pipe_name(pipe))
+> +					test_scaler_with_rotation_pipe(&data, mode->hdisplay / 4,
+> +							mode->vdisplay / 4, false, pipe, output);
+> +			}
+> +		}
+> +
+> +		igt_describe("Tests downscaling with tiling rotation, scaling factor 2.");
+> +		igt_subtest_with_dynamic("downscale-with-rotation-factor-2") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				drmModeModeInfo *mode;
+> +
+> +				mode = igt_output_get_mode(output);
+> +
+> +				igt_dynamic_f("pipe-%s-downscale-with-rotation", kmstest_pipe_name(pipe))
+> +					test_scaler_with_rotation_pipe(&data, mode->hdisplay / 2,
+> +							mode->vdisplay / 2, false, pipe, output);
+> +			}
+> +		}
+> +		igt_describe("Tests scaling with tiling rotation, unity scaling.");
+> +		igt_subtest_with_dynamic("scaler-with-rotation-unity-scaling") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				drmModeModeInfo *mode;
+> +
+> +				mode = igt_output_get_mode(output);
+> +
+>   				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+> -					test_scaler_with_rotation_pipe(&data, pipe, output);
+> +					test_scaler_with_rotation_pipe(&data, mode->hdisplay,
+> +							mode->vdisplay, true, pipe, output);
+> +			}
+>   		}
+>   
+>   		igt_describe("Tests scaling with clipping and clamping.");
 
 -- 
 ~Swati Sharma
