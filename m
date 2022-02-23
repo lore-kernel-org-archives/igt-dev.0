@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7559B10E16C
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 15:34:32 +0000 (UTC)
-From: "Newsome, Jasmine" <jasmine.newsome@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 23 Feb 2022 15:34:26 +0000
-Message-ID: <SA1PR11MB5873635D1C442A4E06A8C746FE3C9@SA1PR11MB5873.namprd11.prod.outlook.com>
-References: <20220219013215.3531766-1-jasmine.newsome@intel.com>
- <20220219013215.3531766-3-jasmine.newsome@intel.com>
- <f2324dc7-4d4e-1e75-a980-9d65276b6d5d@linux.intel.com>
-In-Reply-To: <f2324dc7-4d4e-1e75-a980-9d65276b6d5d@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com
+ [185.132.182.106])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DB1910E6B1
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Feb 2022 15:44:40 +0000 (UTC)
+Message-ID: <e7a77cf5-17a8-d688-3eb1-b76cb4d76d0d@foss.st.com>
+Date: Wed, 23 Feb 2022 16:44:27 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_spin_batch: Removing
- context persistence
+Content-Language: en-US
+To: Petri Latvala <petri.latvala@intel.com>
+References: <20220223084553.84156-1-raphael.gallais-pou@foss.st.com>
+ <YhYNWsKIFhWzvbbO@platvala-desk.ger.corp.intel.com>
+From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+In-Reply-To: <YhYNWsKIFhWzvbbO@platvala-desk.ger.corp.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/drmtest: add support for STM drivers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,49 +22,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>,
+ Yannick Fertre <yannick.fertre@foss.st.com>,
+ Philippe Cornu <philippe.cornu@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@st.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMTkvMDIvMjAyMiAwMTozMiwgSmFzbWluZSBOZXdzb21lIHdyb3RlOg0KPiBUaGUgc3BpbiBh
-bGwgdGVzdCByZWxpZWQgb24gY29udGV4dCBwZXJzaXN0ZW5jZSB1bmVjZXNzYXJpbHkgYnkgdHJ5
-aW5nIA0KPiB0byBkZXN0cm95IGNvbnRleHRzIHdoaWxlIGtlZXBpbmcgc3Bpbm5lcnMgYWN0aXZl
-Lg0KPiBUaGUgY3VycmVudCBpbXBsZW1lbnRhdGlvbiBvZiBjb250ZXh0IHBlcnNpc3RlbmNlIGlu
-IGk5MTUgY2FuIGNhdXNlIA0KPiBmYWlsdXJlcywgYW5kIHBlcnNpc3RlbmNlIGlzIG5vdCBuZWVk
-ZWQgZm9yIHRoaXMgdGVzdC4NCg0KQ291bGQgeW91IHBsZWFzZSBleHBhbmQgYSBiaXQgb24gImN1
-cnJlbnQgaW1wbGVtZW50YXRpb24iIGFuZCAiY2FuIGNhdXNlIGZhaWx1cmVzIj8NCg0KQWxzbyBm
-cm9tIHRoZSBzdWJqZWN0IG9mICJSZW1vdmluZyBjb250ZXh0IHBlcnNpc3RlbmNlIiBJIHdhcyBl
-eHBlY3RpbmcgdG8gc2VlIHVzYWdlIG9mIEk5MTVfQ09OVEVYVF9QQVJBTV9QRVJTSVNURU5DRSB0
-byBhY3R1YWxseSBjaGFuZ2UgdGhlIG1vZGUuDQoNCk15IGNvbmNlcm4gaXMgdGhhdCB0aGUgcGF0
-dGVybiBvZiBkZXN0cm95aW5nIGNvbnRleHRzIHdoaWxlIGtlZXBpbmcgdGhpbmdzIGFjdGl2ZSBv
-biB0aGUgR1BVIGlzIHZlcnkgd2lkZSBzcHJlYWQgaW4gSUdUIGFuZCBwb3NzaWJseSBleGlzdHMg
-aW4gdXNlcnNwYWNlIGFzIHdlbGwuDQoNCkhhcyB0aGUgd2lkZXIgc3RvcnkgYmVlbiBhbmFseXNl
-ZCBieSB0aGUgYXJjaGl0ZWN0cyBoZXJlIGFuZCB3aGF0IGlzIHRoZSBwbGFuPyBEbyB3ZSBhY3R1
-YWxseSBrbm93IG5vIHVzZXJzcGFjZSBhY3R1YWxseSBkZXBlbmRzIG9uIGl0Pw0KDQpbQ29tZXMg
-YmFjayBsYXRlciwgYWZ0ZXIgc3BvdHRpbmcgdGhlIGNvdmVyIGxldHRlci5dDQoNClNvIGl0J3Mg
-b25seSBHdUMsIG5vdCBpOTE1LCBzbyBwbGVhc2Ugc2F5IHRoYXQgaW4gdGhpcyBjb21taXQgbWVz
-c2FnZSBzaW5jZSBjb3ZlciBsZXR0ZXJzIGFyZSBub3Qgc2F2ZWQgaW4gZ2l0IGhpc3RvcnkuDQoN
-ClJlZ2FyZHMsDQoNClR2cnRrbw0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tDQoNCk9rIHRoYW5rcy4gSSB3aWxsIHVwZGF0ZSB0aGUgY29tbWl0IG1lc3Nh
-Z2UgYW5kIHJlc2VuZC4gDQoNClJlZ2FyZHMsDQpKYXNtaW5lDQoNCj4gDQo+IE1vdmluZyBpbnRl
-bF9jdHhfZGVzdHJveSBhZnRlciBpZ3Rfc3Bpbl9lbmQuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBK
-YXNtaW5lIE5ld3NvbWUgPGphc21pbmUubmV3c29tZUBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgIHRl
-c3RzL2k5MTUvZ2VtX3NwaW5fYmF0Y2guYyB8IDQgKystLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAy
-IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMv
-aTkxNS9nZW1fc3Bpbl9iYXRjaC5jIGIvdGVzdHMvaTkxNS9nZW1fc3Bpbl9iYXRjaC5jIA0KPiBp
-bmRleCA2NTM4MTJjNy4uNzA3ZDY5YjYgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX3Nw
-aW5fYmF0Y2guYw0KPiArKysgYi90ZXN0cy9pOTE1L2dlbV9zcGluX2JhdGNoLmMNCj4gQEAgLTE2
-MSw4ICsxNjEsNiBAQCBzdGF0aWMgdm9pZCBzcGluX2FsbChpbnQgaTkxNSwgY29uc3QgaW50ZWxf
-Y3R4X3QgKmN0eCwgdW5zaWduZWQgaW50IGZsYWdzKQ0KPiAgIAkJCQkgICAgLmVuZ2luZSA9IGUt
-PmZsYWdzLA0KPiAgIAkJCQkgICAgLmZsYWdzID0gKElHVF9TUElOX1BPTExfUlVOIHwNCj4gICAJ
-CQkJCSAgICAgIElHVF9TUElOX05PX1BSRUVNUFRJT04pKTsNCj4gLQkJaWYgKGZsYWdzICYgUEFS
-QUxMRUxfU1BJTl9ORVdfQ1RYKQ0KPiAtCQkJaW50ZWxfY3R4X2Rlc3Ryb3koaTkxNSwgY3R4KTsN
-Cj4gICANCj4gICAJCWlndF9zcGluX2J1c3l3YWl0X3VudGlsX3N0YXJ0ZWQoc3Bpbik7DQo+ICAg
-CQlpZ3RfbGlzdF9tb3ZlKCZzcGluLT5saW5rLCAmbGlzdCk7IEBAIC0xNzIsNiArMTcwLDggQEAg
-c3RhdGljIHZvaWQgDQo+IHNwaW5fYWxsKGludCBpOTE1LCBjb25zdCBpbnRlbF9jdHhfdCAqY3R4
-LCB1bnNpZ25lZCBpbnQgZmxhZ3MpDQo+ICAgCQlpZ3RfYXNzZXJ0KGdlbV9ib19idXN5KGk5MTUs
-IHNwaW4tPmhhbmRsZSkpOw0KPiAgIAkJYWhuZCA9IHNwaW4tPmFobmQ7DQo+ICAgCQlpZ3Rfc3Bp
-bl9lbmQoc3Bpbik7DQo+ICsJCWlmIChmbGFncyAmIFBBUkFMTEVMX1NQSU5fTkVXX0NUWCkNCj4g
-KwkJCWludGVsX2N0eF9kZXN0cm95KGk5MTUsIHNwaW4tPm9wdHMuY3R4KTsNCj4gICAJCWdlbV9z
-eW5jKGk5MTUsIHNwaW4tPmhhbmRsZSk7DQo+ICAgCQlpZ3Rfc3Bpbl9mcmVlKGk5MTUsIHNwaW4p
-Ow0KPiAgIAkJcHV0X2FobmQoYWhuZCk7DQo=
+
+On 2/23/22 11:32, Petri Latvala wrote:
+> On Wed, Feb 23, 2022 at 09:45:53AM +0100, Raphaël Gallais-Pou wrote:
+>> From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+>>
+>> Since CRC feature is now supported on STM display drivers, IGT would be
+>> an interesting solution for testing.
+>>
+>> This patch adds basic support for IGT to run with STM drivers.
+>>
+>> Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+>> ---
+>>  lib/drmtest.c | 13 +++++++++++++
+>>  lib/drmtest.h |  3 +++
+>>  2 files changed, 16 insertions(+)
+>>
+>> diff --git a/lib/drmtest.c b/lib/drmtest.c
+>> index 09a9a229..e6886c1c 100644
+>> --- a/lib/drmtest.c
+>> +++ b/lib/drmtest.c
+>> @@ -134,6 +134,11 @@ bool is_nouveau_device(int fd)
+>>  #endif
+>>  }
+>>  
+>> +bool is_stm_device(int fd)
+>> +{
+>> +	return __is_device(fd, "stm");
+>> +}
+>> +
+>>  bool is_vc4_device(int fd)
+>>  {
+>>  	return __is_device(fd, "vc4");
+>> @@ -186,6 +191,7 @@ static const struct module {
+>>  	{ DRIVER_INTEL, "i915", modprobe_i915 },
+>>  	{ DRIVER_MSM, "msm" },
+>>  	{ DRIVER_PANFROST, "panfrost" },
+>> +	{ DRIVER_STM, "stm32-display" },
+>>  	{ DRIVER_V3D, "v3d" },
+>>  	{ DRIVER_VC4, "vc4" },
+>>  	{ DRIVER_VGEM, "vgem" },
+>> @@ -547,6 +553,8 @@ static const char *chipset_to_str(int chipset)
+>>  		return "panfrost";
+>>  	case DRIVER_MSM:
+>>  		return "msm";
+>> +	case DRIVER_STM:
+>> +		return "stm";
+>>  	case DRIVER_ANY:
+>>  		return "any";
+>>  	default:
+>> @@ -651,6 +659,11 @@ void igt_require_nouveau(int fd)
+>>  	igt_require(is_nouveau_device(fd));
+>>  }
+>>  
+>> +void igt_require_stm(int fd)
+>> +{
+>> +	igt_require(is_stm_device(fd));
+>> +}
+>> +
+>>  void igt_require_vc4(int fd)
+>>  {
+>>  	igt_require(is_vc4_device(fd));
+>> diff --git a/lib/drmtest.h b/lib/drmtest.h
+>> index b5debd44..6a7ab082 100644
+>> --- a/lib/drmtest.h
+>> +++ b/lib/drmtest.h
+>> @@ -51,6 +51,7 @@
+>>  #define DRIVER_V3D	(1 << 4)
+>>  #define DRIVER_PANFROST	(1 << 5)
+>>  #define DRIVER_MSM	(1 << 6)
+>> +#define DRIVER_STM	(1 << 7)
+> Hi,
+>
+> Thanks for the patch! But do consider whether it's at needed at this
+> point, or at all. Generally the DRIVER_XYZ stuff need to be added for
+> one of these reasons:
+>
+> 1) The test is driver-specific, like for interfaces around rendering.
+>
+> 2) The test needs to fiddle with the .ko module itself (unload/load
+> tests)
+>
+> 3) Some driver-specific adjusting is needed
+>
+> The kms tests that use DRIVER_ANY should already work out of the box
+> to some extent. Otherwise, if this patch is needed it's more than
+> welcome but I'd rather wait until it is.
+
+Tests that do not require any driver specific shenanigans effectively work without the need of this patch.
+
+I was sending it in "standalone" in regards for potential future patches that could apply to STM-specific tests.
+
+But I did not saw it that way. I will resend this, when tweaks will be needed, in a serie.
+
+
+Regards,
+
+>
+>
