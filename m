@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5A0110EBB0
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Feb 2022 05:17:53 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	manasi.d.navare@intel.com
-Date: Thu, 24 Feb 2022 10:46:48 +0530
-Message-Id: <20220224051648.91470-6-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220224051648.91470-1-bhanuprakash.modem@intel.com>
-References: <20220224051648.91470-1-bhanuprakash.modem@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FF1110E19C
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Feb 2022 05:20:06 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
+ zbigniew.kempczynski@intel.com
+Date: Thu, 24 Feb 2022 10:50:02 +0530
+Message-Id: <20220224052002.11852-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 5/5] HAX: Add VRR negative tests to BAT
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture: Adding Local
+ memory support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,23 +23,142 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 5c867bbf7e..aedbba2917 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -138,6 +138,8 @@ igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
- igt@kms_psr@primary_mmap_gtt
- igt@kms_setmode@basic-clone-single-crtc
-+igt@kms_vrr@negative-basic
-+igt@kms_vrr@parse-vrr-range
- igt@i915_pm_backlight@basic-brightness
- igt@i915_pm_rpm@basic-pci-d3-state
- igt@i915_pm_rpm@basic-rte
+Adding local memory support to many-4K-zero subtest
+
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/gem_exec_capture.c | 36 +++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
+
+diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+index 60f8df04..3eb516e7 100644
+--- a/tests/i915/gem_exec_capture.c
++++ b/tests/i915/gem_exec_capture.c
+@@ -415,7 +415,7 @@ static struct offset *
+ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	   const struct intel_execution_engine2 *e,
+ 	   unsigned int size, int count,
+-	   unsigned int flags, int *_fence_out)
++	   unsigned int flags, int *_fence_out, uint32_t region)
+ #define INCREMENTAL 0x1
+ #define ASYNC 0x2
+ {
+@@ -436,7 +436,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	obj = calloc(count + 2, sizeof(*obj));
+ 	igt_assert(obj);
+ 
+-	obj[0].handle = gem_create(fd, 4096);
++	obj[0].handle = gem_create_in_memory_regions(fd, 4096, region);
+ 	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
+ 	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
+ 
+@@ -459,7 +459,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 		}
+ 	}
+ 
+-	obj[count + 1].handle = gem_create(fd, 4096);
++	obj[count + 1].handle = gem_create_in_memory_regions(fd, 4096, region);
+ 	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
+ 	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
+ 	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
+@@ -585,7 +585,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+ 		saved = configure_hangs(fd, e, ctx->id); \
+ 	} while(0)
+ 
+-static void many(int fd, int dir, uint64_t size, unsigned int flags)
++static void many(int fd, int dir, uint64_t size, unsigned int flags, uint32_t region)
+ {
+ 	const struct intel_execution_engine2 *e;
+ 	const intel_ctx_t *ctx;
+@@ -607,7 +607,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ 	intel_require_memory(count, size, CHECK_RAM);
+ 	ahnd = get_reloc_ahnd(fd, ctx->id);
+ 
+-	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
++	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL, region);
+ 
+ 	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
+ 	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
+@@ -620,7 +620,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+ }
+ 
+ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+-		    const struct intel_execution_engine2 *e)
++		    const struct intel_execution_engine2 *e, uint32_t region)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct drm_i915_gem_exec_object2 obj = {
+@@ -677,7 +677,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+ 		/* Reopen the allocator in the new process. */
+ 		ahnd = get_reloc_ahnd(fd, ctx2->id);
+ 
+-		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
++		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out, region));
+ 		put_ahnd(ahnd);
+ 
+ 		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
+@@ -767,6 +767,7 @@ igt_main
+ 	struct igt_collection *regions, *set;
+ 	char *sub_name;
+ 	uint32_t region;
++	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
+ 
+ 	igt_fixture {
+ 		int gen;
+@@ -803,29 +804,36 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_subtest_f("many-4K-zero") {
++
++	igt_subtest_with_dynamic("many-4K-zero") {
+ 		igt_require(gem_can_store_dword(fd, 0));
+-		many(fd, dir, 1<<12, 0);
++		for_each_combination(regions, 1, set) {
++			sub_name = memregion_dynamic_subtest_name(regions);
++			region = igt_collection_get_value(regions, 0);
++			igt_dynamic_f("%s", sub_name)
++				many(fd, dir, 1<<12, 0, region);
++			free(sub_name);
++		}
+ 	}
+ 
+ 	igt_subtest_f("many-4K-incremental") {
+ 		igt_require(gem_can_store_dword(fd, 0));
+-		many(fd, dir, 1<<12, INCREMENTAL);
++		many(fd, dir, 1<<12, INCREMENTAL, system_region);
+ 	}
+ 
+ 	igt_subtest_f("many-2M-zero") {
+ 		igt_require(gem_can_store_dword(fd, 0));
+-		many(fd, dir, 2<<20, 0);
++		many(fd, dir, 2<<20, 0, system_region);
+ 	}
+ 
+ 	igt_subtest_f("many-2M-incremental") {
+ 		igt_require(gem_can_store_dword(fd, 0));
+-		many(fd, dir, 2<<20, INCREMENTAL);
++		many(fd, dir, 2<<20, INCREMENTAL, system_region);
+ 	}
+ 
+ 	igt_subtest_f("many-256M-incremental") {
+ 		igt_require(gem_can_store_dword(fd, 0));
+-		many(fd, dir, 256<<20, INCREMENTAL);
++		many(fd, dir, 256<<20, INCREMENTAL, system_region);
+ 	}
+ 
+ 	/* And check we can read from different types of objects */
+@@ -837,7 +845,7 @@ igt_main
+ 
+ 	test_each_engine("pi", fd, ctx, e)
+ 		igt_dynamic_f("%s", (e)->name)
+-			prioinv(fd, dir, ctx, e);
++			prioinv(fd, dir, ctx, e, system_region);
+ 
+ 	igt_fixture {
+ 		close(dir);
 -- 
-2.35.0
+2.35.1
