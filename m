@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93D4110F674
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Feb 2022 09:58:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E301E10F865
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Feb 2022 09:58:22 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Feb 2022 15:42:17 +0530
-Message-Id: <20220224101224.12319-2-swati2.sharma@intel.com>
+Date: Thu, 24 Feb 2022 15:42:21 +0530
+Message-Id: <20220224101224.12319-6-swati2.sharma@intel.com>
 In-Reply-To: <20220224101224.12319-1-swati2.sharma@intel.com>
 References: <20220224101224.12319-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v6 1/8] tests/kms_plane_scaling: Removal of
- plane-scaling subtest
+Subject: [igt-dev] [v6 5/8] tests/kms_plane_scaling: Upscaling and
+ downscaling scenario
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,212 +24,149 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The test case has dead code, primary_plane_scaling is always 0.
-Also, upscaling and downscaling scenarios seems little bit messy.
-Lets simplify those scenarios by introducing new subtests covering both
-upscaling and downscaling.
+Upscaling on first plane and downscaling on second plane.
+
+v2: -add check for min 2 scalers
+    -add igt_require() for overlay planes, fixes CRASH on KBL
+v3: -test modified for n planes (Ville)
+v4: -code optimization
+v5: -limiting while loop and few other changes based on prev. patches
+v6: -rebase
+    -modified tests after rebase for consistency and more coverage
+    (Petri)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_plane_scaling.c | 179 --------------------------------------
- 1 file changed, 179 deletions(-)
+ tests/kms_plane_scaling.c | 89 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index bd1bc073..ac39d37b 100644
+index 8ed75ab6..52f19f5d 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
-@@ -355,178 +355,6 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height,
- 	}
- }
+@@ -32,6 +32,7 @@ IGT_TEST_DESCRIPTION("Test display plane scaling");
+ enum scaler_combo_test_type {
+ 	TEST_PLANES_UPSCALE = 0,
+ 	TEST_PLANES_DOWNSCALE,
++	TEST_PLANES_UPSCALE_DOWNSCALE
+ };
  
--/* does iterative scaling on plane2 */
--static void iterate_plane_scaling(data_t *d, drmModeModeInfo *mode)
--{
--	igt_display_t *display = &d->display;
--
--	if (mode->hdisplay >= d->fb[1].width) {
--		int w, h;
--		/* fixed fb */
--		igt_fb_set_position(&d->fb[1], d->plane2, 0, 0);
--		igt_fb_set_size(&d->fb[1], d->plane2, d->fb[1].width, d->fb[1].height);
--		igt_plane_set_position(d->plane2, 0, 0);
--
--		/* adjust plane size */
--		for (w = d->fb[1].width; w <= mode->hdisplay; w+=10) {
--			h = w * d->fb[1].height / d->fb[1].width;
--			igt_plane_set_size(d->plane2, w, h);
--			igt_display_commit2(display, COMMIT_ATOMIC);
--		}
--	} else {
--		int w, h;
--		/* fixed plane */
--		igt_plane_set_position(d->plane2, 0, 0);
--		igt_plane_set_size(d->plane2, mode->hdisplay, mode->vdisplay);
--		igt_fb_set_position(&d->fb[1], d->plane2, 0, 0);
--
--		/* adjust fb size */
--		for (w = mode->hdisplay; w <= d->fb[1].width; w+=10) {
--			/* Source coordinates must not be clipped. */
--			h = min(w * mode->hdisplay / mode->vdisplay, d->fb[1].height);
--			igt_fb_set_size(&d->fb[1], d->plane2, w, h);
--			igt_display_commit2(display, COMMIT_ATOMIC);
--		}
--	}
--}
--
--static void
--test_plane_scaling_on_pipe(data_t *d, enum pipe pipe, igt_output_t *output)
--{
--	igt_display_t *display = &d->display;
--	igt_pipe_t *pipe_obj = &display->pipes[pipe];
--	drmModeModeInfo *mode;
--	int primary_plane_scaling = 0; /* For now */
--	uint64_t modifier = is_i915_device(display->drm_fd) ?
--		I915_FORMAT_MOD_X_TILED : DRM_FORMAT_MOD_LINEAR;
--
--	igt_require(get_num_scalers(d, pipe) > 0);
--
--	igt_skip_on(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888,
--						modifier));
--
--	mode = igt_output_get_mode(output);
--
--	/* Set up display with plane 1 */
--	d->plane1 = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_PRIMARY);
--	prepare_crtc(d, output, pipe, d->plane1, mode);
--
--	igt_create_color_pattern_fb(display->drm_fd, 600, 600,
--				    DRM_FORMAT_XRGB8888,
--				    modifier,
--				    .5, .5, .5, &d->fb[1]);
--
--	igt_create_pattern_fb(d->drm_fd,
--			      mode->hdisplay, mode->vdisplay,
--			      DRM_FORMAT_XRGB8888,
--			      modifier,
--			      &d->fb[2]);
--
--	if (primary_plane_scaling) {
--		/* Primary plane upscaling */
--		igt_fb_set_position(&d->fb[0], d->plane1, 100, 100);
--		igt_fb_set_size(&d->fb[0], d->plane1, 500, 500);
--		igt_plane_set_position(d->plane1, 0, 0);
--		igt_plane_set_size(d->plane1, mode->hdisplay, mode->vdisplay);
--		igt_display_commit2(display, COMMIT_ATOMIC);
--
--		/* Primary plane 1:1 no scaling */
--		igt_fb_set_position(&d->fb[0], d->plane1, 0, 0);
--		igt_fb_set_size(&d->fb[0], d->plane1, d->fb[0].width, d->fb[0].height);
--		igt_plane_set_position(d->plane1, 0, 0);
--		igt_plane_set_size(d->plane1, mode->hdisplay, mode->vdisplay);
--		igt_display_commit2(display, COMMIT_ATOMIC);
--	}
--
--	/* Set up fb[1]->plane2 mapping. */
--	d->plane2 = igt_pipe_get_plane_type_index(pipe_obj,
--						  DRM_PLANE_TYPE_OVERLAY, 0);
--
--	if (!d->plane2) {
--		igt_debug("Plane-2 doesnt exist on pipe %s\n", kmstest_pipe_name(pipe));
--		return;
--	}
--
--	igt_plane_set_fb(d->plane2, &d->fb[1]);
--
--	/* 2nd plane windowed */
--	igt_fb_set_position(&d->fb[1], d->plane2, 100, 100);
--	igt_fb_set_size(&d->fb[1], d->plane2, d->fb[1].width-200, d->fb[1].height-200);
--	igt_plane_set_position(d->plane2, 100, 100);
--	igt_plane_set_size(d->plane2, mode->hdisplay-200, mode->vdisplay-200);
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
--	iterate_plane_scaling(d, mode);
--
--	/* 2nd plane up scaling */
--	igt_fb_set_position(&d->fb[1], d->plane2, 100, 100);
--	igt_fb_set_size(&d->fb[1], d->plane2, 500, 500);
--	igt_plane_set_position(d->plane2, 10, 10);
--	igt_plane_set_size(d->plane2, mode->hdisplay-20, mode->vdisplay-20);
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
--	/* 2nd plane downscaling */
--	igt_fb_set_position(&d->fb[1], d->plane2, 0, 0);
--	igt_fb_set_size(&d->fb[1], d->plane2, d->fb[1].width, d->fb[1].height);
--	igt_plane_set_position(d->plane2, 10, 10);
--
--	/* Downscale (10/9)x of original image */
--	igt_plane_set_size(d->plane2, (d->fb[1].width * 10)/9, (d->fb[1].height * 10)/9);
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
--	if (primary_plane_scaling) {
--		/* Primary plane up scaling */
--		igt_fb_set_position(&d->fb[0], d->plane1, 100, 100);
--		igt_fb_set_size(&d->fb[0], d->plane1, 500, 500);
--		igt_plane_set_position(d->plane1, 0, 0);
--		igt_plane_set_size(d->plane1, mode->hdisplay, mode->vdisplay);
--		igt_display_commit2(display, COMMIT_ATOMIC);
--	}
--
--	/* Set up fb[2]->plane3 mapping. */
--	d->plane3 = igt_pipe_get_plane_type_index(pipe_obj,
--						  DRM_PLANE_TYPE_OVERLAY, 1);
--	if(!d->plane3) {
--		igt_debug("Plane-3 doesnt exist on pipe %s\n", kmstest_pipe_name(pipe));
--		return;
--	}
--
--	igt_plane_set_fb(d->plane3, &d->fb[2]);
--
--	/* 3rd plane windowed - no scaling */
--	igt_fb_set_position(&d->fb[2], d->plane3, 100, 100);
--	igt_fb_set_size(&d->fb[2], d->plane3, d->fb[2].width-300, d->fb[2].height-300);
--	igt_plane_set_position(d->plane3, 100, 100);
--	igt_plane_set_size(d->plane3, mode->hdisplay-300, mode->vdisplay-300);
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
--	/* Switch scaler from plane 2 to plane 3 */
--	igt_fb_set_position(&d->fb[1], d->plane2, 100, 100);
--	igt_fb_set_size(&d->fb[1], d->plane2, d->fb[1].width-200, d->fb[1].height-200);
--	igt_plane_set_position(d->plane2, 100, 100);
--	igt_plane_set_size(d->plane2, d->fb[1].width-200, d->fb[1].height-200);
--
--	igt_fb_set_position(&d->fb[2], d->plane3, 100, 100);
--	igt_fb_set_size(&d->fb[2], d->plane3, d->fb[2].width-400, d->fb[2].height-400);
--	igt_plane_set_position(d->plane3, 10, 10);
--	igt_plane_set_size(d->plane3, mode->hdisplay-300, mode->vdisplay-300);
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
--	if (primary_plane_scaling) {
--		/* Switch scaler from plane 1 to plane 2 */
--		igt_fb_set_position(&d->fb[0], d->plane1, 0, 0);
--		igt_fb_set_size(&d->fb[0], d->plane1, d->fb[0].width, d->fb[0].height);
--		igt_plane_set_position(d->plane1, 0, 0);
--		igt_plane_set_size(d->plane1, mode->hdisplay, mode->vdisplay);
--
--		igt_fb_set_position(&d->fb[1], d->plane2, 100, 100);
--		igt_fb_set_size(&d->fb[1], d->plane2, d->fb[1].width-500,d->fb[1].height-500);
--		igt_plane_set_position(d->plane2, 100, 100);
--		igt_plane_set_size(d->plane2, mode->hdisplay-200, mode->vdisplay-200);
--		igt_display_commit2(display, COMMIT_ATOMIC);
--	}
--}
--
- static void
- __test_scaler_with_clipping_clamping_scenario(data_t *d, drmModeModeInfo *mode)
+ typedef struct {
+@@ -52,6 +53,66 @@ typedef struct {
+ 	bool extended;
+ } data_t;
+ 
++const struct {
++	const char * const describe;
++	const char * const name;
++	const int sf_plane1;
++	const int sf_plane2;
++} upscale_downscale_tests[] = {
++		{
++			"Tests upscaling (20x20) and downscaling (scaling factor 2) of 2 planes.",
++			"planes-upscale-20x20-downscale-factor-2",
++			0.0,
++			2.0,
++		},
++		{
++			"Tests upscaling (20x20) and downscaling (scaling factor 4) of 2 planes.",
++			"planes-upscale-20x20-downscale-factor-4",
++			0.0,
++			4.0,
++		},
++		{
++			"Tests upscaling (scaling factor 4) and downscaling (scaling factor 2) of 2 planes.",
++			"planes-upscale-factor-4-downscale-factor-2",
++			4.0,
++			2.0,
++		},
++		{
++			"Tests upscaling (scaling factor 4) and downscaling (scaling factor 4) of 2 planes.",
++			"planes-upscale-factor-4-downscale-factor-4",
++			4.0,
++			4.0,
++		},
++		{
++			"Tests scaling (unity) and downscaling (scaling factor 2) of 2 planes.",
++			"planes-unity-scaling-downscale-factor-2",
++			1.0,
++			2.0,
++		},
++		{
++			"Tests scaling (unity) and downscaling (scaling factor 4) of 2 planes.",
++			"planes-unity-scaling-downscale-factor-4",
++			1.0,
++			4.0,
++		},
++};
++
++static int get_width(drmModeModeInfo *mode, int scaling_factor)
++{
++	if (scaling_factor == 0)
++		return 20;
++	else
++		return mode->hdisplay / scaling_factor;
++}
++
++static int get_height(drmModeModeInfo *mode, int scaling_factor)
++{
++	if (scaling_factor == 0)
++		return 20;
++	else
++		return mode->vdisplay / scaling_factor;
++}
++
+ static int get_num_scalers(data_t* d, enum pipe pipe)
  {
-@@ -751,13 +579,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_subtest_group {
- 		igt_output_t *output;
+ 	if (!is_i915_device(d->drm_fd))
+@@ -500,6 +561,12 @@ __test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+ 		/* second plane downscaling */
+ 		igt_plane_set_size(p2, w2, h2);
+ 	}
++	if (test_type == TEST_PLANES_UPSCALE_DOWNSCALE) {
++		/* first plane upscaling */
++		igt_plane_set_size(p1, mode->hdisplay, mode->vdisplay);
++		/* second plane downscaling */
++		igt_plane_set_size(p2, w2, h2);
++	}
  
--		igt_describe("Tests plane scaling per pipe.");
--		igt_subtest_with_dynamic("plane-scaling") {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
--					test_plane_scaling_on_pipe(&data, pipe, output);
--		}
--
- 		igt_describe("Tests upscaling with pixel formats, from 20x20 fb.");
- 		igt_subtest_with_dynamic("upscale-with-pixel-format-20x20") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
+@@ -541,6 +608,10 @@ test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+ 		setup_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, 1.0, 0.0, 0.0, &d->fb[1]);
+ 		setup_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, 0.0, 1.0, 0.0, &d->fb[2]);
+ 	}
++	if (test_type == TEST_PLANES_UPSCALE_DOWNSCALE) {
++		setup_fb(display->drm_fd, w1, h1, 1.0, 0.0, 0.0, &d->fb[1]);
++		setup_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, 0.0, 1.0, 0.0, &d->fb[2]);
++	}
+ 
+ 	for (int k = 0; k < display->pipes[pipe].n_planes; k++) {
+ 		igt_plane_t *p1, *p2;
+@@ -868,6 +939,24 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				}
+ 		}
+ 
++		for (int index = 0; index < ARRAY_SIZE(upscale_downscale_tests); index++) {
++			igt_describe(upscale_downscale_tests[index].describe);
++			igt_subtest_with_dynamic(upscale_downscale_tests[index].name) {
++			for_each_pipe_with_single_output(&data.display, pipe, output)
++				igt_dynamic_f("pipe-%s-%s-planes-upscale-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
++					drmModeModeInfo *mode;
++
++					mode = igt_output_get_mode(output);
++
++					test_planes_scaling_combo(&data,
++							get_width(mode, upscale_downscale_tests[index].sf_plane1),
++							get_height(mode, upscale_downscale_tests[index].sf_plane1),
++							get_width(mode, upscale_downscale_tests[index].sf_plane2),
++							get_height(mode,upscale_downscale_tests[index].sf_plane2),
++							pipe, output, TEST_PLANES_UPSCALE_DOWNSCALE);
++				}
++			}
++		}
+ 	}
+ 
+ 	igt_describe("Tests scaling with multi-pipe scenario.");
 -- 
 2.25.1
