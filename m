@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 31DA910F650
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Feb 2022 08:33:38 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	manasi.d.navare@intel.com
-Date: Thu, 24 Feb 2022 14:02:41 +0530
-Message-Id: <20220224083241.96381-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220224051648.91470-3-bhanuprakash.modem@intel.com>
-References: <20220224051648.91470-3-bhanuprakash.modem@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A856C10F828
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Feb 2022 08:53:32 +0000 (UTC)
+Date: Thu, 24 Feb 2022 09:53:14 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <YhdHeoEV8S0aVnxk@zkempczy-mobl2>
+References: <20220218194651.25977-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 i-g-t 2/5] lib/igt_edid: Helper to read monitor range
- from EDID
+In-Reply-To: <20220218194651.25977-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/api_intel_allocator: change
+ copy instruction for new gens
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,75 +21,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a helper function to read Monitor's range capability
-from EDID.
+On Fri, Feb 18, 2022 at 08:46:51PM +0100, Kamil Konieczny wrote:
+> Use XY_FAST_COPY_BLT on newer GPU generations.
+> 
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/i915/api_intel_allocator.c | 23 ++++++++++++++---------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
+> index bb1b3838..487eafce 100644
+> --- a/tests/i915/api_intel_allocator.c
+> +++ b/tests/i915/api_intel_allocator.c
+> @@ -575,15 +575,20 @@ static void execbuf_with_allocator(int fd)
+>  
+>  	/* Blit src -> dst */
+>  	i = 0;
+> -	batch[i++] = XY_SRC_COPY_BLT_CMD |
+> -		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+> -		  XY_SRC_COPY_BLT_WRITE_RGB;
+> -	if (gen >= 8)
+> -		batch[i - 1] |= 8;
+> -	else
+> -		batch[i - 1] |= 6;
+> -
+> -	batch[i++] = (3 << 24) | (0xcc << 16) | 4;
+> +	if (gen >= 9) {
+> +		batch[i++] = XY_FAST_COPY_BLT; /* No tiling */
+> +		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | 0x10;
+> +	} else {
+> +		batch[i++] = XY_SRC_COPY_BLT_CMD |
+> +			  XY_SRC_COPY_BLT_WRITE_ALPHA |
+> +			  XY_SRC_COPY_BLT_WRITE_RGB;
+> +		if (gen >= 8)
+> +			batch[i - 1] |= 8;
+> +		else
+> +			batch[i - 1] |= 6;
+> +
+> +		batch[i++] = (3 << 24) | (0xcc << 16) | 4;
+> +	}
+>  	batch[i++] = 0;
+>  	batch[i++] = (1 << 16) | 4;
+>  	batch[i++] = object[1].offset;
+> -- 
+> 2.32.0
+>
 
-V2:
-* Check for flag range limits only.
+Looks good.
 
-Cc: Manasi Navare <manasi.d.navare@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_edid.c | 29 +++++++++++++++++++++++++++++
- lib/igt_edid.h |  2 ++
- 2 files changed, 31 insertions(+)
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-index df346c4c8c..9ed029a394 100644
---- a/lib/igt_edid.c
-+++ b/lib/igt_edid.c
-@@ -160,6 +160,35 @@ void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
- 	       sizeof(monitor_range_padding));
- }
- 
-+struct detailed_data_monitor_range
-+detailed_timing_get_monitor_range(const struct edid *edid)
-+{
-+	uint8_t i;
-+	struct detailed_data_monitor_range mr = {0, 0};
-+
-+	for (i = 0; i < DETAILED_TIMINGS_LEN; i++) {
-+		struct detailed_non_pixel *other_data;
-+		struct detailed_timing timings = edid->detailed_timings[i];
-+
-+		if (timings.pixel_clock[0] != 0x00 &&
-+		    timings.pixel_clock[1] != 0x00 &&
-+		    timings.pixel_clock[2] != 0x00)
-+			continue;
-+
-+		other_data = &timings.data.other_data;
-+		if (other_data->type != EDID_DETAIL_MONITOR_RANGE)
-+			continue;
-+
-+		/* Check for flag range limits only. */
-+		if (other_data->data.range.flags != 1)
-+			continue;
-+
-+		return other_data->data.range;
-+	}
-+
-+	return mr;
-+}
-+
- /**
-  * detailed_timing_set_string: set a detailed timing to be a string
-  */
-diff --git a/lib/igt_edid.h b/lib/igt_edid.h
-index aac2f4a208..e412479d84 100644
---- a/lib/igt_edid.h
-+++ b/lib/igt_edid.h
-@@ -381,6 +381,8 @@ void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
- 			      int width_mm, int height_mm);
- void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
- 					    drmModeModeInfo *mode);
-+struct detailed_data_monitor_range detailed_timing_get_monitor_range(
-+				const struct edid *edid);
- void detailed_timing_set_string(struct detailed_timing *dt,
- 				enum detailed_non_pixel_type type,
- 				const char *str);
--- 
-2.35.0
+--
+Zbigniew 
