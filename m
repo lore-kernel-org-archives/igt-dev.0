@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F37910E766
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 05:09:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E442210E76D
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 05:09:46 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Feb 2022 10:38:52 +0530
-Message-Id: <20220225050853.8349-10-jeevan.b@intel.com>
+Date: Fri, 25 Feb 2022 10:38:53 +0530
+Message-Id: <20220225050853.8349-11-jeevan.b@intel.com>
 In-Reply-To: <20220225050853.8349-1-jeevan.b@intel.com>
 References: <20220225050853.8349-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 09/10] igt/tests: Add support for
- Tile4(TileF) format to testdisplay
+Subject: [igt-dev] [PATCH i-g-t 10/10] igt/tests: Add support for
+ Tile4(TileF) format to kms_rotation_crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,52 +17,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, juha-pekka.heikkila@intel.com
+Cc: juha-pekka.heikkila@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Matt Roper <matthew.d.roper@intel.com>
+Adding subtest to test new tiling format.
 
-testdisplay is a great test for manual testing/debug of Tile-4; we just
-need an extra parameter to enable that tiling format.
-
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/testdisplay.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tests/kms_rotation_crc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/testdisplay.c b/tests/testdisplay.c
-index 54327761..e9fbd260 100644
---- a/tests/testdisplay.c
-+++ b/tests/testdisplay.c
-@@ -593,7 +593,7 @@ static void set_termio_mode(void)
- 	tcsetattr(tio_fd, TCSANOW, &tio);
- }
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 3f716002..50869a08 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -983,6 +983,8 @@ static const char *modifier_test_str(uint64_t modifier)
+ 		return "y-tiled";
+ 	case I915_FORMAT_MOD_Yf_TILED:
+ 		return "yf-tiled";
++	case I915_FORMAT_MOD_4_TILED:
++		return "4-tiled";
+ 	default:
+ 		igt_assert(0);
+ 	}
+@@ -1041,6 +1043,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_90 },
+ 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_180 },
+ 		{ I915_FORMAT_MOD_Yf_TILED, IGT_ROTATION_270 },
++		{ I915_FORMAT_MOD_4_TILED, IGT_ROTATION_0 },
++		{ I915_FORMAT_MOD_4_TILED, IGT_ROTATION_180 },
+ 		{ 0, 0 }
+ 	};
  
--static char optstr[] = "3Aiaf:s:d:p:mrto:j:y";
-+static char optstr[] = "3Aiaf:s:d:p:mrt4o:j:y";
- static struct option long_opts[] = {
- 	{"yb", 0, 0, OPT_YB},
- 	{"yf", 0, 0, OPT_YF},
-@@ -612,6 +612,7 @@ static const char *help_str =
- 	"  -t\tuse an X-tiled framebuffer\n"
- 	"  -y, --yb\n"
- 	"  \tuse a Y-tiled framebuffer\n"
-+	"  -4\tuse an Tile-4 framebuffer\n"
- 	"  --yf\tuse a Yf-tiled framebuffer\n"
- 	"  -j\tdo dpms off, optional arg to select dpms level (1-3)\n"
- 	"  -r\tprint a QR code on the screen whose content is \"pass\" for the automatic test\n"
-@@ -680,6 +681,9 @@ static int opt_handler(int opt, int opt_index, void *data)
- 	case OPT_YF:
- 		modifier = I915_FORMAT_MOD_Yf_TILED;
- 		break;
-+	case '4':
-+		modifier = I915_FORMAT_MOD_4_TILED;
-+		break;
- 	case 'r':
- 		qr_code = 1;
- 		break;
 -- 
 2.17.1
