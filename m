@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17E2010E50F
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 14:30:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E273D10E43E
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 14:30:39 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Feb 2022 20:14:31 +0530
-Message-Id: <20220225144436.17718-4-swati2.sharma@intel.com>
+Date: Fri, 25 Feb 2022 20:14:36 +0530
+Message-Id: <20220225144436.17718-9-swati2.sharma@intel.com>
 In-Reply-To: <20220225144436.17718-1-swati2.sharma@intel.com>
 References: <20220225144436.17718-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v7 3/8] tests/kms_plane_scaling: Upscaling on 2 planes
+Subject: [igt-dev] [v7 8/8] tests/kms_plane_scaling: Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,171 +23,58 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-i915 driver supports 2 scalers per pipe. Added test case
-to upscale 2 planes simultaneously on single pipe.
-
-v2: -add check for min 2 scalers
-    -add igt_require() for overlay planes, fixes CRASH on KBL
-v3: -test modified for n planes (Ville)
-v4: -modularized the code
-    -removed i915 dependency (Ville)
-v5: -added primary plane back (Ville)
-    -whitespace fixed (Ville)
-v6: -rebase
-    -modified tests after rebase for consistency and more coverage
-    (Petri)
-v7: -renaming tests
-
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_plane_scaling.c | 121 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+ tests/kms_plane_scaling.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 5f608acd..706a09ad 100644
+index e6ebb46d..5ae973c7 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
-@@ -29,6 +29,10 @@
+@@ -26,7 +26,6 @@
+ #include "igt_vec.h"
+ #include <math.h>
  
+-
  IGT_TEST_DESCRIPTION("Test display plane scaling");
  
-+enum scaler_combo_test_type {
-+	TEST_PLANES_UPSCALE = 0,
-+};
-+
- typedef struct {
+ enum scaler_combo_test_type {
+@@ -39,10 +38,6 @@ typedef struct {
  	uint32_t devid;
  	int drm_fd;
-@@ -467,6 +471,85 @@ static void find_connected_pipe(igt_display_t *display, bool second, enum pipe *
- 		igt_require_f(found, "No valid outputs found\n");
- }
+ 	igt_display_t display;
+-	igt_crc_t ref_crc;
+-
+-	int image_w;
+-	int image_h;
  
-+static void
-+__test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
-+			    enum pipe pipe, igt_output_t *output,
-+			    igt_plane_t *p1, igt_plane_t *p2,
-+			    struct igt_fb *fb1, struct igt_fb *fb2,
-+			    enum scaler_combo_test_type test_type)
-+{
-+	igt_display_t *display = &d->display;
-+	drmModeModeInfo *mode;
-+	int ret;
-+
-+	mode = igt_output_get_mode(output);
-+
-+	igt_plane_set_fb(p1, fb1);
-+	igt_plane_set_fb(p2, fb2);
-+
-+	if (test_type == TEST_PLANES_UPSCALE) {
-+		/* first plane upscaling */
-+		igt_plane_set_size(p1, mode->hdisplay, mode->vdisplay);
-+		/* second plane upscaling */
-+		igt_plane_set_size(p2, mode->hdisplay - 20, mode->vdisplay - 20);
-+	}
-+
-+	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	igt_plane_set_fb(p1, NULL);
-+	igt_plane_set_fb(p2, NULL);
-+
-+	igt_skip_on_f(ret == -EINVAL || ret == -ERANGE, "Scaling op not supported by driver\n");
-+	igt_assert_eq(ret, 0);
-+}
-+
-+static void setup_fb(int fd, int width, int height,
-+		     double r, double g, double b,
-+		     struct igt_fb *fb)
-+{
-+	igt_create_color_pattern_fb(fd, width, height,
-+				    DRM_FORMAT_XRGB8888,
-+				    I915_TILING_NONE,
-+				    r, g, b, fb);
-+}
-+
-+static void
-+test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
-+			  enum pipe pipe, igt_output_t *output,
-+			  enum scaler_combo_test_type test_type)
-+{
-+	igt_display_t *display = &d->display;
-+
-+	cleanup_crtc(d);
-+
-+	igt_output_set_pipe(output, pipe);
-+
-+	if (test_type == TEST_PLANES_UPSCALE) {
-+		setup_fb(display->drm_fd, w1, h1, 1.0, 0.0, 0.0, &d->fb[1]);
-+		setup_fb(display->drm_fd, w2, h2, 0.0, 1.0, 0.0, &d->fb[2]);
-+	}
-+
-+	for (int k = 0; k < display->pipes[pipe].n_planes; k++) {
-+		igt_plane_t *p1, *p2;
-+
-+		p1 = &display->pipes[pipe].planes[k];
-+		igt_require(p1);
-+		p2 = &display->pipes[pipe].planes[k+1];
-+		igt_require(p2);
-+
-+		if (p1->type == DRM_PLANE_TYPE_CURSOR || p2->type == DRM_PLANE_TYPE_CURSOR)
-+				continue;
-+
-+		__test_planes_scaling_combo(d, w1, h1, w2, h2,
-+					    pipe, output, p1, p2,
-+					    &d->fb[1], &d->fb[2],
-+					    test_type);
-+	}
-+
-+	igt_remove_fb(display->drm_fd, &d->fb[1]);
-+	igt_remove_fb(display->drm_fd, &d->fb[2]);
-+}
-+
- static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	struct igt_fb fb[4];
+ 
+@@ -316,8 +311,7 @@ static void test_scaler_with_rotation_pipe(data_t *d,
  {
  	igt_display_t *display = &d->display;
-@@ -703,6 +786,44 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				igt_dynamic_f("pipe-%s-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe), igt_output_name(output))
- 					test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
- 		}
-+
-+		igt_describe("Tests upscaling of 2 planes, from 20x20 fb.");
-+		igt_subtest_with_dynamic("planes-upscale-20x20") {
-+			for_each_pipe_with_single_output(&data.display, pipe, output)
-+				igt_dynamic_f("pipe-%s-%s-planes-upscale", kmstest_pipe_name(pipe), igt_output_name(output))
-+					test_planes_scaling_combo(&data, 20, 20, 20, 20,
-+							pipe, output, TEST_PLANES_UPSCALE);
-+		}
-+
-+		igt_describe("Tests upscaling of 2 planes for 0.25 scaling factor.");
-+		igt_subtest_with_dynamic("planes-upscale-factor-0-25") {
-+			for_each_pipe_with_single_output(&data.display, pipe, output)
-+				igt_dynamic_f("pipe-%s-%s-planes-upscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+					drmModeModeInfo *mode;
-+
-+					mode = igt_output_get_mode(output);
-+
-+					test_planes_scaling_combo(&data,
-+							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
-+							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
-+							pipe, output, TEST_PLANES_UPSCALE);
-+				}
-+		}
-+
-+		igt_describe("Tests scaling of 2 planes, unity scaling.");
-+		igt_subtest_with_dynamic("planes-scaling-unity-scaling") {
-+			for_each_pipe_with_single_output(&data.display, pipe, output)
-+				igt_dynamic_f("pipe-%s-%s-planes-unity-scaling", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+					drmModeModeInfo *mode;
-+
-+					mode = igt_output_get_mode(output);
-+
-+					test_planes_scaling_combo(&data,
-+							mode->hdisplay, mode->vdisplay,
-+							mode->hdisplay, mode->vdisplay,
-+							pipe, output, TEST_PLANES_UPSCALE);
-+				}
-+		}
- 	}
+ 	igt_plane_t *plane;
+-	uint64_t modifier = is_i915_device(d->drm_fd) ?
+-		I915_FORMAT_MOD_Y_TILED : DRM_FORMAT_MOD_LINEAR;
++	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
  
- 	igt_describe("Tests scaling with multi-pipe scenario.");
+ 	igt_require(get_num_scalers(d, pipe) > 0);
+ 
+@@ -732,12 +726,12 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	mode1 = igt_output_get_mode(output1);
+ 	mode2 = igt_output_get_mode(output2);
+ 
+-	/* Upscaling Primary */
++	/* upscaling primary */
+ 	igt_plane_set_size(d->plane1, mode1->hdisplay, mode1->vdisplay);
+ 	igt_plane_set_size(d->plane3, mode2->hdisplay, mode2->vdisplay);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+-	/* Upscaling Sprites */
++	/* upscaling sprites */
+ 	igt_plane_set_size(d->plane2 ?: d->plane1, mode1->hdisplay, mode1->vdisplay);
+ 	igt_plane_set_size(d->plane4 ?: d->plane3, mode2->hdisplay, mode2->vdisplay);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
 -- 
 2.25.1
