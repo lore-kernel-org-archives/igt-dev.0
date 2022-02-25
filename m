@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2F4810E302
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 07:04:56 +0000 (UTC)
-Date: Fri, 25 Feb 2022 08:04:42 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Message-ID: <Yhh/ilGNvqQxUuxE@zkempczy-mobl2>
-References: <20220224075415.18663-1-zbigniew.kempczynski@intel.com>
- <20220224075415.18663-2-zbigniew.kempczynski@intel.com>
- <87v8x4htv3.wl-ashutosh.dixit@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38D7210E503
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 06:33:48 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Fri, 25 Feb 2022 06:33:43 +0000
+Message-ID: <78b6d037df834d40b3572e253f19cf4d@intel.com>
+References: <20220225050853.8349-1-jeevan.b@intel.com>
+ <20220225050853.8349-3-jeevan.b@intel.com> <Yhh0gzIeFgoQV6s/@zkempczy-mobl2>
+In-Reply-To: <Yhh0gzIeFgoQV6s/@zkempczy-mobl2>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87v8x4htv3.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_allocator: Add safe
- alignment as a default
+Subject: Re: [igt-dev] [PATCH i-g-t 02/10] include/drm-uapi: Introduce new
+ Tile 4 format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,78 +22,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
+ Juha-pekka" <juha-pekka.heikkila@intel.com>, "Latvala,
+ Petri" <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 24, 2022 at 12:50:24PM -0800, Dixit, Ashutosh wrote:
-> On Wed, 23 Feb 2022 23:54:14 -0800, Zbigniew Kempczyński wrote:
-> >
-> > diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-> > index eabff1f9a..340b88828 100644
-> > --- a/lib/intel_allocator.c
-> > +++ b/lib/intel_allocator.c
-> > @@ -283,7 +283,8 @@ static bool __allocator_put(struct allocator *al)
-> >  static struct intel_allocator *intel_allocator_create(int fd,
-> >						      uint64_t start, uint64_t end,
-> >						      uint8_t allocator_type,
-> > -						      uint8_t allocator_strategy)
-> > +						      uint8_t allocator_strategy,
-> > +						      uint64_t default_alignment)
-> >  {
-> >	struct intel_allocator *ial = NULL;
-> >
-> > @@ -321,6 +322,7 @@ static struct intel_allocator *intel_allocator_create(int fd,
-> >
-> >	ial->type = allocator_type;
-> >	ial->strategy = allocator_strategy;
-> > +	ial->default_alignment = default_alignment;
-> 
-> Isn't this a better place to set default_alignment to
-> gem_detect_safe_alignment() rather than in __intel_allocator_open_full()
-> below (though I understand they are roughly equivalent)?
+>-----Original Message-----
+>From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+>Sent: Friday, February 25, 2022 11:48 AM
+>To: B, Jeevan <jeevan.b@intel.com>
+>Cc: igt-dev@lists.freedesktop.org; Heikkila, Juha-pekka <juha-
+>pekka.heikkila@intel.com>; Latvala, Petri <petri.latvala@intel.com>; Lisov=
+skiy,
+>Stanislav <stanislav.lisovskiy@intel.com>
+>Subject: Re: [PATCH i-g-t 02/10] include/drm-uapi: Introduce new Tile 4 fo=
+rmat
+>
+>On Fri, Feb 25, 2022 at 10:38:45AM +0530, Jeevan B wrote:
+>> This tiling layout uses 4KB tiles in a row-major layout. It has the
+>> same shape as Tile Y at two granularities: 4KB (128B x 32) and 64B
+>> (16B x 4). It only differs from Tile Y at the 256B granularity in
+>> between. At this granularity, Tile Y has a shape of 16B x 32 rows, but
+>> this tiling has a shape of 64B x 8 rows.
+>>
+>> Reference:
+>> https://cgit.freedesktop.org/drm/drm-tip/commit/?id=3Dc6e7deb0f092616bd8
+>> cb19e8c436b212c64daaab
+>>
+>> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+>> ---
+>>  include/drm-uapi/drm_fourcc.h | 11 +++++++++++
+>>  1 file changed, 11 insertions(+)
+>>
+>> diff --git a/include/drm-uapi/drm_fourcc.h
+>> b/include/drm-uapi/drm_fourcc.h index 91b6a0fd..318b50fa 100644
+>> --- a/include/drm-uapi/drm_fourcc.h
+>> +++ b/include/drm-uapi/drm_fourcc.h
+>> @@ -559,6 +559,17 @@ extern "C" {
+>>   */
+>>  #define I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC
+>> fourcc_mod_code(INTEL, 8)
+>>
+>> +/*
+>> + * Intel Tile 4 layout
+>> + *
+>> + * This is a tiled layout using 4KB tiles in a row-major layout. It
+>> +has the same
+>> + * shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B
+>> +x 4). It
+>> + * only differs from Tile Y at the 256B granularity in between. At
+>> +this
+>> + * granularity, Tile Y has a shape of 16B x 32 rows, but this tiling
+>> +has a shape
+>> + * of 64B x 8 rows.
+>> + */
+>> +#define I915_FORMAT_MOD_4_TILED         fourcc_mod_code(INTEL, 9)
+>> +
+>>  /*
+>>   * Tiled, NV12MT, grouped in 64 (pixels) x 32 (lines) -sized macroblock=
+s
+>>   *
+>> --
+>> 2.17.1
+>>
+>
+>I think you should sync this file, not only apply this change.
+Sure will do this.=20
 
-No, default alignment which will be used in simple allocator should
-be caller specific. If user doesn't care and it want to have safe
-alignment it passes 0 as a requested default alignment. Then using
-alloc() you can request specific alignment. I think place where
-establishing default alignment is correct, we should evaluate this
-in same place where we decide about start/end of vm space.
-
-> 
-> > @@ -903,6 +920,9 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
-> >		req.open.end = gtt_size;
-> >	}
-> >
-> > +	if (!default_alignment)
-> > +		req.open.default_alignment = gem_detect_safe_alignment(fd);
-> > +
-> 
-> /snip/
-> 
-> > @@ -948,20 +970,24 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
-> >  uint64_t intel_allocator_open_full(int fd, uint32_t ctx,
-> >				   uint64_t start, uint64_t end,
-> >				   uint8_t allocator_type,
-> > -				   enum allocator_strategy strategy)
-> > +				   enum allocator_strategy strategy,
-> > +				   uint64_t default_alignment)
-> 
-> So we have added default_alignment to all these API's now and that does
-> provide additional flexibility but I am wondering if the additional
-> flexibility is really needed and will any IGT ever set default_alignment
-> other than 0 (i.e. let allocator choose safe_alignment)? And also does
-> having a different default_alignment improve test coverage in any way?
-> 
-> In any case, this is:
-> 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-
-We just started to handle discrete so I prefer to have this flexibility
-than try to add this later if you don't mind.
-
-Thank you for the review. I dare to commit as it is.
-
---
-Zbigniew
+Thanks=20
+Jeevan B
+>
+>--
+>Zbigniew
