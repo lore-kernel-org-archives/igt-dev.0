@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6287710E77F
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 05:09:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62EBB10E762
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 05:09:35 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Feb 2022 10:38:45 +0530
-Message-Id: <20220225050853.8349-3-jeevan.b@intel.com>
+Date: Fri, 25 Feb 2022 10:38:48 +0530
+Message-Id: <20220225050853.8349-6-jeevan.b@intel.com>
 In-Reply-To: <20220225050853.8349-1-jeevan.b@intel.com>
 References: <20220225050853.8349-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 02/10] include/drm-uapi: Introduce new Tile
- 4 format
+Subject: [igt-dev] [PATCH i-g-t 05/10] igt/tests: Add support for
+ Tile4(TileF) format to kms_draw_crc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,41 +22,83 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This tiling layout uses 4KB tiles in a row-major layout. It has the same
-shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B x 4). It
-only differs from Tile Y at the 256B granularity in between. At this
-granularity, Tile Y has a shape of 16B x 32 rows, but this tiling has a shape
-of 64B x 8 rows.
+From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
 
-Reference:
-https://cgit.freedesktop.org/drm/drm-tip/commit/?id=c6e7deb0f092616bd8cb19e8c436b212c64daaab
+kms_draw_crc would be the first sample test to support new
+format.
 
+v2: add check for tile-4 support
+
+Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- include/drm-uapi/drm_fourcc.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/i915/kms_draw_crc.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
-index 91b6a0fd..318b50fa 100644
---- a/include/drm-uapi/drm_fourcc.h
-+++ b/include/drm-uapi/drm_fourcc.h
-@@ -559,6 +559,17 @@ extern "C" {
-  */
- #define I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC fourcc_mod_code(INTEL, 8)
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index 82c368e1..33b7bdf4 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -41,25 +41,24 @@ drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
+ struct buf_ops *bops;
+ igt_pipe_crc_t *pipe_crc;
  
-+/*
-+ * Intel Tile 4 layout
-+ *
-+ * This is a tiled layout using 4KB tiles in a row-major layout. It has the same
-+ * shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B x 4). It
-+ * only differs from Tile Y at the 256B granularity in between. At this
-+ * granularity, Tile Y has a shape of 16B x 32 rows, but this tiling has a shape
-+ * of 64B x 8 rows.
-+ */
-+#define I915_FORMAT_MOD_4_TILED         fourcc_mod_code(INTEL, 9)
+-#define N_FORMATS 3
+-static const uint32_t formats[N_FORMATS] = {
++static const uint32_t formats[] = {
+ 	DRM_FORMAT_XRGB8888,
+ 	DRM_FORMAT_RGB565,
+ 	DRM_FORMAT_XRGB2101010,
+ };
+ 
+-#define N_MODIFIER_METHODS 3
+-static const uint64_t modifiers[N_MODIFIER_METHODS] = {
++static const uint64_t modifiers[] = {
+ 	DRM_FORMAT_MOD_LINEAR,
+ 	I915_FORMAT_MOD_X_TILED,
+ 	I915_FORMAT_MOD_Y_TILED,
++	I915_FORMAT_MOD_4_TILED,
+ };
+ 
+ struct base_crc {
+ 	bool set;
+ 	igt_crc_t crc;
+ };
+-struct base_crc base_crcs[N_FORMATS];
++struct base_crc base_crcs[ARRAY_SIZE(formats)];
+ 
+ struct modeset_params ms;
+ 
+@@ -178,6 +177,9 @@ static void draw_method_subtest(enum igt_draw_method method,
+ {
+ 	igt_crc_t crc;
+ 
++	igt_skip_on(modifier == I915_FORMAT_MOD_4_TILED &&
++		    !HAS_4TILE(intel_get_drm_devid(drm_fd)));
 +
- /*
-  * Tiled, NV12MT, grouped in 64 (pixels) x 32 (lines) -sized macroblocks
-  *
+ 	igt_skip_on(method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd));
+ 	igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
+ 		    !gem_has_mappable_ggtt(drm_fd));
+@@ -315,6 +317,8 @@ static const char *modifier_str(int modifier_index)
+ 		return "xtiled";
+ 	case I915_FORMAT_MOD_Y_TILED:
+ 		return "ytiled";
++	case I915_FORMAT_MOD_4_TILED:
++		return "4tiled";
+ 	default:
+ 		igt_assert(false);
+ 	}
+@@ -328,9 +332,9 @@ igt_main
+ 	igt_fixture
+ 		setup_environment();
+ 
+-	for (format_idx = 0; format_idx < N_FORMATS; format_idx++) {
++	for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+ 	for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+-	for (modifier_idx = 0; modifier_idx < N_MODIFIER_METHODS; modifier_idx++) {
++	for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+ 		igt_describe("This subtest verfies igt_draw library works "
+ 			     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
+ 		igt_subtest_f("draw-method-%s-%s-%s",
 -- 
 2.17.1
