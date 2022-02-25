@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A98610E1AF
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 14:43:45 +0000 (UTC)
-Date: Fri, 25 Feb 2022 16:42:52 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Swati Sharma <swati2.sharma@intel.com>
-Message-ID: <Yhjq7LxkgDBP7zb+@platvala-desk.ger.corp.intel.com>
-References: <20220225144436.17718-1-swati2.sharma@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBC1810E39D
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 14:50:45 +0000 (UTC)
+Date: Fri, 25 Feb 2022 15:50:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YhjswUQevoz76Bo2@kamilkon-DESK1>
+References: <20220225110626.82776-1-zbigniew.kempczynski@intel.com>
+ <20220225110626.82776-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220225144436.17718-1-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [v7 0/8] Addition of new plane scaling test cases
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220225110626.82776-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] i915/gem_engine_topology: Only use
+ the main copy engines for XY_BLOCK_COPY
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,51 +22,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Feb 25, 2022 at 08:14:28PM +0530, Swati Sharma wrote:
-> In this series, combination of downscaling and upscaling
-> testcases are added. Also, code refactoring is done for
-> existing code.
+Hi Zbigniew,
+
+can you change patch subject ? The patch itself adds two general
+helper functions to lib, and one helper for checking copy
+capability. It do not uses it by itself. Maybe change it to
+something like : Add capability helpers.
+
+Dnia 2022-02-25 at 12:06:24 +0100, Zbigniew Kempczyński napisał(a):
+> From: Chris Wilson <chris.p.wilson@intel.com>
 > 
->     v2:-minor fixes, to prevent CI crashes
->     v3:-added subtests for testing upscaling/downscaling for
->         each plane individually (Ville)
->        -modified existing subtests for each N plane scaling
->         combo (Ville)
->     v4:-removal of i915sm (Ville)
->        -code reusablity (Ville)
->     v5:-use enum (Viile)
->        -limit while loop (Ville)
->        -add assert for fail/pass (Ville)
->        -added primary plane for testing (Ville)
->     v6:-after rebase, made changes accordingly to make
->         test cases consistent and for better coverage (Petri)
->     v7:-renaming of existing tests
->        -added 0.75 scaling factor downscaling tests (Petri)
+
+Below is description about why change is needed, it's ok.
+
+> XY_BLOCK_COPY blt command is used to transfer the ccs data.
+
+Imho it would be helpfull here to put full description of ccs,
+"ccs compressed data". There is also compute engine and it has
+the same shorthand ccs.
+
+> So, we can only run the tests on those engines which have
+
+s/So, We/We/
+
+> support for the "block_copy" capability.
+
+What is missing here is description about what was changed in lib.
+
 > 
-> Swati Sharma (8):
->   tests/kms_plane_scaling: Removal of plane-scaling subtest
->   tests/kms_plane_scaling: Minor changes with existing tests
->   tests/kms_plane_scaling: Upscaling on 2 planes
->   tests/kms_plane_scaling: Downscaling on 2 planes
->   tests/kms_plane_scaling: Upscaling and downscaling scenario
->   tests/kms_plane_scaling: Add negative test to check num of scalers
->   tests/kms_plane_scaling: Refactor clipping-clamping subtest
->   tests/kms_plane_scaling: Cleanup
+> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> ---
+>  lib/i915/gem_engine_topology.c | 38 ++++++++++++++++++++++++++++++++++
+>  lib/i915/gem_engine_topology.h |  5 +++++
+>  2 files changed, 43 insertions(+)
 > 
->  tests/kms_plane_scaling.c | 790 ++++++++++++++++++++++----------------
->  1 file changed, 463 insertions(+), 327 deletions(-)
-> 
+> diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+> index bd12d0bc9..18fc00ab0 100644
+> --- a/lib/i915/gem_engine_topology.c
+> +++ b/lib/i915/gem_engine_topology.c
+> @@ -534,6 +534,44 @@ void gem_engine_properties_restore(int fd, const struct gem_engine_properties *s
+>  	}
+>  }
+>  
+> +static bool
+> +__gem_engine_has_capability(int i915, const char *engine,
+> +			    const char *attr, const char *cap)
+> +{
+> +	char buf[4096] = {};
+> +	FILE *file;
+> +
+> +	file = __open_attr(igt_sysfs_open(i915), "r",
+> +			   "engine", engine, attr, NULL);
+> +	if (file) {
+> +		fread(buf, 1, sizeof(buf) - 1, file);
+> +		fclose(file);
+> +	}
+
+What happens when file==NULL ? Should'nt we return NULL immediatly ?
+Maybe re-arrange it like:
+	if(!file)
+		return NULL;
+
+What about buffer end ? Or when number of readed bytes will be zero ?
+I think we should add null string terminator at end of readed buf.
+
+> +
+> +	return strstr(buf, cap);
+> +}
+
+One problem with this function is it do not differentiate between
+when it was zero read (so it do not helped us) and when i915
+driver fills it and we can actually check capabilities here.
+
+> +
+> +bool gem_engine_has_capability(int i915, const char *engine, const char *cap)
+> +{
+> +	return __gem_engine_has_capability(i915, engine, "capabilities", cap);
+> +}
+> +
+> +bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap)
+> +{
+> +	return __gem_engine_has_capability(i915, engine, "known_capabilities", cap);
+> +}
+> +
+> +bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine)
+> +{
+> +	if (engine->class != I915_ENGINE_CLASS_COPY)
+> +		return false;
+> +
+> +	if (!gem_engine_has_known_capability(i915, engine->name, "block_copy"))
+> +		return intel_gen(intel_get_drm_devid(i915)) >= 12;
+
+This looks like guessing but maybe it is ok.
+
+> +
+> +	return gem_engine_has_capability(i915, engine->name, "block_copy");
+> +}
+> +
+>  uint32_t gem_engine_mmio_base(int i915, const char *engine)
+>  {
+>  	unsigned int mmio = 0;
+> diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+> index b413aa8ab..987f2bf94 100644
+> --- a/lib/i915/gem_engine_topology.h
+> +++ b/lib/i915/gem_engine_topology.h
+> @@ -133,6 +133,11 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+>  
+>  uint32_t gem_engine_mmio_base(int i915, const char *engine);
+>  
+> +bool gem_engine_has_capability(int i915, const char *engine, const char *cap);
+> +bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap);
+> +
+> +bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine);
+> +
+>  void dyn_sysfs_engines(int i915, int engines, const char *file,
+>  		       void (*test)(int i915, int engine));
+>  
 > -- 
-> 2.25.1
+> 2.32.0
 > 
-
-
-One comment made on one patch, with that addressed the series is
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-as long as CI doesn't choke on this.
+Regards,
+Kamil Konieczny
