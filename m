@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CFF810E251
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 05:43:18 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
- arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com
-Date: Fri, 25 Feb 2022 11:06:12 +0530
-Message-Id: <20220225053612.43527-1-priyanka.dandamudi@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C86610E4CA
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Feb 2022 06:17:45 +0000 (UTC)
+Date: Fri, 25 Feb 2022 07:17:39 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jeevan B <jeevan.b@intel.com>
+Message-ID: <Yhh0gzIeFgoQV6s/@zkempczy-mobl2>
+References: <20220225050853.8349-1-jeevan.b@intel.com>
+ <20220225050853.8349-3-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_create: Added test description for
- test case
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220225050853.8349-3-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 02/10] include/drm-uapi: Introduce new
+ Tile 4 format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,88 +21,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, juha-pekka.heikkila@intel.com,
+ petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+On Fri, Feb 25, 2022 at 10:38:45AM +0530, Jeevan B wrote:
+> This tiling layout uses 4KB tiles in a row-major layout. It has the same
+> shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B x 4). It
+> only differs from Tile Y at the 256B granularity in between. At this
+> granularity, Tile Y has a shape of 16B x 32 rows, but this tiling has a shape
+> of 64B x 8 rows.
+> 
+> Reference:
+> https://cgit.freedesktop.org/drm/drm-tip/commit/?id=c6e7deb0f092616bd8cb19e8c436b212c64daaab
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  include/drm-uapi/drm_fourcc.h | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
+> index 91b6a0fd..318b50fa 100644
+> --- a/include/drm-uapi/drm_fourcc.h
+> +++ b/include/drm-uapi/drm_fourcc.h
+> @@ -559,6 +559,17 @@ extern "C" {
+>   */
+>  #define I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC fourcc_mod_code(INTEL, 8)
+>  
+> +/*
+> + * Intel Tile 4 layout
+> + *
+> + * This is a tiled layout using 4KB tiles in a row-major layout. It has the same
+> + * shape as Tile Y at two granularities: 4KB (128B x 32) and 64B (16B x 4). It
+> + * only differs from Tile Y at the 256B granularity in between. At this
+> + * granularity, Tile Y has a shape of 16B x 32 rows, but this tiling has a shape
+> + * of 64B x 8 rows.
+> + */
+> +#define I915_FORMAT_MOD_4_TILED         fourcc_mod_code(INTEL, 9)
+> +
+>  /*
+>   * Tiled, NV12MT, grouped in 64 (pixels) x 32 (lines) -sized macroblocks
+>   *
+> -- 
+> 2.17.1
+> 
 
-Added test description to all the available subtests.
+I think you should sync this file, not only apply this change.
 
-v2: Added test description for newly added subtets.
-
-v3: Updated test descriptions.
-
-Cc: Melkaveri Arjun <Arjun.Melkaveri@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_create.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index 45804cde..31fd6526 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -59,9 +59,8 @@
- #include "i915/gem_mman.h"
- #include "i915_drm.h"
- 
--IGT_TEST_DESCRIPTION("This is a test for the gem_create ioctl,"
--		     " where the goal is to simply ensure that basics work"
--		     " and invalid input combinations are rejected.");
-+IGT_TEST_DESCRIPTION("Ensure that basic gem_create and gem_create_ext works"
-+		     " and that invalid input combinations are rejected.");
- 
- #define PAGE_SIZE 4096
- 
-@@ -489,30 +488,46 @@ igt_main
- 		fd = drm_open_driver(DRIVER_INTEL);
- 	}
- 
-+	igt_describe("Try to create a gem object of invalid size 0"
-+		     " and check if ioctl returns error.");
- 	igt_subtest("create-invalid-size")
- 		invalid_size_test(fd);
- 
-+	igt_describe("Exercise creation of buffer object with impossible"
-+		     " size and check for the expected error.");
- 	igt_subtest("create-massive")
- 		massive_test(fd);
- 
-+	igt_describe("Try to create an object with non-aligned size, check"
-+		     " we got one with size aligned up to page size and test"
-+		     " we can write into the padded extra memory.");
- 	igt_subtest("create-valid-nonaligned")
- 		valid_nonaligned_size(fd);
- 
-+	igt_describe("Try to create a gem object with size 15"
-+		     " and check actual created size.");
- 	igt_subtest("create-size-update")
- 		size_update(fd);
- 
-+	igt_describe("Verify that all new objects are clear.");
- 	igt_subtest("create-clear")
- 		always_clear(fd, 30);
- 
-+	igt_describe("Create buffer objects while GPU is busy.");
- 	igt_subtest("busy-create")
- 		busy_create(fd, 30);
- 
-+	igt_describe("Exercise create_ext placements extension.");
- 	igt_subtest("create-ext-placement-sanity-check")
- 		create_ext_placement_sanity_check(fd);
- 
-+	igt_describe("Create one object with memory pieces in each"
-+		     " memory region using create_ext.");
- 	igt_subtest("create-ext-placement-each")
- 		create_ext_placement_each(fd);
- 
-+	igt_describe("Create objects in every  memory region using"
-+		     " create_ext.");
- 	igt_subtest("create-ext-placement-all")
- 		create_ext_placement_all(fd);
- 
--- 
-2.25.1
+--
+Zbigniew
