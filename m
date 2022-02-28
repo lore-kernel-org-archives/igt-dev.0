@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5678777937098053435=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E77710E76C
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Feb 2022 12:29:01 +0000 (UTC)
+From: Ramalingam C <ramalingam.c@intel.com>
+To: igt-dev <igt-dev@lists.freedesktop.org>
+Date: Mon, 28 Feb 2022 17:59:19 +0530
+Message-Id: <20220228122921.15095-2-ramalingam.c@intel.com>
+In-Reply-To: <20220228122921.15095-1-ramalingam.c@intel.com>
+References: <20220228122921.15095-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Mon, 28 Feb 2022 11:59:45 -0000
-Message-ID: <164604958597.6631.9374264640646350043@emeril.freedesktop.org>
-References: <20220228104623.12757-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20220228104623.12757-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSUdUIGNs?=
- =?utf-8?q?eanup_=28rev2=29?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/3] i915/gem_engine_topology: Only use the
+ main copy engines for XY_BLOCK_COPY
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,256 +20,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5678777937098053435==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-== Series Details ==
+XY_BLOCK_COPY blt command is used to transfer the ccs data.
+So, we can only run the tests on those engines which have
+support for the "block_copy" capability.
 
-Series: IGT cleanup (rev2)
-URL   : https://patchwork.freedesktop.org/series/100801/
-State : success
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+---
+ lib/i915/gem_engine_topology.c | 38 ++++++++++++++++++++++++++++++++++
+ lib/i915/gem_engine_topology.h |  5 +++++
+ 2 files changed, 43 insertions(+)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11296 -> IGTPW_6713
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/index.html
-
-Participating hosts (43 -> 41)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (3): fi-bsw-cyan shard-tglu fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6713 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_flink_basic@bad-flink:
-    - fi-skl-6600u:       [PASS][1] -> [INCOMPLETE][2] ([i915#4547])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-dg1-5:          [PASS][3] -> [FAIL][4] ([i915#4032])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/bat-dg1-5/igt@i915_pm_rps@basic-api.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/bat-dg1-5/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [PASS][5] -> [INCOMPLETE][6] ([i915#2940])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [PASS][7] -> [INCOMPLETE][8] ([i915#3921])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][9] ([fdo#109271]) +57 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-bsw-nick:        NOTRUN -> [FAIL][10] ([fdo#109271] / [i915#1436] / [i915#3428] / [i915#4312])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-bsw-nick/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-guc:         [SKIP][11] ([fdo#109271]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          [DMESG-FAIL][13] ([i915#4957]) -> [DMESG-FAIL][14] ([i915#4494] / [i915#4957])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-    - bat-dg1-6:          [DMESG-FAIL][15] ([i915#4957]) -> [DMESG-FAIL][16] ([i915#4494] / [i915#4957])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  * igt@runner@aborted:
-    - fi-skl-6600u:       [FAIL][17] ([i915#4312]) -> [FAIL][18] ([i915#2722] / [i915#4312])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-skl-6600u/igt@runner@aborted.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-skl-6600u/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#3428]: https://gitlab.freedesktop.org/drm/intel/issues/3428
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#4032]: https://gitlab.freedesktop.org/drm/intel/issues/4032
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6359 -> IGTPW_6713
-
-  CI-20190529: 20190529
-  CI_DRM_11296: 8dae787ba8b9f6d29baaa82902f4d50af94ae058 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6713: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/index.html
-  IGT_6359: 57049558c452272b27eeb099fac07e55a924bbf9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/index.html
-
---===============5678777937098053435==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>IGT cleanup (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100801/">https://patchwork.freedesktop.org/series/100801/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11296 -&gt; IGTPW_6713</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/index.html</p>
-<h2>Participating hosts (43 -&gt; 41)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (3): fi-bsw-cyan shard-tglu fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6713 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_flink_basic@bad-flink:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/bat-dg1-5/igt@i915_pm_rps@basic-api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/bat-dg1-5/igt@i915_pm_rps@basic-api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4032">i915#4032</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
-</li>
-<li>
-<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11296/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6359 -&gt; IGTPW_6713</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11296: 8dae787ba8b9f6d29baaa82902f4d50af94ae058 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6713: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6713/index.html<br />
-  IGT_6359: 57049558c452272b27eeb099fac07e55a924bbf9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5678777937098053435==--
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index bd12d0bc986d..18fc00ab00e9 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -534,6 +534,44 @@ void gem_engine_properties_restore(int fd, const struct gem_engine_properties *s
+ 	}
+ }
+ 
++static bool
++__gem_engine_has_capability(int i915, const char *engine,
++			    const char *attr, const char *cap)
++{
++	char buf[4096] = {};
++	FILE *file;
++
++	file = __open_attr(igt_sysfs_open(i915), "r",
++			   "engine", engine, attr, NULL);
++	if (file) {
++		fread(buf, 1, sizeof(buf) - 1, file);
++		fclose(file);
++	}
++
++	return strstr(buf, cap);
++}
++
++bool gem_engine_has_capability(int i915, const char *engine, const char *cap)
++{
++	return __gem_engine_has_capability(i915, engine, "capabilities", cap);
++}
++
++bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap)
++{
++	return __gem_engine_has_capability(i915, engine, "known_capabilities", cap);
++}
++
++bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine)
++{
++	if (engine->class != I915_ENGINE_CLASS_COPY)
++		return false;
++
++	if (!gem_engine_has_known_capability(i915, engine->name, "block_copy"))
++		return intel_gen(intel_get_drm_devid(i915)) >= 12;
++
++	return gem_engine_has_capability(i915, engine->name, "block_copy");
++}
++
+ uint32_t gem_engine_mmio_base(int i915, const char *engine)
+ {
+ 	unsigned int mmio = 0;
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index b413aa8aba30..987f2bf9449d 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -133,6 +133,11 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+ 
+ uint32_t gem_engine_mmio_base(int i915, const char *engine);
+ 
++bool gem_engine_has_capability(int i915, const char *engine, const char *cap);
++bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap);
++
++bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine);
++
+ void dyn_sysfs_engines(int i915, int engines, const char *file,
+ 		       void (*test)(int i915, int engine));
+ 
+-- 
+2.20.1
