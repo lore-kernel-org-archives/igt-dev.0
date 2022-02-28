@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2314110E4AE
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Feb 2022 10:45:14 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 28 Feb 2022 16:16:23 +0530
-Message-Id: <20220228104623.12757-1-nidhi1.gupta@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E89110E39A
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Feb 2022 10:50:26 +0000 (UTC)
+Date: Mon, 28 Feb 2022 12:49:40 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Swati Sharma <swati2.sharma@intel.com>
+Message-ID: <YhyoxLE3nAHFCwju@platvala-desk.ger.corp.intel.com>
+References: <20220227163057.28703-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] IGT cleanup
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220227163057.28703-1-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [v8 0/8] Addition of new plane scaling test cases
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,72 +19,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before starting the next subtest, clean up the states to default
-values, those are assumed by other tests.
+On Sun, Feb 27, 2022 at 10:00:49PM +0530, Swati Sharma wrote:
+> In this series, combination of downscaling and upscaling
+> testcases are added. Also, code refactoring is done for
+> existing code.
+> 
+>     v2:-minor fixes, to prevent CI crashes
+>     v3:-added subtests for testing upscaling/downscaling for
+>         each plane individually (Ville)
+>        -modified existing subtests for each N plane scaling
+>         combo (Ville)
+>     v4:-removal of i915sm (Ville)
+>        -code reusablity (Ville)
+>     v5:-use enum (Viile)
+>        -limit while loop (Ville)
+>        -add assert for fail/pass (Ville)
+>        -added primary plane for testing (Ville)
+>     v6:-after rebase, made changes accordingly to make
+>         test cases consistent and for better coverage (Petri)
+>     v7:-renaming of existing tests
+>        -added 0.75 scaling factor downscaling tests (Petrii)
+>     v8:-code cleanup
+> 
+> Swati Sharma (8):
+>   tests/kms_plane_scaling: Removal of plane-scaling subtest
+>   tests/kms_plane_scaling: Cleanup
+>   tests/kms_plane_scaling: Minor changes with existing tests
+>   tests/kms_plane_scaling: Addition of 0.75 scaling factor downscaling
+>     tests
+>   tests/kms_plane_scaling: Upscaling on 2 planes
+>   tests/kms_plane_scaling: Downscaling on 2 planes
+>   tests/kms_plane_scaling: Upscaling and downscaling scenario
+>   tests/kms_plane_scaling: Add negative test to check num of scalers
+> 
+>  tests/kms_plane_scaling.c | 866 ++++++++++++++++++++------------------
+>  1 file changed, 468 insertions(+), 398 deletions(-)
 
-v2: And also before running the subtest we need to sanitize the system state
-to default, since we can't trust the state of previous subtest, used
-igt_display_reset() to sanitize the state. (Bhanuprakash Modem)
-
-Below tests are modified:
-	tests/kms_concurrent.c
-	tests/kms_sequence.c
-
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_concurrent.c | 4 +++-
- tests/kms_sequence.c   | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 1b8f4b04..705546e5 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
- 	}
- 
- 	/* reset the constraint on the pipe */
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
- 	free(data->plane);
- 	data->plane = NULL;
-@@ -375,6 +376,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_reset(&data.display);
- 		igt_require(data.display.is_atomic);
- 	}
- 
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index 9c287480..9dbb6897 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -109,8 +109,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, NULL);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
--	igt_display_commit(display);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
- 
- static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
-@@ -278,6 +278,7 @@ igt_main
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, fd);
-+		igt_display_reset(&data.display);
- 	}
- 
- 	for (f = funcs; f->name; f++) {
--- 
-2.26.2
+One comment on patch 8, with that addressed the series is
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
