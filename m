@@ -1,139 +1,128 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE02610E379
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Feb 2022 07:29:26 +0000 (UTC)
-Date: Tue, 1 Feb 2022 08:29:22 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <YfjhUtEt7G/bTZ6r@zkempczy-mobl2>
-References: <20220131164804.26165-1-zbigniew.kempczynski@intel.com>
- <164365157812.8647.3353202405050166647@emeril.freedesktop.org>
+Return-Path: <petri.latvala@intel.com>
+Date: Tue, 1 Mar 2022 18:13:00 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH v2 0/9] Add support to collect code coverage
+ data
+Message-ID: <Yh5GDGcm72996+Lj@platvala-desk.ger.corp.intel.com>
+References: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <164365157812.8647.3353202405050166647@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9h?=
- =?utf-8?q?pi=5Fintel=5Fbb=3A_Correct_size_for_munmap?=
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+In-Reply-To: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jan 31, 2022 at 05:52:58PM +0000, Patchwork wrote:
->    Patch Details
+On Tue, Mar 01, 2022 at 08:59:20AM +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
->    Series:  i915/api_intel_bb: Correct size for munmap                     
->    URL:     https://patchwork.freedesktop.org/series/99536/                
->    State:   failure                                                        
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6589/index.html 
+> The gcc compiler has a feature that allows collecting code coverage
+> in runtime, which is already supported by the Linux Kernel, as described
+> on its documentation:
 > 
->               CI Bug Log - changes from CI_DRM_11164 -> IGTPW_6589
+> 	https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
 > 
-> Summary
+> Add support for it at the igt_runner and scripts/run-tests.sh.
 > 
->    FAILURE
+> With such support, once a Kernel is compiled with:
 > 
->    Serious unknown changes coming with IGTPW_6589 absolutely need to be
->    verified manually.
+> 	./scripts/config -e DEBUG_FS -e GCOV_KERNEL
 > 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_6589, please notify your bug team to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
+> And GCOV is enabled by one or more drivers, like doing:
 > 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6589/index.html
+> 	for i in $(find drivers/gpu/drm/ -name Makefile); do sed '1 a GCOV_PROFILE := y' -i $i; done
 > 
-> Participating hosts (46 -> 42)
+> One can use igt_runner and/or run-tests.sh to collect the code coverage.
 > 
->    Missing (4): fi-bsw-cyan bat-rpls-1 fi-icl-u2 fi-bdw-samus
+> The way the implementation works is that the igt_runner has internally
+> the logic which reset the gcov usage counters. The code capture itself
+> is done via an external script.
 > 
-> Possible new issues
+> There are two versions of such script:
 > 
->    Here are the unknown changes that may have been introduced in IGTPW_6589:
+> - scripts/code_cov_capture.sh:
 > 
->   IGT changes
+>   Assumes that the Kernel was built at the same machine, and uses
+>   the lcov tool to generate GCC-independent code coverage data,
+>   in the form of *.info files;
 > 
->     Possible regressions
+> - scripts/code_cov_gather_on_test.py:
 > 
->      * igt@core_hotunplug@unbind-rebind:
->           * fi-blb-e6850: PASS -> FAIL
+>   Generates a gzipped tarbal with the code coverage counters in
+>   binary format. Such kind of output should then be parsed at
+>   the same machine where the Kernel as built, as its content is not
+>   ony dependent on the Kernel source, but also on the Kernel output
+>   objects.
+> 
+> Either way, both igt_runner and scripts/run-tests.sh could be used
+> to generate the code coverage results.
+> 
+> So, in order to get the code coverage results, storing results per each
+> IGT test, one should run either:
+> 
+> 	./scripts/run-tests.sh -T my_tests.testlist -k ~/linux \
+> 		-c scripts/code_cov_gather_on_test.py -P
+> 
+> or:
+> 
+> 	sudo ./build/runner/igt_runner -o --test-list my_tests.testlist \
+> 		--coverage-per-test \
+> 		--collect-script scripts/code_cov_gather_on_test.py \
+> 		build/tests results
+> 
+> Once the data is captured, it is possible to generate HTML reports
+> using scripts/code_cov_gen_report.sh:
+> 
+> 	scripts/code_cov_gen_report.sh -r results/code_cov/i915_selftest_live.info -k ~/linux -o cov_results -i -f
+> 
+> v2:
+>   - Applied this commant to patch 8:
+>     sed 's!/home/gta/!/basedir/!;s,\./basedir,/basedir,' -i docs/code_coverage.md
+> 
+> Mauro Carvalho Chehab (8):
+>   runner: check if it has root permissions
+>   runner: Add support for code coverage
+>   scripts/code_cov_gather*/sh: add help scripts for code coverage
+>   scripts/code_cov_gather_on_build.sh: Improve the script
+>   scripts/code_cov_capture.sh: add a script to use lcov on build+test
+>     machine
+>   scripts/code_cov_gen_report.sh: add a script to generate code coverage
+>     reports
+>   scripts/run-tests.sh: add code coverage support
+>   docs: add documentation for code coverage
+> 
+> Tomi Sarvela (1):
+>   scripts:code_cov_gather_on_test: use a faster script
+> 
+>  docs/code_coverage.md               | 293 ++++++++++++++++++++++++++++
+>  runner/executor.c                   | 200 ++++++++++++++++++-
+>  runner/resume.c                     |   4 +-
+>  runner/runner_tests.c               |  30 +++
+>  runner/settings.c                   |  87 ++++++++-
+>  runner/settings.h                   |   8 +
+>  scripts/code_cov_capture.sh         |  25 +++
+>  scripts/code_cov_gather_on_build.sh |  39 ++++
+>  scripts/code_cov_gather_on_test.py  |  91 +++++++++
+>  scripts/code_cov_gen_report.sh      | 170 ++++++++++++++++
+>  scripts/run-tests.sh                |  52 ++++-
+>  11 files changed, 979 insertions(+), 20 deletions(-)
+>  create mode 100644 docs/code_coverage.md
+>  create mode 100755 scripts/code_cov_capture.sh
+>  create mode 100755 scripts/code_cov_gather_on_build.sh
+>  create mode 100755 scripts/code_cov_gather_on_test.py
+>  create mode 100755 scripts/code_cov_gen_report.sh
+> 
+> -- 
+> 2.35.1
+> 
 
-Unrelated to the patch. May I ask for continue run?
 
---
-Zbigniew
+Support for -o (overwrite) is missing from this version of the series,
+I suppose we should get that done at least before this can be merged
+and put into use. Having the code_cov* scripts be installed by meson
+is a semi-necessity for i915 CI but can be left for later, whatever
+you prefer.
 
-> 
-> Known issues
-> 
->    Here are the changes found in IGTPW_6589 that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@gem_huc_copy@huc-copy:
-> 
->           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271 / i915#2190)
->      * igt@gem_lmem_swapping@verify-random:
-> 
->           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271 / i915#4613) +3 similar
->             issues
->      * igt@kms_chamelium@vga-edid-read:
-> 
->           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +8 similar
->             issues
->      * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-> 
->           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271) +2 similar issues
->      * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-> 
->           * fi-skl-6600u: NOTRUN -> SKIP (fdo#109271 / i915#533)
->      * igt@kms_psr@primary_page_flip:
-> 
->           * fi-skl-6600u: NOTRUN -> FAIL (i915#4547)
->      * igt@runner@aborted:
-> 
->           * fi-skl-6600u: NOTRUN -> FAIL (i915#4312)
-> 
->           * fi-bdw-5557u: NOTRUN -> FAIL (i915#2426 / i915#4312)
-> 
->     Possible fixes
-> 
->      * igt@kms_frontbuffer_tracking@basic:
-> 
->           * fi-cfl-8109u: DMESG-FAIL (i915#295) -> PASS
->      * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-> 
->           * fi-cfl-8109u: DMESG-WARN (i915#295) -> PASS +10 similar issues
-> 
->     Warnings
-> 
->      * igt@i915_selftest@live@hangcheck:
-> 
->           * bat-dg1-5: DMESG-FAIL (i915#4494 / i915#4957) -> DMESG-FAIL
->             (i915#4957)
-> 
->           * bat-dg1-6: DMESG-FAIL (i915#4494 / i915#4957) -> DMESG-FAIL
->             (i915#4957)
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_6337 -> IGTPW_6589
-> 
->    CI-20190529: 20190529
->    CI_DRM_11164: b0839553cd93d73bf43e0949203b24044113b5e7 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_6589: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6589/index.html
->    IGT_6337: 7c9c034619ef9dbfbfe041fbf3973a1cf1ac7a22 @
->    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+-- 
+Petri Latvala
