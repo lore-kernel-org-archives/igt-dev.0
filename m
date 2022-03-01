@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A62210E85D
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Mar 2022 07:59:40 +0000 (UTC)
-Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nOxQ0-000Wk7-MS
- for igt-dev@lists.freedesktop.org; Tue, 01 Mar 2022 08:59:36 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Mar 2022 08:59:24 +0100
-Message-Id: <20220301075929.125733-5-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
-References: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
+Date: Tue,  1 Mar 2022 11:03:59 +0000
+Message-Id: <20220301110359.663637-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 4/9] scripts/code_cov_gather_on_build.sh:
- Improve the script
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_params: check available
+ memory earlier
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,77 +14,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+The shmem mmap and pwrite interfaces conveniently let us probe just a
+few pages, without needing to populate the entire object. On discrete
+and newer platforms the kernel has dropped support for both, leaving us
+with MMAP_OFFSET, which will always populate the entire object, for now
+at least. Luckily we can just move the batch creation to after checking
+the available memory to ensure we don't hit -ENOMEM on such platforms.
 
-- speedup the script by allowing Sparse file detection instead
-  of libz compression;
+Also it seems that doing a massive allocation(filling much of system
+memory) and then calling intel_purge_vm_caches() seems to take 40+
+seconds, like when calling intel_require_memory(). Hence switching the
+ordering here should also help with that.
 
-- use realpath for the paths to allow running them from everywhere;
+For reference the larger-than-life test is just a simple regression test
+to ensure that some very large batch buffer(greater than ~4G) can't
+overflow the batch_len, causing all kinds of issues. See 57b2d834bf23
+("drm/i915/gem: Support parsing of oversize batches").
 
-- Speedup tarball generation by limiting the source file scope to
-  the DRM subsystem;
-
-- Indent with tabs instead of spaces.
-
-Reviewed-by: Tomi Sarvela <tomi.p.sarvela@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
 ---
- scripts/code_cov_gather_on_build.sh | 34 +++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+ tests/i915/gem_exec_params.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/code_cov_gather_on_build.sh b/scripts/code_cov_gather_on_build.sh
-index 99c436f76fb8..eebee89f9f1c 100755
---- a/scripts/code_cov_gather_on_build.sh
-+++ b/scripts/code_cov_gather_on_build.sh
-@@ -4,20 +4,36 @@ KSRC=$1
- KOBJ=$2
- DEST=$3
+diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
+index d247b8a6..da36af74 100644
+--- a/tests/i915/gem_exec_params.c
++++ b/tests/i915/gem_exec_params.c
+@@ -332,9 +332,7 @@ static void test_larger_than_life_batch(int fd)
+ 	const struct intel_execution_engine2 *e;
+ 	uint64_t size = 1ULL << 32; /* batch_len is __u32 as per the ABI */
+ 	const intel_ctx_t *ctx = intel_ctx_create_all_physical(fd);
+-	struct drm_i915_gem_exec_object2 exec = {
+-		.handle = batch_create_size(fd, size),
+-	};
++	struct drm_i915_gem_exec_object2 exec = {};
+ 	struct drm_i915_gem_execbuffer2 execbuf = {
+ 		.buffers_ptr = to_user_pointer(&exec),
+ 		.buffer_count = 1,
+@@ -350,6 +348,8 @@ static void test_larger_than_life_batch(int fd)
+ 	igt_require(size < gem_aperture_size(fd));
+ 	intel_require_memory(2, size, CHECK_RAM); /* batch + shadow */
  
-+# Limit scope in order to speedup tarball creation
-+GCOV_SCOPE=drivers/gpu/drm/
++	exec.handle = batch_create_size(fd, size);
 +
- if [ -z "$KSRC" ] || [ -z "$KOBJ" ] || [ -z "$DEST" ]; then
--  echo "Usage: $0 <ksrc directory> <kobj directory> <output.tar.gz>" >&2
--  exit 1
-+	echo "Usage: $0 <ksrc directory> <kobj directory> <output.tar[.gz]>" >&2
-+	exit 1
-+fi
-+
-+if [ "x$(echo $DEST|grep '\.gz')" != "x" ]; then
-+	TAR_COMPRESS="z"
-+else
-+	# gcno files are sparsed. So, if no compression is used, store the
-+	# results as a sparse file, in order to save disk space
-+	TAR_COMPRESS="S"
- fi
- 
--KSRC=$(cd $KSRC; printf "all:\n\t@echo \${CURDIR}\n" | make -f -)
--KOBJ=$(cd $KOBJ; printf "all:\n\t@echo \${CURDIR}\n" | make -f -)
-+KSRC=$(realpath $KSRC)
-+KOBJ=$(realpath $KOBJ)
-+
-+# Source files
-+SRCS="${KSRC}/include ${KSRC}/arch/x86/include $(find ${KSRC}/${GCOV_SCOPE} -name '*.[ch]')"
-+
-+# Generated gcno files and links
-+OBJS="$(find $KOBJ/${GCOV_SCOPE} \( -name '*.gcno' -o -name '*.[ch]' -o -type l \) -a -perm /u+r,g+r)"
- 
--find $KSRC $KOBJ \( -name '*.gcno' -o -name '*.[ch]' -o -type l \) -a \
--                 -perm /u+r,g+r | tar cfz $DEST -P -T -
-+tar cf${TAR_COMPRESS} $DEST $SRCS $OBJS
- 
- if [ $? -eq 0 ] ; then
--  echo "$DEST successfully created, copy to test system and unpack with:"
--  echo "  tar xfz $DEST -P"
-+	echo "$DEST successfully created, copy to test system and unpack with:"
-+	echo "  tar xf${TAR_COMPRESS} $DEST"
- else
--  echo "Could not create file $DEST"
-+	echo "Could not create file $DEST"
- fi
+ 	for_each_ctx_engine(fd, ctx, e) {
+ 		/* Keep the batch_len implicit [0] */
+ 		execbuf.flags = e->flags;
 -- 
-2.35.1
+2.34.1
