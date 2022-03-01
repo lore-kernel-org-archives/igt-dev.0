@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4DD910E847
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Mar 2022 07:59:39 +0000 (UTC)
-Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nOxQ0-000Wjv-K0
- for igt-dev@lists.freedesktop.org; Tue, 01 Mar 2022 08:59:36 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9005310E82A
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Mar 2022 07:58:14 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Mar 2022 08:59:20 +0100
-Message-Id: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
+Date: Tue,  1 Mar 2022 08:58:01 +0100
+Message-Id: <20220301075803.117058-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220301075803.117058-1-zbigniew.kempczynski@intel.com>
+References: <20220301075803.117058-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 0/9] Add support to collect code coverage data
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/intel_memory_regions: Add helper
+ which creates supported dma-buf set
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,103 +24,101 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+As different systems support or not dma-buf add function helper which
+will create set of supported by dma-buf memory regions.
 
-The gcc compiler has a feature that allows collecting code coverage
-in runtime, which is already supported by the Linux Kernel, as described
-on its documentation:
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/i915/intel_memory_region.c | 61 ++++++++++++++++++++++++++++++++++
+ lib/i915/intel_memory_region.h |  3 ++
+ 2 files changed, 64 insertions(+)
 
-	https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
-
-Add support for it at the igt_runner and scripts/run-tests.sh.
-
-With such support, once a Kernel is compiled with:
-
-	./scripts/config -e DEBUG_FS -e GCOV_KERNEL
-
-And GCOV is enabled by one or more drivers, like doing:
-
-	for i in $(find drivers/gpu/drm/ -name Makefile); do sed '1 a GCOV_PROFILE := y' -i $i; done
-
-One can use igt_runner and/or run-tests.sh to collect the code coverage.
-
-The way the implementation works is that the igt_runner has internally
-the logic which reset the gcov usage counters. The code capture itself
-is done via an external script.
-
-There are two versions of such script:
-
-- scripts/code_cov_capture.sh:
-
-  Assumes that the Kernel was built at the same machine, and uses
-  the lcov tool to generate GCC-independent code coverage data,
-  in the form of *.info files;
-
-- scripts/code_cov_gather_on_test.py:
-
-  Generates a gzipped tarbal with the code coverage counters in
-  binary format. Such kind of output should then be parsed at
-  the same machine where the Kernel as built, as its content is not
-  ony dependent on the Kernel source, but also on the Kernel output
-  objects.
-
-Either way, both igt_runner and scripts/run-tests.sh could be used
-to generate the code coverage results.
-
-So, in order to get the code coverage results, storing results per each
-IGT test, one should run either:
-
-	./scripts/run-tests.sh -T my_tests.testlist -k ~/linux \
-		-c scripts/code_cov_gather_on_test.py -P
-
-or:
-
-	sudo ./build/runner/igt_runner -o --test-list my_tests.testlist \
-		--coverage-per-test \
-		--collect-script scripts/code_cov_gather_on_test.py \
-		build/tests results
-
-Once the data is captured, it is possible to generate HTML reports
-using scripts/code_cov_gen_report.sh:
-
-	scripts/code_cov_gen_report.sh -r results/code_cov/i915_selftest_live.info -k ~/linux -o cov_results -i -f
-
-v2:
-  - Applied this commant to patch 8:
-    sed 's!/home/gta/!/basedir/!;s,\./basedir,/basedir,' -i docs/code_coverage.md
-
-Mauro Carvalho Chehab (8):
-  runner: check if it has root permissions
-  runner: Add support for code coverage
-  scripts/code_cov_gather*/sh: add help scripts for code coverage
-  scripts/code_cov_gather_on_build.sh: Improve the script
-  scripts/code_cov_capture.sh: add a script to use lcov on build+test
-    machine
-  scripts/code_cov_gen_report.sh: add a script to generate code coverage
-    reports
-  scripts/run-tests.sh: add code coverage support
-  docs: add documentation for code coverage
-
-Tomi Sarvela (1):
-  scripts:code_cov_gather_on_test: use a faster script
-
- docs/code_coverage.md               | 293 ++++++++++++++++++++++++++++
- runner/executor.c                   | 200 ++++++++++++++++++-
- runner/resume.c                     |   4 +-
- runner/runner_tests.c               |  30 +++
- runner/settings.c                   |  87 ++++++++-
- runner/settings.h                   |   8 +
- scripts/code_cov_capture.sh         |  25 +++
- scripts/code_cov_gather_on_build.sh |  39 ++++
- scripts/code_cov_gather_on_test.py  |  91 +++++++++
- scripts/code_cov_gen_report.sh      | 170 ++++++++++++++++
- scripts/run-tests.sh                |  52 ++++-
- 11 files changed, 979 insertions(+), 20 deletions(-)
- create mode 100644 docs/code_coverage.md
- create mode 100755 scripts/code_cov_capture.sh
- create mode 100755 scripts/code_cov_gather_on_build.sh
- create mode 100755 scripts/code_cov_gather_on_test.py
- create mode 100755 scripts/code_cov_gen_report.sh
-
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index a8759e069..a2db74566 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -332,6 +332,67 @@ char *memregion_dynamic_subtest_name(struct igt_collection *set)
+ 	return name;
+ }
+ 
++struct mmap_supported_region {
++	uint32_t region;
++	struct igt_list_head link;
++};
++
++/**
++ * get_dma_buf_mmap_supported_set:
++ * @i915: i915 drm file descriptor
++ * @set: memory regions set
++ *
++ * Function constructs set with regions which supports dma-buf mapping.
++ *
++ * Returns: set of regions which allows do dma-buf mmap or NULL otherwise.
++ *
++ * Note: set (igt_collection) need to be destroyed after use.
++ */
++struct igt_collection *
++get_dma_buf_mmap_supported_set(int i915, struct igt_collection *set)
++{
++	struct igt_collection *region, *supported_set = NULL;
++	uint32_t reg;
++	int dma_buf_fd;
++	char *ptr;
++	uint32_t handle, bosize = 4096;
++	int count = 0;
++	struct mmap_supported_region *mreg, *tmp;
++	IGT_LIST_HEAD(region_list);
++
++	for_each_combination(region, 1, set) {
++		reg = igt_collection_get_value(region, 0);
++		handle = gem_create_in_memory_regions(i915, bosize, reg);
++
++		dma_buf_fd = prime_handle_to_fd(i915, handle);
++		ptr = mmap(NULL, bosize, PROT_READ, MAP_SHARED, dma_buf_fd, 0);
++		if (ptr != MAP_FAILED) {
++			mreg = malloc(sizeof(*mreg));
++			igt_assert(mreg);
++			mreg->region = reg;
++			igt_list_add_tail(&mreg->link, &region_list);
++			count++;
++		}
++		munmap(ptr, bosize);
++		gem_close(i915, handle);
++		close(dma_buf_fd);
++	}
++
++	if (count) {
++		int i = 0;
++
++		supported_set = igt_collection_create(count);
++
++		igt_list_for_each_entry_safe(mreg, tmp, &region_list, link) {
++			igt_collection_set_value(supported_set, i++, mreg->region);
++			igt_list_del(&mreg->link);
++			free(mreg);
++		}
++	}
++
++	return supported_set;
++}
++
+ /**
+  * intel_dump_gpu_meminfo:
+  * @info: pointer to drm_i915_query_memory_regions structure
+diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+index 936e7d1c8..bd92267b6 100644
+--- a/lib/i915/intel_memory_region.h
++++ b/lib/i915/intel_memory_region.h
+@@ -111,6 +111,9 @@ __get_memory_region_set(struct drm_i915_query_memory_regions *regions,
+ 	__get_memory_region_set(regions, arr__, ARRAY_SIZE(arr__)); \
+ })
+ 
++struct igt_collection *
++get_dma_buf_mmap_supported_set(int i915, struct igt_collection *set);
++
+ char *memregion_dynamic_subtest_name(struct igt_collection *set);
+ 
+ void intel_dump_gpu_meminfo(const struct drm_i915_query_memory_regions *info);
 -- 
-2.35.1
+2.32.0
