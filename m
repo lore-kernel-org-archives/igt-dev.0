@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC8C310E62E
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Mar 2022 12:38:31 +0000 (UTC)
-Date: Tue, 1 Mar 2022 13:38:26 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Yh4TwotZFhgMNOMY@kamilkon-DESK1>
-References: <20220301075803.117058-1-zbigniew.kempczynski@intel.com>
- <20220301075803.117058-3-zbigniew.kempczynski@intel.com>
+Date: Tue,  1 Mar 2022 13:47:28 +0100
+Message-Id: <20220301124728.312967-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220301075803.117058-3-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/prime_mmap: Iterate over
- dma-buf supported memory regions
+Subject: [igt-dev] [PATCH i-g-t] lib/intel_mmio: Fix mmapped resources not
+ unmapped on fini
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,94 +14,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Dnia 2022-03-01 at 08:58:02 +0100, Zbigniew Kempczyński napisał(a):
-> To avoid code duplication (prime_mmap_coherency uses similar code)
-> use helper function which returns dma-buf set of supported regions.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  tests/prime_mmap.c | 34 ++++++----------------------------
->  1 file changed, 6 insertions(+), 28 deletions(-)
+Commit 5f3cfa485eb4 ("lib: Use safe wrappers around libpciaccess
+initialization functions") took care of not leaking memory allocated by
+pci_system_init() but didn't take care of users potentially attempting to
+reinitialize global data maintained by libpciaccess.  For example,
+intel_register_access_init() mmaps device's PCI BAR0 resource with
+pci_device_map_range() but intel_register_access_fini() doesn't unmap it
+and next call to intel_register_access_init() fails on attempt to mmap it
+again with pci_device_map_range().
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Fix it, and also provide intel_mmio_umap_*() counterparts to public
+functions intel_mmio_use_pci_bar() and intel_mmio_use_dump_file().
 
-> 
-> diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-> index e0cb9a25b..d53185ff1 100644
-> --- a/tests/prime_mmap.c
-> +++ b/tests/prime_mmap.c
-> @@ -483,31 +483,6 @@ test_aperture_limit(uint32_t region, int size)
->  	gem_close(fd, handle2);
->  }
->  
-> -static int
-> -check_for_dma_buf_mmap(struct igt_collection *set)
-> -{
-> -	struct igt_collection *region;
-> -	uint32_t reg;
-> -	int dma_buf_fd;
-> -	char *ptr;
-> -	uint32_t handle;
-> -	int ret = 1;
-> -
-> -	for_each_combination(region, 1, set) {
-> -		reg = igt_collection_get_value(region, 0);
-> -		handle = gem_create_in_memory_regions(fd, BO_SIZE, reg);
-> -
-> -		dma_buf_fd = prime_handle_to_fd(fd, handle);
-> -		ptr = mmap(NULL, BO_SIZE, PROT_READ, MAP_SHARED, dma_buf_fd, 0);
-> -		if (ptr != MAP_FAILED)
-> -			ret = 0;
-> -		munmap(ptr, BO_SIZE);
-> -		gem_close(fd, handle);
-> -		close(dma_buf_fd);
-> -	}
-> -	return ret;
-> -}
-> -
->  #define SKIP_LMEM (1 << 0)
->  #define SKIP_USERPTR (1 << 1)
->  
-> @@ -527,7 +502,7 @@ static bool check_skip(uint32_t skip, uint32_t region)
->  
->  igt_main
->  {
-> -	struct igt_collection *set, *regions;
-> +	struct igt_collection *set, *regions, *dma_buf_set;
->  	struct drm_i915_query_memory_regions *query_info;
->  	struct {
->  		const char *name;
-> @@ -560,13 +535,15 @@ igt_main
->  
->  		set = get_memory_region_set(query_info, I915_SYSTEM_MEMORY,
->  					    I915_DEVICE_MEMORY);
-> -		igt_assert(check_for_dma_buf_mmap(set) == 0);
-> +
-> +		dma_buf_set = get_dma_buf_mmap_supported_set(fd, set);
-> +		igt_require_f(dma_buf_set, "No dma-buf region supported\n");
->  		errno = 0;
->  	}
->  
->  	for (i = 0; i < ARRAY_SIZE(tests); i++)
->  		igt_subtest_with_dynamic(tests[i].name) {
-> -			for_each_combination(regions, 1, set) {
-> +			for_each_combination(regions, 1, dma_buf_set) {
->  				region = igt_collection_get_value(regions, 0);
->  				size = gem_get_batch_size(fd, MEMORY_TYPE_FROM_REGION(region));
->  				size = max(size, BO_SIZE);
-> @@ -582,6 +559,7 @@ igt_main
->  	igt_fixture {
->  		free(query_info);
->  		igt_collection_destroy(set);
-> +		igt_collection_destroy(dma_buf_set);
->  		close(fd);
->  	}
->  }
-> -- 
-> 2.32.0
-> 
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ lib/intel_io.h   |  4 +++
+ lib/intel_mmio.c | 65 ++++++++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 62 insertions(+), 7 deletions(-)
+
+diff --git a/lib/intel_io.h b/lib/intel_io.h
+index 1cfe4fb6b9..ea2649d9bc 100644
+--- a/lib/intel_io.h
++++ b/lib/intel_io.h
+@@ -49,6 +49,8 @@ struct intel_register_map {
+ 
+ struct intel_mmio_data {
+ 	void *igt_mmio;
++	size_t mmio_size;
++	struct pci_device *dev;
+ 	struct intel_register_map map;
+ 	uint32_t pci_device_id;
+ 	int key;
+@@ -57,7 +59,9 @@ struct intel_mmio_data {
+ 
+ void intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data,
+ 			    struct pci_device *pci_dev);
++void intel_mmio_unmap_pci_bar(struct intel_mmio_data *mmio_data);
+ void intel_mmio_use_dump_file(struct intel_mmio_data *mmio_data, char *file);
++void intel_mmio_unmap_dump_file(struct intel_mmio_data *mmio_data);
+ 
+ int intel_register_access_init(struct intel_mmio_data *mmio_data,
+ 			       struct pci_device *pci_dev, int safe, int fd);
+diff --git a/lib/intel_mmio.c b/lib/intel_mmio.c
+index 667a69f5aa..c8800a6d53 100644
+--- a/lib/intel_mmio.c
++++ b/lib/intel_mmio.c
+@@ -82,6 +82,8 @@ void *igt_global_mmio;
+  * Sets also up mmio_data->igt_mmio to point at the data contained
+  * in @file. This allows the same code to get reused for dumping and decoding
+  * from running hardware as from register dumps.
++ *
++ * Users are expected to call intel_mmio_unmap_dump_file() after use.
+  */
+ void
+ intel_mmio_use_dump_file(struct intel_mmio_data *mmio_data, char *file)
+@@ -99,11 +101,29 @@ intel_mmio_use_dump_file(struct intel_mmio_data *mmio_data, char *file)
+ 	igt_fail_on_f(mmio_data->igt_mmio == MAP_FAILED,
+ 		      "Couldn't mmap %s\n", file);
+ 
++	mmio_data->mmio_size = st.st_size;
+ 	igt_global_mmio = mmio_data->igt_mmio;
+ 
+ 	close(fd);
+ }
+ 
++/**
++ * intel_mmio_unmap_dump_file:
++ * @mmio_data:  mmio structure for IO operations
++ *
++ * Unmaps a dump file mmapped with intel_mmio_use_dump_file()
++ */
++void intel_mmio_unmap_dump_file(struct intel_mmio_data *mmio_data)
++{
++	if (igt_warn_on_f(!mmio_data->mmio_size || mmio_data->dev,
++			  "test bug: argument doesn't point to struct intel_mmio_data initialized with intel_mmio_use_dump_file()\n"))
++		return;
++
++	igt_global_mmio = NULL;
++	igt_debug_on(munmap(mmio_data->igt_mmio, mmio_data->mmio_size) < 0);
++	mmio_data->mmio_size = 0;
++}
++
+ /**
+  * intel_mmio_use_pci_bar:
+  * @mmio_data:  mmio structure for IO operations
+@@ -112,12 +132,14 @@ intel_mmio_use_dump_file(struct intel_mmio_data *mmio_data, char *file)
+  * Fill a mmio_data stucture with igt_mmio to point at the mmio bar.
+  *
+  * @pci_dev can be obtained from intel_get_pci_device().
++ *
++ * Users are expected to call intel_mmio_unmap_pci_bar() after use.
+  */
+ void
+ intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci_dev)
+ {
+ 	uint32_t devid, gen;
+-	int mmio_bar, mmio_size;
++	int mmio_bar;
+ 	int error;
+ 
+ 	memset(mmio_data, 0, sizeof(struct intel_mmio_data));
+@@ -129,11 +151,11 @@ intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci
+ 
+ 	gen = intel_gen(devid);
+ 	if (gen < 3)
+-		mmio_size = 512*1024;
++		mmio_data->mmio_size = 512*1024;
+ 	else if (gen < 5)
+-		mmio_size = 512*1024;
++		mmio_data->mmio_size = 512*1024;
+ 	else
+-		mmio_size = 2*1024*1024;
++		mmio_data->mmio_size = 2*1024*1024;
+ 
+ 	error = pci_device_map_range (pci_dev,
+ 				      pci_dev->regions[mmio_bar].base_addr,
+@@ -141,10 +163,30 @@ intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci
+ 				      PCI_DEV_MAP_FLAG_WRITABLE,
+ 				      &mmio_data->igt_mmio);
+ 
+-	igt_global_mmio = mmio_data->igt_mmio;
+-
+ 	igt_fail_on_f(error != 0,
+ 		      "Couldn't map MMIO region\n");
++
++	mmio_data->dev = pci_dev;
++	igt_global_mmio = mmio_data->igt_mmio;
++}
++
++/**
++ * intel_mmio_unmap_pci_bar:
++ * @mmio_data:  mmio structure for IO operations
++ *
++ * Unmaps a PCI BAR region mmapped with intel_mmio_use_pci_bar()
++ */
++void intel_mmio_unmap_pci_bar(struct intel_mmio_data *mmio_data)
++{
++	if (igt_warn_on_f(!mmio_data->dev,
++			  "test bug: argument doesn't point to struct intel_mmio_data initialized with intel_mmio_use_pci_bar()\n"))
++		return;
++
++	igt_global_mmio = NULL;
++	igt_debug_on(pci_device_unmap_range(mmio_data->dev,
++					    mmio_data->igt_mmio, mmio_data->mmio_size) < 0);
++	mmio_data->mmio_data->dev = NULL;
++	mmio_data->mmio_size = 0;
+ }
+ 
+ static void
+@@ -166,6 +208,8 @@ release_forcewake_lock(int fd)
+  * It also initializes mmio_data->igt_mmio like intel_mmio_use_pci_bar().
+  *
+  * @pci_dev can be obtained from intel_get_pci_device().
++ *
++ * Users are expected to call intel_register_access_fini() after use.
+  */
+ int
+ intel_register_access_init(struct intel_mmio_data *mmio_data, struct pci_device *pci_dev, int safe, int fd)
+@@ -222,8 +266,15 @@ int intel_register_access_needs_fakewake(struct intel_mmio_data *mmio_data)
+ void
+ intel_register_access_fini(struct intel_mmio_data *mmio_data)
+ {
+-	if (mmio_data->key && intel_register_access_needs_wake(mmio_data))
++	if (igt_warn_on_f(!mmio_data->key,
++			  "test bug: argument doesn't point to struct intel_mmio_data initialized with intel_register_access_init()\n"))
++		return;
++
++	if (intel_register_access_needs_wake(mmio_data))
+ 		release_forcewake_lock(mmio_data->key);
++	mmio_data->key = 0;
++
++	intel_mmio_unmap_pci_bar(mmio_data);
+ }
+ 
+ /**
+-- 
+2.25.1
