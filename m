@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7162891607195531894=="
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DEC410E83E
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Mar 2022 07:59:40 +0000 (UTC)
+Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nOxQ0-000WkG-Nn
+ for igt-dev@lists.freedesktop.org; Tue, 01 Mar 2022 08:59:36 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  1 Mar 2022 08:59:27 +0100
+Message-Id: <20220301075929.125733-8-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
+References: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 01 Mar 2022 08:44:01 -0000
-Message-ID: <164612424139.8601.6185948493993063582@emeril.freedesktop.org>
-References: <20220301075803.117058-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220301075803.117058-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVXNlIHN1?=
- =?utf-8?q?pported_dma-buf_regions_in_prime=5Fmmap*_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 7/9] scripts/run-tests.sh: add code coverage
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,295 +22,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7162891607195531894==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-== Series Details ==
+When the Kernel is built with GCOV_KERNEL and one or more drivers are
+built with GCOV_PROFILE enabled[1], the Kernel will collect code
+coverage usage at the same time as a test runs.
 
-Series: Use supported dma-buf regions in prime_mmap* (rev2)
-URL   : https://patchwork.freedesktop.org/series/100819/
-State : success
+Add support at run-tests.sh to collect usage data and store them on
+.info files.
 
-== Summary ==
+That actually require two new options:
 
-CI Bug Log - changes from CI_DRM_11301 -> IGTPW_6720
-====================================================
+-c <test_name>: will store the tests under test_name.info;
+-k <kernel_tree>: Points to the source code of the built Kernel.
 
-Summary
--------
+The Kernel tree can be a partial tree, provided that it contains at
+least all *.h files used by the drivers, plus the *.c files that were
+built with gcov support enabled.
 
-  **SUCCESS**
+[1] See https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
 
-  No regressions found.
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ scripts/run-tests.sh | 52 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 46 insertions(+), 6 deletions(-)
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html
-
-Participating hosts (42 -> 41)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (2): fi-bsw-cyan fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6720:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@gem_lmem_swapping@verify-random@lmem0:
-    - {bat-dg2-9}:        [INCOMPLETE][1] ([i915#4936]) -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-dg2-9/igt@gem_lmem_swapping@verify-random@lmem0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-dg2-9/igt@gem_lmem_swapping@verify-random@lmem0.html
-
-  * igt@kms_addfb_basic@too-high:
-    - {bat-dg2-9}:        [PASS][3] -> [DMESG-WARN][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-dg2-9/igt@kms_addfb_basic@too-high.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-dg2-9/igt@kms_addfb_basic@too-high.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6720 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271]) +8 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][8] ([i915#1886] / [i915#2291])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - bat-adlp-4:         [PASS][10] -> [DMESG-WARN][11] ([i915#3576])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][12] ([fdo#109271] / [i915#533])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_busy@basic@modeset:
-    - bat-adlp-4:         [DMESG-WARN][13] ([i915#3576]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-4/igt@kms_busy@basic@modeset.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-4/igt@kms_busy@basic@modeset.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - {bat-adlp-6}:       [DMESG-WARN][15] ([i915#3576]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-    - fi-cfl-8109u:       [DMESG-WARN][17] ([i915#295]) -> [PASS][18] +12 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4936]: https://gitlab.freedesktop.org/drm/intel/issues/4936
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6361 -> IGTPW_6720
-
-  CI-20190529: 20190529
-  CI_DRM_11301: 2993d5d1ab67bc47f6be438e163742bb8cd3004c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6720: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html
-  IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html
-
---===============7162891607195531894==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Use supported dma-buf regions in prime_mmap* (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100819/">https://patchwork.freedesktop.org/series/100819/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11301 -&gt; IGTPW_6720</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html</p>
-<h2>Participating hosts (42 -&gt; 41)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6720:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@verify-random@lmem0:</p>
-<ul>
-<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-dg2-9/igt@gem_lmem_swapping@verify-random@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4936">i915#4936</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-dg2-9/igt@gem_lmem_swapping@verify-random@lmem0.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@too-high:</p>
-<ul>
-<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-dg2-9/igt@kms_addfb_basic@too-high.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-dg2-9/igt@kms_addfb_basic@too-high.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6720 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_busy@basic@modeset:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-4/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-4/igt@kms_busy@basic@modeset.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +12 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6361 -&gt; IGTPW_6720</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11301: 2993d5d1ab67bc47f6be438e163742bb8cd3004c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6720: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html<br />
-  IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7162891607195531894==--
+diff --git a/scripts/run-tests.sh b/scripts/run-tests.sh
+index 8399b6d15aa9..6986232e8eb4 100755
+--- a/scripts/run-tests.sh
++++ b/scripts/run-tests.sh
+@@ -29,6 +29,11 @@ RESULTS="$ROOT/results"
+ PIGLIT=`which piglit 2> /dev/null`
+ IGT_RUNNER=
+ IGT_RESUME=
++IGT_KERNEL_TREE=
++COV_ARGS=
++COV_PER_TEST=
++LCOV_CMD="lcov"
++KERNEL_TREE=
+ USE_PIGLIT=0
+ RUNNER=
+ RESUME=
+@@ -84,6 +89,15 @@ function find_runner_binary # basename
+ 	return 1
+ }
+ 
++function find_lcov_binary # basename
++{
++	if command -v $LCOV_CMD &> /dev/null; then
++		return 0
++	fi
++
++	return 1
++}
++
+ function download_piglit {
+ 	git clone https://anongit.freedesktop.org/git/piglit.git "$ROOT/piglit"
+ }
+@@ -96,10 +110,10 @@ function execute_runner # as-root <runner> <args>
+ 	shift
+ 	local sudo
+ 
+-	export IGT_TEST_ROOT IGT_CONFIG_PATH
++	export IGT_TEST_ROOT IGT_CONFIG_PATH IGT_KERNEL_TREE
+ 
+ 	if [ "$need_root" -ne 0 -a "$EUID" -ne 0 ]; then
+-		sudo="sudo --preserve-env=IGT_TEST_ROOT,IGT_CONFIG_PATH"
++		sudo="sudo --preserve-env=IGT_TEST_ROOT,IGT_CONFIG_PATH,IGT_KERNEL_TREE"
+ 	fi
+ 
+ 	$sudo $runner "$@"
+@@ -108,8 +122,14 @@ function execute_runner # as-root <runner> <args>
+ function print_help {
+ 	echo "Usage: run-tests.sh [options]"
+ 	echo "Available options:"
++	echo "  -c <capture_script>"
++	echo "                  capture gcov code coverage using the <capture_script>."
++	echo "  -P              store code coverage results per each test. Should be"
++	echo "                  used together with -k option"
+ 	echo "  -d              download Piglit to $ROOT/piglit"
+ 	echo "  -h              display this help message"
++	echo "  -k <kernel_dir> Linux Kernel source code directory used to generate code"
++	echo "                  coverage builds."
+ 	echo "  -l              list all available tests"
+ 	echo "  -r <directory>  store the results in directory"
+ 	echo "                  (default: $RESULTS)"
+@@ -134,11 +154,14 @@ function print_help {
+ 	echo "Useful patterns for test filtering are described in the API documentation."
+ }
+ 
+-while getopts ":dhlr:st:T:vx:Rnpb:" opt; do
++while getopts ":c:dhk:lPr:st:T:vx:Rnpb:" opt; do
+ 	case $opt in
++		c) COV_ARGS="$COV_ARGS --collect-code-cov --collect-script $OPTARG " ;;
+ 		d) download_piglit; exit ;;
+ 		h) print_help; exit ;;
++		k) IGT_KERNEL_TREE="$OPTARG" ;;
+ 		l) LIST_TESTS="true" ;;
++		P) COV_ARGS="$COV_ARGS --coverage-per-test"; COV_PER_TEST=1 ;;
+ 		r) RESULTS="$OPTARG" ;;
+ 		s) SUMMARY="html" ;;
+ 		t) FILTER="$FILTER -t $OPTARG" ;;
+@@ -172,6 +195,18 @@ if [ "x$PIGLIT" == "x" ]; then
+ 	PIGLIT="$ROOT/piglit/piglit"
+ fi
+ 
++if [ "x$COV_ARGS" != "x" ]; then
++	if [ "$USE_PIGLIT" -eq "1" ]; then
++		echo "Cannot collect code coverage when running tests with Piglit. Use igt_runner instead."
++		exit 1
++	fi
++
++	if ! $(find_lcov_binary); then
++		echo "Can't check code coverage, as 'lcov' is not installed"
++		exit 1
++	fi
++fi
++
+ RUN_ARGS=
+ RESUME_ARGS=
+ LIST_ARGS=
+@@ -201,15 +236,20 @@ else
+ fi
+ 
+ if [ "x$LIST_TESTS" != "x" ]; then
+-	execute_runner 0 $RUNNER $LIST_ARGS $FILTER
++	execute_runner 0 $RUNNER $LIST_ARGS $FILTER $COV_ARGS
+ 	exit
+ fi
+ 
+ if [ "x$RESUME_RUN" != "x" ]; then
+-	execute_runner 1 $RESUME $RESUME_ARGS "$RESULTS"
++	if [ "x$COV_ARGS" != "x" -a "x$COV_PER_TEST" == "x" ]; then
++		echo "Can't continue collecting coverage tests. Next time, run"
++		echo "$0 with '-P' in order to generate separate code coverage results".
++		exit 1
++	fi
++	execute_runner 1 $RESUME $RESUME_ARGS $COV_ARGS "$RESULTS"
+ else
+ 	mkdir -p "$RESULTS"
+-	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $VERBOSE $FILTER
++	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER
+ fi
+ 
+ if [ "$SUMMARY" == "html" ]; then
+-- 
+2.35.1
