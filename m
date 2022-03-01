@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7D2010E6E3
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Mar 2022 18:45:36 +0000 (UTC)
-Date: Tue, 1 Mar 2022 17:45:07 -0100
-From: Melissa Wen <mwen@igalia.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8478410E13F
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Mar 2022 19:55:20 +0000 (UTC)
+Date: Tue, 1 Mar 2022 14:55:15 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Message-ID: <20220301184507.mevlxxb2pyxdi5ww@mail.igalia.com>
+Message-ID: <Yh56I/J+C6z29zEX@intel.com>
 References: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
- <20220217152646.425503-2-Rodrigo.Siqueira@amd.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="4pbpo3jbn5aphmz6"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220217152646.425503-2-Rodrigo.Siqueira@amd.com>
-Subject: Re: [igt-dev] [PATCH 1/2] MAINTAINERS: Introduce MAINTAINERS file
+In-Reply-To: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
+Subject: Re: [igt-dev] [PATCH 0/2] Introduce MAINTAINERS file to IGT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,30 +20,44 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Cc: Petri Latvala <petri.latvala@intel.com>,
- Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>,
  Qingqing Zhuo <qingqing.zhuo@amd.com>, igt-dev@lists.freedesktop.org,
- Sean Paul <seanpaul@chromium.org>, Mark Yacoub <markyacoub@google.com>
+ Sean Paul <seanpaul@chromium.org>,
+ Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>,
+ Mark Yacoub <markyacoub@google.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Thu, Feb 17, 2022 at 10:26:44AM -0500, Rodrigo Siqueira wrote:
+> IGT is becoming more generic, and multiple vendors are adopting it. For
+> example, AMD fully upstream all of its internal changes last year, and
+> now we are relying on IGT from the upstream. Additionally, thanks to the
+> ChromeOS project, we have other vendors working on the KMS tests as
+> well. At this point, I believe that we need some mechanism to better
+> contact developers that care about some specific tests or even provide
+> an easy way for other people to find the right stakeholder for dealing
+> with some particular issue.
+> 
+> Imho Linux Kernel already has a good solution codified in the
+> MAINTAINERS and get_maintainers files. One of the best things about this
+> approach was adding reviewers and maintainers (and other options) to the
+> specific part of the code and using the get_maintainers tool to extract
+> the right people to be part of the series. With this idea in mind, I
+> created an RFC that introduces the MAINTAINERS file in IGT, and
+> collected feedback. This series is the first version that introduces the
+> MAINTAINERS and a wrapper to the get_maintainers file.
 
---4pbpo3jbn5aphmz6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+But in the Linux Kernel we do for big blocks, not for individual .c files.
+For the .c files git blame should be enough imho...
 
-On 02/17, Rodrigo Siqueira wrote:
-> IGT is growing in terms of new vendors actively using it. Right now, we
-> only have Intel CI to validate new patches, which can create a situation
-> where bugs get accidentally introduced to other vendors. To alleviate
-> this problem and also making easy for other developers to be aware of
-> some specific changes, I'm proposing the introduction of the MAINTAINERS
-> file as the one used in the Linux kernel. With this approach, we can
-> have multiple enginers from different companies as reviewers for
-> specific tests, and contributors should use get_maintainers script to
-> find the right people to address their changes.
->=20
+> 
+> For this series, I recommend:
+> 
+> 1. Patch 1: It has the maintainers file. If you want to add yourself to
+> some specific test, please, let me know in this patch.
+> 2. Patch 2: get_maintainers wrapper, see the CONTRIBUTING page on how to
+> use it.
+> 
 > Cc: Arkadiusz Hiler <arek@hiler.eu>
 > Cc: Petri Latvala <petri.latvala@intel.com>
 > Cc: Mark Yacoub <markyacoub@google.com>
@@ -65,244 +77,18 @@ On 02/17, Rodrigo Siqueira wrote:
 > Cc: Solomon Chiu <solomon.chiu@amd.com>
 > Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 > Cc: Dingchen Zhang (David) <Dingchen.Zhang@amd.com>
->=20
-> Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> ---
->  MAINTAINERS | 198 +++++++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 196 insertions(+), 2 deletions(-)
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 383c327c..fac605de 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1,2 +1,196 @@
-> -Petri Latvala <petri.latvala@intel.com>
-> -Arkadiusz Hiler <arek@hiler.eu>
-> +List of maintainers/reviewers to submit IGT changes
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-> +
-> +Please try to follow the guidelines below.  This will make things
-> +easier on the maintainers.  Not all of these guidelines matter for every
-> +trivial patch so apply some common sense.
-> +
-> +Tips for patch submitters
-> +-------------------------
-> +
-> +1.	Always *test* your changes.
-> +
-> +2.	Make sure your changes compile correctly.
-> +
-> +3.	When you are happy with a change make it generally available for
-> +	testing and await feedback.
-> +
-> +4.	Make a patch available to the relevant maintainer in the list. Be pre=
-pared
-> +	to get your changes sent back with seemingly silly requests about
-> +	formatting and variable names. These aren't as silly as they seem. One =
-job
-> +	the maintainers do is to keep things looking the same.
-> +
-> +	PLEASE CC: the maintainers and mailing lists that are generated
-> +	by ``scripts/get_maintainer.sh.`` The results returned by the
-> +	script will be best if you have git installed.
-> +
-> +	PLEASE try to include any credit lines you want added with the
-> +	patch. It avoids people being missed off by mistake and makes
-> +	it easier to know who wants adding and who doesn't.
-> +
-> +	PLEASE document known bugs.
-> +
-> +5.	Make sure you have the right to send any changes you make. If you
-> +	do changes at work you may find your employer owns the patch
-> +	not you.
-> +
-> +Descriptions of section entries and preferred order
-> +---------------------------------------------------
-> +
-> +	M: *Mail* patches to: FullName <address@domain>
-> +	R: Designated *Reviewer*: FullName <address@domain>
-> +	   These reviewers should be CCed on patches.
-> +	L: *Mailing list* that is relevant to this area
-> +	S: *Status*, one of the following:
-> +	   Supported:	Someone is actually paid to look after this.
-> +	   Maintained:	Someone actually looks after it.
-> +	W: *Web-page* with status/info
-> +	Q: *Patchwork* web based patch tracking system site
-> +	B: URI for where to file *bugs*. A web-page with detailed bug
-> +	   filing info, a direct bug tracker link, or a mailto: URI.
-> +	C: URI for *chat* protocol, server and channel where developers
-> +	   usually hang out, for example irc://server/channel.
-> +	T: *SCM* tree type and location.
-> +	   Type is one of: git, hg, quilt, stgit, topgit
-> +	F: *Files* and directories wildcard patterns.
-> +	   A trailing slash includes all files and subdirectory files.
-> +	   F:	tests/amdgpu/	all files in and below tests/amdgpu
-> +	   F:	tests/*	all files in tests/, but not below
-> +	   One pattern per line.  Multiple F: lines acceptable.
-> +	X: *Excluded* files and directories that are NOT maintained, same
-> +	   rules as F:. Files exclusions are tested before file matches.
-> +
-> +Maintainers List
-> +----------------
-> +
-> +KMS Generic API tests
-> +R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> +R:	Qingqing Zhuo (Lilian) <Qingqing.Zhuo@amd.com@amd.com>
-> +R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
-> +F:	tests/kms_atomic.c
-> +F:	tests/kms_atomic_interruptible.c
-> +F:	tests/kms_atomic_transition.c
-> +F:	tests/kms_properties.c
-> +F:	tests/kms_setmode.c
-> +F:	tests/kms_concurrent.c
-> +F:	tests/kms_prop_blob.c
-> +F:	tests/kms_multipipe_modeset.c
-> +
-> +KMS CRC API
-> +R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> +R:	Sunpeng Li (Leo) <Sunpeng.Li@amd.com>
-> +R:	Dingchen Zhang (David) <Dingchen.Zhang@amd.com>
-> +R:	Melissa Wen <mwen@igalia.com>
-> +F:	tests/kms_cursor_crc.c
-> +F:	tests/kms_pipe_crc_basic.c
-> +F:	tests/kms_rotation_crc.c
-> +
-> +KMS HDR
-> +R:	Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
-> +
-> +KMS Color
-> +R:	Stylon Wang <stylon.wang@amd.com>
-> +R:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
-> +R:	Sunpeng Li (Leo) <Sunpeng.Li@amd.com>
-> +F:	tests/kms_color.c
-> +
-> +KMS Content protection
-> +R:	Dingchen Zhang (David) <Dingchen.Zhang@amd.com>
-> +R:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
-> +F:	tests/kms_content_protection.c
-> +
-> +KMS Cursor tests
-> +R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> +R:	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> +F:	tests/kms_cursor_legacy.c
-> +F:	tests/kms_cursor_edge_walk.c
-> +F:	tests/kms_plane_cursor.c
-> +F:	tests/kms_plane_alpha_blend.c
-> +
-> +VRR tests
-> +R:	Stylon Wang <stylon.wang@amd.com>
-> +R:	Wayne Lin <Wayne.Lin@amd.com>
-> +R:	Solomon Chiu <Solomon.Chiu@amd.com>
-> +R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
-> +R:	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> +S:	Maintained
-> +F:	tests/kms_vrr.c
-> +
-> +KMS Vblank tests
-> +R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
-> +R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> +S:	Maintained
-> +F:	tests/kms_vblank.c
-> +
-> +KMS Flip tests
-> +R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
-> +R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> +S:	Maintained
-> +F:	tests/kms_flip.c
-> +F:	tests/kms_flip_event_leak.c
-> +
-> +KMS plane tests
-> +R:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
-> +R:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> +R:	Stylon Wang <stylon.wang@amd.com>
-> +S:	Maintained
-> +F:	tests/kms_plane.c
-> +F:	tests/kms_plane_scaling.c
-> +
-> +KMS Bandwidth
-> +R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
-> +F:	tests/kms_bw.c
-> +
-> +AMDGPU
-> +M:	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> +M:	Stylon Wang <stylon.wang@amd.com>
-> +M:	Wayne Lin <Wayne.Lin@amd.com>
-> +S:	Maintained
-> +F:	tests/amdgpu/*
-> +
-> +AMDGPU AMD Plane
-> +M:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
-> +F:	tests/amdgpu/amd_plane.c
-> +
-> +AMDGPU AMD Link
-> +M:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
-> +F:	tests/amdgpu/amd_link_settings.c
-> +F:	tests/amdgpu/amd_dp_dsc.c
-> +F:	tests/amdgpu/amd_hotplug.c
-> +
-> +AMDGPU AMD Color
-> +M:	Stylon Wang <stylon.wang@amd.com>
-> +R:	Sunpeng Li (Leo) <Sunpeng.Li@amd.com>
-> +R:	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> +F:	tests/amdgpu/amd_color.c
-> +F:	tests/amdgpu/amd_max_bpc.c
-> +
-> +AMDGPU AMD content protection
-> +M:	Stylon Wang <stylon.wang@amd.com>
-> +R:	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
-> +F:	tests/amdgpu/amd_assr.c
-> +
-> +AMDGPU VRR/Freesync
-> +M:	Stylon Wang <stylon.wang@amd.com>
-> +M:	Solomon Chiu <Solomon.Chiu@amd.com>
-> +R:	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> +R:	Aurabindo Pillai <aurabindo.pillai@amd.com>
-> +F:	tests/amdgpu/amd_vrr_range.c
-> +
-> +All KMS tests
-> +R:	Mark Yacoub <markyacoub@chromium.org>
-> +F:	tests/kms_*
-> +
-> +V3D tests
-> +R:	Melissa Wen <mwen@igalia.com>
-> +F:	tests/v3d_*
-
-Acked-by: Melissa Wen <mwen@igalia.com>
-> +
-> +THE REST
-> +M:	Arkadiusz Hiler <arek@hiler.eu>
-> +M:	Petri Latvala <petri.latvala@intel.com>
-> +L:	igt-dev@lists.freedesktop.org
-> +B:	https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues
-> +Q:	https://patchwork.freedesktop.org/project/igt/series/?ordering=3D-las=
-t_updated
-> +T:	git@gitlab.freedesktop.org:drm/igt-gpu-tools.git
-> +F:	*
-> +F:	*/
-> --=20
+> 
+> Rodrigo Siqueira (2):
+>   MAINTAINERS: Introduce MAINTAINERS file
+>   scripts: get_maintainer: Introduce get_maintainer wrapper
+> 
+>  .gitignore                |   1 +
+>  CONTRIBUTING.md           |  17 +++-
+>  MAINTAINERS               | 198 +++++++++++++++++++++++++++++++++++++-
+>  scripts/get_maintainer.sh | 104 ++++++++++++++++++++
+>  4 files changed, 317 insertions(+), 3 deletions(-)
+>  create mode 100755 scripts/get_maintainer.sh
+> 
+> -- 
 > 2.25.1
->=20
-
---4pbpo3jbn5aphmz6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmIeaa8ACgkQwqF3j0dL
-ehylGw/+I2FqY0nTmwGEKMxfLj/NkZfvmzAbVoMNbPnGaWErPAph2uOQJxugyLpY
-X5LD0V8vGPINFi7PiBN8eWTM+bOrep4sCM9CJ5OvMyaaAY+0R+hsIzMYzpv9jMT4
-qCLgowIWFcbwruGtmK3KzPtCCS02hiIC9l9/WZxx5govnJfet9O2ETf8Cak9NKoC
-VekZ4R0b1YltwSVky0CC6aroacvPp6yTtaNodt191PpSuYbFeOLtnMhRXKwk/140
-GM08ke/su31VmvYZi5S8x3Tz/d5ZVs8VMUQ/58bAb1UxO6QIN4tBSGdo5lUGA5jM
-2uUyOEYqXFmhJWzog3C4oxfrDblvF/ouBpD/hJN9jQaJ5sxjUYEL8FlDcBMEOl1C
-WN5P1MzRLHe5SbQ4WJe0fYq0oHBEATubECdszKAOO0fp8FgosCb4kUqxEIE+7X/q
-JaVVpShaBGcWuEb5ovc2y0v7FkJ5wqw5DHOgpYl46w7wP/N9LPS99qmt2FvEeKbd
-OhGJXqlYCRZvhLE5+HpBM025ax0GyNq0rVfBtSb/D1rhgFlb5s2EM4yKTazwXFkJ
-w7uZSs6+P9W8PIdmvcc79Z0L0xloTf/mCeLCv6ijh73RVUCjPOam1zONlEgGx2t5
-S/6a8FXJZJmwFgBNXOPzuFEQuy0GXFh0sZ4DmKxQiXAfToZyoZQ=
-=D+m4
------END PGP SIGNATURE-----
-
---4pbpo3jbn5aphmz6--
+> 
