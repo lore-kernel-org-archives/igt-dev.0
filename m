@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DA7810E5B0
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Mar 2022 07:59:40 +0000 (UTC)
-Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nOxQ0-000Wk1-LP
- for igt-dev@lists.freedesktop.org; Tue, 01 Mar 2022 08:59:36 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Mar 2022 08:59:22 +0100
-Message-Id: <20220301075929.125733-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
-References: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7162891607195531894=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 2/9] runner: Add support for code coverage
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 01 Mar 2022 08:44:01 -0000
+Message-ID: <164612424139.8601.6185948493993063582@emeril.freedesktop.org>
+References: <20220301075803.117058-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220301075803.117058-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVXNlIHN1?=
+ =?utf-8?q?pported_dma-buf_regions_in_prime=5Fmmap*_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,483 +17,295 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============7162891607195531894==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The gcc compiler has a feature that enables checking the code coverage
-in runtime[1].
+== Series Details ==
 
-[1] See https://www.kernel.org/doc/html/latest/dev-tools/gcov.html
+Series: Use supported dma-buf regions in prime_mmap* (rev2)
+URL   : https://patchwork.freedesktop.org/series/100819/
+State : success
 
-The Linux Kernel comes with an option to enable such feature:
+== Summary ==
 
-	./scripts/config -e DEBUG_FS -e GCOV_KERNEL
+CI Bug Log - changes from CI_DRM_11301 -> IGTPW_6720
+====================================================
 
-The driver's Makefile also needs change to enable it. For instance, in
-order to enable GCOV for all DRM drivers, one would need to run:
+Summary
+-------
 
-	for i in $(find drivers/gpu/drm/ -name Makefile); do
-                sed '1 a GCOV_PROFILE := y' -i $i
-        done
+  **SUCCESS**
 
-This patch adds support for it by:
+  No regressions found.
 
-a) Implementing a logic to cleanup the code coverage counters via sysfs;
-b) Calling a script responsible for collecging code coverage data.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html
 
-The implementation works with two modes:
+Participating hosts (42 -> 41)
+------------------------------
 
-1) It zeroes the counters, run all IGT tests and collects the code
-   coverage results at the end.
+  Additional (1): fi-kbl-soraka 
+  Missing    (2): fi-bsw-cyan fi-bdw-samus 
 
-   This implies that no tests would crash the driver, as otherwise the
-   results won't be collected;
+Possible new issues
+-------------------
 
-   This is faster, as collecting code coverage data can take several
-   seconds.
+  Here are the unknown changes that may have been introduced in IGTPW_6720:
 
-2) For each test, it will clean the code coverage counters, run the and
-   collect the results.
+### IGT changes ###
 
-   This is more reliable, as a Kernel crash/OOPS won't affect the
-   results of the previously ran tests.
+#### Suppressed ####
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- runner/executor.c     | 186 ++++++++++++++++++++++++++++++++++++++++--
- runner/runner_tests.c |   3 +
- runner/settings.c     |  79 +++++++++++++++++-
- runner/settings.h     |   7 ++
- 4 files changed, 265 insertions(+), 10 deletions(-)
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 15bd53dd150c..ab00900c6d44 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -1,3 +1,4 @@
-+#include <ctype.h>
- #include <errno.h>
- #include <fcntl.h>
- #include <glib.h>
-@@ -1693,6 +1694,140 @@ static bool should_die_because_signal(int sigfd)
- 	return false;
- }
- 
-+static char *code_coverage_name(struct settings *settings)
-+{
-+	const char *start, *end, *fname;
-+	char *name;
-+	int size;
-+
-+	if (settings->name && *settings->name)
-+		return settings->name;
-+	else if (!settings->test_list)
-+		return NULL;
-+
-+	/* Use only the base of the test_list, without path and extension */
-+	fname = settings->test_list;
-+
-+	start = strrchr(fname,'/');
-+	if (!start)
-+		start = fname;
-+
-+	end = strrchr(start, '.');
-+	if (end)
-+		size = end - start;
-+	else
-+		size = strlen(start);
-+
-+	name = malloc(size + 1);
-+	strncpy(name, fname, size);
-+	name[size]  = '\0';
-+
-+	return name;
-+}
-+
-+static void run_as_root(char * const argv[], int sigfd, char **abortreason)
-+{
-+	struct signalfd_siginfo siginfo;
-+	int status = 0, ret;
-+	pid_t child;
-+
-+	child = fork();
-+	if (child < 0) {
-+		*abortreason = strdup("Failed to fork");
-+		return;
-+	}
-+
-+	if (child == 0) {
-+		execv(argv[0], argv);
-+		perror (argv[0]);
-+		exit(IGT_EXIT_INVALID);
-+	}
-+
-+	if (sigfd >= 0) {
-+		while (1) {
-+			ret = read(sigfd, &siginfo, sizeof(siginfo));
-+			if (ret < 0) {
-+				errf("Error reading from signalfd: %m\n");
-+				continue;
-+			} else if (siginfo.ssi_signo == SIGCHLD) {
-+				if (child != waitpid(child, &status, WNOHANG)) {
-+					errf("Failed to reap child\n");
-+					status = 9999;
-+					continue;
-+				}
-+				break;
-+			}
-+		}
-+	} else {
-+		waitpid(child, &status, 0);
-+	}
-+
-+	if (WIFSIGNALED(status))
-+		asprintf(abortreason, "%s received signal %d while running\n",argv[0], WTERMSIG(status));
-+	else if (!WIFEXITED(status))
-+		asprintf(abortreason, "%s aborted with unknown status\n", argv[0]);
-+	else if (WEXITSTATUS(status))
-+		asprintf(abortreason, "%s returned error %d\n", argv[0], WEXITSTATUS(status));
-+}
-+
-+static void code_coverage_start(struct settings *settings, int sigfd, char **abortreason)
-+{
-+	int fd;
-+
-+	fd = open(GCOV_RESET, O_WRONLY);
-+	if (fd < 0) {
-+		asprintf(abortreason, "Failed to open %s", GCOV_RESET);
-+		return;
-+	}
-+	if (write(fd, "0\n", 2) < 0)
-+		*abortreason = strdup("Failed to reset gcov counters");
-+
-+	close(fd);
-+}
-+
-+static void code_coverage_stop(struct settings *settings, const char *job_name,
-+			       int sigfd, char **abortreason)
-+{
-+	int i, j = 0, last_was_escaped = 1;
-+	char fname[PATH_MAX];
-+	char name[PATH_MAX];
-+	char *argv[3] = {};
-+
-+	/* If name is empty, use a default */
-+	if (!job_name || !*job_name)
-+		job_name = "code_coverage";
-+
-+	/*
-+	 * Use only letters, numbers and '_'
-+	 *
-+	 * This way, the tarball name can be used as testname when lcov runs
-+	 */
-+	for (i = 0; i < strlen(job_name); i++) {
-+		if (!isalpha(job_name[i]) && !isalnum(job_name[i])) {
-+			if (last_was_escaped)
-+				continue;
-+			name[j++] = '_';
-+			last_was_escaped = 1;
-+		} else {
-+			name[j++] = job_name[i];
-+			last_was_escaped = 0;
-+		}
-+	}
-+	if (j && last_was_escaped)
-+		j--;
-+	name[j] = '\0';
-+
-+	strcpy(fname, settings->results_path);
-+	strcat(fname, CODE_COV_RESULTS_PATH "/");
-+	strcat(fname, name);
-+
-+	argv[0] = settings->code_coverage_script;
-+	argv[1] = fname;
-+
-+	outf("Storing code coverage results...\n");
-+	run_as_root(argv, sigfd, abortreason);
-+}
-+
- bool execute(struct execute_state *state,
- 	     struct settings *settings,
- 	     struct job_list *job_list)
-@@ -1709,6 +1844,17 @@ bool execute(struct execute_state *state,
- 		return true;
- 	}
- 
-+	if (settings->enable_code_coverage && !settings->cov_results_per_test) {
-+		char *reason = NULL;
-+
-+		code_coverage_start(settings, -1, &reason);
-+		if (reason != NULL) {
-+			errf("%s\n", reason);
-+			free(reason);
-+			status = false;
-+		}
-+	}
-+
- 	if ((resdirfd = open(settings->results_path, O_DIRECTORY | O_RDONLY)) < 0) {
- 		/* Initialize state should have done this */
- 		errf("Error: Failure opening results path %s\n",
-@@ -1795,6 +1941,7 @@ bool execute(struct execute_state *state,
- 	for (; state->next < job_list->size;
- 	     state->next++) {
- 		char *reason = NULL;
-+		char *job_name;
- 		int result;
- 
- 		if (should_die_because_signal(sigfd)) {
-@@ -1802,14 +1949,26 @@ bool execute(struct execute_state *state,
- 			goto end;
- 		}
- 
--		result = execute_next_entry(state,
--					    job_list->size,
--					    &time_spent,
--					    settings,
--					    &job_list->entries[state->next],
--					    testdirfd, resdirfd,
--					    sigfd, &sigmask,
--					    &reason);
-+		if (settings->cov_results_per_test) {
-+			code_coverage_start(settings, sigfd, &reason);
-+			job_name = entry_display_name(&job_list->entries[state->next]);
-+		}
-+
-+		if (reason == NULL) {
-+			result = execute_next_entry(state,
-+						job_list->size,
-+						&time_spent,
-+						settings,
-+						&job_list->entries[state->next],
-+						testdirfd, resdirfd,
-+						sigfd, &sigmask,
-+						&reason);
-+
-+			if (settings->cov_results_per_test) {
-+				code_coverage_stop(settings, job_name, sigfd, &reason);
-+				free(job_name);
-+			}
-+		}
- 
- 		if (reason != NULL || (reason = need_to_abort(settings)) != NULL) {
- 			char *prev = entry_display_name(&job_list->entries[state->next]);
-@@ -1864,6 +2023,17 @@ bool execute(struct execute_state *state,
- 	}
- 
-  end:
-+	if (settings->enable_code_coverage && !settings->cov_results_per_test) {
-+		char *reason = NULL;
-+
-+		code_coverage_stop(settings, code_coverage_name(settings), -1, &reason);
-+		if (reason != NULL) {
-+			errf("%s\n", reason);
-+			free(reason);
-+			status = false;
-+		}
-+	}
-+
- 	close_watchdogs(settings);
- 	sigprocmask(SIG_UNBLOCK, &sigmask, NULL);
- 	/* make sure that we do not leave any signals unhandled */
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index e67e08a8c99f..96ffbf1ff398 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -443,6 +443,9 @@ igt_main
- 				       "--use-watchdog",
- 				       "--piglit-style-dmesg",
- 				       "--dmesg-warn-level=3",
-+				       "--collect-code-cov",
-+				       "--coverage-per-test",
-+				       "--collect-script", "/usr/bin/true",
- 				       "test-root-dir",
- 				       "path-to-results",
- 		};
-diff --git a/runner/settings.c b/runner/settings.c
-index ac090b081e3b..a7a12f506a05 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -25,6 +25,9 @@ enum {
- 	OPT_OVERALL_TIMEOUT,
- 	OPT_PER_TEST_TIMEOUT,
- 	OPT_ALLOW_NON_ROOT,
-+	OPT_CODE_COV_SCRIPT,
-+	OPT_ENABLE_CODE_COVERAGE,
-+	OPT_COV_RESULTS_PER_TEST,
- 	OPT_VERSION,
- 	OPT_HELP = 'h',
- 	OPT_NAME = 'n',
-@@ -240,6 +243,13 @@ static const char *usage_str =
- 	"                        Exclude all test matching to regexes from FILENAME\n"
- 	"                        (can be used more than once)\n"
- 	"  -L, --list-all        List all matching subtests instead of running\n"
-+	"  --collect-code-cov    Enables gcov-based collect of code coverage for tests.\n"
-+	"                        Requires --collect-script FILENAME\n"
-+	"  --coverage-per-test   Stores code coverage results per each test.\n"
-+	"                        Requires --collect-script FILENAME\n"
-+	"  --collect-script FILENAME\n"
-+	"                        Use FILENAME as script to collect code coverage data.\n"
-+	"\n"
- 	"  [test_root]           Directory that contains the IGT tests. The environment\n"
- 	"                        variable IGT_TEST_ROOT will be used if set, overriding\n"
- 	"                        this option if given.\n"
-@@ -338,11 +348,21 @@ static void free_regexes(struct regex_list *regexes)
- 	free(regexes->regexes);
- }
- 
--static bool readable_file(char *filename)
-+static bool readable_file(const char *filename)
- {
- 	return !access(filename, R_OK);
- }
- 
-+static bool writeable_file(const char *filename)
-+{
-+	return !access(filename, W_OK);
-+}
-+
-+static bool executable_file(const char *filename)
-+{
-+	return !access(filename, X_OK);
-+}
-+
- static void print_version(void)
- {
- 	struct utsname uts;
-@@ -393,6 +413,9 @@ bool parse_options(int argc, char **argv,
- 		{"test-list", required_argument, NULL, OPT_TEST_LIST},
- 		{"overwrite", no_argument, NULL, OPT_OVERWRITE},
- 		{"ignore-missing", no_argument, NULL, OPT_IGNORE_MISSING},
-+		{"collect-code-cov", no_argument, NULL, OPT_ENABLE_CODE_COVERAGE},
-+		{"coverage-per-test", no_argument, NULL, OPT_COV_RESULTS_PER_TEST},
-+		{"collect-script", required_argument, NULL, OPT_CODE_COV_SCRIPT},
- 		{"multiple-mode", no_argument, NULL, OPT_MULTIPLE},
- 		{"inactivity-timeout", required_argument, NULL, OPT_TIMEOUT},
- 		{"per-test-timeout", required_argument, NULL, OPT_PER_TEST_TIMEOUT},
-@@ -465,6 +488,16 @@ bool parse_options(int argc, char **argv,
- 		case OPT_IGNORE_MISSING:
- 			/* Ignored, piglit compatibility */
- 			break;
-+		case OPT_ENABLE_CODE_COVERAGE:
-+			settings->enable_code_coverage = true;
-+			break;
-+		case OPT_COV_RESULTS_PER_TEST:
-+			settings->cov_results_per_test = true;
-+			break;
-+		case OPT_CODE_COV_SCRIPT:
-+			settings->code_coverage_script = absolute_path(optarg);
-+			break;
-+
- 		case OPT_MULTIPLE:
- 			settings->multiple_mode = true;
- 			break;
-@@ -597,6 +630,29 @@ bool validate_settings(struct settings *settings)
- 	close(fd);
- 	close(dirfd);
- 
-+	/* enables code coverage when --coverage-per-test is used */
-+	if (settings->cov_results_per_test)
-+		settings->enable_code_coverage = true;
-+
-+	if (!settings->allow_non_root && (getuid() != 0)) {
-+		fprintf(stderr, "Runner needs to run with UID 0 (root).\n");
-+		return false;
-+	}
-+
-+	if (settings->enable_code_coverage) {
-+		if (!executable_file(settings->code_coverage_script)) {
-+			fprintf(stderr, "%s doesn't exist or is not executable\n", settings->code_coverage_script);
-+			return false;
-+		}
-+		if (!writeable_file(GCOV_RESET)) {
-+			if (getuid() != 0)
-+				fprintf(stderr, "Code coverage requires root.\n");
-+			else
-+				fprintf(stderr, "Is GCOV enabled? Can't access %s stat.\n", GCOV_RESET);
-+			return false;
-+		}
-+	}
-+
- 	return true;
- }
- 
-@@ -645,7 +701,8 @@ bool serialize_settings(struct settings *settings)
- {
- #define SERIALIZE_LINE(f, s, name, format) fprintf(f, "%s : " format "\n", #name, s->name)
- 
--	int dirfd, fd;
-+	int dirfd, covfd, fd;
-+	char path[PATH_MAX];
- 	FILE *f;
- 
- 	if (!settings->results_path) {
-@@ -660,6 +717,18 @@ bool serialize_settings(struct settings *settings)
- 			return false;
- 		}
- 	}
-+	if (settings->enable_code_coverage) {
-+		strcpy(path, settings->results_path);
-+		strcat(path, CODE_COV_RESULTS_PATH);
-+		if ((covfd = open(path, O_DIRECTORY | O_RDONLY)) < 0) {
-+			if (mkdir(path, 0755)) {
-+				usage("Creating code coverage path failed", stderr);
-+				return false;
-+			}
-+		} else {
-+			close(covfd);
-+		}
-+	}
- 
- 	if (!settings->overwrite &&
- 	    faccessat(dirfd, settings_filename, F_OK, 0) == 0) {
-@@ -712,6 +781,9 @@ bool serialize_settings(struct settings *settings)
- 	SERIALIZE_LINE(f, settings, dmesg_warn_level, "%d");
- 	SERIALIZE_LINE(f, settings, test_root, "%s");
- 	SERIALIZE_LINE(f, settings, results_path, "%s");
-+	SERIALIZE_LINE(f, settings, enable_code_coverage, "%d");
-+	SERIALIZE_LINE(f, settings, cov_results_per_test, "%d");
-+	SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
- 
- 	if (settings->sync) {
- 		fsync(fd);
-@@ -760,6 +832,9 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
- 		PARSE_LINE(settings, name, val, dmesg_warn_level, numval);
- 		PARSE_LINE(settings, name, val, test_root, val ? strdup(val) : NULL);
- 		PARSE_LINE(settings, name, val, results_path, val ? strdup(val) : NULL);
-+		PARSE_LINE(settings, name, val, enable_code_coverage, numval);
-+		PARSE_LINE(settings, name, val, cov_results_per_test, numval);
-+		PARSE_LINE(settings, name, val, code_coverage_script, val ? strdup(val) : NULL);
- 
- 		printf("Warning: Unknown field in settings file: %s = %s\n",
- 		       name, val);
-diff --git a/runner/settings.h b/runner/settings.h
-index bc61faeb6c86..3c2a3ee9c336 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -20,6 +20,10 @@ enum {
- 
- _Static_assert(ABORT_ALL == (ABORT_TAINT | ABORT_LOCKDEP | ABORT_PING), "ABORT_ALL must be all conditions bitwise or'd");
- 
-+#define GCOV_DIR		"/sys/kernel/debug/gcov"
-+#define GCOV_RESET GCOV_DIR	"/reset"
-+#define CODE_COV_RESULTS_PATH	"/code_cov"
-+
- struct regex_list {
- 	char **regex_strings;
- 	GRegex **regexes;
-@@ -48,6 +52,9 @@ struct settings {
- 	bool piglit_style_dmesg;
- 	int dmesg_warn_level;
- 	bool list_all;
-+	char *code_coverage_script;
-+	bool enable_code_coverage;
-+	bool cov_results_per_test;
- };
- 
- /**
--- 
-2.35.1
+  * igt@gem_lmem_swapping@verify-random@lmem0:
+    - {bat-dg2-9}:        [INCOMPLETE][1] ([i915#4936]) -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-dg2-9/igt@gem_lmem_swapping@verify-random@lmem0.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-dg2-9/igt@gem_lmem_swapping@verify-random@lmem0.html
+
+  * igt@kms_addfb_basic@too-high:
+    - {bat-dg2-9}:        [PASS][3] -> [DMESG-WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-dg2-9/igt@kms_addfb_basic@too-high.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-dg2-9/igt@kms_addfb_basic@too-high.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6720 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271]) +8 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][8] ([i915#1886] / [i915#2291])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - bat-adlp-4:         [PASS][10] -> [DMESG-WARN][11] ([i915#3576])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][12] ([fdo#109271] / [i915#533])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_busy@basic@modeset:
+    - bat-adlp-4:         [DMESG-WARN][13] ([i915#3576]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-4/igt@kms_busy@basic@modeset.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-4/igt@kms_busy@basic@modeset.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - {bat-adlp-6}:       [DMESG-WARN][15] ([i915#3576]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [DMESG-WARN][17] ([i915#295]) -> [PASS][18] +12 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4936]: https://gitlab.freedesktop.org/drm/intel/issues/4936
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6361 -> IGTPW_6720
+
+  CI-20190529: 20190529
+  CI_DRM_11301: 2993d5d1ab67bc47f6be438e163742bb8cd3004c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6720: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html
+  IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html
+
+--===============7162891607195531894==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Use supported dma-buf regions in prime_mmap* (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100819/">https://patchwork.freedesktop.org/series/100819/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11301 -&gt; IGTPW_6720</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6720:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@verify-random@lmem0:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-dg2-9/igt@gem_lmem_swapping@verify-random@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4936">i915#4936</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-dg2-9/igt@gem_lmem_swapping@verify-random@lmem0.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@too-high:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-dg2-9/igt@kms_addfb_basic@too-high.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-dg2-9/igt@kms_addfb_basic@too-high.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6720 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_busy@basic@modeset:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-4/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-4/igt@kms_busy@basic@modeset.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11301/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +12 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6361 -&gt; IGTPW_6720</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11301: 2993d5d1ab67bc47f6be438e163742bb8cd3004c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6720: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6720/index.html<br />
+  IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7162891607195531894==--
