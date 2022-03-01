@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Mar 2022 11:03:59 +0000
-Message-Id: <20220301110359.663637-1-matthew.auld@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1588742126851076428=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_params: check available
- memory earlier
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Tue, 01 Mar 2022 11:57:23 -0000
+Message-ID: <164613584328.8602.13045530637677825739@emeril.freedesktop.org>
+References: <20220301110359.663637-1-matthew.auld@intel.com>
+In-Reply-To: <20220301110359.663637-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fexec=5Fparams=3A_check_available_memory_earlier?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,58 +17,216 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The shmem mmap and pwrite interfaces conveniently let us probe just a
-few pages, without needing to populate the entire object. On discrete
-and newer platforms the kernel has dropped support for both, leaving us
-with MMAP_OFFSET, which will always populate the entire object, for now
-at least. Luckily we can just move the batch creation to after checking
-the available memory to ensure we don't hit -ENOMEM on such platforms.
+--===============1588742126851076428==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Also it seems that doing a massive allocation(filling much of system
-memory) and then calling intel_purge_vm_caches() seems to take 40+
-seconds, like when calling intel_require_memory(). Hence switching the
-ordering here should also help with that.
+== Series Details ==
 
-For reference the larger-than-life test is just a simple regression test
-to ensure that some very large batch buffer(greater than ~4G) can't
-overflow the batch_len, causing all kinds of issues. See 57b2d834bf23
-("drm/i915/gem: Support parsing of oversize batches").
+Series: tests/i915/gem_exec_params: check available memory earlier
+URL   : https://patchwork.freedesktop.org/series/100879/
+State : success
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
----
- tests/i915/gem_exec_params.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
-index d247b8a6..da36af74 100644
---- a/tests/i915/gem_exec_params.c
-+++ b/tests/i915/gem_exec_params.c
-@@ -332,9 +332,7 @@ static void test_larger_than_life_batch(int fd)
- 	const struct intel_execution_engine2 *e;
- 	uint64_t size = 1ULL << 32; /* batch_len is __u32 as per the ABI */
- 	const intel_ctx_t *ctx = intel_ctx_create_all_physical(fd);
--	struct drm_i915_gem_exec_object2 exec = {
--		.handle = batch_create_size(fd, size),
--	};
-+	struct drm_i915_gem_exec_object2 exec = {};
- 	struct drm_i915_gem_execbuffer2 execbuf = {
- 		.buffers_ptr = to_user_pointer(&exec),
- 		.buffer_count = 1,
-@@ -350,6 +348,8 @@ static void test_larger_than_life_batch(int fd)
- 	igt_require(size < gem_aperture_size(fd));
- 	intel_require_memory(2, size, CHECK_RAM); /* batch + shadow */
- 
-+	exec.handle = batch_create_size(fd, size);
-+
- 	for_each_ctx_engine(fd, ctx, e) {
- 		/* Keep the batch_len implicit [0] */
- 		execbuf.flags = e->flags;
--- 
-2.34.1
+CI Bug Log - changes from CI_DRM_11302 -> IGTPW_6722
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html
+
+Participating hosts (48 -> 44)
+------------------------------
+
+  Missing    (4): fi-bsw-cyan shard-rkl shard-tglu fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6722 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][1] ([i915#4547])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-bdw-5557u:       [PASS][2] -> [INCOMPLETE][3] ([i915#146])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-4:         [PASS][4] -> [DMESG-WARN][5] ([i915#3576])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/bat-adlp-4/igt@i915_pm_rpm@module-reload.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/bat-adlp-4/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-bsw-n3050:       [PASS][6] -> [DMESG-FAIL][7] ([i915#2927] / [i915#3428])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/fi-bsw-n3050/igt@i915_selftest@live@late_gt_pm.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/fi-bsw-n3050/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@kms_busy@basic@flip:
+    - bat-adlp-4:         [PASS][8] -> [DMESG-WARN][9] ([i915#1982] / [i915#3576])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/bat-adlp-4/igt@kms_busy@basic@flip.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/bat-adlp-4/igt@kms_busy@basic@flip.html
+
+  * igt@runner@aborted:
+    - fi-bsw-n3050:       NOTRUN -> [FAIL][10] ([fdo#109271] / [i915#1436] / [i915#3428] / [i915#4312])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/fi-bsw-n3050/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - bat-adlp-4:         [DMESG-WARN][11] ([i915#3576]) -> [PASS][12] +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2927]: https://gitlab.freedesktop.org/drm/intel/issues/2927
+  [i915#3428]: https://gitlab.freedesktop.org/drm/intel/issues/3428
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6361 -> IGTPW_6722
+
+  CI-20190529: 20190529
+  CI_DRM_11302: 680d0d26eca3df6dc7c9cac1c7cbe7404a255c7e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6722: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html
+  IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html
+
+--===============1588742126851076428==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_params: check available memory earlier</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100879/">https://patchwork.freedesktop.org/series/100879/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11302 -&gt; IGTPW_6722</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html</p>
+<h2>Participating hosts (48 -&gt; 44)</h2>
+<p>Missing    (4): fi-bsw-cyan shard-rkl shard-tglu fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6722 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/bat-adlp-4/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/bat-adlp-4/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/fi-bsw-n3050/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/fi-bsw-n3050/igt@i915_selftest@live@late_gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2927">i915#2927</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/bat-adlp-4/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-modeset@a-edp1:<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6361 -&gt; IGTPW_6722</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11302: 680d0d26eca3df6dc7c9cac1c7cbe7404a255c7e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6722: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html<br />
+  IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1588742126851076428==--
