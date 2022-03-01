@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============3783180117490838226=="
+ boundary="===============1974547961066484017=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Tue, 01 Mar 2022 17:36:56 -0000
-Message-ID: <164615621631.8602.6755194369912969503@emeril.freedesktop.org>
-References: <20220301164330.156289-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220301164330.156289-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fsetmode=3A_Fix_stealing_test?=
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Tue, 01 Mar 2022 18:37:03 -0000
+Message-ID: <164615982329.8601.12568031140369470588@emeril.freedesktop.org>
+References: <20220301110359.663637-1-matthew.auld@intel.com>
+In-Reply-To: <20220301110359.663637-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fexec=5Fparams=3A_check_available_memory_earlier?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3783180117490838226==
+--===============1974547961066484017==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_setmode: Fix stealing test
-URL   : https://patchwork.freedesktop.org/series/100893/
+Series: tests/i915/gem_exec_params: check available memory earlier
+URL   : https://patchwork.freedesktop.org/series/100879/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_11303 -> IGTPW_6725
+CI Bug Log - changes from CI_DRM_11302_full -> IGTPW_6722_full
 ====================================================
 
 Summary
@@ -44,46 +44,46 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with IGTPW_6725 absolutely need to be
+  Serious unknown changes coming with IGTPW_6722_full absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6725, please notify your bug team to allow them
+  introduced in IGTPW_6722_full, please notify your bug team to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html
 
-Participating hosts (49 -> 44)
+Participating hosts (13 -> 8)
 ------------------------------
 
-  Additional (3): fi-kbl-soraka fi-tgl-dsi fi-pnv-d510 
-  Missing    (8): fi-cml-u2 shard-tglu fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 shard-rkl shard-dg1 fi-bdw-samus 
+  Missing    (5): pig-kbl-iris pig-glk-j5005 pig-skl-6260u shard-rkl shard-dg1 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_6725:
+  Here are the unknown changes that may have been introduced in IGTPW_6722_full:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-rkl-guc:         [PASS][1] -> [SKIP][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - bat-adlp-4:         [PASS][3] -> [SKIP][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-4/igt@kms_setmode@basic-clone-single-crtc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-4/igt@kms_setmode@basic-clone-single-crtc.html
-    - bat-dg1-6:          [PASS][5] -> [SKIP][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-tgl-1115g4:      [PASS][7] -> [SKIP][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
-    - bat-dg1-5:          [PASS][9] -> [SKIP][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
+  * igt@i915_pm_rpm@fences-dpms (NEW):
+    - shard-iclb:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb4/igt@i915_pm_rpm@fences-dpms.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb7/igt@i915_pm_rpm@fences-dpms.html
+
+  * igt@kms_flip@flip-vs-suspend-interruptible@b-edp1:
+    - shard-iclb:         [PASS][3] -> [SKIP][4] +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb6/igt@kms_flip@flip-vs-suspend-interruptible@b-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb5/igt@kms_flip@flip-vs-suspend-interruptible@b-edp1.html
+
+  * {igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-d-edp-1-downscale-with-pixel-format} (NEW):
+    - shard-tglb:         NOTRUN -> [SKIP][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb6/igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-d-edp-1-downscale-with-pixel-format.html
+
+  * {igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-d-hdmi-a-1-downscale-with-rotation} (NEW):
+    - {shard-tglu}:       NOTRUN -> [SKIP][6] +1 similar issue
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglu-6/igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-d-hdmi-a-1-downscale-with-rotation.html
 
   
 #### Suppressed ####
@@ -91,474 +91,926 @@ Possible new issues
   The following results come from untrusted machines, tests, or statuses.
   They do not affect the overall result.
 
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - {bat-rpls-2}:       NOTRUN -> [SKIP][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html
-    - {fi-tgl-dsi}:       NOTRUN -> [SKIP][12]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-    - {fi-jsl-1}:         [PASS][13] -> [SKIP][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-    - {bat-jsl-1}:        [PASS][15] -> [SKIP][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-    - {fi-ehl-2}:         [PASS][17] -> [SKIP][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html
-    - {bat-adlp-6}:       [PASS][19] -> [SKIP][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-6/igt@kms_setmode@basic-clone-single-crtc.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-6/igt@kms_setmode@basic-clone-single-crtc.html
-    - {bat-jsl-2}:        [PASS][21] -> [SKIP][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html
+  * {igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-b-edp-1-downscale-with-pixel-format}:
+    - shard-tglb:         NOTRUN -> [SKIP][7] +2 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb6/igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-b-edp-1-downscale-with-pixel-format.html
+
+  * {igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a-edp-1-planes-upscale-downscale}:
+    - shard-iclb:         [PASS][8] -> [SKIP][9] +2 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a-edp-1-planes-upscale-downscale.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb2/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a-edp-1-planes-upscale-downscale.html
+
+  * {igt@kms_plane_scaling@scaler-with-pixel-format-unity-scaling@pipe-b-edp-1-scaler-with-pixel-format}:
+    - shard-iclb:         [PASS][10] -> [INCOMPLETE][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb8/igt@kms_plane_scaling@scaler-with-pixel-format-unity-scaling@pipe-b-edp-1-scaler-with-pixel-format.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb2/igt@kms_plane_scaling@scaler-with-pixel-format-unity-scaling@pipe-b-edp-1-scaler-with-pixel-format.html
+
+  * {igt@kms_plane_scaling@upscale-with-rotation-20x20@pipe-c-hdmi-a-1-upscale-with-rotation}:
+    - {shard-tglu}:       NOTRUN -> [SKIP][12] +9 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglu-3/igt@kms_plane_scaling@upscale-with-rotation-20x20@pipe-c-hdmi-a-1-upscale-with-rotation.html
 
   
 New tests
 ---------
 
-  New tests have been introduced between CI_DRM_11303 and IGTPW_6725:
+  New tests have been introduced between CI_DRM_11302_full and IGTPW_6722_full:
 
-### New IGT tests (53) ###
+### New IGT tests (203) ###
 
-  * igt@amdgpu/amd_basic@cs-compute:
-    - Statuses : 29 skip(s)
+  * igt@gem_create@create-clear:
+    - Statuses : 5 pass(s)
+    - Exec time: [32.59, 36.75] s
+
+  * igt@gem_ctx_engines@none:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@gem_ctx_exec@basic-norecovery:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.01, 0.04] s
+
+  * igt@gem_ctx_persistence@legacy-engines-queued@blt:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.03, 0.14] s
+
+  * igt@gem_ctx_persistence@legacy-engines-queued@bsd:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.03, 0.04] s
+
+  * igt@gem_ctx_persistence@legacy-engines-queued@bsd1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.02] s
+
+  * igt@gem_ctx_persistence@legacy-engines-queued@bsd2:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.03] s
+
+  * igt@gem_ctx_persistence@legacy-engines-queued@render:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.03] s
+
+  * igt@gem_ctx_persistence@legacy-engines-queued@vebox:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.03, 0.04] s
+
+  * igt@gem_ctx_sseu@mmap-args:
+    - Statuses : 6 skip(s)
     - Exec time: [0.0] s
 
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - Statuses : 29 skip(s)
+  * igt@gem_ctx_sseu@mmap-args@gtt:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@gem_ctx_sseu@mmap-args@uc:
+    - Statuses : 1 pass(s)
     - Exec time: [0.0] s
 
-  * igt@amdgpu/amd_basic@cs-multi-fence:
-    - Statuses : 29 skip(s)
+  * igt@gem_ctx_sseu@mmap-args@wb:
+    - Statuses : 1 pass(s)
     - Exec time: [0.0] s
 
-  * igt@amdgpu/amd_basic@cs-sdma:
-    - Statuses : 29 skip(s)
+  * igt@gem_ctx_sseu@mmap-args@wc:
+    - Statuses : 1 pass(s)
     - Exec time: [0.0] s
 
-  * igt@amdgpu/amd_basic@memory-alloc:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_basic@query-info:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_basic@userptr:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_cs_nop@fork-compute0:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_cs_nop@fork-gfx0:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_cs_nop@nop-compute0:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_cs_nop@nop-gfx0:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_cs_nop@sync-compute0:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_cs_nop@sync-fork-compute0:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_cs_nop@sync-fork-gfx0:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_cs_nop@sync-gfx0:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_prime@amd-to-i915:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@amdgpu/amd_prime@i915-to-amd:
-    - Statuses : 29 skip(s)
-    - Exec time: [0.0] s
+  * igt@gem_eio@context-create:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.02, 0.12] s
 
   * igt@gem_exec_basic@basic:
     - Statuses :
     - Exec time: [None] s
 
+  * igt@gem_exec_create@forked:
+    - Statuses :
+    - Exec time: [None] s
+
   * igt@gem_exec_fence@basic-await:
-    - Statuses : 3 skip(s)
+    - Statuses : 1 skip(s)
     - Exec time: [0.0] s
 
   * igt@gem_exec_fence@basic-await@bcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.06, 0.33] s
+    - Statuses : 4 pass(s)
+    - Exec time: [0.08, 0.11] s
 
   * igt@gem_exec_fence@basic-await@rcs0:
-    - Statuses : 40 pass(s)
-    - Exec time: [0.06, 0.33] s
+    - Statuses : 4 pass(s)
+    - Exec time: [0.07, 0.12] s
 
   * igt@gem_exec_fence@basic-await@vcs0:
-    - Statuses : 38 pass(s)
-    - Exec time: [0.06, 0.30] s
+    - Statuses : 4 pass(s)
+    - Exec time: [0.07, 0.11] s
 
   * igt@gem_exec_fence@basic-await@vcs1:
-    - Statuses : 11 pass(s)
-    - Exec time: [0.07, 0.23] s
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
 
   * igt@gem_exec_fence@basic-await@vecs0:
-    - Statuses : 35 pass(s)
-    - Exec time: [0.07, 0.30] s
+    - Statuses : 4 pass(s)
+    - Exec time: [0.07, 0.12] s
 
   * igt@gem_exec_fence@basic-busy:
-    - Statuses : 3 skip(s)
+    - Statuses : 1 skip(s)
     - Exec time: [0.0] s
 
   * igt@gem_exec_fence@basic-busy@bcs0:
-    - Statuses : 21 pass(s) 15 skip(s)
-    - Exec time: [0.00, 0.05] s
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.00, 0.03] s
 
   * igt@gem_exec_fence@basic-busy@rcs0:
-    - Statuses : 40 pass(s)
-    - Exec time: [0.01, 0.07] s
+    - Statuses : 5 pass(s)
+    - Exec time: [0.02, 0.04] s
 
   * igt@gem_exec_fence@basic-busy@vcs0:
-    - Statuses : 38 pass(s)
-    - Exec time: [0.01, 0.05] s
+    - Statuses : 5 pass(s)
+    - Exec time: [0.02, 0.04] s
 
   * igt@gem_exec_fence@basic-busy@vcs1:
-    - Statuses : 11 pass(s)
-    - Exec time: [0.01, 0.06] s
+    - Statuses : 2 pass(s)
+    - Exec time: [0.03, 0.04] s
 
   * igt@gem_exec_fence@basic-busy@vecs0:
-    - Statuses : 35 pass(s)
-    - Exec time: [0.01, 0.06] s
+    - Statuses : 5 pass(s)
+    - Exec time: [0.02, 0.04] s
 
   * igt@gem_exec_fence@basic-wait:
-    - Statuses : 3 skip(s)
+    - Statuses : 1 skip(s)
     - Exec time: [0.0] s
 
   * igt@gem_exec_fence@basic-wait@bcs0:
-    - Statuses : 21 pass(s) 15 skip(s)
+    - Statuses : 2 pass(s) 3 skip(s)
     - Exec time: [0.00, 0.04] s
 
   * igt@gem_exec_fence@basic-wait@rcs0:
-    - Statuses : 40 pass(s)
-    - Exec time: [0.01, 0.07] s
+    - Statuses : 5 pass(s)
+    - Exec time: [0.02, 0.04] s
 
   * igt@gem_exec_fence@basic-wait@vcs0:
-    - Statuses : 38 pass(s)
-    - Exec time: [0.01, 0.05] s
+    - Statuses : 5 pass(s)
+    - Exec time: [0.02, 0.04] s
 
   * igt@gem_exec_fence@basic-wait@vcs1:
-    - Statuses : 11 pass(s)
-    - Exec time: [0.01, 0.05] s
+    - Statuses : 3 pass(s)
+    - Exec time: [0.03, 0.04] s
 
   * igt@gem_exec_fence@basic-wait@vecs0:
-    - Statuses : 35 pass(s)
-    - Exec time: [0.01, 0.05] s
+    - Statuses : 5 pass(s)
+    - Exec time: [0.02, 0.03] s
 
   * igt@gem_exec_fence@nb-await:
-    - Statuses : 3 skip(s)
+    - Statuses : 1 skip(s)
     - Exec time: [0.0] s
 
   * igt@gem_exec_fence@nb-await@bcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.05, 0.12] s
+    - Statuses : 2 pass(s)
+    - Exec time: [0.06, 0.07] s
 
   * igt@gem_exec_fence@nb-await@rcs0:
-    - Statuses : 40 pass(s)
-    - Exec time: [0.05, 0.15] s
+    - Statuses : 2 pass(s)
+    - Exec time: [0.06, 0.07] s
 
   * igt@gem_exec_fence@nb-await@vcs0:
-    - Statuses : 38 pass(s)
-    - Exec time: [0.05, 0.11] s
-
-  * igt@gem_exec_fence@nb-await@vcs1:
-    - Statuses : 11 pass(s)
-    - Exec time: [0.06, 0.10] s
+    - Statuses : 2 pass(s)
+    - Exec time: [0.07] s
 
   * igt@gem_exec_fence@nb-await@vecs0:
-    - Statuses : 35 pass(s)
-    - Exec time: [0.05, 0.13] s
+    - Statuses : 2 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@gem_exec_reloc@basic-scanout:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_exec_reloc@basic-scanout@bcs0:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.07, 0.18] s
+
+  * igt@gem_exec_reloc@basic-scanout@rcs0:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.10, 0.46] s
+
+  * igt@gem_exec_reloc@basic-scanout@vcs0:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.07, 0.18] s
+
+  * igt@gem_exec_reloc@basic-scanout@vcs1:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.11, 0.17] s
+
+  * igt@gem_exec_reloc@basic-scanout@vecs0:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.11, 0.20] s
+
+  * igt@gem_exec_suspend@basic:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_exec_whisper@basic-contexts:
+    - Statuses : 5 pass(s)
+    - Exec time: [1.40, 9.14] s
+
+  * igt@gem_exec_whisper@basic-contexts-all:
+    - Statuses : 7 pass(s)
+    - Exec time: [1.64, 16.89] s
+
+  * igt@gem_exec_whisper@basic-contexts-forked:
+    - Statuses : 2 pass(s)
+    - Exec time: [10.04, 10.84] s
+
+  * igt@gem_exec_whisper@basic-contexts-forked-all:
+    - Statuses : 7 pass(s)
+    - Exec time: [19.07, 25.18] s
+
+  * igt@gem_exec_whisper@basic-contexts-priority:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.00, 16.66] s
+
+  * igt@gem_exec_whisper@basic-contexts-priority-all:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 24.67] s
+
+  * igt@gem_exec_whisper@basic-fds:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_exec_whisper@basic-fds-all:
+    - Statuses : 6 pass(s)
+    - Exec time: [2.53, 22.18] s
+
+  * igt@gem_exec_whisper@basic-fds-forked:
+    - Statuses : 2 pass(s)
+    - Exec time: [7.08, 11.16] s
+
+  * igt@gem_exec_whisper@basic-fds-forked-all:
+    - Statuses : 6 pass(s)
+    - Exec time: [21.49, 24.41] s
+
+  * igt@gem_exec_whisper@basic-fds-priority:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.00, 19.24] s
+
+  * igt@gem_exec_whisper@basic-fds-priority-all:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.00, 24.18] s
+
+  * igt@gem_exec_whisper@basic-forked:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_exec_whisper@basic-forked-all:
+    - Statuses : 6 pass(s)
+    - Exec time: [13.59, 22.10] s
+
+  * igt@gem_exec_whisper@basic-normal:
+    - Statuses : 3 pass(s)
+    - Exec time: [1.16, 5.65] s
+
+  * igt@gem_exec_whisper@basic-normal-all:
+    - Statuses : 7 pass(s)
+    - Exec time: [1.31, 11.06] s
+
+  * igt@gem_exec_whisper@basic-queues:
+    - Statuses : 4 pass(s) 1 skip(s)
+    - Exec time: [0.00, 6.82] s
+
+  * igt@gem_exec_whisper@basic-queues-all:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.00, 14.93] s
+
+  * igt@gem_exec_whisper@basic-queues-forked:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.00, 11.17] s
+
+  * igt@gem_exec_whisper@basic-queues-forked-all:
+    - Statuses : 1 dmesg-warn(s) 4 pass(s) 1 skip(s)
+    - Exec time: [0.00, 23.25] s
+
+  * igt@gem_exec_whisper@basic-queues-priority:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.00, 9.30] s
+
+  * igt@gem_exec_whisper@basic-queues-priority-all:
+    - Statuses : 2 pass(s) 1 skip(s)
+    - Exec time: [0.00, 22.94] s
+
+  * igt@gem_exec_whisper@basic-sync:
+    - Statuses : 6 pass(s)
+    - Exec time: [1.17, 8.73] s
+
+  * igt@gem_exec_whisper@basic-sync-all:
+    - Statuses : 5 pass(s)
+    - Exec time: [1.38, 15.11] s
+
+  * igt@gem_render_copy@linear:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_render_copy@mixed-tiled-to-y-tiled-ccs:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_render_copy@mixed-tiled-to-yf-tiled-ccs:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_render_copy@y-tiled-ccs-to-x-tiled:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_userptr_blits@map-fixed-invalidate-overlap-busy:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_pm_backlight@bad-brightness:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 0.00] s
 
   * igt@i915_pm_backlight@basic-brightness:
-    - Statuses : 12 pass(s) 26 skip(s)
-    - Exec time: [0.0, 0.27] s
+    - Statuses : 2 pass(s) 3 skip(s)
+    - Exec time: [0.0, 0.22] s
 
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - Statuses : 24 pass(s) 14 skip(s)
-    - Exec time: [0.0, 4.98] s
+  * igt@i915_pm_backlight@fade:
+    - Statuses : 2 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.36] s
 
-  * igt@i915_pm_rpm@basic-rte:
-    - Statuses : 24 pass(s) 14 skip(s)
-    - Exec time: [0.85, 31.23] s
+  * igt@i915_pm_backlight@fade_with_dpms:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@i915_pm_rpm@module-reload:
-    - Statuses : 30 pass(s) 8 skip(s)
-    - Exec time: [0.0, 40.08] s
+  * igt@i915_pm_backlight@fade_with_suspend:
+    - Statuses : 2 pass(s) 5 skip(s)
+    - Exec time: [0.0, 4.47] s
 
-  * igt@i915_pm_rps@basic-api:
-    - Statuses : 1 fail(s) 32 pass(s) 5 skip(s)
+  * igt@i915_pm_lpsp@screens-disabled:
+    - Statuses : 6 skip(s)
     - Exec time: [0.0, 0.06] s
 
-  * igt@kms_busy@basic:
+  * igt@i915_pm_rc6_residency@media-rc6-accuracy:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@i915_pm_rc6_residency@rc6-accuracy:
+    - Statuses : 1 pass(s) 1 skip(s)
+    - Exec time: [0.0, 3.00] s
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 4.42] s
+
+  * igt@i915_pm_rpm@basic-rte:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [1.41, 6.14] s
+
+  * igt@i915_pm_rpm@cursor:
+    - Statuses : 2 pass(s) 1 skip(s)
+    - Exec time: [0.0, 2.16] s
+
+  * igt@i915_pm_rpm@cursor-dpms:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 36.43] s
+
+  * igt@i915_pm_rpm@debugfs-forcewake-user:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 13.89] s
+
+  * igt@i915_pm_rpm@debugfs-read:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_pm_rpm@dpms-lpsp:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 0.55] s
+
+  * igt@i915_pm_rpm@dpms-mode-unset-lpsp:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 9.18] s
+
+  * igt@i915_pm_rpm@dpms-mode-unset-non-lpsp:
+    - Statuses : 2 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.63] s
+
+  * igt@i915_pm_rpm@dpms-non-lpsp:
+    - Statuses : 2 pass(s) 3 skip(s)
+    - Exec time: [0.0, 0.21] s
+
+  * igt@i915_pm_rpm@drm-resources-equal:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 5.86] s
+
+  * igt@i915_pm_rpm@fences:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 11.36] s
+
+  * igt@i915_pm_rpm@fences-dpms:
+    - Statuses : 1 incomplete(s) 4 pass(s) 1 skip(s)
+    - Exec time: [0.0, 10.83] s
+
+  * igt@i915_pm_rpm@gem-evict-pwrite:
+    - Statuses : 4 pass(s) 1 skip(s)
+    - Exec time: [0.0, 3.65] s
+
+  * igt@i915_pm_rpm@gem-execbuf:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 7.74] s
+
+  * igt@i915_pm_rpm@gem-execbuf-stress:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 42.10] s
+
+  * igt@i915_pm_rpm@gem-execbuf-stress-pc8:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0, 0.06] s
+
+  * igt@i915_pm_rpm@gem-idle:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 8.68] s
+
+  * igt@i915_pm_rpm@gem-mmap-type:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@i915_pm_rpm@gem-mmap-type@gtt:
+    - Statuses : 5 pass(s)
+    - Exec time: [2.14, 15.07] s
+
+  * igt@i915_pm_rpm@gem-mmap-type@uc:
+    - Statuses : 5 pass(s)
+    - Exec time: [1.05, 6.72] s
+
+  * igt@i915_pm_rpm@gem-mmap-type@wb:
+    - Statuses : 5 pass(s)
+    - Exec time: [1.06, 6.39] s
+
+  * igt@i915_pm_rpm@gem-mmap-type@wc:
+    - Statuses : 5 pass(s)
+    - Exec time: [1.08, 6.72] s
+
+  * igt@i915_pm_rpm@gem-pread:
+    - Statuses : 2 pass(s) 1 skip(s)
+    - Exec time: [0.0, 5.55] s
+
+  * igt@i915_pm_rpm@i2c:
+    - Statuses : 4 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.27] s
+
+  * igt@i915_pm_rpm@legacy-planes:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_pm_rpm@legacy-planes-dpms:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_pm_rpm@modeset-lpsp:
+    - Statuses : 3 skip(s)
+    - Exec time: [0.0, 0.37] s
+
+  * igt@i915_pm_rpm@modeset-lpsp-stress:
+    - Statuses : 3 pass(s) 4 skip(s)
+    - Exec time: [0.0, 29.94] s
+
+  * igt@i915_pm_rpm@modeset-lpsp-stress-no-wait:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 11.26] s
+
+  * igt@i915_pm_rpm@modeset-non-lpsp:
+    - Statuses : 3 pass(s) 3 skip(s)
+    - Exec time: [0.0, 3.62] s
+
+  * igt@i915_pm_rpm@modeset-non-lpsp-stress:
+    - Statuses : 3 pass(s) 4 skip(s)
+    - Exec time: [0.0, 6.68] s
+
+  * igt@i915_pm_rpm@modeset-non-lpsp-stress-no-wait:
+    - Statuses : 2 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.75] s
+
+  * igt@i915_pm_rpm@modeset-pc8-residency-stress:
     - Statuses : 6 skip(s)
     - Exec time: [0.0] s
 
+  * igt@i915_pm_rpm@modeset-stress-extra-wait:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_pm_rpm@pc8-residency:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@i915_pm_rpm@pm-caching:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 19.09] s
+
+  * igt@i915_pm_rpm@pm-tiling:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 7.97] s
+
+  * igt@i915_pm_rpm@reg-read-ioctl:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 7.46] s
+
+  * igt@i915_pm_rpm@sysfs-read:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 3.62] s
+
+  * igt@i915_pm_rpm@system-suspend:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 8.54] s
+
+  * igt@i915_pm_rpm@system-suspend-devices:
+    - Statuses : 2 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.81] s
+
+  * igt@i915_pm_rpm@system-suspend-execbuf:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 85.41] s
+
+  * igt@i915_pm_rpm@system-suspend-modeset:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 13.61] s
+
+  * igt@i915_pm_rpm@universal-planes:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_pm_rpm@universal-planes-dpms:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_pm_rps@basic-api:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@i915_pm_rps@min-max-config-idle:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.15, 0.38] s
+
+  * igt@i915_pm_rps@min-max-config-loaded:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.32, 0.38] s
+
+  * igt@i915_pm_rps@reset:
+    - Statuses : 7 pass(s)
+    - Exec time: [3.52, 3.63] s
+
+  * igt@i915_pm_rps@waitboost:
+    - Statuses : 7 pass(s)
+    - Exec time: [2.52, 2.57] s
+
+  * igt@i915_pm_sseu@full-enable:
+    - Statuses : 3 pass(s) 4 skip(s)
+    - Exec time: [0.0, 0.03] s
+
+  * igt@kms_atomic_interruptible@atomic-setmode:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_atomic_interruptible@legacy-dpms:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_atomic_interruptible@legacy-pageflip:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_atomic_transition@plane-use-after-nonblocking-unbind:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_busy@basic:
+    - Statuses :
+    - Exec time: [None] s
+
   * igt@kms_busy@basic@flip:
-    - Statuses : 2 dmesg-warn(s) 1 incomplete(s) 29 pass(s) 1 skip(s)
-    - Exec time: [0.0, 4.39] s
+    - Statuses : 5 pass(s)
+    - Exec time: [0.30, 0.89] s
 
   * igt@kms_busy@basic@modeset:
-    - Statuses : 1 dmesg-warn(s) 26 pass(s) 5 skip(s)
-    - Exec time: [0.0, 5.19] s
+    - Statuses : 5 pass(s)
+    - Exec time: [0.47, 3.68] s
 
-  * igt@kms_setmode@basic-clone-single-crtc@pipe-a-vga-1-hdmi-a-1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
+  * igt@kms_content_protection@atomic-dpms:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0, 0.01] s
 
-  * igt@kms_setmode@basic-clone-single-crtc@pipe-b-vga-1-hdmi-a-1:
+  * igt@kms_content_protection@dp-mst-lic-type-0:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_content_protection@dp-mst-lic-type-1:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_content_protection@dp-mst-type-0:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_content_protection@dp-mst-type-1:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_flip@blocking-absolute-wf_vblank:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_flip@bo-too-big:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_flip@dpms-off-confusion-interruptible:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_flip@flip-vs-dpms-off-vs-modeset:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_flip@flip-vs-modeset-vs-hang:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_flip@flip-vs-panning-vs-hang:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_flip@nonexisting-fb:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_hdr@bpc-switch:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 3.77] s
+
+  * igt@kms_hdr@bpc-switch-dpms:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 4.88] s
+
+  * igt@kms_hdr@bpc-switch-suspend:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.05] s
+
+  * igt@kms_hdr@static-swap:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_hdr@static-toggle:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_hdr@static-toggle-dpms:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_hdr@static-toggle-suspend:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_lease@implicit-plane-lease:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.00, 0.02] s
+
+  * igt@kms_lease@invalid-create-leases:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@kms_lease@lease-uevent:
+    - Statuses : 6 pass(s)
+    - Exec time: [1.01, 1.02] s
+
+  * igt@kms_lease@lease_invalid_plane:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_lease@master-vs-lease:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.0, 0.01] s
+
+  * igt@kms_lease@multimaster-lease:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@kms_lease@possible-crtcs-filtering:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.00, 0.03] s
+
+  * igt@kms_mmap_write_crc@main:
+    - Statuses : 7 pass(s)
+    - Exec time: [2.29, 14.13] s
+
+  * igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-d-edp-1-downscale-with-pixel-format:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.02] s
+
+  * igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-b-hdmi-a-1-downscale-with-rotation:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.02] s
+
+  * igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-d-hdmi-a-1-downscale-with-rotation:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.02] s
+
+  * igt@kms_plane_scaling@invalid-num-scalers@pipe-d-edp-1-invalid-num-scalers:
     - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
+    - Exec time: [0.02] s
+
+  * igt@kms_plane_scaling@invalid-num-scalers@pipe-d-hdmi-a-1-invalid-num-scalers:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-b-hdmi-a-1-planes-downscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-edp-1-planes-downscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.28] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-hdmi-a-1-planes-downscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-b-hdmi-a-1-planes-unity-scaling:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-d-edp-1-planes-unity-scaling:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.28] s
+
+  * igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-d-hdmi-a-1-planes-unity-scaling:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20@pipe-b-hdmi-a-1-planes-upscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20@pipe-d-edp-1-planes-upscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.22] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20@pipe-d-hdmi-a-1-planes-upscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-edp-1-planes-upscale-downscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.20] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-hdmi-a-1-planes-upscale-downscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.36] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-vga-1-planes-upscale-downscale:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.04] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-edp-1-planes-upscale-downscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-hdmi-a-2-planes-upscale-downscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.32] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-vga-1-planes-upscale-downscale:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.03] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-c-edp-1-planes-upscale-downscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-c-hdmi-a-1-planes-upscale-downscale:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.10] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-d-edp-1-planes-upscale:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.21] s
+
+  * igt@kms_plane_scaling@scaler-with-clipping-clamping@pipe-b-hdmi-a-1-scaler-with-clipping-clamping:
+    - Statuses : 1 pass(s)
+    - Exec time: [23.04] s
+
+  * igt@kms_plane_scaling@scaler-with-clipping-clamping@pipe-d-hdmi-a-1-scaler-with-clipping-clamping:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.27] s
+
+  * igt@prime_mmap@test_correct:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@prime_mmap@test_correct_cpu_write:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@prime_mmap@test_forked_cpu_write:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@prime_mmap@test_invalid_sync_flags:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@prime_mmap@test_userptr:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@prime_vgem@basic-blt:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.01, 0.07] s
+
+  * igt@prime_vgem@basic-fence-blt:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.07, 0.12] s
+
+  * igt@prime_vgem@coherency-blt:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.55, 5.07] s
 
   
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_6725 that come from known issues:
+  Here are the changes found in IGTPW_6722_full that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@amdgpu/amd_basic@query-info (NEW):
-    - {fi-tgl-dsi}:       NOTRUN -> [SKIP][23] ([fdo#109315])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-tgl-dsi/igt@amdgpu/amd_basic@query-info.html
+  * igt@feature_discovery@display-2x:
+    - shard-tglb:         NOTRUN -> [SKIP][13] ([i915#1839])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb6/igt@feature_discovery@display-2x.html
+    - shard-iclb:         NOTRUN -> [SKIP][14] ([i915#1839])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb4/igt@feature_discovery@display-2x.html
 
-  * igt@amdgpu/amd_basic@semaphore (NEW):
-    - fi-hsw-4770:        NOTRUN -> [SKIP][24] ([fdo#109271] / [fdo#109315]) +17 similar issues
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
+  * igt@gem_ctx_persistence@legacy-engines-queued:
+    - shard-snb:          NOTRUN -> [SKIP][15] ([fdo#109271] / [i915#1099]) +2 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-snb4/igt@gem_ctx_persistence@legacy-engines-queued.html
 
-  * igt@amdgpu/amd_cs_nop@fork-gfx0 (NEW):
-    - {fi-tgl-dsi}:       NOTRUN -> [SKIP][25] ([fdo#109315] / [i915#2575]) +16 similar issues
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-tgl-dsi/igt@amdgpu/amd_cs_nop@fork-gfx0.html
+  * igt@gem_ctx_sseu@mmap-args (NEW):
+    - {shard-tglu}:       NOTRUN -> [SKIP][16] ([i915#280])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglu-4/igt@gem_ctx_sseu@mmap-args.html
+    - shard-tglb:         NOTRUN -> [SKIP][17] ([i915#280])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb5/igt@gem_ctx_sseu@mmap-args.html
 
-  * igt@gem_exec_fence@basic-busy@bcs0 (NEW):
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][26] ([fdo#109271]) +9 similar issues
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+  * igt@gem_eio@in-flight-1us:
+    - shard-tglb:         [PASS][18] -> [TIMEOUT][19] ([i915#3063])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-tglb8/igt@gem_eio@in-flight-1us.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb5/igt@gem_eio@in-flight-1us.html
 
-  * igt@gem_flink_basic@bad-flink:
-    - fi-skl-6600u:       [PASS][27] -> [INCOMPLETE][28] ([i915#4547])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+  * igt@gem_eio@unwedge-stress:
+    - shard-tglb:         [PASS][20] -> [TIMEOUT][21] ([i915#3063] / [i915#3648])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-tglb6/igt@gem_eio@unwedge-stress.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb6/igt@gem_eio@unwedge-stress.html
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][29] ([fdo#109271]) +58 similar issues
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][30] ([fdo#109271] / [i915#2190])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+  * igt@gem_exec_balancer@parallel-balancer:
+    - shard-iclb:         [PASS][22] -> [SKIP][23] ([i915#4525])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb1/igt@gem_exec_balancer@parallel-balancer.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb6/igt@gem_exec_balancer@parallel-balancer.html
 
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][31] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@gem_lmem_swapping@parallel-random-engines.html
+  * igt@gem_exec_balancer@parallel-out-fence:
+    - shard-kbl:          NOTRUN -> [DMESG-WARN][24] ([i915#5076]) +1 similar issue
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-kbl3/igt@gem_exec_balancer@parallel-out-fence.html
 
-  * igt@i915_pm_backlight@basic-brightness (NEW):
-    - {bat-rpls-2}:       NOTRUN -> [SKIP][32] ([i915#1155])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html
+  * igt@gem_exec_fair@basic-flow@rcs0:
+    - shard-tglb:         NOTRUN -> [FAIL][25] ([i915#2842]) +6 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb5/igt@gem_exec_fair@basic-flow@rcs0.html
 
-  * igt@i915_pm_rpm@basic-pci-d3-state (NEW):
-    - {bat-rpls-2}:       NOTRUN -> [SKIP][33] ([fdo#109308]) +1 similar issue
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@i915_pm_rpm@basic-pci-d3-state.html
+  * igt@gem_exec_fair@basic-none@vcs0:
+    - shard-apl:          [PASS][26] -> [FAIL][27] ([i915#2842]) +1 similar issue
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-apl2/igt@gem_exec_fair@basic-none@vcs0.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-apl2/igt@gem_exec_fair@basic-none@vcs0.html
 
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][34] ([i915#1886] / [i915#2291])
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+  * igt@gem_exec_fair@basic-pace@rcs0:
+    - shard-kbl:          NOTRUN -> [FAIL][28] ([i915#2842]) +4 similar issues
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-kbl3/igt@gem_exec_fair@basic-pace@rcs0.html
 
-  * igt@kms_busy@basic (NEW):
-    - {bat-rpls-2}:       NOTRUN -> [SKIP][35] ([i915#1845])
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@kms_busy@basic.html
+  * igt@gem_exec_fair@basic-pace@vecs0:
+    - shard-glk:          [PASS][29] -> [FAIL][30] ([i915#2842]) +2 similar issues
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-glk3/igt@gem_exec_fair@basic-pace@vecs0.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-glk8/igt@gem_exec_fair@basic-pace@vecs0.html
 
-  * igt@kms_busy@basic@flip (NEW):
-    - {bat-adlp-6}:       [PASS][36] -> [DMESG-WARN][37] ([i915#3576])
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-6/igt@kms_busy@basic@flip.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-6/igt@kms_busy@basic@flip.html
+  * igt@gem_exec_fair@basic-throttle@rcs0:
+    - shard-iclb:         NOTRUN -> [FAIL][31] ([i915#2849])
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb1/igt@gem_exec_fair@basic-throttle@rcs0.html
 
-  * igt@kms_chamelium@dp-edid-read:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][38] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html
+  * igt@gem_exec_params@secure-non-root:
+    - shard-tglb:         NOTRUN -> [SKIP][32] ([fdo#112283])
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb7/igt@gem_exec_params@secure-non-root.html
 
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][39] ([fdo#109271] / [i915#533])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-c:
-    - bat-adlp-4:         [PASS][40] -> [DMESG-WARN][41] ([i915#3576]) +1 similar issue
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-4/igt@kms_pipe_crc_basic@read-crc-pipe-c.html
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-4/igt@kms_pipe_crc_basic@read-crc-pipe-c.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-skl-6700k2:      [PASS][42] -> [SKIP][43] ([fdo#109271])
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-blb-e6850:       [PASS][44] -> [SKIP][45] ([fdo#109271])
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-x1275:       [PASS][46] -> [SKIP][47] ([fdo#109271])
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-kefka:       [PASS][48] -> [SKIP][49] ([fdo#109271])
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bwr-2160:        [PASS][50] -> [SKIP][51] ([fdo#109271])
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-nick:        [PASS][52] -> [SKIP][53] ([fdo#109271])
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-guc:         [PASS][54] -> [SKIP][55] ([fdo#109271])
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-8809g:       [PASS][56] -> [SKIP][57] ([fdo#109271])
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-ilk-650:         [PASS][58] -> [SKIP][59] ([fdo#109271])
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-elk-e7500:       [PASS][60] -> [SKIP][61] ([fdo#109271])
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-glk-dsi:         [PASS][62] -> [SKIP][63] ([fdo#109271])
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-glk-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-glk-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-snb-2520m:       [PASS][64] -> [SKIP][65] ([fdo#109271])
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-8109u:       [PASS][66] -> [SKIP][67] ([fdo#109271])
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-7500u:       [PASS][68] -> [SKIP][69] ([fdo#109271])
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bxt-dsi:         [PASS][70] -> [SKIP][71] ([fdo#109271])
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-hsw-4770:        [PASS][72] -> [SKIP][73] ([fdo#109271])
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-guc:         [PASS][74] -> [SKIP][75] ([fdo#109271])
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-7567u:       [PASS][76] -> [SKIP][77] ([fdo#109271])
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-skl-guc:         [PASS][78] -> [SKIP][79] ([fdo#109271])
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-n3050:       [PASS][80] -> [SKIP][81] ([fdo#109271])
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html
-   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-ivb-3770:        [PASS][82] -> [SKIP][83] ([fdo#109271])
-   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html
-   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-8700k:       [PASS][84] -> [SKIP][85] ([fdo#109271])
-   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html
-   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-glk-j4005:       [PASS][86] -> [SKIP][87] ([fdo#109271])
-   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html
-   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - {bat-rpls-2}:       [INCOMPLETE][88] ([i915#4898]) -> [PASS][89]
-   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-rpls-2/igt@gem_exec_suspend@basic-s3@smem.html
-   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_pm_rpm@module-reload (NEW):
-    - fi-kbl-guc:         [INCOMPLETE][90] ([i915#151]) -> [PASS][91]
-   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [INCOMPLETE][92] ([i915#3303]) -> [PASS][93]
-   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_busy@basic@modeset (NEW):
-    - {bat-adlp-6}:       [DMESG-WARN][94] ([i915#3576]) -> [PASS][95]
-   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-6/igt@kms_busy@basic@modeset.html
-   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-6/igt@kms_busy@basic@modeset.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - bat-adlp-4:         [DMESG-WARN][96] ([i915#3576]) -> [PASS][97]
-   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#151]: https://gitlab.freedesktop.org/drm/intel/issues/151
-  [i915#1759]: https://gitlab.freedesktop.org/drm/intel/issues/1759
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#2373]: https://gitlab.freedesktop.org/drm/intel/issues/2373
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4898]: https://gitlab.freedesktop.org/drm/intel/issues/4898
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6361 -> IGTPW_6725
-
-  CI-20190529: 20190529
-  CI_DRM_11303: 329182aa4c789d378e58b87b5f283116d87278a7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6725: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/index.html
-  IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  * igt@gem_exec_whisper@basic-queues-forked-all (NEW):
+    - shard-glk:          [PASS][33] -> [DMESG-WARN][34] ([i915#118]) +1 similar issue
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-glk6/igt@gem_exec_whisper@basic-queues-forked-all.html
+   [34]: https://intel-gfx-c
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html
 
---===============3783180117490838226==
+--===============1974547961066484017==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -578,50 +1030,53 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Fix stealing test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100893/">https://patchwork.freedesktop.org/series/100893/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_params: check available memory earlier</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100879/">https://patchwork.freedesktop.org/series/100879/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_11303 -&gt; IGTPW_6725</h1>
+    <h1>CI Bug Log - changes from CI_DRM_11302_full -&gt; IGTPW_6722_full</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6725 absolutely need to be<br />
+<p>Serious unknown changes coming with IGTPW_6722_full absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6725, please notify your bug team to allow them<br />
+  introduced in IGTPW_6722_full, please notify your bug team to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/index.html</p>
-<h2>Participating hosts (49 -&gt; 44)</h2>
-<p>Additional (3): fi-kbl-soraka fi-tgl-dsi fi-pnv-d510 <br />
-  Missing    (8): fi-cml-u2 shard-tglu fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 shard-rkl shard-dg1 fi-bdw-samus </p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/index.html</p>
+<h2>Participating hosts (13 -&gt; 8)</h2>
+<p>Missing    (5): pig-kbl-iris pig-glk-j5005 pig-skl-6260u shard-rkl shard-dg1 </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6725:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6722_full:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
 <li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<p>igt@i915_pm_rpm@fences-dpms (NEW):</p>
 <ul>
-<li>
-<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb4/igt@i915_pm_rpm@fences-dpms.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb7/igt@i915_pm_rpm@fences-dpms.html">INCOMPLETE</a></li>
+</ul>
 </li>
 <li>
-<p>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-4/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-4/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
+<p>igt@kms_flip@flip-vs-suspend-interruptible@b-edp1:</p>
+<ul>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb6/igt@kms_flip@flip-vs-suspend-interruptible@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb5/igt@kms_flip@flip-vs-suspend-interruptible@b-edp1.html">SKIP</a> +2 similar issues</li>
+</ul>
 </li>
 <li>
-<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
+<p>{igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-d-edp-1-downscale-with-pixel-format} (NEW):</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb6/igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-d-edp-1-downscale-with-pixel-format.html">SKIP</a></li>
+</ul>
 </li>
 <li>
-<p>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
-<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
+<p>{igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-d-hdmi-a-1-downscale-with-rotation} (NEW):</p>
+<ul>
+<li>{shard-tglu}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglu-6/igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-d-hdmi-a-1-downscale-with-rotation.html">SKIP</a> +1 similar issue</li>
 </ul>
 </li>
 </ul>
@@ -630,160 +1085,137 @@ Content-Transfer-Encoding: 7bit
   They do not affect the overall result.</p>
 <ul>
 <li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<p>{igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-b-edp-1-downscale-with-pixel-format}:</p>
 <ul>
-<li>
-<p>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
+<li>shard-tglb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb6/igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-b-edp-1-downscale-with-pixel-format.html">SKIP</a> +2 similar issues</li>
+</ul>
 </li>
 <li>
-<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
+<p>{igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a-edp-1-planes-upscale-downscale}:</p>
+<ul>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a-edp-1-planes-upscale-downscale.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb2/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a-edp-1-planes-upscale-downscale.html">SKIP</a> +2 similar issues</li>
+</ul>
 </li>
 <li>
-<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
+<p>{igt@kms_plane_scaling@scaler-with-pixel-format-unity-scaling@pipe-b-edp-1-scaler-with-pixel-format}:</p>
+<ul>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb8/igt@kms_plane_scaling@scaler-with-pixel-format-unity-scaling@pipe-b-edp-1-scaler-with-pixel-format.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb2/igt@kms_plane_scaling@scaler-with-pixel-format-unity-scaling@pipe-b-edp-1-scaler-with-pixel-format.html">INCOMPLETE</a></li>
+</ul>
 </li>
 <li>
-<p>{bat-jsl-1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
-<p>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
-<p>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-6/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
-<p>{bat-jsl-2}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
+<p>{igt@kms_plane_scaling@upscale-with-rotation-20x20@pipe-c-hdmi-a-1-upscale-with-rotation}:</p>
+<ul>
+<li>{shard-tglu}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglu-3/igt@kms_plane_scaling@upscale-with-rotation-20x20@pipe-c-hdmi-a-1-upscale-with-rotation.html">SKIP</a> +9 similar issues</li>
 </ul>
 </li>
 </ul>
 <h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_11303 and IGTPW_6725:</p>
-<h3>New IGT tests (53)</h3>
+<p>New tests have been introduced between CI_DRM_11302_full and IGTPW_6722_full:</p>
+<h3>New IGT tests (203)</h3>
 <ul>
 <li>
-<p>igt@amdgpu/amd_basic@cs-compute:</p>
+<p>igt@gem_create@create-clear:</p>
 <ul>
-<li>Statuses : 29 skip(s)</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [32.59, 36.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_engines@none:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_exec@basic-norecovery:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.01, 0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@legacy-engines-queued@blt:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.03, 0.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@legacy-engines-queued@bsd:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.03, 0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@legacy-engines-queued@bsd1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@legacy-engines-queued@bsd2:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@legacy-engines-queued@render:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@legacy-engines-queued@vebox:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.03, 0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_sseu@mmap-args:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<p>igt@gem_ctx_sseu@mmap-args@gtt:</p>
 <ul>
-<li>Statuses : 29 skip(s)</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_sseu@mmap-args@uc:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@amdgpu/amd_basic@cs-multi-fence:</p>
+<p>igt@gem_ctx_sseu@mmap-args@wb:</p>
 <ul>
-<li>Statuses : 29 skip(s)</li>
+<li>Statuses : 1 pass(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@amdgpu/amd_basic@cs-sdma:</p>
+<p>igt@gem_ctx_sseu@mmap-args@wc:</p>
 <ul>
-<li>Statuses : 29 skip(s)</li>
+<li>Statuses : 1 pass(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@amdgpu/amd_basic@memory-alloc:</p>
+<p>igt@gem_eio@context-create:</p>
 <ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_basic@query-info:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_basic@userptr:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@fork-compute0:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@fork-gfx0:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@nop-compute0:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-compute0:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-fork-compute0:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-fork-gfx0:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@sync-gfx0:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_prime@i915-to-amd:</p>
-<ul>
-<li>Statuses : 29 skip(s)</li>
-<li>Exec time: [0.0] s</li>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.02, 0.12] s</li>
 </ul>
 </li>
 <li>
@@ -794,465 +1226,1417 @@ Content-Transfer-Encoding: 7bit
 </ul>
 </li>
 <li>
+<p>igt@gem_exec_create@forked:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
 <p>igt@gem_exec_fence@basic-await:</p>
 <ul>
-<li>Statuses : 3 skip(s)</li>
+<li>Statuses : 1 skip(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-await@bcs0:</p>
 <ul>
-<li>Statuses : 36 pass(s)</li>
-<li>Exec time: [0.06, 0.33] s</li>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.08, 0.11] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-await@rcs0:</p>
 <ul>
-<li>Statuses : 40 pass(s)</li>
-<li>Exec time: [0.06, 0.33] s</li>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.07, 0.12] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-await@vcs0:</p>
 <ul>
-<li>Statuses : 38 pass(s)</li>
-<li>Exec time: [0.06, 0.30] s</li>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.07, 0.11] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-await@vcs1:</p>
 <ul>
-<li>Statuses : 11 pass(s)</li>
-<li>Exec time: [0.07, 0.23] s</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-await@vecs0:</p>
 <ul>
-<li>Statuses : 35 pass(s)</li>
-<li>Exec time: [0.07, 0.30] s</li>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.07, 0.12] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-busy:</p>
 <ul>
-<li>Statuses : 3 skip(s)</li>
+<li>Statuses : 1 skip(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-busy@bcs0:</p>
 <ul>
-<li>Statuses : 21 pass(s) 15 skip(s)</li>
-<li>Exec time: [0.00, 0.05] s</li>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.00, 0.03] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-busy@rcs0:</p>
 <ul>
-<li>Statuses : 40 pass(s)</li>
-<li>Exec time: [0.01, 0.07] s</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.02, 0.04] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-busy@vcs0:</p>
 <ul>
-<li>Statuses : 38 pass(s)</li>
-<li>Exec time: [0.01, 0.05] s</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.02, 0.04] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-busy@vcs1:</p>
 <ul>
-<li>Statuses : 11 pass(s)</li>
-<li>Exec time: [0.01, 0.06] s</li>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.03, 0.04] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-busy@vecs0:</p>
 <ul>
-<li>Statuses : 35 pass(s)</li>
-<li>Exec time: [0.01, 0.06] s</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.02, 0.04] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-wait:</p>
 <ul>
-<li>Statuses : 3 skip(s)</li>
+<li>Statuses : 1 skip(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-wait@bcs0:</p>
 <ul>
-<li>Statuses : 21 pass(s) 15 skip(s)</li>
+<li>Statuses : 2 pass(s) 3 skip(s)</li>
 <li>Exec time: [0.00, 0.04] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-wait@rcs0:</p>
 <ul>
-<li>Statuses : 40 pass(s)</li>
-<li>Exec time: [0.01, 0.07] s</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.02, 0.04] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-wait@vcs0:</p>
 <ul>
-<li>Statuses : 38 pass(s)</li>
-<li>Exec time: [0.01, 0.05] s</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.02, 0.04] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-wait@vcs1:</p>
 <ul>
-<li>Statuses : 11 pass(s)</li>
-<li>Exec time: [0.01, 0.05] s</li>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.03, 0.04] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@basic-wait@vecs0:</p>
 <ul>
-<li>Statuses : 35 pass(s)</li>
-<li>Exec time: [0.01, 0.05] s</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.02, 0.03] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@nb-await:</p>
 <ul>
-<li>Statuses : 3 skip(s)</li>
+<li>Statuses : 1 skip(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@nb-await@bcs0:</p>
 <ul>
-<li>Statuses : 36 pass(s)</li>
-<li>Exec time: [0.05, 0.12] s</li>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.06, 0.07] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@nb-await@rcs0:</p>
 <ul>
-<li>Statuses : 40 pass(s)</li>
-<li>Exec time: [0.05, 0.15] s</li>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.06, 0.07] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@nb-await@vcs0:</p>
 <ul>
-<li>Statuses : 38 pass(s)</li>
-<li>Exec time: [0.05, 0.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fence@nb-await@vcs1:</p>
-<ul>
-<li>Statuses : 11 pass(s)</li>
-<li>Exec time: [0.06, 0.10] s</li>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.07] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fence@nb-await@vecs0:</p>
 <ul>
-<li>Statuses : 35 pass(s)</li>
-<li>Exec time: [0.05, 0.13] s</li>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-scanout:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-scanout@bcs0:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.07, 0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-scanout@rcs0:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.10, 0.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-scanout@vcs0:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.07, 0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-scanout@vcs1:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.11, 0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_reloc@basic-scanout@vecs0:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.11, 0.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-contexts:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [1.40, 9.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-contexts-all:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [1.64, 16.89] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-contexts-forked:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [10.04, 10.84] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-contexts-forked-all:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [19.07, 25.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-contexts-priority:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 16.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-contexts-priority-all:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 24.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-fds:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-fds-all:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [2.53, 22.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-fds-forked:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [7.08, 11.16] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-fds-forked-all:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [21.49, 24.41] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-fds-priority:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 19.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-fds-priority-all:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 24.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-forked:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-forked-all:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [13.59, 22.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-normal:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [1.16, 5.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-normal-all:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [1.31, 11.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-queues:</p>
+<ul>
+<li>Statuses : 4 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 6.82] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-queues-all:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 14.93] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-queues-forked:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 11.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-queues-forked-all:</p>
+<ul>
+<li>Statuses : 1 dmesg-warn(s) 4 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 23.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-queues-priority:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 9.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-queues-priority-all:</p>
+<ul>
+<li>Statuses : 2 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.00, 22.94] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-sync:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [1.17, 8.73] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-sync-all:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [1.38, 15.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_copy@linear:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_copy@mixed-tiled-to-y-tiled-ccs:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_copy@mixed-tiled-to-yf-tiled-ccs:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_copy@y-tiled-ccs-to-x-tiled:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@map-fixed-invalidate-overlap-busy:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@bad-brightness:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
 </ul>
 </li>
 <li>
 <p>igt@i915_pm_backlight@basic-brightness:</p>
 <ul>
-<li>Statuses : 12 pass(s) 26 skip(s)</li>
-<li>Exec time: [0.0, 0.27] s</li>
+<li>Statuses : 2 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 0.22] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@fade:</p>
+<ul>
+<li>Statuses : 2 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@fade_with_dpms:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@fade_with_suspend:</p>
+<ul>
+<li>Statuses : 2 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 4.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_lpsp@screens-disabled:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@media-rc6-accuracy:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-accuracy:</p>
+<ul>
+<li>Statuses : 1 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 3.00] s</li>
 </ul>
 </li>
 <li>
 <p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
 <ul>
-<li>Statuses : 24 pass(s) 14 skip(s)</li>
-<li>Exec time: [0.0, 4.98] s</li>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 4.42] s</li>
 </ul>
 </li>
 <li>
 <p>igt@i915_pm_rpm@basic-rte:</p>
 <ul>
-<li>Statuses : 24 pass(s) 14 skip(s)</li>
-<li>Exec time: [0.85, 31.23] s</li>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [1.41, 6.14] s</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_rpm@module-reload:</p>
+<p>igt@i915_pm_rpm@cursor:</p>
 <ul>
-<li>Statuses : 30 pass(s) 8 skip(s)</li>
-<li>Exec time: [0.0, 40.08] s</li>
+<li>Statuses : 2 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 2.16] s</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_rps@basic-api:</p>
+<p>igt@i915_pm_rpm@cursor-dpms:</p>
 <ul>
-<li>Statuses : 1 fail(s) 32 pass(s) 5 skip(s)</li>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 36.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@debugfs-forcewake-user:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 13.89] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@debugfs-read:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@dpms-lpsp:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@dpms-mode-unset-lpsp:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 9.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@dpms-mode-unset-non-lpsp:</p>
+<ul>
+<li>Statuses : 2 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@dpms-non-lpsp:</p>
+<ul>
+<li>Statuses : 2 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 0.21] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@drm-resources-equal:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 5.86] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@fences:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 11.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@fences-dpms:</p>
+<ul>
+<li>Statuses : 1 incomplete(s) 4 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 10.83] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-evict-pwrite:</p>
+<ul>
+<li>Statuses : 4 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 3.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-execbuf:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 7.74] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-execbuf-stress:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 42.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-execbuf-stress-pc8:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
 <li>Exec time: [0.0, 0.06] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_busy@basic:</p>
+<p>igt@i915_pm_rpm@gem-idle:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 8.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-mmap-type:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-mmap-type@gtt:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [2.14, 15.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-mmap-type@uc:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [1.05, 6.72] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-mmap-type@wb:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [1.06, 6.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-mmap-type@wc:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [1.08, 6.72] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@gem-pread:</p>
+<ul>
+<li>Statuses : 2 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 5.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@i2c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@legacy-planes:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@legacy-planes-dpms:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-lpsp:</p>
+<ul>
+<li>Statuses : 3 skip(s)</li>
+<li>Exec time: [0.0, 0.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-lpsp-stress:</p>
+<ul>
+<li>Statuses : 3 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 29.94] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-lpsp-stress-no-wait:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 11.26] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-non-lpsp:</p>
+<ul>
+<li>Statuses : 3 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-non-lpsp-stress:</p>
+<ul>
+<li>Statuses : 3 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 6.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-non-lpsp-stress-no-wait:</p>
+<ul>
+<li>Statuses : 2 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-pc8-residency-stress:</p>
 <ul>
 <li>Statuses : 6 skip(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
+<p>igt@i915_pm_rpm@modeset-stress-extra-wait:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@pc8-residency:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@pm-caching:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 19.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@pm-tiling:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 7.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@reg-read-ioctl:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 7.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@sysfs-read:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@system-suspend:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 8.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@system-suspend-devices:</p>
+<ul>
+<li>Statuses : 2 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.81] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@system-suspend-execbuf:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 85.41] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@system-suspend-modeset:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 13.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@universal-planes:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@universal-planes-dpms:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@min-max-config-idle:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.15, 0.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@min-max-config-loaded:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.32, 0.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@reset:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [3.52, 3.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@waitboost:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [2.52, 2.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_sseu@full-enable:</p>
+<ul>
+<li>Statuses : 3 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_interruptible@atomic-setmode:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_interruptible@legacy-dpms:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_interruptible@legacy-pageflip:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_atomic_transition@plane-use-after-nonblocking-unbind:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
 <p>igt@kms_busy@basic@flip:</p>
 <ul>
-<li>Statuses : 2 dmesg-warn(s) 1 incomplete(s) 29 pass(s) 1 skip(s)</li>
-<li>Exec time: [0.0, 4.39] s</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.30, 0.89] s</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_busy@basic@modeset:</p>
 <ul>
-<li>Statuses : 1 dmesg-warn(s) 26 pass(s) 5 skip(s)</li>
-<li>Exec time: [0.0, 5.19] s</li>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.47, 3.68] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_setmode@basic-clone-single-crtc@pipe-a-vga-1-hdmi-a-1:</p>
+<p>igt@kms_content_protection@atomic-dpms:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0, 0.01] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_setmode@basic-clone-single-crtc@pipe-b-vga-1-hdmi-a-1:</p>
+<p>igt@kms_content_protection@dp-mst-lic-type-0:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-lic-type-1:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-type-0:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-type-1:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@blocking-absolute-wf_vblank:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@bo-too-big:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@dpms-off-confusion-interruptible:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-dpms-off-vs-modeset:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-modeset-vs-hang:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-panning-vs-hang:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@nonexisting-fb:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@bpc-switch:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 3.77] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@bpc-switch-dpms:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 4.88] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@bpc-switch-suspend:</p>
+<ul>
+<li>Statuses : 6 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@static-swap:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@static-toggle:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@static-toggle-dpms:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@static-toggle-suspend:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_lease@implicit-plane-lease:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.00, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_lease@invalid-create-leases:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_lease@lease-uevent:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [1.01, 1.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_lease@lease_invalid_plane:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_lease@master-vs-lease:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.0, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_lease@multimaster-lease:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_lease@possible-crtcs-filtering:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.00, 0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_mmap_write_crc@main:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [2.29, 14.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-25@pipe-d-edp-1-downscale-with-pixel-format:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-b-hdmi-a-1-downscale-with-rotation:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-d-hdmi-a-1-downscale-with-rotation:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@invalid-num-scalers@pipe-d-edp-1-invalid-num-scalers:</p>
 <ul>
 <li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@invalid-num-scalers@pipe-d-hdmi-a-1-invalid-num-scalers:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-b-hdmi-a-1-planes-downscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-edp-1-planes-downscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-hdmi-a-1-planes-downscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-b-hdmi-a-1-planes-unity-scaling:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-d-edp-1-planes-unity-scaling:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-d-hdmi-a-1-planes-unity-scaling:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20@pipe-b-hdmi-a-1-planes-upscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20@pipe-d-edp-1-planes-upscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.22] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20@pipe-d-hdmi-a-1-planes-upscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-edp-1-planes-upscale-downscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-hdmi-a-1-planes-upscale-downscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-vga-1-planes-upscale-downscale:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-edp-1-planes-upscale-downscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-hdmi-a-2-planes-upscale-downscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-vga-1-planes-upscale-downscale:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-c-edp-1-planes-upscale-downscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-c-hdmi-a-1-planes-upscale-downscale:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-d-edp-1-planes-upscale:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.21] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@scaler-with-clipping-clamping@pipe-b-hdmi-a-1-scaler-with-clipping-clamping:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [23.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@scaler-with-clipping-clamping@pipe-d-hdmi-a-1-scaler-with-clipping-clamping:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_mmap@test_correct:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_mmap@test_correct_cpu_write:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_mmap@test_forked_cpu_write:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_mmap@test_invalid_sync_flags:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_mmap@test_userptr:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-blt:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.01, 0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-blt:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.07, 0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@coherency-blt:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.55, 5.07] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6725 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_6722_full that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@amdgpu/amd_basic@query-info (NEW):</p>
-<ul>
-<li>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-tgl-dsi/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore (NEW):</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_cs_nop@fork-gfx0 (NEW):</p>
-<ul>
-<li>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-tgl-dsi/igt@amdgpu/amd_cs_nop@fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +16 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fence@basic-busy@bcs0 (NEW):</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_flink_basic@bad-flink:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
+<p>igt@feature_discovery@display-2x:</p>
 <ul>
 <li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +58 similar issues</p>
+<p>shard-tglb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb6/igt@feature_discovery@display-2x.html">SKIP</a> ([i915#1839])</p>
 </li>
 <li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+<p>shard-iclb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb4/igt@feature_discovery@display-2x.html">SKIP</a> ([i915#1839])</p>
 </li>
 </ul>
 </li>
 <li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<p>igt@gem_ctx_persistence@legacy-engines-queued:</p>
 <ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-snb4/igt@gem_ctx_persistence@legacy-engines-queued.html">SKIP</a> ([fdo#109271] / [i915#1099]) +2 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_backlight@basic-brightness (NEW):</p>
-<ul>
-<li>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state (NEW):</p>
-<ul>
-<li>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@i915_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109308">fdo#109308</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic (NEW):</p>
-<ul>
-<li>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@kms_busy@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip (NEW):</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-edid-read:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-pipe-c:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-4/igt@kms_pipe_crc_basic@read-crc-pipe-c.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-4/igt@kms_pipe_crc_basic@read-crc-pipe-c.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<p>igt@gem_ctx_sseu@mmap-args (NEW):</p>
 <ul>
 <li>
-<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+<p>{shard-tglu}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglu-4/igt@gem_ctx_sseu@mmap-args.html">SKIP</a> ([i915#280])</p>
 </li>
 <li>
-<p>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bwr-2160:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-glk-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-glk-dsi/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-glk-dsi/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+<p>shard-tglb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb5/igt@gem_ctx_sseu@mmap-args.html">SKIP</a> ([i915#280])</p>
 </li>
 </ul>
 </li>
-</ul>
-<h4>Possible fixes</h4>
+<li>
+<p>igt@gem_eio@in-flight-1us:</p>
 <ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-rpls-2/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4898">i915#4898</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-rpls-2/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-tglb8/igt@gem_eio@in-flight-1us.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb5/igt@gem_eio@in-flight-1us.html">TIMEOUT</a> ([i915#3063])</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_rpm@module-reload (NEW):</p>
+<p>igt@gem_eio@unwedge-stress:</p>
 <ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/151">i915#151</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-tglb6/igt@gem_eio@unwedge-stress.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb6/igt@gem_eio@unwedge-stress.html">TIMEOUT</a> ([i915#3063] / [i915#3648])</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@hangcheck:</p>
+<p>igt@gem_exec_balancer@parallel-balancer:</p>
 <ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-iclb1/igt@gem_exec_balancer@parallel-balancer.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb6/igt@gem_exec_balancer@parallel-balancer.html">SKIP</a> ([i915#4525])</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_busy@basic@modeset (NEW):</p>
+<p>igt@gem_exec_balancer@parallel-out-fence:</p>
 <ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-6/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-6/igt@kms_busy@basic@modeset.html">PASS</a></li>
+<li>shard-kbl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-kbl3/igt@gem_exec_balancer@parallel-out-fence.html">DMESG-WARN</a> ([i915#5076]) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
+<p>igt@gem_exec_fair@basic-flow@rcs0:</p>
 <ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11303/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a></li>
+<li>shard-tglb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb5/igt@gem_exec_fair@basic-flow@rcs0.html">FAIL</a> ([i915#2842]) +6 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-none@vcs0:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-apl2/igt@gem_exec_fair@basic-none@vcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-apl2/igt@gem_exec_fair@basic-none@vcs0.html">FAIL</a> ([i915#2842]) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace@rcs0:</p>
+<ul>
+<li>shard-kbl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-kbl3/igt@gem_exec_fair@basic-pace@rcs0.html">FAIL</a> ([i915#2842]) +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace@vecs0:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-glk3/igt@gem_exec_fair@basic-pace@vecs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-glk8/igt@gem_exec_fair@basic-pace@vecs0.html">FAIL</a> ([i915#2842]) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-throttle@rcs0:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-iclb1/igt@gem_exec_fair@basic-throttle@rcs0.html">FAIL</a> ([i915#2849])</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_params@secure-non-root:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6722/shard-tglb7/igt@gem_exec_params@secure-non-root.html">SKIP</a> ([fdo#112283])</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-queues-forked-all (NEW):</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11302/shard-glk6/igt@gem_exec_whisper@basic-queues-forked-all.html">PASS</a> -&gt; <a href="https://intel-gfx-c">DMESG-WARN</a> ([i915#118]) +1 similar issue</li>
 </ul>
 </li>
 </ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6361 -&gt; IGTPW_6725</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11303: 329182aa4c789d378e58b87b5f283116d87278a7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6725: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6725/index.html<br />
-  IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============3783180117490838226==--
+--===============1974547961066484017==--
