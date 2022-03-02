@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20EEA10F2BE
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Mar 2022 09:24:01 +0000 (UTC)
-From: apoorva1.singh@intel.com
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Wed,  2 Mar 2022 15:03:58 +0530
-Message-Id: <20220302093358.833975-1-apoorva1.singh@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F55210F248
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Mar 2022 09:37:47 +0000 (UTC)
+Date: Wed, 2 Mar 2022 10:37:42 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Yh865qjXPk1pN0pF@kamilkon-DESK1>
+References: <20220302080629.11562-1-zbigniew.kempczynski@intel.com>
+ <20220302080629.11562-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t,
- v5] i915/gem_ctx_create: Added test description for test case
+In-Reply-To: <20220302080629.11562-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/intel_memory_regions: Add
+ helper which creates supported dma-buf set
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,117 +26,113 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Apoorva Singh <apoorva1.singh@intel.com>
+Dnia 2022-03-02 at 09:06:27 +0100, Zbigniew Kempczyński napisał(a):
+> Not all systems supports dma-buf or supports it partially thus tests which
+> relies on this functionality should be skipped. Partially means some
+> memory regions can support it whereas other not. Add a helper function
+> which will verify dma-buf support on memory regions and create a set of
+> those supported.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/i915/intel_memory_region.c | 61 ++++++++++++++++++++++++++++++++++
+>  lib/i915/intel_memory_region.h |  3 ++
+>  2 files changed, 64 insertions(+)
 
-Added test and subtests description
-
-v2: Modified description to be more precise
-
-v3: Rebase
-
-v4: Incorporated minor changes in description based
-    on feedback
-
-v5: Minor alignment adjustments
-
-Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-Cc: Dec, Katarzyna <katarzyna.dec@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Acked-by: Katarzyna Dec <katarzyna.dec@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_ctx_create.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
 
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index 44846652..a0610fe9 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -36,6 +36,8 @@
- #include "igt_rand.h"
- #include "sw_sync.h"
- 
-+IGT_TEST_DESCRIPTION("Test the context create ioctls");
-+
- #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
- 
- static unsigned all_engines[I915_EXEC_RING_MASK + 1];
-@@ -585,6 +587,7 @@ igt_main
- 		igt_fork_hang_detector(fd);
- 	}
- 
-+	igt_describe("Test random context creation");
- 	igt_subtest("basic") {
- 		memset(&create, 0, sizeof(create));
- 		create.ctx_id = rand();
-@@ -594,41 +597,67 @@ igt_main
- 		gem_context_destroy(fd, create.ctx_id);
- 	}
- 
-+	igt_describe("Verify valid and invalid context extensions");
- 	igt_subtest("ext-param")
- 		basic_ext_param(fd);
-+
-+	igt_describe("Set, validate and execute particular context params");
- 	igt_subtest("iris-pipeline")
- 		iris_pipeline(fd);
- 
-+	igt_describe("Create contexts upto available RAM size, calculate the average "
-+		     "performance of their execution on multiple parallel processes");
- 	igt_subtest("maximum-mem")
- 		maximum(fd, &cfg, ncpus, CHECK_RAM);
-+
-+	igt_describe("Create contexts upto available RAM+SWAP size, calculate the average "
-+		     "performance of their execution on multiple parallel processes");
- 	igt_subtest("maximum-swap")
- 		maximum(fd, &cfg, ncpus, CHECK_RAM | CHECK_SWAP);
- 
-+	igt_describe("Exercise implicit per-fd context creation");
- 	igt_subtest("basic-files")
- 		files(fd, &cfg, 2, 1);
-+
-+	igt_describe("Exercise implicit per-fd context creation on 1 CPU for long duration");
- 	igt_subtest("files")
- 		files(fd, &cfg, 20, 1);
-+
-+	igt_describe("Exercise implicit per-fd context creation on all CPUs for long duration");
- 	igt_subtest("forked-files")
- 		files(fd, &cfg, 20, ncpus);
- 
-+	igt_describe("Calculate the average performance of context creation and "
-+		     "it's execution using all engines");
- 	/* NULL value means all engines */
- 	igt_subtest("active-all")
- 		active(fd, &cfg, NULL, 20, 1);
-+
-+	igt_describe("Calculate the average performance of context creation and it's execution "
-+		     "using all engines on multiple parallel processes");
- 	igt_subtest("forked-active-all")
- 		active(fd, &cfg, NULL, 20, ncpus);
- 
-+	igt_describe("For each engine calculate the average performance of context creation "
-+		     "and execution");
- 	igt_subtest_with_dynamic("active") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
- 				active(fd, &cfg, e, 20, 1);
- 		}
- 	}
-+
-+	igt_describe("For each engine calculate the average performance of context creation "
-+		     "and execution on multiple parallel processes");
- 	igt_subtest_with_dynamic("forked-active") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
- 				active(fd, &cfg, e, 20, ncpus);
- 		}
- 	}
-+
-+	igt_describe("For each engine calculate the average performance of context creation "
-+		     "and execution while all other engines are hogging the resources");
- 	igt_subtest_with_dynamic("hog") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--- 
-2.25.1
+Regards,
+Kamil Konieczny
+
+> 
+> diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+> index a8759e069..a2db74566 100644
+> --- a/lib/i915/intel_memory_region.c
+> +++ b/lib/i915/intel_memory_region.c
+> @@ -332,6 +332,67 @@ char *memregion_dynamic_subtest_name(struct igt_collection *set)
+>  	return name;
+>  }
+>  
+> +struct mmap_supported_region {
+> +	uint32_t region;
+> +	struct igt_list_head link;
+> +};
+> +
+> +/**
+> + * get_dma_buf_mmap_supported_set:
+> + * @i915: i915 drm file descriptor
+> + * @set: memory regions set
+> + *
+> + * Function constructs set with regions which supports dma-buf mapping.
+> + *
+> + * Returns: set of regions which allows do dma-buf mmap or NULL otherwise.
+> + *
+> + * Note: set (igt_collection) need to be destroyed after use.
+> + */
+> +struct igt_collection *
+> +get_dma_buf_mmap_supported_set(int i915, struct igt_collection *set)
+> +{
+> +	struct igt_collection *region, *supported_set = NULL;
+> +	uint32_t reg;
+> +	int dma_buf_fd;
+> +	char *ptr;
+> +	uint32_t handle, bosize = 4096;
+> +	int count = 0;
+> +	struct mmap_supported_region *mreg, *tmp;
+> +	IGT_LIST_HEAD(region_list);
+> +
+> +	for_each_combination(region, 1, set) {
+> +		reg = igt_collection_get_value(region, 0);
+> +		handle = gem_create_in_memory_regions(i915, bosize, reg);
+> +
+> +		dma_buf_fd = prime_handle_to_fd(i915, handle);
+> +		ptr = mmap(NULL, bosize, PROT_READ, MAP_SHARED, dma_buf_fd, 0);
+> +		if (ptr != MAP_FAILED) {
+> +			mreg = malloc(sizeof(*mreg));
+> +			igt_assert(mreg);
+> +			mreg->region = reg;
+> +			igt_list_add_tail(&mreg->link, &region_list);
+> +			count++;
+> +		}
+> +		munmap(ptr, bosize);
+> +		gem_close(i915, handle);
+> +		close(dma_buf_fd);
+> +	}
+> +
+> +	if (count) {
+> +		int i = 0;
+> +
+> +		supported_set = igt_collection_create(count);
+> +
+> +		igt_list_for_each_entry_safe(mreg, tmp, &region_list, link) {
+> +			igt_collection_set_value(supported_set, i++, mreg->region);
+> +			igt_list_del(&mreg->link);
+> +			free(mreg);
+> +		}
+> +	}
+> +
+> +	return supported_set;
+> +}
+> +
+>  /**
+>   * intel_dump_gpu_meminfo:
+>   * @info: pointer to drm_i915_query_memory_regions structure
+> diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+> index 936e7d1c8..bd92267b6 100644
+> --- a/lib/i915/intel_memory_region.h
+> +++ b/lib/i915/intel_memory_region.h
+> @@ -111,6 +111,9 @@ __get_memory_region_set(struct drm_i915_query_memory_regions *regions,
+>  	__get_memory_region_set(regions, arr__, ARRAY_SIZE(arr__)); \
+>  })
+>  
+> +struct igt_collection *
+> +get_dma_buf_mmap_supported_set(int i915, struct igt_collection *set);
+> +
+>  char *memregion_dynamic_subtest_name(struct igt_collection *set);
+>  
+>  void intel_dump_gpu_meminfo(const struct drm_i915_query_memory_regions *info);
+> -- 
+> 2.32.0
+> 
