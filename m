@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6569150562602656383=="
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0728010E2C9
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Mar 2022 16:27:11 +0000 (UTC)
+Date: Thu, 3 Mar 2022 17:27:05 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YiDsWVm4MlaN8bAa@zkempczy-mobl2>
+References: <20220302121253.25299-1-zbigniew.kempczynski@intel.com>
+ <20220302121253.25299-3-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Anshuman Gupta" <anshuman.gupta@intel.com>
-Date: Thu, 03 Mar 2022 16:18:59 -0000
-Message-ID: <164632433969.19817.17006373281559739510@emeril.freedesktop.org>
-References: <20220303140636.26652-1-anshuman.gupta@intel.com>
-In-Reply-To: <20220303140636.26652-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIHBs?=
- =?utf-8?q?acement_to_gem=5Fexec=5Fstress?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220302121253.25299-3-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/rendercopy/dg2: Add rendercopy
+ support for dg2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,447 +22,176 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
+ Juha-Pekka =?iso-8859-1?Q?Heikkil=E4?= <juha-pekka.heikkila@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6569150562602656383==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Mar 02, 2022 at 01:12:52PM +0100, Zbigniew Kempczyński wrote:
+> From: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>
+> 
+> The present gen12 rendercopy is not compatible with gen21p71(dg2).
+> 
+> Add rendercopy support for dg2 and introduce gen12p71_render_copyfunc
+> function to use it.
+> 
+> Signed-off-by: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>
+> Signed-off-by: Juha-Pekka Heikkilä <juha-pekka.heikkila@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-== Series Details ==
+Looks good for me:
 
-Series: Add placement to gem_exec_stress
-URL   : https://patchwork.freedesktop.org/series/100997/
-State : success
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-== Summary ==
+--
+Zbigniew
 
-CI Bug Log - changes from CI_DRM_11319 -> IGTPW_6737
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/index.html
-
-Participating hosts (44 -> 44)
-------------------------------
-
-  Additional (3): bat-rpls-2 fi-kbl-8809g fi-pnv-d510 
-  Missing    (3): fi-bsw-cyan fi-icl-u2 fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6737:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@hugepages:
-    - {bat-rpls-2}:       NOTRUN -> [DMESG-WARN][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-rpls-2/igt@i915_selftest@live@hugepages.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6737 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@cs-gfx:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][2] ([fdo#109271] / [fdo#109315]) +17 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html
-
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +8 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - fi-kbl-8809g:       NOTRUN -> [DMESG-WARN][4] ([i915#4962]) +1 similar issue
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-skl-6600u:       NOTRUN -> [FAIL][5] ([i915#4547])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#2190])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][10] ([i915#1886] / [i915#2291])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-bdw-5557u:       NOTRUN -> [INCOMPLETE][11] ([i915#3921])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html
-    - bat-dg1-6:          [PASS][12] -> [DMESG-FAIL][13] ([i915#4494] / [i915#4957])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-    - fi-snb-2600:        [PASS][14] -> [INCOMPLETE][15] ([i915#3921])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][16] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][17] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][18] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@kms_chamelium@hdmi-edid-read.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
-    - fi-cfl-8109u:       [PASS][19] -> [DMESG-WARN][20] ([i915#295]) +12 similar issues
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][21] ([fdo#109271] / [i915#533])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][22] ([fdo#109271] / [i915#533])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@kms_psr@cursor_plane_move:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][23] ([fdo#109271]) +54 similar issues
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@kms_psr@cursor_plane_move.html
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][24] ([fdo#109271]) +13 similar issues
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][25] ([fdo#109271]) +57 similar issues
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          [DMESG-FAIL][26] ([i915#4957]) -> [PASS][27]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-    - fi-hsw-4770:        [INCOMPLETE][28] ([i915#4785]) -> [PASS][29]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - {bat-adlp-6}:       [DMESG-WARN][30] ([i915#3576]) -> [PASS][31] +1 similar issue
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - bat-adlp-4:         [DMESG-WARN][32] ([i915#3576]) -> [PASS][33] +2 similar issues
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/bat-adlp-4/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-adlp-4/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2291]: https://gitlab.freedesktop.org/drm/intel/issues/2291
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#4962]: https://gitlab.freedesktop.org/drm/intel/issues/4962
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5068]: https://gitlab.freedesktop.org/drm/intel/issues/5068
-  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6362 -> IGTPW_6737
-
-  CI-20190529: 20190529
-  CI_DRM_11319: 710a019ad85e96e66f7d75ee7f4733cdd8a2b0d0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6737: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/index.html
-  IGT_6362: 698695136f8ade2391f2d8f45300eae2df02e947 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@gem_eio@create
-+igt@gem_eio@create-ext
--igt@i915_pm_rpm@gem-execbuf-stress-extra-wait
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/index.html
-
---===============6569150562602656383==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add placement to gem_exec_stress</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100997/">https://patchwork.freedesktop.org/series/100997/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11319 -&gt; IGTPW_6737</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/index.html</p>
-<h2>Participating hosts (44 -&gt; 44)</h2>
-<p>Additional (3): bat-rpls-2 fi-kbl-8809g fi-pnv-d510 <br />
-  Missing    (3): fi-bsw-cyan fi-icl-u2 fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6737:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@hugepages:<ul>
-<li>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-rpls-2/igt@i915_selftest@live@hugepages.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6737 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@cs-gfx:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4962">i915#4962</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2291">i915#2291</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</p>
-</li>
-<li>
-<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
-</li>
-<li>
-<p>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-bdw-5557u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +12 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@cursor_plane_move:</p>
-<ul>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-kbl-8809g/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +54 similar issues</p>
-</li>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +13 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11319/bat-adlp-4/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/bat-adlp-4/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a> +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6362 -&gt; IGTPW_6737</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11319: 710a019ad85e96e66f7d75ee7f4733cdd8a2b0d0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6737: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6737/index.html<br />
-  IGT_6362: 698695136f8ade2391f2d8f45300eae2df02e947 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@gem_eio@create<br />
-+igt@gem_eio@create-ext<br />
--igt@i915_pm_rpm@gem-execbuf-stress-extra-wait</p>
-
-</body>
-</html>
-
---===============6569150562602656383==--
+> ---
+>  lib/gen4_render.h                            |  2 +
+>  lib/i915/shaders/ps/gen12p71_render_copy.asm | 16 +++++++
+>  lib/intel_batchbuffer.c                      |  2 +
+>  lib/rendercopy.h                             |  4 ++
+>  lib/rendercopy_gen9.c                        | 47 ++++++++++++++++++++
+>  5 files changed, 71 insertions(+)
+>  create mode 100644 lib/i915/shaders/ps/gen12p71_render_copy.asm
+> 
+> diff --git a/lib/gen4_render.h b/lib/gen4_render.h
+> index ab6b9c9f8e..7d8bc659a7 100644
+> --- a/lib/gen4_render.h
+> +++ b/lib/gen4_render.h
+> @@ -42,6 +42,8 @@
+>  
+>  #define GEN4_3DSTATE_BINDING_TABLE_POINTERS	GEN4_3D(3, 0, 1)
+>  
+> +#define GEN4_3DSTATE_BINDING_TABLE_POOL_ALLOC  GEN4_3D(3, 1, 0x19)
+> +
+>  #define GEN4_3DSTATE_VERTEX_BUFFERS		GEN4_3D(3, 0, 8)
+>  # define GEN4_VB0_BUFFER_INDEX_SHIFT			27
+>  # define GEN4_VB0_VERTEXDATA				(0 << 26)
+> diff --git a/lib/i915/shaders/ps/gen12p71_render_copy.asm b/lib/i915/shaders/ps/gen12p71_render_copy.asm
+> new file mode 100644
+> index 0000000000..e407a425fb
+> --- /dev/null
+> +++ b/lib/i915/shaders/ps/gen12p71_render_copy.asm
+> @@ -0,0 +1,16 @@
+> +L0:
+> +(W)      mad (8|M0)               acc0.0<1>:f  r6.3<0;0>:f       r2.0<8;1>:f       r6.0<0>:f
+> +(W)      mad (8|M0)               r113.0<1>:f   acc0.0<8;1>:f    r3.0<8;1>:f       r6.1<0>:f
+> +(W)      mad (8|M0)               acc0.0<1>:f  r6.3<0;0>:f       r4.0<8;1>:f       r6.0<0>:f
+> +(W)      mad (8|M0)               r114.0<1>:f   acc0.0<8;1>:f    r5.0<8;1>:f       r6.1<0>:f
+> +(W)      mad (8|M0)               acc0.0<1>:f  r6.7<0;0>:f       r2.0<8;1>:f       r6.4<0>:f
+> +(W)      mad (8|M0)               r115.0<1>:f   acc0.0<8;1>:f    r3.0<8;1>:f       r6.5<0>:f
+> +(W)      mad (8|M0)               acc0.0<1>:f  r6.7<0;0>:f       r4.0<8;1>:f       r6.4<0>:f
+> +(W)      mad (8|M0)               r116.0<1>:f   acc0.0<8;1>:f    r5.0<8;1>:f       r6.5<0>:f
+> +(W)      send.smpl (16|M0)        r12      r113    null    0x0         0x8840001   //    wr:4+0, rd:8, fc: 0x40001
+> +         mov (16|M0)              r113.0<1>:f   r12.0<8;8,1>:f                   {$0.dst}
+> +         mov (16|M0)              r115.0<1>:f   r14.0<8;8,1>:f
+> +         mov (16|M0)              r117.0<1>:f   r16.0<8;8,1>:f
+> +         mov (16|M0)              r119.0<1>:f   r18.0<8;8,1>:f
+> +(W)      send.rc (16|M0)          null     r113    null    0x0         0x10031000 {EOT, @1} //    wr:8+0, rd:0, Render Target Write msc:16, to #0
+> +L224:
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index e50ab9055e..10e8ba2471 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -1142,6 +1142,8 @@ igt_render_copyfunc_t igt_get_render_copyfunc(int devid)
+>  		copy = gen9_render_copyfunc;
+>  	else if (IS_GEN11(devid))
+>  		copy = gen11_render_copyfunc;
+> +	else if (IS_DG2(devid))
+> +		copy = gen12p71_render_copyfunc;
+>  	else if (IS_GEN12(devid))
+>  		copy = gen12_render_copyfunc;
+>  
+> diff --git a/lib/rendercopy.h b/lib/rendercopy.h
+> index d2d9c586f8..3e984a1415 100644
+> --- a/lib/rendercopy.h
+> +++ b/lib/rendercopy.h
+> @@ -27,6 +27,10 @@ void gen12_render_clearfunc(struct intel_bb *ibb,
+>  			    struct intel_buf *dst, unsigned int dst_x, unsigned int dst_y,
+>  			    unsigned int width, unsigned int height,
+>  			    const float clear_color[4]);
+> +void gen12p71_render_copyfunc(struct intel_bb *ibb,
+> +			      struct intel_buf *src, uint32_t src_x, uint32_t src_y,
+> +			      uint32_t width, uint32_t height,
+> +			      struct intel_buf *dst, uint32_t dst_x, uint32_t dst_y);
+>  void gen12_render_copyfunc(struct intel_bb *ibb,
+>  			   struct intel_buf *src, uint32_t src_x, uint32_t src_y,
+>  			   uint32_t width, uint32_t height,
+> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+> index f021f4cb35..6c45efb4ac 100644
+> --- a/lib/rendercopy_gen9.c
+> +++ b/lib/rendercopy_gen9.c
+> @@ -116,6 +116,24 @@ static const uint32_t gen12_render_copy[][4] = {
+>  	{ 0x80040131, 0x00000004, 0x50007144, 0x00c40000 },
+>  };
+>  
+> +/* see lib/i915/shaders/ps/gen12p71_render_copy.asm */
+> +static const uint32_t gen12p71_render_copy[][4] = {
+> +	{ 0x8003005b, 0x200002a0, 0x0a0a0664, 0x06040205 },
+> +	{ 0x8003005b, 0x71040aa8, 0x0a0a2001, 0x06240305 },
+> +	{ 0x8003005b, 0x200002a0, 0x0a0a0664, 0x06040405 },
+> +	{ 0x8003005b, 0x72040aa8, 0x0a0a2001, 0x06240505 },
+> +	{ 0x8003005b, 0x200002a0, 0x0a0a06e4, 0x06840205 },
+> +	{ 0x8003005b, 0x73040aa8, 0x0a0a2001, 0x06a40305 },
+> +	{ 0x8003005b, 0x200002a0, 0x0a0a06e4, 0x06840405 },
+> +	{ 0x8003005b, 0x74040aa8, 0x0a0a2001, 0x06a40505 },
+> +	{ 0x80031101, 0x00010000, 0x00000000, 0x00000000 },
+> +	{ 0x80044031, 0x0c440000, 0x20027124, 0x01000000 },
+> +	{ 0x00042061, 0x71050aa0, 0x00460c05, 0x00000000 },
+> +	{ 0x00040061, 0x73050aa0, 0x00460e05, 0x00000000 },
+> +	{ 0x00040061, 0x75050aa0, 0x00461005, 0x00000000 },
+> +	{ 0x00040061, 0x77050aa0, 0x00461205, 0x00000000 },
+> +	{ 0x80041131, 0x00000004, 0x50007144, 0x00c40000 },
+> +};
+>  
+>  /*
+>   * Gen >= 12 onwards don't have a setting for PTE,
+> @@ -1062,6 +1080,14 @@ void _gen9_render_op(struct intel_bb *ibb,
+>  
+>  	gen9_emit_state_base_address(ibb);
+>  
+> +	if (IS_DG2(ibb->devid) || intel_gen(ibb->devid) > 12) {
+> +		intel_bb_out(ibb, GEN4_3DSTATE_BINDING_TABLE_POOL_ALLOC | 2);
+> +		intel_bb_emit_reloc(ibb, ibb->handle,
+> +				    I915_GEM_DOMAIN_RENDER | I915_GEM_DOMAIN_INSTRUCTION, 0,
+> +				    0, ibb->batch_offset);
+> +		intel_bb_out(ibb, 1 << 12);
+> +	}
+> +
+>  	intel_bb_out(ibb, GEN7_3DSTATE_VIEWPORT_STATE_POINTERS_CC);
+>  	intel_bb_out(ibb, viewport.cc_state);
+>  	intel_bb_out(ibb, GEN8_3DSTATE_VIEWPORT_STATE_POINTERS_SF_CLIP);
+> @@ -1164,6 +1190,27 @@ void gen12_render_copyfunc(struct intel_bb *ibb,
+>  	gen12_aux_pgtable_cleanup(ibb, &pgtable_info);
+>  }
+>  
+> +void gen12p71_render_copyfunc(struct intel_bb *ibb,
+> +			      struct intel_buf *src,
+> +			      unsigned int src_x, unsigned int src_y,
+> +			      unsigned int width, unsigned int height,
+> +			      struct intel_buf *dst,
+> +			      unsigned int dst_x, unsigned int dst_y)
+> +{
+> +	struct aux_pgtable_info pgtable_info = { };
+> +
+> +	gen12_aux_pgtable_init(&pgtable_info, ibb, src, dst);
+> +
+> +	_gen9_render_op(ibb, src, src_x, src_y,
+> +			width, height, dst, dst_x, dst_y,
+> +			pgtable_info.pgtable_buf,
+> +			NULL,
+> +			gen12p71_render_copy,
+> +			sizeof(gen12p71_render_copy));
+> +
+> +	gen12_aux_pgtable_cleanup(ibb, &pgtable_info);
+> +}
+> +
+>  void gen12_render_clearfunc(struct intel_bb *ibb,
+>  			    struct intel_buf *dst,
+>  			    unsigned int dst_x, unsigned int dst_y,
+> -- 
+> 2.32.0
+> 
