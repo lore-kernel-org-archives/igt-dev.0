@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6743A10E191
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Mar 2022 04:25:47 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  3 Mar 2022 09:57:00 +0530
+Message-Id: <20220303042700.3690-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Thu, 03 Mar 2022 04:22:39 -0000
-Message-ID: <164628135935.19838.12573628120167144703@emeril.freedesktop.org>
-References: <20220303034634.30253-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20220303034634.30253-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
- =?utf-8?q?GT_cleanup_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4] IGT cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,133 +16,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Before starting the next subtest, clean up the states to default
+values, those are assumed by other tests.
 
-Series: IGT cleanup (rev3)
-URL   : https://patchwork.freedesktop.org/series/100801/
-State : warning
+v2: And also before running the subtest we need to sanitize the system state
+to default, since we can't trust the state of previous subtest, used
+igt_display_reset() to sanitize the state. (Bhanuprakash Modem)
 
-== Summary ==
+Below tests are modified:
+	tests/kms_concurrent.c
+	tests/kms_sequence.c
 
-Pipeline status: FAILED.
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_concurrent.c | 4 +++-
+ tests/kms_sequence.c   | 6 ++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/522559 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/19381022):
-  320/324 assembler test/rnde-intsrc              OK       0.02 s 
-  321/324 assembler test/rndz                     OK       0.01 s 
-  322/324 assembler test/lzd                      OK       0.02 s 
-  323/324 assembler test/not                      OK       0.02 s 
-  324/324 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  320
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1646280999:step_script
-  section_start:1646280999:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1646281000:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/19381025):
-  Ok:                  306
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1646281067:step_script
-  section_start:1646281067:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1694 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=19381025 responseStatus=201 Created token=_Rho-Xyd
-  section_end:1646281076:upload_artifacts_on_failure
-  section_start:1646281076:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1646281076:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/19381026):
-  Ok:                  306
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1646281072:step_script
-  section_start:1646281072:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1694 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=19381026 responseStatus=201 Created token=gUsS_-tL
-  section_end:1646281081:upload_artifacts_on_failure
-  section_start:1646281081:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1646281082:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/19381024):
-  320/324 assembler test/rnde-intsrc              OK       0.02 s 
-  321/324 assembler test/rndz                     OK       0.01 s 
-  322/324 assembler test/lzd                      OK       0.02 s 
-  323/324 assembler test/not                      OK       0.03 s 
-  324/324 assembler test/immediate                OK       0.03 s 
-  
-  Ok:                  320
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1646281030:step_script
-  section_start:1646281030:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1646281030:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/19381027):
-  Ok:                  306
-  Expected Fail:         3
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1646281119:step_script
-  section_start:1646281119:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1694 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=19381027 responseStatus=201 Created token=SZ5GUuk8
-  section_end:1646281128:upload_artifacts_on_failure
-  section_start:1646281128:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1646281129:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/522559
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 1b8f4b04..72a55e65 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
+ 	}
+ 
+ 	/* reset the constraint on the pipe */
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+ 	free(data->plane);
+ 	data->plane = NULL;
+@@ -316,6 +317,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 
+ 	igt_fixture {
+ 		int valid_tests = 0;
++		igt_display_reset(&data->display);
+ 
+ 		igt_require_pipe(&data->display, pipe);
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index 9c287480..2afdb13a 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -109,8 +109,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
+-	igt_display_commit(display);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ }
+ 
+ static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
+@@ -278,6 +278,7 @@ igt_main
+ 		fd = drm_open_driver_master(DRIVER_ANY);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, fd);
++		igt_display_reset(&data.display);
+ 	}
+ 
+ 	for (f = funcs; f->name; f++) {
+@@ -289,6 +290,7 @@ igt_main
+ 				     "drmCrtcQueueSequence");
+ 			igt_subtest_f("%s-%s", f->name, m->name) {
+ 				data.flags = m->flags;
++				igt_display_reset(&data.display);
+ 				run_test(&data, fd, f->func);
+ 			}
+ 		}
+-- 
+2.26.2
