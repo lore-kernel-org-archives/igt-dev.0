@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8551988577150032982=="
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com
+ [IPv6:2607:f8b0:4864:20::b2e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1973F10EC3B
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Mar 2022 08:45:20 +0000 (UTC)
+Received: by mail-yb1-xb2e.google.com with SMTP id t7so11980611ybi.8
+ for <igt-dev@lists.freedesktop.org>; Fri, 04 Mar 2022 00:45:20 -0800 (PST)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Chuansheng Liu" <chuansheng.liu@intel.com>
-Date: Fri, 04 Mar 2022 06:27:23 -0000
-Message-ID: <164637524381.21309.586980234112680549@emeril.freedesktop.org>
-References: <20220304051509.44816-1-chuansheng.liu@intel.com>
-In-Reply-To: <20220304051509.44816-1-chuansheng.liu@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?gem=5Fmmap=5Fgtt=3A_add_test_mmap=5Fclosed=5Fbo?=
+References: <20220303090507.grenwdro7u4fzmoe@houat>
+ <YiCeCeNobS2FCiQB@intel.com>
+In-Reply-To: <YiCeCeNobS2FCiQB@intel.com>
+From: Daniel Stone <daniel@fooishbar.org>
+Date: Fri, 4 Mar 2022 08:45:07 +0000
+Message-ID: <CAPj87rOjof_WMT32G3-mb-ukVmOxVWJfXEVB4hYbUj0_VCV6ng@mail.gmail.com>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] Mandatory Test Suite for KMS Drivers?
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,194 +22,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Maxime Ripard <maxime@cerno.tech>,
+ dri-devel@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8551988577150032982==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+On Thu, 3 Mar 2022 at 10:53, Rodrigo Vivi <rodrigo.vivi@intel.com> wrote:
+> On Thu, Mar 03, 2022 at 10:05:07AM +0100, Maxime Ripard wrote:
+> > Back at XDC we floated the idea of creating a test suite for IGT that we
+> > expect any KMS driver to pass, similar to what v4l2-compliance and
+> > cec-compliance provide for v4l2 and CEC respectively.
+> >
+> > I was looking at the list of tests, and it's fairly massive, so it's not
+> > clear to me what tests we could start this suite with. I can only assume
+> > all the KMS (but the chamelium ones) and fbdev related ones would be a
+> > good start?
+> >
+> > What do you think?
+>
+> I believe we should start with the group of the tests that we know that
+> are reliably passing today on most of the platforms and then increase
+> the list as the tests and drivers become more reliable.
+>
+> For instance, many of these would be candidate to be filtered out for now
+> https://intel-gfx-ci.01.org/tree/drm-next/index.html?testfilter=kms
+>
+> compared to the whole view of kms tests:
+> https://intel-gfx-ci.01.org/tree/drm-next/shards-all.html?testfilter=kms
 
-Series: tests/gem_mmap_gtt: add test mmap_closed_bo
-URL   : https://patchwork.freedesktop.org/series/101035/
-State : success
+We are running some of IGT on Panfrost + amdgpu + i915 as part of
+KernelCI as well: go to https://linux.kernelci.org/test/ and search
+for 'igt-gpu'. This gets run for mainline, next, and whatever other
+kernel trees push into i915.
 
-== Summary ==
+There is a Grafana-based dashboard that the KernelCI team have been
+working on to visualise test runs, but it's currently having some
+backend issues so I can't show you a link for that. I did raise a
+suggestion in their design discussion for a proper testing dashboard
+for making it easier to see the status, so feel free to pile in there:
+https://github.com/kernelci/kernelci-project/discussions/28#discussioncomment-2293696
 
-CI Bug Log - changes from CI_DRM_11325 -> IGTPW_6739
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Additional (1): fi-pnv-d510 
-  Missing    (2): fi-bsw-cyan fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6739 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][1] ([fdo#109271]) +57 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][2] ([i915#2426] / [i915#4312])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/fi-bdw-5557u/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          [DMESG-FAIL][3] ([i915#4494] / [i915#4957]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11325/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-6:          [DMESG-FAIL][5] ([i915#4494] / [i915#4957]) -> [DMESG-FAIL][6] ([i915#4957])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11325/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6362 -> IGTPW_6739
-
-  CI-20190529: 20190529
-  CI_DRM_11325: 332be8ce9631bce29763a2b43ff217b1bb926aea @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6739: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/index.html
-  IGT_6362: 698695136f8ade2391f2d8f45300eae2df02e947 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@gem_mmap_gtt@mmap_closed_bo
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/index.html
-
---===============8551988577150032982==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/gem_mmap_gtt: add test mmap_closed_bo</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101035/">https://patchwork.freedesktop.org/series/101035/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11325 -&gt; IGTPW_6739</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Additional (1): fi-pnv-d510 <br />
-  Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6739 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11325/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11325/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6362 -&gt; IGTPW_6739</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11325: 332be8ce9631bce29763a2b43ff217b1bb926aea @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6739: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6739/index.html<br />
-  IGT_6362: 698695136f8ade2391f2d8f45300eae2df02e947 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@gem_mmap_gtt@mmap_closed_bo</p>
-
-</body>
-</html>
-
---===============8551988577150032982==--
+Cheers,
+Daniel
