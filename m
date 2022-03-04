@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F36A610EF83
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Mar 2022 09:37:11 +0000 (UTC)
-Date: Fri, 4 Mar 2022 10:37:07 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YiHdw/lxHbEc9aO0@kamilkon-DESK1>
-References: <20220304090202.32164-1-zbigniew.kempczynski@intel.com>
- <20220304090202.32164-2-zbigniew.kempczynski@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE6E610E71B
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Mar 2022 11:01:32 +0000 (UTC)
+Date: Fri, 4 Mar 2022 12:01:28 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Arjun Melkaveri <arjun.melkaveri@intel.com>
+Message-ID: <YiHxiC7NPsh9ixhG@zkempczy-mobl2>
+References: <20220225110626.82776-1-zbigniew.kempczynski@intel.com>
+ <20220225110626.82776-2-zbigniew.kempczynski@intel.com>
+ <YhjswUQevoz76Bo2@kamilkon-DESK1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220304090202.32164-2-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/intel_batchbuffer: Use safe
- alignment for intel-bb
+In-Reply-To: <YhjswUQevoz76Bo2@kamilkon-DESK1>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] i915/gem_engine_topology: Only use
+ the main copy engines for XY_BLOCK_COPY
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,50 +28,160 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Dnia 2022-03-04 at 10:02:00 +0100, Zbigniew Kempczyński napisał(a):
-> Discrete cards can have different memory alignment requirements
-> when objects used in execbuffer comes from different memory regions.
-> Lets use safe alignment which should be fine regardless objects
-> location.
+On Fri, Feb 25, 2022 at 03:50:41PM +0100, Kamil Konieczny wrote:
+> Hi Zbigniew,
 > 
-> v2: ensure passed alignment is power of two (Kamil)
+> can you change patch subject ? The patch itself adds two general
+> helper functions to lib, and one helper for checking copy
+> capability. It do not uses it by itself. Maybe change it to
+> something like : Add capability helpers.
+
+Ok, I will change it.
+
 > 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/intel_batchbuffer.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> Dnia 2022-02-25 at 12:06:24 +0100, Zbigniew Kempczyński napisał(a):
+> > From: Chris Wilson <chris.p.wilson@intel.com>
+> > 
 > 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index ddb8d8c1fd..460f5f2bb3 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -1370,7 +1370,7 @@ __intel_bb_create(int i915, uint32_t ctx, uint32_t size, bool do_relocs,
->  	ibb->enforce_relocs = do_relocs;
->  	ibb->handle = gem_create(i915, size);
->  	ibb->size = size;
-> -	ibb->alignment = 4096;
-> +	ibb->alignment = gem_detect_safe_alignment(i915);
->  	ibb->ctx = ctx;
->  	ibb->vm_id = 0;
->  	ibb->batch = calloc(1, size);
-> @@ -1925,9 +1925,10 @@ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
->  
->  	igt_assert(INVALID_ADDR(offset) || alignment == 0
->  		   || ALIGN(offset, alignment) == offset);
-> +	igt_assert(is_power_of_two(alignment));
->  
->  	object = __add_to_cache(ibb, handle);
-> -	alignment = alignment ?: 4096;
-> +	alignment = max_t(uint64_t, alignment, gem_detect_safe_alignment(ibb->i915));
->  	__add_to_objects(ibb, object);
->  
->  	/*
-> -- 
-> 2.32.0
+> Below is description about why change is needed, it's ok.
 > 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > XY_BLOCK_COPY blt command is used to transfer the ccs data.
+> 
+> Imho it would be helpfull here to put full description of ccs,
+> "ccs compressed data". There is also compute engine and it has
+> the same shorthand ccs.
+
+Ccs data is ok for me. In this context it implicates compressed data,
+not compute command streamer. XY_BLOCK_COPY_BLT is blitter command
+so it is unrelated to CCS.
+
+> 
+> > So, we can only run the tests on those engines which have
+> 
+> s/So, We/We/
+
+Ok.
+> 
+> > support for the "block_copy" capability.
+> 
+> What is missing here is description about what was changed in lib.
+
+Ok, I will change it.
+
+> 
+> > 
+> > Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+> > Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> > ---
+> >  lib/i915/gem_engine_topology.c | 38 ++++++++++++++++++++++++++++++++++
+> >  lib/i915/gem_engine_topology.h |  5 +++++
+> >  2 files changed, 43 insertions(+)
+> > 
+> > diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+> > index bd12d0bc9..18fc00ab0 100644
+> > --- a/lib/i915/gem_engine_topology.c
+> > +++ b/lib/i915/gem_engine_topology.c
+> > @@ -534,6 +534,44 @@ void gem_engine_properties_restore(int fd, const struct gem_engine_properties *s
+> >  	}
+> >  }
+> >  
+> > +static bool
+> > +__gem_engine_has_capability(int i915, const char *engine,
+> > +			    const char *attr, const char *cap)
+> > +{
+> > +	char buf[4096] = {};
+> > +	FILE *file;
+> > +
+> > +	file = __open_attr(igt_sysfs_open(i915), "r",
+> > +			   "engine", engine, attr, NULL);
+> > +	if (file) {
+> > +		fread(buf, 1, sizeof(buf) - 1, file);
+> > +		fclose(file);
+> > +	}
+> 
+> What happens when file==NULL ? Should'nt we return NULL immediatly ?
+> Maybe re-arrange it like:
+> 	if(!file)
+> 		return NULL;
+
+Ok, I will modify it.
+
+> 
+> What about buffer end ? Or when number of readed bytes will be zero ?
+> I think we should add null string terminator at end of readed buf.
+
+What for? char buf[4096] = {} initializes it to zero so if you'll read
+zero bytes strstr() will return NULL.
+
+> 
+> > +
+> > +	return strstr(buf, cap);
+> > +}
+> 
+> One problem with this function is it do not differentiate between
+> when it was zero read (so it do not helped us) and when i915
+> driver fills it and we can actually check capabilities here.
+
+We are interested in positive scenario where kernel reports caps. Negative
+case - kernel reports caps but doesn't support or caps file doesn't
+exits is treated as negative. 
+
+> 
+> > +
+> > +bool gem_engine_has_capability(int i915, const char *engine, const char *cap)
+> > +{
+> > +	return __gem_engine_has_capability(i915, engine, "capabilities", cap);
+> > +}
+> > +
+> > +bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap)
+> > +{
+> > +	return __gem_engine_has_capability(i915, engine, "known_capabilities", cap);
+> > +}
+> > +
+> > +bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine)
+> > +{
+> > +	if (engine->class != I915_ENGINE_CLASS_COPY)
+> > +		return false;
+> > +
+> > +	if (!gem_engine_has_known_capability(i915, engine->name, "block_copy"))
+> > +		return intel_gen(intel_get_drm_devid(i915)) >= 12;
+> 
+> This looks like guessing but maybe it is ok.
+
+If kernel doesn't support reporting caps we assume gen 12 is enough to claim
+we can execute block-copy.
 
 --
-Kamil
+Zbigniew
+
+> 
+> > +
+> > +	return gem_engine_has_capability(i915, engine->name, "block_copy");
+> > +}
+> > +
+> >  uint32_t gem_engine_mmio_base(int i915, const char *engine)
+> >  {
+> >  	unsigned int mmio = 0;
+> > diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+> > index b413aa8ab..987f2bf94 100644
+> > --- a/lib/i915/gem_engine_topology.h
+> > +++ b/lib/i915/gem_engine_topology.h
+> > @@ -133,6 +133,11 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+> >  
+> >  uint32_t gem_engine_mmio_base(int i915, const char *engine);
+> >  
+> > +bool gem_engine_has_capability(int i915, const char *engine, const char *cap);
+> > +bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap);
+> > +
+> > +bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine);
+> > +
+> >  void dyn_sysfs_engines(int i915, int engines, const char *file,
+> >  		       void (*test)(int i915, int engine));
+> >  
+> > -- 
+> > 2.32.0
+> > 
+> Regards,
+> Kamil Konieczny
