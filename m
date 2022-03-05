@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5902170649322046815=="
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam08on2051.outbound.protection.outlook.com [40.107.102.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1A4810EB1F
+ for <igt-dev@lists.freedesktop.org>; Sat,  5 Mar 2022 04:13:04 +0000 (UTC)
+From: Solomon Chiu <solomon.chiu@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Sat, 5 Mar 2022 12:12:38 +0800
+Message-ID: <20220305041238.47659-1-solomon.chiu@amd.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Sat, 05 Mar 2022 03:31:20 -0000
-Message-ID: <164645108017.21681.5420223495832452688@emeril.freedesktop.org>
-References: <20220301164330.156289-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220301164330.156289-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fsetmode=3A_Fix_stealing_test_=28rev2=29?=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4] tests/amdgpu: new test for
+ Freesync-Video Mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,560 +19,902 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5902170649322046815==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/kms_setmode: Fix stealing test (rev2)
-URL   : https://patchwork.freedesktop.org/series/100893/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11330 -> IGTPW_6741
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_6741 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_6741, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html
-
-Participating hosts (48 -> 34)
-------------------------------
-
-  Additional (1): fi-glk-dsi 
-  Missing    (15): fi-kbl-soraka fi-bdw-samus shard-tglu bat-dg1-6 bat-dg1-5 shard-rkl fi-icl-u2 bat-dg2-9 bat-adlp-6 fi-bsw-cyan fi-pnv-d510 bat-rpls-2 shard-dg1 bat-jsl-2 bat-jsl-1 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6741:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-rkl-guc:         [PASS][1] -> [SKIP][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-tgl-1115g4:      [INCOMPLETE][3] ([i915#1385]) -> [INCOMPLETE][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-tgl-1115g4:      [DMESG-WARN][5] -> [SKIP][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - {fi-tgl-dsi}:       [PASS][7] -> [SKIP][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-    - {fi-jsl-1}:         [PASS][9] -> [SKIP][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-    - {fi-ehl-2}:         [PASS][11] -> [SKIP][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_11330 and IGTPW_6741:
-
-### New IGT tests (2) ###
-
-  * igt@kms_setmode@basic-clone-single-crtc@pipe-a-vga-1-hdmi-a-1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@kms_setmode@basic-clone-single-crtc@pipe-b-vga-1-hdmi-a-1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6741 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_basic@query-info:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][13] ([fdo#109271]) +31 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@amdgpu/amd_basic@query-info.html
-
-  * igt@amdgpu/amd_basic@semaphore:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][14] ([fdo#109271] / [fdo#109315]) +17 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - fi-skl-6600u:       [PASS][15] -> [INCOMPLETE][16] ([i915#4547])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][17] ([fdo#109271] / [i915#2190])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][18] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-7567u:       [PASS][19] -> [DMESG-FAIL][20] ([i915#541])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [PASS][21] -> [DMESG-FAIL][22] ([i915#5026])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@i915_selftest@live@requests.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][23] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][24] ([fdo#109271] / [i915#533])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-skl-6700k2:      [PASS][25] -> [SKIP][26] ([fdo#109271])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-blb-e6850:       [PASS][27] -> [SKIP][28] ([fdo#109271])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-x1275:       [PASS][29] -> [SKIP][30] ([fdo#109271])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-kefka:       [PASS][31] -> [SKIP][32] ([fdo#109271])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bwr-2160:        [PASS][33] -> [SKIP][34] ([fdo#109271])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-nick:        [PASS][35] -> [SKIP][36] ([fdo#109271])
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-guc:         [PASS][37] -> [SKIP][38] ([fdo#109271])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-8809g:       [PASS][39] -> [SKIP][40] ([fdo#109271])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-ilk-650:         [PASS][41] -> [SKIP][42] ([fdo#109271])
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-elk-e7500:       [PASS][43] -> [SKIP][44] ([fdo#109271])
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-snb-2520m:       [PASS][45] -> [SKIP][46] ([fdo#109271])
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-8109u:       [PASS][47] -> [SKIP][48] ([fdo#109271])
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-7500u:       [PASS][49] -> [SKIP][50] ([fdo#109271])
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bxt-dsi:         [PASS][51] -> [SKIP][52] ([fdo#109271])
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-hsw-4770:        [PASS][53] -> [SKIP][54] ([fdo#109271])
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-guc:         [PASS][55] -> [SKIP][56] ([fdo#109271])
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-7567u:       [PASS][57] -> [SKIP][58] ([fdo#109271])
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-skl-guc:         [PASS][59] -> [SKIP][60] ([fdo#109271])
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-n3050:       [PASS][61] -> [SKIP][62] ([fdo#109271])
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-ivb-3770:        [PASS][63] -> [SKIP][64] ([fdo#109271])
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-8700k:       [PASS][65] -> [SKIP][66] ([fdo#109271])
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-glk-j4005:       [PASS][67] -> [SKIP][68] ([fdo#109271])
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@runner@aborted:
-    - fi-blb-e6850:       NOTRUN -> [FAIL][69] ([fdo#109271] / [i915#2403] / [i915#2426] / [i915#4312])
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@runner@aborted.html
-    - fi-skl-6600u:       NOTRUN -> [FAIL][70] ([i915#4312])
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6600u/igt@runner@aborted.html
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][71] ([i915#2426] / [i915#4312])
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bdw-5557u/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@dmabuf:
-    - {fi-tgl-dsi}:       [FAIL][72] -> [PASS][73]
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-dsi/igt@i915_selftest@live@dmabuf.html
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-dsi/igt@i915_selftest@live@dmabuf.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [INCOMPLETE][74] ([i915#4785]) -> [PASS][75]
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1385]: https://gitlab.freedesktop.org/drm/intel/issues/1385
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#5026]: https://gitlab.freedesktop.org/drm/intel/issues/5026
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6364 -> IGTPW_6741
-
-  CI-20190529: 20190529
-  CI_DRM_11330: 68d8cd94c6eaa94aa6bae2e92efbd488523a1a1b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6741: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html
-  IGT_6364: 3523fe577bc22e6512a8de7e60175c8f46cf61d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html
-
---===============5902170649322046815==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Fix stealing test (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100893/">https://patchwork.freedesktop.org/series/100893/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11330 -&gt; IGTPW_6741</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6741 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_6741, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html</p>
-<h2>Participating hosts (48 -&gt; 34)</h2>
-<p>Additional (1): fi-glk-dsi <br />
-  Missing    (15): fi-kbl-soraka fi-bdw-samus shard-tglu bat-dg1-6 bat-dg1-5 shard-rkl fi-icl-u2 bat-dg2-9 bat-adlp-6 fi-bsw-cyan fi-pnv-d510 bat-rpls-2 shard-dg1 bat-jsl-2 bat-jsl-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6741:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_setmode@basic-clone-single-crtc:<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1385">i915#1385</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>
-<p>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
-<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
-<p>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_11330 and IGTPW_6741:</p>
-<h3>New IGT tests (2)</h3>
-<ul>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc@pipe-a-vga-1-hdmi-a-1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc@pipe-b-vga-1-hdmi-a-1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6741 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_basic@query-info:</p>
-<ul>
-<li>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@amdgpu/amd_basic@query-info.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@amdgpu/amd_basic@semaphore:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/541">i915#541</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5026">i915#5026</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>
-<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bwr-2160:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-ilk-650:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@dmabuf:</p>
-<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-dsi/igt@i915_selftest@live@dmabuf.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-dsi/igt@i915_selftest@live@dmabuf.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6364 -&gt; IGTPW_6741</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11330: 68d8cd94c6eaa94aa6bae2e92efbd488523a1a1b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6741: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html<br />
-  IGT_6364: 3523fe577bc22e6512a8de7e60175c8f46cf61d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5902170649322046815==--
+This tests transition between normal and FreeSync-Video modes and
+measures the FPS to ensure vblank events are happening at the
+expected rate. A SMPTE test pattern is displayed in the first mode,
+and then a simple animation is displayed in the second mode, in
+order to help the user to check if there are blanking with mode
+transition.
+
+v4: Rebase and refine commit message
+v3: Remove conditional debugging calls and some comments.
+v2: Rebase
+---
+ tests/amdgpu/amd_freesync_video_mode.c | 872 +++++++++++++++++++++++++
+ 1 file changed, 872 insertions(+)
+ create mode 100644 tests/amdgpu/amd_freesync_video_mode.c
+
+diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
+new file mode 100644
+index 00000000..579d2443
+--- /dev/null
++++ b/tests/amdgpu/amd_freesync_video_mode.c
+@@ -0,0 +1,872 @@
++/*
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "igt.h"
++#include "sw_sync.h"
++#include <fcntl.h>
++#include <signal.h>
++
++#define NSECS_PER_SEC		(1000000000ull)
++#define TEST_DURATION_NS	(10 * NSECS_PER_SEC)
++
++#define BYTES_PER_PIXEL         4
++#define MK_COLOR(r, g, b)	((0 << 24) | (r << 16) | (g << 8) | b)
++
++/*
++ * The Display Core of amdgpu will add a set of modes derived from the
++ * base FreeSync video mode into the corresponding connector’s mode list based
++ * on commonly used refresh rates and VRR range of the connected display.
++ * From the userspace's perspective, they can see a seamless mode change
++ * experience when the change between different refresh rates under the same
++ * resolution. Additionally, userspace applications such as Video playback can
++ * read this modeset list and change the refresh rate based on the video frame
++ * rate. Finally, the userspace can also derive an appropriate mode for
++ * a particular refresh rate based on the FreeSync Mode and add it to the
++ * connector’s mode list.
++*/
++IGT_TEST_DESCRIPTION("This tests transition between normal and FreeSync-Video"
++		     "modes and measures the FPS to ensure vblank events are"
++		     "happening at the expected rate.");
++typedef struct range {
++	unsigned int min;
++	unsigned int max;
++} range_t;
++
++typedef struct data {
++	int		drm_fd;
++	igt_display_t	display;
++	igt_plane_t	*primary;
++	igt_fb_t	fbs[2];
++	uint32_t	*fb_mem[2];
++	int		front;
++	bool		fb_initialized;
++	range_t		range;
++
++	drmModeConnector *connector;
++	drmModeModeInfo *modes;
++	int		count_modes;
++
++	uint32_t	preferred_mode_index;
++        uint32_t	base_mode_index;
++	uint32_t	hdisplay;
++	uint32_t	vdisplay;
++} data_t;
++
++struct fsv_sprite {
++        uint32_t        w;
++	uint32_t	h;
++        uint32_t        *data;
++};
++static struct fsv_sprite cicle_sprite;
++
++enum {
++        FSV_PREFERRED_MODE,
++        FSV_BASE_MODE,
++        FSV_FREESYNC_VIDEO_MODE,
++        FSV_NON_FREESYNC_VIDEO_MODE,
++};
++
++enum {
++	ANIM_TYPE_SMPTE,
++	ANIM_TYPE_CIRCLE_WAVE,
++
++	ANIM_TYPE_COUNT,
++};
++
++enum {
++	SCENE_BASE_MODE_TO_VARIOUS_FSV_MODE ,
++	SCENE_LOWER_FSV_MODE_TO_HIGHER_FSV_MODE ,
++	SCENE_NON_FSV_MODE_TO_FSV_MODE ,
++	SCENE_BASE_MODE_TO_CUSTUM_MODE ,
++	SCENE_NON_FSV_MODE_TO_NON_FSV_MODE,
++
++	SCENE_COUNT,
++};
++
++/*----------------------------------------------------------------------------*/
++
++/* Converts a timespec structure to nanoseconds. */
++static uint64_t timespec_to_ns(struct timespec *ts)
++{
++	return ts->tv_sec * NSECS_PER_SEC + ts->tv_nsec;
++}
++
++/*
++ * Gets an event from DRM and returns its timestamp in nanoseconds.
++ * Asserts if the event from DRM is not matched with requested one.
++ *
++ * This blocks until the event is received.
++ */
++static uint64_t get_kernel_event_ns(data_t *data, uint32_t event)
++{
++	struct drm_event_vblank ev;
++
++	igt_set_timeout(1, "Waiting for an event\n");
++	igt_assert_eq(read(data->drm_fd, &ev, sizeof(ev)), sizeof(ev));
++	igt_assert_eq(ev.base.type, event);
++	igt_reset_timeout();
++
++	return ev.tv_sec * NSECS_PER_SEC + ev.tv_usec * 1000ull;
++}
++
++/*
++ * Returns the current CLOCK_MONOTONIC time in nanoseconds.
++ * The regular IGT helpers can't be used since they default to
++ * CLOCK_MONOTONIC_RAW - which isn't what the kernel uses for its timestamps.
++ */
++static uint64_t get_time_ns(void)
++{
++	struct timespec ts;
++	memset(&ts, 0, sizeof(ts));
++	errno = 0;
++
++	if (!clock_gettime(CLOCK_MONOTONIC, &ts))
++		return timespec_to_ns(&ts);
++
++	igt_warn("Could not read monotonic time: %s\n", strerror(errno));
++	igt_fail(-errno);
++
++	return 0;
++}
++
++static void fbmem_draw_rect(
++		uint32_t *fbmem,
++		uint32_t stride,
++		uint32_t x,
++		uint32_t y,
++		uint32_t w,
++		uint32_t h,
++		uint32_t color)
++{
++        uint32_t offset = y * stride + x;
++
++        for (uint32_t j = 0; j < h; j++) {
++                for (uint32_t i = 0; i < w; i++) {
++                        fbmem[offset + i] = color;
++                }
++                offset += stride;
++        }
++}
++
++static void fbmem_draw_smpte_pattern(uint32_t *fbmem, int width, int height)
++{
++	uint32_t x, y;
++        uint32_t colors_top[] = {
++                MK_COLOR(192, 192, 192), /* grey */
++                MK_COLOR(192, 192, 0),   /* yellow */
++                MK_COLOR(0, 192, 192),   /* cyan */
++                MK_COLOR(0, 192, 0),     /* green */
++                MK_COLOR(192, 0, 192),   /* magenta */
++                MK_COLOR(192, 0, 0),     /* red */
++                MK_COLOR(0, 0, 192),     /* blue */
++        };
++        uint32_t colors_middle[] = {
++                MK_COLOR(0, 0, 192),     /* blue */
++                MK_COLOR(19, 19, 19),    /* black */
++                MK_COLOR(192, 0, 192),   /* magenta */
++                MK_COLOR(19, 19, 19),    /* black */
++                MK_COLOR(0, 192, 192),   /* cyan */
++                MK_COLOR(19, 19, 19),    /* black */
++                MK_COLOR(192, 192, 192), /* grey */
++        };
++        uint32_t colors_bottom[] = {
++                MK_COLOR(0, 33, 76),     /* in-phase */
++                MK_COLOR(255, 255, 255), /* super white */
++                MK_COLOR(50, 0, 106),    /* quadrature */
++                MK_COLOR(19, 19, 19),    /* black */
++                MK_COLOR(9, 9, 9),       /* 3.5% */
++                MK_COLOR(19, 19, 19),    /* 7.5% */
++                MK_COLOR(29, 29, 29),    /* 11.5% */
++                MK_COLOR(19, 19, 19),    /* black */
++        };
++
++        for (y = 0; y < height * 6 / 9; ++y) {
++                for (x = 0; x < width; ++x)
++                        fbmem[x] =
++                                colors_top[x * 7 / width];
++                fbmem += width;
++        }
++
++        for (; y < height * 7 / 9; ++y) {
++                for (x = 0; x < width; ++x)
++                        fbmem[x] =
++                                colors_middle[x * 7 / width];
++                fbmem += width;
++        }
++
++        for (; y < height; ++y) {
++                for (x = 0; x < width * 5 / 7; ++x)
++                        fbmem[x] =
++                                colors_bottom[x * 4 / (width * 5 / 7)];
++                for (; x < width * 6 / 7; ++x)
++                        fbmem[x] =
++                                colors_bottom[(x - width * 5 / 7) * 3
++                                              / (width / 7) + 4];
++                for (; x < width; ++x)
++                        fbmem[x] = colors_bottom[7];
++                fbmem += width;
++        }
++}
++
++static void sprite_init(
++		struct fsv_sprite *sprite,
++		uint32_t w,
++		uint32_t h)
++{
++        igt_assert(sprite);
++
++        sprite->data = (uint32_t *)malloc(w * h * BYTES_PER_PIXEL);
++        igt_assert(sprite->data);
++
++        sprite->w = w;
++        sprite->h = h;
++}
++
++static void sprite_paste(
++		uint32_t *fbmem,
++		uint32_t fb_stride,
++		struct fsv_sprite *sprite,
++		uint32_t x,
++		uint32_t y)
++{
++        uint32_t fb_offset = y * fb_stride + x;
++        uint32_t sprite_offset = 0;
++
++        for (int j = 0; j < sprite->h; j++) {
++                memcpy(fbmem + fb_offset, sprite->data + sprite_offset, sprite->w * 4);
++                sprite_offset += sprite->w;
++                fb_offset += fb_stride;
++        }
++}
++
++static void sprite_draw_rect(
++		struct fsv_sprite *sprite,
++		uint32_t x,
++		uint32_t y,
++		uint32_t w,
++		uint32_t h,
++		uint32_t color)
++{
++        uint32_t offset = y * sprite->w + x;
++        uint32_t *addr = (uint32_t *)sprite->data;
++
++        for (uint32_t j = 0; j < h; j++) {
++                addr = (uint32_t *)(sprite->data + offset);
++                for (uint32_t i = 0; i < w; i++) {
++                        addr[i] = color;
++                }
++                offset += sprite->w;
++        }
++}
++
++/* drawing horizontal line in the sprite */
++static void sprite_draw_hline(
++		struct fsv_sprite *sprite,
++		uint32_t x1,
++		uint32_t y1,
++		uint32_t x2,
++		uint32_t color)
++{
++	uint32_t offset = y1 * sprite->w;
++        for (int x = x1 ; x < x2; x++) {
++                sprite->data[offset + x] = color;
++        }
++}
++
++/* drawing filled circle with Bresenham's algorithm */
++static void sprite_draw_circle(
++		struct fsv_sprite *sprite,
++		uint32_t x,
++		uint32_t y,
++		uint32_t radius,
++		uint32_t color)
++{
++        int offsetx = 0, offsety = radius, d = radius -1;
++
++        while (offsety >= offsetx) {
++                sprite_draw_hline(sprite, x - offsety, y + offsetx,
++                                x + offsety, color);
++                sprite_draw_hline(sprite, x - offsetx, y + offsety,
++                                x + offsetx, color);
++                sprite_draw_hline(sprite, x - offsetx, y - offsety,
++                                x + offsetx, color);
++                sprite_draw_hline(sprite, x - offsety, y - offsetx,
++                                x + offsety, color);
++
++                if (d >= 2 * offsetx) {
++                        d -= 2 * offsetx + 1;
++                        offsetx += 1;
++                } else if (d < 2 * (radius - offsety)) {
++                        d += 2 * offsety - 1;
++                        offsety -= 1;
++                } else {
++                        d += 2 * (offsety - offsetx - 1);
++                        offsety -= 1;
++                        offsetx += 1;
++                }
++        }
++}
++
++static void sprite_anim_init(void)
++{
++        memset(&cicle_sprite, 0, sizeof(cicle_sprite));
++        sprite_init(&cicle_sprite, 100, 100);
++
++        sprite_draw_rect(&cicle_sprite, 0, 0, 100, 100, MK_COLOR(128, 128, 128));
++	/* draw filled circle with center (50, 50), radius 50. */
++        sprite_draw_circle(&cicle_sprite, 50, 50, 50, MK_COLOR(0, 0, 255));
++}
++
++static void sprite_anim(data_t *data, uint32_t *addr)
++{
++        struct timeval tv1, tv2, tv_delta;
++        uint64_t frame_ns = get_time_ns();
++        double now = frame_ns / (double)NSECS_PER_SEC;
++
++        gettimeofday(&tv1, NULL);
++
++        fbmem_draw_rect(addr, data->hdisplay, 0, 0,
++			data->hdisplay, data->vdisplay, MK_COLOR(128, 128, 128));
++	/* red rectangle for checking tearing effect*/
++        if (data->front) {
++                fbmem_draw_rect(addr, data->hdisplay, 0, 0,
++			30, data->vdisplay, MK_COLOR(191, 0, 0));
++        }
++
++	/* draw 16 filled circles */
++        for (int i = 0; i < 16; ++i) {
++                double tv = now + i * 0.25;
++                float x, y;
++                x = data->hdisplay - 10.0f - 118.0f * i - 100.0f;
++                y = data->vdisplay * 0.5f + cos(tv) * data->vdisplay * 0.35;
++                sprite_paste(addr, data->hdisplay, &cicle_sprite, (uint32_t)x, (uint32_t)y);
++        }
++
++        gettimeofday(&tv2, NULL);
++        timersub(&tv2, &tv1, &tv_delta);
++
++        igt_debug("time of drawing: %ld ms\n", tv_delta.tv_usec / 1000);
++}
++
++/*----------------------------------------------------------------------------*/
++
++/* The freesync video modes is derived from the base mode(the mode with the
++   highest clock rate, and has the same resolution with preferred mode) by
++   amdgpu driver. They have the same clock rate with base mode, and the
++   type of mode has been set as DRM_MODE_TYPE_DRIVER"
++*/
++static bool is_freesync_video_mode(data_t *data, drmModeModeInfo *mode)
++{
++        drmModeModeInfo *base_mode = &data->modes[data->base_mode_index];
++        uint32_t bm_clock = base_mode->clock;
++
++        if (    mode->hdisplay == data->hdisplay &&
++                mode->vdisplay == data->vdisplay &&
++                mode->clock == bm_clock &&
++		mode->type & DRM_MODE_TYPE_DRIVER) {
++                return true;
++        }
++
++        return false;
++}
++
++static drmModeModeInfo* select_mode(
++        data_t *data,
++        uint32_t mode_type,
++        int refresh_rate)
++{
++	int i;
++        int index;
++        drmModeModeInfo *mode = NULL;
++	igt_debug("select_mode: type=%d, refresh_rate=%d\n", mode_type, refresh_rate);
++
++        switch (mode_type) {
++        case FSV_BASE_MODE:
++                index = data->base_mode_index;
++                mode = &data->modes[index];
++                break;
++
++        case FSV_PREFERRED_MODE:
++                index = data->preferred_mode_index;
++                mode = &data->modes[index];
++                break;
++
++        case FSV_FREESYNC_VIDEO_MODE:
++                for (i = 0; i < data->count_modes; i++) {
++                        mode = &data->modes[i];
++                        if (    mode->vrefresh == refresh_rate &&
++                                is_freesync_video_mode(data, mode)) {
++                                break;
++                        }
++                }
++		if (i == data->count_modes)
++			mode = NULL;
++                break;
++
++        case FSV_NON_FREESYNC_VIDEO_MODE:
++                for (i = 0; i < data->count_modes; i++) {
++                        mode = &data->modes[i];
++                        if (    mode->vrefresh == refresh_rate &&
++                                !is_freesync_video_mode(data, mode)) {
++                                break;
++                        }
++                }
++		if (i == data->count_modes)
++			mode = NULL;
++                break;
++
++        default:
++                igt_assert("Cannot find mode with specified rate and type.");
++                break;
++        }
++
++	if (mode) {
++		igt_info("selected mode:\n");
++		kmstest_dump_mode(mode);
++	}
++
++        return mode;
++}
++
++static int prepare_custom_mode(
++        data_t *data,
++	drmModeModeInfo *custom_mode,
++	uint32_t refresh_rate)
++{
++	uint64_t num, den;
++	uint64_t target_vtotal, target_vtotal_diff;
++	drmModeModeInfo *base_mode;
++
++	igt_info("prepare custom mode:\n");
++
++	base_mode = &data->modes[data->base_mode_index];
++	if (base_mode->vrefresh < refresh_rate) {
++		igt_warn("The given refresh rate is large than base mode's one:" \
++				" base_mode->vrefresh=%d, refresh_rate=%u\n",
++				base_mode->vrefresh, refresh_rate);
++		return -1;
++	}
++
++	if (refresh_rate < data->range.min ||
++			refresh_rate > data->range.max) {
++		igt_warn("The given refresh rate(%u) should be between the rage of: min=%d, max=%d\n",
++				refresh_rate, data->range.min, data->range.max);
++		return -1;
++	}
++
++	num = (unsigned long long)base_mode->clock * 1000 * 1000;
++	den = refresh_rate * 1000 * (unsigned long long)base_mode->htotal;
++	target_vtotal = num / den;
++	target_vtotal_diff = target_vtotal - base_mode->vtotal;
++	igt_debug("num=%lu, den=%lu, " \
++                  "target_vtotal=%lu, target_vtotal_diff=%lu, base_mode->vtotal=%d\n",
++		  num, den, target_vtotal, target_vtotal_diff, base_mode->vtotal
++		);
++
++	/* Check for illegal modes */
++	if (base_mode->vsync_start + target_vtotal_diff < base_mode->vdisplay ||
++			base_mode->vsync_end + target_vtotal_diff < base_mode->vsync_start ||
++			base_mode->vtotal + target_vtotal_diff < base_mode->vsync_end)
++		return -1;
++
++	*custom_mode = *base_mode;
++	custom_mode->vtotal += (uint16_t)target_vtotal_diff;
++	custom_mode->vsync_start += (uint16_t)target_vtotal_diff;
++	custom_mode->vsync_end += (uint16_t)target_vtotal_diff;
++	custom_mode->type &= ~DRM_MODE_TYPE_PREFERRED;
++	custom_mode->type |= DRM_MODE_TYPE_DRIVER;
++	custom_mode->vrefresh = refresh_rate;
++
++	igt_info("custom mode:\n");
++	kmstest_dump_mode(custom_mode);
++
++	return 0;
++}
++
++/* Returns the rate duration in nanoseconds for the given refresh rate. */
++static uint64_t nsec_per_frame(uint64_t refresh)
++{
++	return NSECS_PER_SEC / refresh;
++}
++
++/* Read min and max vrr range from the connector debugfs. */
++static range_t
++get_vrr_range(data_t *data, igt_output_t *output)
++{
++	char buf[256];
++	char *start_loc;
++	int fd, res;
++	range_t range;
++
++	fd = igt_debugfs_connector_dir(data->drm_fd, output->name, O_RDONLY);
++	igt_assert(fd >= 0);
++
++	res = igt_debugfs_simple_read(fd, "vrr_range", buf, sizeof(buf));
++	igt_require(res > 0);
++
++	close(fd);
++
++	igt_assert(start_loc = strstr(buf, "Min: "));
++	igt_assert_eq(sscanf(start_loc, "Min: %u", &range.min), 1);
++
++	igt_assert(start_loc = strstr(buf, "Max: "));
++	igt_assert_eq(sscanf(start_loc, "Max: %u", &range.max), 1);
++
++	return range;
++}
++
++/* Returns true if an output supports VRR. */
++static bool has_vrr(igt_output_t *output)
++{
++	return igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE) &&
++	       igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE);
++}
++
++/* Toggles variable refresh rate on the pipe. */
++static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
++{
++	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED,
++				enabled);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++}
++
++static void prepare_test(
++		data_t *data,
++		igt_output_t *output,
++		enum pipe pipe,
++		drmModeModeInfo *mode)
++{
++	/* Reset output */
++	igt_display_reset(&data->display);
++	igt_output_set_pipe(output, pipe);
++
++	igt_output_override_mode(output, mode);
++
++	/* Prepare resources */
++	if (!data->fb_initialized) {
++		igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fbs[0]);
++
++		igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
++				DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fbs[1]);
++		data->fb_mem[0] = igt_fb_map_buffer(data->drm_fd, &data->fbs[0]);
++		data->fb_mem[1] = igt_fb_map_buffer(data->drm_fd, &data->fbs[1]);
++		data->fb_initialized = true;
++	}
++
++	fbmem_draw_smpte_pattern(data->fb_mem[0], data->hdisplay, data->vdisplay);
++	fbmem_draw_smpte_pattern(data->fb_mem[1], data->hdisplay, data->vdisplay);
++
++	/* Take care of any required modesetting before the test begins. */
++	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(data->primary, &data->fbs[0]);
++
++	/* Clear vrr_enabled state before enabling it, because
++	 * it might be left enabled if the previous test fails.
++	 */
++	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED, 0);
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++}
++
++/* Performs an atomic non-blocking page-flip on a pipe. */
++static void
++do_flip(data_t *data)
++{
++	int ret;
++	igt_fb_t *fb = &(data->fbs[data->front]);
++
++	igt_set_timeout(1, "Scheduling page flip\n");
++	igt_plane_set_fb(data->primary, fb);
++
++	do {
++		ret = igt_display_try_commit_atomic(&data->display,
++				  DRM_MODE_ATOMIC_NONBLOCK |
++				  DRM_MODE_PAGE_FLIP_EVENT,
++				  data);
++	} while (ret == -EBUSY);
++
++	igt_assert_eq(ret, 0);
++	igt_reset_timeout();
++}
++
++/*
++ * Flips at the given rate and measures against the expected value.
++ * Returns the pass rate as a percentage from 0 - 100.
++ *
++ * The VRR API is quite flexible in terms of definition - the driver
++ * can arbitrarily restrict the bounds further than the absolute
++ * min and max range. But VRR is really about extending the flip
++ * to prevent stuttering or to match a source content rate.
++ */
++static uint32_t
++flip_and_measure(
++		data_t *data,
++		igt_output_t *output,
++		enum pipe pipe,
++		uint64_t interval_ns,
++		uint64_t duration_ns,
++		int anim_type)
++{
++	uint64_t start_ns, last_event_ns, target_ns;
++	uint32_t total_flip = 0, total_pass = 0;
++
++	/* Align with the flip completion event to speed up convergence. */
++	do_flip(data);
++	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
++							DRM_EVENT_FLIP_COMPLETE);
++	igt_info("interval_ns=%lu\n", interval_ns);
++
++	for (;;) {
++		uint64_t event_ns;
++		int64_t diff_ns;
++
++		data->front = !data->front;
++		if (anim_type == ANIM_TYPE_CIRCLE_WAVE)
++			sprite_anim(data, data->fb_mem[data->front]);
++		do_flip(data);
++
++		/* We need to capture flip event instead of vblank event,
++		 * because vblank is triggered after each frame, but depending
++		 * on the vblank evasion time flip might or might not happen in
++		 * that same frame.
++		 */
++		event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
++		igt_debug("event_ns - last_event_ns: %"PRIu64"\n",
++						(event_ns - last_event_ns));
++
++		/*
++		 * Check if the difference between the two flip timestamps
++		 * was within the required threshold from the expected rate.
++		 *
++		 * A ~50us threshold is arbitrary, but it's roughly the
++		 * difference between 144Hz and 143Hz which should give this
++		 * enough accuracy for most use cases.
++		 */
++		diff_ns = interval_ns;
++		diff_ns -= event_ns - last_event_ns;
++		if (llabs(diff_ns) < 50000ll)
++			total_pass += 1;
++
++		last_event_ns = event_ns;
++		total_flip += 1;
++
++		if (event_ns - start_ns > duration_ns)
++			break;
++	}
++
++	igt_info("Completed %u flips, %u were in threshold for (%llu Hz) %"PRIu64"ns.\n",
++		 total_flip, total_pass, (NSECS_PER_SEC / interval_ns), interval_ns);
++
++	return total_flip ? ((total_pass * 100) / total_flip) : 0;
++}
++
++static void init_data(data_t *data, igt_output_t *output) {
++	int i;
++	uint32_t pm_hdisplay, pm_vdisplay, max_clk = 0;
++	drmModeModeInfo *preferred_mode;
++	drmModeConnector *connector;
++
++	connector = data->connector = output->config.connector;
++	data->count_modes = connector->count_modes;
++	data->modes = (drmModeModeInfo *)malloc(sizeof(drmModeModeInfo) * data->count_modes);
++
++	for (i = 0; i < data->count_modes; i++) {
++		data->modes[i] = connector->modes[i];
++#ifdef FSV_DEBUG
++		igt_info("mode %d:", i);
++		kmstest_dump_mode(&data->modes[i]);
++#endif
++	}
++
++	/* searching the preferred mode */
++        for (i = 0; i < connector->count_modes; i++) {
++                drmModeModeInfo *mode = &connector->modes[i];
++
++                if (mode->type & DRM_MODE_TYPE_PREFERRED) {
++                        data->preferred_mode_index = i;
++			data->hdisplay = mode->hdisplay;
++			data->vdisplay = mode->vdisplay;
++			pm_hdisplay = preferred_mode->hdisplay;
++			pm_vdisplay = preferred_mode->vdisplay;
++			break;
++                }
++        }
++
++        /* searching the base mode; */
++        for (i = 0; i < connector->count_modes; i++) {
++                drmModeModeInfo *mode = &connector->modes[i];
++                if (mode->hdisplay == pm_hdisplay && mode->vdisplay == pm_vdisplay) {
++                        if (mode->clock > max_clk) {
++                                max_clk = mode->clock;
++                                data->base_mode_index = i;
++                        }
++                }
++        }
++        igt_info("preferred=%d, base=%d\n", data->preferred_mode_index, data->base_mode_index);
++
++        for (i = 0; i < connector->count_modes; i++) {
++                drmModeModeInfo *mode = &connector->modes[i];
++                if (is_freesync_video_mode(data, mode))
++                        igt_debug("mode[%d] is freesync video mode.\n", i);
++        }
++
++	data->range = get_vrr_range(data, output);
++}
++
++static void finish_test(data_t *data, enum pipe pipe, igt_output_t *output)
++{
++	set_vrr_on_pipe(data, pipe, 0);
++	igt_plane_set_fb(data->primary, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_output_override_mode(output, NULL);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	igt_fb_unmap_buffer(&data->fbs[1], data->fb_mem[1]);
++	igt_fb_unmap_buffer(&data->fbs[0], data->fb_mem[0]);
++	igt_remove_fb(data->drm_fd, &data->fbs[1]);
++	igt_remove_fb(data->drm_fd, &data->fbs[0]);
++}
++
++static void
++mode_transition(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t scene)
++{
++	uint32_t result;
++	uint64_t interval;
++	drmModeModeInfo *mode_start = NULL, *mode_playback = NULL, mode_custom;
++
++	init_data(data, output);
++	sprite_anim_init();
++
++	igt_info("stage-1:\n");
++	switch(scene) {
++        case SCENE_BASE_MODE_TO_VARIOUS_FSV_MODE:
++		mode_start = select_mode(data, FSV_BASE_MODE, 0);
++                mode_playback  = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
++		break;
++        case SCENE_LOWER_FSV_MODE_TO_HIGHER_FSV_MODE:
++		mode_start = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
++                mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 120);
++		break;
++        case SCENE_NON_FSV_MODE_TO_FSV_MODE:
++		mode_start = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 60);
++                mode_playback = select_mode(data, FSV_FREESYNC_VIDEO_MODE, 60);
++		break;
++        case SCENE_BASE_MODE_TO_CUSTUM_MODE:
++		mode_start = select_mode(data, FSV_BASE_MODE, 0);
++		prepare_custom_mode(data, &mode_custom, 72);
++		mode_playback = &mode_custom;
++		break;
++	case SCENE_NON_FSV_MODE_TO_NON_FSV_MODE:
++		mode_start = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 120);
++		mode_playback = select_mode(data, FSV_NON_FREESYNC_VIDEO_MODE, 100);
++		break;
++	default:
++		igt_warn("Undefined test scene: %d", scene);
++		break;
++	}
++	igt_assert_f(mode_start && mode_playback,
++			"Failure on selecting mode with given type and refresh rate.\n");
++	prepare_test(data, output, pipe, mode_start);
++	interval = nsec_per_frame(mode_start->vrefresh) ;
++	set_vrr_on_pipe(data, pipe, 1);
++	result = flip_and_measure(data, output, pipe, interval, TEST_DURATION_NS, ANIM_TYPE_SMPTE);
++
++	igt_info("stage-2: simple animation as video playback\n");
++	prepare_test(data, output, pipe, mode_playback);
++	interval = nsec_per_frame(mode_playback->vrefresh) ;
++	result = flip_and_measure(data, output, pipe, interval, TEST_DURATION_NS, ANIM_TYPE_CIRCLE_WAVE);
++	igt_assert_f(result > 90, "Target refresh rate not meet(result=%d%%\n", result);
++
++	finish_test(data, pipe, output);
++}
++
++static void
++run_test(data_t *data, uint32_t scene)
++{
++	igt_output_t *output;
++	bool found = false;
++
++	for_each_connected_output(&data->display, output) {
++		enum pipe pipe;
++
++		if (!has_vrr(output))
++			continue;
++
++		for_each_pipe(&data->display, pipe)
++			if (igt_pipe_connector_valid(pipe, output)) {
++				mode_transition(data, pipe, output, scene);
++				found = true;
++				break;
++			}
++	}
++
++	if (!found)
++		igt_skip("No vrr capable outputs found.\n");
++}
++
++igt_main
++{
++	data_t data = {};
++	memset(&data, 0, sizeof(data));
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_AMDGPU);
++		if (data.drm_fd == -1) {
++			igt_skip("Not an amdgpu driver.\n");
++		}
++		kmstest_set_vt_graphics_mode();
++		igt_display_require(&data.display, data.drm_fd);
++		igt_require(data.display.is_atomic);
++		igt_display_require_output(&data.display);
++	}
++
++	/* Expectation: Modeset happens instantaneously without blanking */
++        igt_describe("Test switch from base freesync mode to " \
++                     "various freesync video modes");
++        igt_subtest("freesync-base-to-various")
++		run_test(&data, SCENE_BASE_MODE_TO_VARIOUS_FSV_MODE);
++
++	/* Expectation: Modeset happens instantaneously without blanking */
++        igt_describe("Test switching from lower refresh freesync mode to " \
++                     "another freesync mode with higher refresh rate");
++        igt_subtest("freesync-lower-to-higher")
++		run_test(&data, SCENE_LOWER_FSV_MODE_TO_HIGHER_FSV_MODE);
++
++	/* Expectation: Full modeset is triggered. */
++        igt_describe("Test switching from non preferred video mode to " \
++                     "one of freesync video mode");
++        igt_subtest("freesync-non-preferred-to-freesync")
++		run_test(&data, SCENE_NON_FSV_MODE_TO_FSV_MODE);
++
++	/* Expectation: Modeset happens instantaneously without blanking */
++        igt_describe("Add custom mode through xrandr based on " \
++                     "base freesync mode and apply the new mode");
++        igt_subtest("freesync-custom-mode")
++		run_test(&data, SCENE_BASE_MODE_TO_CUSTUM_MODE);
++
++        igt_info("end of test\n");
++
++	igt_fixture {
++		igt_display_fini(&data.display);
++	}
++}
+-- 
+2.25.1
