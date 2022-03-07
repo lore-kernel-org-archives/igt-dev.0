@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0846010E0E3
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Mar 2022 01:02:16 +0000 (UTC)
-From: "Liu, Chuansheng" <chuansheng.liu@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 7 Mar 2022 01:02:12 +0000
-Message-ID: <BL1PR11MB544548D4A7A8247D1DEECE1297089@BL1PR11MB5445.namprd11.prod.outlook.com>
-References: <20220304051509.44816-1-chuansheng.liu@intel.com>
- <9bebc5ee-55eb-91bc-65dd-1e0692e42a6a@linux.intel.com>
-In-Reply-To: <9bebc5ee-55eb-91bc-65dd-1e0692e42a6a@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF89910EAB6
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Mar 2022 04:57:54 +0000 (UTC)
+Message-ID: <5d5bd74b-1cbd-29d2-0cfe-dee50e870442@intel.com>
+Date: Mon, 7 Mar 2022 10:27:41 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+To: "Navare, Manasi" <manasi.d.navare@intel.com>
+References: <20220224051648.91470-1-bhanuprakash.modem@intel.com>
+ <20220224051648.91470-4-bhanuprakash.modem@intel.com>
+ <20220304012021.GB5029@labuser-Z97X-UD5H>
+ <9296e826-a323-9038-f7c6-17803cecd2e1@intel.com>
+In-Reply-To: <9296e826-a323-9038-f7c6-17803cecd2e1@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_mmap_gtt: add test
- mmap_closed_bo
+Subject: Re: [igt-dev] [i-g-t 3/5] tests/kms_vrr: Add Negative tests to
+ validate VRR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,90 +24,182 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Ursulin, Tvrtko" <tvrtko.ursulin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgVHZydGtvLA0KDQpUaGFua3MgZm9yIHJldmlldywgcGxlYXNlIHNlZSBteSBjb21tZW50cyBi
-ZWxvdy4NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBUdnJ0a28gVXJz
-dWxpbiA8dHZydGtvLnVyc3VsaW5AbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBTYXR1cmRheSwg
-TWFyY2ggNSwgMjAyMiAxMjozNSBBTQ0KPiBUbzogTGl1LCBDaHVhbnNoZW5nIDxjaHVhbnNoZW5n
-LmxpdUBpbnRlbC5jb20+OyBpZ3QtDQo+IGRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6
-IFVyc3VsaW4sIFR2cnRrbyA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBS
-ZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMvZ2VtX21tYXBfZ3R0OiBhZGQgdGVzdA0K
-PiBtbWFwX2Nsb3NlZF9ibw0KPiANCj4gDQo+IEhpLA0KPiANCj4gU29tZSBuaXRzLCBzb21lIHF1
-ZXN0aW9ucyBiZWxvdy4NCj4gDQo+IE9uIDA0LzAzLzIwMjIgMDU6MTUsIENodWFuc2hlbmcgTGl1
-IHdyb3RlOg0KPiA+IFJlY2VudGx5IHdlIGZpZ3VyZWQgb3V0IG9uZSBtZW1vcnkgbGVhayBpbiBp
-OTE1IGRyaXZlciB3aGVuIHJ1bm5pbmcNCj4gPiBiZWxvdyBhbGlrZSB0ZXN0Og0KPiA+DQo+ID4g
-Y3JlYXRlX2JvDQo+ID4gZ2VtX21tYXBfZ3R0IGJvDQo+ID4gZ2VtX21tYXBfZ3R0IGJvIHR3aWNl
-DQo+ID4gY2xvc2VfYm8NCj4gPg0KPiA+IHRoZW4gdGhlIG1lbW9yeSBsZWFrIGlzIGRldGVjdGVk
-LiBNb3JlIGRldGFpbHMgY2FuIGJlIHJlZmVycmVkIGluDQo+ID4gaHR0cHM6Ly9wYXRjaHdvcmsu
-ZnJlZWRlc2t0b3Aub3JnL3BhdGNoLzQ3NTgwMi8/c2VyaWVzPTEwMDUzMiZyZXY9Mg0KPiA+DQo+
-ID4gRm9yIGRldGVjdGluZyBzdWNoIGlzc3VlLCB0aGlzIHRlc3QgY2FzZSBtbWFwX2Nsb3NlZF9i
-byBpcyBjcmVhdGVkLA0KPiA+IGl0IHdpbGwgY2xvc2UgdGhlIGJvIHdpdGgga2VlcGluZyBvbmUg
-bW1hcCwgdGhlbiBzZWNvbmQgbW1hcCB0aGUgYm8sDQo+ID4gaW4gbm9ybWFsIHNpdHVhdGlvbiwg
-d2UgZXhwZWN0IHNlY29uZCBtbWFwIGZhaWx1cmUgd2l0aCBFQUNDRVNTLiBCdXQNCj4gPiBpdCB3
-aWxsIHN1Y2NlZWQgaWYgZHJpdmVyIGhhcyB0aGUgdm1fbm9kZSBhbGxvd2FuY2UgbGVhay4NCj4g
-Pg0KPiA+IENjOiBUdnJ0a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IENodWFuc2hlbmcgTGl1IDxjaHVhbnNoZW5nLmxpdUBpbnRlbC5jb20+
-DQo+ID4gLS0tDQo+ID4gICB0ZXN0cy9pOTE1L2dlbV9tbWFwX2d0dC5jIHwgNDINCj4gKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwg
-NDIgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX21t
-YXBfZ3R0LmMgYi90ZXN0cy9pOTE1L2dlbV9tbWFwX2d0dC5jDQo+ID4gaW5kZXggOTJiYmI1ZDIu
-LjBmNGQ1Mzg1IDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX21tYXBfZ3R0LmMNCj4g
-PiArKysgYi90ZXN0cy9pOTE1L2dlbV9tbWFwX2d0dC5jDQo+ID4gQEAgLTMxOCw2ICszMTgsNDYg
-QEAgdGVzdF93YyhpbnQgZmQpDQo+ID4gICAJCSAgICAgNSpndHRfd3JpdGVzLzI1Ni4sIDUqY3B1
-X3dyaXRlcy8yNTYuKTsNCj4gPiAgIH0NCj4gPg0KPiA+ICtzdGF0aWMgdm9pZCBtbWFwX2Nsb3Nl
-ZF9ibyhpbnQgZmQpDQo+ID4gK3sNCj4gPiArCXN0cnVjdCBkcm1faTkxNV9nZW1fbW1hcF9ndHQg
-bW1hcF9hcmc7DQo+ID4gKwl2b2lkICpwMSwgKnAyOw0KPiA+ICsJaW50IGxvb3AgPSAwLCBpID0g
-MDsNCj4gDQo+IE5pdHMgLSBkb24ndCBuZWVkIHRvIGluaXQgaSwgbW1hcF9hcmcsIHAxIGFuZCBw
-MiBjb3VsZCBiZSBkZWNsYXJlZCBpbg0KPiB0aGUgbG9vcC4NCk9LLCB3aWxsIHVwZGF0ZSBpdCBp
-biBWMi4NCg0KPiANCj4gPiArDQo+ID4gKwl3aGlsZSAobG9vcCsrIDwgMikgew0KPiA+ICsJCW1l
-bXNldCgmbW1hcF9hcmcsIDAsIHNpemVvZihtbWFwX2FyZykpOw0KPiA+ICsNCj4gPiArCQltbWFw
-X2FyZy5oYW5kbGUgPSBnZW1fY3JlYXRlKGZkLCBPQkpFQ1RfU0laRSk7DQo+ID4gKwkJaWd0X2Fz
-c2VydChtbWFwX2FyZy5oYW5kbGUpOw0KPiA+ICsNCj4gPiArCQlpID0gbG9vcDsNCj4gPiArCQl3
-aGlsZSAoaS0tKSB7DQo+ID4gKwkJCS8qIGdldCBvZmZzZXQsIGhlcmUgd2UgdHJpZXMgYSBsb29w
-IHRvIGNhbGwNCj4gR0VNX01NQVBfR1RUIG1hbnkgdGltZXMsDQo+IA0KPiBJZiBJIG1heSBzdWdn
-ZXN0Og0KPiANCj4gLyoNCj4gICAqIEdldCBtbWFwIG9mZnNldCBieSBjYWxsaW5nIEdFTV9NTUFQ
-X0dUVCBvbmUgb3IgbXVsdGlwbGUgdGltZXMgaW4NCj4gICAqIG9yZGVyIHRvIHRyeSB0byBwcm92
-b2tlIGEgbWVtb3J5IGxlYWsgaW4gdGhlIGRyaXZlci4NCj4gICAqLw0KT0ssIHdpbGwgdXBkYXRl
-IGl0IGluIFYyLg0KDQo+IA0KPiA+ICsJCQkgKiBpdCBjb3VsZCB0cmlnZ2VyIGRyaXZlciBtZW1v
-cnkgbGVhayBpc3N1ZSBlYXNpbHkuDQo+ID4gKwkJCSAqLw0KPiA+ICsJCQlkb19pb2N0bChmZCwg
-RFJNX0lPQ1RMX0k5MTVfR0VNX01NQVBfR1RULA0KPiAmbW1hcF9hcmcpOw0KPiA+ICsJCX0NCj4g
-PiArDQo+ID4gKwkJcDEgPSBtbWFwNjQoMCwgT0JKRUNUX1NJWkUsIFBST1RfUkVBRCB8IFBST1Rf
-V1JJVEUsDQo+ID4gKwkJCU1BUF9TSEFSRUQsIGZkLCBtbWFwX2FyZy5vZmZzZXQpOw0KPiA+ICsJ
-CWlndF9hc3NlcnQocDEgIT0gTUFQX0ZBSUxFRCk7DQo+ID4gKw0KPiA+ICsJCWdlbV9jbG9zZShm
-ZCwgbW1hcF9hcmcuaGFuZGxlKTsNCj4gPiArCQlnZW1fcXVpZXNjZW50X2dwdShmZCk7DQo+IA0K
-PiBXaGF0IGlzIHF1aWVzY2VudCBmb3I/IEkgdXN1YWxseSBleHBlY3QgdG8gc2VlIGl0IHdoZW4g
-dGVzdCBjcmVhdGVkIHNvbWUNCj4gR1BVIGFjdGl2aXR5LCB3aGljaCBpc24ndCB0aGUgY2FzZSBo
-ZXJlLiBJZiB0aGVyZSBpcyBhIHN1YnRsZSByZWFzb24NCj4gcGxlYXNlIHB1dCBhIGNvbW1lbnQg
-aGVyZS4NCj4NCk5vcm1hbGx5IHdoZW4gd2UgY2FsbCBnZW1fY2xvc2UoKSwgdGhlIG9iamVjdCBp
-cyBiZWluZyBmcmVlZCBieSBrd29ya2VyIG9uIHRoZSB3YXksDQppZiB3ZSBjYWxsIG1tYXAgaW4g
-dGhlIG1pZGRsZSwgd2UgbWF5IGdldCBkaWZmZXJlbnQgZXJybm8oaW52YWxpZCBvciBlYWNjZXNz
-KSBpbmNvbnNpc3RlbnRseSwNCmhlcmUgcXVpZXNjZW50IGlzIGZvciBmbHVzaCBvYmplY3QtZnJl
-ZSBrd29ya2VyIGRvbmUgdG8gZ2V0IGNvbnNpc3RlbnQgZXJybm8uIEV2ZW4gdGhvdWdoLA0KaW4g
-dGhpcyBjYXNlLCByZXR1cm4gZXJyb3IgLTEgb2YgbW1hcCBpcyBlbm91Z2ggZm9yIGNoZWNraW5n
-IGF0IGxhc3QuDQpJIGNvdWxkIHB1dCBvbmUgY29tbWVudCBmb3IgaXQgaW4gVjIuDQogDQo+ID4g
-Kw0KPiA+ICsJCXAyID0gbW1hcDY0KDAsIE9CSkVDVF9TSVpFLCBQUk9UX1JFQUQgfCBQUk9UX1dS
-SVRFLA0KPiA+ICsJCQlNQVBfU0hBUkVELCBmZCwgbW1hcF9hcmcub2Zmc2V0KTsNCj4gPiArDQo+
-ID4gKwkJbXVubWFwKHAxLCBPQkpFQ1RfU0laRSk7DQo+ID4gKw0KPiA+ICsJCS8qIHdlIGV4cGVj
-dCBtbWFwcGluZyBwMiB3b3VsZCBmYWlsLCBvdGhlcndpc2UgdGhlIGRyaXZlcg0KPiA+ICsJCSAq
-IG1heSBub3QgY2xlYW4gdXAgdGhlIGFsbG93YW5jZSBvZiB2bV9ub2RlLCBpdCB3b3VsZA0KPiA+
-ICsJCSAqIGNhdXNlIG1lbW9yeSBsZWFrLg0KPiA+ICsJCSAqLw0KPiA+ICsJCWlndF9hc3NlcnQo
-cDIgPT0gTUFQX0ZBSUxFRCk7DQo+IA0KPiBJIGdldCB0aGlzIC0gbW1hcChwMikgc2hvdWxkIGZh
-aWwgYWZ0ZXIgb2JqZWN0IGNsb3NlIHJlZ2FyZGxlc3Mgb2YgaG93DQo+IG1hbnkgdGltZSBEUk1f
-SU9DVExfSTkxNV9HRU1fTU1BUF9HVFQgd2FzIGNhbGxlZC4NCj4gDQo+IEV4Y2VsbGVudCB0aGF0
-IHlvdSBmb3VuZCBhIHdheSB0byB0ZXN0IGZvciB0aGUgbGVhayB3aXRob3V0IHRoZSBuZWVkIGZv
-cg0KPiBrbWVtbGVhayEgQXQgbGVhc3QgdGhhdCdzIGhvdyBJIHJlYWQgdGhlIHBvc3Rpbmcgb2Yg
-dGhpcyB0ZXN0LiA6KQ0KRXhhY3RseSA6ICkNClRoaXMgdGVzdCBhbHNvIHJlZmxlY3RzIHRoZSBp
-bmNvbnNpc3RlbmN5IGJldHdlZW4gY2FsbGluZyBvbmUtdGltZSBNTUFQX0dUVCANCmFuZCBjYWxs
-aW5nIG11bHRpLXRpbWUgTU1BUF9HVFQuDQoNCkJlc3QgUmVnYXJkcw0KQ2h1YW5zaGVuZw0KDQo+
-IA0KPiBSZWdhcmRzLA0KPiANCj4gVHZydGtvDQo+IA0KPiA+ICsJfQ0KPiA+ICt9DQo+ID4gKw0K
-PiA+ICAgc3RhdGljIGludCBtbWFwX2d0dF92ZXJzaW9uKGludCBpOTE1KQ0KPiA+ICAgew0KPiA+
-ICAgCWludCB2YWwgPSAwOw0KPiA+IEBAIC0xMzA1LDYgKzEzNDUsOCBAQCBpZ3RfbWFpbg0KPiA+
-ICAgCQl0ZXN0X3dyaXRlKGZkKTsNCj4gPiAgIAlpZ3Rfc3VidGVzdCgiYmFzaWMtd3JpdGUtZ3R0
-IikNCj4gPiAgIAkJdGVzdF93cml0ZV9ndHQoZmQpOw0KPiA+ICsJaWd0X3N1YnRlc3QoIm1tYXBf
-Y2xvc2VkX2JvIikNCj4gPiArCQltbWFwX2Nsb3NlZF9ibyhmZCk7DQo+ID4gICAJaWd0X3N1YnRl
-c3QoInB0cmFjZSIpDQo+ID4gICAJCXRlc3RfcHRyYWNlKGZkKTsNCj4gPiAgIAlpZ3Rfc3VidGVz
-dCgiY29oZXJlbmN5IikNCg==
+On Fri-04-03-2022 09:32 am, Modem, Bhanuprakash wrote:
+> On Fri-04-03-2022 06:50 am, Navare, Manasi wrote:
+>> On Thu, Feb 24, 2022 at 10:46:46AM +0530, Bhanuprakash Modem wrote:
+>>> This patch will try to enable VRR on Non-VRR panel. VRR should
+>>> not be enabled on the Non-VRR panel. Hence Kernel should reject
+>>> the commit.
+>>>
+>>> Cc: Manasi Navare <manasi.d.navare@intel.com>
+>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>> ---
+>>>   tests/kms_vrr.c | 69 +++++++++++++++++++++++++++++++++++++++++++++++--
+>>>   1 file changed, 67 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+>>> index 8976d4a6c3..7deab77311 100644
+>>> --- a/tests/kms_vrr.c
+>>> +++ b/tests/kms_vrr.c
+>>> @@ -45,6 +45,7 @@ enum {
+>>>       TEST_DPMS = 1 << 0,
+>>>       TEST_SUSPEND = 1 << 1,
+>>>       TEST_FLIPLINE = 1 << 2,
+>>> +    TEST_NEGATIVE = 1 << 3,
+>>>   };
+>>>   typedef struct range {
+>>> @@ -244,6 +245,34 @@ static void prepare_test(data_t *data, 
+>>> igt_output_t *output, enum pipe pipe)
+>>>       igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>>>   }
+>>> +static void prepare_negative_test(data_t *data, igt_output_t 
+>>> *output, enum pipe pipe)
+>>> +{
+>>> +    drmModeModeInfo *mode;
+>>> +
+>>> +    /* Reset output */
+>>> +    igt_display_reset(&data->display);
+>>> +    igt_output_set_pipe(output, pipe);
+>>> +
+>>> +    /* Capture VRR range */
+>>> +    data->range = get_vrr_range(data, output);
+>>> +
+>>> +    /* Prepare resources */
+>>> +    mode = igt_output_get_mode(output);
+>>> +    igt_assert(igt_create_fb(data->drm_fd, mode->hdisplay, 
+>>> mode->vdisplay,
+>>> +                 DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+>>> +                 &data->fb0));
+>>> +
+>>> +    /* Take care of any required modesetting before the test begins. */
+>>> +    data->primary = igt_output_get_plane_type(output, 
+>>> DRM_PLANE_TYPE_PRIMARY);
+>>> +    igt_plane_set_fb(data->primary, &data->fb0);
+>>> +
+>>> +    /* Clear vrr_enabled state before enabling it, because
+>>> +     * it might be left enabled if the previous test fails.
+>>> +     */
+>>> +    igt_pipe_set_prop_value(&data->display, pipe, 
+>>> IGT_CRTC_VRR_ENABLED, 0);
+>>> +    igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>>> +}
+>>> +
+>>>   /* Performs an atomic non-blocking page-flip on a pipe. */
+>>>   static void
+>>>   do_flip(data_t *data, igt_fb_t *fb)
+>>> @@ -430,6 +459,32 @@ test_basic(data_t *data, enum pipe pipe, 
+>>> igt_output_t *output, uint32_t flags)
+>>>       igt_remove_fb(data->drm_fd, &data->fb0);
+>>>   }
+>>> +/* VRR on Non-VRR panel: VRR should not be enabled on the Non-VRR 
+>>> panel.
+>>> + * Kernel should reject the commit.
+>>> + */
+>>> +static void
+>>> +test_negative_basic(data_t *data, enum pipe pipe,
+>>> +            igt_output_t *output, uint32_t flags)
+>>> +{
+>>> +    int ret;
+>>> +
+>>> +    igt_info("VRR Negative Test execution on %s, PIPE_%s.\n",
+>>> +            output->name, kmstest_pipe_name(pipe));
+>>> +
+>>> +    prepare_negative_test(data, output, pipe);
+>>> +    igt_pipe_set_prop_value(&data->display, pipe, 
+>>> IGT_CRTC_VRR_ENABLED, 1);
+>>> +
+>>> +    ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+>>> +    igt_assert_f(ret == 0, "VRR shouln't be enabled on Non-VRR 
+>>> panel.\n");
+>>
+>> No this is not correct since in the kernel, if its a non VRR panel 
+>> then it will just
+>> do the modeset without enabling VRR so you will just see the visual 
+>> artifacts but not reject it.
+> 
+> Hmm, intel_vrr_compute_config() will just return & even don't care about 
+> "vrr_enabled" if the panel is Non-VRR.
+> 
+> In general, if we try to commit with invalid config, Kernel must reject 
+> (with -22 invalid arg) right? Here, we requested to enable VRR, but 
+> Kernel returned success without enabling it.
+> 
+> So the flow would be:
+> * Set "vrr_enabled" on selected pipe & do modeset
+> * Readback the "vrr_enabled" prop to make sure that Kernel enabled the 
+> VRR on selected pipe.
+
+Floated to try-bot: https://patchwork.freedesktop.org/series/100463
+Logs: 
+https://intel-gfx-ci.01.org/tree/drm-tip/TrybotIGT_488/bat-all.html?testfilter=kms_vrr@negative
+
+https://intel-gfx-ci.01.org/tree/drm-tip/TrybotIGT_488/fi-tgl-1115g4/igt@kms_vrr@negative-basic@pipe-a-dp-1.html 
+
+Starting subtest: negative-basic
+Starting dynamic subtest: pipe-A-DP-1
+(kms_vrr:5413) CRITICAL: Test assertion failure function 
+test_negative_basic, file ../tests/kms_vrr.c:483:
+(kms_vrr:5413) CRITICAL: Failed assertion: !vrr_enabled
+(kms_vrr:5413) CRITICAL: VRR shouln't be enabled on Non-VRR panel.
+Dynamic subtest pipe-A-DP-1 failed.
+
+VRR is getting enabled on non-VRR panels.
+
+- Bhanu
+
+> 
+> Am I missing anything?
+> 
+> - Bhanu
+> 
+>>
+>> Manasi
+>>
+>>> +
+>>> +    /* Clean-up */
+>>> +    igt_plane_set_fb(data->primary, NULL);
+>>> +    igt_output_set_pipe(output, PIPE_NONE);
+>>> +    set_vrr_on_pipe(data, pipe, false);
+>>> +
+>>> +    igt_remove_fb(data->drm_fd, &data->fb0);
+>>> +}
+>>> +
+>>>   /* Runs tests on outputs that are VRR capable. */
+>>>   static void
+>>>   run_vrr_test(data_t *data, test_t test, uint32_t flags)
+>>> @@ -439,8 +494,14 @@ run_vrr_test(data_t *data, test_t test, uint32_t 
+>>> flags)
+>>>       for_each_connected_output(&data->display, output) {
+>>>           enum pipe pipe;
+>>> -        if (!has_vrr(output))
+>>> -            continue;
+>>> +        /* For Negative tests, panel should be non-vrr. */
+>>> +        if (flags & TEST_NEGATIVE) {
+>>> +            if (has_vrr(output))
+>>> +                continue;
+>>> +        } else {
+>>> +            if (!has_vrr(output))
+>>> +                continue;
+>>> +        }
+>>>           for_each_pipe(&data->display, pipe) {
+>>>               if (igt_pipe_connector_valid(pipe, output)) {
+>>> @@ -486,6 +547,10 @@ igt_main
+>>>       igt_subtest_with_dynamic("flipline")
+>>>           run_vrr_test(&data, test_basic, TEST_FLIPLINE);
+>>> +    igt_describe("Make sure that VRR should not be enabled on the 
+>>> Non-VRR panel.");
+>>> +    igt_subtest_with_dynamic("negative-basic")
+>>> +        run_vrr_test(&data, test_negative_basic, TEST_NEGATIVE);
+>>> +
+>>>       igt_fixture {
+>>>           igt_display_fini(&data.display);
+>>>       }
+>>> -- 
+>>> 2.35.0
+>>>
+> 
