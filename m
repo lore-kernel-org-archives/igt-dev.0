@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============1174567642487851020=="
+ boundary="===============2164859242209467726=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Mon, 07 Mar 2022 05:07:15 -0000
-Message-ID: <164662963515.12768.7823889319699554382@emeril.freedesktop.org>
+Date: Mon, 07 Mar 2022 05:16:28 -0000
+Message-ID: <164663018825.12771.14328722162772319318@emeril.freedesktop.org>
 References: <20220301164330.156289-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220301164330.156289-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
  =?utf-8?q?kms=5Fsetmode=3A_Fix_stealing_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1174567642487851020==
+--===============2164859242209467726==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -32,7 +32,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/kms_setmode: Fix stealing test (rev2)
 URL   : https://patchwork.freedesktop.org/series/100893/
-State : failure
+State : success
 
 == Summary ==
 
@@ -42,10 +42,10 @@ CI Bug Log - changes from CI_DRM_11330 -> IGTPW_6741
 Summary
 -------
 
-  **FAILURE**
+  **WARNING**
 
-  Serious unknown changes coming with IGTPW_6741 absolutely need to be
-  verified manually.
+  Minor unknown changes coming with IGTPW_6741 need to be verified
+  manually.
   
   If you think the reported changes have nothing to do with the changes
   introduced in IGTPW_6741, please notify your bug team to allow them
@@ -66,28 +66,12 @@ Possible new issues
 
 ### IGT changes ###
 
-#### Possible regressions ####
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-dg1-6:          [PASS][1] -> [SKIP][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html
-    - bat-dg1-5:          [PASS][3] -> [SKIP][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
 #### Warnings ####
 
   * igt@i915_pm_rpm@module-reload:
-    - fi-tgl-1115g4:      [INCOMPLETE][5] ([i915#1385]) -> [INCOMPLETE][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-tgl-1115g4:      [DMESG-WARN][7] ([i915#4002]) -> [SKIP][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-tgl-1115g4:      [INCOMPLETE][1] ([i915#1385]) -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
 
   
 #### Suppressed ####
@@ -96,27 +80,21 @@ Possible new issues
   They do not affect the overall result.
 
   * igt@kms_setmode@basic-clone-single-crtc:
-    - {bat-rpls-2}:       [PASS][9] -> [SKIP][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html
-    - {fi-tgl-dsi}:       [PASS][11] -> [SKIP][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-    - {fi-jsl-1}:         [PASS][13] -> [SKIP][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-    - {bat-jsl-1}:        [PASS][15] -> [SKIP][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-    - {fi-ehl-2}:         [PASS][17] -> [SKIP][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html
-    - {bat-adlp-6}:       [PASS][19] -> [SKIP][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-adlp-6/igt@kms_setmode@basic-clone-single-crtc.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-adlp-6/igt@kms_setmode@basic-clone-single-crtc.html
-    - {bat-jsl-2}:        [PASS][21] -> [SKIP][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html
+    - {bat-rpls-2}:       [PASS][3] -> [SKIP][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html
+    - {fi-jsl-1}:         [PASS][5] -> [SKIP][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
+    - {bat-jsl-1}:        [PASS][7] -> [SKIP][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
+    - {fi-ehl-2}:         [PASS][9] -> [SKIP][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html
+    - {bat-jsl-2}:        [PASS][11] -> [SKIP][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html
 
   
 New tests
@@ -146,147 +124,161 @@ Known issues
 #### Issues hit ####
 
   * igt@amdgpu/amd_basic@query-info:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][23] ([fdo#109271]) +31 similar issues
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@amdgpu/amd_basic@query-info.html
+    - fi-glk-dsi:         NOTRUN -> [SKIP][13] ([fdo#109271]) +31 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@amdgpu/amd_basic@query-info.html
 
   * igt@amdgpu/amd_basic@semaphore:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][24] ([fdo#109271] / [fdo#109315]) +17 similar issues
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
+    - fi-hsw-4770:        NOTRUN -> [SKIP][14] ([fdo#109271] / [fdo#109315]) +17 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
 
   * igt@gem_exec_suspend@basic-s3@smem:
-    - fi-skl-6600u:       [PASS][25] -> [INCOMPLETE][26] ([i915#4547])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
+    - fi-skl-6600u:       [PASS][15] -> [INCOMPLETE][16] ([i915#4547])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6600u/igt@gem_exec_suspend@basic-s3@smem.html
 
   * igt@gem_huc_copy@huc-copy:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][27] ([fdo#109271] / [i915#2190])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@gem_huc_copy@huc-copy.html
+    - fi-glk-dsi:         NOTRUN -> [SKIP][17] ([fdo#109271] / [i915#2190])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@gem_huc_copy@huc-copy.html
 
   * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][28] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@gem_lmem_swapping@parallel-random-engines.html
+    - fi-glk-dsi:         NOTRUN -> [SKIP][18] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@gem_lmem_swapping@parallel-random-engines.html
 
   * igt@i915_selftest@live@gt_engines:
-    - bat-dg1-6:          [PASS][29] -> [INCOMPLETE][30] ([i915#4418])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+    - bat-dg1-6:          [PASS][19] -> [INCOMPLETE][20] ([i915#4418])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
 
   * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-7567u:       [PASS][31] -> [DMESG-FAIL][32] ([i915#541])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
+    - fi-kbl-7567u:       [PASS][21] -> [DMESG-FAIL][22] ([i915#541])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
 
   * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [PASS][33] -> [DMESG-FAIL][34] ([i915#5026])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@i915_selftest@live@requests.html
+    - fi-blb-e6850:       [PASS][23] -> [DMESG-FAIL][24] ([i915#5026])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@i915_selftest@live@requests.html
 
   * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][35] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@kms_chamelium@hdmi-hpd-fast.html
+    - fi-glk-dsi:         NOTRUN -> [SKIP][25] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@kms_chamelium@hdmi-hpd-fast.html
 
   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-glk-dsi:         NOTRUN -> [SKIP][36] ([fdo#109271] / [i915#533])
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+    - fi-glk-dsi:         NOTRUN -> [SKIP][26] ([fdo#109271] / [i915#533])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-dsi/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
 
   * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-skl-6700k2:      [PASS][37] -> [SKIP][38] ([fdo#109271])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-blb-e6850:       [PASS][39] -> [SKIP][40] ([fdo#109271])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-x1275:       [PASS][41] -> [SKIP][42] ([fdo#109271])
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-kefka:       [PASS][43] -> [SKIP][44] ([fdo#109271])
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bwr-2160:        [PASS][45] -> [SKIP][46] ([fdo#109271])
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-nick:        [PASS][47] -> [SKIP][48] ([fdo#109271])
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-guc:         [PASS][49] -> [SKIP][50] ([fdo#109271])
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-8809g:       [PASS][51] -> [SKIP][52] ([fdo#109271])
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-rkl-guc:         [PASS][53] -> [SKIP][54] ([i915#4098])
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-ilk-650:         [PASS][55] -> [SKIP][56] ([fdo#109271])
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-elk-e7500:       [PASS][57] -> [SKIP][58] ([fdo#109271])
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-snb-2520m:       [PASS][59] -> [SKIP][60] ([fdo#109271])
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-8109u:       [PASS][61] -> [SKIP][62] ([fdo#109271])
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-7500u:       [PASS][63] -> [SKIP][64] ([fdo#109271])
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bxt-dsi:         [PASS][65] -> [SKIP][66] ([fdo#109271])
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-hsw-4770:        [PASS][67] -> [SKIP][68] ([fdo#109271])
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-guc:         [PASS][69] -> [SKIP][70] ([fdo#109271])
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-kbl-7567u:       [PASS][71] -> [SKIP][72] ([fdo#109271])
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-skl-guc:         [PASS][73] -> [SKIP][74] ([fdo#109271])
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-bsw-n3050:       [PASS][75] -> [SKIP][76] ([fdo#109271])
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-ivb-3770:        [PASS][77] -> [SKIP][78] ([fdo#109271])
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-cfl-8700k:       [PASS][79] -> [SKIP][80] ([fdo#109271])
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html
-    - fi-glk-j4005:       [PASS][81] -> [SKIP][82] ([fdo#109271])
-   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html
-   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-skl-6700k2:      [PASS][27] -> [SKIP][28] ([fdo#109271])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6700k2/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-blb-e6850:       [PASS][29] -> [SKIP][30] ([fdo#109271])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-kbl-x1275:       [PASS][31] -> [SKIP][32] ([fdo#109271])
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-x1275/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-bsw-kefka:       [PASS][33] -> [SKIP][34] ([fdo#109271])
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-kefka/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-bwr-2160:        [PASS][35] -> [SKIP][36] ([fdo#109271])
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bwr-2160/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-bsw-nick:        [PASS][37] -> [SKIP][38] ([fdo#109271])
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-kbl-guc:         [PASS][39] -> [SKIP][40] ([fdo#109271])
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-guc/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-kbl-8809g:       [PASS][41] -> [SKIP][42] ([fdo#109271])
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-8809g/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-rkl-guc:         [PASS][43] -> [SKIP][44] ([i915#4098])
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-rkl-guc/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-ilk-650:         [PASS][45] -> [SKIP][46] ([fdo#109271])
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ilk-650/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-elk-e7500:       [PASS][47] -> [SKIP][48] ([fdo#109271])
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-elk-e7500/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-snb-2520m:       [PASS][49] -> [SKIP][50] ([fdo#109271])
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-snb-2520m/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-cfl-8109u:       [PASS][51] -> [SKIP][52] ([fdo#109271])
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8109u/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-kbl-7500u:       [PASS][53] -> [SKIP][54] ([fdo#109271])
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html
+    - bat-dg1-6:          [PASS][55] -> [SKIP][56] ([i915#3555])
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-bxt-dsi:         [PASS][57] -> [SKIP][58] ([fdo#109271])
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-hsw-4770:        [PASS][59] -> [SKIP][60] ([fdo#109271])
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-cfl-guc:         [PASS][61] -> [SKIP][62] ([fdo#109271])
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-guc/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-kbl-7567u:       [PASS][63] -> [SKIP][64] ([fdo#109271])
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7567u/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-skl-guc:         [PASS][65] -> [SKIP][66] ([fdo#109271])
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-guc/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-bsw-n3050:       [PASS][67] -> [SKIP][68] ([fdo#109271])
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bsw-n3050/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-ivb-3770:        [PASS][69] -> [SKIP][70] ([fdo#109271])
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ivb-3770/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-cfl-8700k:       [PASS][71] -> [SKIP][72] ([fdo#109271])
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html
+    - bat-dg1-5:          [PASS][73] -> [SKIP][74] ([i915#3555])
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
+    - fi-glk-j4005:       [PASS][75] -> [SKIP][76] ([fdo#109271])
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html
 
   * igt@runner@aborted:
-    - bat-dg1-6:          NOTRUN -> [FAIL][83] ([i915#4312])
-   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-6/igt@runner@aborted.html
-    - fi-blb-e6850:       NOTRUN -> [FAIL][84] ([fdo#109271] / [i915#2403] / [i915#2426] / [i915#4312])
-   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@runner@aborted.html
-    - fi-skl-6600u:       NOTRUN -> [FAIL][85] ([i915#4312])
-   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6600u/igt@runner@aborted.html
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][86] ([i915#2426] / [i915#4312])
-   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bdw-5557u/igt@runner@aborted.html
+    - bat-dg1-6:          NOTRUN -> [FAIL][77] ([i915#4312])
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-6/igt@runner@aborted.html
+    - fi-blb-e6850:       NOTRUN -> [FAIL][78] ([fdo#109271] / [i915#2403] / [i915#2426] / [i915#4312])
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-blb-e6850/igt@runner@aborted.html
+    - fi-skl-6600u:       NOTRUN -> [FAIL][79] ([i915#4312])
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-skl-6600u/igt@runner@aborted.html
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][80] ([i915#2426] / [i915#4312])
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bdw-5557u/igt@runner@aborted.html
 
   
 #### Possible fixes ####
 
   * igt@i915_selftest@live@dmabuf:
-    - {fi-tgl-dsi}:       [FAIL][87] -> [PASS][88]
-   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-dsi/igt@i915_selftest@live@dmabuf.html
-   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-dsi/igt@i915_selftest@live@dmabuf.html
+    - {fi-tgl-dsi}:       [FAIL][81] -> [PASS][82]
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-dsi/igt@i915_selftest@live@dmabuf.html
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-dsi/igt@i915_selftest@live@dmabuf.html
 
   * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [INCOMPLETE][89] ([i915#4785]) -> [PASS][90]
-   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+    - fi-hsw-4770:        [INCOMPLETE][83] ([i915#4785]) -> [PASS][84]
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
 
   * igt@kms_busy@basic@modeset:
-    - {bat-adlp-6}:       [DMESG-WARN][91] ([i915#3576]) -> [PASS][92] +1 similar issue
-   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-adlp-6/igt@kms_busy@basic@modeset.html
-   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-adlp-6/igt@kms_busy@basic@modeset.html
+    - {bat-adlp-6}:       [DMESG-WARN][85] ([i915#3576]) -> [PASS][86] +1 similar issue
+   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-adlp-6/igt@kms_busy@basic@modeset.html
+   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-adlp-6/igt@kms_busy@basic@modeset.html
+
+  
+#### Warnings ####
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-tgl-1115g4:      [DMESG-WARN][87] ([i915#4002]) -> [SKIP][88] ([i915#3555])
+   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
+   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -300,6 +292,7 @@ Known issues
   [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
   [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
   [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
   [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
   [i915#4002]: https://gitlab.freedesktop.org/drm/intel/issues/4002
   [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
@@ -331,7 +324,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html
 
---===============1174567642487851020==
+--===============2164859242209467726==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -353,7 +346,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/kms_setmode: Fix stealing test (rev2)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100893/">https://patchwork.freedesktop.org/series/100893/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/index.html</a></td></tr>
 
@@ -362,9 +355,9 @@ Content-Transfer-Encoding: 7bit
 
     <h1>CI Bug Log - changes from CI_DRM_11330 -&gt; IGTPW_6741</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_6741 absolutely need to be<br />
-  verified manually.</p>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_6741 need to be verified<br />
+  manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
   introduced in IGTPW_6741, please notify your bug team to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
@@ -375,32 +368,10 @@ Content-Transfer-Encoding: 7bit
 <h2>Possible new issues</h2>
 <p>Here are the unknown changes that may have been introduced in IGTPW_6741:</p>
 <h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>
-<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
-<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-</ul>
-</li>
-</ul>
 <h4>Warnings</h4>
 <ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
 <li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1385">i915#1385</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></li>
 </ul>
 </li>
 </ul>
@@ -415,9 +386,6 @@ Content-Transfer-Encoding: 7bit
 <p>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-rpls-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
 </li>
 <li>
-<p>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-dsi/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
 <p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
 </li>
 <li>
@@ -425,9 +393,6 @@ Content-Transfer-Encoding: 7bit
 </li>
 <li>
 <p>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-ehl-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
-</li>
-<li>
-<p>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-adlp-6/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-adlp-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
 </li>
 <li>
 <p>{bat-jsl-2}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-jsl-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a></p>
@@ -565,6 +530,9 @@ Content-Transfer-Encoding: 7bit
 <p>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-kbl-7500u/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
 </li>
 <li>
+<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</p>
+</li>
+<li>
 <p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-bxt-dsi/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
 </li>
 <li>
@@ -587,6 +555,9 @@ Content-Transfer-Encoding: 7bit
 </li>
 <li>
 <p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-cfl-8700k/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</p>
 </li>
 <li>
 <p>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-glk-j4005/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
@@ -632,6 +603,13 @@ Content-Transfer-Encoding: 7bit
 </ul>
 </li>
 </ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_setmode@basic-clone-single-crtc:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11330/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4002">i915#4002</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6741/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+</ul>
 <p>{name}: This element is suppressed. This means it is ignored when computing<br />
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
@@ -647,4 +625,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1174567642487851020==--
+--===============2164859242209467726==--
