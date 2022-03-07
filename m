@@ -1,22 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2AED10F0C9
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Mar 2022 10:10:35 +0000 (UTC)
-Message-ID: <441f2463-fc74-fb67-2512-f23ab942c162@linux.intel.com>
-Date: Mon, 7 Mar 2022 10:10:28 +0000
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0042910F3D8
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Mar 2022 10:36:54 +0000 (UTC)
+Date: Mon, 7 Mar 2022 11:36:50 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+	igt-dev@lists.freedesktop.org, "Cc:"@freedesktop.org
+Message-ID: <YiXgQmwkpNuxhpAu@zkempczy-mobl2>
+References: <20220225110626.82776-1-zbigniew.kempczynski@intel.com>
+ <20220225110626.82776-4-zbigniew.kempczynski@intel.com>
+ <Yh9KPX19TxL3ENjz@kamilkon-DESK1> <YiC+bDNvjwqLo3Y8@zkempczy-mobl2>
+ <YiEbOhFSqaKHTp0u@kamilkon-DESK1>
 MIME-Version: 1.0
-Content-Language: en-US
-To: "Liu, Chuansheng" <chuansheng.liu@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20220304051509.44816-1-chuansheng.liu@intel.com>
- <9bebc5ee-55eb-91bc-65dd-1e0692e42a6a@linux.intel.com>
- <BL1PR11MB544548D4A7A8247D1DEECE1297089@BL1PR11MB5445.namprd11.prod.outlook.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <BL1PR11MB544548D4A7A8247D1DEECE1297089@BL1PR11MB5445.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_mmap_gtt: add test
- mmap_closed_bo
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YiEbOhFSqaKHTp0u@kamilkon-DESK1>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/gem_ccs: Verify uncompressed
+ and compressed blits
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,170 +25,625 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Ursulin, Tvrtko" <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 07/03/2022 01:02, Liu, Chuansheng wrote:
-> Hi Tvrtko,
+On Thu, Mar 03, 2022 at 08:47:06PM +0100, Kamil Konieczny wrote:
+> Dnia 2022-03-03 at 14:11:08 +0100, Zbigniew Kempczyński napisał(a):
+> > On Wed, Mar 02, 2022 at 11:43:09AM +0100, Kamil Konieczny wrote:
+> > > Hi Zbigniew,
+> > > 
+> > > Dnia 2022-02-25 at 12:06:26 +0100, Zbigniew Kempczyński napisał(a):
+> > > > DG2 and above supports flat-ccs what means object compression lays in
+> > > > dedicated part or memory and is directly correlated with object location
+> > > > in physical memory. As no mapping is possible from CPU side to this area
+> > > > dedicated blitter command (XY_CTRL_SURF_COPY_BLT) was created to copy
+> > > > from/to ccs data.
+> > > > 
+> > > > Test exercises scenarios:
+> > > > 1. block-copy without compression (TGL/DG1)
+> > > > 2. block-copy with flat-ccs compression (DG2+) + inplace decompression
+> > > > 3. ctrl-surf-copy which verifies copying ccs data to/from flat-ccs area
+> > > 
+> > > This is good starting point, what about one more, maybe for next
+> > > patch edition, with check for compressed data, e.g. check if
+> > > compression was really done ?
+> > 
+> > We can compare both src and mid after blit, it should differ. I'm not sure
+> > but likely we would be able to write compression algorithm on cpu. But 
+> > I don't know is it worth to do this (at least now). If src->mid->dst 
+> > works fine and I assume mid is compressed algorithm is not much important,
+> > as it is reversible. 
 > 
-> Thanks for review, please see my comments below.
-> 
->> -----Original Message-----
->> From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
->> Sent: Saturday, March 5, 2022 12:35 AM
->> To: Liu, Chuansheng <chuansheng.liu@intel.com>; igt-
->> dev@lists.freedesktop.org
->> Cc: Ursulin, Tvrtko <tvrtko.ursulin@intel.com>
->> Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_mmap_gtt: add test
->> mmap_closed_bo
->>
->>
->> Hi,
->>
->> Some nits, some questions below.
->>
->> On 04/03/2022 05:15, Chuansheng Liu wrote:
->>> Recently we figured out one memory leak in i915 driver when running
->>> below alike test:
->>>
->>> create_bo
->>> gem_mmap_gtt bo
->>> gem_mmap_gtt bo twice
->>> close_bo
->>>
->>> then the memory leak is detected. More details can be referred in
->>> https://patchwork.freedesktop.org/patch/475802/?series=100532&rev=2
->>>
->>> For detecting such issue, this test case mmap_closed_bo is created,
->>> it will close the bo with keeping one mmap, then second mmap the bo,
->>> in normal situation, we expect second mmap failure with EACCESS. But
->>> it will succeed if driver has the vm_node allowance leak.
->>>
->>> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>> Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
->>> ---
->>>    tests/i915/gem_mmap_gtt.c | 42
->> +++++++++++++++++++++++++++++++++++++++
->>>    1 file changed, 42 insertions(+)
->>>
->>> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
->>> index 92bbb5d2..0f4d5385 100644
->>> --- a/tests/i915/gem_mmap_gtt.c
->>> +++ b/tests/i915/gem_mmap_gtt.c
->>> @@ -318,6 +318,46 @@ test_wc(int fd)
->>>    		     5*gtt_writes/256., 5*cpu_writes/256.);
->>>    }
->>>
->>> +static void mmap_closed_bo(int fd)
->>> +{
->>> +	struct drm_i915_gem_mmap_gtt mmap_arg;
->>> +	void *p1, *p2;
->>> +	int loop = 0, i = 0;
->>
->> Nits - don't need to init i, mmap_arg, p1 and p2 could be declared in
->> the loop.
-> OK, will update it in V2.
-> 
->>
->>> +
->>> +	while (loop++ < 2) {
->>> +		memset(&mmap_arg, 0, sizeof(mmap_arg));
->>> +
->>> +		mmap_arg.handle = gem_create(fd, OBJECT_SIZE);
->>> +		igt_assert(mmap_arg.handle);
->>> +
->>> +		i = loop;
->>> +		while (i--) {
->>> +			/* get offset, here we tries a loop to call
->> GEM_MMAP_GTT many times,
->>
->> If I may suggest:
->>
->> /*
->>    * Get mmap offset by calling GEM_MMAP_GTT one or multiple times in
->>    * order to try to provoke a memory leak in the driver.
->>    */
-> OK, will update it in V2.
-> 
->>
->>> +			 * it could trigger driver memory leak issue easily.
->>> +			 */
->>> +			do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT,
->> &mmap_arg);
->>> +		}
->>> +
->>> +		p1 = mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
->>> +			MAP_SHARED, fd, mmap_arg.offset);
->>> +		igt_assert(p1 != MAP_FAILED);
->>> +
->>> +		gem_close(fd, mmap_arg.handle);
->>> +		gem_quiescent_gpu(fd);
->>
->> What is quiescent for? I usually expect to see it when test created some
->> GPU activity, which isn't the case here. If there is a subtle reason
->> please put a comment here.
->>
-> Normally when we call gem_close(), the object is being freed by kworker on the way,
-> if we call mmap in the middle, we may get different errno(invalid or eaccess) inconsistently,
-> here quiescent is for flush object-free kworker done to get consistent errno. Even though,
-> in this case, return error -1 of mmap is enough for checking at last.
-> I could put one comment for it in V2.
+> I was thinking about something simple like byte freqency counting.
+> Well, I agree there are other ways for checks, like sending 8K
+> image trough 4K pipe to display.
 
-I see. You could call igt_drop_caches_set(DROP_FREED) and it will be 
-close to self-documenting? I think that's the flag to use at least, 
-please check if you decide to try it.
+To be sure should we have compression we should implement this on cpu and
+compare mid. But I'm fine where mid != src and mid -> dst gives src == dst.
+Implicit proof we got compressed data is in 'ctrl-surf-copy' test where we
+intentionally damage ccs data for surface, thus mid -> dst gives dst != src.
+That means ccs data influences on blit and when we back with previous data
+mid -> dst will give src == dst.
 
-Rest of v2 looks good to me.
+I think this should be enough to assume compression works fine in block-copy.
 
-Regards,
+--
+Zbigniew
 
-Tvrtko
-
->   
->>> +
->>> +		p2 = mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
->>> +			MAP_SHARED, fd, mmap_arg.offset);
->>> +
->>> +		munmap(p1, OBJECT_SIZE);
->>> +
->>> +		/* we expect mmapping p2 would fail, otherwise the driver
->>> +		 * may not clean up the allowance of vm_node, it would
->>> +		 * cause memory leak.
->>> +		 */
->>> +		igt_assert(p2 == MAP_FAILED);
->>
->> I get this - mmap(p2) should fail after object close regardless of how
->> many time DRM_IOCTL_I915_GEM_MMAP_GTT was called.
->>
->> Excellent that you found a way to test for the leak without the need for
->> kmemleak! At least that's how I read the posting of this test. :)
-> Exactly : )
-> This test also reflects the inconsistency between calling one-time MMAP_GTT
-> and calling multi-time MMAP_GTT.
 > 
-> Best Regards
-> Chuansheng
+> > 
+> > > 
+> > > > 
+> > > > v2: set mip tail lod to 0xf to avoid overlap with lod
+> > > > 
+> > > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > > > ---
+> > > >  tests/i915/gem_ccs.c | 488 +++++++++++++++++++++++++++++++++++++++++++
+> > > >  tests/meson.build    |   1 +
+> > > >  2 files changed, 489 insertions(+)
+> > > >  create mode 100644 tests/i915/gem_ccs.c
+> > > > 
+> > > > diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> > > > new file mode 100644
+> > > > index 000000000..9770d2840
+> > > > --- /dev/null
+> > > > +++ b/tests/i915/gem_ccs.c
+> > > > @@ -0,0 +1,488 @@
+> > > > +// SPDX-License-Identifier: MIT
+> > > > +/*
+> > > > + * Copyright © 2022 Intel Corporation
+> > > > + */
+> > > > +
+> > > > +#include <errno.h>
+> > > > +#include <sys/ioctl.h>
+> > > > +#include <sys/time.h>
+> > > > +#include <malloc.h>
+> > > > +#include "drm.h"
+> > > > +#include "igt.h"
+> > > > +#include "i915/gem.h"
+> > > > +#include "i915/gem_create.h"
+> > > > +#include "lib/intel_chipset.h"
+> > > > +#include "i915/i915_blt.h"
+> > > > +
+> > > > +IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flat ccs");
+> > > 
+> > > s/ccs/ccs compression/
+> > > 
+> > > Please add "compression" word at the end of description, to
+> > > make it different from compute ccs.
 > 
->>
->> Regards,
->>
->> Tvrtko
->>
->>> +	}
->>> +}
->>> +
->>>    static int mmap_gtt_version(int i915)
->>>    {
->>>    	int val = 0;
->>> @@ -1305,6 +1345,8 @@ igt_main
->>>    		test_write(fd);
->>>    	igt_subtest("basic-write-gtt")
->>>    		test_write_gtt(fd);
->>> +	igt_subtest("mmap_closed_bo")
->>> +		mmap_closed_bo(fd);
->>>    	igt_subtest("ptrace")
->>>    		test_ptrace(fd);
->>>    	igt_subtest("coherency")
+> > 
+> > Flat ccs means flat compressed control surface, and definitely is not 
+> > the same as compute. CCS there means Compute Command Streamer. 
+> >  
+> Maybe something like:
+> 
+> Exercise gen12 blitter with and without flat compressed control surface
+> 
+> It can also be placed as comment, before test description.
+> 
+> > > 
+> > > > +
+> > > > +#define BPP 32
+> > 
+> > This is also very common and I think no BITS_PER_PIXEL defines is necessary,
+> > all knows what that means. 
+> 
+> ok, that was only suggestion, as this is used only in one place.
+> 
+> Regards,
+> Kamil
+> 
+> > 
+> > > 
+> > > Please add description of BPP here, I guess it is BITS_PER_PIXEL, or maybe 
+> > > just use full name ?
+> > > 
+> > > > +
+> > > > +static struct param {
+> > > > +	int compression_format;
+> > > > +	int tiling;
+> > > > +	bool write_png;
+> > > > +	bool print_bb;
+> > > > +	bool print_surface_info;
+> > > > +	int width;
+> > > > +	int height;
+> > > > +	uint32_t increase_mid_surf_size;
+> > > > +} param = {
+> > > > +	.compression_format = 0,
+> > > > +	.tiling = -1,
+> > > > +	.write_png = false,
+> > > > +	.print_bb = false,
+> > > > +	.print_surface_info = false,
+> > > > +	.width = 512,
+> > > > +	.height = 512,
+> > > > +	.increase_mid_surf_size = 0,
+> > > > +};
+> > > > +
+> > > > +struct test_config {
+> > > > +	bool compression;
+> > > > +	bool inplace;
+> > > > +	bool surfcopy;
+> > > > +};
+> > > > +
+> > > > +static void set_object(struct blt_copy_object *obj,
+> > > > +		       uint32_t handle, uint64_t size, uint32_t region,
+> > > > +		       uint8_t mocs, enum blt_tiling tiling,
+> > > > +		       enum blt_compression compression,
+> > > > +		       enum blt_compression_type compression_type)
+> > > > +{
+> > > > +	obj->handle = handle;
+> > > > +	obj->size = size;
+> > > > +	obj->region = region;
+> > > > +	obj->mocs = mocs;
+> > > > +	obj->tiling = tiling;
+> > > > +	obj->compression = compression;
+> > > > +	obj->compression_type = compression_type;
+> > > > +}
+> > > > +
+> > > > +static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
+> > > > +		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+> > > > +		     uint16_t x_offset, uint16_t y_offset)
+> > > > +{
+> > > > +	obj->pitch = pitch;
+> > > > +	obj->x1 = x1;
+> > > > +	obj->y1 = y1;
+> > > > +	obj->x2 = x2;
+> > > > +	obj->y2 = y2;
+> > > > +	obj->x_offset = x_offset;
+> > > > +	obj->y_offset = y_offset;
+> > > > +}
+> > > > +
+> > > > +static void set_batch(struct blt_copy_batch *batch,
+> > > > +		      uint32_t handle, uint64_t size, uint32_t region)
+> > > > +{
+> > > > +	batch->handle = handle;
+> > > > +	batch->size = size;
+> > > > +	batch->region = region;
+> > > > +}
+> > > > +
+> > > > +static void set_object_ext(struct blt_block_copy_object_ext *obj,
+> > > > +			   uint8_t compression_format,
+> > > > +			   uint16_t surface_width, uint16_t surface_height,
+> > > > +			   enum blt_surface_type surface_type)
+> > > > +{
+> > > > +	obj->compression_format = compression_format;
+> > > > +	obj->surface_width = surface_width;
+> > > > +	obj->surface_height = surface_height;
+> > > > +	obj->surface_type = surface_type;
+> > > > +
+> > > > +	/* Ensure mip tail won't overlap lod */
+> > > > +	obj->mip_tail_start_lod = 0xf;
+> > > > +}
+> > > > +
+> > > > +static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
+> > > > +			    uint32_t handle, uint32_t region, uint64_t size,
+> > > > +			    uint8_t mocs, enum blt_access_type access_type)
+> > > > +{
+> > > > +	obj->handle = handle;
+> > > > +	obj->region = region;
+> > > > +	obj->size = size;
+> > > > +	obj->mocs = mocs;
+> > > > +	obj->access_type = access_type;
+> > > > +}
+> > > > +
+> > > > +static struct blt_copy_object *
+> > > > +create_object(int i915, uint32_t region,
+> > > > +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+> > > > +	      enum blt_tiling tiling,
+> > > > +	      enum blt_compression compression,
+> > > > +	      enum blt_compression_type compression_type,
+> > > > +	      bool create_mapping,
+> > > > +	      uint64_t increase_size)
+> > > > +{
+> > > > +	struct blt_copy_object *obj;
+> > > > +	uint64_t size = width * height * bpp / 8 + increase_size;
+> > > > +	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
+> > > > +	uint32_t handle;
+> > > > +
+> > > > +	obj = calloc(1, sizeof(*obj));
+> > > > +
+> > > > +	obj->size = size;
+> > > > +	igt_assert(__gem_create_in_memory_regions(i915, &handle,
+> > > > +						  &size, region) == 0);
+> > > > +
+> > > > +	set_object(obj, handle, size, region, mocs, tiling,
+> > > > +		   compression, compression_type);
+> > > > +	set_geom(obj, stride, 0, 0, width, height, 0, 0);
+> > > > +
+> > > > +	if (create_mapping)
+> > > > +		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
+> > > > +						     PROT_READ | PROT_WRITE);
+> > > > +
+> > > > +	return obj;
+> > > > +}
+> > > > +
+> > > > +static void destroy_object(int i915, struct blt_copy_object *obj)
+> > > > +{
+> > > > +	if (obj->ptr)
+> > > > +		munmap(obj->ptr, obj->size);
+> > > > +
+> > > > +	gem_close(i915, obj->handle);
+> > > > +}
+> > > > +
+> > > > +static void set_blt_object(struct blt_copy_object *obj,
+> > > > +			   const struct blt_copy_object *orig)
+> > > > +{
+> > > > +	memcpy(obj, orig, sizeof(*obj));
+> > > > +}
+> > > > +
+> > > > +#define PRINT_SURFACE_INFO(name, obj) do { \
+> > > > +	if (param.print_surface_info) \
+> > > > +		blt_surface_info((name), (obj)); } while (0)
+> > > > +
+> > > > +#define WRITE_PNG(fd, id, name, obj, w, h) do { \
+> > > > +	if (param.write_png) \
+> > > > +		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+> > > > +
+> > > > +static void surf_copy(int i915,
+> > > > +		      const intel_ctx_t *ctx,
+> > > > +		      const struct intel_execution_engine2 *e,
+> > > > +		      uint64_t ahnd,
+> > > > +		      const struct blt_copy_object *src,
+> > > > +		      const struct blt_copy_object *mid,
+> > > > +		      const struct blt_copy_object *dst,
+> > > > +		      int run_id)
+> > > > +{
+> > > > +	struct blt_copy_data blt = {};
+> > > > +	struct blt_block_copy_data_ext ext = {};
+> > > > +	struct blt_ctrl_surf_copy_data surf = {};
+> > > > +	uint32_t bb, bb2, ccs, *ccsmap, bb_size = 4096;
+> > > > +	uint64_t ccssize = mid->size / CCS_RATIO;
+> > > > +	uint32_t *ccscopy;
+> > > > +	int result;
+> > > > +
+> > > > +	igt_assert(mid->compression);
+> > > > +	ccscopy = (uint32_t *) malloc(ccssize);
+> > > > +	bb = gem_create(i915, bb_size);
+> > > > +	bb2 = gem_create(i915, bb_size);
+> > > > +	ccs = gem_create(i915, ccssize);
+> > > > +
+> > > > +	surf.i915 = i915;
+> > > > +	surf.print_bb = param.print_bb;
+> > > > +	set_surf_object(&surf.src, mid->handle, mid->region, mid->size,
+> > > > +			0, INDIRECT_ACCESS);
+> > > > +	set_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
+> > > > +			0, DIRECT_ACCESS);
+> > > > +	set_batch(&surf.bb, bb, bb_size, REGION_SMEM);
+> > > > +	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+> > > > +	gem_sync(i915, surf.dst.handle);
+> > > > +
+> > > > +	ccsmap = gem_mmap__device_coherent(i915, ccs, 0, surf.dst.size,
+> > > > +					   PROT_READ | PROT_WRITE);
+> > > > +	memcpy(ccscopy, ccsmap, ccssize);
+> > > > +
+> > > > +	/* corrupt ccs */
+> > > > +	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+> > > > +		ccsmap[i] = i;
+> > > > +	set_surf_object(&surf.src, ccs, REGION_SMEM, ccssize,
+> > > > +			0, DIRECT_ACCESS);
+> > > > +	set_surf_object(&surf.dst, mid->handle, mid->region, mid->size,
+> > > > +			0, INDIRECT_ACCESS);
+> > > > +	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+> > > > +
+> > > > +	memset(&blt, 0, sizeof(blt));
+> > > > +	blt.color_depth = CD_32bit;
+> > > > +	blt.print_bb = param.print_bb;
+> > > > +	set_blt_object(&blt.src, mid);
+> > > > +	set_blt_object(&blt.dst, dst);
+> > > > +	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
+> > > > +	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
+> > > > +	set_batch(&blt.bb, bb2, bb_size, REGION_SMEM);
+> > > > +	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
+> > > > +	gem_sync(i915, blt.dst.handle);
+> > > > +	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
+> > > > +	result = memcmp(src->ptr, dst->ptr, src->size);
+> > > > +	igt_assert(result != 0);
+> > > > +
+> > > > +	/* retrieve back ccs */
+> > > > +	memcpy(ccsmap, ccscopy, ccssize);
+> > > > +	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+> > > > +
+> > > > +	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
+> > > > +	gem_sync(i915, blt.dst.handle);
+> > > > +	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
+> > > > +	result = memcmp(src->ptr, dst->ptr, src->size);
+> > > > +	igt_assert(result == 0);
+> > > > +
+> > > > +	munmap(ccsmap, ccssize);
+> > > > +	gem_close(i915, bb);
+> > > > +	gem_close(i915, bb2);
+> > > > +	gem_close(i915, ccs);
+> > > > +}
+> > > > +
+> > > > +static void block_copy(int i915,
+> > > > +		       const intel_ctx_t *ctx,
+> > > > +		       const struct intel_execution_engine2 *e,
+> > > > +		       uint32_t region1, uint32_t region2,
+> > > > +		       enum blt_tiling mid_tiling, bool compression,
+> > > > +		       bool inplace,
+> > > > +		       bool surfcopy)
+> > > > +{
+> > > > +	struct blt_copy_data blt = {};
+> > > > +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> > > > +	struct blt_copy_object *src, *mid, *dst;
+> > > > +	const uint32_t bpp = BPP;
+> > > 
+> > > This BPP is used only once here, maybe change to full name ?
+> > 
+> > I like bpp - it is short and I don't know another acronym which 
+> > is used in graphics programming. But I wondered to initalize bpp to 32
+> > here, without BPP macro on the top.
+> > 
+> > > 
+> > > > +	uint64_t add_size = param.increase_mid_surf_size;
+> > > > +	uint64_t bb_size = 4096;
+> > > > +	uint64_t ahnd = intel_allocator_open_full(i915, ctx->id, 0, 0,
+> > > > +						  INTEL_ALLOCATOR_SIMPLE,
+> > > > +						  ALLOC_STRATEGY_LOW_TO_HIGH);
+> > > > +	uint32_t run_id = mid_tiling;
+> > > > +	uint32_t mid_region = region2, bb;
+> > > > +	uint32_t width = param.width, height = param.height;
+> > > > +	enum blt_compression mid_compression = compression;
+> > > > +	int mid_compression_format = param.compression_format;
+> > > > +	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+> > > > +	int result;
+> > > > +
+> > > > +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+> > > > +
+> > > > +	if (!blt_supports_compression(i915))
+> > > > +		pext = NULL;
+> > > > +
+> > > > +	src = create_object(i915, region1, width, height, bpp, 0,
+> > > > +			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true, 0);
+> > > > +	mid = create_object(i915, mid_region, width, height, bpp, 0,
+> > > > +			    mid_tiling, mid_compression, comp_type, true, add_size);
+> > > > +	dst = create_object(i915, region1, width, height, bpp, 0,
+> > > > +			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true, 0);
+> > > > +	igt_assert(src->size == dst->size);
+> > > > +	PRINT_SURFACE_INFO("src", src);
+> > > > +	PRINT_SURFACE_INFO("mid", mid);
+> > > > +	PRINT_SURFACE_INFO("dst", dst);
+> > > > +
+> > > > +	blt_surface_fill_rect(i915, src, width, height);
+> > > > +	WRITE_PNG(i915, run_id, "src", src, width, height);
+> > > > +
+> > > > +	memset(&blt, 0, sizeof(blt));
+> > > > +	blt.color_depth = CD_32bit;
+> > > > +	blt.print_bb = param.print_bb;
+> > > > +	set_blt_object(&blt.src, src);
+> > > > +	set_blt_object(&blt.dst, mid);
+> > > > +	set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
+> > > > +	set_object_ext(&ext.dst, mid_compression_format, width, height, SURFACE_TYPE_2D);
+> > > > +	set_batch(&blt.bb, bb, bb_size, region1);
+> > > > +
+> > > > +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+> > > > +	gem_sync(i915, mid->handle);
+> > > > +
+> > > > +	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
+> > > > +	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
+> > > > +
+> > > > +	if (surfcopy && pext)
+> > > > +		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
+> > > > +
+> > > > +	memset(&blt, 0, sizeof(blt));
+> > > > +	blt.color_depth = CD_32bit;
+> > > > +	blt.print_bb = param.print_bb;
+> > > > +	set_blt_object(&blt.src, mid);
+> > > > +	set_blt_object(&blt.dst, dst);
+> > > > +	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
+> > > > +	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+> > > > +	if (inplace) {
+> > > > +		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+> > > > +			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
+> > > > +		blt.dst.ptr = mid->ptr;
+> > > > +	}
+> > > > +
+> > > > +	set_batch(&blt.bb, bb, bb_size, region1);
+> > > > +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+> > > > +	gem_sync(i915, blt.dst.handle);
+> > > > +	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height);
+> > > > +
+> > > > +	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+> > > > +
+> > > > +	destroy_object(i915, src);
+> > > > +	destroy_object(i915, mid);
+> > > > +	destroy_object(i915, dst);
+> > > > +	gem_close(i915, bb);
+> > > > +	put_ahnd(ahnd);
+> > > > +
+> > > > +	igt_assert_f(!result, "source and destination surfaces differs!\n");
+> > > > +}
+> > > > +
+> > > > +static void block_copy_test(int i915,
+> > > > +			    const struct test_config *config,
+> > > > +			    const intel_ctx_t *ctx,
+> > > > +			    struct igt_collection *set)
+> > > > +{
+> > > > +	struct igt_collection *regions;
+> > > > +	const struct intel_execution_engine2 *e;
+> > > > +
+> > > > +	if (config->compression && !blt_supports_compression(i915))
+> > > > +		return;
+> > > > +
+> > > > +	if (config->inplace && !config->compression)
+> > > > +		return;
+> > > > +
+> > > > +	for (int tiling = T_LINEAR; tiling <= T_TILE64; tiling++) {
+> > > > +		if (!blt_supports_tiling(i915, tiling) ||
+> > > > +		    (param.tiling >= 0 && param.tiling != tiling))
+> > > > +			continue;
+> > > > +
+> > > > +		for_each_ctx_engine(i915, ctx, e) {
+> > > > +			if (!gem_engine_can_block_copy(i915, e))
+> > > > +				continue;
+> > > > +
+> > > > +			for_each_variation_r(regions, 2, set) {
+> > > > +				uint32_t region1, region2;
+> > > > +				char *regtxt;
+> > > > +
+> > > > +				region1 = igt_collection_get_value(regions, 0);
+> > > > +				region2 = igt_collection_get_value(regions, 1);
+> > > > +
+> > > > +				/* Compressed surface must be in device memory */
+> > > > +				if (config->compression && !IS_DEVICE_MEMORY_REGION(region2))
+> > > > +					continue;
+> > > > +
+> > > > +				regtxt = memregion_dynamic_subtest_name(regions);
+> > > > +				igt_dynamic_f("%s-%s-compfmt%d-%s",
+> > > > +					      blt_tiling_name(tiling),
+> > > > +					      config->compression ?
+> > > > +						      "compressed" : "uncompressed",
+> > > > +					      param.compression_format, regtxt) {
+> > > > +					block_copy(i915, ctx, e,
+> > > > +						   region1, region2,
+> > > > +						   tiling,
+> > > > +						   config->compression,
+> > > > +						   config->inplace,
+> > > > +						   config->surfcopy);
+> > > > +				}
+> > > > +				free(regtxt);
+> > > > +			}
+> > > > +		}
+> > > > +	}
+> > > > +}
+> > > > +
+> > > > +static int opt_handler(int opt, int opt_index, void *data)
+> > > > +{
+> > > > +	switch (opt) {
+> > > > +	case 'b':
+> > > > +		param.print_bb = true;
+> > > > +		igt_debug("Print bb: %d\n", param.print_bb);
+> > > > +		break;
+> > > > +	case 'f':
+> > > > +		param.compression_format = atoi(optarg);
+> > > > +		igt_debug("Compression format: %d\n", param.compression_format);
+> > > > +		igt_assert((param.compression_format & ~0x1f) == 0);
+> > > > +		break;
+> > > > +	case 'p':
+> > > > +		param.write_png = true;
+> > > > +		igt_debug("Write png: %d\n", param.write_png);
+> > > > +		break;
+> > > > +	case 's':
+> > > > +		param.print_surface_info = true;
+> > > > +		igt_debug("Print surface info: %d\n", param.print_surface_info);
+> > > > +		break;
+> > > > +	case 't':
+> > > > +		param.tiling = atoi(optarg);
+> > > > +		igt_debug("Tiling: %d\n", param.tiling);
+> > > > +		break;
+> > > > +	case 'W':
+> > > > +		param.width = atoi(optarg);
+> > > > +		igt_debug("Width: %d\n", param.width);
+> > > > +		break;
+> > > > +	case 'H':
+> > > > +		param.height = atoi(optarg);
+> > > > +		igt_debug("Height: %d\n", param.height);
+> > > > +		break;
+> > > > +	case 'I':
+> > > > +		param.increase_mid_surf_size = atoi(optarg);
+> > > > +		igt_debug("Additional mid size: %x\n", param.increase_mid_surf_size);
+> > > > +		break;
+> > > > +	default:
+> > > > +		return IGT_OPT_HANDLER_ERROR;
+> > > > +	}
+> > > > +
+> > > > +	return IGT_OPT_HANDLER_SUCCESS;
+> > > > +}
+> > > > +
+> > > > +const char *help_str =
+> > > > +	"  -b\tPrint bb\n"
+> > > > +	"  -f\tCompression format (0-31)"
+> > > > +	"  -p\tWrite PNG\n"
+> > > > +	"  -s\tPrint surface info\n"
+> > > > +	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64)\n"
+> > > > +	"  -W\tWidth (default 512)\n"
+> > > > +	"  -H\tHeight (default 512)\n"
+> > > > +	"  -I\tIncrease Tile64 surface size (value)"
+> > > > +	;
+> > > > +
+> > > > +igt_main_args("bf:pst:W:H:I:", NULL, help_str, opt_handler, NULL)
+> > > > +{
+> > > > +	struct drm_i915_query_memory_regions *query_info;
+> > > > +	struct igt_collection *set;
+> > > > +	const intel_ctx_t *ctx;
+> > > > +	int i915;
+> > > > +	igt_hang_t hang;
+> > > > +
+> > > > +	igt_fixture {
+> > > > +		i915 = drm_open_driver(DRIVER_INTEL);
+> > > > +		igt_require_gem(i915);
+> > > > +		igt_require(AT_LEAST_GEN(intel_get_drm_devid(i915), 12) > 0);
+> > > > +
+> > > > +		query_info = gem_get_query_memory_regions(i915);
+> > > > +		igt_require(query_info);
+> > > > +
+> > > > +		set = get_memory_region_set(query_info,
+> > > > +					    I915_SYSTEM_MEMORY,
+> > > > +					    I915_DEVICE_MEMORY);
+> > > > +		ctx = intel_ctx_create_all_physical(i915);
+> > > > +		hang = igt_allow_hang(i915, ctx->id, 0);
+> > > > +	}
+> > > > +
+> > > > +	igt_subtest_with_dynamic("block-copy-uncompressed") {
+> > > > +		struct test_config config = {};
+> > > > +
+> > > > +		block_copy_test(i915, &config, ctx, set);
+> > > > +	}
+> > > > +
+> > > > +	igt_subtest_with_dynamic("block-copy-compressed") {
+> > > > +		struct test_config config = { .compression = true };
+> > > > +
+> > > > +		block_copy_test(i915, &config, ctx, set);
+> > > > +	}
+> > > > +
+> > > > +	igt_subtest_with_dynamic("block-copy-inplace") {
+> > > > +		struct test_config config = { .compression = true,
+> > > > +					      .inplace = true };
+> > > > +
+> > > > +		block_copy_test(i915, &config, ctx, set);
+> > > > +	}
+> > > > +
+> > > > +	igt_subtest_with_dynamic("ctrl-surf-copy") {
+> > > > +		struct test_config config = { .compression = true,
+> > > > +					      .surfcopy = true };
+> > > > +
+> > > > +		block_copy_test(i915, &config, ctx, set);
+> > > > +	}
+> > > 
+> > > imho we need descriptions of subtests here, before each one,
+> > > use --describe to see where it is needed.
+> > 
+> > Agree, I'm going to add this.
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > 
+> > > > +
+> > > > +	igt_fixture {
+> > > > +		igt_disallow_hang(i915, hang);
+> > > > +		close(i915);
+> > > > +	}
+> > > > +}
+> > > > diff --git a/tests/meson.build b/tests/meson.build
+> > > > index 3dbba7a1b..3af4576f4 100644
+> > > > --- a/tests/meson.build
+> > > > +++ b/tests/meson.build
+> > > > @@ -109,6 +109,7 @@ i915_progs = [
+> > > >  	'gem_blits',
+> > > >  	'gem_busy',
+> > > >  	'gem_caching',
+> > > > +	'gem_ccs',
+> > > >  	'gem_close',
+> > > >  	'gem_close_race',
+> > > >  	'gem_concurrent_blit',
+> > > > -- 
+> > > > 2.32.0
+> > > > 
+> > > 
+> > > Rest looks good to me,
+> > > regards,
+> > > Kamil Konieczny
