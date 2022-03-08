@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D40A10EC78
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 07:54:43 +0000 (UTC)
-Date: Tue, 8 Mar 2022 08:54:38 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Arkadiusz Hiler <arek@hiler.eu>, Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20220308085438.602d37a6@maurocar-mobl2>
-In-Reply-To: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
-References: <20220301075929.125733-1-mauro.chehab@linux.intel.com>
+Date: Tue, 8 Mar 2022 10:26:24 +0200
+From: Pekka Paalanen <ppaalanen@gmail.com>
+To: Maxime Ripard <maxime@cerno.tech>
+Message-ID: <20220308102624.1a757e36@eldfell>
+In-Reply-To: <20220304144607.3pwfwhxf4zsckan7@houat>
+References: <20220304144607.3pwfwhxf4zsckan7@houat>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH v2 0/9] Add support to collect code coverage
- data
+Content-Type: multipart/signed; boundary="Sig_/iCg=Yj0kdBgmLGBsNe3WJT=";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Subject: Re: [igt-dev] Writeback Assumptions for XRGB
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,117 +16,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Tim Gover <tim.gover@raspberrypi.com>, dri-devel@lists.freedesktop.org,
+ igt-dev@lists.freedesktop.org, Phil Elwell <phil@raspberrypi.com>,
+ Dom Cobley <dom@raspberrypi.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue,  1 Mar 2022 08:59:20 +0100
-Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+--Sig_/iCg=Yj0kdBgmLGBsNe3WJT=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> The gcc compiler has a feature that allows collecting code coverage
-> in runtime, which is already supported by the Linux Kernel, as described
-> on its documentation:
-> 
-> 	https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
-> 
-> Add support for it at the igt_runner and scripts/run-tests.sh.
+On Fri, 4 Mar 2022 15:46:07 +0100
+Maxime Ripard <maxime@cerno.tech> wrote:
 
-Arkadiusz/Petri,
+> Indeed, while the input buffer uses 0xff for the X component, we'll get
+> back 0x00 from the hardware, and thus the hashes are not identical. We
+> can force the hardware to always set it to 0xff, but that doesn't seem
+> right. It would make more sense to ignore the X component entirely in
+> that case.
 
-Gentile ping.
+Hi,
 
-Regards,
-Mauro
+I tried hard to send a slightly longer response, but gmail refuses to
+deliver to anyone without explanation. So here's a summary of my opinion:
 
-> 
-> With such support, once a Kernel is compiled with:
-> 
-> 	./scripts/config -e DEBUG_FS -e GCOV_KERNEL
-> 
-> And GCOV is enabled by one or more drivers, like doing:
-> 
-> 	for i in $(find drivers/gpu/drm/ -name Makefile); do sed '1 a GCOV_PROFILE := y' -i $i; done
-> 
-> One can use igt_runner and/or run-tests.sh to collect the code coverage.
-> 
-> The way the implementation works is that the igt_runner has internally
-> the logic which reset the gcov usage counters. The code capture itself
-> is done via an external script.
-> 
-> There are two versions of such script:
-> 
-> - scripts/code_cov_capture.sh:
-> 
->   Assumes that the Kernel was built at the same machine, and uses
->   the lcov tool to generate GCC-independent code coverage data,
->   in the form of *.info files;
-> 
-> - scripts/code_cov_gather_on_test.py:
-> 
->   Generates a gzipped tarbal with the code coverage counters in
->   binary format. Such kind of output should then be parsed at
->   the same machine where the Kernel as built, as its content is not
->   ony dependent on the Kernel source, but also on the Kernel output
->   objects.
-> 
-> Either way, both igt_runner and scripts/run-tests.sh could be used
-> to generate the code coverage results.
-> 
-> So, in order to get the code coverage results, storing results per each
-> IGT test, one should run either:
-> 
-> 	./scripts/run-tests.sh -T my_tests.testlist -k ~/linux \
-> 		-c scripts/code_cov_gather_on_test.py -P
-> 
-> or:
-> 
-> 	sudo ./build/runner/igt_runner -o --test-list my_tests.testlist \
-> 		--coverage-per-test \
-> 		--collect-script scripts/code_cov_gather_on_test.py \
-> 		build/tests results
-> 
-> Once the data is captured, it is possible to generate HTML reports
-> using scripts/code_cov_gen_report.sh:
-> 
-> 	scripts/code_cov_gen_report.sh -r results/code_cov/i915_selftest_live.info -k ~/linux -o cov_results -i -f
-> 
-> v2:
->   - Applied this commant to patch 8:
->     sed 's!/home/gta/!/basedir/!;s,\./basedir,/basedir,' -i docs/code_coverage.md
-> 
-> Mauro Carvalho Chehab (8):
->   runner: check if it has root permissions
->   runner: Add support for code coverage
->   scripts/code_cov_gather*/sh: add help scripts for code coverage
->   scripts/code_cov_gather_on_build.sh: Improve the script
->   scripts/code_cov_capture.sh: add a script to use lcov on build+test
->     machine
->   scripts/code_cov_gen_report.sh: add a script to generate code coverage
->     reports
->   scripts/run-tests.sh: add code coverage support
->   docs: add documentation for code coverage
-> 
-> Tomi Sarvela (1):
->   scripts:code_cov_gather_on_test: use a faster script
-> 
->  docs/code_coverage.md               | 293 ++++++++++++++++++++++++++++
->  runner/executor.c                   | 200 ++++++++++++++++++-
->  runner/resume.c                     |   4 +-
->  runner/runner_tests.c               |  30 +++
->  runner/settings.c                   |  87 ++++++++-
->  runner/settings.h                   |   8 +
->  scripts/code_cov_capture.sh         |  25 +++
->  scripts/code_cov_gather_on_build.sh |  39 ++++
->  scripts/code_cov_gather_on_test.py  |  91 +++++++++
->  scripts/code_cov_gen_report.sh      | 170 ++++++++++++++++
->  scripts/run-tests.sh                |  52 ++++-
->  11 files changed, 979 insertions(+), 20 deletions(-)
->  create mode 100644 docs/code_coverage.md
->  create mode 100755 scripts/code_cov_capture.sh
->  create mode 100755 scripts/code_cov_gather_on_build.sh
->  create mode 100755 scripts/code_cov_gather_on_test.py
->  create mode 100755 scripts/code_cov_gen_report.sh
-> 
+- KMS must ignore X channel contents on read
+- IGT must ignore X channel contents when comparing results
+- it would be nice if IGT filled image X channels with garbage to
+  verify the first two points
+
+
+Thanks,
+pq
+
+--Sig_/iCg=Yj0kdBgmLGBsNe3WJT=
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmInEzAACgkQI1/ltBGq
+qqcUcQ//UZAQSQNYXpLzSLqy5/Ap3IXCOzNmkT14SnHdO1VT3umGK6G4/4R+tJ/U
+UBPB6atLZdf/5grpUxWX5fAGXLXMSqeInDaoBM/ooTR/xU61CTTmgTHyHNr6d4vK
+xEoxw0D+CKCO8VDyyk2n1nnsD9893ghMcTptE0BvplAx/H4HgXqdy9IFLKdEHYGB
+v6pcOoJyUf/bQMgtYCRHwB1fBlXLKpWWzrvlIar0EhCbZMF8LNZMjxWLD0gw3fbA
+R/1WLY6ze0UCCtBvYqzIWGVEt8RHwtU1l8MC+WcbKZ7SBxZCj3yR03qCAsQjlS7I
+1GVxAQjmqcn+p4ciqZX0lmaRptk3NdiUkPFHoHtgPAyb+d8fZ2ECUiEU0tu97CQ5
+QPsFynig8Ka7fHq4xBiTb2Db3xj2rEPwT16EjkAze5Ql3fq0ycYVKJiSzhKdccMQ
+mSOSH+MdqVLW36j6XHbA0doHHxdinNERg+7xwetl84h344TKkfJKYOxXOqbON5pj
+nrABkqabmTGhO0GL/Fv/6lnKN64DtBt9DE0DBHThn8NtU1D/rN1GolPztdLvkqi9
+onoXpQgEATC1psPlm8bnBzOhC66CGOi0+QeyEn8wepO2PLQN1rTS6tHgcj+yW17D
+x7BlGGi0qnb3JX5MqpQ0P7jaI2wfndL1WfQysI8nk9wOY41hW4I=
+=tdw1
+-----END PGP SIGNATURE-----
+
+--Sig_/iCg=Yj0kdBgmLGBsNe3WJT=--
