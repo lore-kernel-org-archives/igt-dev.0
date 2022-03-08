@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB17410E400
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 14:23:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD71710E400
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 14:23:37 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Mar 2022 19:52:03 +0530
-Message-Id: <20220308142205.275928-2-bhanuprakash.modem@intel.com>
+Date: Tue,  8 Mar 2022 19:52:05 +0530
+Message-Id: <20220308142205.275928-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220308142205.275928-1-bhanuprakash.modem@intel.com>
 References: <20220308142205.275928-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 i-g-t 1/3] tests/kms_setmode: Use dynamic subtests
+Subject: [igt-dev] [v2 i-g-t 3/3] tests/kms_setmode: Sort modes only if they
+ dont fit in link BW
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,75 +23,202 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support to use dynamic subtests.
+This patch reverts sorting logic and uses it only when modes
+tried dont fit into link BW. This avoids failure due to
+setting unsupported modes on connector.
+
+Test affected (fail -> pass after change) :
+  * igt@kms_setmode@invalid-clone-single-[crtc|crtc-stealing]
+  * igt@kms_setmode@basic
+
+V2: Fix typo in commit message (Swati)
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_setmode.c | 37 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 34 insertions(+), 3 deletions(-)
+ tests/kms_setmode.c | 135 ++++++++++++++++++--------------------------
+ 1 file changed, 54 insertions(+), 81 deletions(-)
 
 diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 18d81ee4f3..a47d47e5ab 100644
+index a47070e50c..d5cb45d438 100644
 --- a/tests/kms_setmode.c
 +++ b/tests/kms_setmode.c
-@@ -653,6 +653,26 @@ static void test_crtc_config(const struct test_config *tconf,
- 	return;
+@@ -42,9 +42,6 @@ static drmModeRes *drm_resources;
+ static int filter_test_id;
+ static bool dry_run;
+ 
+-static char str_buf[MAX_CRTCS][1024];
+-static const char *crtc_strs[MAX_CRTCS];
+-
+ const drmModeModeInfo mode_640_480 = {
+ 	.name		= "640x480",
+ 	.vrefresh	= 60,
+@@ -536,87 +533,18 @@ static int sort_drm_modes(const void *a, const void *b)
+ {
+ 	const drmModeModeInfo *mode1 = a, *mode2 = b;
+ 
+-	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
+-}
+-
+-static
+-int __test_crtc_config(struct crtc_config *crtcs, int crtc_count,
+-		       const struct test_config *tconf, bool *config_failed,
+-		       int base)
+-{
+-	struct crtc_config *crtc = NULL;
+-	int ret = 0;
+-
+-	crtc = &crtcs[base];
+-
+-	/* Sort the modes in descending order by clock freq. */
+-	qsort(crtc->cconfs->connector->modes,
+-		crtc->cconfs->connector->count_modes,
+-		sizeof(drmModeModeInfo),
+-		sort_drm_modes);
+-
+-	for (int i = 0; i < crtc->cconfs->connector->count_modes; i++) {
+-		uint32_t *ids;
+-
+-		crtc->mode = crtc->cconfs->connector->modes[i];
+-
+-		get_crtc_config_str(crtc, str_buf[base], sizeof(str_buf[base]));
+-		crtc_strs[base] = &str_buf[base][0];
+-		igt_info("    %s\n", crtc_strs[base]);
+-
+-		create_fb_for_crtc(crtc, &crtc->fb_info);
+-		paint_fb(&crtc->fb_info, tconf->name, crtc_strs, crtc_count, base);
+-
+-		ids = get_connector_ids(crtc);
+-		if (tconf->flags & TEST_STEALING)
+-			ret = test_stealing(drm_fd, crtc, ids);
+-		else
+-			ret = drmModeSetCrtc(drm_fd, crtc->crtc_id,
+-					     crtc->fb_info.fb_id, 0, 0, ids,
+-					     crtc->connector_count, &crtc->mode);
+-
+-		free(ids);
+-
+-		/* crtcs[base].modes[i] don't fit, try next mode. */
+-		if (ret < 0 && errno == ENOSPC)
+-			continue;
+-
+-		if (ret < 0) {
+-			igt_assert_eq(errno, EINVAL);
+-			*config_failed = true;
+-
+-			return ret;
+-		}
+-
+-		/* Try all crtcs recursively. */
+-		if (base + 1 < crtc_count)
+-			ret = __test_crtc_config(crtcs, crtc_count, tconf, config_failed, base + 1);
+-
+-		/*
+-		 * With crtcs[base].modes[i], None of the crtc[base+1] modes fits
+-		 * into the link BW.
+-		 *
+-		 * Lets try with crtcs[base].modes[i+1]
+-		 */
+-		if (ret < 0 && errno == ENOSPC)
+-			continue;
+-
+-		/*
+-		 * ret == 0, (or) ret < 0 && errno == EINVAL
+-		 * No need to try other modes of crtcs[base].
+-		 */
+-		return ret;
+-	}
+-
+-	/* When all crtcs[base].modes are tried & failed to fit into link BW. */
+-	return ret;
++	return (mode2->clock < mode1->clock) - (mode1->clock < mode2->clock);
  }
  
-+static int get_test_name_str(struct crtc_config *crtc, char *buf,
-+				size_t buf_size)
-+{
-+	int pos;
-+	int i;
-+
-+	pos = snprintf(buf, buf_size, "pipe-%s-", kmstest_pipe_name(crtc->pipe_id));
-+
-+	for (i = 0; i < crtc->connector_count; i++) {
-+		drmModeConnector *connector = crtc->cconfs[i].connector;
-+
-+		pos += snprintf(&buf[pos], buf_size - pos,
-+			"%s%s-%d", i ? "-" : "",
-+			kmstest_connector_type_str(connector->connector_type),
-+			connector->connector_type_id);
-+	}
-+
-+	return pos;
-+}
-+
- static void test_one_combination(const struct test_config *tconf,
- 				 struct connector_config *cconfs,
- 				 int connector_count)
-@@ -664,8 +684,19 @@ static void test_one_combination(const struct test_config *tconf,
- 	setup_crtcs(tconf, cconfs, connector_count, crtcs,
- 		    &crtc_count, &config_valid);
+ static void test_crtc_config(const struct test_config *tconf,
+ 			     struct crtc_config *crtcs, int crtc_count)
+ {
++	char str_buf[MAX_CRTCS][1024];
++	const char *crtc_strs[MAX_CRTCS];
++	struct crtc_config *crtc;
+ 	static int test_id;
+ 	bool config_failed = false;
++	bool retry = false;
+ 	int ret = 0;
+ 	int i;
  
--	if (config_valid == !(tconf->flags & TEST_INVALID))
--		test_crtc_config(tconf, crtcs, crtc_count);
-+	if (config_valid == !(tconf->flags & TEST_INVALID)) {
-+		int i, pos = 0;
-+		char test_name[256];
+@@ -627,6 +555,21 @@ static void test_crtc_config(const struct test_config *tconf,
+ 
+ 	igt_info("  Test id#%d CRTC count %d\n", test_id, crtc_count);
+ 
++retry:
++	if (retry) {
++		kmstest_unset_all_crtcs(drm_fd, tconf->resources);
 +
 +		for (i = 0; i < crtc_count; i++) {
-+			if (i > 0)
-+				pos += snprintf(&test_name[pos], ARRAY_SIZE(test_name) - pos, "-");
-+			pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
-+		}
++			/* Sort the modes in asending order by clock freq. */
++			qsort(crtcs[i].cconfs->connector->modes,
++			      crtcs[i].cconfs->connector->count_modes,
++			      sizeof(drmModeModeInfo),
++			      sort_drm_modes);
 +
-+		igt_dynamic_f("%s", test_name)
-+			test_crtc_config(tconf, crtcs, crtc_count);
++			crtcs[i].mode = crtcs[i].cconfs->connector->modes[0];
++		}
 +	}
++
+ 	for (i = 0; i < crtc_count; i++) {
+ 		get_crtc_config_str(&crtcs[i], str_buf[i], sizeof(str_buf[i]));
+ 		crtc_strs[i] = &str_buf[i][0];
+@@ -638,9 +581,39 @@ static void test_crtc_config(const struct test_config *tconf,
+ 		return;
+ 	}
  
- 	cleanup_crtcs(crtcs, crtc_count);
- }
-@@ -939,7 +970,7 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+-	ret = __test_crtc_config(crtcs, crtc_count, tconf, &config_failed, 0);
+-	igt_skip_on_f((ret < 0 && errno == ENOSPC),
+-			"No suitable mode(s) found to fit into the link BW\n");
++	for (i = 0; i < crtc_count; i++) {
++		uint32_t *ids;
++
++		crtc = &crtcs[i];
++
++		igt_info("    %s\n", crtc_strs[i]);
++
++		create_fb_for_crtc(crtc, &crtc->fb_info);
++		paint_fb(&crtc->fb_info, tconf->name, crtc_strs, crtc_count, i);
++
++		ids = get_connector_ids(crtc);
++		if (tconf->flags & TEST_STEALING)
++			ret = test_stealing(drm_fd, crtc, ids);
++		else
++			ret = drmModeSetCrtc(drm_fd, crtc->crtc_id,
++					     crtc->fb_info.fb_id, 0, 0, ids,
++					     crtc->connector_count, &crtc->mode);
++
++		free(ids);
++
++		if (ret < 0) {
++			if (errno == ENOSPC) {
++				igt_skip_on_f(retry, "No suitable mode(s) found to fit into the link BW.\n");
++
++				retry = true;
++				goto retry;
++			}
++
++			igt_assert_eq(errno, EINVAL);
++			config_failed = true;
++		}
++	}
++
+ 	igt_assert(config_failed == !!(tconf->flags & TEST_INVALID));
  
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
- 		igt_describe("Tests the mode by iterating through all valid/invalid crtc/connector combinations");
--		igt_subtest(tests[i].name) {
-+		igt_subtest_with_dynamic(tests[i].name) {
- 			struct test_config tconf = {
- 				.flags		= tests[i].flags,
- 				.name		= tests[i].name,
+ 	if (ret == 0 && tconf->flags & TEST_TIMINGS)
+@@ -712,7 +685,7 @@ static int assign_crtc_to_connectors(const struct test_config *tconf,
+ 		    crtc_idx_mask & ~(1 << crtc_idx))
+ 			return -1;
+ 
+-		if ((tconf->flags & TEST_EXCLUSIVE_CRTC_CLONE) &&
++		if ((tconf->flags & (TEST_EXCLUSIVE_CRTC_CLONE | TEST_TIMINGS)) &&
+ 		    crtc_idx_mask & (1 << crtc_idx))
+ 			return -1;
+ 
 -- 
 2.35.1
