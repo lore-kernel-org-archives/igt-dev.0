@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C929510E26F
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 15:48:52 +0000 (UTC)
-Date: Tue, 8 Mar 2022 16:48:49 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Yid64Qq2s9QqBciz@kamilkon-DESK1>
-References: <20220223125837.340407-1-apoorva1.singh@intel.com>
+Date: Tue, 8 Mar 2022 16:55:23 +0100
+From: Maxime Ripard <maxime@cerno.tech>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Message-ID: <20220308155523.nhbg4i3y66pm3x55@houat>
+References: <20220303090507.grenwdro7u4fzmoe@houat>
+ <YiCeCeNobS2FCiQB@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="az3d6kpqqzu5hmzq"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220223125837.340407-1-apoorva1.singh@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t,
- v3] i915/gem_flink_basic: Add subtests description for test case
+In-Reply-To: <YiCeCeNobS2FCiQB@intel.com>
+Subject: Re: [igt-dev] Mandatory Test Suite for KMS Drivers?
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,83 +18,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Apoorva,
 
-Dnia 2022-02-23 at 18:28:37 +0530, apoorva1.singh@intel.com napisał(a):
-> From: Apoorva Singh <apoorva1.singh@intel.com>
-> 
-> Add description for all subtests
-> 
-> v2: Modified a description to be more clear
-> 
-> v3: Rebase
-> 
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> ---
->  tests/i915/gem_flink_basic.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
+--az3d6kpqqzu5hmzq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Please send your descripton patches as HAX series, e.g.
-add second patch with file tests/intel-ci/fast-feedback.testlist
-containing only one line:
+Hi Rodrigo,
 
-igt@meta_test@fail-result
+On Thu, Mar 03, 2022 at 05:52:57AM -0500, Rodrigo Vivi wrote:
+> On Thu, Mar 03, 2022 at 10:05:07AM +0100, Maxime Ripard wrote:
+> > Hi,
+> >=20
+> > Back at XDC we floated the idea of creating a test suite for IGT that we
+> > expect any KMS driver to pass, similar to what v4l2-compliance and
+> > cec-compliance provide for v4l2 and CEC respectively.
+> >=20
+> > I was looking at the list of tests, and it's fairly massive, so it's not
+> > clear to me what tests we could start this suite with. I can only assume
+> > all the KMS (but the chamelium ones) and fbdev related ones would be a
+> > good start?
+> >=20
+> > What do you think?
+>=20
+> I believe we should start with the group of the tests that we know that
+> are reliably passing today on most of the platforms and then increase
+> the list as the tests and drivers become more reliable.
 
-and in cover letter Subject put "HAX add description to [put name of test here]"
+I can see why that would be an objective too, but I'm not sure it would
+cover mine. What I'd like this series to be is something we can ask
+upfront to new drivers being submitted to make sure that they are sane.
 
-See e-mail from Zbigniew on 3 Mar 2022,
-"Use HAX for series which add igt_describe"
+Whether or not old drivers pass that bar is a bit irrelevant to that
+objective (and this would actually create tasks for newcomers that are
+looking for something to work on).
 
-> diff --git a/tests/i915/gem_flink_basic.c b/tests/i915/gem_flink_basic.c
-> index 48b0b8b1..ad370eb4 100644
-> --- a/tests/i915/gem_flink_basic.c
-> +++ b/tests/i915/gem_flink_basic.c
-> @@ -161,16 +161,24 @@ igt_main
->  	igt_fixture
->  		fd = drm_open_driver(DRIVER_INTEL);
->  
-> +	igt_describe("Check if gem object can be exported to global namespace and then opened");
->  	igt_subtest("basic")
->  		test_flink(fd);
-> +
-> +	igt_describe("Tests that multiple flinks for the same gem object share the same name");
->  	igt_subtest("double-flink")
->  		test_double_flink(fd);
-> +
-> +	igt_describe("Verify that GEM_FLINK ioctl with invalid gem object retuns relevant error");
+So, yeah, I don't mind having failing tests on older drivers, I kind of
+even expect them to fail somehow. It would essentially be a bar to show
+what any driver should strive for, not the lowest common denominator.
 
-s/retuns relevant error/fails/
+Does that make sense?
 
->  	igt_subtest("bad-flink")
->  		test_bad_flink(fd);
-> +
-> +	igt_describe("Verify that GEM_OPEN ioctl with invalid flink name retuns relevant error");
+> For instance, many of these would be candidate to be filtered out for now
+> https://intel-gfx-ci.01.org/tree/drm-next/index.html?testfilter=3Dkms
+>=20
+> compared to the whole view of kms tests:
+> https://intel-gfx-ci.01.org/tree/drm-next/shards-all.html?testfilter=3Dkms
 
-s/retuns relevant error/fails/
+So the set of tests that are always run would be the latter, right?
 
->  	igt_subtest("bad-open")
->  		test_bad_open(fd);
->  
->  	/* Flink lifetime is limited to that of the gem object it points to */
-> +	igt_describe("Tests flink lifetime by referencing it from multiple fd's");
+Maxime
 
-s/fd's/descriptors/
-Despite that imho comment before test and its content do not
-match but this is separate issue.
+--az3d6kpqqzu5hmzq
+Content-Type: application/pgp-signature; name="signature.asc"
 
->  	igt_subtest("flink-lifetime")
->  		test_flink_lifetime(fd);
->  }
-> -- 
-> 2.25.1
-> 
+-----BEGIN PGP SIGNATURE-----
 
-Regards,
-Kamil
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCYid8awAKCRDj7w1vZxhR
+xT2LAP9nq0W8cnjXaiqZWyA0fWnsNV6+F4ZuzrLPeV2ZyR232AEAyRR+VOMRVipC
+lK7DS4JQxYaR03qcrJJq9eN/QrO8sAk=
+=MdhL
+-----END PGP SIGNATURE-----
+
+--az3d6kpqqzu5hmzq--
