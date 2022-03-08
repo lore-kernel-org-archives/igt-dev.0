@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E73210E8B5
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 04:46:18 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C83C910E8F0
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 04:49:59 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
  kamil.konieczny@linux.intel.com
-Date: Tue,  8 Mar 2022 10:16:01 +0530
-Message-Id: <20220308044601.18357-1-sai.gowtham.ch@intel.com>
+Date: Tue,  8 Mar 2022 10:19:43 +0530
+Message-Id: <20220308044943.18449-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_linear_blits: Added
- description to the subtest
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_basic: Added test
+ description for test case.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +24,44 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 
-Added description to subtests.
+Added test description to all the available subtests.
 
-Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Cc: Melkaveri Arjun <Arjun.Melkaveri@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/gem_linear_blits.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/i915/gem_basic.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
-index 6504c9f2..9f049863 100644
---- a/tests/i915/gem_linear_blits.c
-+++ b/tests/i915/gem_linear_blits.c
-@@ -258,9 +258,12 @@ igt_main
- 		count = (count + ncpus - 1) / ncpus;
- 	}
+diff --git a/tests/i915/gem_basic.c b/tests/i915/gem_basic.c
+index 13ecce52..db6b1682 100644
+--- a/tests/i915/gem_basic.c
++++ b/tests/i915/gem_basic.c
+@@ -39,6 +39,8 @@
+ #include "drm.h"
+ #include "i915/gem_create.h"
  
-+	igt_describe("Basic blitter functionality check with 2 buffers");
- 	igt_subtest("basic")
- 		run_test(fd, 2, do_relocs);
++IGT_TEST_DESCRIPTION("Tests basic gem_create and gem_close IOCTLs");
++
+ static void
+ test_bad_close(int fd)
+ {
+@@ -83,10 +85,16 @@ igt_main
+ 	igt_fixture
+ 		fd = drm_open_driver(DRIVER_INTEL);
  
-+	igt_describe("The intent is to push beyond the working GTT size to force"
-+			" the driver to rebind the buffers");
- 	igt_subtest("normal") {
- 		intel_allocator_multiprocess_start();
- 		igt_fork(child, ncpus)
-@@ -269,6 +272,7 @@ igt_main
- 		intel_allocator_multiprocess_stop();
- 	}
- 
-+	igt_describe("Test with interrupts in between the parent process");
- 	igt_subtest("interruptible") {
- 		intel_allocator_multiprocess_start();
- 		igt_fork_signal_helper();
++	igt_describe("Check error on DRM_IOCTL_GEM_CLOSE, category=Gem, category=SW_only");
+ 	igt_subtest("bad-close")
+ 		test_bad_close(fd);
++
++	igt_describe("Check creating an object using DRM_IOCTL_I915_GEM_CREATE and "
++			" closing it using DRM_IOCTL_GEM_CLOSE, category=Gem, category=SW_only");
+ 	igt_subtest("create-close")
+ 		test_create_close(fd);
++
++	igt_describe("Check closing fd with an object allocated, category=Gem, category=SW_only");
+ 	igt_subtest("create-fd-close")
+ 		test_create_fd_close(fd);
+ }
 -- 
 2.35.1
