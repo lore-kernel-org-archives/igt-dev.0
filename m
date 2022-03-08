@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com
  [66.111.4.27])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FF0C10E492
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 15:21:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7AC510E505
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 15:21:54 +0000 (UTC)
 From: Maxime Ripard <maxime@cerno.tech>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Mar 2022 16:21:36 +0100
-Message-Id: <20220308152141.2457841-4-maxime@cerno.tech>
+Date: Tue,  8 Mar 2022 16:21:38 +0100
+Message-Id: <20220308152141.2457841-6-maxime@cerno.tech>
 In-Reply-To: <20220308152141.2457841-1-maxime@cerno.tech>
 References: <20220308152141.2457841-1-maxime@cerno.tech>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/8] lib/igt_frame: Move frame path creation
- to function
+Subject: [igt-dev] [PATCH i-g-t 5/8] tests/kms_writeback: Use endianness
+ accessor to fill pixels
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,83 +25,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The igt_write_frame_to_png() has some logic to create the PNG filename
-Since we'll need the same logic in a future function, let's move it to a
-separate function.
+The fill_fb() function in the kms_writeback test suite will fill an
+XRGB8888 buffer using a pattern passed an an argument. However, the
+pattern is native endian, while XRGB8888 is little-endian.
+
+Add an accessor and use it to fill the framebuffer with our pattern.
 
 Signed-off-by: Maxime Ripard <maxime@cerno.tech>
 ---
- lib/igt_frame.c | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ lib/igt_core.h        | 9 +++++++++
+ tests/kms_writeback.c | 2 +-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_frame.c b/lib/igt_frame.c
-index 530ccbc32df2..ba29ac028e1b 100644
---- a/lib/igt_frame.c
-+++ b/lib/igt_frame.c
-@@ -57,6 +57,30 @@ bool igt_frame_dump_is_enabled(void)
- 	return igt_frame_dump_path != NULL;
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 78dc6202ced4..12b1a912c1d7 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -31,6 +31,7 @@
+ #define IGT_CORE_H
+ 
+ #include <assert.h>
++#include <byteswap.h>
+ #include <setjmp.h>
+ #include <stdbool.h>
+ #include <stdint.h>
+@@ -1446,6 +1447,14 @@ void igt_kmsg(const char *format, ...);
+ #define READ_ONCE(x) (*(volatile typeof(x) *)(&(x)))
+ #define WRITE_ONCE(x, v) do *(volatile typeof(x) *)(&(x)) = (v); while (0)
+ 
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++#define cpu_to_le32(x)  bswap_32(x)
++#define le32_to_cpu(x)  bswap_32(x)
++#else
++#define cpu_to_le32(x)  (x)
++#define le32_to_cpu(x)  (x)
++#endif
++
+ #define MSEC_PER_SEC (1000)
+ #define USEC_PER_SEC (1000*MSEC_PER_SEC)
+ #define NSEC_PER_SEC (1000*USEC_PER_SEC)
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index 21d62faabf6b..faa790cc0f72 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -239,7 +239,7 @@ static void fill_fb(igt_fb_t *fb, uint32_t pixel)
+ 
+ 	pixel_count = fb->strides[0] * fb->height / sizeof(uint32_t);
+ 	for (i = 0; i < pixel_count; i++)
+-		ptr[i] = pixel;
++		ptr[i] = cpu_to_le32(pixel);
+ 
+ 	igt_fb_unmap_buffer(fb, ptr);
  }
- 
-+static char *igt_get_frame_path(const char *qualifier, const char *suffix,
-+				const char *extension)
-+{
-+	char *path;
-+	const char *test_name;
-+	const char *subtest_name;
-+	test_name = igt_test_name();
-+	subtest_name = igt_subtest_name();
-+
-+	path = malloc(PATH_MAX);
-+	igt_assert(path);
-+
-+	if (suffix)
-+		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s-%s.%s",
-+			 igt_frame_dump_path, test_name, subtest_name, qualifier,
-+			 suffix, extension);
-+	else
-+		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s.%s",
-+			 igt_frame_dump_path, test_name, subtest_name, qualifier,
-+			 extension);
-+
-+	return path;
-+}
-+
- static void igt_log_frame_path(int summary_fd, char *path)
- {
- 	int index = strlen(path);
-@@ -72,22 +96,11 @@ static void igt_log_frame_path(int summary_fd, char *path)
- static void igt_write_frame_to_png(cairo_surface_t *surface, int summary_fd,
- 				   const char *qualifier, const char *suffix)
- {
--	char path[PATH_MAX];
--	const char *test_name;
--	const char *subtest_name;
-+	char *path;
- 	cairo_status_t status;
--	int index;
- 
--	test_name = igt_test_name();
--	subtest_name = igt_subtest_name();
--
--	if (suffix)
--		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s-%s.png",
--			 igt_frame_dump_path, test_name, subtest_name, qualifier,
--			 suffix);
--	else
--		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s.png",
--			 igt_frame_dump_path, test_name, subtest_name, qualifier);
-+	path = igt_get_frame_path(qualifier, suffix, "png");
-+	igt_assert(path);
- 
- 	igt_debug("Dumping %s frame to %s...\n", qualifier, path);
- 
-@@ -96,6 +109,7 @@ static void igt_write_frame_to_png(cairo_surface_t *surface, int summary_fd,
- 	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
- 
- 	igt_log_frame_path(summary_fd, path);
-+	free(path);
- }
- 
- /**
 -- 
 2.35.1
