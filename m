@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com
  [66.111.4.27])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E86110E4D1
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 15:21:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6965710E4D2
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 15:21:58 +0000 (UTC)
 From: Maxime Ripard <maxime@cerno.tech>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Mar 2022 16:21:33 +0100
-Message-Id: <20220308152141.2457841-1-maxime@cerno.tech>
-Content-Type: text/plain; charset="utf-8"
+Date: Tue,  8 Mar 2022 16:21:40 +0100
+Message-Id: <20220308152141.2457841-8-maxime@cerno.tech>
+In-Reply-To: <20220308152141.2457841-1-maxime@cerno.tech>
+References: <20220308152141.2457841-1-maxime@cerno.tech>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: [igt-dev] [PATCH i-g-t 0/8] Writeback fixes and improvements
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 7/8] lib/igt_fb: Ignore the X component when
+ computing CRC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,43 +25,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,=0D
-=0D
-Here's a series addressing the writeback-check-output test not passing=0D
-on vc4. This is due to the fact that the writeback controller will force=0D
-the X component to 0, while we expect the output and input buffers to be=0D
-identical, and the input buffer has 0xff.=0D
-=0D
-This series tackles this by adding some support to dump the faulty=0D
-frames in PNG and raw, which proved to be useful while debugging this=0D
-series. Then, we rework the hash function to ignore the X component of=0D
-our buffer and only hash the pixels themselves.=0D
-=0D
-Finally, we change the input buffer X value to a garbage, different from=0D
-0 and 0xff, value to make sure the hardware properly ignores the=0D
-component and doesn't treat it as alpha.=0D
-=0D
-Let me know what you think,=0D
-Maxime=0D
-=0D
-Maxime Ripard (8):=0D
-  lib/igt_frame: Rename summary fd variable=0D
-  lib/igt_frame: Move frame dump logging to function=0D
-  lib/igt_frame: Move frame path creation to function=0D
-  lib/igt_frame: Add function to dump frames in RGB and raw=0D
-  tests/kms_writeback: Use endianness accessor to fill pixels=0D
-  tests/kms_writeback: Dump the frames if the don't match=0D
-  lib/igt_fb: Ignore the X component when computing CRC=0D
-  tests/kms_writeback: Use a garbage X value to create fill our test=0D
-    buffer=0D
-=0D
- lib/igt_core.h        |   9 +++=0D
- lib/igt_fb.c          |  20 ++++--=0D
- lib/igt_frame.c       | 137 ++++++++++++++++++++++++++++++++++++------=0D
- lib/igt_frame.h       |   4 ++=0D
- tests/kms_writeback.c |  40 +++++++++++-=0D
- 5 files changed, 185 insertions(+), 25 deletions(-)=0D
-=0D
--- =0D
-2.35.1=0D
-=0D
+The igt_fb_get_fnv1a_crc() function will compute a FNV-1a hash over the
+content of the framebuffer. The sole user of this function is the
+writeback test suite, which will use it to compare an XRGB8888 buffer
+used in input to an XRGB8888 buffer filled by the writeback connector.
+
+However, that function uses each bytes of each buffers to compute the
+hash, and therefore the writeback code assumes that the hardware will
+preserve the content of the X component through the writeback pipeline,
+which isn't true for all hardware. VC4 doesn't for example.
+
+Since that function is only ever used for XRGB8888 buffers, let's just
+set the most significant to 0 (which is the X padding) for each pixel
+when computing the hash, and thus ignore whatever the hardware will
+return here.
+
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+---
+ lib/igt_fb.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
+
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 1530b96090b5..9720465d5b5f 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -4222,15 +4222,19 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ {
+ 	const uint32_t FNV1a_OFFSET_BIAS = 2166136261;
+ 	const uint32_t FNV1a_PRIME = 16777619;
++	uint32_t *line = NULL;
+ 	uint32_t hash;
+ 	void *map;
+-	char *ptr, *line = NULL;
++	char *ptr;
+ 	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
+ 	uint32_t stride = calc_plane_stride(fb, 0);
+ 
+ 	if (fb->num_planes != 1)
+ 		return -EINVAL;
+ 
++	if (fb->drm_format != DRM_FORMAT_XRGB8888)
++		return -EINVAL;
++
+ 	ptr = igt_fb_map_buffer(fb->fd, fb);
+ 	igt_assert(ptr);
+ 	map = ptr;
+@@ -4252,9 +4256,17 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 
+ 		igt_memcpy_from_wc(line, ptr, fb->width * cpp);
+ 
+-		for (x = 0; x < fb->width * cpp; x++) {
+-			hash ^= line[x];
+-			hash *= FNV1a_PRIME;
++		for (x = 0; x < fb->width; x++) {
++			unsigned int i;
++			uint32_t pixel = le32_to_cpu(line[x]);
++			pixel &= 0x00ffffff;
++
++			for (i = 0; i < sizeof(pixel); i++) {
++				uint8_t component = (pixel >> (i * 8)) & 0xff;
++
++				hash ^= component;
++				hash *= FNV1a_PRIME;
++			}
+ 		}
+ 	}
+ 
+-- 
+2.35.1
