@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 000DE10E1F5
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 15:05:26 +0000 (UTC)
-Date: Tue, 8 Mar 2022 16:05:15 +0100
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4007210E272
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 15:08:47 +0000 (UTC)
+Date: Tue, 8 Mar 2022 16:08:35 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Yidwq5Sk730yqqHN@kamilkon-DESK1>
-References: <20220225104610.50919-1-priyanka.dandamudi@intel.com>
+Message-ID: <YidxcxOtwI97ARic@kamilkon-DESK1>
+References: <20220225080831.44981-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220225104610.50919-1-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_ctx_exec: Added test
- description for testcase
+In-Reply-To: <20220225080831.44981-1-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/vgem_basic: Added test
+ description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,91 +27,105 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Priyanka,
 
-Dnia 2022-02-25 at 16:16:10 +0530, priyanka.dandamudi@intel.com napisał(a):
+one more nit, see below.
+
+Dnia 2022-02-25 at 13:38:31 +0530, priyanka.dandamudi@intel.com napisał(a):
 > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
 > Added test description to all the available subtests.
 > 
-> v2: Added description for newly added test case.
+> v2: rebase
 > 
 > Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  tests/i915/gem_ctx_exec.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+>  tests/vgem_basic.c | 20 +++++++++++++++++---
+>  1 file changed, 17 insertions(+), 3 deletions(-)
 > 
-
-Please make it HAX series for next version, as I described in
-my replay to your vgem_basic patch.
-
-> diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-> index a1270a88..88f0d6ed 100644
-> --- a/tests/i915/gem_ctx_exec.c
-> +++ b/tests/i915/gem_ctx_exec.c
-> @@ -465,6 +465,7 @@ igt_main
->  		gem_write(fd, handle, 0, batch, sizeof(batch));
+> diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
+> index 57c575e2..5920a99a 100644
+> --- a/tests/vgem_basic.c
+> +++ b/tests/vgem_basic.c
+> @@ -410,6 +410,7 @@ igt_main
+>  {
+>  	int fd = -1;
+>  
+> +	igt_describe("Basic test for handling of module unload.");
+>  	igt_subtest("unload")
+>  		test_unload();
+>  
+> @@ -417,15 +418,19 @@ igt_main
+>  		fd = drm_open_driver(DRIVER_VGEM);
 >  	}
 >  
-> +	igt_describe("Check the basic context batch buffer execution.");
->  	igt_subtest("basic") {
->  		ctx_id = gem_context_create(fd);
->  		igt_assert(exec(fd, handle, 0, ctx_id) == 0);
-> @@ -480,18 +481,30 @@ igt_main
->  		gem_sync(fd, handle);
->  	}
+> +	igt_describe("Check the working of DRM_IOCTL_SET_VERSION ioctl.");
+>  	igt_subtest_f("setversion")
+>  		test_setversion(fd);
 >  
-> +	igt_describe("Check if __gem_execbuf returns -ENOENT"
-> +		     " when non-existent context id's are set.");
-
-Please change this, for example:
-Verify that execbuf with invalid context fails.
-
->  	igt_subtest("basic-invalid-context")
->  		invalid_context(fd, handle);
+> +	igt_describe("Check whether it can open multiple clients.");
+>  	igt_subtest_f("second-client")
+>  		test_client(fd);
 >  
-> +	igt_describe("Check maximum number of buffersit can"
------------------------------------------------------^
-Put space there, s/buffersit/buffers it/
-
-> +		     " evict for a context.");
->  	igt_subtest("eviction")
->  		big_exec(fd, handle, 0);
+> +	igt_describe("Check the basic working of vgem_create ioctl.");
+>  	igt_subtest_f("create")
+>  		test_create(fd);
 >  
-> +	igt_describe("Create a no-recovery scenario by allowing a hang,"
-> +		     " setting I915_CONTEXT_PARAM_RECOVERABLE to 0 and then"
-> +		     " force resetting the GPU and check if __gem_execbuf"
-> +		     " returns -EIO.");
-
-Please make it short here, no need to put every step taken in
-description. Take also look at for loop in test, the -EIO is
-returned only in one case.
-
->  	igt_subtest("basic-norecovery")
->  		norecovery(fd);
+> +	igt_describe("Create a vgem handle and check if it can mmap the handle.");
+>  	igt_subtest_f("mmap")
+>  		test_mmap(fd);
 >  
-> +	igt_describe("Verify that contexts are automatically shotdown"
-> +		     " on close, if hangchecking is disabled.");
->  	igt_subtest("basic-nohangcheck")
->  		nohangcheck_hostile(fd);
->  
-> +	igt_describe("Race the execution and interrupt handlers along a context,"
-> +	             " while closing it at a random time.");
->  	igt_subtest_group {
+> @@ -433,10 +438,13 @@ igt_main
 >  		igt_fixture {
->  			intel_allocator_multiprocess_start();
-> @@ -505,6 +518,8 @@ igt_main
+>  			igt_require(has_prime_export(fd));
+>  		}
+> -
+
+Do not delete this empty line.
+
+> +		igt_describe("Check whether it can export/import the vgem handle"
+> +			     " using prime.");
+>  		igt_subtest("dmabuf-export")
+>  			test_dmabuf_export(fd);
+> -
+
+Same here, restore newline here.
+
+> +		igt_describe("Export the vgem handle along with RDWR capabilities"
+> +			     " using prime and check if it can mmap the exported"
+> +			     " handle.");
+>  		igt_subtest("dmabuf-mmap")
+>  			test_dmabuf_mmap(fd);
+>  
+> @@ -444,16 +452,22 @@ igt_main
+>  			igt_fixture {
+>  				igt_require(vgem_has_fences(fd));
+>  			}
+> -
+
+Same here, restore newline here.
+
+> +			igt_describe("Check the working of dma-buf fence interop.");
+>  			igt_subtest("dmabuf-fence")
+>  				test_dmabuf_fence(fd);
+> +			igt_describe("Attach a fence before exporting a vgem handle"
+> +				     " and check the working of fence.");
+>  			igt_subtest("dmabuf-fence-before")
+>  				test_dmabuf_fence_before(fd);
 >  		}
 >  	}
 >  
-> +	igt_describe("Check if the kernel doesn't leak the vma"
-> +		     " pin_count for the last context on reset.");
->  	igt_subtest("reset-pin-leak") {
->  		int i;
->  		uint64_t ahnd;
+> +	igt_describe("Check the basic access to sysfs and also try to"
+> +		     " read entries in the directory.");
+>  	igt_subtest("sysfs")
+>  		test_sysfs_read(fd);
+> +	igt_describe("Check the basic access to debugfs and also try to"
+> +		     " read entries in the directory.");
+>  	igt_subtest("debugfs")
+>  		test_debugfs_read(fd);
+>  
 > -- 
 > 2.25.1
->
+> 
 Regards,
 Kamil
- 
