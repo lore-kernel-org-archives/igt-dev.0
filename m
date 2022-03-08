@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 8 Mar 2022 10:26:24 +0200
-From: Pekka Paalanen <ppaalanen@gmail.com>
-To: Maxime Ripard <maxime@cerno.tech>
-Message-ID: <20220308102624.1a757e36@eldfell>
-In-Reply-To: <20220304144607.3pwfwhxf4zsckan7@houat>
-References: <20220304144607.3pwfwhxf4zsckan7@houat>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBCB210E204
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 08:30:12 +0000 (UTC)
+Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nRVEP-003V5E-1P
+ for igt-dev@lists.freedesktop.org; Tue, 08 Mar 2022 09:30:09 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  8 Mar 2022 09:30:06 +0100
+Message-Id: <20220308083006.834346-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220308083006.834346-1-mauro.chehab@linux.intel.com>
+References: <20220308083006.834346-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/iCg=Yj0kdBgmLGBsNe3WJT=";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Subject: Re: [igt-dev] Writeback Assumptions for XRGB
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH 1/1] lib/i915_pciids.h: Add DG2 PCI IDs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,59 +22,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tim Gover <tim.gover@raspberrypi.com>, dri-devel@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, Phil Elwell <phil@raspberrypi.com>,
- Dom Cobley <dom@raspberrypi.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---Sig_/iCg=Yj0kdBgmLGBsNe3WJT=
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-On Fri, 4 Mar 2022 15:46:07 +0100
-Maxime Ripard <maxime@cerno.tech> wrote:
+As DG2 hardware will start showing up in CI shortly, and the DG2
+list of PCI id's is not in sync with the patch merged at Linux
+drm-tip upstream, update them to reflect what it was merged
+there by this Linux changeset:
 
-> Indeed, while the input buffer uses 0xff for the X component, we'll get
-> back 0x00 from the hardware, and thus the hashes are not identical. We
-> can force the hardware to always set it to 0xff, but that doesn't seem
-> right. It would make more sense to ignore the X component entirely in
-> that case.
+  commit 92b805135ed2851989097106bbde0f099d664902
+  Author: Matt Roper <matthew.d.roper@intel.com>
+  Date:   Tue Feb 15 13:45:44 2022 -0800
 
-Hi,
+    drm/i915: Add DG2 PCI IDs
 
-I tried hard to send a slightly longer response, but gmail refuses to
-deliver to anyone without explanation. So here's a summary of my opinion:
+    DG2 hardware will start showing up in CI shortly; let's make sure it's
+    recognized by the driver.
 
-- KMS must ignore X channel contents on read
-- IGT must ignore X channel contents when comparing results
-- it would be nice if IGT filled image X channels with garbage to
-  verify the first two points
+    Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+    Reviewed-by: Caz Yokoyama <caz.yokoyama@intel.com>
+    Link: https://patchwork.freedesktop.org/patch/msgid/20220215214544.2197483-1-matthew.d.roper@intel.com
+    Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
+This patch partially reverts:
+b842aa665d48 ("lib/intel_device_info: Introduce i915_pciids_local.h and add DG2 definition")
 
-Thanks,
-pq
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ lib/i915_pciids.h       | 27 +++++++++++++++++++++++++++
+ lib/i915_pciids_local.h | 20 --------------------
+ lib/intel_device_info.c |  1 -
+ 3 files changed, 27 insertions(+), 21 deletions(-)
+ delete mode 100644 lib/i915_pciids_local.h
 
---Sig_/iCg=Yj0kdBgmLGBsNe3WJT=
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmInEzAACgkQI1/ltBGq
-qqcUcQ//UZAQSQNYXpLzSLqy5/Ap3IXCOzNmkT14SnHdO1VT3umGK6G4/4R+tJ/U
-UBPB6atLZdf/5grpUxWX5fAGXLXMSqeInDaoBM/ooTR/xU61CTTmgTHyHNr6d4vK
-xEoxw0D+CKCO8VDyyk2n1nnsD9893ghMcTptE0BvplAx/H4HgXqdy9IFLKdEHYGB
-v6pcOoJyUf/bQMgtYCRHwB1fBlXLKpWWzrvlIar0EhCbZMF8LNZMjxWLD0gw3fbA
-R/1WLY6ze0UCCtBvYqzIWGVEt8RHwtU1l8MC+WcbKZ7SBxZCj3yR03qCAsQjlS7I
-1GVxAQjmqcn+p4ciqZX0lmaRptk3NdiUkPFHoHtgPAyb+d8fZ2ECUiEU0tu97CQ5
-QPsFynig8Ka7fHq4xBiTb2Db3xj2rEPwT16EjkAze5Ql3fq0ycYVKJiSzhKdccMQ
-mSOSH+MdqVLW36j6XHbA0doHHxdinNERg+7xwetl84h344TKkfJKYOxXOqbON5pj
-nrABkqabmTGhO0GL/Fv/6lnKN64DtBt9DE0DBHThn8NtU1D/rN1GolPztdLvkqi9
-onoXpQgEATC1psPlm8bnBzOhC66CGOi0+QeyEn8wepO2PLQN1rTS6tHgcj+yW17D
-x7BlGGi0qnb3JX5MqpQ0P7jaI2wfndL1WfQysI8nk9wOY41hW4I=
-=tdw1
------END PGP SIGNATURE-----
-
---Sig_/iCg=Yj0kdBgmLGBsNe3WJT=--
+diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+index 533890dc9da1..3609f3254f24 100644
+--- a/lib/i915_pciids.h
++++ b/lib/i915_pciids.h
+@@ -681,4 +681,31 @@
+ 	INTEL_VGA_DEVICE(0xA788, info), \
+ 	INTEL_VGA_DEVICE(0xA789, info)
+ 
++/* DG2 */
++#define INTEL_DG2_G10_IDS(info) \
++	INTEL_VGA_DEVICE(0x5690, info), \
++	INTEL_VGA_DEVICE(0x5691, info), \
++	INTEL_VGA_DEVICE(0x5692, info), \
++	INTEL_VGA_DEVICE(0x56A0, info), \
++	INTEL_VGA_DEVICE(0x56A1, info), \
++	INTEL_VGA_DEVICE(0x56A2, info)
++
++#define INTEL_DG2_G11_IDS(info) \
++	INTEL_VGA_DEVICE(0x5693, info), \
++	INTEL_VGA_DEVICE(0x5694, info), \
++	INTEL_VGA_DEVICE(0x5695, info), \
++	INTEL_VGA_DEVICE(0x56A5, info), \
++	INTEL_VGA_DEVICE(0x56A6, info), \
++	INTEL_VGA_DEVICE(0x56B0, info), \
++	INTEL_VGA_DEVICE(0x56B1, info)
++
++#define INTEL_DG2_G12_IDS(info) \
++	INTEL_VGA_DEVICE(0x56A3, info), \
++	INTEL_VGA_DEVICE(0x56A4, info)
++
++#define INTEL_DG2_IDS(info) \
++	INTEL_DG2_G10_IDS(info), \
++	INTEL_DG2_G11_IDS(info), \
++	INTEL_DG2_G12_IDS(info)
++
+ #endif /* _I915_PCIIDS_H */
+diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
+deleted file mode 100644
+index 2a18109e59e5..000000000000
+--- a/lib/i915_pciids_local.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/* SPDX-License-Identifier: MIT */
+-/*
+- * Copyright © 2022 Intel Corporation
+- */
+-#ifndef _I915_PCIIDS_LOCAL_H_
+-#define _I915_PCIIDS_LOCAL_H_
+-
+-#include "i915_pciids.h"
+-
+-/* DG2 */
+-#define INTEL_DG2_IDS(info) \
+-	INTEL_VGA_DEVICE(0x56A0, info), \
+-	INTEL_VGA_DEVICE(0x56A1, info), \
+-	INTEL_VGA_DEVICE(0x56A2, info), \
+-	INTEL_VGA_DEVICE(0x56A3, info), \
+-	INTEL_VGA_DEVICE(0x56A4, info), \
+-	INTEL_VGA_DEVICE(0x56A5, info), \
+-	INTEL_VGA_DEVICE(0x56A6, info)
+-
+-#endif /* _I915_PCIIDS_LOCAL_H */
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 9f19136795e4..56c43e97a40f 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -1,6 +1,5 @@
+ #include "intel_chipset.h"
+ #include "i915_pciids.h"
+-#include "i915_pciids_local.h"
+ 
+ #include <strings.h> /* ffs() */
+ 
+-- 
+2.35.1
