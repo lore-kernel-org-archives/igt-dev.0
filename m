@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3B1E10E30E
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 09:26:52 +0000 (UTC)
-From: Ramalingam C <ramalingam.c@intel.com>
-To: igt-dev <igt-dev@lists.freedesktop.org>
-Date: Tue,  8 Mar 2022 14:57:17 +0530
-Message-Id: <20220308092717.5528-1-ramalingam.c@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD5D910E838
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 10:44:08 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  8 Mar 2022 16:28:24 +0530
+Message-Id: <20220308105824.32233-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_lmem_swapping: move the obj
- to lmem before init
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Test cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,89 +16,571 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Hellstrom Thomas <thomas.hellstrom@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When lmem obj is created through ttm, by default pages resides at smem.
-So before start initializing through mmap, lets move the pages into
-lmem. Else this will overload smem and OOM-killer will be triggered
+Test is updated with
+    *Dynamic subtests
+    *Subtests renaming
+    *Removal of valid_test check
+    *Code indentation
+    *Addition of igt_display_reset()
+    *Restricting tests for #pipes=1 at one stage early
 
-[10163.886990] containerd invoked oom-killer:
-gfp_mask=0x1140cca(GFP_HIGHUSER_MOVABLE|__GFP_COMP), order=0,
-oom_score_adj=-999
-[10163.956048] CPU: 1 PID: 1707 Comm: containerd Not tainted
-5.17.0-rc6-4425-ram+ #2
-[10163.963536] Hardware name: Intel Corporation CoffeeLake Client
-Platform/CoffeeLake S UDIMM RVP, BIOS CNLSFWR1.R00.X220.B00.2103302221
-03/30/2021
-[10163.976467] Call Trace:
-[10163.978925]  <TASK>
-[10163.981039]  dump_stack_lvl+0x57/0x7d
-[10163.984708]  dump_header+0x45/0x2f4
-[10163.988206]  oom_kill_process.cold+0xb/0x10
-[10163.992395]  out_of_memory+0x104/0x3a0
-[10163.996152]  __alloc_pages_slowpath.constprop.0+0xbe6/0xd30
-[10164.001734]  __alloc_pages+0x316/0x350
-[10164.005492]  __folio_alloc+0x12/0x40
-[10164.009071]  __filemap_get_folio+0x1de/0x730
-[10164.013356]  filemap_fault+0x55a/0x1100
-[10164.017202]  ? filemap_map_pages+0x167/0x690
-[10164.021482]  __do_fault+0x2f/0xa0
-[10164.024810]  __handle_mm_fault+0xd2f/0x1490
-[10164.029009]  handle_mm_fault+0x146/0x410
-[10164.032943]  do_user_addr_fault+0x1e5/0x670
-[10164.037133]  exc_page_fault+0x65/0x250
-[10164.040889]  ? asm_exc_page_fault+0x8/0x30
-[10164.044995]  asm_exc_page_fault+0x1e/0x30
-[10164.049014] RIP: 0033:0x55c0c67174f0
-[10164.052597] Code: Unable to access opcode bytes at RIP
-0x55c0c67174c6.
-[10164.059120] RSP: 002b:000000c00024d9c8 EFLAGS: 00010206
-[10164.064345] RAX: 0000000000002000 RBX: 0000000000000004 RCX:
-000055c0c8dfc1a0
-[10164.071474] RDX: 000055c0c8e68f38 RSI: 00000000000000af RDI:
-00000000000000aa
-[10164.078607] RBP: 000000c00024da20 R08: 000055c0c80b9ca0 R09:
-0000000000203000
-[10164.085738] R10: 0000000000000008 R11: 000000000fffffc0 R12:
-0000000000000006
-[10164.092868] R13: 00000000000000a4 R14: 00000000000000aa R15:
-00000000000000aa
-[10164.100009]  </TASK>
-[10164.169081] Mem-Info:
-[10164.185134] active_anon:811 inactive_anon:74186 isolated_anon:0
-                active_file:285 inactive_file:321 isolated_file:0
-                unevictable:3794624 dirty:0 writeback:0
-                slab_reclaimable:34539 slab_unreclaimable:106743
-                mapped:482 shmem:3795382 pagetables:1707 bounce:0
-                kernel_misc_reclaimable:0
-                free:37283 free_pcp:51 free_cma:0
+v2: -removal of redundant igt_display_reset() (Bhanu)
+    -removal of igt_info (Bhanu)
 
-Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
-cc: Thomas Hellstrom <thomas.hellstrom@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/gem_lmem_swapping.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tests/kms_hdr.c | 431 ++++++++++++++++++++++--------------------------
+ 1 file changed, 197 insertions(+), 234 deletions(-)
 
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 39f9e1f536dd..582111dddeb9 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -201,11 +201,10 @@ static void __do_evict(int i915,
- 		}
- 		obj->handle = create_bo(i915, obj->size, region, params->oom_test);
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index 35e25f4d..247eb658 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -173,106 +173,75 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	data->h = data->mode->vdisplay;
+ }
  
-+		move_to_lmem(i915, objects + i, 1, batch, engine,
-+			     params->oom_test);
- 		if (params->flags & TEST_VERIFY)
- 			init_object(i915, obj, rand(), params->flags);
+-static bool igt_pipe_is_free(igt_display_t *display, enum pipe pipe)
+-{
+-	int i;
+-
+-	for (i = 0; i < display->n_outputs; i++)
+-		if (display->outputs[i].pending_pipe == pipe)
+-			return false;
+-
+-	return true;
+-}
+-
+-static void test_bpc_switch_on_output(data_t *data, igt_output_t *output,
++static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
++				      igt_output_t *output,
+ 				      uint32_t flags)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_crc_t ref_crc, new_crc;
+-	enum pipe pipe;
+ 	igt_fb_t afb;
+ 	int afb_id, ret;
+ 
+-	for_each_pipe(display, pipe) {
+-		if (!igt_pipe_connector_valid(pipe, output))
+-			continue;
+-		/*
+-		 * If previous subtest of connector failed, pipe
+-		 * attached to that connector is not released.
+-		 * Because of that we have to choose the non
+-		 * attached pipe for this subtest.
+-		 */
+-		if (!igt_pipe_is_free(display, pipe))
+-			continue;
+-
+-		prepare_test(data, output, pipe);
+-
+-		/* 10-bit formats are slow, so limit the size. */
+-		afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
+-		igt_assert(afb_id);
++	prepare_test(data, output, pipe);
+ 
+-		draw_hdr_pattern(&afb);
+-
+-		/* Plane may be required to fit fullscreen. Check it here and allow
+-		 * smaller plane size in following tests.
+-		 */
+-		igt_plane_set_fb(data->primary, &afb);
+-		igt_plane_set_size(data->primary, data->w, data->h);
+-		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
+-		if (!ret) {
+-			data->w = afb.width;
+-			data->h = afb.height;
+-		}
++	/* 10-bit formats are slow, so limit the size. */
++	afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
++	igt_assert(afb_id);
+ 
+-		/* Start in 8bpc. */
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+-		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		/*
+-		 * i915 driver doesn't expose max bpc as debugfs entry,
+-		 * so limiting assert only for amd driver.
+-		 */
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 8);
+-
+-		/*
+-		 * amdgpu requires a primary plane when the CRTC is enabled.
+-		 * However, some older Intel hardware (hsw) have scaling
+-		 * requirements that are not met by the plane, so remove it
+-		 * for non-AMD devices.
+-		 */
+-		if (!is_amdgpu_device(data->fd))
+-			igt_plane_set_fb(data->primary, NULL);
++	draw_hdr_pattern(&afb);
+ 
+-		/* Switch to 10bpc. */
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+-		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 10);
+-
+-		/* Verify that the CRC are equal after DPMS or suspend. */
+-		igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+-		test_cycle_flags(data, flags);
+-		igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
+-
+-		/* Drop back to 8bpc. */
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+-		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 8);
+-
+-		/* CRC capture is clamped to 8bpc, so capture should match. */
+-		igt_assert_crc_equal(&ref_crc, &new_crc);
++	/* Plane may be required to fit fullscreen. Check it here and allow
++	 * smaller plane size in following tests.
++	 */
++	igt_plane_set_fb(data->primary, &afb);
++	igt_plane_set_size(data->primary, data->w, data->h);
++	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
++	if (!ret) {
++		data->w = afb.width;
++		data->h = afb.height;
++	}
+ 
+-		test_fini(data);
+-		igt_remove_fb(data->fd, &afb);
++	/* Start in 8bpc. */
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	/*
++	 * i915 driver doesn't expose max bpc as debugfs entry,
++	 * so limiting assert only for amd driver.
++	 */
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 8);
+ 
+-		/*
+-		 * Testing a output with a pipe is enough for HDR
+-		 * testing. No ROI in testing the connector with other
+-		 * pipes. So break the loop on pipe.
+-		 */
+-		break;
+-	}
++	/*
++	 * amdgpu requires a primary plane when the CRTC is enabled.
++	 * However, some older Intel hardware (hsw) have scaling
++	 * requirements that are not met by the plane, so remove it
++	 * for non-AMD devices.
++	 */
++	if (!is_amdgpu_device(data->fd))
++		igt_plane_set_fb(data->primary, NULL);
++
++	/* Switch to 10bpc. */
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 10);
++
++	/* Verify that the CRC are equal after DPMS or suspend. */
++	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
++	test_cycle_flags(data, flags);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
++
++	/* Drop back to 8bpc. */
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 8);
++
++	/* CRC capture is clamped to 8bpc, so capture should match. */
++	igt_assert_crc_equal(&ref_crc, &new_crc);
++
++	test_fini(data);
++	igt_remove_fb(data->fd, &afb);
+ }
+ 
+ /* Returns true if an output supports max bpc property. */
+@@ -282,21 +251,27 @@ static bool has_max_bpc(igt_output_t *output)
+ 	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+ }
+ 
+-static void test_bpc_switch(data_t *data, uint32_t flags)
++static void test_bpc_switch(data_t *data, const char *test_name, uint32_t flags)
+ {
++	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+-	int valid_tests = 0;
+ 
+-	for_each_connected_output(&data->display, output) {
++	for_each_connected_output(display, output) {
++		enum pipe pipe;
++
+ 		if (!has_max_bpc(output))
+ 			continue;
+ 
+-		igt_info("BPC switch test execution on %s\n", output->name);
+-		test_bpc_switch_on_output(data, output, flags);
+-		valid_tests++;
++		for_each_pipe(display, pipe) {
++			if (igt_pipe_connector_valid(pipe, output)) {
++				 igt_dynamic_f("%s-%s-pipe-%s",
++					        test_name, output->name, kmstest_pipe_name(pipe))
++					test_bpc_switch_on_output(data, pipe, output, flags);
++			/* One pipe is enough */
++				break;
++			}
++		}
+ 	}
+-
+-	igt_require_f(valid_tests, "No connector found with max_bpc connector property\n");
+ }
+ 
+ static bool cta_block(const char *edid_ext)
+@@ -426,68 +401,58 @@ static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
+ 	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
+ }
+ 
+-static void test_static_toggle(data_t *data, igt_output_t *output,
++static void test_static_toggle(data_t *data, enum pipe pipe,
++			       igt_output_t *output,
+ 			       uint32_t flags)
+ {
+ 	igt_display_t *display = &data->display;
+ 	struct hdr_output_metadata hdr;
+ 	igt_crc_t ref_crc, new_crc;
+-	enum pipe pipe;
+ 	igt_fb_t afb;
+ 	int afb_id;
+ 
+-	for_each_pipe(display, pipe) {
+-		if (!igt_pipe_connector_valid(pipe, output))
+-			continue;
++	prepare_test(data, output, pipe);
+ 
+-		if (!igt_pipe_is_free(display, pipe))
+-			continue;
++	/* 10-bit formats are slow, so limit the size. */
++	afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
++	igt_assert(afb_id);
+ 
+-		prepare_test(data, output, pipe);
++	draw_hdr_pattern(&afb);
+ 
+-		/* 10-bit formats are slow, so limit the size. */
+-		afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
+-		igt_assert(afb_id);
++	fill_hdr_output_metadata_st2048(&hdr);
+ 
+-		draw_hdr_pattern(&afb);
++	/* Start with no metadata. */
++	igt_plane_set_fb(data->primary, &afb);
++	igt_plane_set_size(data->primary, data->w, data->h);
++	set_hdr_output_metadata(data, NULL);
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 8);
+ 
+-		fill_hdr_output_metadata_st2048(&hdr);
++	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
++	set_hdr_output_metadata(data, &hdr);
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 10);
+ 
+-		/* Start with no metadata. */
+-		igt_plane_set_fb(data->primary, &afb);
+-		igt_plane_set_size(data->primary, data->w, data->h);
+-		set_hdr_output_metadata(data, NULL);
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+-		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 8);
++	/* Verify that the CRC are equal after DPMS or suspend. */
++	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
++	test_cycle_flags(data, flags);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
+ 
+-		/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
+-		set_hdr_output_metadata(data, &hdr);
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+-		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 10);
++	/* Disable HDR metadata and drop back to 8bpc. We expect a modeset for exiting. */
++	set_hdr_output_metadata(data, NULL);
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 8);
+ 
+-		/* Verify that the CRC are equal after DPMS or suspend. */
+-		igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+-		test_cycle_flags(data, flags);
+-		igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
++	igt_assert_crc_equal(&ref_crc, &new_crc);
+ 
+-		/* Disable HDR metadata and drop back to 8bpc. We expect a modeset for exiting. */
+-		set_hdr_output_metadata(data, NULL);
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+-		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 8);
+-
+-		igt_assert_crc_equal(&ref_crc, &new_crc);
+-
+-		test_fini(data);
+-		igt_remove_fb(data->fd, &afb);
+-
+-		break;
+-	}
++	test_fini(data);
++	igt_remove_fb(data->fd, &afb);
+ }
+ 
+ /* Fills some test values for HDR metadata targeting SDR. */
+@@ -520,88 +485,77 @@ static void fill_hdr_output_metadata_sdr(struct hdr_output_metadata *meta)
+ 	meta->hdmi_metadata_type1.max_cll = 0;
+ }
+ 
+-static void test_static_swap(data_t *data, igt_output_t *output)
++static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_crc_t ref_crc, new_crc;
+-	enum pipe pipe;
+ 	igt_fb_t afb;
+ 	int afb_id;
+ 	struct hdr_output_metadata hdr;
+ 
+-	for_each_pipe(display, pipe) {
+-		if (!igt_pipe_connector_valid(pipe, output))
+-			continue;
+-
+-		if (!igt_pipe_is_free(display, pipe))
+-			continue;
+-
+-		prepare_test(data, output, pipe);
+-
+-		/* 10-bit formats are slow, so limit the size. */
+-		afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
+-		igt_assert(afb_id);
+-
+-		draw_hdr_pattern(&afb);
+-
+-		/* Start in SDR. */
+-		igt_plane_set_fb(data->primary, &afb);
+-		igt_plane_set_size(data->primary, data->w, data->h);
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++	prepare_test(data, output, pipe);
++
++	/* 10-bit formats are slow, so limit the size. */
++	afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
++	igt_assert(afb_id);
++
++	draw_hdr_pattern(&afb);
++
++	/* Start in SDR. */
++	igt_plane_set_fb(data->primary, &afb);
++	igt_plane_set_size(data->primary, data->w, data->h);
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 8);
++
++	/* Enter HDR, a modeset is allowed here. */
++	fill_hdr_output_metadata_st2048(&hdr);
++	set_hdr_output_metadata(data, &hdr);
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 10);
++
++	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
++
++	/* Change the mastering information, no modeset allowed
++	 * for amd driver, whereas a modeset is required for i915
++	 * driver. */
++	hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
++	hdr.hdmi_metadata_type1.max_fall = 200;
++	hdr.hdmi_metadata_type1.max_cll = 100;
++
++	set_hdr_output_metadata(data, &hdr);
++	if (is_amdgpu_device(data->fd))
++		igt_display_commit_atomic(display, 0, NULL);
++	else
+ 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 8);
+ 
+-		/* Enter HDR, a modeset is allowed here. */
+-		fill_hdr_output_metadata_st2048(&hdr);
+-		set_hdr_output_metadata(data, &hdr);
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
++	/* Enter SDR via metadata, no modeset allowed for
++	 * amd driver, whereas a modeset is required for
++	 * i915 driver. */
++	fill_hdr_output_metadata_sdr(&hdr);
++	set_hdr_output_metadata(data, &hdr);
++	if (is_amdgpu_device(data->fd))
++		igt_display_commit_atomic(display, 0, NULL);
++	else
+ 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 10);
+-
+-		igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+-
+-		/* Change the mastering information, no modeset allowed
+-		 * for amd driver, whereas a modeset is required for i915
+-		 * driver. */
+-		hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
+-		hdr.hdmi_metadata_type1.max_fall = 200;
+-		hdr.hdmi_metadata_type1.max_cll = 100;
+-
+-		set_hdr_output_metadata(data, &hdr);
+-		if (is_amdgpu_device(data->fd))
+-			igt_display_commit_atomic(display, 0, NULL);
 -		else
--			move_to_lmem(i915, objects + i, 1, batch, engine,
--				     params->oom_test);
+-			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-
+-		/* Enter SDR via metadata, no modeset allowed for
+-		 * amd driver, whereas a modeset is required for
+-		 * i915 driver. */
+-		fill_hdr_output_metadata_sdr(&hdr);
+-		set_hdr_output_metadata(data, &hdr);
+-		if (is_amdgpu_device(data->fd))
+-			igt_display_commit_atomic(display, 0, NULL);
+-		else
+-			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-
+-		igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
+-
+-		/* Exit SDR and enter 8bpc, cleanup. */
+-		set_hdr_output_metadata(data, NULL);
+-		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+-		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-		if (is_amdgpu_device(data->fd))
+-			assert_output_bpc(data, 8);
+ 
+-		/* Verify that the CRC didn't change while cycling metadata. */
+-		igt_assert_crc_equal(&ref_crc, &new_crc);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
+ 
+-		test_fini(data);
+-		igt_remove_fb(data->fd, &afb);
++	/* Exit SDR and enter 8bpc, cleanup. */
++	set_hdr_output_metadata(data, NULL);
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (is_amdgpu_device(data->fd))
++		assert_output_bpc(data, 8);
+ 
+-		break;
+-	}
++	/* Verify that the CRC didn't change while cycling metadata. */
++	igt_assert_crc_equal(&ref_crc, &new_crc);
++
++	test_fini(data);
++	igt_remove_fb(data->fd, &afb);
+ }
+ 
+ /* Returns true if an output supports HDR metadata property. */
+@@ -612,34 +566,36 @@ static bool has_hdr(igt_output_t *output)
+ 
+ static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
+ {
++	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+-	int valid_tests = 0;
+ 
+-	for_each_connected_output(&data->display, output) {
++	for_each_connected_output(display, output) {
++		enum pipe pipe;
++
+ 		/* To test HDR, 10 bpc is required, so we need to
+ 		 * set MAX_BPC property to 10bpc prior to setting
+ 		 * HDR metadata property. Therefore, checking.
+ 		 */
+-		if (!has_max_bpc(output) || !has_hdr(output)) {
+-			igt_info("%s connector not found with HDR metadata/max_bpc connector property\n", output->name);
++		if (!has_max_bpc(output) || !has_hdr(output))
+ 			continue;
+-		}
+ 
+-		if (!is_panel_hdr(data, output)) {
+-			igt_info("Panel attached via %s connector is non-HDR\n", output->name);
++		if (!is_panel_hdr(data, output))
+ 			continue;
+-		}
+-
+-		igt_info("HDR %s test execution on %s\n", test_name, output->name);
+-		if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
+-			test_static_toggle(data, output, flags);
+-		if (flags & TEST_SWAP)
+-			test_static_swap(data, output);
+ 
+-		valid_tests++;
++		for_each_pipe(display, pipe) {
++			if (igt_pipe_connector_valid(pipe, output)) {
++				igt_dynamic_f("%s-%s-pipe-%s",
++					      test_name, output->name, kmstest_pipe_name(pipe)) {
++					if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
++						test_static_toggle(data, pipe, output, flags);
++					if (flags & TEST_SWAP)
++						test_static_swap(data, pipe, output);
++				}
++			/* One pipe is enough */
++				break;
++			}
++		}
+ 	}
+-
+-	igt_require_f(valid_tests, "No connector found with HDR metadata/max_bpc connector property (or) panel is non-HDR\n");
+ }
+ 
+ igt_main
+@@ -658,21 +614,28 @@ igt_main
  	}
  
- 	igt_debug("obj size min/max=%lu %s/%lu %s, count=%u, seed: %u\n",
+ 	igt_describe("Tests switching between different display output bpc modes");
+-	igt_subtest("bpc-switch") test_bpc_switch(&data, TEST_NONE);
++	igt_subtest_with_dynamic("bpc-switch")
++		test_bpc_switch(&data, "bpc-switch", TEST_NONE);
+ 	igt_describe("Tests bpc switch with dpms");
+-	igt_subtest("bpc-switch-dpms") test_bpc_switch(&data, TEST_DPMS);
++	igt_subtest_with_dynamic("bpc-switch-dpms")
++		test_bpc_switch(&data, "bpc-switch-dpms", TEST_DPMS);
+ 	igt_describe("Tests bpc switch with suspend");
+-	igt_subtest("bpc-switch-suspend") test_bpc_switch(&data, TEST_SUSPEND);
++	igt_subtest_with_dynamic("bpc-switch-suspend")
++		test_bpc_switch(&data, "bpc-switch-suspend", TEST_SUSPEND);
+ 
+ 	igt_describe("Tests entering and exiting HDR mode");
+-	igt_subtest("static-toggle") test_hdr(&data, "static-toggle", TEST_NONE);
++	igt_subtest_with_dynamic("static-toggle")
++		test_hdr(&data, "static-toggle", TEST_NONE);
+ 	igt_describe("Tests static toggle with dpms");
+-	igt_subtest("static-toggle-dpms") test_hdr(&data, "static-toggle-dpms", TEST_DPMS);
++	igt_subtest_with_dynamic("static-toggle-dpms")
++		test_hdr(&data, "static-toggle-dpms", TEST_DPMS);
+ 	igt_describe("Tests static toggle with suspend");
+-	igt_subtest("static-toggle-suspend") test_hdr(&data, "static-toggle-suspend", TEST_SUSPEND);
++	igt_subtest_with_dynamic("static-toggle-suspend")
++		test_hdr(&data, "static-toggle-suspend", TEST_SUSPEND);
+ 
+ 	igt_describe("Tests swapping static HDR metadata");
+-	igt_subtest("static-swap") test_hdr(&data, "static-swap", TEST_SWAP);
++	igt_subtest_with_dynamic("static-swap")
++		test_hdr(&data, "static-swap", TEST_SWAP);
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
 -- 
-2.20.1
+2.25.1
