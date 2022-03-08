@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com
- [66.111.4.27])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03AD610E4C0
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 15:21:48 +0000 (UTC)
-From: Maxime Ripard <maxime@cerno.tech>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 383EA10E2D5
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 14:49:40 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Mar 2022 16:21:34 +0100
-Message-Id: <20220308152141.2457841-2-maxime@cerno.tech>
-In-Reply-To: <20220308152141.2457841-1-maxime@cerno.tech>
-References: <20220308152141.2457841-1-maxime@cerno.tech>
+Date: Tue,  8 Mar 2022 20:19:14 +0530
+Message-Id: <20220308144914.29185-3-anshuman.gupta@intel.com>
+In-Reply-To: <20220308144914.29185-1-anshuman.gupta@intel.com>
+References: <20220308144914.29185-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/8] lib/igt_frame: Rename summary fd
- variable
+Subject: [igt-dev] [PATCH i-g-t v2 2/2] i915_pm_rpm: Add placement to
+ gem_exec_stress
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,49 +19,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Pekka Paalanen <ppaalanen@gmail.com>, Maxime Ripard <maxime@cerno.tech>
+Cc: chris.p.wilson@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The igt_write_frame_to_png() function takes a file descriptor to a
-summary text file to write the path to the PNG it will dump the frame
-to.
+This add memory region placement to gem_exec_stress group of test.
+gem-execbuf-stress-pc8 is odd one test as PC8 is applicable to igfx
+platform. dgfx soc has its own PkgG sates therefore memory region
+placement is irrelevant for gem-execbuf-stress-pc8 test.
 
-Since we have multiple files involved, rename the generic fd variable to
-summary_fd.
+v2:
+- Deleted gem_memory_topology.[ch] and moved it's content
+  to intel_memory_region.[ch]. [Ashutosh]
 
-Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- lib/igt_frame.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/i915/i915_pm_rpm.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_frame.c b/lib/igt_frame.c
-index 45523a79f601..03aeb24d6edb 100644
---- a/lib/igt_frame.c
-+++ b/lib/igt_frame.c
-@@ -57,7 +57,7 @@ bool igt_frame_dump_is_enabled(void)
- 	return igt_frame_dump_path != NULL;
- }
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 1df0ed222..8d263312f 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -1373,7 +1373,9 @@ static void gem_execbuf_subtest(void)
  
--static void igt_write_frame_to_png(cairo_surface_t *surface, int fd,
-+static void igt_write_frame_to_png(cairo_surface_t *surface, int summary_fd,
- 				   const char *qualifier, const char *suffix)
+ /* Assuming execbuf already works, let's see what happens when we force many
+  * suspend/resume cycles with commands. */
+-static void gem_execbuf_stress_subtest(int rounds, int wait_flags)
++static void
++gem_execbuf_stress_subtest(int rounds, int wait_flags,
++			   struct drm_i915_gem_memory_class_instance *mem_regions)
  {
- 	char path[PATH_MAX];
-@@ -85,11 +85,11 @@ static void igt_write_frame_to_png(cairo_surface_t *surface, int fd,
+ 	int i;
+ 	int batch_size = 4 * sizeof(uint32_t);
+@@ -1396,7 +1398,12 @@ static void gem_execbuf_stress_subtest(int rounds, int wait_flags)
  
- 	index = strlen(path);
+ 	disable_all_screens_and_wait(&ms_data);
  
--	if (fd >= 0 && index < (PATH_MAX - 1)) {
-+	if (summary_fd >= 0 && index < (PATH_MAX - 1)) {
- 		path[index++] = '\n';
- 		path[index] = '\0';
+-	handle = gem_create(drm_fd, batch_size);
++	/* PC8 test is only applicable to igfx  */
++	if (wait_flags & WAIT_PC8_RES)
++		handle = gem_create(drm_fd, batch_size);
++	else
++		handle = gem_create_in_memory_region_list(drm_fd, batch_size, mem_regions, 1);
++
+ 	gem_write(drm_fd, handle, 0, batch_buf, batch_size);
  
--		write(fd, path, strlen(path));
-+		write(summary_fd, path, strlen(path));
- 	}
- }
+ 	objs[0].handle = handle;
+@@ -2038,8 +2045,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	/* Skip instead of failing in case the machine is not prepared to reach
+ 	 * PC8+. We don't want bug reports from cases where the machine is just
+ 	 * not properly configured. */
+-	igt_fixture
++	igt_fixture {
+ 		igt_require(setup_environment(false));
++	}
  
+ 	if (stay)
+ 		igt_subtest("stay")
+@@ -2151,12 +2159,17 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		system_suspend_subtest(SUSPEND_STATE_DISK, SUSPEND_TEST_NONE);
+ 
+ 	/* GEM stress */
+-	igt_subtest("gem-execbuf-stress")
+-		gem_execbuf_stress_subtest(rounds, WAIT_STATUS);
++	igt_subtest_with_dynamic("gem-execbuf-stress") {
++		for_each_memory_region(r, drm_fd) {
++			igt_dynamic_f("%s", r->name)
++				gem_execbuf_stress_subtest(rounds, WAIT_STATUS, &r->ci);
++			igt_dynamic_f("%s-%s", "extra-wait", r->name)
++				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_EXTRA, &r->ci);
++		}
++	}
++
+ 	igt_subtest("gem-execbuf-stress-pc8")
+-		gem_execbuf_stress_subtest(rounds, WAIT_PC8_RES);
+-	igt_subtest("gem-execbuf-stress-extra-wait")
+-		gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_EXTRA);
++		gem_execbuf_stress_subtest(rounds, WAIT_PC8_RES, 0);
+ 
+ 	/* power-wake reference tests */
+ 	igt_subtest("pm-tiling") {
 -- 
-2.35.1
+2.26.2
