@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5AE6110E9AA
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 12:22:40 +0000 (UTC)
-Date: Wed, 9 Mar 2022 13:22:36 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <YiicDO7m/zH+uJFs@zkempczy-mobl2>
-References: <20220309112415.882790-1-mauro.chehab@linux.intel.com>
- <20220309112415.882790-2-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8205035073013627200=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220309112415.882790-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH v2 1/1] lib/i915_pciids.h: Add DG2 PCI IDs
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 09 Mar 2022 16:07:52 -0000
+Message-ID: <164684207260.14946.5149372337718177838@emeril.freedesktop.org>
+References: <20220309112415.882790-1-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220309112415.882790-1-mauro.chehab@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgU3luY2hy?=
+ =?utf-8?q?onizes_the_PCI_IDs_on_i915=5Fpciids_for_DG2?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,109 +16,269 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Mar 09, 2022 at 12:24:15PM +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> As DG2 hardware will start showing up in CI shortly, and the DG2
-> list of PCI id's is not in sync with the patch merged at Linux
-> drm-tip upstream, update them to reflect what it was merged
-> there by this Linux changeset:
-> 
->   commit 92b805135ed2851989097106bbde0f099d664902
->   Author: Matt Roper <matthew.d.roper@intel.com>
->   Date:   Tue Feb 15 13:45:44 2022 -0800
-> 
->     drm/i915: Add DG2 PCI IDs
-> 
->     DG2 hardware will start showing up in CI shortly; let's make sure it's
->     recognized by the driver.
-> 
->     Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
->     Reviewed-by: Caz Yokoyama <caz.yokoyama@intel.com>
->     Link: https://patchwork.freedesktop.org/patch/msgid/20220215214544.2197483-1-matthew.d.roper@intel.com
->     Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> 
-> This patch partially reverts:
-> b842aa665d48 ("lib/intel_device_info: Introduce i915_pciids_local.h and add DG2 definition")
-> but it preserves the file, as this may be used in the future while
-> testing future devices, while PCI IDs are still a WIP.
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  lib/i915_pciids.h       | 27 +++++++++++++++++++++++++++
->  lib/i915_pciids_local.h | 10 +---------
->  2 files changed, 28 insertions(+), 9 deletions(-)
-> 
-> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-> index 533890dc9da1..3609f3254f24 100644
-> --- a/lib/i915_pciids.h
-> +++ b/lib/i915_pciids.h
-> @@ -681,4 +681,31 @@
->  	INTEL_VGA_DEVICE(0xA788, info), \
->  	INTEL_VGA_DEVICE(0xA789, info)
->  
-> +/* DG2 */
-> +#define INTEL_DG2_G10_IDS(info) \
-> +	INTEL_VGA_DEVICE(0x5690, info), \
-> +	INTEL_VGA_DEVICE(0x5691, info), \
-> +	INTEL_VGA_DEVICE(0x5692, info), \
-> +	INTEL_VGA_DEVICE(0x56A0, info), \
-> +	INTEL_VGA_DEVICE(0x56A1, info), \
-> +	INTEL_VGA_DEVICE(0x56A2, info)
-> +
-> +#define INTEL_DG2_G11_IDS(info) \
-> +	INTEL_VGA_DEVICE(0x5693, info), \
-> +	INTEL_VGA_DEVICE(0x5694, info), \
-> +	INTEL_VGA_DEVICE(0x5695, info), \
-> +	INTEL_VGA_DEVICE(0x56A5, info), \
-> +	INTEL_VGA_DEVICE(0x56A6, info), \
-> +	INTEL_VGA_DEVICE(0x56B0, info), \
-> +	INTEL_VGA_DEVICE(0x56B1, info)
-> +
-> +#define INTEL_DG2_G12_IDS(info) \
-> +	INTEL_VGA_DEVICE(0x56A3, info), \
-> +	INTEL_VGA_DEVICE(0x56A4, info)
-> +
-> +#define INTEL_DG2_IDS(info) \
-> +	INTEL_DG2_G10_IDS(info), \
-> +	INTEL_DG2_G11_IDS(info), \
-> +	INTEL_DG2_G12_IDS(info)
-> +
->  #endif /* _I915_PCIIDS_H */
-> diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
-> index 2a18109e59e5..3a26412e71ae 100644
-> --- a/lib/i915_pciids_local.h
-> +++ b/lib/i915_pciids_local.h
-> @@ -7,14 +7,6 @@
->  
->  #include "i915_pciids.h"
->  
-> -/* DG2 */
-> -#define INTEL_DG2_IDS(info) \
-> -	INTEL_VGA_DEVICE(0x56A0, info), \
-> -	INTEL_VGA_DEVICE(0x56A1, info), \
-> -	INTEL_VGA_DEVICE(0x56A2, info), \
-> -	INTEL_VGA_DEVICE(0x56A3, info), \
-> -	INTEL_VGA_DEVICE(0x56A4, info), \
-> -	INTEL_VGA_DEVICE(0x56A5, info), \
-> -	INTEL_VGA_DEVICE(0x56A6, info)
-> +/* Curently empty. Should be used as place to put temporary PCI IDs */
->  
->  #endif /* _I915_PCIIDS_LOCAL_H */
-> -- 
-> 2.35.1
->
+--===============8205035073013627200==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM:
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: Synchronizes the PCI IDs on i915_pciids for DG2
+URL   : https://patchwork.freedesktop.org/series/101200/
+State : success
 
---
-Zbigniew 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11344 -> IGTPW_6764
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/index.html
+
+Participating hosts (44 -> 36)
+------------------------------
+
+  Additional (2): fi-kbl-soraka fi-pnv-d510 
+  Missing    (10): bat-dg1-6 bat-dg1-5 bat-dg2-9 fi-bsw-cyan bat-adlp-6 bat-adlp-4 fi-ctg-p8600 bat-rpls-2 bat-jsl-2 bat-jsl-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6764 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +9 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_flink_basic@bad-flink:
+    - fi-skl-6600u:       [PASS][2] -> [FAIL][3] ([i915#4547])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11344/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][6] ([i915#1886])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_flip@basic-plain-flip@c-dp2:
+    - fi-cfl-8109u:       [PASS][8] -> [DMESG-WARN][9] ([i915#165])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11344/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp2.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp2.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [PASS][10] -> [DMESG-WARN][11] ([i915#165] / [i915#295]) +14 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11344/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][12] ([fdo#109271] / [i915#533])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][13] ([fdo#109271]) +58 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {fi-rkl-11600}:     [INCOMPLETE][14] ([i915#5127]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11344/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#165]: https://gitlab.freedesktop.org/drm/intel/issues/165
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4547]: https://gitlab.freedesktop.org/drm/intel/issues/4547
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6373 -> IGTPW_6764
+
+  CI-20190529: 20190529
+  CI_DRM_11344: 80b618ceb10af09cb6b3515bab762b8ec500d5f8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6764: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/index.html
+  IGT_6373: 82306f1903c0fee8371f43a156d8b63163ca61c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/index.html
+
+--===============8205035073013627200==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Synchronizes the PCI IDs on i915_pciids for DG2</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101200/">https://patchwork.freedesktop.org/series/101200/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11344 -&gt; IGTPW_6764</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/index.html</p>
+<h2>Participating hosts (44 -&gt; 36)</h2>
+<p>Additional (2): fi-kbl-soraka fi-pnv-d510 <br />
+  Missing    (10): bat-dg1-6 bat-dg1-5 bat-dg2-9 fi-bsw-cyan bat-adlp-6 bat-adlp-4 fi-ctg-p8600 bat-rpls-2 bat-jsl-2 bat-jsl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6764 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_flink_basic@bad-flink:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11344/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-skl-6600u/igt@gem_flink_basic@bad-flink.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4547">i915#4547</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@c-dp2:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11344/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-cfl-8109u/igt@kms_flip@basic-plain-flip@c-dp2.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/165">i915#165</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11344/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/165">i915#165</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) +14 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +58 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
+<li>{fi-rkl-11600}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11344/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5127">i915#5127</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6373 -&gt; IGTPW_6764</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11344: 80b618ceb10af09cb6b3515bab762b8ec500d5f8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6764: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6764/index.html<br />
+  IGT_6373: 82306f1903c0fee8371f43a156d8b63163ca61c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8205035073013627200==--
