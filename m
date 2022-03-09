@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
- [IPv6:2a00:1450:4864:20::536])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAACE10E3FC
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 07:42:57 +0000 (UTC)
-Received: by mail-ed1-x536.google.com with SMTP id c20so1698628edr.8
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Mar 2022 23:42:57 -0800 (PST)
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
+ [IPv6:2a00:1450:4864:20::534])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4F3410E3F5
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 07:42:56 +0000 (UTC)
+Received: by mail-ed1-x534.google.com with SMTP id y12so1693500edt.9
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Mar 2022 23:42:56 -0800 (PST)
 From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Wed,  9 Mar 2022 08:42:32 +0100
-Message-Id: <20220309074242.65066-2-tomeu.vizoso@collabora.com>
-In-Reply-To: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
-References: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
+Date: Wed,  9 Mar 2022 08:42:31 +0100
+Message-Id: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 01/11] ci: Move containers from Buster to Bullseye
+Subject: [igt-dev] [PATCH 00/11] Run CI on Qualcomm devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,102 +24,69 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Except for MIPS, which isn't support since Bullseye.
+Run a bunch of KMS and GPU tests on Qualcomm devices. The pipeline will
+fail if there is any regression.
 
-Currently, we hit this error:
+With these changes, it should be fairly trivial to add testing on other
+KMS and GPU drivers.
 
-STEP 2: RUN apt-get update
-Get:1 http://security.debian.org/debian-security buster/updates InRelease [65.4 kB]
-Get:2 http://deb.debian.org/debian buster InRelease [122 kB]
-Get:3 http://deb.debian.org/debian buster-updates InRelease [51.9 kB]
-Reading package lists...
-E: Repository 'http://security.debian.org/debian-security buster/updates InRelease' changed its 'Suite' value from 'stable' to 'oldstable'
-E: Repository 'http://deb.debian.org/debian buster InRelease' changed its 'Suite' value from 'stable' to 'oldstable'
-E: Repository 'http://deb.debian.org/debian buster-updates InRelease' changed its 'Suite' value from 'stable-updates' to 'oldstable-updates'
-Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 100
+Regards,
 
-Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
----
- Dockerfile.build-debian         | 2 +-
- Dockerfile.build-debian-arm64   | 4 ++--
- Dockerfile.build-debian-armhf   | 2 +-
- Dockerfile.build-debian-minimal | 2 +-
- Dockerfile.build-debian-mips    | 4 +++-
- 5 files changed, 8 insertions(+), 6 deletions(-)
+Tomeu
 
-diff --git a/Dockerfile.build-debian b/Dockerfile.build-debian
-index 454f4bce5e77..52d7c42d1325 100644
---- a/Dockerfile.build-debian
-+++ b/Dockerfile.build-debian
-@@ -15,7 +15,7 @@ RUN apt-get install -y \
- 			libxmlrpc-core-c3-dev \
- 			libjson-c-dev \
- 			libcurl4-openssl-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg \
- 			libdrm-intel1
-diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
-index 573c7096feb8..cf0625ac725a 100644
---- a/Dockerfile.build-debian-arm64
-+++ b/Dockerfile.build-debian-arm64
-@@ -1,4 +1,4 @@
--FROM debian:buster
-+FROM debian:bullseye
- 
- RUN apt-get update
- RUN apt-get install -y \
-@@ -6,7 +6,7 @@ RUN apt-get install -y \
- 			bison \
- 			pkg-config \
- 			x11proto-dri2-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg
- 
-diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
-index 737ca3645f1b..dd43fcd6f18e 100644
---- a/Dockerfile.build-debian-armhf
-+++ b/Dockerfile.build-debian-armhf
-@@ -6,7 +6,7 @@ RUN apt-get install -y \
- 			bison \
- 			pkg-config \
- 			x11proto-dri2-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg
- 
-diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
-index 64edf4b4313e..3850fb43e5cc 100644
---- a/Dockerfile.build-debian-minimal
-+++ b/Dockerfile.build-debian-minimal
-@@ -1,4 +1,4 @@
--FROM debian:buster
-+FROM debian:bullseye
- 
- RUN apt-get update
- RUN apt-get install -y \
-diff --git a/Dockerfile.build-debian-mips b/Dockerfile.build-debian-mips
-index 9b7c0a5b4703..e9cdaab9d640 100644
---- a/Dockerfile.build-debian-mips
-+++ b/Dockerfile.build-debian-mips
-@@ -1,3 +1,5 @@
-+# we are stuck on buster for mips:
-+# https://lists.debian.org/debian-mips/2019/07/msg00010.html
- FROM debian:buster
- 
- RUN apt-get update
-@@ -6,7 +8,7 @@ RUN apt-get install -y \
- 			bison \
- 			pkg-config \
- 			x11proto-dri2-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg
- 
+Tomeu Vizoso (11):
+  ci: Move containers from Buster to Bullseye
+  ci: Move files to ci/ subdir
+  ci: Add dependencies between jobs
+  ci: Install ci-templates in Debian container
+  ci: Install ci-templates in arm64 container
+  ci: Install lavacli in Debian container
+  ci: Add wget to Debian container
+  ci: Setup JWT token to use with MinIO
+  ci: Upload build tarball to MinIO
+  ci: Add files from Mesa required to submit jobs to LAVA
+  ci: Add job for testing changes to tests in Qualcomm devices
+
+ .gitlab-ci.yml                                | 129 +++++-
+ Dockerfile => ci/Dockerfile                   |   0
+ .../Dockerfile.build-debian                   |  10 +-
+ .../Dockerfile.build-debian-arm64             |   8 +-
+ .../Dockerfile.build-debian-armhf             |   2 +-
+ .../Dockerfile.build-debian-minimal           |   2 +-
+ .../Dockerfile.build-debian-mips              |   4 +-
+ .../Dockerfile.build-fedora                   |   0
+ ci/ci-common/capture-devcoredump.sh           |  14 +
+ ci/ci-common/generate-env.sh                  | 112 ++++++
+ ci/ci-common/init-stage1.sh                   |  22 +
+ ci/ci-common/init-stage2.sh                   |  78 ++++
+ ci/lava/lava-submit.sh                        |  38 ++
+ ci/lava/lava_job_submitter.py                 | 380 ++++++++++++++++++
+ .../meson-cross-arm64.txt                     |   0
+ .../meson-cross-armhf.txt                     |   0
+ .../meson-cross-mips.txt                      |   0
+ ci/msm_results.txt                            |  97 +++++
+ ci/msm_tests.txt                              |  14 +
+ ci/run_tests.sh                               |  87 ++++
+ 20 files changed, 980 insertions(+), 17 deletions(-)
+ rename Dockerfile => ci/Dockerfile (100%)
+ rename Dockerfile.build-debian => ci/Dockerfile.build-debian (60%)
+ rename Dockerfile.build-debian-arm64 => ci/Dockerfile.build-debian-arm64 (79%)
+ rename Dockerfile.build-debian-armhf => ci/Dockerfile.build-debian-armhf (97%)
+ rename Dockerfile.build-debian-minimal => ci/Dockerfile.build-debian-minimal (94%)
+ rename Dockerfile.build-debian-mips => ci/Dockerfile.build-debian-mips (86%)
+ rename Dockerfile.build-fedora => ci/Dockerfile.build-fedora (100%)
+ create mode 100755 ci/ci-common/capture-devcoredump.sh
+ create mode 100755 ci/ci-common/generate-env.sh
+ create mode 100755 ci/ci-common/init-stage1.sh
+ create mode 100755 ci/ci-common/init-stage2.sh
+ create mode 100755 ci/lava/lava-submit.sh
+ create mode 100755 ci/lava/lava_job_submitter.py
+ rename meson-cross-arm64.txt => ci/meson-cross-arm64.txt (100%)
+ rename meson-cross-armhf.txt => ci/meson-cross-armhf.txt (100%)
+ rename meson-cross-mips.txt => ci/meson-cross-mips.txt (100%)
+ create mode 100644 ci/msm_results.txt
+ create mode 100644 ci/msm_tests.txt
+ create mode 100755 ci/run_tests.sh
+
 -- 
 2.31.1
