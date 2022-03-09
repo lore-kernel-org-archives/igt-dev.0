@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C10410E2EB
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 09:24:23 +0000 (UTC)
-Date: Wed, 9 Mar 2022 10:24:13 +0100
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5AE6110E9AA
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 12:22:40 +0000 (UTC)
+Date: Wed, 9 Mar 2022 13:22:36 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <YihyPZ0KAzcRp11O@zkempczy-mobl2>
-References: <20220308083006.834346-1-mauro.chehab@linux.intel.com>
- <20220308083006.834346-2-mauro.chehab@linux.intel.com>
+Message-ID: <YiicDO7m/zH+uJFs@zkempczy-mobl2>
+References: <20220309112415.882790-1-mauro.chehab@linux.intel.com>
+ <20220309112415.882790-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220308083006.834346-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH 1/1] lib/i915_pciids.h: Add DG2 PCI IDs
+In-Reply-To: <20220309112415.882790-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH v2 1/1] lib/i915_pciids.h: Add DG2 PCI IDs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,7 +26,7 @@ To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 08, 2022 at 09:30:06AM +0100, Mauro Carvalho Chehab wrote:
+On Wed, Mar 09, 2022 at 12:24:15PM +0100, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
 > As DG2 hardware will start showing up in CI shortly, and the DG2
@@ -50,23 +50,15 @@ On Tue, Mar 08, 2022 at 09:30:06AM +0100, Mauro Carvalho Chehab wrote:
 > 
 > This patch partially reverts:
 > b842aa665d48 ("lib/intel_device_info: Introduce i915_pciids_local.h and add DG2 definition")
-
-I would keep this file even if it stays empty. We will need this when
-we start upstreaming other gpus. I will add comment on the top of the
-file what's intention of it.
-
---
-Zbigniew
-
+> but it preserves the file, as this may be used in the future while
+> testing future devices, while PCI IDs are still a WIP.
 > 
 > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
 >  lib/i915_pciids.h       | 27 +++++++++++++++++++++++++++
->  lib/i915_pciids_local.h | 20 --------------------
->  lib/intel_device_info.c |  1 -
->  3 files changed, 27 insertions(+), 21 deletions(-)
->  delete mode 100644 lib/i915_pciids_local.h
+>  lib/i915_pciids_local.h | 10 +---------
+>  2 files changed, 28 insertions(+), 9 deletions(-)
 > 
 > diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
 > index 533890dc9da1..3609f3254f24 100644
@@ -105,20 +97,13 @@ Zbigniew
 > +
 >  #endif /* _I915_PCIIDS_H */
 > diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
-> deleted file mode 100644
-> index 2a18109e59e5..000000000000
+> index 2a18109e59e5..3a26412e71ae 100644
 > --- a/lib/i915_pciids_local.h
-> +++ /dev/null
-> @@ -1,20 +0,0 @@
-> -/* SPDX-License-Identifier: MIT */
-> -/*
-> - * Copyright © 2022 Intel Corporation
-> - */
-> -#ifndef _I915_PCIIDS_LOCAL_H_
-> -#define _I915_PCIIDS_LOCAL_H_
-> -
-> -#include "i915_pciids.h"
-> -
+> +++ b/lib/i915_pciids_local.h
+> @@ -7,14 +7,6 @@
+>  
+>  #include "i915_pciids.h"
+>  
 > -/* DG2 */
 > -#define INTEL_DG2_IDS(info) \
 > -	INTEL_VGA_DEVICE(0x56A0, info), \
@@ -128,19 +113,16 @@ Zbigniew
 > -	INTEL_VGA_DEVICE(0x56A4, info), \
 > -	INTEL_VGA_DEVICE(0x56A5, info), \
 > -	INTEL_VGA_DEVICE(0x56A6, info)
-> -
-> -#endif /* _I915_PCIIDS_LOCAL_H */
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index 9f19136795e4..56c43e97a40f 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -1,6 +1,5 @@
->  #include "intel_chipset.h"
->  #include "i915_pciids.h"
-> -#include "i915_pciids_local.h"
+> +/* Curently empty. Should be used as place to put temporary PCI IDs */
 >  
->  #include <strings.h> /* ffs() */
->  
+>  #endif /* _I915_PCIIDS_LOCAL_H */
 > -- 
 > 2.35.1
-> 
+>
+
+LGTM:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew 
