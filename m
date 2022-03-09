@@ -1,12 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB61010E3C9
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 16:49:48 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  9 Mar 2022 22:14:47 +0530
-Message-Id: <20220309164452.8240-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 0/5] Add tile 4 plane format support
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com
+ [IPv6:2a00:1450:4864:20::62f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B38E910E439
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 07:43:06 +0000 (UTC)
+Received: by mail-ej1-x62f.google.com with SMTP id dr20so3000723ejc.6
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Mar 2022 23:43:06 -0800 (PST)
+From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Date: Wed,  9 Mar 2022 08:42:40 +0100
+Message-Id: <20220309074242.65066-10-tomeu.vizoso@collabora.com>
+In-Reply-To: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
+References: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH 09/11] ci: Upload build tarball to MinIO
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,32 +21,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: juha-pekka.heikkila@intel.com
+Cc: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding new tests and support for tile 4 plane format. 
+For use in test jobs in LAVA that need to download them into their
+rootfs.
 
-Jeevan B (2):
-  igt/tests: Add support for Tile4(TileF) format to
-    tests/kms_addfb_basic
-  tests/kms_plane_scaling: Adding Tile-4 support
+Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+---
+ .gitlab-ci.yml | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Matt Roper (1):
-  lib/igt_draw: Use XY_FAST_COLOR_BLT on DG2
-
-Mika Kahola (2):
-  tests/kms_frontbuffer_tracking: Add support for 4 tiling
-  tests/kms_draw_crc: Use 4 tiling when filling framebuffer
-
- lib/igt_draw.c                        | 107 +++++++++++++++++++-------
- lib/intel_reg.h                       |   2 +
- tests/i915/kms_draw_crc.c             |   5 +-
- tests/i915/kms_frontbuffer_tracking.c |  22 +++++-
- tests/kms_addfb_basic.c               |  44 ++++++++++-
- tests/kms_plane_scaling.c             |  11 ++-
- 6 files changed, 160 insertions(+), 31 deletions(-)
-
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 7476b3306845..04152103b923 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -12,6 +12,8 @@ variables:
+     -Drunner=enabled
+     -Dlibunwind=enabled
+   LANG: "C.UTF-8"
++  MINIO_HOST: minio-packet.freedesktop.org
++  PIPELINE_ARTIFACTS_BASE: ${MINIO_HOST}/artifacts/${CI_PROJECT_PATH}/${CI_PIPELINE_ID}
+ 
+ stages:
+   - build-containers
+@@ -158,10 +160,17 @@ build:tests-debian-meson-armhf:
+ build:tests-debian-meson-arm64:
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-arm64:commit-$CI_COMMIT_SHA
+   stage: build
++  variables:
++    MINIO_ARTIFACT_NAME: igt-arm64
+   script:
+     - export PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig/
+     - meson --cross-file ci/meson-cross-arm64.txt build
+     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
++    - cp -rf ci build/.
++    - MINIO_ARTIFACT_NAME="$MINIO_ARTIFACT_NAME.tar.gz" # Pass needed files to the test stage
++    - tar -czf $MINIO_ARTIFACT_NAME build
++    - ci-fairy minio login --token-file "${CI_JOB_JWT_FILE}"
++    - ci-fairy minio cp ${MINIO_ARTIFACT_NAME} minio://${PIPELINE_ARTIFACTS_BASE}/${MINIO_ARTIFACT_NAME}
+   artifacts:
+     paths:
+       - build
 -- 
-2.17.1
+2.31.1
