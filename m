@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09E2E10E425
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 11:24:19 +0000 (UTC)
+Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nRuQS-003hfU-Ke
+ for igt-dev@lists.freedesktop.org; Wed, 09 Mar 2022 12:24:16 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Mar 2022 14:26:19 +0000
-Message-Id: <20220324142621.347452-3-matthew.auld@intel.com>
-In-Reply-To: <20220324142621.347452-1-matthew.auld@intel.com>
-References: <20220324142621.347452-1-matthew.auld@intel.com>
+Date: Wed,  9 Mar 2022 12:24:15 +0100
+Message-Id: <20220309112415.882790-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220309112415.882790-1-mauro.chehab@linux.intel.com>
+References: <20220309112415.882790-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] test/gem_lmem_swapping: fix physical
- engine usage
+Subject: [igt-dev] [PATCH v2 1/1] lib/i915_pciids.h: Add DG2 PCI IDs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,157 +22,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DG2 seems to have too many physical engines, and during execbuf just hits:
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-	"execbuf with unknown ring: 5"
+As DG2 hardware will start showing up in CI shortly, and the DG2
+list of PCI id's is not in sync with the patch merged at Linux
+drm-tip upstream, update them to reflect what it was merged
+there by this Linux changeset:
 
-Convert the test over to using the non-legacy API where we instead fill
-the ctx with all the physical engines and then engine/ring becomes the
-index into this.
+  commit 92b805135ed2851989097106bbde0f099d664902
+  Author: Matt Roper <matthew.d.roper@intel.com>
+  Date:   Tue Feb 15 13:45:44 2022 -0800
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5192
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
+    drm/i915: Add DG2 PCI IDs
+
+    DG2 hardware will start showing up in CI shortly; let's make sure it's
+    recognized by the driver.
+
+    Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+    Reviewed-by: Caz Yokoyama <caz.yokoyama@intel.com>
+    Link: https://patchwork.freedesktop.org/patch/msgid/20220215214544.2197483-1-matthew.d.roper@intel.com
+    Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+
+This patch partially reverts:
+b842aa665d48 ("lib/intel_device_info: Introduce i915_pciids_local.h and add DG2 definition")
+but it preserves the file, as this may be used in the future while
+testing future devices, while PCI IDs are still a WIP.
+
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_lmem_swapping.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ lib/i915_pciids.h       | 27 +++++++++++++++++++++++++++
+ lib/i915_pciids_local.h | 10 +---------
+ 2 files changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 193ff370..995a663f 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -126,6 +126,7 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
- }
+diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+index 533890dc9da1..3609f3254f24 100644
+--- a/lib/i915_pciids.h
++++ b/lib/i915_pciids.h
+@@ -681,4 +681,31 @@
+ 	INTEL_VGA_DEVICE(0xA788, info), \
+ 	INTEL_VGA_DEVICE(0xA789, info)
  
- static void move_to_lmem(int i915,
-+			 const intel_ctx_t *ctx,
- 			 struct object *list,
- 			 unsigned int num,
- 			 uint32_t batch,
-@@ -137,6 +138,7 @@ static void move_to_lmem(int i915,
- 		.buffers_ptr = to_user_pointer(obj),
- 		.buffer_count = 1 + num,
- 		.flags = I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT | engine,
-+		.rsvd1 = ctx->id,
- 	};
- 	unsigned int i, ret;
- 
-@@ -156,6 +158,7 @@ retry:
- }
- 
- static void __do_evict(int i915,
-+		       const intel_ctx_t *ctx,
- 		       struct drm_i915_gem_memory_class_instance *region,
- 		       struct params *params,
- 		       unsigned int seed)
-@@ -170,7 +173,6 @@ static void __do_evict(int i915,
- 	struct timespec t = {};
- 	unsigned int num;
- 
--	__gem_context_set_persistence(i915, 0, false);
- 	size = 4096;
- 	batch = create_bo(i915, &size, region, params->oom_test);
- 
-@@ -201,7 +203,7 @@ static void __do_evict(int i915,
- 		}
- 		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
- 
--		move_to_lmem(i915, objects + i, 1, batch, engine,
-+		move_to_lmem(i915, ctx, objects + i, 1, batch, engine,
- 			     params->oom_test);
- 		if (params->flags & TEST_VERIFY)
- 			init_object(i915, obj, rand(), params->flags);
-@@ -226,7 +228,7 @@ static void __do_evict(int i915,
- 			idx = (idx + 1) % params->count;
- 		}
- 
--		move_to_lmem(i915, list, num, batch, engine, params->oom_test);
-+		move_to_lmem(i915, ctx, list, num, batch, engine, params->oom_test);
- 
- 		if (params->flags & TEST_ENGINES)
- 			engine = (engine + 1) % __num_engines__;
-@@ -342,6 +344,7 @@ static void fill_params(int i915, struct params *params,
- }
- 
- static void test_evict(int i915,
-+		       const intel_ctx_t *ctx,
- 		       struct drm_i915_memory_region_info *region,
- 		       unsigned int flags)
- {
-@@ -353,14 +356,17 @@ static void test_evict(int i915,
- 	if (flags & TEST_PARALLEL) {
- 		int fd = gem_reopen_driver(i915);
- 
-+		ctx = intel_ctx_create_all_physical(fd);
-+		__gem_context_set_persistence(i915, ctx->id, false);
++/* DG2 */
++#define INTEL_DG2_G10_IDS(info) \
++	INTEL_VGA_DEVICE(0x5690, info), \
++	INTEL_VGA_DEVICE(0x5691, info), \
++	INTEL_VGA_DEVICE(0x5692, info), \
++	INTEL_VGA_DEVICE(0x56A0, info), \
++	INTEL_VGA_DEVICE(0x56A1, info), \
++	INTEL_VGA_DEVICE(0x56A2, info)
 +
- 		igt_fork(child, nproc)
--			__do_evict(fd, &region->region, &params,
-+			__do_evict(fd, ctx, &region->region, &params,
- 				   params.seed + child + 1);
- 
- 		igt_waitchildren();
- 		close(fd);
- 	} else {
--		__do_evict(i915, &region->region, &params, params.seed);
-+		__do_evict(i915, ctx, &region->region, &params, params.seed);
- 	}
- }
- 
-@@ -399,6 +405,7 @@ static void smem_oom_exit_handler(int sig)
- }
- 
- static void test_smem_oom(int i915,
-+			  const intel_ctx_t *ctx,
- 			  struct drm_i915_memory_region_info *region)
- {
- 	const uint64_t smem_size = intel_get_total_ram_mb() +
-@@ -421,7 +428,7 @@ static void test_smem_oom(int i915,
- 		fill_params(i915, &params, region, 0, 1, true);
- 
- 		igt_install_exit_handler(smem_oom_exit_handler);
--		__do_evict(fd, &region->region, &params,
-+		__do_evict(fd, ctx, &region->region, &params,
- 			   params.seed + child + 1);
- 
- 		close(fd);
-@@ -513,6 +520,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
- 		{ }
- 	};
-+	const intel_ctx_t *ctx;
- 	int i915 = -1;
- 
- 	igt_fixture {
-@@ -528,17 +536,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		for_each_physical_engine(i915, e)
- 			__num_engines__++;
- 		igt_require(__num_engines__);
-+		ctx = intel_ctx_create_all_physical(i915);
-+		__gem_context_set_persistence(i915, ctx->id, false);
++#define INTEL_DG2_G11_IDS(info) \
++	INTEL_VGA_DEVICE(0x5693, info), \
++	INTEL_VGA_DEVICE(0x5694, info), \
++	INTEL_VGA_DEVICE(0x5695, info), \
++	INTEL_VGA_DEVICE(0x56A5, info), \
++	INTEL_VGA_DEVICE(0x56A6, info), \
++	INTEL_VGA_DEVICE(0x56B0, info), \
++	INTEL_VGA_DEVICE(0x56B1, info)
 +
- 	}
++#define INTEL_DG2_G12_IDS(info) \
++	INTEL_VGA_DEVICE(0x56A3, info), \
++	INTEL_VGA_DEVICE(0x56A4, info)
++
++#define INTEL_DG2_IDS(info) \
++	INTEL_DG2_G10_IDS(info), \
++	INTEL_DG2_G11_IDS(info), \
++	INTEL_DG2_G12_IDS(info)
++
+ #endif /* _I915_PCIIDS_H */
+diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
+index 2a18109e59e5..3a26412e71ae 100644
+--- a/lib/i915_pciids_local.h
++++ b/lib/i915_pciids_local.h
+@@ -7,14 +7,6 @@
  
- 	for (test = tests; test->name; test++) {
- 		igt_describe("Exercise local memory swapping to system memory");
- 		dynamic_lmem_subtest(region, regions, test->name)
--			test_evict(i915, region, test->flags);
-+			test_evict(i915, ctx, region, test->flags);
- 	}
+ #include "i915_pciids.h"
  
- 	igt_describe("Exercise local memory swapping during exhausting system memory");
- 	dynamic_lmem_subtest(region, regions, "smem-oom")
--		test_smem_oom(i915, region);
-+		test_smem_oom(i915, ctx, region);
+-/* DG2 */
+-#define INTEL_DG2_IDS(info) \
+-	INTEL_VGA_DEVICE(0x56A0, info), \
+-	INTEL_VGA_DEVICE(0x56A1, info), \
+-	INTEL_VGA_DEVICE(0x56A2, info), \
+-	INTEL_VGA_DEVICE(0x56A3, info), \
+-	INTEL_VGA_DEVICE(0x56A4, info), \
+-	INTEL_VGA_DEVICE(0x56A5, info), \
+-	INTEL_VGA_DEVICE(0x56A6, info)
++/* Curently empty. Should be used as place to put temporary PCI IDs */
  
- 	igt_fixture {
- 		free(regions);
+ #endif /* _I915_PCIIDS_LOCAL_H */
 -- 
-2.34.1
+2.35.1
