@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6486C10E65C
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 09:30:43 +0000 (UTC)
-From: "Hellstrom, Thomas" <thomas.hellstrom@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "C,
- Ramalingam" <ramalingam.c@intel.com>
-Date: Tue, 8 Mar 2022 09:30:39 +0000
-Message-ID: <b837dbd33d402e44c84a13dbb88b1f4b4286b89f.camel@intel.com>
-References: <20220308092717.5528-1-ramalingam.c@intel.com>
-In-Reply-To: <20220308092717.5528-1-ramalingam.c@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <18E9A0695BCF7A41A2F65727D3B05D89@namprd11.prod.outlook.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FC0C10E201
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 01:51:02 +0000 (UTC)
+From: Mastan Katragadda <mastanx.katragadda@intel.com>
+To: igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
+Date: Wed,  9 Mar 2022 07:21:14 +0530
+Message-Id: <20220309015114.2682899-1-mastanx.katragadda@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_lmem_swapping: move the
- obj to lmem before init
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t] igt/gem_mmap_offset: Adding subtest oob_read
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,86 +20,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIyLTAzLTA4IGF0IDE0OjU3ICswNTMwLCBSYW1hbGluZ2FtIEMgd3JvdGU6DQo+
-IFdoZW4gbG1lbSBvYmogaXMgY3JlYXRlZCB0aHJvdWdoIHR0bSwgYnkgZGVmYXVsdCBwYWdlcyBy
-ZXNpZGVzIGF0IHNtZW0uDQo+IFNvIGJlZm9yZSBzdGFydCBpbml0aWFsaXppbmcgdGhyb3VnaCBt
-bWFwLCBsZXRzIG1vdmUgdGhlIHBhZ2VzIGludG8NCj4gbG1lbS4gRWxzZSB0aGlzIHdpbGwgb3Zl
-cmxvYWQgc21lbSBhbmQgT09NLWtpbGxlciB3aWxsIGJlIHRyaWdnZXJlZA0KPiANCj4gWzEwMTYz
-Ljg4Njk5MF0gY29udGFpbmVyZCBpbnZva2VkIG9vbS1raWxsZXI6DQo+IGdmcF9tYXNrPTB4MTE0
-MGNjYShHRlBfSElHSFVTRVJfTU9WQUJMRXxfX0dGUF9DT01QKSwgb3JkZXI9MCwNCj4gb29tX3Nj
-b3JlX2Fkaj0tOTk5DQo+IFsxMDE2My45NTYwNDhdIENQVTogMSBQSUQ6IDE3MDcgQ29tbTogY29u
-dGFpbmVyZCBOb3QgdGFpbnRlZA0KPiA1LjE3LjAtcmM2LTQ0MjUtcmFtKyAjMg0KPiBbMTAxNjMu
-OTYzNTM2XSBIYXJkd2FyZSBuYW1lOiBJbnRlbCBDb3Jwb3JhdGlvbiBDb2ZmZWVMYWtlIENsaWVu
-dA0KPiBQbGF0Zm9ybS9Db2ZmZWVMYWtlIFMgVURJTU0gUlZQLCBCSU9TIENOTFNGV1IxLlIwMC5Y
-MjIwLkIwMC4yMTAzMzAyMjIxDQo+IDAzLzMwLzIwMjENCj4gWzEwMTYzLjk3NjQ2N10gQ2FsbCBU
-cmFjZToNCj4gWzEwMTYzLjk3ODkyNV3CoCA8VEFTSz4NCj4gWzEwMTYzLjk4MTAzOV3CoCBkdW1w
-X3N0YWNrX2x2bCsweDU3LzB4N2QNCj4gWzEwMTYzLjk4NDcwOF3CoCBkdW1wX2hlYWRlcisweDQ1
-LzB4MmY0DQo+IFsxMDE2My45ODgyMDZdwqAgb29tX2tpbGxfcHJvY2Vzcy5jb2xkKzB4Yi8weDEw
-DQo+IFsxMDE2My45OTIzOTVdwqAgb3V0X29mX21lbW9yeSsweDEwNC8weDNhMA0KPiBbMTAxNjMu
-OTk2MTUyXcKgIF9fYWxsb2NfcGFnZXNfc2xvd3BhdGguY29uc3Rwcm9wLjArMHhiZTYvMHhkMzAN
-Cj4gWzEwMTY0LjAwMTczNF3CoCBfX2FsbG9jX3BhZ2VzKzB4MzE2LzB4MzUwDQo+IFsxMDE2NC4w
-MDU0OTJdwqAgX19mb2xpb19hbGxvYysweDEyLzB4NDANCj4gWzEwMTY0LjAwOTA3MV3CoCBfX2Zp
-bGVtYXBfZ2V0X2ZvbGlvKzB4MWRlLzB4NzMwDQo+IFsxMDE2NC4wMTMzNTZdwqAgZmlsZW1hcF9m
-YXVsdCsweDU1YS8weDExMDANCj4gWzEwMTY0LjAxNzIwMl3CoCA/IGZpbGVtYXBfbWFwX3BhZ2Vz
-KzB4MTY3LzB4NjkwDQo+IFsxMDE2NC4wMjE0ODJdwqAgX19kb19mYXVsdCsweDJmLzB4YTANCj4g
-WzEwMTY0LjAyNDgxMF3CoCBfX2hhbmRsZV9tbV9mYXVsdCsweGQyZi8weDE0OTANCj4gWzEwMTY0
-LjAyOTAwOV3CoCBoYW5kbGVfbW1fZmF1bHQrMHgxNDYvMHg0MTANCj4gWzEwMTY0LjAzMjk0M13C
-oCBkb191c2VyX2FkZHJfZmF1bHQrMHgxZTUvMHg2NzANCj4gWzEwMTY0LjAzNzEzM13CoCBleGNf
-cGFnZV9mYXVsdCsweDY1LzB4MjUwDQo+IFsxMDE2NC4wNDA4ODldwqAgPyBhc21fZXhjX3BhZ2Vf
-ZmF1bHQrMHg4LzB4MzANCj4gWzEwMTY0LjA0NDk5NV3CoCBhc21fZXhjX3BhZ2VfZmF1bHQrMHgx
-ZS8weDMwDQo+IFsxMDE2NC4wNDkwMTRdIFJJUDogMDAzMzoweDU1YzBjNjcxNzRmMA0KPiBbMTAx
-NjQuMDUyNTk3XSBDb2RlOiBVbmFibGUgdG8gYWNjZXNzIG9wY29kZSBieXRlcyBhdCBSSVANCj4g
-MHg1NWMwYzY3MTc0YzYuDQo+IFsxMDE2NC4wNTkxMjBdIFJTUDogMDAyYjowMDAwMDBjMDAwMjRk
-OWM4IEVGTEFHUzogMDAwMTAyMDYNCj4gWzEwMTY0LjA2NDM0NV0gUkFYOiAwMDAwMDAwMDAwMDAy
-MDAwIFJCWDogMDAwMDAwMDAwMDAwMDAwNCBSQ1g6DQo+IDAwMDA1NWMwYzhkZmMxYTANCj4gWzEw
-MTY0LjA3MTQ3NF0gUkRYOiAwMDAwNTVjMGM4ZTY4ZjM4IFJTSTogMDAwMDAwMDAwMDAwMDBhZiBS
-REk6DQo+IDAwMDAwMDAwMDAwMDAwYWENCj4gWzEwMTY0LjA3ODYwN10gUkJQOiAwMDAwMDBjMDAw
-MjRkYTIwIFIwODogMDAwMDU1YzBjODBiOWNhMCBSMDk6DQo+IDAwMDAwMDAwMDAyMDMwMDANCj4g
-WzEwMTY0LjA4NTczOF0gUjEwOiAwMDAwMDAwMDAwMDAwMDA4IFIxMTogMDAwMDAwMDAwZmZmZmZj
-MCBSMTI6DQo+IDAwMDAwMDAwMDAwMDAwMDYNCj4gWzEwMTY0LjA5Mjg2OF0gUjEzOiAwMDAwMDAw
-MDAwMDAwMGE0IFIxNDogMDAwMDAwMDAwMDAwMDBhYSBSMTU6DQo+IDAwMDAwMDAwMDAwMDAwYWEN
-Cj4gWzEwMTY0LjEwMDAwOV3CoCA8L1RBU0s+DQo+IFsxMDE2NC4xNjkwODFdIE1lbS1JbmZvOg0K
-PiBbMTAxNjQuMTg1MTM0XSBhY3RpdmVfYW5vbjo4MTEgaW5hY3RpdmVfYW5vbjo3NDE4NiBpc29s
-YXRlZF9hbm9uOjANCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFjdGl2ZV9maWxl
-OjI4NSBpbmFjdGl2ZV9maWxlOjMyMSBpc29sYXRlZF9maWxlOjANCj4gwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIHVuZXZpY3RhYmxlOjM3OTQ2MjQgZGlydHk6MCB3cml0ZWJhY2s6MA0K
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc2xhYl9yZWNsYWltYWJsZTozNDUzOSBz
-bGFiX3VucmVjbGFpbWFibGU6MTA2NzQzDQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBtYXBwZWQ6NDgyIHNobWVtOjM3OTUzODIgcGFnZXRhYmxlczoxNzA3IGJvdW5jZTowDQo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBrZXJuZWxfbWlzY19yZWNsYWltYWJsZTowDQo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmcmVlOjM3MjgzIGZyZWVfcGNwOjUxIGZy
-ZWVfY21hOjANCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFJhbWFsaW5nYW0gQyA8cmFtYWxpbmdhbS5j
-QGludGVsLmNvbT4NCj4gY2M6IFRob21hcyBIZWxsc3Ryb20gPHRob21hcy5oZWxsc3Ryb21AaW50
-ZWwuY29tPg0KDQpMR1RNLiBBcyBsb25nIGFzIHdlIGtlZXAgdGhpcyAiYXZvaWQgbWlncmF0aW5n
-IHdoZW4gbW1hcHBpbmciIGJlaGF2aW91cg0KdGhpcyBpcyBuZWVkZWQgZm9yIGdlbV9sbWVtX3N3
-YXBwaW5nIHRvIHdvcmsgY29ycmVjdGx5Lg0KDQpSZXZpZXdlZC1ieTogVGhvbWFzIEhlbGxzdHLD
-tm0gPHRob21hcy5oZWxsc3Ryb21AaW50ZWwuY29tPg0KDQoNCj4gLS0tDQo+IMKgdGVzdHMvaTkx
-NS9nZW1fbG1lbV9zd2FwcGluZy5jIHwgNSArKy0tLQ0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAyIGlu
-c2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkx
-NS9nZW1fbG1lbV9zd2FwcGluZy5jDQo+IGIvdGVzdHMvaTkxNS9nZW1fbG1lbV9zd2FwcGluZy5j
-DQo+IGluZGV4IDM5ZjllMWY1MzZkZC4uNTgyMTExZGRkZWI5IDEwMDY0NA0KPiAtLS0gYS90ZXN0
-cy9pOTE1L2dlbV9sbWVtX3N3YXBwaW5nLmMNCj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fbG1lbV9z
-d2FwcGluZy5jDQo+IEBAIC0yMDEsMTEgKzIwMSwxMCBAQCBzdGF0aWMgdm9pZCBfX2RvX2V2aWN0
-KGludCBpOTE1LA0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0NCj4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBvYmotPmhhbmRsZSA9IGNyZWF0ZV9ibyhpOTE1LCBv
-YmotPnNpemUsIHJlZ2lvbiwNCj4gcGFyYW1zLT5vb21fdGVzdCk7DQo+IMKgDQo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBtb3ZlX3RvX2xtZW0oaTkxNSwgb2JqZWN0cyArIGksIDEs
-IGJhdGNoLCBlbmdpbmUsDQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgcGFyYW1zLT5vb21fdGVzdCk7DQo+IMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgaWYgKHBhcmFtcy0+ZmxhZ3MgJiBURVNUX1ZFUklGWSkNCj4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaW5pdF9vYmplY3QoaTkx
-NSwgb2JqLCByYW5kKCksIHBhcmFtcy0+ZmxhZ3MpOw0KPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgZWxzZQ0KPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoG1vdmVfdG9fbG1lbShpOTE1LCBvYmplY3RzICsgaSwgMSwgYmF0Y2gsDQo+IGVuZ2lu
-ZSwNCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgcGFyYW1zLT5vb21fdGVzdCk7DQo+IMKgwqDCoMKgwqDCoMKg
-wqB9DQo+IMKgDQo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVidWcoIm9iaiBzaXplIG1pbi9tYXg9
-JWx1ICVzLyVsdSAlcywgY291bnQ9JXUsIHNlZWQ6DQo+ICV1XG4iLA0KDQotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CkludGVsIFN3ZWRlbiBBQgpSZWdpc3RlcmVkIE9mZmljZTogSXNhZmpvcmRzZ2F0YW4gMzBCLCAx
-NjQgNDAgS2lzdGEsIFN0b2NraG9sbSwgU3dlZGVuClJlZ2lzdHJhdGlvbiBOdW1iZXI6IDU1NjE4
-OS02MDI3CgpUaGlzIGUtbWFpbCBhbmQgYW55IGF0dGFjaG1lbnRzIG1heSBjb250YWluIGNvbmZp
-ZGVudGlhbCBtYXRlcmlhbCBmb3IKdGhlIHNvbGUgdXNlIG9mIHRoZSBpbnRlbmRlZCByZWNpcGll
-bnQocykuIEFueSByZXZpZXcgb3IgZGlzdHJpYnV0aW9uCmJ5IG90aGVycyBpcyBzdHJpY3RseSBw
-cm9oaWJpdGVkLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQKcmVjaXBpZW50LCBwbGVhc2Ug
-Y29udGFjdCB0aGUgc2VuZGVyIGFuZCBkZWxldGUgYWxsIGNvcGllcy4K
+This test will Detect A missing bounds check in vm_access().
+can lead to an out-of-bounds read or write in the adjacent memory area.
+
+Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+---
+ tests/i915/gem_mmap_offset.c | 37 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index 8148f0a2..9723f4e3 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -289,6 +289,40 @@ static void *memchr_inv(const void *s, int c, size_t n)
+ 	return NULL;
+ }
+ 
++static void
++test_oob_read(int i915)
++{
++
++	int memfd;
++	unsigned char p_init[4096];
++	unsigned char p_read_buf[4096];
++	void *ptr;
++	uintptr_t p_addr;
++	int ret;
++	uint32_t handle;
++
++	handle = gem_create(i915, 4096);
++
++	memset(p_init, 0x41, sizeof(p_init));
++	gem_write(i915, handle, 0, &p_init, sizeof(p_init));
++
++	ptr = __gem_mmap_offset__wc(i915, handle, 0, 4096, PROT_READ|PROT_WRITE);
++	igt_assert(ptr != MAP_FAILED);
++
++	memfd = open("/proc/self/mem", O_RDWR, 0);
++	igt_require_f(memfd != -1, "/proc/self/mem\n");
++
++	p_addr = (uintptr_t)((unsigned long)ptr + 4092);
++	ret = lseek64(memfd, p_addr, SEEK_SET);
++	igt_assert_f(ret != -1, "lseek failed\n");
++
++	/* Triggering the buf (out of bound read) */
++	ret = read(memfd, p_read_buf, sizeof(p_read_buf));
++	igt_assert(ret == -1 && errno ==  EIO);
++	munmap(ptr, 4096);
++	close(memfd);
++}
++
+ static void test_ptrace(int i915)
+ {
+ 	const unsigned int SZ = 3 * 4096;
+@@ -692,6 +726,9 @@ igt_main
+ 	igt_subtest_f("pf-nonblock")
+ 		pf_nonblock(i915);
+ 
++	igt_subtest("oob-read")
++		test_oob_read(i915);
++
+ 	igt_subtest_with_dynamic("ptrace")
+ 		test_ptrace(i915);
+ 
+-- 
+2.25.1
