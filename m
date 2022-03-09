@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A48AB10E2E2
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 09:54:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECE3610E1FD
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 09:54:56 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
  arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com
-Date: Wed,  9 Mar 2022 15:17:17 +0530
-Message-Id: <20220309094719.144716-1-priyanka.dandamudi@intel.com>
+Date: Wed,  9 Mar 2022 15:17:18 +0530
+Message-Id: <20220309094719.144716-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20220309094719.144716-1-priyanka.dandamudi@intel.com>
+References: <20220309094719.144716-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] HAX add description to gem_ctx_exec
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_ctx_exec: Added test
+ description for testcase
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,15 +26,67 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Add test description to gem_ctx_exec.
+Added test description to all the available subtests.
 
-Priyanka Dandamudi (2):
-  i915/gem_ctx_exec: Added test description for testcase
-  HAX: don't do full run
+v2: Added description for newly added test case.
 
- tests/i915/gem_ctx_exec.c             |  12 ++
- tests/intel-ci/fast-feedback.testlist | 179 +-------------------------
- 2 files changed, 13 insertions(+), 178 deletions(-)
+v3: Modified test descriptions.
 
+Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/i915/gem_ctx_exec.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+index a1270a88..1f3d1a44 100644
+--- a/tests/i915/gem_ctx_exec.c
++++ b/tests/i915/gem_ctx_exec.c
+@@ -465,6 +465,7 @@ igt_main
+ 		gem_write(fd, handle, 0, batch, sizeof(batch));
+ 	}
+ 
++	igt_describe("Check the basic context batch buffer execution.");
+ 	igt_subtest("basic") {
+ 		ctx_id = gem_context_create(fd);
+ 		igt_assert(exec(fd, handle, 0, ctx_id) == 0);
+@@ -480,18 +481,27 @@ igt_main
+ 		gem_sync(fd, handle);
+ 	}
+ 
++	igt_describe("Verify that execbuf with invalid context fails.");
+ 	igt_subtest("basic-invalid-context")
+ 		invalid_context(fd, handle);
+ 
++	igt_describe("Check maximum number of buffers it can"
++		     " evict for a context.");
+ 	igt_subtest("eviction")
+ 		big_exec(fd, handle, 0);
+ 
++	igt_describe("Check the status of context after a hang"
++		     " by setting and unsetting the RECOVERABLE.");
+ 	igt_subtest("basic-norecovery")
+ 		norecovery(fd);
+ 
++	igt_describe("Verify that contexts are automatically shotdown"
++		     " on close, if hangchecking is disabled.");
+ 	igt_subtest("basic-nohangcheck")
+ 		nohangcheck_hostile(fd);
+ 
++	igt_describe("Race the execution and interrupt handlers along a context,"
++	             " while closing it at a random time.");
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			intel_allocator_multiprocess_start();
+@@ -505,6 +515,8 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Check if the kernel doesn't leak the vma"
++		     " pin_count for the last context on reset.");
+ 	igt_subtest("reset-pin-leak") {
+ 		int i;
+ 		uint64_t ahnd;
 -- 
 2.25.1
