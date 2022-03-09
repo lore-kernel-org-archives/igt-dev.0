@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D2ED10E179
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 06:46:38 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Sep 2021 02:03:57 +0530
-Message-Id: <20210908203358.79947-1-mohammed.thasleem@intel.com>
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
+ [IPv6:2a00:1450:4864:20::536])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AAACE10E3FC
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 07:42:57 +0000 (UTC)
+Received: by mail-ed1-x536.google.com with SMTP id c20so1698628edr.8
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Mar 2022 23:42:57 -0800 (PST)
+From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Date: Wed,  9 Mar 2022 08:42:32 +0100
+Message-Id: <20220309074242.65066-2-tomeu.vizoso@collabora.com>
+In-Reply-To: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
+References: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/i915_pm_lpsp : Close fd
- after igt_display_fini execution.
+Subject: [igt-dev] [PATCH 01/11] ci: Move containers from Buster to Bullseye
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,32 +21,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt_display_reset() added in igt_display_fini which required fd to procees
-further. Closing fd before igt_display_fini leads to bad fd failure,
-So changing the order of close fd after igt_display_fini to avoid bad fd
-failure.
+Except for MIPS, which isn't support since Bullseye.
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Currently, we hit this error:
+
+STEP 2: RUN apt-get update
+Get:1 http://security.debian.org/debian-security buster/updates InRelease [65.4 kB]
+Get:2 http://deb.debian.org/debian buster InRelease [122 kB]
+Get:3 http://deb.debian.org/debian buster-updates InRelease [51.9 kB]
+Reading package lists...
+E: Repository 'http://security.debian.org/debian-security buster/updates InRelease' changed its 'Suite' value from 'stable' to 'oldstable'
+E: Repository 'http://deb.debian.org/debian buster InRelease' changed its 'Suite' value from 'stable' to 'oldstable'
+E: Repository 'http://deb.debian.org/debian buster-updates InRelease' changed its 'Suite' value from 'stable-updates' to 'oldstable-updates'
+Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 100
+
+Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 ---
- tests/i915/i915_pm_lpsp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Dockerfile.build-debian         | 2 +-
+ Dockerfile.build-debian-arm64   | 4 ++--
+ Dockerfile.build-debian-armhf   | 2 +-
+ Dockerfile.build-debian-minimal | 2 +-
+ Dockerfile.build-debian-mips    | 4 +++-
+ 5 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index b3b1561e..3ad8b260 100644
---- a/tests/i915/i915_pm_lpsp.c
-+++ b/tests/i915/i915_pm_lpsp.c
-@@ -210,7 +210,7 @@ igt_main
+diff --git a/Dockerfile.build-debian b/Dockerfile.build-debian
+index 454f4bce5e77..52d7c42d1325 100644
+--- a/Dockerfile.build-debian
++++ b/Dockerfile.build-debian
+@@ -15,7 +15,7 @@ RUN apt-get install -y \
+ 			libxmlrpc-core-c3-dev \
+ 			libjson-c-dev \
+ 			libcurl4-openssl-dev \
+-			python-docutils \
++			python3-docutils \
+ 			valgrind \
+ 			peg \
+ 			libdrm-intel1
+diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
+index 573c7096feb8..cf0625ac725a 100644
+--- a/Dockerfile.build-debian-arm64
++++ b/Dockerfile.build-debian-arm64
+@@ -1,4 +1,4 @@
+-FROM debian:buster
++FROM debian:bullseye
  
- 	igt_fixture {
- 		free(data.pwr_dmn_info);
--		close(data.drm_fd);
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
- 	}
- }
+ RUN apt-get update
+ RUN apt-get install -y \
+@@ -6,7 +6,7 @@ RUN apt-get install -y \
+ 			bison \
+ 			pkg-config \
+ 			x11proto-dri2-dev \
+-			python-docutils \
++			python3-docutils \
+ 			valgrind \
+ 			peg
+ 
+diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
+index 737ca3645f1b..dd43fcd6f18e 100644
+--- a/Dockerfile.build-debian-armhf
++++ b/Dockerfile.build-debian-armhf
+@@ -6,7 +6,7 @@ RUN apt-get install -y \
+ 			bison \
+ 			pkg-config \
+ 			x11proto-dri2-dev \
+-			python-docutils \
++			python3-docutils \
+ 			valgrind \
+ 			peg
+ 
+diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
+index 64edf4b4313e..3850fb43e5cc 100644
+--- a/Dockerfile.build-debian-minimal
++++ b/Dockerfile.build-debian-minimal
+@@ -1,4 +1,4 @@
+-FROM debian:buster
++FROM debian:bullseye
+ 
+ RUN apt-get update
+ RUN apt-get install -y \
+diff --git a/Dockerfile.build-debian-mips b/Dockerfile.build-debian-mips
+index 9b7c0a5b4703..e9cdaab9d640 100644
+--- a/Dockerfile.build-debian-mips
++++ b/Dockerfile.build-debian-mips
+@@ -1,3 +1,5 @@
++# we are stuck on buster for mips:
++# https://lists.debian.org/debian-mips/2019/07/msg00010.html
+ FROM debian:buster
+ 
+ RUN apt-get update
+@@ -6,7 +8,7 @@ RUN apt-get install -y \
+ 			bison \
+ 			pkg-config \
+ 			x11proto-dri2-dev \
+-			python-docutils \
++			python3-docutils \
+ 			valgrind \
+ 			peg
+ 
 -- 
-2.25.1
+2.31.1
