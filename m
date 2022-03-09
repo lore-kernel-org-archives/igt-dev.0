@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
- [IPv6:2a00:1450:4864:20::534])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4F3410E3F5
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 07:42:56 +0000 (UTC)
-Received: by mail-ed1-x534.google.com with SMTP id y12so1693500edt.9
- for <igt-dev@lists.freedesktop.org>; Tue, 08 Mar 2022 23:42:56 -0800 (PST)
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com
+ [IPv6:2a00:1450:4864:20::532])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35D8510E3F5
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 07:43:00 +0000 (UTC)
+Received: by mail-ed1-x532.google.com with SMTP id g3so1741718edu.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 08 Mar 2022 23:43:00 -0800 (PST)
 From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Wed,  9 Mar 2022 08:42:31 +0100
-Message-Id: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
+Date: Wed,  9 Mar 2022 08:42:34 +0100
+Message-Id: <20220309074242.65066-4-tomeu.vizoso@collabora.com>
+In-Reply-To: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
+References: <20220309074242.65066-1-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 00/11] Run CI on Qualcomm devices
+Subject: [igt-dev] [PATCH 03/11] ci: Add dependencies between jobs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,69 +26,178 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Run a bunch of KMS and GPU tests on Qualcomm devices. The pipeline will
-fail if there is any regression.
+So a stage doesn't need to completely finish before jobs from the next
+stages can start. This allows for pipelines to finish much sooner.
 
-With these changes, it should be fairly trivial to add testing on other
-KMS and GPU drivers.
+Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+---
+ .gitlab-ci.yml | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-Regards,
-
-Tomeu
-
-Tomeu Vizoso (11):
-  ci: Move containers from Buster to Bullseye
-  ci: Move files to ci/ subdir
-  ci: Add dependencies between jobs
-  ci: Install ci-templates in Debian container
-  ci: Install ci-templates in arm64 container
-  ci: Install lavacli in Debian container
-  ci: Add wget to Debian container
-  ci: Setup JWT token to use with MinIO
-  ci: Upload build tarball to MinIO
-  ci: Add files from Mesa required to submit jobs to LAVA
-  ci: Add job for testing changes to tests in Qualcomm devices
-
- .gitlab-ci.yml                                | 129 +++++-
- Dockerfile => ci/Dockerfile                   |   0
- .../Dockerfile.build-debian                   |  10 +-
- .../Dockerfile.build-debian-arm64             |   8 +-
- .../Dockerfile.build-debian-armhf             |   2 +-
- .../Dockerfile.build-debian-minimal           |   2 +-
- .../Dockerfile.build-debian-mips              |   4 +-
- .../Dockerfile.build-fedora                   |   0
- ci/ci-common/capture-devcoredump.sh           |  14 +
- ci/ci-common/generate-env.sh                  | 112 ++++++
- ci/ci-common/init-stage1.sh                   |  22 +
- ci/ci-common/init-stage2.sh                   |  78 ++++
- ci/lava/lava-submit.sh                        |  38 ++
- ci/lava/lava_job_submitter.py                 | 380 ++++++++++++++++++
- .../meson-cross-arm64.txt                     |   0
- .../meson-cross-armhf.txt                     |   0
- .../meson-cross-mips.txt                      |   0
- ci/msm_results.txt                            |  97 +++++
- ci/msm_tests.txt                              |  14 +
- ci/run_tests.sh                               |  87 ++++
- 20 files changed, 980 insertions(+), 17 deletions(-)
- rename Dockerfile => ci/Dockerfile (100%)
- rename Dockerfile.build-debian => ci/Dockerfile.build-debian (60%)
- rename Dockerfile.build-debian-arm64 => ci/Dockerfile.build-debian-arm64 (79%)
- rename Dockerfile.build-debian-armhf => ci/Dockerfile.build-debian-armhf (97%)
- rename Dockerfile.build-debian-minimal => ci/Dockerfile.build-debian-minimal (94%)
- rename Dockerfile.build-debian-mips => ci/Dockerfile.build-debian-mips (86%)
- rename Dockerfile.build-fedora => ci/Dockerfile.build-fedora (100%)
- create mode 100755 ci/ci-common/capture-devcoredump.sh
- create mode 100755 ci/ci-common/generate-env.sh
- create mode 100755 ci/ci-common/init-stage1.sh
- create mode 100755 ci/ci-common/init-stage2.sh
- create mode 100755 ci/lava/lava-submit.sh
- create mode 100755 ci/lava/lava_job_submitter.py
- rename meson-cross-arm64.txt => ci/meson-cross-arm64.txt (100%)
- rename meson-cross-armhf.txt => ci/meson-cross-armhf.txt (100%)
- rename meson-cross-mips.txt => ci/meson-cross-mips.txt (100%)
- create mode 100644 ci/msm_results.txt
- create mode 100644 ci/msm_tests.txt
- create mode 100755 ci/run_tests.sh
-
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 9d80c02fadcf..7219cd0b3464 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -71,6 +71,8 @@ build:tests-fedora:
+     paths:
+       - build
+       - installdir
++  needs:
++    - build-containers:build-fedora
+ 
+ build:tests-fedora-no-libunwind:
+   stage: build
+@@ -78,6 +80,8 @@ build:tests-fedora-no-libunwind:
+     - dnf remove -y libunwind-devel
+     - meson -Dlibunwind=disabled build
+     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
++  needs:
++    - build-containers:build-fedora
+ 
+ # documentation building is different with meson<0.47
+ build:tests-fedora-oldest-meson:
+@@ -88,6 +92,8 @@ build:tests-fedora-oldest-meson:
+     - meson $MESON_OPTIONS build
+     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
+     - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
++  needs:
++    - build-containers:build-fedora
+ 
+ # ensure igt_nouveau stubs build when nouveau support for libdrm is disabled
+ build:tests-fedora-no-libdrm-nouveau:
+@@ -95,6 +101,8 @@ build:tests-fedora-no-libdrm-nouveau:
+   script:
+     - meson -Dlibdrm_drivers= build
+     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
++  needs:
++    - build-containers:build-fedora
+ 
+ build:tests-fedora-clang:
+   stage: build
+@@ -106,6 +114,8 @@ build:tests-fedora-clang:
+   artifacts:
+     paths:
+       - build
++  needs:
++    - build-containers:build-fedora
+ 
+ build:tests-debian-meson:
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian:commit-$CI_COMMIT_SHA
+@@ -117,6 +127,8 @@ build:tests-debian-meson:
+   artifacts:
+     paths:
+       - meson-test-list.txt
++  needs:
++    - build-containers:build-debian
+ 
+ build:tests-debian-minimal:
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-minimal:commit-$CI_COMMIT_SHA
+@@ -127,6 +139,8 @@ build:tests-debian-minimal:
+   artifacts:
+     paths:
+       - build
++  needs:
++    - build-containers:build-debian
+ 
+ build:tests-debian-meson-armhf:
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-armhf:commit-$CI_COMMIT_SHA
+@@ -138,6 +152,8 @@ build:tests-debian-meson-armhf:
+   artifacts:
+     paths:
+       - build
++  needs:
++    - build-containers:build-debian-armhf
+ 
+ build:tests-debian-meson-arm64:
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-arm64:commit-$CI_COMMIT_SHA
+@@ -149,6 +165,8 @@ build:tests-debian-meson-arm64:
+   artifacts:
+     paths:
+       - build
++  needs:
++    - build-containers:build-debian-arm64
+ 
+ build:tests-debian-meson-mips:
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-mips:commit-$CI_COMMIT_SHA
+@@ -160,6 +178,8 @@ build:tests-debian-meson-mips:
+   artifacts:
+     paths:
+       - build
++  needs:
++    - build-containers:build-debian-mips
+ 
+ #################### TEST ##########################
+ 
+@@ -171,6 +191,8 @@ test:ninja-test:
+     - build:tests-fedora
+   stage: test
+   script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
++  needs:
++    - build:tests-fedora
+ 
+ test:ninja-test-clang:
+   tags:
+@@ -182,6 +204,8 @@ test:ninja-test-clang:
+     CC: clang
+   stage: test
+   script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
++  needs:
++    - build:tests-fedora-clang
+ 
+ test:ninja-test-minimal:
+   tags:
+@@ -192,6 +216,8 @@ test:ninja-test-minimal:
+     - build:tests-debian-minimal
+   stage: test
+   script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
++  needs:
++    - build:tests-debian-minimal
+ 
+ test:ninja-test-arm64:
+   tags:
+@@ -209,6 +235,8 @@ test:ninja-test-arm64:
+     paths:
+       - build
+     when: on_failure
++  needs:
++    - build:tests-debian-meson-arm64
+ 
+ test:ninja-test-armhf:
+   tags:
+@@ -226,6 +254,8 @@ test:ninja-test-armhf:
+     paths:
+       - build
+     when: on_failure
++  needs:
++    - build:tests-debian-meson-armhf
+ 
+ test:ninja-test-mips:
+   tags:
+@@ -243,6 +273,8 @@ test:ninja-test-mips:
+     paths:
+       - build
+     when: on_failure
++  needs:
++    - build:tests-debian-meson-mips
+ 
+ test:list-undocumented-tests:
+   dependencies:
+@@ -252,12 +284,16 @@ test:list-undocumented-tests:
+   artifacts:
+     paths:
+       - undocumented_tests.txt
++  needs:
++    - build:tests-fedora
+ 
+ test:verify-blacklists:
+   dependencies:
+     - build:tests-fedora
+   stage: test
+   script: for bl in tests/intel-ci/blacklist{,-pre-merge}.txt; do scripts/verify-blacklist.sh build/runner/igt_runner build/tests "$bl" || exit 1; done
++  needs:
++    - build:tests-fedora
+ 
+ ################### DEPLOY #########################
+ 
 -- 
 2.31.1
