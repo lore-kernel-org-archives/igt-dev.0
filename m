@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4280610E41E
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 16:49:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 358EC10E41E
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 16:50:08 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  9 Mar 2022 22:14:49 +0530
-Message-Id: <20220309164452.8240-3-jeevan.b@intel.com>
+Date: Wed,  9 Mar 2022 22:14:51 +0530
+Message-Id: <20220309164452.8240-5-jeevan.b@intel.com>
 In-Reply-To: <20220309164452.8240-1-jeevan.b@intel.com>
 References: <20220309164452.8240-1-jeevan.b@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 2/5] igt/tests: Add support for Tile4(TileF)
- format to tests/kms_addfb_basic
+Subject: [igt-dev] [PATCH i-g-t 4/5] tests/kms_draw_crc: Use 4 tiling when
+ filling framebuffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,81 +22,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding subtest to test new tiling format
+From: Mika Kahola <mika.kahola@intel.com>
 
+For platforms with 4 tiling, let's use 4 tiling instead of Y tiling.
+
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_addfb_basic.c | 44 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ tests/i915/kms_draw_crc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index b7b3b0f2..2fc99eb4 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -155,7 +155,6 @@ static void invalid_tests(int fd)
- 		uint64_t size;
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index 33b7bdf4..33fefed4 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -226,6 +226,7 @@ static void fill_fb_subtest(void)
+ 	int rc;
+ 	struct igt_fb fb;
+ 	igt_crc_t base_crc, crc;
++	bool has_4tile = intel_get_device_info(intel_get_drm_devid(drm_fd))->has_4tile;
  
- 		igt_require_intel(fd);
--		igt_require(gem_has_lmem(fd));
- 		igt_calc_fb_size(fd, f.width, f.height,
- 				DRM_FORMAT_XRGB8888, 0, &size, &stride);
- 		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
-@@ -676,6 +675,47 @@ static void addfb25_ytile(int fd)
+ 	igt_create_fb(drm_fd, ms.mode->hdisplay, ms.mode->vdisplay,
+ 		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
+@@ -248,7 +249,9 @@ static void fill_fb_subtest(void)
+ 	igt_assert_crc_equal(&crc, &base_crc);
+ 
+ 	if (intel_display_ver(intel_get_drm_devid(drm_fd)) >= 9) {
+-		get_fill_crc(I915_FORMAT_MOD_Y_TILED, &crc);
++		get_fill_crc(has_4tile ?
++			     I915_FORMAT_MOD_4_TILED : I915_FORMAT_MOD_Y_TILED,
++			     &crc);
+ 		igt_assert_crc_equal(&crc, &base_crc);
  	}
- }
  
-+static void addfb25_4tile(int fd)
-+{
-+	struct drm_mode_fb_cmd2 f = {};
-+	igt_display_t display;
-+
-+	igt_fixture {
-+		igt_display_require(&display, fd);
-+
-+		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
-+				DRM_FORMAT_XRGB8888, 0, 0, NULL, NULL, NULL);
-+		igt_assert(gem_bo);
-+
-+		memset(&f, 0, sizeof(f));
-+
-+		f.width = 1024;
-+		f.height = 1024;
-+		f.pixel_format = DRM_FORMAT_XRGB8888;
-+		f.pitches[0] = 1024*4;
-+		f.flags = DRM_MODE_FB_MODIFIERS;
-+		f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
-+
-+		f.handles[0] = gem_bo;
-+	}
-+
-+	igt_subtest("addfb25-4-tiled") {
-+		igt_require_fb_modifiers(fd);
-+
-+		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
-+		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
-+			   addfb_expected_ret(&display, &f));
-+		if (!addfb_expected_ret(&display, &f))
-+			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+		f.fb_id = 0;
-+	}
-+
-+	igt_fixture {
-+		gem_close(fd, gem_bo);
-+		igt_display_fini(&display);
-+	}
-+}
-+
- static void prop_tests(int fd)
- {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -826,6 +866,8 @@ igt_main
- 
- 	addfb25_ytile(fd);
- 
-+	addfb25_4tile(fd);
-+
- 	tiling_tests(fd);
- 
- 	prop_tests(fd);
 -- 
 2.17.1
