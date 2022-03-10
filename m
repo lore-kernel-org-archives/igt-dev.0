@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com
+ [IPv6:2a00:1450:4864:20::632])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82B3F10F52D
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 07:38:24 +0000 (UTC)
+Received: by mail-ej1-x632.google.com with SMTP id gb39so10151006ejc.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Mar 2022 23:38:24 -0800 (PST)
+From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Date: Thu, 10 Mar 2022 08:37:48 +0100
+Message-Id: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Thu, 10 Mar 2022 07:34:57 -0000
-Message-ID: <164689769743.17007.15107078729059666466@emeril.freedesktop.org>
-References: <20220310071008.10811-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20220310071008.10811-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBJR1Qg?=
- =?utf-8?q?cleanup_=28rev5=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 00/12] Run CI on Qualcomm devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +19,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>, Daniel Stone <daniels@collabora.com>,
+ Tomeu Vizoso <tomeu.vizoso@collabora.com>, Eric Anholt <eric@anholt.net>,
+ Sean Paul <seanpaul@chromium.org>, Mark Yacoub <markyacoub@google.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Run a bunch of KMS and GPU tests on Qualcomm devices. The pipeline will
+fail if there is any regression.
 
-Series: IGT cleanup (rev5)
-URL   : https://patchwork.freedesktop.org/series/100801/
-State : failure
+With these changes, it should be fairly trivial to add testing on other
+KMS and GPU drivers.
 
-== Summary ==
+v2: - Run container jobs only in Packet runners
+    - Update expectations after rebasing
 
-IGT patchset build failed on latest successful build
-82306f1903c0fee8371f43a156d8b63163ca61c1 lib/intel_mmio: Fix mmapped resources not unmapped on fini
+Regards,
 
-292/324 testcase check amdgpu/amd_basic               OK               0.18s
-293/324 testcase check amdgpu/amd_bypass              OK               0.17s
-294/324 testcase check amdgpu/amd_color               OK               0.17s
-295/324 testcase check amdgpu/amd_cs_nop              OK               0.16s
-296/324 testcase check amdgpu/amd_hotplug             OK               0.16s
-297/324 testcase check amdgpu/amd_info                OK               0.16s
-298/324 testcase check amdgpu/amd_prime               OK               0.15s
-299/324 testcase check amdgpu/amd_max_bpc             OK               0.15s
-300/324 testcase check amdgpu/amd_module_load         OK               0.15s
-301/324 testcase check amdgpu/amd_mem_leak            OK               0.14s
-302/324 testcase check amdgpu/amd_link_settings       OK               0.13s
-303/324 testcase check amdgpu/amd_vrr_range           OK               0.12s
-304/324 testcase check amdgpu/amd_mode_switch         OK               0.11s
-305/324 testcase check amdgpu/amd_dp_dsc              OK               0.11s
-306/324 testcase check amdgpu/amd_psr                 OK               0.11s
-307/324 testcase check amdgpu/amd_plane               OK               0.10s
-308/324 testcase check amdgpu/amd_ilr                 OK               0.10s
-309/324 runner_json                                   OK               0.09s
-310/324 assembler test/mov                            OK               0.08s
-311/324 assembler test/frc                            OK               0.08s
-312/324 assembler test/regtype                        OK               0.08s
-313/324 assembler test/rndd                           OK               0.07s
-314/324 assembler test/rndu                           OK               0.07s
-315/324 assembler test/rnde                           OK               0.06s
-316/324 assembler test/rnde-intsrc                    OK               0.06s
-317/324 assembler test/rndz                           OK               0.05s
-318/324 assembler test/lzd                            OK               0.05s
-319/324 assembler test/not                            OK               0.04s
-320/324 assembler test/immediate                      OK               0.03s
-321/324 lib igt_nesting                               OK               2.27s
-322/324 lib igt_fork                                  OK               2.79s
-323/324 runner                                        OK               4.64s
-324/324 testcase check gem_concurrent_all             OK               5.44s
+Tomeu
 
-Summary of Failures:
+Tomeu Vizoso (12):
+  ci: Run container jobs only in packet.net runners
+  ci: Move containers from Buster to Bullseye
+  ci: Move files to ci/ subdir
+  ci: Add dependencies between jobs
+  ci: Install ci-templates in Debian container
+  ci: Install ci-templates in arm64 container
+  ci: Install lavacli in Debian container
+  ci: Add wget to Debian container
+  ci: Setup JWT token to use with MinIO
+  ci: Upload build tarball to MinIO
+  ci: Add files from Mesa required to submit jobs to LAVA
+  ci: Add job for testing changes to tests in Qualcomm devices
 
- 35/324 testcase check kms_concurrent                 FAIL             0.24s   exit status 1
+ .gitlab-ci.yml                                | 131 +++++-
+ Dockerfile => ci/Dockerfile                   |   0
+ .../Dockerfile.build-debian                   |  10 +-
+ .../Dockerfile.build-debian-arm64             |   8 +-
+ .../Dockerfile.build-debian-armhf             |   2 +-
+ .../Dockerfile.build-debian-minimal           |   2 +-
+ .../Dockerfile.build-debian-mips              |   4 +-
+ .../Dockerfile.build-fedora                   |   0
+ ci/ci-common/capture-devcoredump.sh           |  14 +
+ ci/ci-common/generate-env.sh                  | 112 ++++++
+ ci/ci-common/init-stage1.sh                   |  22 +
+ ci/ci-common/init-stage2.sh                   |  78 ++++
+ ci/lava/lava-submit.sh                        |  38 ++
+ ci/lava/lava_job_submitter.py                 | 380 ++++++++++++++++++
+ .../meson-cross-arm64.txt                     |   0
+ .../meson-cross-armhf.txt                     |   0
+ .../meson-cross-mips.txt                      |   0
+ ci/msm_results.txt                            |  97 +++++
+ ci/msm_tests.txt                              |  14 +
+ ci/run_tests.sh                               |  87 ++++
+ 20 files changed, 986 insertions(+), 13 deletions(-)
+ rename Dockerfile => ci/Dockerfile (100%)
+ rename Dockerfile.build-debian => ci/Dockerfile.build-debian (60%)
+ rename Dockerfile.build-debian-arm64 => ci/Dockerfile.build-debian-arm64 (79%)
+ rename Dockerfile.build-debian-armhf => ci/Dockerfile.build-debian-armhf (97%)
+ rename Dockerfile.build-debian-minimal => ci/Dockerfile.build-debian-minimal (94%)
+ rename Dockerfile.build-debian-mips => ci/Dockerfile.build-debian-mips (86%)
+ rename Dockerfile.build-fedora => ci/Dockerfile.build-fedora (100%)
+ create mode 100755 ci/ci-common/capture-devcoredump.sh
+ create mode 100755 ci/ci-common/generate-env.sh
+ create mode 100755 ci/ci-common/init-stage1.sh
+ create mode 100755 ci/ci-common/init-stage2.sh
+ create mode 100755 ci/lava/lava-submit.sh
+ create mode 100755 ci/lava/lava_job_submitter.py
+ rename meson-cross-arm64.txt => ci/meson-cross-arm64.txt (100%)
+ rename meson-cross-armhf.txt => ci/meson-cross-armhf.txt (100%)
+ rename meson-cross-mips.txt => ci/meson-cross-mips.txt (100%)
+ create mode 100644 ci/msm_results.txt
+ create mode 100644 ci/msm_tests.txt
+ create mode 100755 ci/run_tests.sh
 
-
-Ok:                 320 
-Expected Fail:      3   
-Fail:               1   
-Unexpected Pass:    0   
-Skipped:            0   
-Timeout:            0   
-
-Full log written to /home/cidrm/igt-gpu-tools/build/meson-logs/testlog.txt
-FAILED: meson-test 
-/usr/bin/meson test --no-rebuild --print-errorlogs
-ninja: build stopped: subcommand failed.
-
+-- 
+2.31.1
