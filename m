@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F81210F253
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 07:15:43 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F6DF10F14C
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 07:08:49 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Mar 2022 08:15:23 +0100
-Message-Id: <20220310071529.61930-1-zbigniew.kempczynski@intel.com>
+Date: Thu, 10 Mar 2022 12:40:08 +0530
+Message-Id: <20220310071008.10811-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/6] Add i915 blt library + gem_ccs test
+Subject: [igt-dev] [PATCH i-g-t v5] IGT cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,56 +16,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enable DG2+ testing of flatccs.
+Before starting the next subtest, clean up the states to default
+values, those are assumed by other tests.
 
-Idea of library comes from Ayaz, just implementation differs due
-to some reasons discovered during different tiling testing.
+v2: And also before running the subtest we need to sanitize the system state
+to default, since we can't trust the state of previous subtest, used
+igt_display_reset() to sanitize the state. (Bhanuprakash Modem)
 
-v3: rebased on top of local DG2 pciids
-v4: fix tile64 - set mip tail
-v5: use gem-pool in ctrl-surf-copy
-    use uc mocs (Ayaz)
-    address review comments (Kamil)
+v3: Added dynamic subtests (Karthik)
 
-Cc: Apoorva Singh <apoorva1.singh@intel.com>
-Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+Below tests are modified:
+	tests/kms_concurrent.c
+	tests/kms_sequence.c
 
-Apoorva Singh (1):
-  lib/i915: Introduce library intel_mocs
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_concurrent.c | 43 +++++++++++++++++++++---------------------
+ tests/kms_sequence.c   | 11 +++++++----
+ 2 files changed, 28 insertions(+), 26 deletions(-)
 
-Chris Wilson (1):
-  i915/gem_engine_topology: Add helpers for checking driver capabilities
-
-Zbigniew Kempczyński (4):
-  lib/i915/gem_create: Introduce gem-pool bo cache
-  tests/api_intel_allocator: Verify gem-pool is working as expected
-  lib/i915_blt: Add library for blitter
-  tests/gem_ccs: Verify uncompressed and compressed blits
-
- .../igt-gpu-tools/igt-gpu-tools-docs.xml      |    2 +
- lib/i915/gem_create.c                         |  271 +++++
- lib/i915/gem_create.h                         |    4 +
- lib/i915/gem_engine_topology.c                |   39 +
- lib/i915/gem_engine_topology.h                |    5 +
- lib/i915/i915_blt.c                           | 1082 +++++++++++++++++
- lib/i915/i915_blt.h                           |  196 +++
- lib/i915/intel_mocs.c                         |   56 +
- lib/i915/intel_mocs.h                         |   25 +
- lib/igt_core.c                                |    2 +
- lib/meson.build                               |    2 +
- tests/i915/api_intel_allocator.c              |   58 +
- tests/i915/gem_ccs.c                          |  487 ++++++++
- tests/meson.build                             |    1 +
- 14 files changed, 2230 insertions(+)
- create mode 100644 lib/i915/i915_blt.c
- create mode 100644 lib/i915/i915_blt.h
- create mode 100644 lib/i915/intel_mocs.c
- create mode 100644 lib/i915/intel_mocs.h
- create mode 100644 tests/i915/gem_ccs.c
-
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 1b8f4b04..5efe422b 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
+ 	}
+ 
+ 	/* reset the constraint on the pipe */
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+ 	free(data->plane);
+ 	data->plane = NULL;
+@@ -278,35 +279,30 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+ static void
+ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+-	int connected_outs;
+-	int n_planes = data->display.pipes[pipe].n_planes;
++	int n_planes;
++
++	igt_display_reset(&data->display);
++	n_planes = data->display.pipes[pipe].n_planes;
+ 
+ 	if (!opt.user_seed)
+ 		opt.seed = time(NULL);
+ 
+-	connected_outs = 0;
+-	for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
+-			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+-
+-		srand(opt.seed);
++	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
++		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+ 
+-		test_init(data, pipe, n_planes, output);
+-
+-		igt_fork(child, 1) {
+-			test_plane_position_with_output(data, pipe, n_planes, output);
+-		}
++	srand(opt.seed);
+ 
+-		test_resolution_with_output(data, pipe, n_planes, output);
++	test_init(data, pipe, n_planes, output);
+ 
+-		igt_waitchildren();
++	igt_fork(child, 1) {
++		test_plane_position_with_output(data, pipe, n_planes, output);
++	}
+ 
+-		test_fini(data, pipe, n_planes, output);
++	test_resolution_with_output(data, pipe, n_planes, output);
+ 
+-		connected_outs++;
+-	}
++	igt_waitchildren();
+ 
+-	igt_skip_on(connected_outs == 0);
++	test_fini(data, pipe, n_planes, output);
+ }
+ 
+ static void
+@@ -316,6 +312,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 
+ 	igt_fixture {
+ 		int valid_tests = 0;
++		igt_display_reset(&data->display);
+ 
+ 		igt_require_pipe(&data->display, pipe);
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+@@ -328,9 +325,11 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 
+ 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+ 		     "resolution.");
+-	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe))
++	igt_subtest_with_dynamic("mode-setting-concurrently-with-multiple-planes-and-screen-resolution") {
+ 		for_each_valid_output_on_pipe(&data->display, pipe, output)
+-			run_test(data, pipe, output);
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_test(data, pipe, output);
++	}
+ }
+ 
+ static int opt_handler(int option, int option_index, void *input)
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index 9c287480..569ea1d9 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -74,9 +74,12 @@ static double elapsed(const struct timespec *start,
+ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+ {
+ 	drmModeModeInfo *mode;
+-	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+-
++	igt_display_t *display;
++	
++	igt_display_reset(&data->display);
++	display = &data->display;
++	
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+@@ -109,8 +112,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
+-	igt_display_commit(display);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ }
+ 
+ static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
 -- 
-2.32.0
+2.26.2
