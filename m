@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2068.outbound.protection.outlook.com [40.107.93.68])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E82F10EA32
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 22:31:12 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 10 Mar 2022 17:30:46 -0500
-Message-ID: <20220310223046.578910-5-dingchen.zhang@amd.com>
-In-Reply-To: <20220310223046.578910-1-dingchen.zhang@amd.com>
-References: <20220310223046.578910-1-dingchen.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============4460151995266241601=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 4/4] tests/amdgpu/amd_psr: add PSR-SU MPO subtest
- case
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "David Zhang" <dingchen.zhang@amd.com>
+Date: Thu, 10 Mar 2022 23:24:47 -0000
+Message-ID: <164695468785.17008.14314128578490665097@emeril.freedesktop.org>
+References: <20220310223046.578910-1-dingchen.zhang@amd.com>
+In-Reply-To: <20220310223046.578910-1-dingchen.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUFNSLVNV?=
+ =?utf-8?q?_MPO_case_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,282 +17,300 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why]
-We need a test case to imitate the multiplane overlay (MPO) video
-playback use case and check PSR-SU enablement during test run.
+--===============4460151995266241601==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[how]
-The test run only works for PSR-SU capable sink device and skip for
-any non-eDP or non-PSR-SU connector or kernel driver not supporting
-PSR-SU feature.
+== Series Details ==
 
-To emulate the video playback and MPO scenario, we use overlay plane
-w/ size of addressable and primary plane w/ size of quater of overlay
-acting as video playback region.
+Series: PSR-SU MPO case test
+URL   : https://patchwork.freedesktop.org/series/101250/
+State : success
 
-Create couple of framebuffers w/ size of primary plane and with
-the pattern of vertical color strip on different position on the
-FB. During test run, we flip the primary framebuffer and expect the
-visual effect of moving strip within the region of primary plane
-acting as video playback. The primary plane during test run is not
-moving position or resizing.
+== Summary ==
 
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Jay Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
+CI Bug Log - changes from IGT_6375 -> IGTPW_6775
+====================================================
 
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- lib/igt_amd.h          |  25 ++++++++
- tests/amdgpu/amd_psr.c | 137 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 162 insertions(+)
+Summary
+-------
 
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index f87c1991..e4e12ce5 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -90,6 +90,31 @@ enum dc_link_training_type {
- 	LINK_TRAINING_NO_PATTERN
- };
- 
-+/*
-+ * enumeration of PSR STATE below should be aligned to the upstreamed
-+ * amdgpu kernel driver 'enum dc_psr_state' in dc_type.h
-+ */
-+enum amdgpu_psr_state {
-+	PSR_STATE0 = 0x0,
-+	PSR_STATE1,
-+	PSR_STATE1a,
-+	PSR_STATE2,
-+	PSR_STATE2a,
-+	PSR_STATE2b,
-+	PSR_STATE3,
-+	PSR_STATE3Init,
-+	PSR_STATE4,
-+	PSR_STATE4a,
-+	PSR_STATE4b,
-+	PSR_STATE4c,
-+	PSR_STATE4d,
-+	PSR_STATE5,
-+	PSR_STATE5a,
-+	PSR_STATE5b,
-+	PSR_STATE5c,
-+	PSR_STATE_INVALID = 0xFF
-+};
-+
- uint32_t igt_amd_create_bo(int fd, uint64_t size);
- void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
- unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 88e824c3..0a895aa7 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -32,6 +32,7 @@
- /* hardware requirements:
-  * 1. eDP panel that supports PSR (multiple panel can be connected at the same time)
-  * 2. Optional DP display for testing a regression condition (setting crtc to null)
-+ * 3. eDP panel that supports PSR-SU
-  */
- IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP displays");
- 
-@@ -45,16 +46,29 @@ typedef struct data {
-         igt_display_t display;
-         igt_plane_t *primary;
-         igt_plane_t *cursor;
-+	igt_plane_t *overlay;
-         igt_output_t *output;
-         igt_pipe_t *pipe;
-         igt_pipe_crc_t *pipe_crc;
-         drmModeModeInfo *mode;
-         enum pipe pipe_id;
-         int fd;
-+	int debugfs_fd;
-         int w;
-         int h;
- } data_t;
- 
-+static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
-+		             double r, double g, double b, double a)
-+{
-+	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
-+
-+	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-+	igt_paint_color_alpha(cr, x, y, w, h, r, g, b, a);
-+
-+	igt_put_cairo_ctx(cr);
-+}
-+
- /* Common test setup. */
- static void test_init(data_t *data)
- {
-@@ -68,9 +82,11 @@ static void test_init(data_t *data)
- 
-         data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
-         igt_require(data->output);
-+	igt_info("output %s\n", data->output->name);
- 
-         data->mode = igt_output_get_mode(data->output);
-         igt_assert(data->mode);
-+	kmstest_dump_mode(data->mode);
- 
-         data->primary =
-                 igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
-@@ -78,6 +94,9 @@ static void test_init(data_t *data)
-         data->cursor =
-                 igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
- 
-+	data->overlay =
-+		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
-+
-         data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id, "auto");
- 
-         igt_output_set_pipe(data->output, data->pipe_id);
-@@ -181,6 +200,117 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
- 	test_fini(data);
- }
- 
-+static void run_check_psr_su_mpo(data_t *data)
-+{
-+#ifndef N_MPO_TEST_RECT_FB
-+#define N_MPO_TEST_RECT_FB 20
-+#endif
-+	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
-+	bool sink_support_psrsu = false;
-+	bool drv_suport_psrsu = false;
-+	igt_fb_t ov_fb;		// fb for overlay
-+	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	// rectangle fbs for primary, emulate as video playback region
-+	igt_fb_t ref_fb;	// reference fb
-+	igt_fb_t *flip_fb;
-+	int ret;
-+	const int run_sec = 5;
-+	enum amdgpu_psr_state psr_state = PSR_STATE0;
-+	int frame_rate = 0;
-+
-+	/* skip the test run if no eDP sink detected */
-+	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
-+
-+	/* init */
-+	test_init(data);
-+	frame_rate = data->mode->vrefresh;
-+
-+	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
-+	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
-+	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
-+	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
-+	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
-+	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
-+	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
-+
-+	/* reference background pattern in grey */
-+	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    .5, .5, .5, &ref_fb);
-+	igt_plane_set_fb(data->primary, &ref_fb);
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	/*
-+	 * overlay and primary fbs creation
-+	 * for MPO vpb use case, the vpb is always in the primary plane as an underlay,
-+	 * while the control panel/tool bar such icons/items are all in the overlay plane,
-+	 * and alpha for vpb region is adjusted to control the transparency.
-+	 * thus the overlay fb be initialized w/ ARGB pixel format to support blending
-+	 */
-+	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 1.0, 1.0, &ov_fb);
-+	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i) {
-+		cairo_t *cr;
-+		int strip_w = data->w / (2 * N_MPO_TEST_RECT_FB);
-+
-+		igt_create_fb(data->fd, data->w / 2, data->h / 2, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			      &rect_fb[i]);
-+		cr = igt_get_cairo_ctx(data->fd, &rect_fb[i]);
-+		igt_assert_f(cr, "Failed to get cairo context\n");
-+		/* background in black */
-+		igt_paint_color(cr, 0, 0, data->w, data->h, .0, .0, .0);
-+		/* foreground (megenta strip) */
-+		igt_paint_color(cr, i * strip_w, 0, strip_w, data->h, 1.0, .0, 1.0);
-+
-+		igt_put_cairo_ctx(cr);
-+	}
-+
-+	/* tie fbs to planes and set position/size/blending */
-+	igt_plane_set_fb(data->overlay, &ov_fb);
-+	igt_plane_set_fb(data->primary, &rect_fb[0]);
-+	igt_plane_set_position(data->primary, 0, 0);
-+	igt_plane_set_size(data->primary, data->w / 2, data->h / 2);
-+
-+	/* adjust alpha for vpb (primary plane) region in overlay */
-+	draw_color_alpha(&ov_fb, 0, 0, data->w / 2, data->h / 2, .5, .5, .5, .3);
-+
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	/* multiplane overlay to emulate video playback use case */
-+	igt_info("\n start flipping ...\n");
-+
-+	for (int i = 0; i < run_sec * frame_rate; ++i) {
-+		igt_info(" About to commit a primary plane (FB %d), loop %d \n", i % N_MPO_TEST_RECT_FB, i);
-+		flip_fb = &rect_fb[i % N_MPO_TEST_RECT_FB];
-+
-+		igt_plane_set_fb(data->primary, flip_fb);
-+		igt_output_set_pipe(data->output, data->pipe_id);
-+
-+		ret = drmModePageFlip(data->fd, data->output->config.crtc->crtc_id,
-+				      flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+		igt_require(ret == 0);
-+		kmstest_wait_for_pageflip(data->fd);
-+
-+		/* check PSR state */
-+		if (i > PSR_SETTLE_DELAY * frame_rate) {
-+			psr_state = igt_amd_read_psr_state(data->fd, data->output->name);
-+			igt_fail_on_f(psr_state == PSR_STATE0,
-+				"PSR was not enabled for connector %s\n", data->output->name);
-+			igt_fail_on_f(psr_state == PSR_STATE_INVALID,
-+				"PSR is invalid for connector %s\n", data->output->name);
-+			igt_fail_on_f(psr_state != PSR_STATE3,
-+				"PSR state is expected to be STATE_3 for connector %s\n", data->output->name);
-+		}
-+	}
-+
-+	/* fini */
-+	igt_remove_fb(data->fd, &ref_fb);
-+	igt_remove_fb(data->fd, &ov_fb);
-+	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i) igt_remove_fb(data->fd, &rect_fb[i]);
-+	test_fini(data);
-+	close(data->fd);
-+}
-+
- igt_main
- {
- 	data_t data;
-@@ -191,6 +321,8 @@ igt_main
- 	igt_fixture
- 	{
- 		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
-+		if (data.fd == -1) igt_skip("Not an amdgpu driver.\n");
-+		data.debugfs_fd = igt_debugfs_dir(data.fd);
- 
- 		kmstest_set_vt_graphics_mode();
- 
-@@ -205,8 +337,13 @@ igt_main
- 	igt_describe("Test whether setting CRTC to null triggers any warning with PSR enabled");
- 	igt_subtest("psr_enable_null_crtc") run_check_psr(&data, true);
- 
-+	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
-+		     "and to imitate Multiplane Overlay video playback scenario");
-+	igt_subtest("psr_su_mpo") run_check_psr_su_mpo(&data);
-+
- 	igt_fixture
- 	{
-+		close(data.debugfs_fd);
- 		igt_display_fini(&data.display);
- 	}
- }
--- 
-2.25.1
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/index.html
+
+Participating hosts (45 -> 41)
+------------------------------
+
+  Additional (2): bat-rpls-2 fi-cfl-8700k 
+  Missing    (6): fi-hsw-4200u fi-bsw-cyan fi-icl-u2 fi-ctg-p8600 fi-pnv-d510 fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6775:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:
+    - {bat-dg2-9}:        [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/bat-dg2-9/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/bat-dg2-9/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6775 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-multi-fence:
+    - fi-blb-e6850:       NOTRUN -> [SKIP][3] ([fdo#109271]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-blb-e6850/igt@amdgpu/amd_basic@cs-multi-fence.html
+
+  * igt@amdgpu/amd_cs_nop@sync-fork-gfx0:
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][4] ([fdo#109271]) +29 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-bdw-5557u:       [PASS][5] -> [INCOMPLETE][6] ([i915#146])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#2190])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][8] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#533])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [DMESG-FAIL][11] ([i915#4528]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][13] ([i915#4957]) -> [DMESG-FAIL][14] ([i915#4494] / [i915#4957])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+    - bat-dg1-6:          [DMESG-FAIL][15] ([i915#4957]) -> [DMESG-FAIL][16] ([i915#4494] / [i915#4957])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
+  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6375 -> IGTPW_6775
+
+  CI-20190529: 20190529
+  CI_DRM_11349: 47cea122bb4617b37f3974d066b9bea91b5c6581 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6775: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/index.html
+  IGT_6375: aa6eb64bac510b7d617436997171bfe388943d89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@amdgpu/amd_psr@psr_su_mpo
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/index.html
+
+--===============4460151995266241601==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>PSR-SU MPO case test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101250/">https://patchwork.freedesktop.org/series/101250/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6375 -&gt; IGTPW_6775</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/index.html</p>
+<h2>Participating hosts (45 -&gt; 41)</h2>
+<p>Additional (2): bat-rpls-2 fi-cfl-8700k <br />
+  Missing    (6): fi-hsw-4200u fi-bsw-cyan fi-icl-u2 fi-ctg-p8600 fi-pnv-d510 fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6775:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/bat-dg2-9/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/bat-dg2-9/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6775 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-multi-fence:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-blb-e6850/igt@amdgpu/amd_basic@cs-multi-fence.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-fork-gfx0:</p>
+<ul>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@amdgpu/amd_cs_nop@sync-fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +29 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-cfl-8700k/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@requests:<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
+</li>
+<li>
+<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6375/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6375 -&gt; IGTPW_6775</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11349: 47cea122bb4617b37f3974d066b9bea91b5c6581 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6775: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6775/index.html<br />
+  IGT_6375: aa6eb64bac510b7d617436997171bfe388943d89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@amdgpu/amd_psr@psr_su_mpo</p>
+
+</body>
+</html>
+
+--===============4460151995266241601==--
