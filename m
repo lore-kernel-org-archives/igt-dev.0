@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com
- [IPv6:2a00:1450:4864:20::62f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECF2C10F52F
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 07:38:26 +0000 (UTC)
-Received: by mail-ej1-x62f.google.com with SMTP id qx21so10087715ejb.13
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Mar 2022 23:38:26 -0800 (PST)
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
+ [IPv6:2a00:1450:4864:20::62c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21FE410F530
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 07:38:28 +0000 (UTC)
+Received: by mail-ej1-x62c.google.com with SMTP id qx21so10087808ejb.13
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Mar 2022 23:38:28 -0800 (PST)
 From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Thu, 10 Mar 2022 08:37:50 +0100
-Message-Id: <20220310073800.22067-3-tomeu.vizoso@collabora.com>
+Date: Thu, 10 Mar 2022 08:37:51 +0100
+Message-Id: <20220310073800.22067-4-tomeu.vizoso@collabora.com>
 In-Reply-To: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
 References: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 02/12] ci: Move containers from Buster to
- Bullseye
+Subject: [igt-dev] [PATCH v2 03/12] ci: Move files to ci/ subdir
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,102 +28,123 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Except for MIPS, which isn't support since Bullseye.
-
-Currently, we hit this error:
-
-STEP 2: RUN apt-get update
-Get:1 http://security.debian.org/debian-security buster/updates InRelease [65.4 kB]
-Get:2 http://deb.debian.org/debian buster InRelease [122 kB]
-Get:3 http://deb.debian.org/debian buster-updates InRelease [51.9 kB]
-Reading package lists...
-E: Repository 'http://security.debian.org/debian-security buster/updates InRelease' changed its 'Suite' value from 'stable' to 'oldstable'
-E: Repository 'http://deb.debian.org/debian buster InRelease' changed its 'Suite' value from 'stable' to 'oldstable'
-E: Repository 'http://deb.debian.org/debian buster-updates InRelease' changed its 'Suite' value from 'stable-updates' to 'oldstable-updates'
-Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 100
+We will be adding a few more files soon.
 
 Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 ---
- Dockerfile.build-debian         | 2 +-
- Dockerfile.build-debian-arm64   | 4 ++--
- Dockerfile.build-debian-armhf   | 2 +-
- Dockerfile.build-debian-minimal | 2 +-
- Dockerfile.build-debian-mips    | 4 +++-
- 5 files changed, 8 insertions(+), 6 deletions(-)
+ .gitlab-ci.yml                                       | 12 ++++++------
+ Dockerfile => ci/Dockerfile                          |  0
+ .../Dockerfile.build-debian                          |  0
+ .../Dockerfile.build-debian-arm64                    |  0
+ .../Dockerfile.build-debian-armhf                    |  0
+ .../Dockerfile.build-debian-minimal                  |  0
+ .../Dockerfile.build-debian-mips                     |  0
+ .../Dockerfile.build-fedora                          |  0
+ meson-cross-arm64.txt => ci/meson-cross-arm64.txt    |  0
+ meson-cross-armhf.txt => ci/meson-cross-armhf.txt    |  0
+ meson-cross-mips.txt => ci/meson-cross-mips.txt      |  0
+ 11 files changed, 6 insertions(+), 6 deletions(-)
+ rename Dockerfile => ci/Dockerfile (100%)
+ rename Dockerfile.build-debian => ci/Dockerfile.build-debian (100%)
+ rename Dockerfile.build-debian-arm64 => ci/Dockerfile.build-debian-arm64 (100%)
+ rename Dockerfile.build-debian-armhf => ci/Dockerfile.build-debian-armhf (100%)
+ rename Dockerfile.build-debian-minimal => ci/Dockerfile.build-debian-minimal (100%)
+ rename Dockerfile.build-debian-mips => ci/Dockerfile.build-debian-mips (100%)
+ rename Dockerfile.build-fedora => ci/Dockerfile.build-fedora (100%)
+ rename meson-cross-arm64.txt => ci/meson-cross-arm64.txt (100%)
+ rename meson-cross-armhf.txt => ci/meson-cross-armhf.txt (100%)
+ rename meson-cross-mips.txt => ci/meson-cross-mips.txt (100%)
 
-diff --git a/Dockerfile.build-debian b/Dockerfile.build-debian
-index 454f4bce5e77..52d7c42d1325 100644
---- a/Dockerfile.build-debian
-+++ b/Dockerfile.build-debian
-@@ -15,7 +15,7 @@ RUN apt-get install -y \
- 			libxmlrpc-core-c3-dev \
- 			libjson-c-dev \
- 			libcurl4-openssl-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg \
- 			libdrm-intel1
-diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
-index 573c7096feb8..cf0625ac725a 100644
---- a/Dockerfile.build-debian-arm64
-+++ b/Dockerfile.build-debian-arm64
-@@ -1,4 +1,4 @@
--FROM debian:buster
-+FROM debian:bullseye
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 9f252836c578..10fd28291cc8 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -27,8 +27,8 @@ build-containers:build-debian:
+   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+-    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-minimal build-debian-minimal
+-    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian build-debian
++    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-minimal build-debian-minimal
++    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian build-debian
+   tags:
+     - packet.net
  
- RUN apt-get update
- RUN apt-get install -y \
-@@ -6,7 +6,7 @@ RUN apt-get install -y \
- 			bison \
- 			pkg-config \
- 			x11proto-dri2-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg
+@@ -37,7 +37,7 @@ build-containers:build-debian-armhf:
+   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+-    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-armhf build-debian-armhf
++    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-armhf build-debian-armhf
+   tags:
+     - packet.net
  
-diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
-index 737ca3645f1b..dd43fcd6f18e 100644
---- a/Dockerfile.build-debian-armhf
-+++ b/Dockerfile.build-debian-armhf
-@@ -6,7 +6,7 @@ RUN apt-get install -y \
- 			bison \
- 			pkg-config \
- 			x11proto-dri2-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg
+@@ -46,7 +46,7 @@ build-containers:build-debian-arm64:
+   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+-    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-arm64 build-debian-arm64
++    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-arm64 build-debian-arm64
+   tags:
+     - packet.net
  
-diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
-index 64edf4b4313e..3850fb43e5cc 100644
---- a/Dockerfile.build-debian-minimal
-+++ b/Dockerfile.build-debian-minimal
-@@ -1,4 +1,4 @@
--FROM debian:buster
-+FROM debian:bullseye
+@@ -55,7 +55,7 @@ build-containers:build-debian-mips:
+   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+-    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-mips build-debian-mips
++    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-mips build-debian-mips
+   tags:
+     - packet.net
  
- RUN apt-get update
- RUN apt-get install -y \
-diff --git a/Dockerfile.build-debian-mips b/Dockerfile.build-debian-mips
-index 9b7c0a5b4703..e9cdaab9d640 100644
---- a/Dockerfile.build-debian-mips
-+++ b/Dockerfile.build-debian-mips
-@@ -1,3 +1,5 @@
-+# we are stuck on buster for mips:
-+# https://lists.debian.org/debian-mips/2019/07/msg00010.html
- FROM debian:buster
+@@ -64,7 +64,7 @@ build-containers:build-fedora:
+   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+-    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-fedora build-fedora
++    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-fedora build-fedora
+   tags:
+     - packet.net
  
- RUN apt-get update
-@@ -6,7 +8,7 @@ RUN apt-get install -y \
- 			bison \
- 			pkg-config \
- 			x11proto-dri2-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg
- 
+diff --git a/Dockerfile b/ci/Dockerfile
+similarity index 100%
+rename from Dockerfile
+rename to ci/Dockerfile
+diff --git a/Dockerfile.build-debian b/ci/Dockerfile.build-debian
+similarity index 100%
+rename from Dockerfile.build-debian
+rename to ci/Dockerfile.build-debian
+diff --git a/Dockerfile.build-debian-arm64 b/ci/Dockerfile.build-debian-arm64
+similarity index 100%
+rename from Dockerfile.build-debian-arm64
+rename to ci/Dockerfile.build-debian-arm64
+diff --git a/Dockerfile.build-debian-armhf b/ci/Dockerfile.build-debian-armhf
+similarity index 100%
+rename from Dockerfile.build-debian-armhf
+rename to ci/Dockerfile.build-debian-armhf
+diff --git a/Dockerfile.build-debian-minimal b/ci/Dockerfile.build-debian-minimal
+similarity index 100%
+rename from Dockerfile.build-debian-minimal
+rename to ci/Dockerfile.build-debian-minimal
+diff --git a/Dockerfile.build-debian-mips b/ci/Dockerfile.build-debian-mips
+similarity index 100%
+rename from Dockerfile.build-debian-mips
+rename to ci/Dockerfile.build-debian-mips
+diff --git a/Dockerfile.build-fedora b/ci/Dockerfile.build-fedora
+similarity index 100%
+rename from Dockerfile.build-fedora
+rename to ci/Dockerfile.build-fedora
+diff --git a/meson-cross-arm64.txt b/ci/meson-cross-arm64.txt
+similarity index 100%
+rename from meson-cross-arm64.txt
+rename to ci/meson-cross-arm64.txt
+diff --git a/meson-cross-armhf.txt b/ci/meson-cross-armhf.txt
+similarity index 100%
+rename from meson-cross-armhf.txt
+rename to ci/meson-cross-armhf.txt
+diff --git a/meson-cross-mips.txt b/ci/meson-cross-mips.txt
+similarity index 100%
+rename from meson-cross-mips.txt
+rename to ci/meson-cross-mips.txt
 -- 
 2.31.1
