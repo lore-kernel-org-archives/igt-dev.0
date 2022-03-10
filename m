@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com
- [IPv6:2a00:1450:4864:20::630])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BF5210F530
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 07:38:30 +0000 (UTC)
-Received: by mail-ej1-x630.google.com with SMTP id a8so10146903ejc.8
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Mar 2022 23:38:30 -0800 (PST)
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com
+ [IPv6:2a00:1450:4864:20::52b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5CB210F538
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 07:38:34 +0000 (UTC)
+Received: by mail-ed1-x52b.google.com with SMTP id y22so5855981eds.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 09 Mar 2022 23:38:34 -0800 (PST)
 From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Thu, 10 Mar 2022 08:37:53 +0100
-Message-Id: <20220310073800.22067-6-tomeu.vizoso@collabora.com>
+Date: Thu, 10 Mar 2022 08:37:57 +0100
+Message-Id: <20220310073800.22067-10-tomeu.vizoso@collabora.com>
 In-Reply-To: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
 References: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 05/12] ci: Install ci-templates in Debian
- container
+Subject: [igt-dev] [PATCH v2 09/12] ci: Setup JWT token to use with MinIO
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,29 +28,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We will need it to store artifacts in MinIO.
+We will need it to authenticate with MinIO when uploading artifacts.
 
 Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 ---
- ci/Dockerfile.build-debian | 4 ++++
- 1 file changed, 4 insertions(+)
+ .gitlab-ci.yml | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/ci/Dockerfile.build-debian b/ci/Dockerfile.build-debian
-index 52d7c42d1325..b6fc4773fcff 100644
---- a/ci/Dockerfile.build-debian
-+++ b/ci/Dockerfile.build-debian
-@@ -16,8 +16,12 @@ RUN apt-get install -y \
- 			libjson-c-dev \
- 			libcurl4-openssl-dev \
- 			python3-docutils \
-+			python3-pip \
- 			valgrind \
- 			peg \
-+			git \
- 			libdrm-intel1
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 8c72e0494b67..77c4fa00fcb4 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -305,6 +305,21 @@ test:verify-blacklists:
+   needs:
+     - build:tests-fedora
  
- RUN apt-get clean
++default:
++  before_script:
++    - echo -e "\e[0Ksection_start:$(date +%s):unset_env_vars_section[collapsed=true]\r\e[0KUnsetting vulnerable environment variables"
++    - export CI_JOB_JWT_FILE="${CI_JOB_JWT_FILE:-$(mktemp)}"
++    - echo -n "${CI_JOB_JWT}" > "${CI_JOB_JWT_FILE}"
++    - unset CI_JOB_JWT
++    - echo -e "\e[0Ksection_end:$(date +%s):unset_env_vars_section\r\e[0K"
 +
-+RUN pip3 install git+http://gitlab.freedesktop.org/freedesktop/ci-templates@34f4ade99434043f88e164933f570301fd18b125
++  after_script:
++    - >
++      set +x
++
++      test -e "${CI_JOB_JWT_FILE}" &&
++      export CI_JOB_JWT="$(<${CI_JOB_JWT_FILE})" &&
++      rm "${CI_JOB_JWT_FILE}"
+ ################### DEPLOY #########################
+ 
+ pages:
 -- 
 2.31.1
