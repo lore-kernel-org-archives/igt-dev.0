@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8640710E401
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 08:44:32 +0000 (UTC)
-Date: Fri, 11 Mar 2022 09:44:25 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <YisL6dFuDZZngjCi@zkempczy-mobl2>
-References: <20220224052002.11852-1-sai.gowtham.ch@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E755410E8EA
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 10:51:34 +0000 (UTC)
+Date: Fri, 11 Mar 2022 11:51:30 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Yispsv4QDtYofZy3@kamilkon-DESK1>
+References: <20220310071529.61930-1-zbigniew.kempczynski@intel.com>
+ <20220310071529.61930-3-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220224052002.11852-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture: Adding
- Local memory support
+In-Reply-To: <20220310071529.61930-3-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/6] tests/api_intel_allocator: Verify
+ gem-pool is working as expected
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,171 +22,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 24, 2022 at 10:50:02AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Dnia 2022-03-10 at 08:15:25 +0100, Zbigniew Kempczyński napisał(a):
+> Simple check which acquires buffer objects from gem-pool. It verifies:
+> - object reuse (previously created is completed in execbuf)
+> - object creation (submitting batches when spinner is executing).
 > 
-> Adding local memory support to many-4K-zero subtest
-> 
-> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/i915/gem_exec_capture.c | 36 +++++++++++++++++++++--------------
->  1 file changed, 22 insertions(+), 14 deletions(-)
+>  tests/i915/api_intel_allocator.c | 58 ++++++++++++++++++++++++++++++++
+>  1 file changed, 58 insertions(+)
 > 
-> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-> index 60f8df04..3eb516e7 100644
-> --- a/tests/i915/gem_exec_capture.c
-> +++ b/tests/i915/gem_exec_capture.c
-> @@ -415,7 +415,7 @@ static struct offset *
->  __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	   const struct intel_execution_engine2 *e,
->  	   unsigned int size, int count,
-> -	   unsigned int flags, int *_fence_out)
-> +	   unsigned int flags, int *_fence_out, uint32_t region)
->  #define INCREMENTAL 0x1
->  #define ASYNC 0x2
->  {
-> @@ -436,7 +436,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	obj = calloc(count + 2, sizeof(*obj));
->  	igt_assert(obj);
->  
-> -	obj[0].handle = gem_create(fd, 4096);
-> +	obj[0].handle = gem_create_in_memory_regions(fd, 4096, region);
->  	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
->  	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
->  
-> @@ -459,7 +459,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  		}
->  	}
->  
-> -	obj[count + 1].handle = gem_create(fd, 4096);
-> +	obj[count + 1].handle = gem_create_in_memory_regions(fd, 4096, region);
->  	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
->  	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
->  	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
-> @@ -585,7 +585,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  		saved = configure_hangs(fd, e, ctx->id); \
->  	} while(0)
->  
-> -static void many(int fd, int dir, uint64_t size, unsigned int flags)
-> +static void many(int fd, int dir, uint64_t size, unsigned int flags, uint32_t region)
->  {
->  	const struct intel_execution_engine2 *e;
->  	const intel_ctx_t *ctx;
-> @@ -607,7 +607,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
->  	intel_require_memory(count, size, CHECK_RAM);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
-> +	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL, region);
-
-I'm sorry you had wait so long for the review.
-
-Number of object is too big for lmem because count is calculated looking at min(gtt,ram),
-not min(gtt,lmem) when region is lmem.
-
-I mean:
-
-	gtt = gem_aperture_size(fd) / size;
-	ram = (intel_get_avail_ram_mb() << 20) / size;
-	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
-		  gtt, ram);
-
-	count = min(gtt, ram) / 4; <----- should depend on region size
-
-With limited count it works for me. I'm little bit surprised for DG2 with relocs enabled
-I observe hang (we got such igt-enablement patch on core-for-CI branch). But softpin 
-version works fine.
-
---
-Zbigniew
-
->  
->  	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
->  	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-> @@ -620,7 +620,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+> diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
+> index a652caf4ec..a7929e9b13 100644
+> --- a/tests/i915/api_intel_allocator.c
+> +++ b/tests/i915/api_intel_allocator.c
+> @@ -692,6 +692,60 @@ static void fork_reopen_allocator(int fd, uint8_t type)
+>  	intel_allocator_multiprocess_stop();
 >  }
 >  
->  static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> -		    const struct intel_execution_engine2 *e)
-> +		    const struct intel_execution_engine2 *e, uint32_t region)
->  {
->  	const uint32_t bbe = MI_BATCH_BUFFER_END;
->  	struct drm_i915_gem_exec_object2 obj = {
-> @@ -677,7 +677,7 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  		/* Reopen the allocator in the new process. */
->  		ahnd = get_reloc_ahnd(fd, ctx2->id);
->  
-> -		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
-> +		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out, region));
->  		put_ahnd(ahnd);
->  
->  		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-> @@ -767,6 +767,7 @@ igt_main
->  	struct igt_collection *regions, *set;
->  	char *sub_name;
->  	uint32_t region;
-> +	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
->  
->  	igt_fixture {
->  		int gen;
-> @@ -803,29 +804,36 @@ igt_main
->  		}
->  	}
->  
-> -	igt_subtest_f("many-4K-zero") {
+> +static uint32_t single_exec_from_pool(int i915, uint64_t ahnd, uint64_t size)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+> +	struct drm_i915_gem_exec_object2 obj = {};
+> +	uint32_t bb = gem_create_from_pool(i915, &size, REGION_SMEM);
+> +	uint32_t *bbptr;
 > +
-> +	igt_subtest_with_dynamic("many-4K-zero") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 1<<12, 0);
-> +		for_each_combination(regions, 1, set) {
-> +			sub_name = memregion_dynamic_subtest_name(regions);
-> +			region = igt_collection_get_value(regions, 0);
-> +			igt_dynamic_f("%s", sub_name)
-> +				many(fd, dir, 1<<12, 0, region);
-> +			free(sub_name);
-> +		}
->  	}
+> +	bbptr = gem_mmap__device_coherent(i915, bb, 0, size, PROT_WRITE);
+> +	*bbptr = MI_BATCH_BUFFER_END;
+> +	gem_munmap(bbptr, size);
+> +	obj.offset = get_offset(ahnd, bb, size, 0);
+> +	if (ahnd)
+> +		obj.flags = EXEC_OBJECT_PINNED;
+> +	obj.handle = bb;
+> +	execbuf.buffer_count = 1;
+> +	execbuf.buffers_ptr = to_user_pointer(&obj);
+> +	gem_execbuf(i915, &execbuf);
+> +
+> +	return bb;
+> +}
+> +
+> +static void gem_pool(int i915)
+> +{
+> +	uint32_t bb[4];
+> +	uint64_t ahnd = get_reloc_ahnd(i915, 0);
+> +	igt_spin_t *spin;
+> +
+> +	bb[0] = single_exec_from_pool(i915, ahnd, 4096);
+> +	gem_sync(i915, bb[0]);
+> +	bb[1] = single_exec_from_pool(i915, ahnd, 4096);
+> +	igt_assert(bb[0] == bb[1]);
+> +
+> +	bb[2] = single_exec_from_pool(i915, ahnd, 8192);
+> +	gem_sync(i915, bb[2]);
+> +	bb[3] = single_exec_from_pool(i915, ahnd, 8192);
+> +	igt_assert(bb[2] == bb[3]);
+> +	igt_assert(bb[0] != bb[2]);
+> +
+> +	spin = igt_spin_new(i915,
+> +			    .ahnd = ahnd,
+> +			    .engine = I915_EXEC_DEFAULT);
+> +	bb[0] = single_exec_from_pool(i915, ahnd, 4096);
+> +	bb[1] = single_exec_from_pool(i915, ahnd, 4096);
+> +	bb[2] = single_exec_from_pool(i915, ahnd, 8192);
+> +	bb[3] = single_exec_from_pool(i915, ahnd, 8192);
+> +	igt_spin_free(i915, spin);
+> +	igt_assert(bb[0] != bb[1]);
+> +	igt_assert(bb[2] != bb[3]);
+> +
+> +	put_ahnd(ahnd);
+> +
+> +	gem_pool_dump();
+> +}
+> +
+>  struct allocators {
+>  	const char *name;
+>  	uint8_t type;
+> @@ -790,6 +844,10 @@ igt_main
+>  	igt_subtest_f("execbuf-with-allocator")
+>  		execbuf_with_allocator(fd);
 >  
->  	igt_subtest_f("many-4K-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 1<<12, INCREMENTAL);
-> +		many(fd, dir, 1<<12, INCREMENTAL, system_region);
->  	}
->  
->  	igt_subtest_f("many-2M-zero") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 2<<20, 0);
-> +		many(fd, dir, 2<<20, 0, system_region);
->  	}
->  
->  	igt_subtest_f("many-2M-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 2<<20, INCREMENTAL);
-> +		many(fd, dir, 2<<20, INCREMENTAL, system_region);
->  	}
->  
->  	igt_subtest_f("many-256M-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 256<<20, INCREMENTAL);
-> +		many(fd, dir, 256<<20, INCREMENTAL, system_region);
->  	}
->  
->  	/* And check we can read from different types of objects */
-> @@ -837,7 +845,7 @@ igt_main
->  
->  	test_each_engine("pi", fd, ctx, e)
->  		igt_dynamic_f("%s", (e)->name)
-> -			prioinv(fd, dir, ctx, e);
-> +			prioinv(fd, dir, ctx, e, system_region);
->  
->  	igt_fixture {
->  		close(dir);
+> +	igt_describe("Verifies creating and executing bb from gem pool");
+> +	igt_subtest_f("gem-pool")
+> +		gem_pool(fd);
+> +
+>  	igt_fixture
+>  		close(fd);
+>  }
 > -- 
-> 2.35.1
+> 2.32.0
 > 
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+--
+Kamil
