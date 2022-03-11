@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2051.outbound.protection.outlook.com [40.107.94.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87E4610E0D8
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 19:45:10 +0000 (UTC)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2058.outbound.protection.outlook.com [40.107.244.58])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F85710E9E2
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 19:45:13 +0000 (UTC)
 From: David Zhang <dingchen.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 11 Mar 2022 14:44:50 -0500
-Message-ID: <20220311194452.291714-3-dingchen.zhang@amd.com>
+Date: Fri, 11 Mar 2022 14:44:51 -0500
+Message-ID: <20220311194452.291714-4-dingchen.zhang@amd.com>
 In-Reply-To: <20220311194452.291714-1-dingchen.zhang@amd.com>
 References: <20220311194452.291714-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH v2 2/4] lib/igt_amd: add helpers to check PSR
- capibility
+Subject: [igt-dev] [PATCH v2 3/4] lib/igt_amd: add helpers to check PSR state
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,30 +25,19 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 [why]
-For AMDGPU devices, the debugfs interface to check sink PSR cap
-is a bit different from that of i915, i.e. the interface is located
-in the path
-<debugfs_root>/dri/0/eDP-X/psr_capability
-where 'X' is eDP connector index.
-
-We need such debugfs interface to check if the sink device and the
-x86 driver supports PSR or PSR-SU capabilities.
+For AMDGPU devices, we'd check the PSR state via reading from the
+debugfs interface for a given eDP connector, where the debugfs
+interface path locates at
+  <debugfs_root>/dri/0/eDP-X/psr_state
+where 'X' is the eDP connector index.
 
 [how]
-define and add the helpers to read from connector debugfs interface
+define and add the helper to check if PSR state debugfs interface
+is supported in driver, and the helper to read PSR state from the
+debugfs interface.
 
-For sink device PSR cap check:
-- for PSR1 device, the psr version DPCD be 0x1
-- for PSR-SU device, the psr version DPCD be either 0x3 or 0x4.
-
-For amdgpu x86 driver PSR support check:
-- for PSR1, expect to contain sub-string "yes"
-- for PSR-SU, expect to contain sub-string "yes [0x1]"
-
-changes in v2
--------------------
-* fix the typo in string comp within the helper to read from
-  psr cap debugfs interface
+In addition, the helper to check debugfs supported is generic and
+can be used to replacing the existed redundant codes.
 
 Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Cc: Harry Wentland <harry.wentland@amd.com>
@@ -59,150 +47,276 @@ Cc: Wayne Lin <wayne.lin@amd.com>
 
 Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 ---
- lib/igt_amd.c | 93 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_amd.h |  8 +++++
- 2 files changed, 101 insertions(+)
+ lib/igt_amd.c          | 142 +++++++++++++++++------------------------
+ lib/igt_amd.h          |   3 +
+ tests/amdgpu/amd_psr.c |  13 +---
+ 3 files changed, 65 insertions(+), 93 deletions(-)
 
 diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index ae94fb99..577a8612 100644
+index 577a8612..0e861ab1 100644
 --- a/lib/igt_amd.c
 +++ b/lib/igt_amd.c
-@@ -1004,3 +1004,96 @@ bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name)
- 	close(fd);
+@@ -251,11 +251,15 @@ bool igt_amd_is_tiled(uint64_t modifier)
+ }
+ 
+ /**
+- * igt_amd_output_has_dsc: check if connector has dsc debugfs entry
+- * @drm_fd: DRM file descriptor
+- * @connector_name: The connector's name, on which we're reading the status
++ * @brief generic helper to check if the debugfs entry of given connector has the
++ *        debugfs interface defined.
++ * @param drm_fd: DRM file descriptor
++ * @param connector_name: The connector's name, on which we're reading the status
++ * @param interface_name: The debugfs interface name to check
++ * @return true if <debugfs_root>/connector_name/interface_name exists and defined
++ * @return false otherwise
+  */
+-static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
++static bool igt_amd_output_has_debugfs(int drm_fd, char *connector_name, const char *interface_name)
+ {
+ 	int fd;
+ 	int res;
+@@ -267,9 +271,9 @@ static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
+ 		return false;
+ 	}
+ 
+-	res = fstatat(fd, DEBUGFS_DSC_CLOCK_EN , &stat, 0);
++	res = fstatat(fd, interface_name, &stat, 0);
+ 	if (res != 0) {
+-		igt_info("%s debugfs not supported\n", DEBUGFS_DSC_CLOCK_EN);
++		igt_info("output %s: %s debugfs not supported\n", connector_name, interface_name);
+ 		close(fd);
+ 		return false;
+ 	}
+@@ -278,6 +282,16 @@ static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
  	return true;
+ }
+ 
++/**
++ * igt_amd_output_has_dsc: check if connector has dsc debugfs entry
++ * @drm_fd: DRM file descriptor
++ * @connector_name: The connector's name, on which we're reading the status
++ */
++static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
++{
++	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_DSC_CLOCK_EN);
++}
++
+ /**
+  * is_dp_dsc_supported: Checks if connector is DSC capable
+  * @display: A pointer to an #igt_display_t structure
+@@ -707,25 +721,7 @@ int igt_amd_read_dsc_param_slice_bpg(int drm_fd, char *connector_name)
+  */
+ static bool igt_amd_output_has_hpd(int drm_fd, char *connector_name)
+ {
+-        int fd;
+-        int res;
+-        struct stat stat;
+-
+-        fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
+-        if (fd < 0) {
+-                igt_info("output %s: debugfs not found\n", connector_name);
+-                return false;
+-        }
+-
+-        res = fstatat(fd, DEBUGFS_HPD_TRIGGER, &stat, 0);
+-        if (res != 0) {
+-                igt_info("%s debugfs not supported\n", DEBUGFS_HPD_TRIGGER);
+-                close(fd);
+-                return false;
+-        }
+-
+-        close(fd);
+-        return true;
++	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_HPD_TRIGGER);
+ }
+ 
+ /**
+@@ -872,25 +868,7 @@ void igt_amd_write_link_settings(
+  */
+ bool igt_amd_output_has_link_settings(int drm_fd, char *connector_name)
+ {
+-	int fd;
+-	int res;
+-	struct stat stat;
+-
+-	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
+-	if (fd < 0) {
+-		igt_info("output %s: debugfs not found\n", connector_name);
+-		return false;
+-	}
+-
+-	res = fstatat(fd, DEBUGFS_DP_LINK_SETTINGS, &stat, 0);
+-	if (res != 0) {
+-		igt_info("output %s: %s debugfs not supported\n", connector_name, DEBUGFS_DP_LINK_SETTINGS);
+-		close(fd);
+-		return false;
+-	}
+-
+-	close(fd);
+-	return true;
++	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_DP_LINK_SETTINGS);;
+ }
+ 
+ /*
+@@ -984,25 +962,7 @@ void igt_amd_write_ilr_setting(
+  */
+ bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name)
+ {
+-	int fd;
+-	int res;
+-	struct stat stat;
+-
+-	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
+-	if (fd < 0) {
+-		igt_info("output %s: debugfs not found\n", connector_name);
+-		return false;
+-	}
+-
+-	res = fstatat(fd, DEBUGFS_EDP_ILR_SETTING, &stat, 0);
+-	if (res != 0) {
+-		igt_info("output %s: %s debugfs not supported\n", connector_name, DEBUGFS_EDP_ILR_SETTING);
+-		close(fd);
+-		return false;
+-	}
+-
+-	close(fd);
+-	return true;
++	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_ILR_SETTING);;
+ }
+ 
+ /**
+@@ -1012,25 +972,7 @@ bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name)
+  */
+ bool igt_amd_output_has_psr_cap(int drm_fd, char *connector_name)
+ {
+-	int fd;
+-	int res;
+-	struct stat stat;
+-
+-	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
+-	if (fd < 0) {
+-		igt_info("output %s: debugfs not found\n", connector_name);
+-		return false;
+-	}
+-
+-	res = fstatat(fd, DEBUGFS_EDP_PSR_CAP, &stat, 0);
+-	if (res != 0) {
+-		igt_info("output %s: %s debugfs not supported\n", connector_name, DEBUGFS_EDP_PSR_CAP);
+-		close(fd);
+-		return false;
+-	}
+-
+-	close(fd);
+-	return true;
++	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_PSR_CAP);
+ }
+ 
+ /**
+@@ -1097,3 +1039,39 @@ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mod
+ 	else
+ 		return strstr(buf, "Driver support: yes [0x01]");
  }
 +
 +/**
-+ * igt_amd_output_has_psr_cap: check if eDP connector has psr_capability debugfs entry
++ * igt_amd_output_has_psr_state: check if eDP connector has psr_state debugfs entry
 + * @drm_fd: DRM file descriptor
 + * @connector_name: The connector's name, on which we're reading the status
 + */
-+bool igt_amd_output_has_psr_cap(int drm_fd, char *connector_name)
++bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name)
 +{
-+	int fd;
-+	int res;
-+	struct stat stat;
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	if (fd < 0) {
-+		igt_info("output %s: debugfs not found\n", connector_name);
-+		return false;
-+	}
-+
-+	res = fstatat(fd, DEBUGFS_EDP_PSR_CAP, &stat, 0);
-+	if (res != 0) {
-+		igt_info("output %s: %s debugfs not supported\n", connector_name, DEBUGFS_EDP_PSR_CAP);
-+		close(fd);
-+		return false;
-+	}
-+
-+	close(fd);
-+	return true;
++	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_PSR_STATE);
 +}
 +
 +/**
-+ * igt_amd_psr_support_sink: check if sink device support PSR
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ * @mode: expected PSR mode, either PSR1 or PSR2
++ * @brief Read PSR State from debugfs interface
++ * @param drm_fd DRM file descriptor
++ * @param connector_name The connector's name, on which we're reading the status
++ * @return PSR state as integer
 + */
-+bool igt_amd_psr_support_sink(int drm_fd, char *connector_name, enum psr_mode mode)
++int igt_amd_read_psr_state(int drm_fd, char *connector_name)
 +{
-+	char buf[PSR_STATUS_MAX_LEN];
-+	int ret;
-+	int fd;
++	char buf[4];
++	int fd, ret;
 +
 +	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
 +	if (fd < 0) {
-+		igt_info("output %s: debugfs not found\n", connector_name);
++		igt_info("Couldn't open connector %s debugfs directory\n", connector_name);
 +		return false;
 +	}
 +
-+	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_PSR_CAP, buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-+		     DEBUGFS_EDP_PSR_CAP, connector_name);
++	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_PSR_STATE, buf, sizeof(buf));
 +	close(fd);
 +
-+	if (ret < 1)
-+		return false;
-+
-+	if (mode == PSR_MODE_1)
-+		return strstr(buf, "Sink support: yes [0x01]");
-+	else
-+		return strstr(buf, "Sink support: yes [0x03]") ||
-+		       strstr(buf, "Sink support: yes [0x04]");
-+}
-+
-+/**
-+ * igt_amd_psr_support_drv: check if AMDGPU kernel driver support PSR
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ * @mode: expected PSR mode, either PSR1 or PSR2
-+ */
-+bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mode)
-+{
-+	char buf[PSR_STATUS_MAX_LEN];
-+	int ret;
-+	int fd;
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	if (fd < 0) {
-+		igt_info("output %s: debugfs not found\n", connector_name);
-+		return false;
-+	}
-+
-+	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_PSR_CAP, buf, sizeof(buf));
 +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-+		     DEBUGFS_EDP_PSR_CAP, connector_name);
-+	close(fd);
++		     DEBUGFS_EDP_PSR_STATE, connector_name);
 +
-+	if (ret < 1)
-+		return false;
-+
-+	if (mode == PSR_MODE_1)
-+		return strstr(buf, "Driver support: yes");
-+	else
-+		return strstr(buf, "Driver support: yes [0x01]");
++	return strtol(buf, NULL, 10);
 +}
 diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index f11e36b2..6e465817 100644
+index 6e465817..f87c1991 100644
 --- a/lib/igt_amd.h
 +++ b/lib/igt_amd.h
-@@ -26,6 +26,7 @@
- #include <stdint.h>
- #include "igt.h"
- #include "igt_fb.h"
-+#include "igt_psr.h"
- 
- /* Read & Write DSC parameters */
- #define DEBUGFS_DSC_CLOCK_EN "dsc_clock_en"
-@@ -42,8 +43,10 @@
- #define DEBUGFS_DP_LINK_SETTINGS "link_settings"
- #define DEBUGFS_HPD_TRIGGER "trigger_hotplug"
- 
-+/* eDP related */
+@@ -47,6 +47,7 @@
  #define DEBUGFS_EDP_ILR_SETTING "ilr_setting"
  #define MAX_SUPPORTED_ILR 8
-+#define DEBUGFS_EDP_PSR_CAP	"psr_capability"
+ #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
++#define DEBUGFS_EDP_PSR_STATE	"psr_state"
  
  enum amd_dsc_clock_force {
  	DSC_AUTOMATIC = 0,
-@@ -129,11 +132,16 @@ void igt_amd_write_link_settings(
- 	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
- 	enum dc_link_rate link_rate, enum dc_link_training_type training_type);
- bool igt_amd_output_has_link_settings(int drm_fd, char *connector_name);
-+
-+/* eDP debugfs helpers */
- void igt_amd_read_ilr_setting(
- 	int drm_fd, char *connector_name, int *supported_ilr);
- void igt_amd_write_ilr_setting(
- 	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
- 	uint8_t link_rate_set);
- bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name);
-+bool igt_amd_output_has_psr_cap(int drm_fd, char *connector_name);
-+bool igt_amd_psr_support_sink(int drm_fd, char *connector_name, enum psr_mode mode);
-+bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mode);
+@@ -143,5 +144,7 @@ bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name);
+ bool igt_amd_output_has_psr_cap(int drm_fd, char *connector_name);
+ bool igt_amd_psr_support_sink(int drm_fd, char *connector_name, enum psr_mode mode);
+ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mode);
++bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
++int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
  
  #endif /* IGT_AMD_H */
+diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+index 732eab25..88e824c3 100644
+--- a/tests/amdgpu/amd_psr.c
++++ b/tests/amdgpu/amd_psr.c
+@@ -24,6 +24,7 @@
+ #include "igt.h"
+ #include "igt_core.h"
+ #include "igt_kms.h"
++#include "igt_amd.h"
+ #include <stdint.h>
+ #include <fcntl.h>
+ #include <xf86drmMode.h>
+@@ -34,7 +35,6 @@
+  */
+ IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP displays");
+ 
+-#define DEBUGFS_PSR_STATE "psr_state"
+ /* After a full update, a few fast updates are necessary for PSR to be enabled */
+ #define N_FLIPS 6
+ /* DMCUB takes some time to actually enable PSR. Worst case delay is 4 seconds */
+@@ -108,8 +108,6 @@ static int check_conn_type(data_t *data, uint32_t type) {
+ }
+ 
+ static void run_check_psr(data_t *data, bool test_null_crtc) {
+-	char buf[8];
+-	char *connector_name;
+ 	int fd, edp_idx, dp_idx, ret, i, psr_state;
+ 	igt_fb_t ref_fb, ref_fb2;
+ 	igt_fb_t *flip_fb;
+@@ -157,14 +155,7 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+ 		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 			continue;
+ 
+-		connector_name = output->name;
+-		fd = igt_debugfs_connector_dir(data->fd, connector_name, O_RDONLY);
+-		igt_assert(fd >= 0);
+-
+-		ret = igt_debugfs_simple_read(fd, DEBUGFS_PSR_STATE, buf, sizeof(buf));
+-		igt_require(ret > 0);
+-
+-		psr_state =  (int) strtol(buf, NULL, 10);
++		psr_state = igt_amd_read_psr_state(data->fd, output->name);
+ 		igt_fail_on_f(psr_state < 1, "PSR was not enabled for connector %s\n", output->name);
+ 		igt_fail_on_f(psr_state == 0xff, "PSR is invalid for connector %s\n", output->name);
+ 		igt_fail_on_f(psr_state != 5, "PSR state is expected to be at 5 on a "
 -- 
 2.25.1
