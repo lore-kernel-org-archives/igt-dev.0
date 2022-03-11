@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D88310E953
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 12:13:38 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A277010E953
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 12:13:30 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Mar 2022 13:13:16 +0100
-Message-Id: <20220311121318.112757-5-zbigniew.kempczynski@intel.com>
+Date: Fri, 11 Mar 2022 13:13:14 +0100
+Message-Id: <20220311121318.112757-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220311121318.112757-1-zbigniew.kempczynski@intel.com>
 References: <20220311121318.112757-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/6] i915/gem_engine_topology: Add helpers
- for checking driver capabilities
+Subject: [igt-dev] [PATCH i-g-t 2/6] tests/api_intel_allocator: Verify
+ gem-pool is working as expected
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,91 +24,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@intel.com>
+Simple check which acquires buffer objects from gem-pool. It verifies:
+- object reuse (previously created is completed in execbuf)
+- object creation (submitting batches when spinner is executing).
 
-If driver is able to report capabilities we want to use them in easy way.
-For example it can support blitter "block_copy" (XY_BLOCK_COPY_BLT
-command) and reports it in sysfs. We add then capabilities helpers to
-read these properties. Helpers allows checking does driver knows
-capability (by checking sysfs "known_capabilities" file) and supports it
-(by checking sysfs "capabilities" file). Dedicated helper was added to
-verify "block_copy" capability.
-
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/i915/gem_engine_topology.c | 39 ++++++++++++++++++++++++++++++++++
- lib/i915/gem_engine_topology.h |  5 +++++
- 2 files changed, 44 insertions(+)
+ tests/i915/api_intel_allocator.c | 58 ++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index bd12d0bc98..ca3333c252 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -534,6 +534,45 @@ void gem_engine_properties_restore(int fd, const struct gem_engine_properties *s
- 	}
+diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
+index a652caf4ec..a7929e9b13 100644
+--- a/tests/i915/api_intel_allocator.c
++++ b/tests/i915/api_intel_allocator.c
+@@ -692,6 +692,60 @@ static void fork_reopen_allocator(int fd, uint8_t type)
+ 	intel_allocator_multiprocess_stop();
  }
  
-+static bool
-+__gem_engine_has_capability(int i915, const char *engine,
-+			    const char *attr, const char *cap)
++static uint32_t single_exec_from_pool(int i915, uint64_t ahnd, uint64_t size)
 +{
-+	char buf[4096] = {};
-+	FILE *file;
++	struct drm_i915_gem_execbuffer2 execbuf = {};
++	struct drm_i915_gem_exec_object2 obj = {};
++	uint32_t bb = gem_create_from_pool(i915, &size, REGION_SMEM);
++	uint32_t *bbptr;
 +
-+	file = __open_attr(igt_sysfs_open(i915), "r",
-+			   "engine", engine, attr, NULL);
-+	if (!file)
-+		return NULL;
++	bbptr = gem_mmap__device_coherent(i915, bb, 0, size, PROT_WRITE);
++	*bbptr = MI_BATCH_BUFFER_END;
++	gem_munmap(bbptr, size);
++	obj.offset = get_offset(ahnd, bb, size, 0);
++	if (ahnd)
++		obj.flags = EXEC_OBJECT_PINNED;
++	obj.handle = bb;
++	execbuf.buffer_count = 1;
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	gem_execbuf(i915, &execbuf);
 +
-+	fread(buf, 1, sizeof(buf) - 1, file);
-+	fclose(file);
-+
-+	return strstr(buf, cap);
++	return bb;
 +}
 +
-+bool gem_engine_has_capability(int i915, const char *engine, const char *cap)
++static void gem_pool(int i915)
 +{
-+	return __gem_engine_has_capability(i915, engine, "capabilities", cap);
++	uint32_t bb[4];
++	uint64_t ahnd = get_reloc_ahnd(i915, 0);
++	igt_spin_t *spin;
++
++	bb[0] = single_exec_from_pool(i915, ahnd, 4096);
++	gem_sync(i915, bb[0]);
++	bb[1] = single_exec_from_pool(i915, ahnd, 4096);
++	igt_assert(bb[0] == bb[1]);
++
++	bb[2] = single_exec_from_pool(i915, ahnd, 8192);
++	gem_sync(i915, bb[2]);
++	bb[3] = single_exec_from_pool(i915, ahnd, 8192);
++	igt_assert(bb[2] == bb[3]);
++	igt_assert(bb[0] != bb[2]);
++
++	spin = igt_spin_new(i915,
++			    .ahnd = ahnd,
++			    .engine = I915_EXEC_DEFAULT);
++	bb[0] = single_exec_from_pool(i915, ahnd, 4096);
++	bb[1] = single_exec_from_pool(i915, ahnd, 4096);
++	bb[2] = single_exec_from_pool(i915, ahnd, 8192);
++	bb[3] = single_exec_from_pool(i915, ahnd, 8192);
++	igt_spin_free(i915, spin);
++	igt_assert(bb[0] != bb[1]);
++	igt_assert(bb[2] != bb[3]);
++
++	put_ahnd(ahnd);
++
++	gem_pool_dump();
 +}
 +
-+bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap)
-+{
-+	return __gem_engine_has_capability(i915, engine, "known_capabilities", cap);
-+}
-+
-+bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine)
-+{
-+	if (engine->class != I915_ENGINE_CLASS_COPY)
-+		return false;
-+
-+	if (!gem_engine_has_known_capability(i915, engine->name, "block_copy"))
-+		return intel_gen(intel_get_drm_devid(i915)) >= 12;
-+
-+	return gem_engine_has_capability(i915, engine->name, "block_copy");
-+}
-+
- uint32_t gem_engine_mmio_base(int i915, const char *engine)
- {
- 	unsigned int mmio = 0;
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index b413aa8aba..987f2bf944 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -133,6 +133,11 @@ int gem_engine_property_printf(int i915, const char *engine, const char *attr,
+ struct allocators {
+ 	const char *name;
+ 	uint8_t type;
+@@ -790,6 +844,10 @@ igt_main
+ 	igt_subtest_f("execbuf-with-allocator")
+ 		execbuf_with_allocator(fd);
  
- uint32_t gem_engine_mmio_base(int i915, const char *engine);
- 
-+bool gem_engine_has_capability(int i915, const char *engine, const char *cap);
-+bool gem_engine_has_known_capability(int i915, const char *engine, const char *cap);
++	igt_describe("Verifies creating and executing bb from gem pool");
++	igt_subtest_f("gem-pool")
++		gem_pool(fd);
 +
-+bool gem_engine_can_block_copy(int i915, const struct intel_execution_engine2 *engine);
-+
- void dyn_sysfs_engines(int i915, int engines, const char *file,
- 		       void (*test)(int i915, int engine));
- 
+ 	igt_fixture
+ 		close(fd);
+ }
 -- 
 2.32.0
