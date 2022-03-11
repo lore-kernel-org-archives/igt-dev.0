@@ -1,27 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
- [IPv6:2607:f8b0:4864:20::72b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C53D10E953
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 12:23:21 +0000 (UTC)
-Received: by mail-qk1-x72b.google.com with SMTP id h196so6781169qke.12
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 04:23:21 -0800 (PST)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB2EA10E959
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 12:30:41 +0000 (UTC)
+Date: Fri, 11 Mar 2022 13:30:38 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YitA7pBc7XG0gVbF@kamilkon-DESK1>
+References: <20220310071008.10811-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-References: <20220311070309.3281660-1-mastanx.katragadda@intel.com>
- <Yis+nkpghfj7Qksp@kamilkon-DESK1>
-In-Reply-To: <Yis+nkpghfj7Qksp@kamilkon-DESK1>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Fri, 11 Mar 2022 12:22:54 +0000
-Message-ID: <CAM0jSHP1_jXfpqPHiu3uVpY6=L=YS4ADRvf-A3F5kz1FkKrJmg@mail.gmail.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Mastan Katragadda <mastanx.katragadda@intel.com>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
- Matthew Auld <matthew.auld@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [i-g-t,
- v2] igt/gem_mmap_offset: Adding subtest oob_read
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220310071008.10811-1-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v5] IGT cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,118 +20,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 11 Mar 2022 at 12:20, Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Dnia 2022-03-11 at 12:33:09 +0530, Mastan Katragadda napisa=C5=82(a):
-> > This test will Detect A missing bounds check in vm_access().
-> ---------------- ^
-> > can lead to an out-of-bounds read or write in the adjacent memory area.
-> >
->
-> Commit description looks like copy-paste, mixed. Maybe just
-> s/This test will Detect A/Detect a/
->
-> and remove dot after "vm_access()."
->
-> > Changes Since V1:
-> >       - Incorporated minor changes as suggested in feedback [Chris/Matt=
-hew].
-> >         - Fixed build failures.
-> >
-> > Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
-> > Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> > Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> > Cc: Matthew Auld <matthew.auld@intel.com>
-> > ---
-> >  tests/i915/gem_mmap_offset.c | 44 ++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 44 insertions(+)
-> >
-> > diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.=
-c
-> > index 8148f0a2..c8fab18b 100644
-> > --- a/tests/i915/gem_mmap_offset.c
-> > +++ b/tests/i915/gem_mmap_offset.c
-> > @@ -22,6 +22,8 @@
-> >   */
-> >
-> >  #include <errno.h>
-> > +#include <unistd.h>
-> > +#include <fcntl.h>
-> >  #include <pthread.h>
-> >  #include <signal.h>
-> >  #include <stdatomic.h>
-> > @@ -289,6 +291,44 @@ static void *memchr_inv(const void *s, int c, size=
-_t n)
-> >       return NULL;
-> >  }
-> >
-> > +static void
-> > +test_oob_read(int i915)
-> > +{
-> > +     unsigned char read_buf[4096];
-> > +     uint32_t handle;
-> > +     uintptr_t addr;
-> > +     int memfd;
-> > +     int ret;
-> > +
-> > +     handle =3D gem_create(i915, 4096);
->
-> What if page size is bigger ? You ask for only 4096 bytes, but
-> you can get more depending on page size.
+Hi Nidhi,
 
-AFAIK this will always just give us system memory.
+please put "KMS" in your subject, like:
+IGT KMS cleanup
 
->
-> Regards,
-> Kamil Konieczny
->
-> > +
-> > +     for_each_mmap_offset_type(i915, t) {
-> > +             uint32_t *ptr;
-> > +
-> > +             ptr =3D __mmap_offset(i915, handle, 0, 4096,
-> > +                                 PROT_READ | PROT_WRITE,
-> > +                                 t->type);
-> > +             if (!ptr)
-> > +                     continue;
-> > +
-> > +             memfd =3D open("/proc/self/mem", O_RDWR);
-> > +             igt_require_f(memfd !=3D -1, "/proc/self/mem\n");
-> > +
-> > +             addr =3D (uintptr_t)ptr + 4092;
-> > +             ret =3D lseek(memfd, addr, SEEK_SET);
-> > +             igt_assert_f(ret !=3D -1, "lseek failed\n");
-> > +
-> > +             /* Triggering the buf (out of bound read) */
-> > +             ret =3D read(memfd, read_buf, 8);
-> > +             igt_assert(ret =3D=3D -1 && errno =3D=3D  EIO);
-> > +
-> > +             munmap(ptr, 4096);
-> > +             close(memfd);
-> > +     }
-> > +
-> > +     gem_close(i915, handle);
-> > +}
-> > +
-> >  static void test_ptrace(int i915)
-> >  {
-> >       const unsigned int SZ =3D 3 * 4096;
-> > @@ -692,6 +732,10 @@ igt_main
-> >       igt_subtest_f("pf-nonblock")
-> >               pf_nonblock(i915);
-> >
-> > +     igt_describe("Check Linear Out-Of-Bound in Vm_access");
-> > +     igt_subtest("oob-read")
-> > +             test_oob_read(i915);
-> > +
-> >       igt_subtest_with_dynamic("ptrace")
-> >               test_ptrace(i915);
-> >
-> > --
-> > 2.25.1
-> >
+Dnia 2022-03-10 at 12:40:08 +0530, Nidhi Gupta napisał(a):
+> Before starting the next subtest, clean up the states to default
+> values, those are assumed by other tests.
+> 
+> v2: And also before running the subtest we need to sanitize the system state
+
+s/And also before/Before/
+
+> to default, since we can't trust the state of previous subtest, used
+> igt_display_reset() to sanitize the state. (Bhanuprakash Modem)
+> 
+> v3: Added dynamic subtests (Karthik)
+
+Please do not mix cleanup with addition of new tests. Send it with
+separate patch.
+
+> 
+> Below tests are modified:
+> 	tests/kms_concurrent.c
+> 	tests/kms_sequence.c
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>  tests/kms_concurrent.c | 43 +++++++++++++++++++++---------------------
+>  tests/kms_sequence.c   | 11 +++++++----
+>  2 files changed, 28 insertions(+), 26 deletions(-)
+> 
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index 1b8f4b04..5efe422b 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
+>  	}
+>  
+>  	/* reset the constraint on the pipe */
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>  
+>  	free(data->plane);
+>  	data->plane = NULL;
+> @@ -278,35 +279,30 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+>  static void
+>  run_test(data_t *data, enum pipe pipe, igt_output_t *output)
+>  {
+> -	int connected_outs;
+> -	int n_planes = data->display.pipes[pipe].n_planes;
+> +	int n_planes;
+> +
+> +	igt_display_reset(&data->display);
+> +	n_planes = data->display.pipes[pipe].n_planes;
+>  
+>  	if (!opt.user_seed)
+>  		opt.seed = time(NULL);
+>  
+> -	connected_outs = 0;
+> -	for_each_valid_output_on_pipe(&data->display, pipe, output) {
+> -		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
+> -			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+> -
+> -		srand(opt.seed);
+> +	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
+> +		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+>  
+> -		test_init(data, pipe, n_planes, output);
+> -
+> -		igt_fork(child, 1) {
+> -			test_plane_position_with_output(data, pipe, n_planes, output);
+> -		}
+> +	srand(opt.seed);
+>  
+> -		test_resolution_with_output(data, pipe, n_planes, output);
+> +	test_init(data, pipe, n_planes, output);
+>  
+> -		igt_waitchildren();
+> +	igt_fork(child, 1) {
+> +		test_plane_position_with_output(data, pipe, n_planes, output);
+> +	}
+>  
+> -		test_fini(data, pipe, n_planes, output);
+> +	test_resolution_with_output(data, pipe, n_planes, output);
+>  
+> -		connected_outs++;
+> -	}
+> +	igt_waitchildren();
+>  
+> -	igt_skip_on(connected_outs == 0);
+> +	test_fini(data, pipe, n_planes, output);
+>  }
+>  
+>  static void
+> @@ -316,6 +312,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+>  
+>  	igt_fixture {
+>  		int valid_tests = 0;
+> +		igt_display_reset(&data->display);
+>  
+>  		igt_require_pipe(&data->display, pipe);
+>  		igt_require(data->display.pipes[pipe].n_planes > 0);
+> @@ -328,9 +325,11 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+>  
+>  	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+>  		     "resolution.");
+> -	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe))
+> +	igt_subtest_with_dynamic("mode-setting-concurrently-with-multiple-planes-and-screen-resolution") {
+
+Do you really need such long name of subtest here ?
+
+>  		for_each_valid_output_on_pipe(&data->display, pipe, output)
+> -			run_test(data, pipe, output);
+> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +				run_test(data, pipe, output);
+> +	}
+>  }
+>  
+>  static int opt_handler(int option, int option_index, void *input)
+> diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+> index 9c287480..569ea1d9 100644
+> --- a/tests/kms_sequence.c
+> +++ b/tests/kms_sequence.c
+> @@ -74,9 +74,12 @@ static double elapsed(const struct timespec *start,
+>  static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+>  {
+>  	drmModeModeInfo *mode;
+> -	igt_display_t *display = &data->display;
+>  	igt_plane_t *primary;
+> -
+> +	igt_display_t *display;
+> +	
+> +	igt_display_reset(&data->display);
+> +	display = &data->display;
+> +	
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, data->pipe);
+>  
+> @@ -109,8 +112,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+>  	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>  	igt_plane_set_fb(primary, NULL);
+>  
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> -	igt_display_commit(display);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>  }
+>  
+>  static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
+> -- 
+> 2.26.2
+
+Regards,
+Kamil
