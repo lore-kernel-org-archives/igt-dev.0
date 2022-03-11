@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
- [IPv6:2607:f8b0:4864:20::72e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0972F10E923
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 11:30:01 +0000 (UTC)
-Received: by mail-qk1-x72e.google.com with SMTP id h196so6692774qke.12
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 03:30:00 -0800 (PST)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B86F310E920
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 11:30:22 +0000 (UTC)
+Date: Fri, 11 Mar 2022 12:30:18 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Apoorva Singh <apoorva1.singh@intel.com>,
+ Arjun Melkaveri <arjun.melkaveri@intel.com>
+Message-ID: <YisyyrfBQScaZSpI@zkempczy-mobl2>
+References: <20220310071529.61930-1-zbigniew.kempczynski@intel.com>
+ <20220310071529.61930-4-zbigniew.kempczynski@intel.com>
+ <YisvLNAmPsQnlF1j@kamilkon-DESK1>
 MIME-Version: 1.0
-References: <20220311070309.3281660-1-mastanx.katragadda@intel.com>
-In-Reply-To: <20220311070309.3281660-1-mastanx.katragadda@intel.com>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Fri, 11 Mar 2022 11:29:33 +0000
-Message-ID: <CAM0jSHOMjVtHAuZJ=+upQhtATcw1yYmiH1wX4tss41nOnP8asQ@mail.gmail.com>
-To: Mastan Katragadda <mastanx.katragadda@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [i-g-t,
- v2] igt/gem_mmap_offset: Adding subtest oob_read
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YisvLNAmPsQnlF1j@kamilkon-DESK1>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/6] lib/i915: Introduce library
+ intel_mocs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,112 +25,179 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 11 Mar 2022 at 07:02, Mastan Katragadda
-<mastanx.katragadda@intel.com> wrote:
->
-> This test will Detect A missing bounds check in vm_access().
-> can lead to an out-of-bounds read or write in the adjacent memory area.
->
-> Changes Since V1:
->         - Incorporated minor changes as suggested in feedback [Chris/Matthew].
->         - Fixed build failures.
->
-> Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> ---
->  tests/i915/gem_mmap_offset.c | 44 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 44 insertions(+)
->
-> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> index 8148f0a2..c8fab18b 100644
-> --- a/tests/i915/gem_mmap_offset.c
-> +++ b/tests/i915/gem_mmap_offset.c
-> @@ -22,6 +22,8 @@
->   */
->
->  #include <errno.h>
-> +#include <unistd.h>
-> +#include <fcntl.h>
+On Fri, Mar 11, 2022 at 12:14:52PM +0100, Kamil Konieczny wrote:
+> Hi Zbigniew,
+> 
+> Dnia 2022-03-10 at 08:15:26 +0100, Zbigniew Kempczyński napisał(a):
+> > From: Apoorva Singh <apoorva1.singh@intel.com>
+> > 
+> > Add new library intel_mocs for mocs settings.
+> > 
+> > Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> > Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > ---
+> >  lib/i915/intel_mocs.c | 56 +++++++++++++++++++++++++++++++++++++++++++
+> >  lib/i915/intel_mocs.h | 25 +++++++++++++++++++
+> >  lib/meson.build       |  1 +
+> >  3 files changed, 82 insertions(+)
+> >  create mode 100644 lib/i915/intel_mocs.c
+> >  create mode 100644 lib/i915/intel_mocs.h
+> > 
+> > diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
+> > new file mode 100644
+> > index 0000000000..63ead1118f
+> > --- /dev/null
+> > +++ b/lib/i915/intel_mocs.c
+> > @@ -0,0 +1,56 @@
+> > +// SPDX-License-Identifier: MIT
+> > +/*
+> > + * Copyright © 2022 Intel Corporation
+> > + */
+> > +
+> > +#include "igt.h"
+> > +#include "i915/gem.h"
+> > +#include "intel_mocs.h"
+> > +
+> > +static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
+> > +{
+> > +	uint16_t devid = intel_get_drm_devid(fd);
+> > +
+> > +	/*
+> > +	 * Gen >= 12 onwards don't have a setting for PTE,
+> > +	 * so using I915_MOCS_PTE as mocs index may leads to
+> > +	 * some undefined MOCS behavior.
+> > +	 * This helper function is providing current UC as well
+> > +	 * as WB MOCS index based on platform.
+> > +	 */
+> > +	if (IS_DG1(devid)) {
+> > +		mocs->uc_index = DG1_MOCS_UC_IDX;
+> > +		mocs->wb_index = DG1_MOCS_WB_IDX;
+> > +	} else if (IS_DG2(devid)) {
+> > +		mocs->uc_index = DG2_MOCS_UC_IDX;
+> > +		mocs->wb_index = DG2_MOCS_WB_IDX;
+> > +
+> > +	} else if (IS_GEN12(devid)) {
+> > +		mocs->uc_index = GEN12_MOCS_UC_IDX;
+> > +		mocs->wb_index = GEN12_MOCS_WB_IDX;
+> > +	} else {
+> > +		mocs->uc_index = I915_MOCS_PTE;
+> > +		mocs->wb_index = I915_MOCS_CACHED;
+> > +		igt_info("C1\n");
+> 
+> Remove this or make it igt_debug.
 
-Nit: These should be kept sorted.
+Eh, thanks for spotting that.
 
->  #include <pthread.h>
->  #include <signal.h>
->  #include <stdatomic.h>
-> @@ -289,6 +291,44 @@ static void *memchr_inv(const void *s, int c, size_t n)
->         return NULL;
->  }
->
-> +static void
-> +test_oob_read(int i915)
-> +{
-> +       unsigned char read_buf[4096];
-> +       uint32_t handle;
-> +       uintptr_t addr;
-> +       int memfd;
-> +       int ret;
-> +
-> +       handle = gem_create(i915, 4096);
-> +
-> +       for_each_mmap_offset_type(i915, t) {
-> +               uint32_t *ptr;
-> +
-> +               ptr = __mmap_offset(i915, handle, 0, 4096,
-> +                                   PROT_READ | PROT_WRITE,
-> +                                   t->type);
-> +               if (!ptr)
-> +                       continue;
-> +
-> +               memfd = open("/proc/self/mem", O_RDWR);
-> +               igt_require_f(memfd != -1, "/proc/self/mem\n");
-> +
-> +               addr = (uintptr_t)ptr + 4092;
-> +               ret = lseek(memfd, addr, SEEK_SET);
-> +               igt_assert_f(ret != -1, "lseek failed\n");
-> +
-> +               /* Triggering the buf (out of bound read) */
-> +               ret = read(memfd, read_buf, 8);
-> +               igt_assert(ret == -1 && errno ==  EIO);
-> +
-> +               munmap(ptr, 4096);
-> +               close(memfd);
-> +       }
-> +
-> +       gem_close(i915, handle);
-> +}
-> +
->  static void test_ptrace(int i915)
->  {
->         const unsigned int SZ = 3 * 4096;
-> @@ -692,6 +732,10 @@ igt_main
->         igt_subtest_f("pf-nonblock")
->                 pf_nonblock(i915);
->
-> +       igt_describe("Check Linear Out-Of-Bound in Vm_access");
+> 
+> > +	}
+> > +}
+> > +
+> > +/* BitField [6:1] represents index to MOCS Tables
+> > + * BitField [0] represents Encryption/Decryption
+> > + */
+> > +
+> > +uint8_t intel_get_wb_mocs(int fd)
+> > +{
+> > +	struct drm_i915_mocs_index mocs;
+> > +
+> > +	get_mocs_index(fd, &mocs);
+> > +	return mocs.wb_index << 1;
+> > +}
+> > +
+> > +uint8_t intel_get_uc_mocs(int fd)
+> > +{
+> > +	struct drm_i915_mocs_index mocs;
+> > +
+> > +	get_mocs_index(fd, &mocs);
+> > +	return mocs.uc_index << 1;
+> > +}
+> > diff --git a/lib/i915/intel_mocs.h b/lib/i915/intel_mocs.h
+> > new file mode 100644
+> > index 0000000000..c05569f426
+> > --- /dev/null
+> > +++ b/lib/i915/intel_mocs.h
+> > @@ -0,0 +1,25 @@
+> > +/* SPDX-License-Identifier: MIT */
+> > +/*
+> > + * Copyright © 2022 Intel Corporation
+> > + */
+> > +
+> > +#ifndef _INTEL_MOCS_H
+> > +#define _INTEL_MOCS_H
+> > +
+> > +#define DG1_MOCS_UC_IDX			1
+> > +#define DG1_MOCS_WB_IDX			5
+> > +#define DG2_MOCS_UC_IDX			1
+> > +#define DG2_MOCS_WB_IDX			3
+> > +#define GEN12_MOCS_UC_IDX			3
+> > +#define GEN12_MOCS_WB_IDX			2
+> 
+> Do we need this here ? Can it be placed in lib implementation
+> and hided there ?
 
-Odd capitalisation here. No need to resend just for that, I can fix up
-when pushing. Can you just login and hit the retest button here[1],
-just to ensure this now passes with the kernel changes merged? Or
-alternatively I guess just re-send to trigger a new CI run.
+Agree, exporting this is not necessary.
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> 
+> > +#define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
+> > +#define XY_CTRL_SURF_COPY_BLT_MOCS_SHIFT	25
+> 
+> Same here, there is no uses for this constants. They can stay
+> if you can tell they will be used in near future.
 
-[1] https://patchwork.freedesktop.org/series/101187/
+Agree.
 
-> +       igt_subtest("oob-read")
-> +               test_oob_read(i915);
-> +
->         igt_subtest_with_dynamic("ptrace")
->                 test_ptrace(i915);
->
-> --
-> 2.25.1
->
+> 
+> > +
+> > +struct drm_i915_mocs_index {
+> > +	uint8_t uc_index;
+> > +	uint8_t wb_index;
+> > +};
+> > +
+> > +uint8_t intel_get_wb_mocs(int fd);
+> > +uint8_t intel_get_uc_mocs(int fd);
+> 
+> These helpers returns uc and wb index, so maybe struct can be
+> moved to .c implementation ? So we can keep headers clean. It is
+> up to you, I do not insist on changes in header file.
+
+You're right, if we can hide implementation details we should do this.
+
+Will send in v6.
+
+> 
+> > +#endif /* _INTEL_MOCS_H */
+> > diff --git a/lib/meson.build b/lib/meson.build
+> > index 3e43316d1e..a5fe91dc99 100644
+> > --- a/lib/meson.build
+> > +++ b/lib/meson.build
+> > @@ -11,6 +11,7 @@ lib_sources = [
+> >  	'i915/gem_mman.c',
+> >  	'i915/gem_vm.c',
+> >  	'i915/intel_memory_region.c',
+> > +	'i915/intel_mocs.c',
+> >  	'igt_collection.c',
+> >  	'igt_color_encoding.c',
+> >  	'igt_debugfs.c',
+> > -- 
+> > 2.32.0
+> > 
+> 
+> With that fixed you can add my r-b tag,
+
+Ok, will hide implementation and resend with r-b.
+
+Thank you for the review.
+
+--
+Zbigniew
+ 
+
+> 
+> Regards,
+> Kamil
