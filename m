@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com
- [IPv6:2a00:1450:4864:20::431])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3868310E9B0
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 14:13:19 +0000 (UTC)
-Received: by mail-wr1-x431.google.com with SMTP id u1so13126013wrg.11
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 06:13:19 -0800 (PST)
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com
+ [IPv6:2a00:1450:4864:20::42d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D73A10E9BA
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 14:13:23 +0000 (UTC)
+Received: by mail-wr1-x42d.google.com with SMTP id j17so13228355wrc.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 06:13:23 -0800 (PST)
 From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Fri, 11 Mar 2022 15:12:49 +0100
-Message-Id: <20220311141300.60629-2-tomeu.vizoso@collabora.com>
+Date: Fri, 11 Mar 2022 15:12:53 +0100
+Message-Id: <20220311141300.60629-6-tomeu.vizoso@collabora.com>
 In-Reply-To: <20220311141300.60629-1-tomeu.vizoso@collabora.com>
 References: <20220311141300.60629-1-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 01/12] ci: Run container jobs only in
- packet.net runners
+Subject: [igt-dev] [PATCH v3 05/12] ci: Install ci-templates in Debian
+ container
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,66 +29,29 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Hetzner runners, we get the following error:
-
-error running container: error creating container for [/bin/sh -c apt-get update]: time="2022-03-09T11:17:43Z" level=warning msg="signal: killed"
-time="2022-03-09T11:17:43Z" level=error msg="container_linux.go:346: starting container process caused \"process_linux.go:297: applying cgroup configuration for process caused \\\"mountpoint for cgroup not found\\\"\"\n"
-container_linux.go:346: starting container process caused "process_linux.go:297: applying cgroup configuration for process caused \"mountpoint for cgroup not found\"": exit status 1
-Error: error building at STEP "RUN apt-get update": error while running runtime: exit status 1
+We will need it to store artifacts in MinIO.
 
 Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 ---
- .gitlab-ci.yml | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ ci/Dockerfile.build-debian | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index fd0ca7cbdfbb..9f252836c578 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -29,6 +29,8 @@ build-containers:build-debian:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-minimal build-debian-minimal
-     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian build-debian
-+  tags:
-+    - packet.net
+diff --git a/ci/Dockerfile.build-debian b/ci/Dockerfile.build-debian
+index 52d7c42d1325..b6fc4773fcff 100644
+--- a/ci/Dockerfile.build-debian
++++ b/ci/Dockerfile.build-debian
+@@ -16,8 +16,12 @@ RUN apt-get install -y \
+ 			libjson-c-dev \
+ 			libcurl4-openssl-dev \
+ 			python3-docutils \
++			python3-pip \
+ 			valgrind \
+ 			peg \
++			git \
+ 			libdrm-intel1
  
- build-containers:build-debian-armhf:
-   stage: build-containers
-@@ -36,6 +38,8 @@ build-containers:build-debian-armhf:
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-armhf build-debian-armhf
-+  tags:
-+    - packet.net
- 
- build-containers:build-debian-arm64:
-   stage: build-containers
-@@ -43,6 +47,8 @@ build-containers:build-debian-arm64:
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-arm64 build-debian-arm64
-+  tags:
-+    - packet.net
- 
- build-containers:build-debian-mips:
-   stage: build-containers
-@@ -50,6 +56,8 @@ build-containers:build-debian-mips:
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-mips build-debian-mips
-+  tags:
-+    - packet.net
- 
- build-containers:build-fedora:
-   stage: build-containers
-@@ -57,6 +65,8 @@ build-containers:build-fedora:
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-fedora build-fedora
-+  tags:
-+    - packet.net
- 
- #################### BUILD #########################
- 
+ RUN apt-get clean
++
++RUN pip3 install git+http://gitlab.freedesktop.org/freedesktop/ci-templates@34f4ade99434043f88e164933f570301fd18b125
 -- 
 2.31.1
