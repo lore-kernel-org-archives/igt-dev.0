@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2058.outbound.protection.outlook.com [40.107.244.58])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F85710E9E2
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 19:45:13 +0000 (UTC)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2074.outbound.protection.outlook.com [40.107.220.74])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFB3210EA64
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Mar 2022 19:45:16 +0000 (UTC)
 From: David Zhang <dingchen.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 11 Mar 2022 14:44:51 -0500
-Message-ID: <20220311194452.291714-4-dingchen.zhang@amd.com>
+Date: Fri, 11 Mar 2022 14:44:52 -0500
+Message-ID: <20220311194452.291714-5-dingchen.zhang@amd.com>
 In-Reply-To: <20220311194452.291714-1-dingchen.zhang@amd.com>
 References: <20220311194452.291714-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH v2 3/4] lib/igt_amd: add helpers to check PSR state
+Subject: [igt-dev] [PATCH v2 4/4] tests/amdgpu/amd_psr: add PSR-SU MPO
+ subtest case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,19 +26,28 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 [why]
-For AMDGPU devices, we'd check the PSR state via reading from the
-debugfs interface for a given eDP connector, where the debugfs
-interface path locates at
-  <debugfs_root>/dri/0/eDP-X/psr_state
-where 'X' is the eDP connector index.
+We need a test case to imitate the multiplane overlay (MPO) video
+playback use case and check PSR-SU enablement during test run.
 
 [how]
-define and add the helper to check if PSR state debugfs interface
-is supported in driver, and the helper to read PSR state from the
-debugfs interface.
+The test run only works for PSR-SU capable sink device and skip for
+any non-eDP or non-PSR-SU connector or kernel driver not supporting
+PSR-SU feature.
 
-In addition, the helper to check debugfs supported is generic and
-can be used to replacing the existed redundant codes.
+To emulate the video playback and MPO scenario, we use overlay plane
+w/ size of addressable and primary plane w/ size of quater of overlay
+acting as video playback region.
+
+Create couple of framebuffers w/ size of primary plane and with
+the pattern of vertical color strip on different position on the
+FB. During test run, we flip the primary framebuffer and expect the
+visual effect of moving strip within the region of primary plane
+acting as video playback. The primary plane during test run is not
+moving position or resizing.
+
+changes in v2
+----------------
+* move #define statement to top of the source file.
 
 Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Cc: Harry Wentland <harry.wentland@amd.com>
@@ -47,276 +57,257 @@ Cc: Wayne Lin <wayne.lin@amd.com>
 
 Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 ---
- lib/igt_amd.c          | 142 +++++++++++++++++------------------------
- lib/igt_amd.h          |   3 +
- tests/amdgpu/amd_psr.c |  13 +---
- 3 files changed, 65 insertions(+), 93 deletions(-)
+ lib/igt_amd.h          |  25 ++++++++
+ tests/amdgpu/amd_psr.c | 138 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 163 insertions(+)
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 577a8612..0e861ab1 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -251,11 +251,15 @@ bool igt_amd_is_tiled(uint64_t modifier)
- }
- 
- /**
-- * igt_amd_output_has_dsc: check if connector has dsc debugfs entry
-- * @drm_fd: DRM file descriptor
-- * @connector_name: The connector's name, on which we're reading the status
-+ * @brief generic helper to check if the debugfs entry of given connector has the
-+ *        debugfs interface defined.
-+ * @param drm_fd: DRM file descriptor
-+ * @param connector_name: The connector's name, on which we're reading the status
-+ * @param interface_name: The debugfs interface name to check
-+ * @return true if <debugfs_root>/connector_name/interface_name exists and defined
-+ * @return false otherwise
-  */
--static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
-+static bool igt_amd_output_has_debugfs(int drm_fd, char *connector_name, const char *interface_name)
- {
- 	int fd;
- 	int res;
-@@ -267,9 +271,9 @@ static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
- 		return false;
- 	}
- 
--	res = fstatat(fd, DEBUGFS_DSC_CLOCK_EN , &stat, 0);
-+	res = fstatat(fd, interface_name, &stat, 0);
- 	if (res != 0) {
--		igt_info("%s debugfs not supported\n", DEBUGFS_DSC_CLOCK_EN);
-+		igt_info("output %s: %s debugfs not supported\n", connector_name, interface_name);
- 		close(fd);
- 		return false;
- 	}
-@@ -278,6 +282,16 @@ static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
- 	return true;
- }
- 
-+/**
-+ * igt_amd_output_has_dsc: check if connector has dsc debugfs entry
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ */
-+static bool igt_amd_output_has_dsc(int drm_fd, char *connector_name)
-+{
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_DSC_CLOCK_EN);
-+}
-+
- /**
-  * is_dp_dsc_supported: Checks if connector is DSC capable
-  * @display: A pointer to an #igt_display_t structure
-@@ -707,25 +721,7 @@ int igt_amd_read_dsc_param_slice_bpg(int drm_fd, char *connector_name)
-  */
- static bool igt_amd_output_has_hpd(int drm_fd, char *connector_name)
- {
--        int fd;
--        int res;
--        struct stat stat;
--
--        fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
--        if (fd < 0) {
--                igt_info("output %s: debugfs not found\n", connector_name);
--                return false;
--        }
--
--        res = fstatat(fd, DEBUGFS_HPD_TRIGGER, &stat, 0);
--        if (res != 0) {
--                igt_info("%s debugfs not supported\n", DEBUGFS_HPD_TRIGGER);
--                close(fd);
--                return false;
--        }
--
--        close(fd);
--        return true;
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_HPD_TRIGGER);
- }
- 
- /**
-@@ -872,25 +868,7 @@ void igt_amd_write_link_settings(
-  */
- bool igt_amd_output_has_link_settings(int drm_fd, char *connector_name)
- {
--	int fd;
--	int res;
--	struct stat stat;
--
--	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
--	if (fd < 0) {
--		igt_info("output %s: debugfs not found\n", connector_name);
--		return false;
--	}
--
--	res = fstatat(fd, DEBUGFS_DP_LINK_SETTINGS, &stat, 0);
--	if (res != 0) {
--		igt_info("output %s: %s debugfs not supported\n", connector_name, DEBUGFS_DP_LINK_SETTINGS);
--		close(fd);
--		return false;
--	}
--
--	close(fd);
--	return true;
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_DP_LINK_SETTINGS);;
- }
- 
- /*
-@@ -984,25 +962,7 @@ void igt_amd_write_ilr_setting(
-  */
- bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name)
- {
--	int fd;
--	int res;
--	struct stat stat;
--
--	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
--	if (fd < 0) {
--		igt_info("output %s: debugfs not found\n", connector_name);
--		return false;
--	}
--
--	res = fstatat(fd, DEBUGFS_EDP_ILR_SETTING, &stat, 0);
--	if (res != 0) {
--		igt_info("output %s: %s debugfs not supported\n", connector_name, DEBUGFS_EDP_ILR_SETTING);
--		close(fd);
--		return false;
--	}
--
--	close(fd);
--	return true;
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_ILR_SETTING);;
- }
- 
- /**
-@@ -1012,25 +972,7 @@ bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name)
-  */
- bool igt_amd_output_has_psr_cap(int drm_fd, char *connector_name)
- {
--	int fd;
--	int res;
--	struct stat stat;
--
--	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
--	if (fd < 0) {
--		igt_info("output %s: debugfs not found\n", connector_name);
--		return false;
--	}
--
--	res = fstatat(fd, DEBUGFS_EDP_PSR_CAP, &stat, 0);
--	if (res != 0) {
--		igt_info("output %s: %s debugfs not supported\n", connector_name, DEBUGFS_EDP_PSR_CAP);
--		close(fd);
--		return false;
--	}
--
--	close(fd);
--	return true;
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_PSR_CAP);
- }
- 
- /**
-@@ -1097,3 +1039,39 @@ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mod
- 	else
- 		return strstr(buf, "Driver support: yes [0x01]");
- }
-+
-+/**
-+ * igt_amd_output_has_psr_state: check if eDP connector has psr_state debugfs entry
-+ * @drm_fd: DRM file descriptor
-+ * @connector_name: The connector's name, on which we're reading the status
-+ */
-+bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name)
-+{
-+	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_EDP_PSR_STATE);
-+}
-+
-+/**
-+ * @brief Read PSR State from debugfs interface
-+ * @param drm_fd DRM file descriptor
-+ * @param connector_name The connector's name, on which we're reading the status
-+ * @return PSR state as integer
-+ */
-+int igt_amd_read_psr_state(int drm_fd, char *connector_name)
-+{
-+	char buf[4];
-+	int fd, ret;
-+
-+	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
-+	if (fd < 0) {
-+		igt_info("Couldn't open connector %s debugfs directory\n", connector_name);
-+		return false;
-+	}
-+
-+	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_PSR_STATE, buf, sizeof(buf));
-+	close(fd);
-+
-+	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
-+		     DEBUGFS_EDP_PSR_STATE, connector_name);
-+
-+	return strtol(buf, NULL, 10);
-+}
 diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 6e465817..f87c1991 100644
+index f87c1991..e4e12ce5 100644
 --- a/lib/igt_amd.h
 +++ b/lib/igt_amd.h
-@@ -47,6 +47,7 @@
- #define DEBUGFS_EDP_ILR_SETTING "ilr_setting"
- #define MAX_SUPPORTED_ILR 8
- #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
-+#define DEBUGFS_EDP_PSR_STATE	"psr_state"
+@@ -90,6 +90,31 @@ enum dc_link_training_type {
+ 	LINK_TRAINING_NO_PATTERN
+ };
  
- enum amd_dsc_clock_force {
- 	DSC_AUTOMATIC = 0,
-@@ -143,5 +144,7 @@ bool igt_amd_output_has_ilr_setting(int drm_fd, char *connector_name);
- bool igt_amd_output_has_psr_cap(int drm_fd, char *connector_name);
- bool igt_amd_psr_support_sink(int drm_fd, char *connector_name, enum psr_mode mode);
- bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mode);
-+bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
-+int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
- 
- #endif /* IGT_AMD_H */
++/*
++ * enumeration of PSR STATE below should be aligned to the upstreamed
++ * amdgpu kernel driver 'enum dc_psr_state' in dc_type.h
++ */
++enum amdgpu_psr_state {
++	PSR_STATE0 = 0x0,
++	PSR_STATE1,
++	PSR_STATE1a,
++	PSR_STATE2,
++	PSR_STATE2a,
++	PSR_STATE2b,
++	PSR_STATE3,
++	PSR_STATE3Init,
++	PSR_STATE4,
++	PSR_STATE4a,
++	PSR_STATE4b,
++	PSR_STATE4c,
++	PSR_STATE4d,
++	PSR_STATE5,
++	PSR_STATE5a,
++	PSR_STATE5b,
++	PSR_STATE5c,
++	PSR_STATE_INVALID = 0xFF
++};
++
+ uint32_t igt_amd_create_bo(int fd, uint64_t size);
+ void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
+ unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
 diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 732eab25..88e824c3 100644
+index 88e824c3..d80820c8 100644
 --- a/tests/amdgpu/amd_psr.c
 +++ b/tests/amdgpu/amd_psr.c
-@@ -24,6 +24,7 @@
- #include "igt.h"
- #include "igt_core.h"
- #include "igt_kms.h"
-+#include "igt_amd.h"
- #include <stdint.h>
- #include <fcntl.h>
- #include <xf86drmMode.h>
-@@ -34,7 +35,6 @@
+@@ -32,6 +32,7 @@
+ /* hardware requirements:
+  * 1. eDP panel that supports PSR (multiple panel can be connected at the same time)
+  * 2. Optional DP display for testing a regression condition (setting crtc to null)
++ * 3. eDP panel that supports PSR-SU
   */
  IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP displays");
  
--#define DEBUGFS_PSR_STATE "psr_state"
- /* After a full update, a few fast updates are necessary for PSR to be enabled */
+@@ -39,22 +40,39 @@ IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP display
  #define N_FLIPS 6
  /* DMCUB takes some time to actually enable PSR. Worst case delay is 4 seconds */
-@@ -108,8 +108,6 @@ static int check_conn_type(data_t *data, uint32_t type) {
+ #define PSR_SETTLE_DELAY 4
++/* # of framebuffers for PSR-SU MPO test case to emulate video playback */
++#ifndef N_MPO_TEST_RECT_FB
++#define N_MPO_TEST_RECT_FB 20
++#endif
+ 
+ /* Common test data. */
+ typedef struct data {
+         igt_display_t display;
+         igt_plane_t *primary;
+         igt_plane_t *cursor;
++	igt_plane_t *overlay;
+         igt_output_t *output;
+         igt_pipe_t *pipe;
+         igt_pipe_crc_t *pipe_crc;
+         drmModeModeInfo *mode;
+         enum pipe pipe_id;
+         int fd;
++	int debugfs_fd;
+         int w;
+         int h;
+ } data_t;
+ 
++static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
++		             double r, double g, double b, double a)
++{
++	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
++
++	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
++	igt_paint_color_alpha(cr, x, y, w, h, r, g, b, a);
++
++	igt_put_cairo_ctx(cr);
++}
++
+ /* Common test setup. */
+ static void test_init(data_t *data)
+ {
+@@ -68,9 +86,11 @@ static void test_init(data_t *data)
+ 
+         data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
+         igt_require(data->output);
++	igt_info("output %s\n", data->output->name);
+ 
+         data->mode = igt_output_get_mode(data->output);
+         igt_assert(data->mode);
++	kmstest_dump_mode(data->mode);
+ 
+         data->primary =
+                 igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+@@ -78,6 +98,9 @@ static void test_init(data_t *data)
+         data->cursor =
+                 igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
+ 
++	data->overlay =
++		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
++
+         data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id, "auto");
+ 
+         igt_output_set_pipe(data->output, data->pipe_id);
+@@ -181,6 +204,114 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+ 	test_fini(data);
  }
  
- static void run_check_psr(data_t *data, bool test_null_crtc) {
--	char buf[8];
--	char *connector_name;
- 	int fd, edp_idx, dp_idx, ret, i, psr_state;
- 	igt_fb_t ref_fb, ref_fb2;
- 	igt_fb_t *flip_fb;
-@@ -157,14 +155,7 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
- 		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
++static void run_check_psr_su_mpo(data_t *data)
++{
++	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
++	bool sink_support_psrsu = false;
++	bool drv_suport_psrsu = false;
++	igt_fb_t ov_fb;		// fb for overlay
++	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	// rectangle fbs for primary, emulate as video playback region
++	igt_fb_t ref_fb;	// reference fb
++	igt_fb_t *flip_fb;
++	int ret;
++	const int run_sec = 5;
++	enum amdgpu_psr_state psr_state = PSR_STATE0;
++	int frame_rate = 0;
++
++	/* skip the test run if no eDP sink detected */
++	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
++
++	/* init */
++	test_init(data);
++	frame_rate = data->mode->vrefresh;
++
++	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
++	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
++	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
++	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
++	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
++	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
++	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
++
++	/* reference background pattern in grey */
++	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++			    .5, .5, .5, &ref_fb);
++	igt_plane_set_fb(data->primary, &ref_fb);
++	igt_output_set_pipe(data->output, data->pipe_id);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	/*
++	 * overlay and primary fbs creation
++	 * for MPO vpb use case, the vpb is always in the primary plane as an underlay,
++	 * while the control panel/tool bar such icons/items are all in the overlay plane,
++	 * and alpha for vpb region is adjusted to control the transparency.
++	 * thus the overlay fb be initialized w/ ARGB pixel format to support blending
++	 */
++	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
++			    1.0, 1.0, 1.0, &ov_fb);
++	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i) {
++		cairo_t *cr;
++		int strip_w = data->w / (2 * N_MPO_TEST_RECT_FB);
++
++		igt_create_fb(data->fd, data->w / 2, data->h / 2, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++			      &rect_fb[i]);
++		cr = igt_get_cairo_ctx(data->fd, &rect_fb[i]);
++		igt_assert_f(cr, "Failed to get cairo context\n");
++		/* background in black */
++		igt_paint_color(cr, 0, 0, data->w, data->h, .0, .0, .0);
++		/* foreground (megenta strip) */
++		igt_paint_color(cr, i * strip_w, 0, strip_w, data->h, 1.0, .0, 1.0);
++
++		igt_put_cairo_ctx(cr);
++	}
++
++	/* tie fbs to planes and set position/size/blending */
++	igt_plane_set_fb(data->overlay, &ov_fb);
++	igt_plane_set_fb(data->primary, &rect_fb[0]);
++	igt_plane_set_position(data->primary, 0, 0);
++	igt_plane_set_size(data->primary, data->w / 2, data->h / 2);
++
++	/* adjust alpha for vpb (primary plane) region in overlay */
++	draw_color_alpha(&ov_fb, 0, 0, data->w / 2, data->h / 2, .5, .5, .5, .3);
++
++	igt_output_set_pipe(data->output, data->pipe_id);
++	igt_display_commit_atomic(&data->display, 0, NULL);
++
++	/* multiplane overlay to emulate video playback use case */
++	igt_info("\n start flipping ...\n");
++
++	for (int i = 0; i < run_sec * frame_rate; ++i) {
++		igt_info(" About to commit a primary plane (FB %d), loop %d \n", i % N_MPO_TEST_RECT_FB, i);
++		flip_fb = &rect_fb[i % N_MPO_TEST_RECT_FB];
++
++		igt_plane_set_fb(data->primary, flip_fb);
++		igt_output_set_pipe(data->output, data->pipe_id);
++
++		ret = drmModePageFlip(data->fd, data->output->config.crtc->crtc_id,
++				      flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
++		igt_require(ret == 0);
++		kmstest_wait_for_pageflip(data->fd);
++
++		/* check PSR state */
++		if (i > PSR_SETTLE_DELAY * frame_rate) {
++			psr_state = igt_amd_read_psr_state(data->fd, data->output->name);
++			igt_fail_on_f(psr_state == PSR_STATE0,
++				"PSR was not enabled for connector %s\n", data->output->name);
++			igt_fail_on_f(psr_state == PSR_STATE_INVALID,
++				"PSR is invalid for connector %s\n", data->output->name);
++			igt_fail_on_f(psr_state != PSR_STATE3,
++				"PSR state is expected to be STATE_3 for connector %s\n", data->output->name);
++		}
++	}
++
++	/* fini */
++	igt_remove_fb(data->fd, &ref_fb);
++	igt_remove_fb(data->fd, &ov_fb);
++	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i) igt_remove_fb(data->fd, &rect_fb[i]);
++	test_fini(data);
++	close(data->fd);
++}
++
+ igt_main
+ {
+ 	data_t data;
+@@ -191,6 +322,8 @@ igt_main
+ 	igt_fixture
+ 	{
+ 		data.fd = drm_open_driver_master(DRIVER_AMDGPU);
++		if (data.fd == -1) igt_skip("Not an amdgpu driver.\n");
++		data.debugfs_fd = igt_debugfs_dir(data.fd);
  
--		connector_name = output->name;
--		fd = igt_debugfs_connector_dir(data->fd, connector_name, O_RDONLY);
--		igt_assert(fd >= 0);
--
--		ret = igt_debugfs_simple_read(fd, DEBUGFS_PSR_STATE, buf, sizeof(buf));
--		igt_require(ret > 0);
--
--		psr_state =  (int) strtol(buf, NULL, 10);
-+		psr_state = igt_amd_read_psr_state(data->fd, output->name);
- 		igt_fail_on_f(psr_state < 1, "PSR was not enabled for connector %s\n", output->name);
- 		igt_fail_on_f(psr_state == 0xff, "PSR is invalid for connector %s\n", output->name);
- 		igt_fail_on_f(psr_state != 5, "PSR state is expected to be at 5 on a "
+ 		kmstest_set_vt_graphics_mode();
+ 
+@@ -205,8 +338,13 @@ igt_main
+ 	igt_describe("Test whether setting CRTC to null triggers any warning with PSR enabled");
+ 	igt_subtest("psr_enable_null_crtc") run_check_psr(&data, true);
+ 
++	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
++		     "and to imitate Multiplane Overlay video playback scenario");
++	igt_subtest("psr_su_mpo") run_check_psr_su_mpo(&data);
++
+ 	igt_fixture
+ 	{
++		close(data.debugfs_fd);
+ 		igt_display_fini(&data.display);
+ 	}
+ }
 -- 
 2.25.1
