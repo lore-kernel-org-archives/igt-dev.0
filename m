@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94BFA10E0F8
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Mar 2022 17:18:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB12910E43F
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Mar 2022 16:34:25 +0000 (UTC)
+Date: Mon, 14 Mar 2022 17:34:22 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 14 Mar 2022 18:17:47 +0100
-Message-Id: <20220314171747.24668-1-kamil.konieczny@linux.intel.com>
+Message-ID: <Yi9ujutFYBVIwTSz@kamilkon-DESK1>
+References: <20220311181534.134751-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_create: lower active
- subtests timeout
+In-Reply-To: <20220311181534.134751-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_ccs: Add subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,99 +24,235 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Active subtests measure time for one cycle of context creation
-and bufexec execution per engine and this is done until timeout
-of 20 seconds expires. On old gpu gens there are low number of
-engines so it runs in reasonable time, but on new ones it can
-take as long as over 800s. Lower timeout to only 2s to keep it
-low on CI. Below is example of dmesg output on new machine with
-long 20 seconds timeout:
+Dnia 2022-03-11 at 19:15:34 +0100, Zbigniew Kempczyński napisał(a):
+> From: Apoorva Singh <apoorva1.singh@intel.com>
+> 
+> - Verify ccs data is binded to physical memory by using
+>   XY_CTRL_SURF_COPY_BLT command in separate context.
+> 
+> - Introduce suspend/resume and verify validity of objects.
+> 
 
-[ 3683.594715] [IGT] gem_ctx_create: executing
-[ 3895.606195] [IGT] gem_ctx_create: starting subtest basic-active
-[ 3895.606343] [IGT] gem_ctx_create: starting dynamic subtest bcs0
-[ 3915.890896] [IGT] gem_ctx_create: starting dynamic subtest bcs1
-[ 3937.463308] [IGT] gem_ctx_create: starting dynamic subtest bcs2
-[ 3957.849851] [IGT] gem_ctx_create: starting dynamic subtest bcs3
-[ 3981.950263] [IGT] gem_ctx_create: starting dynamic subtest bcs4
-[ 4004.387712] [IGT] gem_ctx_create: starting dynamic subtest bcs5
-[ 4026.379749] [IGT] gem_ctx_create: starting dynamic subtest bcs6
-[ 4049.476240] [IGT] gem_ctx_create: starting dynamic subtest bcs7
-[ 4071.459781] [IGT] gem_ctx_create: starting dynamic subtest bcs8
-[ 4094.289894] [IGT] gem_ctx_create: starting dynamic subtest bcs9
-[ 4115.836807] [IGT] gem_ctx_create: starting dynamic subtest bcs10
-[ 4137.660152] [IGT] gem_ctx_create: starting dynamic subtest bcs11
-[ 4158.003191] [IGT] gem_ctx_create: starting dynamic subtest bcs12
-[ 4179.631347] [IGT] gem_ctx_create: starting dynamic subtest bcs13
-[ 4200.043429] [IGT] gem_ctx_create: starting dynamic subtest bcs14
-[ 4221.887682] [IGT] gem_ctx_create: starting dynamic subtest bcs15
-[ 4243.864100] [IGT] gem_ctx_create: starting dynamic subtest vcs0
-[ 4266.711902] [IGT] gem_ctx_create: starting dynamic subtest vcs1
-[ 4289.776354] [IGT] gem_ctx_create: starting dynamic subtest vcs2
-[ 4311.965040] [IGT] gem_ctx_create: starting dynamic subtest vcs3
-[ 4333.856301] [IGT] gem_ctx_create: starting dynamic subtest vcs4
-[ 4355.431020] [IGT] gem_ctx_create: starting dynamic subtest vcs5
-[ 4376.878056] [IGT] gem_ctx_create: starting dynamic subtest ccs0
-[ 4398.554019] [IGT] gem_ctx_create: starting dynamic subtest ccs1
-[ 4418.947135] [IGT] gem_ctx_create: starting dynamic subtest ccs2
-[ 4441.688846] [IGT] gem_ctx_create: starting dynamic subtest ccs3
-[ 4464.843852] [IGT] gem_ctx_create: starting dynamic subtest ccs4
-[ 4485.289491] [IGT] gem_ctx_create: starting dynamic subtest ccs5
-[ 4507.076429] [IGT] gem_ctx_create: starting dynamic subtest ccs6
-[ 4529.704434] [IGT] gem_ctx_create: starting dynamic subtest ccs7
-[ 4551.486436] [IGT] gem_ctx_create: exiting, ret=0
+imho this should be splitted up to two separate patches, one for
+verify binding, second for suspend/resume. May you point to
+some RFC/doc/spec about how suspend/resume is handled by device,
+e.g. if LMEM in discrete gfx can survive it ? If it is only SMEM,
+please put it in commit description. You should also describe
+how you check validity, it looks like it is checked only in
+compression scenario.
 
-so it took around 868s.
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/i915/gem_ccs.c | 79 +++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 64 insertions(+), 15 deletions(-)
+> 
+> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> index fdf1fe75f5..073e5b3d3e 100644
+> --- a/tests/i915/gem_ccs.c
+> +++ b/tests/i915/gem_ccs.c
+> @@ -4,6 +4,7 @@
+>   */
+>  
+>  #include <errno.h>
+> +#include <glib.h>
+>  #include <sys/ioctl.h>
+>  #include <sys/time.h>
+>  #include <malloc.h>
+> @@ -39,6 +40,8 @@ struct test_config {
+>  	bool compression;
+>  	bool inplace;
+>  	bool surfcopy;
+> +	bool new_ctx;
+> +	bool suspend_resume;
+>  };
+>  
+>  static void set_object(struct blt_copy_object *obj,
+> @@ -161,22 +164,24 @@ static void surf_copy(int i915,
+>  		      const struct blt_copy_object *src,
+>  		      const struct blt_copy_object *mid,
+>  		      const struct blt_copy_object *dst,
+> -		      int run_id)
+> +		      int run_id, bool suspend_resume)
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_ctx_create.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+It is better to make separate function suspend_resume.
 
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index 44846652..8052e17c 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -37,6 +37,7 @@
- #include "sw_sync.h"
- 
- #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
-+#define ACTIVE_TIMEOUT 20
- 
- static unsigned all_engines[I915_EXEC_RING_MASK + 1];
- static unsigned all_nengine;
-@@ -613,26 +614,26 @@ igt_main
- 
- 	/* NULL value means all engines */
- 	igt_subtest("active-all")
--		active(fd, &cfg, NULL, 20, 1);
-+		active(fd, &cfg, NULL, ACTIVE_TIMEOUT, 1);
- 	igt_subtest("forked-active-all")
--		active(fd, &cfg, NULL, 20, ncpus);
-+		active(fd, &cfg, NULL, ACTIVE_TIMEOUT, ncpus);
- 
- 	igt_subtest_with_dynamic("active") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, &cfg, e, 20, 1);
-+				active(fd, &cfg, e, ACTIVE_TIMEOUT, 1);
- 		}
- 	}
- 	igt_subtest_with_dynamic("forked-active") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, &cfg, e, 20, ncpus);
-+				active(fd, &cfg, e, ACTIVE_TIMEOUT, ncpus);
- 		}
- 	}
- 	igt_subtest_with_dynamic("hog") {
- 		for_each_ctx_cfg_engine(fd, &cfg, e) {
- 			igt_dynamic_f("%s", e->name)
--				active(fd, &cfg, e, 20, -1);
-+				active(fd, &cfg, e, ACTIVE_TIMEOUT, -1);
- 		}
- 	}
- 
--- 
-2.32.0
+>  {
+>  	struct blt_copy_data blt = {};
+>  	struct blt_block_copy_data_ext ext = {};
+>  	struct blt_ctrl_surf_copy_data surf = {};
+> -	uint32_t bb, ccs, *ccsmap;
+> -	uint64_t bb_size = 4096;
+> -	uint64_t ccssize = mid->size / CCS_RATIO;
+> +	uint32_t bb, ccs, ccs2, *ccsmap, *ccsmap2;
+> +	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
+>  	uint32_t *ccscopy;
+>  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
+>  	int result;
+> +	char *orig, *orig2, *new, *new2;
+>  
+>  	igt_assert(mid->compression);
+>  	ccscopy = (uint32_t *) malloc(ccssize);
+> +	bb_size = 4096;
+>  	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
+>  	ccs = gem_create(i915, ccssize);
+> +	ccs2 = gem_create(i915, ccssize);
+>  
+>  	surf.i915 = i915;
+>  	surf.print_bb = param.print_bb;
+> @@ -192,6 +197,27 @@ static void surf_copy(int i915,
+>  					   PROT_READ | PROT_WRITE);
+>  	memcpy(ccscopy, ccsmap, ccssize);
+>  
+> +	if (suspend_resume) {
+> +		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap, surf.dst.size);
+> +		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
+> +
+> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+
+Why not just leave only this one line here and delete others
+from if-suspend-resume block ? Then it will look like:
+
+	if (suspend_resume)
+		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+
+In this case it can be added with only one boolean as param. Can
+suspend/resume be used in other places in this function ? Or for
+other checks, for example if LMEM is restored after resume ?
+
+> +
+> +		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
+> +				0, DIRECT_ACCESS);
+> +		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+> +		gem_sync(i915, surf.dst.handle);
+> +
+> +		ccsmap2 = gem_mmap__device_coherent(i915, ccs2, 0, surf.dst.size,
+> +						    PROT_READ | PROT_WRITE);
+> +		new = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap2, surf.dst.size);
+> +		new2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
+> +
+> +		igt_assert(!strcmp(orig, new));
+> +		igt_assert(!strcmp(orig2, new2));
+> +		munmap(ccsmap2, ccssize);
+
+Move unmap before first assert. Btw the uncompression phase
+checks data integrity. Why not move checksums into main function
+body and replace memcmp ? It can be left to later refactor.
+
+> +	}
+> +
+>  	/* corrupt ccs */
+>  	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+>  		ccsmap[i] = i;
+> @@ -208,6 +234,7 @@ static void surf_copy(int i915,
+>  	set_blt_object(&blt.dst, dst);
+>  	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
+>  	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
+> +	bb_size = 4096;
+>  	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
+>  	set_batch(&blt.bb, bb, bb_size, REGION_SMEM);
+>  	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
+> @@ -228,15 +255,15 @@ static void surf_copy(int i915,
+>  
+>  	munmap(ccsmap, ccssize);
+>  	gem_close(i915, ccs);
+> +	gem_close(i915, ccs2);
+>  }
+>  
+>  static void block_copy(int i915,
+>  		       const intel_ctx_t *ctx,
+>  		       const struct intel_execution_engine2 *e,
+>  		       uint32_t region1, uint32_t region2,
+> -		       enum blt_tiling mid_tiling, bool compression,
+> -		       bool inplace,
+> -		       bool surfcopy)
+> +		       enum blt_tiling mid_tiling,
+> +		       const struct test_config *config)
+>  {
+>  	struct blt_copy_data blt = {};
+>  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> @@ -249,7 +276,7 @@ static void block_copy(int i915,
+>  	uint32_t run_id = mid_tiling;
+>  	uint32_t mid_region = region2, bb;
+>  	uint32_t width = param.width, height = param.height;
+> -	enum blt_compression mid_compression = compression;
+> +	enum blt_compression mid_compression = config->compression;
+>  	int mid_compression_format = param.compression_format;
+>  	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+>  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
+> @@ -293,8 +320,17 @@ static void block_copy(int i915,
+>  	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
+>  	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
+>  
+> -	if (surfcopy && pext)
+> -		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
+> +	if (config->surfcopy && pext) {
+> +		const intel_ctx_t *surf_ctx = ctx;
+> +
+> +		if (config->new_ctx)
+> +			surf_ctx = intel_ctx_create(i915, &ctx->cfg);
+> +
+> +		surf_copy(i915, surf_ctx, e, ahnd, src, mid, dst, run_id, config->suspend_resume);
+> +
+> +		if (surf_ctx != ctx)
+> +			intel_ctx_destroy(i915, surf_ctx);
+> +	}
+>  
+>  	memset(&blt, 0, sizeof(blt));
+>  	blt.color_depth = CD_32bit;
+> @@ -303,7 +339,7 @@ static void block_copy(int i915,
+>  	set_blt_object(&blt.dst, dst);
+>  	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
+>  	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+> -	if (inplace) {
+> +	if (config->inplace) {
+>  		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+>  			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>  		blt.dst.ptr = mid->ptr;
+> @@ -367,10 +403,7 @@ static void block_copy_test(int i915,
+>  					      param.compression_format, regtxt) {
+>  					block_copy(i915, ctx, e,
+>  						   region1, region2,
+> -						   tiling,
+> -						   config->compression,
+> -						   config->inplace,
+> -						   config->surfcopy);
+> +						   tiling, config);
+>  				}
+>  				free(regtxt);
+>  			}
+> @@ -480,6 +513,22 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  		block_copy_test(i915, &config, ctx, set);
+>  	}
+>  
+
+Please add test descriptions before new test.
+
+> +	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
+> +		struct test_config config = { .compression = true,
+> +					      .surfcopy = true,
+> +					      .new_ctx = true };
+> +
+> +		block_copy_test(i915, &config, ctx, set);
+> +	}
+> +
+
+Same here.
+
+> +	igt_subtest_with_dynamic("suspend-resume") {
+> +		struct test_config config = { .compression = true,
+> +					      .surfcopy = true,
+> +					      .suspend_resume = true };
+> +
+> +		block_copy_test(i915, &config, ctx, set);
+> +	}
+> +
+>  	igt_fixture {
+>  		igt_disallow_hang(i915, hang);
+>  		close(i915);
+> -- 
+> 2.32.0
+> 
+
+Regards,
+Kamil
