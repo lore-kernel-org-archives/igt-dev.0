@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EB4A10EAA4
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Mar 2022 09:57:56 +0000 (UTC)
-Date: Thu, 3 Mar 2022 10:57:52 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YiCRIHDRFBX3hbGh@zkempczy-mobl2>
-References: <20220302080629.11562-1-zbigniew.kempczynski@intel.com>
- <164623233776.11317.16103371987620816@emeril.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31C8D10E824
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Mar 2022 05:14:03 +0000 (UTC)
+From: Ramalingam C <ramalingam.c@intel.com>
+To: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ igt-dev <igt-dev@lists.freedesktop.org>
+Date: Mon, 14 Mar 2022 10:44:32 +0530
+Message-Id: <20220314051432.15785-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <164623233776.11317.16103371987620816@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgVXNlIHN1?=
- =?utf-8?q?pported_dma-buf_regions_in_prime=5Fmmap*_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3] tests/i915/gem_lmem_swapping: Add ccs
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,496 +18,372 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Mar 02, 2022 at 02:45:37PM +0000, Patchwork wrote:
->    Patch Details
-> 
->    Series:  Use supported dma-buf regions in prime_mmap* (rev3)            
->    URL:     https://patchwork.freedesktop.org/series/100819/               
->    State:   failure                                                        
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/index.html 
-> 
->          CI Bug Log - changes from CI_DRM_11308_full -> IGTPW_6728_full
-> 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with IGTPW_6728_full absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_6728_full, please notify your bug team to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/index.html
-> 
-> Participating hosts (13 -> 8)
-> 
->    Missing (5): pig-kbl-iris pig-glk-j5005 pig-skl-6260u shard-rkl shard-dg1
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in
->    IGTPW_6728_full:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@gem_mmap_gtt@fault-concurrent-y:
-> 
->           * shard-snb: PASS -> INCOMPLETE
->      * {igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-d-hdmi-a-1-downscale-with-rotation}
->        (NEW):
-> 
->           * {shard-tglu}: NOTRUN -> SKIP +1 similar issue
+Add subtests for covering the compressed object's eviction.
 
-Change touches prime_mmap* tests + adds library helper which is not
-used on above tests.
+v2:
+  gem_sync after the block_copy blit for init
+v3:
+  ahnd is passed in as a param [Zbigniew]
+  cmd is bb [Zbigniew]
+  blt src and dst sizes supposed to be same [Zbigniew]
 
---
-Zbigniew
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+---
+ tests/i915/gem_lmem_swapping.c | 222 +++++++++++++++++++++++++++++++--
+ 1 file changed, 215 insertions(+), 7 deletions(-)
 
-> 
->     Suppressed
-> 
->    The following results come from untrusted machines, tests, or statuses.
->    They do not affect the overall result.
-> 
->      * {igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-75@pipe-b-edp-1-downscale-with-pixel-format}:
-> 
->           * shard-iclb: PASS -> INCOMPLETE
->      * {igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-a-hdmi-a-1-downscale-with-rotation}:
-> 
->           * {shard-tglu}: NOTRUN -> SKIP +1 similar issue
-> 
-> New tests
-> 
->    New tests have been introduced between CI_DRM_11308_full and
->    IGTPW_6728_full:
-> 
->   New IGT tests (29)
-> 
->      * igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-75@pipe-b-hdmi-a-1-downscale-with-pixel-format:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [22.84] s
->      * igt@kms_plane_scaling@downscale-with-pixel-format-factor-0-75@pipe-d-hdmi-a-1-downscale-with-pixel-format:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.27] s
->      * igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-b-hdmi-a-1-downscale-with-rotation:
-> 
->           * Statuses : 1 skip(s)
->           * Exec time: [0.02] s
->      * igt@kms_plane_scaling@downscale-with-rotation-factor-0-25@pipe-d-hdmi-a-1-downscale-with-rotation:
-> 
->           * Statuses : 1 skip(s)
->           * Exec time: [0.02] s
->      * igt@kms_plane_scaling@invalid-num-scalers@pipe-d-edp-1-invalid-num-scalers:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.02] s
->      * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-b-hdmi-a-1-planes-downscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.14] s
->      * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-edp-1-planes-downscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [1.28] s
->      * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-hdmi-a-1-planes-downscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.12] s
->      * igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-b-hdmi-a-1-planes-unity-scaling:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.15] s
->      * igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-d-edp-1-planes-unity-scaling:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [1.28] s
->      * igt@kms_plane_scaling@planes-scaling-unity-scaling@pipe-d-hdmi-a-1-planes-unity-scaling:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.11] s
->      * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-d-edp-1-planes-upscale-downscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [1.22] s
->      * igt@kms_plane_scaling@planes-upscale-20x20@pipe-b-hdmi-a-1-planes-upscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.10] s
->      * igt@kms_plane_scaling@planes-upscale-20x20@pipe-d-edp-1-planes-upscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [1.20] s
->      * igt@kms_plane_scaling@planes-upscale-20x20@pipe-d-hdmi-a-1-planes-upscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.10] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-edp-1-planes-upscale-downscale:
-> 
->           * Statuses : 2 pass(s)
->           * Exec time: [0.15, 0.18] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-hdmi-a-1-planes-upscale-downscale:
-> 
->           * Statuses : 2 pass(s)
->           * Exec time: [0.09, 0.50] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a-vga-1-planes-upscale-downscale:
-> 
->           * Statuses : 1 skip(s)
->           * Exec time: [0.21] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-edp-1-planes-upscale-downscale:
-> 
->           * Statuses : 2 pass(s)
->           * Exec time: [1.27, 1.32] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-hdmi-a-1-planes-upscale-downscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.11] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-hdmi-a-2-planes-upscale-downscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.40] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b-vga-1-planes-upscale-downscale:
-> 
->           * Statuses : 1 skip(s)
->           * Exec time: [0.03] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-c-edp-1-planes-upscale-downscale:
-> 
->           * Statuses : 2 pass(s)
->           * Exec time: [1.27, 1.28] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-c-hdmi-a-1-planes-upscale-downscale:
-> 
->           * Statuses : 1 pass(s) 1 skip(s)
->           * Exec time: [0.11, 0.14] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-d-edp-1-planes-upscale-downscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [1.22] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-d-hdmi-a-1-planes-upscale-downscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.11] s
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-d-edp-1-planes-upscale:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [1.22] s
->      * igt@kms_plane_scaling@scaler-with-clipping-clamping@pipe-b-hdmi-a-1-scaler-with-clipping-clamping:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [22.73] s
->      * igt@kms_plane_scaling@scaler-with-clipping-clamping@pipe-d-hdmi-a-1-scaler-with-clipping-clamping:
-> 
->           * Statuses : 1 pass(s)
->           * Exec time: [0.29] s
-> 
-> Known issues
-> 
->    Here are the changes found in IGTPW_6728_full that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@feature_discovery@display-2x:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#1839])
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#1839])
-> 
->      * igt@gem_ctx_param@set-priority-not-supported:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#109314])
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109314])
-> 
->      * igt@gem_ctx_persistence@process:
-> 
->           * shard-snb: NOTRUN -> SKIP ([fdo#109271] / [i915#1099]) +1 similar
->             issue
->      * igt@gem_ctx_sseu@mmap-args:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#280])
->      * igt@gem_exec_balancer@parallel-out-fence:
-> 
->           * shard-kbl: NOTRUN -> DMESG-WARN ([i915#5076])
->      * igt@gem_exec_capture@pi@vcs0:
-> 
->           * shard-iclb: PASS -> INCOMPLETE ([i915#3371])
->      * igt@gem_exec_fair@basic-flow@rcs0:
-> 
->           * shard-tglb: NOTRUN -> FAIL ([i915#2842]) +5 similar issues
->      * igt@gem_exec_fair@basic-none-share@rcs0:
-> 
->           * shard-iclb: PASS -> FAIL ([i915#2842])
->      * igt@gem_exec_fair@basic-none-vip@rcs0:
-> 
->           * shard-kbl: PASS -> FAIL ([i915#2842])
->      * igt@gem_exec_fair@basic-none@vcs0:
-> 
->           * shard-kbl: NOTRUN -> FAIL ([i915#2842]) +3 similar issues
->      * igt@gem_exec_fair@basic-none@vcs1:
-> 
->           * shard-iclb: NOTRUN -> FAIL ([i915#2842]) +4 similar issues
->      * igt@gem_exec_fair@basic-pace-solo@rcs0:
-> 
->           * shard-apl: PASS -> FAIL ([i915#2842])
->      * igt@gem_exec_fair@basic-pace@vcs0:
-> 
->           * shard-glk: PASS -> FAIL ([i915#2842]) +1 similar issue
->      * igt@gem_exec_params@secure-non-root:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#112283])
->      * igt@gem_huc_copy@huc-copy:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#2190])
->      * igt@gem_lmem_swapping@heavy-random:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#4613]) +2 similar issues
-> 
->           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#4613])
-> 
->           * shard-glk: NOTRUN -> SKIP ([fdo#109271] / [i915#4613]) +1 similar
->             issue
-> 
->      * igt@gem_lmem_swapping@heavy-verify-random:
-> 
->           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [i915#4613]) +2 similar
->             issues
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#4613]) +2 similar issues
-> 
->      * igt@gem_pxp@create-protected-buffer:
-> 
->           * shard-snb: NOTRUN -> SKIP ([fdo#109271]) +133 similar issues
->      * igt@gem_pxp@create-regular-buffer:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#4270]) +7 similar issues
->      * igt@gem_pxp@create-regular-context-1:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#4270]) +4 similar issues
->      * igt@gem_render_copy@y-tiled-mc-ccs-to-yf-tiled-ccs:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#768]) +2 similar issues
->      * igt@gem_userptr_blits@input-checking:
-> 
->           * shard-apl: NOTRUN -> DMESG-WARN ([i915#4991])
-> 
->           * shard-kbl: NOTRUN -> DMESG-WARN ([i915#4991])
-> 
->      * igt@gem_userptr_blits@unsync-unmap-cycles:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#3297])
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#3297]) +1 similar issue
-> 
->      * igt@gen3_render_tiledy_blits:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#109289]) +5 similar issues
->      * igt@gen7_exec_parse@batch-without-end:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109289]) +4 similar issues
->      * igt@gen9_exec_parse@allowed-all:
-> 
->           * shard-kbl: PASS -> DMESG-WARN ([i915#1436] / [i915#716])
->      * igt@gen9_exec_parse@shadow-peek:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#2527] / [i915#2856]) +3 similar
->             issues
->      * igt@gen9_exec_parse@unaligned-access:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#2856]) +2 similar issues
->      * igt@i915_pm_rc6_residency@media-rc6-accuracy:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#109289] / [fdo#111719])
->      * igt@i915_pm_rc6_residency@rc6-idle:
-> 
->           * shard-tglb: NOTRUN -> WARN ([i915#2681] / [i915#2684])
->      * igt@i915_pm_rpm@gem-execbuf-stress-pc8:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109293] / [fdo#109506])
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#109506] / [i915#2411])
-> 
->      * igt@i915_pm_sseu@full-enable:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#4387])
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#4387])
-> 
->      * igt@i915_selftest@live@hangcheck:
-> 
->           * shard-snb: PASS -> INCOMPLETE ([i915#3921])
->      * igt@kms_atomic@plane-primary-overlay-mutable-zpos:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#404])
->      * igt@kms_atomic_transition@plane-all-modeset-transition:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#1769])
->      * igt@kms_big_fb@linear-64bpp-rotate-180:
-> 
->           * shard-glk: PASS -> FAIL ([i915#1888])
->      * igt@kms_big_fb@linear-8bpp-rotate-270:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#111614]) +4 similar issues
->      * igt@kms_big_fb@x-tiled-64bpp-rotate-270:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#110725] / [fdo#111614]) +1
->             similar issue
->      * igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:
-> 
->           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [i915#3777]) +2 similar
->             issues
->      * igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip:
-> 
->           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#3777]) +3 similar
->             issues
->      * igt@kms_big_fb@yf-tiled-64bpp-rotate-270:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#111615]) +11 similar issues
->      * igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0:
-> 
->           * shard-apl: NOTRUN -> SKIP ([fdo#109271]) +178 similar issues
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#110723]) +3 similar issues
-> 
->      * igt@kms_big_joiner@basic:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#2705])
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#2705])
-> 
->      * igt@kms_ccs@pipe-a-bad-aux-stride-y_tiled_gen12_rc_ccs_cc:
-> 
->           * shard-glk: NOTRUN -> SKIP ([fdo#109271] / [i915#3886]) +6 similar
->             issues
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109278] / [i915#3886]) +8
->             similar issues
-> 
->      * igt@kms_ccs@pipe-a-crc-primary-rotation-180-y_tiled_gen12_mc_ccs:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#3689] / [i915#3886]) +5 similar
->             issues
->      * igt@kms_ccs@pipe-a-crc-primary-rotation-180-y_tiled_gen12_rc_ccs_cc:
-> 
->           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [i915#3886]) +12
->             similar issues
->      * igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_ccs:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#3689]) +10 similar issues
->      * igt@kms_ccs@pipe-a-missing-ccs-buffer-y_tiled_gen12_rc_ccs_cc:
-> 
->           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [i915#3886]) +14
->             similar issues
->      * igt@kms_ccs@pipe-b-crc-primary-rotation-180-y_tiled_gen12_rc_ccs:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109278]) +45 similar issues
->      * igt@kms_ccs@pipe-d-missing-ccs-buffer-yf_tiled_ccs:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#111615] / [i915#3689]) +10
->             similar issues
->      * igt@kms_cdclk@plane-scaling:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#3742])
->      * igt@kms_chamelium@dp-mode-timings:
-> 
->           * shard-apl: NOTRUN -> SKIP ([fdo#109271] / [fdo#111827]) +19
->             similar issues
->      * igt@kms_chamelium@hdmi-hpd:
-> 
->           * shard-glk: NOTRUN -> SKIP ([fdo#109271] / [fdo#111827]) +12
->             similar issues
->      * igt@kms_chamelium@vga-hpd-for-each-pipe:
-> 
->           * shard-kbl: NOTRUN -> SKIP ([fdo#109271] / [fdo#111827]) +19
->             similar issues
->      * igt@kms_color_chamelium@pipe-a-ctm-blue-to-red:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109284] / [fdo#111827]) +17
->             similar issues
->      * igt@kms_color_chamelium@pipe-b-ctm-limited-range:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#109284] / [fdo#111827]) +22
->             similar issues
->      * igt@kms_color_chamelium@pipe-c-ctm-green-to-red:
-> 
->           * shard-snb: NOTRUN -> SKIP ([fdo#109271] / [fdo#111827]) +11
->             similar issues
->      * igt@kms_color_chamelium@pipe-d-ctm-limited-range:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109278] / [fdo#109284] /
->             [fdo#111827])
->      * igt@kms_content_protection@atomic:
-> 
->           * shard-apl: NOTRUN -> TIMEOUT ([i915#1319])
->      * igt@kms_content_protection@type1:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109300] / [fdo#111066])
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#1063])
-> 
->      * igt@kms_cursor_crc@pipe-a-cursor-32x10-offscreen:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#3359]) +9 similar issues
->      * igt@kms_cursor_crc@pipe-a-cursor-suspend:
-> 
->           * shard-kbl: NOTRUN -> DMESG-WARN ([i915#180]) +1 similar issue
->      * igt@kms_cursor_crc@pipe-b-cursor-32x32-sliding:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#3319]) +3 similar issues
->      * igt@kms_cursor_crc@pipe-b-cursor-512x512-rapid-movement:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109278] / [fdo#109279]) +3
->             similar issues
->      * igt@kms_cursor_crc@pipe-c-cursor-512x512-random:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#109279] / [i915#3359]) +6
->             similar issues
->      * igt@kms_cursor_edge_walk@pipe-d-64x64-left-edge:
-> 
->           * shard-kbl: NOTRUN -> SKIP ([fdo#109271]) +206 similar issues
->      * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#4103]) +2 similar issues
->      * igt@kms_cursor_legacy@cursora-vs-flipb-atomic:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#109274] / [fdo#111825]) +12
->             similar issues
->      * igt@kms_cursor_legacy@cursora-vs-flipb-legacy:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109274] / [fdo#109278]) +3
->             similar issues
->      * igt@kms_flip@2x-absolute-wf_vblank:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([fdo#109274] / [fdo#111825] /
->             [i915#3966])
->      * igt@kms_flip@2x-modeset-vs-vblank-race-interruptible:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([fdo#109274]) +6 similar issues
->      * igt@kms_flip@flip-vs-suspend-interruptible@a-dp1:
-> 
->           * shard-kbl: PASS -> DMESG-WARN ([i915#180]) +2 similar issues
->      * igt@kms_flip@flip-vs-suspend@c-dp1:
-> 
->           * shard-kbl: PASS -> INCOMPLETE ([i915#636])
-> 
->           * shard-apl: PASS -> DMESG-WARN ([i915#180]) +1 similar issue
-> 
->      * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-upscaling:
-> 
->           * shard-tglb: NOTRUN -> SKIP ([i915#2587])
->      * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling:
-> 
->           * shard-iclb: NOTRUN -> SKIP ([i915#2587])
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+index 582111dddeb9..97858219aa96 100644
+--- a/tests/i915/gem_lmem_swapping.c
++++ b/tests/i915/gem_lmem_swapping.c
+@@ -22,6 +22,7 @@
+ #include <sys/time.h>
+ #include <sys/wait.h>
+ #include "drm.h"
++#include "i915/i915_blt.h"
+ 
+ IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
+ 
+@@ -30,6 +31,7 @@ IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
+ 
+ #define PAGE_SIZE  (1ULL << 12)
+ #define SZ_64K	   (16 * PAGE_SIZE)
++#define DG2_MOCS   (2 << 1)
+ 
+ static const char *readable_unit(uint64_t size)
+ {
+@@ -60,6 +62,7 @@ struct params {
+ #define TEST_RANDOM	(1 << 3)
+ #define TEST_ENGINES	(1 << 4)
+ #define TEST_MULTI	(1 << 5)
++#define TEST_CCS	(1 << 6)
+ 	unsigned int flags;
+ 	unsigned int seed;
+ 	bool oom_test;
+@@ -69,8 +72,56 @@ struct object {
+ 	uint64_t size;
+ 	uint32_t seed;
+ 	uint32_t handle;
++	struct blt_copy_object *blt_obj;
+ };
+ 
++static void set_object(struct blt_copy_object *obj,
++		       uint32_t handle, uint64_t size, uint32_t region,
++		       uint8_t mocs, enum blt_tiling tiling,
++		       enum blt_compression compression,
++		       enum blt_compression_type compression_type)
++{
++	obj->handle = handle;
++	obj->size = size;
++	obj->region = region;
++	obj->mocs = mocs;
++	obj->tiling = tiling;
++	obj->compression = compression;
++	obj->compression_type = compression_type;
++}
++
++static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
++		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
++		     uint16_t x_offset, uint16_t y_offset)
++{
++	obj->pitch = pitch;
++	obj->x1 = x1;
++	obj->y1 = y1;
++	obj->x2 = x2;
++	obj->y2 = y2;
++	obj->x_offset = x_offset;
++	obj->y_offset = y_offset;
++}
++
++static void set_batch(struct blt_copy_batch *batch,
++		      uint32_t handle, uint64_t size, uint32_t region)
++{
++	batch->handle = handle;
++	batch->size = size;
++	batch->region = region;
++}
++
++static void set_object_ext(struct blt_block_copy_object_ext *obj,
++			   uint8_t compression_format,
++			   uint16_t surface_width, uint16_t surface_height,
++			   enum blt_surface_type surface_type)
++{
++	obj->compression_format = compression_format;
++	obj->surface_width = surface_width;
++	obj->surface_height = surface_height;
++	obj->surface_type = surface_type;
++}
++
+ static uint32_t create_bo(int i915,
+ 			  uint64_t size,
+ 			  struct drm_i915_gem_memory_class_instance *region,
+@@ -105,6 +156,46 @@ init_object(int i915, struct object *obj, unsigned long seed, unsigned int flags
+ 	munmap(buf, obj->size);
+ }
+ 
++#define BATCH_SIZE		4096
++static void
++init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
++		struct blt_copy_batch *cmd, unsigned long seed,
++		const intel_ctx_t *ctx, uint32_t region, uint64_t ahnd)
++{
++	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
++	const struct intel_execution_engine2 *e;
++	struct blt_copy_data blt = {};
++	unsigned long *buf, j;
++
++	obj->seed = seed;
++	for_each_ctx_engine(i915, ctx, e) {
++		igt_assert_f(gem_engine_can_block_copy(i915, e),
++			     "Ctx dont have Blt engine");
++		break;
++	}
++
++	buf = gem_mmap__device_coherent(i915, tmp->handle, 0, obj->size, PROT_WRITE);
++	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
++
++	for (j = 0; j < obj->size / sizeof(*buf); j++)
++		buf[j] = seed++;
++	munmap(buf, obj->size);
++
++	memset(&blt, 0, sizeof(blt));
++	blt.color_depth = CD_32bit;
++
++	memcpy(&blt.src, tmp, sizeof(blt.src));
++	memcpy(&blt.dst, obj->blt_obj, sizeof(blt.dst));
++	memcpy(&blt.bb, cmd, sizeof(blt.bb));
++
++	set_object_ext(&ext.src, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
++	set_object_ext(&ext.dst, 0, obj->blt_obj->x2, obj->blt_obj->y2,
++		       SURFACE_TYPE_2D);
++
++	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
++	gem_sync(i915, obj->blt_obj->handle);
++}
++
+ static void
+ verify_object(int i915, const struct object *obj,  unsigned int flags)
+ {
+@@ -125,6 +216,53 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
+ 	munmap(buf, obj->size);
+ }
+ 
++static void
++verify_object_ccs(int i915, const struct object *obj,
++		  struct blt_copy_object *tmp, struct blt_copy_batch *cmd,
++		  const intel_ctx_t *ctx, uint32_t region, uint64_t ahnd)
++{
++	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
++	const struct intel_execution_engine2 *e;
++	struct blt_copy_data blt = {};
++	unsigned long j, val, *buf;
++
++	for_each_ctx_engine(i915, ctx, e) {
++		igt_assert_f(gem_engine_can_block_copy(i915, e),
++			     "ctx dont have Blt engine");
++		break;
++	}
++
++	memset(&blt, 0, sizeof(blt));
++	blt.color_depth = CD_32bit;
++
++	memcpy(&blt.src, obj->blt_obj, sizeof(blt.src));
++	memcpy(&blt.dst, tmp, sizeof(blt.dst));
++	memcpy(&blt.bb, cmd, sizeof(blt.bb));
++
++	blt.dst.x2 = min(obj->blt_obj->x2, tmp->x2);
++	blt.dst.y2 = min(obj->blt_obj->y2, tmp->y2);
++
++	set_object_ext(&ext.src, 0, obj->blt_obj->x2, obj->blt_obj->y2,
++		       SURFACE_TYPE_2D);
++	set_object_ext(&ext.dst, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
++	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
++
++	buf = gem_mmap__device_coherent(i915, tmp->handle, 0,
++					obj->size, PROT_READ);
++	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, 0);
++
++	for (j = 0; j < obj->size / PAGE_SIZE; j++) {
++		unsigned long x = (j * PAGE_SIZE + rand() % PAGE_SIZE) / sizeof(*buf);
++
++		val = obj->seed + x;
++		igt_assert_f(buf[x] == val,
++			     "Object mismatch at offset %lu - found %lx, expected %lx, difference:%lx!\n",
++			     x * sizeof(*buf), buf[x], val, buf[x] ^ val);
++	}
++
++	munmap(buf, obj->size);
++}
++
+ static void move_to_lmem(int i915,
+ 			 struct object *list,
+ 			 unsigned int num,
+@@ -160,31 +298,62 @@ static void __do_evict(int i915,
+ 		       struct params *params,
+ 		       unsigned int seed)
+ {
++	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
++						    region->memory_instance);
+ 	const unsigned int max_swap_in = params->count / 100 + 1;
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct object *objects, *obj, *list;
+-	uint32_t batch;
++	const uint32_t bpp = 32;
++	uint32_t batch, width, height, stride;
++	const intel_ctx_t *blt_ctx;
++	struct blt_copy_object *tmp;
++	struct blt_copy_batch *cmd;
+ 	unsigned int engine = 0;
+ 	unsigned int i, l;
+-	uint64_t size;
++	uint64_t size, ahnd;
+ 	struct timespec t = {};
+ 	unsigned int num;
+ 
++	width = PAGE_SIZE / (bpp / 8);
++	height = params->size.max / (bpp / 8) /  width;
++	stride = width * 4;
++
++	tmp = calloc(1, sizeof(*tmp));
++	cmd = calloc(1, sizeof(*cmd));
++
+ 	__gem_context_set_persistence(i915, 0, false);
+ 	size = 4096;
+ 	batch = create_bo(i915, size, region, params->oom_test);
+-
+ 	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+ 
++	if (params->flags & TEST_CCS)
++		blt_ctx = intel_ctx_create_for_engine(i915,
++						      I915_ENGINE_CLASS_COPY,
++						      0);
++
+ 	objects = calloc(params->count, sizeof(*objects));
+ 	igt_assert(objects);
+ 
+ 	list = calloc(max_swap_in, sizeof(*list));
+ 	igt_assert(list);
+ 
++	ahnd = intel_allocator_open_full(i915, blt_ctx->id, 0, 0,
++					 INTEL_ALLOCATOR_SIMPLE,
++					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+ 	srand(seed);
+ 
+ 	/* Create the initial working set of objects. */
++	if (params->flags & TEST_CCS) {
++		tmp->handle = gem_create_in_memory_regions(i915, params->size.max,
++				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
++		set_object(tmp, tmp->handle, params->size.max,
++			   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0), DG2_MOCS,
++			   T_LINEAR, COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
++		set_geom(tmp, stride, 0, 0, width, height, 0, 0);
++		cmd->handle = gem_create_in_memory_regions(i915, BATCH_SIZE, region_id);
++		set_batch(cmd, cmd->handle, BATCH_SIZE, region_id);
++	}
++
+ 	size = 0;
+ 	for (i = 0, obj = objects; i < params->count; i++, obj++) {
+ 		if (params->flags & TEST_RANDOM)
+@@ -194,6 +363,7 @@ static void __do_evict(int i915,
+ 		else
+ 			obj->size = params->size.min;
+ 
++		obj->size = ALIGN(obj->size, 4096);
+ 		size += obj->size;
+ 		if ((size >> 20) > params->mem_limit) {
+ 			params->count = i;
+@@ -201,10 +371,26 @@ static void __do_evict(int i915,
+ 		}
+ 		obj->handle = create_bo(i915, obj->size, region, params->oom_test);
+ 
+-		move_to_lmem(i915, objects + i, 1, batch, engine,
+-			     params->oom_test);
+-		if (params->flags & TEST_VERIFY)
++		if (params->flags & TEST_CCS) {
++			width = PAGE_SIZE / (bpp / 8);
++			height = obj->size / (bpp / 8) /  width;
++			stride = width * 4;
++
++			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
++			set_object(obj->blt_obj, obj->handle, obj->size, region_id,
++				   DG2_MOCS, T_LINEAR, COMPRESSION_ENABLED,
++				   COMPRESSION_TYPE_3D);
++			set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
++			init_object_ccs(i915, obj, tmp, cmd, rand(), blt_ctx,
++					region_id, ahnd);
++		} else if (params->flags & TEST_VERIFY) {
+ 			init_object(i915, obj, rand(), params->flags);
++			move_to_lmem(i915, objects + i, 1, batch, engine,
++				     params->oom_test);
++		} else {
++			move_to_lmem(i915, objects + i, 1, batch, engine,
++				     params->oom_test);
++		}
+ 	}
+ 
+ 	igt_debug("obj size min/max=%lu %s/%lu %s, count=%u, seed: %u\n",
+@@ -231,7 +417,15 @@ static void __do_evict(int i915,
+ 		if (params->flags & TEST_ENGINES)
+ 			engine = (engine + 1) % __num_engines__;
+ 
+-		if (params->flags & TEST_VERIFY) {
++		if (params->flags & TEST_CCS) {
++			for (i = 0; i < num; i++)
++				verify_object_ccs(i915, &list[i], tmp, cmd,
++						  blt_ctx, region_id, ahnd);
++			/* Update random object - may swap it back in. */
++			i = rand() % params->count;
++			init_object_ccs(i915, &objects[i], tmp, cmd, rand(),
++					blt_ctx, region_id, ahnd);
++		} else if (params->flags & TEST_VERIFY) {
+ 			for (i = 0; i < num; i++)
+ 				verify_object(i915, &list[i], params->flags);
+ 
+@@ -241,11 +435,17 @@ static void __do_evict(int i915,
+ 		}
+ 	}
+ 
++	put_ahnd(ahnd);
+ 	for (i = 0; i < params->count; i++)
+ 		gem_close(i915, objects[i].handle);
+ 
+ 	free(list);
+ 	free(objects);
++	if (params->flags & TEST_CCS) {
++		gem_close(i915, cmd->handle);
++		gem_close(i915, tmp->handle);
++		gem_context_destroy(i915, blt_ctx->id);
++	}
+ 
+ 	gem_close(i915, batch);
+ }
+@@ -348,6 +548,9 @@ static void test_evict(int i915,
+ 	const unsigned int nproc = sysconf(_SC_NPROCESSORS_ONLN) + 1;
+ 	struct params params;
+ 
++	if (flags & TEST_CCS)
++		igt_require(IS_DG2(intel_get_drm_devid(i915)));
++
+ 	fill_params(i915, &params, region, flags, nproc, false);
+ 
+ 	if (flags & TEST_PARALLEL) {
+@@ -511,6 +714,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		{ "parallel-random-engines", TEST_PARALLEL | TEST_RANDOM | TEST_ENGINES },
+ 		{ "parallel-random-verify", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY },
+ 		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
++		{ "verify-ccs", TEST_CCS },
++		{ "verify-random-ccs", TEST_CCS | TEST_RANDOM },
++		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
++		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
++		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
+ 		{ }
+ 	};
+ 	int i915 = -1;
+-- 
+2.20.1
