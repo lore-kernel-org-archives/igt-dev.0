@@ -1,19 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
- [IPv6:2a00:1450:4864:20::62c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21FE410F530
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 07:38:28 +0000 (UTC)
-Received: by mail-ej1-x62c.google.com with SMTP id qx21so10087808ejb.13
- for <igt-dev@lists.freedesktop.org>; Wed, 09 Mar 2022 23:38:28 -0800 (PST)
-From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Thu, 10 Mar 2022 08:37:51 +0100
-Message-Id: <20220310073800.22067-4-tomeu.vizoso@collabora.com>
-In-Reply-To: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
-References: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
+Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com
+ [IPv6:2607:f8b0:4864:20::82f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1478510E4FD
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Mar 2022 17:02:16 +0000 (UTC)
+Received: by mail-qt1-x82f.google.com with SMTP id a14so13673403qtx.12
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Mar 2022 10:02:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 03/12] ci: Move files to ci/ subdir
+References: <20220311070309.3281660-1-mastanx.katragadda@intel.com>
+ <164722515776.20568.18350303924654466398@emeril.freedesktop.org>
+In-Reply-To: <164722515776.20568.18350303924654466398@emeril.freedesktop.org>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Mon, 14 Mar 2022 17:01:48 +0000
+Message-ID: <CAM0jSHNsB7RVbhb3V_rRc1VSazH8s8nrJv4R7LTD7ZOkVD1sOw@mail.gmail.com>
+To: igt-dev@lists.freedesktop.org, lakshminarayana.vudum@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev]
+	=?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaWd0L2dl?=
+	=?utf-8?q?m=5Fmmap=5Foffset=3A_Adding_subtest_oob=5Fread_=28rev4?=
+	=?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,130 +25,128 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Daniel Stone <daniels@collabora.com>,
- Tomeu Vizoso <tomeu.vizoso@collabora.com>, Eric Anholt <eric@anholt.net>,
- Sean Paul <seanpaul@chromium.org>, Mark Yacoub <markyacoub@google.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We will be adding a few more files soon.
+On Mon, 14 Mar 2022 at 02:32, Patchwork
+<patchwork@emeril.freedesktop.org> wrote:
+>
+> Patch Details
+> Series:igt/gem_mmap_offset: Adding subtest oob_read (rev4)
+> URL:https://patchwork.freedesktop.org/series/101187/
+> State:failure
+> Details:https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html
+>
+> CI Bug Log - changes from CI_DRM_11355 -> IGTPW_6785
+>
+> Summary
+>
+> FAILURE
+>
+> Serious unknown changes coming with IGTPW_6785 absolutely need to be
+> verified manually.
+>
+> If you think the reported changes have nothing to do with the changes
+> introduced in IGTPW_6785, please notify your bug team to allow them
+> to document this new failure mode, which will reduce false positives in CI.
+>
+> External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html
+>
+> Participating hosts (43 -> 38)
+>
+> Missing (5): shard-tglu fi-bsw-cyan shard-rkl shard-dg1 fi-bdw-samus
+>
+> Possible new issues
+>
+> Here are the unknown changes that may have been introduced in IGTPW_6785:
+>
+> IGT changes
+>
+> Possible regressions
+>
+> igt@i915_selftest@live@gt_heartbeat:
+>
+> fi-bxt-dsi: PASS -> DMESG-FAIL
 
-Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
----
- .gitlab-ci.yml                                       | 12 ++++++------
- Dockerfile => ci/Dockerfile                          |  0
- .../Dockerfile.build-debian                          |  0
- .../Dockerfile.build-debian-arm64                    |  0
- .../Dockerfile.build-debian-armhf                    |  0
- .../Dockerfile.build-debian-minimal                  |  0
- .../Dockerfile.build-debian-mips                     |  0
- .../Dockerfile.build-fedora                          |  0
- meson-cross-arm64.txt => ci/meson-cross-arm64.txt    |  0
- meson-cross-armhf.txt => ci/meson-cross-armhf.txt    |  0
- meson-cross-mips.txt => ci/meson-cross-mips.txt      |  0
- 11 files changed, 6 insertions(+), 6 deletions(-)
- rename Dockerfile => ci/Dockerfile (100%)
- rename Dockerfile.build-debian => ci/Dockerfile.build-debian (100%)
- rename Dockerfile.build-debian-arm64 => ci/Dockerfile.build-debian-arm64 (100%)
- rename Dockerfile.build-debian-armhf => ci/Dockerfile.build-debian-armhf (100%)
- rename Dockerfile.build-debian-minimal => ci/Dockerfile.build-debian-minimal (100%)
- rename Dockerfile.build-debian-mips => ci/Dockerfile.build-debian-mips (100%)
- rename Dockerfile.build-fedora => ci/Dockerfile.build-fedora (100%)
- rename meson-cross-arm64.txt => ci/meson-cross-arm64.txt (100%)
- rename meson-cross-armhf.txt => ci/meson-cross-armhf.txt (100%)
- rename meson-cross-mips.txt => ci/meson-cross-mips.txt (100%)
+Unrelated failure it seems.
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index 9f252836c578..10fd28291cc8 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -27,8 +27,8 @@ build-containers:build-debian:
-   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
--    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-minimal build-debian-minimal
--    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian build-debian
-+    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-minimal build-debian-minimal
-+    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian build-debian
-   tags:
-     - packet.net
- 
-@@ -37,7 +37,7 @@ build-containers:build-debian-armhf:
-   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
--    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-armhf build-debian-armhf
-+    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-armhf build-debian-armhf
-   tags:
-     - packet.net
- 
-@@ -46,7 +46,7 @@ build-containers:build-debian-arm64:
-   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
--    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-arm64 build-debian-arm64
-+    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-arm64 build-debian-arm64
-   tags:
-     - packet.net
- 
-@@ -55,7 +55,7 @@ build-containers:build-debian-mips:
-   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
--    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-mips build-debian-mips
-+    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-mips build-debian-mips
-   tags:
-     - packet.net
- 
-@@ -64,7 +64,7 @@ build-containers:build-fedora:
-   image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
-   script:
-     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
--    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-fedora build-fedora
-+    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-fedora build-fedora
-   tags:
-     - packet.net
- 
-diff --git a/Dockerfile b/ci/Dockerfile
-similarity index 100%
-rename from Dockerfile
-rename to ci/Dockerfile
-diff --git a/Dockerfile.build-debian b/ci/Dockerfile.build-debian
-similarity index 100%
-rename from Dockerfile.build-debian
-rename to ci/Dockerfile.build-debian
-diff --git a/Dockerfile.build-debian-arm64 b/ci/Dockerfile.build-debian-arm64
-similarity index 100%
-rename from Dockerfile.build-debian-arm64
-rename to ci/Dockerfile.build-debian-arm64
-diff --git a/Dockerfile.build-debian-armhf b/ci/Dockerfile.build-debian-armhf
-similarity index 100%
-rename from Dockerfile.build-debian-armhf
-rename to ci/Dockerfile.build-debian-armhf
-diff --git a/Dockerfile.build-debian-minimal b/ci/Dockerfile.build-debian-minimal
-similarity index 100%
-rename from Dockerfile.build-debian-minimal
-rename to ci/Dockerfile.build-debian-minimal
-diff --git a/Dockerfile.build-debian-mips b/ci/Dockerfile.build-debian-mips
-similarity index 100%
-rename from Dockerfile.build-debian-mips
-rename to ci/Dockerfile.build-debian-mips
-diff --git a/Dockerfile.build-fedora b/ci/Dockerfile.build-fedora
-similarity index 100%
-rename from Dockerfile.build-fedora
-rename to ci/Dockerfile.build-fedora
-diff --git a/meson-cross-arm64.txt b/ci/meson-cross-arm64.txt
-similarity index 100%
-rename from meson-cross-arm64.txt
-rename to ci/meson-cross-arm64.txt
-diff --git a/meson-cross-armhf.txt b/ci/meson-cross-armhf.txt
-similarity index 100%
-rename from meson-cross-armhf.txt
-rename to ci/meson-cross-armhf.txt
-diff --git a/meson-cross-mips.txt b/ci/meson-cross-mips.txt
-similarity index 100%
-rename from meson-cross-mips.txt
-rename to ci/meson-cross-mips.txt
--- 
-2.31.1
+
+>
+> Suppressed
+>
+> The following results come from untrusted machines, tests, or statuses.
+> They do not affect the overall result.
+>
+> igt@i915_selftest@live@coherency:
+>
+> {bat-rpls-2}: NOTRUN -> INCOMPLETE
+>
+> igt@kms_busy@basic@flip:
+>
+> {bat-adlp-6}: PASS -> DMESG-WARN +1 similar issue
+>
+> igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:
+>
+> {bat-dg2-9}: NOTRUN -> DMESG-WARN
+>
+> Known issues
+>
+> Here are the changes found in IGTPW_6785 that come from known issues:
+>
+> IGT changes
+>
+> Issues hit
+>
+> igt@amdgpu/amd_prime@amd-to-i915:
+>
+> fi-ivb-3770: NOTRUN -> SKIP (fdo#109271) +17 similar issues
+>
+> igt@i915_selftest@live@execlists:
+>
+> fi-kbl-soraka: PASS -> INCOMPLETE (i915#5294 / i915#794)
+>
+> Possible fixes
+>
+> igt@i915_selftest@live@hangcheck:
+>
+> fi-ivb-3770: INCOMPLETE (i915#3303) -> PASS
+>
+> igt@i915_selftest@live@requests:
+>
+> {bat-rpls-2}: INCOMPLETE (i915#4391) -> PASS
+>
+> igt@i915_selftest@live@sanitycheck:
+>
+> {bat-rpls-2}: DMESG-WARN (i915#4391) -> PASS +1 similar issue
+>
+> igt@kms_busy@basic@flip:
+>
+> {bat-dg2-9}: DMESG-WARN (i915#5291) -> PASS
+>
+> igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+>
+> {bat-adlp-6}: DMESG-WARN -> PASS
+>
+> Warnings
+>
+> igt@runner@aborted:
+>
+> fi-bsw-n3050: FAIL (fdo#109271 / i915#1436 / i915#3428 / i915#4312) -> FAIL (fdo#109271 / i915#1436 / i915#2722 / i915#3428 / i915#4312)
+>
+> {name}: This element is suppressed. This means it is ignored when computing
+> the status of the difference (SUCCESS, WARNING, or FAILURE).
+>
+> Build changes
+>
+> CI: CI-20190529 -> None
+> IGT: IGT_6378 -> IGTPW_6785
+>
+> CI-20190529: 20190529
+> CI_DRM_11355: 16e4683c0a29f572cbc04ff619f6fdb703d8024e @ git://anongit.freedesktop.org/gfx-ci/linux
+> IGTPW_6785: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html
+> IGT_6378: 9c79047f49acdb6450368ee13fd8b6d28f3fb8e1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>
+> == Testlist changes ==
+>
+> +igt@gem_mmap_offset@oob-read
