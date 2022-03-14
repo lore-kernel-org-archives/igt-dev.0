@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB12910E43F
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Mar 2022 16:34:25 +0000 (UTC)
-Date: Mon, 14 Mar 2022 17:34:22 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Yi9ujutFYBVIwTSz@kamilkon-DESK1>
-References: <20220311181534.134751-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5026119810717958350=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220311181534.134751-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_ccs: Add subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "mastan Katragadda" <mastanx.katragadda@intel.com>
+Date: Mon, 14 Mar 2022 17:47:35 -0000
+Message-ID: <164728005557.20568.13048470798394600997@emeril.freedesktop.org>
+References: <20220311070309.3281660-1-mastanx.katragadda@intel.com>
+In-Reply-To: <20220311070309.3281660-1-mastanx.katragadda@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaWd0L2dl?=
+ =?utf-8?q?m=5Fmmap=5Foffset=3A_Adding_subtest_oob=5Fread_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,239 +17,312 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Dnia 2022-03-11 at 19:15:34 +0100, Zbigniew Kempczyński napisał(a):
-> From: Apoorva Singh <apoorva1.singh@intel.com>
-> 
-> - Verify ccs data is binded to physical memory by using
->   XY_CTRL_SURF_COPY_BLT command in separate context.
-> 
-> - Introduce suspend/resume and verify validity of objects.
-> 
+--===============5026119810717958350==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-imho this should be splitted up to two separate patches, one for
-verify binding, second for suspend/resume. May you point to
-some RFC/doc/spec about how suspend/resume is handled by device,
-e.g. if LMEM in discrete gfx can survive it ? If it is only SMEM,
-please put it in commit description. You should also describe
-how you check validity, it looks like it is checked only in
-compression scenario.
+== Series Details ==
 
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/i915/gem_ccs.c | 79 +++++++++++++++++++++++++++++++++++---------
->  1 file changed, 64 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-> index fdf1fe75f5..073e5b3d3e 100644
-> --- a/tests/i915/gem_ccs.c
-> +++ b/tests/i915/gem_ccs.c
-> @@ -4,6 +4,7 @@
->   */
->  
->  #include <errno.h>
-> +#include <glib.h>
->  #include <sys/ioctl.h>
->  #include <sys/time.h>
->  #include <malloc.h>
-> @@ -39,6 +40,8 @@ struct test_config {
->  	bool compression;
->  	bool inplace;
->  	bool surfcopy;
-> +	bool new_ctx;
-> +	bool suspend_resume;
->  };
->  
->  static void set_object(struct blt_copy_object *obj,
-> @@ -161,22 +164,24 @@ static void surf_copy(int i915,
->  		      const struct blt_copy_object *src,
->  		      const struct blt_copy_object *mid,
->  		      const struct blt_copy_object *dst,
-> -		      int run_id)
-> +		      int run_id, bool suspend_resume)
+Series: igt/gem_mmap_offset: Adding subtest oob_read (rev4)
+URL   : https://patchwork.freedesktop.org/series/101187/
+State : success
 
-It is better to make separate function suspend_resume.
+== Summary ==
 
->  {
->  	struct blt_copy_data blt = {};
->  	struct blt_block_copy_data_ext ext = {};
->  	struct blt_ctrl_surf_copy_data surf = {};
-> -	uint32_t bb, ccs, *ccsmap;
-> -	uint64_t bb_size = 4096;
-> -	uint64_t ccssize = mid->size / CCS_RATIO;
-> +	uint32_t bb, ccs, ccs2, *ccsmap, *ccsmap2;
-> +	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
->  	uint32_t *ccscopy;
->  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
->  	int result;
-> +	char *orig, *orig2, *new, *new2;
->  
->  	igt_assert(mid->compression);
->  	ccscopy = (uint32_t *) malloc(ccssize);
-> +	bb_size = 4096;
->  	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
->  	ccs = gem_create(i915, ccssize);
-> +	ccs2 = gem_create(i915, ccssize);
->  
->  	surf.i915 = i915;
->  	surf.print_bb = param.print_bb;
-> @@ -192,6 +197,27 @@ static void surf_copy(int i915,
->  					   PROT_READ | PROT_WRITE);
->  	memcpy(ccscopy, ccsmap, ccssize);
->  
-> +	if (suspend_resume) {
-> +		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap, surf.dst.size);
-> +		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
-> +
-> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+CI Bug Log - changes from CI_DRM_11355 -> IGTPW_6785
+====================================================
 
-Why not just leave only this one line here and delete others
-from if-suspend-resume block ? Then it will look like:
+Summary
+-------
 
-	if (suspend_resume)
-		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+  **SUCCESS**
 
-In this case it can be added with only one boolean as param. Can
-suspend/resume be used in other places in this function ? Or for
-other checks, for example if LMEM is restored after resume ?
+  No regressions found.
 
-> +
-> +		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
-> +				0, DIRECT_ACCESS);
-> +		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
-> +		gem_sync(i915, surf.dst.handle);
-> +
-> +		ccsmap2 = gem_mmap__device_coherent(i915, ccs2, 0, surf.dst.size,
-> +						    PROT_READ | PROT_WRITE);
-> +		new = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap2, surf.dst.size);
-> +		new2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
-> +
-> +		igt_assert(!strcmp(orig, new));
-> +		igt_assert(!strcmp(orig2, new2));
-> +		munmap(ccsmap2, ccssize);
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html
 
-Move unmap before first assert. Btw the uncompression phase
-checks data integrity. Why not move checksums into main function
-body and replace memcmp ? It can be left to later refactor.
+Participating hosts (43 -> 38)
+------------------------------
 
-> +	}
-> +
->  	/* corrupt ccs */
->  	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
->  		ccsmap[i] = i;
-> @@ -208,6 +234,7 @@ static void surf_copy(int i915,
->  	set_blt_object(&blt.dst, dst);
->  	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
->  	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
-> +	bb_size = 4096;
->  	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
->  	set_batch(&blt.bb, bb, bb_size, REGION_SMEM);
->  	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
-> @@ -228,15 +255,15 @@ static void surf_copy(int i915,
->  
->  	munmap(ccsmap, ccssize);
->  	gem_close(i915, ccs);
-> +	gem_close(i915, ccs2);
->  }
->  
->  static void block_copy(int i915,
->  		       const intel_ctx_t *ctx,
->  		       const struct intel_execution_engine2 *e,
->  		       uint32_t region1, uint32_t region2,
-> -		       enum blt_tiling mid_tiling, bool compression,
-> -		       bool inplace,
-> -		       bool surfcopy)
-> +		       enum blt_tiling mid_tiling,
-> +		       const struct test_config *config)
->  {
->  	struct blt_copy_data blt = {};
->  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-> @@ -249,7 +276,7 @@ static void block_copy(int i915,
->  	uint32_t run_id = mid_tiling;
->  	uint32_t mid_region = region2, bb;
->  	uint32_t width = param.width, height = param.height;
-> -	enum blt_compression mid_compression = compression;
-> +	enum blt_compression mid_compression = config->compression;
->  	int mid_compression_format = param.compression_format;
->  	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
->  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
-> @@ -293,8 +320,17 @@ static void block_copy(int i915,
->  	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
->  	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
->  
-> -	if (surfcopy && pext)
-> -		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
-> +	if (config->surfcopy && pext) {
-> +		const intel_ctx_t *surf_ctx = ctx;
-> +
-> +		if (config->new_ctx)
-> +			surf_ctx = intel_ctx_create(i915, &ctx->cfg);
-> +
-> +		surf_copy(i915, surf_ctx, e, ahnd, src, mid, dst, run_id, config->suspend_resume);
-> +
-> +		if (surf_ctx != ctx)
-> +			intel_ctx_destroy(i915, surf_ctx);
-> +	}
->  
->  	memset(&blt, 0, sizeof(blt));
->  	blt.color_depth = CD_32bit;
-> @@ -303,7 +339,7 @@ static void block_copy(int i915,
->  	set_blt_object(&blt.dst, dst);
->  	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
->  	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
-> -	if (inplace) {
-> +	if (config->inplace) {
->  		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
->  			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
->  		blt.dst.ptr = mid->ptr;
-> @@ -367,10 +403,7 @@ static void block_copy_test(int i915,
->  					      param.compression_format, regtxt) {
->  					block_copy(i915, ctx, e,
->  						   region1, region2,
-> -						   tiling,
-> -						   config->compression,
-> -						   config->inplace,
-> -						   config->surfcopy);
-> +						   tiling, config);
->  				}
->  				free(regtxt);
->  			}
-> @@ -480,6 +513,22 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->  		block_copy_test(i915, &config, ctx, set);
->  	}
->  
+  Missing    (5): shard-tglu fi-bsw-cyan shard-rkl shard-dg1 fi-bdw-samus 
 
-Please add test descriptions before new test.
+Possible new issues
+-------------------
 
-> +	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
-> +		struct test_config config = { .compression = true,
-> +					      .surfcopy = true,
-> +					      .new_ctx = true };
-> +
-> +		block_copy_test(i915, &config, ctx, set);
-> +	}
-> +
+  Here are the unknown changes that may have been introduced in IGTPW_6785:
 
-Same here.
+### IGT changes ###
 
-> +	igt_subtest_with_dynamic("suspend-resume") {
-> +		struct test_config config = { .compression = true,
-> +					      .surfcopy = true,
-> +					      .suspend_resume = true };
-> +
-> +		block_copy_test(i915, &config, ctx, set);
-> +	}
-> +
->  	igt_fixture {
->  		igt_disallow_hang(i915, hang);
->  		close(i915);
-> -- 
-> 2.32.0
-> 
+#### Suppressed ####
 
-Regards,
-Kamil
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@coherency:
+    - {bat-rpls-2}:       NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-rpls-2/igt@i915_selftest@live@coherency.html
+
+  * igt@kms_busy@basic@flip:
+    - {bat-adlp-6}:       [PASS][2] -> [DMESG-WARN][3] +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-adlp-6/igt@kms_busy@basic@flip.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-adlp-6/igt@kms_busy@basic@flip.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:
+    - {bat-dg2-9}:        NOTRUN -> [DMESG-WARN][4]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-dg2-9/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6785 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_prime@amd-to-i915:
+    - fi-ivb-3770:        NOTRUN -> [SKIP][5] ([fdo#109271]) +17 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-ivb-3770/igt@amdgpu/amd_prime@amd-to-i915.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-kbl-soraka:      [PASS][6] -> [INCOMPLETE][7] ([i915#5294] / [i915#794])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-bxt-dsi:         [PASS][8] -> [DMESG-FAIL][9] ([i915#5333])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-ivb-3770:        [INCOMPLETE][10] ([i915#3303]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - {bat-rpls-2}:       [INCOMPLETE][12] ([i915#4391]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-rpls-2/igt@i915_selftest@live@requests.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-rpls-2/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - {bat-rpls-2}:       [DMESG-WARN][14] ([i915#4391]) -> [PASS][15] +1 similar issue
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-rpls-2/igt@i915_selftest@live@sanitycheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-rpls-2/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@kms_busy@basic@flip:
+    - {bat-dg2-9}:        [DMESG-WARN][16] ([i915#5291]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-dg2-9/igt@kms_busy@basic@flip.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-dg2-9/igt@kms_busy@basic@flip.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - {bat-adlp-6}:       [DMESG-WARN][18] -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+
+  
+#### Warnings ####
+
+  * igt@runner@aborted:
+    - fi-bsw-n3050:       [FAIL][20] ([fdo#109271] / [i915#1436] / [i915#3428] / [i915#4312]) -> [FAIL][21] ([fdo#109271] / [i915#1436] / [i915#2722] / [i915#3428] / [i915#4312])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/fi-bsw-n3050/igt@runner@aborted.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-bsw-n3050/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3428]: https://gitlab.freedesktop.org/drm/intel/issues/3428
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#5276]: https://gitlab.freedesktop.org/drm/intel/issues/5276
+  [i915#5291]: https://gitlab.freedesktop.org/drm/intel/issues/5291
+  [i915#5294]: https://gitlab.freedesktop.org/drm/intel/issues/5294
+  [i915#5333]: https://gitlab.freedesktop.org/drm/intel/issues/5333
+  [i915#794]: https://gitlab.freedesktop.org/drm/intel/issues/794
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6378 -> IGTPW_6785
+
+  CI-20190529: 20190529
+  CI_DRM_11355: 16e4683c0a29f572cbc04ff619f6fdb703d8024e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6785: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html
+  IGT_6378: 9c79047f49acdb6450368ee13fd8b6d28f3fb8e1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@gem_mmap_offset@oob-read
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html
+
+--===============5026119810717958350==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>igt/gem_mmap_offset: Adding subtest oob_read (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101187/">https://patchwork.freedesktop.org/series/101187/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11355 -&gt; IGTPW_6785</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html</p>
+<h2>Participating hosts (43 -&gt; 38)</h2>
+<p>Missing    (5): shard-tglu fi-bsw-cyan shard-rkl shard-dg1 fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6785:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@i915_selftest@live@coherency:</p>
+<ul>
+<li>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-rpls-2/igt@i915_selftest@live@coherency.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:</p>
+<ul>
+<li>{bat-dg2-9}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-dg2-9/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6785 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-ivb-3770/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5294">i915#5294</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/794">i915#794</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5333">i915#5333</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-rpls-2/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4391">i915#4391</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-rpls-2/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4391">i915#4391</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-rpls-2/igt@i915_selftest@live@sanitycheck.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-dg2-9/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5291">i915#5291</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-dg2-9/igt@kms_busy@basic@flip.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11355/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6378 -&gt; IGTPW_6785</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11355: 16e4683c0a29f572cbc04ff619f6fdb703d8024e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6785: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6785/index.html<br />
+  IGT_6378: 9c79047f49acdb6450368ee13fd8b6d28f3fb8e1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_mmap_offset@oob-read</p>
+
+</body>
+</html>
+
+--===============5026119810717958350==--
