@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA95310E405
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 11:43:40 +0000 (UTC)
-Date: Tue, 15 Mar 2022 13:43:07 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB66A10E3C4
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 13:32:19 +0000 (UTC)
+Date: Tue, 15 Mar 2022 15:31:46 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <YjB7y8eD3eBxELul@platvala-desk.ger.corp.intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Message-ID: <YjCVQrCFFtH06X7w@platvala-desk.ger.corp.intel.com>
 References: <20220315065509.398990-1-bhanuprakash.modem@intel.com>
+ <YjB7y8eD3eBxELul@platvala-desk.ger.corp.intel.com>
+ <1f59b2c7-e201-7ead-4861-942340d06b89@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220315065509.398990-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <1f59b2c7-e201-7ead-4861-942340d06b89@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] i915_module_load: Unload the module
  before exiting the subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -25,75 +27,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 15, 2022 at 12:25:09PM +0530, Bhanuprakash Modem wrote:
-> On DP-MST setup, after execution of "reload" subtest, i915
-> became unloadable. And this is effecting the next subtest
-> "reload-no-display".
+On Tue, Mar 15, 2022 at 05:35:10PM +0530, Modem, Bhanuprakash wrote:
+> On Tue-15-03-2022 05:13 pm, Petri Latvala wrote:
+> > On Tue, Mar 15, 2022 at 12:25:09PM +0530, Bhanuprakash Modem wrote:
+> > > On DP-MST setup, after execution of "reload" subtest, i915
+> > > became unloadable. And this is effecting the next subtest
+> > > "reload-no-display".
+> > > 
+> > > Observing below error, if we run all subtests of i915_module_load
+> > > (or) run "reload" & "reload-no-display" in same order using the
+> > > igt_runner. But not seen any issue if we run each subtest individually.
+> > > 
+> > > $ ./igt_runner -o -l verbose -s --test-list tests.txt --use-watchdog ../tests/ results/
+> > > (or)
+> > > $ ./build/tests/i915_module_load
+> > >    Starting subtest: reload
+> > >    ...
+> > >    Subtest reload: SUCCESS (3.780s)
+> > > 
+> > >    Starting subtest: reload-no-display
+> > >    (i915_module_load:42617) igt_kmod-WARNING: Could not unload i915
+> > >    Module                   Used by
+> > >    i915                     1
+> > >    ...
+> > >    Reloading i915 with disable_display=1
+> > >    Module i915 already inserted
+> > >    Could not load i915
+> > >    Subtest reload-no-display: FAIL (1.998s)
+> > > 
+> > > $ ./build/tests/i915_module_load --r reload
+> > >    Starting subtest: reload
+> > >    ...
+> > >    Subtest reload: SUCCESS (5.562s)
+> > > $ ./build/tests/i915_module_load --r reload-no-display
+> > >    Starting subtest: reload-no-display
+> > >    ...
+> > >    Subtest reload-no-display: SUCCESS (7.995s)
+> > > 
+> > > This patch will unload the module before exiting the subtest. So
+> > > that we can make sure that the module is unloaded.
+> > 
+> > Does it succeed in there? Or does this just make sure that the failure
+> > is caught in the right place? What is actually holding the reference
+> > to i915.ko?
 > 
-> Observing below error, if we run all subtests of i915_module_load
-> (or) run "reload" & "reload-no-display" in same order using the
-> igt_runner. But not seen any issue if we run each subtest individually.
+> Not sure who is holding the ref to i915. lsmod showing it is used by 1 but
+> not showing who actually holding it.
 > 
-> $ ./igt_runner -o -l verbose -s --test-list tests.txt --use-watchdog ../tests/ results/
-> (or)
-> $ ./build/tests/i915_module_load
->   Starting subtest: reload
->   ...
->   Subtest reload: SUCCESS (3.780s)
+> Module                   Used by
+> i915                     1
 > 
->   Starting subtest: reload-no-display
->   (i915_module_load:42617) igt_kmod-WARNING: Could not unload i915
->   Module                   Used by
->   i915                     1
->   ...
->   Reloading i915 with disable_display=1
->   Module i915 already inserted
->   Could not load i915
->   Subtest reload-no-display: FAIL (1.998s)
-> 
-> $ ./build/tests/i915_module_load --r reload
->   Starting subtest: reload
->   ...
->   Subtest reload: SUCCESS (5.562s)
-> $ ./build/tests/i915_module_load --r reload-no-display
->   Starting subtest: reload-no-display
->   ...
->   Subtest reload-no-display: SUCCESS (7.995s)
-> 
-> This patch will unload the module before exiting the subtest. So
-> that we can make sure that the module is unloaded.
+> But with this fix, there is no such failures mentioned in commit msg.
 
-Does it succeed in there? Or does this just make sure that the failure
-is caught in the right place? What is actually holding the reference
-to i915.ko?
 
+What about just having a gem_quiescent_gpu() call in there? Does that
+do anything?
 
 -- 
 Petri Latvala
-
-
-
-
-> 
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/i915/i915_module_load.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-> index a86dd86cd0..c641a6a989 100644
-> --- a/tests/i915/i915_module_load.c
-> +++ b/tests/i915/i915_module_load.c
-> @@ -249,7 +249,7 @@ igt_main
->  
->  		gem_sanitycheck();
->  
-> -		/* only default modparams, can leave module loaded */
-> +		igt_i915_driver_unload();
->  	}
->  
->  	igt_subtest("reload-no-display") {
-> -- 
-> 2.35.1
-> 
