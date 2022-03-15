@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E645510E2F1
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Mar 2022 22:18:08 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-To: "Zhang, Dingchen (David)" <Dingchen.Zhang@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 14 Mar 2022 22:18:06 +0000
-Message-ID: <b18ccd1c57114d519b853aeb39e0c2bf@intel.com>
-References: <20220312052910.357949-1-dingchen.zhang@amd.com>
- <164707046826.29602.14167804032196242305@emeril.freedesktop.org>
- <BN9PR12MB5145EF32380B83A89844C3928D0F9@BN9PR12MB5145.namprd12.prod.outlook.com>
-In-Reply-To: <BN9PR12MB5145EF32380B83A89844C3928D0F9@BN9PR12MB5145.namprd12.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AEDC10E4A3
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 08:08:44 +0000 (UTC)
+Date: Tue, 15 Mar 2022 09:08:40 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Apoorva Singh <apoorva1.singh@intel.com>
+Message-ID: <YjBJiCgwVScT2xcS@zkempczy-mobl2>
+References: <20220311181534.134751-1-zbigniew.kempczynski@intel.com>
+ <Yi9ujutFYBVIwTSz@kamilkon-DESK1>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgUFNSLVNV?=
- =?utf-8?q?_MPO_test_case_=28rev2=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Yi9ujutFYBVIwTSz@kamilkon-DESK1>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_ccs: Add subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,238 +26,257 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCkZpbGVkIGEgbmV3IGlzc3VlIGFuZCByZS1yZXBvcnRlZC4NCmh0dHBzOi8vZ2l0bGFi
-LmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvLS9pc3N1ZXMvNTMzNQ0KaWd0QGttc19mcm9udGJ1
-ZmZlcl90cmFja2luZ0BmYmMtMXAtcHJpbXNjcm4taW5kZmItcGxmbGlwLWJsdCAtIGluY29tcGxl
-dGUgLSBObyB3YXJuaW5ncy9lcnJvcnMNCg0KTGFrc2htaS4NCi0tLS0tT3JpZ2luYWwgTWVzc2Fn
-ZS0tLS0tDQpGcm9tOiBaaGFuZywgRGluZ2NoZW4gKERhdmlkKSA8RGluZ2NoZW4uWmhhbmdAYW1k
-LmNvbT4gDQpTZW50OiBNb25kYXksIE1hcmNoIDE0LCAyMDIyIDI6MDkgUE0NClRvOiBpZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5h
-cmF5YW5hLnZ1ZHVtQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiDinJcgRmkuQ0kuSUdUOiBmYWls
-dXJlIGZvciBQU1ItU1UgTVBPIHRlc3QgY2FzZSAocmV2MikNCg0KW0FNRCBPZmZpY2lhbCBVc2Ug
-T25seV0NCg0KSGkgTGFrc2htaW5hcmF5YW5hLA0KDQpJIHRoaW5rIHRoaXMgaXMgYSBmYWxzZS1w
-b3NpdGl2ZSBzaW5jZSBpdCBmYWlsZWQgaW4gYSB0ZXN0IHdoaWNoIGlzIG5vdCBhc3NvY2lhdGVk
-IHdpdGggdGhlIHBhdGNoIHNlcmllcy4gRm9sbG93IHRoZSBsaW5rIHRvIHRoZSBwYXRjaCBiZWxv
-dyBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzEwMTMwMC8NCg0KQ291
-bGQgeW91IHBsZWFzZSBoZWxwIHJldHJpZ2dlciB0aGUgQ0kgdG8gY2hlY2sgaWYgdGhlIHJlZ3Jl
-c3Npb24gaXMgZ29uZT8gV2hhdCBkbyB5b3UgdGhpbms/DQoNClRoYW5rcw0KRGF2aWQgWmhhbmcN
-Cg0KDQoNCkZyb206IFBhdGNod29yayA8cGF0Y2h3b3JrQGVtZXJpbC5mcmVlZGVza3RvcC5vcmc+
-DQpTZW50OiBTYXR1cmRheSwgTWFyY2ggMTIsIDIwMjIgMjozNCBBTQ0KVG86IFpoYW5nLCBEaW5n
-Y2hlbiAoRGF2aWQpIDxEaW5nY2hlbi5aaGFuZ0BhbWQuY29tPg0KQ2M6IGlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnIDxpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4NClN1YmplY3Q6
-IOKclyBGaS5DSS5JR1Q6IGZhaWx1cmUgZm9yIFBTUi1TVSBNUE8gdGVzdCBjYXNlIChyZXYyKQ0K
-DQpQYXRjaCBEZXRhaWxzDQpTZXJpZXM6DQpQU1ItU1UgTVBPIHRlc3QgY2FzZSAocmV2MikNClVS
-TDoNCmh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTAxMzAwLw0KU3Rh
-dGU6DQpmYWlsdXJlDQpEZXRhaWxzOg0KaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
-ZHJtLXRpcC9JR1RQV182Nzg0L2luZGV4Lmh0bWwNCkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20g
-Q0lfRFJNXzExMzUzX2Z1bGwgLT4gSUdUUFdfNjc4NF9mdWxsIFN1bW1hcnkgRkFJTFVSRSBTZXJp
-b3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV182Nzg0X2Z1bGwgYWJzb2x1dGVs
-eSBuZWVkIHRvIGJlIHZlcmlmaWVkIG1hbnVhbGx5Lg0KSWYgeW91IHRoaW5rIHRoZSByZXBvcnRl
-ZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzIGludHJvZHVjZWQg
-aW4gSUdUUFdfNjc4NF9mdWxsLCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gdG8gYWxsb3cg
-dGhlbSB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNl
-IGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCkV4dGVybmFsIFVSTDogaHR0cHM6Ly9pbnRlbC1nZngt
-Y2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV182Nzg0L2luZGV4Lmh0bWwNClBhcnRpY2lwYXRp
-bmcgaG9zdHMgKDExIC0+IDkpDQpBZGRpdGlvbmFsICgxKTogc2hhcmQtcmtsDQpNaXNzaW5nICgz
-KTogcGlnLXNrbC02MjYwdSBwaWcta2JsLWlyaXMgcGlnLWdsay1qNTAwNSBQb3NzaWJsZSBuZXcg
-aXNzdWVzIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGlu
-dHJvZHVjZWQgaW4gSUdUUFdfNjc4NF9mdWxsOg0KSUdUIGNoYW5nZXMNClBvc3NpYmxlIHJlZ3Jl
-c3Npb25zDQppZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0xcC1wcmltc2Nybi1pbmRm
-Yi1wbGZsaXAtYmx0Og0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+IElOQ09NUExFVEUNCktub3duIGlz
-c3Vlcw0KSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfNjc4NF9mdWxsIHRoYXQg
-Y29tZSBmcm9tIGtub3duIGlzc3VlczoNCklHVCBjaGFuZ2VzDQpJc3N1ZXMgaGl0DQppZ3RAZ2Vt
-X2N0eF9wYXJhbUBzZXQtcHJpb3JpdHktbm90LXN1cHBvcnRlZDoNCnNoYXJkLXRnbGI6IE5PVFJV
-TiAtPiBTS0lQIChbZmRvIzEwOTMxNF0pDQpzaGFyZC1pY2xiOiBOT1RSVU4gLT4gU0tJUCAoW2Zk
-byMxMDkzMTRdKQ0KaWd0QGdlbV9jdHhfcGVyc2lzdGVuY2VAbGVnYWN5LWVuZ2luZXMtbWl4ZWQt
-cHJvY2VzczoNCnNoYXJkLXNuYjogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5MjcxXSAvIFtpOTE1
-IzEwOTldKSArMiBzaW1pbGFyIGlzc3Vlcw0KaWd0QGdlbV9jdHhfc3NldUBlbmdpbmVzOg0Kc2hh
-cmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzI4MF0pDQppZ3RAZ2VtX2V4ZWNfYmFsYW5j
-ZXJAcGFyYWxsZWwtYmItZmlyc3Q6DQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gRE1FU0ctV0FSTiAo
-W2k5MTUjNTA3Nl0pICsxIHNpbWlsYXIgaXNzdWUNCnNoYXJkLWljbGI6IE5PVFJVTiAtPiBTS0lQ
-IChbaTkxNSM0NTI1XSkNCmlndEBnZW1fZXhlY19iYWxhbmNlckBwYXJhbGxlbC1rZWVwLWluLWZl
-bmNlOg0Kc2hhcmQta2JsOiBOT1RSVU4gLT4gRE1FU0ctV0FSTiAoW2k5MTUjNTA3Nl0pICsxIHNp
-bWlsYXIgaXNzdWUNCmlndEBnZW1fZXhlY19mYWlyQGJhc2ljLWZsb3dAcmNzMDoNCnNoYXJkLXRn
-bGI6IFBBU1MgLT4gRkFJTCAoW2k5MTUjMjg0Ml0pDQppZ3RAZ2VtX2V4ZWNfZmFpckBiYXNpYy1u
-b25lLXNvbG9AcmNzMDoNCnNoYXJkLWdsazogTk9UUlVOIC0+IEZBSUwgKFtpOTE1IzI4NDJdKQ0K
-c2hhcmQtaWNsYjogTk9UUlVOIC0+IEZBSUwgKFtpOTE1IzI4NDJdKQ0KaWd0QGdlbV9leGVjX2Zh
-aXJAYmFzaWMtbm9uZUB2Y3MwOg0Kc2hhcmQta2JsOiBOT1RSVU4gLT4gRkFJTCAoW2k5MTUjMjg0
-Ml0pICsyIHNpbWlsYXIgaXNzdWVzDQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gRkFJTCAoW2k5MTUj
-Mjg0Ml0pICs0IHNpbWlsYXIgaXNzdWVzDQppZ3RAZ2VtX2V4ZWNfZmFpckBiYXNpYy1wYWNlQHZl
-Y3MwOg0Kc2hhcmQtZ2xrOiBQQVNTIC0+IEZBSUwgKFtpOTE1IzI4NDJdKSArMiBzaW1pbGFyIGlz
-c3Vlcw0KaWd0QGdlbV9leGVjX2ZhaXJAYmFzaWMtdGhyb3R0bGVAcmNzMDoNCnNoYXJkLWljbGI6
-IFBBU1MgLT4gRkFJTCAoW2k5MTUjMjg0OV0pDQppZ3RAZ2VtX2V4ZWNfcGFyYW1zQG5vLWJsdDoN
-CnNoYXJkLWljbGI6IE5PVFJVTiAtPiBTS0lQIChbZmRvIzEwOTI4M10pDQppZ3RAZ2VtX2V4ZWNf
-cGFyYW1zQG5vLXZlYm94Og0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5Mjgz
-XSAvIFtpOTE1IzQ4NzddKQ0KaWd0QGdlbV9odWNfY29weUBodWMtY29weToNCnNoYXJkLWFwbDog
-Tk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5MjcxXSAvIFtpOTE1IzIxOTBdKQ0Kc2hhcmQta2JsOiBO
-T1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDkyNzFdIC8gW2k5MTUjMjE5MF0pDQppZ3RAZ2VtX2xtZW1f
-c3dhcHBpbmdAaGVhdnktdmVyaWZ5LXJhbmRvbToNCnNoYXJkLWtibDogTk9UUlVOIC0+IFNLSVAg
-KFtmZG8jMTA5MjcxXSAvIFtpOTE1IzQ2MTNdKSArMSBzaW1pbGFyIGlzc3VlDQpzaGFyZC10Z2xi
-OiBOT1RSVU4gLT4gU0tJUCAoW2k5MTUjNDYxM10pICsxIHNpbWlsYXIgaXNzdWUNCmlndEBnZW1f
-bG1lbV9zd2FwcGluZ0ByYW5kb20tZW5naW5lczoNCnNoYXJkLWljbGI6IE5PVFJVTiAtPiBTS0lQ
-IChbaTkxNSM0NjEzXSkgKzEgc2ltaWxhciBpc3N1ZQ0Kc2hhcmQtYXBsOiBOT1RSVU4gLT4gU0tJ
-UCAoW2ZkbyMxMDkyNzFdIC8gW2k5MTUjNDYxM10pICsyIHNpbWlsYXIgaXNzdWVzDQpzaGFyZC1n
-bGs6IE5PVFJVTiAtPiBTS0lQIChbZmRvIzEwOTI3MV0gLyBbaTkxNSM0NjEzXSkgKzEgc2ltaWxh
-ciBpc3N1ZQ0KaWd0QGdlbV9wcmVhZEBleGhhdXN0aW9uOg0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+
-IFdBUk4gKFtpOTE1IzI2NThdKQ0KaWd0QGdlbV9weHBAcmVndWxhci1iYXNlbGluZS1zcmMtY29w
-eS1yZWFkaWJsZToNCnNoYXJkLXRnbGI6IE5PVFJVTiAtPiBTS0lQIChbaTkxNSM0MjcwXSkgKzMg
-c2ltaWxhciBpc3N1ZXMNCmlndEBnZW1fcHhwQHJlamVjdC1tb2RpZnktY29udGV4dC1wcm90ZWN0
-aW9uLW9mZi0yOg0Kc2hhcmQtaWNsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzQyNzBdKSArMSBz
-aW1pbGFyIGlzc3VlDQppZ3RAZ2VtX3JlbmRlcl9jb3B5QHktdGlsZWQtY2NzLXRvLXktdGlsZWQt
-bWMtY2NzOg0Kc2hhcmQtaWNsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1Izc2OF0pICsyIHNpbWls
-YXIgaXNzdWVzDQppZ3RAZ2VtX3VzZXJwdHJfYmxpdHNAY29oZXJlbmN5LXVuc3luYzoNCnNoYXJk
-LXRnbGI6IE5PVFJVTiAtPiBTS0lQIChbaTkxNSMzMjk3XSkNCnNoYXJkLWljbGI6IE5PVFJVTiAt
-PiBTS0lQIChbaTkxNSMzMjk3XSkNCmlndEBnZW1fdXNlcnB0cl9ibGl0c0BkbWFidWYtc3luYzoN
-CnNoYXJkLWtibDogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5MjcxXSAvIFtpOTE1IzMzMjNdKQ0K
-c2hhcmQtaWNsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzMzMjNdKQ0Kc2hhcmQtYXBsOiBOT1RS
-VU4gLT4gU0tJUCAoW2ZkbyMxMDkyNzFdIC8gW2k5MTUjMzMyM10pDQpzaGFyZC1nbGs6IE5PVFJV
-TiAtPiBTS0lQIChbZmRvIzEwOTI3MV0gLyBbaTkxNSMzMzIzXSkNCnNoYXJkLXRnbGI6IE5PVFJV
-TiAtPiBTS0lQIChbaTkxNSMzMzIzXSkNCmlndEBnZW1fdXNlcnB0cl9ibGl0c0B2bWEtbWVyZ2U6
-DQpzaGFyZC1rYmw6IE5PVFJVTiAtPiBGQUlMIChbaTkxNSMzMzE4XSkNCmlndEBnZW45X2V4ZWNf
-cGFyc2VAYmItc3RhcnQtZmFyOg0Kc2hhcmQtaWNsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzI4
-NTZdKSArMiBzaW1pbGFyIGlzc3Vlcw0KaWd0QGdlbjlfZXhlY19wYXJzZUBzaGFkb3ctcGVlazoN
-CnNoYXJkLXRnbGI6IE5PVFJVTiAtPiBTS0lQIChbaTkxNSMyNTI3XSAvIFtpOTE1IzI4NTZdKSAr
-NSBzaW1pbGFyIGlzc3Vlcw0KaWd0QGk5MTVfcG1fcmM2X3Jlc2lkZW5jeUBtZWRpYS1yYzYtYWNj
-dXJhY3k6DQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDkyODldIC8gW2ZkbyMx
-MTE3MTldKQ0KaWd0QGk5MTVfcG1fcmM2X3Jlc2lkZW5jeUByYzYtaWRsZToNCnNoYXJkLXRnbGI6
-IE5PVFJVTiAtPiBXQVJOIChbaTkxNSMyNjgxXSAvIFtpOTE1IzI2ODRdKQ0KaWd0QGk5MTVfcG1f
-cnBtQGdlbS1leGVjYnVmLXN0cmVzcy1wYzg6DQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gU0tJUCAo
-W2ZkbyMxMDk1MDZdIC8gW2k5MTUjMjQxMV0pDQppZ3RAaTkxNV9wbV9ycG1AbW9kZXNldC1ub24t
-bHBzcC1zdHJlc3M6DQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMTE2NDRdIC8g
-W2k5MTUjMTM5N10gLyBbaTkxNSMyNDExXSkgKzIgc2ltaWxhciBpc3N1ZXMNCmlndEBpOTE1X3Bt
-X3JwbUBtb2Rlc2V0LW5vbi1scHNwLXN0cmVzcy1uby13YWl0Og0Kc2hhcmQtaWNsYjogTk9UUlVO
-IC0+IFNLSVAgKFtmZG8jMTEwODkyXSkgKzEgc2ltaWxhciBpc3N1ZQ0KaWd0QGk5MTVfcXVlcnlA
-cXVlcnktdG9wb2xvZ3ktdW5zdXBwb3J0ZWQ6DQpzaGFyZC1pY2xiOiBOT1RSVU4gLT4gU0tJUCAo
-W2ZkbyMxMDkzMDJdKQ0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5MzAyXSkN
-CmlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZ3RfbHJjOg0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+IERN
-RVNHLUZBSUwgKFtpOTE1IzIzNzNdKQ0KaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZUBndF9wbToNCnNo
-YXJkLXRnbGI6IE5PVFJVTiAtPiBETUVTRy1GQUlMIChbaTkxNSMxNzU5XSkNCmlndEBpOTE1X3Nl
-bGZ0ZXN0QGxpdmVAaGFuZ2NoZWNrOg0Kc2hhcmQtc25iOiBQQVNTIC0+IElOQ09NUExFVEUgKFtp
-OTE1IzM5MjFdKQ0KaWd0QGttc19hZGRmYl9iYXNpY0BpbnZhbGlkLXNtZW0tYm8tb24tZGlzY3Jl
-dGU6DQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gU0tJUCAoW2k5MTUjMzgyNl0pDQpzaGFyZC1pY2xi
-OiBOT1RSVU4gLT4gU0tJUCAoW2k5MTUjMzgyNl0pDQppZ3RAa21zX2JpZ19mYkA0LXRpbGVkLW1h
-eC1ody1zdHJpZGUtMzJicHAtcm90YXRlLTE4MC1oZmxpcC1hc3luYy1mbGlwOg0Kc2hhcmQtdGds
-YjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzUyODZdKSArNCBzaW1pbGFyIGlzc3Vlcw0KaWd0QGtt
-c19iaWdfZmJANC10aWxlZC1tYXgtaHctc3RyaWRlLTY0YnBwLXJvdGF0ZS0xODAtYXN5bmMtZmxp
-cDoNCnNoYXJkLWljbGI6IE5PVFJVTiAtPiBTS0lQIChbaTkxNSM1Mjg2XSkgKzEgc2ltaWxhciBp
-c3N1ZQ0KaWd0QGttc19iaWdfZmJAbGluZWFyLThicHAtcm90YXRlLTkwOg0Kc2hhcmQtdGdsYjog
-Tk9UUlVOIC0+IFNLSVAgKFtmZG8jMTExNjE0XSkgKzIgc2ltaWxhciBpc3N1ZXMNCnNoYXJkLWlj
-bGI6IE5PVFJVTiAtPiBTS0lQIChbZmRvIzExMDcyNV0gLyBbZmRvIzExMTYxNF0pDQppZ3RAa21z
-X2JpZ19mYkB5LXRpbGVkLThicHAtcm90YXRlLTE4MDoNCnNoYXJkLWdsazogUEFTUyAtPiBGQUlM
-IChbaTkxNSMxODg4XSkNCmlndEBrbXNfYmlnX2ZiQHktdGlsZWQtbWF4LWh3LXN0cmlkZS0zMmJw
-cC1yb3RhdGUtMTgwLWhmbGlwOg0Kc2hhcmQta2JsOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDky
-NzFdIC8gW2k5MTUjMzc3N10pICsyIHNpbWlsYXIgaXNzdWVzDQpzaGFyZC1hcGw6IE5PVFJVTiAt
-PiBTS0lQIChbZmRvIzEwOTI3MV0gLyBbaTkxNSMzNzc3XSkgKzQgc2ltaWxhciBpc3N1ZXMNCmln
-dEBrbXNfYmlnX2ZiQHktdGlsZWQtbWF4LWh3LXN0cmlkZS02NGJwcC1yb3RhdGUtMC1oZmxpcDoN
-CnNoYXJkLWdsazogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5MjcxXSAvIFtpOTE1IzM3NzddKSAr
-MiBzaW1pbGFyIGlzc3Vlcw0KaWd0QGttc19iaWdfZmJAeWYtdGlsZWQtMzJicHAtcm90YXRlLTI3
-MDoNCnNoYXJkLXRnbGI6IE5PVFJVTiAtPiBTS0lQIChbZmRvIzExMTYxNV0pICs1IHNpbWlsYXIg
-aXNzdWVzDQppZ3RAa21zX2JpZ19mYkB5Zi10aWxlZC02NGJwcC1yb3RhdGUtMTgwOg0Kc2hhcmQt
-aWNsYjogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTEwNzIzXSkgKzIgc2ltaWxhciBpc3N1ZXMNCmln
-dEBrbXNfY2NzQHBpcGUtYS1iYWQtcGl4ZWwtZm9ybWF0LXlfdGlsZWRfZ2VuMTJfbWNfY2NzOg0K
-c2hhcmQtYXBsOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDkyNzFdIC8gW2k5MTUjMzg4Nl0pICsy
-IHNpbWlsYXIgaXNzdWVzDQppZ3RAa21zX2Njc0BwaXBlLWEtY3JjLXNwcml0ZS1wbGFuZXMtYmFz
-aWMteV90aWxlZF9nZW4xMl9yY19jY3NfY2M6DQpzaGFyZC1rYmw6IE5PVFJVTiAtPiBTS0lQIChb
-ZmRvIzEwOTI3MV0gLyBbaTkxNSMzODg2XSkgKzkgc2ltaWxhciBpc3N1ZXMNCmlndEBrbXNfY2Nz
-QHBpcGUtYi1jcmMtc3ByaXRlLXBsYW5lcy1iYXNpYy15X3RpbGVkX2dlbjEyX21jX2NjczoNCnNo
-YXJkLXRnbGI6IE5PVFJVTiAtPiBTS0lQIChbaTkxNSMzNjg5XSAvIFtpOTE1IzM4ODZdKSArNCBz
-aW1pbGFyIGlzc3Vlcw0KaWd0QGttc19jY3NAcGlwZS1iLWNyYy1zcHJpdGUtcGxhbmVzLWJhc2lj
-LXlfdGlsZWRfZ2VuMTJfcmNfY2NzX2NjOg0Kc2hhcmQtZ2xrOiBOT1RSVU4gLT4gU0tJUCAoW2Zk
-byMxMDkyNzFdIC8gW2k5MTUjMzg4Nl0pICsxIHNpbWlsYXIgaXNzdWUNCmlndEBrbXNfY2NzQHBp
-cGUtYy1iYWQtcm90YXRpb24tOTAteV90aWxlZF9nZW4xMl9yY19jY3NfY2M6DQpzaGFyZC1pY2xi
-OiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDkyNzhdIC8gW2k5MTUjMzg4Nl0pICs0IHNpbWlsYXIg
-aXNzdWVzDQppZ3RAa21zX2Njc0BwaXBlLWQtYmFkLXBpeGVsLWZvcm1hdC15X3RpbGVkX2NjczoN
-CnNoYXJkLXNuYjogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5MjcxXSkgKzIyNSBzaW1pbGFyIGlz
-c3Vlcw0KaWd0QGttc19jY3NAcGlwZS1kLWNjcy1vbi1hbm90aGVyLWJvLXlfdGlsZWRfY2NzOg0K
-c2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzM2ODldKSArMTAgc2ltaWxhciBpc3N1
-ZXMNCmlndEBrbXNfY2NzQHBpcGUtZC1taXNzaW5nLWNjcy1idWZmZXIteWZfdGlsZWRfY2NzOg0K
-c2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTExNjE1XSAvIFtpOTE1IzM2ODldKSAr
-OSBzaW1pbGFyIGlzc3Vlcw0KaWd0QGttc19jZGNsa0Btb2RlLXRyYW5zaXRpb246DQpzaGFyZC1h
-cGw6IE5PVFJVTiAtPiBTS0lQIChbZmRvIzEwOTI3MV0pICsyMTAgc2ltaWxhciBpc3N1ZXMNCnNo
-YXJkLXRnbGI6IE5PVFJVTiAtPiBTS0lQIChbaTkxNSMzNzQyXSkNCmlndEBrbXNfY2hhbWVsaXVt
-QGRwLWhwZC1mb3ItZWFjaC1waXBlOg0Kc2hhcmQta2JsOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMx
-MDkyNzFdIC8gW2ZkbyMxMTE4MjddKSArMTMgc2ltaWxhciBpc3N1ZXMNCmlndEBrbXNfY2hhbWVs
-aXVtQGRwLW1vZGUtdGltaW5nczoNCnNoYXJkLWFwbDogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5
-MjcxXSAvIFtmZG8jMTExODI3XSkgKzExIHNpbWlsYXIgaXNzdWVzDQppZ3RAa21zX2NoYW1lbGl1
-bUB2Z2EtaHBkLWVuYWJsZS1kaXNhYmxlLW1vZGU6DQpzaGFyZC1nbGs6IE5PVFJVTiAtPiBTS0lQ
-IChbZmRvIzEwOTI3MV0gLyBbZmRvIzExMTgyN10pICszIHNpbWlsYXIgaXNzdWVzDQppZ3RAa21z
-X2NvbG9yX2NoYW1lbGl1bUBwaXBlLWItY3RtLXJlZC10by1ibHVlOg0Kc2hhcmQtaWNsYjogTk9U
-UlVOIC0+IFNLSVAgKFtmZG8jMTA5Mjg0XSAvIFtmZG8jMTExODI3XSkgKzUgc2ltaWxhciBpc3N1
-ZXMNCmlndEBrbXNfY29sb3JfY2hhbWVsaXVtQHBpcGUtZC1jdG0tbWF4Og0Kc2hhcmQtdGdsYjog
-Tk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5Mjg0XSAvIFtmZG8jMTExODI3XSkgKzEyIHNpbWlsYXIg
-aXNzdWVzDQppZ3RAa21zX2NvbG9yX2NoYW1lbGl1bUBwaXBlLWQtY3RtLXJlZC10by1ibHVlOg0K
-c2hhcmQtc25iOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDkyNzFdIC8gW2ZkbyMxMTE4MjddKSAr
-NSBzaW1pbGFyIGlzc3Vlcw0KaWd0QGttc19jb250ZW50X3Byb3RlY3Rpb25AYXRvbWljOg0Kc2hh
-cmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzEwNjNdKSArMSBzaW1pbGFyIGlzc3VlDQpp
-Z3RAa21zX2NvbnRlbnRfcHJvdGVjdGlvbkBsaWM6DQpzaGFyZC1hcGw6IE5PVFJVTiAtPiBUSU1F
-T1VUIChbaTkxNSMxMzE5XSkNCnNoYXJkLWtibDogTk9UUlVOIC0+IFRJTUVPVVQgKFtpOTE1IzEz
-MTldKQ0KaWd0QGttc19jb250ZW50X3Byb3RlY3Rpb25AbWVpX2ludGVyZmFjZToNCnNoYXJkLWlj
-bGI6IE5PVFJVTiAtPiBTS0lQIChbZmRvIzEwOTMwMF0gLyBbZmRvIzExMTA2Nl0pDQppZ3RAa21z
-X2N1cnNvcl9jcmNAcGlwZS1hLWN1cnNvci01MTJ4NTEyLW9mZnNjcmVlbjoNCnNoYXJkLWljbGI6
-IE5PVFJVTiAtPiBTS0lQIChbZmRvIzEwOTI3OF0gLyBbZmRvIzEwOTI3OV0pICsxIHNpbWlsYXIg
-aXNzdWUNCmlndEBrbXNfY3Vyc29yX2NyY0BwaXBlLWItY3Vyc29yLTMyeDMyLW9uc2NyZWVuOg0K
-c2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzMzMTldKSArNSBzaW1pbGFyIGlzc3Vl
-cw0KaWd0QGttc19jdXJzb3JfY3JjQHBpcGUtYi1jdXJzb3Itc3VzcGVuZDoNCnNoYXJkLWtibDog
-Tk9UUlVOIC0+IERNRVNHLVdBUk4gKFtpOTE1IzE4MF0pDQppZ3RAa21zX2N1cnNvcl9jcmNAcGlw
-ZS1jLWN1cnNvci0zMngxMC1yYXBpZC1tb3ZlbWVudDoNCnNoYXJkLXRnbGI6IE5PVFJVTiAtPiBT
-S0lQIChbaTkxNSMzMzU5XSkgKzYgc2ltaWxhciBpc3N1ZXMNCmlndEBrbXNfY3Vyc29yX2NyY0Bw
-aXBlLWQtY3Vyc29yLTI1Nng4NS1yYW5kb206DQpzaGFyZC1pY2xiOiBOT1RSVU4gLT4gU0tJUCAo
-W2ZkbyMxMDkyNzhdKSArMjcgc2ltaWxhciBpc3N1ZXMNCmlndEBrbXNfY3Vyc29yX2NyY0BwaXBl
-LWQtY3Vyc29yLTUxMng1MTItb2Zmc2NyZWVuOg0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAg
-KFtmZG8jMTA5Mjc5XSAvIFtpOTE1IzMzNTldKSArMyBzaW1pbGFyIGlzc3Vlcw0KaWd0QGttc19j
-dXJzb3JfZWRnZV93YWxrQHBpcGUtZC02NHg2NC1sZWZ0LWVkZ2U6DQpzaGFyZC1rYmw6IE5PVFJV
-TiAtPiBTS0lQIChbZmRvIzEwOTI3MV0pICsyMzUgc2ltaWxhciBpc3N1ZXMNCmlndEBrbXNfY3Vy
-c29yX2xlZ2FjeUBjdXJzb3JiLXZzLWZsaXBiLWF0b21pYy10cmFuc2l0aW9ucy12YXJ5aW5nLXNp
-emU6DQpzaGFyZC1pY2xiOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDkyNzRdIC8gW2ZkbyMxMDky
-NzhdKSArNiBzaW1pbGFyIGlzc3Vlcw0KaWd0QGttc19jdXJzb3JfbGVnYWN5QHBpcGUtZC10b3J0
-dXJlLWJvOg0Kc2hhcmQtYXBsOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDkyNzFdIC8gW2k5MTUj
-NTMzXSkgKzEgc2ltaWxhciBpc3N1ZQ0Kc2hhcmQtZ2xrOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMx
-MDkyNzFdIC8gW2k5MTUjNTMzXSkNCmlndEBrbXNfY3Vyc29yX2xlZ2FjeUBzaG9ydC1idXN5LWZs
-aXAtYmVmb3JlLWN1cnNvci1hdG9taWMtdHJhbnNpdGlvbnMtdmFyeWluZy1zaXplOg0Kc2hhcmQt
-dGdsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzQxMDNdKSArMSBzaW1pbGFyIGlzc3VlDQppZ3RA
-a21zX2Rpc3BsYXlfbW9kZXNAZXh0ZW5kZWQtbW9kZS1iYXNpYzoNCnNoYXJkLXRnbGI6IE5PVFJV
-TiAtPiBTS0lQIChbZmRvIzEwOTI3NF0pDQppZ3RAa21zX2RyYXdfY3JjQGRyYXctbWV0aG9kLXJn
-YjU2NS1ibHQtNHRpbGVkOg0Kc2hhcmQtaWNsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzUyODdd
-KSArMSBzaW1pbGFyIGlzc3VlDQppZ3RAa21zX2RyYXdfY3JjQGRyYXctbWV0aG9kLXJnYjU2NS1t
-bWFwLWNwdS00dGlsZWQ6DQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gU0tJUCAoW2k5MTUjNTI4N10p
-ICs1IHNpbWlsYXIgaXNzdWVzDQppZ3RAa21zX2RzY0B4cmdiODg4OC1kc2MtY29tcHJlc3Npb246
-DQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gU0tJUCAoW2k5MTUjMzgyOF0pDQpzaGFyZC1pY2xiOiBO
-T1RSVU4gLT4gU0tJUCAoW2k5MTUjMzgyOF0pDQppZ3RAa21zX2ZsaXBAMngtZmxpcC12cy1ybWZi
-Og0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5Mjc0XSAvIFtmZG8jMTExODI1
-XSkgKzE3IHNpbWlsYXIgaXNzdWVzDQppZ3RAa21zX2ZsaXBAZmxpcC12cy1zdXNwZW5kLWludGVy
-cnVwdGlibGVAYS1kcDE6DQpzaGFyZC1rYmw6IFBBU1MgLT4gRE1FU0ctV0FSTiAoW2k5MTUjMTgw
-XSkgKzMgc2ltaWxhciBpc3N1ZXMNCmlndEBrbXNfZmxpcF9zY2FsZWRfY3JjQGZsaXAtMzJicHAt
-eXRpbGUtdG8tMzJicHAteXRpbGVjY3MtdXBzY2FsaW5nOg0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+
-IFNLSVAgKFtpOTE1IzI1ODddKQ0KaWd0QGttc19mbGlwX3NjYWxlZF9jcmNAZmxpcC02NGJwcC15
-dGlsZS10by0xNmJwcC15dGlsZS1kb3duc2NhbGluZzoNCnNoYXJkLWljbGI6IFBBU1MgLT4gU0tJ
-UCAoW2k5MTUjMzcwMV0pDQppZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0ycC1zY25k
-c2Nybi1wcmktc2hyZmItZHJhdy1tbWFwLWNwdToNCnNoYXJkLWljbGI6IE5PVFJVTiAtPiBTS0lQ
-IChbZmRvIzEwOTI4MF0pICsxNSBzaW1pbGFyIGlzc3Vlcw0KaWd0QGttc19mcm9udGJ1ZmZlcl90
-cmFja2luZ0BmYmNwc3ItMnAtc2NuZHNjcm4taW5kZmItcGxmbGlwLWJsdDoNCnNoYXJkLXRnbGI6
-IE5PVFJVTiAtPiBTS0lQIChbZmRvIzEwOTI4MF0gLyBbZmRvIzExMTgyNV0pICszNyBzaW1pbGFy
-IGlzc3Vlcw0KaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0Bwc3ItMnAtc2NuZHNjcm4tc3By
-LWluZGZiLWRyYXctcmVuZGVyOg0Kc2hhcmQtZ2xrOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDky
-NzFdKSArOTIgc2ltaWxhciBpc3N1ZXMNCmlndEBrbXNfaGRyQHN0YXRpYy10b2dnbGUtc3VzcGVu
-ZDoNCnNoYXJkLXRnbGI6IE5PVFJVTiAtPiBTS0lQIChbaTkxNSMzNTU1XSkgKzEgc2ltaWxhciBp
-c3N1ZQ0KaWd0QGttc19waXBlX2JfY19pdmJAcGlwZS1iLWRvdWJsZS1tb2Rlc2V0LXRoZW4tbW9k
-ZXNldC1waXBlLWM6DQpzaGFyZC10Z2xiOiBOT1RSVU4gLT4gU0tJUCAoW2ZkbyMxMDkyODldKSAr
-MiBzaW1pbGFyIGlzc3Vlcw0KaWd0QGttc19waXBlX2NyY19iYXNpY0BzdXNwZW5kLXJlYWQtY3Jj
-LXBpcGUtYzoNCnNoYXJkLWFwbDogUEFTUyAtPiBETUVTRy1XQVJOIChbaTkxNSMxODBdKSArMiBz
-aW1pbGFyIGlzc3Vlcw0KaWd0QGttc19wbGFuZV9hbHBoYV9ibGVuZEBwaXBlLWEtYWxwaGEtb3Bh
-cXVlLWZiOg0Kc2hhcmQtYXBsOiBOT1RSVU4gLT4gRkFJTCAoW2ZkbyMxMDgxNDVdIC8gW2k5MTUj
-MjY1XSkgKzEgc2ltaWxhciBpc3N1ZQ0KaWd0QGttc19wbGFuZV9hbHBoYV9ibGVuZEBwaXBlLWIt
-YWxwaGEtYmFzaWM6DQpzaGFyZC1rYmw6IE5PVFJVTiAtPiBGQUlMIChbZmRvIzEwODE0NV0gLyBb
-aTkxNSMyNjVdKSArMSBzaW1pbGFyIGlzc3VlDQppZ3RAa21zX3BsYW5lX2FscGhhX2JsZW5kQHBp
-cGUtYi1jb25zdGFudC1hbHBoYS1tYXg6DQpzaGFyZC1nbGs6IE5PVFJVTiAtPiBGQUlMIChbZmRv
-IzEwODE0NV0gLyBbaTkxNSMyNjVdKQ0KaWd0QGttc19wbGFuZV9sb3dyZXNAcGlwZS1iLXRpbGlu
-Zy00Og0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzUyODhdKSArMiBzaW1pbGFy
-IGlzc3Vlcw0KaWd0QGttc19wbGFuZV9sb3dyZXNAcGlwZS1iLXRpbGluZy1ub25lOg0Kc2hhcmQt
-dGdsYjogTk9UUlVOIC0+IFNLSVAgKFtpOTE1IzM1MzZdKSArMSBzaW1pbGFyIGlzc3VlDQppZ3RA
-a21zX3BsYW5lX2xvd3Jlc0BwaXBlLWMtdGlsaW5nLXlmOg0Kc2hhcmQtaWNsYjogTk9UUlVOIC0+
-IFNLSVAgKFtpOTE1IzM1MzZdKQ0Kc2hhcmQtdGdsYjogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTEx
-NjE1XSAvIFtmZG8jMTEyMDU0XSkNCmlndEBrbXNfcGxhbmVfc2NhbGluZ0AyeC1zY2FsZXItbXVs
-dGktcGlwZToNCnNoYXJkLWljbGI6IE5PVFJVTiAtPiBTS0lQIChbZmRvIzEwOTI3NF0pICs2IHNp
-bWlsYXIgaXNzdWVzDQppZ3RAa21zX3BzcjJfc2ZAb3ZlcmxheS1wcmltYXJ5LXVwZGF0ZS1zZi1k
-bWctYXJlYToNCnNoYXJkLWFwbDogTk9UUlVOIC0+IFNLSVAgKFtmZG8jMTA5MjcxXSAvIFtpOTE1
-IzY1OF0pICsyIHNpbWlsYXIgaXNzdWVzDQpzaGFyZC1pY2xiOiBOT1RSVU4gLT4gU0tJUCAoW2Zk
-byMxMTEwNjhdIC8gW2k5MTUjNjU4XSkNCg==
+On Mon, Mar 14, 2022 at 05:34:22PM +0100, Kamil Konieczny wrote:
+> Dnia 2022-03-11 at 19:15:34 +0100, Zbigniew Kempczyński napisał(a):
+> > From: Apoorva Singh <apoorva1.singh@intel.com>
+> > 
+> > - Verify ccs data is binded to physical memory by using
+> >   XY_CTRL_SURF_COPY_BLT command in separate context.
+> > 
+> > - Introduce suspend/resume and verify validity of objects.
+> > 
+> 
+> imho this should be splitted up to two separate patches, one for
+> verify binding, second for suspend/resume. May you point to
+> some RFC/doc/spec about how suspend/resume is handled by device,
+> e.g. if LMEM in discrete gfx can survive it ? If it is only SMEM,
+> please put it in commit description. You should also describe
+> how you check validity, it looks like it is checked only in
+> compression scenario.
+
+Agree, please split patch to suspend/resume + new ctx.
+
+> 
+> > Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > ---
+> >  tests/i915/gem_ccs.c | 79 +++++++++++++++++++++++++++++++++++---------
+> >  1 file changed, 64 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> > index fdf1fe75f5..073e5b3d3e 100644
+> > --- a/tests/i915/gem_ccs.c
+> > +++ b/tests/i915/gem_ccs.c
+> > @@ -4,6 +4,7 @@
+> >   */
+> >  
+> >  #include <errno.h>
+> > +#include <glib.h>
+> >  #include <sys/ioctl.h>
+> >  #include <sys/time.h>
+> >  #include <malloc.h>
+> > @@ -39,6 +40,8 @@ struct test_config {
+> >  	bool compression;
+> >  	bool inplace;
+> >  	bool surfcopy;
+> > +	bool new_ctx;
+> > +	bool suspend_resume;
+> >  };
+> >  
+> >  static void set_object(struct blt_copy_object *obj,
+> > @@ -161,22 +164,24 @@ static void surf_copy(int i915,
+> >  		      const struct blt_copy_object *src,
+> >  		      const struct blt_copy_object *mid,
+> >  		      const struct blt_copy_object *dst,
+> > -		      int run_id)
+> > +		      int run_id, bool suspend_resume)
+> 
+> It is better to make separate function suspend_resume.
+
+I'm not sure separate function is really needed. Scenario is extention
+of surf_copy() so it should be called within (otherwise we will need
+duplicate test, block_copy->surf_copy->suspend_resume()). 
+> 
+> >  {
+> >  	struct blt_copy_data blt = {};
+> >  	struct blt_block_copy_data_ext ext = {};
+> >  	struct blt_ctrl_surf_copy_data surf = {};
+> > -	uint32_t bb, ccs, *ccsmap;
+> > -	uint64_t bb_size = 4096;
+> > -	uint64_t ccssize = mid->size / CCS_RATIO;
+> > +	uint32_t bb, ccs, ccs2, *ccsmap, *ccsmap2;
+> > +	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
+> >  	uint32_t *ccscopy;
+> >  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
+> >  	int result;
+> > +	char *orig, *orig2, *new, *new2;
+> >  
+> >  	igt_assert(mid->compression);
+> >  	ccscopy = (uint32_t *) malloc(ccssize);
+> > +	bb_size = 4096;
+> >  	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
+> >  	ccs = gem_create(i915, ccssize);
+> > +	ccs2 = gem_create(i915, ccssize);
+> >  
+> >  	surf.i915 = i915;
+> >  	surf.print_bb = param.print_bb;
+> > @@ -192,6 +197,27 @@ static void surf_copy(int i915,
+> >  					   PROT_READ | PROT_WRITE);
+> >  	memcpy(ccscopy, ccsmap, ccssize);
+> >  
+> > +	if (suspend_resume) {
+> > +		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap, surf.dst.size);
+> > +		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
+> > +
+> > +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+> 
+> Why not just leave only this one line here and delete others
+> from if-suspend-resume block ? Then it will look like:
+> 
+> 	if (suspend_resume)
+> 		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+
+Imo checksumming is not necessary in pure ctrl-surf-copy test; we need to
+verify its content only in suspend-resume. 
+
+> 
+> In this case it can be added with only one boolean as param. Can
+> suspend/resume be used in other places in this function ? Or for
+> other checks, for example if LMEM is restored after resume ?
+> 
+> > +
+> > +		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
+> > +				0, DIRECT_ACCESS);
+> > +		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
+> > +		gem_sync(i915, surf.dst.handle);
+> > +
+> > +		ccsmap2 = gem_mmap__device_coherent(i915, ccs2, 0, surf.dst.size,
+> > +						    PROT_READ | PROT_WRITE);
+> > +		new = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap2, surf.dst.size);
+> > +		new2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
+> > +
+> > +		igt_assert(!strcmp(orig, new));
+> > +		igt_assert(!strcmp(orig2, new2));
+> > +		munmap(ccsmap2, ccssize);
+> 
+> Move unmap before first assert. Btw the uncompression phase
+> checks data integrity. Why not move checksums into main function
+> body and replace memcmp ? It can be left to later refactor.
+
+Agree that munmap() can be moved before assert. But I think separate
+compare makes sense as we can check where potential corruption can occur -
+I mean if assert() will pass on checksumming but not on block copy blit
+that means main surface can be corrupted. If we base on comparing 
+src with dst we won't know where corruption occured.
+
+--
+Zbigniew
+
+> 
+> > +	}
+> > +
+> >  	/* corrupt ccs */
+> >  	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+> >  		ccsmap[i] = i;
+> > @@ -208,6 +234,7 @@ static void surf_copy(int i915,
+> >  	set_blt_object(&blt.dst, dst);
+> >  	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
+> >  	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
+> > +	bb_size = 4096;
+> >  	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
+> >  	set_batch(&blt.bb, bb, bb_size, REGION_SMEM);
+> >  	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
+> > @@ -228,15 +255,15 @@ static void surf_copy(int i915,
+> >  
+> >  	munmap(ccsmap, ccssize);
+> >  	gem_close(i915, ccs);
+> > +	gem_close(i915, ccs2);
+> >  }
+> >  
+> >  static void block_copy(int i915,
+> >  		       const intel_ctx_t *ctx,
+> >  		       const struct intel_execution_engine2 *e,
+> >  		       uint32_t region1, uint32_t region2,
+> > -		       enum blt_tiling mid_tiling, bool compression,
+> > -		       bool inplace,
+> > -		       bool surfcopy)
+> > +		       enum blt_tiling mid_tiling,
+> > +		       const struct test_config *config)
+> >  {
+> >  	struct blt_copy_data blt = {};
+> >  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> > @@ -249,7 +276,7 @@ static void block_copy(int i915,
+> >  	uint32_t run_id = mid_tiling;
+> >  	uint32_t mid_region = region2, bb;
+> >  	uint32_t width = param.width, height = param.height;
+> > -	enum blt_compression mid_compression = compression;
+> > +	enum blt_compression mid_compression = config->compression;
+> >  	int mid_compression_format = param.compression_format;
+> >  	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+> >  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
+> > @@ -293,8 +320,17 @@ static void block_copy(int i915,
+> >  	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
+> >  	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
+> >  
+> > -	if (surfcopy && pext)
+> > -		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
+> > +	if (config->surfcopy && pext) {
+> > +		const intel_ctx_t *surf_ctx = ctx;
+> > +
+> > +		if (config->new_ctx)
+> > +			surf_ctx = intel_ctx_create(i915, &ctx->cfg);
+> > +
+> > +		surf_copy(i915, surf_ctx, e, ahnd, src, mid, dst, run_id, config->suspend_resume);
+> > +
+> > +		if (surf_ctx != ctx)
+> > +			intel_ctx_destroy(i915, surf_ctx);
+> > +	}
+> >  
+> >  	memset(&blt, 0, sizeof(blt));
+> >  	blt.color_depth = CD_32bit;
+> > @@ -303,7 +339,7 @@ static void block_copy(int i915,
+> >  	set_blt_object(&blt.dst, dst);
+> >  	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
+> >  	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+> > -	if (inplace) {
+> > +	if (config->inplace) {
+> >  		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+> >  			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
+> >  		blt.dst.ptr = mid->ptr;
+> > @@ -367,10 +403,7 @@ static void block_copy_test(int i915,
+> >  					      param.compression_format, regtxt) {
+> >  					block_copy(i915, ctx, e,
+> >  						   region1, region2,
+> > -						   tiling,
+> > -						   config->compression,
+> > -						   config->inplace,
+> > -						   config->surfcopy);
+> > +						   tiling, config);
+> >  				}
+> >  				free(regtxt);
+> >  			}
+> > @@ -480,6 +513,22 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+> >  		block_copy_test(i915, &config, ctx, set);
+> >  	}
+> >  
+> 
+> Please add test descriptions before new test.
+> 
+> > +	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
+> > +		struct test_config config = { .compression = true,
+> > +					      .surfcopy = true,
+> > +					      .new_ctx = true };
+> > +
+> > +		block_copy_test(i915, &config, ctx, set);
+> > +	}
+> > +
+> 
+> Same here.
+> 
+> > +	igt_subtest_with_dynamic("suspend-resume") {
+> > +		struct test_config config = { .compression = true,
+> > +					      .surfcopy = true,
+> > +					      .suspend_resume = true };
+> > +
+> > +		block_copy_test(i915, &config, ctx, set);
+> > +	}
+> > +
+> >  	igt_fixture {
+> >  		igt_disallow_hang(i915, hang);
+> >  		close(i915);
+> > -- 
+> > 2.32.0
+> > 
+> 
+> Regards,
+> Kamil
