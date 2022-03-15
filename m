@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com
- [IPv6:2607:f8b0:4864:20::f2b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7DF289DC0
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 14:45:36 +0000 (UTC)
-Received: by mail-qv1-xf2b.google.com with SMTP id kd12so1204102qvb.1
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 07:45:36 -0700 (PDT)
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com
+ [IPv6:2a00:1450:4864:20::529])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8EE2894FE
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 15:59:58 +0000 (UTC)
+Received: by mail-ed1-x529.google.com with SMTP id g20so24802227edw.6
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 08:59:58 -0700 (PDT)
+Message-ID: <809fe1bc-1788-8738-c0d6-ed67907f2c71@gmail.com>
+Date: Tue, 15 Mar 2022 17:59:51 +0200
 MIME-Version: 1.0
-References: <20220311070309.3281660-1-mastanx.katragadda@intel.com>
-In-Reply-To: <20220311070309.3281660-1-mastanx.katragadda@intel.com>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Tue, 15 Mar 2022 14:45:09 +0000
-Message-ID: <CAM0jSHNYA6q2-tfXaxOWMRJDWdM_r1B7MSgKGrY9dyfhKwTfbg@mail.gmail.com>
-To: Mastan Katragadda <mastanx.katragadda@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [i-g-t,
- v2] igt/gem_mmap_offset: Adding subtest oob_read
+Content-Language: en-US
+To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220309164452.8240-1-jeevan.b@intel.com>
+ <20220309164452.8240-3-jeevan.b@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20220309164452.8240-3-jeevan.b@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 2/5] igt/tests: Add support for
+ Tile4(TileF) format to tests/kms_addfb_basic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,103 +25,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 11 Mar 2022 at 07:02, Mastan Katragadda
-<mastanx.katragadda@intel.com> wrote:
->
-> This test will Detect A missing bounds check in vm_access().
-> can lead to an out-of-bounds read or write in the adjacent memory area.
->
-> Changes Since V1:
->         - Incorporated minor changes as suggested in feedback [Chris/Matthew].
->         - Fixed build failures.
->
-> Signed-off-by: Mastan Katragadda <mastanx.katragadda@intel.com>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-
-Pushed with the style nits fixed, and the improved commit message
-suggested by Kamil. Thanks.
-
+On 9.3.2022 18.44, Jeevan B wrote:
+> Adding subtest to test new tiling format
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  tests/i915/gem_mmap_offset.c | 44 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 44 insertions(+)
->
-> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> index 8148f0a2..c8fab18b 100644
-> --- a/tests/i915/gem_mmap_offset.c
-> +++ b/tests/i915/gem_mmap_offset.c
-> @@ -22,6 +22,8 @@
->   */
->
->  #include <errno.h>
-> +#include <unistd.h>
-> +#include <fcntl.h>
->  #include <pthread.h>
->  #include <signal.h>
->  #include <stdatomic.h>
-> @@ -289,6 +291,44 @@ static void *memchr_inv(const void *s, int c, size_t n)
->         return NULL;
->  }
->
-> +static void
-> +test_oob_read(int i915)
+>   tests/kms_addfb_basic.c | 44 ++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 43 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index b7b3b0f2..2fc99eb4 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -155,7 +155,6 @@ static void invalid_tests(int fd)
+>   		uint64_t size;
+>   
+>   		igt_require_intel(fd);
+> -		igt_require(gem_has_lmem(fd));
+
+I think this change caused those ci failures on kms_addfb_basic
+
+>   		igt_calc_fb_size(fd, f.width, f.height,
+>   				DRM_FORMAT_XRGB8888, 0, &size, &stride);
+>   		handle = gem_create_in_memory_regions(fd, size, REGION_SMEM);
+> @@ -676,6 +675,47 @@ static void addfb25_ytile(int fd)
+>   	}
+>   }
+>   
+> +static void addfb25_4tile(int fd)
 > +{
-> +       unsigned char read_buf[4096];
-> +       uint32_t handle;
-> +       uintptr_t addr;
-> +       int memfd;
-> +       int ret;
+> +	struct drm_mode_fb_cmd2 f = {};
+> +	igt_display_t display;
 > +
-> +       handle = gem_create(i915, 4096);
+> +	igt_fixture {
+> +		igt_display_require(&display, fd);
 > +
-> +       for_each_mmap_offset_type(i915, t) {
-> +               uint32_t *ptr;
+> +		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+> +				DRM_FORMAT_XRGB8888, 0, 0, NULL, NULL, NULL);
+> +		igt_assert(gem_bo);
 > +
-> +               ptr = __mmap_offset(i915, handle, 0, 4096,
-> +                                   PROT_READ | PROT_WRITE,
-> +                                   t->type);
-> +               if (!ptr)
-> +                       continue;
+> +		memset(&f, 0, sizeof(f));
 > +
-> +               memfd = open("/proc/self/mem", O_RDWR);
-> +               igt_require_f(memfd != -1, "/proc/self/mem\n");
+> +		f.width = 1024;
+> +		f.height = 1024;
+> +		f.pixel_format = DRM_FORMAT_XRGB8888;
+> +		f.pitches[0] = 1024*4;
+> +		f.flags = DRM_MODE_FB_MODIFIERS;
+> +		f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
 > +
-> +               addr = (uintptr_t)ptr + 4092;
-> +               ret = lseek(memfd, addr, SEEK_SET);
-> +               igt_assert_f(ret != -1, "lseek failed\n");
+> +		f.handles[0] = gem_bo;
+> +	}
 > +
-> +               /* Triggering the buf (out of bound read) */
-> +               ret = read(memfd, read_buf, 8);
-> +               igt_assert(ret == -1 && errno ==  EIO);
+> +	igt_subtest("addfb25-4-tiled") {
+> +		igt_require_fb_modifiers(fd);
 > +
-> +               munmap(ptr, 4096);
-> +               close(memfd);
-> +       }
+> +		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
+> +		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
+> +			   addfb_expected_ret(&display, &f));
+> +		if (!addfb_expected_ret(&display, &f))
+> +			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+> +		f.fb_id = 0;
+> +	}
 > +
-> +       gem_close(i915, handle);
+> +	igt_fixture {
+> +		gem_close(fd, gem_bo);
+> +		igt_display_fini(&display);
+> +	}
 > +}
 > +
->  static void test_ptrace(int i915)
->  {
->         const unsigned int SZ = 3 * 4096;
-> @@ -692,6 +732,10 @@ igt_main
->         igt_subtest_f("pf-nonblock")
->                 pf_nonblock(i915);
->
-> +       igt_describe("Check Linear Out-Of-Bound in Vm_access");
-> +       igt_subtest("oob-read")
-> +               test_oob_read(i915);
+>   static void prop_tests(int fd)
+>   {
+>   	struct drm_mode_fb_cmd2 f = {};
+> @@ -826,6 +866,8 @@ igt_main
+>   
+>   	addfb25_ytile(fd);
+>   
+> +	addfb25_4tile(fd);
 > +
->         igt_subtest_with_dynamic("ptrace")
->                 test_ptrace(i915);
->
-> --
-> 2.25.1
->
+>   	tiling_tests(fd);
+>   
+>   	prop_tests(fd);
