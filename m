@@ -1,23 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
- [IPv6:2a00:1450:4864:20::536])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84EE510E422
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 16:00:53 +0000 (UTC)
-Received: by mail-ed1-x536.google.com with SMTP id w4so24804083edc.7
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 09:00:53 -0700 (PDT)
-Message-ID: <ce66978e-e21e-3f96-9fc5-e63bc3228bfb@gmail.com>
-Date: Tue, 15 Mar 2022 18:00:43 +0200
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com
+ [IPv6:2a00:1450:4864:20::633])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4DB410E422
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 16:01:44 +0000 (UTC)
+Received: by mail-ej1-x633.google.com with SMTP id bi12so42515248ejb.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 09:01:44 -0700 (PDT)
+Message-ID: <c258c5bf-e1bd-bf62-8a7e-2f26e261077d@gmail.com>
+Date: Tue, 15 Mar 2022 18:01:37 +0200
 MIME-Version: 1.0
 Content-Language: en-US
 To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
 References: <20220309164452.8240-1-jeevan.b@intel.com>
- <20220309164452.8240-5-jeevan.b@intel.com>
+ <20220309164452.8240-6-jeevan.b@intel.com>
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220309164452.8240-5-jeevan.b@intel.com>
+In-Reply-To: <20220309164452.8240-6-jeevan.b@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 4/5] tests/kms_draw_crc: Use 4 tiling
- when filling framebuffer
+Subject: Re: [igt-dev] [PATCH i-g-t 5/5] tests/kms_plane_scaling: Adding
+ Tile-4 support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,39 +30,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
 On 9.3.2022 18.44, Jeevan B wrote:
-> From: Mika Kahola <mika.kahola@intel.com>
+> Adding subtest to test new tiling format
 > 
-> For platforms with 4 tiling, let's use 4 tiling instead of Y tiling.
-> 
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
 > Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->   tests/i915/kms_draw_crc.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+>   tests/kms_plane_scaling.c | 11 ++++++++++-
+>   1 file changed, 10 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-> index 33b7bdf4..33fefed4 100644
-> --- a/tests/i915/kms_draw_crc.c
-> +++ b/tests/i915/kms_draw_crc.c
-> @@ -226,6 +226,7 @@ static void fill_fb_subtest(void)
->   	int rc;
->   	struct igt_fb fb;
->   	igt_crc_t base_crc, crc;
-> +	bool has_4tile = intel_get_device_info(intel_get_drm_devid(drm_fd))->has_4tile;
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index b91039b0..73975480 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -40,6 +40,7 @@ typedef struct {
+>   	igt_display_t display;
+>   	struct igt_fb fb[4];
+>   	bool extended;
+> +	bool has_4tile;
+
+this entire has_4tile flag seems mostly harmful. Only place where it is 
+used is followed by igt_plane_has_format_mod(..)
+
+>   } data_t;
 >   
->   	igt_create_fb(drm_fd, ms.mode->hdisplay, ms.mode->vdisplay,
->   		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
-> @@ -248,7 +249,9 @@ static void fill_fb_subtest(void)
->   	igt_assert_crc_equal(&crc, &base_crc);
+>   const struct {
+> @@ -331,7 +332,8 @@ static const uint64_t modifiers[] = {
+>   	DRM_FORMAT_MOD_LINEAR,
+>   	I915_FORMAT_MOD_X_TILED,
+>   	I915_FORMAT_MOD_Y_TILED,
+> -	I915_FORMAT_MOD_Yf_TILED
+> +	I915_FORMAT_MOD_Yf_TILED,
+> +	I915_FORMAT_MOD_4_TILED
+>   };
 >   
->   	if (intel_display_ver(intel_get_drm_devid(drm_fd)) >= 9) {
-> -		get_fill_crc(I915_FORMAT_MOD_Y_TILED, &crc);
-> +		get_fill_crc(has_4tile ?
-> +			     I915_FORMAT_MOD_4_TILED : I915_FORMAT_MOD_Y_TILED,
-> +			     &crc);
->   		igt_assert_crc_equal(&crc, &base_crc);
+>   static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height, bool is_upscale,
+> @@ -350,6 +352,10 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height,
+>   
+>   		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+>   			uint64_t modifier = modifiers[i];
+> +
+> +			if (modifier == I915_FORMAT_MOD_4_TILED)
+> +				igt_require(d->has_4tile);
+> +
+
+I think this will cause this test to skip on all non dg2 boxes?
+
+>   			struct igt_vec tested_formats;
+>   
+>   			igt_vec_init(&tested_formats, sizeof(uint32_t));
+> @@ -682,6 +688,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		data.devid = is_i915_device(data.drm_fd) ?
+>   			intel_get_drm_devid(data.drm_fd) : 0;
+>   		igt_require(data.display.is_atomic);
+> +
+> +		data.has_4tile = is_i915_device(data.drm_fd) &&
+> +				 intel_get_device_info(intel_get_drm_devid(data.drm_fd))->has_4tile;
 >   	}
 >   
+>   	igt_subtest_group {
