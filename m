@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBCB210E204
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Mar 2022 08:30:12 +0000 (UTC)
-Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nRVEP-003V5E-1P
- for igt-dev@lists.freedesktop.org; Tue, 08 Mar 2022 09:30:09 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Mar 2022 09:30:06 +0100
-Message-Id: <20220308083006.834346-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220308083006.834346-1-mauro.chehab@linux.intel.com>
-References: <20220308083006.834346-1-mauro.chehab@linux.intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F285210E31E
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 13:53:18 +0000 (UTC)
+Date: Tue, 15 Mar 2022 15:52:44 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+Message-ID: <YjCaLLlVuBJ4V+da@platvala-desk.ger.corp.intel.com>
+References: <20220308142205.275928-1-bhanuprakash.modem@intel.com>
+ <20220308142205.275928-2-bhanuprakash.modem@intel.com>
+ <3e9ab021-3650-0acc-191d-8fce611aa199@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/1] lib/i915_pciids.h: Add DG2 PCI IDs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3e9ab021-3650-0acc-191d-8fce611aa199@amd.com>
+Subject: Re: [igt-dev] [v2 i-g-t 1/3] tests/kms_setmode: Use dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,115 +21,100 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Hayden Goodfellow <hayden.goodfellow@amd.com>,
+ igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Tue, Mar 15, 2022 at 09:37:31AM -0400, Rodrigo Siqueira Jordao wrote:
+> 
+> 
+> On 2022-03-08 09:22, Bhanuprakash Modem wrote:
+> > Add support to use dynamic subtests.
+> > 
+> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+> > ---
+> >   tests/kms_setmode.c | 37 ++++++++++++++++++++++++++++++++++---
+> >   1 file changed, 34 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> > index 18d81ee4f3..a47d47e5ab 100644
+> > --- a/tests/kms_setmode.c
+> > +++ b/tests/kms_setmode.c
+> > @@ -653,6 +653,26 @@ static void test_crtc_config(const struct test_config *tconf,
+> >   	return;
+> >   }
+> > +static int get_test_name_str(struct crtc_config *crtc, char *buf,
+> > +				size_t buf_size)
+> > +{
+> > +	int pos;
+> > +	int i;
+> > +
+> > +	pos = snprintf(buf, buf_size, "pipe-%s-", kmstest_pipe_name(crtc->pipe_id));
+> > +
+> > +	for (i = 0; i < crtc->connector_count; i++) {
+> > +		drmModeConnector *connector = crtc->cconfs[i].connector;
+> > +
+> > +		pos += snprintf(&buf[pos], buf_size - pos,
+> > +			"%s%s-%d", i ? "-" : "",
+> > +			kmstest_connector_type_str(connector->connector_type),
+> > +			connector->connector_type_id);
+> > +	}
+> > +
+> > +	return pos;
+> > +}
+> > +
+> >   static void test_one_combination(const struct test_config *tconf,
+> >   				 struct connector_config *cconfs,
+> >   				 int connector_count)
+> > @@ -664,8 +684,19 @@ static void test_one_combination(const struct test_config *tconf,
+> >   	setup_crtcs(tconf, cconfs, connector_count, crtcs,
+> >   		    &crtc_count, &config_valid);
+> > -	if (config_valid == !(tconf->flags & TEST_INVALID))
+> > -		test_crtc_config(tconf, crtcs, crtc_count);
+> > +	if (config_valid == !(tconf->flags & TEST_INVALID)) {
+> > +		int i, pos = 0;
+> > +		char test_name[256];
+> > +
+> > +		for (i = 0; i < crtc_count; i++) {
+> > +			if (i > 0)
+> > +				pos += snprintf(&test_name[pos], ARRAY_SIZE(test_name) - pos, "-");
+> > +			pos += get_test_name_str(&crtcs[i], &test_name[pos], ARRAY_SIZE(test_name) - pos);
+> > +		}
+> > +
+> > +		igt_dynamic_f("%s", test_name)
+> > +			test_crtc_config(tconf, crtcs, crtc_count);
+> > +	}
+> >   	cleanup_crtcs(crtcs, crtc_count);
+> >   }
+> > @@ -939,7 +970,7 @@ igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+> >   	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+> >   		igt_describe("Tests the mode by iterating through all valid/invalid crtc/connector combinations");
+> > -		igt_subtest(tests[i].name) {
+> > +		igt_subtest_with_dynamic(tests[i].name) {
+> 
+> Hi Bhanuprakash,
+> 
+> The above change causes a regression in AMD CI. Previously, all the below
+> tests were passing, but now they are skipping.
+> 
+> basic-clone-single-crtc
+> clone-exclusive-crtc
+> invalid-clone-exclusive-crtc
+> invalid-clone-single-crtc
+> invalid-clone-single-crtc-stealing
+> basic-clone-single-crtc
+> 
+> If we use igt_subtest instead of igt_subtest_with_dynamic, everything gets
+> back to normal. Can we reintroduce igt_subtest? Or is there a better way to
+> fix this issue?
 
-As DG2 hardware will start showing up in CI shortly, and the DG2
-list of PCI id's is not in sync with the patch merged at Linux
-drm-tip upstream, update them to reflect what it was merged
-there by this Linux changeset:
+What is the skip message? If it's "no dynamic subtests executed", then
+you don't have any valid configs. Previously that would just silently
+give a pass even when the test did absolutely nothing.
 
-  commit 92b805135ed2851989097106bbde0f099d664902
-  Author: Matt Roper <matthew.d.roper@intel.com>
-  Date:   Tue Feb 15 13:45:44 2022 -0800
 
-    drm/i915: Add DG2 PCI IDs
-
-    DG2 hardware will start showing up in CI shortly; let's make sure it's
-    recognized by the driver.
-
-    Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-    Reviewed-by: Caz Yokoyama <caz.yokoyama@intel.com>
-    Link: https://patchwork.freedesktop.org/patch/msgid/20220215214544.2197483-1-matthew.d.roper@intel.com
-    Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-
-This patch partially reverts:
-b842aa665d48 ("lib/intel_device_info: Introduce i915_pciids_local.h and add DG2 definition")
-
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- lib/i915_pciids.h       | 27 +++++++++++++++++++++++++++
- lib/i915_pciids_local.h | 20 --------------------
- lib/intel_device_info.c |  1 -
- 3 files changed, 27 insertions(+), 21 deletions(-)
- delete mode 100644 lib/i915_pciids_local.h
-
-diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-index 533890dc9da1..3609f3254f24 100644
---- a/lib/i915_pciids.h
-+++ b/lib/i915_pciids.h
-@@ -681,4 +681,31 @@
- 	INTEL_VGA_DEVICE(0xA788, info), \
- 	INTEL_VGA_DEVICE(0xA789, info)
- 
-+/* DG2 */
-+#define INTEL_DG2_G10_IDS(info) \
-+	INTEL_VGA_DEVICE(0x5690, info), \
-+	INTEL_VGA_DEVICE(0x5691, info), \
-+	INTEL_VGA_DEVICE(0x5692, info), \
-+	INTEL_VGA_DEVICE(0x56A0, info), \
-+	INTEL_VGA_DEVICE(0x56A1, info), \
-+	INTEL_VGA_DEVICE(0x56A2, info)
-+
-+#define INTEL_DG2_G11_IDS(info) \
-+	INTEL_VGA_DEVICE(0x5693, info), \
-+	INTEL_VGA_DEVICE(0x5694, info), \
-+	INTEL_VGA_DEVICE(0x5695, info), \
-+	INTEL_VGA_DEVICE(0x56A5, info), \
-+	INTEL_VGA_DEVICE(0x56A6, info), \
-+	INTEL_VGA_DEVICE(0x56B0, info), \
-+	INTEL_VGA_DEVICE(0x56B1, info)
-+
-+#define INTEL_DG2_G12_IDS(info) \
-+	INTEL_VGA_DEVICE(0x56A3, info), \
-+	INTEL_VGA_DEVICE(0x56A4, info)
-+
-+#define INTEL_DG2_IDS(info) \
-+	INTEL_DG2_G10_IDS(info), \
-+	INTEL_DG2_G11_IDS(info), \
-+	INTEL_DG2_G12_IDS(info)
-+
- #endif /* _I915_PCIIDS_H */
-diff --git a/lib/i915_pciids_local.h b/lib/i915_pciids_local.h
-deleted file mode 100644
-index 2a18109e59e5..000000000000
---- a/lib/i915_pciids_local.h
-+++ /dev/null
-@@ -1,20 +0,0 @@
--/* SPDX-License-Identifier: MIT */
--/*
-- * Copyright © 2022 Intel Corporation
-- */
--#ifndef _I915_PCIIDS_LOCAL_H_
--#define _I915_PCIIDS_LOCAL_H_
--
--#include "i915_pciids.h"
--
--/* DG2 */
--#define INTEL_DG2_IDS(info) \
--	INTEL_VGA_DEVICE(0x56A0, info), \
--	INTEL_VGA_DEVICE(0x56A1, info), \
--	INTEL_VGA_DEVICE(0x56A2, info), \
--	INTEL_VGA_DEVICE(0x56A3, info), \
--	INTEL_VGA_DEVICE(0x56A4, info), \
--	INTEL_VGA_DEVICE(0x56A5, info), \
--	INTEL_VGA_DEVICE(0x56A6, info)
--
--#endif /* _I915_PCIIDS_LOCAL_H */
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 9f19136795e4..56c43e97a40f 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -1,6 +1,5 @@
- #include "intel_chipset.h"
- #include "i915_pciids.h"
--#include "i915_pciids_local.h"
- 
- #include <strings.h> /* ffs() */
- 
 -- 
-2.35.1
+Petri Latvala
