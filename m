@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 483F210E603
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:04:43 +0000 (UTC)
-Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e1F-9g
- for igt-dev@lists.freedesktop.org; Wed, 16 Mar 2022 16:00:07 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Mar 2022 16:00:01 +0100
-Message-Id: <20220316150003.1583681-9-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
-References: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5888D10E64C
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 09:30:20 +0000 (UTC)
+Date: Tue, 15 Mar 2022 10:29:38 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Ramalingam C <ramalingam.c@intel.com>
+Message-ID: <YjBcgpXn+wCr2Us1@zkempczy-mobl2>
+References: <20220314051432.15785-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 08/10] scripts/run-tests.sh: add code coverage
- support
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220314051432.15785-1-ramalingam.c@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/i915/gem_lmem_swapping: Add
+ ccs subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,154 +20,396 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Mon, Mar 14, 2022 at 10:44:32AM +0530, Ramalingam C wrote:
+> Add subtests for covering the compressed object's eviction.
+> 
+> v2:
+>   gem_sync after the block_copy blit for init
+> v3:
+>   ahnd is passed in as a param [Zbigniew]
+>   cmd is bb [Zbigniew]
+>   blt src and dst sizes supposed to be same [Zbigniew]
+> 
+> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+> Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+> Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+> ---
+>  tests/i915/gem_lmem_swapping.c | 222 +++++++++++++++++++++++++++++++--
+>  1 file changed, 215 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+> index 582111dddeb9..97858219aa96 100644
+> --- a/tests/i915/gem_lmem_swapping.c
+> +++ b/tests/i915/gem_lmem_swapping.c
+> @@ -22,6 +22,7 @@
+>  #include <sys/time.h>
+>  #include <sys/wait.h>
+>  #include "drm.h"
+> +#include "i915/i915_blt.h"
+>  
+>  IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
+>  
+> @@ -30,6 +31,7 @@ IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
+>  
+>  #define PAGE_SIZE  (1ULL << 12)
+>  #define SZ_64K	   (16 * PAGE_SIZE)
+> +#define DG2_MOCS   (2 << 1)
+>  
+>  static const char *readable_unit(uint64_t size)
+>  {
+> @@ -60,6 +62,7 @@ struct params {
+>  #define TEST_RANDOM	(1 << 3)
+>  #define TEST_ENGINES	(1 << 4)
+>  #define TEST_MULTI	(1 << 5)
+> +#define TEST_CCS	(1 << 6)
+>  	unsigned int flags;
+>  	unsigned int seed;
+>  	bool oom_test;
+> @@ -69,8 +72,56 @@ struct object {
+>  	uint64_t size;
+>  	uint32_t seed;
+>  	uint32_t handle;
+> +	struct blt_copy_object *blt_obj;
+>  };
+>  
+> +static void set_object(struct blt_copy_object *obj,
+> +		       uint32_t handle, uint64_t size, uint32_t region,
+> +		       uint8_t mocs, enum blt_tiling tiling,
+> +		       enum blt_compression compression,
+> +		       enum blt_compression_type compression_type)
+> +{
+> +	obj->handle = handle;
+> +	obj->size = size;
+> +	obj->region = region;
+> +	obj->mocs = mocs;
+> +	obj->tiling = tiling;
+> +	obj->compression = compression;
+> +	obj->compression_type = compression_type;
+> +}
+> +
+> +static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
+> +		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+> +		     uint16_t x_offset, uint16_t y_offset)
+> +{
+> +	obj->pitch = pitch;
+> +	obj->x1 = x1;
+> +	obj->y1 = y1;
+> +	obj->x2 = x2;
+> +	obj->y2 = y2;
+> +	obj->x_offset = x_offset;
+> +	obj->y_offset = y_offset;
+> +}
+> +
+> +static void set_batch(struct blt_copy_batch *batch,
+> +		      uint32_t handle, uint64_t size, uint32_t region)
+> +{
+> +	batch->handle = handle;
+> +	batch->size = size;
+> +	batch->region = region;
+> +}
+> +
+> +static void set_object_ext(struct blt_block_copy_object_ext *obj,
+> +			   uint8_t compression_format,
+> +			   uint16_t surface_width, uint16_t surface_height,
+> +			   enum blt_surface_type surface_type)
+> +{
+> +	obj->compression_format = compression_format;
+> +	obj->surface_width = surface_width;
+> +	obj->surface_height = surface_height;
+> +	obj->surface_type = surface_type;
+> +}
+> +
+>  static uint32_t create_bo(int i915,
+>  			  uint64_t size,
+>  			  struct drm_i915_gem_memory_class_instance *region,
+> @@ -105,6 +156,46 @@ init_object(int i915, struct object *obj, unsigned long seed, unsigned int flags
+>  	munmap(buf, obj->size);
+>  }
+>  
+> +#define BATCH_SIZE		4096
+> +static void
+> +init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+> +		struct blt_copy_batch *cmd, unsigned long seed,
+> +		const intel_ctx_t *ctx, uint32_t region, uint64_t ahnd)
+> +{
+> +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> +	const struct intel_execution_engine2 *e;
+> +	struct blt_copy_data blt = {};
+> +	unsigned long *buf, j;
+> +
+> +	obj->seed = seed;
+> +	for_each_ctx_engine(i915, ctx, e) {
+> +		igt_assert_f(gem_engine_can_block_copy(i915, e),
+> +			     "Ctx dont have Blt engine");
+> +		break;
+> +	}
+> +
+> +	buf = gem_mmap__device_coherent(i915, tmp->handle, 0, obj->size, PROT_WRITE);
+> +	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
+> +
+> +	for (j = 0; j < obj->size / sizeof(*buf); j++)
+> +		buf[j] = seed++;
+> +	munmap(buf, obj->size);
+> +
+> +	memset(&blt, 0, sizeof(blt));
+> +	blt.color_depth = CD_32bit;
+> +
+> +	memcpy(&blt.src, tmp, sizeof(blt.src));
+> +	memcpy(&blt.dst, obj->blt_obj, sizeof(blt.dst));
+> +	memcpy(&blt.bb, cmd, sizeof(blt.bb));
+> +
+> +	set_object_ext(&ext.src, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
+> +	set_object_ext(&ext.dst, 0, obj->blt_obj->x2, obj->blt_obj->y2,
+> +		       SURFACE_TYPE_2D);
+> +
+> +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+> +	gem_sync(i915, obj->blt_obj->handle);
 
-When the Kernel is built with GCOV_KERNEL and one or more drivers are
-built with GCOV_PROFILE enabled[1], the Kernel will collect code
-coverage usage at the same time as a test runs.
+You can avoid stalls if you will use gem_create_from_pool().
 
-Add support at run-tests.sh to collect usage data and store them on
-.info files.
+> +}
+> +
+>  static void
+>  verify_object(int i915, const struct object *obj,  unsigned int flags)
+>  {
+> @@ -125,6 +216,53 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
+>  	munmap(buf, obj->size);
+>  }
+>  
+> +static void
+> +verify_object_ccs(int i915, const struct object *obj,
+> +		  struct blt_copy_object *tmp, struct blt_copy_batch *cmd,
+> +		  const intel_ctx_t *ctx, uint32_t region, uint64_t ahnd)
+> +{
+> +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> +	const struct intel_execution_engine2 *e;
+> +	struct blt_copy_data blt = {};
+> +	unsigned long j, val, *buf;
+> +
+> +	for_each_ctx_engine(i915, ctx, e) {
+> +		igt_assert_f(gem_engine_can_block_copy(i915, e),
+> +			     "ctx dont have Blt engine");
+> +		break;
+> +	}
+> +
+> +	memset(&blt, 0, sizeof(blt));
+> +	blt.color_depth = CD_32bit;
+> +
+> +	memcpy(&blt.src, obj->blt_obj, sizeof(blt.src));
+> +	memcpy(&blt.dst, tmp, sizeof(blt.dst));
+> +	memcpy(&blt.bb, cmd, sizeof(blt.bb));
+> +
+> +	blt.dst.x2 = min(obj->blt_obj->x2, tmp->x2);
+> +	blt.dst.y2 = min(obj->blt_obj->y2, tmp->y2);
+> +
+> +	set_object_ext(&ext.src, 0, obj->blt_obj->x2, obj->blt_obj->y2,
+> +		       SURFACE_TYPE_2D);
+> +	set_object_ext(&ext.dst, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
+> +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+> +
+> +	buf = gem_mmap__device_coherent(i915, tmp->handle, 0,
+> +					obj->size, PROT_READ);
+> +	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, 0);
+> +
+> +	for (j = 0; j < obj->size / PAGE_SIZE; j++) {
+> +		unsigned long x = (j * PAGE_SIZE + rand() % PAGE_SIZE) / sizeof(*buf);
+> +
+> +		val = obj->seed + x;
+> +		igt_assert_f(buf[x] == val,
+> +			     "Object mismatch at offset %lu - found %lx, expected %lx, difference:%lx!\n",
+> +			     x * sizeof(*buf), buf[x], val, buf[x] ^ val);
+> +	}
+> +
+> +	munmap(buf, obj->size);
+> +}
+> +
+>  static void move_to_lmem(int i915,
+>  			 struct object *list,
+>  			 unsigned int num,
+> @@ -160,31 +298,62 @@ static void __do_evict(int i915,
+>  		       struct params *params,
+>  		       unsigned int seed)
+>  {
+> +	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
+> +						    region->memory_instance);
+>  	const unsigned int max_swap_in = params->count / 100 + 1;
+>  	const uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	struct object *objects, *obj, *list;
+> -	uint32_t batch;
+> +	const uint32_t bpp = 32;
+> +	uint32_t batch, width, height, stride;
+> +	const intel_ctx_t *blt_ctx;
+> +	struct blt_copy_object *tmp;
+> +	struct blt_copy_batch *cmd;
+>  	unsigned int engine = 0;
+>  	unsigned int i, l;
+> -	uint64_t size;
+> +	uint64_t size, ahnd;
+>  	struct timespec t = {};
+>  	unsigned int num;
+>  
+> +	width = PAGE_SIZE / (bpp / 8);
+> +	height = params->size.max / (bpp / 8) /  width;
+> +	stride = width * 4;
+> +
+> +	tmp = calloc(1, sizeof(*tmp));
+> +	cmd = calloc(1, sizeof(*cmd));
+> +
+>  	__gem_context_set_persistence(i915, 0, false);
+>  	size = 4096;
+>  	batch = create_bo(i915, size, region, params->oom_test);
+> -
+>  	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+>  
+> +	if (params->flags & TEST_CCS)
+> +		blt_ctx = intel_ctx_create_for_engine(i915,
+> +						      I915_ENGINE_CLASS_COPY,
+> +						      0);
+> +
+>  	objects = calloc(params->count, sizeof(*objects));
+>  	igt_assert(objects);
+>  
+>  	list = calloc(max_swap_in, sizeof(*list));
+>  	igt_assert(list);
+>  
+> +	ahnd = intel_allocator_open_full(i915, blt_ctx->id, 0, 0,
+> +					 INTEL_ALLOCATOR_SIMPLE,
+> +					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+>  	srand(seed);
+>  
+>  	/* Create the initial working set of objects. */
+> +	if (params->flags & TEST_CCS) {
+> +		tmp->handle = gem_create_in_memory_regions(i915, params->size.max,
+> +				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
+> +		set_object(tmp, tmp->handle, params->size.max,
+> +			   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0), DG2_MOCS,
+> +			   T_LINEAR, COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
+> +		set_geom(tmp, stride, 0, 0, width, height, 0, 0);
+> +		cmd->handle = gem_create_in_memory_regions(i915, BATCH_SIZE, region_id);
 
-That actually require two new options:
+I would use bb pool to avoid stalls.
 
--c <test_name>: will store the tests under test_name.info;
--k <kernel_tree>: Points to the source code of the built Kernel.
 
-The Kernel tree can be a partial tree, provided that it contains at
-least all *.h files used by the drivers, plus the *.c files that were
-built with gcov support enabled.
+> +		set_batch(cmd, cmd->handle, BATCH_SIZE, region_id);
+> +	}
+> +
+>  	size = 0;
+>  	for (i = 0, obj = objects; i < params->count; i++, obj++) {
+>  		if (params->flags & TEST_RANDOM)
+> @@ -194,6 +363,7 @@ static void __do_evict(int i915,
+>  		else
+>  			obj->size = params->size.min;
+>  
+> +		obj->size = ALIGN(obj->size, 4096);
+>  		size += obj->size;
+>  		if ((size >> 20) > params->mem_limit) {
+>  			params->count = i;
+> @@ -201,10 +371,26 @@ static void __do_evict(int i915,
+>  		}
+>  		obj->handle = create_bo(i915, obj->size, region, params->oom_test);
+>  
+> -		move_to_lmem(i915, objects + i, 1, batch, engine,
+> -			     params->oom_test);
+> -		if (params->flags & TEST_VERIFY)
+> +		if (params->flags & TEST_CCS) {
+> +			width = PAGE_SIZE / (bpp / 8);
+> +			height = obj->size / (bpp / 8) /  width;
+> +			stride = width * 4;
+> +
+> +			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
+> +			set_object(obj->blt_obj, obj->handle, obj->size, region_id,
+> +				   DG2_MOCS, T_LINEAR, COMPRESSION_ENABLED,
+> +				   COMPRESSION_TYPE_3D);
+> +			set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
 
-[1] See https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
+Especially here and sync after last blit.
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/run-tests.sh | 52 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 46 insertions(+), 6 deletions(-)
+> +			init_object_ccs(i915, obj, tmp, cmd, rand(), blt_ctx,
+> +					region_id, ahnd);
+> +		} else if (params->flags & TEST_VERIFY) {
+>  			init_object(i915, obj, rand(), params->flags);
+> +			move_to_lmem(i915, objects + i, 1, batch, engine,
+> +				     params->oom_test);
+> +		} else {
+> +			move_to_lmem(i915, objects + i, 1, batch, engine,
+> +				     params->oom_test);
+> +		}
+>  	}
+>  
+>  	igt_debug("obj size min/max=%lu %s/%lu %s, count=%u, seed: %u\n",
+> @@ -231,7 +417,15 @@ static void __do_evict(int i915,
+>  		if (params->flags & TEST_ENGINES)
+>  			engine = (engine + 1) % __num_engines__;
+>  
+> -		if (params->flags & TEST_VERIFY) {
+> +		if (params->flags & TEST_CCS) {
+> +			for (i = 0; i < num; i++)
+> +				verify_object_ccs(i915, &list[i], tmp, cmd,
+> +						  blt_ctx, region_id, ahnd);
 
-diff --git a/scripts/run-tests.sh b/scripts/run-tests.sh
-index 8399b6d15aa9..6986232e8eb4 100755
---- a/scripts/run-tests.sh
-+++ b/scripts/run-tests.sh
-@@ -29,6 +29,11 @@ RESULTS="$ROOT/results"
- PIGLIT=`which piglit 2> /dev/null`
- IGT_RUNNER=
- IGT_RESUME=
-+IGT_KERNEL_TREE=
-+COV_ARGS=
-+COV_PER_TEST=
-+LCOV_CMD="lcov"
-+KERNEL_TREE=
- USE_PIGLIT=0
- RUNNER=
- RESUME=
-@@ -84,6 +89,15 @@ function find_runner_binary # basename
- 	return 1
- }
- 
-+function find_lcov_binary # basename
-+{
-+	if command -v $LCOV_CMD &> /dev/null; then
-+		return 0
-+	fi
-+
-+	return 1
-+}
-+
- function download_piglit {
- 	git clone https://anongit.freedesktop.org/git/piglit.git "$ROOT/piglit"
- }
-@@ -96,10 +110,10 @@ function execute_runner # as-root <runner> <args>
- 	shift
- 	local sudo
- 
--	export IGT_TEST_ROOT IGT_CONFIG_PATH
-+	export IGT_TEST_ROOT IGT_CONFIG_PATH IGT_KERNEL_TREE
- 
- 	if [ "$need_root" -ne 0 -a "$EUID" -ne 0 ]; then
--		sudo="sudo --preserve-env=IGT_TEST_ROOT,IGT_CONFIG_PATH"
-+		sudo="sudo --preserve-env=IGT_TEST_ROOT,IGT_CONFIG_PATH,IGT_KERNEL_TREE"
- 	fi
- 
- 	$sudo $runner "$@"
-@@ -108,8 +122,14 @@ function execute_runner # as-root <runner> <args>
- function print_help {
- 	echo "Usage: run-tests.sh [options]"
- 	echo "Available options:"
-+	echo "  -c <capture_script>"
-+	echo "                  capture gcov code coverage using the <capture_script>."
-+	echo "  -P              store code coverage results per each test. Should be"
-+	echo "                  used together with -k option"
- 	echo "  -d              download Piglit to $ROOT/piglit"
- 	echo "  -h              display this help message"
-+	echo "  -k <kernel_dir> Linux Kernel source code directory used to generate code"
-+	echo "                  coverage builds."
- 	echo "  -l              list all available tests"
- 	echo "  -r <directory>  store the results in directory"
- 	echo "                  (default: $RESULTS)"
-@@ -134,11 +154,14 @@ function print_help {
- 	echo "Useful patterns for test filtering are described in the API documentation."
- }
- 
--while getopts ":dhlr:st:T:vx:Rnpb:" opt; do
-+while getopts ":c:dhk:lPr:st:T:vx:Rnpb:" opt; do
- 	case $opt in
-+		c) COV_ARGS="$COV_ARGS --collect-code-cov --collect-script $OPTARG " ;;
- 		d) download_piglit; exit ;;
- 		h) print_help; exit ;;
-+		k) IGT_KERNEL_TREE="$OPTARG" ;;
- 		l) LIST_TESTS="true" ;;
-+		P) COV_ARGS="$COV_ARGS --coverage-per-test"; COV_PER_TEST=1 ;;
- 		r) RESULTS="$OPTARG" ;;
- 		s) SUMMARY="html" ;;
- 		t) FILTER="$FILTER -t $OPTARG" ;;
-@@ -172,6 +195,18 @@ if [ "x$PIGLIT" == "x" ]; then
- 	PIGLIT="$ROOT/piglit/piglit"
- fi
- 
-+if [ "x$COV_ARGS" != "x" ]; then
-+	if [ "$USE_PIGLIT" -eq "1" ]; then
-+		echo "Cannot collect code coverage when running tests with Piglit. Use igt_runner instead."
-+		exit 1
-+	fi
-+
-+	if ! $(find_lcov_binary); then
-+		echo "Can't check code coverage, as 'lcov' is not installed"
-+		exit 1
-+	fi
-+fi
-+
- RUN_ARGS=
- RESUME_ARGS=
- LIST_ARGS=
-@@ -201,15 +236,20 @@ else
- fi
- 
- if [ "x$LIST_TESTS" != "x" ]; then
--	execute_runner 0 $RUNNER $LIST_ARGS $FILTER
-+	execute_runner 0 $RUNNER $LIST_ARGS $FILTER $COV_ARGS
- 	exit
- fi
- 
- if [ "x$RESUME_RUN" != "x" ]; then
--	execute_runner 1 $RESUME $RESUME_ARGS "$RESULTS"
-+	if [ "x$COV_ARGS" != "x" -a "x$COV_PER_TEST" == "x" ]; then
-+		echo "Can't continue collecting coverage tests. Next time, run"
-+		echo "$0 with '-P' in order to generate separate code coverage results".
-+		exit 1
-+	fi
-+	execute_runner 1 $RESUME $RESUME_ARGS $COV_ARGS "$RESULTS"
- else
- 	mkdir -p "$RESULTS"
--	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $VERBOSE $FILTER
-+	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER
- fi
- 
- if [ "$SUMMARY" == "html" ]; then
--- 
-2.35.1
+This one syncs internally in gem_set_domain so single bb is ok.
+
+> +			/* Update random object - may swap it back in. */
+> +			i = rand() % params->count;
+> +			init_object_ccs(i915, &objects[i], tmp, cmd, rand(),
+> +					blt_ctx, region_id, ahnd);
+
+But here also I would use bb pool with sync after last one.
+
+Other things looks ok imo.
+
+--
+Zbigniew
+
+> +		} else if (params->flags & TEST_VERIFY) {
+>  			for (i = 0; i < num; i++)
+>  				verify_object(i915, &list[i], params->flags);
+>  
+> @@ -241,11 +435,17 @@ static void __do_evict(int i915,
+>  		}
+>  	}
+>  
+> +	put_ahnd(ahnd);
+>  	for (i = 0; i < params->count; i++)
+>  		gem_close(i915, objects[i].handle);
+>  
+>  	free(list);
+>  	free(objects);
+> +	if (params->flags & TEST_CCS) {
+> +		gem_close(i915, cmd->handle);
+> +		gem_close(i915, tmp->handle);
+> +		gem_context_destroy(i915, blt_ctx->id);
+> +	}
+>  
+>  	gem_close(i915, batch);
+>  }
+> @@ -348,6 +548,9 @@ static void test_evict(int i915,
+>  	const unsigned int nproc = sysconf(_SC_NPROCESSORS_ONLN) + 1;
+>  	struct params params;
+>  
+> +	if (flags & TEST_CCS)
+> +		igt_require(IS_DG2(intel_get_drm_devid(i915)));
+> +
+>  	fill_params(i915, &params, region, flags, nproc, false);
+>  
+>  	if (flags & TEST_PARALLEL) {
+> @@ -511,6 +714,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		{ "parallel-random-engines", TEST_PARALLEL | TEST_RANDOM | TEST_ENGINES },
+>  		{ "parallel-random-verify", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY },
+>  		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
+> +		{ "verify-ccs", TEST_CCS },
+> +		{ "verify-random-ccs", TEST_CCS | TEST_RANDOM },
+> +		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
+> +		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
+> +		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
+>  		{ }
+>  	};
+>  	int i915 = -1;
+> -- 
+> 2.20.1
+> 
