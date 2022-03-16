@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7BBA10E3F7
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 13:57:01 +0000 (UTC)
-Message-ID: <6d9c1f94-f1f5-fb20-7385-a1587fdbf758@intel.com>
-Date: Tue, 15 Mar 2022 19:26:42 +0530
-Content-Language: en-US
-To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>, Swati Sharma
- <swati2.sharma@intel.com>, Mark Yacoub <markyacoub@chromium.org>, "Pillai,
- Aurabindo" <Aurabindo.Pillai@amd.com>, Nicholas Choi <nicholas.choi@amd.com>
-References: <20220308142205.275928-1-bhanuprakash.modem@intel.com>
- <20220308142205.275928-2-bhanuprakash.modem@intel.com>
- <3e9ab021-3650-0acc-191d-8fce611aa199@amd.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <3e9ab021-3650-0acc-191d-8fce611aa199@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1151010E5CC
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 14:00:13 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 16 Mar 2022 19:28:45 +0530
+Message-Id: <20220316135845.418963-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220316135845.418963-1-bhanuprakash.modem@intel.com>
+References: <20220316135845.418963-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v2 i-g-t 1/3] tests/kms_setmode: Use dynamic subtests
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [v8 i-g-t 2/2] tests/kms_color: Add support for Deep-Color
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,123 +18,324 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- Hayden Goodfellow <hayden.goodfellow@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue-15-03-2022 07:07 pm, Rodrigo Siqueira Jordao wrote:
-> 
-> 
-> On 2022-03-08 09:22, Bhanuprakash Modem wrote:
->> Add support to use dynamic subtests.
->>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
->> ---
->>   tests/kms_setmode.c | 37 ++++++++++++++++++++++++++++++++++---
->>   1 file changed, 34 insertions(+), 3 deletions(-)
->>
->> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
->> index 18d81ee4f3..a47d47e5ab 100644
->> --- a/tests/kms_setmode.c
->> +++ b/tests/kms_setmode.c
->> @@ -653,6 +653,26 @@ static void test_crtc_config(const struct 
->> test_config *tconf,
->>       return;
->>   }
->> +static int get_test_name_str(struct crtc_config *crtc, char *buf,
->> +                size_t buf_size)
->> +{
->> +    int pos;
->> +    int i;
->> +
->> +    pos = snprintf(buf, buf_size, "pipe-%s-", 
->> kmstest_pipe_name(crtc->pipe_id));
->> +
->> +    for (i = 0; i < crtc->connector_count; i++) {
->> +        drmModeConnector *connector = crtc->cconfs[i].connector;
->> +
->> +        pos += snprintf(&buf[pos], buf_size - pos,
->> +            "%s%s-%d", i ? "-" : "",
->> +            kmstest_connector_type_str(connector->connector_type),
->> +            connector->connector_type_id);
->> +    }
->> +
->> +    return pos;
->> +}
->> +
->>   static void test_one_combination(const struct test_config *tconf,
->>                    struct connector_config *cconfs,
->>                    int connector_count)
->> @@ -664,8 +684,19 @@ static void test_one_combination(const struct 
->> test_config *tconf,
->>       setup_crtcs(tconf, cconfs, connector_count, crtcs,
->>               &crtc_count, &config_valid);
->> -    if (config_valid == !(tconf->flags & TEST_INVALID))
->> -        test_crtc_config(tconf, crtcs, crtc_count);
->> +    if (config_valid == !(tconf->flags & TEST_INVALID)) {
->> +        int i, pos = 0;
->> +        char test_name[256];
->> +
->> +        for (i = 0; i < crtc_count; i++) {
->> +            if (i > 0)
->> +                pos += snprintf(&test_name[pos], 
->> ARRAY_SIZE(test_name) - pos, "-");
->> +            pos += get_test_name_str(&crtcs[i], &test_name[pos], 
->> ARRAY_SIZE(test_name) - pos);
->> +        }
->> +
->> +        igt_dynamic_f("%s", test_name)
->> +            test_crtc_config(tconf, crtcs, crtc_count);
->> +    }
->>       cleanup_crtcs(crtcs, crtc_count);
->>   }
->> @@ -939,7 +970,7 @@ igt_main_args("det:", NULL, help_str, opt_handler, 
->> NULL)
->>       for (i = 0; i < ARRAY_SIZE(tests); i++) {
->>           igt_describe("Tests the mode by iterating through all 
->> valid/invalid crtc/connector combinations");
->> -        igt_subtest(tests[i].name) {
->> +        igt_subtest_with_dynamic(tests[i].name) {
-> 
-> Hi Bhanuprakash,
-> 
-> The above change causes a regression in AMD CI. Previously, all the 
-> below tests were passing, but now they are skipping.
-> 
-> basic-clone-single-crtc
-> clone-exclusive-crtc
-> invalid-clone-exclusive-crtc
-> invalid-clone-single-crtc
-> invalid-clone-single-crtc-stealing
-> basic-clone-single-crtc
-> 
-> If we use igt_subtest instead of igt_subtest_with_dynamic, everything 
-> gets back to normal. Can we reintroduce igt_subtest? Or is there a 
-> better way to fix this issue?
+Add new subtests to validate deep color.
 
-Hi Siqueira,
+V2:
+* i915 needs atleast gen 11 to support deep-color
+* Add connector name to dynamic subtest
+V3:
+* Fix the usage of "output"
+V4:
+* Set max_bpc prop to default before exiting the subtest
+* Minor cleanups
 
-It is not a regression. On single display config these SKIPs are 
-expected due to the introduction of dynamic subtests. In other wards, we 
-need at least 2 displays to run these tests. Earlier on single display 
-setup, these tests were just throwing SUCCESS without actually 
-triggering the test.
+Cc: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+---
+ tests/kms_color.c        | 107 ++++++++++++++++++++++++++++++---------
+ tests/kms_color_helper.c |   2 +-
+ tests/kms_color_helper.h |   2 +
+ 3 files changed, 86 insertions(+), 25 deletions(-)
 
-Also, due to the long CI execution time on multidisplay setups, we were 
-restricted the execution to 2 pipes only. In patch [2/3] in this series 
-we reverted that limitation too. Hence we introduced dynamic subtests.
-
-- Bhanu
-
-> 
-> Thanks
-> Siqueira
-> 
-> 
->>               struct test_config tconf = {
->>                   .flags        = tests[i].flags,
->>                   .name        = tests[i].name,
-> 
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 854b8f3c31..afff174478 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -26,10 +26,10 @@
+ 
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+ 
+-static void test_pipe_degamma(data_t *data,
++static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
+ {
+-	igt_output_t *output;
++	igt_output_t *output = data->output;
+ 	igt_display_t *display = &data->display;
+ 	gamma_lut_t *degamma_linear, *degamma_full;
+ 	color_t red_green_blue[] = {
+@@ -41,6 +41,7 @@ static void test_pipe_degamma(data_t *data,
+ 	struct igt_fb fb_modeset, fb;
+ 	igt_crc_t crc_fullgamma, crc_fullcolors;
+ 	int fb_id, fb_modeset_id;
++	bool ret;
+ 
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+@@ -48,9 +49,6 @@ static void test_pipe_degamma(data_t *data,
+ 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	degamma_full = generate_table_max(data->degamma_lut_size);
+ 
+-	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
+-	igt_require(output);
+-
+ 	igt_output_set_pipe(output, primary->pipe->pipe);
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -58,7 +56,7 @@ static void test_pipe_degamma(data_t *data,
+ 	fb_id = igt_create_fb(data->drm_fd,
+ 			      mode->hdisplay,
+ 			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
++			      data->drm_format,
+ 			      DRM_FORMAT_MOD_LINEAR,
+ 			      &fb);
+ 	igt_assert(fb_id);
+@@ -66,7 +64,7 @@ static void test_pipe_degamma(data_t *data,
+ 	fb_modeset_id = igt_create_fb(data->drm_fd,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+-				      DRM_FORMAT_XRGB8888,
++				      data->drm_format,
+ 				      DRM_FORMAT_MOD_LINEAR,
+ 				      &fb_modeset);
+ 	igt_assert(fb_modeset_id);
+@@ -99,7 +97,7 @@ static void test_pipe_degamma(data_t *data,
+ 	/* Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the degamma LUT transformation output.
+ 	 */
+-	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
+ 
+ 	disable_degamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
+@@ -110,16 +108,18 @@ static void test_pipe_degamma(data_t *data,
+ 
+ 	free_lut(degamma_linear);
+ 	free_lut(degamma_full);
++
++	return ret;
+ }
+ 
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
+  * LUT and verify we have the same CRC as drawing solid color rectangles.
+  */
+-static void test_pipe_gamma(data_t *data,
++static bool test_pipe_gamma(data_t *data,
+ 			    igt_plane_t *primary)
+ {
+-	igt_output_t *output;
++	igt_output_t *output = data->output;
+ 	igt_display_t *display = &data->display;
+ 	gamma_lut_t *gamma_full;
+ 	color_t red_green_blue[] = {
+@@ -131,14 +131,12 @@ static void test_pipe_gamma(data_t *data,
+ 	struct igt_fb fb_modeset, fb;
+ 	igt_crc_t crc_fullgamma, crc_fullcolors;
+ 	int fb_id, fb_modeset_id;
++	bool ret;
+ 
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+ 
+ 	gamma_full = generate_table_max(data->gamma_lut_size);
+ 
+-	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
+-	igt_require(output);
+-
+ 	igt_output_set_pipe(output, primary->pipe->pipe);
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -146,7 +144,7 @@ static void test_pipe_gamma(data_t *data,
+ 	fb_id = igt_create_fb(data->drm_fd,
+ 			      mode->hdisplay,
+ 			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
++			      data->drm_format,
+ 			      DRM_FORMAT_MOD_LINEAR,
+ 			      &fb);
+ 	igt_assert(fb_id);
+@@ -154,7 +152,7 @@ static void test_pipe_gamma(data_t *data,
+ 	fb_modeset_id = igt_create_fb(data->drm_fd,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+-				      DRM_FORMAT_XRGB8888,
++				      data->drm_format,
+ 				      DRM_FORMAT_MOD_LINEAR,
+ 				      &fb_modeset);
+ 	igt_assert(fb_modeset_id);
+@@ -186,7 +184,7 @@ static void test_pipe_gamma(data_t *data,
+ 	/* Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the gamma LUT transformation output.
+ 	 */
+-	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
+ 
+ 	disable_gamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
+@@ -196,6 +194,8 @@ static void test_pipe_gamma(data_t *data,
+ 	igt_remove_fb(data->drm_fd, &fb_modeset);
+ 
+ 	free_lut(gamma_full);
++
++	return ret;
+ }
+ 
+ /*
+@@ -439,7 +439,7 @@ static bool test_pipe_ctm(data_t *data,
+ 		0.0, 0.0, 1.0
+ 	};
+ 	gamma_lut_t *degamma_linear, *gamma_linear;
+-	igt_output_t *output;
++	igt_output_t *output = data->output;
+ 	bool ret = true;
+ 	igt_display_t *display = &data->display;
+ 	drmModeModeInfo *mode;
+@@ -452,9 +452,6 @@ static bool test_pipe_ctm(data_t *data,
+ 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+ 
+-	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
+-	igt_require(output);
+-
+ 	igt_output_set_pipe(output, primary->pipe->pipe);
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -462,7 +459,7 @@ static bool test_pipe_ctm(data_t *data,
+ 	fb_id = igt_create_fb(data->drm_fd,
+ 			      mode->hdisplay,
+ 			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
++			      data->drm_format,
+ 			      DRM_FORMAT_MOD_LINEAR,
+ 			      &fb);
+ 	igt_assert(fb_id);
+@@ -470,7 +467,7 @@ static bool test_pipe_ctm(data_t *data,
+ 	fb_modeset_id = igt_create_fb(data->drm_fd,
+ 				      mode->hdisplay,
+ 				      mode->vdisplay,
+-				      DRM_FORMAT_XRGB8888,
++				      data->drm_format,
+ 				      DRM_FORMAT_MOD_LINEAR,
+ 				      &fb_modeset);
+ 	igt_assert(fb_modeset_id);
+@@ -686,12 +683,15 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 						  INTEL_PIPE_CRC_SOURCE_AUTO);
+ 
+ 		igt_display_require_output_on_pipe(&data->display, p);
++		data->output = igt_get_single_output_for_pipe(&data->display, p);
++		igt_require(data->output);
+ 	}
+ 
+ 	/* We assume an 8bits depth per color for degamma/gamma LUTs
+ 	 * for CRC checks with framebuffer references. */
+ 	data->color_depth = 8;
+ 	delta = 1.0 / (1 << data->color_depth);
++	data->drm_format = DRM_FORMAT_XRGB8888;
+ 
+ 	igt_describe("Check the color transformation from red to blue");
+ 	igt_subtest_f("pipe-%s-ctm-red-to-blue", kmstest_pipe_name(p)) {
+@@ -851,11 +851,11 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 
+ 	igt_describe("Verify that degamma LUT transformation works correctly");
+ 	igt_subtest_f("pipe-%s-degamma", kmstest_pipe_name(p))
+-		test_pipe_degamma(data, primary);
++		igt_assert(test_pipe_degamma(data, primary));
+ 
+ 	igt_describe("Verify that gamma LUT transformation works correctly");
+ 	igt_subtest_f("pipe-%s-gamma", kmstest_pipe_name(p))
+-		test_pipe_gamma(data, primary);
++		igt_assert(test_pipe_gamma(data, primary));
+ 
+ 	igt_describe("Verify that legacy gamma LUT transformation works correctly");
+ 	igt_subtest_f("pipe-%s-legacy-gamma", kmstest_pipe_name(p))
+@@ -866,6 +866,65 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
+ 		test_pipe_legacy_gamma_reset(data, primary);
+ 
++	igt_describe("Verify that deep color works correctly");
++	igt_subtest_with_dynamic_f("pipe-%s-deep-color", kmstest_pipe_name(p)) {
++		igt_output_t *output;
++		color_t blue_green_blue[] = {
++			{ 0.0, 0.0, 1.0 },
++			{ 0.0, 1.0, 0.0 },
++			{ 0.0, 0.0, 1.0 }
++		};
++		double ctm[] = { 0.0, 0.0, 0.0,
++				0.0, 1.0, 0.0,
++				1.0, 0.0, 1.0 };
++
++		if (is_i915_device(data->drm_fd))
++			igt_require_f((intel_display_ver(data->devid) >= 11),
++					"At least GEN 11 is required to validate Deep-color.\n");
++
++		for_each_valid_output_on_pipe(&data->display, p, output) {
++			drmModeConnector *connector = output->config.connector;
++			uint64_t max_bpc = get_max_bpc(output);
++			bool ret;
++
++			if (!max_bpc)
++				continue;
++
++			if (!panel_supports_deep_color(data->drm_fd, connector))
++				continue;
++
++			data->color_depth = 10;
++			data->drm_format = DRM_FORMAT_XRGB2101010;
++			data->output = output;
++			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
++
++			igt_dynamic_f("gamma-%s", output->name) {
++				ret = test_pipe_gamma(data, primary);
++
++				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
++				igt_assert(ret);
++			}
++
++			igt_dynamic_f("degamma-%s", output->name) {
++				ret = test_pipe_degamma(data, primary);
++
++				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
++				igt_assert(ret);
++			}
++
++			igt_dynamic_f("ctm-%s", output->name) {
++				ret = test_pipe_ctm(data, primary,
++						    red_green_blue,
++						    blue_green_blue, ctm);
++
++				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
++				igt_assert(ret);
++			}
++
++			break;
++		}
++	}
++
+ 	igt_fixture {
+ 		disable_degamma(primary->pipe);
+ 		disable_gamma(primary->pipe);
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index 3ea1c4bc9c..3ef124cdce 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -206,7 +206,7 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
+ 	uint32_t mask;
+ 
+ 	if (is_i915_device(data->drm_fd))
+-		mask = ((1 << color_depth) - 1) << 8;
++		mask = ((1 << color_depth) - 1) << (16 - color_depth);
+ 	else
+ 		mask = max_value;
+ 
+diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+index 4c38def454..a6665b1fd6 100644
+--- a/tests/kms_color_helper.h
++++ b/tests/kms_color_helper.h
+@@ -49,7 +49,9 @@ typedef struct {
+ 	uint32_t devid;
+ 	igt_display_t display;
+ 	igt_pipe_crc_t *pipe_crc;
++	igt_output_t *output;
+ 
++	uint32_t drm_format;
+ 	uint32_t color_depth;
+ 	uint64_t degamma_lut_size;
+ 	uint64_t gamma_lut_size;
+-- 
+2.35.1
