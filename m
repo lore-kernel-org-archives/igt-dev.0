@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52A8B10E603
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:02:09 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 483F210E603
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:04:43 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e17-8m
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e1F-9g
  for igt-dev@lists.freedesktop.org; Wed, 16 Mar 2022 16:00:07 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Mar 2022 15:59:59 +0100
-Message-Id: <20220316150003.1583681-7-mauro.chehab@linux.intel.com>
+Date: Wed, 16 Mar 2022 16:00:01 +0100
+Message-Id: <20220316150003.1583681-9-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
 References: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 06/10] scripts/code_cov_capture.sh: add a
- script to use lcov on build+test machine
+Subject: [igt-dev] [PATCH v3 08/10] scripts/run-tests.sh: add code coverage
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,52 +28,148 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-When the test machine is also the build machine, it is possible to run
-lcov directly on it. That makes the IGT tests faster, as it won't need
-to generate a results tarball, and the produced results will be
-independent on the Kernel object files, making the output files more
-portable.
+When the Kernel is built with GCOV_KERNEL and one or more drivers are
+built with GCOV_PROFILE enabled[1], the Kernel will collect code
+coverage usage at the same time as a test runs.
 
-It should be noticed that, in order to generate html files, the Kernel
-source will still be needed, due to the detailed view.
+Add support at run-tests.sh to collect usage data and store them on
+.info files.
 
-Reviewed-by: Tomi Sarvela <tomi.p.sarvela@intel.com>
+That actually require two new options:
+
+-c <test_name>: will store the tests under test_name.info;
+-k <kernel_tree>: Points to the source code of the built Kernel.
+
+The Kernel tree can be a partial tree, provided that it contains at
+least all *.h files used by the drivers, plus the *.c files that were
+built with gcov support enabled.
+
+[1] See https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_capture.sh | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
- create mode 100755 scripts/code_cov_capture.sh
+ scripts/run-tests.sh | 52 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 46 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/code_cov_capture.sh b/scripts/code_cov_capture.sh
-new file mode 100755
-index 000000000000..8662b0f145b8
---- /dev/null
-+++ b/scripts/code_cov_capture.sh
-@@ -0,0 +1,25 @@
-+#!/bin/bash
+diff --git a/scripts/run-tests.sh b/scripts/run-tests.sh
+index 8399b6d15aa9..6986232e8eb4 100755
+--- a/scripts/run-tests.sh
++++ b/scripts/run-tests.sh
+@@ -29,6 +29,11 @@ RESULTS="$ROOT/results"
+ PIGLIT=`which piglit 2> /dev/null`
+ IGT_RUNNER=
+ IGT_RESUME=
++IGT_KERNEL_TREE=
++COV_ARGS=
++COV_PER_TEST=
++LCOV_CMD="lcov"
++KERNEL_TREE=
+ USE_PIGLIT=0
+ RUNNER=
+ RESUME=
+@@ -84,6 +89,15 @@ function find_runner_binary # basename
+ 	return 1
+ }
+ 
++function find_lcov_binary # basename
++{
++	if command -v $LCOV_CMD &> /dev/null; then
++		return 0
++	fi
 +
-+trap 'catch $LINENO' ERR
-+catch() {
-+	echo "$0: error on line $1. Code coverage not stored." >&2
-+	exit 1
++	return 1
 +}
 +
-+if [ -z "$IGT_KERNEL_TREE" ] ; then
-+	echo "Error! IGT_KERNEL_TREE environment var was not defined." >&2
-+	exit 1
+ function download_piglit {
+ 	git clone https://anongit.freedesktop.org/git/piglit.git "$ROOT/piglit"
+ }
+@@ -96,10 +110,10 @@ function execute_runner # as-root <runner> <args>
+ 	shift
+ 	local sudo
+ 
+-	export IGT_TEST_ROOT IGT_CONFIG_PATH
++	export IGT_TEST_ROOT IGT_CONFIG_PATH IGT_KERNEL_TREE
+ 
+ 	if [ "$need_root" -ne 0 -a "$EUID" -ne 0 ]; then
+-		sudo="sudo --preserve-env=IGT_TEST_ROOT,IGT_CONFIG_PATH"
++		sudo="sudo --preserve-env=IGT_TEST_ROOT,IGT_CONFIG_PATH,IGT_KERNEL_TREE"
+ 	fi
+ 
+ 	$sudo $runner "$@"
+@@ -108,8 +122,14 @@ function execute_runner # as-root <runner> <args>
+ function print_help {
+ 	echo "Usage: run-tests.sh [options]"
+ 	echo "Available options:"
++	echo "  -c <capture_script>"
++	echo "                  capture gcov code coverage using the <capture_script>."
++	echo "  -P              store code coverage results per each test. Should be"
++	echo "                  used together with -k option"
+ 	echo "  -d              download Piglit to $ROOT/piglit"
+ 	echo "  -h              display this help message"
++	echo "  -k <kernel_dir> Linux Kernel source code directory used to generate code"
++	echo "                  coverage builds."
+ 	echo "  -l              list all available tests"
+ 	echo "  -r <directory>  store the results in directory"
+ 	echo "                  (default: $RESULTS)"
+@@ -134,11 +154,14 @@ function print_help {
+ 	echo "Useful patterns for test filtering are described in the API documentation."
+ }
+ 
+-while getopts ":dhlr:st:T:vx:Rnpb:" opt; do
++while getopts ":c:dhk:lPr:st:T:vx:Rnpb:" opt; do
+ 	case $opt in
++		c) COV_ARGS="$COV_ARGS --collect-code-cov --collect-script $OPTARG " ;;
+ 		d) download_piglit; exit ;;
+ 		h) print_help; exit ;;
++		k) IGT_KERNEL_TREE="$OPTARG" ;;
+ 		l) LIST_TESTS="true" ;;
++		P) COV_ARGS="$COV_ARGS --coverage-per-test"; COV_PER_TEST=1 ;;
+ 		r) RESULTS="$OPTARG" ;;
+ 		s) SUMMARY="html" ;;
+ 		t) FILTER="$FILTER -t $OPTARG" ;;
+@@ -172,6 +195,18 @@ if [ "x$PIGLIT" == "x" ]; then
+ 	PIGLIT="$ROOT/piglit/piglit"
+ fi
+ 
++if [ "x$COV_ARGS" != "x" ]; then
++	if [ "$USE_PIGLIT" -eq "1" ]; then
++		echo "Cannot collect code coverage when running tests with Piglit. Use igt_runner instead."
++		exit 1
++	fi
++
++	if ! $(find_lcov_binary); then
++		echo "Can't check code coverage, as 'lcov' is not installed"
++		exit 1
++	fi
 +fi
 +
-+if [ -z "$1" ] ; then
-+	echo "Usage: $0 <output>" >&2
-+	echo "   Please notice that this script assumes $IGT_KERNEL_TREE is used as both Kernel source and object dir." >&2
-+	exit 1
-+fi
-+
-+lcov -q --rc lcov_branch_coverage=1 \
-+	--test-name "$(basename $1)" -b $IGT_KERNEL_TREE --capture \
-+	--output-file $1.info
-+
-+uptime=$(cat /proc/uptime|cut -d' ' -f 1)
-+echo "[$uptime]     Code coverage wrote to $1.info"
+ RUN_ARGS=
+ RESUME_ARGS=
+ LIST_ARGS=
+@@ -201,15 +236,20 @@ else
+ fi
+ 
+ if [ "x$LIST_TESTS" != "x" ]; then
+-	execute_runner 0 $RUNNER $LIST_ARGS $FILTER
++	execute_runner 0 $RUNNER $LIST_ARGS $FILTER $COV_ARGS
+ 	exit
+ fi
+ 
+ if [ "x$RESUME_RUN" != "x" ]; then
+-	execute_runner 1 $RESUME $RESUME_ARGS "$RESULTS"
++	if [ "x$COV_ARGS" != "x" -a "x$COV_PER_TEST" == "x" ]; then
++		echo "Can't continue collecting coverage tests. Next time, run"
++		echo "$0 with '-P' in order to generate separate code coverage results".
++		exit 1
++	fi
++	execute_runner 1 $RESUME $RESUME_ARGS $COV_ARGS "$RESULTS"
+ else
+ 	mkdir -p "$RESULTS"
+-	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $VERBOSE $FILTER
++	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER
+ fi
+ 
+ if [ "$SUMMARY" == "html" ]; then
 -- 
 2.35.1
