@@ -1,21 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2059.outbound.protection.outlook.com [40.107.94.59])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27E5010E5A2
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 13:24:38 +0000 (UTC)
-Message-ID: <379d3199-7705-f666-9f2d-a8d7f7691417@amd.com>
-Date: Wed, 16 Mar 2022 09:24:32 -0400
-Content-Language: en-US
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-References: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
- <Yh56I/J+C6z29zEX@intel.com>
-From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
-In-Reply-To: <Yh56I/J+C6z29zEX@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BFF010E569
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 13:40:17 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Rodrigo Siqueira Jordao <rjordrigo@amd.com>, Petri Latvala
+ <petri.latvala@intel.com>
+In-Reply-To: <4ce3234e-493b-8ee9-07b8-148be2a9e917@amd.com>
+References: <20220131142818.2686782-1-Rodrigo.Siqueira@amd.com>
+ <20220131142818.2686782-2-Rodrigo.Siqueira@amd.com>
+ <Yfu2nPEIQQT+6l/t@platvala-desk.ger.corp.intel.com>
+ <3af10091-6a1f-0d13-944f-7f7833837e1e@amd.com> <87sfsurh88.fsf@intel.com>
+ <Yh9eYotWmjBpgTgO@platvala-desk.ger.corp.intel.com>
+ <87bkyo5x86.fsf@intel.com> <4ce3234e-493b-8ee9-07b8-148be2a9e917@amd.com>
+Date: Wed, 16 Mar 2022 15:39:54 +0200
+Message-ID: <8735jinhhx.fsf@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 0/2] Introduce MAINTAINERS file to IGT
+Content-Type: text/plain
+Subject: Re: [igt-dev] [RFC i-g-t 1/1] MAINTAINERS: Introduce MAINTAINERS
+ file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,8 +25,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Qingqing Zhuo <qingqing.zhuo@amd.com>, igt-dev@lists.freedesktop.org,
+Cc: Qingqing Zhuo <qingqing.zhuo@amd.com>, igt-dev@lists.freedesktop.org,
  Sean Paul <seanpaul@chromium.org>,
  Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>,
  Mark Yacoub <markyacoub@google.com>
@@ -32,88 +33,76 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Wed, 16 Mar 2022, Rodrigo Siqueira Jordao <rjordrigo@amd.com> wrote:
+> On 2022-03-02 07:56, Jani Nikula wrote:
+>> On Wed, 02 Mar 2022, Petri Latvala <petri.latvala@intel.com> wrote:
+>>> On Mon, Feb 07, 2022 at 02:31:03PM +0200, Jani Nikula wrote:
+>>>> FWIW, if I were to do this, I'd do it in yaml and implement it in
+>>>> python+strictyaml with a schema. No need to import a monster perl parser
+>>>> from kernel or implement our own.
+>>>
+>>> I really like this suggestion. The perl script from kernel is
+>>> completely overkill for IGT purposes where it would be mostly (or
+>>> 100%) used to collect Cc fields to patches for people volunteering for
+>>> doing review.
+>> 
+>> Last week I hacked a bit on what my suggestion would look like, but
+>> decided I really don't have time for this. Anyway, attached is what I
+>> put together in less than an hour in case anyone wants to pick it up
+>> from here.
+>> 
+>> You'll need strictyaml and whatthepatch from pip. The latter could
+>> perhaps be replaced with something better but it fit the bill now and it
+>> took only minutes to start using. Using strictyaml with a schema is a
+>> really powerful tool here.
+>> 
+>> Put the attachments in igt root (they're not even patches, sorry), and
+>> try:
+>> 
+>> $ ./maintainers.py some-igt.patch
+>> 
+>> The MAINTAINERS used here is just a conversion from some earlier patch,
+>> don't put too much weight on the content, rather the format.
+>> 
+>> BR,
+>> Jani.
+>> 
+>> 
+>
+> Hi Jani,
+>
+> I'm inclined to avoid creating an IGT-specific solution because we will 
+> need to maintain it, which will add more effort for IGT developers 
+> (manage dependencies, bugs, etc.). However, I also agree that copy & 
+> paste other people's code will end up in a similar issue; for this 
+> reason, I suggested a different approach in the second patch of the 
+> following patchset:
+>
+>   https://patchwork.freedesktop.org/series/99534/
+>
+> Instead of copying the get_maintainers script to IGT, I created a thin 
+> layer that automatically downloads get_maintainers and invokes it with a 
+> few options. What do you think about this approach?
+
+In the end, it's all up to the IGT maintainers, what they think is the
+most sensible option, and what they're willing to take on. It's not up
+to me, I'm just offering my opinion, and even some code to support that
+opinion.
+
+Re-using kernel's get_maintainer.pl also has a non-zero maintenance
+effort related to it. Upstream does not support using get_maintainer.pl
+even for downstream kernel forks (*), let alone non-kernel
+projects. It's not a general purpose tool. If you hit problems with it,
+you get to debug a monster perl script *and* the shell script to use
+it. And then potentially work around the issues in IGT because upstream
+doesn't care.
 
 
-On 2022-03-01 14:55, Rodrigo Vivi wrote:
-> On Thu, Feb 17, 2022 at 10:26:44AM -0500, Rodrigo Siqueira wrote:
->> IGT is becoming more generic, and multiple vendors are adopting it. For
->> example, AMD fully upstream all of its internal changes last year, and
->> now we are relying on IGT from the upstream. Additionally, thanks to the
->> ChromeOS project, we have other vendors working on the KMS tests as
->> well. At this point, I believe that we need some mechanism to better
->> contact developers that care about some specific tests or even provide
->> an easy way for other people to find the right stakeholder for dealing
->> with some particular issue.
->>
->> Imho Linux Kernel already has a good solution codified in the
->> MAINTAINERS and get_maintainers files. One of the best things about this
->> approach was adding reviewers and maintainers (and other options) to the
->> specific part of the code and using the get_maintainers tool to extract
->> the right people to be part of the series. With this idea in mind, I
->> created an RFC that introduces the MAINTAINERS file in IGT, and
->> collected feedback. This series is the first version that introduces the
->> MAINTAINERS and a wrapper to the get_maintainers file.
-> 
-> But in the Linux Kernel we do for big blocks, not for individual .c files.
-> For the .c files git blame should be enough imho...
-
-Hi Rodrigo,
-
-I don't think git blame will work for what I'm suggesting. What I'm 
-trying to achieve here is a bit different; I'm trying to add more 
-contact points for specific tests since IGT became more and more adopted.
-For example, last year, we retired our IGT fork and tried to upstream 
-all of our internal changes since we want to move to the upstream first 
-approach with IGT. As a result of this change, our CI now relies on IGT 
-from GitLab, and we run a lot of the kms tests, but we did not directly 
-work in some of them. In those cases, git blame will not point to anyone 
-from AMD. If you see the first patch, we are trying to add specific 
-people to follow certain tests to make the IGT maintenance scalable for 
-us and for anyone using IGT in their CI.
-
-Thanks
-Siqueira
+BR,
+Jani.
 
 
->>
->> For this series, I recommend:
->>
->> 1. Patch 1: It has the maintainers file. If you want to add yourself to
->> some specific test, please, let me know in this patch.
->> 2. Patch 2: get_maintainers wrapper, see the CONTRIBUTING page on how to
->> use it.
->>
->> Cc: Arkadiusz Hiler <arek@hiler.eu>
->> Cc: Petri Latvala <petri.latvala@intel.com>
->> Cc: Mark Yacoub <markyacoub@google.com>
->> Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
->> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
->> Cc: Melissa Wen <mwen@igalia.com>
->> Cc: Sean Paul <seanpaul@chromium.org>
->> Cc: Harry Wentland <harry.wentland@amd.com>
->> Cc: Sun Peng Li(Leo) <sunpeng.li@amd.com>
->> Cc: Chao-kai Wang (Stylon) <stylon.wang@amd.com>
->> Cc: Wayne Lin <wayne.lin@amd.com>
->> Cc: Nicholas Choi <nicholas.choi@amd.com>
->> Cc: Martin Peres <martin.peres@mupuf.org>
->> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
->> Cc: Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
->> Cc: Qingqing Zhuo (Lilian) <qingqing.zhuo@amd.com>
->> Cc: Solomon Chiu <solomon.chiu@amd.com>
->> Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
->> Cc: Dingchen Zhang (David) <Dingchen.Zhang@amd.com>
->>
->> Rodrigo Siqueira (2):
->>    MAINTAINERS: Introduce MAINTAINERS file
->>    scripts: get_maintainer: Introduce get_maintainer wrapper
->>
->>   .gitignore                |   1 +
->>   CONTRIBUTING.md           |  17 +++-
->>   MAINTAINERS               | 198 +++++++++++++++++++++++++++++++++++++-
->>   scripts/get_maintainer.sh | 104 ++++++++++++++++++++
->>   4 files changed, 317 insertions(+), 3 deletions(-)
->>   create mode 100755 scripts/get_maintainer.sh
->>
->> -- 
->> 2.25.1
->>
+(*) I've tried submitting changes to that effect.
+
+-- 
+Jani Nikula, Intel Open Source Graphics Center
