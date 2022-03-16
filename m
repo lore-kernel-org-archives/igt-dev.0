@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CEB110E60E
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:03:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86D6310E603
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:03:39 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e1J-A7
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e0z-7t
  for igt-dev@lists.freedesktop.org; Wed, 16 Mar 2022 16:00:07 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Mar 2022 16:00:02 +0100
-Message-Id: <20220316150003.1583681-10-mauro.chehab@linux.intel.com>
+Date: Wed, 16 Mar 2022 15:59:57 +0100
+Message-Id: <20220316150003.1583681-5-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
 References: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 09/10] scripts:code_cov_gather_on_test: use a
- faster script
+Subject: [igt-dev] [PATCH v3 04/10] scripts/code_cov_gather*/sh: add help
+ scripts for code coverage
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,145 +26,97 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tomi Sarvela <tomi.p.sarvela@intel.com>
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The original shell script takes too long to complete (~7-10 seconds),
-while the python version requires only ~500 ms.
+When a Linux Kernel is built with gcov support, the compiler creates
+some other object files (*.gcno) that are dependent of the compiler
+version, and contain references to the source files.
 
-As this has a relevant impact when doing the tests, use the faster
-version.
+At Kernel runtime at the test machine, counter files will be visible at
+sysfs (*.gcda files), which are also on a compiler specific format.
 
-Signed-off-by: Tomi Sarvela <tomi.p.sarvela@intel.com>
+In order to be able to properly parse the contents of the counters, the
+information from 3 different places should be merged altogether:
+
+	- Runtime counters: /sys/.../*.gcda and hiperlinks to *.gcno
+	- Compile-time cross-reference object files: *.gcno
+	- Kernel source code.
+
+If the build machine is different than the source machine, some special
+scripts are needed in order to either copy the source files to the
+runtime machine or vice versa.
+
+This is described at:
+
+	https://www.kernel.org/doc/html/latest/dev-tools/gcov.html
+
+Copy the two scripts described there as-is.
+
+Further patches will modify them as needed.
+
+Acked-by: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_gather_on_test.py | 91 ++++++++++++++++++++++++++++++
- scripts/code_cov_gather_on_test.sh | 20 -------
- 2 files changed, 91 insertions(+), 20 deletions(-)
- create mode 100755 scripts/code_cov_gather_on_test.py
- delete mode 100755 scripts/code_cov_gather_on_test.sh
+ scripts/code_cov_gather_on_build.sh | 23 +++++++++++++++++++++++
+ scripts/code_cov_gather_on_test.sh  | 20 ++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
+ create mode 100755 scripts/code_cov_gather_on_build.sh
+ create mode 100755 scripts/code_cov_gather_on_test.sh
 
-diff --git a/scripts/code_cov_gather_on_test.py b/scripts/code_cov_gather_on_test.py
+diff --git a/scripts/code_cov_gather_on_build.sh b/scripts/code_cov_gather_on_build.sh
 new file mode 100755
-index 000000000000..b4356aa1397b
+index 000000000000..99c436f76fb8
 --- /dev/null
-+++ b/scripts/code_cov_gather_on_test.py
-@@ -0,0 +1,91 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0 OR MIT
-+#
-+# Copyright (C) 2022 Intel Corporation
-+#
-+# gather_on_test.py
-+#
-+# by Tomi Sarvela <tomi.p.sarvela@intel.com>
-+#
-+# Faster implementation for linux kernel GCOV data collection
-+# Command line compatible with original gather_on_test.sh
-+#
-+# Refs:
-+# https://www.kernel.org/doc/html/latest/dev-tools/gcov.html
-+#
-+import argparse
-+import errno
-+import io
-+import os
-+import sys
-+import tarfile
++++ b/scripts/code_cov_gather_on_build.sh
+@@ -0,0 +1,23 @@
++#!/bin/bash
 +
-+def parse_args() -> argparse.Namespace:
-+    '''Command line arguments'''
-+    ap = argparse.ArgumentParser(description="Gather Linux kernel GCOV data")
-+    ap.add_argument('output',
-+                    help="Output file name (.tar.gz will be added)")
-+    ap.add_argument('--gcov', default='/sys/kernel/debug/gcov',
-+                    help="GCOV directory, default: /sys/kernel/debug/gcov")
-+    return ap.parse_args()
++KSRC=$1
++KOBJ=$2
++DEST=$3
 +
-+def tar_add_link(tar:tarfile.TarFile, filename:str):
-+    '''Add filename as symlink to tarfile'''
-+    info = tarfile.TarInfo(filename)
-+    if info.name[0] == '/': info.name = info.name[1:]
-+    info.type = tarfile.SYMTYPE
-+    info.linkname = os.readlink(filename)
-+    tar.addfile(info)
++if [ -z "$KSRC" ] || [ -z "$KOBJ" ] || [ -z "$DEST" ]; then
++  echo "Usage: $0 <ksrc directory> <kobj directory> <output.tar.gz>" >&2
++  exit 1
++fi
 +
-+def tar_add_file(tar:tarfile.TarFile, filename:str):
-+    '''Add filename to tarfile, file size expected to be invalid'''
-+    try:
-+        with open(filename, "rb") as fp:
-+            data = fp.read() # big gulp
-+    except OSError as e:
-+        print(f"ERROR: {filename}: {e}", file=sys.stderr)
-+        return
-+    info = tarfile.TarInfo(filename)
-+    if info.name[0] == '/': info.name = info.name[1:]
-+    info.size = len(data)
-+    tar.addfile(info, io.BytesIO(data))
++KSRC=$(cd $KSRC; printf "all:\n\t@echo \${CURDIR}\n" | make -f -)
++KOBJ=$(cd $KOBJ; printf "all:\n\t@echo \${CURDIR}\n" | make -f -)
 +
-+def tar_add_tree(tar:tarfile.TarFile, tree:str):
-+    '''Add gcov files in directory tree to tar'''
-+    # FIXME: should dirs be added to tar for compatibility?
-+    for root, _, files in os.walk(tree, followlinks=False):
-+        for file in files:
-+            filepath = os.path.join(root, file)
-+            if file.endswith('.gcda'): tar_add_file(tar, filepath)
-+            if file.endswith('.gcno'): tar_add_link(tar, filepath)
++find $KSRC $KOBJ \( -name '*.gcno' -o -name '*.[ch]' -o -type l \) -a \
++                 -perm /u+r,g+r | tar cfz $DEST -P -T -
 +
-+def main() -> int:
-+    '''MAIN'''
-+    if not os.path.isdir(args.gcov):
-+        print(f"ERROR: [Errno {errno.ENOTDIR}] {os.strerror(errno.ENOTDIR)}: '{args.gcov}'",
-+              file=sys.stderr)
-+        return errno.ENOTDIR
-+    if args.output == '-':
-+        # reopen stdout as bytes for tarfile
-+        fp = os.fdopen(sys.stdout.fileno(), "wb", closefd=False)
-+    else:
-+        if not args.output.endswith('.tgz') and \
-+           not args.output.endswith('.tar.gz'):
-+            args.output+='.tar.gz'
-+        try:
-+            fp = open(args.output, 'wb')
-+        except OSError as e:
-+            print(f"ERROR: {e}", file=sys.stderr)
-+            return e.errno
-+    with tarfile.open(fileobj=fp, mode='w:gz') as tar:
-+        tar_add_tree(tar, args.gcov)
-+    fp.close()
-+    return 0
-+
-+if __name__ == '__main__':
-+    try:
-+        args = parse_args()
-+        sys.exit(main())
-+    except KeyboardInterrupt:
-+        print("Interrupted", file=sys.stderr)
-+        sys.exit(errno.EINTR)
++if [ $? -eq 0 ] ; then
++  echo "$DEST successfully created, copy to test system and unpack with:"
++  echo "  tar xfz $DEST -P"
++else
++  echo "Could not create file $DEST"
++fi
 diff --git a/scripts/code_cov_gather_on_test.sh b/scripts/code_cov_gather_on_test.sh
-deleted file mode 100755
-index 8834aa0d78af..000000000000
---- a/scripts/code_cov_gather_on_test.sh
-+++ /dev/null
-@@ -1,20 +0,0 @@
--#!/bin/bash -e
--
--DEST=$1
--GCDA=/sys/kernel/debug/gcov
--
--if [ -z "$DEST" ] ; then
--  echo "Usage: $0 <output.tar.gz>" >&2
--  exit 1
--fi
--
--TEMPDIR=$(mktemp -d)
--echo Collecting data..
--find $GCDA -type d -exec mkdir -p $TEMPDIR/\{\} \;
--find $GCDA -name '*.gcda' -exec sh -c 'cat < $0 > '$TEMPDIR'/$0' {} \;
--find $GCDA -name '*.gcno' -exec sh -c 'cp -d $0 '$TEMPDIR'/$0' {} \;
--tar czf $DEST -C $TEMPDIR sys
--rm -rf $TEMPDIR
--
--echo "$DEST successfully created, copy to build system and unpack with:"
--echo "  tar xfz $DEST"
+new file mode 100755
+index 000000000000..8834aa0d78af
+--- /dev/null
++++ b/scripts/code_cov_gather_on_test.sh
+@@ -0,0 +1,20 @@
++#!/bin/bash -e
++
++DEST=$1
++GCDA=/sys/kernel/debug/gcov
++
++if [ -z "$DEST" ] ; then
++  echo "Usage: $0 <output.tar.gz>" >&2
++  exit 1
++fi
++
++TEMPDIR=$(mktemp -d)
++echo Collecting data..
++find $GCDA -type d -exec mkdir -p $TEMPDIR/\{\} \;
++find $GCDA -name '*.gcda' -exec sh -c 'cat < $0 > '$TEMPDIR'/$0' {} \;
++find $GCDA -name '*.gcno' -exec sh -c 'cp -d $0 '$TEMPDIR'/$0' {} \;
++tar czf $DEST -C $TEMPDIR sys
++rm -rf $TEMPDIR
++
++echo "$DEST successfully created, copy to build system and unpack with:"
++echo "  tar xfz $DEST"
 -- 
 2.35.1
