@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0ABC010E603
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:02:08 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CEB110E60E
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:03:36 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e1B-9D
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e1J-A7
  for igt-dev@lists.freedesktop.org; Wed, 16 Mar 2022 16:00:07 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Mar 2022 16:00:00 +0100
-Message-Id: <20220316150003.1583681-8-mauro.chehab@linux.intel.com>
+Date: Wed, 16 Mar 2022 16:00:02 +0100
+Message-Id: <20220316150003.1583681-10-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
 References: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 07/10] scripts/code_cov_gen_report.sh: add a
- script to generate code coverage reports
+Subject: [igt-dev] [PATCH v3 09/10] scripts:code_cov_gather_on_test: use a
+ faster script
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,193 +26,145 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+From: Tomi Sarvela <tomi.p.sarvela@intel.com>
 
-The proper sequence to process the results at the build machine is not
-trivial. Add a script automating such steps.
+The original shell script takes too long to complete (~7-10 seconds),
+while the python version requires only ~500 ms.
 
-Reviewed-by: Tomi Sarvela <tomi.p.sarvela@intel.com>
+As this has a relevant impact when doing the tests, use the faster
+version.
+
+Signed-off-by: Tomi Sarvela <tomi.p.sarvela@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_gen_report.sh | 170 +++++++++++++++++++++++++++++++++
- 1 file changed, 170 insertions(+)
- create mode 100755 scripts/code_cov_gen_report.sh
+ scripts/code_cov_gather_on_test.py | 91 ++++++++++++++++++++++++++++++
+ scripts/code_cov_gather_on_test.sh | 20 -------
+ 2 files changed, 91 insertions(+), 20 deletions(-)
+ create mode 100755 scripts/code_cov_gather_on_test.py
+ delete mode 100755 scripts/code_cov_gather_on_test.sh
 
-diff --git a/scripts/code_cov_gen_report.sh b/scripts/code_cov_gen_report.sh
+diff --git a/scripts/code_cov_gather_on_test.py b/scripts/code_cov_gather_on_test.py
 new file mode 100755
-index 000000000000..05efebe19ee4
+index 000000000000..b4356aa1397b
 --- /dev/null
-+++ b/scripts/code_cov_gen_report.sh
-@@ -0,0 +1,170 @@
-+#!/bin/bash
++++ b/scripts/code_cov_gather_on_test.py
+@@ -0,0 +1,91 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0 OR MIT
++#
++# Copyright (C) 2022 Intel Corporation
++#
++# gather_on_test.py
++#
++# by Tomi Sarvela <tomi.p.sarvela@intel.com>
++#
++# Faster implementation for linux kernel GCOV data collection
++# Command line compatible with original gather_on_test.sh
++#
++# Refs:
++# https://www.kernel.org/doc/html/latest/dev-tools/gcov.html
++#
++import argparse
++import errno
++import io
++import os
++import sys
++import tarfile
 +
-+MERGED_INFO="merged"
-+GATHER_ON_BUILD="code_cov_gather_on_build.sh"
-+PARSE_INFO="code_cov_parse_info.pl"
++def parse_args() -> argparse.Namespace:
++    '''Command line arguments'''
++    ap = argparse.ArgumentParser(description="Gather Linux kernel GCOV data")
++    ap.add_argument('output',
++                    help="Output file name (.tar.gz will be added)")
++    ap.add_argument('--gcov', default='/sys/kernel/debug/gcov',
++                    help="GCOV directory, default: /sys/kernel/debug/gcov")
++    return ap.parse_args()
 +
-+trap 'catch $LINENO' ERR
-+catch() {
-+	echo "$0: error on line $1. HTML report not generated."
-+	exit $1
-+}
++def tar_add_link(tar:tarfile.TarFile, filename:str):
++    '''Add filename as symlink to tarfile'''
++    info = tarfile.TarInfo(filename)
++    if info.name[0] == '/': info.name = info.name[1:]
++    info.type = tarfile.SYMTYPE
++    info.linkname = os.readlink(filename)
++    tar.addfile(info)
 +
-+usage() {
-+    printf >&2 "\
-+Usage:
-+    $(basename $0)
-+	--read <file or dir> --kernel-source <dir> --kernel-object <dir>
-+	--output-dir <dir> [--info or --tar] [--force-override]
++def tar_add_file(tar:tarfile.TarFile, filename:str):
++    '''Add filename to tarfile, file size expected to be invalid'''
++    try:
++        with open(filename, "rb") as fp:
++            data = fp.read() # big gulp
++    except OSError as e:
++        print(f"ERROR: {filename}: {e}", file=sys.stderr)
++        return
++    info = tarfile.TarInfo(filename)
++    if info.name[0] == '/': info.name = info.name[1:]
++    info.size = len(data)
++    tar.addfile(info, io.BytesIO(data))
 +
-+--kernel-object is only needed when Kernel was built with make O=dir
-+"
-+    exit $1
-+}
++def tar_add_tree(tar:tarfile.TarFile, tree:str):
++    '''Add gcov files in directory tree to tar'''
++    # FIXME: should dirs be added to tar for compatibility?
++    for root, _, files in os.walk(tree, followlinks=False):
++        for file in files:
++            filepath = os.path.join(root, file)
++            if file.endswith('.gcda'): tar_add_file(tar, filepath)
++            if file.endswith('.gcno'): tar_add_link(tar, filepath)
 +
-+MODE=
-+RESULTS=
-+KSRC=
-+KOBJ=
-+DEST_DIR=
-+FORCE=
++def main() -> int:
++    '''MAIN'''
++    if not os.path.isdir(args.gcov):
++        print(f"ERROR: [Errno {errno.ENOTDIR}] {os.strerror(errno.ENOTDIR)}: '{args.gcov}'",
++              file=sys.stderr)
++        return errno.ENOTDIR
++    if args.output == '-':
++        # reopen stdout as bytes for tarfile
++        fp = os.fdopen(sys.stdout.fileno(), "wb", closefd=False)
++    else:
++        if not args.output.endswith('.tgz') and \
++           not args.output.endswith('.tar.gz'):
++            args.output+='.tar.gz'
++        try:
++            fp = open(args.output, 'wb')
++        except OSError as e:
++            print(f"ERROR: {e}", file=sys.stderr)
++            return e.errno
++    with tarfile.open(fileobj=fp, mode='w:gz') as tar:
++        tar_add_tree(tar, args.gcov)
++    fp.close()
++    return 0
 +
-+while [ "$1" != "" ]; do
-+	case $1 in
-+	--info|-i)
-+		MODE=info
-+		;;
-+	--tar|--tarball|-t)
-+		MODE=tar.gz
-+		;;
-+	--kernel-source|-k)
-+		if [ "$2" == "" ]; then
-+			usage 1
-+		else
-+			KSRC=$(realpath $2)
-+			shift
-+		fi
-+		;;
-+	--kernel-object|-O)
-+		if [ "$2" == "" ]; then
-+			usage 1
-+		else
-+			KOBJ=$(realpath $2)
-+			shift
-+		fi
-+		;;
-+	--output-dir|-o)
-+		if [ "$2" == "" ]; then
-+			usage 1
-+		else
-+			DEST_DIR=$(realpath $2)
-+			shift
-+		fi
-+		;;
-+	--read|-r)
-+		if [ "$2" == "" ]; then
-+			usage 1
-+		else
-+			RESULTS=$(realpath $2)
-+			shift
-+		fi
-+		;;
-+	--force-override|-f)
-+		FORCE=1
-+		;;
-+	--help)
-+		usage 0
-+		;;
-+
-+	*)
-+		echo "Unknown argument '$1'"
-+		usage 1
-+		;;
-+	esac
-+	shift
-+done
-+
-+if [ "x$RESULTS" == "x" -o "x$KSRC" == "x" -o "x$DEST_DIR" == "x" -o "x$MODE" == "x" ]; then
-+	echo "Missing a mandatory argument"
-+	usage 1
-+fi
-+
-+if [ -z "$KOBJ" ]; then
-+	KOBJ=$KSRC
-+fi
-+
-+SCRIPT_DIR=$(dirname $(realpath $0))
-+RESULTS=$(realpath $RESULTS)
-+KSRC=$(realpath $KSRC)
-+KOBJ=$(realpath $KOBJ)
-+DEST_DIR=$(realpath $DEST_DIR)
-+
-+if [ -e "$DEST_DIR" ]; then
-+	if [ "x$FORCE" != "x" -a -d "$DEST_DIR" ]; then
-+		rm -rf $DEST_DIR/
-+	else
-+		echo "Directory exists. Won't override."
-+		exit 1
-+	fi
-+fi
-+
-+mkdir -p $DEST_DIR
-+cd $DEST_DIR
-+
-+if [ "$MODE" != "info" ]; then
-+	echo "Generating source tarball from $KSRC (O=$KOBJ)..."
-+	${SCRIPT_DIR}/${GATHER_ON_BUILD} $KSRC $KOBJ source.tar.gz
-+
-+	echo "Adding source files..."
-+	tar xf source.tar.gz
-+
-+	if [ -d "$RESULTS" ]; then
-+		echo "Creating per-file info files..."
-+		echo -n "" >${MERGED_INFO}.info
-+		for i in $RESULTS/*.tar.gz; do
-+			TITLE=$(basename $i)
-+			TITLE=${TITLE/.tar.gz/}
-+
-+			echo "Adding results from $i..."
-+			tar xf $i
-+
-+			echo "Generating $TITLE.info..."
-+			lcov -q -t ${TITLE} --rc lcov_branch_coverage=1 -o $TITLE.info -c -d .
-+
-+			cat $TITLE.info >>${MERGED_INFO}.info
-+
-+			# Remove the contents of the results tarball
-+			rm -rf sys/
-+		done
-+
-+		TITLE=${MERGED_INFO}
-+	else
-+		TITLE=$(basename $RESULTS)
-+		TITLE=${TITLE/.tar.gz/}
-+
-+		echo "Adding results from $RESULTS..."
-+		tar xf $RESULTS
-+
-+		echo "Generating $TITLE.info..."
-+		lcov -q -t ${TITLE} --rc lcov_branch_coverage=1 -o $TITLE.info -c -d .
-+	fi
-+else
-+	if [ -d "$RESULTS" ]; then
-+		echo "Merging info files..."
-+		echo -n "" >${MERGED_INFO}.info
-+		for i in $RESULTS/*.info; do
-+			cat $i >>${MERGED_INFO}.info
-+		done
-+
-+		TITLE=${MERGED_INFO}
-+	else
-+		echo "Copying $RESULTS to $DEST_DIR..."
-+		cp $RESULTS .
-+
-+		TITLE=$(basename $RESULTS)
-+		TITLE=${TITLE/.info/}
-+	fi
-+fi
-+
-+echo "Generating HTML files..."
-+genhtml -q ${TITLE}.info
++if __name__ == '__main__':
++    try:
++        args = parse_args()
++        sys.exit(main())
++    except KeyboardInterrupt:
++        print("Interrupted", file=sys.stderr)
++        sys.exit(errno.EINTR)
+diff --git a/scripts/code_cov_gather_on_test.sh b/scripts/code_cov_gather_on_test.sh
+deleted file mode 100755
+index 8834aa0d78af..000000000000
+--- a/scripts/code_cov_gather_on_test.sh
++++ /dev/null
+@@ -1,20 +0,0 @@
+-#!/bin/bash -e
+-
+-DEST=$1
+-GCDA=/sys/kernel/debug/gcov
+-
+-if [ -z "$DEST" ] ; then
+-  echo "Usage: $0 <output.tar.gz>" >&2
+-  exit 1
+-fi
+-
+-TEMPDIR=$(mktemp -d)
+-echo Collecting data..
+-find $GCDA -type d -exec mkdir -p $TEMPDIR/\{\} \;
+-find $GCDA -name '*.gcda' -exec sh -c 'cat < $0 > '$TEMPDIR'/$0' {} \;
+-find $GCDA -name '*.gcno' -exec sh -c 'cp -d $0 '$TEMPDIR'/$0' {} \;
+-tar czf $DEST -C $TEMPDIR sys
+-rm -rf $TEMPDIR
+-
+-echo "$DEST successfully created, copy to build system and unpack with:"
+-echo "  tar xfz $DEST"
 -- 
 2.35.1
