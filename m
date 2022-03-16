@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54B6710E585
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 06:14:53 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Mar 2022 13:47:28 +0100
-Message-Id: <20220301124728.312967-1-janusz.krzysztofik@linux.intel.com>
+Date: Wed, 16 Mar 2022 11:46:17 +0530
+Message-Id: <20220316061617.30842-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/intel_mmio: Fix mmapped resources not
- unmapped on fini
+Subject: [igt-dev] [PATCH i-g-t v6] IGT cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,184 +16,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Commit 5f3cfa485eb4 ("lib: Use safe wrappers around libpciaccess
-initialization functions") took care of not leaking memory allocated by
-pci_system_init() but didn't take care of users potentially attempting to
-reinitialize global data maintained by libpciaccess.  For example,
-intel_register_access_init() mmaps device's PCI BAR0 resource with
-pci_device_map_range() but intel_register_access_fini() doesn't unmap it
-and next call to intel_register_access_init() fails on attempt to mmap it
-again with pci_device_map_range().
+Before starting the next subtest, clean up the states to default
+values, those are assumed by other tests.
 
-Fix it, and also provide intel_mmio_umap_*() counterparts to public
-functions intel_mmio_use_pci_bar() and intel_mmio_use_dump_file().
+v2: And also before running the subtest we need to sanitize the system state
+to default, since we can't trust the state of previous subtest, used
+igt_display_reset() to sanitize the state. (Bhanuprakash Modem)
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Below tests are modified:
+	tests/kms_concurrent.c
+	tests/kms_sequence.c
+
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- lib/intel_io.h   |  4 +++
- lib/intel_mmio.c | 65 ++++++++++++++++++++++++++++++++++++++++++------
- 2 files changed, 62 insertions(+), 7 deletions(-)
+ tests/kms_concurrent.c | 37 +++++++++++++++++--------------------
+ tests/kms_sequence.c   | 11 +++++++----
+ 2 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/lib/intel_io.h b/lib/intel_io.h
-index 1cfe4fb6b9..ea2649d9bc 100644
---- a/lib/intel_io.h
-+++ b/lib/intel_io.h
-@@ -49,6 +49,8 @@ struct intel_register_map {
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 1b8f4b04..6428c60d 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
+ 	}
  
- struct intel_mmio_data {
- 	void *igt_mmio;
-+	size_t mmio_size;
-+	struct pci_device *dev;
- 	struct intel_register_map map;
- 	uint32_t pci_device_id;
- 	int key;
-@@ -57,7 +59,9 @@ struct intel_mmio_data {
+ 	/* reset the constraint on the pipe */
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  
- void intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data,
- 			    struct pci_device *pci_dev);
-+void intel_mmio_unmap_pci_bar(struct intel_mmio_data *mmio_data);
- void intel_mmio_use_dump_file(struct intel_mmio_data *mmio_data, char *file);
-+void intel_mmio_unmap_dump_file(struct intel_mmio_data *mmio_data);
- 
- int intel_register_access_init(struct intel_mmio_data *mmio_data,
- 			       struct pci_device *pci_dev, int safe, int fd);
-diff --git a/lib/intel_mmio.c b/lib/intel_mmio.c
-index 667a69f5aa..c8800a6d53 100644
---- a/lib/intel_mmio.c
-+++ b/lib/intel_mmio.c
-@@ -82,6 +82,8 @@ void *igt_global_mmio;
-  * Sets also up mmio_data->igt_mmio to point at the data contained
-  * in @file. This allows the same code to get reused for dumping and decoding
-  * from running hardware as from register dumps.
-+ *
-+ * Users are expected to call intel_mmio_unmap_dump_file() after use.
-  */
- void
- intel_mmio_use_dump_file(struct intel_mmio_data *mmio_data, char *file)
-@@ -99,11 +101,29 @@ intel_mmio_use_dump_file(struct intel_mmio_data *mmio_data, char *file)
- 	igt_fail_on_f(mmio_data->igt_mmio == MAP_FAILED,
- 		      "Couldn't mmap %s\n", file);
- 
-+	mmio_data->mmio_size = st.st_size;
- 	igt_global_mmio = mmio_data->igt_mmio;
- 
- 	close(fd);
- }
- 
-+/**
-+ * intel_mmio_unmap_dump_file:
-+ * @mmio_data:  mmio structure for IO operations
-+ *
-+ * Unmaps a dump file mmapped with intel_mmio_use_dump_file()
-+ */
-+void intel_mmio_unmap_dump_file(struct intel_mmio_data *mmio_data)
-+{
-+	if (igt_warn_on_f(!mmio_data->mmio_size || mmio_data->dev,
-+			  "test bug: argument doesn't point to struct intel_mmio_data initialized with intel_mmio_use_dump_file()\n"))
-+		return;
-+
-+	igt_global_mmio = NULL;
-+	igt_debug_on(munmap(mmio_data->igt_mmio, mmio_data->mmio_size) < 0);
-+	mmio_data->mmio_size = 0;
-+}
-+
- /**
-  * intel_mmio_use_pci_bar:
-  * @mmio_data:  mmio structure for IO operations
-@@ -112,12 +132,14 @@ intel_mmio_use_dump_file(struct intel_mmio_data *mmio_data, char *file)
-  * Fill a mmio_data stucture with igt_mmio to point at the mmio bar.
-  *
-  * @pci_dev can be obtained from intel_get_pci_device().
-+ *
-+ * Users are expected to call intel_mmio_unmap_pci_bar() after use.
-  */
- void
- intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci_dev)
+ 	free(data->plane);
+ 	data->plane = NULL;
+@@ -278,35 +279,30 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+ static void
+ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
  {
- 	uint32_t devid, gen;
--	int mmio_bar, mmio_size;
-+	int mmio_bar;
- 	int error;
+-	int connected_outs;
+-	int n_planes = data->display.pipes[pipe].n_planes;
++	int n_planes;
++
++	igt_display_reset(&data->display);
++	n_planes = data->display.pipes[pipe].n_planes;
  
- 	memset(mmio_data, 0, sizeof(struct intel_mmio_data));
-@@ -129,11 +151,11 @@ intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci
+ 	if (!opt.user_seed)
+ 		opt.seed = time(NULL);
  
- 	gen = intel_gen(devid);
- 	if (gen < 3)
--		mmio_size = 512*1024;
-+		mmio_data->mmio_size = 512*1024;
- 	else if (gen < 5)
--		mmio_size = 512*1024;
-+		mmio_data->mmio_size = 512*1024;
- 	else
--		mmio_size = 2*1024*1024;
-+		mmio_data->mmio_size = 2*1024*1024;
- 
- 	error = pci_device_map_range (pci_dev,
- 				      pci_dev->regions[mmio_bar].base_addr,
-@@ -141,10 +163,30 @@ intel_mmio_use_pci_bar(struct intel_mmio_data *mmio_data, struct pci_device *pci
- 				      PCI_DEV_MAP_FLAG_WRITABLE,
- 				      &mmio_data->igt_mmio);
- 
--	igt_global_mmio = mmio_data->igt_mmio;
+-	connected_outs = 0;
+-	for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
+-			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
 -
- 	igt_fail_on_f(error != 0,
- 		      "Couldn't map MMIO region\n");
-+
-+	mmio_data->dev = pci_dev;
-+	igt_global_mmio = mmio_data->igt_mmio;
-+}
-+
-+/**
-+ * intel_mmio_unmap_pci_bar:
-+ * @mmio_data:  mmio structure for IO operations
-+ *
-+ * Unmaps a PCI BAR region mmapped with intel_mmio_use_pci_bar()
-+ */
-+void intel_mmio_unmap_pci_bar(struct intel_mmio_data *mmio_data)
-+{
-+	if (igt_warn_on_f(!mmio_data->dev,
-+			  "test bug: argument doesn't point to struct intel_mmio_data initialized with intel_mmio_use_pci_bar()\n"))
-+		return;
-+
-+	igt_global_mmio = NULL;
-+	igt_debug_on(pci_device_unmap_range(mmio_data->dev,
-+					    mmio_data->igt_mmio, mmio_data->mmio_size) < 0);
-+	mmio_data->mmio_data->dev = NULL;
-+	mmio_data->mmio_size = 0;
+-		srand(opt.seed);
+-
+-		test_init(data, pipe, n_planes, output);
++	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
++		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+ 
+-		igt_fork(child, 1) {
+-			test_plane_position_with_output(data, pipe, n_planes, output);
+-		}
++	srand(opt.seed);
+ 
+-		test_resolution_with_output(data, pipe, n_planes, output);
++	test_init(data, pipe, n_planes, output);
+ 
+-		igt_waitchildren();
++	igt_fork(child, 1) {
++		test_plane_position_with_output(data, pipe, n_planes, output);
++	}
+ 
+-		test_fini(data, pipe, n_planes, output);
++	test_resolution_with_output(data, pipe, n_planes, output);
+ 
+-		connected_outs++;
+-	}
++	igt_waitchildren();
+ 
+-	igt_skip_on(connected_outs == 0);
++	test_fini(data, pipe, n_planes, output);
  }
  
  static void
-@@ -166,6 +208,8 @@ release_forcewake_lock(int fd)
-  * It also initializes mmio_data->igt_mmio like intel_mmio_use_pci_bar().
-  *
-  * @pci_dev can be obtained from intel_get_pci_device().
-+ *
-+ * Users are expected to call intel_register_access_fini() after use.
-  */
- int
- intel_register_access_init(struct intel_mmio_data *mmio_data, struct pci_device *pci_dev, int safe, int fd)
-@@ -222,8 +266,15 @@ int intel_register_access_needs_fakewake(struct intel_mmio_data *mmio_data)
- void
- intel_register_access_fini(struct intel_mmio_data *mmio_data)
+@@ -316,6 +312,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 
+ 	igt_fixture {
+ 		int valid_tests = 0;
++		igt_display_reset(&data->display);
+ 
+ 		igt_require_pipe(&data->display, pipe);
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index 9c287480..569ea1d9 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -74,9 +74,12 @@ static double elapsed(const struct timespec *start,
+ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
  {
--	if (mmio_data->key && intel_register_access_needs_wake(mmio_data))
-+	if (igt_warn_on_f(!mmio_data->key,
-+			  "test bug: argument doesn't point to struct intel_mmio_data initialized with intel_register_access_init()\n"))
-+		return;
-+
-+	if (intel_register_access_needs_wake(mmio_data))
- 		release_forcewake_lock(mmio_data->key);
-+	mmio_data->key = 0;
-+
-+	intel_mmio_unmap_pci_bar(mmio_data);
+ 	drmModeModeInfo *mode;
+-	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+-
++	igt_display_t *display;
++	
++	igt_display_reset(&data->display);
++	display = &data->display;
++	
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+@@ -109,8 +112,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
+-	igt_display_commit(display);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  }
  
- /**
+ static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
 -- 
-2.25.1
+2.26.2
