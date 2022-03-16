@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C3E910E603
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:04:32 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FA1610E603
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 15:07:49 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.94.2)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e0w-7P
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1nUV8B-006e0n-5q
  for igt-dev@lists.freedesktop.org; Wed, 16 Mar 2022 16:00:07 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Mar 2022 15:59:56 +0100
-Message-Id: <20220316150003.1583681-4-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
-References: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
+Date: Wed, 16 Mar 2022 15:59:53 +0100
+Message-Id: <20220316150003.1583681-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 03/10] runner: cleanup code_cov directory,
- if any
+Subject: [igt-dev] [PATCH v3 00/10] Add support to collect code coverage data
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,142 +25,106 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Ensure that "-o" parameter will also cleanup the contents of the
-code coverage results directory.
+The gcc compiler has a feature that allows collecting code coverage
+in runtime, which is already supported by the Linux Kernel, as described
+on its documentation:
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- runner/executor.c | 59 ++++++++++++++++++++++++++++++++++++-----------
- runner/settings.h |  2 +-
- 2 files changed, 47 insertions(+), 14 deletions(-)
+	https://01.org/linuxgraphics/gfx-docs/drm/dev-tools/gcov.html
 
-diff --git a/runner/executor.c b/runner/executor.c
-index ab00900c6d44..b4efc4fdbf81 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -20,6 +20,7 @@
- #include <sys/types.h>
- #include <sys/utsname.h>
- #include <sys/wait.h>
-+#include <dirent.h>
- #include <time.h>
- #include <unistd.h>
- 
-@@ -1446,8 +1447,11 @@ static bool clear_test_result_directory(int dirfd)
- 
- static bool clear_old_results(char *path)
- {
-+	struct dirent *entry;
-+	char name[PATH_MAX];
- 	int dirfd;
- 	size_t i;
-+	DIR *dir;
- 
- 	if ((dirfd = open(path, O_DIRECTORY | O_RDONLY)) < 0) {
- 		if (errno == ENOENT) {
-@@ -1469,7 +1473,6 @@ static bool clear_old_results(char *path)
- 	}
- 
- 	for (i = 0; true; i++) {
--		char name[32];
- 		int resdirfd;
- 
- 		snprintf(name, sizeof(name), "%zd", i);
-@@ -1488,6 +1491,31 @@ static bool clear_old_results(char *path)
- 		}
- 	}
- 
-+	strcpy(name, path);
-+	strcat(name, "/" CODE_COV_RESULTS_PATH);
-+	if ((dir = opendir(name)) != NULL) {
-+		char *p;
-+
-+		strcat(name, "/");
-+		p = name + strlen(name);
-+
-+		while ((entry = readdir(dir)) != NULL) {
-+			if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, ".."))
-+				continue;
-+
-+			strcpy(p, entry->d_name);
-+			if (unlink(name))  {
-+				errf("Error removing %s\n", name);
-+			}
-+		}
-+
-+		closedir(dir);
-+		if (unlinkat(dirfd, CODE_COV_RESULTS_PATH, AT_REMOVEDIR)) {
-+			errf("Warning: Result directory %s/%s contains extra files\n",
-+			     path, CODE_COV_RESULTS_PATH);
-+		}
-+	}
-+
- 	close(dirfd);
- 
- 	return true;
-@@ -1818,7 +1846,7 @@ static void code_coverage_stop(struct settings *settings, const char *job_name,
- 	name[j] = '\0';
- 
- 	strcpy(fname, settings->results_path);
--	strcat(fname, CODE_COV_RESULTS_PATH "/");
-+	strcat(fname, "/" CODE_COV_RESULTS_PATH "/");
- 	strcat(fname, name);
- 
- 	argv[0] = settings->code_coverage_script;
-@@ -1844,17 +1872,6 @@ bool execute(struct execute_state *state,
- 		return true;
- 	}
- 
--	if (settings->enable_code_coverage && !settings->cov_results_per_test) {
--		char *reason = NULL;
--
--		code_coverage_start(settings, -1, &reason);
--		if (reason != NULL) {
--			errf("%s\n", reason);
--			free(reason);
--			status = false;
--		}
--	}
--
- 	if ((resdirfd = open(settings->results_path, O_DIRECTORY | O_RDONLY)) < 0) {
- 		/* Initialize state should have done this */
- 		errf("Error: Failure opening results path %s\n",
-@@ -1862,6 +1879,22 @@ bool execute(struct execute_state *state,
- 		return false;
- 	}
- 
-+	if (settings->enable_code_coverage) {
-+		if (!settings->cov_results_per_test) {
-+			char *reason = NULL;
-+
-+			code_coverage_start(settings, -1, &reason);
-+			if (reason != NULL) {
-+				errf("%s\n", reason);
-+				free(reason);
-+				close(resdirfd);
-+				return false;
-+			}
-+		}
-+
-+		mkdirat(resdirfd, CODE_COV_RESULTS_PATH, 0755);
-+	}
-+
- 	if ((testdirfd = open(settings->test_root, O_DIRECTORY | O_RDONLY)) < 0) {
- 		errf("Error: Failure opening test root %s\n",
- 		     settings->test_root);
-diff --git a/runner/settings.h b/runner/settings.h
-index 3c2a3ee9c336..bbd965d27882 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -22,7 +22,7 @@ _Static_assert(ABORT_ALL == (ABORT_TAINT | ABORT_LOCKDEP | ABORT_PING), "ABORT_A
- 
- #define GCOV_DIR		"/sys/kernel/debug/gcov"
- #define GCOV_RESET GCOV_DIR	"/reset"
--#define CODE_COV_RESULTS_PATH	"/code_cov"
-+#define CODE_COV_RESULTS_PATH	"code_cov"
- 
- struct regex_list {
- 	char **regex_strings;
+Add support for it at the igt_runner and scripts/run-tests.sh.
+
+With such support, once a Kernel is compiled with:
+
+	./scripts/config -e DEBUG_FS -e GCOV_KERNEL
+
+And GCOV is enabled by one or more drivers, like doing:
+
+	for i in $(find drivers/gpu/drm/ -name Makefile); do sed '1 a GCOV_PROFILE := y' -i $i; done
+
+One can use igt_runner and/or run-tests.sh to collect the code coverage.
+
+The way the implementation works is that the igt_runner has internally
+the logic which reset the gcov usage counters. The code capture itself
+is done via an external script.
+
+There are two versions of such script:
+
+- scripts/code_cov_capture.sh:
+
+  Assumes that the Kernel was built at the same machine, and uses
+  the lcov tool to generate GCC-independent code coverage data,
+  in the form of *.info files;
+
+- scripts/code_cov_gather_on_test.py:
+
+  Generates a gzipped tarbal with the code coverage counters in
+  binary format. Such kind of output should then be parsed at
+  the same machine where the Kernel as built, as its content is not
+  ony dependent on the Kernel source, but also on the Kernel output
+  objects.
+
+Either way, both igt_runner and scripts/run-tests.sh could be used
+to generate the code coverage results.
+
+So, in order to get the code coverage results, storing results per each
+IGT test, one should run either:
+
+	./scripts/run-tests.sh -T my_tests.testlist -k ~/linux \
+		-c scripts/code_cov_gather_on_test.py -P
+
+or:
+
+	sudo ./build/runner/igt_runner -o --test-list my_tests.testlist \
+		--coverage-per-test \
+		--collect-script scripts/code_cov_gather_on_test.py \
+		build/tests results
+
+Once the data is captured, it is possible to generate HTML reports
+using scripts/code_cov_gen_report.sh:
+
+	scripts/code_cov_gen_report.sh -r results/code_cov/i915_selftest_live.info -k ~/linux -o cov_results -i -f
+
+v3:
+  - Added support at igt_runner to cleanup code coverage results with -o
+    parameter
+
+v2:
+  - Applied this commant to patch 8:
+    sed 's!/home/gta/!/basedir/!;s,\./basedir,/basedir,' -i docs/code_coverage.md
+
+Mauro Carvalho Chehab (9):
+  runner: check if it has root permissions
+  runner: Add support for code coverage
+  runner: cleanup code_cov directory, if any
+  scripts/code_cov_gather*/sh: add help scripts for code coverage
+  scripts/code_cov_gather_on_build.sh: Improve the script
+  scripts/code_cov_capture.sh: add a script to use lcov on build+test
+    machine
+  scripts/code_cov_gen_report.sh: add a script to generate code coverage
+    reports
+  scripts/run-tests.sh: add code coverage support
+  docs: add documentation for code coverage
+
+Tomi Sarvela (1):
+  scripts:code_cov_gather_on_test: use a faster script
+
+ docs/code_coverage.md               | 293 ++++++++++++++++++++++++++++
+ runner/executor.c                   | 235 +++++++++++++++++++++-
+ runner/resume.c                     |   4 +-
+ runner/runner_tests.c               |  30 +++
+ runner/settings.c                   |  87 ++++++++-
+ runner/settings.h                   |   8 +
+ scripts/code_cov_capture.sh         |  25 +++
+ scripts/code_cov_gather_on_build.sh |  39 ++++
+ scripts/code_cov_gather_on_test.py  |  91 +++++++++
+ scripts/code_cov_gen_report.sh      | 170 ++++++++++++++++
+ scripts/run-tests.sh                |  52 ++++-
+ 11 files changed, 1013 insertions(+), 21 deletions(-)
+ create mode 100644 docs/code_coverage.md
+ create mode 100755 scripts/code_cov_capture.sh
+ create mode 100755 scripts/code_cov_gather_on_build.sh
+ create mode 100755 scripts/code_cov_gather_on_test.py
+ create mode 100755 scripts/code_cov_gen_report.sh
+
 -- 
 2.35.1
