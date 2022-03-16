@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0489107940015038818=="
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8602610E548
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Mar 2022 05:59:21 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 16 Mar 2022 05:59:15 +0000
+Message-ID: <754a12f5cd2a4d0ca7df8612a9668f2c@intel.com>
+References: <20220208041233.2202854-1-bhanuprakash.modem@intel.com>
+ <20220217155457.2427855-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220217155457.2427855-2-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Anshuman Gupta" <anshuman.gupta@intel.com>
-Date: Wed, 16 Mar 2022 05:50:15 -0000
-Message-ID: <164740981501.29208.13269459254811247442@emeril.freedesktop.org>
-References: <20220316050037.28295-1-anshuman.gupta@intel.com>
-In-Reply-To: <20220316050037.28295-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9p?=
- =?utf-8?q?915=5Fpm=5Frpm=3A_Remove_igt=5Fdescribe=28=29_from_dynamic_subt?=
- =?utf-8?q?est?=
+Subject: Re: [igt-dev] [v4 i-g-t 2/3] tests/kms_color: Add support for
+ Deep-Color
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,249 +23,301 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0489107940015038818==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: test/i915_pm_rpm: Remove igt_describe() from dynamic subtest
-URL   : https://patchwork.freedesktop.org/series/101413/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11366 -> IGTPW_6789
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/index.html
-
-Participating hosts (46 -> 40)
-------------------------------
-
-  Missing    (6): fi-kbl-soraka shard-tglu fi-hsw-4200u fi-ctg-p8600 shard-rkl fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6789:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - {bat-jsl-2}:        [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-jsl-2/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-jsl-2/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6789 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - bat-adlp-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#3576])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  * igt@runner@aborted:
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][5] ([i915#2426] / [i915#4312])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/fi-bdw-5557u/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-adlp-4:         [DMESG-FAIL][6] -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-adlp-4/igt@i915_selftest@live@gt_lrc.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-adlp-4/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@mman:
-    - {bat-rpls-2}:       [DMESG-WARN][8] ([i915#4391]) -> [PASS][9] +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-rpls-2/igt@i915_selftest@live@mman.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-rpls-2/igt@i915_selftest@live@mman.html
-
-  * igt@kms_busy@basic@modeset:
-    - {bat-adlp-6}:       [DMESG-WARN][10] ([i915#3576]) -> [PASS][11] +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-adlp-6/igt@kms_busy@basic@modeset.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-adlp-6/igt@kms_busy@basic@modeset.html
-    - bat-adlp-4:         [DMESG-WARN][12] ([i915#3576]) -> [PASS][13] +1 similar issue
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-adlp-4/igt@kms_busy@basic@modeset.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-adlp-4/igt@kms_busy@basic@modeset.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-kbl-guc:         [SKIP][14] ([fdo#109271]) -> [FAIL][15] ([i915#579])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2426]: https://gitlab.freedesktop.org/drm/intel/issues/2426
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
-  [i915#5068]: https://gitlab.freedesktop.org/drm/intel/issues/5068
-  [i915#5339]: https://gitlab.freedesktop.org/drm/intel/issues/5339
-  [i915#5342]: https://gitlab.freedesktop.org/drm/intel/issues/5342
-  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
 
 
-Build changes
--------------
+> -----Original Message-----
+> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Sent: Thursday, February 17, 2022 9:25 PM
+> To: igt-dev@lists.freedesktop.org; Shankar, Uma <uma.shankar@intel.com>
+> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Subject: [v4 i-g-t 2/3] tests/kms_color: Add support for Deep-Color
+>=20
+> Add new subtests to validate deep color.
+>=20
+> V2:
+> * i915 needs atleast gen 11 to support deep-color
+> * Add connector name to dynamic subtest
+> V3:
+> * Fix the usage of "output"
+>=20
+> Cc: Uma Shankar <uma.shankar@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/kms_color.c        | 96 +++++++++++++++++++++++++++++-----------
+>  tests/kms_color_helper.c |  2 +-
+>  tests/kms_color_helper.h |  2 +
+>  3 files changed, 72 insertions(+), 28 deletions(-)
+>=20
+> diff --git a/tests/kms_color.c b/tests/kms_color.c index 854b8f3c31..6cc4=
+456159
+> 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -29,7 +29,6 @@ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level=
+");
+> static void test_pipe_degamma(data_t *data,
+>  			      igt_plane_t *primary)
+>  {
+> -	igt_output_t *output;
+>  	igt_display_t *display =3D &data->display;
+>  	gamma_lut_t *degamma_linear, *degamma_full;
+>  	color_t red_green_blue[] =3D {
+> @@ -48,17 +47,14 @@ static void test_pipe_degamma(data_t *data,
+>  	degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
+>  	degamma_full =3D generate_table_max(data->degamma_lut_size);
+>=20
+> -	output =3D igt_get_single_output_for_pipe(&data->display, primary->pipe=
+-
+> >pipe);
+> -	igt_require(output);
+> -
+> -	igt_output_set_pipe(output, primary->pipe->pipe);
+> -	mode =3D igt_output_get_mode(output);
+> +	igt_output_set_pipe(data->output, primary->pipe->pipe);
+> +	mode =3D igt_output_get_mode(data->output);
+>=20
+>  	/* Create a framebuffer at the size of the output. */
+>  	fb_id =3D igt_create_fb(data->drm_fd,
+>  			      mode->hdisplay,
+>  			      mode->vdisplay,
+> -			      DRM_FORMAT_XRGB8888,
+> +			      data->drm_format,
+>  			      DRM_FORMAT_MOD_LINEAR,
+>  			      &fb);
+>  	igt_assert(fb_id);
+> @@ -66,7 +62,7 @@ static void test_pipe_degamma(data_t *data,
+>  	fb_modeset_id =3D igt_create_fb(data->drm_fd,
+>  				      mode->hdisplay,
+>  				      mode->vdisplay,
+> -				      DRM_FORMAT_XRGB8888,
+> +				      data->drm_format,
+>  				      DRM_FORMAT_MOD_LINEAR,
+>  				      &fb_modeset);
+>  	igt_assert(fb_modeset_id);
+> @@ -103,7 +99,7 @@ static void test_pipe_degamma(data_t *data,
+>=20
+>  	disable_degamma(primary->pipe);
+>  	igt_plane_set_fb(primary, NULL);
+> -	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_output_set_pipe(data->output, PIPE_NONE);
+>  	igt_display_commit(&data->display);
+>  	igt_remove_fb(data->drm_fd, &fb);
+>  	igt_remove_fb(data->drm_fd, &fb_modeset); @@ -119,7 +115,6 @@ static
+> void test_pipe_degamma(data_t *data,  static void test_pipe_gamma(data_t =
+*data,
+>  			    igt_plane_t *primary)
+>  {
+> -	igt_output_t *output;
+>  	igt_display_t *display =3D &data->display;
+>  	gamma_lut_t *gamma_full;
+>  	color_t red_green_blue[] =3D {
+> @@ -136,17 +131,14 @@ static void test_pipe_gamma(data_t *data,
+>=20
+>  	gamma_full =3D generate_table_max(data->gamma_lut_size);
+>=20
+> -	output =3D igt_get_single_output_for_pipe(&data->display, primary->pipe=
+-
+> >pipe);
+> -	igt_require(output);
+> -
+> -	igt_output_set_pipe(output, primary->pipe->pipe);
+> -	mode =3D igt_output_get_mode(output);
+> +	igt_output_set_pipe(data->output, primary->pipe->pipe);
+> +	mode =3D igt_output_get_mode(data->output);
+>=20
+>  	/* Create a framebuffer at the size of the output. */
+>  	fb_id =3D igt_create_fb(data->drm_fd,
+>  			      mode->hdisplay,
+>  			      mode->vdisplay,
+> -			      DRM_FORMAT_XRGB8888,
+> +			      data->drm_format,
+>  			      DRM_FORMAT_MOD_LINEAR,
+>  			      &fb);
+>  	igt_assert(fb_id);
+> @@ -154,7 +146,7 @@ static void test_pipe_gamma(data_t *data,
+>  	fb_modeset_id =3D igt_create_fb(data->drm_fd,
+>  				      mode->hdisplay,
+>  				      mode->vdisplay,
+> -				      DRM_FORMAT_XRGB8888,
+> +				      data->drm_format,
+>  				      DRM_FORMAT_MOD_LINEAR,
+>  				      &fb_modeset);
+>  	igt_assert(fb_modeset_id);
+> @@ -190,7 +182,7 @@ static void test_pipe_gamma(data_t *data,
+>=20
+>  	disable_gamma(primary->pipe);
+>  	igt_plane_set_fb(primary, NULL);
+> -	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_output_set_pipe(data->output, PIPE_NONE);
+>  	igt_display_commit(&data->display);
+>  	igt_remove_fb(data->drm_fd, &fb);
+>  	igt_remove_fb(data->drm_fd, &fb_modeset); @@ -439,7 +431,6 @@ static
+> bool test_pipe_ctm(data_t *data,
+>  		0.0, 0.0, 1.0
+>  	};
+>  	gamma_lut_t *degamma_linear, *gamma_linear;
+> -	igt_output_t *output;
+>  	bool ret =3D true;
+>  	igt_display_t *display =3D &data->display;
+>  	drmModeModeInfo *mode;
+> @@ -452,17 +443,14 @@ static bool test_pipe_ctm(data_t *data,
+>  	degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
+>  	gamma_linear =3D generate_table(data->gamma_lut_size, 1.0);
+>=20
+> -	output =3D igt_get_single_output_for_pipe(&data->display, primary->pipe=
+-
+> >pipe);
+> -	igt_require(output);
+> -
+> -	igt_output_set_pipe(output, primary->pipe->pipe);
+> -	mode =3D igt_output_get_mode(output);
+> +	igt_output_set_pipe(data->output, primary->pipe->pipe);
+> +	mode =3D igt_output_get_mode(data->output);
+>=20
+>  	/* Create a framebuffer at the size of the output. */
+>  	fb_id =3D igt_create_fb(data->drm_fd,
+>  			      mode->hdisplay,
+>  			      mode->vdisplay,
+> -			      DRM_FORMAT_XRGB8888,
+> +			      data->drm_format,
+>  			      DRM_FORMAT_MOD_LINEAR,
+>  			      &fb);
+>  	igt_assert(fb_id);
+> @@ -470,7 +458,7 @@ static bool test_pipe_ctm(data_t *data,
+>  	fb_modeset_id =3D igt_create_fb(data->drm_fd,
+>  				      mode->hdisplay,
+>  				      mode->vdisplay,
+> -				      DRM_FORMAT_XRGB8888,
+> +				      data->drm_format,
+>  				      DRM_FORMAT_MOD_LINEAR,
+>  				      &fb_modeset);
+>  	igt_assert(fb_modeset_id);
+> @@ -516,7 +504,7 @@ static bool test_pipe_ctm(data_t *data,
+>  	ret &=3D !igt_skip_crc_compare || igt_check_crc_equal(&crc_software,
+> &crc_hardware);
+>=20
+>  	igt_plane_set_fb(primary, NULL);
+> -	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_output_set_pipe(data->output, PIPE_NONE);
+>  	igt_remove_fb(data->drm_fd, &fb);
+>  	igt_remove_fb(data->drm_fd, &fb_modeset);
+>=20
+> @@ -686,12 +674,14 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+>=20
+> INTEL_PIPE_CRC_SOURCE_AUTO);
+>=20
+>  		igt_display_require_output_on_pipe(&data->display, p);
+> +		data->output =3D igt_get_single_output_for_pipe(&data->display, p);
+>  	}
+>=20
+>  	/* We assume an 8bits depth per color for degamma/gamma LUTs
+>  	 * for CRC checks with framebuffer references. */
+>  	data->color_depth =3D 8;
+>  	delta =3D 1.0 / (1 << data->color_depth);
+> +	data->drm_format =3D DRM_FORMAT_XRGB8888;
+>=20
+>  	igt_describe("Check the color transformation from red to blue");
+>  	igt_subtest_f("pipe-%s-ctm-red-to-blue", kmstest_pipe_name(p)) { @@ -
+> 866,6 +856,58 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+>  	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
+>  		test_pipe_legacy_gamma_reset(data, primary);
+>=20
+> +	igt_describe("Verify that deep color works correctly");
+> +	igt_subtest_with_dynamic_f("pipe-%s-deep-color", kmstest_pipe_name(p)) =
+{
+> +		igt_output_t *output;
+> +		color_t blue_green_blue[] =3D {
+> +			{ 0.0, 0.0, 1.0 },
+> +			{ 0.0, 1.0, 0.0 },
+> +			{ 0.0, 0.0, 1.0 }
+> +		};
+> +		double ctm[] =3D { 0.0, 0.0, 0.0,
+> +				0.0, 1.0, 0.0,
+> +				1.0, 0.0, 1.0 };
+> +
+> +		if (is_i915_device(data->drm_fd))
+> +			igt_require_f((intel_display_ver(data->devid) >=3D 11),
+> +					"At least GEN 11 is required to validate
+> Deep-color.\n");
+> +
+> +		for_each_valid_output_on_pipe(&data->display, p, output) {
+> +			drmModeConnector *connector =3D output-
+> >config.connector;
+> +
+> +			if (!is_max_bpc_supported(output))
+> +				continue;
+> +
+> +			if (!is_panel_supports_deep_color(data->drm_fd,
+> connector))
+> +				continue;
+> +
+> +			data->color_depth =3D 10;
+> +			data->drm_format =3D DRM_FORMAT_XRGB2101010;
+> +			data->output =3D output;
+> +			igt_output_set_prop_value(output,
+> IGT_CONNECTOR_MAX_BPC, 10);
+> +
+> +			igt_dynamic_f("gamma-%s", output->name) {
+> +				igt_output_set_pipe(data->output, PIPE_NONE);
+> +				test_pipe_gamma(data, primary);
+> +			}
+> +
+> +			igt_dynamic_f("degamma-%s", output->name) {
+> +				igt_output_set_pipe(data->output, PIPE_NONE);
+> +				test_pipe_degamma(data, primary);
+> +			}
+> +
+> +			igt_dynamic_f("ctm-%s", output->name) {
+> +				igt_output_set_pipe(data->output, PIPE_NONE);
+> +				igt_assert(test_pipe_ctm(data, primary,
+> +							 red_green_blue,
+> +							 blue_green_blue, ctm));
+> +			}
+> +
+> +			igt_output_set_prop_value(output,
+> IGT_CONNECTOR_MAX_BPC, 12);
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6382 -> IGTPW_6789
+Should we not get the max bpc supported and set to default what was set ear=
+lier. It may not be set to 12
+earlier so would be good to restore the value set earlier.
 
-  CI-20190529: 20190529
-  CI_DRM_11366: 3bd60c0259406c5ca3ce5cdc958fb910ad4b8175 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6789: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/index.html
-  IGT_6382: a6a5a178cb1cbe0dab8d8d092a4aee932ccb93cc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/index.html
-
---===============0489107940015038818==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/i915_pm_rpm: Remove igt_describe() from dynamic subtest</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101413/">https://patchwork.freedesktop.org/series/101413/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11366 -&gt; IGTPW_6789</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/index.html</p>
-<h2>Participating hosts (46 -&gt; 40)</h2>
-<p>Missing    (6): fi-kbl-soraka shard-tglu fi-hsw-4200u fi-ctg-p8600 shard-rkl fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6789:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_pm_rpm@basic-pci-d3-state:<ul>
-<li>{bat-jsl-2}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-jsl-2/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-jsl-2/igt@i915_pm_rpm@basic-pci-d3-state.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6789 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2426">i915#2426</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-adlp-4/igt@i915_selftest@live@gt_lrc.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-adlp-4/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-rpls-2/igt@i915_selftest@live@mman.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4391">i915#4391</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-rpls-2/igt@i915_selftest@live@mman.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@modeset:</p>
-<ul>
-<li>
-<p>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-adlp-6/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-adlp-6/igt@kms_busy@basic@modeset.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/bat-adlp-4/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/bat-adlp-4/igt@kms_busy@basic@modeset.html">PASS</a> +1 similar issue</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_pm_rpm@basic-rte:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11366/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/579">i915#579</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6382 -&gt; IGTPW_6789</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11366: 3bd60c0259406c5ca3ce5cdc958fb910ad4b8175 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6789: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6789/index.html<br />
-  IGT_6382: a6a5a178cb1cbe0dab8d8d092a4aee932ccb93cc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0489107940015038818==--
+> +			break;
+> +		}
+> +	}
+> +
+>  	igt_fixture {
+>  		disable_degamma(primary->pipe);
+>  		disable_gamma(primary->pipe);
+> diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c index
+> 6b3af02b00..b0abe5507e 100644
+> --- a/tests/kms_color_helper.c
+> +++ b/tests/kms_color_helper.c
+> @@ -206,7 +206,7 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
+>  	uint32_t mask;
+>=20
+>  	if (is_i915_device(data->drm_fd))
+> -		mask =3D ((1 << color_depth) - 1) << 8;
+> +		mask =3D ((1 << color_depth) - 1) << (16 - color_depth);
+>  	else
+>  		mask =3D max_value;
+>=20
+> diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h index
+> 992087ac9c..4e381a1c28 100644
+> --- a/tests/kms_color_helper.h
+> +++ b/tests/kms_color_helper.h
+> @@ -49,7 +49,9 @@ typedef struct {
+>  	uint32_t devid;
+>  	igt_display_t display;
+>  	igt_pipe_crc_t *pipe_crc;
+> +	igt_output_t *output;
+>=20
+> +	uint32_t drm_format;
+>  	uint32_t color_depth;
+>  	uint64_t degamma_lut_size;
+>  	uint64_t gamma_lut_size;
+> --
+> 2.35.0
