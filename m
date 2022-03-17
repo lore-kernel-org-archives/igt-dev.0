@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2371810E03A
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Mar 2022 16:45:50 +0000 (UTC)
-Date: Thu, 17 Mar 2022 17:45:46 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C31D10E0D7
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Mar 2022 20:54:28 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YjNlurWApX1B1M6i@zkempczy-mobl2>
-References: <20220317102002.35243-1-zbigniew.kempczynski@intel.com>
- <20220317102002.35243-2-zbigniew.kempczynski@intel.com>
+Date: Fri, 18 Mar 2022 02:24:10 +0530
+Message-Id: <20220317205414.13668-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220317102002.35243-2-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_ccs: Check
- ctrl-surf-copy in new context
+Subject: [igt-dev] [PATCH i-g-t v2 0/4] Add tile 4 plane format support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,114 +20,27 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Mar 17, 2022 at 11:20:01AM +0100, Zbigniew Kempczyński wrote:
-> From: Apoorva Singh <apoorva1.singh@intel.com>
-> 
-> Verify ccs data is binded to physical memory by using
-> XY_CTRL_SURF_COPY_BLT command in separate context.
-> 
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/i915/gem_ccs.c | 36 +++++++++++++++++++++++++-----------
->  1 file changed, 25 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-> index fdf1fe75f5..1a21e24597 100644
-> --- a/tests/i915/gem_ccs.c
-> +++ b/tests/i915/gem_ccs.c
-> @@ -39,6 +39,7 @@ struct test_config {
->  	bool compression;
->  	bool inplace;
->  	bool surfcopy;
-> +	bool new_ctx;
->  };
->  
->  static void set_object(struct blt_copy_object *obj,
-> @@ -234,9 +235,8 @@ static void block_copy(int i915,
->  		       const intel_ctx_t *ctx,
->  		       const struct intel_execution_engine2 *e,
->  		       uint32_t region1, uint32_t region2,
-> -		       enum blt_tiling mid_tiling, bool compression,
-> -		       bool inplace,
-> -		       bool surfcopy)
-> +		       enum blt_tiling mid_tiling,
-> +		       const struct test_config *config)
->  {
->  	struct blt_copy_data blt = {};
->  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-> @@ -249,7 +249,7 @@ static void block_copy(int i915,
->  	uint32_t run_id = mid_tiling;
->  	uint32_t mid_region = region2, bb;
->  	uint32_t width = param.width, height = param.height;
-> -	enum blt_compression mid_compression = compression;
-> +	enum blt_compression mid_compression = config->compression;
->  	int mid_compression_format = param.compression_format;
->  	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
->  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
-> @@ -293,8 +293,17 @@ static void block_copy(int i915,
->  	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
->  	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
->  
-> -	if (surfcopy && pext)
-> -		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
-> +	if (config->surfcopy && pext) {
-> +		const intel_ctx_t *surf_ctx = ctx;
-> +
-> +		if (config->new_ctx)
-> +			surf_ctx = intel_ctx_create(i915, &ctx->cfg);
-> +
-> +		surf_copy(i915, surf_ctx, e, ahnd, src, mid, dst, run_id);
+Adding new tests and support for tile 4 plane format. 
 
-There's one thing I would fix. Newly created context doesn't share vm
-so separate ahnd should be used here. 
+v2: Rename f-tile to tile-4 and revert the call to avoid ci failures.
 
---
-Zbigniew
+Jeevan B (1):
+  igt/tests: Add support for Tile4(TileF) format to
+    tests/kms_addfb_basic
 
-> +
-> +		if (surf_ctx != ctx)
-> +			intel_ctx_destroy(i915, surf_ctx);
-> +	}
->  
->  	memset(&blt, 0, sizeof(blt));
->  	blt.color_depth = CD_32bit;
-> @@ -303,7 +312,7 @@ static void block_copy(int i915,
->  	set_blt_object(&blt.dst, dst);
->  	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
->  	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
-> -	if (inplace) {
-> +	if (config->inplace) {
->  		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
->  			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
->  		blt.dst.ptr = mid->ptr;
-> @@ -367,10 +376,7 @@ static void block_copy_test(int i915,
->  					      param.compression_format, regtxt) {
->  					block_copy(i915, ctx, e,
->  						   region1, region2,
-> -						   tiling,
-> -						   config->compression,
-> -						   config->inplace,
-> -						   config->surfcopy);
-> +						   tiling, config);
->  				}
->  				free(regtxt);
->  			}
-> @@ -480,6 +486,14 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->  		block_copy_test(i915, &config, ctx, set);
->  	}
->  
-> +	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
-> +		struct test_config config = { .compression = true,
-> +					      .surfcopy = true,
-> +					      .new_ctx = true };
-> +
-> +		block_copy_test(i915, &config, ctx, set);
-> +	}
-> +
->  	igt_fixture {
->  		igt_disallow_hang(i915, hang);
->  		close(i915);
-> -- 
-> 2.32.0
-> 
+Matt Roper (1):
+  lib/igt_draw: Use XY_FAST_COLOR_BLT on DG2
+
+Mika Kahola (2):
+  tests/kms_frontbuffer_tracking: Add support for 4 tiling
+  tests/kms_draw_crc: Use 4 tiling when filling framebuffer
+
+ lib/igt_draw.c                        | 107 +++++++++++++++++++-------
+ lib/intel_reg.h                       |   2 +
+ tests/i915/kms_draw_crc.c             |   5 +-
+ tests/i915/kms_frontbuffer_tracking.c |  22 +++++-
+ tests/kms_addfb_basic.c               |  46 +++++++++++
+ 5 files changed, 153 insertions(+), 29 deletions(-)
+
+-- 
+2.35.1
