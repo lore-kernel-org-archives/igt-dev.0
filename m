@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com
- [IPv6:2a00:1450:4864:20::52c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E36910E784
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Mar 2022 09:35:05 +0000 (UTC)
-Received: by mail-ed1-x52c.google.com with SMTP id x34so8395188ede.8
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Mar 2022 02:35:05 -0700 (PDT)
-Message-ID: <1b6cbe1b-1ae2-3409-67ec-1a5ff6700eb8@gmail.com>
-Date: Fri, 18 Mar 2022 11:34:57 +0200
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C0D310E7B4
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Mar 2022 09:45:47 +0000 (UTC)
+Date: Fri, 18 Mar 2022 10:45:43 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YjRUxw/8xEVAHy7x@kamilkon-DESK1>
+References: <20220318073018.26941-1-zbigniew.kempczynski@intel.com>
+ <20220318073018.26941-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220317205414.13668-1-jeevan.b@intel.com>
- <20220317205414.13668-3-jeevan.b@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220317205414.13668-3-jeevan.b@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/4] igt/tests: Add support for
- Tile4(TileF) format to tests/kms_addfb_basic
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220318073018.26941-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_ccs: Check
+ ctrl-surf-copy in new context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,84 +22,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Subject line need to be fixed, with that
-
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-On 17.3.2022 22.54, Jeevan B wrote:
-> Adding subtest to test new tiling format
+Dnia 2022-03-18 at 08:30:17 +0100, Zbigniew Kempczyński napisał(a):
+> From: Apoorva Singh <apoorva1.singh@intel.com>
 > 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> Verify ccs data is binded to physical memory by using
+> XY_CTRL_SURF_COPY_BLT command in separate context.
+> 
+> v2: add separate allocator handle for new context (Zbigniew)
+> 
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->   tests/kms_addfb_basic.c | 46 +++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 46 insertions(+)
+>  tests/i915/gem_ccs.c | 50 ++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 39 insertions(+), 11 deletions(-)
 > 
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> index b7b3b0f2..6b2323a9 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -676,6 +676,50 @@ static void addfb25_ytile(int fd)
->   	}
->   }
->   
-> +static void addfb25_4tile(int fd)
-> +{
-> +	struct drm_mode_fb_cmd2 f = {};
-> +	igt_display_t display;
+> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> index fdf1fe75f5..7e104f6ad8 100644
+> --- a/tests/i915/gem_ccs.c
+> +++ b/tests/i915/gem_ccs.c
+> @@ -39,6 +39,7 @@ struct test_config {
+>  	bool compression;
+>  	bool inplace;
+>  	bool surfcopy;
+> +	bool new_ctx;
+>  };
+>  
+>  static void set_object(struct blt_copy_object *obj,
+> @@ -234,9 +235,8 @@ static void block_copy(int i915,
+>  		       const intel_ctx_t *ctx,
+>  		       const struct intel_execution_engine2 *e,
+>  		       uint32_t region1, uint32_t region2,
+> -		       enum blt_tiling mid_tiling, bool compression,
+> -		       bool inplace,
+> -		       bool surfcopy)
+> +		       enum blt_tiling mid_tiling,
+> +		       const struct test_config *config)
+>  {
+>  	struct blt_copy_data blt = {};
+>  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> @@ -249,7 +249,7 @@ static void block_copy(int i915,
+>  	uint32_t run_id = mid_tiling;
+>  	uint32_t mid_region = region2, bb;
+>  	uint32_t width = param.width, height = param.height;
+> -	enum blt_compression mid_compression = compression;
+> +	enum blt_compression mid_compression = config->compression;
+>  	int mid_compression_format = param.compression_format;
+>  	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+>  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
+> @@ -293,8 +293,31 @@ static void block_copy(int i915,
+>  	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
+>  	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
+>  
+> -	if (surfcopy && pext)
+> -		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
+> +	if (config->surfcopy && pext) {
+> +		const intel_ctx_t *surf_ctx = ctx;
+> +		uint64_t surf_ahnd = ahnd;
+> +		struct intel_execution_engine2 surf_e = *e;
 > +
-> +	igt_fixture {
-> +		igt_display_require(&display, fd);
+> +		if (config->new_ctx) {
+> +			intel_ctx_cfg_t cfg = {};
 > +
-> +		gem_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
-> +				DRM_FORMAT_XRGB8888, 0, 0, NULL, NULL, NULL);
-> +		igt_assert(gem_bo);
+> +			cfg.num_engines = 1;
+> +			cfg.engines[0].engine_class = e->class;
+> +			cfg.engines[0].engine_instance = e->instance;
+> +			surf_ctx = intel_ctx_create(i915, &cfg);
+> +			surf_e.flags = 0;
+> +			ahnd = intel_allocator_open_full(i915, surf_ctx->id, 0, 0,
+> +							 INTEL_ALLOCATOR_SIMPLE,
+> +							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +		}
 > +
-> +		memset(&f, 0, sizeof(f));
+> +		surf_copy(i915, surf_ctx, &surf_e, surf_ahnd, src, mid, dst, run_id);
 > +
-> +		f.width = 1024;
-> +		f.height = 1024;
-> +		f.pixel_format = DRM_FORMAT_XRGB8888;
-> +		f.pitches[0] = 1024*4;
-> +		f.flags = DRM_MODE_FB_MODIFIERS;
-> +		f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
+> +		if (surf_ctx != ctx) {
+> +			intel_ctx_destroy(i915, surf_ctx);
+> +			put_ahnd(surf_ahnd);
+> +		}
+> +	}
+>  
+>  	memset(&blt, 0, sizeof(blt));
+>  	blt.color_depth = CD_32bit;
+> @@ -303,7 +326,7 @@ static void block_copy(int i915,
+>  	set_blt_object(&blt.dst, dst);
+>  	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
+>  	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+> -	if (inplace) {
+> +	if (config->inplace) {
+>  		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+>  			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>  		blt.dst.ptr = mid->ptr;
+> @@ -367,10 +390,7 @@ static void block_copy_test(int i915,
+>  					      param.compression_format, regtxt) {
+>  					block_copy(i915, ctx, e,
+>  						   region1, region2,
+> -						   tiling,
+> -						   config->compression,
+> -						   config->inplace,
+> -						   config->surfcopy);
+> +						   tiling, config);
+>  				}
+>  				free(regtxt);
+>  			}
+> @@ -480,6 +500,14 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  		block_copy_test(i915, &config, ctx, set);
+>  	}
+>  
+> +	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
+> +		struct test_config config = { .compression = true,
+> +					      .surfcopy = true,
+> +					      .new_ctx = true };
 > +
-> +		f.handles[0] = gem_bo;
-> +
+> +		block_copy_test(i915, &config, ctx, set);
 > +	}
 > +
-> +	igt_describe("Check if addfb2 call works for tiling-4");
-> +	igt_subtest("addfb25-4-tiled") {
-> +		igt_require_fb_modifiers(fd);
-> +		igt_require_intel(fd);
-> +
-> +		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
-> +		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
-> +			   addfb_expected_ret(&display, &f));
-> +		if (!addfb_expected_ret(&display, &f))
-> +			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-> +		f.fb_id = 0;
-> +	}
-> +
-> +	igt_fixture {
-> +		gem_close(fd, gem_bo);
-> +		igt_display_fini(&display);
-> +	}
-> +}
-> +
->   static void prop_tests(int fd)
->   {
->   	struct drm_mode_fb_cmd2 f = {};
-> @@ -826,6 +870,8 @@ igt_main
->   
->   	addfb25_ytile(fd);
->   
-> +	addfb25_4tile(fd);
-> +
->   	tiling_tests(fd);
->   
->   	prop_tests(fd);
+>  	igt_fixture {
+>  		igt_disallow_hang(i915, hang);
+>  		close(i915);
+> -- 
+> 2.32.0
+> 
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+--
+Kamil
