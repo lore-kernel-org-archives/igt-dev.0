@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1571410E319
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Mar 2022 11:02:09 +0000 (UTC)
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 21 Mar 2022 11:02:07 +0000
-Message-ID: <ec59568605744fb994ffa4510a2e80e6@intel.com>
-References: <20220316061617.30842-1-nidhi1.gupta@intel.com>
- <a038123b-1f53-e358-323b-07748981e0a5@intel.com>
-In-Reply-To: <a038123b-1f53-e358-323b-07748981e0a5@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4075310E20E
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Mar 2022 11:11:43 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 21 Mar 2022 12:11:30 +0100
+Message-Id: <20220321111130.145805-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220321111130.145805-1-zbigniew.kempczynski@intel.com>
+References: <20220321111130.145805-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v6] IGT cleanup
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_ccs: Add suspend-resume
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,98 +24,134 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQpIaSBCaGFudSwNCg0KSSBtYWRlIHRoZSBmb2xsb3dpbmcgY2hhbmdlIHRvICByZW1vdmUgdGhl
-IHdhcm5pbmcgSSBhbSBnZXR0aW5nOiAidGVzdHMva21zX3NlcXVlbmNlLmM6Nzk6Mjogd2Fybmlu
-ZzogSVNPIEM5MCBmb3JiaWRzIG1peGVkIGRlY2xhcmF0aW9ucyBhbmQgY29kZSINCmludCBjb25u
-ZWN0ZWRfb3V0czsNCj4gLQlpbnQgbl9wbGFuZXMgPSBkYXRhLT5kaXNwbGF5LnBpcGVzW3BpcGVd
-Lm5fcGxhbmVzOw0KPiArCWludCBuX3BsYW5lczsNCldoeSBkbyB3ZSBuZWVkIHRoaXMgY2hhbmdl
-PyB3aWxsIGlndF9kaXNwbGF5X3Jlc2V0KCkgY2xlYXIgdGhpcyBkYXRhPw0KDQo+ICsNCj4gKwlp
-Z3RfZGlzcGxheV9yZXNldCgmZGF0YS0+ZGlzcGxheSk7DQo+ICsJbl9wbGFuZXMgPSBkYXRhLT5k
-aXNwbGF5LnBpcGVzW3BpcGVdLm5fcGxhbmVzDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
-RnJvbTogTW9kZW0sIEJoYW51cHJha2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4g
-DQpTZW50OiBGcmlkYXksIE1hcmNoIDE4LCAyMDIyIDc6NDEgUE0NClRvOiBHdXB0YSwgTmlkaGkx
-IDxuaWRoaTEuZ3VwdGFAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcN
-ClN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXQgdjZdIElHVCBjbGVhbnVwDQoNCk9uIFdlZC0xNi0w
-My0yMDIyIDExOjQ2IGFtLCBOaWRoaSBHdXB0YSB3cm90ZToNCj4gQmVmb3JlIHN0YXJ0aW5nIHRo
-ZSBuZXh0IHN1YnRlc3QsIGNsZWFuIHVwIHRoZSBzdGF0ZXMgdG8gZGVmYXVsdCANCj4gdmFsdWVz
-LCB0aG9zZSBhcmUgYXNzdW1lZCBieSBvdGhlciB0ZXN0cy4NCj4gDQo+IHYyOiBBbmQgYWxzbyBi
-ZWZvcmUgcnVubmluZyB0aGUgc3VidGVzdCB3ZSBuZWVkIHRvIHNhbml0aXplIHRoZSBzeXN0ZW0g
-DQo+IHN0YXRlIHRvIGRlZmF1bHQsIHNpbmNlIHdlIGNhbid0IHRydXN0IHRoZSBzdGF0ZSBvZiBw
-cmV2aW91cyBzdWJ0ZXN0LCANCj4gdXNlZA0KPiBpZ3RfZGlzcGxheV9yZXNldCgpIHRvIHNhbml0
-aXplIHRoZSBzdGF0ZS4gKEJoYW51cHJha2FzaCBNb2RlbSkNCj4gDQo+IEJlbG93IHRlc3RzIGFy
-ZSBtb2RpZmllZDoNCj4gCXRlc3RzL2ttc19jb25jdXJyZW50LmMNCj4gCXRlc3RzL2ttc19zZXF1
-ZW5jZS5jDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGlu
-dGVsLmNvbT4NCj4gLS0tDQo+ICAgdGVzdHMva21zX2NvbmN1cnJlbnQuYyB8IDM3ICsrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gICB0ZXN0cy9rbXNfc2VxdWVuY2UuYyAg
-IHwgMTEgKysrKysrKy0tLS0NCj4gICAyIGZpbGVzIGNoYW5nZWQsIDI0IGluc2VydGlvbnMoKyks
-IDI0IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19jb25jdXJyZW50
-LmMgYi90ZXN0cy9rbXNfY29uY3VycmVudC5jIGluZGV4IA0KPiAxYjhmNGIwNC4uNjQyOGM2MGQg
-MTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2ttc19jb25jdXJyZW50LmMNCj4gKysrIGIvdGVzdHMva21z
-X2NvbmN1cnJlbnQuYw0KPiBAQCAtODIsNyArODIsOCBAQCBzdGF0aWMgdm9pZCB0ZXN0X2Zpbmko
-ZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwgaW50IG5fcGxhbmVzLA0KPiAgIAl9DQo+ICAg
-DQo+ICAgCS8qIHJlc2V0IHRoZSBjb25zdHJhaW50IG9uIHRoZSBwaXBlICovDQo+IC0JaWd0X291
-dHB1dF9zZXRfcGlwZShvdXRwdXQsIFBJUEVfQU5ZKTsNCj4gKwlpZ3Rfb3V0cHV0X3NldF9waXBl
-KG91dHB1dCwgUElQRV9OT05FKTsNCj4gKwlpZ3RfZGlzcGxheV9jb21taXQyKCZkYXRhLT5kaXNw
-bGF5LCBkYXRhLT5kaXNwbGF5LmlzX2F0b21pYyA/IA0KPiArQ09NTUlUX0FUT01JQyA6IENPTU1J
-VF9MRUdBQ1kpOw0KPiAgIA0KPiAgIAlmcmVlKGRhdGEtPnBsYW5lKTsNCj4gICAJZGF0YS0+cGxh
-bmUgPSBOVUxMOw0KPiBAQCAtMjc4LDM1ICsyNzksMzAgQEAgdGVzdF9yZXNvbHV0aW9uX3dpdGhf
-b3V0cHV0KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsIGludCBtYXhfcGxhbmVzLCBpZ3Rf
-b3UNCj4gICBzdGF0aWMgdm9pZA0KPiAgIHJ1bl90ZXN0KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBl
-IHBpcGUsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQ0KPiAgIHsNCj4gLQlpbnQgY29ubmVjdGVkX291
-dHM7DQo+IC0JaW50IG5fcGxhbmVzID0gZGF0YS0+ZGlzcGxheS5waXBlc1twaXBlXS5uX3BsYW5l
-czsNCj4gKwlpbnQgbl9wbGFuZXM7DQpXaHkgZG8gd2UgbmVlZCB0aGlzIGNoYW5nZT8gd2lsbCBp
-Z3RfZGlzcGxheV9yZXNldCgpIGNsZWFyIHRoaXMgZGF0YT8NCg0KPiArDQo+ICsJaWd0X2Rpc3Bs
-YXlfcmVzZXQoJmRhdGEtPmRpc3BsYXkpOw0KPiArCW5fcGxhbmVzID0gZGF0YS0+ZGlzcGxheS5w
-aXBlc1twaXBlXS5uX3BsYW5lczsNCj4gICANCj4gICAJaWYgKCFvcHQudXNlcl9zZWVkKQ0KPiAg
-IAkJb3B0LnNlZWQgPSB0aW1lKE5VTEwpOw0KPiAgIA0KPiAtCWNvbm5lY3RlZF9vdXRzID0gMDsN
-Cj4gLQlmb3JfZWFjaF92YWxpZF9vdXRwdXRfb25fcGlwZSgmZGF0YS0+ZGlzcGxheSwgcGlwZSwg
-b3V0cHV0KSB7DQo+IC0JCWlndF9pbmZvKCJUZXN0aW5nIHJlc29sdXRpb24gd2l0aCBjb25uZWN0
-b3IgJXMgdXNpbmcgcGlwZSAlcyB3aXRoIHNlZWQgJWRcbiIsDQo+IC0JCQkgaWd0X291dHB1dF9u
-YW1lKG91dHB1dCksIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLCBvcHQuc2VlZCk7DQo+IC0NCj4g
-LQkJc3JhbmQob3B0LnNlZWQpOw0KPiAtDQo+IC0JCXRlc3RfaW5pdChkYXRhLCBwaXBlLCBuX3Bs
-YW5lcywgb3V0cHV0KTsNCj4gKwlpZ3RfaW5mbygiVGVzdGluZyByZXNvbHV0aW9uIHdpdGggY29u
-bmVjdG9yICVzIHVzaW5nIHBpcGUgJXMgd2l0aCBzZWVkICVkXG4iLA0KPiArCQkgaWd0X291dHB1
-dF9uYW1lKG91dHB1dCksIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLCBvcHQuc2VlZCk7DQo+ICAg
-DQo+IC0JCWlndF9mb3JrKGNoaWxkLCAxKSB7DQo+IC0JCQl0ZXN0X3BsYW5lX3Bvc2l0aW9uX3dp
-dGhfb3V0cHV0KGRhdGEsIHBpcGUsIG5fcGxhbmVzLCBvdXRwdXQpOw0KPiAtCQl9DQo+ICsJc3Jh
-bmQob3B0LnNlZWQpOw0KPiAgIA0KPiAtCQl0ZXN0X3Jlc29sdXRpb25fd2l0aF9vdXRwdXQoZGF0
-YSwgcGlwZSwgbl9wbGFuZXMsIG91dHB1dCk7DQo+ICsJdGVzdF9pbml0KGRhdGEsIHBpcGUsIG5f
-cGxhbmVzLCBvdXRwdXQpOw0KPiAgIA0KPiAtCQlpZ3Rfd2FpdGNoaWxkcmVuKCk7DQo+ICsJaWd0
-X2ZvcmsoY2hpbGQsIDEpIHsNCj4gKwkJdGVzdF9wbGFuZV9wb3NpdGlvbl93aXRoX291dHB1dChk
-YXRhLCBwaXBlLCBuX3BsYW5lcywgb3V0cHV0KTsNCj4gKwl9DQo+ICAgDQo+IC0JCXRlc3RfZmlu
-aShkYXRhLCBwaXBlLCBuX3BsYW5lcywgb3V0cHV0KTsNCj4gKwl0ZXN0X3Jlc29sdXRpb25fd2l0
-aF9vdXRwdXQoZGF0YSwgcGlwZSwgbl9wbGFuZXMsIG91dHB1dCk7DQo+ICAgDQo+IC0JCWNvbm5l
-Y3RlZF9vdXRzKys7DQo+IC0JfQ0KPiArCWlndF93YWl0Y2hpbGRyZW4oKTsNCj4gICANCj4gLQlp
-Z3Rfc2tpcF9vbihjb25uZWN0ZWRfb3V0cyA9PSAwKTsNCj4gKwl0ZXN0X2ZpbmkoZGF0YSwgcGlw
-ZSwgbl9wbGFuZXMsIG91dHB1dCk7DQo+ICAgfQ0KPiAgIA0KPiAgIHN0YXRpYyB2b2lkDQo+IEBA
-IC0zMTYsNiArMzEyLDcgQEAgcnVuX3Rlc3RzX2Zvcl9waXBlKGRhdGFfdCAqZGF0YSwgZW51bSBw
-aXBlIHBpcGUpDQo+ICAgDQo+ICAgCWlndF9maXh0dXJlIHsNCj4gICAJCWludCB2YWxpZF90ZXN0
-cyA9IDA7DQo+ICsJCWlndF9kaXNwbGF5X3Jlc2V0KCZkYXRhLT5kaXNwbGF5KTsNClJlc2V0IGlz
-IG5vdCByZXF1aXJlZCBoZXJlLCBhbHNvIHdlIG5lZWQgdG8gdXNlDQppZ3RfZGlzcGxheV9yZXF1
-aXJlX291dHB1dCgpIGluc3RlYWQgb2YgaGF2aW5nIHZhbGlkX3Rlc3RzIHZhcmlhYmxlLg0KDQpB
-bHNvLCBjYW4gd2UgaGF2ZSBhIG5ldyBwYXRjaCB0byBjb252ZXJ0IGttc19jb25jdXJyZW50IHRv
-IGR5bmFtaWMgc3VidGVzdHM/DQoNCj4gICANCj4gICAJCWlndF9yZXF1aXJlX3BpcGUoJmRhdGEt
-PmRpc3BsYXksIHBpcGUpOw0KPiAgIAkJaWd0X3JlcXVpcmUoZGF0YS0+ZGlzcGxheS5waXBlc1tw
-aXBlXS5uX3BsYW5lcyA+IDApOyBkaWZmIC0tZ2l0IA0KPiBhL3Rlc3RzL2ttc19zZXF1ZW5jZS5j
-IGIvdGVzdHMva21zX3NlcXVlbmNlLmMgaW5kZXggOWMyODc0ODAuLjU2OWVhMWQ5IA0KPiAxMDA2
-NDQNCj4gLS0tIGEvdGVzdHMva21zX3NlcXVlbmNlLmMNCj4gKysrIGIvdGVzdHMva21zX3NlcXVl
-bmNlLmMNCj4gQEAgLTc0LDkgKzc0LDEyIEBAIHN0YXRpYyBkb3VibGUgZWxhcHNlZChjb25zdCBz
-dHJ1Y3QgdGltZXNwZWMgKnN0YXJ0LA0KPiAgIHN0YXRpYyB2b2lkIHByZXBhcmVfY3J0YyhkYXRh
-X3QgKmRhdGEsIGludCBmZCwgaWd0X291dHB1dF90ICpvdXRwdXQpDQo+ICAgew0KPiAgIAlkcm1N
-b2RlTW9kZUluZm8gKm1vZGU7DQo+IC0JaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9ICZkYXRhLT5k
-aXNwbGF5Ow0KPiAgIAlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsNCj4gLQ0KPiArCWlndF9kaXNwbGF5
-X3QgKmRpc3BsYXk7DQpXaHkgdGhpcyBjaGFuZ2U/DQoNCj4gKwkNCj4gKwlpZ3RfZGlzcGxheV9y
-ZXNldCgmZGF0YS0+ZGlzcGxheSk7DQo+ICsJZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPiAr
-CQ0KPiAgIAkvKiBzZWxlY3QgdGhlIHBpcGUgd2Ugd2FudCB0byB1c2UgKi8NCj4gICAJaWd0X291
-dHB1dF9zZXRfcGlwZShvdXRwdXQsIGRhdGEtPnBpcGUpOw0KPiAgIA0KPiBAQCAtMTA5LDggKzEx
-Miw4IEBAIHN0YXRpYyB2b2lkIGNsZWFudXBfY3J0YyhkYXRhX3QgKmRhdGEsIGludCBmZCwgaWd0
-X291dHB1dF90ICpvdXRwdXQpDQo+ICAgCXByaW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90
-eXBlKG91dHB1dCwgRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7DQo+ICAgCWlndF9wbGFuZV9zZXRf
-ZmIocHJpbWFyeSwgTlVMTCk7DQo+ICAgDQo+IC0JaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQs
-IFBJUEVfQU5ZKTsNCj4gLQlpZ3RfZGlzcGxheV9jb21taXQoZGlzcGxheSk7DQo+ICsJaWd0X291
-dHB1dF9zZXRfcGlwZShvdXRwdXQsIFBJUEVfTk9ORSk7DQo+ICsJaWd0X2Rpc3BsYXlfY29tbWl0
-MihkaXNwbGF5LCBkaXNwbGF5LT5pc19hdG9taWMgPyBDT01NSVRfQVRPTUlDIDogDQo+ICtDT01N
-SVRfTEVHQUNZKTsNCj4gICB9DQo+ICAgDQo+ICAgc3RhdGljIGludCBjcnRjX2dldF9zZXF1ZW5j
-ZShpbnQgZmQsIHN0cnVjdCBkcm1fY3J0Y19nZXRfc2VxdWVuY2UgDQo+ICpjZ3MpDQoNCkFsc28s
-IGNhbiB3ZSBoYXZlIGEgbmV3IHBhdGNoIHRvIGNvbnZlcnQga21zX3NlcXVlbmNlIHRvIGR5bmFt
-aWMgc3VidGVzdHM/DQoNCi0gQmhhbnUNCg==
+From: Apoorva Singh <apoorva1.singh@intel.com>
+
+Verify flatccs data won't be corrupted when device will be put
+to S0 (s2idle) state.
+
+v2: addressing review comments (Kamil)
+v3: fix memory leak (Kamil)
+
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/gem_ccs.c | 50 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
+
+diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+index 7e104f6ad8..1f8f98ce62 100644
+--- a/tests/i915/gem_ccs.c
++++ b/tests/i915/gem_ccs.c
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include <errno.h>
++#include <glib.h>
+ #include <sys/ioctl.h>
+ #include <sys/time.h>
+ #include <malloc.h>
+@@ -40,6 +41,7 @@ struct test_config {
+ 	bool inplace;
+ 	bool surfcopy;
+ 	bool new_ctx;
++	bool suspend_resume;
+ };
+ 
+ static void set_object(struct blt_copy_object *obj,
+@@ -162,22 +164,23 @@ static void surf_copy(int i915,
+ 		      const struct blt_copy_object *src,
+ 		      const struct blt_copy_object *mid,
+ 		      const struct blt_copy_object *dst,
+-		      int run_id)
++		      int run_id, bool suspend_resume)
+ {
+ 	struct blt_copy_data blt = {};
+ 	struct blt_block_copy_data_ext ext = {};
+ 	struct blt_ctrl_surf_copy_data surf = {};
+-	uint32_t bb, ccs, *ccsmap;
+-	uint64_t bb_size = 4096;
+-	uint64_t ccssize = mid->size / CCS_RATIO;
++	uint32_t bb, ccs, ccs2, *ccsmap, *ccsmap2;
++	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
+ 	uint32_t *ccscopy;
+ 	uint8_t uc_mocs = intel_get_uc_mocs(i915);
+ 	int result;
+ 
+ 	igt_assert(mid->compression);
+ 	ccscopy = (uint32_t *) malloc(ccssize);
++	bb_size = 4096;
+ 	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
+ 	ccs = gem_create(i915, ccssize);
++	ccs2 = gem_create(i915, ccssize);
+ 
+ 	surf.i915 = i915;
+ 	surf.print_bb = param.print_bb;
+@@ -193,6 +196,33 @@ static void surf_copy(int i915,
+ 					   PROT_READ | PROT_WRITE);
+ 	memcpy(ccscopy, ccsmap, ccssize);
+ 
++	if (suspend_resume) {
++		char *orig, *orig2, *newsum, *newsum2;
++
++		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap, surf.dst.size);
++		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
++
++		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
++
++		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
++				0, DIRECT_ACCESS);
++		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
++		gem_sync(i915, surf.dst.handle);
++
++		ccsmap2 = gem_mmap__device_coherent(i915, ccs2, 0, surf.dst.size,
++						    PROT_READ | PROT_WRITE);
++		newsum = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap2, surf.dst.size);
++		newsum2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
++
++		munmap(ccsmap2, ccssize);
++		igt_assert(!strcmp(orig, newsum));
++		igt_assert(!strcmp(orig2, newsum2));
++		g_free(orig);
++		g_free(orig2);
++		g_free(newsum);
++		g_free(newsum2);
++	}
++
+ 	/* corrupt ccs */
+ 	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+ 		ccsmap[i] = i;
+@@ -209,6 +239,7 @@ static void surf_copy(int i915,
+ 	set_blt_object(&blt.dst, dst);
+ 	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
+ 	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
++	bb_size = 4096;
+ 	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
+ 	set_batch(&blt.bb, bb, bb_size, REGION_SMEM);
+ 	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
+@@ -311,7 +342,8 @@ static void block_copy(int i915,
+ 							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+ 		}
+ 
+-		surf_copy(i915, surf_ctx, &surf_e, surf_ahnd, src, mid, dst, run_id);
++		surf_copy(i915, surf_ctx, &surf_e, ahnd, src, mid, dst, run_id,
++			  config->suspend_resume);
+ 
+ 		if (surf_ctx != ctx) {
+ 			intel_ctx_destroy(i915, surf_ctx);
+@@ -508,6 +540,14 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+ 		block_copy_test(i915, &config, ctx, set);
+ 	}
+ 
++	igt_subtest_with_dynamic("suspend-resume") {
++		struct test_config config = { .compression = true,
++					      .surfcopy = true,
++					      .suspend_resume = true };
++
++		block_copy_test(i915, &config, ctx, set);
++	}
++
+ 	igt_fixture {
+ 		igt_disallow_hang(i915, hang);
+ 		close(i915);
+-- 
+2.32.0
