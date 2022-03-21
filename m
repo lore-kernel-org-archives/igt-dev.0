@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 659F310E2C9
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Mar 2022 13:20:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27DCC10E2F2
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Mar 2022 13:20:07 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
  arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com
-Date: Mon, 21 Mar 2022 18:42:03 +0530
-Message-Id: <20220321131205.267500-1-priyanka.dandamudi@intel.com>
+Date: Mon, 21 Mar 2022 18:42:04 +0530
+Message-Id: <20220321131205.267500-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20220321131205.267500-1-priyanka.dandamudi@intel.com>
+References: <20220321131205.267500-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] HAX add description to prime_self_import
+Subject: [igt-dev] [PATCH i-g-t 1/2] prime_self_import: Add description for
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,15 +26,27 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Add test description to prime_self_import.
+Add description for test.
 
-Priyanka Dandamudi (2):
-  prime_self_import: Add description for test
-  HAX: don't do full run
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
+---
+ tests/prime_self_import.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- tests/intel-ci/fast-feedback.testlist | 179 +-------------------------
- tests/prime_self_import.c             |   2 +
- 2 files changed, 3 insertions(+), 178 deletions(-)
-
+diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
+index 38a55439..a56ec313 100644
+--- a/tests/prime_self_import.c
++++ b/tests/prime_self_import.c
+@@ -442,6 +442,8 @@ igt_main
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
++		igt_describe_f("Verify PRIME_HANDLE_TO_FD functionality in"
++				" different scenarios:%s", tests[i].name);
+ 		igt_subtest(tests[i].name)
+ 			tests[i].fn();
+ 	}
 -- 
 2.25.1
