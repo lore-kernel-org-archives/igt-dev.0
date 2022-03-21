@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B01910E2D7
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Mar 2022 17:35:43 +0000 (UTC)
-From: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-To: "rjordrigo@amd.com" <rjordrigo@amd.com>, "Rodrigo.Siqueira@amd.com"
- <Rodrigo.Siqueira@amd.com>
-Date: Mon, 21 Mar 2022 17:35:21 +0000
-Message-ID: <524ca4d8d78bbaafd8c58848a84ecf37d171fd00.camel@intel.com>
-References: <20220217152646.425503-1-Rodrigo.Siqueira@amd.com>
- <Yh56I/J+C6z29zEX@intel.com> <379d3199-7705-f666-9f2d-a8d7f7691417@amd.com>
-In-Reply-To: <379d3199-7705-f666-9f2d-a8d7f7691417@amd.com>
-Content-Language: en-US
 Content-Type: multipart/alternative;
- boundary="_000_524ca4d8d78bbaafd8c58848a84ecf37d171fd00camelintelcom_"
+ boundary="===============1428408645302545081=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 0/2] Introduce MAINTAINERS file to IGT
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Date: Mon, 21 Mar 2022 18:44:17 -0000
+Message-ID: <164788825791.18159.12424625013561919216@emeril.freedesktop.org>
+References: <20220321142155.273109-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20220321142155.273109-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSEFYIGFk?=
+ =?utf-8?q?d_description_to_i915=5Fmodule=5Fload?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,249 +17,470 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>,
- "qingqing.zhuo@amd.com" <qingqing.zhuo@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "seanpaul@chromium.org" <seanpaul@chromium.org>,
- "bhawanpreet.lakha@amd.com" <bhawanpreet.lakha@amd.com>,
- "markyacoub@google.com" <markyacoub@google.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_524ca4d8d78bbaafd8c58848a84ecf37d171fd00camelintelcom_
+--===============1428408645302545081==
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCAyMDIyLTAzLTE2IGF0IDA5OjI0IC0wNDAwLCBSb2RyaWdvIFNpcXVlaXJhIEpvcmRh
-byB3cm90ZToNCg0KDQpPbiAyMDIyLTAzLTAxIDE0OjU1LCBSb2RyaWdvIFZpdmkgd3JvdGU6DQpP
-biBUaHUsIEZlYiAxNywgMjAyMiBhdCAxMDoyNjo0NEFNIC0wNTAwLCBSb2RyaWdvIFNpcXVlaXJh
-IHdyb3RlOg0KSUdUIGlzIGJlY29taW5nIG1vcmUgZ2VuZXJpYywgYW5kIG11bHRpcGxlIHZlbmRv
-cnMgYXJlIGFkb3B0aW5nIGl0LiBGb3INCmV4YW1wbGUsIEFNRCBmdWxseSB1cHN0cmVhbSBhbGwg
-b2YgaXRzIGludGVybmFsIGNoYW5nZXMgbGFzdCB5ZWFyLCBhbmQNCm5vdyB3ZSBhcmUgcmVseWlu
-ZyBvbiBJR1QgZnJvbSB0aGUgdXBzdHJlYW0uIEFkZGl0aW9uYWxseSwgdGhhbmtzIHRvIHRoZQ0K
-Q2hyb21lT1MgcHJvamVjdCwgd2UgaGF2ZSBvdGhlciB2ZW5kb3JzIHdvcmtpbmcgb24gdGhlIEtN
-UyB0ZXN0cyBhcw0Kd2VsbC4gQXQgdGhpcyBwb2ludCwgSSBiZWxpZXZlIHRoYXQgd2UgbmVlZCBz
-b21lIG1lY2hhbmlzbSB0byBiZXR0ZXINCmNvbnRhY3QgZGV2ZWxvcGVycyB0aGF0IGNhcmUgYWJv
-dXQgc29tZSBzcGVjaWZpYyB0ZXN0cyBvciBldmVuIHByb3ZpZGUNCmFuIGVhc3kgd2F5IGZvciBv
-dGhlciBwZW9wbGUgdG8gZmluZCB0aGUgcmlnaHQgc3Rha2Vob2xkZXIgZm9yIGRlYWxpbmcNCndp
-dGggc29tZSBwYXJ0aWN1bGFyIGlzc3VlLg0KDQpJbWhvIExpbnV4IEtlcm5lbCBhbHJlYWR5IGhh
-cyBhIGdvb2Qgc29sdXRpb24gY29kaWZpZWQgaW4gdGhlDQpNQUlOVEFJTkVSUyBhbmQgZ2V0X21h
-aW50YWluZXJzIGZpbGVzLiBPbmUgb2YgdGhlIGJlc3QgdGhpbmdzIGFib3V0IHRoaXMNCmFwcHJv
-YWNoIHdhcyBhZGRpbmcgcmV2aWV3ZXJzIGFuZCBtYWludGFpbmVycyAoYW5kIG90aGVyIG9wdGlv
-bnMpIHRvIHRoZQ0Kc3BlY2lmaWMgcGFydCBvZiB0aGUgY29kZSBhbmQgdXNpbmcgdGhlIGdldF9t
-YWludGFpbmVycyB0b29sIHRvIGV4dHJhY3QNCnRoZSByaWdodCBwZW9wbGUgdG8gYmUgcGFydCBv
-ZiB0aGUgc2VyaWVzLiBXaXRoIHRoaXMgaWRlYSBpbiBtaW5kLCBJDQpjcmVhdGVkIGFuIFJGQyB0
-aGF0IGludHJvZHVjZXMgdGhlIE1BSU5UQUlORVJTIGZpbGUgaW4gSUdULCBhbmQNCmNvbGxlY3Rl
-ZCBmZWVkYmFjay4gVGhpcyBzZXJpZXMgaXMgdGhlIGZpcnN0IHZlcnNpb24gdGhhdCBpbnRyb2R1
-Y2VzIHRoZQ0KTUFJTlRBSU5FUlMgYW5kIGEgd3JhcHBlciB0byB0aGUgZ2V0X21haW50YWluZXJz
-IGZpbGUuDQoNCkJ1dCBpbiB0aGUgTGludXggS2VybmVsIHdlIGRvIGZvciBiaWcgYmxvY2tzLCBu
-b3QgZm9yIGluZGl2aWR1YWwgLmMgZmlsZXMuDQpGb3IgdGhlIC5jIGZpbGVzIGdpdCBibGFtZSBz
-aG91bGQgYmUgZW5vdWdoIGltaG8uLi4NCg0KSGkgUm9kcmlnbywNCg0KSSBkb24ndCB0aGluayBn
-aXQgYmxhbWUgd2lsbCB3b3JrIGZvciB3aGF0IEknbSBzdWdnZXN0aW5nLiBXaGF0IEknbQ0KdHJ5
-aW5nIHRvIGFjaGlldmUgaGVyZSBpcyBhIGJpdCBkaWZmZXJlbnQ7IEknbSB0cnlpbmcgdG8gYWRk
-IG1vcmUNCmNvbnRhY3QgcG9pbnRzIGZvciBzcGVjaWZpYyB0ZXN0cyBzaW5jZSBJR1QgYmVjYW1l
-IG1vcmUgYW5kIG1vcmUgYWRvcHRlZC4NCkZvciBleGFtcGxlLCBsYXN0IHllYXIsIHdlIHJldGly
-ZWQgb3VyIElHVCBmb3JrIGFuZCB0cmllZCB0byB1cHN0cmVhbQ0KYWxsIG9mIG91ciBpbnRlcm5h
-bCBjaGFuZ2VzIHNpbmNlIHdlIHdhbnQgdG8gbW92ZSB0byB0aGUgdXBzdHJlYW0gZmlyc3QNCmFw
-cHJvYWNoIHdpdGggSUdULiBBcyBhIHJlc3VsdCBvZiB0aGlzIGNoYW5nZSwgb3VyIENJIG5vdyBy
-ZWxpZXMgb24gSUdUDQpmcm9tIEdpdExhYiwgYW5kIHdlIHJ1biBhIGxvdCBvZiB0aGUga21zIHRl
-c3RzLCBidXQgd2UgZGlkIG5vdCBkaXJlY3RseQ0Kd29yayBpbiBzb21lIG9mIHRoZW0uIEluIHRo
-b3NlIGNhc2VzLCBnaXQgYmxhbWUgd2lsbCBub3QgcG9pbnQgdG8gYW55b25lDQpmcm9tIEFNRC4g
-SWYgeW91IHNlZSB0aGUgZmlyc3QgcGF0Y2gsIHdlIGFyZSB0cnlpbmcgdG8gYWRkIHNwZWNpZmlj
-DQpwZW9wbGUgdG8gZm9sbG93IGNlcnRhaW4gdGVzdHMgdG8gbWFrZSB0aGUgSUdUIG1haW50ZW5h
-bmNlIHNjYWxhYmxlIGZvcg0KdXMgYW5kIGZvciBhbnlvbmUgdXNpbmcgSUdUIGluIHRoZWlyIENJ
-Lg0KDQpJIHRvdGFsbHkgdW5kZXJzdGFuZCB5b3VyIGdvYWwgaGVyZSBhbmQgSSBmdWxseSBzdXBw
-b3J0IGFueSBhY3Rpb24gdGhhdCBicmluZ3MgdGhlDQp1cHN0cmVhbSBmaXJzdCBhcHByb2FjaC4g
-TXkgYmlnZ2VzdCBjb25jZXJuIHdpdGggdGhpcyBhcHByb2FjaCBpcyB0aGUgbWFpbnRlbmFuY2Ug
-Y29zdC4NCkEgbGlzdCBiaWcgYW5kIHZlcnkgc3BlY2lmaWMgbGlrZSB0aGlzIHdpbGwgbGlrZWx5
-IGNoYW5nZSBxdWlja2x5IGFuZCBnZXQgb3V0ZGF0ZWQgaW4gdGhlIGJsaW5rIG9mIGFuIGV5ZS4N
-Cg0KQnV0IGl0IGlzIGp1c3QgbXkgcGVyc29uYWwgdGhvdWdodCBvbiB0aGlzLiBQbGVhc2Ugc3lu
-YyB3aXRoIFBldHJpIHRvIGRldGVybWluZSB0aGUgZ29vZCBwYXRoIG9mIHRoaXMuDQoNCg0KVGhh
-bmtzDQpTaXF1ZWlyYQ0KDQoNCg0KRm9yIHRoaXMgc2VyaWVzLCBJIHJlY29tbWVuZDoNCg0KMS4g
-UGF0Y2ggMTogSXQgaGFzIHRoZSBtYWludGFpbmVycyBmaWxlLiBJZiB5b3Ugd2FudCB0byBhZGQg
-eW91cnNlbGYgdG8NCnNvbWUgc3BlY2lmaWMgdGVzdCwgcGxlYXNlLCBsZXQgbWUga25vdyBpbiB0
-aGlzIHBhdGNoLg0KMi4gUGF0Y2ggMjogZ2V0X21haW50YWluZXJzIHdyYXBwZXIsIHNlZSB0aGUg
-Q09OVFJJQlVUSU5HIHBhZ2Ugb24gaG93IHRvDQp1c2UgaXQuDQoNCkNjOiBBcmthZGl1c3ogSGls
-ZXIgPGFyZWtAaGlsZXIuZXU8bWFpbHRvOmFyZWtAaGlsZXIuZXU+Pg0KQ2M6IFBldHJpIExhdHZh
-bGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPG1haWx0bzpwZXRyaS5sYXR2YWxhQGludGVsLmNv
-bT4+DQpDYzogTWFyayBZYWNvdWIgPG1hcmt5YWNvdWJAZ29vZ2xlLmNvbTxtYWlsdG86bWFya3lh
-Y291YkBnb29nbGUuY29tPj4NCkNjOiBKZXNzaWNhIFpoYW5nIDxxdWljX2plc3N6aGFuQHF1aWNp
-bmMuY29tPG1haWx0bzpxdWljX2plc3N6aGFuQHF1aWNpbmMuY29tPj4NCkNjOiBBYmhpbmF2IEt1
-bWFyIDxxdWljX2FiaGluYXZrQHF1aWNpbmMuY29tPG1haWx0bzpxdWljX2FiaGluYXZrQHF1aWNp
-bmMuY29tPj4NCkNjOiBNZWxpc3NhIFdlbiA8bXdlbkBpZ2FsaWEuY29tPG1haWx0bzptd2VuQGln
-YWxpYS5jb20+Pg0KQ2M6IFNlYW4gUGF1bCA8c2VhbnBhdWxAY2hyb21pdW0ub3JnPG1haWx0bzpz
-ZWFucGF1bEBjaHJvbWl1bS5vcmc+Pg0KQ2M6IEhhcnJ5IFdlbnRsYW5kIDxoYXJyeS53ZW50bGFu
-ZEBhbWQuY29tPG1haWx0bzpoYXJyeS53ZW50bGFuZEBhbWQuY29tPj4NCkNjOiBTdW4gUGVuZyBM
-aShMZW8pIDxzdW5wZW5nLmxpQGFtZC5jb208bWFpbHRvOnN1bnBlbmcubGlAYW1kLmNvbT4+DQpD
-YzogQ2hhby1rYWkgV2FuZyAoU3R5bG9uKSA8c3R5bG9uLndhbmdAYW1kLmNvbTxtYWlsdG86c3R5
-bG9uLndhbmdAYW1kLmNvbT4+DQpDYzogV2F5bmUgTGluIDx3YXluZS5saW5AYW1kLmNvbTxtYWls
-dG86d2F5bmUubGluQGFtZC5jb20+Pg0KQ2M6IE5pY2hvbGFzIENob2kgPG5pY2hvbGFzLmNob2lA
-YW1kLmNvbTxtYWlsdG86bmljaG9sYXMuY2hvaUBhbWQuY29tPj4NCkNjOiBNYXJ0aW4gUGVyZXMg
-PG1hcnRpbi5wZXJlc0BtdXB1Zi5vcmc8bWFpbHRvOm1hcnRpbi5wZXJlc0BtdXB1Zi5vcmc+Pg0K
-Q2M6IEF1cmFiaW5kbyBQaWxsYWkgPGF1cmFiaW5kby5waWxsYWlAYW1kLmNvbTxtYWlsdG86YXVy
-YWJpbmRvLnBpbGxhaUBhbWQuY29tPj4NCkNjOiBCaGF3YW5wcmVldCBMYWtoYSA8Ymhhd2FucHJl
-ZXQubGFraGFAYW1kLmNvbTxtYWlsdG86Ymhhd2FucHJlZXQubGFraGFAYW1kLmNvbT4+DQpDYzog
-UWluZ3FpbmcgWmh1byAoTGlsaWFuKSA8cWluZ3Fpbmcuemh1b0BhbWQuY29tPG1haWx0bzpxaW5n
-cWluZy56aHVvQGFtZC5jb20+Pg0KQ2M6IFNvbG9tb24gQ2hpdSA8c29sb21vbi5jaGl1QGFtZC5j
-b208bWFpbHRvOnNvbG9tb24uY2hpdUBhbWQuY29tPj4NCkNjOiBOaWNob2xhcyBLYXpsYXVza2Fz
-IDxuaWNob2xhcy5rYXpsYXVza2FzQGFtZC5jb208bWFpbHRvOm5pY2hvbGFzLmthemxhdXNrYXNA
-YW1kLmNvbT4+DQpDYzogRGluZ2NoZW4gWmhhbmcgKERhdmlkKSA8RGluZ2NoZW4uWmhhbmdAYW1k
-LmNvbTxtYWlsdG86RGluZ2NoZW4uWmhhbmdAYW1kLmNvbT4+DQoNClJvZHJpZ28gU2lxdWVpcmEg
-KDIpOg0KICAgTUFJTlRBSU5FUlM6IEludHJvZHVjZSBNQUlOVEFJTkVSUyBmaWxlDQogICBzY3Jp
-cHRzOiBnZXRfbWFpbnRhaW5lcjogSW50cm9kdWNlIGdldF9tYWludGFpbmVyIHdyYXBwZXINCg0K
-ICAuZ2l0aWdub3JlICAgICAgICAgICAgICAgIHwgICAxICsNCiAgQ09OVFJJQlVUSU5HLm1kICAg
-ICAgICAgICB8ICAxNyArKystDQogIE1BSU5UQUlORVJTICAgICAgICAgICAgICAgfCAxOTggKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0NCiAgc2NyaXB0cy9nZXRfbWFpbnRh
-aW5lci5zaCB8IDEwNCArKysrKysrKysrKysrKysrKysrKw0KICA0IGZpbGVzIGNoYW5nZWQsIDMx
-NyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KICBjcmVhdGUgbW9kZSAxMDA3NTUgc2Ny
-aXB0cy9nZXRfbWFpbnRhaW5lci5zaA0KDQotLQ0KMi4yNS4xDQoNCg0KDQo=
+== Series Details ==
 
---_000_524ca4d8d78bbaafd8c58848a84ecf37d171fd00camelintelcom_
+Series: HAX add description to i915_module_load
+URL   : https://patchwork.freedesktop.org/series/101598/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11393 -> IGTPW_6807
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6807 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6807, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Additional (3): fi-kbl-soraka fi-cml-u2 fi-pnv-d510 
+  Missing    (4): fi-ctg-p8600 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6807:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@meta_test@fail-result (NEW):
+    - fi-pnv-d510:        NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-pnv-d510/igt@meta_test@fail-result.html
+    - {fi-adl-ddr5}:      NOTRUN -> [FAIL][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-adl-ddr5/igt@meta_test@fail-result.html
+    - {fi-jsl-1}:         NOTRUN -> [FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-jsl-1/igt@meta_test@fail-result.html
+    - {bat-adlp-6}:       NOTRUN -> [FAIL][4]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-adlp-6/igt@meta_test@fail-result.html
+    - fi-cml-u2:          NOTRUN -> [FAIL][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cml-u2/igt@meta_test@fail-result.html
+    - fi-cfl-8700k:       NOTRUN -> [FAIL][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cfl-8700k/igt@meta_test@fail-result.html
+    - {fi-tgl-dsi}:       NOTRUN -> [FAIL][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-tgl-dsi/igt@meta_test@fail-result.html
+    - fi-snb-2520m:       NOTRUN -> [FAIL][8]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-snb-2520m/igt@meta_test@fail-result.html
+    - fi-ivb-3770:        NOTRUN -> [FAIL][9]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-ivb-3770/igt@meta_test@fail-result.html
+    - fi-apl-guc:         NOTRUN -> [FAIL][10]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-apl-guc/igt@meta_test@fail-result.html
+    - fi-bxt-dsi:         NOTRUN -> [FAIL][11]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bxt-dsi/igt@meta_test@fail-result.html
+    - {bat-dg2-9}:        NOTRUN -> [FAIL][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-dg2-9/igt@meta_test@fail-result.html
+    - fi-elk-e7500:       NOTRUN -> [FAIL][13]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-elk-e7500/igt@meta_test@fail-result.html
+    - fi-skl-6700k2:      NOTRUN -> [FAIL][14]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-skl-6700k2/igt@meta_test@fail-result.html
+    - fi-tgl-1115g4:      NOTRUN -> [FAIL][15]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-tgl-1115g4/igt@meta_test@fail-result.html
+    - fi-kbl-soraka:      NOTRUN -> [FAIL][16]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-soraka/igt@meta_test@fail-result.html
+    - fi-cfl-guc:         NOTRUN -> [FAIL][17]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cfl-guc/igt@meta_test@fail-result.html
+    - fi-bsw-n3050:       NOTRUN -> [FAIL][18]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bsw-n3050/igt@meta_test@fail-result.html
+    - fi-ilk-650:         NOTRUN -> [FAIL][19]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-ilk-650/igt@meta_test@fail-result.html
+    - fi-rkl-guc:         NOTRUN -> [FAIL][20]
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-rkl-guc/igt@meta_test@fail-result.html
+    - {bat-jsl-2}:        NOTRUN -> [FAIL][21]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-jsl-2/igt@meta_test@fail-result.html
+    - fi-bsw-kefka:       NOTRUN -> [FAIL][22]
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bsw-kefka/igt@meta_test@fail-result.html
+    - bat-dg1-6:          NOTRUN -> [FAIL][23]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-dg1-6/igt@meta_test@fail-result.html
+    - {bat-jsl-1}:        NOTRUN -> [FAIL][24]
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-jsl-1/igt@meta_test@fail-result.html
+    - fi-kbl-x1275:       NOTRUN -> [FAIL][25]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-x1275/igt@meta_test@fail-result.html
+    - fi-snb-2600:        NOTRUN -> [FAIL][26]
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-snb-2600/igt@meta_test@fail-result.html
+    - {bat-dg2-8}:        NOTRUN -> [FAIL][27]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-dg2-8/igt@meta_test@fail-result.html
+    - fi-cfl-8109u:       NOTRUN -> [FAIL][28]
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cfl-8109u/igt@meta_test@fail-result.html
+    - fi-glk-dsi:         NOTRUN -> [FAIL][29]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-glk-dsi/igt@meta_test@fail-result.html
+    - {bat-rpls-2}:       NOTRUN -> [FAIL][30]
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-rpls-2/igt@meta_test@fail-result.html
+    - fi-bsw-nick:        NOTRUN -> [FAIL][31]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bsw-nick/igt@meta_test@fail-result.html
+    - fi-glk-j4005:       NOTRUN -> [FAIL][32]
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-glk-j4005/igt@meta_test@fail-result.html
+    - fi-kbl-7567u:       NOTRUN -> [FAIL][33]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-7567u/igt@meta_test@fail-result.html
+    - fi-kbl-8809g:       NOTRUN -> [FAIL][34]
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-8809g/igt@meta_test@fail-result.html
+    - {fi-hsw-g3258}:     NOTRUN -> [FAIL][35]
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-hsw-g3258/igt@meta_test@fail-result.html
+    - fi-blb-e6850:       NOTRUN -> [FAIL][36]
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-blb-e6850/igt@meta_test@fail-result.html
+    - fi-bwr-2160:        NOTRUN -> [FAIL][37]
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bwr-2160/igt@meta_test@fail-result.html
+    - {fi-rkl-11600}:     NOTRUN -> [FAIL][38]
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-rkl-11600/igt@meta_test@fail-result.html
+    - {fi-ehl-2}:         NOTRUN -> [FAIL][39]
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-ehl-2/igt@meta_test@fail-result.html
+    - fi-kbl-guc:         NOTRUN -> [FAIL][40]
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-guc/igt@meta_test@fail-result.html
+    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][41]
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bdw-gvtdvm/igt@meta_test@fail-result.html
+    - fi-hsw-4770:        NOTRUN -> [FAIL][42]
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-hsw-4770/igt@meta_test@fail-result.html
+    - fi-kbl-7500u:       NOTRUN -> [FAIL][43]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-7500u/igt@meta_test@fail-result.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_11393 and IGTPW_6807:
+
+### New IGT tests (1) ###
+
+  * igt@meta_test@fail-result:
+    - Statuses : 43 fail(s)
+    - Exec time: [0.00, 0.20] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6807 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@cs-gfx:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][44] ([fdo#109271] / [fdo#109315]) +17 similar issues
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][45] ([fdo#109271]) +17 similar issues
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html
+
+  * igt@amdgpu/amd_basic@cs-sdma:
+    - fi-kbl-guc:         NOTRUN -> [SKIP][46] ([fdo#109271]) +17 similar issues
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-guc/igt@amdgpu/amd_basic@cs-sdma.html
+
+  * igt@amdgpu/amd_basic@memory-alloc:
+    - fi-cml-u2:          NOTRUN -> [SKIP][47] ([fdo#109315]) +17 similar issues
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cml-u2/igt@amdgpu/amd_basic@memory-alloc.html
+
+  * igt@amdgpu/amd_cs_nop@nop-gfx0:
+    - fi-apl-guc:         NOTRUN -> [SKIP][48] ([fdo#109271]) +17 similar issues
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-apl-guc/igt@amdgpu/amd_cs_nop@nop-gfx0.html
+
+  * igt@amdgpu/amd_cs_nop@sync-compute0:
+    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][49] ([fdo#109271]) +17 similar issues
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bdw-gvtdvm/igt@amdgpu/amd_cs_nop@sync-compute0.html
+
+  * igt@amdgpu/amd_prime@amd-to-i915:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][50] ([fdo#109271]) +17 similar issues
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-pnv-d510/igt@amdgpu/amd_prime@amd-to-i915.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6387 -> IGTPW_6807
+
+  CI-20190529: 20190529
+  CI_DRM_11393: bb39f08a81da1a7e2d82026eac394394504b7126 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6807: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/index.html
+  IGT_6387: 04d012b18355b53798af5a55a8915afb1a421bba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/index.html
+
+--===============1428408645302545081==
 Content-Type: text/html; charset="utf-8"
-Content-ID: <C5E85D74FA2E4F47BB2CEDD4927BECB9@intel.com>
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
-dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjwvaGVhZD4NCjxib2R5Pg0KPGRpdj5PbiBXZWQs
-IDIwMjItMDMtMTYgYXQgMDk6MjQgLTA0MDAsIFJvZHJpZ28gU2lxdWVpcmEgSm9yZGFvIHdyb3Rl
-OjwvZGl2Pg0KPGJsb2NrcXVvdGUgdHlwZT0iY2l0ZSIgc3R5bGU9Im1hcmdpbjowIDAgMCAuOGV4
-OyBib3JkZXItbGVmdDoycHggIzcyOWZjZiBzb2xpZDtwYWRkaW5nLWxlZnQ6MWV4Ij4NCjxkaXY+
-PGJyPg0KPC9kaXY+DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj5PbiAyMDIyLTAzLTAxIDE0OjU1
-LCBSb2RyaWdvIFZpdmkgd3JvdGU6PGJyPg0KPC9kaXY+DQo8YmxvY2txdW90ZSB0eXBlPSJjaXRl
-IiBzdHlsZT0ibWFyZ2luOjAgMCAwIC44ZXg7IGJvcmRlci1sZWZ0OjJweCAjNzI5ZmNmIHNvbGlk
-O3BhZGRpbmctbGVmdDoxZXgiPg0KPGRpdj5PbiBUaHUsIEZlYiAxNywgMjAyMiBhdCAxMDoyNjo0
-NEFNIC0wNTAwLCBSb2RyaWdvIFNpcXVlaXJhIHdyb3RlOjxicj4NCjwvZGl2Pg0KPGJsb2NrcXVv
-dGUgdHlwZT0iY2l0ZSIgc3R5bGU9Im1hcmdpbjowIDAgMCAuOGV4OyBib3JkZXItbGVmdDoycHgg
-IzcyOWZjZiBzb2xpZDtwYWRkaW5nLWxlZnQ6MWV4Ij4NCjxkaXY+SUdUIGlzIGJlY29taW5nIG1v
-cmUgZ2VuZXJpYywgYW5kIG11bHRpcGxlIHZlbmRvcnMgYXJlIGFkb3B0aW5nIGl0LiBGb3I8YnI+
-DQo8L2Rpdj4NCjxkaXY+ZXhhbXBsZSwgQU1EIGZ1bGx5IHVwc3RyZWFtIGFsbCBvZiBpdHMgaW50
-ZXJuYWwgY2hhbmdlcyBsYXN0IHllYXIsIGFuZDxicj4NCjwvZGl2Pg0KPGRpdj5ub3cgd2UgYXJl
-IHJlbHlpbmcgb24gSUdUIGZyb20gdGhlIHVwc3RyZWFtLiBBZGRpdGlvbmFsbHksIHRoYW5rcyB0
-byB0aGU8YnI+DQo8L2Rpdj4NCjxkaXY+Q2hyb21lT1MgcHJvamVjdCwgd2UgaGF2ZSBvdGhlciB2
-ZW5kb3JzIHdvcmtpbmcgb24gdGhlIEtNUyB0ZXN0cyBhczxicj4NCjwvZGl2Pg0KPGRpdj53ZWxs
-LiBBdCB0aGlzIHBvaW50LCBJIGJlbGlldmUgdGhhdCB3ZSBuZWVkIHNvbWUgbWVjaGFuaXNtIHRv
-IGJldHRlcjxicj4NCjwvZGl2Pg0KPGRpdj5jb250YWN0IGRldmVsb3BlcnMgdGhhdCBjYXJlIGFi
-b3V0IHNvbWUgc3BlY2lmaWMgdGVzdHMgb3IgZXZlbiBwcm92aWRlPGJyPg0KPC9kaXY+DQo8ZGl2
-PmFuIGVhc3kgd2F5IGZvciBvdGhlciBwZW9wbGUgdG8gZmluZCB0aGUgcmlnaHQgc3Rha2Vob2xk
-ZXIgZm9yIGRlYWxpbmc8YnI+DQo8L2Rpdj4NCjxkaXY+d2l0aCBzb21lIHBhcnRpY3VsYXIgaXNz
-dWUuPGJyPg0KPC9kaXY+DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj5JbWhvIExpbnV4IEtlcm5l
-bCBhbHJlYWR5IGhhcyBhIGdvb2Qgc29sdXRpb24gY29kaWZpZWQgaW4gdGhlPGJyPg0KPC9kaXY+
-DQo8ZGl2Pk1BSU5UQUlORVJTIGFuZCBnZXRfbWFpbnRhaW5lcnMgZmlsZXMuIE9uZSBvZiB0aGUg
-YmVzdCB0aGluZ3MgYWJvdXQgdGhpczxicj4NCjwvZGl2Pg0KPGRpdj5hcHByb2FjaCB3YXMgYWRk
-aW5nIHJldmlld2VycyBhbmQgbWFpbnRhaW5lcnMgKGFuZCBvdGhlciBvcHRpb25zKSB0byB0aGU8
-YnI+DQo8L2Rpdj4NCjxkaXY+c3BlY2lmaWMgcGFydCBvZiB0aGUgY29kZSBhbmQgdXNpbmcgdGhl
-IGdldF9tYWludGFpbmVycyB0b29sIHRvIGV4dHJhY3Q8YnI+DQo8L2Rpdj4NCjxkaXY+dGhlIHJp
-Z2h0IHBlb3BsZSB0byBiZSBwYXJ0IG9mIHRoZSBzZXJpZXMuIFdpdGggdGhpcyBpZGVhIGluIG1p
-bmQsIEk8YnI+DQo8L2Rpdj4NCjxkaXY+Y3JlYXRlZCBhbiBSRkMgdGhhdCBpbnRyb2R1Y2VzIHRo
-ZSBNQUlOVEFJTkVSUyBmaWxlIGluIElHVCwgYW5kPGJyPg0KPC9kaXY+DQo8ZGl2PmNvbGxlY3Rl
-ZCBmZWVkYmFjay4gVGhpcyBzZXJpZXMgaXMgdGhlIGZpcnN0IHZlcnNpb24gdGhhdCBpbnRyb2R1
-Y2VzIHRoZTxicj4NCjwvZGl2Pg0KPGRpdj5NQUlOVEFJTkVSUyBhbmQgYSB3cmFwcGVyIHRvIHRo
-ZSBnZXRfbWFpbnRhaW5lcnMgZmlsZS48YnI+DQo8L2Rpdj4NCjwvYmxvY2txdW90ZT4NCjxkaXY+
-PGJyPg0KPC9kaXY+DQo8ZGl2PkJ1dCBpbiB0aGUgTGludXggS2VybmVsIHdlIGRvIGZvciBiaWcg
-YmxvY2tzLCBub3QgZm9yIGluZGl2aWR1YWwgLmMgZmlsZXMuPGJyPg0KPC9kaXY+DQo8ZGl2PkZv
-ciB0aGUgLmMgZmlsZXMgZ2l0IGJsYW1lIHNob3VsZCBiZSBlbm91Z2ggaW1oby4uLjxicj4NCjwv
-ZGl2Pg0KPC9ibG9ja3F1b3RlPg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXY+SGkgUm9kcmlnbyw8
-YnI+DQo8L2Rpdj4NCjxkaXY+PGJyPg0KPC9kaXY+DQo8ZGl2PkkgZG9uJ3QgdGhpbmsgZ2l0IGJs
-YW1lIHdpbGwgd29yayBmb3Igd2hhdCBJJ20gc3VnZ2VzdGluZy4gV2hhdCBJJ20gPGJyPg0KPC9k
-aXY+DQo8ZGl2PnRyeWluZyB0byBhY2hpZXZlIGhlcmUgaXMgYSBiaXQgZGlmZmVyZW50OyBJJ20g
-dHJ5aW5nIHRvIGFkZCBtb3JlIDxicj4NCjwvZGl2Pg0KPGRpdj5jb250YWN0IHBvaW50cyBmb3Ig
-c3BlY2lmaWMgdGVzdHMgc2luY2UgSUdUIGJlY2FtZSBtb3JlIGFuZCBtb3JlIGFkb3B0ZWQuPGJy
-Pg0KPC9kaXY+DQo8ZGl2PkZvciBleGFtcGxlLCBsYXN0IHllYXIsIHdlIHJldGlyZWQgb3VyIElH
-VCBmb3JrIGFuZCB0cmllZCB0byB1cHN0cmVhbSA8YnI+DQo8L2Rpdj4NCjxkaXY+YWxsIG9mIG91
-ciBpbnRlcm5hbCBjaGFuZ2VzIHNpbmNlIHdlIHdhbnQgdG8gbW92ZSB0byB0aGUgdXBzdHJlYW0g
-Zmlyc3QgPGJyPg0KPC9kaXY+DQo8ZGl2PmFwcHJvYWNoIHdpdGggSUdULiBBcyBhIHJlc3VsdCBv
-ZiB0aGlzIGNoYW5nZSwgb3VyIENJIG5vdyByZWxpZXMgb24gSUdUIDxicj4NCjwvZGl2Pg0KPGRp
-dj5mcm9tIEdpdExhYiwgYW5kIHdlIHJ1biBhIGxvdCBvZiB0aGUga21zIHRlc3RzLCBidXQgd2Ug
-ZGlkIG5vdCBkaXJlY3RseSA8YnI+DQo8L2Rpdj4NCjxkaXY+d29yayBpbiBzb21lIG9mIHRoZW0u
-IEluIHRob3NlIGNhc2VzLCBnaXQgYmxhbWUgd2lsbCBub3QgcG9pbnQgdG8gYW55b25lIDxicj4N
-CjwvZGl2Pg0KPGRpdj5mcm9tIEFNRC4gSWYgeW91IHNlZSB0aGUgZmlyc3QgcGF0Y2gsIHdlIGFy
-ZSB0cnlpbmcgdG8gYWRkIHNwZWNpZmljIDxicj4NCjwvZGl2Pg0KPGRpdj5wZW9wbGUgdG8gZm9s
-bG93IGNlcnRhaW4gdGVzdHMgdG8gbWFrZSB0aGUgSUdUIG1haW50ZW5hbmNlIHNjYWxhYmxlIGZv
-ciA8YnI+DQo8L2Rpdj4NCjxkaXY+dXMgYW5kIGZvciBhbnlvbmUgdXNpbmcgSUdUIGluIHRoZWly
-IENJLjxicj4NCjwvZGl2Pg0KPC9ibG9ja3F1b3RlPg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXY+
-SSB0b3RhbGx5IHVuZGVyc3RhbmQgeW91ciBnb2FsIGhlcmUgYW5kIEkgZnVsbHkgc3VwcG9ydCBh
-bnkgYWN0aW9uIHRoYXQgYnJpbmdzIHRoZTwvZGl2Pg0KPGRpdj51cHN0cmVhbSBmaXJzdCBhcHBy
-b2FjaC4gTXkgYmlnZ2VzdCBjb25jZXJuIHdpdGggdGhpcyBhcHByb2FjaCBpcyB0aGUgbWFpbnRl
-bmFuY2UgY29zdC48L2Rpdj4NCjxkaXY+QSBsaXN0IGJpZyBhbmQgdmVyeSBzcGVjaWZpYyBsaWtl
-IHRoaXMgd2lsbCBsaWtlbHkgY2hhbmdlIHF1aWNrbHkgYW5kIGdldCBvdXRkYXRlZCBpbiB0aGUg
-Ymxpbmsgb2YgYW4gZXllLjwvZGl2Pg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXY+QnV0IGl0IGlz
-IGp1c3QgbXkgcGVyc29uYWwgdGhvdWdodCBvbiB0aGlzLiBQbGVhc2Ugc3luYyB3aXRoIFBldHJp
-IHRvIGRldGVybWluZSB0aGUgZ29vZCBwYXRoIG9mIHRoaXMuPC9kaXY+DQo8ZGl2Pjxicj4NCjwv
-ZGl2Pg0KPGJsb2NrcXVvdGUgdHlwZT0iY2l0ZSIgc3R5bGU9Im1hcmdpbjowIDAgMCAuOGV4OyBi
-b3JkZXItbGVmdDoycHggIzcyOWZjZiBzb2xpZDtwYWRkaW5nLWxlZnQ6MWV4Ij4NCjxkaXY+PGJy
-Pg0KPC9kaXY+DQo8ZGl2PlRoYW5rczxicj4NCjwvZGl2Pg0KPGRpdj5TaXF1ZWlyYTxicj4NCjwv
-ZGl2Pg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXY+PGJyPg0KPC9kaXY+DQo8YmxvY2txdW90ZSB0
-eXBlPSJjaXRlIiBzdHlsZT0ibWFyZ2luOjAgMCAwIC44ZXg7IGJvcmRlci1sZWZ0OjJweCAjNzI5
-ZmNmIHNvbGlkO3BhZGRpbmctbGVmdDoxZXgiPg0KPGJsb2NrcXVvdGUgdHlwZT0iY2l0ZSIgc3R5
-bGU9Im1hcmdpbjowIDAgMCAuOGV4OyBib3JkZXItbGVmdDoycHggIzcyOWZjZiBzb2xpZDtwYWRk
-aW5nLWxlZnQ6MWV4Ij4NCjxkaXY+PGJyPg0KPC9kaXY+DQo8ZGl2PkZvciB0aGlzIHNlcmllcywg
-SSByZWNvbW1lbmQ6PGJyPg0KPC9kaXY+DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj4xLiBQYXRj
-aCAxOiBJdCBoYXMgdGhlIG1haW50YWluZXJzIGZpbGUuIElmIHlvdSB3YW50IHRvIGFkZCB5b3Vy
-c2VsZiB0bzxicj4NCjwvZGl2Pg0KPGRpdj5zb21lIHNwZWNpZmljIHRlc3QsIHBsZWFzZSwgbGV0
-IG1lIGtub3cgaW4gdGhpcyBwYXRjaC48YnI+DQo8L2Rpdj4NCjxkaXY+Mi4gUGF0Y2ggMjogZ2V0
-X21haW50YWluZXJzIHdyYXBwZXIsIHNlZSB0aGUgQ09OVFJJQlVUSU5HIHBhZ2Ugb24gaG93IHRv
-PGJyPg0KPC9kaXY+DQo8ZGl2PnVzZSBpdC48YnI+DQo8L2Rpdj4NCjxkaXY+PGJyPg0KPC9kaXY+
-DQo8ZGl2PkNjOiBBcmthZGl1c3ogSGlsZXIgJmx0OzxhIGhyZWY9Im1haWx0bzphcmVrQGhpbGVy
-LmV1Ij5hcmVrQGhpbGVyLmV1PC9hPiZndDs8YnI+DQo8L2Rpdj4NCjxkaXY+Q2M6IFBldHJpIExh
-dHZhbGEgJmx0OzxhIGhyZWY9Im1haWx0bzpwZXRyaS5sYXR2YWxhQGludGVsLmNvbSI+cGV0cmku
-bGF0dmFsYUBpbnRlbC5jb208L2E+Jmd0Ozxicj4NCjwvZGl2Pg0KPGRpdj5DYzogTWFyayBZYWNv
-dWIgJmx0OzxhIGhyZWY9Im1haWx0bzptYXJreWFjb3ViQGdvb2dsZS5jb20iPm1hcmt5YWNvdWJA
-Z29vZ2xlLmNvbTwvYT4mZ3Q7PGJyPg0KPC9kaXY+DQo8ZGl2PkNjOiBKZXNzaWNhIFpoYW5nICZs
-dDs8YSBocmVmPSJtYWlsdG86cXVpY19qZXNzemhhbkBxdWljaW5jLmNvbSI+cXVpY19qZXNzemhh
-bkBxdWljaW5jLmNvbTwvYT4mZ3Q7PGJyPg0KPC9kaXY+DQo8ZGl2PkNjOiBBYmhpbmF2IEt1bWFy
-ICZsdDs8YSBocmVmPSJtYWlsdG86cXVpY19hYmhpbmF2a0BxdWljaW5jLmNvbSI+cXVpY19hYmhp
-bmF2a0BxdWljaW5jLmNvbTwvYT4mZ3Q7PGJyPg0KPC9kaXY+DQo8ZGl2PkNjOiBNZWxpc3NhIFdl
-biAmbHQ7PGEgaHJlZj0ibWFpbHRvOm13ZW5AaWdhbGlhLmNvbSI+bXdlbkBpZ2FsaWEuY29tPC9h
-PiZndDs8YnI+DQo8L2Rpdj4NCjxkaXY+Q2M6IFNlYW4gUGF1bCAmbHQ7PGEgaHJlZj0ibWFpbHRv
-OnNlYW5wYXVsQGNocm9taXVtLm9yZyI+c2VhbnBhdWxAY2hyb21pdW0ub3JnPC9hPiZndDs8YnI+
-DQo8L2Rpdj4NCjxkaXY+Q2M6IEhhcnJ5IFdlbnRsYW5kICZsdDs8YSBocmVmPSJtYWlsdG86aGFy
-cnkud2VudGxhbmRAYW1kLmNvbSI+aGFycnkud2VudGxhbmRAYW1kLmNvbTwvYT4mZ3Q7PGJyPg0K
-PC9kaXY+DQo8ZGl2PkNjOiBTdW4gUGVuZyBMaShMZW8pICZsdDs8YSBocmVmPSJtYWlsdG86c3Vu
-cGVuZy5saUBhbWQuY29tIj5zdW5wZW5nLmxpQGFtZC5jb208L2E+Jmd0Ozxicj4NCjwvZGl2Pg0K
-PGRpdj5DYzogQ2hhby1rYWkgV2FuZyAoU3R5bG9uKSAmbHQ7PGEgaHJlZj0ibWFpbHRvOnN0eWxv
-bi53YW5nQGFtZC5jb20iPnN0eWxvbi53YW5nQGFtZC5jb208L2E+Jmd0Ozxicj4NCjwvZGl2Pg0K
-PGRpdj5DYzogV2F5bmUgTGluICZsdDs8YSBocmVmPSJtYWlsdG86d2F5bmUubGluQGFtZC5jb20i
-PndheW5lLmxpbkBhbWQuY29tPC9hPiZndDs8YnI+DQo8L2Rpdj4NCjxkaXY+Q2M6IE5pY2hvbGFz
-IENob2kgJmx0OzxhIGhyZWY9Im1haWx0bzpuaWNob2xhcy5jaG9pQGFtZC5jb20iPm5pY2hvbGFz
-LmNob2lAYW1kLmNvbTwvYT4mZ3Q7PGJyPg0KPC9kaXY+DQo8ZGl2PkNjOiBNYXJ0aW4gUGVyZXMg
-Jmx0OzxhIGhyZWY9Im1haWx0bzptYXJ0aW4ucGVyZXNAbXVwdWYub3JnIj5tYXJ0aW4ucGVyZXNA
-bXVwdWYub3JnPC9hPiZndDs8YnI+DQo8L2Rpdj4NCjxkaXY+Q2M6IEF1cmFiaW5kbyBQaWxsYWkg
-Jmx0OzxhIGhyZWY9Im1haWx0bzphdXJhYmluZG8ucGlsbGFpQGFtZC5jb20iPmF1cmFiaW5kby5w
-aWxsYWlAYW1kLmNvbTwvYT4mZ3Q7PGJyPg0KPC9kaXY+DQo8ZGl2PkNjOiBCaGF3YW5wcmVldCBM
-YWtoYSAmbHQ7PGEgaHJlZj0ibWFpbHRvOmJoYXdhbnByZWV0Lmxha2hhQGFtZC5jb20iPmJoYXdh
-bnByZWV0Lmxha2hhQGFtZC5jb208L2E+Jmd0Ozxicj4NCjwvZGl2Pg0KPGRpdj5DYzogUWluZ3Fp
-bmcgWmh1byAoTGlsaWFuKSAmbHQ7PGEgaHJlZj0ibWFpbHRvOnFpbmdxaW5nLnpodW9AYW1kLmNv
-bSI+cWluZ3Fpbmcuemh1b0BhbWQuY29tPC9hPiZndDs8YnI+DQo8L2Rpdj4NCjxkaXY+Q2M6IFNv
-bG9tb24gQ2hpdSAmbHQ7PGEgaHJlZj0ibWFpbHRvOnNvbG9tb24uY2hpdUBhbWQuY29tIj5zb2xv
-bW9uLmNoaXVAYW1kLmNvbTwvYT4mZ3Q7PGJyPg0KPC9kaXY+DQo8ZGl2PkNjOiBOaWNob2xhcyBL
-YXpsYXVza2FzICZsdDs8YSBocmVmPSJtYWlsdG86bmljaG9sYXMua2F6bGF1c2thc0BhbWQuY29t
-Ij5uaWNob2xhcy5rYXpsYXVza2FzQGFtZC5jb208L2E+Jmd0Ozxicj4NCjwvZGl2Pg0KPGRpdj5D
-YzogRGluZ2NoZW4gWmhhbmcgKERhdmlkKSAmbHQ7PGEgaHJlZj0ibWFpbHRvOkRpbmdjaGVuLlpo
-YW5nQGFtZC5jb20iPkRpbmdjaGVuLlpoYW5nQGFtZC5jb208L2E+Jmd0Ozxicj4NCjwvZGl2Pg0K
-PGRpdj48YnI+DQo8L2Rpdj4NCjxkaXY+Um9kcmlnbyBTaXF1ZWlyYSAoMik6PGJyPg0KPC9kaXY+
-DQo8ZGl2PiZuYnNwOyZuYnNwOyBNQUlOVEFJTkVSUzogSW50cm9kdWNlIE1BSU5UQUlORVJTIGZp
-bGU8YnI+DQo8L2Rpdj4NCjxkaXY+Jm5ic3A7Jm5ic3A7IHNjcmlwdHM6IGdldF9tYWludGFpbmVy
-OiBJbnRyb2R1Y2UgZ2V0X21haW50YWluZXIgd3JhcHBlcjxicj4NCjwvZGl2Pg0KPGRpdj48YnI+
-DQo8L2Rpdj4NCjxkaXY+Jm5ic3A7IC5naXRpZ25vcmUmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
-bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsgfCZuYnNwOyZuYnNwOyAxICYjNDM7PGJyPg0KPC9kaXY+DQo8ZGl2PiZuYnNwOyBD
-T05UUklCVVRJTkcubWQmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
-bmJzcDsmbmJzcDsmbmJzcDsgfCZuYnNwOyAxNyAmIzQzOyYjNDM7JiM0MzstPGJyPg0KPC9kaXY+
-DQo8ZGl2PiZuYnNwOyBNQUlOVEFJTkVSUyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyB8IDE5
-OCAmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7
-JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYj
-NDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQz
-OyYjNDM7JiM0MzsmIzQzOy08YnI+DQo8L2Rpdj4NCjxkaXY+Jm5ic3A7IHNjcmlwdHMvZ2V0X21h
-aW50YWluZXIuc2ggfCAxMDQgJiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQz
-OyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0Mzsm
-IzQzOzxicj4NCjwvZGl2Pg0KPGRpdj4mbmJzcDsgNCBmaWxlcyBjaGFuZ2VkLCAzMTcgaW5zZXJ0
-aW9ucygmIzQzOyksIDMgZGVsZXRpb25zKC0pPGJyPg0KPC9kaXY+DQo8ZGl2PiZuYnNwOyBjcmVh
-dGUgbW9kZSAxMDA3NTUgc2NyaXB0cy9nZXRfbWFpbnRhaW5lci5zaDxicj4NCjwvZGl2Pg0KPGRp
-dj48YnI+DQo8L2Rpdj4NCjxkaXY+LS0gPGJyPg0KPC9kaXY+DQo8ZGl2PjIuMjUuMTxicj4NCjwv
-ZGl2Pg0KPGRpdj48YnI+DQo8L2Rpdj4NCjwvYmxvY2txdW90ZT4NCjwvYmxvY2txdW90ZT4NCjxk
-aXY+PGJyPg0KPC9kaXY+DQo8L2Jsb2NrcXVvdGU+DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj48
-c3Bhbj48L3NwYW4+PC9kaXY+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
 
---_000_524ca4d8d78bbaafd8c58848a84ecf37d171fd00camelintelcom_--
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>HAX add description to i915_module_load</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101598/">https://patchwork.freedesktop.org/series/101598/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11393 -&gt; IGTPW_6807</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6807 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6807, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Additional (3): fi-kbl-soraka fi-cml-u2 fi-pnv-d510 <br />
+  Missing    (4): fi-ctg-p8600 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6807:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@meta_test@fail-result (NEW):</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-pnv-d510/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-adl-ddr5}:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-adl-ddr5/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-jsl-1/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{bat-adlp-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-adlp-6/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cml-u2/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cfl-8700k/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-tgl-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-snb-2520m/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-ivb-3770/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-apl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bxt-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{bat-dg2-9}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-dg2-9/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-elk-e7500/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-skl-6700k2/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-tgl-1115g4/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-soraka/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cfl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bsw-n3050/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-ilk-650/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-rkl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{bat-jsl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-jsl-2/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bsw-kefka/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-dg1-6/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{bat-jsl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-jsl-1/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-x1275/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-snb-2600/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-dg2-8/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cfl-8109u/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-glk-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/bat-rpls-2/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bsw-nick/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-glk-j4005/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-7567u/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-8809g/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-hsw-g3258}:     NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-hsw-g3258/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-blb-e6850/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bwr-2160/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-rkl-11600}:     NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-rkl-11600/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-ehl-2/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bdw-gvtdvm/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-hsw-4770/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-7500u/igt@meta_test@fail-result.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_11393 and IGTPW_6807:</p>
+<h3>New IGT tests (1)</h3>
+<ul>
+<li>igt@meta_test@fail-result:<ul>
+<li>Statuses : 43 fail(s)</li>
+<li>Exec time: [0.00, 0.20] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6807 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@cs-gfx:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-hsw-4770/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-soraka/igt@amdgpu/amd_basic@cs-gfx.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_basic@cs-sdma:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-kbl-guc/igt@amdgpu/amd_basic@cs-sdma.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_basic@memory-alloc:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-cml-u2/igt@amdgpu/amd_basic@memory-alloc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@nop-gfx0:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-apl-guc/igt@amdgpu/amd_cs_nop@nop-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-compute0:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-bdw-gvtdvm/igt@amdgpu/amd_cs_nop@sync-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_prime@amd-to-i915:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/fi-pnv-d510/igt@amdgpu/amd_prime@amd-to-i915.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6387 -&gt; IGTPW_6807</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11393: bb39f08a81da1a7e2d82026eac394394504b7126 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6807: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6807/index.html<br />
+  IGT_6387: 04d012b18355b53798af5a55a8915afb1a421bba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1428408645302545081==--
