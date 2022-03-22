@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C317C10E52B
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 08:25:28 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80F2010E52B
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 08:25:45 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Mar 2022 09:25:17 +0100
-Message-Id: <20220322082518.17726-2-zbigniew.kempczynski@intel.com>
+Date: Tue, 22 Mar 2022 09:25:18 +0100
+Message-Id: <20220322082518.17726-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220322082518.17726-1-zbigniew.kempczynski@intel.com>
 References: <20220322082518.17726-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_ccs: Check
- ctrl-surf-copy in new context
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_ccs: Add suspend-resume
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,115 +26,127 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Apoorva Singh <apoorva1.singh@intel.com>
 
-Verify ccs data is binded to physical memory by using
-XY_CTRL_SURF_COPY_BLT command in separate context.
+Verify flatccs data won't be corrupted when device will be put
+to S0 (s2idle) state.
 
-v2: add separate allocator handle for new context (Zbigniew)
+v2: addressing review comments (Kamil)
+v3: fix memory leak (Kamil)
 
 Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_ccs.c | 52 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 41 insertions(+), 11 deletions(-)
+ tests/i915/gem_ccs.c | 51 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 46 insertions(+), 5 deletions(-)
 
 diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-index fdf1fe75f5..b697ea56f9 100644
+index b697ea56f9..4ecb3e36ac 100644
 --- a/tests/i915/gem_ccs.c
 +++ b/tests/i915/gem_ccs.c
-@@ -39,6 +39,7 @@ struct test_config {
- 	bool compression;
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include <errno.h>
++#include <glib.h>
+ #include <sys/ioctl.h>
+ #include <sys/time.h>
+ #include <malloc.h>
+@@ -40,6 +41,7 @@ struct test_config {
  	bool inplace;
  	bool surfcopy;
-+	bool new_ctx;
+ 	bool new_ctx;
++	bool suspend_resume;
  };
  
  static void set_object(struct blt_copy_object *obj,
-@@ -234,9 +235,8 @@ static void block_copy(int i915,
- 		       const intel_ctx_t *ctx,
- 		       const struct intel_execution_engine2 *e,
- 		       uint32_t region1, uint32_t region2,
--		       enum blt_tiling mid_tiling, bool compression,
--		       bool inplace,
--		       bool surfcopy)
-+		       enum blt_tiling mid_tiling,
-+		       const struct test_config *config)
+@@ -162,22 +164,23 @@ static void surf_copy(int i915,
+ 		      const struct blt_copy_object *src,
+ 		      const struct blt_copy_object *mid,
+ 		      const struct blt_copy_object *dst,
+-		      int run_id)
++		      int run_id, bool suspend_resume)
  {
  	struct blt_copy_data blt = {};
- 	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-@@ -249,7 +249,7 @@ static void block_copy(int i915,
- 	uint32_t run_id = mid_tiling;
- 	uint32_t mid_region = region2, bb;
- 	uint32_t width = param.width, height = param.height;
--	enum blt_compression mid_compression = compression;
-+	enum blt_compression mid_compression = config->compression;
- 	int mid_compression_format = param.compression_format;
- 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+ 	struct blt_block_copy_data_ext ext = {};
+ 	struct blt_ctrl_surf_copy_data surf = {};
+-	uint32_t bb, ccs, *ccsmap;
+-	uint64_t bb_size = 4096;
+-	uint64_t ccssize = mid->size / CCS_RATIO;
++	uint32_t bb, ccs, ccs2, *ccsmap, *ccsmap2;
++	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
+ 	uint32_t *ccscopy;
  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
-@@ -293,8 +293,31 @@ static void block_copy(int i915,
- 	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
- 	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
+ 	int result;
  
--	if (surfcopy && pext)
--		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
-+	if (config->surfcopy && pext) {
-+		const intel_ctx_t *surf_ctx = ctx;
-+		uint64_t surf_ahnd = ahnd;
-+		struct intel_execution_engine2 surf_e = *e;
+ 	igt_assert(mid->compression);
+ 	ccscopy = (uint32_t *) malloc(ccssize);
++	bb_size = 4096;
+ 	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
+ 	ccs = gem_create(i915, ccssize);
++	ccs2 = gem_create(i915, ccssize);
+ 
+ 	surf.i915 = i915;
+ 	surf.print_bb = param.print_bb;
+@@ -193,6 +196,33 @@ static void surf_copy(int i915,
+ 					   PROT_READ | PROT_WRITE);
+ 	memcpy(ccscopy, ccsmap, ccssize);
+ 
++	if (suspend_resume) {
++		char *orig, *orig2, *newsum, *newsum2;
 +
-+		if (config->new_ctx) {
-+			intel_ctx_cfg_t cfg = {};
++		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap, surf.dst.size);
++		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
 +
-+			cfg.num_engines = 1;
-+			cfg.engines[0].engine_class = e->class;
-+			cfg.engines[0].engine_instance = e->instance;
-+			surf_ctx = intel_ctx_create(i915, &cfg);
-+			surf_e.flags = 0;
-+			surf_ahnd = intel_allocator_open_full(i915, surf_ctx->id, 0, 0,
-+							      INTEL_ALLOCATOR_SIMPLE,
-+							      ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+		}
++		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
 +
-+		surf_copy(i915, surf_ctx, &surf_e, surf_ahnd, src, mid, dst, run_id);
++		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
++				0, DIRECT_ACCESS);
++		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
++		gem_sync(i915, surf.dst.handle);
 +
-+		if (surf_ctx != ctx) {
-+			intel_ctx_destroy(i915, surf_ctx);
-+			put_ahnd(surf_ahnd);
-+		}
++		ccsmap2 = gem_mmap__device_coherent(i915, ccs2, 0, surf.dst.size,
++						    PROT_READ | PROT_WRITE);
++		newsum = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap2, surf.dst.size);
++		newsum2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
++
++		munmap(ccsmap2, ccssize);
++		igt_assert(!strcmp(orig, newsum));
++		igt_assert(!strcmp(orig2, newsum2));
++		g_free(orig);
++		g_free(orig2);
++		g_free(newsum);
++		g_free(newsum2);
 +	}
- 
- 	memset(&blt, 0, sizeof(blt));
- 	blt.color_depth = CD_32bit;
-@@ -303,7 +326,7 @@ static void block_copy(int i915,
++
+ 	/* corrupt ccs */
+ 	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
+ 		ccsmap[i] = i;
+@@ -209,6 +239,7 @@ static void surf_copy(int i915,
  	set_blt_object(&blt.dst, dst);
- 	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
- 	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
--	if (inplace) {
-+	if (config->inplace) {
- 		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
- 			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
- 		blt.dst.ptr = mid->ptr;
-@@ -367,10 +390,7 @@ static void block_copy_test(int i915,
- 					      param.compression_format, regtxt) {
- 					block_copy(i915, ctx, e,
- 						   region1, region2,
--						   tiling,
--						   config->compression,
--						   config->inplace,
--						   config->surfcopy);
-+						   tiling, config);
- 				}
- 				free(regtxt);
- 			}
-@@ -480,6 +500,16 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+ 	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
+ 	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
++	bb_size = 4096;
+ 	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
+ 	set_batch(&blt.bb, bb, bb_size, REGION_SMEM);
+ 	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
+@@ -311,7 +342,8 @@ static void block_copy(int i915,
+ 							      ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+ 		}
+ 
+-		surf_copy(i915, surf_ctx, &surf_e, surf_ahnd, src, mid, dst, run_id);
++		surf_copy(i915, surf_ctx, &surf_e, surf_ahnd, src, mid, dst, run_id,
++			  config->suspend_resume);
+ 
+ 		if (surf_ctx != ctx) {
+ 			intel_ctx_destroy(i915, surf_ctx);
+@@ -510,6 +542,15 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
  		block_copy_test(i915, &config, ctx, set);
  	}
  
-+	igt_describe("Check flatccs data are physically tagged and visible"
-+		     " in different contexts");
-+	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
++	igt_describe("Check flatccs data persists after suspend / resume (S0)");
++	igt_subtest_with_dynamic("suspend-resume") {
 +		struct test_config config = { .compression = true,
 +					      .surfcopy = true,
-+					      .new_ctx = true };
++					      .suspend_resume = true };
 +
 +		block_copy_test(i915, &config, ctx, set);
 +	}
