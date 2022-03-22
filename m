@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2301856888056661460=="
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDC8910E10E
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 09:51:13 +0000 (UTC)
+Date: Tue, 22 Mar 2022 10:51:09 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Ramalingam C <ramalingam.c@intel.com>
+Message-ID: <YjmcDQ/ASrGtpfQX@zkempczy-mobl2>
+References: <20220314051432.15785-1-ramalingam.c@intel.com>
+ <YjBcgpXn+wCr2Us1@zkempczy-mobl2>
+ <20220321230051.GA12356@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 22 Mar 2022 09:21:20 -0000
-Message-ID: <164794088084.20007.12251382876372585870@emeril.freedesktop.org>
-References: <20220322082518.17726-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220322082518.17726-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIHR3?=
- =?utf-8?q?o_gem-ccs_subtests_=28rev6=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220321230051.GA12356@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/i915/gem_lmem_swapping: Add
+ ccs subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,220 +23,437 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2301856888056661460==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, Mar 22, 2022 at 04:30:53AM +0530, Ramalingam C wrote:
+> On 2022-03-15 at 10:29:38 +0100, Zbigniew Kempczyński wrote:
+> > On Mon, Mar 14, 2022 at 10:44:32AM +0530, Ramalingam C wrote:
+> > > Add subtests for covering the compressed object's eviction.
+> > > 
+> > > v2:
+> > >   gem_sync after the block_copy blit for init
+> > > v3:
+> > >   ahnd is passed in as a param [Zbigniew]
+> > >   cmd is bb [Zbigniew]
+> > >   blt src and dst sizes supposed to be same [Zbigniew]
+> > > 
+> > > Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+> > > Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+> > > Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+> > > ---
+> > >  tests/i915/gem_lmem_swapping.c | 222 +++++++++++++++++++++++++++++++--
+> > >  1 file changed, 215 insertions(+), 7 deletions(-)
+> > > 
+> > > diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+> > > index 582111dddeb9..97858219aa96 100644
+> > > --- a/tests/i915/gem_lmem_swapping.c
+> > > +++ b/tests/i915/gem_lmem_swapping.c
+> > > @@ -22,6 +22,7 @@
+> > >  #include <sys/time.h>
+> > >  #include <sys/wait.h>
+> > >  #include "drm.h"
+> > > +#include "i915/i915_blt.h"
+> > >  
+> > >  IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
+> > >  
+> > > @@ -30,6 +31,7 @@ IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
+> > >  
+> > >  #define PAGE_SIZE  (1ULL << 12)
+> > >  #define SZ_64K	   (16 * PAGE_SIZE)
+> > > +#define DG2_MOCS   (2 << 1)
+> > >  
+> > >  static const char *readable_unit(uint64_t size)
+> > >  {
+> > > @@ -60,6 +62,7 @@ struct params {
+> > >  #define TEST_RANDOM	(1 << 3)
+> > >  #define TEST_ENGINES	(1 << 4)
+> > >  #define TEST_MULTI	(1 << 5)
+> > > +#define TEST_CCS	(1 << 6)
+> > >  	unsigned int flags;
+> > >  	unsigned int seed;
+> > >  	bool oom_test;
+> > > @@ -69,8 +72,56 @@ struct object {
+> > >  	uint64_t size;
+> > >  	uint32_t seed;
+> > >  	uint32_t handle;
+> > > +	struct blt_copy_object *blt_obj;
+> > >  };
+> > >  
+> > > +static void set_object(struct blt_copy_object *obj,
+> > > +		       uint32_t handle, uint64_t size, uint32_t region,
+> > > +		       uint8_t mocs, enum blt_tiling tiling,
+> > > +		       enum blt_compression compression,
+> > > +		       enum blt_compression_type compression_type)
+> > > +{
+> > > +	obj->handle = handle;
+> > > +	obj->size = size;
+> > > +	obj->region = region;
+> > > +	obj->mocs = mocs;
+> > > +	obj->tiling = tiling;
+> > > +	obj->compression = compression;
+> > > +	obj->compression_type = compression_type;
+> > > +}
+> > > +
+> > > +static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
+> > > +		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+> > > +		     uint16_t x_offset, uint16_t y_offset)
+> > > +{
+> > > +	obj->pitch = pitch;
+> > > +	obj->x1 = x1;
+> > > +	obj->y1 = y1;
+> > > +	obj->x2 = x2;
+> > > +	obj->y2 = y2;
+> > > +	obj->x_offset = x_offset;
+> > > +	obj->y_offset = y_offset;
+> > > +}
+> > > +
+> > > +static void set_batch(struct blt_copy_batch *batch,
+> > > +		      uint32_t handle, uint64_t size, uint32_t region)
+> > > +{
+> > > +	batch->handle = handle;
+> > > +	batch->size = size;
+> > > +	batch->region = region;
+> > > +}
+> > > +
+> > > +static void set_object_ext(struct blt_block_copy_object_ext *obj,
+> > > +			   uint8_t compression_format,
+> > > +			   uint16_t surface_width, uint16_t surface_height,
+> > > +			   enum blt_surface_type surface_type)
+> > > +{
+> > > +	obj->compression_format = compression_format;
+> > > +	obj->surface_width = surface_width;
+> > > +	obj->surface_height = surface_height;
+> > > +	obj->surface_type = surface_type;
+> > > +}
+> > > +
+> > >  static uint32_t create_bo(int i915,
+> > >  			  uint64_t size,
+> > >  			  struct drm_i915_gem_memory_class_instance *region,
+> > > @@ -105,6 +156,46 @@ init_object(int i915, struct object *obj, unsigned long seed, unsigned int flags
+> > >  	munmap(buf, obj->size);
+> > >  }
+> > >  
+> > > +#define BATCH_SIZE		4096
+> > > +static void
+> > > +init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+> > > +		struct blt_copy_batch *cmd, unsigned long seed,
+> > > +		const intel_ctx_t *ctx, uint32_t region, uint64_t ahnd)
+> > > +{
+> > > +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> > > +	const struct intel_execution_engine2 *e;
+> > > +	struct blt_copy_data blt = {};
+> > > +	unsigned long *buf, j;
+> > > +
+> > > +	obj->seed = seed;
+> > > +	for_each_ctx_engine(i915, ctx, e) {
+> > > +		igt_assert_f(gem_engine_can_block_copy(i915, e),
+> > > +			     "Ctx dont have Blt engine");
+> > > +		break;
+> > > +	}
+> > > +
+> > > +	buf = gem_mmap__device_coherent(i915, tmp->handle, 0, obj->size, PROT_WRITE);
+> > > +	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
+> > > +
+> > > +	for (j = 0; j < obj->size / sizeof(*buf); j++)
+> > > +		buf[j] = seed++;
+> > > +	munmap(buf, obj->size);
+> > > +
+> > > +	memset(&blt, 0, sizeof(blt));
+> > > +	blt.color_depth = CD_32bit;
+> > > +
+> > > +	memcpy(&blt.src, tmp, sizeof(blt.src));
+> > > +	memcpy(&blt.dst, obj->blt_obj, sizeof(blt.dst));
+> > > +	memcpy(&blt.bb, cmd, sizeof(blt.bb));
+> > > +
+> > > +	set_object_ext(&ext.src, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
+> > > +	set_object_ext(&ext.dst, 0, obj->blt_obj->x2, obj->blt_obj->y2,
+> > > +		       SURFACE_TYPE_2D);
+> > > +
+> > > +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+> > > +	gem_sync(i915, obj->blt_obj->handle);
+> > 
+> > You can avoid stalls if you will use gem_create_from_pool().
+> Hi Zbigkniew! Thanks for the review.
+> 
+> AFAIK, pool of obj will be useful if we want to keep scheduling work with
+> different bb. So that we will get different or free bbs each time so
+> that on the run we wont write into already executing work.
+> 
+> Here the common obj used between init_obj_ccs and verify_obj_ccs are the
+> obj and also cmd. So either way we need to sync here, which we are
+> already doing it on obj.
+> 
+> Now could you please help me to understand how pool could help us here?
 
-== Series Details ==
+Currently you need to wait until bb becomes not busy (gem_sync()) before
+you're reusing it feeding it with commands. This leads to stalls between
+execution - after gem_sync() gpu is doing nothing. These micro pauses can
+hide some coherency issues which may occur in pipelined executions.
 
-Series: Add two gem-ccs subtests (rev6)
-URL   : https://patchwork.freedesktop.org/series/101472/
-State : success
+If you're doing 
 
-== Summary ==
+	bb = gem_create_from_pool(i915, 4096);
 
-CI Bug Log - changes from CI_DRM_11395 -> IGTPW_6811
-====================================================
+you'll get first handle which is 4KiB size and at the moment of that call
+is not busy. So you don't need to use gem_sync() because library will return
+you first not used object with 4KiB size. Removing gem_sync() you'll verify
+how not-stalled execution will behave.
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/index.html
-
-Participating hosts (49 -> 44)
-------------------------------
-
-  Additional (2): bat-adlm-1 bat-jsl-2 
-  Missing    (7): shard-tglu fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 shard-rkl shard-dg1 fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_6811:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@coherency:
-    - {bat-rpls-2}:       [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11395/bat-rpls-2/igt@i915_selftest@live@coherency.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/bat-rpls-2/igt@i915_selftest@live@coherency.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6811 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [PASS][3] -> [DMESG-FAIL][4] ([i915#4528])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11395/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/fi-blb-e6850/igt@i915_selftest@live@requests.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_busy@basic@flip:
-    - {bat-adlp-6}:       [DMESG-WARN][5] ([i915#3576]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11395/bat-adlp-6/igt@kms_busy@basic@flip.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/bat-adlp-6/igt@kms_busy@basic@flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#5339]: https://gitlab.freedesktop.org/drm/intel/issues/5339
-  [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
-  [i915#5342]: https://gitlab.freedesktop.org/drm/intel/issues/5342
-  [i915#5361]: https://gitlab.freedesktop.org/drm/intel/issues/5361
+--
+Zbigniew
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6387 -> IGTPW_6811
-
-  CI-20190529: 20190529
-  CI_DRM_11395: a678f97326454b60ffbbde6abf52d23997d71a27 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6811: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/index.html
-  IGT_6387: 04d012b18355b53798af5a55a8915afb1a421bba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-
-== Testlist changes ==
-
-+igt@gem_ccs@ctrl-surf-copy-new-ctx
-+igt@gem_ccs@suspend-resume
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/index.html
-
---===============2301856888056661460==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add two gem-ccs subtests (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101472/">https://patchwork.freedesktop.org/series/101472/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11395 -&gt; IGTPW_6811</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/index.html</p>
-<h2>Participating hosts (49 -&gt; 44)</h2>
-<p>Additional (2): bat-adlm-1 bat-jsl-2 <br />
-  Missing    (7): shard-tglu fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 shard-rkl shard-dg1 fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_6811:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@coherency:<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11395/bat-rpls-2/igt@i915_selftest@live@coherency.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/bat-rpls-2/igt@i915_selftest@live@coherency.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6811 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@requests:<ul>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11395/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_busy@basic@flip:<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11395/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6387 -&gt; IGTPW_6811</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11395: a678f97326454b60ffbbde6abf52d23997d71a27 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6811: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6811/index.html<br />
-  IGT_6387: 04d012b18355b53798af5a55a8915afb1a421bba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<p>== Testlist changes ==</p>
-<p>+igt@gem_ccs@ctrl-surf-copy-new-ctx<br />
-+igt@gem_ccs@suspend-resume</p>
-
-</body>
-</html>
-
---===============2301856888056661460==--
+> > 
+> > > +}
+> > > +
+> > >  static void
+> > >  verify_object(int i915, const struct object *obj,  unsigned int flags)
+> > >  {
+> > > @@ -125,6 +216,53 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
+> > >  	munmap(buf, obj->size);
+> > >  }
+> > >  
+> > > +static void
+> > > +verify_object_ccs(int i915, const struct object *obj,
+> > > +		  struct blt_copy_object *tmp, struct blt_copy_batch *cmd,
+> > > +		  const intel_ctx_t *ctx, uint32_t region, uint64_t ahnd)
+> > > +{
+> > > +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> > > +	const struct intel_execution_engine2 *e;
+> > > +	struct blt_copy_data blt = {};
+> > > +	unsigned long j, val, *buf;
+> > > +
+> > > +	for_each_ctx_engine(i915, ctx, e) {
+> > > +		igt_assert_f(gem_engine_can_block_copy(i915, e),
+> > > +			     "ctx dont have Blt engine");
+> > > +		break;
+> > > +	}
+> > > +
+> > > +	memset(&blt, 0, sizeof(blt));
+> > > +	blt.color_depth = CD_32bit;
+> > > +
+> > > +	memcpy(&blt.src, obj->blt_obj, sizeof(blt.src));
+> > > +	memcpy(&blt.dst, tmp, sizeof(blt.dst));
+> > > +	memcpy(&blt.bb, cmd, sizeof(blt.bb));
+> > > +
+> > > +	blt.dst.x2 = min(obj->blt_obj->x2, tmp->x2);
+> > > +	blt.dst.y2 = min(obj->blt_obj->y2, tmp->y2);
+> > > +
+> > > +	set_object_ext(&ext.src, 0, obj->blt_obj->x2, obj->blt_obj->y2,
+> > > +		       SURFACE_TYPE_2D);
+> > > +	set_object_ext(&ext.dst, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
+> > > +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+> > > +
+> > > +	buf = gem_mmap__device_coherent(i915, tmp->handle, 0,
+> > > +					obj->size, PROT_READ);
+> > > +	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, 0);
+> > > +
+> > > +	for (j = 0; j < obj->size / PAGE_SIZE; j++) {
+> > > +		unsigned long x = (j * PAGE_SIZE + rand() % PAGE_SIZE) / sizeof(*buf);
+> > > +
+> > > +		val = obj->seed + x;
+> > > +		igt_assert_f(buf[x] == val,
+> > > +			     "Object mismatch at offset %lu - found %lx, expected %lx, difference:%lx!\n",
+> > > +			     x * sizeof(*buf), buf[x], val, buf[x] ^ val);
+> > > +	}
+> > > +
+> > > +	munmap(buf, obj->size);
+> > > +}
+> > > +
+> > >  static void move_to_lmem(int i915,
+> > >  			 struct object *list,
+> > >  			 unsigned int num,
+> > > @@ -160,31 +298,62 @@ static void __do_evict(int i915,
+> > >  		       struct params *params,
+> > >  		       unsigned int seed)
+> > >  {
+> > > +	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
+> > > +						    region->memory_instance);
+> > >  	const unsigned int max_swap_in = params->count / 100 + 1;
+> > >  	const uint32_t bbe = MI_BATCH_BUFFER_END;
+> > >  	struct object *objects, *obj, *list;
+> > > -	uint32_t batch;
+> > > +	const uint32_t bpp = 32;
+> > > +	uint32_t batch, width, height, stride;
+> > > +	const intel_ctx_t *blt_ctx;
+> > > +	struct blt_copy_object *tmp;
+> > > +	struct blt_copy_batch *cmd;
+> > >  	unsigned int engine = 0;
+> > >  	unsigned int i, l;
+> > > -	uint64_t size;
+> > > +	uint64_t size, ahnd;
+> > >  	struct timespec t = {};
+> > >  	unsigned int num;
+> > >  
+> > > +	width = PAGE_SIZE / (bpp / 8);
+> > > +	height = params->size.max / (bpp / 8) /  width;
+> > > +	stride = width * 4;
+> > > +
+> > > +	tmp = calloc(1, sizeof(*tmp));
+> > > +	cmd = calloc(1, sizeof(*cmd));
+> > > +
+> > >  	__gem_context_set_persistence(i915, 0, false);
+> > >  	size = 4096;
+> > >  	batch = create_bo(i915, size, region, params->oom_test);
+> > > -
+> > >  	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+> > >  
+> > > +	if (params->flags & TEST_CCS)
+> > > +		blt_ctx = intel_ctx_create_for_engine(i915,
+> > > +						      I915_ENGINE_CLASS_COPY,
+> > > +						      0);
+> > > +
+> > >  	objects = calloc(params->count, sizeof(*objects));
+> > >  	igt_assert(objects);
+> > >  
+> > >  	list = calloc(max_swap_in, sizeof(*list));
+> > >  	igt_assert(list);
+> > >  
+> > > +	ahnd = intel_allocator_open_full(i915, blt_ctx->id, 0, 0,
+> > > +					 INTEL_ALLOCATOR_SIMPLE,
+> > > +					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> > >  	srand(seed);
+> > >  
+> > >  	/* Create the initial working set of objects. */
+> > > +	if (params->flags & TEST_CCS) {
+> > > +		tmp->handle = gem_create_in_memory_regions(i915, params->size.max,
+> > > +				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
+> > > +		set_object(tmp, tmp->handle, params->size.max,
+> > > +			   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0), DG2_MOCS,
+> > > +			   T_LINEAR, COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
+> > > +		set_geom(tmp, stride, 0, 0, width, height, 0, 0);
+> > > +		cmd->handle = gem_create_in_memory_regions(i915, BATCH_SIZE, region_id);
+> > 
+> > I would use bb pool to avoid stalls.
+> May be i am missing something. since this is sequential if we sync
+> between init, verify and subsequent init we dont need bb pool.
+> 
+> if we need two different bb in a loop for different independent tasks
+> then bb pool might help to go ahead without sync inbetween.
+> 
+> Sorry if i miss what you are suggesting. Please help me to understand.
+> 
+> Ram.
+> > 
+> > 
+> > > +		set_batch(cmd, cmd->handle, BATCH_SIZE, region_id);
+> > > +	}
+> > > +
+> > >  	size = 0;
+> > >  	for (i = 0, obj = objects; i < params->count; i++, obj++) {
+> > >  		if (params->flags & TEST_RANDOM)
+> > > @@ -194,6 +363,7 @@ static void __do_evict(int i915,
+> > >  		else
+> > >  			obj->size = params->size.min;
+> > >  
+> > > +		obj->size = ALIGN(obj->size, 4096);
+> > >  		size += obj->size;
+> > >  		if ((size >> 20) > params->mem_limit) {
+> > >  			params->count = i;
+> > > @@ -201,10 +371,26 @@ static void __do_evict(int i915,
+> > >  		}
+> > >  		obj->handle = create_bo(i915, obj->size, region, params->oom_test);
+> > >  
+> > > -		move_to_lmem(i915, objects + i, 1, batch, engine,
+> > > -			     params->oom_test);
+> > > -		if (params->flags & TEST_VERIFY)
+> > > +		if (params->flags & TEST_CCS) {
+> > > +			width = PAGE_SIZE / (bpp / 8);
+> > > +			height = obj->size / (bpp / 8) /  width;
+> > > +			stride = width * 4;
+> > > +
+> > > +			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
+> > > +			set_object(obj->blt_obj, obj->handle, obj->size, region_id,
+> > > +				   DG2_MOCS, T_LINEAR, COMPRESSION_ENABLED,
+> > > +				   COMPRESSION_TYPE_3D);
+> > > +			set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
+> > 
+> > Especially here and sync after last blit.
+> > 
+> > > +			init_object_ccs(i915, obj, tmp, cmd, rand(), blt_ctx,
+> > > +					region_id, ahnd);
+> > > +		} else if (params->flags & TEST_VERIFY) {
+> > >  			init_object(i915, obj, rand(), params->flags);
+> > > +			move_to_lmem(i915, objects + i, 1, batch, engine,
+> > > +				     params->oom_test);
+> > > +		} else {
+> > > +			move_to_lmem(i915, objects + i, 1, batch, engine,
+> > > +				     params->oom_test);
+> > > +		}
+> > >  	}
+> > >  
+> > >  	igt_debug("obj size min/max=%lu %s/%lu %s, count=%u, seed: %u\n",
+> > > @@ -231,7 +417,15 @@ static void __do_evict(int i915,
+> > >  		if (params->flags & TEST_ENGINES)
+> > >  			engine = (engine + 1) % __num_engines__;
+> > >  
+> > > -		if (params->flags & TEST_VERIFY) {
+> > > +		if (params->flags & TEST_CCS) {
+> > > +			for (i = 0; i < num; i++)
+> > > +				verify_object_ccs(i915, &list[i], tmp, cmd,
+> > > +						  blt_ctx, region_id, ahnd);
+> > 
+> > This one syncs internally in gem_set_domain so single bb is ok.
+> > 
+> > > +			/* Update random object - may swap it back in. */
+> > > +			i = rand() % params->count;
+> > > +			init_object_ccs(i915, &objects[i], tmp, cmd, rand(),
+> > > +					blt_ctx, region_id, ahnd);
+> > 
+> > But here also I would use bb pool with sync after last one.
+> > 
+> > Other things looks ok imo.
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > +		} else if (params->flags & TEST_VERIFY) {
+> > >  			for (i = 0; i < num; i++)
+> > >  				verify_object(i915, &list[i], params->flags);
+> > >  
+> > > @@ -241,11 +435,17 @@ static void __do_evict(int i915,
+> > >  		}
+> > >  	}
+> > >  
+> > > +	put_ahnd(ahnd);
+> > >  	for (i = 0; i < params->count; i++)
+> > >  		gem_close(i915, objects[i].handle);
+> > >  
+> > >  	free(list);
+> > >  	free(objects);
+> > > +	if (params->flags & TEST_CCS) {
+> > > +		gem_close(i915, cmd->handle);
+> > > +		gem_close(i915, tmp->handle);
+> > > +		gem_context_destroy(i915, blt_ctx->id);
+> > > +	}
+> > >  
+> > >  	gem_close(i915, batch);
+> > >  }
+> > > @@ -348,6 +548,9 @@ static void test_evict(int i915,
+> > >  	const unsigned int nproc = sysconf(_SC_NPROCESSORS_ONLN) + 1;
+> > >  	struct params params;
+> > >  
+> > > +	if (flags & TEST_CCS)
+> > > +		igt_require(IS_DG2(intel_get_drm_devid(i915)));
+> > > +
+> > >  	fill_params(i915, &params, region, flags, nproc, false);
+> > >  
+> > >  	if (flags & TEST_PARALLEL) {
+> > > @@ -511,6 +714,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+> > >  		{ "parallel-random-engines", TEST_PARALLEL | TEST_RANDOM | TEST_ENGINES },
+> > >  		{ "parallel-random-verify", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY },
+> > >  		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
+> > > +		{ "verify-ccs", TEST_CCS },
+> > > +		{ "verify-random-ccs", TEST_CCS | TEST_RANDOM },
+> > > +		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
+> > > +		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
+> > > +		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
+> > >  		{ }
+> > >  	};
+> > >  	int i915 = -1;
+> > > -- 
+> > > 2.20.1
+> > > 
