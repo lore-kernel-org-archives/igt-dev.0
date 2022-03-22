@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 263AE10E0FD
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 07:22:11 +0000 (UTC)
-Date: Tue, 22 Mar 2022 08:22:04 +0100
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7696910E0A8
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 07:44:59 +0000 (UTC)
+Date: Tue, 22 Mar 2022 08:44:54 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <Yjl5HIG55rmhnfYl@zkempczy-mobl2>
-References: <YiBboHmOS4cuU1iH@zkempczy-mobl2> <YiCNFUCFm8qWn4W0@kamilkon-DESK1>
- <YiCtTfYqWTfvfX9z@zkempczy-mobl2> <YjNYR2c027KZwtsT@kamilkon-DESK1>
- <YjTLkQ+wjeU0p2SG@zkempczy-mobl2>
- <YjhExEM8S6uxqujD@platvala-desk.ger.corp.intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <Yjl+dkKMgdRt6Awm@zkempczy-mobl2>
+References: <20220318160445.27986-1-kamil.konieczny@linux.intel.com>
+ <20220318160445.27986-2-kamil.konieczny@linux.intel.com>
+ <YjhK2FvwgZol1crL@platvala-desk.ger.corp.intel.com>
+ <76113dfc-b042-54e9-a3af-1bf23f0441a2@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YjhExEM8S6uxqujD@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [RFC] Use HAX for series which add igt_describe
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <76113dfc-b042-54e9-a3af-1bf23f0441a2@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915/gem_engine_topology: add
+ iterator for choosing one random engine from each class
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,82 +24,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Mar 21, 2022 at 11:26:28AM +0200, Petri Latvala wrote:
-
-<cut>
-
-> > > One downside is when developers document dynamic subtests, see
-> > > "test/i915_pm_rpm: Remove igt_describe() from dynamic subtest"
+On Mon, Mar 21, 2022 at 12:28:58PM +0000, Tvrtko Ursulin wrote:
+> 
+> On 21/03/2022 09:52, Petri Latvala wrote:
+> > On Fri, Mar 18, 2022 at 05:04:44PM +0100, Kamil Konieczny wrote:
+> > > In new GPUs there are many engines so tests with fixed timeout
+> > > which iterate over all engines can take much longer than on older
+> > > gens. Add new iterator for_one_random_cfg_ctx_engine, which will
+> > > iterate over each class of engines and will choose one from each
+> > > class at random.
 > > > 
-> > > ./i915_pm_rpm --run gem-execbuf-stress
-> > > [cut]
-> > > Starting subtest: gem-execbuf-stress
-> > > documenting dynamic subsubtests is impossible, document the subtest instead.please refer to lib/igt_core documentation
-> > > i915_pm_rpm: ../lib/igt_core.c:365: internal_assert: Assertion `0' failed.
-> > > Received signal SIGABRT.
+> > > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > ---
+> > >   lib/i915/gem_engine_topology.c | 64 ++++++++++++++++++++++++++++++++++
+> > >   lib/i915/gem_engine_topology.h | 19 ++++++++++
+> > >   2 files changed, 83 insertions(+)
+> > > 
+> > > diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+> > > index ca3333c2..52a2f3ef 100644
+> > > --- a/lib/i915/gem_engine_topology.c
+> > > +++ b/lib/i915/gem_engine_topology.c
+> > > @@ -208,6 +208,70 @@ void intel_next_engine(struct intel_engine_data *ed)
+> > >   	}
+> > >   }
+> > > +static void __intel_random_init(void)
+> > > +{
+> > > +	struct timespec start;
+> > > +
+> > > +	clock_gettime(CLOCK_MONOTONIC, &start);
+> > > +	igt_debug("seed %d\n", (int)start.tv_nsec);
+> > > +	srand((int)start.tv_nsec);
+> > > +}
 > > 
-> > Eh, what a pity this is not detected on compile time. Unfortunately this
-> > cannot be easily catched if test requirements are not met and test will
-> > skip. So you're right, using HAX is bad idea.
+> > I don't like randomness for testing, but it sure is sometimes needed.
 > > 
-> > Btw shouldn't igt_describe() be no-op with warning in such case instead
-> > of asserting?
+> > We have quite a bit of rand()-using tests and some of them have a
+> > --seed parameter so their results can be reproduced. Currently there's
+> > no overlap in sight with them and this thing, but if testing ever
+> > expands that way, mixing RNGs might break reproduceability. Can this
+> > instead use another RNG stream that's self-contained, like maybe
+> > rand_r() or such? Or the one implemented in lib/igt_rand.
 > 
+> Agreed, for developer use it is an essential requirement to be able to run a
+> test multiple times with same parameters. So any test which would be
+> converted to use for_one_random_ctx_cfg_engine would need to have a common
+> way of specifying a stable config.
 > 
-> We decided to make that assert loudly to catch dead code. Or rather,
-> dead documentation that never reaches docs.
+> Hm if we look at the end result:
 > 
-> A way to catch those is to build the docs locally
+>  	igt_subtest_with_dynamic("active") {
+> -		for_each_ctx_cfg_engine(fd, &cfg, e) {
+> +		for_one_random_ctx_cfg_engine(fd, &cfg, e) {
+>  			igt_dynamic_f("%s", e->name)
+>  				active(fd, &cfg, e, 20, 1);
+>  		}
 > 
->    $ ninja -C build igt-gpu-tools-doc
-> 
-> and check the output. That would also preemptively avoid the review
-> round that just points out incorrect use of multiline strings where a
-> space is missing between the lines.
-> 
-> In general people should do some testing locally on their code before
-> they send patches.
->
+> Would that even work better at the test runner layer? New testlist syntax to
+> pick one random out of a list of dynamic subtests?
 
-Agree, author as well as reviewer should test change locally. I was not
-careful enough proposing HAX with igt_describe(). I wasn't aware that
-for dynamic subtests it will assert. Anyway building docs is good tip
-to catch this locally. 
+Getting random engine is prone for two problems:
+
+1. if we have same seed we always choose same engine in single test
+   (as igt_runner is executing tests in separate processes we lost randomness
+    at all)
+
+2. if we have different seed we will have fluctuations on e->name across
+   different runs. I don't know how CI will react if subtest will be rcs0
+   then bcs0 in next run. 
+
+I think subtest name crc/hash would be good seed, it would allow us to 
+keep same engine across runs for single subtest and selecting different 
+engines across subtests.
 
 --
 Zbigniew
- 
-> -- 
-> Petri Latvala
+
+
 > 
+> Regards,
 > 
-> 
-> > 
-> > --
-> > Zbigniew
-> > 
-> > > 
-> > > That patch deleted following lines "> -":
-> > > 
-> > > >   	igt_subtest_with_dynamic("gem-execbuf-stress") {
-> > > >   		for_each_memory_region(r, drm_fd) {
-> > > > -			igt_describe("Validate execbuf submission while exercising rpm "
-> > > > -				     "suspend/resume cycles.");
-> > > >   			igt_dynamic_f("%s", r->name)
-> > > >   				gem_execbuf_stress_subtest(rounds, WAIT_STATUS, &r->ci);
-> > > > -			igt_describe("Validate execbuf submission while exercising rpm "
-> > > > -				     "suspend/resume cycles with extra wait.");
-> > > >   			igt_dynamic_f("%s-%s", "extra-wait", r->name)
-> > > >   				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_EXTRA, &r->ci);
-> > > >   		}
-> > > 
-> > > This fail will not be catched when we will use HAX.
-> > > 
-> > > --
-> > > Kamil
-> > > 
+> Tvrtko
