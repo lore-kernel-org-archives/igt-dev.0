@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D05E810E521
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 06:59:28 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Mar 2022 07:59:13 +0100
-Message-Id: <20220322065913.13319-3-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220322065913.13319-1-zbigniew.kempczynski@intel.com>
-References: <20220322065913.13319-1-zbigniew.kempczynski@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 263AE10E0FD
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 07:22:11 +0000 (UTC)
+Date: Tue, 22 Mar 2022 08:22:04 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <Yjl5HIG55rmhnfYl@zkempczy-mobl2>
+References: <YiBboHmOS4cuU1iH@zkempczy-mobl2> <YiCNFUCFm8qWn4W0@kamilkon-DESK1>
+ <YiCtTfYqWTfvfX9z@zkempczy-mobl2> <YjNYR2c027KZwtsT@kamilkon-DESK1>
+ <YjTLkQ+wjeU0p2SG@zkempczy-mobl2>
+ <YjhExEM8S6uxqujD@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_ccs: Add suspend-resume
- subtest
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YjhExEM8S6uxqujD@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [RFC] Use HAX for series which add igt_describe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,139 +22,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Apoorva Singh <apoorva1.singh@intel.com>
+On Mon, Mar 21, 2022 at 11:26:28AM +0200, Petri Latvala wrote:
 
-Verify flatccs data won't be corrupted when device will be put
-to S0 (s2idle) state.
+<cut>
 
-v2: addressing review comments (Kamil)
-v3: fix memory leak (Kamil)
+> > > One downside is when developers document dynamic subtests, see
+> > > "test/i915_pm_rpm: Remove igt_describe() from dynamic subtest"
+> > > 
+> > > ./i915_pm_rpm --run gem-execbuf-stress
+> > > [cut]
+> > > Starting subtest: gem-execbuf-stress
+> > > documenting dynamic subsubtests is impossible, document the subtest instead.please refer to lib/igt_core documentation
+> > > i915_pm_rpm: ../lib/igt_core.c:365: internal_assert: Assertion `0' failed.
+> > > Received signal SIGABRT.
+> > 
+> > Eh, what a pity this is not detected on compile time. Unfortunately this
+> > cannot be easily catched if test requirements are not met and test will
+> > skip. So you're right, using HAX is bad idea.
+> > 
+> > Btw shouldn't igt_describe() be no-op with warning in such case instead
+> > of asserting?
+> 
+> 
+> We decided to make that assert loudly to catch dead code. Or rather,
+> dead documentation that never reaches docs.
+> 
+> A way to catch those is to build the docs locally
+> 
+>    $ ninja -C build igt-gpu-tools-doc
+> 
+> and check the output. That would also preemptively avoid the review
+> round that just points out incorrect use of multiline strings where a
+> space is missing between the lines.
+> 
+> In general people should do some testing locally on their code before
+> they send patches.
+>
 
-Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_ccs.c | 51 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 46 insertions(+), 5 deletions(-)
+Agree, author as well as reviewer should test change locally. I was not
+careful enough proposing HAX with igt_describe(). I wasn't aware that
+for dynamic subtests it will assert. Anyway building docs is good tip
+to catch this locally. 
 
-diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-index 28711bdc59..2747983925 100644
---- a/tests/i915/gem_ccs.c
-+++ b/tests/i915/gem_ccs.c
-@@ -4,6 +4,7 @@
-  */
+--
+Zbigniew
  
- #include <errno.h>
-+#include <glib.h>
- #include <sys/ioctl.h>
- #include <sys/time.h>
- #include <malloc.h>
-@@ -40,6 +41,7 @@ struct test_config {
- 	bool inplace;
- 	bool surfcopy;
- 	bool new_ctx;
-+	bool suspend_resume;
- };
- 
- static void set_object(struct blt_copy_object *obj,
-@@ -162,22 +164,23 @@ static void surf_copy(int i915,
- 		      const struct blt_copy_object *src,
- 		      const struct blt_copy_object *mid,
- 		      const struct blt_copy_object *dst,
--		      int run_id)
-+		      int run_id, bool suspend_resume)
- {
- 	struct blt_copy_data blt = {};
- 	struct blt_block_copy_data_ext ext = {};
- 	struct blt_ctrl_surf_copy_data surf = {};
--	uint32_t bb, ccs, *ccsmap;
--	uint64_t bb_size = 4096;
--	uint64_t ccssize = mid->size / CCS_RATIO;
-+	uint32_t bb, ccs, ccs2, *ccsmap, *ccsmap2;
-+	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
- 	uint32_t *ccscopy;
- 	uint8_t uc_mocs = intel_get_uc_mocs(i915);
- 	int result;
- 
- 	igt_assert(mid->compression);
- 	ccscopy = (uint32_t *) malloc(ccssize);
-+	bb_size = 4096;
- 	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
- 	ccs = gem_create(i915, ccssize);
-+	ccs2 = gem_create(i915, ccssize);
- 
- 	surf.i915 = i915;
- 	surf.print_bb = param.print_bb;
-@@ -193,6 +196,33 @@ static void surf_copy(int i915,
- 					   PROT_READ | PROT_WRITE);
- 	memcpy(ccscopy, ccsmap, ccssize);
- 
-+	if (suspend_resume) {
-+		char *orig, *orig2, *newsum, *newsum2;
-+
-+		orig = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap, surf.dst.size);
-+		orig2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
-+
-+		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
-+
-+		set_surf_object(&surf.dst, ccs2, REGION_SMEM, ccssize,
-+				0, DIRECT_ACCESS);
-+		blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
-+		gem_sync(i915, surf.dst.handle);
-+
-+		ccsmap2 = gem_mmap__device_coherent(i915, ccs2, 0, surf.dst.size,
-+						    PROT_READ | PROT_WRITE);
-+		newsum = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)ccsmap2, surf.dst.size);
-+		newsum2 = g_compute_checksum_for_data(G_CHECKSUM_SHA1, (void *)mid->ptr, mid->size);
-+
-+		munmap(ccsmap2, ccssize);
-+		igt_assert(!strcmp(orig, newsum));
-+		igt_assert(!strcmp(orig2, newsum2));
-+		g_free(orig);
-+		g_free(orig2);
-+		g_free(newsum);
-+		g_free(newsum2);
-+	}
-+
- 	/* corrupt ccs */
- 	for (int i = 0; i < surf.dst.size / sizeof(uint32_t); i++)
- 		ccsmap[i] = i;
-@@ -209,6 +239,7 @@ static void surf_copy(int i915,
- 	set_blt_object(&blt.dst, dst);
- 	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
- 	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
-+	bb_size = 4096;
- 	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
- 	set_batch(&blt.bb, bb, bb_size, REGION_SMEM);
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
-@@ -311,7 +342,8 @@ static void block_copy(int i915,
- 							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
- 		}
- 
--		surf_copy(i915, surf_ctx, &surf_e, surf_ahnd, src, mid, dst, run_id);
-+		surf_copy(i915, surf_ctx, &surf_e, ahnd, src, mid, dst, run_id,
-+			  config->suspend_resume);
- 
- 		if (surf_ctx != ctx) {
- 			intel_ctx_destroy(i915, surf_ctx);
-@@ -510,6 +542,15 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		block_copy_test(i915, &config, ctx, set);
- 	}
- 
-+	igt_describe("Check flatccs data persists after suspend / resume (S0)");
-+	igt_subtest_with_dynamic("suspend-resume") {
-+		struct test_config config = { .compression = true,
-+					      .surfcopy = true,
-+					      .suspend_resume = true };
-+
-+		block_copy_test(i915, &config, ctx, set);
-+	}
-+
- 	igt_fixture {
- 		igt_disallow_hang(i915, hang);
- 		close(i915);
--- 
-2.32.0
+> -- 
+> Petri Latvala
+> 
+> 
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > 
+> > > That patch deleted following lines "> -":
+> > > 
+> > > >   	igt_subtest_with_dynamic("gem-execbuf-stress") {
+> > > >   		for_each_memory_region(r, drm_fd) {
+> > > > -			igt_describe("Validate execbuf submission while exercising rpm "
+> > > > -				     "suspend/resume cycles.");
+> > > >   			igt_dynamic_f("%s", r->name)
+> > > >   				gem_execbuf_stress_subtest(rounds, WAIT_STATUS, &r->ci);
+> > > > -			igt_describe("Validate execbuf submission while exercising rpm "
+> > > > -				     "suspend/resume cycles with extra wait.");
+> > > >   			igt_dynamic_f("%s-%s", "extra-wait", r->name)
+> > > >   				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_EXTRA, &r->ci);
+> > > >   		}
+> > > 
+> > > This fail will not be catched when we will use HAX.
+> > > 
+> > > --
+> > > Kamil
+> > > 
