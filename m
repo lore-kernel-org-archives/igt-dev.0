@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DAE210E167
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 11:07:57 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B012910E15D
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 11:54:17 +0000 (UTC)
+Date: Tue, 22 Mar 2022 12:54:13 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Mar 2022 16:39:12 +0530
-Message-Id: <20220322110912.3509-1-nidhi1.gupta@intel.com>
+Message-ID: <Yjm45YC88J+FbOI3@kamilkon-DESK1>
+References: <20220322082518.17726-1-zbigniew.kempczynski@intel.com>
+ <20220322082518.17726-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7] IGT cleanup
+In-Reply-To: <20220322082518.17726-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_ccs: Check
+ ctrl-surf-copy in new context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,131 +22,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before starting the next subtest, clean up the states to default
-values, those are assumed by other tests.
+Dnia 2022-03-22 at 09:25:17 +0100, Zbigniew Kempczyński napisał(a):
+> From: Apoorva Singh <apoorva1.singh@intel.com>
+> 
+> Verify ccs data is binded to physical memory by using
+> XY_CTRL_SURF_COPY_BLT command in separate context.
+> 
+> v2: add separate allocator handle for new context (Zbigniew)
+> 
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/i915/gem_ccs.c | 52 ++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 41 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> index fdf1fe75f5..b697ea56f9 100644
+> --- a/tests/i915/gem_ccs.c
+> +++ b/tests/i915/gem_ccs.c
+> @@ -39,6 +39,7 @@ struct test_config {
+>  	bool compression;
+>  	bool inplace;
+>  	bool surfcopy;
+> +	bool new_ctx;
+>  };
+>  
+>  static void set_object(struct blt_copy_object *obj,
+> @@ -234,9 +235,8 @@ static void block_copy(int i915,
+>  		       const intel_ctx_t *ctx,
+>  		       const struct intel_execution_engine2 *e,
+>  		       uint32_t region1, uint32_t region2,
+> -		       enum blt_tiling mid_tiling, bool compression,
+> -		       bool inplace,
+> -		       bool surfcopy)
+> +		       enum blt_tiling mid_tiling,
+> +		       const struct test_config *config)
+>  {
+>  	struct blt_copy_data blt = {};
+>  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> @@ -249,7 +249,7 @@ static void block_copy(int i915,
+>  	uint32_t run_id = mid_tiling;
+>  	uint32_t mid_region = region2, bb;
+>  	uint32_t width = param.width, height = param.height;
+> -	enum blt_compression mid_compression = compression;
+> +	enum blt_compression mid_compression = config->compression;
+>  	int mid_compression_format = param.compression_format;
+>  	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+>  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
+> @@ -293,8 +293,31 @@ static void block_copy(int i915,
+>  	WRITE_PNG(i915, run_id, "src", &blt.src, width, height);
+>  	WRITE_PNG(i915, run_id, "mid", &blt.dst, width, height);
+>  
+> -	if (surfcopy && pext)
+> -		surf_copy(i915, ctx, e, ahnd, src, mid, dst, run_id);
+> +	if (config->surfcopy && pext) {
+> +		const intel_ctx_t *surf_ctx = ctx;
+> +		uint64_t surf_ahnd = ahnd;
+> +		struct intel_execution_engine2 surf_e = *e;
+> +
+> +		if (config->new_ctx) {
+> +			intel_ctx_cfg_t cfg = {};
+> +
+> +			cfg.num_engines = 1;
+> +			cfg.engines[0].engine_class = e->class;
+> +			cfg.engines[0].engine_instance = e->instance;
+> +			surf_ctx = intel_ctx_create(i915, &cfg);
+> +			surf_e.flags = 0;
+> +			surf_ahnd = intel_allocator_open_full(i915, surf_ctx->id, 0, 0,
+> +							      INTEL_ALLOCATOR_SIMPLE,
+> +							      ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +		}
+> +
+> +		surf_copy(i915, surf_ctx, &surf_e, surf_ahnd, src, mid, dst, run_id);
+> +
+> +		if (surf_ctx != ctx) {
+> +			intel_ctx_destroy(i915, surf_ctx);
+> +			put_ahnd(surf_ahnd);
+> +		}
+> +	}
+>  
+>  	memset(&blt, 0, sizeof(blt));
+>  	blt.color_depth = CD_32bit;
+> @@ -303,7 +326,7 @@ static void block_copy(int i915,
+>  	set_blt_object(&blt.dst, dst);
+>  	set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
+>  	set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+> -	if (inplace) {
+> +	if (config->inplace) {
+>  		set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
+>  			   T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>  		blt.dst.ptr = mid->ptr;
+> @@ -367,10 +390,7 @@ static void block_copy_test(int i915,
+>  					      param.compression_format, regtxt) {
+>  					block_copy(i915, ctx, e,
+>  						   region1, region2,
+> -						   tiling,
+> -						   config->compression,
+> -						   config->inplace,
+> -						   config->surfcopy);
+> +						   tiling, config);
+>  				}
+>  				free(regtxt);
+>  			}
+> @@ -480,6 +500,16 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  		block_copy_test(i915, &config, ctx, set);
+>  	}
+>  
+> +	igt_describe("Check flatccs data are physically tagged and visible"
+> +		     " in different contexts");
+> +	igt_subtest_with_dynamic("ctrl-surf-copy-new-ctx") {
+> +		struct test_config config = { .compression = true,
+> +					      .surfcopy = true,
+> +					      .new_ctx = true };
+> +
+> +		block_copy_test(i915, &config, ctx, set);
+> +	}
+> +
+>  	igt_fixture {
+>  		igt_disallow_hang(i915, hang);
+>  		close(i915);
+> -- 
+> 2.32.0
+> 
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-v2: And also before running the subtest we need to sanitize the system state
-to default, since we can't trust the state of previous subtest, used
-igt_display_reset() to sanitize the state. (Bhanuprakash Modem)
-
-Below tests are modified:
-	tests/kms_concurrent.c
-	tests/kms_sequence.c
-
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_concurrent.c | 39 ++++++++++++++-------------------------
- tests/kms_sequence.c   |  8 +++++---
- 2 files changed, 19 insertions(+), 28 deletions(-)
-
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 1b8f4b04..3fbf80e1 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
- 	}
- 
- 	/* reset the constraint on the pipe */
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
- 	free(data->plane);
- 	data->plane = NULL;
-@@ -278,35 +279,28 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
- static void
- run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- {
--	int connected_outs;
- 	int n_planes = data->display.pipes[pipe].n_planes;
-+	igt_display_reset(&data->display);
- 
- 	if (!opt.user_seed)
- 		opt.seed = time(NULL);
- 
--	connected_outs = 0;
--	for_each_valid_output_on_pipe(&data->display, pipe, output) {
--		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
--			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
-+	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
-+		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
- 
--		srand(opt.seed);
-+	srand(opt.seed);
- 
--		test_init(data, pipe, n_planes, output);
-+	test_init(data, pipe, n_planes, output);
- 
--		igt_fork(child, 1) {
--			test_plane_position_with_output(data, pipe, n_planes, output);
--		}
--
--		test_resolution_with_output(data, pipe, n_planes, output);
--
--		igt_waitchildren();
-+	igt_fork(child, 1) {
-+		test_plane_position_with_output(data, pipe, n_planes, output);
-+	}
- 
--		test_fini(data, pipe, n_planes, output);
-+	test_resolution_with_output(data, pipe, n_planes, output);
- 
--		connected_outs++;
--	}
-+	igt_waitchildren();
- 
--	igt_skip_on(connected_outs == 0);
-+	test_fini(data, pipe, n_planes, output);
- }
- 
- static void
-@@ -315,15 +309,10 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_output_t *output;
- 
- 	igt_fixture {
--		int valid_tests = 0;
--
- 		igt_require_pipe(&data->display, pipe);
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			valid_tests++;
--
--		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
-+		igt_display_require_output(&data->display);
- 	}
- 
- 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index 9c287480..80e8e45c 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -76,7 +76,9 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
- 	drmModeModeInfo *mode;
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *primary;
--
-+	
-+	igt_display_reset(&data->display);
-+	
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
- 
-@@ -109,8 +111,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, NULL);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
--	igt_display_commit(display);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
- 
- static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
--- 
-2.26.2
+--
+Kamil
