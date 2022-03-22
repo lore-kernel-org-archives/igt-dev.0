@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDC8910E10E
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 09:51:13 +0000 (UTC)
-Date: Tue, 22 Mar 2022 10:51:09 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Ramalingam C <ramalingam.c@intel.com>
-Message-ID: <YjmcDQ/ASrGtpfQX@zkempczy-mobl2>
-References: <20220314051432.15785-1-ramalingam.c@intel.com>
- <YjBcgpXn+wCr2Us1@zkempczy-mobl2>
- <20220321230051.GA12356@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DAE210E167
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 11:07:57 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 22 Mar 2022 16:39:12 +0530
+Message-Id: <20220322110912.3509-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220321230051.GA12356@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/i915/gem_lmem_swapping: Add
- ccs subtests
+Subject: [igt-dev] [PATCH i-g-t v7] IGT cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,437 +16,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev <igt-dev@lists.freedesktop.org>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 22, 2022 at 04:30:53AM +0530, Ramalingam C wrote:
-> On 2022-03-15 at 10:29:38 +0100, Zbigniew Kempczyński wrote:
-> > On Mon, Mar 14, 2022 at 10:44:32AM +0530, Ramalingam C wrote:
-> > > Add subtests for covering the compressed object's eviction.
-> > > 
-> > > v2:
-> > >   gem_sync after the block_copy blit for init
-> > > v3:
-> > >   ahnd is passed in as a param [Zbigniew]
-> > >   cmd is bb [Zbigniew]
-> > >   blt src and dst sizes supposed to be same [Zbigniew]
-> > > 
-> > > Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> > > Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> > > Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
-> > > ---
-> > >  tests/i915/gem_lmem_swapping.c | 222 +++++++++++++++++++++++++++++++--
-> > >  1 file changed, 215 insertions(+), 7 deletions(-)
-> > > 
-> > > diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-> > > index 582111dddeb9..97858219aa96 100644
-> > > --- a/tests/i915/gem_lmem_swapping.c
-> > > +++ b/tests/i915/gem_lmem_swapping.c
-> > > @@ -22,6 +22,7 @@
-> > >  #include <sys/time.h>
-> > >  #include <sys/wait.h>
-> > >  #include "drm.h"
-> > > +#include "i915/i915_blt.h"
-> > >  
-> > >  IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
-> > >  
-> > > @@ -30,6 +31,7 @@ IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
-> > >  
-> > >  #define PAGE_SIZE  (1ULL << 12)
-> > >  #define SZ_64K	   (16 * PAGE_SIZE)
-> > > +#define DG2_MOCS   (2 << 1)
-> > >  
-> > >  static const char *readable_unit(uint64_t size)
-> > >  {
-> > > @@ -60,6 +62,7 @@ struct params {
-> > >  #define TEST_RANDOM	(1 << 3)
-> > >  #define TEST_ENGINES	(1 << 4)
-> > >  #define TEST_MULTI	(1 << 5)
-> > > +#define TEST_CCS	(1 << 6)
-> > >  	unsigned int flags;
-> > >  	unsigned int seed;
-> > >  	bool oom_test;
-> > > @@ -69,8 +72,56 @@ struct object {
-> > >  	uint64_t size;
-> > >  	uint32_t seed;
-> > >  	uint32_t handle;
-> > > +	struct blt_copy_object *blt_obj;
-> > >  };
-> > >  
-> > > +static void set_object(struct blt_copy_object *obj,
-> > > +		       uint32_t handle, uint64_t size, uint32_t region,
-> > > +		       uint8_t mocs, enum blt_tiling tiling,
-> > > +		       enum blt_compression compression,
-> > > +		       enum blt_compression_type compression_type)
-> > > +{
-> > > +	obj->handle = handle;
-> > > +	obj->size = size;
-> > > +	obj->region = region;
-> > > +	obj->mocs = mocs;
-> > > +	obj->tiling = tiling;
-> > > +	obj->compression = compression;
-> > > +	obj->compression_type = compression_type;
-> > > +}
-> > > +
-> > > +static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> > > +		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> > > +		     uint16_t x_offset, uint16_t y_offset)
-> > > +{
-> > > +	obj->pitch = pitch;
-> > > +	obj->x1 = x1;
-> > > +	obj->y1 = y1;
-> > > +	obj->x2 = x2;
-> > > +	obj->y2 = y2;
-> > > +	obj->x_offset = x_offset;
-> > > +	obj->y_offset = y_offset;
-> > > +}
-> > > +
-> > > +static void set_batch(struct blt_copy_batch *batch,
-> > > +		      uint32_t handle, uint64_t size, uint32_t region)
-> > > +{
-> > > +	batch->handle = handle;
-> > > +	batch->size = size;
-> > > +	batch->region = region;
-> > > +}
-> > > +
-> > > +static void set_object_ext(struct blt_block_copy_object_ext *obj,
-> > > +			   uint8_t compression_format,
-> > > +			   uint16_t surface_width, uint16_t surface_height,
-> > > +			   enum blt_surface_type surface_type)
-> > > +{
-> > > +	obj->compression_format = compression_format;
-> > > +	obj->surface_width = surface_width;
-> > > +	obj->surface_height = surface_height;
-> > > +	obj->surface_type = surface_type;
-> > > +}
-> > > +
-> > >  static uint32_t create_bo(int i915,
-> > >  			  uint64_t size,
-> > >  			  struct drm_i915_gem_memory_class_instance *region,
-> > > @@ -105,6 +156,46 @@ init_object(int i915, struct object *obj, unsigned long seed, unsigned int flags
-> > >  	munmap(buf, obj->size);
-> > >  }
-> > >  
-> > > +#define BATCH_SIZE		4096
-> > > +static void
-> > > +init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
-> > > +		struct blt_copy_batch *cmd, unsigned long seed,
-> > > +		const intel_ctx_t *ctx, uint32_t region, uint64_t ahnd)
-> > > +{
-> > > +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-> > > +	const struct intel_execution_engine2 *e;
-> > > +	struct blt_copy_data blt = {};
-> > > +	unsigned long *buf, j;
-> > > +
-> > > +	obj->seed = seed;
-> > > +	for_each_ctx_engine(i915, ctx, e) {
-> > > +		igt_assert_f(gem_engine_can_block_copy(i915, e),
-> > > +			     "Ctx dont have Blt engine");
-> > > +		break;
-> > > +	}
-> > > +
-> > > +	buf = gem_mmap__device_coherent(i915, tmp->handle, 0, obj->size, PROT_WRITE);
-> > > +	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
-> > > +
-> > > +	for (j = 0; j < obj->size / sizeof(*buf); j++)
-> > > +		buf[j] = seed++;
-> > > +	munmap(buf, obj->size);
-> > > +
-> > > +	memset(&blt, 0, sizeof(blt));
-> > > +	blt.color_depth = CD_32bit;
-> > > +
-> > > +	memcpy(&blt.src, tmp, sizeof(blt.src));
-> > > +	memcpy(&blt.dst, obj->blt_obj, sizeof(blt.dst));
-> > > +	memcpy(&blt.bb, cmd, sizeof(blt.bb));
-> > > +
-> > > +	set_object_ext(&ext.src, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
-> > > +	set_object_ext(&ext.dst, 0, obj->blt_obj->x2, obj->blt_obj->y2,
-> > > +		       SURFACE_TYPE_2D);
-> > > +
-> > > +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
-> > > +	gem_sync(i915, obj->blt_obj->handle);
-> > 
-> > You can avoid stalls if you will use gem_create_from_pool().
-> Hi Zbigkniew! Thanks for the review.
-> 
-> AFAIK, pool of obj will be useful if we want to keep scheduling work with
-> different bb. So that we will get different or free bbs each time so
-> that on the run we wont write into already executing work.
-> 
-> Here the common obj used between init_obj_ccs and verify_obj_ccs are the
-> obj and also cmd. So either way we need to sync here, which we are
-> already doing it on obj.
-> 
-> Now could you please help me to understand how pool could help us here?
+Before starting the next subtest, clean up the states to default
+values, those are assumed by other tests.
 
-Currently you need to wait until bb becomes not busy (gem_sync()) before
-you're reusing it feeding it with commands. This leads to stalls between
-execution - after gem_sync() gpu is doing nothing. These micro pauses can
-hide some coherency issues which may occur in pipelined executions.
+v2: And also before running the subtest we need to sanitize the system state
+to default, since we can't trust the state of previous subtest, used
+igt_display_reset() to sanitize the state. (Bhanuprakash Modem)
 
-If you're doing 
+Below tests are modified:
+	tests/kms_concurrent.c
+	tests/kms_sequence.c
 
-	bb = gem_create_from_pool(i915, 4096);
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_concurrent.c | 39 ++++++++++++++-------------------------
+ tests/kms_sequence.c   |  8 +++++---
+ 2 files changed, 19 insertions(+), 28 deletions(-)
 
-you'll get first handle which is 4KiB size and at the moment of that call
-is not busy. So you don't need to use gem_sync() because library will return
-you first not used object with 4KiB size. Removing gem_sync() you'll verify
-how not-stalled execution will behave.
-
---
-Zbigniew
-
-
-> > 
-> > > +}
-> > > +
-> > >  static void
-> > >  verify_object(int i915, const struct object *obj,  unsigned int flags)
-> > >  {
-> > > @@ -125,6 +216,53 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
-> > >  	munmap(buf, obj->size);
-> > >  }
-> > >  
-> > > +static void
-> > > +verify_object_ccs(int i915, const struct object *obj,
-> > > +		  struct blt_copy_object *tmp, struct blt_copy_batch *cmd,
-> > > +		  const intel_ctx_t *ctx, uint32_t region, uint64_t ahnd)
-> > > +{
-> > > +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-> > > +	const struct intel_execution_engine2 *e;
-> > > +	struct blt_copy_data blt = {};
-> > > +	unsigned long j, val, *buf;
-> > > +
-> > > +	for_each_ctx_engine(i915, ctx, e) {
-> > > +		igt_assert_f(gem_engine_can_block_copy(i915, e),
-> > > +			     "ctx dont have Blt engine");
-> > > +		break;
-> > > +	}
-> > > +
-> > > +	memset(&blt, 0, sizeof(blt));
-> > > +	blt.color_depth = CD_32bit;
-> > > +
-> > > +	memcpy(&blt.src, obj->blt_obj, sizeof(blt.src));
-> > > +	memcpy(&blt.dst, tmp, sizeof(blt.dst));
-> > > +	memcpy(&blt.bb, cmd, sizeof(blt.bb));
-> > > +
-> > > +	blt.dst.x2 = min(obj->blt_obj->x2, tmp->x2);
-> > > +	blt.dst.y2 = min(obj->blt_obj->y2, tmp->y2);
-> > > +
-> > > +	set_object_ext(&ext.src, 0, obj->blt_obj->x2, obj->blt_obj->y2,
-> > > +		       SURFACE_TYPE_2D);
-> > > +	set_object_ext(&ext.dst, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
-> > > +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
-> > > +
-> > > +	buf = gem_mmap__device_coherent(i915, tmp->handle, 0,
-> > > +					obj->size, PROT_READ);
-> > > +	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, 0);
-> > > +
-> > > +	for (j = 0; j < obj->size / PAGE_SIZE; j++) {
-> > > +		unsigned long x = (j * PAGE_SIZE + rand() % PAGE_SIZE) / sizeof(*buf);
-> > > +
-> > > +		val = obj->seed + x;
-> > > +		igt_assert_f(buf[x] == val,
-> > > +			     "Object mismatch at offset %lu - found %lx, expected %lx, difference:%lx!\n",
-> > > +			     x * sizeof(*buf), buf[x], val, buf[x] ^ val);
-> > > +	}
-> > > +
-> > > +	munmap(buf, obj->size);
-> > > +}
-> > > +
-> > >  static void move_to_lmem(int i915,
-> > >  			 struct object *list,
-> > >  			 unsigned int num,
-> > > @@ -160,31 +298,62 @@ static void __do_evict(int i915,
-> > >  		       struct params *params,
-> > >  		       unsigned int seed)
-> > >  {
-> > > +	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
-> > > +						    region->memory_instance);
-> > >  	const unsigned int max_swap_in = params->count / 100 + 1;
-> > >  	const uint32_t bbe = MI_BATCH_BUFFER_END;
-> > >  	struct object *objects, *obj, *list;
-> > > -	uint32_t batch;
-> > > +	const uint32_t bpp = 32;
-> > > +	uint32_t batch, width, height, stride;
-> > > +	const intel_ctx_t *blt_ctx;
-> > > +	struct blt_copy_object *tmp;
-> > > +	struct blt_copy_batch *cmd;
-> > >  	unsigned int engine = 0;
-> > >  	unsigned int i, l;
-> > > -	uint64_t size;
-> > > +	uint64_t size, ahnd;
-> > >  	struct timespec t = {};
-> > >  	unsigned int num;
-> > >  
-> > > +	width = PAGE_SIZE / (bpp / 8);
-> > > +	height = params->size.max / (bpp / 8) /  width;
-> > > +	stride = width * 4;
-> > > +
-> > > +	tmp = calloc(1, sizeof(*tmp));
-> > > +	cmd = calloc(1, sizeof(*cmd));
-> > > +
-> > >  	__gem_context_set_persistence(i915, 0, false);
-> > >  	size = 4096;
-> > >  	batch = create_bo(i915, size, region, params->oom_test);
-> > > -
-> > >  	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
-> > >  
-> > > +	if (params->flags & TEST_CCS)
-> > > +		blt_ctx = intel_ctx_create_for_engine(i915,
-> > > +						      I915_ENGINE_CLASS_COPY,
-> > > +						      0);
-> > > +
-> > >  	objects = calloc(params->count, sizeof(*objects));
-> > >  	igt_assert(objects);
-> > >  
-> > >  	list = calloc(max_swap_in, sizeof(*list));
-> > >  	igt_assert(list);
-> > >  
-> > > +	ahnd = intel_allocator_open_full(i915, blt_ctx->id, 0, 0,
-> > > +					 INTEL_ALLOCATOR_SIMPLE,
-> > > +					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-> > >  	srand(seed);
-> > >  
-> > >  	/* Create the initial working set of objects. */
-> > > +	if (params->flags & TEST_CCS) {
-> > > +		tmp->handle = gem_create_in_memory_regions(i915, params->size.max,
-> > > +				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
-> > > +		set_object(tmp, tmp->handle, params->size.max,
-> > > +			   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0), DG2_MOCS,
-> > > +			   T_LINEAR, COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
-> > > +		set_geom(tmp, stride, 0, 0, width, height, 0, 0);
-> > > +		cmd->handle = gem_create_in_memory_regions(i915, BATCH_SIZE, region_id);
-> > 
-> > I would use bb pool to avoid stalls.
-> May be i am missing something. since this is sequential if we sync
-> between init, verify and subsequent init we dont need bb pool.
-> 
-> if we need two different bb in a loop for different independent tasks
-> then bb pool might help to go ahead without sync inbetween.
-> 
-> Sorry if i miss what you are suggesting. Please help me to understand.
-> 
-> Ram.
-> > 
-> > 
-> > > +		set_batch(cmd, cmd->handle, BATCH_SIZE, region_id);
-> > > +	}
-> > > +
-> > >  	size = 0;
-> > >  	for (i = 0, obj = objects; i < params->count; i++, obj++) {
-> > >  		if (params->flags & TEST_RANDOM)
-> > > @@ -194,6 +363,7 @@ static void __do_evict(int i915,
-> > >  		else
-> > >  			obj->size = params->size.min;
-> > >  
-> > > +		obj->size = ALIGN(obj->size, 4096);
-> > >  		size += obj->size;
-> > >  		if ((size >> 20) > params->mem_limit) {
-> > >  			params->count = i;
-> > > @@ -201,10 +371,26 @@ static void __do_evict(int i915,
-> > >  		}
-> > >  		obj->handle = create_bo(i915, obj->size, region, params->oom_test);
-> > >  
-> > > -		move_to_lmem(i915, objects + i, 1, batch, engine,
-> > > -			     params->oom_test);
-> > > -		if (params->flags & TEST_VERIFY)
-> > > +		if (params->flags & TEST_CCS) {
-> > > +			width = PAGE_SIZE / (bpp / 8);
-> > > +			height = obj->size / (bpp / 8) /  width;
-> > > +			stride = width * 4;
-> > > +
-> > > +			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
-> > > +			set_object(obj->blt_obj, obj->handle, obj->size, region_id,
-> > > +				   DG2_MOCS, T_LINEAR, COMPRESSION_ENABLED,
-> > > +				   COMPRESSION_TYPE_3D);
-> > > +			set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
-> > 
-> > Especially here and sync after last blit.
-> > 
-> > > +			init_object_ccs(i915, obj, tmp, cmd, rand(), blt_ctx,
-> > > +					region_id, ahnd);
-> > > +		} else if (params->flags & TEST_VERIFY) {
-> > >  			init_object(i915, obj, rand(), params->flags);
-> > > +			move_to_lmem(i915, objects + i, 1, batch, engine,
-> > > +				     params->oom_test);
-> > > +		} else {
-> > > +			move_to_lmem(i915, objects + i, 1, batch, engine,
-> > > +				     params->oom_test);
-> > > +		}
-> > >  	}
-> > >  
-> > >  	igt_debug("obj size min/max=%lu %s/%lu %s, count=%u, seed: %u\n",
-> > > @@ -231,7 +417,15 @@ static void __do_evict(int i915,
-> > >  		if (params->flags & TEST_ENGINES)
-> > >  			engine = (engine + 1) % __num_engines__;
-> > >  
-> > > -		if (params->flags & TEST_VERIFY) {
-> > > +		if (params->flags & TEST_CCS) {
-> > > +			for (i = 0; i < num; i++)
-> > > +				verify_object_ccs(i915, &list[i], tmp, cmd,
-> > > +						  blt_ctx, region_id, ahnd);
-> > 
-> > This one syncs internally in gem_set_domain so single bb is ok.
-> > 
-> > > +			/* Update random object - may swap it back in. */
-> > > +			i = rand() % params->count;
-> > > +			init_object_ccs(i915, &objects[i], tmp, cmd, rand(),
-> > > +					blt_ctx, region_id, ahnd);
-> > 
-> > But here also I would use bb pool with sync after last one.
-> > 
-> > Other things looks ok imo.
-> > 
-> > --
-> > Zbigniew
-> > 
-> > > +		} else if (params->flags & TEST_VERIFY) {
-> > >  			for (i = 0; i < num; i++)
-> > >  				verify_object(i915, &list[i], params->flags);
-> > >  
-> > > @@ -241,11 +435,17 @@ static void __do_evict(int i915,
-> > >  		}
-> > >  	}
-> > >  
-> > > +	put_ahnd(ahnd);
-> > >  	for (i = 0; i < params->count; i++)
-> > >  		gem_close(i915, objects[i].handle);
-> > >  
-> > >  	free(list);
-> > >  	free(objects);
-> > > +	if (params->flags & TEST_CCS) {
-> > > +		gem_close(i915, cmd->handle);
-> > > +		gem_close(i915, tmp->handle);
-> > > +		gem_context_destroy(i915, blt_ctx->id);
-> > > +	}
-> > >  
-> > >  	gem_close(i915, batch);
-> > >  }
-> > > @@ -348,6 +548,9 @@ static void test_evict(int i915,
-> > >  	const unsigned int nproc = sysconf(_SC_NPROCESSORS_ONLN) + 1;
-> > >  	struct params params;
-> > >  
-> > > +	if (flags & TEST_CCS)
-> > > +		igt_require(IS_DG2(intel_get_drm_devid(i915)));
-> > > +
-> > >  	fill_params(i915, &params, region, flags, nproc, false);
-> > >  
-> > >  	if (flags & TEST_PARALLEL) {
-> > > @@ -511,6 +714,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
-> > >  		{ "parallel-random-engines", TEST_PARALLEL | TEST_RANDOM | TEST_ENGINES },
-> > >  		{ "parallel-random-verify", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY },
-> > >  		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
-> > > +		{ "verify-ccs", TEST_CCS },
-> > > +		{ "verify-random-ccs", TEST_CCS | TEST_RANDOM },
-> > > +		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
-> > > +		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
-> > > +		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
-> > >  		{ }
-> > >  	};
-> > >  	int i915 = -1;
-> > > -- 
-> > > 2.20.1
-> > > 
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 1b8f4b04..3fbf80e1 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
+ 	}
+ 
+ 	/* reset the constraint on the pipe */
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+ 	free(data->plane);
+ 	data->plane = NULL;
+@@ -278,35 +279,28 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+ static void
+ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+-	int connected_outs;
+ 	int n_planes = data->display.pipes[pipe].n_planes;
++	igt_display_reset(&data->display);
+ 
+ 	if (!opt.user_seed)
+ 		opt.seed = time(NULL);
+ 
+-	connected_outs = 0;
+-	for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
+-			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
++	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
++		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+ 
+-		srand(opt.seed);
++	srand(opt.seed);
+ 
+-		test_init(data, pipe, n_planes, output);
++	test_init(data, pipe, n_planes, output);
+ 
+-		igt_fork(child, 1) {
+-			test_plane_position_with_output(data, pipe, n_planes, output);
+-		}
+-
+-		test_resolution_with_output(data, pipe, n_planes, output);
+-
+-		igt_waitchildren();
++	igt_fork(child, 1) {
++		test_plane_position_with_output(data, pipe, n_planes, output);
++	}
+ 
+-		test_fini(data, pipe, n_planes, output);
++	test_resolution_with_output(data, pipe, n_planes, output);
+ 
+-		connected_outs++;
+-	}
++	igt_waitchildren();
+ 
+-	igt_skip_on(connected_outs == 0);
++	test_fini(data, pipe, n_planes, output);
+ }
+ 
+ static void
+@@ -315,15 +309,10 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 	igt_output_t *output;
+ 
+ 	igt_fixture {
+-		int valid_tests = 0;
+-
+ 		igt_require_pipe(&data->display, pipe);
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+ 
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
+-			valid_tests++;
+-
+-		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
++		igt_display_require_output(&data->display);
+ 	}
+ 
+ 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index 9c287480..80e8e45c 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -76,7 +76,9 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+ 	drmModeModeInfo *mode;
+ 	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+-
++	
++	igt_display_reset(&data->display);
++	
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+@@ -109,8 +111,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
+-	igt_display_commit(display);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ }
+ 
+ static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
+-- 
+2.26.2
