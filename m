@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8270D10E290
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Mar 2022 16:24:16 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EF2510E6DC
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Mar 2022 16:46:28 +0000 (UTC)
+Date: Wed, 23 Mar 2022 17:46:23 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Mar 2022 21:41:48 +0530
-Message-Id: <20220323161148.581529-1-bhanuprakash.modem@intel.com>
+Message-ID: <YjtO3wJ4NnjSM4N5@kamilkon-DESK1>
+References: <20220323130653.65094-1-zbigniew.kempczynski@intel.com>
+ <20220323130653.65094-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Limit the execution to
- two display config
+In-Reply-To: <20220323130653.65094-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_exec_suspend: Add
+ 48b exec flag for execbuf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,75 +26,49 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Restrict the execution of all subtests to two disply config.
+Dnia 2022-03-23 at 14:06:52 +0100, Zbigniew Kempczyński napisał(a):
+> On DG2 and beyond safe alignment is bigger than on previous gens
+> so test could get offset which is >= 2^32. Add execbuf flag which
+> allows using such offsets.
 
-If we want to execute on all configs, need to pass an extra
-flag "-e" as a command line argument.
+imho this is better to describe as in cover letter, e.g. that dg2
+has vm larger than 4GB (2^32) so we need to add this flag.
+Bigger alignment shows this in runs so you can add that also.
+It is not strong opinion, you can change it or not.
 
-Example: ./build/tests/kms_setmode -e --r basic
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/i915/gem_exec_suspend.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+> index 59fad1dc9e..401026ef9a 100644
+> --- a/tests/i915/gem_exec_suspend.c
+> +++ b/tests/i915/gem_exec_suspend.c
+> @@ -137,7 +137,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+>  	} else {
+>  		/* ignore first execbuf offset */
+>  		obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
+> -		obj[0].flags |= EXEC_OBJECT_PINNED;
+> +		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+>  	}
+>  
+>  	for (int i = 0; i < 1024; i++) {
+> @@ -150,7 +150,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+>  		obj[1].handle = gem_create(fd, 4096);
+>  		if (ahnd) {
+>  			obj[1].offset = get_offset(ahnd, obj[1].handle, 4096, 0);
+> -			obj[1].flags |= EXEC_OBJECT_PINNED;
+> +			obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+>  			offset = obj[0].offset + reloc.delta;
+>  		} else {
+>  			offset = reloc.presumed_offset + reloc.delta;
+> -- 
+> 2.32.0
+> 
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_setmode.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index d5cb45d438..5efb56ad7f 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -41,6 +41,7 @@ static int drm_fd;
- static drmModeRes *drm_resources;
- static int filter_test_id;
- static bool dry_run;
-+static bool extended = false;
- 
- const drmModeModeInfo mode_640_480 = {
- 	.name		= "640x480",
-@@ -809,7 +810,11 @@ static void test_combinations(const struct test_config *tconf,
- 	struct connector_config *cconfs;
- 	int i;
- 
--	if (connector_count > 2 && (tconf->flags & TEST_STEALING))
-+	igt_info("Testing: %s %d connector combinations\n", tconf->name,
-+		 connector_count);
-+
-+	if (connector_count > 2 &&
-+	    ((tconf->flags & TEST_STEALING) || !extended))
- 		return;
- 
- 	igt_assert(tconf->resources);
-@@ -827,8 +832,6 @@ static void test_combinations(const struct test_config *tconf,
- 	get_combinations(tconf->resources->count_crtcs, connector_count,
- 			 true, &crtc_combs);
- 
--	igt_info("Testing: %s %d connector combinations\n", tconf->name,
--		 connector_count);
- 	for (i = 0; i < connector_combs.count; i++) {
- 		int *connector_idxs;
- 		int ret;
-@@ -878,6 +881,9 @@ static int opt_handler(int opt, int opt_index, void *data)
- 	case 'd':
- 		dry_run = true;
- 		break;
-+	case 'e':
-+		extended = true;
-+		break;
- 	case 't':
- 		filter_test_id = atoi(optarg);
- 		break;
-@@ -890,9 +896,10 @@ static int opt_handler(int opt, int opt_index, void *data)
- 
- const char *help_str =
- 	"  -d\t\tDon't run any test, only print what would be done. (still needs DRM access)\n"
--	"  -t <test id>\tRun only the test with this id.";
-+	"  -t <test id>\tRun only the test with this id\n"
-+	"  -e \t\tExtend to run on all display configs. (By default it's limited to 2 display config)\n";
- 
--igt_main_args("dt:", NULL, help_str, opt_handler, NULL)
-+igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- {
- 	const struct {
- 		enum test_flags flags;
--- 
-2.35.1
+--
+Kamil
