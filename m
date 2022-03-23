@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C346510E5CC
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Mar 2022 07:24:05 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Mar 2022 12:52:23 +0530
-Message-Id: <20220323072223.566016-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8069612042528030897=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Limit the execution on
- simulation
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Wed, 23 Mar 2022 08:18:44 -0000
+Message-ID: <164802352422.17994.7493413390817630533@emeril.freedesktop.org>
+References: <20220323072223.566016-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220323072223.566016-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fsetmode=3A_Limit_the_execution_on_simulation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,126 +17,276 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Restrict the execution of all subtests to two pipes on simulation
-environment.
+--===============8069612042528030897==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-If we want to execute on all pipes, need to pass an extra flag "-e"
-as a command line argument.
+== Series Details ==
 
-Example: ./build/tests/kms_setmode -e --r basic
+Series: tests/kms_setmode: Limit the execution on simulation
+URL   : https://patchwork.freedesktop.org/series/101670/
+State : success
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_setmode.c | 38 +++++++++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 9 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index d5cb45d438..5f879fb633 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -37,10 +37,14 @@
- /* max combinations with repetitions */
- #define MAX_COMBINATION_ELEMS   MAX_CRTCS
- 
-+/* restricted pipe count */
-+#define CRTC_RESTRICT_CNT 2
-+
- static int drm_fd;
- static drmModeRes *drm_resources;
- static int filter_test_id;
- static bool dry_run;
-+static bool extended = false;
- 
- const drmModeModeInfo mode_640_480 = {
- 	.name		= "640x480",
-@@ -801,6 +805,18 @@ static void get_combinations(int n, int k, bool allow_repetitions,
- 	iterate_combinations(n, k, allow_repetitions, 0, 0, &comb, set);
- }
- 
-+static int get_crtc_count(int count_crtcs, bool extend)
-+{
-+	if (igt_run_in_simulation()) {
-+		if ((count_crtcs <= CRTC_RESTRICT_CNT) || extend)
-+			return count_crtcs;
-+		else
-+			return CRTC_RESTRICT_CNT;
-+	}
-+
-+	return count_crtcs;
-+}
-+
- static void test_combinations(const struct test_config *tconf,
- 			      int connector_count)
- {
-@@ -808,6 +824,7 @@ static void test_combinations(const struct test_config *tconf,
- 	struct combination_set crtc_combs;
- 	struct connector_config *cconfs;
- 	int i;
-+	int crtc_count = get_crtc_count(tconf->resources->count_crtcs, extended);
- 
- 	if (connector_count > 2 && (tconf->flags & TEST_STEALING))
- 		return;
-@@ -815,17 +832,15 @@ static void test_combinations(const struct test_config *tconf,
- 	igt_assert(tconf->resources);
- 
- 	connector_combs.capacity = pow(tconf->resources->count_connectors,
--				       tconf->resources->count_crtcs + 1);
--	crtc_combs.capacity = pow(tconf->resources->count_crtcs,
--				  tconf->resources->count_crtcs + 1);
--
-+				       crtc_count + 1);
-+	crtc_combs.capacity = pow(crtc_count,
-+				  crtc_count + 1);
- 	connector_combs.items = malloc(connector_combs.capacity * sizeof(struct combination));
- 	crtc_combs.items = malloc(crtc_combs.capacity * sizeof(struct combination));
- 
- 	get_combinations(tconf->resources->count_connectors, connector_count,
- 			 false, &connector_combs);
--	get_combinations(tconf->resources->count_crtcs, connector_count,
--			 true, &crtc_combs);
-+	get_combinations(crtc_count, connector_count, true, &crtc_combs);
- 
- 	igt_info("Testing: %s %d connector combinations\n", tconf->name,
- 		 connector_count);
-@@ -866,9 +881,10 @@ free_cconfs:
- static void run_test(const struct test_config *tconf)
- {
- 	int connector_num;
-+	int crtc_count = get_crtc_count(tconf->resources->count_crtcs, extended);
- 
- 	connector_num = tconf->flags & TEST_CLONE ? 2 : 1;
--	for (; connector_num <= tconf->resources->count_crtcs; connector_num++)
-+	for (; connector_num <= crtc_count; connector_num++)
- 		test_combinations(tconf, connector_num);
- }
- 
-@@ -878,6 +894,9 @@ static int opt_handler(int opt, int opt_index, void *data)
- 	case 'd':
- 		dry_run = true;
- 		break;
-+	case 'e':
-+		extended = true;
-+		break;
- 	case 't':
- 		filter_test_id = atoi(optarg);
- 		break;
-@@ -890,9 +909,10 @@ static int opt_handler(int opt, int opt_index, void *data)
- 
- const char *help_str =
- 	"  -d\t\tDon't run any test, only print what would be done. (still needs DRM access)\n"
--	"  -t <test id>\tRun only the test with this id.";
-+	"  -t <test id>\tRun only the test with this id\n"
-+	"  -e \t\tRun on all pipes. (Default it will Run only two pipes)\n";
- 
--igt_main_args("dt:", NULL, help_str, opt_handler, NULL)
-+igt_main_args("det:", NULL, help_str, opt_handler, NULL)
- {
- 	const struct {
- 		enum test_flags flags;
--- 
-2.35.1
+CI Bug Log - changes from IGT_6389 -> IGTPW_6815
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/index.html
+
+Participating hosts (43 -> 41)
+------------------------------
+
+  Additional (2): bat-jsl-2 fi-bsw-nick 
+  Missing    (4): fi-ctg-p8600 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6815 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-6:          [PASS][1] -> [INCOMPLETE][2] ([i915#4418])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-bsw-nick/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#5341])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-bsw-nick/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][5] ([fdo#109271]) +67 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-bsw-nick/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@runner@aborted:
+    - bat-dg1-6:          NOTRUN -> [FAIL][6] ([i915#4312] / [i915#5257])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/bat-dg1-6/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-rpls-2}:       [DMESG-WARN][7] ([i915#4391]) -> [PASS][8] +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_busy@basic@flip:
+    - {bat-adlp-6}:       [DMESG-WARN][9] ([i915#3576]) -> [PASS][10] +1 similar issue
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/bat-adlp-6/igt@kms_busy@basic@flip.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/bat-adlp-6/igt@kms_busy@basic@flip.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [DMESG-WARN][11] ([i915#295]) -> [PASS][12] +10 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+    - fi-cfl-8109u:       [DMESG-WARN][13] ([i915#295] / [i915#5341]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][15] ([i915#4785]) -> [INCOMPLETE][16] ([i915#3303])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
+  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#295]: https://gitlab.freedesktop.org/drm/intel/issues/295
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
+  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5337]: https://gitlab.freedesktop.org/drm/intel/issues/5337
+  [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6389 -> IGTPW_6815
+
+  CI-20190529: 20190529
+  CI_DRM_11397: 056d47eaf6ea753fa2e21da31f9cbd8b721bbb7b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6815: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/index.html
+  IGT_6389: fa423f527496936a759eb838b023642deea7625f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/index.html
+
+--===============8069612042528030897==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_setmode: Limit the execution on simulation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101670/">https://patchwork.freedesktop.org/series/101670/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6389 -&gt; IGTPW_6815</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/index.html</p>
+<h2>Participating hosts (43 -&gt; 41)</h2>
+<p>Additional (2): bat-jsl-2 fi-bsw-nick <br />
+  Missing    (4): fi-ctg-p8600 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6815 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-bsw-nick/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-bsw-nick/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5341">i915#5341</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-bsw-nick/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +67 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/bat-dg1-6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4391">i915#4391</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +10 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/295">i915#295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5341">i915#5341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6389/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6389 -&gt; IGTPW_6815</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11397: 056d47eaf6ea753fa2e21da31f9cbd8b721bbb7b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6815: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6815/index.html<br />
+  IGT_6389: fa423f527496936a759eb838b023642deea7625f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8069612042528030897==--
