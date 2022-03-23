@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D85210E1EB
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Mar 2022 19:09:51 +0000 (UTC)
-Date: Tue, 22 Mar 2022 20:09:47 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B698410E06C
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Mar 2022 17:39:04 +0000 (UTC)
+Date: Wed, 23 Mar 2022 18:38:03 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <Yjoe7TFbxc0T7RJ3@zkempczy-mobl2>
-References: <20220224130444.18793-1-kamil.konieczny@linux.intel.com>
- <20220224130444.18793-2-kamil.konieczny@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Message-ID: <Yjta+9X/3cub+MeJ@zkempczy-mobl2>
+References: <20220323130653.65094-1-zbigniew.kempczynski@intel.com>
+ <20220323130653.65094-2-zbigniew.kempczynski@intel.com>
+ <YjtO3wJ4NnjSM4N5@kamilkon-DESK1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220224130444.18793-2-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_batchbuffer: add create
- without relocs
+In-Reply-To: <YjtO3wJ4NnjSM4N5@kamilkon-DESK1>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_exec_suspend: Add
+ 48b exec flag for execbuf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,65 +24,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 24, 2022 at 02:04:43PM +0100, Kamil Konieczny wrote:
-> There is create function with relocations, so add its
-> counterpart without it.
+On Wed, Mar 23, 2022 at 05:46:23PM +0100, Kamil Konieczny wrote:
+> Dnia 2022-03-23 at 14:06:52 +0100, Zbigniew Kempczyński napisał(a):
+> > On DG2 and beyond safe alignment is bigger than on previous gens
+> > so test could get offset which is >= 2^32. Add execbuf flag which
+> > allows using such offsets.
 > 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/intel_batchbuffer.c | 9 ++++++++-
->  lib/intel_batchbuffer.h | 1 +
->  2 files changed, 9 insertions(+), 1 deletion(-)
+> imho this is better to describe as in cover letter, e.g. that dg2
+> has vm larger than 4GB (2^32) so we need to add this flag.
+> Bigger alignment shows this in runs so you can add that also.
+> It is not strong opinion, you can change it or not.
+
+I think this is obvious, starting at gen8 we got PPGTT which is > 32b.
+
 > 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index e5666cd4..159813dd 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -1484,7 +1484,14 @@ struct intel_bb *intel_bb_create(int i915, uint32_t size)
->  	return __intel_bb_create(i915, 0, size,
->  				 relocs && !aux_needs_softpin(i915), 0, 0,
->  				 INTEL_ALLOCATOR_SIMPLE,
-> -				 ALLOC_STRATEGY_HIGH_TO_LOW);
-> +				 ALLOC_STRATEGY_LOW_TO_HIGH);
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  tests/i915/gem_exec_suspend.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+> > index 59fad1dc9e..401026ef9a 100644
+> > --- a/tests/i915/gem_exec_suspend.c
+> > +++ b/tests/i915/gem_exec_suspend.c
+> > @@ -137,7 +137,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+> >  	} else {
+> >  		/* ignore first execbuf offset */
+> >  		obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
+> > -		obj[0].flags |= EXEC_OBJECT_PINNED;
+> > +		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> >  	}
+> >  
+> >  	for (int i = 0; i < 1024; i++) {
+> > @@ -150,7 +150,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+> >  		obj[1].handle = gem_create(fd, 4096);
+> >  		if (ahnd) {
+> >  			obj[1].offset = get_offset(ahnd, obj[1].handle, 4096, 0);
+> > -			obj[1].flags |= EXEC_OBJECT_PINNED;
+> > +			obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> >  			offset = obj[0].offset + reloc.delta;
+> >  		} else {
+> >  			offset = reloc.presumed_offset + reloc.delta;
+> > -- 
+> > 2.32.0
+> > 
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Please keep HIGH_TO_LOW strategy. Only thing you need to do is 
-to use CANONICAL() + EXEC_OBJECT_SUPPORTS_48B_ADDRESS. Works fine
-for me. 
+Thanks for review.
 
-> +}
-> +
-> +struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size)
-> +{
-> +	return __intel_bb_create(i915, 0, size, false, 0, 0,
-> +				 INTEL_ALLOCATOR_SIMPLE,
-> +				 ALLOC_STRATEGY_LOW_TO_HIGH);
->  }
-
-Same here.
-
---
-Zbigniew
-
->  
->  /**
-> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-> index a488f9cf..793c16aa 100644
-> --- a/lib/intel_batchbuffer.h
-> +++ b/lib/intel_batchbuffer.h
-> @@ -523,6 +523,7 @@ struct intel_bb *intel_bb_create(int i915, uint32_t size);
->  struct intel_bb *
->  intel_bb_create_with_context(int i915, uint32_t ctx, uint32_t size);
->  struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size);
-> +struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size);
->  struct intel_bb *
->  intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx, uint32_t size);
->  void intel_bb_destroy(struct intel_bb *ibb);
-> -- 
-> 2.32.0
+> 
+> --
+> Kamil
 > 
