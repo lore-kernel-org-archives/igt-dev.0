@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4BAD10E6E0
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Mar 2022 13:52:19 +0000 (UTC)
-Date: Wed, 23 Mar 2022 15:52:14 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Message-ID: <YjsmDuhyfj4l/C7s@intel.com>
-References: <1647991289-19891-1-git-send-email-quic_abhinavk@quicinc.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8573710E163
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Mar 2022 13:51:57 +0000 (UTC)
+Date: Wed, 23 Mar 2022 14:51:53 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Yjsl+UZ3DFgTaLz+@kamilkon-DESK1>
+References: <20220321131205.267500-1-priyanka.dandamudi@intel.com>
+ <20220321131205.267500-2-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1647991289-19891-1-git-send-email-quic_abhinavk@quicinc.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: commit only the primary
- plane which is prepared
+In-Reply-To: <20220321131205.267500-2-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] prime_self_import: Add description
+ for test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,61 +22,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, swboyd@chromium.org, igt-dev@lists.freedesktop.org,
- nganji@codeaurora.org, seanpaul@chromium.org, quic_aravindh@quicinc.com,
- quic_khsieh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 22, 2022 at 04:21:29PM -0700, Abhinav Kumar wrote:
-> kms_atomic's test-only sub-test prepares only one primary plane
-> but igt_plane_commit() tries to commit all the primary planes.
+Hi Priyanka,
+
+Dnia 2022-03-21 at 18:42:04 +0530, priyanka.dandamudi@intel.com napisaÅ‚(a):
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> For drivers having only one primary plane per display still
-> work fine but when there is more than one primary plane, since
-> FB_ID is not assigned for the second one, the API
-> igt_primary_plane_commit_legacy() ends up calling the CRTC
-> disable path incorrectly and hence failing the test.
+> Add description for test.
 > 
-> Since only one primary plane has been prepared, commit only
-> that one by matching the index correctly.
-> 
-> Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
 > ---
->  lib/igt_kms.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  tests/prime_self_import.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 34a2aa0..98a6e1b 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -3189,6 +3189,8 @@ static int igt_plane_commit(igt_plane_t *plane,
->  			    enum igt_commit_style s,
->  			    bool fail_on_error)
->  {
-> +	igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
->  	if (pipe->display->first_commit || (s == COMMIT_UNIVERSAL &&
->  	     igt_plane_is_prop_changed(plane, IGT_PLANE_ROTATION))) {
->  		int ret;
-> @@ -3199,7 +3201,8 @@ static int igt_plane_commit(igt_plane_t *plane,
+> diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
+> index 38a55439..a56ec313 100644
+> --- a/tests/prime_self_import.c
+> +++ b/tests/prime_self_import.c
+> @@ -442,6 +442,8 @@ igt_main
+>  	int i;
 >  
->  	if (plane->type == DRM_PLANE_TYPE_CURSOR && s == COMMIT_LEGACY) {
->  		return igt_cursor_commit_legacy(plane, pipe, fail_on_error);
-> -	} else if (plane->type == DRM_PLANE_TYPE_PRIMARY && s == COMMIT_LEGACY) {
-> +	} else if (plane->type == DRM_PLANE_TYPE_PRIMARY && s == COMMIT_LEGACY &&
-> +			(plane->index == plane_primary->index)) {
+>  	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+> +		igt_describe_f("Verify PRIME_HANDLE_TO_FD functionality in"
+> +				" different scenarios:%s", tests[i].name);
 
-I think you should be able to simplify that to just
-'plane == plane_primary && s == COMMIT_LEGACY'
+Imho this doesn't add much explanation to test, so either keep
+it short, like "Verify prime import/export with %s", or add
+description to tests[] and print tests[i].idescription
 
->  		return igt_primary_plane_commit_legacy(plane, pipe,
->  						       fail_on_error);
->  	} else {
+>  		igt_subtest(tests[i].name)
+>  			tests[i].fn();
+>  	}
 > -- 
-> 2.7.4
-
--- 
-Ville Syrjälä
-Intel
+> 2.25.1
+> 
+Regards,
+Kamil
