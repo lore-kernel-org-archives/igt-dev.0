@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B0F310E07B
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Mar 2022 15:08:39 +0000 (UTC)
-Message-ID: <2aa9ace7-2a2d-c1ba-c0d2-c18a677cb0f1@intel.com>
-Date: Wed, 23 Mar 2022 20:38:19 +0530
-Content-Language: en-US
-To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220323072223.566016-1-bhanuprakash.modem@intel.com>
- <56dde28c-e484-0732-9ed9-d71794d49031@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <56dde28c-e484-0732-9ed9-d71794d49031@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA79F10E6EC
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Mar 2022 15:20:48 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 23 Mar 2022 17:20:13 +0200
+Message-Id: <20220323152016.19033-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_setmode: Limit the execution
- on simulation
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/4] runner: Introduce --prune_mode to
+ igt_runner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,247 +17,294 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed-23-03-2022 02:53 pm, Karthik B S wrote:
-> On 3/23/2022 12:52 PM, Bhanuprakash Modem wrote:
->> Restrict the execution of all subtests to two pipes on simulation
->> environment.
->>
->> If we want to execute on all pipes, need to pass an extra flag "-e"
->> as a command line argument.
->>
->> Example: ./build/tests/kms_setmode -e --r basic
->>
->> Cc: Karthik B S <karthik.b.s@intel.com>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> ---
->>   tests/kms_setmode.c | 38 +++++++++++++++++++++++++++++---------
->>   1 file changed, 29 insertions(+), 9 deletions(-)
->>
->> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
->> index d5cb45d438..5f879fb633 100644
->> --- a/tests/kms_setmode.c
->> +++ b/tests/kms_setmode.c
->> @@ -37,10 +37,14 @@
->>   /* max combinations with repetitions */
->>   #define MAX_COMBINATION_ELEMS   MAX_CRTCS
->> +/* restricted pipe count */
->> +#define CRTC_RESTRICT_CNT 2
->> +
->>   static int drm_fd;
->>   static drmModeRes *drm_resources;
->>   static int filter_test_id;
->>   static bool dry_run;
->> +static bool extended = false;
->>   const drmModeModeInfo mode_640_480 = {
->>       .name        = "640x480",
->> @@ -801,6 +805,18 @@ static void get_combinations(int n, int k, bool 
->> allow_repetitions,
->>       iterate_combinations(n, k, allow_repetitions, 0, 0, &comb, set);
->>   }
->> +static int get_crtc_count(int count_crtcs, bool extend)
->> +{
->> +    if (igt_run_in_simulation()) {
-> 
-> Hi,
-> 
-> I agree with this idea of restricting the execution to 2 pipes. IMHO, we 
-> could remove this simulation check also and restrict the execution to 2 
-> pipes in all cases to optimize execution time on CI. Otherwise the 
-> execution time on CI for this test will be very high, especially if we 
-> configurations in which we have displays connected to all the pipes.
+Allow finer control of reporting dynamic subtests instead of
+unconditionally assuming that the main subtest result and logs are
+uninteresting if the subtest has dynamic subtests.
 
-Hmm, in that case we must limit the execution on connector basis not on 
-pipe basis.
+The default is still to remove subtest results when the subtest has
+dynamic subtests. Other options are:
 
-Example: In 4 display config
-If we restrict the execution to 2 pipes, subtests will run on pipe A & B 
-only. So we'll loose the coverage of pipe C & D as well as 3 & 4 display 
-coverage in CI.
+keep-subtests: Remove the dynamic subtests instead, for cases when a
+stable test count is more important.
 
-pipe-A-DP-1-pipe-B-DP-2
-pipe-B-DP-1-pipe-A-DP-2
-pipe-A-DP-1-pipe-B-DP-3
-pipe-B-DP-1-pipe-A-DP-3
-pipe-A-DP-1-pipe-B-DP-4
-pipe-B-DP-1-pipe-A-DP-4
-pipe-A-DP-2-pipe-B-DP-3
-pipe-B-DP-2-pipe-A-DP-3
-pipe-A-DP-2-pipe-B-DP-4
-pipe-B-DP-2-pipe-A-DP-4
-pipe-A-DP-3-pipe-B-DP-4
-pipe-B-DP-3-pipe-A-DP-4
+keep-all: Remove nothing.
 
-If we limit the execution to 2 connectors, we don't loose the coverage 
-of pipe C & D.
+keep-requested: Remove the results that were not directly requested to
+be executed. This option is useful in cases where the test selection
+is a hand-picked mix of subtests and particular dynamic subtests.
 
-pipe-A-DP-1-pipe-B-DP-2
-pipe-A-DP-1-pipe-C-DP-2
-pipe-A-DP-1-pipe-D-DP-2
-pipe-B-DP-1-pipe-A-DP-2
-pipe-B-DP-1-pipe-C-DP-2
-pipe-B-DP-1-pipe-D-DP-2
-pipe-C-DP-1-pipe-A-DP-2
-pipe-C-DP-1-pipe-B-DP-2
-pipe-C-DP-1-pipe-D-DP-2
-pipe-D-DP-1-pipe-A-DP-2
-pipe-D-DP-1-pipe-B-DP-2
-pipe-D-DP-1-pipe-C-DP-2
-pipe-A-DP-1-pipe-B-DP-3
-pipe-A-DP-1-pipe-C-DP-3
-pipe-A-DP-1-pipe-D-DP-3
-pipe-B-DP-1-pipe-A-DP-3
-pipe-B-DP-1-pipe-C-DP-3
-pipe-B-DP-1-pipe-D-DP-3
-pipe-C-DP-1-pipe-A-DP-3
-pipe-C-DP-1-pipe-B-DP-3
-pipe-C-DP-1-pipe-D-DP-3
-pipe-D-DP-1-pipe-A-DP-3
-pipe-D-DP-1-pipe-B-DP-3
-pipe-D-DP-1-pipe-C-DP-3
-pipe-A-DP-1-pipe-B-DP-4
-pipe-A-DP-1-pipe-C-DP-4
-pipe-A-DP-1-pipe-D-DP-4
-pipe-B-DP-1-pipe-A-DP-4
-pipe-B-DP-1-pipe-C-DP-4
-pipe-B-DP-1-pipe-D-DP-4
-pipe-C-DP-1-pipe-A-DP-4
-pipe-C-DP-1-pipe-B-DP-4
-pipe-C-DP-1-pipe-D-DP-4
-pipe-D-DP-1-pipe-A-DP-4
-pipe-D-DP-1-pipe-B-DP-4
-pipe-D-DP-1-pipe-C-DP-4
-pipe-A-DP-2-pipe-B-DP-3
-pipe-A-DP-2-pipe-C-DP-3
-pipe-A-DP-2-pipe-D-DP-3
-pipe-B-DP-2-pipe-A-DP-3
-pipe-B-DP-2-pipe-C-DP-3
-pipe-B-DP-2-pipe-D-DP-3
-pipe-C-DP-2-pipe-A-DP-3
-pipe-C-DP-2-pipe-B-DP-3
-pipe-C-DP-2-pipe-D-DP-3
-pipe-D-DP-2-pipe-A-DP-3
-pipe-D-DP-2-pipe-B-DP-3
-pipe-D-DP-2-pipe-C-DP-3
-pipe-A-DP-2-pipe-B-DP-4
-pipe-A-DP-2-pipe-C-DP-4
-pipe-A-DP-2-pipe-D-DP-4
-pipe-B-DP-2-pipe-A-DP-4
-pipe-B-DP-2-pipe-C-DP-4
-pipe-B-DP-2-pipe-D-DP-4
-pipe-C-DP-2-pipe-A-DP-4
-pipe-C-DP-2-pipe-B-DP-4
-pipe-C-DP-2-pipe-D-DP-4
-pipe-D-DP-2-pipe-A-DP-4
-pipe-D-DP-2-pipe-B-DP-4
-pipe-D-DP-2-pipe-C-DP-4
-pipe-A-DP-3-pipe-B-DP-4
-pipe-A-DP-3-pipe-C-DP-4
-pipe-A-DP-3-pipe-D-DP-4
-pipe-B-DP-3-pipe-A-DP-4
-pipe-B-DP-3-pipe-C-DP-4
-pipe-B-DP-3-pipe-D-DP-4
-pipe-C-DP-3-pipe-A-DP-4
-pipe-C-DP-3-pipe-B-DP-4
-pipe-C-DP-3-pipe-D-DP-4
-pipe-D-DP-3-pipe-A-DP-4
-pipe-D-DP-3-pipe-B-DP-4
-pipe-D-DP-3-pipe-C-DP-4
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+---
+ runner/resultgen.c | 83 +++++++++++++++++++++++++++++++++++-----------
+ runner/settings.c  | 49 +++++++++++++++++++++++++++
+ runner/settings.h  |  8 +++++
+ 3 files changed, 121 insertions(+), 19 deletions(-)
 
-Still we need to pass an extra flag as a command line argument to cover 
-3 & 4 display configs.
-
-I'll float a new rev with this change.
-
-- Bhanu
-
-> 
-> Thanks,
-> 
-> Karthik.B.S
-> 
->> +        if ((count_crtcs <= CRTC_RESTRICT_CNT) || extend)
->> +            return count_crtcs;
->> +        else
->> +            return CRTC_RESTRICT_CNT;
->> +    }
->> +
->> +    return count_crtcs;
->> +}
->> +
->>   static void test_combinations(const struct test_config *tconf,
->>                     int connector_count)
->>   {
->> @@ -808,6 +824,7 @@ static void test_combinations(const struct 
->> test_config *tconf,
->>       struct combination_set crtc_combs;
->>       struct connector_config *cconfs;
->>       int i;
->> +    int crtc_count = get_crtc_count(tconf->resources->count_crtcs, 
->> extended);
->>       if (connector_count > 2 && (tconf->flags & TEST_STEALING))
->>           return;
->> @@ -815,17 +832,15 @@ static void test_combinations(const struct 
->> test_config *tconf,
->>       igt_assert(tconf->resources);
->>       connector_combs.capacity = pow(tconf->resources->count_connectors,
->> -                       tconf->resources->count_crtcs + 1);
->> -    crtc_combs.capacity = pow(tconf->resources->count_crtcs,
->> -                  tconf->resources->count_crtcs + 1);
->> -
->> +                       crtc_count + 1);
->> +    crtc_combs.capacity = pow(crtc_count,
->> +                  crtc_count + 1);
->>       connector_combs.items = malloc(connector_combs.capacity * 
->> sizeof(struct combination));
->>       crtc_combs.items = malloc(crtc_combs.capacity * sizeof(struct 
->> combination));
->>       get_combinations(tconf->resources->count_connectors, 
->> connector_count,
->>                false, &connector_combs);
->> -    get_combinations(tconf->resources->count_crtcs, connector_count,
->> -             true, &crtc_combs);
->> +    get_combinations(crtc_count, connector_count, true, &crtc_combs);
->>       igt_info("Testing: %s %d connector combinations\n", tconf->name,
->>            connector_count);
->> @@ -866,9 +881,10 @@ free_cconfs:
->>   static void run_test(const struct test_config *tconf)
->>   {
->>       int connector_num;
->> +    int crtc_count = get_crtc_count(tconf->resources->count_crtcs, 
->> extended);
->>       connector_num = tconf->flags & TEST_CLONE ? 2 : 1;
->> -    for (; connector_num <= tconf->resources->count_crtcs; 
->> connector_num++)
->> +    for (; connector_num <= crtc_count; connector_num++)
->>           test_combinations(tconf, connector_num);
->>   }
->> @@ -878,6 +894,9 @@ static int opt_handler(int opt, int opt_index, 
->> void *data)
->>       case 'd':
->>           dry_run = true;
->>           break;
->> +    case 'e':
->> +        extended = true;
->> +        break;
->>       case 't':
->>           filter_test_id = atoi(optarg);
->>           break;
->> @@ -890,9 +909,10 @@ static int opt_handler(int opt, int opt_index, 
->> void *data)
->>   const char *help_str =
->>       "  -d\t\tDon't run any test, only print what would be done. 
->> (still needs DRM access)\n"
->> -    "  -t <test id>\tRun only the test with this id.";
->> +    "  -t <test id>\tRun only the test with this id\n"
->> +    "  -e \t\tRun on all pipes. (Default it will Run only two pipes)\n";
->> -igt_main_args("dt:", NULL, help_str, opt_handler, NULL)
->> +igt_main_args("det:", NULL, help_str, opt_handler, NULL)
->>   {
->>       const struct {
->>           enum test_flags flags;
-> 
-> 
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index bccfca12..76f9fb7d 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -1229,19 +1229,64 @@ static void fill_from_journal(int fd,
+ 	fclose(f);
+ }
+ 
+-static void prune_subtests_with_dynamic_subtests(const char *binary,
+-						 struct subtest_list *subtests,
+-						 struct json_object *tests)
++static bool result_is_requested(struct job_list_entry *entry,
++				const char *subtestname,
++				const char *dynamic_name)
+ {
+-	char piglit_name[256];
++	char entryname[512];
+ 	size_t i;
+ 
++	if (dynamic_name)
++		snprintf(entryname, sizeof(entryname) - 1, "%s@%s", subtestname, dynamic_name);
++	else
++		strncpy(entryname, subtestname, sizeof(entryname) - 1);
++
++	for (i = 0; i < entry->subtest_count; i++) {
++		if (!strcmp(entry->subtests[i], entryname))
++			return true;
++	}
++
++	return false;
++}
++
++static void prune_subtests(struct settings *settings,
++			   struct job_list_entry *entry,
++			   struct subtest_list *subtests,
++			   struct json_object *tests)
++{
++	char piglit_name[256];
++	char dynamic_piglit_name[256];
++	size_t i, k;
++
++	if (settings->prune_mode == PRUNE_KEEP_ALL)
++		return;
++
+ 	for (i = 0; i < subtests->size; i++) {
+-		if (subtests->subs[i].dynamic_size) {
+-			generate_piglit_name(binary, subtests->subs[i].name, piglit_name, sizeof(piglit_name));
++		generate_piglit_name(entry->binary, subtests->subs[i].name, piglit_name, sizeof(piglit_name));
++
++		if (settings->prune_mode == PRUNE_KEEP_DYNAMIC) {
++			if (subtests->subs[i].dynamic_size)
++				json_object_object_del(tests, piglit_name);
++
++			continue;
++		}
++
++		assert(settings->prune_mode == PRUNE_KEEP_SUBTESTS || settings->prune_mode == PRUNE_KEEP_REQUESTED);
++
++		if (settings->prune_mode == PRUNE_KEEP_REQUESTED &&
++		    !result_is_requested(entry, subtests->subs[i].name, NULL)) {
+ 			json_object_object_del(tests, piglit_name);
+ 		}
+ 
++		for (k = 0; k < subtests->subs[i].dynamic_size; k++) {
++			if (settings->prune_mode == PRUNE_KEEP_SUBTESTS ||
++			    (settings->prune_mode == PRUNE_KEEP_REQUESTED &&
++			     !result_is_requested(entry, subtests->subs[i].name, subtests->subs[i].dynamic_names[k]))) {
++				generate_piglit_name_for_dynamic(piglit_name, subtests->subs[i].dynamic_names[k],
++								 dynamic_piglit_name, sizeof(dynamic_piglit_name));
++				json_object_object_del(tests, dynamic_piglit_name);
++			}
++		}
+ 	}
+ }
+ 
+@@ -1426,8 +1471,7 @@ static void add_to_totals(const char *binary,
+ 	for (i = 0; i < subtests->size; i++) {
+ 		generate_piglit_name(binary, subtests->subs[i].name, piglit_name, sizeof(piglit_name));
+ 
+-		if (subtests->subs[i].dynamic_size == 0) {
+-			test = get_or_create_json_object(results->tests, piglit_name);
++		if (json_object_object_get_ex(results->tests, piglit_name, &test)) {
+ 			if (!json_object_object_get_ex(test, "result", &resultobj)) {
+ 				fprintf(stderr, "Warning: No results set for %s\n", piglit_name);
+ 				return;
+@@ -1441,17 +1485,18 @@ static void add_to_totals(const char *binary,
+ 		for (k = 0; k < subtests->subs[i].dynamic_size; k++) {
+ 			generate_piglit_name_for_dynamic(piglit_name, subtests->subs[i].dynamic_names[k],
+ 							 dynamic_piglit_name, sizeof(dynamic_piglit_name));
+-			test = get_or_create_json_object(results->tests, dynamic_piglit_name);
+-			if (!json_object_object_get_ex(test, "result", &resultobj)) {
+-				fprintf(stderr, "Warning: No results set for %s\n", dynamic_piglit_name);
+-				return;
++
++			if (json_object_object_get_ex(results->tests, dynamic_piglit_name, &test)) {
++				if (!json_object_object_get_ex(test, "result", &resultobj)) {
++					fprintf(stderr, "Warning: No results set for %s\n", dynamic_piglit_name);
++					return;
++				}
++				result = json_object_get_string(resultobj);
++				add_result_to_totals(emptystrtotal, result);
++				add_result_to_totals(roottotal, result);
++				add_result_to_totals(binarytotal, result);
+ 			}
+-			result = json_object_get_string(resultobj);
+-			add_result_to_totals(emptystrtotal, result);
+-			add_result_to_totals(roottotal, result);
+-			add_result_to_totals(binarytotal, result);
+ 		}
+-
+ 	}
+ }
+ 
+@@ -1483,9 +1528,9 @@ static bool parse_test_directory(int dirfd,
+ 		goto parse_output_end;
+ 	}
+ 
+-	prune_subtests_with_dynamic_subtests(entry->binary, &subtests, results->tests);
+-
+ 	override_results(entry->binary, &subtests, results->tests);
++	prune_subtests(settings, entry, &subtests, results->tests);
++
+ 	add_to_totals(entry->binary, &subtests, results);
+ 
+  parse_output_end:
+diff --git a/runner/settings.c b/runner/settings.c
+index a7a12f50..cd64b964 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -29,6 +29,7 @@ enum {
+ 	OPT_ENABLE_CODE_COVERAGE,
+ 	OPT_COV_RESULTS_PER_TEST,
+ 	OPT_VERSION,
++	OPT_PRUNE_MODE,
+ 	OPT_HELP = 'h',
+ 	OPT_NAME = 'n',
+ 	OPT_DRY_RUN = 'd',
+@@ -65,6 +66,18 @@ static struct {
+ 	{ 0, 0 },
+ };
+ 
++static struct {
++	int value;
++	const char *name;
++} prune_modes[] = {
++	{ PRUNE_KEEP_DYNAMIC, "keep-dynamic-subtests" },
++	{ PRUNE_KEEP_DYNAMIC, "keep-dynamic" },
++	{ PRUNE_KEEP_SUBTESTS, "keep-subtests" },
++	{ PRUNE_KEEP_ALL, "keep-all" },
++	{ PRUNE_KEEP_REQUESTED, "keep-requested" },
++	{ 0, 0 },
++};
++
+ static bool set_log_level(struct settings* settings, const char *level)
+ {
+ 	typeof(*log_levels) *it;
+@@ -103,6 +116,20 @@ static bool set_abort_condition(struct settings* settings, const char *cond)
+ 	return false;
+ }
+ 
++static bool set_prune_mode(struct settings* settings, const char *mode)
++{
++	typeof(*prune_modes) *it;
++
++	for (it = prune_modes; it->name; it++) {
++		if (!strcmp(mode, it->name)) {
++			settings->prune_mode = it->value;
++			return true;
++		}
++	}
++
++	return false;
++}
++
+ static bool parse_abort_conditions(struct settings *settings, const char *optarg)
+ {
+ 	char *dup, *origdup, *p;
+@@ -239,6 +266,19 @@ static const char *usage_str =
+ 	"                        (longer) filter list means the test result should\n"
+ 	"                        change. KERN_NOTICE dmesg level is treated as warn,\n"
+ 	"                        unless overridden with --dmesg-warn-level.\n"
++	"  --prune-mode <mode>   Control reporting of dynamic subtests by selecting test\n"
++	"                        results that are removed from the final results set.\n"
++	"                        Possible options:\n"
++	"                         keep-dynamic-subtests  - Remove subtests that have dynamic\n"
++	"                                                  subtests. (default)\n"
++	"                         keep-dynamic           - Alias for the above\n"
++	"                         keep-subtests          - Remove dynamic subtests,\n"
++	"                                                  leaving just the parent subtest.\n"
++	"                         keep-all               - Don't remove anything\n"
++	"                         keep-requested         - Remove reported results that are\n"
++	"                                                  not in the requested test set.\n"
++	"                                                  Useful when you have a hand-written\n"
++	"                                                  testlist.\n"
+ 	"  -b, --blacklist FILENAME\n"
+ 	"                        Exclude all test matching to regexes from FILENAME\n"
+ 	"                        (can be used more than once)\n"
+@@ -423,6 +463,7 @@ bool parse_options(int argc, char **argv,
+ 		{"use-watchdog", no_argument, NULL, OPT_WATCHDOG},
+ 		{"piglit-style-dmesg", no_argument, NULL, OPT_PIGLIT_DMESG},
+ 		{"dmesg-warn-level", required_argument, NULL, OPT_DMESG_WARN_LEVEL},
++		{"prune-mode", required_argument, NULL, OPT_PRUNE_MODE},
+ 		{"blacklist", required_argument, NULL, OPT_BLACKLIST},
+ 		{"list-all", no_argument, NULL, OPT_LIST_ALL},
+ 		{ 0, 0, 0, 0},
+@@ -521,6 +562,12 @@ bool parse_options(int argc, char **argv,
+ 		case OPT_DMESG_WARN_LEVEL:
+ 			settings->dmesg_warn_level = atoi(optarg);
+ 			break;
++		case OPT_PRUNE_MODE:
++			if (!set_prune_mode(settings, optarg)) {
++				usage("Cannot parse prune mode", stderr);
++				goto error;
++			}
++			break;
+ 		case OPT_BLACKLIST:
+ 			if (!parse_blacklist(&settings->exclude_regexes,
+ 					     absolute_path(optarg)))
+@@ -779,6 +826,7 @@ bool serialize_settings(struct settings *settings)
+ 	SERIALIZE_LINE(f, settings, use_watchdog, "%d");
+ 	SERIALIZE_LINE(f, settings, piglit_style_dmesg, "%d");
+ 	SERIALIZE_LINE(f, settings, dmesg_warn_level, "%d");
++	SERIALIZE_LINE(f, settings, prune_mode, "%d");
+ 	SERIALIZE_LINE(f, settings, test_root, "%s");
+ 	SERIALIZE_LINE(f, settings, results_path, "%s");
+ 	SERIALIZE_LINE(f, settings, enable_code_coverage, "%d");
+@@ -830,6 +878,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+ 		PARSE_LINE(settings, name, val, use_watchdog, numval);
+ 		PARSE_LINE(settings, name, val, piglit_style_dmesg, numval);
+ 		PARSE_LINE(settings, name, val, dmesg_warn_level, numval);
++		PARSE_LINE(settings, name, val, prune_mode, numval);
+ 		PARSE_LINE(settings, name, val, test_root, val ? strdup(val) : NULL);
+ 		PARSE_LINE(settings, name, val, results_path, val ? strdup(val) : NULL);
+ 		PARSE_LINE(settings, name, val, enable_code_coverage, numval);
+diff --git a/runner/settings.h b/runner/settings.h
+index bbd965d2..6ae64695 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -24,6 +24,13 @@ _Static_assert(ABORT_ALL == (ABORT_TAINT | ABORT_LOCKDEP | ABORT_PING), "ABORT_A
+ #define GCOV_RESET GCOV_DIR	"/reset"
+ #define CODE_COV_RESULTS_PATH	"code_cov"
+ 
++enum {
++	PRUNE_KEEP_DYNAMIC = 0,
++	PRUNE_KEEP_SUBTESTS,
++	PRUNE_KEEP_ALL,
++	PRUNE_KEEP_REQUESTED,
++};
++
+ struct regex_list {
+ 	char **regex_strings;
+ 	GRegex **regexes;
+@@ -51,6 +58,7 @@ struct settings {
+ 	char *results_path;
+ 	bool piglit_style_dmesg;
+ 	int dmesg_warn_level;
++	int prune_mode;
+ 	bool list_all;
+ 	char *code_coverage_script;
+ 	bool enable_code_coverage;
+-- 
+2.30.2
