@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Message-ID: <d2e27f20-99e3-38ad-0bb0-bf4f5a063197@linux.intel.com>
+Date: Thu, 24 Mar 2022 15:33:40 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Tomeu Vizoso" <tomeu.vizoso@collabora.com>
-Date: Thu, 10 Mar 2022 08:14:10 -0000
-Message-ID: <164690005094.17008.6507964405123387760@emeril.freedesktop.org>
-References: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
-In-Reply-To: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_R?=
- =?utf-8?q?un_CI_on_Qualcomm_devices_=28rev2=29?=
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220324142621.347452-1-matthew.auld@intel.com>
+ <20220324142621.347452-4-matthew.auld@intel.com>
+From: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20220324142621.347452-4-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/gem_lmem_swapping: limit lmem
+ to 4G
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,89 +19,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@linux.intel.com>, intel-gfx@lists.freedesktop.org,
+ CQ Tang <cq.tang@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: Run CI on Qualcomm devices (rev2)
-URL   : https://patchwork.freedesktop.org/series/101195/
-State : warning
+On 3/24/22 15:26, Matthew Auld wrote:
+> From: CQ Tang <cq.tang@intel.com>
+>
+> On some systems lmem can be as large as 16G, which seems to trigger
+> various CI timeouts, and in the best case just takes a long time. For
+> the purposes of the test we should be able to limit to 4G, without any
+> big loss in coverage.
+>
+> Signed-off-by: CQ Tang <cq.tang@intel.com>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
 
-== Summary ==
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/528220 for the overview.
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/19604901):
-  $ unset CI_JOB_JWT
-  $ echo -e "\e[0Ksection_end:$(date +%s):unset_env_vars_section\r\e[0K"
-  section_end:1646899713:unset_env_vars_section
-  
-  $ export PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig/
-  $ meson --cross-file meson-cross-arm64.txt build
-  Could not find any valid candidate for cross files: meson-cross-arm64.txt
-  
-  ERROR: Cannot find specified cross file: meson-cross-arm64.txt
-  section_end:1646899717:step_script
-  section_start:1646899717:after_script
-  Running after_script
-  Running after script...
-  $ set +x # collapsed multi-line command
-  section_end:1646899724:after_script
-  section_start:1646899724:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1646899727:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/19604900):
-  $ echo -n "${CI_JOB_JWT}" > "${CI_JOB_JWT_FILE}"
-  $ unset CI_JOB_JWT
-  $ echo -e "\e[0Ksection_end:$(date +%s):unset_env_vars_section\r\e[0K"
-  section_end:1646899712:unset_env_vars_section
-  
-  $ export PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig/
-  $ meson --cross-file meson-cross-armhf.txt build
-  
-  ERROR: Cannot find specified cross file: meson-cross-armhf.txt
-  section_end:1646899715:step_script
-  section_start:1646899715:after_script
-  Running after_script
-  Running after script...
-  $ set +x # collapsed multi-line command
-  section_end:1646899721:after_script
-  section_start:1646899721:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1646899727:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/19604902):
-  $ echo -n "${CI_JOB_JWT}" > "${CI_JOB_JWT_FILE}"
-  $ unset CI_JOB_JWT
-  $ echo -e "\e[0Ksection_end:$(date +%s):unset_env_vars_section\r\e[0K"
-  section_end:1646899713:unset_env_vars_section
-  
-  $ export PKG_CONFIG_PATH=/usr/lib/mips-linux-gnu/pkgconfig/
-  $ meson --cross-file meson-cross-mips.txt build
-  
-  ERROR: Cannot find specified cross file: meson-cross-mips.txt
-  section_end:1646899717:step_script
-  section_start:1646899717:after_script
-  Running after_script
-  Running after script...
-  $ set +x # collapsed multi-line command
-  section_end:1646899724:after_script
-  section_start:1646899724:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1646899728:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/528220
+> ---
+>   tests/i915/gem_lmem_swapping.c | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+> index 995a663f..ad1c989c 100644
+> --- a/tests/i915/gem_lmem_swapping.c
+> +++ b/tests/i915/gem_lmem_swapping.c
+> @@ -526,7 +526,13 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   	igt_fixture {
+>   		struct intel_execution_engine2 *e;
+>   
+> -		i915 = drm_open_driver(DRIVER_INTEL);
+> +		igt_i915_driver_unload();
+> +		if (igt_i915_driver_load("lmem_size=4096")) {
+> +			igt_debug("i915 missing lmem_size modparam support\n");
+> +			igt_assert_eq(igt_i915_driver_load(NULL), 0);
+> +		}
+> +
+> +		i915 = __drm_open_driver(DRIVER_INTEL);
+>   		igt_require_gem(i915);
+>   		igt_require(gem_has_lmem(i915));
+>   
+> @@ -554,6 +560,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   	igt_fixture {
+>   		free(regions);
+>   		close(i915);
+> +		igt_i915_driver_unload();
+>   	}
+>   
+>   	igt_exit();
