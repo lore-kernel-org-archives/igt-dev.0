@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <f9deae4a-d93a-7660-c990-4ac093d0c37e@linux.intel.com>
-Date: Thu, 24 Mar 2022 14:46:45 +0000
+Content-Type: multipart/alternative;
+ boundary="===============5589604668274886855=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220324142621.347452-1-matthew.auld@intel.com>
- <20220324142621.347452-3-matthew.auld@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20220324142621.347452-3-matthew.auld@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/4] test/gem_lmem_swapping:
- fix physical engine usage
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Thu, 24 Mar 2022 15:01:43 -0000
+Message-ID: <164813410358.18591.12178512792727418522@emeril.freedesktop.org>
+References: <20220324141917.36759-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220324141917.36759-1-kamil.konieczny@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fconcurrent=5Fall=3A_Add_no-reloc_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,167 +17,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============5589604668274886855==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 24/03/2022 14:26, Matthew Auld wrote:
-> DG2 seems to have too many physical engines, and during execbuf just hits:
+== Series Details ==
 
-FWIW it's not that DG2 has too many engines but the test was apparently 
-broken (because considering legacy eb ring selector as consecutive index 
-namespace within total number of engines is wrong) during porting to 
-upstream codebase.
+Series: i915/gem_concurrent_all: Add no-reloc (rev2)
+URL   : https://patchwork.freedesktop.org/series/100688/
+State : success
 
-Regards,
+== Summary ==
 
-Tvrtko
+CI Bug Log - changes from CI_DRM_11402 -> IGTPW_6824
+====================================================
 
-> 
-> 	"execbuf with unknown ring: 5"
-> 
-> Convert the test over to using the non-legacy API where we instead fill
-> the ctx with all the physical engines and then engine/ring becomes the
-> index into this.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5192
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
-> ---
->   tests/i915/gem_lmem_swapping.c | 27 +++++++++++++++++++--------
->   1 file changed, 19 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-> index 193ff370..995a663f 100644
-> --- a/tests/i915/gem_lmem_swapping.c
-> +++ b/tests/i915/gem_lmem_swapping.c
-> @@ -126,6 +126,7 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
->   }
->   
->   static void move_to_lmem(int i915,
-> +			 const intel_ctx_t *ctx,
->   			 struct object *list,
->   			 unsigned int num,
->   			 uint32_t batch,
-> @@ -137,6 +138,7 @@ static void move_to_lmem(int i915,
->   		.buffers_ptr = to_user_pointer(obj),
->   		.buffer_count = 1 + num,
->   		.flags = I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT | engine,
-> +		.rsvd1 = ctx->id,
->   	};
->   	unsigned int i, ret;
->   
-> @@ -156,6 +158,7 @@ retry:
->   }
->   
->   static void __do_evict(int i915,
-> +		       const intel_ctx_t *ctx,
->   		       struct drm_i915_gem_memory_class_instance *region,
->   		       struct params *params,
->   		       unsigned int seed)
-> @@ -170,7 +173,6 @@ static void __do_evict(int i915,
->   	struct timespec t = {};
->   	unsigned int num;
->   
-> -	__gem_context_set_persistence(i915, 0, false);
->   	size = 4096;
->   	batch = create_bo(i915, &size, region, params->oom_test);
->   
-> @@ -201,7 +203,7 @@ static void __do_evict(int i915,
->   		}
->   		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
->   
-> -		move_to_lmem(i915, objects + i, 1, batch, engine,
-> +		move_to_lmem(i915, ctx, objects + i, 1, batch, engine,
->   			     params->oom_test);
->   		if (params->flags & TEST_VERIFY)
->   			init_object(i915, obj, rand(), params->flags);
-> @@ -226,7 +228,7 @@ static void __do_evict(int i915,
->   			idx = (idx + 1) % params->count;
->   		}
->   
-> -		move_to_lmem(i915, list, num, batch, engine, params->oom_test);
-> +		move_to_lmem(i915, ctx, list, num, batch, engine, params->oom_test);
->   
->   		if (params->flags & TEST_ENGINES)
->   			engine = (engine + 1) % __num_engines__;
-> @@ -342,6 +344,7 @@ static void fill_params(int i915, struct params *params,
->   }
->   
->   static void test_evict(int i915,
-> +		       const intel_ctx_t *ctx,
->   		       struct drm_i915_memory_region_info *region,
->   		       unsigned int flags)
->   {
-> @@ -353,14 +356,17 @@ static void test_evict(int i915,
->   	if (flags & TEST_PARALLEL) {
->   		int fd = gem_reopen_driver(i915);
->   
-> +		ctx = intel_ctx_create_all_physical(fd);
-> +		__gem_context_set_persistence(i915, ctx->id, false);
-> +
->   		igt_fork(child, nproc)
-> -			__do_evict(fd, &region->region, &params,
-> +			__do_evict(fd, ctx, &region->region, &params,
->   				   params.seed + child + 1);
->   
->   		igt_waitchildren();
->   		close(fd);
->   	} else {
-> -		__do_evict(i915, &region->region, &params, params.seed);
-> +		__do_evict(i915, ctx, &region->region, &params, params.seed);
->   	}
->   }
->   
-> @@ -399,6 +405,7 @@ static void smem_oom_exit_handler(int sig)
->   }
->   
->   static void test_smem_oom(int i915,
-> +			  const intel_ctx_t *ctx,
->   			  struct drm_i915_memory_region_info *region)
->   {
->   	const uint64_t smem_size = intel_get_total_ram_mb() +
-> @@ -421,7 +428,7 @@ static void test_smem_oom(int i915,
->   		fill_params(i915, &params, region, 0, 1, true);
->   
->   		igt_install_exit_handler(smem_oom_exit_handler);
-> -		__do_evict(fd, &region->region, &params,
-> +		__do_evict(fd, ctx, &region->region, &params,
->   			   params.seed + child + 1);
->   
->   		close(fd);
-> @@ -513,6 +520,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->   		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
->   		{ }
->   	};
-> +	const intel_ctx_t *ctx;
->   	int i915 = -1;
->   
->   	igt_fixture {
-> @@ -528,17 +536,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->   		for_each_physical_engine(i915, e)
->   			__num_engines__++;
->   		igt_require(__num_engines__);
-> +		ctx = intel_ctx_create_all_physical(i915);
-> +		__gem_context_set_persistence(i915, ctx->id, false);
-> +
->   	}
->   
->   	for (test = tests; test->name; test++) {
->   		igt_describe("Exercise local memory swapping to system memory");
->   		dynamic_lmem_subtest(region, regions, test->name)
-> -			test_evict(i915, region, test->flags);
-> +			test_evict(i915, ctx, region, test->flags);
->   	}
->   
->   	igt_describe("Exercise local memory swapping during exhausting system memory");
->   	dynamic_lmem_subtest(region, regions, "smem-oom")
-> -		test_smem_oom(i915, region);
-> +		test_smem_oom(i915, ctx, region);
->   
->   	igt_fixture {
->   		free(regions);
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/index.html
+
+Participating hosts (44 -> 40)
+------------------------------
+
+  Missing    (4): fi-bsw-cyan shard-tglu fi-bdw-samus fi-pnv-d510 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6824:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-rpls-2}:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11402/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6824 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-6:          [PASS][3] -> [INCOMPLETE][4] ([i915#4418])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11402/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+
+  * igt@runner@aborted:
+    - bat-dg1-6:          NOTRUN -> [FAIL][5] ([i915#4312] / [i915#5257])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/bat-dg1-6/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#5195]: https://gitlab.freedesktop.org/drm/intel/issues/5195
+  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6392 -> IGTPW_6824
+
+  CI-20190529: 20190529
+  CI_DRM_11402: 07be21d8f94f3d18394522fe5d6c75a08036c3a6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6824: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/index.html
+  IGT_6392: 5a78ea9ff9c0a77bec5b094bf7e9d82c9848702b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/index.html
+
+--===============5589604668274886855==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_concurrent_all: Add no-reloc (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/100688/">https://patchwork.freedesktop.org/series/100688/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11402 -&gt; IGTPW_6824</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/index.html</p>
+<h2>Participating hosts (44 -&gt; 40)</h2>
+<p>Missing    (4): fi-bsw-cyan shard-tglu fi-bdw-samus fi-pnv-d510 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6824:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11402/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6824 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11402/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/bat-dg1-6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6392 -&gt; IGTPW_6824</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11402: 07be21d8f94f3d18394522fe5d6c75a08036c3a6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6824: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6824/index.html<br />
+  IGT_6392: 5a78ea9ff9c0a77bec5b094bf7e9d82c9848702b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5589604668274886855==--
