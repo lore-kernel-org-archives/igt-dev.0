@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49E6E10E87F
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Mar 2022 10:19:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37EC410E87F
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Mar 2022 10:19:54 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Mar 2022 15:48:51 +0530
-Message-Id: <20220324101852.73089-4-riana.tauro@intel.com>
+Date: Thu, 24 Mar 2022 15:48:50 +0530
+Message-Id: <20220324101852.73089-3-riana.tauro@intel.com>
 In-Reply-To: <20220324101852.73089-1-riana.tauro@intel.com>
 References: <20220324101852.73089-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC PATCH i-g-t 3/4] tests/i915/i915_suspend: Add
- suspend/resume cycle without i915 module
+Subject: [igt-dev] [RFC PATCH i-g-t 2/4] lib/drmtest : add function to call
+ exit handler to unload i915 module
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,104 +25,55 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: "Tauro, Riana" <riana.tauro@intel.com>
 
-Exercise suspend/resume cycles without i915 module
-to know the system wide health of suspend/resume feature
-before executing i915 suspend/resume tests.
+Unload of i915 module needs closing of  at_exit_drm_fd.
+Add a function that calls the exit handler of at_exit_drm_fd
+to unload module successfully
 
 Signed-off-by: Tauro, Riana <riana.tauro@intel.com>
 ---
- tests/i915/i915_suspend.c | 39 +++++++++++++++++++++++++++++++++------
- 1 file changed, 33 insertions(+), 6 deletions(-)
+ lib/drmtest.c | 17 +++++++++++++++++
+ lib/drmtest.h |  1 +
+ 2 files changed, 18 insertions(+)
 
-diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-index da27ce09..09f74617 100644
---- a/tests/i915/i915_suspend.c
-+++ b/tests/i915/i915_suspend.c
-@@ -202,6 +202,17 @@ test_forcewake(int fd, bool hibernate)
- 	close (fw_fd);
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 09a9a229..2dafb4f7 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -588,6 +588,23 @@ int drm_open_driver(int chipset)
+ 	return fd;
  }
  
-+static int
-+basic_system_suspend(int fd, bool hibernate)
++/**
++ * drm_cancel_work_at_exit:
++ *
++ * calls __cancel_work_at_exit and closes
++ * at_exit_drm_fd to allow unloading of the module.
++ */
++void drm_cancel_work_at_exit(void)
 +{
-+	int suspend = hibernate ? SUSPEND_STATE_DISK : SUSPEND_STATE_MEM;
-+	close(fd);
-+	fd = -1;
-+        igt_i915_unload_systemsuspend(suspend,SUSPEND_TEST_NONE);
-+        fd = drm_open_driver(DRIVER_INTEL);
-+	return fd;
++	if (at_exit_drm_fd < 0)
++		return;
++	__cancel_work_at_exit(at_exit_drm_fd);
++
++	close(at_exit_drm_fd);
++	at_exit_drm_fd = -1;
 +}
 +
- int fd;
++
+ /**
+  * drm_open_driver_master:
+  * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index b5debd44..95248f56 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -89,6 +89,7 @@ void __set_forced_driver(const char *name);
+ #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
  
- igt_main
-@@ -210,45 +221,61 @@ igt_main
- 		fd = drm_open_driver(DRIVER_INTEL);
- 
- 	igt_subtest("fence-restore-tiled2untiled") {
-+		fd = basic_system_suspend(fd, false);
- 		gem_require_mappable_ggtt(fd);
- 		test_fence_restore(fd, true, false);
- 	}
- 
- 	igt_subtest("fence-restore-untiled") {
-+		fd = basic_system_suspend(fd, false);
- 		gem_require_mappable_ggtt(fd);
- 		test_fence_restore(fd, false, false);
- 	}
- 
--	igt_subtest("debugfs-reader")
-+	igt_subtest("debugfs-reader") {
-+		fd = basic_system_suspend(fd, false);
- 		test_debugfs_reader(fd, false);
-+	}
- 
--	igt_subtest("sysfs-reader")
-+	igt_subtest("sysfs-reader") {
-+		fd = basic_system_suspend(fd, false);
- 		test_sysfs_reader(fd, false);
-+	}
- 
- 	igt_subtest("shrink")
- 		test_shrink(fd, SUSPEND_STATE_MEM);
- 
--	igt_subtest("forcewake")
-+	igt_subtest("forcewake") {
-+		fd = basic_system_suspend(fd, false);
- 		test_forcewake(fd, false);
-+	}
- 
- 	igt_subtest("fence-restore-tiled2untiled-hibernate") {
-+		fd = basic_system_suspend(fd, true);
- 		gem_require_mappable_ggtt(fd);
- 		test_fence_restore(fd, true, true);
- 	}
- 
- 	igt_subtest("fence-restore-untiled-hibernate") {
-+		fd = basic_system_suspend(fd, true);
- 		gem_require_mappable_ggtt(fd);
- 		test_fence_restore(fd, false, true);
- 	}
- 
--	igt_subtest("debugfs-reader-hibernate")
-+	igt_subtest("debugfs-reader-hibernate") {
-+		fd = basic_system_suspend(fd, true);
- 		test_debugfs_reader(fd, true);
-+	}
- 
--	igt_subtest("sysfs-reader-hibernate")
-+	igt_subtest("sysfs-reader-hibernate") {
-+		fd = basic_system_suspend(fd, true);
- 		test_sysfs_reader(fd, true);
-+	}
- 
--	igt_subtest("forcewake-hibernate")
-+	igt_subtest("forcewake-hibernate") {
-+		fd = basic_system_suspend(fd, true);
- 		test_forcewake(fd, true);
-+	}
- 
- 	igt_fixture
- 		close(fd);
+ void drm_load_module(unsigned int chipset);
++void drm_cancel_work_at_exit(void);
+ int drm_open_driver(int chipset);
+ int drm_open_driver_master(int chipset);
+ int drm_open_driver_render(int chipset);
 -- 
 2.25.1
