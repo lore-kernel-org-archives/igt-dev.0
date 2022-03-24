@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BD7E10E4C3
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Mar 2022 15:15:45 +0000 (UTC)
-Date: Wed, 9 Mar 2022 16:15:39 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YijEm56I670FRT/E@kamilkon-DESK1>
-References: <20220308045819.18471-1-sai.gowtham.ch@intel.com>
+Date: Thu, 24 Mar 2022 14:26:20 +0000
+Message-Id: <20220324142621.347452-4-matthew.auld@intel.com>
+In-Reply-To: <20220324142621.347452-1-matthew.auld@intel.com>
+References: <20220324142621.347452-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220308045819.18471-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_basic: Add test
- description to the subtest.
+Subject: [igt-dev] [PATCH i-g-t 3/4] tests/gem_lmem_swapping: limit lmem to
+ 4G
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,73 +17,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, CQ Tang <cq.tang@intel.com>,
+ Nirmoy Das <nirmoy.das@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Sai,
+From: CQ Tang <cq.tang@intel.com>
 
-Dnia 2022-03-08 at 10:28:19 +0530, sai.gowtham.ch@intel.com napisał(a):
-> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> 
-> Added test description to subtests that are available.
+On some systems lmem can be as large as 16G, which seems to trigger
+various CI timeouts, and in the best case just takes a long time. For
+the purposes of the test we should be able to limit to 4G, without any
+big loss in coverage.
 
-Please send your descripton patches as HAX series, e.g.
-add second patch with file tests/intel-ci/fast-feedback.testlist
-containing only one line:
+Signed-off-by: CQ Tang <cq.tang@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
+---
+ tests/i915/gem_lmem_swapping.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-igt@meta_test@fail-result
-
-and in cover letter Subject put "HAX add description to [put name of test here]"
-
-See e-mail from Zbigniew on 3 Mar 2022,
-"Use HAX for series which add igt_describe"
-
-or https://patchwork.freedesktop.org/series/101198/
-as an example.
-
-> 
-> Cc: Melkaveri Arjun <Arjun.Melkaveri@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com
-> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> ---
->  tests/i915/gem_exec_basic.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
-> index 008a35d0..16466b05 100644
-> --- a/tests/i915/gem_exec_basic.c
-> +++ b/tests/i915/gem_exec_basic.c
-> @@ -63,6 +63,8 @@ igt_main
->  					    I915_DEVICE_MEMORY);
->  	}
->  
-> +	igt_describe("Basic test to check DRM_IOCTL_I915_GEM_EXECBUFFER2 ioctl on"
-> +			" every ring, iterating over memory regions.");
--------------------- ^
-When you have multi-line string, please align below ones to that
-of above, this should looks like
-
-	igt_describe("Basic test to check DRM_IOCTL_I915_GEM_EXECBUFFER2 ioctl on"
-		     " every ring, iterating over memory regions.");
-^^
-(tabulators, then few spaces for align)
-
-Please also change description, e.g. no need to keep long DRM_ ,
-something like: 
-
-Check basic functionality of GEM_EXECBUFFER2 ioctl
-on every ring and every memory region.
-
-Split it and align accordingly.
-
-
->  	igt_subtest_with_dynamic("basic") {
->  		for_each_combination(regions, 1, set) {
->  			char *sub_name = memregion_dynamic_subtest_name(regions);
-> -- 
-> 2.35.1
-> 
-Regards,
-Kamil
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+index 995a663f..ad1c989c 100644
+--- a/tests/i915/gem_lmem_swapping.c
++++ b/tests/i915/gem_lmem_swapping.c
+@@ -526,7 +526,13 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	igt_fixture {
+ 		struct intel_execution_engine2 *e;
+ 
+-		i915 = drm_open_driver(DRIVER_INTEL);
++		igt_i915_driver_unload();
++		if (igt_i915_driver_load("lmem_size=4096")) {
++			igt_debug("i915 missing lmem_size modparam support\n");
++			igt_assert_eq(igt_i915_driver_load(NULL), 0);
++		}
++
++		i915 = __drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(i915);
+ 		igt_require(gem_has_lmem(i915));
+ 
+@@ -554,6 +560,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	igt_fixture {
+ 		free(regions);
+ 		close(i915);
++		igt_i915_driver_unload();
+ 	}
+ 
+ 	igt_exit();
+-- 
+2.34.1
