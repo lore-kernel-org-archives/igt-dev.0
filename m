@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <64e19b8f58a8587e2c12bb5acd6953c9ccaacac5.camel@linux.intel.com>
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
-Date: Fri, 25 Mar 2022 09:05:34 +0100
-In-Reply-To: <20220324142621.347452-2-matthew.auld@intel.com>
-References: <20220324142621.347452-1-matthew.auld@intel.com>
- <20220324142621.347452-2-matthew.auld@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <af23ceff-4899-6bef-87e5-273419f030f8@intel.com>
+Date: Fri, 25 Mar 2022 08:40:45 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/4] test/gem_lmem_swapping: account for
- object rounding
+Content-Language: en-GB
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ Petri Latvala <petri.latvala@intel.com>
+References: <20220324142621.347452-1-matthew.auld@intel.com>
+ <20220324142621.347452-4-matthew.auld@intel.com>
+ <8735j75jjk.wl-ashutosh.dixit@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <8735j75jjk.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/gem_lmem_swapping: limit lmem
+ to 4G
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,81 +21,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nirmoy Das <nirmoy.das@linux.intel.com>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org,
+ =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, CQ Tang <cq.tang@intel.com>,
+ Nirmoy Das <nirmoy.das@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 2022-03-24 at 14:26 +0000, Matthew Auld wrote:
-> On DG2 the object size might be rounded when allocating lmem. Make
-> sure
-> we account for any rounding up.
+On 24/03/2022 17:47, Dixit, Ashutosh wrote:
+> On Thu, 24 Mar 2022 07:26:20 -0700, Matthew Auld wrote:
+>>
+>> @@ -554,6 +560,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>> 	igt_fixture {
+>> 		free(regions);
+>> 		close(i915);
+>> +		igt_i915_driver_unload();
 > 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux-intel.com>
+> I thought we'd reload the module with default params here but when the next
+> test runs the module gets loaded automatically so maybe this is ok?
 
-> ---
->  tests/i915/gem_lmem_swapping.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/i915/gem_lmem_swapping.c
-> b/tests/i915/gem_lmem_swapping.c
-> index 582111dd..193ff370 100644
-> --- a/tests/i915/gem_lmem_swapping.c
-> +++ b/tests/i915/gem_lmem_swapping.c
-> @@ -72,7 +72,7 @@ struct object {
->  };
->  
->  static uint32_t create_bo(int i915,
-> -                         uint64_t size,
-> +                         uint64_t *size,
->                           struct drm_i915_gem_memory_class_instance
-> *region,
->                           bool do_oom_test)
->  {
-> @@ -80,7 +80,7 @@ static uint32_t create_bo(int i915,
->         int ret;
->  
->  retry:
-> -       ret = __gem_create_in_memory_region_list(i915, &handle,
-> &size, region, 1);
-> +       ret = __gem_create_in_memory_region_list(i915, &handle, size,
-> region, 1);
->         if (do_oom_test && ret == -ENOMEM)
->                 goto retry;
->         igt_assert_eq(ret, 0);
-> @@ -172,7 +172,7 @@ static void __do_evict(int i915,
->  
->         __gem_context_set_persistence(i915, 0, false);
->         size = 4096;
-> -       batch = create_bo(i915, size, region, params->oom_test);
-> +       batch = create_bo(i915, &size, region, params->oom_test);
->  
->         gem_write(i915, batch, 0, &bbe, sizeof(bbe));
->  
-> @@ -199,7 +199,7 @@ static void __do_evict(int i915,
->                         params->count = i;
->                         break;
->                 }
-> -               obj->handle = create_bo(i915, obj->size, region,
-> params->oom_test);
-> +               obj->handle = create_bo(i915, &obj->size, region,
-> params->oom_test);
->  
->                 move_to_lmem(i915, objects + i, 1, batch, engine,
->                              params->oom_test);
-> @@ -270,7 +270,7 @@ static void fill_params(int i915, struct params
-> *params,
->  
->         if (flags & TEST_RANDOM) {
->                 params->size.min = 4096;
-> -               handle = create_bo(i915, params->size.min, &region-
-> >region,
-> +               handle = create_bo(i915, &params->size.min, &region-
-> >region,
->                                    do_oom_test);
->                 gem_close(i915, handle);
->                 params->size.max = 2 * size + params->size.min;
-
+Yeah, that at least matches my understanding. Adding Petri in case he 
+has some comments here.
