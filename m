@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 25 Mar 2022 12:02:37 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <Yj2TPQE3p16uIFLP@platvala-desk.ger.corp.intel.com>
+Message-ID: <48a192ae-dd05-823a-ac82-98284c6ebae4@linux.intel.com>
+Date: Fri, 25 Mar 2022 11:13:31 +0100
+MIME-Version: 1.0
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
 References: <20220324142621.347452-1-matthew.auld@intel.com>
  <20220324142621.347452-4-matthew.auld@intel.com>
- <8735j75jjk.wl-ashutosh.dixit@intel.com>
- <af23ceff-4899-6bef-87e5-273419f030f8@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af23ceff-4899-6bef-87e5-273419f030f8@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20220324142621.347452-4-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/gem_lmem_swapping: limit lmem
  to 4G
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,42 +19,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@linux.intel.com>,
- CQ Tang <cq.tang@intel.com>
+Cc: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, CQ Tang <cq.tang@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Mar 25, 2022 at 08:40:45AM +0000, Matthew Auld wrote:
-> On 24/03/2022 17:47, Dixit, Ashutosh wrote:
-> > On Thu, 24 Mar 2022 07:26:20 -0700, Matthew Auld wrote:
-> > > 
-> > > @@ -554,6 +560,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
-> > > 	igt_fixture {
-> > > 		free(regions);
-> > > 		close(i915);
-> > > +		igt_i915_driver_unload();
-> > 
-> > I thought we'd reload the module with default params here but when the next
-> > test runs the module gets loaded automatically so maybe this is ok?
-> 
-> Yeah, that at least matches my understanding. Adding Petri in case he has
-> some comments here.
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 
-Yes, the convention is to either leave the module loaded with
-defaults, or leave it unloaded. If the next test happens to be one
-that wants to load the module with different params, we save some
-time.
-
-If loading the module again doesn't work we should see some fireworks
-in CI results elsewhere anyway. Due to module loading problems we used
-to limit them to known places (reloading tests, selftests, ...) so we
-might need to revisit this topic later. But no need to FUD it at this
-time.
-
-
-
--- 
-Petri Latvala
+On 3/24/2022 3:26 PM, Matthew Auld wrote:
+> From: CQ Tang <cq.tang@intel.com>
+>
+> On some systems lmem can be as large as 16G, which seems to trigger
+> various CI timeouts, and in the best case just takes a long time. For
+> the purposes of the test we should be able to limit to 4G, without any
+> big loss in coverage.
+>
+> Signed-off-by: CQ Tang <cq.tang@intel.com>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
+> ---
+>   tests/i915/gem_lmem_swapping.c | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+> index 995a663f..ad1c989c 100644
+> --- a/tests/i915/gem_lmem_swapping.c
+> +++ b/tests/i915/gem_lmem_swapping.c
+> @@ -526,7 +526,13 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   	igt_fixture {
+>   		struct intel_execution_engine2 *e;
+>   
+> -		i915 = drm_open_driver(DRIVER_INTEL);
+> +		igt_i915_driver_unload();
+> +		if (igt_i915_driver_load("lmem_size=4096")) {
+> +			igt_debug("i915 missing lmem_size modparam support\n");
+> +			igt_assert_eq(igt_i915_driver_load(NULL), 0);
+> +		}
+> +
+> +		i915 = __drm_open_driver(DRIVER_INTEL);
+>   		igt_require_gem(i915);
+>   		igt_require(gem_has_lmem(i915));
+>   
+> @@ -554,6 +560,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   	igt_fixture {
+>   		free(regions);
+>   		close(i915);
+> +		igt_i915_driver_unload();
+>   	}
+>   
+>   	igt_exit();
