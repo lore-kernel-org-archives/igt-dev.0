@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Mar 2022 09:09:57 +0000
-Message-Id: <20220325090958.408654-2-matthew.auld@intel.com>
-In-Reply-To: <20220325090958.408654-1-matthew.auld@intel.com>
-References: <20220325090958.408654-1-matthew.auld@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5769188965400781871=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/3] test/gem_lmem_swapping: fix physical
- engine usage
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Fri, 25 Mar 2022 09:41:47 -0000
+Message-ID: <164820130762.24040.62470264383112225@emeril.freedesktop.org>
+References: <20220325090958.408654-1-matthew.auld@intel.com>
+In-Reply-To: <20220325090958.408654-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2Cv2=2C1/3=5D_test/gem=5Flmem=5Fswappin?=
+ =?utf-8?q?g=3A_account_for_object_rounding?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,168 +18,328 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@linux.intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-During execbuf DG2 currently just hits:
+--===============5769188965400781871==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-	"execbuf with unknown ring: 5"
+== Series Details ==
 
-It looks like the fix is to convert the test over to using the
-non-legacy API where we instead fill the ctx with all the physical
-engines and then engine/ring becomes the index into this.
+Series: series starting with [i-g-t,v2,1/3] test/gem_lmem_swapping: account for object rounding
+URL   : https://patchwork.freedesktop.org/series/101778/
+State : success
 
-v2:
-  - Make sure we destroy our newly created contexts(Ashutosh)
-  - Tweak the commit message so that we are talking less nonsense(Tvrtko)
-  - s/i915/fd/ when calling set_persistence
+== Summary ==
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5192
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
----
- tests/i915/gem_lmem_swapping.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+CI Bug Log - changes from IGT_6393 -> IGTPW_6829
+====================================================
 
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 193ff370..526835cc 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -126,6 +126,7 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
- }
- 
- static void move_to_lmem(int i915,
-+			 const intel_ctx_t *ctx,
- 			 struct object *list,
- 			 unsigned int num,
- 			 uint32_t batch,
-@@ -137,6 +138,7 @@ static void move_to_lmem(int i915,
- 		.buffers_ptr = to_user_pointer(obj),
- 		.buffer_count = 1 + num,
- 		.flags = I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT | engine,
-+		.rsvd1 = ctx->id,
- 	};
- 	unsigned int i, ret;
- 
-@@ -156,6 +158,7 @@ retry:
- }
- 
- static void __do_evict(int i915,
-+		       const intel_ctx_t *ctx,
- 		       struct drm_i915_gem_memory_class_instance *region,
- 		       struct params *params,
- 		       unsigned int seed)
-@@ -170,7 +173,6 @@ static void __do_evict(int i915,
- 	struct timespec t = {};
- 	unsigned int num;
- 
--	__gem_context_set_persistence(i915, 0, false);
- 	size = 4096;
- 	batch = create_bo(i915, &size, region, params->oom_test);
- 
-@@ -201,7 +203,7 @@ static void __do_evict(int i915,
- 		}
- 		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
- 
--		move_to_lmem(i915, objects + i, 1, batch, engine,
-+		move_to_lmem(i915, ctx, objects + i, 1, batch, engine,
- 			     params->oom_test);
- 		if (params->flags & TEST_VERIFY)
- 			init_object(i915, obj, rand(), params->flags);
-@@ -226,7 +228,7 @@ static void __do_evict(int i915,
- 			idx = (idx + 1) % params->count;
- 		}
- 
--		move_to_lmem(i915, list, num, batch, engine, params->oom_test);
-+		move_to_lmem(i915, ctx, list, num, batch, engine, params->oom_test);
- 
- 		if (params->flags & TEST_ENGINES)
- 			engine = (engine + 1) % __num_engines__;
-@@ -342,6 +344,7 @@ static void fill_params(int i915, struct params *params,
- }
- 
- static void test_evict(int i915,
-+		       const intel_ctx_t *ctx,
- 		       struct drm_i915_memory_region_info *region,
- 		       unsigned int flags)
- {
-@@ -353,14 +356,18 @@ static void test_evict(int i915,
- 	if (flags & TEST_PARALLEL) {
- 		int fd = gem_reopen_driver(i915);
- 
-+		ctx = intel_ctx_create_all_physical(fd);
-+		__gem_context_set_persistence(fd, ctx->id, false);
-+
- 		igt_fork(child, nproc)
--			__do_evict(fd, &region->region, &params,
-+			__do_evict(fd, ctx, &region->region, &params,
- 				   params.seed + child + 1);
- 
- 		igt_waitchildren();
-+		intel_ctx_destroy(fd, ctx);
- 		close(fd);
- 	} else {
--		__do_evict(i915, &region->region, &params, params.seed);
-+		__do_evict(i915, ctx, &region->region, &params, params.seed);
- 	}
- }
- 
-@@ -399,6 +406,7 @@ static void smem_oom_exit_handler(int sig)
- }
- 
- static void test_smem_oom(int i915,
-+			  const intel_ctx_t *ctx,
- 			  struct drm_i915_memory_region_info *region)
- {
- 	const uint64_t smem_size = intel_get_total_ram_mb() +
-@@ -421,7 +429,7 @@ static void test_smem_oom(int i915,
- 		fill_params(i915, &params, region, 0, 1, true);
- 
- 		igt_install_exit_handler(smem_oom_exit_handler);
--		__do_evict(fd, &region->region, &params,
-+		__do_evict(fd, ctx, &region->region, &params,
- 			   params.seed + child + 1);
- 
- 		close(fd);
-@@ -513,6 +521,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
- 		{ }
- 	};
-+	const intel_ctx_t *ctx;
- 	int i915 = -1;
- 
- 	igt_fixture {
-@@ -528,19 +537,23 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		for_each_physical_engine(i915, e)
- 			__num_engines__++;
- 		igt_require(__num_engines__);
-+		ctx = intel_ctx_create_all_physical(i915);
-+		__gem_context_set_persistence(i915, ctx->id, false);
-+
- 	}
- 
- 	for (test = tests; test->name; test++) {
- 		igt_describe("Exercise local memory swapping to system memory");
- 		dynamic_lmem_subtest(region, regions, test->name)
--			test_evict(i915, region, test->flags);
-+			test_evict(i915, ctx, region, test->flags);
- 	}
- 
- 	igt_describe("Exercise local memory swapping during exhausting system memory");
- 	dynamic_lmem_subtest(region, regions, "smem-oom")
--		test_smem_oom(i915, region);
-+		test_smem_oom(i915, ctx, region);
- 
- 	igt_fixture {
-+		intel_ctx_destroy(i915, ctx);
- 		free(regions);
- 		close(i915);
- 	}
--- 
-2.34.1
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (3): fi-bsw-cyan fi-bdw-samus fi-kbl-8809g 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6829:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gt_lrc:
+    - {bat-dg2-8}:        NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg2-8/igt@i915_selftest@live@gt_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6829 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][2] ([fdo#109271]) +17 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-bsw-nick/igt@amdgpu/amd_basic@semaphore.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          NOTRUN -> [DMESG-FAIL][3] ([i915#4494] / [i915#4957])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#5341])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-pnv-d510/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][5] ([fdo#109271]) +57 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_lmem_swapping@parallel-random-engines@lmem0:
+    - {bat-dg2-9}:        [FAIL][6] ([i915#5192]) -> [PASS][7] +1 similar issue
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-dg2-9/igt@gem_lmem_swapping@parallel-random-engines@lmem0.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg2-9/igt@gem_lmem_swapping@parallel-random-engines@lmem0.html
+
+  * igt@gem_lmem_swapping@random-engines@lmem0:
+    - {bat-dg2-8}:        [FAIL][8] ([i915#5192]) -> [PASS][9] +1 similar issue
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-dg2-8/igt@gem_lmem_swapping@random-engines@lmem0.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg2-8/igt@gem_lmem_swapping@random-engines@lmem0.html
+
+  * igt@gem_lmem_swapping@verify-random@lmem0:
+    - {bat-dg2-8}:        [INCOMPLETE][10] ([i915#5342]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-dg2-8/igt@gem_lmem_swapping@verify-random@lmem0.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg2-8/igt@gem_lmem_swapping@verify-random@lmem0.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [INCOMPLETE][12] ([i915#2940]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-6:          [INCOMPLETE][14] ([i915#4418]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-jsl-1}:         [INCOMPLETE][16] ([i915#5134]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/fi-jsl-1/igt@i915_selftest@live@hangcheck.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-jsl-1/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_busy@basic@flip:
+    - {bat-adlp-6}:       [DMESG-WARN][18] ([i915#3576]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-adlp-6/igt@kms_busy@basic@flip.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-adlp-6/igt@kms_busy@basic@flip.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][20] -> [INCOMPLETE][21] ([i915#4785])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+  [i915#5134]: https://gitlab.freedesktop.org/drm/intel/issues/5134
+  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
+  [i915#5192]: https://gitlab.freedesktop.org/drm/intel/issues/5192
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#5275]: https://gitlab.freedesktop.org/drm/intel/issues/5275
+  [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
+  [i915#5342]: https://gitlab.freedesktop.org/drm/intel/issues/5342
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#5414]: https://gitlab.freedesktop.org/drm/intel/issues/5414
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6393 -> IGTPW_6829
+
+  CI-20190529: 20190529
+  CI_DRM_11403: 76ccfdacc3c78b22c90127356a2d19241f452208 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6829: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/index.html
+  IGT_6393: 1d267ea1b829fa10b31a37ccf6b4a970f032784a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/index.html
+
+--===============5769188965400781871==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/3] test/gem_lmem_swapping: account for object rounding</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/101778/">https://patchwork.freedesktop.org/series/101778/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6393 -&gt; IGTPW_6829</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (3): fi-bsw-cyan fi-bdw-samus fi-kbl-8809g </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6829:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg2-8/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6829 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-bsw-nick/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-pnv-d510/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5341">i915#5341</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines@lmem0:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-dg2-9/igt@gem_lmem_swapping@parallel-random-engines@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5192">i915#5192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg2-9/igt@gem_lmem_swapping@parallel-random-engines@lmem0.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines@lmem0:</p>
+<ul>
+<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-dg2-8/igt@gem_lmem_swapping@random-engines@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5192">i915#5192</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg2-8/igt@gem_lmem_swapping@random-engines@lmem0.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random@lmem0:</p>
+<ul>
+<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-dg2-8/igt@gem_lmem_swapping@verify-random@lmem0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5342">i915#5342</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg2-8/igt@gem_lmem_swapping@verify-random@lmem0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/fi-jsl-1/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5134">i915#5134</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-jsl-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6393/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6393 -&gt; IGTPW_6829</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11403: 76ccfdacc3c78b22c90127356a2d19241f452208 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6829: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6829/index.html<br />
+  IGT_6393: 1d267ea1b829fa10b31a37ccf6b4a970f032784a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5769188965400781871==--
