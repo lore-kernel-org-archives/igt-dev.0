@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Mar 2022 09:09:56 +0000
-Message-Id: <20220325090958.408654-1-matthew.auld@intel.com>
+Date: Fri, 25 Mar 2022 09:09:57 +0000
+Message-Id: <20220325090958.408654-2-matthew.auld@intel.com>
+In-Reply-To: <20220325090958.408654-1-matthew.auld@intel.com>
+References: <20220325090958.408654-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/3] test/gem_lmem_swapping: account for
- object rounding
+Subject: [igt-dev] [PATCH i-g-t v2 2/3] test/gem_lmem_swapping: fix physical
+ engine usage
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,66 +23,162 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On DG2 the object size might be rounded when allocating lmem. Make sure
-we account for any rounding up.
+During execbuf DG2 currently just hits:
 
+	"execbuf with unknown ring: 5"
+
+It looks like the fix is to convert the test over to using the
+non-legacy API where we instead fill the ctx with all the physical
+engines and then engine/ring becomes the index into this.
+
+v2:
+  - Make sure we destroy our newly created contexts(Ashutosh)
+  - Tweak the commit message so that we are talking less nonsense(Tvrtko)
+  - s/i915/fd/ when calling set_persistence
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5192
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_lmem_swapping.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tests/i915/gem_lmem_swapping.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
 diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 582111dd..193ff370 100644
+index 193ff370..526835cc 100644
 --- a/tests/i915/gem_lmem_swapping.c
 +++ b/tests/i915/gem_lmem_swapping.c
-@@ -72,7 +72,7 @@ struct object {
- };
+@@ -126,6 +126,7 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
+ }
  
- static uint32_t create_bo(int i915,
--			  uint64_t size,
-+			  uint64_t *size,
- 			  struct drm_i915_gem_memory_class_instance *region,
- 			  bool do_oom_test)
- {
-@@ -80,7 +80,7 @@ static uint32_t create_bo(int i915,
- 	int ret;
+ static void move_to_lmem(int i915,
++			 const intel_ctx_t *ctx,
+ 			 struct object *list,
+ 			 unsigned int num,
+ 			 uint32_t batch,
+@@ -137,6 +138,7 @@ static void move_to_lmem(int i915,
+ 		.buffers_ptr = to_user_pointer(obj),
+ 		.buffer_count = 1 + num,
+ 		.flags = I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT | engine,
++		.rsvd1 = ctx->id,
+ 	};
+ 	unsigned int i, ret;
  
- retry:
--	ret = __gem_create_in_memory_region_list(i915, &handle, &size, region, 1);
-+	ret = __gem_create_in_memory_region_list(i915, &handle, size, region, 1);
- 	if (do_oom_test && ret == -ENOMEM)
- 		goto retry;
- 	igt_assert_eq(ret, 0);
-@@ -172,7 +172,7 @@ static void __do_evict(int i915,
+@@ -156,6 +158,7 @@ retry:
+ }
  
- 	__gem_context_set_persistence(i915, 0, false);
+ static void __do_evict(int i915,
++		       const intel_ctx_t *ctx,
+ 		       struct drm_i915_gem_memory_class_instance *region,
+ 		       struct params *params,
+ 		       unsigned int seed)
+@@ -170,7 +173,6 @@ static void __do_evict(int i915,
+ 	struct timespec t = {};
+ 	unsigned int num;
+ 
+-	__gem_context_set_persistence(i915, 0, false);
  	size = 4096;
--	batch = create_bo(i915, size, region, params->oom_test);
-+	batch = create_bo(i915, &size, region, params->oom_test);
+ 	batch = create_bo(i915, &size, region, params->oom_test);
  
- 	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
- 
-@@ -199,7 +199,7 @@ static void __do_evict(int i915,
- 			params->count = i;
- 			break;
+@@ -201,7 +203,7 @@ static void __do_evict(int i915,
  		}
--		obj->handle = create_bo(i915, obj->size, region, params->oom_test);
-+		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
+ 		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
  
- 		move_to_lmem(i915, objects + i, 1, batch, engine,
+-		move_to_lmem(i915, objects + i, 1, batch, engine,
++		move_to_lmem(i915, ctx, objects + i, 1, batch, engine,
  			     params->oom_test);
-@@ -270,7 +270,7 @@ static void fill_params(int i915, struct params *params,
+ 		if (params->flags & TEST_VERIFY)
+ 			init_object(i915, obj, rand(), params->flags);
+@@ -226,7 +228,7 @@ static void __do_evict(int i915,
+ 			idx = (idx + 1) % params->count;
+ 		}
  
- 	if (flags & TEST_RANDOM) {
- 		params->size.min = 4096;
--		handle = create_bo(i915, params->size.min, &region->region,
-+		handle = create_bo(i915, &params->size.min, &region->region,
- 				   do_oom_test);
- 		gem_close(i915, handle);
- 		params->size.max = 2 * size + params->size.min;
+-		move_to_lmem(i915, list, num, batch, engine, params->oom_test);
++		move_to_lmem(i915, ctx, list, num, batch, engine, params->oom_test);
+ 
+ 		if (params->flags & TEST_ENGINES)
+ 			engine = (engine + 1) % __num_engines__;
+@@ -342,6 +344,7 @@ static void fill_params(int i915, struct params *params,
+ }
+ 
+ static void test_evict(int i915,
++		       const intel_ctx_t *ctx,
+ 		       struct drm_i915_memory_region_info *region,
+ 		       unsigned int flags)
+ {
+@@ -353,14 +356,18 @@ static void test_evict(int i915,
+ 	if (flags & TEST_PARALLEL) {
+ 		int fd = gem_reopen_driver(i915);
+ 
++		ctx = intel_ctx_create_all_physical(fd);
++		__gem_context_set_persistence(fd, ctx->id, false);
++
+ 		igt_fork(child, nproc)
+-			__do_evict(fd, &region->region, &params,
++			__do_evict(fd, ctx, &region->region, &params,
+ 				   params.seed + child + 1);
+ 
+ 		igt_waitchildren();
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	} else {
+-		__do_evict(i915, &region->region, &params, params.seed);
++		__do_evict(i915, ctx, &region->region, &params, params.seed);
+ 	}
+ }
+ 
+@@ -399,6 +406,7 @@ static void smem_oom_exit_handler(int sig)
+ }
+ 
+ static void test_smem_oom(int i915,
++			  const intel_ctx_t *ctx,
+ 			  struct drm_i915_memory_region_info *region)
+ {
+ 	const uint64_t smem_size = intel_get_total_ram_mb() +
+@@ -421,7 +429,7 @@ static void test_smem_oom(int i915,
+ 		fill_params(i915, &params, region, 0, 1, true);
+ 
+ 		igt_install_exit_handler(smem_oom_exit_handler);
+-		__do_evict(fd, &region->region, &params,
++		__do_evict(fd, ctx, &region->region, &params,
+ 			   params.seed + child + 1);
+ 
+ 		close(fd);
+@@ -513,6 +521,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
+ 		{ }
+ 	};
++	const intel_ctx_t *ctx;
+ 	int i915 = -1;
+ 
+ 	igt_fixture {
+@@ -528,19 +537,23 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		for_each_physical_engine(i915, e)
+ 			__num_engines__++;
+ 		igt_require(__num_engines__);
++		ctx = intel_ctx_create_all_physical(i915);
++		__gem_context_set_persistence(i915, ctx->id, false);
++
+ 	}
+ 
+ 	for (test = tests; test->name; test++) {
+ 		igt_describe("Exercise local memory swapping to system memory");
+ 		dynamic_lmem_subtest(region, regions, test->name)
+-			test_evict(i915, region, test->flags);
++			test_evict(i915, ctx, region, test->flags);
+ 	}
+ 
+ 	igt_describe("Exercise local memory swapping during exhausting system memory");
+ 	dynamic_lmem_subtest(region, regions, "smem-oom")
+-		test_smem_oom(i915, region);
++		test_smem_oom(i915, ctx, region);
+ 
+ 	igt_fixture {
++		intel_ctx_destroy(i915, ctx);
+ 		free(regions);
+ 		close(i915);
+ 	}
 -- 
 2.34.1
