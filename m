@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <af23ceff-4899-6bef-87e5-273419f030f8@intel.com>
-Date: Fri, 25 Mar 2022 08:40:45 +0000
-MIME-Version: 1.0
-Content-Language: en-GB
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
- Petri Latvala <petri.latvala@intel.com>
-References: <20220324142621.347452-1-matthew.auld@intel.com>
- <20220324142621.347452-4-matthew.auld@intel.com>
- <8735j75jjk.wl-ashutosh.dixit@intel.com>
 From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <8735j75jjk.wl-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/gem_lmem_swapping: limit lmem
- to 4G
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 25 Mar 2022 09:09:58 +0000
+Message-Id: <20220325090958.408654-3-matthew.auld@intel.com>
+In-Reply-To: <20220325090958.408654-1-matthew.auld@intel.com>
+References: <20220325090958.408654-1-matthew.auld@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/gem_lmem_swapping: reduce the
+ timeout
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,25 +17,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, CQ Tang <cq.tang@intel.com>,
- Nirmoy Das <nirmoy.das@linux.intel.com>
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 24/03/2022 17:47, Dixit, Ashutosh wrote:
-> On Thu, 24 Mar 2022 07:26:20 -0700, Matthew Auld wrote:
->>
->> @@ -554,6 +560,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->> 	igt_fixture {
->> 		free(regions);
->> 		close(i915);
->> +		igt_i915_driver_unload();
-> 
-> I thought we'd reload the module with default params here but when the next
-> test runs the module gets loaded automatically so maybe this is ok?
+300s is way too much for some BAT test. Drop it down to 45s.
 
-Yeah, that at least matches my understanding. Adding Petri in case he 
-has some comments here.
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ tests/i915/gem_lmem_swapping.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+index 526835cc..31644bcd 100644
+--- a/tests/i915/gem_lmem_swapping.c
++++ b/tests/i915/gem_lmem_swapping.c
+@@ -219,7 +219,7 @@ static void __do_evict(int i915,
+ 	 * For TEST_MULTI runs, make each object counts a loop to
+ 	 * avoid excessive run times.
+ 	 */
+-	for (l = 0; l < params->loops && igt_seconds_elapsed(&t) < 300; l += num) {
++	for (l = 0; l < params->loops && igt_seconds_elapsed(&t) < 45; l += num) {
+ 		unsigned int idx = rand() % params->count;
+ 
+ 		num = params->flags & TEST_MULTI ? rand() % max_swap_in + 1 : 1;
+-- 
+2.34.1
