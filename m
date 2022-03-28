@@ -1,20 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3ACF910ED97
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 19:56:40 +0000 (UTC)
-Message-ID: <6e5671ce-90e1-edbf-de48-8e6f5f64dbbc@quicinc.com>
-Date: Mon, 28 Mar 2022 12:56:37 -0700
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
+ [199.106.114.39])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45EE510E980
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 20:54:18 +0000 (UTC)
+Message-ID: <4fc24722-d7e2-563a-253c-dabd178d1673@quicinc.com>
+Date: Mon, 28 Mar 2022 13:53:46 -0700
 MIME-Version: 1.0
 Content-Language: en-US
-To: Mark Yacoub <markyacoub@chromium.org>
-References: <1648062054-3729-1-git-send-email-quic_abhinavk@quicinc.com>
- <CAJUqKUpc+3+zYvH0HktxB0BcGWVZ=tDh+twkS2H+E9aaNAa0jA@mail.gmail.com>
+To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <1648251706-30978-1-git-send-email-quic_abhinavk@quicinc.com>
+ <164825405518.29535.8468932072737039345@emeril.freedesktop.org>
+ <ff10f319-ee93-ccad-7281-cf336d8fbec2@quicinc.com>
+ <a9a782e5d92b4107b5f68c9ad9fad3c6@intel.com>
 From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <CAJUqKUpc+3+zYvH0HktxB0BcGWVZ=tDh+twkS2H+E9aaNAa0jA@mail.gmail.com>
+In-Reply-To: <a9a782e5d92b4107b5f68c9ad9fad3c6@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_kms: commit only the primary
- plane which is prepared
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fconcurrent=3A_check_if_second_primary_plane_is_valid_=28r?=
+ =?utf-8?q?ev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,70 +28,285 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, swboyd@chromium.org, igt-dev@lists.freedesktop.org,
- nganji@codeaurora.org, seanpaul@chromium.org, quic_aravindh@quicinc.com,
- quic_khsieh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Applied.
-
-Thanks
+Thank you so much.
 
 Abhinav
 
-On 3/24/2022 1:54 PM, Mark Yacoub wrote:
-> looking at ville's comment being addressed, lgtm.
+On 3/27/2022 10:22 PM, Vudum, Lakshminarayana wrote:
+> Re-reproted.
 > 
-> On Wed, Mar 23, 2022 at 3:01 PM Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
+> -----Original Message-----
+> From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Sent: Friday, March 25, 2022 5:31 PM
+> To: igt-dev@lists.freedesktop.org; Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
+> Subject: Re: ✗ Fi.CI.BAT: failure for tests/kms_concurrent: check if second primary plane is valid (rev2)
+> 
+> Hi Lakshmi
+> 
+> I checked the failure but it doesnt seem to be related to my change.
+> 
+> Can you please help to check once?
+> 
+> Thanks
+> 
+> Abhinav
+> 
+> On 3/25/2022 5:20 PM, Patchwork wrote:
+>> == Series Details ==
 >>
->> kms_atomic's test-only sub-test prepares only one primary plane
->> but igt_plane_commit() tries to commit all the primary planes.
+>> Series: tests/kms_concurrent: check if second primary plane is valid (rev2)
+>> URL   : https://patchwork.freedesktop.org/series/101755/
+>> State : failure
 >>
->> For drivers having only one primary plane per display still
->> work fine but when there is more than one primary plane, since
->> FB_ID is not assigned for the second one, the API
->> igt_primary_plane_commit_legacy() ends up calling the CRTC
->> disable path incorrectly and hence failing the test.
+>> == Summary ==
 >>
->> Since only one primary plane has been prepared, commit only
->> that one by matching the primary_plane handle with the plane
->> which has been passed.
+>> CI Bug Log - changes from CI_DRM_11407 -> IGTPW_6831
+>> ====================================================
 >>
->> changes in v2:
->>          - compare the primary_plane and current plane's handle
->>            to determine whether the current plane is the primary
->>            plane instead of comparing the index
+>> Summary
+>> -------
 >>
->> Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> Reviewed-by: Mark Yacoub <markyacoub@chromium.org>
->> ---
->>   lib/igt_kms.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>     **FAILURE**
 >>
->> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->> index 34a2aa0..7838ff2 100644
->> --- a/lib/igt_kms.c
->> +++ b/lib/igt_kms.c
->> @@ -3189,6 +3189,8 @@ static int igt_plane_commit(igt_plane_t *plane,
->>                              enum igt_commit_style s,
->>                              bool fail_on_error)
->>   {
->> +       igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
->> +
->>          if (pipe->display->first_commit || (s == COMMIT_UNIVERSAL &&
->>               igt_plane_is_prop_changed(plane, IGT_PLANE_ROTATION))) {
->>                  int ret;
->> @@ -3199,7 +3201,7 @@ static int igt_plane_commit(igt_plane_t *plane,
+>>     Serious unknown changes coming with IGTPW_6831 absolutely need to be
+>>     verified manually.
+>>     
+>>     If you think the reported changes have nothing to do with the changes
+>>     introduced in IGTPW_6831, please notify your bug team to allow them
+>>     to document this new failure mode, which will reduce false positives in CI.
 >>
->>          if (plane->type == DRM_PLANE_TYPE_CURSOR && s == COMMIT_LEGACY) {
->>                  return igt_cursor_commit_legacy(plane, pipe, fail_on_error);
->> -       } else if (plane->type == DRM_PLANE_TYPE_PRIMARY && s == COMMIT_LEGACY) {
->> +       } else if (plane == plane_primary && s == COMMIT_LEGACY) {
->>                  return igt_primary_plane_commit_legacy(plane, pipe,
->>                                                         fail_on_error);
->>          } else {
->> --
->> 2.7.4
+>>     External URL:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/index.html
+>>
+>> Participating hosts (47 -> 43)
+>> ------------------------------
+>>
+>>     Additional (1): fi-pnv-d510
+>>     Missing    (5): shard-tglu fi-bsw-cyan fi-kbl-x1275 shard-rkl fi-bdw-samus
+>>
+>> Possible new issues
+>> -------------------
+>>
+>>     Here are the unknown changes that may have been introduced in IGTPW_6831:
+>>
+>> ### IGT changes ###
+>>
+>> #### Possible regressions ####
+>>
+>>     * igt@core_hotunplug@unbind-rebind:
+>>       - fi-elk-e7500:       NOTRUN -> [INCOMPLETE][1]
+>>      [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-elk-e7500/igt@core_hotunplug@unbind-rebind.html
+>>       - fi-glk-dsi:         [PASS][2] -> [INCOMPLETE][3]
+>>      [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-glk-dsi/igt@core_hotunplug@unbind-rebind.html
+>>      [3]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-glk-dsi/igt@cor
+>> e_hotunplug@unbind-rebind.html
+>>
+>>     * igt@gem_render_linear_blits@basic:
+>>       - fi-bsw-kefka:       [PASS][4] -> [INCOMPLETE][5]
+>>      [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-bsw-kefka/igt@gem_render_linear_blits@basic.html
+>>      [5]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-bsw-kefka/igt@g
+>> em_render_linear_blits@basic.html
+>>
+>>     * igt@gem_tiled_blits@basic:
+>>       - fi-pnv-d510:        NOTRUN -> [INCOMPLETE][6]
+>>      [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-pnv-d510/igt@gem_tiled_blits@basic.html
+>>       - fi-cfl-8109u:       [PASS][7] -> [INCOMPLETE][8]
+>>      [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-cfl-8109u/igt@gem_tiled_blits@basic.html
+>>      [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-cfl-8109u/igt@gem_tiled_blits@basic.html
+>>       - fi-kbl-7567u:       [PASS][9] -> [INCOMPLETE][10]
+>>      [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-kbl-7567u/igt@gem_tiled_blits@basic.html
+>>      [10]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-kbl-7567u/igt@g
+>> em_tiled_blits@basic.html
+>>
+>>     
+>> #### Suppressed ####
+>>
+>>     The following results come from untrusted machines, tests, or statuses.
+>>     They do not affect the overall result.
+>>
+>>     * igt@gem_render_tiled_blits@basic:
+>>       - {bat-rpls-1}:       NOTRUN -> [INCOMPLETE][11]
+>>      [11]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/bat-rpls-1/igt@gem
+>> _render_tiled_blits@basic.html
+>>
+>>     
+>> Known issues
+>> ------------
+>>
+>>     Here are the changes found in IGTPW_6831 that come from known issues:
+>>
+>> ### IGT changes ###
+>>
+>> #### Issues hit ####
+>>
+>>     * igt@core_hotunplug@unbind-rebind:
+>>       - fi-rkl-guc:         [PASS][12] -> [INCOMPLETE][13] ([i915#1373])
+>>      [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-rkl-guc/igt@core_hotunplug@unbind-rebind.html
+>>      [13]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-rkl-guc/igt@cor
+>> e_hotunplug@unbind-rebind.html
+>>
+>>     * igt@gem_huc_copy@huc-copy:
+>>       - fi-pnv-d510:        NOTRUN -> [SKIP][14] ([fdo#109271]) +11 similar issues
+>>      [14]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-pnv-d510/igt@ge
+>> m_huc_copy@huc-copy.html
+>>
+>>     * igt@i915_selftest@live@hangcheck:
+>>       - fi-hsw-4770:        [PASS][15] -> [INCOMPLETE][16] ([i915#4785])
+>>      [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+>>      [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+>>       - bat-dg1-6:          NOTRUN -> [DMESG-FAIL][17] ([i915#4494] / [i915#4957])
+>>      [17]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/bat-dg1-6/igt@i915
+>> _selftest@live@hangcheck.html
+>>
+>>     * igt@kms_chamelium@dp-edid-read:
+>>       - fi-elk-e7500:       NOTRUN -> [SKIP][18] ([fdo#109271]) +26 similar issues
+>>      [18]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-elk-e7500/igt@k
+>> ms_chamelium@dp-edid-read.html
+>>
+>>     * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+>>       - fi-bwr-2160:        NOTRUN -> [SKIP][19] ([fdo#109271] / [i915#5341])
+>>      [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-bwr-2160/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+>>       - fi-elk-e7500:       NOTRUN -> [SKIP][20] ([fdo#109271] / [i915#5341])
+>>      [20]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-elk-e7500/igt@k
+>> ms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+>>
+>>     * igt@kms_pipe_crc_basic@read-crc-pipe-c:
+>>       - fi-bwr-2160:        NOTRUN -> [SKIP][21] ([fdo#109271]) +45 similar issues
+>>      [21]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-bwr-2160/igt@km
+>> s_pipe_crc_basic@read-crc-pipe-c.html
+>>
+>>     * igt@runner@aborted:
+>>       - fi-pnv-d510:        NOTRUN -> [FAIL][22] ([i915#2403] / [i915#4312])
+>>      [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-pnv-d510/igt@runner@aborted.html
+>>       - fi-glk-dsi:         NOTRUN -> [FAIL][23] ([i915#4312] / [k.org#202321])
+>>      [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-glk-dsi/igt@runner@aborted.html
+>>       - fi-hsw-4770:        NOTRUN -> [FAIL][24] ([fdo#109271] / [i915#1436] / [i915#2722] / [i915#4312])
+>>      [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-hsw-4770/igt@runner@aborted.html
+>>       - fi-rkl-guc:         NOTRUN -> [FAIL][25] ([i915#4312])
+>>      [25]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-rkl-guc/igt@run
+>> ner@aborted.html
+>>
+>>     
+>> #### Possible fixes ####
+>>
+>>     * igt@core_hotunplug@unbind-rebind:
+>>       - {bat-jsl-2}:        [INCOMPLETE][26] ([i915#1373]) -> [PASS][27]
+>>      [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/bat-jsl-2/igt@core_hotunplug@unbind-rebind.html
+>>      [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/bat-jsl-2/igt@core_hotunplug@unbind-rebind.html
+>>       - {bat-hsw-1}:        [INCOMPLETE][28] -> [PASS][29]
+>>      [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/bat-hsw-1/igt@core_hotunplug@unbind-rebind.html
+>>      [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/bat-hsw-1/igt@core_hotunplug@unbind-rebind.html
+>>       - {bat-jsl-1}:        [INCOMPLETE][30] ([i915#1373]) -> [PASS][31]
+>>      [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/bat-jsl-1/igt@core_hotunplug@unbind-rebind.html
+>>      [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/bat-jsl-1/igt@core_hotunplug@unbind-rebind.html
+>>       - bat-dg1-6:          [INCOMPLETE][32] -> [PASS][33]
+>>      [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/bat-dg1-6/igt@core_hotunplug@unbind-rebind.html
+>>      [33]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/bat-dg1-6/igt@core
+>> _hotunplug@unbind-rebind.html
+>>
+>>     * igt@gem_render_tiled_blits@basic:
+>>       - {bat-rpls-2}:       [INCOMPLETE][34] -> [PASS][35]
+>>      [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/bat-rpls-2/igt@gem_render_tiled_blits@basic.html
+>>      [35]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/bat-rpls-2/igt@gem
+>> _render_tiled_blits@basic.html
+>>
+>>     * igt@gem_tiled_blits@basic:
+>>       - fi-elk-e7500:       [INCOMPLETE][36] -> [PASS][37]
+>>      [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-elk-e7500/igt@gem_tiled_blits@basic.html
+>>      [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-elk-e7500/igt@gem_tiled_blits@basic.html
+>>       - fi-bwr-2160:        [INCOMPLETE][38] -> [PASS][39]
+>>      [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-bwr-2160/igt@gem_tiled_blits@basic.html
+>>      [39]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-bwr-2160/igt@ge
+>> m_tiled_blits@basic.html
+>>
+>>     * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+>>       - {bat-adlp-6}:       [DMESG-WARN][40] ([i915#3576]) -> [PASS][41] +1 similar issue
+>>      [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+>>      [41]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/bat-adlp-6/igt@kms
+>> _flip@basic-flip-vs-modeset@a-edp1.html
+>>
+>>     
+>> #### Warnings ####
+>>
+>>     * igt@core_hotunplug@unbind-rebind:
+>>       - fi-cfl-8700k:       [INCOMPLETE][42] -> [INCOMPLETE][43] ([i915#1982])
+>>      [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11407/fi-cfl-8700k/igt@core_hotunplug@unbind-rebind.html
+>>      [43]:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/fi-cfl-8700k/igt@c
+>> ore_hotunplug@unbind-rebind.html
+>>
+>>     
+>>     {name}: This element is suppressed. This means it is ignored when computing
+>>             the status of the difference (SUCCESS, WARNING, or FAILURE).
+>>
+>>     [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+>>     [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+>>     [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
+>>     [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
+>>     [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+>>     [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+>>     [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+>>     [i915#1373]: https://gitlab.freedesktop.org/drm/intel/issues/1373
+>>     [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+>>     [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+>>     [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+>>     [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+>>     [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+>>     [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+>>     [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+>>     [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+>>     [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+>>     [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+>>     [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+>>     [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+>>     [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+>>     [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+>>     [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+>>     [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+>>     [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+>>     [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
+>>     [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+>>     [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+>>     [i915#5339]: https://gitlab.freedesktop.org/drm/intel/issues/5339
+>>     [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
+>>     [i915#5342]: https://gitlab.freedesktop.org/drm/intel/issues/5342
+>>     [i915#5401]: https://gitlab.freedesktop.org/drm/intel/issues/5401
+>>     [k.org#202321]: https://bugzilla.kernel.org/show_bug.cgi?id=202321
+>>
+>>
+>> Build changes
+>> -------------
+>>
+>>     * CI: CI-20190529 -> None
+>>     * IGT: IGT_6393 -> IGTPW_6831
+>>
+>>     CI-20190529: 20190529
+>>     CI_DRM_11407: a2fff1c90d9587c65608497d5bf5781c073bf46a @ git://anongit.freedesktop.org/gfx-ci/linux
+>>     IGTPW_6831: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/index.html
+>>     IGT_6393: 1d267ea1b829fa10b31a37ccf6b4a970f032784a @
+>> https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>>
+>> == Logs ==
+>>
+>> For more details see:
+>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6831/index.html
 >>
