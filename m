@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9168710EDAC
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 19:56:01 +0000 (UTC)
-Message-ID: <37541432-978e-ec7e-93c9-27b2cec2b31d@quicinc.com>
-Date: Mon, 28 Mar 2022 12:55:57 -0700
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3ACF910ED97
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 19:56:40 +0000 (UTC)
+Message-ID: <6e5671ce-90e1-edbf-de48-8e6f5f64dbbc@quicinc.com>
+Date: Mon, 28 Mar 2022 12:56:37 -0700
 MIME-Version: 1.0
 Content-Language: en-US
 To: Mark Yacoub <markyacoub@chromium.org>
-References: <1648151791-16202-1-git-send-email-quic_abhinavk@quicinc.com>
- <CAJUqKUp108BWzkVVBcy1yp1Hc0DqqSmq_dQ39Q3=bLRbKRwWug@mail.gmail.com>
- <5d361e23-378d-def4-aa28-647ff82dab32@quicinc.com>
- <CAJUqKUqfzRUrgymHvqV=a2CAvi05FBBe+z0x198-ZeJ4UjBDbw@mail.gmail.com>
+References: <1648062054-3729-1-git-send-email-quic_abhinavk@quicinc.com>
+ <CAJUqKUpc+3+zYvH0HktxB0BcGWVZ=tDh+twkS2H+E9aaNAa0jA@mail.gmail.com>
 From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <CAJUqKUqfzRUrgymHvqV=a2CAvi05FBBe+z0x198-ZeJ4UjBDbw@mail.gmail.com>
+In-Reply-To: <CAJUqKUpc+3+zYvH0HktxB0BcGWVZ=tDh+twkS2H+E9aaNAa0jA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: check if second
- primary plane is valid
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_kms: commit only the primary
+ plane which is prepared
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,103 +29,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks, I have added the comment on top of the if
-and applied the change.
+Applied.
+
+Thanks
 
 Abhinav
 
-On 3/25/2022 8:21 AM, Mark Yacoub wrote:
-> On Thu, Mar 24, 2022 at 5:00 PM Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
+On 3/24/2022 1:54 PM, Mark Yacoub wrote:
+> looking at ville's comment being addressed, lgtm.
+> 
+> On Wed, Mar 23, 2022 at 3:01 PM Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
 >>
+>> kms_atomic's test-only sub-test prepares only one primary plane
+>> but igt_plane_commit() tries to commit all the primary planes.
 >>
+>> For drivers having only one primary plane per display still
+>> work fine but when there is more than one primary plane, since
+>> FB_ID is not assigned for the second one, the API
+>> igt_primary_plane_commit_legacy() ends up calling the CRTC
+>> disable path incorrectly and hence failing the test.
 >>
->> On 3/24/2022 1:56 PM, Mark Yacoub wrote:
->>> On Thu, Mar 24, 2022 at 3:57 PM Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
->>>>
->>>> prepare_planes() in kms_concurrent loops through the list
->>>> of planes and assigns them to the data->plane array.
->>>>
->>>> During this assignment, it skips planes which are of type
->>>> DRM_PLANE_TYPE_PRIMARY as they are assigned separately.
->>>>
->>>> However, only one primary plane is assigned and prepared for
->>>> the test.
->>> do you not need the other primary plane to be assigned and prepared
->>> for the test?
+>> Since only one primary plane has been prepared, commit only
+>> that one by matching the primary_plane handle with the plane
+>> which has been passed.
 >>
->> I am just fixing the current behavior of the test which is prepare one
->> primary plane and rest of the overlay planes before the commit.
+>> changes in v2:
+>>          - compare the primary_plane and current plane's handle
+>>            to determine whether the current plane is the primary
+>>            plane instead of comparing the index
 >>
->> This was broken without this change.
->>
->> If we want to change the behavior of the test to prepare multiple
->> primary planes and rest of the overlay planes, that would be a separate
->> change in my opinion.
-> I'm okay with keeping the current behavior. but please add a comment
-> on top of the if-statement why some plans might be null. with this
-> being done:
->>
->> Let me know what you think.
->>
->> Thanks
->>
->> Abhinav
->>>>
->>>> This causes an issue later on in the test when there are
->>>> multiple primary planes as the second one is not added
->>>> to the data->plane list causing a segmentation fault
->>>> when trying to access the second primary plane.
->>>>
->>>> Check if the data->plane is valid before accessing its
->>>> members to fix this crash.
->>>>
->>>> This fixes the crash and makes kms_concurrent pass on devices
->>>> having multiple primary planes.
->>>>
->>>> localhost /usr/local/libexec/igt-gpu-tools # ./kms_concurrent
->>>> IGT-Version: 1.26-NO-GIT (arm) (Linux: 5.17.0-rc2-lockdep-75821-g6200d34d858f aarch64)
->>>> Starting subtest: pipe-A
->>>> Testing resolution with connector eDP-1 using pipe A with seed 1648151339
->>>> Subtest pipe-A: SUCCESS (0.429s)
->>>> Starting subtest: pipe-B
->>>> Testing resolution with connector eDP-1 using pipe B with seed 1648151340
->>>> Subtest pipe-B: SUCCESS (0.592s)
->>>> Test requirement not met in function igt_require_pipe, file ../igt-gpu-tools-9999/lib/igt_kms.c:2135:
->>>> Test requirement: !(pipe >= display->n_pipes || !display->pipes[pipe].enabled)
->>>> Pipe C does not exist or not enabled
->>>> Subtest pipe-C: SKIP
->>>> Test requirement not met in function igt_require_pipe, file ../igt-gpu-tools-9999/lib/igt_kms.c:2135:
->>>> Test requirement: !(pipe >= display->n_pipes || !display->pipes[pipe].enabled)
->>>> Pipe D does not exist or not enabled
->>>> Subtest pipe-D: SKIP
->>>> Test requirement not met in function igt_require_pipe, file ../igt-gpu-tools-9999/lib/igt_kms.c:2135:
->>>> Test requirement: !(pipe >= display->n_pipes || !display->pipes[pipe].enabled)
->>>> Pipe E does not exist or not enabled
->>>> Subtest pipe-E: SKIP
->>>> Test requirement not met in function igt_require_pipe, file ../igt-gpu-tools-9999/lib/igt_kms.c:2135:
->>>> Test requirement: !(pipe >= display->n_pipes || !display->pipes[pipe].enabled)
->>>> Pipe F does not exist or not enabled
->>>> Subtest pipe-F: SKIP
->>>>
->>>> Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+>> Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 > Reviewed-by: Mark Yacoub <markyacoub@chromium.org>
->>>> ---
->>>>    tests/kms_concurrent.c | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
->>>> index 1b8f4b0..9cbeec4 100644
->>>> --- a/tests/kms_concurrent.c
->>>> +++ b/tests/kms_concurrent.c
->>>> @@ -116,7 +116,7 @@ create_fb_for_mode_position(data_t *data, drmModeModeInfo *mode,
->>>>                           0.0f, 0.0f, 1.0f);
->>>>
->>>>           for (int i = 0; i < max_planes; i++) {
->>>> -               if (data->plane[i]->type == DRM_PLANE_TYPE_PRIMARY)
->>>> +               if (data->plane[i] && data->plane[i]->type == DRM_PLANE_TYPE_PRIMARY)
->>>>                           continue;
->>>>
->>>>                   igt_paint_color(cr, rect_x[i], rect_y[i],
->>>> --
->>>> 2.7.4
->>>>
+>> ---
+>>   lib/igt_kms.c | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index 34a2aa0..7838ff2 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -3189,6 +3189,8 @@ static int igt_plane_commit(igt_plane_t *plane,
+>>                              enum igt_commit_style s,
+>>                              bool fail_on_error)
+>>   {
+>> +       igt_plane_t *plane_primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>> +
+>>          if (pipe->display->first_commit || (s == COMMIT_UNIVERSAL &&
+>>               igt_plane_is_prop_changed(plane, IGT_PLANE_ROTATION))) {
+>>                  int ret;
+>> @@ -3199,7 +3201,7 @@ static int igt_plane_commit(igt_plane_t *plane,
+>>
+>>          if (plane->type == DRM_PLANE_TYPE_CURSOR && s == COMMIT_LEGACY) {
+>>                  return igt_cursor_commit_legacy(plane, pipe, fail_on_error);
+>> -       } else if (plane->type == DRM_PLANE_TYPE_PRIMARY && s == COMMIT_LEGACY) {
+>> +       } else if (plane == plane_primary && s == COMMIT_LEGACY) {
+>>                  return igt_primary_plane_commit_legacy(plane, pipe,
+>>                                                         fail_on_error);
+>>          } else {
+>> --
+>> 2.7.4
+>>
