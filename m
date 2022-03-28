@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
  [64.147.123.25])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B528B10EB22
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 14:55:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1629710EB03
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 14:55:24 +0000 (UTC)
 From: Maxime Ripard <maxime@cerno.tech>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
  Arkadiusz Hiler <arek@hiler.eu>
-Date: Mon, 28 Mar 2022 16:55:07 +0200
-Message-Id: <20220328145509.2331195-7-maxime@cerno.tech>
+Date: Mon, 28 Mar 2022 16:55:04 +0200
+Message-Id: <20220328145509.2331195-4-maxime@cerno.tech>
 In-Reply-To: <20220328145509.2331195-1-maxime@cerno.tech>
 References: <20220328145509.2331195-1-maxime@cerno.tech>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 6/8] tests/kms_writeback: Dump the frames
- if the don't match
+Subject: [igt-dev] [PATCH i-g-t v2 3/8] lib/igt_frame: Move frame path
+ creation to function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,72 +26,83 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The writeback tests will make sure the reference and captured frames
-match. If they don't however, we don't get anything but their hash which
-isn't really helpful.
-
-Add a function similar to chamelium_assert_crc_eq_or_dump() to dump the
-PNG and raw buffers of those two frames if they don't match and frame
-dumping has been enabled.
+The igt_write_frame_to_png() has some logic to create the PNG filename
+Since we'll need the same logic in a future function, let's move it to a
+separate function.
 
 Signed-off-by: Maxime Ripard <maxime@cerno.tech>
 ---
- tests/kms_writeback.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ lib/igt_frame.c | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index faa790cc0f72..2366692865b7 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -256,6 +256,39 @@ static void get_and_wait_out_fence(igt_output_t *output)
- 	output->writeback_out_fence_fd = -1;
+diff --git a/lib/igt_frame.c b/lib/igt_frame.c
+index 530ccbc32df2..ba29ac028e1b 100644
+--- a/lib/igt_frame.c
++++ b/lib/igt_frame.c
+@@ -57,6 +57,30 @@ bool igt_frame_dump_is_enabled(void)
+ 	return igt_frame_dump_path != NULL;
  }
  
-+static void writeback_assert_crtc_eq_or_dump(igt_crc_t *reference_crc,
-+					     igt_fb_t *reference_fb,
-+					     igt_crc_t *capture_crc,
-+					     igt_fb_t *capture_fb)
++static char *igt_get_frame_path(const char *qualifier, const char *suffix,
++				const char *extension)
 +{
-+	bool eq;
++	char *path;
++	const char *test_name;
++	const char *subtest_name;
++	test_name = igt_test_name();
++	subtest_name = igt_subtest_name();
 +
-+	eq = igt_check_crc_equal(reference_crc, capture_crc);
-+	if (!eq) {
-+		cairo_surface_t *reference, *capture;
-+		char *reference_suffix, *capture_suffix;
++	path = malloc(PATH_MAX);
++	igt_assert(path);
 +
-+		reference = igt_get_cairo_surface(reference_fb->fd, reference_fb);
-+		igt_assert(reference);
++	if (suffix)
++		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s-%s.%s",
++			 igt_frame_dump_path, test_name, subtest_name, qualifier,
++			 suffix, extension);
++	else
++		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s.%s",
++			 igt_frame_dump_path, test_name, subtest_name, qualifier,
++			 extension);
 +
-+		capture = igt_get_cairo_surface(capture_fb->fd, capture_fb);
-+		igt_assert(capture);
-+
-+		reference_suffix = igt_crc_to_string_extended(reference_crc, '-', 2);
-+		capture_suffix = igt_crc_to_string_extended(capture_crc, '-', 2);
-+
-+		/* Write reference and capture frames to png. */
-+		igt_write_compared_frames(reference, capture,
-+					  reference_suffix,
-+					  capture_suffix);
-+
-+		free(reference_suffix);
-+		free(capture_suffix);
-+	}
-+
-+	igt_assert(eq);
++	return path;
 +}
 +
- static void writeback_sequence(igt_output_t *output, igt_plane_t *plane,
- 				igt_fb_t *in_fb, igt_fb_t *out_fbs[], int n_commits)
+ static void igt_log_frame_path(int summary_fd, char *path)
  {
-@@ -303,7 +336,8 @@ static void writeback_sequence(igt_output_t *output, igt_plane_t *plane,
- 		if (out_fbs[i]) {
- 			igt_crc_t out_after;
- 			igt_fb_get_fnv1a_crc(out_fbs[i], &out_after);
--			igt_assert_crc_equal(&out_expected, &out_after);
-+			writeback_assert_crtc_eq_or_dump(&out_expected, in_fb,
-+							 &out_after, out_fbs[i]);
+ 	int index = strlen(path);
+@@ -72,22 +96,11 @@ static void igt_log_frame_path(int summary_fd, char *path)
+ static void igt_write_frame_to_png(cairo_surface_t *surface, int summary_fd,
+ 				   const char *qualifier, const char *suffix)
+ {
+-	char path[PATH_MAX];
+-	const char *test_name;
+-	const char *subtest_name;
++	char *path;
+ 	cairo_status_t status;
+-	int index;
  
- 			/* And clear it, for the next time */
- 			fill_fb(out_fbs[i], clear_color);
+-	test_name = igt_test_name();
+-	subtest_name = igt_subtest_name();
+-
+-	if (suffix)
+-		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s-%s.png",
+-			 igt_frame_dump_path, test_name, subtest_name, qualifier,
+-			 suffix);
+-	else
+-		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s.png",
+-			 igt_frame_dump_path, test_name, subtest_name, qualifier);
++	path = igt_get_frame_path(qualifier, suffix, "png");
++	igt_assert(path);
+ 
+ 	igt_debug("Dumping %s frame to %s...\n", qualifier, path);
+ 
+@@ -96,6 +109,7 @@ static void igt_write_frame_to_png(cairo_surface_t *surface, int summary_fd,
+ 	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
+ 
+ 	igt_log_frame_path(summary_fd, path);
++	free(path);
+ }
+ 
+ /**
 -- 
 2.35.1
