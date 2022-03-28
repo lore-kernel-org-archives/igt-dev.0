@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 28 Mar 2022 12:40:31 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <YkGCjznvCyAwMxz4@platvala-desk.ger.corp.intel.com>
-References: <20220328092959.790392-1-matthew.auld@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4E4610EB53
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 10:07:50 +0000 (UTC)
+Received: from localhost ([127.0.0.1] helo=maurocar-mobl2)
+ by linux.intel.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.94.2) (envelope-from <mauro.chehab@linux.intel.com>)
+ id 1nYmCo-0007dy-5a
+ for igt-dev@lists.freedesktop.org; Mon, 28 Mar 2022 12:02:34 +0200
+Date: Mon, 28 Mar 2022 12:02:33 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Message-ID: <20220328120233.12e172eb@maurocar-mobl2>
+In-Reply-To: <20220328091329.16009-1-petri.latvala@intel.com>
+References: <20220328091329.16009-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220328092959.790392-1-matthew.auld@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/gem_lmem_swapping: limit lmem
- to 4G
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] runner: Fix handling of per-test-timeout
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,75 +24,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- Nirmoy Das <nirmoy.das@linux.intel.com>, CQ Tang <cq.tang@intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Mar 28, 2022 at 10:29:59AM +0100, Matthew Auld wrote:
-> From: CQ Tang <cq.tang@intel.com>
+On Mon, 28 Mar 2022 12:13:29 +0300
+Petri Latvala <petri.latvala@intel.com> wrote:
+
+> Instead of stopping execution on resume-init success, stop on
+> resume-init failure like intended.
 > 
-> On some systems lmem can be as large as 16G, which seems to trigger
-> various CI timeouts, and in the best case just takes a long time. For
-> the purposes of the test we should be able to limit to 4G, without any
-> big loss in coverage.
-> 
-> v2:
->  - No need to try again without the modparam; if it's not supported it
->    will still load the driver just fine.
-> 
-> Signed-off-by: CQ Tang <cq.tang@intel.com>
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
-> Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+> Fixes: 4b88a9253443 ("runner: check if it has root permissions")
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
->  tests/i915/gem_lmem_swapping.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  runner/executor.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-> index 31644bcd..69f7bae9 100644
-> --- a/tests/i915/gem_lmem_swapping.c
-> +++ b/tests/i915/gem_lmem_swapping.c
-> @@ -527,7 +527,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  	igt_fixture {
->  		struct intel_execution_engine2 *e;
->  
-> -		i915 = drm_open_driver(DRIVER_INTEL);
-> +		igt_i915_driver_unload();
-> +		igt_assert_eq(igt_i915_driver_load("lmem_size=4096"), 0);
-> +
-> +		i915 = __drm_open_driver(DRIVER_INTEL);
-
-
-A debug print would still be lovely if the param is
-missing. __igt_params_get() handily tells you if lmem_size exists.
-
-igt_debug might not be good for that kind of a print, log buffer isn't
-dumped on igt_runner timeouts. igt_info maybe, igt_warn might be
-overkill.
-
-
--- 
-Petri Latvala
-
-
-
->  		igt_require_gem(i915);
->  		igt_require(gem_has_lmem(i915));
->  
-> @@ -556,6 +559,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		intel_ctx_destroy(i915, ctx);
->  		free(regions);
->  		close(i915);
-> +		igt_i915_driver_unload();
->  	}
->  
->  	igt_exit();
-> -- 
-> 2.34.1
-> 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index b4efc4fd..6e6ca9cc 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -2043,7 +2043,7 @@ bool execute(struct execute_state *state,
+>  			}
+>  			close(sigfd);
+>  			close(testdirfd);
+> -			if (initialize_execute_state_from_resume(resdirfd, state, settings, job_list))
+> +			if (!initialize_execute_state_from_resume(resdirfd, state, settings, job_list))
+>  				return false;
+>  			state->time_left = time_left;
+>  			return execute(state, settings, job_list);
