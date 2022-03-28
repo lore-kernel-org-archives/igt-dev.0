@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 593D010E599
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 10:14:44 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 28 Mar 2022 11:08:59 +0100
-Message-Id: <20220328100859.13550-1-matthew.auld@intel.com>
+Date: Mon, 28 Mar 2022 15:43:39 +0530
+Message-Id: <20220328101339.136706-1-riana.tauro@intel.com>
+In-Reply-To: <20220328064722.127301-2-riana.tauro@intel.com>
+References: <20220328064722.127301-2-riana.tauro@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] tests/gem_lmem_swapping: limit lmem to 4G
+Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/i915/i915_suspend: Add
+ system-suspend-without-i915 subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,72 +19,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org,
- Nirmoy Das <nirmoy.das@linux.intel.com>, CQ Tang <cq.tang@intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: CQ Tang <cq.tang@intel.com>
+From: "Tauro, Riana" <riana.tauro@intel.com>
 
-On some systems lmem can be as large as 16G, which seems to trigger
-various CI timeouts, and in the best case just takes a long time. For
-the purposes of the test we should be able to limit to 4G, without any
-big loss in coverage.
+Add a new subtest system-suspend-without-i915 to exercise suspend/resume cycle
+without i915 module to know the system wide health of suspend/resume feature.
+This test will be part of CI fast-feedback test list.
 
 v2:
- - No need to try again without the modparam; if it's not supported it
-   will still load the driver just fine.
-v3(Petri):
- - Add a helpful debug print in case the kernel is missing support for
-   the lmem_size modparam.
+-Remove drm_cancel_work_at_exit.
+-Add igt_describe. [Anshuman]
 
-Signed-off-by: CQ Tang <cq.tang@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+v3 : Added assertion on unload module.[Anshuman]
+
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Tauro, Riana <riana.tauro@intel.com>
 ---
- tests/i915/gem_lmem_swapping.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ tests/i915/i915_suspend.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 31644bcd..6cf1acec 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -526,11 +526,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+index da27ce09..d34b7a5d 100644
+--- a/tests/i915/i915_suspend.c
++++ b/tests/i915/i915_suspend.c
+@@ -41,6 +41,7 @@
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "igt.h"
++#include "igt_kmod.h"
+ #include "igt_device.h"
  
- 	igt_fixture {
- 		struct intel_execution_engine2 *e;
-+		char *tmp;
+ #define OBJECT_SIZE (16*1024*1024)
+@@ -202,10 +203,26 @@ test_forcewake(int fd, bool hibernate)
+ 	close (fw_fd);
+ }
  
--		i915 = drm_open_driver(DRIVER_INTEL);
-+		igt_i915_driver_unload();
-+		igt_assert_eq(igt_i915_driver_load("lmem_size=4096"), 0);
++static void
++test_suspend_without_i915(void)
++{
++	igt_kmsg(KMSG_INFO "Unloading i915\n");
++	igt_assert_eq(igt_i915_driver_unload(),0);
 +
-+		i915 = __drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(i915);
- 		igt_require(gem_has_lmem(i915));
- 
-+		tmp = __igt_params_get(i915, "lmem_size");
-+		if (!tmp)
-+			igt_info("lmem_size modparam not supported on this kernel. Continuing with full lmem size. This may result in CI timeouts.");
-+		free(tmp);
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
 +
- 		regions = gem_get_query_memory_regions(i915);
- 		igt_require(regions);
++	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
++	igt_assert_eq(igt_i915_driver_load(NULL), 0);
++}
++
+ int fd;
  
-@@ -556,6 +565,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		intel_ctx_destroy(i915, ctx);
- 		free(regions);
- 		close(i915);
-+		igt_i915_driver_unload();
- 	}
+ igt_main
+ {
++	igt_describe("Validate system suspend cycle without i915 module");
++	igt_subtest("system-suspend-without-i915")
++		test_suspend_without_i915();
++
+ 	igt_fixture
+ 		fd = drm_open_driver(DRIVER_INTEL);
  
- 	igt_exit();
 -- 
-2.34.1
+2.25.1
