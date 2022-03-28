@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C7FD10EC1C
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 10:07:51 +0000 (UTC)
-Date: Mon, 28 Mar 2022 11:52:06 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20220328115206.6f6a029b@maurocar-mobl2>
-In-Reply-To: <20220328091329.16009-1-petri.latvala@intel.com>
-References: <20220328091329.16009-1-petri.latvala@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 28 Mar 2022 11:08:59 +0100
+Message-Id: <20220328100859.13550-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] runner: Fix handling of per-test-timeout
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3] tests/gem_lmem_swapping: limit lmem to 4G
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,35 +14,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org,
+ Nirmoy Das <nirmoy.das@linux.intel.com>, CQ Tang <cq.tang@intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 28 Mar 2022 12:13:29 +0300
-Petri Latvala <petri.latvala@intel.com> wrote:
+From: CQ Tang <cq.tang@intel.com>
 
-> Instead of stopping execution on resume-init success, stop on
-> resume-init failure like intended.
-> 
-> Fixes: 4b88a9253443 ("runner: check if it has root permissions")
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  runner/executor.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index b4efc4fd..6e6ca9cc 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -2043,7 +2043,7 @@ bool execute(struct execute_state *state,
->  			}
->  			close(sigfd);
->  			close(testdirfd);
-> -			if (initialize_execute_state_from_resume(resdirfd, state, settings, job_list))
-> +			if (!initialize_execute_state_from_resume(resdirfd, state, settings, job_list))
->  				return false;
->  			state->time_left = time_left;
->  			return execute(state, settings, job_list);
+On some systems lmem can be as large as 16G, which seems to trigger
+various CI timeouts, and in the best case just takes a long time. For
+the purposes of the test we should be able to limit to 4G, without any
+big loss in coverage.
+
+v2:
+ - No need to try again without the modparam; if it's not supported it
+   will still load the driver just fine.
+v3(Petri):
+ - Add a helpful debug print in case the kernel is missing support for
+   the lmem_size modparam.
+
+Signed-off-by: CQ Tang <cq.tang@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/i915/gem_lmem_swapping.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+index 31644bcd..6cf1acec 100644
+--- a/tests/i915/gem_lmem_swapping.c
++++ b/tests/i915/gem_lmem_swapping.c
+@@ -526,11 +526,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 
+ 	igt_fixture {
+ 		struct intel_execution_engine2 *e;
++		char *tmp;
+ 
+-		i915 = drm_open_driver(DRIVER_INTEL);
++		igt_i915_driver_unload();
++		igt_assert_eq(igt_i915_driver_load("lmem_size=4096"), 0);
++
++		i915 = __drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(i915);
+ 		igt_require(gem_has_lmem(i915));
+ 
++		tmp = __igt_params_get(i915, "lmem_size");
++		if (!tmp)
++			igt_info("lmem_size modparam not supported on this kernel. Continuing with full lmem size. This may result in CI timeouts.");
++		free(tmp);
++
+ 		regions = gem_get_query_memory_regions(i915);
+ 		igt_require(regions);
+ 
+@@ -556,6 +565,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		intel_ctx_destroy(i915, ctx);
+ 		free(regions);
+ 		close(i915);
++		igt_i915_driver_unload();
+ 	}
+ 
+ 	igt_exit();
+-- 
+2.34.1
