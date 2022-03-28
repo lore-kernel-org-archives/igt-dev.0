@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27D5A10E5CA
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 06:48:33 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 28 Mar 2022 12:17:22 +0530
+Message-Id: <20220328064722.127301-3-riana.tauro@intel.com>
+In-Reply-To: <20220328064722.127301-1-riana.tauro@intel.com>
+References: <20220328064722.127301-1-riana.tauro@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ramalingam C" <ramalingam.c@intel.com>
-Date: Wed, 30 Mar 2022 05:23:39 -0000
-Message-ID: <164861781942.8657.8555297578496752764@emeril.freedesktop.org>
-References: <20220330044915.31189-1-ramalingam.c@intel.com>
-In-Reply-To: <20220330044915.31189-1-ramalingam.c@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/i915/gem=5Flmem=5Fswapping=3A_Add_ccs_subtests_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/intel-ci/fast-feedback: Add
+ system-suspend-without-i915 subtest into fast-feedback list
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +19,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: "Tauro, Riana" <riana.tauro@intel.com>
 
-Series: tests/i915/gem_lmem_swapping: Add ccs subtests (rev3)
-URL   : https://patchwork.freedesktop.org/series/101324/
-State : warning
+Add system-suspend-without-i915 subtest to CI fast-feedback test list.
 
-== Summary ==
+v2 : Addressing review comments
 
-Pipeline status: FAILED.
+Signed-off-by: Tauro, Riana <riana.tauro@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist | 1 +
+ 1 file changed, 1 insertion(+)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/545268 for the overview.
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/20461159):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                287
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1648617544:step_script
-  section_start:1648617544:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1712 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=20461159 responseStatus=201 Created token=GkSzCGxz
-  section_end:1648617554:upload_artifacts_on_failure
-  section_start:1648617554:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1648617555:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/545268
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 5c867bbf..c1014558 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -174,6 +174,7 @@ igt@core_hotunplug@unbind-rebind
+ igt@vgem_basic@unload
+ igt@i915_module_load@reload
+ igt@i915_pm_rpm@module-reload
++igt@i915_suspend@system-suspend-without-i915
+ 
+ # Kernel selftests
+ igt@i915_selftest@live
+-- 
+2.25.1
