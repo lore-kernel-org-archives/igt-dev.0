@@ -1,16 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4E4610EB53
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 10:07:50 +0000 (UTC)
-Received: from localhost ([127.0.0.1] helo=maurocar-mobl2)
- by linux.intel.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.94.2) (envelope-from <mauro.chehab@linux.intel.com>)
- id 1nYmCo-0007dy-5a
- for igt-dev@lists.freedesktop.org; Mon, 28 Mar 2022 12:02:34 +0200
-Date: Mon, 28 Mar 2022 12:02:33 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C7FD10EC1C
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 10:07:51 +0000 (UTC)
+Date: Mon, 28 Mar 2022 11:52:06 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Message-ID: <20220328120233.12e172eb@maurocar-mobl2>
+To: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20220328115206.6f6a029b@maurocar-mobl2>
 In-Reply-To: <20220328091329.16009-1-petri.latvala@intel.com>
 References: <20220328091329.16009-1-petri.latvala@intel.com>
 MIME-Version: 1.0
@@ -24,6 +19,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
