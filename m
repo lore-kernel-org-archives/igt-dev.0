@@ -1,23 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58C6110E2FC
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Mar 2022 14:34:13 +0000 (UTC)
-Message-ID: <19549fe2-216c-213b-730f-7220d75729ed@intel.com>
-Date: Wed, 2 Mar 2022 16:33:58 +0200
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3557410EB3A
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 05:52:00 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Mon, 28 Mar 2022 05:51:55 +0000
+Message-ID: <fa54b7ba3eea4a5ea5d8f025dae4424a@intel.com>
+References: <20220328051727.119142-1-riana.tauro@intel.com>
+ <20220328051727.119142-3-riana.tauro@intel.com>
+In-Reply-To: <20220328051727.119142-3-riana.tauro@intel.com>
 Content-Language: en-US
-To: <igt-dev@lists.freedesktop.org>, Patchwork
- <patchwork@emeril.freedesktop.org>, =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?=
- <zbigniew.kempczynski@intel.com>
-References: <20220302080629.11562-1-zbigniew.kempczynski@intel.com>
- <164621110222.11316.4619549116482056881@emeril.freedesktop.org>
-From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-In-Reply-To: <164621110222.11316.4619549116482056881@emeril.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVXNlIHN1?=
- =?utf-8?q?pported_dma-buf_regions_in_prime=5Fmmap*_=28rev3=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/i915/i915_suspend: Add
+ system-suspend-without-i915 subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,132 +27,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If this patch of the kernel 
-(https://patchwork.freedesktop.org/series/100737/) is applied along with 
-this patch series, the igt@prime_mmap_coherency CI test results will be 
-shown as "Success" on dg1.
 
-On 3/2/22 10:51 AM, Patchwork wrote:
-> *Patch Details*
-> *Series:*	Use supported dma-buf regions in prime_mmap* (rev3)
-> *URL:*	https://patchwork.freedesktop.org/series/100819/ 
-> <https://patchwork.freedesktop.org/series/100819/>
-> *State:*	success
-> *Details:* 
-> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/index.html 
-> <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/index.html>
-> 
-> 
->   CI Bug Log - changes from CI_DRM_11308 -> IGTPW_6728
-> 
-> 
->     Summary
-> 
-> *SUCCESS*
-> 
-> No regressions found.
-> 
-> External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/index.html
-> 
-> 
->     Participating hosts (51 -> 43)
-> 
-> Additional (1): fi-pnv-d510
-> Missing (9): fi-cml-u2 shard-tglu fi-hsw-4200u fi-icl-u2 fi-bsw-cyan 
-> fi-ctg-p8600 shard-rkl shard-dg1 fi-bdw-samus
-> 
-> 
->     Known issues
-> 
-> Here are the changes found in IGTPW_6728 that come from known issues:
-> 
-> 
->       IGT changes
-> 
-> 
->         Issues hit
-> 
->   *
-> 
->     igt@gem_huc_copy@huc-copy:
-> 
->       o fi-pnv-d510: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html>
->         (fdo#109271
->         <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +57
->         similar issues
->   *
-> 
->     igt@i915_selftest@live@hangcheck:
-> 
->       o fi-bdw-5557u: NOTRUN -> INCOMPLETE
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html>
->         (i915#3921 <https://gitlab.freedesktop.org/drm/intel/issues/3921>)
->   *
-> 
->     igt@kms_chamelium@vga-edid-read:
-> 
->       o fi-bdw-5557u: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/fi-bdw-5557u/igt@kms_chamelium@vga-edid-read.html>
->         (fdo#109271
->         <https://bugs.freedesktop.org/show_bug.cgi?id=109271> /
->         fdo#111827
->         <https://bugs.freedesktop.org/show_bug.cgi?id=111827>) +8
->         similar issues
->   *
-> 
->     igt@kms_psr@cursor_plane_move:
-> 
->       o fi-bdw-5557u: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/fi-bdw-5557u/igt@kms_psr@cursor_plane_move.html>
->         (fdo#109271
->         <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +13
->         similar issues
->   *
-> 
->     igt@prime_vgem@basic-userptr:
-> 
->       o fi-skl-6600u: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/fi-skl-6600u/igt@prime_vgem@basic-userptr.html>
->         (fdo#109271
->         <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +18
->         similar issues
-> 
-> 
->         Possible fixes
-> 
->   *
-> 
->     igt@kms_busy@basic@flip:
-> 
->       o {bat-adlp-6}: DMESG-WARN
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11308/bat-adlp-6/igt@kms_busy@basic@flip.html>
->         (i915#3576
->         <https://gitlab.freedesktop.org/drm/intel/issues/3576>) -> PASS
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/bat-adlp-6/igt@kms_busy@basic@flip.html>
->   *
-> 
->     igt@kms_psr@primary_page_flip:
-> 
->       o fi-skl-6600u: FAIL
->         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11308/fi-skl-6600u/igt@kms_psr@primary_page_flip.html>
->         (i915#4547
->         <https://gitlab.freedesktop.org/drm/intel/issues/4547>) -> PASS
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/fi-skl-6600u/igt@kms_psr@primary_page_flip.html>
-> 
-> {name}: This element is suppressed. This means it is ignored when computing
-> the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> 
->     Build changes
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_6361 -> IGTPW_6728
-> 
-> CI-20190529: 20190529
-> CI_DRM_11308: e1345b708d76052ef668aaba362ef8ad81ed0b9b @ 
-> git://anongit.freedesktop.org/gfx-ci/linux
-> IGTPW_6728: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6728/index.html
-> IGT_6361: 2372a4beb6a33c5f0799a4a8ccbb93794f52dbca @ 
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
+
+> -----Original Message-----
+> From: Tauro, Riana <riana.tauro@intel.com>
+> Sent: Monday, March 28, 2022 10:47 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
+> <anshuman.gupta@intel.com>; Ewins, Jon <jon.ewins@intel.com>; Dixit,
+> Ashutosh <ashutosh.dixit@intel.com>
+> Subject: [PATCH i-g-t 2/3] tests/i915/i915_suspend: Add system-suspend-
+> without-i915 subtest
+>=20
+> From: "Tauro, Riana" <riana.tauro@intel.com>
+>=20
+> Add a new test system-suspend-without-i915 to exercise suspend/resume cyc=
+le
+> without i915 module to know the system wide health of suspend/resume
+> feature.
+> This test will be part of CI fast-feedback test list.
+>=20
+> Signed-off-by: Tauro, Riana <riana.tauro@intel.com>
+> ---
+>  tests/i915/i915_suspend.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+>=20
+> diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c index
+> da27ce09..4660d7a7 100644
+> --- a/tests/i915/i915_suspend.c
+> +++ b/tests/i915/i915_suspend.c
+> @@ -41,6 +41,7 @@
+>  #include "i915/gem.h"
+>  #include "i915/gem_create.h"
+>  #include "igt.h"
+> +#include "igt_kmod.h"
+>  #include "igt_device.h"
+>=20
+>  #define OBJECT_SIZE (16*1024*1024)
+> @@ -202,6 +203,22 @@ test_forcewake(int fd, bool hibernate)
+>  	close (fw_fd);
+>  }
+>=20
+> +static int
+> +test_suspend_without_i915(int fd)
+> +{
+> +	close(fd);
+> +	fd =3D -1;
+> +	drm_cancel_work_at_exit();
+> +	igt_i915_driver_unload();
+> +
+> +	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> SUSPEND_TEST_NONE);
+> +
+> +	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
+> +	igt_assert_eq(igt_i915_driver_load(NULL), 0);
+> +	fd =3D drm_open_driver(DRIVER_INTEL);
+> +	return fd;
+> +}
+> +
+>  int fd;
+>=20
+>  igt_main
+> @@ -209,6 +226,9 @@ igt_main
+>  	igt_fixture
+>  		fd =3D drm_open_driver(DRIVER_INTEL);
+>=20
+> +	igt_subtest("system-suspend-without-i915")
+> +		fd =3D test_suspend_without_i915(fd);
+> +
+Move above code block to above of igt_fixture(), this subtest doesn't need =
+igt_fixture.
+With that we don't need to close the fd and reopen it back and forth ?
+This will avoid to call drm_cancel_work_at_exit() ?
+>  	igt_subtest("fence-restore-tiled2untiled") {
+>  		gem_require_mappable_ggtt(fd);
+>  		test_fence_restore(fd, true, false);
+> --
+> 2.25.1
