@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
  [64.147.123.25])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E77E710EB22
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 14:55:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7B6610EB22
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 14:55:29 +0000 (UTC)
 From: Maxime Ripard <maxime@cerno.tech>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
  Arkadiusz Hiler <arek@hiler.eu>
-Date: Mon, 28 Mar 2022 16:55:05 +0200
-Message-Id: <20220328145509.2331195-5-maxime@cerno.tech>
+Date: Mon, 28 Mar 2022 16:55:06 +0200
+Message-Id: <20220328145509.2331195-6-maxime@cerno.tech>
 In-Reply-To: <20220328145509.2331195-1-maxime@cerno.tech>
 References: <20220328145509.2331195-1-maxime@cerno.tech>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 4/8] lib/igt_frame: Add function to dump
- frames in RGB and raw
+Subject: [igt-dev] [PATCH i-g-t v2 5/8] tests/kms_writeback: Use endianness
+ accessor to fill pixels
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,131 +26,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The igt_write_frame_to_png() already allows to dump the content of a
-cairo surface into a PNG image. However, it can be useful to have the
-raw content of the buffer as well, so let's create a function that will
-dump both a PNG image and its raw buffer.
+The fill_fb() function in the kms_writeback test suite will fill an
+XRGB8888 buffer using a pattern passed an an argument. However, the
+pattern is native endian, while XRGB8888 is little-endian.
+
+Add an accessor and use it to fill the framebuffer with our pattern.
 
 Signed-off-by: Maxime Ripard <maxime@cerno.tech>
 ---
- lib/igt_frame.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_frame.h |  4 +++
- 2 files changed, 86 insertions(+)
+ lib/igt_core.h        | 9 +++++++++
+ tests/kms_writeback.c | 2 +-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_frame.c b/lib/igt_frame.c
-index ba29ac028e1b..f53ba3a381ef 100644
---- a/lib/igt_frame.c
-+++ b/lib/igt_frame.c
-@@ -112,6 +112,40 @@ static void igt_write_frame_to_png(cairo_surface_t *surface, int summary_fd,
- 	free(path);
- }
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 78dc6202ced4..12b1a912c1d7 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -31,6 +31,7 @@
+ #define IGT_CORE_H
  
-+static void igt_write_frame_to_raw(cairo_surface_t *surface, int summary_fd,
-+				   const char *qualifier, const char *suffix)
-+{
-+	int height, stride, size;
-+	char *path;
-+	void *ptr;
-+	int out_fd = -1;
-+
-+	path = igt_get_frame_path(qualifier, suffix, "raw");
-+	igt_assert(path);
-+
-+	igt_debug("Dumping %s frame to %s...\n", qualifier, path);
-+
-+	out_fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-+	igt_assert(out_fd >= 0);
-+
-+	ptr = cairo_image_surface_get_data(surface);
-+	igt_assert(ptr);
-+
-+	stride = cairo_image_surface_get_stride(surface);
-+	igt_assert(stride > 0);
-+
-+	height = cairo_image_surface_get_height(surface);
-+	igt_assert(height > 0);
-+
-+	size = stride * height;
-+	write(out_fd, ptr, size);
-+
-+	close(out_fd);
-+
-+	igt_log_frame_path(summary_fd, path);
-+	free(path);
-+}
-+
- /**
-  * igt_write_compared_frames_to_png:
-  * @reference: The reference cairo surface
-@@ -158,6 +192,54 @@ void igt_write_compared_frames_to_png(cairo_surface_t *reference,
- 	close(fd);
- }
+ #include <assert.h>
++#include <byteswap.h>
+ #include <setjmp.h>
+ #include <stdbool.h>
+ #include <stdint.h>
+@@ -1446,6 +1447,14 @@ void igt_kmsg(const char *format, ...);
+ #define READ_ONCE(x) (*(volatile typeof(x) *)(&(x)))
+ #define WRITE_ONCE(x, v) do *(volatile typeof(x) *)(&(x)) = (v); while (0)
  
-+/**
-+ * igt_write_compared_frames:
-+ * @reference: The reference cairo surface
-+ * @capture: The captured cairo surface
-+ * @reference_suffix: The suffix to give to the reference png file
-+ * @capture_suffix: The suffix to give to the capture png file
-+ *
-+ * Dump previously compared frames to png and raw files.
-+ */
-+void igt_write_compared_frames(cairo_surface_t *reference,
-+			       cairo_surface_t *capture,
-+			       const char *reference_suffix,
-+			       const char *capture_suffix)
-+{
-+	char *id;
-+	const char *test_name;
-+	const char *subtest_name;
-+	char path[PATH_MAX];
-+	int fd = -1;
++#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
++#define cpu_to_le32(x)  bswap_32(x)
++#define le32_to_cpu(x)  bswap_32(x)
++#else
++#define cpu_to_le32(x)  (x)
++#define le32_to_cpu(x)  (x)
++#endif
 +
-+	if (!igt_frame_dump_is_enabled())
-+		return;
-+
-+	id = getenv("IGT_FRAME_DUMP_ID");
-+
-+	test_name = igt_test_name();
-+	subtest_name = igt_subtest_name();
-+
-+	if (id)
-+		snprintf(path, PATH_MAX, "%s/frame-%s-%s-%s.txt",
-+			 igt_frame_dump_path, test_name, subtest_name, id);
-+	else
-+		snprintf(path, PATH_MAX, "%s/frame-%s-%s.txt",
-+			 igt_frame_dump_path, test_name, subtest_name);
-+
-+	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-+	igt_assert(fd >= 0);
-+
-+	igt_debug("Writing dump report to %s...\n", path);
-+
-+	igt_write_frame_to_raw(reference, fd, "reference", reference_suffix);
-+	igt_write_frame_to_png(reference, fd, "reference", reference_suffix);
-+	igt_write_frame_to_raw(capture, fd, "capture", capture_suffix);
-+	igt_write_frame_to_png(capture, fd, "capture", capture_suffix);
-+
-+	close(fd);
-+}
-+
- /**
-  * igt_check_analog_frame_match:
-  * @reference: The reference cairo surface
-diff --git a/lib/igt_frame.h b/lib/igt_frame.h
-index f44f57d7ce73..51cbc2bd68b4 100644
---- a/lib/igt_frame.h
-+++ b/lib/igt_frame.h
-@@ -36,6 +36,10 @@ void igt_write_compared_frames_to_png(cairo_surface_t *reference,
- 				      cairo_surface_t *capture,
- 				      const char *reference_suffix,
- 				      const char *capture_suffix);
-+void igt_write_compared_frames(cairo_surface_t *reference,
-+			       cairo_surface_t *capture,
-+			       const char *reference_suffix,
-+			       const char *capture_suffix);
- bool igt_check_analog_frame_match(cairo_surface_t *reference,
- 				  cairo_surface_t *capture);
- bool igt_check_checkerboard_frame_match(cairo_surface_t *reference,
+ #define MSEC_PER_SEC (1000)
+ #define USEC_PER_SEC (1000*MSEC_PER_SEC)
+ #define NSEC_PER_SEC (1000*USEC_PER_SEC)
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index 21d62faabf6b..faa790cc0f72 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -239,7 +239,7 @@ static void fill_fb(igt_fb_t *fb, uint32_t pixel)
+ 
+ 	pixel_count = fb->strides[0] * fb->height / sizeof(uint32_t);
+ 	for (i = 0; i < pixel_count; i++)
+-		ptr[i] = pixel;
++		ptr[i] = cpu_to_le32(pixel);
+ 
+ 	igt_fb_unmap_buffer(fb, ptr);
+ }
 -- 
 2.35.1
