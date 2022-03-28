@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2719210EB11
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Mar 2022 08:48:05 +0000 (UTC)
-Message-ID: <eefad1b3-3725-7d48-9803-8d2eea60b5da@intel.com>
-Date: Mon, 28 Mar 2022 14:17:50 +0530
-Content-Language: en-US
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>, =?UTF-8?Q?Juha-Pekka_Heikkil=c3=a4?=
- <juha-pekka.heikkila@intel.com>
-References: <20220310035439.15304-1-karthik.b.s@intel.com>
- <14cae113-f0d2-7554-b878-16be48c1ee2c@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <14cae113-f0d2-7554-b878-16be48c1ee2c@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-ID: <3f35c6fe-5564-f39f-0cd1-876faf331be3@linux.intel.com>
+Date: Mon, 28 Mar 2022 11:16:57 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: Test Cleanup
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220325090958.408654-1-matthew.auld@intel.com>
+ <20220325090958.408654-2-matthew.auld@intel.com>
+From: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20220325090958.408654-2-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2 2/3]
+ test/gem_lmem_swapping: fix physical engine usage
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,357 +19,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 3/18/2022 8:58 PM, Modem, Bhanuprakash wrote:
-Hi,
 
-Thanks for the review.
-> On Thu-10-03-2022 09:24 am, Karthik B S wrote:
->> -Convert tests to dynamic
+On 3/25/22 10:09, Matthew Auld wrote:
+> During execbuf DG2 currently just hits:
 >
-> Can we have separate patch for dynamic subtests?
-Sure, will split this.
+> 	"execbuf with unknown ring: 5"
 >
->> -Replace drm function call with existing library functions
->> -igt_display_reset() before all subtests
->>
->> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
->> ---
->>   tests/kms_async_flips.c | 202 ++++++++++++++++++++++++++++------------
->>   1 file changed, 144 insertions(+), 58 deletions(-)
->>
->> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
->> index c658630c..13995700 100644
->> --- a/tests/kms_async_flips.c
->> +++ b/tests/kms_async_flips.c
->> @@ -50,7 +50,7 @@ typedef struct {
->>       uint32_t refresh_rate;
->>       struct igt_fb bufs[4];
->>       igt_display_t display;
->> -    drmModeConnectorPtr connector;
->> +    igt_output_t *output;
->>       unsigned long flip_timestamp_us;
->>       double flip_interval;
->>       igt_pipe_crc_t *pipe_crc;
->> @@ -58,24 +58,9 @@ typedef struct {
->>       int flip_count;
->>       int frame_count;
->>       bool flip_pending;
->> +    bool extended;
->>   } data_t;
->>   -static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
->> -{
->> -    igt_output_t *output;
->> -    drmModeConnectorPtr ret = NULL;
->> -
->> -    for_each_connected_output(&data->display, output) {
->> -        if (output->config.connector->count_modes > 0) {
->> -            ret = output->config.connector;
->> -            break;
->> -        }
->> -    }
->> -
->> -    igt_assert_f(ret, "Connector NOT found\n");
->> -    return ret;
->> -}
->> -
->>   static void flip_handler(int fd_, unsigned int sequence, unsigned 
->> int tv_sec,
->>                unsigned int tv_usec, void *_data)
->>   {
->> @@ -129,14 +114,10 @@ static void wait_flip_event(data_t *data)
->>   }
->>     static void make_fb(data_t *data, struct igt_fb *fb,
->> -            drmModeConnectorPtr connector, int index)
->> +            uint32_t width, uint32_t height, int index)
->>   {
->> -    uint32_t width, height;
->>       int rec_width;
->>   -    width = connector->modes[0].hdisplay;
->> -    height = connector->modes[0].vdisplay;
->> -
->>       rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
->>         igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
->> @@ -347,8 +328,8 @@ static void test_invalid(data_t *data)
->>       uint32_t width, height;
->>       struct igt_fb fb;
->>   -    width = data->connector->modes[0].hdisplay;
->> -    height = data->connector->modes[0].vdisplay;
->> +    width = data->output->config.connector->modes[0].hdisplay;
->> +    height = data->output->config.connector->modes[0].vdisplay;
->> igt_require(igt_display_has_format_mod(&data->display, 
->> DRM_FORMAT_XRGB8888,
->>                              I915_FORMAT_MOD_Y_TILED));
->> @@ -367,31 +348,58 @@ static void test_invalid(data_t *data)
->>       igt_remove_fb(data->drm_fd, &fb);
->>   }
->>   +static enum pipe get_pipe_for_output(igt_display_t *display, 
->> igt_output_t *output)
->> +{
->> +    enum pipe pipe;
->> +
->> +    for_each_pipe(display, pipe) {
->> +        if (igt_pipe_connector_valid(pipe, output))
->> +            return pipe;
->> +    }
->> +
->> +    igt_assert_f(false, "No pipe found for output %s\n",
->> +             igt_output_name(output));
->> +}
->> +
->>   static void test_init(data_t *data)
->>   {
->> -    drmModeResPtr res;
->> -    int i, ret;
->> +    int i;
->> +    uint32_t width, height;
->> +    enum pipe pipe;
->> +    igt_plane_t *plane;
->> +    static uint32_t prev_output_id;
->> +
->> +    if (!prev_output_id) {
->> +        prev_output_id = data->output->id;
->> +    } else if (prev_output_id == data->output->id) {
->> +        return;
->> +    } else {
->> +        prev_output_id = data->output->id;
->> +        for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
->> +            igt_remove_fb(data->drm_fd, &data->bufs[i]);
->> +    }
-> Why do we need this change? will igt_disaplay_reset() change output id 
-> info?
-No. If we run the test without extended flag(basically with the existing 
-test design), we were using the same pipe and connector combination for 
-all the subtests. So fb creation was just one time. But now without the 
-above logic, we would be creating new fb's everytime even if we're 
-running on the same output. Added this logic just reuse the same fb if 
-we're using the same output. This is just to optimize the execution time.
+> It looks like the fix is to convert the test over to using the
+> non-legacy API where we instead fill the ctx with all the physical
+> engines and then engine/ring becomes the index into this.
 >
->>   -    res = drmModeGetResources(data->drm_fd);
->> -    igt_assert(res);
->> +    igt_display_reset(&data->display);
->> +    igt_display_commit(&data->display);
->>   -    kmstest_unset_all_crtcs(data->drm_fd, res);
->> +    pipe = get_pipe_for_output(&data->display, data->output);
->>   -    data->connector = find_connector_for_modeset(data);
->> -    data->crtc_id = kmstest_find_crtc_for_connector(data->drm_fd,
->> -                            res, data->connector, 0);
->> +    width = data->output->config.connector->modes[0].hdisplay;
->> +    height = data->output->config.connector->modes[0].vdisplay;
+> v2:
+>    - Make sure we destroy our newly created contexts(Ashutosh)
+>    - Tweak the commit message so that we are talking less nonsense(Tvrtko)
+>    - s/i915/fd/ when calling set_persistence
 >
-> igt_output_get_mode(data->output) can give the default mode.
-Sure, will update this.
->
->>   -    data->refresh_rate = data->connector->modes[0].vrefresh;
->> +    data->crtc_id = data->display.pipes[pipe].crtc_id;
->> +    data->refresh_rate = 
->> data->output->config.connector->modes[0].vrefresh;
->>         for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
->> -        make_fb(data, &data->bufs[i], data->connector, i);
->> +        make_fb(data, &data->bufs[i], width, height, i);
->>   -    ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, 
->> data->bufs[0].fb_id, 0, 0,
->> -                 &data->connector->connector_id, 1, 
->> &data->connector->modes[0]);
->> +    igt_output_set_pipe(data->output, pipe);
->> +    plane = igt_output_get_plane_type(data->output, 
->> DRM_PLANE_TYPE_PRIMARY);
->>   -    igt_assert(ret == 0);
->> +    igt_plane_set_fb(plane, &data->bufs[0]);
->> +    igt_plane_set_size(plane, width, height);
->>   -    drmModeFreeResources(res);
->> +    igt_display_commit2(&data->display, COMMIT_ATOMIC);
->
-> We need igt_require(atomic) in igt_fixture to use this.
-Sure, will add this.
->
->>   }
->>     static void queue_vblank(data_t *data)
->> @@ -488,7 +496,7 @@ static void test_crc(data_t *data)
->>       drmModeModeInfoPtr mode;
->>         /* make things faster by using a smallish mode */
->> -    mode = &data->connector->modes[0];
->> +    mode = &data->output->config.connector->modes[0];
->>       if (mode->hdisplay > 1024 && mode->vdisplay > 786)
->>           mode = igt_std_1024_mode_get(data->refresh_rate);
->>       else
->> @@ -503,7 +511,7 @@ static void test_crc(data_t *data)
->>       igt_draw_fill_fb(data->drm_fd, &data->bufs[!frame], 0xff0000ff);
->>         ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, 
->> data->bufs[frame].fb_id, 0, 0,
->> -                 &data->connector->connector_id, 1, mode);
->> + &data->output->config.connector->connector_id, 1, mode);
->>       free(mode);
->>       igt_assert_eq(ret, 0);
->>   @@ -541,10 +549,33 @@ static void test_crc(data_t *data)
->>       igt_assert_lt(data->frame_count * 2, data->flip_count);
->>   }
->>   -igt_main
->> +static int opt_handler(int opt, int opt_index, void *_data)
->> +{
->> +    data_t *data = _data;
->> +
->> +    switch (opt) {
->> +    case 'e':
->> +        data->extended = true;
->> +        break;
->> +    }
->> +
->> +    return IGT_OPT_HANDLER_SUCCESS;
->> +}
->> +
->> +static const struct option long_opts[] = {
->> +    { .name = "extended", .has_arg = false, .val = 'e', },
->> +    {}
->> +};
->> +
->> +static const char help_str[] =
->> +    "  --extended\t\tRun the extended tests\n";
->> +
->> +static data_t data;
->> +
->> +igt_main_args("", long_opts, help_str, opt_handler, &data)
->
-> Options are missing in help string. s/""/"e"
-Will fix this.
->
->>   {
->> -    static data_t data;
->>       int i;
->> +    igt_output_t *output;
->>         igt_fixture {
->>           data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->> @@ -558,32 +589,84 @@ igt_main
->>         igt_describe("Verify the async flip functionality and the fps 
->> during async flips");
->>       igt_subtest_group {
->> -        igt_fixture
->> -            test_init(&data);
->> -
->>           igt_describe("Wait for page flip events in between 
->> successive asynchronous flips");
->> -        igt_subtest("async-flip-with-page-flip-events")
->> -            test_async_flip(&data, false);
->> + igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
->> +            for_each_connected_output(&data.display, output) {
->> +                igt_dynamic_f("%s", igt_output_name(output)) {
->> +                    data.output = output;
->> +                    test_init(&data);
->> +                    test_async_flip(&data, false);
->> +                }
->> +                if (!data.extended)
->> +                    break;
->
-> Are we not missing any coverage? Single output/pipe combo is enough?
->
-> AFAIK, aysnc-flips are related pipe and it doesn't matter the 
-> connector type, so we need to iterate all pipes and get single output 
-> using igt_get_single_output_for_pipe()
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5192
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
 
-Currently this is restricted to one pipe as this test is a stress test 
-and time consuming. So wouldn't be optimal running on all pipes for all 
-subtests? May be in extended testing we could add the pipes also?
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-Connector is added in extended as different connectors could have 
-different resolution/vrefresh and async flips could get affected by this.
 
-@JP: Any inputs on this?
-
-Thanks,
-Karthik.B.S
+> ---
+>   tests/i915/gem_lmem_swapping.c | 29 +++++++++++++++++++++--------
+>   1 file changed, 21 insertions(+), 8 deletions(-)
 >
-> - Bhanu
->
->> +            }
->> +        }
->>             igt_describe("Alternate between sync and async flips");
->> -        igt_subtest("alternate-sync-async-flip")
->> -            test_async_flip(&data, true);
->> +        igt_subtest_with_dynamic("alternate-sync-async-flip") {
->> +            for_each_connected_output(&data.display, output) {
->> +                igt_dynamic_f("%s", igt_output_name(output)) {
->> +                    data.output = output;
->> +                    test_init(&data);
->> +                    test_async_flip(&data, true);
->> +                }
->> +                if (!data.extended)
->> +                    break;
->> +            }
->> +        }
->> +
->>             igt_describe("Verify that the async flip timestamp does 
->> not coincide with either previous or next vblank");
->> -        igt_subtest("test-time-stamp")
->> -            test_timestamp(&data);
->> +        igt_subtest_with_dynamic("test-time-stamp") {
->> +            for_each_connected_output(&data.display, output) {
->> +                igt_dynamic_f("%s", igt_output_name(output)) {
->> +                    data.output = output;
->> +                    test_init(&data);
->> +                    test_timestamp(&data);
->> +                }
->> +                if (!data.extended)
->> +                    break;
->> +            }
->> +        }
->>             igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR 
->> passes after async flip");
->> -        igt_subtest("test-cursor")
->> -            test_cursor(&data);
->> +        igt_subtest_with_dynamic("test-cursor") {
->> +            for_each_connected_output(&data.display, output) {
->> +                igt_dynamic_f("%s", igt_output_name(output)) {
->> +                    data.output = output;
->> +                    test_init(&data);
->> +                    test_cursor(&data);
->> +                }
->> +                if (!data.extended)
->> +                    break;
->> +            }
->> +        }
->>             igt_describe("Negative case to verify if changes in fb 
->> are rejected from kernel as expected");
->> -        igt_subtest("invalid-async-flip")
->> -            test_invalid(&data);
->> +        igt_subtest_with_dynamic("invalid-async-flip") {
->> +            for_each_connected_output(&data.display, output) {
->> +                igt_dynamic_f("%s", igt_output_name(output)) {
->> +                    data.output = output;
->> +                    test_init(&data);
->> +                    test_invalid(&data);
->> +                }
->> +                if (!data.extended)
->> +                    break;
->> +            }
->> +        }
->>             igt_describe("Use CRC to verify async flip scans out the 
->> correct framebuffer");
->> -        igt_subtest("crc")
->> -            test_crc(&data);
->> +        igt_subtest_with_dynamic("crc") {
->> +            for_each_connected_output(&data.display, output) {
->> +                igt_dynamic_f("%s", igt_output_name(output)) {
->> +                    data.output = output;
->> +                    test_init(&data);
->> +                    test_crc(&data);
->> +                }
->> +                if (!data.extended)
->> +                    break;
->> +            }
->> +        }
->>             igt_fixture {
->>               for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
->> @@ -591,6 +674,9 @@ igt_main
->>           }
->>       }
->>   -    igt_fixture
->> +    igt_fixture {
->> +        igt_display_reset(&data.display);
->> +        igt_display_commit(&data.display);
->>           igt_display_fini(&data.display);
->> +    }
->>   }
->
+> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+> index 193ff370..526835cc 100644
+> --- a/tests/i915/gem_lmem_swapping.c
+> +++ b/tests/i915/gem_lmem_swapping.c
+> @@ -126,6 +126,7 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
+>   }
+>   
+>   static void move_to_lmem(int i915,
+> +			 const intel_ctx_t *ctx,
+>   			 struct object *list,
+>   			 unsigned int num,
+>   			 uint32_t batch,
+> @@ -137,6 +138,7 @@ static void move_to_lmem(int i915,
+>   		.buffers_ptr = to_user_pointer(obj),
+>   		.buffer_count = 1 + num,
+>   		.flags = I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT | engine,
+> +		.rsvd1 = ctx->id,
+>   	};
+>   	unsigned int i, ret;
+>   
+> @@ -156,6 +158,7 @@ retry:
+>   }
+>   
+>   static void __do_evict(int i915,
+> +		       const intel_ctx_t *ctx,
+>   		       struct drm_i915_gem_memory_class_instance *region,
+>   		       struct params *params,
+>   		       unsigned int seed)
+> @@ -170,7 +173,6 @@ static void __do_evict(int i915,
+>   	struct timespec t = {};
+>   	unsigned int num;
+>   
+> -	__gem_context_set_persistence(i915, 0, false);
+>   	size = 4096;
+>   	batch = create_bo(i915, &size, region, params->oom_test);
+>   
+> @@ -201,7 +203,7 @@ static void __do_evict(int i915,
+>   		}
+>   		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
+>   
+> -		move_to_lmem(i915, objects + i, 1, batch, engine,
+> +		move_to_lmem(i915, ctx, objects + i, 1, batch, engine,
+>   			     params->oom_test);
+>   		if (params->flags & TEST_VERIFY)
+>   			init_object(i915, obj, rand(), params->flags);
+> @@ -226,7 +228,7 @@ static void __do_evict(int i915,
+>   			idx = (idx + 1) % params->count;
+>   		}
+>   
+> -		move_to_lmem(i915, list, num, batch, engine, params->oom_test);
+> +		move_to_lmem(i915, ctx, list, num, batch, engine, params->oom_test);
+>   
+>   		if (params->flags & TEST_ENGINES)
+>   			engine = (engine + 1) % __num_engines__;
+> @@ -342,6 +344,7 @@ static void fill_params(int i915, struct params *params,
+>   }
+>   
+>   static void test_evict(int i915,
+> +		       const intel_ctx_t *ctx,
+>   		       struct drm_i915_memory_region_info *region,
+>   		       unsigned int flags)
+>   {
+> @@ -353,14 +356,18 @@ static void test_evict(int i915,
+>   	if (flags & TEST_PARALLEL) {
+>   		int fd = gem_reopen_driver(i915);
+>   
+> +		ctx = intel_ctx_create_all_physical(fd);
+> +		__gem_context_set_persistence(fd, ctx->id, false);
+> +
+>   		igt_fork(child, nproc)
+> -			__do_evict(fd, &region->region, &params,
+> +			__do_evict(fd, ctx, &region->region, &params,
+>   				   params.seed + child + 1);
+>   
+>   		igt_waitchildren();
+> +		intel_ctx_destroy(fd, ctx);
+>   		close(fd);
+>   	} else {
+> -		__do_evict(i915, &region->region, &params, params.seed);
+> +		__do_evict(i915, ctx, &region->region, &params, params.seed);
+>   	}
+>   }
+>   
+> @@ -399,6 +406,7 @@ static void smem_oom_exit_handler(int sig)
+>   }
+>   
+>   static void test_smem_oom(int i915,
+> +			  const intel_ctx_t *ctx,
+>   			  struct drm_i915_memory_region_info *region)
+>   {
+>   	const uint64_t smem_size = intel_get_total_ram_mb() +
+> @@ -421,7 +429,7 @@ static void test_smem_oom(int i915,
+>   		fill_params(i915, &params, region, 0, 1, true);
+>   
+>   		igt_install_exit_handler(smem_oom_exit_handler);
+> -		__do_evict(fd, &region->region, &params,
+> +		__do_evict(fd, ctx, &region->region, &params,
+>   			   params.seed + child + 1);
+>   
+>   		close(fd);
+> @@ -513,6 +521,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
+>   		{ }
+>   	};
+> +	const intel_ctx_t *ctx;
+>   	int i915 = -1;
+>   
+>   	igt_fixture {
+> @@ -528,19 +537,23 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   		for_each_physical_engine(i915, e)
+>   			__num_engines__++;
+>   		igt_require(__num_engines__);
+> +		ctx = intel_ctx_create_all_physical(i915);
+> +		__gem_context_set_persistence(i915, ctx->id, false);
+> +
+>   	}
+>   
+>   	for (test = tests; test->name; test++) {
+>   		igt_describe("Exercise local memory swapping to system memory");
+>   		dynamic_lmem_subtest(region, regions, test->name)
+> -			test_evict(i915, region, test->flags);
+> +			test_evict(i915, ctx, region, test->flags);
+>   	}
+>   
+>   	igt_describe("Exercise local memory swapping during exhausting system memory");
+>   	dynamic_lmem_subtest(region, regions, "smem-oom")
+> -		test_smem_oom(i915, region);
+> +		test_smem_oom(i915, ctx, region);
+>   
+>   	igt_fixture {
+> +		intel_ctx_destroy(i915, ctx);
+>   		free(regions);
+>   		close(i915);
+>   	}
