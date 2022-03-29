@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C773C10E8CC
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Mar 2022 15:47:01 +0000 (UTC)
-Date: Tue, 29 Mar 2022 17:46:39 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B14710E0D3
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Mar 2022 16:02:01 +0000 (UTC)
+Date: Tue, 29 Mar 2022 18:01:57 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YkMp32PK/bWkWr7j@kamilkon-DESK1>
-References: <20220317051133.27881-1-sai.gowtham.ch@intel.com>
- <20220317051133.27881-2-sai.gowtham.ch@intel.com>
+Message-ID: <YkMtdWDEXj0occ2V@kamilkon-DESK1>
+References: <20220322052015.29961-1-sai.gowtham.ch@intel.com>
+ <20220322052015.29961-2-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220317051133.27881-2-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_exec_basic: Add test
- description to the subtest.
+In-Reply-To: <20220322052015.29961-2-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_ctx_create: Added test
+ description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,46 +22,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
+ Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Sai,
 
-Dnia 2022-03-17 at 10:41:32 +0530, sai.gowtham.ch@intel.com napisał(a):
+please extend a little description of active subtest,
+see below.
+
+Dnia 2022-03-22 at 10:50:14 +0530, sai.gowtham.ch@intel.com napisał(a):
 > From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 > 
-> Added test description to subtests that are available.
+> Added test and subtests description
 > 
-> Cc: Melkaveri Arjun <Arjun.Melkaveri@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> v2: Modified description to be more precise
+> 
+> v3: Rebase
+> 
+> v4: Incorporated minor changes in description based
+>     on feedback
+> 
+> v5: Minor alignment adjustments
+> 
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
 > Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> Cc: Dec, Katarzyna <katarzyna.dec@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Acked-by: Katarzyna Dec <katarzyna.dec@intel.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/i915/gem_exec_basic.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  tests/i915/gem_ctx_create.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
 > 
-> diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
-> index 008a35d0..21062ba2 100644
-> --- a/tests/i915/gem_exec_basic.c
-> +++ b/tests/i915/gem_exec_basic.c
-> @@ -63,6 +63,8 @@ igt_main
->  					    I915_DEVICE_MEMORY);
+> diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+> index 44846652..6eab5bac 100644
+> --- a/tests/i915/gem_ctx_create.c
+> +++ b/tests/i915/gem_ctx_create.c
+> @@ -36,6 +36,8 @@
+>  #include "igt_rand.h"
+>  #include "sw_sync.h"
+>  
+> +IGT_TEST_DESCRIPTION("Test the context create ioctls");
+> +
+>  #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+>  
+>  static unsigned all_engines[I915_EXEC_RING_MASK + 1];
+> @@ -585,6 +587,7 @@ igt_main
+>  		igt_fork_hang_detector(fd);
 >  	}
 >  
-> +	igt_describe("Check basic funtionality of GEM_EXECBUFFER2 ioctl on every"
--------------------------------------^
-s/funtionality/functionality/
+> +	igt_describe("Test random context creation");
+>  	igt_subtest("basic") {
+>  		memset(&create, 0, sizeof(create));
+>  		create.ctx_id = rand();
+> @@ -594,41 +597,67 @@ igt_main
+>  		gem_context_destroy(fd, create.ctx_id);
+>  	}
+>  
+> +	igt_describe("Verify valid and invalid context extensions");
+>  	igt_subtest("ext-param")
+>  		basic_ext_param(fd);
+> +
+> +	igt_describe("Set, validate and execute particular context params");
+>  	igt_subtest("iris-pipeline")
+>  		iris_pipeline(fd);
+>  
+> +	igt_describe("Create contexts upto available RAM size, calculate the average "
+> +		     "performance of their execution on multiple parallel processes");
+>  	igt_subtest("maximum-mem")
+>  		maximum(fd, &cfg, ncpus, CHECK_RAM);
+> +
+> +	igt_describe("Create contexts upto available RAM+SWAP size, calculate the average "
+> +		     "performance of their execution on multiple parallel processes");
+>  	igt_subtest("maximum-swap")
+>  		maximum(fd, &cfg, ncpus, CHECK_RAM | CHECK_SWAP);
+>  
+> +	igt_describe("Exercise implicit per-fd context creation");
+>  	igt_subtest("basic-files")
+>  		files(fd, &cfg, 2, 1);
+> +
+> +	igt_describe("Exercise implicit per-fd context creation on 1 CPU for long duration");
+>  	igt_subtest("files")
+>  		files(fd, &cfg, 20, 1);
+> +
+> +	igt_describe("Exercise implicit per-fd context creation on all CPUs for long duration");
+>  	igt_subtest("forked-files")
+>  		files(fd, &cfg, 20, ncpus);
+>  
+>  	/* NULL value means all engines */
+> +	igt_describe("Calculate the average performance of context creation and "
+> +		     "it's execution using all engines");
+>  	igt_subtest("active-all")
+>  		active(fd, &cfg, NULL, 20, 1);
+> +
+> +	igt_describe("Calculate the average performance of context creation and it's execution "
+> +		     "using all engines on multiple parallel processes");
+>  	igt_subtest("forked-active-all")
+>  		active(fd, &cfg, NULL, 20, ncpus);
+>  
+> +	igt_describe("For each engine calculate the average performance of context creation "
+> +		     "and execution");
 
-With that fixed you can add my r-b tag.
+Add "and exercise context raclaim" at end of description, e.g.
+s/execution/execution and exercise context raclaim/
+
+imho adding this here should suffice, no need to repeat it in
+other active subtests.
 
 Regards,
 Kamil
-
-> +		     " ring and iterating over memory regions.");
->  	igt_subtest_with_dynamic("basic") {
->  		for_each_combination(regions, 1, set) {
->  			char *sub_name = memregion_dynamic_subtest_name(regions);
+>  	igt_subtest_with_dynamic("active") {
+>  		for_each_ctx_cfg_engine(fd, &cfg, e) {
+>  			igt_dynamic_f("%s", e->name)
+>  				active(fd, &cfg, e, 20, 1);
+>  		}
+>  	}
+> +
+> +	igt_describe("For each engine calculate the average performance of context creation "
+> +		     "and execution on multiple parallel processes");
+>  	igt_subtest_with_dynamic("forked-active") {
+>  		for_each_ctx_cfg_engine(fd, &cfg, e) {
+>  			igt_dynamic_f("%s", e->name)
+>  				active(fd, &cfg, e, 20, ncpus);
+>  		}
+>  	}
+> +
+> +	igt_describe("For each engine calculate the average performance of context creation "
+> +		     "and execution while all other engines are hogging the resources");
+>  	igt_subtest_with_dynamic("hog") {
+>  		for_each_ctx_cfg_engine(fd, &cfg, e) {
+>  			igt_dynamic_f("%s", e->name)
 > -- 
 > 2.35.1
 > 
