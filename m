@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E12310EC2F
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Mar 2022 09:43:24 +0000 (UTC)
-Date: Thu, 10 Mar 2022 11:42:45 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Message-ID: <YinIFVvx37IdiRDu@platvala-desk.ger.corp.intel.com>
-References: <20220310073800.22067-1-tomeu.vizoso@collabora.com>
- <20220310073800.22067-13-tomeu.vizoso@collabora.com>
- <Yim/6c0/18rV7wUS@platvala-desk.ger.corp.intel.com>
- <4f5e6179-8976-e116-0beb-2a84b7220d27@collabora.com>
+Date: Wed, 30 Mar 2022 12:52:29 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <20220330195229.GD59408@unerlige-ril-10.165.21.154>
+References: <20220222135605.1120767-1-tvrtko.ursulin@linux.intel.com>
+ <20220222135605.1120767-2-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <4f5e6179-8976-e116-0beb-2a84b7220d27@collabora.com>
-Subject: Re: [igt-dev] [PATCH v2 12/12] ci: Add job for testing changes to
- tests in Qualcomm devices
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220222135605.1120767-2-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 01/11] lib: Helper library
+ for parsing i915 fdinfo output
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,336 +19,310 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Daniel Stone <daniels@collabora.com>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
- Eric Anholt <eric@anholt.net>, Sean Paul <seanpaul@chromium.org>,
- Mark Yacoub <markyacoub@google.com>
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Mar 10, 2022 at 10:23:51AM +0100, Tomeu Vizoso wrote:
-> On 3/10/22 10:07 AM, Petri Latvala wrote:
-> > On Thu, Mar 10, 2022 at 08:38:00AM +0100, Tomeu Vizoso wrote:
-> > > Will allow for more efortless testing of changes to tests that could
-> > > affect Qualcomm devices.
-> > > 
-> > > With these changes, it should be fairly trivial to add testing on other
-> > > KMS and GPU drivers.
-> > > 
-> > > v2: Update expectations after 9f32d552afd7 ("tests/kms_setmode: Use dynamic subtests")
-> > > 
-> > > Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-> > > ---
-> > >   .gitlab-ci.yml     | 49 +++++++++++++++++++++++
-> > >   ci/msm_results.txt | 97 ++++++++++++++++++++++++++++++++++++++++++++++
-> > >   ci/msm_tests.txt   | 14 +++++++
-> > >   ci/run_tests.sh    | 87 +++++++++++++++++++++++++++++++++++++++++
-> > >   4 files changed, 247 insertions(+)
-> > >   create mode 100644 ci/msm_results.txt
-> > >   create mode 100644 ci/msm_tests.txt
-> > >   create mode 100755 ci/run_tests.sh
-> > > 
-> > > diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-> > > index 302043a61bf7..0437c8ec53c0 100644
-> > > --- a/.gitlab-ci.yml
-> > > +++ b/.gitlab-ci.yml
-> > > @@ -329,6 +329,55 @@ default:
-> > >         test -e "${CI_JOB_JWT_FILE}" &&
-> > >         export CI_JOB_JWT="$(<${CI_JOB_JWT_FILE})" &&
-> > >         rm "${CI_JOB_JWT_FILE}"
-> > > +
-> > > +.lava-test:arm64:
-> > > +  image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian:commit-$CI_COMMIT_SHA
-> > > +  variables:
-> > > +    BASE_SYSTEM_HOST_PREFIX: "${MINIO_HOST}/mesa-lava"
-> > > +    FDO_UPSTREAM_REPO: gfx-ci/rootfs
-> > > +    ARCH: arm64
-> > > +    # Tag corresponding to artifacts from https://gitlab.freedesktop.org/gfx-ci/rootfs/
-> > > +    KERNEL_ROOTFS_TAG: "2022-03-08-igt-deps--2022-03-08-bzip2--290b79e0e78eab67a83766f4e9691be554fc4afd"
-> > > +    BASE_SYSTEM_MAINLINE_HOST_PATH: "${BASE_SYSTEM_HOST_PREFIX}/${FDO_UPSTREAM_REPO}/${KERNEL_ROOTFS_TAG}/${ARCH}"
-> > > +    JOB_ARTIFACTS_BASE: ${PIPELINE_ARTIFACTS_BASE}/${CI_JOB_ID}
-> > > +    JOB_RESULTS_PATH: "${JOB_ARTIFACTS_BASE}/results.tar.gz"
-> > > +    MINIO_ARTIFACT_NAME: igt-arm64
-> > > +    BUILD_PATH: "${PIPELINE_ARTIFACTS_BASE}/${MINIO_ARTIFACT_NAME}.tar.gz"
-> > > +    JOB_ROOTFS_OVERLAY_PATH: "${JOB_ARTIFACTS_BASE}/job-rootfs-overlay.tar.gz"
-> > > +    KERNEL_IMAGE_NAME: Image
-> > > +    KERNEL_IMAGE_TYPE: "image"
-> > > +    VISIBILITY_GROUP: "Collabora+fdo"
-> > > +    HWCI_TEST_SCRIPT: "/install/ci/run_tests.sh"
-> > > +  dependencies:
-> > > +    - build:tests-debian-meson-arm64
-> > > +  needs:
-> > > +    - build-containers:build-debian
-> > > +    - build:tests-debian-meson-arm64
-> > > +  script:
-> > > +    - ./ci/lava/lava-submit.sh
-> > > +  artifacts:
-> > > +    name: "igt_${CI_JOB_NAME}"
-> > > +    when: always
-> > > +    paths:
-> > > +      - results/
-> > > +  tags:
-> > > +    - $RUNNER_TAG
-> > > +  after_script:
-> > > +    - wget -q "https://${JOB_RESULTS_PATH}" -O- | tar -xz
-> > > +
-> > > +test:msm:
-> > > +  extends:
-> > > +    - .lava-test:arm64
-> > > +  stage: test
-> > > +  variables:
-> > > +    DEVICE_TYPE: sc7180-trogdor-lazor-limozeen
-> > > +    DTB: sc7180-trogdor-lazor-limozeen-nots
-> > > +    BOOT_METHOD: depthcharge
-> > > +    KERNEL_IMAGE_TYPE: ""
-> > > +    IGT_FORCE_DRIVER: msm
-> > > +  tags:
-> > > +    - mesa-ci-x86-64-lava-rk3399-gru-kevin    # why it doesn't work!? mesa-ci-x86-64-lava-sc7180-trogdor-lazor-limozeen
-> > > +
-> > >   ################### DEPLOY #########################
-> > >   pages:
-> > > diff --git a/ci/msm_results.txt b/ci/msm_results.txt
-> > > new file mode 100644
-> > > index 000000000000..7e8cda489a49
-> > > --- /dev/null
-> > > +++ b/ci/msm_results.txt
-> > > @@ -0,0 +1,97 @@
-> > > +core_auth:getclient-simple pass
-> > > +core_auth:getclient-master-drop pass
-> > > +core_auth:basic-auth pass
-> > > +core_auth:many-magics pass
-> > > +core_getclient pass
-> > > +core_getstats pass
-> > > +core_getversion pass
-> > > +core_setmaster_vs_auth pass
-> > > +drm_read:invalid-buffer pass
-> > > +drm_read:fault-buffer pass
-> > > +drm_read:empty-block pass
-> > > +drm_read:empty-nonblock pass
-> > > +drm_read:short-buffer-block pass
-> > > +drm_read:short-buffer-nonblock pass
-> > > +drm_read:short-buffer-wakeup pass
-> > > +kms_addfb_basic:unused-handle pass
-> > > +kms_addfb_basic:unused-pitches pass
-> > > +kms_addfb_basic:unused-offsets pass
-> > > +kms_addfb_basic:unused-modifier pass
-> > > +kms_addfb_basic:clobberred-modifier skip
-> > > +kms_addfb_basic:invalid-smem-bo-on-discrete skip
-> > > +kms_addfb_basic:legacy-format pass
-> > > +kms_addfb_basic:no-handle pass
-> > > +kms_addfb_basic:basic pass
-> > > +kms_addfb_basic:bad-pitch-0 pass
-> > > +kms_addfb_basic:bad-pitch-32 pass
-> > > +kms_addfb_basic:bad-pitch-63 pass
-> > > +kms_addfb_basic:bad-pitch-128 pass
-> > > +kms_addfb_basic:bad-pitch-256 pass
-> > > +kms_addfb_basic:bad-pitch-1024 pass
-> > > +kms_addfb_basic:bad-pitch-999 pass
-> > > +kms_addfb_basic:bad-pitch-65536 pass
-> > > +kms_addfb_basic:size-max pass
-> > > +kms_addfb_basic:too-wide pass
-> > > +kms_addfb_basic:too-high pass
-> > > +kms_addfb_basic:bo-too-small pass
-> > > +kms_addfb_basic:small-bo pass
-> > > +kms_addfb_basic:bo-too-small-due-to-tiling skip
-> > > +kms_addfb_basic:addfb25-modifier-no-flag pass
-> > > +kms_addfb_basic:addfb25-bad-modifier pass
-> > > +kms_addfb_basic:addfb25-x-tiled-mismatch-legacy skip
-> > > +kms_addfb_basic:addfb25-x-tiled-legacy skip
-> > > +kms_addfb_basic:addfb25-framebuffer-vs-set-tiling skip
-> > > +kms_addfb_basic:addfb25-y-tiled-legacy skip
-> > > +kms_addfb_basic:addfb25-yf-tiled-legacy skip
-> > > +kms_addfb_basic:addfb25-y-tiled-small-legacy skip
-> > > +kms_addfb_basic:basic-x-tiled-legacy skip
-> > > +kms_addfb_basic:framebuffer-vs-set-tiling skip
-> > > +kms_addfb_basic:tile-pitch-mismatch skip
-> > > +kms_addfb_basic:basic-y-tiled-legacy skip
-> > > +kms_addfb_basic:invalid-get-prop-any pass
-> > > +kms_addfb_basic:invalid-get-prop pass
-> > > +kms_addfb_basic:invalid-set-prop-any pass
-> > > +kms_addfb_basic:invalid-set-prop pass
-> > > +kms_addfb_basic:master-rmfb pass
-> > > +kms_atomic:plane-overlay-legacy skip
-> > > +kms_atomic:plane-primary-legacy pass
-> > > +kms_atomic:plane-primary-overlay-mutable-zpos skip
-> > > +kms_atomic:plane-immutable-zpos pass
-> > > +kms_atomic:test-only fail
-> > > +kms_atomic:plane-cursor-legacy pass
-> > > +kms_atomic:plane-invalid-params pass
-> > > +kms_atomic:plane-invalid-params-fence skip
-> > > +kms_atomic:crtc-invalid-params pass
-> > > +kms_atomic:crtc-invalid-params-fence skip
-> > > +kms_atomic:atomic-invalid-params pass
-> > > +kms_atomic:atomic_plane_damage pass
-> > > +kms_flip_event_leak fail
-> > > +kms_prop_blob:basic pass
-> > > +kms_prop_blob:blob-prop-core pass
-> > > +kms_prop_blob:blob-prop-validate pass
-> > > +kms_prop_blob:blob-prop-lifetime pass
-> > > +kms_prop_blob:blob-multiple pass
-> > > +kms_prop_blob:invalid-get-prop-any pass
-> > > +kms_prop_blob:invalid-get-prop pass
-> > > +kms_prop_blob:invalid-set-prop-any pass
-> > > +kms_prop_blob:invalid-set-prop pass
-> > > +kms_setmode:basic pass
-> > > +kms_setmode:basic-clone-single-crtc skip
-> > > +kms_setmode:invalid-clone-single-crtc skip
-> > > +kms_setmode:invalid-clone-exclusive-crtc skip
-> > > +kms_setmode:clone-exclusive-crtc skip
-> > > +kms_setmode:invalid-clone-single-crtc-stealing skip
-> > > +msm_mapping:ring fail
-> > > +msm_mapping:sqefw fail
-> > > +msm_mapping:shadow skip
-> > > +msm_recovery:hangcheck skip
-> > > +msm_recovery:gpu-fault pass
-> > > +msm_recovery:iova-fault pass
-> > > +msm_submit:empty-submit pass
-> > > +msm_submit:invalid-queue-submit pass
-> > > +msm_submit:invalid-flags-submit pass
-> > > +msm_submit:invalid-in-fence-submit pass
-> > > +msm_submit:invalid-duplicate-bo-submit pass
-> > > +msm_submit:invalid-cmd-idx-submit pass
-> > > +msm_submit:invalid-cmd-type-submit pass
-> > > +msm_submit:valid-submit pass
-> > > diff --git a/ci/msm_tests.txt b/ci/msm_tests.txt
-> > > new file mode 100644
-> > > index 000000000000..857dc895426e
-> > > --- /dev/null
-> > > +++ b/ci/msm_tests.txt
-> > > @@ -0,0 +1,14 @@
-> > > +core_auth
-> > > +core_getclient
-> > > +core_getstats
-> > > +core_getversion
-> > > +core_setmaster_vs_auth
-> > > +drm_read
-> > > +kms_addfb_basic
-> > > +kms_atomic
-> > > +kms_flip_event_leak
-> > > +kms_prop_blob
-> > > +kms_setmode
-> > > +msm_mapping
-> > > +msm_recovery
-> > > +msm_submit
-> > > diff --git a/ci/run_tests.sh b/ci/run_tests.sh
-> > > new file mode 100755
-> > > index 000000000000..8ba2b1141d27
-> > > --- /dev/null
-> > > +++ b/ci/run_tests.sh
-> > > @@ -0,0 +1,87 @@
-> > > +#!/bin/sh
-> > > +
-> > > +# Copyright (C) 2019,2022 Collabora Limited
-> > > +# Author: Guillaume Tucker <guillaume.tucker@collabora.com>
-> > > +# Author: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-> > > +#
-> > > +# This script is free software; you can redistribute it and/or modify it under
-> > > +# the terms of the GNU Lesser General Public License as published by the Free
-> > > +# Software Foundation; either version 2.1 of the License, or (at your option)
-> > > +# any later version.
-> > > +#
-> > > +# This library is distributed in the hope that it will be useful, but WITHOUT
-> > > +# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-> > > +# FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
-> > > +# details.
-> > > +#
-> > > +# You should have received a copy of the GNU Lesser General Public License
-> > > +# along with this library; if not, write to the Free Software Foundation, Inc.,
-> > > +# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-> > > +
-> > > +PATH=$PATH:${CI_PROJECT_DIR}/build/tests
-> > > +
-> > > +# See lib/igt_core.h
-> > > +IGT_EXIT_SUCCESS=0
-> > > +IGT_EXIT_INVALID=79
-> > > +IGT_EXIT_FAILURE=98
-> > > +IGT_EXIT_SKIP=77
-> > > +
-> > > +# Check the test case exit status and report the result
-> > > +test_case_status()
-> > > +{
-> > > +    name="$1"
-> > > +    stat="$2"
-> > > +
-> > > +    case $stat in
-> > > +        $IGT_EXIT_SUCCESS)
-> > > +            res="pass"
-> > > +            ;;
-> > > +        $IGT_EXIT_FAILURE)
-> > > +            res="fail"
-> > > +            ;;
-> > > +        $IGT_EXIT_SKIP)
-> > > +            res="skip"
-> > > +            ;;
-> > > +        $IGT_EXIT_INVALID)
-> > > +            echo "WARNING: invalid subtest $t/$sub"
-> > > +            res="skip"
-> > > +            ;;
-> > > +        *)
-> > > +            echo "WARNING: unhandled exit status: $stat"
-> > > +            res="skip"
-> > > +            ;;
-> > > +    esac
-> > > +
-> > > +    echo "$name" "$res" >> /results/igt.txt
-> > > +}
-> > > +
-> > > +mkdir -p /results/
-> > > +
-> > > +oldpath=`pwd`
-> > > +cd ${CI_PROJECT_DIR}/build/
-> > > +
-> > > +tests=`cat ./ci/${IGT_FORCE_DRIVER}_tests.txt`
-> > > +for cmd in $tests; do
-> > > +    subtests=$($cmd --list-subtests)
-> > > +
-> > > +    if [ -n "$subtests" ]; then
-> > > +        for sub in $subtests; do
-> > > +            $cmd --run-subtest $sub
-> > > +            test_case_status $cmd:$sub $?
-> > > +        done
-> > > +    else
-> > > +        $cmd
-> > > +        test_case_status $cmd $?
-> > > +    fi
-> > > +done
-> > 
-> > Why are the tests run and processed manually instead of with
-> > igt_runner?
-> 
-> Because I didn't know about it yet, thanks!
-> 
-> > > +
-> > > +if diff -q ./ci/msm_results.txt /results/igt.txt; then
-> > > +    cd $oldpath
-> > > +    exit 0
-> > > +fi
-> > > +
-> > > +echo Unexpected change in results:
-> > > +diff -u ./ci/msm_results.txt /results/igt.txt
-> > 
-> > This doesn't scale. It will require changes if subtests ever get
-> > renamed, removed or worse, when added.
-> 
-> How do you recommend to do the regression analysis?
+On Tue, Feb 22, 2022 at 01:55:55PM +0000, Tvrtko Ursulin wrote:
+>From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+>Tests and intel_gpu_top will share common code for parsing this file.
+>
+>Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>---
+> lib/igt_drm_fdinfo.c | 183 +++++++++++++++++++++++++++++++++++++++++++
+> lib/igt_drm_fdinfo.h |  48 ++++++++++++
+> lib/meson.build      |   7 ++
+> 3 files changed, 238 insertions(+)
+> create mode 100644 lib/igt_drm_fdinfo.c
+> create mode 100644 lib/igt_drm_fdinfo.h
+>
+>diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+>new file mode 100644
+>index 000000000000..28c1bdbda08e
+>--- /dev/null
+>+++ b/lib/igt_drm_fdinfo.c
+>@@ -0,0 +1,183 @@
+>+/*
+>+ * Copyright © 2022 Intel Corporation
+>+ *
+>+ * Permission is hereby granted, free of charge, to any person obtaining a
+>+ * copy of this software and associated documentation files (the "Software"),
+>+ * to deal in the Software without restriction, including without limitation
+>+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+>+ * and/or sell copies of the Software, and to permit persons to whom the
+>+ * Software is furnished to do so, subject to the following conditions:
+>+ *
+>+ * The above copyright notice and this permission notice (including the next
+>+ * paragraph) shall be included in all copies or substantial portions of the
+>+ * Software.
+>+ *
+>+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+>+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+>+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+>+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+>+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+>+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+>+ * IN THE SOFTWARE.
+>+ *
+>+ */
+>+
+>+#include <ctype.h>
+>+#include <sys/types.h>
+>+#include <sys/stat.h>
+>+#include <fcntl.h>
+>+#include <stdio.h>
+>+#include <string.h>
+>+#include <stdlib.h>
+>+#include <unistd.h>
+>+
+>+#include "drmtest.h"
+>+
+>+#include "igt_drm_fdinfo.h"
+>+
+>+static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
+>+{
+>+	size_t count;
+>+	int fd;
+>+
+>+	fd = openat(at, name, O_RDONLY);
+>+	if (fd < 0)
+>+		return 0;
+>+
+>+	buf[sz - 1] = 0;
 
-To make adding of subtests not cause maintenance burden here,
-testlists can be used for the test selection. See igt_runner's -L
-flag, and an example testlist in
-tests/intel-ci/fast-feedback.testlist.
+Wondering if this ^ should be after the read() in case 4096 bytes are read.
 
-As for the renaming or removal of subtests, running a missing subtest
-from a testlist with igt_runner yields a 'SKIP' result with the test
-logs stating that the subtest is missing. So you have a transition
-from 'PASS' to 'SKIP' there. Depends on the policy and complexity of
-the testing processing whether that actually helps or not.
+>+	count = read(fd, buf, sz);
+>+	close(fd);
+>+
+>+	return count;
+>+}
+>+
+>+static int parse_engine(char *line, struct drm_client_fdinfo *info,
+>+			size_t prefix_len, uint64_t *val)
+>+{
+>+	static const char *e2class[] = {
+>+		"render",
+>+		"copy",
+>+		"video",
+>+		"video-enhance",
+>+	};
+>+	ssize_t name_len;
+>+	char *name, *p;
+>+	int found = -1;
+>+	unsigned int i;
+>+
+>+	p = index(line, ':');
+>+	if (!p || p == line)
+>+		return -1;
+>+
+>+	name_len = p - line - prefix_len;
+>+	if (name_len < 1)
+>+		return -1;
+>+
+>+	name = line + prefix_len;
+>+
+>+	for (i = 0; i < ARRAY_SIZE(e2class); i++) {
+>+		if (!strncmp(name, e2class[i], name_len)) {
+>+			found = i;
+>+			break;
+>+		}
+>+	}
+>+
+>+	if (found >= 0) {
+>+		while (*++p && isspace(*p));
+>+		*val = strtoull(p, NULL, 10);
+>+	}
+>+
+>+	return found;
+>+}
+>+
+>+static const char *find_kv(const char *buf, const char *key, size_t keylen)
+>+{
+>+	const char *p = buf;
+>+
+>+	p = index(buf, ':');
+>+	if (!p || p == buf)
+>+		return NULL;
+>+
+>+	if ((p - buf) != keylen)
+>+		return NULL;
+>+
+>+	while (*++p && isspace(*p));
+>+	if (*p && !strncmp(buf, key, keylen))
 
-Speaking of the processing, igt_runner's results file is json, easily
-processable. It's even fairly piglit-compatible (there are some
-exceptions) so piglit tools can even be used for results comparison
-etc.
+nit: why not just do the strncmp early in this function since buf, key, 
+keylen have not changed?
 
+>+		return p;
+>+
+>+	return NULL;
+>+}
+>+
+>+bool
+>+__igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
+>+{
+>+	char buf[4096], *_buf = buf;
+>+	char *l, *ctx = NULL;
+>+	unsigned int good = 0;
+>+	size_t count;
+>+
 
--- 
-Petri Latvala
+Should buf be zeroed out here?
+
+>+	count = read_fdinfo(buf, sizeof(buf), dir, fd);
+>+	if (!count)
+>+		return false;
+>+
+>+	while ((l = strtok_r(_buf, "\n", &ctx))) {
+>+		uint64_t val = 0;
+>+		const char *v;
+>+		int idx;
+>+
+>+		_buf = NULL;
+>+
+>+		if ((v = find_kv(l, "drm-driver", strlen("drm-driver")))) {
+>+			strncpy(info->driver, v, sizeof(info->driver) - 1);
+>+			good++;
+>+		} else if ((v = find_kv(l, "drm-pdev", strlen("drm-pdev")))) {
+>+			strncpy(info->pdev, v, sizeof(info->pdev) - 1);
+>+		}  else if ((v = find_kv(l, "drm-client-id",
+>+					 strlen("drm-client-id")))) {
+>+			info->id = atol(v);
+>+			good++;
+>+		} else if (!strncmp(l, "drm-engine-", 11) &&
+>+			   strncmp(l, "drm-engine-capacity-", 20)) {
+>+			idx = parse_engine(l, info, strlen("drm-engine-"),
+>+					   &val);
+>+			if (idx >= 0) {
+>+				if (!info->capacity[idx])
+>+					info->capacity[idx] = 1;
+>+				info->busy[idx] = val;
+>+				info->num_engines++;
+>+			}
+>+		} else if (!strncmp(l, "drm-engine-capacity-", 20)) {
+>+			idx = parse_engine(l, info,
+>+					   strlen("drm-engine-capacity-"),
+>+					   &val);
+>+			if (idx >= 0)
+>+				info->capacity[idx] = val;
+>+		}
+>+	}
+>+
+>+	if (good < 2 || !info->num_engines)
+>+		return false; /* fdinfo format not as expected */
+>+
+>+	return true;
+>+}
+>+
+>+bool igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info)
+>+{
+>+	char fd[64];
+>+	int dir, ret;
+>+	bool res;
+>+
+>+	ret = snprintf(fd, sizeof(fd), "%u", drm_fd);
+>+	if (ret < 0 || ret == sizeof(fd))
+>+		return false;
+>+
+>+	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
+>+	if (dir < 0)
+>+		return false;
+>+
+>+	res = __igt_parse_drm_fdinfo(dir, fd, info);
+>+
+>+	close(dir);
+>+
+>+	return res;
+>+}
+>diff --git a/lib/igt_drm_fdinfo.h b/lib/igt_drm_fdinfo.h
+>new file mode 100644
+>index 000000000000..c527bab9a204
+>--- /dev/null
+>+++ b/lib/igt_drm_fdinfo.h
+>@@ -0,0 +1,48 @@
+>+/*
+>+ * Copyright © 2022 Intel Corporation
+>+ *
+>+ * Permission is hereby granted, free of charge, to any person obtaining a
+>+ * copy of this software and associated documentation files (the "Software"),
+>+ * to deal in the Software without restriction, including without limitation
+>+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+>+ * and/or sell copies of the Software, and to permit persons to whom the
+>+ * Software is furnished to do so, subject to the following conditions:
+>+ *
+>+ * The above copyright notice and this permission notice (including the next
+>+ * paragraph) shall be included in all copies or substantial portions of the
+>+ * Software.
+>+ *
+>+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+>+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+>+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+>+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+>+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+>+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+>+ * IN THE SOFTWARE.
+>+ *
+>+ */
+>+
+>+#ifndef IGT_DRM_FDINFO_H
+>+#define IGT_DRM_FDINFO_H
+>+
+>+#include <sys/types.h>
+>+#include <dirent.h>
+>+#include <stdint.h>
+>+#include <stdbool.h>
+>+
+>+struct drm_client_fdinfo {
+>+	char driver[128];
+>+	char pdev[128];
+>+	unsigned long id;
+>+
+>+	unsigned int num_engines;
+>+	unsigned int capacity[16];
+>+	uint64_t busy[16];
+
+I see 16 in a lot of places, wondering if it could use a #define?
+
+Thanks,
+Umesh
+
+>+};
+>+
+>+bool igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info);
+>+
+>+bool __igt_parse_drm_fdinfo(int dir, const char *fd,
+>+			    struct drm_client_fdinfo *info);
+>+
+>+#endif /* IGT_DRM_FDINFO_H */
+>diff --git a/lib/meson.build b/lib/meson.build
+>index 3e43316d1e36..d00817dc58bc 100644
+>--- a/lib/meson.build
+>+++ b/lib/meson.build
+>@@ -16,6 +16,7 @@ lib_sources = [
+> 	'igt_debugfs.c',
+> 	'igt_device.c',
+> 	'igt_device_scan.c',
+>+	'igt_drm_fdinfo.c',
+> 	'igt_aux.c',
+> 	'igt_gt.c',
+> 	'igt_halffloat.c',
+>@@ -216,6 +217,12 @@ lib_igt_device_scan_build = static_library('igt_device_scan',
+> lib_igt_device_scan = declare_dependency(link_with : lib_igt_device_scan_build,
+> 				  include_directories : inc)
+>
+>+lib_igt_drm_fdinfo_build = static_library('igt_drm_fdinfo',
+>+	['igt_drm_fdinfo.c'],
+>+	include_directories : inc)
+>+
+>+lib_igt_drm_fdinfo = declare_dependency(link_with : lib_igt_drm_fdinfo_build,
+>+				  include_directories : inc)
+> i915_perf_files = [
+>   'igt_list.c',
+>   'i915/perf.c',
+>-- 
+>2.32.0
+>
