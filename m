@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE9F610E2E4
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Mar 2022 06:04:38 +0000 (UTC)
+From: Ramalingam C <ramalingam.c@intel.com>
+To: igt-dev <igt-dev@lists.freedesktop.org>
+Date: Wed, 30 Mar 2022 11:35:15 +0530
+Message-Id: <20220330060516.2813-2-ramalingam.c@intel.com>
+In-Reply-To: <20220330060516.2813-1-ramalingam.c@intel.com>
+References: <20220330060516.2813-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Riana Tauro" <riana.tauro@intel.com>
-Date: Wed, 30 Mar 2022 05:48:47 -0000
-Message-ID: <164861932798.8658.9129648550255518867@emeril.freedesktop.org>
-References: <20220328064722.127301-1-riana.tauro@intel.com>
-In-Reply-To: <20220328064722.127301-1-riana.tauro@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_B?=
- =?utf-8?q?asic_Suspend/Resume_with_i915_unload_=28rev5=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v5 1/2] tests/i915/gem_lmem_swapping: create
+ batch buffer from obj pool
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +19,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Use the gem_create_from_pool() for creating the batch buffers.
 
-Series: Basic Suspend/Resume with i915 unload (rev5)
-URL   : https://patchwork.freedesktop.org/series/101730/
-State : warning
+Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+---
+ tests/i915/gem_lmem_swapping.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/545285 for the overview.
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/20461723):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                287
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1648619308:step_script
-  section_start:1648619308:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1712 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=20461723 responseStatus=201 Created token=zRBc56td
-  section_end:1648619318:upload_artifacts_on_failure
-  section_start:1648619318:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1648619318:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/545285
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+index 43f0688f30b2..aba713039cfa 100644
+--- a/tests/i915/gem_lmem_swapping.c
++++ b/tests/i915/gem_lmem_swapping.c
+@@ -129,7 +129,7 @@ static void move_to_lmem(int i915,
+ 			 const intel_ctx_t *ctx,
+ 			 struct object *list,
+ 			 unsigned int num,
+-			 uint32_t batch,
++			 unsigned int region,
+ 			 unsigned int engine,
+ 			 bool do_oom_test)
+ {
+@@ -140,7 +140,13 @@ static void move_to_lmem(int i915,
+ 		.flags = I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT | engine,
+ 		.rsvd1 = ctx->id,
+ 	};
+-	unsigned int i, ret;
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	unsigned int i, ret, batch;
++	uint64_t size;
++
++	size = 4096;
++	batch = gem_create_from_pool(i915, &size, region);
++	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 
+@@ -154,6 +160,7 @@ retry:
+ 	ret = __gem_execbuf(i915, &eb);
+ 	if (do_oom_test && (ret == -ENOMEM || ret == -ENXIO))
+ 		goto retry;
++
+ 	igt_assert_eq(ret, 0);
+ }
+ 
+@@ -163,10 +170,10 @@ static void __do_evict(int i915,
+ 		       struct params *params,
+ 		       unsigned int seed)
+ {
++	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
++						    region->memory_instance);
+ 	const unsigned int max_swap_in = params->count / 100 + 1;
+-	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct object *objects, *obj, *list;
+-	uint32_t batch;
+ 	unsigned int engine = 0;
+ 	unsigned int i, l;
+ 	uint64_t size;
+@@ -174,9 +181,6 @@ static void __do_evict(int i915,
+ 	unsigned int num;
+ 
+ 	size = 4096;
+-	batch = create_bo(i915, &size, region, params->oom_test);
+-
+-	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+ 
+ 	objects = calloc(params->count, sizeof(*objects));
+ 	igt_assert(objects);
+@@ -203,7 +207,7 @@ static void __do_evict(int i915,
+ 		}
+ 		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
+ 
+-		move_to_lmem(i915, ctx, objects + i, 1, batch, engine,
++		move_to_lmem(i915, ctx, objects + i, 1, region_id, engine,
+ 			     params->oom_test);
+ 		if (params->flags & TEST_VERIFY)
+ 			init_object(i915, obj, rand(), params->flags);
+@@ -228,7 +232,8 @@ static void __do_evict(int i915,
+ 			idx = (idx + 1) % params->count;
+ 		}
+ 
+-		move_to_lmem(i915, ctx, list, num, batch, engine, params->oom_test);
++		move_to_lmem(i915, ctx, list, num, region_id, engine,
++			     params->oom_test);
+ 
+ 		if (params->flags & TEST_ENGINES)
+ 			engine = (engine + 1) % __num_engines__;
+@@ -248,8 +253,6 @@ static void __do_evict(int i915,
+ 
+ 	free(list);
+ 	free(objects);
+-
+-	gem_close(i915, batch);
+ }
+ 
+ static void fill_params(int i915, struct params *params,
+-- 
+2.20.1
