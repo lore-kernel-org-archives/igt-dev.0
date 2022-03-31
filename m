@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 610A510E3FA
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Mar 2022 06:56:40 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18E9610E434
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Mar 2022 16:34:45 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Mar 2022 12:25:09 +0530
-Message-Id: <20220315065509.398990-1-bhanuprakash.modem@intel.com>
+Date: Thu, 31 Mar 2022 18:34:28 +0200
+Message-Id: <20220331163430.73167-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220331163430.73167-1-kamil.konieczny@linux.intel.com>
+References: <20220331163430.73167-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915_module_load: Unload the module before
- exiting the subtest
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/intel_batchbuffer: add create
+ without relocs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,66 +20,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On DP-MST setup, after execution of "reload" subtest, i915
-became unloadable. And this is effecting the next subtest
-"reload-no-display".
+There is create function with relocations, so add its
+counterpart without it.
 
-Observing below error, if we run all subtests of i915_module_load
-(or) run "reload" & "reload-no-display" in same order using the
-igt_runner. But not seen any issue if we run each subtest individually.
+v3: moved down after intel_bb_create_with_relocs_and_context,
+    added function description (Zbigniew review)
+v2: change to HIGH_TO_LOW allocation (Zbigniew)
 
-$ ./igt_runner -o -l verbose -s --test-list tests.txt --use-watchdog ../tests/ results/
-(or)
-$ ./build/tests/i915_module_load
-  Starting subtest: reload
-  ...
-  Subtest reload: SUCCESS (3.780s)
-
-  Starting subtest: reload-no-display
-  (i915_module_load:42617) igt_kmod-WARNING: Could not unload i915
-  Module                   Used by
-  i915                     1
-  ...
-  Reloading i915 with disable_display=1
-  Module i915 already inserted
-  Could not load i915
-  Subtest reload-no-display: FAIL (1.998s)
-
-$ ./build/tests/i915_module_load --r reload
-  Starting subtest: reload
-  ...
-  Subtest reload: SUCCESS (5.562s)
-$ ./build/tests/i915_module_load --r reload-no-display
-  Starting subtest: reload-no-display
-  ...
-  Subtest reload-no-display: SUCCESS (7.995s)
-
-This patch will unload the module before exiting the subtest. So
-that we can make sure that the module is unloaded.
-
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/i915_module_load.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/intel_batchbuffer.c | 21 +++++++++++++++++++++
+ lib/intel_batchbuffer.h |  1 +
+ 2 files changed, 22 insertions(+)
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index a86dd86cd0..c641a6a989 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -249,7 +249,7 @@ igt_main
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 2cd472d1..ebf3c598 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -1558,6 +1558,27 @@ intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx, uint32_t size)
+ 				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
+ }
  
- 		gem_sanitycheck();
++/**
++ * intel_bb_create_no_relocs:
++ * @i915: drm fd
++ * @size: size of the batchbuffer
++ *
++ * Creates bb with disabled relocations.
++ * This enables passing addresses and requires pinning objects.
++ *
++ * Returns:
++ *
++ * Pointer the intel_bb, asserts on failure.
++ */
++struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size)
++{
++	igt_require(gem_uses_full_ppgtt(i915));
++
++	return __intel_bb_create(i915, 0, size, false, 0, 0,
++				 INTEL_ALLOCATOR_SIMPLE,
++				 ALLOC_STRATEGY_HIGH_TO_LOW);
++}
++
+ static void __intel_bb_destroy_relocations(struct intel_bb *ibb)
+ {
+ 	uint32_t i;
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 75d41ea3..36b6b61d 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -526,6 +526,7 @@ intel_bb_create_with_context(int i915, uint32_t ctx, uint32_t size);
+ struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size);
+ struct intel_bb *
+ intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx, uint32_t size);
++struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size);
+ void intel_bb_destroy(struct intel_bb *ibb);
  
--		/* only default modparams, can leave module loaded */
-+		igt_i915_driver_unload();
- 	}
- 
- 	igt_subtest("reload-no-display") {
+ /* make it safe to use intel_allocator after failed test */
 -- 
-2.35.1
+2.32.0
