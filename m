@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 31 Mar 2022 15:03:42 +0100
-Message-Id: <20220331140348.2985832-7-tvrtko.ursulin@linux.intel.com>
+Date: Thu, 31 Mar 2022 15:03:41 +0100
+Message-Id: <20220331140348.2985832-6-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20220331140348.2985832-1-tvrtko.ursulin@linux.intel.com>
 References: <20220331140348.2985832-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 06/12] libdrmclients: Record client drm minor
+Subject: [igt-dev] [PATCH i-g-t 05/12] libdrmfdinfo: Allow specifying custom
+ engine map
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,134 +24,274 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Prepare for supporting clients belonging to multiple DRM cards by storing
-the DRM minor in the client record.
+Instead of hard coding the engine names, allow a map of names to indices
+to either be passed in or it gets auto-detected (less efficient) while
+parsing.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- lib/igt_drm_clients.c | 33 ++++++++++++++++++++-------------
- lib/igt_drm_clients.h |  6 ++++--
- 2 files changed, 24 insertions(+), 15 deletions(-)
+ lib/igt_drm_clients.c   |  7 +++---
+ lib/igt_drm_clients.h   |  3 ++-
+ lib/igt_drm_fdinfo.c    | 47 +++++++++++++++++++++++++++--------------
+ lib/igt_drm_fdinfo.h    |  7 ++++--
+ tests/i915/drm_fdinfo.c | 16 +++++++++++---
+ tools/intel_gpu_top.c   | 13 ++++++++++--
+ 6 files changed, 66 insertions(+), 27 deletions(-)
 
 diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index 591602f4c9f5..116479a9f363 100644
+index 58d82648d821..591602f4c9f5 100644
 --- a/lib/igt_drm_clients.c
 +++ b/lib/igt_drm_clients.c
-@@ -117,12 +117,13 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+@@ -269,7 +269,8 @@ static bool is_drm_fd(int fd_dir, const char *name)
+ struct igt_drm_clients *
+ igt_drm_clients_scan(struct igt_drm_clients *clients,
+ 		     bool (*filter_client)(const struct igt_drm_clients *,
+-					   const struct drm_client_fdinfo *))
++					   const struct drm_client_fdinfo *),
++		     const char **name_map, unsigned int map_entries)
+ {
+ 	struct dirent *proc_dent;
+ 	struct igt_drm_client *c;
+@@ -343,8 +344,8 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
+ 			memset(&info, 0, sizeof(info));
+ 
+ 			if (!__igt_parse_drm_fdinfo(dirfd(fdinfo_dir),
+-						    fdinfo_dent->d_name,
+-						    &info))
++						    fdinfo_dent->d_name, &info,
++						    name_map, map_entries))
+ 				continue;
+ 
+ 			if (filter_client && !filter_client(clients, &info))
+diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+index f52080847291..91e9da4c0733 100644
+--- a/lib/igt_drm_clients.h
++++ b/lib/igt_drm_clients.h
+@@ -80,7 +80,8 @@ void igt_drm_clients_free(struct igt_drm_clients *clients);
+ struct igt_drm_clients *
+ igt_drm_clients_scan(struct igt_drm_clients *clients,
+ 		     bool (*filter_client)(const struct igt_drm_clients *,
+-					   const struct drm_client_fdinfo *));
++					   const struct drm_client_fdinfo *),
++		     const char **name_map, unsigned int map_entries);
+ 
+ struct igt_drm_client *
+ igt_drm_clients_find(struct igt_drm_clients *clients,
+diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+index c2462a108cf0..d5c66881ed43 100644
+--- a/lib/igt_drm_fdinfo.c
++++ b/lib/igt_drm_fdinfo.c
+@@ -22,6 +22,7 @@
+  *
+  */
+ 
++#include <assert.h>
+ #include <ctype.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -53,14 +54,10 @@ static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
  }
  
- void
--igt_drm_client_add(struct igt_drm_clients *clients, unsigned int id,
--		   unsigned int pid, char *name, uint64_t busy[16])
-+igt_drm_client_add(struct igt_drm_clients *clients,
-+		   struct drm_client_fdinfo *info,
-+		   unsigned int pid, char *name, unsigned int drm_minor)
+ static int parse_engine(char *line, struct drm_client_fdinfo *info,
+-			size_t prefix_len, uint64_t *val)
++			size_t prefix_len,
++			const char **name_map, unsigned int map_entries,
++			uint64_t *val)
  {
- 	struct igt_drm_client *c;
+-	static const char *e2class[] = {
+-		"render",
+-		"copy",
+-		"video",
+-		"video-enhance",
+-	};
+ 	ssize_t name_len;
+ 	char *name, *p;
+ 	int found = -1;
+@@ -76,10 +73,26 @@ static int parse_engine(char *line, struct drm_client_fdinfo *info,
  
--	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE, id));
-+	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE, info->id));
+ 	name = line + prefix_len;
  
- 	c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_FREE, 0);
- 	if (!c) {
-@@ -137,13 +138,14 @@ igt_drm_client_add(struct igt_drm_clients *clients, unsigned int id,
- 		memset(c, 0, (clients->num_clients - idx) * sizeof(*c));
+-	for (i = 0; i < ARRAY_SIZE(e2class); i++) {
+-		if (!strncmp(name, e2class[i], name_len)) {
+-			found = i;
+-			break;
++	if (name_map) {
++		for (i = 0; i < map_entries; i++) {
++			if (!strncmp(name, name_map[i], name_len)) {
++				found = i;
++				break;
++			}
++		}
++	} else {
++		for (i = 0; i < info->num_engines; i++) {
++			if (!strncmp(name, info->names[i], name_len)) {
++				found = i;
++				break;
++			}
++		}
++
++		if (found < 0) {
++			assert((info->num_engines + 1) < ARRAY_SIZE(info->names));
++			assert((strlen(name) + 1) < sizeof(info->names[0]));
++			strncpy(info->names[info->num_engines], name, name_len);
++			found = info->num_engines;
+ 		}
  	}
  
--	c->id = id;
-+	c->id = info->id;
-+	c->drm_minor = drm_minor;
- 	c->clients = clients;
- 	c->val = calloc(clients->num_classes, sizeof(c->val));
- 	c->last = calloc(clients->num_classes, sizeof(c->last));
- 	assert(c->val && c->last);
- 
--	igt_drm_client_update(c, pid, name, busy);
-+	igt_drm_client_update(c, pid, name, info->busy);
+@@ -112,7 +125,8 @@ static const char *find_kv(const char *buf, const char *key, size_t keylen)
  }
  
- void igt_drm_client_free(struct igt_drm_client *c)
-@@ -254,16 +256,21 @@ static bool get_task_name(const char *buffer, char *out, unsigned long sz)
+ bool
+-__igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
++__igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
++		       const char **name_map, unsigned int map_entries)
+ {
+ 	char buf[4096], *_buf = buf;
+ 	char *l, *ctx = NULL;
+@@ -142,7 +156,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
+ 		} else if (!strncmp(l, "drm-engine-", 11) &&
+ 			   strncmp(l, "drm-engine-capacity-", 20)) {
+ 			idx = parse_engine(l, info, strlen("drm-engine-"),
+-					   &val);
++					   name_map, map_entries, &val);
+ 			if (idx >= 0) {
+ 				if (!info->capacity[idx])
+ 					info->capacity[idx] = 1;
+@@ -152,7 +166,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
+ 		} else if (!strncmp(l, "drm-engine-capacity-", 20)) {
+ 			idx = parse_engine(l, info,
+ 					   strlen("drm-engine-capacity-"),
+-					   &val);
++					   name_map, map_entries, &val);
+ 			if (idx >= 0)
+ 				info->capacity[idx] = val;
+ 		}
+@@ -164,7 +178,8 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
  	return true;
  }
  
--static bool is_drm_fd(int fd_dir, const char *name)
-+static bool is_drm_fd(int fd_dir, const char *name, unsigned int *minor)
+-bool igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info)
++bool igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
++			  const char **name_map, unsigned int map_entries)
  {
- 	struct stat stat;
- 	int ret;
+ 	char fd[64];
+ 	int dir, ret;
+@@ -178,7 +193,7 @@ bool igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info)
+ 	if (dir < 0)
+ 		return false;
  
- 	ret = fstatat(fd_dir, name, &stat, 0);
+-	res = __igt_parse_drm_fdinfo(dir, fd, info);
++	res = __igt_parse_drm_fdinfo(dir, fd, info, name_map, map_entries);
  
--	return ret == 0 &&
--	       (stat.st_mode & S_IFMT) == S_IFCHR &&
--	       major(stat.st_rdev) == 226;
-+	if (ret == 0 &&
-+	    (stat.st_mode & S_IFMT) == S_IFCHR &&
-+	    major(stat.st_rdev) == 226) {
-+		*minor = minor(stat.st_rdev);
-+		return true;
-+	}
+ 	close(dir);
+ 
+diff --git a/lib/igt_drm_fdinfo.h b/lib/igt_drm_fdinfo.h
+index 424e3efef5d4..4d14e7931532 100644
+--- a/lib/igt_drm_fdinfo.h
++++ b/lib/igt_drm_fdinfo.h
+@@ -39,12 +39,15 @@ struct drm_client_fdinfo {
+ 
+ 	unsigned int num_engines;
+ 	unsigned int capacity[DRM_CLIENT_FDINFO_MAX_ENGINES];
++	char names[DRM_CLIENT_FDINFO_MAX_ENGINES][256];
+ 	uint64_t busy[DRM_CLIENT_FDINFO_MAX_ENGINES];
+ };
+ 
+-bool igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info);
++bool igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
++			  const char **name_map, unsigned int map_entries);
+ 
+ bool __igt_parse_drm_fdinfo(int dir, const char *fd,
+-			    struct drm_client_fdinfo *info);
++			    struct drm_client_fdinfo *info,
++			    const char **name_map, unsigned int map_entries);
+ 
+ #endif /* IGT_DRM_FDINFO_H */
+diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
+index e3b1ebb0f454..d1053a53ae2c 100644
+--- a/tests/i915/drm_fdinfo.c
++++ b/tests/i915/drm_fdinfo.c
+@@ -34,6 +34,13 @@ IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
+ const double tolerance = 0.05f;
+ const unsigned long batch_duration_ns = 500e6;
+ 
++static const char *engine_map[] = {
++	"render",
++	"copy",
++	"video",
++	"video-enhance",
++};
 +
-+	return false;
+ #define __assert_within_epsilon(x, ref, tol_up, tol_down) \
+ 	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+ 		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+@@ -50,7 +57,8 @@ static void basics(int i915, unsigned int num_classes)
+ 	struct drm_client_fdinfo info = { };
+ 	bool ret;
+ 
+-	ret = igt_parse_drm_fdinfo(i915, &info);
++	ret = igt_parse_drm_fdinfo(i915, &info, engine_map,
++				   ARRAY_SIZE(engine_map));
+ 	igt_assert(ret);
+ 
+ 	igt_assert(!strcmp(info.driver, "i915"));
+@@ -181,7 +189,8 @@ static uint64_t read_busy(int i915, unsigned int class)
+ {
+ 	struct drm_client_fdinfo info = { };
+ 
+-	igt_assert(igt_parse_drm_fdinfo(i915, &info));
++	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
++					ARRAY_SIZE(engine_map)));
+ 
+ 	return info.busy[class];
  }
+@@ -267,7 +276,8 @@ static void read_busy_all(int i915, uint64_t *val)
+ {
+ 	struct drm_client_fdinfo info = { };
  
- struct igt_drm_clients *
-@@ -293,10 +300,10 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		return clients;
+-	igt_assert(igt_parse_drm_fdinfo(i915, &info));
++	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
++					ARRAY_SIZE(engine_map)));
  
- 	while ((proc_dent = readdir(proc_dir)) != NULL) {
-+		unsigned int client_pid, minor = 0;
- 		int pid_dir = -1, fd_dir = -1;
- 		struct dirent *fdinfo_dent;
- 		char client_name[64] = { };
--		unsigned int client_pid;
- 		DIR *fdinfo_dir = NULL;
- 		char buf[4096];
- 		size_t count;
-@@ -338,7 +345,7 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 			if (!isdigit(fdinfo_dent->d_name[0]))
- 				continue;
+ 	memcpy(val, info.busy, sizeof(info.busy));
+ }
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index c4f990b2a7d0..99e8e1d8ffd4 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -2030,6 +2030,12 @@ int main(int argc, char **argv)
+ {
+ 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+ 	struct igt_drm_clients *clients = NULL;
++	static const char *engine_map[] = {
++		"render",
++		"copy",
++		"video",
++		"video-enhance",
++	};
+ 	int con_w = -1, con_h = -1;
+ 	char *output_path = NULL;
+ 	struct engines *engines;
+@@ -2177,7 +2183,8 @@ int main(int argc, char **argv)
+ 	}
  
--			if (!is_drm_fd(fd_dir, fdinfo_dent->d_name))
-+			if (!is_drm_fd(fd_dir, fdinfo_dent->d_name, &minor))
- 				continue;
+ 	pmu_sample(engines);
+-	igt_drm_clients_scan(clients, client_match);
++	igt_drm_clients_scan(clients, client_match, engine_map,
++			     ARRAY_SIZE(engine_map));
+ 	codename = igt_device_get_pretty_name(&card, false);
  
- 			memset(&info, 0, sizeof(info));
-@@ -358,8 +365,8 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 			c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_PROBE,
- 						info.id);
- 			if (!c)
--				igt_drm_client_add(clients, info.id, client_pid,
--						   client_name, info.busy);
-+				igt_drm_client_add(clients, &info, client_pid,
-+						   client_name, minor);
- 			else
- 				igt_drm_client_update(c, client_pid,
- 						      client_name, info.busy);
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index 91e9da4c0733..7a6318c6af5f 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -48,6 +48,7 @@ struct igt_drm_client {
+ 	while (!stop_top) {
+@@ -2206,7 +2213,9 @@ int main(int argc, char **argv)
  
- 	enum igt_drm_client_status status;
- 	unsigned int id;
-+	unsigned int drm_minor;
- 	unsigned int pid;
- 	char name[24];
- 	char print_name[24];
-@@ -95,8 +96,9 @@ igt_drm_clients_sort(struct igt_drm_clients *clients,
- void igt_drm_client_update(struct igt_drm_client *c,
- 			   unsigned int pid, char *name, uint64_t val[16]);
+ 		disp_clients =
+ 			display_clients(igt_drm_clients_scan(clients,
+-							     client_match));
++							     client_match,
++							     engine_map,
++							     ARRAY_SIZE(engine_map)));
  
--void igt_drm_client_add(struct igt_drm_clients *clients, unsigned int id,
--			unsigned int pid, char *name, uint64_t busy[16]);
-+void igt_drm_client_add(struct igt_drm_clients *clients,
-+			struct drm_client_fdinfo *,
-+			unsigned int pid, char *name, unsigned int drm_minor);
- 
- void igt_drm_client_free(struct igt_drm_client *c);
- 
+ 		if (stop_top)
+ 			break;
 -- 
 2.32.0
