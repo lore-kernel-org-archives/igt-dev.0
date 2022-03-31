@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 31 Mar 2022 15:03:46 +0100
-Message-Id: <20220331140348.2985832-11-tvrtko.ursulin@linux.intel.com>
+Date: Thu, 31 Mar 2022 15:03:42 +0100
+Message-Id: <20220331140348.2985832-7-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20220331140348.2985832-1-tvrtko.ursulin@linux.intel.com>
 References: <20220331140348.2985832-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 10/12] libdrmclient: Enforce client status
- sort order in the library
+Subject: [igt-dev] [PATCH i-g-t 06/12] libdrmclients: Record client drm minor
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,210 +23,134 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Some libdrmclient operations require that inactive clients are last in the
-list. Rather than relying on callers of the library sort routine to
-implement their comparison callbacks correctly, enforce this order
-directly in the library and let callers comparison callbacks concern
-themselves only with ordering they are interested in.
+Prepare for supporting clients belonging to multiple DRM cards by storing
+the DRM minor in the client record.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- lib/igt_drm_clients.c | 25 +++++++++++--
- lib/igt_drm_clients.h |  2 +-
- tools/intel_gpu_top.c | 81 +++++++++++++++++++------------------------
- 3 files changed, 58 insertions(+), 50 deletions(-)
+ lib/igt_drm_clients.c | 33 ++++++++++++++++++++-------------
+ lib/igt_drm_clients.h |  6 ++++--
+ 2 files changed, 24 insertions(+), 15 deletions(-)
 
 diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index 6299f3632b74..e8e86969f984 100644
+index 591602f4c9f5..116479a9f363 100644
 --- a/lib/igt_drm_clients.c
 +++ b/lib/igt_drm_clients.c
-@@ -185,10 +185,29 @@ void igt_drm_client_free(struct igt_drm_client *c)
- 	memset(c, 0, sizeof(*c));
+@@ -117,12 +117,13 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
  }
  
-+struct sort_context
-+{
-+	int (*user_cmp)(const void *, const void *, void *);
-+};
-+
-+static int sort_cmp(const void *_a, const void *_b, void *_ctx)
-+{
-+	const struct sort_context *ctx = _ctx;
-+	const struct igt_drm_client *a = _a;
-+	const struct igt_drm_client *b = _b;
-+	int cmp = b->status - a->status;
-+
-+	if (cmp == 0)
-+		return ctx->user_cmp(_a, _b, _ctx);
-+	else
-+		return cmp;
-+}
-+
- struct igt_drm_clients *
- igt_drm_clients_sort(struct igt_drm_clients *clients,
--		     int (*cmp)(const void *, const void *))
-+		     int (*cmp)(const void *, const void *, void *))
+ void
+-igt_drm_client_add(struct igt_drm_clients *clients, unsigned int id,
+-		   unsigned int pid, char *name, uint64_t busy[16])
++igt_drm_client_add(struct igt_drm_clients *clients,
++		   struct drm_client_fdinfo *info,
++		   unsigned int pid, char *name, unsigned int drm_minor)
  {
-+	struct sort_context ctx = { .user_cmp = cmp };
- 	unsigned int active, free;
  	struct igt_drm_client *c;
- 	int tmp;
-@@ -196,8 +215,8 @@ igt_drm_clients_sort(struct igt_drm_clients *clients,
- 	if (!clients)
+ 
+-	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE, id));
++	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE, info->id));
+ 
+ 	c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_FREE, 0);
+ 	if (!c) {
+@@ -137,13 +138,14 @@ igt_drm_client_add(struct igt_drm_clients *clients, unsigned int id,
+ 		memset(c, 0, (clients->num_clients - idx) * sizeof(*c));
+ 	}
+ 
+-	c->id = id;
++	c->id = info->id;
++	c->drm_minor = drm_minor;
+ 	c->clients = clients;
+ 	c->val = calloc(clients->num_classes, sizeof(c->val));
+ 	c->last = calloc(clients->num_classes, sizeof(c->last));
+ 	assert(c->val && c->last);
+ 
+-	igt_drm_client_update(c, pid, name, busy);
++	igt_drm_client_update(c, pid, name, info->busy);
+ }
+ 
+ void igt_drm_client_free(struct igt_drm_client *c)
+@@ -254,16 +256,21 @@ static bool get_task_name(const char *buffer, char *out, unsigned long sz)
+ 	return true;
+ }
+ 
+-static bool is_drm_fd(int fd_dir, const char *name)
++static bool is_drm_fd(int fd_dir, const char *name, unsigned int *minor)
+ {
+ 	struct stat stat;
+ 	int ret;
+ 
+ 	ret = fstatat(fd_dir, name, &stat, 0);
+ 
+-	return ret == 0 &&
+-	       (stat.st_mode & S_IFMT) == S_IFCHR &&
+-	       major(stat.st_rdev) == 226;
++	if (ret == 0 &&
++	    (stat.st_mode & S_IFMT) == S_IFCHR &&
++	    major(stat.st_rdev) == 226) {
++		*minor = minor(stat.st_rdev);
++		return true;
++	}
++
++	return false;
+ }
+ 
+ struct igt_drm_clients *
+@@ -293,10 +300,10 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
  		return clients;
  
--	qsort(clients->client, clients->num_clients, sizeof(*clients->client),
--	      cmp);
-+	qsort_r(clients->client, clients->num_clients, sizeof(*clients->client),
-+	      sort_cmp, &ctx);
+ 	while ((proc_dent = readdir(proc_dir)) != NULL) {
++		unsigned int client_pid, minor = 0;
+ 		int pid_dir = -1, fd_dir = -1;
+ 		struct dirent *fdinfo_dent;
+ 		char client_name[64] = { };
+-		unsigned int client_pid;
+ 		DIR *fdinfo_dir = NULL;
+ 		char buf[4096];
+ 		size_t count;
+@@ -338,7 +345,7 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
+ 			if (!isdigit(fdinfo_dent->d_name[0]))
+ 				continue;
  
- 	/* Trim excessive array space. */
- 	active = 0;
+-			if (!is_drm_fd(fd_dir, fdinfo_dent->d_name))
++			if (!is_drm_fd(fd_dir, fdinfo_dent->d_name, &minor))
+ 				continue;
+ 
+ 			memset(&info, 0, sizeof(info));
+@@ -358,8 +365,8 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
+ 			c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_PROBE,
+ 						info.id);
+ 			if (!c)
+-				igt_drm_client_add(clients, info.id, client_pid,
+-						   client_name, info.busy);
++				igt_drm_client_add(clients, &info, client_pid,
++						   client_name, minor);
+ 			else
+ 				igt_drm_client_update(c, client_pid,
+ 						      client_name, info.busy);
 diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index 4668df2d7fd6..47547aa8b75f 100644
+index 91e9da4c0733..7a6318c6af5f 100644
 --- a/lib/igt_drm_clients.h
 +++ b/lib/igt_drm_clients.h
-@@ -90,7 +90,7 @@ igt_drm_clients_find(struct igt_drm_clients *clients,
+@@ -48,6 +48,7 @@ struct igt_drm_client {
  
- struct igt_drm_clients *
- igt_drm_clients_sort(struct igt_drm_clients *clients,
--		     int (*cmp)(const void *, const void *));
-+		     int (*cmp)(const void *, const void *, void *));
- 
+ 	enum igt_drm_client_status status;
+ 	unsigned int id;
++	unsigned int drm_minor;
+ 	unsigned int pid;
+ 	char name[24];
+ 	char print_name[24];
+@@ -95,8 +96,9 @@ igt_drm_clients_sort(struct igt_drm_clients *clients,
  void igt_drm_client_update(struct igt_drm_client *c,
  			   unsigned int pid, char *name, uint64_t val[16]);
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index fb7ec9ae6d74..fcc4e5501d3d 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -644,85 +644,74 @@ static void pmu_sample(struct engines *engines)
- 	}
- }
  
--static int client_last_cmp(const void *_a, const void *_b)
-+static int
-+__client_id_cmp(const struct igt_drm_client *a,
-+		const struct igt_drm_client *b)
-+{
-+	if (a->id > b->id)
-+		return 1;
-+	else if (a->id < b->id)
-+		return -1;
-+	else
-+		return 0;
-+}
-+
-+static int client_last_cmp(const void *_a, const void *_b, void *unused)
- {
- 	const struct igt_drm_client *a = _a;
- 	const struct igt_drm_client *b = _b;
--	long tot_a, tot_b;
-+	long val_a = a->last_runtime, val_b = b->last_runtime;
+-void igt_drm_client_add(struct igt_drm_clients *clients, unsigned int id,
+-			unsigned int pid, char *name, uint64_t busy[16]);
++void igt_drm_client_add(struct igt_drm_clients *clients,
++			struct drm_client_fdinfo *,
++			unsigned int pid, char *name, unsigned int drm_minor);
  
- 	/*
- 	 * Sort clients in descending order of runtime in the previous sampling
--	 * period for active ones, followed by inactive. Tie-breaker is client
--	 * id.
-+	 * period. Tie-breaker is client id.
- 	 */
+ void igt_drm_client_free(struct igt_drm_client *c);
  
--	tot_a = a->status == IGT_DRM_CLIENT_ALIVE ? a->last_runtime : -1;
--	tot_b = b->status == IGT_DRM_CLIENT_ALIVE ? b->last_runtime : -1;
--
--	tot_b -= tot_a;
--	if (tot_b > 0)
-+	if (val_a == val_b)
-+		return __client_id_cmp(a, b);
-+	else if (val_b > val_a)
- 		return 1;
--	if (tot_b < 0)
-+	else
- 		return -1;
--
--	return (int)b->id - a->id;
- }
- 
--static int client_total_cmp(const void *_a, const void *_b)
-+static int client_total_cmp(const void *_a, const void *_b, void *unused)
- {
- 	const struct igt_drm_client *a = _a;
- 	const struct igt_drm_client *b = _b;
--	long tot_a, tot_b;
-+	long val_a = a->total_runtime, val_b = b->total_runtime;
- 
--	tot_a = a->status == IGT_DRM_CLIENT_ALIVE ? a->total_runtime : -1;
--	tot_b = b->status == IGT_DRM_CLIENT_ALIVE ? b->total_runtime : -1;
--
--	tot_b -= tot_a;
--	if (tot_b > 0)
-+	if (val_a == val_b)
-+		return __client_id_cmp(a, b);
-+	else if (val_b > val_a)
- 		return 1;
--	if (tot_b < 0)
-+	else
- 		return -1;
--
--	return (int)b->id - a->id;
- }
- 
--static int client_id_cmp(const void *_a, const void *_b)
-+static int client_id_cmp(const void *_a, const void *_b, void *unused)
- {
- 	const struct igt_drm_client *a = _a;
- 	const struct igt_drm_client *b = _b;
--	int id_a, id_b;
--
--	id_a = a->status == IGT_DRM_CLIENT_ALIVE ? a->id : -1;
--	id_b = b->status == IGT_DRM_CLIENT_ALIVE ? b->id : -1;
--
--	id_b -= id_a;
--	if (id_b > 0)
--		return 1;
--	if (id_b < 0)
--		return -1;
- 
--	return (int)b->id - a->id;
-+	return __client_id_cmp(a, b);
- }
- 
--static int client_pid_cmp(const void *_a, const void *_b)
-+static int client_pid_cmp(const void *_a, const void *_b, void *unused)
- {
- 	const struct igt_drm_client *a = _a;
- 	const struct igt_drm_client *b = _b;
--	int pid_a, pid_b;
--
--	pid_a = a->status == IGT_DRM_CLIENT_ALIVE ? a->pid : INT_MAX;
--	pid_b = b->status == IGT_DRM_CLIENT_ALIVE ? b->pid : INT_MAX;
-+	int val_a = a->pid, val_b = b->pid;
- 
--	pid_b -= pid_a;
--	if (pid_b > 0)
-+	if (val_a == val_b)
-+		return __client_id_cmp(a, b);
-+	else if (val_b > val_a)
- 		return -1;
--	if (pid_b < 0)
-+	else
- 		return 1;
--
--	return (int)a->id - b->id;
- }
- 
--static int (*client_cmp)(const void *, const void *) = client_last_cmp;
-+static int (*client_cmp)(const void *, const void *, void *) = client_last_cmp;
- 
- static bool aggregate_pids = true;
- 
-@@ -1910,7 +1899,7 @@ static void interactive_stdin(void)
- static void select_client_sort(void)
- {
- 	struct {
--		int (*cmp)(const void *, const void *);
-+		int (*cmp)(const void *, const void *, void *);
- 		const char *msg;
- 	} cmp[] = {
- 		{ client_last_cmp, "Sorting clients by current GPU usage." },
 -- 
 2.32.0
