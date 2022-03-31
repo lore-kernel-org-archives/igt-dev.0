@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43C9010FA54
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Mar 2022 06:33:07 +0000 (UTC)
-Date: Thu, 31 Mar 2022 08:33:03 +0200
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8947810FB91
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Mar 2022 06:54:07 +0000 (UTC)
+Date: Thu, 31 Mar 2022 08:54:03 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <YkVLH/YZHTEomPBo@zkempczy-mobl2>
-References: <20220329141717.106131-1-kamil.konieczny@linux.intel.com>
- <20220329141717.106131-2-kamil.konieczny@linux.intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Message-ID: <YkVQC27+2tliyXqf@zkempczy-mobl2>
+References: <20210810191425.8391-1-andrzej.turko@linux.intel.com>
+ <20210810191425.8391-2-andrzej.turko@linux.intel.com>
+ <87h77g6khg.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220329141717.106131-2-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/intel_batchbuffer: add create
- without relocs
+In-Reply-To: <87h77g6khg.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/gem_exec_store: Support gens
+ without relocations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,77 +22,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org,
+ Andrzej Turko <andrzej.turko@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 29, 2022 at 04:17:16PM +0200, Kamil Konieczny wrote:
-> There is create function with relocations, so add its
-> counterpart without it.
+On Tue, Mar 29, 2022 at 11:08:11PM -0700, Dixit, Ashutosh wrote:
+> On Tue, 10 Aug 2021 12:14:24 -0700, Andrzej Turko wrote:
+> >
+> > @@ -213,24 +257,41 @@ static void store_all(int fd, const intel_ctx_t *ctx)
+> >		execbuf.flags |= I915_EXEC_SECURE;
+> >	execbuf.rsvd1 = ctx->id;
+> >
+> > +	ahnd = intel_allocator_open(fd, ctx->id, INTEL_ALLOCATOR_SIMPLE);
+> > +
+> >	memset(obj, 0, sizeof(obj));
+> >	obj[0].handle = gem_create(fd, nengine*sizeof(uint32_t));
+> > +	obj[0].offset = intel_allocator_alloc(ahnd, obj[0].handle,
+> > +					      nengine*sizeof(uint32_t), ALIGNMENT);
+> > +	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE;
+> > +	obj[0].offset = CANONICAL(obj[0].offset);
+> >	obj[1].handle = gem_create(fd, 2*nengine*sizeof(batch));
+> > -	obj[1].relocation_count = 1;
+> > +	obj[1].offset = intel_allocator_alloc(ahnd, obj[1].handle,
+> > +					      nengine*sizeof(uint32_t), ALIGNMENT);
 > 
-> v3: moved down after intel_bb_create_with_relocs_and_context,
->     added function description (Zbigniew review)
-> v2: change to HIGH_TO_LOW allocation (Zbigniew)
-> 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/intel_batchbuffer.c | 21 +++++++++++++++++++++
->  lib/intel_batchbuffer.h |  1 +
->  2 files changed, 22 insertions(+)
-> 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index 2cd472d1..ebf3c598 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -1558,6 +1558,27 @@ intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx, uint32_t size)
->  				 INTEL_ALLOCATOR_NONE, ALLOC_STRATEGY_NONE);
->  }
->  
-> +/**
-> + * intel_bb_create_no_relocs:
-> + * @i915: drm fd
-> + * @size: size of the batchbuffer
-> + *
-> + * Creates bb with disabled relocations.
-> + * This enables passing addresses and requires pinning objects.
-> + *
-> + * Returns:
-> + *
-> + * Pointer the intel_bb, asserts on failure.
-> + */
-> +struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size)
-> +{
-> +	igt_require(gem_uses_full_ppgtt(i915));
-> +
-> +	return __intel_bb_create(i915, 0, size, false, 0, 0,
-> +				 INTEL_ALLOCATOR_SIMPLE,
-> +				 ALLOC_STRATEGY_HIGH_TO_LOW);
-> +}
-> +
->  static void __intel_bb_destroy_relocations(struct intel_bb *ibb)
->  {
->  	uint32_t i;
-> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-> index 75d41ea3..36b6b61d 100644
-> --- a/lib/intel_batchbuffer.h
-> +++ b/lib/intel_batchbuffer.h
-> @@ -526,6 +526,7 @@ intel_bb_create_with_context(int i915, uint32_t ctx, uint32_t size);
->  struct intel_bb *intel_bb_create_with_relocs(int i915, uint32_t size);
->  struct intel_bb *
->  intel_bb_create_with_relocs_and_context(int i915, uint32_t ctx, uint32_t size);
-> +struct intel_bb *intel_bb_create_no_relocs(int i915, uint32_t size);
->  void intel_bb_destroy(struct intel_bb *ibb);
->  
->  /* make it safe to use intel_allocator after failed test */
-> -- 
-> 2.32.0
->
+> Is this correct, or should the size argument be 2*nengine*sizeof(batch)
+> (instead of nengine*sizeof(uint32_t))?
 
-Ok, looks good for me.
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Definitely yes. Further allocations still can fit into hole between objects.
+I would remove ALIGNMENT at all. It should work because we now use safe
+alignment as you proposed couple of weeks ago (that was very good idea).
 
 --
-Zbigniew 
+Zbigniew
+
+> 
+> > +	obj[1].offset = CANONICAL(obj[1].offset);
+> > +	obj[1].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
