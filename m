@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1FA310E46E
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Apr 2022 02:04:57 +0000 (UTC)
-Message-ID: <2e258c78-4544-9a05-060a-887d2874a094@intel.com>
-Date: Thu, 31 Mar 2022 19:04:51 -0700
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 160E610EE61
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Apr 2022 02:11:32 +0000 (UTC)
+Message-ID: <f5b445b0-18e6-898d-d451-86cab6ac3a9c@intel.com>
+Date: Thu, 31 Mar 2022 19:11:23 -0700
 Content-Language: en-US
 To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 References: <20220330183259.3003663-1-daniele.ceraolospurio@intel.com>
- <20220330183259.3003663-3-daniele.ceraolospurio@intel.com>
- <87wng9hjpb.wl-ashutosh.dixit@intel.com>
- <87sfqxh9zn.wl-ashutosh.dixit@intel.com>
+ <20220330183259.3003663-2-daniele.ceraolospurio@intel.com>
+ <87r16hh868.wl-ashutosh.dixit@intel.com>
 From: "Ceraolo Spurio, Daniele" <daniele.ceraolospurio@intel.com>
-In-Reply-To: <87sfqxh9zn.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87r16hh868.wl-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_kmod: Unload mei modules
- before unloading i915
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_kmod: Wait for a kmod to
+ finish its probe before unloding it.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,49 +23,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- Alexander Usyskin <alexander.usyskin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 3/31/2022 6:23 PM, Dixit, Ashutosh wrote:
-> On Thu, 31 Mar 2022 14:54:08 -0700, Dixit, Ashutosh wrote:
->> On Wed, 30 Mar 2022 11:32:59 -0700, Daniele Ceraolo Spurio wrote:
->>> mei_gsc binds to an aux device exposed by i915, so it depends on it and
->>> need to be removed before we can unload i915.
->>> On platforms with a GSC, the mei components (pxp, hdcp) depend on
->>> mei_gsc, so those need to be unloaded first.
->> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+On 3/31/2022 7:03 PM, Dixit, Ashutosh wrote:
+> On Wed, 30 Mar 2022 11:32:58 -0700, Daniele Ceraolo Spurio wrote:
+>> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+>> index cf7a3b22..d2ac8a56 100644
+>> --- a/lib/igt_kmod.c
+>> +++ b/lib/igt_kmod.c
+>> @@ -143,6 +143,12 @@ out:
+>> 	return ret;
+>>   }
 >>
->>> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
->>> Cc: Alexander Usyskin <alexander.usyskin@intel.com>
->>> ---
->>>   lib/igt_kmod.c | 4 ++++
->>>   1 file changed, 4 insertions(+)
->>>
->>> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
->>> index d2ac8a56..28ffe515 100644
->>> --- a/lib/igt_kmod.c
->>> +++ b/lib/igt_kmod.c
->>> @@ -400,6 +400,10 @@ int __igt_i915_driver_unload(const char **who)
->>> 	const char *aux[] = {
->>> 		/* gen5: ips uses symbol_get() so only a soft module dependency */
->>> 		"intel_ips",
->>> +		/* mei_gsc uses an i915 aux dev and the other mei mods depend on it */
->>> +		"mei_pxp",
->>> +		"mei_hdcp",
->>> +		"mei_gsc",
-> Actually come to think of it now, why do we even have this list?
-> igt_kmod_unload_r() should automatically try to unload any modules which
-> depend on i915. See 1fbeb61e2695. Or does the aux bus make these modules an
-> exception?
+>> +static bool
+>> +igt_kmod_is_loading(struct kmod_module *kmod)
+>> +{
+>> +	return kmod_module_get_initstate(kmod) == KMOD_MODULE_COMING;
+> One idea would be to check for KMOD_MODULE_LIVE here which will basically
+> invert the logic in the loop but will be a more exact check? But anyway
+> it's equivalent so no need to change I guess.
 
-It does. There is no direct module-to-module dependency between i915 and 
-mei_gsc, so the automatic unload via dependency tracking won't work. 
-Similarly, mei_pxp and mei_hdcp bind to sub-components exposed by mei_gsc.
+I was undecided myself, but decided to go with "COMING" because that 
+matches the exact case I was looking for (i.e. init in progress). I can 
+flip it to check for KMOD_MODULE_LIVE  if you think that works better 
+and/or is more generic.
+
+>
+>>   static int modprobe(struct kmod_module *kmod, const char *options)
+>>   {
+>> 	unsigned int flags;
+>> @@ -289,6 +295,16 @@ igt_kmod_unload(const char *mod_name, unsigned int flags)
+>> 		goto out;
+>> 	}
+>>
+>> +	if (igt_kmod_is_loading(kmod)) {
+>> +		igt_debug("%s still initializing\n", mod_name);
+>> +		err = igt_wait(!igt_kmod_is_loading(kmod), 10000, 100);
+>> +		if (err < 0) {
+>> +			igt_debug("%s failed to complete init within the timeout\n",
+>> +				  mod_name);
+>> +			goto out;
+>> +		}
+>> +	}
+>> +
+>> 	err = igt_kmod_unload_r(kmod, flags);
+> I think it's better to add this code to igt_kmod_unload_r() (instead of
+> igt_kmod_unload()) since that calls itself recursively to remove dependent
+> modules?
+
+I'll move it there.
 
 Daniele
 
+>
+> Also it seems strange that we should explicitly have to wait for module
+> state to become LIVE and kmod_module_remove_module() (which in turn calls
+> the delete_module syscall) doesn't handle this itself? But 'man
+> delete_module' specifically mentions this:
+>
+>    ERRORS
+>         EBUSY  The module is not "live" (i.e., it is still being initialized or
+>                is already marked for removal) ...
+>
+> So a patch like this seems to be needed somewhere (in IGT or in
+> libkmod). So adding it to IGT for now is fine.
