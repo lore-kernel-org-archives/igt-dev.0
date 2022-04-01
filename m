@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam08on2080.outbound.protection.outlook.com [40.107.101.80])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFCBD10E110
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Apr 2022 21:06:41 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 1 Apr 2022 17:06:22 -0400
-Message-ID: <20220401210622.3637249-1-dingchen.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============0040949167831512304=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] lib/igt_amd: add helper to R/W DM visual confirm
- debug option
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "David Zhang" <dingchen.zhang@amd.com>
+Date: Fri, 01 Apr 2022 21:30:33 -0000
+Message-ID: <164884863315.22007.1371084664692133753@emeril.freedesktop.org>
+References: <20220401205241.3634407-1-dingchen.zhang@amd.com>
+In-Reply-To: <20220401205241.3634407-1-dingchen.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Famd=3A_add_helper_to_R/W_DM_visual_confirm_debug_option?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,193 +17,232 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why & how]
-AMDGPU DM exposure a debugfs interface entry of visual confirm
-debug option which is configured for debugging like surface
-programming. It also supports the PSR feature visual confirm
-debugging. We'd add helpers to read/write visual confirm debug
-option from/to such interface entry.
+--===============0040949167831512304==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The interface entry "amdgpu_dm_visual_confirm" is located in the
-debugfs directory. We'd add the enumeration of visual confirm
-option which is aligned to the amdgpu kernel driver.
+== Series Details ==
 
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
+Series: lib/igt_amd: add helper to R/W DM visual confirm debug option
+URL   : https://patchwork.freedesktop.org/series/102091/
+State : success
 
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- lib/igt_amd.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_amd.h | 20 +++++++++++
- 2 files changed, 116 insertions(+)
+== Summary ==
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 664602da..02b35f68 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -25,6 +25,7 @@
- 
- #include "igt_amd.h"
- #include "igt.h"
-+#include "igt_sysfs.h"
- #include <amdgpu_drm.h>
- 
- #define X0 1
-@@ -250,6 +251,38 @@ bool igt_amd_is_tiled(uint64_t modifier)
- 		return false;
- }
- 
-+/**
-+ * @brief generic helper to check if the amdgpu dm debugfs entry defined
-+ *
-+ * @param drm_fd DRM file descriptor
-+ * @param interface_name The debugfs interface entry name with prefix "amdgpu_dm_"
-+ * @return true if <debugfs_root>/interface_name exists and defined
-+ * @return false otherwise
-+ */
-+static bool amd_dm_has_debugfs(int drm_fd, const char *interface_name)
-+{
-+	int fd;
-+	int res;
-+	struct stat stat;
-+
-+	fd = igt_debugfs_dir(drm_fd);
-+	if (fd < 0) {
-+		igt_info("Couldn't open debugfs dir!\n");
-+		return false;
-+	}
-+
-+	res = fstatat(fd, interface_name, &stat, 0);
-+	if (res != 0) {
-+		igt_info("debugfs %s not supported\n", interface_name);
-+		close(fd);
-+		return false;
-+	}
-+
-+	close(fd);
-+	return true;
-+}
-+
-+
- /**
-  * @brief generic helper to check if the debugfs entry of given connector has the
-  *        debugfs interface defined.
-@@ -1075,3 +1108,66 @@ int igt_amd_read_psr_state(int drm_fd, char *connector_name)
- 
- 	return strtol(buf, NULL, 10);
- }
-+
-+/**
-+ * @brief check if AMDGPU DM visual confirm debugfs interface entry exist and defined
-+ * 
-+ * @param drm_fd DRM file descriptor
-+ * @return true if visual confirm debugfs interface exists and defined
-+ * @return false otherwise
-+ */
-+bool igt_amd_dm_has_visual_confirm(int drm_fd)
-+{
-+	return amd_dm_has_debugfs(drm_fd, DEBUGFS_DM_VISUAL_CONFIRM);
-+}
-+
-+/**
-+ * @brief Read amdgpu DM visual confirm debugfs interface
-+ *
-+ * @param drm_fd DRM file descriptor
-+ * @return int visual confirm debug option as integer
-+ */
-+int  igt_amd_dm_get_visual_confirm(int drm_fd)
-+{
-+	char buf[4];	/* current 4 bytes are enough */
-+	int fd, ret;
-+
-+	fd = igt_debugfs_dir(drm_fd);
-+	if (fd < 0) {
-+		igt_info("Couldn't open debugfs dir!\n");
-+		return -1;
-+	}
-+
-+	ret = igt_debugfs_simple_read(fd, DEBUGFS_DM_VISUAL_CONFIRM, buf, sizeof(buf));
-+	close(fd);
-+
-+	igt_assert_f(ret >= 0, "Reading %s failed.\n",
-+		     DEBUGFS_DM_VISUAL_CONFIRM);
-+
-+	return strtol(buf, NULL, 10);
-+}
-+
-+/**
-+ * @brief Write amdgpu DM visual confirm debug option to debugfs interface
-+ *
-+ * @param drm_fd DRM file descriptor
-+ * @param option amdgpu DC visual confirm debug option
-+ * @return true if set visual confirm option success
-+ * @return false otherwise
-+ */
-+bool igt_amd_dm_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option)
-+{
-+	char buf[4];
-+	int fd;
-+
-+	fd = igt_debugfs_dir(drm_fd);
-+	if (fd < 0) {
-+		igt_info("Couldn't open debugfs dir!\n");
-+		return false;
-+	}
-+
-+	memset(buf, '\0', sizeof(buf));
-+	snprintf(buf, sizeof(buf), "%d\n", option);
-+
-+	return igt_sysfs_set(fd, DEBUGFS_DM_VISUAL_CONFIRM, buf);
-+}
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index e4e12ce5..df76f428 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -49,6 +49,9 @@
- #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
- #define DEBUGFS_EDP_PSR_STATE	"psr_state"
- 
-+/* amdgpu DM interface entries */
-+#define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
-+
- enum amd_dsc_clock_force {
- 	DSC_AUTOMATIC = 0,
- 	DSC_FORCE_ON,
-@@ -115,6 +118,19 @@ enum amdgpu_psr_state {
- 	PSR_STATE_INVALID = 0xFF
- };
- 
-+/*
-+ * enumeration of amdgpu DC visual confirm debug option
-+ * aligned to the upstreamed amdgpu kernel driver 'enum visual_confirm' in dc.h
-+ */
-+enum amdgpu_debug_visual_confirm {
-+	VISUAL_CONFIRM_DISABLE	= 0,
-+	VISUAL_CONFIRM_SURFACE	= 1,
-+	VISUAL_CONFIRM_HDR	= 2,
-+	VISUAL_CONFIRM_MPCTREE	= 4,
-+	VISUAL_CONFIRM_PSR	= 5,
-+	VISUAL_CONFIRM_SWIZZLE	= 9
-+};
-+
- uint32_t igt_amd_create_bo(int fd, uint64_t size);
- void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
- unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
-@@ -172,4 +188,8 @@ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mod
- bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
- int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
- 
-+/* DM interface helpers */
-+bool igt_amd_dm_has_visual_confirm(int drm_fd);
-+int  igt_amd_dm_get_visual_confirm(int drm_fd);
-+bool igt_amd_dm_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
- #endif /* IGT_AMD_H */
--- 
-2.25.1
+CI Bug Log - changes from IGT_6406 -> IGTPW_6861
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/index.html
+
+Participating hosts (43 -> 39)
+------------------------------
+
+  Additional (1): bat-adlm-1 
+  Missing    (5): bat-dg2-8 fi-bsw-cyan fi-kbl-8809g bat-jsl-2 fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6861:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+    - {bat-adlm-1}:       NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/bat-adlm-1/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6861 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-g3258:       [PASS][2] -> [INCOMPLETE][3] ([i915#4785])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6406/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_busy@basic@flip:
+    - fi-tgl-u2:          [PASS][4] -> [DMESG-WARN][5] ([i915#402]) +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6406/fi-tgl-u2/igt@kms_busy@basic@flip.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/fi-tgl-u2/igt@kms_busy@basic@flip.html
+
+  * igt@runner@aborted:
+    - fi-hsw-g3258:       NOTRUN -> [FAIL][6] ([fdo#109271] / [i915#1436] / [i915#4312])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/fi-hsw-g3258/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-tgl-1115g4:      [DMESG-FAIL][7] ([i915#3987]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6406/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_busy@basic@modeset:
+    - {bat-adlp-6}:       [DMESG-WARN][9] ([i915#3576]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6406/bat-adlp-6/igt@kms_busy@basic@modeset.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/bat-adlp-6/igt@kms_busy@basic@modeset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#3987]: https://gitlab.freedesktop.org/drm/intel/issues/3987
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#5195]: https://gitlab.freedesktop.org/drm/intel/issues/5195
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6406 -> IGTPW_6861
+
+  CI-20190529: 20190529
+  CI_DRM_11440: 1aba80b3bc8c8e2cc405cd96fe95770ecbadde71 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6861: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/index.html
+  IGT_6406: f3110b3083b4fecfa2153563990720a7b82485c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/index.html
+
+--===============0040949167831512304==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_amd: add helper to R/W DM visual confirm debug option</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102091/">https://patchwork.freedesktop.org/series/102091/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6406 -&gt; IGTPW_6861</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/index.html</p>
+<h2>Participating hosts (43 -&gt; 39)</h2>
+<p>Additional (1): bat-adlm-1 <br />
+  Missing    (5): bat-dg2-8 fi-bsw-cyan fi-kbl-8809g bat-jsl-2 fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6861:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@kms_pipe_crc_basic@read-crc-pipe-b:<ul>
+<li>{bat-adlm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/bat-adlm-1/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6861 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6406/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6406/fi-tgl-u2/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/fi-tgl-u2/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1436">i915#1436</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6406/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3987">i915#3987</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@modeset:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6406/bat-adlp-6/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/bat-adlp-6/igt@kms_busy@basic@modeset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6406 -&gt; IGTPW_6861</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11440: 1aba80b3bc8c8e2cc405cd96fe95770ecbadde71 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6861: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6861/index.html<br />
+  IGT_6406: f3110b3083b4fecfa2153563990720a7b82485c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0040949167831512304==--
