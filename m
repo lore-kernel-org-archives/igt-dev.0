@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Matthew Auld <matthew.auld@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  1 Apr 2022 12:09:02 +0100
-Message-Id: <20220401110902.446305-2-matthew.auld@intel.com>
-In-Reply-To: <20220401110902.446305-1-matthew.auld@intel.com>
-References: <20220401110902.446305-1-matthew.auld@intel.com>
+Date: Fri,  1 Apr 2022 12:09:01 +0100
+Message-Id: <20220401110902.446305-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/gem_ctx_engines: handle missing
- set_caching
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_pwrite_crc: handle missing
+ get_caching
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,30 +19,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Not supported on discrete. Here the object will already have the GTT
-caching bits enabled, and the mapping will be WB, which looks inline
-with what the test is expecting here.
+gem_get_caching is not supported on discrete. The object itself should
+already be coherent with the display engine as-is on such platforms, by
+virtue of the scanout happening via local-memory.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/4926
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/4903
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
 ---
- tests/i915/gem_ctx_engines.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/i915/kms_pwrite_crc.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-index de4b822c..19cf9b05 100644
---- a/tests/i915/gem_ctx_engines.c
-+++ b/tests/i915/gem_ctx_engines.c
-@@ -492,7 +492,8 @@ static void independent(int i915, const intel_ctx_t *base_ctx,
- 	param.ctx_id = gem_context_create(i915);
- 	gem_context_set_param(i915, &param);
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 44fcfadb..584e6a19 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -50,7 +50,6 @@ static void test(data_t *data)
+ 	igt_output_t *output = data->output;
+ 	struct igt_fb *fb = &data->fb[1];
+ 	drmModeModeInfo *mode;
+-	uint32_t caching;
+ 	void *buf;
+ 	igt_crc_t crc;
  
--	gem_set_caching(i915, results.handle, I915_CACHING_CACHED);
-+	if (!gem_has_lmem(i915))
-+		gem_set_caching(i915, results.handle, I915_CACHING_CACHED);
- 	map = gem_mmap__cpu(i915, results.handle, 0, 4096, PROT_READ);
- 	gem_set_domain(i915, results.handle,
- 		       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
+@@ -76,9 +75,14 @@ static void test(data_t *data)
+ 			0, 0, fb->width, fb->height,
+ 			0, 0, fb->width << 16, fb->height << 16);
+ 
+-	/* make sure caching mode has become UC/WT */
+-	caching = gem_get_caching(data->drm_fd, fb->gem_handle);
+-	igt_assert(caching == I915_CACHING_NONE || caching == I915_CACHING_DISPLAY);
++	if (!gem_has_lmem(data->drm_fd)) {
++		uint32_t caching;
++
++		/* make sure caching mode has become UC/WT */
++		caching = gem_get_caching(data->drm_fd, fb->gem_handle);
++		igt_assert(caching == I915_CACHING_NONE ||
++			   caching == I915_CACHING_DISPLAY);
++	}
+ 
+ 	/* use pwrite to make the other fb all white too */
+ 	buf = malloc(fb->size);
 -- 
 2.34.1
