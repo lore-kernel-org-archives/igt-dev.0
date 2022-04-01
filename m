@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 23FEA10FF6F
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Apr 2022 07:44:48 +0000 (UTC)
-From: Ramalingam C <ramalingam.c@intel.com>
-To: igt-dev <igt-dev@lists.freedesktop.org>
-Date: Fri,  1 Apr 2022 13:15:26 +0530
-Message-Id: <20220401074527.15709-2-ramalingam.c@intel.com>
-In-Reply-To: <20220401074527.15709-1-ramalingam.c@intel.com>
-References: <20220401074527.15709-1-ramalingam.c@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFD1910FE4A
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Apr 2022 07:28:30 +0000 (UTC)
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+To: arjun.melkaveri@intel.com, ramalingam.c@intel.com,
+ ashutosh.dixit@intel.com, igt-dev@lists.freedesktop.org
+Date: Fri,  1 Apr 2022 12:58:26 +0530
+Message-Id: <20220401072826.6447-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 1/2] tests/i915/gem_lmem_swapping: create
- batch buffer from obj pool
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_lmem_swapping: Fix bug in
+ test_smem_oom
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,99 +22,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use the gem_create_from_pool() for creating the batch buffers.
+ctx was not initialized with all physical engines,
+after device reopening.
+This change would resolve assert issue seen in __do_evict.
 
-Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+v2: Added missing intel_ctx_destroy.
+
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Ramalingam C <ramalingam.c@intel.com>
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
 ---
- tests/i915/gem_lmem_swapping.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ tests/i915/gem_lmem_swapping.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 43f0688f30b2..aba713039cfa 100644
+index 43f0688f..432607b0 100644
 --- a/tests/i915/gem_lmem_swapping.c
 +++ b/tests/i915/gem_lmem_swapping.c
-@@ -129,7 +129,7 @@ static void move_to_lmem(int i915,
- 			 const intel_ctx_t *ctx,
- 			 struct object *list,
- 			 unsigned int num,
--			 uint32_t batch,
-+			 unsigned int region,
- 			 unsigned int engine,
- 			 bool do_oom_test)
- {
-@@ -140,7 +140,13 @@ static void move_to_lmem(int i915,
- 		.flags = I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT | engine,
- 		.rsvd1 = ctx->id,
- 	};
--	unsigned int i, ret;
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	unsigned int i, ret, batch;
-+	uint64_t size;
+@@ -428,10 +428,14 @@ static void test_smem_oom(int i915,
+ 
+ 		fill_params(i915, &params, region, 0, 1, true);
+ 
++		ctx = intel_ctx_create_all_physical(fd);
++		__gem_context_set_persistence(fd, ctx->id, false);
 +
-+	size = 4096;
-+	batch = gem_create_from_pool(i915, &size, region);
-+	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+ 		igt_install_exit_handler(smem_oom_exit_handler);
+ 		__do_evict(fd, ctx, &region->region, &params,
+ 			   params.seed + child + 1);
  
- 	memset(obj, 0, sizeof(obj));
++		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
+ 	}
  
-@@ -154,6 +160,7 @@ retry:
- 	ret = __gem_execbuf(i915, &eb);
- 	if (do_oom_test && (ret == -ENOMEM || ret == -ENXIO))
- 		goto retry;
-+
- 	igt_assert_eq(ret, 0);
- }
- 
-@@ -163,10 +170,10 @@ static void __do_evict(int i915,
- 		       struct params *params,
- 		       unsigned int seed)
- {
-+	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
-+						    region->memory_instance);
- 	const unsigned int max_swap_in = params->count / 100 + 1;
--	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct object *objects, *obj, *list;
--	uint32_t batch;
- 	unsigned int engine = 0;
- 	unsigned int i, l;
- 	uint64_t size;
-@@ -174,9 +181,6 @@ static void __do_evict(int i915,
- 	unsigned int num;
- 
- 	size = 4096;
--	batch = create_bo(i915, &size, region, params->oom_test);
--
--	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
- 
- 	objects = calloc(params->count, sizeof(*objects));
- 	igt_assert(objects);
-@@ -203,7 +207,7 @@ static void __do_evict(int i915,
- 		}
- 		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
- 
--		move_to_lmem(i915, ctx, objects + i, 1, batch, engine,
-+		move_to_lmem(i915, ctx, objects + i, 1, region_id, engine,
- 			     params->oom_test);
- 		if (params->flags & TEST_VERIFY)
- 			init_object(i915, obj, rand(), params->flags);
-@@ -228,7 +232,8 @@ static void __do_evict(int i915,
- 			idx = (idx + 1) % params->count;
- 		}
- 
--		move_to_lmem(i915, ctx, list, num, batch, engine, params->oom_test);
-+		move_to_lmem(i915, ctx, list, num, region_id, engine,
-+			     params->oom_test);
- 
- 		if (params->flags & TEST_ENGINES)
- 			engine = (engine + 1) % __num_engines__;
-@@ -248,8 +253,6 @@ static void __do_evict(int i915,
- 
- 	free(list);
- 	free(objects);
--
--	gem_close(i915, batch);
- }
- 
- static void fill_params(int i915, struct params *params,
 -- 
-2.20.1
+2.25.1
