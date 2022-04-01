@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2064.outbound.protection.outlook.com [40.107.223.64])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0DB110E0F3
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Apr 2022 20:52:58 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 1 Apr 2022 16:52:41 -0400
-Message-ID: <20220401205241.3634407-1-dingchen.zhang@amd.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] lib/igt_amd: add helper to R/W DM visual confirm
- debug option
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "David Zhang" <dingchen.zhang@amd.com>
+Date: Fri, 01 Apr 2022 21:05:34 -0000
+Message-ID: <164884713479.22004.3926402483483551370@emeril.freedesktop.org>
+References: <20220401205241.3634407-1-dingchen.zhang@amd.com>
+In-Reply-To: <20220401205241.3634407-1-dingchen.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
+ =?utf-8?q?ib/igt=5Famd=3A_add_helper_to_R/W_DM_visual_confirm_debug_optio?=
+ =?utf-8?q?n?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,187 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why & how]
-AMDGPU DM exposure a debugfs interface entry of visual confirm
-debug option which is configured for debugging like surface
-programming. It also supports the PSR feature visual confirm
-debugging. We'd add helpers to read/write visual confirm debug
-option from/to such interface entry.
+== Series Details ==
 
-The interface entry "amdgpu_dm_visual_confirm" is located in the
-debugfs directory. We'd add the enumeration of visual confirm
-option which is aligned to the amdgpu kernel driver.
+Series: lib/igt_amd: add helper to R/W DM visual confirm debug option
+URL   : https://patchwork.freedesktop.org/series/102091/
+State : warning
 
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- lib/igt_amd.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_amd.h | 20 +++++++++++
- 2 files changed, 116 insertions(+)
+== Summary ==
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 664602da..02b35f68 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -25,6 +25,7 @@
- 
- #include "igt_amd.h"
- #include "igt.h"
-+#include "igt_sysfs.h"
- #include <amdgpu_drm.h>
- 
- #define X0 1
-@@ -250,6 +251,38 @@ bool igt_amd_is_tiled(uint64_t modifier)
- 		return false;
- }
- 
-+/**
-+ * @brief generic helper to check if the amdgpu dm debugfs entry defined
-+ *
-+ * @param drm_fd DRM file descriptor
-+ * @param interface_name The debugfs interface entry name with prefix "amdgpu_dm_"
-+ * @return true if <debugfs_root>/interface_name exists and defined
-+ * @return false otherwise
-+ */
-+static bool amd_dm_has_debugfs(int drm_fd, const char *interface_name)
-+{
-+	int fd;
-+	int res;
-+	struct stat stat;
-+
-+	fd = igt_debugfs_dir(drm_fd);
-+	if (fd < 0) {
-+		igt_info("Couldn't open debugfs dir!\n");
-+		return false;
-+	}
-+
-+	res = fstatat(fd, interface_name, &stat, 0);
-+	if (res != 0) {
-+		igt_info("debugfs %s not supported\n", interface_name);
-+		close(fd);
-+		return false;
-+	}
-+
-+	close(fd);
-+	return true;
-+}
-+
-+
- /**
-  * @brief generic helper to check if the debugfs entry of given connector has the
-  *        debugfs interface defined.
-@@ -1075,3 +1108,66 @@ int igt_amd_read_psr_state(int drm_fd, char *connector_name)
- 
- 	return strtol(buf, NULL, 10);
- }
-+
-+/**
-+ * @brief check if AMDGPU DM visual confirm debugfs interface entry exist and defined
-+ * 
-+ * @param drm_fd DRM file descriptor
-+ * @return true if visual confirm debugfs interface exists and defined
-+ * @return false otherwise
-+ */
-+bool igt_amd_dm_has_visual_confirm(int drm_fd)
-+{
-+	return amd_dm_has_debugfs(drm_fd, DEBUGFS_DM_VISUAL_CONFIRM);
-+}
-+
-+/**
-+ * @brief Read amdgpu DM visual confirm debugfs interface
-+ *
-+ * @param drm_fd DRM file descriptor
-+ * @return int visual confirm debug option as integer
-+ */
-+int  igt_amd_dm_get_visual_confirm(int drm_fd)
-+{
-+	char buf[4];	/* current 4 bytes are enough */
-+	int fd, ret;
-+
-+	fd = igt_debugfs_dir(drm_fd);
-+	if (fd < 0) {
-+		igt_info("Couldn't open debugfs dir!\n");
-+		return -1;
-+	}
-+
-+	ret = igt_debugfs_simple_read(fd, DEBUGFS_DM_VISUAL_CONFIRM, buf, sizeof(buf));
-+	close(fd);
-+
-+	igt_assert_f(ret >= 0, "Reading %s failed.\n",
-+		     DEBUGFS_DM_VISUAL_CONFIRM);
-+
-+	return strtol(buf, NULL, 10);
-+}
-+
-+/**
-+ * @brief Write amdgpu DM visual confirm debug option to debugfs interface
-+ *
-+ * @param drm_fd DRM file descriptor
-+ * @param option amdgpu DC visual confirm debug option
-+ * @return true if set visual confirm option success
-+ * @return false otherwise
-+ */
-+bool igt_amd_dm_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option)
-+{
-+	char buf[4];
-+	int fd;
-+
-+	fd = igt_debugfs_dir(drm_fd);
-+	if (fd < 0) {
-+		igt_info("Couldn't open debugfs dir!\n");
-+		return false;
-+	}
-+
-+	memset(buf, '\0', sizeof(buf));
-+	snprintf(buf, sizeof(buf), "%d\n", option);
-+
-+	return igt_sysfs_set(fd, DEBUGFS_DM_VISUAL_CONFIRM, buf);
-+}
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index e4e12ce5..df76f428 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -49,6 +49,9 @@
- #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
- #define DEBUGFS_EDP_PSR_STATE	"psr_state"
- 
-+/* amdgpu DM interface entries */
-+#define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
-+
- enum amd_dsc_clock_force {
- 	DSC_AUTOMATIC = 0,
- 	DSC_FORCE_ON,
-@@ -115,6 +118,19 @@ enum amdgpu_psr_state {
- 	PSR_STATE_INVALID = 0xFF
- };
- 
-+/*
-+ * enumeration of amdgpu DC visual confirm debug option
-+ * aligned to the upstreamed amdgpu kernel driver 'enum visual_confirm' in dc.h
-+ */
-+enum amdgpu_debug_visual_confirm {
-+	VISUAL_CONFIRM_DISABLE	= 0,
-+	VISUAL_CONFIRM_SURFACE	= 1,
-+	VISUAL_CONFIRM_HDR	= 2,
-+	VISUAL_CONFIRM_MPCTREE	= 4,
-+	VISUAL_CONFIRM_PSR	= 5,
-+	VISUAL_CONFIRM_SWIZZLE	= 9
-+};
-+
- uint32_t igt_amd_create_bo(int fd, uint64_t size);
- void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
- unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
-@@ -172,4 +188,8 @@ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mod
- bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
- int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
- 
-+/* DM interface helpers */
-+bool igt_amd_dm_has_visual_confirm(int drm_fd);
-+int  igt_amd_dm_get_visual_confirm(int drm_fd);
-+bool igt_amd_dm_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
- #endif /* IGT_AMD_H */
--- 
-2.25.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/548239 for the overview.
+
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/20632542):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                287
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1648846949:step_script
+  section_start:1648846949:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1712 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=20632542 responseStatus=201 Created token=bAia4AVp
+  section_end:1648846960:upload_artifacts_on_failure
+  section_start:1648846960:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1648846960:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/548239
