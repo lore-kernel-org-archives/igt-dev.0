@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 333D010E00D
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Apr 2022 10:51:06 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  1 Apr 2022 16:21:03 +0530
-Message-Id: <20220401105103.17183-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Skip this test on
- DP MST config
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Fri, 01 Apr 2022 11:08:41 -0000
+Message-ID: <164881132196.22005.7604142282909220541@emeril.freedesktop.org>
+References: <20220401105103.17183-1-jeevan.b@intel.com>
+In-Reply-To: <20220401105103.17183-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fdisplay=5Fmodes=3A_Skip_this_test_on_DP_MST_config?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,53 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-currently this test fails on dp-mst setup. so, with this fix
-test will skip which is expected for extended mode test case.
+== Series Details ==
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_display_modes.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Series: tests/kms_display_modes: Skip this test on DP MST config
+URL   : https://patchwork.freedesktop.org/series/102063/
+State : warning
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index eff30cbb..4701c3ef 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -135,6 +135,8 @@ igt_main
- 	int valid_output = 0, i, j = 0;
- 	igt_output_t *output;
- 	int pipe[IGT_MAX_PIPES];
-+	struct kmstest_connector_config config;
-+	const char *encoder;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -146,6 +148,11 @@ igt_main
- 
- 			if (valid_output > 1)
- 				break;
-+
-+			kmstest_get_connector_config(data.drm_fd,
-+						     output->config.connector->connector_id,
-+						     -1, &config);
-+			encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
- 		}
- 
- 		data.n_pipes = 0;
-@@ -160,6 +167,10 @@ igt_main
- 
- 	igt_describe("Test for validating display extended mode with a pair of connected displays");
- 	igt_subtest_with_dynamic("extended-mode-basic") {
-+
-+		if (strcmp(encoder, "DP MST") == 0)
-+			igt_skip("Test dosen't support DP MST\n");
-+
- 		for (i = 0; i < data.n_pipes - 1; i++) {
- 			igt_dynamic_f("pipe-%s%s", kmstest_pipe_name(pipe[i]),
- 					kmstest_pipe_name(pipe[i+1]));
--- 
-2.35.1
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/547722 for the overview.
+
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/20606530):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                287
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1648811202:step_script
+  section_start:1648811202:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1712 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=20606530 responseStatus=201 Created token=Q8UcQRtW
+  section_end:1648811213:upload_artifacts_on_failure
+  section_start:1648811213:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1648811214:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/547722
