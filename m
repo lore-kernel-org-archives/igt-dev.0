@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3BBC10F1AD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9843310F2E0
  for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 06:26:51 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Mon,  4 Apr 2022 08:26:37 +0200
-Message-Id: <20220404062642.378928-8-mauro.chehab@linux.intel.com>
+Date: Mon,  4 Apr 2022 08:26:42 +0200
+Message-Id: <20220404062642.378928-13-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220404062642.378928-1-mauro.chehab@linux.intel.com>
 References: <20220404062642.378928-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 07/12] docs/code_coverage.md: document the code
- coverage filter script
+Subject: [igt-dev] [PATCH 12/12] code_cov_parse_info: add support for
+ generating html reports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,334 +28,570 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Add documentation bits for the code_coverage_parse_info.
+While lcov has already its own report generator, it is interesting
+to be able to deal with multiple files exposing each input in
+separate.
 
-While here, also drop the extensions from the scripts that were renamed.
+So, add new command line parameters to allow it to generate html
+reports. Also add some command lines to setup html title, add a
+css file and include a prolog/epilog at the html body.
 
-Reviewed-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+The title option can also be useful to rename the titles when
+merging multiple info files.
+
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- docs/code_coverage.md | 238 +++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 224 insertions(+), 14 deletions(-)
+ scripts/code_cov_parse_info | 438 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 386 insertions(+), 52 deletions(-)
 
-diff --git a/docs/code_coverage.md b/docs/code_coverage.md
-index 34d56d283a75..915e800ed68b 100644
---- a/docs/code_coverage.md
-+++ b/docs/code_coverage.md
-@@ -132,15 +132,15 @@ Kernel that was built at the same machine, at the directory `~/linux`,
- and wants to capture one file per test, it would use:
+diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+index 9624dc33468d..faa585ae5b18 100755
+--- a/scripts/code_cov_parse_info
++++ b/scripts/code_cov_parse_info
+@@ -9,6 +9,8 @@ use Pod::Man;
  
- ```
--./scripts/run-tests.sh -T my.testlist -k ~/linux -c scripts/code_cov_capture.sh -P
-+./scripts/run-tests.sh -T my.testlist -k ~/linux -c code_cov_capture -P
- ```
+ my $prefix = qr ".*?(linux)\w*/";
  
- ### Code Coverage Collect script
++my $title = "";
++
+ my %used_func;
+ my %all_func;
+ my %all_branch;
+@@ -307,8 +309,12 @@ sub write_filtered_file($)
  
- While any script could in thesis be used, currently, there are two ones
--under `scripts/`:
-+under the IGT's `scripts/` source directory:
+ 	my $filtered = "";
  
--- `scripts/code_cov_capture.sh`:
-+- `code_cov_capture`:
+-	foreach my $testname(sort keys %test_names) {
+-		$filtered .= "TN:$testname\n";
++	if ($title eq "") {
++		foreach my $testname(sort keys %test_names) {
++			$filtered .= "TN:$testname\n";
++		}
++	} else {
++		$filtered .= "TN:$title\n";
+ 	}
  
-   Assumes that the Kernel was built at the same machine, and uses
-   the lcov tool to generate GCC-independent code coverage data,
-@@ -150,7 +150,7 @@ under `scripts/`:
+ 	# Generates filtered data
+@@ -416,71 +422,331 @@ sub print_code_coverage($$$)
+ 	}
+ }
  
-   Such script requires `lcov` tool to be installed at the test machine.
+-sub print_summary()
++my %stats;
++
++sub gen_stats()
+ {
+-	# Output per-line coverage statistics
+-	my $line_count = 0;
+-	my $line_reached = 0;
++	# per-line coverage statistics
++	$stats{"line_count"} = 0;
++	$stats{"line_reached"} = 0;
  
--- `scripts/code_cov_gather_on_test.py`:
-+- `code_cov_gather_on_test`:
+ 	foreach my $source (keys(%all_line)) {
+ 		next if (!$used_source{$source});
  
-   Generates a gzipped tarbal with the code coverage counters in
-   binary format. Such kind of output should then be parsed at
-@@ -162,12 +162,12 @@ For each script, the igt_runner passes just one parameter: the results
- directory + the test name.
+ 		foreach my $where (keys(%{$all_line{$source}})) {
+-			$line_count++;
+-			$line_reached++ if ($all_line{$source}{$where} != 0);
++			$stats{"line_count"}++;
++			$stats{"line_reached"}++ if ($all_line{$source}{$where} != 0);
+ 		}
+ 	}
+-	if ($line_count) {
+-		my $percent = 100. * $line_reached / $line_count;
+-		printf "  lines......: %.1f%% (%d of %d lines)\n",
+-			$percent, $line_reached, $line_count;
+-	} else {
+-		print "No line coverage data.\n";
+-	}
  
- For instance, if it is needed to run a test called
--`debugfs_test (read_all_entries)` using `scripts/code_cov_capture.sh`
-+`debugfs_test (read_all_entries)` using `code_cov_capture`
- parameter, e. g.:
+-	# Output per-function coverage statistics
+-	my $func_count = 0;
+-	my $func_used = 0;
++	# per-function coverage statistics
++	$stats{"func_count"} = 0;
++	$stats{"func_used"} = 0;
  
- ```
- $ echo "igt@debugfs_test@read_all_entries" > my.testlist
--$ ./scripts/run-tests.sh -T my.testlist -k ~/linux -c scripts/code_cov_capture.sh -P
-+$ ./scripts/run-tests.sh -T my.testlist -k ~/linux -c code_cov_capture -P
- Found test list: "/basedir/igt/build/tests/test-list.txt"
- [31410.499969] [1/1] debugfs_test (read_all_entries)
- [31411.060446] Storing code coverage results...
-@@ -178,7 +178,7 @@ Done.
- The script will be called as:
+ 	foreach my $func (keys(%all_func)) {
+ 		foreach my $file (keys(%{$all_func{$func}})) {
+-			$func_count++;
++			$stats{"func_count"}++;
+ 			if ($used_func{$func}) {
+ 				if ($used_func{$func}->{$file}) {
+-					$func_used++;
++					$stats{"func_used"}++;
+ 				}
+ 			}
+ 		}
+ 	}
  
- ```
--scripts/code_cov_capture.sh /basedir/igt/results/code_cov/debugfs_test_read_all_entries
-+code_cov_capture results/code_cov/debugfs_test_read_all_entries
- ```
+-	if ($func_count) {
+-		my $percent = 100. * $func_used / $func_count;
++	# per-branch coverage statistics
++	$stats{"branch_count"} = 0;
++	$stats{"branch_reached"} = 0;
++
++	foreach my $source (keys(%all_branch)) {
++		next if (!$used_source{$source});
++
++		foreach my $where (keys(%{$all_branch{$source}})) {
++			$stats{"branch_count"}++;
++			$stats{"branch_reached"}++ if ($all_branch{$source}{$where} != 0);
++		}
++	}
++
++	# per-file coverage stats
++	$stats{"all_files"} = scalar keys(%files);
++	$stats{"filtered_files"} = scalar keys(%record);
++	$stats{"used_files"} = scalar keys(%used_source);
++}
++
++sub print_summary()
++{
++	if ($stats{"line_count"}) {
++		my $percent = 100. * $stats{"line_reached"} / $stats{"line_count"};
++		printf "  lines......: %.1f%% (%d of %d lines)\n",
++			$percent, $stats{"line_reached"}, $stats{"line_count"};
++	} else {
++		print "No line coverage data.\n";
++	}
++
++	if ($stats{"func_count"}) {
++		my $percent = 100. * $stats{"func_used"} / $stats{"func_count"};
+ 		printf "  functions..: %.1f%% (%d of %d functions)\n",
+-			$percent, $func_used, $func_count;
++			$percent, $stats{"func_used"}, $stats{"func_count"};
+ 	} else {
+ 		print "No functions reported. Wrong filters?\n";
+ 		return;
+ 	}
  
- Please notice that any character that it is not a number nor a letter at the
-@@ -190,6 +190,73 @@ as titles at the lcov files.
- If any extra global parameters are needed by the script, those can be sent
- via shell's environment var.
+-	# Output per-branch coverage statistics
+-	my $branch_count = 0;
+-	my $branch_reached = 0;
++	if ($stats{"branch_count"}) {
++		my $percent = 100. * $stats{"branch_reached"} / $stats{"branch_count"};
++		printf "  branches...: %.1f%% (%d of %d branches)\n",
++			$percent, $stats{"branch_reached"}, $stats{"branch_count"};
++	} else {
++		print "No branch coverage data.\n";
++	}
++}
  
-+## Parsing data from code coverage *.info files
-+
-+The `*.info` files generated by `lcov` are plain text files that list the
-+tests that were executed in runtime.
-+
-+The `code_cov_parse_info` script has some logic on it that allows
-+printing the called functions stored inside the `*.info` file. It can also
-+optionally apply the following filters. Its main options are:
-+
-+- `--stat` or `--statistics`
-+
-+  Prints code coverage statistics.
-+
-+  It displays function, line, branch and file coverage percentage.
-+
-+  The statistics report is affected by the applied filters.
-+
-+- `--print-coverage`, `--print` or `-p`
-+
-+
-+  Prints the functions that were executed in runtime and how many times
-+  they were reached.
-+
-+  The function coverage report is affected by the applied filters.
-+
-+- `--print-unused` or `-u`
-+
-+  Prints the functions that were never reached.
-+
-+  The function coverage report is affected by the applied filters.
-+
-+- `--show-lines` or `--show_lines`
-+
-+  When printing per-function code coverage data, always output the source
-+  file and the line number where the function is defined.
-+
-+- `--output` *output file* or `-o` *output file*
-+
-+  Produces an output file merging all input files.
-+
-+  The generated output file is affected by the applied filters.
-+
-+- `--show-files` or `--show_files`
-+
-+   Shows the list of files that were useed to produce the code coverage
-+   results.
-+
-+- It also has a set of parameters that filters the code coverage results:
-+  `--only-drm`, `--only-i915`, `--func-filters`, `--source-filters`,
-+  `--ignore-unused`.
-+  When used, all coverage displayed reports, and the stored output file
-+  will be affected by such filters.
-+
-+More details can be seen by calling:
-+
-+```
-+code_cov_parse_info --help
-+
-+```
-+
-+or:
-+
-+```
-+code_cov_parse_info --man
-+
-+```
-+
- ### The `*.info` file format
+-	foreach my $source (keys(%all_branch)) {
+-		next if (!$used_source{$source});
++my $gen_report;
++my $css_file;
++my $html_prolog;
++my $html_epilog;
++my %report;
  
- The `*.info` files contain several fields on it, grouped into records.
-@@ -224,7 +291,7 @@ So, the above example means that, inside
- ## Generating code coverage documentation
+-		foreach my $where (keys(%{$all_branch{$source}})) {
+-			$branch_count++;
+-			$branch_reached++ if ($all_branch{$source}{$where} != 0);
++sub generate_report()
++{
++	my $percent;
++	my $prolog = "";
++	my $epilog = "";
++	my @info_files = sort(keys %report);
++
++	$title = "Code coverage results" if ($title eq "");
++
++	if ($html_prolog) {
++		open IN, $html_prolog or die "Can't open prolog file";
++		$prolog .= $_ while (<IN>);
++		close IN;
++	}
++
++	if ($html_prolog) {
++		open IN, $html_epilog or die "Can't open epilog file";
++		$epilog .= $_ while (<IN>);
++		close IN;
++	}
++
++	# Re-generate the hashes used to report stats in order to procuce the
++	# Total results
++
++	%used_func = ();
++	%all_func = ();
++	%all_branch = ();
++	%all_line = ();
++	%used_source = ();
++	%files = ();
++	%test_names = ();
++
++	foreach my $f (@info_files) {
++		foreach my $source (keys(%{$report{$f}{"all_line"}})) {
++			$used_source{$source} = 1 if ($report{$f}{"used_source"});
++			foreach my $where (keys(%{$report{$f}{"all_line"}{$source}})) {
++				$all_line{$source}{$where} += $report{$f}{"all_line"}{$source}{$where};
++			}
++		}
++		foreach my $func (keys(%{$report{$f}{"all_func"}})) {
++			foreach my $file (keys(%{$report{$f}{"all_func"}{$func}})) {
++				$all_func{$func}{$file}->{ln} = $report{$f}{"all_func"}{$func}{$file}->{ln};
++				$used_func{$func}->{$file} = 1 if ($report{$f}{"used_func"}{$func}->{$file});
++			}
++		}
++		foreach my $source (keys(%{$report{$f}{"all_branch"}})) {
++			foreach my $where (keys(%{$report{$f}{"all_branch"}{$source}})) {
++				$all_branch{$source}{"$where"} += $report{$f}{"all_branch"}{$source}{$where};
++			}
++		}
++		for my $source(keys(%{$report{$f}{"files"}})) {
++			$files{$source} = 1;
++			$used_source{$source} = 1 if ($report{$f}{"used_source"}{$source});
++		}
++		for my $test(keys(%{$report{$f}{"test_names"}})) {
++			$test_names{$test} = 1;
+ 		}
+ 	}
+-	if ($branch_count) {
+-		my $percent = 100. * $branch_reached / $branch_count;
+-		printf "  branches...: %.1f%% (%d of %d branches)\n",
+-			$percent, $branch_reached, $branch_count;
++	gen_stats();
++
++	# Colors for the html output
++
++	my $red    = "style=\"background-color:#ffb3b3\"";
++	my $yellow = "style=\"background-color:#ffffb3\"";
++	my $green  = "style=\"background-color:#d9ffd9\"";
++
++	# Open report file
++
++	open OUT, ">$gen_report" or die "Can't open $gen_report";
++
++	print OUT "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
++
++	print OUT "<html lang=\"en\">\n\n";
++	print OUT "<head>\n";
++	print OUT "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n";
++	print OUT "  <title>$title</title>\n";
++	print OUT "  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css_file\">\n" if ($css_file);
++	print OUT "</head>\n\n<body>\n$prolog";
++
++	print OUT "  <h1>$title</h1>\n";
++
++	print OUT "  <h2>Summary</h2>\n";
++	# Generates a table containing the code coverage statistics per input
++
++	print OUT "<table width=\"100%\" border=1 cellspacing=0 cellpadding=0>\n  <tr>\n";
++	print OUT "    <th></th>\n";
++	foreach my $f (@info_files) {
++		print OUT "    <th>$f</th>\n";
++	}
++	print OUT "    <th>TOTAL</th>\n";
++	print OUT "    <th>Total count</th>\n";
++	print OUT "  </tr><tr>\n";
++
++	print OUT "    <td><b>Functions</b></td>\n";
++	foreach my $f (@info_files) {
++		my %st = %{$report{$f}{"stats"}};
++		if ($st{"func_count"}) {
++			$percent = 100. * $st{"func_used"} / $st{"func_count"};
++
++			printf OUT "    <td>%.1f%%</td>\n", $percent;
++		} else {
++			print OUT "    <td>N. A.</td>\n";
++		}
++	}
++	if ($stats{"func_count"}) {
++		$percent = 100. * $stats{"func_used"} / $stats{"func_count"};
++
++		printf OUT "    <td>%.1f%%</td>\n", $percent;
+ 	} else {
+-		print "No branch coverage data.\n";
++		print OUT "    <td>N. A.</td>\n";
++	}
++	print OUT "  <td>" . $stats{"func_count"} . "</td>";
++	print OUT "  </tr><tr>\n";
++
++	print OUT "    <td><b>Branches</b></td>\n";
++	foreach my $f (@info_files) {
++		my %st = %{$report{$f}{"stats"}};
++		if ($st{"branch_count"}) {
++			$percent = 100. * $st{"branch_reached"} / $st{"branch_count"};
++
++			printf OUT "    <td>%.1f%%</td>\n", $percent;
++		} else {
++			print OUT "    <td>N. A.</td>\n";
++		}
++	}
++	if ($stats{"branch_count"}) {
++		$percent = 100. * $stats{"branch_reached"} / $stats{"branch_count"};
++
++		printf OUT "    <td>%.1f%%</td>\n", $percent;
++	} else {
++		print OUT "    <td>N. A.</td>\n";
++	}
++	print OUT "  <td>" . $stats{"branch_count"} . "</td>";
++	print OUT "  </tr><tr>\n";
++
++	print OUT "    <td><b>Lines</b></td>\n";
++	foreach my $f (@info_files) {
++		my %st = %{$report{$f}{"stats"}};
++
++		if ($st{"line_count"}) {
++			$percent = 100. * $st{"line_reached"} / $st{"line_count"};
++
++			printf OUT "    <td>%.1f%%</td>\n", $percent;
++		} else {
++			print OUT "    <td>N. A.</td>\n";
++		}
++	}
++	if ($stats{"line_count"}) {
++		$percent = 100. * $stats{"line_reached"} / $stats{"line_count"};
++
++		printf OUT "    <td>%.1f%%</td>\n", $percent;
++	} else {
++		print OUT "    <td>N. A.</td>\n";
++	}
++	print OUT "  <td>" . $stats{"line_count"} . "</td>";
++
++	# If there are more than one tests per file, report them
++	my $total = scalar(keys %test_names);
++	if ($total > 1) {
++		print OUT "  </tr><tr>\n";
++		print OUT "    <td><b>Number of tests</b></td>\n";
++		foreach my $f (@info_files) {
++			my $count = scalar(keys %{$report{$f}{"test_names"}});
++
++			if ($count == 0) {
++				print OUT "    <td $red>$count</td>\n";
++			} elsif ($count < $total) {
++				print OUT "    <td $yellow>$count</td>\n";
++			} else {
++				print OUT "    <td $green>$count</td>\n";
++			}
++		}
++		print OUT "    <td $green\>$total</td>\n";
++
++	}
++	print OUT "  </tr>\n</table><p/>\n\n";
++
++	if ($total > 1) {
++		print OUT "<h2>Tests coverage</h2>\n";
++
++		print OUT "<table width=\"100%\" border=1 cellspacing=0 cellpadding=0>\n  <tr>\n";
++		print OUT "    <th>Test name</th>\n";
++		foreach my $f (@info_files) {
++			print OUT "    <th>$f</th>\n";
++		}
++
++		foreach my $t (sort keys(%test_names)) {
++			print OUT "  </tr><tr>\n";
++			printf OUT "    <td>%s</td>\n", $t;
++			foreach my $f (@info_files) {
++				if (%{$report{$f}{"test_names"}}{$t}) {
++					print OUT "    <td $green>YES</td>\n";
++				} else {
++					print OUT "    <td $red>NO</td>\n";
++				}
++			}
++		}
++		print OUT "</tr></table>\n";
+ 	}
++
++
++	# Generates a table containing per-function detailed data
++
++	print OUT "<h2>Functions coverage</h2>\n";
++	print OUT "<table width=\"100%\" border=1 cellspacing=0 cellpadding=0>\n  <tr>\n";
++	print OUT "    <th>Function</th>\n";
++	print OUT "    <th>Used?</th>\n";
++	foreach my $f (@info_files) {
++		print OUT "    <th>$f</th>\n";
++	}
++	print OUT "    <th>File</th>\n";
++
++	foreach my $func (sort keys(%all_func)) {
++		my @keys = sort keys(%{$all_func{$func}});
++		foreach my $file (@keys) {
++			print OUT "  </tr><tr>\n";
++			print OUT "    <td>$func</td>\n";
++			if ($used_func{$func}->{$file}) {
++				print OUT "    <td $green>YES</td>\n";
++			} else {
++				print OUT "    <td $red>NO</td>\n";
++			}
++			foreach my $f (@info_files) {
++				if ($report{$f}{"used_func"}{$func}->{$file}) {
++					print OUT "    <td $green>YES</td>\n";
++				} else {
++					print OUT "    <td $red>NO</td>\n";
++				}
++			}
++			$file =~ s,$prefix,linux/,;
++			print OUT "    <td>$file</td>\n";
++		}
++	}
++	print OUT "</tr></table>\n";
++
++	print OUT "$epilog</body>\n";
++
++	# Close the file and exit
++
++	close OUT;
+ }
  
- The `lcov` package contains the needed tools to parse and generate code
--coverage documentation. It is used by `scripts/code_cov_capture.sh` script
-+coverage documentation. It is used by `code_cov_capture` script
- to convery from compiler-dependent `*.gcno` counters into a
- compiler-independent format (`*.info`).
+ #
+@@ -515,6 +781,11 @@ GetOptions(
+ 	"exclude-source=s" => \$src_exclude,
+ 	"show-files|show_files" => \$show_files,
+ 	"show-lines|show_lines" => \$show_lines,
++	"report|r=s" => \$gen_report,
++	"css-file|css|c=s" => \$css_file,
++	"title|t=s" => \$title,
++	"html-prolog|prolog=s" => \$html_prolog,
++	"html-epilog|epilog=s" => \$html_epilog,
+ 	"help" => \$help,
+ 	"man" => \$man,
+ ) or pod2usage(2);
+@@ -528,7 +799,9 @@ if ($#ARGV < 0) {
+ }
  
-@@ -243,11 +310,16 @@ source files. Some optional arguments can be used at the command line, or
- can be stored at `/etc/lcovrc` or `~/.lcovrc` files.
+ # At least one action should be specified
+-pod2usage(1) if (!$print_used && !$filter && !$stat && !$print_unused);
++pod2usage(1) if (!$print_used && !$filter && !$stat && !$print_unused && !$gen_report);
++
++pod2usage(1) if ($gen_report && ($print_used || $filter || $stat || $print_unused));
  
- As generating the documentation depends wheather the results were generated
--as with a single or multiple `*.info` files by `scripts/code_cov_capture.sh`
-+as with a single or multiple `*.info` files by `code_cov_capture`
- or stored in raw formats inside `*.tar.gz` file(s) by
--`scripts/code_cov_gather_on_test.py`, there's a script that does all the
-+`code_cov_gather_on_test`, there's a script that does all the
- required steps to build the code coverage html reports:
--`scripts/code_cov_gen_report.sh`.
-+`code_cov_gen_report`. Besides its own command line arguments, it
-+also accepts arguments to be passed to `code_cov_parse_info`.
-+
-+If a `code_cov_parse_info` command line parameter is passed, it will
-+also call the script, in order to use a filtered `*.info` file to be
-+used when generating the HTML reports.
+ my $filter_str = "";
+ my $has_filter;
+@@ -617,39 +890,67 @@ if ($ignore_unused) {
  
- It requires the following arguments:
+ foreach my $f (@ARGV) {
+ 	parse_info_data($f);
++
++	if ($gen_report) {
++		$f =~ s,.*/,,;
++		$f =~ s/\.info$//;
++
++		gen_stats();
++
++		$report{$f}{"stats"} = { %stats };
++		$report{$f}{"all_func"} = { %all_func };
++		$report{$f}{"used_func"} = { %used_func };
++		$report{$f}{"all_branch"} = { %all_branch };
++		$report{$f}{"all_line"} = { %all_line };
++		$report{$f}{"used_source"} = { %used_source };
++		$report{$f}{"files"} = { %files };
++		$report{$f}{"test_names"} = { %test_names };
++
++		%used_func = ();
++		%all_func = ();
++		%all_branch = ();
++		%all_line = ();
++		%used_source = ();
++		%files = ();
++		%test_names = ();
++	}
+ }
  
-@@ -276,18 +348,156 @@ It requires the following arguments:
+-print_code_coverage($print_used, $print_unused, $show_lines);
++if ($gen_report) {
++	generate_report();
++	exit 0;
++}
  
-   The files specified by `--read` are gzipped tarballs containing all
-   `*.gcno` files and all `*.gcda` softlinks from the `/sys/kernel/debug/gcov/`
--  directory at the test machine, created by
--  `scripts/code_cov_gather_on_test.py` script.
-+  directory at the test machine, created by `code_cov_gather_on_test` script.
+-print_summary() if ($stat);
++gen_stats();
  
- - `--force-override`
+-my $all_files = scalar keys(%files);
++die "Nothing counted. Wrong input files?" if (!$stats{"all_files"});
  
-   Allow using a non-empty directory for `--output-dir`.
+-die "Nothing counted. Wrong input files?" if (!$all_files);
++print_code_coverage($print_used, $print_unused, $show_lines);
  
-+- It also accepts `--print`, `--only-drm`, `--only-i915` and `--ignore-unused`
-+  options from `code_cov_parse_info`.
-+
- `--info` and `--tar` are mutually exclusive and at least one of them should
- be specified.
+-if ($has_filter) {
+-	my $all_files = scalar keys(%files);
+-	my $filtered_files = scalar keys(%record);
+-	my $used_files = scalar keys(%used_source);
++print_summary() if ($stat);
  
-+## Code coverage capture script example
-+
-+### Capture, parse and generate code coverage html data
-+
-+The script below provides a simple yet powerful script using code
-+coverage capture on a test machine that also contains the Linux
-+Kernel source and objects. It assumes that LGT was installed.
-+
-+```
-+#/bin/bash -e
-+
-+TESTLIST="my_tests.testlist"
-+OUT_DIR="${HOME}/results"
-+
-+mkdir -p $OUT_DIR/html
-+
-+echo "igt@debugfs_test@read_all_entries" > $TESTLIST
-+echo "igt@core_auth@basic-auth" >> $TESTLIST
-+echo "igt@gem_exec_basic@basic" >> $TESTLIST
-+
-+sudo IGT_KERNEL_TREE="${HOME}/linux" igt_runner -s -o --coverage-per-test \
-+                  --collect-script code_cov_capture --test-list $TESTLIST \
-+                  /usr/local/libexec/igt-gpu-tools $OUT_DIR/ | sed s,$HOME/,,
-+
-+sudo chown -R $(id -u):$(id -g) $OUT_DIR/
-+
-+for i in $OUT_DIR/code_cov/*.info; do
-+        echo -e "\n$(basename $i):"
-+        code_cov_parse_info --only-drm --ignore-unused --stat $i
-+done
-+echo -e "\nTOTAL:"
-+code_cov_parse_info --only-drm --stat --output $OUT_DIR/results.info \
-+        $OUT_DIR/code_cov/*.info
-+
-+cd $OUT_DIR/html
-+genhtml -q -s --legend --branch-coverage $OUT_DIR/results.info
-+```
-+
-+Running such script produces the following output:
-+
-+```
-+[3622.993304] [1/3] debugfs_test (read_all_entries)
-+[3631.95]     Code coverage wrote to results/code_cov/debugfs_test_read_all_entries.info
-+[3626.217016] Storing code coverage results...
-+[3631.957998] [2/3] core_auth (basic-auth)
-+[3638.03]     Code coverage wrote to results/code_cov/core_auth_basic_auth.info
-+[3632.116024] Storing code coverage results...
-+[3638.070869] [3/3] gem_exec_basic (basic)
-+[3644.24]     Code coverage wrote to results/code_cov/gem_exec_basic_basic.info
-+[3638.366790] Storing code coverage results...
-+Done.
-+
-+core_auth_basic_auth.info:
-+  lines......: 11.7% (8217 of 70257 lines)
-+  functions..: 7.1% (776 of 10971 functions)
-+  branches...: 7.0% (3596 of 51041 branches)
-+Ignored......: non-drm headers and source files where none of its code ran.
-+Source files.: 23.27% (165 of 709 total), 29.57% (165 of 558 filtered)
-+
-+debugfs_test_read_all_entries.info:
-+  lines......: 19.3% (20266 of 104802 lines)
-+  functions..: 17.5% (1922 of 10971 functions)
-+  branches...: 12.7% (9462 of 74555 branches)
-+Ignored......: non-drm headers and source files where none of its code ran.
-+Source files.: 34.70% (246 of 709 total), 44.09% (246 of 558 filtered)
-+
-+gem_exec_basic_basic.info:
-+  lines......: 17.1% (14964 of 87503 lines)
-+  functions..: 13.0% (1422 of 10971 functions)
-+  branches...: 10.1% (6446 of 63758 branches)
-+Ignored......: non-drm headers and source files where none of its code ran.
-+Source files.: 30.89% (219 of 709 total), 39.25% (219 of 558 filtered)
-+
-+TOTAL:
-+  lines......: 15.5% (25821 of 166849 lines)
-+  functions..: 22.1% (2429 of 10971 functions)
-+  branches...: 10.5% (11869 of 112665 branches)
-+Ignored......: non-drm headers.
-+Source files.: 78.70% (558 of 709 total)
-+```
-+
-+### Reporting detailed function coverage stored on *.info files
-+
-+The `code_cov_parse_info` script can be used alone in order to provide
-+a text file output containing code coverage data obtained from a *.info
-+file. For example, listing code coverage usage for all functions whose name
-+contains "edid_" can be done with:
-+
-+```
-+$ echo edid_ >filter.txt
-+$ code_cov_parse_info --func-filters filter.txt results/results.info -p -u --stat
-+TEST: Code_coverage_tests
-+__drm_get_edid_firmware_path(): unused
-+__drm_set_edid_firmware_path(): unused
-+displayid_iter_edid_begin(): executed 10 times
-+drm_add_edid_modes(): executed 2 times
-+drm_add_override_edid_modes(): unused
-+drm_connector_attach_edid_property(): unused
-+drm_connector_update_edid_property(): executed 8 times
-+drm_dp_send_real_edid_checksum(): unused
-+drm_edid_are_equal(): executed 4 times
-+drm_edid_block_valid(): executed 8 times
-+drm_edid_duplicate(): unused
-+drm_edid_get_monitor_name(): unused
-+drm_edid_header_is_valid(): executed 4 times
-+drm_edid_is_valid(): executed 2 times
-+drm_edid_to_eld(): executed 2 times
-+drm_edid_to_sad(): unused
-+drm_edid_to_speaker_allocation(): unused
-+drm_find_edid_extension(): executed 22 times
-+drm_get_edid_switcheroo(): unused
-+drm_load_edid_firmware(): executed 2 times
-+edid_firmware_get(): unused
-+edid_firmware_set(): unused
-+edid_fixup_preferred(): unused
-+edid_get_quirks(): executed 6 times
-+edid_load(): unused
-+edid_open(): executed 4 times
-+edid_show() from linux/drivers/gpu/drm/drm_debugfs.c: executed 4 times
-+edid_show() from linux/drivers/gpu/drm/drm_sysfs.c: unused
-+edid_vendor(): executed 348 times
-+edid_write(): unused
-+intel_panel_edid_downclock_mode(): unused
-+intel_panel_edid_fixed_mode(): unused
-+is_edid_digital_input_dp(): unused
-+  lines......: 5.5% (5 of 91 lines)
-+  functions..: 42.4% (14 of 33 functions)
-+  branches...: 1.9% (1 of 52 branches)
-+Ignored......: unmatched functions m/(?^:edid_)/ and source files where none of its code ran.
-+Source files.: 0.90% (5 of 558 total), 55.56% (5 of 9 filtered)
-+```
-+
-+When the function is unique, it will just display the function name and how
-+many times the IGT test(s) executed it. When the same function name exists
-+on multiple files (like the `edid_show()` on the above example), it will
-+display multiple lines, one for each different function/file combination.
-+
- ## References
+-	my $percent = 100. * $used_files / $all_files;
++if ($has_filter) {
++	my $percent = 100. * $stats{"used_files"} / $stats{"all_files"};
  
- More information is available at Kernel gcov documentation:
- [Using gcov with the Linux kernel](https://www.kernel.org/doc/html/latest/dev-tools/gcov.html).
--
+ 	$filter_str =~ s/(.*),/$1 and/;
+ 	printf "Ignored......:%s.\n", $filter_str;
+ 	printf "Source files.: %.2f%% (%d of %d total)",
+-		$percent, $used_files, $all_files;
++		$percent, $stats{"used_files"}, $stats{"all_files"};
+ 
+-	if ($used_files != $filtered_files) {
+-		my $percent_filtered = 100. * $used_files / $filtered_files;
++	if ($stats{"used_files"} != $stats{"filtered_files"}) {
++		my $percent_filtered = 100. * $stats{"used_files"} / $stats{"filtered_files"};
+ 
+ 		printf ", %.2f%% (%d of %d filtered)",
+-			$percent_filtered, $used_files, $filtered_files;
++			$percent_filtered, $stats{"used_files"}, $stats{"filtered_files"};
+ 	}
+ 	print "\n";
+ } else {
+ 	printf "Source files: %d\n", scalar keys(%files) if($stat);
+ }
+ 
++my $ntests=scalar(%test_names);
++printf "Number of tests: %d\n", $ntests if ($ntests > 1);
++
+ if ($show_files) {
+ 	for my $f(sort keys %used_source) {
+ 		print "\t$f\n";
+@@ -670,8 +971,10 @@ Parses lcov data from .info files.
+ 
+ code_cov_parse_info <options> [input file(s)]
+ 
+-At least one of the options B<--stat>, B<--print> and/or B<--output>
+-should be used.
++At least one of the output options should be used, e g.
++B<--stat>, B<--print>, B<--print-unused>, B<--report> and/or B<--output>.
++
++Also, B<--report> can't be used together with other output options.
+ 
+ =head1 OPTIONS
+ 
+@@ -700,6 +1003,37 @@ Prints the functions that were never reached.
+ 
+ The function coverage report is affected by the applied filters.
+ 
++=item B<--report>  B<[output file]> or B<-r>  B<[output file]>
++
++Generates an html report containing per-test and total statistics.
++
++The function coverage report is affected by the applied filters.
++
++=item B<--css-file> B<[css file]> or B<--css> B<[css file]> or B<-c> B<[css file]
++
++Adds an optional css file to the html report.
++Used only with B<--report>.
++
++=item B<--title> B<[title] or B<-t> B<[title]
++
++If used with B<--report>, it defines the title for the for the html report.
++
++If used with B<--output>, it replaces the test names with the title. This
++is useful when merging reports from multiple tests into a summarized file.
++If not used, the B<[output file]> will contain all test names on its
++beginning.
++
++Used with B<--report> AND B<--output>.
++
++=item B<--html-prolog> B<[html file] or B<--prolog> B<[html file]
++
++Adds a prolog at the beginning of the body of the html report.
++Used only with B<--report>.
++
++=item B<--html-epilog>  B<[html file] or B<--epilog>  B<[html file]
++
++Adds an epilog before the end of the body of the html report.
++Used only with B<--report>.
+ 
+ =item B<--show-lines> or B<--show_lines>
+ 
 -- 
 2.35.1
