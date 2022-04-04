@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0ADAD10EE7D
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 10:44:28 +0000 (UTC)
-Date: Mon, 4 Apr 2022 13:44:11 +0300
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9625C10EF8A
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 11:00:46 +0000 (UTC)
+Date: Mon, 4 Apr 2022 14:00:30 +0300
 From: Petri Latvala <petri.latvala@intel.com>
 To: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Message-ID: <YkrL+8Xzy3tFt7vh@platvala-desk.ger.corp.intel.com>
+Message-ID: <YkrPzhCgpKaUxKjK@platvala-desk.ger.corp.intel.com>
 References: <20220311141300.60629-1-tomeu.vizoso@collabora.com>
- <20220311141300.60629-4-tomeu.vizoso@collabora.com>
+ <20220311141300.60629-13-tomeu.vizoso@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220311141300.60629-4-tomeu.vizoso@collabora.com>
-Subject: Re: [igt-dev] [PATCH v3 03/12] ci: Move files to ci/ subdir
+In-Reply-To: <20220311141300.60629-13-tomeu.vizoso@collabora.com>
+Subject: Re: [igt-dev] [PATCH v3 12/12] ci: Add job for testing changes to
+ tests in Qualcomm devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,168 +29,112 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Mar 11, 2022 at 03:12:51PM +0100, Tomeu Vizoso wrote:
-> We will be adding a few more files soon.
+On Fri, Mar 11, 2022 at 03:13:00PM +0100, Tomeu Vizoso wrote:
+> Will allow for more efortless testing of changes to tests that could
+> affect Qualcomm devices.
+> 
+> With these changes, it should be fairly trivial to add testing on other
+> KMS and GPU drivers.
+> 
+> v2: Update expectations after 9f32d552afd7 ("tests/kms_setmode: Use dynamic subtests")
+> 
+> v3: Use igt_runner and store a list of subtests for msm CI
 > 
 > Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
 > ---
->  .gitlab-ci.yml                                | 20 +++++++++----------
->  Dockerfile => ci/Dockerfile                   |  0
->  .../Dockerfile.build-debian                   |  0
->  .../Dockerfile.build-debian-arm64             |  0
->  .../Dockerfile.build-debian-armhf             |  0
->  .../Dockerfile.build-debian-minimal           |  0
->  .../Dockerfile.build-debian-mips              |  0
->  .../Dockerfile.build-fedora                   |  0
->  .../meson-cross-arm64.txt                     |  0
->  .../meson-cross-armhf.txt                     |  0
->  .../meson-cross-mips.txt                      |  0
->  11 files changed, 10 insertions(+), 10 deletions(-)
->  rename Dockerfile => ci/Dockerfile (100%)
->  rename Dockerfile.build-debian => ci/Dockerfile.build-debian (100%)
->  rename Dockerfile.build-debian-arm64 => ci/Dockerfile.build-debian-arm64 (100%)
->  rename Dockerfile.build-debian-armhf => ci/Dockerfile.build-debian-armhf (100%)
->  rename Dockerfile.build-debian-minimal => ci/Dockerfile.build-debian-minimal (100%)
->  rename Dockerfile.build-debian-mips => ci/Dockerfile.build-debian-mips (100%)
->  rename Dockerfile.build-fedora => ci/Dockerfile.build-fedora (100%)
->  rename meson-cross-arm64.txt => ci/meson-cross-arm64.txt (100%)
->  rename meson-cross-armhf.txt => ci/meson-cross-armhf.txt (100%)
->  rename meson-cross-mips.txt => ci/meson-cross-mips.txt (100%)
+>  .gitlab-ci.yml            | 49 +++++++++++++++++++
+>  ci/msm_results.txt        | 98 ++++++++++++++++++++++++++++++++++++++
+>  ci/run_tests.sh           | 14 ++++++
+>  tests/msm_ci/msm.testlist | 99 +++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 260 insertions(+)
+>  create mode 100644 ci/msm_results.txt
+>  create mode 100755 ci/run_tests.sh
+>  create mode 100644 tests/msm_ci/msm.testlist
+> 
+> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+> index f820661496c4..ec865bef5e28 100644
+> --- a/.gitlab-ci.yml
+> +++ b/.gitlab-ci.yml
+> @@ -325,6 +325,55 @@ default:
+>        test -e "${CI_JOB_JWT_FILE}" &&
+>        export CI_JOB_JWT="$(<${CI_JOB_JWT_FILE})" &&
+>        rm "${CI_JOB_JWT_FILE}"
+> +
+> +.lava-test:arm64:
+> +  image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian:commit-$CI_COMMIT_SHA
+> +  variables:
+> +    BASE_SYSTEM_HOST_PREFIX: "${MINIO_HOST}/mesa-lava"
+> +    FDO_UPSTREAM_REPO: gfx-ci/rootfs
+> +    ARCH: arm64
+> +    # Tag corresponding to artifacts from https://gitlab.freedesktop.org/gfx-ci/rootfs/
+> +    KERNEL_ROOTFS_TAG: "2022-03-11-jq--2022-03-08-bzip2--290b79e0e78eab67a83766f4e9691be554fc4afd"
+> +    BASE_SYSTEM_MAINLINE_HOST_PATH: "${BASE_SYSTEM_HOST_PREFIX}/${FDO_UPSTREAM_REPO}/${KERNEL_ROOTFS_TAG}/${ARCH}"
+> +    JOB_ARTIFACTS_BASE: ${PIPELINE_ARTIFACTS_BASE}/${CI_JOB_ID}
+> +    JOB_RESULTS_PATH: "${JOB_ARTIFACTS_BASE}/results.tar.gz"
+> +    MINIO_ARTIFACT_NAME: igt-arm64
+> +    BUILD_PATH: "${PIPELINE_ARTIFACTS_BASE}/${MINIO_ARTIFACT_NAME}.tar.gz"
+> +    JOB_ROOTFS_OVERLAY_PATH: "${JOB_ARTIFACTS_BASE}/job-rootfs-overlay.tar.gz"
+> +    KERNEL_IMAGE_NAME: Image
+> +    KERNEL_IMAGE_TYPE: "image"
+> +    VISIBILITY_GROUP: "Collabora+fdo"
+> +    HWCI_TEST_SCRIPT: "/install/ci/run_tests.sh"
+> +  dependencies:
+> +    - build:tests-debian-meson-arm64
+> +  needs:
+> +    - build-containers:build-debian
+> +    - build:tests-debian-meson-arm64
+> +  script:
+> +    - ./ci/lava/lava-submit.sh
+> +  artifacts:
+> +    name: "igt_${CI_JOB_NAME}"
+> +    when: always
+> +    paths:
+> +      - results/
+> +  tags:
+> +    - $RUNNER_TAG
+> +  after_script:
+> +    - wget -q "https://${JOB_RESULTS_PATH}" -O- | tar -xz
+> +
+> +test:msm:
+> +  extends:
+> +    - .lava-test:arm64
+> +  stage: test
+> +  variables:
+> +    DEVICE_TYPE: sc7180-trogdor-lazor-limozeen
+> +    DTB: sc7180-trogdor-lazor-limozeen-nots
+> +    BOOT_METHOD: depthcharge
+> +    KERNEL_IMAGE_TYPE: ""
+> +    IGT_FORCE_DRIVER: msm
+> +  tags:
+> +    - mesa-ci-x86-64-lava-rk3399-gru-kevin    # why it doesn't work!? mesa-ci-x86-64-lava-sc7180-trogdor-lazor-limozeen
+> +
 
-meson-cross-* files are used for cross-compiling in general, not just
-for ci'ing. They can be left in the toplevel dir.
+
+I'm not sure how to dress these questions into words, I'll try my
+best...
+
+What's the aim of this, from the range of "support testing the kernel"
+to "just test that IGT doesn't break"? In particular, what's the
+kernel used here, how/when is it changed?
+
+Can that runner handle the load induced by merging this? For the
+record, IGT forks run the pipelines too, and i915 CI pushes postmerge
+tags _and_ premerge tags to its own ci-tags repository fork so it's
+quote a bit more load than just for every merge to IGT proper.
+
+If I read that correctly, the results.json is stored in pipeline
+artifacts so there's a way to access the logs if something breaks,
+ok...
+
+What's the procedure if someone wants to extend this kind of testing
+on their own platform?
+
+Is IGT_FORCE_DRIVER necessary? FYI there's also
+IGT_DEVICE=pci:vendor=vendorstring along with other types of
+IGT_DEVICE filters. The semantics are slightly different but
+IGT_FORCE_DRIVER is the older, slightly less capable, device selection
+interface from before IGT_DEVICE.
 
 
 -- 
 Petri Latvala
-
-
-
-> 
-> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-> index 9f252836c578..9c91ce067d75 100644
-> --- a/.gitlab-ci.yml
-> +++ b/.gitlab-ci.yml
-> @@ -27,8 +27,8 @@ build-containers:build-debian:
->    image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
->    script:
->      - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-> -    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-minimal build-debian-minimal
-> -    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian build-debian
-> +    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-minimal build-debian-minimal
-> +    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian build-debian
->    tags:
->      - packet.net
->  
-> @@ -37,7 +37,7 @@ build-containers:build-debian-armhf:
->    image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
->    script:
->      - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-> -    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-armhf build-debian-armhf
-> +    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-armhf build-debian-armhf
->    tags:
->      - packet.net
->  
-> @@ -46,7 +46,7 @@ build-containers:build-debian-arm64:
->    image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
->    script:
->      - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-> -    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-arm64 build-debian-arm64
-> +    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-arm64 build-debian-arm64
->    tags:
->      - packet.net
->  
-> @@ -55,7 +55,7 @@ build-containers:build-debian-mips:
->    image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
->    script:
->      - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-> -    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-mips build-debian-mips
-> +    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-debian-mips build-debian-mips
->    tags:
->      - packet.net
->  
-> @@ -64,7 +64,7 @@ build-containers:build-fedora:
->    image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
->    script:
->      - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-> -    - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-fedora build-fedora
-> +    - .gitlab-ci/pull-or-rebuild.sh base ci/Dockerfile.build-fedora build-fedora
->    tags:
->      - packet.net
->  
-> @@ -143,7 +143,7 @@ build:tests-debian-meson-armhf:
->    stage: build
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig/
-> -    - meson --cross-file meson-cross-armhf.txt build
-> +    - meson --cross-file ci/meson-cross-armhf.txt build
->      - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->    artifacts:
->      paths:
-> @@ -154,7 +154,7 @@ build:tests-debian-meson-arm64:
->    stage: build
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig/
-> -    - meson --cross-file meson-cross-arm64.txt build
-> +    - meson --cross-file ci/meson-cross-arm64.txt build
->      - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->    artifacts:
->      paths:
-> @@ -165,7 +165,7 @@ build:tests-debian-meson-mips:
->    stage: build
->    script:
->      - export PKG_CONFIG_PATH=/usr/lib/mips-linux-gnu/pkgconfig/
-> -    - meson --cross-file meson-cross-mips.txt build
-> +    - meson --cross-file ci/meson-cross-mips.txt build
->      - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
->    artifacts:
->      paths:
-> @@ -296,4 +296,4 @@ containers:igt:
->      FORCE_REBUILD: 1
->    script:
->      - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-> -    - .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
-> +    - .gitlab-ci/pull-or-rebuild.sh igt ci/Dockerfile igt
-> diff --git a/Dockerfile b/ci/Dockerfile
-> similarity index 100%
-> rename from Dockerfile
-> rename to ci/Dockerfile
-> diff --git a/Dockerfile.build-debian b/ci/Dockerfile.build-debian
-> similarity index 100%
-> rename from Dockerfile.build-debian
-> rename to ci/Dockerfile.build-debian
-> diff --git a/Dockerfile.build-debian-arm64 b/ci/Dockerfile.build-debian-arm64
-> similarity index 100%
-> rename from Dockerfile.build-debian-arm64
-> rename to ci/Dockerfile.build-debian-arm64
-> diff --git a/Dockerfile.build-debian-armhf b/ci/Dockerfile.build-debian-armhf
-> similarity index 100%
-> rename from Dockerfile.build-debian-armhf
-> rename to ci/Dockerfile.build-debian-armhf
-> diff --git a/Dockerfile.build-debian-minimal b/ci/Dockerfile.build-debian-minimal
-> similarity index 100%
-> rename from Dockerfile.build-debian-minimal
-> rename to ci/Dockerfile.build-debian-minimal
-> diff --git a/Dockerfile.build-debian-mips b/ci/Dockerfile.build-debian-mips
-> similarity index 100%
-> rename from Dockerfile.build-debian-mips
-> rename to ci/Dockerfile.build-debian-mips
-> diff --git a/Dockerfile.build-fedora b/ci/Dockerfile.build-fedora
-> similarity index 100%
-> rename from Dockerfile.build-fedora
-> rename to ci/Dockerfile.build-fedora
-> diff --git a/meson-cross-arm64.txt b/ci/meson-cross-arm64.txt
-> similarity index 100%
-> rename from meson-cross-arm64.txt
-> rename to ci/meson-cross-arm64.txt
-> diff --git a/meson-cross-armhf.txt b/ci/meson-cross-armhf.txt
-> similarity index 100%
-> rename from meson-cross-armhf.txt
-> rename to ci/meson-cross-armhf.txt
-> diff --git a/meson-cross-mips.txt b/ci/meson-cross-mips.txt
-> similarity index 100%
-> rename from meson-cross-mips.txt
-> rename to ci/meson-cross-mips.txt
-> -- 
-> 2.31.1
-> 
