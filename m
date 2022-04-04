@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 859A310E6CC
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 06:55:04 +0000 (UTC)
-Date: Mon, 4 Apr 2022 08:55:00 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <YkqWRFQIK0hjH7I4@zkempczy-mobl2>
-References: <20220329045207.16091-1-sai.gowtham.ch@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA47710ED2C
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 07:08:19 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
+ arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com
+Date: Mon,  4 Apr 2022 12:30:36 +0530
+Message-Id: <20220404070038.249864-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220329045207.16091-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture : Add
- support for local memory
+Subject: [igt-dev] [PATCH i-g-t 0/2] HAX add description to gem_wait
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,326 +17,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 29, 2022 at 10:22:07AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> 
-> Adding local memory support to many-4K-zero subtest and used
-> new macro for_each_memory_region for memory regioning.
-> 
-> Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/i915/gem_exec_capture.c | 109 +++++++++++++++++++++-------------
->  1 file changed, 69 insertions(+), 40 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-> index 60f8df04..84e40a96 100644
-> --- a/tests/i915/gem_exec_capture.c
-> +++ b/tests/i915/gem_exec_capture.c
-> @@ -250,7 +250,9 @@ static void wait_to_die(int fence_out)
->  
->  static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  		       const struct intel_execution_engine2 *e,
-> -		       uint32_t target, uint64_t target_size, uint32_t region)
-> +		       uint32_t target, uint64_t target_size,
-> +		       struct drm_i915_gem_memory_class_instance *region,
-> +		       uint32_t num_regions)
->  {
->  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
->  	struct drm_i915_gem_exec_object2 obj[4];
-> @@ -268,13 +270,13 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	saved_engine = configure_hangs(fd, e, ctx->id);
->  
->  	memset(obj, 0, sizeof(obj));
-> -	obj[SCRATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
-> +	obj[SCRATCH].handle = gem_create_in_memory_region_list(fd, 4096, region, num_regions);
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Before I will proceed with review please fix this (dg1, dg2, drm-tip kernel):
+Add test description to gem_wait.
 
-$ ./gem_exec_capture --run capture
-IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 5.17.0+ x86_64)
-Starting subtest: capture
-Starting dynamic subtest: rcs0-lmem0
-Target died after 0.883048s
-Dynamic subtest rcs0-lmem0: SUCCESS (0,888s)
-Starting dynamic subtest: rcs0-smem0
-(gem_exec_capture:21772) CRITICAL: Test assertion failure function capture, file ../tests/i915/gem_exec_capture.c:395:
-(gem_exec_capture:21772) CRITICAL: Failed assertion: __gem_create_in_memory_region_list(fd, &handle, &obj_size, region, num_regions) == 0
-(gem_exec_capture:21772) CRITICAL: error: -22 != 0
-Stack trace:
-  #0 ../lib/igt_core.c:1756 __igt_fail_assert()
-  #1 ../tests/i915/gem_exec_capture.c:812 __igt_unique____real_main783()
-  #2 ../tests/i915/gem_exec_capture.c:783 main()
-  #3 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
-  #4 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
-  #5 [_start+0x25]
-Dynamic subtest rcs0-smem0 failed.
-**** DEBUG ****
+Priyanka Dandamudi (2):
+  i915/gem_wait: Add description for test and subtests
+  HAX: don't do full run
 
---
-Zbigniew
+ tests/i915/gem_wait.c                 |  14 +-
+ tests/intel-ci/fast-feedback.testlist | 180 +-------------------------
+ 2 files changed, 13 insertions(+), 181 deletions(-)
 
->  	obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
->  	obj[CAPTURE].handle = target;
->  	obj[CAPTURE].flags = EXEC_OBJECT_CAPTURE;
->  	obj[NOCAPTURE].handle = gem_create(fd, 4096);
->  
-> -	obj[BATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
-> +	obj[BATCH].handle = gem_create_in_memory_region_list(fd, 4096, region, num_regions);
->  	obj[BATCH].relocs_ptr = (uintptr_t)reloc;
->  	obj[BATCH].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
->  
-> @@ -384,15 +386,17 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  }
->  
->  static void capture(int fd, int dir, const intel_ctx_t *ctx,
-> -		    const struct intel_execution_engine2 *e, uint32_t region)
-> +		const struct intel_execution_engine2 *e,
-> +		struct drm_i915_gem_memory_class_instance *region, uint32_t num_regions)
->  {
->  	uint32_t handle;
->  	uint64_t ahnd, obj_size = 4096;
->  
-> -	igt_assert_eq(__gem_create_in_memory_regions(fd, &handle, &obj_size, region), 0);
-> +	igt_assert_eq(__gem_create_in_memory_region_list(fd, &handle, &obj_size, region,
-> +				num_regions), 0);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, region);
-> +	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, region, num_regions);
->  
->  	gem_close(fd, handle);
->  	put_ahnd(ahnd);
-> @@ -415,7 +419,9 @@ static struct offset *
->  __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	   const struct intel_execution_engine2 *e,
->  	   unsigned int size, int count,
-> -	   unsigned int flags, int *_fence_out)
-> +	   unsigned int flags, int *_fence_out,
-> +	   struct drm_i915_gem_memory_class_instance *region,
-> +	   uint32_t num_regions)
->  #define INCREMENTAL 0x1
->  #define ASYNC 0x2
->  {
-> @@ -436,9 +442,10 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	obj = calloc(count + 2, sizeof(*obj));
->  	igt_assert(obj);
->  
-> -	obj[0].handle = gem_create(fd, 4096);
-> +	obj[0].handle = gem_create_in_memory_region_list(fd, 4096, region, num_regions);
->  	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
-> -	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
-> +	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE |
-> +			(ahnd ? EXEC_OBJECT_PINNED : 0);
->  
->  	for (i = 0; i < count; i++) {
->  		obj[i + 1].handle = gem_create(fd, size);
-> @@ -459,11 +466,11 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  		}
->  	}
->  
-> -	obj[count + 1].handle = gem_create(fd, 4096);
-> +	obj[count + 1].handle = gem_create_in_memory_region_list(fd, 4096, region, num_regions);
->  	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
->  	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
->  	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
-> -	obj[count + 1].flags = ahnd ? EXEC_OBJECT_PINNED : 0;
-> +	obj[count + 1].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | ahnd ? EXEC_OBJECT_PINNED : 0;
->  
->  	memset(reloc, 0, sizeof(reloc));
->  	reloc[0].target_handle = obj[count + 1].handle; /* recurse */
-> @@ -585,14 +592,17 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  		saved = configure_hangs(fd, e, ctx->id); \
->  	} while(0)
->  
-> -static void many(int fd, int dir, uint64_t size, unsigned int flags)
-> +static void many(int fd, int dir, uint64_t size, unsigned int flags,
-> +		struct drm_i915_gem_memory_class_instance *region,
-> +		uint32_t num_regions)
->  {
->  	const struct intel_execution_engine2 *e;
->  	const intel_ctx_t *ctx;
-> -	uint64_t ram, gtt, ahnd;
-> +	uint64_t ram, gtt, ahnd, lmem_size;
->  	unsigned long count, blobs;
->  	struct offset *offsets;
->  	struct gem_engine_properties saved_engine;
-> +	struct drm_i915_query_memory_regions *info;
->  
->  	find_first_available_engine(fd, ctx, e, saved_engine);
->  
-> @@ -601,13 +611,21 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
->  	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
->  		  gtt, ram);
->  
-> -	count = min(gtt, ram) / 4;
-> +	info = gem_get_query_memory_regions(fd);
-> +	lmem_size = gpu_meminfo_region_total_size(info, I915_MEMORY_CLASS_DEVICE) / size;
-> +
-> +	if (region->memory_class == I915_MEMORY_CLASS_SYSTEM)
-> +		count = min(gtt, ram) / 4;
-> +	else
-> +		count = min(gtt, lmem_size) / 4;
-> +
->  	igt_require(count > 1);
->  
->  	intel_require_memory(count, size, CHECK_RAM);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
-> +	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL,
-> +			region, num_regions);
->  
->  	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
->  	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-> @@ -620,7 +638,9 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
->  }
->  
->  static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> -		    const struct intel_execution_engine2 *e)
-> +		    const struct intel_execution_engine2 *e,
-> +		    struct drm_i915_gem_memory_class_instance *region,
-> +		    uint32_t num_region)
->  {
->  	const uint32_t bbe = MI_BATCH_BUFFER_END;
->  	struct drm_i915_gem_exec_object2 obj = {
-> @@ -677,7 +697,8 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  		/* Reopen the allocator in the new process. */
->  		ahnd = get_reloc_ahnd(fd, ctx2->id);
->  
-> -		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
-> +		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC,
-> +					&fence_out, region, num_region));
->  		put_ahnd(ahnd);
->  
->  		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-> @@ -708,7 +729,9 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  	put_ahnd(ahnd);
->  }
->  
-> -static void userptr(int fd, int dir)
-> +static void userptr(int fd, int dir,
-> +		struct drm_i915_gem_memory_class_instance *region,
-> +		uint32_t num_regions)
->  {
->  	const struct intel_execution_engine2 *e;
->  	const intel_ctx_t *ctx;
-> @@ -716,7 +739,7 @@ static void userptr(int fd, int dir)
->  	uint64_t ahnd;
->  	void *ptr;
->  	int obj_size = 4096;
-> -	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
-> +
->  	struct gem_engine_properties saved_engine;
->  
->  	find_first_available_engine(fd, ctx, e, saved_engine);
-> @@ -726,7 +749,8 @@ static void userptr(int fd, int dir)
->  	igt_require(__gem_userptr(fd, ptr, obj_size, 0, 0, &handle) == 0);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, system_region);
-> +	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size,
-> +			region, num_regions);
->  
->  	gem_close(fd, handle);
->  	put_ahnd(ahnd);
-> @@ -764,9 +788,10 @@ igt_main
->  	int fd = -1;
->  	int dir = -1;
->  	struct drm_i915_query_memory_regions *query_info;
-> -	struct igt_collection *regions, *set;
-> -	char *sub_name;
-> -	uint32_t region;
-> +	struct drm_i915_gem_memory_class_instance region_smem = {
-> +		.memory_class = I915_MEMORY_CLASS_SYSTEM,
-> +		.memory_instance = 0,
-> +	};
->  
->  	igt_fixture {
->  		int gen;
-> @@ -788,56 +813,60 @@ igt_main
->  		igt_require(safer_strlen(igt_sysfs_get(dir, "error")) > 0);
->  		query_info = gem_get_query_memory_regions(fd);
->  		igt_assert(query_info);
-> -		set = get_memory_region_set(query_info,
-> -				I915_SYSTEM_MEMORY,
-> -				I915_DEVICE_MEMORY);
->  	}
->  
->  	test_each_engine("capture", fd, ctx, e) {
-> -		for_each_combination(regions, 1, set) {
-> -			sub_name = memregion_dynamic_subtest_name(regions);
-> -			region = igt_collection_get_value(regions, 0);
-> -			igt_dynamic_f("%s-%s", e->name, sub_name)
-> -				capture(fd, dir, ctx, e, region);
-> -			free(sub_name);
-> +		for_each_memory_region(r, fd) {
-> +			igt_dynamic_f("%s-%s", e->name, r->name)
-> +				capture(fd, dir, ctx, e, &r->ci,
-> +						query_info->num_regions);
->  		}
->  	}
->  
-> -	igt_subtest_f("many-4K-zero") {
-> +	igt_subtest_with_dynamic("many-4K-zero") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 1<<12, 0);
-> +		for_each_memory_region(r, fd) {
-> +			igt_dynamic_f("%s", r->name)
-> +				many(fd, dir, 1<<12, 0, &r->ci,
-> +						query_info->num_regions);
-> +		}
->  	}
->  
->  	igt_subtest_f("many-4K-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 1<<12, INCREMENTAL);
-> +		many(fd, dir, 1<<12, INCREMENTAL, &region_smem,
-> +				query_info->num_regions);
->  	}
->  
->  	igt_subtest_f("many-2M-zero") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 2<<20, 0);
-> +		many(fd, dir, 2<<20, 0, &region_smem,
-> +				query_info->num_regions);
->  	}
->  
->  	igt_subtest_f("many-2M-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 2<<20, INCREMENTAL);
-> +		many(fd, dir, 2<<20, INCREMENTAL, &region_smem,
-> +				query_info->num_regions);
->  	}
->  
->  	igt_subtest_f("many-256M-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 256<<20, INCREMENTAL);
-> +		many(fd, dir, 256<<20, INCREMENTAL, &region_smem,
-> +				query_info->num_regions);
->  	}
->  
->  	/* And check we can read from different types of objects */
->  
->  	igt_subtest_f("userptr") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		userptr(fd, dir);
-> +		userptr(fd, dir, &region_smem, query_info->num_regions);
->  	}
->  
->  	test_each_engine("pi", fd, ctx, e)
->  		igt_dynamic_f("%s", (e)->name)
-> -			prioinv(fd, dir, ctx, e);
-> +			prioinv(fd, dir, ctx, e, &region_smem,
-> +					query_info->num_regions);
->  
->  	igt_fixture {
->  		close(dir);
-> -- 
-> 2.35.1
-> 
+-- 
+2.25.1
