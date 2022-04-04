@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4742C10E2B4
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 17:15:41 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  4 Apr 2022 19:15:34 +0200
+Message-Id: <20220404171534.355029-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "David Zhang" <dingchen.zhang@amd.com>
-Date: Mon, 04 Apr 2022 17:07:25 -0000
-Message-ID: <164909204517.4270.13132397444233254035@emeril.freedesktop.org>
-References: <20220404161955.4087858-1-dingchen.zhang@amd.com>
-In-Reply-To: <20220404161955.4087858-1-dingchen.zhang@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
- =?utf-8?q?ib/igt=5Famd=3A_return_negative_if_PSR_state_debugfs_open_fails?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_softpin: Use valid context
+ when iterating over engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +18,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+For previous gens this bug was not discovered because newly created
+context over physical engines has same number of engines. For discrete
+this is not true so using bigger index taken from new context on
+default is leading to -EINVAL.
 
-Series: lib/igt_amd: return negative if PSR state debugfs open fails
-URL   : https://patchwork.freedesktop.org/series/102150/
-State : warning
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/i915/gem_softpin.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/550105 for the overview.
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/20690552):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                287
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1649091792:step_script
-  section_start:1649091792:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1712 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=20690552 responseStatus=201 Created token=dHuLD6M5
-  section_end:1649091802:upload_artifacts_on_failure
-  section_start:1649091802:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649091803:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/20690551):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                287
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1649091767:step_script
-  section_start:1649091767:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1712 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=20690551 responseStatus=201 Created token=2Yhfy_y9
-  section_end:1649091777:upload_artifacts_on_failure
-  section_start:1649091777:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649091779:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/550105
+diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+index 34fc9983ff..448b4c4b9e 100644
+--- a/tests/i915/gem_softpin.c
++++ b/tests/i915/gem_softpin.c
+@@ -1002,6 +1002,7 @@ static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
+ 	execbuf.buffer_count = 1;
+ 	if (gen < 6)
+ 		execbuf.flags |= I915_EXEC_SECURE;
++	execbuf.rsvd1 = ctx->id;
+ 
+ 	batches = calloc(count, sizeof(*batches));
+ 	igt_assert(batches);
+-- 
+2.32.0
