@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2070.outbound.protection.outlook.com [40.107.244.70])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78BDF10E20C
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 16:20:39 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 4 Apr 2022 12:19:55 -0400
-Message-ID: <20220404161955.4087858-1-dingchen.zhang@amd.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH] lib/igt_amd: return negative if PSR state debugfs
- open fails
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "David Zhang" <dingchen.zhang@amd.com>
+Date: Mon, 04 Apr 2022 17:07:25 -0000
+Message-ID: <164909204517.4270.13132397444233254035@emeril.freedesktop.org>
+References: <20220404161955.4087858-1-dingchen.zhang@amd.com>
+In-Reply-To: <20220404161955.4087858-1-dingchen.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
+ =?utf-8?q?ib/igt=5Famd=3A_return_negative_if_PSR_state_debugfs_open_fails?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,64 +17,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why & how]
-The PSR state read helper should return an integer which is not
-the same as PSR state enumeration item for the case of debugfs
-interface opening fail. Currently it return false which is casted
-to 0 that is the same as PSR_STATE0, this is incorrect.
+== Series Details ==
 
-Instead of returning 0, a negative (e.g. -1) value is returned
-when debugfs interface of PSR state opening fails. And adding the
-check of such negative value in amd_psr test case as well.
+Series: lib/igt_amd: return negative if PSR state debugfs open fails
+URL   : https://patchwork.freedesktop.org/series/102150/
+State : warning
 
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
+== Summary ==
 
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- lib/igt_amd.c          | 2 +-
- tests/amdgpu/amd_psr.c | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+Pipeline status: FAILED.
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 888da44a..664602da 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -1064,7 +1064,7 @@ int igt_amd_read_psr_state(int drm_fd, char *connector_name)
- 	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
- 	if (fd < 0) {
- 		igt_info("Couldn't open connector %s debugfs directory\n", connector_name);
--		return false;
-+		return -1;
- 	}
- 
- 	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_PSR_STATE, buf, sizeof(buf));
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index b9d8a53b..d21d41e3 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -179,6 +179,7 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
- 			continue;
- 
- 		psr_state =  igt_amd_read_psr_state(data->fd, output->name);
-+		igt_fail_on_f(psr_state < 0, "Open PSR state debugfs failed\n");
- 		igt_fail_on_f(psr_state < 1, "PSR was not enabled for connector %s\n", output->name);
- 		igt_fail_on_f(psr_state == 0xff, "PSR is invalid for connector %s\n", output->name);
- 		igt_fail_on_f(psr_state != 5, "PSR state is expected to be at 5 on a "
-@@ -295,6 +296,7 @@ static void run_check_psr_su_mpo(data_t *data)
- 		/* check PSR state */
- 		if (i > PSR_SETTLE_DELAY * frame_rate) {
- 			psr_state = igt_amd_read_psr_state(data->fd, data->output->name);
-+			igt_fail_on_f(psr_state < 0, "Open PSR state debugfs failed\n");
- 			igt_fail_on_f(psr_state == PSR_STATE0,
- 				"PSR was not enabled for connector %s\n", data->output->name);
- 			igt_fail_on_f(psr_state == PSR_STATE_INVALID,
--- 
-2.25.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/550105 for the overview.
+
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/20690552):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                287
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1649091792:step_script
+  section_start:1649091792:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1712 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=20690552 responseStatus=201 Created token=dHuLD6M5
+  section_end:1649091802:upload_artifacts_on_failure
+  section_start:1649091802:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1649091803:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/20690551):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                287
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1649091767:step_script
+  section_start:1649091767:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1712 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=20690551 responseStatus=201 Created token=2Yhfy_y9
+  section_end:1649091777:upload_artifacts_on_failure
+  section_start:1649091777:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1649091779:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/550105
