@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2136447497602708454=="
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2053.outbound.protection.outlook.com [40.107.237.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E4B710E337
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 18:05:18 +0000 (UTC)
+Message-ID: <9aff75af-8b59-e7d4-ad48-8791d9789270@amd.com>
+Date: Mon, 4 Apr 2022 14:05:07 -0400
+Content-Language: en-US
+To: David Zhang <dingchen.zhang@amd.com>, igt-dev@lists.freedesktop.org
+References: <20220404161955.4087858-1-dingchen.zhang@amd.com>
+From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+In-Reply-To: <20220404161955.4087858-1-dingchen.zhang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon, 04 Apr 2022 18:03:36 -0000
-Message-ID: <164909541693.4272.5258829014707786781@emeril.freedesktop.org>
-References: <20220404171534.355029-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220404171534.355029-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fsoftpin=3A_Use_valid_context_when_iterating_over_eng?=
- =?utf-8?q?ines?=
+Subject: Re: [igt-dev] [PATCH] lib/igt_amd: return negative if PSR state
+ debugfs open fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,215 +22,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2136447497602708454==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/i915/gem_softpin: Use valid context when iterating over engines
-URL   : https://patchwork.freedesktop.org/series/102153/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11449 -> IGTPW_6870
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/index.html
-
-Participating hosts (47 -> 45)
-------------------------------
-
-  Missing    (2): fi-bsw-cyan fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_6870 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@amdgpu/amd_cs_nop@fork-gfx0:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][1] ([fdo#109271]) +17 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-bsw-n3050/igt@amdgpu/amd_cs_nop@fork-gfx0.html
-
-  * igt@i915_selftest@live@gt_engines:
-    - bat-dg1-5:          [PASS][2] -> [INCOMPLETE][3] ([i915#4418])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-edp1:
-    - fi-tgl-u2:          [PASS][4] -> [DMESG-WARN][5] ([i915#402])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
-
-  * igt@runner@aborted:
-    - bat-dg1-5:          NOTRUN -> [FAIL][6] ([i915#4312] / [i915#5257])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/bat-dg1-5/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@active:
-    - fi-bsw-n3050:       [DMESG-FAIL][7] ([i915#2927]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/fi-bsw-n3050/igt@i915_selftest@live@active.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-bsw-n3050/igt@i915_selftest@live@active.html
-
-  * igt@i915_selftest@live@migrate:
-    - fi-bsw-n3050:       [DMESG-WARN][9] -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/fi-bsw-n3050/igt@i915_selftest@live@migrate.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-bsw-n3050/igt@i915_selftest@live@migrate.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - fi-tgl-u2:          [DMESG-WARN][11] ([i915#402]) -> [PASS][12] +1 similar issue
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2927]: https://gitlab.freedesktop.org/drm/intel/issues/2927
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
-  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
 
 
-Build changes
--------------
+On 2022-04-04 12:19, David Zhang wrote:
+> [why & how]
+> The PSR state read helper should return an integer which is not
+> the same as PSR state enumeration item for the case of debugfs
+> interface opening fail. Currently it return false which is casted
+> to 0 that is the same as PSR_STATE0, this is incorrect.
+> 
+> Instead of returning 0, a negative (e.g. -1) value is returned
+> when debugfs interface of PSR state opening fails. And adding the
+> check of such negative value in amd_psr test case as well.
+> 
+> Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> Cc: Wayne Lin <wayne.lin@amd.com>
+> 
+> Signed-off-by: David Zhang <dingchen.zhang@amd.com>
+> ---
+>   lib/igt_amd.c          | 2 +-
+>   tests/amdgpu/amd_psr.c | 2 ++
+>   2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> index 888da44a..664602da 100644
+> --- a/lib/igt_amd.c
+> +++ b/lib/igt_amd.c
+> @@ -1064,7 +1064,7 @@ int igt_amd_read_psr_state(int drm_fd, char *connector_name)
+>   	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
+>   	if (fd < 0) {
+>   		igt_info("Couldn't open connector %s debugfs directory\n", connector_name);
+> -		return false;
+> +		return -1;
+>   	}
+>   
+>   	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_PSR_STATE, buf, sizeof(buf));
+> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+> index b9d8a53b..d21d41e3 100644
+> --- a/tests/amdgpu/amd_psr.c
+> +++ b/tests/amdgpu/amd_psr.c
+> @@ -179,6 +179,7 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+>   			continue;
+>   
+>   		psr_state =  igt_amd_read_psr_state(data->fd, output->name);
+> +		igt_fail_on_f(psr_state < 0, "Open PSR state debugfs failed\n");
+>   		igt_fail_on_f(psr_state < 1, "PSR was not enabled for connector %s\n", output->name);
+>   		igt_fail_on_f(psr_state == 0xff, "PSR is invalid for connector %s\n", output->name);
+>   		igt_fail_on_f(psr_state != 5, "PSR state is expected to be at 5 on a "
+> @@ -295,6 +296,7 @@ static void run_check_psr_su_mpo(data_t *data)
+>   		/* check PSR state */
+>   		if (i > PSR_SETTLE_DELAY * frame_rate) {
+>   			psr_state = igt_amd_read_psr_state(data->fd, data->output->name);
+> +			igt_fail_on_f(psr_state < 0, "Open PSR state debugfs failed\n");
+>   			igt_fail_on_f(psr_state == PSR_STATE0,
+>   				"PSR was not enabled for connector %s\n", data->output->name);
+>   			igt_fail_on_f(psr_state == PSR_STATE_INVALID,
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6409 -> IGTPW_6870
-
-  CI-20190529: 20190529
-  CI_DRM_11449: 7f954433d09e65d55ca3ba81e1eb5eced93d4203 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_6870: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/index.html
-  IGT_6409: 13700f4a3ffaac3a825fe59b014c7c6c48a0a5f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/index.html
-
---===============2136447497602708454==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/gem_softpin: Use valid context when iterating over engines</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102153/">https://patchwork.freedesktop.org/series/102153/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11449 -&gt; IGTPW_6870</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/index.html</p>
-<h2>Participating hosts (47 -&gt; 45)</h2>
-<p>Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_6870 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@amdgpu/amd_cs_nop@fork-gfx0:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-bsw-n3050/igt@amdgpu/amd_cs_nop@fork-gfx0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/bat-dg1-5/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@active:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/fi-bsw-n3050/igt@i915_selftest@live@active.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2927">i915#2927</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-bsw-n3050/igt@i915_selftest@live@active.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/fi-bsw-n3050/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-bsw-n3050/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11449/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6409 -&gt; IGTPW_6870</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11449: 7f954433d09e65d55ca3ba81e1eb5eced93d4203 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_6870: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6870/index.html<br />
-  IGT_6409: 13700f4a3ffaac3a825fe59b014c7c6c48a0a5f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2136447497602708454==--
+Reviewed-by: Rodrigo Siqueria <Rodrigo.Siqueira@amd.com>
