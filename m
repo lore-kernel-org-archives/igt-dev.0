@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2053.outbound.protection.outlook.com [40.107.237.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E4B710E337
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 18:05:18 +0000 (UTC)
-Message-ID: <9aff75af-8b59-e7d4-ad48-8791d9789270@amd.com>
-Date: Mon, 4 Apr 2022 14:05:07 -0400
-Content-Language: en-US
-To: David Zhang <dingchen.zhang@amd.com>, igt-dev@lists.freedesktop.org
-References: <20220404161955.4087858-1-dingchen.zhang@amd.com>
-From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
-In-Reply-To: <20220404161955.4087858-1-dingchen.zhang@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5F6510E337
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Apr 2022 18:07:27 +0000 (UTC)
+Message-ID: <0964d752-f3dd-bc89-8dbd-f77557001f5a@linux.intel.com>
+Date: Mon, 4 Apr 2022 20:07:24 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] lib/igt_amd: return negative if PSR state
- debugfs open fails
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20220404171534.355029-1-zbigniew.kempczynski@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20220404171534.355029-1-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_softpin: Use valid
+ context when iterating over engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,63 +26,29 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+LGTM Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 
-
-On 2022-04-04 12:19, David Zhang wrote:
-> [why & how]
-> The PSR state read helper should return an integer which is not
-> the same as PSR state enumeration item for the case of debugfs
-> interface opening fail. Currently it return false which is casted
-> to 0 that is the same as PSR_STATE0, this is incorrect.
-> 
-> Instead of returning 0, a negative (e.g. -1) value is returned
-> when debugfs interface of PSR state opening fails. And adding the
-> check of such negative value in amd_psr test case as well.
-> 
-> Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Leo Li <sunpeng.li@amd.com>
-> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Cc: Wayne Lin <wayne.lin@amd.com>
-> 
-> Signed-off-by: David Zhang <dingchen.zhang@amd.com>
+On 4/4/2022 7:15 PM, Zbigniew Kempczyński wrote:
+> For previous gens this bug was not discovered because newly created
+> context over physical engines has same number of engines. For discrete
+> this is not true so using bigger index taken from new context on
+> default is leading to -EINVAL.
+>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->   lib/igt_amd.c          | 2 +-
->   tests/amdgpu/amd_psr.c | 2 ++
->   2 files changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-> index 888da44a..664602da 100644
-> --- a/lib/igt_amd.c
-> +++ b/lib/igt_amd.c
-> @@ -1064,7 +1064,7 @@ int igt_amd_read_psr_state(int drm_fd, char *connector_name)
->   	fd = igt_debugfs_connector_dir(drm_fd, connector_name, O_RDONLY);
->   	if (fd < 0) {
->   		igt_info("Couldn't open connector %s debugfs directory\n", connector_name);
-> -		return false;
-> +		return -1;
->   	}
+>   tests/i915/gem_softpin.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+> index 34fc9983ff..448b4c4b9e 100644
+> --- a/tests/i915/gem_softpin.c
+> +++ b/tests/i915/gem_softpin.c
+> @@ -1002,6 +1002,7 @@ static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
+>   	execbuf.buffer_count = 1;
+>   	if (gen < 6)
+>   		execbuf.flags |= I915_EXEC_SECURE;
+> +	execbuf.rsvd1 = ctx->id;
 >   
->   	ret = igt_debugfs_simple_read(fd, DEBUGFS_EDP_PSR_STATE, buf, sizeof(buf));
-> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-> index b9d8a53b..d21d41e3 100644
-> --- a/tests/amdgpu/amd_psr.c
-> +++ b/tests/amdgpu/amd_psr.c
-> @@ -179,6 +179,7 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
->   			continue;
->   
->   		psr_state =  igt_amd_read_psr_state(data->fd, output->name);
-> +		igt_fail_on_f(psr_state < 0, "Open PSR state debugfs failed\n");
->   		igt_fail_on_f(psr_state < 1, "PSR was not enabled for connector %s\n", output->name);
->   		igt_fail_on_f(psr_state == 0xff, "PSR is invalid for connector %s\n", output->name);
->   		igt_fail_on_f(psr_state != 5, "PSR state is expected to be at 5 on a "
-> @@ -295,6 +296,7 @@ static void run_check_psr_su_mpo(data_t *data)
->   		/* check PSR state */
->   		if (i > PSR_SETTLE_DELAY * frame_rate) {
->   			psr_state = igt_amd_read_psr_state(data->fd, data->output->name);
-> +			igt_fail_on_f(psr_state < 0, "Open PSR state debugfs failed\n");
->   			igt_fail_on_f(psr_state == PSR_STATE0,
->   				"PSR was not enabled for connector %s\n", data->output->name);
->   			igt_fail_on_f(psr_state == PSR_STATE_INVALID,
-
-Reviewed-by: Rodrigo Siqueria <Rodrigo.Siqueira@amd.com>
+>   	batches = calloc(count, sizeof(*batches));
+>   	igt_assert(batches);
