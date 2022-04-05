@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B262F10EE60
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 08:42:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F29610EE6B
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 08:42:02 +0000 (UTC)
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Apr 2022 09:41:34 +0100
-Message-Id: <20220405084138.3216500-5-tvrtko.ursulin@linux.intel.com>
+Date: Tue,  5 Apr 2022 09:41:35 +0100
+Message-Id: <20220405084138.3216500-6-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20220405084138.3216500-1-tvrtko.ursulin@linux.intel.com>
 References: <20220405084138.3216500-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/8] libdrmclient: Support multiple DRM cards
+Subject: [igt-dev] [PATCH i-g-t 5/8] libdrmfdinfo: Track largest engine index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,76 +26,38 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Require DRM minor match during client lookup.
+Prep code for incoming work.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- lib/igt_drm_clients.c | 14 ++++++++------
- lib/igt_drm_clients.h |  2 +-
- 2 files changed, 9 insertions(+), 7 deletions(-)
+ lib/igt_drm_fdinfo.c | 2 ++
+ lib/igt_drm_fdinfo.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index 0b604e7a171d..906d13e979fd 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -61,7 +61,7 @@ struct igt_drm_clients *igt_drm_clients_init(void *private_data)
- struct igt_drm_client *
- igt_drm_clients_find(struct igt_drm_clients *clients,
- 		     enum igt_drm_client_status status,
--		     unsigned int id)
-+		     unsigned int drm_minor, unsigned int id)
- {
- 	unsigned int start, num;
- 	struct igt_drm_client *c;
-@@ -73,7 +73,8 @@ igt_drm_clients_find(struct igt_drm_clients *clients,
- 		if (status != c->status)
- 			continue;
+diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+index 9b5c81a9b68d..f056b1a14b0e 100644
+--- a/lib/igt_drm_fdinfo.c
++++ b/lib/igt_drm_fdinfo.c
+@@ -162,6 +162,8 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
+ 					info->capacity[idx] = 1;
+ 				info->busy[idx] = val;
+ 				info->num_engines++;
++				if (idx > info->last_engine_index)
++					info->last_engine_index = idx;
+ 			}
+ 		} else if (!strncmp(l, "drm-engine-capacity-", 20)) {
+ 			idx = parse_engine(l, info,
+diff --git a/lib/igt_drm_fdinfo.h b/lib/igt_drm_fdinfo.h
+index 8e62c5962a58..2dd8ea141e50 100644
+--- a/lib/igt_drm_fdinfo.h
++++ b/lib/igt_drm_fdinfo.h
+@@ -38,6 +38,7 @@ struct drm_client_fdinfo {
+ 	unsigned long id;
  
--		if (status == IGT_DRM_CLIENT_FREE || c->id == id)
-+		if (status == IGT_DRM_CLIENT_FREE ||
-+		    (drm_minor == c->drm_minor && c->id == id))
- 			return c;
- 	}
- 
-@@ -129,9 +130,10 @@ igt_drm_client_add(struct igt_drm_clients *clients,
- {
- 	struct igt_drm_client *c;
- 
--	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE, info->id));
-+	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE,
-+				     drm_minor, info->id));
- 
--	c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_FREE, 0);
-+	c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_FREE, 0, 0);
- 	if (!c) {
- 		unsigned int idx = clients->num_clients;
- 
-@@ -367,11 +369,11 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 				continue;
- 
- 			if (igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE,
--						info.id))
-+						 minor, info.id))
- 				continue; /* Skip duplicate fds. */
- 
- 			c = igt_drm_clients_find(clients, IGT_DRM_CLIENT_PROBE,
--						info.id);
-+						 minor, info.id);
- 			if (!c)
- 				igt_drm_client_add(clients, &info, client_pid,
- 						   client_name, minor);
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index 956392799002..90973fcae4dd 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -87,7 +87,7 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- struct igt_drm_client *
- igt_drm_clients_find(struct igt_drm_clients *clients,
- 		     enum igt_drm_client_status status,
--		     unsigned int id);
-+		     unsigned int drm_minor, unsigned int id);
- 
- struct igt_drm_clients *
- igt_drm_clients_sort(struct igt_drm_clients *clients,
+ 	unsigned int num_engines;
++	unsigned int last_engine_index;
+ 	unsigned int capacity[DRM_CLIENT_FDINFO_MAX_ENGINES];
+ 	char names[DRM_CLIENT_FDINFO_MAX_ENGINES][256];
+ 	uint64_t busy[DRM_CLIENT_FDINFO_MAX_ENGINES];
 -- 
 2.32.0
