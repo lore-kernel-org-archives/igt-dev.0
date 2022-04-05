@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEFCC10E9C7
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 15:50:09 +0000 (UTC)
-Date: Tue, 5 Apr 2022 17:50:04 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7FB210EE51
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 08:41:54 +0000 (UTC)
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YkxlLFmlg+xf/p2z@kamilkon-DESK1>
-References: <20220403090708.24030-1-zbigniew.kempczynski@intel.com>
+Date: Tue,  5 Apr 2022 09:41:30 +0100
+Message-Id: <20220405084138.3216500-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220403090708.24030-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_gttfill: Reenable
- test for discrete
+Subject: [igt-dev] [PATCH i-g-t 0/8] Vendor agnostic gputop
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,155 +17,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rob Clark <robdclark@chromium.org>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Dnia 2022-04-03 at 11:07:08 +0200, Zbigniew Kempczyński napisał(a):
-> Test was turned off unnecessarily for discrete so add softpinning to
-> it and enable it again.
-> 
-> v2: ensure eviction takes place (Chris)
-> 
-> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/4086
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/i915/gem_exec_gttfill.c | 29 +++++++++++++++++++++++------
->  1 file changed, 23 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
-> index f16428714d..a113cdcb14 100644
-> --- a/tests/i915/gem_exec_gttfill.c
-> +++ b/tests/i915/gem_exec_gttfill.c
-> @@ -33,6 +33,7 @@ IGT_TEST_DESCRIPTION("Fill the GTT with batches.");
->  struct batch {
->  	uint32_t handle;
->  	void *ptr;
-> +	uint64_t offset;
->  };
->  
->  static void xchg_batch(void *array, unsigned int i, unsigned int j)
-> @@ -45,7 +46,7 @@ static void xchg_batch(void *array, unsigned int i, unsigned int j)
->  	batches[j] = tmp;
->  }
->  
-> -static void submit(int fd, int gen,
-> +static void submit(int fd, uint64_t ahnd, int gen,
->  		   struct drm_i915_gem_execbuffer2 *eb,
->  		   struct drm_i915_gem_relocation_entry *reloc,
->  		   struct batch *batches, unsigned int count)
-> @@ -56,7 +57,7 @@ static void submit(int fd, int gen,
->  
->  	memset(&obj, 0, sizeof(obj));
->  	obj.relocs_ptr = to_user_pointer(reloc);
-> -	obj.relocation_count = 2;
-> +	obj.relocation_count = !ahnd ? 2 : 0;
->  
->  	memset(reloc, 0, 2*sizeof(*reloc));
->  	reloc[0].offset = eb->batch_start_offset;
-> @@ -93,7 +94,17 @@ static void submit(int fd, int gen,
->  		reloc[0].target_handle = obj.handle;
->  		reloc[1].target_handle = obj.handle;
->  
-> -		obj.offset = 0;
-> +		if (ahnd) {
-> +			uint32_t *delta_ptr = batches[i].ptr + reloc[0].delta;
-> +
-> +			*delta_ptr = batches[i].offset;
-> +			batch[1] = batches[i].offset + reloc[0].delta;
-> +			obj.flags = EXEC_OBJECT_PINNED;
-> +			obj.offset = batches[i].offset;
-> +			batch[3] = batches[i].offset;
-> +		} else {
-> +			obj.offset = 0;
-> +		}
->  		reloc[0].presumed_offset = obj.offset;
->  		reloc[1].presumed_offset = obj.offset;
->  
-> @@ -118,6 +129,7 @@ static void fillgtt(int fd, const intel_ctx_t *ctx, unsigned ring, int timeout)
->  	unsigned nengine;
->  	unsigned count;
->  	uint64_t size;
-> +	uint64_t ahnd;
->  
->  	shared = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->  	igt_assert(shared != MAP_FAILED);
-> @@ -157,6 +169,7 @@ static void fillgtt(int fd, const intel_ctx_t *ctx, unsigned ring, int timeout)
->  		execbuf.flags |= I915_EXEC_SECURE;
->  	execbuf.rsvd1 = ctx->id;
->  
-> +	ahnd = get_reloc_ahnd(fd, ctx->id);
+This is a pile of patches which implements a rudimentary vendor agnostic gputop
+tool based of the new DRM spec as documented in
+Documentation/gpu/drm-usage-stats.rst.
 
-Can we use here simple_l2h ?
-Btw I don't see any put_ahnd below.
+First part of the series is code refactoring which should be reasonably stable,
+I've tested it all while working on it both against intel_gpu_top and gputop,
+albeit probably needs more and better comments.
 
->  	batches = calloc(count, sizeof(*batches));
->  	igt_assert(batches);
->  	for (unsigned i = 0; i < count; i++) {
-> @@ -164,10 +177,12 @@ static void fillgtt(int fd, const intel_ctx_t *ctx, unsigned ring, int timeout)
->  		batches[i].ptr =
->  			gem_mmap__device_coherent(fd, batches[i].handle,
->  						  0, BATCH_SIZE, PROT_WRITE);
-> +		batches[i].offset = get_offset(ahnd, batches[i].handle, BATCH_SIZE, 0);
-> +		batches[i].offset %= (1ull << 32) - BATCH_SIZE;
+The actual tools itself (last patch) works but I think not quite nice enough to
+be user facing. Ideally someone gets intrigued enough to improve it? Although it
+is only IGT so maybe it is good enough for a start? Not sure. To start with it
+depends on more drivers adopting the spec.
 
-This looks strange, we lost two allocated offsets here, see some
-dump from end of loop:
-i=1022 offset=ffa00000  -- after -- offset=ffa00000
-i=1023 offset=ffe00000  -- after -- offset=200000
-i=1024 offset=100200000  -- after -- offset=600000
+Fundamental difference between intel_gpu_top and gputop is that the former is
+centered around a single card and only shows processes belonging to it. Gputop
+on the other hand has an idea to show all processes with DRM file descriptors
+open and sort them into groups per card. It also makes no effort to provide
+sorting modes, well any interactivity, or any pretty names for GPUs or engines.
 
-Those last two offsets will be the same as for i=0,1.
+It looks like this:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DRM minor 0
+    PID               NAME    render       copy       video
+    3816          kwin_x11 |███▎      ||          ||          ||          |
+    3523              Xorg |▊         ||          ||          ||          |
+ 1120449               mpv |          ||          ||▋         ||          |
+ 1120529          glxgears |▋         ||          ||          ||          |
+ 1120449               mpv |▍         ||          ||          ||          |
+    3860       plasmashell |▏         ||          ||          ||          |
+    4764           krunner |          ||          ||          ||          |
+  575206            chrome |          ||          ||          ||          |
+  833481           firefox |          ||          ||          ||          |
+  892924       thunderbird |          ||          ||          ||          |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
->  	}
->  
->  	/* Flush all memory before we start the timer */
-> -	submit(fd, gen, &execbuf, reloc, batches, count);
-> +	submit(fd, ahnd, gen, &execbuf, reloc, batches, count);
->  
->  	igt_info("Setup %u batches in %.2fms\n",
->  		 count, 1e-6 * igt_nsec_elapsed(&tv));
-> @@ -179,7 +194,7 @@ static void fillgtt(int fd, const intel_ctx_t *ctx, unsigned ring, int timeout)
->  		execbuf.batch_start_offset = child*64;
->  		execbuf.flags |= engines[child];
->  		igt_until_timeout(timeout) {
-> -			submit(fd, gen, &execbuf, reloc, batches, count);
-> +			submit(fd, ahnd, gen, &execbuf, reloc, batches, count);
->  			for (unsigned i = 0; i < count; i++) {
->  				uint64_t offset, delta;
->  
-> @@ -216,9 +231,9 @@ igt_main
->  	igt_fixture {
->  		i915 = drm_open_driver(DRIVER_INTEL);
->  		igt_require_gem(i915);
-> -		igt_require(gem_has_relocations(i915));
->  		ctx = intel_ctx_create_all_physical(i915);
->  		igt_fork_hang_detector(i915);
-> +		intel_allocator_multiprocess_start();
->  	}
->  
->  	igt_subtest("basic") /* just enough to run a single pass */
-> @@ -238,8 +253,10 @@ igt_main
->  		fillgtt(i915, ctx, ALL_ENGINES, 20);
->  
->  	igt_fixture {
-> +		intel_allocator_multiprocess_stop();
->  		igt_stop_hang_detector();
->  		intel_ctx_destroy(i915, ctx);
->  		close(i915);
-> +
+I did test it as well with two cards and confirmed that too works.
 
-Remove empty line.
-With that fixed you can add my r-b tag.
+Rob Clark also tested it with a patch which exports the respective data from the
+msm driver and confirmed that too works.
 
-Regards,
-Kamil
->  	}
->  }
-> -- 
-> 2.32.0
-> 
+Tvrtko Ursulin (8):
+  lib: Extract igt_drm_clients from intel_gpu_top
+  libdrmfdinfo: Allow specifying custom engine map
+  libdrmclients: Record client drm minor
+  libdrmclient: Support multiple DRM cards
+  libdrmfdinfo: Track largest engine index
+  libdrmclient/intel_gpu_top: Decouple hardcoded engine assumptions
+  libdrmclient: Enforce client status sort order in the library
+  gputop: Basic vendor agnostic GPU top tool
+
+ lib/igt_drm_clients.c   | 451 +++++++++++++++++++++++++++
+ lib/igt_drm_clients.h   |  97 ++++++
+ lib/igt_drm_fdinfo.c    |  50 ++-
+ lib/igt_drm_fdinfo.h    |  16 +-
+ lib/meson.build         |   8 +
+ tests/i915/drm_fdinfo.c |  18 +-
+ tools/gputop.c          | 276 +++++++++++++++++
+ tools/intel_gpu_top.c   | 663 ++++++++++------------------------------
+ tools/meson.build       |   7 +-
+ 9 files changed, 1067 insertions(+), 519 deletions(-)
+ create mode 100644 lib/igt_drm_clients.c
+ create mode 100644 lib/igt_drm_clients.h
+ create mode 100644 tools/gputop.c
+
+-- 
+2.32.0
