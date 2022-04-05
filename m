@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9D3210EE52
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 08:41:57 +0000 (UTC)
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DD0B10ED39
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 17:23:45 +0000 (UTC)
+Date: Tue, 5 Apr 2022 19:23:41 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Apr 2022 09:41:32 +0100
-Message-Id: <20220405084138.3216500-3-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20220405084138.3216500-1-tvrtko.ursulin@linux.intel.com>
-References: <20220405084138.3216500-1-tvrtko.ursulin@linux.intel.com>
+Message-ID: <Ykx7Hf9hq0P/eyI3@kamilkon-DESK1>
+References: <20220405085453.28963-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/8] libdrmfdinfo: Allow specifying custom
- engine map
+In-Reply-To: <20220405085453.28963-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_isolation: Use
+ allocator for registers write
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,317 +21,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Dnia 2022-04-05 at 10:54:53 +0200, Zbigniew Kempczyński napisał(a):
+> For no-reloc we need to ensure all offset management is done with
+> userspace allocator. Leaving register write intact was wrong as
+> offsets returned by allocator could overlap with proposed by the
+> kernel (write_regs() didn't have EXEC_OBJECT_PINNED before).
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/i915/gem_ctx_isolation.c | 15 ++++++++++-----
+>  1 file changed, 10 insertions(+), 5 deletions(-)
 
-Instead of hard coding the engine names, allow a map of names to indices
-to either be passed in or it gets auto-detected (less efficient) while
-parsing.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- lib/igt_drm_clients.c   |  7 +++---
- lib/igt_drm_clients.h   |  3 ++-
- lib/igt_drm_fdinfo.c    | 48 +++++++++++++++++++++++++++--------------
- lib/igt_drm_fdinfo.h    | 15 ++++++++++---
- tests/i915/drm_fdinfo.c | 18 ++++++++++++----
- tools/intel_gpu_top.c   | 13 +++++++++--
- 6 files changed, 75 insertions(+), 29 deletions(-)
+--
+Kamil
 
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index 435de5364f39..0e04e71008f5 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -278,7 +278,8 @@ static bool is_drm_fd(int fd_dir, const char *name)
- struct igt_drm_clients *
- igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		     bool (*filter_client)(const struct igt_drm_clients *,
--					   const struct drm_client_fdinfo *))
-+					   const struct drm_client_fdinfo *),
-+		     const char **name_map, unsigned int map_entries)
- {
- 	struct dirent *proc_dent;
- 	struct igt_drm_client *c;
-@@ -352,8 +353,8 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
- 			memset(&info, 0, sizeof(info));
- 
- 			if (!__igt_parse_drm_fdinfo(dirfd(fdinfo_dir),
--						    fdinfo_dent->d_name,
--						    &info))
-+						    fdinfo_dent->d_name, &info,
-+						    name_map, map_entries))
- 				continue;
- 
- 			if (filter_client && !filter_client(clients, &info))
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index 4a40d5b01566..f35cc118aaad 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -80,7 +80,8 @@ void igt_drm_clients_free(struct igt_drm_clients *clients);
- struct igt_drm_clients *
- igt_drm_clients_scan(struct igt_drm_clients *clients,
- 		     bool (*filter_client)(const struct igt_drm_clients *,
--					   const struct drm_client_fdinfo *));
-+					   const struct drm_client_fdinfo *),
-+		     const char **name_map, unsigned int map_entries);
- 
- struct igt_drm_client *
- igt_drm_clients_find(struct igt_drm_clients *clients,
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index b422f67a4ace..9b5c81a9b68d 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -22,6 +22,7 @@
-  *
-  */
- 
-+#include <assert.h>
- #include <ctype.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-@@ -53,14 +54,10 @@ static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
- }
- 
- static int parse_engine(char *line, struct drm_client_fdinfo *info,
--			size_t prefix_len, uint64_t *val)
-+			size_t prefix_len,
-+			const char **name_map, unsigned int map_entries,
-+			uint64_t *val)
- {
--	static const char *e2class[] = {
--		"render",
--		"copy",
--		"video",
--		"video-enhance",
--	};
- 	ssize_t name_len;
- 	char *name, *p;
- 	int found = -1;
-@@ -76,10 +73,26 @@ static int parse_engine(char *line, struct drm_client_fdinfo *info,
- 
- 	name = line + prefix_len;
- 
--	for (i = 0; i < ARRAY_SIZE(e2class); i++) {
--		if (!strncmp(name, e2class[i], name_len)) {
--			found = i;
--			break;
-+	if (name_map) {
-+		for (i = 0; i < map_entries; i++) {
-+			if (!strncmp(name, name_map[i], name_len)) {
-+				found = i;
-+				break;
-+			}
-+		}
-+	} else {
-+		for (i = 0; i < info->num_engines; i++) {
-+			if (!strncmp(name, info->names[i], name_len)) {
-+				found = i;
-+				break;
-+			}
-+		}
-+
-+		if (found < 0) {
-+			assert((info->num_engines + 1) < ARRAY_SIZE(info->names));
-+			assert((strlen(name) + 1) < sizeof(info->names[0]));
-+			strncpy(info->names[info->num_engines], name, name_len);
-+			found = info->num_engines;
- 		}
- 	}
- 
-@@ -112,7 +125,8 @@ static const char *find_kv(const char *buf, const char *key, size_t keylen)
- }
- 
- unsigned int
--__igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
-+__igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
-+		       const char **name_map, unsigned int map_entries)
- {
- 	char buf[4096], *_buf = buf;
- 	char *l, *ctx = NULL;
-@@ -142,7 +156,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
- 		} else if (!strncmp(l, "drm-engine-", 11) &&
- 			   strncmp(l, "drm-engine-capacity-", 20)) {
- 			idx = parse_engine(l, info, strlen("drm-engine-"),
--					   &val);
-+					   name_map, map_entries, &val);
- 			if (idx >= 0) {
- 				if (!info->capacity[idx])
- 					info->capacity[idx] = 1;
-@@ -152,7 +166,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
- 		} else if (!strncmp(l, "drm-engine-capacity-", 20)) {
- 			idx = parse_engine(l, info,
- 					   strlen("drm-engine-capacity-"),
--					   &val);
-+					   name_map, map_entries, &val);
- 			if (idx >= 0) {
- 				info->capacity[idx] = val;
- 				num_capacity++;
-@@ -166,7 +180,9 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
- 	return good + info->num_engines + num_capacity;
- }
- 
--unsigned int igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info)
-+unsigned int
-+igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
-+		     const char **name_map, unsigned int map_entries)
- {
- 	unsigned int res;
- 	char fd[64];
-@@ -180,7 +196,7 @@ unsigned int igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info)
- 	if (dir < 0)
- 		return false;
- 
--	res = __igt_parse_drm_fdinfo(dir, fd, info);
-+	res = __igt_parse_drm_fdinfo(dir, fd, info, name_map, map_entries);
- 
- 	close(dir);
- 
-diff --git a/lib/igt_drm_fdinfo.h b/lib/igt_drm_fdinfo.h
-index 5db63e28b07e..8e62c5962a58 100644
---- a/lib/igt_drm_fdinfo.h
-+++ b/lib/igt_drm_fdinfo.h
-@@ -39,6 +39,7 @@ struct drm_client_fdinfo {
- 
- 	unsigned int num_engines;
- 	unsigned int capacity[DRM_CLIENT_FDINFO_MAX_ENGINES];
-+	char names[DRM_CLIENT_FDINFO_MAX_ENGINES][256];
- 	uint64_t busy[DRM_CLIENT_FDINFO_MAX_ENGINES];
- };
- 
-@@ -47,11 +48,15 @@ struct drm_client_fdinfo {
-  *
-  * @drm_fd: DRM file descriptor
-  * @info: Structure to populate with read data
-+ * @name_map: Optional array of strings representing engine names
-+ * @map_entries: Number of strings in the names array
-  *
-  * Returns the number of valid drm fdinfo keys found or zero if not all
-  * mandatory keys were present or no engines found.
-  */
--unsigned int igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info);
-+unsigned int
-+igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
-+		     const char **name_map, unsigned int map_entries);
- 
- /**
-  * __igt_parse_drm_fdinfo: Parses the drm fdinfo file
-@@ -59,11 +64,15 @@ unsigned int igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info);
-  * @dir: File descriptor pointing to /proc/pid/fdinfo directory
-  * @fd: String representation of the file descriptor number to parse.
-  * @info: Structure to populate with read data
-+ * @name_map: Optional array of strings representing engine names
-+ * @map_entries: Number of strings in the names array
-  *
-  * Returns the number of valid drm fdinfo keys found or zero if not all
-  * mandatory keys were present or no engines found.
-  */
--unsigned int __igt_parse_drm_fdinfo(int dir, const char *fd,
--				    struct drm_client_fdinfo *info);
-+unsigned int
-+__igt_parse_drm_fdinfo(int dir, const char *fd,
-+		       struct drm_client_fdinfo *info,
-+		       const char **name_map, unsigned int map_entries);
- 
- #endif /* IGT_DRM_FDINFO_H */
-diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
-index 3475d35b23b9..87ad8c8d7c7e 100644
---- a/tests/i915/drm_fdinfo.c
-+++ b/tests/i915/drm_fdinfo.c
-@@ -34,6 +34,13 @@ IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
- const double tolerance = 0.05f;
- const unsigned long batch_duration_ns = 500e6;
- 
-+static const char *engine_map[] = {
-+	"render",
-+	"copy",
-+	"video",
-+	"video-enhance",
-+};
-+
- #define __assert_within_epsilon(x, ref, tol_up, tol_down) \
- 	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
- 		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
-@@ -50,7 +57,8 @@ static void basics(int i915, unsigned int num_classes)
- 	struct drm_client_fdinfo info = { };
- 	unsigned int ret;
- 
--	ret = igt_parse_drm_fdinfo(i915, &info);
-+	ret = igt_parse_drm_fdinfo(i915, &info, engine_map,
-+				   ARRAY_SIZE(engine_map));
- 	igt_assert(ret);
- 
- 	igt_assert(!strcmp(info.driver, "i915"));
-@@ -181,7 +189,8 @@ static uint64_t read_busy(int i915, unsigned int class)
- {
- 	struct drm_client_fdinfo info = { };
- 
--	igt_assert(igt_parse_drm_fdinfo(i915, &info));
-+	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
-+					ARRAY_SIZE(engine_map)));
- 
- 	return info.busy[class];
- }
-@@ -267,7 +276,8 @@ static void read_busy_all(int i915, uint64_t *val)
- {
- 	struct drm_client_fdinfo info = { };
- 
--	igt_assert(igt_parse_drm_fdinfo(i915, &info));
-+	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
-+					ARRAY_SIZE(engine_map)));
- 
- 	memcpy(val, info.busy, sizeof(info.busy));
- }
-@@ -459,7 +469,7 @@ igt_main
- 		i915 = __drm_open_driver(DRIVER_INTEL);
- 
- 		igt_require_gem(i915);
--		igt_require(igt_parse_drm_fdinfo(i915, &info));
-+		igt_require(igt_parse_drm_fdinfo(i915, &info, NULL, 0));
- 
- 		ctx = intel_ctx_create_all_physical(i915);
- 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 9cc4e776af94..5322b23a7712 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -2030,6 +2030,12 @@ int main(int argc, char **argv)
- {
- 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
- 	struct igt_drm_clients *clients = NULL;
-+	static const char *engine_map[] = {
-+		"render",
-+		"copy",
-+		"video",
-+		"video-enhance",
-+	};
- 	int con_w = -1, con_h = -1;
- 	char *output_path = NULL;
- 	struct engines *engines;
-@@ -2177,7 +2183,8 @@ int main(int argc, char **argv)
- 	}
- 
- 	pmu_sample(engines);
--	igt_drm_clients_scan(clients, client_match);
-+	igt_drm_clients_scan(clients, client_match, engine_map,
-+			     ARRAY_SIZE(engine_map));
- 	codename = igt_device_get_pretty_name(&card, false);
- 
- 	while (!stop_top) {
-@@ -2206,7 +2213,9 @@ int main(int argc, char **argv)
- 
- 		disp_clients =
- 			display_clients(igt_drm_clients_scan(clients,
--							     client_match));
-+							     client_match,
-+							     engine_map,
-+							     ARRAY_SIZE(engine_map)));
- 
- 		if (stop_top)
- 			break;
--- 
-2.32.0
+> 
+> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+> index c4fd771edf..bcb9b73410 100644
+> --- a/tests/i915/gem_ctx_isolation.c
+> +++ b/tests/i915/gem_ctx_isolation.c
+> @@ -366,7 +366,7 @@ static uint32_t read_regs(int fd,
+>  	return obj[0].handle;
+>  }
+>  
+> -static void write_regs(int fd,
+> +static void write_regs(int fd, uint64_t ahnd,
+>  		       const intel_ctx_t *ctx,
+>  		       const struct intel_execution_engine2 *e,
+>  		       unsigned int flags,
+> @@ -423,8 +423,13 @@ static void write_regs(int fd,
+>  	execbuf.buffer_count = 1;
+>  	execbuf.flags = e->flags;
+>  	execbuf.rsvd1 = ctx->id;
+> +	if (ahnd) {
+> +		obj.flags |= EXEC_OBJECT_PINNED;
+> +		obj.offset = get_offset(ahnd, obj.handle, batch_size, 0);
+> +	}
+>  	gem_execbuf(fd, &execbuf);
+>  	gem_close(fd, obj.handle);
+> +	put_offset(ahnd, obj.offset);
+>  }
+>  
+>  static void restore_regs(int fd,
+> @@ -658,7 +663,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>  
+>  		igt_debug("%s[%d]: Setting all registers to 0x%08x\n",
+>  			  __func__, v, values[v]);
+> -		write_regs(fd, ctx, e, flags, values[v]);
+> +		write_regs(fd, ahnd, ctx, e, flags, values[v]);
+>  
+>  		if (flags & DIRTY2) {
+>  			const intel_ctx_t *sw = intel_ctx_create(fd, &ctx->cfg);
+> @@ -750,7 +755,7 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+>  		if (flags & DIRTY1) {
+>  			igt_debug("%s[%d]: Setting all registers of ctx 0 to 0x%08x\n",
+>  				  __func__, v, values[v]);
+> -			write_regs(fd, ctx[0], e, flags, values[v]);
+> +			write_regs(fd, ahnd[0], ctx[0], e, flags, values[v]);
+>  		}
+>  
+>  		/*
+> @@ -768,7 +773,7 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+>  		if (flags & DIRTY2) {
+>  			igt_debug("%s[%d]: Setting all registers of ctx 1 to 0x%08x\n",
+>  				  __func__, v, ~values[v]);
+> -			write_regs(fd, ctx[1], e, flags, ~values[v]);
+> +			write_regs(fd, ahnd[1], ctx[1], e, flags, ~values[v]);
+>  		}
+>  
+>  		/*
+> @@ -882,7 +887,7 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>  	for (int v = 0; v < num_values; v++) {
+>  		ctx[v] = intel_ctx_create(fd, cfg);
+>  		ahnd[v] = get_reloc_ahnd(fd, ctx[v]->id);
+> -		write_regs(fd, ctx[v], e, flags, values[v]);
+> +		write_regs(fd, ahnd[v], ctx[v], e, flags, values[v]);
+>  
+>  		regs[v][0] = read_regs(fd, ahnd[v], ctx[v], e, flags);
+>  	}
+> -- 
+> 2.32.0
+> 
