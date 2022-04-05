@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam07on2074.outbound.protection.outlook.com [40.107.95.74])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FF0210E8F7
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 14:24:52 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 5 Apr 2022 10:24:34 -0400
-Message-ID: <20220405142434.40630-3-dingchen.zhang@amd.com>
-In-Reply-To: <20220405142434.40630-1-dingchen.zhang@amd.com>
-References: <20220405142434.40630-1-dingchen.zhang@amd.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2067.outbound.protection.outlook.com [40.107.93.67])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE97410E19A
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 14:58:49 +0000 (UTC)
+Message-ID: <6b6b773c-8496-b831-dcfb-26f6f74eea5e@amd.com>
+Date: Tue, 5 Apr 2022 10:58:44 -0400
+Content-Language: en-US
+To: David Zhang <dingchen.zhang@amd.com>, igt-dev@lists.freedesktop.org
+References: <20220401210622.3637249-1-dingchen.zhang@amd.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+In-Reply-To: <20220401210622.3637249-1-dingchen.zhang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/2] tests/amdgpu/amd_psr: add PSR-SU full frame
- update sub test case
+Subject: Re: [igt-dev] [PATCH] lib/igt_amd: add helper to R/W DM visual
+ confirm debug option
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,185 +26,198 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why]
-We need a full-frame update (FFU) test case to validate PSR-SU
-feature enablement by visual confirm.
 
-[how]
-1. create two overlay FBs with full screen size and one primary FB
-   w/ 1/4 screen size
-2. panning the primary plane to top-left and flip for couple of
-   frames
-3. wait for couple of seconds to allow visual confirm
-4. panning the primary plane from top-left to middle of screen
-5. repeat step 3
-6. panning the primary plane from middle to bottom-right of screen
-7. repeat step 3
 
-If the PSR-SU is enabled as expected, for FFU we'd observe the
-visual confirm by seeing the blue border at the bottom of screen
-and the bottom of primary plane (megenta rectangle) as well.
+On 2022-04-01 17:06, David Zhang wrote:
+> [why & how]
+> AMDGPU DM exposure a debugfs interface entry of visual confirm
+> debug option which is configured for debugging like surface
+> programming. It also supports the PSR feature visual confirm
+> debugging. We'd add helpers to read/write visual confirm debug
+> option from/to such interface entry.
+> 
+> The interface entry "amdgpu_dm_visual_confirm" is located in the
+> debugfs directory. We'd add the enumeration of visual confirm
+> option which is aligned to the amdgpu kernel driver.
+> 
+> Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> Cc: Wayne Lin <wayne.lin@amd.com>
+> 
+> Signed-off-by: David Zhang <dingchen.zhang@amd.com>
+> ---
+>   lib/igt_amd.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_amd.h | 20 +++++++++++
+>   2 files changed, 116 insertions(+)
+> 
+> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> index 664602da..02b35f68 100644
+> --- a/lib/igt_amd.c
+> +++ b/lib/igt_amd.c
+> @@ -25,6 +25,7 @@
+>   
+>   #include "igt_amd.h"
+>   #include "igt.h"
+> +#include "igt_sysfs.h"
+>   #include <amdgpu_drm.h>
+>   
+>   #define X0 1
+> @@ -250,6 +251,38 @@ bool igt_amd_is_tiled(uint64_t modifier)
+>   		return false;
+>   }
+>   
+> +/**
+> + * @brief generic helper to check if the amdgpu dm debugfs entry defined
+> + *
+> + * @param drm_fd DRM file descriptor
+> + * @param interface_name The debugfs interface entry name with prefix "amdgpu_dm_"
+> + * @return true if <debugfs_root>/interface_name exists and defined
+> + * @return false otherwise
+> + */
+> +static bool amd_dm_has_debugfs(int drm_fd, const char *interface_name)
+> +{
+> +	int fd;
+> +	int res;
+> +	struct stat stat;
+> +
+> +	fd = igt_debugfs_dir(drm_fd);
+> +	if (fd < 0) {
+> +		igt_info("Couldn't open debugfs dir!\n");
+> +		return false;
+> +	}
+> +
+> +	res = fstatat(fd, interface_name, &stat, 0);
+> +	if (res != 0) {
+> +		igt_info("debugfs %s not supported\n", interface_name);
+> +		close(fd);
+> +		return false;
+> +	}
+> +
+> +	close(fd);
+> +	return true;
+> +}
+> +
+> +
+>   /**
+>    * @brief generic helper to check if the debugfs entry of given connector has the
+>    *        debugfs interface defined.
+> @@ -1075,3 +1108,66 @@ int igt_amd_read_psr_state(int drm_fd, char *connector_name)
+>   
+>   	return strtol(buf, NULL, 10);
+>   }
+> +
+> +/**
+> + * @brief check if AMDGPU DM visual confirm debugfs interface entry exist and defined
+> + *
+> + * @param drm_fd DRM file descriptor
+> + * @return true if visual confirm debugfs interface exists and defined
+> + * @return false otherwise
+> + */
+> +bool igt_amd_dm_has_visual_confirm(int drm_fd)
+> +{
+> +	return amd_dm_has_debugfs(drm_fd, DEBUGFS_DM_VISUAL_CONFIRM);
+> +}
+> +
+> +/**
+> + * @brief Read amdgpu DM visual confirm debugfs interface
+> + *
+> + * @param drm_fd DRM file descriptor
+> + * @return int visual confirm debug option as integer
+> + */
+> +int  igt_amd_dm_get_visual_confirm(int drm_fd)
+> +{
+> +	char buf[4];	/* current 4 bytes are enough */
+> +	int fd, ret;
+> +
+> +	fd = igt_debugfs_dir(drm_fd);
+> +	if (fd < 0) {
+> +		igt_info("Couldn't open debugfs dir!\n");
+> +		return -1;
+> +	}
+> +
+> +	ret = igt_debugfs_simple_read(fd, DEBUGFS_DM_VISUAL_CONFIRM, buf, sizeof(buf));
+> +	close(fd);
+> +
+> +	igt_assert_f(ret >= 0, "Reading %s failed.\n",
+> +		     DEBUGFS_DM_VISUAL_CONFIRM);
+> +
+> +	return strtol(buf, NULL, 10);
+> +}
+> +
+> +/**
+> + * @brief Write amdgpu DM visual confirm debug option to debugfs interface
+> + *
+> + * @param drm_fd DRM file descriptor
+> + * @param option amdgpu DC visual confirm debug option
+> + * @return true if set visual confirm option success
+> + * @return false otherwise
+> + */
+> +bool igt_amd_dm_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option)
+> +{
+> +	char buf[4];
+> +	int fd;
+> +
+> +	fd = igt_debugfs_dir(drm_fd);
+> +	if (fd < 0) {
+> +		igt_info("Couldn't open debugfs dir!\n");
+> +		return false;
+> +	}
+> +
+> +	memset(buf, '\0', sizeof(buf));
+> +	snprintf(buf, sizeof(buf), "%d\n", option);
+> +
 
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Jay Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
+close fd before returning.
+> +	return igt_sysfs_set(fd, DEBUGFS_DM_VISUAL_CONFIRM, buf);
+> +}
+> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+> index e4e12ce5..df76f428 100644
+> --- a/lib/igt_amd.h
+> +++ b/lib/igt_amd.h
+> @@ -49,6 +49,9 @@
+>   #define DEBUGFS_EDP_PSR_CAP	"psr_capability"
+>   #define DEBUGFS_EDP_PSR_STATE	"psr_state"
+>   
+> +/* amdgpu DM interface entries */
+> +#define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
+> +
+>   enum amd_dsc_clock_force {
+>   	DSC_AUTOMATIC = 0,
+>   	DSC_FORCE_ON,
+> @@ -115,6 +118,19 @@ enum amdgpu_psr_state {
+>   	PSR_STATE_INVALID = 0xFF
+>   };
+>   
+> +/*
+> + * enumeration of amdgpu DC visual confirm debug option
+> + * aligned to the upstreamed amdgpu kernel driver 'enum visual_confirm' in dc.h
+> + */
+> +enum amdgpu_debug_visual_confirm {
+> +	VISUAL_CONFIRM_DISABLE	= 0,
+> +	VISUAL_CONFIRM_SURFACE	= 1,
+> +	VISUAL_CONFIRM_HDR	= 2,
+> +	VISUAL_CONFIRM_MPCTREE	= 4,
+> +	VISUAL_CONFIRM_PSR	= 5,
+> +	VISUAL_CONFIRM_SWIZZLE	= 9
+> +};
+> +
+>   uint32_t igt_amd_create_bo(int fd, uint64_t size);
+>   void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
+>   unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
+> @@ -172,4 +188,8 @@ bool igt_amd_psr_support_drv(int drm_fd, char *connector_name, enum psr_mode mod
+>   bool igt_amd_output_has_psr_state(int drm_fd, char *connector_name);
+>   int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
+>   
+> +/* DM interface helpers */
+> +bool igt_amd_dm_has_visual_confirm(int drm_fd);
+> +int  igt_amd_dm_get_visual_confirm(int drm_fd);
+> +bool igt_amd_dm_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
 
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- tests/amdgpu/amd_psr.c | 125 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 125 insertions(+)
+Is _dm_ in the API strictly necessary? 
+igt_amd_{has,get,set}_visual_confirm() would do IMO. I think we do not 
+support radeon driver. Since its just amdgpu, we need not add dm to the 
+api and keep the api cleaner. Its a nitpick though.
 
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index e70c07cb..d976dd17 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -54,6 +54,7 @@ typedef struct data {
- 	igt_output_t *output;
- 	igt_pipe_t *pipe;
- 	igt_pipe_crc_t *pipe_crc;
-+	igt_fb_t ov_fb[2];
- 	drmModeModeInfo *mode;
- 	enum pipe pipe_id;
- 	int fd;
-@@ -320,6 +321,126 @@ static void run_check_psr_su_mpo(data_t *data)
- 	test_fini(data);
- }
- 
-+static void panning_rect_fb(data_t *data, igt_fb_t *rect_fb, int rect_w, int rect_h,
-+	int prev_x, int prev_y, int curr_x, int curr_y, double alpha)
-+{
-+	int ret;
-+
-+	/* set new position for primary plane */
-+	igt_plane_set_position(data->primary, curr_x, curr_y);
-+
-+	/* flip overlay for couple of frames */
-+	igt_info("\n start flipping ...\n");
-+	for (int i = 0; i < N_FLIPS; ++i) {
-+		igt_info(" About to commit overlay w/ alpha updated in region (x=%d, y=%d, w=%d, h=%d), loop %d \n",
-+			 curr_x, curr_y, rect_w, rect_h, i);
-+
-+		/* update alpha region in overlay for only once and do flip */
-+		if (i < 2) {
-+			draw_color_alpha(&data->ov_fb[i % 2], prev_x, prev_y, rect_w, rect_h,
-+					 1.0, 1.0, 1.0, 1.0);
-+			draw_color_alpha(&data->ov_fb[i % 2], curr_x, curr_y, rect_w, rect_h,
-+					 (i == 0) ? .0 : 1.0,
-+					 (i == 0) ? 1.0 : .0,
-+					 1.0, alpha);
-+		}
-+		igt_plane_set_fb(data->overlay, &data->ov_fb[i % 2]);
-+		igt_plane_set_fb(data->primary, rect_fb);
-+		igt_plane_set_size(data->primary, rect_w, rect_h);
-+		igt_output_set_pipe(data->output, data->pipe_id);
-+
-+		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+		igt_require(ret == 0);
-+		kmstest_wait_for_pageflip(data->fd);
-+	}
-+}
-+
-+static void panning_pfb_and_psrsu_check(data_t *data, igt_fb_t *fb, int fb_w, int fb_h, double alpha)
-+{
-+	const int pos[4][2] = {
-+		{0, 0},
-+		{0, 0},
-+		{fb_w / 2, fb_h / 2},
-+		{fb_w, fb_h}
-+	};
-+
-+	for (int i = 1; i < sizeof(pos) / sizeof(pos[0]); ++i) {
-+		/* panning primary rect fb */
-+		panning_rect_fb(data, fb, fb_w, fb_h, pos[i - 1][0], pos[i - 1][1], pos[i][0], pos[i][1], alpha);
-+
-+		/* validate by visual confirm */
-+		sleep(5);
-+	}
-+}
-+
-+static void run_check_psr_su_ffu(data_t *data)
-+{
-+	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
-+	bool sink_support_psrsu = false;
-+	bool drv_suport_psrsu = false;
-+	igt_fb_t rect_fb; 	// rectangle fbs for primary
-+	igt_fb_t ref_fb;	// reference fb
-+	int pb_w, pb_h, ob_w, ob_h;
-+
-+	/* skip the test run if no eDP sink detected */
-+	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
-+
-+	/* init */
-+	test_init(data);
-+	ob_w = data->w;
-+	ob_h = data->h;
-+	pb_w = data->w / 2;
-+	pb_h = data->h / 2;
-+
-+	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
-+	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
-+	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
-+	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
-+	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
-+	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
-+	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
-+
-+	/* reference background pattern in grey */
-+	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    .5, .5, .5, &ref_fb);
-+	igt_plane_set_fb(data->primary, &ref_fb);
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	/*
-+	 * overlay and primary fbs creation
-+	 * for full frame update (FFU) test case, we don't change primary FB content but to change
-+	 * the position of primary FB (panning) and update the overlay plane alpha region.
-+	 * Any overlay change is expected to be regarded as FFU from KMD's perspective.
-+	 *
-+	 * 1. create two overlay FBs with full screen size and one primary FB w/ 1/4 screen size
-+	 * 2. panning the primary plane to top-left and flip for couple of frames
-+	 * 3. wait for couple of seconds to allow visual confirm
-+	 * 4. panning the primary plane from top-left to middle of screen
-+	 * 5. repeat step 3
-+	 * 6. panning the primary plane from middle to bottom-right of screen
-+	 * 7. repeat step 3
-+	 */
-+
-+	/* step 1 */
-+	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 1.0, 1.0, &data->ov_fb[0]);
-+	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 1.0, 1.0, &data->ov_fb[1]);
-+	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, .0, 1.0, &rect_fb);
-+
-+	/* step 2 - 7 */
-+	panning_pfb_and_psrsu_check(data, &rect_fb, pb_w, pb_h, .3);
-+
-+	/* fini */
-+	igt_remove_fb(data->fd, &ref_fb);
-+	igt_remove_fb(data->fd, &data->ov_fb[0]);
-+	igt_remove_fb(data->fd, &data->ov_fb[1]);
-+	igt_remove_fb(data->fd, &rect_fb);
-+	test_fini(data);
-+}
-+
- const char *help_str =
- "  --visual-confirm           PSR visual confirm debug option enable\n";
- 
-@@ -381,6 +502,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		     "and to imitate Multiplane Overlay video playback scenario");
- 	igt_subtest("psr_su_mpo") run_check_psr_su_mpo(&data);
- 
-+	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
-+		     "and to validate Full Frame Update scenario");
-+	igt_subtest("psr_su_ffu") run_check_psr_su_ffu(&data);
-+
- 	igt_fixture
- 	{
- 		if (opt.visual_confirm) {
--- 
-2.25.1
+>   #endif /* IGT_AMD_H */
