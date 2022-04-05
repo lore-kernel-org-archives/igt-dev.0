@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D98910E15F
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 18:28:35 +0000 (UTC)
-Date: Tue, 5 Apr 2022 20:28:30 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D61E10EE6C
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 19:10:53 +0000 (UTC)
+From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YkyKTgZzvYxb74DF@kamilkon-DESK1>
-References: <20220404171807.355524-1-zbigniew.kempczynski@intel.com>
+Date: Tue,  5 Apr 2022 12:12:14 -0700
+Message-Id: <20220405191215.76309-1-jose.souza@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220404171807.355524-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_softpin: Exercise single
- offset eviction on all engines
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib: Add DRRS helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,146 +17,231 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+Due to recent refactors in i915, it completely changed
+i915_drrs_status breaking all DRRS tests in kms_frontbuffer_tracking
+so here adding DRRS helpers to a separate file so it can be used by
+kms_frontbuffer_tracking and any future tests.
 
-Dnia 2022-04-04 at 19:18:07 +0200, Zbigniew Kempczyński napisał(a):
-> Test verifies does eviction works when all engines try to use same
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+---
+ lib/igt_drrs.c  | 151 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_drrs.h  |  31 ++++++++++
+ lib/meson.build |   1 +
+ 3 files changed, 183 insertions(+)
+ create mode 100644 lib/igt_drrs.c
+ create mode 100644 lib/igt_drrs.h
 
-s/Test verifies does/Verify that/
-
-> offset for different handles. It replaces allocator-evict-all-engines
-> test because it simpler version of it.
-
-s/test/subtest/
-s/because it simpler version of it./because it is simpler./
-
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> ---
->  tests/i915/gem_softpin.c | 85 +++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 83 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-> index 34fc9983ff..5945317ed1 100644
-> --- a/tests/i915/gem_softpin.c
-> +++ b/tests/i915/gem_softpin.c
-> @@ -1072,6 +1072,87 @@ static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
->  }
->  
-> +static void single_offset_submit(int fd, struct drm_i915_gem_execbuffer2 *eb,
-> +				 struct batch *batches, unsigned int count)
-> +{
-> +	struct drm_i915_gem_exec_object2 obj;
-> +	uint64_t address = max_t(uint64_t, gem_detect_safe_start_offset(fd), 0x200000);
----------------------------------------------------------------------------- ^
-Shouldn't this be gem_detect_safe_alignment() ? Or #define and
-describe it with comment or add comment here.
-Another idea whould be to calculate it in evict_single_offset
-before fork and pass it as parameter.
-
-> +
-> +	memset(&obj, 0, sizeof(obj));
-> +	obj.flags = EXEC_OBJECT_PINNED;
-> +
-> +	for (unsigned int i = 0; i < count; i++) {
-> +		obj.handle = batches[i].handle;
-> +		obj.offset = address;
-> +		eb->buffers_ptr = to_user_pointer(&obj);
-> +		gem_execbuf(fd, eb);
-> +	}
-> +}
-> +
-> +static void evict_single_offset(int fd, const intel_ctx_t *ctx, int timeout)
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf;
-> +	struct intel_execution_engine2 *e;
-> +	unsigned int engines[I915_EXEC_RING_MASK + 1];
-> +	struct batch *batches;
-> +	unsigned int nengine;
-> +	unsigned int count;
-> +	uint64_t size;
-> +
-> +	nengine = 0;
-> +	for_each_ctx_engine(fd, ctx, e) {
-> +		engines[nengine++] = e->flags;
-> +	}
-> +	igt_require(nengine);
-> +
-> +	size = gem_aperture_size(fd);
-> +	if (size > 1ull<<32) /* Limit to 4GiB as we do not use allow-48b */
-> +		size = 1ull << 32;
-> +	igt_require(size < (1ull<<32) * BATCH_SIZE);
-> +
-> +	count = size / BATCH_SIZE + 1;
-> +	igt_debug("Using %'d batches to fill %'llu aperture on %d engines\n",
-> +		  count, (long long)size, nengine);
-> +
-> +	intel_require_memory(count, BATCH_SIZE, CHECK_RAM);
-> +	intel_detect_and_clear_missed_interrupts(fd);
-> +
-> +	memset(&execbuf, 0, sizeof(execbuf));
-> +	execbuf.buffer_count = 1;
-> +	execbuf.rsvd1 = ctx->id;
-> +
-> +	batches = calloc(count, sizeof(*batches));
-> +	igt_assert(batches);
-> +	for (unsigned int i = 0; i < count; i++) {
-> +		uint32_t *p;
-> +
-> +		batches[i].handle = gem_create(fd, BATCH_SIZE);
-> +		batches[i].ptr =
-> +			gem_mmap__device_coherent(fd, batches[i].handle,
-> +						  0, BATCH_SIZE, PROT_WRITE);
-> +		p = batches[i].ptr + BATCH_SIZE - 8;
-> +		*p = MI_BATCH_BUFFER_END;
-> +	}
-> +
-> +	/* Flush all memory before we start the timer */
-> +	single_offset_submit(fd, &execbuf, batches, count);
-> +
-> +	igt_fork(child, nengine) {
-> +		execbuf.flags |= engines[child];
-> +		igt_until_timeout(timeout)
-> +			single_offset_submit(fd, &execbuf, batches, count);
-> +	}
-> +	igt_waitchildren();
-> +
-> +	for (unsigned int i = 0; i < count; i++) {
-> +		munmap(batches[i].ptr, BATCH_SIZE);
-> +		gem_close(fd, batches[i].handle);
-> +	}
-> +	free(batches);
-> +
-> +	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-> +}
-> +
->  static void make_batch(int i915, uint32_t handle, uint64_t size)
->  {
->  	uint32_t *bb = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
-> @@ -1212,8 +1293,8 @@ igt_main
->  		test_each_engine("allocator-evict", fd, ctx, e)
->  			test_allocator_evict(fd, ctx, e->flags, 20);
->  
-> -		igt_subtest("allocator-evict-all-engines")
-> -			test_allocator_evict(fd, ctx, ALL_ENGINES, 20);
-> +		igt_subtest("evict-single-offset")
-> +			evict_single_offset(fd, ctx, 20);
-
-While you change it please add description before subtest.
-
-Regards,
-Kamil
->  	}
->  
->  	igt_describe("Check start offset and alignment detection");
-> -- 
-> 2.32.0
-> 
+diff --git a/lib/igt_drrs.c b/lib/igt_drrs.c
+new file mode 100644
+index 0000000000..8c424c32e3
+--- /dev/null
++++ b/lib/igt_drrs.c
+@@ -0,0 +1,151 @@
++/*
++ * Copyright © 2022 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#include "drmtest.h"
++#include "igt_drrs.h"
++
++#define DRRS_ENABLE_STR "DRRS Enabled: "
++#define DRRS_ACTIVE_STR "DRRS Active: "
++#define DRRS_REFRESH_RATE_STR "DRRS refresh rate: "
++
++struct drrs_status {
++	bool enabled;
++	bool active;
++	bool low_refresh_rate;
++};
++
++static bool is_yes_or_no(char *ch)
++{
++	return strncmp(ch, "yes", 3) == 0;
++}
++
++static const char *yes_or_no(bool r)
++{
++	return r ? "yes" : "no";
++}
++
++static bool parse(int debugfs_fd, enum pipe pipe, struct drrs_status *status)
++{
++	char buf[1024], search[16], *ch;
++	int ret;
++
++	ret = igt_debugfs_simple_read(debugfs_fd, "i915_drrs_status", buf,
++				      sizeof(buf));
++	if (ret < 0) {
++		igt_info("Could not read i915_drrs_status: %s\n",
++			 strerror(-ret));
++		return false;
++	}
++
++	snprintf(search, sizeof(search), ":pipe %s]:", kmstest_pipe_name(pipe));
++	ch = strstr(buf, search);
++	if (!ch)
++		return false;
++
++	ch = strstr(buf, DRRS_ENABLE_STR);
++	if (!ch)
++		return false;
++	ch += sizeof(DRRS_ENABLE_STR);
++	status->enabled = is_yes_or_no(ch);
++
++	ch = strstr(buf, DRRS_ACTIVE_STR);
++	if (!ch)
++		return false;
++	ch += sizeof(DRRS_ACTIVE_STR);
++	status->active = is_yes_or_no(ch);
++
++	ch = strstr(buf, DRRS_REFRESH_RATE_STR);
++	if (!ch)
++		return false;
++	ch += sizeof(DRRS_REFRESH_RATE_STR);
++	status->low_refresh_rate = strncmp(ch, "low", 3) == 0;
++
++	return true;
++}
++
++bool drrs_is_enabled(int debugfs_fd, enum pipe pipe)
++{
++	struct drrs_status status;
++	bool ret;
++
++	ret = parse(debugfs_fd, pipe, &status);
++	if (!ret)
++		return false;
++
++	return status.enabled;
++}
++
++bool drrs_is_active(int debugfs_fd, enum pipe pipe)
++{
++	struct drrs_status status;
++	bool ret;
++
++	ret = parse(debugfs_fd, pipe, &status);
++	if (!ret)
++		return false;
++
++	return status.active;
++}
++
++bool drrs_is_low_refresh_rate(int debugfs_fd, enum pipe pipe)
++{
++	struct drrs_status status;
++	bool ret;
++
++	ret = parse(debugfs_fd, pipe, &status);
++	if (!ret)
++		return false;
++
++	return status.low_refresh_rate;
++}
++
++bool drrs_write_status(int debugfs_fd, enum pipe pipe, char *buf, int len)
++{
++	struct drrs_status status;
++	int ret, used = 0;
++
++	ret = parse(debugfs_fd, pipe, &status);
++	if (!ret)
++		return false;
++
++	ret = snprintf(buf, len - used, DRRS_ENABLE_STR "%s\n",
++		       yes_or_no(status.enabled));
++	if (ret < 0 || ret >= (len - used))
++		return false;
++	used += ret;
++	buf += ret;
++
++	ret = snprintf(buf, len - used, DRRS_ACTIVE_STR "%s\n",
++		       yes_or_no(status.active));
++	if (ret < 0 || ret >= (len - used))
++		return false;
++	used += ret;
++	buf += ret;
++
++	ret = snprintf(buf, len - used, DRRS_REFRESH_RATE_STR "%s\n",
++		       status.low_refresh_rate ? "low" : "high");
++	if (ret < 0 || ret >= (len - used))
++		return false;
++
++	return true;
++}
+\ No newline at end of file
+diff --git a/lib/igt_drrs.h b/lib/igt_drrs.h
+new file mode 100644
+index 0000000000..ff79fb20fb
+--- /dev/null
++++ b/lib/igt_drrs.h
+@@ -0,0 +1,31 @@
++/*
++ * Copyright © 2022 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#pragma once
++
++#include "igt_kms.h"
++
++bool drrs_is_enabled(int debugfs_fd, enum pipe pipe);
++bool drrs_is_active(int debugfs_fd, enum pipe pipe);
++bool drrs_is_low_refresh_rate(int debugfs_fd, enum pipe pipe);
++bool drrs_write_status(int debugfs_fd, enum pipe pipe, char *buf, int len);
+diff --git a/lib/meson.build b/lib/meson.build
+index ccee7a5965..3176b27813 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -77,6 +77,7 @@ lib_sources = [
+ 	'igt_dummyload.c',
+ 	'igt_store.c',
+ 	'uwildmat/uwildmat.c',
++	'igt_drrs.c',
+ 	'igt_kmod.c',
+ 	'igt_panfrost.c',
+ 	'igt_v3d.c',
+-- 
+2.35.1
