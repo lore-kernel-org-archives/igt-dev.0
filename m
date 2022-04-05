@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5300A10E697
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 20:41:58 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Apr 2022 13:43:19 -0700
-Message-Id: <20220405204319.90867-2-jose.souza@intel.com>
-In-Reply-To: <20220405204319.90867-1-jose.souza@intel.com>
-References: <20220405204319.90867-1-jose.souza@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8466997208961368493=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] test: kms_frontbuffer_tracking: Fix
- DRRS subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
+Date: Tue, 05 Apr 2022 20:42:40 -0000
+Message-ID: <164919136088.24157.2052378041200708972@emeril.freedesktop.org>
+References: <20220405191215.76309-1-jose.souza@intel.com>
+In-Reply-To: <20220405191215.76309-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_lib=3A_Add_DRRS_helpers?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,133 +17,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Due to recent refactors in i915, it completely changed
-i915_drrs_status breaking all DRRS subtests, so here using
-the newly added DRRS helpers to fix it.
+--===============8466997208961368493==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
----
- tests/i915/kms_frontbuffer_tracking.c | 57 +++------------------------
- 1 file changed, 5 insertions(+), 52 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 814ddb46ce..59ba6cfc11 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -34,6 +34,7 @@
- #include "i915/gem_create.h"
- #include "igt.h"
- #include "igt_sysfs.h"
-+#include "igt_drrs.h"
- #include "igt_psr.h"
- 
- IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
-@@ -723,13 +724,6 @@ static void set_mode_for_params(struct modeset_params *params)
- 	igt_display_commit(&drm.display);
- }
- 
--static void __debugfs_read(const char *param, char *buf, int len)
--{
--	len = igt_debugfs_simple_read(drm.debugfs, param, buf, len);
--	if (len < 0)
--		igt_assert(len == -ENOENT || len == -ENODEV);
--}
--
- static int __debugfs_write(const char *param, char *buf, int len)
- {
- 	return igt_sysfs_write(drm.debugfs, param, buf, len - 1);
-@@ -790,47 +784,11 @@ static void drrs_set(unsigned int val)
- 		igt_assert_f(ret == (sizeof(buf) - 1), "debugfs_write failed");
- }
- 
--static bool is_drrs_high(void)
--{
--	char buf[MAX_DRRS_STATUS_BUF_LEN];
--
--	debugfs_read("i915_drrs_status", buf);
--	return strstr(buf, "DRRS_HIGH_RR");
--}
--
--static bool is_drrs_low(void)
--{
--	char buf[MAX_DRRS_STATUS_BUF_LEN];
--
--	debugfs_read("i915_drrs_status", buf);
--	return strstr(buf, "DRRS_LOW_RR");
--}
--
--static bool is_drrs_supported(void)
--{
--	char buf[MAX_DRRS_STATUS_BUF_LEN];
--
--	debugfs_read("i915_drrs_status", buf);
--	return strcasestr(buf, "DRRS Supported: Yes");
--}
--
--static bool is_drrs_inactive(void)
--{
--	char buf[MAX_DRRS_STATUS_BUF_LEN];
--
--	debugfs_read("i915_drrs_status", buf);
--
--	if (strstr(buf, "DRRS_State: "))
--		return false;
--
--	return true;
--}
--
- static void drrs_print_status(void)
- {
- 	char buf[MAX_DRRS_STATUS_BUF_LEN];
- 
--	debugfs_read("i915_drrs_status", buf);
-+	drrs_write_status(drm.debugfs, prim_mode_params.pipe, buf, sizeof(buf));
- 	igt_info("DRRS STATUS :\n%s\n", buf);
- }
- 
-@@ -951,7 +909,7 @@ static bool fbc_wait_until_enabled(void)
- 
- static bool drrs_wait_until_rr_switch_to_low(void)
- {
--	return igt_wait(is_drrs_low(), 5000, 1);
-+	return igt_wait(drrs_is_low_refresh_rate(drm.debugfs, prim_mode_params.pipe), 5000, 1);
- }
- 
- #define fbc_enable() igt_set_module_param_int(drm.fd, "enable_fbc", 1)
-@@ -1460,11 +1418,6 @@ static void setup_drrs(void)
- 		return;
- 	}
- 
--	if (!is_drrs_supported()) {
--		igt_info("Can't test DRRS: Not supported.\n");
--		return;
--	}
--
- 	drrs.can_test = true;
- }
- 
-@@ -1607,7 +1560,7 @@ static void do_status_assertions(int flags)
- 	}
- 
- 	if (flags & ASSERT_DRRS_HIGH) {
--		if (!is_drrs_high()) {
-+		if (drrs_is_low_refresh_rate(drm.debugfs, prim_mode_params.pipe)) {
- 			drrs_print_status();
- 			igt_assert_f(false, "DRRS HIGH\n");
- 		}
-@@ -1617,7 +1570,7 @@ static void do_status_assertions(int flags)
- 			igt_assert_f(false, "DRRS LOW\n");
- 		}
- 	} else if (flags & ASSERT_DRRS_INACTIVE) {
--		if (!is_drrs_inactive()) {
-+		if (drrs_is_active(drm.debugfs, prim_mode_params.pipe)) {
- 			drrs_print_status();
- 			igt_assert_f(false, "DRRS INACTIVE\n");
- 		}
--- 
-2.35.1
+Series: series starting with [i-g-t,1/2] lib: Add DRRS helpers
+URL   : https://patchwork.freedesktop.org/series/102219/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6411 -> IGTPW_6877
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/index.html
+
+Participating hosts (37 -> 35)
+------------------------------
+
+  Missing    (2): fi-bsw-cyan fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6877 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-rkl-11600:       [PASS][1] -> [INCOMPLETE][2] ([i915#5127])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6411/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-edp1:
+    - fi-tgl-u2:          [PASS][3] -> [DMESG-WARN][4] ([i915#402])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6411/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - fi-tgl-u2:          [DMESG-WARN][5] ([i915#402]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6411/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#5127]: https://gitlab.freedesktop.org/drm/intel/issues/5127
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6411 -> IGTPW_6877
+
+  CI-20190529: 20190529
+  CI_DRM_11458: 7b4967c734a7c99ff69154d062a071181021e49d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6877: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/index.html
+  IGT_6411: 987678ecf2d6930981af93f719e4575c91886959 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/index.html
+
+--===============8466997208961368493==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib: Add DRRS helpers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102219/">https://patchwork.freedesktop.org/series/102219/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6411 -&gt; IGTPW_6877</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/index.html</p>
+<h2>Participating hosts (37 -&gt; 35)</h2>
+<p>Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6877 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6411/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5127">i915#5127</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@a-edp1:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6411/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-modeset@a-edp1:<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6411/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6411 -&gt; IGTPW_6877</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11458: 7b4967c734a7c99ff69154d062a071181021e49d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6877: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6877/index.html<br />
+  IGT_6411: 987678ecf2d6930981af93f719e4575c91886959 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8466997208961368493==--
