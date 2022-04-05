@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45F8B10EE1A
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Apr 2022 10:57:05 +0000 (UTC)
-Date: Tue, 5 Apr 2022 12:57:01 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Ramalingam C <ramalingam.c@intel.com>
-Message-ID: <YkwgfTAL8UwNDT7i@zkempczy-mobl2>
-References: <20220401074527.15709-1-ramalingam.c@intel.com>
- <20220401074527.15709-3-ramalingam.c@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2369277881362800155=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220401074527.15709-3-ramalingam.c@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v6 2/2] tests/i915/gem_lmem_swapping:
- Add ccs subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Tue, 05 Apr 2022 11:52:43 -0000
+Message-ID: <164915956364.24157.13152345891663156567@emeril.freedesktop.org>
+References: <20220405084138.3216500-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20220405084138.3216500-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgVmVuZG9y?=
+ =?utf-8?q?_agnostic_gputop?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,378 +17,389 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev <igt-dev@lists.freedesktop.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 01, 2022 at 01:15:27PM +0530, Ramalingam C wrote:
-> Add subtests for covering the compressed object's eviction.
-> 
-> v2:
->   gem_sync after the block_copy blit for init
-> v3:
->   ahnd is passed in as a param [Zbigniew]
->   cmd is bb [Zbigniew]
->   blt src and dst sizes supposed to be same [Zbigniew]
-> v4:
->   Use gem_create_from_pool [Zbigniew]
-> v5:
->   Mark only blt_ctx as non-persistence [Ashutosh]
-> v6:
->   Move the intel_allocator_open/clsoe is moved under TEST-CCS [Arjun]
->   blt_ctx through intel_ctx_0 [Arjun]
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
-> ---
->  tests/i915/gem_lmem_swapping.c | 226 ++++++++++++++++++++++++++++++++-
->  1 file changed, 220 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-> index aba713039cfa..c49d59419d32 100644
-> --- a/tests/i915/gem_lmem_swapping.c
-> +++ b/tests/i915/gem_lmem_swapping.c
-> @@ -22,6 +22,7 @@
->  #include <sys/time.h>
->  #include <sys/wait.h>
->  #include "drm.h"
-> +#include "i915/i915_blt.h"
->  
->  IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
->  
-> @@ -30,6 +31,7 @@ IGT_TEST_DESCRIPTION("Exercise local memory swapping.");
->  
->  #define PAGE_SIZE  (1ULL << 12)
->  #define SZ_64K	   (16 * PAGE_SIZE)
-> +#define DG2_MOCS   (2 << 1)
->  
->  static const char *readable_unit(uint64_t size)
->  {
-> @@ -60,6 +62,7 @@ struct params {
->  #define TEST_RANDOM	(1 << 3)
->  #define TEST_ENGINES	(1 << 4)
->  #define TEST_MULTI	(1 << 5)
-> +#define TEST_CCS	(1 << 6)
->  	unsigned int flags;
->  	unsigned int seed;
->  	bool oom_test;
-> @@ -69,8 +72,56 @@ struct object {
->  	uint64_t size;
->  	uint32_t seed;
->  	uint32_t handle;
-> +	struct blt_copy_object *blt_obj;
->  };
->  
-> +static void set_object(struct blt_copy_object *obj,
-> +		       uint32_t handle, uint64_t size, uint32_t region,
-> +		       uint8_t mocs, enum blt_tiling tiling,
-> +		       enum blt_compression compression,
-> +		       enum blt_compression_type compression_type)
-> +{
-> +	obj->handle = handle;
-> +	obj->size = size;
-> +	obj->region = region;
-> +	obj->mocs = mocs;
-> +	obj->tiling = tiling;
-> +	obj->compression = compression;
-> +	obj->compression_type = compression_type;
-> +}
-> +
-> +static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> +		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> +		     uint16_t x_offset, uint16_t y_offset)
-> +{
-> +	obj->pitch = pitch;
-> +	obj->x1 = x1;
-> +	obj->y1 = y1;
-> +	obj->x2 = x2;
-> +	obj->y2 = y2;
-> +	obj->x_offset = x_offset;
-> +	obj->y_offset = y_offset;
-> +}
-> +
-> +static void set_batch(struct blt_copy_batch *batch,
-> +		      uint32_t handle, uint64_t size, uint32_t region)
-> +{
-> +	batch->handle = handle;
-> +	batch->size = size;
-> +	batch->region = region;
-> +}
-> +
-> +static void set_object_ext(struct blt_block_copy_object_ext *obj,
-> +			   uint8_t compression_format,
-> +			   uint16_t surface_width, uint16_t surface_height,
-> +			   enum blt_surface_type surface_type)
-> +{
-> +	obj->compression_format = compression_format;
-> +	obj->surface_width = surface_width;
-> +	obj->surface_height = surface_height;
-> +	obj->surface_type = surface_type;
-> +}
-> +
->  static uint32_t create_bo(int i915,
->  			  uint64_t *size,
->  			  struct drm_i915_gem_memory_class_instance *region,
-> @@ -105,6 +156,51 @@ init_object(int i915, struct object *obj, unsigned long seed, unsigned int flags
->  	munmap(buf, obj->size);
->  }
->  
-> +static void
-> +init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
-> +		unsigned long seed, const intel_ctx_t *ctx, uint32_t region,
-> +		uint64_t ahnd)
-> +{
-> +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-> +	const struct intel_execution_engine2 *e;
-> +	struct blt_copy_data blt = {};
-> +	struct blt_copy_batch *cmd;
-> +	uint64_t size = 4096;
-> +	unsigned long *buf, j;
-> +
-> +	obj->seed = seed;
-> +	for_each_ctx_engine(i915, ctx, e) {
-> +		igt_assert_f(gem_engine_can_block_copy(i915, e),
-> +			     "Ctx dont have Blt engine");
+--===============2369277881362800155==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-You'll assert on first engine which is before blitter. Please fix
-and resubmit.
+== Series Details ==
 
---
-Zbigniew 
+Series: Vendor agnostic gputop
+URL   : https://patchwork.freedesktop.org/series/102175/
+State : failure
 
-> +		break;
-> +	}
-> +
-> +	cmd = calloc(1, sizeof(*cmd));
-> +	cmd->handle = gem_create_from_pool(i915, &size, region);
-> +	set_batch(cmd, cmd->handle, size, region);
-> +
-> +	buf = gem_mmap__device_coherent(i915, tmp->handle, 0, obj->size, PROT_WRITE);
-> +	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
-> +
-> +	for (j = 0; j < obj->size / sizeof(*buf); j++)
-> +		buf[j] = seed++;
-> +	munmap(buf, obj->size);
-> +
-> +	memset(&blt, 0, sizeof(blt));
-> +	blt.color_depth = CD_32bit;
-> +
-> +	memcpy(&blt.src, tmp, sizeof(blt.src));
-> +	memcpy(&blt.dst, obj->blt_obj, sizeof(blt.dst));
-> +	memcpy(&blt.bb, cmd, sizeof(blt.bb));
-> +
-> +	set_object_ext(&ext.src, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
-> +	set_object_ext(&ext.dst, 0, obj->blt_obj->x2, obj->blt_obj->y2,
-> +		       SURFACE_TYPE_2D);
-> +
-> +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
-> +	free(cmd);
-> +}
-> +
->  static void
->  verify_object(int i915, const struct object *obj,  unsigned int flags)
->  {
-> @@ -125,6 +221,60 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
->  	munmap(buf, obj->size);
->  }
->  
-> +static void
-> +verify_object_ccs(int i915, const struct object *obj,
-> +		  struct blt_copy_object *tmp, const intel_ctx_t *ctx,
-> +		  uint32_t region, uint64_t ahnd)
-> +{
-> +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
-> +	const struct intel_execution_engine2 *e;
-> +	struct blt_copy_data blt = {};
-> +	struct blt_copy_batch *cmd;
-> +	uint64_t size = 4096;
-> +	unsigned long j, val, *buf;
-> +
-> +	for_each_ctx_engine(i915, ctx, e) {
-> +		igt_assert_f(gem_engine_can_block_copy(i915, e),
-> +			     "ctx dont have Blt engine");
-> +		break;
-> +	}
-> +
-> +	cmd = calloc(1, sizeof(*cmd));
-> +	cmd->handle = gem_create_from_pool(i915, &size, region);
-> +	set_batch(cmd, cmd->handle, size, region);
-> +
-> +	memset(&blt, 0, sizeof(blt));
-> +	blt.color_depth = CD_32bit;
-> +
-> +	memcpy(&blt.src, obj->blt_obj, sizeof(blt.src));
-> +	memcpy(&blt.dst, tmp, sizeof(blt.dst));
-> +	memcpy(&blt.bb, cmd, sizeof(blt.bb));
-> +
-> +	blt.dst.x2 = min(obj->blt_obj->x2, tmp->x2);
-> +	blt.dst.y2 = min(obj->blt_obj->y2, tmp->y2);
-> +
-> +	set_object_ext(&ext.src, 0, obj->blt_obj->x2, obj->blt_obj->y2,
-> +		       SURFACE_TYPE_2D);
-> +	set_object_ext(&ext.dst, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
-> +	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
-> +
-> +	buf = gem_mmap__device_coherent(i915, tmp->handle, 0,
-> +					obj->size, PROT_READ);
-> +	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, 0);
-> +
-> +	for (j = 0; j < obj->size / PAGE_SIZE; j++) {
-> +		unsigned long x = (j * PAGE_SIZE + rand() % PAGE_SIZE) / sizeof(*buf);
-> +
-> +		val = obj->seed + x;
-> +		igt_assert_f(buf[x] == val,
-> +			     "Object mismatch at offset %lu - found %lx, expected %lx, difference:%lx!\n",
-> +			     x * sizeof(*buf), buf[x], val, buf[x] ^ val);
-> +	}
-> +
-> +	munmap(buf, obj->size);
-> +	free(cmd);
-> +}
-> +
->  static void move_to_lmem(int i915,
->  			 const intel_ctx_t *ctx,
->  			 struct object *list,
-> @@ -174,13 +324,25 @@ static void __do_evict(int i915,
->  						    region->memory_instance);
->  	const unsigned int max_swap_in = params->count / 100 + 1;
->  	struct object *objects, *obj, *list;
-> +	const uint32_t bpp = 32;
-> +	uint32_t width, height, stride;
-> +	const intel_ctx_t *blt_ctx;
-> +	struct blt_copy_object *tmp;
->  	unsigned int engine = 0;
->  	unsigned int i, l;
-> -	uint64_t size;
-> +	uint64_t size, ahnd;
->  	struct timespec t = {};
->  	unsigned int num;
->  
-> -	size = 4096;
-> +	width = PAGE_SIZE / (bpp / 8);
-> +	height = params->size.max / (bpp / 8) /  width;
-> +	stride = width * 4;
-> +
-> +	tmp = calloc(1, sizeof(*tmp));
-> +	if (params->flags & TEST_CCS) {
-> +		blt_ctx = intel_ctx_0(i915);
-> +		__gem_context_set_persistence(i915, blt_ctx->id, false);
-> +	}
->  
->  	objects = calloc(params->count, sizeof(*objects));
->  	igt_assert(objects);
-> @@ -191,6 +353,19 @@ static void __do_evict(int i915,
->  	srand(seed);
->  
->  	/* Create the initial working set of objects. */
-> +	if (params->flags & TEST_CCS) {
-> +		ahnd = intel_allocator_open_full(i915, blt_ctx->id, 0, 0,
-> +						 INTEL_ALLOCATOR_SIMPLE,
-> +						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-> +
-> +		tmp->handle = gem_create_in_memory_regions(i915, params->size.max,
-> +				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
-> +		set_object(tmp, tmp->handle, params->size.max,
-> +			   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0), DG2_MOCS,
-> +			   T_LINEAR, COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
-> +		set_geom(tmp, stride, 0, 0, width, height, 0, 0);
-> +	}
-> +
->  	size = 0;
->  	for (i = 0, obj = objects; i < params->count; i++, obj++) {
->  		if (params->flags & TEST_RANDOM)
-> @@ -200,6 +375,7 @@ static void __do_evict(int i915,
->  		else
->  			obj->size = params->size.min;
->  
-> +		obj->size = ALIGN(obj->size, 4096);
->  		size += obj->size;
->  		if ((size >> 20) > params->mem_limit) {
->  			params->count = i;
-> @@ -207,10 +383,26 @@ static void __do_evict(int i915,
->  		}
->  		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
->  
-> -		move_to_lmem(i915, ctx, objects + i, 1, region_id, engine,
-> -			     params->oom_test);
-> -		if (params->flags & TEST_VERIFY)
-> +		if (params->flags & TEST_CCS) {
-> +			width = PAGE_SIZE / (bpp / 8);
-> +			height = obj->size / (bpp / 8) /  width;
-> +			stride = width * 4;
-> +
-> +			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
-> +			set_object(obj->blt_obj, obj->handle, obj->size, region_id,
-> +				   DG2_MOCS, T_LINEAR, COMPRESSION_ENABLED,
-> +				   COMPRESSION_TYPE_3D);
-> +			set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
-> +			init_object_ccs(i915, obj, tmp, rand(), blt_ctx,
-> +					region_id, ahnd);
-> +		} else if (params->flags & TEST_VERIFY) {
->  			init_object(i915, obj, rand(), params->flags);
-> +			move_to_lmem(i915, ctx, objects + i, 1, region_id, engine,
-> +				     params->oom_test);
-> +		} else {
-> +			move_to_lmem(i915, ctx, objects + i, 1, region_id, engine,
-> +				     params->oom_test);
-> +		}
->  	}
->  
->  	igt_debug("obj size min/max=%lu %s/%lu %s, count=%u, seed: %u\n",
-> @@ -238,7 +430,15 @@ static void __do_evict(int i915,
->  		if (params->flags & TEST_ENGINES)
->  			engine = (engine + 1) % __num_engines__;
->  
-> -		if (params->flags & TEST_VERIFY) {
-> +		if (params->flags & TEST_CCS) {
-> +			for (i = 0; i < num; i++)
-> +				verify_object_ccs(i915, &list[i], tmp,
-> +						  blt_ctx, region_id, ahnd);
-> +			/* Update random object - may swap it back in. */
-> +			i = rand() % params->count;
-> +			init_object_ccs(i915, &objects[i], tmp, rand(),
-> +					blt_ctx, region_id, ahnd);
-> +		} else if (params->flags & TEST_VERIFY) {
->  			for (i = 0; i < num; i++)
->  				verify_object(i915, &list[i], params->flags);
->  
-> @@ -253,6 +453,12 @@ static void __do_evict(int i915,
->  
->  	free(list);
->  	free(objects);
-> +
-> +	if (params->flags & TEST_CCS) {
-> +		gem_close(i915, tmp->handle);
-> +		intel_ctx_destroy(i915, blt_ctx);
-> +		put_ahnd(ahnd);
-> +	}
->  }
->  
->  static void fill_params(int i915, struct params *params,
-> @@ -354,6 +560,9 @@ static void test_evict(int i915,
->  	const unsigned int nproc = sysconf(_SC_NPROCESSORS_ONLN) + 1;
->  	struct params params;
->  
-> +	if (flags & TEST_CCS)
-> +		igt_require(IS_DG2(intel_get_drm_devid(i915)));
-> +
->  	fill_params(i915, &params, region, flags, nproc, false);
->  
->  	if (flags & TEST_PARALLEL) {
-> @@ -522,6 +731,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		{ "parallel-random-engines", TEST_PARALLEL | TEST_RANDOM | TEST_ENGINES },
->  		{ "parallel-random-verify", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY },
->  		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
-> +		{ "verify-ccs", TEST_CCS },
-> +		{ "verify-random-ccs", TEST_CCS | TEST_RANDOM },
-> +		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
-> +		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
-> +		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
->  		{ }
->  	};
->  	const intel_ctx_t *ctx;
-> -- 
-> 2.20.1
-> 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11455 -> IGTPW_6872
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6872 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6872, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/index.html
+
+Participating hosts (47 -> 47)
+------------------------------
+
+  Additional (2): fi-cml-u2 fi-pnv-d510 
+  Missing    (2): fi-bsw-cyan fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6872:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {fi-ehl-2}:         [PASS][3] -> [DMESG-FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/fi-ehl-2/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-ehl-2/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6872 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@amdgpu/amd_cs_nop@fork-compute0:
+    - fi-blb-e6850:       NOTRUN -> [SKIP][5] ([fdo#109271]) +17 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-blb-e6850/igt@amdgpu/amd_cs_nop@fork-compute0.html
+
+  * igt@amdgpu/amd_cs_nop@sync-compute0:
+    - fi-cml-u2:          NOTRUN -> [SKIP][6] ([fdo#109315]) +17 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@amdgpu/amd_cs_nop@sync-compute0.html
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-cml-u2:          NOTRUN -> [SKIP][7] ([i915#1208]) +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][8] ([fdo#109271]) +57 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html
+    - fi-cml-u2:          NOTRUN -> [SKIP][9] ([i915#2190])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-cml-u2:          NOTRUN -> [SKIP][10] ([i915#4613]) +3 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-6:          [PASS][11] -> [INCOMPLETE][12] ([i915#4418])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][13] -> [INCOMPLETE][14] ([i915#4785])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@dp-hpd-fast:
+    - fi-cml-u2:          NOTRUN -> [SKIP][15] ([fdo#109284] / [fdo#111827]) +8 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_chamelium@dp-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - fi-cml-u2:          NOTRUN -> [SKIP][16] ([fdo#109278]) +1 similar issue
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-cml-u2:          NOTRUN -> [SKIP][17] ([fdo#109285])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][18] ([fdo#109271] / [i915#5341])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-pnv-d510/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-cml-u2:          NOTRUN -> [SKIP][19] ([fdo#109278] / [i915#533])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-cml-u2:          NOTRUN -> [SKIP][20] ([i915#3555])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-cml-u2:          NOTRUN -> [SKIP][21] ([i915#3301])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - bat-dg1-6:          NOTRUN -> [FAIL][22] ([i915#4312] / [i915#5257])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/bat-dg1-6/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [DMESG-FAIL][23] ([i915#4528]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - fi-tgl-u2:          [DMESG-WARN][25] ([i915#402]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1208]: https://gitlab.freedesktop.org/drm/intel/issues/1208
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6410 -> IGTPW_6872
+
+  CI-20190529: 20190529
+  CI_DRM_11455: 548f9565ec7689e227b24ed9ecd5dd9e521fc7be @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6872: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/index.html
+  IGT_6410: cc359d5d2d3fc8be50340ba0379bacaf5c37bc5f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/index.html
+
+--===============2369277881362800155==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Vendor agnostic gputop</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102175/">https://patchwork.freedesktop.org/series/102175/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11455 -&gt; IGTPW_6872</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6872 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6872, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/index.html</p>
+<h2>Participating hosts (47 -&gt; 47)</h2>
+<p>Additional (2): fi-cml-u2 fi-pnv-d510 <br />
+  Missing    (2): fi-bsw-cyan fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6872:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gt_heartbeat:<ul>
+<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/fi-ehl-2/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-ehl-2/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6872 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_cs_nop@fork-compute0:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-blb-e6850/igt@amdgpu/amd_cs_nop@fork-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@amdgpu/amd_cs_nop@sync-compute0:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@amdgpu/amd_cs_nop@sync-compute0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1208">i915#1208</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</p>
+</li>
+<li>
+<p>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-hpd-fast:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109284">fdo#109284</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-pnv-d510/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5341">i915#5341</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-cml-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/bat-dg1-6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11455/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6410 -&gt; IGTPW_6872</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11455: 548f9565ec7689e227b24ed9ecd5dd9e521fc7be @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6872: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6872/index.html<br />
+  IGT_6410: cc359d5d2d3fc8be50340ba0379bacaf5c37bc5f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2369277881362800155==--
