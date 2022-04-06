@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============1284236857559185651=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Wed, 06 Apr 2022 18:11:51 -0000
-Message-ID: <164926871159.5451.2805683856692871936@emeril.freedesktop.org>
-References: <20220406162906.6057-1-swati2.sharma@intel.com>
-In-Reply-To: <20220406162906.6057-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
- =?utf-8?q?mprovements_in_plane_scaling?=
+To: "Zhang, Dingchen (David)" <dingchen.zhang@amd.com>
+Date: Wed, 06 Apr 2022 18:14:29 -0000
+Message-ID: <164926886974.5451.2387737119299921683@emeril.freedesktop.org>
+References: <20220406145213.418625-1-dingchen.zhang@amd.com>
+In-Reply-To: <20220406145213.418625-1-dingchen.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Famd=3A_return_negative_if_PSR_state_debugfs_open_fails_=28r?=
+ =?utf-8?q?ev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,486 +24,263 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============1284236857559185651==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Series: Improvements in plane scaling
-URL   : https://patchwork.freedesktop.org/series/102280/
-State : warning
+== Series Details ==
 
-=3D=3D Summary =3D=3D
+Series: lib/igt_amd: return negative if PSR state debugfs open fails (rev2)
+URL   : https://patchwork.freedesktop.org/series/102150/
+State : success
 
-Pipeline status: FAILED.
+== Summary ==
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/552205 fo=
-r the overview.
+CI Bug Log - changes from CI_DRM_11465 -> IGTPW_6884
+====================================================
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/20800140):
-  cc -Itests/59830eb@@kms_plane_scaling@exe -Itests -I../tests -I../include=
-/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I=
-. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linu=
-x-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/i=
-nclude/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/inclu=
-de/libdrm/nouveau -I/usr/include/x86_64-linux-gnu -I/usr/include/valgrind -=
-I/usr/include/alsa -I/usr/include -fdiagnostics-color=3Dalways -pipe -D_FIL=
-E_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_S=
-OURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclara=
-tion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -=
-Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissi=
-ng-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wred=
-undant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clo=
-bbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointe=
-r-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unuse=
-d-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werro=
-r=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissin=
-g-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-t=
-ype -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -f=
-no-builtin-malloc -fno-builtin-calloc -fcommon -pthread  -MD -MQ 'tests/598=
-30eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o' -MF 'tests/59830eb@@kms_=
-plane_scaling@exe/kms_plane_scaling.c.o.d' -o 'tests/59830eb@@kms_plane_sca=
-ling@exe/kms_plane_scaling.c.o' -c ../tests/kms_plane_scaling.c
-  ../tests/kms_plane_scaling.c: In function =E2=80=98__igt_unique____real_m=
-ain622=E2=80=99:
-  ../tests/kms_plane_scaling.c:785:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifier_pipe=E2=80=99; did you mean =E2=80=98=
-test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-        test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, output);
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:785:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifier_pipe=E2=80=99 [-Wnested-externs]
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99; did you mean =E2=80=
-=98test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-de=
-claration]
-        test_scaler_with_modifiers_pipe(&data, 0.75 * mode->hdisplay,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:835:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1649268620:step_script
-  section_start:1649268620:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268621:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Summary
+-------
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/20800143):
-  /usr/bin/aarch64-linux-gnu-gcc -Itests/59830eb@@kms_plane_scaling@exe -It=
-ests -I../tests -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../li=
-b -I../lib/stubs/syscalls -I. -I../ -I../lib/stubs/drm -I/usr/include/cairo=
- -I/usr/include/glib-2.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0/include -I/u=
-sr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/inc=
-lude/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/in=
-clude/aarch64-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fdiagn=
-ostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -W=
-extra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=
-=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimpli=
-cit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-at=
-tribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-styl=
-e-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes=
- -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-miss=
-ing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limit=
-s -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darra=
-y-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-ca=
-st -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpoin=
-ter-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtr=
-igraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -fc=
-ommon -pthread  -MD -MQ 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_sca=
-ling.c.o' -MF 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o.d=
-' -o 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o' -c ../tes=
-ts/kms_plane_scaling.c
-  ../tests/kms_plane_scaling.c: In function =E2=80=98__igt_unique____real_m=
-ain622=E2=80=99:
-  ../tests/kms_plane_scaling.c:785:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifier_pipe=E2=80=99; did you mean =E2=80=98=
-test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-        test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, output);
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:785:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifier_pipe=E2=80=99 [-Wnested-externs]
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99; did you mean =E2=80=
-=98test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-de=
-claration]
-        test_scaler_with_modifiers_pipe(&data, 0.75 * mode->hdisplay,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:835:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1649268633:step_script
-  section_start:1649268633:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268633:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/20800142):
-  /usr/bin/arm-linux-gnueabihf-gcc -Itests/59830eb@@kms_plane_scaling@exe -=
-Itests -I../tests -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../=
-lib -I../lib/stubs/syscalls -I. -I../ -I../lib/stubs/drm -I/usr/include/cai=
-ro -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include =
--I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr=
-/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/us=
-r/include/arm-linux-gnueabihf -I/usr/include/valgrind -I/usr/include/alsa -=
-fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-=
-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_=
-SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -=
-Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-for=
-mat-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wol=
-d-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prot=
-otypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wn=
-o-missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type=
--limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=
-=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-poi=
-nter-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=
-=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werr=
-or=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-cal=
-loc -fcommon -pthread  -MD -MQ 'tests/59830eb@@kms_plane_scaling@exe/kms_pl=
-ane_scaling.c.o' -MF 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scalin=
-g.c.o.d' -o 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o' -c=
- ../tests/kms_plane_scaling.c
-  ../tests/kms_plane_scaling.c: In function =E2=80=98__igt_unique____real_m=
-ain622=E2=80=99:
-  ../tests/kms_plane_scaling.c:785:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifier_pipe=E2=80=99; did you mean =E2=80=98=
-test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-        test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, output);
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:785:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifier_pipe=E2=80=99 [-Wnested-externs]
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99; did you mean =E2=80=
-=98test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-de=
-claration]
-        test_scaler_with_modifiers_pipe(&data, 0.75 * mode->hdisplay,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:835:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1649268633:step_script
-  section_start:1649268633:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268634:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  No regressions found.
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/20800144):
-  /usr/bin/mips-linux-gnu-gcc -Itests/59830eb@@kms_plane_scaling@exe -Itest=
-s -I../tests -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib -=
-I../lib/stubs/syscalls -I. -I../ -I../lib/stubs/drm -I/usr/include/cairo -I=
-/usr/include/glib-2.0 -I/usr/lib/mips-linux-gnu/glib-2.0/include -I/usr/inc=
-lude/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/l=
-ibpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/=
-mips-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-co=
-lor=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -st=
-d=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wba=
-d-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallt=
-hrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -=
-Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definit=
-ion -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninit=
-ialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field=
--initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-un=
-used-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds =
--Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werro=
-r=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-in=
-t-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -=
-Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -fcommon -pt=
-hread  -MD -MQ 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'=
- -MF 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o.d' -o 'tes=
-ts/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o' -c ../tests/kms_pl=
-ane_scaling.c
-  ../tests/kms_plane_scaling.c: In function =E2=80=98__igt_unique____real_m=
-ain622=E2=80=99:
-  ../tests/kms_plane_scaling.c:785:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifier_pipe=E2=80=99; did you mean =E2=80=98=
-test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-        test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, output);
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:785:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifier_pipe=E2=80=99 [-Wnested-externs]
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99; did you mean =E2=80=
-=98test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-de=
-claration]
-        test_scaler_with_modifiers_pipe(&data, 0.75 * mode->hdisplay,
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:835:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1649268650:step_script
-  section_start:1649268650:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268651:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/index.html
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/20800135):
-  cc -Itests/59830eb@@kms_plane_scaling@exe -Itests -I../tests -I../include=
-/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I=
-. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/=
-include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/lib=
-png16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/va=
-lgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -W=
-invalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_=
-FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wform=
-at=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmis=
-sing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-exte=
-rns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstr=
-ict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitial=
-ized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-pac=
-ked-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-un=
-used-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -We=
-rror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmis=
-sing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretur=
-n-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings=
- -fno-builtin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ 'tests/5=
-9830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o' -MF 'tests/59830eb@@km=
-s_plane_scaling@exe/kms_plane_scaling.c.o.d' -o 'tests/59830eb@@kms_plane_s=
-caling@exe/kms_plane_scaling.c.o' -c ../tests/kms_plane_scaling.c
-  ../tests/kms_plane_scaling.c: In function =E2=80=98__igt_unique____real_m=
-ain622=E2=80=99:
-  ../tests/kms_plane_scaling.c:785:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifier_pipe=E2=80=99; did you mean =E2=80=98=
-test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    785 |      test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, ou=
-tput);
-        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |      test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:785:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifier_pipe=E2=80=99 [-Wnested-externs]
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99; did you mean =E2=80=
-=98test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-de=
-claration]
-    835 |      test_scaler_with_modifiers_pipe(&data, 0.75 * mode->hdisplay,
-        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |      test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:835:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1649268610:step_script
-  section_start:1649268610:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268613:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Participating hosts (50 -> 46)
+------------------------------
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/20800139):
-  static void test_scaler_with_rotation_pipe(data_t *d,
-              ^
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on 'test_scaler_with_modifiers_pipe' is invalid in C99 [-Werror,-Wimplicit-=
-function-declaration]
-                                          test_scaler_with_modifiers_pipe(&=
-data, 0.75 * mode->hdisplay,
-                                          ^
-  ../tests/kms_plane_scaling.c:835:6: note: did you mean 'test_scaler_with_=
-rotation_pipe'?
-  ../tests/kms_plane_scaling.c:253:13: note: 'test_scaler_with_rotation_pip=
-e' declared here
-  static void test_scaler_with_rotation_pipe(data_t *d,
-              ^
-  ../tests/kms_plane_scaling.c:848:6: error: implicit declaration of functi=
-on 'test_scaler_with_modifiers_pipe' is invalid in C99 [-Werror,-Wimplicit-=
-function-declaration]
-                                          test_scaler_with_modifiers_pipe(&=
-data, mode->hdisplay,
-                                          ^
-  3 errors generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1649268616:step_script
-  section_start:1649268616:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268618:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  Missing    (4): fi-ctg-p8600 fi-bsw-cyan shard-tglu fi-bdw-samus 
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
-.org/gfx-ci/igt-ci-tags/-/jobs/20800138):
-  cc -Itests/59830eb@@kms_plane_scaling@exe -Itests -I../tests -I../include=
-/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I=
-. -I../ -I../lib/stubs/drm -I/usr/include/cairo -I/usr/include/glib-2.0 -I/=
-usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2=
- -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/valgrind -fdi=
-agnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch=
- -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOU=
-RCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wim=
-plicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format=
--attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-s=
-tyle-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototy=
-pes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-m=
-issing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member =
--Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result=
- -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit=
--self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces=
- -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Wer=
-ror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-built=
-in-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ 'tests/59830eb@@kms=
-_plane_scaling@exe/kms_plane_scaling.c.o' -MF 'tests/59830eb@@kms_plane_sca=
-ling@exe/kms_plane_scaling.c.o.d' -o 'tests/59830eb@@kms_plane_scaling@exe/=
-kms_plane_scaling.c.o' -c ../tests/kms_plane_scaling.c
-  ../tests/kms_plane_scaling.c: In function =E2=80=98__igt_unique____real_m=
-ain622=E2=80=99:
-  ../tests/kms_plane_scaling.c:785:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifier_pipe=E2=80=99; did you mean =E2=80=98=
-test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    785 |      test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, ou=
-tput);
-        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |      test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:785:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifier_pipe=E2=80=99 [-Wnested-externs]
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99; did you mean =E2=80=
-=98test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-de=
-claration]
-    835 |      test_scaler_with_modifiers_pipe(&data, 0.75 * mode->hdisplay,
-        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |      test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:835:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1649268624:step_script
-  section_start:1649268624:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268625:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Possible new issues
+-------------------
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/20800136):
-  cc -Itests/59830eb@@kms_plane_scaling@exe -Itests -I../tests -I../include=
-/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I=
-. -I../ -I../lib/stubs/libunwind -I/usr/include/cairo -I/usr/include/glib-2=
-.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/fre=
-etype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/=
-nouveau -I/usr/include/valgrind -fdiagnostics-color=3Dalways -pipe -D_FILE_=
-OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOU=
-RCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarati=
-on-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wm=
-issing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing=
--prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredun=
-dant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobb=
-ered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-=
-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno=
--unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-boun=
-ds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -We=
-rror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to=
--int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraph=
-s -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -fcommon =
--pthread -MD -MQ 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.=
-o' -MF 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o.d' -o 't=
-ests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o' -c ../tests/kms_=
-plane_scaling.c
-  ../tests/kms_plane_scaling.c: In function =E2=80=98__igt_unique____real_m=
-ain622=E2=80=99:
-  ../tests/kms_plane_scaling.c:785:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifier_pipe=E2=80=99; did you mean =E2=80=98=
-test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    785 |      test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, ou=
-tput);
-        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |      test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:785:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifier_pipe=E2=80=99 [-Wnested-externs]
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99; did you mean =E2=80=
-=98test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-de=
-claration]
-    835 |      test_scaler_with_modifiers_pipe(&data, 0.75 * mode->hdisplay,
-        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |      test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:835:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1649268625:step_script
-  section_start:1649268625:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268626:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  Here are the unknown changes that may have been introduced in IGTPW_6884:
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/20800137):
-  cc -Itests/tests@@kms_plane_scaling@exe -Itests -I../tests -I../include/d=
-rm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. =
--I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/in=
-clude -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpn=
-g16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valg=
-rind -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Win=
-valid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FO=
-RTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=
-=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissi=
-ng-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-extern=
-s -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstric=
-t-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitializ=
-ed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packe=
-d-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unus=
-ed-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werr=
-or=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissi=
-ng-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-=
-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -=
-fno-builtin-malloc -fno-builtin-calloc -fcommon -pthread  -MD -MQ 'tests/te=
-sts@@kms_plane_scaling@exe/kms_plane_scaling.c.o' -MF 'tests/tests@@kms_pla=
-ne_scaling@exe/kms_plane_scaling.c.o.d' -o 'tests/tests@@kms_plane_scaling@=
-exe/kms_plane_scaling.c.o' -c ../tests/kms_plane_scaling.c
-  ../tests/kms_plane_scaling.c: In function =E2=80=98__igt_unique____real_m=
-ain622=E2=80=99:
-  ../tests/kms_plane_scaling.c:785:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifier_pipe=E2=80=99; did you mean =E2=80=98=
-test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    785 |      test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, ou=
-tput);
-        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |      test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:785:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifier_pipe=E2=80=99 [-Wnested-externs]
-  ../tests/kms_plane_scaling.c:835:6: error: implicit declaration of functi=
-on =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99; did you mean =E2=80=
-=98test_scaler_with_rotation_pipe=E2=80=99? [-Werror=3Dimplicit-function-de=
-claration]
-    835 |      test_scaler_with_modifiers_pipe(&data, 0.75 * mode->hdisplay,
-        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        |      test_scaler_with_rotation_pipe
-  ../tests/kms_plane_scaling.c:835:6: warning: nested extern declaration of=
- =E2=80=98test_scaler_with_modifiers_pipe=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1649268623:step_script
-  section_start:1649268623:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1649268624:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+### IGT changes ###
 
-=3D=3D Logs =3D=3D
+#### Suppressed ####
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/552205
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_lmem_swapping@verify-random:
+    - {bat-dg2-9}:        NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/bat-dg2-9/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - {bat-adlp-6}:       [DMESG-WARN][2] ([i915#3576]) -> [DMESG-WARN][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/bat-adlp-6/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/bat-adlp-6/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6884 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-bdw-5557u:       [PASS][4] -> [INCOMPLETE][5] ([i915#146])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][6] -> [INCOMPLETE][7] ([i915#4785])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+    - fi-snb-2600:        [PASS][8] -> [INCOMPLETE][9] ([i915#3921])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-hsw-4770:        NOTRUN -> [FAIL][10] ([fdo#109271] / [i915#2722] / [i915#4312])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-hsw-4770/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - {bat-adlp-6}:       [DMESG-WARN][11] ([i915#3576]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+
+  
+#### Warnings ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-kbl-7567u:       [DMESG-WARN][13] -> [DMESG-WARN][14] ([i915#5437])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/fi-kbl-7567u/igt@core_hotunplug@unbind-rebind.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-kbl-7567u/igt@core_hotunplug@unbind-rebind.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
+  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
+  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
+  [i915#5193]: https://gitlab.freedesktop.org/drm/intel/issues/5193
+  [i915#5195]: https://gitlab.freedesktop.org/drm/intel/issues/5195
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#5275]: https://gitlab.freedesktop.org/drm/intel/issues/5275
+  [i915#5437]: https://gitlab.freedesktop.org/drm/intel/issues/5437
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6413 -> IGTPW_6884
+
+  CI-20190529: 20190529
+  CI_DRM_11465: ffe5d6a4b92fb26e9067efb1278fb58c9af68628 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6884: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/index.html
+  IGT_6413: 7506029428b3740395ce086daf86b9498fbbeb77 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/index.html
+
+--===============1284236857559185651==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_amd: return negative if PSR state debugfs open fails (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102150/">https://patchwork.freedesktop.org/series/102150/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11465 -&gt; IGTPW_6884</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/index.html</p>
+<h2>Participating hosts (50 -&gt; 46)</h2>
+<p>Missing    (4): fi-ctg-p8600 fi-bsw-cyan shard-tglu fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6884:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>{bat-dg2-9}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/bat-dg2-9/igt@gem_lmem_swapping@verify-random.html">FAIL</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/bat-adlp-6/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/bat-adlp-6/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6884 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
+</li>
+<li>
+<p>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-modeset@a-edp1:<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11465/fi-kbl-7567u/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/fi-kbl-7567u/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5437">i915#5437</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6413 -&gt; IGTPW_6884</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11465: ffe5d6a4b92fb26e9067efb1278fb58c9af68628 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6884: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6884/index.html<br />
+  IGT_6413: 7506029428b3740395ce086daf86b9498fbbeb77 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1284236857559185651==--
