@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6363610E14F
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Apr 2022 13:53:47 +0000 (UTC)
-Date: Wed, 6 Apr 2022 16:53:43 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <Yk2bZ5WZmXMEcnVn@intel.com>
-References: <20220406130058.25378-1-juhapekka.heikkila@gmail.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07EF310E15D
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Apr 2022 14:40:06 +0000 (UTC)
+Date: Wed, 6 Apr 2022 07:40:05 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20220406144005.st6y4kdp6vtdgzl4@ldmartin-desk2>
+References: <20220405211913.2728176-1-lucas.demarchi@intel.com>
+ <Yk1C6J/r+Lgl/cFZ@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220406130058.25378-1-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: take out test
- only flag for try commit in inner loop
+In-Reply-To: <Yk1C6J/r+Lgl/cFZ@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/intel-ci/fast-feedback: Move
+ gem_lmem_swapping
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,67 +21,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, thomas.hellstrom@linux.intel.com,
+ nirmoy.das@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 06, 2022 at 04:00:58PM +0300, Juha-Pekka Heikkila wrote:
-> This will cause try commit to do modeset which could cause crc buffer
-> overflow in later commit. I changed small fb not to be cleared with
-> green color so there will be no unnecessary green flashes, this seem
-> to also take portion of execution time away.
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  tests/i915/kms_big_fb.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-> index 8724d6069..7c9bb5d2a 100644
-> --- a/tests/i915/kms_big_fb.c
-> +++ b/tests/i915/kms_big_fb.c
-> @@ -348,8 +348,7 @@ static bool test_plane(data_t *data)
->  		 */
->  		if (i == 0 && data->display.is_atomic &&
->  		    igt_display_try_commit_atomic(&data->display,
-> -						  DRM_MODE_ATOMIC_ALLOW_MODESET |
-> -						  DRM_MODE_ATOMIC_TEST_ONLY,
-> +						  DRM_MODE_ATOMIC_ALLOW_MODESET,
->  						  NULL) != 0) {
+On Wed, Apr 06, 2022 at 10:36:08AM +0300, Petri Latvala wrote:
+>On Tue, Apr 05, 2022 at 02:19:13PM -0700, Lucas De Marchi wrote:
+>> Since commit 37ec3b8ffd2c ("tests/gem_lmem_swapping: limit lmem to 4G")
+>> we load the driver with limited 4GB of lmem for test execution. However
+>> this means we also have to 1) reload the driver with that param set and
+>> 2) unload it after we are done. However tests/intel-ci/fast-feedback.testlist
+>> has a dedicated section for tests that rely on module (un|re)loading so
+>> not to impact other tests.
+>>
+>> Move all gem_lmem_swapping to that section, after the coment:
+>>
+>> 	# All tests that do module unloading and reloading are executed last.
+>> 	# They will sometimes reveal issues of earlier tests leaving the
+>> 	# driver in a broken state that is not otherwise noticed in that test.
+>>
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>
+>Damn, I missed this when reviewing.
+>
+>Acked-by: Petri Latvala <petri.latvala@intel.com>
 
-The point here is to validate that the plane configuration is valid,
-if not we skip the test. Doing a real commit here doesn't make sense.
+thanks, pushed.
 
-If there's some step that's too slow while we have the crc capture
-enabled, then we should try do that step before we enable the crc
-capture. A modeset should not cause a crc buffer overflow in itself
-since it stops the crc capture for the duration of the modeset.
-But looking at the code it looks like it should be possible to
-reorder igt_pipe_crc_start() and copy_pattern(). I guess it would
-even be possible to do the igt_pipe_crc_start() after the commit.
-
->  			if (igt_plane_has_prop(plane, IGT_PLANE_ROTATION))
->  				igt_plane_set_rotation(plane, IGT_ROTATION_0);
-> @@ -420,9 +419,8 @@ static bool test_pipe(data_t *data)
->  	if (igt_rotation_90_or_270(data->rotation))
->  		igt_swap(width, height);
->  
-> -	igt_create_color_fb(data->drm_fd, width, height,
-> -			    data->format, data->modifier,
-> -			    0, 1, 0, &data->small_fb);
-> +	igt_create_fb(data->drm_fd, width, height,
-> +		      data->format, data->modifier, &data->small_fb);
-
-I probably made it look obnoxious to make sure it's easy to spot
-should the rendercopy fails somehow.
-
->  
->  	igt_output_set_pipe(data->output, data->pipe);
->  
-> -- 
-> 2.28.0
-
--- 
-Ville Syrjälä
-Intel
+Lucas De Marchi
