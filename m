@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <cbef4460-580a-ab84-296c-6aa1715e8381@linux.intel.com>
-Date: Fri, 8 Apr 2022 09:56:58 +0100
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2077.outbound.protection.outlook.com [40.107.236.77])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BEE7C10E0A8
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Apr 2022 17:07:30 +0000 (UTC)
+From: Alex Hung <alex.hung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Wed, 6 Apr 2022 11:06:59 -0600
+Message-ID: <20220406170659.898333-1-alex.hung@amd.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Petri Latvala <petri.latvala@intel.com>,
- Matthew Auld <matthew.auld@intel.com>
-References: <20220328100859.13550-1-matthew.auld@intel.com>
- <YkGZcTZHHcF781Zz@platvala-desk.ger.corp.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <YkGZcTZHHcF781Zz@platvala-desk.ger.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/gem_lmem_swapping: limit lmem
- to 4G
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] tests/kms: Skip kms test cases for DCC and
+ DCC_RETILE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,89 +19,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- CQ Tang <cq.tang@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
+Cc: markyacoub@google.com, bas@basnieuwenhuizen.nl
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Skip the KMS test cases for planes that has modifiers with
+DCC and DCC_RETILE on AMDGPU.
 
-On 28/03/2022 12:18, Petri Latvala wrote:
-> On Mon, Mar 28, 2022 at 11:08:59AM +0100, Matthew Auld wrote:
->> From: CQ Tang <cq.tang@intel.com>
->>
->> On some systems lmem can be as large as 16G, which seems to trigger
->> various CI timeouts, and in the best case just takes a long time. For
->> the purposes of the test we should be able to limit to 4G, without any
->> big loss in coverage.
->>
->> v2:
->>   - No need to try again without the modparam; if it's not supported it
->>     will still load the driver just fine.
->> v3(Petri):
->>   - Add a helpful debug print in case the kernel is missing support for
->>     the lmem_size modparam.
->>
->> Signed-off-by: CQ Tang <cq.tang@intel.com>
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
->> Cc: Petri Latvala <petri.latvala@intel.com>
->> Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
->> ---
->>   tests/i915/gem_lmem_swapping.c | 12 +++++++++++-
->>   1 file changed, 11 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
->> index 31644bcd..6cf1acec 100644
->> --- a/tests/i915/gem_lmem_swapping.c
->> +++ b/tests/i915/gem_lmem_swapping.c
->> @@ -526,11 +526,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->>   
->>   	igt_fixture {
->>   		struct intel_execution_engine2 *e;
->> +		char *tmp;
->>   
->> -		i915 = drm_open_driver(DRIVER_INTEL);
->> +		igt_i915_driver_unload();
->> +		igt_assert_eq(igt_i915_driver_load("lmem_size=4096"), 0);
->> +
->> +		i915 = __drm_open_driver(DRIVER_INTEL);
->>   		igt_require_gem(i915);
->>   		igt_require(gem_has_lmem(i915));
->>   
->> +		tmp = __igt_params_get(i915, "lmem_size");
->> +		if (!tmp)
->> +			igt_info("lmem_size modparam not supported on this kernel. Continuing with full lmem size. This may result in CI timeouts.");
->> +		free(tmp);
-> 
-> Newline at the end missing. With that added,
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-> 
->> +
->>   		regions = gem_get_query_memory_regions(i915);
->>   		igt_require(regions);
->>   
->> @@ -556,6 +565,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->>   		intel_ctx_destroy(i915, ctx);
->>   		free(regions);
->>   		close(i915);
->> +		igt_i915_driver_unload();
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+---
+ tests/kms_plane.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-If this causes an extra module unload on legacy platforms just after 
-tests skips due not having local memory, is it a good idea? Would it 
-make sense to move the skip to before unload and reload with lmem_size 
-param and only unload if that condition was passed?
-
-Regards,
-
-Tvrtko
-
->>   	}
->>   
->>   	igt_exit();
->> -- 
->> 2.34.1
->>
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 137f23a8..1a71822a 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1004,6 +1004,14 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+ {
+ 	int index = plane->index;
+ 
++	for (int i = 0; i < plane->format_mod_count; i++) {
++		if (AMD_FMT_MOD_GET(DCC, plane->modifiers[i]) ||
++		    AMD_FMT_MOD_GET(DCC_RETILE, plane->modifiers[i])) {
++			igt_debug("Skipping planes with DCC or DCC_RETILE\n");
++			return true;
++		}
++	}
++
+ 	if (data->extended)
+ 		return false;
+ 
+-- 
+2.35.1
