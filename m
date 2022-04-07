@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B06F411222B
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Apr 2022 08:55:11 +0000 (UTC)
-Date: Fri, 1 Apr 2022 14:25:07 +0530
-From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
-To: Ramalingam C <ramalingam.c@intel.com>
-Message-ID: <20220401085507.GA6675@arjun-NUC8i7BEH>
-References: <20220401072826.6447-1-arjun.melkaveri@intel.com>
- <20220401082927.GA12046@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D94810E6A9
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Apr 2022 09:03:56 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  7 Apr 2022 14:33:42 +0530
+Message-Id: <20220407090343.10067-3-swati2.sharma@intel.com>
+In-Reply-To: <20220407090343.10067-1-swati2.sharma@intel.com>
+References: <20220407090343.10067-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220401082927.GA12046@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_lmem_swapping: Fix bug
- in test_smem_oom
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_plane_scaling: Fix modifier
+ and format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,54 +19,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 01, 2022 at 01:59:28PM +0530, Ramalingam C wrote:
-> On 2022-04-01 at 12:58:26 +0530, Arjun Melkaveri wrote:
-> > ctx was not initialized with all physical engines,
-> > after device reopening.
-> > This change would resolve assert issue seen in __do_evict.
-> > 
-> > v2: Added missing intel_ctx_destroy.
-> > 
-> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > Cc: Ramalingam C <ramalingam.c@intel.com>
-> > Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> > ---
-> >  tests/i915/gem_lmem_swapping.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-> > index 43f0688f..432607b0 100644
-> > --- a/tests/i915/gem_lmem_swapping.c
-> > +++ b/tests/i915/gem_lmem_swapping.c
-> > @@ -428,10 +428,14 @@ static void test_smem_oom(int i915,
-> >  
-> >  		fill_params(i915, &params, region, 0, 1, true);
-> >  
-> > +		ctx = intel_ctx_create_all_physical(fd);
-> > +		__gem_context_set_persistence(fd, ctx->id, false);
-> > +
-> igt fixture already creates same kind of context and pass it here. Could
-> we reuse it across all the child and parent processes?
-> 
-> Or we need independed context only?
-> 
-> Ram.
-As we are repoening device , this has to be independed context
-"int fd = gem_reopen_driver(i915);" 
-> 
-> >  		igt_install_exit_handler(smem_oom_exit_handler);
-> >  		__do_evict(fd, ctx, &region->region, &params,
-> >  			   params.seed + child + 1);
-> >  
-> > +		intel_ctx_destroy(fd, ctx);
-> >  		close(fd);
-> >  	}
-> >  
-> > -- 
-> > 2.25.1
-> > 
+Again, these tests timeouts in CI. Here fixed modifier and
+format and looped only for rotations to validate scaling with
+different rotations.
+---
+ tests/kms_plane_scaling.c | 60 ++++++---------------------------------
+ 1 file changed, 8 insertions(+), 52 deletions(-)
+
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 435b2f61..ab1e20ea 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -196,35 +196,6 @@ static const igt_rotation_t rotations[] = {
+ 	IGT_ROTATION_270,
+ };
+ 
+-static bool can_rotate(data_t *d, unsigned format, uint64_t modifier,
+-		       igt_rotation_t rot)
+-{
+-	if (!is_i915_device(d->drm_fd))
+-		return true;
+-
+-	switch (format) {
+-	case DRM_FORMAT_RGB565:
+-		if (intel_display_ver(d->devid) >= 11)
+-			break;
+-		/* fall through */
+-	case DRM_FORMAT_C8:
+-	case DRM_FORMAT_XRGB16161616F:
+-	case DRM_FORMAT_XBGR16161616F:
+-	case DRM_FORMAT_ARGB16161616F:
+-	case DRM_FORMAT_ABGR16161616F:
+-	case DRM_FORMAT_Y210:
+-	case DRM_FORMAT_Y212:
+-	case DRM_FORMAT_Y216:
+-	case DRM_FORMAT_XVYU12_16161616:
+-	case DRM_FORMAT_XVYU16161616:
+-		return false;
+-	default:
+-		break;
+-	}
+-
+-	return true;
+-}
+-
+ static bool can_scale(data_t *d, unsigned format)
+ {
+ 	if (!is_i915_device(d->drm_fd))
+@@ -286,6 +257,7 @@ static void test_scaler_with_rotation_pipe(data_t *d,
+ 					   igt_output_t *output)
+ {
+ 	igt_display_t *display = &d->display;
++	unsigned format = DRM_FORMAT_XRGB8888;
+ 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
+ 	igt_plane_t *plane;
+ 
+@@ -299,30 +271,14 @@ static void test_scaler_with_rotation_pipe(data_t *d,
+ 
+ 		for (int i = 0; i < ARRAY_SIZE(rotations); i++) {
+ 			igt_rotation_t rot = rotations[i];
+-			struct igt_vec tested_formats;
+-
+-			igt_vec_init(&tested_formats, sizeof(uint32_t));
+-
+-			for (int j = 0; j < plane->drm_plane->count_formats; j++) {
+-				unsigned format = plane->drm_plane->formats[j];
+ 
+-				if (!test_pipe_iteration(d, pipe, j))
+-					continue;
+-
+-				if (test_format(d, &tested_formats, format) &&
+-				    igt_plane_has_format_mod(plane, format, modifier) &&
+-				    igt_plane_has_rotation(plane, rot) &&
+-				    can_rotate(d, format, modifier, rot) &&
+-				    can_scale(d, format))
++				if (igt_plane_has_rotation(plane, rot))
+ 					check_scaling_pipe_plane_rot(d, plane,
+ 								     format, modifier,
+ 								     width, height,
+ 								     is_upscale,
+ 								     pipe, output,
+ 								     rot);
+-			}
+-
+-			igt_vec_fini(&tested_formats);
+ 		}
+ 	}
+ }
+@@ -750,14 +706,14 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			}
+ 		}
+ 
+-		igt_describe("Tests upscaling with tiling rotation, from 20x20 fb.");
++		igt_describe("Tests upscaling with rotation, from 20x20 fb.");
+ 		igt_subtest_with_dynamic("upscale-with-rotation-20x20") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output)
+ 				igt_dynamic_f("pipe-%s-%s-upscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
+ 					test_scaler_with_rotation_pipe(&data, 20, 20, true, pipe, output);
+ 		}
+ 
+-		igt_describe("Tests upscaling with tiling rotation for 0.25 scaling factor.");
++		igt_describe("Tests upscaling with rotation for 0.25 scaling factor.");
+ 		igt_subtest_with_dynamic("upscale-with-rotation-factor-0-25") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 				drmModeModeInfo *mode;
+@@ -770,7 +726,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			}
+ 		}
+ 
+-		igt_describe("Tests downscaling with tiling rotation for 0.25 scaling factor.");
++		igt_describe("Tests downscaling with rotation for 0.25 scaling factor.");
+ 		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-25") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 				drmModeModeInfo *mode;
+@@ -783,7 +739,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			}
+ 		}
+ 
+-		igt_describe("Tests downscaling with tiling rotation for 0.5 scaling factor.");
++		igt_describe("Tests downscaling with rotation for 0.5 scaling factor.");
+ 		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-5") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 				drmModeModeInfo *mode;
+@@ -796,7 +752,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			}
+ 		}
+ 
+-		igt_describe("Tests downscaling with tiling rotation for 0.75 scaling factor.");
++		igt_describe("Tests downscaling with rotation for 0.75 scaling factor.");
+ 		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-75") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 				drmModeModeInfo *mode;
+@@ -809,7 +765,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			}
+ 		}
+ 
+-		igt_describe("Tests scaling with tiling rotation, unity scaling.");
++		igt_describe("Tests scaling with rotation, unity scaling.");
+ 		igt_subtest_with_dynamic("scaler-with-rotation-unity-scaling") {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 				drmModeModeInfo *mode;
+-- 
+2.25.1
