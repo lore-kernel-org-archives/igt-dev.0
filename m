@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF13B10E6C6
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Apr 2022 20:04:13 +0000 (UTC)
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E3C610E008
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Apr 2022 20:34:41 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Apr 2022 13:03:40 -0700
-Message-Id: <20220407200340.3457341-1-lucas.demarchi@intel.com>
+Date: Fri,  8 Apr 2022 02:06:31 +0530
+Message-Id: <20220407203631.13363-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/core_hotunplug: apply audio unload
- for all i915 hw
+Subject: [igt-dev] [PATCH i-g-t] tests/kms: IGT cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,61 +16,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Before running the subtest we need to sanitize the system state
+to default, since we can't trust the state of previous subtest, used
+igt_display_reset() to sanitize the state.
 
-The HDA audio driver does not support dynamic hotplug of a HDA codec and
-that applies also to the display HDA codec.
+Replace newly defined function in particular test with existing library
+function.
 
-To test unbind of i915, audio driver must be first unbound and/or
-unloaded. This is the only way to ensure clean unbind, and possibility
-to cleanly reestablish connection between audio and i915.
+Below tests are modified:
+	tests/kms_concurrent.c
+	tests/kms_sequence.c
 
-Without this fix, the core_hotunplug test only works if the audio
-controller is runtime suspended when the test is run. This is very
-brittle and subject to timing races, differences in system configuration
-and so forth. A more predictable test is to explicitly unload the audio
-and in case some entity is using the audio driver, this is flagged with
-a clear, easily understandable error.
-
-References: https://gitlab.freedesktop.org/drm/intel/-/issues/1602
-Cc: Uma Shankar <uma.shankar@intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/core_hotunplug.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ tests/kms_concurrent.c | 39 ++++++++++++++-------------------------
+ tests/kms_sequence.c   |  8 +++++---
+ 2 files changed, 19 insertions(+), 28 deletions(-)
 
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 2f2fb7ac..02eae19e 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -621,13 +621,12 @@ igt_main
- 		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index dc1e36f2..622d3335 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
+ 	}
  
- 		if (is_i915_device(fd_drm)) {
--			uint32_t devid = intel_get_drm_devid(fd_drm);
+ 	/* reset the constraint on the pipe */
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+ 	free(data->plane);
+ 	data->plane = NULL;
+@@ -289,35 +290,28 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+ static void
+ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+-	int connected_outs;
+ 	int n_planes = data->display.pipes[pipe].n_planes;
++	igt_display_reset(&data->display);
+ 
+ 	if (!opt.user_seed)
+ 		opt.seed = time(NULL);
+ 
+-	connected_outs = 0;
+-	for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
+-			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
++	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
++		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+ 
+-		srand(opt.seed);
++	srand(opt.seed);
+ 
+-		test_init(data, pipe, n_planes, output);
++	test_init(data, pipe, n_planes, output);
+ 
+-		igt_fork(child, 1) {
+-			test_plane_position_with_output(data, pipe, n_planes, output);
+-		}
 -
--			if ((IS_HASWELL(devid) || IS_BROADWELL(devid) ||
--			     IS_DG1(devid)) && (igt_kmod_is_loaded("snd_hda_intel"))) {
--				igt_debug("Enable WA to unload snd driver\n");
--				priv.snd_unload = true;
--			}
-+			/*
-+			 * Audio driver does not support hot unplug via DRM
-+			 * audio component framework, so driver must be unloaded
-+			 * explicitly for i915 unbind tests.
-+			 */
-+			priv.snd_unload = true;
+-		test_resolution_with_output(data, pipe, n_planes, output);
+-
+-		igt_waitchildren();
++	igt_fork(child, 1) {
++		test_plane_position_with_output(data, pipe, n_planes, output);
++	}
  
- 			gem_quiescent_gpu(fd_drm);
- 			igt_require_gem(fd_drm);
+-		test_fini(data, pipe, n_planes, output);
++	test_resolution_with_output(data, pipe, n_planes, output);
+ 
+-		connected_outs++;
+-	}
++	igt_waitchildren();
+ 
+-	igt_skip_on(connected_outs == 0);
++	test_fini(data, pipe, n_planes, output);
+ }
+ 
+ static void
+@@ -326,15 +320,10 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 	igt_output_t *output;
+ 
+ 	igt_fixture {
+-		int valid_tests = 0;
+-
+ 		igt_require_pipe(&data->display, pipe);
+ 		igt_require(data->display.pipes[pipe].n_planes > 0);
+ 
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
+-			valid_tests++;
+-
+-		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
++		igt_display_require_output(&data->display);
+ 	}
+ 
+ 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index 9c287480..80e8e45c 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -76,7 +76,9 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+ 	drmModeModeInfo *mode;
+ 	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+-
++	
++	igt_display_reset(&data->display);
++	
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+@@ -109,8 +111,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
+-	igt_display_commit(display);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ }
+ 
+ static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
 -- 
-2.35.1
+2.26.2
