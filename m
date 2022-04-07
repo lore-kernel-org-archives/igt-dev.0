@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C1F010F21F
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 12:25:30 +0000 (UTC)
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Petri Latvala <petri.latvala@intel.com>
-Date: Thu, 14 Apr 2022 14:24:50 +0200
-Message-Id: <cover.1649939026.git.mchehab@kernel.org>
+Content-Type: multipart/alternative;
+ boundary="===============6899214122934259952=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 00/12] code coverage: some improvements
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Thu, 07 Apr 2022 12:26:06 -0000
+Message-ID: <164933436629.14671.13211219751162362870@emeril.freedesktop.org>
+References: <20220407111924.21745-1-jeevan.b@intel.com>
+In-Reply-To: <20220407111924.21745-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZW5hYmxl?=
+ =?utf-8?q?_4-tiled_ccs_modifiers_on_dg2?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,173 +17,453 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============6899214122934259952==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This series:
+== Series Details ==
 
-1. remove the code coverage script extensions and install them
-   on bindir;
-2. adds a small script to test if the code coverage and its
-   scripts are working properly, if excecuted with a kernel
-   compiled with code coverage support;
-3. adds a script that allows filtering, printing statistics,
-   printing used/unused functions and generating html reports.
+Series: enable 4-tiled ccs modifiers on dg2
+URL   : https://patchwork.freedesktop.org/series/102335/
+State : success
 
-The parsing script enhances the code coverage data collect, as it
-allows quickly checking the code coverage results per test.
+== Summary ==
 
-For instance, using the script below:
+CI Bug Log - changes from CI_DRM_11471 -> IGTPW_6892
+====================================================
 
-<script>
-TESTLIST="my_tests.testlist"
-OUT_DIR="${HOME}/results"
+Summary
+-------
 
-mkdir -p $OUT_DIR/html
+  **SUCCESS**
 
-echo "igt@debugfs_test@read_all_entries" > $TESTLIST
-echo "igt@core_auth@basic-auth" >> $TESTLIST
-echo "igt@gem_exec_basic@basic" >> $TESTLIST
+  No regressions found.
 
-sudo IGT_KERNEL_TREE="${HOME}/linux" igt_runner -s -o --coverage-per-test \
-                  --collect-script code_cov_capture --test-list $TESTLIST \
-                  /usr/local/libexec/igt-gpu-tools $OUT_DIR/ | sed s,$HOME/,,
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/index.html
 
-sudo chown -R $(id -u):$(id -g) $OUT_DIR/
+Participating hosts (49 -> 45)
+------------------------------
 
-for i in $OUT_DIR/code_cov/*.info; do
-	echo -e "\n$(basename $i):"
-        code_cov_parse_info --only-drm --ignore-unused --stat $i
-done
-echo -e "\nTOTAL:"
-code_cov_parse_info --only-drm --stat --output $OUT_DIR/results.info \
-        $OUT_DIR/code_cov/*.info
+  Additional (3): fi-tgl-u2 bat-hsw-1 fi-pnv-d510 
+  Missing    (7): fi-kbl-soraka fi-bdw-5557u shard-tglu fi-bsw-cyan bat-adlp-4 fi-ctg-p8600 fi-bdw-samus 
 
-cd $OUT_DIR/html
-genhtml -q -s --legend --branch-coverage $OUT_DIR/results.info
-</script>
+Possible new issues
+-------------------
 
-The parse script will filter and display the function, branch and
-like coverage per test, and the total one:
+  Here are the unknown changes that may have been introduced in IGTPW_6892:
 
-core_auth_basic_auth.info:
-  lines......: 11.7% (8219 of 70257 lines)
-  functions..: 7.1% (776 of 10971 functions)
-  branches...: 7.0% (3597 of 51041 branches)
-Ignored......: non-drm headers and source files where none of its code ran.
-Source files.: 23.27% (165 of 709 total), 29.57% (165 of 558 filtered)
+### IGT changes ###
 
-debugfs_test_read_all_entries.info:
-  lines......: 19.3% (20249 of 104802 lines)
-  functions..: 17.5% (1922 of 10971 functions)
-  branches...: 12.7% (9449 of 74555 branches)
-Ignored......: non-drm headers and source files where none of its code ran.
-Source files.: 34.70% (246 of 709 total), 44.09% (246 of 558 filtered)
+#### Suppressed ####
 
-gem_exec_basic_basic.info:
-  lines......: 17.4% (15196 of 87570 lines)
-  functions..: 13.1% (1437 of 10971 functions)
-  branches...: 10.3% (6562 of 63806 branches)
-Ignored......: non-drm headers and source files where none of its code ran.
-Source files.: 31.17% (221 of 709 total), 39.61% (221 of 558 filtered)
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
 
-TOTAL:
-  lines......: 15.6% (26031 of 166849 lines)
-  functions..: 22.3% (2443 of 10971 functions)
-  branches...: 10.6% (11968 of 112665 branches)
-Ignored......: non-drm headers.
-Source files.: 78.70% (558 of 709 total)
+  * igt@core_hotunplug@unbind-rebind:
+    - {bat-hsw-1}:        NOTRUN -> [DMESG-WARN][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/bat-hsw-1/igt@core_hotunplug@unbind-rebind.html
 
-A much more detailed report can also be produced with --print,
---print-unused (optionally with --show-lines). For instance,
-reporting code coverage usage for functions with "edid_" on
-its name is as simple as:
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - {bat-rpls-1}:       NOTRUN -> [INCOMPLETE][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/bat-rpls-1/igt@gem_lmem_swapping@parallel-random-engines.html
 
-$ echo "+edid_" >filter.txt; code_cov_parse_info --func-filters filter.txt results/results.info --print --print-unused
-TEST: Code_coverage_tests
-__drm_get_edid_firmware_path(): unused
-__drm_set_edid_firmware_path(): unused
-displayid_iter_edid_begin(): executed 10 times
-drm_add_edid_modes(): executed 2 times
-drm_add_override_edid_modes(): unused
-drm_connector_attach_edid_property(): unused
-drm_connector_update_edid_property(): executed 8 times
-drm_dp_send_real_edid_checksum(): unused
-drm_edid_are_equal(): executed 4 times
-drm_edid_block_valid(): executed 8 times
-drm_edid_duplicate(): unused
-drm_edid_get_monitor_name(): unused
-drm_edid_header_is_valid(): executed 4 times
-drm_edid_is_valid(): executed 2 times
-drm_edid_to_eld(): executed 2 times
-drm_edid_to_sad(): unused
-drm_edid_to_speaker_allocation(): unused
-drm_find_edid_extension(): executed 22 times
-drm_get_edid_switcheroo(): unused
-drm_load_edid_firmware(): executed 2 times
-edid_firmware_get(): unused
-edid_firmware_set(): unused
-edid_fixup_preferred(): unused
-edid_get_quirks(): executed 6 times
-edid_load(): unused
-edid_open(): executed 4 times
-edid_show() from linux/drivers/gpu/drm/drm_debugfs.c: executed 4 times
-edid_show() from linux/drivers/gpu/drm/drm_sysfs.c: unused
-edid_vendor(): executed 348 times
-edid_write(): unused
-intel_panel_edid_downclock_mode(): unused
-intel_panel_edid_fixed_mode(): unused
-is_edid_digital_input_dp(): unused
-Ignored......: unmatched functions m/(?^:edid_)/ and source files where none of its code ran.
-Source files.: 0.90% (5 of 558 total), 55.56% (5 of 9 filtered)
+  
+Known issues
+------------
 
-Finally, it can place the data above on an html report and, when
-multiple .info files are used, it places the data collected from
-each .info file on a row, allowing to compare the code coverage
-from different tests and from different machines.
+  Here are the changes found in IGTPW_6892 that come from known issues:
 
-Regards,
-Mauro
+### IGT changes ###
 
-Mauro Carvalho Chehab (12):
-  scripts/code_cov*: remove the extensions from them
-  scripts/code_cov_parse_info: add a tool to parse code coverage info
-    files
-  scripts/code_cov_gen_report: add support for filtering info files
-  runner: execute code coverage script also from PATH
-  scripts/meson.build: install code coverage scripts
-  scripts/code_cov_selftest.sh: test if IGT code coverage is working
-  docs/code_coverage.md: document the code coverage filter script
-  scripts/code_cov_parse_info: better handle test name
-  code_cov_parse_info: fix error handling when opening files
-  code_cov_parse_info: fix --show-lines logic
-  code_cov_parse_info: add support for exclude filters
-  code_cov_parse_info: add support for generating html reports
+#### Issues hit ####
 
- docs/code_coverage.md                         |  238 +++-
- meson.build                                   |    1 +
- runner/settings.c                             |  109 +-
- .../{code_cov_capture.sh => code_cov_capture} |    0
- ...r_on_build.sh => code_cov_gather_on_build} |    0
- ...her_on_test.py => code_cov_gather_on_test} |    0
- ..._cov_gen_report.sh => code_cov_gen_report} |   19 +
- scripts/code_cov_parse_info                   | 1213 +++++++++++++++++
- scripts/code_cov_selftest.sh                  |   47 +
- scripts/meson.build                           |   13 +
- 10 files changed, 1585 insertions(+), 55 deletions(-)
- rename scripts/{code_cov_capture.sh => code_cov_capture} (100%)
- rename scripts/{code_cov_gather_on_build.sh => code_cov_gather_on_build} (100%)
- rename scripts/{code_cov_gather_on_test.py => code_cov_gather_on_test} (100%)
- rename scripts/{code_cov_gen_report.sh => code_cov_gen_report} (85%)
- create mode 100755 scripts/code_cov_parse_info
- create mode 100755 scripts/code_cov_selftest.sh
- create mode 100644 scripts/meson.build
+  * igt@amdgpu/amd_basic@semaphore:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#109315]) +17 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
 
--- 
-2.35.1
+  * igt@gem_huc_copy@huc-copy:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][4] ([fdo#109271]) +57 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html
+    - fi-tgl-u2:          NOTRUN -> [SKIP][5] ([i915#2190])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html
 
+  * igt@kms_busy@basic@flip:
+    - fi-tgl-u2:          NOTRUN -> [DMESG-WARN][6] ([i915#402])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_busy@basic@flip.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-tgl-u2:          NOTRUN -> [SKIP][7] ([fdo#109284] / [fdo#111827]) +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-u2:          NOTRUN -> [SKIP][8] ([i915#4103]) +1 similar issue
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-u2:          NOTRUN -> [SKIP][9] ([fdo#109285])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#5341])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-pnv-d510/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-tgl-u2:          NOTRUN -> [SKIP][11] ([i915#3555])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {fi-tgl-dsi}:       [DMESG-FAIL][12] -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11471/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][14] ([i915#4785]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11471/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
+  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
+  [i915#5552]: https://gitlab.freedesktop.org/drm/intel/issues/5552
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6415 -> IGTPW_6892
+
+  CI-20190529: 20190529
+  CI_DRM_11471: 7067f6f93e8c8b40c9b4592d7674d0ae0960bab6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6892: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/index.html
+  IGT_6415: c3b690bd5f7fb1fb7ed786ab0f3b815930a6a55f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@kms_ccs@pipe-a-bad-pixel-format-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-a-bad-pixel-format-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-a-bad-rotation-90-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-a-bad-rotation-90-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-a-crc-primary-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-a-crc-primary-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-a-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-a-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-a-random-ccs-data-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-a-random-ccs-data-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-b-bad-rotation-90-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-b-bad-rotation-90-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-b-crc-primary-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-b-crc-primary-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-b-crc-primary-rotation-180-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-b-crc-primary-rotation-180-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-b-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-b-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-b-random-ccs-data-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-b-random-ccs-data-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-c-bad-pixel-format-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-c-bad-pixel-format-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-c-bad-rotation-90-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-c-bad-rotation-90-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-c-crc-primary-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-c-crc-primary-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-c-crc-primary-rotation-180-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-c-crc-primary-rotation-180-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-c-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-c-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-c-random-ccs-data-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-c-random-ccs-data-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-d-bad-pixel-format-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-d-bad-pixel-format-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-d-bad-rotation-90-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-d-bad-rotation-90-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-d-crc-primary-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-d-crc-primary-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-d-crc-primary-rotation-180-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-d-crc-primary-rotation-180-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-d-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-d-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-d-random-ccs-data-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-d-random-ccs-data-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-e-bad-pixel-format-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-e-bad-pixel-format-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-e-bad-rotation-90-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-e-bad-rotation-90-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-e-crc-primary-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-e-crc-primary-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-e-crc-primary-rotation-180-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-e-crc-primary-rotation-180-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-e-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-e-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-e-random-ccs-data-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-e-random-ccs-data-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-f-bad-pixel-format-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-f-bad-pixel-format-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-f-bad-rotation-90-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-f-bad-rotation-90-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-f-crc-primary-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-f-crc-primary-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-f-crc-primary-rotation-180-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-f-crc-primary-rotation-180-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-f-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-f-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs
++igt@kms_ccs@pipe-f-random-ccs-data-4_tiled_dg2_mc_ccs
++igt@kms_ccs@pipe-f-random-ccs-data-4_tiled_dg2_rc_ccs
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/index.html
+
+--===============6899214122934259952==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>enable 4-tiled ccs modifiers on dg2</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102335/">https://patchwork.freedesktop.org/series/102335/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11471 -&gt; IGTPW_6892</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/index.html</p>
+<h2>Participating hosts (49 -&gt; 45)</h2>
+<p>Additional (3): fi-tgl-u2 bat-hsw-1 fi-pnv-d510 <br />
+  Missing    (7): fi-kbl-soraka fi-bdw-5557u shard-tglu fi-bsw-cyan bat-adlp-4 fi-ctg-p8600 fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6892:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>{bat-hsw-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/bat-hsw-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>{bat-rpls-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/bat-rpls-1/igt@gem_lmem_swapping@parallel-random-engines.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6892 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@amdgpu/amd_basic@semaphore:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-pnv-d510/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</p>
+</li>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109284">fdo#109284</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-pnv-d510/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5341">i915#5341</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-u2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11471/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11471/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6415 -&gt; IGTPW_6892</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11471: 7067f6f93e8c8b40c9b4592d7674d0ae0960bab6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6892: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6892/index.html<br />
+  IGT_6415: c3b690bd5f7fb1fb7ed786ab0f3b815930a6a55f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_ccs@pipe-a-bad-pixel-format-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-a-bad-pixel-format-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-a-bad-rotation-90-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-a-bad-rotation-90-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-a-crc-primary-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-a-crc-primary-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-a-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-a-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-a-random-ccs-data-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-a-random-ccs-data-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-b-bad-rotation-90-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-b-bad-rotation-90-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-b-crc-primary-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-b-crc-primary-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-b-crc-primary-rotation-180-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-b-crc-primary-rotation-180-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-b-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-b-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-b-random-ccs-data-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-b-random-ccs-data-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-c-bad-pixel-format-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-c-bad-pixel-format-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-c-bad-rotation-90-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-c-bad-rotation-90-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-c-crc-primary-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-c-crc-primary-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-c-crc-primary-rotation-180-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-c-crc-primary-rotation-180-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-c-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-c-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-c-random-ccs-data-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-c-random-ccs-data-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-d-bad-pixel-format-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-d-bad-pixel-format-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-d-bad-rotation-90-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-d-bad-rotation-90-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-d-crc-primary-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-d-crc-primary-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-d-crc-primary-rotation-180-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-d-crc-primary-rotation-180-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-d-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-d-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-d-random-ccs-data-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-d-random-ccs-data-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-e-bad-pixel-format-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-e-bad-pixel-format-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-e-bad-rotation-90-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-e-bad-rotation-90-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-e-crc-primary-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-e-crc-primary-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-e-crc-primary-rotation-180-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-e-crc-primary-rotation-180-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-e-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-e-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-e-random-ccs-data-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-e-random-ccs-data-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-f-bad-pixel-format-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-f-bad-pixel-format-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-f-bad-rotation-90-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-f-bad-rotation-90-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-f-crc-primary-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-f-crc-primary-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-f-crc-primary-rotation-180-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-f-crc-primary-rotation-180-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-f-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-f-crc-sprite-planes-basic-4_tiled_dg2_rc_ccs<br />
++igt@kms_ccs@pipe-f-random-ccs-data-4_tiled_dg2_mc_ccs<br />
++igt@kms_ccs@pipe-f-random-ccs-data-4_tiled_dg2_rc_ccs</p>
+
+</body>
+</html>
+
+--===============6899214122934259952==--
