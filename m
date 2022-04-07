@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2055.outbound.protection.outlook.com [40.107.236.55])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B41910EA35
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Apr 2022 14:08:21 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 7 Apr 2022 10:07:55 -0400
-Message-ID: <20220407140755.560546-3-dingchen.zhang@amd.com>
-In-Reply-To: <20220407140755.560546-1-dingchen.zhang@amd.com>
-References: <20220407140755.560546-1-dingchen.zhang@amd.com>
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-sn1anam02on2077.outbound.protection.outlook.com [40.107.96.77])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9F8E10E13D
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Apr 2022 14:48:59 +0000 (UTC)
+Message-ID: <fc5e94b8-a493-7242-dc01-802df2ff6626@amd.com>
+Date: Thu, 7 Apr 2022 10:48:54 -0400
+Content-Language: en-US
+To: Melissa Wen <mwen@igalia.com>, igt-dev@lists.freedesktop.org
+References: <20220331145344.2503592-1-mwen@igalia.com>
+From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+In-Reply-To: <20220331145344.2503592-1-mwen@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH v2 2/2] tests/amdgpu/amd_psr: add PSR-SU full
- frame update sub test case
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: refactor
+ alpha-7efc for clearer validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,189 +22,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Alex Hung <alex.hung@amd.com>, petri.latvala@intel.com,
+ markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why]
-We need a full-frame update (FFU) test case to validate PSR-SU
-feature enablement by visual confirm.
 
-[how]
-1. create two overlay FBs with full screen size and one primary FB
-   w/ 1/4 screen size
-2. panning the primary plane to top-left and flip for couple of
-   frames
-3. wait for couple of seconds to allow visual confirm
-4. panning the primary plane from top-left to middle of screen
-5. repeat step 3
-6. panning the primary plane from middle to bottom-right of screen
-7. repeat step 3
 
-If the PSR-SU is enabled as expected, for FFU we'd observe the
-visual confirm by seeing the blue border at the bottom of screen
-and the bottom of primary plane (megenta rectangle) as well.
+On 2022-03-31 10:53, Melissa Wen wrote:
+> The alpha-7efc test takes into account that fg.alpha (pixel alpha
+> component) and plane_alpha (alpha property) are swappable in the
+> pre-multiplied blend formula:
+>   plane_alpha * fg.rgb + (1 - (plane_alpha * fg.alpha)) * bg.rgb
+> 
+> Also, 0xfcfc is double 0x7e7e, so the composition of a given plane_alpha
+> and 0x7e7e argb_fb would result in the same CRC of plane_alpha/2 and
+> 0xfcfc argb_fb.
+> 
+> However, precision and rounding issues may affect calculation and
+> results are not consistent between different hw. For example, the test
+> case fails on i915 gen8 and also for some alpha values on amdgpu (after
+> applying[1]), but passes on i915 gen11.
+> 
+> Therefore, refactor the test for a more assertive verification that
+> facilitates debugging when it fails, but keep validating pre-multiplied
+> alpha property in a alpha-7efc context. For this, remove the loop in a
+> range of alpha values and just check the swappable property of fg.alpha
+> and plane_alpha on a pre-multiplied blend mode (default for DRM).
+> 
+> [1] https://lore.kernel.org/dri-devel/20220329201835.2393141-1-mwen@igalia.com/
+> 
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> ---
+>   tests/kms_plane_alpha_blend.c | 25 +++++++++++--------------
+>   1 file changed, 11 insertions(+), 14 deletions(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index d061262d..8e54dfd6 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -386,7 +386,6 @@ static void alpha_7efc(data_t *data, enum pipe pipe, igt_plane_t *plane)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_crc_t ref_crc = {}, crc = {};
+> -	int i;
+>   
+>   	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+>   		igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY), &data->gray_fb);
+> @@ -394,21 +393,18 @@ static void alpha_7efc(data_t *data, enum pipe pipe, igt_plane_t *plane)
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>   	igt_pipe_crc_start(data->pipe_crc);
+>   
+> -	/* for coverage, plane alpha and fb alpha should be swappable, so swap fb and alpha */
+> -	for (i = 0; i < 256; i += 8) {
+> -		igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, ((i/2) << 8) | (i/2));
+> -		igt_plane_set_fb(plane, &data->argb_fb_fc);
+> -		igt_display_commit2(display, COMMIT_ATOMIC);
+> +	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e7e);
+> +	igt_plane_set_fb(plane, &data->argb_fb_fc);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+>   
+> -		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &ref_crc);
+> +	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &ref_crc);
+>   
+> -		igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, (i << 8) | i);
+> -		igt_plane_set_fb(plane, &data->argb_fb_7e);
+> -		igt_display_commit2(display, COMMIT_ATOMIC);
+> +	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0xfcfc);
+> +	igt_plane_set_fb(plane, &data->argb_fb_7e);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+>   
+> -		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+> -		igt_assert_crc_equal(&ref_crc, &crc);
+> -	}
+> +	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+> +	igt_assert_crc_equal(&ref_crc, &crc);
+>   
+>   	igt_pipe_crc_stop(data->pipe_crc);
+>   }
+> @@ -536,7 +532,8 @@ static void run_subtests(data_t *data, enum pipe pipe)
+>   	igt_subtest_f("pipe-%s-alpha-basic", kmstest_pipe_name(pipe))
+>   		run_test_on_pipe_planes(data, pipe, false, true, basic_alpha);
+>   
+> -	igt_describe("Tests plane alpha-7efc properties.");
+> +	igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> +		     "plane_alpha are swappable on pre-multiplied blend mode.");
+>   	igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
+>   		run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc);
+>   
 
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Jay Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
+Thanks a lot for this patch! kms_plane_alpha_blend works really well now!
 
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- tests/amdgpu/amd_psr.c | 125 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 125 insertions(+)
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 0ec50c9f..d08d3c8f 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -54,6 +54,7 @@ typedef struct data {
- 	igt_output_t *output;
- 	igt_pipe_t *pipe;
- 	igt_pipe_crc_t *pipe_crc;
-+	igt_fb_t ov_fb[2];
- 	drmModeModeInfo *mode;
- 	enum pipe pipe_id;
- 	int fd;
-@@ -308,6 +309,126 @@ static void run_check_psr_su_mpo(data_t *data)
- 	test_fini(data);
- }
- 
-+static void panning_rect_fb(data_t *data, igt_fb_t *rect_fb, int rect_w, int rect_h,
-+	int prev_x, int prev_y, int curr_x, int curr_y, double alpha)
-+{
-+	int ret;
-+
-+	/* set new position for primary plane */
-+	igt_plane_set_position(data->primary, curr_x, curr_y);
-+
-+	/* flip overlay for couple of frames */
-+	igt_info("\n start flipping ...\n");
-+	for (int i = 0; i < N_FLIPS; ++i) {
-+		igt_info(" About to commit overlay w/ alpha updated in region (x=%d, y=%d, w=%d, h=%d), loop %d \n",
-+			 curr_x, curr_y, rect_w, rect_h, i);
-+
-+		/* update alpha region in overlay for only once and do flip */
-+		if (i < 2) {
-+			draw_color_alpha(&data->ov_fb[i % 2], prev_x, prev_y, rect_w, rect_h,
-+					 1.0, 1.0, 1.0, 1.0);
-+			draw_color_alpha(&data->ov_fb[i % 2], curr_x, curr_y, rect_w, rect_h,
-+					 (i == 0) ? .0 : 1.0,
-+					 (i == 0) ? 1.0 : .0,
-+					 1.0, alpha);
-+		}
-+		igt_plane_set_fb(data->overlay, &data->ov_fb[i % 2]);
-+		igt_plane_set_fb(data->primary, rect_fb);
-+		igt_plane_set_size(data->primary, rect_w, rect_h);
-+		igt_output_set_pipe(data->output, data->pipe_id);
-+
-+		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+		igt_require(ret == 0);
-+		kmstest_wait_for_pageflip(data->fd);
-+	}
-+}
-+
-+static void panning_pfb_and_psrsu_check(data_t *data, igt_fb_t *fb, int fb_w, int fb_h, double alpha)
-+{
-+	const int pos[4][2] = {
-+		{0, 0},
-+		{0, 0},
-+		{fb_w / 2, fb_h / 2},
-+		{fb_w, fb_h}
-+	};
-+
-+	for (int i = 1; i < sizeof(pos) / sizeof(pos[0]); ++i) {
-+		/* panning primary rect fb */
-+		panning_rect_fb(data, fb, fb_w, fb_h, pos[i - 1][0], pos[i - 1][1], pos[i][0], pos[i][1], alpha);
-+
-+		/* validate by visual confirm */
-+		sleep(5);
-+	}
-+}
-+
-+static void run_check_psr_su_ffu(data_t *data)
-+{
-+	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
-+	bool sink_support_psrsu = false;
-+	bool drv_suport_psrsu = false;
-+	igt_fb_t rect_fb; 	// rectangle fbs for primary
-+	igt_fb_t ref_fb;	// reference fb
-+	int pb_w, pb_h, ob_w, ob_h;
-+
-+	/* skip the test run if no eDP sink detected */
-+	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
-+
-+	/* init */
-+	test_init(data);
-+	ob_w = data->w;
-+	ob_h = data->h;
-+	pb_w = data->w / 2;
-+	pb_h = data->h / 2;
-+
-+	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
-+	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
-+	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
-+	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
-+	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
-+	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
-+	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
-+
-+	/* reference background pattern in grey */
-+	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    .5, .5, .5, &ref_fb);
-+	igt_plane_set_fb(data->primary, &ref_fb);
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	/*
-+	 * overlay and primary fbs creation
-+	 * for full frame update (FFU) test case, we don't change primary FB content but to change
-+	 * the position of primary FB (panning) and update the overlay plane alpha region.
-+	 * Any overlay change is expected to be regarded as FFU from KMD's perspective.
-+	 *
-+	 * 1. create two overlay FBs with full screen size and one primary FB w/ 1/4 screen size
-+	 * 2. panning the primary plane to top-left and flip for couple of frames
-+	 * 3. wait for couple of seconds to allow visual confirm
-+	 * 4. panning the primary plane from top-left to middle of screen
-+	 * 5. repeat step 3
-+	 * 6. panning the primary plane from middle to bottom-right of screen
-+	 * 7. repeat step 3
-+	 */
-+
-+	/* step 1 */
-+	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 1.0, 1.0, &data->ov_fb[0]);
-+	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 1.0, 1.0, &data->ov_fb[1]);
-+	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, .0, 1.0, &rect_fb);
-+
-+	/* step 2 - 7 */
-+	panning_pfb_and_psrsu_check(data, &rect_fb, pb_w, pb_h, .3);
-+
-+	/* fini */
-+	igt_remove_fb(data->fd, &ref_fb);
-+	igt_remove_fb(data->fd, &data->ov_fb[0]);
-+	igt_remove_fb(data->fd, &data->ov_fb[1]);
-+	igt_remove_fb(data->fd, &rect_fb);
-+	test_fini(data);
-+}
-+
- const char *help_str =
- "  --visual-confirm           PSR visual confirm debug option enable\n";
- 
-@@ -367,6 +488,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		     "and to imitate Multiplane Overlay video playback scenario");
- 	igt_subtest("psr_su_mpo") run_check_psr_su_mpo(&data);
- 
-+	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
-+		     "and to validate Full Frame Update scenario");
-+	igt_subtest("psr_su_ffu") run_check_psr_su_ffu(&data);
-+
- 	igt_fixture
- 	{
- 		if (opt.visual_confirm) {
--- 
-2.25.1
