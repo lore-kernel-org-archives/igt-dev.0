@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0807910EA7A
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Apr 2022 06:54:23 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org, jani.nikula@linux.intel.com,
- ville.syrjala@linux.intel.com, harry.wentland@amd.com,
- swati2.sharma@intel.com
-Date: Fri,  8 Apr 2022 12:21:41 +0530
-Message-Id: <20220408065143.1485069-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220408065143.1485069-1-bhanuprakash.modem@intel.com>
-References: <20220408065143.1485069-1-bhanuprakash.modem@intel.com>
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2052.outbound.protection.outlook.com [40.107.237.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99C0E89C56
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Apr 2022 14:08:16 +0000 (UTC)
+From: David Zhang <dingchen.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Thu, 7 Apr 2022 10:07:54 -0400
+Message-ID: <20220407140755.560546-2-dingchen.zhang@amd.com>
+In-Reply-To: <20220407140755.560546-1-dingchen.zhang@amd.com>
+References: <20220407140755.560546-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/4] tests/kms_color: Used debugfs apis for
- deep-color
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH v2 1/2] tests/amdgpu/amd_psr: add interactive
+ option of PSR visual confirm
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,117 +25,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of parsing the EDID, read from the debugfs to make
-sure the connected monitor supports deep-color.
+[why & how]
+AMDGPU DM debugfs provides a debug option of PSR visual confirm,
+we'd make it an interactive option that provides capability to
+usermode to choose if or not to enable the PSR visual confirm.
 
-Cc: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+- add interactive option "visual-confirm" and by-default we select
+  it as TRUE to enable visual confirm for PSR-SU test cases.
+- set PSR visual confirm debugfs if interactive debug option of
+  visual confirm set before any test run begins, and reset after
+  any test run ends.
+
+changes in v2:
+------------------
+- drop the "_dm_" from helpers of visual confirm debugfs set/get
+- drop the non-necessary visual confirm option check after set
+  and reset, before and after the test run, respectively
+- align the 2nd line code w/ previous line's opening brace
+
+Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Jay Pillai <aurabindo.pillai@amd.com>
+Cc: Wayne Lin <wayne.lin@amd.com>
+
+Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 ---
- tests/kms_color.c        |  6 ++++--
- tests/kms_color_helper.c | 46 +++++-----------------------------------
- tests/kms_color_helper.h |  2 +-
- 3 files changed, 10 insertions(+), 44 deletions(-)
+ tests/amdgpu/amd_psr.c | 42 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index afff1744..08ce6ab2 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -883,20 +883,22 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 					"At least GEN 11 is required to validate Deep-color.\n");
+diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+index 58e40d2b..0ec50c9f 100644
+--- a/tests/amdgpu/amd_psr.c
++++ b/tests/amdgpu/amd_psr.c
+@@ -62,6 +62,12 @@ typedef struct data {
+ 	int h;
+ } data_t;
  
- 		for_each_valid_output_on_pipe(&data->display, p, output) {
--			drmModeConnector *connector = output->config.connector;
- 			uint64_t max_bpc = get_max_bpc(output);
- 			bool ret;
- 
- 			if (!max_bpc)
- 				continue;
- 
--			if (!panel_supports_deep_color(data->drm_fd, connector))
-+			if (!panel_supports_deep_color(data->drm_fd, output->name))
- 				continue;
- 
- 			data->color_depth = 10;
- 			data->drm_format = DRM_FORMAT_XRGB2101010;
- 			data->output = output;
- 			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
-+			igt_display_commit(&data->display);
++struct {
++	bool visual_confirm;
++} opt = {
++	.visual_confirm = true,	/* visual confirm debug option */
++};
 +
-+			igt_assert_output_bpc_equal(data->drm_fd, p, output->name, 10);
- 
- 			igt_dynamic_f("gamma-%s", output->name) {
- 				ret = test_pipe_gamma(data, primary);
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 3ef124cd..55f3e409 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -25,49 +25,13 @@
- #include "kms_color_helper.h"
- 
- bool
--panel_supports_deep_color(int fd, drmModeConnector *connector)
-+panel_supports_deep_color(int drm_fd, char *output_name)
+ static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
+ 		             double r, double g, double b, double a)
  {
--	uint64_t edid_blob_id;
--	uint8_t bit_depth, rev;
--	const struct edid *edid;
--	bool result;
--	drmModePropertyBlobPtr edid_blob = NULL;
--
--	igt_assert(kmstest_get_property(fd, connector->connector_id,
--					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
--					&edid_blob_id, NULL));
--	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
--	igt_require_f(edid_blob, "EDID blob is NULL\n");
--
--	edid = (const struct edid *) edid_blob->data;
--	rev = edid->revision;
--
--	if (rev >= 4) {
--		bit_depth = edid_get_bit_depth_from_vid(edid);
--
--		if (bit_depth > 0 && bit_depth < 7)
--			igt_info("Max supported bit depth: %d\n", ((bit_depth << 1) + 4));
--		else
--			igt_info("Max supported bit depth: Undefined\n");
--
--		result = (bit_depth >= 3) && (bit_depth < 7);
--	} else {
--		bit_depth = edid_get_deep_color_from_vsdb(edid);
--
--		if (bit_depth &	HDMI_VSDB_DC_48BIT)
--			igt_info("Max supported bit depth: 16\n");
--		else if (bit_depth & HDMI_VSDB_DC_36BIT)
--			igt_info("Max supported bit depth: 12\n");
--		else if (bit_depth & HDMI_VSDB_DC_30BIT)
--			igt_info("Max supported bit depth: 10\n");
--		else
--			igt_info("Max supported bit depth: Undefined\n");
--
--		result = !!(bit_depth & (7 << 4));
--	}
--	drmModeFreePropertyBlob(edid_blob);
-+	unsigned int maximum = igt_get_output_max_bpc(drm_fd, output_name);
-+
-+	igt_info("Max supported bit depth: %d\n", maximum);
- 
--	return result;
-+	return maximum >= 10;
+@@ -300,10 +306,31 @@ static void run_check_psr_su_mpo(data_t *data)
+ 	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i)
+ 		igt_remove_fb(data->fd, &rect_fb[i]);
+ 	test_fini(data);
+-	close(data->fd);
  }
  
- uint64_t get_max_bpc(igt_output_t *output)
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index a6665b1f..cc07f5ee 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -67,7 +67,7 @@ typedef struct {
- 	color_t coeffs[];
- } gamma_lut_t;
+-igt_main
++const char *help_str =
++"  --visual-confirm           PSR visual confirm debug option enable\n";
++
++struct option long_options[] = {
++	{"visual-confirm",	optional_argument, NULL, 'v'},
++	{ 0, 0, 0, 0 }
++};
++
++static int opt_handler(int option, int option_index, void *data)
++{
++	switch (option) {
++	case 'v':
++		opt.visual_confirm = strtol(optarg, NULL, 0);
++		igt_info(" PSR Visual Confirm %s\n", opt.visual_confirm ? "enabled" : "disabled");
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++igt_main_args("", long_options, help_str, opt_handler, NULL)
+ {
+ 	data_t data;
  
--bool panel_supports_deep_color(int fd, drmModeConnector *connector);
-+bool panel_supports_deep_color(int fd, char *output_name);
- uint64_t get_max_bpc(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
- 			       drmModeModeInfo *mode,
+@@ -321,6 +348,13 @@ igt_main
+ 		igt_display_require(&data.display, data.fd);
+ 		igt_require(&data.display.is_atomic);
+ 		igt_display_require_output(&data.display);
++
++		/* check if visual confirm option available */
++		if (opt.visual_confirm) {
++			igt_skip_on(!igt_amd_has_visual_confirm(data.fd));
++			igt_skip_on_f(!igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_PSR),
++				      "set PSR visual confirm failed\n");
++		}
+ 	}
+ 
+ 	igt_describe("Test whether PSR can be enabled with static screen");
+@@ -335,6 +369,10 @@ igt_main
+ 
+ 	igt_fixture
+ 	{
++		if (opt.visual_confirm) {
++			igt_require_f(igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_DISABLE),
++				      "reset PSR visual confirm option failed\n");
++		}
+ 		close(data.debugfs_fd);
+ 		igt_display_fini(&data.display);
+ 	}
 -- 
-2.35.1
+2.25.1
