@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3A7210E765
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Apr 2022 09:34:53 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3305010E9A7
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Apr 2022 10:45:29 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	karthik.b.s@intel.com
-Date: Thu,  7 Apr 2022 15:02:55 +0530
-Message-Id: <20220407093255.1365917-1-bhanuprakash.modem@intel.com>
+Date: Thu,  7 Apr 2022 16:13:29 +0530
+Message-Id: <20220407104329.1367332-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220407093255.1365917-1-bhanuprakash.modem@intel.com>
+References: <20220407093255.1365917-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH] tests/kms_setmode: Fix the corner case in
@@ -37,23 +39,37 @@ Starting dynamic subtest: pipe-B-DP-1-pipe-A-DP-4
     CRTC[115] [Pipe A] Mode: 7680x4320@30Hz Connectors: DP-4[416]
 Dynamic subtest pipe-B-DP-1-pipe-A-DP-4: FAIL (0.272s)
 
+V2:
+* Improve the logic
+* Add comments
+
 Cc: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_setmode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/kms_setmode.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 969ad75c..ba48dee8 100644
+index 969ad75c..8c755091 100644
 --- a/tests/kms_setmode.c
 +++ b/tests/kms_setmode.c
-@@ -679,7 +679,8 @@ static void test_one_combination(const struct test_config *tconf,
+@@ -676,10 +676,16 @@ static void test_one_combination(const struct test_config *tconf,
+ 			 * if mode.hdisplay > 5120, then ignore
+ 			 *   - last crtc in single/multi-connector config
+ 			 *   - consecutive crtcs in multi-connector config
++			 *
++			 * in multi-connector config ignore if
++			 *   - previous crtc mode.hdisplay > 5120 and
++			 *   - current & previous crtcs are consecutive
  			 */
- 			if ((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
- 			    ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
+-			if ((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
+-			    ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
 -			     (i < (crtc_count - 1) && abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1))) {
-+			     (i < (crtc_count - 1) && abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1) ||
-+			     (i > 0 && abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
++			if (((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
++			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
++			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
++			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
  				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
  				goto out;
  			}
