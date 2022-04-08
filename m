@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A42910F6B0
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Apr 2022 06:54:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59D5510EA7A
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Apr 2022 06:54:24 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org, jani.nikula@linux.intel.com,
  ville.syrjala@linux.intel.com, harry.wentland@amd.com,
  swati2.sharma@intel.com
-Date: Fri,  8 Apr 2022 12:21:40 +0530
-Message-Id: <20220408065143.1485069-2-bhanuprakash.modem@intel.com>
+Date: Fri,  8 Apr 2022 12:21:42 +0530
+Message-Id: <20220408065143.1485069-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220408065143.1485069-1-bhanuprakash.modem@intel.com>
 References: <20220408065143.1485069-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/4] lib/igt_kms: Add helper functions to read few
- debugfs
+Subject: [igt-dev] [PATCH 3/4] tests/kms_hdr: Adopt to use updated debugfs
+ functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,130 +21,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add helper functions:
-    - Read maximum bpc from connector debugfs
-    - Read Current bpc from crtc debugfs
-    - Assert if Current & Requested bpc are not equal
+Instead of writing our own wrappers of debugfs read,
+use updated functions from lib.
 
+Cc: Swati Sharma <swati2.sharma@intel.com>
 Cc: Mark Yacoub <markyacoub@chromium.org>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_kms.c | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  5 +++
- 2 files changed, 89 insertions(+)
+ tests/kms_hdr.c | 69 +++++++------------------------------------------
+ 1 file changed, 9 insertions(+), 60 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 7838ff28..8161d2e1 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5379,3 +5379,87 @@ int igt_get_dsc_debugfs_fd(int drmfd, drmModeConnector *connector)
- 
- 	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index 247eb658..cd2883c8 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -95,44 +95,6 @@ static void test_cycle_flags(data_t *data, uint32_t test_flags)
+ 					      SUSPEND_TEST_NONE);
  }
-+
-+/*
-+ * igt_get_output_max_bpc:
-+ * @drmfd: A drm file descriptor
-+ * @output_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: The maximum bpc from the connector debugfs.
-+ */
-+unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name)
-+{
-+	char buf[24];
-+	char *start_loc;
-+	int fd, res;
-+	unsigned int maximum;
-+
-+	fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
-+	igt_assert(fd >= 0);
-+
-+	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
-+	igt_require(res > 0);
-+
-+	close(fd);
-+
-+	igt_assert(start_loc = strstr(buf, "Maximum: "));
-+	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &maximum), 1);
-+
-+	return maximum;
-+}
-+
-+/*
-+ * igt_get_pipe_current_bpc:
-+ * @drmfd: A drm file descriptor
-+ * @pipe: Display pipe
-+ *
-+ * Returns: The current bpc from the crtc debugfs.
-+ */
-+unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
-+{
-+	char buf[24];
-+	char debugfs_name[24];
-+	char *start_loc;
-+	int fd, res;
-+	unsigned int current;
-+
-+	fd = igt_debugfs_pipe_dir(drmfd, pipe, O_RDONLY);
-+	igt_assert(fd >= 0);
-+
-+	if (is_i915_device(drmfd))
-+		strcpy(debugfs_name, "i915_current_bpc");
-+	else if (is_amdgpu_device(drmfd))
-+		strcpy(debugfs_name, "amdgpu_current_bpc");
-+
-+	res = igt_debugfs_simple_read(fd, debugfs_name, buf, sizeof(buf));
-+	igt_require(res > 0);
-+
-+	close(fd);
-+
-+	igt_assert(start_loc = strstr(buf, "Current: "));
-+	igt_assert_eq(sscanf(start_loc, "Current: %u", &current), 1);
-+
-+	return current;
-+}
-+
-+/*
-+ * igt_assert_output_bpc_equal:
-+ * @drmfd: A drm file descriptor
-+ * @pipe: Display pipe
-+ * @output_name: Name of the libdrm connector we're going to use
-+ * @bpc: BPC to compare with max & current bpc
-+ *
-+ * Returns: True if crtc has the correct requested bpc, else False.
-+ */
-+void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
-+				 char *output_name, unsigned int bpc)
-+{
-+	unsigned int maximum = igt_get_output_max_bpc(drmfd, output_name);
-+	unsigned int current = igt_get_pipe_current_bpc(drmfd, pipe);
-+
-+	igt_require_f(maximum >= bpc,
-+		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
-+		      maximum);
-+
-+	igt_assert_eq(current, bpc);
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index e9ecd21e..aca541d8 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -948,4 +948,9 @@ int igt_force_dsc_enable_bpp(int drmfd, drmModeConnector *connector,
- 				int bpp);
- int igt_get_dsc_debugfs_fd(int drmfd, drmModeConnector *connector);
  
-+unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
-+unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
-+void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
-+				char *output_name, unsigned int bpc);
-+
- #endif /* __IGT_KMS_H__ */
+-/* Returns the current and maximum bpc from the connector debugfs. */
+-static output_bpc_t get_output_bpc(data_t *data)
+-{
+-	char buf[256];
+-	char *start_loc;
+-	int fd, res;
+-	output_bpc_t info;
+-
+-	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
+-	igt_assert(fd >= 0);
+-
+-	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
+-
+-	igt_require(res > 0);
+-
+-	close(fd);
+-
+-	igt_assert(start_loc = strstr(buf, "Current: "));
+-	igt_assert_eq(sscanf(start_loc, "Current: %u", &info.current), 1);
+-
+-	igt_assert(start_loc = strstr(buf, "Maximum: "));
+-	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &info.maximum), 1);
+-
+-	return info;
+-}
+-
+-/* Verifies that connector has the correct output bpc. */
+-static void assert_output_bpc(data_t *data, unsigned int bpc)
+-{
+-	output_bpc_t info = get_output_bpc(data);
+-
+-	igt_require_f(info.maximum >= bpc,
+-		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
+-		      info.maximum);
+-
+-	igt_assert_eq(info.current, bpc);
+-}
+-
+ /* Fills the FB with a test HDR pattern. */
+ static void draw_hdr_pattern(igt_fb_t *fb)
+ {
+@@ -204,12 +166,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+ 	/* Start in 8bpc. */
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	/*
+-	 * i915 driver doesn't expose max bpc as debugfs entry,
+-	 * so limiting assert only for amd driver.
+-	 */
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 8);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	/*
+ 	 * amdgpu requires a primary plane when the CRTC is enabled.
+@@ -223,8 +180,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+ 	/* Switch to 10bpc. */
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 10);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	/* Verify that the CRC are equal after DPMS or suspend. */
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+@@ -234,8 +190,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+ 	/* Drop back to 8bpc. */
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 8);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	/* CRC capture is clamped to 8bpc, so capture should match. */
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+@@ -427,15 +382,13 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+ 	set_hdr_output_metadata(data, NULL);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 8);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
+ 	set_hdr_output_metadata(data, &hdr);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 10);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	/* Verify that the CRC are equal after DPMS or suspend. */
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+@@ -446,8 +399,7 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+ 	set_hdr_output_metadata(data, NULL);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 8);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+ 
+@@ -506,16 +458,14 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_plane_set_size(data->primary, data->w, data->h);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 8);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	/* Enter HDR, a modeset is allowed here. */
+ 	fill_hdr_output_metadata_st2048(&hdr);
+ 	set_hdr_output_metadata(data, &hdr);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 10);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+ 
+@@ -548,8 +498,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	set_hdr_output_metadata(data, NULL);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (is_amdgpu_device(data->fd))
+-		assert_output_bpc(data, 8);
++	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	/* Verify that the CRC didn't change while cycling metadata. */
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
 -- 
 2.35.1
