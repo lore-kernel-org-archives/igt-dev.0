@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D375B10F12E
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Apr 2022 08:45:54 +0000 (UTC)
-From: Ananya Sharma <ananya.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Apr 2022 14:12:00 +0530
-Message-Id: <20220408084200.863502-1-ananya.sharma@intel.com>
+Message-ID: <cbef4460-580a-ab84-296c-6aa1715e8381@linux.intel.com>
+Date: Fri, 8 Apr 2022 09:56:58 +0100
 MIME-Version: 1.0
+Content-Language: en-US
+To: Petri Latvala <petri.latvala@intel.com>,
+ Matthew Auld <matthew.auld@intel.com>
+References: <20220328100859.13550-1-matthew.auld@intel.com>
+ <YkGZcTZHHcF781Zz@platvala-desk.ger.corp.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <YkGZcTZHHcF781Zz@platvala-desk.ger.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v1] tests/kms_color: MPO + pipe color test -
- test for gamma LUT transformation using two planes.
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/gem_lmem_swapping: limit lmem
+ to 4G
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,143 +20,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ CQ Tang <cq.tang@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
----
- tests/kms_color.c | 96 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 775f3596..c520cd5a 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -111,7 +111,95 @@ static void test_pipe_degamma(data_t *data,
- 	free_lut(degamma_linear);
- 	free_lut(degamma_full);
- }
-+static void test_pipe_gamma_multiplane(data_t *data,
-+                            igt_plane_t *primary, igt_plane_t *overlay)
-+{
-+	igt_output_t *output;
-+        igt_display_t *display = &data->display;
-+        gamma_lut_t *gamma_full;
-+        color_t red_green_blue[] = {
-+                { 1.0, 0.0, 0.0 },
-+                { 0.0, 1.0, 0.0 },
-+                { 0.0, 0.0, 1.0 }
-+        };
-+        drmModeModeInfo *mode;
-+        struct igt_fb fb;
-+        igt_crc_t crc_fullgamma, crc_fullcolors;
-+	int fb_id;
-+	int height_primary, height_overlay, width;
-+        igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
-+        gamma_full = generate_table_max(data->gamma_lut_size);
-+
-+        output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
-+        igt_require(output);
-+
-+        igt_output_set_pipe(output, primary->pipe->pipe);
-+        mode = igt_output_get_mode(output);
-+
-+	height_primary = mode->vdisplay/2;
-+	height_overlay = mode->vdisplay/2+1;
-+	width = mode->hdisplay;
-+
-+        /* Create a framebuffer at the size of the output. */
-+	fb_id = igt_create_fb(data->drm_fd,
-+			      mode->hdisplay,
-+			      mode->vdisplay,
-+			      DRM_FORMAT_XRGB8888,
-+			      DRM_FORMAT_MOD_LINEAR,
-+			      &fb);
-+	igt_assert(fb_id);
-+
-+        igt_plane_set_fb(primary, &fb);
-+	igt_plane_set_size(primary, width, height_primary);
-+	igt_plane_set_fb(overlay, &fb);
-+	igt_plane_set_size(overlay, width, height_overlay);
-+
-+	disable_ctm(primary->pipe);
-+        disable_degamma(primary->pipe);
-+        set_gamma(data, primary->pipe, gamma_full);
-+        igt_display_commit(&data->display);
-+
-+	 /* Draw solid colors with no gamma transformation. */
-+        paint_rectangles(data, mode, red_green_blue, &fb);
-+        igt_plane_set_fb(primary, &fb);
-+
-+        igt_display_commit(&data->display);
-+        igt_wait_for_vblank(data->drm_fd,
-+                            display->pipes[primary->pipe->pipe].crtc_offset);
-+        igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
- 
-+	/* Draw a gradient with gamma LUT to remap all values
-+         * to max red/green/blue.
-+         */
-+       /* paint_gradient_rectangles(data, mode, red_green_blue, &fb);*/
-+	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-+        igt_plane_set_fb(primary, &fb);
-+	igt_plane_set_position(primary, 0,0);
-+	igt_plane_set_size(primary, width, height_primary);
-+	igt_plane_set_fb(overlay, &fb);
-+        igt_plane_set_position(overlay, 0, height_primary);
-+        igt_plane_set_size(overlay, width, height_overlay);
-+
-+	igt_display_commit(&data->display);
-+        igt_wait_for_vblank(data->drm_fd,
-+                            display->pipes[primary->pipe->pipe].crtc_offset);
-+        igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-+
-+        /* Verify that the CRC of the software computed output is
-+         * equal to the CRC of the gamma LUT transformation output.
-+       */
-+
-+	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-+
-+	disable_gamma(primary->pipe);
-+        igt_plane_set_fb(primary, NULL);
-+	igt_plane_set_fb(overlay, NULL);
-+        igt_output_set_pipe(output, PIPE_NONE);
-+        igt_display_commit(&data->display);
-+        igt_remove_fb(data->drm_fd, &fb);
-+
-+        free_lut(gamma_full);
-+}
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
-  * LUT and verify we have the same CRC as drawing solid color rectangles.
-@@ -662,7 +750,7 @@ static void
- run_tests_for_pipe(data_t *data, enum pipe p)
- {
- 	igt_pipe_t *pipe;
--	igt_plane_t *primary;
-+	igt_plane_t *primary,*overlay;
- 	double delta;
- 	int i;
- 	color_t red_green_blue[] = {
-@@ -680,6 +768,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 		igt_require(pipe->n_planes >= 0);
- 
- 		primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+		overlay = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_OVERLAY);
- 
- 		data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
- 						  primary->pipe->pipe,
-@@ -860,6 +949,11 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
- 		test_pipe_legacy_gamma_reset(data, primary);
- 
-+	igt_describe("Verify that gamma LUT transformation works correctly for multiplane");
-+	igt_subtest_f("pipe-%s-gamma-multiplane", kmstest_pipe_name(p))
-+                test_pipe_gamma_multiplane(data,primary,overlay);
-+
-+
- 	igt_fixture {
- 		disable_degamma(primary->pipe);
- 		disable_gamma(primary->pipe);
--- 
-2.25.1
+On 28/03/2022 12:18, Petri Latvala wrote:
+> On Mon, Mar 28, 2022 at 11:08:59AM +0100, Matthew Auld wrote:
+>> From: CQ Tang <cq.tang@intel.com>
+>>
+>> On some systems lmem can be as large as 16G, which seems to trigger
+>> various CI timeouts, and in the best case just takes a long time. For
+>> the purposes of the test we should be able to limit to 4G, without any
+>> big loss in coverage.
+>>
+>> v2:
+>>   - No need to try again without the modparam; if it's not supported it
+>>     will still load the driver just fine.
+>> v3(Petri):
+>>   - Add a helpful debug print in case the kernel is missing support for
+>>     the lmem_size modparam.
+>>
+>> Signed-off-by: CQ Tang <cq.tang@intel.com>
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
+>> Cc: Petri Latvala <petri.latvala@intel.com>
+>> Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+>> ---
+>>   tests/i915/gem_lmem_swapping.c | 12 +++++++++++-
+>>   1 file changed, 11 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+>> index 31644bcd..6cf1acec 100644
+>> --- a/tests/i915/gem_lmem_swapping.c
+>> +++ b/tests/i915/gem_lmem_swapping.c
+>> @@ -526,11 +526,20 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>>   
+>>   	igt_fixture {
+>>   		struct intel_execution_engine2 *e;
+>> +		char *tmp;
+>>   
+>> -		i915 = drm_open_driver(DRIVER_INTEL);
+>> +		igt_i915_driver_unload();
+>> +		igt_assert_eq(igt_i915_driver_load("lmem_size=4096"), 0);
+>> +
+>> +		i915 = __drm_open_driver(DRIVER_INTEL);
+>>   		igt_require_gem(i915);
+>>   		igt_require(gem_has_lmem(i915));
+>>   
+>> +		tmp = __igt_params_get(i915, "lmem_size");
+>> +		if (!tmp)
+>> +			igt_info("lmem_size modparam not supported on this kernel. Continuing with full lmem size. This may result in CI timeouts.");
+>> +		free(tmp);
+> 
+> Newline at the end missing. With that added,
+> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+> 
+>> +
+>>   		regions = gem_get_query_memory_regions(i915);
+>>   		igt_require(regions);
+>>   
+>> @@ -556,6 +565,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>>   		intel_ctx_destroy(i915, ctx);
+>>   		free(regions);
+>>   		close(i915);
+>> +		igt_i915_driver_unload();
+
+If this causes an extra module unload on legacy platforms just after 
+tests skips due not having local memory, is it a good idea? Would it 
+make sense to move the skip to before unload and reload with lmem_size 
+param and only unload if that condition was passed?
+
+Regards,
+
+Tvrtko
+
+>>   	}
+>>   
+>>   	igt_exit();
+>> -- 
+>> 2.34.1
+>>
