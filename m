@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE8E710E7E9
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Apr 2022 18:05:24 +0000 (UTC)
-Message-ID: <e65eafdb-00d6-0a00-e64c-6cb4df52bf7e@intel.com>
-Date: Fri, 8 Apr 2022 23:35:05 +0530
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9238D10E69E
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Apr 2022 18:12:17 +0000 (UTC)
+Date: Fri, 8 Apr 2022 11:12:15 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20220408181215.7r37sqjb74bm4yex@ldmartin-desk2>
+References: <20220407051908.3390083-1-lucas.demarchi@intel.com>
+ <164944036505.22676.4540825793246675591@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Ananya Sharma <ananya.sharma@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220408084200.863502-1-ananya.sharma@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220408084200.863502-1-ananya.sharma@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v1] tests/kms_color: MPO + pipe color
- test - test for gamma LUT transformation using two planes.
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <164944036505.22676.4540825793246675591@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?intel-ci/fast-feedback=3A_Move_gem=5Flmem=5Fswapping_further_?=
+ =?utf-8?b?KHJldjMp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,149 +27,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Ananya,
+On Fri, Apr 08, 2022 at 05:52:45PM +0000, Patchwork wrote:
+>== Series Details ==
+>
+>Series: tests/intel-ci/fast-feedback: Move gem_lmem_swapping further (rev3)
+>URL   : https://patchwork.freedesktop.org/series/102312/
+>State : failure
+>
+>== Summary ==
+>
+>CI Bug Log - changes from CI_DRM_11477_full -> IGTPW_6906_full
+>====================================================
+>
+>Summary
+>-------
+>
+>  **FAILURE**
+>
+>  Serious unknown changes coming with IGTPW_6906_full absolutely need to be
+>  verified manually.
+>
+>  If you think the reported changes have nothing to do with the changes
+>  introduced in IGTPW_6906_full, please notify your bug team to allow them
+>  to document this new failure mode, which will reduce false positives in CI.
+>
+>  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6906/index.html
+>
+>Participating hosts (11 -> 6)
+>------------------------------
+>
+>  Missing    (5): shard-skl pig-kbl-iris shard-tglu pig-glk-j5005 pig-skl-6260u
+>
+>Possible new issues
+>-------------------
+>
+>  Here are the unknown changes that may have been introduced in IGTPW_6906_full:
+>
+>### IGT changes ###
+>
+>#### Possible regressions ####
+>
+>  * igt@gem_exec_balancer@parallel-out-fence:
+>    - shard-kbl:          NOTRUN -> [DMESG-WARN][1]
+>   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6906/shard-kbl6/igt@gem_exec_balancer@parallel-out-fence.html
+>
+>  * igt@kms_fbcon_fbt@fbc-suspend:
+>    - shard-apl:          [PASS][2] -> [INCOMPLETE][3]
+>   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11477/shard-apl8/igt@kms_fbcon_fbt@fbc-suspend.html
+>   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6906/shard-apl6/igt@kms_fbcon_fbt@fbc-suspend.html
 
-Why such a long patch subject? Please reduce.
-Also, indentation is complete off. Please correct.
-There seems to be build failure for the patch. Check that too.
+None of these failures are related to the change in the test order.
 
-Correct these 3 things first, before proceeding for reviews.
+Proceeding with merge to unblock the fixes to BAT
 
-On 08-Apr-22 2:12 PM, Ananya Sharma wrote:
-> Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
-> ---
->   tests/kms_color.c | 96 ++++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 95 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index 775f3596..c520cd5a 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -111,7 +111,95 @@ static void test_pipe_degamma(data_t *data,
->   	free_lut(degamma_linear);
->   	free_lut(degamma_full);
->   }
-> +static void test_pipe_gamma_multiplane(data_t *data,
-> +                            igt_plane_t *primary, igt_plane_t *overlay)
-> +{
-> +	igt_output_t *output;
-> +        igt_display_t *display = &data->display;
-> +        gamma_lut_t *gamma_full;
-> +        color_t red_green_blue[] = {
-> +                { 1.0, 0.0, 0.0 },
-> +                { 0.0, 1.0, 0.0 },
-> +                { 0.0, 0.0, 1.0 }
-> +        };
-> +        drmModeModeInfo *mode;
-> +        struct igt_fb fb;
-> +        igt_crc_t crc_fullgamma, crc_fullcolors;
-> +	int fb_id;
-> +	int height_primary, height_overlay, width;
-> +        igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
-> +        gamma_full = generate_table_max(data->gamma_lut_size);
-> +
-> +        output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
-> +        igt_require(output);
-> +
-> +        igt_output_set_pipe(output, primary->pipe->pipe);
-> +        mode = igt_output_get_mode(output);
-> +
-> +	height_primary = mode->vdisplay/2;
-> +	height_overlay = mode->vdisplay/2+1;
-> +	width = mode->hdisplay;
-> +
-> +        /* Create a framebuffer at the size of the output. */
-> +	fb_id = igt_create_fb(data->drm_fd,
-> +			      mode->hdisplay,
-> +			      mode->vdisplay,
-> +			      DRM_FORMAT_XRGB8888,
-> +			      DRM_FORMAT_MOD_LINEAR,
-> +			      &fb);
-> +	igt_assert(fb_id);
-> +
-> +        igt_plane_set_fb(primary, &fb);
-> +	igt_plane_set_size(primary, width, height_primary);
-> +	igt_plane_set_fb(overlay, &fb);
-> +	igt_plane_set_size(overlay, width, height_overlay);
-> +
-> +	disable_ctm(primary->pipe);
-> +        disable_degamma(primary->pipe);
-> +        set_gamma(data, primary->pipe, gamma_full);
-> +        igt_display_commit(&data->display);
-> +
-> +	 /* Draw solid colors with no gamma transformation. */
-> +        paint_rectangles(data, mode, red_green_blue, &fb);
-> +        igt_plane_set_fb(primary, &fb);
-> +
-> +        igt_display_commit(&data->display);
-> +        igt_wait_for_vblank(data->drm_fd,
-> +                            display->pipes[primary->pipe->pipe].crtc_offset);
-> +        igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
->   
-> +	/* Draw a gradient with gamma LUT to remap all values
-> +         * to max red/green/blue.
-> +         */
-> +       /* paint_gradient_rectangles(data, mode, red_green_blue, &fb);*/
-> +	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> +        igt_plane_set_fb(primary, &fb);
-> +	igt_plane_set_position(primary, 0,0);
-> +	igt_plane_set_size(primary, width, height_primary);
-> +	igt_plane_set_fb(overlay, &fb);
-> +        igt_plane_set_position(overlay, 0, height_primary);
-> +        igt_plane_set_size(overlay, width, height_overlay);
-> +
-> +	igt_display_commit(&data->display);
-> +        igt_wait_for_vblank(data->drm_fd,
-> +                            display->pipes[primary->pipe->pipe].crtc_offset);
-> +        igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-> +
-> +        /* Verify that the CRC of the software computed output is
-> +         * equal to the CRC of the gamma LUT transformation output.
-> +       */
-> +
-> +	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-> +
-> +	disable_gamma(primary->pipe);
-> +        igt_plane_set_fb(primary, NULL);
-> +	igt_plane_set_fb(overlay, NULL);
-> +        igt_output_set_pipe(output, PIPE_NONE);
-> +        igt_display_commit(&data->display);
-> +        igt_remove_fb(data->drm_fd, &fb);
-> +
-> +        free_lut(gamma_full);
-> +}
->   /*
->    * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
->    * LUT and verify we have the same CRC as drawing solid color rectangles.
-> @@ -662,7 +750,7 @@ static void
->   run_tests_for_pipe(data_t *data, enum pipe p)
->   {
->   	igt_pipe_t *pipe;
-> -	igt_plane_t *primary;
-> +	igt_plane_t *primary,*overlay;
->   	double delta;
->   	int i;
->   	color_t red_green_blue[] = {
-> @@ -680,6 +768,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
->   		igt_require(pipe->n_planes >= 0);
->   
->   		primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +		overlay = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_OVERLAY);
->   
->   		data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
->   						  primary->pipe->pipe,
-> @@ -860,6 +949,11 @@ run_tests_for_pipe(data_t *data, enum pipe p)
->   	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
->   		test_pipe_legacy_gamma_reset(data, primary);
->   
-> +	igt_describe("Verify that gamma LUT transformation works correctly for multiplane");
-> +	igt_subtest_f("pipe-%s-gamma-multiplane", kmstest_pipe_name(p))
-> +                test_pipe_gamma_multiplane(data,primary,overlay);
-> +
-> +
->   	igt_fixture {
->   		disable_degamma(primary->pipe);
->   		disable_gamma(primary->pipe);
-
--- 
-~Swati Sharma
+Lucas De Marchi
