@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9238D10E69E
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Apr 2022 18:12:17 +0000 (UTC)
-Date: Fri, 8 Apr 2022 11:12:15 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20220408181215.7r37sqjb74bm4yex@ldmartin-desk2>
-References: <20220407051908.3390083-1-lucas.demarchi@intel.com>
- <164944036505.22676.4540825793246675591@emeril.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F6A810F1EC
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Apr 2022 18:28:22 +0000 (UTC)
+Message-ID: <4393df36-155f-eaac-ad95-ec13be834424@intel.com>
+Date: Fri, 8 Apr 2022 23:58:16 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <164944036505.22676.4540825793246675591@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?intel-ci/fast-feedback=3A_Move_gem=5Flmem=5Fswapping_further_?=
- =?utf-8?b?KHJldjMp?=
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+References: <20220407203631.13363-1-nidhi1.gupta@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20220407203631.13363-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms: IGT cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,57 +25,136 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 08, 2022 at 05:52:45PM +0000, Patchwork wrote:
->== Series Details ==
->
->Series: tests/intel-ci/fast-feedback: Move gem_lmem_swapping further (rev3)
->URL   : https://patchwork.freedesktop.org/series/102312/
->State : failure
->
->== Summary ==
->
->CI Bug Log - changes from CI_DRM_11477_full -> IGTPW_6906_full
->====================================================
->
->Summary
->-------
->
->  **FAILURE**
->
->  Serious unknown changes coming with IGTPW_6906_full absolutely need to be
->  verified manually.
->
->  If you think the reported changes have nothing to do with the changes
->  introduced in IGTPW_6906_full, please notify your bug team to allow them
->  to document this new failure mode, which will reduce false positives in CI.
->
->  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6906/index.html
->
->Participating hosts (11 -> 6)
->------------------------------
->
->  Missing    (5): shard-skl pig-kbl-iris shard-tglu pig-glk-j5005 pig-skl-6260u
->
->Possible new issues
->-------------------
->
->  Here are the unknown changes that may have been introduced in IGTPW_6906_full:
->
->### IGT changes ###
->
->#### Possible regressions ####
->
->  * igt@gem_exec_balancer@parallel-out-fence:
->    - shard-kbl:          NOTRUN -> [DMESG-WARN][1]
->   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6906/shard-kbl6/igt@gem_exec_balancer@parallel-out-fence.html
->
->  * igt@kms_fbcon_fbt@fbc-suspend:
->    - shard-apl:          [PASS][2] -> [INCOMPLETE][3]
->   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11477/shard-apl8/igt@kms_fbcon_fbt@fbc-suspend.html
->   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6906/shard-apl6/igt@kms_fbcon_fbt@fbc-suspend.html
+While applying this patch seeing,
+.git/rebase-apply/patch:93: trailing whitespace.
 
-None of these failures are related to the change in the test order.
+.git/rebase-apply/patch:95: trailing whitespace.
 
-Proceeding with merge to unblock the fixes to BAT
+Please use checkpatch
 
-Lucas De Marchi
+On 08-Apr-22 2:06 AM, Nidhi Gupta wrote:
+> Before running the subtest we need to sanitize the system state
+> to default, since we can't trust the state of previous subtest, used
+> igt_display_reset() to sanitize the state.
+> 
+> Replace newly defined function in particular test with existing library
+> function.
+> 
+> Below tests are modified:
+> 	tests/kms_concurrent.c
+> 	tests/kms_sequence.c
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_concurrent.c | 39 ++++++++++++++-------------------------
+>   tests/kms_sequence.c   |  8 +++++---
+>   2 files changed, 19 insertions(+), 28 deletions(-)
+> 
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index dc1e36f2..622d3335 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
+>   	}
+>   
+>   	/* reset the constraint on the pipe */
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   
+>   	free(data->plane);
+>   	data->plane = NULL;
+> @@ -289,35 +290,28 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+>   static void
+>   run_test(data_t *data, enum pipe pipe, igt_output_t *output)
+>   {
+> -	int connected_outs;
+>   	int n_planes = data->display.pipes[pipe].n_planes;
+> +	igt_display_reset(&data->display);
+>   
+>   	if (!opt.user_seed)
+>   		opt.seed = time(NULL);
+>   
+> -	connected_outs = 0;
+> -	for_each_valid_output_on_pipe(&data->display, pipe, output) {
+> -		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
+> -			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+> +	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
+> +		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
+>   
+> -		srand(opt.seed);
+> +	srand(opt.seed);
+>   
+> -		test_init(data, pipe, n_planes, output);
+> +	test_init(data, pipe, n_planes, output);
+>   
+> -		igt_fork(child, 1) {
+> -			test_plane_position_with_output(data, pipe, n_planes, output);
+> -		}
+> -
+> -		test_resolution_with_output(data, pipe, n_planes, output);
+> -
+> -		igt_waitchildren();
+> +	igt_fork(child, 1) {
+> +		test_plane_position_with_output(data, pipe, n_planes, output);
+> +	}
+>   
+> -		test_fini(data, pipe, n_planes, output);
+> +	test_resolution_with_output(data, pipe, n_planes, output);
+>   
+> -		connected_outs++;
+> -	}
+> +	igt_waitchildren();
+>   
+> -	igt_skip_on(connected_outs == 0);
+> +	test_fini(data, pipe, n_planes, output);
+>   }
+>   
+>   static void
+> @@ -326,15 +320,10 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+>   	igt_output_t *output;
+>   
+>   	igt_fixture {
+> -		int valid_tests = 0;
+> -
+>   		igt_require_pipe(&data->display, pipe);
+>   		igt_require(data->display.pipes[pipe].n_planes > 0);
+>   
+> -		for_each_valid_output_on_pipe(&data->display, pipe, output)
+> -			valid_tests++;
+> -
+> -		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
+> +		igt_display_require_output(&data->display);
+>   	}
+>   
+>   	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+> diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+> index 9c287480..80e8e45c 100644
+> --- a/tests/kms_sequence.c
+> +++ b/tests/kms_sequence.c
+> @@ -76,7 +76,9 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+>   	drmModeModeInfo *mode;
+>   	igt_display_t *display = &data->display;
+>   	igt_plane_t *primary;
+> -
+> +	
+> +	igt_display_reset(&data->display);
+> +	
+>   	/* select the pipe we want to use */
+>   	igt_output_set_pipe(output, data->pipe);
+>   
+> @@ -109,8 +111,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   	igt_plane_set_fb(primary, NULL);
+>   
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> -	igt_display_commit(display);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   }
+>   
+>   static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
+
+-- 
+~Swati Sharma
