@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C8FF10F30E
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Apr 2022 08:16:36 +0000 (UTC)
-From: venkata.sai.patnana@intel.com
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 11 Apr 2022 13:29:11 +0530
-Message-Id: <20220411075911.21067-1-venkata.sai.patnana@intel.com>
-In-Reply-To: <20220308032112.12119-1-venkata.sai.patnana@intel.com>
-References: <20220308032112.12119-1-venkata.sai.patnana@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0592313713265655830=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc: IGT clean up for kms_dsc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Arunpravin Paneer Selvam" <arunpravin.paneerselvam@amd.com>
+Date: Mon, 11 Apr 2022 08:19:08 -0000
+Message-ID: <164966514808.2972.10252855649435136555@emeril.freedesktop.org>
+References: <20220411072801.15097-1-Arunpravin.PaneerSelvam@amd.com>
+In-Reply-To: <20220411072801.15097-1-Arunpravin.PaneerSelvam@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?drm=5Fbuddy=3A_Add_drm_buddy_test_cases?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,89 +17,242 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
+--===============0592313713265655830==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Remove redundent code and clean up added in individual test
-block.
+== Series Details ==
 
-Cc: Vandita Kulkarni <vandita.kulkarni@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Patnana Venkata Sai <venkata.sai.patnana@intel.com>
----
- tests/i915/kms_dsc.c | 27 ++++++---------------------
- 1 file changed, 6 insertions(+), 21 deletions(-)
+Series: tests/drm_buddy: Add drm buddy test cases
+URL   : https://patchwork.freedesktop.org/series/102469/
+State : failure
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 22d2216e90..8814073664 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -121,19 +121,6 @@ static void restore_force_dsc_en(void)
- 	force_dsc_restore_fd = -1;
- }
- 
--static void test_cleanup(data_t *data)
--{
--	igt_plane_t *primary;
--
--	if (data->output) {
--		primary = igt_output_get_plane_type(data->output,
--						    DRM_PLANE_TYPE_PRIMARY);
--		igt_plane_set_fb(primary, NULL);
--		igt_output_set_pipe(data->output, PIPE_NONE);
--		igt_display_commit(&data->display);
--	}
--}
--
- static void kms_dsc_exit_handler(int sig)
- {
- 	restore_force_dsc_en();
-@@ -211,9 +198,8 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 	bool enabled;
- 	igt_plane_t *primary;
- 
--	/* Disable the output first */
--	igt_output_set_pipe(data->output, PIPE_NONE);
--	igt_display_commit(&data->display);
-+	/* Sanitize the state before starting the subtest. */
-+	igt_display_reset(&data->display);
- 
- 	igt_debug("DSC is supported on %s\n", data->conn_name);
- 	save_force_dsc_en(data);
-@@ -253,6 +239,10 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
- 		     "Default DSC enable failed on Connector: %s Pipe: %s\n",
- 		     data->conn_name,
- 		     kmstest_pipe_name(data->pipe));
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+	igt_display_commit(&data->display);
- }
- 
- static void run_test(data_t *data, enum dsc_test_type test_type)
-@@ -307,7 +297,6 @@ igt_main
- {
- 	data_t data = {};
- 	drmModeRes *res;
--	drmModeConnector *connector = NULL;
- 	int i, j;
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-@@ -350,10 +339,6 @@ igt_main
- 	}
- 
- 	igt_fixture {
--		if (connector)
--			drmModeFreeConnector(connector);
--		test_cleanup(&data);
--		drmModeFreeResources(res);
- 		igt_display_fini(&data.display);
- 		close(data.drm_fd);
- 	}
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11481 -> IGTPW_6912
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6912 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6912, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/index.html
+
+Participating hosts (47 -> 44)
+------------------------------
+
+  Additional (2): fi-pnv-d510 bat-dg1-5 
+  Missing    (5): shard-tglu fi-bsw-cyan fi-icl-u2 shard-dg1 fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6912:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@runner@aborted:
+    - bat-dg1-5:          NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/bat-dg1-5/igt@runner@aborted.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gt_pm:
+    - {fi-tgl-dsi}:       [DMESG-FAIL][2] ([i915#1759]) -> [INCOMPLETE][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11481/fi-tgl-dsi/igt@i915_selftest@live@gt_pm.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-tgl-dsi/igt@i915_selftest@live@gt_pm.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6912 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#5341])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-pnv-d510/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][5] ([fdo#109271]) +57 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-pnv-d510/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][6] ([i915#4312])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-bdw-5557u/igt@runner@aborted.html
+    - fi-hsw-4770:        NOTRUN -> [FAIL][7] ([fdo#109271] / [i915#2722] / [i915#4312] / [i915#5594])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-hsw-4770/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1759]: https://gitlab.freedesktop.org/drm/intel/issues/1759
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
+  [i915#2722]: https://gitlab.freedesktop.org/drm/intel/issues/2722
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#4897]: https://gitlab.freedesktop.org/drm/intel/issues/4897
+  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
+  [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
+  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
+  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6415 -> IGTPW_6912
+
+  CI-20190529: 20190529
+  CI_DRM_11481: 9bf68eb47288411da23ce5c9967f27dba43bda1d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6912: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/index.html
+  IGT_6415: c3b690bd5f7fb1fb7ed786ab0f3b815930a6a55f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+
+== Testlist changes ==
+
++igt@drm_buddy@all
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/index.html
+
+--===============0592313713265655830==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/drm_buddy: Add drm buddy test cases</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102469/">https://patchwork.freedesktop.org/series/102469/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11481 -&gt; IGTPW_6912</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6912 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6912, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/index.html</p>
+<h2>Participating hosts (47 -&gt; 44)</h2>
+<p>Additional (2): fi-pnv-d510 bat-dg1-5 <br />
+  Missing    (5): shard-tglu fi-bsw-cyan fi-icl-u2 shard-dg1 fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6912:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/bat-dg1-5/igt@runner@aborted.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gt_pm:<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11481/fi-tgl-dsi/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1759">i915#1759</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-tgl-dsi/igt@i915_selftest@live@gt_pm.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6912 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-pnv-d510/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5341">i915#5341</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-pnv-d510/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +57 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2722">i915#2722</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6415 -&gt; IGTPW_6912</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11481: 9bf68eb47288411da23ce5c9967f27dba43bda1d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6912: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6912/index.html<br />
+  IGT_6415: c3b690bd5f7fb1fb7ed786ab0f3b815930a6a55f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>== Testlist changes ==</p>
+<p>+igt@drm_buddy@all</p>
+
+</body>
+</html>
+
+--===============0592313713265655830==--
