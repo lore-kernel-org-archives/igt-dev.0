@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7188D10E777
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Apr 2022 14:08:38 +0000 (UTC)
-Message-ID: <2b01e83c-9e1d-09a1-630a-a03767633f0e@intel.com>
-Date: Wed, 13 Apr 2022 15:53:01 +0200
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 723FE10E05E
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Apr 2022 11:57:36 +0000 (UTC)
+Message-ID: <5bcacce8-8faa-8ff5-6a4c-71e85c2d84e2@intel.com>
+Date: Mon, 11 Apr 2022 13:57:27 +0200
 Content-Language: en-US
-References: <cover.1649753814.git.mchehab@kernel.org>
- <44750fbf7c569f1da80a8f443b07df963730e28f.1649753814.git.mchehab@kernel.org>
+References: <20220404062642.378928-1-mauro.chehab@linux.intel.com>
+ <20220404062642.378928-11-mauro.chehab@linux.intel.com>
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-In-Reply-To: <44750fbf7c569f1da80a8f443b07df963730e28f.1649753814.git.mchehab@kernel.org>
+In-Reply-To: <20220404062642.378928-11-mauro.chehab@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 11/12] code_cov_parse_info: add support for
- exclude filters
+Subject: Re: [igt-dev] [PATCH 10/12] code_cov_parse_info: fix --show-lines
+ logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,63 +23,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Ch
- Sai Gowtham <sai.gowtham.ch@intel.com>
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 12.04.2022 10:59, Mauro Carvalho Chehab wrote:
+On 04.04.2022 08:26, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 >
-> It is interesting to have support not only for including, but
-> also for excluding functions and files. Also, it is trivial to
-> have support for it.
+> print_code_coverage function needs to first read the number
+> of lines and then simplify the $file by removing its prefix.
 >
-> When either one or both source/function filters are enabled, it
-> will print at the console the regular expressions that are applied
-> to functions and sources (if any), e. g.:
+> Without that, it ends trying to access an uninitiated value,
+> leading to warnings and not doing what's expected.
 >
-> $ cat << END >f1
-> +i915
-> gem
->
-> -  display
-> -selftest
-> END
-> $ cat << END >f2
-> 	-/selftests
-> END
-
-I am not sure if we really needs so tolerant parser, up to you.
-
-> $ code_cov_parse_info dg1.info dg2.info --func-filter f1 --source-filters f2 --stat
-
-s/func-filter/func-filters/
-
-Btw, maybe would be good to have inline fliters:
-
-$ code_cov_parse_info dg1.info dg2.info --func-filter '+i915,+gem,-display,-selftest' --source-filters '-/selftest' --stat
-
-For this I would make '+/-' at the beginning required, just an idea, 
-could be implemented later.
-
->    lines......: 72.1% (176 of 244 lines)
->    functions..: 77.3% (17 of 22 functions)
->    branches...: 50.0% (68 of 136 branches)
-> Filters......: function regex (not match: m`display` m`selftest` and match: m`i915` m`gem`), source regex (match: m`/selftest`) and ignored source files where none of its code ran.
-
-I would use then here "+i915,+gem,-display,-selftest" format, just 
-shorter lines.
-
-> Source files.: 0.99% (7 of 710 total), 77.78% (7 of 9 filtered)
+> While here, also check if the ln data is valid, just in case
+> the .info file might have some FN field(s) missing.
 >
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
+>   scripts/code_cov_parse_info | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+> index c8284a297b33..7987b0068e88 100755
+> --- a/scripts/code_cov_parse_info
+> +++ b/scripts/code_cov_parse_info
+> @@ -378,8 +378,13 @@ sub print_code_coverage($$$)
+>   			}
+>   
+>   			if ($show_lines) {
+> +				my $ln = $all_func{$func}{$file}->{ln};
+>   				$file =~ s,$prefix,linux/,;
+> -				$name = "$func() from $file:" . $all_func{$func}{$file}->{ln};
+> +				if ($ln) {
+> +					$name = "$func() from $file:" . $ln;
+> +				} else {
+> +					$name = "$func() from $file";
+> +				}
 
+$name = "$func() from $file";
 
-With fixed typo, and optionally implemented suggestions:
+$name .= ":" . $ln if ($ln);
+
+Would be more compact.
+
+Anyway:
 Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 
 Regards
 Andrzej
+
+
+>   			} elsif (scalar @keys > 1) {
+>   				$file =~ s,$prefix,linux/,;
+>   				$name = "$func() from $file:";
