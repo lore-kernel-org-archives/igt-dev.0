@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF93810FBF3
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 09:17:00 +0000 (UTC)
-Date: Tue, 12 Apr 2022 11:16:55 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>
-Message-ID: <20220412111655.536696c2@maurocar-mobl2>
-In-Reply-To: <9b72fcb4-1aed-f6d4-121c-9c959706df8c@intel.com>
-References: <20220404062642.378928-1-mauro.chehab@linux.intel.com>
- <20220404062642.378928-12-mauro.chehab@linux.intel.com>
- <9b72fcb4-1aed-f6d4-121c-9c959706df8c@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH 11/12] code_cov_parse_info: add support for
- exclude filters
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Tue, 12 Apr 2022 11:15:42 -0000
+Message-ID: <164976214206.18367.4666602456251402328@emeril.freedesktop.org>
+References: <20220412104616.1669124-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220412104616.1669124-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
+ =?utf-8?q?ntel-ci=3A_Drop_kms=5Fsetmode=40basic-clone-single-crtc_from_BA?=
+ =?utf-8?q?T?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,51 +18,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
- Petri Latvala <petri.latvala@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 11 Apr 2022 14:28:24 +0200
-Andrzej Hajda <andrzej.hajda@intel.com> wrote:
+== Series Details ==
 
+Series: intel-ci: Drop kms_setmode@basic-clone-single-crtc from BAT
+URL   : https://patchwork.freedesktop.org/series/102591/
+State : warning
 
-> > +When used with B<--exclude-source>, exclusions take precedence.
-> > +
-> > +=item B<--exclude-source> B<[filter's file]>
-> > +
-> > +Exclude all files that match the regular expressions contained
-> > +at the B<[filter's file]>.
-> > +
-> > +When used with B<--source-filters>, exclusions take precedence.
-> > +  
-> 
-> Now there are two filtering options per functions and two per files.
-> Wouldn't be better to squash include/exclude rules into one param in 
-> 'rsync like' patterns:
-> + include_pattern
-> - exclude_pattern
-> ...
-> This way it would be easier to manage filters - less options, less 
-> helper files.
+== Summary ==
 
-Added support for it. I also preserved the old behavior of placing
-just an include pattern without a "+", in order to be backward-compatible.
+Pipeline status: FAILED.
 
-> One could think about squashing also filters for function and files, but 
-> this I am not sure.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/557124 for the overview.
 
-I see your point. Yet, I opted to have a single file. Btw,
-depending on the file contents, the same filter file can be used as
-both source and function filters. For instance, a filter file like:
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21081671):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                289
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1649761992:step_script
+  section_start:1649761992:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1724 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=21081671 responseStatus=201 Created token=Mj7tMdYT
+  section_end:1649762003:upload_artifacts_on_failure
+  section_start:1649762003:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1649762004:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-	+i915
-	+gem
-	-display
-	-selftest
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21081670):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                289
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1649761992:step_script
+  section_start:1649761992:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1725 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=21081670 responseStatus=201 Created token=-MYr3u-q
+  section_end:1649762002:upload_artifacts_on_failure
+  section_start:1649762002:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1649762002:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
-can either be used for functions or sources (or both).
+== Logs ==
 
-Regards,
-Mauro
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/557124
