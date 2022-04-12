@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2078.outbound.protection.outlook.com [40.107.94.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 327F810E08C
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 19:21:56 +0000 (UTC)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2072.outbound.protection.outlook.com [40.107.93.72])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF0FD10E08C
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 19:21:54 +0000 (UTC)
 From: David Zhang <dingchen.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 12 Apr 2022 15:21:37 -0400
-Message-ID: <20220412192139.1530645-2-dingchen.zhang@amd.com>
-In-Reply-To: <20220412192139.1530645-1-dingchen.zhang@amd.com>
-References: <20220412192139.1530645-1-dingchen.zhang@amd.com>
+Date: Tue, 12 Apr 2022 15:21:36 -0400
+Message-ID: <20220412192139.1530645-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH v3 1/3] tests/amdgpu/amd_psr: add interactive
- option of PSR visual confirm
+Subject: [igt-dev] [PATCH v3 0/3] amdgpu PSR-SU FFU test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,110 +22,22 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why & how]
-AMDGPU DM debugfs provides a debug option of PSR visual confirm,
-we'd make it an interactive option that provides capability to
-usermode to choose if or not to enable the PSR visual confirm.
+changes in v3:
+---------------
+- define reusable wrapper for PSR support check
+- drop the unnecessary helper panning_pfb_and_psrsu_check() and
+  collapse the operations into run_check_psr_su_ffu()
+- initial the two overlay FBs w/ global alpha and different color
+  not to update the specific alpha region for each panning of the
+  primary plane.
 
-- add interactive option "visual-confirm" and by-default we select
-  it as TRUE to enable visual confirm for PSR-SU test cases.
-- set PSR visual confirm debugfs if interactive debug option of
-  visual confirm set before any test run begins, and reset after
-  any test run ends.
+David Zhang (3):
+  tests/amdgpu/amd_psr: add interactive option of PSR visual confirm
+  tests/amdgpu/amd_psr: add PSR-SU full frame update sub test case
+  tests/amdgpu/amd_psr: define reusable wrapper for PSR support check
 
-changes in v2:
-------------------
-- drop the "_dm_" from helpers of visual confirm debugfs set/get
-- drop the non-necessary visual confirm option check after set
-  and reset, before and after the test run, respectively
-- align the 2nd line code w/ previous line's opening brace
+ tests/amdgpu/amd_psr.c | 177 ++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 167 insertions(+), 10 deletions(-)
 
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Jay Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
-
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- tests/amdgpu/amd_psr.c | 42 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
-
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 58e40d2b..0ec50c9f 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -62,6 +62,12 @@ typedef struct data {
- 	int h;
- } data_t;
- 
-+struct {
-+	bool visual_confirm;
-+} opt = {
-+	.visual_confirm = true,	/* visual confirm debug option */
-+};
-+
- static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
- 		             double r, double g, double b, double a)
- {
-@@ -300,10 +306,31 @@ static void run_check_psr_su_mpo(data_t *data)
- 	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i)
- 		igt_remove_fb(data->fd, &rect_fb[i]);
- 	test_fini(data);
--	close(data->fd);
- }
- 
--igt_main
-+const char *help_str =
-+"  --visual-confirm           PSR visual confirm debug option enable\n";
-+
-+struct option long_options[] = {
-+	{"visual-confirm",	optional_argument, NULL, 'v'},
-+	{ 0, 0, 0, 0 }
-+};
-+
-+static int opt_handler(int option, int option_index, void *data)
-+{
-+	switch (option) {
-+	case 'v':
-+		opt.visual_confirm = strtol(optarg, NULL, 0);
-+		igt_info(" PSR Visual Confirm %s\n", opt.visual_confirm ? "enabled" : "disabled");
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+igt_main_args("", long_options, help_str, opt_handler, NULL)
- {
- 	data_t data;
- 
-@@ -321,6 +348,13 @@ igt_main
- 		igt_display_require(&data.display, data.fd);
- 		igt_require(&data.display.is_atomic);
- 		igt_display_require_output(&data.display);
-+
-+		/* check if visual confirm option available */
-+		if (opt.visual_confirm) {
-+			igt_skip_on(!igt_amd_has_visual_confirm(data.fd));
-+			igt_skip_on_f(!igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_PSR),
-+				      "set PSR visual confirm failed\n");
-+		}
- 	}
- 
- 	igt_describe("Test whether PSR can be enabled with static screen");
-@@ -335,6 +369,10 @@ igt_main
- 
- 	igt_fixture
- 	{
-+		if (opt.visual_confirm) {
-+			igt_require_f(igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_DISABLE),
-+				      "reset PSR visual confirm option failed\n");
-+		}
- 		close(data.debugfs_fd);
- 		igt_display_fini(&data.display);
- 	}
 -- 
 2.25.1
