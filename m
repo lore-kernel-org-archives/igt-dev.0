@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B16A10FD48
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 08:59:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF93810FBF3
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 09:17:00 +0000 (UTC)
+Date: Tue, 12 Apr 2022 11:16:55 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
- Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Tue, 12 Apr 2022 10:59:02 +0200
-Message-Id: <e8dcb82be52abf35663c6c547f3df0443eb83409.1649753814.git.mchehab@kernel.org>
-In-Reply-To: <cover.1649753814.git.mchehab@kernel.org>
-References: <cover.1649753814.git.mchehab@kernel.org>
+To: Andrzej Hajda <andrzej.hajda@intel.com>
+Message-ID: <20220412111655.536696c2@maurocar-mobl2>
+In-Reply-To: <9b72fcb4-1aed-f6d4-121c-9c959706df8c@intel.com>
+References: <20220404062642.378928-1-mauro.chehab@linux.intel.com>
+ <20220404062642.378928-12-mauro.chehab@linux.intel.com>
+ <9b72fcb4-1aed-f6d4-121c-9c959706df8c@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 03/12] scripts/code_cov_gen_report: add support
- for filtering info files
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH 11/12] code_cov_parse_info: add support for
+ exclude filters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,74 +22,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
+ Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Mon, 11 Apr 2022 14:28:24 +0200
+Andrzej Hajda <andrzej.hajda@intel.com> wrote:
 
-Now that we have a script that allows filtering the results,
-add support for it when generating code coverage reports.
 
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
+> > +When used with B<--exclude-source>, exclusions take precedence.
+> > +
+> > +=item B<--exclude-source> B<[filter's file]>
+> > +
+> > +Exclude all files that match the regular expressions contained
+> > +at the B<[filter's file]>.
+> > +
+> > +When used with B<--source-filters>, exclusions take precedence.
+> > +  
+> 
+> Now there are two filtering options per functions and two per files.
+> Wouldn't be better to squash include/exclude rules into one param in 
+> 'rsync like' patterns:
+> + include_pattern
+> - exclude_pattern
+> ...
+> This way it would be easier to manage filters - less options, less 
+> helper files.
 
-To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
-See [PATCH v2 00/12] at: https://lore.kernel.org/all/cover.1649753814.git.mchehab@kernel.org/
+Added support for it. I also preserved the old behavior of placing
+just an include pattern without a "+", in order to be backward-compatible.
 
- scripts/code_cov_gen_report | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+> One could think about squashing also filters for function and files, but 
+> this I am not sure.
 
-diff --git a/scripts/code_cov_gen_report b/scripts/code_cov_gen_report
-index 05efebe19ee4..b7c90b114cde 100755
---- a/scripts/code_cov_gen_report
-+++ b/scripts/code_cov_gen_report
-@@ -16,6 +16,8 @@ Usage:
-     $(basename $0)
- 	--read <file or dir> --kernel-source <dir> --kernel-object <dir>
- 	--output-dir <dir> [--info or --tar] [--force-override]
-+	[--print] [--stat] [--ignore-unused] [--only-i915] [--only-drm]
-+	[--show-files] [--func-filters <file>] [--source-filters <file>]
- 
- --kernel-object is only needed when Kernel was built with make O=dir
- "
-@@ -28,6 +30,7 @@ KSRC=
- KOBJ=
- DEST_DIR=
- FORCE=
-+PARSE_ARGS=
- 
- while [ "$1" != "" ]; do
- 	case $1 in
-@@ -69,6 +72,17 @@ while [ "$1" != "" ]; do
- 			shift
- 		fi
- 		;;
-+	--print|--stat|--ignore-unused|--only-i915|--only-drm|--show-files)
-+		PARSE_ARGS="$PARSE_ARGS $1"
-+		;;
-+	--func-filters|--source-filters)
-+		if [ "$2" == "" ]; then
-+			usage 1
-+		else
-+			PARSE_ARGS="$PARSE_ARGS $1 $2"
-+			shift
-+		fi
-+		;;
- 	--force-override|-f)
- 		FORCE=1
- 		;;
-@@ -166,5 +180,10 @@ else
- 	fi
- fi
- 
-+if [ "x$PARSE_ARGS" != "x" ]; then
-+	${SCRIPT_DIR}/$PARSE_INFO $PARSE_ARGS --output filtered_${TITLE}.info ${TITLE}.info
-+	TITLE=filtered_${TITLE}
-+fi
-+
- echo "Generating HTML files..."
- genhtml -q ${TITLE}.info
--- 
-2.35.1
+I see your point. Yet, I opted to have a single file. Btw,
+depending on the file contents, the same filter file can be used as
+both source and function filters. For instance, a filter file like:
+
+	+i915
+	+gem
+	-display
+	-selftest
+
+can either be used for functions or sources (or both).
+
+Regards,
+Mauro
