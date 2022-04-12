@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2077.outbound.protection.outlook.com [40.107.92.77])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A913B10EA02
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 15:00:47 +0000 (UTC)
-Message-ID: <423ec29a-22c7-e4c7-77c1-73661073d979@amd.com>
-Date: Tue, 12 Apr 2022 11:00:43 -0400
-Content-Language: en-US
-To: David Zhang <dingchen.zhang@amd.com>, igt-dev@lists.freedesktop.org
-References: <20220407140755.560546-1-dingchen.zhang@amd.com>
- <20220407140755.560546-3-dingchen.zhang@amd.com>
-From: Leo Li <sunpeng.li@amd.com>
-In-Reply-To: <20220407140755.560546-3-dingchen.zhang@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1B3B10FCD5
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 08:59:37 +0000 (UTC)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
+ Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+Date: Tue, 12 Apr 2022 10:59:08 +0200
+Message-Id: <2a6359e9b7cfcc7cfaa37339d3aa8a3af9788d66.1649753814.git.mchehab@kernel.org>
+In-Reply-To: <cover.1649753814.git.mchehab@kernel.org>
+References: <cover.1649753814.git.mchehab@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 2/2] tests/amdgpu/amd_psr: add PSR-SU full
- frame update sub test case
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 09/12] code_cov_parse_info: fix error handling
+ when opening files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,204 +25,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi David,
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Thanks for the test, comments inline.
+While on bash scripts we use "||" for error handling, perl
+uses "or" instead. Yet, it doesn't warn when "||" is used.
 
-- Leo
+That causes it to print a warning when the open fail while
+reading filter files, instead of the original intent of
+finishing and reporting an error.
 
-On 2022-04-07 10:07, David Zhang wrote:
-> [why]
-> We need a full-frame update (FFU) test case to validate PSR-SU
-> feature enablement by visual confirm.
-> 
-> [how]
-> 1. create two overlay FBs with full screen size and one primary FB
->     w/ 1/4 screen size
-> 2. panning the primary plane to top-left and flip for couple of
->     frames
-> 3. wait for couple of seconds to allow visual confirm
-> 4. panning the primary plane from top-left to middle of screen
-> 5. repeat step 3
-> 6. panning the primary plane from middle to bottom-right of screen
-> 7. repeat step 3
-> 
-> If the PSR-SU is enabled as expected, for FFU we'd observe the
-> visual confirm by seeing the blue border at the bottom of screen
-> and the bottom of primary plane (megenta rectangle) as well.
-> 
-> Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Leo Li <sunpeng.li@amd.com>
-> Cc: Jay Pillai <aurabindo.pillai@amd.com>
-> Cc: Wayne Lin <wayne.lin@amd.com>
-> 
-> Signed-off-by: David Zhang <dingchen.zhang@amd.com>
-> ---
->   tests/amdgpu/amd_psr.c | 125 +++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 125 insertions(+)
-> 
-> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-> index 0ec50c9f..d08d3c8f 100644
-> --- a/tests/amdgpu/amd_psr.c
-> +++ b/tests/amdgpu/amd_psr.c
-> @@ -54,6 +54,7 @@ typedef struct data {
->   	igt_output_t *output;
->   	igt_pipe_t *pipe;
->   	igt_pipe_crc_t *pipe_crc;
-> +	igt_fb_t ov_fb[2];
->   	drmModeModeInfo *mode;
->   	enum pipe pipe_id;
->   	int fd;
-> @@ -308,6 +309,126 @@ static void run_check_psr_su_mpo(data_t *data)
->   	test_fini(data);
->   }
->   
-> +static void panning_rect_fb(data_t *data, igt_fb_t *rect_fb, int rect_w, int rect_h,
-> +	int prev_x, int prev_y, int curr_x, int curr_y, double alpha)
-> +{
-> +	int ret;
-> +
-> +	/* set new position for primary plane */
-> +	igt_plane_set_position(data->primary, curr_x, curr_y);
-> +
-> +	/* flip overlay for couple of frames */
-> +	igt_info("\n start flipping ...\n");
-> +	for (int i = 0; i < N_FLIPS; ++i) {
-> +		igt_info(" About to commit overlay w/ alpha updated in region (x=%d, y=%d, w=%d, h=%d), loop %d \n",
-> +			 curr_x, curr_y, rect_w, rect_h, i);
-> +
-> +		/* update alpha region in overlay for only once and do flip */
-> +		if (i < 2) {
-> +			draw_color_alpha(&data->ov_fb[i % 2], prev_x, prev_y, rect_w, rect_h,
-> +					 1.0, 1.0, 1.0, 1.0);
-> +			draw_color_alpha(&data->ov_fb[i % 2], curr_x, curr_y, rect_w, rect_h,
-> +					 (i == 0) ? .0 : 1.0,
-> +					 (i == 0) ? 1.0 : .0,
-> +					 1.0, alpha);
-> +		}
+Reviewed-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
 
-Would it be cleaner to initialize the two overlay fbs before this flip loop?
+To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
+See [PATCH v2 00/12] at: https://lore.kernel.org/all/cover.1649753814.git.mchehab@kernel.org/
 
-It would also be more visually obvious to give the entire overlay fb a 
-different color, rather than just the alpha region. That way, we can 
-visually observe the flips taking place.
+ scripts/code_cov_parse_info | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +		igt_plane_set_fb(data->overlay, &data->ov_fb[i % 2]);
-> +		igt_plane_set_fb(data->primary, rect_fb);
-> +		igt_plane_set_size(data->primary, rect_w, rect_h);
-> +		igt_output_set_pipe(data->output, data->pipe_id);
-> +
-> +		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> +		igt_require(ret == 0);
-> +		kmstest_wait_for_pageflip(data->fd);
-> +	}
-> +}
-> +
-> +static void panning_pfb_and_psrsu_check(data_t *data, igt_fb_t *fb, int fb_w, int fb_h, double alpha)
-> +{
-> +	const int pos[4][2] = {
-> +		{0, 0},
-> +		{0, 0},
-> +		{fb_w / 2, fb_h / 2},
-> +		{fb_w, fb_h}
-> +	};
-> +
-> +	for (int i = 1; i < sizeof(pos) / sizeof(pos[0]); ++i) {
-> +		/* panning primary rect fb */
-> +		panning_rect_fb(data, fb, fb_w, fb_h, pos[i - 1][0], pos[i - 1][1], pos[i][0], pos[i][1], alpha);
-> +
-> +		/* validate by visual confirm */
-> +		sleep(5);
-> +	}
-> +}
-nit: I don't think this extra function is necessary, could simply 
-collapse into run_check_psr_su_ffu()
-
-> +
-> +static void run_check_psr_su_ffu(data_t *data)
-> +{
-> +	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
-> +	bool sink_support_psrsu = false;
-> +	bool drv_suport_psrsu = false;
-> +	igt_fb_t rect_fb; 	// rectangle fbs for primary
-> +	igt_fb_t ref_fb;	// reference fb
-> +	int pb_w, pb_h, ob_w, ob_h;
-> +
-> +	/* skip the test run if no eDP sink detected */
-> +	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
-> +
-> +	/* init */
-> +	test_init(data);
-> +	ob_w = data->w;
-> +	ob_h = data->h;
-> +	pb_w = data->w / 2;
-> +	pb_h = data->h / 2;
-> +
-> +	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
-> +	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
-> +	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
-> +	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
-> +	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
-> +	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
-> +	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
-> +
-> +	/* reference background pattern in grey */
-> +	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +			    .5, .5, .5, &ref_fb);
-> +	igt_plane_set_fb(data->primary, &ref_fb);
-> +	igt_output_set_pipe(data->output, data->pipe_id);
-> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-
-Do we need to create a reference fb and commit it here? I imagine the 
-first commit of panning_rect_fb() should suffice.
-
-> +
-> +	/*
-> +	 * overlay and primary fbs creation
-> +	 * for full frame update (FFU) test case, we don't change primary FB content but to change
-> +	 * the position of primary FB (panning) and update the overlay plane alpha region.
-> +	 * Any overlay change is expected to be regarded as FFU from KMD's perspective.
-> +	 *
-> +	 * 1. create two overlay FBs with full screen size and one primary FB w/ 1/4 screen size
-> +	 * 2. panning the primary plane to top-left and flip for couple of frames
-> +	 * 3. wait for couple of seconds to allow visual confirm
-> +	 * 4. panning the primary plane from top-left to middle of screen
-> +	 * 5. repeat step 3
-> +	 * 6. panning the primary plane from middle to bottom-right of screen
-> +	 * 7. repeat step 3
-> +	 */
-> +
-> +	/* step 1 */
-> +	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-> +			    1.0, 1.0, 1.0, &data->ov_fb[0]);
-> +	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-> +			    1.0, 1.0, 1.0, &data->ov_fb[1]);
-> +	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +			    1.0, .0, 1.0, &rect_fb);
-> +
-> +	/* step 2 - 7 */
-> +	panning_pfb_and_psrsu_check(data, &rect_fb, pb_w, pb_h, .3);
-> +
-> +	/* fini */
-> +	igt_remove_fb(data->fd, &ref_fb);
-> +	igt_remove_fb(data->fd, &data->ov_fb[0]);
-> +	igt_remove_fb(data->fd, &data->ov_fb[1]);
-> +	igt_remove_fb(data->fd, &rect_fb);
-> +	test_fini(data);
-> +}
-> +
->   const char *help_str =
->   "  --visual-confirm           PSR visual confirm debug option enable\n";
->   
-> @@ -367,6 +488,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->   		     "and to imitate Multiplane Overlay video playback scenario");
->   	igt_subtest("psr_su_mpo") run_check_psr_su_mpo(&data);
->   
-> +	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
-> +		     "and to validate Full Frame Update scenario");
-> +	igt_subtest("psr_su_ffu") run_check_psr_su_ffu(&data);
-> +
->   	igt_fixture
->   	{
->   		if (opt.visual_confirm) {
+diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+index 3e1525a67d99..c8284a297b33 100755
+--- a/scripts/code_cov_parse_info
++++ b/scripts/code_cov_parse_info
+@@ -513,7 +513,7 @@ my $filter_str = "";
+ my $has_filter;
+ 
+ if ($func_filters) {
+-	open IN, $func_filters || die "Can't open $func_filters";
++	open IN, $func_filters or die "Can't open $func_filters";
+ 	while (<IN>) {
+ 		s/^\s+//;
+ 		s/\s+$//;
+@@ -524,7 +524,7 @@ if ($func_filters) {
+ }
+ 
+ if ($src_filters) {
+-	open IN, $src_filters || die "Can't open $src_filters";
++	open IN, $src_filters or die "Can't open $src_filters";
+ 	while (<IN>) {
+ 		s/^\s+//;
+ 		s/\s+$//;
+-- 
+2.35.1
