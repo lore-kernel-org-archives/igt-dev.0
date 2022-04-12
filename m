@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam07on2057.outbound.protection.outlook.com [40.107.95.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3A4710E32D
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 19:22:00 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 12 Apr 2022 15:21:39 -0400
-Message-ID: <20220412192139.1530645-4-dingchen.zhang@amd.com>
-In-Reply-To: <20220412192139.1530645-1-dingchen.zhang@amd.com>
-References: <20220412192139.1530645-1-dingchen.zhang@amd.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 594B210E0AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Apr 2022 20:40:09 +0000 (UTC)
+Date: Tue, 12 Apr 2022 13:40:07 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YlXjpwpnJLwVkawD@mdroper-desk1.amr.corp.intel.com>
+References: <20220412032819.482550-1-matthew.d.roper@intel.com>
+ <164973747893.18364.15526783223091600584@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH v3 3/3] tests/amdgpu/amd_psr: define reusable
- wrapper for PSR support check
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <164973747893.18364.15526783223091600584@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915=5Fquery=3A_Test_new_DRM=5FI915=5FQUERY=5FGEOMETRY=5FSUBSLI?=
+ =?utf-8?q?CES_query?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,106 +23,195 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why & how]
-For amdgpu PSR-SU test cases, we'd first check if the sink device
-and amdgpu driver support the PSR-SU feature at the beginning. We
-define a local helper to wrap the check for PSR-SU support from
-sink and driver as well and called by both MPO and FFU test case,
-to avoid the code repetition.
+On Tue, Apr 12, 2022 at 04:24:38AM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/i915_query: Test new DRM_I915_QUERY_GEOMETRY_SUBSLICES query
+> URL   : https://patchwork.freedesktop.org/series/102564/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_11484 -> IGTPW_6917
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_6917 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_6917, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/index.html
+> 
+> Participating hosts (49 -> 43)
+> ------------------------------
+> 
+>   Additional (2): fi-kbl-soraka fi-hsw-4770 
+>   Missing    (8): shard-tglu bat-dg2-8 fi-bsw-cyan fi-kbl-guc fi-kbl-x1275 fi-pnv-d510 shard-rkl shard-dg1 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_6917:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live@coherency:
+>     - fi-bdw-5557u:       NOTRUN -> [INCOMPLETE][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-bdw-5557u/igt@i915_selftest@live@coherency.html
 
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Jay Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
+Appears to be https://gitlab.freedesktop.org/drm/intel/-/issues/5674
 
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- tests/amdgpu/amd_psr.c | 40 ++++++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+Not caused by the i915_query changes in my patch.
 
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 92628fee..e7614d71 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -138,6 +138,28 @@ static int check_conn_type(data_t *data, uint32_t type) {
- 	return -1;
- }
- 
-+static bool psr_su_supported(data_t *data)
-+{
-+	/* run PSR-SU test i.i.f. eDP panel and kernel driver both support PSR-SU */
-+	if (!igt_amd_output_has_psr_cap(data->fd, data->output->name))
-+		return false;
-+
-+	if (!igt_amd_output_has_psr_state(data->fd, data->output->name))
-+		return false;
-+
-+	if (!igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2)) {
-+		igt_info(" output %s not support PSR-SU\n", data->output->name);
-+		return false;
-+	}
-+
-+	if (!igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2)) {
-+		igt_info(" kernel driver not support PSR-SU\n");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static void run_check_psr(data_t *data, bool test_null_crtc) {
- 	int fd, edp_idx, dp_idx, ret, i, psr_state;
- 	igt_fb_t ref_fb, ref_fb2;
-@@ -217,8 +239,6 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
- static void run_check_psr_su_mpo(data_t *data)
- {
- 	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	bool sink_support_psrsu = false;
--	bool drv_suport_psrsu = false;
- 	igt_fb_t ov_fb;		// fb for overlay
- 	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	// rectangle fbs for primary, emulate as video playback region
- 	igt_fb_t ref_fb;	// reference fb
-@@ -235,12 +255,7 @@ static void run_check_psr_su_mpo(data_t *data)
- 	frame_rate = data->mode->vrefresh;
- 
- 	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
--	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
--	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
--	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
--	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
--	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
--	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
-+	igt_skip_on(!psr_su_supported(data));
- 
- 	/* reference background pattern in grey */
- 	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-@@ -338,8 +353,6 @@ static void panning_rect_fb(data_t *data, igt_fb_t *rect_fb, int rect_w, int rec
- static void run_check_psr_su_ffu(data_t *data)
- {
- 	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	bool sink_support_psrsu = false;
--	bool drv_suport_psrsu = false;
- 	igt_fb_t rect_fb; 	// rectangle fbs for primary
- 	igt_fb_t ref_fb;	// reference fb
- 	int pb_w, pb_h, ob_w, ob_h;
-@@ -355,12 +368,7 @@ static void run_check_psr_su_ffu(data_t *data)
- 	pb_h = data->h / 2;
- 
- 	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
--	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
--	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
--	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
--	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
--	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
--	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
-+	igt_skip_on(!psr_su_supported(data));
- 
- 	/* reference background pattern in grey */
- 	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+
+Matt
+
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_6917 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@amdgpu/amd_basic@semaphore:
+>     - fi-hsw-4770:        NOTRUN -> [SKIP][2] ([fdo#109271] / [fdo#109315]) +17 similar issues
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-hsw-4770/igt@amdgpu/amd_basic@semaphore.html
+> 
+>   * igt@gem_exec_fence@basic-busy@bcs0:
+>     - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +9 similar issues
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+> 
+>   * igt@gem_huc_copy@huc-copy:
+>     - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+> 
+>   * igt@gem_lmem_swapping@parallel-random-engines:
+>     - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 similar issues
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-kbl-soraka/igt@gem_lmem_swapping@parallel-random-engines.html
+> 
+>   * igt@gem_softpin@allocator-basic-reserve:
+>     - fi-hsw-4770:        NOTRUN -> [SKIP][6] ([fdo#109271]) +9 similar issues
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html
+> 
+>   * igt@i915_pm_backlight@basic-brightness:
+>     - fi-hsw-4770:        NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#3012])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html
+> 
+>   * igt@i915_selftest@live@gt_pm:
+>     - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][8] ([i915#1886])
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+> 
+>   * igt@kms_chamelium@dp-crc-fast:
+>     - fi-hsw-4770:        NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html
+> 
+>   * igt@kms_chamelium@dp-edid-read:
+>     - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271] / [fdo#111827]) +8 similar issues
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html
+> 
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+>     - fi-hsw-4770:        NOTRUN -> [SKIP][11] ([fdo#109271] / [i915#533])
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-hsw-4770/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+>     - fi-kbl-soraka:      NOTRUN -> [SKIP][12] ([fdo#109271] / [i915#533])
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+> 
+>   * igt@kms_psr@primary_mmap_gtt:
+>     - fi-hsw-4770:        NOTRUN -> [SKIP][13] ([fdo#109271] / [i915#1072]) +3 similar issues
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-hsw-4770/igt@kms_psr@primary_mmap_gtt.html
+> 
+>   * igt@kms_setmode@basic-clone-single-crtc:
+>     - fi-bdw-5557u:       NOTRUN -> [SKIP][14] ([fdo#109271]) +10 similar issues
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-bdw-5557u/igt@kms_setmode@basic-clone-single-crtc.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@kms_busy@basic@flip:
+>     - {bat-adlp-6}:       [DMESG-WARN][15] ([i915#3576]) -> [PASS][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11484/bat-adlp-6/igt@kms_busy@basic@flip.html
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/bat-adlp-6/igt@kms_busy@basic@flip.html
+>     - fi-tgl-u2:          [DMESG-WARN][17] ([i915#402]) -> [PASS][18]
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11484/fi-tgl-u2/igt@kms_busy@basic@flip.html
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-tgl-u2/igt@kms_busy@basic@flip.html
+> 
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+>     - fi-cfl-8109u:       [DMESG-WARN][19] ([i915#5341] / [i915#62]) -> [PASS][20]
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11484/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+> 
+>   * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+>     - fi-cfl-8109u:       [DMESG-WARN][21] ([i915#62]) -> [PASS][22] +11 similar issues
+>    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11484/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+>    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+> 
+>   * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
+>     - fi-bdw-5557u:       [INCOMPLETE][23] ([i915#146] / [i915#4444]) -> [PASS][24]
+>    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11484/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+>    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/fi-bdw-5557u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+>   [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+>   [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+>   [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+>   [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+>   [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+>   [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+>   [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+>   [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+>   [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+>   [i915#4444]: https://gitlab.freedesktop.org/drm/intel/issues/4444
+>   [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+>   [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+>   [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
+>   [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_6419 -> IGTPW_6917
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_11484: 8034f05811fe63be8ced11c140e59a8cea07a3d6 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_6917: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/index.html
+>   IGT_6419: 33a5adf20dc435cc2c6dd584caa3674c89032762 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> 
+> 
+> == Testlist changes ==
+> 
+> +igt@i915_query@test-query-geometry-subslices
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6917/index.html
+
 -- 
-2.25.1
+Matt Roper
+Graphics Software Engineer
+VTT-OSGC Platform Enablement
+Intel Corporation
+(916) 356-2795
