@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D591C10F0DF
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Apr 2022 13:27:24 +0000 (UTC)
-Message-ID: <3b1fb6c9-b517-e682-04ad-d17d365a33fa@intel.com>
-Date: Wed, 13 Apr 2022 15:27:16 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCFD110EF29
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Apr 2022 14:21:47 +0000 (UTC)
+Message-ID: <0b0580c2-449e-7260-cee0-9ef9fb6edf09@intel.com>
+Date: Wed, 13 Apr 2022 15:59:00 +0200
 Content-Language: en-US
 References: <cover.1649753814.git.mchehab@kernel.org>
- <2a6359e9b7cfcc7cfaa37339d3aa8a3af9788d66.1649753814.git.mchehab@kernel.org>
+ <9a0552078e4e27744894799bad47920f8c145dec.1649753814.git.mchehab@kernel.org>
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-In-Reply-To: <2a6359e9b7cfcc7cfaa37339d3aa8a3af9788d66.1649753814.git.mchehab@kernel.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <9a0552078e4e27744894799bad47920f8c145dec.1649753814.git.mchehab@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 09/12] code_cov_parse_info: fix error
- handling when opening files
+Subject: Re: [igt-dev] [PATCH v2 12/12] code_cov_parse_info: add support for
+ generating html reports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,58 +32,24 @@ List-ID: <igt-dev@lists.freedesktop.org>
 On 12.04.2022 10:59, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 >
-> While on bash scripts we use "||" for error handling, perl
-> uses "or" instead. Yet, it doesn't warn when "||" is used.
-
-Perl accepts || as well (this is why it does not warn), but it has 
-higher priority so in cases below it will behave different than or.
-So the above sentence is misleading.
+> While lcov has already its own report generator, it is interesting
+> to be able to deal with multiple files exposing each input in
+> separate.
 >
-> That causes it to print a warning when the open fail while
-> reading filter files, instead of the original intent of
-> finishing and reporting an error.
+> So, add new command line parameters to allow it to generate html
+> reports. Also add some command lines to setup html title, add a
+> css file and include a prolog/epilog at the html body.
 >
-> Reviewed-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+> The title option can also be useful to rename the titles when
+> merging multiple info files.
+>
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
-> To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
-> See [PATCH v2 00/12] at: https://lore.kernel.org/all/cover.1649753814.git.mchehab@kernel.org/
 >
->   scripts/code_cov_parse_info | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-> index 3e1525a67d99..c8284a297b33 100755
-> --- a/scripts/code_cov_parse_info
-> +++ b/scripts/code_cov_parse_info
-> @@ -513,7 +513,7 @@ my $filter_str = "";
->   my $has_filter;
->   
->   if ($func_filters) {
-> -	open IN, $func_filters || die "Can't open $func_filters";
-> +	open IN, $func_filters or die "Can't open $func_filters";
 
-Replacing with:
-     open(IN, $func_filters) || die "Can't open $func_filters";
-should help as well.
+I wouldn't say I've enough patience to analyze everything :), so:
 
-With or without slightly adjusted commit message.
-
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 
 Regards
 Andrzej
-
-
->   	while (<IN>) {
->   		s/^\s+//;
->   		s/\s+$//;
-> @@ -524,7 +524,7 @@ if ($func_filters) {
->   }
->   
->   if ($src_filters) {
-> -	open IN, $src_filters || die "Can't open $src_filters";
-> +	open IN, $src_filters or die "Can't open $src_filters";
->   	while (<IN>) {
->   		s/^\s+//;
->   		s/\s+$//;
