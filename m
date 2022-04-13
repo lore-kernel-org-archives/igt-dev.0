@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 817CF10E71C
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Apr 2022 19:46:06 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Date: Wed, 13 Apr 2022 19:46:04 +0000
-Message-ID: <3d2810e80da6f0ecb231d71d95e9877a3a1b2c05.camel@intel.com>
-References: <20220405191215.76309-1-jose.souza@intel.com>
- <20220405191215.76309-2-jose.souza@intel.com>
- <Yk1CL+wMYOyZ0k2e@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <Yk1CL+wMYOyZ0k2e@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5D669D535C666D4DBDA02CFF6F5C50AA@intel.com>
-Content-Transfer-Encoding: base64
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
+ [IPv6:2a00:1450:4864:20::133])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FC1610E253
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Apr 2022 19:57:06 +0000 (UTC)
+Received: by mail-lf1-x133.google.com with SMTP id y32so5449454lfa.6
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Apr 2022 12:57:06 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] test: kms_frontbuffer_tracking: Fix
- DRRS subtests
+References: <20220407174215.171440-1-alex.hung@amd.com>
+In-Reply-To: <20220407174215.171440-1-alex.hung@amd.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Wed, 13 Apr 2022 15:56:53 -0400
+Message-ID: <CAJUqKUpntYp_s6cCt=SSY8JwkqL4TrG+juNGx36yPburAnEs9g@mail.gmail.com>
+To: Alex Hung <alex.hung@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t][V2] tests/kms: Skip kms test cases for
+ DCC and DCC_RETILE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,99 +22,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org, bas@basnieuwenhuizen.nl,
+ markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIyLTA0LTA2IGF0IDEwOjMzICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOg0K
-PiBPbiBUdWUsIEFwciAwNSwgMjAyMiBhdCAxMjoxMjoxNVBNIC0wNzAwLCBKb3PDqSBSb2JlcnRv
-IGRlIFNvdXphIHdyb3RlOg0KPiA+IER1ZSB0byByZWNlbnQgcmVmYWN0b3JzIGluIGk5MTUsIGl0
-IGNvbXBsZXRlbHkgY2hhbmdlZA0KPiA+IGk5MTVfZHJyc19zdGF0dXMgYnJlYWtpbmcgYWxsIERS
-UlMgc3VidGVzdHMsIHNvIGhlcmUgdXNpbmcNCj4gPiB0aGUgbmV3bHkgYWRkZWQgRFJSUyBoZWxw
-ZXJzIHRvIGZpeCBpdC4NCj4gPiANCj4gPiBDYzogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJq
-YWxhQGxpbnV4LmludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRl
-IFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMvaTkxNS9r
-bXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYyB8IDU3ICsrKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA1MiBkZWxldGlvbnMoLSkN
-Cj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9rbXNfZnJvbnRidWZmZXJfdHJhY2tp
-bmcuYyBiL3Rlc3RzL2k5MTUva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMNCj4gPiBpbmRleCA4
-MTRkZGI0NmNlLi41OWJhNmNmYzExIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2k5MTUva21zX2Zy
-b250YnVmZmVyX3RyYWNraW5nLmMNCj4gPiArKysgYi90ZXN0cy9pOTE1L2ttc19mcm9udGJ1ZmZl
-cl90cmFja2luZy5jDQo+ID4gQEAgLTM0LDYgKzM0LDcgQEANCj4gPiAgI2luY2x1ZGUgImk5MTUv
-Z2VtX2NyZWF0ZS5oIg0KPiA+ICAjaW5jbHVkZSAiaWd0LmgiDQo+ID4gICNpbmNsdWRlICJpZ3Rf
-c3lzZnMuaCINCj4gPiArI2luY2x1ZGUgImlndF9kcnJzLmgiDQo+ID4gICNpbmNsdWRlICJpZ3Rf
-cHNyLmgiDQo+ID4gIA0KPiA+ICBJR1RfVEVTVF9ERVNDUklQVElPTigiVGVzdCB0aGUgS2VybmVs
-J3MgZnJvbnRidWZmZXIgdHJhY2tpbmcgbWVjaGFuaXNtIGFuZCAiDQo+ID4gQEAgLTcyMywxMyAr
-NzI0LDYgQEAgc3RhdGljIHZvaWQgc2V0X21vZGVfZm9yX3BhcmFtcyhzdHJ1Y3QgbW9kZXNldF9w
-YXJhbXMgKnBhcmFtcykNCj4gPiAgCWlndF9kaXNwbGF5X2NvbW1pdCgmZHJtLmRpc3BsYXkpOw0K
-PiA+ICB9DQo+ID4gIA0KPiA+IC1zdGF0aWMgdm9pZCBfX2RlYnVnZnNfcmVhZChjb25zdCBjaGFy
-ICpwYXJhbSwgY2hhciAqYnVmLCBpbnQgbGVuKQ0KPiA+IC17DQo+ID4gLQlsZW4gPSBpZ3RfZGVi
-dWdmc19zaW1wbGVfcmVhZChkcm0uZGVidWdmcywgcGFyYW0sIGJ1ZiwgbGVuKTsNCj4gPiAtCWlm
-IChsZW4gPCAwKQ0KPiA+IC0JCWlndF9hc3NlcnQobGVuID09IC1FTk9FTlQgfHwgbGVuID09IC1F
-Tk9ERVYpOw0KPiA+IC19DQo+ID4gLQ0KPiA+ICBzdGF0aWMgaW50IF9fZGVidWdmc193cml0ZShj
-b25zdCBjaGFyICpwYXJhbSwgY2hhciAqYnVmLCBpbnQgbGVuKQ0KPiA+ICB7DQo+ID4gIAlyZXR1
-cm4gaWd0X3N5c2ZzX3dyaXRlKGRybS5kZWJ1Z2ZzLCBwYXJhbSwgYnVmLCBsZW4gLSAxKTsNCj4g
-PiBAQCAtNzkwLDQ3ICs3ODQsMTEgQEAgc3RhdGljIHZvaWQgZHJyc19zZXQodW5zaWduZWQgaW50
-IHZhbCkNCj4gPiAgCQlpZ3RfYXNzZXJ0X2YocmV0ID09IChzaXplb2YoYnVmKSAtIDEpLCAiZGVi
-dWdmc193cml0ZSBmYWlsZWQiKTsNCj4gPiAgfQ0KPiA+ICANCj4gPiAtc3RhdGljIGJvb2wgaXNf
-ZHJyc19oaWdoKHZvaWQpDQo+ID4gLXsNCj4gPiAtCWNoYXIgYnVmW01BWF9EUlJTX1NUQVRVU19C
-VUZfTEVOXTsNCj4gPiAtDQo+ID4gLQlkZWJ1Z2ZzX3JlYWQoImk5MTVfZHJyc19zdGF0dXMiLCBi
-dWYpOw0KPiA+IC0JcmV0dXJuIHN0cnN0cihidWYsICJEUlJTX0hJR0hfUlIiKTsNCj4gPiAtfQ0K
-PiA+IC0NCj4gPiAtc3RhdGljIGJvb2wgaXNfZHJyc19sb3codm9pZCkNCj4gPiAtew0KPiA+IC0J
-Y2hhciBidWZbTUFYX0RSUlNfU1RBVFVTX0JVRl9MRU5dOw0KPiA+IC0NCj4gPiAtCWRlYnVnZnNf
-cmVhZCgiaTkxNV9kcnJzX3N0YXR1cyIsIGJ1Zik7DQo+ID4gLQlyZXR1cm4gc3Ryc3RyKGJ1Ziwg
-IkRSUlNfTE9XX1JSIik7DQo+ID4gLX0NCj4gPiAtDQo+ID4gLXN0YXRpYyBib29sIGlzX2RycnNf
-c3VwcG9ydGVkKHZvaWQpDQo+ID4gLXsNCj4gPiAtCWNoYXIgYnVmW01BWF9EUlJTX1NUQVRVU19C
-VUZfTEVOXTsNCj4gPiAtDQo+ID4gLQlkZWJ1Z2ZzX3JlYWQoImk5MTVfZHJyc19zdGF0dXMiLCBi
-dWYpOw0KPiA+IC0JcmV0dXJuIHN0cmNhc2VzdHIoYnVmLCAiRFJSUyBTdXBwb3J0ZWQ6IFllcyIp
-Ow0KPiA+IC19DQo+ID4gLQ0KPiA+IC1zdGF0aWMgYm9vbCBpc19kcnJzX2luYWN0aXZlKHZvaWQp
-DQo+ID4gLXsNCj4gPiAtCWNoYXIgYnVmW01BWF9EUlJTX1NUQVRVU19CVUZfTEVOXTsNCj4gPiAt
-DQo+ID4gLQlkZWJ1Z2ZzX3JlYWQoImk5MTVfZHJyc19zdGF0dXMiLCBidWYpOw0KPiA+IC0NCj4g
-PiAtCWlmIChzdHJzdHIoYnVmLCAiRFJSU19TdGF0ZTogIikpDQo+ID4gLQkJcmV0dXJuIGZhbHNl
-Ow0KPiA+IC0NCj4gPiAtCXJldHVybiB0cnVlOw0KPiA+IC19DQo+ID4gLQ0KPiA+ICBzdGF0aWMg
-dm9pZCBkcnJzX3ByaW50X3N0YXR1cyh2b2lkKQ0KPiA+ICB7DQo+ID4gIAljaGFyIGJ1ZltNQVhf
-RFJSU19TVEFUVVNfQlVGX0xFTl07DQo+ID4gIA0KPiA+IC0JZGVidWdmc19yZWFkKCJpOTE1X2Ry
-cnNfc3RhdHVzIiwgYnVmKTsNCj4gPiArCWRycnNfd3JpdGVfc3RhdHVzKGRybS5kZWJ1Z2ZzLCBw
-cmltX21vZGVfcGFyYW1zLnBpcGUsIGJ1Ziwgc2l6ZW9mKGJ1ZikpOw0KPiA+ICAJaWd0X2luZm8o
-IkRSUlMgU1RBVFVTIDpcbiVzXG4iLCBidWYpOw0KPiA+ICB9DQo+ID4gIA0KPiA+IEBAIC05NTEs
-NyArOTA5LDcgQEAgc3RhdGljIGJvb2wgZmJjX3dhaXRfdW50aWxfZW5hYmxlZCh2b2lkKQ0KPiA+
-ICANCj4gPiAgc3RhdGljIGJvb2wgZHJyc193YWl0X3VudGlsX3JyX3N3aXRjaF90b19sb3codm9p
-ZCkNCj4gPiAgew0KPiA+IC0JcmV0dXJuIGlndF93YWl0KGlzX2RycnNfbG93KCksIDUwMDAsIDEp
-Ow0KPiA+ICsJcmV0dXJuIGlndF93YWl0KGRycnNfaXNfbG93X3JlZnJlc2hfcmF0ZShkcm0uZGVi
-dWdmcywgcHJpbV9tb2RlX3BhcmFtcy5waXBlKSwgNTAwMCwgMSk7DQo+ID4gIH0NCj4gPiAgDQo+
-ID4gICNkZWZpbmUgZmJjX2VuYWJsZSgpIGlndF9zZXRfbW9kdWxlX3BhcmFtX2ludChkcm0uZmQs
-ICJlbmFibGVfZmJjIiwgMSkNCj4gPiBAQCAtMTQ2MCwxMSArMTQxOCw2IEBAIHN0YXRpYyB2b2lk
-IHNldHVwX2RycnModm9pZCkNCj4gPiAgCQlyZXR1cm47DQo+ID4gIAl9DQo+ID4gIA0KPiA+IC0J
-aWYgKCFpc19kcnJzX3N1cHBvcnRlZCgpKSB7DQo+ID4gLQkJaWd0X2luZm8oIkNhbid0IHRlc3Qg
-RFJSUzogTm90IHN1cHBvcnRlZC5cbiIpOw0KPiA+IC0JCXJldHVybjsNCj4gPiAtCX0NCj4gPiAt
-DQo+ID4gIAlkcnJzLmNhbl90ZXN0ID0gdHJ1ZTsNCj4gPiAgfQ0KPiA+ICANCj4gPiBAQCAtMTYw
-Nyw3ICsxNTYwLDcgQEAgc3RhdGljIHZvaWQgZG9fc3RhdHVzX2Fzc2VydGlvbnMoaW50IGZsYWdz
-KQ0KPiA+ICAJfQ0KPiA+ICANCj4gPiAgCWlmIChmbGFncyAmIEFTU0VSVF9EUlJTX0hJR0gpIHsN
-Cj4gPiAtCQlpZiAoIWlzX2RycnNfaGlnaCgpKSB7DQo+ID4gKwkJaWYgKGRycnNfaXNfbG93X3Jl
-ZnJlc2hfcmF0ZShkcm0uZGVidWdmcywgcHJpbV9tb2RlX3BhcmFtcy5waXBlKSkgew0KPiA+ICAJ
-CQlkcnJzX3ByaW50X3N0YXR1cygpOw0KPiA+ICAJCQlpZ3RfYXNzZXJ0X2YoZmFsc2UsICJEUlJT
-IEhJR0hcbiIpOw0KPiA+ICAJCX0NCj4gPiBAQCAtMTYxNyw3ICsxNTcwLDcgQEAgc3RhdGljIHZv
-aWQgZG9fc3RhdHVzX2Fzc2VydGlvbnMoaW50IGZsYWdzKQ0KPiA+ICAJCQlpZ3RfYXNzZXJ0X2Yo
-ZmFsc2UsICJEUlJTIExPV1xuIik7DQo+ID4gIAkJfQ0KPiA+ICAJfSBlbHNlIGlmIChmbGFncyAm
-IEFTU0VSVF9EUlJTX0lOQUNUSVZFKSB7DQo+ID4gLQkJaWYgKCFpc19kcnJzX2luYWN0aXZlKCkp
-IHsNCj4gPiArCQlpZiAoZHJyc19pc19hY3RpdmUoZHJtLmRlYnVnZnMsIHByaW1fbW9kZV9wYXJh
-bXMucGlwZSkpIHsNCj4gPiAgCQkJZHJyc19wcmludF9zdGF0dXMoKTsNCj4gPiAgCQkJaWd0X2Fz
-c2VydF9mKGZhbHNlLCAiRFJSUyBJTkFDVElWRVxuIik7DQo+ID4gIAkJfQ0KPiANCj4gV2l0aCBo
-b3cgdGhlIERSUlMgc3RhdGUgaGFuZGxpbmcgaXMgbW92ZWQgdG8gbGliIGl0J3MgaGFyZCB0byBy
-ZWFkDQo+IGZyb20gdGhlIHBhdGNoIHNlcmllcyB3aGF0IGFjdHVhbGx5IGNoYW5nZWQgaW4gdGhl
-IGtlcm5lbC4NCg0KVGhpcyBpcyBub3cgdGhlIG91dHB1dDoNCg0KZ3RhQERVVDQwMjAtQURMUDp+
-JCBzdWRvIG1vcmUgL3N5cy9rZXJuZWwvZGVidWcvZHJpLzAvaTkxNV9kcnJzX3N0YXR1cw0KW0NS
-VEM6ODA6cGlwZSBBXToNCglEUlJTIEVuYWJsZWQ6IG5vDQoJRFJSUyBBY3RpdmU6IG5vDQoJQnVz
-eV9mcm9udGJ1ZmZlcl9iaXRzOiAweDANCglEUlJTIHJlZnJlc2ggcmF0ZTogaGlnaA0KW0NSVEM6
-MTMxOnBpcGUgQl06DQoJRFJSUyBFbmFibGVkOiBubw0KCURSUlMgQWN0aXZlOiBubw0KCUJ1c3lf
-ZnJvbnRidWZmZXJfYml0czogMHgwDQoJRFJSUyByZWZyZXNoIHJhdGU6IGhpZ2gNCltDUlRDOjE4
-MjpwaXBlIENdOg0KCURSUlMgRW5hYmxlZDogbm8NCglEUlJTIEFjdGl2ZTogbm8NCglCdXN5X2Zy
-b250YnVmZmVyX2JpdHM6IDB4MA0KCURSUlMgcmVmcmVzaCByYXRlOiBoaWdoDQpbQ1JUQzoyMzM6
-cGlwZSBEXToNCglEUlJTIEVuYWJsZWQ6IG5vDQoJRFJSUyBBY3RpdmU6IG5vDQoJQnVzeV9mcm9u
-dGJ1ZmZlcl9iaXRzOiAweDANCglEUlJTIHJlZnJlc2ggcmF0ZTogaGlnaA0KDQpTbyBjb21wbGV0
-ZWx5IGRpZmZlcmVudCB0aGFuIHRoZSBvbGQgb25lDQoNCj4gDQo+IERvZXMgdGhpcyBub3cgaGFu
-ZGxlIGp1c3QgdGhlIG5ldyBzZW1hbnRpY3M/IElzIHRoZSBvbGQgb25lIHVzZWQgaW4NCj4gYW55
-IHN0YWJsZSBrZXJuZWxzPw0KDQpTZW1hbnRpY3MgYWxzbyBoYXZlIGNoYW5nZWQgYSBiaXQsIHNv
-IHN0YWJsZSBrZXJuZWxzIHdvdWxkIGJlIGJyb2tlbiB3aXRoIHRoZSBmaXguDQoNCldoYXQgc2hv
-dWxkIGJlIGRvbmUgaGVyZT8NCg0KPiANCj4gDQoNCg==
+On Thu, Apr 7, 2022 at 1:42 PM Alex Hung <alex.hung@amd.com> wrote:
+title of commit message should include the test name if you're fixing
+only 1 text. so it would be tests/kms_plane
+>
+> Skip the KMS test cases for planes that has modifiers with
+nit: s/has/have.
+> DCC and DCC_RETILE on AMDGPU.
+>
+> Current pixel-format and pixel-format-source-clamping subtests do not
+> support modifers with DCC or DCC_RETILE in kernel.
+nit: s/modifers/modifiers
+>
+> 1. dcc_formats's cpp[1] is set to 0 and this triggers kernel errors
+is [1] referring to a url? i dont see it.
+> "Format requires non-linear modifier for plane 1" because block_size
+> (i.e. cpp[1]) == 0. See kernel commits 816853f9dc40 and 8db2dc852941.
+I would prefer you add links to make it easy to look up.
+>
+> 2. the subtests cause kernel's amdgpu_display_verify_sizes to fail
+> because they do not provide an extra plane with compression metadata.
+> See kernel commit 234055fd9728 for details.
+ditto
+
+if this is affecting a specific subtest, please add it here.
+>
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> ---
+>
+> v2: update comments in commit messages
+>
+>  tests/kms_plane.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 137f23a8..1a71822a 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1004,6 +1004,14 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
+>  {
+>         int index = plane->index;
+>
+> +       for (int i = 0; i < plane->format_mod_count; i++) {
+not sure how it compiled, i think you'll need to move int i to above.
+> +               if (AMD_FMT_MOD_GET(DCC, plane->modifiers[i]) ||
+> +                   AMD_FMT_MOD_GET(DCC_RETILE, plane->modifiers[i])) {
+> +                       igt_debug("Skipping planes with DCC or DCC_RETILE\n");
+> +                       return true;
+> +               }
+> +       }
+> +
+>         if (data->extended)
+>                 return false;
+>
+> --
+> 2.35.1
+>
