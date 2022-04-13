@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 348E210F1E2
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Apr 2022 10:28:17 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Apr 2022 15:56:08 +0530
-Message-Id: <20220413102608.1795110-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220413102608.1795110-1-bhanuprakash.modem@intel.com>
-References: <20220413102608.1795110-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] tests/kms_setmode: Fix the corner case in
- handling 5k+ modes
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ananya Sharma" <ananya.sharma@intel.com>
+Date: Wed, 13 Apr 2022 10:29:45 -0000
+Message-ID: <164984578516.28394.8374890219617470274@emeril.freedesktop.org>
+References: <20220412175902.1114205-1-ananya.sharma@intel.com>
+In-Reply-To: <20220412175902.1114205-1-ananya.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fcolor=3AMPO+pipe_color_test_for_gamma_LUT_transforma?=
+ =?utf-8?q?tion=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,58 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In below example, second combination (Pipe-B & Pipe-A) is invalid
-as bigjoiner come in to the picture. Somehow we missed this corner
-case in earlier fix, hence fixing now.
+== Series Details ==
 
-Starting dynamic subtest: pipe-A-DP-1-pipe-B-DP-4
-  Test id#1 CRTC count 2
-    CRTC[115] [Pipe A] Mode: 3840x2160@30Hz Connectors: DP-1[384]
-    CRTC[203] [Pipe B] Mode: 7680x4320@30Hz Connectors: DP-4[416]
-Dynamic subtest pipe-A-DP-1-pipe-B-DP-4: SUCCESS (0.509s)
-Starting dynamic subtest: pipe-B-DP-1-pipe-A-DP-4
-  Test id#2 CRTC count 2
-    CRTC[203] [Pipe B] Mode: 3840x2160@30Hz Connectors: DP-1[384]
-    CRTC[115] [Pipe A] Mode: 7680x4320@30Hz Connectors: DP-4[416]
-Dynamic subtest pipe-B-DP-1-pipe-A-DP-4: FAIL (0.272s)
+Series: tests/kms_color:MPO+pipe color test for gamma LUT transformation.
+URL   : https://patchwork.freedesktop.org/series/102609/
+State : warning
 
-V2:
-* Improve the logic
-* Add comments
+== Summary ==
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_setmode.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Pipeline status: FAILED.
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 969ad75c..8c755091 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -676,10 +676,16 @@ static void test_one_combination(const struct test_config *tconf,
- 			 * if mode.hdisplay > 5120, then ignore
- 			 *   - last crtc in single/multi-connector config
- 			 *   - consecutive crtcs in multi-connector config
-+			 *
-+			 * in multi-connector config ignore if
-+			 *   - previous crtc mode.hdisplay > 5120 and
-+			 *   - current & previous crtcs are consecutive
- 			 */
--			if ((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
--			    ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
--			     (i < (crtc_count - 1) && abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1))) {
-+			if (((crtc->mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
-+			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
-+			    ((i > 0) && (crtc[i - 1].mode.hdisplay > MAX_HDISPLAY_PER_CRTC) &&
-+			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
- 				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
- 				goto out;
- 			}
--- 
-2.35.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/558225 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21152757):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                289
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1649845741:step_script
+  section_start:1649845741:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1724 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=21152757 responseStatus=201 Created token=dzTgg2yX
+  section_end:1649845750:upload_artifacts_on_failure
+  section_start:1649845750:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1649845751:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/558225
