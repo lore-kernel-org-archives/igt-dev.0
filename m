@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A494B10FBD5
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E648610F232
  for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 12:25:11 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Thu, 14 Apr 2022 14:25:00 +0200
-Message-Id: <a5c0609c589b33fd6f8c546313a4ce5cc19fd38e.1649939026.git.mchehab@kernel.org>
+Date: Thu, 14 Apr 2022 14:24:56 +0200
+Message-Id: <1abe12bd41acfc8cd18f19b72535042d791482fd.1649939026.git.mchehab@kernel.org>
 In-Reply-To: <cover.1649939026.git.mchehab@kernel.org>
 References: <cover.1649939026.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 10/12] code_cov_parse_info: fix --show-lines
- logic
+Subject: [igt-dev] [PATCH v3 06/12] scripts/code_cov_selftest.sh: test if
+ IGT code coverage is working
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,40 +28,75 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-print_code_coverage function needs to first read the number
-of lines and then simplify the $file by removing its prefix.
+The runner_tests.c won't be able to test code coverage, as it
+requires a kernel specially built for such purpose.
 
-Without that, it ends trying to access an uninitiated value,
-leading to warnings and not doing what's expected.
+So, add a script that will validate possible steps while doing
+code coverage.
 
-While here, also check if the ln data is valid, just in case
-the .info file might have some FN field(s) missing.
-
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
 
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v3 00/12] at: https://lore.kernel.org/all/cover.1649939026.git.mchehab@kernel.org/
 
- scripts/code_cov_parse_info | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/code_cov_selftest.sh | 47 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+ create mode 100755 scripts/code_cov_selftest.sh
 
-diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index c8284a297b33..0d9bac38cea9 100755
---- a/scripts/code_cov_parse_info
-+++ b/scripts/code_cov_parse_info
-@@ -378,8 +378,10 @@ sub print_code_coverage($$$)
- 			}
- 
- 			if ($show_lines) {
-+				my $ln = $all_func{$func}{$file}->{ln};
- 				$file =~ s,$prefix,linux/,;
--				$name = "$func() from $file:" . $all_func{$func}{$file}->{ln};
-+				$name = "$func() from $file";
-+				$name .= ":" . $ln if ($ln);
- 			} elsif (scalar @keys > 1) {
- 				$file =~ s,$prefix,linux/,;
- 				$name = "$func() from $file:";
+diff --git a/scripts/code_cov_selftest.sh b/scripts/code_cov_selftest.sh
+new file mode 100755
+index 000000000000..1c4bd96a0111
+--- /dev/null
++++ b/scripts/code_cov_selftest.sh
+@@ -0,0 +1,47 @@
++#!/bin/bash
++
++trap 'catch $LINENO' ERR
++catch() {
++	echo "===> ERROR: Code coverage selftest failed on $0:$1" >&2
++        exit 1
++}
++
++if [ -z "$IGT_KERNEL_TREE" ] ; then
++        echo "Error! IGT_KERNEL_TREE environment var was not defined." >&2
++        exit 1
++fi
++
++TEST="igt@debugfs_test@read_all_entries"
++
++TESTLIST="my_tests.testlist"
++GATHER="scripts/code_cov_gather_on_test.py"
++LCOV_CAP="scripts/code_cov_capture.sh"
++INFO_RESULTS="info_results"
++TAR_RESULTS="tar_results"
++
++sudo rm -rf results/ $INFO_RESULTS/ $TAR_RESULTS/ || true
++
++echo "$TEST" > $TESTLIST
++
++# run-tests.sh
++echo "==> use lcov capture via run-tests.sh"
++./scripts/run-tests.sh -T $TESTLIST -k $IGT_KERNEL_TREE -c $LCOV_CAP
++echo "==> gather sysfs using run-tests.sh"
++./scripts/run-tests.sh -T $TESTLIST -k $IGT_KERNEL_TREE -P -c $GATHER
++echo "==> gather sysfs using run-tests.sh, capturing at the end"
++./scripts/run-tests.sh -T $TESTLIST -k $IGT_KERNEL_TREE -c $GATHER
++
++# igt_runner called directly
++echo "==> use lcov capture via igt_runner"
++sudo IGT_KERNEL_TREE=$IGT_KERNEL_TREE ./build/runner/igt_runner -o --test-list $TESTLIST --coverage-per-test --collect-script $LCOV_CAP  build/tests results
++echo "==> gather sysfs running igt_runner"
++sudo ./build/runner/igt_runner -o --test-list $TESTLIST --coverage-per-test --collect-script $GATHER build/tests results
++
++# html report
++echo "==> generate report from lcov info files"
++scripts/code_cov_gen_report.sh -r results/code_cov/ -k $IGT_KERNEL_TREE -o $INFO_RESULTS -i --only-i915 --ignore-unused
++echo "==> generate report from sysfs gather files"
++scripts/code_cov_gen_report.sh -r results/code_cov/ -k $IGT_KERNEL_TREE -o $TAR_RESULTS -t --only-drm --ignore-unused
++
++echo
++echo "==> All tests passed. <=="
 -- 
 2.35.1
