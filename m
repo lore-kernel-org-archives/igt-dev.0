@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2496010FC14
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 07:59:01 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 14 Apr 2022 13:30:58 +0530
-Message-Id: <20220414080058.5887-1-nidhi1.gupta@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81BA210F245
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 08:36:09 +0000 (UTC)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Petri Latvala <petri.latvala@intel.com>
+Date: Thu, 14 Apr 2022 10:34:53 +0200
+Message-Id: <776e034e169f84eb9d522261763cfd278e9a8331.1649924725.git.mchehab@kernel.org>
+In-Reply-To: <cover.1649924725.git.mchehab@kernel.org>
+References: <cover.1649924725.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms: IGT cleanup
+Subject: [igt-dev] [PATCH RFC 1/1] tests/core_hotunplug: properly finish
+ processes using audio devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,130 +20,321 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before running the subtest we need to sanitize the system state
-to default, since we can't trust the state of previous subtest, used
-igt_display_reset() to sanitize the state.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Replace newly defined function in particular test with existing library
-function.
+Before unloading or unbinding an audio driver, all processes
+that are using it must be terminated. The current logic seeks
+only for alsactl, but ignore other processes, including
+pulseaudio.
 
-Below tests are modified:
-	tests/kms_concurrent.c
-	tests/kms_sequence.c
+Make the logic more general, extending it to any processes that
+could have an open device under /dev/snd.
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+It should be noticed that some distros like Fedora and openSUSE
+are now migrating from pulseaudio into pipewire-pulse. Right
+now, there's no standard distribution-agnostic way to request
+pipewire-pulse to stop using audio devices, but there's a new
+patch upstream that will make things easier:
+
+	https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/6ad6300ec657c88322a8cd6f3548261d3dc05359
+
+Which should be available for pipewire-pulse versions 0.3.50 and
+upper.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_concurrent.c | 39 ++++++++++++++-------------------------
- tests/kms_sequence.c   |  6 ++++--
- 2 files changed, 18 insertions(+), 27 deletions(-)
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index dc1e36f2..622d3335 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
- 	}
- 
- 	/* reset the constraint on the pipe */
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
- 	free(data->plane);
- 	data->plane = NULL;
-@@ -289,35 +290,28 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
- static void
- run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- {
--	int connected_outs;
- 	int n_planes = data->display.pipes[pipe].n_planes;
-+	igt_display_reset(&data->display);
- 
- 	if (!opt.user_seed)
- 		opt.seed = time(NULL);
- 
--	connected_outs = 0;
--	for_each_valid_output_on_pipe(&data->display, pipe, output) {
--		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
--			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
-+	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
-+		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
- 
--		srand(opt.seed);
-+	srand(opt.seed);
- 
--		test_init(data, pipe, n_planes, output);
-+	test_init(data, pipe, n_planes, output);
- 
--		igt_fork(child, 1) {
--			test_plane_position_with_output(data, pipe, n_planes, output);
--		}
--
--		test_resolution_with_output(data, pipe, n_planes, output);
--
--		igt_waitchildren();
-+	igt_fork(child, 1) {
-+		test_plane_position_with_output(data, pipe, n_planes, output);
-+	}
- 
--		test_fini(data, pipe, n_planes, output);
-+	test_resolution_with_output(data, pipe, n_planes, output);
- 
--		connected_outs++;
--	}
-+	igt_waitchildren();
- 
--	igt_skip_on(connected_outs == 0);
-+	test_fini(data, pipe, n_planes, output);
+To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
+See [PATCH RFC 0/1] at: https://lore.kernel.org/all/cover.1649924725.git.mchehab@kernel.org/
+
+ lib/igt_aux.c          | 141 +++++++++++++++++++++++++++++++++++++++++
+ lib/igt_aux.h          |   1 +
+ lib/igt_kmod.c         |  39 ++++++++----
+ lib/igt_kmod.h         |   2 +
+ tests/core_hotunplug.c |  11 +---
+ 5 files changed, 173 insertions(+), 21 deletions(-)
+
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 03cc38c93e5c..32435532e139 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -31,6 +31,7 @@
+ #endif
+ #include <stdio.h>
+ #include <fcntl.h>
++#include <pwd.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
+ #include <string.h>
+@@ -1410,6 +1411,146 @@ igt_lsof(const char *dpath)
+ 	free(sanitized);
  }
  
- static void
-@@ -326,15 +320,10 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_output_t *output;
- 
- 	igt_fixture {
--		int valid_tests = 0;
--
- 		igt_require_pipe(&data->display, pipe);
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			valid_tests++;
--
--		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
-+		igt_display_require_output(&data->display);
- 	}
- 
- 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index 9c287480..ca25e041 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -77,6 +77,8 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *primary;
- 
-+	igt_display_reset(&data->display);
++static void pulseaudio_unload_module(proc_t *proc_info)
++{
++	char xdg_dir[PATH_MAX];
++	const char *homedir;
++	struct passwd *pw;
 +
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
++	igt_fork(child, 1) {
++		pw = getpwuid(proc_info->euid);
++		homedir = pw->pw_dir;
++		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
++
++		igt_info("Ask pulseaudio to stop using audio device\n");
++
++		setgid(proc_info->egid);
++		setuid(proc_info->euid);
++		clearenv();
++		setenv("HOME", homedir, 1);
++		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
++
++		exit(system("for i in $(pacmd list-sources|grep module:|cut -d : -f 2); do pactl unload-module $i; done"));
++	}
++}
++
++static int
++__igt_lsof_kill_proc(proc_t *proc_info, char *proc_path)
++{
++	const char *audio_dev = "/dev/snd/";
++	char path[PATH_MAX * 2];
++	struct dirent *d;
++	struct stat st;
++	char *fd_lnk;
++	int fail = 0;
++	ssize_t read;
++
++	DIR *dp = opendir(proc_path);
++	igt_assert(dp);
++
++	while ((d = readdir(dp))) {
++		if (*d->d_name == '.')
++			continue;
++
++		memset(path, 0, sizeof(path));
++		snprintf(path, sizeof(path), "%s/%s", proc_path, d->d_name);
++
++		if (lstat(path, &st) == -1)
++			continue;
++
++		fd_lnk = malloc(st.st_size + 1);
++
++		igt_assert((read = readlink(path, fd_lnk, st.st_size + 1)));
++		fd_lnk[read] = '\0';
++
++		if (strncmp(audio_dev, fd_lnk, strlen(audio_dev))) {
++			free(fd_lnk);
++			continue;
++		}
++
++		free(fd_lnk);
++
++		/*
++		 * In order to avoid racing against pa/systemd, ensure that
++		 * pulseaudio will close all audio files. This should be
++		 * enough to unbind audio modules and won't case race issues
++		 * with systemd trying to reload it.
++		 */
++		if (!strcmp(proc_info->cmd, "pulseaudio")) {
++			pulseaudio_unload_module(proc_info);
++			break;
++		}
++
++		/*
++		 * FIXME: terminating pipewire-pulse is not that easy, as
++		 * pipewire will be reloaded by  systemd. The next upstream
++		 * version to be released after 0.3.49 brings a way:
++		 *
++		 * 1) start a thread running:
++		 *	 pw-reserve -n Audio0 -r
++		 * 2) unload/unbind the the audio driver(s);
++		 * 3) stop the pw-reserve thread.
++		 *
++		 * Before such change, trying to kill pipewire will cause a
++		 * between IGT and systemd. If IGT wins, the audio driver
++		 * will be unloaded before systemd tries to reload it, but
++		 * if systemd wins, the audio device will be re-opened and
++		 * used before IGT has a chance to remove the audio driver.
++		 */
++
++		/* For all other processes, just kill them */
++		igt_info("process %d (%s) is using audio device. Should be terminated.\n",
++				proc_info->tid, proc_info->cmd);
++
++		if (kill(proc_info->tid, SIGTERM) < 0) {
++			igt_info("Fail to terminate %s (pid: %d) with SIGTERM\n",
++				proc_info->cmd, proc_info->tid);
++			if (kill(proc_info->tid, SIGABRT) < 0) {
++				fail++;
++				igt_info("Fail to terminate %s (pid: %d) with SIGABRT\n",
++					proc_info->cmd, proc_info->tid);
++			}
++		}
++
++		break;
++	}
++
++	closedir(dp);
++	return fail;
++}
++
++/*
++ * This function identifies each process running on the machine that is
++ * opening an audio device and tries to stop it.
++ *
++ * Special care should be taken with pipewire and pipewire-pulse, as those
++ * daemons are respanned if they got killed.
++ */
++int
++igt_lsof_kill_audio_processes(void)
++{
++	char path[PATH_MAX];
++	proc_t *proc_info;
++	PROCTAB *proc;
++	int fail = 0;
++
++	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
++	igt_assert(proc != NULL);
++
++	while ((proc_info = readproc(proc, NULL))) {
++		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1) {
++			fail++;
++		} else {
++			fail += __igt_lsof_kill_proc(proc_info, path);
++		}
++
++		freeproc(proc_info);
++	}
++	closeproc(proc);
++
++	return fail;
++}
++
+ static struct igt_siglatency {
+ 	timer_t timer;
+ 	struct timespec target;
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index 9f2588aeca90..bb96d1afb777 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -306,6 +306,7 @@ bool igt_allow_unlimited_files(void);
+ int igt_is_process_running(const char *comm);
+ int igt_terminate_process(int sig, const char *comm);
+ void igt_lsof(const char *dpath);
++int igt_lsof_kill_audio_processes(void);
  
-@@ -109,8 +111,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, NULL);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
--	igt_display_commit(display);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ #define igt_hweight(x) \
+ 	__builtin_choose_expr(sizeof(x) == 8, \
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index f252535d5a3a..1a65522f9faa 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -389,15 +389,37 @@ igt_i915_driver_load(const char *opts)
+ 	return 0;
  }
  
- static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
+-int __igt_i915_driver_unload(const char **who)
++int igt_audio_driver_unload(const char **who)
+ {
+ 	int ret;
+ 	const char *sound[] = {
+ 		"snd_hda_intel",
+ 		"snd_hdmi_lpe_audio",
++		/* FIXME: newer chipsets use soc/sof drivers  */
+ 		NULL,
+ 	};
+ 
++	for (const char **m = sound; *m; m++) {
++		if (igt_kmod_is_loaded(*m)) {
++			if (igt_lsof_kill_audio_processes())
++				return 1;
++
++			kick_snd_hda_intel();
++			ret = igt_kmod_unload(*m, 0);
++			if (ret) {
++				if (who)
++					*who = *m;
++				return ret;
++			}
++		}
++	}
++	return 0;
++}
++
++int __igt_i915_driver_unload(const char **who)
++{
++	int ret;
++
+ 	const char *aux[] = {
+ 		/* gen5: ips uses symbol_get() so only a soft module dependency */
+ 		"intel_ips",
+@@ -411,18 +433,9 @@ int __igt_i915_driver_unload(const char **who)
+ 	/* unbind vt */
+ 	bind_fbcon(false);
+ 
+-	for (const char **m = sound; *m; m++) {
+-		if (igt_kmod_is_loaded(*m)) {
+-			igt_terminate_process(SIGTERM, "alsactl");
+-			kick_snd_hda_intel();
+-			ret = igt_kmod_unload(*m, 0);
+-			if (ret) {
+-				if (who)
+-					*who = *m;
+-				return ret;
+-			}
+-		}
+-	}
++	ret = igt_audio_driver_unload(who);
++	if (ret)
++		return ret;
+ 
+ 	for (const char **m = aux; *m; m++) {
+ 		if (igt_kmod_is_loaded(*m)) {
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index 0898122b3efe..15f0be31e8e4 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -36,6 +36,8 @@ bool igt_kmod_has_param(const char *mod_name, const char *param);
+ int igt_kmod_load(const char *mod_name, const char *opts);
+ int igt_kmod_unload(const char *mod_name, unsigned int flags);
+ 
++int igt_audio_driver_unload(const char **whom);
++
+ int igt_i915_driver_load(const char *opts);
+ int igt_i915_driver_unload(void);
+ int __igt_i915_driver_unload(const char **whom);
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 2f2fb7ac18d6..f8a4d6f08f69 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -152,19 +152,14 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
+ 	 * safest and easiest way out.
+ 	 */
+ 	if (priv->snd_unload) {
+-		igt_terminate_process(SIGTERM, "alsactl");
+-
+-		/* unbind snd_hda_intel */
+-		kick_snd_hda_intel();
+-
+-		if (igt_kmod_unload("snd_hda_intel", 0)) {
++		if (igt_audio_driver_unload(NULL)) {
+ 			priv->snd_unload = false;
+-			igt_warn("Could not unload snd_hda_intel\n");
++			igt_warn("Could not unload audio driver\n");
+ 			igt_kmod_list_loaded();
+ 			igt_lsof("/dev/snd");
+ 			igt_skip("Audio is in use, skipping\n");
+ 		} else {
+-			igt_info("Preventively unloaded snd_hda_intel\n");
++			igt_info("Preventively unloaded audio driver\n");
+ 		}
+ 	}
+ 
 -- 
-2.26.2
+2.35.1
