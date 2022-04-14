@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2085.outbound.protection.outlook.com [40.107.243.85])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18B6D10E1F5
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 00:02:52 +0000 (UTC)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2054.outbound.protection.outlook.com [40.107.93.54])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6056010F203
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 01:01:37 +0000 (UTC)
 From: "Hung, Alex" <Alex.Hung@amd.com>
-To: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu, 14 Apr 2022 00:02:48 +0000
-Message-ID: <BYAPR12MB3048AD2942B2E340109010CBF7EF9@BYAPR12MB3048.namprd12.prod.outlook.com>
+To: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Date: Thu, 14 Apr 2022 01:01:32 +0000
+Message-ID: <BYAPR12MB3048D361909BF8758C8CEA4CF7EF9@BYAPR12MB3048.namprd12.prod.outlook.com>
 References: <20220407174215.171440-1-alex.hung@amd.com>
- <CAJUqKUpntYp_s6cCt=SSY8JwkqL4TrG+juNGx36yPburAnEs9g@mail.gmail.com>
-In-Reply-To: <CAJUqKUpntYp_s6cCt=SSY8JwkqL4TrG+juNGx36yPburAnEs9g@mail.gmail.com>
+ <CAP+8YyFV8mdU+xUqeP0bF+YuNo2Uo=A9WVBJOJBvoc+ZEwuEmw@mail.gmail.com>
+In-Reply-To: <CAP+8YyFV8mdU+xUqeP0bF+YuNo2Uo=A9WVBJOJBvoc+ZEwuEmw@mail.gmail.com>
 Content-Language: en-GB
 Content-Type: multipart/alternative;
- boundary="_000_BYAPR12MB3048AD2942B2E340109010CBF7EF9BYAPR12MB3048namp_"
+ boundary="_000_BYAPR12MB3048D361909BF8758C8CEA4CF7EF9BYAPR12MB3048namp_"
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t][V2] tests/kms: Skip kms test cases for
  DCC and DCC_RETILE
@@ -23,14 +23,13 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "bas@basnieuwenhuizen.nl" <bas@basnieuwenhuizen.nl>,
- "markyacoub@google.com" <markyacoub@google.com>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
+ Mark Yacoub <markyacoub@google.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_BYAPR12MB3048AD2942B2E340109010CBF7EF9BYAPR12MB3048namp_
+--_000_BYAPR12MB3048D361909BF8758C8CEA4CF7EF9BYAPR12MB3048namp_
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
@@ -39,39 +38,56 @@ Content-Transfer-Encoding: quoted-printable
 
 
 ________________________________
-From: Mark Yacoub <markyacoub@chromium.org>
-Sent: 13 April 2022 13:56
+From: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Sent: 13 April 2022 16:00
 To: Hung, Alex <Alex.Hung@amd.com>
-Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; markyaco=
-ub@google.com <markyacoub@google.com>; bas@basnieuwenhuizen.nl <bas@basnieu=
-wenhuizen.nl>
-Subject: Re: [igt-dev] [PATCH i-g-t][V2] tests/kms: Skip kms test cases for=
- DCC and DCC_RETILE
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.o=
+rg>; Mark Yacoub <markyacoub@google.com>; Siqueira, Rodrigo <Rodrigo.Siquei=
+ra@amd.com>; Pillai, Aurabindo <Aurabindo.Pillai@amd.com>
+Subject: Re: [PATCH i-g-t][V2] tests/kms: Skip kms test cases for DCC and D=
+CC_RETILE
 
-On Thu, Apr 7, 2022 at 1:42 PM Alex Hung <alex.hung@amd.com> wrote:
-title of commit message should include the test name if you're fixing
-only 1 text. so it would be tests/kms_plane
+On Thu, Apr 7, 2022 at 7:42 PM Alex Hung <alex.hung@amd.com> wrote:
 >
 > Skip the KMS test cases for planes that has modifiers with
-nit: s/has/have.
 > DCC and DCC_RETILE on AMDGPU.
 >
 > Current pixel-format and pixel-format-source-clamping subtests do not
 > support modifers with DCC or DCC_RETILE in kernel.
-nit: s/modifers/modifiers
 >
 > 1. dcc_formats's cpp[1] is set to 0 and this triggers kernel errors
-is [1] referring to a url? i dont see it.
 > "Format requires non-linear modifier for plane 1" because block_size
 > (i.e. cpp[1]) =3D=3D 0. See kernel commits 816853f9dc40 and 8db2dc852941.
-I would prefer you add links to make it easy to look up.
+
+We aren't using a linear modifier here, why would this trigger?
+
+The data seems to be all zero, and r->modifier[i] will be zero and equals D=
+RM_FORMAT_MOD_LINEAR (=3D 0)
+
 >
 > 2. the subtests cause kernel's amdgpu_display_verify_sizes to fail
 > because they do not provide an extra plane with compression metadata.
 > See kernel commit 234055fd9728 for details.
-ditto
 
-if this is affecting a specific subtest, please add it here.
+Can we do something more generic by skipping all modifiers where the
+number of planes !=3D the number of planes for the format with a linear
+modifier?
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Do you mean something like below:
+
+        int nlinear =3D 0;
+        int i;
+
+        for (i =3D 0; i < plane->format_mod_count; i++)
+                if (plane->modifiers[i] =3D=3D DRM_FORMAT_MOD_LINEAR)
+                        nlinear++;
+
+        if (plane->format_mod_count !=3D nlinear)
+                return true;
+
+This will affect more than DCC.
+
 >
 > Signed-off-by: Alex Hung <alex.hung@amd.com>
 > ---
@@ -91,13 +107,25 @@ plane)
 >         int index =3D plane->index;
 >
 > +       for (int i =3D 0; i < plane->format_mod_count; i++) {
-not sure how it compiled, i think you'll need to move int i to above.
-
-igt has many "for (int i ...)" so I use the same approach just for neatness=
-. I will move it to above in V3.
-
 > +               if (AMD_FMT_MOD_GET(DCC, plane->modifiers[i]) ||
 > +                   AMD_FMT_MOD_GET(DCC_RETILE, plane->modifiers[i])) {
+
+This check is only valid if you first check that this is an AMD modifier.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Thanks. This can be fixed by the following if it is to be used.
+
+        for (i =3D 0; i < plane->format_mod_count; i++) {
+                if (IS_AMD_FMT_MOD(plane->modifiers[i]) &&
+                    (AMD_FMT_MOD_GET(DCC, plane->modifiers[i]) ||
+                     AMD_FMT_MOD_GET(DCC_RETILE, plane->modifiers[i]))) {
+                        igt_debug("Skipping planes with DCC or DCC_RETILE\n=
+");
+                        return true;
+                }
+        }
+
+
 > +                       igt_debug("Skipping planes with DCC or DCC_RETILE=
 \n");
 > +                       return true;
@@ -111,7 +139,7 @@ igt has many "for (int i ...)" so I use the same approach just for neatness=
 > 2.35.1
 >
 
---_000_BYAPR12MB3048AD2942B2E340109010CBF7EF9BYAPR12MB3048namp_
+--_000_BYAPR12MB3048D361909BF8758C8CEA4CF7EF9BYAPR12MB3048namp_
 Content-Type: text/html; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
@@ -140,49 +168,76 @@ t; color:rgb(0,0,0)">
 </div>
 <hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
 <div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" co=
-lor=3D"#000000" style=3D"font-size:11pt"><b>From:</b> Mark Yacoub &lt;marky=
-acoub@chromium.org&gt;<br>
-<b>Sent:</b> 13 April 2022 13:56<br>
+lor=3D"#000000" style=3D"font-size:11pt"><b>From:</b> Bas Nieuwenhuizen &lt=
+;bas@basnieuwenhuizen.nl&gt;<br>
+<b>Sent:</b> 13 April 2022 16:00<br>
 <b>To:</b> Hung, Alex &lt;Alex.Hung@amd.com&gt;<br>
-<b>Cc:</b> igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&=
-gt;; markyacoub@google.com &lt;markyacoub@google.com&gt;; bas@basnieuwenhui=
-zen.nl &lt;bas@basnieuwenhuizen.nl&gt;<br>
-<b>Subject:</b> Re: [igt-dev] [PATCH i-g-t][V2] tests/kms: Skip kms test ca=
-ses for DCC and DCC_RETILE</font>
+<b>Cc:</b> Development mailing list for IGT GPU Tools &lt;igt-dev@lists.fre=
+edesktop.org&gt;; Mark Yacoub &lt;markyacoub@google.com&gt;; Siqueira, Rodr=
+igo &lt;Rodrigo.Siqueira@amd.com&gt;; Pillai, Aurabindo &lt;Aurabindo.Pilla=
+i@amd.com&gt;<br>
+<b>Subject:</b> Re: [PATCH i-g-t][V2] tests/kms: Skip kms test cases for DC=
+C and DCC_RETILE</font>
 <div>&nbsp;</div>
 </div>
 <div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt"=
 >
-<div class=3D"PlainText">On Thu, Apr 7, 2022 at 1:42 PM Alex Hung &lt;alex.=
+<div class=3D"PlainText">On Thu, Apr 7, 2022 at 7:42 PM Alex Hung &lt;alex.=
 hung@amd.com&gt; wrote:<br>
-title of commit message should include the test name if you're fixing<br>
-only 1 text. so it would be tests/kms_plane<br>
 &gt;<br>
 &gt; Skip the KMS test cases for planes that has modifiers with<br>
-nit: s/has/have.<br>
 &gt; DCC and DCC_RETILE on AMDGPU.<br>
 &gt;<br>
 &gt; Current pixel-format and pixel-format-source-clamping subtests do not<=
 br>
 &gt; support modifers with DCC or DCC_RETILE in kernel.<br>
-nit: s/modifers/modifiers<br>
 &gt;<br>
 &gt; 1. dcc_formats's cpp[1] is set to 0 and this triggers kernel errors<br=
 >
-is [1] referring to a url? i dont see it.<br>
 &gt; &quot;Format requires non-linear modifier for plane 1&quot; because bl=
 ock_size<br>
 &gt; (i.e. cpp[1]) =3D=3D 0. See kernel commits 816853f9dc40 and 8db2dc8529=
 41.<br>
-I would prefer you add links to make it easy to look up.<br>
+<br>
+We aren't using a linear modifier here, why would this trigger?</div>
+<div class=3D"PlainText"><br>
+</div>
+<div class=3D"PlainText">The data seems to be all zero, and r-&gt;modifier[=
+i] will be zero and equals&nbsp;DRM_FORMAT_MOD_LINEAR (=3D 0)</div>
+<div class=3D"PlainText"><br>
 &gt;<br>
 &gt; 2. the subtests cause kernel's amdgpu_display_verify_sizes to fail<br>
 &gt; because they do not provide an extra plane with compression metadata.<=
 br>
 &gt; See kernel commit 234055fd9728 for details.<br>
-ditto<br>
 <br>
-if this is affecting a specific subtest, please add it here.<br>
+Can we do something more generic by skipping all modifiers where the<br>
+number of planes !=3D the number of planes for the format with a linear<br>
+modifier?<br>
+<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+Do you mean something like below:</div>
+<div class=3D"PlainText"><br>
+</div>
+<div class=3D"PlainText">&nbsp; &nbsp; &nbsp; &nbsp; int nlinear =3D 0;
+<div>&nbsp; &nbsp; &nbsp; &nbsp; int i;</div>
+<div><br>
+</div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; for (i =3D 0; i &lt; plane-&gt;format_mod_=
+count; i++) </div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (plane-&gt;=
+modifiers[i] =3D=3D DRM_FORMAT_MOD_LINEAR)</div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
+&nbsp; &nbsp; nlinear++;</div>
+<div><br>
+</div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; if (plane-&gt;format_mod_count !=3D nlinea=
+r)</div>
+<span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return true;<=
+/span><br>
+<br>
+This will affect more than DCC.<br>
+<br>
 &gt;<br>
 &gt; Signed-off-by: Alex Hung &lt;alex.hung@amd.com&gt;<br>
 &gt; ---<br>
@@ -204,20 +259,41 @@ t;index;<br>
 &gt;<br>
 &gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i =3D 0; i &lt; plane-&=
 gt;format_mod_count; i++) {<br>
-not sure how it compiled, i think you'll need to move int i to above.</div>
-<div class=3D"PlainText"><br>
-</div>
-<div class=3D"PlainText"><span style=3D"background-color:rgb(255, 255, 255)=
-;display:inline !important">igt has many &quot;for (int i ...)&quot; so I u=
-se the same approach just for neatness. I will move it to above in V3.</spa=
-n><br>
-</div>
-<div class=3D"PlainText"><br>
 &gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
 sp;&nbsp;&nbsp; if (AMD_FMT_MOD_GET(DCC, plane-&gt;modifiers[i]) ||<br>
 &gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
 sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AMD_FMT_MOD_GET(DCC_RETILE, plane-&=
 gt;modifiers[i])) {<br>
+<br>
+This check is only valid if you first check that this is an AMD modifier.</=
+div>
+<div class=3D"PlainText"><br>
+</div>
+<div class=3D"PlainText"><span style=3D"background-color:rgb(255, 255, 255)=
+;display:inline !important">=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D</span><br>
+</div>
+<div class=3D"PlainText">Thanks. This can be fixed by the following if it i=
+s to be used.</div>
+<div class=3D"PlainText"><br>
+</div>
+<div class=3D"PlainText">&nbsp; &nbsp; &nbsp; &nbsp; for (i =3D 0; i &lt; p=
+lane-&gt;format_mod_count; i++) {
+<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (IS_AMD_FMT=
+_MOD(plane-&gt;modifiers[i]) &amp;&amp;</div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
+(AMD_FMT_MOD_GET(DCC, plane-&gt;modifiers[i]) ||</div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
+&nbsp;AMD_FMT_MOD_GET(DCC_RETILE, plane-&gt;modifiers[i]))) {</div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
+&nbsp; &nbsp; igt_debug(&quot;Skipping planes with DCC or DCC_RETILE\n&quot=
+;);</div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
+&nbsp; &nbsp; return true;</div>
+<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</div>
+<span>&nbsp; &nbsp; &nbsp; &nbsp; }</span><br>
+<br>
+<br>
 &gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
 sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_debug(&=
 quot;Skipping planes with DCC or DCC_RETILE\n&quot;);<br>
@@ -242,4 +318,4 @@ sp;&nbsp;&nbsp; }<br>
 </body>
 </html>
 
---_000_BYAPR12MB3048AD2942B2E340109010CBF7EF9BYAPR12MB3048namp_--
+--_000_BYAPR12MB3048D361909BF8758C8CEA4CF7EF9BYAPR12MB3048namp_--
