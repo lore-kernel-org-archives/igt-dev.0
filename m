@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98A8910E208
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 19:45:53 +0000 (UTC)
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 14 Apr 2022 12:45:33 -0700
-Message-Id: <20220414194533.1049925-1-lucas.demarchi@intel.com>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2065.outbound.protection.outlook.com [40.107.223.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD47510E021
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 17:16:58 +0000 (UTC)
+Message-ID: <ffb077c5-48d9-189f-d688-a18999bc5903@amd.com>
+Date: Thu, 14 Apr 2022 13:16:48 -0400
+Content-Language: en-US
+To: David Zhang <dingchen.zhang@amd.com>, igt-dev@lists.freedesktop.org
+References: <20220412192139.1530645-1-dingchen.zhang@amd.com>
+ <20220412192139.1530645-4-dingchen.zhang@amd.com>
+From: Leo Li <sunpeng.li@amd.com>
+In-Reply-To: <20220412192139.1530645-4-dingchen.zhang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [CI] tests/core_hotunplug: apply audio unload for all
- i915 hw
+Subject: Re: [igt-dev] [PATCH v3 3/3] tests/amdgpu/amd_psr: define reusable
+ wrapper for PSR support check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,60 +23,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-The HDA audio driver does not support dynamic hotplug of a HDA codec and
-that applies also to the display HDA codec.
 
-To test unbind of i915, audio driver must be first unbound and/or
-unloaded. This is the only way to ensure clean unbind, and possibility
-to cleanly reestablish connection between audio and i915.
 
-Without this fix, the core_hotunplug test only works if the audio
-controller is runtime suspended when the test is run. This is very
-brittle and subject to timing races, differences in system configuration
-and so forth. A more predictable test is to explicitly unload the audio
-and in case some entity is using the audio driver, this is flagged with
-a clear, easily understandable error.
+On 2022-04-12 15:21, David Zhang wrote:
+> [why & how]
+> For amdgpu PSR-SU test cases, we'd first check if the sink device
+> and amdgpu driver support the PSR-SU feature at the beginning. We
+> define a local helper to wrap the check for PSR-SU support from
+> sink and driver as well and called by both MPO and FFU test case,
+> to avoid the code repetition.
+> 
+> Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Jay Pillai <aurabindo.pillai@amd.com>
+> Cc: Wayne Lin <wayne.lin@amd.com>
+> 
+> Signed-off-by: David Zhang <dingchen.zhang@amd.com>
+> ---
+>   tests/amdgpu/amd_psr.c | 40 ++++++++++++++++++++++++----------------
+>   1 file changed, 24 insertions(+), 16 deletions(-)
+> 
+> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+> index 92628fee..e7614d71 100644
+> --- a/tests/amdgpu/amd_psr.c
+> +++ b/tests/amdgpu/amd_psr.c
+> @@ -138,6 +138,28 @@ static int check_conn_type(data_t *data, uint32_t type) {
+>   	return -1;
+>   }
+>   
+> +static bool psr_su_supported(data_t *data)
+> +{
+> +	/* run PSR-SU test i.i.f. eDP panel and kernel driver both support PSR-SU */
+> +	if (!igt_amd_output_has_psr_cap(data->fd, data->output->name))
+> +		return false;
+> +
+> +	if (!igt_amd_output_has_psr_state(data->fd, data->output->name))
+> +		return false;
+> +
 
-References: https://gitlab.freedesktop.org/drm/intel/-/issues/1602
-Cc: Uma Shankar <uma.shankar@intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tests/core_hotunplug.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+Would be good to igt_warn on the above checks too, so the reason for
+skipping is clear.
 
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 2f2fb7ac..02eae19e 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -621,13 +621,12 @@ igt_main
- 		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
- 
- 		if (is_i915_device(fd_drm)) {
--			uint32_t devid = intel_get_drm_devid(fd_drm);
--
--			if ((IS_HASWELL(devid) || IS_BROADWELL(devid) ||
--			     IS_DG1(devid)) && (igt_kmod_is_loaded("snd_hda_intel"))) {
--				igt_debug("Enable WA to unload snd driver\n");
--				priv.snd_unload = true;
--			}
-+			/*
-+			 * Audio driver does not support hot unplug via DRM
-+			 * audio component framework, so driver must be unloaded
-+			 * explicitly for i915 unbind tests.
-+			 */
-+			priv.snd_unload = true;
- 
- 			gem_quiescent_gpu(fd_drm);
- 			igt_require_gem(fd_drm);
--- 
-2.35.2
+> +	if (!igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2)) {
+> +		igt_info(" output %s not support PSR-SU\n", data->output->name);
+
+Consider using igt_warn()
+
+With those addressed,
+
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+
+Thanks,
+Leo
+
+> +		return false;
+> +	}
+> +
+> +	if (!igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2)) {
+> +		igt_info(" kernel driver not support PSR-SU\n");
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>   static void run_check_psr(data_t *data, bool test_null_crtc) {
+>   	int fd, edp_idx, dp_idx, ret, i, psr_state;
+>   	igt_fb_t ref_fb, ref_fb2;
+> @@ -217,8 +239,6 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+>   static void run_check_psr_su_mpo(data_t *data)
+>   {
+>   	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
+> -	bool sink_support_psrsu = false;
+> -	bool drv_suport_psrsu = false;
+>   	igt_fb_t ov_fb;		// fb for overlay
+>   	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	// rectangle fbs for primary, emulate as video playback region
+>   	igt_fb_t ref_fb;	// reference fb
+> @@ -235,12 +255,7 @@ static void run_check_psr_su_mpo(data_t *data)
+>   	frame_rate = data->mode->vrefresh;
+>   
+>   	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
+> -	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
+> -	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
+> -	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
+> -	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
+> -	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
+> -	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
+> +	igt_skip_on(!psr_su_supported(data));
+>   
+>   	/* reference background pattern in grey */
+>   	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> @@ -338,8 +353,6 @@ static void panning_rect_fb(data_t *data, igt_fb_t *rect_fb, int rect_w, int rec
+>   static void run_check_psr_su_ffu(data_t *data)
+>   {
+>   	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
+> -	bool sink_support_psrsu = false;
+> -	bool drv_suport_psrsu = false;
+>   	igt_fb_t rect_fb; 	// rectangle fbs for primary
+>   	igt_fb_t ref_fb;	// reference fb
+>   	int pb_w, pb_h, ob_w, ob_h;
+> @@ -355,12 +368,7 @@ static void run_check_psr_su_ffu(data_t *data)
+>   	pb_h = data->h / 2;
+>   
+>   	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
+> -	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
+> -	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
+> -	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
+> -	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
+> -	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
+> -	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
+> +	igt_skip_on(!psr_su_supported(data));
+>   
+>   	/* reference background pattern in grey */
+>   	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
