@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB7E110FD05
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A494B10FBD5
  for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 12:25:11 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Thu, 14 Apr 2022 14:24:53 +0200
-Message-Id: <e8dcb82be52abf35663c6c547f3df0443eb83409.1649939026.git.mchehab@kernel.org>
+Date: Thu, 14 Apr 2022 14:25:00 +0200
+Message-Id: <a5c0609c589b33fd6f8c546313a4ce5cc19fd38e.1649939026.git.mchehab@kernel.org>
 In-Reply-To: <cover.1649939026.git.mchehab@kernel.org>
 References: <cover.1649939026.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 03/12] scripts/code_cov_gen_report: add support
- for filtering info files
+Subject: [igt-dev] [PATCH v3 10/12] code_cov_parse_info: fix --show-lines
+ logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,8 +28,14 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Now that we have a script that allows filtering the results,
-add support for it when generating code coverage reports.
+print_code_coverage function needs to first read the number
+of lines and then simplify the $file by removing its prefix.
+
+Without that, it ends trying to access an uninitiated value,
+leading to warnings and not doing what's expected.
+
+While here, also check if the ln data is valid, just in case
+the .info file might have some FN field(s) missing.
 
 Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
@@ -38,58 +44,24 @@ Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v3 00/12] at: https://lore.kernel.org/all/cover.1649939026.git.mchehab@kernel.org/
 
- scripts/code_cov_gen_report | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ scripts/code_cov_parse_info | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/code_cov_gen_report b/scripts/code_cov_gen_report
-index 05efebe19ee4..b7c90b114cde 100755
---- a/scripts/code_cov_gen_report
-+++ b/scripts/code_cov_gen_report
-@@ -16,6 +16,8 @@ Usage:
-     $(basename $0)
- 	--read <file or dir> --kernel-source <dir> --kernel-object <dir>
- 	--output-dir <dir> [--info or --tar] [--force-override]
-+	[--print] [--stat] [--ignore-unused] [--only-i915] [--only-drm]
-+	[--show-files] [--func-filters <file>] [--source-filters <file>]
+diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+index c8284a297b33..0d9bac38cea9 100755
+--- a/scripts/code_cov_parse_info
++++ b/scripts/code_cov_parse_info
+@@ -378,8 +378,10 @@ sub print_code_coverage($$$)
+ 			}
  
- --kernel-object is only needed when Kernel was built with make O=dir
- "
-@@ -28,6 +30,7 @@ KSRC=
- KOBJ=
- DEST_DIR=
- FORCE=
-+PARSE_ARGS=
- 
- while [ "$1" != "" ]; do
- 	case $1 in
-@@ -69,6 +72,17 @@ while [ "$1" != "" ]; do
- 			shift
- 		fi
- 		;;
-+	--print|--stat|--ignore-unused|--only-i915|--only-drm|--show-files)
-+		PARSE_ARGS="$PARSE_ARGS $1"
-+		;;
-+	--func-filters|--source-filters)
-+		if [ "$2" == "" ]; then
-+			usage 1
-+		else
-+			PARSE_ARGS="$PARSE_ARGS $1 $2"
-+			shift
-+		fi
-+		;;
- 	--force-override|-f)
- 		FORCE=1
- 		;;
-@@ -166,5 +180,10 @@ else
- 	fi
- fi
- 
-+if [ "x$PARSE_ARGS" != "x" ]; then
-+	${SCRIPT_DIR}/$PARSE_INFO $PARSE_ARGS --output filtered_${TITLE}.info ${TITLE}.info
-+	TITLE=filtered_${TITLE}
-+fi
-+
- echo "Generating HTML files..."
- genhtml -q ${TITLE}.info
+ 			if ($show_lines) {
++				my $ln = $all_func{$func}{$file}->{ln};
+ 				$file =~ s,$prefix,linux/,;
+-				$name = "$func() from $file:" . $all_func{$func}{$file}->{ln};
++				$name = "$func() from $file";
++				$name .= ":" . $ln if ($ln);
+ 			} elsif (scalar @keys > 1) {
+ 				$file =~ s,$prefix,linux/,;
+ 				$name = "$func() from $file:";
 -- 
 2.35.1
