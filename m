@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A99C10F245
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 08:36:09 +0000 (UTC)
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Petri Latvala <petri.latvala@intel.com>
-Date: Thu, 14 Apr 2022 10:34:52 +0200
-Message-Id: <cover.1649924725.git.mchehab@kernel.org>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5102810FBEE
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 09:05:07 +0000 (UTC)
+From: Ramalingam C <ramalingam.c@intel.com>
+To: igt-dev <igt-dev@lists.freedesktop.org>
+Date: Thu, 14 Apr 2022 14:35:54 +0530
+Message-Id: <20220414090555.9344-2-ramalingam.c@intel.com>
+In-Reply-To: <20220414090555.9344-1-ramalingam.c@intel.com>
+References: <20220414090555.9344-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH RFC 0/1] Better handle video driver unload logic
+Subject: [igt-dev] [PATCH i-g-t v9 1/2] tests/i915/gem_lmem_swapping: create
+ batch buffer from obj pool
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,58 +20,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Use the gem_create_from_pool() for creating the batch buffers.
 
-Audio device drivers can be hooking into the video drivers, in order to
-handle audio from HDMI. On such cases, the video driver usage count
-will be incremented.
+Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/gem_lmem_swapping.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-Before unloading or unbinding such drivers, it is needed first to ensure
-that no processes are using the audio devices and that the audio
-modules are either unbind or unloaded.
-
-Currently, the logic handles alsactl in daemon mode, but it doesn't
-touch pulseaudio nor any other processes that could also be using it.
-
-Make the logic more generic, in order to cover all audio-related processes
-and add an special case for pulseaudio, which requires an special request
-to stop using audio devices.
-
-With that, tests like core_hotunplug will now do the right thing, even if
-pulseaudio is loaded:
-
-	$ sudo ./build/tests/core_hotunplug --run unbind-rebind
-	IGT-Version: 1.26-g776e034e (x86_64) (Linux: 5.18.0-rc2-drm-0fd740aed3bb+ x86_64)
-	Starting subtest: unbind-rebind
-	Ask pulseaudio to stop using audio device
-	process 12919 (alsactl) is using audio device. Should be terminated.
-	Preventively unloaded audio driver
-	Subtest unbind-rebind: SUCCESS (2.146s)
-
-I'm sending this as a RFC, as there are other cases that also need to be
-covered there:
-
-1. pipewire-pulse. This requires a new feature that was added at version 0.3.50,
-   released last week;
-2. the current code covers only snd-hda-intel and snd-hdmi-lpe-audio. Other
-   audio modules may also need to be handled - like soc/sof audio drivers.
-
-Mauro Carvalho Chehab (1):
-  tests/core_hotunplug: properly finish processes using audio devices
-
- lib/igt_aux.c          | 141 +++++++++++++++++++++++++++++++++++++++++
- lib/igt_aux.h          |   1 +
- lib/igt_kmod.c         |  39 ++++++++----
- lib/igt_kmod.h         |   2 +
- tests/core_hotunplug.c |  11 +---
- 5 files changed, 173 insertions(+), 21 deletions(-)
-
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+index 432607b06155..2f9f32685cd8 100644
+--- a/tests/i915/gem_lmem_swapping.c
++++ b/tests/i915/gem_lmem_swapping.c
+@@ -129,7 +129,7 @@ static void move_to_lmem(int i915,
+ 			 const intel_ctx_t *ctx,
+ 			 struct object *list,
+ 			 unsigned int num,
+-			 uint32_t batch,
++			 unsigned int region,
+ 			 unsigned int engine,
+ 			 bool do_oom_test)
+ {
+@@ -140,7 +140,13 @@ static void move_to_lmem(int i915,
+ 		.flags = I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT | engine,
+ 		.rsvd1 = ctx->id,
+ 	};
+-	unsigned int i, ret;
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	unsigned int i, ret, batch;
++	uint64_t size;
++
++	size = 4096;
++	batch = gem_create_from_pool(i915, &size, region);
++	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 
+@@ -163,10 +169,10 @@ static void __do_evict(int i915,
+ 		       struct params *params,
+ 		       unsigned int seed)
+ {
++	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
++						    region->memory_instance);
+ 	const unsigned int max_swap_in = params->count / 100 + 1;
+-	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct object *objects, *obj, *list;
+-	uint32_t batch;
+ 	unsigned int engine = 0;
+ 	unsigned int i, l;
+ 	uint64_t size;
+@@ -174,9 +180,6 @@ static void __do_evict(int i915,
+ 	unsigned int num;
+ 
+ 	size = 4096;
+-	batch = create_bo(i915, &size, region, params->oom_test);
+-
+-	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
+ 
+ 	objects = calloc(params->count, sizeof(*objects));
+ 	igt_assert(objects);
+@@ -203,7 +206,7 @@ static void __do_evict(int i915,
+ 		}
+ 		obj->handle = create_bo(i915, &obj->size, region, params->oom_test);
+ 
+-		move_to_lmem(i915, ctx, objects + i, 1, batch, engine,
++		move_to_lmem(i915, ctx, objects + i, 1, region_id, engine,
+ 			     params->oom_test);
+ 		if (params->flags & TEST_VERIFY)
+ 			init_object(i915, obj, rand(), params->flags);
+@@ -228,7 +231,8 @@ static void __do_evict(int i915,
+ 			idx = (idx + 1) % params->count;
+ 		}
+ 
+-		move_to_lmem(i915, ctx, list, num, batch, engine, params->oom_test);
++		move_to_lmem(i915, ctx, list, num, region_id, engine,
++			     params->oom_test);
+ 
+ 		if (params->flags & TEST_ENGINES)
+ 			engine = (engine + 1) % __num_engines__;
+@@ -248,8 +252,6 @@ static void __do_evict(int i915,
+ 
+ 	free(list);
+ 	free(objects);
+-
+-	gem_close(i915, batch);
+ }
+ 
+ static void fill_params(int i915, struct params *params,
 -- 
-2.35.1
-
+2.20.1
