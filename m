@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3F2610FC53
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D872810FC7B
  for <igt-dev@lists.freedesktop.org>; Thu, 14 Apr 2022 12:25:11 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Thu, 14 Apr 2022 14:25:01 +0200
-Message-Id: <a77b585c64a5926fd301ffe3b86f5798126b0a75.1649939026.git.mchehab@kernel.org>
+Date: Thu, 14 Apr 2022 14:24:57 +0200
+Message-Id: <3f620c9eb05bfacdee38f1975fb9e03ee1ff62f7.1649939026.git.mchehab@kernel.org>
 In-Reply-To: <cover.1649939026.git.mchehab@kernel.org>
 References: <cover.1649939026.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 11/12] code_cov_parse_info: add support for
- exclude filters
+Subject: [igt-dev] [PATCH v3 07/12] docs/code_coverage.md: document the code
+ coverage filter script
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,31 +28,11 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-It is interesting to have support not only for including, but
-also for excluding functions and files. Also, it is trivial to
-have support for it.
+Add documentation bits for the code_coverage_parse_info.
 
-When either one or both source/function filters are enabled, it
-will print at the console the regular expressions that are applied
-to functions and sources (if any), e. g.:
+While here, also drop the extensions from the scripts that were renamed.
 
-$ cat << END >f1
-+i915
-gem
-
--  display
--selftest
-END
-$ cat << END >f2
-	-/selftests
-END
-$ code_cov_parse_info dg1.info dg2.info --func-filters f1 --source-filters f2 --stat
-  lines......: 72.1% (176 of 244 lines)
-  functions..: 77.3% (17 of 22 functions)
-  branches...: 50.0% (68 of 136 branches)
-Filters......: function regex (not match: m`display` m`selftest` and match: m`i915` m`gem`), source regex (match: m`/selftest`) and ignored source files where none of its code ran.
-Source files.: 0.99% (7 of 710 total), 77.78% (7 of 9 filtered)
-
+Reviewed-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
@@ -60,356 +40,327 @@ Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v3 00/12] at: https://lore.kernel.org/all/cover.1649939026.git.mchehab@kernel.org/
 
- scripts/code_cov_parse_info | 250 +++++++++++++++++++++++++-----------
- 1 file changed, 178 insertions(+), 72 deletions(-)
+ docs/code_coverage.md | 238 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 224 insertions(+), 14 deletions(-)
 
-diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index 0d9bac38cea9..206145ef4925 100755
---- a/scripts/code_cov_parse_info
-+++ b/scripts/code_cov_parse_info
-@@ -17,21 +17,27 @@ my %used_source;
- my %record;
- my %files;
- my @func_regexes;
-+my @func_exclude_regexes;
- my %test_names;
- my @src_regexes;
-+my @src_exclude_regexes;
+diff --git a/docs/code_coverage.md b/docs/code_coverage.md
+index 34d56d283a75..915e800ed68b 100644
+--- a/docs/code_coverage.md
++++ b/docs/code_coverage.md
+@@ -132,15 +132,15 @@ Kernel that was built at the same machine, at the directory `~/linux`,
+ and wants to capture one file per test, it would use:
  
- my $verbose = 0;
- my $ignore_unused = 0;
--my $only_i915 = 0;
--my $only_drm = 0;
- my $skip_func = 0;
+ ```
+-./scripts/run-tests.sh -T my.testlist -k ~/linux -c scripts/code_cov_capture.sh -P
++./scripts/run-tests.sh -T my.testlist -k ~/linux -c code_cov_capture -P
+ ```
  
- sub is_function_excluded($)
- {
-+	return 0 if (!@func_regexes && !@func_exclude_regexes);
-+
-+	my $func = shift;
-+
-+	foreach my $r (@func_exclude_regexes) {
-+		return 1 if ($func =~ m/$r/);
-+	}
-+
- 	return 0 if (!@func_regexes);
+ ### Code Coverage Collect script
  
--	my $func = shift;
+ While any script could in thesis be used, currently, there are two ones
+-under `scripts/`:
++under the IGT's `scripts/` source directory:
+ 
+-- `scripts/code_cov_capture.sh`:
++- `code_cov_capture`:
+ 
+   Assumes that the Kernel was built at the same machine, and uses
+   the lcov tool to generate GCC-independent code coverage data,
+@@ -150,7 +150,7 @@ under `scripts/`:
+ 
+   Such script requires `lcov` tool to be installed at the test machine.
+ 
+-- `scripts/code_cov_gather_on_test.py`:
++- `code_cov_gather_on_test`:
+ 
+   Generates a gzipped tarbal with the code coverage counters in
+   binary format. Such kind of output should then be parsed at
+@@ -162,12 +162,12 @@ For each script, the igt_runner passes just one parameter: the results
+ directory + the test name.
+ 
+ For instance, if it is needed to run a test called
+-`debugfs_test (read_all_entries)` using `scripts/code_cov_capture.sh`
++`debugfs_test (read_all_entries)` using `code_cov_capture`
+ parameter, e. g.:
+ 
+ ```
+ $ echo "igt@debugfs_test@read_all_entries" > my.testlist
+-$ ./scripts/run-tests.sh -T my.testlist -k ~/linux -c scripts/code_cov_capture.sh -P
++$ ./scripts/run-tests.sh -T my.testlist -k ~/linux -c code_cov_capture -P
+ Found test list: "/basedir/igt/build/tests/test-list.txt"
+ [31410.499969] [1/1] debugfs_test (read_all_entries)
+ [31411.060446] Storing code coverage results...
+@@ -178,7 +178,7 @@ Done.
+ The script will be called as:
+ 
+ ```
+-scripts/code_cov_capture.sh /basedir/igt/results/code_cov/debugfs_test_read_all_entries
++code_cov_capture results/code_cov/debugfs_test_read_all_entries
+ ```
+ 
+ Please notice that any character that it is not a number nor a letter at the
+@@ -190,6 +190,73 @@ as titles at the lcov files.
+ If any extra global parameters are needed by the script, those can be sent
+ via shell's environment var.
+ 
++## Parsing data from code coverage *.info files
++
++The `*.info` files generated by `lcov` are plain text files that list the
++tests that were executed in runtime.
++
++The `code_cov_parse_info` script has some logic on it that allows
++printing the called functions stored inside the `*.info` file. It can also
++optionally apply the following filters. Its main options are:
++
++- `--stat` or `--statistics`
++
++  Prints code coverage statistics.
++
++  It displays function, line, branch and file coverage percentage.
++
++  The statistics report is affected by the applied filters.
++
++- `--print-coverage`, `--print` or `-p`
++
++
++  Prints the functions that were executed in runtime and how many times
++  they were reached.
++
++  The function coverage report is affected by the applied filters.
++
++- `--print-unused` or `-u`
++
++  Prints the functions that were never reached.
++
++  The function coverage report is affected by the applied filters.
++
++- `--show-lines` or `--show_lines`
++
++  When printing per-function code coverage data, always output the source
++  file and the line number where the function is defined.
++
++- `--output` *output file* or `-o` *output file*
++
++  Produces an output file merging all input files.
++
++  The generated output file is affected by the applied filters.
++
++- `--show-files` or `--show_files`
++
++   Shows the list of files that were useed to produce the code coverage
++   results.
++
++- It also has a set of parameters that filters the code coverage results:
++  `--only-drm`, `--only-i915`, `--func-filters`, `--source-filters`,
++  `--ignore-unused`.
++  When used, all coverage displayed reports, and the stored output file
++  will be affected by such filters.
++
++More details can be seen by calling:
++
++```
++code_cov_parse_info --help
++
++```
++
++or:
++
++```
++code_cov_parse_info --man
++
++```
++
+ ### The `*.info` file format
+ 
+ The `*.info` files contain several fields on it, grouped into records.
+@@ -224,7 +291,7 @@ So, the above example means that, inside
+ ## Generating code coverage documentation
+ 
+ The `lcov` package contains the needed tools to parse and generate code
+-coverage documentation. It is used by `scripts/code_cov_capture.sh` script
++coverage documentation. It is used by `code_cov_capture` script
+ to convery from compiler-dependent `*.gcno` counters into a
+ compiler-independent format (`*.info`).
+ 
+@@ -243,11 +310,16 @@ source files. Some optional arguments can be used at the command line, or
+ can be stored at `/etc/lcovrc` or `~/.lcovrc` files.
+ 
+ As generating the documentation depends wheather the results were generated
+-as with a single or multiple `*.info` files by `scripts/code_cov_capture.sh`
++as with a single or multiple `*.info` files by `code_cov_capture`
+ or stored in raw formats inside `*.tar.gz` file(s) by
+-`scripts/code_cov_gather_on_test.py`, there's a script that does all the
++`code_cov_gather_on_test`, there's a script that does all the
+ required steps to build the code coverage html reports:
+-`scripts/code_cov_gen_report.sh`.
++`code_cov_gen_report`. Besides its own command line arguments, it
++also accepts arguments to be passed to `code_cov_parse_info`.
++
++If a `code_cov_parse_info` command line parameter is passed, it will
++also call the script, in order to use a filtered `*.info` file to be
++used when generating the HTML reports.
+ 
+ It requires the following arguments:
+ 
+@@ -276,18 +348,156 @@ It requires the following arguments:
+ 
+   The files specified by `--read` are gzipped tarballs containing all
+   `*.gcno` files and all `*.gcda` softlinks from the `/sys/kernel/debug/gcov/`
+-  directory at the test machine, created by
+-  `scripts/code_cov_gather_on_test.py` script.
++  directory at the test machine, created by `code_cov_gather_on_test` script.
+ 
+ - `--force-override`
+ 
+   Allow using a non-empty directory for `--output-dir`.
+ 
++- It also accepts `--print`, `--only-drm`, `--only-i915` and `--ignore-unused`
++  options from `code_cov_parse_info`.
++
+ `--info` and `--tar` are mutually exclusive and at least one of them should
+ be specified.
+ 
++## Code coverage capture script example
++
++### Capture, parse and generate code coverage html data
++
++The script below provides a simple yet powerful script using code
++coverage capture on a test machine that also contains the Linux
++Kernel source and objects. It assumes that LGT was installed.
++
++```
++#/bin/bash -e
++
++TESTLIST="my_tests.testlist"
++OUT_DIR="${HOME}/results"
++
++mkdir -p $OUT_DIR/html
++
++echo "igt@debugfs_test@read_all_entries" > $TESTLIST
++echo "igt@core_auth@basic-auth" >> $TESTLIST
++echo "igt@gem_exec_basic@basic" >> $TESTLIST
++
++sudo IGT_KERNEL_TREE="${HOME}/linux" igt_runner -s -o --coverage-per-test \
++                  --collect-script code_cov_capture --test-list $TESTLIST \
++                  /usr/local/libexec/igt-gpu-tools $OUT_DIR/ | sed s,$HOME/,,
++
++sudo chown -R $(id -u):$(id -g) $OUT_DIR/
++
++for i in $OUT_DIR/code_cov/*.info; do
++        echo -e "\n$(basename $i):"
++        code_cov_parse_info --only-drm --ignore-unused --stat $i
++done
++echo -e "\nTOTAL:"
++code_cov_parse_info --only-drm --stat --output $OUT_DIR/results.info \
++        $OUT_DIR/code_cov/*.info
++
++cd $OUT_DIR/html
++genhtml -q -s --legend --branch-coverage $OUT_DIR/results.info
++```
++
++Running such script produces the following output:
++
++```
++[3622.993304] [1/3] debugfs_test (read_all_entries)
++[3631.95]     Code coverage wrote to results/code_cov/debugfs_test_read_all_entries.info
++[3626.217016] Storing code coverage results...
++[3631.957998] [2/3] core_auth (basic-auth)
++[3638.03]     Code coverage wrote to results/code_cov/core_auth_basic_auth.info
++[3632.116024] Storing code coverage results...
++[3638.070869] [3/3] gem_exec_basic (basic)
++[3644.24]     Code coverage wrote to results/code_cov/gem_exec_basic_basic.info
++[3638.366790] Storing code coverage results...
++Done.
++
++core_auth_basic_auth.info:
++  lines......: 11.7% (8217 of 70257 lines)
++  functions..: 7.1% (776 of 10971 functions)
++  branches...: 7.0% (3596 of 51041 branches)
++Ignored......: non-drm headers and source files where none of its code ran.
++Source files.: 23.27% (165 of 709 total), 29.57% (165 of 558 filtered)
++
++debugfs_test_read_all_entries.info:
++  lines......: 19.3% (20266 of 104802 lines)
++  functions..: 17.5% (1922 of 10971 functions)
++  branches...: 12.7% (9462 of 74555 branches)
++Ignored......: non-drm headers and source files where none of its code ran.
++Source files.: 34.70% (246 of 709 total), 44.09% (246 of 558 filtered)
++
++gem_exec_basic_basic.info:
++  lines......: 17.1% (14964 of 87503 lines)
++  functions..: 13.0% (1422 of 10971 functions)
++  branches...: 10.1% (6446 of 63758 branches)
++Ignored......: non-drm headers and source files where none of its code ran.
++Source files.: 30.89% (219 of 709 total), 39.25% (219 of 558 filtered)
++
++TOTAL:
++  lines......: 15.5% (25821 of 166849 lines)
++  functions..: 22.1% (2429 of 10971 functions)
++  branches...: 10.5% (11869 of 112665 branches)
++Ignored......: non-drm headers.
++Source files.: 78.70% (558 of 709 total)
++```
++
++### Reporting detailed function coverage stored on *.info files
++
++The `code_cov_parse_info` script can be used alone in order to provide
++a text file output containing code coverage data obtained from a *.info
++file. For example, listing code coverage usage for all functions whose name
++contains "edid_" can be done with:
++
++```
++$ echo edid_ >filter.txt
++$ code_cov_parse_info --func-filters filter.txt results/results.info -p -u --stat
++TEST: Code_coverage_tests
++__drm_get_edid_firmware_path(): unused
++__drm_set_edid_firmware_path(): unused
++displayid_iter_edid_begin(): executed 10 times
++drm_add_edid_modes(): executed 2 times
++drm_add_override_edid_modes(): unused
++drm_connector_attach_edid_property(): unused
++drm_connector_update_edid_property(): executed 8 times
++drm_dp_send_real_edid_checksum(): unused
++drm_edid_are_equal(): executed 4 times
++drm_edid_block_valid(): executed 8 times
++drm_edid_duplicate(): unused
++drm_edid_get_monitor_name(): unused
++drm_edid_header_is_valid(): executed 4 times
++drm_edid_is_valid(): executed 2 times
++drm_edid_to_eld(): executed 2 times
++drm_edid_to_sad(): unused
++drm_edid_to_speaker_allocation(): unused
++drm_find_edid_extension(): executed 22 times
++drm_get_edid_switcheroo(): unused
++drm_load_edid_firmware(): executed 2 times
++edid_firmware_get(): unused
++edid_firmware_set(): unused
++edid_fixup_preferred(): unused
++edid_get_quirks(): executed 6 times
++edid_load(): unused
++edid_open(): executed 4 times
++edid_show() from linux/drivers/gpu/drm/drm_debugfs.c: executed 4 times
++edid_show() from linux/drivers/gpu/drm/drm_sysfs.c: unused
++edid_vendor(): executed 348 times
++edid_write(): unused
++intel_panel_edid_downclock_mode(): unused
++intel_panel_edid_fixed_mode(): unused
++is_edid_digital_input_dp(): unused
++  lines......: 5.5% (5 of 91 lines)
++  functions..: 42.4% (14 of 33 functions)
++  branches...: 1.9% (1 of 52 branches)
++Ignored......: unmatched functions m/(?^:edid_)/ and source files where none of its code ran.
++Source files.: 0.90% (5 of 558 total), 55.56% (5 of 9 filtered)
++```
++
++When the function is unique, it will just display the function name and how
++many times the IGT test(s) executed it. When the same function name exists
++on multiple files (like the `edid_show()` on the above example), it will
++display multiple lines, one for each different function/file combination.
++
+ ## References
+ 
+ More information is available at Kernel gcov documentation:
+ [Using gcov with the Linux kernel](https://www.kernel.org/doc/html/latest/dev-tools/gcov.html).
 -
- 	foreach my $r (@func_regexes) {
- 		return 0 if ($func =~ m/$r/);
- 	}
-@@ -43,31 +49,14 @@ sub filter_file($)
- {
- 	my $s = shift;
- 
--	if ($only_drm) {
--		# Please keep --only-drm doc updated with any changes her
--		if ($s =~ m/\.h$/) {
--			if ($s =~ m/trace/ || !($s =~ m/drm/)) {
--				return 1;
--			}
--		}
--	}
-+	return 0 if (!@src_regexes && !@src_exclude_regexes);
- 
--	if ($only_i915) {
--		# Please keep --only-i915 doc updated with any changes here
--		if ($s =~ m/selftest/) {
--			return 1;
--		}
--
--		# Please keep --only-i915 doc updated with any changes here
--		if (!($s =~ m#drm/i915/# || $s =~ m#drm/ttm# || $s =~ m#drm/vgem#)) {
--			return 1;
--		}
-+	foreach my $r (@src_exclude_regexes) {
-+		return 1 if ($s =~ m/$r/);
- 	}
- 
- 	return 0 if (!@src_regexes);
- 
--	my $func = shift;
--
- 	foreach my $r (@src_regexes) {
- 		return 0 if ($s =~ m/$r/);
- 	}
-@@ -468,6 +457,63 @@ sub print_summary()
- 	}
- }
- 
-+sub open_filter_file($$$)
-+{
-+	my $fname = shift;
-+	my $include = shift;
-+	my $exclude = shift;
-+	my $match_str = "";
-+	my $not_match_str = "";
-+	my $filter = "";
-+	my $i;
-+
-+	# Handle regexes that came from command line params
-+
-+	for ($i = 0;$i < scalar(@{$include}); $i++) {
-+		my $op = @{$include}[$i];
-+		$match_str .= sprintf "m`$op` ";
-+		@{$include}[$i] = qr /$op/;
-+	}
-+
-+	for ($i = 0;$i < scalar(@{$exclude}); $i++) {
-+		my $op = @{$exclude}[$i];
-+		$not_match_str .= sprintf "m`$op` ";
-+		@{$exclude}[$i] = qr /$op/;
-+	}
-+
-+	if ($fname) {
-+		open IN, $fname or die "Can't open $fname";
-+		while (<IN>) {
-+			s/^\s+//;
-+			s/\s+$//;
-+			next if (m/^#/ || m/^$/);
-+			if (m/^([+\-])\s*(.*)/) {
-+				if ($1 eq "+") {
-+					$match_str .= sprintf "m`$2` ";
-+					push @{$include}, qr /$2/;
-+				} else {
-+					$not_match_str .= sprintf "m`$2` ";
-+					push @{$exclude}, qr /$2/;
-+				}
-+			} else {
-+				$match_str .= sprintf "m`$_` ";
-+				push @{$include}, qr /$_/;
-+			}
-+		}
-+		close IN;
-+	}
-+
-+	$filter .= "not match: $not_match_str" if ($not_match_str);
-+	if ($match_str) {
-+		$filter .= "and " if ($filter ne "");
-+		$filter .= "match: $match_str";
-+	}
-+
-+	$filter =~ s/\s+$//;
-+
-+	return $filter;
-+}
-+
- #
- # Argument handling
- #
-@@ -482,6 +528,8 @@ my $func_filters;
- my $src_filters;
- my $show_files;
- my $show_lines;
-+my $only_i915;
-+my $only_drm;
- 
- GetOptions(
- 	"print-coverage|print_coverage|print|p" => \$print_used,
-@@ -493,7 +541,11 @@ GetOptions(
- 	"only-i915|only_i915" => \$only_i915,
- 	"only-drm|only_drm" => \$only_drm,
- 	"func-filters|f=s" => \$func_filters,
-+	"include-func=s" => \@func_regexes,
-+	"exclude-func=s" => \@func_exclude_regexes,
- 	"source-filters|S=s" => \$src_filters,
-+	"include-source=s" => \@src_regexes,
-+	"exclude-source=s" => \@src_exclude_regexes,
- 	"show-files|show_files" => \$show_files,
- 	"show-lines|show_lines" => \$show_lines,
- 	"help" => \$help,
-@@ -513,64 +565,41 @@ pod2usage(1) if (!$print_used && !$filter && !$stat && !$print_unused);
- 
- my $filter_str = "";
- my $has_filter;
--
--if ($func_filters) {
--	open IN, $func_filters or die "Can't open $func_filters";
--	while (<IN>) {
--		s/^\s+//;
--		s/\s+$//;
--		next if (m/^#/ || m/^$/);
--		push @func_regexes, qr /$_/;
--	}
--	close IN;
--}
--
--if ($src_filters) {
--	open IN, $src_filters or die "Can't open $src_filters";
--	while (<IN>) {
--		s/^\s+//;
--		s/\s+$//;
--		next if (m/^#/ || m/^$/);
--		push @src_regexes, qr /$_/;
--	}
--	close IN;
--}
--
--$ignore_unused = 1 if (@func_regexes);
-+my $str;
- 
- if ($only_i915) {
--	$filter_str = " non-i915 files";
--	$has_filter = 1;
-+	# Please keep in sync with the documentation
-+	push @src_exclude_regexes, "selftest";
-+	push @src_regexes, "drm/i915";
-+	push @src_regexes, "drm/ttm";
-+	push @src_regexes, "drm/vgem";
- }
- 
- if ($only_drm) {
--	$filter_str .= "," if ($filter_str ne "");
--	$filter_str .= " non-drm headers";
--	$has_filter = 1;
-+	# Please keep in sync with the documentation
-+	push @src_exclude_regexes, "trace.*\.h";
-+	push @src_exclude_regexes, "drm.*\.h";
- }
- 
--if (@func_regexes) {
-+$str = open_filter_file($func_filters, \@func_regexes, \@func_exclude_regexes);
-+if ($str) {
- 	$filter_str .= "," if ($filter_str ne "");
--	$filter_str .= " unmatched functions";
--	foreach my $r (@func_regexes) {
--		$filter_str .= " m/$r/";
--	}
--
-+	$filter_str .= " function regex ($str)";
- 	$has_filter = 1;
- }
- 
--if (@src_regexes) {
-+$str = open_filter_file($src_filters, \@src_regexes, \@src_exclude_regexes);
-+if ($str) {
- 	$filter_str .= "," if ($filter_str ne "");
--	$filter_str .= " unmatched source files";
--	foreach my $r (@src_regexes) {
--		$filter_str .= " m/$r/";
--	}
-+	$filter_str .= " source regex ($str)";
- 	$has_filter = 1;
- }
- 
-+$ignore_unused = 1 if (@func_regexes || @func_exclude_regexes);
-+
- if ($ignore_unused) {
- 	$filter_str .= "," if ($filter_str ne "");
--	$filter_str .= " source files where none of its code ran";
-+	$filter_str .= " ignored source files where none of its code ran";
- 	$has_filter = 1;
- }
- 
-@@ -594,7 +623,7 @@ if ($has_filter) {
- 	my $percent = 100. * $used_files / $all_files;
- 
- 	$filter_str =~ s/(.*),/$1 and/;
--	printf "Ignored......:%s.\n", $filter_str;
-+	printf "Filters......:%s.\n", $filter_str;
- 	printf "Source files.: %.2f%% (%d of %d total)",
- 		$percent, $used_files, $all_files;
- 
-@@ -699,16 +728,93 @@ Excluding files that match:
- 
- =item B<--func-filters>  B<[filter's file]> or B<-f>  B<[filter's file]>
- 
--Take into account only the code coverage for the functions that match
--the regular expressions contained at the B<[filter's file]>.
-+Use a file containing regular expressions (regex) to filter functions.
- 
--When this filter is used, B<--ignore-unused> will be automaticaly enabled,
--as the final goal is to report per-function usage, and not per-file.
-+Each line at B<[filter's file]> may contain a new regex:
-+
-+=over 4
-+
-+- Blank lines and lines starting with B<#> will be ignored;
-+
-+- Each line of the file will be handled as a new regex;
-+
-+- If B<+regex> is used, the filter will include B<regex> to the matches;
-+
-+- If B<-regex> is used, the filter will exclude B<regex> from the matches;
-+
-+- If the line doesn't start with neither B<+> nor B<->, containing just
-+  B<regex>, the filter will include B<regex> to the matches.
-+
-+- Any whitespace/tab before or after B<regex> will be ignored.
-+
-+=back
-+
-+When both include and exclude regexes are found, exclude regexes are
-+applied first and any functions that don't match the include regular
-+expressions from the B<[filter's file]> will be ignored.
-+
-+Please notice that, when this filter is used, B<--ignore-unused> will be
-+automaticaly enabled, as the final goal is to report per-function usage.
-+
-+=item B<--include-func> B<regex>
-+
-+Include B<regex> to the function filter. Can be used multiple times.
-+
-+When used together with B<--func-filters>, regexes here are handled first.
-+
-+Please notice that, when this filter is used, B<--ignore-unused> will be
-+automaticaly enabled, as the final goal is to report per-function usage.
-+
-+=item B<--exclude-func> B<regex>
-+
-+Include B<regex> to the function filter. Can be used multiple times.
-+
-+When used together with B<--func-filters>, regexes here are handled first.
-+
-+Please notice that, when this filter is used, B<--ignore-unused> will be
-+automaticaly enabled, as the final goal is to report per-function usage.
- 
- =item B<--source-filters>  B<[filter's file]> or B<-S>  B<[filter's file]>
- 
--Takes into account only the code coverage for the source files that match
--the regular expressions contained at the B<[filter's file]>.
-+Use a file containing regular expressions to filter source files.
-+
-+Each line of the file will be handled as a new regular expressions.
-+Blank lines and lines starting with B<#> will be ignored.
-+
-+Each line at B<[filter's file]> may contain a new regex:
-+
-+=over 4
-+
-+- Blank lines and lines starting with B<#> will be ignored;
-+
-+- Each line of the file will be handled as a new regex;
-+
-+- If B<+regex> is used, the filter will include B<regex> to the matches;
-+
-+- If B<-regex> is used, the filter will exclude B<regex> from the matches;
-+
-+- If the line doesn't start with neither B<+> nor B<->, containing just
-+  B<regex>, the filter will include B<regex> to the matches.
-+
-+- Any whitespace/tab before or after B<regex> will be ignored.
-+
-+=back
-+
-+When both include and exclude regexes are found, exclude regexes are
-+applied first and any functions that don't match the include regular
-+expressions from the B<[filter's file]> will be ignored.
-+
-+=item B<--include-src> B<regex>
-+
-+Include B<regex> to the sources filter. Can be used multiple times.
-+
-+When used together with B<--src-filters>, regexes here are handled first.
-+
-+=item B<--exclude-src> B<regex>
-+
-+Include B<regex> to the sources filter. Can be used multiple times.
-+
-+When used together with B<--src-filters>, regexes here are handled first.
- 
- =item B<--ignore-unused> or B<--ignore_unused>
- 
 -- 
 2.35.1
