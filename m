@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2081.outbound.protection.outlook.com [40.107.223.81])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FBAF10E23B
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Apr 2022 21:33:21 +0000 (UTC)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2082.outbound.protection.outlook.com [40.107.220.82])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC39210E23B
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Apr 2022 21:33:09 +0000 (UTC)
 From: David Zhang <dingchen.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 18 Apr 2022 17:32:53 -0400
-Message-ID: <20220418213253.2484226-4-dingchen.zhang@amd.com>
+Date: Mon, 18 Apr 2022 17:32:51 -0400
+Message-ID: <20220418213253.2484226-2-dingchen.zhang@amd.com>
 In-Reply-To: <20220418213253.2484226-1-dingchen.zhang@amd.com>
 References: <20220418213253.2484226-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH v4 3/3] tests/amdgpu/amd_psr: define reusable
- wrapper for PSR support check
+Subject: [igt-dev] [PATCH v4 1/3] tests/amdgpu/amd_psr: add interactive
+ option of PSR visual confirm
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,11 +26,22 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 [why & how]
-For amdgpu PSR-SU test cases, we'd first check if the sink device
-and amdgpu driver support the PSR-SU feature at the beginning. We
-define a local helper to wrap the check for PSR-SU support from
-sink and driver as well and called by both MPO and FFU test case,
-to avoid the code repetition.
+AMDGPU DM debugfs provides a debug option of PSR visual confirm,
+we'd make it an interactive option that provides capability to
+usermode to choose if or not to enable the PSR visual confirm.
+
+- add interactive option "visual-confirm" and by-default we select
+  it as TRUE to enable visual confirm for PSR-SU test cases.
+- set PSR visual confirm debugfs if interactive debug option of
+  visual confirm set before any test run begins, and reset after
+  any test run ends.
+
+changes in v2:
+------------------
+- drop the "_dm_" from helpers of visual confirm debugfs set/get
+- drop the non-necessary visual confirm option check after set
+  and reset, before and after the test run, respectively
+- align the 2nd line code w/ previous line's opening brace
 
 Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Cc: Harry Wentland <harry.wentland@amd.com>
@@ -38,99 +49,87 @@ Cc: Leo Li <sunpeng.li@amd.com>
 Cc: Jay Pillai <aurabindo.pillai@amd.com>
 Cc: Wayne Lin <wayne.lin@amd.com>
 
-Changes in v2:
------------------
-- use igt_warn() for any PSR SU cap/support check before FALSE
-  returned
-
 Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 Reviewed-by: Leo Li <sunpeng.li@amd.com>
 ---
- tests/amdgpu/amd_psr.c | 44 +++++++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 16 deletions(-)
+ tests/amdgpu/amd_psr.c | 42 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
 
 diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index fac5da77..d4bfb7bb 100644
+index 58e40d2b..0ec50c9f 100644
 --- a/tests/amdgpu/amd_psr.c
 +++ b/tests/amdgpu/amd_psr.c
-@@ -138,6 +138,32 @@ static int check_conn_type(data_t *data, uint32_t type) {
- 	return -1;
+@@ -62,6 +62,12 @@ typedef struct data {
+ 	int h;
+ } data_t;
+ 
++struct {
++	bool visual_confirm;
++} opt = {
++	.visual_confirm = true,	/* visual confirm debug option */
++};
++
+ static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
+ 		             double r, double g, double b, double a)
+ {
+@@ -300,10 +306,31 @@ static void run_check_psr_su_mpo(data_t *data)
+ 	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i)
+ 		igt_remove_fb(data->fd, &rect_fb[i]);
+ 	test_fini(data);
+-	close(data->fd);
  }
  
-+static bool psr_su_supported(data_t *data)
+-igt_main
++const char *help_str =
++"  --visual-confirm           PSR visual confirm debug option enable\n";
++
++struct option long_options[] = {
++	{"visual-confirm",	optional_argument, NULL, 'v'},
++	{ 0, 0, 0, 0 }
++};
++
++static int opt_handler(int option, int option_index, void *data)
 +{
-+	/* run PSR-SU test i.i.f. eDP panel and kernel driver both support PSR-SU */
-+	if (!igt_amd_output_has_psr_cap(data->fd, data->output->name)) {
-+		igt_warn(" driver does not have %s debugfs interface\n", DEBUGFS_EDP_PSR_CAP);
-+		return false;
++	switch (option) {
++	case 'v':
++		opt.visual_confirm = strtol(optarg, NULL, 0);
++		igt_info(" PSR Visual Confirm %s\n", opt.visual_confirm ? "enabled" : "disabled");
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
 +	}
 +
-+	if (!igt_amd_output_has_psr_state(data->fd, data->output->name)) {
-+		igt_warn(" driver does not have %s debugfs interface\n", DEBUGFS_EDP_PSR_STATE);
-+		return false;
-+	}
-+
-+	if (!igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2)) {
-+		igt_warn(" output %s not support PSR-SU\n", data->output->name);
-+		return false;
-+	}
-+
-+	if (!igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2)) {
-+		igt_warn(" kernel driver not support PSR-SU\n");
-+		return false;
-+	}
-+
-+	return true;
++	return IGT_OPT_HANDLER_SUCCESS;
 +}
 +
- static void run_check_psr(data_t *data, bool test_null_crtc) {
- 	int fd, edp_idx, dp_idx, ret, i, psr_state;
- 	igt_fb_t ref_fb, ref_fb2;
-@@ -217,8 +243,6 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
- static void run_check_psr_su_mpo(data_t *data)
++igt_main_args("", long_options, help_str, opt_handler, NULL)
  {
- 	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	bool sink_support_psrsu = false;
--	bool drv_suport_psrsu = false;
- 	igt_fb_t ov_fb;		// fb for overlay
- 	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	// rectangle fbs for primary, emulate as video playback region
- 	igt_fb_t ref_fb;	// reference fb
-@@ -235,12 +259,7 @@ static void run_check_psr_su_mpo(data_t *data)
- 	frame_rate = data->mode->vrefresh;
+ 	data_t data;
  
- 	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
--	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
--	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
--	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
--	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
--	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
--	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
-+	igt_skip_on(!psr_su_supported(data));
+@@ -321,6 +348,13 @@ igt_main
+ 		igt_display_require(&data.display, data.fd);
+ 		igt_require(&data.display.is_atomic);
+ 		igt_display_require_output(&data.display);
++
++		/* check if visual confirm option available */
++		if (opt.visual_confirm) {
++			igt_skip_on(!igt_amd_has_visual_confirm(data.fd));
++			igt_skip_on_f(!igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_PSR),
++				      "set PSR visual confirm failed\n");
++		}
+ 	}
  
- 	/* reference background pattern in grey */
- 	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-@@ -344,8 +363,6 @@ static void panning_rect_fb(data_t *data, igt_fb_t *rect_fb, int rect_w, int rec
- static void run_check_psr_su_ffu(data_t *data)
- {
- 	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	bool sink_support_psrsu = false;
--	bool drv_suport_psrsu = false;
- 	igt_fb_t rect_fb; 	// rectangle fbs for primary
- 	igt_fb_t ref_fb;	// reference fb
- 	int pb_w, pb_h;
-@@ -359,12 +376,7 @@ static void run_check_psr_su_ffu(data_t *data)
- 	pb_h = data->h / 2;
+ 	igt_describe("Test whether PSR can be enabled with static screen");
+@@ -335,6 +369,10 @@ igt_main
  
- 	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
--	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
--	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
--	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
--	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
--	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
--	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
-+	igt_skip_on(!psr_su_supported(data));
- 
- 	/* reference background pattern in grey */
- 	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+ 	igt_fixture
+ 	{
++		if (opt.visual_confirm) {
++			igt_require_f(igt_amd_set_visual_confirm(data.fd, VISUAL_CONFIRM_DISABLE),
++				      "reset PSR visual confirm option failed\n");
++		}
+ 		close(data.debugfs_fd);
+ 		igt_display_fini(&data.display);
+ 	}
 -- 
 2.25.1
