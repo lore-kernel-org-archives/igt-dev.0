@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24B8410E397
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Apr 2022 12:51:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E70C10E172
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Apr 2022 12:51:11 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Apr 2022 18:20:41 +0530
-Message-Id: <20220418125048.7969-3-anshuman.gupta@intel.com>
+Date: Mon, 18 Apr 2022 18:20:43 +0530
+Message-Id: <20220418125048.7969-5-anshuman.gupta@intel.com>
 In-Reply-To: <20220418125048.7969-1-anshuman.gupta@intel.com>
 References: <20220418125048.7969-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/9] lib/igt_device: Get gfx PCI card root
- port
+Subject: [igt-dev] [PATCH i-g-t 4/9] lib/intel_device_info: Add IS_DGFX()
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,63 +24,60 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Utility library function to get the Gfx Card PCI topology
-root port pci device using libpaciaccess.
-root port will be used to get the real ACPI D state.
+Currently IGT is lacking IS_DGFX() macro support.
+There are some power features like D3Cold are only
+supported on discrete card. So IGT test/tools specific
+to D3Cold requires to consume IS_DGFX().
+Adding a is_dgfx field in intel_device_info and initializing
+it for DG1. All future discrete platform would require to
+initialize this field.
 
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- lib/igt_device.c | 28 ++++++++++++++++++++++++++++
- lib/igt_device.h |  1 +
- 2 files changed, 29 insertions(+)
+ lib/intel_chipset.h     | 2 ++
+ lib/intel_device_info.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/lib/igt_device.c b/lib/igt_device.c
-index 9794a9928..fddfba72c 100644
---- a/lib/igt_device.c
-+++ b/lib/igt_device.c
-@@ -257,3 +257,31 @@ struct pci_device *igt_device_get_pci_device(int fd)
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index db75a829f..07fdd213e 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -42,6 +42,7 @@ struct intel_device_info {
+ 	unsigned gt; /* 0 if unknown */
+ 	bool has_4tile : 1;
+ 	bool has_flatccs;
++	bool is_dgfx :1;
+ 	bool is_mobile : 1;
+ 	bool is_whitney : 1;
+ 	bool is_almador : 1;
+@@ -208,6 +209,7 @@ void intel_check_pch(void);
  
- 	return pci_dev;
- }
-+
-+/**
-+ * igt_device_get_pci_root_port:
-+ * @fd: the device.
-+ *
-+ * Looks up the graphics pci device root port using libpciaccess.
-+ *
-+ * Returns:
-+ * The root port pci_device.
-+ */
-+struct pci_device *
-+igt_device_get_pci_root_port(int fd)
-+{
-+	struct pci_device *pci_dev, *prev;
-+
-+	pci_dev = __igt_device_get_pci_device(fd, 0);
-+	igt_require(pci_dev);
-+
-+	while (pci_dev) {
-+		prev = pci_dev;
-+		pci_dev = pci_device_get_parent_bridge(pci_dev);
-+	}
-+
-+	igt_debug("Root Port PCI device %04x:%02x:%02x.%01x\n",
-+		  prev->domain, prev->bus, prev->dev, prev->func);
-+
-+	return prev;
-+}
-diff --git a/lib/igt_device.h b/lib/igt_device.h
-index 1aaa840e2..800a0fcc3 100644
---- a/lib/igt_device.h
-+++ b/lib/igt_device.h
-@@ -34,5 +34,6 @@ void igt_device_drop_master(int fd);
- int igt_device_get_card_index(int fd);
- struct pci_device *igt_device_get_pci_device(int fd);
- struct pci_device *__igt_device_get_pci_device(int fd, unsigned int vf_id);
-+struct pci_device *igt_device_get_pci_root_port(int fd);
+ #define IS_MOBILE(devid)	(intel_get_device_info(devid)->is_mobile)
+ #define IS_965(devid)		AT_LEAST_GEN(devid, 4)
++#define IS_DGFX(devid)	(intel_get_device_info(devid)->is_dgfx)
  
- #endif /* __IGT_DEVICE_H__ */
+ #define HAS_BSD_RING(devid)	AT_LEAST_GEN(devid, 5)
+ #define HAS_BLT_RING(devid)	AT_LEAST_GEN(devid, 6)
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index e55841df5..b735f16a6 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -386,6 +386,7 @@ static const struct intel_device_info intel_rocketlake_info = {
+ static const struct intel_device_info intel_dg1_info = {
+ 	.graphics_ver = 12,
+ 	.display_ver = 12,
++	.is_dgfx = true,
+ 	.is_dg1 = true,
+ 	.codename = "dg1"
+ };
+@@ -394,6 +395,7 @@ static const struct intel_device_info intel_dg2_info = {
+ 	.graphics_ver = 12,
+ 	.display_ver = 13,
+ 	.has_4tile = true,
++	.is_dgfx = true,
+ 	.is_dg2 = true,
+ 	.codename = "dg2",
+ 	.has_flatccs = true,
 -- 
 2.26.2
