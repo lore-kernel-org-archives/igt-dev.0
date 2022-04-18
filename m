@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAA0C10E805
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Apr 2022 13:01:03 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 19 Apr 2022 16:00:57 +0300
-Message-Id: <20220419130057.9141-1-petri.latvala@intel.com>
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2082.outbound.protection.outlook.com [40.107.244.82])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D54FE10E1D2
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Apr 2022 22:19:35 +0000 (UTC)
+From: David Zhang <dingchen.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Mon, 18 Apr 2022 18:18:18 -0400
+Message-ID: <20220418221820.2490163-3-dingchen.zhang@amd.com>
+In-Reply-To: <20220418221820.2490163-1-dingchen.zhang@amd.com>
+References: <20220418221820.2490163-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] gem_lmem_swapping: Check requirements
- before module unload
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH v2 2/4] tests/amdgpu/amd_psr: set visual-confirm
+ option required argument
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,54 +21,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Matthew Auld <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To prevent a needless unload-load cycle, check for lmem before the
-unload if i915 is already loaded.
+[why & how]
+previously set to optional argument, and the command line argument
+set for visual confirm debug option would cause NULL optarg string
+and thus hit system segmentation fault.
 
-Also check that the device is there at all so we get a better error
-message than EBADFD from require_gem.
+set the "visual-confirm" from optional to required argument.
 
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Jay Pillai <aurabindo.pillai@amd.com>
+Cc: Wayne Lin <wayne.lin@amd.com>
+
+Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 ---
- tests/i915/gem_lmem_swapping.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tests/amdgpu/amd_psr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 2f9f3268..ec41dfc3 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -534,10 +534,25 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		struct intel_execution_engine2 *e;
- 		char *tmp;
+diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+index e3a2cb4a..834fefcc 100644
+--- a/tests/amdgpu/amd_psr.c
++++ b/tests/amdgpu/amd_psr.c
+@@ -491,7 +491,7 @@ const char *help_str =
+ "  --visual-confirm           PSR visual confirm debug option enable\n";
  
-+		/*
-+		 * If the driver is already loaded, check that it has
-+		 * lmem before unloading to prevent a needless
-+		 * unload-load cycle on integrated platforms.
-+		 */
-+		if (igt_kmod_is_loaded("i915")) {
-+			i915 = __drm_open_driver(DRIVER_INTEL);
-+			igt_require_fd(i915);
-+			igt_require_gem(i915);
-+			igt_require(gem_has_lmem(i915));
-+			close(i915);
-+		}
-+
- 		igt_i915_driver_unload();
- 		igt_assert_eq(igt_i915_driver_load("lmem_size=4096"), 0);
- 
- 		i915 = __drm_open_driver(DRIVER_INTEL);
-+		igt_require_fd(i915);
-+		/* Do the lmem check again in case the reload messed something up (as unlikely it is) */
- 		igt_require_gem(i915);
- 		igt_require(gem_has_lmem(i915));
+ struct option long_options[] = {
+-	{"visual-confirm",	optional_argument, NULL, 'v'},
++	{"visual-confirm",	required_argument, NULL, 'v'},
+ 	{ 0, 0, 0, 0 }
+ };
  
 -- 
-2.30.2
+2.25.1
