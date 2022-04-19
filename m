@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B4D910E752
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Apr 2022 07:31:17 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 19 Apr 2022 13:03:18 +0530
-Message-Id: <20220419073319.541-2-nidhi1.gupta@intel.com>
-In-Reply-To: <20220419073319.541-1-nidhi1.gupta@intel.com>
-References: <20220419073319.541-1-nidhi1.gupta@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F35B10E289
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Apr 2022 07:33:45 +0000 (UTC)
+From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 19 Apr 2022 07:33:40 +0000
+Message-ID: <12890197ce9340c89da5c3bb37d78a68@intel.com>
+References: <20220418075356.22143-1-nidhi1.gupta@intel.com>
+ <631db0bd-e105-847b-5e85-99dfd42cf0a8@intel.com>
+In-Reply-To: <631db0bd-e105-847b-5e85-99dfd42cf0a8@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms: IGT cleanup
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms : Added dynamic test cases
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,130 +22,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before running the subtest we need to sanitize the system state
-to default, since we can't trust the state of previous subtest, used
-igt_display_reset() to sanitize the state.
-
-Replace newly defined function in particular test with existing library
-function.
-
-Below tests are modified:
-	tests/kms_concurrent.c
-	tests/kms_sequence.c
-
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_concurrent.c | 39 ++++++++++++++-------------------------
- tests/kms_sequence.c   |  6 ++++--
- 2 files changed, 18 insertions(+), 27 deletions(-)
-
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index dc1e36f2..622d3335 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -82,7 +82,8 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
- 	}
- 
- 	/* reset the constraint on the pipe */
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
- 	free(data->plane);
- 	data->plane = NULL;
-@@ -289,35 +290,28 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
- static void
- run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- {
--	int connected_outs;
- 	int n_planes = data->display.pipes[pipe].n_planes;
-+	igt_display_reset(&data->display);
- 
- 	if (!opt.user_seed)
- 		opt.seed = time(NULL);
- 
--	connected_outs = 0;
--	for_each_valid_output_on_pipe(&data->display, pipe, output) {
--		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
--			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
-+	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
-+		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
- 
--		srand(opt.seed);
-+	srand(opt.seed);
- 
--		test_init(data, pipe, n_planes, output);
-+	test_init(data, pipe, n_planes, output);
- 
--		igt_fork(child, 1) {
--			test_plane_position_with_output(data, pipe, n_planes, output);
--		}
--
--		test_resolution_with_output(data, pipe, n_planes, output);
--
--		igt_waitchildren();
-+	igt_fork(child, 1) {
-+		test_plane_position_with_output(data, pipe, n_planes, output);
-+	}
- 
--		test_fini(data, pipe, n_planes, output);
-+	test_resolution_with_output(data, pipe, n_planes, output);
- 
--		connected_outs++;
--	}
-+	igt_waitchildren();
- 
--	igt_skip_on(connected_outs == 0);
-+	test_fini(data, pipe, n_planes, output);
- }
- 
- static void
-@@ -326,15 +320,10 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_output_t *output;
- 
- 	igt_fixture {
--		int valid_tests = 0;
--
- 		igt_require_pipe(&data->display, pipe);
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			valid_tests++;
--
--		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
-+		igt_display_require_output(&data->display);
- 	}
- 
- 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index 9c287480..ca25e041 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -77,6 +77,8 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *primary;
- 
-+	igt_display_reset(&data->display);
-+
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
- 
-@@ -109,8 +111,8 @@ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, NULL);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
--	igt_display_commit(display);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
- 
- static int crtc_get_sequence(int fd, struct drm_crtc_get_sequence *cgs)
--- 
-2.26.2
+DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBNb2RlbSwgQmhhbnVwcmFrYXNo
+IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPiANClNlbnQ6IE1vbmRheSwgQXByaWwgMTgs
+IDIwMjIgNDoyNCBQTQ0KVG86IEd1cHRhLCBOaWRoaTEgPG5pZGhpMS5ndXB0YUBpbnRlbC5jb20+
+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KU3ViamVjdDogUmU6IFtQQVRDSCBpLWct
+dCB2Ml0gdGVzdHMva21zIDogQWRkZWQgZHluYW1pYyB0ZXN0IGNhc2VzDQoNCk9uIE1vbi0xOC0w
+NC0yMDIyIDAxOjIzIHBtLCBOaWRoaSBHdXB0YSB3cm90ZToNCj4gTW9kaWZpZWQga21zX3NlcXVl
+bmNlIGFuZCBrbXNfY29uY3VycmVudCB0byBpbmNsdWRlIGR5bmFtaWMgdGVzdCANCj4gY2FzZXMu
+DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGludGVsLmNv
+bT4NCj4gLS0tDQo+ICAgdGVzdHMva21zX2NvbmN1cnJlbnQuYyB8ICA2ICsrKystLQ0KPiAgIHRl
+c3RzL2ttc19zZXF1ZW5jZS5jICAgfCAxMyArKysrKysrKysrLS0tDQo+ICAgMiBmaWxlcyBjaGFu
+Z2VkLCAxNCBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBh
+L3Rlc3RzL2ttc19jb25jdXJyZW50LmMgYi90ZXN0cy9rbXNfY29uY3VycmVudC5jIGluZGV4IA0K
+PiBkYzFlMzZmMi4uNTUzNmEzNjkgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2ttc19jb25jdXJyZW50
+LmMNCj4gKysrIGIvdGVzdHMva21zX2NvbmN1cnJlbnQuYw0KPiBAQCAtMzM5LDkgKzMzOSwxMSBA
+QCBydW5fdGVzdHNfZm9yX3BpcGUoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSkNCj4gICAN
+Cj4gICAJaWd0X2Rlc2NyaWJlKCJUZXN0IGF0b21pYyBtb2RlIHNldHRpbmcgY29uY3VycmVudGx5
+IHdpdGggbXVsdGlwbGUgcGxhbmVzIGFuZCBzY3JlZW4gIg0KPiAgIAkJICAgICAicmVzb2x1dGlv
+bi4iKTsNCj4gLQlpZ3Rfc3VidGVzdF9mKCJwaXBlLSVzIiwga21zdGVzdF9waXBlX25hbWUocGlw
+ZSkpDQo+ICsJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljX2YoInBpcGUtJXMiLCBrbXN0ZXN0X3Bp
+cGVfbmFtZShwaXBlKSkgew0KPiAgIAkJZm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoJmRh
+dGEtPmRpc3BsYXksIHBpcGUsIG91dHB1dCkNCj4gLQkJCXJ1bl90ZXN0KGRhdGEsIHBpcGUsIG91
+dHB1dCk7DQo+ICsJCQlpZ3RfZHluYW1pY19mKCIlcyIsIGlndF9vdXRwdXRfbmFtZShvdXRwdXQp
+KQ0KPiArCQkJCXJ1bl90ZXN0KGRhdGEsIHBpcGUsIG91dHB1dCk7DQoNCllvdSBuZWVkIHRvIHJl
+bW92ZSBmb3JfZWFjaF92YWxpZF9vdXRwdXRfb25fcGlwZSgpIGxvZ2ljIGZyb20gcnVuX3Rlc3Qo
+KSwgc2luY2Ugd2UgYWxyZWFkeSBkb2luZyBoZXJlIHRoZSBzYW1lLg0KSSBhbHJlYWR5IGFkZGVk
+IHRoaXMgaW4gSUdUIGNsZWFudXAgcGF0Y2gsIHRvIGF2b2lkIHRoZSBjb25mdXNpb24gSSBzZW5k
+IGEgbmV3IHNlcmllcyB3aXRoIDIgcGF0Y2hlcywgb25lIElHVCBjbGVhbnVwIGFuZCBvdGhlciBk
+eW5hbWljIHRlc3RzDQoNCj4gKwl9DQo+ICAgfQ0KPiAgIA0KPiAgIHN0YXRpYyBpbnQgb3B0X2hh
+bmRsZXIoaW50IG9wdGlvbiwgaW50IG9wdGlvbl9pbmRleCwgdm9pZCAqaW5wdXQpIA0KPiBkaWZm
+IC0tZ2l0IGEvdGVzdHMva21zX3NlcXVlbmNlLmMgYi90ZXN0cy9rbXNfc2VxdWVuY2UuYyBpbmRl
+eCANCj4gOWMyODc0ODAuLmFlYWJjZTIzIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9rbXNfc2VxdWVu
+Y2UuYw0KPiArKysgYi90ZXN0cy9rbXNfc2VxdWVuY2UuYw0KPiBAQCAtMjUzLDYgKzI1Myw3IEBA
+IHN0YXRpYyB2b2lkIHNlcXVlbmNlX3F1ZXVlKGRhdGFfdCAqZGF0YSwgaW50IGZkLCBpbnQgbmNo
+aWxkcmVuKQ0KPiAgIGlndF9tYWluDQo+ICAgew0KPiAgIAlpbnQgZmQ7DQo+ICsJaWd0X291dHB1
+dF90ICpvdXRwdXQ7DQo+ICAgCWRhdGFfdCBkYXRhOw0KPiAgIAljb25zdCBzdHJ1Y3Qgew0KPiAg
+IAkJY29uc3QgY2hhciAqbmFtZTsNCj4gQEAgLTI3OCw2ICsyNzksNyBAQCBpZ3RfbWFpbg0KPiAg
+IAkJZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9BTlkpOw0KPiAgIAkJa21zdGVz
+dF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSgpOw0KPiAgIAkJaWd0X2Rpc3BsYXlfcmVxdWlyZSgmZGF0
+YS5kaXNwbGF5LCBmZCk7DQo+ICsJCWlndF9kaXNwbGF5X3JlcXVpcmVfb3V0cHV0KCZkYXRhLmRp
+c3BsYXkpOw0KPiAgIAl9DQo+ICAgDQo+ICAgCWZvciAoZiA9IGZ1bmNzOyBmLT5uYW1lOyBmKysp
+IHsNCj4gQEAgLTI4Nyw5ICsyODksMTQgQEAgaWd0X21haW4NCj4gICANCj4gICAJCQlpZ3RfZGVz
+Y3JpYmUoIlRoaXMgaXMgYSB0ZXN0IG9mIGRybUNydGNHZXRTZXF1ZW5jZSBhbmQgIg0KPiAgIAkJ
+CQkgICAgICJkcm1DcnRjUXVldWVTZXF1ZW5jZSIpOw0KPiAtCQkJaWd0X3N1YnRlc3RfZigiJXMt
+JXMiLCBmLT5uYW1lLCBtLT5uYW1lKSB7DQo+IC0JCQkJZGF0YS5mbGFncyA9IG0tPmZsYWdzOw0K
+PiAtCQkJCXJ1bl90ZXN0KCZkYXRhLCBmZCwgZi0+ZnVuYyk7DQo+ICsJCQlpZ3Rfc3VidGVzdF93
+aXRoX2R5bmFtaWNfZigiJXMtJXMiLCBmLT5uYW1lLCBtLT5uYW1lKSB7DQo+ICsJCQkJZm9yX2Vh
+Y2hfY29ubmVjdGVkX291dHB1dCgmZGF0YS5kaXNwbGF5LCBvdXRwdXQpIHsNCj4gKwkJCQkJaWd0
+X2R5bmFtaWNfZigiJXMiLCBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSkgew0KPiArCQkJCQkJZGF0
+YS5vdXRwdXQgPSBvdXRwdXQ7DQoNCldlIGFyZSBubyB3aGVyZSB1c2luZyB0aGlzICJkYXRhLm91
+dHB1dCIuDQoNCkFjdHVhbGx5LCBydW5fdGVzdCgpIGlzIGl0ZXJhdGluZyBmb3JfZWFjaF9waXBl
+X3dpdGhfdmFsaWRfb3V0cHV0KCkgdG8gZ2V0IHZhbGlkIHBpcGUvY29ubmVjdG9yIGNvbWJpbmF0
+aW9uLg0KDQpJZiB5b3Ugd2FudCB0byBjcmVhdGUgZHluYW1pYyBzdWJ0ZXN0cyB3aXRoIHBpcGUv
+Y29ubmVjdG9yIGNvbmZpZywgeW91IG5lZWQgdG8gaXRlcmF0ZSBmb3JfZWFjaF9waXBlX3dpdGhf
+dmFsaWRfb3V0cHV0KCkgYmVmb3JlIGNhbGxpbmcNCmlndF9keW5hbWljKCkgYW5kIHJlbW92ZSB0
+aGUgc2FtZSBsb2dpYyBmcm9tIHJ1bl90ZXN0KCkuDQoNCi0gQmhhbnUNCg0KPiArCQkJCQkJZGF0
+YS5mbGFncyA9IG0tPmZsYWdzOw0KPiArCQkJCQkJcnVuX3Rlc3QoJmRhdGEsIGZkLCBmLT5mdW5j
+KTsNCj4gKwkJCQkJfQ0KPiArCQkJCX0NCj4gICAJCQl9DQo+ICAgCQl9DQo+ICAgCX0NCg0K
