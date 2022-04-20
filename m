@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAB0F10E2CC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D23BB10E192
  for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 06:12:59 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 19 Apr 2022 23:12:49 -0700
-Message-Id: <85c51c99da76e3fe286ed28e80fa964e148f6020.1650435058.git.ashutosh.dixit@intel.com>
+Date: Tue, 19 Apr 2022 23:12:51 -0700
+Message-Id: <4257c39f2bdffe8b2fbaf36cfb720841c21b4d22.1650435058.git.ashutosh.dixit@intel.com>
+In-Reply-To: <85c51c99da76e3fe286ed28e80fa964e148f6020.1650435058.git.ashutosh.dixit@intel.com>
+References: <85c51c99da76e3fe286ed28e80fa964e148f6020.1650435058.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_sysfs: Add helpers to iterate
- over GTs
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/i915_pm_disag_freq: New test for
+ media freq factor
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,139 +24,235 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+XEHPSDV and DG2/ATS-M allow media IP blocks to run at frequencies different
+from the GT frequency. i915 exposes sysfs controls for this frequency
+"disaggregation". IGT's introduced in this patch exercise and verify these
+per-gt (gt/gtN) sysfs attributes.
 
-Provide iterators to:
-- construct the subdirectory string for a gt
-- obtain fd for the subdirectory of the interface
+Further, RPS defaults exposed in gt/gtN/.defaults sysfs directory are used
+in the test to start and complete in the known default state.
 
-v2: Separated out RPS functionality into seaparate patch (Ashutosh)
+v2: Added igt_describe's and s/igt_info/igt_debug/  (Kamil)
 
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h | 13 +++++++++
- 2 files changed, 84 insertions(+)
+ tests/i915/i915_pm_disag_freq.c | 186 ++++++++++++++++++++++++++++++++
+ tests/meson.build               |   8 ++
+ 2 files changed, 194 insertions(+)
+ create mode 100644 tests/i915/i915_pm_disag_freq.c
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index f8ef23e2c8e2..b167c0507039 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -54,6 +54,21 @@
-  * provides basic support for like igt_sysfs_open().
-  */
- 
-+/**
-+ * igt_sysfs_has_attr:
-+ * @dir: sysfs directory fd
-+ * @attr: attr inside sysfs dir that needs to be checked for existence
-+ *
-+ * This checks if specified attr exists in device sysfs directory.
-+ *
-+ * Returns:
-+ * true if attr exists in sysfs, false otherwise.
+diff --git a/tests/i915/i915_pm_disag_freq.c b/tests/i915/i915_pm_disag_freq.c
+new file mode 100644
+index 000000000000..af216eb98815
+--- /dev/null
++++ b/tests/i915/i915_pm_disag_freq.c
+@@ -0,0 +1,186 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
 + */
-+bool igt_sysfs_has_attr(int dir, const char *attr)
++
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++
++#include "i915/gem.h"
++#include "igt.h"
++#include "igt_sysfs.h"
++
++IGT_TEST_DESCRIPTION(
++	"Tests for sysfs controls for \"disaggregated\" IP blocks, viz. IP "
++	"blocks which run at frequencies different from the main GT frequency."
++);
++
++#define FREQ_SCALE_FACTOR	0.00390625f	/* 1.0f / 256 */
++
++/*
++ * Firmware interfaces are not completely synchronous, a delay is needed
++ * before the requested freq is actually set.
++ * Media ratio read back after set will mismatch if this value is too small
++ */
++#define wait_freq_set()	usleep(100000)
++
++static int i915 = -1;
++const intel_ctx_t *ctx;
++uint64_t ahnd;
++
++static void spin_all(void)
 +{
-+	return !faccessat(dir, attr, F_OK, 0);
++	igt_spin_t *spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx, .engine = ALL_ENGINES,
++					.flags = IGT_SPIN_POLL_RUN);
++
++	/* Wait till at least one spinner starts */
++	igt_spin_busywait_until_started(spin);
 +}
 +
- /**
-  * igt_sysfs_path:
-  * @device: fd of the device
-@@ -104,6 +119,62 @@ int igt_sysfs_open(int device)
- 	return open(path, O_RDONLY);
- }
- 
-+/**
-+ * igt_sysfs_gt_path:
-+ * @device: fd of the device
-+ * @gt: gt number
-+ * @path: buffer to fill with the sysfs gt path to the device
-+ * @pathlen: length of @path buffer
-+ *
-+ * This finds the sysfs directory corresponding to @device and @gt. If the gt
-+ * specific directory is not available and gt is 0, path is filled with sysfs
-+ * base directory.
-+ *
-+ * Returns:
-+ * The directory path, or NULL on failure.
-+ */
-+char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen)
++static void restore_rps_defaults(int dir)
 +{
-+	struct stat st;
++	int def, min, max, media;
 +
-+	if (device < 0)
-+		return NULL;
++	/* Read from gt/gtN/.defaults/ write to gt/gtN/ */
++	def = openat(dir, ".defaults", O_RDONLY);
++	if (def <= 0)
++		return;
 +
-+	if (igt_debug_on(fstat(device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
-+		return NULL;
++	max = igt_sysfs_get_u32(def, "rps_max_freq_mhz");
++	igt_sysfs_set_u32(dir, "rps_max_freq_mhz", max);
 +
-+	snprintf(path, pathlen, "/sys/dev/char/%d:%d/gt/gt%d",
-+		 major(st.st_rdev), minor(st.st_rdev), gt);
++	min = igt_sysfs_get_u32(def, "rps_min_freq_mhz");
++	igt_sysfs_set_u32(dir, "rps_min_freq_mhz", min);
 +
-+	if (!igt_debug_on(access(path, F_OK)))
-+		return path;
-+	else if (!igt_debug_on(gt != 0))
-+		return igt_sysfs_path(device, path, pathlen);
++	if (igt_sysfs_has_attr(dir, "media_freq_factor")) {
++		media = igt_sysfs_get_u32(def, "media_freq_factor");
++		igt_sysfs_set_u32(dir, "media_freq_factor", media);
++	}
 +
-+	return NULL;
++	close(def);
 +}
 +
-+/**
-+ * igt_sysfs_gt_open:
-+ * @device: fd of the device
-+ * @gt: gt number
-+ *
-+ * This opens the sysfs gt directory corresponding to device and gt for use
-+ * with igt_sysfs_set() and igt_sysfs_get().
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
-+ */
-+int igt_sysfs_gt_open(int device, int gt)
++static void __restore_rps_defaults(int sig)
 +{
-+	char path[96];
++	int dir, gt;
 +
-+	if (igt_debug_on(!igt_sysfs_gt_path(device, gt, path, sizeof(path))))
-+		return -1;
-+
-+	return open(path, O_RDONLY);
++	for_each_sysfs_gt_dirfd(i915, dir, gt)
++		restore_rps_defaults(dir);
 +}
 +
- /**
-  * igt_sysfs_write:
-  * @dir: directory for the device from igt_sysfs_open()
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 56741a0a37e3..33317a969619 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -28,8 +28,21 @@
- #include <stdbool.h>
- #include <stdarg.h>
- 
-+#define for_each_sysfs_gt_path(i915__, path__, pathlen__) \
-+	for (int gt__ = 0; \
-+	     igt_sysfs_gt_path(i915__, gt__, path__, pathlen__) != NULL; \
-+	     gt__++)
++static void setup_freq(int gt, int dir)
++{
++	int rp0, rp1, rpn, min, max, act, media;
 +
-+#define for_each_sysfs_gt_dirfd(i915__, dirfd__, gt__) \
-+	for (gt__ = 0; \
-+	     (dirfd__ = igt_sysfs_gt_open(i915__, gt__)) != -1; \
-+	     close(dirfd__), gt__++)
++	ctx = intel_ctx_create_all_physical(i915);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
 +
- char *igt_sysfs_path(int device, char *path, int pathlen);
- int igt_sysfs_open(int device);
-+char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
-+int igt_sysfs_gt_open(int device, int gt);
-+bool igt_sysfs_has_attr(int dir, const char *attr);
++	/* Reset to known state */
++	restore_rps_defaults(dir);
++
++	/* Spin on all engines to jack freq up to max */
++	spin_all();
++	wait_freq_set();
++
++	/* Print some debug information */
++	rp0 = igt_sysfs_get_u32(dir, "rps_RP0_freq_mhz");
++	rp1 = igt_sysfs_get_u32(dir, "rps_RP1_freq_mhz");
++	rpn = igt_sysfs_get_u32(dir, "rps_RPn_freq_mhz");
++	min = igt_sysfs_get_u32(dir, "rps_min_freq_mhz");
++	max = igt_sysfs_get_u32(dir, "rps_max_freq_mhz");
++	act = igt_sysfs_get_u32(dir, "rps_act_freq_mhz");
++
++	igt_debug("RP0 mhz: %d, RP1 mhz: %d, RPn mhz: %d, min mhz: %d, max mhz: %d, act mhz: %d\n", rp0, rp1, rpn, min, max, act);
++
++	if (igt_sysfs_has_attr(dir, "media_freq_factor")) {
++		media = igt_sysfs_get_u32(dir, "media_freq_factor");
++		igt_debug("media ratio: %.2f\n", media * FREQ_SCALE_FACTOR);
++	}
++}
++
++static void cleanup(int dir)
++{
++	igt_free_spins(i915);
++	put_ahnd(ahnd);
++	intel_ctx_destroy(i915, ctx);
++	restore_rps_defaults(dir);
++	gem_quiescent_gpu(i915);
++}
++
++static void media_freq(int gt, int dir)
++{
++	float scale;
++
++	igt_require(igt_sysfs_has_attr(dir, "media_freq_factor"));
++
++	igt_sysfs_scanf(dir, "media_freq_factor.scale", "%g", &scale);
++	igt_assert_eq(scale, FREQ_SCALE_FACTOR);
++
++	setup_freq(gt, dir);
++
++	igt_debug("media RP0 mhz: %d, media RPn mhz: %d\n",
++		  igt_sysfs_get_u32(dir, "media_RP0_freq_mhz"),
++		  igt_sysfs_get_u32(dir, "media_RPn_freq_mhz"));
++	igt_debug("media ratio value 0.0 represents dynamic mode\n");
++
++	/*
++	 * Media freq ratio modes supported are: dynamic (0), 1:2 (128) and
++	 * 1:1 (256). Setting dynamic (0) can return any of the three
++	 * modes. Fixed ratio modes should return the same value.
++	 */
++	for (int v = 256; v >= 0; v -= 64) {
++		int getv, ret;
++
++		/*
++		 * Check that we can set the mode. Ratios other than 1:2
++		 * and 1:1 are not supported.
++		 */
++		ret = igt_sysfs_printf(dir, "media_freq_factor", "%u", v);
++		if (ret <= 0) {
++			igt_debug("Media ratio %.2f is not supported\n", v * scale);
++			continue;
++		}
++
++		wait_freq_set();
++
++		getv = igt_sysfs_get_u32(dir, "media_freq_factor");
++
++		igt_debug("media ratio set: %.2f, media ratio get: %.2f\n",
++			  v * scale, getv * scale);
++
++		/*
++		 * Skip validation in dynamic mode since the returned media
++		 * ratio and freq are platform dependent and not clearly defined
++		 */
++		if (v)
++			igt_assert_eq(getv, v);
++	}
++
++	cleanup(dir);
++}
++
++igt_main
++{
++	int dir, gt;
++
++	igt_fixture {
++		i915 = drm_open_driver(DRIVER_INTEL);
++
++		/* Disag multipliers (aka "frequency factors") are not simulated. */
++		igt_require(!igt_run_in_simulation());
++		igt_install_exit_handler(__restore_rps_defaults);
++	}
++
++	igt_describe("Tests for \"disaggregated\" media freq sysfs");
++	igt_subtest_with_dynamic("media-freq") {
++		for_each_sysfs_gt_dirfd(i915, dir, gt) {
++			igt_dynamic_f("gt%d", gt)
++				media_freq(gt, dir);
++		}
++	}
++
++	igt_fixture {
++		close(i915);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 7261e9aa2950..cd89defbb418 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -356,6 +356,14 @@ test_executables += executable('gem_mmap_offset',
+ 	   install : true)
+ test_list += 'gem_mmap_offset'
  
- int igt_sysfs_read(int dir, const char *attr, void *data, int len);
- int igt_sysfs_write(int dir, const char *attr, const void *data, int len);
++test_executables += executable('i915_pm_disag_freq',
++	   join_paths('i915', 'i915_pm_disag_freq.c'),
++	   dependencies : test_deps + [ lib_igt_perf ],
++	   install_dir : libexecdir,
++	   install_rpath : libexecdir_rpathdir,
++	   install : true)
++test_list += 'i915_pm_disag_freq'
++
+ test_executables += executable('i915_pm_rc6_residency',
+ 	   join_paths('i915', 'i915_pm_rc6_residency.c'),
+ 	   dependencies : test_deps + [ lib_igt_perf ],
 -- 
 2.34.1
