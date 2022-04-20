@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2057.outbound.protection.outlook.com [40.107.220.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDFF410E473
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 21:58:56 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 20 Apr 2022 17:58:33 -0400
-Message-ID: <20220420215834.30467-4-dingchen.zhang@amd.com>
-In-Reply-To: <20220420215834.30467-1-dingchen.zhang@amd.com>
-References: <20220420215834.30467-1-dingchen.zhang@amd.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D082310E2ED
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 22:19:40 +0000 (UTC)
+From: "Srivatsa, Anusha" <anusha.srivatsa@intel.com>
+To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Date: Wed, 20 Apr 2022 22:19:39 +0000
+Message-ID: <705d48d960ee4149882241da82959c0c@intel.com>
+References: <20220420184628.412506-1-rodrigo.vivi@intel.com>
+ <671434dd9c4241e481bcf4abb0f2666c@intel.com>
+ <3dd9fb53d204f1e7865b74bb675078fb462ed958.camel@intel.com>
+ <ddc1a8ca3b7149c68455ca9cd5068545@intel.com> <YmBfYFrFLdTSMBtl@intel.com>
+In-Reply-To: <YmBfYFrFLdTSMBtl@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH v3 3/4] tests/amdgpu/amd_psr: add PSR-SU cursor
- movement test case
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc.c: Remove PC8+
+ dependency from DC9.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,170 +24,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why]
-We'd have a test case to validate PSR-SU enablement and selective
-region update when cursor movement occurs by visual confirm. This
-is to emulate the scenario of usermode behavior that only the
-cursor is moving on top of the static screen.
-
-[how]
-create overlay plane w/ screen size and primary plane w/ quarter
-of screen size and positioned at the top-left of screen. create
-a cursor plane w/ size of (currently set to) 128 pixels.
-
-move the cursor plane along horizonal/vertical/diagonal three
-directions w/ the incremental step of 16 pixels for a couple of
-seconds to allow visual confirm of PSR-SU update.
-
-changes in v2:
----------------
-- add more clear comments
-
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Jay Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
-
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- tests/amdgpu/amd_psr.c | 106 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 106 insertions(+)
-
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 834fefcc..cee57758 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -63,6 +63,13 @@ typedef struct data {
- 	int h;
- } data_t;
- 
-+enum cursor_move {
-+	HORIZONTAL,
-+	VERTICAL,
-+	DIAGONAL,
-+	INVALID
-+};
-+
- struct {
- 	bool visual_confirm;
- } opt = {
-@@ -487,6 +494,101 @@ static void run_check_psr_su_ffu(data_t *data)
- 	test_fini(data);
- }
- 
-+static void test_cursor_movement(data_t *data, int iters, igt_fb_t * pfb, int cs_size, enum cursor_move move_type)
-+{
-+	int i, pos_x, pos_y;
-+	int ret;
-+
-+	/* incremental step == cursor size / 16 */
-+	for (i = 0, pos_y = 0, pos_x = 0; i < iters; ++i) {
-+		if (move_type == HORIZONTAL && (pos_x + cs_size > data->w))
-+			pos_x = 0;
-+		else if (move_type == VERTICAL && (pos_y + cs_size > data->h))
-+			pos_y = 0;
-+		else if (move_type == DIAGONAL && ((pos_y + cs_size > data->h) || (pos_x + cs_size > data->w)))
-+			pos_x = pos_y = 0;
-+
-+		igt_plane_set_position(data->cursor, pos_x, pos_y);
-+		igt_plane_set_fb(data->primary, pfb);
-+
-+		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+		igt_require(ret == 0);
-+		kmstest_wait_for_pageflip(data->fd);
-+
-+		/* update position */
-+		if (move_type == HORIZONTAL)
-+			pos_x += cs_size / 16;
-+		else if (move_type == VERTICAL)
-+			pos_y += cs_size / 16;
-+		else if (move_type == DIAGONAL) {
-+			pos_x += cs_size / 16;
-+			pos_y += cs_size / 16;
-+		}
-+	}
-+}
-+
-+static void run_check_psr_su_cursor(data_t *data)
-+{
-+	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
-+	igt_fb_t rect_fb;	// primary FB
-+	igt_fb_t cs_fb;		// cursor FB
-+	const int cs_size = 128;
-+	const int delay_sec = 5; // seconds
-+	int frame_rate = 0;
-+	int pb_w, pb_h, ob_w, ob_h;
-+
-+	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
-+
-+	test_init(data);
-+	igt_skip_on(!psr_su_supported(data));
-+
-+	ob_w = data->w;
-+	ob_h = data->h;
-+	pb_w = data->w / 2;
-+	pb_h = data->h / 2;
-+	frame_rate = data->mode->vrefresh;
-+
-+	/* primary & overlay FB creation and set alpha region of overlay to show */
-+	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    .0, .0, 1.0, &rect_fb);
-+	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 1.0, 1.0, &data->ov_fb[0]);
-+	draw_color_alpha(&data->ov_fb[0], 0, 0, pb_w, pb_h, 1.0, 1.0, 1.0, .0);
-+
-+	/* cursor FB creation, draw cursor pattern/set alpha regions */
-+	igt_create_fb(data->fd, cs_size, cs_size, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, &cs_fb);
-+	draw_color_cursor(&cs_fb, cs_size, 1.0, .0, 1.0);
-+
-+	igt_plane_set_fb(data->primary, &rect_fb);
-+	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
-+	igt_plane_set_fb(data->cursor, &cs_fb);
-+	igt_plane_set_position(data->cursor, 0, 0);
-+
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	/*
-+	 * test by setting different cursor position in screen
-+	 * - horizontal movement
-+	 * - vertial movement
-+	 * - diagonal movement
-+	 */
-+
-+	/* horizontal */
-+	test_cursor_movement(data, frame_rate * delay_sec, &rect_fb, cs_size, HORIZONTAL);
-+
-+	/* vertical */
-+	test_cursor_movement(data, frame_rate * delay_sec, &rect_fb, cs_size, VERTICAL);
-+
-+	/* diagonal */
-+	test_cursor_movement(data, frame_rate * delay_sec, &rect_fb, cs_size, DIAGONAL);
-+
-+	igt_remove_fb(data->fd, &rect_fb);
-+	igt_remove_fb(data->fd, &cs_fb);
-+	igt_remove_fb(data->fd, &data->ov_fb[0]);
-+	test_fini(data);
-+}
-+
- const char *help_str =
- "  --visual-confirm           PSR visual confirm debug option enable\n";
- 
-@@ -550,6 +652,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		     "and to validate Full Frame Update scenario");
- 	igt_subtest("psr_su_ffu") run_check_psr_su_ffu(&data);
- 
-+	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
-+		     "and to validate cursor movement + static background scenario");
-+	igt_subtest("psr_su_cursor") run_check_psr_su_cursor(&data);
-+
- 	igt_fixture
- 	{
- 		if (opt.visual_confirm) {
--- 
-2.25.1
+UmV2aWV3ZWQtYnk6IEFudXNoYSBTcml2YXRzYSA8YW51c2hhLnNyaXZhdHNhQGludGVsLmNvbT4N
+Cg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFZpdmksIFJvZHJpZ28g
+PHJvZHJpZ28udml2aUBpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgQXByaWwgMjAsIDIw
+MjIgMTI6MzEgUE0NCj4gVG86IFNyaXZhdHNhLCBBbnVzaGEgPGFudXNoYS5zcml2YXRzYUBpbnRl
+bC5jb20+DQo+IENjOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgR3VwdGEsIEFuc2h1
+bWFuDQo+IDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+OyBEZWFrLCBJbXJlIDxpbXJlLmRlYWtA
+aW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10XSB0ZXN0cy9pOTE1L2k5MTVf
+cG1fZGMuYzogUmVtb3ZlIFBDOCsNCj4gZGVwZW5kZW5jeSBmcm9tIERDOS4NCj4gDQo+IE9uIFdl
+ZCwgQXByIDIwLCAyMDIyIGF0IDAzOjI3OjE5UE0gLTA0MDAsIFNyaXZhdHNhLCBBbnVzaGEgd3Jv
+dGU6DQo+ID4NCj4gPg0KPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+IEZy
+b206IFZpdmksIFJvZHJpZ28gPHJvZHJpZ28udml2aUBpbnRlbC5jb20+DQo+ID4gPiBTZW50OiBX
+ZWRuZXNkYXksIEFwcmlsIDIwLCAyMDIyIDEyOjA5IFBNDQo+ID4gPiBUbzogaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmc7IFNyaXZhdHNhLCBBbnVzaGENCj4gPiA+IDxhbnVzaGEuc3JpdmF0
+c2FAaW50ZWwuY29tPg0KPiA+ID4gQ2M6IEd1cHRhLCBBbnNodW1hbiA8YW5zaHVtYW4uZ3VwdGFA
+aW50ZWwuY29tPjsgRGVhaywgSW1yZQ0KPiA+ID4gPGltcmUuZGVha0BpbnRlbC5jb20+DQo+ID4g
+PiBTdWJqZWN0OiBSZTogW1BBVENIIGktZy10XSB0ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYzogUmVt
+b3ZlIFBDOCsNCj4gPiA+IGRlcGVuZGVuY3kgZnJvbSBEQzkuDQo+ID4gPg0KPiA+ID4gT24gV2Vk
+LCAyMDIyLTA0LTIwIGF0IDEyOjA3IC0wNzAwLCBTcml2YXRzYSwgQW51c2hhIHdyb3RlOg0KPiA+
+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4g
+PiA+ID4gRnJvbTogVml2aSwgUm9kcmlnbyA8cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gPiA+
+ID4gPiBTZW50OiBXZWRuZXNkYXksIEFwcmlsIDIwLCAyMDIyIDExOjQ2IEFNDQo+ID4gPiA+ID4g
+VG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+ID4gPiA+ID4gQ2M6IFZpdmksIFJv
+ZHJpZ28gPHJvZHJpZ28udml2aUBpbnRlbC5jb20+OyBEZWFrLCBJbXJlDQo+ID4gPiA+ID4gPGlt
+cmUuZGVha0BpbnRlbC5jb20+OyBHdXB0YSwgQW5zaHVtYW4NCj4gPiA+IDxhbnNodW1hbi5ndXB0
+YUBpbnRlbC5jb20+Ow0KPiA+ID4gPiA+IFNyaXZhdHNhLCBBbnVzaGEgPGFudXNoYS5zcml2YXRz
+YUBpbnRlbC5jb20+DQo+ID4gPiA+ID4gU3ViamVjdDogW1BBVENIIGktZy10XSB0ZXN0cy9pOTE1
+L2k5MTVfcG1fZGMuYzogUmVtb3ZlIFBDOCsNCj4gPiA+ID4gPiBkZXBlbmRlbmN5IGZyb20gREM5
+Lg0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gRGlmZmVyZW50IGZyb20gREM2LCBEQzkgZG9lcyBub3Qg
+ZGVwZW5kIG9uIHRoZSBCSU9TL1BDVSB0bw0KPiA+ID4gPiA+IGV4ZWN1dGUgc2F2ZSBhbmQgcmVz
+dG9yZSBvciBhbnkgb3RoZXIgc2VxdWVuY2Ugd2hlbiBnb2luZyB0bw0KPiBQQzkvUEMxMC4NCj4g
+PiA+ID4gPg0KPiA+ID4gPiA+IERDOSBhY3R1YWxseSBkZXBlbmRzIG9uIEQzIGFuZCBQQ09ERSBz
+aW1wbHkgcmVtb3ZlIHBvd2VyIGlmIFNXDQo+ID4gPiA+ID4gYWxsb3dlZC4NCj4gPiA+ID4NCj4g
+PiA+ID4gSXMgdGhpcyB0aGUgY2FzZSBmb3IgYm90aCBpZ2Z4IGFuZCBkZ2Z4Pw0KPiA+ID4NCj4g
+PiA+IHllcw0KPiA+ID4NCj4gPiBXaGVuIHRoZSBjaGVjayB3YXMgaW50cm9kdWNlZC0gZm9yIElD
+TCwgd2FzbuKAmXQgdGhpcyB0aGUgcmVxdWlyZW1lbnQNCj4gdGhvdWdoPyBIb3cgY29tZSB3ZSBo
+YXZlIG5vdCBoYWQgaXNzdWVzIG9uIElDTCsgcGxhdGZvcm1zIHRpbGwgbm93IGlmIHRoZQ0KPiBj
+aGVjayB3YXMgd3JvbmcuDQo+IA0KPiBUaGUgZm9pbHMgSSdtIGNoZWNraW5nIGlzIGZvciBnZW45
+Ky4gSSBoYXZlIGZ3ZGVkIGl0IHRvIHlvdSBjb3VwbGUgd2Vla3MgYWdvLg0KPiANCj4gREM5IG5l
+dmVyIGhhZCBhbnkgZGVwZW5kZW5jeSBvbiBQYWNrYWdlLUMgc3RhdGVzLCBidXQgb25seSBvbiBE
+My4NCj4gRXZlbiBvbiBCWFQuDQo+IA0KPiBJIGJlbGlldmUgdGhpcyBhZGRpdGlvbiBoZXJlIHdh
+cyBhY2NpZGVudGFsIHdoZW4gYWRkaW5nIHRoZSBjaGVja3MgZm9yIERDNi4NCj4gDQo+ID4NCj4g
+PiBBbnVzaGENCj4gPiA+ID4NCj4gPiA+ID4gQW51c2hhDQo+ID4gPiA+DQo+ID4gPiA+ID4gQ2M6
+IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNvbT4NCj4gPiA+ID4gPiBDYzogQW5zaHVtYW4g
+R3VwdGEgPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT4NCj4gPiA+ID4gPiBDYzogQW51c2hhIFNy
+aXZhdHNhIDxhbnVzaGEuc3JpdmF0c2FAaW50ZWwuY29tPg0KPiA+ID4gPiA+IFNpZ25lZC1vZmYt
+Ynk6IFJvZHJpZ28gVml2aSA8cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gPiA+ID4gPiAtLS0N
+Cj4gPiA+ID4gPiDCoHRlc3RzL2k5MTUvaTkxNV9wbV9kYy5jIHwgMiAtLQ0KPiA+ID4gPiA+IMKg
+MSBmaWxlIGNoYW5nZWQsIDIgZGVsZXRpb25zKC0pDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBkaWZm
+IC0tZ2l0IGEvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMgYi90ZXN0cy9pOTE1L2k5MTVfcG1fZGMu
+Yw0KPiA+ID4gPiA+IGluZGV4IDJjMmM1MDg2Li45YTIyMjQ2YyAxMDA2NDQNCj4gPiA+ID4gPiAt
+LS0gYS90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYw0KPiA+ID4gPiA+ICsrKyBiL3Rlc3RzL2k5MTUv
+aTkxNV9wbV9kYy5jDQo+ID4gPiA+ID4gQEAgLTUzMSw4ICs1MzEsNiBAQCBpbnQgbWFpbihpbnQg
+YXJnYywgY2hhciAqYXJndltdKQ0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gwqDCoMKgwqDCoMKgwqDC
+oGlndF9kZXNjcmliZSgiVGhpcyB0ZXN0IHZhbGlkYXRlcyBkaXNwbGF5IGVuZ2luZSBlbnRyeQ0K
+PiA+ID4gPiA+IHRvDQo+ID4gPiA+ID4gREM5IHN0YXRlIik7DQo+ID4gPiA+ID4gwqDCoMKgwqDC
+oMKgwqDCoGlndF9zdWJ0ZXN0KCJkYzktZHBtcyIpIHsNCj4gPiA+ID4gPiAtDQo+ID4gPiA+ID4N
+Cj4gPiA+ID4gPiBpZ3RfcmVxdWlyZV9mKGlndF9wbV9wYzhfcGx1c19yZXNpZGVuY2llc19lbmFi
+bGVkKGRhdGEubXNyXw0KPiA+ID4gPiA+IGZkKSwNCj4gPiA+ID4gPiAtwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAiUEM4KyByZXNp
+ZGVuY2llcyBub3QNCj4gPiA+ID4gPiBzdXBwb3J0ZWRcbiIpOw0KPiA+ID4gPiA+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9kYzlfZHBtcygmZGF0YSk7DQo+ID4gPiA+ID4g
+wqDCoMKgwqDCoMKgwqDCoH0NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IC0tDQo+ID4gPiA+ID4gMi4z
+NC4xDQo+ID4gPiA+DQo+ID4NCg==
