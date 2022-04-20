@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E31AB10E804
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 05:03:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28FE710E804
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 05:03:05 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 19 Apr 2022 22:02:57 -0700
-Message-Id: <85c51c99da76e3fe286ed28e80fa964e148f6020.1650430680.git.ashutosh.dixit@intel.com>
+Date: Tue, 19 Apr 2022 22:02:58 -0700
+Message-Id: <d38e666fe8159eed5defb4d30045fa1154410e4f.1650430680.git.ashutosh.dixit@intel.com>
 In-Reply-To: <deb07be64c3930945a0e7bd17989fda4ed2e5ece.1649870633.git.ashutosh.dixit@intel.com>
 References: <deb07be64c3930945a0e7bd17989fda4ed2e5ece.1649870633.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_sysfs: Add helpers to iterate
- over GTs
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_sysfs: Add RPS sysfs helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,11 +25,12 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-Provide iterators to:
-- construct the subdirectory string for a gt
-- obtain fd for the subdirectory of the interface
+RPS sysfs files exposed by the kernel can either be in per-gt sysfs or in
+the per-device legacy sysfs. Add helpers to read/write these files in
+either of the two sets of locations.
 
-v2: Separated out RPS functionality into seaparate patch (Ashutosh)
+v2: Added function descriptions (Kamil)
+    Separated patch from "lib/igt_sysfs: Add helpers to iterate over GTs"
 
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Andi Shyti <andi.shyti@intel.com>
@@ -39,122 +39,178 @@ Cc: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h | 13 +++++++++
- 2 files changed, 84 insertions(+)
+ lib/igt_sysfs.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h | 54 +++++++++++++++++++++++++++++
+ 2 files changed, 144 insertions(+)
 
 diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index f8ef23e2c8e2..b167c0507039 100644
+index b167c0507039..0ac5d2a3d6e5 100644
 --- a/lib/igt_sysfs.c
 +++ b/lib/igt_sysfs.c
-@@ -54,6 +54,21 @@
+@@ -54,6 +54,96 @@
   * provides basic support for like igt_sysfs_open().
   */
  
++enum {
++	GT,
++	RPS,
++
++	SYSFS_NUM_TYPES,
++};
++
++static const char *i915_attr_name[SYSFS_NUM_TYPES][SYSFS_NUM_ATTR] = {
++	{
++		"gt_act_freq_mhz",
++		"gt_cur_freq_mhz",
++		"gt_min_freq_mhz",
++		"gt_max_freq_mhz",
++		"gt_RP0_freq_mhz",
++		"gt_RP1_freq_mhz",
++		"gt_RPn_freq_mhz",
++		"gt_idle_freq_mhz",
++		"gt_boost_freq_mhz",
++		"power/rc6_enable",
++		"power/rc6_residency_ms",
++		"power/rc6p_residency_ms",
++		"power/rc6pp_residency_ms",
++		"power/media_rc6_residency_ms",
++	},
++	{
++		"rps_act_freq_mhz",
++		"rps_cur_freq_mhz",
++		"rps_min_freq_mhz",
++		"rps_max_freq_mhz",
++		"rps_RP0_freq_mhz",
++		"rps_RP1_freq_mhz",
++		"rps_RPn_freq_mhz",
++		"rps_idle_freq_mhz",
++		"rps_boost_freq_mhz",
++		"rc6_enable",
++		"rc6_residency_ms",
++		"rc6p_residency_ms",
++		"rc6pp_residency_ms",
++		"media_rc6_residency_ms",
++	},
++};
++
 +/**
-+ * igt_sysfs_has_attr:
++ * igt_sysfs_dir_id_to_name:
 + * @dir: sysfs directory fd
-+ * @attr: attr inside sysfs dir that needs to be checked for existence
++ * @id: sysfs attribute id
 + *
-+ * This checks if specified attr exists in device sysfs directory.
-+ *
-+ * Returns:
-+ * true if attr exists in sysfs, false otherwise.
-+ */
-+bool igt_sysfs_has_attr(int dir, const char *attr)
-+{
-+	return !faccessat(dir, attr, F_OK, 0);
-+}
-+
- /**
-  * igt_sysfs_path:
-  * @device: fd of the device
-@@ -104,6 +119,62 @@ int igt_sysfs_open(int device)
- 	return open(path, O_RDONLY);
- }
- 
-+/**
-+ * igt_sysfs_gt_path:
-+ * @device: fd of the device
-+ * @gt: gt number
-+ * @path: buffer to fill with the sysfs gt path to the device
-+ * @pathlen: length of @path buffer
-+ *
-+ * This finds the sysfs directory corresponding to @device and @gt. If the gt
-+ * specific directory is not available and gt is 0, path is filled with sysfs
-+ * base directory.
++ * Returns attribute name corresponding to attribute id in either the
++ * per-gt or legacy per-device sysfs
 + *
 + * Returns:
-+ * The directory path, or NULL on failure.
++ * Attribute name in sysfs
 + */
-+char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen)
++const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id)
 +{
-+	struct stat st;
++	igt_assert(id < SYSFS_NUM_ATTR);
 +
-+	if (device < 0)
-+		return NULL;
-+
-+	if (igt_debug_on(fstat(device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
-+		return NULL;
-+
-+	snprintf(path, pathlen, "/sys/dev/char/%d:%d/gt/gt%d",
-+		 major(st.st_rdev), minor(st.st_rdev), gt);
-+
-+	if (!igt_debug_on(access(path, F_OK)))
-+		return path;
-+	else if (!igt_debug_on(gt != 0))
-+		return igt_sysfs_path(device, path, pathlen);
-+
-+	return NULL;
++	if (igt_sysfs_has_attr(dir, i915_attr_name[GT][id]))
++		return i915_attr_name[GT][id];
++	else if (igt_sysfs_has_attr(dir, i915_attr_name[RPS][id]))
++		return i915_attr_name[RPS][id];
++	else
++		igt_assert_f(0, "Invalid sysfs dir\n");
 +}
 +
 +/**
-+ * igt_sysfs_gt_open:
-+ * @device: fd of the device
-+ * @gt: gt number
++ * igt_sysfs_path_id_to_name:
++ * @path: sysfs directory path
++ * @id: sysfs attribute id
 + *
-+ * This opens the sysfs gt directory corresponding to device and gt for use
-+ * with igt_sysfs_set() and igt_sysfs_get().
++ * Returns attribute name corresponding to attribute id in either the
++ * per-gt or legacy per-device sysfs
 + *
 + * Returns:
-+ * The directory fd, or -1 on failure.
++ * Attribute name in sysfs
 + */
-+int igt_sysfs_gt_open(int device, int gt)
++const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id)
 +{
-+	char path[96];
++	int dir;
++	const char *name;
 +
-+	if (igt_debug_on(!igt_sysfs_gt_path(device, gt, path, sizeof(path))))
-+		return -1;
++	dir = open(path, O_RDONLY);
++	igt_assert(dir);
 +
-+	return open(path, O_RDONLY);
++	name = igt_sysfs_dir_id_to_name(dir, id);
++	close(dir);
++
++	return name;
 +}
 +
  /**
-  * igt_sysfs_write:
-  * @dir: directory for the device from igt_sysfs_open()
+  * igt_sysfs_has_attr:
+  * @dir: sysfs directory fd
 diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 56741a0a37e3..33317a969619 100644
+index 33317a969619..8e39b8fa9890 100644
 --- a/lib/igt_sysfs.h
 +++ b/lib/igt_sysfs.h
-@@ -28,8 +28,21 @@
- #include <stdbool.h>
- #include <stdarg.h>
+@@ -38,11 +38,65 @@
+ 	     (dirfd__ = igt_sysfs_gt_open(i915__, gt__)) != -1; \
+ 	     close(dirfd__), gt__++)
  
-+#define for_each_sysfs_gt_path(i915__, path__, pathlen__) \
-+	for (int gt__ = 0; \
-+	     igt_sysfs_gt_path(i915__, gt__, path__, pathlen__) != NULL; \
-+	     gt__++)
++#define igt_sysfs_rps_write(dir, id, data, len) \
++	igt_sysfs_write(dir, igt_sysfs_dir_id_to_name(dir, id), data, len)
 +
-+#define for_each_sysfs_gt_dirfd(i915__, dirfd__, gt__) \
-+	for (gt__ = 0; \
-+	     (dirfd__ = igt_sysfs_gt_open(i915__, gt__)) != -1; \
-+	     close(dirfd__), gt__++)
++#define igt_sysfs_rps_read(dir, id, data, len) \
++	igt_sysfs_read(dir, igt_sysfs_dir_id_to_name(dir, id), data, len)
++
++#define igt_sysfs_rps_set(dir, id, value) \
++	igt_sysfs_set(dir, igt_sysfs_dir_id_to_name(dir, id), value)
++
++#define igt_sysfs_rps_get(dir, id) \
++	igt_sysfs_get(dir, igt_sysfs_dir_id_to_name(dir, id))
++
++#define igt_sysfs_rps_scanf(dir, id, fmt, ...) \
++	igt_sysfs_scanf(dir, igt_sysfs_dir_id_to_name(dir, id), fmt, ##__VA_ARGS__)
++
++#define igt_sysfs_rps_vprintf(dir, id, fmt, ap) \
++	igt_sysfs_vprintf(dir, igt_sysfs_dir_id_to_name(id), fmt, ap)
++
++#define igt_sysfs_rps_printf(dir, id, fmt, ...) \
++	igt_sysfs_printf(dir, igt_sysfs_dir_id_to_name(dir, id), fmt, ##__VA_ARGS__)
++
++#define igt_sysfs_rps_get_u32(dir, id) \
++	igt_sysfs_get_u32(dir, igt_sysfs_dir_id_to_name(dir, id))
++
++#define igt_sysfs_rps_set_u32(dir, id, value) \
++	igt_sysfs_set_u32(dir, igt_sysfs_dir_id_to_name(dir, id), value)
++
++#define igt_sysfs_rps_get_boolean(dir, id) \
++	igt_sysfs_get_boolean(dir, igt_sysfs_dir_id_to_name(dir, id))
++
++#define igt_sysfs_rps_set_boolean(dir, id, value) \
++	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
++
++enum i915_attr_id {
++	RPS_ACT_FREQ_MHZ,
++	RPS_CUR_FREQ_MHZ,
++	RPS_MIN_FREQ_MHZ,
++	RPS_MAX_FREQ_MHZ,
++	RPS_RP0_FREQ_MHZ,
++	RPS_RP1_FREQ_MHZ,
++	RPS_RPn_FREQ_MHZ,
++	RPS_IDLE_FREQ_MHZ,
++	RPS_BOOST_FREQ_MHZ,
++	RC6_ENABLE,
++	RC6_RESIDENCY_MS,
++	RC6P_RESIDENCY_MS,
++	RC6PP_RESIDENCY_MS,
++	MEDIA_RC6_RESIDENCY_MS,
++
++	SYSFS_NUM_ATTR,
++};
 +
  char *igt_sysfs_path(int device, char *path, int pathlen);
  int igt_sysfs_open(int device);
-+char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
-+int igt_sysfs_gt_open(int device, int gt);
-+bool igt_sysfs_has_attr(int dir, const char *attr);
+ char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
+ int igt_sysfs_gt_open(int device, int gt);
+ bool igt_sysfs_has_attr(int dir, const char *attr);
++const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);
++const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
  
  int igt_sysfs_read(int dir, const char *attr, void *data, int len);
  int igt_sysfs_write(int dir, const char *attr, const void *data, int len);
