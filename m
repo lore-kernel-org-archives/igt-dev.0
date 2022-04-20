@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F45F10F10F
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 13:37:58 +0000 (UTC)
-Message-ID: <39e38d6e-9666-f7ec-50c3-62366da6cc60@intel.com>
-Date: Wed, 20 Apr 2022 19:07:44 +0530
-Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20211012105300.27890-1-mohammed.thasleem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20211012105300.27890-1-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25EBC10E5AC
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 13:50:32 +0000 (UTC)
+Date: Wed, 20 Apr 2022 16:50:32 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Talla Raviteja Goud <ravitejax.goud.talla@intel.com>
+Message-ID: <YmAPqDh2NStF3ZPh@platvala-desk.ger.corp.intel.com>
+References: <20220420124920.3628871-1-ravitejax.goud.talla@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] [i-g-t] tests/kms: IGT cleanup
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220420124920.3628871-1-ravitejax.goud.talla@intel.com>
+Subject: Re: [igt-dev] [i-g-t] lib: sync i915_pciids.h with kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,61 +19,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Thasleem,
-
-Thanks for the patch. I think, commit subject shouldn't be the same for 
-all commits in this series. Please try to follow: 
-https://cbea.ms/git-commit/
-
-Also commit subject should start with "tests/<test_name>:"
-Ex: tests/kms_vrr: Introduce dynamic subtests
-
-As you started to cleanup the IGT, please try to make sure below points:
-- Convert to dynamic subtests
-- Sanitize the state before starting the subtest. (igt_display_reset)
-- Clear the states before exiting the subtest.
-- Update existing libdrm APIs with IGT kms APIs.
-- Other misc (Ex: update deprecated APIs/macros/enums, FB leaks etc..)
-
-- Bhanu
-
-On Tue-12-10-2021 04:22 pm, Mohammed Thasleem wrote:
-> Before starting the subtest, clean up the states to default
-> by igt_display_reset().
+On Wed, Apr 20, 2022 at 06:19:20PM +0530, Talla Raviteja Goud wrote:
+> From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 > 
-> Replace newly defined function in particular test with existing
-> library function.
+> Adding Raptor lake P platform definitions
 > 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> Signed-off-by: Adam Miszczak <adam.miszczak@intel.com>
+> Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> Signed-off-by: Raviteja Goud Talla <ravitejax.goud.talla@intel.com>
+
+Write the kernel commit sha the file is copied from in the commit
+message. And change intel_device_info.c in a separate commit.
+
+See git log lib/i915_pciids.h for examples.
+
+
+-- 
+Petri Latvala
+
+
+
 > ---
->   tests/i915/kms_mmap_write_crc.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+>  lib/i915_pciids.h       | 9 +++++++++
+>  lib/intel_device_info.c | 1 +
+>  2 files changed, 10 insertions(+)
 > 
-> diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-> index b17e5fdb..f8825284 100644
-> --- a/tests/i915/kms_mmap_write_crc.c
-> +++ b/tests/i915/kms_mmap_write_crc.c
-> @@ -169,6 +169,8 @@ static void prepare_crtc(data_t *data)
->   	igt_output_t *output = data->output;
->   	drmModeModeInfo *mode;
->   
-> +	igt_display_reset(&data->display);
+> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+> index 533890dc..f4b21a26 100644
+> --- a/lib/i915_pciids.h
+> +++ b/lib/i915_pciids.h
+> @@ -681,4 +681,13 @@
+>  	INTEL_VGA_DEVICE(0xA788, info), \
+>  	INTEL_VGA_DEVICE(0xA789, info)
+>  
+> +/*RPL-P */
+> +#define INTEL_RPLP_IDS(info) \
+> +        INTEL_VGA_DEVICE(0xA720, info), \
+> +        INTEL_VGA_DEVICE(0xA721, info), \
+> +        INTEL_VGA_DEVICE(0xA7A0, info), \
+> +        INTEL_VGA_DEVICE(0xA7A1, info), \
+> +        INTEL_VGA_DEVICE(0xA7A8, info), \
+> +        INTEL_VGA_DEVICE(0xA7A9, info)
 > +
->   	/* select the pipe we want to use */
->   	igt_output_set_pipe(output, data->pipe);
->   
-> @@ -204,8 +206,8 @@ static void cleanup_crtc(data_t *data)
->   
->   	igt_plane_set_fb(data->primary, NULL);
->   
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> -	igt_display_commit(display);
-> +	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   
->   	igt_remove_fb(data->drm_fd, &data->fb[0]);
->   	igt_remove_fb(data->drm_fd, &data->fb[1]);
+>  #endif /* _I915_PCIIDS_H */
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index e55841df..0253a732 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -521,6 +521,7 @@ static const struct pci_id_match intel_device_match[] = {
+>  	INTEL_ADLS_IDS(&intel_alderlake_s_info),
+>  	INTEL_RPLS_IDS(&intel_raptorlake_s_info),
+>  	INTEL_ADLP_IDS(&intel_alderlake_p_info),
+> +	INTEL_RPLP_IDS(&intel_alderlake_p_info),
+>  	INTEL_ADLN_IDS(&intel_alderlake_n_info),
+>  
+>  	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
+> -- 
+> 2.34.1
+> 
