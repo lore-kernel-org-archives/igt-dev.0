@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7C2510F1F6
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 19:30:45 +0000 (UTC)
-Date: Wed, 20 Apr 2022 15:30:40 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: "Srivatsa, Anusha" <anusha.srivatsa@intel.com>
-Message-ID: <YmBfYFrFLdTSMBtl@intel.com>
-References: <20220420184628.412506-1-rodrigo.vivi@intel.com>
- <671434dd9c4241e481bcf4abb0f2666c@intel.com>
- <3dd9fb53d204f1e7865b74bb675078fb462ed958.camel@intel.com>
- <ddc1a8ca3b7149c68455ca9cd5068545@intel.com>
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-sn1anam02on2043.outbound.protection.outlook.com [40.107.96.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 189A010F21E
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 19:40:21 +0000 (UTC)
+Message-ID: <d098e14c-c6e7-8430-6259-e0db972b431f@amd.com>
+Date: Wed, 20 Apr 2022 15:40:16 -0400
+Content-Language: en-US
+To: David Zhang <dingchen.zhang@amd.com>, igt-dev@lists.freedesktop.org
+References: <20220418213253.2484226-1-dingchen.zhang@amd.com>
+ <20220418213253.2484226-3-dingchen.zhang@amd.com>
+From: Rodrigo Siqueira Jordao <rjordrigo@amd.com>
+In-Reply-To: <20220418213253.2484226-3-dingchen.zhang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ddc1a8ca3b7149c68455ca9cd5068545@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc.c: Remove PC8+
- dependency from DC9.
+Subject: Re: [igt-dev] [PATCH v4 2/3] tests/amdgpu/amd_psr: add PSR-SU full
+ frame update sub test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,87 +23,213 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 20, 2022 at 03:27:19PM -0400, Srivatsa, Anusha wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> > Sent: Wednesday, April 20, 2022 12:09 PM
-> > To: igt-dev@lists.freedesktop.org; Srivatsa, Anusha
-> > <anusha.srivatsa@intel.com>
-> > Cc: Gupta, Anshuman <anshuman.gupta@intel.com>; Deak, Imre
-> > <imre.deak@intel.com>
-> > Subject: Re: [PATCH i-g-t] tests/i915/i915_pm_dc.c: Remove PC8+
-> > dependency from DC9.
-> > 
-> > On Wed, 2022-04-20 at 12:07 -0700, Srivatsa, Anusha wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> > > > Sent: Wednesday, April 20, 2022 11:46 AM
-> > > > To: igt-dev@lists.freedesktop.org
-> > > > Cc: Vivi, Rodrigo <rodrigo.vivi@intel.com>; Deak, Imre
-> > > > <imre.deak@intel.com>; Gupta, Anshuman
-> > <anshuman.gupta@intel.com>;
-> > > > Srivatsa, Anusha <anusha.srivatsa@intel.com>
-> > > > Subject: [PATCH i-g-t] tests/i915/i915_pm_dc.c: Remove PC8+
-> > > > dependency from DC9.
-> > > >
-> > > > Different from DC6, DC9 does not depend on the BIOS/PCU to execute
-> > > > save and restore or any other sequence when going to PC9/PC10.
-> > > >
-> > > > DC9 actually depends on D3 and PCODE simply remove power if SW
-> > > > allowed.
-> > >
-> > > Is this the case for both igfx and dgfx?
-> > 
-> > yes
-> > 
-> When the check was introduced- for ICL, wasn’t this the requirement though? How come we have not had issues on ICL+ platforms till now if the check was wrong. 
 
-The foils I'm checking is for gen9+. I have fwded it to you couple weeks ago.
 
-DC9 never had any dependency on Package-C states, but only on D3.
-Even on BXT.
-
-I believe this addition here was accidental when adding the checks for DC6.
-
+On 2022-04-18 17:32, David Zhang wrote:
+> [why]
+> We need a full-frame update (FFU) test case to validate PSR-SU
+> feature enablement by visual confirm.
 > 
-> Anusha
-> > >
-> > > Anusha
-> > >
-> > > > Cc: Imre Deak <imre.deak@intel.com>
-> > > > Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> > > > Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
-> > > > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > > > ---
-> > > >  tests/i915/i915_pm_dc.c | 2 --
-> > > >  1 file changed, 2 deletions(-)
-> > > >
-> > > > diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index
-> > > > 2c2c5086..9a22246c 100644
-> > > > --- a/tests/i915/i915_pm_dc.c
-> > > > +++ b/tests/i915/i915_pm_dc.c
-> > > > @@ -531,8 +531,6 @@ int main(int argc, char *argv[])
-> > > >
-> > > >         igt_describe("This test validates display engine entry to
-> > > > DC9 state");
-> > > >         igt_subtest("dc9-dpms") {
-> > > > -
-> > > >         igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_
-> > > > fd),
-> > > > -                               "PC8+ residencies not supported\n");
-> > > >                 test_dc9_dpms(&data);
-> > > >         }
-> > > >
-> > > > --
-> > > > 2.34.1
-> > >
+> [how]
+> 1. create two overlay FBs with full screen size and one primary FB
+>     w/ 1/4 screen size
+> 2. panning the primary plane to top-left and flip for couple of
+>     frames
+> 3. wait for couple of seconds to allow visual confirm
+> 4. panning the primary plane from top-left to middle of screen
+> 5. repeat step 3
+> 6. panning the primary plane from middle to bottom-right of screen
+> 7. repeat step 3
 > 
+> If the PSR-SU is enabled as expected, for FFU we'd observe the
+> visual confirm by seeing the blue border at the bottom of screen
+> and the bottom of primary plane (megenta rectangle) as well.
+> 
+> Changes in v2:
+> ----------------
+> - drop the unnecessary helper panning_pfb_and_psrsu_check() and
+>    collapse the operations into run_check_psr_su_ffu()
+> - initial the two overlay FBs w/ global alpha and different color
+>    not to update the specific alpha region for each panning of the
+>    primary plane.
+> 
+> Changes in v3:
+> ----------------
+> - before each panning of primary plane, update alpha region in
+>    overlay at position/size of primary plane, set alpha to 0.0
+>    to make it transparent. In addition, set the rest of overlay
+>    region to 1.0 to make it opaque.
+> 
+> Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Jay Pillai <aurabindo.pillai@amd.com>
+> Cc: Wayne Lin <wayne.lin@amd.com>
+> 
+> Signed-off-by: David Zhang <dingchen.zhang@amd.com>
+> ---
+>   tests/amdgpu/amd_psr.c | 124 +++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 124 insertions(+)
+> 
+> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+> index 0ec50c9f..fac5da77 100644
+> --- a/tests/amdgpu/amd_psr.c
+> +++ b/tests/amdgpu/amd_psr.c
+> @@ -54,6 +54,7 @@ typedef struct data {
+>   	igt_output_t *output;
+>   	igt_pipe_t *pipe;
+>   	igt_pipe_crc_t *pipe_crc;
+> +	igt_fb_t ov_fb[2];
+>   	drmModeModeInfo *mode;
+>   	enum pipe pipe_id;
+>   	int fd;
+> @@ -75,6 +76,7 @@ static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
+>   
+>   	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+>   	igt_paint_color_alpha(cr, x, y, w, h, r, g, b, a);
+> +	cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+>   
+>   	igt_put_cairo_ctx(cr);
+>   }
+> @@ -308,6 +310,124 @@ static void run_check_psr_su_mpo(data_t *data)
+>   	test_fini(data);
+>   }
+>   
+> +static void panning_rect_fb(data_t *data, igt_fb_t *rect_fb, int rect_w, int rect_h, int curr_x, int curr_y)
+> +{
+> +	int ret;
+> +
+> +	/* set new position for primary plane */
+> +	igt_plane_set_position(data->primary, curr_x, curr_y);
+> +	igt_plane_set_size(data->primary, rect_w, rect_h);
+> +
+> +	/* fill in entire overlay planes w/ different colors and set opaque */
+> +	draw_color_alpha(&data->ov_fb[0], 0, 0, data->w, data->h, 1.0, 1.0, 1.0, 1.0); /* white overlay */
+> +	draw_color_alpha(&data->ov_fb[1], 0, 0, data->w, data->h, .0, 1.0, .0, 1.0);   /* greeen overlay */
+> +
+> +	/* update alpha region in overlay w/ size of primary plane and set transparent */
+> +	draw_color_alpha(&data->ov_fb[0], curr_x, curr_y, rect_w, rect_h, 1.0, 1.0, 1.0, .0);
+> +	draw_color_alpha(&data->ov_fb[1], curr_x, curr_y, rect_w, rect_h, .0, 1.0, .0, .0);
+> +
+> +	/* flip overlay for couple of frames */
+> +	igt_info("\n  primary at (%d, %d) of size (%d, %d), flipping overlay ...\n", curr_x, curr_y, rect_w, rect_h);
+> +	for (int i = 0; i < N_FLIPS; ++i) {
+> +		/* do flip overlay */
+> +		igt_plane_set_fb(data->overlay, &data->ov_fb[i % 2]);
+> +		igt_plane_set_fb(data->primary, rect_fb);
+> +		igt_plane_set_size(data->primary, rect_w, rect_h);
+> +		igt_output_set_pipe(data->output, data->pipe_id);
+> +
+> +		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+> +		igt_require(ret == 0);
+> +		kmstest_wait_for_pageflip(data->fd);
+> +	}
+> +}
+> +
+> +static void run_check_psr_su_ffu(data_t *data)
+> +{
+> +	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
+> +	bool sink_support_psrsu = false;
+> +	bool drv_suport_psrsu = false;
+> +	igt_fb_t rect_fb; 	// rectangle fbs for primary
+> +	igt_fb_t ref_fb;	// reference fb
+> +	int pb_w, pb_h;
+> +
+> +	/* skip the test run if no eDP sink detected */
+> +	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
+> +
+> +	/* init */
+> +	test_init(data);
+> +	pb_w = data->w / 2;
+> +	pb_h = data->h / 2;
+> +
+> +	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
+> +	igt_skip_on(!igt_amd_output_has_psr_cap(data->fd, data->output->name));
+> +	igt_skip_on(!igt_amd_output_has_psr_state(data->fd, data->output->name));
+> +	sink_support_psrsu = igt_amd_psr_support_sink(data->fd, data->output->name, PSR_MODE_2);
+> +	igt_skip_on_f(!sink_support_psrsu, "output %s not support PSR-SU\n", data->output->name);
+> +	drv_suport_psrsu = igt_amd_psr_support_drv(data->fd, data->output->name, PSR_MODE_2);
+> +	igt_skip_on_f(!drv_suport_psrsu, "kernel driver not support PSR-SU\n");
+> +
+> +	/* reference background pattern in grey */
+> +	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +			    .5, .5, .5, &ref_fb);
+> +	igt_plane_set_fb(data->primary, &ref_fb);
+> +	igt_output_set_pipe(data->output, data->pipe_id);
+> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+> +	/*
+> +	 * overlay and primary fbs creation
+> +	 * for full frame update (FFU) test case, we don't change primary FB content but to change
+> +	 * the position of primary FB (panning) and update the overlay plane alpha region.
+> +	 * Any overlay change is expected to be regarded as FFU from KMD's perspective.
+> +	 *
+> +	 * 1. create two overlay FBs of full screen size and different colors and
+> +	 *    one primary FB of quarter screen size
+> +	 * 2. panning the primary plane to top-left and flip for couple of frames
+> +	 * 3. wait for couple of seconds to allow visual confirm
+> +	 * 4. panning the primary plane from top-left to middle of screen
+> +	 * 5. repeat step 3
+> +	 * 6. panning the primary plane from middle to bottom-right of screen
+> +	 * 7. repeat step 3
+> +	 *
+> +	 * Note:
+> +	 * Ideally we only want 0.0 alpha over the primary plane region, with the
+> +	 * rest as solid (1.0) alpha:
+> +	 * +----------------------------+
+> +	 * | +-------------+            |
+> +	 * | |             |            |
+> +	 * | |  Primary    |		|
+> +	 * | |  (alpha=0.0)|            |
+> +	 * | +-------------+            |
+> +	 * |                Overlay     |
+> +	 * |              (alpha=1.0)   |
+> +	 * +----------------------------+
+> +	 */
+> +
+> +	/* step 1 */
+> +	igt_create_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, &data->ov_fb[0]);
+> +	igt_create_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, &data->ov_fb[1]);
+> +	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +			    1.0, .0, 1.0, &rect_fb); /* magenta primary */
+> +
+> +	/* step 2 & 3 */
+> +	panning_rect_fb(data, &rect_fb, pb_w, pb_h, 0, 0);
+> +	sleep(5);
+> +
+> +	/* step 4 & 5 */
+> +	panning_rect_fb(data, &rect_fb, pb_w, pb_h, pb_w / 2, pb_h / 2);
+> +	sleep(5);
+> +
+> +	/* step 6 & 7 */
+> +	panning_rect_fb(data, &rect_fb, pb_w, pb_h, pb_w, pb_h);
+> +	sleep(5);
+> +
+> +	/* fini */
+> +	igt_remove_fb(data->fd, &ref_fb);
+> +	igt_remove_fb(data->fd, &data->ov_fb[0]);
+> +	igt_remove_fb(data->fd, &data->ov_fb[1]);
+> +	igt_remove_fb(data->fd, &rect_fb);
+> +	test_fini(data);
+> +}
+> +
+>   const char *help_str =
+>   "  --visual-confirm           PSR visual confirm debug option enable\n";
+>   
+> @@ -367,6 +487,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   		     "and to imitate Multiplane Overlay video playback scenario");
+>   	igt_subtest("psr_su_mpo") run_check_psr_su_mpo(&data);
+>   
+> +	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
+> +		     "and to validate Full Frame Update scenario");
+> +	igt_subtest("psr_su_ffu") run_check_psr_su_ffu(&data);
+> +
+>   	igt_fixture
+>   	{
+>   		if (opt.visual_confirm) {
+
+Acked-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
