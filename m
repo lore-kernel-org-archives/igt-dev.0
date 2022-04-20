@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14CF910F1BA
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 19:27:20 +0000 (UTC)
-From: "Srivatsa, Anusha" <anusha.srivatsa@intel.com>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Wed, 20 Apr 2022 19:27:19 +0000
-Message-ID: <ddc1a8ca3b7149c68455ca9cd5068545@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7C2510F1F6
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 19:30:45 +0000 (UTC)
+Date: Wed, 20 Apr 2022 15:30:40 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: "Srivatsa, Anusha" <anusha.srivatsa@intel.com>
+Message-ID: <YmBfYFrFLdTSMBtl@intel.com>
 References: <20220420184628.412506-1-rodrigo.vivi@intel.com>
  <671434dd9c4241e481bcf4abb0f2666c@intel.com>
  <3dd9fb53d204f1e7865b74bb675078fb462ed958.camel@intel.com>
-In-Reply-To: <3dd9fb53d204f1e7865b74bb675078fb462ed958.camel@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <ddc1a8ca3b7149c68455ca9cd5068545@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ddc1a8ca3b7149c68455ca9cd5068545@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc.c: Remove PC8+
  dependency from DC9.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -24,51 +24,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVml2aSwgUm9kcmlnbyA8
-cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBBcHJpbCAyMCwgMjAy
-MiAxMjowOSBQTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IFNyaXZhdHNh
-LCBBbnVzaGENCj4gPGFudXNoYS5zcml2YXRzYUBpbnRlbC5jb20+DQo+IENjOiBHdXB0YSwgQW5z
-aHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47IERlYWssIEltcmUNCj4gPGltcmUuZGVh
-a0BpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXRdIHRlc3RzL2k5MTUvaTkx
-NV9wbV9kYy5jOiBSZW1vdmUgUEM4Kw0KPiBkZXBlbmRlbmN5IGZyb20gREM5Lg0KPiANCj4gT24g
-V2VkLCAyMDIyLTA0LTIwIGF0IDEyOjA3IC0wNzAwLCBTcml2YXRzYSwgQW51c2hhIHdyb3RlOg0K
-PiA+DQo+ID4NCj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBW
-aXZpLCBSb2RyaWdvIDxyb2RyaWdvLnZpdmlAaW50ZWwuY29tPg0KPiA+ID4gU2VudDogV2VkbmVz
-ZGF5LCBBcHJpbCAyMCwgMjAyMiAxMTo0NiBBTQ0KPiA+ID4gVG86IGlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnDQo+ID4gPiBDYzogVml2aSwgUm9kcmlnbyA8cm9kcmlnby52aXZpQGludGVs
-LmNvbT47IERlYWssIEltcmUNCj4gPiA+IDxpbXJlLmRlYWtAaW50ZWwuY29tPjsgR3VwdGEsIEFu
-c2h1bWFuDQo+IDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+Ow0KPiA+ID4gU3JpdmF0c2EsIEFu
-dXNoYSA8YW51c2hhLnNyaXZhdHNhQGludGVsLmNvbT4NCj4gPiA+IFN1YmplY3Q6IFtQQVRDSCBp
-LWctdF0gdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmM6IFJlbW92ZSBQQzgrDQo+ID4gPiBkZXBlbmRl
-bmN5IGZyb20gREM5Lg0KPiA+ID4NCj4gPiA+IERpZmZlcmVudCBmcm9tIERDNiwgREM5IGRvZXMg
-bm90IGRlcGVuZCBvbiB0aGUgQklPUy9QQ1UgdG8gZXhlY3V0ZQ0KPiA+ID4gc2F2ZSBhbmQgcmVz
-dG9yZSBvciBhbnkgb3RoZXIgc2VxdWVuY2Ugd2hlbiBnb2luZyB0byBQQzkvUEMxMC4NCj4gPiA+
-DQo+ID4gPiBEQzkgYWN0dWFsbHkgZGVwZW5kcyBvbiBEMyBhbmQgUENPREUgc2ltcGx5IHJlbW92
-ZSBwb3dlciBpZiBTVw0KPiA+ID4gYWxsb3dlZC4NCj4gPg0KPiA+IElzIHRoaXMgdGhlIGNhc2Ug
-Zm9yIGJvdGggaWdmeCBhbmQgZGdmeD8NCj4gDQo+IHllcw0KPiANCldoZW4gdGhlIGNoZWNrIHdh
-cyBpbnRyb2R1Y2VkLSBmb3IgSUNMLCB3YXNu4oCZdCB0aGlzIHRoZSByZXF1aXJlbWVudCB0aG91
-Z2g/IEhvdyBjb21lIHdlIGhhdmUgbm90IGhhZCBpc3N1ZXMgb24gSUNMKyBwbGF0Zm9ybXMgdGls
-bCBub3cgaWYgdGhlIGNoZWNrIHdhcyB3cm9uZy4gDQoNCkFudXNoYQ0KPiA+DQo+ID4gQW51c2hh
-DQo+ID4NCj4gPiA+IENjOiBJbXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+DQo+ID4gPiBD
-YzogQW5zaHVtYW4gR3VwdGEgPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT4NCj4gPiA+IENjOiBB
-bnVzaGEgU3JpdmF0c2EgPGFudXNoYS5zcml2YXRzYUBpbnRlbC5jb20+DQo+ID4gPiBTaWduZWQt
-b2ZmLWJ5OiBSb2RyaWdvIFZpdmkgPHJvZHJpZ28udml2aUBpbnRlbC5jb20+DQo+ID4gPiAtLS0N
-Cj4gPiA+IMKgdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMgfCAyIC0tDQo+ID4gPiDCoDEgZmlsZSBj
-aGFuZ2VkLCAyIGRlbGV0aW9ucygtKQ0KPiA+ID4NCj4gPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9p
-OTE1L2k5MTVfcG1fZGMuYyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jIGluZGV4DQo+ID4gPiAy
-YzJjNTA4Ni4uOWEyMjI0NmMgMTAwNjQ0DQo+ID4gPiAtLS0gYS90ZXN0cy9pOTE1L2k5MTVfcG1f
-ZGMuYw0KPiA+ID4gKysrIGIvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMNCj4gPiA+IEBAIC01MzEs
-OCArNTMxLDYgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gPiA+DQo+ID4g
-PiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJUaGlzIHRlc3QgdmFsaWRhdGVzIGRpc3Bs
-YXkgZW5naW5lIGVudHJ5IHRvDQo+ID4gPiBEQzkgc3RhdGUiKTsNCj4gPiA+IMKgwqDCoMKgwqDC
-oMKgwqBpZ3Rfc3VidGVzdCgiZGM5LWRwbXMiKSB7DQo+ID4gPiAtDQo+ID4gPiDCoMKgwqDCoMKg
-wqDCoMKgaWd0X3JlcXVpcmVfZihpZ3RfcG1fcGM4X3BsdXNfcmVzaWRlbmNpZXNfZW5hYmxlZChk
-YXRhLm1zcl8NCj4gPiA+IGZkKSwNCj4gPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCJQQzgrIHJlc2lkZW5jaWVzIG5vdCBz
-dXBwb3J0ZWRcbiIpOw0KPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0
-X2RjOV9kcG1zKCZkYXRhKTsNCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqB9DQo+ID4gPg0KPiA+ID4g
-LS0NCj4gPiA+IDIuMzQuMQ0KPiA+DQoNCg==
+On Wed, Apr 20, 2022 at 03:27:19PM -0400, Srivatsa, Anusha wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
+> > Sent: Wednesday, April 20, 2022 12:09 PM
+> > To: igt-dev@lists.freedesktop.org; Srivatsa, Anusha
+> > <anusha.srivatsa@intel.com>
+> > Cc: Gupta, Anshuman <anshuman.gupta@intel.com>; Deak, Imre
+> > <imre.deak@intel.com>
+> > Subject: Re: [PATCH i-g-t] tests/i915/i915_pm_dc.c: Remove PC8+
+> > dependency from DC9.
+> > 
+> > On Wed, 2022-04-20 at 12:07 -0700, Srivatsa, Anusha wrote:
+> > >
+> > >
+> > > > -----Original Message-----
+> > > > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
+> > > > Sent: Wednesday, April 20, 2022 11:46 AM
+> > > > To: igt-dev@lists.freedesktop.org
+> > > > Cc: Vivi, Rodrigo <rodrigo.vivi@intel.com>; Deak, Imre
+> > > > <imre.deak@intel.com>; Gupta, Anshuman
+> > <anshuman.gupta@intel.com>;
+> > > > Srivatsa, Anusha <anusha.srivatsa@intel.com>
+> > > > Subject: [PATCH i-g-t] tests/i915/i915_pm_dc.c: Remove PC8+
+> > > > dependency from DC9.
+> > > >
+> > > > Different from DC6, DC9 does not depend on the BIOS/PCU to execute
+> > > > save and restore or any other sequence when going to PC9/PC10.
+> > > >
+> > > > DC9 actually depends on D3 and PCODE simply remove power if SW
+> > > > allowed.
+> > >
+> > > Is this the case for both igfx and dgfx?
+> > 
+> > yes
+> > 
+> When the check was introduced- for ICL, wasn’t this the requirement though? How come we have not had issues on ICL+ platforms till now if the check was wrong. 
+
+The foils I'm checking is for gen9+. I have fwded it to you couple weeks ago.
+
+DC9 never had any dependency on Package-C states, but only on D3.
+Even on BXT.
+
+I believe this addition here was accidental when adding the checks for DC6.
+
+> 
+> Anusha
+> > >
+> > > Anusha
+> > >
+> > > > Cc: Imre Deak <imre.deak@intel.com>
+> > > > Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+> > > > Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
+> > > > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > > ---
+> > > >  tests/i915/i915_pm_dc.c | 2 --
+> > > >  1 file changed, 2 deletions(-)
+> > > >
+> > > > diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c index
+> > > > 2c2c5086..9a22246c 100644
+> > > > --- a/tests/i915/i915_pm_dc.c
+> > > > +++ b/tests/i915/i915_pm_dc.c
+> > > > @@ -531,8 +531,6 @@ int main(int argc, char *argv[])
+> > > >
+> > > >         igt_describe("This test validates display engine entry to
+> > > > DC9 state");
+> > > >         igt_subtest("dc9-dpms") {
+> > > > -
+> > > >         igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_
+> > > > fd),
+> > > > -                               "PC8+ residencies not supported\n");
+> > > >                 test_dc9_dpms(&data);
+> > > >         }
+> > > >
+> > > > --
+> > > > 2.34.1
+> > >
+> 
