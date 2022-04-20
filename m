@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2076.outbound.protection.outlook.com [40.107.94.76])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA86F10E45E
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 21:58:56 +0000 (UTC)
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam08on2055.outbound.protection.outlook.com [40.107.101.55])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFFB710E29E
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 21:58:53 +0000 (UTC)
 From: David Zhang <dingchen.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 20 Apr 2022 17:58:34 -0400
-Message-ID: <20220420215834.30467-5-dingchen.zhang@amd.com>
+Date: Wed, 20 Apr 2022 17:58:31 -0400
+Message-ID: <20220420215834.30467-2-dingchen.zhang@amd.com>
 In-Reply-To: <20220420215834.30467-1-dingchen.zhang@amd.com>
 References: <20220420215834.30467-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH v3 4/4] tests/amdgpu/amd_psr: add PSR-SU test case
- for cursor move + MPO scenario
+Subject: [igt-dev] [PATCH v3 1/4] tests/amdgpu/amd_psr: add helper to draw
+ cursor pattern
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,24 +26,15 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 [why & how]
-Besides the static background + cursor movement, a more generic use
-case from usermode is MPO + cursor movement, e.g. a video stream
-is playing on screen and user moves the cursor randomly. We'd have
-a test case to validate PSR-SU enablement and SU region updates by
-visual confirm for MPO + cursor movement scenario.
+For amdgpu PSR-SU validation, we'd create and test cursor update
+use case as well. To emulate a mouse-like cursor movement, we'd
+define a helper to draw a cursor pattern.
 
-Refactoring the function for static background + cursor movement
-test case by adding a flag indicating to test MPO or not. Adding
-primary FBs as member of data structure used in PSR-SU test cases.
-
-For MPO + cursormovement test case, create two primary FBs w/ diff
-color and fix the position, and during iteration, flip the primary
-FB together w/ cursor positon update. By enabling visual confirm
-debug option, the equivalent dirty rectangle region fo SU update
-is the combination of the old cursor position, new cursor position,
-and the dirty rectangle for MPO plane. It is expected to observe
-a green bar on the right side of the screen with height of the
-combinated dirty rectangle.
+- helper draw the cursor pattern as an 45-degrees rotated arrow
+- for the region of arrow, set alpha to 1 to make cursor foreground
+  and always on the top
+- for rest of the non-arrow region, set alpha to 0 to make it as
+  background
 
 Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Cc: Harry Wentland <harry.wentland@amd.com>
@@ -53,128 +44,66 @@ Cc: Wayne Lin <wayne.lin@amd.com>
 
 Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 ---
- tests/amdgpu/amd_psr.c | 48 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 36 insertions(+), 12 deletions(-)
+ tests/amdgpu/amd_psr.c | 47 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
 diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index cee57758..1a5ab2c1 100644
+index d4bfb7bb..e3a2cb4a 100644
 --- a/tests/amdgpu/amd_psr.c
 +++ b/tests/amdgpu/amd_psr.c
-@@ -55,6 +55,7 @@ typedef struct data {
- 	igt_pipe_t *pipe;
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_fb_t ov_fb[2];
-+	igt_fb_t pm_fb[2];
- 	drmModeModeInfo *mode;
- 	enum pipe pipe_id;
- 	int fd;
-@@ -494,10 +495,11 @@ static void run_check_psr_su_ffu(data_t *data)
- 	test_fini(data);
+@@ -81,6 +81,53 @@ static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
+ 	igt_put_cairo_ctx(cr);
  }
  
--static void test_cursor_movement(data_t *data, int iters, igt_fb_t * pfb, int cs_size, enum cursor_move move_type)
-+static void test_cursor_movement(data_t *data, int iters, int cs_size, enum cursor_move move_type, bool test_mpo)
- {
- 	int i, pos_x, pos_y;
- 	int ret;
-+	igt_fb_t *pfb;
- 
- 	/* incremental step == cursor size / 16 */
- 	for (i = 0, pos_y = 0, pos_x = 0; i < iters; ++i) {
-@@ -508,7 +510,11 @@ static void test_cursor_movement(data_t *data, int iters, igt_fb_t * pfb, int cs
- 		else if (move_type == DIAGONAL && ((pos_y + cs_size > data->h) || (pos_x + cs_size > data->w)))
- 			pos_x = pos_y = 0;
- 
-+		/* move cursor */
- 		igt_plane_set_position(data->cursor, pos_x, pos_y);
++/* draw a cursor pattern assuming the FB given is square w/ FORMAT ARGB */
++static void draw_color_cursor(igt_fb_t *fb, int size, double r, double g, double b)
++{
++	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
++	int x, y, line_w;
 +
-+		/* flip primary FB if MPO flag set */
-+		pfb = test_mpo ? &data->pm_fb[i % 2] : &data->pm_fb[0];
- 		igt_plane_set_fb(data->primary, pfb);
- 
- 		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-@@ -527,10 +533,9 @@ static void test_cursor_movement(data_t *data, int iters, igt_fb_t * pfb, int cs
- 	}
- }
- 
--static void run_check_psr_su_cursor(data_t *data)
-+static void run_check_psr_su_cursor(data_t *data, bool test_mpo)
- {
- 	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	igt_fb_t rect_fb;	// primary FB
- 	igt_fb_t cs_fb;		// cursor FB
- 	const int cs_size = 128;
- 	const int delay_sec = 5; // seconds
-@@ -548,18 +553,29 @@ static void run_check_psr_su_cursor(data_t *data)
- 	pb_h = data->h / 2;
- 	frame_rate = data->mode->vrefresh;
- 
--	/* primary & overlay FB creation and set alpha region of overlay to show */
++	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
++
 +	/*
-+	 * primary & overlay FBs creation
-+	 * - create primary FBs of quarter screen size of different colors (blue and green)
-+	 * - create overlay FB of screen size of white color (default alpha 1.0)
++	 * draw cursor
++	 * recall that alpha blending value:
++	 * - 0, output pixel is the background
++	 * - 1, output pixel is simply the foreground
++	 * - (0, 1), mix of background + foreground
 +	 */
- 	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
--			    .0, .0, 1.0, &rect_fb);
-+			    .0, .0, 1.0, &data->pm_fb[0]);
-+	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    .0, 1.0, .0, &data->pm_fb[1]);
- 	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
- 			    1.0, 1.0, 1.0, &data->ov_fb[0]);
--	draw_color_alpha(&data->ov_fb[0], 0, 0, pb_w, pb_h, 1.0, 1.0, 1.0, .0);
- 
- 	/* cursor FB creation, draw cursor pattern/set alpha regions */
- 	igt_create_fb(data->fd, cs_size, cs_size, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, &cs_fb);
- 	draw_color_cursor(&cs_fb, cs_size, 1.0, .0, 1.0);
- 
--	igt_plane_set_fb(data->primary, &rect_fb);
-+	/*
-+	 * panning the primary plane at the top-left of screen
-+	 * set alpha region in overlay plane and set alpha to 0.0 to show primary plane
-+	 * set cursor plane and starting from position of (0, 0)
-+	 */ 
-+	draw_color_alpha(&data->ov_fb[0], 0, 0, pb_w, pb_h, 1.0, 1.0, 1.0, .0);
-+	igt_plane_set_fb(data->primary, &data->pm_fb[0]);
- 	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
- 	igt_plane_set_fb(data->cursor, &cs_fb);
- 	igt_plane_set_position(data->cursor, 0, 0);
-@@ -575,15 +591,19 @@ static void run_check_psr_su_cursor(data_t *data)
- 	 */
- 
- 	/* horizontal */
--	test_cursor_movement(data, frame_rate * delay_sec, &rect_fb, cs_size, HORIZONTAL);
-+	igt_info("  moving cursor in horizontal ...\n");
-+	test_cursor_movement(data, frame_rate * delay_sec, cs_size, HORIZONTAL, test_mpo);
- 
- 	/* vertical */
--	test_cursor_movement(data, frame_rate * delay_sec, &rect_fb, cs_size, VERTICAL);
-+	igt_info("  moving cursor in vertical ...\n");
-+	test_cursor_movement(data, frame_rate * delay_sec, cs_size, VERTICAL, test_mpo);
- 
- 	/* diagonal */
--	test_cursor_movement(data, frame_rate * delay_sec, &rect_fb, cs_size, DIAGONAL);
-+	igt_info("  moving cursor in diagonal ...\n");
-+	test_cursor_movement(data, frame_rate * delay_sec, cs_size, DIAGONAL, test_mpo);
- 
--	igt_remove_fb(data->fd, &rect_fb);
-+	igt_remove_fb(data->fd, &data->pm_fb[0]);
-+	igt_remove_fb(data->fd, &data->pm_fb[1]);
- 	igt_remove_fb(data->fd, &cs_fb);
- 	igt_remove_fb(data->fd, &data->ov_fb[0]);
- 	test_fini(data);
-@@ -654,7 +674,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 
- 	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
- 		     "and to validate cursor movement + static background scenario");
--	igt_subtest("psr_su_cursor") run_check_psr_su_cursor(&data);
-+	igt_subtest("psr_su_cursor") run_check_psr_su_cursor(&data, false);
 +
-+	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
-+		     "and to validate cursor movement + MPO scenario");
-+	igt_subtest("psr_su_cursor_mpo") run_check_psr_su_cursor(&data, true);
- 
- 	igt_fixture
- 	{
++	/* set cursor FB to background first */
++	igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, .0);
++
++	/*
++	 * draw cursur pattern w/ alpha set to 1
++	 * - 1. draw triangle part
++	 * - 2. draw rectangle part
++	 */
++	for (x = y = 0, line_w = size / 2; line_w > 0; ++y, --line_w)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	/*
++	 * draw rectangle part, split into three geometry parts
++	 * - triangle
++	 * - rhombus
++	 * - reversed triangle
++	 */
++	for (x = size * 3 / 8, y = size / 8, line_w = 1; y < size * 3 / 8; --x, ++y, line_w += 2)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	for (x = size / 8, y = size * 3 / 8; y < size * 3 / 4; ++x, ++y)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	for (; line_w > 0; ++x, ++y, line_w -= 2)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
++
++	igt_put_cairo_ctx(cr);
++}
++
+ /* Common test setup. */
+ static void test_init(data_t *data)
+ {
 -- 
 2.25.1
