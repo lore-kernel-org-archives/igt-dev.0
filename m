@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8467810E387
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Apr 2022 23:44:13 +0000 (UTC)
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 19 Apr 2022 16:43:39 -0700
-Message-ID: <20220419234339.181-1-quic_jesszhan@quicinc.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E31AB10E804
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Apr 2022 05:03:04 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 19 Apr 2022 22:02:57 -0700
+Message-Id: <85c51c99da76e3fe286ed28e80fa964e148f6020.1650430680.git.ashutosh.dixit@intel.com>
+In-Reply-To: <deb07be64c3930945a0e7bd17989fda4ed2e5ece.1649870633.git.ashutosh.dixit@intel.com>
+References: <deb07be64c3930945a0e7bd17989fda4ed2e5ece.1649870633.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v1] meson: Move MSM-specific tests to their
- own subdirectory
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_sysfs: Add helpers to iterate
+ over GTs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,111 +19,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: robdclark@chromium.org, petri.latvala@intel.com, quic_aravindh@quicinc.com
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Move all custom MSM tests to their own subdirectory and have them
-installed in an msm/ subdirectory
----
- meson.build                    |  9 +++++++++
- tests/meson.build              |  4 +---
- tests/msm/meson.build          | 15 +++++++++++++++
- tests/{ => msm}/msm_mapping.c  |  0
- tests/{ => msm}/msm_recovery.c |  0
- tests/{ => msm}/msm_submit.c   |  0
- 6 files changed, 25 insertions(+), 3 deletions(-)
- create mode 100644 tests/msm/meson.build
- rename tests/{ => msm}/msm_mapping.c (100%)
- rename tests/{ => msm}/msm_recovery.c (100%)
- rename tests/{ => msm}/msm_submit.c (100%)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-diff --git a/meson.build b/meson.build
-index 3e937f5a5b98..a42414c1d22d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -260,6 +260,7 @@ includedir = get_option('includedir')
- libdir = get_option('libdir')
- libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
- amdgpudir = join_paths(libexecdir, 'amdgpu')
-+msmdir = join_paths(libexecdir, 'msm')
- mandir = get_option('mandir')
- pkgconfigdir = join_paths(libdir, 'pkgconfig')
- python3 = find_program('python3', required : true)
-@@ -295,10 +296,18 @@ if get_option('use_rpath')
- 		amdgpudir_rpathdir = join_paths(amdgpudir_rpathdir, '..')
- 	endforeach
- 	amdgpudir_rpathdir = join_paths(amdgpudir_rpathdir, libdir)
-+
-+	msmdir_rpathdir = '$ORIGIN'
-+	foreach p : msmdir.split('/')
-+		msmdir_rpathdir = join_paths(msmdir_rpathdir, '..')
-+	endforeach
-+	msmdir_rpathdir = join_paths(msmdir_rpathdir, libdir)
-+
- else
- 	bindir_rpathdir = ''
- 	libexecdir_rpathdir = ''
- 	amdgpudir_rpathdir = ''
-+	msmdir_rpathdir = ''
- endif
+Provide iterators to:
+- construct the subdirectory string for a gt
+- obtain fd for the subdirectory of the interface
+
+v2: Separated out RPS functionality into seaparate patch (Ashutosh)
+
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Andi Shyti <andi.shyti@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h | 13 +++++++++
+ 2 files changed, 84 insertions(+)
+
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index f8ef23e2c8e2..b167c0507039 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -54,6 +54,21 @@
+  * provides basic support for like igt_sysfs_open().
+  */
  
- subdir('lib')
-diff --git a/tests/meson.build b/tests/meson.build
-index 7261e9aa2950..4ee06677a1eb 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -63,9 +63,6 @@ test_progs = [
- 	'kms_vrr',
- 	'kms_writeback',
- 	'meta_test',
--	'msm_mapping',
--	'msm_recovery',
--	'msm_submit',
- 	'panfrost_get_param',
- 	'panfrost_gem_new',
- 	'panfrost_prime',
-@@ -420,6 +417,7 @@ test_executables += executable('sw_sync', 'sw_sync.c',
- test_list += 'sw_sync'
- 
- subdir('amdgpu')
-+subdir('msm')
- 
- gen_testlist = find_program('generate_testlist.sh')
- test_list_target = custom_target('testlist',
-diff --git a/tests/msm/meson.build b/tests/msm/meson.build
-new file mode 100644
-index 000000000000..9f1788a38d20
---- /dev/null
-+++ b/tests/msm/meson.build
-@@ -0,0 +1,15 @@
-+msm_progs = [
-+	'msm_mapping',
-+	'msm_recovery',
-+	'msm_submit'
-+]
-+msm_deps = test_deps
++/**
++ * igt_sysfs_has_attr:
++ * @dir: sysfs directory fd
++ * @attr: attr inside sysfs dir that needs to be checked for existence
++ *
++ * This checks if specified attr exists in device sysfs directory.
++ *
++ * Returns:
++ * true if attr exists in sysfs, false otherwise.
++ */
++bool igt_sysfs_has_attr(int dir, const char *attr)
++{
++	return !faccessat(dir, attr, F_OK, 0);
++}
 +
-+foreach prog : msm_progs
-+	test_executables += executable(prog, prog + '.c',
-+				       dependencies : msm_deps,
-+				       install_dir : msmdir,
-+				       install_rpath : msmdir_rpathdir,
-+				       install : true)
-+	test_list += join_paths('msm', prog)
-+endforeach
-diff --git a/tests/msm_mapping.c b/tests/msm/msm_mapping.c
-similarity index 100%
-rename from tests/msm_mapping.c
-rename to tests/msm/msm_mapping.c
-diff --git a/tests/msm_recovery.c b/tests/msm/msm_recovery.c
-similarity index 100%
-rename from tests/msm_recovery.c
-rename to tests/msm/msm_recovery.c
-diff --git a/tests/msm_submit.c b/tests/msm/msm_submit.c
-similarity index 100%
-rename from tests/msm_submit.c
-rename to tests/msm/msm_submit.c
+ /**
+  * igt_sysfs_path:
+  * @device: fd of the device
+@@ -104,6 +119,62 @@ int igt_sysfs_open(int device)
+ 	return open(path, O_RDONLY);
+ }
+ 
++/**
++ * igt_sysfs_gt_path:
++ * @device: fd of the device
++ * @gt: gt number
++ * @path: buffer to fill with the sysfs gt path to the device
++ * @pathlen: length of @path buffer
++ *
++ * This finds the sysfs directory corresponding to @device and @gt. If the gt
++ * specific directory is not available and gt is 0, path is filled with sysfs
++ * base directory.
++ *
++ * Returns:
++ * The directory path, or NULL on failure.
++ */
++char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen)
++{
++	struct stat st;
++
++	if (device < 0)
++		return NULL;
++
++	if (igt_debug_on(fstat(device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
++		return NULL;
++
++	snprintf(path, pathlen, "/sys/dev/char/%d:%d/gt/gt%d",
++		 major(st.st_rdev), minor(st.st_rdev), gt);
++
++	if (!igt_debug_on(access(path, F_OK)))
++		return path;
++	else if (!igt_debug_on(gt != 0))
++		return igt_sysfs_path(device, path, pathlen);
++
++	return NULL;
++}
++
++/**
++ * igt_sysfs_gt_open:
++ * @device: fd of the device
++ * @gt: gt number
++ *
++ * This opens the sysfs gt directory corresponding to device and gt for use
++ * with igt_sysfs_set() and igt_sysfs_get().
++ *
++ * Returns:
++ * The directory fd, or -1 on failure.
++ */
++int igt_sysfs_gt_open(int device, int gt)
++{
++	char path[96];
++
++	if (igt_debug_on(!igt_sysfs_gt_path(device, gt, path, sizeof(path))))
++		return -1;
++
++	return open(path, O_RDONLY);
++}
++
+ /**
+  * igt_sysfs_write:
+  * @dir: directory for the device from igt_sysfs_open()
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 56741a0a37e3..33317a969619 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -28,8 +28,21 @@
+ #include <stdbool.h>
+ #include <stdarg.h>
+ 
++#define for_each_sysfs_gt_path(i915__, path__, pathlen__) \
++	for (int gt__ = 0; \
++	     igt_sysfs_gt_path(i915__, gt__, path__, pathlen__) != NULL; \
++	     gt__++)
++
++#define for_each_sysfs_gt_dirfd(i915__, dirfd__, gt__) \
++	for (gt__ = 0; \
++	     (dirfd__ = igt_sysfs_gt_open(i915__, gt__)) != -1; \
++	     close(dirfd__), gt__++)
++
+ char *igt_sysfs_path(int device, char *path, int pathlen);
+ int igt_sysfs_open(int device);
++char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
++int igt_sysfs_gt_open(int device, int gt);
++bool igt_sysfs_has_attr(int dir, const char *attr);
+ 
+ int igt_sysfs_read(int dir, const char *attr, void *data, int len);
+ int igt_sysfs_write(int dir, const char *attr, const void *data, int len);
 -- 
-2.31.0
+2.34.1
