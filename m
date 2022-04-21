@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FC8410E5C5
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Apr 2022 15:00:30 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com, petri.latvala@intel.com,
- ashutosh.dixit@intel.com, umesh.nerlige.ramappa@intel.com,
- arjun.melkaveri@intel.com, krishnaiah.bommu@intel.com,
- igt-dev@lists.freedesktop.org
-Date: Thu, 21 Apr 2022 20:22:05 +0530
-Message-Id: <20220421145211.464313-1-priyanka.dandamudi@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0939110E1A6
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Apr 2022 15:49:41 +0000 (UTC)
+Date: Thu, 21 Apr 2022 17:49:37 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YmF9EXfaWmG4vPin@kamilkon-DESK1>
+References: <85c51c99da76e3fe286ed28e80fa964e148f6020.1650435058.git.ashutosh.dixit@intel.com>
+ <d38e666fe8159eed5defb4d30045fa1154410e4f.1650435058.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/6] Test for shared reset domain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d38e666fe8159eed5defb4d30045fa1154410e4f.1650435058.git.ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_sysfs: Add RPS sysfs helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,39 +20,226 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Hi Ashutosh,
 
-Add test for shared reset domain and lib functions to support it.
+On 2022-04-19 at 23:12:50 -0700, Ashutosh Dixit wrote:
+> From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> 
+> RPS sysfs files exposed by the kernel can either be in per-gt sysfs or in
+> the per-device legacy sysfs. Add helpers to read/write these files in
+> either of the two sets of locations.
+> 
+> v2: Added function descriptions (Kamil)
+>     Separated patch from "lib/igt_sysfs: Add helpers to iterate over GTs"
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Andi Shyti <andi.shyti@intel.com>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>  lib/igt_sysfs.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_sysfs.h | 54 +++++++++++++++++++++++++++++
+>  2 files changed, 144 insertions(+)
+> 
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> index b167c0507039..0ac5d2a3d6e5 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -54,6 +54,96 @@
+>   * provides basic support for like igt_sysfs_open().
+>   */
+>  
+> +enum {
+> +	GT,
+> +	RPS,
+> +
+> +	SYSFS_NUM_TYPES,
+> +};
+> +
+> +static const char *i915_attr_name[SYSFS_NUM_TYPES][SYSFS_NUM_ATTR] = {
+> +	{
+> +		"gt_act_freq_mhz",
+> +		"gt_cur_freq_mhz",
+> +		"gt_min_freq_mhz",
+> +		"gt_max_freq_mhz",
+> +		"gt_RP0_freq_mhz",
+> +		"gt_RP1_freq_mhz",
+> +		"gt_RPn_freq_mhz",
+> +		"gt_idle_freq_mhz",
+> +		"gt_boost_freq_mhz",
+> +		"power/rc6_enable",
+> +		"power/rc6_residency_ms",
+> +		"power/rc6p_residency_ms",
+> +		"power/rc6pp_residency_ms",
+> +		"power/media_rc6_residency_ms",
+> +	},
+> +	{
+> +		"rps_act_freq_mhz",
+> +		"rps_cur_freq_mhz",
+> +		"rps_min_freq_mhz",
+> +		"rps_max_freq_mhz",
+> +		"rps_RP0_freq_mhz",
+> +		"rps_RP1_freq_mhz",
+> +		"rps_RPn_freq_mhz",
+> +		"rps_idle_freq_mhz",
+> +		"rps_boost_freq_mhz",
+> +		"rc6_enable",
+> +		"rc6_residency_ms",
+> +		"rc6p_residency_ms",
+> +		"rc6pp_residency_ms",
+> +		"media_rc6_residency_ms",
+> +	},
+> +};
+> +
+> +/**
+> + * igt_sysfs_dir_id_to_name:
+> + * @dir: sysfs directory fd
+> + * @id: sysfs attribute id
+> + *
+> + * Returns attribute name corresponding to attribute id in either the
+> + * per-gt or legacy per-device sysfs
+> + *
+> + * Returns:
+> + * Attribute name in sysfs
+> + */
+> +const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id)
+> +{
+> +	igt_assert(id < SYSFS_NUM_ATTR);
 
-Ashutosh Dixit (1):
-  lib/intel_ctx: Create intel_ctx with physical engines in a single gt
+What about id < 0 ?
 
-Chris Wilson (1):
-  lib/i915/gem_engine_topology: Add helper to list engines
+> +
+> +	if (igt_sysfs_has_attr(dir, i915_attr_name[GT][id]))
+> +		return i915_attr_name[GT][id];
+> +	else if (igt_sysfs_has_attr(dir, i915_attr_name[RPS][id]))
+------- ^
+s/else //
 
-Marcin Bernatowicz (1):
-  lib/sysfs: helper for number of gts
+> +		return i915_attr_name[RPS][id];
+> +	else
+------- ^
+drop this else here, checkpatch warn:
+WARNING: else is not generally useful after a break or return
+#102: FILE: lib/igt_sysfs.c:118:
++               return i915_attr_name[RPS][id];
++       else
 
-Priyanka Dandamudi (2):
-  lib/i915/i915_drm_local : Add DRM_I915_QUERY_DISTANCE_INFO query
-  tests/gem_reset_stats: Test for shared reset domain
+> +		igt_assert_f(0, "Invalid sysfs dir\n");
 
-Umesh Nerlige Ramappa (1):
-  lib/igt_sysfs: Add helpers to iterate over GTs
+and align this assert.
 
- lib/i915/gem_engine_topology.c | 118 +++++++++++++++++++++---
- lib/i915/gem_engine_topology.h |   8 ++
- lib/i915/i915_drm_local.h      |  23 +++++
- lib/igt_sysfs.c                |  92 +++++++++++++++++++
- lib/igt_sysfs.h                |  14 +++
- lib/intel_ctx.c                |  41 +++++++++
- lib/intel_ctx.h                |   2 +
- tests/i915/gem_reset_stats.c   | 162 +++++++++++++++++++++++++++++++++
- 8 files changed, 447 insertions(+), 13 deletions(-)
+Rest looks good, with that fixed you can add my r-b tag.
 
--- 
-2.25.1
+Regards,
+Kamil
+
+> +}
+> +
+> +/**
+> + * igt_sysfs_path_id_to_name:
+> + * @path: sysfs directory path
+> + * @id: sysfs attribute id
+> + *
+> + * Returns attribute name corresponding to attribute id in either the
+> + * per-gt or legacy per-device sysfs
+> + *
+> + * Returns:
+> + * Attribute name in sysfs
+> + */
+> +const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id)
+> +{
+> +	int dir;
+> +	const char *name;
+> +
+> +	dir = open(path, O_RDONLY);
+> +	igt_assert(dir);
+> +
+> +	name = igt_sysfs_dir_id_to_name(dir, id);
+> +	close(dir);
+> +
+> +	return name;
+> +}
+> +
+>  /**
+>   * igt_sysfs_has_attr:
+>   * @dir: sysfs directory fd
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index 33317a969619..8e39b8fa9890 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -38,11 +38,65 @@
+>  	     (dirfd__ = igt_sysfs_gt_open(i915__, gt__)) != -1; \
+>  	     close(dirfd__), gt__++)
+>  
+> +#define igt_sysfs_rps_write(dir, id, data, len) \
+> +	igt_sysfs_write(dir, igt_sysfs_dir_id_to_name(dir, id), data, len)
+> +
+> +#define igt_sysfs_rps_read(dir, id, data, len) \
+> +	igt_sysfs_read(dir, igt_sysfs_dir_id_to_name(dir, id), data, len)
+> +
+> +#define igt_sysfs_rps_set(dir, id, value) \
+> +	igt_sysfs_set(dir, igt_sysfs_dir_id_to_name(dir, id), value)
+> +
+> +#define igt_sysfs_rps_get(dir, id) \
+> +	igt_sysfs_get(dir, igt_sysfs_dir_id_to_name(dir, id))
+> +
+> +#define igt_sysfs_rps_scanf(dir, id, fmt, ...) \
+> +	igt_sysfs_scanf(dir, igt_sysfs_dir_id_to_name(dir, id), fmt, ##__VA_ARGS__)
+> +
+> +#define igt_sysfs_rps_vprintf(dir, id, fmt, ap) \
+> +	igt_sysfs_vprintf(dir, igt_sysfs_dir_id_to_name(id), fmt, ap)
+> +
+> +#define igt_sysfs_rps_printf(dir, id, fmt, ...) \
+> +	igt_sysfs_printf(dir, igt_sysfs_dir_id_to_name(dir, id), fmt, ##__VA_ARGS__)
+> +
+> +#define igt_sysfs_rps_get_u32(dir, id) \
+> +	igt_sysfs_get_u32(dir, igt_sysfs_dir_id_to_name(dir, id))
+> +
+> +#define igt_sysfs_rps_set_u32(dir, id, value) \
+> +	igt_sysfs_set_u32(dir, igt_sysfs_dir_id_to_name(dir, id), value)
+> +
+> +#define igt_sysfs_rps_get_boolean(dir, id) \
+> +	igt_sysfs_get_boolean(dir, igt_sysfs_dir_id_to_name(dir, id))
+> +
+> +#define igt_sysfs_rps_set_boolean(dir, id, value) \
+> +	igt_sysfs_set_boolean(dir, igt_sysfs_dir_id_to_name(dir, id), value)
+> +
+> +enum i915_attr_id {
+> +	RPS_ACT_FREQ_MHZ,
+> +	RPS_CUR_FREQ_MHZ,
+> +	RPS_MIN_FREQ_MHZ,
+> +	RPS_MAX_FREQ_MHZ,
+> +	RPS_RP0_FREQ_MHZ,
+> +	RPS_RP1_FREQ_MHZ,
+> +	RPS_RPn_FREQ_MHZ,
+> +	RPS_IDLE_FREQ_MHZ,
+> +	RPS_BOOST_FREQ_MHZ,
+> +	RC6_ENABLE,
+> +	RC6_RESIDENCY_MS,
+> +	RC6P_RESIDENCY_MS,
+> +	RC6PP_RESIDENCY_MS,
+> +	MEDIA_RC6_RESIDENCY_MS,
+> +
+> +	SYSFS_NUM_ATTR,
+> +};
+> +
+>  char *igt_sysfs_path(int device, char *path, int pathlen);
+>  int igt_sysfs_open(int device);
+>  char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
+>  int igt_sysfs_gt_open(int device, int gt);
+>  bool igt_sysfs_has_attr(int dir, const char *attr);
+> +const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);
+> +const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
+>  
+>  int igt_sysfs_read(int dir, const char *attr, void *data, int len);
+>  int igt_sysfs_write(int dir, const char *attr, const void *data, int len);
+> -- 
+> 2.34.1
+> 
