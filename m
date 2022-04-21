@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 459D510F413
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Apr 2022 06:10:14 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 21 Apr 2022 08:09:55 +0200
-Message-Id: <20220421060955.21016-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220421060955.21016-1-zbigniew.kempczynski@intel.com>
-References: <20220421060955.21016-1-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] tests/i915/gem_exec_schedule: Use
- separate context for spinner
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu, 21 Apr 2022 06:33:17 -0000
+Message-ID: <165052279776.10763.18007375729657797379@emeril.freedesktop.org>
+References: <20220421060955.21016-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220421060955.21016-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_F?=
+ =?utf-8?q?ix_couple_of_gem=5Fexec=5Fschedule_subtests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,59 +17,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Iterating over all physical engines on default context is wrong and
-it may end with failure when there're more engines than default context
-contains. To handle this we should create separate context on top of
-all-physical-engines config.
+== Series Details ==
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/5444 (semaphore-resolved).
----
- tests/i915/gem_exec_schedule.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Series: Fix couple of gem_exec_schedule subtests
+URL   : https://patchwork.freedesktop.org/series/102908/
+State : warning
 
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index dfcff849c8..cf2625cbf5 100644
---- a/tests/i915/gem_exec_schedule.c
-+++ b/tests/i915/gem_exec_schedule.c
-@@ -1065,7 +1065,7 @@ static void semaphore_resolve(int i915, const intel_ctx_cfg_t *cfg,
- 	const struct intel_execution_engine2 *e;
- 	const uint32_t SEMAPHORE_ADDR = 64 << 10;
- 	uint32_t semaphore, *sema;
--	const intel_ctx_t *outer, *inner;
-+	const intel_ctx_t *spin_ctx, *outer, *inner;
- 	uint64_t ahnd = get_reloc_ahnd(i915, 0);
- 
- 	/*
-@@ -1080,6 +1080,7 @@ static void semaphore_resolve(int i915, const intel_ctx_cfg_t *cfg,
- 	igt_require(gem_scheduler_has_preemption(i915));
- 	igt_require(intel_get_drm_devid(i915) >= 8); /* for MI_SEMAPHORE_WAIT */
- 
-+	spin_ctx = intel_ctx_create(i915, cfg);
- 	outer = intel_ctx_create(i915, cfg);
- 	inner = intel_ctx_create(i915, cfg);
- 
-@@ -1097,7 +1098,7 @@ static void semaphore_resolve(int i915, const intel_ctx_cfg_t *cfg,
- 		if (!gem_class_can_store_dword(i915, e->class))
- 			continue;
- 
--		spin = __igt_spin_new(i915, .ahnd = ahnd,
-+		spin = __igt_spin_new(i915, .ahnd = ahnd, .ctx = spin_ctx,
- 				      .engine = e->flags, .flags = flags);
- 		igt_spin_end(spin); /* we just want its address for later */
- 		gem_sync(i915, spin->handle);
-@@ -1190,6 +1191,7 @@ static void semaphore_resolve(int i915, const intel_ctx_cfg_t *cfg,
- 
- 	intel_ctx_destroy(i915, inner);
- 	intel_ctx_destroy(i915, outer);
-+	intel_ctx_destroy(i915, spin_ctx);
- 	put_ahnd(ahnd);
- }
- 
--- 
-2.32.0
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/565398 for the overview.
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21542743):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                289
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1650522694:step_script
+  section_start:1650522694:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1725 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=21542743 responseStatus=201 Created token=ePuH5hWy
+  section_end:1650522704:upload_artifacts_on_failure
+  section_start:1650522704:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1650522705:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21542742):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                289
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1650522671:step_script
+  section_start:1650522671:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1725 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=21542742 responseStatus=201 Created token=Z3cZTkGa
+  section_end:1650522682:upload_artifacts_on_failure
+  section_start:1650522682:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1650522683:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/565398
