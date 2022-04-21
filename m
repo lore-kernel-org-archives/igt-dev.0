@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
  [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD99010E00C
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Apr 2022 22:40:40 +0000 (UTC)
-Message-ID: <cc310ef6-96b8-9002-e592-5811ef3bf56a@quicinc.com>
-Date: Thu, 21 Apr 2022 15:40:39 -0700
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 789B810E030
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Apr 2022 22:43:40 +0000 (UTC)
+Message-ID: <eefee734-f4f1-d912-9ebb-fe4fc3940e1c@quicinc.com>
+Date: Thu, 21 Apr 2022 15:43:39 -0700
 MIME-Version: 1.0
 Content-Language: en-US
-To: <lakshminarayana.vudum@intel.com>
+To: <yedireswarapux.sai.nandan@intel.com>
 References: <20220421172858.263-1-quic_jesszhan@quicinc.com>
  <165057519298.10764.6605100681028658462@emeril.freedesktop.org>
 From: Jessica Zhang <quic_jesszhan@quicinc.com>
@@ -30,7 +30,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hey Lakshmi,
+Hi Sai,
 
 I've looked over this failure, but it doesn't seem to be related to my 
 change.
