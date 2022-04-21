@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FAD510E37D
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Apr 2022 05:27:57 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
- zbigniew.kempczynski@intel.com
-Date: Mon, 25 Apr 2022 10:56:59 +0530
-Message-Id: <20220425052659.16768-1-sai.gowtham.ch@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9546D10E0D0
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Apr 2022 19:51:10 +0000 (UTC)
+Date: Thu, 21 Apr 2022 21:51:05 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YmG1qcR35zDexTGu@kamilkon-DESK1>
+References: <20220421060955.21016-1-zbigniew.kempczynski@intel.com>
+ <20220421060955.21016-3-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture : Add support
- for local memory
+In-Reply-To: <20220421060955.21016-3-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/i915/gem_exec_schedule: Don't
+ use default context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,280 +26,75 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+Hi Zbigniew,
 
-Adding local memory support to many-4K-zero subtest and used
-new macro for_each_memory_region for memory regioning.
+On 2022-04-21 at 08:09:54 +0200, Zbigniew Kempczyński wrote:
+> Config created on top of all physical devices may provide more devices
+> than default context contains. Using engine id from such "richer"
+> context is wrong when default context will be chosen for this engine.
+> Add dedicated context to handle all engines covered by context cfg.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/5444 (timeslicing)
+> ---
+>  tests/i915/gem_exec_schedule.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+> index caeac255de..dfcff849c8 100644
+> --- a/tests/i915/gem_exec_schedule.c
+> +++ b/tests/i915/gem_exec_schedule.c
+> @@ -568,7 +568,7 @@ static void timeslice(int i915, const intel_ctx_cfg_t *cfg,
+>  		.buffers_ptr = to_user_pointer(&obj),
+>  		.buffer_count = 1,
+>  	};
+> -	const intel_ctx_t *ctx;
+> +	const intel_ctx_t *ctx[2];
 
-Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_exec_capture.c | 100 ++++++++++++++++++++--------------
- 1 file changed, 59 insertions(+), 41 deletions(-)
+This looks redundant, see below.
 
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 60f8df04..0b6f3ffb 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -250,7 +250,8 @@ static void wait_to_die(int fence_out)
- 
- static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 		       const struct intel_execution_engine2 *e,
--		       uint32_t target, uint64_t target_size, uint32_t region)
-+		       uint32_t target, uint64_t target_size,
-+		       struct drm_i915_gem_memory_class_instance *region)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct drm_i915_gem_exec_object2 obj[4];
-@@ -268,13 +269,13 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	saved_engine = configure_hangs(fd, e, ctx->id);
- 
- 	memset(obj, 0, sizeof(obj));
--	obj[SCRATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
-+	obj[SCRATCH].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
- 	obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
- 	obj[CAPTURE].handle = target;
- 	obj[CAPTURE].flags = EXEC_OBJECT_CAPTURE;
- 	obj[NOCAPTURE].handle = gem_create(fd, 4096);
- 
--	obj[BATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
-+	obj[BATCH].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
- 	obj[BATCH].relocs_ptr = (uintptr_t)reloc;
- 	obj[BATCH].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
- 
-@@ -384,12 +385,13 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- }
- 
- static void capture(int fd, int dir, const intel_ctx_t *ctx,
--		    const struct intel_execution_engine2 *e, uint32_t region)
-+		const struct intel_execution_engine2 *e,
-+		struct drm_i915_gem_memory_class_instance *region)
- {
- 	uint32_t handle;
- 	uint64_t ahnd, obj_size = 4096;
- 
--	igt_assert_eq(__gem_create_in_memory_regions(fd, &handle, &obj_size, region), 0);
-+	igt_assert_eq(__gem_create_in_memory_region_list(fd, &handle, &obj_size, region, 1), 0);
- 	ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, region);
-@@ -415,7 +417,8 @@ static struct offset *
- __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	   const struct intel_execution_engine2 *e,
- 	   unsigned int size, int count,
--	   unsigned int flags, int *_fence_out)
-+	   unsigned int flags, int *_fence_out,
-+	   struct drm_i915_gem_memory_class_instance *region)
- #define INCREMENTAL 0x1
- #define ASYNC 0x2
- {
-@@ -436,9 +439,10 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	obj = calloc(count + 2, sizeof(*obj));
- 	igt_assert(obj);
- 
--	obj[0].handle = gem_create(fd, 4096);
-+	obj[0].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
- 	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
--	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
-+	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE |
-+			(ahnd ? EXEC_OBJECT_PINNED : 0);
- 
- 	for (i = 0; i < count; i++) {
- 		obj[i + 1].handle = gem_create(fd, size);
-@@ -459,11 +463,12 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 		}
- 	}
- 
--	obj[count + 1].handle = gem_create(fd, 4096);
-+	obj[count + 1].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
- 	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
- 	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
- 	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
--	obj[count + 1].flags = ahnd ? EXEC_OBJECT_PINNED : 0;
-+	obj[count + 1].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS |
-+				(ahnd ? EXEC_OBJECT_PINNED : 0);
- 
- 	memset(reloc, 0, sizeof(reloc));
- 	reloc[0].target_handle = obj[count + 1].handle; /* recurse */
-@@ -585,14 +590,16 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 		saved = configure_hangs(fd, e, ctx->id); \
- 	} while(0)
- 
--static void many(int fd, int dir, uint64_t size, unsigned int flags)
-+static void many(int fd, int dir, uint64_t size, unsigned int flags,
-+		struct drm_i915_gem_memory_class_instance *region)
- {
- 	const struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
--	uint64_t ram, gtt, ahnd;
-+	uint64_t ram, gtt, ahnd, lmem_size;
- 	unsigned long count, blobs;
- 	struct offset *offsets;
- 	struct gem_engine_properties saved_engine;
-+	struct drm_i915_query_memory_regions *info;
- 
- 	find_first_available_engine(fd, ctx, e, saved_engine);
- 
-@@ -601,13 +608,22 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
- 		  gtt, ram);
- 
--	count = min(gtt, ram) / 4;
--	igt_require(count > 1);
-+	info = gem_get_query_memory_regions(fd);
-+	lmem_size = gpu_meminfo_region_total_size(info, I915_MEMORY_CLASS_DEVICE) / size;
-+
-+	if (region->memory_class == I915_MEMORY_CLASS_SYSTEM) {
-+		count = min(gtt, ram) / 4;
-+		igt_require(count > 1);
-+		intel_require_memory(count, size, CHECK_RAM);
-+	} else {
-+		count = min(gtt, lmem_size) / 4;
-+		igt_require(count > 1);
-+	}
- 
--	intel_require_memory(count, size, CHECK_RAM);
- 	ahnd = get_reloc_ahnd(fd, ctx->id);
- 
--	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
-+	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL,
-+			region);
- 
- 	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
- 	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-@@ -620,7 +636,8 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- }
- 
- static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
--		    const struct intel_execution_engine2 *e)
-+		    const struct intel_execution_engine2 *e,
-+		    struct drm_i915_gem_memory_class_instance *region)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_exec_object2 obj = {
-@@ -677,7 +694,8 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
- 		/* Reopen the allocator in the new process. */
- 		ahnd = get_reloc_ahnd(fd, ctx2->id);
- 
--		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
-+		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC,
-+					&fence_out, region));
- 		put_ahnd(ahnd);
- 
- 		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-@@ -708,7 +726,8 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
- 	put_ahnd(ahnd);
- }
- 
--static void userptr(int fd, int dir)
-+static void userptr(int fd, int dir,
-+		struct drm_i915_gem_memory_class_instance *region)
- {
- 	const struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
-@@ -716,7 +735,7 @@ static void userptr(int fd, int dir)
- 	uint64_t ahnd;
- 	void *ptr;
- 	int obj_size = 4096;
--	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
-+
- 	struct gem_engine_properties saved_engine;
- 
- 	find_first_available_engine(fd, ctx, e, saved_engine);
-@@ -726,7 +745,8 @@ static void userptr(int fd, int dir)
- 	igt_require(__gem_userptr(fd, ptr, obj_size, 0, 0, &handle) == 0);
- 	ahnd = get_reloc_ahnd(fd, ctx->id);
- 
--	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, system_region);
-+	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size,
-+			region);
- 
- 	gem_close(fd, handle);
- 	put_ahnd(ahnd);
-@@ -764,9 +784,10 @@ igt_main
- 	int fd = -1;
- 	int dir = -1;
- 	struct drm_i915_query_memory_regions *query_info;
--	struct igt_collection *regions, *set;
--	char *sub_name;
--	uint32_t region;
-+	struct drm_i915_gem_memory_class_instance region_smem = {
-+		.memory_class = I915_MEMORY_CLASS_SYSTEM,
-+		.memory_instance = 0,
-+	};
- 
- 	igt_fixture {
- 		int gen;
-@@ -788,56 +809,53 @@ igt_main
- 		igt_require(safer_strlen(igt_sysfs_get(dir, "error")) > 0);
- 		query_info = gem_get_query_memory_regions(fd);
- 		igt_assert(query_info);
--		set = get_memory_region_set(query_info,
--				I915_SYSTEM_MEMORY,
--				I915_DEVICE_MEMORY);
- 	}
- 
- 	test_each_engine("capture", fd, ctx, e) {
--		for_each_combination(regions, 1, set) {
--			sub_name = memregion_dynamic_subtest_name(regions);
--			region = igt_collection_get_value(regions, 0);
--			igt_dynamic_f("%s-%s", e->name, sub_name)
--				capture(fd, dir, ctx, e, region);
--			free(sub_name);
-+		for_each_memory_region(r, fd) {
-+			igt_dynamic_f("%s-%s", e->name, r->name)
-+				capture(fd, dir, ctx, e, &r->ci);
- 		}
- 	}
- 
--	igt_subtest_f("many-4K-zero") {
-+	igt_subtest_with_dynamic("many-4K-zero") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 1<<12, 0);
-+		for_each_memory_region(r, fd) {
-+			igt_dynamic_f("%s", r->name)
-+				many(fd, dir, 1<<12, 0, &r->ci);
-+		}
- 	}
- 
- 	igt_subtest_f("many-4K-incremental") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 1<<12, INCREMENTAL);
-+		many(fd, dir, 1<<12, INCREMENTAL, &region_smem);
- 	}
- 
- 	igt_subtest_f("many-2M-zero") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 2<<20, 0);
-+		many(fd, dir, 2<<20, 0, &region_smem);
- 	}
- 
- 	igt_subtest_f("many-2M-incremental") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 2<<20, INCREMENTAL);
-+		many(fd, dir, 2<<20, INCREMENTAL, &region_smem);
- 	}
- 
- 	igt_subtest_f("many-256M-incremental") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		many(fd, dir, 256<<20, INCREMENTAL);
-+		many(fd, dir, 256<<20, INCREMENTAL, &region_smem);
- 	}
- 
- 	/* And check we can read from different types of objects */
- 
- 	igt_subtest_f("userptr") {
- 		igt_require(gem_can_store_dword(fd, 0));
--		userptr(fd, dir);
-+		userptr(fd, dir, &region_smem);
- 	}
- 
- 	test_each_engine("pi", fd, ctx, e)
- 		igt_dynamic_f("%s", (e)->name)
--			prioinv(fd, dir, ctx, e);
-+			prioinv(fd, dir, ctx, e, &region_smem);
- 
- 	igt_fixture {
- 		close(dir);
--- 
-2.35.1
+>  	uint32_t *result;
+>  	int out;
+>  
+> @@ -582,22 +582,25 @@ static void timeslice(int i915, const intel_ctx_cfg_t *cfg,
+>  	igt_require(gem_scheduler_has_timeslicing(i915));
+>  	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
+>  
+> +	ctx[0] = intel_ctx_create(i915, cfg);
+>  	obj.handle = timeslicing_batches(i915, &offset);
+>  	result = gem_mmap__device_coherent(i915, obj.handle, 0, 4096, PROT_READ);
+>  
+>  	execbuf.flags = engine | I915_EXEC_FENCE_OUT;
+>  	execbuf.batch_start_offset = 0;
+> +	execbuf.rsvd1 = ctx[0]->id;
+>  	gem_execbuf_wr(i915, &execbuf);
+> +	intel_ctx_destroy(i915, ctx[0]);
+
+Here you destroy this and later you create other context, so you
+can just reuse ctx pointer.
+
+>  
+>  	/* No coupling between requests; free to timeslice */
+>  
+> -	ctx = intel_ctx_create(i915, cfg);
+> -	execbuf.rsvd1 = ctx->id;
+> +	ctx[1] = intel_ctx_create(i915, cfg);
+> +	execbuf.rsvd1 = ctx[1]->id;
+>  	execbuf.rsvd2 >>= 32;
+>  	execbuf.flags = engine | I915_EXEC_FENCE_OUT;
+>  	execbuf.batch_start_offset = offset;
+>  	gem_execbuf_wr(i915, &execbuf);
+> -	intel_ctx_destroy(i915, ctx);
+> +	intel_ctx_destroy(i915, ctx[1]);
+
+Maybe here is place for intel_ctx_destroy(i915, ctx[0]); ?
+
+>  
+>  	gem_sync(i915, obj.handle);
+>  	gem_close(i915, obj.handle);
+> -- 
+> 2.32.0
+> 
+Regards,
+Kamil
