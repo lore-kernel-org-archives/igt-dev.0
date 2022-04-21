@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05FF310F535
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Apr 2022 06:50:15 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 21 Apr 2022 08:50:08 +0200
+Message-Id: <20220421065008.24682-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 21 Apr 2022 06:33:17 -0000
-Message-ID: <165052279776.10763.18007375729657797379@emeril.freedesktop.org>
-References: <20220421060955.21016-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220421060955.21016-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_F?=
- =?utf-8?q?ix_couple_of_gem=5Fexec=5Fschedule_subtests?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_lmem_swapping: Add
+ parallel-random-verify-ccs subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +18,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+For this subtest we need to use allocator thread so parallel subtests
+need to be executed in allocator multi-process aware environment.
 
-Series: Fix couple of gem_exec_schedule subtests
-URL   : https://patchwork.freedesktop.org/series/102908/
-State : warning
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Ramalingam C <ramalingam.c@intel.com>
+---
+ tests/i915/gem_lmem_swapping.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/565398 for the overview.
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21542743):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                289
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1650522694:step_script
-  section_start:1650522694:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1725 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=21542743 responseStatus=201 Created token=ePuH5hWy
-  section_end:1650522704:upload_artifacts_on_failure
-  section_start:1650522704:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1650522705:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21542742):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                289
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1650522671:step_script
-  section_start:1650522671:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1725 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=21542742 responseStatus=201 Created token=Z3cZTkGa
-  section_end:1650522682:upload_artifacts_on_failure
-  section_start:1650522682:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1650522683:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/565398
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+index e58a1f505f..5d93e9daae 100644
+--- a/tests/i915/gem_lmem_swapping.c
++++ b/tests/i915/gem_lmem_swapping.c
+@@ -576,6 +576,7 @@ static void test_evict(int i915,
+ 	if (flags & TEST_PARALLEL) {
+ 		int fd = gem_reopen_driver(i915);
+ 
++		intel_allocator_multiprocess_start();
+ 		ctx = intel_ctx_create_all_physical(fd);
+ 		__gem_context_set_persistence(fd, ctx->id, false);
+ 
+@@ -586,6 +587,7 @@ static void test_evict(int i915,
+ 		igt_waitchildren();
+ 		intel_ctx_destroy(fd, ctx);
+ 		close(fd);
++		intel_allocator_multiprocess_stop();
+ 	} else {
+ 		__do_evict(i915, ctx, &region->region, &params, params.seed);
+ 	}
+@@ -747,6 +749,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		{ "verify-random-ccs", TEST_CCS | TEST_RANDOM },
+ 		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
+ 		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
++		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
+ 		{ }
+ 	};
+ 	const intel_ctx_t *ctx;
+-- 
+2.32.0
