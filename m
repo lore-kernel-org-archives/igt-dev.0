@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D392710E810
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 10:22:35 +0000 (UTC)
-Date: Fri, 22 Apr 2022 06:22:28 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <YmKB5D9Y8FpX9VNN@intel.com>
-References: <20220418125048.7969-1-anshuman.gupta@intel.com>
- <20220418125048.7969-6-anshuman.gupta@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6718B10E1B4
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 10:28:03 +0000 (UTC)
+Date: Fri, 22 Apr 2022 12:27:58 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YmKDLmopAjeMnylL@kamilkon-DESK1>
+References: <20220421060955.21016-1-zbigniew.kempczynski@intel.com>
+ <20220421060955.21016-3-zbigniew.kempczynski@intel.com>
+ <YmG1qcR35zDexTGu@kamilkon-DESK1> <YmJHV/BloGQvyXKF@zkempczy-mobl2>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220418125048.7969-6-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/9] tools: Add intel_pm_rpm tool
+In-Reply-To: <YmJHV/BloGQvyXKF@zkempczy-mobl2>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/i915/gem_exec_schedule: Don't
+ use default context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,267 +23,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Apr 18, 2022 at 06:20:44PM +0530, Anshuman Gupta wrote:
-> intel_pm_rpm tool is a debug tool. It can be use to setup
-> and prepare the gfx card to go to D3Cold.
-> It also provide the debug option to disable all display and
-> prepare device to enter to runtime suspend.
+Hi Zbigniew,
+
+On 2022-04-22 at 08:12:39 +0200, Zbigniew Kempczyński wrote:
+> On Thu, Apr 21, 2022 at 09:51:05PM +0200, Kamil Konieczny wrote:
+> > Hi Zbigniew,
+> > 
+> > On 2022-04-21 at 08:09:54 +0200, Zbigniew Kempczyński wrote:
+> > > Config created on top of all physical devices may provide more devices
+> > > than default context contains. Using engine id from such "richer"
+> > > context is wrong when default context will be chosen for this engine.
+> > > Add dedicated context to handle all engines covered by context cfg.
+> > > 
+> > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/5444 (timeslicing)
+> > > ---
+> > >  tests/i915/gem_exec_schedule.c | 11 +++++++----
+> > >  1 file changed, 7 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+> > > index caeac255de..dfcff849c8 100644
+> > > --- a/tests/i915/gem_exec_schedule.c
+> > > +++ b/tests/i915/gem_exec_schedule.c
+> > > @@ -568,7 +568,7 @@ static void timeslice(int i915, const intel_ctx_cfg_t *cfg,
+> > >  		.buffers_ptr = to_user_pointer(&obj),
+> > >  		.buffer_count = 1,
+> > >  	};
+> > > -	const intel_ctx_t *ctx;
+> > > +	const intel_ctx_t *ctx[2];
+> > 
+> > This looks redundant, see below.
+> > 
+> > >  	uint32_t *result;
+> > >  	int out;
+> > >  
+> > > @@ -582,22 +582,25 @@ static void timeslice(int i915, const intel_ctx_cfg_t *cfg,
+> > >  	igt_require(gem_scheduler_has_timeslicing(i915));
+> > >  	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
+> > >  
+> > > +	ctx[0] = intel_ctx_create(i915, cfg);
+> > >  	obj.handle = timeslicing_batches(i915, &offset);
+> > >  	result = gem_mmap__device_coherent(i915, obj.handle, 0, 4096, PROT_READ);
+> > >  
+> > >  	execbuf.flags = engine | I915_EXEC_FENCE_OUT;
+> > >  	execbuf.batch_start_offset = 0;
+> > > +	execbuf.rsvd1 = ctx[0]->id;
+> > >  	gem_execbuf_wr(i915, &execbuf);
+> > > +	intel_ctx_destroy(i915, ctx[0]);
+> > 
+> > Here you destroy this and later you create other context, so you
+> > can just reuse ctx pointer.
 > 
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  tools/intel_pm_rpm.c | 209 +++++++++++++++++++++++++++++++++++++++++++
->  tools/meson.build    |   1 +
->  2 files changed, 210 insertions(+)
->  create mode 100644 tools/intel_pm_rpm.c
+> Yes, I know I can reuse. I created indexed array to easier track in
+> which context execbufs are executed. I mean when you're looking at the
+> code and you see
 > 
-> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-> new file mode 100644
-> index 000000000..df9cfa632
-> --- /dev/null
-> +++ b/tools/intel_pm_rpm.c
-> @@ -0,0 +1,209 @@
-> +/*
-> + * Copyright � 2022 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + */
-> +
-> +#include <errno.h>
-> +#include <getopt.h>
-> +#include <glib.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <stdbool.h>
-> +#include "igt.h"
-> +#include "igt_device.h"
-> +#include "igt_device_scan.h"
-> +#include "igt_pm.h"
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	int debugfs_fd;
-> +	uint32_t devid;
-> +	drmModeResPtr res;
-> +	igt_display_t display;
-> +} data_t;
-> +
-> +const char *help_str =
-> +	"  --disable-display\t\tDisable all screen and try to go into runtime pm.\n"
-> +	"  --setup-d3cold\t\tPrepare dgfx gfx card to enter runtime D3Cold.\n"
-> +	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
-> +static struct option long_options[] = {
-> +	{"disable-display", 0, 0, 'd'},
-> +	{"setup-d3cold", 0, 0, 's'},
-> +	{"help", 0, 0, 'h'},
-> +	{ 0, 0, 0, 0 }
-> +};
-> +
-> +const char *optstr = "dsh";
-> +
-> +static void usage(const char *name)
-> +{
-> +	igt_info("Usage: %s [options]\n", name);
-> +	igt_info("%s\n", help_str);
-> +}
-> +
-> +static void disable_all_displays(data_t *data)
-> +{
-> +	igt_output_t *output;
-> +
-> +	for (int i = 0; i < data->display.n_outputs; i++) {
-> +		output = &data->display.outputs[i];
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +		igt_display_commit(&data->display);
-> +	}
-> +}
-> +
-> +static void setup_gfx_card_d3cold(data_t *data)
-> +{
-> +	struct pci_device *root;
-> +	int d_state;
-> +
-> +	/* igfx does not support d3cold */
-> +	if (!IS_DGFX(data->devid))
-> +		return;
-
-I believe the if below will already take care of this since the real_power_state
-won't show up. However, let's keep this check here to be really clear on the
-expectations and to avoid navigating the tree in vain...
-
-> +
-> +	root = igt_device_get_pci_root_port(data->drm_fd);
-> +
-> +	if (!igt_pm_acpi_d3cold_supported(root)) {
-> +		igt_info("D3Cold isn't supported on Root port %04x:%02x:%02x.%01x\n",
-> +			 root->domain, root->bus, root->dev, root->func);
-> +		return;
-> +	}
-> +
-> +	disable_all_displays(data);
-> +	igt_pm_setup_pci_card_runtime_pm(root);
-> +	sleep(1);
-> +	d_state = igt_pm_get_acpi_real_d_state(root);
-> +
-> +	if (d_state == IGT_ACPI_D3Cold) {
-> +		igt_info("D3Cold achieved for root port %04x:%02x:%02x.%01x\n",
-> +			 root->domain, root->bus, root->dev, root->func);
-> +	} else {
-> +		igt_pm_print_pci_card_runtime_status();
-> +		igt_info("D3Cold not achieved yet. Please monitor %04x:%02x:%02x.%01x real_power_state\n",
-> +			 root->domain, root->bus, root->dev, root->func);
-> +	}
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +	bool disable_display = false, setup_d3cold = false;
-> +	struct igt_device_card card;
-> +	char *env_device = NULL;
-> +	int c, option_index = 0;
-> +	data_t data = {};
-> +	int ret = 0;
-> +
-> +	if (argc <= 1) {
-> +		usage(argv[0]);
-> +		return EXIT_SUCCESS;
-> +	}
-> +
-> +	env_device = getenv("IGT_DEVICE");
-> +	igt_devices_scan(false);
-> +
-> +	if (env_device) {
-> +		if (!igt_device_card_match(env_device, &card)) {
-> +			igt_warn("No device found for the env_device\n");
-> +			ret = EXIT_FAILURE;
-> +			goto exit;
-> +		}
-> +	} else {
-> +		if (!igt_device_find_first_i915_discrete_card(&card)) {
-> +			igt_warn("No discrete gpu found\n");
-> +			ret = EXIT_FAILURE;
-> +			goto exit;
-> +		}
-> +	}
-> +
-> +	while ((c = getopt_long(argc, argv, optstr,
-> +				long_options, &option_index)) != -1) {
-> +		switch (c) {
-> +		case 'd':
-> +			disable_display = true;
-> +			break;
-> +		case 's':
-> +			setup_d3cold = true;
-> +			break;
-> +		default:
-> +		case 'h':
-> +			usage(argv[0]);
-> +			ret = EXIT_SUCCESS;
-> +			goto exit;
-> +		}
-> +	}
-> +
-> +	data.drm_fd = igt_open_card(&card);
-> +	if (data.drm_fd  >= 0) {
-> +		igt_info("Device %s successfully opened\n", card.card);
-> +	} else {
-> +		igt_warn("Cannot open card %s device\n", card.card);
-> +		ret = EXIT_FAILURE;
-> +		goto exit;
-> +	}
-> +
-> +	data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-> +	data.devid = intel_get_drm_devid(data.drm_fd);
-> +	igt_setup_runtime_pm(data.drm_fd);
-> +
-> +	data.res = drmModeGetResources(data.drm_fd);
-> +	if (data.res) {
-> +		kmstest_set_vt_graphics_mode();
-> +		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
-> +			igt_warn("dmc fw is not loaded, no runtime pm\n");
-> +			ret = EXIT_FAILURE;
-> +			goto exit;
-> +		}
-> +	}
-
-Do we really need this? It is only for checking if DMC is there in case we have display right?
-Should deserve a comment at least...
-
-but already can use my:
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-if explained with reply here or with comment if you see it fits
-
-> +
-> +	if (disable_display) {
-> +		disable_all_displays(&data);
-> +		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
-> +			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
-> +			ret = EXIT_FAILURE;
-> +			goto exit;
-> +		}
-> +
-> +		igt_info("Device runtime suspended, Useful for debugging.\n"
-> +			 "Hit CTRL-C to exit\n");
-> +		/* Don't return useful for debugging */
-> +		while (1)
-> +			sleep(600);
-> +	}
-> +
-> +	if (setup_d3cold)
-> +		setup_gfx_card_d3cold(&data);
-> +
-> +exit:
-> +	igt_restore_runtime_pm();
-> +
-> +	if (data.res)
-> +		igt_display_fini(&data.display);
-> +
-> +	close(data.debugfs_fd);
-> +	close(data.drm_fd);
-> +	igt_devices_free();
-> +
-> +	return ret;
-> +}
-> diff --git a/tools/meson.build b/tools/meson.build
-> index 771d0b9e3..24d0ea714 100644
-> --- a/tools/meson.build
-> +++ b/tools/meson.build
-> @@ -28,6 +28,7 @@ tools_progs = [
->  	'intel_lid',
->  	'intel_opregion_decode',
->  	'intel_panel_fitter',
-> +	'intel_pm_rpm',
->  	'intel_reg_checker',
->  	'intel_residency',
->  	'intel_stepping',
-> -- 
-> 2.26.2
+> execbuf.rsvd1 = ctx->id;
 > 
+> you need to track the above code what context is in use. Using ctx[n]->id
+> increases readability imo. 
+> 
+> I will change to single ctx if you insist.
+> 
+> --
+> Zbigniew
+> 
+
+You can keep it if you see it more usefull in this form.
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+--
+Kamil
+> > >  
+> > >  	/* No coupling between requests; free to timeslice */
+> > >  
+> > > -	ctx = intel_ctx_create(i915, cfg);
+> > > -	execbuf.rsvd1 = ctx->id;
+> > > +	ctx[1] = intel_ctx_create(i915, cfg);
+> > > +	execbuf.rsvd1 = ctx[1]->id;
+> > >  	execbuf.rsvd2 >>= 32;
+> > >  	execbuf.flags = engine | I915_EXEC_FENCE_OUT;
+> > >  	execbuf.batch_start_offset = offset;
+> > >  	gem_execbuf_wr(i915, &execbuf);
+> > > -	intel_ctx_destroy(i915, ctx);
+> > > +	intel_ctx_destroy(i915, ctx[1]);
+> > 
+> > Maybe here is place for intel_ctx_destroy(i915, ctx[0]); ?
+> > 
+> > >  
+> > >  	gem_sync(i915, obj.handle);
+> > >  	gem_close(i915, obj.handle);
+> > > -- 
+> > > 2.32.0
+> > > 
+> > Regards,
+> > Kamil
