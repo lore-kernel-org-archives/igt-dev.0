@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78E4E10E20A
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 12:15:41 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 890AD10E469
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 12:53:50 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 22 Apr 2022 17:45:27 +0530
-Message-Id: <20220422121527.19008-1-anshuman.gupta@intel.com>
-In-Reply-To: <20220422055930.19377-1-anshuman.gupta@intel.com>
-References: <20220422055930.19377-1-anshuman.gupta@intel.com>
+Date: Fri, 22 Apr 2022 18:23:39 +0530
+Message-Id: <20220422125339.528-1-anshuman.gupta@intel.com>
+In-Reply-To: <20220422121527.19008-1-anshuman.gupta@intel.com>
+References: <20220422121527.19008-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t v2] intel-ci: Reorder system suspend tests
@@ -25,8 +25,11 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Reorder the system wide igt tests to last of fast-feedback.testlist,
-so we don't loose the other tests coverage on the platforms which
+so we don't lose the other tests coverage on the platforms which
 are largely getting hit by Suspend/Resume related failures.
+
+v2:
+- Improved the comment in fast-feedback.testlist. [swati]
 
 Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Swati Sharma <swati2.sharma@intel.com>
@@ -38,7 +41,7 @@ Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
  1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index f6329708b..c9613e609 100644
+index f6329708b..d075aa312 100644
 --- a/tests/intel-ci/fast-feedback.testlist
 +++ b/tests/intel-ci/fast-feedback.testlist
 @@ -25,8 +25,6 @@ igt@gem_exec_fence@nb-await
@@ -76,7 +79,7 @@ index f6329708b..c9613e609 100644
  igt@i915_selftest@live
  igt@dmabuf@all
 +
-+# System wide Suspend Test
++# System wide suspend tests
 +igt@i915_suspend@system-suspend-without-i915
 +igt@gem_exec_suspend@basic-s0
 +igt@gem_exec_suspend@basic-s3
