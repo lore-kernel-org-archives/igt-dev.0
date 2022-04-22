@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F410B10ECF1
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 13:55:55 +0000 (UTC)
-Message-ID: <3d26d651-4616-4b5d-1185-4850c01cff72@intel.com>
-Date: Fri, 22 Apr 2022 19:25:40 +0530
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C622B10F930
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 13:55:45 +0000 (UTC)
+Message-ID: <44bdda94-c934-2cc6-ca12-3b3b7609b1ca@intel.com>
+Date: Fri, 22 Apr 2022 19:25:32 +0530
 Content-Language: en-US
 To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20220422095907.31901-1-karthik.b.s@intel.com>
- <20220422095907.31901-2-karthik.b.s@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220422095907.31901-2-karthik.b.s@intel.com>
+In-Reply-To: <20220422095907.31901-1-karthik.b.s@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/kms_async_flips: Convert
- tests to dynamic
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/kms_async_flips: Test
+ Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,247 +26,321 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On Fri-22-04-2022 03:29 pm, Karthik B S wrote:
-> Convert the subtests to dynamic at pipe/output level.
+> -Convert tests to dynamic
+> -Replace drm function call with existing library functions
+> -igt_display_reset() before all subtests
+> 
+> v2: -Move conversion to dynamic subtest to a separate patch (Bhanu)
+>      -Use igt_output_get_mode to get default mode (Bhanu)
+>      -Add 'is_atomic' check before igt_display_commit2 (Bhanu)
 > 
 > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/kms_async_flips.c | 164 ++++++++++++++++++++--------------------
->   1 file changed, 83 insertions(+), 81 deletions(-)
+>   tests/kms_async_flips.c | 194 ++++++++++++++++++++++++++++------------
+>   1 file changed, 137 insertions(+), 57 deletions(-)
 > 
 > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index 335d6818..c00590aa 100644
+> index 5e11cd43..335d6818 100644
 > --- a/tests/kms_async_flips.c
 > +++ b/tests/kms_async_flips.c
-> @@ -350,56 +350,39 @@ static void test_invalid(data_t *data)
+> @@ -50,7 +50,7 @@ typedef struct {
+>   	uint32_t refresh_rate;
+>   	struct igt_fb bufs[4];
+>   	igt_display_t display;
+> -	drmModeConnectorPtr connector;
+> +	igt_output_t *output;
+>   	unsigned long flip_timestamp_us;
+>   	double flip_interval;
+>   	igt_pipe_crc_t *pipe_crc;
+> @@ -58,24 +58,9 @@ typedef struct {
+>   	int flip_count;
+>   	int frame_count;
+>   	bool flip_pending;
+> +	bool extended;
+>   } data_t;
+>   
+> -static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
+> -{
+> -	igt_output_t *output;
+> -	drmModeConnectorPtr ret = NULL;
+> -
+> -	for_each_connected_output(&data->display, output) {
+> -		if (output->config.connector->count_modes > 0) {
+> -			ret = output->config.connector;
+> -			break;
+> -		}
+> -	}
+> -
+> -	igt_assert_f(ret, "Connector NOT found\n");
+> -	return ret;
+> -}
+> -
+>   static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+>   			 unsigned int tv_usec, void *_data)
+>   {
+> @@ -129,14 +114,10 @@ static void wait_flip_event(data_t *data)
+>   }
+>   
+>   static void make_fb(data_t *data, struct igt_fb *fb,
+> -		    drmModeConnectorPtr connector, int index)
+> +		    uint32_t width, uint32_t height, int index)
+>   {
+> -	uint32_t width, height;
+>   	int rec_width;
+>   
+> -	width = connector->modes[0].hdisplay;
+> -	height = connector->modes[0].vdisplay;
+> -
+>   	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+>   
+>   	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> @@ -346,9 +327,11 @@ static void test_invalid(data_t *data)
+>   	int ret;
+>   	uint32_t width, height;
+>   	struct igt_fb fb;
+> +	drmModeModeInfo *mode;
+>   
+> -	width = data->connector->modes[0].hdisplay;
+> -	height = data->connector->modes[0].vdisplay;
+> +	mode = igt_output_get_mode(data->output);
+> +	width = mode->hdisplay;
+> +	height = mode->vdisplay;
+>   
+>   	igt_require(igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
+>   					       I915_FORMAT_MOD_Y_TILED));
+> @@ -367,31 +350,60 @@ static void test_invalid(data_t *data)
 >   	igt_remove_fb(data->drm_fd, &fb);
 >   }
 >   
-> -static enum pipe get_pipe_for_output(igt_display_t *display, igt_output_t *output)
-> -{
-> -	enum pipe pipe;
-> -
-> -	for_each_pipe(display, pipe) {
-> -		if (igt_pipe_connector_valid(pipe, output))
-> -			return pipe;
-> -	}
-> -
-> -	igt_assert_f(false, "No pipe found for output %s\n",
-> -		     igt_output_name(output));
-> -}
-> -
-> -static void test_init(data_t *data)
-> +static void test_init(data_t *data, enum pipe pipe)
->   {
->   	int i;
->   	uint32_t width, height;
-> -	enum pipe pipe;
->   	igt_plane_t *plane;
->   	static uint32_t prev_output_id;
->   	drmModeModeInfo *mode;
->   
-> -	if (!prev_output_id) {
-> -		prev_output_id = data->output->id;
-> -	} else if (prev_output_id == data->output->id) {
-> -		return;
-> -	} else {
-> -		prev_output_id = data->output->id;
-> -		for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-> -			igt_remove_fb(data->drm_fd, &data->bufs[i]);
-> -	}
-> -
-> -	igt_display_reset(&data->display);
-> -	igt_display_commit(&data->display);
-> -
-> -	pipe = get_pipe_for_output(&data->display, data->output);
-> -
->   	mode = igt_output_get_mode(data->output);
->   	width = mode->hdisplay;
->   	height = mode->vdisplay;
-
-I think, we need to get the mode after igt_display_reset()
-
->   
-> +	igt_display_reset(&data->display);
-> +	igt_display_commit(&data->display);
+> +static enum pipe get_pipe_for_output(igt_display_t *display, igt_output_t *output)
+> +{
+> +	enum pipe pipe;
 > +
->   	data->crtc_id = data->display.pipes[pipe].crtc_id;
->   	data->refresh_rate = mode->vrefresh;
->   
-> -	for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-> -		make_fb(data, &data->bufs[i], width, height, i);
-> -
->   	igt_output_set_pipe(data->output, pipe);
->   	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
->   
-> +	if (prev_output_id != data->output->id) {
-> +		prev_output_id = data->output->id;
-> +
-> +		if (data->bufs[0].fb_id) {
-> +			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-> +				igt_remove_fb(data->drm_fd, &data->bufs[i]);
-> +		}
-> +
-> +		for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-> +			make_fb(data, &data->bufs[i], width, height, i);
+> +	for_each_pipe(display, pipe) {
+> +		if (igt_pipe_connector_valid(pipe, output))
+> +			return pipe;
 > +	}
 > +
->   	igt_plane_set_fb(plane, &data->bufs[0]);
->   	igt_plane_set_size(plane, width, height);
->   
-> @@ -566,6 +549,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+> +	igt_assert_f(false, "No pipe found for output %s\n",
+> +		     igt_output_name(output));
+> +}
+> +
+>   static void test_init(data_t *data)
 >   {
->   	int i;
->   	igt_output_t *output;
+> -	drmModeResPtr res;
+> -	int i, ret;
+> +	int i;
+> +	uint32_t width, height;
 > +	enum pipe pipe;
+> +	igt_plane_t *plane;
+> +	static uint32_t prev_output_id;
+> +	drmModeModeInfo *mode;
+> +
+> +	if (!prev_output_id) {
+> +		prev_output_id = data->output->id;
+> +	} else if (prev_output_id == data->output->id) {
+> +		return;
+> +	} else {
+> +		prev_output_id = data->output->id;
+> +		for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+> +			igt_remove_fb(data->drm_fd, &data->bufs[i]);
+> +	}
+
+I understood, this logic is to optimize fb creation. Still, I can feel 
+regular method of fb creation is best option to me, b'coz crc subtest is 
+filling the FBs with different content.
+
+Subtest Start --> create fb --> do some stuff --> destroy fb --> End
+
+>   
+> -	res = drmModeGetResources(data->drm_fd);
+> -	igt_assert(res);
+> +	igt_display_reset(&data->display);
+> +	igt_display_commit(&data->display);
+>   
+> -	kmstest_unset_all_crtcs(data->drm_fd, res);
+> +	pipe = get_pipe_for_output(&data->display, data->output);
+>   
+> -	data->connector = find_connector_for_modeset(data);
+> -	data->crtc_id = kmstest_find_crtc_for_connector(data->drm_fd,
+> -							res, data->connector, 0);
+> +	mode = igt_output_get_mode(data->output);
+> +	width = mode->hdisplay;
+> +	height = mode->vdisplay;
+>   
+> -	data->refresh_rate = data->connector->modes[0].vrefresh;
+> +	data->crtc_id = data->display.pipes[pipe].crtc_id;
+> +	data->refresh_rate = mode->vrefresh;
+>   
+>   	for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+> -		make_fb(data, &data->bufs[i], data->connector, i);
+> +		make_fb(data, &data->bufs[i], width, height, i);
+>   
+> -	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[0].fb_id, 0, 0,
+> -			     &data->connector->connector_id, 1, &data->connector->modes[0]);
+> +	igt_output_set_pipe(data->output, pipe);
+> +	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -	igt_assert(ret == 0);
+> +	igt_plane_set_fb(plane, &data->bufs[0]);
+> +	igt_plane_set_size(plane, width, height);
+>   
+> -	drmModeFreeResources(res);
+> +	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   }
+>   
+>   static void queue_vblank(data_t *data)
+> @@ -494,7 +506,8 @@ static void test_crc(data_t *data)
+>   	igt_draw_fill_fb(data->drm_fd, &data->bufs[!frame], 0xff0000ff);
+>   
+>   	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id, 0, 0,
+> -			     &data->connector->connector_id, 1, &data->connector->modes[0]);
+> +			     &data->output->config.connector->connector_id, 1,
+> +			     &data->output->config.connector->modes[0]);
+>   	igt_assert_eq(ret, 0);
+>   
+>   	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
+> @@ -531,10 +544,28 @@ static void test_crc(data_t *data)
+>   	igt_assert_lt(data->frame_count * 2, data->flip_count);
+>   }
+>   
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	data_t *data = _data;
+> +
+> +	switch (opt) {
+> +	case 'e':
+> +		data->extended = true;
+> +		break;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const char help_str[] =
+> +	"  --e \t\tRun the extended tests\n";
+> +
+> +static data_t data;
+> +
+> +igt_main_args("e", NULL, help_str, opt_handler, &data)
+>   {
+> -	static data_t data;
+>   	int i;
+> +	igt_output_t *output;
 >   
 >   	igt_fixture {
 >   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -580,75 +564,93 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+> @@ -548,32 +579,78 @@ igt_main
+>   
 >   	igt_describe("Verify the async flip functionality and the fps during async flips");
 >   	igt_subtest_group {
->   		igt_describe("Wait for page flip events in between successive asynchronous flips");
-> -		igt_subtest("async-flip-with-page-flip-events") {
-> -			for_each_connected_output(&data.display, output) {
-> -				data.output = output;
-> -				test_init(&data);
-> -				test_async_flip(&data, false);
+> -		igt_fixture
+> -			test_init(&data);
 > -
-> -				if (!data.extended)
-> -					break;
-> +		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
-> +			for_each_pipe_static(pipe) {
+>   		igt_describe("Wait for page flip events in between successive asynchronous flips");
+> -		igt_subtest("async-flip-with-page-flip-events")
+> -			test_async_flip(&data, false);
+> +		igt_subtest("async-flip-with-page-flip-events") {
+> +			for_each_connected_output(&data.display, output) {
+> +				data.output = output;
+> +				test_init(&data);
 
-So, by default we are going to run tests on all pipes with single 
-output. With extended flag, we'll run on all pipe/output combinations.
+Please move test_init() to test_async_flip.
 
-I think its better to limit to single pipe (or) first & last pipes by 
-default.
+Ex: We can SKIP the test without test_init() if system won't support 
+monotonic_timestamp
 
-> +				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +					igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe)) {
-> +						data.output = output;
-> +						test_init(&data, pipe);
-> +						test_async_flip(&data, false);
-> +					}
-> +					if (!data.extended)
-> +						break;
-> +				}
->   			}
->   		}
+This comment is applicable in all places.
+
+> +				test_async_flip(&data, false);
+> +
+> +				if (!data.extended)
+> +					break;
+> +			}
+> +		}
 >   
 >   		igt_describe("Alternate between sync and async flips");
-> -		igt_subtest("alternate-sync-async-flip") {
-> -			for_each_connected_output(&data.display, output) {
-> -				data.output = output;
-> -				test_init(&data);
-> -				test_async_flip(&data, true);
-> -
-> -				if (!data.extended)
-> -					break;
-> +		igt_subtest_with_dynamic("alternate-sync-async-flip") {
-> +			for_each_pipe_static(pipe) {
-> +				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +					igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe)) {
-> +						data.output = output;
-> +						test_init(&data, pipe);
-> +						test_async_flip(&data, true);
-> +					}
-> +					if (!data.extended)
-> +						break;
-> +				}
->   			}
->   		}
->   
+> -		igt_subtest("alternate-sync-async-flip")
+> -			test_async_flip(&data, true);
+> +		igt_subtest("alternate-sync-async-flip") {
+> +			for_each_connected_output(&data.display, output) {
+> +				data.output = output;
+> +				test_init(&data);
+> +				test_async_flip(&data, true);
+> +
+> +				if (!data.extended)
+> +					break;
+> +			}
+> +		}
+> +
 >   
 >   		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
-> -		igt_subtest("test-time-stamp") {
-> -			for_each_connected_output(&data.display, output) {
-> -				data.output = output;
-> -				test_init(&data);
-> -				test_timestamp(&data);
-> -
-> -				if (!data.extended)
-> -					break;
-> +		igt_subtest_with_dynamic("test-time-stamp") {
-> +			for_each_pipe_static(pipe) {
-> +				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +					igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe)) {
-> +						data.output = output;
-> +						test_init(&data, pipe);
-> +						test_timestamp(&data);
-> +					}
-> +					if (!data.extended)
-> +						break;
-> +				}
->   			}
->   		}
+> -		igt_subtest("test-time-stamp")
+> -			test_timestamp(&data);
+> +		igt_subtest("test-time-stamp") {
+> +			for_each_connected_output(&data.display, output) {
+> +				data.output = output;
+> +				test_init(&data);
+> +				test_timestamp(&data);
+> +
+> +				if (!data.extended)
+> +					break;
+> +			}
+> +		}
 >   
 >   		igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
-> -		igt_subtest("test-cursor") {
-> -			for_each_connected_output(&data.display, output) {
-> -				data.output = output;
-> -				test_init(&data);
-> -				test_cursor(&data);
-> -
-> -				if (!data.extended)
-> -					break;
-> +		igt_subtest_with_dynamic("test-cursor") {
-> +			for_each_pipe_static(pipe) {
-> +				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +					igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe)) {
-> +						data.output = output;
-> +						test_init(&data, pipe);
-> +						test_cursor(&data);
-> +					}
-> +					if (!data.extended)
-> +						break;
-> +				}
->   			}
->   		}
+> -		igt_subtest("test-cursor")
+> -			test_cursor(&data);
+> +		igt_subtest("test-cursor") {
+> +			for_each_connected_output(&data.display, output) {
+> +				data.output = output;
+> +				test_init(&data);
+> +				test_cursor(&data);
+> +
+> +				if (!data.extended)
+> +					break;
+> +			}
+> +		}
 >   
 >   		igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
-> -		igt_subtest("invalid-async-flip") {
-> -			for_each_connected_output(&data.display, output) {
-> -				data.output = output;
-> -				test_init(&data);
-> -				test_invalid(&data);
-> -
-> -				if (!data.extended)
-> -					break;
-> +		igt_subtest_with_dynamic("invalid-async-flip") {
-> +			for_each_pipe_static(pipe) {
-> +				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +					igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe)) {
-> +						data.output = output;
-> +						test_init(&data, pipe);
-> +						test_invalid(&data);
-> +					}
-> +					if (!data.extended)
-> +						break;
-> +				}
->   			}
->   		}
+> -		igt_subtest("invalid-async-flip")
+> -			test_invalid(&data);
+> +		igt_subtest("invalid-async-flip") {
+> +			for_each_connected_output(&data.display, output) {
+> +				data.output = output;
+> +				test_init(&data);
+> +				test_invalid(&data);
+> +
+> +				if (!data.extended)
+> +					break;
+> +			}
+> +		}
 >   
 >   		igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
-> -		igt_subtest("crc") {
-> -			for_each_connected_output(&data.display, output) {
-> -				data.output = output;
-> -				test_init(&data);
-> -				test_crc(&data);
-> -
-> -				if (!data.extended)
-> -					break;
-> +		igt_subtest_with_dynamic("crc") {
-> +			for_each_pipe_static(pipe) {
-> +				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +					igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe)) {
-> +						data.output = output;
-> +						test_init(&data, pipe);
-> +						test_crc(&data);
-> +					}
-> +					if (!data.extended)
-> +							break;
-> +				}
->   			}
->   		}
+> -		igt_subtest("crc")
+> -			test_crc(&data);
+> +		igt_subtest("crc") {
+> +			for_each_connected_output(&data.display, output) {
+> +				data.output = output;
+> +				test_init(&data);
+> +				test_crc(&data);
+> +
+> +				if (!data.extended)
+> +					break;
+> +			}
+> +		}
 >   
+>   		igt_fixture {
+>   			for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
+> @@ -581,6 +658,9 @@ igt_main
+>   		}
+>   	}
+>   
+> -	igt_fixture
+> +	igt_fixture {
+> +		igt_display_reset(&data.display);
+> +		igt_display_commit(&data.display);
+>   		igt_display_fini(&data.display);
+> +	}
+>   }
