@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98CDE11213E
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 07:29:57 +0000 (UTC)
-Message-ID: <60a88b08-bf08-55ab-9f40-c32a702ec72d@intel.com>
-Date: Fri, 22 Apr 2022 12:59:50 +0530
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D02B112166
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 07:42:44 +0000 (UTC)
+Date: Fri, 22 Apr 2022 10:42:45 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Talla Raviteja Goud <ravitejax.goud.talla@intel.com>
+Message-ID: <YmJcdWH1lSjnPS73@platvala-desk.ger.corp.intel.com>
+References: <20220421055819.3765382-1-ravitejax.goud.talla@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220422055930.19377-1-anshuman.gupta@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220422055930.19377-1-anshuman.gupta@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Reorder system suspend to last
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220421055819.3765382-1-ravitejax.goud.talla@intel.com>
+Subject: Re: [igt-dev] [i-g-t,v2, 1/2] lib: sync i915_pciids.h with kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,77 +19,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>, badal.nilawar@intel.com
+Cc: igt-dev@lists.freedesktop.org, tejaskumarx.surendrakumar.upadhyay@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Please find one nitpick below. Rest looks good to me.
-With that fixed.
-
-Reviewed-by:
-Swati Sharma <swati2.sharma@intel.com>
-
-On 22-Apr-22 11:29 AM, Anshuman Gupta wrote:
-> Reorder the system wide igt tests to last of fast-feedback.testlist,
-> so we don't loose the other tests coverage on the platforms which
-> are largely getting hit by Suspend/Resume related failures.
+On Thu, Apr 21, 2022 at 11:28:18AM +0530, Talla Raviteja Goud wrote:
+> From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 > 
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> This synchronizes with kernel commit
+> 
+> 72c3c8d6e5275 ("drm/i915/rpl-p: Add PCI IDs")
+> to bring in RPL-P PCI IDs.
+> 
+> v2: Corresponding kernel commit added in commit message (Petri)
+> 
+> Signed-off-by: Adam Miszczak <adam.miszczak@intel.com>
+> Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> Signed-off-by: Raviteja Goud Talla <ravitejax.goud.talla@intel.com>
 > ---
->   tests/intel-ci/fast-feedback.testlist | 12 +++++++-----
->   1 file changed, 7 insertions(+), 5 deletions(-)
+>  lib/i915_pciids.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index f6329708b..c9613e609 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -25,8 +25,6 @@ igt@gem_exec_fence@nb-await
->   igt@gem_exec_gttfill@basic
->   igt@gem_exec_parallel@engines
->   igt@gem_exec_store@basic
-> -igt@gem_exec_suspend@basic-s0
-> -igt@gem_exec_suspend@basic-s3
->   igt@gem_flink_basic@bad-flink
->   igt@gem_flink_basic@bad-open
->   igt@gem_flink_basic@basic
-> @@ -98,7 +96,6 @@ igt@kms_chamelium@hdmi-edid-read
->   igt@kms_chamelium@hdmi-crc-fast
->   igt@kms_chamelium@vga-hpd-fast
->   igt@kms_chamelium@vga-edid-read
-> -igt@kms_chamelium@common-hpd-after-suspend
->   igt@kms_prop_blob@basic
->   igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
->   igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
-> @@ -128,7 +125,6 @@ igt@kms_pipe_crc_basic@read-crc-pipe-a
->   igt@kms_pipe_crc_basic@read-crc-pipe-b
->   igt@kms_pipe_crc_basic@read-crc-pipe-c
->   igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
-> -igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
->   igt@kms_psr@primary_page_flip
->   igt@kms_psr@cursor_plane_move
->   igt@kms_psr@sprite_plane_onoff
-> @@ -174,8 +170,14 @@ igt@gem_lmem_swapping@parallel-random-engines
->   igt@gem_lmem_swapping@random-engines
->   igt@gem_lmem_swapping@verify-random
->   igt@i915_pm_rpm@module-reload
-> -igt@i915_suspend@system-suspend-without-i915
->   
->   # Kernel selftests
->   igt@i915_selftest@live
->   igt@dmabuf@all
-> +
-> +# System wide Suspend Test
+> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+> index 533890dc..3233a06e 100644
+> --- a/lib/i915_pciids.h
+> +++ b/lib/i915_pciids.h
+> @@ -681,4 +681,13 @@
+>  	INTEL_VGA_DEVICE(0xA788, info), \
+>  	INTEL_VGA_DEVICE(0xA789, info)
 
-nitpick: System wide suspend tests
+You need to _copy_ the file from that kernel commit. It has changes to
+the list of RPL-S ids here too, this patch doesn't match what's in
+72c3c8d6e5275.
 
-> +igt@i915_suspend@system-suspend-without-i915
-> +igt@gem_exec_suspend@basic-s0
-> +igt@gem_exec_suspend@basic-s3
-> +igt@kms_chamelium@common-hpd-after-suspend
-> +igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
 
 -- 
-~Swati Sharma
+Petri Latvala
+
+
+>  
+> +/*RPL-P */
+> +#define INTEL_RPLP_IDS(info) \
+> +	INTEL_VGA_DEVICE(0xA720, info), \
+> +	INTEL_VGA_DEVICE(0xA721, info), \
+> +	INTEL_VGA_DEVICE(0xA7A0, info), \
+> +	INTEL_VGA_DEVICE(0xA7A1, info), \
+> +	INTEL_VGA_DEVICE(0xA7A8, info), \
+> +	INTEL_VGA_DEVICE(0xA7A9, info)
+> +
+>  #endif /* _I915_PCIIDS_H */
+> -- 
+> 2.34.1
+> 
