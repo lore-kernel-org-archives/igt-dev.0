@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69F1510F607
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 07:18:28 +0000 (UTC)
-Date: Fri, 22 Apr 2022 10:18:18 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Message-ID: <YmJWug08Xp/Dx40b@platvala-desk.ger.corp.intel.com>
-References: <20220311141300.60629-1-tomeu.vizoso@collabora.com>
- <20220311141300.60629-13-tomeu.vizoso@collabora.com>
- <YkrPzhCgpKaUxKjK@platvala-desk.ger.corp.intel.com>
- <a31f4d98-2020-7dc1-884f-52750d137f04@collabora.com>
+Content-Type: multipart/alternative;
+ boundary="===============0569620831907860295=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a31f4d98-2020-7dc1-884f-52750d137f04@collabora.com>
-Subject: Re: [igt-dev] [PATCH v3 12/12] ci: Add job for testing changes to
- tests in Qualcomm devices
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anshuman Gupta" <anshuman.gupta@intel.com>
+Date: Fri, 22 Apr 2022 07:27:09 -0000
+Message-ID: <165061242993.14005.11844269967792070118@emeril.freedesktop.org>
+References: <20220422055930.19377-1-anshuman.gupta@intel.com>
+In-Reply-To: <20220422055930.19377-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaW50ZWwt?=
+ =?utf-8?q?ci=3A_Reorder_system_suspend_to_last?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,161 +17,325 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Daniel Stone <daniels@collabora.com>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
- Eric Anholt <eric@anholt.net>, Sean Paul <seanpaul@chromium.org>,
- Mark Yacoub <markyacoub@google.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 21, 2022 at 09:28:48AM +0200, Tomeu Vizoso wrote:
-> 
-> 
-> On 4/4/22 1:00 PM, Petri Latvala wrote:
-> > On Fri, Mar 11, 2022 at 03:13:00PM +0100, Tomeu Vizoso wrote:
-> > > Will allow for more efortless testing of changes to tests that could
-> > > affect Qualcomm devices.
-> > > 
-> > > With these changes, it should be fairly trivial to add testing on other
-> > > KMS and GPU drivers.
-> > > 
-> > > v2: Update expectations after 9f32d552afd7 ("tests/kms_setmode: Use dynamic subtests")
-> > > 
-> > > v3: Use igt_runner and store a list of subtests for msm CI
-> > > 
-> > > Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-> > > ---
-> > >   .gitlab-ci.yml            | 49 +++++++++++++++++++
-> > >   ci/msm_results.txt        | 98 ++++++++++++++++++++++++++++++++++++++
-> > >   ci/run_tests.sh           | 14 ++++++
-> > >   tests/msm_ci/msm.testlist | 99 +++++++++++++++++++++++++++++++++++++++
-> > >   4 files changed, 260 insertions(+)
-> > >   create mode 100644 ci/msm_results.txt
-> > >   create mode 100755 ci/run_tests.sh
-> > >   create mode 100644 tests/msm_ci/msm.testlist
-> > > 
-> > > diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-> > > index f820661496c4..ec865bef5e28 100644
-> > > --- a/.gitlab-ci.yml
-> > > +++ b/.gitlab-ci.yml
-> > > @@ -325,6 +325,55 @@ default:
-> > >         test -e "${CI_JOB_JWT_FILE}" &&
-> > >         export CI_JOB_JWT="$(<${CI_JOB_JWT_FILE})" &&
-> > >         rm "${CI_JOB_JWT_FILE}"
-> > > +
-> > > +.lava-test:arm64:
-> > > +  image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian:commit-$CI_COMMIT_SHA
-> > > +  variables:
-> > > +    BASE_SYSTEM_HOST_PREFIX: "${MINIO_HOST}/mesa-lava"
-> > > +    FDO_UPSTREAM_REPO: gfx-ci/rootfs
-> > > +    ARCH: arm64
-> > > +    # Tag corresponding to artifacts from https://gitlab.freedesktop.org/gfx-ci/rootfs/
-> > > +    KERNEL_ROOTFS_TAG: "2022-03-11-jq--2022-03-08-bzip2--290b79e0e78eab67a83766f4e9691be554fc4afd"
-> > > +    BASE_SYSTEM_MAINLINE_HOST_PATH: "${BASE_SYSTEM_HOST_PREFIX}/${FDO_UPSTREAM_REPO}/${KERNEL_ROOTFS_TAG}/${ARCH}"
-> > > +    JOB_ARTIFACTS_BASE: ${PIPELINE_ARTIFACTS_BASE}/${CI_JOB_ID}
-> > > +    JOB_RESULTS_PATH: "${JOB_ARTIFACTS_BASE}/results.tar.gz"
-> > > +    MINIO_ARTIFACT_NAME: igt-arm64
-> > > +    BUILD_PATH: "${PIPELINE_ARTIFACTS_BASE}/${MINIO_ARTIFACT_NAME}.tar.gz"
-> > > +    JOB_ROOTFS_OVERLAY_PATH: "${JOB_ARTIFACTS_BASE}/job-rootfs-overlay.tar.gz"
-> > > +    KERNEL_IMAGE_NAME: Image
-> > > +    KERNEL_IMAGE_TYPE: "image"
-> > > +    VISIBILITY_GROUP: "Collabora+fdo"
-> > > +    HWCI_TEST_SCRIPT: "/install/ci/run_tests.sh"
-> > > +  dependencies:
-> > > +    - build:tests-debian-meson-arm64
-> > > +  needs:
-> > > +    - build-containers:build-debian
-> > > +    - build:tests-debian-meson-arm64
-> > > +  script:
-> > > +    - ./ci/lava/lava-submit.sh
-> > > +  artifacts:
-> > > +    name: "igt_${CI_JOB_NAME}"
-> > > +    when: always
-> > > +    paths:
-> > > +      - results/
-> > > +  tags:
-> > > +    - $RUNNER_TAG
-> > > +  after_script:
-> > > +    - wget -q "https://${JOB_RESULTS_PATH}" -O- | tar -xz
-> > > +
-> > > +test:msm:
-> > > +  extends:
-> > > +    - .lava-test:arm64
-> > > +  stage: test
-> > > +  variables:
-> > > +    DEVICE_TYPE: sc7180-trogdor-lazor-limozeen
-> > > +    DTB: sc7180-trogdor-lazor-limozeen-nots
-> > > +    BOOT_METHOD: depthcharge
-> > > +    KERNEL_IMAGE_TYPE: ""
-> > > +    IGT_FORCE_DRIVER: msm
-> > > +  tags:
-> > > +    - mesa-ci-x86-64-lava-rk3399-gru-kevin    # why it doesn't work!? mesa-ci-x86-64-lava-sc7180-trogdor-lazor-limozeen
-> > > +
-> > 
-> > 
-> > I'm not sure how to dress these questions into words, I'll try my
-> > best...
-> > 
-> > What's the aim of this, from the range of "support testing the kernel"
-> > to "just test that IGT doesn't break"? In particular, what's the
-> > kernel used here, how/when is it changed?
-> 
-> The goal here is definitely "just test that IGT doesn't break".
-> 
-> > Can that runner handle the load induced by merging this? For the
-> > record, IGT forks run the pipelines too, and i915 CI pushes postmerge
-> > tags _and_ premerge tags to its own ci-tags repository fork so it's
-> > quote a bit more load than just for every merge to IGT proper.
-> 
-> For now I think we have plenty of capacity as the boards in use are also
-> used for Mesa CI, which needs to shard to a minimum of 2 boards, more often
-> 5-10.
-> 
-> Also, the number of tests being run are quite small at the moment. If the
-> executions start taking longer, then capacity might not be enough.
-> 
-> > If I read that correctly, the results.json is stored in pipeline
-> > artifacts so there's a way to access the logs if something breaks,
-> > ok...
-> 
-> Yep, and also the first devcoredump.
-> 
-> > What's the procedure if someone wants to extend this kind of testing
-> > on their own platform?
-> 
-> I can add docs for this in a future iteration, but most of the work is in
-> providing a lab that can receive test jobs from a gitlab runner.
-> 
-> > Is IGT_FORCE_DRIVER necessary? FYI there's also
-> > IGT_DEVICE=pci:vendor=vendorstring along with other types of
-> > IGT_DEVICE filters. The semantics are slightly different but
-> > IGT_FORCE_DRIVER is the older, slightly less capable, device selection
-> > interface from before IGT_DEVICE.
-> 
-> Back when I looked at this for kernelci.org, that only worked for PCI
-> devices, but not platform. Has this changed?
+--===============0569620831907860295==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-What does "platform" mean here? "Any msm device"?
+== Series Details ==
 
-The device filters can use pci:vendor=hexcode for selecting the first
-device matching the vendor part of the PCI ID, or the sysfs selector
-like sys:/sys/devices/platform/vgem. You can check what the device
-selection can use with tools/lsgpu. The default listing is only --drm
-selectors, try --sys / --pci options separately.
+Series: intel-ci: Reorder system suspend to last
+URL   : https://patchwork.freedesktop.org/series/102971/
+State : failure
 
-(There's named vendors mappint strings to hex in
-lib/igt_device_scan.c, looks like so far there's only intel="8086" and
-amd="1002")
+== Summary ==
 
-The major difference with FORCE_DRIVER vs. IGT_DEVICE is the
-capability for selecting multiple devices to be used with
-drm_open_driver_another(), for testing e.g. prime between msm and
-vkms. I don't know how relevant that would be to you. Under the hood
-FORCE_DRIVER only forces DRIVER_ANY to mean
-DRIVER_THISONE. Practically that does nothing if there's only one
-/dev/dri/card* node in the system.
+CI Bug Log - changes from CI_DRM_11539 -> IGTPW_6974
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_6974 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_6974, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/index.html
+
+Participating hosts (44 -> 41)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (4): fi-hsw-4770 fi-rkl-11600 fi-bsw-cyan bat-adlp-4 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_6974:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - fi-tgl-1115g4:      [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11539/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-bdw-5557u:       [PASS][3] -> [INCOMPLETE][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11539/fi-bdw-5557u/igt@i915_selftest@live@gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-bdw-5557u/igt@i915_selftest@live@gem_contexts.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_6974 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271]) +9 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][8] ([i915#1886])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][9] -> [DMESG-FAIL][10] ([i915#4494] / [i915#4957])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11539/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@dp-edid-read:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][11] ([fdo#109271] / [fdo#111827]) +7 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html
+    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][12] ([fdo#109271] / [fdo#111827]) +7 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-bdw-gvtdvm/igt@kms_chamelium@dp-edid-read.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-kbl-guc:         NOTRUN -> [SKIP][13] ([fdo#109271])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-guc/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][14] ([fdo#109271] / [i915#5341])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-bdw-gvtdvm/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][15] ([fdo#109271] / [i915#533])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-c:
+    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][16] ([fdo#109271]) +42 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-bdw-gvtdvm/igt@kms_pipe_crc_basic@read-crc-pipe-c.html
+
+  * igt@runner@aborted:
+    - fi-tgl-1115g4:      NOTRUN -> [FAIL][17] ([i915#4312] / [i915#5257])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-tgl-1115g4/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gem:
+    - fi-pnv-d510:        [DMESG-FAIL][18] ([i915#4528]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11539/fi-pnv-d510/igt@i915_selftest@live@gem.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-pnv-d510/igt@i915_selftest@live@gem.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
+  [i915#5270]: https://gitlab.freedesktop.org/drm/intel/issues/5270
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5341]: https://gitlab.freedesktop.org/drm/intel/issues/5341
+  [i915#5356]: https://gitlab.freedesktop.org/drm/intel/issues/5356
+  [i915#5647]: https://gitlab.freedesktop.org/drm/intel/issues/5647
 
 
--- 
-Petri Latvala
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6445 -> IGTPW_6974
+
+  CI-20190529: 20190529
+  CI_DRM_11539: 6cb847509fe9aa278324a4f9662df271c42851f8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_6974: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/index.html
+  IGT_6445: 8c2ac78f0d80a2af3c7b47dd2df064cdd07f24b6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/index.html
+
+--===============0569620831907860295==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Reorder system suspend to last</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102971/">https://patchwork.freedesktop.org/series/102971/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11539 -&gt; IGTPW_6974</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_6974 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_6974, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/index.html</p>
+<h2>Participating hosts (44 -&gt; 41)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (4): fi-hsw-4770 fi-rkl-11600 fi-bsw-cyan bat-adlp-4 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_6974:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11539/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-tgl-1115g4/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem_contexts:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11539/fi-bdw-5557u/igt@i915_selftest@live@gem_contexts.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-bdw-5557u/igt@i915_selftest@live@gem_contexts.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_6974 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11539/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-edid-read:</p>
+<ul>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</p>
+</li>
+<li>
+<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-bdw-gvtdvm/igt@kms_chamelium@dp-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-guc/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-bdw-gvtdvm/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5341">i915#5341</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-pipe-c:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-bdw-gvtdvm/igt@kms_pipe_crc_basic@read-crc-pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +42 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-tgl-1115g4/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gem:<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11539/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/fi-pnv-d510/igt@i915_selftest@live@gem.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6445 -&gt; IGTPW_6974</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11539: 6cb847509fe9aa278324a4f9662df271c42851f8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_6974: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6974/index.html<br />
+  IGT_6445: 8c2ac78f0d80a2af3c7b47dd2df064cdd07f24b6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0569620831907860295==--
