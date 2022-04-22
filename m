@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F20510EEF8
- for <igt-dev@lists.freedesktop.org>; Mon,  2 May 2022 21:50:25 +0000 (UTC)
-Received: by mail-pg1-x529.google.com with SMTP id 7so8749050pga.12
- for <igt-dev@lists.freedesktop.org>; Mon, 02 May 2022 14:50:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220429011117.147-1-quic_jesszhan@quicinc.com>
-In-Reply-To: <20220429011117.147-1-quic_jesszhan@quicinc.com>
-From: Rob Clark <robdclark@chromium.org>
-Date: Mon, 2 May 2022 14:50:12 -0700
-Message-ID: <CAJs_Fx7ccyWrdnCDMM8Ayj-jwOZ6BLgAM9hsXk2r+9QHD_gjqw@mail.gmail.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3672710F847
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 05:19:47 +0000 (UTC)
+From: "Sai Nandan, YedireswarapuX" <yedireswarapux.sai.nandan@intel.com>
 To: Jessica Zhang <quic_jesszhan@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH i-g-t v1] tests/kms_universal_plane: Skip
- pageflip_test_pipe subtest if pipe has more than 1 primary plane
+Date: Fri, 22 Apr 2022 05:19:44 +0000
+Message-ID: <DM4PR11MB534232F448E6F1DF8E80D66CB3F79@DM4PR11MB5342.namprd11.prod.outlook.com>
+References: <20220421172858.263-1-quic_jesszhan@quicinc.com>
+ <165057519298.10764.6605100681028658462@emeril.freedesktop.org>
+ <eefee734-f4f1-d912-9ebb-fe4fc3940e1c@quicinc.com>
+In-Reply-To: <eefee734-f4f1-d912-9ebb-fe4fc3940e1c@quicinc.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev]
+ =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
+ =?utf-8?q?eson=3A_Move_MSM-specific_tests_to_their_own_subdirectory_=28re?=
+ =?utf-8?b?djUp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,76 +25,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, quic_aravindh@quicinc.com,
- petri.latvala@intel.com
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Vudum,
+ Lakshminarayana" <lakshminarayana.vudum@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 28, 2022 at 6:11 PM Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
->
-> Currently, IGT assumes that the first primary plane it encounters in
-> display->planes is the primary plane being assigned to the current pipe
-> in the driver [1]. However, this is not always the case when planes are
-> being shared between pipes and there are multiple possible primary
-> planes.
-
-I wonder if it is actually worse than that.. igt_pipe_t seems designed
-around the idea that CRTCs have exclusive ownership of planes.  Not
-sure if there are any tests that drive multiple CRTCs at the same
-time, which could end up trying to use the same plane on multiple
-pipes..
-
-BR,
--R
-
-> It's possible for IGT to set pipe->plane_primary to a primary plane
-> that's different from the one being used in the driver, since IGT uses
-> possible_crtcs to find the primary planes and stops at the first match.
->
-> Unfortunately, DRM doesn't expose which primary plane is being used by a
-> pipe, so let's skip pageflip_test_pipe for cases where there are
-> multiple possible primary planes.
->
-> [1]
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/lib/igt_kms.c#L2305
->
-> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-> ---
->  tests/kms_universal_plane.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> index 3cb6d704a6ef..95cae2be1aaf 100644
-> --- a/tests/kms_universal_plane.c
-> +++ b/tests/kms_universal_plane.c
-> @@ -470,13 +470,25 @@ static void
->  pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
->  {
->         pageflip_test_t test = { .data = data };
-> -       igt_plane_t *primary;
-> +       igt_plane_t *primary, *plane;
->         struct timeval timeout = { .tv_sec = 0, .tv_usec = 500 };
->         drmEventContext evctx = { .version = 2 };
->
->         fd_set fds;
-> +       int primary_plane_count = 0;
->         int ret = 0;
->
-> +       for_each_plane_on_pipe(&data->display, pipe, plane)
-> +               if (plane->type == DRM_PLANE_TYPE_PRIMARY)
-> +                       primary_plane_count++;
-> +
-> +       /*
-> +        * Skip subtest when there are multiple primary planes since we
-> +        * aren't able to distinguish which primary plane is actually being
-> +        * assigned a pipe
-> +        */
-> +       igt_skip_on(primary_plane_count > 1);
-> +
->         igt_require_pipe(&data->display, pipe);
->
->         igt_output_set_pipe(output, pipe);
-> --
-> 2.31.0
->
+SGkgSmVzc2ljYSwNCg0KSSBoYXZlIHJlLXJlcG9ydGVkIHRoZSBmYWlsdXJlLCBodHRwczovL3Bh
+dGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzEwMjg0NC8jcmV2NQ0KDQoNClRoYW5rcywN
+ClNhaSBOYW5kYW4NCg0KDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBKZXNz
+aWNhIFpoYW5nIDxxdWljX2plc3N6aGFuQHF1aWNpbmMuY29tPiANClNlbnQ6IEZyaWRheSwgQXBy
+aWwgMjIsIDIwMjIgNDoxNCBBTQ0KVG86IFNhaSBOYW5kYW4sIFllZGlyZXN3YXJhcHVYIDx5ZWRp
+cmVzd2FyYXB1eC5zYWkubmFuZGFuQGludGVsLmNvbT4NCkNjOiBpZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZw0KU3ViamVjdDogUmU6IOKclyBHaXRMYWIuUGlwZWxpbmU6IHdhcm5pbmcgZm9y
+IG1lc29uOiBNb3ZlIE1TTS1zcGVjaWZpYyB0ZXN0cyB0byB0aGVpciBvd24gc3ViZGlyZWN0b3J5
+IChyZXY1KQ0KDQpIaSBTYWksDQoNCkkndmUgbG9va2VkIG92ZXIgdGhpcyBmYWlsdXJlLCBidXQg
+aXQgZG9lc24ndCBzZWVtIHRvIGJlIHJlbGF0ZWQgdG8gbXkgY2hhbmdlLg0KDQpDYW4geW91IGhl
+bHAgdGFrZSBhIGxvb2s/DQoNClRoYW5rcywNCg0KSmVzc2ljYSBaaGFuZw0KDQpPbiA0LzIxLzIw
+MjIgMjowNiBQTSwgUGF0Y2h3b3JrIHdyb3RlOg0KPiA9PSBTZXJpZXMgRGV0YWlscyA9PQ0KPiAN
+Cj4gU2VyaWVzOiBtZXNvbjogTW92ZSBNU00tc3BlY2lmaWMgdGVzdHMgdG8gdGhlaXIgb3duIHN1
+YmRpcmVjdG9yeSAocmV2NSkNCj4gVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3Rv
+cC5vcmcvc2VyaWVzLzEwMjg0NC8NCj4gU3RhdGUgOiB3YXJuaW5nDQo+IA0KPiA9PSBTdW1tYXJ5
+ID09DQo+IA0KPiBQaXBlbGluZSBzdGF0dXM6IEZBSUxFRC4NCj4gDQo+IHNlZSBodHRwczovL2dp
+dGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vcGlwZWxpbmVzLzU2NjE3
+MiBmb3IgdGhlIG92ZXJ2aWV3Lg0KPiANCj4gdGVzdDpuaW5qYS10ZXN0LWFybTY0IGhhcyBmYWls
+ZWQgKGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9q
+b2JzLzIxNTkzNTQ3KToNCj4gICAgT2s6ICAgICAgICAgICAgICAgICAgIDIyDQo+ICAgIEV4cGVj
+dGVkIEZhaWw6ICAgICAgICAgMw0KPiAgICBGYWlsOiAgICAgICAgICAgICAgICAyODkNCj4gICAg
+VW5leHBlY3RlZCBQYXNzOiAgICAgICAwDQo+ICAgIFNraXBwZWQ6ICAgICAgICAgICAgICAgMA0K
+PiAgICBUaW1lb3V0OiAgICAgICAgICAgICAgIDANCj4gICAgDQo+ICAgIEZ1bGwgbG9nIHdyaXR0
+ZW4gdG8gL2J1aWxkcy9nZngtY2kvaWd0LWNpLXRhZ3MvYnVpbGQvbWVzb24tbG9ncy90ZXN0bG9n
+LnR4dA0KPiAgICBzZWN0aW9uX2VuZDoxNjUwNTc0OTg0OnN0ZXBfc2NyaXB0DQo+ICAgIHNlY3Rp
+b25fc3RhcnQ6MTY1MDU3NDk4NDp1cGxvYWRfYXJ0aWZhY3RzX29uX2ZhaWx1cmUNCj4gICAgVXBs
+b2FkaW5nIGFydGlmYWN0cyBmb3IgZmFpbGVkIGpvYg0KPiAgICBVcGxvYWRpbmcgYXJ0aWZhY3Rz
+Li4uDQo+ICAgIGJ1aWxkOiBmb3VuZCAxNzI1IG1hdGNoaW5nIGZpbGVzIGFuZCBkaXJlY3Rvcmll
+cw0KPiAgICBVcGxvYWRpbmcgYXJ0aWZhY3RzIGFzICJhcmNoaXZlIiB0byBjb29yZGluYXRvci4u
+LiAyMDEgQ3JlYXRlZCAgaWQ9MjE1OTM1NDcgcmVzcG9uc2VTdGF0dXM9MjAxIENyZWF0ZWQgdG9r
+ZW49UGVIeU50d2YNCj4gICAgc2VjdGlvbl9lbmQ6MTY1MDU3NDk5Nzp1cGxvYWRfYXJ0aWZhY3Rz
+X29uX2ZhaWx1cmUNCj4gICAgc2VjdGlvbl9zdGFydDoxNjUwNTc0OTk3OmNsZWFudXBfZmlsZV92
+YXJpYWJsZXMNCj4gICAgQ2xlYW5pbmcgdXAgcHJvamVjdCBkaXJlY3RvcnkgYW5kIGZpbGUgYmFz
+ZWQgdmFyaWFibGVzDQo+ICAgIHNlY3Rpb25fZW5kOjE2NTA1NzQ5OTg6Y2xlYW51cF9maWxlX3Zh
+cmlhYmxlcw0KPiAgICBFUlJPUjogSm9iIGZhaWxlZDogZXhpdCBjb2RlIDENCj4gDQo+ID09IExv
+Z3MgPT0NCj4gDQo+IEZvciBtb3JlIGRldGFpbHMgc2VlOiANCj4gaHR0cHM6Ly9naXRsYWIuZnJl
+ZWRlc2t0b3Aub3JnL2dmeC1jaS9pZ3QtY2ktdGFncy8tL3BpcGVsaW5lcy81NjYxNzINCg==
