@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3866310E0FE
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 11:44:30 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 22 Apr 2022 11:44:28 +0000
-Message-ID: <638d5a2c162d48a8805796667b744cd0@intel.com>
-References: <20220407183733.7329-1-juhapekka.heikkila@gmail.com>
- <20220407183733.7329-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220407183733.7329-2-juhapekka.heikkila@gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFA3C10E9B7
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 11:49:56 +0000 (UTC)
+Date: Fri, 22 Apr 2022 14:49:57 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>
+Message-ID: <YmKWZWxZyHWRn5gA@platvala-desk.ger.corp.intel.com>
+References: <20220422055930.19377-1-anshuman.gupta@intel.com>
+ <60a88b08-bf08-55ab-9f40-c32a702ec72d@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/kms_big_fb: Don't fill
- small fb during test setup
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <60a88b08-bf08-55ab-9f40-c32a702ec72d@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Reorder system suspend to last
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,30 +20,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
-dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSnVoYS0NCj4gUGVra2Eg
-SGVpa2tpbGENCj4gU2VudDogVGh1cnNkYXksIEFwcmlsIDcsIDIwMjIgOTozOCBQTQ0KPiBUbzog
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRD
-SCBpLWctdCAyLzJdIHRlc3RzL2k5MTUva21zX2JpZ19mYjogRG9uJ3QgZmlsbCBzbWFsbCBmYg0K
-PiBkdXJpbmcgdGVzdCBzZXR1cA0KPiANCj4gQ2hhbmdlIHNtYWxsIGZiIG5vdCB0byBiZSBmaWxs
-ZWQgd2l0aCBncmVlbiBjb2xvciwgdGhpcyB3aWxsIG5ldmVyIHNob3cgYW55d2hlcmUNCj4gYW5k
-IGp1c3QgdGFrZSB0aW1lIHdoaWxlIHNldHRpbmcgdXAgdGVzdC4NCj4gDQoNClJldmlld2VkLWJ5
-OiBNaWthIEthaG9sYSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPg0KDQo+IFNpZ25lZC1vZmYtYnk6
-IEp1aGEtUGVra2EgSGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+DQo+IC0t
-LQ0KPiAgdGVzdHMvaTkxNS9rbXNfYmlnX2ZiLmMgfCA1ICsrLS0tDQo+ICAxIGZpbGUgY2hhbmdl
-ZCwgMiBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rl
-c3RzL2k5MTUva21zX2JpZ19mYi5jIGIvdGVzdHMvaTkxNS9rbXNfYmlnX2ZiLmMgaW5kZXgNCj4g
-YjdiY2MzNDAxLi43YTg1MDQwMTcgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2k5MTUva21zX2JpZ19m
-Yi5jDQo+ICsrKyBiL3Rlc3RzL2k5MTUva21zX2JpZ19mYi5jDQo+IEBAIC00MjAsOSArNDIwLDgg
-QEAgc3RhdGljIGJvb2wgdGVzdF9waXBlKGRhdGFfdCAqZGF0YSkNCj4gIAlpZiAoaWd0X3JvdGF0
-aW9uXzkwX29yXzI3MChkYXRhLT5yb3RhdGlvbikpDQo+ICAJCWlndF9zd2FwKHdpZHRoLCBoZWln
-aHQpOw0KPiANCj4gLQlpZ3RfY3JlYXRlX2NvbG9yX2ZiKGRhdGEtPmRybV9mZCwgd2lkdGgsIGhl
-aWdodCwNCj4gLQkJCSAgICBkYXRhLT5mb3JtYXQsIGRhdGEtPm1vZGlmaWVyLA0KPiAtCQkJICAg
-IDAsIDEsIDAsICZkYXRhLT5zbWFsbF9mYik7DQo+ICsJaWd0X2NyZWF0ZV9mYihkYXRhLT5kcm1f
-ZmQsIHdpZHRoLCBoZWlnaHQsDQo+ICsJCSAgICAgIGRhdGEtPmZvcm1hdCwgZGF0YS0+bW9kaWZp
-ZXIsICZkYXRhLT5zbWFsbF9mYik7DQo+IA0KPiAgCWlndF9vdXRwdXRfc2V0X3BpcGUoZGF0YS0+
-b3V0cHV0LCBkYXRhLT5waXBlKTsNCj4gDQo+IC0tDQo+IDIuMjguMA0KDQo=
+On Fri, Apr 22, 2022 at 12:59:50PM +0530, Sharma, Swati2 wrote:
+> Please find one nitpick below. Rest looks good to me.
+> With that fixed.
+> 
+> Reviewed-by:
+> Swati Sharma <swati2.sharma@intel.com>
+
+And FWIW CI's pov:
+
+Acked-by: Petri Latvala <petri.latvala@intel.com>
+
+> 
+> On 22-Apr-22 11:29 AM, Anshuman Gupta wrote:
+> > Reorder the system wide igt tests to last of fast-feedback.testlist,
+> > so we don't loose the other tests coverage on the platforms which
+> > are largely getting hit by Suspend/Resume related failures.
+> > 
+> > Cc: Petri Latvala <petri.latvala@intel.com>
+> > Cc: Swati Sharma <swati2.sharma@intel.com>
+> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > ---
+> >   tests/intel-ci/fast-feedback.testlist | 12 +++++++-----
+> >   1 file changed, 7 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> > index f6329708b..c9613e609 100644
+> > --- a/tests/intel-ci/fast-feedback.testlist
+> > +++ b/tests/intel-ci/fast-feedback.testlist
+> > @@ -25,8 +25,6 @@ igt@gem_exec_fence@nb-await
+> >   igt@gem_exec_gttfill@basic
+> >   igt@gem_exec_parallel@engines
+> >   igt@gem_exec_store@basic
+> > -igt@gem_exec_suspend@basic-s0
+> > -igt@gem_exec_suspend@basic-s3
+> >   igt@gem_flink_basic@bad-flink
+> >   igt@gem_flink_basic@bad-open
+> >   igt@gem_flink_basic@basic
+> > @@ -98,7 +96,6 @@ igt@kms_chamelium@hdmi-edid-read
+> >   igt@kms_chamelium@hdmi-crc-fast
+> >   igt@kms_chamelium@vga-hpd-fast
+> >   igt@kms_chamelium@vga-edid-read
+> > -igt@kms_chamelium@common-hpd-after-suspend
+> >   igt@kms_prop_blob@basic
+> >   igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+> >   igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+> > @@ -128,7 +125,6 @@ igt@kms_pipe_crc_basic@read-crc-pipe-a
+> >   igt@kms_pipe_crc_basic@read-crc-pipe-b
+> >   igt@kms_pipe_crc_basic@read-crc-pipe-c
+> >   igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
+> > -igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+> >   igt@kms_psr@primary_page_flip
+> >   igt@kms_psr@cursor_plane_move
+> >   igt@kms_psr@sprite_plane_onoff
+> > @@ -174,8 +170,14 @@ igt@gem_lmem_swapping@parallel-random-engines
+> >   igt@gem_lmem_swapping@random-engines
+> >   igt@gem_lmem_swapping@verify-random
+> >   igt@i915_pm_rpm@module-reload
+> > -igt@i915_suspend@system-suspend-without-i915
+> >   # Kernel selftests
+> >   igt@i915_selftest@live
+> >   igt@dmabuf@all
+> > +
+> > +# System wide Suspend Test
+> 
+> nitpick: System wide suspend tests
+> 
+> > +igt@i915_suspend@system-suspend-without-i915
+> > +igt@gem_exec_suspend@basic-s0
+> > +igt@gem_exec_suspend@basic-s3
+> > +igt@kms_chamelium@common-hpd-after-suspend
+> > +igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+> 
+> -- 
+> ~Swati Sharma
