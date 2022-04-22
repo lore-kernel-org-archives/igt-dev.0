@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3744210EB58
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 14:12:28 +0000 (UTC)
-Date: Fri, 22 Apr 2022 16:12:24 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B94CE10ECFA
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 14:22:11 +0000 (UTC)
+Date: Fri, 22 Apr 2022 16:22:07 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YmK3yFzMkYFEyDnK@kamilkon-DESK1>
-References: <20220422125912.6862-1-anshuman.gupta@intel.com>
+Message-ID: <YmK6D2iiWseVOsIh@kamilkon-DESK1>
+References: <20220418125048.7969-1-anshuman.gupta@intel.com>
+ <20220418125048.7969-7-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220422125912.6862-1-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_device_info: Add IS_DGFX()
- support
+In-Reply-To: <20220418125048.7969-7-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 6/9] i915_pm_rpm: Add D3Cold basic
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,86 +28,74 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Anshuman,
 
-On 2022-04-22 at 18:29:12 +0530, Anshuman Gupta wrote:
-> Currently IGT is lacking IS_DGFX() macro support.
+On 2022-04-18 at 18:20:45 +0530, Anshuman Gupta wrote:
+> Add support for D3Cold basic subtest.
+> It setup and prepares the gfx PCI card for D3Cold
+> and checks the ACPI D3Cold state.
+> 
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>  tests/i915/i915_pm_rpm.c | 28 ++++++++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+> 
+> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> index d2bce5826..c30862dc4 100644
+> --- a/tests/i915/i915_pm_rpm.c
+> +++ b/tests/i915/i915_pm_rpm.c
+> @@ -1534,6 +1534,31 @@ __noreturn static void stay_subtest(void)
+>  		sleep(600);
+>  }
+>  
+> +static void d3cold_basic_subtest(void)
+> +{
+> +	struct pci_device *root;
+> +	bool result;
+> +
+> +	/* igfx does not support d3cold */
+> +	igt_require(IS_DGFX(ms_data.devid));
+> +
+> +	root = igt_device_get_pci_root_port(drm_fd);
+> +	disable_all_screens_and_wait(&ms_data);
+> +	igt_require(igt_pm_acpi_d3cold_supported(root));
+> +	igt_pm_setup_pci_card_runtime_pm(root);
+> +
+> +	result = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
+> +
+> +	if (!result) {
+> +		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
+> +			 root->domain, root->bus, root->dev, root->func);
+> +		igt_pm_print_pci_card_runtime_status();
+> +	}
+> +
+> +	igt_assert(result);
+> +	igt_pm_restore_pci_card_runtime_pm();
+> +}
+> +
+>  static void system_suspend_subtest(int state, int debug)
+>  {
+>  	disable_all_screens_and_wait(&ms_data);
+> @@ -2065,6 +2090,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		igt_subtest("stay")
+>  			stay_subtest();
+>  
 
-imho anything new is lacking ... I would rewrite this into
-something like in subject and move that add macro info to
-place where you describe what you added.
+For each new added subtest add description before, like:
 
-> There are some power features like D3Cold are only
-> supported on discrete card. So IGT test/tools specific
+	igt_describe("Describe your subtest here");
 
-s/So//
-
-> to D3Cold requires to consume IS_DGFX().
-
-s/requires to consume IS_DGFX()./requires to know this./
-
-> Adding a is_dgfx field in intel_device_info and initializing
-
-s/a is_dgfx/an is_dgfx/
-
-Here you can write about new macro.
-
-> it for DG1. All future discrete platform would require to
--------- ^
-
-You are also adding it for DG2, so write DG1/DG2 here.
+Run you test with --describe option and see where you need to
+add it (do this only to new subtests you are adding).
 
 Regards,
 Kamil
 
-> initialize this field.
-> 
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> ---
->  lib/intel_chipset.h     | 2 ++
->  lib/intel_device_info.c | 2 ++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-> index db75a829f..07fdd213e 100644
-> --- a/lib/intel_chipset.h
-> +++ b/lib/intel_chipset.h
-> @@ -42,6 +42,7 @@ struct intel_device_info {
->  	unsigned gt; /* 0 if unknown */
->  	bool has_4tile : 1;
->  	bool has_flatccs;
-> +	bool is_dgfx :1;
->  	bool is_mobile : 1;
->  	bool is_whitney : 1;
->  	bool is_almador : 1;
-> @@ -208,6 +209,7 @@ void intel_check_pch(void);
->  
->  #define IS_MOBILE(devid)	(intel_get_device_info(devid)->is_mobile)
->  #define IS_965(devid)		AT_LEAST_GEN(devid, 4)
-> +#define IS_DGFX(devid)	(intel_get_device_info(devid)->is_dgfx)
->  
->  #define HAS_BSD_RING(devid)	AT_LEAST_GEN(devid, 5)
->  #define HAS_BLT_RING(devid)	AT_LEAST_GEN(devid, 6)
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index e55841df5..b735f16a6 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -386,6 +386,7 @@ static const struct intel_device_info intel_rocketlake_info = {
->  static const struct intel_device_info intel_dg1_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 12,
-> +	.is_dgfx = true,
->  	.is_dg1 = true,
->  	.codename = "dg1"
->  };
-> @@ -394,6 +395,7 @@ static const struct intel_device_info intel_dg2_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 13,
->  	.has_4tile = true,
-> +	.is_dgfx = true,
->  	.is_dg2 = true,
->  	.codename = "dg2",
->  	.has_flatccs = true,
+> +	igt_subtest("d3cold-basic")
+> +		d3cold_basic_subtest();
+> +
+>  	/* Essential things */
+>  	igt_subtest("drm-resources-equal")
+>  		drm_resources_equal_subtest();
 > -- 
 > 2.26.2
 > 
