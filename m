@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D66BA10F793
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 07:28:32 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 22 Apr 2022 09:28:25 +0200
-Message-Id: <20220422072825.11563-1-zbigniew.kempczynski@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98CDE11213E
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 07:29:57 +0000 (UTC)
+Message-ID: <60a88b08-bf08-55ab-9f40-c32a702ec72d@intel.com>
+Date: Fri, 22 Apr 2022 12:59:50 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_isolation.c - fix to
- poison CACHE_MODE_0
+Content-Language: en-US
+To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220422055930.19377-1-anshuman.gupta@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20220422055930.19377-1-anshuman.gupta@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Reorder system suspend to last
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,44 +20,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: CQ Tang <cq.tang@intel.com>, Chris P Wilson <chris.p.wilson@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: CQ Tang <cq.tang@intel.com>
+Please find one nitpick below. Rest looks good to me.
+With that fixed.
 
-On DG2, if we poison bit8 of this register 0x7000, it causes the test
-to catch "GPU hung". bit8 is "Depth Related Cache Pipelined Flush
-Disable", set this to enable slow mode.
-This change is to mask off to set bit8 of this register.
+Reviewed-by:
+Swati Sharma <swati2.sharma@intel.com>
 
-Signed-off-by: CQ Tang <cq.tang@intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Chris P Wilson <chris.p.wilson@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_ctx_isolation.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+On 22-Apr-22 11:29 AM, Anshuman Gupta wrote:
+> Reorder the system wide igt tests to last of fast-feedback.testlist,
+> so we don't loose the other tests coverage on the platforms which
+> are largely getting hit by Suspend/Resume related failures.
+> 
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>   tests/intel-ci/fast-feedback.testlist | 12 +++++++-----
+>   1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> index f6329708b..c9613e609 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -25,8 +25,6 @@ igt@gem_exec_fence@nb-await
+>   igt@gem_exec_gttfill@basic
+>   igt@gem_exec_parallel@engines
+>   igt@gem_exec_store@basic
+> -igt@gem_exec_suspend@basic-s0
+> -igt@gem_exec_suspend@basic-s3
+>   igt@gem_flink_basic@bad-flink
+>   igt@gem_flink_basic@bad-open
+>   igt@gem_flink_basic@basic
+> @@ -98,7 +96,6 @@ igt@kms_chamelium@hdmi-edid-read
+>   igt@kms_chamelium@hdmi-crc-fast
+>   igt@kms_chamelium@vga-hpd-fast
+>   igt@kms_chamelium@vga-edid-read
+> -igt@kms_chamelium@common-hpd-after-suspend
+>   igt@kms_prop_blob@basic
+>   igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+>   igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+> @@ -128,7 +125,6 @@ igt@kms_pipe_crc_basic@read-crc-pipe-a
+>   igt@kms_pipe_crc_basic@read-crc-pipe-b
+>   igt@kms_pipe_crc_basic@read-crc-pipe-c
+>   igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
+> -igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+>   igt@kms_psr@primary_page_flip
+>   igt@kms_psr@cursor_plane_move
+>   igt@kms_psr@sprite_plane_onoff
+> @@ -174,8 +170,14 @@ igt@gem_lmem_swapping@parallel-random-engines
+>   igt@gem_lmem_swapping@random-engines
+>   igt@gem_lmem_swapping@verify-random
+>   igt@i915_pm_rpm@module-reload
+> -igt@i915_suspend@system-suspend-without-i915
+>   
+>   # Kernel selftests
+>   igt@i915_selftest@live
+>   igt@dmabuf@all
+> +
+> +# System wide Suspend Test
 
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index bcb9b73410..95d13969fa 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -116,7 +116,13 @@ static const struct named_register {
- 	{ "OACTXID", GEN8, RCS0, 0x2364 },
- 	{ "PS_INVOCATION_COUNT_2", GEN8, RCS0, 0x2448, 2, .write_mask = ~0x3 },
- 	{ "PS_DEPTH_COUNT_2", GEN8, RCS0, 0x2450, 2 },
--	{ "Cache_Mode_0", GEN7, RCS0, 0x7000, .masked = true },
-+	{ "Cache_Mode_0", GEN7, RCS0, 0x7000, .masked = true,
-+	  /*
-+	   * bit8 is "Depth Relate Cache Pipelined Flush Disable",
-+	   * set this to enable slow mode, and the test catches
-+	   * "GPU hung" on DG2, so mask off to poison this bit.
-+	   */
-+	  .write_mask = ~0x100 },
- 	{ "Cache_Mode_1", GEN7, RCS0, 0x7004, .masked = true },
- 	{ "GT_MODE", GEN8, RCS0, 0x7008, .masked = true },
- 	{ "L3_Config", GEN_RANGE(8, 11), RCS0, 0x7034 },
+nitpick: System wide suspend tests
+
+> +igt@i915_suspend@system-suspend-without-i915
+> +igt@gem_exec_suspend@basic-s0
+> +igt@gem_exec_suspend@basic-s3
+> +igt@kms_chamelium@common-hpd-after-suspend
+> +igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+
 -- 
-2.32.0
+~Swati Sharma
