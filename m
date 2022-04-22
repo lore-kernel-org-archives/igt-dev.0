@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 658F310F513
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 11:36:48 +0000 (UTC)
-Date: Fri, 22 Apr 2022 14:36:49 +0300
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A07510E0FE
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 11:38:44 +0000 (UTC)
+Date: Fri, 22 Apr 2022 14:38:45 +0300
 From: Petri Latvala <petri.latvala@intel.com>
 To: Jessica Zhang <quic_jesszhan@quicinc.com>
-Message-ID: <YmKTUd5Ic/NazRZZ@platvala-desk.ger.corp.intel.com>
-References: <20220421162545.135-1-quic_jesszhan@quicinc.com>
- <YmJliBYaxQBDMPak@platvala-desk.ger.corp.intel.com>
+Message-ID: <YmKTxenDlaT4VeXF@platvala-desk.ger.corp.intel.com>
+References: <20220421172858.263-1-quic_jesszhan@quicinc.com>
+ <165057519298.10764.6605100681028658462@emeril.freedesktop.org>
+ <cc310ef6-96b8-9002-e592-5811ef3bf56a@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YmJliBYaxQBDMPak@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] meson: Move MSM-specific tests to
- their own subdirectory
+In-Reply-To: <cc310ef6-96b8-9002-e592-5811ef3bf56a@quicinc.com>
+Subject: Re: [igt-dev]
+ =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
+ =?utf-8?q?eson=3A_Move_MSM-specific_tests_to_their_own_subdirectory_=28re?=
+ =?utf-8?b?djUp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,66 +24,22 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, robdclark@chromium.org,
- quic_aravindh@quicinc.com
+Cc: igt-dev@lists.freedesktop.org, lakshminarayana.vudum@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 22, 2022 at 11:21:28AM +0300, Petri Latvala wrote:
-> On Thu, Apr 21, 2022 at 09:25:45AM -0700, Jessica Zhang wrote:
-> > Move all custom MSM tests to their own subdirectory and have them
-> > installed in an msm/ subdirectory
-> > 
-> > Changes from v1:
-> > - Removed extra whitespace
-> > - Moved meson build commands for msm tests from tests/msm/meson.build
-> >   to tests/meson.build
-> > ---
-> >  meson.build                    |  8 ++++++++
-> >  tests/meson.build              | 18 +++++++++++++++---
-> >  tests/{ => msm}/msm_mapping.c  |  0
-> >  tests/{ => msm}/msm_recovery.c |  0
-> >  tests/{ => msm}/msm_submit.c   |  0
-> >  5 files changed, 23 insertions(+), 3 deletions(-)
-> >  rename tests/{ => msm}/msm_mapping.c (100%)
-> >  rename tests/{ => msm}/msm_recovery.c (100%)
-> >  rename tests/{ => msm}/msm_submit.c (100%)
-> > 
-> > diff --git a/meson.build b/meson.build
-> > index 3e937f5a5b98..5d6f5d5686bb 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -260,6 +260,7 @@ includedir = get_option('includedir')
-> >  libdir = get_option('libdir')
-> >  libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
-> >  amdgpudir = join_paths(libexecdir, 'amdgpu')
-> > +msmdir = join_paths(libexecdir, 'msm')
-> >  mandir = get_option('mandir')
-> >  pkgconfigdir = join_paths(libdir, 'pkgconfig')
-> >  python3 = find_program('python3', required : true)
-> > @@ -295,10 +296,17 @@ if get_option('use_rpath')
-> >  		amdgpudir_rpathdir = join_paths(amdgpudir_rpathdir, '..')
-> >  	endforeach
-> >  	amdgpudir_rpathdir = join_paths(amdgpudir_rpathdir, libdir)
-> > +
-> > +	msmdir_rpathdir = '$ORIGIN'
-> > +	foreach p : msmdir.split('/')
-> > +		msmdir_rpathdir = join_paths(msmdir_rpathdir, '..')
-> > +	endforeach
-> > +	msmdir_rpathdir = join_paths(msmdir_rpathdir, libdir)
-> >  else
-> >  	bindir_rpathdir = ''
-> >  	libexecdir_rpathdir = ''
-> >  	amdgpudir_rpathdir = ''
-> > +	msmdir_rpathdir = ''
-> >  endif
+On Thu, Apr 21, 2022 at 03:40:39PM -0700, Jessica Zhang wrote:
+> Hey Lakshmi,
 > 
-> Drop this chunk. It's only needed if msm binaries are in their own
-> subdirectory. As can be seen by 'msmdir_rpathdir' being unused now.
+> I've looked over this failure, but it doesn't seem to be related to my
+> change.
+> 
+> Can you help take a look?
 
-And I of course missed that there was already an updated version on
-this...
+It's a spurious error that happens more and more often now... I just
+sent a patch to disable ninja-test-arm* temporarily to avoid this,
+until it's properly fixed.
 
 
 -- 
@@ -88,68 +47,43 @@ Petri Latvala
 
 
 > 
+> Thanks,
 > 
-> -- 
-> Petri Latvala
+> Jessica Zhang
 > 
-> 
-> >  
-> >  subdir('lib')
-> > diff --git a/tests/meson.build b/tests/meson.build
-> > index 7261e9aa2950..fb0f1e37f633 100644
-> > --- a/tests/meson.build
-> > +++ b/tests/meson.build
-> > @@ -63,9 +63,6 @@ test_progs = [
-> >  	'kms_vrr',
-> >  	'kms_writeback',
-> >  	'meta_test',
-> > -	'msm_mapping',
-> > -	'msm_recovery',
-> > -	'msm_submit',
-> >  	'panfrost_get_param',
-> >  	'panfrost_gem_new',
-> >  	'panfrost_prime',
-> > @@ -253,6 +250,12 @@ i915_progs = [
-> >  	'sysfs_timeslice_duration',
-> >  ]
-> >  
-> > +msm_progs = [
-> > +	'msm_mapping',
-> > +	'msm_recovery',
-> > +	'msm_submit'
-> > +]
-> > +
-> >  test_deps = [ igt_deps ]
-> >  
-> >  if libdrm_nouveau.found()
-> > @@ -294,6 +297,15 @@ foreach prog : i915_progs
-> >  	test_list += prog
-> >  endforeach
-> >  
-> > +foreach prog : msm_progs
-> > +	test_executables += executable(prog, join_paths('msm', prog + '.c'),
-> > +				       dependencies : test_deps,
-> > +				       install_dir : libexecdir,
-> > +				       install_rpath : libexecdir_rpathdir,
-> > +				       install : true)
-> > +	test_list += prog
-> > +endforeach
-> > +
-> >  test_executables += executable('drm_fdinfo',
-> >  	   join_paths('i915', 'drm_fdinfo.c'),
-> >  	   dependencies : test_deps + [ lib_igt_drm_fdinfo ],
-> > diff --git a/tests/msm_mapping.c b/tests/msm/msm_mapping.c
-> > similarity index 100%
-> > rename from tests/msm_mapping.c
-> > rename to tests/msm/msm_mapping.c
-> > diff --git a/tests/msm_recovery.c b/tests/msm/msm_recovery.c
-> > similarity index 100%
-> > rename from tests/msm_recovery.c
-> > rename to tests/msm/msm_recovery.c
-> > diff --git a/tests/msm_submit.c b/tests/msm/msm_submit.c
-> > similarity index 100%
-> > rename from tests/msm_submit.c
-> > rename to tests/msm/msm_submit.c
-> > -- 
-> > 2.31.0
+> On 4/21/2022 2:06 PM, Patchwork wrote:
+> > == Series Details ==
 > > 
+> > Series: meson: Move MSM-specific tests to their own subdirectory (rev5)
+> > URL   : https://patchwork.freedesktop.org/series/102844/
+> > State : warning
+> > 
+> > == Summary ==
+> > 
+> > Pipeline status: FAILED.
+> > 
+> > see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/566172 for the overview.
+> > 
+> > test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21593547):
+> >    Ok:                   22
+> >    Expected Fail:         3
+> >    Fail:                289
+> >    Unexpected Pass:       0
+> >    Skipped:               0
+> >    Timeout:               0
+> >    Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+> >    section_end:1650574984:step_script
+> >    section_start:1650574984:upload_artifacts_on_failure
+> >    Uploading artifacts for failed job
+> >    Uploading artifacts...
+> >    build: found 1725 matching files and directories
+> >    Uploading artifacts as "archive" to coordinator... 201 Created  id=21593547 responseStatus=201 Created token=PeHyNtwf
+> >    section_end:1650574997:upload_artifacts_on_failure
+> >    section_start:1650574997:cleanup_file_variables
+> >    Cleaning up project directory and file based variables
+> >    section_end:1650574998:cleanup_file_variables
+> >    ERROR: Job failed: exit code 1
+> > 
+> > == Logs ==
+> > 
+> > For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/566172
