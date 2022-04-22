@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 587DE10E458
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 12:07:47 +0000 (UTC)
-Date: Fri, 22 Apr 2022 08:07:41 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <YmKajYK3+xxRH3J+@intel.com>
-References: <20220418125048.7969-1-anshuman.gupta@intel.com>
- <20220418125048.7969-6-anshuman.gupta@intel.com>
- <YmKB5D9Y8FpX9VNN@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D0AD10EAE5
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 11:11:54 +0000 (UTC)
+Date: Fri, 22 Apr 2022 13:11:50 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YmKNduulUzc04OkO@zkempczy-mobl2>
+References: <20220422072825.11563-1-zbigniew.kempczynski@intel.com>
+ <165062487218.14004.16868766420637190985@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YmKB5D9Y8FpX9VNN@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/9] tools: Add intel_pm_rpm tool
+In-Reply-To: <165062487218.14004.16868766420637190985@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fctx=5Fisolation=2Ec_-_fix_to_poison_CACHE=5FMODE=5F0?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,275 +22,623 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
+Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 22, 2022 at 06:22:28AM -0400, Rodrigo Vivi wrote:
-> On Mon, Apr 18, 2022 at 06:20:44PM +0530, Anshuman Gupta wrote:
-> > intel_pm_rpm tool is a debug tool. It can be use to setup
-> > and prepare the gfx card to go to D3Cold.
-> > It also provide the debug option to disable all display and
-> > prepare device to enter to runtime suspend.
-> > 
-> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > ---
-> >  tools/intel_pm_rpm.c | 209 +++++++++++++++++++++++++++++++++++++++++++
-> >  tools/meson.build    |   1 +
-> >  2 files changed, 210 insertions(+)
-> >  create mode 100644 tools/intel_pm_rpm.c
-> > 
-> > diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-> > new file mode 100644
-> > index 000000000..df9cfa632
-> > --- /dev/null
-> > +++ b/tools/intel_pm_rpm.c
-> > @@ -0,0 +1,209 @@
-> > +/*
-> > + * Copyright © 2022 Intel Corporation
-> > + *
-> > + * Permission is hereby granted, free of charge, to any person obtaining a
-> > + * copy of this software and associated documentation files (the "Software"),
-> > + * to deal in the Software without restriction, including without limitation
-> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> > + * and/or sell copies of the Software, and to permit persons to whom the
-> > + * Software is furnished to do so, subject to the following conditions:
-> > + *
-> > + * The above copyright notice and this permission notice (including the next
-> > + * paragraph) shall be included in all copies or substantial portions of the
-> > + * Software.
-> > + *
-> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> > + * IN THE SOFTWARE.
-> > + *
-> > + */
-> > +
-> > +#include <errno.h>
-> > +#include <getopt.h>
-> > +#include <glib.h>
-> > +#include <stdio.h>
-> > +#include <stdlib.h>
-> > +#include <string.h>
-> > +#include <stdbool.h>
-> > +#include "igt.h"
-> > +#include "igt_device.h"
-> > +#include "igt_device_scan.h"
-> > +#include "igt_pm.h"
-> > +
-> > +typedef struct {
-> > +	int drm_fd;
-> > +	int debugfs_fd;
-> > +	uint32_t devid;
-> > +	drmModeResPtr res;
-> > +	igt_display_t display;
-> > +} data_t;
-> > +
-> > +const char *help_str =
-> > +	"  --disable-display\t\tDisable all screen and try to go into runtime pm.\n"
-> > +	"  --setup-d3cold\t\tPrepare dgfx gfx card to enter runtime D3Cold.\n"
-> > +	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
-> > +static struct option long_options[] = {
-> > +	{"disable-display", 0, 0, 'd'},
-> > +	{"setup-d3cold", 0, 0, 's'},
-> > +	{"help", 0, 0, 'h'},
-> > +	{ 0, 0, 0, 0 }
-> > +};
-> > +
-> > +const char *optstr = "dsh";
-> > +
-> > +static void usage(const char *name)
-> > +{
-> > +	igt_info("Usage: %s [options]\n", name);
-> > +	igt_info("%s\n", help_str);
-> > +}
-> > +
-> > +static void disable_all_displays(data_t *data)
-> > +{
-> > +	igt_output_t *output;
-> > +
-> > +	for (int i = 0; i < data->display.n_outputs; i++) {
-> > +		output = &data->display.outputs[i];
-> > +		igt_output_set_pipe(output, PIPE_NONE);
-> > +		igt_display_commit(&data->display);
-> > +	}
-> > +}
-> > +
-> > +static void setup_gfx_card_d3cold(data_t *data)
-> > +{
-> > +	struct pci_device *root;
-> > +	int d_state;
-> > +
-> > +	/* igfx does not support d3cold */
-> > +	if (!IS_DGFX(data->devid))
-> > +		return;
+On Fri, Apr 22, 2022 at 10:54:32AM +0000, Patchwork wrote:
+>    Patch Details
 > 
-> I believe the if below will already take care of this since the real_power_state
-> won't show up. However, let's keep this check here to be really clear on the
-> expectations and to avoid navigating the tree in vain...
+>    Series:  tests/i915/gem_ctx_isolation.c - fix to poison CACHE_MODE_0    
+>    URL:     https://patchwork.freedesktop.org/series/102974/               
+>    State:   failure                                                        
+>    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6977/index.html 
 > 
-> > +
-> > +	root = igt_device_get_pci_root_port(data->drm_fd);
-> > +
-> > +	if (!igt_pm_acpi_d3cold_supported(root)) {
-> > +		igt_info("D3Cold isn't supported on Root port %04x:%02x:%02x.%01x\n",
-> > +			 root->domain, root->bus, root->dev, root->func);
-> > +		return;
-> > +	}
-> > +
-> > +	disable_all_displays(data);
-> > +	igt_pm_setup_pci_card_runtime_pm(root);
-> > +	sleep(1);
-> > +	d_state = igt_pm_get_acpi_real_d_state(root);
-> > +
-> > +	if (d_state == IGT_ACPI_D3Cold) {
-> > +		igt_info("D3Cold achieved for root port %04x:%02x:%02x.%01x\n",
-> > +			 root->domain, root->bus, root->dev, root->func);
-> > +	} else {
-> > +		igt_pm_print_pci_card_runtime_status();
-> > +		igt_info("D3Cold not achieved yet. Please monitor %04x:%02x:%02x.%01x real_power_state\n",
-> > +			 root->domain, root->bus, root->dev, root->func);
+>          CI Bug Log - changes from CI_DRM_11539_full -> IGTPW_6977_full
+> 
+> Summary
+> 
+>    FAILURE
+> 
+>    Serious unknown changes coming with IGTPW_6977_full absolutely need to be
+>    verified manually.
+> 
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in IGTPW_6977_full, please notify your bug team to allow them
+>    to document this new failure mode, which will reduce false positives in
+>    CI.
+> 
+>    External URL:
+>    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6977/index.html
+> 
+> Participating hosts (10 -> 9)
+> 
+>    Additional (3): shard-rkl shard-dg1 shard-tglu
+>    Missing (4): pig-skl-6260u shard-skl pig-kbl-iris pig-glk-j5005
+> 
+> Possible new issues
+> 
+>    Here are the unknown changes that may have been introduced in
+>    IGTPW_6977_full:
+> 
+>   IGT changes
+> 
+>     Possible regressions
+> 
+>      * igt@syncobj_wait@wait-for-submit-snapshot:
+>           * shard-glk: PASS -> FAIL
 
+Unrelated, change touches gem_ctx_isolation.
 
-oh, I had forgot to send comment on this one...
-I believe that with sleep(1) above you are always reaching to this msg here, no?!
+--
+Zbigniew
 
-Should we also change the autosuspend from everyone to 1 and maybe wait 2 here?
-
-> > +	}
-> > +}
-> > +
-> > +int main(int argc, char *argv[])
-> > +{
-> > +	bool disable_display = false, setup_d3cold = false;
-> > +	struct igt_device_card card;
-> > +	char *env_device = NULL;
-> > +	int c, option_index = 0;
-> > +	data_t data = {};
-> > +	int ret = 0;
-> > +
-> > +	if (argc <= 1) {
-> > +		usage(argv[0]);
-> > +		return EXIT_SUCCESS;
-> > +	}
-> > +
-> > +	env_device = getenv("IGT_DEVICE");
-> > +	igt_devices_scan(false);
-> > +
-> > +	if (env_device) {
-> > +		if (!igt_device_card_match(env_device, &card)) {
-> > +			igt_warn("No device found for the env_device\n");
-> > +			ret = EXIT_FAILURE;
-> > +			goto exit;
-> > +		}
-> > +	} else {
-> > +		if (!igt_device_find_first_i915_discrete_card(&card)) {
-> > +			igt_warn("No discrete gpu found\n");
-> > +			ret = EXIT_FAILURE;
-> > +			goto exit;
-> > +		}
-> > +	}
-> > +
-> > +	while ((c = getopt_long(argc, argv, optstr,
-> > +				long_options, &option_index)) != -1) {
-> > +		switch (c) {
-> > +		case 'd':
-> > +			disable_display = true;
-> > +			break;
-> > +		case 's':
-> > +			setup_d3cold = true;
-> > +			break;
-> > +		default:
-> > +		case 'h':
-> > +			usage(argv[0]);
-> > +			ret = EXIT_SUCCESS;
-> > +			goto exit;
-> > +		}
-> > +	}
-> > +
-> > +	data.drm_fd = igt_open_card(&card);
-> > +	if (data.drm_fd  >= 0) {
-> > +		igt_info("Device %s successfully opened\n", card.card);
-> > +	} else {
-> > +		igt_warn("Cannot open card %s device\n", card.card);
-> > +		ret = EXIT_FAILURE;
-> > +		goto exit;
-> > +	}
-> > +
-> > +	data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-> > +	data.devid = intel_get_drm_devid(data.drm_fd);
-> > +	igt_setup_runtime_pm(data.drm_fd);
-> > +
-> > +	data.res = drmModeGetResources(data.drm_fd);
-> > +	if (data.res) {
-> > +		kmstest_set_vt_graphics_mode();
-> > +		igt_display_require(&data.display, data.drm_fd);
-> > +
-> > +		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
-> > +			igt_warn("dmc fw is not loaded, no runtime pm\n");
-> > +			ret = EXIT_FAILURE;
-> > +			goto exit;
-> > +		}
-> > +	}
 > 
-> Do we really need this? It is only for checking if DMC is there in case we have display right?
-> Should deserve a comment at least...
+>     Suppressed
 > 
-> but already can use my:
+>    The following results come from untrusted machines, tests, or statuses.
+>    They do not affect the overall result.
 > 
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>      * {igt@gem_lmem_swapping@heavy-verify-random-ccs@lmem0}:
 > 
-> if explained with reply here or with comment if you see it fits
+>           * {shard-dg1}: NOTRUN -> SKIP +1 similar issue
+>      * igt@gem_softpin@noreloc-s3:
 > 
-> > +
-> > +	if (disable_display) {
-> > +		disable_all_displays(&data);
-> > +		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
-> > +			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
-> > +			ret = EXIT_FAILURE;
-> > +			goto exit;
-> > +		}
-> > +
-> > +		igt_info("Device runtime suspended, Useful for debugging.\n"
-> > +			 "Hit CTRL-C to exit\n");
-> > +		/* Don't return useful for debugging */
-> > +		while (1)
-> > +			sleep(600);
-> > +	}
-> > +
-> > +	if (setup_d3cold)
-> > +		setup_gfx_card_d3cold(&data);
-> > +
-> > +exit:
-> > +	igt_restore_runtime_pm();
-> > +
-> > +	if (data.res)
-> > +		igt_display_fini(&data.display);
-> > +
-> > +	close(data.debugfs_fd);
-> > +	close(data.drm_fd);
-> > +	igt_devices_free();
-> > +
-> > +	return ret;
-> > +}
-> > diff --git a/tools/meson.build b/tools/meson.build
-> > index 771d0b9e3..24d0ea714 100644
-> > --- a/tools/meson.build
-> > +++ b/tools/meson.build
-> > @@ -28,6 +28,7 @@ tools_progs = [
-> >  	'intel_lid',
-> >  	'intel_opregion_decode',
-> >  	'intel_panel_fitter',
-> > +	'intel_pm_rpm',
-> >  	'intel_reg_checker',
-> >  	'intel_residency',
-> >  	'intel_stepping',
-> > -- 
-> > 2.26.2
-> > 
+>           * {shard-rkl}: NOTRUN -> DMESG-WARN
+> 
+>           * {shard-tglu}: NOTRUN -> DMESG-WARN
+> 
+> Known issues
+> 
+>    Here are the changes found in IGTPW_6977_full that come from known issues:
+> 
+>   IGT changes
+> 
+>     Issues hit
+> 
+>      * igt@feature_discovery@chamelium:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#111827)
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#111827)
+> 
+>      * igt@feature_discovery@display-2x:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#1839)
+>      * igt@feature_discovery@psr2:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#658)
+>      * igt@gem_ccs@block-copy-uncompressed:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#5327) +1 similar issue
+>      * igt@gem_ccs@suspend-resume:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#5325) +1 similar issue
+>      * igt@gem_ctx_persistence@legacy-engines-persistence:
+> 
+>           * shard-snb: NOTRUN -> SKIP (fdo#109271 / i915#1099) +2 similar
+>             issues
+>      * igt@gem_ctx_sseu@mmap-args:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#280)
+>      * igt@gem_exec_balancer@parallel:
+> 
+>           * shard-kbl: NOTRUN -> DMESG-WARN (i915#5076 / i915#5614) +1
+>             similar issue
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#4525)
+> 
+>           * shard-tglb: NOTRUN -> DMESG-WARN (i915#5076 / i915#5614)
+> 
+>      * igt@gem_exec_balancer@parallel-ordering:
+> 
+>           * shard-kbl: NOTRUN -> DMESG-FAIL (i915#5076 / i915#5614)
+>      * igt@gem_exec_fair@basic-none-rrul@rcs0:
+> 
+>           * shard-tglb: NOTRUN -> FAIL (i915#2842) +2 similar issues
+>      * igt@gem_exec_fair@basic-none-solo@rcs0:
+> 
+>           * shard-kbl: NOTRUN -> FAIL (i915#2842) +2 similar issues
+> 
+>           * shard-apl: NOTRUN -> FAIL (i915#2842)
+> 
+>      * igt@gem_exec_fair@basic-none@vcs0:
+> 
+>           * shard-apl: PASS -> FAIL (i915#2842)
+>      * igt@gem_exec_fair@basic-pace-share@rcs0:
+> 
+>           * shard-glk: PASS -> FAIL (i915#2842) +1 similar issue
+> 
+>           * shard-tglb: PASS -> FAIL (i915#2842)
+> 
+>      * igt@gem_exec_fair@basic-throttle@rcs0:
+> 
+>           * shard-glk: NOTRUN -> FAIL (i915#2842)
+>      * igt@gem_exec_flush@basic-wb-rw-default:
+> 
+>           * shard-snb: PASS -> SKIP (fdo#109271) +1 similar issue
+>      * igt@gem_exec_params@secure-non-master:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#112283)
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#112283)
+> 
+>      * igt@gem_huc_copy@huc-copy:
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#2190)
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#2190)
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#2190)
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#2190)
+> 
+>      * igt@gem_lmem_swapping@heavy-verify-multi-ccs:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#4613)
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#4613)
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#4613) +1 similar
+>             issue
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#4613)
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#4613)
+> 
+>      * igt@gem_media_vme:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#284)
+>      * igt@gem_pread@exhaustion:
+> 
+>           * shard-kbl: NOTRUN -> WARN (i915#2658)
+> 
+>           * shard-tglb: NOTRUN -> WARN (i915#2658)
+> 
+>           * shard-glk: NOTRUN -> WARN (i915#2658)
+> 
+>      * igt@gem_pxp@create-regular-context-1:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#4270) +1 similar issue
+>      * igt@gem_pxp@reject-modify-context-protection-on:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#4270) +2 similar issues
+>      * igt@gem_render_copy@x-tiled-to-vebox-yf-tiled:
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271) +308 similar issues
+>      * igt@gem_render_copy@y-tiled-ccs-to-y-tiled-mc-ccs:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#768) +1 similar issue
+>      * igt@gem_userptr_blits@dmabuf-sync:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3323)
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#3323)
+> 
+>      * igt@gem_userptr_blits@dmabuf-unsync:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3297)
+>      * igt@gen7_exec_parse@cmd-crossing-page:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#109289) +4 similar issues
+>      * igt@gen9_exec_parse@allowed-single:
+> 
+>           * shard-glk: PASS -> DMESG-WARN (i915#5566 / i915#716)
+> 
+>           * shard-apl: PASS -> DMESG-WARN (i915#5566 / i915#716) +1 similar
+>             issue
+> 
+>      * igt@gen9_exec_parse@bb-start-cmd:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#2527 / i915#2856) +6 similar
+>             issues
+>      * igt@gen9_exec_parse@bb-start-out:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#2856) +2 similar issues
+>      * igt@i915_pm_dc@dc3co-vpb-simulation:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#1904)
+>      * igt@i915_pm_rpm@gem-execbuf-stress-pc8:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#109506 / i915#2411)
+>      * igt@kms_addfb_basic@invalid-smem-bo-on-discrete:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3826)
+>      * igt@kms_atomic_transition@plane-all-modeset-transition:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#1769)
+>      * igt@kms_big_fb@4-tiled-64bpp-rotate-270:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#5286) +3 similar issues
+>      * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-180-hflip:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#5286) +7 similar issues
+>      * igt@kms_big_fb@linear-32bpp-rotate-180:
+> 
+>           * shard-glk: NOTRUN -> DMESG-WARN (i915#118)
+>      * igt@kms_big_fb@linear-8bpp-rotate-270:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#111614) +2 similar issues
+>      * igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip:
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#3777) +2 similar
+>             issues
+>      * igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip:
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#3777) +2 similar
+>             issues
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#3777) +3 similar
+>             issues
+> 
+>      * igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#111615) +4 similar issues
+>      * igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#110723)
+>      * igt@kms_ccs@pipe-a-bad-aux-stride-y_tiled_ccs:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3689) +5 similar issues
+>      * igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_rc_ccs_cc:
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#3886) +4 similar
+>             issues
+>      * igt@kms_ccs@pipe-a-crc-primary-rotation-180-y_tiled_gen12_mc_ccs:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3689 / i915#3886) +6 similar
+>             issues
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#3886) +2 similar
+>             issues
+> 
+>      * igt@kms_ccs@pipe-a-missing-ccs-buffer-y_tiled_gen12_mc_ccs:
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#3886) +9 similar
+>             issues
+>      * igt@kms_ccs@pipe-c-crc-primary-rotation-180-y_tiled_gen12_mc_ccs:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109278 / i915#3886) +1 similar
+>             issue
+>      * igt@kms_ccs@pipe-d-crc-primary-rotation-180-yf_tiled_ccs:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#111615 / i915#3689) +7 similar
+>             issues
+>      * igt@kms_chamelium@dp-hpd-for-each-pipe:
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +24 similar
+>             issues
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109284 / fdo#111827) +4 similar
+>             issues
+> 
+>      * igt@kms_chamelium@hdmi-crc-single:
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +10 similar
+>             issues
+>      * igt@kms_color@pipe-d-ctm-blue-to-red:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109278 / i915#1149)
+>      * igt@kms_color_chamelium@pipe-b-ctm-max:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#109284 / fdo#111827) +15 similar
+>             issues
+>      * igt@kms_color_chamelium@pipe-b-ctm-red-to-blue:
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +10 similar
+>             issues
+>      * igt@kms_color_chamelium@pipe-d-gamma:
+> 
+>           * shard-snb: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +7 similar
+>             issues
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109278 / fdo#109284 / fdo#111827)
+>             +1 similar issue
+> 
+>      * igt@kms_content_protection@atomic-dpms:
+> 
+>           * shard-kbl: NOTRUN -> TIMEOUT (i915#1319)
+>      * igt@kms_content_protection@dp-mst-lic-type-0:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#3116)
+>      * igt@kms_content_protection@dp-mst-type-0:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3116 / i915#3299) +1 similar
+>             issue
+>      * igt@kms_cursor_crc@pipe-a-cursor-suspend:
+> 
+>           * shard-apl: PASS -> DMESG-WARN (i915#180) +1 similar issue
+>      * igt@kms_cursor_crc@pipe-b-cursor-32x10-sliding:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3359) +4 similar issues
+>      * igt@kms_cursor_crc@pipe-b-cursor-512x512-sliding:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109278 / fdo#109279)
+>      * igt@kms_cursor_crc@pipe-c-cursor-32x10-offscreen:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109278) +26 similar issues
+>      * igt@kms_cursor_crc@pipe-c-cursor-32x32-offscreen:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3319) +1 similar issue
+>      * igt@kms_cursor_crc@pipe-d-cursor-512x512-rapid-movement:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#109279 / i915#3359) +5 similar
+>             issues
+>      * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-varying-size:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#4103) +2 similar issues
+>      * igt@kms_cursor_legacy@cursora-vs-flipb-varying-size:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109274 / fdo#109278) +2 similar
+>             issues
+>      * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
+> 
+>           * shard-iclb: PASS -> FAIL (i915#2346)
+>      * igt@kms_draw_crc@draw-method-rgb565-pwrite-xtiled:
+> 
+>           * shard-glk: PASS -> FAIL (i915#1888 / i915#5160)
+>      * igt@kms_draw_crc@draw-method-xrgb2101010-blt-4tiled:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#5287) +3 similar issues
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#5287) +1 similar issue
+> 
+>      * igt@kms_draw_crc@draw-method-xrgb8888-render-xtiled:
+> 
+>           * shard-glk: PASS -> DMESG-FAIL (i915#118 / i915#1888)
+>      * igt@kms_flip@2x-dpms-vs-vblank-race:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109274) +4 similar issues
+>      * igt@kms_flip@2x-plain-flip:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#109274 / fdo#111825) +14 similar
+>             issues
+>      * igt@kms_flip@flip-vs-expired-vblank@a-dp1:
+> 
+>           * shard-apl: PASS -> FAIL (i915#79)
+>      * igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-downscaling:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#2587)
+>      * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#2587)
+>      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-blt:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109280) +23 similar issues
+>      * igt@kms_frontbuffer_tracking@fbc-suspend:
+> 
+>           * shard-kbl: NOTRUN -> DMESG-WARN (i915#180) +3 similar issues
+>      * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-draw-pwrite:
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271) +201 similar issues
+>      * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-cur-indfb-move:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#109280 / fdo#111825) +43 similar
+>             issues
+>      * igt@kms_hdr@static-toggle-dpms:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#3555) +1 similar issue
+>      * igt@kms_pipe_b_c_ivb@from-pipe-c-to-b-with-3-lanes:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109289) +4 similar issues
+>      * igt@kms_plane_alpha_blend@pipe-a-alpha-transparent-fb:
+> 
+>           * shard-kbl: NOTRUN -> FAIL (i915#265) +1 similar issue
+>      * igt@kms_plane_alpha_blend@pipe-b-alpha-transparent-fb:
+> 
+>           * shard-apl: NOTRUN -> FAIL (i915#265)
+>      * igt@kms_plane_alpha_blend@pipe-b-constant-alpha-max:
+> 
+>           * shard-kbl: NOTRUN -> FAIL (fdo#108145 / i915#265)
+>      * igt@kms_plane_alpha_blend@pipe-c-constant-alpha-max:
+> 
+>           * shard-glk: NOTRUN -> FAIL (fdo#108145 / i915#265)
+> 
+>           * shard-apl: NOTRUN -> FAIL (fdo#108145 / i915#265)
+> 
+>      * igt@kms_plane_lowres@pipe-c-tiling-4:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#5288)
+>      * igt@kms_plane_lowres@pipe-d-tiling-yf:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#111615 / fdo#112054)
+>      * igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-b-edp-1-planes-downscale:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#5235) +3 similar issues
+>      * igt@kms_plane_scaling@upscale-with-rotation-factor-0-25@pipe-a-edp-1-upscale-with-rotation:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#5176) +3 similar issues
+>      * igt@kms_plane_scaling@upscale-with-rotation-factor-0-25@pipe-b-edp-1-upscale-with-rotation:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#5176) +2 similar issues
+>      * igt@kms_psr2_sf@overlay-plane-update-sf-dmg-area:
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#658)
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#2920)
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#658) +2 similar
+>             issues
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#658) +1 similar
+>             issue
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#111068 / i915#658)
+> 
+>      * igt@kms_psr@psr2_basic:
+> 
+>           * shard-tglb: NOTRUN -> FAIL (i915#132 / i915#3467) +3 similar
+>             issues
+>      * igt@kms_psr@psr2_cursor_mmap_cpu:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109441)
+>      * igt@kms_psr@psr2_suspend:
+> 
+>           * shard-iclb: PASS -> SKIP (fdo#109441) +1 similar issue
+>      * igt@kms_psr_stress_test@flip-primary-invalidate-overlay:
+> 
+>           * shard-iclb: PASS -> SKIP (i915#5519)
+>      * igt@kms_rotation_crc@primary-y-tiled-reflect-x-270:
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271) +153 similar issues
+>      * igt@kms_universal_plane@disable-primary-vs-flip-pipe-d:
+> 
+>           * shard-snb: NOTRUN -> SKIP (fdo#109271) +193 similar issues
+>      * igt@kms_vblank@pipe-d-wait-idle:
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#533) +2 similar
+>             issues
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#533) +1 similar
+>             issue
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#533) +1 similar
+>             issue
+> 
+>      * igt@kms_writeback@writeback-fb-id:
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#2437)
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#2437)
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#2437)
+> 
+>      * igt@nouveau_crc@pipe-d-source-rg:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#2530) +1 similar issue
+>      * igt@prime_nv_pcopy@test3_2:
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109291) +2 similar issues
+>      * igt@prime_nv_test@i915_import_gtt_mmap:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#109291) +4 similar issues
+>      * igt@prime_vgem@coherency-gtt:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#111656)
+>      * igt@sysfs_clients@fair-3:
+> 
+>           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#2994) +3 similar
+>             issues
+>      * igt@sysfs_clients@recycle-many:
+> 
+>           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#2994) +2 similar
+>             issues
+> 
+>           * shard-iclb: NOTRUN -> SKIP (i915#2994) +1 similar issue
+> 
+>      * igt@sysfs_clients@split-50:
+> 
+>           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#2994) +5 similar
+>             issues
+> 
+>           * shard-tglb: NOTRUN -> SKIP (i915#2994) +4 similar issues
+> 
+>      * igt@tools_test@sysfs_l3_parity:
+> 
+>           * shard-tglb: NOTRUN -> SKIP (fdo#109307)
+> 
+>           * shard-iclb: NOTRUN -> SKIP (fdo#109307)
+> 
+>     Possible fixes
+> 
+>      * igt@gem_exec_fair@basic-none@vecs0:
+> 
+>           * shard-apl: FAIL (i915#2842) -> PASS
+>      * igt@gem_exec_fair@basic-pace@vecs0:
+> 
+>           * shard-glk: FAIL (i915#2842) -> PASS +2 similar issues
+>      * igt@gem_exec_flush@basic-wb-ro-before-default:
+> 
+>           * shard-snb: SKIP (fdo#109271) -> PASS +2 similar issues
+>      * igt@gen9_exec_parse@allowed-all:
+> 
+>           * shard-kbl: DMESG-WARN (i915#5566 / i915#716) -> PASS
+>      * igt@i915_selftest@live@hangcheck:
+> 
+>           * shard-tglb: DMESG-WARN (i915#5591) -> PASS
+>      * igt@kms_cursor_edge_walk@pipe-a-256x256-top-edge:
+> 
+>           * shard-iclb: FAIL (i915#1888) -> PASS
+>      * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:
+> 
+>           * shard-glk: FAIL (i915#2346 / i915#533) -> PASS
+>      * igt@kms_fbcon_fbt@psr-suspend:
+> 
+>           * shard-iclb: TIMEOUT -> PASS
+>      * igt@kms_flip@dpms-vs-vblank-race@c-hdmi-a1:
+> 
+>           * shard-glk: FAIL -> PASS
+>      * igt@kms_frontbuffer_tracking@fbc-modesetfrombusy:
+> 
+>           * shard-iclb: FAIL (i915#2546) -> PASS
+>      * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
+> 
+>           * shard-kbl: DMESG-WARN (i915#180) -> PASS
+>      * igt@kms_plane_lowres@pipe-b-tiling-yf:
+> 
+>           * shard-glk: FAIL (i915#1888) -> PASS
+>      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-b-edp-1-planes-upscale-downscale:
+> 
+>           * shard-iclb: SKIP (i915#5235) -> PASS +2 similar issues
+>      * igt@kms_plane_scaling@scaler-with-clipping-clamping@pipe-b-edp-1-scaler-with-clipping-clamping:
+> 
+>           * shard-iclb: INCOMPLETE (i915#5243) -> PASS
+>      * igt@kms_psr@psr2_cursor_render:
+> 
+>           * shard-iclb: SKIP (fdo#109441) -> PASS +4 similar issues
+>      * igt@kms_psr_stress_test@invalidate-primary-flip-overlay:
+> 
+>           * shard-iclb: SKIP (i915#5519) -> PASS
+>      * igt@kms_vblank@pipe-c-ts-continuation-suspend:
+> 
+>           * shard-apl: DMESG-WARN (i915#180) -> PASS +1 similar issue
+> 
+>     Warnings
+> 
+>      * igt@gem_eio@unwedge-stress:
+> 
+>           * shard-tglb: TIMEOUT (i915#3063 / i915#3648) -> FAIL (i915#232)
+>      * igt@gem_exec_balancer@parallel-keep-in-fence:
+> 
+>           * shard-iclb: SKIP (i915#4525) -> DMESG-WARN (i915#5614)
+>      * igt@gem_exec_balancer@parallel-ordering:
+> 
+>           * shard-iclb: SKIP (i915#4525) -> DMESG-FAIL (i915#5614)
+>      * igt@kms_psr2_sf@overlay-plane-update-continuous-sf:
+> 
+>           * shard-iclb: SKIP (i915#2920) -> SKIP (fdo#111068 / i915#658)
+>      * igt@kms_psr2_sf@overlay-primary-update-sf-dmg-area:
+> 
+>           * shard-iclb: SKIP (fdo#111068 / i915#658) -> SKIP (i915#2920)
+>      * igt@runner@aborted:
+> 
+>           * shard-apl: (FAIL, FAIL, FAIL, FAIL, FAIL, FAIL) (i915#180 /
+>             i915#3002 / i915#4312 / i915#5257) -> (FAIL, FAIL, FAIL, FAIL,
+>             FAIL, FAIL, FAIL, FAIL) (fdo#109271 / i915#3002 / i915#4312 /
+>             i915#5257)
+> 
+>           * shard-kbl: (FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL,
+>             FAIL, FAIL, FAIL, FAIL, FAIL) (fdo#109271 / i915#180 / i915#3002
+>             / i915#4312 / i915#5257 / i915#716) -> (FAIL, FAIL, FAIL, FAIL,
+>             FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL)
+>             (fdo#109271 / i915#180 / i915#3002 / i915#4312 / i915#5257)
+> 
+>    {name}: This element is suppressed. This means it is ignored when
+>    computing
+>    the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+> Build changes
+> 
+>      * CI: CI-20190529 -> None
+>      * IGT: IGT_6445 -> IGTPW_6977
+>      * Piglit: piglit_4509 -> None
+> 
+>    CI-20190529: 20190529
+>    CI_DRM_11539: 6cb847509fe9aa278324a4f9662df271c42851f8 @
+>    git://anongit.freedesktop.org/gfx-ci/linux
+>    IGTPW_6977: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_6977/index.html
+>    IGT_6445: 8c2ac78f0d80a2af3c7b47dd2df064cdd07f24b6 @
+>    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>    piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @
+>    git://anongit.freedesktop.org/piglit
