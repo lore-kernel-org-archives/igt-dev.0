@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44CF210F8F3
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 09:26:46 +0000 (UTC)
-Date: Fri, 22 Apr 2022 05:26:40 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55A9610EB97
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 09:29:19 +0000 (UTC)
+Date: Fri, 22 Apr 2022 05:29:00 -0400
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <YmJ00H6aMy13sF6o@intel.com>
+Message-ID: <YmJ1XFNd+UNmx4iJ@intel.com>
 References: <20220418125048.7969-1-anshuman.gupta@intel.com>
- <20220418125048.7969-2-anshuman.gupta@intel.com>
+ <20220418125048.7969-3-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220418125048.7969-2-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/9] test/i915_pm_rpm: Add placement to
- gem-{mmap-type, execbuf}
+In-Reply-To: <20220418125048.7969-3-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/9] lib/igt_device: Get gfx PCI card
+ root port
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,99 +21,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com,
- Chris Wilson <chris.p.wilson@intel.com>
+Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Apr 18, 2022 at 06:20:40PM +0530, Anshuman Gupta wrote:
-> Add memory region placement to gem-{mmap-type, execbuf} subtest.
-> This will be useful to extend these sub-test for D3Cold.
+On Mon, Apr 18, 2022 at 06:20:41PM +0530, Anshuman Gupta wrote:
+> Utility library function to get the Gfx Card PCI topology
+> root port pci device using libpaciaccess.
+> root port will be used to get the real ACPI D state.
 > 
-> Cc: Chris Wilson <chris.p.wilson@intel.com>
 > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 > ---
->  tests/i915/i915_pm_rpm.c | 23 +++++++++++++++--------
->  1 file changed, 15 insertions(+), 8 deletions(-)
+>  lib/igt_device.c | 28 ++++++++++++++++++++++++++++
+>  lib/igt_device.h |  1 +
+>  2 files changed, 29 insertions(+)
 > 
-> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> index 461730e8a..d2bce5826 100644
-> --- a/tests/i915/i915_pm_rpm.c
-> +++ b/tests/i915/i915_pm_rpm.c
-> @@ -1069,7 +1069,8 @@ static void debugfs_forcewake_user_subtest(void)
->  	igt_assert(wait_for_suspended());
+> diff --git a/lib/igt_device.c b/lib/igt_device.c
+> index 9794a9928..fddfba72c 100644
+> --- a/lib/igt_device.c
+> +++ b/lib/igt_device.c
+> @@ -257,3 +257,31 @@ struct pci_device *igt_device_get_pci_device(int fd)
+>  
+>  	return pci_dev;
 >  }
->  
-> -static void gem_mmap_args(const struct mmap_offset *t)
-> +static void gem_mmap_args(const struct mmap_offset *t,
-> +			  struct drm_i915_gem_memory_class_instance *mem_regions)
->  {
->  	int i;
->  	uint32_t handle;
-> @@ -1079,7 +1080,7 @@ static void gem_mmap_args(const struct mmap_offset *t)
->  	/* Create, map and set data while the device is active. */
->  	enable_one_screen_and_wait(&ms_data);
->  
-> -	handle = gem_create(drm_fd, buf_size);
-> +	handle = gem_create_in_memory_region_list(drm_fd, buf_size, mem_regions, 1);
->  
->  	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
->  				    PROT_READ | PROT_WRITE, t->type);
-> @@ -1290,7 +1291,7 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
->  }
->  
->  /* Make sure we can submit a batch buffer and verify its result. */
-> -static void gem_execbuf_subtest(void)
-> +static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions)
->  {
->  	int x, y;
->  	uint32_t handle;
-> @@ -1308,7 +1309,7 @@ static void gem_execbuf_subtest(void)
->  	/* Create and set data while the device is active. */
->  	enable_one_screen_and_wait(&ms_data);
->  
-> -	handle = gem_create(drm_fd, dst_size);
-> +	handle = gem_create_in_memory_region_list(drm_fd, dst_size, mem_regions, 1);
->  
->  	cpu_buf = malloc(dst_size);
->  	igt_assert(cpu_buf);
-> @@ -2083,15 +2084,21 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  	/* GEM */
->  	igt_subtest_with_dynamic("gem-mmap-type") {
->  		for_each_mmap_offset_type(drm_fd, t) {
-> -			igt_dynamic_f("%s", t->name)
-> -				gem_mmap_args(t);
-> +			for_each_memory_region(r, drm_fd) {
-> +				igt_dynamic_f("%s-%s", t->name, r->name)
-> +				gem_mmap_args(t, &r->ci);
-> +			}
->  		}
->  	}
->  
->  	igt_subtest("gem-pread")
->  		gem_pread_subtest();
-> -	igt_subtest("gem-execbuf")
-> -		gem_execbuf_subtest();
-> +	igt_subtest_with_dynamic("gem-execbuf") {
-> +		for_each_memory_region(r, drm_fd) {
-> +			igt_dynamic_f("%s", r->name)
-> +				gem_execbuf_subtest(&r->ci);
-> +		}
+> +
+> +/**
+> + * igt_device_get_pci_root_port:
+> + * @fd: the device.
+> + *
+> + * Looks up the graphics pci device root port using libpciaccess.
+> + *
+> + * Returns:
+> + * The root port pci_device.
+> + */
+> +struct pci_device *
+> +igt_device_get_pci_root_port(int fd)
+> +{
+> +	struct pci_device *pci_dev, *prev;
+> +
+> +	pci_dev = __igt_device_get_pci_device(fd, 0);
+> +	igt_require(pci_dev);
+> +
+> +	while (pci_dev) {
+> +		prev = pci_dev;
+> +		pci_dev = pci_device_get_parent_bridge(pci_dev);
 > +	}
 
-I believe for D3Cold the only ones that matters are the lmem ones,
-but I don't believe it hurts to try more.
-
+Neat!
 
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
 
 
->  	igt_subtest("gem-idle")
->  		gem_idle_subtest();
->  	igt_subtest("gem-evict-pwrite") {
+> +
+> +	igt_debug("Root Port PCI device %04x:%02x:%02x.%01x\n",
+> +		  prev->domain, prev->bus, prev->dev, prev->func);
+> +
+> +	return prev;
+> +}
+> diff --git a/lib/igt_device.h b/lib/igt_device.h
+> index 1aaa840e2..800a0fcc3 100644
+> --- a/lib/igt_device.h
+> +++ b/lib/igt_device.h
+> @@ -34,5 +34,6 @@ void igt_device_drop_master(int fd);
+>  int igt_device_get_card_index(int fd);
+>  struct pci_device *igt_device_get_pci_device(int fd);
+>  struct pci_device *__igt_device_get_pci_device(int fd, unsigned int vf_id);
+> +struct pci_device *igt_device_get_pci_root_port(int fd);
+>  
+>  #endif /* __IGT_DEVICE_H__ */
 > -- 
 > 2.26.2
 > 
