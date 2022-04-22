@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C187910E1B5
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 14:45:09 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 22 Apr 2022 20:17:03 +0530
-Message-Id: <20220422144703.16956-3-nidhi1.gupta@intel.com>
-In-Reply-To: <20220422144703.16956-1-nidhi1.gupta@intel.com>
-References: <20220422144703.16956-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms : Added dynamic test cases
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+Date: Fri, 22 Apr 2022 14:50:06 -0000
+Message-ID: <165063900642.14005.9480442570671596662@emeril.freedesktop.org>
+References: <20220422060240.3193599-1-jouni.hogander@intel.com>
+In-Reply-To: <20220422060240.3193599-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_k?=
+ =?utf-8?q?ms=5Fpsr2=5Fsu=3A_Skip_page-flip_tests_if_FB=5FDAMAGE=5FCLIPS_n?=
+ =?utf-8?q?ot_supported_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,165 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_sequence and kms_concurrent to include
-dynamic test cases.
+== Series Details ==
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_concurrent.c |  6 ++-
- tests/kms_sequence.c   | 88 +++++++++++++++++++++---------------------
- 2 files changed, 48 insertions(+), 46 deletions(-)
+Series: kms_psr2_su: Skip page-flip tests if FB_DAMAGE_CLIPS not supported (rev2)
+URL   : https://patchwork.freedesktop.org/series/102972/
+State : warning
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 622d3335..82b2021e 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -328,9 +328,11 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 
- 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
- 		     "resolution.");
--	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe))
-+	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			run_test(data, pipe, output);
-+			igt_dynamic_f("%s", igt_output_name(output))
-+				run_test(data, pipe, output);
-+	}
- }
- 
- static int opt_handler(int option, int option_index, void *input)
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index ca25e041..1655d7d1 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -140,54 +140,45 @@ static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
- {
- 	int nchildren =
- 		data->flags & FORKED ? sysconf(_SC_NPROCESSORS_ONLN) : 1;
--	igt_display_t *display = &data->display;
--	igt_output_t *output;
--	enum pipe p;
--	unsigned int valid_tests = 0;
--
--	for_each_pipe_with_valid_output(display, p, output) {
--		data->pipe = p;
--		prepare_crtc(data, fd, output);
--
--		igt_info("Beginning %s on pipe %s, connector %s (%d threads)\n",
--			 igt_subtest_name(),
--			 kmstest_pipe_name(data->pipe),
--			 igt_output_name(output),
--			 nchildren);
--
--		if (data->flags & BUSY) {
--			struct drm_crtc_queue_sequence cqs;
--
--			memset(&cqs, 0, sizeof(cqs));
--			cqs.crtc_id = data->crtc_id;
--			cqs.flags = DRM_CRTC_SEQUENCE_RELATIVE;
--			cqs.sequence = 120 + 12;
--			igt_assert_eq(crtc_queue_sequence(fd, &cqs), 0);
--		}
-+	igt_output_t *output = data->output;
- 
--		igt_fork(child, nchildren)
--			testfunc(data, fd, nchildren);
--		igt_waitchildren();
-+	prepare_crtc(data, fd, output);
- 
--		if (data->flags & BUSY) {
--			struct drm_event_vblank buf;
--			igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
--		}
-+	igt_info("Beginning %s on pipe %s, connector %s (%d threads)\n",
-+		 igt_subtest_name(),
-+		 kmstest_pipe_name(data->pipe),
-+		 igt_output_name(output),
-+		 nchildren);
- 
--		igt_assert(poll(&(struct pollfd){fd, POLLIN}, 1, 0) == 0);
-+	if (data->flags & BUSY) {
-+		struct drm_crtc_queue_sequence cqs;
- 
--		igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
--			 igt_subtest_name(),
--			 kmstest_pipe_name(data->pipe),
--			 igt_output_name(output));
-+		memset(&cqs, 0, sizeof(cqs));
-+		cqs.crtc_id = data->crtc_id;
-+		cqs.flags = DRM_CRTC_SEQUENCE_RELATIVE;
-+		cqs.sequence = 120 + 12;
-+		igt_assert_eq(crtc_queue_sequence(fd, &cqs), 0);
-+	}
-+
-+	igt_fork(child, nchildren)
-+	testfunc(data, fd, nchildren);
-+	igt_waitchildren();
- 
--		/* cleanup what prepare_crtc() has done */
--		cleanup_crtc(data, fd, output);
--		valid_tests++;
-+	if (data->flags & BUSY) {
-+		struct drm_event_vblank buf;
-+
-+		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
- 	}
- 
--	igt_require_f(valid_tests,
--		      "no valid crtc/connector combinations found\n");
-+	igt_assert(poll(&(struct pollfd){fd, POLLIN}, 1, 0) == 0);
-+
-+	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
-+		 igt_subtest_name(),
-+		 kmstest_pipe_name(data->pipe),
-+		 igt_output_name(output));
-+
-+	/* cleanup what prepare_crtc() has done */
-+	cleanup_crtc(data, fd, output);
- }
- 
- static void sequence_get(data_t *data, int fd, int nchildren)
-@@ -255,6 +246,8 @@ static void sequence_queue(data_t *data, int fd, int nchildren)
- igt_main
- {
- 	int fd;
-+	igt_output_t *output;
-+	enum pipe p;
- 	data_t data;
- 	const struct {
- 		const char *name;
-@@ -280,6 +273,7 @@ igt_main
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, fd);
-+		igt_display_require_output(&data.display);
- 	}
- 
- 	for (f = funcs; f->name; f++) {
-@@ -289,9 +283,15 @@ igt_main
- 
- 			igt_describe("This is a test of drmCrtcGetSequence and "
- 				     "drmCrtcQueueSequence");
--			igt_subtest_f("%s-%s", f->name, m->name) {
--				data.flags = m->flags;
--				run_test(&data, fd, f->func);
-+			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
-+				for_each_pipe_with_valid_output(&data.display, p, output) {
-+					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
-+						data.pipe = p;
-+						data.output = output;
-+						data.flags = m->flags;
-+						run_test(&data, fd, f->func);
-+					}
-+				}
- 			}
- 		}
- 	}
--- 
-2.26.2
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/566924 for the overview.
+
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21632753):
+  Downloading artifacts
+  Downloading artifacts for build:tests-fedora (21632735)...
+  Downloading artifacts from coordinator... ok        id=21632735 responseStatus=200 OK token=knb5FKkY
+  section_end:1650638770:download_artifacts
+  section_start:1650638770:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
+  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  Login Succeeded!
+  $ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
+  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-8d43a5cfe7b7afa2a04bdddea9018146eeb720e6
+  Getting image source signatures
+  Copying blob sha256:b39735705e69a2516323755ff4698ea5cd86b08b31d8c8287bc83d76d34c3bfc
+  Error: error creating build container: Error writing blob: error storing blob to file "/var/tmp/storage346971694/1": read tcp 172.17.0.2:47554->142.250.31.128:443: read: connection reset by peer
+  section_end:1650638783:step_script
+  section_start:1650638783:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1650638784:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/566924
