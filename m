@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 890AD10E469
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 12:53:50 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C217710E09C
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 12:59:26 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 22 Apr 2022 18:23:39 +0530
-Message-Id: <20220422125339.528-1-anshuman.gupta@intel.com>
-In-Reply-To: <20220422121527.19008-1-anshuman.gupta@intel.com>
-References: <20220422121527.19008-1-anshuman.gupta@intel.com>
+Date: Fri, 22 Apr 2022 18:29:12 +0530
+Message-Id: <20220422125912.6862-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] intel-ci: Reorder system suspend tests
- to last
+Subject: [igt-dev] [PATCH i-g-t] lib/intel_device_info: Add IS_DGFX() support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,71 +16,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>, badal.nilawar@intel.com
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reorder the system wide igt tests to last of fast-feedback.testlist,
-so we don't lose the other tests coverage on the platforms which
-are largely getting hit by Suspend/Resume related failures.
+Currently IGT is lacking IS_DGFX() macro support.
+There are some power features like D3Cold are only
+supported on discrete card. So IGT test/tools specific
+to D3Cold requires to consume IS_DGFX().
+Adding a is_dgfx field in intel_device_info and initializing
+it for DG1. All future discrete platform would require to
+initialize this field.
 
-v2:
-- Improved the comment in fast-feedback.testlist. [swati]
-
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ lib/intel_chipset.h     | 2 ++
+ lib/intel_device_info.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index f6329708b..d075aa312 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -25,8 +25,6 @@ igt@gem_exec_fence@nb-await
- igt@gem_exec_gttfill@basic
- igt@gem_exec_parallel@engines
- igt@gem_exec_store@basic
--igt@gem_exec_suspend@basic-s0
--igt@gem_exec_suspend@basic-s3
- igt@gem_flink_basic@bad-flink
- igt@gem_flink_basic@bad-open
- igt@gem_flink_basic@basic
-@@ -98,7 +96,6 @@ igt@kms_chamelium@hdmi-edid-read
- igt@kms_chamelium@hdmi-crc-fast
- igt@kms_chamelium@vga-hpd-fast
- igt@kms_chamelium@vga-edid-read
--igt@kms_chamelium@common-hpd-after-suspend
- igt@kms_prop_blob@basic
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
-@@ -128,7 +125,6 @@ igt@kms_pipe_crc_basic@read-crc-pipe-a
- igt@kms_pipe_crc_basic@read-crc-pipe-b
- igt@kms_pipe_crc_basic@read-crc-pipe-c
- igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
--igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
- igt@kms_psr@primary_page_flip
- igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
-@@ -174,8 +170,14 @@ igt@gem_lmem_swapping@parallel-random-engines
- igt@gem_lmem_swapping@random-engines
- igt@gem_lmem_swapping@verify-random
- igt@i915_pm_rpm@module-reload
--igt@i915_suspend@system-suspend-without-i915
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index db75a829f..07fdd213e 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -42,6 +42,7 @@ struct intel_device_info {
+ 	unsigned gt; /* 0 if unknown */
+ 	bool has_4tile : 1;
+ 	bool has_flatccs;
++	bool is_dgfx :1;
+ 	bool is_mobile : 1;
+ 	bool is_whitney : 1;
+ 	bool is_almador : 1;
+@@ -208,6 +209,7 @@ void intel_check_pch(void);
  
- # Kernel selftests
- igt@i915_selftest@live
- igt@dmabuf@all
-+
-+# System wide suspend tests
-+igt@i915_suspend@system-suspend-without-i915
-+igt@gem_exec_suspend@basic-s0
-+igt@gem_exec_suspend@basic-s3
-+igt@kms_chamelium@common-hpd-after-suspend
-+igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+ #define IS_MOBILE(devid)	(intel_get_device_info(devid)->is_mobile)
+ #define IS_965(devid)		AT_LEAST_GEN(devid, 4)
++#define IS_DGFX(devid)	(intel_get_device_info(devid)->is_dgfx)
+ 
+ #define HAS_BSD_RING(devid)	AT_LEAST_GEN(devid, 5)
+ #define HAS_BLT_RING(devid)	AT_LEAST_GEN(devid, 6)
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index e55841df5..b735f16a6 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -386,6 +386,7 @@ static const struct intel_device_info intel_rocketlake_info = {
+ static const struct intel_device_info intel_dg1_info = {
+ 	.graphics_ver = 12,
+ 	.display_ver = 12,
++	.is_dgfx = true,
+ 	.is_dg1 = true,
+ 	.codename = "dg1"
+ };
+@@ -394,6 +395,7 @@ static const struct intel_device_info intel_dg2_info = {
+ 	.graphics_ver = 12,
+ 	.display_ver = 13,
+ 	.has_4tile = true,
++	.is_dgfx = true,
+ 	.is_dg2 = true,
+ 	.codename = "dg2",
+ 	.has_flatccs = true,
 -- 
 2.26.2
