@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6533810E0D1
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 10:17:05 +0000 (UTC)
-Date: Fri, 22 Apr 2022 06:16:58 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7ED1610E319
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 10:17:52 +0000 (UTC)
+Date: Fri, 22 Apr 2022 06:17:46 -0400
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <YmKAmsmhkGg90gBG@intel.com>
+Message-ID: <YmKAyjjO6sNcF6iO@intel.com>
 References: <20220418125048.7969-1-anshuman.gupta@intel.com>
- <20220418125048.7969-4-anshuman.gupta@intel.com>
+ <20220418125048.7969-5-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220418125048.7969-4-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/9] lib/igt_pm: D3Cold runtime pm
- infrastructure
+In-Reply-To: <20220418125048.7969-5-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/9] lib/intel_device_info: Add
+ IS_DGFX() support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,316 +26,67 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Apr 18, 2022 at 06:20:42PM +0530, Anshuman Gupta wrote:
-> Enable gfx card pci devices runtime pm for all pci devices
-> and bridge under the topology of Gfx Card root port.
-> 
-> Added a library function to get the PCI root port ACPI
-> D state and to print the pci card devices runtime pm
-> status.
+On Mon, Apr 18, 2022 at 06:20:43PM +0530, Anshuman Gupta wrote:
+> Currently IGT is lacking IS_DGFX() macro support.
+> There are some power features like D3Cold are only
+> supported on discrete card. So IGT test/tools specific
+> to D3Cold requires to consume IS_DGFX().
+> Adding a is_dgfx field in intel_device_info and initializing
+> it for DG1. All future discrete platform would require to
+> initialize this field.
 > 
 > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+
+we also need this one for other stuff, so probably better to split and already merge this...
+
 > ---
->  lib/igt_pm.c | 226 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_pm.h |  21 +++++
->  2 files changed, 247 insertions(+)
+>  lib/intel_chipset.h     | 2 ++
+>  lib/intel_device_info.c | 2 ++
+>  2 files changed, 4 insertions(+)
 > 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index b409ec463..8e8a330f8 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -28,6 +28,7 @@
->  #include <fcntl.h>
->  #include <stdio.h>
->  #include <limits.h>
-> +#include <pciaccess.h>
->  #include <stdlib.h>
->  #include <string.h>
->  #include <unistd.h>
-> @@ -75,6 +76,7 @@ enum {
->  #define MIN_POWER_STR		"min_power\n"
->  /* Remember to fix this if adding longer strings */
->  #define MAX_POLICY_STRLEN	strlen(MAX_PERFORMANCE_STR)
-> +#define MAX_PCI_DEVICES		256
->  int8_t *__sata_pm_policies;
->  int __scsi_host_cnt;
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index db75a829f..07fdd213e 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -42,6 +42,7 @@ struct intel_device_info {
+>  	unsigned gt; /* 0 if unknown */
+>  	bool has_4tile : 1;
+>  	bool has_flatccs;
+> +	bool is_dgfx :1;
+>  	bool is_mobile : 1;
+>  	bool is_whitney : 1;
+>  	bool is_almador : 1;
+> @@ -208,6 +209,7 @@ void intel_check_pch(void);
 >  
-> @@ -856,3 +858,227 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
+>  #define IS_MOBILE(devid)	(intel_get_device_info(devid)->is_mobile)
+>  #define IS_965(devid)		AT_LEAST_GEN(devid, 4)
+> +#define IS_DGFX(devid)	(intel_get_device_info(devid)->is_dgfx)
 >  
->  	return strstr(buf, "LPSP: capable");
->  }
-> +
-> +/**
-> + * igt_pm_acpi_d3cold_suppoarted:
-
-                              ^ typo
-
-> + * @pci_dev: root port pci_dev.
-> + * Check ACPI D3Cold support.
-> + *
-> + * Returns:
-> + * True if ACPI D3Cold supported otherwise false.
-> + */
-> +bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
-> +{
-> +	char name[PATH_MAX];
-> +	int dir, fd;
-> +
-> +	snprintf(name, PATH_MAX,
-> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	dir = open(name, O_RDONLY);
-> +	igt_require(dir > 0);
-> +
-> +	/* BIOS need to enable ACPI D3Cold Support.*/
-> +	fd = openat(dir, "real_power_state", O_RDONLY);
-> +	if (fd < 0 && errno == ENOENT)
-> +		return false;
-> +
-> +	igt_require(fd > 0);
-> +
-> +	return true;
-> +}
-> +
-> +/**
-> + * igt_pm_get_acpi_real_d_state:
-> + * @pci_dev: root port pci_dev.
-> + * Get ACPI D state for a given root port.
-> + *
-> + * Returns:
-> + * igt_acpi_d_state state.
-> + */
-> +enum igt_acpi_d_state
-> +igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev)
-> +{
-> +	char name[PATH_MAX];
-> +	char acpi_d_state[64];
-> +	int fd, n_read;
-> +
-> +	snprintf(name, PATH_MAX,
-> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node/real_power_state",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	fd = open(name, O_RDONLY);
-> +	if (fd < 0)
-> +		return IGT_ACPI_UNKNOWN_STATE;
-> +
-> +	n_read = read(fd, acpi_d_state, sizeof(acpi_d_state) - 1);
-> +	igt_assert(n_read >= 0);
-> +	acpi_d_state[n_read] = '\0';
-> +	close(fd);
-> +
-> +	if (strncmp(acpi_d_state, "D0\n", n_read) == 0)
-> +		return IGT_ACPI_D0;
-> +	else if  (strncmp(acpi_d_state, "D1\n", n_read) == 0)
-> +		return IGT_ACPI_D1;
-> +	else if  (strncmp(acpi_d_state, "D2\n", n_read) == 0)
-> +		return IGT_ACPI_D2;
-> +	else if  (strncmp(acpi_d_state, "D3hot\n", n_read) == 0)
-> +		return IGT_ACPI_D3Hot;
-> +	else if  (strncmp(acpi_d_state, "D3cold\n", n_read) == 0)
-> +		return IGT_ACPI_D3Cold;
-> +	else
-> +		return IGT_ACPI_UNKNOWN_STATE;
-> +}
-> +
-> +static struct igt_pm_pci_dev_control  __igt_pm_pci_control[MAX_PCI_DEVICES];
-
-the only thing that I'm not totally comfortable with this patch is this global
-struct of 256 items in a lib file.
-
-Although I liked the use of the exit handler to restore the status...
-
-> +
-> +static void __igt_pm_pci_card_exit_handler(int sig)
-> +{
-> +	igt_pm_restore_pci_card_runtime_pm();
-> +}
-> +
-> +static void
-> +__igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev, int index)
-> +{
-> +	char name[PATH_MAX], buf[6];
-> +	int fd, control_size, size;
-> +	char *control;
-> +
-> +	igt_assert(index <  MAX_PCI_DEVICES);
-> +
-> +	control = __igt_pm_pci_control[index].control;
-> +	control_size =  sizeof(__igt_pm_pci_control[index].control);
-> +	__igt_pm_pci_control[index].pci_dev = pci_dev;
-> +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/control",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	fd = open(name, O_RDWR);
-> +	igt_assert_f(fd >= 0, "Can't open control\n");
-> +
-> +	igt_assert(read(fd, control, control_size - 1) > 0);
-> +	strchomp(control);
-> +
-> +	igt_debug("Saved runtime power management for PCI '%04x:%02x:%02x.%01x' '%s'\n",
-> +		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, control);
-> +	igt_install_exit_handler(__igt_pm_pci_card_exit_handler);
-> +
-> +	size = write(fd, "auto\n", 5);
-> +	igt_assert(size == 5);
-> +
-> +	lseek(fd, 0, SEEK_SET);
-> +	size = read(fd, buf, ARRAY_SIZE(buf));
-> +	igt_assert(size == 5);
-> +	igt_assert(strncmp(buf, "auto\n", 5) == 0);
-> +
-> +	close(fd);
-> +}
-> +
-> +/**
-> + * igt_pm_setup_pci_card_runtime_pm:
-> + * @pci_dev: root port pci_dev.
-> + * Setup runtime PM for all PCI endpoints devices for a given
-> + * root port. It also save power control attribute for all PCI endpoints
-> + * devices for a given root port.
-> + */
-> +void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev)
-> +{
-> +	int primary, secondary, subordinate, ret;
-> +	struct pci_device_iterator *iter;
-> +	struct pci_device *dev;
-> +	int i = 0;
-> +
-> +	memset(__igt_pm_pci_control, 0, sizeof(__igt_pm_pci_control));
-> +	ret = pci_device_get_bridge_buses(pci_dev, &primary, &secondary, &subordinate);
-> +	igt_assert(!ret);
-> +
-> +	ret = pci_system_init();
-> +	igt_assert(!ret);
-> +
-> +	iter = pci_slot_match_iterator_create(NULL);
-> +	/* Setup runtime pm for PCI root port */
-> +	__igt_pm_setup_pci_card_runtime_pm(pci_dev, i++);
-> +	while ((dev = pci_device_next(iter)) != NULL) {
-> +		if (dev->bus >= secondary && dev->bus <= subordinate)
-> +			__igt_pm_setup_pci_card_runtime_pm(dev, i++);
-> +	}
-> +}
-> +
-> +static void igt_pm_restore_pci_dev_runtime_pm(struct pci_device *pci_dev, char *control, int len)
-> +{
-> +	char name[PATH_MAX];
-> +	int fd;
-> +
-> +	igt_debug("Restoring runtime power management for PCI '%04x:%02x:%02x.%01x' '%s'\n",
-> +		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, control);
-> +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/control",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	fd = open(name, O_WRONLY);
-> +	igt_assert_f(fd >= 0, "Can't open control\n");
-> +
-> +	igt_assert(write(fd, control, len) == len);
-> +	close(fd);
-> +}
-> +
-> +/**
-> + * igt_pm_restore_pci_card_runtime_pm:
-> + * @pci_dev: root port pci_dev.
-> + * Restore power control attribute for all PCI endpoints devices for a given
-> + * root port.
-> + */
-> +void igt_pm_restore_pci_card_runtime_pm(void)
-> +{
-> +	int i = 0;
-> +
-> +	for (i = 0; i < MAX_PCI_DEVICES; i++) {
-> +		if (!__igt_pm_pci_control[i].pci_dev)
-> +			break;
-> +
-> +		igt_pm_restore_pci_dev_runtime_pm(__igt_pm_pci_control[i].pci_dev,
-> +						  __igt_pm_pci_control[i].control,
-> +						  sizeof(__igt_pm_pci_control[i].control));
-> +	}
-> +
-> +	memset(__igt_pm_pci_control, 0, sizeof(__igt_pm_pci_control));
-> +	pci_system_cleanup();
-> +}
-> +
-> +static void igt_pm_print_pci_dev_runtime_status(struct pci_device *pci_dev)
-> +{
-> +	char name[PATH_MAX], runtime_status[64];
-> +	int fd, n_read;
-> +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/runtime_status",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	fd = open(name, O_RDONLY);
-> +	igt_assert_f(fd >= 0, "Can't open runtime_status\n");
-> +
-> +	n_read = read(fd, runtime_status, sizeof(runtime_status) - 1);
-> +	igt_assert(n_read >= 0);
-> +	runtime_status[n_read] = '\0';
-> +	igt_info("runtime suspend status for PCI '%04x:%02x:%02x.%01x' %s\n",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, runtime_status);
-> +	close(fd);
-> +}
-> +
-> +/**
-> + * igt_pm_print_pci_card_runtime_status:
-> + * @pci_dev: root port pci_dev.
-> + * Print runtime suspend status for all PCI endpoints devices for a given
-> + * root port.
-> + */
-> +void igt_pm_print_pci_card_runtime_status(void)
-> +{
-> +	int i = 0;
-> +
-> +	for (i = 0; i < MAX_PCI_DEVICES; i++) {
-> +		if (!__igt_pm_pci_control[i].pci_dev)
-> +			break;
-> +
-> +		igt_pm_print_pci_dev_runtime_status(__igt_pm_pci_control[i].pci_dev);
-> +	}
-> +}
-> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> index 162d3ca3c..a5a9c4760 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -46,6 +46,21 @@ enum igt_runtime_pm_status {
->  	IGT_RUNTIME_PM_STATUS_UNKNOWN,
+>  #define HAS_BSD_RING(devid)	AT_LEAST_GEN(devid, 5)
+>  #define HAS_BLT_RING(devid)	AT_LEAST_GEN(devid, 6)
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index e55841df5..b735f16a6 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -386,6 +386,7 @@ static const struct intel_device_info intel_rocketlake_info = {
+>  static const struct intel_device_info intel_dg1_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 12,
+> +	.is_dgfx = true,
+>  	.is_dg1 = true,
+>  	.codename = "dg1"
 >  };
->  
-> +/* PCI ACPI firmware node real state */
-> +enum igt_acpi_d_state {
-> +	IGT_ACPI_D0,
-> +	IGT_ACPI_D1,
-> +	IGT_ACPI_D2,
-> +	IGT_ACPI_D3Hot,
-> +	IGT_ACPI_D3Cold,
-> +	IGT_ACPI_UNKNOWN_STATE,
-> +};
-> +
-> +struct	igt_pm_pci_dev_control {
-> +	struct pci_device *pci_dev;
-> +	char control[64];
-> +};
-> +
->  bool igt_setup_runtime_pm(int device);
->  void igt_disable_runtime_pm(void);
->  void igt_restore_runtime_pm(void);
-> @@ -54,5 +69,11 @@ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
->  bool igt_pm_dmc_loaded(int debugfs);
->  bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
->  bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
-> +bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
-> +enum igt_acpi_d_state
-> +igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
-> +void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
-> +void igt_pm_restore_pci_card_runtime_pm(void);
-> +void igt_pm_print_pci_card_runtime_status(void);
->  
->  #endif /* IGT_PM_H */
+> @@ -394,6 +395,7 @@ static const struct intel_device_info intel_dg2_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 13,
+>  	.has_4tile = true,
+> +	.is_dgfx = true,
+>  	.is_dg2 = true,
+>  	.codename = "dg2",
+>  	.has_flatccs = true,
 > -- 
 > 2.26.2
 > 
