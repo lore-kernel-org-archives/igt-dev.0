@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F04210EECD
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 00:38:52 +0000 (UTC)
-From: Anusha Srivatsa <anusha.srivatsa@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 21 Apr 2022 17:35:22 -0700
-Message-Id: <20220422003522.4129510-1-anusha.srivatsa@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B667610E0F3
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 01:06:54 +0000 (UTC)
+From: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+To: "Srivatsa, Anusha" <anusha.srivatsa@intel.com>
+Date: Fri, 22 Apr 2022 01:06:52 +0000
+Message-ID: <04513ED8-BDE2-470A-AA0E-34AFDCAB0484@intel.com>
+References: <20220422003522.4129510-1-anusha.srivatsa@intel.com>
+In-Reply-To: <20220422003522.4129510-1-anusha.srivatsa@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] i915/dg2/pm_rpm: skip basic-rte subtest for Dg2
+Subject: Re: [igt-dev] [i-g-t] i915/dg2/pm_rpm: skip basic-rte subtest for
+ Dg2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,44 +21,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As part of IGT cleanup we need to understand if the IGT needs
-to change for discrete graphics scenario or need new subtests.
-As of now this fails with MMIO BARS on DG2.
-Lets skip the test temporarily till we completely understand the
-use case for dgfx before we run this again with confidence.
-
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Anusha Srivatsa <anusha.srivatsa@intel.com>
----
- tests/i915/i915_pm_rpm.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 461730e8..1395718d 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -2049,6 +2049,17 @@ static struct option long_options[] = {
- igt_main_args("", long_options, help_str, opt_handler, NULL)
- {
- 	igt_subtest("basic-rte") {
-+	/* TODO As a part of IGT cleanup, lets understand if the test needs
-+	 * changes for DG2.
-+	 * This tests results in MMIO BARs when run on DG2. The igt_require()
-+	 * below does state the test to SKIP in case system is not cnfigured
-+	 * properly. However on DG2 instead of skipping smoothly it  causes MMIO
-+	 * BAR resulting in hang. Till we have understood
-+	 * if the test makes sense to be run on DG2 or needs any changes for
-+	 * discrete GPU case, lets explicitly SKIP it
-+	 */
-+               igt_skip_on(IS_DG2(ms_data.devid));
-+
- 		igt_assert(setup_environment(false));
- 		basic_subtest();
- 	}
--- 
-2.25.1
+TmFjay4gSSB0aG91Z2h0IHdlIGhhZCBhZ3JlZWQgdGhhdCB0aGlzIGlzIG5vdCB0aGUgaXNzdWUg
+YW5kIGlmIHdlIGJsYWNrbGlzdCB0aGlzIHRoZSBsb3cgcG93ZXIgc3RhdGVzIHdpbGwgYmxvdyB0
+aGluZ3MgdXAgc29tZXdoZXJlIGVsc2UuDQoNCj4gT24gQXByIDIxLCAyMDIyLCBhdCA4OjM4IFBN
+LCBTcml2YXRzYSwgQW51c2hhIDxhbnVzaGEuc3JpdmF0c2FAaW50ZWwuY29tPiB3cm90ZToNCj4g
+DQo+IO+7v0FzIHBhcnQgb2YgSUdUIGNsZWFudXAgd2UgbmVlZCB0byB1bmRlcnN0YW5kIGlmIHRo
+ZSBJR1QgbmVlZHMNCj4gdG8gY2hhbmdlIGZvciBkaXNjcmV0ZSBncmFwaGljcyBzY2VuYXJpbyBv
+ciBuZWVkIG5ldyBzdWJ0ZXN0cy4NCj4gQXMgb2Ygbm93IHRoaXMgZmFpbHMgd2l0aCBNTUlPIEJB
+UlMgb24gREcyLg0KPiBMZXRzIHNraXAgdGhlIHRlc3QgdGVtcG9yYXJpbHkgdGlsbCB3ZSBjb21w
+bGV0ZWx5IHVuZGVyc3RhbmQgdGhlDQo+IHVzZSBjYXNlIGZvciBkZ2Z4IGJlZm9yZSB3ZSBydW4g
+dGhpcyBhZ2FpbiB3aXRoIGNvbmZpZGVuY2UuDQo+IA0KPiBDYzogUm9kcmlnbyBWaXZpIDxyb2Ry
+aWdvLnZpdmlAaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBBbnVzaGEgU3JpdmF0c2EgPGFu
+dXNoYS5zcml2YXRzYUBpbnRlbC5jb20+DQo+IC0tLQ0KPiB0ZXN0cy9pOTE1L2k5MTVfcG1fcnBt
+LmMgfCAxMSArKysrKysrKysrKw0KPiAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKQ0K
+PiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvaTkxNV9wbV9ycG0uYyBiL3Rlc3RzL2k5MTUv
+aTkxNV9wbV9ycG0uYw0KPiBpbmRleCA0NjE3MzBlOC4uMTM5NTcxOGQgMTAwNjQ0DQo+IC0tLSBh
+L3Rlc3RzL2k5MTUvaTkxNV9wbV9ycG0uYw0KPiArKysgYi90ZXN0cy9pOTE1L2k5MTVfcG1fcnBt
+LmMNCj4gQEAgLTIwNDksNiArMjA0OSwxNyBAQCBzdGF0aWMgc3RydWN0IG9wdGlvbiBsb25nX29w
+dGlvbnNbXSA9IHsNCj4gaWd0X21haW5fYXJncygiIiwgbG9uZ19vcHRpb25zLCBoZWxwX3N0ciwg
+b3B0X2hhbmRsZXIsIE5VTEwpDQo+IHsNCj4gICAgaWd0X3N1YnRlc3QoImJhc2ljLXJ0ZSIpIHsN
+Cj4gKyAgICAvKiBUT0RPIEFzIGEgcGFydCBvZiBJR1QgY2xlYW51cCwgbGV0cyB1bmRlcnN0YW5k
+IGlmIHRoZSB0ZXN0IG5lZWRzDQo+ICsgICAgICogY2hhbmdlcyBmb3IgREcyLg0KPiArICAgICAq
+IFRoaXMgdGVzdHMgcmVzdWx0cyBpbiBNTUlPIEJBUnMgd2hlbiBydW4gb24gREcyLiBUaGUgaWd0
+X3JlcXVpcmUoKQ0KPiArICAgICAqIGJlbG93IGRvZXMgc3RhdGUgdGhlIHRlc3QgdG8gU0tJUCBp
+biBjYXNlIHN5c3RlbSBpcyBub3QgY25maWd1cmVkDQo+ICsgICAgICogcHJvcGVybHkuIEhvd2V2
+ZXIgb24gREcyIGluc3RlYWQgb2Ygc2tpcHBpbmcgc21vb3RobHkgaXQgIGNhdXNlcyBNTUlPDQo+
+ICsgICAgICogQkFSIHJlc3VsdGluZyBpbiBoYW5nLiBUaWxsIHdlIGhhdmUgdW5kZXJzdG9vZA0K
+PiArICAgICAqIGlmIHRoZSB0ZXN0IG1ha2VzIHNlbnNlIHRvIGJlIHJ1biBvbiBERzIgb3IgbmVl
+ZHMgYW55IGNoYW5nZXMgZm9yDQo+ICsgICAgICogZGlzY3JldGUgR1BVIGNhc2UsIGxldHMgZXhw
+bGljaXRseSBTS0lQIGl0DQo+ICsgICAgICovDQo+ICsgICAgICAgICAgICAgICBpZ3Rfc2tpcF9v
+bihJU19ERzIobXNfZGF0YS5kZXZpZCkpOw0KPiArDQo+ICAgICAgICBpZ3RfYXNzZXJ0KHNldHVw
+X2Vudmlyb25tZW50KGZhbHNlKSk7DQo+ICAgICAgICBiYXNpY19zdWJ0ZXN0KCk7DQo+ICAgIH0N
+Cj4gLS0gDQo+IDIuMjUuMQ0KPiANCg==
