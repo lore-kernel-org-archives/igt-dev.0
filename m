@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFA3C10E9B7
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 11:49:56 +0000 (UTC)
-Date: Fri, 22 Apr 2022 14:49:57 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Message-ID: <YmKWZWxZyHWRn5gA@platvala-desk.ger.corp.intel.com>
-References: <20220422055930.19377-1-anshuman.gupta@intel.com>
- <60a88b08-bf08-55ab-9f40-c32a702ec72d@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1620610F490
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 12:01:51 +0000 (UTC)
+Date: Fri, 22 Apr 2022 08:01:31 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <YmKZG5bI3rvMovpe@intel.com>
+References: <20220418125048.7969-1-anshuman.gupta@intel.com>
+ <20220418125048.7969-7-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <60a88b08-bf08-55ab-9f40-c32a702ec72d@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Reorder system suspend to last
+In-Reply-To: <20220418125048.7969-7-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 6/9] i915_pm_rpm: Add D3Cold basic
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,77 +26,66 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 22, 2022 at 12:59:50PM +0530, Sharma, Swati2 wrote:
-> Please find one nitpick below. Rest looks good to me.
-> With that fixed.
+On Mon, Apr 18, 2022 at 06:20:45PM +0530, Anshuman Gupta wrote:
+> Add support for D3Cold basic subtest.
+> It setup and prepares the gfx PCI card for D3Cold
+> and checks the ACPI D3Cold state.
 > 
-> Reviewed-by:
-> Swati Sharma <swati2.sharma@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 
-And FWIW CI's pov:
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-
+> ---
+>  tests/i915/i915_pm_rpm.c | 28 ++++++++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
 > 
-> On 22-Apr-22 11:29 AM, Anshuman Gupta wrote:
-> > Reorder the system wide igt tests to last of fast-feedback.testlist,
-> > so we don't loose the other tests coverage on the platforms which
-> > are largely getting hit by Suspend/Resume related failures.
-> > 
-> > Cc: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Swati Sharma <swati2.sharma@intel.com>
-> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > ---
-> >   tests/intel-ci/fast-feedback.testlist | 12 +++++++-----
-> >   1 file changed, 7 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> > index f6329708b..c9613e609 100644
-> > --- a/tests/intel-ci/fast-feedback.testlist
-> > +++ b/tests/intel-ci/fast-feedback.testlist
-> > @@ -25,8 +25,6 @@ igt@gem_exec_fence@nb-await
-> >   igt@gem_exec_gttfill@basic
-> >   igt@gem_exec_parallel@engines
-> >   igt@gem_exec_store@basic
-> > -igt@gem_exec_suspend@basic-s0
-> > -igt@gem_exec_suspend@basic-s3
-> >   igt@gem_flink_basic@bad-flink
-> >   igt@gem_flink_basic@bad-open
-> >   igt@gem_flink_basic@basic
-> > @@ -98,7 +96,6 @@ igt@kms_chamelium@hdmi-edid-read
-> >   igt@kms_chamelium@hdmi-crc-fast
-> >   igt@kms_chamelium@vga-hpd-fast
-> >   igt@kms_chamelium@vga-edid-read
-> > -igt@kms_chamelium@common-hpd-after-suspend
-> >   igt@kms_prop_blob@basic
-> >   igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
-> >   igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
-> > @@ -128,7 +125,6 @@ igt@kms_pipe_crc_basic@read-crc-pipe-a
-> >   igt@kms_pipe_crc_basic@read-crc-pipe-b
-> >   igt@kms_pipe_crc_basic@read-crc-pipe-c
-> >   igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
-> > -igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
-> >   igt@kms_psr@primary_page_flip
-> >   igt@kms_psr@cursor_plane_move
-> >   igt@kms_psr@sprite_plane_onoff
-> > @@ -174,8 +170,14 @@ igt@gem_lmem_swapping@parallel-random-engines
-> >   igt@gem_lmem_swapping@random-engines
-> >   igt@gem_lmem_swapping@verify-random
-> >   igt@i915_pm_rpm@module-reload
-> > -igt@i915_suspend@system-suspend-without-i915
-> >   # Kernel selftests
-> >   igt@i915_selftest@live
-> >   igt@dmabuf@all
-> > +
-> > +# System wide Suspend Test
-> 
-> nitpick: System wide suspend tests
-> 
-> > +igt@i915_suspend@system-suspend-without-i915
-> > +igt@gem_exec_suspend@basic-s0
-> > +igt@gem_exec_suspend@basic-s3
-> > +igt@kms_chamelium@common-hpd-after-suspend
-> > +igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
-> 
+> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> index d2bce5826..c30862dc4 100644
+> --- a/tests/i915/i915_pm_rpm.c
+> +++ b/tests/i915/i915_pm_rpm.c
+> @@ -1534,6 +1534,31 @@ __noreturn static void stay_subtest(void)
+>  		sleep(600);
+>  }
+>  
+> +static void d3cold_basic_subtest(void)
+> +{
+> +	struct pci_device *root;
+> +	bool result;
+> +
+> +	/* igfx does not support d3cold */
+> +	igt_require(IS_DGFX(ms_data.devid));
+> +
+> +	root = igt_device_get_pci_root_port(drm_fd);
+> +	disable_all_screens_and_wait(&ms_data);
+> +	igt_require(igt_pm_acpi_d3cold_supported(root));
+> +	igt_pm_setup_pci_card_runtime_pm(root);
+> +
+> +	result = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
+> +
+> +	if (!result) {
+> +		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
+> +			 root->domain, root->bus, root->dev, root->func);
+> +		igt_pm_print_pci_card_runtime_status();
+> +	}
+> +
+> +	igt_assert(result);
+> +	igt_pm_restore_pci_card_runtime_pm();
+> +}
+> +
+>  static void system_suspend_subtest(int state, int debug)
+>  {
+>  	disable_all_screens_and_wait(&ms_data);
+> @@ -2065,6 +2090,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		igt_subtest("stay")
+>  			stay_subtest();
+>  
+> +	igt_subtest("d3cold-basic")
+> +		d3cold_basic_subtest();
+> +
+>  	/* Essential things */
+>  	igt_subtest("drm-resources-equal")
+>  		drm_resources_equal_subtest();
 > -- 
-> ~Swati Sharma
+> 2.26.2
+> 
