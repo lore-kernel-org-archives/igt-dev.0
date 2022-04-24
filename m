@@ -1,25 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E0C510E5C4
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 13:32:13 +0000 (UTC)
-Received: from linux.intel.com (unknown [10.252.3.61])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 2CCFA580D96
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Mar 2023 06:32:00 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pgmx4-00ABng-0Z
- for igt-dev@lists.freedesktop.org; Mon, 27 Mar 2023 15:31:58 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDC8110E1CF
+ for <igt-dev@lists.freedesktop.org>; Sat, 25 Mar 2023 18:34:04 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Mar 2023 15:31:55 +0200
-Message-Id: <20230327133155.2428454-12-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
-References: <20230327133155.2428454-1-mauro.chehab@linux.intel.com>
+Date: Sun, 24 Apr 2022 06:27:37 +0530
+Message-Id: <20220424005737.228759-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 11/11] xe/xe_noexec_ping_pong: document
- subtest
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_backlight: Brightness
+ test during DPMS on and off
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,54 +21,68 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Set brightness by deviding max brightness, store and read it back.
+The actual brightness should be same during DPMS on and off cycle.
 
-Use the SUBTEST tag to add the subtest's description to the
-IGT test plan documentation.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/xe/xe_noexec_ping_pong.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ tests/i915/i915_pm_backlight.c | 37 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/tests/xe/xe_noexec_ping_pong.c b/tests/xe/xe_noexec_ping_pong.c
-index dc14f8cf3f2d..367671883a28 100644
---- a/tests/xe/xe_noexec_ping_pong.c
-+++ b/tests/xe/xe_noexec_ping_pong.c
-@@ -20,20 +20,22 @@
-  * Category: Software building block
-  * Sub-category: compute
-  * Test category: functionality test
-- */
--
--/*
-- * This test creates compute vms, binds a couple of bos and an engine each,
-- * thus redying it for execution. However, VRAM memory is over-
-- * committed and while there is still nothing to execute, an eviction
-- * will trigger the VM's rebind worker to rebind the evicted bo, which
-- * will in turn trigger another eviction and so on.
-  *
-- * Since we don't have eviction stats yet we need to watch "top" for
-- * the rebind kworkers using a lot of CPU while the test idles.
-+ * SUBTEST:
-+ * Description:
-+ *	This test creates compute vms, binds a couple of bos and an engine each,
-+ *	thus redying it for execution. However, VRAM memory is over-
-+ *	committed and while there is still nothing to execute, an eviction
-+ *	will trigger the VM's rebind worker to rebind the evicted bo, which
-+ *	will in turn trigger another eviction and so on.
-+ *
-+ *	Since we don't have eviction stats yet we need to watch "top" for
-+ *	the rebind kworkers using a lot of CPU while the test idles.
-  *
-- * The correct driver behaviour should be not to rebind anything unless
-- * there is worked queued on one of the VM's compute engines.
-+ *	The correct driver behaviour should be not to rebind anything unless
-+ *	there is worked queued on one of the VM's compute engines.
-+ * Run type: FULL
-+ * TODO: change ``'Run type' == FULL`` to a better category
-  */
- static void test_ping_pong(int fd, struct drm_xe_engine_class_instance *eci)
+diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
+index 82960662..3961f4fc 100644
+--- a/tests/i915/i915_pm_backlight.c
++++ b/tests/i915/i915_pm_backlight.c
+@@ -188,6 +188,32 @@ check_suspend(igt_output_t *output)
+ 	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
+ }
+ 
++static void check_dpms_cycle(igt_display_t *display, igt_output_t *output, struct context *context)
++{
++	int max, val_1, val_2;
++
++	backlight_read(&max, "max_brightness", context);
++	igt_assert(max);
++
++	backlight_write(max / 2, "brightness", context);
++	backlight_read(&val_1, "actual_brightness", context);
++
++	igt_require(igt_setup_runtime_pm(output->display->drm_fd));
++
++	kmstest_set_connector_dpms(output->display->drm_fd,
++				   output->config.connector,
++				   DRM_MODE_DPMS_OFF);
++	igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
++
++	kmstest_set_connector_dpms(output->display->drm_fd,
++				   output->config.connector,
++				   DRM_MODE_DPMS_ON);
++	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
++
++	backlight_read(&val_2, "actual_brightness", context);
++	igt_assert_eq(val_1, val_2);
++}
++
+ static void test_cleanup(igt_display_t *display, igt_output_t *output)
  {
+ 	igt_output_set_pipe(output, PIPE_NONE);
+@@ -325,6 +351,17 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("test brightness with dpms on and off cycle");
++	igt_subtest_with_dynamic("brightness-with-dpms") {
++		for (int j = 0; j < (dual_edp ? 2 : 1); j++) {
++			test_setup(display, &contexts->output[j]);
++			igt_dynamic_f("%s", igt_output_name(contexts[j].output)) {
++				check_dpms_cycle(&display, &contexts->output[j], &contexts[j]);
++				test_cleanup(&display, &contexts->output[j]);
++			}
++		}
++	}
++
+ 	igt_fixture {
+ 		/* Restore old brightness */
+ 		for (i = 0; i < (dual_edp ? 2 : 1); i++)
 -- 
-2.39.2
+2.25.1
