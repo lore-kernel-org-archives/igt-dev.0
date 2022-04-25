@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA63E10E3FF
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Apr 2022 19:00:53 +0000 (UTC)
-Message-ID: <d0d7a799-b36e-211b-bda1-0e6ee7c36b53@quicinc.com>
-Date: Mon, 25 Apr 2022 12:00:49 -0700
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Language: en-US
-To: Jessica Zhang <quic_jesszhan@quicinc.com>, <igt-dev@lists.freedesktop.org>
-References: <20220421172858.263-1-quic_jesszhan@quicinc.com>
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20220421172858.263-1-quic_jesszhan@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3] meson: Move MSM-specific tests to
- their own subdirectory
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pillai, Aurabindo" <aurabindo.pillai@amd.com>
+Date: Mon, 25 Apr 2022 19:54:25 -0000
+Message-ID: <165091646571.32286.12774446819812553580@emeril.freedesktop.org>
+References: <20220425184556.771707-1-dingchen.zhang@amd.com>
+In-Reply-To: <20220425184556.771707-1-dingchen.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_a?=
+ =?utf-8?q?mdgpu_PSR-SU_cursor_move_test_cases_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,92 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: robdclark@chromium.org, quic_aravindh@quicinc.com, petri.latvala@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This has been applied keeping petri's ack from the previous version.
+== Series Details ==
 
-Thanks
+Series: amdgpu PSR-SU cursor move test cases (rev4)
+URL   : https://patchwork.freedesktop.org/series/102886/
+State : warning
 
-Abhinav
+== Summary ==
 
-On 4/21/2022 10:28 AM, Jessica Zhang wrote:
-> Move all custom MSM tests to their own subdirectory and have them
-> installed in an msm/ subdirectory
-> 
-> Changes from v1:
-> - Removed extra whitespace
-> - Moved meson build commands for msm tests from tests/msm/meson.build
->    to tests/meson.build
-> 
-> Changes from v2:
-> - Removed unused variables
-> 
-> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-> ---
->   tests/meson.build              | 18 +++++++++++++++---
->   tests/{ => msm}/msm_mapping.c  |  0
->   tests/{ => msm}/msm_recovery.c |  0
->   tests/{ => msm}/msm_submit.c   |  0
->   4 files changed, 15 insertions(+), 3 deletions(-)
->   rename tests/{ => msm}/msm_mapping.c (100%)
->   rename tests/{ => msm}/msm_recovery.c (100%)
->   rename tests/{ => msm}/msm_submit.c (100%)
-> 
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 7261e9aa2950..fb0f1e37f633 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -63,9 +63,6 @@ test_progs = [
->   	'kms_vrr',
->   	'kms_writeback',
->   	'meta_test',
-> -	'msm_mapping',
-> -	'msm_recovery',
-> -	'msm_submit',
->   	'panfrost_get_param',
->   	'panfrost_gem_new',
->   	'panfrost_prime',
-> @@ -253,6 +250,12 @@ i915_progs = [
->   	'sysfs_timeslice_duration',
->   ]
->   
-> +msm_progs = [
-> +	'msm_mapping',
-> +	'msm_recovery',
-> +	'msm_submit'
-> +]
-> +
->   test_deps = [ igt_deps ]
->   
->   if libdrm_nouveau.found()
-> @@ -294,6 +297,15 @@ foreach prog : i915_progs
->   	test_list += prog
->   endforeach
->   
-> +foreach prog : msm_progs
-> +	test_executables += executable(prog, join_paths('msm', prog + '.c'),
-> +				       dependencies : test_deps,
-> +				       install_dir : libexecdir,
-> +				       install_rpath : libexecdir_rpathdir,
-> +				       install : true)
-> +	test_list += prog
-> +endforeach
-> +
->   test_executables += executable('drm_fdinfo',
->   	   join_paths('i915', 'drm_fdinfo.c'),
->   	   dependencies : test_deps + [ lib_igt_drm_fdinfo ],
-> diff --git a/tests/msm_mapping.c b/tests/msm/msm_mapping.c
-> similarity index 100%
-> rename from tests/msm_mapping.c
-> rename to tests/msm/msm_mapping.c
-> diff --git a/tests/msm_recovery.c b/tests/msm/msm_recovery.c
-> similarity index 100%
-> rename from tests/msm_recovery.c
-> rename to tests/msm/msm_recovery.c
-> diff --git a/tests/msm_submit.c b/tests/msm/msm_submit.c
-> similarity index 100%
-> rename from tests/msm_submit.c
-> rename to tests/msm/msm_submit.c
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/569071 for the overview.
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/21733586):
+  Ok:                  310
+  Expected Fail:         3
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1650916225:step_script
+  section_start:1650916225:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1718 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=21733586 responseStatus=201 Created token=ayt62HGC
+  section_end:1650916235:upload_artifacts_on_failure
+  section_start:1650916235:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1650916236:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/569071
