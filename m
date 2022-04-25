@@ -1,22 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC74110E160
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Apr 2022 06:10:27 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Date: Mon, 25 Apr 2022 06:10:23 +0000
-Message-ID: <1e597a2232df4c51ac6a2ac8112784bf@intel.com>
-References: <20220422125912.6862-1-anshuman.gupta@intel.com>
- <87y1zx6qzs.wl-ashutosh.dixit@intel.com>
- <6b377d0333494eb1940bd2f96ba15cb8@intel.com>
- <874k2haf9t.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <874k2haf9t.wl-ashutosh.dixit@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFAA210E34C
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Apr 2022 06:23:12 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>, Jessica Zhang
+ <quic_jesszhan@quicinc.com>
+Date: Mon, 25 Apr 2022 06:23:07 +0000
+Message-ID: <d22b812b1140465885b28af31638713f@intel.com>
+References: <20220421172858.263-1-quic_jesszhan@quicinc.com>
+ <165057519298.10764.6605100681028658462@emeril.freedesktop.org>
+ <cc310ef6-96b8-9002-e592-5811ef3bf56a@quicinc.com>
+ <YmKTxenDlaT4VeXF@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YmKTxenDlaT4VeXF@platvala-desk.ger.corp.intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_device_info: Add IS_DGFX()
- support
+Subject: Re: [igt-dev]
+ =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
+ =?utf-8?q?eson=3A_Move_MSM-specific_tests_to_their_own_subdirectory_=28re?=
+ =?utf-8?b?djUp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,89 +27,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Vivi,
- Rodrigo" <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
-> Sent: Monday, April 25, 2022 11:14 AM
-> To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_device_info: Add IS_DGFX()=
- support
->=20
-> On Sun, 24 Apr 2022 22:24:06 -0700, Gupta, Anshuman wrote:
-> >
-> > > -----Original Message-----
-> > > From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
-> > > Sent: Friday, April 22, 2022 9:38 PM
-> > > To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> > > Cc: igt-dev@lists.freedesktop.org; Vivi, Rodrigo
-> > > <rodrigo.vivi@intel.com>
-> > > Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_device_info: Add
-> > > IS_DGFX() support
-> > >
-> > > On Fri, 22 Apr 2022 05:59:12 -0700, Anshuman Gupta wrote:
-> > > >
-> > > > Currently IGT is lacking IS_DGFX() macro support.
-> > > > There are some power features like D3Cold are only supported on
-> > > > discrete card. So IGT test/tools specific to D3Cold requires to
-> > > > consume IS_DGFX().
-> > > > Adding a is_dgfx field in intel_device_info and initializing it
-> > > > for DG1. All future discrete platform would require to initialize
-> > > > this field.
-> > >
-> > > #define IS_DGFX(fd) gem_has_lmem(fd) ?
-> > >
-> > > gem_has_lmem() is already pretty widely used so maybe we should not
-> > > introduce another way to achieve the same goal?
-> >
-> > Before introducing this , I thought on using gem_has_lmem.
-> > But I was not sure in case every discrete platform mandatory to have lm=
-em
-> region.
-> > If it is guaranteed that every discrete platform will have lmem memory =
-region
-> ?
-> > I will  drop  this patch.
->=20
-> So not sure what will happen in the future but till now and in the forsee=
-able
-> future all dGfx platforms have LMEM, so gem_has_lmem seems fine.
-It seems better to carry with gem_has_lmem(), as IS_DGFX() requires to popu=
-late device info fields.
-This patch spined off from series https://patchwork.freedesktop.org/series/=
-102780/
-I will use gem_has_lmem() instead of IS_DGFX().
-@rodrigo what is your opinion about it  ?
->=20
-> I think if we introduce IS_DGFX() as in this patch, we should have an add=
-itional
-> patch to convert all tests using gem_has_lmem() to IS_DGFX() so that we d=
-on't
-> have multiple ways of tests deciding if something should run for dGfx.
->=20
-> Or maybe both are also ok? So lmem related tests should use gem_has_lmem(=
-)
-> and non LMEM related tests should use IS_DGFX()?
-Actually, both of these methods even are not sufficient, if needed prior to=
- open the drm_fd.
-Ex. igt_device_find_first_i915_discrete_card() checks the igpu b:d:f, which=
- breaks on one of real time issue.
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/94
-Thanks,
-Anshuman Gupta.
-=20
->=20
-> So if we want to merge this let's look at other tests which are presently=
- using
-> gem_has_lmem() and see if any need to be converted over to IS_DGFX(). Or =
-to
-> keep things simple just use gem_has_lmem() for now?
->=20
-> Thanks.
+TG9va3MgbGlrZSByZXYgNSBpcyByZS1yZXBvcnRlZC4NCg0KTGFrc2htaS4NCg0KLS0tLS1Pcmln
+aW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IExhdHZhbGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGlu
+dGVsLmNvbT4gDQpTZW50OiBGcmlkYXksIEFwcmlsIDIyLCAyMDIyIDQ6MzkgQU0NClRvOiBKZXNz
+aWNhIFpoYW5nIDxxdWljX2plc3N6aGFuQHF1aWNpbmMuY29tPg0KQ2M6IFZ1ZHVtLCBMYWtzaG1p
+bmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZw0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSDinJcgR2l0TGFiLlBpcGVs
+aW5lOiB3YXJuaW5nIGZvciBtZXNvbjogTW92ZSBNU00tc3BlY2lmaWMgdGVzdHMgdG8gdGhlaXIg
+b3duIHN1YmRpcmVjdG9yeSAocmV2NSkNCg0KT24gVGh1LCBBcHIgMjEsIDIwMjIgYXQgMDM6NDA6
+MzlQTSAtMDcwMCwgSmVzc2ljYSBaaGFuZyB3cm90ZToNCj4gSGV5IExha3NobWksDQo+IA0KPiBJ
+J3ZlIGxvb2tlZCBvdmVyIHRoaXMgZmFpbHVyZSwgYnV0IGl0IGRvZXNuJ3Qgc2VlbSB0byBiZSBy
+ZWxhdGVkIHRvIG15IA0KPiBjaGFuZ2UuDQo+IA0KPiBDYW4geW91IGhlbHAgdGFrZSBhIGxvb2s/
+DQoNCkl0J3MgYSBzcHVyaW91cyBlcnJvciB0aGF0IGhhcHBlbnMgbW9yZSBhbmQgbW9yZSBvZnRl
+biBub3cuLi4gSSBqdXN0IHNlbnQgYSBwYXRjaCB0byBkaXNhYmxlIG5pbmphLXRlc3QtYXJtKiB0
+ZW1wb3JhcmlseSB0byBhdm9pZCB0aGlzLCB1bnRpbCBpdCdzIHByb3Blcmx5IGZpeGVkLg0KDQoN
+Ci0tDQpQZXRyaSBMYXR2YWxhDQoNCg0KPiANCj4gVGhhbmtzLA0KPiANCj4gSmVzc2ljYSBaaGFu
+Zw0KPiANCj4gT24gNC8yMS8yMDIyIDI6MDYgUE0sIFBhdGNod29yayB3cm90ZToNCj4gPiA9PSBT
+ZXJpZXMgRGV0YWlscyA9PQ0KPiA+IA0KPiA+IFNlcmllczogbWVzb246IE1vdmUgTVNNLXNwZWNp
+ZmljIHRlc3RzIHRvIHRoZWlyIG93biBzdWJkaXJlY3RvcnkgKHJldjUpDQo+ID4gVVJMICAgOiBo
+dHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzEwMjg0NC8NCj4gPiBTdGF0
+ZSA6IHdhcm5pbmcNCj4gPiANCj4gPiA9PSBTdW1tYXJ5ID09DQo+ID4gDQo+ID4gUGlwZWxpbmUg
+c3RhdHVzOiBGQUlMRUQuDQo+ID4gDQo+ID4gc2VlIGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9w
+Lm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9waXBlbGluZXMvNTY2MTcyIGZvciB0aGUgb3ZlcnZp
+ZXcuDQo+ID4gDQo+ID4gdGVzdDpuaW5qYS10ZXN0LWFybTY0IGhhcyBmYWlsZWQgKGh0dHBzOi8v
+Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9qb2JzLzIxNTkzNTQ3
+KToNCj4gPiAgICBPazogICAgICAgICAgICAgICAgICAgMjINCj4gPiAgICBFeHBlY3RlZCBGYWls
+OiAgICAgICAgIDMNCj4gPiAgICBGYWlsOiAgICAgICAgICAgICAgICAyODkNCj4gPiAgICBVbmV4
+cGVjdGVkIFBhc3M6ICAgICAgIDANCj4gPiAgICBTa2lwcGVkOiAgICAgICAgICAgICAgIDANCj4g
+PiAgICBUaW1lb3V0OiAgICAgICAgICAgICAgIDANCj4gPiAgICBGdWxsIGxvZyB3cml0dGVuIHRv
+IC9idWlsZHMvZ2Z4LWNpL2lndC1jaS10YWdzL2J1aWxkL21lc29uLWxvZ3MvdGVzdGxvZy50eHQN
+Cj4gPiAgICBzZWN0aW9uX2VuZDoxNjUwNTc0OTg0OnN0ZXBfc2NyaXB0DQo+ID4gICAgc2VjdGlv
+bl9zdGFydDoxNjUwNTc0OTg0OnVwbG9hZF9hcnRpZmFjdHNfb25fZmFpbHVyZQ0KPiA+ICAgIFVw
+bG9hZGluZyBhcnRpZmFjdHMgZm9yIGZhaWxlZCBqb2INCj4gPiAgICBVcGxvYWRpbmcgYXJ0aWZh
+Y3RzLi4uDQo+ID4gICAgYnVpbGQ6IGZvdW5kIDE3MjUgbWF0Y2hpbmcgZmlsZXMgYW5kIGRpcmVj
+dG9yaWVzDQo+ID4gICAgVXBsb2FkaW5nIGFydGlmYWN0cyBhcyAiYXJjaGl2ZSIgdG8gY29vcmRp
+bmF0b3IuLi4gMjAxIENyZWF0ZWQgIGlkPTIxNTkzNTQ3IHJlc3BvbnNlU3RhdHVzPTIwMSBDcmVh
+dGVkIHRva2VuPVBlSHlOdHdmDQo+ID4gICAgc2VjdGlvbl9lbmQ6MTY1MDU3NDk5Nzp1cGxvYWRf
+YXJ0aWZhY3RzX29uX2ZhaWx1cmUNCj4gPiAgICBzZWN0aW9uX3N0YXJ0OjE2NTA1NzQ5OTc6Y2xl
+YW51cF9maWxlX3ZhcmlhYmxlcw0KPiA+ICAgIENsZWFuaW5nIHVwIHByb2plY3QgZGlyZWN0b3J5
+IGFuZCBmaWxlIGJhc2VkIHZhcmlhYmxlcw0KPiA+ICAgIHNlY3Rpb25fZW5kOjE2NTA1NzQ5OTg6
+Y2xlYW51cF9maWxlX3ZhcmlhYmxlcw0KPiA+ICAgIEVSUk9SOiBKb2IgZmFpbGVkOiBleGl0IGNv
+ZGUgMQ0KPiA+IA0KPiA+ID09IExvZ3MgPT0NCj4gPiANCj4gPiBGb3IgbW9yZSBkZXRhaWxzIHNl
+ZTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9pZ3QtY2ktdGFncy8tL3Bp
+cGVsaW5lcy81NjYxNzINCg==
