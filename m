@@ -1,25 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFAA210E34C
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Apr 2022 06:23:12 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-To: "Latvala, Petri" <petri.latvala@intel.com>, Jessica Zhang
- <quic_jesszhan@quicinc.com>
-Date: Mon, 25 Apr 2022 06:23:07 +0000
-Message-ID: <d22b812b1140465885b28af31638713f@intel.com>
-References: <20220421172858.263-1-quic_jesszhan@quicinc.com>
- <165057519298.10764.6605100681028658462@emeril.freedesktop.org>
- <cc310ef6-96b8-9002-e592-5811ef3bf56a@quicinc.com>
- <YmKTxenDlaT4VeXF@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YmKTxenDlaT4VeXF@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 90A5410E325
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Apr 2022 11:07:47 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
+ arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com
+Date: Mon, 25 Apr 2022 16:29:18 +0530
+Message-Id: <20220425105919.508029-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20220425105919.508029-1-priyanka.dandamudi@intel.com>
+References: <20220425105919.508029-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
- =?utf-8?q?eson=3A_Move_MSM-specific_tests_to_their_own_subdirectory_=28re?=
- =?utf-8?b?djUp?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_set_tiling_vs_blt: Add
+ description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,51 +20,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-TG9va3MgbGlrZSByZXYgNSBpcyByZS1yZXBvcnRlZC4NCg0KTGFrc2htaS4NCg0KLS0tLS1Pcmln
-aW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IExhdHZhbGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGlu
-dGVsLmNvbT4gDQpTZW50OiBGcmlkYXksIEFwcmlsIDIyLCAyMDIyIDQ6MzkgQU0NClRvOiBKZXNz
-aWNhIFpoYW5nIDxxdWljX2plc3N6aGFuQHF1aWNpbmMuY29tPg0KQ2M6IFZ1ZHVtLCBMYWtzaG1p
-bmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZw0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSDinJcgR2l0TGFiLlBpcGVs
-aW5lOiB3YXJuaW5nIGZvciBtZXNvbjogTW92ZSBNU00tc3BlY2lmaWMgdGVzdHMgdG8gdGhlaXIg
-b3duIHN1YmRpcmVjdG9yeSAocmV2NSkNCg0KT24gVGh1LCBBcHIgMjEsIDIwMjIgYXQgMDM6NDA6
-MzlQTSAtMDcwMCwgSmVzc2ljYSBaaGFuZyB3cm90ZToNCj4gSGV5IExha3NobWksDQo+IA0KPiBJ
-J3ZlIGxvb2tlZCBvdmVyIHRoaXMgZmFpbHVyZSwgYnV0IGl0IGRvZXNuJ3Qgc2VlbSB0byBiZSBy
-ZWxhdGVkIHRvIG15IA0KPiBjaGFuZ2UuDQo+IA0KPiBDYW4geW91IGhlbHAgdGFrZSBhIGxvb2s/
-DQoNCkl0J3MgYSBzcHVyaW91cyBlcnJvciB0aGF0IGhhcHBlbnMgbW9yZSBhbmQgbW9yZSBvZnRl
-biBub3cuLi4gSSBqdXN0IHNlbnQgYSBwYXRjaCB0byBkaXNhYmxlIG5pbmphLXRlc3QtYXJtKiB0
-ZW1wb3JhcmlseSB0byBhdm9pZCB0aGlzLCB1bnRpbCBpdCdzIHByb3Blcmx5IGZpeGVkLg0KDQoN
-Ci0tDQpQZXRyaSBMYXR2YWxhDQoNCg0KPiANCj4gVGhhbmtzLA0KPiANCj4gSmVzc2ljYSBaaGFu
-Zw0KPiANCj4gT24gNC8yMS8yMDIyIDI6MDYgUE0sIFBhdGNod29yayB3cm90ZToNCj4gPiA9PSBT
-ZXJpZXMgRGV0YWlscyA9PQ0KPiA+IA0KPiA+IFNlcmllczogbWVzb246IE1vdmUgTVNNLXNwZWNp
-ZmljIHRlc3RzIHRvIHRoZWlyIG93biBzdWJkaXJlY3RvcnkgKHJldjUpDQo+ID4gVVJMICAgOiBo
-dHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzEwMjg0NC8NCj4gPiBTdGF0
-ZSA6IHdhcm5pbmcNCj4gPiANCj4gPiA9PSBTdW1tYXJ5ID09DQo+ID4gDQo+ID4gUGlwZWxpbmUg
-c3RhdHVzOiBGQUlMRUQuDQo+ID4gDQo+ID4gc2VlIGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9w
-Lm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9waXBlbGluZXMvNTY2MTcyIGZvciB0aGUgb3ZlcnZp
-ZXcuDQo+ID4gDQo+ID4gdGVzdDpuaW5qYS10ZXN0LWFybTY0IGhhcyBmYWlsZWQgKGh0dHBzOi8v
-Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9qb2JzLzIxNTkzNTQ3
-KToNCj4gPiAgICBPazogICAgICAgICAgICAgICAgICAgMjINCj4gPiAgICBFeHBlY3RlZCBGYWls
-OiAgICAgICAgIDMNCj4gPiAgICBGYWlsOiAgICAgICAgICAgICAgICAyODkNCj4gPiAgICBVbmV4
-cGVjdGVkIFBhc3M6ICAgICAgIDANCj4gPiAgICBTa2lwcGVkOiAgICAgICAgICAgICAgIDANCj4g
-PiAgICBUaW1lb3V0OiAgICAgICAgICAgICAgIDANCj4gPiAgICBGdWxsIGxvZyB3cml0dGVuIHRv
-IC9idWlsZHMvZ2Z4LWNpL2lndC1jaS10YWdzL2J1aWxkL21lc29uLWxvZ3MvdGVzdGxvZy50eHQN
-Cj4gPiAgICBzZWN0aW9uX2VuZDoxNjUwNTc0OTg0OnN0ZXBfc2NyaXB0DQo+ID4gICAgc2VjdGlv
-bl9zdGFydDoxNjUwNTc0OTg0OnVwbG9hZF9hcnRpZmFjdHNfb25fZmFpbHVyZQ0KPiA+ICAgIFVw
-bG9hZGluZyBhcnRpZmFjdHMgZm9yIGZhaWxlZCBqb2INCj4gPiAgICBVcGxvYWRpbmcgYXJ0aWZh
-Y3RzLi4uDQo+ID4gICAgYnVpbGQ6IGZvdW5kIDE3MjUgbWF0Y2hpbmcgZmlsZXMgYW5kIGRpcmVj
-dG9yaWVzDQo+ID4gICAgVXBsb2FkaW5nIGFydGlmYWN0cyBhcyAiYXJjaGl2ZSIgdG8gY29vcmRp
-bmF0b3IuLi4gMjAxIENyZWF0ZWQgIGlkPTIxNTkzNTQ3IHJlc3BvbnNlU3RhdHVzPTIwMSBDcmVh
-dGVkIHRva2VuPVBlSHlOdHdmDQo+ID4gICAgc2VjdGlvbl9lbmQ6MTY1MDU3NDk5Nzp1cGxvYWRf
-YXJ0aWZhY3RzX29uX2ZhaWx1cmUNCj4gPiAgICBzZWN0aW9uX3N0YXJ0OjE2NTA1NzQ5OTc6Y2xl
-YW51cF9maWxlX3ZhcmlhYmxlcw0KPiA+ICAgIENsZWFuaW5nIHVwIHByb2plY3QgZGlyZWN0b3J5
-IGFuZCBmaWxlIGJhc2VkIHZhcmlhYmxlcw0KPiA+ICAgIHNlY3Rpb25fZW5kOjE2NTA1NzQ5OTg6
-Y2xlYW51cF9maWxlX3ZhcmlhYmxlcw0KPiA+ICAgIEVSUk9SOiBKb2IgZmFpbGVkOiBleGl0IGNv
-ZGUgMQ0KPiA+IA0KPiA+ID09IExvZ3MgPT0NCj4gPiANCj4gPiBGb3IgbW9yZSBkZXRhaWxzIHNl
-ZTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9pZ3QtY2ktdGFncy8tL3Bp
-cGVsaW5lcy81NjYxNzINCg==
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+
+Add test description for subtest.
+
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/i915/gem_set_tiling_vs_blt.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tests/i915/gem_set_tiling_vs_blt.c b/tests/i915/gem_set_tiling_vs_blt.c
+index bf274be9..5e3bf6a1 100644
+--- a/tests/i915/gem_set_tiling_vs_blt.c
++++ b/tests/i915/gem_set_tiling_vs_blt.c
+@@ -232,6 +232,7 @@ igt_main
+ 		bops = buf_ops_create(fd);
+ 	}
+ 
++	igt_describe("Check for proper synchronization of untiled->tiled transition.");
+ 	igt_subtest("untiled-to-tiled") {
+ 		tiling = I915_TILING_NONE;
+ 		tiling_after = I915_TILING_X;
+@@ -240,6 +241,7 @@ igt_main
+ 		igt_assert(tiling_after == I915_TILING_X);
+ 	}
+ 
++	igt_describe("Check for proper synchronization of tiled->untiled transition.");
+ 	igt_subtest("tiled-to-untiled") {
+ 		tiling = I915_TILING_X;
+ 		tiling_after = I915_TILING_NONE;
+@@ -248,6 +250,7 @@ igt_main
+ 		igt_assert(tiling_after == I915_TILING_NONE);
+ 	}
+ 
++	igt_describe("Check for proper synchronization of tiled->tiled transition.");
+ 	igt_subtest("tiled-to-tiled") {
+ 		tiling = I915_TILING_X;
+ 		tiling_after = I915_TILING_X;
+-- 
+2.25.1
