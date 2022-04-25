@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CF0610E12D
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Apr 2022 11:14:07 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sun, 17 Oct 2021 15:29:28 +0530
-Message-Id: <20211017095928.96637-1-mohammed.thasleem@intel.com>
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam08on2051.outbound.protection.outlook.com [40.107.101.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62CDD10F1AE
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Apr 2022 15:37:10 +0000 (UTC)
+From: David Zhang <dingchen.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Mon, 25 Apr 2022 11:36:51 -0400
+Message-ID: <20220425153654.752046-2-dingchen.zhang@amd.com>
+In-Reply-To: <20220425153654.752046-1-dingchen.zhang@amd.com>
+References: <20220425153654.752046-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_mmap_write_crc : Create
- dynamic subtests
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH v3 1/4] tests/amdgpu/amd_psr: add helper to draw
+ cursor pattern
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,75 +25,85 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Create dynamic subtests with valid crtc/connector combinations.
+[why & how]
+For amdgpu PSR-SU validation, we'd create and test cursor update
+use case as well. To emulate a mouse-like cursor movement, we'd
+define a helper to draw a cursor pattern.
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+- helper draw the cursor pattern as an 45-degrees rotated arrow
+- for the region of arrow, set alpha to 1 to make cursor foreground
+  and always on the top
+- for rest of the non-arrow region, set alpha to 0 to make it as
+  background
+
+Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Jay Pillai <aurabindo.pillai@amd.com>
+Cc: Wayne Lin <wayne.lin@amd.com>
+
+Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 ---
- tests/i915/kms_mmap_write_crc.c | 38 +++++++++++++++------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ tests/amdgpu/amd_psr.c | 47 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index f8825284..680aaf11 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -215,23 +215,9 @@ static void cleanup_crtc(data_t *data)
- 
- static void run_test(data_t *data)
- {
--	igt_display_t *display = &data->display;
--	igt_output_t *output;
--	enum pipe pipe;
--
--	for_each_pipe_with_valid_output(display, pipe, output) {
--		data->output = output;
--		data->pipe = pipe;
--
--		prepare_crtc(data);
--		test(data);
--		cleanup_crtc(data);
--
--		/* once is enough */
--		return;
--	}
--
--	igt_skip("no valid crtc/connector combinations found\n");
-+	prepare_crtc(data);
-+	test(data);
-+	cleanup_crtc(data);
+diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+index d4bfb7bb..e3a2cb4a 100644
+--- a/tests/amdgpu/amd_psr.c
++++ b/tests/amdgpu/amd_psr.c
+@@ -81,6 +81,53 @@ static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
+ 	igt_put_cairo_ctx(cr);
  }
  
- struct igt_helper_process hog;
-@@ -272,6 +258,8 @@ static data_t data;
- igt_main_args("n", NULL, NULL, opt_handler, NULL)
- {
- 	int i;
-+	igt_output_t *output;
-+	enum pipe pipe;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-@@ -288,10 +276,18 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
- 	}
- 
- 	igt_describe("Tests that caching mode has become UC/WT and flushed using mmap write");
--	igt_subtest("main") {
--		igt_info("Using %d rounds for the test\n", ROUNDS);
--		for (i = 0; i < ROUNDS; i++)
--			run_test(&data);
-+	igt_info("Using %d rounds for each pipe in the test\n", ROUNDS);
++/* draw a cursor pattern assuming the FB given is square w/ FORMAT ARGB */
++static void draw_color_cursor(igt_fb_t *fb, int size, double r, double g, double b)
++{
++	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
++	int x, y, line_w;
 +
-+	igt_subtest_with_dynamic("main") {
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
-+					kmstest_pipe_name(pipe)) {
-+				data.output = output;
-+				data.pipe = pipe;
-+				for (i = 0; i < ROUNDS; i++)
-+					run_test(&data);
-+			}
-+		}
- 	}
- 
- 	igt_fixture {
++	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
++
++	/*
++	 * draw cursor
++	 * recall that alpha blending value:
++	 * - 0, output pixel is the background
++	 * - 1, output pixel is simply the foreground
++	 * - (0, 1), mix of background + foreground
++	 */
++
++	/* set cursor FB to background first */
++	igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, .0);
++
++	/*
++	 * draw cursur pattern w/ alpha set to 1
++	 * - 1. draw triangle part
++	 * - 2. draw rectangle part
++	 */
++	for (x = y = 0, line_w = size / 2; line_w > 0; ++y, --line_w)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	/*
++	 * draw rectangle part, split into three geometry parts
++	 * - triangle
++	 * - rhombus
++	 * - reversed triangle
++	 */
++	for (x = size * 3 / 8, y = size / 8, line_w = 1; y < size * 3 / 8; --x, ++y, line_w += 2)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	for (x = size / 8, y = size * 3 / 8; y < size * 3 / 4; ++x, ++y)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	for (; line_w > 0; ++x, ++y, line_w -= 2)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
++
++	igt_put_cairo_ctx(cr);
++}
++
+ /* Common test setup. */
+ static void test_init(data_t *data)
+ {
 -- 
 2.25.1
