@@ -1,22 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1ADC11248A
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 05:23:45 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
- Jose" <jose.souza@intel.com>
-Date: Tue, 26 Apr 2022 05:23:41 +0000
-Message-ID: <fd2b3105ba2c9d539d960ea8392f84376843ee9c.camel@intel.com>
-References: <20220422060240.3193599-1-jouni.hogander@intel.com>
- <dc51666444e8be51d44d8c7e25e9c586677b0ec0.camel@intel.com>
-In-Reply-To: <dc51666444e8be51d44d8c7e25e9c586677b0ec0.camel@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1DCE796A677E1C4D8207757ED7B711BA@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17035112493
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 05:24:30 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
+ kamil.konieczny@linux.intel.com
+Date: Tue, 26 Apr 2022 10:53:30 +0530
+Message-Id: <20220426052331.3453-2-sai.gowtham.ch@intel.com>
+In-Reply-To: <20220426052331.3453-1-sai.gowtham.ch@intel.com>
+References: <20220426052331.3453-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] kms_psr2_su: Skip page-flip tests if
- FB_DAMAGE_CLIPS not supported
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_pipe_control_store_loop: added
+ description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,42 +20,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDIyLTA0LTI1IGF0IDEzOjM2ICswMDAwLCBTb3V6YSwgSm9zZSB3cm90ZToNCj4g
-T24gRnJpLCAyMDIyLTA0LTIyIGF0IDA5OjAyICswMzAwLCBKb3VuaSBIw7ZnYW5kZXIgd3JvdGU6
-DQo+ID4gQ3VycmVudGx5IHdlIGFyZSBzZWVpbmcgZmFpbHVyZXMgaW4gSUNMIHBsYXRmb3JtcyBk
-dWUgdG8NCj4gPiBtaXNzaW5nIHN1cHBvcnQgZm9yIElHVF9QTEFORV9GQl9EQU1BR0VfQ0xJUFMu
-IFNraXAgcGFnZS1mbGlwDQo+ID4gdGVzdHMgaWYgSUdUX1BMQU5FX0ZCX0RBTUFHRV9DTElQUyBp
-cyBub3Qgc3VwcG9ydGVkLg0KPiANCj4gSXQgc2hvdWxkIHNraXAgdGhpcyB3aG9sZSB0ZXN0IHRl
-c3QgaW4gZGlzcGxheSA8PSAxMQ0KPiANCg0KWWVzLCBJIGNvbnNpZGVyZWQgdGhpcyBvbmUgYXMg
-d2VsbC4gSSBqdXN0IHRob3VnaHQgaXQgd291bGQgYmUgYmV0dGVyDQp0byBjaGVjayBwb3NzaWJs
-ZSBzdXBwb3J0IGZvciBGQl9EQU1BR0VfQ0xJUFMgKHdoaWNoIGRvZXNuJ3QgZXhpc3QgZm9yDQoi
-PD0gMTEiIGVpdGhlcikgcmF0aGVyIHRoYW4gYWRkIG9uZSBtb3JlIHBsYXRmb3JtIGNoZWNrIGlu
-dG8gaWd0LiBUaGlzDQppcyBiYXNpY2FsbHkgd2hhdCB0aGUgcHJvYmxlbSBpbiANCmh0dHBzOi8v
-Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvLS9pc3N1ZXMvNDE0OCBpcy4gV2UgdHJ5
-IHRvDQpydW4gdGhpcyB0ZXN0IG9uIHBsYXRmb3JtIG5vdCBzdXBwb3J0aW5nIEZCX0RBTUFHRV9D
-TElQUy4NCg0KZHJpdmVycy9ncHUvZHJtL2k5MTUvZGlzcGxheS9za2xfdW5pdmVyc2FsX3BsYW5l
-LmM6DQoNCglpZiAoRElTUExBWV9WRVIoZGV2X3ByaXYpID49IDEyKQ0KCQlkcm1fcGxhbmVfZW5h
-YmxlX2ZiX2RhbWFnZV9jbGlwcygmcGxhbmUtPmJhc2UpOw0KDQpXaGF0IGRvIHlvdSB0aGluaz8N
-Cg0KPiA+IENsb3NlczogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC8t
-L2lzc3Vlcy80MTQ4DQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogSm91bmkgSMO2Z2FuZGVyIDxq
-b3VuaS5ob2dhbmRlckBpbnRlbC5jb20+DQo+ID4gQ2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxh
-dHZhbGFAaW50ZWwuY29tPg0KPiA+IENjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNv
-dXphQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMvaTkxNS9rbXNfcHNyMl9zdS5jIHwg
-NyArKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKykNCj4gPiANCj4g
-PiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9rbXNfcHNyMl9zdS5jIGIvdGVzdHMvaTkxNS9rbXNf
-cHNyMl9zdS5jDQo+ID4gaW5kZXggNDc0YjFkZmQuLjBjZTFmOTI0IDEwMDY0NA0KPiA+IC0tLSBh
-L3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYw0KPiA+ICsrKyBiL3Rlc3RzL2k5MTUva21zX3BzcjJf
-c3UuYw0KPiA+IEBAIC0zMjIsNiArMzIyLDEzIEBAIGlndF9tYWluDQo+ID4gICAqLw0KPiA+ICBp
-Z3Rfc2tpcCgiUFNSMiBzZWxlY3RpdmUgZmV0Y2ggaXMgZG9pbmcgZnVsbCBmcmFtZSBmZXRjaGVz
-IGZvcg0KPiA+IGZyb250YnVmZmVyIHJlbmRlcmluZ1xuIik7DQo+ID4gIH0NCj4gPiAraWYgKGRh
-dGEub3AgPT0gUEFHRV9GTElQICYmDQo+ID4gKyAgICAhaWd0X3BsYW5lX2hhc19wcm9wKGlndF9v
-dXRwdXRfZ2V0X3BsYW5lX3R5cGUoDQo+ID4gK2RhdGEub3V0cHV0LA0KPiA+ICtEUk1fUExBTkVf
-VFlQRV9QUklNQVJZKSwNCj4gPiArSUdUX1BMQU5FX0ZCX0RBTUFHRV9DTElQUykpIHsNCj4gPiAr
-aWd0X3NraXAoIkZCX0RBTUFHRV9DTElQUyBub3Qgc3VwcG9ydGVkXG4iKTsNCj4gPiArfQ0KPiA+
-ICBwcmVwYXJlKCZkYXRhKTsNCj4gPiAgcnVuKCZkYXRhKTsNCj4gPiAgY2xlYW51cCgmZGF0YSk7
-DQoNCg==
+From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+
+Added test description for subtest that are available.
+
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
+---
+ tests/i915/gem_pipe_control_store_loop.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/i915/gem_pipe_control_store_loop.c
+index 983605e3..070e767f 100644
+--- a/tests/i915/gem_pipe_control_store_loop.c
++++ b/tests/i915/gem_pipe_control_store_loop.c
+@@ -183,9 +183,13 @@ igt_main
+ 		igt_skip_on(devid == PCI_CHIP_I965_G); /* has totally broken pipe control */
+ 	}
+ 
++	igt_describe("checks tlb consistency of the pipe_control target so creates new buffer"
++		     " each time, emit commands and send it to ring for execution and target"
++		     " buffer won't get reused.");
+ 	igt_subtest("fresh-buffer")
+ 		store_pipe_control_loop(false, 2);
+ 
++	igt_describe("Emit commands in reused buffer and send it to ring for execution.");
+ 	igt_subtest("reused-buffer")
+ 		store_pipe_control_loop(true, 2);
+ 
+-- 
+2.35.1
