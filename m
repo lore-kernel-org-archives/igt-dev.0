@@ -1,26 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 106F910E045
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 14:25:39 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
- Jose" <jose.souza@intel.com>
-Date: Tue, 26 Apr 2022 14:25:36 +0000
-Message-ID: <1932ea0fb06e2d7ae9d705272afc9dd8e1a6b1f8.camel@intel.com>
-References: <20220422060240.3193599-1-jouni.hogander@intel.com>
- <dc51666444e8be51d44d8c7e25e9c586677b0ec0.camel@intel.com>
- <fd2b3105ba2c9d539d960ea8392f84376843ee9c.camel@intel.com>
- <760d330e4d1ba83bdba98d4e29e4083b2f8ec7bb.camel@intel.com>
- <0fc9fb61113bd6a24fac258f2f92a3bffdeda96d.camel@intel.com>
- <6436d4ac81862a6bd9429f1d1cf7fe62701dc823.camel@intel.com>
-In-Reply-To: <6436d4ac81862a6bd9429f1d1cf7fe62701dc823.camel@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7F35A5795BB2BC49867AF9AE87F12FDE@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-sn1anam02on2088.outbound.protection.outlook.com [40.107.96.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CE3B10E07C
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 14:29:36 +0000 (UTC)
+From: David Zhang <dingchen.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Tue, 26 Apr 2022 10:29:03 -0400
+Message-ID: <20220426142906.1016713-2-dingchen.zhang@amd.com>
+In-Reply-To: <20220426142906.1016713-1-dingchen.zhang@amd.com>
+References: <20220426142906.1016713-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] kms_psr2_su: Skip page-flip tests if
- FB_DAMAGE_CLIPS not supported
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH v5 1/4] tests/amdgpu/amd_psr: add helper to draw
+ cursor pattern
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,74 +21,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIyLTA0LTI2IGF0IDEzOjM4ICswMDAwLCBTb3V6YSwgSm9zZSB3cm90ZToNCj4g
-T24gVHVlLCAyMDIyLTA0LTI2IGF0IDEzOjMxICswMDAwLCBIb2dhbmRlciwgSm91bmkgd3JvdGU6
-DQo+ID4gT24gVHVlLCAyMDIyLTA0LTI2IGF0IDEzOjA4ICswMDAwLCBTb3V6YSwgSm9zZSB3cm90
-ZToNCj4gPiA+IE9uIFR1ZSwgMjAyMi0wNC0yNiBhdCAwNToyMyArMDAwMCwgSG9nYW5kZXIsIEpv
-dW5pIHdyb3RlOg0KPiA+ID4gPiBPbiBNb24sIDIwMjItMDQtMjUgYXQgMTM6MzYgKzAwMDAsIFNv
-dXphLCBKb3NlIHdyb3RlOg0KPiA+ID4gPiA+IE9uIEZyaSwgMjAyMi0wNC0yMiBhdCAwOTowMiAr
-MDMwMCwgSm91bmkgSMO2Z2FuZGVyIHdyb3RlOg0KPiA+ID4gPiA+ID4gQ3VycmVudGx5IHdlIGFy
-ZSBzZWVpbmcgZmFpbHVyZXMgaW4gSUNMIHBsYXRmb3JtcyBkdWUgdG8NCj4gPiA+ID4gPiA+IG1p
-c3Npbmcgc3VwcG9ydCBmb3IgSUdUX1BMQU5FX0ZCX0RBTUFHRV9DTElQUy4gU2tpcCBwYWdlLQ0K
-PiA+ID4gPiA+ID4gZmxpcA0KPiA+ID4gPiA+ID4gdGVzdHMgaWYgSUdUX1BMQU5FX0ZCX0RBTUFH
-RV9DTElQUyBpcyBub3Qgc3VwcG9ydGVkLg0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IEl0IHNob3Vs
-ZCBza2lwIHRoaXMgd2hvbGUgdGVzdCB0ZXN0IGluIGRpc3BsYXkgPD0gMTENCj4gPiANCj4gPiBX
-aHkgc2hvdWxkIGl0IHNraXAgZnJvbnRidWZmZXIgc3VidGVzdHM/IFdlIGhhdmUgdGhlbSBwYXNz
-aW5nOg0KPiA+IA0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAv
-Q0lfRFJNXzExNTQ5L3NoYXJkLWljbGIyL2lndEBrbXNfcHNyMl9zdUBmcm9udGJ1ZmZlci14cmdi
-ODg4OC5odG1sDQo+ID4gDQo+ID4gVGhlIGJ1ZyByZWZlcmVuY2VkIGhlcmUgaXMgYWJvdXQgcGFn
-ZV9mbGlwIGZhaWxpbmcgZHVlIHRvIG1pc3NpbmcNCj4gPiBzdXBwb3J0IGZvciBGQl9EQU1BR0Vf
-Q0xJUFMuIFRoZSBmaXggSSdtIHByb3Bvc2luZyBpcyB0byBjaGVjaw0KPiA+IHdoZXRoZXIgRkJf
-REFNQUdFX0NMSVBTIGlzIHN1cHBvcnRlZCBhbmQgc2tpcCBwYWdlX2ZsaXAgc3VidGVzdHMgaWYN
-Cj4gPiBpdCdzIG5vdC4gSXQncyBsb2dpY2FsIHRvIG15IG9waW5pb24sIGJlY2F1c2UgcGFnZV9m
-bGlwIHN1YnRlc3RzDQo+ID4gYXJlDQo+ID4gcmVseWluZyBvbiBGQl9EQU1BR0VfQ0xJUFMuDQo+
-ID4gDQo+IA0KPiBTb3JyeSBtaXhlZCB1cCBrbXNfcHNyMl9zdSB3aXRoIGttc19wc3IyX3NmLg0K
-PiANCj4gU28ga21zX3BzcjJfc3Ugb25seSBkZXBlbmRzIG9uIGRhbWFnZV9jbGlwcyB3aGVuIHNl
-bGVjdGl2ZSBmZXRjaCBpcw0KPiBlbmFibGVkLCBzbyBpbnN0ZWFkIG9mIHNraXAgd2hlbiBkYW1h
-Z2VfY2xpcHMgaXMgbm90IGF2YWlsYWJsZSBpdA0KPiBzaG91bGQganVzdCBub3QNCj4gc2VuZCB0
-aGUgZGFtYWdlX2NsaXBzLg0KDQpPaywgSSB3aWxsIHRyeSB0aGlzIG91dC4NCg0KPiANCj4gRm9y
-IElDTCBhbmQgb2xkZXIgaXQgd2lsbCB1c2UgdGhlIFBTUjIgSFcgdHJhY2tpbmcgYW5kIHdpbGwg
-dXBkYXRlDQo+IHRoZSByZWdpc3RlciB3aXRoIHRoZSBudW1iZXIgb2YgYmxvY2tzIHRoYXQgd2Fz
-IHNlbnQgdG8gdGhlIHBhbmVsLg0KPiANCj4gPiA+ID4gDQo+ID4gPiA+IFllcywgSSBjb25zaWRl
-cmVkIHRoaXMgb25lIGFzIHdlbGwuIEkganVzdCB0aG91Z2h0IGl0IHdvdWxkIGJlDQo+ID4gPiA+
-IGJldHRlcg0KPiA+ID4gPiB0byBjaGVjayBwb3NzaWJsZSBzdXBwb3J0IGZvciBGQl9EQU1BR0Vf
-Q0xJUFMgKHdoaWNoIGRvZXNuJ3QNCj4gPiA+ID4gZXhpc3QNCj4gPiA+ID4gZm9yDQo+ID4gPiA+
-ICI8PSAxMSIgZWl0aGVyKSByYXRoZXIgdGhhbiBhZGQgb25lIG1vcmUgcGxhdGZvcm0gY2hlY2sg
-aW50bw0KPiA+ID4gPiBpZ3QuDQo+ID4gPiA+IFRoaXMNCj4gPiA+ID4gaXMgYmFzaWNhbGx5IHdo
-YXQgdGhlIHByb2JsZW0gaW4NCj4gPiA+ID4gaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
-L2RybS9pbnRlbC8tL2lzc3Vlcy80MTQ4IGlzLiBXZQ0KPiA+ID4gPiB0cnkNCj4gPiA+ID4gdG8N
-Cj4gPiA+ID4gcnVuIHRoaXMgdGVzdCBvbiBwbGF0Zm9ybSBub3Qgc3VwcG9ydGluZyBGQl9EQU1B
-R0VfQ0xJUFMuDQo+ID4gPiA+IA0KPiA+ID4gPiBkcml2ZXJzL2dwdS9kcm0vaTkxNS9kaXNwbGF5
-L3NrbF91bml2ZXJzYWxfcGxhbmUuYzoNCj4gPiA+ID4gDQo+ID4gPiA+ICAgICAgICAgaWYgKERJ
-U1BMQVlfVkVSKGRldl9wcml2KSA+PSAxMikNCj4gPiA+ID4gICAgICAgICAgICAgICAgIGRybV9w
-bGFuZV9lbmFibGVfZmJfZGFtYWdlX2NsaXBzKCZwbGFuZS0+YmFzZSk7DQo+ID4gPiANCj4gPiA+
-IEknbSBmaW5lIGluIHVzaW5nIHRoZSBkYW1hZ2UgY2xpcCBwcm9wZXJ0eSBjaGVjayBidXQgdGhl
-IGNoZWNrDQo+ID4gPiBzaG91bGQNCj4gPiA+IHNraXAgdGhlIHdob2xlIHRlc3Qgbm90IG9ubHkg
-d2hlbiBvcGVyYXRpb24gaXMgUEFHRV9GTElQLg0KPiA+ID4gDQo+ID4gPiA+IFdoYXQgZG8geW91
-IHRoaW5rPw0KPiA+ID4gPiANCj4gPiA+ID4gPiA+IENsb3NlczogDQo+ID4gPiA+ID4gPiBodHRw
-czovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsLy0vaXNzdWVzLzQxNDgNCj4gPiA+
-ID4gPiA+IA0KPiA+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogSm91bmkgSMO2Z2FuZGVyIDxqb3Vu
-aS5ob2dhbmRlckBpbnRlbC5jb20+DQo+ID4gPiA+ID4gPiBDYzogUGV0cmkgTGF0dmFsYSA8cGV0
-cmkubGF0dmFsYUBpbnRlbC5jb20+DQo+ID4gPiA+ID4gPiBDYzogSm9zw6kgUm9iZXJ0byBkZSBT
-b3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQo+ID4gPiA+ID4gPiAtLS0NCj4gPiA+ID4gPiA+
-ICB0ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMgfCA3ICsrKysrKysNCj4gPiA+ID4gPiA+ICAxIGZp
-bGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IGRp
-ZmYgLS1naXQgYS90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMNCj4gPiA+ID4gPiA+IGIvdGVzdHMv
-aTkxNS9rbXNfcHNyMl9zdS5jDQo+ID4gPiA+ID4gPiBpbmRleCA0NzRiMWRmZC4uMGNlMWY5MjQg
-MTAwNjQ0DQo+ID4gPiA+ID4gPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMNCj4gPiA+
-ID4gPiA+ICsrKyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYw0KPiA+ID4gPiA+ID4gQEAgLTMy
-Miw2ICszMjIsMTMgQEAgaWd0X21haW4NCj4gPiA+ID4gPiA+ICAgKi8NCj4gPiA+ID4gPiA+ICBp
-Z3Rfc2tpcCgiUFNSMiBzZWxlY3RpdmUgZmV0Y2ggaXMgZG9pbmcgZnVsbCBmcmFtZSBmZXRjaGVz
-DQo+ID4gPiA+ID4gPiBmb3INCj4gPiA+ID4gPiA+IGZyb250YnVmZmVyIHJlbmRlcmluZ1xuIik7
-DQo+ID4gPiA+ID4gPiAgfQ0KPiA+ID4gPiA+ID4gK2lmIChkYXRhLm9wID09IFBBR0VfRkxJUCAm
-Jg0KPiA+ID4gPiA+ID4gKyAgICAhaWd0X3BsYW5lX2hhc19wcm9wKGlndF9vdXRwdXRfZ2V0X3Bs
-YW5lX3R5cGUoDQo+ID4gPiA+ID4gPiArZGF0YS5vdXRwdXQsDQo+ID4gPiA+ID4gPiArRFJNX1BM
-QU5FX1RZUEVfUFJJTUFSWSksDQo+ID4gPiA+ID4gPiArSUdUX1BMQU5FX0ZCX0RBTUFHRV9DTElQ
-UykpIHsNCj4gPiA+ID4gPiA+ICtpZ3Rfc2tpcCgiRkJfREFNQUdFX0NMSVBTIG5vdCBzdXBwb3J0
-ZWRcbiIpOw0KPiA+ID4gPiA+ID4gK30NCj4gPiA+ID4gPiA+ICBwcmVwYXJlKCZkYXRhKTsNCj4g
-PiA+ID4gPiA+ICBydW4oJmRhdGEpOw0KPiA+ID4gPiA+ID4gIGNsZWFudXAoJmRhdGEpOw0KDQo=
+[why & how]
+For amdgpu PSR-SU validation, we'd create and test cursor update
+use case as well. To emulate a mouse-like cursor movement, we'd
+define a helper to draw a cursor pattern.
+
+- helper draw the cursor pattern as an 45-degrees rotated arrow
+- for the region of arrow, set alpha to 1 to make cursor foreground
+  and always on the top
+- for rest of the non-arrow region, set alpha to 0 to make it as
+  background
+
+Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Jay Pillai <aurabindo.pillai@amd.com>
+Cc: Wayne Lin <wayne.lin@amd.com>
+
+Signed-off-by: David Zhang <dingchen.zhang@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+---
+ tests/amdgpu/amd_psr.c | 47 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+index d4bfb7bb..e3a2cb4a 100644
+--- a/tests/amdgpu/amd_psr.c
++++ b/tests/amdgpu/amd_psr.c
+@@ -81,6 +81,53 @@ static void draw_color_alpha(igt_fb_t *fb, int x, int y, int w, int h,
+ 	igt_put_cairo_ctx(cr);
+ }
+ 
++/* draw a cursor pattern assuming the FB given is square w/ FORMAT ARGB */
++static void draw_color_cursor(igt_fb_t *fb, int size, double r, double g, double b)
++{
++	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
++	int x, y, line_w;
++
++	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
++
++	/*
++	 * draw cursor
++	 * recall that alpha blending value:
++	 * - 0, output pixel is the background
++	 * - 1, output pixel is simply the foreground
++	 * - (0, 1), mix of background + foreground
++	 */
++
++	/* set cursor FB to background first */
++	igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, .0);
++
++	/*
++	 * draw cursur pattern w/ alpha set to 1
++	 * - 1. draw triangle part
++	 * - 2. draw rectangle part
++	 */
++	for (x = y = 0, line_w = size / 2; line_w > 0; ++y, --line_w)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	/*
++	 * draw rectangle part, split into three geometry parts
++	 * - triangle
++	 * - rhombus
++	 * - reversed triangle
++	 */
++	for (x = size * 3 / 8, y = size / 8, line_w = 1; y < size * 3 / 8; --x, ++y, line_w += 2)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	for (x = size / 8, y = size * 3 / 8; y < size * 3 / 4; ++x, ++y)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	for (; line_w > 0; ++x, ++y, line_w -= 2)
++		igt_paint_color_alpha(cr, x, y, line_w, 1, r, g, b, 1.0);
++
++	cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
++
++	igt_put_cairo_ctx(cr);
++}
++
+ /* Common test setup. */
+ static void test_init(data_t *data)
+ {
+-- 
+2.25.1
