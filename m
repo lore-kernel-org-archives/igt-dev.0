@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FA0C10E376
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 19:04:35 +0000 (UTC)
-From: Ananya Sharma <ananya.sharma@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E89410E4D3
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 19:41:20 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 27 Apr 2022 00:31:12 +0530
-Message-Id: <20220426190112.254042-1-ananya.sharma@intel.com>
+Date: Tue, 26 Apr 2022 12:41:11 -0700
+Message-Id: <20220426194111.5990-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v1] tests/kms: IGT cleanup by sanitizing the
- system state
+Subject: [igt-dev] [PATCH i-g-t] tests/i915_pm_freq_mult: New test for media
+ freq factor
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,134 +18,200 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before running the subtest we need to sanitize the system state to
-default, Therefore using igt_display_reset() to sanitize the state.
+XEHPSDV and DG2/ATS-M allow media IP blocks to run at frequencies different
+from the GT frequency. i915 exposes sysfs controls for these frequency
+multipliers. IGT's introduced in this patch exercise and verify these
+per-gt (gt/gtN) sysfs controls starting with the media freq factor (factor
+and multiplier terms are used interchangeably).
 
-Below tests are modified:
-	tests/i915/kms_fence_pin_leak.c
-	tests/kms_universal_plane.c
+v2: Added igt_describe's and s/igt_info/igt_debug/  (Kamil)
+v3: Change test name from i915_pm_disag_freq to i915_pm_freq_mult (Kamil)
+    Remove .defaults and media_RPx sysfs controls for first merege
 
-Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/kms_fence_pin_leak.c |  5 +++--
- tests/kms_universal_plane.c     | 15 ++++++++++-----
- 2 files changed, 13 insertions(+), 7 deletions(-)
+ tests/i915/i915_pm_freq_mult.c | 146 +++++++++++++++++++++++++++++++++
+ tests/meson.build              |   8 ++
+ 2 files changed, 154 insertions(+)
+ create mode 100644 tests/i915/i915_pm_freq_mult.c
 
-diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
-index 16eb595f..906b3708 100644
---- a/tests/i915/kms_fence_pin_leak.c
-+++ b/tests/i915/kms_fence_pin_leak.c
-@@ -124,6 +124,7 @@ static void run_single_test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	struct igt_fb fb[2];
- 	int i;
+diff --git a/tests/i915/i915_pm_freq_mult.c b/tests/i915/i915_pm_freq_mult.c
+new file mode 100644
+index 000000000000..f7ec74a9f897
+--- /dev/null
++++ b/tests/i915/i915_pm_freq_mult.c
+@@ -0,0 +1,146 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++
++#include "i915/gem.h"
++#include "igt.h"
++#include "igt_sysfs.h"
++
++IGT_TEST_DESCRIPTION(
++	"Tests for sysfs controls (or multipliers) for IP blocks which run at "
++	"frequencies different from the main GT frequency."
++);
++
++#define FREQ_SCALE_FACTOR	0.00390625f	/* 1.0f / 256 */
++
++/*
++ * Firmware interfaces are not completely synchronous, a delay is needed
++ * before the requested freq is actually set.
++ * Media ratio read back after set will mismatch if this value is too small
++ */
++#define wait_freq_set()	usleep(100000)
++
++static int i915 = -1;
++const intel_ctx_t *ctx;
++uint64_t ahnd;
++
++static void spin_all(void)
++{
++	igt_spin_t *spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx, .engine = ALL_ENGINES,
++					.flags = IGT_SPIN_POLL_RUN);
++
++	/* Wait till at least one spinner starts */
++	igt_spin_busywait_until_started(spin);
++}
++
++static void setup_freq(int gt, int dir)
++{
++	int rp0, rp1, rpn, min, max, act, media;
++
++	ctx = intel_ctx_create_all_physical(i915);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
++
++	/* Spin on all engines to jack freq up to max */
++	spin_all();
++	wait_freq_set();
++
++	/* Print some debug information */
++	rp0 = igt_sysfs_get_u32(dir, "rps_RP0_freq_mhz");
++	rp1 = igt_sysfs_get_u32(dir, "rps_RP1_freq_mhz");
++	rpn = igt_sysfs_get_u32(dir, "rps_RPn_freq_mhz");
++	min = igt_sysfs_get_u32(dir, "rps_min_freq_mhz");
++	max = igt_sysfs_get_u32(dir, "rps_max_freq_mhz");
++	act = igt_sysfs_get_u32(dir, "rps_act_freq_mhz");
++
++	igt_debug("RP0 MHz: %d, RP1 MHz: %d, RPn MHz: %d, min MHz: %d, max MHz: %d, act MHz: %d\n", rp0, rp1, rpn, min, max, act);
++
++	if (igt_sysfs_has_attr(dir, "media_freq_factor")) {
++		media = igt_sysfs_get_u32(dir, "media_freq_factor");
++		igt_debug("media ratio: %.2f\n", media * FREQ_SCALE_FACTOR);
++	}
++}
++
++static void cleanup(int dir)
++{
++	igt_free_spins(i915);
++	put_ahnd(ahnd);
++	intel_ctx_destroy(i915, ctx);
++	gem_quiescent_gpu(i915);
++}
++
++static void media_freq(int gt, int dir)
++{
++	float scale;
++
++	igt_require(igt_sysfs_has_attr(dir, "media_freq_factor"));
++
++	igt_sysfs_scanf(dir, "media_freq_factor.scale", "%g", &scale);
++	igt_assert_eq(scale, FREQ_SCALE_FACTOR);
++
++	setup_freq(gt, dir);
++	igt_debug("media ratio value 0.0 represents dynamic mode\n");
++
++	/*
++	 * Media freq ratio modes supported are: dynamic (0), 1:2 (128) and
++	 * 1:1 (256). Setting dynamic (0) can return any of the three
++	 * modes. Fixed ratio modes should return the same value.
++	 */
++	for (int v = 256; v >= 0; v -= 64) {
++		int getv, ret;
++
++		/*
++		 * Check that we can set the mode. Ratios other than 1:2
++		 * and 1:1 are not supported.
++		 */
++		ret = igt_sysfs_printf(dir, "media_freq_factor", "%u", v);
++		if (ret <= 0) {
++			igt_debug("Media ratio %.2f is not supported\n", v * scale);
++			continue;
++		}
++
++		wait_freq_set();
++
++		getv = igt_sysfs_get_u32(dir, "media_freq_factor");
++
++		igt_debug("media ratio set: %.2f, media ratio get: %.2f\n",
++			  v * scale, getv * scale);
++
++		/*
++		 * Skip validation in dynamic mode since the returned media
++		 * ratio and freq are platform dependent and not clearly defined
++		 */
++		if (v)
++			igt_assert_eq(getv, v);
++	}
++
++	cleanup(dir);
++}
++
++igt_main
++{
++	int dir, gt;
++
++	igt_fixture {
++		i915 = drm_open_driver(DRIVER_INTEL);
++
++		/* Frequency multipliers are not simulated. */
++		igt_require(!igt_run_in_simulation());
++	}
++
++	igt_describe("Tests for media frequency factor sysfs");
++	igt_subtest_with_dynamic("media-freq") {
++		for_each_sysfs_gt_dirfd(i915, dir, gt) {
++			igt_dynamic_f("gt%d", gt)
++				media_freq(gt, dir);
++		}
++	}
++
++	igt_fixture {
++		close(i915);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index fb0f1e37f633..70c3c9118c3b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -368,6 +368,14 @@ test_executables += executable('gem_mmap_offset',
+ 	   install : true)
+ test_list += 'gem_mmap_offset'
  
-+	igt_display_reset(display);
- 	igt_output_set_pipe(output, pipe);
- 
- 	mode = igt_output_get_mode(output);
-@@ -180,8 +181,8 @@ static void run_single_test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	}
- 
- 	igt_plane_set_fb(primary, NULL);
--	igt_output_set_pipe(output, PIPE_ANY);
--	igt_display_commit(display);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
- 	igt_remove_fb(data->drm_fd, &fb[1]);
- 	igt_remove_fb(data->drm_fd, &fb[0]);
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 3cb6d704..1a6502a4 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -107,7 +107,7 @@ functional_test_fini(functional_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -135,6 +135,7 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int num_primary = 0, num_cursor = 0;
- 	int i;
- 
-+	igt_display_reset(display);
- 	igt_require_pipe(display, pipe);
- 
- 	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
-@@ -345,7 +346,7 @@ sanity_test_fini(sanity_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->undersized_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -364,6 +365,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int i;
- 	int expect;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(&data->display, pipe);
- 
- 	igt_output_set_pipe(output, pipe);
-@@ -462,7 +464,7 @@ pageflip_test_fini(pageflip_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -477,6 +479,7 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	fd_set fds;
- 	int ret = 0;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(&data->display, pipe);
- 
- 	igt_output_set_pipe(output, pipe);
-@@ -544,7 +547,7 @@ cursor_leak_test_fini(data_t *data,
- 	for (i = 0; i < 10; i++)
- 		igt_remove_fb(data->drm_fd, &curs[i]);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- }
- 
- static int
-@@ -578,6 +581,7 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int r, g, b;
- 	int count1, count2;
- 
-+	igt_display_reset(display);
- 	igt_require_pipe(display, pipe);
- 	igt_require(display->has_cursor_plane);
- 	igt_require_intel(data->drm_fd);
-@@ -690,7 +694,7 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->smallred_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->smallblue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -706,6 +710,7 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 	int ret = 0;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_intel(data->drm_fd);
- 	igt_skip_on(data->display_ver < 9);
- 	igt_require_pipe(&data->display, pipe);
++test_executables += executable('i915_pm_freq_mult',
++	   join_paths('i915', 'i915_pm_freq_mult.c'),
++	   dependencies : test_deps + [ lib_igt_perf ],
++	   install_dir : libexecdir,
++	   install_rpath : libexecdir_rpathdir,
++	   install : true)
++test_list += 'i915_pm_freq_mult'
++
+ test_executables += executable('i915_pm_rc6_residency',
+ 	   join_paths('i915', 'i915_pm_rc6_residency.c'),
+ 	   dependencies : test_deps + [ lib_igt_perf ],
 -- 
-2.25.1
+2.34.1
