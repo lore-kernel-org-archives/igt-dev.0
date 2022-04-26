@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42B6E10E3E3
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 00:03:44 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 25 Apr 2022 17:03:37 -0700
-Message-Id: <20220426000337.9367-1-ashutosh.dixit@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2752018378912966250=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [CI i-g-t] tests/i915_pm_disag_freq: New test for media
- freq factor
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Date: Tue, 26 Apr 2022 00:47:45 -0000
+Message-ID: <165093406529.12386.7690274737489306781@emeril.freedesktop.org>
+References: <20220426000337.9367-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20220426000337.9367-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915=5Fpm=5Fdisag=5Ffreq=3A_New_test_for_media_freq_factor?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,239 +17,313 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CI ONLY: PLEASE DON'T REVIEW
+--===============2752018378912966250==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-XEHPSDV and DG2/ATS-M allow media IP blocks to run at frequencies different
-from the GT frequency. i915 exposes sysfs controls for this frequency
-"disaggregation". IGT's introduced in this patch exercise and verify these
-per-gt (gt/gtN) sysfs attributes.
+== Series Details ==
 
-Further, RPS defaults exposed in gt/gtN/.defaults sysfs directory are used
-in the test to start and complete in the known default state.
+Series: tests/i915_pm_disag_freq: New test for media freq factor
+URL   : https://patchwork.freedesktop.org/series/103107/
+State : success
 
-v2: Added igt_describe's and s/igt_info/igt_debug/  (Kamil)
+== Summary ==
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/i915_pm_disag_freq.c | 186 ++++++++++++++++++++++++++++++++
- tests/meson.build               |   8 ++
- 2 files changed, 194 insertions(+)
- create mode 100644 tests/i915/i915_pm_disag_freq.c
+CI Bug Log - changes from IGT_6454 -> IGTPW_7000
+====================================================
 
-diff --git a/tests/i915/i915_pm_disag_freq.c b/tests/i915/i915_pm_disag_freq.c
-new file mode 100644
-index 000000000000..af216eb98815
---- /dev/null
-+++ b/tests/i915/i915_pm_disag_freq.c
-@@ -0,0 +1,186 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+
-+#include "i915/gem.h"
-+#include "igt.h"
-+#include "igt_sysfs.h"
-+
-+IGT_TEST_DESCRIPTION(
-+	"Tests for sysfs controls for \"disaggregated\" IP blocks, viz. IP "
-+	"blocks which run at frequencies different from the main GT frequency."
-+);
-+
-+#define FREQ_SCALE_FACTOR	0.00390625f	/* 1.0f / 256 */
-+
-+/*
-+ * Firmware interfaces are not completely synchronous, a delay is needed
-+ * before the requested freq is actually set.
-+ * Media ratio read back after set will mismatch if this value is too small
-+ */
-+#define wait_freq_set()	usleep(100000)
-+
-+static int i915 = -1;
-+const intel_ctx_t *ctx;
-+uint64_t ahnd;
-+
-+static void spin_all(void)
-+{
-+	igt_spin_t *spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx, .engine = ALL_ENGINES,
-+					.flags = IGT_SPIN_POLL_RUN);
-+
-+	/* Wait till at least one spinner starts */
-+	igt_spin_busywait_until_started(spin);
-+}
-+
-+static void restore_rps_defaults(int dir)
-+{
-+	int def, min, max, media;
-+
-+	/* Read from gt/gtN/.defaults/ write to gt/gtN/ */
-+	def = openat(dir, ".defaults", O_RDONLY);
-+	if (def <= 0)
-+		return;
-+
-+	max = igt_sysfs_get_u32(def, "rps_max_freq_mhz");
-+	igt_sysfs_set_u32(dir, "rps_max_freq_mhz", max);
-+
-+	min = igt_sysfs_get_u32(def, "rps_min_freq_mhz");
-+	igt_sysfs_set_u32(dir, "rps_min_freq_mhz", min);
-+
-+	if (igt_sysfs_has_attr(dir, "media_freq_factor")) {
-+		media = igt_sysfs_get_u32(def, "media_freq_factor");
-+		igt_sysfs_set_u32(dir, "media_freq_factor", media);
-+	}
-+
-+	close(def);
-+}
-+
-+static void __restore_rps_defaults(int sig)
-+{
-+	int dir, gt;
-+
-+	for_each_sysfs_gt_dirfd(i915, dir, gt)
-+		restore_rps_defaults(dir);
-+}
-+
-+static void setup_freq(int gt, int dir)
-+{
-+	int rp0, rp1, rpn, min, max, act, media;
-+
-+	ctx = intel_ctx_create_all_physical(i915);
-+	ahnd = get_reloc_ahnd(i915, ctx->id);
-+
-+	/* Reset to known state */
-+	restore_rps_defaults(dir);
-+
-+	/* Spin on all engines to jack freq up to max */
-+	spin_all();
-+	wait_freq_set();
-+
-+	/* Print some debug information */
-+	rp0 = igt_sysfs_get_u32(dir, "rps_RP0_freq_mhz");
-+	rp1 = igt_sysfs_get_u32(dir, "rps_RP1_freq_mhz");
-+	rpn = igt_sysfs_get_u32(dir, "rps_RPn_freq_mhz");
-+	min = igt_sysfs_get_u32(dir, "rps_min_freq_mhz");
-+	max = igt_sysfs_get_u32(dir, "rps_max_freq_mhz");
-+	act = igt_sysfs_get_u32(dir, "rps_act_freq_mhz");
-+
-+	igt_debug("RP0 mhz: %d, RP1 mhz: %d, RPn mhz: %d, min mhz: %d, max mhz: %d, act mhz: %d\n", rp0, rp1, rpn, min, max, act);
-+
-+	if (igt_sysfs_has_attr(dir, "media_freq_factor")) {
-+		media = igt_sysfs_get_u32(dir, "media_freq_factor");
-+		igt_debug("media ratio: %.2f\n", media * FREQ_SCALE_FACTOR);
-+	}
-+}
-+
-+static void cleanup(int dir)
-+{
-+	igt_free_spins(i915);
-+	put_ahnd(ahnd);
-+	intel_ctx_destroy(i915, ctx);
-+	restore_rps_defaults(dir);
-+	gem_quiescent_gpu(i915);
-+}
-+
-+static void media_freq(int gt, int dir)
-+{
-+	float scale;
-+
-+	igt_require(igt_sysfs_has_attr(dir, "media_freq_factor"));
-+
-+	igt_sysfs_scanf(dir, "media_freq_factor.scale", "%g", &scale);
-+	igt_assert_eq(scale, FREQ_SCALE_FACTOR);
-+
-+	setup_freq(gt, dir);
-+
-+	igt_debug("media RP0 mhz: %d, media RPn mhz: %d\n",
-+		  igt_sysfs_get_u32(dir, "media_RP0_freq_mhz"),
-+		  igt_sysfs_get_u32(dir, "media_RPn_freq_mhz"));
-+	igt_debug("media ratio value 0.0 represents dynamic mode\n");
-+
-+	/*
-+	 * Media freq ratio modes supported are: dynamic (0), 1:2 (128) and
-+	 * 1:1 (256). Setting dynamic (0) can return any of the three
-+	 * modes. Fixed ratio modes should return the same value.
-+	 */
-+	for (int v = 256; v >= 0; v -= 64) {
-+		int getv, ret;
-+
-+		/*
-+		 * Check that we can set the mode. Ratios other than 1:2
-+		 * and 1:1 are not supported.
-+		 */
-+		ret = igt_sysfs_printf(dir, "media_freq_factor", "%u", v);
-+		if (ret <= 0) {
-+			igt_debug("Media ratio %.2f is not supported\n", v * scale);
-+			continue;
-+		}
-+
-+		wait_freq_set();
-+
-+		getv = igt_sysfs_get_u32(dir, "media_freq_factor");
-+
-+		igt_debug("media ratio set: %.2f, media ratio get: %.2f\n",
-+			  v * scale, getv * scale);
-+
-+		/*
-+		 * Skip validation in dynamic mode since the returned media
-+		 * ratio and freq are platform dependent and not clearly defined
-+		 */
-+		if (v)
-+			igt_assert_eq(getv, v);
-+	}
-+
-+	cleanup(dir);
-+}
-+
-+igt_main
-+{
-+	int dir, gt;
-+
-+	igt_fixture {
-+		i915 = drm_open_driver(DRIVER_INTEL);
-+
-+		/* Disag multipliers (aka "frequency factors") are not simulated. */
-+		igt_require(!igt_run_in_simulation());
-+		igt_install_exit_handler(__restore_rps_defaults);
-+	}
-+
-+	igt_describe("Tests for \"disaggregated\" media freq sysfs");
-+	igt_subtest_with_dynamic("media-freq") {
-+		for_each_sysfs_gt_dirfd(i915, dir, gt) {
-+			igt_dynamic_f("gt%d", gt)
-+				media_freq(gt, dir);
-+		}
-+	}
-+
-+	igt_fixture {
-+		close(i915);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index fb0f1e37f633..da312e70f8b7 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -368,6 +368,14 @@ test_executables += executable('gem_mmap_offset',
- 	   install : true)
- test_list += 'gem_mmap_offset'
- 
-+test_executables += executable('i915_pm_disag_freq',
-+	   join_paths('i915', 'i915_pm_disag_freq.c'),
-+	   dependencies : test_deps + [ lib_igt_perf ],
-+	   install_dir : libexecdir,
-+	   install_rpath : libexecdir_rpathdir,
-+	   install : true)
-+test_list += 'i915_pm_disag_freq'
-+
- test_executables += executable('i915_pm_rc6_residency',
- 	   join_paths('i915', 'i915_pm_rc6_residency.c'),
- 	   dependencies : test_deps + [ lib_igt_perf ],
--- 
-2.34.1
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/index.html
+
+Participating hosts (44 -> 44)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (1): fi-bsw-cyan 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7000:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gtt:
+    - {bat-rpls-1}:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/bat-rpls-1/igt@i915_selftest@live@gtt.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/bat-rpls-1/igt@i915_selftest@live@gtt.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7000 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +9 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-bdw-5557u:       [PASS][4] -> [INCOMPLETE][5] ([i915#146])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-7567u:       [PASS][8] -> [DMESG-FAIL][9] ([i915#5334])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][10] ([i915#1886])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][11] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][12] ([fdo#109271] / [i915#533])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - {bat-rpls-2}:       [DMESG-WARN][13] ([i915#4391]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/bat-rpls-2/igt@core_hotunplug@unbind-rebind.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/bat-rpls-2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][15] ([i915#4785]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_busy@basic@modeset:
+    - {bat-adlp-6}:       [DMESG-WARN][17] ([i915#3576]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/bat-adlp-6/igt@kms_busy@basic@modeset.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/bat-adlp-6/igt@kms_busy@basic@modeset.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:
+    - fi-cfl-8109u:       [DMESG-WARN][19] ([i915#62]) -> [PASS][20] +12 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#5270]: https://gitlab.freedesktop.org/drm/intel/issues/5270
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5356]: https://gitlab.freedesktop.org/drm/intel/issues/5356
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6454 -> IGTPW_7000
+
+  CI-20190529: 20190529
+  CI_DRM_11550: 56b089ae03ef8ea8ab7f474eaa70367898891ef0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7000: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/index.html
+  IGT_6454: 855dc13d376b5e4561f6c022aa52b01aa4d0892f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@i915_pm_disag_freq@media-freq
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/index.html
+
+--===============2752018378912966250==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915_pm_disag_freq: New test for media freq factor</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103107/">https://patchwork.freedesktop.org/series/103107/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6454 -&gt; IGTPW_7000</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/index.html</p>
+<h2>Participating hosts (44 -&gt; 44)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (1): fi-bsw-cyan </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7000:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gtt:<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/bat-rpls-1/igt@i915_selftest@live@gtt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/bat-rpls-1/igt@i915_selftest@live@gtt.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7000 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-bdw-5557u/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/bat-rpls-2/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4391">i915#4391</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/bat-rpls-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@modeset:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/bat-adlp-6/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/bat-adlp-6/igt@kms_busy@basic@modeset.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6454/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/fi-cfl-8109u/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b.html">PASS</a> +12 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6454 -&gt; IGTPW_7000</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11550: 56b089ae03ef8ea8ab7f474eaa70367898891ef0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7000: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7000/index.html<br />
+  IGT_6454: 855dc13d376b5e4561f6c022aa52b01aa4d0892f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@i915_pm_disag_freq@media-freq</p>
+
+</body>
+</html>
+
+--===============2752018378912966250==--
