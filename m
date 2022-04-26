@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3735710E4DF
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 15:37:23 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6422910E639
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 15:42:55 +0000 (UTC)
 From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 26 Apr 2022 15:33:49 +0000
-Message-ID: <DM6PR11MB44928F7EE59A0432F513778B8DFB9@DM6PR11MB4492.namprd11.prod.outlook.com>
-References: <20220421145211.464313-1-priyanka.dandamudi@intel.com>
- <20220421145211.464313-4-priyanka.dandamudi@intel.com>
- <YmeuWDU0jQvxVCUc@kamilkon-DESK1>
-In-Reply-To: <YmeuWDU0jQvxVCUc@kamilkon-DESK1>
+Date: Tue, 26 Apr 2022 15:42:52 +0000
+Message-ID: <DM6PR11MB44929D17E2C538ACF9D0A9928DFB9@DM6PR11MB4492.namprd11.prod.outlook.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] lib/sysfs: helper for number of gts
+Subject: [igt-dev] Recall: [PATCH i-g-t 3/6] lib/sysfs: helper for number of
+ gts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,61 +24,5 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
-IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiAyNiBBcHJpbCAyMDIy
-IDAyOjAzIFBNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogTWFy
-Y2luIEJlcm5hdG93aWN6IDxtYXJjaW4uYmVybmF0b3dpY3pAbGludXguaW50ZWwuY29tPjsgRGFu
-ZGFtdWRpLA0KPiBQcml5YW5rYSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gU3Vi
-amVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXQgMy82XSBsaWIvc3lzZnM6IGhlbHBlciBm
-b3IgbnVtYmVyIG9mIGd0cw0KPiANCj4gSGkgUHJpeWFua2EsDQo+IA0KPiBPbiAyMDIyLTA0LTIx
-IGF0IDIwOjIyOjA4ICswNTMwLCBwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tIHdyb3RlOg0K
-PiA+IEZyb206IE1hcmNpbiBCZXJuYXRvd2ljeiA8bWFyY2luLmJlcm5hdG93aWN6QGxpbnV4Lmlu
-dGVsLmNvbT4NCj4gPg0KPiA+IEFkZGVkIGNvbnZlbmllbmNlIGZ1bmN0aW9uIHJldHVybmluZyBu
-dW1iZXIgb2YgZ3RzLg0KPiA+IEl0IGlzIGNhbGN1bGF0ZWQgYXMgbnVtYmVyIG9mIGd0IHN5c2Zz
-IGVudHJpZXMsIGlmIG5vIGVudHJpZXMgYXJlDQo+ID4gZm91bmQgaXQgcmV0dXJucyAxIGFzIG51
-bWJlciBvZiBndHMuDQo+ID4NCj4gUGxlYXNlIGNoYW5nZSBndHMgaW4gc3ViamVjdCBhbmQgY29t
-bWl0IG1lc3NhZ2UgdG8gR1RzIHMvZ3RzL0dUcy8NCj4gDQo+ID4gU2lnbmVkLW9mZi1ieTogTWFy
-Y2luIEJlcm5hdG93aWN6IDxtYXJjaW4uYmVybmF0b3dpY3pAbGludXguaW50ZWwuY29tPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IFByaXlhbmthIERhbmRhbXVkaSA8cHJpeWFua2EuZGFuZGFtdWRpQGlu
-dGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgbGliL2lndF9zeXNmcy5jIHwgMjEgKysrKysrKysrKysr
-KysrKysrKysrICBsaWIvaWd0X3N5c2ZzLmggfCAgMSArDQo+ID4gIDIgZmlsZXMgY2hhbmdlZCwg
-MjIgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfc3lzZnMuYyBi
-L2xpYi9pZ3Rfc3lzZnMuYyBpbmRleA0KPiA+IGIxNjdjMDUwLi5hZWJjNmViNyAxMDA2NDQNCj4g
-PiAtLS0gYS9saWIvaWd0X3N5c2ZzLmMNCj4gPiArKysgYi9saWIvaWd0X3N5c2ZzLmMNCj4gPiBA
-QCAtMTc1LDYgKzE3NSwyNyBAQCBpbnQgaWd0X3N5c2ZzX2d0X29wZW4oaW50IGRldmljZSwgaW50
-IGd0KQ0KPiA+ICAJcmV0dXJuIG9wZW4ocGF0aCwgT19SRE9OTFkpOw0KPiA+ICB9DQo+ID4NCj4g
-PiArLyoqDQo+ID4gKyAqIGlndF9zeXNmc19nZXRfbnVtX2d0czoNCj4gLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLSBeDQo+IGltaG8gdGhpcyBmdW5jdGlvbiBuYW1lIHNob3VsZCBiZSBpZ3Rfc3lz
-ZnNfZ2V0X251bV9ndA0KPiANCj4gPiArICogQGRldmljZTogZmQgb2YgdGhlIGRldmljZQ0KPiA+
-ICsgKg0KPiA+ICsgKiBSZWFkcyBudW1iZXIgb2YgZ3Qgc3lzZnMgZW50cmllcy4NCj4gPiArICog
-SWYgbm8gZ3Qgc3lzZnMgZW50cmllcyBhcmUgZm91bmQgcmV0dXJucyAxDQo+IA0KPiBXaHkgbm90
-IHplcm8gZm9yIG5vIGVudHJpZXMgPyBUaGlzICcxJyBkbyBub3QgbWF0Y2ggd2l0aCBwcmV2aW91
-cyBkZXNjcmlwdGlvbg0KPiBvbmUgbGluZSBhYm92ZS4gTWF5YmUgdGhlcmUgc2hvdWxkIGJlIGFk
-ZGl0aW9uYWwgZnVuY3Rpb24NCj4gDQo+IGlndF9nZXRfbnVtX2d0DQo+IA0KPiBhbmQgdGhhdCBv
-bmUgd2lsbCByZXR1cm4gPj0gMSBpZiBpOTE1IGRyaXZlciAob3Igb3RoZXIgR1BVDQo+IGRyaXZl
-cikgaXMgbG9hZGVkID8NCj4gDQo+ID4gKyAqIChzZWUgaWd0X3N5c2ZzX2d0X3BhdGgpLg0KPiA+
-ICsgKg0KPiA+ICsgKiBSZXR1cm5zOiBOdW1iZXIgb2YgZ3RzIChhdCBsZWFzdCBvbmUpLg0KPiAN
-Cj4gcy9ndHMvR1RzLw0KPiANCj4gPiArICovDQo+ID4gK2ludCBpZ3Rfc3lzZnNfZ2V0X251bV9n
-dHMoaW50IGRldmljZSkNCj4gDQo+IHMvZ3RzL2d0Lw0KPiANCj4gPiArew0KPiA+ICsJaW50IG51
-bV9ndHMgPSAwOw0KPiA+ICsJY2hhciBwYXRoWzk2XTsNCj4gPiArDQo+ID4gKwl3aGlsZSAoaWd0
-X3N5c2ZzX2d0X3BhdGgoZGV2aWNlLCBudW1fZ3RzLCBwYXRoLCBzaXplb2YocGF0aCkpKQ0KPiA+
-ICsJCSsrbnVtX2d0czsNCj4gDQo+IElmIHdoaWxlIGZhaWxzIGF0IHN0YXJ0IHRoZW4gbnVtX2d0
-cyB3aWxsIGJlIDAuDQo+IGltaG8gaGVyZSBzaG91bGQgYmUgaWd0X2Fzc2VydChudW1fZ3RzID4g
-MCk7DQpbRGFuZGFtdWRpLCBQcml5YW5rYV0gDQpJbWhvIGlmIHdoaWxlIGxvb3AgcGFzc2VzIHRo
-ZW4gaXQgd2lsbCByZXR1cm4gbWluaW11bSBvZiAxIGd0IA0KZWxzZSBpdCB3aWxsIG5vdCBnbyBm
-dXJ0aGVyIGl0IHdpbGwgZWl0aGVyIHJldHVybiBudWxsIG9yIHRoZSBwYXRoLg0KSW4gdGhhdCBj
-YXNlIG5vIG5lZWQgdG8gcHV0IGFzc2VydCBjb25kaXRpb24gYWZ0ZXIgd2hpbGUgbG9vcC4NCj4g
-DQo+ID4gKw0KPiA+ICsJcmV0dXJuIG51bV9ndHM7DQo+ID4gK30NCj4gPiArDQo+ID4gIC8qKg0K
-PiA+ICAgKiBpZ3Rfc3lzZnNfd3JpdGU6DQo+ID4gICAqIEBkaXI6IGRpcmVjdG9yeSBmb3IgdGhl
-IGRldmljZSBmcm9tIGlndF9zeXNmc19vcGVuKCkgZGlmZiAtLWdpdA0KPiA+IGEvbGliL2lndF9z
-eXNmcy5oIGIvbGliL2lndF9zeXNmcy5oIGluZGV4IDMzMzE3YTk2Li42YzhiOTJhNyAxMDA2NDQN
-Cj4gPiAtLS0gYS9saWIvaWd0X3N5c2ZzLmgNCj4gPiArKysgYi9saWIvaWd0X3N5c2ZzLmgNCj4g
-PiBAQCAtNDIsNiArNDIsNyBAQCBjaGFyICppZ3Rfc3lzZnNfcGF0aChpbnQgZGV2aWNlLCBjaGFy
-ICpwYXRoLCBpbnQNCj4gPiBwYXRobGVuKTsgIGludCBpZ3Rfc3lzZnNfb3BlbihpbnQgZGV2aWNl
-KTsgIGNoYXINCj4gPiAqaWd0X3N5c2ZzX2d0X3BhdGgoaW50IGRldmljZSwgaW50IGd0LCBjaGFy
-ICpwYXRoLCBpbnQgcGF0aGxlbik7ICBpbnQNCj4gPiBpZ3Rfc3lzZnNfZ3Rfb3BlbihpbnQgZGV2
-aWNlLCBpbnQgZ3QpOw0KPiA+ICtpbnQgaWd0X3N5c2ZzX2dldF9udW1fZ3RzKGludCBkZXZpY2Up
-Ow0KPiANCj4gcy9ndHMvZ3QvDQo+IA0KPiA+ICBib29sIGlndF9zeXNmc19oYXNfYXR0cihpbnQg
-ZGlyLCBjb25zdCBjaGFyICphdHRyKTsNCj4gPg0KPiA+ICBpbnQgaWd0X3N5c2ZzX3JlYWQoaW50
-IGRpciwgY29uc3QgY2hhciAqYXR0ciwgdm9pZCAqZGF0YSwgaW50IGxlbik7DQo+ID4gLS0NCj4g
-PiAyLjI1LjENCj4gPg0KPiBSZWdhcmRzLA0KPiBLYW1pbA0KPiANCg==
+Dandamudi, Priyanka would like to recall the message, "[igt-dev] [PATCH i-g=
+-t 3/6] lib/sysfs: helper for number of gts".=
