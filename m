@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A05810FD7E
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 04:20:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13C0610FD7E
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 04:20:58 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
  priyanka.dandamudi@intel.com
-Date: Tue, 26 Apr 2022 09:42:26 +0530
-Message-Id: <20220426041228.516686-1-priyanka.dandamudi@intel.com>
+Date: Tue, 26 Apr 2022 09:42:27 +0530
+Message-Id: <20220426041228.516686-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20220426041228.516686-1-priyanka.dandamudi@intel.com>
+References: <20220426041228.516686-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] HAX add description to
- gem_set_tiling_vs_pwrite
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_set_tiling_vs_pwrite: Added
+ description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,19 +24,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+From: ranjeet kumar <ranjeet1.kumar@intel.com>
 
-Add test description to gem_set_tiling_vs_pwrite
+Added test description for subtest.
 
-Priyanka Dandamudi (1):
-  HAX: don't do full run
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: ranjeet kumar <ranjeet1.kumar@intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/i915/gem_set_tiling_vs_pwrite.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-ranjeet kumar (1):
-  i915/gem_set_tiling_vs_pwrite: Added description for test case
-
- tests/i915/gem_set_tiling_vs_pwrite.c |   5 +-
- tests/intel-ci/fast-feedback.testlist | 180 +-------------------------
- 2 files changed, 4 insertions(+), 181 deletions(-)
-
+diff --git a/tests/i915/gem_set_tiling_vs_pwrite.c b/tests/i915/gem_set_tiling_vs_pwrite.c
+index 6bec7f27..7e96ad96 100644
+--- a/tests/i915/gem_set_tiling_vs_pwrite.c
++++ b/tests/i915/gem_set_tiling_vs_pwrite.c
+@@ -74,7 +74,7 @@ igt_simple_main
+ 		*ptr = 0xdeadbeef;
+ 	}
+ 
+-	igt_info("testing pwrite on tiled buffer\n");
++	igt_describe("Set tiling stride and domain and check pwrite coherency on tiled buffer.");
+ 	gem_write(fd, handle, 0, data, OBJECT_SIZE);
+ 	memset(data, 0, OBJECT_SIZE);
+ 	gem_read(fd, handle, 0, data, OBJECT_SIZE);
+@@ -90,7 +90,8 @@ igt_simple_main
+ 
+ 	gem_set_tiling(fd, handle, I915_TILING_NONE, 0);
+ 
+-	igt_info("testing pwrite on untiled, but still fenced buffer\n");
++	igt_describe("set tiling stride as none and domain and check pwrite coherency on"
++		     " still fenced buffer.");
+ 	gem_write(fd, handle, 0, data, OBJECT_SIZE);
+ 	memset(data, 0, OBJECT_SIZE);
+ 	gem_read(fd, handle, 0, data, OBJECT_SIZE);
 -- 
 2.25.1
