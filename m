@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam08on2089.outbound.protection.outlook.com [40.107.101.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEAF210E2FD
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 13:26:24 +0000 (UTC)
-Message-ID: <a1d52d01-2453-df4d-375d-a248398a9c76@amd.com>
-Date: Tue, 26 Apr 2022 09:26:20 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F121B10E2FD
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 13:31:18 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
+ Jose" <jose.souza@intel.com>
+Date: Tue, 26 Apr 2022 13:31:03 +0000
+Message-ID: <0fc9fb61113bd6a24fac258f2f92a3bffdeda96d.camel@intel.com>
+References: <20220422060240.3193599-1-jouni.hogander@intel.com>
+ <dc51666444e8be51d44d8c7e25e9c586677b0ec0.camel@intel.com>
+ <fd2b3105ba2c9d539d960ea8392f84376843ee9c.camel@intel.com>
+ <760d330e4d1ba83bdba98d4e29e4083b2f8ec7bb.camel@intel.com>
+In-Reply-To: <760d330e4d1ba83bdba98d4e29e4083b2f8ec7bb.camel@intel.com>
 Content-Language: en-US
-To: igt-dev@lists.freedesktop.org
-References: <20220422113553.19181-1-petri.latvala@intel.com>
-From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20220422113553.19181-1-petri.latvala@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <64EA2901E09C8E44942F03AA50EA8EB1@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] gitlab-CI: Temporarily disable armhf
- and arm64 selfchecks
+Subject: Re: [igt-dev] [PATCH i-g-t] kms_psr2_su: Skip page-flip tests if
+ FB_DAMAGE_CLIPS not supported
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,102 +26,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On 2022-04-22 07:35, Petri Latvala wrote:
-> gitlab runners have sporadic trouble executing the arm binaries. The
-> arm testing needs to be converted to be run on native arm hardware
-> instead of through qemu.
-> 
-> Compilation for armhf and arm64 are kept so they don't regress.
-> 
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> ---
->   .gitlab-ci.yml | 67 +++++++++++++++++++++++++-------------------------
->   1 file changed, 34 insertions(+), 33 deletions(-)
-> 
-> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-> index fd0ca7cb..55559303 100644
-> --- a/.gitlab-ci.yml
-> +++ b/.gitlab-ci.yml
-> @@ -193,39 +193,40 @@ test:ninja-test-minimal:
->     stage: test
->     script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
->   
-> -test:ninja-test-arm64:
-> -  tags:
-> -    - gstreamer
-> -  retry: 2
-> -  image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-arm64:commit-$CI_COMMIT_SHA
-> -  dependencies:
-> -    - build:tests-debian-meson-arm64
-> -  stage: test
-> -  script:
-> -    - export PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig/
-> -    - env > build/envdump.txt
-> -    - meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
-> -  artifacts:
-> -    paths:
-> -      - build
-> -    when: on_failure
-> -
-> -test:ninja-test-armhf:
-> -  tags:
-> -    - gstreamer
-> -  retry: 2
-> -  image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-armhf:commit-$CI_COMMIT_SHA
-> -  dependencies:
-> -    - build:tests-debian-meson-armhf
-> -  stage: test
-> -  script:
-> -    - export PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig/
-> -    - env > build/envdump.txt
-> -    - meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
-> -  artifacts:
-> -    paths:
-> -      - build
-> -    when: on_failure
-> +# arm testing temporarily disabled until converted to run on native arm HW
-> +# test:ninja-test-arm64:
-> +#   tags:
-> +#     - gstreamer
-> +#   retry: 2
-> +#   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-arm64:commit-$CI_COMMIT_SHA
-> +#   dependencies:
-> +#     - build:tests-debian-meson-arm64
-> +#   stage: test
-> +#   script:
-> +#     - export PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig/
-> +#     - env > build/envdump.txt
-> +#     - meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
-> +#   artifacts:
-> +#     paths:
-> +#       - build
-> +#     when: on_failure
-> +#
-> +# test:ninja-test-armhf:
-> +#   tags:
-> +#     - gstreamer
-> +#   retry: 2
-> +#   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-armhf:commit-$CI_COMMIT_SHA
-> +#   dependencies:
-> +#     - build:tests-debian-meson-armhf
-> +#   stage: test
-> +#   script:
-> +#     - export PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig/
-> +#     - env > build/envdump.txt
-> +#     - meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
-> +#   artifacts:
-> +#     paths:
-> +#       - build
-> +#     when: on_failure
->   
->   test:ninja-test-mips:
->     tags:
-
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+T24gVHVlLCAyMDIyLTA0LTI2IGF0IDEzOjA4ICswMDAwLCBTb3V6YSwgSm9zZSB3cm90ZToNCj4g
+T24gVHVlLCAyMDIyLTA0LTI2IGF0IDA1OjIzICswMDAwLCBIb2dhbmRlciwgSm91bmkgd3JvdGU6
+DQo+ID4gT24gTW9uLCAyMDIyLTA0LTI1IGF0IDEzOjM2ICswMDAwLCBTb3V6YSwgSm9zZSB3cm90
+ZToNCj4gPiA+IE9uIEZyaSwgMjAyMi0wNC0yMiBhdCAwOTowMiArMDMwMCwgSm91bmkgSMO2Z2Fu
+ZGVyIHdyb3RlOg0KPiA+ID4gPiBDdXJyZW50bHkgd2UgYXJlIHNlZWluZyBmYWlsdXJlcyBpbiBJ
+Q0wgcGxhdGZvcm1zIGR1ZSB0bw0KPiA+ID4gPiBtaXNzaW5nIHN1cHBvcnQgZm9yIElHVF9QTEFO
+RV9GQl9EQU1BR0VfQ0xJUFMuIFNraXAgcGFnZS1mbGlwDQo+ID4gPiA+IHRlc3RzIGlmIElHVF9Q
+TEFORV9GQl9EQU1BR0VfQ0xJUFMgaXMgbm90IHN1cHBvcnRlZC4NCj4gPiA+IA0KPiA+ID4gSXQg
+c2hvdWxkIHNraXAgdGhpcyB3aG9sZSB0ZXN0IHRlc3QgaW4gZGlzcGxheSA8PSAxMQ0KDQpXaHkg
+c2hvdWxkIGl0IHNraXAgZnJvbnRidWZmZXIgc3VidGVzdHM/IFdlIGhhdmUgdGhlbSBwYXNzaW5n
+Og0KDQpodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xMTU0
+OS9zaGFyZC1pY2xiMi9pZ3RAa21zX3BzcjJfc3VAZnJvbnRidWZmZXIteHJnYjg4ODguaHRtbA0K
+DQpUaGUgYnVnIHJlZmVyZW5jZWQgaGVyZSBpcyBhYm91dCBwYWdlX2ZsaXAgZmFpbGluZyBkdWUg
+dG8gbWlzc2luZw0Kc3VwcG9ydCBmb3IgRkJfREFNQUdFX0NMSVBTLiBUaGUgZml4IEknbSBwcm9w
+b3NpbmcgaXMgdG8gY2hlY2sNCndoZXRoZXIgRkJfREFNQUdFX0NMSVBTIGlzIHN1cHBvcnRlZCBh
+bmQgc2tpcCBwYWdlX2ZsaXAgc3VidGVzdHMgaWYNCml0J3Mgbm90LiBJdCdzIGxvZ2ljYWwgdG8g
+bXkgb3BpbmlvbiwgYmVjYXVzZSBwYWdlX2ZsaXAgc3VidGVzdHMgYXJlDQpyZWx5aW5nIG9uIEZC
+X0RBTUFHRV9DTElQUy4NCg0KPiA+ID4gDQo+ID4gDQo+ID4gWWVzLCBJIGNvbnNpZGVyZWQgdGhp
+cyBvbmUgYXMgd2VsbC4gSSBqdXN0IHRob3VnaHQgaXQgd291bGQgYmUNCj4gPiBiZXR0ZXINCj4g
+PiB0byBjaGVjayBwb3NzaWJsZSBzdXBwb3J0IGZvciBGQl9EQU1BR0VfQ0xJUFMgKHdoaWNoIGRv
+ZXNuJ3QgZXhpc3QNCj4gPiBmb3INCj4gPiAiPD0gMTEiIGVpdGhlcikgcmF0aGVyIHRoYW4gYWRk
+IG9uZSBtb3JlIHBsYXRmb3JtIGNoZWNrIGludG8gaWd0Lg0KPiA+IFRoaXMNCj4gPiBpcyBiYXNp
+Y2FsbHkgd2hhdCB0aGUgcHJvYmxlbSBpbg0KPiA+IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9w
+Lm9yZy9kcm0vaW50ZWwvLS9pc3N1ZXMvNDE0OCBpcy4gV2UgdHJ5DQo+ID4gdG8NCj4gPiBydW4g
+dGhpcyB0ZXN0IG9uIHBsYXRmb3JtIG5vdCBzdXBwb3J0aW5nIEZCX0RBTUFHRV9DTElQUy4NCj4g
+PiANCj4gPiBkcml2ZXJzL2dwdS9kcm0vaTkxNS9kaXNwbGF5L3NrbF91bml2ZXJzYWxfcGxhbmUu
+YzoNCj4gPiANCj4gPiAgICAgICAgIGlmIChESVNQTEFZX1ZFUihkZXZfcHJpdikgPj0gMTIpDQo+
+ID4gICAgICAgICAgICAgICAgIGRybV9wbGFuZV9lbmFibGVfZmJfZGFtYWdlX2NsaXBzKCZwbGFu
+ZS0+YmFzZSk7DQo+IA0KPiBJJ20gZmluZSBpbiB1c2luZyB0aGUgZGFtYWdlIGNsaXAgcHJvcGVy
+dHkgY2hlY2sgYnV0IHRoZSBjaGVjayBzaG91bGQNCj4gc2tpcCB0aGUgd2hvbGUgdGVzdCBub3Qg
+b25seSB3aGVuIG9wZXJhdGlvbiBpcyBQQUdFX0ZMSVAuDQo+IA0KPiA+IFdoYXQgZG8geW91IHRo
+aW5rPw0KPiA+IA0KPiA+ID4gPiBDbG9zZXM6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9y
+Zy9kcm0vaW50ZWwvLS9pc3N1ZXMvNDE0OA0KPiA+ID4gPiANCj4gPiA+ID4gU2lnbmVkLW9mZi1i
+eTogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+DQo+ID4gPiA+IENj
+OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NCj4gPiA+ID4gQ2M6IEpv
+c8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPg0KPiA+ID4gPiAtLS0N
+Cj4gPiA+ID4gIHRlc3RzL2k5MTUva21zX3BzcjJfc3UuYyB8IDcgKysrKysrKw0KPiA+ID4gPiAg
+MSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKQ0KPiA+ID4gPiANCj4gPiA+ID4gZGlmZiAt
+LWdpdCBhL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYw0KPiA+ID4gPiBiL3Rlc3RzL2k5MTUva21z
+X3BzcjJfc3UuYw0KPiA+ID4gPiBpbmRleCA0NzRiMWRmZC4uMGNlMWY5MjQgMTAwNjQ0DQo+ID4g
+PiA+IC0tLSBhL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYw0KPiA+ID4gPiArKysgYi90ZXN0cy9p
+OTE1L2ttc19wc3IyX3N1LmMNCj4gPiA+ID4gQEAgLTMyMiw2ICszMjIsMTMgQEAgaWd0X21haW4N
+Cj4gPiA+ID4gICAqLw0KPiA+ID4gPiAgaWd0X3NraXAoIlBTUjIgc2VsZWN0aXZlIGZldGNoIGlz
+IGRvaW5nIGZ1bGwgZnJhbWUgZmV0Y2hlcyBmb3INCj4gPiA+ID4gZnJvbnRidWZmZXIgcmVuZGVy
+aW5nXG4iKTsNCj4gPiA+ID4gIH0NCj4gPiA+ID4gK2lmIChkYXRhLm9wID09IFBBR0VfRkxJUCAm
+Jg0KPiA+ID4gPiArICAgICFpZ3RfcGxhbmVfaGFzX3Byb3AoaWd0X291dHB1dF9nZXRfcGxhbmVf
+dHlwZSgNCj4gPiA+ID4gK2RhdGEub3V0cHV0LA0KPiA+ID4gPiArRFJNX1BMQU5FX1RZUEVfUFJJ
+TUFSWSksDQo+ID4gPiA+ICtJR1RfUExBTkVfRkJfREFNQUdFX0NMSVBTKSkgew0KPiA+ID4gPiAr
+aWd0X3NraXAoIkZCX0RBTUFHRV9DTElQUyBub3Qgc3VwcG9ydGVkXG4iKTsNCj4gPiA+ID4gK30N
+Cj4gPiA+ID4gIHByZXBhcmUoJmRhdGEpOw0KPiA+ID4gPiAgcnVuKCZkYXRhKTsNCj4gPiA+ID4g
+IGNsZWFudXAoJmRhdGEpOw0KDQo=
