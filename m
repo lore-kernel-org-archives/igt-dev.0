@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C263110E808
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 16:04:23 +0000 (UTC)
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 26 Apr 2022 16:02:49 +0000
-Message-ID: <DM6PR11MB44929C5E16EFF9D50612D29C8DFB9@DM6PR11MB4492.namprd11.prod.outlook.com>
-References: <20220421145211.464313-1-priyanka.dandamudi@intel.com>
- <20220421145211.464313-4-priyanka.dandamudi@intel.com>
- <YmeuWDU0jQvxVCUc@kamilkon-DESK1>
- <DM6PR11MB44928F7EE59A0432F513778B8DFB9@DM6PR11MB4492.namprd11.prod.outlook.com>
-In-Reply-To: <DM6PR11MB44928F7EE59A0432F513778B8DFB9@DM6PR11MB4492.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7A1410E80B
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Apr 2022 16:06:30 +0000 (UTC)
+Date: Tue, 26 Apr 2022 18:06:01 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YmgYaYCz92f2MKpu@kamilkon-DESK1>
+References: <20220418125048.7969-1-anshuman.gupta@intel.com>
+ <20220418125048.7969-4-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] lib/sysfs: helper for number of gts
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220418125048.7969-4-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/9] lib/igt_pm: D3Cold runtime pm
+ infrastructure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,77 +21,332 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGFuZGFtdWRpLCBQcml5
-YW5rYQ0KPiBTZW50OiAyNiBBcHJpbCAyMDIyIDA5OjA0IFBNDQo+IFRvOiBLYW1pbCBLb25pZWN6
-bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+OyBpZ3QtDQo+IGRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmcNCj4gQ2M6IE1hcmNpbiBCZXJuYXRvd2ljeiA8bWFyY2luLmJlcm5hdG93
-aWN6QGxpbnV4LmludGVsLmNvbT4NCj4gU3ViamVjdDogUkU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1n
-LXQgMy82XSBsaWIvc3lzZnM6IGhlbHBlciBmb3IgbnVtYmVyIG9mIGd0cw0KPiANCj4gDQo+IA0K
-PiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gRnJvbTogS2FtaWwgS29uaWVjem55
-IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiA+IFNlbnQ6IDI2IEFwcmlsIDIw
-MjIgMDI6MDMgUE0NCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiBD
-YzogTWFyY2luIEJlcm5hdG93aWN6IDxtYXJjaW4uYmVybmF0b3dpY3pAbGludXguaW50ZWwuY29t
-PjsNCj4gPiBEYW5kYW11ZGksIFByaXlhbmthIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29t
-Pg0KPiA+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGktZy10IDMvNl0gbGliL3N5c2Zz
-OiBoZWxwZXIgZm9yIG51bWJlcg0KPiA+IG9mIGd0cw0KPiA+DQo+ID4gSGkgUHJpeWFua2EsDQo+
-ID4NCj4gPiBPbiAyMDIyLTA0LTIxIGF0IDIwOjIyOjA4ICswNTMwLCBwcml5YW5rYS5kYW5kYW11
-ZGlAaW50ZWwuY29tIHdyb3RlOg0KPiA+ID4gRnJvbTogTWFyY2luIEJlcm5hdG93aWN6IDxtYXJj
-aW4uYmVybmF0b3dpY3pAbGludXguaW50ZWwuY29tPg0KPiA+ID4NCj4gPiA+IEFkZGVkIGNvbnZl
-bmllbmNlIGZ1bmN0aW9uIHJldHVybmluZyBudW1iZXIgb2YgZ3RzLg0KPiA+ID4gSXQgaXMgY2Fs
-Y3VsYXRlZCBhcyBudW1iZXIgb2YgZ3Qgc3lzZnMgZW50cmllcywgaWYgbm8gZW50cmllcyBhcmUN
-Cj4gPiA+IGZvdW5kIGl0IHJldHVybnMgMSBhcyBudW1iZXIgb2YgZ3RzLg0KPiA+ID4NCj4gPiBQ
-bGVhc2UgY2hhbmdlIGd0cyBpbiBzdWJqZWN0IGFuZCBjb21taXQgbWVzc2FnZSB0byBHVHMgcy9n
-dHMvR1RzLw0KPiA+DQo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBNYXJjaW4gQmVybmF0b3dpY3oNCj4g
-PiA+IDxtYXJjaW4uYmVybmF0b3dpY3pAbGludXguaW50ZWwuY29tPg0KPiA+ID4gU2lnbmVkLW9m
-Zi1ieTogUHJpeWFua2EgRGFuZGFtdWRpIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPg0K
-PiA+ID4gLS0tDQo+ID4gPiAgbGliL2lndF9zeXNmcy5jIHwgMjEgKysrKysrKysrKysrKysrKysr
-KysrICBsaWIvaWd0X3N5c2ZzLmggfCAgMSArDQo+ID4gPiAgMiBmaWxlcyBjaGFuZ2VkLCAyMiBp
-bnNlcnRpb25zKCspDQo+ID4gPg0KPiA+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfc3lzZnMuYyBi
-L2xpYi9pZ3Rfc3lzZnMuYyBpbmRleA0KPiA+ID4gYjE2N2MwNTAuLmFlYmM2ZWI3IDEwMDY0NA0K
-PiA+ID4gLS0tIGEvbGliL2lndF9zeXNmcy5jDQo+ID4gPiArKysgYi9saWIvaWd0X3N5c2ZzLmMN
-Cj4gPiA+IEBAIC0xNzUsNiArMTc1LDI3IEBAIGludCBpZ3Rfc3lzZnNfZ3Rfb3BlbihpbnQgZGV2
-aWNlLCBpbnQgZ3QpDQo+ID4gPiAgCXJldHVybiBvcGVuKHBhdGgsIE9fUkRPTkxZKTsNCj4gPiA+
-ICB9DQo+ID4gPg0KPiA+ID4gKy8qKg0KPiA+ID4gKyAqIGlndF9zeXNmc19nZXRfbnVtX2d0czoN
-Cj4gPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIF4NCj4gPiBpbWhvIHRoaXMgZnVuY3Rpb24g
-bmFtZSBzaG91bGQgYmUgaWd0X3N5c2ZzX2dldF9udW1fZ3QNCj4gPg0KPiA+ID4gKyAqIEBkZXZp
-Y2U6IGZkIG9mIHRoZSBkZXZpY2UNCj4gPiA+ICsgKg0KPiA+ID4gKyAqIFJlYWRzIG51bWJlciBv
-ZiBndCBzeXNmcyBlbnRyaWVzLg0KPiA+ID4gKyAqIElmIG5vIGd0IHN5c2ZzIGVudHJpZXMgYXJl
-IGZvdW5kIHJldHVybnMgMQ0KPiA+DQo+ID4gV2h5IG5vdCB6ZXJvIGZvciBubyBlbnRyaWVzID8g
-VGhpcyAnMScgZG8gbm90IG1hdGNoIHdpdGggcHJldmlvdXMNCj4gPiBkZXNjcmlwdGlvbiBvbmUg
-bGluZSBhYm92ZS4gTWF5YmUgdGhlcmUgc2hvdWxkIGJlIGFkZGl0aW9uYWwgZnVuY3Rpb24NCj4g
-Pg0KPiA+IGlndF9nZXRfbnVtX2d0DQo+ID4NCj4gPiBhbmQgdGhhdCBvbmUgd2lsbCByZXR1cm4g
-Pj0gMSBpZiBpOTE1IGRyaXZlciAob3Igb3RoZXIgR1BVDQo+ID4gZHJpdmVyKSBpcyBsb2FkZWQg
-Pw0KPiA+DQo+ID4gPiArICogKHNlZSBpZ3Rfc3lzZnNfZ3RfcGF0aCkuDQo+ID4gPiArICoNCj4g
-PiA+ICsgKiBSZXR1cm5zOiBOdW1iZXIgb2YgZ3RzIChhdCBsZWFzdCBvbmUpLg0KPiA+DQo+ID4g
-cy9ndHMvR1RzLw0KPiA+DQo+ID4gPiArICovDQo+ID4gPiAraW50IGlndF9zeXNmc19nZXRfbnVt
-X2d0cyhpbnQgZGV2aWNlKQ0KPiA+DQo+ID4gcy9ndHMvZ3QvDQo+ID4NCj4gPiA+ICt7DQo+ID4g
-PiArCWludCBudW1fZ3RzID0gMDsNCj4gPiA+ICsJY2hhciBwYXRoWzk2XTsNCj4gPiA+ICsNCj4g
-PiA+ICsJd2hpbGUgKGlndF9zeXNmc19ndF9wYXRoKGRldmljZSwgbnVtX2d0cywgcGF0aCwgc2l6
-ZW9mKHBhdGgpKSkNCj4gPiA+ICsJCSsrbnVtX2d0czsNCj4gPg0KPiA+IElmIHdoaWxlIGZhaWxz
-IGF0IHN0YXJ0IHRoZW4gbnVtX2d0cyB3aWxsIGJlIDAuDQo+ID4gaW1obyBoZXJlIHNob3VsZCBi
-ZSBpZ3RfYXNzZXJ0KG51bV9ndHMgPiAwKTsNCj4gW0RhbmRhbXVkaSwgUHJpeWFua2FdDQo+IElt
-aG8gaWYgd2hpbGUgbG9vcCBwYXNzZXMgdGhlbiBpdCB3aWxsIHJldHVybiBtaW5pbXVtIG9mIDEg
-Z3QgZWxzZSBpdCB3aWxsIG5vdA0KPiBnbyBmdXJ0aGVyIGl0IHdpbGwgZWl0aGVyIHJldHVybiBu
-dWxsIG9yIHRoZSBwYXRoLg0KPiBJbiB0aGF0IGNhc2Ugbm8gbmVlZCB0byBwdXQgYXNzZXJ0IGNv
-bmRpdGlvbiBhZnRlciB3aGlsZSBsb29wLg0KW0RhbmRhbXVkaSwgUHJpeWFua2FdIA0KS2FtaWwg
-eW91IGFyZSByaWdodCBpdCB3aWxsIHJldHVybiAwIGd0IGlmIHdoaWxlIGZhaWxzIGluIGZpcnN0
-IGl0ZXJhdGlvbi4NCldpbGwgbW9kaWZ5IGl0IGFjY29yZGluZ2x5IGFuZCBzZW5kIGl0Lg0KPiA+
-DQo+ID4gPiArDQo+ID4gPiArCXJldHVybiBudW1fZ3RzOw0KPiA+ID4gK30NCj4gPiA+ICsNCj4g
-PiA+ICAvKioNCj4gPiA+ICAgKiBpZ3Rfc3lzZnNfd3JpdGU6DQo+ID4gPiAgICogQGRpcjogZGly
-ZWN0b3J5IGZvciB0aGUgZGV2aWNlIGZyb20gaWd0X3N5c2ZzX29wZW4oKSBkaWZmIC0tZ2l0DQo+
-ID4gPiBhL2xpYi9pZ3Rfc3lzZnMuaCBiL2xpYi9pZ3Rfc3lzZnMuaCBpbmRleCAzMzMxN2E5Ni4u
-NmM4YjkyYTcgMTAwNjQ0DQo+ID4gPiAtLS0gYS9saWIvaWd0X3N5c2ZzLmgNCj4gPiA+ICsrKyBi
-L2xpYi9pZ3Rfc3lzZnMuaA0KPiA+ID4gQEAgLTQyLDYgKzQyLDcgQEAgY2hhciAqaWd0X3N5c2Zz
-X3BhdGgoaW50IGRldmljZSwgY2hhciAqcGF0aCwgaW50DQo+ID4gPiBwYXRobGVuKTsgIGludCBp
-Z3Rfc3lzZnNfb3BlbihpbnQgZGV2aWNlKTsgIGNoYXINCj4gPiA+ICppZ3Rfc3lzZnNfZ3RfcGF0
-aChpbnQgZGV2aWNlLCBpbnQgZ3QsIGNoYXIgKnBhdGgsIGludCBwYXRobGVuKTsNCj4gPiA+IGlu
-dCBpZ3Rfc3lzZnNfZ3Rfb3BlbihpbnQgZGV2aWNlLCBpbnQgZ3QpOw0KPiA+ID4gK2ludCBpZ3Rf
-c3lzZnNfZ2V0X251bV9ndHMoaW50IGRldmljZSk7DQo+ID4NCj4gPiBzL2d0cy9ndC8NCj4gPg0K
-PiA+ID4gIGJvb2wgaWd0X3N5c2ZzX2hhc19hdHRyKGludCBkaXIsIGNvbnN0IGNoYXIgKmF0dHIp
-Ow0KPiA+ID4NCj4gPiA+ICBpbnQgaWd0X3N5c2ZzX3JlYWQoaW50IGRpciwgY29uc3QgY2hhciAq
-YXR0ciwgdm9pZCAqZGF0YSwgaW50IGxlbik7DQo+ID4gPiAtLQ0KPiA+ID4gMi4yNS4xDQo+ID4g
-Pg0KPiA+IFJlZ2FyZHMsDQo+ID4gS2FtaWwNCj4gPg0K
+Hi Anshuman,
+
+one small nit, see below.
+
+On 2022-04-18 at 18:20:42 +0530, Anshuman Gupta wrote:
+> Enable gfx card pci devices runtime pm for all pci devices
+> and bridge under the topology of Gfx Card root port.
+> 
+> Added a library function to get the PCI root port ACPI
+> D state and to print the pci card devices runtime pm
+> status.
+> 
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>  lib/igt_pm.c | 226 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_pm.h |  21 +++++
+>  2 files changed, 247 insertions(+)
+> 
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index b409ec463..8e8a330f8 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -28,6 +28,7 @@
+>  #include <fcntl.h>
+>  #include <stdio.h>
+>  #include <limits.h>
+> +#include <pciaccess.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+>  #include <unistd.h>
+> @@ -75,6 +76,7 @@ enum {
+>  #define MIN_POWER_STR		"min_power\n"
+>  /* Remember to fix this if adding longer strings */
+>  #define MAX_POLICY_STRLEN	strlen(MAX_PERFORMANCE_STR)
+> +#define MAX_PCI_DEVICES		256
+>  int8_t *__sata_pm_policies;
+>  int __scsi_host_cnt;
+>  
+> @@ -856,3 +858,227 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
+>  
+>  	return strstr(buf, "LPSP: capable");
+>  }
+> +
+> +/**
+> + * igt_pm_acpi_d3cold_suppoarted:
+> + * @pci_dev: root port pci_dev.
+> + * Check ACPI D3Cold support.
+> + *
+> + * Returns:
+> + * True if ACPI D3Cold supported otherwise false.
+> + */
+> +bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
+> +{
+> +	char name[PATH_MAX];
+> +	int dir, fd;
+> +
+> +	snprintf(name, PATH_MAX,
+> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +	dir = open(name, O_RDONLY);
+> +	igt_require(dir > 0);
+> +
+> +	/* BIOS need to enable ACPI D3Cold Support.*/
+> +	fd = openat(dir, "real_power_state", O_RDONLY);
+> +	if (fd < 0 && errno == ENOENT)
+> +		return false;
+> +
+> +	igt_require(fd > 0);
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * igt_pm_get_acpi_real_d_state:
+> + * @pci_dev: root port pci_dev.
+> + * Get ACPI D state for a given root port.
+> + *
+> + * Returns:
+> + * igt_acpi_d_state state.
+> + */
+> +enum igt_acpi_d_state
+> +igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev)
+> +{
+> +	char name[PATH_MAX];
+> +	char acpi_d_state[64];
+> +	int fd, n_read;
+> +
+> +	snprintf(name, PATH_MAX,
+> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node/real_power_state",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +	fd = open(name, O_RDONLY);
+> +	if (fd < 0)
+> +		return IGT_ACPI_UNKNOWN_STATE;
+> +
+> +	n_read = read(fd, acpi_d_state, sizeof(acpi_d_state) - 1);
+> +	igt_assert(n_read >= 0);
+> +	acpi_d_state[n_read] = '\0';
+> +	close(fd);
+> +
+> +	if (strncmp(acpi_d_state, "D0\n", n_read) == 0)
+> +		return IGT_ACPI_D0;
+> +	else if  (strncmp(acpi_d_state, "D1\n", n_read) == 0)
+------- ^
+s/else //
+
+There is no point in using "else" after return. The same edit
+may be done below.
+
+> +		return IGT_ACPI_D1;
+> +	else if  (strncmp(acpi_d_state, "D2\n", n_read) == 0)
+------- ^
+> +		return IGT_ACPI_D2;
+> +	else if  (strncmp(acpi_d_state, "D3hot\n", n_read) == 0)
+------- ^
+> +		return IGT_ACPI_D3Hot;
+> +	else if  (strncmp(acpi_d_state, "D3cold\n", n_read) == 0)
+------- ^
+> +		return IGT_ACPI_D3Cold;
+> +	else
+------- ^
+
+You may use Linux kernel checkpatch to check patch condition.
+
+Regards,
+Kamil
+
+> +		return IGT_ACPI_UNKNOWN_STATE;
+> +}
+> +
+> +static struct igt_pm_pci_dev_control  __igt_pm_pci_control[MAX_PCI_DEVICES];
+> +
+> +static void __igt_pm_pci_card_exit_handler(int sig)
+> +{
+> +	igt_pm_restore_pci_card_runtime_pm();
+> +}
+> +
+> +static void
+> +__igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev, int index)
+> +{
+> +	char name[PATH_MAX], buf[6];
+> +	int fd, control_size, size;
+> +	char *control;
+> +
+> +	igt_assert(index <  MAX_PCI_DEVICES);
+> +
+> +	control = __igt_pm_pci_control[index].control;
+> +	control_size =  sizeof(__igt_pm_pci_control[index].control);
+> +	__igt_pm_pci_control[index].pci_dev = pci_dev;
+> +
+> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/control",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +	fd = open(name, O_RDWR);
+> +	igt_assert_f(fd >= 0, "Can't open control\n");
+> +
+> +	igt_assert(read(fd, control, control_size - 1) > 0);
+> +	strchomp(control);
+> +
+> +	igt_debug("Saved runtime power management for PCI '%04x:%02x:%02x.%01x' '%s'\n",
+> +		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, control);
+> +	igt_install_exit_handler(__igt_pm_pci_card_exit_handler);
+> +
+> +	size = write(fd, "auto\n", 5);
+> +	igt_assert(size == 5);
+> +
+> +	lseek(fd, 0, SEEK_SET);
+> +	size = read(fd, buf, ARRAY_SIZE(buf));
+> +	igt_assert(size == 5);
+> +	igt_assert(strncmp(buf, "auto\n", 5) == 0);
+> +
+> +	close(fd);
+> +}
+> +
+> +/**
+> + * igt_pm_setup_pci_card_runtime_pm:
+> + * @pci_dev: root port pci_dev.
+> + * Setup runtime PM for all PCI endpoints devices for a given
+> + * root port. It also save power control attribute for all PCI endpoints
+> + * devices for a given root port.
+> + */
+> +void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev)
+> +{
+> +	int primary, secondary, subordinate, ret;
+> +	struct pci_device_iterator *iter;
+> +	struct pci_device *dev;
+> +	int i = 0;
+> +
+> +	memset(__igt_pm_pci_control, 0, sizeof(__igt_pm_pci_control));
+> +	ret = pci_device_get_bridge_buses(pci_dev, &primary, &secondary, &subordinate);
+> +	igt_assert(!ret);
+> +
+> +	ret = pci_system_init();
+> +	igt_assert(!ret);
+> +
+> +	iter = pci_slot_match_iterator_create(NULL);
+> +	/* Setup runtime pm for PCI root port */
+> +	__igt_pm_setup_pci_card_runtime_pm(pci_dev, i++);
+> +	while ((dev = pci_device_next(iter)) != NULL) {
+> +		if (dev->bus >= secondary && dev->bus <= subordinate)
+> +			__igt_pm_setup_pci_card_runtime_pm(dev, i++);
+> +	}
+> +}
+> +
+> +static void igt_pm_restore_pci_dev_runtime_pm(struct pci_device *pci_dev, char *control, int len)
+> +{
+> +	char name[PATH_MAX];
+> +	int fd;
+> +
+> +	igt_debug("Restoring runtime power management for PCI '%04x:%02x:%02x.%01x' '%s'\n",
+> +		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, control);
+> +
+> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/control",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +	fd = open(name, O_WRONLY);
+> +	igt_assert_f(fd >= 0, "Can't open control\n");
+> +
+> +	igt_assert(write(fd, control, len) == len);
+> +	close(fd);
+> +}
+> +
+> +/**
+> + * igt_pm_restore_pci_card_runtime_pm:
+> + * @pci_dev: root port pci_dev.
+> + * Restore power control attribute for all PCI endpoints devices for a given
+> + * root port.
+> + */
+> +void igt_pm_restore_pci_card_runtime_pm(void)
+> +{
+> +	int i = 0;
+> +
+> +	for (i = 0; i < MAX_PCI_DEVICES; i++) {
+> +		if (!__igt_pm_pci_control[i].pci_dev)
+> +			break;
+> +
+> +		igt_pm_restore_pci_dev_runtime_pm(__igt_pm_pci_control[i].pci_dev,
+> +						  __igt_pm_pci_control[i].control,
+> +						  sizeof(__igt_pm_pci_control[i].control));
+> +	}
+> +
+> +	memset(__igt_pm_pci_control, 0, sizeof(__igt_pm_pci_control));
+> +	pci_system_cleanup();
+> +}
+> +
+> +static void igt_pm_print_pci_dev_runtime_status(struct pci_device *pci_dev)
+> +{
+> +	char name[PATH_MAX], runtime_status[64];
+> +	int fd, n_read;
+> +
+> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/runtime_status",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +	fd = open(name, O_RDONLY);
+> +	igt_assert_f(fd >= 0, "Can't open runtime_status\n");
+> +
+> +	n_read = read(fd, runtime_status, sizeof(runtime_status) - 1);
+> +	igt_assert(n_read >= 0);
+> +	runtime_status[n_read] = '\0';
+> +	igt_info("runtime suspend status for PCI '%04x:%02x:%02x.%01x' %s\n",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, runtime_status);
+> +	close(fd);
+> +}
+> +
+> +/**
+> + * igt_pm_print_pci_card_runtime_status:
+> + * @pci_dev: root port pci_dev.
+> + * Print runtime suspend status for all PCI endpoints devices for a given
+> + * root port.
+> + */
+> +void igt_pm_print_pci_card_runtime_status(void)
+> +{
+> +	int i = 0;
+> +
+> +	for (i = 0; i < MAX_PCI_DEVICES; i++) {
+> +		if (!__igt_pm_pci_control[i].pci_dev)
+> +			break;
+> +
+> +		igt_pm_print_pci_dev_runtime_status(__igt_pm_pci_control[i].pci_dev);
+> +	}
+> +}
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index 162d3ca3c..a5a9c4760 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -46,6 +46,21 @@ enum igt_runtime_pm_status {
+>  	IGT_RUNTIME_PM_STATUS_UNKNOWN,
+>  };
+>  
+> +/* PCI ACPI firmware node real state */
+> +enum igt_acpi_d_state {
+> +	IGT_ACPI_D0,
+> +	IGT_ACPI_D1,
+> +	IGT_ACPI_D2,
+> +	IGT_ACPI_D3Hot,
+> +	IGT_ACPI_D3Cold,
+> +	IGT_ACPI_UNKNOWN_STATE,
+> +};
+> +
+> +struct	igt_pm_pci_dev_control {
+> +	struct pci_device *pci_dev;
+> +	char control[64];
+> +};
+> +
+>  bool igt_setup_runtime_pm(int device);
+>  void igt_disable_runtime_pm(void);
+>  void igt_restore_runtime_pm(void);
+> @@ -54,5 +69,11 @@ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
+>  bool igt_pm_dmc_loaded(int debugfs);
+>  bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
+>  bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
+> +bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
+> +enum igt_acpi_d_state
+> +igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
+> +void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
+> +void igt_pm_restore_pci_card_runtime_pm(void);
+> +void igt_pm_print_pci_card_runtime_status(void);
+>  
+>  #endif /* IGT_PM_H */
+> -- 
+> 2.26.2
+> 
