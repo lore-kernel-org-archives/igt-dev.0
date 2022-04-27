@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81EBF10ED77
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 22:12:32 +0000 (UTC)
-Message-ID: <622d248f-9e16-552b-6118-587b56f6fe96@intel.com>
-Date: Wed, 27 Apr 2022 15:12:18 -0700
-Content-Language: en-US
-To: "Ye, Tony" <tony.ye@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220427214436.1815778-1-daniele.ceraolospurio@intel.com>
- <61ed5fb2-6808-5c58-3a1a-e8169357c966@intel.com>
-From: "Ceraolo Spurio, Daniele" <daniele.ceraolospurio@intel.com>
-In-Reply-To: <61ed5fb2-6808-5c58-3a1a-e8169357c966@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============0953965472186775227=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/i915/gem_huc_copy: cover reset and
- suspend/resume scenarios
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ceraolo Spurio, Daniele" <daniele.ceraolospurio@intel.com>
+Date: Wed, 27 Apr 2022 22:53:02 -0000
+Message-ID: <165109998260.24234.16333429845125592004@emeril.freedesktop.org>
+References: <20220427214436.1815778-1-daniele.ceraolospurio@intel.com>
+In-Reply-To: <20220427214436.1815778-1-daniele.ceraolospurio@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fhuc=5Fcopy=3A_cover_reset_and_suspend/resume_scenari?=
+ =?utf-8?q?os?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,190 +18,249 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============0953965472186775227==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/i915/gem_huc_copy: cover reset and suspend/resume scenarios
+URL   : https://patchwork.freedesktop.org/series/103240/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6458 -> IGTPW_7018
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_7018 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7018, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/index.html
+
+Participating hosts (43 -> 39)
+------------------------------
+
+  Missing    (4): bat-rpls-2 fi-bsw-cyan fi-bdw-samus fi-pnv-d510 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7018:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@reset:
+    - fi-bdw-5557u:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/fi-bdw-5557u/igt@i915_selftest@live@reset.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/fi-bdw-5557u/igt@i915_selftest@live@reset.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {fi-ehl-2}:         [PASS][3] -> [DMESG-WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7018 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-4:         [PASS][5] -> [DMESG-WARN][6] ([i915#3576]) +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/bat-adlp-4/igt@i915_pm_rpm@module-reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/bat-adlp-4/igt@i915_pm_rpm@module-reload.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-cfl-8109u:       [DMESG-WARN][7] ([i915#62]) -> [PASS][8] +15 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gtt:
+    - fi-bdw-5557u:       [DMESG-FAIL][9] ([i915#3674]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/fi-bdw-5557u/igt@i915_selftest@live@gtt.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/fi-bdw-5557u/igt@i915_selftest@live@gtt.html
+
+  * igt@kms_busy@basic@flip:
+    - {bat-adlp-6}:       [DMESG-WARN][11] ([i915#3576]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/bat-adlp-6/igt@kms_busy@basic@flip.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/bat-adlp-6/igt@kms_busy@basic@flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#3674]: https://gitlab.freedesktop.org/drm/intel/issues/3674
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5087]: https://gitlab.freedesktop.org/drm/intel/issues/5087
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5338]: https://gitlab.freedesktop.org/drm/intel/issues/5338
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
 
 
-On 4/27/2022 2:58 PM, Ye, Tony wrote:
->
-> On 4/27/2022 2:44 PM, Daniele Ceraolo Spurio wrote:
->> Additional subtests have been added to make sure the HuC keeps working
->> after GT reset and suspend/resume.
->>
->> Cc: Tony Ye <tony.ye@intel.com>
->> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
->> ---
->>   tests/i915/gem_huc_copy.c | 118 ++++++++++++++++++++++++++++----------
->>   1 file changed, 89 insertions(+), 29 deletions(-)
->>
->> diff --git a/tests/i915/gem_huc_copy.c b/tests/i915/gem_huc_copy.c
->> index ea32b705..ef577824 100644
->> --- a/tests/i915/gem_huc_copy.c
->> +++ b/tests/i915/gem_huc_copy.c
->> @@ -40,6 +40,13 @@ IGT_TEST_DESCRIPTION("A very simple workload for 
->> the HuC.");
->>     #define HUC_COPY_DATA_BUF_SIZE    4096
->>   +enum operation {
->> +    GPU_RESET,
->> +    SUSPEND_RESUME,
->> +    HIBERNATE_RESUME,
->> +    SIMPLE_COPY,
->> +};
->> +
->>   static void
->>   compare_huc_copy_result(int drm_fd, uint32_t src_handle, uint32_t 
->> dst_handle)
->>   {
->> @@ -84,12 +91,77 @@ static void test_huc_load(int fd)
->>       igt_fail_on_f(status == 0, "HuC firmware is not running!\n");
->>   }
->>   +static void huc_copy_test(int drm_fd, uint64_t ahnd,
->> +              igt_huc_copyfunc_t huc_copy, enum operation op)
->> +{
->> +    char inputs[HUC_COPY_DATA_BUF_SIZE];
->> +    struct drm_i915_gem_exec_object2 obj[3];
->> +    uint64_t objsize[3] = { HUC_COPY_DATA_BUF_SIZE,
->> +                HUC_COPY_DATA_BUF_SIZE,
->> +                4096 };
->> +
->> +    switch (op) {
->> +    case GPU_RESET:
->> +        igt_force_gpu_reset(drm_fd);
->
-> The issue in VLK-33957 is not reproducible with a forced gpu reset 
-> through the i915_wedged debugfs. It is also not reproducible with 
-> igt_hang_ctx(). Only a real GPU HANG can reproduce the issue.
+Build changes
+-------------
 
-The bug you're referencing is about recovery of an hung context and it 
-is not what these new tests are for. What I want to test here is whether 
-the HuC itself is working correctly after a GT reset or suspend/resume 
-flow. This is to make sure we don't break anything with the upcoming DG2 
-changes, because the flow and timing are completely different with GSC 
-loading the HuC. Hibernation/resume is going to be especially tricky, 
-because HuC load will happen after i915 resume is complete, so we'll 
-have to synchronize.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6458 -> IGTPW_7018
 
-Daniele
+  CI-20190529: 20190529
+  CI_DRM_11550: 56b089ae03ef8ea8ab7f474eaa70367898891ef0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7018: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/index.html
+  IGT_6458: bcc26bd2b26220147b00f87d91e2ff1d4bd3ce5e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
->
-> Thanks,
->
-> Tony
->
->> +        break;
->> +
->> +    case SUSPEND_RESUME:
->> +        igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
->> +                          SUSPEND_TEST_NONE);
->> +        break;
->> +
->> +    case HIBERNATE_RESUME:
->> +        igt_system_suspend_autoresume(SUSPEND_STATE_DISK,
->> +                          SUSPEND_TEST_NONE);
->> +        break;
->> +
->> +    case SIMPLE_COPY:
->> +        break;
->> +
->> +    default:
->> +        igt_assert(0);
->> +    }
->> +
->> +    test_huc_load(drm_fd);
->> +    /* Initialize src buffer randomly */
->> +    srand(time(NULL));
->> +    for (int i = 0; i < HUC_COPY_DATA_BUF_SIZE; i++)
->> +        inputs[i] = (char) (rand() % 256);
->> +
->> +    memset(obj, 0, sizeof(obj));
->> +    /* source buffer object for storing input */
->> +    obj[0].handle = gem_create(drm_fd, HUC_COPY_DATA_BUF_SIZE);
->> +    /* destination buffer object to receive input */
->> +    obj[1].handle = gem_create(drm_fd, HUC_COPY_DATA_BUF_SIZE);
->> +    /* execution buffer object */
->> +    obj[2].handle = gem_create(drm_fd, 4096);
->> +
->> +    gem_write(drm_fd, obj[0].handle, 0, inputs, 
->> HUC_COPY_DATA_BUF_SIZE);
->> +
->> +    huc_copy(drm_fd, ahnd, obj, objsize);
->> +    compare_huc_copy_result(drm_fd, obj[0].handle, obj[1].handle);
->> +
->> +    gem_close(drm_fd, obj[0].handle);
->> +    gem_close(drm_fd, obj[1].handle);
->> +    gem_close(drm_fd, obj[2].handle);
->> +}
->> +
->>   igt_main
->>   {
->>       int drm_fd = -1;
->>       uint32_t devid;
->>       igt_huc_copyfunc_t huc_copy;
->>       uint64_t ahnd;
->> +    const struct {
->> +        const char *name;
->> +        enum operation op;
->> +    } ops[] =   {
->> +        { "", SIMPLE_COPY },
->> +        { "-after-reset", GPU_RESET },
->> +        { "-after-suspend-resume", SUSPEND_RESUME },
->> +        { "-after-hibernate-resume", HIBERNATE_RESUME },
->> +        { }
->> +    }, *op;
->>         igt_fixture {
->>           drm_fd = drm_open_driver(DRIVER_INTEL);
->> @@ -106,35 +178,23 @@ igt_main
->>                "by copying a char array using Huc"
->>                "and verifying the copied result");
->>   -    igt_subtest("huc-copy") {
->> -        char inputs[HUC_COPY_DATA_BUF_SIZE];
->> -        struct drm_i915_gem_exec_object2 obj[3];
->> -        uint64_t objsize[3] = { HUC_COPY_DATA_BUF_SIZE,
->> -                    HUC_COPY_DATA_BUF_SIZE,
->> -                    4096 };
->> -
->> -        test_huc_load(drm_fd);
->> -        /* Initialize src buffer randomly */
->> -        srand(time(NULL));
->> -        for (int i = 0; i < HUC_COPY_DATA_BUF_SIZE; i++)
->> -            inputs[i] = (char) (rand() % 256);
->> -
->> -        memset(obj, 0, sizeof(obj));
->> -        /* source buffer object for storing input */
->> -        obj[0].handle = gem_create(drm_fd, HUC_COPY_DATA_BUF_SIZE);
->> -        /* destination buffer object to receive input */
->> -        obj[1].handle = gem_create(drm_fd, HUC_COPY_DATA_BUF_SIZE);
->> -        /* execution buffer object */
->> -        obj[2].handle = gem_create(drm_fd, 4096);
->> -
->> -        gem_write(drm_fd, obj[0].handle, 0, inputs, 
->> HUC_COPY_DATA_BUF_SIZE);
->> -
->> -        huc_copy(drm_fd, ahnd, obj, objsize);
->> -        compare_huc_copy_result(drm_fd, obj[0].handle, obj[1].handle);
->> -
->> -        gem_close(drm_fd, obj[0].handle);
->> -        gem_close(drm_fd, obj[1].handle);
->> -        gem_close(drm_fd, obj[2].handle);
->> +    for (op = ops; op->name; op++) {
->> +        igt_subtest_group {
->> +            igt_hang_t hang = {};
->> +
->> +            igt_fixture {
->> +                if (op->op == GPU_RESET)
->> +                    hang = igt_allow_hang(drm_fd, 0, 
->> HANG_ALLOW_CAPTURE);
->> +            }
->> +
->> +            igt_subtest_f("huc-copy%s", op->name)
->> +                huc_copy_test(drm_fd, ahnd, huc_copy, op->op);
->> +
->> +            igt_fixture {
->> +                if (op->op == GPU_RESET)
->> +                    igt_disallow_hang(drm_fd, hang);
->> +            }
->> +        }
->>       }
->>         igt_fixture {
+
+Testlist changes
+----------------
+
++igt@gem_huc_copy@huc-copy-after-hibernate-resume
++igt@gem_huc_copy@huc-copy-after-reset
++igt@gem_huc_copy@huc-copy-after-suspend-resume
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/index.html
+
+--===============0953965472186775227==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_huc_copy: cover reset and suspend/resume scenarios</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103240/">https://patchwork.freedesktop.org/series/103240/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6458 -&gt; IGTPW_7018</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7018 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7018, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/index.html</p>
+<h2>Participating hosts (43 -&gt; 39)</h2>
+<p>Missing    (4): bat-rpls-2 fi-bsw-cyan fi-bdw-samus fi-pnv-d510 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7018:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@reset:<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/fi-bdw-5557u/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/fi-bdw-5557u/igt@i915_selftest@live@reset.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@gem_exec_suspend@basic-s0@smem:<ul>
+<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7018 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/bat-adlp-4/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/bat-adlp-4/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">PASS</a> +15 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gtt:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/fi-bdw-5557u/igt@i915_selftest@live@gtt.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3674">i915#3674</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/fi-bdw-5557u/igt@i915_selftest@live@gtt.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6458/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6458 -&gt; IGTPW_7018</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11550: 56b089ae03ef8ea8ab7f474eaa70367898891ef0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7018: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7018/index.html<br />
+  IGT_6458: bcc26bd2b26220147b00f87d91e2ff1d4bd3ce5e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@gem_huc_copy@huc-copy-after-hibernate-resume<br />
++igt@gem_huc_copy@huc-copy-after-reset<br />
++igt@gem_huc_copy@huc-copy-after-suspend-resume</p>
+
+</body>
+</html>
+
+--===============0953965472186775227==--
