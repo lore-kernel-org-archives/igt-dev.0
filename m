@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27B1710E05E
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 16:11:27 +0000 (UTC)
-Date: Wed, 27 Apr 2022 18:09:26 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF18310F461
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 16:20:05 +0000 (UTC)
+Date: Wed, 27 Apr 2022 18:15:15 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YmlqtnI313l2uZWN@kamilkon-DESK1>
-References: <20220426052719.3474-1-sai.gowtham.ch@intel.com>
- <20220426052719.3474-2-sai.gowtham.ch@intel.com>
+Message-ID: <YmlsE676i48ECWLJ@kamilkon-DESK1>
+References: <20220427061726.26383-1-sai.gowtham.ch@intel.com>
+ <20220427061726.26383-2-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220426052719.3474-2-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_bad_reloc: Added
- description for test case
+In-Reply-To: <20220427061726.26383-2-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_exec_basic: Add test
+ description to the subtest.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,59 +21,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Sai,
 
-On 2022-04-26 at 10:57:18 +0530, sai.gowtham.ch@intel.com wrote:
+On 2022-04-27 at 11:47:25 +0530, sai.gowtham.ch@intel.com wrote:
 > From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 > 
-> Added test description for subtest that are available.
+> Added test description to subtests that are available.
 > 
+> Cc: Melkaveri Arjun <Arjun.Melkaveri@intel.com>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 ---------------- ^
-Please correct this (see my other letter).
+Please correct this to
 
-> ---
->  tests/i915/gem_bad_reloc.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/tests/i915/gem_bad_reloc.c b/tests/i915/gem_bad_reloc.c
-> index 3ca0f345..dc344baf 100644
-> --- a/tests/i915/gem_bad_reloc.c
-> +++ b/tests/i915/gem_bad_reloc.c
-> @@ -197,12 +197,17 @@ igt_main
->  		gem_require_blitter(fd);
->  	}
->  
-> +	igt_describe("SNA behaviour is compressing batch buffer which leads to negative"
-> +		     " relocation deltas. negative self-relocation happening with"
------------------------------------------ ^
-Start sentence with upper letter, so s/negative/Negative/
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-> +		     " real offset 0.\n");
->  	igt_subtest("negative-reloc")
->  		negative_reloc(fd, 0);
->  
-> +	igt_describe("Similar to previous test with flags for lut_based_execbuffer.");
->  	igt_subtest("negative-reloc-lut")
->  		negative_reloc(fd, USE_LUT);
->  
-> +	igt_describe("exercising blitter operation with negative reloc.\n");
---------------------- ^
-s/exercising/Exercising/
+or
 
-With that fixed you can add my r-b tag.
+Signed-off-by: Sai Gowtham Your_Last_Name_Here <sai.gowtham.ch@intel.com>
+
+You can keep my r-b tag.
 
 Regards,
 Kamil
->  	igt_subtest("negative-reloc-bltcopy")
->  		negative_reloc_blt(fd);
+
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/i915/gem_exec_basic.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+> index 008a35d0..ab4c1597 100644
+> --- a/tests/i915/gem_exec_basic.c
+> +++ b/tests/i915/gem_exec_basic.c
+> @@ -63,6 +63,8 @@ igt_main
+>  					    I915_DEVICE_MEMORY);
+>  	}
 >  
+> +	igt_describe("Check basic functionality of GEM_EXECBUFFER2 ioctl on every"
+> +		     " ring and iterating over memory regions.");
+>  	igt_subtest_with_dynamic("basic") {
+>  		for_each_combination(regions, 1, set) {
+>  			char *sub_name = memregion_dynamic_subtest_name(regions);
 > -- 
 > 2.35.1
 > 
