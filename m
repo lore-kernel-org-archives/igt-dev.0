@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB1D810F3DC
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 16:00:02 +0000 (UTC)
-Date: Wed, 27 Apr 2022 17:48:01 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41AD110F658
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 16:01:41 +0000 (UTC)
+Date: Wed, 27 Apr 2022 18:01:01 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YmllsSnrkYpLFGDU@kamilkon-DESK1>
-References: <20220427080243.4253-1-sai.gowtham.ch@intel.com>
- <20220427080243.4253-2-sai.gowtham.ch@intel.com>
+Message-ID: <Ymlovfq1MJcp0VNX@kamilkon-DESK1>
+References: <20220426052331.3453-1-sai.gowtham.ch@intel.com>
+ <20220426052331.3453-2-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220427080243.4253-2-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_partial_pwrite_pread: Add
- subtests description
+In-Reply-To: <20220426052331.3453-2-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_pipe_control_store_loop:
+ added description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,60 +28,55 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Sai,
 
-On 2022-04-27 at 13:32:42 +0530, sai.gowtham.ch@intel.com wrote:
+On 2022-04-26 at 10:53:30 +0530, sai.gowtham.ch@intel.com wrote:
 > From: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 > 
-> Add description to all the available subtests.
+> Added test description for subtest that are available.
 > 
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
 > Signed-off-by: Ch Sai Gowtham <sai.gowtham.ch@intel.com>
 ---------------- ^
+Correct this (see my other letter on gem_partial_pwrite_pread).
 
-Please change this to
+> ---
+>  tests/i915/gem_pipe_control_store_loop.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/i915/gem_pipe_control_store_loop.c
+> index 983605e3..070e767f 100644
+> --- a/tests/i915/gem_pipe_control_store_loop.c
+> +++ b/tests/i915/gem_pipe_control_store_loop.c
+> @@ -183,9 +183,13 @@ igt_main
+>  		igt_skip_on(devid == PCI_CHIP_I965_G); /* has totally broken pipe control */
+>  	}
+>  
+> +	igt_describe("checks tlb consistency of the pipe_control target so creates new buffer"
+--------------------- ^
+Use capital letter at begin of sentence, so s/checks/Checks/
 
-Signed-off-by: Sai Gowtham your_full_last_name <sai.gowtham.ch@intel.com>
+> +		     " each time, emit commands and send it to ring for execution and target"
+> +		     " buffer won't get reused.");
 
-You can do this with global git configuration, just run:
+Looks a little too long, you do not need to describe every
+single step used, so imho shorten this to something like
 
-git config --global user.name "Sai Gowtham your_full_lastname_here"
+	igt_describe("Checks tlb consistency of the pipe_control with fresh buffer.");
 
-or see https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
-If you do not want your full last name there, at least put "Ch",
-but full name is preferable.
+should be ok.
 
-Rest looks good so after that fixed you can add my r-b tag.
+>  	igt_subtest("fresh-buffer")
+>  		store_pipe_control_loop(false, 2);
+>  
+> +	igt_describe("Emit commands in reused buffer and send it to ring for execution.");
+
+Here just reuse previous one with s/fresh/reused/ buffer change.
 
 Regards,
 Kamil
 
-> ---
->  tests/i915/gem_partial_pwrite_pread.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tests/i915/gem_partial_pwrite_pread.c b/tests/i915/gem_partial_pwrite_pread.c
-> index 4f81d34b..474149d4 100644
-> --- a/tests/i915/gem_partial_pwrite_pread.c
-> +++ b/tests/i915/gem_partial_pwrite_pread.c
-> @@ -280,12 +280,18 @@ static void do_tests(data_t *data, int cache_level, const char *suffix)
->  			gem_set_caching(data->drm_fd, scratch_buf->handle, cache_level);
->  	}
+>  	igt_subtest("reused-buffer")
+>  		store_pipe_control_loop(true, 2);
 >  
-> +	igt_describe_f("Verify if pread is consistent while accessing partial cachelines "
-> +		       "with %s caching level", cache_level == -1 ? "default" : suffix+1);
->  	igt_subtest_f("reads%s", suffix)
->  		test_partial_reads(data);
->  
-> +	igt_describe_f("Verify if pwrite is consistent while accessing partial cachelines "
-> +		       "with %s caching level", cache_level == -1 ? "default" : suffix+1);
->  	igt_subtest_f("write%s", suffix)
->  		test_partial_writes(data);
->  
-> +	igt_describe_f("Verify if both pread, pwrite are consistent while accessing partial "
-> +		       "cachelines with %s caching level", cache_level == -1 ? "default" : suffix+1);
->  	igt_subtest_f("writes-after-reads%s", suffix)
->  		test_partial_read_writes(data);
->  }
 > -- 
 > 2.35.1
 > 
