@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 274C310F5BF
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 15:26:19 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
- priyanka.dandamudi@intel.com
-Date: Wed, 27 Apr 2022 20:29:23 +0530
-Message-Id: <20220427145923.532981-1-priyanka.dandamudi@intel.com>
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2085.outbound.protection.outlook.com [40.107.236.85])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1831310F5F1
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 15:38:06 +0000 (UTC)
+Message-ID: <4fe46aba-99e5-218b-4bab-d19e4346dc84@amd.com>
+Date: Wed, 27 Apr 2022 11:38:01 -0400
+Content-Language: en-US
+To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org,
+ bas@basnieuwenhuizen.nl
+References: <20220419022929.1771545-1-alex.hung@amd.com>
+From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20220419022929.1771545-1-alex.hung@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/sysfs: helper for number of GTs
+Subject: Re: [igt-dev] [PATCH i-g-t-][V3] tests/kms: Skip kms test cases for
+ DCC and DCC_RETILE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,69 +23,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
-Added convenience function returning number of GTs.
-Reads number of GT sysfs entries and returns number
-of GTs, if atleast one GT entry is found.
 
-v2: Add an assert condition to check for atleast one GT entry. (Priyanka)
+On 2022-04-18 22:29, Alex Hung wrote:
+> Skip the KMS test cases for planes that has modifiers with
+> DCC and DCC_RETILE on AMDGPU.
+> 
+> Current pixel-format and pixel-format-source-clamping subtests do not
+> support modifers with DCC or DCC_RETILE in kernel.
+> 
+> 1. dcc_formats's cpp[1] is set to 0 and this triggers kernel errors
+> "Format requires non-linear modifier for plane 1" because block_size
+> (i.e. cpp[1]) == 0. See kernel commits 816853f9dc40 and 8db2dc852941.
+> 
+> 2. the subtests cause kernel's amdgpu_display_verify_sizes to fail
+> because they do not provide an extra plane with compression metadata.
+> See kernel commit 234055fd9728 for details.
+> 
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> ---
+> 
+> v2: update comments in commit messages
+> v3: add AMD MOD check
+> 
+>   tests/kms_plane.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 137f23a8..b1be44c3 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1003,6 +1003,16 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>   static bool skip_plane(data_t *data, igt_plane_t *plane)
+>   {
+>   	int index = plane->index;
+> +	int i;
+> +
+> +	for (i = 0; i < plane->format_mod_count; i++) {
+> +		if (IS_AMD_FMT_MOD(plane->modifiers[i]) &&
+> +		    (AMD_FMT_MOD_GET(DCC, plane->modifiers[i]) ||
+> +		     AMD_FMT_MOD_GET(DCC_RETILE, plane->modifiers[i]))) {
+> +			igt_debug("Skipping planes with DCC or DCC_RETILE\n");
+> +			return true;
+> +		}
+> +	}
+>   
+>   	if (data->extended)
+>   		return false;
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- lib/igt_sysfs.c | 22 ++++++++++++++++++++++
- lib/igt_sysfs.h |  1 +
- 2 files changed, 23 insertions(+)
+It lgtm,
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index fe77afd7..ee71a566 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -264,6 +264,28 @@ int igt_sysfs_gt_open(int device, int gt)
- 	return open(path, O_RDONLY);
- }
- 
-+/**
-+ * igt_sysfs_get_num_gt:
-+ * @device: fd of the device
-+ *
-+ * Reads number of GT sysfs entries.
-+ * Asserts for atleast one GT entry.
-+ * (see igt_sysfs_gt_path).
-+ *
-+ * Returns: Number of GTs.
-+ */
-+int igt_sysfs_get_num_gt(int device)
-+{
-+	int num_gts = 0;
-+	char path[96];
-+
-+	while (igt_sysfs_gt_path(device, num_gts, path, sizeof(path)))
-+		++num_gts;
-+
-+	igt_assert_f(num_gts > 0, "No GT sysfs entry is found.");
-+
-+	return num_gts;
-+}
- /**
-  * igt_sysfs_write:
-  * @dir: directory for the device from igt_sysfs_open()
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 8e39b8fa..1c9791a1 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -94,6 +94,7 @@ char *igt_sysfs_path(int device, char *path, int pathlen);
- int igt_sysfs_open(int device);
- char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
- int igt_sysfs_gt_open(int device, int gt);
-+int igt_sysfs_get_num_gt(int device);
- bool igt_sysfs_has_attr(int dir, const char *attr);
- const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);
- const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
--- 
-2.25.1
+Acked-by: Rodrigo Siqueira <Rodrigo.Siqueria@amd.com>
