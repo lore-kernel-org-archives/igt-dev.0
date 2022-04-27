@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98B0D10F5D7
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 15:27:54 +0000 (UTC)
-Date: Wed, 27 Apr 2022 17:08:12 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YmlcXKBdeBJaog8h@kamilkon-DESK1>
-References: <20220425105919.508029-1-priyanka.dandamudi@intel.com>
- <20220425105919.508029-2-priyanka.dandamudi@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 274C310F5BF
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 15:26:19 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
+ priyanka.dandamudi@intel.com
+Date: Wed, 27 Apr 2022 20:29:23 +0530
+Message-Id: <20220427145923.532981-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220425105919.508029-2-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_set_tiling_vs_blt: Add
- description for test case
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/sysfs: helper for number of GTs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,51 +21,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2022-04-25 at 16:29:18 +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> Add test description for subtest.
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Added convenience function returning number of GTs.
+Reads number of GT sysfs entries and returns number
+of GTs, if atleast one GT entry is found.
 
---
-Kamil
+v2: Add an assert condition to check for atleast one GT entry. (Priyanka)
 
->  tests/i915/gem_set_tiling_vs_blt.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/tests/i915/gem_set_tiling_vs_blt.c b/tests/i915/gem_set_tiling_vs_blt.c
-> index bf274be9..5e3bf6a1 100644
-> --- a/tests/i915/gem_set_tiling_vs_blt.c
-> +++ b/tests/i915/gem_set_tiling_vs_blt.c
-> @@ -232,6 +232,7 @@ igt_main
->  		bops = buf_ops_create(fd);
->  	}
->  
-> +	igt_describe("Check for proper synchronization of untiled->tiled transition.");
->  	igt_subtest("untiled-to-tiled") {
->  		tiling = I915_TILING_NONE;
->  		tiling_after = I915_TILING_X;
-> @@ -240,6 +241,7 @@ igt_main
->  		igt_assert(tiling_after == I915_TILING_X);
->  	}
->  
-> +	igt_describe("Check for proper synchronization of tiled->untiled transition.");
->  	igt_subtest("tiled-to-untiled") {
->  		tiling = I915_TILING_X;
->  		tiling_after = I915_TILING_NONE;
-> @@ -248,6 +250,7 @@ igt_main
->  		igt_assert(tiling_after == I915_TILING_NONE);
->  	}
->  
-> +	igt_describe("Check for proper synchronization of tiled->tiled transition.");
->  	igt_subtest("tiled-to-tiled") {
->  		tiling = I915_TILING_X;
->  		tiling_after = I915_TILING_X;
-> -- 
-> 2.25.1
-> 
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ lib/igt_sysfs.c | 22 ++++++++++++++++++++++
+ lib/igt_sysfs.h |  1 +
+ 2 files changed, 23 insertions(+)
+
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index fe77afd7..ee71a566 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -264,6 +264,28 @@ int igt_sysfs_gt_open(int device, int gt)
+ 	return open(path, O_RDONLY);
+ }
+ 
++/**
++ * igt_sysfs_get_num_gt:
++ * @device: fd of the device
++ *
++ * Reads number of GT sysfs entries.
++ * Asserts for atleast one GT entry.
++ * (see igt_sysfs_gt_path).
++ *
++ * Returns: Number of GTs.
++ */
++int igt_sysfs_get_num_gt(int device)
++{
++	int num_gts = 0;
++	char path[96];
++
++	while (igt_sysfs_gt_path(device, num_gts, path, sizeof(path)))
++		++num_gts;
++
++	igt_assert_f(num_gts > 0, "No GT sysfs entry is found.");
++
++	return num_gts;
++}
+ /**
+  * igt_sysfs_write:
+  * @dir: directory for the device from igt_sysfs_open()
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 8e39b8fa..1c9791a1 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -94,6 +94,7 @@ char *igt_sysfs_path(int device, char *path, int pathlen);
+ int igt_sysfs_open(int device);
+ char *igt_sysfs_gt_path(int device, int gt, char *path, int pathlen);
+ int igt_sysfs_gt_open(int device, int gt);
++int igt_sysfs_get_num_gt(int device);
+ bool igt_sysfs_has_attr(int dir, const char *attr);
+ const char *igt_sysfs_dir_id_to_name(int dir, enum i915_attr_id id);
+ const char *igt_sysfs_path_id_to_name(const char *path, enum i915_attr_id id);
+-- 
+2.25.1
