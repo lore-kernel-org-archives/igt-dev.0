@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBC9110E515
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 17:55:48 +0000 (UTC)
-Date: Wed, 27 Apr 2022 13:55:18 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Message-ID: <YmmDhhjhcG0mxVcn@intel.com>
-References: <20220426194111.5990-1-ashutosh.dixit@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C68D10E13C
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 18:42:10 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 27 Apr 2022 20:42:04 +0200
+Message-Id: <20220427184204.65427-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220426194111.5990-1-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_pm_freq_mult: New test for
- media freq factor
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_softpin: Exercise single
+ offset eviction on all engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,214 +18,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 26, 2022 at 12:41:11PM -0700, Ashutosh Dixit wrote:
-> XEHPSDV and DG2/ATS-M allow media IP blocks to run at frequencies different
-> from the GT frequency. i915 exposes sysfs controls for these frequency
-> multipliers. IGT's introduced in this patch exercise and verify these
-> per-gt (gt/gtN) sysfs controls starting with the media freq factor (factor
-> and multiplier terms are used interchangeably).
-> 
-> v2: Added igt_describe's and s/igt_info/igt_debug/  (Kamil)
-> v3: Change test name from i915_pm_disag_freq to i915_pm_freq_mult (Kamil)
->     Remove .defaults and media_RPx sysfs controls for first merege
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  tests/i915/i915_pm_freq_mult.c | 146 +++++++++++++++++++++++++++++++++
->  tests/meson.build              |   8 ++
->  2 files changed, 154 insertions(+)
->  create mode 100644 tests/i915/i915_pm_freq_mult.c
-> 
-> diff --git a/tests/i915/i915_pm_freq_mult.c b/tests/i915/i915_pm_freq_mult.c
-> new file mode 100644
-> index 000000000000..f7ec74a9f897
-> --- /dev/null
-> +++ b/tests/i915/i915_pm_freq_mult.c
-> @@ -0,0 +1,146 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright � 2022 Intel Corporation
-> + */
-> +
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +#include <fcntl.h>
-> +
-> +#include "i915/gem.h"
-> +#include "igt.h"
-> +#include "igt_sysfs.h"
-> +
-> +IGT_TEST_DESCRIPTION(
-> +	"Tests for sysfs controls (or multipliers) for IP blocks which run at "
-> +	"frequencies different from the main GT frequency."
-> +);
-> +
-> +#define FREQ_SCALE_FACTOR	0.00390625f	/* 1.0f / 256 */
-> +
-> +/*
-> + * Firmware interfaces are not completely synchronous, a delay is needed
-> + * before the requested freq is actually set.
-> + * Media ratio read back after set will mismatch if this value is too small
-> + */
-> +#define wait_freq_set()	usleep(100000)
-> +
-> +static int i915 = -1;
-> +const intel_ctx_t *ctx;
-> +uint64_t ahnd;
-> +
-> +static void spin_all(void)
-> +{
-> +	igt_spin_t *spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx, .engine = ALL_ENGINES,
-> +					.flags = IGT_SPIN_POLL_RUN);
-> +
-> +	/* Wait till at least one spinner starts */
-> +	igt_spin_busywait_until_started(spin);
-> +}
-> +
-> +static void setup_freq(int gt, int dir)
-> +{
-> +	int rp0, rp1, rpn, min, max, act, media;
-> +
-> +	ctx = intel_ctx_create_all_physical(i915);
-> +	ahnd = get_reloc_ahnd(i915, ctx->id);
-> +
-> +	/* Spin on all engines to jack freq up to max */
-> +	spin_all();
-> +	wait_freq_set();
-> +
-> +	/* Print some debug information */
-> +	rp0 = igt_sysfs_get_u32(dir, "rps_RP0_freq_mhz");
-> +	rp1 = igt_sysfs_get_u32(dir, "rps_RP1_freq_mhz");
-> +	rpn = igt_sysfs_get_u32(dir, "rps_RPn_freq_mhz");
-> +	min = igt_sysfs_get_u32(dir, "rps_min_freq_mhz");
-> +	max = igt_sysfs_get_u32(dir, "rps_max_freq_mhz");
-> +	act = igt_sysfs_get_u32(dir, "rps_act_freq_mhz");
-> +
-> +	igt_debug("RP0 MHz: %d, RP1 MHz: %d, RPn MHz: %d, min MHz: %d, max MHz: %d, act MHz: %d\n", rp0, rp1, rpn, min, max, act);
+Verify that eviction works when all engines try to use same offset for
+different handles. It replaces allocator-evict-all-engines test because
+it is simpler.
 
-should we also get boost in the list here for completeness?
+v2: addressing review comments (Kamil)
+v3: simplifying subtest (Chris)
 
-> +
-> +	if (igt_sysfs_has_attr(dir, "media_freq_factor")) {
-> +		media = igt_sysfs_get_u32(dir, "media_freq_factor");
-> +		igt_debug("media ratio: %.2f\n", media * FREQ_SCALE_FACTOR);
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ tests/i915/gem_softpin.c | 76 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 74 insertions(+), 2 deletions(-)
 
-I was going to say that it would be better to use the one from sysfs, but then
-I noticed this one is after the assertion...
-
-with or without the boost:
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-
-> +	}
-> +}
-> +
-> +static void cleanup(int dir)
-> +{
-> +	igt_free_spins(i915);
-> +	put_ahnd(ahnd);
-> +	intel_ctx_destroy(i915, ctx);
-> +	gem_quiescent_gpu(i915);
-> +}
-> +
-> +static void media_freq(int gt, int dir)
-> +{
-> +	float scale;
-> +
-> +	igt_require(igt_sysfs_has_attr(dir, "media_freq_factor"));
-> +
-> +	igt_sysfs_scanf(dir, "media_freq_factor.scale", "%g", &scale);
-> +	igt_assert_eq(scale, FREQ_SCALE_FACTOR);
-> +
-> +	setup_freq(gt, dir);
-> +	igt_debug("media ratio value 0.0 represents dynamic mode\n");
-> +
-> +	/*
-> +	 * Media freq ratio modes supported are: dynamic (0), 1:2 (128) and
-> +	 * 1:1 (256). Setting dynamic (0) can return any of the three
-> +	 * modes. Fixed ratio modes should return the same value.
-> +	 */
-> +	for (int v = 256; v >= 0; v -= 64) {
-> +		int getv, ret;
-> +
-> +		/*
-> +		 * Check that we can set the mode. Ratios other than 1:2
-> +		 * and 1:1 are not supported.
-> +		 */
-> +		ret = igt_sysfs_printf(dir, "media_freq_factor", "%u", v);
-> +		if (ret <= 0) {
-> +			igt_debug("Media ratio %.2f is not supported\n", v * scale);
-> +			continue;
-> +		}
-> +
-> +		wait_freq_set();
-> +
-> +		getv = igt_sysfs_get_u32(dir, "media_freq_factor");
-> +
-> +		igt_debug("media ratio set: %.2f, media ratio get: %.2f\n",
-> +			  v * scale, getv * scale);
-> +
-> +		/*
-> +		 * Skip validation in dynamic mode since the returned media
-> +		 * ratio and freq are platform dependent and not clearly defined
-> +		 */
-> +		if (v)
-> +			igt_assert_eq(getv, v);
-> +	}
-> +
-> +	cleanup(dir);
-> +}
-> +
-> +igt_main
-> +{
-> +	int dir, gt;
-> +
-> +	igt_fixture {
-> +		i915 = drm_open_driver(DRIVER_INTEL);
-> +
-> +		/* Frequency multipliers are not simulated. */
-> +		igt_require(!igt_run_in_simulation());
-> +	}
-> +
-> +	igt_describe("Tests for media frequency factor sysfs");
-> +	igt_subtest_with_dynamic("media-freq") {
-> +		for_each_sysfs_gt_dirfd(i915, dir, gt) {
-> +			igt_dynamic_f("gt%d", gt)
-> +				media_freq(gt, dir);
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		close(i915);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index fb0f1e37f633..70c3c9118c3b 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -368,6 +368,14 @@ test_executables += executable('gem_mmap_offset',
->  	   install : true)
->  test_list += 'gem_mmap_offset'
->  
-> +test_executables += executable('i915_pm_freq_mult',
-> +	   join_paths('i915', 'i915_pm_freq_mult.c'),
-> +	   dependencies : test_deps + [ lib_igt_perf ],
-> +	   install_dir : libexecdir,
-> +	   install_rpath : libexecdir_rpathdir,
-> +	   install : true)
-> +test_list += 'i915_pm_freq_mult'
-> +
->  test_executables += executable('i915_pm_rc6_residency',
->  	   join_paths('i915', 'i915_pm_rc6_residency.c'),
->  	   dependencies : test_deps + [ lib_igt_perf ],
-> -- 
-> 2.34.1
-> 
+diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+index 448b4c4b9e..7dae2a6c44 100644
+--- a/tests/i915/gem_softpin.c
++++ b/tests/i915/gem_softpin.c
+@@ -1073,6 +1073,77 @@ static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+ }
+ 
++#define MINIMAL_OFFSET 0x200000
++static void single_offset_submit(int fd, struct drm_i915_gem_execbuffer2 *eb,
++				 struct batch *batches, unsigned int count)
++{
++	struct drm_i915_gem_exec_object2 obj = {
++		.offset = max_t(uint64_t, gem_detect_safe_start_offset(fd), MINIMAL_OFFSET),
++		.flags = EXEC_OBJECT_PINNED,
++	};
++
++	eb->buffers_ptr = to_user_pointer(&obj);
++
++	for (unsigned int i = 0; i < count; i++) {
++		obj.handle = batches[i].handle;
++		gem_execbuf(fd, eb);
++	}
++}
++
++static void evict_single_offset(int fd, const intel_ctx_t *ctx, int timeout)
++{
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct intel_execution_engine2 *e;
++	unsigned int engines[I915_EXEC_RING_MASK + 1];
++	struct batch *batches;
++	unsigned int nengine;
++	unsigned int count;
++	uint64_t size, batch_size = BATCH_SIZE;
++
++	nengine = 0;
++	for_each_ctx_engine(fd, ctx, e) {
++		engines[nengine++] = e->flags;
++	}
++	igt_require(nengine);
++
++	size = gem_aperture_size(fd);
++	if (size > 1ull<<32) /* Limit to 4GiB as we do not use allow-48b */
++		size = 1ull << 32;
++	igt_require(size < (1ull<<32) * BATCH_SIZE);
++
++	count = size / BATCH_SIZE + 1;
++	igt_debug("Using %'d batches to fill %'llu aperture on %d engines\n",
++		  count, (long long)size, nengine);
++
++	intel_require_memory(count, BATCH_SIZE, CHECK_RAM);
++	intel_detect_and_clear_missed_interrupts(fd);
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffer_count = 1;
++	execbuf.rsvd1 = ctx->id;
++
++	batches = calloc(count, sizeof(*batches));
++	igt_assert(batches);
++	for (unsigned int i = 0; i < count; i++)
++		batches[i].handle = batch_create(fd, &batch_size);
++
++	/* Flush all memory before we start the timer */
++	single_offset_submit(fd, &execbuf, batches, count);
++
++	igt_fork(child, nengine) {
++		execbuf.flags |= engines[child];
++		igt_until_timeout(timeout)
++			single_offset_submit(fd, &execbuf, batches, count);
++	}
++	igt_waitchildren();
++
++	for (unsigned int i = 0; i < count; i++)
++		gem_close(fd, batches[i].handle);
++	free(batches);
++
++	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
++}
++
+ static void make_batch(int i915, uint32_t handle, uint64_t size)
+ {
+ 	uint32_t *bb = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
+@@ -1213,8 +1284,9 @@ igt_main
+ 		test_each_engine("allocator-evict", fd, ctx, e)
+ 			test_allocator_evict(fd, ctx, e->flags, 20);
+ 
+-		igt_subtest("allocator-evict-all-engines")
+-			test_allocator_evict(fd, ctx, ALL_ENGINES, 20);
++		igt_describe("Use same offset for all engines and for different handles");
++		igt_subtest("evict-single-offset")
++			evict_single_offset(fd, ctx, 20);
+ 	}
+ 
+ 	igt_describe("Check start offset and alignment detection");
+-- 
+2.32.0
