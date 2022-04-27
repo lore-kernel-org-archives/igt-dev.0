@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4987993373741257937=="
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B704B10E0CB
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Apr 2022 08:54:40 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 27 Apr 2022 13:52:09 +0530
+Message-Id: <20220427082209.7276-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Wed, 27 Apr 2022 08:23:15 -0000
-Message-ID: <165104779541.24233.299266949269988700@emeril.freedesktop.org>
-References: <20220427080243.4253-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20220427080243.4253-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSEFYIGFk?=
- =?utf-8?q?d_description_to_gem=5Fpartial=5Fpwrite=5Fpread?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_big_joiner: Convert test to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,403 +17,375 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4987993373741257937==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Covert the tests to dynamic subtests at pipe level.
 
-== Series Details ==
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/i915/kms_big_joiner.c | 218 +++++++++++++++++++-----------------
+ 1 file changed, 118 insertions(+), 100 deletions(-)
 
-Series: HAX add description to gem_partial_pwrite_pread
-URL   : https://patchwork.freedesktop.org/series/103205/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_6456 -> IGTPW_7012
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_7012 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7012, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/index.html
-
-Participating hosts (46 -> 47)
-------------------------------
-
-  Additional (5): fi-rkl-11600 bat-adls-5 bat-dg1-6 bat-dg1-5 bat-adlp-4 
-  Missing    (4): fi-ctg-p8600 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7012:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@meta_test@fail-result (NEW):
-    - {bat-adls-5}:       NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-adls-5/igt@meta_test@fail-result.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-pnv-d510/igt@meta_test@fail-result.html
-    - fi-adl-ddr5:        NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-adl-ddr5/igt@meta_test@fail-result.html
-    - {fi-jsl-1}:         NOTRUN -> [FAIL][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-jsl-1/igt@meta_test@fail-result.html
-    - bat-dg1-5:          NOTRUN -> [FAIL][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-dg1-5/igt@meta_test@fail-result.html
-    - {bat-adlp-6}:       NOTRUN -> [FAIL][6]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-adlp-6/igt@meta_test@fail-result.html
-    - fi-cfl-8700k:       NOTRUN -> [FAIL][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-cfl-8700k/igt@meta_test@fail-result.html
-    - {fi-tgl-dsi}:       NOTRUN -> [FAIL][8]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-tgl-dsi/igt@meta_test@fail-result.html
-    - fi-snb-2520m:       NOTRUN -> [FAIL][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-snb-2520m/igt@meta_test@fail-result.html
-    - fi-ivb-3770:        NOTRUN -> [FAIL][10]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-ivb-3770/igt@meta_test@fail-result.html
-    - fi-apl-guc:         NOTRUN -> [FAIL][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-apl-guc/igt@meta_test@fail-result.html
-    - fi-bxt-dsi:         NOTRUN -> [FAIL][12]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bxt-dsi/igt@meta_test@fail-result.html
-    - {bat-dg2-9}:        NOTRUN -> [FAIL][13]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-dg2-9/igt@meta_test@fail-result.html
-    - fi-elk-e7500:       NOTRUN -> [FAIL][14]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-elk-e7500/igt@meta_test@fail-result.html
-    - fi-skl-6700k2:      NOTRUN -> [FAIL][15]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-skl-6700k2/igt@meta_test@fail-result.html
-    - fi-tgl-1115g4:      NOTRUN -> [FAIL][16]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-tgl-1115g4/igt@meta_test@fail-result.html
-    - fi-kbl-soraka:      NOTRUN -> [FAIL][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-soraka/igt@meta_test@fail-result.html
-    - fi-cfl-guc:         NOTRUN -> [FAIL][18]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-cfl-guc/igt@meta_test@fail-result.html
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][19]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bsw-n3050/igt@meta_test@fail-result.html
-    - fi-ilk-650:         NOTRUN -> [FAIL][20]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-ilk-650/igt@meta_test@fail-result.html
-    - fi-rkl-guc:         NOTRUN -> [FAIL][21]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-rkl-guc/igt@meta_test@fail-result.html
-    - {bat-jsl-2}:        NOTRUN -> [FAIL][22]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-jsl-2/igt@meta_test@fail-result.html
-    - fi-bsw-kefka:       NOTRUN -> [FAIL][23]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bsw-kefka/igt@meta_test@fail-result.html
-    - bat-dg1-6:          NOTRUN -> [FAIL][24]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-dg1-6/igt@meta_test@fail-result.html
-    - {bat-jsl-1}:        NOTRUN -> [FAIL][25]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-jsl-1/igt@meta_test@fail-result.html
-    - fi-kbl-x1275:       NOTRUN -> [FAIL][26]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-x1275/igt@meta_test@fail-result.html
-    - fi-snb-2600:        NOTRUN -> [FAIL][27]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-snb-2600/igt@meta_test@fail-result.html
-    - {bat-dg2-8}:        NOTRUN -> [FAIL][28]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-dg2-8/igt@meta_test@fail-result.html
-    - fi-cfl-8109u:       NOTRUN -> [FAIL][29]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-cfl-8109u/igt@meta_test@fail-result.html
-    - {bat-adlm-1}:       NOTRUN -> [FAIL][30]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-adlm-1/igt@meta_test@fail-result.html
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][31]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bdw-5557u/igt@meta_test@fail-result.html
-    - {bat-rpls-2}:       NOTRUN -> [FAIL][32]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-rpls-2/igt@meta_test@fail-result.html
-    - fi-bsw-nick:        NOTRUN -> [FAIL][33]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bsw-nick/igt@meta_test@fail-result.html
-    - fi-glk-j4005:       NOTRUN -> [FAIL][34]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-glk-j4005/igt@meta_test@fail-result.html
-    - fi-kbl-7567u:       NOTRUN -> [FAIL][35]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-7567u/igt@meta_test@fail-result.html
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][36]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-8809g/igt@meta_test@fail-result.html
-    - fi-hsw-g3258:       NOTRUN -> [FAIL][37]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-hsw-g3258/igt@meta_test@fail-result.html
-    - fi-blb-e6850:       NOTRUN -> [FAIL][38]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-blb-e6850/igt@meta_test@fail-result.html
-    - fi-bwr-2160:        NOTRUN -> [FAIL][39]
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bwr-2160/igt@meta_test@fail-result.html
-    - fi-rkl-11600:       NOTRUN -> [FAIL][40]
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-rkl-11600/igt@meta_test@fail-result.html
-    - fi-skl-guc:         NOTRUN -> [FAIL][41]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-skl-guc/igt@meta_test@fail-result.html
-    - {fi-ehl-2}:         NOTRUN -> [FAIL][42]
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-ehl-2/igt@meta_test@fail-result.html
-    - fi-kbl-guc:         NOTRUN -> [FAIL][43]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-guc/igt@meta_test@fail-result.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][44]
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bdw-gvtdvm/igt@meta_test@fail-result.html
-    - fi-hsw-4770:        NOTRUN -> [FAIL][45]
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-hsw-4770/igt@meta_test@fail-result.html
-    - bat-adlp-4:         NOTRUN -> [FAIL][46]
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-adlp-4/igt@meta_test@fail-result.html
-    - fi-kbl-7500u:       NOTRUN -> [FAIL][47]
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-7500u/igt@meta_test@fail-result.html
-
-  
-New tests
----------
-
-  New tests have been introduced between IGT_6456 and IGTPW_7012:
-
-### New IGT tests (1) ###
-
-  * igt@meta_test@fail-result:
-    - Statuses : 47 fail(s)
-    - Exec time: [0.00, 0.24] s
-
-  
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6456 -> IGTPW_7012
-
-  CI-20190529: 20190529
-  CI_DRM_11550: 56b089ae03ef8ea8ab7f474eaa70367898891ef0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7012: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/index.html
-  IGT_6456: c2b13bab06755aa47adc7c880fb52f41360099f3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/index.html
-
---===============4987993373741257937==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>HAX add description to gem_partial_pwrite_pread</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103205/">https://patchwork.freedesktop.org/series/103205/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6456 -&gt; IGTPW_7012</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7012 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7012, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/index.html</p>
-<h2>Participating hosts (46 -&gt; 47)</h2>
-<p>Additional (5): fi-rkl-11600 bat-adls-5 bat-dg1-6 bat-dg1-5 bat-adlp-4 <br />
-  Missing    (4): fi-ctg-p8600 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7012:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@meta_test@fail-result (NEW):</p>
-<ul>
-<li>
-<p>{bat-adls-5}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-adls-5/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-pnv-d510/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-adl-ddr5:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-adl-ddr5/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-jsl-1/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-dg1-5/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-adlp-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-adlp-6/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-cfl-8700k/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-tgl-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-snb-2520m/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-ivb-3770/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-apl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bxt-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-dg2-9}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-dg2-9/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-elk-e7500/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-skl-6700k2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-tgl-1115g4/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-soraka/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-cfl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bsw-n3050/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-ilk-650/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-rkl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-jsl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-jsl-2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bsw-kefka/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-dg1-6/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-jsl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-jsl-1/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-x1275/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-snb-2600/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-dg2-8/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-cfl-8109u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-adlm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-adlm-1/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bdw-5557u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-rpls-2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bsw-nick/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-glk-j4005/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-7567u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-8809g/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-hsw-g3258/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-blb-e6850/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bwr-2160/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-rkl-11600/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-skl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-ehl-2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-bdw-gvtdvm/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-hsw-4770/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/bat-adlp-4/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/fi-kbl-7500u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between IGT_6456 and IGTPW_7012:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@meta_test@fail-result:<ul>
-<li>Statuses : 47 fail(s)</li>
-<li>Exec time: [0.00, 0.24] s</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6456 -&gt; IGTPW_7012</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11550: 56b089ae03ef8ea8ab7f474eaa70367898891ef0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7012: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7012/index.html<br />
-  IGT_6456: c2b13bab06755aa47adc7c880fb52f41360099f3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4987993373741257937==--
+diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+index d7fa2e53..9922e43c 100644
+--- a/tests/i915/kms_big_joiner.c
++++ b/tests/i915/kms_big_joiner.c
+@@ -35,6 +35,8 @@ typedef struct {
+ 	igt_display_t display;
+ 	struct igt_fb fb;
+ 	int n_pipes;
++	enum pipe pipe1;
++	enum pipe pipe2;
+ 	struct output_data {
+ 		uint32_t id;
+ 		int mode_number;
+@@ -46,10 +48,12 @@ static void test_invalid_modeset(data_t *data)
+ 	drmModeModeInfo *mode;
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output, *big_joiner_output = NULL, *second_output = NULL;
+-	int i, ret;
++	int ret;
+ 	igt_pipe_t *pipe;
+ 	igt_plane_t *plane;
+ 
++	igt_display_reset(display);
++
+ 	for_each_connected_output(display, output) {
+ 		mode = &output->config.connector->modes[0];
+ 
+@@ -60,100 +64,92 @@ static void test_invalid_modeset(data_t *data)
+ 		}
+ 	}
+ 
+-	for_each_pipe(display, i) {
+-		if (i < (data->n_pipes - 1)) {
+-			igt_output_set_pipe(big_joiner_output, i);
++	igt_output_set_pipe(big_joiner_output, data->pipe1);
+ 
+-			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+-			igt_output_override_mode(big_joiner_output, mode);
++	mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
++	igt_output_override_mode(big_joiner_output, mode);
+ 
+-			pipe = &display->pipes[i];
+-			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	pipe = &display->pipes[data->pipe1];
++	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+-			igt_plane_set_fb(plane, &data->fb);
+-			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+-			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_fb(plane, &data->fb);
++	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+ 
+-			igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+-			igt_output_set_pipe(second_output, i + 1);
++	igt_output_set_pipe(second_output, data->pipe2);
+ 
+-			mode = igt_output_get_mode(second_output);
++	mode = igt_output_get_mode(second_output);
+ 
+-			pipe = &display->pipes[i + 1];
+-			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	pipe = &display->pipes[data->pipe2];
++	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+-			igt_plane_set_fb(plane, &data->fb);
+-			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+-			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_fb(plane, &data->fb);
++	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+ 
+-			/* This commit is expectd to fail as this pipe is being used for big joiner */
+-			ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
+-							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-			igt_assert_lt(ret, 0);
++	/* This commit is expectd to fail as this pipe is being used for big joiner */
++	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
++					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_assert_lt(ret, 0);
+ 
+-			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+-			igt_output_set_pipe(second_output, PIPE_NONE);
++	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
++	igt_output_set_pipe(second_output, PIPE_NONE);
+ 
+-			pipe = &display->pipes[i];
+-			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	pipe = &display->pipes[data->pipe1];
++	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+-			/*
+-			 * Do not explicitly set the plane of the second output to NULL,
+-			 * as it is the adjacent pipe to the big joiner output and
+-			 * setting the big joiner plane to NULL will take care of this.
+-			 */
+-			igt_plane_set_fb(plane, NULL);
+-			igt_display_commit2(display, COMMIT_ATOMIC);
+-			igt_output_override_mode(big_joiner_output, NULL);
+-		}
+-	}
++	/*
++	 * Do not explicitly set the plane of the second output to NULL,
++	 * as it is the adjacent pipe to the big joiner output and
++	 * setting the big joiner plane to NULL will take care of this.
++	 */
++	igt_plane_set_fb(plane, NULL);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_output_override_mode(big_joiner_output, NULL);
+ 
+-	for_each_pipe(display, i) {
+-		if (i < (data->n_pipes - 1)) {
+-			igt_output_set_pipe(second_output, i + 1);
++	igt_output_set_pipe(second_output, data->pipe2);
+ 
+-			mode = igt_output_get_mode(second_output);
++	mode = igt_output_get_mode(second_output);
+ 
+-			pipe = &display->pipes[i + 1];
+-			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	pipe = &display->pipes[data->pipe2];
++	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+-			igt_plane_set_fb(plane, &data->fb);
+-			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+-			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_fb(plane, &data->fb);
++	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+ 
+-			igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+-			igt_output_set_pipe(big_joiner_output, i);
++	igt_output_set_pipe(big_joiner_output, data->pipe1);
+ 
+-			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+-			igt_output_override_mode(big_joiner_output, mode);
++	mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
++	igt_output_override_mode(big_joiner_output, mode);
+ 
+-			pipe = &display->pipes[i];
+-			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	pipe = &display->pipes[data->pipe1];
++	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+-			igt_plane_set_fb(plane, &data->fb);
+-			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+-			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_fb(plane, &data->fb);
++	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+ 
+-			/* This commit is expected to fail as the adjacent pipe is already in use*/
+-			ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
+-							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-			igt_assert_lt(ret, 0);
++	/* This commit is expected to fail as the adjacent pipe is already in use*/
++	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
++					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_assert_lt(ret, 0);
+ 
+-			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+-			igt_output_set_pipe(second_output, PIPE_NONE);
+-			igt_plane_set_fb(plane, NULL);
++	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
++	igt_output_set_pipe(second_output, PIPE_NONE);
++	igt_plane_set_fb(plane, NULL);
+ 
+-			pipe = &display->pipes[i + 1];
+-			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+-			igt_plane_set_fb(plane, NULL);
++	pipe = &display->pipes[data->pipe2];
++	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(plane, NULL);
+ 
+-			igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+-			igt_output_override_mode(big_joiner_output, NULL);
+-		}
+-	}
++	igt_output_override_mode(big_joiner_output, NULL);
+ }
+ 
+ static void test_basic_modeset(data_t *data)
+@@ -161,10 +157,11 @@ static void test_basic_modeset(data_t *data)
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output, *big_joiner_output = NULL;
+ 	igt_display_t *display = &data->display;
+-	int i;
+ 	igt_pipe_t *pipe;
+ 	igt_plane_t *plane;
+ 
++	igt_display_reset(display);
++
+ 	for_each_connected_output(display, output) {
+ 		if (data->big_joiner_output[0].id == output->id) {
+ 			big_joiner_output = output;
+@@ -172,27 +169,23 @@ static void test_basic_modeset(data_t *data)
+ 		}
+ 	}
+ 
+-	for_each_pipe(display, i) {
+-		if (i < (data->n_pipes - 1)) {
+-			igt_output_set_pipe(big_joiner_output, i);
++	igt_output_set_pipe(big_joiner_output, data->pipe1);
+ 
+-			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+-			igt_output_override_mode(big_joiner_output, mode);
++	mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
++	igt_output_override_mode(big_joiner_output, mode);
+ 
+-			pipe = &display->pipes[i];
+-			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	pipe = &display->pipes[data->pipe1];
++	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+-			igt_plane_set_fb(plane, &data->fb);
+-			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+-			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_fb(plane, &data->fb);
++	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+ 
+-			igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+-			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+-			igt_plane_set_fb(plane, NULL);
+-			igt_display_commit2(display, COMMIT_ATOMIC);
+-		}
+-	}
++	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
++	igt_plane_set_fb(plane, NULL);
++	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
+ 
+ static void test_dual_display(data_t *data)
+@@ -204,6 +197,8 @@ static void test_dual_display(data_t *data)
+ 	igt_plane_t *plane;
+ 	int count = 0;
+ 
++	igt_display_reset(display);
++
+ 	for_each_connected_output(display, output) {
+ 		if (data->big_joiner_output[count].id == output->id) {
+ 			big_joiner_output[count] = output;
+@@ -214,14 +209,14 @@ static void test_dual_display(data_t *data)
+ 			break;
+ 	}
+ 
+-	igt_output_set_pipe(big_joiner_output[0], PIPE_A);
+-	igt_output_set_pipe(big_joiner_output[1], PIPE_C);
++	igt_output_set_pipe(big_joiner_output[0], data->pipe1);
++	igt_output_set_pipe(big_joiner_output[1], data->pipe2);
+ 
+ 	/* Set up first big joiner output on Pipe A*/
+ 	mode = &big_joiner_output[0]->config.connector->modes[data->big_joiner_output[0].mode_number];
+ 	igt_output_override_mode(big_joiner_output[0], mode);
+ 
+-	pipe = &display->pipes[PIPE_A];
++	pipe = &display->pipes[data->pipe1];
+ 	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+ 	igt_plane_set_fb(plane, &data->fb);
+@@ -232,7 +227,7 @@ static void test_dual_display(data_t *data)
+ 	mode = &big_joiner_output[1]->config.connector->modes[data->big_joiner_output[1].mode_number];
+ 	igt_output_override_mode(big_joiner_output[1], mode);
+ 
+-	pipe = &display->pipes[PIPE_C];
++	pipe = &display->pipes[data->pipe2];
+ 	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+ 	igt_plane_set_fb(plane, &data->fb);
+@@ -244,8 +239,8 @@ static void test_dual_display(data_t *data)
+ 	/* Clean up */
+ 	igt_output_set_pipe(big_joiner_output[0], PIPE_NONE);
+ 	igt_output_set_pipe(big_joiner_output[1], PIPE_NONE);
+-	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[PIPE_A], DRM_PLANE_TYPE_PRIMARY), NULL);
+-	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[PIPE_C], DRM_PLANE_TYPE_PRIMARY), NULL);
++	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[data->pipe1], DRM_PLANE_TYPE_PRIMARY), NULL);
++	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[data->pipe2], DRM_PLANE_TYPE_PRIMARY), NULL);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
+ 
+@@ -254,8 +249,9 @@ igt_main
+ 	data_t data;
+ 	igt_output_t *output;
+ 	drmModeModeInfo *mode;
+-	int valid_output = 0, i, count = 0;
++	int valid_output = 0, i, count = 0, j = 0;
+ 	uint16_t width = 0, height = 0;
++	enum pipe pipe_seq[IGT_MAX_PIPES];
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+@@ -282,8 +278,11 @@ igt_main
+ 		}
+ 
+ 		data.n_pipes = 0;
+-		for_each_pipe(&data.display, i)
++		for_each_pipe(&data.display, i) {
+ 			data.n_pipes++;
++			pipe_seq[j] = i;
++			j++;
++		}
+ 
+ 		igt_require_f(count > 0, "No output with 5k+ mode found\n");
+ 
+@@ -292,21 +291,40 @@ igt_main
+ 	}
+ 
+ 	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+-	igt_subtest("basic")
+-		test_basic_modeset(&data);
++	igt_subtest_with_dynamic("basic") {
++		for (i = 0; i < data.n_pipes - 1; i++) {
++			if (i < (data.n_pipes - 1)) {
++				data.pipe1 = pipe_seq[i];
++				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe_seq[i]))
++					test_basic_modeset(&data);
++			}
++		}
++	}
+ 
+ 	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
+ 		     "when the pipe is active with a big joiner modeset");
+-	igt_subtest("invalid-modeset") {
++	igt_subtest_with_dynamic("invalid-modeset") {
+ 		igt_require_f(valid_output > 1, "No valid Second output found\n");
+-		test_invalid_modeset(&data);
++		for (i = 0; i < data.n_pipes - 1; i++) {
++			if (i < (data.n_pipes - 1)) {
++				data.pipe1 = pipe_seq[i];
++				data.pipe2 = pipe_seq[i + 1];
++				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe_seq[i]))
++					test_invalid_modeset(&data);
++			}
++		}
+ 	}
+ 
+ 	igt_describe("Verify simultaneous modeset on 2 big joiner outputs");
+-	igt_subtest("2x-modeset") {
++	igt_subtest_with_dynamic("2x-modeset") {
+ 		igt_require_f(count > 1, "2 outputs with big joiner modes are required\n");
+ 		igt_require_f(data.n_pipes > 3, "Minumum of 4 pipes are required\n");
+-		test_dual_display(&data);
++		for (i = 0; (i + 2) < data.n_pipes - 1; i++) {
++			data.pipe1 = pipe_seq[i];
++			data.pipe2 = pipe_seq[i + 2];
++			igt_dynamic_f("pipe-%s%s", kmstest_pipe_name(pipe_seq[i]), kmstest_pipe_name(pipe_seq[i + 2]))
++				test_dual_display(&data);
++		}
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.22.0
