@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52F3210E061
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Apr 2022 16:08:30 +0000 (UTC)
-Date: Thu, 28 Apr 2022 18:07:50 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Ymq71jm8gxP6U3jl@kamilkon-DESK1>
-References: <20220427184204.65427-1-zbigniew.kempczynski@intel.com>
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2044.outbound.protection.outlook.com [40.107.243.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 711DE10E176
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Apr 2022 16:59:40 +0000 (UTC)
+From: David Zhang <dingchen.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Thu, 28 Apr 2022 12:59:23 -0400
+Message-ID: <20220428165925.1406641-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220427184204.65427-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_softpin: Exercise single
- offset eviction on all engines
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 0/2] amdgpu PSR-SU scaling test cases
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,138 +18,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+- add primary plane up/down scaling subtest case
+- add primary plane up/down scaling + cursor movement subtest case
+- fix the "visual confirm debug option" enable issue for amdgpu PSR-SU
+  tests
 
-On 2022-04-27 at 20:42:04 +0200, Zbigniew Kempczyński wrote:
-> Verify that eviction works when all engines try to use same offset for
-> different handles. It replaces allocator-evict-all-engines test because
-> it is simpler.
-> 
-> v2: addressing review comments (Kamil)
-> v3: simplifying subtest (Chris)
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> ---
->  tests/i915/gem_softpin.c | 76 ++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 74 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-> index 448b4c4b9e..7dae2a6c44 100644
-> --- a/tests/i915/gem_softpin.c
-> +++ b/tests/i915/gem_softpin.c
-> @@ -1073,6 +1073,77 @@ static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
->  }
->  
-> +#define MINIMAL_OFFSET 0x200000
-> +static void single_offset_submit(int fd, struct drm_i915_gem_execbuffer2 *eb,
-> +				 struct batch *batches, unsigned int count)
-> +{
-> +	struct drm_i915_gem_exec_object2 obj = {
-> +		.offset = max_t(uint64_t, gem_detect_safe_start_offset(fd), MINIMAL_OFFSET),
+David Zhang (2):
+  tests/amdgpu/amd_psr: add PSR-SU scaling test cases
+  tests/amdgpu/amd_psr: trigger full modeset if visual confirm enabled
 
-imho this should be a parameter to this function, so it will be
-calculated once but you can leave it here, your choice.
+ tests/amdgpu/amd_psr.c | 126 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 126 insertions(+)
 
-> +		.flags = EXEC_OBJECT_PINNED,
-> +	};
-> +
-> +	eb->buffers_ptr = to_user_pointer(&obj);
-> +
-> +	for (unsigned int i = 0; i < count; i++) {
-> +		obj.handle = batches[i].handle;
-> +		gem_execbuf(fd, eb);
-> +	}
-> +}
-> +
-> +static void evict_single_offset(int fd, const intel_ctx_t *ctx, int timeout)
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf;
-> +	struct intel_execution_engine2 *e;
-> +	unsigned int engines[I915_EXEC_RING_MASK + 1];
-> +	struct batch *batches;
-> +	unsigned int nengine;
-> +	unsigned int count;
-> +	uint64_t size, batch_size = BATCH_SIZE;
-> +
-> +	nengine = 0;
-> +	for_each_ctx_engine(fd, ctx, e) {
-> +		engines[nengine++] = e->flags;
-> +	}
-> +	igt_require(nengine);
-> +
-> +	size = gem_aperture_size(fd);
-> +	if (size > 1ull<<32) /* Limit to 4GiB as we do not use allow-48b */
-> +		size = 1ull << 32;
-> +	igt_require(size < (1ull<<32) * BATCH_SIZE);
-> +
-> +	count = size / BATCH_SIZE + 1;
-> +	igt_debug("Using %'d batches to fill %'llu aperture on %d engines\n",
-> +		  count, (long long)size, nengine);
-
-Please add here print for timeout used and also change printing
-size to MB.
-
-> +
-> +	intel_require_memory(count, BATCH_SIZE, CHECK_RAM);
-> +	intel_detect_and_clear_missed_interrupts(fd);
-> +
-> +	memset(&execbuf, 0, sizeof(execbuf));
-> +	execbuf.buffer_count = 1;
-> +	execbuf.rsvd1 = ctx->id;
-> +
-> +	batches = calloc(count, sizeof(*batches));
-> +	igt_assert(batches);
-> +	for (unsigned int i = 0; i < count; i++)
-> +		batches[i].handle = batch_create(fd, &batch_size);
-> +
-> +	/* Flush all memory before we start the timer */
-> +	single_offset_submit(fd, &execbuf, batches, count);
-> +
-> +	igt_fork(child, nengine) {
-> +		execbuf.flags |= engines[child];
-> +		igt_until_timeout(timeout)
-> +			single_offset_submit(fd, &execbuf, batches, count);
-> +	}
-> +	igt_waitchildren();
-> +
-> +	for (unsigned int i = 0; i < count; i++)
-> +		gem_close(fd, batches[i].handle);
-> +	free(batches);
-> +
-> +	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-> +}
-> +
->  static void make_batch(int i915, uint32_t handle, uint64_t size)
->  {
->  	uint32_t *bb = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
-> @@ -1213,8 +1284,9 @@ igt_main
->  		test_each_engine("allocator-evict", fd, ctx, e)
->  			test_allocator_evict(fd, ctx, e->flags, 20);
->  
-> -		igt_subtest("allocator-evict-all-engines")
-> -			test_allocator_evict(fd, ctx, ALL_ENGINES, 20);
-> +		igt_describe("Use same offset for all engines and for different handles");
-> +		igt_subtest("evict-single-offset")
-> +			evict_single_offset(fd, ctx, 20);
-
-You are not using allocator here, so maybe move this down after
-evict-hog sibtest ?
-
-With that small changes you can add my r-b tag.
-
-Regards,
-Kamil
->  	}
->  
->  	igt_describe("Check start offset and alignment detection");
-> -- 
-> 2.32.0
-> 
+-- 
+2.25.1
