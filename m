@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD14D10FBD0
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 06:26:06 +0000 (UTC)
-From: "Ye, Tony" <tony.ye@intel.com>
-To: "Ceraolo Spurio, Daniele" <daniele.ceraolospurio@intel.com>
-Date: Fri, 29 Apr 2022 06:25:57 +0000
-Message-ID: <04E62DFC-8EEB-4DBB-9F58-E260702AB1B3@intel.com>
-References: <20220427214436.1815778-1-daniele.ceraolospurio@intel.com>
- <61ed5fb2-6808-5c58-3a1a-e8169357c966@intel.com>
- <622d248f-9e16-552b-6118-587b56f6fe96@intel.com>
-In-Reply-To: <622d248f-9e16-552b-6118-587b56f6fe96@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E28710F97D
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Apr 2022 10:31:54 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Date: Thu, 28 Apr 2022 06:59:46 +0000
+Message-ID: <62a1358e9f824ada8f68f792032c3deb@intel.com>
+References: <20220418125048.7969-1-anshuman.gupta@intel.com>
+ <20220418125048.7969-6-anshuman.gupta@intel.com> <YmKB5D9Y8FpX9VNN@intel.com>
+ <YmKajYK3+xxRH3J+@intel.com>
+In-Reply-To: <YmKajYK3+xxRH3J+@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/i915/gem_huc_copy: cover reset and
- suspend/resume scenarios
+Subject: Re: [igt-dev] [PATCH i-g-t 5/9] tools: Add intel_pm_rpm tool
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,128 +22,337 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nilawar,
+ Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmV2aWV3ZWQtYnk6IFRvbnkgWWUgPHRvbnkueWVAaW50ZWwuY29tPg0KDQpUaGFua3MsDQpUb255
-DQo+IOWcqCAyMDIy5bm0NOaciDI35pel77yM5LiL5Y2IMzoxMu+8jENlcmFvbG8gU3B1cmlvLCBE
-YW5pZWxlIDxkYW5pZWxlLmNlcmFvbG9zcHVyaW9AaW50ZWwuY29tPiDlhpnpgZPvvJoNCj4gDQo+
-IO+7vw0KPiANCj4+IE9uIDQvMjcvMjAyMiAyOjU4IFBNLCBZZSwgVG9ueSB3cm90ZToNCj4+IA0K
-Pj4+IE9uIDQvMjcvMjAyMiAyOjQ0IFBNLCBEYW5pZWxlIENlcmFvbG8gU3B1cmlvIHdyb3RlOg0K
-Pj4+IEFkZGl0aW9uYWwgc3VidGVzdHMgaGF2ZSBiZWVuIGFkZGVkIHRvIG1ha2Ugc3VyZSB0aGUg
-SHVDIGtlZXBzIHdvcmtpbmcNCj4+PiBhZnRlciBHVCByZXNldCBhbmQgc3VzcGVuZC9yZXN1bWUu
-DQo+Pj4gDQo+Pj4gQ2M6IFRvbnkgWWUgPHRvbnkueWVAaW50ZWwuY29tPg0KPj4+IFNpZ25lZC1v
-ZmYtYnk6IERhbmllbGUgQ2VyYW9sbyBTcHVyaW8gPGRhbmllbGUuY2VyYW9sb3NwdXJpb0BpbnRl
-bC5jb20+DQo+Pj4gLS0tDQo+Pj4gICB0ZXN0cy9pOTE1L2dlbV9odWNfY29weS5jIHwgMTE4ICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tDQo+Pj4gICAxIGZpbGUgY2hhbmdl
-ZCwgODkgaW5zZXJ0aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pDQo+Pj4gDQo+Pj4gZGlmZiAtLWdp
-dCBhL3Rlc3RzL2k5MTUvZ2VtX2h1Y19jb3B5LmMgYi90ZXN0cy9pOTE1L2dlbV9odWNfY29weS5j
-DQo+Pj4gaW5kZXggZWEzMmI3MDUuLmVmNTc3ODI0IDEwMDY0NA0KPj4+IC0tLSBhL3Rlc3RzL2k5
-MTUvZ2VtX2h1Y19jb3B5LmMNCj4+PiArKysgYi90ZXN0cy9pOTE1L2dlbV9odWNfY29weS5jDQo+
-Pj4gQEAgLTQwLDYgKzQwLDEzIEBAIElHVF9URVNUX0RFU0NSSVBUSU9OKCJBIHZlcnkgc2ltcGxl
-IHdvcmtsb2FkIGZvciB0aGUgSHVDLiIpOw0KPj4+ICAgICAjZGVmaW5lIEhVQ19DT1BZX0RBVEFf
-QlVGX1NJWkUgICAgNDA5Ng0KPj4+ICAgK2VudW0gb3BlcmF0aW9uIHsNCj4+PiArICAgIEdQVV9S
-RVNFVCwNCj4+PiArICAgIFNVU1BFTkRfUkVTVU1FLA0KPj4+ICsgICAgSElCRVJOQVRFX1JFU1VN
-RSwNCj4+PiArICAgIFNJTVBMRV9DT1BZLA0KPj4+ICt9Ow0KPj4+ICsNCj4+PiAgIHN0YXRpYyB2
-b2lkDQo+Pj4gICBjb21wYXJlX2h1Y19jb3B5X3Jlc3VsdChpbnQgZHJtX2ZkLCB1aW50MzJfdCBz
-cmNfaGFuZGxlLCB1aW50MzJfdCBkc3RfaGFuZGxlKQ0KPj4+ICAgew0KPj4+IEBAIC04NCwxMiAr
-OTEsNzcgQEAgc3RhdGljIHZvaWQgdGVzdF9odWNfbG9hZChpbnQgZmQpDQo+Pj4gICAgICAgaWd0
-X2ZhaWxfb25fZihzdGF0dXMgPT0gMCwgIkh1QyBmaXJtd2FyZSBpcyBub3QgcnVubmluZyFcbiIp
-Ow0KPj4+ICAgfQ0KPj4+ICAgK3N0YXRpYyB2b2lkIGh1Y19jb3B5X3Rlc3QoaW50IGRybV9mZCwg
-dWludDY0X3QgYWhuZCwNCj4+PiArICAgICAgICAgICAgICBpZ3RfaHVjX2NvcHlmdW5jX3QgaHVj
-X2NvcHksIGVudW0gb3BlcmF0aW9uIG9wKQ0KPj4+ICt7DQo+Pj4gKyAgICBjaGFyIGlucHV0c1tI
-VUNfQ09QWV9EQVRBX0JVRl9TSVpFXTsNCj4+PiArICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhl
-Y19vYmplY3QyIG9ialszXTsNCj4+PiArICAgIHVpbnQ2NF90IG9ianNpemVbM10gPSB7IEhVQ19D
-T1BZX0RBVEFfQlVGX1NJWkUsDQo+Pj4gKyAgICAgICAgICAgICAgICBIVUNfQ09QWV9EQVRBX0JV
-Rl9TSVpFLA0KPj4+ICsgICAgICAgICAgICAgICAgNDA5NiB9Ow0KPj4+ICsNCj4+PiArICAgIHN3
-aXRjaCAob3ApIHsNCj4+PiArICAgIGNhc2UgR1BVX1JFU0VUOg0KPj4+ICsgICAgICAgIGlndF9m
-b3JjZV9ncHVfcmVzZXQoZHJtX2ZkKTsNCj4+IA0KPj4gVGhlIGlzc3VlIGluIFZMSy0zMzk1NyBp
-cyBub3QgcmVwcm9kdWNpYmxlIHdpdGggYSBmb3JjZWQgZ3B1IHJlc2V0IHRocm91Z2ggdGhlIGk5
-MTVfd2VkZ2VkIGRlYnVnZnMuIEl0IGlzIGFsc28gbm90IHJlcHJvZHVjaWJsZSB3aXRoIGlndF9o
-YW5nX2N0eCgpLiBPbmx5IGEgcmVhbCBHUFUgSEFORyBjYW4gcmVwcm9kdWNlIHRoZSBpc3N1ZS4N
-Cj4gDQo+IFRoZSBidWcgeW91J3JlIHJlZmVyZW5jaW5nIGlzIGFib3V0IHJlY292ZXJ5IG9mIGFu
-IGh1bmcgY29udGV4dCBhbmQgaXQgaXMgbm90IHdoYXQgdGhlc2UgbmV3IHRlc3RzIGFyZSBmb3Iu
-IFdoYXQgSSB3YW50IHRvIHRlc3QgaGVyZSBpcyB3aGV0aGVyIHRoZSBIdUMgaXRzZWxmIGlzIHdv
-cmtpbmcgY29ycmVjdGx5IGFmdGVyIGEgR1QgcmVzZXQgb3Igc3VzcGVuZC9yZXN1bWUgZmxvdy4g
-VGhpcyBpcyB0byBtYWtlIHN1cmUgd2UgZG9uJ3QgYnJlYWsgYW55dGhpbmcgd2l0aCB0aGUgdXBj
-b21pbmcgREcyIGNoYW5nZXMsIGJlY2F1c2UgdGhlIGZsb3cgYW5kIHRpbWluZyBhcmUgY29tcGxl
-dGVseSBkaWZmZXJlbnQgd2l0aCBHU0MgbG9hZGluZyB0aGUgSHVDLiBIaWJlcm5hdGlvbi9yZXN1
-bWUgaXMgZ29pbmcgdG8gYmUgZXNwZWNpYWxseSB0cmlja3ksIGJlY2F1c2UgSHVDIGxvYWQgd2ls
-bCBoYXBwZW4gYWZ0ZXIgaTkxNSByZXN1bWUgaXMgY29tcGxldGUsIHNvIHdlJ2xsIGhhdmUgdG8g
-c3luY2hyb25pemUuDQo+IA0KPiBEYW5pZWxlDQo+IA0KPj4gDQo+PiBUaGFua3MsDQo+PiANCj4+
-IFRvbnkNCj4+IA0KPj4+ICsgICAgICAgIGJyZWFrOw0KPj4+ICsNCj4+PiArICAgIGNhc2UgU1VT
-UEVORF9SRVNVTUU6DQo+Pj4gKyAgICAgICAgaWd0X3N5c3RlbV9zdXNwZW5kX2F1dG9yZXN1bWUo
-U1VTUEVORF9TVEFURV9NRU0sDQo+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgU1VTUEVO
-RF9URVNUX05PTkUpOw0KPj4+ICsgICAgICAgIGJyZWFrOw0KPj4+ICsNCj4+PiArICAgIGNhc2Ug
-SElCRVJOQVRFX1JFU1VNRToNCj4+PiArICAgICAgICBpZ3Rfc3lzdGVtX3N1c3BlbmRfYXV0b3Jl
-c3VtZShTVVNQRU5EX1NUQVRFX0RJU0ssDQo+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAg
-U1VTUEVORF9URVNUX05PTkUpOw0KPj4+ICsgICAgICAgIGJyZWFrOw0KPj4+ICsNCj4+PiArICAg
-IGNhc2UgU0lNUExFX0NPUFk6DQo+Pj4gKyAgICAgICAgYnJlYWs7DQo+Pj4gKw0KPj4+ICsgICAg
-ZGVmYXVsdDoNCj4+PiArICAgICAgICBpZ3RfYXNzZXJ0KDApOw0KPj4+ICsgICAgfQ0KPj4+ICsN
-Cj4+PiArICAgIHRlc3RfaHVjX2xvYWQoZHJtX2ZkKTsNCj4+PiArICAgIC8qIEluaXRpYWxpemUg
-c3JjIGJ1ZmZlciByYW5kb21seSAqLw0KPj4+ICsgICAgc3JhbmQodGltZShOVUxMKSk7DQo+Pj4g
-KyAgICBmb3IgKGludCBpID0gMDsgaSA8IEhVQ19DT1BZX0RBVEFfQlVGX1NJWkU7IGkrKykNCj4+
-PiArICAgICAgICBpbnB1dHNbaV0gPSAoY2hhcikgKHJhbmQoKSAlIDI1Nik7DQo+Pj4gKw0KPj4+
-ICsgICAgbWVtc2V0KG9iaiwgMCwgc2l6ZW9mKG9iaikpOw0KPj4+ICsgICAgLyogc291cmNlIGJ1
-ZmZlciBvYmplY3QgZm9yIHN0b3JpbmcgaW5wdXQgKi8NCj4+PiArICAgIG9ialswXS5oYW5kbGUg
-PSBnZW1fY3JlYXRlKGRybV9mZCwgSFVDX0NPUFlfREFUQV9CVUZfU0laRSk7DQo+Pj4gKyAgICAv
-KiBkZXN0aW5hdGlvbiBidWZmZXIgb2JqZWN0IHRvIHJlY2VpdmUgaW5wdXQgKi8NCj4+PiArICAg
-IG9ialsxXS5oYW5kbGUgPSBnZW1fY3JlYXRlKGRybV9mZCwgSFVDX0NPUFlfREFUQV9CVUZfU0la
-RSk7DQo+Pj4gKyAgICAvKiBleGVjdXRpb24gYnVmZmVyIG9iamVjdCAqLw0KPj4+ICsgICAgb2Jq
-WzJdLmhhbmRsZSA9IGdlbV9jcmVhdGUoZHJtX2ZkLCA0MDk2KTsNCj4+PiArDQo+Pj4gKyAgICBn
-ZW1fd3JpdGUoZHJtX2ZkLCBvYmpbMF0uaGFuZGxlLCAwLCBpbnB1dHMsIEhVQ19DT1BZX0RBVEFf
-QlVGX1NJWkUpOw0KPj4+ICsNCj4+PiArICAgIGh1Y19jb3B5KGRybV9mZCwgYWhuZCwgb2JqLCBv
-YmpzaXplKTsNCj4+PiArICAgIGNvbXBhcmVfaHVjX2NvcHlfcmVzdWx0KGRybV9mZCwgb2JqWzBd
-LmhhbmRsZSwgb2JqWzFdLmhhbmRsZSk7DQo+Pj4gKw0KPj4+ICsgICAgZ2VtX2Nsb3NlKGRybV9m
-ZCwgb2JqWzBdLmhhbmRsZSk7DQo+Pj4gKyAgICBnZW1fY2xvc2UoZHJtX2ZkLCBvYmpbMV0uaGFu
-ZGxlKTsNCj4+PiArICAgIGdlbV9jbG9zZShkcm1fZmQsIG9ialsyXS5oYW5kbGUpOw0KPj4+ICt9
-DQo+Pj4gKw0KPj4+ICAgaWd0X21haW4NCj4+PiAgIHsNCj4+PiAgICAgICBpbnQgZHJtX2ZkID0g
-LTE7DQo+Pj4gICAgICAgdWludDMyX3QgZGV2aWQ7DQo+Pj4gICAgICAgaWd0X2h1Y19jb3B5ZnVu
-Y190IGh1Y19jb3B5Ow0KPj4+ICAgICAgIHVpbnQ2NF90IGFobmQ7DQo+Pj4gKyAgICBjb25zdCBz
-dHJ1Y3Qgew0KPj4+ICsgICAgICAgIGNvbnN0IGNoYXIgKm5hbWU7DQo+Pj4gKyAgICAgICAgZW51
-bSBvcGVyYXRpb24gb3A7DQo+Pj4gKyAgICB9IG9wc1tdID0gICB7DQo+Pj4gKyAgICAgICAgeyAi
-IiwgU0lNUExFX0NPUFkgfSwNCj4+PiArICAgICAgICB7ICItYWZ0ZXItcmVzZXQiLCBHUFVfUkVT
-RVQgfSwNCj4+PiArICAgICAgICB7ICItYWZ0ZXItc3VzcGVuZC1yZXN1bWUiLCBTVVNQRU5EX1JF
-U1VNRSB9LA0KPj4+ICsgICAgICAgIHsgIi1hZnRlci1oaWJlcm5hdGUtcmVzdW1lIiwgSElCRVJO
-QVRFX1JFU1VNRSB9LA0KPj4+ICsgICAgICAgIHsgfQ0KPj4+ICsgICAgfSwgKm9wOw0KPj4+ICAg
-ICAgICAgaWd0X2ZpeHR1cmUgew0KPj4+ICAgICAgICAgICBkcm1fZmQgPSBkcm1fb3Blbl9kcml2
-ZXIoRFJJVkVSX0lOVEVMKTsNCj4+PiBAQCAtMTA2LDM1ICsxNzgsMjMgQEAgaWd0X21haW4NCj4+
-PiAgICAgICAgICAgICAgICAiYnkgY29weWluZyBhIGNoYXIgYXJyYXkgdXNpbmcgSHVjIg0KPj4+
-ICAgICAgICAgICAgICAgICJhbmQgdmVyaWZ5aW5nIHRoZSBjb3BpZWQgcmVzdWx0Iik7DQo+Pj4g
-ICAtICAgIGlndF9zdWJ0ZXN0KCJodWMtY29weSIpIHsNCj4+PiAtICAgICAgICBjaGFyIGlucHV0
-c1tIVUNfQ09QWV9EQVRBX0JVRl9TSVpFXTsNCj4+PiAtICAgICAgICBzdHJ1Y3QgZHJtX2k5MTVf
-Z2VtX2V4ZWNfb2JqZWN0MiBvYmpbM107DQo+Pj4gLSAgICAgICAgdWludDY0X3Qgb2Jqc2l6ZVsz
-XSA9IHsgSFVDX0NPUFlfREFUQV9CVUZfU0laRSwNCj4+PiAtICAgICAgICAgICAgICAgICAgICBI
-VUNfQ09QWV9EQVRBX0JVRl9TSVpFLA0KPj4+IC0gICAgICAgICAgICAgICAgICAgIDQwOTYgfTsN
-Cj4+PiAtDQo+Pj4gLSAgICAgICAgdGVzdF9odWNfbG9hZChkcm1fZmQpOw0KPj4+IC0gICAgICAg
-IC8qIEluaXRpYWxpemUgc3JjIGJ1ZmZlciByYW5kb21seSAqLw0KPj4+IC0gICAgICAgIHNyYW5k
-KHRpbWUoTlVMTCkpOw0KPj4+IC0gICAgICAgIGZvciAoaW50IGkgPSAwOyBpIDwgSFVDX0NPUFlf
-REFUQV9CVUZfU0laRTsgaSsrKQ0KPj4+IC0gICAgICAgICAgICBpbnB1dHNbaV0gPSAoY2hhcikg
-KHJhbmQoKSAlIDI1Nik7DQo+Pj4gLQ0KPj4+IC0gICAgICAgIG1lbXNldChvYmosIDAsIHNpemVv
-ZihvYmopKTsNCj4+PiAtICAgICAgICAvKiBzb3VyY2UgYnVmZmVyIG9iamVjdCBmb3Igc3Rvcmlu
-ZyBpbnB1dCAqLw0KPj4+IC0gICAgICAgIG9ialswXS5oYW5kbGUgPSBnZW1fY3JlYXRlKGRybV9m
-ZCwgSFVDX0NPUFlfREFUQV9CVUZfU0laRSk7DQo+Pj4gLSAgICAgICAgLyogZGVzdGluYXRpb24g
-YnVmZmVyIG9iamVjdCB0byByZWNlaXZlIGlucHV0ICovDQo+Pj4gLSAgICAgICAgb2JqWzFdLmhh
-bmRsZSA9IGdlbV9jcmVhdGUoZHJtX2ZkLCBIVUNfQ09QWV9EQVRBX0JVRl9TSVpFKTsNCj4+PiAt
-ICAgICAgICAvKiBleGVjdXRpb24gYnVmZmVyIG9iamVjdCAqLw0KPj4+IC0gICAgICAgIG9ialsy
-XS5oYW5kbGUgPSBnZW1fY3JlYXRlKGRybV9mZCwgNDA5Nik7DQo+Pj4gLQ0KPj4+IC0gICAgICAg
-IGdlbV93cml0ZShkcm1fZmQsIG9ialswXS5oYW5kbGUsIDAsIGlucHV0cywgSFVDX0NPUFlfREFU
-QV9CVUZfU0laRSk7DQo+Pj4gLQ0KPj4+IC0gICAgICAgIGh1Y19jb3B5KGRybV9mZCwgYWhuZCwg
-b2JqLCBvYmpzaXplKTsNCj4+PiAtICAgICAgICBjb21wYXJlX2h1Y19jb3B5X3Jlc3VsdChkcm1f
-ZmQsIG9ialswXS5oYW5kbGUsIG9ialsxXS5oYW5kbGUpOw0KPj4+IC0NCj4+PiAtICAgICAgICBn
-ZW1fY2xvc2UoZHJtX2ZkLCBvYmpbMF0uaGFuZGxlKTsNCj4+PiAtICAgICAgICBnZW1fY2xvc2Uo
-ZHJtX2ZkLCBvYmpbMV0uaGFuZGxlKTsNCj4+PiAtICAgICAgICBnZW1fY2xvc2UoZHJtX2ZkLCBv
-YmpbMl0uaGFuZGxlKTsNCj4+PiArICAgIGZvciAob3AgPSBvcHM7IG9wLT5uYW1lOyBvcCsrKSB7
-DQo+Pj4gKyAgICAgICAgaWd0X3N1YnRlc3RfZ3JvdXAgew0KPj4+ICsgICAgICAgICAgICBpZ3Rf
-aGFuZ190IGhhbmcgPSB7fTsNCj4+PiArDQo+Pj4gKyAgICAgICAgICAgIGlndF9maXh0dXJlIHsN
-Cj4+PiArICAgICAgICAgICAgICAgIGlmIChvcC0+b3AgPT0gR1BVX1JFU0VUKQ0KPj4+ICsgICAg
-ICAgICAgICAgICAgICAgIGhhbmcgPSBpZ3RfYWxsb3dfaGFuZyhkcm1fZmQsIDAsIEhBTkdfQUxM
-T1dfQ0FQVFVSRSk7DQo+Pj4gKyAgICAgICAgICAgIH0NCj4+PiArDQo+Pj4gKyAgICAgICAgICAg
-IGlndF9zdWJ0ZXN0X2YoImh1Yy1jb3B5JXMiLCBvcC0+bmFtZSkNCj4+PiArICAgICAgICAgICAg
-ICAgIGh1Y19jb3B5X3Rlc3QoZHJtX2ZkLCBhaG5kLCBodWNfY29weSwgb3AtPm9wKTsNCj4+PiAr
-DQo+Pj4gKyAgICAgICAgICAgIGlndF9maXh0dXJlIHsNCj4+PiArICAgICAgICAgICAgICAgIGlm
-IChvcC0+b3AgPT0gR1BVX1JFU0VUKQ0KPj4+ICsgICAgICAgICAgICAgICAgICAgIGlndF9kaXNh
-bGxvd19oYW5nKGRybV9mZCwgaGFuZyk7DQo+Pj4gKyAgICAgICAgICAgIH0NCj4+PiArICAgICAg
-ICB9DQo+Pj4gICAgICAgfQ0KPj4+ICAgICAgICAgaWd0X2ZpeHR1cmUgew0KPiANCg==
+
+
+> -----Original Message-----
+> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
+> Sent: Friday, April 22, 2022 5:38 PM
+> To: Gupta, Anshuman <anshuman.gupta@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Nilawar, Badal <badal.nilawar@intel.co=
+m>
+> Subject: Re: [igt-dev] [PATCH i-g-t 5/9] tools: Add intel_pm_rpm tool
+>=20
+> On Fri, Apr 22, 2022 at 06:22:28AM -0400, Rodrigo Vivi wrote:
+> > On Mon, Apr 18, 2022 at 06:20:44PM +0530, Anshuman Gupta wrote:
+> > > intel_pm_rpm tool is a debug tool. It can be use to setup and
+> > > prepare the gfx card to go to D3Cold.
+> > > It also provide the debug option to disable all display and prepare
+> > > device to enter to runtime suspend.
+> > >
+> > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > > ---
+> > >  tools/intel_pm_rpm.c | 209
+> +++++++++++++++++++++++++++++++++++++++++++
+> > >  tools/meson.build    |   1 +
+> > >  2 files changed, 210 insertions(+)
+> > >  create mode 100644 tools/intel_pm_rpm.c
+> > >
+> > > diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c new file
+> > > mode 100644 index 000000000..df9cfa632
+> > > --- /dev/null
+> > > +++ b/tools/intel_pm_rpm.c
+> > > @@ -0,0 +1,209 @@
+> > > +/*
+> > > + * Copyright (c) 2022 Intel Corporation
+> > > + *
+> > > + * Permission is hereby granted, free of charge, to any person
+> > > +obtaining a
+> > > + * copy of this software and associated documentation files (the
+> > > +"Software"),
+> > > + * to deal in the Software without restriction, including without
+> > > +limitation
+> > > + * the rights to use, copy, modify, merge, publish, distribute,
+> > > +sublicense,
+> > > + * and/or sell copies of the Software, and to permit persons to
+> > > +whom the
+> > > + * Software is furnished to do so, subject to the following conditio=
+ns:
+> > > + *
+> > > + * The above copyright notice and this permission notice (including
+> > > +the next
+> > > + * paragraph) shall be included in all copies or substantial
+> > > +portions of the
+> > > + * Software.
+> > > + *
+> > > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+> KIND,
+> > > +EXPRESS OR
+> > > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+> > > +MERCHANTABILITY,
+> > > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO
+> > > +EVENT SHALL
+> > > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+> > > +DAMAGES OR OTHER
+> > > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+> OTHERWISE,
+> > > +ARISING
+> > > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+> OR
+> > > +OTHER DEALINGS
+> > > + * IN THE SOFTWARE.
+> > > + *
+> > > + */
+> > > +
+> > > +#include <errno.h>
+> > > +#include <getopt.h>
+> > > +#include <glib.h>
+> > > +#include <stdio.h>
+> > > +#include <stdlib.h>
+> > > +#include <string.h>
+> > > +#include <stdbool.h>
+> > > +#include "igt.h"
+> > > +#include "igt_device.h"
+> > > +#include "igt_device_scan.h"
+> > > +#include "igt_pm.h"
+> > > +
+> > > +typedef struct {
+> > > +	int drm_fd;
+> > > +	int debugfs_fd;
+> > > +	uint32_t devid;
+> > > +	drmModeResPtr res;
+> > > +	igt_display_t display;
+> > > +} data_t;
+> > > +
+> > > +const char *help_str =3D
+> > > +	"  --disable-display\t\tDisable all screen and try to go into runti=
+me
+> pm.\n"
+> > > +	"  --setup-d3cold\t\tPrepare dgfx gfx card to enter runtime D3Cold.=
+\n"
+> > > +	"  --help\t\tProvide help. Provide card name with
+> > > +IGT_DEVICE=3Ddrm:/dev/dri/card*."; static struct option long_options=
+[] =3D {
+> > > +	{"disable-display", 0, 0, 'd'},
+> > > +	{"setup-d3cold", 0, 0, 's'},
+> > > +	{"help", 0, 0, 'h'},
+> > > +	{ 0, 0, 0, 0 }
+> > > +};
+> > > +
+> > > +const char *optstr =3D "dsh";
+> > > +
+> > > +static void usage(const char *name) {
+> > > +	igt_info("Usage: %s [options]\n", name);
+> > > +	igt_info("%s\n", help_str);
+> > > +}
+> > > +
+> > > +static void disable_all_displays(data_t *data) {
+> > > +	igt_output_t *output;
+> > > +
+> > > +	for (int i =3D 0; i < data->display.n_outputs; i++) {
+> > > +		output =3D &data->display.outputs[i];
+> > > +		igt_output_set_pipe(output, PIPE_NONE);
+> > > +		igt_display_commit(&data->display);
+> > > +	}
+> > > +}
+> > > +
+> > > +static void setup_gfx_card_d3cold(data_t *data) {
+> > > +	struct pci_device *root;
+> > > +	int d_state;
+> > > +
+> > > +	/* igfx does not support d3cold */
+> > > +	if (!IS_DGFX(data->devid))
+> > > +		return;
+> >
+> > I believe the if below will already take care of this since the
+> > real_power_state won't show up. However, let's keep this check here to
+> > be really clear on the expectations and to avoid navigating the tree in=
+ vain...
+> >
+> > > +
+> > > +	root =3D igt_device_get_pci_root_port(data->drm_fd);
+> > > +
+> > > +	if (!igt_pm_acpi_d3cold_supported(root)) {
+> > > +		igt_info("D3Cold isn't supported on Root port
+> %04x:%02x:%02x.%01x\n",
+> > > +			 root->domain, root->bus, root->dev, root->func);
+> > > +		return;
+> > > +	}
+> > > +
+> > > +	disable_all_displays(data);
+> > > +	igt_pm_setup_pci_card_runtime_pm(root);
+> > > +	sleep(1);
+> > > +	d_state =3D igt_pm_get_acpi_real_d_state(root);
+> > > +
+> > > +	if (d_state =3D=3D IGT_ACPI_D3Cold) {
+> > > +		igt_info("D3Cold achieved for root port
+> %04x:%02x:%02x.%01x\n",
+> > > +			 root->domain, root->bus, root->dev, root->func);
+> > > +	} else {
+> > > +		igt_pm_print_pci_card_runtime_status();
+> > > +		igt_info("D3Cold not achieved yet. Please monitor
+> %04x:%02x:%02x.%01x real_power_state\n",
+> > > +			 root->domain, root->bus, root->dev, root->func);
+>=20
+>=20
+> oh, I had forgot to send comment on this one...
+> I believe that with sleep(1) above you are always reaching to this msg he=
+re, no?!
+>=20
+> Should we also change the autosuspend from everyone to 1 and maybe wait 2
+> here?
+May be 0 should be ok to write all devices auto suspend delay.
+The problem is here writing 1 will conflict with existing i915 runtime pm s=
+etup layer,
+Which writes 0 to i915 auto suspend delay.
+
+Another issue I had observed while writing auto suspend delay ,
+Few pci devices doesn't support auto-suspend.
+---------------------------------------------------------------------------=
+-------
+ta@DUT2135-DG2MRB:~/drivers.gpu.i915.igt-gpu-tools$ sudo ./build/tools/inte=
+l_pm_rpm --s
+Device /dev/dri/card1 successfully opened
+DMC: fw loaded: yes
+Test requirement not met in function __igt_pm_setup_pci_card_runtime_pm, fi=
+le ../lib/igt_pm.c:969:
+Test requirement: read(delay_fd, delay, delay_size - 1) > 0
+PCI '0000:02:01.0' doesn't support auto_suspend
+Last errno: 5, Input/output error
+---------------------------------------------------------------------------=
+-------=20
+
+Br,
+Anshuman Gupta.
+>=20
+> > > +	}
+> > > +}
+> > > +
+> > > +int main(int argc, char *argv[])
+> > > +{
+> > > +	bool disable_display =3D false, setup_d3cold =3D false;
+> > > +	struct igt_device_card card;
+> > > +	char *env_device =3D NULL;
+> > > +	int c, option_index =3D 0;
+> > > +	data_t data =3D {};
+> > > +	int ret =3D 0;
+> > > +
+> > > +	if (argc <=3D 1) {
+> > > +		usage(argv[0]);
+> > > +		return EXIT_SUCCESS;
+> > > +	}
+> > > +
+> > > +	env_device =3D getenv("IGT_DEVICE");
+> > > +	igt_devices_scan(false);
+> > > +
+> > > +	if (env_device) {
+> > > +		if (!igt_device_card_match(env_device, &card)) {
+> > > +			igt_warn("No device found for the env_device\n");
+> > > +			ret =3D EXIT_FAILURE;
+> > > +			goto exit;
+> > > +		}
+> > > +	} else {
+> > > +		if (!igt_device_find_first_i915_discrete_card(&card)) {
+> > > +			igt_warn("No discrete gpu found\n");
+> > > +			ret =3D EXIT_FAILURE;
+> > > +			goto exit;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	while ((c =3D getopt_long(argc, argv, optstr,
+> > > +				long_options, &option_index)) !=3D -1) {
+> > > +		switch (c) {
+> > > +		case 'd':
+> > > +			disable_display =3D true;
+> > > +			break;
+> > > +		case 's':
+> > > +			setup_d3cold =3D true;
+> > > +			break;
+> > > +		default:
+> > > +		case 'h':
+> > > +			usage(argv[0]);
+> > > +			ret =3D EXIT_SUCCESS;
+> > > +			goto exit;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	data.drm_fd =3D igt_open_card(&card);
+> > > +	if (data.drm_fd  >=3D 0) {
+> > > +		igt_info("Device %s successfully opened\n", card.card);
+> > > +	} else {
+> > > +		igt_warn("Cannot open card %s device\n", card.card);
+> > > +		ret =3D EXIT_FAILURE;
+> > > +		goto exit;
+> > > +	}
+> > > +
+> > > +	data.debugfs_fd =3D igt_debugfs_dir(data.drm_fd);
+> > > +	data.devid =3D intel_get_drm_devid(data.drm_fd);
+> > > +	igt_setup_runtime_pm(data.drm_fd);
+> > > +
+> > > +	data.res =3D drmModeGetResources(data.drm_fd);
+> > > +	if (data.res) {
+> > > +		kmstest_set_vt_graphics_mode();
+> > > +		igt_display_require(&data.display, data.drm_fd);
+> > > +
+> > > +		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
+> > > +			igt_warn("dmc fw is not loaded, no runtime pm\n");
+> > > +			ret =3D EXIT_FAILURE;
+> > > +			goto exit;
+> > > +		}
+> > > +	}
+> >
+> > Do we really need this? It is only for checking if DMC is there in case=
+ we have
+> display right?
+> > Should deserve a comment at least...
+> >
+> > but already can use my:
+> >
+> > Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> >
+> > if explained with reply here or with comment if you see it fits
+> >
+> > > +
+> > > +	if (disable_display) {
+> > > +		disable_all_displays(&data);
+> > > +		if
+> (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
+> > > +			__igt_debugfs_dump(data.drm_fd,
+> "i915_runtime_pm_status", IGT_LOG_INFO);
+> > > +			ret =3D EXIT_FAILURE;
+> > > +			goto exit;
+> > > +		}
+> > > +
+> > > +		igt_info("Device runtime suspended, Useful for debugging.\n"
+> > > +			 "Hit CTRL-C to exit\n");
+> > > +		/* Don't return useful for debugging */
+> > > +		while (1)
+> > > +			sleep(600);
+> > > +	}
+> > > +
+> > > +	if (setup_d3cold)
+> > > +		setup_gfx_card_d3cold(&data);
+> > > +
+> > > +exit:
+> > > +	igt_restore_runtime_pm();
+> > > +
+> > > +	if (data.res)
+> > > +		igt_display_fini(&data.display);
+> > > +
+> > > +	close(data.debugfs_fd);
+> > > +	close(data.drm_fd);
+> > > +	igt_devices_free();
+> > > +
+> > > +	return ret;
+> > > +}
+> > > diff --git a/tools/meson.build b/tools/meson.build index
+> > > 771d0b9e3..24d0ea714 100644
+> > > --- a/tools/meson.build
+> > > +++ b/tools/meson.build
+> > > @@ -28,6 +28,7 @@ tools_progs =3D [
+> > >  	'intel_lid',
+> > >  	'intel_opregion_decode',
+> > >  	'intel_panel_fitter',
+> > > +	'intel_pm_rpm',
+> > >  	'intel_reg_checker',
+> > >  	'intel_residency',
+> > >  	'intel_stepping',
+> > > --
+> > > 2.26.2
+> > >
