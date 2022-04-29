@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93DE610FB2D
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 06:28:56 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: igt-dev@lists.freedesktop.org,
-	priyanka.dandamudi@intel.com
-Date: Fri, 29 Apr 2022 11:50:18 +0530
-Message-Id: <20220429062018.562391-3-priyanka.dandamudi@intel.com>
-In-Reply-To: <20220429062018.562391-1-priyanka.dandamudi@intel.com>
-References: <20220429062018.562391-1-priyanka.dandamudi@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C34710F699
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 06:44:58 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 29 Apr 2022 08:44:46 +0200
+Message-Id: <20220429064446.13020-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: don't do full run
+Subject: [igt-dev] [PATCH i-g-t] HAX: test prime_mmap_coherency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +20,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-
-Just for test description, no full run is necessary.
-
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 182 +-------------------------
- 1 file changed, 1 insertion(+), 181 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 185 +-------------------------
+ 1 file changed, 4 insertions(+), 181 deletions(-)
 
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index d075aa31..1d57372d 100644
+index d075aa3124..2d3bcc7564 100644
 --- a/tests/intel-ci/fast-feedback.testlist
 +++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,183 +1,3 @@
+@@ -1,183 +1,6 @@
  # Keep alphabetically sorted by default
  
 -igt@core_auth@basic-auth
@@ -220,6 +212,9 @@ index d075aa31..1d57372d 100644
 -igt@gem_exec_suspend@basic-s3
 -igt@kms_chamelium@common-hpd-after-suspend
 -igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
++igt@prime_mmap_coherency@read
++igt@prime_mmap_coherency@write
++igt@prime_mmap_coherency@ioctl-errors
 +igt@meta_test@fail-result
 -- 
-2.25.1
+2.32.0
