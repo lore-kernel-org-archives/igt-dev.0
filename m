@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 969A910FB8D
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 07:23:42 +0000 (UTC)
-Date: Fri, 29 Apr 2022 10:23:50 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Alex Hung <alex.hung@amd.com>
-Message-ID: <YmuShjl2kI4G8MNJ@platvala-desk.ger.corp.intel.com>
-References: <20220415003328.514267-1-alex.hung@amd.com>
- <20220415003328.514267-2-alex.hung@amd.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C8A510FCEF
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 07:27:16 +0000 (UTC)
+Date: Fri, 29 Apr 2022 09:27:12 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YmuTUGQ3ZfVDb+QZ@kamilkon-DESK1>
+References: <20220429062018.562391-1-priyanka.dandamudi@intel.com>
+ <20220429062018.562391-2-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220415003328.514267-2-alex.hung@amd.com>
-Subject: Re: [igt-dev] [PATCH 2/2] tests/kms_panel_fitting: Skip
- atomic-fastset for non-i915
+In-Reply-To: <20220429062018.562391-2-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_madvise: added description
+ for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,44 +21,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 14, 2022 at 06:33:28PM -0600, Alex Hung wrote:
-> In kernel function drm_atomic_check_only checks allow_modeset,
-> and it can return -EINVAL (-22) for non-i915 devices.
+On 2022-04-29 at 11:50:17 +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> Therefore, let's skip atomic-fastset subtest for non-i915 until
-> specific implementation is added for each gpu driver.
+> Added description for subtests.
 > 
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Ranjeet kumar <ranjeet1.kumar@intel.com>
+------------------------ ^
+s/kumar/Kumar/
+
+Rest is ok so keep r-b tag.
+
+Regards,
+Kamil
+
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Acked-by: Katarzyna Dec <katarzyna.dec@intel.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/kms_panel_fitting.c | 1 +
->  1 file changed, 1 insertion(+)
+>  tests/i915/gem_madvise.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-> index 7ed0d196..9f607376 100644
-> --- a/tests/kms_panel_fitting.c
-> +++ b/tests/kms_panel_fitting.c
-> @@ -242,6 +242,7 @@ static void test_atomic_fastset(data_t *data)
->  	int valid_tests = 0;
->  	struct stat sb;
+> diff --git a/tests/i915/gem_madvise.c b/tests/i915/gem_madvise.c
+> index d88747a9..2502d84c 100644
+> --- a/tests/i915/gem_madvise.c
+> +++ b/tests/i915/gem_madvise.c
+> @@ -190,15 +190,23 @@ dontneed_before_exec(void)
 >  
-> +	igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
+>  igt_main
+>  {
+> +	igt_describe("Check signal for Segmentation Fault and bus error before"
+> +		     " obtaining a purgeable object and calling for sighandler.");
+>  	igt_subtest("dontneed-before-mmap")
+>  		dontneed_before_mmap();
 >  
->  	if (is_i915_device(display->drm_fd)) {
-
-This if becomes redundant now.
-
-
--- 
-Petri Latvala
-
-
-
->  		/* Until this is force enabled, force modeset evasion. */
+> +	igt_describe("Check signal for Segmentation Fault and bus error after"
+> +		     " obtaining a purgeable object and calling for sighandler.");
+>  	igt_subtest("dontneed-after-mmap")
+>  		dontneed_after_mmap();
+>  
+> +	igt_describe("Check if PWRITE reports EFAULT when trying to use purged bo"
+> +		     " for write operation.");
+>  	igt_subtest("dontneed-before-pwrite")
+>  		dontneed_before_pwrite();
+>  
+> +	igt_describe("Check if EXECBUFFER2 reports EFAULT when trying to submit"
+> +		     " purged bo for GPU.");
+>  	igt_subtest("dontneed-before-exec")
+>  		dontneed_before_exec();
+>  }
 > -- 
-> 2.35.1
+> 2.25.1
 > 
