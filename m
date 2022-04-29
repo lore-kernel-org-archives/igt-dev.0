@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5F7810ED1B
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 13:28:07 +0000 (UTC)
-Date: Fri, 29 Apr 2022 16:28:14 +0300
-From: Petri Latvala <petri.latvala@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A38310EBC4
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 13:42:56 +0000 (UTC)
+Date: Fri, 29 Apr 2022 09:42:46 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Message-ID: <Ymvn7vI+yLo7oudN@platvala-desk.ger.corp.intel.com>
+Message-ID: <YmvrVotTrYp4ixKI@intel.com>
 References: <20220429085425.24568-1-anshuman.gupta@intel.com>
  <20220429085425.24568-7-anshuman.gupta@intel.com>
  <Ymvi/oPF1oyKyNwk@intel.com>
@@ -23,13 +23,13 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nilawar,
- Badal" <badal.nilawar@intel.com>, "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
+ Petri" <petri.latvala@intel.com>, "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 29, 2022 at 04:10:15PM +0300, Gupta, Anshuman wrote:
+On Fri, Apr 29, 2022 at 09:10:15AM -0400, Gupta, Anshuman wrote:
 > 
 > 
 > > -----Original Message-----
@@ -242,9 +242,29 @@ On Fri, Apr 29, 2022 at 04:10:15PM +0300, Gupta, Anshuman wrote:
 > > lmem_threshold);
 > > 
 > > but also we should probably do the save/restore with igt_fixture?
-> We can do once we have this param in kernel , otherwise CI will break for all i915_pm_rpm tests. 
+> We can do once we have this param in kernel , otherwise CI will break for all i915_pm_rpm tests.
 
-Does this mean LTS kernels are expected to be broken?
+I don't get it... why?
+Why can't we get_d3cold_sr_lmem_threshold(debugfs); at setup_environment()
+and set_d3cold_sr_lmem_threshold(debugfs, lmem_threshold) at teardown_environment()
+?
 
--- 
-Petri Latvala
+> Thanks,
+> Anshuman Gupta.
+> > 
+> > > +			}
+> > > +
+> > > +			igt_dynamic_f("%s-%s", "d3cold-vrsr", r->name) {
+> > > +				set_d3cold_sr_lmem_threshold(debugfs, 0);
+> > > +				gem_execbuf_stress_subtest(rounds,
+> > WAIT_STATUS | WAIT_D3COLD,
+> > > +							   &r->ci);
+> > > +				set_d3cold_sr_lmem_threshold(debugfs,
+> > lmem_threshold);
+> > > +			}
+> > >  		}
+> > >  	}
+> > >
+> > > --
+> > > 2.26.2
+> > >
