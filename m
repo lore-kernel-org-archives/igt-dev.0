@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05C5910ECC8
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 08:54:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC33410F664
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 08:54:56 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 29 Apr 2022 14:24:23 +0530
-Message-Id: <20220429085425.24568-7-anshuman.gupta@intel.com>
+Date: Fri, 29 Apr 2022 14:24:25 +0530
+Message-Id: <20220429085425.24568-9-anshuman.gupta@intel.com>
 In-Reply-To: <20220429085425.24568-1-anshuman.gupta@intel.com>
 References: <20220429085425.24568-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 6/8] i915_pm_rpm: Extend gem_exec_stress
+Subject: [igt-dev] [PATCH i-g-t v2 8/8] i915_pm_rpm: Extend gem-mmap-type
  test with D3Cold
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,197 +24,125 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added d3cold dynamic subtest to gem_exec_stress with device class
+Added d3cold dynamic subtest to gem-mmap-type with device class
 memory region. It test both D3Cold-{VRAM_SR, Off} by using
 d3cold_sr_lmem_threshold i915_params debugfs.
 
 v2:
 - Two different subtest d3cold-off and d3cold-vrsr. [Rodrigo]
-- commit header modification.
 
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 97 ++++++++++++++++++++++++++++++++++------
- 1 file changed, 83 insertions(+), 14 deletions(-)
+ tests/i915/i915_pm_rpm.c | 44 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
 diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 31f9712a8..1ef76f562 100644
+index 97a84359b..8ca6ba2c8 100644
 --- a/tests/i915/i915_pm_rpm.c
 +++ b/tests/i915/i915_pm_rpm.c
-@@ -85,6 +85,7 @@ enum plane_type {
- #define WAIT_PC8_RES	2
- #define WAIT_EXTRA	4
- #define USE_DPMS	8
-+#define WAIT_D3COLD	16
- 
- int drm_fd, msr_fd, pc8_status_fd;
- int debugfs;
-@@ -215,6 +216,21 @@ static bool wait_for_suspended(void)
- 	}
+@@ -1121,11 +1121,12 @@ static struct pci_device *setup_d3cold_and_get_root_port(void)
  }
  
-+static bool wait_for_d3cold(struct pci_device *root)
-+{
-+	bool d3colded;
-+
-+	d3colded = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
-+
-+	if (!d3colded) {
-+		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
-+			 root->domain, root->bus, root->dev, root->func);
-+		igt_pm_print_pci_card_runtime_status();
-+	}
-+
-+	return d3colded;
-+}
-+
- static bool wait_for_active(void)
- {
- 	if (has_pc8 && !has_runtime_pm)
-@@ -744,6 +760,30 @@ static void test_i2c(struct mode_set_data *data)
- 			"There is an EDID mismatch between i2c and DRM!\n");
- }
- 
-+static int get_d3cold_sr_lmem_threshold(int dir)
-+{
-+	int param_dir, lmem_threshold, ret;
-+
-+	param_dir = openat(dir, "i915_params", O_RDONLY);
-+	ret = igt_sysfs_scanf(param_dir, "d3cold_sr_lmem_threshold", "%d", &lmem_threshold);
-+	igt_assert(ret >= 0);
-+
-+	close(param_dir);
-+	return lmem_threshold;
-+}
-+
-+static int set_d3cold_sr_lmem_threshold(int dir, int val)
-+{
-+	int param_dir, ret;
-+
-+	param_dir = openat(dir, "i915_params", O_RDONLY);
-+	ret = igt_sysfs_printf(param_dir, "d3cold_sr_lmem_threshold", "%d", val);
-+	igt_assert(ret > 0);
-+
-+	close(param_dir);
-+	return ret;
-+}
-+
- static void setup_pc8(void)
- {
- 	has_pc8 = false;
-@@ -1069,6 +1109,17 @@ static void debugfs_forcewake_user_subtest(void)
- 	igt_assert(wait_for_suspended());
- }
- 
-+static struct pci_device *setup_d3cold_and_get_root_port(void)
-+{
-+	struct pci_device *root;
-+
-+	root = igt_device_get_pci_root_port(drm_fd);
-+	igt_require(igt_pm_acpi_d3cold_supported(root));
-+	igt_pm_setup_pci_card_runtime_pm(root);
-+
-+	return root;
-+}
-+
  static void gem_mmap_args(const struct mmap_offset *t,
- 			  struct drm_i915_gem_memory_class_instance *mem_regions)
+-			  struct drm_i915_gem_memory_class_instance *mem_regions)
++			  struct drm_i915_gem_memory_class_instance *mem_regions, bool d3cold)
  {
-@@ -1392,6 +1443,7 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
  	int i;
- 	int batch_size = 4 * sizeof(uint32_t);
- 	uint32_t batch_buf[batch_size];
-+	struct pci_device *root;
  	uint32_t handle;
- 	struct drm_i915_gem_execbuffer2 execbuf = {};
- 	struct drm_i915_gem_exec_object2 objs[1] = {{}};
-@@ -1408,6 +1460,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
- 	batch_buf[i++] = MI_NOOP;
- 	igt_assert(i * sizeof(uint32_t) == batch_size);
+ 	int buf_size = 8192;
++	struct pci_device *root;
+ 	uint8_t *gem_buf;
  
-+	if (wait_flags & WAIT_D3COLD)
+ 	/* Create, map and set data while the device is active. */
+@@ -1143,17 +1144,29 @@ static void gem_mmap_args(const struct mmap_offset *t,
+ 	for (i = 0; i < buf_size; i++)
+ 		igt_assert(gem_buf[i] == (i & 0xFF));
+ 
++	if (d3cold)
 +		root = setup_d3cold_and_get_root_port();
 +
+ 	/* Now suspend, read and modify. */
  	disable_all_screens_and_wait(&ms_data);
  
- 	/* PC8 test is only applicable to igfx  */
-@@ -1433,6 +1488,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
- 			/* clean up idle work */
- 			igt_drop_caches_set(drm_fd, DROP_IDLE);
- 			igt_assert(wait_for_suspended());
-+			if (wait_flags & WAIT_D3COLD)
-+				igt_assert(wait_for_d3cold(root));
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
 +
- 		}
- 		if (wait_flags & WAIT_PC8_RES)
- 			igt_assert(pc8_plus_residency_changed(30));
-@@ -1440,6 +1498,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
- 			sleep(5);
- 	}
+ 	for (i = 0; i < buf_size; i++)
+ 		igt_assert(gem_buf[i] == (i & 0xFF));
+ 	igt_assert(wait_for_suspended());
  
-+	if (wait_flags & WAIT_D3COLD)
-+		igt_pm_restore_pci_card_runtime_pm();
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
 +
- 	gem_close(drm_fd, handle);
- }
+ 	for (i = 0; i < buf_size; i++)
+ 		gem_buf[i] = (~i & 0xFF);
+ 	igt_assert(wait_for_suspended());
  
-@@ -1537,22 +1598,10 @@ __noreturn static void stay_subtest(void)
- static void d3cold_basic_subtest(void)
- {
- 	struct pci_device *root;
--	bool result;
- 
--	root = igt_device_get_pci_root_port(drm_fd);
--	igt_require(igt_pm_acpi_d3cold_supported(root));
--	igt_pm_setup_pci_card_runtime_pm(root);
-+	root = setup_d3cold_and_get_root_port();
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	/* Now resume and see if it's still there. */
+ 	enable_one_screen_and_wait(&ms_data);
+ 	for (i = 0; i < buf_size; i++)
+@@ -1165,12 +1178,18 @@ static void gem_mmap_args(const struct mmap_offset *t,
+ 	 * suspended. */
  	disable_all_screens_and_wait(&ms_data);
--
--	result = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
--
--	if (!result) {
--		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
--			 root->domain, root->bus, root->dev, root->func);
--		igt_pm_print_pci_card_runtime_status();
--	}
--
--	igt_assert(result);
-+	igt_assert(wait_for_d3cold(root));
- 	igt_pm_restore_pci_card_runtime_pm();
- }
  
-@@ -2206,11 +2255,31 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	igt_describe("Validate execbuf submission while exercising rpm "
- 		     "suspend/resume cycles.");
- 	igt_subtest_with_dynamic("gem-execbuf-stress") {
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
+ 				    PROT_READ | PROT_WRITE, t->type);
+ 	igt_require(gem_buf);
+ 
+ 	igt_assert(wait_for_suspended());
+ 
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	for (i = 0; i < buf_size; i++)
+ 		gem_buf[i] = i & 0xFF;
+ 
+@@ -1179,6 +1198,9 @@ static void gem_mmap_args(const struct mmap_offset *t,
+ 
+ 	igt_assert(wait_for_suspended());
+ 
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	/* Resume and check if it's still there. */
+ 	enable_one_screen_and_wait(&ms_data);
+ 	for (i = 0; i < buf_size; i++)
+@@ -2172,10 +2194,28 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 
+ 	/* GEM */
+ 	igt_subtest_with_dynamic("gem-mmap-type") {
 +		int lmem_threshold;
 +
- 		for_each_memory_region(r, drm_fd) {
- 			igt_dynamic_f("%s", r->name)
- 				gem_execbuf_stress_subtest(rounds, WAIT_STATUS, &r->ci);
- 			igt_dynamic_f("%s-%s", "extra-wait", r->name)
- 				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_EXTRA, &r->ci);
+ 		for_each_mmap_offset_type(drm_fd, t) {
+ 			for_each_memory_region(r, drm_fd) {
+ 				igt_dynamic_f("%s-%s", t->name, r->name)
+-				gem_mmap_args(t, &r->ci);
++				gem_mmap_args(t, &r->ci, false);
 +
-+			if (r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM)
-+				continue;
++				if (r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM)
++					continue;
 +
-+			lmem_threshold = get_d3cold_sr_lmem_threshold(debugfs);
-+			igt_dynamic_f("%s-%s", "d3cold-off", r->name) {
-+				set_d3cold_sr_lmem_threshold(debugfs, 300);
-+				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_D3COLD,
-+							   &r->ci);
-+				set_d3cold_sr_lmem_threshold(debugfs, lmem_threshold);
-+			}
++				lmem_threshold = get_d3cold_sr_lmem_threshold(debugfs);
++				igt_dynamic_f("%s-%s-%s", t->name, "d3cold-off", r->name) {
++					set_d3cold_sr_lmem_threshold(debugfs, 300);
++					gem_mmap_args(t, &r->ci, true);
++					set_d3cold_sr_lmem_threshold(debugfs, lmem_threshold);
++				}
 +
-+			igt_dynamic_f("%s-%s", "d3cold-vrsr", r->name) {
-+				set_d3cold_sr_lmem_threshold(debugfs, 0);
-+				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_D3COLD,
-+							   &r->ci);
-+				set_d3cold_sr_lmem_threshold(debugfs, lmem_threshold);
-+			}
++				igt_dynamic_f("%s-%s-%s", t->name, "d3cold-vrsr", r->name) {
++					set_d3cold_sr_lmem_threshold(debugfs, 0);
++					gem_mmap_args(t, &r->ci, true);
++					set_d3cold_sr_lmem_threshold(debugfs, lmem_threshold);
++				}
+ 			}
  		}
  	}
- 
 -- 
 2.26.2
