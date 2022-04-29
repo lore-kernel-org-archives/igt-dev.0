@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com
- [IPv6:2a00:1450:4864:20::22e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3AA810ECBF
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 13:01:46 +0000 (UTC)
-Received: by mail-lj1-x22e.google.com with SMTP id l19so10442611ljb.7
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 06:01:46 -0700 (PDT)
-Date: Fri, 29 Apr 2022 16:01:41 +0300
-From: Pekka Paalanen <ppaalanen@gmail.com>
-To: Maxime Ripard <maxime@cerno.tech>
-Message-ID: <20220429160141.0c9a394b@eldfell>
-In-Reply-To: <20220328145509.2331195-9-maxime@cerno.tech>
-References: <20220328145509.2331195-1-maxime@cerno.tech>
- <20220328145509.2331195-9-maxime@cerno.tech>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BE1410ECD6
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Apr 2022 13:07:25 +0000 (UTC)
+Date: Fri, 29 Apr 2022 09:07:10 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <Ymvi/oPF1oyKyNwk@intel.com>
+References: <20220429085425.24568-1-anshuman.gupta@intel.com>
+ <20220429085425.24568-7-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/HMCI4Ff1yBa7k1.diJYAENl";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Subject: Re: [igt-dev] [PATCH i-g-t v2 8/8] tests/kms_writeback: Use a
- garbage X value to create fill our test buffer
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220429085425.24568-7-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 6/8] i915_pm_rpm: Extend
+ gem_exec_stress test with D3Cold
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,78 +21,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com,
+ badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---Sig_/HMCI4Ff1yBa7k1.diJYAENl
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 28 Mar 2022 16:55:09 +0200
-Maxime Ripard <maxime@cerno.tech> wrote:
-
-> Since we use buffers in XRGB8888, whatever value we have in X should be
-> ignored by the drivers and the hardware. However, since we always use
-> 0xff in our test, whether that is the case or not cannot be determined.
->=20
-> Let's use a garbage value (but consistent across test runs) to make sure
-> it doesn't have any impact on the writeback output.
->=20
-> Signed-off-by: Maxime Ripard <maxime@cerno.tech>
-
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-
-Yup, this is definitely a good idea.
-
-I proposed to do the same in VKMS when writing out to XRGB writeback
-buffer after blending, but Igor had the same problem as you with IGT. I
-hope this series solves it.
-
-
-Thanks,
-pq
-
+On Fri, Apr 29, 2022 at 02:24:23PM +0530, Anshuman Gupta wrote:
+> Added d3cold dynamic subtest to gem_exec_stress with device class
+> memory region. It test both D3Cold-{VRAM_SR, Off} by using
+> d3cold_sr_lmem_threshold i915_params debugfs.
+> 
+> v2:
+> - Two different subtest d3cold-off and d3cold-vrsr. [Rodrigo]
+> - commit header modification.
+> 
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 > ---
->  tests/kms_writeback.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-> index 2366692865b7..4efd99713479 100644
-> --- a/tests/kms_writeback.c
-> +++ b/tests/kms_writeback.c
-> @@ -293,7 +293,7 @@ static void writeback_sequence(igt_output_t *output, =
-igt_plane_t *plane,
->  				igt_fb_t *in_fb, igt_fb_t *out_fbs[], int n_commits)
+>  tests/i915/i915_pm_rpm.c | 97 ++++++++++++++++++++++++++++++++++------
+>  1 file changed, 83 insertions(+), 14 deletions(-)
+> 
+> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> index 31f9712a8..1ef76f562 100644
+> --- a/tests/i915/i915_pm_rpm.c
+> +++ b/tests/i915/i915_pm_rpm.c
+> @@ -85,6 +85,7 @@ enum plane_type {
+>  #define WAIT_PC8_RES	2
+>  #define WAIT_EXTRA	4
+>  #define USE_DPMS	8
+> +#define WAIT_D3COLD	16
+>  
+>  int drm_fd, msr_fd, pc8_status_fd;
+>  int debugfs;
+> @@ -215,6 +216,21 @@ static bool wait_for_suspended(void)
+>  	}
+>  }
+>  
+> +static bool wait_for_d3cold(struct pci_device *root)
+> +{
+> +	bool d3colded;
+> +
+> +	d3colded = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
+> +
+> +	if (!d3colded) {
+> +		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
+> +			 root->domain, root->bus, root->dev, root->func);
+> +		igt_pm_print_pci_card_runtime_status();
+> +	}
+> +
+> +	return d3colded;
+> +}
+> +
+>  static bool wait_for_active(void)
 >  {
->  	int i =3D 0;
-> -	uint32_t in_fb_colors[2] =3D { 0xffff0000, 0xff00ff00 };
-> +	uint32_t in_fb_colors[2] =3D { 0x42ff0000, 0x4200ff00 };
->  	uint32_t clear_color =3D 0xffffffff;
-> =20
->  	igt_crc_t cleared_crc, out_expected;
+>  	if (has_pc8 && !has_runtime_pm)
+> @@ -744,6 +760,30 @@ static void test_i2c(struct mode_set_data *data)
+>  			"There is an EDID mismatch between i2c and DRM!\n");
+>  }
+>  
+> +static int get_d3cold_sr_lmem_threshold(int dir)
+> +{
+> +	int param_dir, lmem_threshold, ret;
+> +
+> +	param_dir = openat(dir, "i915_params", O_RDONLY);
+> +	ret = igt_sysfs_scanf(param_dir, "d3cold_sr_lmem_threshold", "%d", &lmem_threshold);
+> +	igt_assert(ret >= 0);
+> +
+> +	close(param_dir);
+> +	return lmem_threshold;
+> +}
+> +
+> +static int set_d3cold_sr_lmem_threshold(int dir, int val)
+> +{
+> +	int param_dir, ret;
+> +
+> +	param_dir = openat(dir, "i915_params", O_RDONLY);
+> +	ret = igt_sysfs_printf(param_dir, "d3cold_sr_lmem_threshold", "%d", val);
+> +	igt_assert(ret > 0);
+> +
+> +	close(param_dir);
+> +	return ret;
+> +}
+> +
+>  static void setup_pc8(void)
+>  {
+>  	has_pc8 = false;
+> @@ -1069,6 +1109,17 @@ static void debugfs_forcewake_user_subtest(void)
+>  	igt_assert(wait_for_suspended());
+>  }
+>  
+> +static struct pci_device *setup_d3cold_and_get_root_port(void)
+> +{
+> +	struct pci_device *root;
+> +
+> +	root = igt_device_get_pci_root_port(drm_fd);
+> +	igt_require(igt_pm_acpi_d3cold_supported(root));
+> +	igt_pm_setup_pci_card_runtime_pm(root);
+> +
+> +	return root;
+> +}
+> +
+>  static void gem_mmap_args(const struct mmap_offset *t,
+>  			  struct drm_i915_gem_memory_class_instance *mem_regions)
+>  {
+> @@ -1392,6 +1443,7 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
+>  	int i;
+>  	int batch_size = 4 * sizeof(uint32_t);
+>  	uint32_t batch_buf[batch_size];
+> +	struct pci_device *root;
+>  	uint32_t handle;
+>  	struct drm_i915_gem_execbuffer2 execbuf = {};
+>  	struct drm_i915_gem_exec_object2 objs[1] = {{}};
+> @@ -1408,6 +1460,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
+>  	batch_buf[i++] = MI_NOOP;
+>  	igt_assert(i * sizeof(uint32_t) == batch_size);
+>  
+> +	if (wait_flags & WAIT_D3COLD)
+> +		root = setup_d3cold_and_get_root_port();
+> +
+>  	disable_all_screens_and_wait(&ms_data);
+>  
+>  	/* PC8 test is only applicable to igfx  */
+> @@ -1433,6 +1488,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
+>  			/* clean up idle work */
+>  			igt_drop_caches_set(drm_fd, DROP_IDLE);
+>  			igt_assert(wait_for_suspended());
+> +			if (wait_flags & WAIT_D3COLD)
+> +				igt_assert(wait_for_d3cold(root));
+> +
+>  		}
+>  		if (wait_flags & WAIT_PC8_RES)
+>  			igt_assert(pc8_plus_residency_changed(30));
+> @@ -1440,6 +1498,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
+>  			sleep(5);
+>  	}
+>  
+> +	if (wait_flags & WAIT_D3COLD)
+> +		igt_pm_restore_pci_card_runtime_pm();
+> +
+>  	gem_close(drm_fd, handle);
+>  }
+>  
+> @@ -1537,22 +1598,10 @@ __noreturn static void stay_subtest(void)
+>  static void d3cold_basic_subtest(void)
+>  {
+>  	struct pci_device *root;
+> -	bool result;
+>  
+> -	root = igt_device_get_pci_root_port(drm_fd);
+> -	igt_require(igt_pm_acpi_d3cold_supported(root));
+> -	igt_pm_setup_pci_card_runtime_pm(root);
+> +	root = setup_d3cold_and_get_root_port();
+>  	disable_all_screens_and_wait(&ms_data);
+> -
+> -	result = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
+> -
+> -	if (!result) {
+> -		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
+> -			 root->domain, root->bus, root->dev, root->func);
+> -		igt_pm_print_pci_card_runtime_status();
+> -	}
+> -
+> -	igt_assert(result);
+> +	igt_assert(wait_for_d3cold(root));
+>  	igt_pm_restore_pci_card_runtime_pm();
+>  }
+>  
+> @@ -2206,11 +2255,31 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  	igt_describe("Validate execbuf submission while exercising rpm "
+>  		     "suspend/resume cycles.");
+>  	igt_subtest_with_dynamic("gem-execbuf-stress") {
+> +		int lmem_threshold;
+> +
+>  		for_each_memory_region(r, drm_fd) {
+>  			igt_dynamic_f("%s", r->name)
+>  				gem_execbuf_stress_subtest(rounds, WAIT_STATUS, &r->ci);
+>  			igt_dynamic_f("%s-%s", "extra-wait", r->name)
+>  				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_EXTRA, &r->ci);
+> +
+> +			if (r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM)
+> +				continue;
+> +
+> +			lmem_threshold = get_d3cold_sr_lmem_threshold(debugfs);
 
+since we have just one global threashold and not one per memory region we can avoid the
+extra reads in here by moving it ouside.
 
---Sig_/HMCI4Ff1yBa7k1.diJYAENl
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+> +			igt_dynamic_f("%s-%s", "d3cold-off", r->name) {
+> +				set_d3cold_sr_lmem_threshold(debugfs, 300);
+> +				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_D3COLD,
+> +							   &r->ci);
+> +				set_d3cold_sr_lmem_threshold(debugfs, lmem_threshold);
 
------BEGIN PGP SIGNATURE-----
+but also we should probably do the save/restore with igt_fixture?
 
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmJr4bUACgkQI1/ltBGq
-qqdYjBAArVGIhmpzue1Um3tU4hrAsarqEUtM6WLFypgUX0cP+yycI0/enTowGPh3
-3NozsRN8iUNmZs4pg/O4Hl7CEbs9cYoHgWMDkzY/7aYchcXYJNoJQ10GrkDyG+y8
-4uFQXTCA13+odC69ndgPE9YFy/+KySv9NkjSYfIutg6rR1dSLN50cJ3s1YmLuaJs
-+AI23s5FwLviKXS1365GmVm5WRdZ5IUqzmLY8V3g0dzAmBAngli8P6rPUXnI2CMr
-1IBHi7g88mZl3jLNwUWystVbtkzXcWbELHD47HYEEYbsk0wbla320Sr97h1771AL
-V/1rjUSxzaCVWK2ZtJFPdJIU/koo/rMVPaXsxsblPHt16aqSTfNpwnEDBZVsgGCH
-Zwg9dLknSXbMASU240/lHPKkGGBRihjsqkGh0NeVXHRfyL6E7AIJikhD70qvai9m
-0QqLLRLxRIRg7i0yB9xyXGRLlKv3Sj9zlj5yAGy+uLbJYspejvSTEXnnXOHB+dHF
-cQtPMFMMym/Jd+WdxQ4ow2tA/b4fy+UzOnQZQl5gZriv55gDm2mESCkFbPePGplC
-+AfkS2hozZKC+cDY6C7ggVqkG1TkKDkihJTJpRIswLYtadfECDULkhBeaEp2cqjs
-mvgmB1Py6qEBjXRKxuuHaXB8nMCBWKcIc5Z9PPXO/tLZocvlC4g=
-=goCM
------END PGP SIGNATURE-----
-
---Sig_/HMCI4Ff1yBa7k1.diJYAENl--
+> +			}
+> +
+> +			igt_dynamic_f("%s-%s", "d3cold-vrsr", r->name) {
+> +				set_d3cold_sr_lmem_threshold(debugfs, 0);
+> +				gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_D3COLD,
+> +							   &r->ci);
+> +				set_d3cold_sr_lmem_threshold(debugfs, lmem_threshold);
+> +			}
+>  		}
+>  	}
+>  
+> -- 
+> 2.26.2
+> 
