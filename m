@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D558B10F66C
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 09:21:17 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 31 May 2022 14:19:29 +0530
-Message-Id: <20220531084929.28679-3-karthik.b.s@intel.com>
-In-Reply-To: <20220531084929.28679-1-karthik.b.s@intel.com>
-References: <20220531084929.28679-1-karthik.b.s@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CDCA10FF2B
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 May 2022 05:51:28 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Date: Mon, 2 May 2022 05:51:26 +0000
+Message-ID: <e75db8284f274036a2b278c56f4d8833@intel.com>
+References: <20220429085425.24568-1-anshuman.gupta@intel.com>
+ <20220429085425.24568-4-anshuman.gupta@intel.com>
+ <Ymv6jBIDhNOishd6@intel.com>
+In-Reply-To: <Ymv6jBIDhNOishd6@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 2/2] tests/kms_async_flips: Test
- Refactoring
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/8] lib/igt_pm: D3Cold runtime pm
+ infrastructure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,312 +23,453 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
+ Petri" <petri.latvala@intel.com>, "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Replace drm function call with existing library functions
-igt_display_reset() before all subtests
 
-v2: -Move conversion to dynamic subtest to a separate patch (Bhanu)
-    -Use igt_output_get_mode to get default mode (Bhanu)
-    -Add 'is_atomic' check before igt_display_commit2 (Bhanu)
 
-v3: -Move test_init after the checks to skip subtest (Bhanu)
-    -Update the logic to call make_fb() in test_init()
-
-v4: -Move patch after patch to convert tests to dynamic to avoid code
-     duplicaton. (Bhanu)
-
-v5: -Update commit message. (Bhanu)
-    -Move skip checks in the dynamic subtests before the start of the
-     subtest to optimize the test. (Bhanu)
-    -Close drm_fd at the end of the subtest.
-
-v6: -Fix identation for braces. (Andre)
-
-v7: -Remove '-' from commit description. (Kamil)
-
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_async_flips.c | 167 ++++++++++++++++++++++------------------
- 1 file changed, 90 insertions(+), 77 deletions(-)
-
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index c9129bb0..4a0527dc 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -50,7 +50,6 @@ typedef struct {
- 	uint32_t refresh_rate;
- 	struct igt_fb bufs[4];
- 	igt_display_t display;
--	drmModeConnectorPtr connector;
- 	igt_output_t *output;
- 	unsigned long flip_timestamp_us;
- 	double flip_interval;
-@@ -64,22 +63,6 @@ typedef struct {
- 	bool alternate_sync_async;
- } data_t;
- 
--static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
--{
--	igt_output_t *output;
--	drmModeConnectorPtr ret = NULL;
--
--	for_each_connected_output(&data->display, output) {
--		if (output->config.connector->count_modes > 0) {
--			ret = output->config.connector;
--			break;
--		}
--	}
--
--	igt_assert_f(ret, "Connector NOT found\n");
--	return ret;
--}
--
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
- 			 unsigned int tv_usec, void *_data)
- {
-@@ -133,15 +116,11 @@ static void wait_flip_event(data_t *data)
- }
- 
- static void make_fb(data_t *data, struct igt_fb *fb,
--		    drmModeConnectorPtr connector, int index)
-+		    uint32_t width, uint32_t height, int index)
- {
--	uint32_t width, height;
- 	int rec_width;
- 	cairo_t *cr;
- 
--	width = connector->modes[0].hdisplay;
--	height = connector->modes[0].vdisplay;
--
- 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
- 
- 	if (is_i915_device(data->drm_fd)) {
-@@ -163,13 +142,52 @@ static void require_monotonic_timestamp(int fd)
- 		      "Monotonic timestamps not supported\n");
- }
- 
-+static void test_init(data_t *data)
-+{
-+	int i;
-+	uint32_t width, height;
-+	igt_plane_t *plane;
-+	static uint32_t prev_output_id;
-+	drmModeModeInfo *mode;
-+
-+	igt_display_reset(&data->display);
-+	igt_display_commit(&data->display);
-+
-+	mode = igt_output_get_mode(data->output);
-+	width = mode->hdisplay;
-+	height = mode->vdisplay;
-+
-+	data->crtc_id = data->display.pipes[data->pipe].crtc_id;
-+	data->refresh_rate = mode->vrefresh;
-+
-+	igt_output_set_pipe(data->output, data->pipe);
-+	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	if (prev_output_id != data->output->id) {
-+		prev_output_id = data->output->id;
-+
-+		if (data->bufs[0].fb_id) {
-+			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-+				igt_remove_fb(data->drm_fd, &data->bufs[i]);
-+		}
-+
-+		for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-+			make_fb(data, &data->bufs[i], width, height, i);
-+	}
-+
-+	igt_plane_set_fb(plane, &data->bufs[0]);
-+	igt_plane_set_size(plane, width, height);
-+
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+}
-+
- static void test_async_flip(data_t *data)
- {
- 	int ret, frame;
- 	long long int fps;
- 	struct timeval start, end, diff;
- 
--	require_monotonic_timestamp(data->drm_fd);
-+	test_init(data);
- 
- 	gettimeofday(&start, NULL);
- 	frame = 1;
-@@ -262,7 +280,7 @@ static void test_timestamp(data_t *data)
- 	unsigned int seq, seq1;
- 	int ret;
- 
--	require_monotonic_timestamp(data->drm_fd);
-+	test_init(data);
- 
- 	/*
- 	 * In older platforms(<= gen10), async address update bit is double buffered.
-@@ -321,6 +339,8 @@ static void test_cursor(data_t *data)
- 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
- 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
- 
-+	test_init(data);
-+
- 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_ARGB8888,
- 			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
- 
-@@ -355,15 +375,13 @@ static void test_invalid(data_t *data)
- 	int ret;
- 	uint32_t width, height;
- 	struct igt_fb fb;
-+	drmModeModeInfo *mode;
- 
--	/* TODO: support more vendors */
--	igt_require(is_i915_device(data->drm_fd));
-+	mode = igt_output_get_mode(data->output);
-+	width = mode->hdisplay;
-+	height = mode->vdisplay;
- 
--	width = data->connector->modes[0].hdisplay;
--	height = data->connector->modes[0].vdisplay;
--
--	igt_require(igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
--					       I915_FORMAT_MOD_Y_TILED));
-+	test_init(data);
- 
- 	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
- 		      I915_FORMAT_MOD_Y_TILED, &fb);
-@@ -379,33 +397,6 @@ static void test_invalid(data_t *data)
- 	igt_remove_fb(data->drm_fd, &fb);
- }
- 
--static void test_init(data_t *data)
--{
--	drmModeResPtr res;
--	int i, ret;
--
--	res = drmModeGetResources(data->drm_fd);
--	igt_assert(res);
--
--	kmstest_unset_all_crtcs(data->drm_fd, res);
--
--	data->connector = find_connector_for_modeset(data);
--	data->crtc_id = kmstest_find_crtc_for_connector(data->drm_fd,
--							res, data->connector, 0);
--
--	data->refresh_rate = data->connector->modes[0].vrefresh;
--
--	for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
--		make_fb(data, &data->bufs[i], data->connector, i);
--
--	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[0].fb_id, 0, 0,
--			     &data->connector->connector_id, 1, &data->connector->modes[0]);
--
--	igt_assert(ret == 0);
--
--	drmModeFreeResources(res);
--}
--
- static void queue_vblank(data_t *data)
- {
- 	int pipe = kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id);
-@@ -491,13 +482,12 @@ static void test_crc(data_t *data)
- 	cairo_t *cr;
- 	int ret;
- 
--	/* Devices without CRC can't run this test */
--	igt_require_pipe_crc(data->drm_fd);
--
- 	data->flip_count = 0;
- 	data->frame_count = 0;
- 	data->flip_pending = false;
- 
-+	test_init(data);
-+
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
- 	igt_paint_color(cr, 0, 0, data->bufs[frame].width, data->bufs[frame].height, 1.0, 0.0, 0.0);
- 
-@@ -505,7 +495,8 @@ static void test_crc(data_t *data)
- 	igt_paint_color(cr, 0, 0, data->bufs[!frame].width, data->bufs[!frame].height, 1.0, 0.0, 0.0);
- 
- 	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id, 0, 0,
--			     &data->connector->connector_id, 1, &data->connector->modes[0]);
-+			     &data->output->config.connector->connector_id, 1,
-+			     &data->output->config.connector->modes[0]);
- 	igt_assert_eq(ret, 0);
- 
- 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
-@@ -598,7 +589,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 	igt_describe("Verify the async flip functionality and the fps during async flips");
- 	igt_subtest_group {
- 		igt_fixture
--			test_init(&data);
-+			require_monotonic_timestamp(data.drm_fd);
- 
- 		igt_describe("Wait for page flip events in between successive asynchronous flips");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
-@@ -615,25 +606,47 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
- 		igt_subtest_with_dynamic("test-time-stamp")
- 			run_test(&data, test_timestamp);
-+	}
- 
--		igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
--		igt_subtest_with_dynamic("test-cursor")
--			run_test(&data, test_cursor);
-+	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
-+	igt_subtest_with_dynamic("test-cursor") {
-+		/*
-+		 * Intel's PSR2 selective fetch adds other planes to state when
-+		 * necessary, causing the async flip to fail because async flip is not
-+		 * supported in cursor plane.
-+		 */
-+		igt_skip_on_f(i915_psr2_selective_fetch_check(data.drm_fd),
-+			      "PSR2 sel fetch causes cursor to be added to primary plane " \
-+			      "pages flips and async flip is not supported in cursor\n");
-+
-+		run_test(&data, test_cursor);
-+	}
- 
--		igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
--		igt_subtest_with_dynamic("invalid-async-flip")
--			run_test(&data, test_invalid);
-+	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
-+	igt_subtest_with_dynamic("invalid-async-flip") {
-+		/* TODO: support more vendors */
-+		igt_require(is_i915_device(data.drm_fd));
-+		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
-+						       I915_FORMAT_MOD_Y_TILED));
- 
--		igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
--		igt_subtest_with_dynamic("crc")
--			run_test(&data, test_crc);
-+		run_test(&data, test_invalid);
-+	}
- 
--		igt_fixture {
--			for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
--				igt_remove_fb(data.drm_fd, &data.bufs[i]);
--		}
-+	igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
-+	igt_subtest_with_dynamic("crc") {
-+		/* Devices without CRC can't run this test */
-+		igt_require_pipe_crc(data.drm_fd);
-+
-+		run_test(&data, test_crc);
- 	}
- 
--	igt_fixture
-+	igt_fixture {
-+		for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
-+			igt_remove_fb(data.drm_fd, &data.bufs[i]);
-+
-+		igt_display_reset(&data.display);
-+		igt_display_commit(&data.display);
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
-+	}
- }
--- 
-2.22.0
+> -----Original Message-----
+> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
+> Sent: Friday, April 29, 2022 8:18 PM
+> To: Gupta, Anshuman <anshuman.gupta@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; kamil.konieczny@linux.intel.com; Latva=
+la,
+> Petri <petri.latvala@intel.com>; Nilawar, Badal <badal.nilawar@intel.com>=
+;
+> Ewins, Jon <jon.ewins@intel.com>
+> Subject: Re: [PATCH i-g-t v2 3/8] lib/igt_pm: D3Cold runtime pm infrastru=
+cture
+>=20
+> On Fri, Apr 29, 2022 at 02:24:20PM +0530, Anshuman Gupta wrote:
+> > Enable gfx card pci devices runtime pm for all pci devices and bridge
+> > under the topology of Gfx Card root port.
+> >
+> > Added a library function to get the PCI root port ACPI D state and to
+> > print the pci card devices runtime pm status.
+> >
+> > v2:
+> > - Save pci dev power attr to dynamically allocated array. [Rodrigo]
+> > - Set autosuspend delay to 0 on supported devices. [Rodrigo]
+> > - %s/else if/else in  igt_pm_get_acpi_real_d_state. [Kamil]
+> >
+> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > ---
+> >  lib/igt_pm.c | 290
+> > +++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  lib/igt_pm.h |  23 ++++
+> >  2 files changed, 313 insertions(+)
+> >
+> > diff --git a/lib/igt_pm.c b/lib/igt_pm.c index b409ec463..20296c40b
+> > 100644
+> > --- a/lib/igt_pm.c
+> > +++ b/lib/igt_pm.c
+> > @@ -28,6 +28,7 @@
+> >  #include <fcntl.h>
+> >  #include <stdio.h>
+> >  #include <limits.h>
+> > +#include <pciaccess.h>
+> >  #include <stdlib.h>
+> >  #include <string.h>
+> >  #include <unistd.h>
+> > @@ -75,6 +76,7 @@ enum {
+> >  #define MIN_POWER_STR		"min_power\n"
+> >  /* Remember to fix this if adding longer strings */
+> >  #define MAX_POLICY_STRLEN	strlen(MAX_PERFORMANCE_STR)
+> > +#define MAX_PCI_DEVICES		256
+> >  int8_t *__sata_pm_policies;
+> >  int __scsi_host_cnt;
+> >
+> > @@ -856,3 +858,291 @@ bool i915_output_is_lpsp_capable(int drm_fd,
+> > igt_output_t *output)
+> >
+> >  	return strstr(buf, "LPSP: capable");  }
+> > +
+> > +/**
+> > + * igt_pm_acpi_d3cold_supported:
+> > + * @pci_dev: root port pci_dev.
+> > + * Check ACPI D3Cold support.
+> > + *
+> > + * Returns:
+> > + * True if ACPI D3Cold supported otherwise false.
+> > + */
+> > +bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev) {
+> > +	char name[PATH_MAX];
+> > +	int dir, fd;
+> > +
+> > +	snprintf(name, PATH_MAX,
+> > +
+> "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
+> > +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> > +
+> > +	dir =3D open(name, O_RDONLY);
+> > +	igt_require(dir > 0);
+> > +
+> > +	/* BIOS need to enable ACPI D3Cold Support.*/
+> > +	fd =3D openat(dir, "real_power_state", O_RDONLY);
+> > +	if (fd < 0 && errno =3D=3D ENOENT)
+> > +		return false;
+> > +
+> > +	igt_require(fd > 0);
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +/**
+> > + * igt_pm_get_acpi_real_d_state:
+> > + * @pci_dev: root port pci_dev.
+> > + * Get ACPI D state for a given root port.
+> > + *
+> > + * Returns:
+> > + * igt_acpi_d_state state.
+> > + */
+> > +enum igt_acpi_d_state
+> > +igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev) {
+> > +	char name[PATH_MAX];
+> > +	char acpi_d_state[64];
+> > +	int fd, n_read;
+> > +
+> > +	snprintf(name, PATH_MAX,
+> > +
+> "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node/real_power_stat
+> e",
+> > +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> > +
+> > +	fd =3D open(name, O_RDONLY);
+> > +	if (fd < 0)
+> > +		return IGT_ACPI_UNKNOWN_STATE;
+> > +
+> > +	n_read =3D read(fd, acpi_d_state, sizeof(acpi_d_state) - 1);
+> > +	igt_assert(n_read >=3D 0);
+> > +	acpi_d_state[n_read] =3D '\0';
+> > +	close(fd);
+> > +
+> > +	if (strncmp(acpi_d_state, "D0\n", n_read) =3D=3D 0)
+> > +		return IGT_ACPI_D0;
+> > +	if  (strncmp(acpi_d_state, "D1\n", n_read) =3D=3D 0)
+> > +		return IGT_ACPI_D1;
+> > +	if  (strncmp(acpi_d_state, "D2\n", n_read) =3D=3D 0)
+> > +		return IGT_ACPI_D2;
+> > +	if  (strncmp(acpi_d_state, "D3hot\n", n_read) =3D=3D 0)
+> > +		return IGT_ACPI_D3Hot;
+> > +	if  (strncmp(acpi_d_state, "D3cold\n", n_read) =3D=3D 0)
+> > +		return IGT_ACPI_D3Cold;
+> > +
+> > +	return IGT_ACPI_UNKNOWN_STATE;
+> > +}
+> > +
+> > +static struct igt_pm_pci_dev_pwrattr  *__pci_dev_pwrattr; static int
+> > +__igt_pm_pci_dev_cnt;
+>=20
+> looking at this now I believe I prefer the static global one than this re=
+allocated
+> one.
+>=20
+> I saw that we have other examples in igt lib that follows same patter so =
+that
+> should be okay.
+Reallocated buffer approach also referred from __igt_pm_enable_sata_link_po=
+wer_management()
+Igt_pm.c.  IMHO this will be good as compare to global buffer, unless i mis=
+sed any issues around it ?=20
+>=20
+> But honestly what I don't like is the global at all.
+> I see that you have the exit handler below that takes care of the unset, =
+but I
+> believe as a "lib" this should be independent for symmetric reasons.
+>=20
+> what I had in mind was something to be called at setup fixture and clean =
+up
+> fixture. you save locally your pci config and then you clean that up on r=
+estore...
+AFAIK igt_fixture() approach to restore the power attribute state may not w=
+ork in certain cases when task is
+getting killed due to some raised signal. That is where igt exit handler ha=
+ve importance.
+If we would have a void *data argument to pass in igt exit handler , then  =
+we could get rid of global.
+Thanks,
+Anshuman Gupta.
+>=20
+> But now seeing other global cases in the core of igt lib I don't care muc=
+h
+> anymore...
+>=20
+> But probably cleaner with the static now... and sorry about the back and =
+forth
+> on this...
+>=20
+> > +
+> > +static void __igt_pm_pci_card_exit_handler(int sig) {
+> > +	igt_pm_restore_pci_card_runtime_pm();
+> > +}
+> > +
+> > +static int igt_pm_get_power_attr_fd(struct pci_device *pci_dev, const
+> > +char *attr) {
+> > +	char name[PATH_MAX];
+> > +	int fd;
+> > +
+> > +	snprintf(name, PATH_MAX,
+> "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/%s",
+> > +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func,
+> attr);
+> > +
+> > +	fd =3D open(name, O_RDWR);
+> > +	igt_assert_f(fd >=3D 0, "Can't open %s\n", attr);
+> > +
+> > +	return fd;
+> > +}
+> > +
+> > +static bool igt_pm_save_power_attr(int fd, char *attr, int len, bool
+> > +autosuspend) {
+> > +	int size;
+> > +
+> > +	size =3D read(fd, attr, len - 1);
+> > +
+> > +	if (autosuspend) {
+> > +		if (size < 0)
+> > +			return false;
+> > +	} else {
+> > +		igt_assert(size > 0);
+> > +	}
+> > +
+> > +	attr[size] =3D '\0';
+> > +	strchomp(attr);
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +static void igt_pm_setup_power_attr(int fd, const char *val) {
+> > +	int size, len;
+> > +	char buf[6];
+> > +
+> > +	len =3D strlen(val);
+> > +
+> > +	size =3D write(fd, val, len);
+> > +	igt_assert_eq(size, len);
+> > +	lseek(fd, 0, SEEK_SET);
+> > +	size =3D read(fd, buf, ARRAY_SIZE(buf));
+> > +	igt_assert_eq(size, len);
+> > +	igt_assert(strncmp(buf, val, len) =3D=3D 0); }
+> > +
+> > +static void
+> > +__igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev, int
+> > +index) {
+> > +	int control_fd, delay_fd, control_size, delay_size;
+> > +	char *control, *delay;
+> > +
+> > +	igt_assert(index <  MAX_PCI_DEVICES);
+> > +
+> > +	if (!(index % 16)) {
+> > +		__pci_dev_pwrattr =3D
+> > +			realloc(__pci_dev_pwrattr,
+> > +				sizeof(struct igt_pm_pci_dev_pwrattr) * (index
+> / 16 + 1) * 16);
+> > +	}
+> > +
+> > +	control =3D __pci_dev_pwrattr[index].control;
+> > +	control_size =3D  sizeof(__pci_dev_pwrattr[index].control);
+> > +	delay =3D __pci_dev_pwrattr[index].autosuspend_delay;
+> > +	delay_size =3D  sizeof(__pci_dev_pwrattr[index].autosuspend_delay);
+> > +	__pci_dev_pwrattr[index].pci_dev =3D pci_dev;
+> > +	__pci_dev_pwrattr[index].autosuspend_supported =3D true;
+> > +
+> > +	delay_fd =3D igt_pm_get_power_attr_fd(pci_dev,
+> "autosuspend_delay_ms");
+> > +	control_fd =3D igt_pm_get_power_attr_fd(pci_dev, "control");
+> > +
+> > +	if (!igt_pm_save_power_attr(delay_fd, delay, delay_size, true)) {
+> > +		__pci_dev_pwrattr[index].autosuspend_supported =3D false;
+> > +		igt_debug("PCI '%04x:%02x:%02x.%01x' doesn't support
+> auto_suspend\n",
+> > +			  pci_dev->domain, pci_dev->bus, pci_dev->dev,
+> pci_dev->func);
+> > +	}
+> > +
+> > +	igt_pm_save_power_attr(control_fd, control, control_size, false);
+> > +	igt_debug("PCI '%04x:%02x:%02x.%01x' Saved 'control,
+> autosuspend_delay_ms' as '%s, %s'\n",
+> > +		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func,
+> control,
+> > +		  __pci_dev_pwrattr[index].autosuspend_supported ? delay :
+> "NA");
+> > +
+> > +	if (!index)
+> > +		igt_install_exit_handler(__igt_pm_pci_card_exit_handler);
+> > +
+> > +	if (__pci_dev_pwrattr[index].autosuspend_supported)
+> > +		igt_pm_setup_power_attr(delay_fd, "0\n");
+> > +
+> > +	igt_pm_setup_power_attr(control_fd, "auto\n");
+> > +
+> > +	close(delay_fd);
+> > +	close(control_fd);
+> > +}
+> > +
+> > +/**
+> > + * igt_pm_setup_pci_card_runtime_pm:
+> > + * @pci_dev: root port pci_dev.
+> > + * Setup runtime PM for all PCI endpoints devices for a given root
+> > +port by
+> > + * enabling runtime suspend and setting autosuspend_delay_ms to zero.
+> > + * It also saves power control attribute for all PCI endpoints
+> > + * devices under given root port.
+> > + */
+> > +void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev) {
+> > +	int primary, secondary, subordinate, ret;
+> > +	struct pci_device_iterator *iter;
+> > +	struct pci_device *dev;
+> > +	int i;
+> > +
+> > +	ret =3D pci_device_get_bridge_buses(pci_dev, &primary, &secondary,
+> &subordinate);
+> > +	igt_assert(!ret);
+> > +
+> > +	ret =3D pci_system_init();
+> > +	igt_assert(!ret);
+> > +
+> > +	iter =3D pci_slot_match_iterator_create(NULL);
+> > +	/* Setup runtime pm for PCI root port */
+> > +	__igt_pm_setup_pci_card_runtime_pm(pci_dev, i++);
+> > +	while ((dev =3D pci_device_next(iter)) !=3D NULL) {
+> > +		if (dev->bus >=3D secondary && dev->bus <=3D subordinate)
+> > +			__igt_pm_setup_pci_card_runtime_pm(dev, i++);
+> > +	}
+> > +
+> > +	__igt_pm_pci_dev_cnt =3D i;
+> > +}
+> > +
+> > +static void
+> > +igt_pm_restore_power_attr(struct pci_device *pci_dev, const char
+> > +*attr, char *val, int len) {
+> > +	int fd;
+> > +
+> > +	igt_debug("PCI '%04x:%02x:%02x.%01x' Restoring %s attr to '%s'\n",
+> > +		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func,
+> attr,
+> > +val);
+> > +
+> > +	fd =3D igt_pm_get_power_attr_fd(pci_dev, attr);
+> > +	igt_assert(write(fd, val, len) =3D=3D len);
+> > +
+> > +	close(fd);
+> > +}
+> > +
+> > +/**
+> > + * igt_pm_restore_pci_card_runtime_pm:
+> > + * Restore control and autosuspend_delay_ms power attribute for all
+> > + * PCI endpoints devices under gfx root port, which were saved
+> > +earlier
+> > + * by igt_pm_setup_pci_card_runtime_pm().
+> > + */
+> > +void igt_pm_restore_pci_card_runtime_pm(void)
+> > +{
+> > +	int i =3D 0;
+> > +
+> > +	if (!__pci_dev_pwrattr)
+> > +		return;
+> > +
+> > +	for (i =3D 0; i < __igt_pm_pci_dev_cnt; i++) {
+> > +		igt_pm_restore_power_attr(__pci_dev_pwrattr[i].pci_dev,
+> "control",
+> > +					  __pci_dev_pwrattr[i].control,
+> > +					  sizeof(__pci_dev_pwrattr[i].control));
+> > +
+> > +		if (!__pci_dev_pwrattr[i].autosuspend_supported)
+> > +			continue;
+> > +
+> > +		igt_pm_restore_power_attr(__pci_dev_pwrattr[i].pci_dev,
+> "autosuspend_delay_ms",
+> > +
+> __pci_dev_pwrattr[i].autosuspend_delay,
+> > +
+> sizeof(__pci_dev_pwrattr[i].autosuspend_delay));
+> > +	}
+> > +
+> > +	pci_system_cleanup();
+> > +	free(__pci_dev_pwrattr);
+> > +	__pci_dev_pwrattr =3D NULL;
+> > +}
+> > +
+> > +static void igt_pm_print_pci_dev_runtime_status(struct pci_device
+> > +*pci_dev) {
+> > +	char name[PATH_MAX], runtime_status[64];
+> > +	int fd, n_read;
+> > +
+> > +	snprintf(name, PATH_MAX,
+> "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/runtime_status",
+> > +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> > +
+> > +	fd =3D open(name, O_RDONLY);
+> > +	igt_assert_f(fd >=3D 0, "Can't open runtime_status\n");
+> > +
+> > +	n_read =3D read(fd, runtime_status, sizeof(runtime_status) - 1);
+> > +	igt_assert(n_read >=3D 0);
+> > +	runtime_status[n_read] =3D '\0';
+> > +	igt_info("runtime suspend status for PCI '%04x:%02x:%02x.%01x' %s\n",
+> > +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func,
+> runtime_status);
+> > +	close(fd);
+> > +}
+> > +
+> > +/**
+> > + * igt_pm_print_pci_card_runtime_status:
+> > + * @pci_dev: root port pci_dev.
+> > + * Print runtime suspend status for all PCI endpoints devices for a
+> > +given
+> > + * root port.
+> > + */
+> > +void igt_pm_print_pci_card_runtime_status(void)
+> > +{
+> > +	int i =3D 0;
+> > +
+> > +	if (!__pci_dev_pwrattr)
+> > +		return;
+> > +
+> > +	for (i =3D 0; i < __igt_pm_pci_dev_cnt; i++)
+> > +
+> 	igt_pm_print_pci_dev_runtime_status(__pci_dev_pwrattr[i].pci_dev);
+> > +}
+> > diff --git a/lib/igt_pm.h b/lib/igt_pm.h index 162d3ca3c..898178670
+> > 100644
+> > --- a/lib/igt_pm.h
+> > +++ b/lib/igt_pm.h
+> > @@ -46,6 +46,23 @@ enum igt_runtime_pm_status {
+> >  	IGT_RUNTIME_PM_STATUS_UNKNOWN,
+> >  };
+> >
+> > +/* PCI ACPI firmware node real state */ enum igt_acpi_d_state {
+> > +	IGT_ACPI_D0,
+> > +	IGT_ACPI_D1,
+> > +	IGT_ACPI_D2,
+> > +	IGT_ACPI_D3Hot,
+> > +	IGT_ACPI_D3Cold,
+> > +	IGT_ACPI_UNKNOWN_STATE,
+> > +};
+> > +
+> > +struct	igt_pm_pci_dev_pwrattr {
+> > +	struct pci_device *pci_dev;
+> > +	char control[64];
+> > +	bool autosuspend_supported;
+> > +	char autosuspend_delay[64];
+> > +};
+> > +
+> >  bool igt_setup_runtime_pm(int device);  void
+> > igt_disable_runtime_pm(void);  void igt_restore_runtime_pm(void); @@
+> > -54,5 +71,11 @@ bool igt_wait_for_pm_status(enum igt_runtime_pm_status
+> > status);  bool igt_pm_dmc_loaded(int debugfs);  bool
+> > igt_pm_pc8_plus_residencies_enabled(int msr_fd);  bool
+> > i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
+> > +bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev); enum
+> > +igt_acpi_d_state igt_pm_get_acpi_real_d_state(struct pci_device
+> > +*pci_dev); void igt_pm_setup_pci_card_runtime_pm(struct pci_device
+> > +*pci_dev); void igt_pm_restore_pci_card_runtime_pm(void);
+> > +void igt_pm_print_pci_card_runtime_status(void);
+> >
+> >  #endif /* IGT_PM_H */
+> > --
+> > 2.26.2
+> >
