@@ -1,23 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 723CA10FD23
- for <igt-dev@lists.freedesktop.org>; Mon,  2 May 2022 05:20:55 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A617289F43
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 May 2022 11:33:21 +0000 (UTC)
 From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Date: Mon, 2 May 2022 05:20:53 +0000
-Message-ID: <1f75fc52810c4321a0b998c25ab3e4ee@intel.com>
+To: "Nilawar, Badal" <badal.nilawar@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 2 May 2022 11:33:07 +0000
+Message-ID: <89e71fa727774afc9dd381dc5e8b1894@intel.com>
 References: <20220429085425.24568-1-anshuman.gupta@intel.com>
- <20220429085425.24568-7-anshuman.gupta@intel.com>
- <Ymvi/oPF1oyKyNwk@intel.com> <63df14e7660045ed98799ef8f0694e3b@intel.com>
- <YmvrVotTrYp4ixKI@intel.com> <14bdefc9f32842d2bcf7051c46bcd5f0@intel.com>
- <YmwLqACf2OatSL+p@intel.com>
-In-Reply-To: <YmwLqACf2OatSL+p@intel.com>
+ <20220429085425.24568-4-anshuman.gupta@intel.com>
+ <d71d912b-5a22-a92c-035a-5dd36b214e1c@intel.com>
+In-Reply-To: <d71d912b-5a22-a92c-035a-5dd36b214e1c@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 6/8] i915_pm_rpm: Extend
- gem_exec_stress test with D3Cold
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/8] lib/igt_pm: D3Cold runtime pm
+ infrastructure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,345 +24,247 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
- Petri" <petri.latvala@intel.com>, "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Sent: Friday, April 29, 2022 9:31 PM
-> To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; kamil.konieczny@linux.intel.com; Latva=
-la,
-> Petri <petri.latvala@intel.com>; Nilawar, Badal <badal.nilawar@intel.com>=
-;
-> Ewins, Jon <jon.ewins@intel.com>
-> Subject: Re: [PATCH i-g-t v2 6/8] i915_pm_rpm: Extend gem_exec_stress tes=
-t
-> with D3Cold
->=20
-> On Fri, Apr 29, 2022 at 10:57:25AM -0400, Gupta, Anshuman wrote:
-> >
-> >
-> > > -----Original Message-----
-> > > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> > > Sent: Friday, April 29, 2022 7:13 PM
-> > > To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> > > Cc: igt-dev@lists.freedesktop.org; kamil.konieczny@linux.intel.com;
-> > > Latvala, Petri <petri.latvala@intel.com>; Nilawar, Badal
-> > > <badal.nilawar@intel.com>; Ewins, Jon <jon.ewins@intel.com>
-> > > Subject: Re: [PATCH i-g-t v2 6/8] i915_pm_rpm: Extend
-> > > gem_exec_stress test with D3Cold
-> > >
-> > > On Fri, Apr 29, 2022 at 09:10:15AM -0400, Gupta, Anshuman wrote:
-> > > >
-> > > >
-> > > > > -----Original Message-----
-> > > > > From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> > > > > Sent: Friday, April 29, 2022 6:37 PM
-> > > > > To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> > > > > Cc: igt-dev@lists.freedesktop.org;
-> > > > > kamil.konieczny@linux.intel.com; Latvala, Petri
-> > > > > <petri.latvala@intel.com>; Nilawar, Badal
-> > > > > <badal.nilawar@intel.com>; Ewins, Jon <jon.ewins@intel.com>
-> > > > > Subject: Re: [PATCH i-g-t v2 6/8] i915_pm_rpm: Extend
-> > > > > gem_exec_stress test with D3Cold
-> > > > >
-> > > > > On Fri, Apr 29, 2022 at 02:24:23PM +0530, Anshuman Gupta wrote:
-> > > > > > Added d3cold dynamic subtest to gem_exec_stress with device
-> > > > > > class memory region. It test both D3Cold-{VRAM_SR, Off} by
-> > > > > > using d3cold_sr_lmem_threshold i915_params debugfs.
-> > > > > >
-> > > > > > v2:
-> > > > > > - Two different subtest d3cold-off and d3cold-vrsr. [Rodrigo]
-> > > > > > - commit header modification.
-> > > > > >
-> > > > > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > > > > > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > > > > > ---
-> > > > > >  tests/i915/i915_pm_rpm.c | 97
-> > > > > > ++++++++++++++++++++++++++++++++++------
-> > > > > >  1 file changed, 83 insertions(+), 14 deletions(-)
-> > > > > >
-> > > > > > diff --git a/tests/i915/i915_pm_rpm.c
-> > > > > > b/tests/i915/i915_pm_rpm.c index
-> > > > > > 31f9712a8..1ef76f562 100644
-> > > > > > --- a/tests/i915/i915_pm_rpm.c
-> > > > > > +++ b/tests/i915/i915_pm_rpm.c
-> > > > > > @@ -85,6 +85,7 @@ enum plane_type {
-> > > > > >  #define WAIT_PC8_RES	2
-> > > > > >  #define WAIT_EXTRA	4
-> > > > > >  #define USE_DPMS	8
-> > > > > > +#define WAIT_D3COLD	16
-> > > > > >
-> > > > > >  int drm_fd, msr_fd, pc8_status_fd;  int debugfs; @@ -215,6
-> > > > > > +216,21 @@ static bool wait_for_suspended(void)
-> > > > > >  	}
-> > > > > >  }
-> > > > > >
-> > > > > > +static bool wait_for_d3cold(struct pci_device *root) {
-> > > > > > +	bool d3colded;
-> > > > > > +
-> > > > > > +	d3colded =3D igt_wait(igt_pm_get_acpi_real_d_state(root) =3D=
-=3D
-> > > > > > +IGT_ACPI_D3Cold, 10000, 500);
-> > > > > > +
-> > > > > > +	if (!d3colded) {
-> > > > > > +		igt_info("D3Cold not achieved for root port
-> > > > > %04x:%02x:%02x.%01x\n",
-> > > > > > +			 root->domain, root->bus, root->dev, root-
-> >func);
-> > > > > > +		igt_pm_print_pci_card_runtime_status();
-> > > > > > +	}
-> > > > > > +
-> > > > > > +	return d3colded;
-> > > > > > +}
-> > > > > > +
-> > > > > >  static bool wait_for_active(void)  {
-> > > > > >  	if (has_pc8 && !has_runtime_pm) @@ -744,6 +760,30 @@
-> static
-> > > > > > void test_i2c(struct mode_set_data *data)
-> > > > > >  			"There is an EDID mismatch between i2c and
-> DRM!\n");
-> > > > > }
-> > > > > >
-> > > > > > +static int get_d3cold_sr_lmem_threshold(int dir) {
-> > > > > > +	int param_dir, lmem_threshold, ret;
-> > > > > > +
-> > > > > > +	param_dir =3D openat(dir, "i915_params", O_RDONLY);
-> > > > > > +	ret =3D igt_sysfs_scanf(param_dir, "d3cold_sr_lmem_threshold"=
-,
-> > > > > > +"%d",
-> > > > > &lmem_threshold);
-> > > > > > +	igt_assert(ret >=3D 0);
-> > > > > > +
-> > > > > > +	close(param_dir);
-> > > > > > +	return lmem_threshold;
-> > > > > > +}
-> > > > > > +
-> > > > > > +static int set_d3cold_sr_lmem_threshold(int dir, int val) {
-> > > > > > +	int param_dir, ret;
-> > > > > > +
-> > > > > > +	param_dir =3D openat(dir, "i915_params", O_RDONLY);
-> > > > > > +	ret =3D igt_sysfs_printf(param_dir,
-> > > > > > +"d3cold_sr_lmem_threshold", "%d",
-> > > > > val);
-> > > > > > +	igt_assert(ret > 0);
-> > > > > > +
-> > > > > > +	close(param_dir);
-> > > > > > +	return ret;
-> > > > > > +}
-> > > > > > +
-> > > > > >  static void setup_pc8(void)
-> > > > > >  {
-> > > > > >  	has_pc8 =3D false;
-> > > > > > @@ -1069,6 +1109,17 @@ static void
-> > > debugfs_forcewake_user_subtest(void)
-> > > > > >  	igt_assert(wait_for_suspended());  }
-> > > > > >
-> > > > > > +static struct pci_device
-> > > > > > +*setup_d3cold_and_get_root_port(void)
-> > > > > > +{
-> > > > > > +	struct pci_device *root;
-> > > > > > +
-> > > > > > +	root =3D igt_device_get_pci_root_port(drm_fd);
-> > > > > > +	igt_require(igt_pm_acpi_d3cold_supported(root));
-> > > > > > +	igt_pm_setup_pci_card_runtime_pm(root);
-> > > > > > +
-> > > > > > +	return root;
-> > > > > > +}
-> > > > > > +
-> > > > > >  static void gem_mmap_args(const struct mmap_offset *t,
-> > > > > >  			  struct drm_i915_gem_memory_class_instance
-> > > > > *mem_regions)  { @@
-> > > > > > -1392,6 +1443,7 @@ gem_execbuf_stress_subtest(int rounds, int
-> > > wait_flags,
-> > > > > >  	int i;
-> > > > > >  	int batch_size =3D 4 * sizeof(uint32_t);
-> > > > > >  	uint32_t batch_buf[batch_size];
-> > > > > > +	struct pci_device *root;
-> > > > > >  	uint32_t handle;
-> > > > > >  	struct drm_i915_gem_execbuffer2 execbuf =3D {};
-> > > > > >  	struct drm_i915_gem_exec_object2 objs[1] =3D {{}}; @@ -1408,6
-> > > > > > +1460,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flag=
-s,
-> > > > > >  	batch_buf[i++] =3D MI_NOOP;
-> > > > > >  	igt_assert(i * sizeof(uint32_t) =3D=3D batch_size);
-> > > > > >
-> > > > > > +	if (wait_flags & WAIT_D3COLD)
-> > > > > > +		root =3D setup_d3cold_and_get_root_port();
-> > > > > > +
-> > > > > >  	disable_all_screens_and_wait(&ms_data);
-> > > > > >
-> > > > > >  	/* PC8 test is only applicable to igfx  */ @@ -1433,6
-> > > > > > +1488,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flag=
-s,
-> > > > > >  			/* clean up idle work */
-> > > > > >  			igt_drop_caches_set(drm_fd, DROP_IDLE);
-> > > > > >  			igt_assert(wait_for_suspended());
-> > > > > > +			if (wait_flags & WAIT_D3COLD)
-> > > > > > +				igt_assert(wait_for_d3cold(root));
-> > > > > > +
-> > > > > >  		}
-> > > > > >  		if (wait_flags & WAIT_PC8_RES)
-> > > > > >  			igt_assert(pc8_plus_residency_changed(30));
-> > > > > > @@ -1440,6 +1498,9 @@ gem_execbuf_stress_subtest(int rounds,
-> > > > > > int
-> > > > > wait_flags,
-> > > > > >  			sleep(5);
-> > > > > >  	}
-> > > > > >
-> > > > > > +	if (wait_flags & WAIT_D3COLD)
-> > > > > > +		igt_pm_restore_pci_card_runtime_pm();
-> > > > > > +
-> > > > > >  	gem_close(drm_fd, handle);
-> > > > > >  }
-> > > > > >
-> > > > > > @@ -1537,22 +1598,10 @@ __noreturn static void
-> > > > > > stay_subtest(void) static void d3cold_basic_subtest(void)  {
-> > > > > >  	struct pci_device *root;
-> > > > > > -	bool result;
-> > > > > >
-> > > > > > -	root =3D igt_device_get_pci_root_port(drm_fd);
-> > > > > > -	igt_require(igt_pm_acpi_d3cold_supported(root));
-> > > > > > -	igt_pm_setup_pci_card_runtime_pm(root);
-> > > > > > +	root =3D setup_d3cold_and_get_root_port();
-> > > > > >  	disable_all_screens_and_wait(&ms_data);
-> > > > > > -
-> > > > > > -	result =3D igt_wait(igt_pm_get_acpi_real_d_state(root) =3D=3D
-> > > > > IGT_ACPI_D3Cold, 10000, 500);
-> > > > > > -
-> > > > > > -	if (!result) {
-> > > > > > -		igt_info("D3Cold not achieved for root port
-> > > > > %04x:%02x:%02x.%01x\n",
-> > > > > > -			 root->domain, root->bus, root->dev, root-
-> >func);
-> > > > > > -		igt_pm_print_pci_card_runtime_status();
-> > > > > > -	}
-> > > > > > -
-> > > > > > -	igt_assert(result);
-> > > > > > +	igt_assert(wait_for_d3cold(root));
-> > > > > >  	igt_pm_restore_pci_card_runtime_pm();
-> > > > > >  }
-> > > > > >
-> > > > > > @@ -2206,11 +2255,31 @@ igt_main_args("", long_options,
-> > > > > > help_str,
-> > > > > opt_handler, NULL)
-> > > > > >  	igt_describe("Validate execbuf submission while exercising rp=
-m
-> "
-> > > > > >  		     "suspend/resume cycles.");
-> > > > > >  	igt_subtest_with_dynamic("gem-execbuf-stress") {
-> > > > > > +		int lmem_threshold;
-> > > > > > +
-> > > > > >  		for_each_memory_region(r, drm_fd) {
-> > > > > >  			igt_dynamic_f("%s", r->name)
-> > > > > >  				gem_execbuf_stress_subtest(rounds,
-> > > > > WAIT_STATUS, &r->ci);
-> > > > > >  			igt_dynamic_f("%s-%s", "extra-wait", r->name)
-> > > > > >  				gem_execbuf_stress_subtest(rounds,
-> > > > > WAIT_STATUS | WAIT_EXTRA,
-> > > > > > &r->ci);
-> > > > > > +
-> > > > > > +			if (r->ci.memory_class =3D=3D
-> > > > > I915_MEMORY_CLASS_SYSTEM)
-> > > > > > +				continue;
-> > > > > > +
-> > > > > > +			lmem_threshold =3D
-> > > > > get_d3cold_sr_lmem_threshold(debugfs);
-> > > > >
-> > > > > since we have just one global threashold and not one per memory
-> > > > > region we
-> > > can
-> > > > > avoid the extra reads in here by moving it ouside.
-> > > > >
-> > > > > > +			igt_dynamic_f("%s-%s", "d3cold-off", r->name)
-> {
-> > > > > > +
-> 	set_d3cold_sr_lmem_threshold(debugfs, 300);
-> > > > > > +				gem_execbuf_stress_subtest(rounds,
-> > > > > WAIT_STATUS | WAIT_D3COLD,
-> > > > > > +							   &r->ci);
-> > > > > > +
-> 	set_d3cold_sr_lmem_threshold(debugfs,
-> > > > > lmem_threshold);
-> > > > >
-> > > > > but also we should probably do the save/restore with igt_fixture?
-> > > > We can do once we have this param in kernel , otherwise CI will
-> > > > break for all
-> > > i915_pm_rpm tests.
-> > >
-> > > I don't get it... why?
-> > > Why can't we get_d3cold_sr_lmem_threshold(debugfs); at
-> > > setup_environment() and set_d3cold_sr_lmem_threshold(debugfs,
-> > > lmem_threshold) at
-> > > teardown_environment()
-> > We have a assertion here on ret.
-> > ret =3D igt_sysfs_scanf(param_dir, "d3cold_sr_lmem_threshold", "%d",
-> > &lmem_threshold);
->=20
-> A few things I just noticed:
->=20
-> 1. (probably not related to this patch)
-> sysfs? can we use these igt_sysfs funct for the debugfs?
-> if so we could probably rename them...
->=20
-> 2. param_dir is not a good name. that's the file pathname already, not di=
-r.
->=20
-> > igt_assert(ret >=3D 0);
-> > so this will fail , until underlying kernel implement the
-> d3cold_sr_lmem_threshold  module_param.
->=20
-> if the underlying kernel doesn't have the debug fs won't this igt_assert =
-fail as
-> well?
->=20
-> why would it be different with module_param?
->=20
-> Petri's question is pertinent, won't this break in LTS anyway?
->=20
-> > I need to remove igt_assertion from above to to keep {get,set}_
-> > get_d3cold_sr_lmem_threshold() in igt_fixture().
->=20
-> don't we need to remove it anyway?
-> in the read inside the loop aren't you breaking the execution of the foll=
-owing
-> memory region subtests?
-Yes, got that point. Thanks for explaining that.
-I will remove the assertion from that point.
-Br,
-Thanks,
-Anshuman Gupta.
->=20
-> >
-> > Thanks,
-> > Anshuman Gupta.
-> > > ?
-> > >
-> > > > Thanks,
-> > > > Anshuman Gupta.
-> > > > >
-> > > > > > +			}
-> > > > > > +
-> > > > > > +			igt_dynamic_f("%s-%s", "d3cold-vrsr", r-
-> >name) {
-> > > > > > +
-> 	set_d3cold_sr_lmem_threshold(debugfs, 0);
-> > > > > > +				gem_execbuf_stress_subtest(rounds,
-> > > > > WAIT_STATUS | WAIT_D3COLD,
-> > > > > > +							   &r->ci);
-> > > > > > +
-> 	set_d3cold_sr_lmem_threshold(debugfs,
-> > > > > lmem_threshold);
-> > > > > > +			}
-> > > > > >  		}
-> > > > > >  	}
-> > > > > >
-> > > > > > --
-> > > > > > 2.26.2
-> > > > > >
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTmlsYXdhciwgQmFkYWwg
+PGJhZGFsLm5pbGF3YXJAaW50ZWwuY29tPg0KPiBTZW50OiBTYXR1cmRheSwgQXByaWwgMzAsIDIw
+MjIgMTI6NDMgQU0NCj4gVG86IEd1cHRhLCBBbnNodW1hbiA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwu
+Y29tPjsgaWd0LQ0KPiBkZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBrYW1pbC5rb25p
+ZWN6bnlAbGludXguaW50ZWwuY29tOyBWaXZpLCBSb2RyaWdvIDxyb2RyaWdvLnZpdmlAaW50ZWwu
+Y29tPjsNCj4gTGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPjsgRXdpbnMs
+IEpvbiA8am9uLmV3aW5zQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdCB2
+MiAzLzhdIGxpYi9pZ3RfcG06IEQzQ29sZCBydW50aW1lIHBtIGluZnJhc3RydWN0dXJlDQo+IA0K
+PiANCj4gDQo+IE9uIDI5LTA0LTIwMjIgMTQ6MjQsIEFuc2h1bWFuIEd1cHRhIHdyb3RlOg0KPiA+
+IEVuYWJsZSBnZnggY2FyZCBwY2kgZGV2aWNlcyBydW50aW1lIHBtIGZvciBhbGwgcGNpIGRldmlj
+ZXMgYW5kIGJyaWRnZQ0KPiA+IHVuZGVyIHRoZSB0b3BvbG9neSBvZiBHZnggQ2FyZCByb290IHBv
+cnQuDQo+ID4NCj4gPiBBZGRlZCBhIGxpYnJhcnkgZnVuY3Rpb24gdG8gZ2V0IHRoZSBQQ0kgcm9v
+dCBwb3J0IEFDUEkgRCBzdGF0ZSBhbmQgdG8NCj4gPiBwcmludCB0aGUgcGNpIGNhcmQgZGV2aWNl
+cyBydW50aW1lIHBtIHN0YXR1cy4NCj4gPg0KPiA+IHYyOg0KPiA+IC0gU2F2ZSBwY2kgZGV2IHBv
+d2VyIGF0dHIgdG8gZHluYW1pY2FsbHkgYWxsb2NhdGVkIGFycmF5LiBbUm9kcmlnb10NCj4gPiAt
+IFNldCBhdXRvc3VzcGVuZCBkZWxheSB0byAwIG9uIHN1cHBvcnRlZCBkZXZpY2VzLiBbUm9kcmln
+b10NCj4gPiAtICVzL2Vsc2UgaWYvZWxzZSBpbiAgaWd0X3BtX2dldF9hY3BpX3JlYWxfZF9zdGF0
+ZS4gW0thbWlsXQ0KPiA+DQo+ID4gQ2M6IFJvZHJpZ28gVml2aSA8cm9kcmlnby52aXZpQGludGVs
+LmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBBbnNodW1hbiBHdXB0YSA8YW5zaHVtYW4uZ3VwdGFA
+aW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICAgbGliL2lndF9wbS5jIHwgMjkwDQo+ICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAgbGliL2ln
+dF9wbS5oIHwgIDIzICsrKysNCj4gPiAgIDIgZmlsZXMgY2hhbmdlZCwgMzEzIGluc2VydGlvbnMo
+KykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0X3BtLmMgYi9saWIvaWd0X3BtLmMgaW5k
+ZXggYjQwOWVjNDYzLi4yMDI5NmM0MGINCj4gPiAxMDA2NDQNCj4gPiAtLS0gYS9saWIvaWd0X3Bt
+LmMNCj4gPiArKysgYi9saWIvaWd0X3BtLmMNCj4gPiBAQCAtMjgsNiArMjgsNyBAQA0KPiA+ICAg
+I2luY2x1ZGUgPGZjbnRsLmg+DQo+ID4gICAjaW5jbHVkZSA8c3RkaW8uaD4NCj4gPiAgICNpbmNs
+dWRlIDxsaW1pdHMuaD4NCj4gPiArI2luY2x1ZGUgPHBjaWFjY2Vzcy5oPg0KPiA+ICAgI2luY2x1
+ZGUgPHN0ZGxpYi5oPg0KPiA+ICAgI2luY2x1ZGUgPHN0cmluZy5oPg0KPiA+ICAgI2luY2x1ZGUg
+PHVuaXN0ZC5oPg0KPiA+IEBAIC03NSw2ICs3Niw3IEBAIGVudW0gew0KPiA+ICAgI2RlZmluZSBN
+SU5fUE9XRVJfU1RSCQkibWluX3Bvd2VyXG4iDQo+ID4gICAvKiBSZW1lbWJlciB0byBmaXggdGhp
+cyBpZiBhZGRpbmcgbG9uZ2VyIHN0cmluZ3MgKi8NCj4gPiAgICNkZWZpbmUgTUFYX1BPTElDWV9T
+VFJMRU4Jc3RybGVuKE1BWF9QRVJGT1JNQU5DRV9TVFIpDQo+ID4gKyNkZWZpbmUgTUFYX1BDSV9E
+RVZJQ0VTCQkyNTYNCj4gPiAgIGludDhfdCAqX19zYXRhX3BtX3BvbGljaWVzOw0KPiA+ICAgaW50
+IF9fc2NzaV9ob3N0X2NudDsNCj4gPg0KPiA+IEBAIC04NTYsMyArODU4LDI5MSBAQCBib29sIGk5
+MTVfb3V0cHV0X2lzX2xwc3BfY2FwYWJsZShpbnQgZHJtX2ZkLA0KPiA+IGlndF9vdXRwdXRfdCAq
+b3V0cHV0KQ0KPiA+DQo+ID4gICAJcmV0dXJuIHN0cnN0cihidWYsICJMUFNQOiBjYXBhYmxlIik7
+DQo+ID4gICB9DQo+ID4gKw0KPiA+ICsvKioNCj4gPiArICogaWd0X3BtX2FjcGlfZDNjb2xkX3N1
+cHBvcnRlZDoNCj4gPiArICogQHBjaV9kZXY6IHJvb3QgcG9ydCBwY2lfZGV2Lg0KPiA+ICsgKiBD
+aGVjayBBQ1BJIEQzQ29sZCBzdXBwb3J0Lg0KPiA+ICsgKg0KPiA+ICsgKiBSZXR1cm5zOg0KPiA+
+ICsgKiBUcnVlIGlmIEFDUEkgRDNDb2xkIHN1cHBvcnRlZCBvdGhlcndpc2UgZmFsc2UuDQo+ID4g
+KyAqLw0KPiA+ICtib29sIGlndF9wbV9hY3BpX2QzY29sZF9zdXBwb3J0ZWQoc3RydWN0IHBjaV9k
+ZXZpY2UgKnBjaV9kZXYpIHsNCj4gPiArCWNoYXIgbmFtZVtQQVRIX01BWF07DQo+ID4gKwlpbnQg
+ZGlyLCBmZDsNCj4gPiArDQo+ID4gKwlzbnByaW50ZihuYW1lLCBQQVRIX01BWCwNCj4gPiArDQo+
+ICIvc3lzL2J1cy9wY2kvZGV2aWNlcy8lMDR4OiUwMng6JTAyeC4lMDF4L2Zpcm13YXJlX25vZGUi
+LA0KPiA+ICsJCSBwY2lfZGV2LT5kb21haW4sIHBjaV9kZXYtPmJ1cywgcGNpX2Rldi0+ZGV2LCBw
+Y2lfZGV2LT5mdW5jKTsNCj4gPiArDQo+ID4gKwlkaXIgPSBvcGVuKG5hbWUsIE9fUkRPTkxZKTsN
+Cj4gPiArCWlndF9yZXF1aXJlKGRpciA+IDApOw0KPiA+ICsNCj4gPiArCS8qIEJJT1MgbmVlZCB0
+byBlbmFibGUgQUNQSSBEM0NvbGQgU3VwcG9ydC4qLw0KPiA+ICsJZmQgPSBvcGVuYXQoZGlyLCAi
+cmVhbF9wb3dlcl9zdGF0ZSIsIE9fUkRPTkxZKTsNCj4gPiArCWlmIChmZCA8IDAgJiYgZXJybm8g
+PT0gRU5PRU5UKQ0KPiA+ICsJCXJldHVybiBmYWxzZTsNCj4gPiArDQo+ID4gKwlpZ3RfcmVxdWly
+ZShmZCA+IDApOw0KPiA+ICsNCj4gPiArCXJldHVybiB0cnVlOw0KPiA+ICt9DQo+ID4gKw0KPiA+
+ICsvKioNCj4gPiArICogaWd0X3BtX2dldF9hY3BpX3JlYWxfZF9zdGF0ZToNCj4gPiArICogQHBj
+aV9kZXY6IHJvb3QgcG9ydCBwY2lfZGV2Lg0KPiA+ICsgKiBHZXQgQUNQSSBEIHN0YXRlIGZvciBh
+IGdpdmVuIHJvb3QgcG9ydC4NCj4gPiArICoNCj4gPiArICogUmV0dXJuczoNCj4gPiArICogaWd0
+X2FjcGlfZF9zdGF0ZSBzdGF0ZS4NCj4gPiArICovDQo+ID4gK2VudW0gaWd0X2FjcGlfZF9zdGF0
+ZQ0KPiA+ICtpZ3RfcG1fZ2V0X2FjcGlfcmVhbF9kX3N0YXRlKHN0cnVjdCBwY2lfZGV2aWNlICpw
+Y2lfZGV2KSB7DQo+ID4gKwljaGFyIG5hbWVbUEFUSF9NQVhdOw0KPiA+ICsJY2hhciBhY3BpX2Rf
+c3RhdGVbNjRdOw0KPiA+ICsJaW50IGZkLCBuX3JlYWQ7DQo+ID4gKw0KPiA+ICsJc25wcmludGYo
+bmFtZSwgUEFUSF9NQVgsDQo+ID4gKw0KPiAiL3N5cy9idXMvcGNpL2RldmljZXMvJTA0eDolMDJ4
+OiUwMnguJTAxeC9maXJtd2FyZV9ub2RlL3JlYWxfcG93ZXJfc3RhdA0KPiBlIiwNCj4gPiArCQkg
+cGNpX2Rldi0+ZG9tYWluLCBwY2lfZGV2LT5idXMsIHBjaV9kZXYtPmRldiwgcGNpX2Rldi0+ZnVu
+Yyk7DQo+ID4gKw0KPiA+ICsJZmQgPSBvcGVuKG5hbWUsIE9fUkRPTkxZKTsNCj4gPiArCWlmIChm
+ZCA8IDApDQo+ID4gKwkJcmV0dXJuIElHVF9BQ1BJX1VOS05PV05fU1RBVEU7DQo+ID4gKw0KPiA+
+ICsJbl9yZWFkID0gcmVhZChmZCwgYWNwaV9kX3N0YXRlLCBzaXplb2YoYWNwaV9kX3N0YXRlKSAt
+IDEpOw0KPiA+ICsJaWd0X2Fzc2VydChuX3JlYWQgPj0gMCk7DQo+ID4gKwlhY3BpX2Rfc3RhdGVb
+bl9yZWFkXSA9ICdcMCc7DQo+ID4gKwljbG9zZShmZCk7DQo+ID4gKw0KPiA+ICsJaWYgKHN0cm5j
+bXAoYWNwaV9kX3N0YXRlLCAiRDBcbiIsIG5fcmVhZCkgPT0gMCkNCj4gPiArCQlyZXR1cm4gSUdU
+X0FDUElfRDA7DQo+ID4gKwlpZiAgKHN0cm5jbXAoYWNwaV9kX3N0YXRlLCAiRDFcbiIsIG5fcmVh
+ZCkgPT0gMCkNCj4gPiArCQlyZXR1cm4gSUdUX0FDUElfRDE7DQo+ID4gKwlpZiAgKHN0cm5jbXAo
+YWNwaV9kX3N0YXRlLCAiRDJcbiIsIG5fcmVhZCkgPT0gMCkNCj4gPiArCQlyZXR1cm4gSUdUX0FD
+UElfRDI7DQo+ID4gKwlpZiAgKHN0cm5jbXAoYWNwaV9kX3N0YXRlLCAiRDNob3RcbiIsIG5fcmVh
+ZCkgPT0gMCkNCj4gPiArCQlyZXR1cm4gSUdUX0FDUElfRDNIb3Q7DQo+ID4gKwlpZiAgKHN0cm5j
+bXAoYWNwaV9kX3N0YXRlLCAiRDNjb2xkXG4iLCBuX3JlYWQpID09IDApDQo+ID4gKwkJcmV0dXJu
+IElHVF9BQ1BJX0QzQ29sZDsNCj4gPiArDQo+ID4gKwlyZXR1cm4gSUdUX0FDUElfVU5LTk9XTl9T
+VEFURTsNCj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIHN0cnVjdCBpZ3RfcG1fcGNpX2Rldl9w
+d3JhdHRyICAqX19wY2lfZGV2X3B3cmF0dHI7IHN0YXRpYyBpbnQNCj4gPiArX19pZ3RfcG1fcGNp
+X2Rldl9jbnQ7DQo+ID4gKw0KPiA+ICtzdGF0aWMgdm9pZCBfX2lndF9wbV9wY2lfY2FyZF9leGl0
+X2hhbmRsZXIoaW50IHNpZykgew0KPiA+ICsJaWd0X3BtX3Jlc3RvcmVfcGNpX2NhcmRfcnVudGlt
+ZV9wbSgpOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICtzdGF0aWMgaW50IGlndF9wbV9nZXRfcG93ZXJf
+YXR0cl9mZChzdHJ1Y3QgcGNpX2RldmljZSAqcGNpX2RldiwgY29uc3QNCj4gPiArY2hhciAqYXR0
+cikgew0KPiA+ICsJY2hhciBuYW1lW1BBVEhfTUFYXTsNCj4gPiArCWludCBmZDsNCj4gPiArDQo+
+ID4gKwlzbnByaW50ZihuYW1lLCBQQVRIX01BWCwNCj4gIi9zeXMvYnVzL3BjaS9kZXZpY2VzLyUw
+NHg6JTAyeDolMDJ4LiUwMXgvcG93ZXIvJXMiLA0KPiA+ICsJCSBwY2lfZGV2LT5kb21haW4sIHBj
+aV9kZXYtPmJ1cywgcGNpX2Rldi0+ZGV2LCBwY2lfZGV2LT5mdW5jLA0KPiBhdHRyKTsNCj4gPiAr
+DQo+ID4gKwlmZCA9IG9wZW4obmFtZSwgT19SRFdSKTsNCj4gPiArCWlndF9hc3NlcnRfZihmZCA+
+PSAwLCAiQ2FuJ3Qgb3BlbiAlc1xuIiwgYXR0cik7DQo+ID4gKw0KPiA+ICsJcmV0dXJuIGZkOw0K
+PiA+ICt9DQo+ID4gKw0KPiA+ICtzdGF0aWMgYm9vbCBpZ3RfcG1fc2F2ZV9wb3dlcl9hdHRyKGlu
+dCBmZCwgY2hhciAqYXR0ciwgaW50IGxlbiwgYm9vbA0KPiA+ICthdXRvc3VzcGVuZCkgew0KPiA+
+ICsJaW50IHNpemU7DQo+ID4gKw0KPiA+ICsJc2l6ZSA9IHJlYWQoZmQsIGF0dHIsIGxlbiAtIDEp
+Ow0KPiA+ICsNCj4gPiArCWlmIChhdXRvc3VzcGVuZCkgew0KPiA+ICsJCWlmIChzaXplIDwgMCkN
+Cj4gPiArCQkJcmV0dXJuIGZhbHNlOw0KPiA+ICsJfSBlbHNlIHsNCj4gPiArCQlpZ3RfYXNzZXJ0
+KHNpemUgPiAwKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwlhdHRyW3NpemVdID0gJ1wwJzsNCj4g
+PiArCXN0cmNob21wKGF0dHIpOw0KPiA+ICsNCj4gPiArCXJldHVybiB0cnVlOw0KPiA+ICt9DQo+
+ID4gKw0KPiA+ICtzdGF0aWMgdm9pZCBpZ3RfcG1fc2V0dXBfcG93ZXJfYXR0cihpbnQgZmQsIGNv
+bnN0IGNoYXIgKnZhbCkgew0KPiA+ICsJaW50IHNpemUsIGxlbjsNCj4gPiArCWNoYXIgYnVmWzZd
+Ow0KPiA+ICsNCj4gPiArCWxlbiA9IHN0cmxlbih2YWwpOw0KPiA+ICsNCj4gPiArCXNpemUgPSB3
+cml0ZShmZCwgdmFsLCBsZW4pOw0KPiA+ICsJaWd0X2Fzc2VydF9lcShzaXplLCBsZW4pOw0KPiA+
+ICsJbHNlZWsoZmQsIDAsIFNFRUtfU0VUKTsNCj4gPiArCXNpemUgPSByZWFkKGZkLCBidWYsIEFS
+UkFZX1NJWkUoYnVmKSk7DQo+ID4gKwlpZ3RfYXNzZXJ0X2VxKHNpemUsIGxlbik7DQo+ID4gKwlp
+Z3RfYXNzZXJ0KHN0cm5jbXAoYnVmLCB2YWwsIGxlbikgPT0gMCk7IH0NCj4gPiArDQo+ID4gK3N0
+YXRpYyB2b2lkDQo+ID4gK19faWd0X3BtX3NldHVwX3BjaV9jYXJkX3J1bnRpbWVfcG0oc3RydWN0
+IHBjaV9kZXZpY2UgKnBjaV9kZXYsIGludA0KPiA+ICtpbmRleCkgew0KPiA+ICsJaW50IGNvbnRy
+b2xfZmQsIGRlbGF5X2ZkLCBjb250cm9sX3NpemUsIGRlbGF5X3NpemU7DQo+ID4gKwljaGFyICpj
+b250cm9sLCAqZGVsYXk7DQo+ID4gKw0KPiA+ICsJaWd0X2Fzc2VydChpbmRleCA8ICBNQVhfUENJ
+X0RFVklDRVMpID4gKw0KPiA+ICsJaWYgKCEoaW5kZXggJSAxNikpIHsNCj4gPiArCQlfX3BjaV9k
+ZXZfcHdyYXR0ciA9DQo+ID4gKwkJCXJlYWxsb2MoX19wY2lfZGV2X3B3cmF0dHIsDQo+ID4gKwkJ
+CQlzaXplb2Yoc3RydWN0IGlndF9wbV9wY2lfZGV2X3B3cmF0dHIpICogKGluZGV4DQo+IC8gMTYg
+KyAxKSAqIDE2KTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwljb250cm9sID0gX19wY2lfZGV2X3B3
+cmF0dHJbaW5kZXhdLmNvbnRyb2w7DQo+ID4gKwljb250cm9sX3NpemUgPSAgc2l6ZW9mKF9fcGNp
+X2Rldl9wd3JhdHRyW2luZGV4XS5jb250cm9sKTsNCj4gPiArCWRlbGF5ID0gX19wY2lfZGV2X3B3
+cmF0dHJbaW5kZXhdLmF1dG9zdXNwZW5kX2RlbGF5Ow0KPiA+ICsJZGVsYXlfc2l6ZSA9ICBzaXpl
+b2YoX19wY2lfZGV2X3B3cmF0dHJbaW5kZXhdLmF1dG9zdXNwZW5kX2RlbGF5KTsNCj4gPiArCV9f
+cGNpX2Rldl9wd3JhdHRyW2luZGV4XS5wY2lfZGV2ID0gcGNpX2RldjsNCj4gPiArCV9fcGNpX2Rl
+dl9wd3JhdHRyW2luZGV4XS5hdXRvc3VzcGVuZF9zdXBwb3J0ZWQgPSB0cnVlOw0KPiA+ICsNCj4g
+PiArCWRlbGF5X2ZkID0gaWd0X3BtX2dldF9wb3dlcl9hdHRyX2ZkKHBjaV9kZXYsDQo+ICJhdXRv
+c3VzcGVuZF9kZWxheV9tcyIpOw0KPiA+ICsJY29udHJvbF9mZCA9IGlndF9wbV9nZXRfcG93ZXJf
+YXR0cl9mZChwY2lfZGV2LCAiY29udHJvbCIpOw0KPiA+ICsNCj4gPiArCWlmICghaWd0X3BtX3Nh
+dmVfcG93ZXJfYXR0cihkZWxheV9mZCwgZGVsYXksIGRlbGF5X3NpemUsIHRydWUpKSB7DQo+ID4g
+KwkJX19wY2lfZGV2X3B3cmF0dHJbaW5kZXhdLmF1dG9zdXNwZW5kX3N1cHBvcnRlZCA9IGZhbHNl
+Ow0KPiA+ICsJCWlndF9kZWJ1ZygiUENJICclMDR4OiUwMng6JTAyeC4lMDF4JyBkb2Vzbid0IHN1
+cHBvcnQNCj4gYXV0b19zdXNwZW5kXG4iLA0KPiA+ICsJCQkgIHBjaV9kZXYtPmRvbWFpbiwgcGNp
+X2Rldi0+YnVzLCBwY2lfZGV2LT5kZXYsDQo+IHBjaV9kZXYtPmZ1bmMpOw0KPiA+ICsJfQ0KPiA+
+ICsNCj4gPiArCWlndF9wbV9zYXZlX3Bvd2VyX2F0dHIoY29udHJvbF9mZCwgY29udHJvbCwgY29u
+dHJvbF9zaXplLCBmYWxzZSk7DQo+ID4gKwlpZ3RfZGVidWcoIlBDSSAnJTA0eDolMDJ4OiUwMngu
+JTAxeCcgU2F2ZWQgJ2NvbnRyb2wsDQo+IGF1dG9zdXNwZW5kX2RlbGF5X21zJyBhcyAnJXMsICVz
+J1xuIiwNCj4gPiArCQkgIHBjaV9kZXYtPmRvbWFpbiwgcGNpX2Rldi0+YnVzLCBwY2lfZGV2LT5k
+ZXYsIHBjaV9kZXYtPmZ1bmMsDQo+IGNvbnRyb2wsDQo+ID4gKwkJICBfX3BjaV9kZXZfcHdyYXR0
+cltpbmRleF0uYXV0b3N1c3BlbmRfc3VwcG9ydGVkID8gZGVsYXkgOg0KPiAiTkEiKTsNCj4gPiAr
+DQo+ID4gKwlpZiAoIWluZGV4KQ0KPiA+ICsJCWlndF9pbnN0YWxsX2V4aXRfaGFuZGxlcihfX2ln
+dF9wbV9wY2lfY2FyZF9leGl0X2hhbmRsZXIpOw0KPiA+ICsNCj4gPiArCWlmIChfX3BjaV9kZXZf
+cHdyYXR0cltpbmRleF0uYXV0b3N1c3BlbmRfc3VwcG9ydGVkKQ0KPiA+ICsJCWlndF9wbV9zZXR1
+cF9wb3dlcl9hdHRyKGRlbGF5X2ZkLCAiMFxuIik7DQo+ID4gKw0KPiA+ICsJaWd0X3BtX3NldHVw
+X3Bvd2VyX2F0dHIoY29udHJvbF9mZCwgImF1dG9cbiIpOw0KPiA+ICsNCj4gPiArCWNsb3NlKGRl
+bGF5X2ZkKTsNCj4gPiArCWNsb3NlKGNvbnRyb2xfZmQpOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICsv
+KioNCj4gPiArICogaWd0X3BtX3NldHVwX3BjaV9jYXJkX3J1bnRpbWVfcG06DQo+ID4gKyAqIEBw
+Y2lfZGV2OiByb290IHBvcnQgcGNpX2Rldi4NCj4gPiArICogU2V0dXAgcnVudGltZSBQTSBmb3Ig
+YWxsIFBDSSBlbmRwb2ludHMgZGV2aWNlcyBmb3IgYSBnaXZlbiByb290DQo+ID4gK3BvcnQgYnkN
+Cj4gPiArICogZW5hYmxpbmcgcnVudGltZSBzdXNwZW5kIGFuZCBzZXR0aW5nIGF1dG9zdXNwZW5k
+X2RlbGF5X21zIHRvIHplcm8uDQo+ID4gKyAqIEl0IGFsc28gc2F2ZXMgcG93ZXIgY29udHJvbCBh
+dHRyaWJ1dGUgZm9yIGFsbCBQQ0kgZW5kcG9pbnRzDQo+ID4gKyAqIGRldmljZXMgdW5kZXIgZ2l2
+ZW4gcm9vdCBwb3J0Lg0KPiA+ICsgKi8NCj4gPiArdm9pZCBpZ3RfcG1fc2V0dXBfcGNpX2NhcmRf
+cnVudGltZV9wbShzdHJ1Y3QgcGNpX2RldmljZSAqcGNpX2Rldikgew0KPiA+ICsJaW50IHByaW1h
+cnksIHNlY29uZGFyeSwgc3Vib3JkaW5hdGUsIHJldDsNCj4gPiArCXN0cnVjdCBwY2lfZGV2aWNl
+X2l0ZXJhdG9yICppdGVyOw0KPiA+ICsJc3RydWN0IHBjaV9kZXZpY2UgKmRldjsNCj4gPiArCWlu
+dCBpOw0KPiBpIHNob3VsZCBiZSBpbml0aWFsaXplZCB0byAwOw0KVGhhbmtzIGZvciBjYXRjaGlu
+ZyB0aGlzLCBJIG1pc3NlZCBpdCB3aGlsZSByZWJhc2luZyBpdC4gSXQgd2FzIGluaXRpYWxpemVk
+IGluIHYxIHBhdGNoLiANCj4gPiArDQo+ID4gKwlyZXQgPSBwY2lfZGV2aWNlX2dldF9icmlkZ2Vf
+YnVzZXMocGNpX2RldiwgJnByaW1hcnksICZzZWNvbmRhcnksDQo+ICZzdWJvcmRpbmF0ZSk7DQo+
+ID4gKwlpZ3RfYXNzZXJ0KCFyZXQpOw0KPiA+ICsNCj4gPiArCXJldCA9IHBjaV9zeXN0ZW1faW5p
+dCgpOw0KPiA+ICsJaWd0X2Fzc2VydCghcmV0KTsNCj4gPiArDQo+ID4gKwlpdGVyID0gcGNpX3Ns
+b3RfbWF0Y2hfaXRlcmF0b3JfY3JlYXRlKE5VTEwpOw0KPiA+ICsJLyogU2V0dXAgcnVudGltZSBw
+bSBmb3IgUENJIHJvb3QgcG9ydCAqLw0KPiA+ICsJX19pZ3RfcG1fc2V0dXBfcGNpX2NhcmRfcnVu
+dGltZV9wbShwY2lfZGV2LCBpKyspOw0KPiA+ICsJd2hpbGUgKChkZXYgPSBwY2lfZGV2aWNlX25l
+eHQoaXRlcikpICE9IE5VTEwpIHsgPiArCQlpZiAoZGV2LT5idXMgPj0NCj4gc2Vjb25kYXJ5ICYm
+IGRldi0+YnVzIDw9IHN1Ym9yZGluYXRlKQ0KPiA+ICsJCQlfX2lndF9wbV9zZXR1cF9wY2lfY2Fy
+ZF9ydW50aW1lX3BtKGRldiwgaSsrKTsNCj4gPiArCX1TZWFyY2hpbmcgb2YgcGNpX2RldmljZSB3
+b3VsZCBiZSBsaXR0bGUgZmFzdGVyIGlmIHdlIHVzZSBpdHItPm1vZGUNCj4gPiArPQ0KPiBtYXRj
+aF9zbG90IGFuZCBwYXNzIGl0ZXItPm1hdGNoLnNsb3QuYnVzIHRvIHBjaV9kZXZpY2VfbmV4dCgp
+DQpJdGVyIG1lbWJlcnMgYXJlIG5vdCBhY2Nlc3NpYmxlIG91dHNpZGUgbGlicGNpYWNjZXNzLg0K
+U28gd2UgZG8gbmVlZCB0byBjcmVhdGUgaXRlciBlYWNoIHRpbWUgLCB3aGVuIGRvIHdlIHdhbnQg
+dG8gaW5jcmVtZW50IHRoZSBzZWNvbmRhcnkgYnVzLg0KQ3JlYXRpbmcgaXRlciBldmVyeSB0aW1l
+IHdpbGwgbm90IHNlYXJjaCBmYXN0ZXIuDQpUaGFua3MsDQpBbnNodW1hbiBHdXB0YS4gDQo+IA0K
+PiBUaGFua3MsDQo+IEJhZGFsIE5pbGF3YXINCj4gPiArDQo+ID4gKwlfX2lndF9wbV9wY2lfZGV2
+X2NudCA9IGk7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyB2b2lkDQo+ID4gK2lndF9wbV9y
+ZXN0b3JlX3Bvd2VyX2F0dHIoc3RydWN0IHBjaV9kZXZpY2UgKnBjaV9kZXYsIGNvbnN0IGNoYXIN
+Cj4gPiArKmF0dHIsIGNoYXIgKnZhbCwgaW50IGxlbikgew0KPiA+ICsJaW50IGZkOw0KPiA+ICsN
+Cj4gPiArCWlndF9kZWJ1ZygiUENJICclMDR4OiUwMng6JTAyeC4lMDF4JyBSZXN0b3JpbmcgJXMg
+YXR0ciB0byAnJXMnXG4iLA0KPiA+ICsJCSAgcGNpX2Rldi0+ZG9tYWluLCBwY2lfZGV2LT5idXMs
+IHBjaV9kZXYtPmRldiwgcGNpX2Rldi0+ZnVuYywNCj4gYXR0ciwNCj4gPiArdmFsKTsNCj4gPiAr
+DQo+ID4gKwlmZCA9IGlndF9wbV9nZXRfcG93ZXJfYXR0cl9mZChwY2lfZGV2LCBhdHRyKTsNCj4g
+PiArCWlndF9hc3NlcnQod3JpdGUoZmQsIHZhbCwgbGVuKSA9PSBsZW4pOw0KPiA+ICsNCj4gPiAr
+CWNsb3NlKGZkKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiArLyoqDQo+ID4gKyAqIGlndF9wbV9yZXN0
+b3JlX3BjaV9jYXJkX3J1bnRpbWVfcG06DQo+ID4gKyAqIFJlc3RvcmUgY29udHJvbCBhbmQgYXV0
+b3N1c3BlbmRfZGVsYXlfbXMgcG93ZXIgYXR0cmlidXRlIGZvciBhbGwNCj4gPiArICogUENJIGVu
+ZHBvaW50cyBkZXZpY2VzIHVuZGVyIGdmeCByb290IHBvcnQsIHdoaWNoIHdlcmUgc2F2ZWQNCj4g
+PiArZWFybGllcg0KPiA+ICsgKiBieSBpZ3RfcG1fc2V0dXBfcGNpX2NhcmRfcnVudGltZV9wbSgp
+Lg0KPiA+ICsgKi8NCj4gPiArdm9pZCBpZ3RfcG1fcmVzdG9yZV9wY2lfY2FyZF9ydW50aW1lX3Bt
+KHZvaWQpDQo+ID4gK3sNCj4gPiArCWludCBpID0gMDsNCj4gPiArDQo+ID4gKwlpZiAoIV9fcGNp
+X2Rldl9wd3JhdHRyKQ0KPiA+ICsJCXJldHVybjsNCj4gPiArDQo+ID4gKwlmb3IgKGkgPSAwOyBp
+IDwgX19pZ3RfcG1fcGNpX2Rldl9jbnQ7IGkrKykgew0KPiA+ICsJCWlndF9wbV9yZXN0b3JlX3Bv
+d2VyX2F0dHIoX19wY2lfZGV2X3B3cmF0dHJbaV0ucGNpX2RldiwNCj4gImNvbnRyb2wiLA0KPiA+
+ICsJCQkJCSAgX19wY2lfZGV2X3B3cmF0dHJbaV0uY29udHJvbCwNCj4gPiArCQkJCQkgIHNpemVv
+ZihfX3BjaV9kZXZfcHdyYXR0cltpXS5jb250cm9sKSk7DQo+ID4gKw0KPiA+ICsJCWlmICghX19w
+Y2lfZGV2X3B3cmF0dHJbaV0uYXV0b3N1c3BlbmRfc3VwcG9ydGVkKQ0KPiA+ICsJCQljb250aW51
+ZTsNCj4gPiArDQo+ID4gKwkJaWd0X3BtX3Jlc3RvcmVfcG93ZXJfYXR0cihfX3BjaV9kZXZfcHdy
+YXR0cltpXS5wY2lfZGV2LA0KPiAiYXV0b3N1c3BlbmRfZGVsYXlfbXMiLA0KPiA+ICsNCj4gX19w
+Y2lfZGV2X3B3cmF0dHJbaV0uYXV0b3N1c3BlbmRfZGVsYXksDQo+ID4gKw0KPiBzaXplb2YoX19w
+Y2lfZGV2X3B3cmF0dHJbaV0uYXV0b3N1c3BlbmRfZGVsYXkpKTsNCj4gPiArCX0NCj4gPiArDQo+
+ID4gKwlwY2lfc3lzdGVtX2NsZWFudXAoKTsNCj4gPiArCWZyZWUoX19wY2lfZGV2X3B3cmF0dHIp
+Ow0KPiA+ICsJX19wY2lfZGV2X3B3cmF0dHIgPSBOVUxMOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICtz
+dGF0aWMgdm9pZCBpZ3RfcG1fcHJpbnRfcGNpX2Rldl9ydW50aW1lX3N0YXR1cyhzdHJ1Y3QgcGNp
+X2RldmljZQ0KPiA+ICsqcGNpX2Rldikgew0KPiA+ICsJY2hhciBuYW1lW1BBVEhfTUFYXSwgcnVu
+dGltZV9zdGF0dXNbNjRdOw0KPiA+ICsJaW50IGZkLCBuX3JlYWQ7DQo+ID4gKw0KPiA+ICsJc25w
+cmludGYobmFtZSwgUEFUSF9NQVgsDQo+ICIvc3lzL2J1cy9wY2kvZGV2aWNlcy8lMDR4OiUwMng6
+JTAyeC4lMDF4L3Bvd2VyL3J1bnRpbWVfc3RhdHVzIiwNCj4gPiArCQkgcGNpX2Rldi0+ZG9tYWlu
+LCBwY2lfZGV2LT5idXMsIHBjaV9kZXYtPmRldiwgcGNpX2Rldi0+ZnVuYyk7DQo+ID4gKw0KPiA+
+ICsJZmQgPSBvcGVuKG5hbWUsIE9fUkRPTkxZKTsNCj4gPiArCWlndF9hc3NlcnRfZihmZCA+PSAw
+LCAiQ2FuJ3Qgb3BlbiBydW50aW1lX3N0YXR1c1xuIik7DQo+ID4gKw0KPiA+ICsJbl9yZWFkID0g
+cmVhZChmZCwgcnVudGltZV9zdGF0dXMsIHNpemVvZihydW50aW1lX3N0YXR1cykgLSAxKTsNCj4g
+PiArCWlndF9hc3NlcnQobl9yZWFkID49IDApOw0KPiA+ICsJcnVudGltZV9zdGF0dXNbbl9yZWFk
+XSA9ICdcMCc7DQo+ID4gKwlpZ3RfaW5mbygicnVudGltZSBzdXNwZW5kIHN0YXR1cyBmb3IgUENJ
+ICclMDR4OiUwMng6JTAyeC4lMDF4JyAlc1xuIiwNCj4gPiArCQkgcGNpX2Rldi0+ZG9tYWluLCBw
+Y2lfZGV2LT5idXMsIHBjaV9kZXYtPmRldiwgcGNpX2Rldi0+ZnVuYywNCj4gcnVudGltZV9zdGF0
+dXMpOw0KPiA+ICsJY2xvc2UoZmQpOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICsvKioNCj4gPiArICog
+aWd0X3BtX3ByaW50X3BjaV9jYXJkX3J1bnRpbWVfc3RhdHVzOg0KPiA+ICsgKiBAcGNpX2Rldjog
+cm9vdCBwb3J0IHBjaV9kZXYuDQo+ID4gKyAqIFByaW50IHJ1bnRpbWUgc3VzcGVuZCBzdGF0dXMg
+Zm9yIGFsbCBQQ0kgZW5kcG9pbnRzIGRldmljZXMgZm9yIGENCj4gPiArZ2l2ZW4NCj4gPiArICog
+cm9vdCBwb3J0Lg0KPiA+ICsgKi8NCj4gPiArdm9pZCBpZ3RfcG1fcHJpbnRfcGNpX2NhcmRfcnVu
+dGltZV9zdGF0dXModm9pZCkNCj4gPiArew0KPiA+ICsJaW50IGkgPSAwOw0KPiA+ICsNCj4gPiAr
+CWlmICghX19wY2lfZGV2X3B3cmF0dHIpDQo+ID4gKwkJcmV0dXJuOw0KPiA+ICsNCj4gPiArCWZv
+ciAoaSA9IDA7IGkgPCBfX2lndF9wbV9wY2lfZGV2X2NudDsgaSsrKQ0KPiA+ICsNCj4gCWlndF9w
+bV9wcmludF9wY2lfZGV2X3J1bnRpbWVfc3RhdHVzKF9fcGNpX2Rldl9wd3JhdHRyW2ldLnBjaV9k
+ZXYpOw0KPiA+ICt9DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcG0uaCBiL2xpYi9pZ3RfcG0u
+aCBpbmRleCAxNjJkM2NhM2MuLjg5ODE3ODY3MA0KPiA+IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9p
+Z3RfcG0uaA0KPiA+ICsrKyBiL2xpYi9pZ3RfcG0uaA0KPiA+IEBAIC00Niw2ICs0NiwyMyBAQCBl
+bnVtIGlndF9ydW50aW1lX3BtX3N0YXR1cyB7DQo+ID4gICAJSUdUX1JVTlRJTUVfUE1fU1RBVFVT
+X1VOS05PV04sDQo+ID4gICB9Ow0KPiA+DQo+ID4gKy8qIFBDSSBBQ1BJIGZpcm13YXJlIG5vZGUg
+cmVhbCBzdGF0ZSAqLyBlbnVtIGlndF9hY3BpX2Rfc3RhdGUgew0KPiA+ICsJSUdUX0FDUElfRDAs
+DQo+ID4gKwlJR1RfQUNQSV9EMSwNCj4gPiArCUlHVF9BQ1BJX0QyLA0KPiA+ICsJSUdUX0FDUElf
+RDNIb3QsDQo+ID4gKwlJR1RfQUNQSV9EM0NvbGQsDQo+ID4gKwlJR1RfQUNQSV9VTktOT1dOX1NU
+QVRFLA0KPiA+ICt9Ow0KPiA+ICsNCj4gPiArc3RydWN0CWlndF9wbV9wY2lfZGV2X3B3cmF0dHIg
+ew0KPiA+ICsJc3RydWN0IHBjaV9kZXZpY2UgKnBjaV9kZXY7DQo+ID4gKwljaGFyIGNvbnRyb2xb
+NjRdOw0KPiA+ICsJYm9vbCBhdXRvc3VzcGVuZF9zdXBwb3J0ZWQ7DQo+ID4gKwljaGFyIGF1dG9z
+dXNwZW5kX2RlbGF5WzY0XTsNCj4gPiArfTsNCj4gPiArDQo+ID4gICBib29sIGlndF9zZXR1cF9y
+dW50aW1lX3BtKGludCBkZXZpY2UpOw0KPiA+ICAgdm9pZCBpZ3RfZGlzYWJsZV9ydW50aW1lX3Bt
+KHZvaWQpOw0KPiA+ICAgdm9pZCBpZ3RfcmVzdG9yZV9ydW50aW1lX3BtKHZvaWQpOw0KPiA+IEBA
+IC01NCw1ICs3MSwxMSBAQCBib29sIGlndF93YWl0X2Zvcl9wbV9zdGF0dXMoZW51bQ0KPiBpZ3Rf
+cnVudGltZV9wbV9zdGF0dXMgc3RhdHVzKTsNCj4gPiAgIGJvb2wgaWd0X3BtX2RtY19sb2FkZWQo
+aW50IGRlYnVnZnMpOw0KPiA+ICAgYm9vbCBpZ3RfcG1fcGM4X3BsdXNfcmVzaWRlbmNpZXNfZW5h
+YmxlZChpbnQgbXNyX2ZkKTsNCj4gPiAgIGJvb2wgaTkxNV9vdXRwdXRfaXNfbHBzcF9jYXBhYmxl
+KGludCBkcm1fZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KTsNCj4gPiArYm9vbCBpZ3RfcG1fYWNw
+aV9kM2NvbGRfc3VwcG9ydGVkKHN0cnVjdCBwY2lfZGV2aWNlICpwY2lfZGV2KTsgZW51bQ0KPiA+
+ICtpZ3RfYWNwaV9kX3N0YXRlIGlndF9wbV9nZXRfYWNwaV9yZWFsX2Rfc3RhdGUoc3RydWN0IHBj
+aV9kZXZpY2UNCj4gPiArKnBjaV9kZXYpOyB2b2lkIGlndF9wbV9zZXR1cF9wY2lfY2FyZF9ydW50
+aW1lX3BtKHN0cnVjdCBwY2lfZGV2aWNlDQo+ID4gKypwY2lfZGV2KTsgdm9pZCBpZ3RfcG1fcmVz
+dG9yZV9wY2lfY2FyZF9ydW50aW1lX3BtKHZvaWQpOw0KPiA+ICt2b2lkIGlndF9wbV9wcmludF9w
+Y2lfY2FyZF9ydW50aW1lX3N0YXR1cyh2b2lkKTsNCj4gPg0KPiA+ICAgI2VuZGlmIC8qIElHVF9Q
+TV9IICovDQo=
