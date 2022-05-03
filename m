@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABBA511288B
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 10:57:30 +0000 (UTC)
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 31 May 2022 12:56:54 +0200
-Message-Id: <20220531105654.1029576-1-karolina.drobnik@intel.com>
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2042.outbound.protection.outlook.com [40.107.237.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 966A210EAA2
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 May 2022 14:06:44 +0000 (UTC)
+Message-ID: <ce8a419a-475e-ec84-ab85-6a4ac8c7154e@amd.com>
+Date: Tue, 3 May 2022 10:06:35 -0400
+Content-Language: en-US
+To: David Zhang <dingchen.zhang@amd.com>, igt-dev@lists.freedesktop.org
+References: <20220503135009.2178652-1-dingchen.zhang@amd.com>
+From: Leo Li <sunpeng.li@amd.com>
+In-Reply-To: <20220503135009.2178652-1-dingchen.zhang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915: Use correct type for gen
- parameter
+Subject: Re: [igt-dev] [PATCH v2] tests/amdgpu/amd_psr: trigger full modeset
+ if visual confirm enabled
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,61 +26,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-intel_gen is designed to return a big unsigned number for an unknown device.
-The value is interpreted to be the newest generation possible, and the matching
-configuration is used. Some functions incorrectly pass the gen value as a signed
-number, meaning it becomes negative, and the oldest configuration is used
-instead of the newest one. This leads to GPU hangs in some cases.
 
-Update the definition of submit functions in gem_exec_gttfill and gem_softpin,
-and has_cs_timestamp in gem_ctx_engines to use a correct type for gen parameter.
 
-Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_ctx_engines.c  | 2 +-
- tests/i915/gem_exec_gttfill.c | 2 +-
- tests/i915/gem_softpin.c      | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+On 2022-05-03 09:50, David Zhang wrote:
+> [why]
+> In amdgpu kernel, to enable PSR visual confirm debug option, it
+> needs a full modeset to call the DM PSR setup helper which in turn
+> to set the visual confirm debug option. Currently before test run
+> there is such full modeset, and after test run ends the visual
+> confirm option is restored to be disabled. Although the IGT clean
+> up after test run ends will do DPMS transition and trigger a full
+> modeset, but at the moment the visual confirm is already disabled.
+> This means that even from command line, visual confirm option is
+> set, the DC visual confirm debug is never enabled actually during
+> any PSR-SU test run.
+> 
+> [how]
+> If visual confirm option is set from command line parameter, before
+> any PSR-SU test run, we manually trigger a DPMS off->ON transition
+> which in turn to trigger a full modeset in kernel from test_init(),
+> to enable the visual confirm.
+> 
+> changes in v2:
+> - drop the scaling test patch and rebase w/ latest cod base
+> 
+> Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Jay Pillai <aurabindo.pillai@amd.com>
+> Cc: Wayne Lin <wayne.lin@amd.com>
 
-diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-index 19cf9b05..4b8e5145 100644
---- a/tests/i915/gem_ctx_engines.c
-+++ b/tests/i915/gem_ctx_engines.c
-@@ -437,7 +437,7 @@ static uint32_t read_result(int timeline, uint32_t *map, int idx)
- 	return map[idx];
- }
- 
--static bool has_cs_timestamp(const struct intel_execution_engine2 *e, int gen)
-+static bool has_cs_timestamp(const struct intel_execution_engine2 *e, unsigned int gen)
- {
- 	if (gen >= 7)
- 		return true;
-diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
-index ebe6d2d3..037275f5 100644
---- a/tests/i915/gem_exec_gttfill.c
-+++ b/tests/i915/gem_exec_gttfill.c
-@@ -46,7 +46,7 @@ static void xchg_batch(void *array, unsigned int i, unsigned int j)
- 	batches[j] = tmp;
- }
- 
--static void submit(int fd, uint64_t ahnd, int gen,
-+static void submit(int fd, uint64_t ahnd, unsigned int gen,
- 		   struct drm_i915_gem_execbuffer2 *eb,
- 		   struct drm_i915_gem_relocation_entry *reloc,
- 		   struct batch *batches, unsigned int count)
-diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-index 00912fd3..6c8b46f3 100644
---- a/tests/i915/gem_softpin.c
-+++ b/tests/i915/gem_softpin.c
-@@ -898,7 +898,7 @@ static void xchg_batch(void *array, unsigned int i, unsigned int j)
- 	batches[j] = tmp;
- }
- 
--static void submit(int fd, int gen,
-+static void submit(int fd, unsigned int gen,
- 		   struct drm_i915_gem_execbuffer2 *eb,
- 		   struct batch *batches, unsigned int count,
- 		   uint64_t ahnd)
--- 
-2.25.1
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+
+Thanks!
+> 
+> Signed-off-by: David Zhang <dingchen.zhang@amd.com>
+> ---
+>   tests/amdgpu/amd_psr.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+> 
+> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+> index 56858f79..b930b20e 100644
+> --- a/tests/amdgpu/amd_psr.c
+> +++ b/tests/amdgpu/amd_psr.c
+> @@ -170,6 +170,16 @@ static void test_init(data_t *data)
+>   
+>   	data->w = data->mode->hdisplay;
+>   	data->h = data->mode->vdisplay;
+> +
+> +	if (opt.visual_confirm) {
+> +		/**
+> +		 * if visual confirm option is enabled, we'd trigger a full modeset before test run
+> +		 * to make PSR visual confirm enable take effect. DPMS off -> ON transition is one of
+> +		 * the approaches.
+> +		 */
+> +		kmstest_set_connector_dpms(data->fd, data->output->config.connector, DRM_MODE_DPMS_OFF);
+> +		kmstest_set_connector_dpms(data->fd, data->output->config.connector, DRM_MODE_DPMS_ON);
+> +	}
+>   }
+>   /* Common test cleanup. */
+>   static void test_fini(data_t *data)
