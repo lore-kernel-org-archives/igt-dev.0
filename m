@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81F0410E0CB
- for <igt-dev@lists.freedesktop.org>; Wed,  4 May 2022 17:55:34 +0000 (UTC)
-Date: Wed, 4 May 2022 13:54:58 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EAB010E0EB
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 May 2022 17:56:24 +0000 (UTC)
+Date: Wed, 4 May 2022 13:55:38 -0400
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <YnK98pYt4cZnQXJU@intel.com>
+Message-ID: <YnK+Guf0oyqHnPAX@intel.com>
 References: <20220504135900.13806-1-anshuman.gupta@intel.com>
- <20220504135900.13806-8-anshuman.gupta@intel.com>
+ <20220504135900.13806-9-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220504135900.13806-8-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 7/8] i915_pm_rpm: Extend gem_execbuf
- test with D3Cold
+In-Reply-To: <20220504135900.13806-9-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 8/8] i915_pm_rpm: Extend
+ gem-mmap-type test with D3Cold
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,8 +27,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 04, 2022 at 07:28:59PM +0530, Anshuman Gupta wrote:
-> Added d3cold dynamic subtest to gem_execbuf with device class
+On Wed, May 04, 2022 at 07:29:00PM +0530, Anshuman Gupta wrote:
+> Added d3cold dynamic subtest to gem-mmap-type with device class
 > memory region. It test both D3Cold-{VRAM_SR, Off} by using
 > d3cold_sr_lmem_threshold i915_params debugfs.
 > 
@@ -43,87 +43,110 @@ On Wed, May 04, 2022 at 07:28:59PM +0530, Anshuman Gupta wrote:
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
 > ---
->  tests/i915/i915_pm_rpm.c | 34 ++++++++++++++++++++++++++++++++--
->  1 file changed, 32 insertions(+), 2 deletions(-)
+>  tests/i915/i915_pm_rpm.c | 41 ++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 39 insertions(+), 2 deletions(-)
 > 
 > diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> index b16d61643..a062fde88 100644
+> index a062fde88..3a4e2901b 100644
 > --- a/tests/i915/i915_pm_rpm.c
 > +++ b/tests/i915/i915_pm_rpm.c
-> @@ -1350,10 +1350,11 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
+> @@ -1129,11 +1129,12 @@ static struct pci_device *setup_d3cold_and_get_root_port(void)
 >  }
 >  
->  /* Make sure we can submit a batch buffer and verify its result. */
-> -static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions)
-> +static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions, bool d3cold)
+>  static void gem_mmap_args(const struct mmap_offset *t,
+> -			  struct drm_i915_gem_memory_class_instance *mem_regions)
+> +			  struct drm_i915_gem_memory_class_instance *mem_regions, bool d3cold)
 >  {
->  	int x, y;
+>  	int i;
 >  	uint32_t handle;
+>  	int buf_size = 8192;
 > +	struct pci_device *root;
->  	int bpp = 4;
->  	int pitch = 128 * bpp;
->  	int dst_size = 128 * 128 * bpp; /* 128x128 square */
-> @@ -1375,6 +1376,9 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
->  	memset(cpu_buf, 0, dst_size);
->  	gem_write(drm_fd, handle, 0, cpu_buf, dst_size);
+>  	uint8_t *gem_buf;
+>  
+>  	/* Create, map and set data while the device is active. */
+> @@ -1151,17 +1152,29 @@ static void gem_mmap_args(const struct mmap_offset *t,
+>  	for (i = 0; i < buf_size; i++)
+>  		igt_assert(gem_buf[i] == (i & 0xFF));
 >  
 > +	if (d3cold)
 > +		root = setup_d3cold_and_get_root_port();
 > +
->  	/* Now suspend and try it. */
->  	disable_all_screens_and_wait(&ms_data);
->  
-> @@ -1383,8 +1387,15 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
->  		       &presumed_offset);
->  	igt_assert(wait_for_suspended());
->  
-> +	if (d3cold)
-> +		igt_assert(wait_for_d3cold(root));
-> +
->  	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
->  	igt_assert(wait_for_suspended());
-> +
-> +	if (d3cold)
-> +		igt_assert(wait_for_d3cold(root));
-> +
->  	for (y = 0; y < 128; y++) {
->  		for (x = 0; x < 128; x++) {
->  			uint32_t px = cpu_buf[y * 128 + x];
-> @@ -1423,6 +1434,9 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
->  
+>  	/* Now suspend, read and modify. */
 >  	disable_all_screens_and_wait(&ms_data);
 >  
 > +	if (d3cold)
 > +		igt_assert(wait_for_d3cold(root));
 > +
->  	memset(cpu_buf, 0, dst_size);
->  	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
->  	for (y = 0; y < 128; y++) {
-> @@ -2182,7 +2196,23 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  	igt_subtest_with_dynamic("gem-execbuf") {
->  		for_each_memory_region(r, drm_fd) {
->  			igt_dynamic_f("%s", r->name)
-> -				gem_execbuf_subtest(&r->ci);
-> +				gem_execbuf_subtest(&r->ci, false);
+>  	for (i = 0; i < buf_size; i++)
+>  		igt_assert(gem_buf[i] == (i & 0xFF));
+>  	igt_assert(wait_for_suspended());
+>  
+> +	if (d3cold)
+> +		igt_assert(wait_for_d3cold(root));
 > +
-> +			if (r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM)
-> +				continue;
+>  	for (i = 0; i < buf_size; i++)
+>  		gem_buf[i] = (~i & 0xFF);
+>  	igt_assert(wait_for_suspended());
+>  
+> +	if (d3cold)
+> +		igt_assert(wait_for_d3cold(root));
 > +
-> +			igt_dynamic_f("%s-%s", "d3cold-off", r->name) {
-> +				if (lmem_threshold >= 0)
-> +					set_d3cold_sr_lmem_threshold(debugfs, 300);
+>  	/* Now resume and see if it's still there. */
+>  	enable_one_screen_and_wait(&ms_data);
+>  	for (i = 0; i < buf_size; i++)
+> @@ -1173,12 +1186,18 @@ static void gem_mmap_args(const struct mmap_offset *t,
+>  	 * suspended. */
+>  	disable_all_screens_and_wait(&ms_data);
+>  
+> +	if (d3cold)
+> +		igt_assert(wait_for_d3cold(root));
 > +
-> +				gem_execbuf_subtest(&r->ci, true);
-> +			}
+>  	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
+>  				    PROT_READ | PROT_WRITE, t->type);
+>  	igt_require(gem_buf);
+>  
+>  	igt_assert(wait_for_suspended());
+>  
+> +	if (d3cold)
+> +		igt_assert(wait_for_d3cold(root));
 > +
-> +			igt_dynamic_f("%s-%s", "d3cold-vrsr", r->name) {
-> +				igt_require(lmem_threshold >= 0);
-> +				set_d3cold_sr_lmem_threshold(debugfs, 0);
-> +				gem_execbuf_subtest(&r->ci, true);
-> +			}
+>  	for (i = 0; i < buf_size; i++)
+>  		gem_buf[i] = i & 0xFF;
+>  
+> @@ -1187,6 +1206,9 @@ static void gem_mmap_args(const struct mmap_offset *t,
+>  
+>  	igt_assert(wait_for_suspended());
+>  
+> +	if (d3cold)
+> +		igt_assert(wait_for_d3cold(root));
+> +
+>  	/* Resume and check if it's still there. */
+>  	enable_one_screen_and_wait(&ms_data);
+>  	for (i = 0; i < buf_size; i++)
+> @@ -2186,7 +2208,22 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		for_each_mmap_offset_type(drm_fd, t) {
+>  			for_each_memory_region(r, drm_fd) {
+>  				igt_dynamic_f("%s-%s", t->name, r->name)
+> -				gem_mmap_args(t, &r->ci);
+> +				gem_mmap_args(t, &r->ci, false);
+> +
+> +				if (r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM)
+> +					continue;
+> +
+> +				igt_dynamic_f("%s-%s-%s", t->name, "d3cold-off", r->name) {
+> +					if (lmem_threshold >= 0)
+> +						set_d3cold_sr_lmem_threshold(debugfs, 300);
+> +					gem_mmap_args(t, &r->ci, true);
+> +				}
+> +
+> +				igt_dynamic_f("%s-%s-%s", t->name, "d3cold-vrsr", r->name) {
+> +					igt_require(lmem_threshold >= 0);
+> +					set_d3cold_sr_lmem_threshold(debugfs, 0);
+> +					gem_mmap_args(t, &r->ci, true);
+> +				}
+>  			}
 >  		}
 >  	}
->  	igt_subtest("gem-idle")
 > -- 
 > 2.26.2
 > 
