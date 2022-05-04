@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4918110EBB0
- for <igt-dev@lists.freedesktop.org>; Wed,  4 May 2022 07:29:01 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A645110FB87
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 May 2022 09:59:12 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Wed,  4 May 2022 09:28:36 +0200
-Message-Id: <20220504072837.2136657-6-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220504072837.2136657-1-mauro.chehab@linux.intel.com>
-References: <20220504072837.2136657-1-mauro.chehab@linux.intel.com>
+Date: Wed,  4 May 2022 11:59:03 +0200
+Message-Id: <20220504095904.2145592-6-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
+References: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/6] lib/igt_kmod: make it less pedantic
+Subject: [igt-dev] [PATCH i-g-t v2 5/6] lib/igt_kmod: make it less pedantic
  with audio driver removal
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
