@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9E2510FB9E
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75BCB1120BB
  for <igt-dev@lists.freedesktop.org>; Wed,  4 May 2022 09:59:12 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Wed,  4 May 2022 11:58:58 +0200
-Message-Id: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
+Date: Wed,  4 May 2022 11:58:59 +0200
+Message-Id: <20220504095904.2145592-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
+References: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/6] Improve logic to work with audio
- dependency on DRM driver
+Subject: [igt-dev] [PATCH i-g-t v2 1/6] tests/core_hotunplug: properly
+ finish processes using audio devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,109 +28,308 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-There are several IGT tests that require a DRM driver to unbind or unload.
+Before unloading or unbinding an audio driver, all processes
+that are using it must be terminated. The current logic seeks
+only for alsactl, but ignore other processes, including
+pulseaudio.
 
-However, depending on the hardware model, the audio driver (snd_hda_intel)
-hooks into the DRM driver in order to work, and the audio PCI drivers and
-ALSA core currently doesn't support unbind drivers that provide them access
-to the hardware, without first unbinding the audio driver.
+Make the logic more general, extending it to any processes that
+could have an open device under /dev/snd.
 
-The real fix would be to improve the audio driver's bind/unbind logic, but
-this will very likely require changes at the subsystem as well. There were
-some discussions in the past at the ALSA subsystem:
+It should be noticed that some distros like Fedora and openSUSE
+are now migrating from pulseaudio into pipewire-pulse. Right
+now, there's no standard distribution-agnostic way to request
+pipewire-pulse to stop using audio devices, but there's a new
+patch upstream that will make things easier:
 
-	https://mailman.alsa-project.org/pipermail/alsa-devel/2021-September/190279.html
+	https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/6ad6300ec657c88322a8cd6f3548261d3dc05359
 
-But this was not addressed yet.
+Which should be available for pipewire-pulse versions 0.3.50 and
+upper.
 
-It should be noticed that there are some daemons like alsactl, pulseaudio and
-pipewire-pulse that constantly accesses the audio hardware. So, the only way to
-unbind the audio driver is to first make such apps to stop using the audio
-devices.
-
-On other words, if, for instance, snd-hda-intel is bound into i915 driver,
-those are the needed steps to unbind i915 driver:
-
-- request pulseaudio or pipewire-pulse to stop using the audio devices;
-- kill all other apps that are using /dev/snd devnodes;
-- unbind/unload snd-hda-intel;
-- unbind or unload i915 driver.
-
-The patches on this series warrant that the above steps will be observed,
-and unifies the logic which currently has two implementations: one at IGT
-library and another one at core_hotunplug.
-
-In the specific case of snd-hda and i915 driver, the actual binding between
-them depends on the actual hardware architecture. In the past, only a few
-CPU/GPU models would do such binding. As documented at sound/pci/hda/hda_intel,
-it used to be:
-
-	- Haswell;
-	- Broadwell;
-	- Baytrail;
-	- Braswell.
-
-But nowadays, on all devices with discrete graphics GPU, the snd_hda
-driver needs to hook into the i915 driver, mostly for power management.
-Also, newer integrated graphics also need to bind into i915, in order
-to talk with the hardware registers.
-
-As the binding between snd_hda and i915 depends on hardware model and
-changes over time, the safest way is to know for sure when such binding
-exists would be if the userspace tools would report, e. g.:
-
-	$ lsmod|grep i915.*snd
-	i915                 8167424  3 snd_hda_intel
-
-	$ cat /proc/modules |grep i915.*snd
-	i915 8167424 3 snd_hda_intel, Live 0x0000000000000000
-
-With such knowledge, userspace can better decide if how to unbind the
-DRM driver. The Kernel patches adding support for such feature can be
-seen at:
-
-	https://lore.kernel.org/intel-gfx/cover.1651348913.git.mchehab@kernel.org/
-
-This series assumes that the above patch series (or a similar one) will
-be there on Kernel 5.20 (this could be changed in the future if the patch
-series take a longer time to be merged).
-
-So, if Kernel is 5.20 and /proc/modules doesn't show any dependencies
-between a snd driver and the DRM driver, IGT will simply unbind the DRM
-driver directly, completely ignoring the audio drivers. If the dependency
-exists, the logic shoud work for any audio and DRM driver - and even allow
-recursive dependencies. So, it should work even for SOC/SOF audio drivers.
-
-If Kernel is older, it will try to unload the audio first, but then the
-logic is dependent on the drivers names. This series preserve the existing
-dependency chain. e. g. it expects either snd_hda_intel or snd_hdmi_lpe_audio
-driver, and assumes that those are likely bind to i915 driver.
-Howver, as IGT doesn't know for sure if the such binding exists, it won't
-fail the IGT test if the audio unload fails, as there's a chance that
-the i915 unbind would work even when this fails.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
-
-v2:
-  - rebased on the top of today's origin/master, to make CI happy.
-    no functional changes.
-
-Mauro Carvalho Chehab (6):
-  tests/core_hotunplug: properly finish processes using audio devices
-  lib/igt_kmod: always fill who when unloading audio driver
-  lib/igt_kmod: improve audio unbind logic
-  core_hotunplug: fix audio unbind logic
-  lib/igt_kmod: make it less pedantic with audio driver removal
-  lib/igt_kmod: properly handle pipewire-pulse
-
- lib/igt_aux.c          | 248 ++++++++++++++++++++++++++++++++++++++
- lib/igt_aux.h          |   3 +
- lib/igt_core.c         |   7 ++
- lib/igt_core.h         |   1 +
- lib/igt_kmod.c         | 264 +++++++++++++++++++++++++++++++++++++++--
+ lib/igt_aux.c          | 142 +++++++++++++++++++++++++++++++++++++++++
+ lib/igt_aux.h          |   1 +
+ lib/igt_kmod.c         |  38 +++++++----
  lib/igt_kmod.h         |   2 +
- tests/core_hotunplug.c |  55 +++------
- 7 files changed, 531 insertions(+), 49 deletions(-)
+ tests/core_hotunplug.c |  11 +---
+ 5 files changed, 173 insertions(+), 21 deletions(-)
 
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 03cc38c93e5c..4f1d88ed68dd 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -31,6 +31,7 @@
+ #endif
+ #include <stdio.h>
+ #include <fcntl.h>
++#include <pwd.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
+ #include <string.h>
+@@ -1410,6 +1411,147 @@ igt_lsof(const char *dpath)
+ 	free(sanitized);
+ }
+ 
++static void pulseaudio_unload_module(proc_t *proc_info)
++{
++	char xdg_dir[PATH_MAX];
++	const char *homedir;
++	struct passwd *pw;
++
++	igt_fork(child, 1) {
++		pw = getpwuid(proc_info->euid);
++		homedir = pw->pw_dir;
++		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
++
++		igt_info("Ask pulseaudio to stop using audio device\n");
++
++		setgid(proc_info->egid);
++		setuid(proc_info->euid);
++		clearenv();
++		setenv("HOME", homedir, 1);
++		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
++
++		exit(system("for i in $(pacmd list-sources|grep module:|cut -d : -f 2); do pactl unload-module $i; done"));
++	}
++}
++
++static int
++__igt_lsof_kill_proc(proc_t *proc_info, char *proc_path)
++{
++	const char *audio_dev = "/dev/snd/";
++	char path[PATH_MAX * 2];
++	struct dirent *d;
++	struct stat st;
++	char *fd_lnk;
++	int fail = 0;
++	ssize_t read;
++
++	DIR *dp = opendir(proc_path);
++	igt_assert(dp);
++
++	while ((d = readdir(dp))) {
++		if (*d->d_name == '.')
++			continue;
++
++		memset(path, 0, sizeof(path));
++		snprintf(path, sizeof(path), "%s/%s", proc_path, d->d_name);
++
++		if (lstat(path, &st) == -1)
++			continue;
++
++		fd_lnk = malloc(st.st_size + 1);
++
++		igt_assert((read = readlink(path, fd_lnk, st.st_size + 1)));
++		fd_lnk[read] = '\0';
++
++		if (strncmp(audio_dev, fd_lnk, strlen(audio_dev))) {
++			free(fd_lnk);
++			continue;
++		}
++
++		free(fd_lnk);
++
++		/*
++		 * In order to avoid racing against pa/systemd, ensure that
++		 * pulseaudio will close all audio files. This should be
++		 * enough to unbind audio modules and won't case race issues
++		 * with systemd trying to reload it.
++		 */
++		if (!strcmp(proc_info->cmd, "pulseaudio")) {
++			pulseaudio_unload_module(proc_info);
++			break;
++		}
++
++		/*
++		 * FIXME: terminating pipewire-pulse is not that easy, as
++		 * pipewire there's no standard way up to pipewire version
++		 * 0.3.49. Just trying to kill pipewire will start a race
++		 * between IGT and systemd. If IGT wins, the audio driver
++		 * will be unloaded before systemd tries to reload it, but
++		 * if systemd wins, the audio device will be re-opened and
++		 * used before IGT has a chance to remove the audio driver.
++		 * Pipewire version 0.3.50 should bring a standard way:
++		 *
++		 * 1) start a thread running:
++		 *	 pw-reserve -n Audio0 -r
++		 * 2) unload/unbind the the audio driver(s);
++		 * 3) stop the pw-reserve thread.
++		 *
++		 * We should add support for it once distros start shipping it.
++		 */
++
++		/* For all other processes, just kill them */
++		igt_info("process %d (%s) is using audio device. Should be terminated.\n",
++				proc_info->tid, proc_info->cmd);
++
++		if (kill(proc_info->tid, SIGTERM) < 0) {
++			igt_info("Fail to terminate %s (pid: %d) with SIGTERM\n",
++				proc_info->cmd, proc_info->tid);
++			if (kill(proc_info->tid, SIGABRT) < 0) {
++				fail++;
++				igt_info("Fail to terminate %s (pid: %d) with SIGABRT\n",
++					proc_info->cmd, proc_info->tid);
++			}
++		}
++
++		break;
++	}
++
++	closedir(dp);
++	return fail;
++}
++
++/*
++ * This function identifies each process running on the machine that is
++ * opening an audio device and tries to stop it.
++ *
++ * Special care should be taken with pipewire and pipewire-pulse, as those
++ * daemons are respanned if they got killed.
++ */
++int
++igt_lsof_kill_audio_processes(void)
++{
++	char path[PATH_MAX];
++	proc_t *proc_info;
++	PROCTAB *proc;
++	int fail = 0;
++
++	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
++	igt_assert(proc != NULL);
++
++	while ((proc_info = readproc(proc, NULL))) {
++		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1) {
++			fail++;
++		} else {
++			fail += __igt_lsof_kill_proc(proc_info, path);
++		}
++
++		freeproc(proc_info);
++	}
++	closeproc(proc);
++
++	return fail;
++}
++
+ static struct igt_siglatency {
+ 	timer_t timer;
+ 	struct timespec target;
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index 9f2588aeca90..bb96d1afb777 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -306,6 +306,7 @@ bool igt_allow_unlimited_files(void);
+ int igt_is_process_running(const char *comm);
+ int igt_terminate_process(int sig, const char *comm);
+ void igt_lsof(const char *dpath);
++int igt_lsof_kill_audio_processes(void);
+ 
+ #define igt_hweight(x) \
+ 	__builtin_choose_expr(sizeof(x) == 8, \
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index f252535d5a3a..87a59245f699 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -389,7 +389,7 @@ igt_i915_driver_load(const char *opts)
+ 	return 0;
+ }
+ 
+-int __igt_i915_driver_unload(const char **who)
++int igt_audio_driver_unload(const char **who)
+ {
+ 	int ret;
+ 	const char *sound[] = {
+@@ -398,6 +398,27 @@ int __igt_i915_driver_unload(const char **who)
+ 		NULL,
+ 	};
+ 
++	for (const char **m = sound; *m; m++) {
++		if (igt_kmod_is_loaded(*m)) {
++			if (igt_lsof_kill_audio_processes())
++				return 1;
++
++			kick_snd_hda_intel();
++			ret = igt_kmod_unload(*m, 0);
++			if (ret) {
++				if (who)
++					*who = *m;
++				return ret;
++			}
++		}
++	}
++	return 0;
++}
++
++int __igt_i915_driver_unload(const char **who)
++{
++	int ret;
++
+ 	const char *aux[] = {
+ 		/* gen5: ips uses symbol_get() so only a soft module dependency */
+ 		"intel_ips",
+@@ -411,18 +432,9 @@ int __igt_i915_driver_unload(const char **who)
+ 	/* unbind vt */
+ 	bind_fbcon(false);
+ 
+-	for (const char **m = sound; *m; m++) {
+-		if (igt_kmod_is_loaded(*m)) {
+-			igt_terminate_process(SIGTERM, "alsactl");
+-			kick_snd_hda_intel();
+-			ret = igt_kmod_unload(*m, 0);
+-			if (ret) {
+-				if (who)
+-					*who = *m;
+-				return ret;
+-			}
+-		}
+-	}
++	ret = igt_audio_driver_unload(who);
++	if (ret)
++		return ret;
+ 
+ 	for (const char **m = aux; *m; m++) {
+ 		if (igt_kmod_is_loaded(*m)) {
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index 0898122b3efe..15f0be31e8e4 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -36,6 +36,8 @@ bool igt_kmod_has_param(const char *mod_name, const char *param);
+ int igt_kmod_load(const char *mod_name, const char *opts);
+ int igt_kmod_unload(const char *mod_name, unsigned int flags);
+ 
++int igt_audio_driver_unload(const char **whom);
++
+ int igt_i915_driver_load(const char *opts);
+ int igt_i915_driver_unload(void);
+ int __igt_i915_driver_unload(const char **whom);
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 02eae19e1e16..18e37ec8feba 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -152,19 +152,14 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
+ 	 * safest and easiest way out.
+ 	 */
+ 	if (priv->snd_unload) {
+-		igt_terminate_process(SIGTERM, "alsactl");
+-
+-		/* unbind snd_hda_intel */
+-		kick_snd_hda_intel();
+-
+-		if (igt_kmod_unload("snd_hda_intel", 0)) {
++		if (igt_audio_driver_unload(NULL)) {
+ 			priv->snd_unload = false;
+-			igt_warn("Could not unload snd_hda_intel\n");
++			igt_warn("Could not unload audio driver\n");
+ 			igt_kmod_list_loaded();
+ 			igt_lsof("/dev/snd");
+ 			igt_skip("Audio is in use, skipping\n");
+ 		} else {
+-			igt_info("Preventively unloaded snd_hda_intel\n");
++			igt_info("Preventively unloaded audio driver\n");
+ 		}
+ 	}
+ 
 -- 
 2.35.1
