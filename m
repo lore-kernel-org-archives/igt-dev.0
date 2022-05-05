@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0364E10E0CC
- for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 16:19:05 +0000 (UTC)
-Date: Thu, 5 May 2022 12:16:32 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBF6610E301
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 16:24:11 +0000 (UTC)
+Date: Thu, 5 May 2022 12:22:54 -0400
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <YnP4YOYq99fnhd98@intel.com>
+Message-ID: <YnP53roC16A8iS0Q@intel.com>
 References: <20220505110354.30768-1-anshuman.gupta@intel.com>
- <20220505110354.30768-4-anshuman.gupta@intel.com>
+ <20220505110354.30768-5-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20220505110354.30768-4-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 3/9] lib/igt_pm: D3Cold runtime pm
- infrastructure
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220505110354.30768-5-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 4/9] tools: Add intel_pm_rpm tool
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,442 +27,256 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, May 05, 2022 at 04:33:48PM +0530, Anshuman Gupta wrote:
-> Enable gfx card pci devices runtime pm for all pci devices
-> and bridge under the topology of Gfx Card root port.
-> 
-> Added a library function to get the PCI root port ACPI
-> D state and to print the pci card devices runtime pm
-> status.
+On Thu, May 05, 2022 at 04:33:49PM +0530, Anshuman Gupta wrote:
+> intel_pm_rpm tool is a debug tool. It can be use to setup
+> and prepare the gfx card to go to D3Cold.
+> It also provide the debug option to disable all display and
+> prepare device to enter to runtime suspend.
 > 
 > v2:
-> - Save pci dev power attr to dynamically allocated array. [Rodrigo]
-> - Set autosuspend delay to 0 on supported devices. [Rodrigo]
-> - %s/else if/else in  igt_pm_get_acpi_real_d_state. [Kamil]
-> v3:
-> - Add comment for MAX_PCI_DEVICES. [Badal]
-> - Use static global arrary __pci_dev_pwrattr[]. [Rodrigo]
-> - Use pci_slot_match iter. [Badal]
-> - Destroy the iter. [Badal]
-> v4:
-> - Added igt_pm_enbale_pci_card_autosuspend() to avoid any
->   control attr save/resore by exit handler. [Rodrigo]
+> - Removed IS_DGFX() condition.
 > 
 > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
->  lib/igt_pm.c | 341 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_pm.h |  24 ++++
->  2 files changed, 365 insertions(+)
+>  tools/intel_pm_rpm.c | 206 +++++++++++++++++++++++++++++++++++++++++++
+>  tools/meson.build    |   1 +
+>  2 files changed, 207 insertions(+)
+>  create mode 100644 tools/intel_pm_rpm.c
 > 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index b409ec463..8e5aa9208 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -28,6 +28,7 @@
->  #include <fcntl.h>
->  #include <stdio.h>
->  #include <limits.h>
-> +#include <pciaccess.h>
->  #include <stdlib.h>
->  #include <string.h>
->  #include <unistd.h>
-> @@ -75,6 +76,8 @@ enum {
->  #define MIN_POWER_STR		"min_power\n"
->  /* Remember to fix this if adding longer strings */
->  #define MAX_POLICY_STRLEN	strlen(MAX_PERFORMANCE_STR)
-> +/* Root Port bus can have max 32 dev and each dev can have max 8 func */
-> +#define MAX_PCI_DEVICES		256
->  int8_t *__sata_pm_policies;
->  int __scsi_host_cnt;
->  
-> @@ -856,3 +859,341 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
->  
->  	return strstr(buf, "LPSP: capable");
->  }
-> +
-> +/**
-> + * igt_pm_acpi_d3cold_supported:
-> + * @pci_dev: root port pci_dev.
-> + * Check ACPI D3Cold support.
+> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
+> new file mode 100644
+> index 000000000..bf8212b3c
+> --- /dev/null
+> +++ b/tools/intel_pm_rpm.c
+> @@ -0,0 +1,206 @@
+> +/*
+> + * Copyright © 2022 Intel Corporation
 > + *
-> + * Returns:
-> + * True if ACPI D3Cold supported otherwise false.
-> + */
-> +bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
-> +{
-> +	char name[PATH_MAX];
-> +	int dir, fd;
-> +
-> +	snprintf(name, PATH_MAX,
-> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	dir = open(name, O_RDONLY);
-> +	igt_require(dir > 0);
-> +
-> +	/* BIOS need to enable ACPI D3Cold Support.*/
-> +	fd = openat(dir, "real_power_state", O_RDONLY);
-> +	if (fd < 0 && errno == ENOENT)
-> +		return false;
-> +
-> +	igt_require(fd > 0);
-> +
-> +	return true;
-> +}
-> +
-> +/**
-> + * igt_pm_get_acpi_real_d_state:
-> + * @pci_dev: root port pci_dev.
-> + * Get ACPI D state for a given root port.
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
 > + *
-> + * Returns:
-> + * igt_acpi_d_state state.
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + *
 > + */
-> +enum igt_acpi_d_state
-> +igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev)
+> +
+> +#include <errno.h>
+> +#include <getopt.h>
+> +#include <glib.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <stdbool.h>
+> +#include "igt.h"
+> +#include "igt_device.h"
+> +#include "igt_device_scan.h"
+> +#include "igt_pm.h"
+> +
+> +typedef struct {
+> +	int drm_fd;
+> +	int debugfs_fd;
+> +	uint32_t devid;
+> +	drmModeResPtr res;
+> +	igt_display_t display;
+> +} data_t;
+> +
+> +const char *help_str =
+> +	"  --disable-display\t\tDisable all screen and try to go into runtime pm.\n"
+> +	"  --setup-d3cold\t\tPrepare dgfx gfx card to enter runtime D3Cold.\n"
+> +	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
+> +static struct option long_options[] = {
+> +	{"disable-display", 0, 0, 'd'},
+> +	{"setup-d3cold", 0, 0, 's'},
+> +	{"help", 0, 0, 'h'},
+> +	{ 0, 0, 0, 0 }
+> +};
+> +
+> +const char *optstr = "dsh";
+> +
+> +static void usage(const char *name)
 > +{
-> +	char name[PATH_MAX];
-> +	char acpi_d_state[64];
-> +	int fd, n_read;
-> +
-> +	snprintf(name, PATH_MAX,
-> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node/real_power_state",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	fd = open(name, O_RDONLY);
-> +	if (fd < 0)
-> +		return IGT_ACPI_UNKNOWN_STATE;
-> +
-> +	n_read = read(fd, acpi_d_state, sizeof(acpi_d_state) - 1);
-> +	igt_assert(n_read >= 0);
-> +	acpi_d_state[n_read] = '\0';
-> +	close(fd);
-> +
-> +	if (strncmp(acpi_d_state, "D0\n", n_read) == 0)
-> +		return IGT_ACPI_D0;
-> +	if  (strncmp(acpi_d_state, "D1\n", n_read) == 0)
-> +		return IGT_ACPI_D1;
-> +	if  (strncmp(acpi_d_state, "D2\n", n_read) == 0)
-> +		return IGT_ACPI_D2;
-> +	if  (strncmp(acpi_d_state, "D3hot\n", n_read) == 0)
-> +		return IGT_ACPI_D3Hot;
-> +	if  (strncmp(acpi_d_state, "D3cold\n", n_read) == 0)
-> +		return IGT_ACPI_D3Cold;
-> +
-> +	return IGT_ACPI_UNKNOWN_STATE;
+> +	igt_info("Usage: %s [options]\n", name);
+> +	igt_info("%s\n", help_str);
 > +}
 > +
-> +static struct igt_pm_pci_dev_pwrattr  __pci_dev_pwrattr[MAX_PCI_DEVICES];
-> +
-> +static void __igt_pm_pci_card_exit_handler(int sig)
+> +static void disable_all_displays(data_t *data)
 > +{
-> +	igt_pm_restore_pci_card_runtime_pm();
+> +	igt_output_t *output;
+> +
+> +	for (int i = 0; i < data->display.n_outputs; i++) {
+> +		output = &data->display.outputs[i];
+> +		igt_output_set_pipe(output, PIPE_NONE);
+> +		igt_display_commit(&data->display);
+> +	}
 > +}
 > +
-> +static int igt_pm_get_power_attr_fd(struct pci_device *pci_dev, const char *attr)
+> +static void setup_gfx_card_d3cold(data_t *data)
 > +{
-> +	char name[PATH_MAX];
-> +	int fd;
+> +	struct pci_device *root;
+> +	int d_state;
 > +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/%s",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, attr);
+> +	root = igt_device_get_pci_root_port(data->drm_fd);
 > +
-> +	fd = open(name, O_RDWR);
-> +	igt_assert_f(fd >= 0, "Can't open %s\n", attr);
+> +	if (!igt_pm_acpi_d3cold_supported(root)) {
+> +		igt_info("D3Cold isn't supported on Root port %04x:%02x:%02x.%01x\n",
+> +			 root->domain, root->bus, root->dev, root->func);
+> +		return;
+> +	}
 > +
-> +	return fd;
-> +}
+> +	disable_all_displays(data);
+> +	igt_pm_setup_pci_card_runtime_pm(root);
+> +	sleep(1);
+> +	d_state = igt_pm_get_acpi_real_d_state(root);
 > +
-> +static bool igt_pm_save_power_attr(int fd, char *attr, int len, bool autosuspend)
-> +{
-> +	int size;
-> +
-> +	size = read(fd, attr, len - 1);
-> +
-> +	if (autosuspend) {
-> +		if (size < 0)
-> +			return false;
+> +	if (d_state == IGT_ACPI_D3Cold) {
+> +		igt_info("D3Cold achieved for root port %04x:%02x:%02x.%01x\n",
+> +			 root->domain, root->bus, root->dev, root->func);
 > +	} else {
-> +		igt_assert(size > 0);
+> +		igt_pm_print_pci_card_runtime_status();
+> +		igt_info("D3Cold not achieved yet. Please monitor %04x:%02x:%02x.%01x real_power_state\n",
+> +			 root->domain, root->bus, root->dev, root->func);
+> +	}
+
+wait... I'm confused now...
+I just realized that here we don't have the while(1) with the ctrl+c for exit like we have on the disable-display.
+
+With that right after this line aren't we restoring all the runtime_pm control states?
+
+Shouldn't we keep in loop here as well?
+
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	bool disable_display = false, setup_d3cold = false;
+> +	struct igt_device_card card;
+> +	char *env_device = NULL;
+> +	int c, option_index = 0;
+> +	data_t data = {};
+> +	int ret = 0;
+> +
+> +	if (argc <= 1) {
+> +		usage(argv[0]);
+> +		return EXIT_SUCCESS;
 > +	}
 > +
-> +	attr[size] = '\0';
-> +	strchomp(attr);
+> +	env_device = getenv("IGT_DEVICE");
+> +	igt_devices_scan(false);
 > +
-> +	return true;
-> +}
-> +
-> +static void igt_pm_setup_power_attr(int fd, const char *val)
-> +{
-> +	int size, len;
-> +	char buf[6];
-> +
-> +	len = strlen(val);
-> +
-> +	size = write(fd, val, len);
-> +	igt_assert_eq(size, len);
-> +	lseek(fd, 0, SEEK_SET);
-> +	size = read(fd, buf, ARRAY_SIZE(buf));
-> +	igt_assert_eq(size, len);
-> +	igt_assert(strncmp(buf, val, len) == 0);
-> +}
-> +
-> +static void
-> +__igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev, int index)
-> +{
-> +	int control_fd, delay_fd, control_size, delay_size;
-> +	char *control, *delay;
-> +
-> +	igt_assert(index <  MAX_PCI_DEVICES);
-> +
-> +	control = __pci_dev_pwrattr[index].control;
-> +	control_size =  sizeof(__pci_dev_pwrattr[index].control);
-> +	delay = __pci_dev_pwrattr[index].autosuspend_delay;
-> +	delay_size =  sizeof(__pci_dev_pwrattr[index].autosuspend_delay);
-> +	__pci_dev_pwrattr[index].pci_dev = pci_dev;
-> +	__pci_dev_pwrattr[index].autosuspend_supported = true;
-> +
-> +	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
-> +	control_fd = igt_pm_get_power_attr_fd(pci_dev, "control");
-> +
-> +	if (!igt_pm_save_power_attr(delay_fd, delay, delay_size, true)) {
-> +		__pci_dev_pwrattr[index].autosuspend_supported = false;
-> +		igt_debug("PCI '%04x:%02x:%02x.%01x' doesn't support auto_suspend\n",
-> +			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +	}
-> +
-> +	igt_pm_save_power_attr(control_fd, control, control_size, false);
-> +	igt_debug("PCI '%04x:%02x:%02x.%01x' Saved 'control, autosuspend_delay_ms' as '%s, %s'\n",
-> +		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, control,
-> +		  __pci_dev_pwrattr[index].autosuspend_supported ? delay : "NA");
-> +
-> +	if (!index)
-> +		igt_install_exit_handler(__igt_pm_pci_card_exit_handler);
-> +
-> +	if (__pci_dev_pwrattr[index].autosuspend_supported)
-> +		igt_pm_setup_power_attr(delay_fd, "0\n");
-> +
-> +	igt_pm_setup_power_attr(control_fd, "auto\n");
-> +
-> +	close(delay_fd);
-> +	close(control_fd);
-> +}
-> +
-> +static struct
-> +pci_device_iterator *igt_pm_get_pci_dev_itr(struct pci_device *pci_dev)
-> +{
-> +	struct pci_device_iterator *iter;
-> +	struct pci_slot_match match;
-> +	int ret;
-> +
-> +	ret = pci_system_init();
-> +	igt_assert(!ret);
-> +
-> +	match.domain = pci_dev->domain;
-> +	match.bus = PCI_MATCH_ANY;
-> +	match.dev = PCI_MATCH_ANY;
-> +	match.func = PCI_MATCH_ANY;
-> +	iter = pci_slot_match_iterator_create(&match);
-> +
-> +	return iter;
-> +}
-> +
-> +/**
-> + * igt_pm_enbale_pci_card_autosuspend:
-> + * @pci_dev: root port pci_dev.
-> + * Setup runtime PM for all PCI endpoints devices for a given root port by
-> + * setting power/control attr to "auto".
-> + *
-> + * Returns:
-> + * Zero if success else returns error.
-> + */
-> +int igt_pm_enbale_pci_card_autosuspend(struct pci_device *pci_dev)
-> +{
-> +	int primary, secondary, subordinate, ret, control_fd;
-> +	struct pci_device_iterator *iter;
-> +	struct pci_device *dev;
-> +
-> +	ret = pci_device_get_bridge_buses(pci_dev, &primary, &secondary, &subordinate);
-> +	if (ret)
-> +		return ret;
-> +
-> +	iter = igt_pm_get_pci_dev_itr(pci_dev);
-> +	if (!iter)
-> +		return -ENODEV;
-> +
-> +	control_fd = igt_pm_get_power_attr_fd(pci_dev, "control");
-> +	igt_pm_setup_power_attr(control_fd, "auto\n");
-> +	while ((dev = pci_device_next(iter)) != NULL) {
-> +		if (dev->bus >= secondary && dev->bus <= subordinate) {
-> +			control_fd = igt_pm_get_power_attr_fd(dev, "control");
-> +			igt_pm_setup_power_attr(control_fd, "auto\n");
+> +	if (env_device) {
+> +		if (!igt_device_card_match(env_device, &card)) {
+> +			igt_warn("No device found for the env_device\n");
+> +			ret = EXIT_FAILURE;
+> +			goto exit;
+> +		}
+> +	} else {
+> +		if (!igt_device_find_first_i915_discrete_card(&card)) {
+> +			igt_warn("No discrete gpu found\n");
+> +			ret = EXIT_FAILURE;
+> +			goto exit;
 > +		}
 > +	}
-
-could we do in a way that we avoid duplication?
-it looks like the other setup function is handling more cases with debug msgs.
-
 > +
-> +	pci_iterator_destroy(iter);
-> +	pci_system_cleanup();
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * igt_pm_setup_pci_card_runtime_pm:
-> + * @pci_dev: root port pci_dev.
-> + * Setup runtime PM for all PCI endpoints devices for a given root port by
-> + * enabling runtime suspend and setting autosuspend_delay_ms to zero.
-> + * It also saves power control attribute for all PCI endpoints
-> + * devices under given root port.
-> + */
-> +void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev)
-> +{
-> +	int primary, secondary, subordinate, ret;
-> +	struct pci_device_iterator *iter;
-> +	struct pci_device *dev;
-> +	int i = 0;
-> +
-> +	memset(__pci_dev_pwrattr, 0, sizeof(__pci_dev_pwrattr));
-> +	ret = pci_device_get_bridge_buses(pci_dev, &primary, &secondary, &subordinate);
-> +	igt_assert(!ret);
-> +
-> +	/* Setup runtime pm for PCI root port */
-> +	__igt_pm_setup_pci_card_runtime_pm(pci_dev, i++);
-> +
-> +	iter = igt_pm_get_pci_dev_itr(pci_dev);
-> +	igt_assert(iter);
-> +	while ((dev = pci_device_next(iter)) != NULL) {
-> +		if (dev->bus >= secondary && dev->bus <= subordinate)
-> +			__igt_pm_setup_pci_card_runtime_pm(dev, i++);
-> +	}
-> +
-> +	pci_iterator_destroy(iter);
-> +}
-> +
-> +static void
-> +igt_pm_restore_power_attr(struct pci_device *pci_dev, const char *attr, char *val, int len)
-> +{
-> +	int fd;
-> +
-> +	igt_debug("PCI '%04x:%02x:%02x.%01x' Restoring %s attr to '%s'\n",
-> +		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, attr, val);
-> +
-> +	fd = igt_pm_get_power_attr_fd(pci_dev, attr);
-> +	igt_assert(write(fd, val, len) == len);
-> +
-> +	close(fd);
-> +}
-> +
-> +/**
-> + * igt_pm_restore_pci_card_runtime_pm:
-> + * Restore control and autosuspend_delay_ms power attribute for all
-> + * PCI endpoints devices under gfx root port, which were saved earlier
-> + * by igt_pm_setup_pci_card_runtime_pm().
-> + */
-> +void igt_pm_restore_pci_card_runtime_pm(void)
-> +{
-> +	int i = 0;
-> +
-> +	for (i = 0; i < MAX_PCI_DEVICES; i++) {
-> +		if (!__pci_dev_pwrattr[i].pci_dev)
+> +	while ((c = getopt_long(argc, argv, optstr,
+> +				long_options, &option_index)) != -1) {
+> +		switch (c) {
+> +		case 'd':
+> +			disable_display = true;
 > +			break;
-> +
-> +		igt_pm_restore_power_attr(__pci_dev_pwrattr[i].pci_dev, "control",
-> +					  __pci_dev_pwrattr[i].control,
-> +					  sizeof(__pci_dev_pwrattr[i].control));
-> +
-> +		if (!__pci_dev_pwrattr[i].autosuspend_supported)
-> +			continue;
-> +
-> +		igt_pm_restore_power_attr(__pci_dev_pwrattr[i].pci_dev, "autosuspend_delay_ms",
-> +					  __pci_dev_pwrattr[i].autosuspend_delay,
-> +					  sizeof(__pci_dev_pwrattr[i].autosuspend_delay));
-> +	}
-> +
-> +	memset(__pci_dev_pwrattr, 0, sizeof(__pci_dev_pwrattr));
-> +	pci_system_cleanup();
-> +}
-> +
-> +static void igt_pm_print_pci_dev_runtime_status(struct pci_device *pci_dev)
-> +{
-> +	char name[PATH_MAX], runtime_status[64];
-> +	int fd, n_read;
-> +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/runtime_status",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	fd = open(name, O_RDONLY);
-> +	igt_assert_f(fd >= 0, "Can't open runtime_status\n");
-> +
-> +	n_read = read(fd, runtime_status, sizeof(runtime_status) - 1);
-> +	igt_assert(n_read >= 0);
-> +	runtime_status[n_read] = '\0';
-> +	igt_info("runtime suspend status for PCI '%04x:%02x:%02x.%01x' %s\n",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, runtime_status);
-> +	close(fd);
-> +}
-> +
-> +/**
-> + * igt_pm_print_pci_card_runtime_status:
-> + * @pci_dev: root port pci_dev.
-> + * Print runtime suspend status for all PCI endpoints devices for a given
-> + * root port.
-> + */
-> +void igt_pm_print_pci_card_runtime_status(void)
-> +{
-> +	int i = 0;
-> +
-> +	for (i = 0; i < MAX_PCI_DEVICES; i++) {
-> +		if (!__pci_dev_pwrattr[i].pci_dev)
+> +		case 's':
+> +			setup_d3cold = true;
 > +			break;
-> +
-> +		igt_pm_print_pci_dev_runtime_status(__pci_dev_pwrattr[i].pci_dev);
+> +		default:
+> +		case 'h':
+> +			usage(argv[0]);
+> +			ret = EXIT_SUCCESS;
+> +			goto exit;
+> +		}
 > +	}
+> +
+> +	data.drm_fd = igt_open_card(&card);
+> +	if (data.drm_fd  >= 0) {
+> +		igt_info("Device %s successfully opened\n", card.card);
+> +	} else {
+> +		igt_warn("Cannot open card %s device\n", card.card);
+> +		ret = EXIT_FAILURE;
+> +		goto exit;
+> +	}
+> +
+> +	data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+> +	data.devid = intel_get_drm_devid(data.drm_fd);
+> +	igt_setup_runtime_pm(data.drm_fd);
+> +
+> +	data.res = drmModeGetResources(data.drm_fd);
+> +	if (data.res) {
+> +		kmstest_set_vt_graphics_mode();
+> +		igt_display_require(&data.display, data.drm_fd);
+> +
+> +		/* i915 disables RPM in case DMC is not loaded on kms supported cards */
+> +		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
+> +			igt_warn("dmc fw is not loaded, no runtime pm\n");
+> +			ret = EXIT_FAILURE;
+> +			goto exit;
+> +		}
+> +	}
+> +
+> +	if (disable_display) {
+> +		disable_all_displays(&data);
+> +		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
+> +			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
+> +			ret = EXIT_FAILURE;
+> +			goto exit;
+> +		}
+> +
+> +		igt_info("Device runtime suspended, Useful for debugging.\n"
+> +			 "Hit CTRL-C to exit\n");
+> +		/* Don't return useful for debugging */
+> +		while (1)
+> +			sleep(600);
+> +	}
+> +
+> +	if (setup_d3cold)
+> +		setup_gfx_card_d3cold(&data);
+> +
+> +exit:
+> +	igt_restore_runtime_pm();
+> +
+> +	if (data.res)
+> +		igt_display_fini(&data.display);
+> +
+> +	close(data.debugfs_fd);
+> +	close(data.drm_fd);
+> +	igt_devices_free();
+> +
+> +	return ret;
 > +}
-> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> index 162d3ca3c..db187cc2e 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -46,6 +46,23 @@ enum igt_runtime_pm_status {
->  	IGT_RUNTIME_PM_STATUS_UNKNOWN,
->  };
->  
-> +/* PCI ACPI firmware node real state */
-> +enum igt_acpi_d_state {
-> +	IGT_ACPI_D0,
-> +	IGT_ACPI_D1,
-> +	IGT_ACPI_D2,
-> +	IGT_ACPI_D3Hot,
-> +	IGT_ACPI_D3Cold,
-> +	IGT_ACPI_UNKNOWN_STATE,
-> +};
-> +
-> +struct	igt_pm_pci_dev_pwrattr {
-> +	struct pci_device *pci_dev;
-> +	char control[64];
-> +	bool autosuspend_supported;
-> +	char autosuspend_delay[64];
-> +};
-> +
->  bool igt_setup_runtime_pm(int device);
->  void igt_disable_runtime_pm(void);
->  void igt_restore_runtime_pm(void);
-> @@ -54,5 +71,12 @@ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
->  bool igt_pm_dmc_loaded(int debugfs);
->  bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
->  bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
-> +bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
-> +enum igt_acpi_d_state
-> +igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
-> +int igt_pm_enbale_pci_card_autosuspend(struct pci_device *pci_dev);
-> +void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
-> +void igt_pm_restore_pci_card_runtime_pm(void);
-> +void igt_pm_print_pci_card_runtime_status(void);
->  
->  #endif /* IGT_PM_H */
+> diff --git a/tools/meson.build b/tools/meson.build
+> index 771d0b9e3..24d0ea714 100644
+> --- a/tools/meson.build
+> +++ b/tools/meson.build
+> @@ -28,6 +28,7 @@ tools_progs = [
+>  	'intel_lid',
+>  	'intel_opregion_decode',
+>  	'intel_panel_fitter',
+> +	'intel_pm_rpm',
+>  	'intel_reg_checker',
+>  	'intel_residency',
+>  	'intel_stepping',
 > -- 
 > 2.26.2
 > 
