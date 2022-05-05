@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6236687222535948122=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 04 May 2022 11:57:47 -0000
-Message-ID: <165166546764.680.16965025222167275794@emeril.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60D0B10E82F
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 15:58:30 +0000 (UTC)
+Date: Thu, 5 May 2022 17:54:09 +0200
+From: Andi Shyti <andi.shyti@linux.intel.com>
+Message-ID: <YnPzIYa/TRpBMoqZ@intel.intel>
 References: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSW1wcm92?=
- =?utf-8?q?e_logic_to_work_with_audio_dependency_on_DRM_driver?=
+ <20220504095904.2145592-2-mauro.chehab@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220504095904.2145592-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/6] tests/core_hotunplug: properly
+ finish processes using audio devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,299 +20,277 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>, Petri Latvala <petri.latvala@intel.com>, Andrzej Hajda <andrzej.hajda@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6236687222535948122==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mauro,
 
-== Series Details ==
+[...]
 
-Series: Improve logic to work with audio dependency on DRM driver
-URL   : https://patchwork.freedesktop.org/series/103530/
-State : failure
+> +static void pulseaudio_unload_module(proc_t *proc_info)
+> +{
+> +	char xdg_dir[PATH_MAX];
+> +	const char *homedir;
+> +	struct passwd *pw;
+> +
+> +	igt_fork(child, 1) {
+> +		pw = getpwuid(proc_info->euid);
+> +		homedir = pw->pw_dir;
+> +		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
+> +
+> +		igt_info("Ask pulseaudio to stop using audio device\n");
+> +
+> +		setgid(proc_info->egid);
+> +		setuid(proc_info->euid);
+> +		clearenv();
+> +		setenv("HOME", homedir, 1);
+> +		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
+> +
+> +		exit(system("for i in $(pacmd list-sources|grep module:|cut -d : -f 2); do pactl unload-module $i; done"));
 
-== Summary ==
+you shouldn't need for the exit()
 
-CI Bug Log - changes from CI_DRM_11601 -> IGTPW_7037
-====================================================
+> +	}
 
-Summary
--------
+do we need for igt_waitchildren() at the end?
 
-  **FAILURE**
+> +}
+> +
+> +static int
+> +__igt_lsof_kill_proc(proc_t *proc_info, char *proc_path)
+> +{
+> +	const char *audio_dev = "/dev/snd/";
+> +	char path[PATH_MAX * 2];
+> +	struct dirent *d;
+> +	struct stat st;
+> +	char *fd_lnk;
+> +	int fail = 0;
+> +	ssize_t read;
 
-  Serious unknown changes coming with IGTPW_7037 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7037, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+nitpick: shall we move some of the variables above inside the
+while loop?
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/index.html
+> +	DIR *dp = opendir(proc_path);
+> +	igt_assert(dp);
+> +
+> +	while ((d = readdir(dp))) {
+> +		if (*d->d_name == '.')
+> +			continue;
 
-Participating hosts (44 -> 43)
-------------------------------
+do we need to consider ".." as well? "by-path"?
 
-  Additional (2): bat-rpls-1 bat-adlm-1 
-  Missing    (3): fi-bsw-cyan bat-jsl-2 fi-icl-u2 
+> +		memset(path, 0, sizeof(path));
+> +		snprintf(path, sizeof(path), "%s/%s", proc_path, d->d_name);
+> +
+> +		if (lstat(path, &st) == -1)
+> +			continue;
 
-Possible new issues
--------------------
+should this be treated as an unlikely error?
 
-  Here are the unknown changes that may have been introduced in IGTPW_7037:
+> +		fd_lnk = malloc(st.st_size + 1);
+> +
+> +		igt_assert((read = readlink(path, fd_lnk, st.st_size + 1)));
+> +		fd_lnk[read] = '\0';
 
-### IGT changes ###
+are we sure that in /dev/snd we have only links? In my PC I have
+only character interfaces.
 
-#### Possible regressions ####
+> +		if (strncmp(audio_dev, fd_lnk, strlen(audio_dev))) {
+> +			free(fd_lnk);
+> +			continue;
+> +		}
+> +
+> +		free(fd_lnk);
+> +
+> +		/*
+> +		 * In order to avoid racing against pa/systemd, ensure that
+> +		 * pulseaudio will close all audio files. This should be
+> +		 * enough to unbind audio modules and won't case race issues
 
-  * igt@i915_selftest@live@gtt:
-    - bat-adlp-4:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-adlp-4/igt@i915_selftest@live@gtt.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlp-4/igt@i915_selftest@live@gtt.html
+/case/cause/
 
-  
-#### Suppressed ####
+> +		 * with systemd trying to reload it.
+> +		 */
+> +		if (!strcmp(proc_info->cmd, "pulseaudio")) {
+> +			pulseaudio_unload_module(proc_info);
+> +			break;
+> +		}
+> +
+> +		/*
+> +		 * FIXME: terminating pipewire-pulse is not that easy, as
+> +		 * pipewire there's no standard way up to pipewire version
+> +		 * 0.3.49. Just trying to kill pipewire will start a race
+> +		 * between IGT and systemd. If IGT wins, the audio driver
+> +		 * will be unloaded before systemd tries to reload it, but
+> +		 * if systemd wins, the audio device will be re-opened and
+> +		 * used before IGT has a chance to remove the audio driver.
+> +		 * Pipewire version 0.3.50 should bring a standard way:
+> +		 *
+> +		 * 1) start a thread running:
+> +		 *	 pw-reserve -n Audio0 -r
+> +		 * 2) unload/unbind the the audio driver(s);
+> +		 * 3) stop the pw-reserve thread.
+> +		 *
+> +		 * We should add support for it once distros start shipping it.
+> +		 */
 
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
+thanks for the explanation!
 
-  * igt@i915_selftest@live@gt_mocs:
-    - {bat-adlm-1}:       NOTRUN -> [INCOMPLETE][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlm-1/igt@i915_selftest@live@gt_mocs.html
+> +		/* For all other processes, just kill them */
+> +		igt_info("process %d (%s) is using audio device. Should be terminated.\n",
+> +				proc_info->tid, proc_info->cmd);
+> +
+> +		if (kill(proc_info->tid, SIGTERM) < 0) {
+> +			igt_info("Fail to terminate %s (pid: %d) with SIGTERM\n",
+> +				proc_info->cmd, proc_info->tid);
+> +			if (kill(proc_info->tid, SIGABRT) < 0) {
+> +				fail++;
+> +				igt_info("Fail to terminate %s (pid: %d) with SIGABRT\n",
+> +					proc_info->cmd, proc_info->tid);
+> +			}
+> +		}
+> +
+> +		break;
+> +	}
+> +
+> +	closedir(dp);
+> +	return fail;
+> +}
+> +
+> +/*
+> + * This function identifies each process running on the machine that is
+> + * opening an audio device and tries to stop it.
+> + *
+> + * Special care should be taken with pipewire and pipewire-pulse, as those
+> + * daemons are respanned if they got killed.
+> + */
+> +int
+> +igt_lsof_kill_audio_processes(void)
+> +{
+> +	char path[PATH_MAX];
+> +	proc_t *proc_info;
+> +	PROCTAB *proc;
+> +	int fail = 0;
+> +
+> +	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
 
-  
-Known issues
-------------
+you could eventually make an igt_openproc() with the assert as
+this is a pattern that it's repeated several times. Up to you.
 
-  Here are the changes found in IGTPW_7037 that come from known issues:
+> +	igt_assert(proc != NULL);
+> +
+> +	while ((proc_info = readproc(proc, NULL))) {
+> +		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1) {
+> +			fail++;
 
-### IGT changes ###
+we are counting failures but using it more as a boolean. Is there
+any use of fail?
 
-#### Issues hit ####
+> +		} else {
+> +			fail += __igt_lsof_kill_proc(proc_info, path);
+> +		}
 
-  * igt@i915_selftest@live@hangcheck:
-    - fi-bdw-5557u:       NOTRUN -> [INCOMPLETE][4] ([i915#3921])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html
-    - fi-snb-2600:        [PASS][5] -> [INCOMPLETE][6] ([i915#3921])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+brackets not needed here
 
-  * igt@kms_busy@basic@flip:
-    - bat-adlp-4:         [PASS][7] -> [DMESG-WARN][8] ([i915#3576]) +2 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-adlp-4/igt@kms_busy@basic@flip.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlp-4/igt@kms_busy@basic@flip.html
+> +		freeproc(proc_info);
+> +	}
+> +	closeproc(proc);
+> +
+> +	return fail;
+> +}
+> +
+>  static struct igt_siglatency {
+>  	timer_t timer;
+>  	struct timespec target;
+> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+> index 9f2588aeca90..bb96d1afb777 100644
+> --- a/lib/igt_aux.h
+> +++ b/lib/igt_aux.h
+> @@ -306,6 +306,7 @@ bool igt_allow_unlimited_files(void);
+>  int igt_is_process_running(const char *comm);
+>  int igt_terminate_process(int sig, const char *comm);
+>  void igt_lsof(const char *dpath);
+> +int igt_lsof_kill_audio_processes(void);
+>  
+>  #define igt_hweight(x) \
+>  	__builtin_choose_expr(sizeof(x) == 8, \
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index f252535d5a3a..87a59245f699 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -389,7 +389,7 @@ igt_i915_driver_load(const char *opts)
+>  	return 0;
+>  }
+>  
+> -int __igt_i915_driver_unload(const char **who)
+> +int igt_audio_driver_unload(const char **who)
+>  {
+>  	int ret;
+>  	const char *sound[] = {
+> @@ -398,6 +398,27 @@ int __igt_i915_driver_unload(const char **who)
+>  		NULL,
+>  	};
+>  
+> +	for (const char **m = sound; *m; m++) {
+> +		if (igt_kmod_is_loaded(*m)) {
 
-  
-#### Possible fixes ####
+little insignificant nit: with
 
-  * igt@i915_pm_rpm@module-reload:
-    - fi-cfl-8109u:       [DMESG-WARN][9] ([i915#62]) -> [PASS][10] +81 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
+	if (!igt_kmod_is_loaded(*m))
+		continue;
 
-  * igt@i915_selftest@live@client:
-    - {bat-dg2-9}:        [DMESG-FAIL][11] ([i915#5879]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-dg2-9/igt@i915_selftest@live@client.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-dg2-9/igt@i915_selftest@live@client.html
+you save one level of indentation.
 
-  * igt@i915_selftest@live@memory_region:
-    - fi-cfl-8109u:       [DMESG-WARN][13] -> [PASS][14] +34 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/fi-cfl-8109u/igt@i915_selftest@live@memory_region.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-cfl-8109u/igt@i915_selftest@live@memory_region.html
+> +			if (igt_lsof_kill_audio_processes())
+> +				return 1;
 
-  * igt@i915_selftest@live@mman:
-    - fi-bdw-5557u:       [INCOMPLETE][15] ([i915#5704]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/fi-bdw-5557u/igt@i915_selftest@live@mman.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-bdw-5557u/igt@i915_selftest@live@mman.html
+mmhhh... I don't like the return 1 because makes this function a
+hybrid boolean/error function and we can't rely anyomore on the
+return value. Please identify a proper errno to return.
 
-  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
-    - {bat-adlp-6}:       [DMESG-WARN][17] ([i915#3576]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-    - bat-adlp-4:         [DMESG-WARN][19] ([i915#3576]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+> +
+> +			kick_snd_hda_intel();
+> +			ret = igt_kmod_unload(*m, 0);
+> +			if (ret) {
+> +				if (who)
+> +					*who = *m;
+> +				return ret;
+> +			}
+> +		}
+> +	}
+> +	return 0;
+> +}
 
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+[...]
 
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5704]: https://gitlab.freedesktop.org/drm/intel/issues/5704
-  [i915#5828]: https://gitlab.freedesktop.org/drm/intel/issues/5828
-  [i915#5879]: https://gitlab.freedesktop.org/drm/intel/issues/5879
-  [i915#5885]: https://gitlab.freedesktop.org/drm/intel/issues/5885
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+> @@ -152,19 +152,14 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
+>  	 * safest and easiest way out.
+>  	 */
+>  	if (priv->snd_unload) {
+> -		igt_terminate_process(SIGTERM, "alsactl");
+> -
+> -		/* unbind snd_hda_intel */
+> -		kick_snd_hda_intel();
+> -
+> -		if (igt_kmod_unload("snd_hda_intel", 0)) {
+> +		if (igt_audio_driver_unload(NULL)) {
 
+why give NULL insteadd of a proper string? We can provide a
+better log.
 
-Build changes
--------------
+>  			priv->snd_unload = false;
+> -			igt_warn("Could not unload snd_hda_intel\n");
+> +			igt_warn("Could not unload audio driver\n");
+>  			igt_kmod_list_loaded();
+>  			igt_lsof("/dev/snd");
+>  			igt_skip("Audio is in use, skipping\n");
+>  		} else {
+> -			igt_info("Preventively unloaded snd_hda_intel\n");
+> +			igt_info("Preventively unloaded audio driver\n");
+>  		}
+>  	}
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6465 -> IGTPW_7037
-
-  CI-20190529: 20190529
-  CI_DRM_11601: 387569698a0a6c4fefffe315446e51f169f52e7b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7037: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/index.html
-  IGT_6465: f6bb4399881a806fbff75ce3df89b60286d55917 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/index.html
-
---===============6236687222535948122==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Improve logic to work with audio dependency on DRM driver</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103530/">https://patchwork.freedesktop.org/series/103530/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11601 -&gt; IGTPW_7037</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7037 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7037, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/index.html</p>
-<h2>Participating hosts (44 -&gt; 43)</h2>
-<p>Additional (2): bat-rpls-1 bat-adlm-1 <br />
-  Missing    (3): fi-bsw-cyan bat-jsl-2 fi-icl-u2 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7037:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@gtt:<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-adlp-4/igt@i915_selftest@live@gtt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlp-4/igt@i915_selftest@live@gtt.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@gt_mocs:<ul>
-<li>{bat-adlm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlm-1/igt@i915_selftest@live@gt_mocs.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7037 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</p>
-</li>
-<li>
-<p>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-adlp-4/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">PASS</a> +81 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@client:</p>
-<ul>
-<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-dg2-9/igt@i915_selftest@live@client.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5879">i915#5879</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-dg2-9/igt@i915_selftest@live@client.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@memory_region:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/fi-cfl-8109u/igt@i915_selftest@live@memory_region.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-cfl-8109u/igt@i915_selftest@live@memory_region.html">PASS</a> +34 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/fi-bdw-5557u/igt@i915_selftest@live@mman.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5704">i915#5704</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/fi-bdw-5557u/igt@i915_selftest@live@mman.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
-<ul>
-<li>
-<p>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a></p>
-</li>
-<li>
-<p>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11601/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6465 -&gt; IGTPW_7037</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11601: 387569698a0a6c4fefffe315446e51f169f52e7b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7037: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7037/index.html<br />
-  IGT_6465: f6bb4399881a806fbff75ce3df89b60286d55917 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6236687222535948122==--
+Andi
