@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E17310E2BD
- for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 14:04:36 +0000 (UTC)
-Message-ID: <feece842-9df6-506b-2711-f2d286b41ac1@intel.com>
-Date: Thu, 5 May 2022 19:34:29 +0530
-MIME-Version: 1.0
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2064.outbound.protection.outlook.com [40.107.94.64])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5AF410E159
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 15:08:31 +0000 (UTC)
+Message-ID: <ccc83311-8287-cc5e-b55f-af2cb21c76a0@amd.com>
+Date: Thu, 5 May 2022 11:08:28 -0400
 Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org, jani.nikula@linux.intel.com,
- ville.syrjala@linux.intel.com, harry.wentland@amd.com
-References: <20220411094147.1650859-1-bhanuprakash.modem@intel.com>
- <20220411094147.1650859-4-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220411094147.1650859-4-bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+References: <20220504184117.2441365-1-dingchen.zhang@amd.com>
+From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20220504184117.2441365-1-dingchen.zhang@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V2 3/5] tests/kms_hdr: Adopt to use updated debugfs
- functions
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH] tests/amdgpu/amd_bypass: skip if DSC is
+ enabled on the connector
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,172 +26,49 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanu,
-Please fix asserts. At few places we need assertion with 10 bpc and
-not 8bpc.
-Seeing CI failures 
-https://intel-gfx-ci.01.org/tree/drm-tip/Patchwork_102502v2/shards-all.html?testfilter=hdr
-Hopefully should be resolved by fixing this.
 
-On 11-Apr-22 3:11 PM, Bhanuprakash Modem wrote:
-> Instead of writing our own wrappers of debugfs read,
-> use updated functions from lib.
+
+On 2022-05-04 14:41, David Zhang wrote:
+> [why & how]
+> Since the DSC is visually lossless but loss still exists after
+> compression/decompression at source/destination sides. So for any
+> bypass mode validation, which requires what received at sink is
+> consistent to what is transmitted at source, DSC is required to be
+> turned off.
 > 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Cc: Mark Yacoub <markyacoub@chromium.org>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> skip the test run if the DSC is enabled on the connector (output).
+> 
+> Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 > ---
->   tests/kms_hdr.c | 69 +++++++------------------------------------------
->   1 file changed, 9 insertions(+), 60 deletions(-)
+>   tests/amdgpu/amd_bypass.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
 > 
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index 247eb658..cd2883c8 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -95,44 +95,6 @@ static void test_cycle_flags(data_t *data, uint32_t test_flags)
->   					      SUSPEND_TEST_NONE);
->   }
+> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+> index 75ad8521..5ec90884 100644
+> --- a/tests/amdgpu/amd_bypass.c
+> +++ b/tests/amdgpu/amd_bypass.c
+> @@ -21,6 +21,7 @@
+>    *
+>    */
+>   #include "igt.h"
+> +#include "igt_amd.h"
 >   
-> -/* Returns the current and maximum bpc from the connector debugfs. */
-> -static output_bpc_t get_output_bpc(data_t *data)
-> -{
-> -	char buf[256];
-> -	char *start_loc;
-> -	int fd, res;
-> -	output_bpc_t info;
-> -
-> -	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
-> -	igt_assert(fd >= 0);
-> -
-> -	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
-> -
-> -	igt_require(res > 0);
-> -
-> -	close(fd);
-> -
-> -	igt_assert(start_loc = strstr(buf, "Current: "));
-> -	igt_assert_eq(sscanf(start_loc, "Current: %u", &info.current), 1);
-> -
-> -	igt_assert(start_loc = strstr(buf, "Maximum: "));
-> -	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &info.maximum), 1);
-> -
-> -	return info;
-> -}
-> -
-> -/* Verifies that connector has the correct output bpc. */
-> -static void assert_output_bpc(data_t *data, unsigned int bpc)
-> -{
-> -	output_bpc_t info = get_output_bpc(data);
-> -
-> -	igt_require_f(info.maximum >= bpc,
-> -		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
-> -		      info.maximum);
-> -
-> -	igt_assert_eq(info.current, bpc);
-> -}
-> -
->   /* Fills the FB with a test HDR pattern. */
->   static void draw_hdr_pattern(igt_fb_t *fb)
->   {
-> @@ -204,12 +166,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
->   	/* Start in 8bpc. */
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	/*
-> -	 * i915 driver doesn't expose max bpc as debugfs entry,
-> -	 * so limiting assert only for amd driver.
-> -	 */
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 8);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   /*
+>    * internal use
+> @@ -315,6 +316,14 @@ static void bypass_8bpc_test(data_t *data)
 >   
->   	/*
->   	 * amdgpu requires a primary plane when the CRTC is enabled.
-> @@ -223,8 +180,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
->   	/* Switch to 10bpc. */
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 10);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   	test_init(data);
+>   
+> +	/**
+> +	 * 8bpc bypass only makes sense without DSC.
+> +	 * DSC is visually lossless but actually still loss exists and any bypass mode
+> +	 * cannot be run w/ DSC enabled.
+> +	 */
+> +	igt_skip_on_f(igt_amd_read_dsc_clock_status(data->drm_fd, data->output->name) == 1,
+> +		      "DSC enabled on %s and no sense to validate bypass mode\n", data->output->name);
+> +
+>   	igt_create_fb(data->drm_fd, data->width, data->height,
+>   		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
+>   
 
-It should be 10 not 8.
-
->   
->   	/* Verify that the CRC are equal after DPMS or suspend. */
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
-> @@ -234,8 +190,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
->   	/* Drop back to 8bpc. */
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 8);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
->   
->   	/* CRC capture is clamped to 8bpc, so capture should match. */
->   	igt_assert_crc_equal(&ref_crc, &new_crc);
-> @@ -427,15 +382,13 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
->   	set_hdr_output_metadata(data, NULL);
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 8);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
->   
->   	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
->   	set_hdr_output_metadata(data, &hdr);
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 10);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
-
-It should be 10 not 8.
-
->   
->   	/* Verify that the CRC are equal after DPMS or suspend. */
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
-> @@ -446,8 +399,7 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
->   	set_hdr_output_metadata(data, NULL);
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 8);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
->   
->   	igt_assert_crc_equal(&ref_crc, &new_crc);
->   
-> @@ -506,16 +458,14 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
->   	igt_plane_set_size(data->primary, data->w, data->h);
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 8);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
->   
->   	/* Enter HDR, a modeset is allowed here. */
->   	fill_hdr_output_metadata_st2048(&hdr);
->   	set_hdr_output_metadata(data, &hdr);
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 10);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
-
-Same here
->   
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
->   
-> @@ -548,8 +498,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
->   	set_hdr_output_metadata(data, NULL);
->   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	if (is_amdgpu_device(data->fd))
-> -		assert_output_bpc(data, 8);
-> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
->   
->   	/* Verify that the CRC didn't change while cycling metadata. */
->   	igt_assert_crc_equal(&ref_crc, &new_crc);
-
--- 
-~Swati Sharma
+Acked-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
