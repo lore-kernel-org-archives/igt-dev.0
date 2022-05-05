@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77E2210E2FE
- for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 12:30:07 +0000 (UTC)
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Thu, 5 May 2022 12:30:05 +0000
-Message-ID: <4721666085d64da6a6ef73b7540bc680@intel.com>
-References: <20220504220013.20671-1-nidhi1.gupta@intel.com>
- <b2d623fb-b5b9-5853-e2d5-4b62b8f63d86@intel.com>
-In-Reply-To: <b2d623fb-b5b9-5853-e2d5-4b62b8f63d86@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E17310E2BD
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 14:04:36 +0000 (UTC)
+Message-ID: <feece842-9df6-506b-2711-f2d286b41ac1@intel.com>
+Date: Thu, 5 May 2022 19:34:29 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Skip the subtest
- if the resolution is not supported
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org, jani.nikula@linux.intel.com,
+ ville.syrjala@linux.intel.com, harry.wentland@amd.com
+References: <20220411094147.1650859-1-bhanuprakash.modem@intel.com>
+ <20220411094147.1650859-4-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20220411094147.1650859-4-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [V2 3/5] tests/kms_hdr: Adopt to use updated debugfs
+ functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,57 +28,172 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBCIFMsIEthcnRoaWsgPGthcnRo
-aWsuYi5zQGludGVsLmNvbT4gDQpTZW50OiBUaHVyc2RheSwgTWF5IDUsIDIwMjIgMTE6MjQgQU0N
-ClRvOiBHdXB0YSwgTmlkaGkxIDxuaWRoaTEuZ3VwdGFAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcNClN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19j
-b25jdXJyZW50OiBTa2lwIHRoZSBzdWJ0ZXN0IGlmIHRoZSByZXNvbHV0aW9uIGlzIG5vdCBzdXBw
-b3J0ZWQNCg0KT24gNS81LzIwMjIgMzozMCBBTSwgTmlkaGkgR3VwdGEgd3JvdGU6DQo+IFRoZSBr
-bXNfY29uY3VycmVudCBpcyBhYm91dCB0ZXN0aW5nIG1vZGUgc2V0dGluZyB3aXRoIHJlZHVjaW5n
-IHRoZSANCj4gcmVzb2x1dGlvbiBhbmQgdGhlbiBhZ2FpbiBpbmNyZWFzaW5nIGl0LCBmb3IgdGhp
-cyB0aGUgdGVzdCB3aWxsIHRha2UgDQo+IHRoZSBoaWdoIHJlc29sdXRpb24gc3VwcG9ydGVkIGJ5
-IHRoZSBjb25uZWN0b3IgYW5kIHRoZW4gY2FsY3VsYXRlIHRoZSANCj4gbG93ZXN0IHJlc29sdXRp
-b24sIGlmIHRoZSBjYWxjdWxhdGVkIHJlc29sdXRpb24gaXMgbm90IHN1cHBvcnRlZCBieSANCj4g
-dGhlIGNvbm5lY3RvciBpdCB3aWxsIGFzc2lnbiB0aGUgZGVmYXVsdCByZXNvbHV0aW9uIG9mIDEw
-MjR4IDc2OCANCj4gd2l0aG91dCBjaGVja2luZy4NCj4NCj4gQWRkaW5nIHRoZSBjaGVjayB0byBz
-a2lwIHRoZSBzdWJ0ZXN0IGlmIHRoZSBkZWZhdWx0IHJlc29sdXRpb24gaXMgbm90IA0KPiBzdXBw
-b3J0ZWQgYnkgdGhlIGNvbm5lY3Rvci4NCg0KSGksDQoNClBsZWFzZSB1cGRhdGUgdGhlIGNvbW1p
-dCBtZXNzYWdlLiBXZSdyZSBza2lwcGluZyBpZiAsICJtb2RlX2xvLT52ZGlzcGxheSAgPiBtb2Rl
-X2hpLT52ZGlzcGxheSIuIE1lbnRpb24gdGhlIHNhbWUuDQoNCkFsc28sIEkgdGhpbmsgaXRzIGJl
-dHRlciB0byBtb3ZlIHRoaXMgY2hlY2sgaW5zaWRlICJnZXRfbG93cmVzX21vZGUoKSIuIEJlZm9y
-ZSByZXR1cm5pbmcgMTAyNHg3NjggbW9kZSwgd2UgY291bGQgdXNlIHRoZSBzYW1lIGNoZWNrIHVz
-ZWQgaW4gdGhlIGxvb3AsICJtb2RlLT52ZGlzcGxheSA8IGxpbWl0IiwgYW5kIHNraXAgdGhlIHRl
-c3QgaWYgdGhpcyBpcyBub3QgbWV0Lg0KDQpUaGFua3MsDQpLYXJ0aGlrLkIuUw0KPg0KPiBTaWdu
-ZWQtb2ZmLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGludGVsLmNvbT4NCj4gLS0tDQo+
-ICAgdGVzdHMva21zX2NvbmN1cnJlbnQuYyB8IDIgKysNCj4gICAxIGZpbGUgY2hhbmdlZCwgMiBp
-bnNlcnRpb25zKCspDQo+DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfY29uY3VycmVudC5jIGIv
-dGVzdHMva21zX2NvbmN1cnJlbnQuYyBpbmRleCANCj4gODJiMjAyMWUuLmZkZWY2YjI2IDEwMDY0
-NA0KPiAtLS0gYS90ZXN0cy9rbXNfY29uY3VycmVudC5jDQo+ICsrKyBiL3Rlc3RzL2ttc19jb25j
-dXJyZW50LmMNCj4gQEAgLTI3Miw2ICsyNzIsOCBAQCB0ZXN0X3Jlc29sdXRpb25fd2l0aF9vdXRw
-dXQoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwgaW50IG1heF9wbGFuZXMsIGlndF9vdQ0K
-PiAgIAkJbW9kZV9oaSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsNCj4gICAJCW1vZGVf
-bG8gPSBnZXRfbG93cmVzX21vZGUoZGF0YSwgbW9kZV9oaSwgb3V0cHV0KTsNCj4gICANCj4gKwkJ
-aWd0X3NraXBfb24obW9kZV9sby0+dmRpc3BsYXkgPiBtb2RlX2hpLT52ZGlzcGxheSk7DQo+ICsN
-Cj4gICAJCS8qIHN3aXRjaCB0byBsb3dlciByZXNvbHV0aW9uICovDQo+ICAgCQlpZ3Rfb3V0cHV0
-X292ZXJyaWRlX21vZGUob3V0cHV0LCBtb2RlX2xvKTsNCj4gICAJCWZyZWUobW9kZV9sbyk7DQpI
-aSBLYXJ0aGlrLA0KDQpUaGFua3MgZm9yIHlvdXIgcmV2aWV3LCBidXQgaWYgSSB1c2UgbW9kZS0+
-dmRpc3BsYXkgPCBsaW1pdCwgaXRzIHNraXBwaW5nIGZvciBlRFAgYWxzbywgYmVjYXVzZSBmb3Ig
-ZURQIG1vZGUgd2l0aCByZXNvbHV0aW9uIGxlc3MgdGhlbiBsaW1pdCAobGltaXQgPSBtb2RlX2Rl
-ZmF1bHQtPnZkaXNwbGF5IC0gU0laRV9QTEFORSkgaXMgbm90IGF2YWlsYWJsZSBidXQgMTAyNHg3
-NjggaXMgYXZhaWxhYmxlLg0KDQpJIHRyaWVkIHRvIGV4ZWN1dGUgYWxzbyBiZWxvdyBhcmUgdGhl
-IHJlc3VsdHM6DQpndGFAc2FkLWd0YS1kdXQ6fi9kcml2ZXJzLmdwdS5pOTE1LmlndC1ncHUtdG9v
-bHMkIHN1ZG8gTERfTElCUkFSWV9QQVRIPS91c3IvbG9jYWwvbGliOi91c3IvbG9jYWwvbGliL3g4
-Nl82NC1saW51eC1nbnUvIGJ1aWxkL3Rlc3RzL2ttc19jb25jdXJyZW50DQpJR1QtVmVyc2lvbjog
-MS4yNi1nNmJhODg0NzFjMjUgKHg4Nl82NCkgKExpbnV4OiA1LjEwLjU0LURJSV81Njc3LWdkMTNm
-Yjc1ZmZmMzcrIHg4Nl82NCkNCk9wZW5lZCBkZXZpY2U6IC9kZXYvZHJpL2NhcmQwDQpTdGFydGlu
-ZyBzdWJ0ZXN0OiBwaXBlLUENClN0YXJ0aW5nIGR5bmFtaWMgc3VidGVzdDogZURQLTENClRlc3Rp
-bmcgcmVzb2x1dGlvbiB3aXRoIGNvbm5lY3RvciBlRFAtMSB1c2luZyBwaXBlIEEgd2l0aCBzZWVk
-IDE2NTE3NTM0MzYNClRlc3QgcmVxdWlyZW1lbnQgbm90IG1ldCBpbiBmdW5jdGlvbiBnZXRfbG93
-cmVzX21vZGUsIGZpbGUgLi4vdGVzdHMva21zX2NvbmN1cnJlbnQuYzoyNTY6DQpUZXN0IHJlcXVp
-cmVtZW50OiAhKG1vZGUtPnZkaXNwbGF5ID4gbGltaXQpDQpEeW5hbWljIHN1YnRlc3QgZURQLTE6
-IFNLSVAgKDAuMDAzcykNClN0YXJ0aW5nIGR5bmFtaWMgc3VidGVzdDogSERNSS1BLTENClRlc3Rp
-bmcgcmVzb2x1dGlvbiB3aXRoIGNvbm5lY3RvciBIRE1JLUEtMSB1c2luZyBwaXBlIEEgd2l0aCBz
-ZWVkIDE2NTE3NTM0MzYNClRlc3QgcmVxdWlyZW1lbnQgbm90IG1ldCBpbiBmdW5jdGlvbiBnZXRf
-bG93cmVzX21vZGUsIGZpbGUgLi4vdGVzdHMva21zX2NvbmN1cnJlbnQuYzoyNTY6DQpUZXN0IHJl
-cXVpcmVtZW50OiAhKG1vZGUtPnZkaXNwbGF5ID4gbGltaXQpDQpEeW5hbWljIHN1YnRlc3QgSERN
-SS1BLTE6IFNLSVAgKDAuMDAzcykNCg0K
+Hi Bhanu,
+Please fix asserts. At few places we need assertion with 10 bpc and
+not 8bpc.
+Seeing CI failures 
+https://intel-gfx-ci.01.org/tree/drm-tip/Patchwork_102502v2/shards-all.html?testfilter=hdr
+Hopefully should be resolved by fixing this.
+
+On 11-Apr-22 3:11 PM, Bhanuprakash Modem wrote:
+> Instead of writing our own wrappers of debugfs read,
+> use updated functions from lib.
+> 
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Cc: Mark Yacoub <markyacoub@chromium.org>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_hdr.c | 69 +++++++------------------------------------------
+>   1 file changed, 9 insertions(+), 60 deletions(-)
+> 
+> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+> index 247eb658..cd2883c8 100644
+> --- a/tests/kms_hdr.c
+> +++ b/tests/kms_hdr.c
+> @@ -95,44 +95,6 @@ static void test_cycle_flags(data_t *data, uint32_t test_flags)
+>   					      SUSPEND_TEST_NONE);
+>   }
+>   
+> -/* Returns the current and maximum bpc from the connector debugfs. */
+> -static output_bpc_t get_output_bpc(data_t *data)
+> -{
+> -	char buf[256];
+> -	char *start_loc;
+> -	int fd, res;
+> -	output_bpc_t info;
+> -
+> -	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
+> -	igt_assert(fd >= 0);
+> -
+> -	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
+> -
+> -	igt_require(res > 0);
+> -
+> -	close(fd);
+> -
+> -	igt_assert(start_loc = strstr(buf, "Current: "));
+> -	igt_assert_eq(sscanf(start_loc, "Current: %u", &info.current), 1);
+> -
+> -	igt_assert(start_loc = strstr(buf, "Maximum: "));
+> -	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &info.maximum), 1);
+> -
+> -	return info;
+> -}
+> -
+> -/* Verifies that connector has the correct output bpc. */
+> -static void assert_output_bpc(data_t *data, unsigned int bpc)
+> -{
+> -	output_bpc_t info = get_output_bpc(data);
+> -
+> -	igt_require_f(info.maximum >= bpc,
+> -		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
+> -		      info.maximum);
+> -
+> -	igt_assert_eq(info.current, bpc);
+> -}
+> -
+>   /* Fills the FB with a test HDR pattern. */
+>   static void draw_hdr_pattern(igt_fb_t *fb)
+>   {
+> @@ -204,12 +166,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+>   	/* Start in 8bpc. */
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	/*
+> -	 * i915 driver doesn't expose max bpc as debugfs entry,
+> -	 * so limiting assert only for amd driver.
+> -	 */
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/*
+>   	 * amdgpu requires a primary plane when the CRTC is enabled.
+> @@ -223,8 +180,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+>   	/* Switch to 10bpc. */
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 10);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+
+It should be 10 not 8.
+
+>   
+>   	/* Verify that the CRC are equal after DPMS or suspend. */
+>   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+> @@ -234,8 +190,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+>   	/* Drop back to 8bpc. */
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/* CRC capture is clamped to 8bpc, so capture should match. */
+>   	igt_assert_crc_equal(&ref_crc, &new_crc);
+> @@ -427,15 +382,13 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+>   	set_hdr_output_metadata(data, NULL);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
+>   	set_hdr_output_metadata(data, &hdr);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 10);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+
+It should be 10 not 8.
+
+>   
+>   	/* Verify that the CRC are equal after DPMS or suspend. */
+>   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+> @@ -446,8 +399,7 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+>   	set_hdr_output_metadata(data, NULL);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	igt_assert_crc_equal(&ref_crc, &new_crc);
+>   
+> @@ -506,16 +458,14 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	igt_plane_set_size(data->primary, data->w, data->h);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/* Enter HDR, a modeset is allowed here. */
+>   	fill_hdr_output_metadata_st2048(&hdr);
+>   	set_hdr_output_metadata(data, &hdr);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 10);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+
+Same here
+>   
+>   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+>   
+> @@ -548,8 +498,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	set_hdr_output_metadata(data, NULL);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/* Verify that the CRC didn't change while cycling metadata. */
+>   	igt_assert_crc_equal(&ref_crc, &new_crc);
+
+-- 
+~Swati Sharma
