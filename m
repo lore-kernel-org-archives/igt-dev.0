@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2050.outbound.protection.outlook.com [40.107.94.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3DB6E10F8A8
- for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 21:32:45 +0000 (UTC)
-From: David Zhang <dingchen.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 5 May 2022 17:32:25 -0400
-Message-ID: <20220505213226.2614662-4-dingchen.zhang@amd.com>
-In-Reply-To: <20220505213226.2614662-1-dingchen.zhang@amd.com>
-References: <20220505213226.2614662-1-dingchen.zhang@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============1606250592678678989=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 3/4] tests/amdgpu/amd_psr: use double framebuffers
- to emulate MPO case
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "David Zhang" <dingchen.zhang@amd.com>
+Date: Thu, 05 May 2022 22:31:00 -0000
+Message-ID: <165178986067.7659.8923492073707063368@emeril.freedesktop.org>
+References: <20220505213226.2614662-1-dingchen.zhang@amd.com>
+In-Reply-To: <20220505213226.2614662-1-dingchen.zhang@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgYW1kZ3B1?=
+ =?utf-8?q?_PSR-SU_scaling_tests_and_some_fix?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,174 +17,337 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[why]
-Current implementation to emulate the MPO video playback is via
-creating 20 framebuffers (FB) and each FB has a colorful strip
-pattern in a different position. From usrmode's view, in general
-it would not create so many FBs for primary plane. Instead, it
-only creates double or tripple buffers.
+--===============1606250592678678989==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[how]
-- drop the 20 framebuffers in current implementation
-- use the double primary plane framebuffers defined in data struct
-  and update the strip pattern alternatively on the double FBs and
-  do page flip for each iteration
+== Series Details ==
 
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Jay Pillai <aurabindo.pillai@amd.com>
-Cc: Wayne Lin <wayne.lin@amd.com>
+Series: amdgpu PSR-SU scaling tests and some fix
+URL   : https://patchwork.freedesktop.org/series/103635/
+State : success
 
-Signed-off-by: David Zhang <dingchen.zhang@amd.com>
----
- tests/amdgpu/amd_psr.c | 76 +++++++++++++++++++++++++++---------------
- 1 file changed, 49 insertions(+), 27 deletions(-)
+== Summary ==
 
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index 29982605..81ebebd3 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -40,10 +40,11 @@ IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP display
- #define N_FLIPS 6
- /* DMCUB takes some time to actually enable PSR. Worst case delay is 4 seconds */
- #define PSR_SETTLE_DELAY 4
--/* # of framebuffers for PSR-SU MPO test case to emulate video playback */
--#ifndef N_MPO_TEST_RECT_FB
--#define N_MPO_TEST_RECT_FB 20
--#endif
-+
-+typedef struct {
-+	int x, y;
-+	int w, h;
-+} pos_t;
- 
- /* Common test data. */
- typedef struct data {
-@@ -138,6 +139,29 @@ static void draw_color_cursor(igt_fb_t *fb, int size, double r, double g, double
- 	igt_put_cairo_ctx(cr);
- }
- 
-+/* update the given framebuffer and draw colorful strip in new position */
-+static void update_color_strip(igt_fb_t *fb, pos_t *old, pos_t *new, double r, double g, double b)
-+{
-+	cairo_t *cr;
-+
-+	if (!fb || !new || !old)
-+		return;
-+
-+	cr = igt_get_cairo_ctx(fb->fd, fb);
-+	igt_assert_f(cr, "Failed to get cairo context\n");
-+
-+	/**
-+	 * we'd draw the strip in the new position w/ given color
-+	 * and make the background of the framebuffer as black
-+	 * - render black BG in the old position of strip instead of rendering the whole FB
-+	 * - render colorful strip in the new position
-+	 */
-+	igt_paint_color(cr, old->x, old->y, old->w, old->h, .0, .0, .0);
-+	igt_paint_color(cr, new->x, new->y, new->w, new->h, r, g, b);
-+
-+	igt_put_cairo_ctx(cr);
-+}
-+
- /* Common test setup. */
- static void test_init(data_t *data)
- {
-@@ -314,12 +338,12 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
- static void run_check_psr_su_mpo(data_t *data)
- {
- 	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	/* rectangle fbs for primary, emulate as video playback region */
- 	igt_fb_t ref_fb;	/* reference fb */
- 	igt_fb_t *flip_fb;
- 	int ret;
- 	const int run_sec = 5;
- 	int frame_rate = 0;
-+	pos_t old[2], new;
- 
- 	/* skip the test run if no eDP sink detected */
- 	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
-@@ -327,6 +351,10 @@ static void run_check_psr_su_mpo(data_t *data)
- 	/* init */
- 	test_init(data);
- 	frame_rate = data->mode->vrefresh;
-+	memset(&old, 0, sizeof(pos_t) * 2);
-+	memset(&new, 0, sizeof(pos_t));
-+	old[0].w = old[1].w = new.w = 30;
-+	old[0].h = old[1].h = new.h = data->pfb_h;
- 
- 	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
- 	igt_skip_on(!psr_su_supported(data));
-@@ -347,25 +375,14 @@ static void run_check_psr_su_mpo(data_t *data)
- 	 */
- 	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
- 			    1.0, 1.0, 1.0, &data->ov_fb[0]);
--	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i) {
--		cairo_t *cr;
--		int strip_w = data->w / (2 * N_MPO_TEST_RECT_FB);
--
--		igt_create_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
--			      &rect_fb[i]);
--		cr = igt_get_cairo_ctx(data->fd, &rect_fb[i]);
--		igt_assert_f(cr, "Failed to get cairo context\n");
--		/* background in black */
--		igt_paint_color(cr, 0, 0, data->pfb_w, data->pfb_h, .0, .0, .0);
--		/* foreground (megenta strip) */
--		igt_paint_color(cr, i * strip_w, 0, strip_w, data->pfb_h, 1.0, .0, 1.0);
--
--		igt_put_cairo_ctx(cr);
--	}
-+	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    .0, .0, .0, &data->pm_fb[0]);
-+	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    .0, .0, .0, &data->pm_fb[1]);
- 
- 	/* tie fbs to planes and set position/size/blending */
- 	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
--	igt_plane_set_fb(data->primary, &rect_fb[0]);
-+	igt_plane_set_fb(data->primary, &data->pm_fb[1]);
- 	igt_plane_set_position(data->primary, 0, 0);
- 	igt_plane_set_size(data->primary, data->pfb_w, data->pfb_h);
- 
-@@ -389,23 +406,28 @@ static void run_check_psr_su_mpo(data_t *data)
- 	igt_info("\n start flipping ...\n");
- 
- 	for (int i = 0; i < run_sec * frame_rate; ++i) {
--		igt_info(" About to commit a primary plane (FB %d), loop %d \n", i % N_MPO_TEST_RECT_FB, i);
--		flip_fb = &rect_fb[i % N_MPO_TEST_RECT_FB];
-+		flip_fb = &data->pm_fb[i & 1];
-+		/* draw the color strip onto primary plane FB */
-+		update_color_strip(flip_fb, &old[i & 1], &new, 1.0, .0, 1.0);
- 
- 		igt_plane_set_fb(data->primary, flip_fb);
- 		igt_output_set_pipe(data->output, data->pipe_id);
- 
--		ret = drmModePageFlip(data->fd, data->output->config.crtc->crtc_id,
--				      flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
- 		igt_require(ret == 0);
- 		kmstest_wait_for_pageflip(data->fd);
-+
-+		/* update strip position */
-+		old[i & 1].x = new.x;
-+		new.x += 3;
-+		new.x = (new.x + new.w > data->pfb_w) ? 0 : new.x;
- 	}
- 
- 	/* fini */
- 	igt_remove_fb(data->fd, &ref_fb);
- 	igt_remove_fb(data->fd, &data->ov_fb[0]);
--	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i)
--		igt_remove_fb(data->fd, &rect_fb[i]);
-+	igt_remove_fb(data->fd, &data->pm_fb[0]);
-+	igt_remove_fb(data->fd, &data->pm_fb[1]);
- 	test_fini(data);
- }
- 
--- 
-2.25.1
+CI Bug Log - changes from CI_DRM_11612 -> IGTPW_7044
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/index.html
+
+Participating hosts (41 -> 43)
+------------------------------
+
+  Additional (3): bat-rpls-1 bat-adlm-1 fi-icl-u2 
+  Missing    (1): fi-bsw-cyan 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7044:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gt_contexts:
+    - {bat-adlm-1}:       NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/bat-adlm-1/igt@i915_selftest@live@gt_contexts.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7044 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-icl-u2:          NOTRUN -> [SKIP][2] ([i915#2190])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-icl-u2:          NOTRUN -> [SKIP][3] ([i915#4613]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - fi-rkl-guc:         [PASS][4] -> [INCOMPLETE][5] ([i915#4418])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][6] -> [INCOMPLETE][7] ([i915#4785])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          NOTRUN -> [SKIP][8] ([fdo#111827]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - fi-icl-u2:          NOTRUN -> [SKIP][9] ([fdo#109278]) +2 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-icl-u2:          NOTRUN -> [SKIP][10] ([fdo#109285])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-icl-u2:          NOTRUN -> [SKIP][11] ([i915#3555])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-icl-u2:          NOTRUN -> [SKIP][12] ([i915#3301])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-rkl-guc:         NOTRUN -> [FAIL][13] ([i915#4312])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-rkl-guc/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-tgl-1115g4:      [DMESG-FAIL][14] ([i915#3987]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - {fi-jsl-1}:         [INCOMPLETE][16] ([i915#3921] / [i915#5153]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/fi-jsl-1/igt@i915_selftest@live@hangcheck.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-jsl-1/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_busy@basic@flip:
+    - {bat-adlp-6}:       [DMESG-WARN][18] ([i915#3576]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/bat-adlp-6/igt@kms_busy@basic@flip.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/bat-adlp-6/igt@kms_busy@basic@flip.html
+    - bat-adlp-4:         [DMESG-WARN][20] ([i915#3576]) -> [PASS][21] +1 similar issue
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/bat-adlp-4/igt@kms_busy@basic@flip.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/bat-adlp-4/igt@kms_busy@basic@flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#3987]: https://gitlab.freedesktop.org/drm/intel/issues/3987
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6467 -> IGTPW_7044
+
+  CI-20190529: 20190529
+  CI_DRM_11612: 9f6ebefdd3fadb37d1e284e7f0bf0cfcd2fef75b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7044: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/index.html
+  IGT_6467: 929abc51cdd48d673efa03e025b1f31b557972ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@amdgpu/amd_psr@psr_su_mpo_scaling_0_75
++igt@amdgpu/amd_psr@psr_su_mpo_scaling_1_5
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/index.html
+
+--===============1606250592678678989==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>amdgpu PSR-SU scaling tests and some fix</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103635/">https://patchwork.freedesktop.org/series/103635/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11612 -&gt; IGTPW_7044</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/index.html</p>
+<h2>Participating hosts (41 -&gt; 43)</h2>
+<p>Additional (3): bat-rpls-1 bat-adlm-1 fi-icl-u2 <br />
+  Missing    (1): fi-bsw-cyan </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7044:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gt_contexts:<ul>
+<li>{bat-adlm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/bat-adlm-1/igt@i915_selftest@live@gt_contexts.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7044 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-icl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3987">i915#3987</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/fi-jsl-1/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5153">i915#5153</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/fi-jsl-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>
+<p>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></p>
+</li>
+<li>
+<p>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11612/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/bat-adlp-4/igt@kms_busy@basic@flip.html">PASS</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6467 -&gt; IGTPW_7044</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11612: 9f6ebefdd3fadb37d1e284e7f0bf0cfcd2fef75b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7044: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7044/index.html<br />
+  IGT_6467: 929abc51cdd48d673efa03e025b1f31b557972ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@amdgpu/amd_psr@psr_su_mpo_scaling_0_75<br />
++igt@amdgpu/amd_psr@psr_su_mpo_scaling_1_5</p>
+
+</body>
+</html>
+
+--===============1606250592678678989==--
