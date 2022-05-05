@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E1FC10F8BF
- for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 11:04:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84C7010F898
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 May 2022 11:04:28 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 May 2022 16:33:51 +0530
-Message-Id: <20220505110354.30768-7-anshuman.gupta@intel.com>
+Date: Thu,  5 May 2022 16:33:53 +0530
+Message-Id: <20220505110354.30768-9-anshuman.gupta@intel.com>
 In-Reply-To: <20220505110354.30768-1-anshuman.gupta@intel.com>
 References: <20220505110354.30768-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 6/9] i915_pm_rpm: Add D3Cold basic subtest
+Subject: [igt-dev] [PATCH i-g-t v4 8/9] i915_pm_rpm: Extend gem_execbuf test
+ with D3Cold
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,64 +24,99 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support for D3Cold basic subtest.
-It setup and prepares the gfx PCI card for D3Cold
-and checks the ACPI D3Cold state.
+Added d3cold dynamic subtest to gem_execbuf with device class
+memory region. It test both D3Cold-{VRAM_SR, Off} by using
+d3cold_sr_lmem_threshold i915_params debugfs.
 
 v2:
-- Removed IS_DGFX() condition.
-- Added igt_describe(). [Kamil]
+- Two different subtest d3cold-off and d3cold-vrsr. [Rodrigo]
+v3:
+- Skip the d3cold-vram-sr test when lmem_threshold is not available.
 
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ tests/i915/i915_pm_rpm.c | 34 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
 diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index d2bce5826..31f9712a8 100644
+index b16d61643..a062fde88 100644
 --- a/tests/i915/i915_pm_rpm.c
 +++ b/tests/i915/i915_pm_rpm.c
-@@ -1534,6 +1534,28 @@ __noreturn static void stay_subtest(void)
- 		sleep(600);
+@@ -1350,10 +1350,11 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
  }
  
-+static void d3cold_basic_subtest(void)
-+{
-+	struct pci_device *root;
-+	bool result;
-+
-+	root = igt_device_get_pci_root_port(drm_fd);
-+	igt_require(igt_pm_acpi_d3cold_supported(root));
-+	igt_pm_setup_pci_card_runtime_pm(root);
-+	disable_all_screens_and_wait(&ms_data);
-+
-+	result = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
-+
-+	if (!result) {
-+		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
-+			 root->domain, root->bus, root->dev, root->func);
-+		igt_pm_print_pci_card_runtime_status();
-+	}
-+
-+	igt_assert(result);
-+	igt_pm_restore_pci_card_runtime_pm();
-+}
-+
- static void system_suspend_subtest(int state, int debug)
+ /* Make sure we can submit a batch buffer and verify its result. */
+-static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions)
++static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions, bool d3cold)
  {
- 	disable_all_screens_and_wait(&ms_data);
-@@ -2065,6 +2087,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_subtest("stay")
- 			stay_subtest();
+ 	int x, y;
+ 	uint32_t handle;
++	struct pci_device *root;
+ 	int bpp = 4;
+ 	int pitch = 128 * bpp;
+ 	int dst_size = 128 * 128 * bpp; /* 128x128 square */
+@@ -1375,6 +1376,9 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+ 	memset(cpu_buf, 0, dst_size);
+ 	gem_write(drm_fd, handle, 0, cpu_buf, dst_size);
  
-+	igt_describe("Validate gfx root port d3cold state");
-+	igt_subtest("d3cold-basic")
-+		d3cold_basic_subtest();
++	if (d3cold)
++		root = setup_d3cold_and_get_root_port();
 +
- 	/* Essential things */
- 	igt_subtest("drm-resources-equal")
- 		drm_resources_equal_subtest();
+ 	/* Now suspend and try it. */
+ 	disable_all_screens_and_wait(&ms_data);
+ 
+@@ -1383,8 +1387,15 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+ 		       &presumed_offset);
+ 	igt_assert(wait_for_suspended());
+ 
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+ 	igt_assert(wait_for_suspended());
++
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	for (y = 0; y < 128; y++) {
+ 		for (x = 0; x < 128; x++) {
+ 			uint32_t px = cpu_buf[y * 128 + x];
+@@ -1423,6 +1434,9 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+ 
+ 	disable_all_screens_and_wait(&ms_data);
+ 
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	memset(cpu_buf, 0, dst_size);
+ 	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+ 	for (y = 0; y < 128; y++) {
+@@ -2182,7 +2196,23 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	igt_subtest_with_dynamic("gem-execbuf") {
+ 		for_each_memory_region(r, drm_fd) {
+ 			igt_dynamic_f("%s", r->name)
+-				gem_execbuf_subtest(&r->ci);
++				gem_execbuf_subtest(&r->ci, false);
++
++			if (r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM)
++				continue;
++
++			igt_dynamic_f("%s-%s", "d3cold-off", r->name) {
++				if (lmem_threshold >= 0)
++					set_d3cold_sr_lmem_threshold(debugfs, 300);
++
++				gem_execbuf_subtest(&r->ci, true);
++			}
++
++			igt_dynamic_f("%s-%s", "d3cold-vrsr", r->name) {
++				igt_require(lmem_threshold >= 0);
++				set_d3cold_sr_lmem_threshold(debugfs, 0);
++				gem_execbuf_subtest(&r->ci, true);
++			}
+ 		}
+ 	}
+ 	igt_subtest("gem-idle")
 -- 
 2.26.2
