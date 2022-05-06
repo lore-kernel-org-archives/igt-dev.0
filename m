@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E354110E4F2
- for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 05:47:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EAF310E669
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 05:47:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 May 2022 11:14:31 +0530
-Message-Id: <20220506054446.3228224-1-bhanuprakash.modem@intel.com>
+Date: Fri,  6 May 2022 11:14:32 +0530
+Message-Id: <20220506054446.3228224-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220506054446.3228224-1-bhanuprakash.modem@intel.com>
+References: <20220506054446.3228224-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v4 00/15] Add IGT support for plane color management
+Subject: [igt-dev] [v4 01/15] HAX: Get uapi headers to compile the IGT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,49 +22,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From the Plane Color Management feature design, userspace can
-take the smart blending decisions based on hardware supported
-plane color features to obtain an accurate color profile.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ include/drm-uapi/drm.h      | 10 ++++++++++
+ include/drm-uapi/drm_mode.h | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-These IGT patches extend the existing pipe color management
-tests to the plane level.
-
-Kernel implementation:
-https://patchwork.freedesktop.org/series/90825/
-
-V2: Rebase
-
-Bhanuprakash Modem (13):
-  HAX: Get uapi headers to compile the IGT
-  lib/igt_kms: Add plane color mgmt properties
-  kms_color_helper: Add helper functions for plane color mgmt
-  tests/kms_color: New subtests for Plane gamma
-  tests/kms_color: New subtests for Plane degamma
-  tests/kms_color: New subtests for Plane CTM
-  tests/kms_color: New negative tests for plane level color mgmt
-  tests/kms_color_chamelium: New subtests for Plane gamma
-  tests/kms_color_chamelium: New subtests for Plane degamma
-  tests/kms_color_chamelium: New subtests for Plane CTM
-  tests/kms_color: Extended IGT tests to support logarithmic gamma mode
-  tests/kms_color_chamelium: Extended IGT tests to support logarithmic
-    gamma mode
-  HAX: Add color mgmt tests to BAT
-
-Mukunda Pramodh Kumar (2):
-  lib/igt_kms: Add pipe color mgmt properties
-  kms_color_helper: Add helper functions to support logarithmic gamma
-    mode
-
- include/drm-uapi/drm.h                |  10 +
- include/drm-uapi/drm_mode.h           |  28 ++
- lib/igt_kms.c                         |   6 +
- lib/igt_kms.h                         |   6 +
- tests/intel-ci/fast-feedback.testlist | 113 +++++
- tests/kms_color.c                     | 672 +++++++++++++++++++++++++-
- tests/kms_color_chamelium.c           | 597 ++++++++++++++++++++++-
- tests/kms_color_helper.c              | 303 +++++++++++-
- tests/kms_color_helper.h              |  44 ++
- 9 files changed, 1762 insertions(+), 17 deletions(-)
-
---
+diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
+index 5e54c3aa..9ca3dbe8 100644
+--- a/include/drm-uapi/drm.h
++++ b/include/drm-uapi/drm.h
+@@ -830,6 +830,16 @@ struct drm_get_cap {
+  */
+ #define DRM_CLIENT_CAP_WRITEBACK_CONNECTORS	5
+ 
++/**
++ * DRM_CLIENT_CAP_ADVANCE_GAMMA_MODES
++ *
++ * Add support for advance gamma mode UAPI
++ * If set to 1, DRM will enable advance gamma mode
++ * UAPI to process the gamma mode based on extended
++ * range and segments.
++ */
++#define DRM_CLIENT_CAP_ADVANCE_GAMMA_MODES     6
++
+ /* DRM_IOCTL_SET_CLIENT_CAP ioctl argument type */
+ struct drm_set_client_cap {
+ 	__u64 capability;
+diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
+index e4a2570a..97198609 100644
+--- a/include/drm-uapi/drm_mode.h
++++ b/include/drm-uapi/drm_mode.h
+@@ -817,6 +817,34 @@ struct drm_color_lut {
+ 	__u16 reserved;
+ };
+ 
++/*
++ * Creating 64 bit palette entries for better data
++ * precision. This will be required for HDR and
++ * similar color processing usecases.
++ */
++struct drm_color_lut_ext {
++    /*
++     * Data is U32.32 fixed point format.
++     */
++    __u64 red;
++    __u64 green;
++    __u64 blue;
++    __u64 reserved;
++};
++
++struct drm_color_lut_range {
++    /* DRM_MODE_LUT_* */
++    __u32 flags;
++    /* number of points on the curve */
++    __u16 count;
++    /* input/output bits per component */
++    __u8 input_bpc, output_bpc;
++    /* input start/end values */
++    __s32 start, end;
++    /* output min/max values */
++    __s32 min, max;
++};
++
+ /**
+  * struct hdr_metadata_infoframe - HDR Metadata Infoframe Data.
+  *
+-- 
 2.35.1
