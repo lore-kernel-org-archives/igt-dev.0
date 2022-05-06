@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============1180982893754296000=="
+ boundary="===============2631598442284924171=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Anshuman Gupta" <anshuman.gupta@intel.com>
-Date: Fri, 06 May 2022 18:57:48 -0000
-Message-ID: <165186346852.18817.12033440907309448288@emeril.freedesktop.org>
-References: <20220506154553.6146-1-anshuman.gupta@intel.com>
-In-Reply-To: <20220506154553.6146-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgRDNDb2xk?=
- =?utf-8?q?_Tool_=26_IGT_=28rev5=29?=
+To: "Jason Ekstrand" <jason@jlekstrand.net>
+Date: Fri, 06 May 2022 20:51:08 -0000
+Message-ID: <165187026872.18815.17185608685832716460@emeril.freedesktop.org>
+References: <20220506171632.1438408-1-jason.ekstrand@collabora.com>
+In-Reply-To: <20220506171632.1438408-1-jason.ekstrand@collabora.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?dmabuf=3A_Add_tests_for_sync=5Ffile_import/export_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1180982893754296000==
+--===============2631598442284924171==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: D3Cold Tool & IGT (rev5)
-URL   : https://patchwork.freedesktop.org/series/102780/
+Series: tests/dmabuf: Add tests for sync_file import/export (rev3)
+URL   : https://patchwork.freedesktop.org/series/90490/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_11617_full -> IGTPW_7055_full
+CI Bug Log - changes from CI_DRM_11618_full -> IGTPW_7056_full
 ====================================================
 
 Summary
@@ -46,30 +46,54 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/index.html
 
-Participating hosts (11 -> 7)
+Participating hosts (10 -> 7)
 ------------------------------
 
-  Missing    (4): pig-skl-6260u pig-kbl-iris shard-tglu pig-glk-j5005 
+  Missing    (3): pig-skl-6260u pig-kbl-iris pig-glk-j5005 
 
 New tests
 ---------
 
-  New tests have been introduced between CI_DRM_11617_full and IGTPW_7055_full:
+  New tests have been introduced between CI_DRM_11618_full and IGTPW_7056_full:
 
-### New IGT tests (1) ###
+### New IGT tests (7) ###
 
-  * igt@i915_pm_rpm@d3cold-basic:
+  * igt@dmabuf_sync_file@export-basic:
     - Statuses : 1 skip(s)
     - Exec time: [0.0] s
+
+  * igt@dmabuf_sync_file@export-before-signal:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@dmabuf_sync_file@export-multiwait:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@dmabuf_sync_file@export-wait-after-attach:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@dmabuf_sync_file@import-basic:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.00] s
+
+  * igt@dmabuf_sync_file@import-multiple-read-only:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.00] s
+
+  * igt@dmabuf_sync_file@import-multiple-read-write:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.00] s
 
   
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_7055_full that come from known issues:
+  Here are the changes found in IGTPW_7056_full that come from known issues:
 
 ### IGT changes ###
 
@@ -77,27 +101,32 @@ Known issues
 
   * igt@gem_ctx_persistence@engines-cleanup:
     - shard-snb:          NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#1099])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb2/igt@gem_ctx_persistence@engines-cleanup.html
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb7/igt@gem_ctx_persistence@engines-cleanup.html
+
+  * igt@gem_exec_flush@basic-uc-ro-default:
+    - shard-snb:          [PASS][2] -> [SKIP][3] ([fdo#109271]) +2 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11618/shard-snb2/igt@gem_exec_flush@basic-uc-ro-default.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb6/igt@gem_exec_flush@basic-uc-ro-default.html
 
   * igt@i915_hangman@engine-engine-hang:
-    - shard-snb:          NOTRUN -> [SKIP][2] ([fdo#109271]) +109 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb4/igt@i915_hangman@engine-engine-hang.html
+    - shard-snb:          NOTRUN -> [SKIP][4] ([fdo#109271]) +117 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb4/igt@i915_hangman@engine-engine-hang.html
 
   * igt@kms_chamelium@hdmi-hpd-enable-disable-mode:
-    - shard-snb:          NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827]) +4 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb6/igt@kms_chamelium@hdmi-hpd-enable-disable-mode.html
+    - shard-snb:          NOTRUN -> [SKIP][5] ([fdo#109271] / [fdo#111827]) +4 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb4/igt@kms_chamelium@hdmi-hpd-enable-disable-mode.html
 
   * igt@syncobj_timeline@transfer-timeline-point:
-    - shard-snb:          NOTRUN -> [DMESG-FAIL][4] ([i915#5098])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb6/igt@syncobj_timeline@transfer-timeline-point.html
+    - shard-snb:          NOTRUN -> [DMESG-FAIL][6] ([i915#5098])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb4/igt@syncobj_timeline@transfer-timeline-point.html
 
   
 #### Possible fixes ####
 
-  * igt@gem_mmap_gtt@coherency:
-    - shard-snb:          [SKIP][5] ([fdo#109271]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11617/shard-snb6/igt@gem_mmap_gtt@coherency.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb5/igt@gem_mmap_gtt@coherency.html
+  * igt@gem_exec_flush@basic-batch-kernel-default-wb:
+    - shard-snb:          [SKIP][7] ([fdo#109271]) -> [PASS][8] +2 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11618/shard-snb6/igt@gem_exec_flush@basic-batch-kernel-default-wb.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb2/igt@gem_exec_flush@basic-batch-kernel-default-wb.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -113,20 +142,20 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_6468 -> IGTPW_7055
+  * IGT: IGT_6468 -> IGTPW_7056
   * Piglit: piglit_4509 -> None
 
   CI-20190529: 20190529
-  CI_DRM_11617: d96cea3d7ffb524248fcc8db433c579cf262eaea @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7055: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/index.html
+  CI_DRM_11618: 07c7d578e3b8a85c79e9a7f8dace075192d5fd91 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7056: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/index.html
   IGT_6468: cffa5fffe9acddf49565b4caeeb5e3355ff2ea44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/index.html
 
---===============1180982893754296000==
+--===============2631598442284924171==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -146,66 +175,116 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>D3Cold Tool &amp; IGT (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102780/">https://patchwork.freedesktop.org/series/102780/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/dmabuf: Add tests for sync_file import/export (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/90490/">https://patchwork.freedesktop.org/series/90490/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_11617_full -&gt; IGTPW_7055_full</h1>
+    <h1>CI Bug Log - changes from CI_DRM_11618_full -&gt; IGTPW_7056_full</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/index.html</p>
-<h2>Participating hosts (11 -&gt; 7)</h2>
-<p>Missing    (4): pig-skl-6260u pig-kbl-iris shard-tglu pig-glk-j5005 </p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/index.html</p>
+<h2>Participating hosts (10 -&gt; 7)</h2>
+<p>Missing    (3): pig-skl-6260u pig-kbl-iris pig-glk-j5005 </p>
 <h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_11617_full and IGTPW_7055_full:</p>
-<h3>New IGT tests (1)</h3>
+<p>New tests have been introduced between CI_DRM_11618_full and IGTPW_7056_full:</p>
+<h3>New IGT tests (7)</h3>
 <ul>
-<li>igt@i915_pm_rpm@d3cold-basic:<ul>
+<li>
+<p>igt@dmabuf_sync_file@export-basic:</p>
+<ul>
 <li>Statuses : 1 skip(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
+<li>
+<p>igt@dmabuf_sync_file@export-before-signal:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf_sync_file@export-multiwait:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf_sync_file@export-wait-after-attach:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf_sync_file@import-basic:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf_sync_file@import-multiple-read-only:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf_sync_file@import-multiple-read-write:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7055_full that come from known issues:</p>
+<p>Here are the changes found in IGTPW_7056_full that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
 <p>igt@gem_ctx_persistence@engines-cleanup:</p>
 <ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb2/igt@gem_ctx_persistence@engines-cleanup.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1099">i915#1099</a>)</li>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb7/igt@gem_ctx_persistence@engines-cleanup.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1099">i915#1099</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_flush@basic-uc-ro-default:</p>
+<ul>
+<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11618/shard-snb2/igt@gem_exec_flush@basic-uc-ro-default.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb6/igt@gem_exec_flush@basic-uc-ro-default.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
 </ul>
 </li>
 <li>
 <p>igt@i915_hangman@engine-engine-hang:</p>
 <ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb4/igt@i915_hangman@engine-engine-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +109 similar issues</li>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb4/igt@i915_hangman@engine-engine-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +117 similar issues</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_chamelium@hdmi-hpd-enable-disable-mode:</p>
 <ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb6/igt@kms_chamelium@hdmi-hpd-enable-disable-mode.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +4 similar issues</li>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb4/igt@kms_chamelium@hdmi-hpd-enable-disable-mode.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +4 similar issues</li>
 </ul>
 </li>
 <li>
 <p>igt@syncobj_timeline@transfer-timeline-point:</p>
 <ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb6/igt@syncobj_timeline@transfer-timeline-point.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5098">i915#5098</a>)</li>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb4/igt@syncobj_timeline@transfer-timeline-point.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5098">i915#5098</a>)</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@gem_mmap_gtt@coherency:<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11617/shard-snb6/igt@gem_mmap_gtt@coherency.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/shard-snb5/igt@gem_mmap_gtt@coherency.html">PASS</a></li>
+<li>igt@gem_exec_flush@basic-batch-kernel-default-wb:<ul>
+<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11618/shard-snb6/igt@gem_exec_flush@basic-batch-kernel-default-wb.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/shard-snb2/igt@gem_exec_flush@basic-batch-kernel-default-wb.html">PASS</a> +2 similar issues</li>
 </ul>
 </li>
 </ul>
@@ -214,16 +293,16 @@ Content-Transfer-Encoding: 7bit
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6468 -&gt; IGTPW_7055</li>
+<li>IGT: IGT_6468 -&gt; IGTPW_7056</li>
 <li>Piglit: piglit_4509 -&gt; None</li>
 </ul>
 <p>CI-20190529: 20190529<br />
-  CI_DRM_11617: d96cea3d7ffb524248fcc8db433c579cf262eaea @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7055: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7055/index.html<br />
+  CI_DRM_11618: 07c7d578e3b8a85c79e9a7f8dace075192d5fd91 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7056: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7056/index.html<br />
   IGT_6468: cffa5fffe9acddf49565b4caeeb5e3355ff2ea44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
 
 </body>
 </html>
 
---===============1180982893754296000==--
+--===============2631598442284924171==--
