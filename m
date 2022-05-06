@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 254CE10E87D
- for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 15:46:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EA3E10E8CF
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 15:46:08 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 May 2022 21:15:44 +0530
-Message-Id: <20220506154553.6146-1-anshuman.gupta@intel.com>
+Date: Fri,  6 May 2022 21:15:45 +0530
+Message-Id: <20220506154553.6146-2-anshuman.gupta@intel.com>
+In-Reply-To: <20220506154553.6146-1-anshuman.gupta@intel.com>
+References: <20220506154553.6146-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 0/9] D3Cold Tool & IGT
+Subject: [igt-dev] [PATCH i-g-t v5 1/9] test/i915_pm_rpm: Add placement to
+ gem-{mmap-type, execbuf}
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,36 +19,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, badal.nilawar@intel.com, rodrigo.vivi@intel.com
+Cc: petri.latvala@intel.com, Chris Wilson <chris.p.wilson@intel.com>,
+ badal.nilawar@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series adds support for D3Cold Tool and IGT.
+Add memory region placement to gem-{mmap-type, execbuf} subtest.
+This will be useful to extend these sub-test for D3Cold.
 
-v5 rev has addressed the review comment mentioned in
-commit version log.
+Cc: Chris Wilson <chris.p.wilson@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ tests/i915/i915_pm_rpm.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-Anshuman Gupta (9):
-  test/i915_pm_rpm: Add placement to gem-{mmap-type, execbuf}
-  lib/igt_device: Get gfx PCI card root port
-  lib/igt_pm: D3Cold runtime pm infrastructure
-  tools: Add intel_pm_rpm tool
-  tools/intel_pm_rpm: Add an option to setup d3cold
-  i915_pm_rpm: Add D3Cold basic subtest
-  i915_pm_rpm: Extend gem_exec_stress test with D3Cold
-  i915_pm_rpm: Extend gem_execbuf test with D3Cold
-  i915_pm_rpm: Extend gem-mmap-type test with D3Cold
-
- lib/igt_device.c         |  28 ++++
- lib/igt_device.h         |   1 +
- lib/igt_pm.c             | 317 +++++++++++++++++++++++++++++++++++++++
- lib/igt_pm.h             |  24 +++
- tests/i915/i915_pm_rpm.c | 199 ++++++++++++++++++++++--
- tools/intel_pm_rpm.c     | 229 ++++++++++++++++++++++++++++
- tools/meson.build        |   1 +
- 7 files changed, 790 insertions(+), 9 deletions(-)
- create mode 100644 tools/intel_pm_rpm.c
-
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 461730e8a..d2bce5826 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -1069,7 +1069,8 @@ static void debugfs_forcewake_user_subtest(void)
+ 	igt_assert(wait_for_suspended());
+ }
+ 
+-static void gem_mmap_args(const struct mmap_offset *t)
++static void gem_mmap_args(const struct mmap_offset *t,
++			  struct drm_i915_gem_memory_class_instance *mem_regions)
+ {
+ 	int i;
+ 	uint32_t handle;
+@@ -1079,7 +1080,7 @@ static void gem_mmap_args(const struct mmap_offset *t)
+ 	/* Create, map and set data while the device is active. */
+ 	enable_one_screen_and_wait(&ms_data);
+ 
+-	handle = gem_create(drm_fd, buf_size);
++	handle = gem_create_in_memory_region_list(drm_fd, buf_size, mem_regions, 1);
+ 
+ 	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
+ 				    PROT_READ | PROT_WRITE, t->type);
+@@ -1290,7 +1291,7 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
+ }
+ 
+ /* Make sure we can submit a batch buffer and verify its result. */
+-static void gem_execbuf_subtest(void)
++static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions)
+ {
+ 	int x, y;
+ 	uint32_t handle;
+@@ -1308,7 +1309,7 @@ static void gem_execbuf_subtest(void)
+ 	/* Create and set data while the device is active. */
+ 	enable_one_screen_and_wait(&ms_data);
+ 
+-	handle = gem_create(drm_fd, dst_size);
++	handle = gem_create_in_memory_region_list(drm_fd, dst_size, mem_regions, 1);
+ 
+ 	cpu_buf = malloc(dst_size);
+ 	igt_assert(cpu_buf);
+@@ -2083,15 +2084,21 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	/* GEM */
+ 	igt_subtest_with_dynamic("gem-mmap-type") {
+ 		for_each_mmap_offset_type(drm_fd, t) {
+-			igt_dynamic_f("%s", t->name)
+-				gem_mmap_args(t);
++			for_each_memory_region(r, drm_fd) {
++				igt_dynamic_f("%s-%s", t->name, r->name)
++				gem_mmap_args(t, &r->ci);
++			}
+ 		}
+ 	}
+ 
+ 	igt_subtest("gem-pread")
+ 		gem_pread_subtest();
+-	igt_subtest("gem-execbuf")
+-		gem_execbuf_subtest();
++	igt_subtest_with_dynamic("gem-execbuf") {
++		for_each_memory_region(r, drm_fd) {
++			igt_dynamic_f("%s", r->name)
++				gem_execbuf_subtest(&r->ci);
++		}
++	}
+ 	igt_subtest("gem-idle")
+ 		gem_idle_subtest();
+ 	igt_subtest("gem-evict-pwrite") {
 -- 
 2.26.2
