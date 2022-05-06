@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A4EE10ED00
- for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 08:36:40 +0000 (UTC)
-Date: Fri, 6 May 2022 10:36:34 +0200
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF60C10E530
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 09:13:25 +0000 (UTC)
+Date: Fri, 6 May 2022 11:12:23 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Andi Shyti <andi.shyti@linux.intel.com>
-Message-ID: <20220506103634.48465614@maurocar-mobl2>
-In-Reply-To: <YnPzIYa/TRpBMoqZ@intel.intel>
+Message-ID: <20220506111223.114c13d9@maurocar-mobl2>
+In-Reply-To: <YnP++wDyxg1Me+jA@intel.intel>
 References: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
- <20220504095904.2145592-2-mauro.chehab@linux.intel.com>
- <YnPzIYa/TRpBMoqZ@intel.intel>
+ <20220504095904.2145592-4-mauro.chehab@linux.intel.com>
+ <YnP++wDyxg1Me+jA@intel.intel>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/6] tests/core_hotunplug: properly
- finish processes using audio devices
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/6] lib/igt_kmod: improve audio
+ unbind logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,332 +29,249 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 5 May 2022 17:54:09 +0200
+On Thu, 5 May 2022 18:44:43 +0200
 Andi Shyti <andi.shyti@linux.intel.com> wrote:
 
 > Hi Mauro,
->=20
-> [...]
->=20
-> > +static void pulseaudio_unload_module(proc_t *proc_info)
+> 
+> > +static struct module_ref *read_module_dependencies(unsigned int *num_mod)
 > > +{
-> > +	char xdg_dir[PATH_MAX];
-> > +	const char *homedir;
-> > +	struct passwd *pw;
+> > +	FILE *fp = fopen("/proc/modules", "r");
+> > +	struct module_ref *mod = NULL;
+> > +	size_t line_buf_size = 0;
+> > +	char *required_by, *p;
+> > +	unsigned n_mod = 0;
+> > +	unsigned num_req;
+> > +	char *line = NULL;
+> > +	int len = 0;
+> > +	int i, ret;
 > > +
-> > +	igt_fork(child, 1) {
-> > +		pw =3D getpwuid(proc_info->euid);
-> > +		homedir =3D pw->pw_dir;
-> > +		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
+> > +	igt_assert(fp);
 > > +
-> > +		igt_info("Ask pulseaudio to stop using audio device\n");
+> > +	while ((len = getline(&line, &line_buf_size, fp)) > 0) {
+> > +		mod = realloc(mod, (n_mod + 1) * sizeof(*mod));
+> > +		igt_assert(mod);
+> > +		mod[n_mod].required_by = NULL;
 > > +
-> > +		setgid(proc_info->egid);
-> > +		setuid(proc_info->euid);
-> > +		clearenv();
-> > +		setenv("HOME", homedir, 1);
-> > +		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
+> > +		p = strtok(line, " ");
+> > +		mod[n_mod].name = strdup(p);
 > > +
-> > +		exit(system("for i in $(pacmd list-sources|grep module:|cut -d : -f =
-2); do pactl unload-module $i; done")); =20
->=20
-> you shouldn't need for the exit()
-
-Ok.
-
->=20
-> > +	} =20
->=20
-> do we need for igt_waitchildren() at the end?
-
-Yes.
-
->=20
-> > +}
+> > +		p = strtok(NULL, " ");
+> > +		ret = sscanf(p, "%lu", &mod[n_mod].mem);
+> > +		igt_assert(ret == 1);
 > > +
-> > +static int
-> > +__igt_lsof_kill_proc(proc_t *proc_info, char *proc_path)
-> > +{
-> > +	const char *audio_dev =3D "/dev/snd/";
-> > +	char path[PATH_MAX * 2];
-> > +	struct dirent *d;
-> > +	struct stat st;
-> > +	char *fd_lnk;
-> > +	int fail =3D 0;
-> > +	ssize_t read; =20
->=20
-> nitpick: shall we move some of the variables above inside the
-> while loop?
-
-I actually like more to place the vars at the beginning, in reverse
-Christmas tree order ;-)
-
-All the above vars belong to the loop (except for fail).=20
-
->=20
-> > +	DIR *dp =3D opendir(proc_path);
-> > +	igt_assert(dp);
+> > +		p = strtok(NULL, " ");
+> > +		ret = sscanf(p, "%u", &mod[n_mod].ref_count);
+> > +		igt_assert(ret == 1);
 > > +
-> > +	while ((d =3D readdir(dp))) {
-> > +		if (*d->d_name =3D=3D '.')
-> > +			continue; =20
->=20
-> do we need to consider ".." as well? "by-path"?
-
-Look it better: it is actually picking both "." and "..", as it is
-actually ignoring everything that starts with a dot ;-)
-
->=20
-> > +		memset(path, 0, sizeof(path));
-> > +		snprintf(path, sizeof(path), "%s/%s", proc_path, d->d_name);
+> > +		num_req = 0;
+> > +		required_by = strtok(NULL, " ");
+> > +		if (strcmp(required_by, "-")) {
+> > +			p = strtok(required_by, ",");
+> > +			while (p) {
+> > +				for (i = 0; i < n_mod; i++) {
+> > +					if (!strcmp(p, mod[i].name))
+> > +						break;
+> > +				}  
+> 
+> brackets not needed here
+> 
+> > +				igt_assert(i < n_mod);
 > > +
-> > +		if (lstat(path, &st) =3D=3D -1)
-> > +			continue; =20
->=20
-> should this be treated as an unlikely error?
-
-Good point. This is what __igt_lsof_fds(). I just copied it without
-any changes, as an error here would break the next line:
-
-> > +		fd_lnk =3D malloc(st.st_size + 1);
-
-Yet, if the Kernel is producing badly formed procfs entries, I
-bet the system will be unreliable enough to compete booting ;-)
-
-> > +
-> > +		igt_assert((read =3D readlink(path, fd_lnk, st.st_size + 1)));
-> > +		fd_lnk[read] =3D '\0'; =20
->=20
-> are we sure that in /dev/snd we have only links? In my PC I have
-> only character interfaces.
-
-No. This is not looking inside /dev/snd... the logic is actually reading
-the contents of /proc/<pid>/fd. This is what is shown here on Fedora 35
-for alsactl, for instance:
-
-	$ tree /proc/1052/fd
-	/proc/1052/fd
-	=E2=94=9C=E2=94=80=E2=94=80 0 -> /dev/null
-	=E2=94=9C=E2=94=80=E2=94=80 1 -> socket:[29993]
-	=E2=94=9C=E2=94=80=E2=94=80 2 -> socket:[29993]
-	=E2=94=9C=E2=94=80=E2=94=80 3 -> socket:[29997]
-	=E2=94=94=E2=94=80=E2=94=80 4 -> /dev/snd/controlC0
-
-Everything there are symlinks.
-
-> > +		if (strncmp(audio_dev, fd_lnk, strlen(audio_dev))) {
-> > +			free(fd_lnk);
-> > +			continue;
+> > +				mod[n_mod].required_by = realloc(mod[n_mod].required_by,
+> > +								 (num_req + 1) * sizeof(unsigned int));
+> > +				mod[n_mod].required_by[num_req] = i;
+> > +				num_req++;
+> > +				p = strtok(NULL, ",");
+> > +			}
 > > +		}
+> > +		mod[n_mod].num_required = num_req;
+> > +		n_mod++;
+> > +	}
+> > +	free(line);
+> > +	fclose(fp);
 > > +
-> > +		free(fd_lnk);
+> > +	*num_mod = n_mod;
+> > +	return mod;
+> > +}  
+> 
+> it looks correct, haven't spotted any error in this function, but
+> I admit that string parsing can be complex. I trust you have
+> tested it properly. I will check it again, though.
+
+Yeah, this was tested.
+
+Basically, /proc/modules produce:
+
+	i2c_hid_acpi 16384 0 - Live 0x0000000000000000
+	typec 65536 1 typec_ucsi, Live 0x0000000000000000
+	wmi 32768 3 hp_wmi,wmi_bmof,intel_wmi_thunderbolt, Live 0x0000000000000000
+
+
+So, the third parameter (module dependencies) is either "-" or a
+comma-separated list mod modules, ending with a comma.
+
+I opted to use strtok here to get the 4 parameters:
+
+	- module name;
+	- module size (unused, but need to parse it anyway);
+	- refcount;
+	- module dependencies.
+
+As strtok(NULL, delimiter) continues the search, without requiring
+any extra logic. 
+
+Then, I use strtok() again with "," to handle module dependencies
+at the 4th parameter, if the parameter is not equal to "-" (meaning
+no dependencies).
+
+Btw, to test it, I applied my Kernel patches and commented the
+Kernel version fallback check.
+
+> 
+> [...]
+> 
+> > +#define LINUX_VERSION(major, minor, patch)			\
+> > +		     ((major) << 16 | (minor) << 8 | (patch))  
+> 
+> I can't believe that the glibc is not providing anything similar.
+
+Fedora has a macro like that (KERNEL_VERSION) under:
+	/usr/include/linux/version.h
+
+but I'm not 100% sure if this would exist on all distros. The
+Fedora one has things like:
+
+	#define RHEL_MAJOR 9
+	#define RHEL_MINOR 99
+
+So, IMO the best is to just define it.
+
+> 
 > > +
-> > +		/*
-> > +		 * In order to avoid racing against pa/systemd, ensure that
-> > +		 * pulseaudio will close all audio files. This should be
-> > +		 * enough to unbind audio modules and won't case race issues =20
->=20
-> /case/cause/
->=20
-> > +		 * with systemd trying to reload it.
-> > +		 */
-> > +		if (!strcmp(proc_info->cmd, "pulseaudio")) {
-> > +			pulseaudio_unload_module(proc_info);
+> > +  
+> 
+> you have an extra line here
+
+Ok, will drop.
+
+> 
+> > +static int linux_kernel_version(void)
+> > +{
+> > +	struct utsname utsname;
+> > +	int ver[3] = { 0 };  
+> 
+> [...]
+> 
+> > +
+> > +int igt_audio_driver_unload(const char **who)  
+> 
+> ha! this confused me because I start reading from the bottom and
+> I didn't notice the above
+> 
+>   -int igt_audio_driver_unload(const char **who)
+>   +static int igt_always_unload_audio_driver(const char **who)
+> 
+> > +{
+> > +	unsigned int num_mod, i, j;
+> > +	struct module_ref *mod;
+> > +	int pos = -1;
+> > +	int ret = 0;
+> > +
+> > +	/*
+> > +	 * On older Kernels, there's no way to check if the audio driver
+> > +	 * binds into the DRM one. So, always remove audio drivers that
+> > +	 * might be binding.
+> > +	 */
+> > +	if (linux_kernel_version() < LINUX_VERSION(5, 20, 0))
+> > +		return igt_always_unload_audio_driver(who);  
+> 
+> ... so that this one becomes what you did in patch 1.
+
+Yes. On current Kernels, there's no way to know if snd_hda_intel
+is using i915. So, it will use a somewhat hacky logic there,
+that will always unload snd_hda_intel, even if not needed, and
+will even ignore recursive dependencies (if any).
+
+This should hopefully work fine with current hardware tested
+on our CI.
+
+Once the Kernel patches reach upstream, IGT will use the newer
+way, which is independent on the audio module names and will
+handle more complex cases where the removal of a `snd_driver_foo`
+driver would require some other Kernel drivers first.
+
+This should work fine with the newer approach where SOF/SOC are
+being used for newer CPUs, and could require more complex unload
+logic.
+
+> > +	/*
+> > +	 * Newer Kernels gained support for showing the dependencies between
+> > +	 * audio and DRM drivers via /proc/modules and lsmod. Use it to
+> > +	 * detect if removing the audio driver is needed, properly unloading
+> > +	 * any audio processes that could be using the audio driver and
+> > +	 * handling module dependencies. Such solution should be generic
+> > +	 * enough to work with newer SOC/SOF drivers if ever needed.
+> > +	 */
+> > +
+> > +	mod = read_module_dependencies(&num_mod);
+> > +
+> > +	for (i = 0; i < num_mod; i++) {
+> > +		if (!strcmp(mod[i].name, "i915")) {
 > > +			break;
 > > +		}
+> > +	}  
+> 
+> no need for brackets here.
+
+I'll drop.
+
+> 
 > > +
+> > +	if (i == num_mod)
+> > +		return 0;
+> > +
+> > +	/* Recursively remove all drivers that depend on i915 */
+> > +	for (j = 0; j < mod[i].num_required; j++) {
+> > +		pos = mod[i].required_by[j];
+> > +		if (who)
+> > +			*who = strdup(mod[pos].name);
 > > +		/*
-> > +		 * FIXME: terminating pipewire-pulse is not that easy, as
-> > +		 * pipewire there's no standard way up to pipewire version
-> > +		 * 0.3.49. Just trying to kill pipewire will start a race
-> > +		 * between IGT and systemd. If IGT wins, the audio driver
-> > +		 * will be unloaded before systemd tries to reload it, but
-> > +		 * if systemd wins, the audio device will be re-opened and
-> > +		 * used before IGT has a chance to remove the audio driver.
-> > +		 * Pipewire version 0.3.50 should bring a standard way:
-> > +		 *
-> > +		 * 1) start a thread running:
-> > +		 *	 pw-reserve -n Audio0 -r
-> > +		 * 2) unload/unbind the the audio driver(s);
-> > +		 * 3) stop the pw-reserve thread.
-> > +		 *
-> > +		 * We should add support for it once distros start shipping it.
-> > +		 */ =20
->=20
-> thanks for the explanation!
->=20
-> > +		/* For all other processes, just kill them */
-> > +		igt_info("process %d (%s) is using audio device. Should be terminate=
-d.\n",
-> > +				proc_info->tid, proc_info->cmd);
-> > +
-> > +		if (kill(proc_info->tid, SIGTERM) < 0) {
-> > +			igt_info("Fail to terminate %s (pid: %d) with SIGTERM\n",
-> > +				proc_info->cmd, proc_info->tid);
-> > +			if (kill(proc_info->tid, SIGABRT) < 0) {
-> > +				fail++;
-> > +				igt_info("Fail to terminate %s (pid: %d) with SIGABRT\n",
-> > +					proc_info->cmd, proc_info->tid);
+> > +		 * If a sound driver depends on i915, kill audio processes
+> > +		 * first, in order to make it possible to unload the driver
+> > +		 */
+> > +		if (strstr(mod[pos].name, "snd")) {
+> > +			if (igt_lsof_kill_audio_processes()) {
+> > +				ret = 1;  
+> 
+> is this a boolean function? Shall we choose some proper errnos?
+> 
+> > +				goto ret;  
+> 
+> do we need to free who here...
+
+The structs that handle the module references should be freed.
+
+> 
 > > +			}
 > > +		}
-> > +
-> > +		break;
+> > +		ret = igt_unload_driver(mod, num_mod, pos);  
+> 
+> ... and here?
+> 
+> And here... do we need to handle the error?
+
+yeah, a goto is missing here - and also at the trivial case where there's no
+DRM driver that might have snd holders are loaded.
+
+> 
 > > +	}
 > > +
-> > +	closedir(dp);
-> > +	return fail;
-> > +}
+> > +ret:
+> > +	free_module_ref(mod, num_mod);
 > > +
-> > +/*
-> > + * This function identifies each process running on the machine that is
-> > + * opening an audio device and tries to stop it.
-> > + *
-> > + * Special care should be taken with pipewire and pipewire-pulse, as t=
-hose
-> > + * daemons are respanned if they got killed.
-> > + */
-> > +int
-> > +igt_lsof_kill_audio_processes(void)
-> > +{
-> > +	char path[PATH_MAX];
-> > +	proc_t *proc_info;
-> > +	PROCTAB *proc;
-> > +	int fail =3D 0;
-> > +
-> > +	proc =3D openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG); =20
->=20
-> you could eventually make an igt_openproc() with the assert as
-> this is a pattern that it's repeated several times. Up to you.
-
-Ok.
-
->=20
-> > +	igt_assert(proc !=3D NULL);
-> > +
-> > +	while ((proc_info =3D readproc(proc, NULL))) {
-> > +		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1)=
- {
-> > +			fail++; =20
->=20
-> we are counting failures but using it more as a boolean. Is there
-> any use of fail?
-
-Currently no. It might be interesting to print the number of failures
-in case something bad happens there. That's why I opted to use
-a number.
->=20
-> > +		} else {
-> > +			fail +=3D __igt_lsof_kill_proc(proc_info, path);
-> > +		} =20
->=20
-> brackets not needed here
-
-Will drop. I had some printfs in the middle during my tests. Forgot
-removing the brackets afterwards ;-)
-
-> > +		freeproc(proc_info);
-> > +	}
-> > +	closeproc(proc);
-> > +
-> > +	return fail;
-> > +}
-> > +
-> >  static struct igt_siglatency {
-> >  	timer_t timer;
-> >  	struct timespec target;
-> > diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-> > index 9f2588aeca90..bb96d1afb777 100644
-> > --- a/lib/igt_aux.h
-> > +++ b/lib/igt_aux.h
-> > @@ -306,6 +306,7 @@ bool igt_allow_unlimited_files(void);
-> >  int igt_is_process_running(const char *comm);
-> >  int igt_terminate_process(int sig, const char *comm);
-> >  void igt_lsof(const char *dpath);
-> > +int igt_lsof_kill_audio_processes(void);
-> > =20
-> >  #define igt_hweight(x) \
-> >  	__builtin_choose_expr(sizeof(x) =3D=3D 8, \
-> > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> > index f252535d5a3a..87a59245f699 100644
-> > --- a/lib/igt_kmod.c
-> > +++ b/lib/igt_kmod.c
-> > @@ -389,7 +389,7 @@ igt_i915_driver_load(const char *opts)
-> >  	return 0;
-> >  }
-> > =20
-> > -int __igt_i915_driver_unload(const char **who)
-> > +int igt_audio_driver_unload(const char **who)
-> >  {
-> >  	int ret;
-> >  	const char *sound[] =3D {
-> > @@ -398,6 +398,27 @@ int __igt_i915_driver_unload(const char **who)
-> >  		NULL,
-> >  	};
-> > =20
-> > +	for (const char **m =3D sound; *m; m++) {
-> > +		if (igt_kmod_is_loaded(*m)) { =20
->=20
-> little insignificant nit: with
->=20
-> 	if (!igt_kmod_is_loaded(*m))
-> 		continue;
->=20
-> you save one level of indentation.
->=20
-> > +			if (igt_lsof_kill_audio_processes())
-> > +				return 1; =20
->=20
-> mmhhh... I don't like the return 1 because makes this function a
-> hybrid boolean/error function and we can't rely anyomore on the
-> return value. Please identify a proper errno to return.
-
-
->=20
-> > +
-> > +			kick_snd_hda_intel();
-> > +			ret =3D igt_kmod_unload(*m, 0);
-> > +			if (ret) {
-> > +				if (who)
-> > +					*who =3D *m;
-> > +				return ret;
-> > +			}
-> > +		}
-> > +	}
-> > +	return 0;
-> > +} =20
->=20
-> [...]
->=20
-> > @@ -152,19 +152,14 @@ static void driver_unbind(struct hotunplug *priv,=
- const char *prefix,
-> >  	 * safest and easiest way out.
-> >  	 */
-> >  	if (priv->snd_unload) {
-> > -		igt_terminate_process(SIGTERM, "alsactl");
-> > -
-> > -		/* unbind snd_hda_intel */
-> > -		kick_snd_hda_intel();
-> > -
-> > -		if (igt_kmod_unload("snd_hda_intel", 0)) {
-> > +		if (igt_audio_driver_unload(NULL)) { =20
->=20
-> why give NULL insteadd of a proper string? We can provide a
-> better log.
-
-As you noticed, I opted to do this on another patch, in order to
-properly address some const char* warnings.
-
->=20
-> >  			priv->snd_unload =3D false;
-> > -			igt_warn("Could not unload snd_hda_intel\n");
-> > +			igt_warn("Could not unload audio driver\n");
-> >  			igt_kmod_list_loaded();
-> >  			igt_lsof("/dev/snd");
-> >  			igt_skip("Audio is in use, skipping\n");
-> >  		} else {
-> > -			igt_info("Preventively unloaded snd_hda_intel\n");
-> > +			igt_info("Preventively unloaded audio driver\n");
-> >  		}
-> >  	} =20
->=20
+> > +	return ret;
+> > +}  
+> 
+> Thanks,
 > Andi
