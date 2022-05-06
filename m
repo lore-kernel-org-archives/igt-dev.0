@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C38410E4F2
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6758C10E772
  for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 05:47:42 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 May 2022 11:14:34 +0530
-Message-Id: <20220506054446.3228224-4-bhanuprakash.modem@intel.com>
+Date: Fri,  6 May 2022 11:14:35 +0530
+Message-Id: <20220506054446.3228224-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220506054446.3228224-1-bhanuprakash.modem@intel.com>
 References: <20220506054446.3228224-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v4 03/15] kms_color_helper: Add helper functions for
- plane color mgmt
+Subject: [igt-dev] [v4 04/15] tests/kms_color: New subtests for Plane gamma
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,17 +24,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add helper functions to support Plane color management properties.
+To verify Plane gamma, draw 3 gradient rectangles in red, green and blue,
+with a maxed out gamma LUT and verify we have the same CRC as drawing solid
+color rectangles.
 
-v2: (Pekka)
-* Rename linear LUT to unity LUT
-* Remove Intel specific logic from helper functions
-* New function to fill ctm matrix
-* Zero LUT for invalid lut_size tests
+v2:
+* Drop Intel specific logic (Pekka)
+* Add a support for extended mode (Bhanu)
 v3:
-* Commit 'no (de)gamma' without LUT (Bhanu)
-v4:
-* Rebase
+* Add support to validate 'no gamma' mode (Harry)
 
 Cc: Harry Wentland <harry.wentland@amd.com>
 Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
@@ -43,283 +40,220 @@ Cc: Pekka Paalanen <ppaalanen@gmail.com>
 Cc: Uma Shankar <uma.shankar@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color_helper.c | 180 +++++++++++++++++++++++++++++++++++++--
- tests/kms_color_helper.h |  29 +++++++
- 2 files changed, 203 insertions(+), 6 deletions(-)
+ tests/kms_color.c | 180 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 178 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 3ef124cd..cf8dfee1 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -267,23 +267,31 @@ void set_gamma(data_t *data,
- 	free(lut);
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index afff1744..7d7656d7 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -24,7 +24,10 @@
+ 
+ #include "kms_color_helper.h"
+ 
+-IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
++IGT_TEST_DESCRIPTION("Test Color Features at Pipe & Plane level");
++
++typedef bool (*test_t)(data_t*, igt_plane_t*);
++static bool extended = false;
+ 
+ static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
+@@ -635,6 +638,128 @@ static void test_pipe_limited_range_ctm(data_t *data,
  }
+ #endif
  
--void set_ctm(igt_pipe_t *pipe, const double *coefficients)
-+static void
-+fill_ctm_matrix(struct drm_color_ctm *ctm, const double *coefficients)
- {
--	struct drm_color_ctm ctm;
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(ctm.matrix); i++) {
-+	igt_assert(ctm && coefficients);
-+
-+	for (i = 0; i < ARRAY_SIZE(ctm->matrix); i++) {
- 		if (coefficients[i] < 0) {
--			ctm.matrix[i] =
-+			ctm->matrix[i] =
- 				(int64_t) (-coefficients[i] *
- 				((int64_t) 1L << 32));
--			ctm.matrix[i] |= 1ULL << 63;
-+			ctm->matrix[i] |= 1ULL << 63;
- 		} else
--			ctm.matrix[i] =
-+			ctm->matrix[i] =
- 				(int64_t) (coefficients[i] *
- 				((int64_t) 1L << 32));
- 	}
-+}
-+
-+void set_ctm(igt_pipe_t *pipe, const double *coefficients)
++static bool plane_gamma_test(data_t *data, igt_plane_t *plane)
 +{
-+	struct drm_color_ctm ctm;
- 
-+	fill_ctm_matrix(&ctm, coefficients);
- 	igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_CTM, &ctm, sizeof(ctm));
- }
- 
-@@ -293,6 +301,136 @@ void disable_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop)
- 		igt_pipe_obj_replace_prop_blob(pipe, prop, NULL, 0);
- }
- 
-+drmModePropertyPtr get_plane_gamma_degamma_mode(igt_plane_t *plane,
-+				enum igt_atomic_plane_properties prop)
-+{
-+	igt_display_t *display = plane->pipe->display;
-+	uint32_t prop_id = plane->props[prop];
-+	drmModePropertyPtr drmProp;
-+
-+	igt_assert(prop_id);
-+
-+	drmProp = drmModeGetProperty(display->drm_fd, prop_id);
-+
-+	igt_assert(drmProp);
-+	igt_assert(drmProp->count_enums);
-+
-+	return drmProp;
-+}
-+
-+struct drm_color_lut_ext *create_unity_lut(segment_data_t *info)
-+{
-+	uint32_t val, segment, entry, index = 0;
-+	uint32_t max_val = 0xffffffff;
-+	struct drm_color_lut_ext *lut = malloc(sizeof(struct drm_color_lut_ext) * info->entries_count);
-+	igt_assert(lut);
-+
-+	for (segment = 0; segment < info->segment_count; segment++) {
-+		uint32_t entry_count = info->segment_data[segment].count;
-+		uint32_t start = info->segment_data[segment].start;
-+		uint32_t end = info->segment_data[segment].end;
-+
-+		for (entry = 1; entry <= entry_count; entry++) {
-+			val = start + entry * ((end - start) * 1.0 / entry_count);
-+			lut[index].red = lut[index].green = lut[index].blue = MIN(val, max_val);
-+
-+			index++;
-+		}
-+	}
-+
-+	return lut;
-+}
-+
-+struct drm_color_lut_ext *create_max_lut(segment_data_t *info)
-+{
-+	int i;
-+	struct drm_color_lut_ext *lut;
-+	uint32_t max_val = 0xffffffff;
-+
-+	lut = malloc(sizeof(struct drm_color_lut_ext) * info->entries_count);
-+	igt_assert(lut);
-+
-+	for (i = 0; i < info->entries_count; i++)
-+		lut[i].red = lut[i].green = lut[i].blue = max_val;
-+
-+	return lut;
-+}
-+
-+void clear_segment_data(segment_data_t *info)
-+{
-+	if (!info)
-+		return;
-+
-+	free(info->segment_data);
-+	free(info);
-+}
-+
-+segment_data_t *get_segment_data(data_t *data,
-+				uint64_t blob_id, char *mode)
-+{
-+	drmModePropertyBlobPtr blob;
-+	struct drm_color_lut_range *lut_range = NULL;
-+	segment_data_t *info = NULL;
++	igt_output_t *output;
++	igt_display_t *display = &data->display;
++	drmModeModeInfo *mode;
++	struct igt_fb fb;
++	drmModePropertyPtr gamma_mode = NULL;
 +	uint32_t i;
++	bool ret = true;
++	igt_pipe_crc_t *pipe_crc = NULL;
++	color_t red_green_blue[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 }
++	};
 +
-+	blob = drmModeGetPropertyBlob(data->drm_fd, blob_id);
-+	igt_assert(blob);
-+	igt_assert(blob->length);
++	igt_info("Plane gamma test is running on pipe-%s plane-%d(%s)\n",
++			kmstest_pipe_name(plane->pipe->pipe), plane->index,
++			kmstest_plane_type_name(plane->type));
 +
-+	info = malloc(sizeof(segment_data_t));
-+	igt_assert(info);
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_MODE));
++	igt_require(igt_plane_has_prop(plane, IGT_PLANE_GAMMA_LUT));
 +
-+	lut_range = (struct drm_color_lut_range *) blob->data;
-+	info->segment_count = blob->length / sizeof(lut_range[0]);
-+	igt_assert(info->segment_count);
++	pipe_crc = igt_pipe_crc_new(data->drm_fd,
++				  plane->pipe->pipe,
++				  INTEL_PIPE_CRC_SOURCE_AUTO);
 +
-+	info->segment_data = malloc(sizeof(struct drm_color_lut_range) * info->segment_count);
-+	igt_assert(info->segment_data);
++	output = igt_get_single_output_for_pipe(display, plane->pipe->pipe);
++	igt_assert(output);
 +
-+	for (i = 0; i < info->segment_count; i++) {
-+		info->entries_count += lut_range[i].count;
-+		info->segment_data[i] = lut_range[i];
++	igt_output_set_pipe(output, plane->pipe->pipe);
++	mode = igt_output_get_mode(output);
++
++	/* Create a framebuffer at the size of the output. */
++	igt_assert(igt_create_fb(data->drm_fd,
++			      mode->hdisplay,
++			      mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      DRM_FORMAT_MOD_LINEAR,
++			      &fb));
++	igt_plane_set_fb(plane, &fb);
++
++	/* Disable Pipe color props. */
++	disable_ctm(plane->pipe);
++	disable_degamma(plane->pipe);
++	disable_gamma(plane->pipe);
++
++	disable_plane_ctm(plane);
++	disable_plane_degamma(plane);
++	igt_display_commit2(display, display->is_atomic ?
++					COMMIT_ATOMIC : COMMIT_LEGACY);
++
++	gamma_mode = get_plane_gamma_degamma_mode(plane, IGT_PLANE_GAMMA_MODE);
++
++	/* Iterate all supported gamma modes. */
++	for (i = 0; i < gamma_mode->count_enums; i++) {
++		igt_crc_t crc_gamma, crc_fullcolors;
++		segment_data_t *segment_info = NULL;
++		struct drm_color_lut_ext *lut = NULL;
++		uint32_t lut_size = 0;
++
++		igt_info("Trying to use gamma mode: \'%s\'\n", gamma_mode->enums[i].name);
++
++		/* Draw solid colors with no gamma transformation. */
++		disable_plane_gamma(plane);
++		paint_rectangles(data, mode, red_green_blue, &fb);
++		igt_plane_set_fb(plane, &fb);
++		igt_display_commit2(display, display->is_atomic ?
++					COMMIT_ATOMIC : COMMIT_LEGACY);
++		igt_wait_for_vblank(data->drm_fd,
++			display->pipes[plane->pipe->pipe].crtc_offset);
++		igt_pipe_crc_collect_crc(pipe_crc, &crc_fullcolors);
++
++		/* 'no gamma' is intended to disable the gamma.
++		 * Hence, setting GAMMA_LUT to NULL (i.e disable_plane_gamma())
++		 * and setting GAMMA_MODE as 'no gamma' (i.e set_plane_gamma())
++		 * should produce the same result.
++		 */
++		if (strcmp(gamma_mode->enums[i].name, "no gamma")) {
++			segment_info = get_segment_data(data,
++							gamma_mode->enums[i].value,
++							gamma_mode->enums[i].name);
++			lut_size = sizeof(struct drm_color_lut_ext) * segment_info->entries_count;
++			lut = create_max_lut(segment_info);
++			if (is_i915_device(data->drm_fd))
++				lut[0].red = lut[0].green = lut[0].blue = 0; /* First entry is 0 for Intel h/w. */
++
++			/* Draw gradient colors with gamma LUT to remap all
++			 * values to max red/green/blue.
++			 */
++			paint_gradient_rectangles(data, mode, red_green_blue, &fb);
++			igt_plane_set_fb(plane, &fb);
++		}
++
++		set_plane_gamma(plane, gamma_mode->enums[i].name, lut, lut_size);
++		igt_display_commit2(display, display->is_atomic ?
++					COMMIT_ATOMIC : COMMIT_LEGACY);
++		igt_wait_for_vblank(data->drm_fd,
++			display->pipes[plane->pipe->pipe].crtc_offset);
++		igt_pipe_crc_collect_crc(pipe_crc, &crc_gamma);
++
++		/* Verify that the CRC of the software computed output is
++		 * equal to the CRC of the gamma LUT transformation output.
++		 */
++		ret &= igt_check_crc_equal(&crc_gamma, &crc_fullcolors);
++
++		free(lut);
++		clear_segment_data(segment_info);
 +	}
 +
-+	drmModeFreePropertyBlob(blob);
++	disable_plane_gamma(plane);
++	igt_plane_set_fb(plane, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, display->is_atomic ?
++					COMMIT_ATOMIC : COMMIT_LEGACY);
 +
-+	return info;
++	igt_pipe_crc_free(pipe_crc);
++	drmModeFreeProperty(gamma_mode);
++
++	return ret;
 +}
 +
-+void set_plane_gamma(igt_plane_t *plane,
-+		char *mode,
-+		struct drm_color_lut_ext *lut,
-+		uint32_t size)
-+{
-+	igt_plane_set_prop_enum(plane, IGT_PLANE_GAMMA_MODE, mode);
-+	if (size)
-+		igt_plane_replace_prop_blob(plane, IGT_PLANE_GAMMA_LUT, lut, size);
-+}
-+
-+void set_plane_degamma(igt_plane_t *plane,
-+		char *mode,
-+		struct drm_color_lut_ext *lut,
-+		uint32_t size)
-+{
-+	igt_plane_set_prop_enum(plane, IGT_PLANE_DEGAMMA_MODE, mode);
-+	if (size)
-+		igt_plane_replace_prop_blob(plane, IGT_PLANE_DEGAMMA_LUT, lut, size);
-+}
-+
-+void set_plane_ctm(igt_plane_t *plane, const double *coefficients)
-+{
-+	struct drm_color_ctm ctm;
-+
-+	fill_ctm_matrix(&ctm, coefficients);
-+	igt_plane_replace_prop_blob(plane, IGT_PLANE_CTM, &ctm, sizeof(ctm));
-+}
-+
-+void disable_plane_prop(igt_plane_t *plane, enum igt_atomic_plane_properties prop)
-+{
-+	if (igt_plane_has_prop(plane, prop))
-+		igt_plane_replace_prop_blob(plane, prop, NULL, 0);
-+}
-+
- drmModePropertyBlobPtr
- get_blob(data_t *data, igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop)
+ static void
+ prep_pipe(data_t *data, enum pipe p)
  {
-@@ -326,6 +464,19 @@ pipe_set_property_blob_id(igt_pipe_t *pipe,
- 	return ret;
+@@ -955,7 +1080,55 @@ run_invalid_tests_for_pipe(data_t *data, enum pipe p)
+ 		invalid_ctm_matrix_sizes(data, p);
  }
  
-+static int
-+plane_set_property_blob(igt_display_t *display,
-+			igt_plane_t *plane,
-+			enum igt_atomic_plane_properties prop,
-+			void *ptr, size_t length)
+-igt_main
++static void run_plane_color_test(data_t *data, enum pipe pipe, test_t test)
 +{
-+	igt_plane_replace_prop_blob(plane, prop, ptr, length);
++	igt_plane_t *plane;
++	int count = 0;
++	int last_plane = (&data->display)->pipes[pipe].n_planes - 1;
 +
-+	return igt_display_try_commit2(display,
-+				       display->is_atomic ?
-+				       COMMIT_ATOMIC : COMMIT_LEGACY);
++	for_each_plane_on_pipe(&data->display, pipe, plane) {
++		if (!extended && j__ != 0 && j__ != last_plane)
++			continue;
++
++		igt_assert(test(data, plane));
++
++		count++;
++	}
++
++	igt_require_f(count, "No valid planes found.\n");
 +}
 +
- int
- pipe_set_property_blob(igt_pipe_t *pipe,
- 		       enum igt_atomic_crtc_properties prop,
-@@ -371,6 +522,23 @@ invalid_lut_sizes(data_t *data, enum pipe p,
- 	free(lut);
- }
- 
-+void
-+invalid_plane_lut_sizes(igt_display_t *display,
-+			igt_plane_t *plane,
-+			enum igt_atomic_plane_properties prop,
-+			size_t lut_size)
++static void run_tests_for_plane(data_t *data, enum pipe pipe)
 +{
-+	void *lut = malloc(lut_size * 2);
-+	igt_assert(lut);
++	igt_fixture {
++		igt_require_pipe(&data->display, pipe);
++		igt_require_pipe_crc(data->drm_fd);
++		igt_require(data->display.pipes[pipe].n_planes > 0);
++		igt_display_require_output_on_pipe(&data->display, pipe);
++	}
 +
-+	memset(lut, 0, (lut_size * 2));
-+	igt_assert_eq(plane_set_property_blob(display, plane, prop, lut, 1), -EINVAL);
-+	igt_assert_eq(plane_set_property_blob(display, plane, prop, lut, lut_size + 1), -EINVAL);
-+	igt_assert_eq(plane_set_property_blob(display, plane, prop, lut, lut_size - 1), -EINVAL);
-+
-+	free(lut);
++	igt_describe("Compare maxed out plane gamma LUT and solid color linear LUT");
++	igt_subtest_f("pipe-%s-plane-gamma", kmstest_pipe_name(pipe))
++		run_plane_color_test(data, pipe, plane_gamma_test);
 +}
 +
- void
- invalid_gamma_lut_sizes(data_t *data, enum pipe p)
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++		case 'e':
++			extended = true;
++			break;
++		default:
++			return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -e \tExtended plane tests.\n";
++
++igt_main_args("e", NULL, help_str, opt_handler, NULL)
  {
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index a6665b1f..33674f73 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -67,6 +67,14 @@ typedef struct {
- 	color_t coeffs[];
- } gamma_lut_t;
+ 	data_t data = {};
+ 	enum pipe pipe;
+@@ -975,6 +1148,9 @@ igt_main
  
-+typedef struct {
-+	uint32_t segment_count;
-+	struct drm_color_lut_range *segment_data;
-+	uint32_t entries_count;
-+} segment_data_t;
+ 		igt_subtest_group
+ 			run_invalid_tests_for_pipe(&data, pipe);
 +
-+#define MIN(a, b) ((a) < (b) ? (a) : (b))
-+
- bool panel_supports_deep_color(int fd, drmModeConnector *connector);
- uint64_t get_max_bpc(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
-@@ -95,10 +103,31 @@ void set_gamma(data_t *data,
- void set_ctm(igt_pipe_t *pipe, const double *coefficients);
- void disable_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties prop);
++		igt_subtest_group
++			run_tests_for_plane(&data, pipe);
+ 	}
  
-+drmModePropertyPtr get_plane_gamma_degamma_mode(igt_plane_t *plane,
-+	enum igt_atomic_plane_properties prop);
-+void clear_segment_data(segment_data_t *info);
-+struct drm_color_lut_ext *create_unity_lut(segment_data_t *info);
-+struct drm_color_lut_ext *create_max_lut(segment_data_t *info);
-+segment_data_t *get_segment_data(data_t *data, uint64_t blob_id, char *mode);
-+void set_plane_gamma(igt_plane_t *plane,
-+	char *mode, struct drm_color_lut_ext *lut, uint32_t size);
-+void set_plane_degamma(igt_plane_t *plane,
-+	char *mode, struct drm_color_lut_ext *lut, uint32_t size);
-+void set_plane_ctm(igt_plane_t *plane, const double *coefficients);
-+void disable_plane_prop(igt_plane_t *plane, enum igt_atomic_plane_properties prop);
-+void invalid_plane_lut_sizes(igt_display_t *display,
-+			   igt_plane_t *plane,
-+			   enum igt_atomic_plane_properties prop,
-+			   size_t lut_size);
-+
- #define disable_degamma(pipe) disable_prop(pipe, IGT_CRTC_DEGAMMA_LUT)
- #define disable_gamma(pipe) disable_prop(pipe, IGT_CRTC_GAMMA_LUT)
- #define disable_ctm(pipe) disable_prop(pipe, IGT_CRTC_CTM)
- 
-+#define disable_plane_degamma(plane) disable_plane_prop(plane, IGT_PLANE_DEGAMMA_LUT)
-+#define disable_plane_gamma(plane) disable_plane_prop(plane, IGT_PLANE_GAMMA_LUT)
-+#define disable_plane_ctm(plane) disable_plane_prop(plane, IGT_PLANE_CTM)
-+
- drmModePropertyBlobPtr get_blob(data_t *data, igt_pipe_t *pipe,
- 				enum igt_atomic_crtc_properties prop);
- bool crc_equal(igt_crc_t *a, igt_crc_t *b);
+ 	igt_fixture {
 -- 
 2.35.1
