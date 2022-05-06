@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1AF410EFC5
- for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 06:13:52 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 May 2022 11:11:00 +0530
-Message-Id: <20220506054100.27458-1-karthik.b.s@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BC8011201F
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 06:32:11 +0000 (UTC)
+Date: Fri, 6 May 2022 08:32:05 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Message-ID: <20220506083205.79cb6fcd@maurocar-mobl2>
+In-Reply-To: <YnQVC3sDSt75xG7m@intel.intel>
+References: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
+ <20220504095904.2145592-7-mauro.chehab@linux.intel.com>
+ <YnQVC3sDSt75xG7m@intel.intel>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres: Convert test to
- dynamic
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v2 6/6] lib/igt_kmod: properly handle
+ pipewire-pulse
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,169 +22,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Covert the existing subtests to dynamic subtests at pipe/output level.
-Also, move igt_display_reset() to the begining to the function to reset
-display even in case of failures.
+On Thu, 5 May 2022 20:18:51 +0200
+Andi Shyti <andi.shyti@linux.intel.com> wrote:
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_plane_lowres.c | 112 ++++++++++++++++++++++++++-------------
- 1 file changed, 75 insertions(+), 37 deletions(-)
+> Hi Mauro,
+> 
+> > Newer distributions like Fedora and openSUSE thumbweed are now
+> > coming with pipewire-pulse instead of pulseaudio - either as
+> > default or as an optional audio stack.
+> > 
+> > That adds a new requirement when unloading sound drivers,
+> > which, in turn, is needed when the DRM driver is bound into
+> > it.
+> > 
+> > Add the needed logic to work properly in case pipewire-pulse
+> > is detected.  
+> 
+> stubborn processes that don't want to do what the user tells them
+> to do :)
 
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index 3f3f77c8..4c660efe 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -166,6 +166,7 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
- 	igt_plane_t *primary;
- 	igt_crc_t crc_lowres, crc_hires1, crc_hires2;
- 
-+	igt_display_reset(&data->display);
- 	igt_output_set_pipe(data->output, data->pipe);
- 
- 	primary = compatible_main_plane(plane, data->output, data->devid);
-@@ -245,8 +246,6 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
- 	igt_remove_fb(data->drm_fd, &data->ref_hires.fb);
- 	igt_remove_fb(data->drm_fd, &data->ref_lowres.fb);
- 
--	igt_display_reset(&data->display);
--
- 	return tested;
- }
- 
-@@ -256,17 +255,6 @@ test_planes_on_pipe(data_t *data, uint64_t modifier)
- 	igt_plane_t *plane;
- 	unsigned tested = 0;
- 
--	igt_require_pipe(&data->display, data->pipe);
--	igt_display_require_output_on_pipe(&data->display, data->pipe);
--	igt_skip_on(!igt_display_has_format_mod(&data->display,
--						DRM_FORMAT_XRGB8888, modifier));
--
--	data->output = igt_get_single_output_for_pipe(&data->display, data->pipe);
--	igt_require(data->output);
--
--	igt_info("Testing connector %s using pipe %s\n",
--		 igt_output_name(data->output), kmstest_pipe_name(data->pipe));
--
- 	for_each_plane_on_pipe(&data->display, data->pipe, plane)
- 		tested += test_planes_on_pipe_with_output(data, plane, modifier);
- 
-@@ -280,6 +268,7 @@ igt_main
- {
- 	data_t data = {};
- 	enum pipe pipe;
-+	igt_output_t *output;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -293,30 +282,79 @@ igt_main
- 		igt_require(data.display.is_atomic);
- 	}
- 
--	for_each_pipe_static(pipe) {
--		data.pipe = pipe;
--		igt_describe("Tests the visibility of the planes when switching between "
--			     "high and low resolution with tiling as none.");
--		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
--			test_planes_on_pipe(&data, DRM_FORMAT_MOD_LINEAR);
--
--		igt_describe("Tests the visibility of the planes when switching between "
--			     "high and low resolution with x-tiling.");
--		igt_subtest_f("pipe-%s-tiling-x", kmstest_pipe_name(pipe))
--			test_planes_on_pipe(&data, I915_FORMAT_MOD_X_TILED);
--
--		igt_describe("Tests the visibility of the planes when switching between "
--			     "high and low resolution with y-tiling.");
--		igt_subtest_f("pipe-%s-tiling-y", kmstest_pipe_name(pipe))
--			test_planes_on_pipe(&data, I915_FORMAT_MOD_Y_TILED);
--
--		igt_describe("Tests the visibility of the planes when switching between "
--			     "high and low resolution with yf-tiling.");
--		igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
--			test_planes_on_pipe(&data, I915_FORMAT_MOD_Yf_TILED);
--
--		igt_subtest_f("pipe-%s-tiling-4", kmstest_pipe_name(pipe))
--			test_planes_on_pipe(&data, I915_FORMAT_MOD_4_TILED);
-+	igt_describe("Tests the visibility of the planes when switching between "
-+		     "high and low resolution with tiling as none.");
-+	igt_subtest_with_dynamic("tiling-none") {
-+		igt_skip_on(!igt_display_has_format_mod(&data.display,
-+							DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR));
-+		for_each_pipe(&data.display, pipe) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				data.pipe = pipe;
-+				data.output = output;
-+				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-+					test_planes_on_pipe(&data, DRM_FORMAT_MOD_LINEAR);
-+			}
-+		}
-+	}
-+
-+	igt_describe("Tests the visibility of the planes when switching between "
-+		     "high and low resolution with x-tiling.");
-+	igt_subtest_with_dynamic("tiling-x") {
-+		igt_skip_on(!igt_display_has_format_mod(&data.display,
-+							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED));
-+		for_each_pipe(&data.display, pipe) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				data.pipe = pipe;
-+				data.output = output;
-+				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-+					test_planes_on_pipe(&data, I915_FORMAT_MOD_X_TILED);
-+			}
-+		}
-+	}
-+
-+	igt_describe("Tests the visibility of the planes when switching between "
-+		     "high and low resolution with y-tiling.");
-+	igt_subtest_with_dynamic("tiling-y") {
-+		igt_skip_on(!igt_display_has_format_mod(&data.display,
-+							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_Y_TILED));
-+		for_each_pipe(&data.display, pipe) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				data.pipe = pipe;
-+				data.output = output;
-+				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-+					test_planes_on_pipe(&data, I915_FORMAT_MOD_Y_TILED);
-+			}
-+		}
-+	}
-+
-+	igt_describe("Tests the visibility of the planes when switching between "
-+		     "high and low resolution with yf-tiling.");
-+	igt_subtest_with_dynamic("tiling-yf") {
-+		igt_skip_on(!igt_display_has_format_mod(&data.display,
-+							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_Yf_TILED));
-+		for_each_pipe(&data.display, pipe) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				data.pipe = pipe;
-+				data.output = output;
-+				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-+					test_planes_on_pipe(&data, I915_FORMAT_MOD_Yf_TILED);
-+			}
-+		}
-+	}
-+
-+	igt_describe("Tests the visibility of the planes when switching between "
-+		     "high and low resolution with 4-tiling.");
-+	igt_subtest_with_dynamic("tiling-4") {
-+		igt_skip_on(!igt_display_has_format_mod(&data.display,
-+							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_4_TILED));
-+		for_each_pipe(&data.display, pipe) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				data.pipe = pipe;
-+				data.output = output;
-+				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-+					test_planes_on_pipe(&data, I915_FORMAT_MOD_4_TILED);
-+			}
-+		}
- 	}
- 
- 	igt_fixture {
--- 
-2.22.0
+heh, yes!
+
+> 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > ---
+> >  lib/igt_aux.c  | 122 +++++++++++++++++++++++++++++++++++++++++++++----
+> >  lib/igt_aux.h  |   4 +-
+> >  lib/igt_core.c |   7 +++
+> >  lib/igt_core.h |   1 +
+> >  lib/igt_kmod.c |  17 ++++++-
+> >  5 files changed, 140 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+> > index 15fe87839567..a0da1d042ab4 100644
+> > --- a/lib/igt_aux.c
+> > +++ b/lib/igt_aux.c
+> > @@ -1434,8 +1434,109 @@ static void pulseaudio_unload_module(proc_t *proc_info)
+> >  	}
+> >  }
+> >  
+> > +static void pipewire_reserve_wait(int pipewire_pulse_pid)
+> > +{
+> > +	char xdg_dir[PATH_MAX];
+> > +	const char *homedir;
+> > +	struct passwd *pw;
+> > +	proc_t *proc_info;
+> > +	PROCTAB *proc;
+> > +
+> > +	igt_fork(child, 1) {
+> > +		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
+> > +
+> > +		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+> > +		igt_assert(proc != NULL);
+> > +
+> > +		while ((proc_info = readproc(proc, NULL))) {
+> > +			if (pipewire_pulse_pid == proc_info->tid)
+> > +				break;
+> > +			freeproc(proc_info);
+> > +		}
+> > +		closeproc(proc);
+> > +
+> > +		/* Sanity check: if it can't find the process, it means it has gone */
+> > +		if (pipewire_pulse_pid != proc_info->tid)
+> > +			exit(0);
+> > +
+> > +		pw = getpwuid(proc_info->euid);
+> > +		homedir = pw->pw_dir;
+> > +		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
+> > +		setgid(proc_info->egid);
+> > +		setuid(proc_info->euid);
+> > +		clearenv();
+> > +		setenv("HOME", homedir, 1);
+> > +		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
+> > +		freeproc(proc_info);
+> > +
+> > +		exit(system("pw-reserve -n Audio0 -r"));  
+> 
+> no need for exit
+> 
+> > +	}  
+> 
+> we need waitchild, I guess.
+
+I guess not. Assuming that there's just the *pulse* process running,
+this is what happens:
+
+1) for pulseaudio:
+
+We need to call some pa-specific processes and wait for their exit.
+After the proccess exit, remove the alsa device.
+
+2) for pipewire-pulse:
+
+We need to call pw-reserve, wait for it to send a pipewire-specific
+signaling via DBUS and, while pw-reserve is still running, remove
+the alsa device, as, at the moment pw-reserve exits, it will send
+another message via DBUS that will make pipewire to re-bind at the
+audio devices.
+
+So, in this particular case, what the logic is doing is waiting for
+the pa-reserve process to appear, then give some time for the DBUS
+message to arrive pipewire-pulse.
+
+> 
+> > +}
+> > +
+> > +static int pipewire_pw_reserve_pid = 0;
+> > +
+> > +/* Maximum time waiting for pw-reserve to start running */
+> > +#define PIPEWIRE_RESERVE_MAX_TIME 1000 /* milisseconds */
+> > +
+> > +int pipewire_pulse_start_reserve(int pipewire_pulse_pid)
+> > +{
+> > +	bool is_pw_reserve_running = false;
+> > +	proc_t *proc_info;
+> > +	int attempts = 0;
+> > +	PROCTAB *proc;
+> > +
+> > +	if (!pipewire_pulse_pid)
+> > +		return 0;
+> > +
+> > +	pipewire_reserve_wait(pipewire_pulse_pid);
+> > +
+> > +	/*
+> > +	 * Note: using pw-reserve to stop using audio only works with
+> > +	 * pipewire version 0.3.50 or upper.
+> > +	 */
+> > +	for (attempts = 0; attempts < PIPEWIRE_RESERVE_MAX_TIME; attempts++) {
+> > +		usleep(1000);
+> > +		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+> > +		igt_assert(proc != NULL);
+> > +
+> > +		while ((proc_info = readproc(proc, NULL))) {
+> > +			if (!strcmp(proc_info->cmd, "pw-reserve")) {
+> > +				is_pw_reserve_running = true;
+> > +				pipewire_pw_reserve_pid = proc_info->tid;
+> > +				freeproc(proc_info);
+> > +				break;
+> > +			}
+> > +			freeproc(proc_info);
+> > +		}
+> > +		closeproc(proc);
+> > +		if (is_pw_reserve_running)
+> > +			break;
+> > +	}
+> > +	if (!is_pw_reserve_running) {
+> > +		igt_warn("Failed to remove audio drivers from pipewire\n");
+> > +		return 1;
+> > +	}
+> > +	/* Let's grant some time for pw_reserve to notify pipewire via D-BUS */
+> > +	usleep(50000);
+> > +
+> > +	/*
+> > +	 * pw-reserve is running, and should have stopped using the audio
+> > +	 * drivers. We can now remove the driver.
+> > +	 */
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +void pipewire_pulse_stop_reserve(int pipewire_pulse_pid)
+> > +{
+> > +	if (!pipewire_pulse_pid)
+> > +		return;
+> > +
+> > +	igt_killchildren(SIGTERM);
+> > +}
+> > +
+> >  static int
+> > -__igt_lsof_kill_proc(proc_t *proc_info, char *proc_path)
+> > +__igt_lsof_kill_proc(proc_t *proc_info, char *proc_path, int *pipewire_pulse_pid)  
+> 
+> here we lose some clarity as in 6 patches these functions are
+> slightly changing their meaning.
+> 
+> __igt_lsof_kill_proc() by the name is supposed to kill a process
+> using a resource. But in the meantime, cunningly, is also telling
+> if the process killed is pipewire. But this meaning is intrinsic
+> in the parameter.
+
+Yeah, the function name is not precise. it should be something like
+__igt_lsof_audio_helper_and_kill_proc().
+
+Perhaps I could add some documentation before it explaining what
+this is supposed to do.
+
+Originally, it was designed to kill audio processes and stop pulseaudio
+to bind audio devices, but this doesn't work with pipewire-pulse.
+
+As explained earlier, pipewire-pulse requires something similar to
+this bash script snippet:
+
+	pw-reserve -n Audio0 -r &
+	child_pid=$!
+	usleep 100000 		# give some time for the process to start, send a DBUS msg and wait for pipewire-pulse to handle the msg
+	rmmod snd_hda_audio
+	kill $child_pid
+
+(instead of usleep, we could run lsof on a loop waiting for it to
+unbind from /dev/snd, until some timeout, but this would increase
+complexity and could still fail, so I opted to just use usleep on
+this series, as this should likely be enough for IGT)
+
+> It would be nicer to have a better understanding of the function
+> in a first glance. I dare a new person, who doesn't really know
+> what's going on, to understand the meaning of the "int
+> *pipewire_pulse_pid".
+> 
+> Perhaps, for the sake of clarity, we can add some extra function
+> that tells immediately if the sound user is pipewire or others.
+
+I guess a proper description of the function should be enough.
+What do we use on IGT? kerneldoc?
+
+Regards,
+Mauro
