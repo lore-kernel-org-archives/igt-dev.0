@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE5A110E18B
- for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 11:39:19 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-To: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>, "B S, Karthik"
- <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Fri, 6 May 2022 11:39:18 +0000
-Message-ID: <240619292efa44059e2ead6af300af02@intel.com>
-References: <20220504220013.20671-1-nidhi1.gupta@intel.com>
- <b2d623fb-b5b9-5853-e2d5-4b62b8f63d86@intel.com>
- <4721666085d64da6a6ef73b7540bc680@intel.com>
-In-Reply-To: <4721666085d64da6a6ef73b7540bc680@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ED4F10E489
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 11:48:36 +0000 (UTC)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Petri Latvala <petri.latvala@intel.com>
+Date: Fri,  6 May 2022 13:48:28 +0200
+Message-Id: <20220506114829.2288273-6-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
+References: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Skip the subtest
- if the resolution is not supported
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 5/6] lib/igt_kmod: make it less pedantic
+ with audio driver removal
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,82 +20,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
-dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgR3VwdGEsDQo+IE5pZGhp
-MQ0KPiBTZW50OiBUaHVyc2RheSwgTWF5IDUsIDIwMjIgMzozMCBQTQ0KPiBUbzogQiBTLCBLYXJ0
-aGlrIDxrYXJ0aGlrLmIuc0BpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-Zw0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVzdHMva21zX2NvbmN1
-cnJlbnQ6IFNraXAgdGhlIHN1YnRlc3QgaWYgdGhlDQo+IHJlc29sdXRpb24gaXMgbm90IHN1cHBv
-cnRlZA0KPiANCj4gDQo+IA0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBC
-IFMsIEthcnRoaWsgPGthcnRoaWsuYi5zQGludGVsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIE1h
-eSA1LCAyMDIyIDExOjI0IEFNDQo+IFRvOiBHdXB0YSwgTmlkaGkxIDxuaWRoaTEuZ3VwdGFAaW50
-ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUmU6IFtQ
-QVRDSCBpLWctdF0gdGVzdHMva21zX2NvbmN1cnJlbnQ6IFNraXAgdGhlIHN1YnRlc3QgaWYgdGhl
-DQo+IHJlc29sdXRpb24gaXMgbm90IHN1cHBvcnRlZA0KPiANCj4gT24gNS81LzIwMjIgMzozMCBB
-TSwgTmlkaGkgR3VwdGEgd3JvdGU6DQo+ID4gVGhlIGttc19jb25jdXJyZW50IGlzIGFib3V0IHRl
-c3RpbmcgbW9kZSBzZXR0aW5nIHdpdGggcmVkdWNpbmcgdGhlDQo+ID4gcmVzb2x1dGlvbiBhbmQg
-dGhlbiBhZ2FpbiBpbmNyZWFzaW5nIGl0LCBmb3IgdGhpcyB0aGUgdGVzdCB3aWxsIHRha2UNCj4g
-PiB0aGUgaGlnaCByZXNvbHV0aW9uIHN1cHBvcnRlZCBieSB0aGUgY29ubmVjdG9yIGFuZCB0aGVu
-IGNhbGN1bGF0ZSB0aGUNCj4gPiBsb3dlc3QgcmVzb2x1dGlvbiwgaWYgdGhlIGNhbGN1bGF0ZWQg
-cmVzb2x1dGlvbiBpcyBub3Qgc3VwcG9ydGVkIGJ5DQo+ID4gdGhlIGNvbm5lY3RvciBpdCB3aWxs
-IGFzc2lnbiB0aGUgZGVmYXVsdCByZXNvbHV0aW9uIG9mIDEwMjR4IDc2OA0KPiA+IHdpdGhvdXQg
-Y2hlY2tpbmcuDQo+ID4NCj4gPiBBZGRpbmcgdGhlIGNoZWNrIHRvIHNraXAgdGhlIHN1YnRlc3Qg
-aWYgdGhlIGRlZmF1bHQgcmVzb2x1dGlvbiBpcyBub3QNCj4gPiBzdXBwb3J0ZWQgYnkgdGhlIGNv
-bm5lY3Rvci4NCj4gDQo+IEhpLA0KPiANCj4gUGxlYXNlIHVwZGF0ZSB0aGUgY29tbWl0IG1lc3Nh
-Z2UuIFdlJ3JlIHNraXBwaW5nIGlmICwgIm1vZGVfbG8tPnZkaXNwbGF5ICA+DQo+IG1vZGVfaGkt
-PnZkaXNwbGF5Ii4gTWVudGlvbiB0aGUgc2FtZS4NCj4gDQo+IEFsc28sIEkgdGhpbmsgaXRzIGJl
-dHRlciB0byBtb3ZlIHRoaXMgY2hlY2sgaW5zaWRlICJnZXRfbG93cmVzX21vZGUoKSIuIEJlZm9y
-ZQ0KPiByZXR1cm5pbmcgMTAyNHg3NjggbW9kZSwgd2UgY291bGQgdXNlIHRoZSBzYW1lIGNoZWNr
-IHVzZWQgaW4gdGhlIGxvb3AsDQo+ICJtb2RlLT52ZGlzcGxheSA8IGxpbWl0IiwgYW5kIHNraXAg
-dGhlIHRlc3QgaWYgdGhpcyBpcyBub3QgbWV0Lg0KPiANCj4gVGhhbmtzLA0KPiBLYXJ0aGlrLkIu
-Uw0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogTmlkaGkgR3VwdGEgPG5pZGhpMS5ndXB0YUBpbnRl
-bC5jb20+DQo+ID4gLS0tDQo+ID4gICB0ZXN0cy9rbXNfY29uY3VycmVudC5jIHwgMiArKw0KPiA+
-ICAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBh
-L3Rlc3RzL2ttc19jb25jdXJyZW50LmMgYi90ZXN0cy9rbXNfY29uY3VycmVudC5jIGluZGV4DQo+
-ID4gODJiMjAyMWUuLmZkZWY2YjI2IDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19jb25jdXJy
-ZW50LmMNCj4gPiArKysgYi90ZXN0cy9rbXNfY29uY3VycmVudC5jDQo+ID4gQEAgLTI3Miw2ICsy
-NzIsOCBAQCB0ZXN0X3Jlc29sdXRpb25fd2l0aF9vdXRwdXQoZGF0YV90ICpkYXRhLCBlbnVtIHBp
-cGUNCj4gcGlwZSwgaW50IG1heF9wbGFuZXMsIGlndF9vdQ0KPiA+ICAgCQltb2RlX2hpID0gaWd0
-X291dHB1dF9nZXRfbW9kZShvdXRwdXQpOw0KPiA+ICAgCQltb2RlX2xvID0gZ2V0X2xvd3Jlc19t
-b2RlKGRhdGEsIG1vZGVfaGksIG91dHB1dCk7DQo+ID4NCj4gPiArCQlpZ3Rfc2tpcF9vbihtb2Rl
-X2xvLT52ZGlzcGxheSA+IG1vZGVfaGktPnZkaXNwbGF5KTsNCj4gPiArDQo+ID4gICAJCS8qIHN3
-aXRjaCB0byBsb3dlciByZXNvbHV0aW9uICovDQo+ID4gICAJCWlndF9vdXRwdXRfb3ZlcnJpZGVf
-bW9kZShvdXRwdXQsIG1vZGVfbG8pOw0KPiA+ICAgCQlmcmVlKG1vZGVfbG8pOw0KPiBIaSBLYXJ0
-aGlrLA0KPiANCj4gVGhhbmtzIGZvciB5b3VyIHJldmlldywgYnV0IGlmIEkgdXNlIG1vZGUtPnZk
-aXNwbGF5IDwgbGltaXQsIGl0cyBza2lwcGluZyBmb3IgZURQDQo+IGFsc28sIGJlY2F1c2UgZm9y
-IGVEUCBtb2RlIHdpdGggcmVzb2x1dGlvbiBsZXNzIHRoZW4gbGltaXQgKGxpbWl0ID0NCj4gbW9k
-ZV9kZWZhdWx0LT52ZGlzcGxheSAtIFNJWkVfUExBTkUpIGlzIG5vdCBhdmFpbGFibGUgYnV0IDEw
-MjR4NzY4IGlzIGF2YWlsYWJsZS4NCj4gDQo+IEkgdHJpZWQgdG8gZXhlY3V0ZSBhbHNvIGJlbG93
-IGFyZSB0aGUgcmVzdWx0czoNCj4gZ3RhQHNhZC1ndGEtZHV0On4vZHJpdmVycy5ncHUuaTkxNS5p
-Z3QtZ3B1LXRvb2xzJCBzdWRvDQo+IExEX0xJQlJBUllfUEFUSD0vdXNyL2xvY2FsL2xpYjovdXNy
-L2xvY2FsL2xpYi94ODZfNjQtbGludXgtZ251Lw0KPiBidWlsZC90ZXN0cy9rbXNfY29uY3VycmVu
-dA0KPiBJR1QtVmVyc2lvbjogMS4yNi1nNmJhODg0NzFjMjUgKHg4Nl82NCkgKExpbnV4OiA1LjEw
-LjU0LURJSV81Njc3LQ0KPiBnZDEzZmI3NWZmZjM3KyB4ODZfNjQpIE9wZW5lZCBkZXZpY2U6IC9k
-ZXYvZHJpL2NhcmQwIFN0YXJ0aW5nIHN1YnRlc3Q6IHBpcGUtQQ0KPiBTdGFydGluZyBkeW5hbWlj
-IHN1YnRlc3Q6IGVEUC0xIFRlc3RpbmcgcmVzb2x1dGlvbiB3aXRoIGNvbm5lY3RvciBlRFAtMSB1
-c2luZw0KPiBwaXBlIEEgd2l0aCBzZWVkIDE2NTE3NTM0MzYgVGVzdCByZXF1aXJlbWVudCBub3Qg
-bWV0IGluIGZ1bmN0aW9uDQo+IGdldF9sb3dyZXNfbW9kZSwgZmlsZSAuLi90ZXN0cy9rbXNfY29u
-Y3VycmVudC5jOjI1NjoNCj4gVGVzdCByZXF1aXJlbWVudDogIShtb2RlLT52ZGlzcGxheSA+IGxp
-bWl0KSBEeW5hbWljIHN1YnRlc3QgZURQLTE6IFNLSVAgKDAuMDAzcykNCj4gU3RhcnRpbmcgZHlu
-YW1pYyBzdWJ0ZXN0OiBIRE1JLUEtMSBUZXN0aW5nIHJlc29sdXRpb24gd2l0aCBjb25uZWN0b3Ig
-SERNSS1BLTENCj4gdXNpbmcgcGlwZSBBIHdpdGggc2VlZCAxNjUxNzUzNDM2IFRlc3QgcmVxdWly
-ZW1lbnQgbm90IG1ldCBpbiBmdW5jdGlvbg0KPiBnZXRfbG93cmVzX21vZGUsIGZpbGUgLi4vdGVz
-dHMva21zX2NvbmN1cnJlbnQuYzoyNTY6DQo+IFRlc3QgcmVxdWlyZW1lbnQ6ICEobW9kZS0+dmRp
-c3BsYXkgPiBsaW1pdCkgRHluYW1pYyBzdWJ0ZXN0IEhETUktQS0xOiBTS0lQDQo+ICgwLjAwM3Mp
-DQoNCkhpIQ0KDQpJIGhhZCBhcyBzaW1pbGFyIGlkZWEgaW4gbWluZCB0aGF0IEthcnRoaWsgYWxy
-ZWFkeSBoYWQuIEJ1dCBvYnZpb3VzbHkgdGhpcyBpcyBhcHByb2FjaCBpcyBub3QgcmVhbGx5IHdv
-cmtpbmcgaWYgZGVmYXVsdCBtb2RlIDEwMjR4NzY4IGlzIHN1cHBvcnRlZCBieSB0aGUgcGFuZWwu
-DQoNCk9yaWdpbmFsbHksIHRoaXMgZ2V0X2xvd3Jlc19tb2RlKCkgZnVuY3Rpb24gYXMgYSBkaXJl
-Y3QgY29weSBmcm9tIHRoZSBvbmUgdXNlZCBieSBrbXNfcGxhbmVfbG93cmVzLmMuIEF0IHNvbWUg
-cG9pbnQgb2YgdGltZSwgdGhlc2UgdHdvIGdldF9sb3dyZXNfbW9kZSgpIGZ1bmN0aW9ucyBldm9s
-dmVkIHRvIGJlIGEgYml0IGRpZmZlcmVudC4gTWF5YmUsIHRoaXMgd291bGQgYmUgYSB0aW1lIGFu
-ZCBhIHBsYWNlIHRvIHVuaWZ5IHRoZXNlIHR3byBkaWZmZXJlbnQgZ2V0X2xvd3Jlc19tb2RlKCkg
-ZnVuY3Rpb25zIG9yIGV2ZW4gbW92ZSB0aGlzIGZ1bmN0aW9uIHRvIGJlIHBhcnQgb2YgYSBsaWJy
-YXJ5IHJvdXRpbmVzLg0KDQpBbnl3YXksIGJhY2sgd2l0aCB0aGUgaWd0X3NraXBfb24oKS4gDQoN
-Ck1heWJlIHdlIGNvdWxkIGFkZCBhIGNvbW1lbnQgb24gaWd0X3NraXBfb24oKSB0byBnaXZlIGEg
-cmVhc29uLCB3aHkgd2Ugc2tpcHBlZC4gTWF5YmUgc29tZXRoaW5nIGxpa2UgIk5vIHN1aXRhYmxl
-IHJlc29sdXRpb24gd2FzIGZvdW5kIi4gDQoNCkNoZWVycywNCk1pa2ENCg==
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Current Linux Kernel don't report if the audio driver binds
+into the DRM driver. As this is CPU specific, allow audio
+driver unload fail without skipping the IGT tests on legacy
+Kernels, as this may not be mandatory.
+
+On new kernels where lsmod will properly display the dependency
+between the audio and DRM drivers, skip the core hotunplug
+test if it fails to unload the audio driver, as this is
+unrelated to the DRM driver - and it could simply because there
+are some userspace code using the audio device while the IGT
+test is running.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ lib/igt_kmod.c         | 33 +++++++++++++++++++++++++++++----
+ tests/core_hotunplug.c |  7 ++-----
+ 2 files changed, 31 insertions(+), 9 deletions(-)
+
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index ca74c602ce66..5a1d1658b367 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -399,17 +399,35 @@ static int igt_always_unload_audio_driver(const char **who)
+ 		NULL,
+ 	};
+ 
++	/*
++	 * With old Kernels, the dependencies between audio and DRM drivers
++	 * are not shown. So, it may not be mandatory to remove the audio
++	 * driver before unload/unbind the DRM one. So, let's print warnings,
++	 * but return 0 on errors, as, if the dependency is mandatory, this
++	 * will be detected later when trying to unbind/unload the DRM driver.
++	 */
+ 	for (const char **m = sound; *m; m++) {
+ 		if (igt_kmod_is_loaded(*m)) {
+ 			if (who)
+ 				*who = *m;
+-			if (igt_lsof_kill_audio_processes())
+-				return EACCES;
++
++			ret = igt_lsof_kill_audio_processes();
++
++			if (ret) {
++				igt_warn("Could not stop %d audio process(es)\n", ret);
++				igt_kmod_list_loaded();
++				igt_lsof("/dev/snd");
++				return 0;
++			}
+ 
+ 			kick_snd_hda_intel();
+ 			ret = igt_kmod_unload(*m, 0);
+-			if (ret)
+-				return ret;
++			if (ret) {
++				igt_warn("Could not unload audio driver %s\n", *m);
++				igt_kmod_list_loaded();
++				igt_lsof("/dev/snd");
++				return 0;
++			}
+ 		}
+ 	}
+ 	return 0;
+@@ -599,6 +617,13 @@ int igt_audio_driver_unload(const char **who)
+ 	}
+ 
+ ret:
++	if (ret) {
++		igt_warn("Couldn't unload %s, which is using the %s driver\n",
++			 mod[pos].name, drm_driver);
++		igt_kmod_list_loaded();
++		igt_lsof("/dev/snd");
++	}
++
+ 	free_module_ref(mod, num_mod);
+ 
+ 	return ret;
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 7c68b336e67b..3888c660d4ac 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -149,11 +149,8 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
+ 	 * unbind i915 driver, reloading it when binding again.
+ 	 */
+ 	if (igt_audio_driver_unload(&priv->snd_driver)) {
+-		if (priv->snd_driver)
+-			igt_warn("Could not unload audio driver %s\n", priv->snd_driver);
+-		igt_kmod_list_loaded();
+-		igt_lsof("/dev/snd");
+-		igt_skip("Audio is in use, skipping\n");
++		igt_skip("Audio driver %s in use, skipping test\n",
++			 priv->snd_driver);
+ 	} else if (priv->snd_driver) {
+ 		igt_info("Unloaded audio driver %s\n", priv->snd_driver);
+ 	}
+-- 
+2.35.1
