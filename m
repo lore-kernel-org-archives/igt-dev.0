@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com
- [IPv6:2607:f8b0:4864:20::230])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7A7010F1E9
- for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 17:16:36 +0000 (UTC)
-Received: by mail-oi1-x230.google.com with SMTP id n24so8134578oie.12
- for <igt-dev@lists.freedesktop.org>; Fri, 06 May 2022 10:16:36 -0700 (PDT)
-From: Jason Ekstrand <jason@jlekstrand.net>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  6 May 2022 12:16:31 -0500
-Message-Id: <20220506171632.1438408-2-jason.ekstrand@collabora.com>
-In-Reply-To: <20220506171632.1438408-1-jason.ekstrand@collabora.com>
-References: <20220506171632.1438408-1-jason.ekstrand@collabora.com>
+Content-Type: multipart/alternative;
+ boundary="===============4520069983930145936=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/2] tests/dmabuf: Add tests for sync_file export
- (v4)
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sinjan.kumar@intel.com
+Date: Fri, 06 May 2022 17:50:32 -0000
+Message-ID: <165185943279.18816.11755476801748116765@emeril.freedesktop.org>
+References: <20220506142445.2068263-1-sinjan.kumar@intel.com>
+In-Reply-To: <20220506142445.2068263-1-sinjan.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fexec=5Fbalancer=3A_Add_busy_subtest_description_=28r?=
+ =?utf-8?q?ev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,379 +18,185 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jason Ekstrand <jason.ekstrand@intel.com>,
- Jason Ekstrand <jason.ekstrand@collabora.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Jason Ekstrand <jason@jlekstrand.net>
+--===============4520069983930145936==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2 (Jason Ekstrand):
- - Rename subtests to have "export" in the name
+== Series Details ==
 
-v3 (Jason Ekstrand):
- - Add an export-before-signal subtest
+Series: tests/i915/gem_exec_balancer: Add busy subtest description (rev2)
+URL   : https://patchwork.freedesktop.org/series/103674/
+State : success
 
-v4 (Jason Ekstrand):
- - Test both via sync_file and via poll to ensure the semantics match
-   properly.
+== Summary ==
 
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-Signed-off-by: Jason Ekstrand <jason.ekstrand@intel.com>
-Signed-off-by: Jason Ekstrand <jason.ekstrand@collabora.com>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
----
- tests/dmabuf_sync_file.c | 328 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 329 insertions(+)
- create mode 100644 tests/dmabuf_sync_file.c
+CI Bug Log - changes from CI_DRM_11617_full -> IGTPW_7054_full
+====================================================
 
-diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
-new file mode 100644
-index 00000000..7fed60f8
---- /dev/null
-+++ b/tests/dmabuf_sync_file.c
-@@ -0,0 +1,328 @@
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ */
-+
-+#include "igt.h"
-+#include "igt_vgem.h"
-+
-+#include <linux/dma-buf.h>
-+#include <sys/poll.h>
-+
-+IGT_TEST_DESCRIPTION("Tests for sync_file export from dma-buf");
-+
-+struct igt_dma_buf_sync_file {
-+	__u32 flags;
-+	__s32 fd;
-+};
-+
-+#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
-+
-+static bool has_dmabuf_export_sync_file(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf, ret;
-+	struct igt_dma_buf_sync_file arg;
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+	gem_close(fd, bo.handle);
-+
-+	arg.flags = DMA_BUF_SYNC_WRITE;
-+	arg.fd = -1;
-+
-+	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
-+	close(dmabuf);
-+	igt_assert(ret == 0 || errno == ENOTTY);
-+
-+	return ret == 0;
-+}
-+
-+static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
-+{
-+	struct igt_dma_buf_sync_file arg;
-+
-+	arg.flags = flags;
-+	arg.fd = -1;
-+	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
-+
-+	return arg.fd;
-+}
-+
-+static bool dmabuf_busy(int dmabuf, uint32_t flags)
-+{
-+	struct pollfd pfd = { .fd = dmabuf };
-+
-+	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
-+	 * else poll() may return a non-zero value if there are only read
-+	 * fences because POLLIN is ready even if POLLOUT isn't.
-+	 */
-+	if (flags & DMA_BUF_SYNC_WRITE)
-+		pfd.events |= POLLOUT;
-+	else if (flags & DMA_BUF_SYNC_READ)
-+		pfd.events |= POLLIN;
-+
-+	return poll(&pfd, 1, 0) == 0;
-+}
-+
-+static bool sync_file_busy(int sync_file)
-+{
-+	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
-+	return poll(&pfd, 1, 0) == 0;
-+}
-+
-+static bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
-+{
-+	int sync_file;
-+	bool busy;
-+
-+	sync_file = dmabuf_export_sync_file(dmabuf, flags);
-+	busy = sync_file_busy(sync_file);
-+	close(sync_file);
-+
-+	return busy;
-+}
-+
-+static void test_export_basic(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf;
-+	uint32_t fence;
-+
-+	igt_require(has_dmabuf_export_sync_file(fd));
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	fence = vgem_fence_attach(fd, &bo, 0);
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
-+
-+	vgem_fence_signal(fd, fence);
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
-+
-+	fence = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
-+	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
-+
-+	vgem_fence_signal(fd, fence);
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
-+
-+	close(dmabuf);
-+	gem_close(fd, bo.handle);
-+}
-+
-+static void test_export_before_signal(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf, read_fd, write_fd;
-+	uint32_t fence;
-+
-+	igt_require(has_dmabuf_export_sync_file(fd));
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	fence = vgem_fence_attach(fd, &bo, 0);
-+
-+	read_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
-+	write_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-+
-+	igt_assert(!sync_file_busy(read_fd));
-+	igt_assert(sync_file_busy(write_fd));
-+
-+	vgem_fence_signal(fd, fence);
-+
-+	igt_assert(!sync_file_busy(read_fd));
-+	igt_assert(!sync_file_busy(write_fd));
-+
-+	close(read_fd);
-+	close(write_fd);
-+
-+	fence = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-+
-+	read_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
-+	write_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-+
-+	igt_assert(sync_file_busy(read_fd));
-+	igt_assert(sync_file_busy(write_fd));
-+
-+	vgem_fence_signal(fd, fence);
-+
-+	igt_assert(!sync_file_busy(read_fd));
-+	igt_assert(!sync_file_busy(write_fd));
-+
-+	close(read_fd);
-+	close(write_fd);
-+
-+	close(dmabuf);
-+	gem_close(fd, bo.handle);
-+}
-+
-+static void test_export_multiwait(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf, sync_file;
-+	uint32_t fence1, fence2, fence3;
-+
-+	igt_require(has_dmabuf_export_sync_file(fd));
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+
-+	fence1 = vgem_fence_attach(fd, &bo, 0);
-+	fence2 = vgem_fence_attach(fd, &bo, 0);
-+
-+	sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-+
-+	fence3 = vgem_fence_attach(fd, &bo, 0);
-+
-+	igt_assert(sync_file_busy(sync_file));
-+
-+	vgem_fence_signal(fd, fence1);
-+
-+	igt_assert(sync_file_busy(sync_file));
-+
-+	vgem_fence_signal(fd, fence2);
-+
-+	igt_assert(!sync_file_busy(sync_file));
-+
-+	vgem_fence_signal(fd, fence3);
-+
-+	close(sync_file);
-+	close(dmabuf);
-+	gem_close(fd, bo.handle);
-+}
-+
-+static void test_export_wait_after_attach(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf, read_sync_file, write_sync_file;
-+	uint32_t fence1, fence2;
-+
-+	igt_require(has_dmabuf_export_sync_file(fd));
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+
-+	read_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
-+	write_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-+
-+	fence1 = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-+
-+	igt_assert(!sync_file_busy(read_sync_file));
-+	igt_assert(!sync_file_busy(write_sync_file));
-+	close(read_sync_file);
-+	close(write_sync_file);
-+
-+	/* These wait on fence1 */
-+	read_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
-+	write_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-+
-+	igt_assert(sync_file_busy(read_sync_file));
-+	igt_assert(sync_file_busy(write_sync_file));
-+
-+	vgem_fence_signal(fd, fence1);
-+	fence2 = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-+
-+	/* fence1 has signaled */
-+	igt_assert(!sync_file_busy(read_sync_file));
-+	igt_assert(!sync_file_busy(write_sync_file));
-+
-+	/* fence2 has not */
-+	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-+	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-+
-+	vgem_fence_signal(fd, fence2);
-+	close(read_sync_file);
-+	close(write_sync_file);
-+
-+	close(dmabuf);
-+	gem_close(fd, bo.handle);
-+}
-+
-+igt_main
-+{
-+	int fd;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_VGEM);
-+	}
-+
-+	igt_subtest_f("export-basic")
-+		test_export_basic(fd);
-+
-+	igt_subtest_f("export-before-signal")
-+		test_export_before_signal(fd);
-+
-+	igt_subtest_f("export-multiwait")
-+		test_export_multiwait(fd);
-+
-+	igt_subtest_f("export-wait-after-attach")
-+		test_export_wait_after_attach(fd);
-+
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index fb0f1e37..b548dc3b 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -7,6 +7,7 @@ test_progs = [
- 	'core_setmaster_vs_auth',
- 	'debugfs_test',
- 	'dmabuf',
-+	'dmabuf_sync_file',
- 	'device_reset',
- 	'drm_buddy',
- 	'drm_import_export',
--- 
-2.36.0
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/index.html
+
+Participating hosts (11 -> 7)
+------------------------------
+
+  Missing    (4): pig-skl-6260u pig-kbl-iris shard-tglu pig-glk-j5005 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7054_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_ctx_persistence@engines-cleanup:
+    - shard-snb:          NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#1099])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb4/igt@gem_ctx_persistence@engines-cleanup.html
+
+  * igt@i915_hangman@engine-engine-hang:
+    - shard-snb:          NOTRUN -> [SKIP][2] ([fdo#109271]) +108 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb5/igt@i915_hangman@engine-engine-hang.html
+
+  * igt@kms_chamelium@hdmi-hpd-enable-disable-mode:
+    - shard-snb:          NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb2/igt@kms_chamelium@hdmi-hpd-enable-disable-mode.html
+
+  * igt@syncobj_timeline@transfer-timeline-point:
+    - shard-snb:          NOTRUN -> [DMESG-FAIL][4] ([i915#5098])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb7/igt@syncobj_timeline@transfer-timeline-point.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_mmap_gtt@coherency:
+    - shard-snb:          [SKIP][5] ([fdo#109271]) -> [PASS][6] +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11617/shard-snb6/igt@gem_mmap_gtt@coherency.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb2/igt@gem_mmap_gtt@coherency.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1099]: https://gitlab.freedesktop.org/drm/intel/issues/1099
+  [i915#5098]: https://gitlab.freedesktop.org/drm/intel/issues/5098
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6468 -> IGTPW_7054
+  * Piglit: piglit_4509 -> None
+
+  CI-20190529: 20190529
+  CI_DRM_11617: d96cea3d7ffb524248fcc8db433c579cf262eaea @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7054: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/index.html
+  IGT_6468: cffa5fffe9acddf49565b4caeeb5e3355ff2ea44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/index.html
+
+--===============4520069983930145936==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_balancer: Add busy subtest description (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103674/">https://patchwork.freedesktop.org/series/103674/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11617_full -&gt; IGTPW_7054_full</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/index.html</p>
+<h2>Participating hosts (11 -&gt; 7)</h2>
+<p>Missing    (4): pig-skl-6260u pig-kbl-iris shard-tglu pig-glk-j5005 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7054_full that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_ctx_persistence@engines-cleanup:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb4/igt@gem_ctx_persistence@engines-cleanup.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1099">i915#1099</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_hangman@engine-engine-hang:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb5/igt@i915_hangman@engine-engine-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +108 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-enable-disable-mode:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb2/igt@kms_chamelium@hdmi-hpd-enable-disable-mode.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@transfer-timeline-point:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb7/igt@syncobj_timeline@transfer-timeline-point.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5098">i915#5098</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_mmap_gtt@coherency:<ul>
+<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11617/shard-snb6/igt@gem_mmap_gtt@coherency.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/shard-snb2/igt@gem_mmap_gtt@coherency.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6468 -&gt; IGTPW_7054</li>
+<li>Piglit: piglit_4509 -&gt; None</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11617: d96cea3d7ffb524248fcc8db433c579cf262eaea @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7054: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7054/index.html<br />
+  IGT_6468: cffa5fffe9acddf49565b4caeeb5e3355ff2ea44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
+
+</body>
+</html>
+
+--===============4520069983930145936==--
