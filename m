@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34E4110E599
- for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 11:48:38 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1787210E514
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 11:48:37 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Fri,  6 May 2022 13:48:27 +0200
-Message-Id: <20220506114829.2288273-5-mauro.chehab@linux.intel.com>
+Date: Fri,  6 May 2022 13:48:29 +0200
+Message-Id: <20220506114829.2288273-7-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
 References: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 4/6] core_hotunplug: fix audio unbind
- logic
+Subject: [igt-dev] [PATCH i-g-t v3 6/6] lib/igt_kmod: properly handle
+ pipewire-pulse
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,114 +28,380 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The current audio unbind logic is wrong: it expects the audio
-driver to depend on i915 only on Haswell, Broadwell and DG1.
+Newer distributions like Fedora and openSUSE thumbweed are now
+coming with pipewire-pulse instead of pulseaudio - either as
+default or as an optional audio stack.
 
-That doesn't match the Kernel driver, where snd-hda-audio binds
-on i915 also on Skylake, Braswell and whenever it needs to use
-pm runtime from the DRM driver.
+That adds a new requirement when unloading sound drivers,
+which, in turn, is needed when the DRM driver is bound into
+it.
 
-Now that lib/igt-kmod has gained improved support for audio
-unbind, update core_hotunplug to benefit from the newer logic.
+Add the needed logic to work properly in case pipewire-pulse
+is detected.
 
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Tested on RKL-S with Fedora 35 and wireplumber:
+
+	./build/tests/core_hotunplug --run unbind-rebind
+	IGT-Version: 1.26-gf8b43420 (x86_64) (Linux: 5.18.0-rc4-drm-11b90fad0e81+ x86_64)
+	Starting subtest: unbind-rebind
+	process 699 (alsactl) is using audio device. Should be terminated.
+	process 3557 (pipewire) is using audio device. Should be terminated.
+	process 4491 (pipewire-pulse) is using audio device. Should be requested to stop using them.
+	Preventing pipewire-pulse to use the audio drivers
+	Device Audio0 can not be acquired: Success
+	reserve acquired
+	Timed out waiting for children
+	Unloaded audio driver snd_hda_intel
+	Realoading snd_hda_intel
+	Subtest unbind-rebind: SUCCESS (2.478s)
+
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/core_hotunplug.c | 53 ++++++++++++++++++------------------------
- 1 file changed, 22 insertions(+), 31 deletions(-)
+ lib/igt_aux.c  | 169 ++++++++++++++++++++++++++++++++++++++++++-------
+ lib/igt_aux.h  |   4 +-
+ lib/igt_core.c |   7 ++
+ lib/igt_core.h |   1 +
+ lib/igt_kmod.c |  18 +++++-
+ 5 files changed, 173 insertions(+), 26 deletions(-)
 
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 18e37ec8feba..7c68b336e67b 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -54,7 +54,7 @@ struct hotunplug {
- 	const char *failure;
- 	bool need_healthcheck;
- 	bool has_intel_perf;
--	bool snd_unload;
-+ 	const char *snd_driver;
- };
- 
- /* Helpers */
-@@ -140,27 +140,22 @@ static void prepare(struct hotunplug *priv)
- static void driver_unbind(struct hotunplug *priv, const char *prefix,
- 			  int timeout)
- {
--	/**
--	 * FIXME: Unbinding the i915 driver on affected platforms with
--	 * audio results in a kernel WARN on "i915 raw-wakerefs=1
--	 * wakelocks=1 on cleanup". The below CI friendly user level
--	 * workaround to unload and de-couple audio from IGT testing,
--	 * prevents the warning from appearing. Drop this hack as soon
--	 * as this is fixed in the kernel. unbind/re-bind validation
--	 * on audio side is not robust and we could have potential
--	 * failures blocking display CI, currently this seems to the
--	 * safest and easiest way out.
-+	/*
-+	 * FIXME: on some devices, the audio driver (snd_hda_intel)
-+	 * binds into the i915 driver. On such hardware, kernel warnings
-+	 * and errors may happen if i915 is unbind/removed before removing
-+	 * first the audio driver.
-+	 * So, add a logic that unloads the audio driver before trying to
-+	 * unbind i915 driver, reloading it when binding again.
- 	 */
--	if (priv->snd_unload) {
--		if (igt_audio_driver_unload(NULL)) {
--			priv->snd_unload = false;
--			igt_warn("Could not unload audio driver\n");
--			igt_kmod_list_loaded();
--			igt_lsof("/dev/snd");
--			igt_skip("Audio is in use, skipping\n");
--		} else {
--			igt_info("Preventively unloaded audio driver\n");
--		}
-+	if (igt_audio_driver_unload(&priv->snd_driver)) {
-+		if (priv->snd_driver)
-+			igt_warn("Could not unload audio driver %s\n", priv->snd_driver);
-+		igt_kmod_list_loaded();
-+		igt_lsof("/dev/snd");
-+		igt_skip("Audio is in use, skipping\n");
-+	} else if (priv->snd_driver) {
-+		igt_info("Unloaded audio driver %s\n", priv->snd_driver);
- 	}
- 
- 	local_debug("%sunbinding the driver from the device\n", prefix);
-@@ -192,8 +187,11 @@ static void driver_bind(struct hotunplug *priv, int timeout)
- 				F_OK, 0),
- 		      "Rebound device not present (%s)!\n", priv->dev_bus_addr);
- 
--	if (priv->snd_unload)
--		igt_kmod_load("snd_hda_intel", NULL);
-+	if (priv->snd_driver) {
-+		igt_info("Realoading %s\n", priv->snd_driver);
-+		igt_kmod_load(priv->snd_driver, NULL);
-+		priv->snd_driver = NULL;
-+	}
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 0d90ebb5b6ec..b508f7ab7533 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -1435,12 +1435,114 @@ static void pulseaudio_unload_module(proc_t *proc_info)
+ 	igt_waitchildren();
  }
  
- /* Remove (virtually unplug) the device from its bus */
-@@ -606,7 +604,7 @@ igt_main
- 		.failure	= NULL,
- 		.need_healthcheck = true,
- 		.has_intel_perf = false,
--		.snd_unload	= false,
-+		.snd_driver	= NULL,
- 	};
++static void pipewire_reserve_wait(int pipewire_pulse_pid)
++{
++	char xdg_dir[PATH_MAX];
++	const char *homedir;
++	struct passwd *pw;
++	proc_t *proc_info;
++	PROCTAB *proc;
++
++	igt_fork(child, 1) {
++		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
++
++		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
++		igt_assert(proc != NULL);
++
++		while ((proc_info = readproc(proc, NULL))) {
++			if (pipewire_pulse_pid == proc_info->tid)
++				break;
++			freeproc(proc_info);
++		}
++		closeproc(proc);
++
++		/* Sanity check: if it can't find the process, it means it has gone */
++		if (pipewire_pulse_pid != proc_info->tid)
++			exit(0);
++
++		pw = getpwuid(proc_info->euid);
++		homedir = pw->pw_dir;
++		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
++		setgid(proc_info->egid);
++		setuid(proc_info->euid);
++		clearenv();
++		setenv("HOME", homedir, 1);
++		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
++		freeproc(proc_info);
++
++		exit(system("pw-reserve -n Audio0 -r"));
++	}
++}
++
++static int pipewire_pw_reserve_pid = 0;
++
++/* Maximum time waiting for pw-reserve to start running */
++#define PIPEWIRE_RESERVE_MAX_TIME 1000 /* milisseconds */
++
++int pipewire_pulse_start_reserve(int pipewire_pulse_pid)
++{
++	bool is_pw_reserve_running = false;
++	proc_t *proc_info;
++	int attempts = 0;
++	PROCTAB *proc;
++
++	if (!pipewire_pulse_pid)
++		return 0;
++
++	pipewire_reserve_wait(pipewire_pulse_pid);
++
++	/*
++	 * Note: using pw-reserve to stop using audio only works with
++	 * pipewire version 0.3.50 or upper.
++	 */
++	for (attempts = 0; attempts < PIPEWIRE_RESERVE_MAX_TIME; attempts++) {
++		usleep(1000);
++		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
++		igt_assert(proc != NULL);
++
++		while ((proc_info = readproc(proc, NULL))) {
++			if (!strcmp(proc_info->cmd, "pw-reserve")) {
++				is_pw_reserve_running = true;
++				pipewire_pw_reserve_pid = proc_info->tid;
++				freeproc(proc_info);
++				break;
++			}
++			freeproc(proc_info);
++		}
++		closeproc(proc);
++		if (is_pw_reserve_running)
++			break;
++	}
++	if (!is_pw_reserve_running) {
++		igt_warn("Failed to remove audio drivers from pipewire\n");
++		return 1;
++	}
++	/* Let's grant some time for pw_reserve to notify pipewire via D-BUS */
++	usleep(50000);
++
++	/*
++	 * pw-reserve is running, and should have stopped using the audio
++	 * drivers. We can now remove the driver.
++	 */
++
++	return 0;
++}
++
++void pipewire_pulse_stop_reserve(int pipewire_pulse_pid)
++{
++	if (!pipewire_pulse_pid)
++		return;
++
++	igt_killchildren(SIGTERM);
++}
++
+ /**
+  * __igt_lsof_audio_and_kill_proc() - check if a given process is using an
+  *	audio device. If so, stop or prevent them to use such devices.
+  *
+  * @proc_info: process struct, as returned by readproc()
+  * @proc_path: path of the process under procfs
++ * @pipewire_pulse_pid: PID of pipewire-pulse process
+  *
+  * No processes can be using an audio device by the time it gets removed.
+  * This function checks if a process is using an audio device from /dev/snd.
+@@ -1448,10 +1550,15 @@ static void pulseaudio_unload_module(proc_t *proc_info)
+  * 	- if the process is pulseaudio, it can't be killed, as systemd will
+  * 	  respawn it. So, instead, send a request for it to stop bind the
+  * 	  audio devices.
++ *	- if the process is pipewire-pulse, it can't be killed, as systemd will
++ *	  respawn it. So, instead, the caller should call pw-reserve, remove
++ *	  the kernel driver and then stop pw-reserve. On such case, this
++ *	  function returns the PID of pipewire-pulse, but won't touch it.
+  * If the check fails, it means that the process can simply be killed.
+  */
+ static int
+-__igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
++__igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path,
++			       int *pipewire_pulse_pid)
+ {
+ 	const char *audio_dev = "/dev/snd/";
+ 	char path[PATH_MAX * 2];
+@@ -1460,8 +1567,43 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
+ 	char *fd_lnk;
+ 	int fail = 0;
+ 	ssize_t read;
++	DIR *dp;
  
- 	igt_fixture {
-@@ -616,13 +614,6 @@ igt_main
- 		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
+-	DIR *dp = opendir(proc_path);
++	/*
++	 * Terminating pipewire-pulse require an special procedure, which
++	 * is only available at version 0.3.50 and upper. Just trying to
++	 * kill pipewire will start a race between IGT and systemd. If IGT
++	 * wins, the audio driver will be unloaded before systemd tries to
++	 * reload it, but if systemd wins, the audio device will be re-opened
++	 * and used before IGT has a chance to remove the audio driver.
++	 * Pipewire version 0.3.50 should bring a standard way:
++	 *
++	 * 1) start a thread running:
++	 *	 pw-reserve -n Audio0 -r
++	 * 2) unload/unbind the the audio driver(s);
++	 * 3) stop the pw-reserve thread.
++	 */
++	if (!strcmp(proc_info->cmd, "pipewire-pulse")) {
++		igt_info("process %d (%s) is using audio device. Should be requested to stop using them.\n",
++			 proc_info->tid, proc_info->cmd);
++		*pipewire_pulse_pid = proc_info->tid;
++		return 0;
++	}
++	/*
++	 * pipewire-pulse itself doesn't hook into a /dev/snd device. Instead,
++	 * the actual binding happens at the Pipewire Session Manager, e.g.
++	 * either wireplumber or pipewire media-session.
++	 *
++	 * Just killing such processes won't produce any effect, as systemd
++	 * will respawn them. So, just ignore here, they'll honor pw-reserve,
++	 * when the time comes.
++	 */
++	if (!strcmp(proc_info->cmd, "pipewire-media-session"))
++		return 0;
++	if (!strcmp(proc_info->cmd, "wireplumber"))
++		return 0;
++
++	dp = opendir(proc_path);
+ 	igt_assert(dp);
  
- 		if (is_i915_device(fd_drm)) {
--			/*
--			 * Audio driver does not support hot unplug via DRM
--			 * audio component framework, so driver must be unloaded
--			 * explicitly for i915 unbind tests.
--			 */
--			priv.snd_unload = true;
+ 	while ((d = readdir(dp))) {
+@@ -1497,24 +1639,6 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
+ 			break;
+ 		}
+ 
+-		/*
+-		 * FIXME: terminating pipewire-pulse is not that easy, as
+-		 * pipewire there's no standard way up to pipewire version
+-		 * 0.3.49. Just trying to kill pipewire will start a race
+-		 * between IGT and systemd. If IGT wins, the audio driver
+-		 * will be unloaded before systemd tries to reload it, but
+-		 * if systemd wins, the audio device will be re-opened and
+-		 * used before IGT has a chance to remove the audio driver.
+-		 * Pipewire version 0.3.50 should bring a standard way:
+-		 *
+-		 * 1) start a thread running:
+-		 *	 pw-reserve -n Audio0 -r
+-		 * 2) unload/unbind the the audio driver(s);
+-		 * 3) stop the pw-reserve thread.
+-		 *
+-		 * We should add support for it once distros start shipping it.
+-		 */
 -
- 			gem_quiescent_gpu(fd_drm);
- 			igt_require_gem(fd_drm);
+ 		/* For all other processes, just kill them */
+ 		igt_info("process %d (%s) is using audio device. Should be terminated.\n",
+ 				proc_info->tid, proc_info->cmd);
+@@ -1544,7 +1668,7 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
+  * daemons are respanned if they got killed.
+  */
+ int
+-igt_lsof_kill_audio_processes(void)
++igt_lsof_kill_audio_processes(int *pipewire_pulse_pid)
+ {
+ 	char path[PATH_MAX];
+ 	proc_t *proc_info;
+@@ -1553,12 +1677,13 @@ igt_lsof_kill_audio_processes(void)
  
+ 	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+ 	igt_assert(proc != NULL);
++	*pipewire_pulse_pid = 0;
+ 
+ 	while ((proc_info = readproc(proc, NULL))) {
+ 		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1)
+ 			fail++;
+ 		else
+-			fail += __igt_lsof_audio_and_kill_proc(proc_info, path);
++			fail += __igt_lsof_audio_and_kill_proc(proc_info, path, pipewire_pulse_pid);
+ 
+ 		freeproc(proc_info);
+ 	}
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index bb96d1afb777..d8b05088f0ba 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -306,7 +306,9 @@ bool igt_allow_unlimited_files(void);
+ int igt_is_process_running(const char *comm);
+ int igt_terminate_process(int sig, const char *comm);
+ void igt_lsof(const char *dpath);
+-int igt_lsof_kill_audio_processes(void);
++int igt_lsof_kill_audio_processes(int *pipewire_pulse_pid);
++int pipewire_pulse_start_reserve(int pipewire_pulse_pid);
++void pipewire_pulse_stop_reserve(int pipewire_pulse_pid);
+ 
+ #define igt_hweight(x) \
+ 	__builtin_choose_expr(sizeof(x) == 8, \
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 6dad3c84858f..10b3e37656bd 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -2427,6 +2427,13 @@ static void igt_alarm_killchildren(int signal)
+ 	kill_children();
+ }
+ 
++void igt_killchildren(int signal)
++{
++	igt_info("Timed out waiting for children\n");
++
++	kill_children();
++}
++
+ /**
+  * igt_waitchildren_timeout:
+  * @seconds: timeout in seconds to wait
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 78dc6202ced4..c62a31e016af 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1103,6 +1103,7 @@ bool __igt_fork(void);
+ int __igt_waitchildren(void);
+ void igt_waitchildren(void);
+ void igt_waitchildren_timeout(int seconds, const char *reason);
++void igt_killchildren(int signal);
+ 
+ /**
+  * igt_helper_process:
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 5a1d1658b367..5d5a23cad837 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -392,6 +392,7 @@ igt_i915_driver_load(const char *opts)
+ 
+ static int igt_always_unload_audio_driver(const char **who)
+ {
++	int pipewire_pulse_pid;
+ 	int ret;
+ 	const char *sound[] = {
+ 		"snd_hda_intel",
+@@ -411,8 +412,7 @@ static int igt_always_unload_audio_driver(const char **who)
+ 			if (who)
+ 				*who = *m;
+ 
+-			ret = igt_lsof_kill_audio_processes();
+-
++			ret = igt_lsof_kill_audio_processes(&pipewire_pulse_pid);
+ 			if (ret) {
+ 				igt_warn("Could not stop %d audio process(es)\n", ret);
+ 				igt_kmod_list_loaded();
+@@ -420,8 +420,12 @@ static int igt_always_unload_audio_driver(const char **who)
+ 				return 0;
+ 			}
+ 
++			ret = pipewire_pulse_start_reserve(pipewire_pulse_pid);
++			if (ret)
++				igt_warn("Failed to notify pipewire_pulse\n");
+ 			kick_snd_hda_intel();
+ 			ret = igt_kmod_unload(*m, 0);
++			pipewire_pulse_stop_reserve(pipewire_pulse_pid);
+ 			if (ret) {
+ 				igt_warn("Could not unload audio driver %s\n", *m);
+ 				igt_kmod_list_loaded();
+@@ -566,6 +570,7 @@ int igt_audio_driver_unload(const char **who)
+ {
+ 	const char *drm_driver = "i915";
+ 	unsigned int num_mod, i, j;
++	int pipewire_pulse_pid = 0;
+ 	struct module_ref *mod;
+ 	int pos = -1;
+ 	int ret = 0;
+@@ -608,12 +613,19 @@ int igt_audio_driver_unload(const char **who)
+ 		 * first, in order to make it possible to unload the driver
+ 		 */
+ 		if (strstr(mod[pos].name, "snd")) {
+-			if (igt_lsof_kill_audio_processes()) {
++			if (igt_lsof_kill_audio_processes(&pipewire_pulse_pid)) {
+ 				ret = EACCES;
+ 				goto ret;
+ 			}
+ 		}
++
++		ret = pipewire_pulse_start_reserve(pipewire_pulse_pid);
++		if (ret)
++			igt_warn("Failed to notify pipewire_pulse\n");
+ 		ret = igt_unload_driver(mod, num_mod, pos);
++		pipewire_pulse_stop_reserve(pipewire_pulse_pid);
++		if (ret)
++			break;
+ 	}
+ 
+ ret:
 -- 
 2.35.1
