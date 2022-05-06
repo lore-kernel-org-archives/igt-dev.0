@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF60C10E530
- for <igt-dev@lists.freedesktop.org>; Fri,  6 May 2022 09:13:25 +0000 (UTC)
-Date: Fri, 6 May 2022 11:12:23 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-Message-ID: <20220506111223.114c13d9@maurocar-mobl2>
-In-Reply-To: <YnP++wDyxg1Me+jA@intel.intel>
-References: <20220504095904.2145592-1-mauro.chehab@linux.intel.com>
- <20220504095904.2145592-4-mauro.chehab@linux.intel.com>
- <YnP++wDyxg1Me+jA@intel.intel>
+Content-Type: multipart/alternative;
+ boundary="===============3621600979487769611=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/6] lib/igt_kmod: improve audio
- unbind logic
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+Date: Fri, 06 May 2022 09:39:34 -0000
+Message-ID: <165182997495.18815.10275055330964081349@emeril.freedesktop.org>
+References: <20220506071104.2876292-1-jouni.hogander@intel.com>
+In-Reply-To: <20220506071104.2876292-1-jouni.hogander@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVGVzdGNh?=
+ =?utf-8?q?ses_for_selective_fetch_area_calculation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,256 +17,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 5 May 2022 18:44:43 +0200
-Andi Shyti <andi.shyti@linux.intel.com> wrote:
+--===============3621600979487769611==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> Hi Mauro,
-> 
-> > +static struct module_ref *read_module_dependencies(unsigned int *num_mod)
-> > +{
-> > +	FILE *fp = fopen("/proc/modules", "r");
-> > +	struct module_ref *mod = NULL;
-> > +	size_t line_buf_size = 0;
-> > +	char *required_by, *p;
-> > +	unsigned n_mod = 0;
-> > +	unsigned num_req;
-> > +	char *line = NULL;
-> > +	int len = 0;
-> > +	int i, ret;
-> > +
-> > +	igt_assert(fp);
-> > +
-> > +	while ((len = getline(&line, &line_buf_size, fp)) > 0) {
-> > +		mod = realloc(mod, (n_mod + 1) * sizeof(*mod));
-> > +		igt_assert(mod);
-> > +		mod[n_mod].required_by = NULL;
-> > +
-> > +		p = strtok(line, " ");
-> > +		mod[n_mod].name = strdup(p);
-> > +
-> > +		p = strtok(NULL, " ");
-> > +		ret = sscanf(p, "%lu", &mod[n_mod].mem);
-> > +		igt_assert(ret == 1);
-> > +
-> > +		p = strtok(NULL, " ");
-> > +		ret = sscanf(p, "%u", &mod[n_mod].ref_count);
-> > +		igt_assert(ret == 1);
-> > +
-> > +		num_req = 0;
-> > +		required_by = strtok(NULL, " ");
-> > +		if (strcmp(required_by, "-")) {
-> > +			p = strtok(required_by, ",");
-> > +			while (p) {
-> > +				for (i = 0; i < n_mod; i++) {
-> > +					if (!strcmp(p, mod[i].name))
-> > +						break;
-> > +				}  
-> 
-> brackets not needed here
-> 
-> > +				igt_assert(i < n_mod);
-> > +
-> > +				mod[n_mod].required_by = realloc(mod[n_mod].required_by,
-> > +								 (num_req + 1) * sizeof(unsigned int));
-> > +				mod[n_mod].required_by[num_req] = i;
-> > +				num_req++;
-> > +				p = strtok(NULL, ",");
-> > +			}
-> > +		}
-> > +		mod[n_mod].num_required = num_req;
-> > +		n_mod++;
-> > +	}
-> > +	free(line);
-> > +	fclose(fp);
-> > +
-> > +	*num_mod = n_mod;
-> > +	return mod;
-> > +}  
-> 
-> it looks correct, haven't spotted any error in this function, but
-> I admit that string parsing can be complex. I trust you have
-> tested it properly. I will check it again, though.
+== Series Details ==
 
-Yeah, this was tested.
+Series: Testcases for selective fetch area calculation
+URL   : https://patchwork.freedesktop.org/series/103661/
+State : success
 
-Basically, /proc/modules produce:
+== Summary ==
 
-	i2c_hid_acpi 16384 0 - Live 0x0000000000000000
-	typec 65536 1 typec_ucsi, Live 0x0000000000000000
-	wmi 32768 3 hp_wmi,wmi_bmof,intel_wmi_thunderbolt, Live 0x0000000000000000
+CI Bug Log - changes from CI_DRM_11616 -> IGTPW_7050
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7050/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): fi-bsw-cyan 
 
 
-So, the third parameter (module dependencies) is either "-" or a
-comma-separated list mod modules, ending with a comma.
+Changes
+-------
 
-I opted to use strtok here to get the 4 parameters:
+  No changes found
 
-	- module name;
-	- module size (unused, but need to parse it anyway);
-	- refcount;
-	- module dependencies.
 
-As strtok(NULL, delimiter) continues the search, without requiring
-any extra logic. 
+Build changes
+-------------
 
-Then, I use strtok() again with "," to handle module dependencies
-at the 4th parameter, if the parameter is not equal to "-" (meaning
-no dependencies).
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6467 -> IGTPW_7050
 
-Btw, to test it, I applied my Kernel patches and commented the
-Kernel version fallback check.
+  CI-20190529: 20190529
+  CI_DRM_11616: 65a5fe9ac96c60bd6dfcc44a0bb8d584912ea53d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7050: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7050/index.html
+  IGT_6467: 929abc51cdd48d673efa03e025b1f31b557972ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-> 
-> [...]
-> 
-> > +#define LINUX_VERSION(major, minor, patch)			\
-> > +		     ((major) << 16 | (minor) << 8 | (patch))  
-> 
-> I can't believe that the glibc is not providing anything similar.
 
-Fedora has a macro like that (KERNEL_VERSION) under:
-	/usr/include/linux/version.h
+Testlist changes
+----------------
 
-but I'm not 100% sure if this would exist on all distros. The
-Fedora one has things like:
++igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-fully-sf
++igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-sf
++igt@kms_psr2_sf@overlay-plane-move-continuous-exceed-fully-sf
++igt@kms_psr2_sf@overlay-plane-move-continuous-exceed-sf
++igt@kms_psr2_sf@primary-plane-update-sf-dmg-area-big-fb
 
-	#define RHEL_MAJOR 9
-	#define RHEL_MINOR 99
+== Logs ==
 
-So, IMO the best is to just define it.
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7050/index.html
 
-> 
-> > +
-> > +  
-> 
-> you have an extra line here
+--===============3621600979487769611==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Ok, will drop.
 
-> 
-> > +static int linux_kernel_version(void)
-> > +{
-> > +	struct utsname utsname;
-> > +	int ver[3] = { 0 };  
-> 
-> [...]
-> 
-> > +
-> > +int igt_audio_driver_unload(const char **who)  
-> 
-> ha! this confused me because I start reading from the bottom and
-> I didn't notice the above
-> 
->   -int igt_audio_driver_unload(const char **who)
->   +static int igt_always_unload_audio_driver(const char **who)
-> 
-> > +{
-> > +	unsigned int num_mod, i, j;
-> > +	struct module_ref *mod;
-> > +	int pos = -1;
-> > +	int ret = 0;
-> > +
-> > +	/*
-> > +	 * On older Kernels, there's no way to check if the audio driver
-> > +	 * binds into the DRM one. So, always remove audio drivers that
-> > +	 * might be binding.
-> > +	 */
-> > +	if (linux_kernel_version() < LINUX_VERSION(5, 20, 0))
-> > +		return igt_always_unload_audio_driver(who);  
-> 
-> ... so that this one becomes what you did in patch 1.
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-Yes. On current Kernels, there's no way to know if snd_hda_intel
-is using i915. So, it will use a somewhat hacky logic there,
-that will always unload snd_hda_intel, even if not needed, and
-will even ignore recursive dependencies (if any).
 
-This should hopefully work fine with current hardware tested
-on our CI.
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Testcases for selective fetch area calculation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103661/">https://patchwork.freedesktop.org/series/103661/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-Once the Kernel patches reach upstream, IGT will use the newer
-way, which is independent on the audio module names and will
-handle more complex cases where the removal of a `snd_driver_foo`
-driver would require some other Kernel drivers first.
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7050/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7050/index.html</a></td></tr>
 
-This should work fine with the newer approach where SOF/SOC are
-being used for newer CPUs, and could require more complex unload
-logic.
+</table>
 
-> > +	/*
-> > +	 * Newer Kernels gained support for showing the dependencies between
-> > +	 * audio and DRM drivers via /proc/modules and lsmod. Use it to
-> > +	 * detect if removing the audio driver is needed, properly unloading
-> > +	 * any audio processes that could be using the audio driver and
-> > +	 * handling module dependencies. Such solution should be generic
-> > +	 * enough to work with newer SOC/SOF drivers if ever needed.
-> > +	 */
-> > +
-> > +	mod = read_module_dependencies(&num_mod);
-> > +
-> > +	for (i = 0; i < num_mod; i++) {
-> > +		if (!strcmp(mod[i].name, "i915")) {
-> > +			break;
-> > +		}
-> > +	}  
-> 
-> no need for brackets here.
 
-I'll drop.
+    <h1>CI Bug Log - changes from CI_DRM_11616 -&gt; IGTPW_7050</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7050/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Missing    (1): fi-bsw-cyan </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6467 -&gt; IGTPW_7050</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11616: 65a5fe9ac96c60bd6dfcc44a0bb8d584912ea53d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7050: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7050/index.html<br />
+  IGT_6467: 929abc51cdd48d673efa03e025b1f31b557972ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-fully-sf<br />
++igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-sf<br />
++igt@kms_psr2_sf@overlay-plane-move-continuous-exceed-fully-sf<br />
++igt@kms_psr2_sf@overlay-plane-move-continuous-exceed-sf<br />
++igt@kms_psr2_sf@primary-plane-update-sf-dmg-area-big-fb</p>
 
-> 
-> > +
-> > +	if (i == num_mod)
-> > +		return 0;
-> > +
-> > +	/* Recursively remove all drivers that depend on i915 */
-> > +	for (j = 0; j < mod[i].num_required; j++) {
-> > +		pos = mod[i].required_by[j];
-> > +		if (who)
-> > +			*who = strdup(mod[pos].name);
-> > +		/*
-> > +		 * If a sound driver depends on i915, kill audio processes
-> > +		 * first, in order to make it possible to unload the driver
-> > +		 */
-> > +		if (strstr(mod[pos].name, "snd")) {
-> > +			if (igt_lsof_kill_audio_processes()) {
-> > +				ret = 1;  
-> 
-> is this a boolean function? Shall we choose some proper errnos?
-> 
-> > +				goto ret;  
-> 
-> do we need to free who here...
+</body>
+</html>
 
-The structs that handle the module references should be freed.
-
-> 
-> > +			}
-> > +		}
-> > +		ret = igt_unload_driver(mod, num_mod, pos);  
-> 
-> ... and here?
-> 
-> And here... do we need to handle the error?
-
-yeah, a goto is missing here - and also at the trivial case where there's no
-DRM driver that might have snd holders are loaded.
-
-> 
-> > +	}
-> > +
-> > +ret:
-> > +	free_module_ref(mod, num_mod);
-> > +
-> > +	return ret;
-> > +}  
-> 
-> Thanks,
-> Andi
+--===============3621600979487769611==--
