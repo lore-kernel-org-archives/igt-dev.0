@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AADFA10E76A
- for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 11:43:14 +0000 (UTC)
-Message-ID: <1e7442e6-ff75-2723-e6d2-43021eea44e7@intel.com>
-Date: Mon, 9 May 2022 12:43:11 +0100
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DCC210EDA3
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 11:59:07 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  9 May 2022 17:31:32 +0530
+Message-Id: <20220509120132.5769-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Language: en-GB
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20220509113059.38048-1-zbigniew.kempczynski@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20220509113059.38048-1-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_memory_region: Use separate
- context for probing offset and alignment
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Skip the subtest if
+ the resolution is not supported
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,112 +17,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 09/05/2022 12:30, Zbigniew Kempczyński wrote:
-> Probing alignment/offset (A/O) in default context works properly only
-> when there're no processes which competes on same vm space. To avoid
-> risk that single probe will be called on already used offset in another
-> process lets use dedicated context for this purpose if possible.
-> 
-> In other words when forking occur without A/O cache filled (subject of
-> COW) children will exercise A/O individually. Using same default context
-> leads to risk of probing offset which is in flight in another child
-> thus we can get different A/O. Such behavior is not allowed as allocator
-> infrastructure requires same type, strategy and alignment on single vm.
-> We expect coherent A/O in different children so we try to use separate
-> context to fill this requirement.
-> 
-> v2: on old gens where're no logical contexts use default context
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/5729
-> ---
->   lib/i915/intel_memory_region.c | 15 +++++++++++++--
->   1 file changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-> index 593f4bedc8..c0f67bd737 100644
-> --- a/lib/i915/intel_memory_region.c
-> +++ b/lib/i915/intel_memory_region.c
-> @@ -630,7 +630,7 @@ uint64_t gem_detect_min_start_offset_for_region(int i915, uint32_t region)
->   	struct drm_i915_gem_execbuffer2 eb;
->   	uint64_t start_offset = 0;
->   	uint64_t bb_size = PAGE_SIZE;
-> -	uint32_t *batch;
-> +	uint32_t *batch, ctx = 0;
->   	uint16_t devid = intel_get_drm_devid(i915);
->   	struct cache_entry *entry, *newentry;
->   
-> @@ -640,12 +640,16 @@ uint64_t gem_detect_min_start_offset_for_region(int i915, uint32_t region)
->   		goto out;
->   	pthread_mutex_unlock(&cache_mutex);
->   
-> +	/* Use separate context if possible to avoid offset overlapping */
-> +	__gem_context_create(i915, &ctx);
-> +
->   	memset(&obj, 0, sizeof(obj));
->   	memset(&eb, 0, sizeof(eb));
->   
->   	eb.buffers_ptr = to_user_pointer(&obj);
->   	eb.buffer_count = 1;
->   	eb.flags = I915_EXEC_DEFAULT;
-> +	eb.rsvd1 = ctx;
->   	igt_assert(__gem_create_in_memory_regions(i915, &obj.handle, &bb_size, region) == 0);
->   	obj.flags = EXEC_OBJECT_PINNED;
->   
-> @@ -670,6 +674,7 @@ uint64_t gem_detect_min_start_offset_for_region(int i915, uint32_t region)
->   		igt_assert(start_offset <= 1ull << 48);
->   	}
->   	gem_close(i915, obj.handle);
-> +	gem_context_destroy(i915, ctx);
+The kms_concurrent is about testing mode setting with
+reducing the resolution and then again increasing it,
+for this the test will take the high resolution supported
+by the connector and then calculate the lowest resolution,
+if the calculated resolution is not supported by the connector
+it will assign the default resolution of 1024x 768 without
+checking.
 
-if (ctx)
-     gem_context_destroy();
+Added check to skip the subtest if the default resolution is not supported
+by the connector, to achieve that we are skipping if,
+"mode_lo->vdisplay  > mode_hi->vdisplay".
 
-?
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_concurrent.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-r-b still stands, assuming CI is now happy :)
-
->   
->   	newentry = malloc(sizeof(*newentry));
->   	if (!newentry)
-> @@ -770,7 +775,7 @@ uint64_t gem_detect_min_alignment_for_regions(int i915,
->   	struct drm_i915_gem_execbuffer2 eb;
->   	uint64_t min_alignment = PAGE_SIZE;
->   	uint64_t bb_size = PAGE_SIZE, obj_size = PAGE_SIZE;
-> -	uint32_t *batch;
-> +	uint32_t *batch, ctx = 0;
->   	uint16_t devid = intel_get_drm_devid(i915);
->   	struct cache_entry *entry, *newentry;
->   
-> @@ -780,6 +785,9 @@ uint64_t gem_detect_min_alignment_for_regions(int i915,
->   		goto out;
->   	pthread_mutex_unlock(&cache_mutex);
->   
-> +	/* Use separate context if possible to avoid offset overlapping */
-> +	__gem_context_create(i915, &ctx);
-> +
->   	memset(obj, 0, sizeof(obj));
->   	memset(&eb, 0, sizeof(eb));
->   
-> @@ -787,6 +795,7 @@ uint64_t gem_detect_min_alignment_for_regions(int i915,
->   	eb.buffers_ptr = to_user_pointer(obj);
->   	eb.buffer_count = ARRAY_SIZE(obj);
->   	eb.flags = I915_EXEC_BATCH_FIRST | I915_EXEC_DEFAULT;
-> +	eb.rsvd1 = ctx;
->   	igt_assert(__gem_create_in_memory_regions(i915, &obj[0].handle,
->   						  &bb_size, region1) == 0);
->   
-> @@ -815,6 +824,8 @@ uint64_t gem_detect_min_alignment_for_regions(int i915,
->   
->   	gem_close(i915, obj[0].handle);
->   	gem_close(i915, obj[1].handle);
-> +	if (ctx)
-> +		gem_context_destroy(i915, ctx);
->   
->   	newentry = malloc(sizeof(*newentry));
->   	if (!newentry)
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 82b2021e..e7f8d85c 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -272,6 +272,8 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+ 		mode_hi = igt_output_get_mode(output);
+ 		mode_lo = get_lowres_mode(data, mode_hi, output);
+ 
++		igt_skip_on_f(mode_lo->vdisplay > mode_hi->vdisplay, "No suitable resolution was found\n");
++
+ 		/* switch to lower resolution */
+ 		igt_output_override_mode(output, mode_lo);
+ 		free(mode_lo);
+-- 
+2.26.2
