@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85D3010E437
- for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 12:33:48 +0000 (UTC)
-Date: Mon, 9 May 2022 14:33:36 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 762AE10EA7C
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 12:39:25 +0000 (UTC)
+Date: Mon, 9 May 2022 14:39:20 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YnkKIHx78BctsXmm@kamilkon-DESK1>
+Message-ID: <YnkLeGuBSSuekZUC@kamilkon-DESK1>
 References: <20220509072637.3291112-1-bhanuprakash.modem@intel.com>
- <20220509072637.3291112-2-bhanuprakash.modem@intel.com>
+ <20220509072637.3291112-4-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220509072637.3291112-2-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/6] tests/kms_pipe_crc_basic: Create dynamic
- subtests
+In-Reply-To: <20220509072637.3291112-4-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [PATCH 3/6] tests/kms_cursor_edge_walk: Create
+ dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,173 +27,115 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Bhanuprakash,
 
-On 2022-05-09 at 12:56:32 +0530, Bhanuprakash Modem wrote:
+On 2022-05-09 at 12:56:34 +0530, Bhanuprakash Modem wrote:
 > Covert the existing subtests to dynamic subtests at pipe level.
 ----^
 s/Covert/Convert/
 
-This needs to apply here and also in other commit messages.
-
-imho you should also change Subject of this series, e.g.
-s/Create dynamic subtests/Convert to dynamic subtests/
-
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  tests/kms_pipe_crc_basic.c | 111 ++++++++++++++++++++++---------------
->  1 file changed, 65 insertions(+), 46 deletions(-)
+>  tests/kms_cursor_edge_walk.c | 66 ++++++++++++++++--------------------
+>  1 file changed, 30 insertions(+), 36 deletions(-)
 > 
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 0861c46d..9627a2c7 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -59,8 +59,13 @@ static void test_bad_source(data_t *data)
+> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+> index b775714f..01ac9790 100644
+> --- a/tests/kms_cursor_edge_walk.c
+> +++ b/tests/kms_cursor_edge_walk.c
+> @@ -309,6 +309,17 @@ static const char *help_str =
 >  
->  #define N_CRCS	3
->  
-> -#define TEST_SEQUENCE (1<<0)
-> -#define TEST_NONBLOCK (1<<1)
-> +enum {
-> +	TEST_NONE = 0,
-
-This name is unfortunate, better call it basic, imho TEST_BASIC
-looks better.
-
-> +	TEST_SEQUENCE = 1 << 0,
-> +	TEST_NONBLOCK = 1 << 1,
-> +	TEST_SUSPEND = 1 << 2,
-> +	TEST_HANG = 1 << 3,
-> +};
->  
->  static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
+>  igt_main_args("", long_opts, help_str, opt_handler, &data)
 >  {
-> @@ -270,6 +275,25 @@ data_t data = {0, };
->  igt_main
->  {
->  	enum pipe pipe;
 > +	struct {
 > +		const char *name;
 > +		unsigned flags;
-> +		const char *desc;
+
+Add description field here.
+
 > +	} tests[] = {
-> +		{ "read-crc", TEST_NONE,
-> +			"Test for pipe CRC reads." },
-> +		{ "read-crc-frame-sequence", TEST_SEQUENCE,
-> +			"Tests the pipe CRC read and ensure frame sequence." },
-> +		{ "nonblocking-crc", TEST_NONBLOCK,
-> +			"Test for O_NONBLOCK CRC reads." },
-> +		{ "nonblocking-crc-frame-sequence", TEST_SEQUENCE | TEST_NONBLOCK,
-> +			"Test for O_NONBLOCK CRC reads and ensure frame sequence." },
-> +		{ "suspend-read-crc", TEST_SUSPEND,
-> +			"Suspend test for pipe CRC reads." },
-> +		{ "hand-read-crc", TEST_HANG,
-> +			"Hang test for pipe CRC read." },
+> +		{ "left-edge", EDGE_LEFT },
+
+Put descriptions here.
+
+> +		{ "right-edge", EDGE_RIGHT },
+> +		{ "top-edge", EDGE_TOP },
+> +		{ "top-bottom", EDGE_BOTTOM },
 > +	};
 > +	int i;
->  
+> +
 >  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -286,54 +310,49 @@ igt_main
->  	igt_subtest("bad-source")
->  		test_bad_source(&data);
+>  		int ret;
 >  
-> -	for_each_pipe_static(pipe) {
-> -		igt_describe("Test for pipe CRC reads.");
-> -		igt_subtest_f("read-crc-pipe-%s", kmstest_pipe_name(pipe))
-> -			test_read_crc(&data, pipe, 0);
+> @@ -328,44 +339,27 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>  		igt_require_pipe_crc(data.drm_fd);
+>  
+>  		igt_display_require(&data.display, data.drm_fd);
+> +		igt_display_require_output(&data.display);
+>  	}
+>  
+> -	for_each_pipe_static(data.pipe) {
+> -		igt_subtest_group {
+> -			igt_fixture {
+> -				igt_display_require_output_on_pipe(&data.display, data.pipe);
+> -				data.output = igt_get_single_output_for_pipe(&data.display, data.pipe);
+> -			}
 > -
-> -		igt_describe("Tests the pipe CRC read and ensure frame sequence.");
-> -		igt_subtest_f("read-crc-pipe-%s-frame-sequence", kmstest_pipe_name(pipe))
-> -			test_read_crc(&data, pipe, TEST_SEQUENCE);
+> -			for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
+> -				data.curh = data.curw;
 > -
-> -		igt_describe("Test for O_NONBLOCK CRC reads.");
-> -		igt_subtest_f("nonblocking-crc-pipe-%s", kmstest_pipe_name(pipe))
-> -			test_read_crc(&data, pipe, TEST_NONBLOCK);
+> -				igt_fixture
+> -					igt_require(data.curw <= max_curw && data.curh <= max_curh);
 > -
-> -		igt_describe("Test for O_NONBLOCK CRC reads and ensure frame sequence.");
-> -		igt_subtest_f("nonblocking-crc-pipe-%s-frame-sequence", kmstest_pipe_name(pipe))
-> -			test_read_crc(&data, pipe, TEST_SEQUENCE | TEST_NONBLOCK);
+> -				igt_describe("Checking cursor by walking left edge of screen");
+> -				igt_subtest_f("pipe-%s-%dx%d-left-edge",
+> -					kmstest_pipe_name(data.pipe),
+> -					data.curw, data.curh)
+> -					test_crtc(&data, EDGE_LEFT);
 > -
-> -		igt_describe("Suspend test for pipe CRC reads");
-> -		igt_subtest_f("suspend-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
-> -			test_read_crc(&data, pipe, 0);
+> -				igt_describe("Checking cursor by walking right edge of screen");
+> -				igt_subtest_f("pipe-%s-%dx%d-right-edge",
+> -					kmstest_pipe_name(data.pipe),
+> -					data.curw, data.curh)
+> -					test_crtc(&data, EDGE_RIGHT);
 > -
-> -			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> -						      SUSPEND_TEST_NONE);
+> -				igt_describe("Checking cursor by walking top edge of screen");
+> -				igt_subtest_f("pipe-%s-%dx%d-top-edge",
+> -					kmstest_pipe_name(data.pipe),
+> -					data.curw, data.curh)
+> -					test_crtc(&data, EDGE_TOP);
 > -
-> -			test_read_crc(&data, pipe, 0);
-> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-> +		igt_describe(tests[i].desc);
-> +		igt_subtest_with_dynamic(tests[i].name) {
-> +			for_each_pipe(&data.display, pipe) {
-> +				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
-> +					if (tests[i].flags & TEST_SUSPEND) {
-> +						test_read_crc(&data, pipe, TEST_NONE);
+> -				igt_describe("Checking cursor by walking bottom edge of screen");
+> -				igt_subtest_f("pipe-%s-%dx%d-bottom-edge",
+> -					kmstest_pipe_name(data.pipe),
+> -					data.curw, data.curh)
+> -					test_crtc(&data, EDGE_BOTTOM);
+> +	igt_describe("Checking cursor by walking left/right/top/bottom edge of screen");
+> +	igt_subtest_group {
+> +		for (i = 0; i < ARRAY_SIZE(tests); i++) {
 
-Here you can just use 0 instead of TEST_NONE (same note apply
-below).
+Please add description here.
 
 Regards,
 Kamil
 
+> +			igt_subtest_with_dynamic(tests[i].name) {
+> +				for_each_pipe(&data.display, data.pipe) {
+> +					igt_fixture {
+> +						igt_require(data.curw <= max_curw && data.curh <= max_curh);
+> +						data.output = igt_get_single_output_for_pipe(&data.display, data.pipe);
+> +					}
 > +
-> +						igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> +									      SUSPEND_TEST_NONE);
-> +
-> +						test_read_crc(&data, pipe, TEST_NONE);
-> +					} else if (tests[i].flags & TEST_SUSPEND) {
-> +						igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
-> +
-> +						test_read_crc(&data, pipe, TEST_NONE);
-> +						igt_force_gpu_reset(data.drm_fd);
-> +						test_read_crc(&data, pipe, TEST_NONE);
-> +
-> +						igt_disallow_hang(data.drm_fd, hang);
-> +					} else {
-> +						test_read_crc(&data, pipe, tests[i].flags);
+> +					for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
+> +						data.curh = data.curw;
+> +						igt_dynamic_f("pipe-%s-%dx%d",
+> +							      kmstest_pipe_name(data.pipe),
+> +							      data.curw, data.curh)
+> +							test_crtc(&data, tests[i].flags);
 > +					}
 > +				}
-> +			}
+>  			}
 >  		}
-> +	}
->  
-> -		igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
-> -			     "does not cause issues.");
-> -		igt_subtest_f("disable-crc-after-crtc-pipe-%s", kmstest_pipe_name(pipe))
-> -			test_disable_crc_after_crtc(&data, pipe);
-> -
-> -		igt_describe("Hang test for pipe CRC read");
-> -		igt_subtest_f("hang-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
-> -			igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
-> -
-> -			test_read_crc(&data, pipe, 0);
-> -
-> -			igt_force_gpu_reset(data.drm_fd);
-> -
-> -			test_read_crc(&data, pipe, 0);
-> -
-> -			igt_disallow_hang(data.drm_fd, hang);
-> +	igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
-> +		     "does not cause issues.");
-> +	igt_subtest_with_dynamic("disable-crc-after-crtc") {
-> +		for_each_pipe(&data.display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_disable_crc_after_crtc(&data, pipe);
->  		}
-> +	}
->  
-> -		igt_describe("Basic sanity check for CRC mismatches");
-> -		igt_subtest_f("compare-crc-sanitycheck-pipe-%s", kmstest_pipe_name(pipe))
-> -			test_compare_crc(&data, pipe);
-> +	igt_describe("Basic sanity check for CRC mismatches");
-> +	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
-> +		for_each_pipe(&data.display, pipe) {
-> +			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +				test_compare_crc(&data, pipe);
-> +		}
 >  	}
->  
->  	igt_fixture {
 > -- 
 > 2.35.1
 > 
