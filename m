@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 830E210E36B
- for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 08:59:20 +0000 (UTC)
-Date: Mon, 9 May 2022 10:59:14 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YnjX4nGRTGx1rags@kamilkon-DESK1>
-References: <20220506170447.1437849-1-jason.ekstrand@collabora.com>
- <20220506170447.1437849-2-jason.ekstrand@collabora.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CE9910E748
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 09:10:00 +0000 (UTC)
+Date: Mon, 9 May 2022 12:10:15 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Jessica Zhang <quic_jesszhan@quicinc.com>
+Message-ID: <Ynjad7oekC6FiUe8@platvala-desk.ger.corp.intel.com>
+References: <20220506181432.165-1-quic_jesszhan@quicinc.com>
+ <20220506181432.165-3-quic_jesszhan@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220506170447.1437849-2-jason.ekstrand@collabora.com>
-Subject: Re: [igt-dev] [PATCH 1/2] tests/dmabuf: Add tests for sync_file
- export (v4)
+In-Reply-To: <20220506181432.165-3-quic_jesszhan@quicinc.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v1 2/3] tests/kms_universal_plane: Use
+ igt_get_assigned_primary to get the primary plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,387 +21,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, quic_aravindh@quicinc.com,
+ robdclark@chromium.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jason,
-
-On 2022-05-06 at 12:04:46 -0500, Jason Ekstrand wrote:
-> From: Jason Ekstrand <jason@jlekstrand.net>
+On Fri, May 06, 2022 at 11:14:31AM -0700, Jessica Zhang wrote:
+> Currently, pageflip_test_pipe will use igt_output_get_plane_type to get
+> the primary plane of the pipe and assumes that the primary plane marked
+> by the driver will also be used by drmModePageFlip to perform the page flip.
 > 
-> v2 (Jason Ekstrand):
->  - Rename subtests to have "export" in the name
+> This is not necessarily true in cases where there are multiple possible
+> primary planes.
 > 
-> v3 (Jason Ekstrand):
->  - Add an export-before-signal subtest
+> To fix this, let's use igt_get_assigned_primary to get the primary plane
+> instead.
 > 
-> v4 (Jason Ekstrand):
->  - Test both via sync_file and via poll to ensure the semantics match
->    properly.
-> 
-> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
-> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 > ---
->  tests/dmabuf_sync_file.c | 328 +++++++++++++++++++++++++++++++++++++++
->  tests/meson.build        |   1 +
->  2 files changed, 329 insertions(+)
->  create mode 100644 tests/dmabuf_sync_file.c
+>  tests/kms_universal_plane.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
-> new file mode 100644
-> index 00000000..7fed60f8
-> --- /dev/null
-> +++ b/tests/dmabuf_sync_file.c
-> @@ -0,0 +1,328 @@
-> +/*
-> + * Copyright © 2021 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_vgem.h"
-> +
-> +#include <linux/dma-buf.h>
-> +#include <sys/poll.h>
-> +
-> +IGT_TEST_DESCRIPTION("Tests for sync_file export from dma-buf");
-> +
-> +struct igt_dma_buf_sync_file {
-> +	__u32 flags;
-> +	__s32 fd;
-> +};
-> +
-> +#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
-> +
-> +static bool has_dmabuf_export_sync_file(int fd)
-> +{
-> +	struct vgem_bo bo;
-> +	int dmabuf, ret;
-> +	struct igt_dma_buf_sync_file arg;
-> +
-> +	bo.width = 1;
-> +	bo.height = 1;
-> +	bo.bpp = 32;
-> +	vgem_create(fd, &bo);
-> +
-> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
-> +	gem_close(fd, bo.handle);
-> +
-> +	arg.flags = DMA_BUF_SYNC_WRITE;
-> +	arg.fd = -1;
-> +
-> +	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
-> +	close(dmabuf);
-> +	igt_assert(ret == 0 || errno == ENOTTY);
-> +
-> +	return ret == 0;
-> +}
-> +
-> +static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
-> +{
-> +	struct igt_dma_buf_sync_file arg;
-> +
-> +	arg.flags = flags;
-> +	arg.fd = -1;
-> +	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
-> +
-> +	return arg.fd;
-> +}
-> +
-> +static bool dmabuf_busy(int dmabuf, uint32_t flags)
-> +{
-> +	struct pollfd pfd = { .fd = dmabuf };
-> +
-> +	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
-> +	 * else poll() may return a non-zero value if there are only read
-> +	 * fences because POLLIN is ready even if POLLOUT isn't.
-> +	 */
-> +	if (flags & DMA_BUF_SYNC_WRITE)
-> +		pfd.events |= POLLOUT;
-> +	else if (flags & DMA_BUF_SYNC_READ)
-> +		pfd.events |= POLLIN;
-> +
-> +	return poll(&pfd, 1, 0) == 0;
-> +}
-> +
-> +static bool sync_file_busy(int sync_file)
-> +{
-> +	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
-> +	return poll(&pfd, 1, 0) == 0;
-> +}
-> +
-> +static bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
-> +{
-> +	int sync_file;
-> +	bool busy;
-> +
-> +	sync_file = dmabuf_export_sync_file(dmabuf, flags);
-> +	busy = sync_file_busy(sync_file);
-> +	close(sync_file);
-> +
-> +	return busy;
-> +}
-> +
-> +static void test_export_basic(int fd)
-> +{
-> +	struct vgem_bo bo;
-> +	int dmabuf;
-> +	uint32_t fence;
-> +
-> +	igt_require(has_dmabuf_export_sync_file(fd));
-> +
-> +	bo.width = 1;
-> +	bo.height = 1;
-> +	bo.bpp = 32;
-> +	vgem_create(fd, &bo);
-> +
-> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
-> +
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +
-> +	fence = vgem_fence_attach(fd, &bo, 0);
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
-> +
-> +	vgem_fence_signal(fd, fence);
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
-> +
-> +	fence = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
-> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
-> +
-> +	vgem_fence_signal(fd, fence);
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
-> +
-> +	close(dmabuf);
-> +	gem_close(fd, bo.handle);
-> +}
-> +
-> +static void test_export_before_signal(int fd)
-> +{
-> +	struct vgem_bo bo;
-> +	int dmabuf, read_fd, write_fd;
-> +	uint32_t fence;
-> +
-> +	igt_require(has_dmabuf_export_sync_file(fd));
-> +
-> +	bo.width = 1;
-> +	bo.height = 1;
-> +	bo.bpp = 32;
-> +	vgem_create(fd, &bo);
-> +
-> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
-> +
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +
-> +	fence = vgem_fence_attach(fd, &bo, 0);
-> +
-> +	read_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
-> +	write_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-> +
-> +	igt_assert(!sync_file_busy(read_fd));
-> +	igt_assert(sync_file_busy(write_fd));
-> +
-> +	vgem_fence_signal(fd, fence);
-> +
-> +	igt_assert(!sync_file_busy(read_fd));
-> +	igt_assert(!sync_file_busy(write_fd));
-> +
-> +	close(read_fd);
-> +	close(write_fd);
-> +
-> +	fence = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-> +
-> +	read_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
-> +	write_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-> +
-> +	igt_assert(sync_file_busy(read_fd));
-> +	igt_assert(sync_file_busy(write_fd));
-> +
-> +	vgem_fence_signal(fd, fence);
-> +
-> +	igt_assert(!sync_file_busy(read_fd));
-> +	igt_assert(!sync_file_busy(write_fd));
-> +
-> +	close(read_fd);
-> +	close(write_fd);
-> +
-> +	close(dmabuf);
-> +	gem_close(fd, bo.handle);
-> +}
-> +
-> +static void test_export_multiwait(int fd)
-> +{
-> +	struct vgem_bo bo;
-> +	int dmabuf, sync_file;
-> +	uint32_t fence1, fence2, fence3;
-> +
-> +	igt_require(has_dmabuf_export_sync_file(fd));
-> +
-> +	bo.width = 1;
-> +	bo.height = 1;
-> +	bo.bpp = 32;
-> +	vgem_create(fd, &bo);
-> +
-> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
-> +
-> +	fence1 = vgem_fence_attach(fd, &bo, 0);
-> +	fence2 = vgem_fence_attach(fd, &bo, 0);
-> +
-> +	sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-> +
-> +	fence3 = vgem_fence_attach(fd, &bo, 0);
-> +
-> +	igt_assert(sync_file_busy(sync_file));
-> +
-> +	vgem_fence_signal(fd, fence1);
-> +
-> +	igt_assert(sync_file_busy(sync_file));
-> +
-> +	vgem_fence_signal(fd, fence2);
-> +
-> +	igt_assert(!sync_file_busy(sync_file));
-> +
-> +	vgem_fence_signal(fd, fence3);
-> +
-> +	close(sync_file);
-> +	close(dmabuf);
-> +	gem_close(fd, bo.handle);
-> +}
-> +
-> +static void test_export_wait_after_attach(int fd)
-> +{
-> +	struct vgem_bo bo;
-> +	int dmabuf, read_sync_file, write_sync_file;
-> +	uint32_t fence1, fence2;
-> +
-> +	igt_require(has_dmabuf_export_sync_file(fd));
-> +
-> +	bo.width = 1;
-> +	bo.height = 1;
-> +	bo.bpp = 32;
-> +	vgem_create(fd, &bo);
-> +
-> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
-> +
-> +	read_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
-> +	write_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-> +
-> +	fence1 = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-> +
-> +	igt_assert(!sync_file_busy(read_sync_file));
-> +	igt_assert(!sync_file_busy(write_sync_file));
-> +	close(read_sync_file);
-> +	close(write_sync_file);
-> +
-> +	/* These wait on fence1 */
-> +	read_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
-> +	write_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
-> +
-> +	igt_assert(sync_file_busy(read_sync_file));
-> +	igt_assert(sync_file_busy(write_sync_file));
-> +
-> +	vgem_fence_signal(fd, fence1);
-> +	fence2 = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
-> +
-> +	/* fence1 has signaled */
-> +	igt_assert(!sync_file_busy(read_sync_file));
-> +	igt_assert(!sync_file_busy(write_sync_file));
-> +
-> +	/* fence2 has not */
-> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
-> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
-> +
-> +	vgem_fence_signal(fd, fence2);
-> +	close(read_sync_file);
-> +	close(write_sync_file);
-> +
-> +	close(dmabuf);
-> +	gem_close(fd, bo.handle);
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_VGEM);
-> +	}
-> +
+> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+> index 3cb6d704a6ef..7bd2c667b552 100644
+> --- a/tests/kms_universal_plane.c
+> +++ b/tests/kms_universal_plane.c
+> @@ -483,7 +483,7 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>  
+>  	pageflip_test_init(&test, output, pipe);
+>  
+> -	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +	primary = igt_get_assigned_primary(output, &data->display.pipes[pipe]);
 
-Please add description before subtest with igt_describe().
-You can run your test with --describe to see where you need it,
-then add to new subtests you introduced.
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7059/shard-glk6/igt@kms_rotation_crc@primary-rotation-270.html
 
-Regards,
-Kamil
+The setcrtc call is getting ENOSPC there. Doing that unconditionally
+is a no-go, and needs to be handled somehow cleanly.
 
-> +	igt_subtest_f("export-basic")
-> +		test_export_basic(fd);
-> +
-> +	igt_subtest_f("export-before-signal")
-> +		test_export_before_signal(fd);
-> +
-> +	igt_subtest_f("export-multiwait")
-> +		test_export_multiwait(fd);
-> +
-> +	igt_subtest_f("export-wait-after-attach")
-> +		test_export_wait_after_attach(fd);
-> +
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index fb0f1e37..b548dc3b 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -7,6 +7,7 @@ test_progs = [
->  	'core_setmaster_vs_auth',
->  	'debugfs_test',
->  	'dmabuf',
-> +	'dmabuf_sync_file',
->  	'device_reset',
->  	'drm_buddy',
->  	'drm_import_export',
-> -- 
-> 2.36.0
-> 
+Check in igt_get_assigned_primary that there's multiple primary
+planes? Check that in init and store that info in igt_output_t or
+igt_pipe_t? Check for msm device specifically (I don't like this, but
+it's the option if all else is unclean)?
+
+
+-- 
+Petri Latvala
