@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDEBD10E3D9
- for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 13:26:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55B2610E2A6
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 13:26:25 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 May 2022 18:53:30 +0530
-Message-Id: <20220509132330.3310616-7-bhanuprakash.modem@intel.com>
+Date: Mon,  9 May 2022 18:53:27 +0530
+Message-Id: <20220509132330.3310616-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220509132330.3310616-1-bhanuprakash.modem@intel.com>
 References: <20220509132330.3310616-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 6/6] tests/intel-ci: Rename tests in BAT
+Subject: [igt-dev] [v2 3/6] tests/kms_cursor_edge_walk: Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,68 +23,98 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As we converted the subtests to dynamic, we must rename the
-same subtests in BAT.
-
-V2:
-* Remove dynamic subtests
+Convert the existing subtests to dynamic subtests at pipe level.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 30 +++++++++------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ tests/kms_cursor_edge_walk.c | 66 ++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 36 deletions(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index d075aa31..6e07d4da 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -97,14 +97,9 @@ igt@kms_chamelium@hdmi-crc-fast
- igt@kms_chamelium@vga-hpd-fast
- igt@kms_chamelium@vga-edid-read
- igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-+igt@kms_cursor_legacy@basic-busy-flip-before-cursor
-+igt@kms_cursor_legacy@basic-flip-after-cursor
-+igt@kms_cursor_legacy@basic-flip-before-cursor
- igt@kms_flip@basic-flip-vs-dpms
- igt@kms_flip@basic-flip-vs-modeset
- igt@kms_flip@basic-flip-vs-wf_vblank
-@@ -114,17 +109,12 @@ igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@force-load-detect
- igt@kms_force_connector_basic@prune-stale-modes
- igt@kms_frontbuffer_tracking@basic
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d
--igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
--igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
--igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
--igt@kms_pipe_crc_basic@read-crc-pipe-a
--igt@kms_pipe_crc_basic@read-crc-pipe-b
--igt@kms_pipe_crc_basic@read-crc-pipe-c
--igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-+igt@kms_pipe_crc_basic@hang-read-crc
-+igt@kms_pipe_crc_basic@nonblocking-crc
-+igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-+igt@kms_pipe_crc_basic@read-crc
-+igt@kms_pipe_crc_basic@read-crc-frame-sequence
- igt@kms_psr@primary_page_flip
- igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
-@@ -180,4 +170,4 @@ igt@i915_suspend@system-suspend-without-i915
- igt@gem_exec_suspend@basic-s0
- igt@gem_exec_suspend@basic-s3
- igt@kms_chamelium@common-hpd-after-suspend
--igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
-+igt@kms_pipe_crc_basic@suspend-read-crc
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index b775714f..01ac9790 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -309,6 +309,17 @@ static const char *help_str =
+ 
+ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ {
++	struct {
++		const char *name;
++		unsigned flags;
++	} tests[] = {
++		{ "left-edge", EDGE_LEFT },
++		{ "right-edge", EDGE_RIGHT },
++		{ "top-edge", EDGE_TOP },
++		{ "top-bottom", EDGE_BOTTOM },
++	};
++	int i;
++
+ 	igt_fixture {
+ 		int ret;
+ 
+@@ -328,44 +339,27 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		igt_require_pipe_crc(data.drm_fd);
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
+ 	}
+ 
+-	for_each_pipe_static(data.pipe) {
+-		igt_subtest_group {
+-			igt_fixture {
+-				igt_display_require_output_on_pipe(&data.display, data.pipe);
+-				data.output = igt_get_single_output_for_pipe(&data.display, data.pipe);
+-			}
+-
+-			for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
+-				data.curh = data.curw;
+-
+-				igt_fixture
+-					igt_require(data.curw <= max_curw && data.curh <= max_curh);
+-
+-				igt_describe("Checking cursor by walking left edge of screen");
+-				igt_subtest_f("pipe-%s-%dx%d-left-edge",
+-					kmstest_pipe_name(data.pipe),
+-					data.curw, data.curh)
+-					test_crtc(&data, EDGE_LEFT);
+-
+-				igt_describe("Checking cursor by walking right edge of screen");
+-				igt_subtest_f("pipe-%s-%dx%d-right-edge",
+-					kmstest_pipe_name(data.pipe),
+-					data.curw, data.curh)
+-					test_crtc(&data, EDGE_RIGHT);
+-
+-				igt_describe("Checking cursor by walking top edge of screen");
+-				igt_subtest_f("pipe-%s-%dx%d-top-edge",
+-					kmstest_pipe_name(data.pipe),
+-					data.curw, data.curh)
+-					test_crtc(&data, EDGE_TOP);
+-
+-				igt_describe("Checking cursor by walking bottom edge of screen");
+-				igt_subtest_f("pipe-%s-%dx%d-bottom-edge",
+-					kmstest_pipe_name(data.pipe),
+-					data.curw, data.curh)
+-					test_crtc(&data, EDGE_BOTTOM);
++	igt_describe("Checking cursor by walking left/right/top/bottom edge of screen");
++	igt_subtest_group {
++		for (i = 0; i < ARRAY_SIZE(tests); i++) {
++			igt_subtest_with_dynamic(tests[i].name) {
++				for_each_pipe(&data.display, data.pipe) {
++					igt_fixture {
++						igt_require(data.curw <= max_curw && data.curh <= max_curh);
++						data.output = igt_get_single_output_for_pipe(&data.display, data.pipe);
++					}
++
++					for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
++						data.curh = data.curw;
++						igt_dynamic_f("pipe-%s-%dx%d",
++							      kmstest_pipe_name(data.pipe),
++							      data.curw, data.curh)
++							test_crtc(&data, tests[i].flags);
++					}
++				}
+ 			}
+ 		}
+ 	}
 -- 
 2.35.1
