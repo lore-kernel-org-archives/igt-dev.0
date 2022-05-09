@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7659010E37B
- for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 08:45:53 +0000 (UTC)
-Date: Mon, 9 May 2022 04:45:48 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <YnjUvN0aTmQ54UnI@intel.com>
-References: <20220506154553.6146-1-anshuman.gupta@intel.com>
- <20220506154553.6146-6-anshuman.gupta@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 830E210E36B
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 08:59:20 +0000 (UTC)
+Date: Mon, 9 May 2022 10:59:14 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YnjX4nGRTGx1rags@kamilkon-DESK1>
+References: <20220506170447.1437849-1-jason.ekstrand@collabora.com>
+ <20220506170447.1437849-2-jason.ekstrand@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220506154553.6146-6-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 5/9] tools/intel_pm_rpm: Add an
- option to setup d3cold
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220506170447.1437849-2-jason.ekstrand@collabora.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/dmabuf: Add tests for sync_file
+ export (v4)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,111 +22,387 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, igt-dev@lists.freedesktop.org,
- badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 06, 2022 at 09:15:49PM +0530, Anshuman Gupta wrote:
-> Few PCI devices under DGFX card tree don't have any kernel driver.
-> These devices will block D3cold state of gfx root port.
-> Adding support to setup d3cold by enabling runtime PM for all PCI
-> devices under the gfx root port.
-> It will not save/restore pci devices power attributes.
-> It will be useful to tune D3Cold after boot.
+Hi Jason,
+
+On 2022-05-06 at 12:04:46 -0500, Jason Ekstrand wrote:
+> From: Jason Ekstrand <jason@jlekstrand.net>
 > 
-> v2:
-> - Change naming convention from configure_autosuspend to
->   setup-d3cold. [Rodrigo].
+> v2 (Jason Ekstrand):
+>  - Rename subtests to have "export" in the name
 > 
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> v3 (Jason Ekstrand):
+>  - Add an export-before-signal subtest
+> 
+> v4 (Jason Ekstrand):
+>  - Test both via sync_file and via poll to ensure the semantics match
+>    properly.
+> 
+> Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 > ---
->  tools/intel_pm_rpm.c | 23 +++++++++++++++++++++--
->  1 file changed, 21 insertions(+), 2 deletions(-)
+>  tests/dmabuf_sync_file.c | 328 +++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build        |   1 +
+>  2 files changed, 329 insertions(+)
+>  create mode 100644 tests/dmabuf_sync_file.c
 > 
-> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-> index 909a2a34d..2703ac305 100644
-> --- a/tools/intel_pm_rpm.c
-> +++ b/tools/intel_pm_rpm.c
-> @@ -45,15 +45,17 @@ typedef struct {
->  const char *help_str =
->  	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
->  	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
-> +	"  --setup-d3cold\t\tPrepare dgfx gfx card to enter to D3Cold.\n"
-
-thanks
-so, as I told in the other patch I prefer this to use i915 autosuspend delay as reference
-for the others or at least avoid touching the i915 one.
-
-with that taken care:
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-
-
->  	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
->  static struct option long_options[] = {
->  	{"disable-display-wait", 0, 0, 'd'},
->  	{"force-d3cold-wait", 0, 0, 'f'},
-> +	{"setup-d3cold", 0, 0, 's'},
->  	{"help", 0, 0, 'h'},
->  	{ 0, 0, 0, 0 }
->  };
->  
-> -const char *optstr = "dfh";
-> +const char *optstr = "dfsh";
->  
->  static void usage(const char *name)
->  {
-> @@ -72,6 +74,17 @@ static void disable_all_displays(data_t *data)
->  	}
->  }
->  
-> +static void
-> +setup_gfx_card_d3cold(data_t *data)
-> +{
-> +	struct pci_device *root;
+> diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
+> new file mode 100644
+> index 00000000..7fed60f8
+> --- /dev/null
+> +++ b/tests/dmabuf_sync_file.c
+> @@ -0,0 +1,328 @@
+> +/*
+> + * Copyright © 2021 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + */
 > +
-> +	root = igt_device_get_pci_root_port(data->drm_fd);
-> +	igt_pm_enable_pci_card_runtime_pm(root);
-> +	igt_info("Enabled pci devs runtime pm under Root port %04x:%02x:%02x.%01x\n",
-> +		 root->domain, root->bus, root->dev, root->func);
+> +#include "igt.h"
+> +#include "igt_vgem.h"
+> +
+> +#include <linux/dma-buf.h>
+> +#include <sys/poll.h>
+> +
+> +IGT_TEST_DESCRIPTION("Tests for sync_file export from dma-buf");
+> +
+> +struct igt_dma_buf_sync_file {
+> +	__u32 flags;
+> +	__s32 fd;
+> +};
+> +
+> +#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
+> +
+> +static bool has_dmabuf_export_sync_file(int fd)
+> +{
+> +	struct vgem_bo bo;
+> +	int dmabuf, ret;
+> +	struct igt_dma_buf_sync_file arg;
+> +
+> +	bo.width = 1;
+> +	bo.height = 1;
+> +	bo.bpp = 32;
+> +	vgem_create(fd, &bo);
+> +
+> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> +	gem_close(fd, bo.handle);
+> +
+> +	arg.flags = DMA_BUF_SYNC_WRITE;
+> +	arg.fd = -1;
+> +
+> +	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+> +	close(dmabuf);
+> +	igt_assert(ret == 0 || errno == ENOTTY);
+> +
+> +	return ret == 0;
 > +}
 > +
->  static void force_gfx_card_d3cold(data_t *data)
->  {
->  	struct pci_device *root;
-> @@ -106,7 +119,7 @@ static void force_gfx_card_d3cold(data_t *data)
->  
->  int main(int argc, char *argv[])
->  {
-> -	bool disable_display = false, force_d3cold = false;
-> +	bool disable_display = false, force_d3cold = false, setup_d3cold = false;
->  	struct igt_device_card card;
->  	char *env_device = NULL;
->  	int c, option_index = 0;
-> @@ -144,6 +157,9 @@ int main(int argc, char *argv[])
->  		case 'f':
->  			force_d3cold = true;
->  			break;
-> +		case 's':
-> +			setup_d3cold = true;
-> +			break;
->  		default:
->  		case 'h':
->  			usage(argv[0]);
-> @@ -196,6 +212,9 @@ int main(int argc, char *argv[])
->  	if (force_d3cold)
->  		force_gfx_card_d3cold(&data);
->  
-> +	if (setup_d3cold)
-> +		setup_gfx_card_d3cold(&data);
+> +static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
+> +{
+> +	struct igt_dma_buf_sync_file arg;
 > +
->  exit:
->  	igt_restore_runtime_pm();
->  
+> +	arg.flags = flags;
+> +	arg.fd = -1;
+> +	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+> +
+> +	return arg.fd;
+> +}
+> +
+> +static bool dmabuf_busy(int dmabuf, uint32_t flags)
+> +{
+> +	struct pollfd pfd = { .fd = dmabuf };
+> +
+> +	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
+> +	 * else poll() may return a non-zero value if there are only read
+> +	 * fences because POLLIN is ready even if POLLOUT isn't.
+> +	 */
+> +	if (flags & DMA_BUF_SYNC_WRITE)
+> +		pfd.events |= POLLOUT;
+> +	else if (flags & DMA_BUF_SYNC_READ)
+> +		pfd.events |= POLLIN;
+> +
+> +	return poll(&pfd, 1, 0) == 0;
+> +}
+> +
+> +static bool sync_file_busy(int sync_file)
+> +{
+> +	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
+> +	return poll(&pfd, 1, 0) == 0;
+> +}
+> +
+> +static bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
+> +{
+> +	int sync_file;
+> +	bool busy;
+> +
+> +	sync_file = dmabuf_export_sync_file(dmabuf, flags);
+> +	busy = sync_file_busy(sync_file);
+> +	close(sync_file);
+> +
+> +	return busy;
+> +}
+> +
+> +static void test_export_basic(int fd)
+> +{
+> +	struct vgem_bo bo;
+> +	int dmabuf;
+> +	uint32_t fence;
+> +
+> +	igt_require(has_dmabuf_export_sync_file(fd));
+> +
+> +	bo.width = 1;
+> +	bo.height = 1;
+> +	bo.bpp = 32;
+> +	vgem_create(fd, &bo);
+> +
+> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> +
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +
+> +	fence = vgem_fence_attach(fd, &bo, 0);
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
+> +
+> +	vgem_fence_signal(fd, fence);
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
+> +
+> +	fence = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
+> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
+> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
+> +
+> +	vgem_fence_signal(fd, fence);
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(!dmabuf_busy(dmabuf, DMA_BUF_SYNC_RW));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_RW));
+> +
+> +	close(dmabuf);
+> +	gem_close(fd, bo.handle);
+> +}
+> +
+> +static void test_export_before_signal(int fd)
+> +{
+> +	struct vgem_bo bo;
+> +	int dmabuf, read_fd, write_fd;
+> +	uint32_t fence;
+> +
+> +	igt_require(has_dmabuf_export_sync_file(fd));
+> +
+> +	bo.width = 1;
+> +	bo.height = 1;
+> +	bo.bpp = 32;
+> +	vgem_create(fd, &bo);
+> +
+> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> +
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(!dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +
+> +	fence = vgem_fence_attach(fd, &bo, 0);
+> +
+> +	read_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
+> +	write_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
+> +
+> +	igt_assert(!sync_file_busy(read_fd));
+> +	igt_assert(sync_file_busy(write_fd));
+> +
+> +	vgem_fence_signal(fd, fence);
+> +
+> +	igt_assert(!sync_file_busy(read_fd));
+> +	igt_assert(!sync_file_busy(write_fd));
+> +
+> +	close(read_fd);
+> +	close(write_fd);
+> +
+> +	fence = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
+> +
+> +	read_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
+> +	write_fd = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
+> +
+> +	igt_assert(sync_file_busy(read_fd));
+> +	igt_assert(sync_file_busy(write_fd));
+> +
+> +	vgem_fence_signal(fd, fence);
+> +
+> +	igt_assert(!sync_file_busy(read_fd));
+> +	igt_assert(!sync_file_busy(write_fd));
+> +
+> +	close(read_fd);
+> +	close(write_fd);
+> +
+> +	close(dmabuf);
+> +	gem_close(fd, bo.handle);
+> +}
+> +
+> +static void test_export_multiwait(int fd)
+> +{
+> +	struct vgem_bo bo;
+> +	int dmabuf, sync_file;
+> +	uint32_t fence1, fence2, fence3;
+> +
+> +	igt_require(has_dmabuf_export_sync_file(fd));
+> +
+> +	bo.width = 1;
+> +	bo.height = 1;
+> +	bo.bpp = 32;
+> +	vgem_create(fd, &bo);
+> +
+> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> +
+> +	fence1 = vgem_fence_attach(fd, &bo, 0);
+> +	fence2 = vgem_fence_attach(fd, &bo, 0);
+> +
+> +	sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
+> +
+> +	fence3 = vgem_fence_attach(fd, &bo, 0);
+> +
+> +	igt_assert(sync_file_busy(sync_file));
+> +
+> +	vgem_fence_signal(fd, fence1);
+> +
+> +	igt_assert(sync_file_busy(sync_file));
+> +
+> +	vgem_fence_signal(fd, fence2);
+> +
+> +	igt_assert(!sync_file_busy(sync_file));
+> +
+> +	vgem_fence_signal(fd, fence3);
+> +
+> +	close(sync_file);
+> +	close(dmabuf);
+> +	gem_close(fd, bo.handle);
+> +}
+> +
+> +static void test_export_wait_after_attach(int fd)
+> +{
+> +	struct vgem_bo bo;
+> +	int dmabuf, read_sync_file, write_sync_file;
+> +	uint32_t fence1, fence2;
+> +
+> +	igt_require(has_dmabuf_export_sync_file(fd));
+> +
+> +	bo.width = 1;
+> +	bo.height = 1;
+> +	bo.bpp = 32;
+> +	vgem_create(fd, &bo);
+> +
+> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> +
+> +	read_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
+> +	write_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
+> +
+> +	fence1 = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
+> +
+> +	igt_assert(!sync_file_busy(read_sync_file));
+> +	igt_assert(!sync_file_busy(write_sync_file));
+> +	close(read_sync_file);
+> +	close(write_sync_file);
+> +
+> +	/* These wait on fence1 */
+> +	read_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_READ);
+> +	write_sync_file = dmabuf_export_sync_file(dmabuf, DMA_BUF_SYNC_WRITE);
+> +
+> +	igt_assert(sync_file_busy(read_sync_file));
+> +	igt_assert(sync_file_busy(write_sync_file));
+> +
+> +	vgem_fence_signal(fd, fence1);
+> +	fence2 = vgem_fence_attach(fd, &bo, VGEM_FENCE_WRITE);
+> +
+> +	/* fence1 has signaled */
+> +	igt_assert(!sync_file_busy(read_sync_file));
+> +	igt_assert(!sync_file_busy(write_sync_file));
+> +
+> +	/* fence2 has not */
+> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_READ));
+> +	igt_assert(dmabuf_sync_file_busy(dmabuf, DMA_BUF_SYNC_WRITE));
+> +
+> +	vgem_fence_signal(fd, fence2);
+> +	close(read_sync_file);
+> +	close(write_sync_file);
+> +
+> +	close(dmabuf);
+> +	gem_close(fd, bo.handle);
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_VGEM);
+> +	}
+> +
+
+Please add description before subtest with igt_describe().
+You can run your test with --describe to see where you need it,
+then add to new subtests you introduced.
+
+Regards,
+Kamil
+
+> +	igt_subtest_f("export-basic")
+> +		test_export_basic(fd);
+> +
+> +	igt_subtest_f("export-before-signal")
+> +		test_export_before_signal(fd);
+> +
+> +	igt_subtest_f("export-multiwait")
+> +		test_export_multiwait(fd);
+> +
+> +	igt_subtest_f("export-wait-after-attach")
+> +		test_export_wait_after_attach(fd);
+> +
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index fb0f1e37..b548dc3b 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -7,6 +7,7 @@ test_progs = [
+>  	'core_setmaster_vs_auth',
+>  	'debugfs_test',
+>  	'dmabuf',
+> +	'dmabuf_sync_file',
+>  	'device_reset',
+>  	'drm_buddy',
+>  	'drm_import_export',
 > -- 
-> 2.26.2
+> 2.36.0
 > 
