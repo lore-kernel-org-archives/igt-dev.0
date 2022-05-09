@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55ED510E504
- for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 13:04:38 +0000 (UTC)
-Message-ID: <4aace31f-1bba-9221-5fc1-daec67b549a4@intel.com>
-Date: Mon, 9 May 2022 18:34:15 +0530
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20220509072637.3291112-1-bhanuprakash.modem@intel.com>
- <20220509072637.3291112-4-bhanuprakash.modem@intel.com>
- <YnkLeGuBSSuekZUC@kamilkon-DESK1>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <YnkLeGuBSSuekZUC@kamilkon-DESK1>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D646610E1F4
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 13:26:20 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  9 May 2022 18:53:24 +0530
+Message-Id: <20220509132330.3310616-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 3/6] tests/kms_cursor_edge_walk: Create
- dynamic subtests
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [v2 0/6] Convert subtests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,141 +20,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon-09-05-2022 06:09 pm, Kamil Konieczny wrote:
-> Hi Bhanuprakash,
-> 
-> On 2022-05-09 at 12:56:34 +0530, Bhanuprakash Modem wrote:
->> Covert the existing subtests to dynamic subtests at pipe level.
-> ----^
-> s/Covert/Convert/
-> 
->>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> ---
->>   tests/kms_cursor_edge_walk.c | 66 ++++++++++++++++--------------------
->>   1 file changed, 30 insertions(+), 36 deletions(-)
->>
->> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
->> index b775714f..01ac9790 100644
->> --- a/tests/kms_cursor_edge_walk.c
->> +++ b/tests/kms_cursor_edge_walk.c
->> @@ -309,6 +309,17 @@ static const char *help_str =
->>   
->>   igt_main_args("", long_opts, help_str, opt_handler, &data)
->>   {
->> +	struct {
->> +		const char *name;
->> +		unsigned flags;
-> 
-> Add description field here.
-> 
->> +	} tests[] = {
->> +		{ "left-edge", EDGE_LEFT },
-> 
-> Put descriptions here.
-> 
->> +		{ "right-edge", EDGE_RIGHT },
->> +		{ "top-edge", EDGE_TOP },
->> +		{ "top-bottom", EDGE_BOTTOM },
->> +	};
->> +	int i;
->> +
->>   	igt_fixture {
->>   		int ret;
->>   
->> @@ -328,44 +339,27 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->>   		igt_require_pipe_crc(data.drm_fd);
->>   
->>   		igt_display_require(&data.display, data.drm_fd);
->> +		igt_display_require_output(&data.display);
->>   	}
->>   
->> -	for_each_pipe_static(data.pipe) {
->> -		igt_subtest_group {
->> -			igt_fixture {
->> -				igt_display_require_output_on_pipe(&data.display, data.pipe);
->> -				data.output = igt_get_single_output_for_pipe(&data.display, data.pipe);
->> -			}
->> -
->> -			for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
->> -				data.curh = data.curw;
->> -
->> -				igt_fixture
->> -					igt_require(data.curw <= max_curw && data.curh <= max_curh);
->> -
->> -				igt_describe("Checking cursor by walking left edge of screen");
->> -				igt_subtest_f("pipe-%s-%dx%d-left-edge",
->> -					kmstest_pipe_name(data.pipe),
->> -					data.curw, data.curh)
->> -					test_crtc(&data, EDGE_LEFT);
->> -
->> -				igt_describe("Checking cursor by walking right edge of screen");
->> -				igt_subtest_f("pipe-%s-%dx%d-right-edge",
->> -					kmstest_pipe_name(data.pipe),
->> -					data.curw, data.curh)
->> -					test_crtc(&data, EDGE_RIGHT);
->> -
->> -				igt_describe("Checking cursor by walking top edge of screen");
->> -				igt_subtest_f("pipe-%s-%dx%d-top-edge",
->> -					kmstest_pipe_name(data.pipe),
->> -					data.curw, data.curh)
->> -					test_crtc(&data, EDGE_TOP);
->> -
->> -				igt_describe("Checking cursor by walking bottom edge of screen");
->> -				igt_subtest_f("pipe-%s-%dx%d-bottom-edge",
->> -					kmstest_pipe_name(data.pipe),
->> -					data.curw, data.curh)
->> -					test_crtc(&data, EDGE_BOTTOM);
->> +	igt_describe("Checking cursor by walking left/right/top/bottom edge of screen");
->> +	igt_subtest_group {
->> +		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-> 
-> Please add description here.
+In below tests, convert all possible subtests to dynamic. This series
+will also rename the tests in BAT with updated ones.
 
-Thanks for the review Kamil,
+Effected files:
+ * tests/kms_pipe_crc_basic.c
+ * tests/kms_cursor_legacy.c
+ * tests/kms_cursor_edge_walk.c
+ * tests/kms_cursor_crc.c
+ * tests/kms_color.c
 
-This is intentional. As we are grouping these tests (using 
-igt_subtest_group), the same igt_describe is applicable to all subtests.
+Bhanuprakash Modem (6):
+  tests/kms_pipe_crc_basic: Convert tests to dynamic
+  tests/kms_cursor_legacy: Convert tests to dynamic
+  tests/kms_cursor_edge_walk: Convert tests to dynamic
+  tests/kms_cursor_crc: Convert tests to dynamic
+  tests/kms_color: Convert tests to dynamic
+  tests/intel-ci: Rename tests in BAT
 
-# ./build/tests/kms_cursor_edge_walk --desc
-Exercise CHV pipe C cursor fail
+ tests/intel-ci/fast-feedback.testlist |  30 +-
+ tests/kms_color.c                     | 536 ++++++++++++++------------
+ tests/kms_color_helper.h              |   1 +
+ tests/kms_cursor_crc.c                | 162 +++++---
+ tests/kms_cursor_edge_walk.c          |  66 ++--
+ tests/kms_cursor_legacy.c             | 254 ++++++------
+ tests/kms_pipe_crc_basic.c            | 111 +++---
+ 7 files changed, 637 insertions(+), 523 deletions(-)
 
-SUB left-edge ../tests/kms_cursor_edge_walk.c:348:
-   Checking cursor by walking left/right/top/bottom edge of screen
-
-SUB right-edge ../tests/kms_cursor_edge_walk.c:348:
-   Checking cursor by walking left/right/top/bottom edge of screen
-
-SUB top-edge ../tests/kms_cursor_edge_walk.c:348:
-   Checking cursor by walking left/right/top/bottom edge of screen
-
-SUB top-bottom ../tests/kms_cursor_edge_walk.c:348:
-   Checking cursor by walking left/right/top/bottom edge of screen
-
-- Bhanu
-
-> 
-> Regards,
-> Kamil
-> 
->> +			igt_subtest_with_dynamic(tests[i].name) {
->> +				for_each_pipe(&data.display, data.pipe) {
->> +					igt_fixture {
->> +						igt_require(data.curw <= max_curw && data.curh <= max_curh);
->> +						data.output = igt_get_single_output_for_pipe(&data.display, data.pipe);
->> +					}
->> +
->> +					for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
->> +						data.curh = data.curw;
->> +						igt_dynamic_f("pipe-%s-%dx%d",
->> +							      kmstest_pipe_name(data.pipe),
->> +							      data.curw, data.curh)
->> +							test_crtc(&data, tests[i].flags);
->> +					}
->> +				}
->>   			}
->>   		}
->>   	}
->> -- 
->> 2.35.1
->>
+--
+2.35.1
