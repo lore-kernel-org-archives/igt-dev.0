@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2070.outbound.protection.outlook.com [40.107.220.70])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7BFA10EAD0
- for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 20:27:55 +0000 (UTC)
-Message-ID: <20128339-8606-40ab-2716-671ae6fb0d89@amd.com>
-Date: Mon, 9 May 2022 16:27:50 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2063.outbound.protection.outlook.com [40.107.244.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01FBC10E126
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 May 2022 19:10:24 +0000 (UTC)
+Message-ID: <2f8737b0-e4db-9062-0aed-0916e42802c4@amd.com>
+Date: Mon, 9 May 2022 15:10:20 -0400
 Content-Language: en-US
 To: David Zhang <dingchen.zhang@amd.com>, igt-dev@lists.freedesktop.org
 References: <20220505213226.2614662-1-dingchen.zhang@amd.com>
- <20220505213226.2614662-5-dingchen.zhang@amd.com>
+ <20220505213226.2614662-4-dingchen.zhang@amd.com>
 From: Leo <sunpeng.li@amd.com>
-In-Reply-To: <20220505213226.2614662-5-dingchen.zhang@amd.com>
+In-Reply-To: <20220505213226.2614662-4-dingchen.zhang@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 4/4] tests/amdgpu/amd_psr: add PSR-SU scaling
- test cases
+Subject: Re: [igt-dev] [PATCH 3/4] tests/amdgpu/amd_psr: use double
+ framebuffers to emulate MPO case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,20 +31,17 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 On 2022-05-05 17:32, David Zhang wrote:
 > [why]
-> We need test cases to validate PSR-SU disabled when a specific
-> plane scaling occurs by visual confirm. From driver's perspective,
-> any plane's height/width change detected, it would cause PSR-SU
-> be disabled.
+> Current implementation to emulate the MPO video playback is via
+> creating 20 framebuffers (FB) and each FB has a colorful strip
+> pattern in a different position. From usrmode's view, in general
+> it would not create so many FBs for primary plane. Instead, it
+> only creates double or tripple buffers.
 > 
 > [how]
-> - based on the existed MPO test case, we'd add two more input
->   arguments to the test function, i.e. one as flag indicating if
->   to test scaling, another as scaling ratio for the primary plane
-> - start from 1/3 iteration in test run, scaling the primary plane
->   w/ the given ratio and update the overlay as well, and observe
->   if PSR-SU is disabled as expected by allowing some delay to
->   check
-> - add two sub-test cases, one w/ scaling ratio 1.5, another 0.75
+> - drop the 20 framebuffers in current implementation
+> - use the double primary plane framebuffers defined in data struct
+>   and update the strip pattern alternatively on the double FBs and
+>   do page flip for each iteration
 > 
 > Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 > Cc: Harry Wentland <harry.wentland@amd.com>
@@ -56,122 +53,148 @@ On 2022-05-05 17:32, David Zhang wrote:
 
 Reviewed-by: Leo Li <sunpeng.li@amd.com>
 
-Thanks!
 > ---
->  tests/amdgpu/amd_psr.c | 41 +++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 39 insertions(+), 2 deletions(-)
+>  tests/amdgpu/amd_psr.c | 76 +++++++++++++++++++++++++++---------------
+>  1 file changed, 49 insertions(+), 27 deletions(-)
 > 
 > diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-> index 81ebebd3..5ad8c7fe 100644
+> index 29982605..81ebebd3 100644
 > --- a/tests/amdgpu/amd_psr.c
 > +++ b/tests/amdgpu/amd_psr.c
-> @@ -335,7 +335,7 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
->  	test_fini(data);
+> @@ -40,10 +40,11 @@ IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP display
+>  #define N_FLIPS 6
+>  /* DMCUB takes some time to actually enable PSR. Worst case delay is 4 seconds */
+>  #define PSR_SETTLE_DELAY 4
+> -/* # of framebuffers for PSR-SU MPO test case to emulate video playback */
+> -#ifndef N_MPO_TEST_RECT_FB
+> -#define N_MPO_TEST_RECT_FB 20
+> -#endif
+> +
+> +typedef struct {
+> +	int x, y;
+> +	int w, h;
+> +} pos_t;
+>  
+>  /* Common test data. */
+>  typedef struct data {
+> @@ -138,6 +139,29 @@ static void draw_color_cursor(igt_fb_t *fb, int size, double r, double g, double
+>  	igt_put_cairo_ctx(cr);
 >  }
 >  
-> -static void run_check_psr_su_mpo(data_t *data)
-> +static void run_check_psr_su_mpo(data_t *data, bool scaling, float scaling_ratio)
+> +/* update the given framebuffer and draw colorful strip in new position */
+> +static void update_color_strip(igt_fb_t *fb, pos_t *old, pos_t *new, double r, double g, double b)
+> +{
+> +	cairo_t *cr;
+> +
+> +	if (!fb || !new || !old)
+> +		return;
+> +
+> +	cr = igt_get_cairo_ctx(fb->fd, fb);
+> +	igt_assert_f(cr, "Failed to get cairo context\n");
+> +
+> +	/**
+> +	 * we'd draw the strip in the new position w/ given color
+> +	 * and make the background of the framebuffer as black
+> +	 * - render black BG in the old position of strip instead of rendering the whole FB
+> +	 * - render colorful strip in the new position
+> +	 */
+> +	igt_paint_color(cr, old->x, old->y, old->w, old->h, .0, .0, .0);
+> +	igt_paint_color(cr, new->x, new->y, new->w, new->h, r, g, b);
+> +
+> +	igt_put_cairo_ctx(cr);
+> +}
+> +
+>  /* Common test setup. */
+>  static void test_init(data_t *data)
+>  {
+> @@ -314,12 +338,12 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
+>  static void run_check_psr_su_mpo(data_t *data)
 >  {
 >  	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
+> -	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	/* rectangle fbs for primary, emulate as video playback region */
 >  	igt_fb_t ref_fb;	/* reference fb */
-> @@ -344,6 +344,7 @@ static void run_check_psr_su_mpo(data_t *data)
+>  	igt_fb_t *flip_fb;
+>  	int ret;
 >  	const int run_sec = 5;
 >  	int frame_rate = 0;
->  	pos_t old[2], new;
-> +	int pm_w_scale, pm_h_scale;	/* primary plane width/heigh after scaling */
+> +	pos_t old[2], new;
 >  
 >  	/* skip the test run if no eDP sink detected */
 >  	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
-> @@ -355,6 +356,10 @@ static void run_check_psr_su_mpo(data_t *data)
->  	memset(&new, 0, sizeof(pos_t));
->  	old[0].w = old[1].w = new.w = 30;
->  	old[0].h = old[1].h = new.h = data->pfb_h;
-> +	if (scaling) {
-> +		pm_w_scale = (int) (data->pfb_w * scaling_ratio);
-> +		pm_h_scale = (int) (data->pfb_h * scaling_ratio);
-> +	}
+> @@ -327,6 +351,10 @@ static void run_check_psr_su_mpo(data_t *data)
+>  	/* init */
+>  	test_init(data);
+>  	frame_rate = data->mode->vrefresh;
+> +	memset(&old, 0, sizeof(pos_t) * 2);
+> +	memset(&new, 0, sizeof(pos_t));
+> +	old[0].w = old[1].w = new.w = 30;
+> +	old[0].h = old[1].h = new.h = data->pfb_h;
 >  
 >  	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
 >  	igt_skip_on(!psr_su_supported(data));
-> @@ -375,6 +380,8 @@ static void run_check_psr_su_mpo(data_t *data)
+> @@ -347,25 +375,14 @@ static void run_check_psr_su_mpo(data_t *data)
 >  	 */
 >  	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
 >  			    1.0, 1.0, 1.0, &data->ov_fb[0]);
-> +	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-> +			    1.0, 1.0, 1.0, &data->ov_fb[1]);
->  	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->  			    .0, .0, .0, &data->pm_fb[0]);
->  	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> @@ -398,6 +405,7 @@ static void run_check_psr_su_mpo(data_t *data)
->  	 * to be zero.
->  	 */
->  	draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, data->pfb_h, .5, .5, .5, .0);
-> +	draw_color_alpha(&data->ov_fb[1], 0, 0, pm_w_scale, pm_h_scale, .5, .5, .5, .0);
+> -	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i) {
+> -		cairo_t *cr;
+> -		int strip_w = data->w / (2 * N_MPO_TEST_RECT_FB);
+> -
+> -		igt_create_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> -			      &rect_fb[i]);
+> -		cr = igt_get_cairo_ctx(data->fd, &rect_fb[i]);
+> -		igt_assert_f(cr, "Failed to get cairo context\n");
+> -		/* background in black */
+> -		igt_paint_color(cr, 0, 0, data->pfb_w, data->pfb_h, .0, .0, .0);
+> -		/* foreground (megenta strip) */
+> -		igt_paint_color(cr, i * strip_w, 0, strip_w, data->pfb_h, 1.0, .0, 1.0);
+> -
+> -		igt_put_cairo_ctx(cr);
+> -	}
+> +	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +			    .0, .0, .0, &data->pm_fb[0]);
+> +	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +			    .0, .0, .0, &data->pm_fb[1]);
 >  
->  	igt_output_set_pipe(data->output, data->pipe_id);
->  	igt_display_commit_atomic(&data->display, 0, NULL);
-> @@ -411,12 +419,32 @@ static void run_check_psr_su_mpo(data_t *data)
->  		update_color_strip(flip_fb, &old[i & 1], &new, 1.0, .0, 1.0);
+>  	/* tie fbs to planes and set position/size/blending */
+>  	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
+> -	igt_plane_set_fb(data->primary, &rect_fb[0]);
+> +	igt_plane_set_fb(data->primary, &data->pm_fb[1]);
+>  	igt_plane_set_position(data->primary, 0, 0);
+>  	igt_plane_set_size(data->primary, data->pfb_w, data->pfb_h);
+>  
+> @@ -389,23 +406,28 @@ static void run_check_psr_su_mpo(data_t *data)
+>  	igt_info("\n start flipping ...\n");
+>  
+>  	for (int i = 0; i < run_sec * frame_rate; ++i) {
+> -		igt_info(" About to commit a primary plane (FB %d), loop %d \n", i % N_MPO_TEST_RECT_FB, i);
+> -		flip_fb = &rect_fb[i % N_MPO_TEST_RECT_FB];
+> +		flip_fb = &data->pm_fb[i & 1];
+> +		/* draw the color strip onto primary plane FB */
+> +		update_color_strip(flip_fb, &old[i & 1], &new, 1.0, .0, 1.0);
 >  
 >  		igt_plane_set_fb(data->primary, flip_fb);
-> +		igt_plane_set_position(data->primary, 0, 0);
-> +		/* do scaling at 1/3 iteration, update both primary/overlay */
-> +		if (scaling && (i >= run_sec * frame_rate / 3)) {
-> +			igt_plane_set_fb(data->overlay, &data->ov_fb[1]);
-> +			igt_plane_set_size(data->primary, pm_w_scale, pm_h_scale);
-> +		}
 >  		igt_output_set_pipe(data->output, data->pipe_id);
 >  
->  		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+> -		ret = drmModePageFlip(data->fd, data->output->config.crtc->crtc_id,
+> -				      flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+> +		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
 >  		igt_require(ret == 0);
 >  		kmstest_wait_for_pageflip(data->fd);
->  
-> +		/**
-> +		 * allow some time to observe visual confirm of PSR-SU disabled
-> +		 * once the plane scaling occurs, i.e. green bar on the right side
-> +		 * screen disappears. From driver's view, the PSR-SU would be
-> +		 * disabled when the specific plane height/width detected changed.
-> +		 * and w/ the test run continues, each MPO FB is scaled to the same
-> +		 * size as the first scaled frame, then the PSR-SU is expected to
-> +		 * be re-enabled and green bar should be appear again if visual
-> +		 * confirm debug option is ON.
-> +		 */
-> +		if (scaling && (i == run_sec * frame_rate / 3)) {
-> +			sleep(2);
-> +		}
 > +
->  		/* update strip position */
->  		old[i & 1].x = new.x;
->  		new.x += 3;
-> @@ -426,6 +454,7 @@ static void run_check_psr_su_mpo(data_t *data)
+> +		/* update strip position */
+> +		old[i & 1].x = new.x;
+> +		new.x += 3;
+> +		new.x = (new.x + new.w > data->pfb_w) ? 0 : new.x;
+>  	}
+>  
 >  	/* fini */
 >  	igt_remove_fb(data->fd, &ref_fb);
 >  	igt_remove_fb(data->fd, &data->ov_fb[0]);
-> +	igt_remove_fb(data->fd, &data->ov_fb[1]);
->  	igt_remove_fb(data->fd, &data->pm_fb[0]);
->  	igt_remove_fb(data->fd, &data->pm_fb[1]);
+> -	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i)
+> -		igt_remove_fb(data->fd, &rect_fb[i]);
+> +	igt_remove_fb(data->fd, &data->pm_fb[0]);
+> +	igt_remove_fb(data->fd, &data->pm_fb[1]);
 >  	test_fini(data);
-> @@ -703,7 +732,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  }
 >  
->  	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
->  		     "and to imitate Multiplane Overlay video playback scenario");
-> -	igt_subtest("psr_su_mpo") run_check_psr_su_mpo(&data);
-> +	igt_subtest("psr_su_mpo") run_check_psr_su_mpo(&data, false, .0);
->  
->  	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
->  		     "and to validate Full Frame Update scenario");
-> @@ -717,6 +746,14 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		     "and to validate cursor movement + MPO scenario");
->  	igt_subtest("psr_su_cursor_mpo") run_check_psr_su_cursor(&data, true);
->  
-> +	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
-> +		     "and to validate PSR SU disable/re-enable w/ primary scaling ratio 1.5");
-> +	igt_subtest("psr_su_mpo_scaling_1_5") run_check_psr_su_mpo(&data, true, 1.5);
-> +
-> +	igt_describe("Test to validate PSR SU enablement with Visual Confirm "
-> +		     "and to validate PSR SU disable/re-enable w/ primary scaling ratio 0.75");
-> +	igt_subtest("psr_su_mpo_scaling_0_75") run_check_psr_su_mpo(&data, true, .75);
-> +
->  	igt_fixture
->  	{
->  		if (opt.visual_confirm) {
