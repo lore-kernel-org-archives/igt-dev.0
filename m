@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F6E610E807
- for <igt-dev@lists.freedesktop.org>; Tue, 10 May 2022 10:46:57 +0000 (UTC)
-Message-ID: <f0d509e8-83e4-5f59-efdf-aa9df08a8592@intel.com>
-Date: Tue, 10 May 2022 16:16:51 +0530
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A27BA10E1D0
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 May 2022 10:49:05 +0000 (UTC)
+Message-ID: <ffcf29ee-4c57-2872-9deb-2af00b050f4f@intel.com>
+Date: Tue, 10 May 2022 16:19:00 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org, jani.nikula@linux.intel.com,
- ville.syrjala@linux.intel.com, harry.wentland@amd.com
-References: <20220411094147.1650859-1-bhanuprakash.modem@intel.com>
- <20220411094147.1650859-3-bhanuprakash.modem@intel.com>
+ igt-dev@lists.freedesktop.org
+References: <20220411094147.1650859-4-bhanuprakash.modem@intel.com>
+ <20220506035952.3210387-1-bhanuprakash.modem@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220411094147.1650859-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220506035952.3210387-1-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V2 2/5] tests/kms_color: Use debugfs apis for
- deep-color
+Subject: Re: [igt-dev] [V2 3/5] tests/kms_hdr: Adopt to use updated debugfs
+ functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,127 +28,164 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 LGTM
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by:
+Swati Sharma <swati2.sharma@intel.com>
 
-On 11-Apr-22 3:11 PM, Bhanuprakash Modem wrote:
-> Instead of parsing the EDID, read from the debugfs to make
-> sure the connected monitor supports deep-color.
+
+On 06-May-22 9:29 AM, Bhanuprakash Modem wrote:
+> Instead of writing our own wrappers of debugfs read,
+> use updated functions from lib.
 > 
 > V2:
-> * Update max_bpc prop before exit
+> * Fix asserts with correct bpc
 > 
-> Cc: Uma Shankar <uma.shankar@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Cc: Mark Yacoub <markyacoub@chromium.org>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_color.c        |  9 ++++++--
->   tests/kms_color_helper.c | 46 +++++-----------------------------------
->   tests/kms_color_helper.h |  2 +-
->   3 files changed, 13 insertions(+), 44 deletions(-)
+>   tests/kms_hdr.c | 69 +++++++------------------------------------------
+>   1 file changed, 9 insertions(+), 60 deletions(-)
 > 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index afff1744..93957f50 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -883,20 +883,25 @@ run_tests_for_pipe(data_t *data, enum pipe p)
->   					"At least GEN 11 is required to validate Deep-color.\n");
->   
->   		for_each_valid_output_on_pipe(&data->display, p, output) {
-> -			drmModeConnector *connector = output->config.connector;
->   			uint64_t max_bpc = get_max_bpc(output);
->   			bool ret;
->   
->   			if (!max_bpc)
->   				continue;
->   
-> -			if (!panel_supports_deep_color(data->drm_fd, connector))
-> +			if (!panel_supports_deep_color(data->drm_fd, output->name))
->   				continue;
->   
->   			data->color_depth = 10;
->   			data->drm_format = DRM_FORMAT_XRGB2101010;
->   			data->output = output;
->   			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
-> +			igt_display_commit(&data->display);
-> +
-> +			if (!igt_check_output_bpc_equal(data->drm_fd, p, output->name, 10)) {
-> +				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
-> +				igt_fail_on_f(true, "Failed to set max_bpc as: 10\n");
-> +			}
->   
->   			igt_dynamic_f("gamma-%s", output->name) {
->   				ret = test_pipe_gamma(data, primary);
-> diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-> index 3ef124cd..55f3e409 100644
-> --- a/tests/kms_color_helper.c
-> +++ b/tests/kms_color_helper.c
-> @@ -25,49 +25,13 @@
->   #include "kms_color_helper.h"
->   
->   bool
-> -panel_supports_deep_color(int fd, drmModeConnector *connector)
-> +panel_supports_deep_color(int drm_fd, char *output_name)
->   {
-> -	uint64_t edid_blob_id;
-> -	uint8_t bit_depth, rev;
-> -	const struct edid *edid;
-> -	bool result;
-> -	drmModePropertyBlobPtr edid_blob = NULL;
-> -
-> -	igt_assert(kmstest_get_property(fd, connector->connector_id,
-> -					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-> -					&edid_blob_id, NULL));
-> -	edid_blob = drmModeGetPropertyBlob(fd, edid_blob_id);
-> -	igt_require_f(edid_blob, "EDID blob is NULL\n");
-> -
-> -	edid = (const struct edid *) edid_blob->data;
-> -	rev = edid->revision;
-> -
-> -	if (rev >= 4) {
-> -		bit_depth = edid_get_bit_depth_from_vid(edid);
-> -
-> -		if (bit_depth > 0 && bit_depth < 7)
-> -			igt_info("Max supported bit depth: %d\n", ((bit_depth << 1) + 4));
-> -		else
-> -			igt_info("Max supported bit depth: Undefined\n");
-> -
-> -		result = (bit_depth >= 3) && (bit_depth < 7);
-> -	} else {
-> -		bit_depth = edid_get_deep_color_from_vsdb(edid);
-> -
-> -		if (bit_depth &	HDMI_VSDB_DC_48BIT)
-> -			igt_info("Max supported bit depth: 16\n");
-> -		else if (bit_depth & HDMI_VSDB_DC_36BIT)
-> -			igt_info("Max supported bit depth: 12\n");
-> -		else if (bit_depth & HDMI_VSDB_DC_30BIT)
-> -			igt_info("Max supported bit depth: 10\n");
-> -		else
-> -			igt_info("Max supported bit depth: Undefined\n");
-> -
-> -		result = !!(bit_depth & (7 << 4));
-> -	}
-> -	drmModeFreePropertyBlob(edid_blob);
-> +	unsigned int maximum = igt_get_output_max_bpc(drm_fd, output_name);
-> +
-> +	igt_info("Max supported bit depth: %d\n", maximum);
->   
-> -	return result;
-> +	return maximum >= 10;
+> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+> index 247eb658..c86615e6 100644
+> --- a/tests/kms_hdr.c
+> +++ b/tests/kms_hdr.c
+> @@ -95,44 +95,6 @@ static void test_cycle_flags(data_t *data, uint32_t test_flags)
+>   					      SUSPEND_TEST_NONE);
 >   }
 >   
->   uint64_t get_max_bpc(igt_output_t *output)
-> diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-> index a6665b1f..cc07f5ee 100644
-> --- a/tests/kms_color_helper.h
-> +++ b/tests/kms_color_helper.h
-> @@ -67,7 +67,7 @@ typedef struct {
->   	color_t coeffs[];
->   } gamma_lut_t;
+> -/* Returns the current and maximum bpc from the connector debugfs. */
+> -static output_bpc_t get_output_bpc(data_t *data)
+> -{
+> -	char buf[256];
+> -	char *start_loc;
+> -	int fd, res;
+> -	output_bpc_t info;
+> -
+> -	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
+> -	igt_assert(fd >= 0);
+> -
+> -	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
+> -
+> -	igt_require(res > 0);
+> -
+> -	close(fd);
+> -
+> -	igt_assert(start_loc = strstr(buf, "Current: "));
+> -	igt_assert_eq(sscanf(start_loc, "Current: %u", &info.current), 1);
+> -
+> -	igt_assert(start_loc = strstr(buf, "Maximum: "));
+> -	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &info.maximum), 1);
+> -
+> -	return info;
+> -}
+> -
+> -/* Verifies that connector has the correct output bpc. */
+> -static void assert_output_bpc(data_t *data, unsigned int bpc)
+> -{
+> -	output_bpc_t info = get_output_bpc(data);
+> -
+> -	igt_require_f(info.maximum >= bpc,
+> -		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
+> -		      info.maximum);
+> -
+> -	igt_assert_eq(info.current, bpc);
+> -}
+> -
+>   /* Fills the FB with a test HDR pattern. */
+>   static void draw_hdr_pattern(igt_fb_t *fb)
+>   {
+> @@ -204,12 +166,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+>   	/* Start in 8bpc. */
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	/*
+> -	 * i915 driver doesn't expose max bpc as debugfs entry,
+> -	 * so limiting assert only for amd driver.
+> -	 */
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
 >   
-> -bool panel_supports_deep_color(int fd, drmModeConnector *connector);
-> +bool panel_supports_deep_color(int fd, char *output_name);
->   uint64_t get_max_bpc(igt_output_t *output);
->   void paint_gradient_rectangles(data_t *data,
->   			       drmModeModeInfo *mode,
+>   	/*
+>   	 * amdgpu requires a primary plane when the CRTC is enabled.
+> @@ -223,8 +180,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+>   	/* Switch to 10bpc. */
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 10);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
+>   
+>   	/* Verify that the CRC are equal after DPMS or suspend. */
+>   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+> @@ -234,8 +190,7 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+>   	/* Drop back to 8bpc. */
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/* CRC capture is clamped to 8bpc, so capture should match. */
+>   	igt_assert_crc_equal(&ref_crc, &new_crc);
+> @@ -427,15 +382,13 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+>   	set_hdr_output_metadata(data, NULL);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
+>   	set_hdr_output_metadata(data, &hdr);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 10);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
+>   
+>   	/* Verify that the CRC are equal after DPMS or suspend. */
+>   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+> @@ -446,8 +399,7 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+>   	set_hdr_output_metadata(data, NULL);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	igt_assert_crc_equal(&ref_crc, &new_crc);
+>   
+> @@ -506,16 +458,14 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	igt_plane_set_size(data->primary, data->w, data->h);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/* Enter HDR, a modeset is allowed here. */
+>   	fill_hdr_output_metadata_st2048(&hdr);
+>   	set_hdr_output_metadata(data, &hdr);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 10);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
+>   
+>   	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+>   
+> @@ -548,8 +498,7 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	set_hdr_output_metadata(data, NULL);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+>   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	if (is_amdgpu_device(data->fd))
+> -		assert_output_bpc(data, 8);
+> +	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+>   
+>   	/* Verify that the CRC didn't change while cycling metadata. */
+>   	igt_assert_crc_equal(&ref_crc, &new_crc);
 
 -- 
 ~Swati Sharma
