@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam08on2066.outbound.protection.outlook.com [40.107.100.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8197C10EB31
- for <igt-dev@lists.freedesktop.org>; Tue, 10 May 2022 02:41:21 +0000 (UTC)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2056.outbound.protection.outlook.com [40.107.244.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD55010EB49
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 May 2022 02:41:22 +0000 (UTC)
 From: David Zhang <dingchen.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 9 May 2022 22:41:09 -0400
-Message-ID: <20220510024111.404004-3-dingchen.zhang@amd.com>
+Date: Mon, 9 May 2022 22:41:10 -0400
+Message-ID: <20220510024111.404004-4-dingchen.zhang@amd.com>
 In-Reply-To: <20220510024111.404004-1-dingchen.zhang@amd.com>
 References: <20220510024111.404004-1-dingchen.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH v2 2/4] tests/amdgpu/amd_psr: clean-up the code
+Subject: [igt-dev] [PATCH v2 3/4] tests/amdgpu/amd_psr: use double
+ framebuffers to emulate MPO case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,15 +26,17 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 [why]
-We'd clean-up the code to avoid repeated variable declarations in
-different psr-su test cases.
+Current implementation to emulate the MPO video playback is via
+creating 20 framebuffers (FB) and each FB has a colorful strip
+pattern in a different position. From usrmode's view, in general
+it would not create so many FBs for primary plane. Instead, it
+only creates double or tripple buffers.
 
 [how]
-- add primary/overlay framebuffer width/height to generic data
-  structure
-- add cursor framebuffer instance to data structure
-- clean-up the code for mpo/ffu/cusor test cases by using above
-  re-useable variables
+- drop the 20 framebuffers in current implementation
+- use the double primary plane framebuffers defined in data struct
+  and update the strip pattern alternatively on the double FBs and
+  do page flip for each iteration
 
 Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Cc: Harry Wentland <harry.wentland@amd.com>
@@ -44,217 +47,149 @@ Cc: Wayne Lin <wayne.lin@amd.com>
 Signed-off-by: David Zhang <dingchen.zhang@amd.com>
 Reviewed-by: Leo Li <sunpeng.li@amd.com>
 ---
- tests/amdgpu/amd_psr.c | 65 +++++++++++++++++++-----------------------
- 1 file changed, 30 insertions(+), 35 deletions(-)
+ tests/amdgpu/amd_psr.c | 76 +++++++++++++++++++++++++++---------------
+ 1 file changed, 49 insertions(+), 27 deletions(-)
 
 diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index de12bd04..11a95fb1 100644
+index 11a95fb1..ab8667a1 100644
 --- a/tests/amdgpu/amd_psr.c
 +++ b/tests/amdgpu/amd_psr.c
-@@ -56,12 +56,14 @@ typedef struct data {
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_fb_t ov_fb[2];
- 	igt_fb_t pm_fb[2];
-+	igt_fb_t cs_fb;		/* cursor framebuffer */
- 	drmModeModeInfo *mode;
- 	enum pipe pipe_id;
- 	int fd;
- 	int debugfs_fd;
--	int w;
--	int h;
+@@ -40,10 +40,11 @@ IGT_TEST_DESCRIPTION("Basic test for enabling Panel Self Refresh for eDP display
+ #define N_FLIPS 6
+ /* DMCUB takes some time to actually enable PSR. Worst case delay is 4 seconds */
+ #define PSR_SETTLE_DELAY 4
+-/* # of framebuffers for PSR-SU MPO test case to emulate video playback */
+-#ifndef N_MPO_TEST_RECT_FB
+-#define N_MPO_TEST_RECT_FB 20
+-#endif
++
++typedef struct {
++	int x, y;
 +	int w, h;
-+	int pfb_w, pfb_h;
-+	int ofb_w, ofb_h;
- } data_t;
++} pos_t;
  
- enum cursor_move {
-@@ -170,6 +172,10 @@ static void test_init(data_t *data)
+ /* Common test data. */
+ typedef struct data {
+@@ -138,6 +139,29 @@ static void draw_color_cursor(igt_fb_t *fb, int size, double r, double g, double
+ 	igt_put_cairo_ctx(cr);
+ }
  
- 	data->w = data->mode->hdisplay;
- 	data->h = data->mode->vdisplay;
-+	data->ofb_w = data->w;
-+	data->ofb_h = data->h;
-+	data->pfb_w = data->w / 2;
-+	data->pfb_h = data->h / 2;
- 
- 	if (opt.visual_confirm) {
- 		/**
-@@ -308,7 +314,6 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
++/* update the given framebuffer and draw colorful strip in new position */
++static void update_color_strip(igt_fb_t *fb, pos_t *old, pos_t *new, double r, double g, double b)
++{
++	cairo_t *cr;
++
++	if (!fb || !new || !old)
++		return;
++
++	cr = igt_get_cairo_ctx(fb->fd, fb);
++	igt_assert_f(cr, "Failed to get cairo context\n");
++
++	/**
++	 * we'd draw the strip in the new position w/ given color
++	 * and make the background of the framebuffer as black
++	 * - render black BG in the old position of strip instead of rendering the whole FB
++	 * - render colorful strip in the new position
++	 */
++	igt_paint_color(cr, old->x, old->y, old->w, old->h, .0, .0, .0);
++	igt_paint_color(cr, new->x, new->y, new->w, new->h, r, g, b);
++
++	igt_put_cairo_ctx(cr);
++}
++
+ /* Common test setup. */
+ static void test_init(data_t *data)
+ {
+@@ -314,12 +338,12 @@ static void run_check_psr(data_t *data, bool test_null_crtc) {
  static void run_check_psr_su_mpo(data_t *data)
  {
  	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	igt_fb_t ov_fb;		/* fb for overlay */
- 	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	/* rectangle fbs for primary, emulate as video playback region */
+-	igt_fb_t rect_fb[N_MPO_TEST_RECT_FB]; 	/* rectangle fbs for primary, emulate as video playback region */
  	igt_fb_t ref_fb;	/* reference fb */
  	igt_fb_t *flip_fb;
-@@ -341,28 +346,28 @@ static void run_check_psr_su_mpo(data_t *data)
- 	 * thus the overlay fb be initialized w/ ARGB pixel format to support blending
- 	 */
- 	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
--			    1.0, 1.0, 1.0, &ov_fb);
-+			    1.0, 1.0, 1.0, &data->ov_fb[0]);
- 	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i) {
- 		cairo_t *cr;
- 		int strip_w = data->w / (2 * N_MPO_TEST_RECT_FB);
- 
--		igt_create_fb(data->fd, data->w / 2, data->h / 2, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+		igt_create_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
- 			      &rect_fb[i]);
- 		cr = igt_get_cairo_ctx(data->fd, &rect_fb[i]);
- 		igt_assert_f(cr, "Failed to get cairo context\n");
- 		/* background in black */
--		igt_paint_color(cr, 0, 0, data->w / 2, data->h / 2, .0, .0, .0);
-+		igt_paint_color(cr, 0, 0, data->pfb_w, data->pfb_h, .0, .0, .0);
- 		/* foreground (megenta strip) */
--		igt_paint_color(cr, i * strip_w, 0, strip_w, data->h / 2, 1.0, .0, 1.0);
-+		igt_paint_color(cr, i * strip_w, 0, strip_w, data->pfb_h, 1.0, .0, 1.0);
- 
- 		igt_put_cairo_ctx(cr);
- 	}
- 
- 	/* tie fbs to planes and set position/size/blending */
--	igt_plane_set_fb(data->overlay, &ov_fb);
-+	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
- 	igt_plane_set_fb(data->primary, &rect_fb[0]);
- 	igt_plane_set_position(data->primary, 0, 0);
--	igt_plane_set_size(data->primary, data->w / 2, data->h / 2);
-+	igt_plane_set_size(data->primary, data->pfb_w, data->pfb_h);
- 
- 	/**
- 	 * adjust alpha for vpb (primary plane) region in overlay.
-@@ -375,7 +380,7 @@ static void run_check_psr_su_mpo(data_t *data)
- 	 * the alpha of each pixel in overlay corresponding to primary plane
- 	 * position/size to be zero.
- 	 */
--	draw_color_alpha(&ov_fb, 0, 0, data->w / 2, data->h / 2, .5, .5, .5, .0);
-+	draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, data->pfb_h, .5, .5, .5, .0);
- 
- 	igt_output_set_pipe(data->output, data->pipe_id);
- 	igt_display_commit_atomic(&data->display, 0, NULL);
-@@ -398,7 +403,7 @@ static void run_check_psr_su_mpo(data_t *data)
- 
- 	/* fini */
- 	igt_remove_fb(data->fd, &ref_fb);
--	igt_remove_fb(data->fd, &ov_fb);
-+	igt_remove_fb(data->fd, &data->ov_fb[0]);
- 	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i)
- 		igt_remove_fb(data->fd, &rect_fb[i]);
- 	test_fini(data);
-@@ -438,17 +443,13 @@ static void panning_rect_fb(data_t *data, igt_fb_t *rect_fb, int rect_w, int rec
- static void run_check_psr_su_ffu(data_t *data)
- {
- 	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	igt_fb_t rect_fb; 	/* rectangle fbs for primary */
- 	igt_fb_t ref_fb;	/* reference fb */
--	int pb_w, pb_h;
+ 	int ret;
+ 	const int run_sec = 5;
+ 	int frame_rate = 0;
++	pos_t old[2], new;
  
  	/* skip the test run if no eDP sink detected */
  	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
- 
+@@ -327,6 +351,10 @@ static void run_check_psr_su_mpo(data_t *data)
  	/* init */
  	test_init(data);
--	pb_w = data->w / 2;
--	pb_h = data->h / 2;
+ 	frame_rate = data->mode->vrefresh;
++	memset(&old, 0, sizeof(pos_t) * 2);
++	memset(&new, 0, sizeof(pos_t));
++	old[0].w = old[1].w = new.w = 30;
++	old[0].h = old[1].h = new.h = data->pfb_h;
  
  	/* run the test i.i.f. eDP panel supports and kernel driver both support PSR-SU  */
  	igt_skip_on(!psr_su_supported(data));
-@@ -492,26 +493,26 @@ static void run_check_psr_su_ffu(data_t *data)
- 	/* step 1 */
- 	igt_create_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, &data->ov_fb[0]);
- 	igt_create_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, &data->ov_fb[1]);
--	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
--			    1.0, .0, 1.0, &rect_fb); /* magenta primary */
+@@ -347,25 +375,14 @@ static void run_check_psr_su_mpo(data_t *data)
+ 	 */
+ 	igt_create_color_fb(data->fd, data->w, data->h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
+ 			    1.0, 1.0, 1.0, &data->ov_fb[0]);
+-	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i) {
+-		cairo_t *cr;
+-		int strip_w = data->w / (2 * N_MPO_TEST_RECT_FB);
+-
+-		igt_create_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-			      &rect_fb[i]);
+-		cr = igt_get_cairo_ctx(data->fd, &rect_fb[i]);
+-		igt_assert_f(cr, "Failed to get cairo context\n");
+-		/* background in black */
+-		igt_paint_color(cr, 0, 0, data->pfb_w, data->pfb_h, .0, .0, .0);
+-		/* foreground (megenta strip) */
+-		igt_paint_color(cr, i * strip_w, 0, strip_w, data->pfb_h, 1.0, .0, 1.0);
+-
+-		igt_put_cairo_ctx(cr);
+-	}
 +	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.0, .0, 1.0, &data->pm_fb[0]); /* magenta primary */
++			    .0, .0, .0, &data->pm_fb[0]);
++	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++			    .0, .0, .0, &data->pm_fb[1]);
  
- 	/* step 2 & 3 */
--	panning_rect_fb(data, &rect_fb, pb_w, pb_h, 0, 0);
-+	panning_rect_fb(data, &data->pm_fb[0], data->pfb_w, data->pfb_h, 0, 0);
- 	sleep(5);
+ 	/* tie fbs to planes and set position/size/blending */
+ 	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
+-	igt_plane_set_fb(data->primary, &rect_fb[0]);
++	igt_plane_set_fb(data->primary, &data->pm_fb[1]);
+ 	igt_plane_set_position(data->primary, 0, 0);
+ 	igt_plane_set_size(data->primary, data->pfb_w, data->pfb_h);
  
- 	/* step 4 & 5 */
--	panning_rect_fb(data, &rect_fb, pb_w, pb_h, pb_w / 2, pb_h / 2);
-+	panning_rect_fb(data, &data->pm_fb[0], data->pfb_w, data->pfb_h, data->pfb_w / 2, data->pfb_h / 2);
- 	sleep(5);
+@@ -389,23 +406,28 @@ static void run_check_psr_su_mpo(data_t *data)
+ 	igt_info("\n start flipping ...\n");
  
- 	/* step 6 & 7 */
--	panning_rect_fb(data, &rect_fb, pb_w, pb_h, pb_w, pb_h);
-+	panning_rect_fb(data, &data->pm_fb[0], data->pfb_w, data->pfb_h, data->pfb_w, data->pfb_h);
- 	sleep(5);
+ 	for (int i = 0; i < run_sec * frame_rate; ++i) {
+-		igt_info(" About to commit a primary plane (FB %d), loop %d \n", i % N_MPO_TEST_RECT_FB, i);
+-		flip_fb = &rect_fb[i % N_MPO_TEST_RECT_FB];
++		flip_fb = &data->pm_fb[i & 1];
++		/* draw the color strip onto primary plane FB */
++		update_color_strip(flip_fb, &old[i & 1], &new, 1.0, .0, 1.0);
+ 
+ 		igt_plane_set_fb(data->primary, flip_fb);
+ 		igt_output_set_pipe(data->output, data->pipe_id);
+ 
+-		ret = drmModePageFlip(data->fd, data->output->config.crtc->crtc_id,
+-				      flip_fb->fb_id, DRM_MODE_PAGE_FLIP_EVENT, NULL);
++		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+ 		igt_require(ret == 0);
+ 		kmstest_wait_for_pageflip(data->fd);
++
++		/* update strip position */
++		old[i & 1].x = new.x;
++		new.x += 3;
++		new.x = (new.x + new.w > data->pfb_w) ? 0 : new.x;
+ 	}
  
  	/* fini */
  	igt_remove_fb(data->fd, &ref_fb);
  	igt_remove_fb(data->fd, &data->ov_fb[0]);
- 	igt_remove_fb(data->fd, &data->ov_fb[1]);
--	igt_remove_fb(data->fd, &rect_fb);
+-	for (int i = 0; i < N_MPO_TEST_RECT_FB; ++i)
+-		igt_remove_fb(data->fd, &rect_fb[i]);
 +	igt_remove_fb(data->fd, &data->pm_fb[0]);
++	igt_remove_fb(data->fd, &data->pm_fb[1]);
  	test_fini(data);
  }
  
-@@ -556,21 +557,15 @@ static void test_cursor_movement(data_t *data, int iters, int cs_size, enum curs
- static void run_check_psr_su_cursor(data_t *data, bool test_mpo)
- {
- 	int edp_idx = check_conn_type(data, DRM_MODE_CONNECTOR_eDP);
--	igt_fb_t cs_fb;		/* cursor FB */
- 	const int cs_size = 128;
- 	const int delay_sec = 5; /* seconds */
- 	int frame_rate = 0;
--	int pb_w, pb_h, ob_w, ob_h;
- 
- 	igt_skip_on_f(edp_idx == -1, "no eDP connector found\n");
- 
- 	test_init(data);
- 	igt_skip_on(!psr_su_supported(data));
- 
--	ob_w = data->w;
--	ob_h = data->h;
--	pb_w = data->w / 2;
--	pb_h = data->h / 2;
- 	frame_rate = data->mode->vrefresh;
- 
- 	/*
-@@ -578,26 +573,26 @@ static void run_check_psr_su_cursor(data_t *data, bool test_mpo)
- 	 * - create primary FBs of quarter screen size of different colors (blue and green)
- 	 * - create overlay FB of screen size of white color (default alpha 1.0)
- 	 */
--	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
- 			    .0, .0, 1.0, &data->pm_fb[0]);
--	igt_create_color_fb(data->fd, pb_w, pb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+	igt_create_color_fb(data->fd, data->pfb_w, data->pfb_h, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
- 			    .0, 1.0, .0, &data->pm_fb[1]);
--	igt_create_color_fb(data->fd, ob_w, ob_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
-+	igt_create_color_fb(data->fd, data->ofb_w, data->ofb_h, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR,
- 			    1.0, 1.0, 1.0, &data->ov_fb[0]);
- 
- 	/* cursor FB creation, draw cursor pattern/set alpha regions */
--	igt_create_fb(data->fd, cs_size, cs_size, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, &cs_fb);
--	draw_color_cursor(&cs_fb, cs_size, 1.0, .0, 1.0);
-+	igt_create_fb(data->fd, cs_size, cs_size, DRM_FORMAT_ARGB8888, DRM_FORMAT_MOD_LINEAR, &data->cs_fb);
-+	draw_color_cursor(&data->cs_fb, cs_size, 1.0, .0, 1.0);
- 
- 	/*
- 	 * panning the primary plane at the top-left of screen
- 	 * set alpha region in overlay plane and set alpha to 0.0 to show primary plane
- 	 * set cursor plane and starting from position of (0, 0)
- 	 */ 
--	draw_color_alpha(&data->ov_fb[0], 0, 0, pb_w, pb_h, 1.0, 1.0, 1.0, .0);
-+	draw_color_alpha(&data->ov_fb[0], 0, 0, data->pfb_w, data->pfb_h, 1.0, 1.0, 1.0, .0);
- 	igt_plane_set_fb(data->primary, &data->pm_fb[0]);
- 	igt_plane_set_fb(data->overlay, &data->ov_fb[0]);
--	igt_plane_set_fb(data->cursor, &cs_fb);
-+	igt_plane_set_fb(data->cursor, &data->cs_fb);
- 	igt_plane_set_position(data->cursor, 0, 0);
- 
- 	igt_output_set_pipe(data->output, data->pipe_id);
-@@ -624,7 +619,7 @@ static void run_check_psr_su_cursor(data_t *data, bool test_mpo)
- 
- 	igt_remove_fb(data->fd, &data->pm_fb[0]);
- 	igt_remove_fb(data->fd, &data->pm_fb[1]);
--	igt_remove_fb(data->fd, &cs_fb);
-+	igt_remove_fb(data->fd, &data->cs_fb);
- 	igt_remove_fb(data->fd, &data->ov_fb[0]);
- 	test_fini(data);
- }
 -- 
 2.25.1
