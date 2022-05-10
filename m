@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB0A910EECD
- for <igt-dev@lists.freedesktop.org>; Tue, 10 May 2022 07:24:17 +0000 (UTC)
-Date: Tue, 10 May 2022 09:24:13 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: sai.gowtham.ch@intel.com
-Message-ID: <YnoTHbUKFqWwupmp@zkempczy-mobl2>
-References: <20220509222020.27447-1-sai.gowtham.ch@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C95510F216
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 May 2022 08:04:48 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 10 May 2022 13:31:58 +0530
+Message-Id: <20220510080203.3319182-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220510080203.3319182-1-bhanuprakash.modem@intel.com>
+References: <20220510080203.3319182-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220509222020.27447-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture : Add
- support for local memory
+Subject: [igt-dev] [v3 1/6] tests/kms_pipe_crc_basic: Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,326 +19,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 10, 2022 at 03:50:20AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> 
-> v1: Adding local memory support to many-4K-zero subtest
->     and used new macro for_each_memory_region for memory regioning.
-> 
-> v2: Add 48b exec flag for execbuf.
-> 
-> v3: Iterate make-4k-incremental subtest over memory region and
->     also reducing the number of objects created in lmem so that
->     allocations in lmem is done adequate based on the allocation size
->     available , as lmem is occupied by flatccs + gtt.
-> 
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/i915/gem_exec_capture.c | 103 ++++++++++++++++++++--------------
->  1 file changed, 61 insertions(+), 42 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-> index 60f8df04..ca3703a3 100644
-> --- a/tests/i915/gem_exec_capture.c
-> +++ b/tests/i915/gem_exec_capture.c
-> @@ -250,7 +250,8 @@ static void wait_to_die(int fence_out)
->  
->  static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  		       const struct intel_execution_engine2 *e,
-> -		       uint32_t target, uint64_t target_size, uint32_t region)
-> +		       uint32_t target, uint64_t target_size,
-> +		       struct drm_i915_gem_memory_class_instance *region)
->  {
->  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
->  	struct drm_i915_gem_exec_object2 obj[4];
-> @@ -268,13 +269,13 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	saved_engine = configure_hangs(fd, e, ctx->id);
->  
->  	memset(obj, 0, sizeof(obj));
-> -	obj[SCRATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
-> +	obj[SCRATCH].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
->  	obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
->  	obj[CAPTURE].handle = target;
->  	obj[CAPTURE].flags = EXEC_OBJECT_CAPTURE;
->  	obj[NOCAPTURE].handle = gem_create(fd, 4096);
->  
-> -	obj[BATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
-> +	obj[BATCH].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
->  	obj[BATCH].relocs_ptr = (uintptr_t)reloc;
->  	obj[BATCH].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
->  
-> @@ -384,12 +385,13 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  }
->  
->  static void capture(int fd, int dir, const intel_ctx_t *ctx,
-> -		    const struct intel_execution_engine2 *e, uint32_t region)
-> +		const struct intel_execution_engine2 *e,
-> +		struct drm_i915_gem_memory_class_instance *region)
+Convert the existing subtests to dynamic subtests at pipe level.
 
-Invalid indentation.
+V2:
+* Fix typos: s/hand/hang/, s/TEST_NONE/TEST_BASIC, etc..
 
->  {
->  	uint32_t handle;
->  	uint64_t ahnd, obj_size = 4096;
->  
-> -	igt_assert_eq(__gem_create_in_memory_regions(fd, &handle, &obj_size, region), 0);
-> +	igt_assert_eq(__gem_create_in_memory_region_list(fd, &handle, &obj_size, region, 1), 0);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
->  	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, region);
-> @@ -415,7 +417,8 @@ static struct offset *
->  __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	   const struct intel_execution_engine2 *e,
->  	   unsigned int size, int count,
-> -	   unsigned int flags, int *_fence_out)
-> +	   unsigned int flags, int *_fence_out,
-> +	   struct drm_i915_gem_memory_class_instance *region)
->  #define INCREMENTAL 0x1
->  #define ASYNC 0x2
->  {
-> @@ -436,9 +439,10 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  	obj = calloc(count + 2, sizeof(*obj));
->  	igt_assert(obj);
->  
-> -	obj[0].handle = gem_create(fd, 4096);
-> +	obj[0].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
->  	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
-> -	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
-> +	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE |
-> +			(ahnd ? EXEC_OBJECT_PINNED : 0);
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_pipe_crc_basic.c | 111 ++++++++++++++++++++++---------------
+ 1 file changed, 65 insertions(+), 46 deletions(-)
 
-Same here.
-
->  
->  	for (i = 0; i < count; i++) {
->  		obj[i + 1].handle = gem_create(fd, size);
-> @@ -459,11 +463,12 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  		}
->  	}
->  
-> -	obj[count + 1].handle = gem_create(fd, 4096);
-> +	obj[count + 1].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
->  	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
->  	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
->  	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
-> -	obj[count + 1].flags = ahnd ? EXEC_OBJECT_PINNED : 0;
-> +	obj[count + 1].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS |
-> +			(ahnd ? EXEC_OBJECT_PINNED : 0);
-
-And here.
-
->  
->  	memset(reloc, 0, sizeof(reloc));
->  	reloc[0].target_handle = obj[count + 1].handle; /* recurse */
-> @@ -585,29 +590,41 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
->  		saved = configure_hangs(fd, e, ctx->id); \
->  	} while(0)
->  
-> -static void many(int fd, int dir, uint64_t size, unsigned int flags)
-> +static void many(int fd, int dir, uint64_t size, unsigned int flags,
-> +		struct drm_i915_gem_memory_class_instance *region)
->  {
->  	const struct intel_execution_engine2 *e;
->  	const intel_ctx_t *ctx;
-> -	uint64_t ram, gtt, ahnd;
-> +	uint64_t ram, gtt, ahnd, lmem_size;
->  	unsigned long count, blobs;
->  	struct offset *offsets;
->  	struct gem_engine_properties saved_engine;
-> +	struct drm_i915_query_memory_regions *info;
->  
->  	find_first_available_engine(fd, ctx, e, saved_engine);
->  
->  	gtt = gem_aperture_size(fd) / size;
-> -	ram = (intel_get_avail_ram_mb() << 20) / size;
-> +	ram = (intel_get_avail_ram_mb() << 20) / (size * 32);
->  	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
->  		  gtt, ram);
->  
-> -	count = min(gtt, ram) / 4;
-> -	igt_require(count > 1);
-> +	info = gem_get_query_memory_regions(fd);
-> +	lmem_size = gpu_meminfo_region_total_size(info, I915_MEMORY_CLASS_DEVICE) / (size * 16);
-> +
-> +	if (region->memory_class == I915_MEMORY_CLASS_SYSTEM) {
-> +		count = min(gtt, ram) / 4;
-> +		igt_require(count > 1);
-> +		intel_require_memory(count, size, CHECK_RAM);
-> +
-> +	} else {
-> +		count = min(gtt, lmem_size) / 4;
-> +		igt_require(count > 1);
-> +	}
-
-igt_require() can be outside condition. BTW you've limited this memory constraint
-too much and I got:
-
-Starting subtest: many-256M-incremental
-Test requirement not met in function many, file ../tests/i915/gem_exec_capture.c:616:
-Test requirement: count > 1
-Subtest many-256M-incremental: SKIP (0.066s)
-
-Even if machine has enough memory to run the test.
-
->  
-> -	intel_require_memory(count, size, CHECK_RAM);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
-> +	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL,
-> +			region);
->  
->  	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
->  	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-> @@ -620,7 +637,8 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
->  }
->  
->  static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
-> -		    const struct intel_execution_engine2 *e)
-> +		    const struct intel_execution_engine2 *e,
-> +		    struct drm_i915_gem_memory_class_instance *region)
->  {
->  	const uint32_t bbe = MI_BATCH_BUFFER_END;
->  	struct drm_i915_gem_exec_object2 obj = {
-> @@ -677,7 +695,8 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  		/* Reopen the allocator in the new process. */
->  		ahnd = get_reloc_ahnd(fd, ctx2->id);
->  
-> -		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
-> +		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC,
-> +					&fence_out, region));
->  		put_ahnd(ahnd);
->  
->  		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-> @@ -708,7 +727,8 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
->  	put_ahnd(ahnd);
->  }
->  
-> -static void userptr(int fd, int dir)
-> +static void userptr(int fd, int dir,
-> +		struct drm_i915_gem_memory_class_instance *region)
-
-Indentation.
-
->  {
->  	const struct intel_execution_engine2 *e;
->  	const intel_ctx_t *ctx;
-> @@ -716,7 +736,7 @@ static void userptr(int fd, int dir)
->  	uint64_t ahnd;
->  	void *ptr;
->  	int obj_size = 4096;
-> -	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
-> +
->  	struct gem_engine_properties saved_engine;
->  
->  	find_first_available_engine(fd, ctx, e, saved_engine);
-> @@ -726,7 +746,8 @@ static void userptr(int fd, int dir)
->  	igt_require(__gem_userptr(fd, ptr, obj_size, 0, 0, &handle) == 0);
->  	ahnd = get_reloc_ahnd(fd, ctx->id);
->  
-> -	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, system_region);
-> +	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size,
-> +			region);
-
-Keep region in same line.
-
---
-Zbigniew
-
->  
->  	gem_close(fd, handle);
->  	put_ahnd(ahnd);
-> @@ -764,9 +785,10 @@ igt_main
->  	int fd = -1;
->  	int dir = -1;
->  	struct drm_i915_query_memory_regions *query_info;
-> -	struct igt_collection *regions, *set;
-> -	char *sub_name;
-> -	uint32_t region;
-> +	struct drm_i915_gem_memory_class_instance region_smem = {
-> +		.memory_class = I915_MEMORY_CLASS_SYSTEM,
-> +		.memory_instance = 0,
-> +	};
->  
->  	igt_fixture {
->  		int gen;
-> @@ -788,56 +810,53 @@ igt_main
->  		igt_require(safer_strlen(igt_sysfs_get(dir, "error")) > 0);
->  		query_info = gem_get_query_memory_regions(fd);
->  		igt_assert(query_info);
-> -		set = get_memory_region_set(query_info,
-> -				I915_SYSTEM_MEMORY,
-> -				I915_DEVICE_MEMORY);
->  	}
->  
->  	test_each_engine("capture", fd, ctx, e) {
-> -		for_each_combination(regions, 1, set) {
-> -			sub_name = memregion_dynamic_subtest_name(regions);
-> -			region = igt_collection_get_value(regions, 0);
-> -			igt_dynamic_f("%s-%s", e->name, sub_name)
-> -				capture(fd, dir, ctx, e, region);
-> -			free(sub_name);
-> +		for_each_memory_region(r, fd) {
-> +			igt_dynamic_f("%s-%s", e->name, r->name)
-> +				capture(fd, dir, ctx, e, &r->ci);
->  		}
->  	}
->  
->  	igt_subtest_f("many-4K-zero") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 1<<12, 0);
-> +		many(fd, dir, 1<<12, 0, &region_smem);
->  	}
->  
-> -	igt_subtest_f("many-4K-incremental") {
-> +	igt_subtest_with_dynamic("many-4K-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 1<<12, INCREMENTAL);
-> +		for_each_memory_region(r, fd) {
-> +			igt_dynamic_f("%s", r->name)
-> +				many(fd, dir, 1<<12, INCREMENTAL, &r->ci);
-> +		}
->  	}
->  
->  	igt_subtest_f("many-2M-zero") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 2<<20, 0);
-> +		many(fd, dir, 2<<20, 0, &region_smem);
->  	}
->  
->  	igt_subtest_f("many-2M-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 2<<20, INCREMENTAL);
-> +		many(fd, dir, 2<<20, INCREMENTAL, &region_smem);
->  	}
->  
->  	igt_subtest_f("many-256M-incremental") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		many(fd, dir, 256<<20, INCREMENTAL);
-> +		many(fd, dir, 256<<20, INCREMENTAL, &region_smem);
->  	}
->  
->  	/* And check we can read from different types of objects */
->  
->  	igt_subtest_f("userptr") {
->  		igt_require(gem_can_store_dword(fd, 0));
-> -		userptr(fd, dir);
-> +		userptr(fd, dir, &region_smem);
->  	}
->  
->  	test_each_engine("pi", fd, ctx, e)
->  		igt_dynamic_f("%s", (e)->name)
-> -			prioinv(fd, dir, ctx, e);
-> +			prioinv(fd, dir, ctx, e, &region_smem);
->  
->  	igt_fixture {
->  		close(dir);
-> -- 
-> 2.35.1
-> 
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 0861c46d..9b3fecee 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -59,8 +59,13 @@ static void test_bad_source(data_t *data)
+ 
+ #define N_CRCS	3
+ 
+-#define TEST_SEQUENCE (1<<0)
+-#define TEST_NONBLOCK (1<<1)
++enum {
++	TEST_BASIC = 0,
++	TEST_SEQUENCE = 1 << 0,
++	TEST_NONBLOCK = 1 << 1,
++	TEST_SUSPEND = 1 << 2,
++	TEST_HANG = 1 << 3,
++};
+ 
+ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
+ {
+@@ -270,6 +275,25 @@ data_t data = {0, };
+ igt_main
+ {
+ 	enum pipe pipe;
++	struct {
++		const char *name;
++		unsigned flags;
++		const char *desc;
++	} tests[] = {
++		{ "read-crc", TEST_BASIC,
++			"Test for pipe CRC reads." },
++		{ "read-crc-frame-sequence", TEST_SEQUENCE,
++			"Tests the pipe CRC read and ensure frame sequence." },
++		{ "nonblocking-crc", TEST_NONBLOCK,
++			"Test for O_NONBLOCK CRC reads." },
++		{ "nonblocking-crc-frame-sequence", TEST_SEQUENCE | TEST_NONBLOCK,
++			"Test for O_NONBLOCK CRC reads and ensure frame sequence." },
++		{ "suspend-read-crc", TEST_SUSPEND,
++			"Suspend test for pipe CRC reads." },
++		{ "hang-read-crc", TEST_HANG,
++			"Hang test for pipe CRC read." },
++	};
++	int i;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -286,54 +310,49 @@ igt_main
+ 	igt_subtest("bad-source")
+ 		test_bad_source(&data);
+ 
+-	for_each_pipe_static(pipe) {
+-		igt_describe("Test for pipe CRC reads.");
+-		igt_subtest_f("read-crc-pipe-%s", kmstest_pipe_name(pipe))
+-			test_read_crc(&data, pipe, 0);
+-
+-		igt_describe("Tests the pipe CRC read and ensure frame sequence.");
+-		igt_subtest_f("read-crc-pipe-%s-frame-sequence", kmstest_pipe_name(pipe))
+-			test_read_crc(&data, pipe, TEST_SEQUENCE);
+-
+-		igt_describe("Test for O_NONBLOCK CRC reads.");
+-		igt_subtest_f("nonblocking-crc-pipe-%s", kmstest_pipe_name(pipe))
+-			test_read_crc(&data, pipe, TEST_NONBLOCK);
+-
+-		igt_describe("Test for O_NONBLOCK CRC reads and ensure frame sequence.");
+-		igt_subtest_f("nonblocking-crc-pipe-%s-frame-sequence", kmstest_pipe_name(pipe))
+-			test_read_crc(&data, pipe, TEST_SEQUENCE | TEST_NONBLOCK);
+-
+-		igt_describe("Suspend test for pipe CRC reads");
+-		igt_subtest_f("suspend-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
+-			test_read_crc(&data, pipe, 0);
+-
+-			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-						      SUSPEND_TEST_NONE);
+-
+-			test_read_crc(&data, pipe, 0);
++	for (i = 0; i < ARRAY_SIZE(tests); i++) {
++		igt_describe(tests[i].desc);
++		igt_subtest_with_dynamic(tests[i].name) {
++			for_each_pipe(&data.display, pipe) {
++				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
++					if (tests[i].flags & TEST_SUSPEND) {
++						test_read_crc(&data, pipe, 0);
++
++						igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++									      SUSPEND_TEST_NONE);
++
++						test_read_crc(&data, pipe, 0);
++					} else if (tests[i].flags & TEST_SUSPEND) {
++						igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
++
++						test_read_crc(&data, pipe, 0);
++						igt_force_gpu_reset(data.drm_fd);
++						test_read_crc(&data, pipe, 0);
++
++						igt_disallow_hang(data.drm_fd, hang);
++					} else {
++						test_read_crc(&data, pipe, tests[i].flags);
++					}
++				}
++			}
+ 		}
++	}
+ 
+-		igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
+-			     "does not cause issues.");
+-		igt_subtest_f("disable-crc-after-crtc-pipe-%s", kmstest_pipe_name(pipe))
+-			test_disable_crc_after_crtc(&data, pipe);
+-
+-		igt_describe("Hang test for pipe CRC read");
+-		igt_subtest_f("hang-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
+-			igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
+-
+-			test_read_crc(&data, pipe, 0);
+-
+-			igt_force_gpu_reset(data.drm_fd);
+-
+-			test_read_crc(&data, pipe, 0);
+-
+-			igt_disallow_hang(data.drm_fd, hang);
++	igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
++		     "does not cause issues.");
++	igt_subtest_with_dynamic("disable-crc-after-crtc") {
++		for_each_pipe(&data.display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_disable_crc_after_crtc(&data, pipe);
+ 		}
++	}
+ 
+-		igt_describe("Basic sanity check for CRC mismatches");
+-		igt_subtest_f("compare-crc-sanitycheck-pipe-%s", kmstest_pipe_name(pipe))
+-			test_compare_crc(&data, pipe);
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
++		for_each_pipe(&data.display, pipe) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				test_compare_crc(&data, pipe);
++		}
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.35.1
