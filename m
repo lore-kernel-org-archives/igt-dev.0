@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95F4B10E3DB
- for <igt-dev@lists.freedesktop.org>; Wed, 11 May 2022 23:03:33 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 11 May 2022 23:03:30 +0000
-Message-ID: <d87b5121e79943bca3adab342bf7c9c6@intel.com>
-References: <20220510080203.3319182-1-bhanuprakash.modem@intel.com>
- <165223803269.2700.4009194685344894298@emeril.freedesktop.org>
- <3aea40fc-b252-8724-7ea1-632b3dfa9fb3@intel.com>
-In-Reply-To: <3aea40fc-b252-8724-7ea1-632b3dfa9fb3@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com
+ [199.106.114.38])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6BB610EFCC
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 May 2022 22:55:16 +0000 (UTC)
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Wed, 11 May 2022 15:54:59 -0700
+Message-ID: <20220511225459.139-1-quic_jesszhan@quicinc.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQ29udmVy?=
- =?utf-8?q?t_subtests_to_dynamic_=28rev5=29?=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t v1] lib/igt_kms: Set pipe->plane_primary to
+ driver-assigned primary plane when there are multiple possible primary
+ planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,49 +20,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: robdclark@chromium.org, petri.latvala@intel.com, quic_aravindh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-WWVzLCB0aGV5IGFyZSBrbm93biBpc3N1ZXMuIEkgaGF2ZSByZS1yZXBvcnRlZCB0aGUgc2VyaWVz
-Lg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogTW9kZW0sIEJoYW51cHJha2Fz
-aCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4gDQpTZW50OiBUdWVzZGF5LCBNYXkgMTAs
-IDIwMjIgOTozMSBQTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBWdWR1bSwg
-TGFrc2htaW5hcmF5YW5hIDxsYWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPg0KU3ViamVj
-dDogUmU6IOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUgZm9yIENvbnZlcnQgc3VidGVzdHMgdG8gZHlu
-YW1pYyAocmV2NSkNCg0KSGkgTGFrc2htaSwNCg0KT24gV2VkLTExLTA1LTIwMjIgMDg6MzAgYW0s
-IFBhdGNod29yayB3cm90ZToNCj4gKlBhdGNoIERldGFpbHMqDQo+ICpTZXJpZXM6KglDb252ZXJ0
-IHN1YnRlc3RzIHRvIGR5bmFtaWMgKHJldjUpDQo+ICpVUkw6KglodHRwczovL3BhdGNod29yay5m
-cmVlZGVza3RvcC5vcmcvc2VyaWVzLzEwMzczNC8gDQo+IDxodHRwczovL3BhdGNod29yay5mcmVl
-ZGVza3RvcC5vcmcvc2VyaWVzLzEwMzczNC8+DQo+ICpTdGF0ZToqCWZhaWx1cmUNCj4gKkRldGFp
-bHM6Kg0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzcw
-NzYvaW5kZXguaHRtbA0KPiA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV183MDc2L2luZGV4Lmh0bWw+DQo+IA0KPiANCj4gICBDSSBCdWcgTG9nIC0gY2hhbmdl
-cyBmcm9tIENJX0RSTV8xMTYzMSAtPiBJR1RQV183MDc2DQo+IA0KPiANCj4gICAgIFN1bW1hcnkN
-Cj4gDQo+ICpGQUlMVVJFKg0KPiANCj4gU2VyaW91cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdp
-dGggSUdUUFdfNzA3NiBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUgDQo+IHZlcmlmaWVkIG1hbnVhbGx5
-Lg0KPiANCj4gSWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0
-byBkbyB3aXRoIHRoZSBjaGFuZ2VzIA0KPiBpbnRyb2R1Y2VkIGluIElHVFBXXzcwNzYsIHBsZWFz
-ZSBub3RpZnkgeW91ciBidWcgdGVhbSB0byBhbGxvdyB0aGVtIHRvIA0KPiBkb2N1bWVudCB0aGlz
-IG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBD
-SS4NCj4gDQo+IEV4dGVybmFsIFVSTDogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90
-cmVlL2RybS10aXAvSUdUUFdfNzA3Ni9pbmRleC5odG1sDQo+IA0KPiANCj4gICAgIFBhcnRpY2lw
-YXRpbmcgaG9zdHMgKDQzIC0+IDM5KQ0KPiANCj4gQWRkaXRpb25hbCAoMik6IGZpLWtibC1zb3Jh
-a2EgZmktcmtsLTExNjAwIE1pc3NpbmcgKDYpOiBmaS1iZHctNTU1N3UgDQo+IGJhdC1kZzEtNSBm
-aS1ic3ctY3lhbiBiYXQtZGcyLTkgZmktY3RnLXA4NjAwDQo+IGZpLWtibC14MTI3NQ0KPiANCj4g
-DQo+ICAgICBQb3NzaWJsZSBuZXcgaXNzdWVzDQo+IA0KPiBIZXJlIGFyZSB0aGUgdW5rbm93biBj
-aGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzcwNzY6DQo+IA0K
-PiANCj4gICAgICAgSUdUIGNoYW5nZXMNCj4gDQo+IA0KPiAgICAgICAgIFBvc3NpYmxlIHJlZ3Jl
-c3Npb25zDQo+IA0KPiAgICoNCj4gDQo+ICAgICB7aWd0QGttc19waXBlX2NyY19iYXNpY0ByZWFk
-LWNyYy1mcmFtZS1zZXF1ZW5jZUBwaXBlLWN9IChORVcpOg0KPiANCj4gICAgICAgbyB7YmF0LWRn
-Mi04fTogTk9UUlVOIC0+IFNLSVANCj4gICAgICAgICA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV183MDc2L2JhdC1kZzItOC9pZ3RAa21zX3BpcGVfY3JjX2Jh
-c2ljQHJlYWQtY3JjLWZyYW1lLXNlcXVlbmNlQHBpcGUtYy5odG1sPg0KPiAgICAgICAgICsxMyBz
-aW1pbGFyIGlzc3Vlcw0KDQpUaGVzZSBza2lwcyBhcmUgZXhwZWN0ZWQgb24gTm8tZGlzcGxheSBz
-ZXR1cHMuDQoNCj4gICAqDQo+IA0KPiAgICAgaWd0QGttc19zZXRtb2RlQGJhc2ljLWNsb25lLXNp
-bmdsZS1jcnRjOg0KPiANCj4gICAgICAgbyBmaS1rYmwtc29yYWthOiBOT1RSVU4gLT4gSU5DT01Q
-TEVURQ0KPiAgICAgICAgIA0KPiA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJt
-LXRpcC9JR1RQV183MDc2L2ZpLWtibC1zb3Jha2EvaWd0DQo+IEBrbXNfc2V0bW9kZUBiYXNpYy1j
-bG9uZS1zaW5nbGUtY3J0Yy5odG1sPg0KDQpUaGVzZSBmYWlsdXJlcyBhcmUgbm90IHJlbGF0ZWQg
-dG8gdGhpcyBwYXRjaCBzZXJpZXMuDQoNClBsZWFzZSBoZWxwIHRvIHJlLXJ1bi4NCg0KLSBCaGFu
-dQ0K
+Currently, IGT populates pipe->planes using possible_crtcs and assumes
+that the first primary plane it encounters is the one being actively
+used by the pipe.
+
+This is not always true in cases where there are multiple possible
+primary planes. This will cause problems whenever IGT calls
+drmModePageFlip since drmModePageFlip will use the primary plane
+assigned to the pipe by the driver to perform the page flip [1]. So a
+mismatch between the primary plane used by IGT and the driver can cause
+the page flip to fail.
+
+To fix this, let's implement a helper method to get the primary plane
+that's being assigned to the pipe by the driver. We can then call it
+during igt_display_require() and, if there's a mismatch between
+pipe->plane_primary and the assigned primary plane's index, we can
+set pipe->plane_primary to the correct driver-assigned primary plane.
+
+[1]
+https://gitlab.freedesktop.org/drm/msm/-/blob/msm-next/drivers/gpu/drm/drm_plane.c#L1234
+
+Suggested-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+---
+ lib/igt_kms.c | 73 ++++++++++++++++++++++++++++++++++++++++++++++++---
+ lib/igt_kms.h |  1 +
+ 2 files changed, 70 insertions(+), 4 deletions(-)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 7838ff283b62..9a4c20581977 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -751,6 +751,52 @@ igt_fill_pipe_props(igt_display_t *display, igt_pipe_t *pipe,
+ 	drmModeFreeObjectProperties(props);
+ }
+ 
++static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *pipe)
++{
++	int drm_fd = output->display->drm_fd;
++	drmModeModeInfo *mode;
++	struct igt_fb fb;
++	igt_plane_t *plane = NULL;
++	uint32_t crtc_id;
++	int i;
++
++	mode = igt_output_get_mode(output);
++
++	igt_create_color_fb(drm_fd, mode->hdisplay, mode->vdisplay,
++						DRM_FORMAT_XRGB8888,
++						DRM_FORMAT_MOD_LINEAR,
++						1.0, 1.0, 1.0, &fb);
++
++	crtc_id = pipe->crtc_id;
++
++	/*
++	 * Do a legacy SETCRTC to start things off, so that we know that
++	 * the kernel will pick the correct primary plane and attach it
++	 * to the CRTC. This lets us handle the case that there are
++	 * multiple primary planes (one per CRTC), but which can *also*
++	 * be attached to other CRTCs
++	 */
++	igt_assert(drmModeSetCrtc(output->display->drm_fd, crtc_id, fb.fb_id,
++							  0, 0, &output->id, 1, mode) == 0);
++
++	for(i = 0; i < pipe->n_planes; i++) {
++		if (pipe->planes[i].type != DRM_PLANE_TYPE_PRIMARY)
++			continue;
++
++		if (igt_plane_get_prop(&pipe->planes[i], IGT_PLANE_CRTC_ID) != crtc_id)
++			continue;
++
++		plane = &pipe->planes[i];
++		break;
++	}
++
++	/* Removing the FB will also shut down the display for us: */
++	igt_remove_fb(drm_fd, &fb);
++	igt_assert_f(plane, "Valid assigned primary plane for CRTC_ID %d not found.\n", crtc_id);
++
++	return plane;
++}
++
+ /**
+  * kmstest_pipe_name:
+  * @pipe: display pipe
+@@ -2302,10 +2348,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 
+ 			type = global_plane->type;
+ 
+-			if (type == DRM_PLANE_TYPE_PRIMARY && pipe->plane_primary == -1) {
+-				plane = &pipe->planes[0];
+-				plane->index = 0;
+-				pipe->plane_primary = 0;
++			if (type == DRM_PLANE_TYPE_PRIMARY) {
++				if (pipe->plane_primary == -1) {
++					plane = &pipe->planes[0];
++					plane->index = 0;
++					pipe->plane_primary = 0;
++				}
++
++				pipe->num_primary_planes++;
+ 			} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->plane_cursor == -1) {
+ 				plane = &pipe->planes[last_plane];
+ 				plane->index = last_plane;
+@@ -2392,6 +2442,21 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ out:
+ 	LOG_UNINDENT(display);
+ 
++	for_each_pipe(display, i) {
++		igt_pipe_t *pipe = &display->pipes[i];
++		igt_output_t *output = igt_get_single_output_for_pipe(display, i);
++
++		if (pipe->num_primary_planes > 1) {
++			igt_plane_t *assigned_primary = igt_get_assigned_primary(output, pipe);
++			int assigned_primary_index = assigned_primary->index;
++
++			if (assigned_primary_index != pipe->plane_primary) {
++				igt_swap(pipe->planes[assigned_primary_index],
++						pipe->planes[pipe->plane_primary]);
++			}
++		}
++	}
++
+ 	if (display->n_pipes && display->n_outputs)
+ 		igt_enable_connectors(drm_fd);
+ 	else
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index e9ecd21e9824..4949b7b39e18 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -383,6 +383,7 @@ struct igt_pipe {
+ 	bool enabled;
+ 
+ 	int n_planes;
++	int num_primary_planes;
+ 	int plane_cursor;
+ 	int plane_primary;
+ 	igt_plane_t *planes;
+-- 
+2.31.0
