@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E74510F363
- for <igt-dev@lists.freedesktop.org>; Wed, 11 May 2022 11:37:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62C1710F324
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 May 2022 11:37:48 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 May 2022 17:07:30 +0530
-Message-Id: <20220511113734.27776-1-anshuman.gupta@intel.com>
+Date: Wed, 11 May 2022 17:07:31 +0530
+Message-Id: <20220511113734.27776-2-anshuman.gupta@intel.com>
+In-Reply-To: <20220511113734.27776-1-anshuman.gupta@intel.com>
+References: <20220511113734.27776-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/4] RPM Test on HEADLESS
+Subject: [igt-dev] [PATCH i-g-t v2 1/4] test: i915_pm_rpm: init devid in
+ setup_envirnoment
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,17 +24,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently RPM Non-Display test skips on HEADLESS configurations.
-This series fixes that issue.
+Refactor out devid initialization out of init_mode_set_data().
+Initialize it in setup_environment().
 
-Anshuman Gupta (4):
-  test: i915_pm_rpm: init devid in setup_envirnoment
-  i915_pm_rpm: %s/display_disabled/display_enabled
-  test: i915_pm_rpm: conditional initialization of igt_display_t
-  i915_pm_rpm: rpm resume by user forcewake
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ tests/i915/i915_pm_rpm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- tests/i915/i915_pm_rpm.c | 112 +++++++++++++++++++++++++++------------
- 1 file changed, 77 insertions(+), 35 deletions(-)
-
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 461730e8a..2cc89eef2 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -409,7 +409,6 @@ static void init_mode_set_data(struct mode_set_data *data)
+ 	}
+ 
+ 	igt_display_require(&data->display, drm_fd);
+-	data->devid = intel_get_drm_devid(drm_fd);
+ 	init_modeset_cached_params(&ms_data);
+ }
+ 
+@@ -797,6 +796,8 @@ static bool setup_environment(bool display_disabled)
+ 	debugfs = igt_debugfs_dir(drm_fd);
+ 	igt_require(debugfs != -1);
+ 
++	ms_data.devid = intel_get_drm_devid(drm_fd);
++
+ 	if (!display_disabled)
+ 		init_mode_set_data(&ms_data);
+ 
 -- 
 2.26.2
