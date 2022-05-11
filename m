@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C56C710E59D
- for <igt-dev@lists.freedesktop.org>; Wed, 11 May 2022 02:13:11 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 May 2022 07:40:25 +0530
-Message-Id: <20220511021025.3324688-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220510080203.3319182-6-bhanuprakash.modem@intel.com>
-References: <20220510080203.3319182-6-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3210099711359035083=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 5/6] tests/kms_color: Convert tests to dynamic
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Wed, 11 May 2022 03:00:32 -0000
+Message-ID: <165223803269.2700.4009194685344894298@emeril.freedesktop.org>
+References: <20220510080203.3319182-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220510080203.3319182-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQ29udmVy?=
+ =?utf-8?q?t_subtests_to_dynamic_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,714 +17,836 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert the existing subtests to dynamic subtests at pipe level.
+--===============3210099711359035083==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-V2:
-* Fix nested igt_fixture in igt_subtest
-V3:
-* Fix to not dereferencing a NULL pointer
+== Series Details ==
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_color.c        | 534 +++++++++++++++++++++------------------
- tests/kms_color_helper.h |   1 +
- 2 files changed, 283 insertions(+), 252 deletions(-)
+Series: Convert subtests to dynamic (rev5)
+URL   : https://patchwork.freedesktop.org/series/103734/
+State : failure
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index afff1744..a7ffff93 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -203,7 +203,7 @@ static bool test_pipe_gamma(data_t *data,
-  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
-  * with linear legacy gamma LUT.
-  */
--static void test_pipe_legacy_gamma(data_t *data,
-+static bool test_pipe_legacy_gamma(data_t *data,
- 				   igt_plane_t *primary)
- {
- 	igt_output_t *output;
-@@ -220,6 +220,7 @@ static void test_pipe_legacy_gamma(data_t *data,
- 	struct igt_fb fb_modeset, fb;
- 	igt_crc_t crc_fullgamma, crc_fullcolors;
- 	int fb_id, fb_modeset_id;
-+	bool ret;
- 
- 	kms_crtc = drmModeGetCrtc(data->drm_fd, primary->pipe->crtc_id);
- 	legacy_lut_size = kms_crtc->gamma_size;
-@@ -285,7 +286,7 @@ static void test_pipe_legacy_gamma(data_t *data,
- 	/* Verify that the CRC of the software computed output is
- 	 * equal to the CRC of the gamma LUT transformation output.
- 	 */
--	igt_assert_crc_equal(&crc_fullgamma, &crc_fullcolors);
-+	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
- 
- 	/* Reset output. */
- 	for (i = 1; i < legacy_lut_size; i++)
-@@ -303,13 +304,15 @@ static void test_pipe_legacy_gamma(data_t *data,
- 	free(red_lut);
- 	free(green_lut);
- 	free(blue_lut);
-+
-+	return ret;
- }
- 
- /*
-  * Verify that setting the legacy gamma LUT resets the gamma LUT set
-  * through the GAMMA_LUT property.
-  */
--static void test_pipe_legacy_gamma_reset(data_t *data,
-+static bool test_pipe_legacy_gamma_reset(data_t *data,
- 					 igt_plane_t *primary)
- {
- 	const double ctm_identity[] = {
-@@ -324,6 +327,7 @@ static void test_pipe_legacy_gamma_reset(data_t *data,
- 	struct drm_color_lut *lut;
- 	drmModePropertyBlobPtr blob;
- 	igt_output_t *output;
-+	bool ret = true;
- 
- 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
- 
-@@ -373,10 +377,12 @@ static void test_pipe_legacy_gamma_reset(data_t *data,
- 				    data->gamma_lut_size));
- 	lut = (struct drm_color_lut *) blob->data;
- 	for (i = 0; i < data->gamma_lut_size; i++)
--		igt_assert(lut[i].red == 0 &&
-+		ret &=(lut[i].red == 0 &&
- 			   lut[i].green == 0 &&
- 			   lut[i].blue == 0);
- 	drmModeFreePropertyBlob(blob);
-+	if(!ret)
-+		goto end;
- 
- 	/* Set a gamma LUT using the legacy ioctl and verify
- 	 * the content of the GAMMA_LUT property is changed
-@@ -411,7 +417,7 @@ static void test_pipe_legacy_gamma_reset(data_t *data,
- 				    legacy_lut_size));
- 	lut = (struct drm_color_lut *) blob->data;
- 	for (i = 0; i < legacy_lut_size; i++)
--		igt_assert(lut[i].red == 0xffff &&
-+		ret &= (lut[i].red == 0xffff &&
- 			   lut[i].green == 0xffff &&
- 			   lut[i].blue == 0xffff);
- 	drmModeFreePropertyBlob(blob);
-@@ -421,6 +427,8 @@ static void test_pipe_legacy_gamma_reset(data_t *data,
- 
- 	free_lut(degamma_linear);
- 	free_lut(gamma_zero);
-+end:
-+	return ret;
- }
- 
- /*
-@@ -655,130 +663,91 @@ prep_pipe(data_t *data, enum pipe p)
- 	}
- }
- 
--static void
--run_tests_for_pipe(data_t *data, enum pipe p)
-+static void test_setup(data_t *data, enum pipe p)
- {
- 	igt_pipe_t *pipe;
--	igt_plane_t *primary;
--	double delta;
--	int i;
--	color_t red_green_blue[] = {
--		{ 1.0, 0.0, 0.0 },
--		{ 0.0, 1.0, 0.0 },
--		{ 0.0, 0.0, 1.0 }
--	};
- 
--	igt_fixture {
--		prep_pipe(data, p);
-+	prep_pipe(data, p);
-+	igt_require_pipe_crc(data->drm_fd);
- 
--		igt_require_pipe_crc(data->drm_fd);
-+	pipe = &data->display.pipes[p];
-+	igt_require(pipe->n_planes >= 0);
- 
--		pipe = &data->display.pipes[p];
--		igt_require(pipe->n_planes >= 0);
-+	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
-+					  data->primary->pipe->pipe,
-+					  INTEL_PIPE_CRC_SOURCE_AUTO);
- 
--		primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+	igt_display_require_output_on_pipe(&data->display, p);
-+	data->output = igt_get_single_output_for_pipe(&data->display, p);
-+	igt_require(data->output);
-+}
- 
--		data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
--						  primary->pipe->pipe,
--						  INTEL_PIPE_CRC_SOURCE_AUTO);
-+static void test_cleanup(data_t *data)
-+{
-+	igt_plane_t *primary = data->primary;
- 
--		igt_display_require_output_on_pipe(&data->display, p);
--		data->output = igt_get_single_output_for_pipe(&data->display, p);
--		igt_require(data->output);
--	}
-+	disable_degamma(primary->pipe);
-+	disable_gamma(primary->pipe);
-+	disable_ctm(primary->pipe);
-+	igt_display_commit(&data->display);
-+
-+	igt_pipe_crc_free(data->pipe_crc);
-+	data->pipe_crc = NULL;
-+}
-+
-+static void
-+run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
-+				 bool (*test_t)(data_t*, igt_plane_t*))
-+{
-+	test_setup(data, p);
- 
- 	/* We assume an 8bits depth per color for degamma/gamma LUTs
- 	 * for CRC checks with framebuffer references. */
- 	data->color_depth = 8;
--	delta = 1.0 / (1 << data->color_depth);
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 
--	igt_describe("Check the color transformation from red to blue");
--	igt_subtest_f("pipe-%s-ctm-red-to-blue", kmstest_pipe_name(p)) {
--		color_t blue_green_blue[] = {
--			{ 0.0, 0.0, 1.0 },
--			{ 0.0, 1.0, 0.0 },
--			{ 0.0, 0.0, 1.0 }
--		};
--		double ctm[] = { 0.0, 0.0, 0.0,
--				0.0, 1.0, 0.0,
--				1.0, 0.0, 1.0 };
--		igt_assert(test_pipe_ctm(data, primary, red_green_blue,
--					 blue_green_blue, ctm));
--	}
-+	igt_dynamic_f("pipe-%s", kmstest_pipe_name(p))
-+		igt_assert(test_t(data, data->primary));
- 
--	igt_describe("Check the color transformation from green to red");
--	igt_subtest_f("pipe-%s-ctm-green-to-red", kmstest_pipe_name(p)) {
--		color_t red_red_blue[] = {
--			{ 1.0, 0.0, 0.0 },
--			{ 1.0, 0.0, 0.0 },
--			{ 0.0, 0.0, 1.0 }
--		};
--		double ctm[] = { 1.0, 1.0, 0.0,
--				0.0, 0.0, 0.0,
--				0.0, 0.0, 1.0 };
--		igt_assert(test_pipe_ctm(data, primary, red_green_blue,
--					 red_red_blue, ctm));
--	}
-+	test_cleanup(data);
-+}
- 
--	igt_describe("Check the color transformation from blue to red");
--	igt_subtest_f("pipe-%s-ctm-blue-to-red", kmstest_pipe_name(p)) {
--		color_t red_green_red[] = {
--			{ 1.0, 0.0, 0.0 },
--			{ 0.0, 1.0, 0.0 },
--			{ 1.0, 0.0, 0.0 }
--		};
--		double ctm[] = { 1.0, 0.0, 1.0,
--				0.0, 1.0, 0.0,
--				0.0, 0.0, 0.0 };
--		igt_assert(test_pipe_ctm(data, primary, red_green_blue,
--					 red_green_red, ctm));
--	}
-+static void
-+run_ctm_tests_for_pipe(data_t *data, enum pipe p,
-+		       color_t *expected_colors,
-+		       double *ctm,
-+		       int iter)
-+{
-+	double delta;
-+	color_t red_green_blue[] = {
-+		{ 1.0, 0.0, 0.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 }
-+	};
- 
--	/* We tests a few values around the expected result because
--	 * the it depends on the hardware we're dealing with, we can
--	 * either get clamped or rounded values and we also need to
--	 * account for odd number of items in the LUTs. */
--	igt_describe("Check the color transformation for 0.25 transparency");
--	igt_subtest_f("pipe-%s-ctm-0-25", kmstest_pipe_name(p)) {
--		color_t expected_colors[] = {
--			{ 0.0, }, { 0.0, }, { 0.0, }
--		};
--		double ctm[] = { 0.25, 0.0,  0.0,
--				 0.0,  0.25, 0.0,
--				 0.0,  0.0,  0.25 };
--		bool success = false;
-+	test_setup(data, p);
- 
--		for (i = 0; i < 5; i++) {
--			expected_colors[0].r =
--				expected_colors[1].g =
--				expected_colors[2].b =
--				0.25 + delta * (i - 2);
--			if (test_pipe_ctm(data, primary, red_green_blue,
--					  expected_colors, ctm)) {
--				success = true;
--				break;
--			}
--		}
--		igt_assert(success);
--	}
-+	/* We assume an 8bits depth per color for degamma/gamma LUTs
-+	 * for CRC checks with framebuffer references. */
-+	data->color_depth = 8;
-+	delta = 1.0 / (1 << data->color_depth);
-+	data->drm_format = DRM_FORMAT_XRGB8888;
- 
--	igt_describe("Check the color transformation for 0.5 transparency");
--	igt_subtest_f("pipe-%s-ctm-0-5", kmstest_pipe_name(p)) {
--		color_t expected_colors[] = {
--			{ 0.0, }, { 0.0, }, { 0.0, }
--		};
--		double ctm[] = { 0.5, 0.0, 0.0,
--				 0.0, 0.5, 0.0,
--				 0.0, 0.0, 0.5 };
-+	igt_dynamic_f("pipe-%s", kmstest_pipe_name(p)) {
- 		bool success = false;
-+		int i;
- 
--		for (i = 0; i < 5; i++) {
-+		if (!iter)
-+			success = test_pipe_ctm(data, data->primary, red_green_blue,
-+						expected_colors, ctm);
-+
-+		for (i = 0; i < iter; i++) {
- 			expected_colors[0].r =
- 				expected_colors[1].g =
- 				expected_colors[2].b =
- 				0.5 + delta * (i - 2);
--			if (test_pipe_ctm(data, primary, red_green_blue,
-+			if (test_pipe_ctm(data, data->primary, red_green_blue,
- 					  expected_colors, ctm)) {
- 				success = true;
- 				break;
-@@ -787,178 +756,241 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 		igt_assert(success);
- 	}
- 
--	igt_describe("Check the color transformation for 0.75 transparency");
--	igt_subtest_f("pipe-%s-ctm-0-75", kmstest_pipe_name(p)) {
--		color_t expected_colors[] = {
--			{ 0.0, }, { 0.0, }, { 0.0, }
--		};
--		double ctm[] = { 0.75, 0.0,  0.0,
--				 0.0,  0.75, 0.0,
--				 0.0,  0.0,  0.75 };
--		bool success = false;
--
--		for (i = 0; i < 7; i++) {
--			expected_colors[0].r =
--				expected_colors[1].g =
--				expected_colors[2].b =
--				0.75 + delta * (i - 3);
--			if (test_pipe_ctm(data, primary, red_green_blue,
--						expected_colors, ctm)) {
--				success = true;
--				break;
--			}
--		}
--		igt_assert(success);
--	}
-+	test_cleanup(data);
-+}
- 
--	igt_describe("Check the color transformation for maximum transparency");
--	igt_subtest_f("pipe-%s-ctm-max", kmstest_pipe_name(p)) {
--		color_t full_rgb[] = {
--			{ 1.0, 0.0, 0.0 },
--			{ 0.0, 1.0, 0.0 },
--			{ 0.0, 0.0, 1.0 }
--		};
--		double ctm[] = { 100.0,   0.0,   0.0,
--				 0.0,   100.0,   0.0,
--				 0.0,     0.0, 100.0 };
--
--		/* CherryView generates values on 10bits that we
--		 * produce with an 8 bits per color framebuffer. */
--		igt_require(!IS_CHERRYVIEW(data->devid));
--
--		igt_assert(test_pipe_ctm(data, primary, red_green_blue,
--					 full_rgb, ctm));
--	}
-+static void
-+run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
-+{
-+	igt_output_t *output;
-+	color_t blue_green_blue[] = {
-+		{ 0.0, 0.0, 1.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 }
-+	};
-+	color_t red_green_blue[] = {
-+		{ 1.0, 0.0, 0.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 }
-+	};
-+	double ctm[] = { 0.0, 0.0, 0.0,
-+			 0.0, 1.0, 0.0,
-+			 1.0, 0.0, 1.0 };
- 
--	igt_describe("Check the color transformation for negative transparency");
--	igt_subtest_f("pipe-%s-ctm-negative", kmstest_pipe_name(p)) {
--		color_t all_black[] = {
--			{ 0.0, 0.0, 0.0 },
--			{ 0.0, 0.0, 0.0 },
--			{ 0.0, 0.0, 0.0 }
--		};
--		double ctm[] = { -1.0,  0.0,  0.0,
--				 0.0, -1.0,  0.0,
--				 0.0,  0.0, -1.0 };
--		igt_assert(test_pipe_ctm(data, primary, red_green_blue,
--					 all_black, ctm));
--	}
-+	if (is_i915_device(data->drm_fd))
-+		igt_require_f((intel_display_ver(data->devid) >= 11),
-+				"At least GEN 11 is required to validate Deep-color.\n");
- 
--#if 0
--	igt_subtest_f("pipe-%s-ctm-limited-range", kmstest_pipe_name(p))
--		test_pipe_limited_range_ctm(data, primary);
--#endif
-+	test_setup(data, p);
- 
--	igt_describe("Verify that degamma LUT transformation works correctly");
--	igt_subtest_f("pipe-%s-degamma", kmstest_pipe_name(p))
--		igt_assert(test_pipe_degamma(data, primary));
-+	for_each_valid_output_on_pipe(&data->display, p, output) {
-+		drmModeConnector *connector = output->config.connector;
-+		uint64_t max_bpc = get_max_bpc(output);
-+		bool ret;
- 
--	igt_describe("Verify that gamma LUT transformation works correctly");
--	igt_subtest_f("pipe-%s-gamma", kmstest_pipe_name(p))
--		igt_assert(test_pipe_gamma(data, primary));
-+		if (!max_bpc)
-+			continue;
- 
--	igt_describe("Verify that legacy gamma LUT transformation works correctly");
--	igt_subtest_f("pipe-%s-legacy-gamma", kmstest_pipe_name(p))
--		test_pipe_legacy_gamma(data, primary);
-+		if (!panel_supports_deep_color(data->drm_fd, connector))
-+			continue;
- 
--	igt_describe("Verify that setting the legacy gamma LUT resets the gamma LUT set through "
--			"GAMMA_LUT property");
--	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
--		test_pipe_legacy_gamma_reset(data, primary);
-+		data->color_depth = 10;
-+		data->drm_format = DRM_FORMAT_XRGB2101010;
-+		data->output = output;
-+		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
- 
--	igt_describe("Verify that deep color works correctly");
--	igt_subtest_with_dynamic_f("pipe-%s-deep-color", kmstest_pipe_name(p)) {
--		igt_output_t *output;
--		color_t blue_green_blue[] = {
--			{ 0.0, 0.0, 1.0 },
--			{ 0.0, 1.0, 0.0 },
--			{ 0.0, 0.0, 1.0 }
--		};
--		double ctm[] = { 0.0, 0.0, 0.0,
--				0.0, 1.0, 0.0,
--				1.0, 0.0, 1.0 };
--
--		if (is_i915_device(data->drm_fd))
--			igt_require_f((intel_display_ver(data->devid) >= 11),
--					"At least GEN 11 is required to validate Deep-color.\n");
--
--		for_each_valid_output_on_pipe(&data->display, p, output) {
--			drmModeConnector *connector = output->config.connector;
--			uint64_t max_bpc = get_max_bpc(output);
--			bool ret;
--
--			if (!max_bpc)
--				continue;
--
--			if (!panel_supports_deep_color(data->drm_fd, connector))
--				continue;
--
--			data->color_depth = 10;
--			data->drm_format = DRM_FORMAT_XRGB2101010;
--			data->output = output;
--			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
--
--			igt_dynamic_f("gamma-%s", output->name) {
--				ret = test_pipe_gamma(data, primary);
--
--				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
--				igt_assert(ret);
--			}
-+		igt_dynamic_f("pipe-%s-gamma-%s", kmstest_pipe_name(p), output->name) {
-+			ret = test_pipe_gamma(data, data->primary);
- 
--			igt_dynamic_f("degamma-%s", output->name) {
--				ret = test_pipe_degamma(data, primary);
-+			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
-+			igt_assert(ret);
-+		}
- 
--				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
--				igt_assert(ret);
--			}
-+		igt_dynamic_f("pipe-%s-degamma-%s", kmstest_pipe_name(p), output->name) {
-+			ret = test_pipe_degamma(data, data->primary);
- 
--			igt_dynamic_f("ctm-%s", output->name) {
--				ret = test_pipe_ctm(data, primary,
--						    red_green_blue,
--						    blue_green_blue, ctm);
-+			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
-+			igt_assert(ret);
-+		}
- 
--				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
--				igt_assert(ret);
--			}
-+		igt_dynamic_f("pipe-%s-ctm-%s", kmstest_pipe_name(p), output->name) {
-+			ret = test_pipe_ctm(data, data->primary,
-+					    red_green_blue,
-+					    blue_green_blue, ctm);
- 
--			break;
-+			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
-+			igt_assert(ret);
- 		}
-+
-+		break;
- 	}
- 
--	igt_fixture {
--		disable_degamma(primary->pipe);
--		disable_gamma(primary->pipe);
--		disable_ctm(primary->pipe);
--		igt_display_commit(&data->display);
-+	test_cleanup(data);
-+}
- 
--		igt_pipe_crc_free(data->pipe_crc);
--		data->pipe_crc = NULL;
-+static void
-+run_invalid_tests_for_pipe(data_t *data)
-+{
-+	enum pipe pipe;
-+	struct {
-+		const char *name;
-+		void (*test_t) (data_t *data, enum pipe pipe);
-+		const char *desc;
-+	} tests[] = {
-+		{ "invalid-gamma-lut-sizes", invalid_gamma_lut_sizes,
-+			"Negative check for invalid gamma lut sizes" },
-+
-+		{ "invalid-degamma-lut-sizes", invalid_degamma_lut_sizes,
-+			"Negative check for invalid degamma lut sizes" },
-+
-+		{ "invalid-ctm-matrix-sizes", invalid_ctm_matrix_sizes,
-+			"Negative check for color tranformation matrix sizes" },
-+	};
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+		igt_describe_f("%s", tests[i].desc);
-+		igt_subtest_with_dynamic_f("%s", tests[i].name) {
-+			for_each_pipe(&data->display, pipe) {
-+				prep_pipe(data, pipe);
-+
-+				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-+					tests[i].test_t(data, pipe);
-+			}
-+		}
- 	}
- }
- 
- static void
--run_invalid_tests_for_pipe(data_t *data, enum pipe p)
-+run_tests_for_pipe(data_t *data)
- {
--	igt_fixture
--		prep_pipe(data, p);
-+	enum pipe pipe;
-+	struct {
-+		const char *name;
-+		bool (*test_t)(data_t*, igt_plane_t*);
-+		const char *desc;
-+	} gamma_degamma_tests[] = {
-+		{ "degamma", test_pipe_degamma,
-+		  "Verify that degamma LUT transformation works correctly" },
-+
-+		{ "gamma", test_pipe_gamma,
-+		  "Verify that gamma LUT transformation works correctly" },
-+
-+		{ "legacy-gamma", test_pipe_legacy_gamma,
-+		  "Verify that legacy gamma LUT transformation works correctly" },
-+
-+		{ "legacy-gamma-reset", test_pipe_legacy_gamma_reset,
-+		  "Verify that setting the legacy gamma LUT resets the gamma LUT set through GAMMA_LUT property" },
-+	};
-+	struct {
-+		const char *name;
-+		int iter;
-+		color_t colors[3];
-+		double ctm[9];
-+		const char *desc;
-+	} ctm_tests[] = {
-+		{ "ctm-red-to-blue", 0,
-+			{{ 0.0, 0.0, 1.0 },
-+			 { 0.0, 1.0, 0.0 },
-+			 { 0.0, 0.0, 1.0 }},
-+		  { 0.0, 0.0, 0.0,
-+		    0.0, 1.0, 0.0,
-+		    1.0, 0.0, 1.0 },
-+		  "Check the color transformation from red to blue"
-+		},
-+		{ "ctm-green-to-red", 0,
-+			{{ 1.0, 0.0, 0.0 },
-+			 { 1.0, 0.0, 0.0 },
-+			 { 0.0, 0.0, 1.0 }},
-+		  { 1.0, 1.0, 0.0,
-+		    0.0, 0.0, 0.0,
-+		    0.0, 0.0, 1.0 },
-+		  "Check the color transformation from green to red"
-+		},
-+		{ "ctm-blue-to-red", 0,
-+			{{ 1.0, 0.0, 0.0 },
-+			 { 0.0, 1.0, 0.0 },
-+			 { 1.0, 0.0, 0.0 }},
-+		  { 1.0, 0.0, 1.0,
-+		    0.0, 1.0, 0.0,
-+		    0.0, 0.0, 0.0 },
-+		  "Check the color transformation from blue to red"
-+		},
-+		{ "ctm-max", 0,
-+			{{ 1.0, 0.0, 0.0 },
-+			 { 0.0, 1.0, 0.0 },
-+			 { 0.0, 0.0, 1.0 }},
-+		  { 100.0, 0.0, 0.0,
-+		    0.0, 100.0, 0.0,
-+		    0.0, 0.0, 100.0 },
-+		  "Check the color transformation for maximum transparency"
-+		},
-+		{ "ctm-negative", 0,
-+			{{ 0.0, 0.0, 0.0 },
-+			 { 0.0, 0.0, 0.0 },
-+			 { 0.0, 0.0, 0.0 }},
-+		  { -1.0, 0.0, 0.0,
-+		    0.0, -1.0, 0.0,
-+		    0.0, 0.0, -1.0 },
-+		  "Check the color transformation for negative transparency"
-+		},
-+		{ "ctm-0-25", 5,
-+			{{ 0.0, }, { 0.0, }, { 0.0, }},
-+		  { 0.25, 0.0,  0.0,
-+		    0.0,  0.25, 0.0,
-+		    0.0,  0.0,  0.25 },
-+		  "Check the color transformation for 0.5 transparency"
-+		},
-+		{ "ctm-0-50", 5,
-+			{{ 0.0, }, { 0.0, }, { 0.0, }},
-+		  { 0.5,  0.0,  0.0,
-+		    0.0,  0.5,  0.0,
-+		    0.0,  0.0,  0.5 },
-+		  "Check the color transformation for 0.5 transparency"
-+		},
-+		{ "ctm-0-75", 7,
-+			{{ 0.0, }, { 0.0, }, { 0.0, }},
-+		  { 0.75, 0.0,  0.0,
-+		    0.0,  0.75, 0.0,
-+		    0.0,  0.0,  0.75 },
-+		  "Check the color transformation for 0.5 transparency"
-+		},
-+	};
-+	int i;
- 
--	igt_describe("Negative check for invalid gamma lut sizes");
--	igt_subtest_f("pipe-%s-invalid-gamma-lut-sizes", kmstest_pipe_name(p))
--		invalid_gamma_lut_sizes(data, p);
-+	for (i = 0; i < ARRAY_SIZE(gamma_degamma_tests); i++) {
-+		igt_describe_f("%s", gamma_degamma_tests[i].desc);
-+		igt_subtest_with_dynamic_f("%s", gamma_degamma_tests[i].name) {
-+			for_each_pipe(&data->display, pipe) {
-+				run_gamma_degamma_tests_for_pipe(data, pipe,
-+								 gamma_degamma_tests[i].test_t);
-+			}
-+		}
-+	}
- 
--	igt_describe("Negative check for invalid degamma lut sizes");
--	igt_subtest_f("pipe-%s-invalid-degamma-lut-sizes", kmstest_pipe_name(p))
--		invalid_degamma_lut_sizes(data, p);
-+	for (i = 0; i < ARRAY_SIZE(ctm_tests); i++) {
-+		igt_describe_f("%s", ctm_tests[i].desc);
-+		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
-+			for_each_pipe(&data->display, pipe) {
-+				run_ctm_tests_for_pipe(data, pipe,
-+						       ctm_tests[i].colors,
-+						       ctm_tests[i].ctm,
-+						       ctm_tests[i].iter);
-+			}
-+		}
-+	}
- 
--	igt_describe("Negative check for color tranformation matrix sizes");
--	igt_subtest_f("pipe-%s-invalid-ctm-matrix-sizes", kmstest_pipe_name(p))
--		invalid_ctm_matrix_sizes(data, p);
-+	igt_describe("Verify that deep color works correctly");
-+	igt_subtest_with_dynamic("deep-color") {
-+		for_each_pipe(&data->display, pipe) {
-+			run_deep_color_tests_for_pipe(data, pipe);
-+		}
-+	}
- }
- 
- igt_main
- {
- 	data_t data = {};
--	enum pipe pipe;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -969,13 +1001,11 @@ igt_main
- 		igt_display_require(&data.display, data.drm_fd);
- 	}
- 
--	for_each_pipe_static(pipe) {
--		igt_subtest_group
--			run_tests_for_pipe(&data, pipe);
-+	igt_subtest_group
-+		run_tests_for_pipe(&data);
- 
--		igt_subtest_group
--			run_invalid_tests_for_pipe(&data, pipe);
--	}
-+	igt_subtest_group
-+		run_invalid_tests_for_pipe(&data);
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index a6665b1f..1ba57e6b 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -50,6 +50,7 @@ typedef struct {
- 	igt_display_t display;
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_output_t *output;
-+	igt_plane_t *primary;
- 
- 	uint32_t drm_format;
- 	uint32_t color_depth;
--- 
-2.35.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11631 -> IGTPW_7076
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_7076 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7076, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/index.html
+
+Participating hosts (43 -> 39)
+------------------------------
+
+  Additional (2): fi-kbl-soraka fi-rkl-11600 
+  Missing    (6): fi-bdw-5557u bat-dg1-5 fi-bsw-cyan bat-dg2-9 fi-ctg-p8600 fi-kbl-x1275 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7076:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c} (NEW):
+    - {bat-dg2-8}:        NOTRUN -> [SKIP][1] +13 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/bat-dg2-8/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@kms_cursor_legacy@basic-busy-flip-before-cursor}:
+    - {fi-ehl-2}:         NOTRUN -> [SKIP][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-ehl-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+
+  * {igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b}:
+    - {bat-dg2-8}:        NOTRUN -> [SKIP][4] +25 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/bat-dg2-8/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_11631 and IGTPW_7076:
+
+### New IGT tests (27) ###
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic:
+    - Statuses : 8 pass(s) 6 skip(s)
+    - Exec time: [0.0, 0.97] s
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - Statuses : 8 pass(s) 6 skip(s)
+    - Exec time: [0.0, 1.06] s
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - Statuses : 8 pass(s) 6 skip(s)
+    - Exec time: [0.0, 1.03] s
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@legacy:
+    - Statuses : 12 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.34] s
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@toggle:
+    - Statuses : 12 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.98] s
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@varying-size:
+    - Statuses : 12 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.99] s
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a:
+    - Statuses : 31 pass(s) 6 skip(s)
+    - Exec time: [0.0, 0.73] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b:
+    - Statuses : 31 pass(s) 6 skip(s)
+    - Exec time: [0.0, 2.24] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c:
+    - Statuses : 24 pass(s) 6 skip(s)
+    - Exec time: [0.0, 1.93] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-d:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.54] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a:
+    - Statuses : 31 pass(s) 6 skip(s)
+    - Exec time: [0.0, 0.80] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b:
+    - Statuses : 31 pass(s) 6 skip(s)
+    - Exec time: [0.0, 2.18] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c:
+    - Statuses : 24 pass(s) 6 skip(s)
+    - Exec time: [0.0, 2.14] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.60] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c:
+    - Statuses : 24 pass(s) 6 skip(s)
+    - Exec time: [0.0, 1.90] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d:
+    - Statuses : 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.54] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a:
+    - Statuses : 25 pass(s) 5 skip(s)
+    - Exec time: [0.0, 17.38] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b:
+    - Statuses : 25 pass(s) 5 skip(s)
+    - Exec time: [0.0, 17.96] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c:
+    - Statuses : 20 pass(s) 5 skip(s)
+    - Exec time: [0.0, 17.98] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 18.00] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7076 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271]) +6 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+    - fi-rkl-11600:       NOTRUN -> [SKIP][7] ([i915#2190])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][8] ([i915#4613]) +3 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@gem_lmem_swapping@basic.html
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][10] ([i915#3282])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][11] ([i915#3012])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_selftest@live@gem:
+    - fi-pnv-d510:        NOTRUN -> [DMESG-FAIL][12] ([i915#4528])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-pnv-d510/igt@i915_selftest@live@gem.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][13] ([i915#1886])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][14] ([fdo#109271] / [fdo#111827])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][15] ([fdo#111827]) +8 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_chamelium@dp-edid-read:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][16] ([fdo#109271] / [fdo#111827]) +7 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html
+
+  * {igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic} (NEW):
+    - fi-elk-e7500:       NOTRUN -> [SKIP][17] ([fdo#109271]) +2 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-elk-e7500/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic.html
+    - fi-blb-e6850:       NOTRUN -> [SKIP][18] ([fdo#109271]) +2 similar issues
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-blb-e6850/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic.html
+    - fi-pnv-d510:        NOTRUN -> [SKIP][19] ([fdo#109271]) +2 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-pnv-d510/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic.html
+
+  * {igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions} (NEW):
+    - fi-bwr-2160:        NOTRUN -> [SKIP][20] ([fdo#109271]) +2 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bwr-2160/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][21] ([fdo#109285] / [i915#4098])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
+
+  * {igt@kms_pipe_crc_basic@hang-read-crc@pipe-a} (NEW):
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][22] ([fdo#109271]) +9 similar issues
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-7567u/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a.html
+
+  * {igt@kms_pipe_crc_basic@hang-read-crc@pipe-b} (NEW):
+    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][23] ([fdo#109271]) +12 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bdw-gvtdvm/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b.html
+
+  * {igt@kms_pipe_crc_basic@hang-read-crc@pipe-c} (NEW):
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][24] ([fdo#109271]) +9 similar issues
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-8809g/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c.html
+
+  * {igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c} (NEW):
+    - fi-bsw-nick:        NOTRUN -> [SKIP][25] ([fdo#109271]) +15 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bsw-nick/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c.html
+    - fi-bsw-kefka:       NOTRUN -> [SKIP][26] ([fdo#109271]) +3 similar issues
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bsw-kefka/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c.html
+
+  * {igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a} (NEW):
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][27] ([fdo#109271]) +5 similar issues
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bsw-n3050/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][28] ([i915#1072]) +3 similar issues
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][29] ([i915#3555] / [i915#4098])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][30] ([i915#3301] / [i915#3708])
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@prime_vgem@basic-userptr.html
+
+  * igt@prime_vgem@basic-write:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][31] ([i915#3291] / [i915#3708]) +2 similar issues
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_mocs:
+    - fi-rkl-guc:         [DMESG-WARN][32] -> [PASS][33]
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11631/fi-rkl-guc/igt@i915_selftest@live@gt_mocs.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-guc/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][34] ([i915#4785]) -> [PASS][35]
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11631/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [DMESG-FAIL][36] ([i915#4528]) -> [PASS][37]
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11631/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#5885]: https://gitlab.freedesktop.org/drm/intel/issues/5885
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6471 -> IGTPW_7076
+
+  CI-20190529: 20190529
+  CI_DRM_11631: 410072c9a105aa0f2d37b8793ae5e5b43f6fa066 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7076: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/index.html
+  IGT_6471: 1d6816f1200520f936a799b7b0ef2e6f396abb16 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++++ 56 lines
+--- 672 lines
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/index.html
+
+--===============3210099711359035083==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Convert subtests to dynamic (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103734/">https://patchwork.freedesktop.org/series/103734/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11631 -&gt; IGTPW_7076</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7076 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7076, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/index.html</p>
+<h2>Participating hosts (43 -&gt; 39)</h2>
+<p>Additional (2): fi-kbl-soraka fi-rkl-11600 <br />
+  Missing    (6): fi-bdw-5557u bat-dg1-5 fi-bsw-cyan bat-dg2-9 fi-ctg-p8600 fi-kbl-x1275 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7076:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>{igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c} (NEW):</p>
+<ul>
+<li>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/bat-dg2-8/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c.html">SKIP</a> +13 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@kms_setmode@basic-clone-single-crtc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>{igt@kms_cursor_legacy@basic-busy-flip-before-cursor}:</p>
+<ul>
+<li>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-ehl-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b}:</p>
+<ul>
+<li>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/bat-dg2-8/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b.html">SKIP</a> +25 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_11631 and IGTPW_7076:</p>
+<h3>New IGT tests (27)</h3>
+<ul>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic:</p>
+<ul>
+<li>Statuses : 8 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 0.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>Statuses : 8 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 1.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>Statuses : 8 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 1.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@legacy:</p>
+<ul>
+<li>Statuses : 12 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@toggle:</p>
+<ul>
+<li>Statuses : 12 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@varying-size:</p>
+<ul>
+<li>Statuses : 12 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a:</p>
+<ul>
+<li>Statuses : 31 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 0.73] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b:</p>
+<ul>
+<li>Statuses : 31 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 2.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c:</p>
+<ul>
+<li>Statuses : 24 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 1.93] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-d:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a:</p>
+<ul>
+<li>Statuses : 31 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 0.80] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b:</p>
+<ul>
+<li>Statuses : 31 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c:</p>
+<ul>
+<li>Statuses : 24 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 2.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c:</p>
+<ul>
+<li>Statuses : 24 pass(s) 6 skip(s)</li>
+<li>Exec time: [0.0, 1.90] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d:</p>
+<ul>
+<li>Statuses : 5 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a:</p>
+<ul>
+<li>Statuses : 25 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 17.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b:</p>
+<ul>
+<li>Statuses : 25 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 17.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c:</p>
+<ul>
+<li>Statuses : 20 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 17.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 18.00] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7076 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+<li>
+<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>
+<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</p>
+</li>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-edid-read:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-soraka/igt@kms_chamelium@dp-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic} (NEW):</p>
+<ul>
+<li>
+<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-elk-e7500/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-blb-e6850/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-pnv-d510/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions} (NEW):</p>
+<ul>
+<li>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bwr-2160/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_pipe_crc_basic@hang-read-crc@pipe-a} (NEW):</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-7567u/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_pipe_crc_basic@hang-read-crc@pipe-b} (NEW):</p>
+<ul>
+<li>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bdw-gvtdvm/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +12 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_pipe_crc_basic@hang-read-crc@pipe-c} (NEW):</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-kbl-8809g/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c} (NEW):</p>
+<ul>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bsw-nick/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +15 similar issues</p>
+</li>
+<li>
+<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bsw-kefka/igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a} (NEW):</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-bsw-n3050/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +5 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_mmap_gtt:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@kms_psr@primary_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-11600/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11631/fi-rkl-guc/igt@i915_selftest@live@gt_mocs.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-rkl-guc/igt@i915_selftest@live@gt_mocs.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11631/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11631/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6471 -&gt; IGTPW_7076</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11631: 410072c9a105aa0f2d37b8793ae5e5b43f6fa066 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7076: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7076/index.html<br />
+  IGT_6471: 1d6816f1200520f936a799b7b0ef2e6f396abb16 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+++ 56 lines<br />
+--- 672 lines</p>
+
+</body>
+</html>
+
+--===============3210099711359035083==--
