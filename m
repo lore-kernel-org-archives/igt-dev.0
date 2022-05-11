@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2326807617894278475=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 06 May 2022 14:23:37 -0000
-Message-ID: <165184701758.18815.18412319310779462116@emeril.freedesktop.org>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E665110F1EF
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 May 2022 17:03:28 +0000 (UTC)
+Date: Wed, 11 May 2022 10:03:26 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+Message-ID: <20220511170326.urdbuix6pkzc6rmp@ldmartin-desk2>
 References: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgSW1wcm92?=
- =?utf-8?q?e_logic_to_work_with_audio_dependency_on_DRM_driver?=
+ <20220506114829.2288273-2-mauro.chehab@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20220506114829.2288273-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/6] tests/core_hotunplug: properly
+ finish processes using audio devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,304 +20,363 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>, Petri Latvala <petri.latvala@intel.com>, Andrzej Hajda <andrzej.hajda@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2326807617894278475==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, May 06, 2022 at 01:48:24PM +0200, Mauro Carvalho Chehab wrote:
+>From: Mauro Carvalho Chehab <mchehab@kernel.org>
+>
+>Before unloading or unbinding an audio driver, all processes
+>that are using it must be terminated. The current logic seeks
+>only for alsactl, but ignore other processes, including
+>pulseaudio.
+>
+>Make the logic more general, extending it to any processes that
+>could have an open device under /dev/snd.
+>
+>It should be noticed that some distros like Fedora and openSUSE
+>are now migrating from pulseaudio into pipewire-pulse. Right
+>now, there's no standard distribution-agnostic way to request
+>pipewire-pulse to stop using audio devices, but there's a new
+>patch upstream that will make things easier:
+>
+>	https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/6ad6300ec657c88322a8cd6f3548261d3dc05359
+>
+>Which should be available for pipewire-pulse versions 0.3.50 and
+>upper.
 
-== Series Details ==
+this is for running tests... I don't think it's really expected to have
+pulseaudio or pipewire running. We should basically be doing
+systemctl disable/mask as a configuration step.
 
-Series: Improve logic to work with audio dependency on DRM driver
-URL   : https://patchwork.freedesktop.org/series/103672/
-State : success
+And if we want to handle that, why don't we simply systemctl stop them
+instead of having specific commands for each of them to unbind?
 
-== Summary ==
+yeah, the fallback to simply kill process with open handles to sound
+device is nice
 
-CI Bug Log - changes from IGT_6468_full -> IGTPW_7052_full
-====================================================
+Lucas De Marchi
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/index.html
-
-Participating hosts (9 -> 8)
-------------------------------
-
-  Missing    (1): shard-rkl 
-
-New tests
----------
-
-  New tests have been introduced between IGT_6468_full and IGTPW_7052_full:
-
-### New IGT tests (2) ###
-
-  * igt@kms_plane_scaling@upscale-with-modifier-20x20@pipe-b-hdmi-a-1-upscale-with-modifier:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.21] s
-
-  * igt@kms_plane_scaling@upscale-with-modifier-20x20@pipe-d-hdmi-a-1-upscale-with-modifier:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.24] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7052_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_flush@basic-batch-kernel-default-uc:
-    - shard-snb:          [PASS][1] -> [SKIP][2] ([fdo#109271]) +2 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6468/shard-snb5/igt@gem_exec_flush@basic-batch-kernel-default-uc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb6/igt@gem_exec_flush@basic-batch-kernel-default-uc.html
-
-  * igt@i915_hangman@engine-engine-hang:
-    - shard-snb:          NOTRUN -> [SKIP][3] ([fdo#109271]) +99 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb7/igt@i915_hangman@engine-engine-hang.html
-
-  * igt@kms_chamelium@hdmi-hpd-enable-disable-mode:
-    - shard-snb:          NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827]) +3 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb6/igt@kms_chamelium@hdmi-hpd-enable-disable-mode.html
-
-  * igt@syncobj_timeline@transfer-timeline-point:
-    - shard-snb:          NOTRUN -> [DMESG-FAIL][5] ([i915#5098])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb5/igt@syncobj_timeline@transfer-timeline-point.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_eio@in-flight-contexts-10ms:
-    - shard-snb:          [FAIL][6] ([i915#4409]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6468/shard-snb6/igt@gem_eio@in-flight-contexts-10ms.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb5/igt@gem_eio@in-flight-contexts-10ms.html
-
-  * igt@gem_eio@unwedge-stress:
-    - {shard-tglu}:       [TIMEOUT][8] ([i915#3063]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6468/shard-tglu-8/igt@gem_eio@unwedge-stress.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-tglu-6/igt@gem_eio@unwedge-stress.html
-
-  * igt@gem_exec_flush@basic-uc-rw-default:
-    - shard-snb:          [SKIP][10] ([fdo#109271]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6468/shard-snb6/igt@gem_exec_flush@basic-uc-rw-default.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb2/igt@gem_exec_flush@basic-uc-rw-default.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
-  [fdo#109279]: https://bugs.freedesktop.org/show_bug.cgi?id=109279
-  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
-  [fdo#109283]: https://bugs.freedesktop.org/show_bug.cgi?id=109283
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
-  [fdo#109291]: https://bugs.freedesktop.org/show_bug.cgi?id=109291
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#109300]: https://bugs.freedesktop.org/show_bug.cgi?id=109300
-  [fdo#109302]: https://bugs.freedesktop.org/show_bug.cgi?id=109302
-  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
-  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
-  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
-  [fdo#111644]: https://bugs.freedesktop.org/show_bug.cgi?id=111644
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [fdo#112283]: https://bugs.freedesktop.org/show_bug.cgi?id=112283
-  [i915#1063]: https://gitlab.freedesktop.org/drm/intel/issues/1063
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#1257]: https://gitlab.freedesktop.org/drm/intel/issues/1257
-  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
-  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
-  [i915#1839]: https://gitlab.freedesktop.org/drm/intel/issues/1839
-  [i915#2437]: https://gitlab.freedesktop.org/drm/intel/issues/2437
-  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
-  [i915#2530]: https://gitlab.freedesktop.org/drm/intel/issues/2530
-  [i915#2658]: https://gitlab.freedesktop.org/drm/intel/issues/2658
-  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
-  [i915#2856]: https://gitlab.freedesktop.org/drm/intel/issues/2856
-  [i915#2994]: https://gitlab.freedesktop.org/drm/intel/issues/2994
-  [i915#3063]: https://gitlab.freedesktop.org/drm/intel/issues/3063
-  [i915#3116]: https://gitlab.freedesktop.org/drm/intel/issues/3116
-  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
-  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
-  [i915#3319]: https://gitlab.freedesktop.org/drm/intel/issues/3319
-  [i915#3359]: https://gitlab.freedesktop.org/drm/intel/issues/3359
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
-  [i915#3804]: https://gitlab.freedesktop.org/drm/intel/issues/3804
-  [i915#3825]: https://gitlab.freedesktop.org/drm/intel/issues/3825
-  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
-  [i915#3966]: https://gitlab.freedesktop.org/drm/intel/issues/3966
-  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
-  [i915#4387]: https://gitlab.freedesktop.org/drm/intel/issues/4387
-  [i915#4409]: https://gitlab.freedesktop.org/drm/intel/issues/4409
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4877]: https://gitlab.freedesktop.org/drm/intel/issues/4877
-  [i915#5076]: https://gitlab.freedesktop.org/drm/intel/issues/5076
-  [i915#5098]: https://gitlab.freedesktop.org/drm/intel/issues/5098
-  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
-  [i915#5182]: https://gitlab.freedesktop.org/drm/intel/issues/5182
-  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
-  [i915#5287]: https://gitlab.freedesktop.org/drm/intel/issues/5287
-  [i915#5289]: https://gitlab.freedesktop.org/drm/intel/issues/5289
-  [i915#5325]: https://gitlab.freedesktop.org/drm/intel/issues/5325
-  [i915#5439]: https://gitlab.freedesktop.org/drm/intel/issues/5439
-  [i915#5614]: https://gitlab.freedesktop.org/drm/intel/issues/5614
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6468 -> IGTPW_7052
-
-  CI-20190529: 20190529
-  CI_DRM_11616: 65a5fe9ac96c60bd6dfcc44a0bb8d584912ea53d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7052: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/index.html
-  IGT_6468: cffa5fffe9acddf49565b4caeeb5e3355ff2ea44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/index.html
-
---===============2326807617894278475==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Improve logic to work with audio dependency on DRM driver</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103672/">https://patchwork.freedesktop.org/series/103672/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6468_full -&gt; IGTPW_7052_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/index.html</p>
-<h2>Participating hosts (9 -&gt; 8)</h2>
-<p>Missing    (1): shard-rkl </p>
-<h2>New tests</h2>
-<p>New tests have been introduced between IGT_6468_full and IGTPW_7052_full:</p>
-<h3>New IGT tests (2)</h3>
-<ul>
-<li>
-<p>igt@kms_plane_scaling@upscale-with-modifier-20x20@pipe-b-hdmi-a-1-upscale-with-modifier:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.21] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane_scaling@upscale-with-modifier-20x20@pipe-d-hdmi-a-1-upscale-with-modifier:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.24] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7052_full that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_flush@basic-batch-kernel-default-uc:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6468/shard-snb5/igt@gem_exec_flush@basic-batch-kernel-default-uc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb6/igt@gem_exec_flush@basic-batch-kernel-default-uc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_hangman@engine-engine-hang:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb7/igt@i915_hangman@engine-engine-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +99 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-enable-disable-mode:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb6/igt@kms_chamelium@hdmi-hpd-enable-disable-mode.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@syncobj_timeline@transfer-timeline-point:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb5/igt@syncobj_timeline@transfer-timeline-point.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5098">i915#5098</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_eio@in-flight-contexts-10ms:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6468/shard-snb6/igt@gem_eio@in-flight-contexts-10ms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4409">i915#4409</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb5/igt@gem_eio@in-flight-contexts-10ms.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@unwedge-stress:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6468/shard-tglu-8/igt@gem_eio@unwedge-stress.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3063">i915#3063</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-tglu-6/igt@gem_eio@unwedge-stress.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_flush@basic-uc-rw-default:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6468/shard-snb6/igt@gem_exec_flush@basic-uc-rw-default.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/shard-snb2/igt@gem_exec_flush@basic-uc-rw-default.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6468 -&gt; IGTPW_7052</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11616: 65a5fe9ac96c60bd6dfcc44a0bb8d584912ea53d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7052: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7052/index.html<br />
-  IGT_6468: cffa5fffe9acddf49565b4caeeb5e3355ff2ea44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2326807617894278475==--
+>
+>Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+>---
+> lib/igt_aux.c          | 157 +++++++++++++++++++++++++++++++++++++++++
+> lib/igt_aux.h          |   1 +
+> lib/igt_kmod.c         |  53 ++++++++------
+> lib/igt_kmod.h         |   2 +
+> tests/core_hotunplug.c |  11 +--
+> 5 files changed, 196 insertions(+), 28 deletions(-)
+>
+>diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+>index 03cc38c93e5c..f56b5a06f100 100644
+>--- a/lib/igt_aux.c
+>+++ b/lib/igt_aux.c
+>@@ -31,6 +31,7 @@
+> #endif
+> #include <stdio.h>
+> #include <fcntl.h>
+>+#include <pwd.h>
+> #include <sys/stat.h>
+> #include <sys/ioctl.h>
+> #include <string.h>
+>@@ -1410,6 +1411,162 @@ igt_lsof(const char *dpath)
+> 	free(sanitized);
+> }
+>
+>+static void pulseaudio_unload_module(proc_t *proc_info)
+>+{
+>+	char xdg_dir[PATH_MAX];
+>+	const char *homedir;
+>+	struct passwd *pw;
+>+
+>+	igt_fork(child, 1) {
+>+		pw = getpwuid(proc_info->euid);
+>+		homedir = pw->pw_dir;
+>+		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
+>+
+>+		igt_info("Ask pulseaudio to stop using audio device\n");
+>+
+>+		setgid(proc_info->egid);
+>+		setuid(proc_info->euid);
+>+		clearenv();
+>+		setenv("HOME", homedir, 1);
+>+		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
+>+
+>+		system("for i in $(pacmd list-sources|grep module:|cut -d : -f 2); do pactl unload-module $i; done");
+>+	}
+>+	igt_waitchildren();
+>+}
+>+
+>+/**
+>+ * __igt_lsof_audio_and_kill_proc() - check if a given process is using an
+>+ *	audio device. If so, stop or prevent them to use such devices.
+>+ *
+>+ * @proc_info: process struct, as returned by readproc()
+>+ * @proc_path: path of the process under procfs
+>+ *
+>+ * No processes can be using an audio device by the time it gets removed.
+>+ * This function checks if a process is using an audio device from /dev/snd.
+>+ * If so, it will check:
+>+ * 	- if the process is pulseaudio, it can't be killed, as systemd will
+>+ * 	  respawn it. So, instead, send a request for it to stop bind the
+>+ * 	  audio devices.
+>+ * If the check fails, it means that the process can simply be killed.
+>+ */
+>+static int
+>+__igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
+>+{
+>+	const char *audio_dev = "/dev/snd/";
+>+	char path[PATH_MAX * 2];
+>+	struct dirent *d;
+>+	struct stat st;
+>+	char *fd_lnk;
+>+	int fail = 0;
+>+	ssize_t read;
+>+
+>+	DIR *dp = opendir(proc_path);
+>+	igt_assert(dp);
+>+
+>+	while ((d = readdir(dp))) {
+>+		if (*d->d_name == '.')
+>+			continue;
+>+
+>+		memset(path, 0, sizeof(path));
+>+		snprintf(path, sizeof(path), "%s/%s", proc_path, d->d_name);
+>+
+>+		if (lstat(path, &st) == -1)
+>+			continue;
+>+
+>+		fd_lnk = malloc(st.st_size + 1);
+>+
+>+		igt_assert((read = readlink(path, fd_lnk, st.st_size + 1)));
+>+		fd_lnk[read] = '\0';
+>+
+>+		if (strncmp(audio_dev, fd_lnk, strlen(audio_dev))) {
+>+			free(fd_lnk);
+>+			continue;
+>+		}
+>+
+>+		free(fd_lnk);
+>+
+>+		/*
+>+		 * In order to avoid racing against pa/systemd, ensure that
+>+		 * pulseaudio will close all audio files. This should be
+>+		 * enough to unbind audio modules and won't cause race issues
+>+		 * with systemd trying to reload it.
+>+		 */
+>+		if (!strcmp(proc_info->cmd, "pulseaudio")) {
+>+			pulseaudio_unload_module(proc_info);
+>+			break;
+>+		}
+>+
+>+		/*
+>+		 * FIXME: terminating pipewire-pulse is not that easy, as
+>+		 * pipewire there's no standard way up to pipewire version
+>+		 * 0.3.49. Just trying to kill pipewire will start a race
+>+		 * between IGT and systemd. If IGT wins, the audio driver
+>+		 * will be unloaded before systemd tries to reload it, but
+>+		 * if systemd wins, the audio device will be re-opened and
+>+		 * used before IGT has a chance to remove the audio driver.
+>+		 * Pipewire version 0.3.50 should bring a standard way:
+>+		 *
+>+		 * 1) start a thread running:
+>+		 *	 pw-reserve -n Audio0 -r
+>+		 * 2) unload/unbind the the audio driver(s);
+>+		 * 3) stop the pw-reserve thread.
+>+		 *
+>+		 * We should add support for it once distros start shipping it.
+>+		 */
+>+
+>+		/* For all other processes, just kill them */
+>+		igt_info("process %d (%s) is using audio device. Should be terminated.\n",
+>+				proc_info->tid, proc_info->cmd);
+>+
+>+		if (kill(proc_info->tid, SIGTERM) < 0) {
+>+			igt_info("Fail to terminate %s (pid: %d) with SIGTERM\n",
+>+				proc_info->cmd, proc_info->tid);
+>+			if (kill(proc_info->tid, SIGABRT) < 0) {
+>+				fail++;
+>+				igt_info("Fail to terminate %s (pid: %d) with SIGABRT\n",
+>+					proc_info->cmd, proc_info->tid);
+>+			}
+>+		}
+>+
+>+		break;
+>+	}
+>+
+>+	closedir(dp);
+>+	return fail;
+>+}
+>+
+>+/*
+>+ * This function identifies each process running on the machine that is
+>+ * opening an audio device and tries to stop it.
+>+ *
+>+ * Special care should be taken with pipewire and pipewire-pulse, as those
+>+ * daemons are respanned if they got killed.
+>+ */
+>+int
+>+igt_lsof_kill_audio_processes(void)
+>+{
+>+	char path[PATH_MAX];
+>+	proc_t *proc_info;
+>+	PROCTAB *proc;
+>+	int fail = 0;
+>+
+>+	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+>+	igt_assert(proc != NULL);
+>+
+>+	while ((proc_info = readproc(proc, NULL))) {
+>+		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1)
+>+			fail++;
+>+		else
+>+			fail += __igt_lsof_audio_and_kill_proc(proc_info, path);
+>+
+>+		freeproc(proc_info);
+>+	}
+>+	closeproc(proc);
+>+
+>+	return fail;
+>+}
+>+
+> static struct igt_siglatency {
+> 	timer_t timer;
+> 	struct timespec target;
+>diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+>index 9f2588aeca90..bb96d1afb777 100644
+>--- a/lib/igt_aux.h
+>+++ b/lib/igt_aux.h
+>@@ -306,6 +306,7 @@ bool igt_allow_unlimited_files(void);
+> int igt_is_process_running(const char *comm);
+> int igt_terminate_process(int sig, const char *comm);
+> void igt_lsof(const char *dpath);
+>+int igt_lsof_kill_audio_processes(void);
+>
+> #define igt_hweight(x) \
+> 	__builtin_choose_expr(sizeof(x) == 8, \
+>diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+>index f252535d5a3a..133d19048a9b 100644
+>--- a/lib/igt_kmod.c
+>+++ b/lib/igt_kmod.c
+>@@ -389,7 +389,7 @@ igt_i915_driver_load(const char *opts)
+> 	return 0;
+> }
+>
+>-int __igt_i915_driver_unload(const char **who)
+>+int igt_audio_driver_unload(const char **who)
+> {
+> 	int ret;
+> 	const char *sound[] = {
+>@@ -398,6 +398,27 @@ int __igt_i915_driver_unload(const char **who)
+> 		NULL,
+> 	};
+>
+>+	for (const char **m = sound; *m; m++) {
+>+		if (igt_kmod_is_loaded(*m)) {
+>+			if (igt_lsof_kill_audio_processes())
+>+				return EACCES;
+>+
+>+			kick_snd_hda_intel();
+>+			ret = igt_kmod_unload(*m, 0);
+>+			if (ret) {
+>+				if (who)
+>+					*who = *m;
+>+				return ret;
+>+			}
+>+		}
+>+	}
+>+	return 0;
+>+}
+>+
+>+int __igt_i915_driver_unload(const char **who)
+>+{
+>+	int ret;
+>+
+> 	const char *aux[] = {
+> 		/* gen5: ips uses symbol_get() so only a soft module dependency */
+> 		"intel_ips",
+>@@ -411,27 +432,19 @@ int __igt_i915_driver_unload(const char **who)
+> 	/* unbind vt */
+> 	bind_fbcon(false);
+>
+>-	for (const char **m = sound; *m; m++) {
+>-		if (igt_kmod_is_loaded(*m)) {
+>-			igt_terminate_process(SIGTERM, "alsactl");
+>-			kick_snd_hda_intel();
+>-			ret = igt_kmod_unload(*m, 0);
+>-			if (ret) {
+>-				if (who)
+>-					*who = *m;
+>-				return ret;
+>-			}
+>-		}
+>-	}
+>+	ret = igt_audio_driver_unload(who);
+>+	if (ret)
+>+		return ret;
+>
+> 	for (const char **m = aux; *m; m++) {
+>-		if (igt_kmod_is_loaded(*m)) {
+>-			ret = igt_kmod_unload(*m, 0);
+>-			if (ret) {
+>-				if (who)
+>-					*who = *m;
+>-				return ret;
+>-			}
+>+		if (!igt_kmod_is_loaded(*m))
+>+			continue;
+>+
+>+		ret = igt_kmod_unload(*m, 0);
+>+		if (ret) {
+>+			if (who)
+>+				*who = *m;
+>+			return ret;
+> 		}
+> 	}
+>
+>diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+>index 0898122b3efe..15f0be31e8e4 100644
+>--- a/lib/igt_kmod.h
+>+++ b/lib/igt_kmod.h
+>@@ -36,6 +36,8 @@ bool igt_kmod_has_param(const char *mod_name, const char *param);
+> int igt_kmod_load(const char *mod_name, const char *opts);
+> int igt_kmod_unload(const char *mod_name, unsigned int flags);
+>
+>+int igt_audio_driver_unload(const char **whom);
+>+
+> int igt_i915_driver_load(const char *opts);
+> int igt_i915_driver_unload(void);
+> int __igt_i915_driver_unload(const char **whom);
+>diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+>index 02eae19e1e16..18e37ec8feba 100644
+>--- a/tests/core_hotunplug.c
+>+++ b/tests/core_hotunplug.c
+>@@ -152,19 +152,14 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
+> 	 * safest and easiest way out.
+> 	 */
+> 	if (priv->snd_unload) {
+>-		igt_terminate_process(SIGTERM, "alsactl");
+>-
+>-		/* unbind snd_hda_intel */
+>-		kick_snd_hda_intel();
+>-
+>-		if (igt_kmod_unload("snd_hda_intel", 0)) {
+>+		if (igt_audio_driver_unload(NULL)) {
+> 			priv->snd_unload = false;
+>-			igt_warn("Could not unload snd_hda_intel\n");
+>+			igt_warn("Could not unload audio driver\n");
+> 			igt_kmod_list_loaded();
+> 			igt_lsof("/dev/snd");
+> 			igt_skip("Audio is in use, skipping\n");
+> 		} else {
+>-			igt_info("Preventively unloaded snd_hda_intel\n");
+>+			igt_info("Preventively unloaded audio driver\n");
+> 		}
+> 	}
+>
+>-- 
+>2.35.1
+>
