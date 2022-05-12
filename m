@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D693D10F8EA
- for <igt-dev@lists.freedesktop.org>; Thu, 12 May 2022 07:48:14 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 12 May 2022 13:18:00 +0530
-Message-Id: <20220512074800.6416-2-swati2.sharma@intel.com>
-In-Reply-To: <20220512074800.6416-1-swati2.sharma@intel.com>
-References: <20220512074800.6416-1-swati2.sharma@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 011C210E0A8
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 May 2022 20:04:08 +0000 (UTC)
+Date: Thu, 12 May 2022 13:05:05 -0700
+From: "Navare, Manasi" <manasi.d.navare@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <20220512200505.GA472559@mdnavare-mobl1.jf.intel.com>
+References: <20220502145114.3188493-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_plane_scaling: Add tests as
- list
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220502145114.3188493-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [PATCH] lib/igt_kms: Add a helper function to check
+ Bigjoiner support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,678 +20,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added subtests as a list. Also, renamed tests to
-distinguish between plane vs planes tests.
-Lastly, for clipping/clamping tests added new tests
-as modifiers, pixel-formats and rotation.
+On Mon, May 02, 2022 at 08:21:14PM +0530, Bhanuprakash Modem wrote:
+> Create a helper function to check that the system supports the
+> given crtc/connector mode(s).
+> 
+> Example: Pipe-D won't support Bigjoiner, hence we can't use the
+> connector modes greater than 5K on Pipe-D
+> 
+> To use this helper, each individual subtest needs to set the
+> @pipe to a specific @output by igt_output_set_pipe() and call
+> this helper to check the validity of the combo.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_plane_scaling.c | 526 ++++++++++++++++++--------------------
- 1 file changed, 246 insertions(+), 280 deletions(-)
+Thank you for taking a stab at cleaning this up and adding this check in
+IGT.
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index a1a883b3..1360c791 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -42,65 +42,250 @@ typedef struct {
- 	bool extended;
- } data_t;
- 
-+const struct {
-+	const char * const describe;
-+	const char * const name;
-+	const double sf;
-+	const bool is_upscale;
-+} scaler_with_pixel_format_tests[] = {
-+		{
-+			"Tests upscaling with pixel formats, from 20x20 fb.",
-+			"plane-upscale-with-pixel-format-20x20",
-+			0.0,
-+			true,
-+		},
-+		{
-+			"Tests upscaling with pixel formats for 0.25 scaling factor.",
-+			"plane-upscale-with-pixel-format-factor-0-25",
-+			0.25,
-+			true,
-+		},
-+		{
-+			"Tests downscaling with pixel formats for 0.25 scaling factor.",
-+			"plane-downscale-with-pixel-format-factor-0-25",
-+			0.25,
-+			false,
-+		},
-+		{
-+			"Tests downscaling with pixel formats for 0.5 scaling factor.",
-+			"plane-downscale-with-pixel-format-factor-0-5",
-+			0.5,
-+			false,
-+		},
-+		{
-+			"Tests downscaling with pixel formats for 0.75 scaling factor.",
-+			"plane-downscale-with-pixel-format-factor-0-75",
-+			0.75,
-+			false,
-+		},
-+		{
-+			"Tests scaling with pixel formats, unity scaling.",
-+			"plane-scaler-with-pixel-format-unity-scaling",
-+			1.0,
-+			true,
-+		},
-+};
-+
-+const struct {
-+	const char * const describe;
-+	const char * const name;
-+	const double sf;
-+	const bool is_upscale;
-+} scaler_with_rotation_tests[] = {
-+		{
-+			"Tests upscaling with rotation, from 20x20 fb.",
-+			"plane-upscale-with-rotation-20x20",
-+			0.0,
-+			true,
-+		},
-+		{
-+			"Tests upscaling with rotation for 0.25 scaling factor.",
-+			"plane-upscale-with-rotation-factor-0-25",
-+			0.25,
-+			true,
-+		},
-+		{
-+			"Tests downscaling with rotation for 0.25 scaling factor.",
-+			"plane-downscale-with-rotation-factor-0-25",
-+			0.25,
-+			false,
-+		},
-+		{
-+			"Tests downscaling with rotation for 0.5 scaling factor.",
-+			"plane-downscale-with-rotation-factor-0-5",
-+			0.25,
-+			false
-+		},
-+		{
-+			"Tests downscaling with rotation for 0.75 scaling factor.",
-+			"plane-downscale-with-rotation-factor-0-75",
-+			0.75,
-+			false,
-+		},
-+		{
-+			"Tests scaling with rotation, unity scaling.",
-+			"plane-scaler-with-rotation-unity-scaling",
-+			1.0,
-+			true,
-+		},
-+};
-+
-+const struct {
-+	const char * const describe;
-+	const char * const name;
-+	const double sf;
-+	const bool is_upscale;
-+} scaler_with_modifiers_tests[] = {
-+		{
-+			"Tests upscaling with modifiers, from 20x20 fb.",
-+			"plane-upscale-with-modifiers-20x20",
-+			0.0,
-+			true,
-+		},
-+		{
-+			"Tests upscaling with modifiers for 0.25 scaling factor.",
-+			"plane-upscale-with-modifiers-factor-0-25",
-+			0.25,
-+			true,
-+		},
-+		{
-+			"Tests downscaling with modifiers for 0.25 scaling factor.",
-+			"plane-downscale-with-modifiers-factor-0-25",
-+			0.25,
-+			false,
-+		},
-+		{
-+			"Tests downscaling with modifiers for 0.5 scaling factor.",
-+			"plane-downscale-with-modifiers-factor-0-5",
-+			0.5,
-+			false,
-+		},
-+		{
-+			"Tests downscaling with modifiers for 0.75 scaling factor.",
-+			"plane-downscale-with-modifiers-factor-0-75",
-+			0.75,
-+			false,
-+		},
-+		{
-+			"Tests scaling with modifiers, unity scaling.",
-+			"plane-scaler-with-modifiers-unity-scaling",
-+			1.0,
-+			true,
-+		},
-+};
-+
- const struct {
- 	const char * const describe;
- 	const char * const name;
- 	const double sf_plane1;
- 	const double sf_plane2;
--} upscale_downscale_tests[] = {
-+	const enum scaler_combo_test_type test_type;
-+} scaler_with_2_planes_tests[] = {
-+		{
-+			"Tests upscaling of 2 planes, from 20x20 fb.",
-+			"planes-upscale-20x20",
-+			0.0,
-+			0.0,
-+			TEST_PLANES_UPSCALE,
-+		},
-+		{
-+			"Tests upscaling of 2 planes for 0.25 scaling factor.",
-+			"planes-upscale-factor-0-25",
-+			0.25,
-+			0.25,
-+			TEST_PLANES_UPSCALE,
-+		},
-+		{
-+			"Tests scaling of 2 planes, unity scaling.",
-+			"planes-scaler-unity-scaling",
-+			1.0,
-+			1.0,
-+			TEST_PLANES_UPSCALE,
-+		},
-+		{
-+			"Tests downscaling of 2 planes for 0.25 scaling factor.",
-+			"planes-downscale-factor-0-25",
-+			0.25,
-+			0.25,
-+			TEST_PLANES_DOWNSCALE,
-+		},
-+		{
-+			"Tests downscaling of 2 planes for 0.5 scaling factor.",
-+			"planes-downscale-factor-0-5",
-+			0.5,
-+			0.5,
-+			TEST_PLANES_DOWNSCALE,
-+		},
-+		{
-+			"Tests downscaling of 2 planes for 0.75 scaling factor.",
-+			"planes-downscale-factor-0-75",
-+			0.75,
-+			0.75,
-+			TEST_PLANES_DOWNSCALE,
-+		},
- 		{
- 			"Tests upscaling (20x20) and downscaling (scaling factor 0.25) of 2 planes.",
- 			"planes-upscale-20x20-downscale-factor-0-25",
- 			0.0,
- 			0.25,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
-+
- 		},
- 		{
- 			"Tests upscaling (20x20) and downscaling (scaling factor 0.5) of 2 planes.",
- 			"planes-upscale-20x20-downscale-factor-0-5",
- 			0.0,
- 			0.5,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
- 		},
- 		{
- 			"Tests upscaling (20x20) and downscaling (scaling factor 0.75) of 2 planes.",
- 			"planes-upscale-20x20-downscale-factor-0-75",
- 			0.0,
- 			0.75,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
- 		},
- 		{
- 			"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.25) of 2 planes.",
- 			"planes-upscale-factor-0-25-downscale-factor-0-25",
- 			0.25,
- 			0.25,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
- 		},
- 		{
- 			"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.5) of 2 planes.",
- 			"planes-upscale-factor-0-25-downscale-factor-0-5",
- 			0.25,
- 			0.5,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
- 		},
- 		{
- 			"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.75) of 2 planes.",
- 			"planes-upscale-factor-0-25-downscale-factor-0-75",
- 			0.25,
- 			0.75,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
- 		},
- 		{
- 			"Tests scaling (unity) and downscaling (scaling factor 0.25) of 2 planes.",
- 			"planes-unity-scaling-downscale-factor-0-25",
- 			1.0,
- 			0.25,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
- 		},
- 		{
- 			"Tests scaling (unity) and downscaling (scaling factor 0.5) of 2 planes.",
- 			"planes-unity-scaling-downscale-factor-0-5",
- 			1.0,
- 			0.5,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
- 		},
- 		{
- 			"Tests scaling (unity) and downscaling (scaling factor 0.75) of 2 planes.",
- 			"planes-unity-scaling-downscale-factor-0-75",
- 			1.0,
- 			0.75,
-+			TEST_PLANES_UPSCALE_DOWNSCALE,
- 		},
- };
- 
-@@ -674,333 +859,114 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_subtest_group {
- 		igt_output_t *output;
- 
--		igt_describe("Tests upscaling with pixel formats, from 20x20 fb.");
--		igt_subtest_with_dynamic("upscale-with-pixel-format-20x20") {
-+		for (int index = 0; index < ARRAY_SIZE(scaler_with_pixel_format_tests); index++) {
-+			igt_describe(scaler_with_pixel_format_tests[index].describe);
-+			igt_subtest_with_dynamic(scaler_with_pixel_format_tests[index].name) {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-upscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_pixel_format_pipe(&data, 20, 20, true, pipe, output);
--		}
--
--		igt_describe("Tests upscaling with pixel formats for 0.25 scaling factor.");
--		igt_subtest_with_dynamic("upscale-with-pixel-format-factor-0-25") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-upscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_pixel_format_pipe(&data, 0.25 * mode->hdisplay,
--							0.25 * mode->vdisplay, true, pipe, output);
--			}
--		}
--
--		igt_describe("Tests downscaling with pixel formats for 0.25 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-pixel-format-factor-0-25") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-downscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_pixel_format_pipe(&data, 0.25 * mode->hdisplay,
--							0.25 * mode->vdisplay, false, pipe, output);
--			}
--		}
--
--		igt_describe("Tests downscaling with pixel formats for 0.5 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-pixel-format-factor-0-5") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-downscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_pixel_format_pipe(&data, 0.5 * mode->hdisplay,
--							0.5 * mode->vdisplay, false, pipe, output);
--			}
--		}
--
--		igt_describe("Tests downscaling with pixel formats for 0.75 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-pixel-format-factor-0-75") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-downscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_pixel_format_pipe(&data, 0.75 * mode->hdisplay,
--							0.75 * mode->vdisplay, false, pipe, output);
--			}
--		}
--
--		igt_describe("Tests scaling with pixel formats, unity scaling.");
--		igt_subtest_with_dynamic("scaler-with-pixel-format-unity-scaling") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+					drmModeModeInfo *mode;
- 
--				mode = igt_output_get_mode(output);
-+					mode = igt_output_get_mode(output);
- 
--				igt_dynamic_f("pipe-%s-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay,
--							mode->vdisplay, true, pipe, output);
-+					test_scaler_with_pixel_format_pipe(&data,
-+							get_width(mode, scaler_with_pixel_format_tests[index].sf),
-+							get_height(mode, scaler_with_pixel_format_tests[index].sf),
-+							scaler_with_pixel_format_tests[index].is_upscale,
-+							pipe, output);
-+				}
- 			}
- 		}
- 
--		igt_describe("Tests upscaling with rotation, from 20x20 fb.");
--		igt_subtest_with_dynamic("upscale-with-rotation-20x20") {
-+		for (int index = 0; index < ARRAY_SIZE(scaler_with_rotation_tests); index++) {
-+			igt_describe(scaler_with_rotation_tests[index].describe);
-+			igt_subtest_with_dynamic(scaler_with_rotation_tests[index].name) {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-upscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_rotation_pipe(&data, 20, 20, true, pipe, output);
--		}
--
--		igt_describe("Tests upscaling with rotation for 0.25 scaling factor.");
--		igt_subtest_with_dynamic("upscale-with-rotation-factor-0-25") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-upscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_rotation_pipe(&data, 0.25 * mode->hdisplay,
--							0.25 * mode->vdisplay, true, pipe, output);
--			}
--		}
--
--		igt_describe("Tests downscaling with rotation for 0.25 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-25") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-downscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_rotation_pipe(&data, 0.25 * mode->hdisplay,
--							0.25 * mode->vdisplay, false, pipe, output);
--			}
--		}
--
--		igt_describe("Tests downscaling with rotation for 0.5 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-5") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-downscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_rotation_pipe(&data, 0.5 * mode->hdisplay,
--							0.5 * mode->vdisplay, false, pipe, output);
--			}
--		}
--
--		igt_describe("Tests downscaling with rotation for 0.75 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-75") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-downscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_rotation_pipe(&data, 0.75 * mode->hdisplay,
--							0.75 * mode->vdisplay, false, pipe, output);
--			}
--		}
--
--		igt_describe("Tests scaling with rotation, unity scaling.");
--		igt_subtest_with_dynamic("scaler-with-rotation-unity-scaling") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+					drmModeModeInfo *mode;
- 
--				mode = igt_output_get_mode(output);
-+					mode = igt_output_get_mode(output);
- 
--				igt_dynamic_f("pipe-%s-%s-scaler-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_rotation_pipe(&data, mode->hdisplay,
--							mode->vdisplay, true, pipe, output);
-+					test_scaler_with_rotation_pipe(&data,
-+							get_width(mode, scaler_with_rotation_tests[index].sf),
-+							get_height(mode, scaler_with_rotation_tests[index].sf),
-+							scaler_with_rotation_tests[index].is_upscale,
-+							pipe, output);
-+				}
- 			}
- 		}
- 
--		igt_describe("Tests upscaling with modifiers, from 20x20 fb.");
--		igt_subtest_with_dynamic("upscale-with-modifier-20x20") {
-+		for (int index = 0; index < ARRAY_SIZE(scaler_with_modifiers_tests); index++) {
-+			igt_describe(scaler_with_modifiers_tests[index].describe);
-+			igt_subtest_with_dynamic(scaler_with_modifiers_tests[index].name) {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-upscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, output);
--		}
--
--		igt_describe("Tests upscaling with modifiers for 0.25 scaling factor.");
--		igt_subtest_with_dynamic("upscale-with-modifier-factor-0-25") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-upscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_modifier_pipe(&data, 0.25 * mode->hdisplay,
--							0.25 * mode->vdisplay, true, pipe, output);
--			}
--		}
--
--		igt_describe("Tests downscaling with modifiers for 0.25 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-modifier-factor-0-25") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s-downscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_modifier_pipe(&data, 0.25 * mode->hdisplay,
--							0.25 * mode->vdisplay, false, pipe, output);
--			}
--		}
--
--		igt_describe("Tests downscaling with modifiers for 0.5 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-modifier-factor-0-5") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+					drmModeModeInfo *mode;
- 
--				mode = igt_output_get_mode(output);
-+					mode = igt_output_get_mode(output);
- 
--				igt_dynamic_f("pipe-%s-%s-downscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_modifier_pipe(&data, 0.5 * mode->hdisplay,
--							0.5 * mode->vdisplay, false, pipe, output);
-+					test_scaler_with_modifier_pipe(&data,
-+							get_width(mode, scaler_with_rotation_tests[index].sf),
-+							get_height(mode, scaler_with_rotation_tests[index].sf),
-+							scaler_with_rotation_tests[index].is_upscale,
-+							pipe, output);
-+				}
- 			}
- 		}
- 
--		igt_describe("Tests downscaling with modifiers for 0.75 scaling factor.");
--		igt_subtest_with_dynamic("downscale-with-modifier-factor-0-75") {
-+		igt_describe("Tests scaling with clipping and clamping, pixel formats.");
-+		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-pixel-formats") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
- 				drmModeModeInfo *mode;
- 
- 				mode = igt_output_get_mode(output);
- 
--				igt_dynamic_f("pipe-%s-%s-downscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_modifier_pipe(&data, 0.75 * mode->hdisplay,
--							0.75 * mode->vdisplay, false, pipe, output);
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-+					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay + 100,
-+							mode->vdisplay + 100, false, pipe, output);
- 			}
- 		}
- 
--		igt_describe("Tests scaling with modifiers, unity scaling.");
--		igt_subtest_with_dynamic("scaler-with-modifier-unity-scaling") {
-+		igt_describe("Tests scaling with clipping and clamping, rotation.");
-+		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-rotation") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
- 				drmModeModeInfo *mode;
- 
- 				mode = igt_output_get_mode(output);
- 
--				igt_dynamic_f("pipe-%s-%s-scaler-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_modifier_pipe(&data, mode->hdisplay,
--							mode->vdisplay, true, pipe, output);
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-+					test_scaler_with_rotation_pipe(&data, mode->hdisplay + 100,
-+							mode->vdisplay + 100, false, pipe, output);
- 			}
- 		}
- 
--		igt_describe("Tests scaling with clipping and clamping.");
--		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
-+		igt_describe("Tests scaling with clipping and clamping, modifiers.");
-+		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-modifiers") {
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
- 				drmModeModeInfo *mode;
- 
- 				mode = igt_output_get_mode(output);
- 
--				igt_dynamic_f("pipe-%s-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay + 100,
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-+					test_scaler_with_modifier_pipe(&data, mode->hdisplay + 100,
- 							mode->vdisplay + 100, false, pipe, output);
- 			}
- 		}
- 
--		igt_describe("Tests upscaling of 2 planes, from 20x20 fb.");
--		igt_subtest_with_dynamic("planes-upscale-20x20") {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-planes-upscale", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_planes_scaling_combo(&data, 20, 20, 20, 20,
--							pipe, output, TEST_PLANES_UPSCALE);
--		}
--
--		igt_describe("Tests upscaling of 2 planes for 0.25 scaling factor.");
--		igt_subtest_with_dynamic("planes-upscale-factor-0-25") {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-planes-upscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
--
--					mode = igt_output_get_mode(output);
--
--					test_planes_scaling_combo(&data,
--							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
--							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
--							pipe, output, TEST_PLANES_UPSCALE);
--				}
--		}
--
--		igt_describe("Tests scaling of 2 planes, unity scaling.");
--		igt_subtest_with_dynamic("planes-scaling-unity-scaling") {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-planes-unity-scaling", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
--
--					mode = igt_output_get_mode(output);
--
--					test_planes_scaling_combo(&data,
--							mode->hdisplay, mode->vdisplay,
--							mode->hdisplay, mode->vdisplay,
--							pipe, output, TEST_PLANES_UPSCALE);
--				}
--		}
--
--		igt_describe("Tests downscaling of 2 planes for 0.25 scaling factor.");
--		igt_subtest_with_dynamic("planes-downscale-factor-0-25") {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-planes-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
--
--					mode = igt_output_get_mode(output);
--
--					test_planes_scaling_combo(&data,
--							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
--							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
--							pipe, output, TEST_PLANES_DOWNSCALE);
--				}
--		}
--
--		igt_describe("Tests downscaling of 2 planes for 0.5 scaling factor.");
--		igt_subtest_with_dynamic("planes-downscale-factor-0-5") {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-planes-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
--
--					mode = igt_output_get_mode(output);
--
--					test_planes_scaling_combo(&data,
--							0.5 * mode->hdisplay, 0.5 * mode->vdisplay,
--							0.5 * mode->hdisplay, 0.5 * mode->vdisplay,
--							pipe, output, TEST_PLANES_DOWNSCALE);
--				}
--		}
--
--		igt_describe("Tests downscaling of 2 planes for 0.75 scaling factor.");
--		igt_subtest_with_dynamic("planes-downscale-factor-0-75") {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-planes-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
--
--					mode = igt_output_get_mode(output);
--
--					test_planes_scaling_combo(&data,
--							0.75 * mode->hdisplay, 0.75 * mode->vdisplay,
--							0.75 * mode->hdisplay, 0.75 * mode->vdisplay,
--							pipe, output, TEST_PLANES_DOWNSCALE);
--				}
--		}
--
--		for (int index = 0; index < ARRAY_SIZE(upscale_downscale_tests); index++) {
--			igt_describe(upscale_downscale_tests[index].describe);
--			igt_subtest_with_dynamic(upscale_downscale_tests[index].name) {
-+		for (int index = 0; index < ARRAY_SIZE(scaler_with_2_planes_tests); index++) {
-+			igt_describe(scaler_with_2_planes_tests[index].describe);
-+			igt_subtest_with_dynamic(scaler_with_2_planes_tests[index].name) {
- 			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s-planes-upscale-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
- 					drmModeModeInfo *mode;
- 
- 					mode = igt_output_get_mode(output);
- 
- 					test_planes_scaling_combo(&data,
--							get_width(mode, upscale_downscale_tests[index].sf_plane1),
--							get_height(mode, upscale_downscale_tests[index].sf_plane1),
--							get_width(mode, upscale_downscale_tests[index].sf_plane2),
--							get_height(mode,upscale_downscale_tests[index].sf_plane2),
--							pipe, output, TEST_PLANES_UPSCALE_DOWNSCALE);
-+							get_width(mode, scaler_with_2_planes_tests[index].sf_plane1),
-+							get_height(mode, scaler_with_2_planes_tests[index].sf_plane1),
-+							get_width(mode, scaler_with_2_planes_tests[index].sf_plane2),
-+							get_height(mode, scaler_with_2_planes_tests[index].sf_plane2),
-+							pipe, output, scaler_with_2_planes_tests[index].test_type);
- 				}
- 			}
- 		}
-@@ -1014,7 +980,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		}
- 	}
- 
--	igt_describe("Tests scaling with multi-pipe scenario.");
-+	igt_describe("Tests scaling with multi-pipe.");
- 	igt_subtest_f("2x-scaler-multi-pipe")
- 		test_scaler_with_multi_pipe_plane(&data);
- 
--- 
-2.25.1
+In all cases, always the bigjoiner can only be supported on pipes 0 -
+total_pipes - 1
+So say the total pipes available in the platform are n, any mode > 5K
+can only be requested on pipes 0- n-1 and will be rejected on pipe n.
+
+Cant we just use this simple check in igt_check_bigjoiner_support() {
+
+total_pipes = n; (based on platform hardcode that say now for all
+platforms that support bigjoiner, total_pipes = 4)
+If mode > 5K and pipe = 4,
+skip test
+}
+
+Manasi
+
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  lib/igt_kms.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_kms.h |  2 ++
+>  2 files changed, 68 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 7838ff28..e277193d 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -5379,3 +5379,69 @@ int igt_get_dsc_debugfs_fd(int drmfd, drmModeConnector *connector)
+>  
+>  	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
+>  }
+> +
+> +/*
+> + * igt_check_bigjoiner_support:
+> + * @display: a pointer to an #igt_display_t structure
+> + *
+> + * Get all active pipes from connected outputs (i.e. pending_pipe != PIPE_NONE)
+> + * and check those pipes supports the selected mode(s).
+> + *
+> + * Example: Pipe-D can't support mode > 5K
+> + *
+> + * Returns: true if a valid crtc/connector mode combo found, else false
+> + */
+> +bool igt_check_bigjoiner_support(igt_display_t *display)
+> +{
+> +	uint8_t i, total_pipes = 0, active_pipes = 0;
+> +	enum pipe p;
+> +	struct {
+> +		enum pipe idx;
+> +		drmModeModeInfo *mode;
+> +	} pipes[IGT_MAX_PIPES];
+> +
+> +	/* Get total enabled pipes. */
+> +	for_each_pipe(display, p)
+> +		total_pipes++;
+> +
+> +	/*
+> +	 * Get list of active pipes those were set by igt_output_set_pipe()
+> +	 * just before calling this function.
+> +	 */
+> +	for (i = 0 ; i < display->n_outputs; i++) {
+> +		igt_output_t *output = &display->outputs[i];
+> +
+> +		if (output->pending_pipe == PIPE_NONE)
+> +			continue;
+> +
+> +		pipes[active_pipes].idx = output->pending_pipe;
+> +		pipes[active_pipes].mode = igt_output_get_mode(output);
+> +		active_pipes++;
+> +	}
+> +
+> +	if (active_pipes)
+> +		return true;
+> +
+> +	/*
+> +	 * if mode.hdisplay > 5120, then ignore
+> +	 *  - last crtc in single/multi-connector config
+> +	 *  - consecutive crtcs in multi-connector config
+> +	 *
+> +	 * in multi-connector config ignore if
+> +	 *  - previous crtc mode.hdisplay > 5120 and
+> +	 *  - current & previous crtcs are consecutive
+> +	 */
+> +	for (i = 0; i < active_pipes; i++) {
+> +		if (((pipes[i].mode->hdisplay > MAX_HDISPLAY_PER_PIPE) &&
+> +		     ((pipes[i].idx >= (total_pipes - 1)) ||
+> +		      ((i < (active_pipes - 1)) && (abs(pipes[i + 1].idx - pipes[i].idx) <= 1)))) ||
+> +		    ((i > 0) && (pipes[i - 1].mode->hdisplay > MAX_HDISPLAY_PER_PIPE) &&
+> +		     (abs(pipes[i].idx - pipes[i - 1].idx) <= 1))) {
+> +			igt_debug("CRTC/Connector is not possible with selected mode(s).\n");
+> +
+> +			return false;
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index e9ecd21e..8a14bb3c 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -109,6 +109,7 @@ const char *kmstest_connector_status_str(int status);
+>  const char *kmstest_connector_type_str(int type);
+>  
+>  void kmstest_dump_mode(drmModeModeInfo *mode);
+> +#define MAX_HDISPLAY_PER_PIPE 5120
+>  
+>  int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id);
+>  void kmstest_set_vt_graphics_mode(void);
+> @@ -947,5 +948,6 @@ int igt_force_dsc_enable(int drmfd, drmModeConnector *connector);
+>  int igt_force_dsc_enable_bpp(int drmfd, drmModeConnector *connector,
+>  				int bpp);
+>  int igt_get_dsc_debugfs_fd(int drmfd, drmModeConnector *connector);
+> +bool igt_check_bigjoiner_support(igt_display_t *display);
+>  
+>  #endif /* __IGT_KMS_H__ */
+> -- 
+> 2.35.1
+> 
