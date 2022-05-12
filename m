@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CDFF10EB95
- for <igt-dev@lists.freedesktop.org>; Thu, 12 May 2022 08:11:29 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 12 May 2022 08:11:23 +0000
-Message-ID: <686cd30c-b0b9-8453-daf2-806bb2324b3a@intel.com>
-References: <20220512061130.3347243-1-bhanuprakash.modem@intel.com>
- <e39d207d-a072-481d-1fc8-618cea3c4f48@intel.com>
- <3ce61fdd-cc39-daf9-d832-5957d2ab1bf9@intel.com>
-In-Reply-To: <3ce61fdd-cc39-daf9-d832-5957d2ab1bf9@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5614C56CEBAF5D4B8BD671153999F8A6@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EFE010E24C
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 May 2022 08:20:29 +0000 (UTC)
+Message-ID: <e397aca8-e3fb-a9a6-5d29-d9e679b58150@intel.com>
+Date: Thu, 12 May 2022 13:50:24 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] tests/kms_hdr: Fix dynamic subtest name
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20220512061130.3347243-1-bhanuprakash.modem@intel.com>
+ <20220512073202.3348807-1-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20220512073202.3348807-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [V2] tests/kms_hdr: Fix dynamic subtest name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,109 +26,120 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LTEyLTA1LTIwMjIgMTI6MzUgcG0sIE1vZGVtLCBCaGFudXByYWthc2ggd3JvdGU6DQo+
-IE9uIFRodS0xMi0wNS0yMDIyIDEyOjMxIHBtLCBTaGFybWEsIFN3YXRpMiB3cm90ZToNCj4+IEFn
-cmVlLiBCdXQgaSBzdWdnZXN0IGlmIHdlIGNhbiBoYXZlDQo+PiBwaXBlX25hbWUtY29ubmVjdG9y
-X25hbWUNCj4+IGxpa2UNCj4+IGlndEBrbXNfaGRyQGJwYy1zd2l0Y2hAcGlwZS1hLWRwLTENCj4g
-DQo+IFN1cmUsIEknbGwgZmxvYXQgYSBuZXcgcmV2IHdpdGggdGhpcyBjaGFuZ2UuDQoNCkRvbmUu
-DQoNCj4gDQo+IC0gQmhhbnUNCj4gDQo+Pg0KPj4gT24gMTItTWF5LTIyIDExOjQxIEFNLCBCaGFu
-dXByYWthc2ggTW9kZW0gd3JvdGU6DQo+Pj4gQXMgd2UgYXJlIHVzaW5nIGR5bmFtaWMgc3VidGVz
-dHMsIG5vIG5lZWQgdG8gdXNlIHRoZSBzYW1lIHN1YnRlc3QNCj4+PiBuYW1lIGluIGFsbCBkeW5h
-bWljIHN1YnRlc3RzLg0KPj4+DQo+Pj4gRXhhbXBsZToNCj4+PiAgwqDCoMKgIEJlZm9yZTogaWd0
-QGttc19oZHJAYnBjLXN3aXRjaEBicGMtc3dpdGNoLWRwLTEtcGlwZS1hDQo+Pj4gIMKgwqDCoCBB
-ZnRlcjrCoCBpZ3RAa21zX2hkckBicGMtc3dpdGNoQGRwLTEtcGlwZS1hDQo+Pj4NCj4+PiBDYzog
-U3dhdGkgU2hhcm1hIDxzd2F0aTIuc2hhcm1hQGludGVsLmNvbT4NCj4+PiBTaWduZWQtb2ZmLWJ5
-OiBCaGFudXByYWthc2ggTW9kZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+DQo+Pj4g
-LS0tDQo+Pj4gIMKgIHRlc3RzL2ttc19oZHIuYyB8IDMyICsrKysrKysrKysrKysrKysrLS0tLS0t
-LS0tLS0tLS0tDQo+Pj4gIMKgIDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspLCAxNSBk
-ZWxldGlvbnMoLSkNCj4+Pg0KPj4+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfaGRyLmMgYi90ZXN0
-cy9rbXNfaGRyLmMNCj4+PiBpbmRleCAyNDdlYjY1OC4uZDYwNDIyYTMgMTAwNjQ0DQo+Pj4gLS0t
-IGEvdGVzdHMva21zX2hkci5jDQo+Pj4gKysrIGIvdGVzdHMva21zX2hkci5jDQo+Pj4gQEAgLTI1
-MSw3ICsyNTEsNyBAQCBzdGF0aWMgYm9vbCBoYXNfbWF4X2JwYyhpZ3Rfb3V0cHV0X3QgKm91dHB1
-dCkNCj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9vdXRwdXRfZ2V0X3Byb3Aob3V0
-cHV0LCBJR1RfQ09OTkVDVE9SX01BWF9CUEMpOw0KPj4+ICDCoCB9DQo+Pj4gLXN0YXRpYyB2b2lk
-IHRlc3RfYnBjX3N3aXRjaChkYXRhX3QgKmRhdGEsIGNvbnN0IGNoYXIgKnRlc3RfbmFtZSwNCj4+
-PiB1aW50MzJfdCBmbGFncykNCj4+PiArc3RhdGljIHZvaWQgdGVzdF9icGNfc3dpdGNoKGRhdGFf
-dCAqZGF0YSwgdWludDMyX3QgZmxhZ3MpDQo+Pj4gIMKgIHsNCj4+PiAgwqDCoMKgwqDCoCBpZ3Rf
-ZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEtPmRpc3BsYXk7DQo+Pj4gIMKgwqDCoMKgwqAgaWd0
-X291dHB1dF90ICpvdXRwdXQ7DQo+Pj4gQEAgLTI2NCwxMCArMjY0LDExIEBAIHN0YXRpYyB2b2lk
-IHRlc3RfYnBjX3N3aXRjaChkYXRhX3QgKmRhdGEsIGNvbnN0DQo+Pj4gY2hhciAqdGVzdF9uYW1l
-LCB1aW50MzJfdCBmbGFncykNCj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgIGZvcl9lYWNoX3BpcGUo
-ZGlzcGxheSwgcGlwZSkgew0KPj4+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoaWd0
-X3BpcGVfY29ubmVjdG9yX3ZhbGlkKHBpcGUsIG91dHB1dCkpIHsNCj4+PiAtwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X2R5bmFtaWNfZigiJXMtJXMtcGlwZS0lcyIsDQo+Pj4g
-LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0
-ZXN0X25hbWUsIG91dHB1dC0+bmFtZSwNCj4+PiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkNCj4+
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9keW5hbWljX2YoIiVzLXBpcGUt
-JXMiLA0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCBvdXRwdXQtPm5hbWUsIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQ0KPj4+ICDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGVzdF9icGNfc3dpdGNoX29uX291
-dHB1dChkYXRhLCBwaXBlLCBvdXRwdXQsDQo+Pj4gZmxhZ3MpOw0KPj4+IC3CoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIC8qIE9uZSBwaXBlIGlzIGVub3VnaCAqLw0KPj4+ICsNCj4+PiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIC8qIE9uZSBwaXBlIGlzIGVub3VnaCAqLw0KPj4+ICDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGJyZWFrOw0KPj4+ICDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCB9DQo+Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoCB9DQo+Pj4gQEAgLTU2NCw3
-ICs1NjUsNyBAQCBzdGF0aWMgYm9vbCBoYXNfaGRyKGlndF9vdXRwdXRfdCAqb3V0cHV0KQ0KPj4+
-ICDCoMKgwqDCoMKgIHJldHVybiBpZ3Rfb3V0cHV0X2hhc19wcm9wKG91dHB1dCwNCj4+PiBJR1Rf
-Q09OTkVDVE9SX0hEUl9PVVRQVVRfTUVUQURBVEEpOw0KPj4+ICDCoCB9DQo+Pj4gLXN0YXRpYyB2
-b2lkIHRlc3RfaGRyKGRhdGFfdCAqZGF0YSwgY29uc3QgY2hhciAqdGVzdF9uYW1lLCB1aW50MzJf
-dA0KPj4+IGZsYWdzKQ0KPj4+ICtzdGF0aWMgdm9pZCB0ZXN0X2hkcihkYXRhX3QgKmRhdGEsIHVp
-bnQzMl90IGZsYWdzKQ0KPj4+ICDCoCB7DQo+Pj4gIMKgwqDCoMKgwqAgaWd0X2Rpc3BsYXlfdCAq
-ZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPj4+ICDCoMKgwqDCoMKgIGlndF9vdXRwdXRfdCAq
-b3V0cHV0Ow0KPj4+IEBAIC01ODQsMTQgKzU4NSwxNSBAQCBzdGF0aWMgdm9pZCB0ZXN0X2hkcihk
-YXRhX3QgKmRhdGEsIGNvbnN0IGNoYXINCj4+PiAqdGVzdF9uYW1lLCB1aW50MzJfdCBmbGFncykN
-Cj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgIGZvcl9lYWNoX3BpcGUoZGlzcGxheSwgcGlwZSkgew0K
-Pj4+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoaWd0X3BpcGVfY29ubmVjdG9yX3Zh
-bGlkKHBpcGUsIG91dHB1dCkpIHsNCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IGlndF9keW5hbWljX2YoIiVzLSVzLXBpcGUtJXMiLA0KPj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0ZXN0X25hbWUsIG91dHB1dC0+bmFtZSwN
-Cj4+PiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkgew0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcyIsDQo+Pj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG91dHB1dC0+bmFtZSwga21z
-dGVzdF9waXBlX25hbWUocGlwZSkpIHsNCj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIGlmIChmbGFncyAmIFRFU1RfTk9ORSB8fCBmbGFncyAmIFRFU1RfRFBN
-UyB8fA0KPj4+IGZsYWdzICYgVEVTVF9TVVNQRU5EKQ0KPj4+ICDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0ZXN0X3N0YXRpY190b2dnbGUoZGF0YSwg
-cGlwZSwgb3V0cHV0LCBmbGFncyk7DQo+Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBpZiAoZmxhZ3MgJiBURVNUX1NXQVApDQo+Pj4gIMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRlc3Rfc3RhdGljX3N3YXAoZGF0
-YSwgcGlwZSwgb3V0cHV0KTsNCj4+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCB9DQo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogT25lIHBpcGUgaXMgZW5vdWdoICov
-DQo+Pj4gKw0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogT25lIHBpcGUg
-aXMgZW5vdWdoICovDQo+Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYnJl
-YWs7DQo+Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4+PiAgwqDCoMKgwqDCoMKg
-wqDCoMKgIH0NCj4+PiBAQCAtNjE1LDI3ICs2MTcsMjcgQEAgaWd0X21haW4NCj4+PiAgwqDCoMKg
-wqDCoCBpZ3RfZGVzY3JpYmUoIlRlc3RzIHN3aXRjaGluZyBiZXR3ZWVuIGRpZmZlcmVudCBkaXNw
-bGF5IG91dHB1dA0KPj4+IGJwYyBtb2RlcyIpOw0KPj4+ICDCoMKgwqDCoMKgIGlndF9zdWJ0ZXN0
-X3dpdGhfZHluYW1pYygiYnBjLXN3aXRjaCIpDQo+Pj4gLcKgwqDCoMKgwqDCoMKgIHRlc3RfYnBj
-X3N3aXRjaCgmZGF0YSwgImJwYy1zd2l0Y2giLCBURVNUX05PTkUpOw0KPj4+ICvCoMKgwqDCoMKg
-wqDCoCB0ZXN0X2JwY19zd2l0Y2goJmRhdGEsIFRFU1RfTk9ORSk7DQo+Pj4gIMKgwqDCoMKgwqAg
-aWd0X2Rlc2NyaWJlKCJUZXN0cyBicGMgc3dpdGNoIHdpdGggZHBtcyIpOw0KPj4+ICDCoMKgwqDC
-oMKgIGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiYnBjLXN3aXRjaC1kcG1zIikNCj4+PiAtwqDC
-oMKgwqDCoMKgwqAgdGVzdF9icGNfc3dpdGNoKCZkYXRhLCAiYnBjLXN3aXRjaC1kcG1zIiwgVEVT
-VF9EUE1TKTsNCj4+PiArwqDCoMKgwqDCoMKgwqAgdGVzdF9icGNfc3dpdGNoKCZkYXRhLCBURVNU
-X0RQTVMpOw0KPj4+ICDCoMKgwqDCoMKgIGlndF9kZXNjcmliZSgiVGVzdHMgYnBjIHN3aXRjaCB3
-aXRoIHN1c3BlbmQiKTsNCj4+PiAgwqDCoMKgwqDCoCBpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMo
-ImJwYy1zd2l0Y2gtc3VzcGVuZCIpDQo+Pj4gLcKgwqDCoMKgwqDCoMKgIHRlc3RfYnBjX3N3aXRj
-aCgmZGF0YSwgImJwYy1zd2l0Y2gtc3VzcGVuZCIsIFRFU1RfU1VTUEVORCk7DQo+Pj4gK8KgwqDC
-oMKgwqDCoMKgIHRlc3RfYnBjX3N3aXRjaCgmZGF0YSwgVEVTVF9TVVNQRU5EKTsNCj4+PiAgwqDC
-oMKgwqDCoCBpZ3RfZGVzY3JpYmUoIlRlc3RzIGVudGVyaW5nIGFuZCBleGl0aW5nIEhEUiBtb2Rl
-Iik7DQo+Pj4gIMKgwqDCoMKgwqAgaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJzdGF0aWMtdG9n
-Z2xlIikNCj4+PiAtwqDCoMKgwqDCoMKgwqAgdGVzdF9oZHIoJmRhdGEsICJzdGF0aWMtdG9nZ2xl
-IiwgVEVTVF9OT05FKTsNCj4+PiArwqDCoMKgwqDCoMKgwqAgdGVzdF9oZHIoJmRhdGEsIFRFU1Rf
-Tk9ORSk7DQo+Pj4gIMKgwqDCoMKgwqAgaWd0X2Rlc2NyaWJlKCJUZXN0cyBzdGF0aWMgdG9nZ2xl
-IHdpdGggZHBtcyIpOw0KPj4+ICDCoMKgwqDCoMKgIGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygi
-c3RhdGljLXRvZ2dsZS1kcG1zIikNCj4+PiAtwqDCoMKgwqDCoMKgwqAgdGVzdF9oZHIoJmRhdGEs
-ICJzdGF0aWMtdG9nZ2xlLWRwbXMiLCBURVNUX0RQTVMpOw0KPj4+ICvCoMKgwqDCoMKgwqDCoCB0
-ZXN0X2hkcigmZGF0YSwgVEVTVF9EUE1TKTsNCj4+PiAgwqDCoMKgwqDCoCBpZ3RfZGVzY3JpYmUo
-IlRlc3RzIHN0YXRpYyB0b2dnbGUgd2l0aCBzdXNwZW5kIik7DQo+Pj4gIMKgwqDCoMKgwqAgaWd0
-X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJzdGF0aWMtdG9nZ2xlLXN1c3BlbmQiKQ0KPj4+IC3CoMKg
-wqDCoMKgwqDCoCB0ZXN0X2hkcigmZGF0YSwgInN0YXRpYy10b2dnbGUtc3VzcGVuZCIsIFRFU1Rf
-U1VTUEVORCk7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIHRlc3RfaGRyKCZkYXRhLCBURVNUX1NVU1BF
-TkQpOw0KPj4+ICDCoMKgwqDCoMKgIGlndF9kZXNjcmliZSgiVGVzdHMgc3dhcHBpbmcgc3RhdGlj
-IEhEUiBtZXRhZGF0YSIpOw0KPj4+ICDCoMKgwqDCoMKgIGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1p
-Yygic3RhdGljLXN3YXAiKQ0KPj4+IC3CoMKgwqDCoMKgwqDCoCB0ZXN0X2hkcigmZGF0YSwgInN0
-YXRpYy1zd2FwIiwgVEVTVF9TV0FQKTsNCj4+PiArwqDCoMKgwqDCoMKgwqAgdGVzdF9oZHIoJmRh
-dGEsIFRFU1RfU1dBUCk7DQo+Pj4gIMKgwqDCoMKgwqAgaWd0X2ZpeHR1cmUgew0KPj4+ICDCoMKg
-wqDCoMKgwqDCoMKgwqAgaWd0X2Rpc3BsYXlfZmluaSgmZGF0YS5kaXNwbGF5KTsNCj4+DQo+IA0K
-DQo=
+LGTM
+Reviewed-by:
+Swati Sharma <swati2.sharma@intel.com>
+
+Lets wait for clean CI run, then we are good to merge this patch.
+
+On 12-May-22 1:02 PM, Bhanuprakash Modem wrote:
+> As we are using dynamic subtests, no need to use the same subtest
+> name in all dynamic subtests.
+> 
+> Example:
+>     Before: igt@kms_hdr@bpc-switch@bpc-switch-dp-1-pipe-a
+>     After:  igt@kms_hdr@bpc-switch@dp-1-pipe-a
+> 
+> V2:
+> * Change test name "<output_name>-<pipe_name>" to "<pipe_name>-<output_name>"
+> 
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_hdr.c | 32 +++++++++++++++++---------------
+>   1 file changed, 17 insertions(+), 15 deletions(-)
+> 
+> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+> index 247eb658..446490cb 100644
+> --- a/tests/kms_hdr.c
+> +++ b/tests/kms_hdr.c
+> @@ -251,7 +251,7 @@ static bool has_max_bpc(igt_output_t *output)
+>   	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+>   }
+>   
+> -static void test_bpc_switch(data_t *data, const char *test_name, uint32_t flags)
+> +static void test_bpc_switch(data_t *data, uint32_t flags)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_output_t *output;
+> @@ -264,10 +264,11 @@ static void test_bpc_switch(data_t *data, const char *test_name, uint32_t flags)
+>   
+>   		for_each_pipe(display, pipe) {
+>   			if (igt_pipe_connector_valid(pipe, output)) {
+> -				 igt_dynamic_f("%s-%s-pipe-%s",
+> -					        test_name, output->name, kmstest_pipe_name(pipe))
+> +				igt_dynamic_f("pipe-%s-%s",
+> +					      kmstest_pipe_name(pipe), output->name)
+>   					test_bpc_switch_on_output(data, pipe, output, flags);
+> -			/* One pipe is enough */
+> +
+> +				/* One pipe is enough */
+>   				break;
+>   			}
+>   		}
+> @@ -564,7 +565,7 @@ static bool has_hdr(igt_output_t *output)
+>   	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
+>   }
+>   
+> -static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
+> +static void test_hdr(data_t *data, uint32_t flags)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_output_t *output;
+> @@ -584,14 +585,15 @@ static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
+>   
+>   		for_each_pipe(display, pipe) {
+>   			if (igt_pipe_connector_valid(pipe, output)) {
+> -				igt_dynamic_f("%s-%s-pipe-%s",
+> -					      test_name, output->name, kmstest_pipe_name(pipe)) {
+> +				igt_dynamic_f("pipe-%s-%s",
+> +					      kmstest_pipe_name(pipe), output->name) {
+>   					if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
+>   						test_static_toggle(data, pipe, output, flags);
+>   					if (flags & TEST_SWAP)
+>   						test_static_swap(data, pipe, output);
+>   				}
+> -			/* One pipe is enough */
+> +
+> +				/* One pipe is enough */
+>   				break;
+>   			}
+>   		}
+> @@ -615,27 +617,27 @@ igt_main
+>   
+>   	igt_describe("Tests switching between different display output bpc modes");
+>   	igt_subtest_with_dynamic("bpc-switch")
+> -		test_bpc_switch(&data, "bpc-switch", TEST_NONE);
+> +		test_bpc_switch(&data, TEST_NONE);
+>   	igt_describe("Tests bpc switch with dpms");
+>   	igt_subtest_with_dynamic("bpc-switch-dpms")
+> -		test_bpc_switch(&data, "bpc-switch-dpms", TEST_DPMS);
+> +		test_bpc_switch(&data, TEST_DPMS);
+>   	igt_describe("Tests bpc switch with suspend");
+>   	igt_subtest_with_dynamic("bpc-switch-suspend")
+> -		test_bpc_switch(&data, "bpc-switch-suspend", TEST_SUSPEND);
+> +		test_bpc_switch(&data, TEST_SUSPEND);
+>   
+>   	igt_describe("Tests entering and exiting HDR mode");
+>   	igt_subtest_with_dynamic("static-toggle")
+> -		test_hdr(&data, "static-toggle", TEST_NONE);
+> +		test_hdr(&data, TEST_NONE);
+>   	igt_describe("Tests static toggle with dpms");
+>   	igt_subtest_with_dynamic("static-toggle-dpms")
+> -		test_hdr(&data, "static-toggle-dpms", TEST_DPMS);
+> +		test_hdr(&data, TEST_DPMS);
+>   	igt_describe("Tests static toggle with suspend");
+>   	igt_subtest_with_dynamic("static-toggle-suspend")
+> -		test_hdr(&data, "static-toggle-suspend", TEST_SUSPEND);
+> +		test_hdr(&data, TEST_SUSPEND);
+>   
+>   	igt_describe("Tests swapping static HDR metadata");
+>   	igt_subtest_with_dynamic("static-swap")
+> -		test_hdr(&data, "static-swap", TEST_SWAP);
+> +		test_hdr(&data, TEST_SWAP);
+>   
+>   	igt_fixture {
+>   		igt_display_fini(&data.display);
+
+-- 
+~Swati Sharma
