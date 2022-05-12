@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAE5010F233
- for <igt-dev@lists.freedesktop.org>; Thu, 12 May 2022 07:01:54 +0000 (UTC)
-Message-ID: <e39d207d-a072-481d-1fc8-618cea3c4f48@intel.com>
-Date: Thu, 12 May 2022 12:31:48 +0530
-MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78D5510F252
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 May 2022 07:06:03 +0000 (UTC)
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 12 May 2022 07:05:38 +0000
+Message-ID: <3ce61fdd-cc39-daf9-d832-5957d2ab1bf9@intel.com>
 References: <20220512061130.3347243-1-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220512061130.3347243-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <e39d207d-a072-481d-1fc8-618cea3c4f48@intel.com>
+In-Reply-To: <e39d207d-a072-481d-1fc8-618cea3c4f48@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A35EA901ABFE464687735AB560A875B4@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH] tests/kms_hdr: Fix dynamic subtest name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,116 +27,104 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Agree. But i suggest if we can have
-pipe_name-connector_name
-like
-igt@kms_hdr@bpc-switch@pipe-a-dp-1
-
-On 12-May-22 11:41 AM, Bhanuprakash Modem wrote:
-> As we are using dynamic subtests, no need to use the same subtest
-> name in all dynamic subtests.
-> 
-> Example:
->     Before: igt@kms_hdr@bpc-switch@bpc-switch-dp-1-pipe-a
->     After:  igt@kms_hdr@bpc-switch@dp-1-pipe-a
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_hdr.c | 32 +++++++++++++++++---------------
->   1 file changed, 17 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index 247eb658..d60422a3 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -251,7 +251,7 @@ static bool has_max_bpc(igt_output_t *output)
->   	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
->   }
->   
-> -static void test_bpc_switch(data_t *data, const char *test_name, uint32_t flags)
-> +static void test_bpc_switch(data_t *data, uint32_t flags)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
-> @@ -264,10 +264,11 @@ static void test_bpc_switch(data_t *data, const char *test_name, uint32_t flags)
->   
->   		for_each_pipe(display, pipe) {
->   			if (igt_pipe_connector_valid(pipe, output)) {
-> -				 igt_dynamic_f("%s-%s-pipe-%s",
-> -					        test_name, output->name, kmstest_pipe_name(pipe))
-> +				igt_dynamic_f("%s-pipe-%s",
-> +					      output->name, kmstest_pipe_name(pipe))
->   					test_bpc_switch_on_output(data, pipe, output, flags);
-> -			/* One pipe is enough */
-> +
-> +				/* One pipe is enough */
->   				break;
->   			}
->   		}
-> @@ -564,7 +565,7 @@ static bool has_hdr(igt_output_t *output)
->   	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
->   }
->   
-> -static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
-> +static void test_hdr(data_t *data, uint32_t flags)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
-> @@ -584,14 +585,15 @@ static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
->   
->   		for_each_pipe(display, pipe) {
->   			if (igt_pipe_connector_valid(pipe, output)) {
-> -				igt_dynamic_f("%s-%s-pipe-%s",
-> -					      test_name, output->name, kmstest_pipe_name(pipe)) {
-> +				igt_dynamic_f("%s-pipe-%s",
-> +					      output->name, kmstest_pipe_name(pipe)) {
->   					if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
->   						test_static_toggle(data, pipe, output, flags);
->   					if (flags & TEST_SWAP)
->   						test_static_swap(data, pipe, output);
->   				}
-> -			/* One pipe is enough */
-> +
-> +				/* One pipe is enough */
->   				break;
->   			}
->   		}
-> @@ -615,27 +617,27 @@ igt_main
->   
->   	igt_describe("Tests switching between different display output bpc modes");
->   	igt_subtest_with_dynamic("bpc-switch")
-> -		test_bpc_switch(&data, "bpc-switch", TEST_NONE);
-> +		test_bpc_switch(&data, TEST_NONE);
->   	igt_describe("Tests bpc switch with dpms");
->   	igt_subtest_with_dynamic("bpc-switch-dpms")
-> -		test_bpc_switch(&data, "bpc-switch-dpms", TEST_DPMS);
-> +		test_bpc_switch(&data, TEST_DPMS);
->   	igt_describe("Tests bpc switch with suspend");
->   	igt_subtest_with_dynamic("bpc-switch-suspend")
-> -		test_bpc_switch(&data, "bpc-switch-suspend", TEST_SUSPEND);
-> +		test_bpc_switch(&data, TEST_SUSPEND);
->   
->   	igt_describe("Tests entering and exiting HDR mode");
->   	igt_subtest_with_dynamic("static-toggle")
-> -		test_hdr(&data, "static-toggle", TEST_NONE);
-> +		test_hdr(&data, TEST_NONE);
->   	igt_describe("Tests static toggle with dpms");
->   	igt_subtest_with_dynamic("static-toggle-dpms")
-> -		test_hdr(&data, "static-toggle-dpms", TEST_DPMS);
-> +		test_hdr(&data, TEST_DPMS);
->   	igt_describe("Tests static toggle with suspend");
->   	igt_subtest_with_dynamic("static-toggle-suspend")
-> -		test_hdr(&data, "static-toggle-suspend", TEST_SUSPEND);
-> +		test_hdr(&data, TEST_SUSPEND);
->   
->   	igt_describe("Tests swapping static HDR metadata");
->   	igt_subtest_with_dynamic("static-swap")
-> -		test_hdr(&data, "static-swap", TEST_SWAP);
-> +		test_hdr(&data, TEST_SWAP);
->   
->   	igt_fixture {
->   		igt_display_fini(&data.display);
-
--- 
-~Swati Sharma
+T24gVGh1LTEyLTA1LTIwMjIgMTI6MzEgcG0sIFNoYXJtYSwgU3dhdGkyIHdyb3RlOg0KPiBBZ3Jl
+ZS4gQnV0IGkgc3VnZ2VzdCBpZiB3ZSBjYW4gaGF2ZQ0KPiBwaXBlX25hbWUtY29ubmVjdG9yX25h
+bWUNCj4gbGlrZQ0KPiBpZ3RAa21zX2hkckBicGMtc3dpdGNoQHBpcGUtYS1kcC0xDQoNClN1cmUs
+IEknbGwgZmxvYXQgYSBuZXcgcmV2IHdpdGggdGhpcyBjaGFuZ2UuDQoNCi0gQmhhbnUNCg0KPiAN
+Cj4gT24gMTItTWF5LTIyIDExOjQxIEFNLCBCaGFudXByYWthc2ggTW9kZW0gd3JvdGU6DQo+PiBB
+cyB3ZSBhcmUgdXNpbmcgZHluYW1pYyBzdWJ0ZXN0cywgbm8gbmVlZCB0byB1c2UgdGhlIHNhbWUg
+c3VidGVzdA0KPj4gbmFtZSBpbiBhbGwgZHluYW1pYyBzdWJ0ZXN0cy4NCj4+DQo+PiBFeGFtcGxl
+Og0KPj4gwqDCoMKgIEJlZm9yZTogaWd0QGttc19oZHJAYnBjLXN3aXRjaEBicGMtc3dpdGNoLWRw
+LTEtcGlwZS1hDQo+PiDCoMKgwqAgQWZ0ZXI6wqAgaWd0QGttc19oZHJAYnBjLXN3aXRjaEBkcC0x
+LXBpcGUtYQ0KPj4NCj4+IENjOiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFAaW50ZWwuY29t
+Pg0KPj4gU2lnbmVkLW9mZi1ieTogQmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9k
+ZW1AaW50ZWwuY29tPg0KPj4gLS0tDQo+PiDCoCB0ZXN0cy9rbXNfaGRyLmMgfCAzMiArKysrKysr
+KysrKysrKysrKy0tLS0tLS0tLS0tLS0tLQ0KPj4gwqAgMSBmaWxlIGNoYW5nZWQsIDE3IGluc2Vy
+dGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNf
+aGRyLmMgYi90ZXN0cy9rbXNfaGRyLmMNCj4+IGluZGV4IDI0N2ViNjU4Li5kNjA0MjJhMyAxMDA2
+NDQNCj4+IC0tLSBhL3Rlc3RzL2ttc19oZHIuYw0KPj4gKysrIGIvdGVzdHMva21zX2hkci5jDQo+
+PiBAQCAtMjUxLDcgKzI1MSw3IEBAIHN0YXRpYyBib29sIGhhc19tYXhfYnBjKGlndF9vdXRwdXRf
+dCAqb3V0cHV0KQ0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9vdXRwdXRfZ2V0X3By
+b3Aob3V0cHV0LCBJR1RfQ09OTkVDVE9SX01BWF9CUEMpOw0KPj4gwqAgfQ0KPj4gLXN0YXRpYyB2
+b2lkIHRlc3RfYnBjX3N3aXRjaChkYXRhX3QgKmRhdGEsIGNvbnN0IGNoYXIgKnRlc3RfbmFtZSwg
+DQo+PiB1aW50MzJfdCBmbGFncykNCj4+ICtzdGF0aWMgdm9pZCB0ZXN0X2JwY19zd2l0Y2goZGF0
+YV90ICpkYXRhLCB1aW50MzJfdCBmbGFncykNCj4+IMKgIHsNCj4+IMKgwqDCoMKgwqAgaWd0X2Rp
+c3BsYXlfdCAqZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPj4gwqDCoMKgwqDCoCBpZ3Rfb3V0
+cHV0X3QgKm91dHB1dDsNCj4+IEBAIC0yNjQsMTAgKzI2NCwxMSBAQCBzdGF0aWMgdm9pZCB0ZXN0
+X2JwY19zd2l0Y2goZGF0YV90ICpkYXRhLCBjb25zdCANCj4+IGNoYXIgKnRlc3RfbmFtZSwgdWlu
+dDMyX3QgZmxhZ3MpDQo+PiDCoMKgwqDCoMKgwqDCoMKgwqAgZm9yX2VhY2hfcGlwZShkaXNwbGF5
+LCBwaXBlKSB7DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoaWd0X3BpcGVfY29u
+bmVjdG9yX3ZhbGlkKHBpcGUsIG91dHB1dCkpIHsNCj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBpZ3RfZHluYW1pY19mKCIlcy0lcy1waXBlLSVzIiwNCj4+IC3CoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGVzdF9uYW1lLCBv
+dXRwdXQtPm5hbWUsIA0KPj4ga21zdGVzdF9waXBlX25hbWUocGlwZSkpDQo+PiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMiLA0KPj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG91dHB1dC0+
+bmFtZSwga21zdGVzdF9waXBlX25hbWUocGlwZSkpDQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgdGVzdF9icGNfc3dpdGNoX29uX291dHB1dChkYXRhLCBwaXBl
+LCBvdXRwdXQsIA0KPj4gZmxhZ3MpOw0KPj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogT25l
+IHBpcGUgaXMgZW5vdWdoICovDQo+PiArDQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIC8qIE9uZSBwaXBlIGlzIGVub3VnaCAqLw0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBicmVhazsNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4+IMKg
+wqDCoMKgwqDCoMKgwqDCoCB9DQo+PiBAQCAtNTY0LDcgKzU2NSw3IEBAIHN0YXRpYyBib29sIGhh
+c19oZHIoaWd0X291dHB1dF90ICpvdXRwdXQpDQo+PiDCoMKgwqDCoMKgIHJldHVybiBpZ3Rfb3V0
+cHV0X2hhc19wcm9wKG91dHB1dCwgDQo+PiBJR1RfQ09OTkVDVE9SX0hEUl9PVVRQVVRfTUVUQURB
+VEEpOw0KPj4gwqAgfQ0KPj4gLXN0YXRpYyB2b2lkIHRlc3RfaGRyKGRhdGFfdCAqZGF0YSwgY29u
+c3QgY2hhciAqdGVzdF9uYW1lLCB1aW50MzJfdCANCj4+IGZsYWdzKQ0KPj4gK3N0YXRpYyB2b2lk
+IHRlc3RfaGRyKGRhdGFfdCAqZGF0YSwgdWludDMyX3QgZmxhZ3MpDQo+PiDCoCB7DQo+PiDCoMKg
+wqDCoMKgIGlndF9kaXNwbGF5X3QgKmRpc3BsYXkgPSAmZGF0YS0+ZGlzcGxheTsNCj4+IMKgwqDC
+oMKgwqAgaWd0X291dHB1dF90ICpvdXRwdXQ7DQo+PiBAQCAtNTg0LDE0ICs1ODUsMTUgQEAgc3Rh
+dGljIHZvaWQgdGVzdF9oZHIoZGF0YV90ICpkYXRhLCBjb25zdCBjaGFyIA0KPj4gKnRlc3RfbmFt
+ZSwgdWludDMyX3QgZmxhZ3MpDQo+PiDCoMKgwqDCoMKgwqDCoMKgwqAgZm9yX2VhY2hfcGlwZShk
+aXNwbGF5LCBwaXBlKSB7DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoaWd0X3Bp
+cGVfY29ubmVjdG9yX3ZhbGlkKHBpcGUsIG91dHB1dCkpIHsNCj4+IC3CoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgaWd0X2R5bmFtaWNfZigiJXMtJXMtcGlwZS0lcyIsDQo+PiAtwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGVzdF9uYW1lLCBv
+dXRwdXQtPm5hbWUsIA0KPj4ga21zdGVzdF9waXBlX25hbWUocGlwZSkpIHsNCj4+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcyIsDQo+PiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgb3V0cHV0
+LT5uYW1lLCBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkgew0KPj4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmIChmbGFncyAmIFRFU1RfTk9ORSB8fCBmbGFncyAm
+IFRFU1RfRFBNUyB8fCANCj4+IGZsYWdzICYgVEVTVF9TVVNQRU5EKQ0KPj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGVzdF9zdGF0aWNfdG9nZ2xl
+KGRhdGEsIHBpcGUsIG91dHB1dCwgZmxhZ3MpOw0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIGlmIChmbGFncyAmIFRFU1RfU1dBUCkNCj4+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRlc3Rfc3RhdGljX3N3YXAo
+ZGF0YSwgcGlwZSwgb3V0cHV0KTsNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgfQ0KPj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyogT25lIHBpcGUgaXMgZW5vdWdoICov
+DQo+PiArDQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIC8qIE9uZSBwaXBlIGlz
+IGVub3VnaCAqLw0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBicmVhazsN
+Cj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4+IMKgwqDCoMKgwqDCoMKgwqDCoCB9
+DQo+PiBAQCAtNjE1LDI3ICs2MTcsMjcgQEAgaWd0X21haW4NCj4+IMKgwqDCoMKgwqAgaWd0X2Rl
+c2NyaWJlKCJUZXN0cyBzd2l0Y2hpbmcgYmV0d2VlbiBkaWZmZXJlbnQgZGlzcGxheSBvdXRwdXQg
+DQo+PiBicGMgbW9kZXMiKTsNCj4+IMKgwqDCoMKgwqAgaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWlj
+KCJicGMtc3dpdGNoIikNCj4+IC3CoMKgwqDCoMKgwqDCoCB0ZXN0X2JwY19zd2l0Y2goJmRhdGEs
+ICJicGMtc3dpdGNoIiwgVEVTVF9OT05FKTsNCj4+ICvCoMKgwqDCoMKgwqDCoCB0ZXN0X2JwY19z
+d2l0Y2goJmRhdGEsIFRFU1RfTk9ORSk7DQo+PiDCoMKgwqDCoMKgIGlndF9kZXNjcmliZSgiVGVz
+dHMgYnBjIHN3aXRjaCB3aXRoIGRwbXMiKTsNCj4+IMKgwqDCoMKgwqAgaWd0X3N1YnRlc3Rfd2l0
+aF9keW5hbWljKCJicGMtc3dpdGNoLWRwbXMiKQ0KPj4gLcKgwqDCoMKgwqDCoMKgIHRlc3RfYnBj
+X3N3aXRjaCgmZGF0YSwgImJwYy1zd2l0Y2gtZHBtcyIsIFRFU1RfRFBNUyk7DQo+PiArwqDCoMKg
+wqDCoMKgwqAgdGVzdF9icGNfc3dpdGNoKCZkYXRhLCBURVNUX0RQTVMpOw0KPj4gwqDCoMKgwqDC
+oCBpZ3RfZGVzY3JpYmUoIlRlc3RzIGJwYyBzd2l0Y2ggd2l0aCBzdXNwZW5kIik7DQo+PiDCoMKg
+wqDCoMKgIGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiYnBjLXN3aXRjaC1zdXNwZW5kIikNCj4+
+IC3CoMKgwqDCoMKgwqDCoCB0ZXN0X2JwY19zd2l0Y2goJmRhdGEsICJicGMtc3dpdGNoLXN1c3Bl
+bmQiLCBURVNUX1NVU1BFTkQpOw0KPj4gK8KgwqDCoMKgwqDCoMKgIHRlc3RfYnBjX3N3aXRjaCgm
+ZGF0YSwgVEVTVF9TVVNQRU5EKTsNCj4+IMKgwqDCoMKgwqAgaWd0X2Rlc2NyaWJlKCJUZXN0cyBl
+bnRlcmluZyBhbmQgZXhpdGluZyBIRFIgbW9kZSIpOw0KPj4gwqDCoMKgwqDCoCBpZ3Rfc3VidGVz
+dF93aXRoX2R5bmFtaWMoInN0YXRpYy10b2dnbGUiKQ0KPj4gLcKgwqDCoMKgwqDCoMKgIHRlc3Rf
+aGRyKCZkYXRhLCAic3RhdGljLXRvZ2dsZSIsIFRFU1RfTk9ORSk7DQo+PiArwqDCoMKgwqDCoMKg
+wqAgdGVzdF9oZHIoJmRhdGEsIFRFU1RfTk9ORSk7DQo+PiDCoMKgwqDCoMKgIGlndF9kZXNjcmli
+ZSgiVGVzdHMgc3RhdGljIHRvZ2dsZSB3aXRoIGRwbXMiKTsNCj4+IMKgwqDCoMKgwqAgaWd0X3N1
+YnRlc3Rfd2l0aF9keW5hbWljKCJzdGF0aWMtdG9nZ2xlLWRwbXMiKQ0KPj4gLcKgwqDCoMKgwqDC
+oMKgIHRlc3RfaGRyKCZkYXRhLCAic3RhdGljLXRvZ2dsZS1kcG1zIiwgVEVTVF9EUE1TKTsNCj4+
+ICvCoMKgwqDCoMKgwqDCoCB0ZXN0X2hkcigmZGF0YSwgVEVTVF9EUE1TKTsNCj4+IMKgwqDCoMKg
+wqAgaWd0X2Rlc2NyaWJlKCJUZXN0cyBzdGF0aWMgdG9nZ2xlIHdpdGggc3VzcGVuZCIpOw0KPj4g
+wqDCoMKgwqDCoCBpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoInN0YXRpYy10b2dnbGUtc3VzcGVu
+ZCIpDQo+PiAtwqDCoMKgwqDCoMKgwqAgdGVzdF9oZHIoJmRhdGEsICJzdGF0aWMtdG9nZ2xlLXN1
+c3BlbmQiLCBURVNUX1NVU1BFTkQpOw0KPj4gK8KgwqDCoMKgwqDCoMKgIHRlc3RfaGRyKCZkYXRh
+LCBURVNUX1NVU1BFTkQpOw0KPj4gwqDCoMKgwqDCoCBpZ3RfZGVzY3JpYmUoIlRlc3RzIHN3YXBw
+aW5nIHN0YXRpYyBIRFIgbWV0YWRhdGEiKTsNCj4+IMKgwqDCoMKgwqAgaWd0X3N1YnRlc3Rfd2l0
+aF9keW5hbWljKCJzdGF0aWMtc3dhcCIpDQo+PiAtwqDCoMKgwqDCoMKgwqAgdGVzdF9oZHIoJmRh
+dGEsICJzdGF0aWMtc3dhcCIsIFRFU1RfU1dBUCk7DQo+PiArwqDCoMKgwqDCoMKgwqAgdGVzdF9o
+ZHIoJmRhdGEsIFRFU1RfU1dBUCk7DQo+PiDCoMKgwqDCoMKgIGlndF9maXh0dXJlIHsNCj4+IMKg
+wqDCoMKgwqDCoMKgwqDCoCBpZ3RfZGlzcGxheV9maW5pKCZkYXRhLmRpc3BsYXkpOw0KPiANCg0K
