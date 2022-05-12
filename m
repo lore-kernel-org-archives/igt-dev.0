@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9EFE010E24C
- for <igt-dev@lists.freedesktop.org>; Thu, 12 May 2022 08:20:29 +0000 (UTC)
-Message-ID: <e397aca8-e3fb-a9a6-5d29-d9e679b58150@intel.com>
-Date: Thu, 12 May 2022 13:50:24 +0530
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8FEF10FAD6
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 May 2022 08:32:02 +0000 (UTC)
+Message-ID: <4793d23c-77b6-0004-615a-ba828527e584@intel.com>
+Date: Thu, 12 May 2022 14:01:56 +0530
 MIME-Version: 1.0
 Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20220512061130.3347243-1-bhanuprakash.modem@intel.com>
- <20220512073202.3348807-1-bhanuprakash.modem@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+References: <20220512073549.5535-1-nidhi1.gupta@intel.com>
+ <20220512073549.5535-2-nidhi1.gupta@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220512073202.3348807-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220512073549.5535-2-nidhi1.gupta@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [V2] tests/kms_hdr: Fix dynamic subtest name
+Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_bw : Added dynamic test cases
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,120 +26,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Reviewed-by:
-Swati Sharma <swati2.sharma@intel.com>
+This test is blacklisted for i915.
+Can you modify test to enable it ?
+++Modem
 
-Lets wait for clean CI run, then we are good to merge this patch.
-
-On 12-May-22 1:02 PM, Bhanuprakash Modem wrote:
-> As we are using dynamic subtests, no need to use the same subtest
-> name in all dynamic subtests.
+On 12-May-22 1:05 PM, Nidhi Gupta wrote:
+> Modified kms_bw to include dynamic test cases
+> for better reporting of the results.
 > 
-> Example:
->     Before: igt@kms_hdr@bpc-switch@bpc-switch-dp-1-pipe-a
->     After:  igt@kms_hdr@bpc-switch@dp-1-pipe-a
-> 
-> V2:
-> * Change test name "<output_name>-<pipe_name>" to "<pipe_name>-<output_name>"
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 > ---
->   tests/kms_hdr.c | 32 +++++++++++++++++---------------
->   1 file changed, 17 insertions(+), 15 deletions(-)
+>   tests/kms_bw.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index 247eb658..446490cb 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -251,7 +251,7 @@ static bool has_max_bpc(igt_output_t *output)
->   	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
->   }
->   
-> -static void test_bpc_switch(data_t *data, const char *test_name, uint32_t flags)
-> +static void test_bpc_switch(data_t *data, uint32_t flags)
+> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+> index a4553cde..60f87537 100644
+> --- a/tests/kms_bw.c
+> +++ b/tests/kms_bw.c
+> @@ -195,6 +195,7 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+>   igt_main
 >   {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
-> @@ -264,10 +264,11 @@ static void test_bpc_switch(data_t *data, const char *test_name, uint32_t flags)
+>   	data_t data;
+> +	igt_output_t *output;
+>   	int i = 0, j = 0;
 >   
->   		for_each_pipe(display, pipe) {
->   			if (igt_pipe_connector_valid(pipe, output)) {
-> -				 igt_dynamic_f("%s-%s-pipe-%s",
-> -					        test_name, output->name, kmstest_pipe_name(pipe))
-> +				igt_dynamic_f("pipe-%s-%s",
-> +					      kmstest_pipe_name(pipe), output->name)
->   					test_bpc_switch_on_output(data, pipe, output, flags);
-> -			/* One pipe is enough */
-> +
-> +				/* One pipe is enough */
->   				break;
->   			}
+>   	memset(&data, 0, sizeof(data));
+> @@ -215,9 +216,11 @@ igt_main
+>   	 * _amount_ of pipes */
+>   	for (i = 0; i < IGT_MAX_PIPES; i++) {
+>   		for (j = 0; j < ARRAY_SIZE(test_mode); j++) {
+> -			igt_subtest_f("linear-tiling-%d-displays-%s", i+1,
+> -			      test_mode[j].name)
+> -			run_test_linear_tiling(&data, i, &test_mode[j]);
+> +			igt_subtest_with_dynamic_f("linear-tiling-%d-displays-%s", i+1,
+> +			      test_mode[j].name) {
+> +				igt_dynamic_f("pipe-%s", igt_output_name(output))
+> +					run_test_linear_tiling(&data, i, &test_mode[j]);
+> +			}
 >   		}
-> @@ -564,7 +565,7 @@ static bool has_hdr(igt_output_t *output)
->   	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
->   }
+>   	}
 >   
-> -static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
-> +static void test_hdr(data_t *data, uint32_t flags)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
-> @@ -584,14 +585,15 @@ static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
->   
->   		for_each_pipe(display, pipe) {
->   			if (igt_pipe_connector_valid(pipe, output)) {
-> -				igt_dynamic_f("%s-%s-pipe-%s",
-> -					      test_name, output->name, kmstest_pipe_name(pipe)) {
-> +				igt_dynamic_f("pipe-%s-%s",
-> +					      kmstest_pipe_name(pipe), output->name) {
->   					if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
->   						test_static_toggle(data, pipe, output, flags);
->   					if (flags & TEST_SWAP)
->   						test_static_swap(data, pipe, output);
->   				}
-> -			/* One pipe is enough */
-> +
-> +				/* One pipe is enough */
->   				break;
->   			}
->   		}
-> @@ -615,27 +617,27 @@ igt_main
->   
->   	igt_describe("Tests switching between different display output bpc modes");
->   	igt_subtest_with_dynamic("bpc-switch")
-> -		test_bpc_switch(&data, "bpc-switch", TEST_NONE);
-> +		test_bpc_switch(&data, TEST_NONE);
->   	igt_describe("Tests bpc switch with dpms");
->   	igt_subtest_with_dynamic("bpc-switch-dpms")
-> -		test_bpc_switch(&data, "bpc-switch-dpms", TEST_DPMS);
-> +		test_bpc_switch(&data, TEST_DPMS);
->   	igt_describe("Tests bpc switch with suspend");
->   	igt_subtest_with_dynamic("bpc-switch-suspend")
-> -		test_bpc_switch(&data, "bpc-switch-suspend", TEST_SUSPEND);
-> +		test_bpc_switch(&data, TEST_SUSPEND);
->   
->   	igt_describe("Tests entering and exiting HDR mode");
->   	igt_subtest_with_dynamic("static-toggle")
-> -		test_hdr(&data, "static-toggle", TEST_NONE);
-> +		test_hdr(&data, TEST_NONE);
->   	igt_describe("Tests static toggle with dpms");
->   	igt_subtest_with_dynamic("static-toggle-dpms")
-> -		test_hdr(&data, "static-toggle-dpms", TEST_DPMS);
-> +		test_hdr(&data, TEST_DPMS);
->   	igt_describe("Tests static toggle with suspend");
->   	igt_subtest_with_dynamic("static-toggle-suspend")
-> -		test_hdr(&data, "static-toggle-suspend", TEST_SUSPEND);
-> +		test_hdr(&data, TEST_SUSPEND);
->   
->   	igt_describe("Tests swapping static HDR metadata");
->   	igt_subtest_with_dynamic("static-swap")
-> -		test_hdr(&data, "static-swap", TEST_SWAP);
-> +		test_hdr(&data, TEST_SWAP);
->   
->   	igt_fixture {
->   		igt_display_fini(&data.display);
 
 -- 
 ~Swati Sharma
