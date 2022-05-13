@@ -1,21 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5232410EF84
- for <igt-dev@lists.freedesktop.org>; Fri, 13 May 2022 08:59:52 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Fri, 13 May 2022 08:59:50 +0000
-Message-ID: <af97b44433be4088b862bde91c566a69@intel.com>
-References: <20220512110113.31158-1-jeevan.b@intel.com>
- <20220512110113.31158-5-jeevan.b@intel.com>
-In-Reply-To: <20220512110113.31158-5-jeevan.b@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 13 May 2022 10:31:28 +0100
+Message-Id: <20220513093128.1027997-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 4/4] tests/kms_getfb: Add flat ccs
- modifier support
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/core_hotunplug: Check sysfs reads
+ after hotunplug
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,61 +14,100 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>, "Heikkila,
- Juha-pekka" <juha-pekka.heikkila@intel.com>
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBCLCBKZWV2YW4gPGplZXZhbi5i
-QGludGVsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIE1heSAxMiwgMjAyMiAyOjAxIFBNDQo+IFRv
-OiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogS2Fob2xhLCBNaWthIDxtaWth
-LmthaG9sYUBpbnRlbC5jb20+OyBEZWFrLCBJbXJlDQo+IDxpbXJlLmRlYWtAaW50ZWwuY29tPjsg
-TGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPjsgSGVpa2tpbGEsDQo+IEp1
-aGEtcGVra2EgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPjsgQiwgSmVldmFuIDxqZWV2
-YW4uYkBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFtQQVRDSCBpLWctdCB2MyA0LzRdIHRlc3RzL2tt
-c19nZXRmYjogQWRkIGZsYXQgY2NzIG1vZGlmaWVyIHN1cHBvcnQNCj4gDQo+IEZyb206IEp1aGEt
-UGVra2EgSGVpa2tpbMOkIDxqdWhhLXBla2thLmhlaWtraWxhQGludGVsLmNvbT4NCj4gDQo+IEFk
-ZCBzdXBwb3J0IGZvciB0ZXN0aW5nL3NraXBwaW5nIGZsYXQgY2NzIG1vZGlmaWVycw0KPiANCj4g
-U2lnbmVkLW9mZi1ieTogSnVoYS1QZWtrYSBIZWlra2lsw6QgPGp1aGEtcGVra2EuaGVpa2tpbGFA
-aW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50ZWwuY29t
-Pg0KDQpSZXZpZXdlZC1ieTogTWlrYSBLYWhvbGEgPG1pa2Eua2Fob2xhQGludGVsLmNvbT4NCg0K
-PiAtLS0NCj4gIHRlc3RzL2ttc19nZXRmYi5jIHwgMjAgKysrKysrKysrKysrKysrKystLS0NCj4g
-IDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiANCj4g
-ZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19nZXRmYi5jIGIvdGVzdHMva21zX2dldGZiLmMgaW5kZXgg
-NzVmNWYzMGMuLmIzYThkMjY1DQo+IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9rbXNfZ2V0ZmIuYw0K
-PiArKysgYi90ZXN0cy9rbXNfZ2V0ZmIuYw0KPiBAQCAtODgsMTEgKzg4LDE4IEBAIHN0YXRpYyB2
-b2lkIGdldF9jY3NfZmIoaW50IGZkLCBzdHJ1Y3QgZHJtX21vZGVfZmJfY21kMg0KPiAqcmV0KQ0K
-PiAgCQkuZmxhZ3MgPSBEUk1fTU9ERV9GQl9NT0RJRklFUlMsDQo+ICAJfTsNCj4gIAlpbnQgc2l6
-ZTsNCj4gKwl1aW50MzJfdCBkZXZpZDsNCj4gDQo+ICAJaWd0X3JlcXVpcmUoaGFzX2FkZGZiMl9p
-ZmFjZShmZCkpOw0KPiAgCWlndF9yZXF1aXJlX2ludGVsKGZkKTsNCj4gKwlkZXZpZCA9IGludGVs
-X2dldF9kcm1fZGV2aWQoZmQpOw0KPiANCj4gLQlpZiAoKGludGVsX2Rpc3BsYXlfdmVyKGludGVs
-X2dldF9kcm1fZGV2aWQoZmQpKSkgPj0gMTIpIHsNCj4gKwlpZiAoSEFTX0ZMQVRDQ1MoZGV2aWQp
-KSB7DQo+ICsJCWFkZC5tb2RpZmllclswXSA9IEk5MTVfRk9STUFUX01PRF80X1RJTEVEX0RHMl9S
-Q19DQ1M7DQo+ICsJCWFkZC5waXRjaGVzWzBdID0gQUxJR04oYWRkLndpZHRoICogNCwgNCAqIDUx
-Mik7DQo+ICsJCXNpemUgPSBhZGQucGl0Y2hlc1swXSAqIEFMSUdOKGFkZC5oZWlnaHQsIDgpOw0K
-PiArCQlzaXplID0gQUxJR04oc2l6ZSwgNDA5Nik7DQo+ICsJfSBlbHNlIGlmICgoaW50ZWxfZGlz
-cGxheV92ZXIoZGV2aWQpKSA+PSAxMikgew0KPiAgCQlhZGQubW9kaWZpZXJbMF0gPQ0KPiBJOTE1
-X0ZPUk1BVF9NT0RfWV9USUxFRF9HRU4xMl9SQ19DQ1M7DQo+ICAJCWFkZC5tb2RpZmllclsxXSA9
-DQo+IEk5MTVfRk9STUFUX01PRF9ZX1RJTEVEX0dFTjEyX1JDX0NDUzsNCj4gDQo+IEBAIC0xMzAs
-NyArMTM3LDkgQEAgc3RhdGljIHZvaWQgZ2V0X2Njc19mYihpbnQgZmQsIHN0cnVjdCBkcm1fbW9k
-ZV9mYl9jbWQyDQo+ICpyZXQpDQo+IA0KPiAgCWFkZC5oYW5kbGVzWzBdID0gZ2VtX2J1ZmZlcl9j
-cmVhdGVfZmJfb2JqKGZkLCBzaXplKTsNCj4gIAlpZ3RfcmVxdWlyZShhZGQuaGFuZGxlc1swXSAh
-PSAwKTsNCj4gLQlhZGQuaGFuZGxlc1sxXSA9IGFkZC5oYW5kbGVzWzBdOw0KPiArDQo+ICsJaWYg
-KCFIQVNfRkxBVENDUyhpbnRlbF9nZXRfZHJtX2RldmlkKGZkKSkpDQo+ICsJCWFkZC5oYW5kbGVz
-WzFdID0gYWRkLmhhbmRsZXNbMF07DQo+IA0KPiAgCWlmIChkcm1Jb2N0bChmZCwgRFJNX0lPQ1RM
-X01PREVfQURERkIyLCAmYWRkKSA9PSAwKQ0KPiAgCQkqcmV0ID0gYWRkOw0KPiBAQCAtMjU2LDYg
-KzI2NSw5IEBAIHN0YXRpYyB2b2lkIHRlc3RfZHVwbGljYXRlX2hhbmRsZXMoaW50IGZkKQ0KPiAg
-CQlzdHJ1Y3QgZHJtX21vZGVfZmJfY21kMiBhZGRfY2NzID0geyB9Ow0KPiAgCQlzdHJ1Y3QgZHJt
-X21vZGVfZmJfY21kIGdldCA9IHsgfTsNCj4gDQo+ICsJCWlndF9yZXF1aXJlX2YoIUhBU19GTEFU
-Q0NTKGludGVsX2dldF9kcm1fZGV2aWQoZmQpKSwNCj4gKwkJCSAgICAgICJza2lwIGJlY2F1c2Ug
-ZmxhdCBjY3MgaGFzIG9ubHkgb25lIGJ1ZmZlci5cbiIpOw0KPiArDQo+ICAJCWdldF9jY3NfZmIo
-ZmQsICZhZGRfY2NzKTsNCj4gIAkJaWd0X3JlcXVpcmUoYWRkX2Njcy5oYW5kbGVzWzBdICE9IDAp
-Ow0KPiAgCQlnZXQuZmJfaWQgPSBhZGRfY2NzLmZiX2lkOw0KPiBAQCAtMzUwLDcgKzM2Miw5IEBA
-IHN0YXRpYyB2b2lkIHRlc3RfZ2V0ZmIyKGludCBmZCkNCj4gIAkJCQlpZ3RfYXNzZXJ0X2VxX3U2
-NChnZXQubW9kaWZpZXJbaV0sIDApOw0KPiAgCQkJfQ0KPiAgCQl9DQo+IC0JCWlndF9hc3NlcnRf
-ZXFfdTMyKGdldC5oYW5kbGVzWzBdLCBnZXQuaGFuZGxlc1sxXSk7DQo+ICsNCj4gKwkJaWYgKCFI
-QVNfRkxBVENDUyhpbnRlbF9nZXRfZHJtX2RldmlkKGZkKSkpDQo+ICsJCQlpZ3RfYXNzZXJ0X2Vx
-X3UzMihnZXQuaGFuZGxlc1swXSwgZ2V0LmhhbmRsZXNbMV0pOw0KPiANCj4gIAkJZG9faW9jdGwo
-ZmQsIERSTV9JT0NUTF9NT0RFX1JNRkIsICZnZXQuZmJfaWQpOw0KPiAgCQlnZW1fY2xvc2UoZmQs
-IGFkZF9jY3MuaGFuZGxlc1swXSk7DQo+IC0tDQo+IDIuMzYuMA0KDQo=
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+
+Leave some sysfs files open and attempt to read from them after hotunplug.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/core_hotunplug.c | 62 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 02eae19e1e16..c3831541202d 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -602,6 +602,59 @@ static void hotreplug_lateclose(struct hotunplug *priv)
+ 	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
+ }
+ 
++static void hotunplug_sysfs(struct hotunplug *priv)
++{
++	int i915, sysfs;
++	struct {
++		int fd;
++		const char *path;
++		char buf[256];
++	} *item, items[] = {
++		{ .fd = -1, .path = "error" },
++		{ .fd = -1, .path = "gt_act_freq_mhz" },
++		{ .fd = -1, .path = "gt/gt0/rps_act_freq_mhz" },
++		{ .fd = -1, .path = "gt/gt0/rc6_residency_ms" },
++		{ .fd = -1, .path = "engine/rcs0/name" },
++		{ .fd = -1, .path = "engine/bcs0/name" },
++		{ .path = NULL },
++	};
++	unsigned int cnt = 0;
++
++	pre_check(priv);
++
++	i915 = local_drm_open_driver(false, "", " for hot unplug");
++	sysfs = igt_sysfs_open(i915);
++	igt_require(sysfs >= 0);
++	for (item = &items[0]; item->path; item++) {
++		item->fd = openat(sysfs, item->path, O_RDONLY);
++		cnt += item->fd >= 0;
++	}
++	close(sysfs);
++	close_device(i915, " ", "sysfs open ");
++
++	igt_require(cnt >= 3);
++
++	device_unplug(priv, "hot ", 60);
++
++	sleep(2);
++
++	for (item = &items[0]; item->path; item++) {
++		ssize_t len;
++		int err;
++
++		if (item->fd < 0)
++			continue;
++
++		len = read(item->fd, item->buf, sizeof(item->buf));
++		err = len < 0 ? -errno : 0;
++		close(item->fd);
++		igt_debug("%s='%s' (%d)\n", item->path, item->buf, err);
++		igt_assert_eq(err, -ENODEV);
++	}
++
++	igt_assert_f(healthcheck(priv, false), "%s\n", priv->failure);
++}
++
+ /* Main */
+ 
+ igt_main
+@@ -735,6 +788,15 @@ igt_main
+ 			recover(&priv);
+ 	}
+ 
++	igt_subtest_group {
++		igt_describe("Check if sysfs files left open can be safely accessed after hotunplug.");
++		igt_subtest("hotunplug-sysfs")
++			hotunplug_sysfs(&priv);
++
++		igt_fixture
++			recover(&priv);
++	}
++
+ 	igt_fixture {
+ 		post_healthcheck(&priv);
+ 
+-- 
+2.32.0
