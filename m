@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3029800712220640474=="
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com
+ [IPv6:2a00:1450:4864:20::436])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3546E10E553
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 May 2022 13:14:16 +0000 (UTC)
+Received: by mail-wr1-x436.google.com with SMTP id w4so11370941wrg.12
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 May 2022 06:14:16 -0700 (PDT)
+Message-ID: <2d3ddb03-483f-6a5b-f7ca-73d043d8dc0b@gmail.com>
+Date: Fri, 13 May 2022 16:14:06 +0300
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Petri Latvala" <petri.latvala@intel.com>
-Date: Fri, 13 May 2022 11:44:11 -0000
-Message-ID: <165244225185.9639.5801310901062768825@emeril.freedesktop.org>
-References: <20220513095300.6785-1-petri.latvala@intel.com>
-In-Reply-To: <20220513095300.6785-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliOiBB?=
- =?utf-8?q?dd_missing_newline_in_igt=5Ffopen=5Fdata=27s_logging?=
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220512080130.6595-1-swati2.sharma@intel.com>
+ <20220512080130.6595-2-swati2.sharma@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20220512080130.6595-2-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_plane_scaling: Add tests
+ as list
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,218 +25,688 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3029800712220640474==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Swati,
 
-== Series Details ==
+On 12.5.2022 11.01, Swati Sharma wrote:
+> Added subtests as a list. Also, renamed tests to
+> distinguish between plane vs planes tests.
+> Lastly, for clipping/clamping tests added new tests
+> as modifiers, pixel-formats and rotation.
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/kms_plane_scaling.c | 526 ++++++++++++++++++--------------------
+>   1 file changed, 246 insertions(+), 280 deletions(-)
+> 
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index a1a883b3..1360c791 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -42,65 +42,250 @@ typedef struct {
+>   	bool extended;
+>   } data_t;
+>   
+> +const struct {
+> +	const char * const describe;
+> +	const char * const name;
+> +	const double sf;
+> +	const bool is_upscale;
+> +} scaler_with_pixel_format_tests[] = {
+> +		{
+> +			"Tests upscaling with pixel formats, from 20x20 fb.",
+> +			"plane-upscale-with-pixel-format-20x20",
+> +			0.0,
+> +			true,
+> +		},
 
-Series: lib: Add missing newline in igt_fopen_data's logging
-URL   : https://patchwork.freedesktop.org/series/103977/
-State : success
+indentation on these structures is wrong, otherwise everything look ok 
+on both patches 1&2.
 
-== Summary ==
+With that fixed both patches
 
-CI Bug Log - changes from CI_DRM_11647 -> IGTPW_7098
-====================================================
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/index.html
-
-Participating hosts (41 -> 37)
-------------------------------
-
-  Additional (1): bat-adlm-1 
-  Missing    (5): fi-rkl-11600 fi-bdw-5557u fi-bsw-cyan bat-dg2-9 fi-ctg-p8600 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7098 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [PASS][1] -> [INCOMPLETE][2] ([i915#2940] / [i915#5801])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-bsw-kefka:       [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/fi-bsw-kefka/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-bsw-kefka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][5] ([fdo#109271])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@runner@aborted:
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][6] ([fdo#109271] / [i915#3428] / [i915#4312])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-bsw-n3050/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {fi-ehl-2}:         [DMESG-WARN][7] ([i915#5122]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-pnv-d510:        [DMESG-FAIL][9] ([i915#4528]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/fi-pnv-d510/igt@i915_selftest@live@requests.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-pnv-d510/igt@i915_selftest@live@requests.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3428]: https://gitlab.freedesktop.org/drm/intel/issues/3428
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5801]: https://gitlab.freedesktop.org/drm/intel/issues/5801
-  [i915#5950]: https://gitlab.freedesktop.org/drm/intel/issues/5950
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6472 -> IGTPW_7098
-
-  CI-20190529: 20190529
-  CI_DRM_11647: 977c7b80e18cb8ef325f8587263183df6a82d1a8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7098: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/index.html
-  IGT_6472: c815c94f0ceb33ae852622538f0136cf44c5725d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/index.html
-
---===============3029800712220640474==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib: Add missing newline in igt_fopen_data&#39;s logging</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103977/">https://patchwork.freedesktop.org/series/103977/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11647 -&gt; IGTPW_7098</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/index.html</p>
-<h2>Participating hosts (41 -&gt; 37)</h2>
-<p>Additional (1): bat-adlm-1 <br />
-  Missing    (5): fi-rkl-11600 fi-bdw-5557u fi-bsw-cyan bat-dg2-9 fi-ctg-p8600 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7098 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5801">i915#5801</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/fi-bsw-kefka/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-bsw-kefka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5122">i915#5122</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6472 -&gt; IGTPW_7098</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11647: 977c7b80e18cb8ef325f8587263183df6a82d1a8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7098: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/index.html<br />
-  IGT_6472: c815c94f0ceb33ae852622538f0136cf44c5725d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3029800712220640474==--
+> +		{
+> +			"Tests upscaling with pixel formats for 0.25 scaling factor.",
+> +			"plane-upscale-with-pixel-format-factor-0-25",
+> +			0.25,
+> +			true,
+> +		},
+> +		{
+> +			"Tests downscaling with pixel formats for 0.25 scaling factor.",
+> +			"plane-downscale-with-pixel-format-factor-0-25",
+> +			0.25,
+> +			false,
+> +		},
+> +		{
+> +			"Tests downscaling with pixel formats for 0.5 scaling factor.",
+> +			"plane-downscale-with-pixel-format-factor-0-5",
+> +			0.5,
+> +			false,
+> +		},
+> +		{
+> +			"Tests downscaling with pixel formats for 0.75 scaling factor.",
+> +			"plane-downscale-with-pixel-format-factor-0-75",
+> +			0.75,
+> +			false,
+> +		},
+> +		{
+> +			"Tests scaling with pixel formats, unity scaling.",
+> +			"plane-scaler-with-pixel-format-unity-scaling",
+> +			1.0,
+> +			true,
+> +		},
+> +};
+> +
+> +const struct {
+> +	const char * const describe;
+> +	const char * const name;
+> +	const double sf;
+> +	const bool is_upscale;
+> +} scaler_with_rotation_tests[] = {
+> +		{
+> +			"Tests upscaling with rotation, from 20x20 fb.",
+> +			"plane-upscale-with-rotation-20x20",
+> +			0.0,
+> +			true,
+> +		},
+> +		{
+> +			"Tests upscaling with rotation for 0.25 scaling factor.",
+> +			"plane-upscale-with-rotation-factor-0-25",
+> +			0.25,
+> +			true,
+> +		},
+> +		{
+> +			"Tests downscaling with rotation for 0.25 scaling factor.",
+> +			"plane-downscale-with-rotation-factor-0-25",
+> +			0.25,
+> +			false,
+> +		},
+> +		{
+> +			"Tests downscaling with rotation for 0.5 scaling factor.",
+> +			"plane-downscale-with-rotation-factor-0-5",
+> +			0.25,
+> +			false
+> +		},
+> +		{
+> +			"Tests downscaling with rotation for 0.75 scaling factor.",
+> +			"plane-downscale-with-rotation-factor-0-75",
+> +			0.75,
+> +			false,
+> +		},
+> +		{
+> +			"Tests scaling with rotation, unity scaling.",
+> +			"plane-scaler-with-rotation-unity-scaling",
+> +			1.0,
+> +			true,
+> +		},
+> +};
+> +
+> +const struct {
+> +	const char * const describe;
+> +	const char * const name;
+> +	const double sf;
+> +	const bool is_upscale;
+> +} scaler_with_modifiers_tests[] = {
+> +		{
+> +			"Tests upscaling with modifiers, from 20x20 fb.",
+> +			"plane-upscale-with-modifiers-20x20",
+> +			0.0,
+> +			true,
+> +		},
+> +		{
+> +			"Tests upscaling with modifiers for 0.25 scaling factor.",
+> +			"plane-upscale-with-modifiers-factor-0-25",
+> +			0.25,
+> +			true,
+> +		},
+> +		{
+> +			"Tests downscaling with modifiers for 0.25 scaling factor.",
+> +			"plane-downscale-with-modifiers-factor-0-25",
+> +			0.25,
+> +			false,
+> +		},
+> +		{
+> +			"Tests downscaling with modifiers for 0.5 scaling factor.",
+> +			"plane-downscale-with-modifiers-factor-0-5",
+> +			0.5,
+> +			false,
+> +		},
+> +		{
+> +			"Tests downscaling with modifiers for 0.75 scaling factor.",
+> +			"plane-downscale-with-modifiers-factor-0-75",
+> +			0.75,
+> +			false,
+> +		},
+> +		{
+> +			"Tests scaling with modifiers, unity scaling.",
+> +			"plane-scaler-with-modifiers-unity-scaling",
+> +			1.0,
+> +			true,
+> +		},
+> +};
+> +
+>   const struct {
+>   	const char * const describe;
+>   	const char * const name;
+>   	const double sf_plane1;
+>   	const double sf_plane2;
+> -} upscale_downscale_tests[] = {
+> +	const enum scaler_combo_test_type test_type;
+> +} scaler_with_2_planes_tests[] = {
+> +		{
+> +			"Tests upscaling of 2 planes, from 20x20 fb.",
+> +			"planes-upscale-20x20",
+> +			0.0,
+> +			0.0,
+> +			TEST_PLANES_UPSCALE,
+> +		},
+> +		{
+> +			"Tests upscaling of 2 planes for 0.25 scaling factor.",
+> +			"planes-upscale-factor-0-25",
+> +			0.25,
+> +			0.25,
+> +			TEST_PLANES_UPSCALE,
+> +		},
+> +		{
+> +			"Tests scaling of 2 planes, unity scaling.",
+> +			"planes-scaler-unity-scaling",
+> +			1.0,
+> +			1.0,
+> +			TEST_PLANES_UPSCALE,
+> +		},
+> +		{
+> +			"Tests downscaling of 2 planes for 0.25 scaling factor.",
+> +			"planes-downscale-factor-0-25",
+> +			0.25,
+> +			0.25,
+> +			TEST_PLANES_DOWNSCALE,
+> +		},
+> +		{
+> +			"Tests downscaling of 2 planes for 0.5 scaling factor.",
+> +			"planes-downscale-factor-0-5",
+> +			0.5,
+> +			0.5,
+> +			TEST_PLANES_DOWNSCALE,
+> +		},
+> +		{
+> +			"Tests downscaling of 2 planes for 0.75 scaling factor.",
+> +			"planes-downscale-factor-0-75",
+> +			0.75,
+> +			0.75,
+> +			TEST_PLANES_DOWNSCALE,
+> +		},
+>   		{
+>   			"Tests upscaling (20x20) and downscaling (scaling factor 0.25) of 2 planes.",
+>   			"planes-upscale-20x20-downscale-factor-0-25",
+>   			0.0,
+>   			0.25,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+> +
+>   		},
+>   		{
+>   			"Tests upscaling (20x20) and downscaling (scaling factor 0.5) of 2 planes.",
+>   			"planes-upscale-20x20-downscale-factor-0-5",
+>   			0.0,
+>   			0.5,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+>   		},
+>   		{
+>   			"Tests upscaling (20x20) and downscaling (scaling factor 0.75) of 2 planes.",
+>   			"planes-upscale-20x20-downscale-factor-0-75",
+>   			0.0,
+>   			0.75,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+>   		},
+>   		{
+>   			"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.25) of 2 planes.",
+>   			"planes-upscale-factor-0-25-downscale-factor-0-25",
+>   			0.25,
+>   			0.25,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+>   		},
+>   		{
+>   			"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.5) of 2 planes.",
+>   			"planes-upscale-factor-0-25-downscale-factor-0-5",
+>   			0.25,
+>   			0.5,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+>   		},
+>   		{
+>   			"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.75) of 2 planes.",
+>   			"planes-upscale-factor-0-25-downscale-factor-0-75",
+>   			0.25,
+>   			0.75,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+>   		},
+>   		{
+>   			"Tests scaling (unity) and downscaling (scaling factor 0.25) of 2 planes.",
+>   			"planes-unity-scaling-downscale-factor-0-25",
+>   			1.0,
+>   			0.25,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+>   		},
+>   		{
+>   			"Tests scaling (unity) and downscaling (scaling factor 0.5) of 2 planes.",
+>   			"planes-unity-scaling-downscale-factor-0-5",
+>   			1.0,
+>   			0.5,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+>   		},
+>   		{
+>   			"Tests scaling (unity) and downscaling (scaling factor 0.75) of 2 planes.",
+>   			"planes-unity-scaling-downscale-factor-0-75",
+>   			1.0,
+>   			0.75,
+> +			TEST_PLANES_UPSCALE_DOWNSCALE,
+>   		},
+>   };
+>   
+> @@ -674,333 +859,114 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   	igt_subtest_group {
+>   		igt_output_t *output;
+>   
+> -		igt_describe("Tests upscaling with pixel formats, from 20x20 fb.");
+> -		igt_subtest_with_dynamic("upscale-with-pixel-format-20x20") {
+> +		for (int index = 0; index < ARRAY_SIZE(scaler_with_pixel_format_tests); index++) {
+> +			igt_describe(scaler_with_pixel_format_tests[index].describe);
+> +			igt_subtest_with_dynamic(scaler_with_pixel_format_tests[index].name) {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-upscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_pixel_format_pipe(&data, 20, 20, true, pipe, output);
+> -		}
+> -
+> -		igt_describe("Tests upscaling with pixel formats for 0.25 scaling factor.");
+> -		igt_subtest_with_dynamic("upscale-with-pixel-format-factor-0-25") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-upscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_pixel_format_pipe(&data, 0.25 * mode->hdisplay,
+> -							0.25 * mode->vdisplay, true, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests downscaling with pixel formats for 0.25 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-pixel-format-factor-0-25") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_pixel_format_pipe(&data, 0.25 * mode->hdisplay,
+> -							0.25 * mode->vdisplay, false, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests downscaling with pixel formats for 0.5 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-pixel-format-factor-0-5") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_pixel_format_pipe(&data, 0.5 * mode->hdisplay,
+> -							0.5 * mode->vdisplay, false, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests downscaling with pixel formats for 0.75 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-pixel-format-factor-0-75") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_pixel_format_pipe(&data, 0.75 * mode->hdisplay,
+> -							0.75 * mode->vdisplay, false, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests scaling with pixel formats, unity scaling.");
+> -		igt_subtest_with_dynamic("scaler-with-pixel-format-unity-scaling") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> +					drmModeModeInfo *mode;
+>   
+> -				mode = igt_output_get_mode(output);
+> +					mode = igt_output_get_mode(output);
+>   
+> -				igt_dynamic_f("pipe-%s-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay,
+> -							mode->vdisplay, true, pipe, output);
+> +					test_scaler_with_pixel_format_pipe(&data,
+> +							get_width(mode, scaler_with_pixel_format_tests[index].sf),
+> +							get_height(mode, scaler_with_pixel_format_tests[index].sf),
+> +							scaler_with_pixel_format_tests[index].is_upscale,
+> +							pipe, output);
+> +				}
+>   			}
+>   		}
+>   
+> -		igt_describe("Tests upscaling with rotation, from 20x20 fb.");
+> -		igt_subtest_with_dynamic("upscale-with-rotation-20x20") {
+> +		for (int index = 0; index < ARRAY_SIZE(scaler_with_rotation_tests); index++) {
+> +			igt_describe(scaler_with_rotation_tests[index].describe);
+> +			igt_subtest_with_dynamic(scaler_with_rotation_tests[index].name) {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-upscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_rotation_pipe(&data, 20, 20, true, pipe, output);
+> -		}
+> -
+> -		igt_describe("Tests upscaling with rotation for 0.25 scaling factor.");
+> -		igt_subtest_with_dynamic("upscale-with-rotation-factor-0-25") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-upscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_rotation_pipe(&data, 0.25 * mode->hdisplay,
+> -							0.25 * mode->vdisplay, true, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests downscaling with rotation for 0.25 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-25") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_rotation_pipe(&data, 0.25 * mode->hdisplay,
+> -							0.25 * mode->vdisplay, false, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests downscaling with rotation for 0.5 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-5") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_rotation_pipe(&data, 0.5 * mode->hdisplay,
+> -							0.5 * mode->vdisplay, false, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests downscaling with rotation for 0.75 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-rotation-factor-0-75") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_rotation_pipe(&data, 0.75 * mode->hdisplay,
+> -							0.75 * mode->vdisplay, false, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests scaling with rotation, unity scaling.");
+> -		igt_subtest_with_dynamic("scaler-with-rotation-unity-scaling") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> +					drmModeModeInfo *mode;
+>   
+> -				mode = igt_output_get_mode(output);
+> +					mode = igt_output_get_mode(output);
+>   
+> -				igt_dynamic_f("pipe-%s-%s-scaler-with-rotation", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_rotation_pipe(&data, mode->hdisplay,
+> -							mode->vdisplay, true, pipe, output);
+> +					test_scaler_with_rotation_pipe(&data,
+> +							get_width(mode, scaler_with_rotation_tests[index].sf),
+> +							get_height(mode, scaler_with_rotation_tests[index].sf),
+> +							scaler_with_rotation_tests[index].is_upscale,
+> +							pipe, output);
+> +				}
+>   			}
+>   		}
+>   
+> -		igt_describe("Tests upscaling with modifiers, from 20x20 fb.");
+> -		igt_subtest_with_dynamic("upscale-with-modifier-20x20") {
+> +		for (int index = 0; index < ARRAY_SIZE(scaler_with_modifiers_tests); index++) {
+> +			igt_describe(scaler_with_modifiers_tests[index].describe);
+> +			igt_subtest_with_dynamic(scaler_with_modifiers_tests[index].name) {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-upscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_modifier_pipe(&data, 20, 20, true, pipe, output);
+> -		}
+> -
+> -		igt_describe("Tests upscaling with modifiers for 0.25 scaling factor.");
+> -		igt_subtest_with_dynamic("upscale-with-modifier-factor-0-25") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-upscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_modifier_pipe(&data, 0.25 * mode->hdisplay,
+> -							0.25 * mode->vdisplay, true, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests downscaling with modifiers for 0.25 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-modifier-factor-0-25") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> -
+> -				mode = igt_output_get_mode(output);
+> -
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_modifier_pipe(&data, 0.25 * mode->hdisplay,
+> -							0.25 * mode->vdisplay, false, pipe, output);
+> -			}
+> -		}
+> -
+> -		igt_describe("Tests downscaling with modifiers for 0.5 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-modifier-factor-0-5") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> -				drmModeModeInfo *mode;
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> +					drmModeModeInfo *mode;
+>   
+> -				mode = igt_output_get_mode(output);
+> +					mode = igt_output_get_mode(output);
+>   
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_modifier_pipe(&data, 0.5 * mode->hdisplay,
+> -							0.5 * mode->vdisplay, false, pipe, output);
+> +					test_scaler_with_modifier_pipe(&data,
+> +							get_width(mode, scaler_with_rotation_tests[index].sf),
+> +							get_height(mode, scaler_with_rotation_tests[index].sf),
+> +							scaler_with_rotation_tests[index].is_upscale,
+> +							pipe, output);
+> +				}
+>   			}
+>   		}
+>   
+> -		igt_describe("Tests downscaling with modifiers for 0.75 scaling factor.");
+> -		igt_subtest_with_dynamic("downscale-with-modifier-factor-0-75") {
+> +		igt_describe("Tests scaling with clipping and clamping, pixel formats.");
+> +		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-pixel-formats") {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output) {
+>   				drmModeModeInfo *mode;
+>   
+>   				mode = igt_output_get_mode(output);
+>   
+> -				igt_dynamic_f("pipe-%s-%s-downscale-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_modifier_pipe(&data, 0.75 * mode->hdisplay,
+> -							0.75 * mode->vdisplay, false, pipe, output);
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+> +					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay + 100,
+> +							mode->vdisplay + 100, false, pipe, output);
+>   			}
+>   		}
+>   
+> -		igt_describe("Tests scaling with modifiers, unity scaling.");
+> -		igt_subtest_with_dynamic("scaler-with-modifier-unity-scaling") {
+> +		igt_describe("Tests scaling with clipping and clamping, rotation.");
+> +		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-rotation") {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output) {
+>   				drmModeModeInfo *mode;
+>   
+>   				mode = igt_output_get_mode(output);
+>   
+> -				igt_dynamic_f("pipe-%s-%s-scaler-with-modifier", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_modifier_pipe(&data, mode->hdisplay,
+> -							mode->vdisplay, true, pipe, output);
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+> +					test_scaler_with_rotation_pipe(&data, mode->hdisplay + 100,
+> +							mode->vdisplay + 100, false, pipe, output);
+>   			}
+>   		}
+>   
+> -		igt_describe("Tests scaling with clipping and clamping.");
+> -		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
+> +		igt_describe("Tests scaling with clipping and clamping, modifiers.");
+> +		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-modifiers") {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output) {
+>   				drmModeModeInfo *mode;
+>   
+>   				mode = igt_output_get_mode(output);
+>   
+> -				igt_dynamic_f("pipe-%s-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay + 100,
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+> +					test_scaler_with_modifier_pipe(&data, mode->hdisplay + 100,
+>   							mode->vdisplay + 100, false, pipe, output);
+>   			}
+>   		}
+>   
+> -		igt_describe("Tests upscaling of 2 planes, from 20x20 fb.");
+> -		igt_subtest_with_dynamic("planes-upscale-20x20") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-planes-upscale", kmstest_pipe_name(pipe), igt_output_name(output))
+> -					test_planes_scaling_combo(&data, 20, 20, 20, 20,
+> -							pipe, output, TEST_PLANES_UPSCALE);
+> -		}
+> -
+> -		igt_describe("Tests upscaling of 2 planes for 0.25 scaling factor.");
+> -		igt_subtest_with_dynamic("planes-upscale-factor-0-25") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-planes-upscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> -					drmModeModeInfo *mode;
+> -
+> -					mode = igt_output_get_mode(output);
+> -
+> -					test_planes_scaling_combo(&data,
+> -							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
+> -							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
+> -							pipe, output, TEST_PLANES_UPSCALE);
+> -				}
+> -		}
+> -
+> -		igt_describe("Tests scaling of 2 planes, unity scaling.");
+> -		igt_subtest_with_dynamic("planes-scaling-unity-scaling") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-planes-unity-scaling", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> -					drmModeModeInfo *mode;
+> -
+> -					mode = igt_output_get_mode(output);
+> -
+> -					test_planes_scaling_combo(&data,
+> -							mode->hdisplay, mode->vdisplay,
+> -							mode->hdisplay, mode->vdisplay,
+> -							pipe, output, TEST_PLANES_UPSCALE);
+> -				}
+> -		}
+> -
+> -		igt_describe("Tests downscaling of 2 planes for 0.25 scaling factor.");
+> -		igt_subtest_with_dynamic("planes-downscale-factor-0-25") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-planes-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> -					drmModeModeInfo *mode;
+> -
+> -					mode = igt_output_get_mode(output);
+> -
+> -					test_planes_scaling_combo(&data,
+> -							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
+> -							0.25 * mode->hdisplay, 0.25 * mode->vdisplay,
+> -							pipe, output, TEST_PLANES_DOWNSCALE);
+> -				}
+> -		}
+> -
+> -		igt_describe("Tests downscaling of 2 planes for 0.5 scaling factor.");
+> -		igt_subtest_with_dynamic("planes-downscale-factor-0-5") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-planes-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> -					drmModeModeInfo *mode;
+> -
+> -					mode = igt_output_get_mode(output);
+> -
+> -					test_planes_scaling_combo(&data,
+> -							0.5 * mode->hdisplay, 0.5 * mode->vdisplay,
+> -							0.5 * mode->hdisplay, 0.5 * mode->vdisplay,
+> -							pipe, output, TEST_PLANES_DOWNSCALE);
+> -				}
+> -		}
+> -
+> -		igt_describe("Tests downscaling of 2 planes for 0.75 scaling factor.");
+> -		igt_subtest_with_dynamic("planes-downscale-factor-0-75") {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-planes-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> -					drmModeModeInfo *mode;
+> -
+> -					mode = igt_output_get_mode(output);
+> -
+> -					test_planes_scaling_combo(&data,
+> -							0.75 * mode->hdisplay, 0.75 * mode->vdisplay,
+> -							0.75 * mode->hdisplay, 0.75 * mode->vdisplay,
+> -							pipe, output, TEST_PLANES_DOWNSCALE);
+> -				}
+> -		}
+> -
+> -		for (int index = 0; index < ARRAY_SIZE(upscale_downscale_tests); index++) {
+> -			igt_describe(upscale_downscale_tests[index].describe);
+> -			igt_subtest_with_dynamic(upscale_downscale_tests[index].name) {
+> +		for (int index = 0; index < ARRAY_SIZE(scaler_with_2_planes_tests); index++) {
+> +			igt_describe(scaler_with_2_planes_tests[index].describe);
+> +			igt_subtest_with_dynamic(scaler_with_2_planes_tests[index].name) {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output)
+> -				igt_dynamic_f("pipe-%s-%s-planes-upscale-downscale", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+>   					drmModeModeInfo *mode;
+>   
+>   					mode = igt_output_get_mode(output);
+>   
+>   					test_planes_scaling_combo(&data,
+> -							get_width(mode, upscale_downscale_tests[index].sf_plane1),
+> -							get_height(mode, upscale_downscale_tests[index].sf_plane1),
+> -							get_width(mode, upscale_downscale_tests[index].sf_plane2),
+> -							get_height(mode,upscale_downscale_tests[index].sf_plane2),
+> -							pipe, output, TEST_PLANES_UPSCALE_DOWNSCALE);
+> +							get_width(mode, scaler_with_2_planes_tests[index].sf_plane1),
+> +							get_height(mode, scaler_with_2_planes_tests[index].sf_plane1),
+> +							get_width(mode, scaler_with_2_planes_tests[index].sf_plane2),
+> +							get_height(mode, scaler_with_2_planes_tests[index].sf_plane2),
+> +							pipe, output, scaler_with_2_planes_tests[index].test_type);
+>   				}
+>   			}
+>   		}
+> @@ -1014,7 +980,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		}
+>   	}
+>   
+> -	igt_describe("Tests scaling with multi-pipe scenario.");
+> +	igt_describe("Tests scaling with multi-pipe.");
+>   	igt_subtest_f("2x-scaler-multi-pipe")
+>   		test_scaler_with_multi_pipe_plane(&data);
+>   
