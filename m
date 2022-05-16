@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D7A010E30F
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:06:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40D3310E977
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:06:54 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 19:32:01 +0530
-Message-Id: <20220516140201.3428227-12-bhanuprakash.modem@intel.com>
+Date: Mon, 16 May 2022 19:31:57 +0530
+Message-Id: <20220516140201.3428227-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220516140201.3428227-1-bhanuprakash.modem@intel.com>
 References: <20220516140201.3428227-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 11/11] tests/intel-ci: Rename tests in BAT
+Subject: [igt-dev] [V4 07/11] tests/kms_cursor_crc: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,68 +22,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As we converted the subtests to dynamic, we must rename the
-same subtests in BAT.
-
-V2:
-* Remove dynamic subtests
+Sanitize the system state before starting the subtest.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 30 +++++++++------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ tests/kms_cursor_crc.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index d075aa31..6e07d4da 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -97,14 +97,9 @@ igt@kms_chamelium@hdmi-crc-fast
- igt@kms_chamelium@vga-hpd-fast
- igt@kms_chamelium@vga-edid-read
- igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-+igt@kms_cursor_legacy@basic-busy-flip-before-cursor
-+igt@kms_cursor_legacy@basic-flip-after-cursor
-+igt@kms_cursor_legacy@basic-flip-before-cursor
- igt@kms_flip@basic-flip-vs-dpms
- igt@kms_flip@basic-flip-vs-modeset
- igt@kms_flip@basic-flip-vs-wf_vblank
-@@ -114,17 +109,12 @@ igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@force-load-detect
- igt@kms_force_connector_basic@prune-stale-modes
- igt@kms_frontbuffer_tracking@basic
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d
--igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
--igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
--igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
--igt@kms_pipe_crc_basic@read-crc-pipe-a
--igt@kms_pipe_crc_basic@read-crc-pipe-b
--igt@kms_pipe_crc_basic@read-crc-pipe-c
--igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-+igt@kms_pipe_crc_basic@hang-read-crc
-+igt@kms_pipe_crc_basic@nonblocking-crc
-+igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-+igt@kms_pipe_crc_basic@read-crc
-+igt@kms_pipe_crc_basic@read-crc-frame-sequence
- igt@kms_psr@primary_page_flip
- igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
-@@ -180,4 +170,4 @@ igt@i915_suspend@system-suspend-without-i915
- igt@gem_exec_suspend@basic-s0
- igt@gem_exec_suspend@basic-s3
- igt@kms_chamelium@common-hpd-after-suspend
--igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
-+igt@kms_pipe_crc_basic@suspend-read-crc
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index e489a870..5c90537b 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -448,22 +448,23 @@ static void cleanup_crtc(data_t *data)
+ 	cairo_surface_destroy(data->surface);
+ 	data->surface = NULL;
+ 
++	igt_output_set_pipe(data->output, PIPE_NONE);
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	igt_display_commit(display);
+ 
+ 	igt_remove_fb(data->drm_fd, &data->primary_fb[HWCURSORBUFFER]);
+ 	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER1]);
+ 	igt_remove_fb(data->drm_fd, &data->primary_fb[SWCOMPARISONBUFFER2]);
+-
+-	igt_display_reset(display);
+ }
+ 
+-static void prepare_crtc(data_t *data, igt_output_t *output,
+-			 int cursor_w, int cursor_h)
++static void prepare_crtc(data_t *data, int cursor_w, int cursor_h)
+ {
+ 	drmModeModeInfo *mode;
+ 	igt_display_t *display = &data->display;
+ 	cairo_t *cr;
++	igt_output_t *output = data->output;
++
++	igt_display_reset(display);
+ 
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+@@ -587,6 +588,7 @@ static void require_cursor_size(data_t *data, int w, int h)
+ 	igt_require(w <= data->cursor_max_w &&
+ 		    h <= data->cursor_max_h);
+ 
++	igt_display_reset(display);
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+ 	mode = igt_output_get_mode(output);
+@@ -624,7 +626,7 @@ static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int
+ 	if (data->fb.fb_id != 0)
+ 		require_cursor_size(data, cursor_w, cursor_h);
+ 
+-	prepare_crtc(data, data->output, cursor_w, cursor_h);
++	prepare_crtc(data, cursor_w, cursor_h);
+ 	testfunc(data);
+ 	cleanup_crtc(data);
+ }
+@@ -883,9 +885,6 @@ igt_main
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+-		igt_display_reset(&data.display);
+-		igt_display_commit2(&data.display, data.display.is_atomic ?
+-				    COMMIT_ATOMIC : COMMIT_LEGACY);
+ 	}
+ 
+ 	data.cursor_max_w = cursor_width;
 -- 
 2.35.1
