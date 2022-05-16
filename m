@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A342310E30F
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:06:48 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DEBD10E4E4
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:09:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 19:31:52 +0530
-Message-Id: <20220516140201.3428227-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220516140201.3428227-1-bhanuprakash.modem@intel.com>
-References: <20220516140201.3428227-1-bhanuprakash.modem@intel.com>
+Date: Mon, 16 May 2022 19:36:15 +0530
+Message-Id: <20220516140617.3428438-10-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220516140617.3428438-1-bhanuprakash.modem@intel.com>
+References: <20220516140617.3428438-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 02/11] tests/kms_pipe_crc_basic: Test Cleanup
+Subject: [igt-dev] [V4 09/11] tests/kms_color: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,96 +22,140 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Clear the system state before exiting the subtest.
+Sanitize the system state before starting the subtest.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_pipe_crc_basic.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ tests/kms_color.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index a9fbfc32..4dd92421 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -77,7 +77,11 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 	int c, j;
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 3a769962..b1f132fc 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -206,7 +206,7 @@ static bool test_pipe_gamma(data_t *data,
+ static bool test_pipe_legacy_gamma(data_t *data,
+ 				   igt_plane_t *primary)
+ {
+-	igt_output_t *output;
++	igt_output_t *output = data->output;
+ 	igt_display_t *display = &data->display;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+@@ -230,9 +230,6 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 	green_lut = malloc(sizeof(uint16_t) * legacy_lut_size);
+ 	blue_lut = malloc(sizeof(uint16_t) * legacy_lut_size);
  
- 	igt_display_reset(display);
+-	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
+-	igt_require(output);
+-
+ 	igt_output_set_pipe(output, primary->pipe->pipe);
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -298,6 +295,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(&data->display);
+ 	igt_remove_fb(data->drm_fd, &fb);
+ 	igt_remove_fb(data->drm_fd, &fb_modeset);
+ 
+@@ -326,7 +324,7 @@ static bool test_pipe_legacy_gamma_reset(data_t *data,
+ 	uint16_t *red_lut, *green_lut, *blue_lut;
+ 	struct drm_color_lut *lut;
+ 	drmModePropertyBlobPtr blob;
+-	igt_output_t *output;
++	igt_output_t *output = data->output;
+ 	bool ret = true;
+ 
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+@@ -335,9 +333,6 @@ static bool test_pipe_legacy_gamma_reset(data_t *data,
+ 		degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	gamma_zero = generate_table_zero(data->gamma_lut_size);
+ 
+-	output = igt_get_single_output_for_pipe(&data->display, primary->pipe->pipe);
+-	igt_require(output);
+-
+ 	igt_output_set_pipe(output, primary->pipe->pipe);
+ 
+ 	/* Ensure we have a clean state to start with. */
+@@ -424,6 +419,7 @@ static bool test_pipe_legacy_gamma_reset(data_t *data,
+ 
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(&data->display);
+ 
+ 	free_lut(degamma_linear);
+ 	free_lut(gamma_zero);
+@@ -522,6 +518,7 @@ static bool test_pipe_ctm(data_t *data,
+ 
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(&data->display);
+ 	igt_remove_fb(data->drm_fd, &fb);
+ 	igt_remove_fb(data->drm_fd, &fb_modeset);
+ 
+@@ -681,17 +678,12 @@ static void test_setup(data_t *data, enum pipe p)
+ 	igt_display_require_output_on_pipe(&data->display, p);
+ 	data->output = igt_get_single_output_for_pipe(&data->display, p);
+ 	igt_require(data->output);
 +
- 	igt_output_set_pipe(output, pipe);
-+	mode = igt_output_get_mode(output);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
- 	for (c = 0; c < ARRAY_SIZE(colors); c++) {
- 		char *crc_str;
-@@ -86,7 +90,6 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 		igt_debug("Clearing the fb with color (%.02lf,%.02lf,%.02lf)\n",
- 			  colors[c].r, colors[c].g, colors[c].b);
- 
--		mode = igt_output_get_mode(output);
- 		igt_create_color_fb(data->drm_fd,
- 					mode->hdisplay, mode->vdisplay,
- 					DRM_FORMAT_XRGB8888,
-@@ -96,7 +99,6 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 					colors[c].b,
- 					&data->fb);
- 
--		primary = igt_output_get_plane(output, 0);
- 		igt_plane_set_fb(primary, &data->fb);
- 
- 		igt_display_commit(display);
-@@ -153,6 +155,11 @@ static void test_read_crc(data_t *data, enum pipe pipe,
- 		free(crcs);
- 		igt_remove_fb(data->drm_fd, &data->fb);
- 	}
-+
-+	/* Clean-up */
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit(display);
++	igt_display_reset(&data->display);
  }
  
- /*
-@@ -226,6 +233,7 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
- 	igt_pipe_crc_t *pipe_crc;
- 	drmModeModeInfo *mode;
- 	igt_crc_t crc[2];
-+	igt_plane_t *primary;
- 
- 	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
- 
-@@ -238,7 +246,9 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
- 			    DRM_FORMAT_XRGB8888,
- 			    DRM_FORMAT_MOD_LINEAR,
- 			    0.0, 1.0, 0.0, &data->fb);
--	igt_plane_set_fb(igt_output_get_plane(output, 0), &data->fb);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, &data->fb);
- 	igt_display_commit(display);
- 
- 	igt_pipe_crc_start(pipe_crc);
-@@ -253,7 +263,11 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
- 	igt_pipe_crc_collect_crc(pipe_crc, &crc[1]);
- 	igt_assert_crc_equal(&crc[0], &crc[1]);
- 
-+	/* Clean-up */
- 	igt_pipe_crc_free(pipe_crc);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit(display);
- 	igt_remove_fb(data->drm_fd, &data->fb);
+ static void test_cleanup(data_t *data)
+ {
+-	igt_plane_t *primary = data->primary;
+-
+-	disable_degamma(primary->pipe);
+-	disable_gamma(primary->pipe);
+-	disable_ctm(primary->pipe);
+-	igt_display_commit(&data->display);
+-
+ 	igt_pipe_crc_free(data->pipe_crc);
+ 	data->pipe_crc = NULL;
  }
+@@ -781,8 +773,6 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		igt_require_f((intel_display_ver(data->devid) >= 11),
+ 				"At least GEN 11 is required to validate Deep-color.\n");
  
-@@ -291,6 +305,8 @@ igt_main
+-	test_setup(data, p);
+-
+ 	for_each_valid_output_on_pipe(&data->display, p, output) {
+ 		drmModeConnector *connector = output->config.connector;
+ 		uint64_t max_bpc = get_max_bpc(output);
+@@ -797,9 +787,11 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		data->color_depth = 10;
+ 		data->drm_format = DRM_FORMAT_XRGB2101010;
+ 		data->output = output;
+-		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
  
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
-+		igt_require_pipe_crc(data.drm_fd);
+ 		igt_dynamic_f("pipe-%s-%s-gamma", kmstest_pipe_name(p), output->name) {
++			test_setup(data, p);
++			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
 +
- 		data.debugfs = igt_debugfs_dir(data.drm_fd);
- 	}
+ 			ret = test_pipe_gamma(data, data->primary);
  
+ 			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
+@@ -807,6 +799,9 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		}
+ 
+ 		igt_dynamic_f("pipe-%s-%s-degamma", kmstest_pipe_name(p), output->name) {
++			test_setup(data, p);
++			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
++
+ 			ret = test_pipe_degamma(data, data->primary);
+ 
+ 			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
+@@ -814,6 +809,9 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		}
+ 
+ 		igt_dynamic_f("pipe-%s-%s-ctm", kmstest_pipe_name(p), output->name) {
++			test_setup(data, p);
++			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
++
+ 			ret = test_pipe_ctm(data, data->primary,
+ 					    red_green_blue,
+ 					    blue_green_blue, ctm);
 -- 
 2.35.1
