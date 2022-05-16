@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4352D10E898
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 08:04:33 +0000 (UTC)
-Date: Mon, 16 May 2022 10:04:21 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Message-ID: <20220516100421.33ed2107@maurocar-mobl2>
-In-Reply-To: <20220516072444.uj77hkwi6y7kqlgt@ldmartin-desk2>
-References: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
- <20220506114829.2288273-2-mauro.chehab@linux.intel.com>
- <20220511170326.urdbuix6pkzc6rmp@ldmartin-desk2>
- <20220512084950.6667a2c7@maurocar-mobl2>
- <20220516072444.uj77hkwi6y7kqlgt@ldmartin-desk2>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77270112A80
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 08:56:28 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 16 May 2022 13:54:26 +0530
+Message-Id: <20220516082426.9852-2-karthik.b.s@intel.com>
+In-Reply-To: <20220516082426.9852-1-karthik.b.s@intel.com>
+References: <20220516082426.9852-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/6] tests/core_hotunplug: properly
- finish processes using audio devices
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 2/2] tests/kms_async_flips: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,133 +18,250 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 16 May 2022 00:24:44 -0700
-Lucas De Marchi <lucas.demarchi@intel.com> wrote:
+-Convert tests to dynamic
+-Replace drm function call with existing library functions
+-igt_display_reset() before all subtests
 
-> On Thu, May 12, 2022 at 08:49:50AM +0200, Mauro Carvalho Chehab wrote:
-> >On Wed, 11 May 2022 10:03:26 -0700
-> >Lucas De Marchi <lucas.demarchi@intel.com> wrote:
-> >  
-> >> On Fri, May 06, 2022 at 01:48:24PM +0200, Mauro Carvalho Chehab wrote:  
-> >> >From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> >> >
-> >> >Before unloading or unbinding an audio driver, all processes
-> >> >that are using it must be terminated. The current logic seeks
-> >> >only for alsactl, but ignore other processes, including
-> >> >pulseaudio.
-> >> >
-> >> >Make the logic more general, extending it to any processes that
-> >> >could have an open device under /dev/snd.
-> >> >
-> >> >It should be noticed that some distros like Fedora and openSUSE
-> >> >are now migrating from pulseaudio into pipewire-pulse. Right
-> >> >now, there's no standard distribution-agnostic way to request
-> >> >pipewire-pulse to stop using audio devices, but there's a new
-> >> >patch upstream that will make things easier:
-> >> >
-> >> >	https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/6ad6300ec657c88322a8cd6f3548261d3dc05359
-> >> >
-> >> >Which should be available for pipewire-pulse versions 0.3.50 and
-> >> >upper.  
-> >>
-> >> this is for running tests... I don't think it's really expected to have
-> >> pulseaudio or pipewire running. We should basically be doing
-> >> systemctl disable/mask as a configuration step.  
-> >
-> >That pretty much depends on where this runs: pipewire-pulse is new.
-> >Systems like Fedora and the upcoming RHEL 9 have it loaded by default. Distros
-> >with older stacks usually came with pulseaudio, also enabled by default.
-> >
-> >See, a special-purpose machine that was carefully prepared for CI
-> >testing can be configured to have pulseaudio/pipewire-pulse not installed
-> >or disabled, but if those are running, they should stop using the
-> >audio device before removing the device driver.
-> >  
-> >> And if we want to handle that, why don't we simply systemctl stop them
-> >> instead of having specific commands for each of them to unbind?  
-> >
-> >Because it doesn't work. On Fedora 35:
-> >
-> >	$ sudo systemctl stop pipewire-pulse
-> >	Failed to stop pipewire-pulse.service: Unit pipewire-pulse.service not loaded.  
-> 
-> it's on user session, not system.
-> 
-> 	systemctl --user disable --now pipewire-pulse.socket
-> 	systemctl --user disable --now pipewire-pulse.service
+v2: -Move conversion to dynamic subtest to a separate patch (Bhanu)
+    -Use igt_output_get_mode to get default mode (Bhanu)
+    -Add 'is_atomic' check before igt_display_commit2 (Bhanu)
 
-Yeah, true.
+v3: -Move test_init after the checks to skip subtest (Bhanu)
+    -Update the logic to call make_fb() in test_init()
 
-> 
-> My worry is that we have to keep adding logic for specific components.
-> You'd probably already have to add support for wireplumber if you follow
-> this logic you will also probably have to find a way to stop wireplumber
-> that is the new pipewire's session manager being adopted by distros.
+v4: -Move patch after patch to convert tests to dynamic to avoid code
+     duplicaton. (Bhanu)
 
-This patch series properly covers pipewire-pulse. It doesn't need
-anything specific to different types of pipewire session manager
-(wireplumber or pipewire media-session), as it uses pipewire reserve 
-API logic that should work with any session manager.
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/kms_async_flips.c | 116 ++++++++++++++++++++--------------------
+ 1 file changed, 59 insertions(+), 57 deletions(-)
 
-Btw, I tested this series on Fedora 35 with pipewire-pulse/wireplumber
-started as --user, and it properly unloaded snd-hda-intel.
-
-I'd expect that we won't need to change anything for quite a while,
-as I can't foresee yet another replacement for puseaudio.
-
-
-I agree with you that the best is to disable pipewire/pulseaudio
-via systemctl, but in case one forgets to do it on some system, this 
-logic will still make snd-hda-intel unload work.
-
-Besides that, I had already some bad experiences in the past with
-systemd issues. Better to not rely only on it to do the right thing.
-
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index e307f0d9..02d021e1 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -50,7 +50,6 @@ typedef struct {
+ 	uint32_t refresh_rate;
+ 	struct igt_fb bufs[4];
+ 	igt_display_t display;
+-	drmModeConnectorPtr connector;
+ 	igt_output_t *output;
+ 	unsigned long flip_timestamp_us;
+ 	double flip_interval;
+@@ -63,22 +62,6 @@ typedef struct {
+ 	enum pipe pipe;
+ } data_t;
+ 
+-static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
+-{
+-	igt_output_t *output;
+-	drmModeConnectorPtr ret = NULL;
 -
-
-Btw, in long term, the best would be to actually change snd-hda-audio
-for it to allow removing/reinserting i915 driver without issues
-(but this may require changes at ALSA core).
-
-> 
-> 
-> >	$ ps ax|grep pulse
-> >	   2337 ?        S<sl 120:47 /usr/bin/pipewire-pulse
-> >	$ find /etc/systemd/|grep pulse
-> >	/etc/systemd/user/sockets.target.wants/pipewire-pulse.socket
-> >
-> >On Ubuntu 20.04:
-> >
-> >	$ sudo systemctl stop pulseaudio
-> >	Failed to stop pulseaudio.service: Unit pulseaudio.service not loaded.
-> >	$ ps ax|grep pulse
-> >	   1469 ?        S<sl   0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
-> >	   2061 ?        Ssl    0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
-> >
-> >	$ find /etc/systemd/|grep pulse
-> >	/etc/systemd/user/default.target.wants/pulseaudio.service
-> >	/etc/systemd/user/sockets.target.wants/pulseaudio.socket  
-> 
-> same here...         ^^^^
-> 
-> I don't really care much, just think not talking with each component
-> directly will be lower maintenance long term and fewer chance for bugs.
-
-I actually think just the opposite: relying that all machines in the
-world that would run IGT are properly customized to not run any audio
-daemons is risky and has a high chance of maintenance and bugs.
-
-IGT should always check it before trying to unload snd-hda-intel, as
-any process that would keep a /dev/snd device opened will prevent the
-module unload, thus may cause issues while doing i915 unbind/rebind
-(or unload/reload).
-
-Regards,
-Mauro
+-	for_each_connected_output(&data->display, output) {
+-		if (output->config.connector->count_modes > 0) {
+-			ret = output->config.connector;
+-			break;
+-		}
+-	}
+-
+-	igt_assert_f(ret, "Connector NOT found\n");
+-	return ret;
+-}
+-
+ static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+ 			 unsigned int tv_usec, void *_data)
+ {
+@@ -132,14 +115,10 @@ static void wait_flip_event(data_t *data)
+ }
+ 
+ static void make_fb(data_t *data, struct igt_fb *fb,
+-		    drmModeConnectorPtr connector, int index)
++		    uint32_t width, uint32_t height, int index)
+ {
+-	uint32_t width, height;
+ 	int rec_width;
+ 
+-	width = connector->modes[0].hdisplay;
+-	height = connector->modes[0].vdisplay;
+-
+ 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+ 
+ 	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+@@ -157,6 +136,45 @@ static void require_monotonic_timestamp(int fd)
+ 		      "Monotonic timestamps not supported\n");
+ }
+ 
++static void test_init(data_t *data)
++{
++	int i;
++	uint32_t width, height;
++	igt_plane_t *plane;
++	static uint32_t prev_output_id;
++	drmModeModeInfo *mode;
++
++	igt_display_reset(&data->display);
++	igt_display_commit(&data->display);
++
++	mode = igt_output_get_mode(data->output);
++	width = mode->hdisplay;
++	height = mode->vdisplay;
++
++	data->crtc_id = data->display.pipes[data->pipe].crtc_id;
++	data->refresh_rate = mode->vrefresh;
++
++	igt_output_set_pipe(data->output, data->pipe);
++	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
++
++	if (prev_output_id != data->output->id) {
++		prev_output_id = data->output->id;
++
++		if (data->bufs[0].fb_id) {
++			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
++				igt_remove_fb(data->drm_fd, &data->bufs[i]);
++	}
++
++		for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
++			make_fb(data, &data->bufs[i], width, height, i);
++	}
++
++	igt_plane_set_fb(plane, &data->bufs[0]);
++	igt_plane_set_size(plane, width, height);
++
++	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++}
++
+ static void test_async_flip(data_t *data, bool alternate_sync_async)
+ {
+ 	int ret, frame;
+@@ -164,6 +182,7 @@ static void test_async_flip(data_t *data, bool alternate_sync_async)
+ 	struct timeval start, end, diff;
+ 
+ 	require_monotonic_timestamp(data->drm_fd);
++	test_init(data);
+ 
+ 	gettimeofday(&start, NULL);
+ 	frame = 1;
+@@ -257,6 +276,7 @@ static void test_timestamp(data_t *data)
+ 	int ret;
+ 
+ 	require_monotonic_timestamp(data->drm_fd);
++	test_init(data);
+ 
+ 	/*
+ 	 * In older platforms(<= gen10), async address update bit is double buffered.
+@@ -315,6 +335,8 @@ static void test_cursor(data_t *data)
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
+ 
++	test_init(data);
++
+ 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_ARGB8888,
+ 			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
+ 
+@@ -349,13 +371,17 @@ static void test_invalid(data_t *data)
+ 	int ret;
+ 	uint32_t width, height;
+ 	struct igt_fb fb;
++	drmModeModeInfo *mode;
+ 
+-	width = data->connector->modes[0].hdisplay;
+-	height = data->connector->modes[0].vdisplay;
++	mode = igt_output_get_mode(data->output);
++	width = mode->hdisplay;
++	height = mode->vdisplay;
+ 
+ 	igt_require(igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
+ 					       I915_FORMAT_MOD_Y_TILED));
+ 
++	test_init(data);
++
+ 	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+ 		      I915_FORMAT_MOD_Y_TILED, &fb);
+ 
+@@ -370,33 +396,6 @@ static void test_invalid(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &fb);
+ }
+ 
+-static void test_init(data_t *data)
+-{
+-	drmModeResPtr res;
+-	int i, ret;
+-
+-	res = drmModeGetResources(data->drm_fd);
+-	igt_assert(res);
+-
+-	kmstest_unset_all_crtcs(data->drm_fd, res);
+-
+-	data->connector = find_connector_for_modeset(data);
+-	data->crtc_id = kmstest_find_crtc_for_connector(data->drm_fd,
+-							res, data->connector, 0);
+-
+-	data->refresh_rate = data->connector->modes[0].vrefresh;
+-
+-	for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+-		make_fb(data, &data->bufs[i], data->connector, i);
+-
+-	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[0].fb_id, 0, 0,
+-			     &data->connector->connector_id, 1, &data->connector->modes[0]);
+-
+-	igt_assert(ret == 0);
+-
+-	drmModeFreeResources(res);
+-}
+-
+ static void queue_vblank(data_t *data)
+ {
+ 	int pipe = kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id);
+@@ -493,11 +492,14 @@ static void test_crc(data_t *data)
+ 	data->frame_count = 0;
+ 	data->flip_pending = false;
+ 
++	test_init(data);
++
+ 	igt_draw_fill_fb(data->drm_fd, &data->bufs[frame], 0xff0000ff);
+ 	igt_draw_fill_fb(data->drm_fd, &data->bufs[!frame], 0xff0000ff);
+ 
+ 	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id, 0, 0,
+-			     &data->connector->connector_id, 1, &data->connector->modes[0]);
++			     &data->output->config.connector->connector_id, 1,
++			     &data->output->config.connector->modes[0]);
+ 	igt_assert_eq(ret, 0);
+ 
+ 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
+@@ -548,7 +550,7 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ }
+ 
+ static const char help_str[] =
+-"  --e \t\tRun the extended tests\n";
++	"  --e \t\tRun the extended tests\n";
+ 
+ static data_t data;
+ 
+@@ -570,9 +572,6 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 
+ 	igt_describe("Verify the async flip functionality and the fps during async flips");
+ 	igt_subtest_group {
+-		igt_fixture
+-			test_init(&data);
+-
+ 		igt_describe("Wait for page flip events in between successive asynchronous flips");
+ 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+ 			for_each_pipe(&data.display, pipe) {
+@@ -675,6 +674,9 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 		}
+ 	}
+ 
+-	igt_fixture
++	igt_fixture {
++		igt_display_reset(&data.display);
++		igt_display_commit(&data.display);
+ 		igt_display_fini(&data.display);
++	}
+ }
+-- 
+2.22.0
