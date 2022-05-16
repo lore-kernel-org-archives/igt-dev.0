@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95EB710E3AD
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F7E91124BD
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:09 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 20:42:52 +0530
-Message-Id: <20220516151255.13153-8-anshuman.gupta@intel.com>
-In-Reply-To: <20220516151255.13153-1-anshuman.gupta@intel.com>
-References: <20220516151255.13153-1-anshuman.gupta@intel.com>
+Date: Mon, 16 May 2022 20:42:45 +0530
+Message-Id: <20220516151255.13153-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 07/10] i915_pm_rpm: Add D3Cold basic
- subtest
+Subject: [igt-dev] [PATCH i-g-t v6 00/10] D3Cold Tool & IGT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,64 +21,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support for D3Cold basic subtest.
-It setup and prepares the gfx PCI card for D3Cold
-and checks the ACPI D3Cold state.
+This series adds support for D3Cold Tool and IGT.
 
-v2:
-- Removed IS_DGFX() condition.
-- Added igt_describe(). [Kamil]
+v6 rev has addressed the review comment mentioned in
+commit version log.
 
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- tests/i915/i915_pm_rpm.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Anshuman Gupta (10):
+  test/i915_pm_rpm: Add placement to gem-{mmap-type, execbuf}
+  lib/igt_device: Get gfx PCI card root port
+  lib/igt_pm: D3Cold runtime pm infrastructure
+  lib: Optional autosuspend_delay_ms configuration
+  tools: Add intel_pm_rpm tool
+  tools/intel_pm_rpm: Add an option to setup d3cold
+  i915_pm_rpm: Add D3Cold basic subtest
+  i915_pm_rpm: Extend gem_exec_stress test with D3Cold
+  i915_pm_rpm: Extend gem_execbuf test with D3Cold
+  i915_pm_rpm: Extend gem-mmap-type test with D3Cold
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index d2bce5826e..31f9712a87 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1534,6 +1534,28 @@ __noreturn static void stay_subtest(void)
- 		sleep(600);
- }
- 
-+static void d3cold_basic_subtest(void)
-+{
-+	struct pci_device *root;
-+	bool result;
-+
-+	root = igt_device_get_pci_root_port(drm_fd);
-+	igt_require(igt_pm_acpi_d3cold_supported(root));
-+	igt_pm_setup_pci_card_runtime_pm(root);
-+	disable_all_screens_and_wait(&ms_data);
-+
-+	result = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
-+
-+	if (!result) {
-+		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
-+			 root->domain, root->bus, root->dev, root->func);
-+		igt_pm_print_pci_card_runtime_status();
-+	}
-+
-+	igt_assert(result);
-+	igt_pm_restore_pci_card_runtime_pm();
-+}
-+
- static void system_suspend_subtest(int state, int debug)
- {
- 	disable_all_screens_and_wait(&ms_data);
-@@ -2065,6 +2087,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_subtest("stay")
- 			stay_subtest();
- 
-+	igt_describe("Validate gfx root port d3cold state");
-+	igt_subtest("d3cold-basic")
-+		d3cold_basic_subtest();
-+
- 	/* Essential things */
- 	igt_subtest("drm-resources-equal")
- 		drm_resources_equal_subtest();
+ lib/igt_device.c         |  28 ++++
+ lib/igt_device.h         |   1 +
+ lib/igt_pm.c             | 346 +++++++++++++++++++++++++++++++++++++++
+ lib/igt_pm.h             |  25 +++
+ tests/i915/i915_pm_rpm.c | 199 +++++++++++++++++++++-
+ tools/intel_pm_rpm.c     | 250 ++++++++++++++++++++++++++++
+ tools/meson.build        |   1 +
+ 7 files changed, 841 insertions(+), 9 deletions(-)
+ create mode 100644 tools/intel_pm_rpm.c
+
 -- 
 2.26.2
