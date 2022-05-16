@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD8F5112B3A
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 06:55:50 +0000 (UTC)
-Date: Mon, 16 May 2022 08:55:45 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Message-ID: <20220516085545.598a766d@maurocar-mobl2>
-In-Reply-To: <20220511170913.rdw7pxl7mze7ylu2@ldmartin-desk2>
-References: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
- <20220506114829.2288273-4-mauro.chehab@linux.intel.com>
- <20220511170913.rdw7pxl7mze7ylu2@ldmartin-desk2>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A186410EB8F
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 07:16:09 +0000 (UTC)
+Message-ID: <d6b7d676-4e25-e0a5-6b28-ca2d096d5a58@intel.com>
+Date: Mon, 16 May 2022 12:45:55 +0530
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220425101220.24874-1-karthik.b.s@intel.com>
+ <8e9d662b-1591-d1df-c1b9-f3f39fa86c53@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <8e9d662b-1591-d1df-c1b9-f3f39fa86c53@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/6] lib/igt_kmod: improve audio
- unbind logic
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_async_flips: Test
+ Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,131 +23,372 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, 11 May 2022 10:09:13 -0700
-Lucas De Marchi <lucas.demarchi@intel.com> wrote:
+On 5/16/2022 11:41 AM, Modem, Bhanuprakash wrote:
+> On Mon-25-04-2022 03:42 pm, Karthik B S wrote:
+>> -Convert tests to dynamic
+>> -Replace drm function call with existing library functions
+>> -igt_display_reset() before all subtests
+>>
+>> v2: -Move conversion to dynamic subtest to a separate patch (Bhanu)
+>>      -Use igt_output_get_mode to get default mode (Bhanu)
+>>      -Add 'is_atomic' check before igt_display_commit2 (Bhanu)
+>>
+>> v3: -Move test_init after the checks to skip subtest (Bhanu)
+>>      -Update the logic to call make_fb() in test_init()
+>>
+>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+>> ---
+>>   tests/kms_async_flips.c | 221 +++++++++++++++++++++++++++-------------
+>>   1 file changed, 151 insertions(+), 70 deletions(-)
+>>
+>> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+>> index 5e11cd43..1b5af111 100644
+>> --- a/tests/kms_async_flips.c
+>> +++ b/tests/kms_async_flips.c
+>> @@ -50,7 +50,7 @@ typedef struct {
+>>       uint32_t refresh_rate;
+>>       struct igt_fb bufs[4];
+>>       igt_display_t display;
+>> -    drmModeConnectorPtr connector;
+>> +    igt_output_t *output;
+>>       unsigned long flip_timestamp_us;
+>>       double flip_interval;
+>>       igt_pipe_crc_t *pipe_crc;
+>> @@ -58,24 +58,9 @@ typedef struct {
+>>       int flip_count;
+>>       int frame_count;
+>>       bool flip_pending;
+>> +    bool extended;
+>>   } data_t;
+>>   -static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
+>> -{
+>> -    igt_output_t *output;
+>> -    drmModeConnectorPtr ret = NULL;
+>> -
+>> -    for_each_connected_output(&data->display, output) {
+>> -        if (output->config.connector->count_modes > 0) {
+>> -            ret = output->config.connector;
+>> -            break;
+>> -        }
+>> -    }
+>> -
+>> -    igt_assert_f(ret, "Connector NOT found\n");
+>> -    return ret;
+>> -}
+>> -
+>>   static void flip_handler(int fd_, unsigned int sequence, unsigned 
+>> int tv_sec,
+>>                unsigned int tv_usec, void *_data)
+>>   {
+>> @@ -129,14 +114,10 @@ static void wait_flip_event(data_t *data)
+>>   }
+>>     static void make_fb(data_t *data, struct igt_fb *fb,
+>> -            drmModeConnectorPtr connector, int index)
+>> +            uint32_t width, uint32_t height, int index)
+>>   {
+>> -    uint32_t width, height;
+>>       int rec_width;
+>>   -    width = connector->modes[0].hdisplay;
+>> -    height = connector->modes[0].vdisplay;
+>> -
+>>       rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+>>         igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+>> @@ -154,6 +135,61 @@ static void require_monotonic_timestamp(int fd)
+>>                 "Monotonic timestamps not supported\n");
+>>   }
+>>   +static enum pipe get_pipe_for_output(igt_display_t *display, 
+>> igt_output_t *output)
+>> +{
+>> +    enum pipe pipe;
+>> +
+>> +    for_each_pipe(display, pipe) {
+>> +        if (igt_pipe_connector_valid(pipe, output))
+>> +            return pipe;
+>> +    }
+>> +
+>> +    igt_assert_f(false, "No pipe found for output %s\n",
+>> +             igt_output_name(output));
+>> +}
+>
+> This block of code is removed by patch 2/2 in this series. I would 
+> suggest, to change the order of patches (1- dynamic subtests, 2- 
+> cleanup) to get rid of this dummy code.
+>
+> With these chnages, this series is looks good to me.
 
-> On Fri, May 06, 2022 at 01:48:26PM +0200, Mauro Carvalho Chehab wrote:
-> >+int igt_audio_driver_unload(const char **who)
-> >+{
-> >+	const char *drm_driver = "i915";
-> >+	unsigned int num_mod, i, j;
-> >+	struct module_ref *mod;
-> >+	int pos = -1;
-> >+	int ret = 0;
-> >+
-> >+	/*
-> >+	 * On older Kernels, there's no way to check if the audio driver
-> >+	 * binds into the DRM one. So, always remove audio drivers that
-> >+	 * might be binding.
-> >+	 */
-> >+	if (linux_kernel_version() < LINUX_VERSION(5, 20, 0))  
-> 
-> comparing specific kernel version is not very good practice as features
-> are moved from one kernel to the other, backported, etc.
+Thank you for the review. Will fix this.
 
-Yes, but, in this very specific case, I don't see much troubles, as the
-logic doesn't rely on it, using the information as only a hint if lsmod
-dependencies are reliable or not.
-
-See, the Kernel patches I'm proposing actually fix a long-standing
-Kernel bug, where lsmod and /proc/modules doesn't properly show 
-dependencies when module refcount is incremented on non-trivial ways.
-
-The approach I took on IGT is that, assuming that this gets merged on
-5.20.0, we can trust that, on all newer kernels, lsmod will properly
-show the dependencies.
-
-Ok, older Kernels may have this backported or not, but, as there's no
-reliable way to know for sure, IGT will fall back to a logic that
-will always try to unload snd-hda-intel, even when this is not needed[1].
-
-> if at all, we should test if something is present in the kernel. 
-
-I can't see any way to verify if the fixes for such bug are present
-or not on a given kernel. Ok, we might artificially increment i915 version
-to indicate that, but there's not a single change on i915 driver, as the
-real fix happens inside kernel/modules. 
-
-[1] On machines where snd-hda-intel doesn't bind into i915, as
-    trying to unload it could fail, this could cause issues at the
-    IGT test - and even on future tests, in case of OOPSes during
-    removal.
-
-> If we
-> can't, then we either add support for that if we can enough.
-> For IGT we can probably simply take the approach of landing this only
-> when the corresponding kernel support is merged.
-> 
-> What we could merge today is: always unload audio drivers.
-
-I would prefer to have the full code there, as there are a fundamental
-difference between the two cases.
-
-See:
-
-Case 1) snd-hda-intel doesn't bind into i915
-
-On such case if IGT can be sure about that (e. g. after the Kernel fixes), 
-IGT will simply not touch snd-hda-intel. So, if something bad happens 
-during i915 unbind/unload, the IGT test should fail.
-
-Case 2) snd-hda-intel binds into i915
-
-In this case, if snd-hda-intel unload fails, the IGT test should be
-skipped, as trying to unload/unbind/rebind i915 will fail, but not 
-be due to i915 troubles. So, it won't make sense to report an IGT
-error on such case.
-
-On other words:
-
-a) if lsmod is reliable:
-
-   - for case 1, don't touch snd-hda-intel;
-   - for case 2, failures to remove snd-hda-intel will call igt_skip();
-   - failures on i915 unbind/rebind (or unload/reload) will call
-     igt_error().
-
-b) if lsmod is not reliable (buggy kernels, like current upstream),
-   as IGT doesn't know if it is case 1 or 2, it will:
-
-   - always try to unload snd-hda-intel. If it fails, just print some
-     messages that will help debugging troubles;
-   - always try to unload or unbind i915. Failures on i915 unbind/rebind 
-     (or unload/reload) will call igt_error().
-
-I would prefer to merge the above logic altogether in order to have the
-full solution in IGT - even if we place, instead, something like:
-
-
-	int igt_audio_driver_unload(const char **who)
-	{
-...
-	/*
-	 * FIXME: update this once the Kernel fixes for lsmod gets merged
-	 */
-	const bool is_lsmod_reliable = false;
-...
-	/*
-	 * On older Kernels, there's no way to check if the audio driver
-	 * binds into the DRM one. So, always remove audio drivers that
-	 * might be binding.
-	 */
-	if (!is_lsmod_reliable)
-		return igt_always_unload_audio_driver(who);
-
-And then, once this gets merged upstream, replace the static var
-with:
-
-	const bool is_lsmod_reliable = linux_kernel_version() >= LINUX_VERSION(5, 20, 0)
-
-(or something similar)
-
-Regards,
-Mauro
+Thanks,
+Karthik.B.S
+>
+> - Bhanu
+>
+>> +
+>> +static void test_init(data_t *data)
+>> +{
+>> +    int i;
+>> +    uint32_t width, height;
+>> +    enum pipe pipe;
+>> +    igt_plane_t *plane;
+>> +    static uint32_t prev_output_id;
+>> +    drmModeModeInfo *mode;
+>> +
+>> +    igt_display_reset(&data->display);
+>> +    igt_display_commit(&data->display);
+>> +
+>> +    pipe = get_pipe_for_output(&data->display, data->output);
+>> +
+>> +    mode = igt_output_get_mode(data->output);
+>> +    width = mode->hdisplay;
+>> +    height = mode->vdisplay;
+>> +
+>> +    data->crtc_id = data->display.pipes[pipe].crtc_id;
+>> +    data->refresh_rate = mode->vrefresh;
+>> +
+>> +    igt_output_set_pipe(data->output, pipe);
+>> +    plane = igt_output_get_plane_type(data->output, 
+>> DRM_PLANE_TYPE_PRIMARY);
+>> +
+>> +    if (prev_output_id != data->output->id) {
+>> +        prev_output_id = data->output->id;
+>> +
+>> +        if (data->bufs[0].fb_id) {
+>> +            for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+>> +                igt_remove_fb(data->drm_fd, &data->bufs[i]);
+>> +    }
+>> +
+>> +        for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+>> +            make_fb(data, &data->bufs[i], width, height, i);
+>> +    }
+>> +
+>> +    igt_plane_set_fb(plane, &data->bufs[0]);
+>> +    igt_plane_set_size(plane, width, height);
+>> +
+>> +    igt_display_commit2(&data->display, data->display.is_atomic ? 
+>> COMMIT_ATOMIC : COMMIT_LEGACY);
+>> +}
+>> +
+>>   static void test_async_flip(data_t *data, bool alternate_sync_async)
+>>   {
+>>       int ret, frame;
+>> @@ -161,6 +197,7 @@ static void test_async_flip(data_t *data, bool 
+>> alternate_sync_async)
+>>       struct timeval start, end, diff;
+>>         require_monotonic_timestamp(data->drm_fd);
+>> +    test_init(data);
+>>         gettimeofday(&start, NULL);
+>>       frame = 1;
+>> @@ -254,6 +291,7 @@ static void test_timestamp(data_t *data)
+>>       int ret;
+>>         require_monotonic_timestamp(data->drm_fd);
+>> +    test_init(data);
+>>         /*
+>>        * In older platforms(<= gen10), async address update bit is 
+>> double buffered.
+>> @@ -312,6 +350,8 @@ static void test_cursor(data_t *data)
+>>       do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
+>>       do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
+>>   +    test_init(data);
+>> +
+>>       igt_create_color_fb(data->drm_fd, width, height, 
+>> DRM_FORMAT_ARGB8888,
+>>                   DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
+>>   @@ -346,13 +386,17 @@ static void test_invalid(data_t *data)
+>>       int ret;
+>>       uint32_t width, height;
+>>       struct igt_fb fb;
+>> +    drmModeModeInfo *mode;
+>>   -    width = data->connector->modes[0].hdisplay;
+>> -    height = data->connector->modes[0].vdisplay;
+>> +    mode = igt_output_get_mode(data->output);
+>> +    width = mode->hdisplay;
+>> +    height = mode->vdisplay;
+>> igt_require(igt_display_has_format_mod(&data->display, 
+>> DRM_FORMAT_XRGB8888,
+>>                              I915_FORMAT_MOD_Y_TILED));
+>>   +    test_init(data);
+>> +
+>>       igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+>>                 I915_FORMAT_MOD_Y_TILED, &fb);
+>>   @@ -367,33 +411,6 @@ static void test_invalid(data_t *data)
+>>       igt_remove_fb(data->drm_fd, &fb);
+>>   }
+>>   -static void test_init(data_t *data)
+>> -{
+>> -    drmModeResPtr res;
+>> -    int i, ret;
+>> -
+>> -    res = drmModeGetResources(data->drm_fd);
+>> -    igt_assert(res);
+>> -
+>> -    kmstest_unset_all_crtcs(data->drm_fd, res);
+>> -
+>> -    data->connector = find_connector_for_modeset(data);
+>> -    data->crtc_id = kmstest_find_crtc_for_connector(data->drm_fd,
+>> -                            res, data->connector, 0);
+>> -
+>> -    data->refresh_rate = data->connector->modes[0].vrefresh;
+>> -
+>> -    for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
+>> -        make_fb(data, &data->bufs[i], data->connector, i);
+>> -
+>> -    ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, 
+>> data->bufs[0].fb_id, 0, 0,
+>> -                 &data->connector->connector_id, 1, 
+>> &data->connector->modes[0]);
+>> -
+>> -    igt_assert(ret == 0);
+>> -
+>> -    drmModeFreeResources(res);
+>> -}
+>> -
+>>   static void queue_vblank(data_t *data)
+>>   {
+>>       int pipe = kmstest_get_pipe_from_crtc_id(data->drm_fd, 
+>> data->crtc_id);
+>> @@ -490,11 +507,14 @@ static void test_crc(data_t *data)
+>>       data->frame_count = 0;
+>>       data->flip_pending = false;
+>>   +    test_init(data);
+>> +
+>>       igt_draw_fill_fb(data->drm_fd, &data->bufs[frame], 0xff0000ff);
+>>       igt_draw_fill_fb(data->drm_fd, &data->bufs[!frame], 0xff0000ff);
+>>         ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, 
+>> data->bufs[frame].fb_id, 0, 0,
+>> -                 &data->connector->connector_id, 1, 
+>> &data->connector->modes[0]);
+>> + &data->output->config.connector->connector_id, 1,
+>> + &data->output->config.connector->modes[0]);
+>>       igt_assert_eq(ret, 0);
+>>         data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
+>> @@ -531,10 +551,28 @@ static void test_crc(data_t *data)
+>>       igt_assert_lt(data->frame_count * 2, data->flip_count);
+>>   }
+>>   -igt_main
+>> +static int opt_handler(int opt, int opt_index, void *_data)
+>> +{
+>> +    data_t *data = _data;
+>> +
+>> +    switch (opt) {
+>> +    case 'e':
+>> +        data->extended = true;
+>> +        break;
+>> +    }
+>> +
+>> +    return IGT_OPT_HANDLER_SUCCESS;
+>> +}
+>> +
+>> +static const char help_str[] =
+>> +    "  --e \t\tRun the extended tests\n";
+>> +
+>> +static data_t data;
+>> +
+>> +igt_main_args("e", NULL, help_str, opt_handler, &data)
+>>   {
+>> -    static data_t data;
+>>       int i;
+>> +    igt_output_t *output;
+>>         igt_fixture {
+>>           data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>> @@ -548,32 +586,72 @@ igt_main
+>>         igt_describe("Verify the async flip functionality and the fps 
+>> during async flips");
+>>       igt_subtest_group {
+>> -        igt_fixture
+>> -            test_init(&data);
+>> -
+>>           igt_describe("Wait for page flip events in between 
+>> successive asynchronous flips");
+>> -        igt_subtest("async-flip-with-page-flip-events")
+>> -            test_async_flip(&data, false);
+>> +        igt_subtest("async-flip-with-page-flip-events") {
+>> +            for_each_connected_output(&data.display, output) {
+>> +                data.output = output;
+>> +                test_async_flip(&data, false);
+>> +
+>> +                if (!data.extended)
+>> +                    break;
+>> +            }
+>> +        }
+>>             igt_describe("Alternate between sync and async flips");
+>> -        igt_subtest("alternate-sync-async-flip")
+>> -            test_async_flip(&data, true);
+>> +        igt_subtest("alternate-sync-async-flip") {
+>> +            for_each_connected_output(&data.display, output) {
+>> +                data.output = output;
+>> +                test_async_flip(&data, true);
+>> +
+>> +                if (!data.extended)
+>> +                    break;
+>> +            }
+>> +        }
+>> +
+>>             igt_describe("Verify that the async flip timestamp does 
+>> not coincide with either previous or next vblank");
+>> -        igt_subtest("test-time-stamp")
+>> -            test_timestamp(&data);
+>> +        igt_subtest("test-time-stamp") {
+>> +            for_each_connected_output(&data.display, output) {
+>> +                data.output = output;
+>> +                test_timestamp(&data);
+>> +
+>> +                if (!data.extended)
+>> +                    break;
+>> +            }
+>> +        }
+>>             igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR 
+>> passes after async flip");
+>> -        igt_subtest("test-cursor")
+>> -            test_cursor(&data);
+>> +        igt_subtest("test-cursor") {
+>> +            for_each_connected_output(&data.display, output) {
+>> +                data.output = output;
+>> +                test_cursor(&data);
+>> +
+>> +                if (!data.extended)
+>> +                    break;
+>> +            }
+>> +        }
+>>             igt_describe("Negative case to verify if changes in fb 
+>> are rejected from kernel as expected");
+>> -        igt_subtest("invalid-async-flip")
+>> -            test_invalid(&data);
+>> +        igt_subtest("invalid-async-flip") {
+>> +            for_each_connected_output(&data.display, output) {
+>> +                data.output = output;
+>> +                test_invalid(&data);
+>> +
+>> +                if (!data.extended)
+>> +                    break;
+>> +            }
+>> +        }
+>>             igt_describe("Use CRC to verify async flip scans out the 
+>> correct framebuffer");
+>> -        igt_subtest("crc")
+>> -            test_crc(&data);
+>> +        igt_subtest("crc") {
+>> +            for_each_connected_output(&data.display, output) {
+>> +                data.output = output;
+>> +                test_crc(&data);
+>> +
+>> +                if (!data.extended)
+>> +                    break;
+>> +            }
+>> +        }
+>>             igt_fixture {
+>>               for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
+>> @@ -581,6 +659,9 @@ igt_main
+>>           }
+>>       }
+>>   -    igt_fixture
+>> +    igt_fixture {
+>> +        igt_display_reset(&data.display);
+>> +        igt_display_commit(&data.display);
+>>           igt_display_fini(&data.display);
+>> +    }
+>>   }
+>
