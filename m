@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 475D6112A80
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 08:56:27 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 13:54:25 +0530
-Message-Id: <20220516082426.9852-1-karthik.b.s@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F5FC10E3E0
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 09:16:02 +0000 (UTC)
+Date: Mon, 16 May 2022 12:13:32 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org,
+ Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+Message-ID: <YoIVvMpuTeA6FtwW@platvala-desk.ger.corp.intel.com>
+References: <20220513095300.6785-1-petri.latvala@intel.com>
+ <165244846695.9638.5961914363232913663@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 1/2] tests/kms_async_flips: Convert tests
- to dynamic
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <165244846695.9638.5961914363232913663@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliOiBB?=
+ =?utf-8?q?dd_missing_newline_in_igt=5Ffopen=5Fdata=27s_logging?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,181 +27,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-v2: -Get the mode after igt_display_reset() (Bhanu)
+On Fri, May 13, 2022 at 01:27:46PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: lib: Add missing newline in igt_fopen_data's logging
+> URL   : https://patchwork.freedesktop.org/series/103977/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_11647_full -> IGTPW_7098_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_7098_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_7098_full, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/index.html
+> 
+> Participating hosts (11 -> 8)
+> ------------------------------
+> 
+>   Missing    (3): pig-skl-6260u pig-kbl-iris pig-glk-j5005 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_7098_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_whisper@basic-fds-forked-all:
+>     - shard-kbl:          [PASS][1] -> [INCOMPLETE][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11647/shard-kbl1/igt@gem_exec_whisper@basic-fds-forked-all.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7098/shard-kbl6/igt@gem_exec_whisper@basic-fds-forked-all.html
+> 
 
-v3: -Move patch to start of series to avoid code duplication (Bhanu)
-    -Use for_each_pipe() instead of for_each_pipe_static() (Bhanu)
+Lakshmi, false positive for you.
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_async_flips.c | 122 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 108 insertions(+), 14 deletions(-)
+<4> [236.913564] general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b7c63: 0000 [#1] PREEMPT SMP PTI
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 5e11cd43..e307f0d9 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -51,6 +51,7 @@ typedef struct {
- 	struct igt_fb bufs[4];
- 	igt_display_t display;
- 	drmModeConnectorPtr connector;
-+	igt_output_t *output;
- 	unsigned long flip_timestamp_us;
- 	double flip_interval;
- 	igt_pipe_crc_t *pipe_crc;
-@@ -58,6 +59,8 @@ typedef struct {
- 	int flip_count;
- 	int frame_count;
- 	bool flip_pending;
-+	bool extended;
-+	enum pipe pipe;
- } data_t;
- 
- static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
-@@ -531,10 +534,29 @@ static void test_crc(data_t *data)
- 	igt_assert_lt(data->frame_count * 2, data->flip_count);
- }
- 
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	data_t *data = _data;
-+
-+	switch (opt) {
-+	case 'e':
-+		data->extended = true;
-+		break;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+static const char help_str[] =
-+"  --e \t\tRun the extended tests\n";
-+
-+static data_t data;
-+
-+igt_main_args("e", NULL, help_str, opt_handler, &data)
- {
--	static data_t data;
- 	int i;
-+	igt_output_t *output;
-+	enum pipe pipe;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -552,28 +574,100 @@ igt_main
- 			test_init(&data);
- 
- 		igt_describe("Wait for page flip events in between successive asynchronous flips");
--		igt_subtest("async-flip-with-page-flip-events")
--			test_async_flip(&data, false);
-+		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+						data.output = output;
-+						data.pipe = pipe;
-+						test_async_flip(&data, false);
-+					}
-+
-+					if (!data.extended)
-+						break;
-+				}
-+			}
-+		}
- 
- 		igt_describe("Alternate between sync and async flips");
--		igt_subtest("alternate-sync-async-flip")
--			test_async_flip(&data, true);
-+		igt_subtest_with_dynamic("alternate-sync-async-flip") {
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+						data.output = output;
-+						data.pipe = pipe;
-+						test_async_flip(&data, true);
-+					}
-+
-+					if (!data.extended)
-+						break;
-+				}
-+			}
-+		}
- 
- 		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
--		igt_subtest("test-time-stamp")
--			test_timestamp(&data);
-+		igt_subtest_with_dynamic("test-time-stamp") {
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+						data.output = output;
-+						data.pipe = pipe;
-+						test_timestamp(&data);
-+					}
-+
-+					if (!data.extended)
-+						break;
-+				}
-+			}
-+		}
- 
- 		igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
--		igt_subtest("test-cursor")
--			test_cursor(&data);
-+		igt_subtest_with_dynamic("test-cursor") {
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+						data.output = output;
-+						data.pipe = pipe;
-+						test_cursor(&data);
-+					}
-+
-+					if (!data.extended)
-+						break;
-+				}
-+			}
-+		}
- 
- 		igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
--		igt_subtest("invalid-async-flip")
--			test_invalid(&data);
-+		igt_subtest_with_dynamic("invalid-async-flip") {
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+						data.output = output;
-+						data.pipe = pipe;
-+						test_invalid(&data);
-+					}
-+
-+					if (!data.extended)
-+						break;
-+				}
-+			}
-+		}
- 
- 		igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
--		igt_subtest("crc")
--			test_crc(&data);
-+		igt_subtest_with_dynamic("crc") {
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+						data.output = output;
-+						data.pipe = pipe;
-+						test_crc(&data);
-+					}
-+
-+					if (!data.extended)
-+						break;
-+				}
-+			}
-+		}
- 
- 		igt_fixture {
- 			for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
+
 -- 
-2.22.0
+Petri Latvala
