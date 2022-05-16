@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED7CA89E57
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95EB710E3AD
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:29 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 20:42:51 +0530
-Message-Id: <20220516151255.13153-7-anshuman.gupta@intel.com>
+Date: Mon, 16 May 2022 20:42:52 +0530
+Message-Id: <20220516151255.13153-8-anshuman.gupta@intel.com>
 In-Reply-To: <20220516151255.13153-1-anshuman.gupta@intel.com>
 References: <20220516151255.13153-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 06/10] tools/intel_pm_rpm: Add an option
- to setup d3cold
+Subject: [igt-dev] [PATCH i-g-t v6 07/10] i915_pm_rpm: Add D3Cold basic
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,121 +24,64 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Few PCI devices under DGFX card tree don't have any kernel driver.
-These devices will block D3cold state of gfx root port.
-Adding support to setup d3cold by enabling runtime PM for all PCI
-devices under the gfx root port.
-It will not save/restore pci devices power attributes.
-It will be useful to tune D3Cold after boot.
+Add support for D3Cold basic subtest.
+It setup and prepares the gfx PCI card for D3Cold
+and checks the ACPI D3Cold state.
 
 v2:
-- Change naming convention from configure_autosuspend to
-  setup-d3cold. [Rodrigo].
-v3:
-- Kept setting auto-suspend delay as optional. [Rodrigo]
+- Removed IS_DGFX() condition.
+- Added igt_describe(). [Kamil]
 
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tools/intel_pm_rpm.c | 42 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ tests/i915/i915_pm_rpm.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-index 1f90c4fce2..53ad252d6e 100644
---- a/tools/intel_pm_rpm.c
-+++ b/tools/intel_pm_rpm.c
-@@ -34,6 +34,9 @@
- #include "igt_device_scan.h"
- #include "igt_pm.h"
- 
-+#define DONT_SET_AUTOSUSPEND_DELAY (1 << 0)
-+#define SET_I915_AUTOSUSPEND_DELAY (1 << 1)
-+
- typedef struct {
- 	int drm_fd;
- 	int debugfs_fd;
-@@ -45,15 +48,18 @@ typedef struct {
- const char *help_str =
- 	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
- 	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
-+	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set autosupend delay to"
-+	"  i915 autosuspend delay. Use --setup-d3cold=i915-auto-delay as optional argument.\n"
- 	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
- static struct option long_options[] = {
- 	{"disable-display-wait", 0, 0, 'd'},
- 	{"force-d3cold-wait", 0, 0, 'f'},
-+	{"setup-d3cold", 2, 0, 's'},
- 	{"help", 0, 0, 'h'},
- 	{ 0, 0, 0, 0 }
- };
- 
--const char *optstr = "dfh";
-+const char *optstr = "dfs::h";
- 
- static void usage(const char *name)
- {
-@@ -72,6 +78,23 @@ static void disable_all_displays(data_t *data)
- 	}
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index d2bce5826e..31f9712a87 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -1534,6 +1534,28 @@ __noreturn static void stay_subtest(void)
+ 		sleep(600);
  }
  
-+static void
-+setup_gfx_card_d3cold(data_t *data, unsigned char setup_d3cold)
++static void d3cold_basic_subtest(void)
 +{
-+	struct pci_device *root, *i915;
++	struct pci_device *root;
++	bool result;
 +
-+	root = igt_device_get_pci_root_port(data->drm_fd);
-+	if (setup_d3cold == DONT_SET_AUTOSUSPEND_DELAY) {
-+		igt_pm_enable_pci_card_runtime_pm(root, NULL);
-+	} else if (setup_d3cold == SET_I915_AUTOSUSPEND_DELAY) {
-+		i915 = igt_device_get_pci_device(data->drm_fd);
-+		igt_pm_enable_pci_card_runtime_pm(root, i915);
++	root = igt_device_get_pci_root_port(drm_fd);
++	igt_require(igt_pm_acpi_d3cold_supported(root));
++	igt_pm_setup_pci_card_runtime_pm(root);
++	disable_all_screens_and_wait(&ms_data);
++
++	result = igt_wait(igt_pm_get_acpi_real_d_state(root) == IGT_ACPI_D3Cold, 10000, 500);
++
++	if (!result) {
++		igt_info("D3Cold not achieved for root port %04x:%02x:%02x.%01x\n",
++			 root->domain, root->bus, root->dev, root->func);
++		igt_pm_print_pci_card_runtime_status();
 +	}
 +
-+	igt_info("Enabled pci devs runtime pm under Root port %04x:%02x:%02x.%01x\n",
-+		 root->domain, root->bus, root->dev, root->func);
++	igt_assert(result);
++	igt_pm_restore_pci_card_runtime_pm();
 +}
 +
- static void force_gfx_card_d3cold(data_t *data)
+ static void system_suspend_subtest(int state, int debug)
  {
- 	struct pci_device *root;
-@@ -107,6 +130,7 @@ static void force_gfx_card_d3cold(data_t *data)
- int main(int argc, char *argv[])
- {
- 	bool disable_display = false, force_d3cold = false;
-+	unsigned char setup_d3cold = 0;
- 	struct igt_device_card card;
- 	char *env_device = NULL;
- 	int c, option_index = 0;
-@@ -144,6 +168,19 @@ int main(int argc, char *argv[])
- 		case 'f':
- 			force_d3cold = true;
- 			break;
-+		case 's':
-+			if (optarg) {
-+				if (!strcmp(optarg, "i915-auto-delay")) {
-+					setup_d3cold = SET_I915_AUTOSUSPEND_DELAY;
-+				} else	{
-+					usage(argv[0]);
-+					ret = EXIT_SUCCESS;
-+					goto exit;
-+				}
-+			} else {
-+				setup_d3cold = DONT_SET_AUTOSUSPEND_DELAY;
-+			}
-+			break;
- 		default:
- 		case 'h':
- 			usage(argv[0]);
-@@ -196,6 +233,9 @@ int main(int argc, char *argv[])
- 	if (force_d3cold)
- 		force_gfx_card_d3cold(&data);
+ 	disable_all_screens_and_wait(&ms_data);
+@@ -2065,6 +2087,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		igt_subtest("stay")
+ 			stay_subtest();
  
-+	if (setup_d3cold)
-+		setup_gfx_card_d3cold(&data, setup_d3cold);
++	igt_describe("Validate gfx root port d3cold state");
++	igt_subtest("d3cold-basic")
++		d3cold_basic_subtest();
 +
- exit:
- 	igt_restore_runtime_pm();
- 
+ 	/* Essential things */
+ 	igt_subtest("drm-resources-equal")
+ 		drm_resources_equal_subtest();
 -- 
 2.26.2
