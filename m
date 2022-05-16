@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 791DF10EF13
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 07:18:11 +0000 (UTC)
-Message-ID: <40c0082f-98d6-3a2e-b989-7ac874a58ffd@intel.com>
-Date: Mon, 16 May 2022 12:47:59 +0530
-Content-Language: en-US
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20220425101220.24874-1-karthik.b.s@intel.com>
- <20220425101220.24874-2-karthik.b.s@intel.com>
- <92cf6cb2-6b9e-1d3f-f00c-5d67edae5824@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <92cf6cb2-6b9e-1d3f-f00c-5d67edae5824@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F9B110FEBD
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 07:47:08 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 16 May 2022 13:14:14 +0530
+Message-Id: <20220516074417.3097812-1-riana.tauro@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] tests/kms_async_flips: Convert
- tests to dynamic
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v6 0/3] Extend system-suspend-without-i915
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,239 +20,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 5/16/2022 11:41 AM, Modem, Bhanuprakash wrote:
-> On Mon-25-04-2022 03:42 pm, Karthik B S wrote:
->> v2: -Get the mode after igt_display_reset() (Bhanu)
->>
->> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
->> ---
->>   tests/kms_async_flips.c | 135 ++++++++++++++++++++++------------------
->>   1 file changed, 75 insertions(+), 60 deletions(-)
->>
->> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
->> index 1b5af111..eeeb8a40 100644
->> --- a/tests/kms_async_flips.c
->> +++ b/tests/kms_async_flips.c
->> @@ -59,6 +59,7 @@ typedef struct {
->>       int frame_count;
->>       bool flip_pending;
->>       bool extended;
->> +    enum pipe pipe;
->>   } data_t;
->>     static void flip_handler(int fd_, unsigned int sequence, unsigned 
->> int tv_sec,
->> @@ -135,24 +136,10 @@ static void require_monotonic_timestamp(int fd)
->>                 "Monotonic timestamps not supported\n");
->>   }
->>   -static enum pipe get_pipe_for_output(igt_display_t *display, 
->> igt_output_t *output)
->> -{
->> -    enum pipe pipe;
->> -
->> -    for_each_pipe(display, pipe) {
->> -        if (igt_pipe_connector_valid(pipe, output))
->> -            return pipe;
->> -    }
->> -
->> -    igt_assert_f(false, "No pipe found for output %s\n",
->> -             igt_output_name(output));
->> -}
->> -
->>   static void test_init(data_t *data)
->>   {
->>       int i;
->>       uint32_t width, height;
->> -    enum pipe pipe;
->>       igt_plane_t *plane;
->>       static uint32_t prev_output_id;
->>       drmModeModeInfo *mode;
->> @@ -160,16 +147,14 @@ static void test_init(data_t *data)
->>       igt_display_reset(&data->display);
->>       igt_display_commit(&data->display);
->>   -    pipe = get_pipe_for_output(&data->display, data->output);
->> -
->>       mode = igt_output_get_mode(data->output);
->>       width = mode->hdisplay;
->>       height = mode->vdisplay;
->>   -    data->crtc_id = data->display.pipes[pipe].crtc_id;
->> +    data->crtc_id = data->display.pipes[data->pipe].crtc_id;
->>       data->refresh_rate = mode->vrefresh;
->>   -    igt_output_set_pipe(data->output, pipe);
->> +    igt_output_set_pipe(data->output, data->pipe);
->>       plane = igt_output_get_plane_type(data->output, 
->> DRM_PLANE_TYPE_PRIMARY);
->>         if (prev_output_id != data->output->id) {
->> @@ -573,6 +558,7 @@ igt_main_args("e", NULL, help_str, opt_handler, 
->> &data)
->>   {
->>       int i;
->>       igt_output_t *output;
->> +    enum pipe pipe;
->>         igt_fixture {
->>           data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->> @@ -587,69 +573,98 @@ igt_main_args("e", NULL, help_str, opt_handler, 
->> &data)
->>       igt_describe("Verify the async flip functionality and the fps 
->> during async flips");
->>       igt_subtest_group {
->>           igt_describe("Wait for page flip events in between 
->> successive asynchronous flips");
->> -        igt_subtest("async-flip-with-page-flip-events") {
->> -            for_each_connected_output(&data.display, output) {
->> -                data.output = output;
->> -                test_async_flip(&data, false);
->> -
->> -                if (!data.extended)
->> -                    break;
->> + igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
->> +            for_each_pipe_static(pipe) {
->
-> "s/for_each_pipe_static()/for_each_pipe()/g"
-Thank you for the review.
-Will update this.
->
->> + for_each_valid_output_on_pipe(&data.display, pipe, output) {
->> +                    igt_dynamic_f("%s-pipe-%s", output->name, 
->> kmstest_pipe_name(pipe)) {
->
-> Can we use the dynamic subtest name as "<pipe_name>-<output_name>"?
->
-> These comments are applicable for all the places.
+Add basic-s2idle-without-i915 and basic-s3-without-i915 to test 
+s2idle and s3 cycles without i915 module.
 
-Sure, will update this.
+These tests will be part of CI fast-feedback test list
 
-Thanks,
-Karthik.B.S
->
-> - Bhanu
->
->> +                        data.output = output;
->> +                        data.pipe = pipe;
->> +                        test_async_flip(&data, false);
->> +                    }
->> +
->> +                    if (!data.extended)
->> +                        break;
->> +                }
->>               }
->>           }
->>             igt_describe("Alternate between sync and async flips");
->> -        igt_subtest("alternate-sync-async-flip") {
->> -            for_each_connected_output(&data.display, output) {
->> -                data.output = output;
->> -                test_async_flip(&data, true);
->> -
->> -                if (!data.extended)
->> -                    break;
->> +        igt_subtest_with_dynamic("alternate-sync-async-flip") {
->> +            for_each_pipe_static(pipe) {
->> + for_each_valid_output_on_pipe(&data.display, pipe, output) {
->> +                    igt_dynamic_f("%s-pipe-%s", output->name, 
->> kmstest_pipe_name(pipe)) {
->> +                        data.output = output;
->> +                        data.pipe = pipe;
->> +                        test_async_flip(&data, true);
->> +                    }
->> +
->> +                    if (!data.extended)
->> +                        break;
->> +                }
->>               }
->>           }
->>   -
->>           igt_describe("Verify that the async flip timestamp does not 
->> coincide with either previous or next vblank");
->> -        igt_subtest("test-time-stamp") {
->> -            for_each_connected_output(&data.display, output) {
->> -                data.output = output;
->> -                test_timestamp(&data);
->> -
->> -                if (!data.extended)
->> +        igt_subtest_with_dynamic("test-time-stamp") {
->> +            for_each_pipe_static(pipe) {
->> + for_each_valid_output_on_pipe(&data.display, pipe, output) {
->> +                    igt_dynamic_f("%s-pipe-%s", output->name, 
->> kmstest_pipe_name(pipe)) {
->> +                        data.output = output;
->> +                        data.pipe = pipe;
->> +                        test_timestamp(&data);
->> +                    }
->> +
->> +                    if (!data.extended)
->>                       break;
->> +                }
->>               }
->>           }
->>             igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR 
->> passes after async flip");
->> -        igt_subtest("test-cursor") {
->> -            for_each_connected_output(&data.display, output) {
->> -                data.output = output;
->> -                test_cursor(&data);
->> -
->> -                if (!data.extended)
->> -                    break;
->> +        igt_subtest_with_dynamic("test-cursor") {
->> +            for_each_pipe_static(pipe) {
->> + for_each_valid_output_on_pipe(&data.display, pipe, output) {
->> +                    igt_dynamic_f("%s-pipe-%s", output->name, 
->> kmstest_pipe_name(pipe)) {
->> +                        data.output = output;
->> +                        data.pipe = pipe;
->> +                        test_cursor(&data);
->> +                    }
->> +
->> +                    if (!data.extended)
->> +                        break;
->> +                }
->>               }
->>           }
->>             igt_describe("Negative case to verify if changes in fb 
->> are rejected from kernel as expected");
->> -        igt_subtest("invalid-async-flip") {
->> -            for_each_connected_output(&data.display, output) {
->> -                data.output = output;
->> -                test_invalid(&data);
->> -
->> -                if (!data.extended)
->> -                    break;
->> +        igt_subtest_with_dynamic("invalid-async-flip") {
->> +            for_each_pipe_static(pipe) {
->> + for_each_valid_output_on_pipe(&data.display, pipe, output) {
->> +                    igt_dynamic_f("%s-pipe-%s", output->name, 
->> kmstest_pipe_name(pipe)) {
->> +                        data.output = output;
->> +                        data.pipe = pipe;
->> +                        test_invalid(&data);
->> +                    }
->> +
->> +                    if (!data.extended)
->> +                        break;
->> +                }
->>               }
->>           }
->>             igt_describe("Use CRC to verify async flip scans out the 
->> correct framebuffer");
->> -        igt_subtest("crc") {
->> -            for_each_connected_output(&data.display, output) {
->> -                data.output = output;
->> -                test_crc(&data);
->> -
->> -                if (!data.extended)
->> -                    break;
->> +        igt_subtest_with_dynamic("crc") {
->> +            for_each_pipe_static(pipe) {
->> + for_each_valid_output_on_pipe(&data.display, pipe, output) {
->> +                    igt_dynamic_f("%s-pipe-%s", output->name, 
->> kmstest_pipe_name(pipe)) {
->> +                        data.output = output;
->> +                        data.pipe = pipe;
->> +                        test_crc(&data);
->> +                    }
->> +
->> +                    if (!data.extended)
->> +                        break;
->> +                }
->>               }
->>           }
->
+Rev2: Add subtests for s2idle and s3 (Anshuman)
+Rev3, Rev4 : rebase
+Rev5: Optimized test to reduce CI Execution time (Anshuman)
+Rev6: Addressed cosmetic review comments
+
+Riana Tauro (3):
+  lib/igt_aux: add library function to read current selected state of
+    mem_sleep
+  tests/i915/i915_suspend: Add s2idle and s3 subtests without i915
+  tests/intel-ci/fast-feedback: Add suspend tests without i915 to
+    fast-feedback list
+
+ lib/igt_aux.c                         | 52 +++++++++++++++++++++++++++
+ lib/igt_aux.h                         | 19 ++++++++++
+ tests/i915/i915_suspend.c             | 16 ++++++---
+ tests/intel-ci/fast-feedback.testlist |  3 +-
+ 4 files changed, 84 insertions(+), 6 deletions(-)
+
+-- 
+2.25.1
