@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF1B810E34C
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:37 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 20:42:55 +0530
-Message-Id: <20220516151255.13153-11-anshuman.gupta@intel.com>
-In-Reply-To: <20220516151255.13153-1-anshuman.gupta@intel.com>
-References: <20220516151255.13153-1-anshuman.gupta@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7B5A10F19A
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:23:32 +0000 (UTC)
+Date: Mon, 16 May 2022 18:21:05 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Jessica Zhang <quic_jesszhan@quicinc.com>
+Message-ID: <YoJr4WezCoTObi4M@platvala-desk.ger.corp.intel.com>
+References: <20220513234838.174-1-quic_jesszhan@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 10/10] i915_pm_rpm: Extend gem-mmap-type
- test with D3Cold
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220513234838.174-1-quic_jesszhan@quicinc.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v1] tests/kms_writeback: Add helper
+ method to detach pipe from output when test finishes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,127 +20,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, badal.nilawar@intel.com, rodrigo.vivi@intel.com
+Cc: igt-dev@lists.freedesktop.org, quic_aravindh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added d3cold dynamic subtest to gem-mmap-type with device class
-memory region. It test both D3Cold-{VRAM_SR, Off} by using
-d3cold_sr_lmem_threshold i915_params debugfs.
+On Fri, May 13, 2022 at 04:48:38PM -0700, Jessica Zhang wrote:
+> Currently, after a writeback test is run, the writeback connecter doesn't
+> release the pipe for other connecters to use. This can cause the device
+> to crash if another connector tries to use the same pipe (for other IGT
+> tests, for example).
+> 
+> In addition, a slight change [1] to DRM's implementation of the rmfb ioctl
+> means that calling igt_remove_fb() alone will not detach the CRTC --
+> instead, an explicit disable will be needed to do that.
+> 
+> [1]
+> https://gitlab.freedesktop.org/drm/msm/-/blob/msm-next/drivers/gpu/drm/drm_framebuffer.c#L997
+> 
+> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-v2:
-- Two different subtest d3cold-off and d3cold-vrsr. [Rodrigo]
-v3:
-- Skip the d3cold-vram-sr test when lmem_threshold is not available.
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_rpm.c | 41 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 39 insertions(+), 2 deletions(-)
-
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index a062fde882..3a4e2901b2 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1129,11 +1129,12 @@ static struct pci_device *setup_d3cold_and_get_root_port(void)
- }
- 
- static void gem_mmap_args(const struct mmap_offset *t,
--			  struct drm_i915_gem_memory_class_instance *mem_regions)
-+			  struct drm_i915_gem_memory_class_instance *mem_regions, bool d3cold)
- {
- 	int i;
- 	uint32_t handle;
- 	int buf_size = 8192;
-+	struct pci_device *root;
- 	uint8_t *gem_buf;
- 
- 	/* Create, map and set data while the device is active. */
-@@ -1151,17 +1152,29 @@ static void gem_mmap_args(const struct mmap_offset *t,
- 	for (i = 0; i < buf_size; i++)
- 		igt_assert(gem_buf[i] == (i & 0xFF));
- 
-+	if (d3cold)
-+		root = setup_d3cold_and_get_root_port();
-+
- 	/* Now suspend, read and modify. */
- 	disable_all_screens_and_wait(&ms_data);
- 
-+	if (d3cold)
-+		igt_assert(wait_for_d3cold(root));
-+
- 	for (i = 0; i < buf_size; i++)
- 		igt_assert(gem_buf[i] == (i & 0xFF));
- 	igt_assert(wait_for_suspended());
- 
-+	if (d3cold)
-+		igt_assert(wait_for_d3cold(root));
-+
- 	for (i = 0; i < buf_size; i++)
- 		gem_buf[i] = (~i & 0xFF);
- 	igt_assert(wait_for_suspended());
- 
-+	if (d3cold)
-+		igt_assert(wait_for_d3cold(root));
-+
- 	/* Now resume and see if it's still there. */
- 	enable_one_screen_and_wait(&ms_data);
- 	for (i = 0; i < buf_size; i++)
-@@ -1173,12 +1186,18 @@ static void gem_mmap_args(const struct mmap_offset *t,
- 	 * suspended. */
- 	disable_all_screens_and_wait(&ms_data);
- 
-+	if (d3cold)
-+		igt_assert(wait_for_d3cold(root));
-+
- 	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
- 				    PROT_READ | PROT_WRITE, t->type);
- 	igt_require(gem_buf);
- 
- 	igt_assert(wait_for_suspended());
- 
-+	if (d3cold)
-+		igt_assert(wait_for_d3cold(root));
-+
- 	for (i = 0; i < buf_size; i++)
- 		gem_buf[i] = i & 0xFF;
- 
-@@ -1187,6 +1206,9 @@ static void gem_mmap_args(const struct mmap_offset *t,
- 
- 	igt_assert(wait_for_suspended());
- 
-+	if (d3cold)
-+		igt_assert(wait_for_d3cold(root));
-+
- 	/* Resume and check if it's still there. */
- 	enable_one_screen_and_wait(&ms_data);
- 	for (i = 0; i < buf_size; i++)
-@@ -2186,7 +2208,22 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		for_each_mmap_offset_type(drm_fd, t) {
- 			for_each_memory_region(r, drm_fd) {
- 				igt_dynamic_f("%s-%s", t->name, r->name)
--				gem_mmap_args(t, &r->ci);
-+				gem_mmap_args(t, &r->ci, false);
-+
-+				if (r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM)
-+					continue;
-+
-+				igt_dynamic_f("%s-%s-%s", t->name, "d3cold-off", r->name) {
-+					if (lmem_threshold >= 0)
-+						set_d3cold_sr_lmem_threshold(debugfs, 300);
-+					gem_mmap_args(t, &r->ci, true);
-+				}
-+
-+				igt_dynamic_f("%s-%s-%s", t->name, "d3cold-vrsr", r->name) {
-+					igt_require(lmem_threshold >= 0);
-+					set_d3cold_sr_lmem_threshold(debugfs, 0);
-+					gem_mmap_args(t, &r->ci, true);
-+				}
- 			}
- 		}
- 	}
--- 
-2.26.2
+> ---
+>  tests/kms_writeback.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+> index 21d62faabf6b..b6c815db413c 100644
+> --- a/tests/kms_writeback.c
+> +++ b/tests/kms_writeback.c
+> @@ -139,6 +139,11 @@ static igt_output_t *kms_writeback_get_output(igt_display_t *display)
+>  	return NULL;
+>  }
+>  
+> +static void detach_crtc(igt_display_t *display, igt_output_t *output) {
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +}
+> +
+>  static void check_writeback_fb_id(igt_output_t *output)
+>  {
+>  	uint64_t check_fb_id;
+> @@ -449,6 +454,7 @@ igt_main
+>  	}
+>  
+>  	igt_fixture {
+> +		detach_crtc(&display, output);
+>  		igt_remove_fb(display.drm_fd, &input_fb);
+>  		igt_display_fini(&display);
+>  	}
+> -- 
+> 2.31.0
+> 
