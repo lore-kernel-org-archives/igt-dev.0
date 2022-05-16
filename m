@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7EFF10E178
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:10:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBAD510E4E4
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:09:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 19:36:17 +0530
-Message-Id: <20220516140617.3428438-12-bhanuprakash.modem@intel.com>
+Date: Mon, 16 May 2022 19:36:16 +0530
+Message-Id: <20220516140617.3428438-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220516140617.3428438-1-bhanuprakash.modem@intel.com>
 References: <20220516140617.3428438-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 11/11] tests/intel-ci: Rename tests in BAT
+Subject: [igt-dev] [V4 10/11] tests/kms_dither: Rename dynamic tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,68 +22,27 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As we converted the subtests to dynamic, we must rename the
-same subtests in BAT.
-
-V2:
-* Remove dynamic subtests
+Instead of using dynamic subtests as <output name>-<pipe name>,
+update as <pipe name>-<output name>.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 30 +++++++++------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ tests/kms_dither.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index d075aa31..6e07d4da 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -97,14 +97,9 @@ igt@kms_chamelium@hdmi-crc-fast
- igt@kms_chamelium@vga-hpd-fast
- igt@kms_chamelium@vga-edid-read
- igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-+igt@kms_cursor_legacy@basic-busy-flip-before-cursor
-+igt@kms_cursor_legacy@basic-flip-after-cursor
-+igt@kms_cursor_legacy@basic-flip-before-cursor
- igt@kms_flip@basic-flip-vs-dpms
- igt@kms_flip@basic-flip-vs-modeset
- igt@kms_flip@basic-flip-vs-wf_vblank
-@@ -114,17 +109,12 @@ igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@force-load-detect
- igt@kms_force_connector_basic@prune-stale-modes
- igt@kms_frontbuffer_tracking@basic
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d
--igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
--igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
--igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
--igt@kms_pipe_crc_basic@read-crc-pipe-a
--igt@kms_pipe_crc_basic@read-crc-pipe-b
--igt@kms_pipe_crc_basic@read-crc-pipe-c
--igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-+igt@kms_pipe_crc_basic@hang-read-crc
-+igt@kms_pipe_crc_basic@nonblocking-crc
-+igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-+igt@kms_pipe_crc_basic@read-crc
-+igt@kms_pipe_crc_basic@read-crc-frame-sequence
- igt@kms_psr@primary_page_flip
- igt@kms_psr@cursor_plane_move
- igt@kms_psr@sprite_plane_onoff
-@@ -180,4 +170,4 @@ igt@i915_suspend@system-suspend-without-i915
- igt@gem_exec_suspend@basic-s0
- igt@gem_exec_suspend@basic-s3
- igt@kms_chamelium@common-hpd-after-suspend
--igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
-+igt@kms_pipe_crc_basic@suspend-read-crc
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index 8e18dc83..b6c05223 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -207,7 +207,8 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
+ 
+ 		for_each_pipe(display, pipe) {
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+-				igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
++				igt_dynamic_f("pipe-%s-%s",
++					      kmstest_pipe_name(pipe), output->name)
+ 					test_dithering(data, pipe, output, fb_bpc,
+ 							fb_format, output_bpc);
+ 
 -- 
 2.35.1
