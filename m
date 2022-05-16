@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 849AA10F28B
- for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 14:30:01 +0000 (UTC)
-From: Ryszard Knop <ryszard.knop@intel.com>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Wed, 18 May 2022 16:24:44 +0200
-Message-Id: <20220518142444.96023-1-ryszard.knop@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CACC10FE7C
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 07:47:09 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 16 May 2022 13:14:16 +0530
+Message-Id: <20220516074417.3097812-3-riana.tauro@intel.com>
+In-Reply-To: <20220516074417.3097812-1-riana.tauro@intel.com>
+References: <20220516074417.3097812-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] docs: Update report link to fd.o GitLab
+Subject: [igt-dev] [PATCH i-g-t v6 2/3] tests/i915/i915_suspend: Add s2idle
+ and s3 subtests without i915
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,230 +23,58 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Bugzilla is read-only for a while now, point at the GitLab issue tracker
-instead. Fixes #115
+Add new tests basic-s2idle-without-i915 and basic-s3-without-i915
+to exercise s2idle and s3 cycles to know the system wide
+health of suspend/resume
 
-Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
+v2: rebase
+v3: rebase
+v4: skip s3 when platform default state is s2idle to reduce
+    CI time (Anshuman)
+
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- man/intel_audio_dump.rst            | 2 +-
- man/intel_bios_dumper.rst           | 2 +-
- man/intel_error_decode.rst          | 2 +-
- man/intel_gpu_frequency.rst         | 2 +-
- man/intel_gpu_top.rst               | 2 +-
- man/intel_gtt.rst                   | 2 +-
- man/intel_infoframes.rst            | 2 +-
- man/intel_lid.rst                   | 2 +-
- man/intel_panel_fitter.rst          | 2 +-
- man/intel_reg.rst                   | 2 +-
- man/intel_stepping.rst              | 2 +-
- man/intel_upload_blit_large.rst     | 2 +-
- man/intel_upload_blit_large_gtt.rst | 2 +-
- man/intel_upload_blit_large_map.rst | 2 +-
- man/intel_upload_blit_small.rst     | 2 +-
- man/intel_vbt_decode.rst            | 2 +-
- tools/intel_gpu_abrt                | 7 +++----
- tools/intel_gpu_frequency.c         | 2 +-
- 18 files changed, 20 insertions(+), 21 deletions(-)
+ tests/i915/i915_suspend.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/man/intel_audio_dump.rst b/man/intel_audio_dump.rst
-index d4e8423b..7e4df54e 100644
---- a/man/intel_audio_dump.rst
-+++ b/man/intel_audio_dump.rst
-@@ -27,4 +27,4 @@ HDMI audio handling on Intel GPUs.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_bios_dumper.rst b/man/intel_bios_dumper.rst
-index b21a24a8..c581becf 100644
---- a/man/intel_bios_dumper.rst
-+++ b/man/intel_bios_dumper.rst
-@@ -28,7 +28,7 @@ table handling.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
- 
- SEE ALSO
- ========
-diff --git a/man/intel_error_decode.rst b/man/intel_error_decode.rst
-index b2495b90..d1855b8c 100644
---- a/man/intel_error_decode.rst
-+++ b/man/intel_error_decode.rst
-@@ -35,4 +35,4 @@ FILENAME
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_gpu_frequency.rst b/man/intel_gpu_frequency.rst
-index 8b7c7860..10dc6ad4 100644
---- a/man/intel_gpu_frequency.rst
-+++ b/man/intel_gpu_frequency.rst
-@@ -76,4 +76,4 @@ intel_gpu_frequency -c max=750
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-index f4dbfc5b..2f9a3123 100644
---- a/man/intel_gpu_top.rst
-+++ b/man/intel_gpu_top.rst
-@@ -96,4 +96,4 @@ LIMITATIONS
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_gtt.rst b/man/intel_gtt.rst
-index 203fd717..485453a8 100644
---- a/man/intel_gtt.rst
-+++ b/man/intel_gtt.rst
-@@ -29,4 +29,4 @@ debugging later overwriting of the GTT with garbage data.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_infoframes.rst b/man/intel_infoframes.rst
-index bd212480..ad92b45d 100644
---- a/man/intel_infoframes.rst
-+++ b/man/intel_infoframes.rst
-@@ -43,7 +43,7 @@ hardware is supported yet.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
- 
- SEE ALSO
- ========
-diff --git a/man/intel_lid.rst b/man/intel_lid.rst
-index f74c5c26..af28818d 100644
---- a/man/intel_lid.rst
-+++ b/man/intel_lid.rst
-@@ -28,4 +28,4 @@ modesetting for lid opening and closing.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_panel_fitter.rst b/man/intel_panel_fitter.rst
-index b1615c9e..c64c2c19 100644
---- a/man/intel_panel_fitter.rst
-+++ b/man/intel_panel_fitter.rst
-@@ -74,4 +74,4 @@ possible to implement.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_reg.rst b/man/intel_reg.rst
-index 4ec24c4c..384a0c9d 100644
---- a/man/intel_reg.rst
-+++ b/man/intel_reg.rst
-@@ -210,4 +210,4 @@ Reading some registers may hang the GPU or the machine.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_stepping.rst b/man/intel_stepping.rst
-index 8f4d5056..445786d2 100644
---- a/man/intel_stepping.rst
-+++ b/man/intel_stepping.rst
-@@ -34,4 +34,4 @@ devices may not be as specific as possible.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_upload_blit_large.rst b/man/intel_upload_blit_large.rst
-index 794fd9b9..24b9223a 100644
---- a/man/intel_upload_blit_large.rst
-+++ b/man/intel_upload_blit_large.rst
-@@ -31,4 +31,4 @@ of the kernel, and not for general conclusions on graphics performance.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_upload_blit_large_gtt.rst b/man/intel_upload_blit_large_gtt.rst
-index 4a1c5934..51188fc8 100644
---- a/man/intel_upload_blit_large_gtt.rst
-+++ b/man/intel_upload_blit_large_gtt.rst
-@@ -31,4 +31,4 @@ of the kernel, and not for general conclusions on graphics performance.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_upload_blit_large_map.rst b/man/intel_upload_blit_large_map.rst
-index d818b6d5..b45e7b94 100644
---- a/man/intel_upload_blit_large_map.rst
-+++ b/man/intel_upload_blit_large_map.rst
-@@ -31,4 +31,4 @@ of the kernel, and not for general conclusions on graphics performance.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_upload_blit_small.rst b/man/intel_upload_blit_small.rst
-index bb6239f5..83ae325d 100644
---- a/man/intel_upload_blit_small.rst
-+++ b/man/intel_upload_blit_small.rst
-@@ -31,4 +31,4 @@ of the kernel, and not for general conclusions on graphics performance.
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
-diff --git a/man/intel_vbt_decode.rst b/man/intel_vbt_decode.rst
-index 496ea3f1..b98ec4d5 100644
---- a/man/intel_vbt_decode.rst
-+++ b/man/intel_vbt_decode.rst
-@@ -61,7 +61,7 @@ OPTIONS
- REPORTING BUGS
- ==============
- 
--Report bugs to https://bugs.freedesktop.org.
-+Report bugs on fd.o GitLab: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues.
- 
- SEE ALSO
- ========
-diff --git a/tools/intel_gpu_abrt b/tools/intel_gpu_abrt
-index bde6fb0d..037241b0 100755
---- a/tools/intel_gpu_abrt
-+++ b/tools/intel_gpu_abrt
-@@ -69,10 +69,9 @@ rm $tmpdir -Rf
- 
- if [ -f intel_gpu_abrt.tar ] ; then
- 	cat <<EOF
--intel_gpu_abrt.tar has been created.
--
--Please attach it to https://bugs.freedesktop.org
--with a good bug description as suggested in this template:
-+intel_gpu_abrt.tar has been created. Attach it to a bug report on
-+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues with a
-+good bug description as suggested in this template:
- 
- System environment:
- -- chipset:
-diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
-index 52b11a98..3ed331ab 100644
---- a/tools/intel_gpu_frequency.c
-+++ b/tools/intel_gpu_frequency.c
-@@ -138,7 +138,7 @@ usage(const char *prog)
- 	printf("   intel_gpu_frequency --set 400\tLock frequency to 400Mhz\n");
- 	printf("   intel_gpu_frequency --custom max=750\tSet the max frequency to 750MHz\n");
- 	printf("\n");
--	printf("Report bugs to <bugs.freedesktop.org>\n");
-+	printf("Report bugs to https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues\n");
- 	exit(EXIT_FAILURE);
+diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+index d34b7a5d..cb33d83e 100644
+--- a/tests/i915/i915_suspend.c
++++ b/tests/i915/i915_suspend.c
+@@ -204,12 +204,14 @@ test_forcewake(int fd, bool hibernate)
  }
  
+ static void
+-test_suspend_without_i915(void)
++test_suspend_without_i915(int state)
+ {
+ 	igt_kmsg(KMSG_INFO "Unloading i915\n");
+ 	igt_assert_eq(igt_i915_driver_unload(),0);
+ 
+-	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
++	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_FREEZE && state > SUSPEND_STATE_FREEZE,
++		      "Platform default state is s2idle\n");
++	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
+ 
+ 	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
+ 	igt_assert_eq(igt_i915_driver_load(NULL), 0);
+@@ -219,9 +221,13 @@ int fd;
+ 
+ igt_main
+ {
+-	igt_describe("Validate system suspend cycle without i915 module");
+-	igt_subtest("system-suspend-without-i915")
+-		test_suspend_without_i915();
++	igt_describe("Validate suspend-to-idle without i915 module");
++	igt_subtest("basic-s2idle-without-i915")
++		test_suspend_without_i915(SUSPEND_STATE_FREEZE);
++
++	igt_describe("Validate S3 without i915 module");
++	igt_subtest("basic-s3-without-i915")
++		test_suspend_without_i915(SUSPEND_STATE_MEM);
+ 
+ 	igt_fixture
+ 		fd = drm_open_driver(DRIVER_INTEL);
 -- 
-2.36.1
+2.25.1
