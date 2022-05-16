@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F118510E0D7
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:09:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACA7A10E172
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:09:19 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 19:36:06 +0530
-Message-Id: <20220516140617.3428438-1-bhanuprakash.modem@intel.com>
+Date: Mon, 16 May 2022 19:36:08 +0530
+Message-Id: <20220516140617.3428438-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220516140617.3428438-1-bhanuprakash.modem@intel.com>
+References: <20220516140617.3428438-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 00/11] tests/kms: IGT test cleanup
+Subject: [igt-dev] [V4 02/11] tests/kms_pipe_crc_basic: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,40 +22,96 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In below tests, convert all possible subtests to dynamic and
-sanitize the system statte before starting/exiting the subtest.
-This series will also rename the tests in BAT with updated ones.
+Clear the system state before exiting the subtest.
 
-Effected files:
- * tests/kms_pipe_crc_basic.c
- * tests/kms_cursor_legacy.c
- * tests/kms_cursor_edge_walk.c
- * tests/kms_cursor_crc.c
- * tests/kms_color.c
- * tests/kms_dither.c
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_pipe_crc_basic.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-Bhanuprakash Modem (11):
-  tests/kms_pipe_crc_basic: Convert tests to dynamic
-  tests/kms_pipe_crc_basic: Test Cleanup
-  tests/kms_cursor_legacy: Convert tests to dynamic
-  tests/kms_cursor_legacy: Test Cleanup
-  tests/kms_cursor_edge_walk: Convert tests to dynamic
-  tests/kms_cursor_crc: Convert tests to dynamic
-  tests/kms_cursor_crc: Test Cleanup
-  tests/kms_color: Convert tests to dynamic
-  tests/kms_color: Test Cleanup
-  tests/kms_dither: Rename dynamic tests
-  tests/intel-ci: Rename tests in BAT
-
- tests/intel-ci/fast-feedback.testlist |  30 +-
- tests/kms_color.c                     | 544 ++++++++++++++------------
- tests/kms_color_helper.h              |   1 +
- tests/kms_cursor_crc.c                | 222 +++++++----
- tests/kms_cursor_edge_walk.c          |  63 ++-
- tests/kms_cursor_legacy.c             | 332 ++++++++++------
- tests/kms_dither.c                    |   3 +-
- tests/kms_pipe_crc_basic.c            | 162 +++++---
- 8 files changed, 764 insertions(+), 593 deletions(-)
-
---
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index a9fbfc32..4dd92421 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -77,7 +77,11 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ 	int c, j;
+ 
+ 	igt_display_reset(display);
++
+ 	igt_output_set_pipe(output, pipe);
++	mode = igt_output_get_mode(output);
++
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+ 	for (c = 0; c < ARRAY_SIZE(colors); c++) {
+ 		char *crc_str;
+@@ -86,7 +90,6 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ 		igt_debug("Clearing the fb with color (%.02lf,%.02lf,%.02lf)\n",
+ 			  colors[c].r, colors[c].g, colors[c].b);
+ 
+-		mode = igt_output_get_mode(output);
+ 		igt_create_color_fb(data->drm_fd,
+ 					mode->hdisplay, mode->vdisplay,
+ 					DRM_FORMAT_XRGB8888,
+@@ -96,7 +99,6 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ 					colors[c].b,
+ 					&data->fb);
+ 
+-		primary = igt_output_get_plane(output, 0);
+ 		igt_plane_set_fb(primary, &data->fb);
+ 
+ 		igt_display_commit(display);
+@@ -153,6 +155,11 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ 		free(crcs);
+ 		igt_remove_fb(data->drm_fd, &data->fb);
+ 	}
++
++	/* Clean-up */
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_plane_set_fb(primary, NULL);
++	igt_display_commit(display);
+ }
+ 
+ /*
+@@ -226,6 +233,7 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 	igt_pipe_crc_t *pipe_crc;
+ 	drmModeModeInfo *mode;
+ 	igt_crc_t crc[2];
++	igt_plane_t *primary;
+ 
+ 	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
+ 
+@@ -238,7 +246,9 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 			    DRM_FORMAT_XRGB8888,
+ 			    DRM_FORMAT_MOD_LINEAR,
+ 			    0.0, 1.0, 0.0, &data->fb);
+-	igt_plane_set_fb(igt_output_get_plane(output, 0), &data->fb);
++
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, &data->fb);
+ 	igt_display_commit(display);
+ 
+ 	igt_pipe_crc_start(pipe_crc);
+@@ -253,7 +263,11 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 	igt_pipe_crc_collect_crc(pipe_crc, &crc[1]);
+ 	igt_assert_crc_equal(&crc[0], &crc[1]);
+ 
++	/* Clean-up */
+ 	igt_pipe_crc_free(pipe_crc);
++	igt_plane_set_fb(primary, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(display);
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ }
+ 
+@@ -291,6 +305,8 @@ igt_main
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
++		igt_require_pipe_crc(data.drm_fd);
++
+ 		data.debugfs = igt_debugfs_dir(data.drm_fd);
+ 	}
+ 
+-- 
 2.35.1
