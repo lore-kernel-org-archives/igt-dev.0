@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8066710EBD4
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 12:31:09 +0000 (UTC)
-Date: Mon, 16 May 2022 14:30:58 +0200
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C8B210EBDD
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 12:31:46 +0000 (UTC)
+Date: Mon, 16 May 2022 14:31:38 +0200
 From: Andi Shyti <andi.shyti@linux.intel.com>
-Message-ID: <YoJEAiNy8LwjpB6V@intel.intel>
+Message-ID: <YoJEKqVBQHT0WCHP@intel.intel>
 References: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
- <20220506114829.2288273-4-mauro.chehab@linux.intel.com>
+ <20220506114829.2288273-2-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220506114829.2288273-4-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/6] lib/igt_kmod: improve audio
- unbind logic
+In-Reply-To: <20220506114829.2288273-2-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/6] tests/core_hotunplug: properly
+ finish processes using audio devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,31 +28,30 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 
-> +	/* Recursively remove all drivers that depend on drm_driver */
-> +	for (j = 0; j < mod[i].num_required; j++) {
-> +		pos = mod[i].required_by[j];
-> +		if (who)
-> +			*who = strdup(mod[pos].name);
+On Fri, May 06, 2022 at 01:48:24PM +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Before unloading or unbinding an audio driver, all processes
+> that are using it must be terminated. The current logic seeks
+> only for alsactl, but ignore other processes, including
+> pulseaudio.
+> 
+> Make the logic more general, extending it to any processes that
+> could have an open device under /dev/snd.
+> 
+> It should be noticed that some distros like Fedora and openSUSE
+> are now migrating from pulseaudio into pipewire-pulse. Right
+> now, there's no standard distribution-agnostic way to request
+> pipewire-pulse to stop using audio devices, but there's a new
+> patch upstream that will make things easier:
+> 
+> 	https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/6ad6300ec657c88322a8cd6f3548261d3dc05359
+> 
+> Which should be available for pipewire-pulse versions 0.3.50 and
+> upper.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-how many who are we "strdupping"? Are they freed anywhere?
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
 Andi
-
-> +		/*
-> +		 * If a sound driver depends on drm_driver, kill audio processes
-> +		 * first, in order to make it possible to unload the driver
-> +		 */
-> +		if (strstr(mod[pos].name, "snd")) {
-> +			if (igt_lsof_kill_audio_processes()) {
-> +				ret = EACCES;
-> +				goto ret;
-> +			}
-> +		}
-> +		ret = igt_unload_driver(mod, num_mod, pos);
-> +	}
-> +
-> +ret:
-> +	free_module_ref(mod, num_mod);
-> +
-> +	return ret;
-> +}
