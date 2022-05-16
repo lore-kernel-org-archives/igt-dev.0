@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E073E1121DE
- for <igt-dev@lists.freedesktop.org>; Wed, 11 May 2022 17:09:15 +0000 (UTC)
-Date: Wed, 11 May 2022 10:09:13 -0700
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 288A710FA1C
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 07:24:46 +0000 (UTC)
+Date: Mon, 16 May 2022 00:24:44 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
-Message-ID: <20220511170913.rdw7pxl7mze7ylu2@ldmartin-desk2>
+Message-ID: <20220516072444.uj77hkwi6y7kqlgt@ldmartin-desk2>
 References: <20220506114829.2288273-1-mauro.chehab@linux.intel.com>
- <20220506114829.2288273-4-mauro.chehab@linux.intel.com>
+ <20220506114829.2288273-2-mauro.chehab@linux.intel.com>
+ <20220511170326.urdbuix6pkzc6rmp@ldmartin-desk2>
+ <20220512084950.6667a2c7@maurocar-mobl2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20220506114829.2288273-4-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/6] lib/igt_kmod: improve audio
- unbind logic
+In-Reply-To: <20220512084950.6667a2c7@maurocar-mobl2>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/6] tests/core_hotunplug: properly
+ finish processes using audio devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,30 +28,85 @@ To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>, Petri Latvala <petri.latvala@intel.com>, Andrzej Hajda <andrzej.hajda@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 06, 2022 at 01:48:26PM +0200, Mauro Carvalho Chehab wrote:
->+int igt_audio_driver_unload(const char **who)
->+{
->+	const char *drm_driver = "i915";
->+	unsigned int num_mod, i, j;
->+	struct module_ref *mod;
->+	int pos = -1;
->+	int ret = 0;
->+
->+	/*
->+	 * On older Kernels, there's no way to check if the audio driver
->+	 * binds into the DRM one. So, always remove audio drivers that
->+	 * might be binding.
->+	 */
->+	if (linux_kernel_version() < LINUX_VERSION(5, 20, 0))
+On Thu, May 12, 2022 at 08:49:50AM +0200, Mauro Carvalho Chehab wrote:
+>On Wed, 11 May 2022 10:03:26 -0700
+>Lucas De Marchi <lucas.demarchi@intel.com> wrote:
+>
+>> On Fri, May 06, 2022 at 01:48:24PM +0200, Mauro Carvalho Chehab wrote:
+>> >From: Mauro Carvalho Chehab <mchehab@kernel.org>
+>> >
+>> >Before unloading or unbinding an audio driver, all processes
+>> >that are using it must be terminated. The current logic seeks
+>> >only for alsactl, but ignore other processes, including
+>> >pulseaudio.
+>> >
+>> >Make the logic more general, extending it to any processes that
+>> >could have an open device under /dev/snd.
+>> >
+>> >It should be noticed that some distros like Fedora and openSUSE
+>> >are now migrating from pulseaudio into pipewire-pulse. Right
+>> >now, there's no standard distribution-agnostic way to request
+>> >pipewire-pulse to stop using audio devices, but there's a new
+>> >patch upstream that will make things easier:
+>> >
+>> >	https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/6ad6300ec657c88322a8cd6f3548261d3dc05359
+>> >
+>> >Which should be available for pipewire-pulse versions 0.3.50 and
+>> >upper.
+>>
+>> this is for running tests... I don't think it's really expected to have
+>> pulseaudio or pipewire running. We should basically be doing
+>> systemctl disable/mask as a configuration step.
+>
+>That pretty much depends on where this runs: pipewire-pulse is new.
+>Systems like Fedora and the upcoming RHEL 9 have it loaded by default. Distros
+>with older stacks usually came with pulseaudio, also enabled by default.
+>
+>See, a special-purpose machine that was carefully prepared for CI
+>testing can be configured to have pulseaudio/pipewire-pulse not installed
+>or disabled, but if those are running, they should stop using the
+>audio device before removing the device driver.
+>
+>> And if we want to handle that, why don't we simply systemctl stop them
+>> instead of having specific commands for each of them to unbind?
+>
+>Because it doesn't work. On Fedora 35:
+>
+>	$ sudo systemctl stop pipewire-pulse
+>	Failed to stop pipewire-pulse.service: Unit pipewire-pulse.service not loaded.
 
-comparing specific kernel version is not very good practice as features
-are moved from one kernel to the other, backported, etc.
+it's on user session, not system.
 
-if at all, we should test if something is present in the kernel. If we
-can't, then we either add support for that if we can enough.
-For IGT we can probably simply take the approach of landing this only
-when the corresponding kernel support is merged.
+	systemctl --user disable --now pipewire-pulse.socket
+	systemctl --user disable --now pipewire-pulse.service
 
-What we could merge today is: always unload audio drivers.
+My worry is that we have to keep adding logic for specific components.
+You'd probably already have to add support for wireplumber if you follow
+this logic you will also probably have to find a way to stop wireplumber
+that is the new pipewire's session manager being adopted by distros.
+
+
+>	$ ps ax|grep pulse
+>	   2337 ?        S<sl 120:47 /usr/bin/pipewire-pulse
+>	$ find /etc/systemd/|grep pulse
+>	/etc/systemd/user/sockets.target.wants/pipewire-pulse.socket
+>
+>On Ubuntu 20.04:
+>
+>	$ sudo systemctl stop pulseaudio
+>	Failed to stop pulseaudio.service: Unit pulseaudio.service not loaded.
+>	$ ps ax|grep pulse
+>	   1469 ?        S<sl   0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+>	   2061 ?        Ssl    0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+>
+>	$ find /etc/systemd/|grep pulse
+>	/etc/systemd/user/default.target.wants/pulseaudio.service
+>	/etc/systemd/user/sockets.target.wants/pulseaudio.socket
+
+same here...         ^^^^
+
+I don't really care much, just think not talking with each component
+directly will be lower maintenance long term and fewer chance for bugs.
+
 
 Lucas De Marchi
