@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5AD3B1124C5
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CD9D10EDF0
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:35 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 20:42:49 +0530
-Message-Id: <20220516151255.13153-5-anshuman.gupta@intel.com>
+Date: Mon, 16 May 2022 20:42:54 +0530
+Message-Id: <20220516151255.13153-10-anshuman.gupta@intel.com>
 In-Reply-To: <20220516151255.13153-1-anshuman.gupta@intel.com>
 References: <20220516151255.13153-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 04/10] lib: Optional autosuspend_delay_ms
- configuration
+Subject: [igt-dev] [PATCH i-g-t v6 09/10] i915_pm_rpm: Extend gem_execbuf
+ test with D3Cold
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,136 +24,99 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add an option to configure autosuspend_delay_ms as i915 read
-autosuspend_delay_ms to all PCI devices under GFX root port.
+Added d3cold dynamic subtest to gem_execbuf with device class
+memory region. It test both D3Cold-{VRAM_SR, Off} by using
+d3cold_sr_lmem_threshold i915_params debugfs.
 
-configuring autosuspend_delay_ms as optional.
+v2:
+- Two different subtest d3cold-off and d3cold-vrsr. [Rodrigo]
+v3:
+- Skip the d3cold-vram-sr test when lmem_threshold is not available.
 
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- lib/igt_pm.c | 48 +++++++++++++++++++++++++++++++++++++++---------
- lib/igt_pm.h |  3 ++-
- 2 files changed, 41 insertions(+), 10 deletions(-)
+ tests/i915/i915_pm_rpm.c | 34 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 4768deefc8..6ebbad330c 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -988,11 +988,25 @@ static void igt_pm_write_power_attr(int fd, const char *val, int len)
- 	igt_assert(strncmp(buf, val, len) == 0);
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index b16d616434..a062fde882 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -1350,10 +1350,11 @@ static void submit_blt_cmd(uint32_t dst_handle, int dst_size,
  }
  
-+static int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev)
-+{
-+	char delay_str[64];
-+	int delay, delay_fd;
-+
-+	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
-+	if (igt_pm_read_power_attr(delay_fd, delay_str, 64, true))
-+		igt_assert(sscanf(delay_str, "%d", &delay) > 0);
-+
-+	return delay;
-+}
-+
- static void
--igt_pm_setup_pci_dev_power_attrs(struct pci_device *pci_dev, struct igt_pm_pci_dev_pwrattr *pwrattr)
-+igt_pm_setup_pci_dev_power_attrs(struct pci_device *pci_dev,
-+				 struct igt_pm_pci_dev_pwrattr *pwrattr, int delay_ms)
+ /* Make sure we can submit a batch buffer and verify its result. */
+-static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions)
++static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_regions, bool d3cold)
  {
- 	int control_fd, delay_fd, control_size, delay_size;
- 	char *control, *delay;
-+	char buff[64];
+ 	int x, y;
+ 	uint32_t handle;
++	struct pci_device *root;
+ 	int bpp = 4;
+ 	int pitch = 128 * bpp;
+ 	int dst_size = 128 * 128 * bpp; /* 128x128 square */
+@@ -1375,6 +1376,9 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+ 	memset(cpu_buf, 0, dst_size);
+ 	gem_write(drm_fd, handle, 0, cpu_buf, dst_size);
  
- 	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
- 	control_fd = igt_pm_get_power_attr_fd(pci_dev, "control");
-@@ -1022,7 +1036,12 @@ igt_pm_setup_pci_dev_power_attrs(struct pci_device *pci_dev, struct igt_pm_pci_d
- 
- write_power_attr:
- 
--	igt_pm_write_power_attr(delay_fd, "0\n", 2);
-+	if (delay_ms >= 0) {
-+		int wc;
-+		wc = snprintf(buff, 64, "%d\n", delay_ms);
-+		igt_pm_write_power_attr(delay_fd, buff, wc);
-+	}
++	if (d3cold)
++		root = setup_d3cold_and_get_root_port();
 +
- 	igt_pm_write_power_attr(control_fd, "auto\n", 5);
+ 	/* Now suspend and try it. */
+ 	disable_all_screens_and_wait(&ms_data);
  
- 	close(delay_fd);
-@@ -1030,7 +1049,7 @@ write_power_attr:
- }
+@@ -1383,8 +1387,15 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+ 		       &presumed_offset);
+ 	igt_assert(wait_for_suspended());
  
- static void
--igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs)
-+igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs, int delay)
- {
- 	int primary, secondary, subordinate, ret;
- 	struct pci_device_iterator *iter;
-@@ -1052,11 +1071,15 @@ igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs)
- 	igt_assert(iter);
- 
- 	/* Setup power attrs for PCI root port */
--	igt_pm_setup_pci_dev_power_attrs(pci_dev, save_attrs ? &__pci_dev_pwrattr[i++] : NULL);
-+	igt_pm_setup_pci_dev_power_attrs(pci_dev,
-+					 save_attrs ? &__pci_dev_pwrattr[i++] : NULL,
-+					 delay);
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
 +
- 	while ((dev = pci_device_next(iter)) != NULL) {
- 		if (dev->bus >= secondary && dev->bus <= subordinate) {
- 			igt_pm_setup_pci_dev_power_attrs(dev,
--							 save_attrs ? &__pci_dev_pwrattr[i++] : NULL);
-+							 save_attrs ? &__pci_dev_pwrattr[i++] : NULL,
-+							 delay);
- 			if (save_attrs)
- 				igt_assert(i <  MAX_PCI_DEVICES);
+ 	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+ 	igt_assert(wait_for_suspended());
++
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	for (y = 0; y < 128; y++) {
+ 		for (x = 0; x < 128; x++) {
+ 			uint32_t px = cpu_buf[y * 128 + x];
+@@ -1423,6 +1434,9 @@ static void gem_execbuf_subtest(struct drm_i915_gem_memory_class_instance *mem_r
+ 
+ 	disable_all_screens_and_wait(&ms_data);
+ 
++	if (d3cold)
++		igt_assert(wait_for_d3cold(root));
++
+ 	memset(cpu_buf, 0, dst_size);
+ 	gem_read(drm_fd, handle, 0, cpu_buf, dst_size);
+ 	for (y = 0; y < 128; y++) {
+@@ -2182,7 +2196,23 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	igt_subtest_with_dynamic("gem-execbuf") {
+ 		for_each_memory_region(r, drm_fd) {
+ 			igt_dynamic_f("%s", r->name)
+-				gem_execbuf_subtest(&r->ci);
++				gem_execbuf_subtest(&r->ci, false);
++
++			if (r->ci.memory_class == I915_MEMORY_CLASS_SYSTEM)
++				continue;
++
++			igt_dynamic_f("%s-%s", "d3cold-off", r->name) {
++				if (lmem_threshold >= 0)
++					set_d3cold_sr_lmem_threshold(debugfs, 300);
++
++				gem_execbuf_subtest(&r->ci, true);
++			}
++
++			igt_dynamic_f("%s-%s", "d3cold-vrsr", r->name) {
++				igt_require(lmem_threshold >= 0);
++				set_d3cold_sr_lmem_threshold(debugfs, 0);
++				gem_execbuf_subtest(&r->ci, true);
++			}
  		}
-@@ -1067,14 +1090,21 @@ igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs)
- 
- /**
-  * igt_pm_enable_pci_card_runtime_pm:
-- * @pci_dev: root port pci_dev.
-+ * @root: root port pci_dev.
-+ * @i915: i915 pci_dev.
-  * Enable runtime PM for all PCI endpoints devices for a given root port by
-  * setting power/control attr to "auto" and setting autosuspend_delay_ms
-  * to zero.
-  */
--void igt_pm_enable_pci_card_runtime_pm(struct pci_device *pci_dev)
-+void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
-+				       struct pci_device *i915)
- {
--	igt_pm_setup_pci_card_power_attrs(pci_dev, false);
-+	int delay = -1;
-+
-+	if (i915)
-+		delay = igt_pm_get_autosuspend_delay(i915);
-+
-+	igt_pm_setup_pci_card_power_attrs(root, false, delay);
- 	pci_system_cleanup();
- }
- 
-@@ -1089,7 +1119,7 @@ void igt_pm_enable_pci_card_runtime_pm(struct pci_device *pci_dev)
- void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev)
- {
- 	memset(__pci_dev_pwrattr, 0, sizeof(__pci_dev_pwrattr));
--	igt_pm_setup_pci_card_power_attrs(pci_dev, true);
-+	igt_pm_setup_pci_card_power_attrs(pci_dev, true, 0);
- }
- 
- static void
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index c53dae2c31..f28b6ebfde 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -74,7 +74,8 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
- bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
- enum igt_acpi_d_state
- igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
--void igt_pm_enable_pci_card_runtime_pm(struct pci_device *pci_dev);
-+void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
-+				       struct pci_device *i915);
- void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
- void igt_pm_restore_pci_card_runtime_pm(void);
- void igt_pm_print_pci_card_runtime_status(void);
+ 	}
+ 	igt_subtest("gem-idle")
 -- 
 2.26.2
