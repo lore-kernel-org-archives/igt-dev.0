@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8947A1124C6
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED7CA89E57
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 15:13:26 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 20:42:50 +0530
-Message-Id: <20220516151255.13153-6-anshuman.gupta@intel.com>
+Date: Mon, 16 May 2022 20:42:51 +0530
+Message-Id: <20220516151255.13153-7-anshuman.gupta@intel.com>
 In-Reply-To: <20220516151255.13153-1-anshuman.gupta@intel.com>
 References: <20220516151255.13153-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 05/10] tools: Add intel_pm_rpm tool
+Subject: [igt-dev] [PATCH i-g-t v6 06/10] tools/intel_pm_rpm: Add an option
+ to setup d3cold
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,255 +24,121 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-intel_pm_rpm tool is a debug tool. It can be use to setup
-and prepare the gfx card to go to D3Cold.
-It also provide the debug option to disable all display and
-prepare device to enter to runtime suspend.
+Few PCI devices under DGFX card tree don't have any kernel driver.
+These devices will block D3cold state of gfx root port.
+Adding support to setup d3cold by enabling runtime PM for all PCI
+devices under the gfx root port.
+It will not save/restore pci devices power attributes.
+It will be useful to tune D3Cold after boot.
 
 v2:
-- Removed IS_DGFX() condition.
+- Change naming convention from configure_autosuspend to
+  setup-d3cold. [Rodrigo].
 v3:
-- Change naming convention from setup-d3cold to force-d3cold-wait
-  disable-display to disable-display-wait. [Rodrigo]
-v4:
-- Use igt_setup_runtime_pm() only for --disable-display-wait.
+- Kept setting auto-suspend delay as optional. [Rodrigo]
 
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tools/intel_pm_rpm.c | 210 +++++++++++++++++++++++++++++++++++++++++++
- tools/meson.build    |   1 +
- 2 files changed, 211 insertions(+)
- create mode 100644 tools/intel_pm_rpm.c
+ tools/intel_pm_rpm.c | 42 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
 diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-new file mode 100644
-index 0000000000..1f90c4fce2
---- /dev/null
+index 1f90c4fce2..53ad252d6e 100644
+--- a/tools/intel_pm_rpm.c
 +++ b/tools/intel_pm_rpm.c
-@@ -0,0 +1,210 @@
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ *
-+ */
+@@ -34,6 +34,9 @@
+ #include "igt_device_scan.h"
+ #include "igt_pm.h"
+ 
++#define DONT_SET_AUTOSUSPEND_DELAY (1 << 0)
++#define SET_I915_AUTOSUSPEND_DELAY (1 << 1)
 +
-+#include <errno.h>
-+#include <getopt.h>
-+#include <glib.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <stdbool.h>
-+#include "igt.h"
-+#include "igt_device.h"
-+#include "igt_device_scan.h"
-+#include "igt_pm.h"
-+
-+typedef struct {
-+	int drm_fd;
-+	int debugfs_fd;
-+	uint32_t devid;
-+	drmModeResPtr res;
-+	igt_display_t display;
-+} data_t;
-+
-+const char *help_str =
-+	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
-+	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
-+	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
-+static struct option long_options[] = {
-+	{"disable-display-wait", 0, 0, 'd'},
-+	{"force-d3cold-wait", 0, 0, 'f'},
-+	{"help", 0, 0, 'h'},
-+	{ 0, 0, 0, 0 }
-+};
-+
-+const char *optstr = "dfh";
-+
-+static void usage(const char *name)
+ typedef struct {
+ 	int drm_fd;
+ 	int debugfs_fd;
+@@ -45,15 +48,18 @@ typedef struct {
+ const char *help_str =
+ 	"  --disable-display-wait\t\tDisable all screens and try to go into runtime pm.\n"
+ 	"  --force-d3cold-wait\t\tForce dgfx gfx card to enter runtime D3Cold.\n"
++	"  --setup-d3cold\t\tEnable gfx card runtime pm and optionally set autosupend delay to"
++	"  i915 autosuspend delay. Use --setup-d3cold=i915-auto-delay as optional argument.\n"
+ 	"  --help\t\tProvide help. Provide card name with IGT_DEVICE=drm:/dev/dri/card*.";
+ static struct option long_options[] = {
+ 	{"disable-display-wait", 0, 0, 'd'},
+ 	{"force-d3cold-wait", 0, 0, 'f'},
++	{"setup-d3cold", 2, 0, 's'},
+ 	{"help", 0, 0, 'h'},
+ 	{ 0, 0, 0, 0 }
+ };
+ 
+-const char *optstr = "dfh";
++const char *optstr = "dfs::h";
+ 
+ static void usage(const char *name)
+ {
+@@ -72,6 +78,23 @@ static void disable_all_displays(data_t *data)
+ 	}
+ }
+ 
++static void
++setup_gfx_card_d3cold(data_t *data, unsigned char setup_d3cold)
 +{
-+	igt_info("Usage: %s [options]\n", name);
-+	igt_info("%s\n", help_str);
-+}
-+
-+static void disable_all_displays(data_t *data)
-+{
-+	igt_output_t *output;
-+
-+	for (int i = 0; i < data->display.n_outputs; i++) {
-+		output = &data->display.outputs[i];
-+		igt_output_set_pipe(output, PIPE_NONE);
-+		igt_display_commit(&data->display);
-+	}
-+}
-+
-+static void force_gfx_card_d3cold(data_t *data)
-+{
-+	struct pci_device *root;
-+	int d_state;
++	struct pci_device *root, *i915;
 +
 +	root = igt_device_get_pci_root_port(data->drm_fd);
-+
-+	if (!igt_pm_acpi_d3cold_supported(root)) {
-+		igt_info("D3Cold isn't supported on Root port %04x:%02x:%02x.%01x\n",
-+			 root->domain, root->bus, root->dev, root->func);
-+		return;
++	if (setup_d3cold == DONT_SET_AUTOSUSPEND_DELAY) {
++		igt_pm_enable_pci_card_runtime_pm(root, NULL);
++	} else if (setup_d3cold == SET_I915_AUTOSUSPEND_DELAY) {
++		i915 = igt_device_get_pci_device(data->drm_fd);
++		igt_pm_enable_pci_card_runtime_pm(root, i915);
 +	}
 +
-+	disable_all_displays(data);
-+	igt_pm_setup_pci_card_runtime_pm(root);
-+	sleep(1);
-+	d_state = igt_pm_get_acpi_real_d_state(root);
-+
-+	if (d_state == IGT_ACPI_D3Cold) {
-+		igt_info("D3Cold achieved for root port %04x:%02x:%02x.%01x\n",
-+			 root->domain, root->bus, root->dev, root->func);
-+	} else {
-+		igt_pm_print_pci_card_runtime_status();
-+		igt_info("D3Cold not achieved yet. Please monitor %04x:%02x:%02x.%01x real_power_state\n",
-+			 root->domain, root->bus, root->dev, root->func);
-+	}
-+
-+	igt_info("Hit CTRL-C to exit\n");
-+	while (1)
-+		sleep(600);
++	igt_info("Enabled pci devs runtime pm under Root port %04x:%02x:%02x.%01x\n",
++		 root->domain, root->bus, root->dev, root->func);
 +}
 +
-+int main(int argc, char *argv[])
-+{
-+	bool disable_display = false, force_d3cold = false;
-+	struct igt_device_card card;
-+	char *env_device = NULL;
-+	int c, option_index = 0;
-+	data_t data = {};
-+	int ret = 0;
-+
-+	if (argc <= 1) {
-+		usage(argv[0]);
-+		return EXIT_SUCCESS;
-+	}
-+
-+	env_device = getenv("IGT_DEVICE");
-+	igt_devices_scan(false);
-+
-+	if (env_device) {
-+		if (!igt_device_card_match(env_device, &card)) {
-+			igt_warn("No device found for the env_device\n");
-+			ret = EXIT_FAILURE;
-+			goto exit;
-+		}
-+	} else {
-+		if (!igt_device_find_first_i915_discrete_card(&card)) {
-+			igt_warn("No discrete gpu found\n");
-+			ret = EXIT_FAILURE;
-+			goto exit;
-+		}
-+	}
-+
-+	while ((c = getopt_long(argc, argv, optstr,
-+				long_options, &option_index)) != -1) {
-+		switch (c) {
-+		case 'd':
-+			disable_display = true;
+ static void force_gfx_card_d3cold(data_t *data)
+ {
+ 	struct pci_device *root;
+@@ -107,6 +130,7 @@ static void force_gfx_card_d3cold(data_t *data)
+ int main(int argc, char *argv[])
+ {
+ 	bool disable_display = false, force_d3cold = false;
++	unsigned char setup_d3cold = 0;
+ 	struct igt_device_card card;
+ 	char *env_device = NULL;
+ 	int c, option_index = 0;
+@@ -144,6 +168,19 @@ int main(int argc, char *argv[])
+ 		case 'f':
+ 			force_d3cold = true;
+ 			break;
++		case 's':
++			if (optarg) {
++				if (!strcmp(optarg, "i915-auto-delay")) {
++					setup_d3cold = SET_I915_AUTOSUSPEND_DELAY;
++				} else	{
++					usage(argv[0]);
++					ret = EXIT_SUCCESS;
++					goto exit;
++				}
++			} else {
++				setup_d3cold = DONT_SET_AUTOSUSPEND_DELAY;
++			}
 +			break;
-+		case 'f':
-+			force_d3cold = true;
-+			break;
-+		default:
-+		case 'h':
-+			usage(argv[0]);
-+			ret = EXIT_SUCCESS;
-+			goto exit;
-+		}
-+	}
+ 		default:
+ 		case 'h':
+ 			usage(argv[0]);
+@@ -196,6 +233,9 @@ int main(int argc, char *argv[])
+ 	if (force_d3cold)
+ 		force_gfx_card_d3cold(&data);
+ 
++	if (setup_d3cold)
++		setup_gfx_card_d3cold(&data, setup_d3cold);
 +
-+	data.drm_fd = igt_open_card(&card);
-+	if (data.drm_fd  >= 0) {
-+		igt_info("Device %s successfully opened\n", card.card);
-+	} else {
-+		igt_warn("Cannot open card %s device\n", card.card);
-+		ret = EXIT_FAILURE;
-+		goto exit;
-+	}
-+
-+	data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-+	data.devid = intel_get_drm_devid(data.drm_fd);
-+
-+	data.res = drmModeGetResources(data.drm_fd);
-+	if (data.res) {
-+		kmstest_set_vt_graphics_mode();
-+		igt_display_require(&data.display, data.drm_fd);
-+
-+		/* i915 disables RPM in case DMC is not loaded on kms supported cards */
-+		if (!igt_pm_dmc_loaded(data.debugfs_fd)) {
-+			igt_warn("dmc fw is not loaded, no runtime pm\n");
-+			ret = EXIT_FAILURE;
-+			goto exit;
-+		}
-+	}
-+
-+	if (disable_display) {
-+		igt_setup_runtime_pm(data.drm_fd);
-+		disable_all_displays(&data);
-+		if (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)) {
-+			__igt_debugfs_dump(data.drm_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
-+			ret = EXIT_FAILURE;
-+			goto exit;
-+		}
-+
-+		igt_info("Device runtime suspended, Useful for debugging.\n"
-+			 "Hit CTRL-C to exit\n");
-+		/* Don't return useful for debugging */
-+		while (1)
-+			sleep(600);
-+	}
-+
-+	if (force_d3cold)
-+		force_gfx_card_d3cold(&data);
-+
-+exit:
-+	igt_restore_runtime_pm();
-+
-+	if (data.res)
-+		igt_display_fini(&data.display);
-+
-+	close(data.debugfs_fd);
-+	close(data.drm_fd);
-+	igt_devices_free();
-+
-+	return ret;
-+}
-diff --git a/tools/meson.build b/tools/meson.build
-index 771d0b9e3d..24d0ea7140 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -28,6 +28,7 @@ tools_progs = [
- 	'intel_lid',
- 	'intel_opregion_decode',
- 	'intel_panel_fitter',
-+	'intel_pm_rpm',
- 	'intel_reg_checker',
- 	'intel_residency',
- 	'intel_stepping',
+ exit:
+ 	igt_restore_runtime_pm();
+ 
 -- 
 2.26.2
