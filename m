@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2804810E30B
- for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:06:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 349A710E586
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 May 2022 14:06:49 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 16 May 2022 19:31:53 +0530
-Message-Id: <20220516140201.3428227-4-bhanuprakash.modem@intel.com>
+Date: Mon, 16 May 2022 19:31:51 +0530
+Message-Id: <20220516140201.3428227-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220516140201.3428227-1-bhanuprakash.modem@intel.com>
 References: <20220516140201.3428227-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 03/11] tests/kms_cursor_legacy: Convert tests to
+Subject: [igt-dev] [V4 01/11] tests/kms_pipe_crc_basic: Convert tests to
  dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,325 +23,231 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert the existing subtests to dynamic subtests.
+Convert the existing subtests to dynamic subtests at pipe level.
 
+V2:
+* Fix typos: s/hand/hang/, s/TEST_NONE/TEST_BASIC, etc..
+V3:
+* Add output->name to the dynamic subtest
+
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_legacy.c | 254 +++++++++++++++++++++-----------------
- 1 file changed, 141 insertions(+), 113 deletions(-)
+ tests/kms_pipe_crc_basic.c | 140 +++++++++++++++++++++----------------
+ 1 file changed, 78 insertions(+), 62 deletions(-)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 47b9b4e1..1e0b2a79 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1424,6 +1424,15 @@ igt_main
- 	igt_display_t display = { .drm_fd = -1 };
- 	bool intel_psr2_restore = false;
- 	int i;
-+	const char *modes[flip_test_last+1] = {
-+		"legacy",
-+		"varying-size",
-+		"toggle",
-+		"atomic",
-+		"atomic-transitions",
-+		"atomic-transitions-varying-size"
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 0861c46d..a9fbfc32 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -59,22 +59,23 @@ static void test_bad_source(data_t *data)
+ 
+ #define N_CRCS	3
+ 
+-#define TEST_SEQUENCE (1<<0)
+-#define TEST_NONBLOCK (1<<1)
++enum {
++	TEST_BASIC = 0,
++	TEST_SEQUENCE = 1 << 0,
++	TEST_NONBLOCK = 1 << 1,
++	TEST_SUSPEND = 1 << 2,
++	TEST_HANG = 1 << 3,
++};
+ 
+-static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
++static void test_read_crc(data_t *data, enum pipe pipe,
++			  igt_output_t *output, unsigned flags)
+ {
+ 	igt_display_t *display = &data->display;
+-	igt_output_t *output;
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
+ 	igt_crc_t *crcs = NULL;
+ 	int c, j;
+ 
+-	igt_require_pipe(display, pipe);
+-	igt_display_require_output_on_pipe(display, pipe);
+-	output = igt_get_single_output_for_pipe(display, pipe);
+-
+ 	igt_display_reset(display);
+ 	igt_output_set_pipe(output, pipe);
+ 
+@@ -164,7 +165,7 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
+  *
+  *   No CRC mismatch should happen
+  */
+-static void test_compare_crc(data_t *data, enum pipe pipe)
++static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+@@ -172,11 +173,6 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
+ 	igt_crc_t ref_crc, crc;
+ 	igt_pipe_crc_t *pipe_crc = NULL;
+ 	struct igt_fb fb0, fb1;
+-	igt_output_t *output;
+-
+-	igt_require_pipe(display, pipe);
+-	igt_display_require_output_on_pipe(display, pipe);
+-	output = igt_get_single_output_for_pipe(display, pipe);
+ 
+ 	igt_display_reset(display);
+ 	igt_output_set_pipe(output, pipe);
+@@ -223,18 +219,14 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
+ 	igt_remove_fb(data->drm_fd, &fb1);
+ }
+ 
+-static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe)
++static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
++					igt_output_t *output)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	drmModeModeInfo *mode;
+-	igt_output_t *output;
+ 	igt_crc_t crc[2];
+ 
+-	igt_require_pipe(display, pipe);
+-	igt_display_require_output_on_pipe(display, pipe);
+-	output = igt_get_single_output_for_pipe(display, pipe);
+-
+ 	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
+ 
+ 	igt_display_reset(display);
+@@ -270,6 +262,25 @@ data_t data = {0, };
+ igt_main
+ {
+ 	enum pipe pipe;
++	struct {
++		const char *name;
++		unsigned flags;
++		const char *desc;
++	} tests[] = {
++		{ "read-crc", TEST_BASIC,
++			"Test for pipe CRC reads." },
++		{ "read-crc-frame-sequence", TEST_SEQUENCE,
++			"Tests the pipe CRC read and ensure frame sequence." },
++		{ "nonblocking-crc", TEST_NONBLOCK,
++			"Test for O_NONBLOCK CRC reads." },
++		{ "nonblocking-crc-frame-sequence", TEST_SEQUENCE | TEST_NONBLOCK,
++			"Test for O_NONBLOCK CRC reads and ensure frame sequence." },
++		{ "suspend-read-crc", TEST_SUSPEND,
++			"Suspend test for pipe CRC reads." },
++		{ "hang-read-crc", TEST_HANG,
++			"Hang test for pipe CRC read." },
 +	};
-+	const char *prefix[2] = {"basic", "short"};
++	int i;
  
  	igt_fixture {
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -1440,30 +1449,35 @@ igt_main
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -279,6 +290,7 @@ igt_main
+ 		igt_require_pipe_crc(data.drm_fd);
  
- 	/*Test description for pipe-* and all-pipe-* tests*/
- 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
--		     "on single pipe with different modes, priority and number of processes");
-+		     "on single/all pipes with different modes, priority and number of processes");
- 	igt_subtest_group {
- 		enum pipe n;
--		for_each_pipe_static(n) {
--			errno = 0;
--
--			igt_fixture {
--				igt_require_pipe(&display, n);
--			}
-+		struct {
-+			const char *name;
-+			int ncpus;
-+			unsigned flags;
-+		} tests[] = {
-+			{ "single-bo", 1, DRM_MODE_CURSOR_BO },
-+			{ "single-move", 1, DRM_MODE_CURSOR_MOVE },
-+			{ "forked-bo", ncpus, DRM_MODE_CURSOR_BO },
-+			{ "forked-move", ncpus, DRM_MODE_CURSOR_MOVE },
-+			{ "torture-bo", -ncpus, DRM_MODE_CURSOR_BO },
-+			{ "torture-move", -ncpus, DRM_MODE_CURSOR_MOVE },
-+		};
- 
--			igt_subtest_f("pipe-%s-single-bo", kmstest_pipe_name(n))
--				stress(&display, n, 1, DRM_MODE_CURSOR_BO, 20);
--			igt_subtest_f("pipe-%s-single-move", kmstest_pipe_name(n))
--				stress(&display, n, 1, DRM_MODE_CURSOR_MOVE, 20);
-+		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+			igt_subtest_with_dynamic(tests[i].name) {
-+				for_each_pipe(&display, n) {
-+					errno = 0;
- 
--			igt_subtest_f("pipe-%s-forked-bo", kmstest_pipe_name(n))
--				stress(&display, n, ncpus, DRM_MODE_CURSOR_BO, 20);
--			igt_subtest_f("pipe-%s-forked-move", kmstest_pipe_name(n))
--				stress(&display, n, ncpus, DRM_MODE_CURSOR_MOVE, 20);
-+					igt_dynamic_f("pipe-%s", kmstest_pipe_name(n))
-+						stress(&display, n, tests[i].ncpus, tests[i].flags, 20);
-+				}
- 
--			igt_subtest_f("pipe-%s-torture-bo", kmstest_pipe_name(n))
--				stress(&display, n, -ncpus, DRM_MODE_CURSOR_BO, 20);
--			igt_subtest_f("pipe-%s-torture-move", kmstest_pipe_name(n))
--				stress(&display, n, -ncpus, DRM_MODE_CURSOR_MOVE, 20);
-+				errno = 0;
-+				igt_dynamic("all-pipes")
-+					stress(&display, -1, tests[i].ncpus, tests[i].flags, 20);
-+			}
- 		}
+ 		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
+ 		data.debugfs = igt_debugfs_dir(data.drm_fd);
  	}
  
-@@ -1471,22 +1485,6 @@ igt_main
- 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
- 		    "on all pipes with different modes, priority and number of processes");
- 	igt_subtest_group {
--
--		igt_subtest("all-pipes-single-bo")
--			stress(&display, -1, 1, DRM_MODE_CURSOR_BO, 20);
--		igt_subtest("all-pipes-single-move")
--			stress(&display, -1, 1, DRM_MODE_CURSOR_MOVE, 20);
--
--		igt_subtest("all-pipes-forked-bo")
--			stress(&display, -1, ncpus, DRM_MODE_CURSOR_BO, 20);
--		igt_subtest("all-pipes-forked-move")
--			stress(&display, -1, ncpus, DRM_MODE_CURSOR_MOVE, 20);
--
--		igt_subtest("all-pipes-torture-bo")
--			stress(&display, -1, -ncpus, DRM_MODE_CURSOR_BO, 20);
--		igt_subtest("all-pipes-torture-move")
--			stress(&display, -1, -ncpus, DRM_MODE_CURSOR_MOVE, 20);
--
- 		igt_subtest("nonblocking-modeset-vs-cursor-atomic")
- 			nonblocking_modeset_vs_cursor(&display, 1);
+@@ -286,54 +298,58 @@ igt_main
+ 	igt_subtest("bad-source")
+ 		test_bad_source(&data);
  
-@@ -1498,36 +1496,49 @@ igt_main
- 	igt_describe("This test executes flips on both CRTCs "
- 		     "while running cursor updates in parallel");
- 	igt_subtest_group {
-+		struct {
-+			const char *name;
-+			int nloops;
-+			bool modeset;
-+			bool atomic;
-+		} tests[] = {
-+			{ "2x-flip-vs-cursor-legacy", 8, false, false },
-+			{ "2x-flip-vs-cursor-atomic", 8, false, true },
-+			{ "2x-long-flip-vs-cursor-legacy", 150, false, false },
-+			{ "2x-long-flip-vs-cursor-atomic", 150, false, true },
-+			{ "2x-nonblocking-modeset-vs-cursor-atomic", 4, true, true },
-+			{ "2x-long-nonblocking-modeset-vs-cursor-atomic", 15, true, true },
-+		};
- 
--		igt_subtest("2x-flip-vs-cursor-legacy")
--			two_screens_flip_vs_cursor(&display, 8, false, false);
+-	for_each_pipe_static(pipe) {
+-		igt_describe("Test for pipe CRC reads.");
+-		igt_subtest_f("read-crc-pipe-%s", kmstest_pipe_name(pipe))
+-			test_read_crc(&data, pipe, 0);
 -
--		igt_subtest("2x-flip-vs-cursor-atomic")
--			two_screens_flip_vs_cursor(&display, 8, false, true);
+-		igt_describe("Tests the pipe CRC read and ensure frame sequence.");
+-		igt_subtest_f("read-crc-pipe-%s-frame-sequence", kmstest_pipe_name(pipe))
+-			test_read_crc(&data, pipe, TEST_SEQUENCE);
 -
--		igt_subtest("2x-cursor-vs-flip-legacy")
--			two_screens_cursor_vs_flip(&display, 8, false);
+-		igt_describe("Test for O_NONBLOCK CRC reads.");
+-		igt_subtest_f("nonblocking-crc-pipe-%s", kmstest_pipe_name(pipe))
+-			test_read_crc(&data, pipe, TEST_NONBLOCK);
 -
--		igt_subtest("2x-long-flip-vs-cursor-legacy")
--			two_screens_flip_vs_cursor(&display, 150, false, false);
+-		igt_describe("Test for O_NONBLOCK CRC reads and ensure frame sequence.");
+-		igt_subtest_f("nonblocking-crc-pipe-%s-frame-sequence", kmstest_pipe_name(pipe))
+-			test_read_crc(&data, pipe, TEST_SEQUENCE | TEST_NONBLOCK);
 -
--		igt_subtest("2x-long-flip-vs-cursor-atomic")
--			two_screens_flip_vs_cursor(&display, 150, false, true);
+-		igt_describe("Suspend test for pipe CRC reads");
+-		igt_subtest_f("suspend-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
+-			test_read_crc(&data, pipe, 0);
 -
--		igt_subtest("2x-long-cursor-vs-flip-legacy")
--			two_screens_cursor_vs_flip(&display, 50, false);
+-			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+-						      SUSPEND_TEST_NONE);
 -
--		igt_subtest("2x-nonblocking-modeset-vs-cursor-atomic")
--			two_screens_flip_vs_cursor(&display, 4, true, true);
--
--		igt_subtest("2x-cursor-vs-flip-atomic")
--			two_screens_cursor_vs_flip(&display, 8, true);
-+		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+			igt_subtest(tests[i].name)
-+				two_screens_flip_vs_cursor(&display,
-+							   tests[i].nloops,
-+							   tests[i].modeset,
-+							   tests[i].atomic);
-+		}
-+	}
- 
--		igt_subtest("2x-long-nonblocking-modeset-vs-cursor-atomic")
--			two_screens_flip_vs_cursor(&display, 15, true, true);
-+	igt_describe("This test executes flips on both CRTCs "
-+		     "while running cursor updates in parallel");
-+	igt_subtest_group {
-+		struct {
-+			const char *name;
-+			int nloops;
-+			bool atomic;
-+		} tests[] = {
-+			{ "2x-cursor-vs-flip-legacy", 8, false },
-+			{ "2x-long-cursor-vs-flip-legacy", 50, false },
-+			{ "2x-cursor-vs-flip-atomic", 8, true },
-+			{ "2x-long-cursor-vs-flip-atomic", 50, true },
-+		};
- 
--		igt_subtest("2x-long-cursor-vs-flip-atomic")
--			two_screens_cursor_vs_flip(&display, 50, true);
-+		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+			igt_subtest(tests[i].name)
-+				two_screens_cursor_vs_flip(&display,
-+							   tests[i].nloops,
-+							   tests[i].atomic);
-+		}
- 	}
- 
- 	/*Test description for cursor-crc tests*/
-@@ -1556,69 +1567,86 @@ igt_main
- 			flip_vs_cursor_busy_crc(&display, true);
- 	}
- 
--	for (i = 0; i <= flip_test_last; i++) {
--		const char *modes[flip_test_last+1] = {
--			"legacy",
--			"varying-size",
--			"toggle",
--			"atomic",
--			"atomic-transitions",
--			"atomic-transitions-varying-size"
--		};
--		const char *prefix = "short-";
-+	for (i = 0; i < ARRAY_SIZE(prefix); i++) {
-+		int j;
- 
--		switch (i) {
--		case flip_test_legacy:
--		case flip_test_varying_size:
--		case flip_test_atomic:
--			prefix = "basic-";
--			break;
--		default: break;
--		}
--
--	igt_describe("Adds variety of tests: "
--		     "varying-size: change the size of cursor b/w 64*64 to maxw x maxh. "
--		     "atomic-transition: alternates between a full screen sprite plane. "
-+		igt_describe("Adds variety of tests: "
-+			"varying-size: change the size of cursor b/w 64*64 to maxw x maxh. "
-+			"atomic-transition: alternates between a full screen sprite plane. "
- 						"and full screen primary plane. "
--		     "toggle: which toggles cursor visibility and make sure cursor moves between updates.");
--	igt_subtest_group {
--		igt_subtest_f("%sflip-before-cursor-%s", prefix, modes[i])
--			basic_flip_cursor(&display, i, FLIP_BEFORE_CURSOR, 0);
--
--		igt_subtest_f("%sbusy-flip-before-cursor-%s", prefix, modes[i]) {
--			igt_require(!cursor_slowpath(&display, i));
--			igt_require_gem(display.drm_fd);
--			basic_flip_cursor(&display, i, FLIP_BEFORE_CURSOR,
--					  BASIC_BUSY);
--		}
--	}
--
--		igt_describe("The essence of the basic test is that neither the cursor nor the "
--			     "nonblocking flip stall the application of the next");
-+			"toggle: which toggles cursor visibility and make sure cursor moves between updates.");
- 		igt_subtest_group {
-+			igt_subtest_with_dynamic_f("%s-flip-before-cursor", prefix[i]) {
-+				for (j = 0; j <= flip_test_last; j++) {
-+					igt_dynamic_f("%s", modes[j])
-+						basic_flip_cursor(&display, j, FLIP_BEFORE_CURSOR, 0);
-+				}
-+			}
- 
--			igt_subtest_f("%sflip-after-cursor-%s", prefix, modes[i])
--				basic_flip_cursor(&display, i, FLIP_AFTER_CURSOR, 0);
-+			igt_subtest_with_dynamic_f("%s-busy-flip-before-cursor", prefix[i]) {
-+				igt_require(!cursor_slowpath(&display, i));
-+				igt_require_gem(display.drm_fd);
- 
--			igt_subtest_f("flip-vs-cursor-%s", modes[i])
--				flip_vs_cursor(&display, i, 150);
-+				for (j = 0; j <= flip_test_last; j++) {
-+					igt_dynamic_f("%s", modes[j])
-+						basic_flip_cursor(&display, j, FLIP_BEFORE_CURSOR, BASIC_BUSY);
-+				}
-+			}
- 
--			igt_subtest_f("cursor-vs-flip-%s", modes[i])
--				cursor_vs_flip(&display, i, 50);
-+			igt_subtest_with_dynamic_f("%s-flip-after-cursor", prefix[i]) {
-+				for (j = 0; j <= flip_test_last; j++) {
-+					igt_dynamic_f("%s", modes[j])
-+						basic_flip_cursor(&display, j, FLIP_AFTER_CURSOR, 0);
-+				}
-+			}
-+		}
-+	}
- 
--			igt_subtest_f("cursorA-vs-flipA-%s", modes[i])
--				flip(&display, 0, 0, 10, i);
-+	igt_describe("The essence of the basic test is that neither the cursor nor the "
-+		     "nonblocking flip stall the application of the next");
-+	igt_subtest_group {
-+		igt_subtest_with_dynamic("flip-vs-cursor") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip_vs_cursor(&display, i, 150);
-+			}
-+		}
+-			test_read_crc(&data, pipe, 0);
++	for (i = 0; i < ARRAY_SIZE(tests); i++) {
++		igt_describe(tests[i].desc);
++		igt_subtest_with_dynamic(tests[i].name) {
++			for_each_pipe(&data.display, pipe) {
++				igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
 +
-+		igt_subtest_with_dynamic("cursor-vs-flip") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					cursor_vs_flip(&display, i, 50);
-+			}
-+		}
++				igt_require(output);
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
++					if (tests[i].flags & TEST_SUSPEND) {
++						test_read_crc(&data, pipe, output, 0);
 +
-+		igt_subtest_with_dynamic("cursorA-vs-flipA") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip(&display, 0, 0, 10, i);
++						igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
++									      SUSPEND_TEST_NONE);
++
++						test_read_crc(&data, pipe, output, 0);
++					} else if (tests[i].flags & TEST_SUSPEND) {
++						igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
++
++						test_read_crc(&data, pipe, output, 0);
++						igt_force_gpu_reset(data.drm_fd);
++						test_read_crc(&data, pipe, output, 0);
++
++						igt_disallow_hang(data.drm_fd, hang);
++					} else {
++						test_read_crc(&data, pipe, output, tests[i].flags);
++					}
++				}
 +			}
-+		}
- 
--			igt_subtest_f("cursorA-vs-flipB-%s", modes[i])
--				flip(&display, 0, 1, 10, i);
-+		igt_subtest_with_dynamic("cursorA-vs-flipB") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip(&display, 0, 1, 10, i);
-+			}
-+		}
- 
--			igt_subtest_f("cursorB-vs-flipA-%s", modes[i])
--				flip(&display, 1, 0, 10, i);
-+		igt_subtest_with_dynamic("cursorB-vs-flipA") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip(&display, 1, 0, 10, i);
-+			}
-+		}
- 
--			igt_subtest_f("cursorB-vs-flipB-%s", modes[i])
--				flip(&display, 1, 1, 10, i);
-+		igt_subtest_with_dynamic("cursorB-vs-flipB") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip(&display, 1, 1, 10, i);
- 			}
  		}
 +	}
  
+-		igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
+-			     "does not cause issues.");
+-		igt_subtest_f("disable-crc-after-crtc-pipe-%s", kmstest_pipe_name(pipe))
+-			test_disable_crc_after_crtc(&data, pipe);
+-
+-		igt_describe("Hang test for pipe CRC read");
+-		igt_subtest_f("hang-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
+-			igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
+-
+-			test_read_crc(&data, pipe, 0);
++	igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
++		     "does not cause issues.");
++	igt_subtest_with_dynamic("disable-crc-after-crtc") {
++		for_each_pipe(&data.display, pipe) {
++			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
+ 
+-			igt_force_gpu_reset(data.drm_fd);
++			igt_require(output);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_disable_crc_after_crtc(&data, pipe, output);
++		}
++	}
+ 
+-			test_read_crc(&data, pipe, 0);
++	igt_describe("Basic sanity check for CRC mismatches");
++	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
++		for_each_pipe(&data.display, pipe) {
++			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
+ 
+-			igt_disallow_hang(data.drm_fd, hang);
++			igt_require(output);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++				test_compare_crc(&data, pipe, output);
+ 		}
+-
+-		igt_describe("Basic sanity check for CRC mismatches");
+-		igt_subtest_f("compare-crc-sanitycheck-pipe-%s", kmstest_pipe_name(pipe))
+-			test_compare_crc(&data, pipe);
+ 	}
+ 
  	igt_fixture {
- 		if (intel_psr2_restore)
 -- 
 2.35.1
