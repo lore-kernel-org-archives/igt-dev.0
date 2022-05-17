@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D912112B7B
- for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 07:28:12 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56FD8112B89
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 07:28:14 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Tue, 17 May 2022 09:28:00 +0200
-Message-Id: <20220517072803.186989-7-mauro.chehab@linux.intel.com>
+Date: Tue, 17 May 2022 09:28:01 +0200
+Message-Id: <20220517072803.186989-8-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
 References: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 6/9] lib/igt_kmod: make it less pedantic
- with audio driver removal
+Subject: [igt-dev] [PATCH i-g-t v4 7/9] lib/igt_core: export kill_children()
+ function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,102 +28,80 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Current Linux Kernel don't report if the audio driver binds
-into the DRM driver. As this is CPU specific, allow audio
-driver unload fail without skipping the IGT tests on legacy
-Kernels, as this may not be mandatory.
+This function is needed outside igt_core. So, make it exportable,
+and allow passing different signs to the children.
 
-On new kernels where lsmod will properly display the dependency
-between the audio and DRM drivers, skip the core hotunplug
-test if it fails to unload the audio driver, as this is
-unrelated to the DRM driver - and it could simply because there
-are some userspace code using the audio device while the IGT
-test is running.
-
-Reviewed-by Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_kmod.c         | 32 ++++++++++++++++++++++++++++----
- tests/core_hotunplug.c |  7 ++-----
- 2 files changed, 30 insertions(+), 9 deletions(-)
+ lib/igt_core.c | 12 ++++++------
+ lib/igt_core.h |  1 +
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 3e9302686844..329878aaeaf0 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -399,6 +399,13 @@ static int igt_always_unload_audio_driver(char **who)
- 		NULL,
- 	};
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 6dad3c84858f..b6bd67ab400f 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -2028,11 +2028,11 @@ void __igt_fail_assert(const char *domain, const char *file, const int line,
+ 	igt_fail(IGT_EXIT_FAILURE);
+ }
  
-+	/*
-+	 * With old Kernels, the dependencies between audio and DRM drivers
-+	 * are not shown. So, it may not be mandatory to remove the audio
-+	 * driver before unload/unbind the DRM one. So, let's print warnings,
-+	 * but return 0 on errors, as, if the dependency is mandatory, this
-+	 * will be detected later when trying to unbind/unload the DRM driver.
-+	 */
- 	for (const char **m = sound; *m; m++) {
- 		if (igt_kmod_is_loaded(*m)) {
- 			if (who) {
-@@ -406,13 +413,23 @@ static int igt_always_unload_audio_driver(char **who)
- 					free(*who);
- 				*who = strdup(*m);
+-static void kill_children(void)
++void igt_kill_children(int signal)
+ {
+ 	for (int c = 0; c < num_test_children; c++) {
+ 		if (test_children[c] > 0)
+-			kill(test_children[c], SIGKILL);
++			kill(test_children[c], signal);
+ 	}
+ }
+ 
+@@ -2060,7 +2060,7 @@ void __igt_abort(const char *domain, const char *file, const int line,
+ 	}
+ 
+ 	/* just try our best, we are aborting the execution anyway */
+-	kill_children();
++	igt_kill_children(SIGKILL);
+ 
+ 	print_backtrace();
+ 
+@@ -2124,7 +2124,7 @@ void igt_exit(void)
+ 			 command_str, igt_exitcode);
+ 	igt_debug("Exiting with status code %d\n", igt_exitcode);
+ 
+-	kill_children();
++	igt_kill_children(SIGKILL);
+ 	assert(!num_test_children);
+ 
+ 	assert(waitpid(-1, &tmp, WNOHANG) == -1 && errno == ECHILD);
+@@ -2390,7 +2390,7 @@ int __igt_waitchildren(void)
+ 				err = 256;
  			}
--			if (igt_lsof_kill_audio_processes())
--				return EACCES;
-+
-+			ret = igt_lsof_kill_audio_processes();
-+			if (ret) {
-+				igt_warn("Could not stop %d audio process(es)\n", ret);
-+				igt_kmod_list_loaded();
-+				igt_lsof("/dev/snd");
-+				return 0;
-+			}
  
- 			kick_snd_hda_intel();
- 			ret = igt_kmod_unload(*m, 0);
--			if (ret)
--				return ret;
-+			if (ret) {
-+				igt_warn("Could not unload audio driver %s\n", *m);
-+				igt_kmod_list_loaded();
-+				igt_lsof("/dev/snd");
-+				return 0;
-+			}
+-			kill_children();
++			igt_kill_children(SIGKILL);
  		}
- 	}
- 	return 0;
-@@ -605,6 +622,13 @@ int igt_audio_driver_unload(char **who)
- 	}
  
- ret:
-+	if (ret) {
-+		igt_warn("Couldn't unload %s, which is using the %s driver\n",
-+			 mod[pos].name, drm_driver);
-+		igt_kmod_list_loaded();
-+		igt_lsof("/dev/snd");
-+	}
-+
- 	free_module_ref(mod, num_mod);
+ 		count++;
+@@ -2424,7 +2424,7 @@ static void igt_alarm_killchildren(int signal)
+ {
+ 	igt_info("Timed out waiting for children\n");
  
- 	return ret;
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 7c68b336e67b..3888c660d4ac 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -149,11 +149,8 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
- 	 * unbind i915 driver, reloading it when binding again.
- 	 */
- 	if (igt_audio_driver_unload(&priv->snd_driver)) {
--		if (priv->snd_driver)
--			igt_warn("Could not unload audio driver %s\n", priv->snd_driver);
--		igt_kmod_list_loaded();
--		igt_lsof("/dev/snd");
--		igt_skip("Audio is in use, skipping\n");
-+		igt_skip("Audio driver %s in use, skipping test\n",
-+			 priv->snd_driver);
- 	} else if (priv->snd_driver) {
- 		igt_info("Unloaded audio driver %s\n", priv->snd_driver);
- 	}
+-	kill_children();
++	igt_kill_children(SIGKILL);
+ }
+ 
+ /**
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 78dc6202ced4..526282faff24 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1103,6 +1103,7 @@ bool __igt_fork(void);
+ int __igt_waitchildren(void);
+ void igt_waitchildren(void);
+ void igt_waitchildren_timeout(int seconds, const char *reason);
++void igt_kill_children(int signal);
+ 
+ /**
+  * igt_helper_process:
 -- 
 2.36.1
