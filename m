@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECE0A11B250
- for <igt-dev@lists.freedesktop.org>; Fri, 20 May 2022 05:42:53 +0000 (UTC)
-Date: Fri, 20 May 2022 08:40:29 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>
-Message-ID: <YocpzY0ty96Q7zbG@platvala-desk.ger.corp.intel.com>
-References: <20220516175927.27616-1-andrealmeid@igalia.com>
- <20220516175927.27616-2-andrealmeid@igalia.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7774112B89
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 07:28:11 +0000 (UTC)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Petri Latvala <petri.latvala@intel.com>
+Date: Tue, 17 May 2022 09:27:58 +0200
+Message-Id: <20220517072803.186989-5-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
+References: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220516175927.27616-2-andrealmeid@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_fb: Add support for drawing
- rectangles with random colors
+Subject: [igt-dev] [PATCH i-g-t v4 4/9] lib/igt_kmod: don't leak who from
+ module unload routines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,72 +20,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com, markyacoub@google.com
+Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, May 16, 2022 at 02:59:26PM -0300, André Almeida wrote:
-> Add support for drawing rectangles with random colors, useful for tests
-> that you don't mind which color will be used.
-> 
-> Signed-off-by: André Almeida <andrealmeid@igalia.com>
-> ---
->  lib/igt_fb.c | 20 ++++++++++++++++++++
->  lib/igt_fb.h |  1 +
->  2 files changed, 21 insertions(+)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index eafbe7fd..5ace94cc 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -1465,6 +1465,26 @@ void igt_paint_color(cairo_t *cr, int x, int y, int w, int h,
->  	cairo_fill(cr);
->  }
->  
-> +/**
-> + * igt_paint_color:
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The function name is igt_paint_color_rand.
+Add code to free allocated strings at the module unload routines
+from igt_kmod.
 
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ lib/igt_kmod.c        | 36 +++++++++++++++++++++++++-----------
+ lib/igt_kmod.h        |  4 ++--
+ tests/i915/perf_pmu.c |  4 +++-
+ 3 files changed, 30 insertions(+), 14 deletions(-)
 
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index ca74c602ce66..3e9302686844 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -390,7 +390,7 @@ igt_i915_driver_load(const char *opts)
+ 	return 0;
+ }
+ 
+-static int igt_always_unload_audio_driver(const char **who)
++static int igt_always_unload_audio_driver(char **who)
+ {
+ 	int ret;
+ 	const char *sound[] = {
+@@ -401,8 +401,11 @@ static int igt_always_unload_audio_driver(const char **who)
+ 
+ 	for (const char **m = sound; *m; m++) {
+ 		if (igt_kmod_is_loaded(*m)) {
+-			if (who)
+-				*who = *m;
++			if (who) {
++				if (*who)
++					free(*who);
++				*who = strdup(*m);
++			}
+ 			if (igt_lsof_kill_audio_processes())
+ 				return EACCES;
+ 
+@@ -544,7 +547,7 @@ static int linux_kernel_version(void)
+ 	return LINUX_VERSION(ver[0], ver[1], ver[2]);
+ }
+ 
+-int igt_audio_driver_unload(const char **who)
++int igt_audio_driver_unload(char **who)
+ {
+ 	const char *drm_driver = "i915";
+ 	unsigned int num_mod, i, j;
+@@ -583,8 +586,11 @@ int igt_audio_driver_unload(const char **who)
+ 	/* Recursively remove all drivers that depend on drm_driver */
+ 	for (j = 0; j < mod[i].num_required; j++) {
+ 		pos = mod[i].required_by[j];
+-		if (who)
++		if (who) {
++			if (*who)
++				free(who);
+ 			*who = strdup(mod[pos].name);
++		}
+ 		/*
+ 		 * If a sound driver depends on drm_driver, kill audio processes
+ 		 * first, in order to make it possible to unload the driver
+@@ -604,7 +610,7 @@ ret:
+ 	return ret;
+ }
+ 
+-int __igt_i915_driver_unload(const char **who)
++int __igt_i915_driver_unload(char **who)
+ {
+ 	int ret;
+ 
+@@ -631,8 +637,12 @@ int __igt_i915_driver_unload(const char **who)
+ 
+ 		ret = igt_kmod_unload(*m, 0);
+ 		if (ret) {
+-			if (who)
+-				*who = *m;
++			if (who) {
++				if (*who)
++					free(*who);
++
++				*who = strdup(*m);
++			}
+ 			return ret;
+ 		}
+ 	}
+@@ -640,8 +650,11 @@ int __igt_i915_driver_unload(const char **who)
+ 	if (igt_kmod_is_loaded("i915")) {
+ 		ret = igt_kmod_unload("i915", 0);
+ 		if (ret) {
+-			if (who)
+-				*who = "i915";
++			if (who) {
++				if (*who)
++					free(*who);
++				*who = strdup("i915");
++			}
+ 			return ret;
+ 		}
+ 	}
+@@ -658,7 +671,7 @@ int __igt_i915_driver_unload(const char **who)
+ int
+ igt_i915_driver_unload(void)
+ {
+-	const char *who;
++	char *who = NULL;
+ 	int ret;
+ 
+ 	ret = __igt_i915_driver_unload(&who);
+@@ -667,6 +680,7 @@ igt_i915_driver_unload(void)
+ 		igt_kmod_list_loaded();
+ 		igt_lsof("/dev/dri");
+ 		igt_lsof("/dev/snd");
++		free(who);
+ 		return ret;
+ 	}
+ 
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index 15f0be31e8e4..f98dd29fb175 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -36,11 +36,11 @@ bool igt_kmod_has_param(const char *mod_name, const char *param);
+ int igt_kmod_load(const char *mod_name, const char *opts);
+ int igt_kmod_unload(const char *mod_name, unsigned int flags);
+ 
+-int igt_audio_driver_unload(const char **whom);
++int igt_audio_driver_unload(char **whom);
+ 
+ int igt_i915_driver_load(const char *opts);
+ int igt_i915_driver_unload(void);
+-int __igt_i915_driver_unload(const char **whom);
++int __igt_i915_driver_unload(char **whom);
+ 
+ int igt_amdgpu_driver_load(const char *opts);
+ int igt_amdgpu_driver_unload(void);
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index c48cc07df0d2..ce047eab8296 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -2047,7 +2047,7 @@ static void test_unload(unsigned int num_engines)
+ 		int fd[4 + num_engines * 3], i;
+ 		uint64_t *buf;
+ 		int count = 0, ret;
+-		const char *who;
++		char *who = NULL;
+ 		int i915;
+ 
+ 		i915 = __drm_open_driver(DRIVER_INTEL);
+@@ -2104,6 +2104,8 @@ static void test_unload(unsigned int num_engines)
+ 		pmu_read_multi(fd[0], count, buf);
+ 		ret = __igt_i915_driver_unload(&who);
+ 		igt_assert(ret != 0 && !strcmp(who, "i915"));
++		if (who)
++			free(who);
+ 		pmu_read_multi(fd[0], count, buf);
+ 
+ 		igt_debug("Close perf\n");
 -- 
-Petri Latvala
-
-
-> + * @cr: cairo drawing context
-> + * @x: pixel x-coordination of the fill rectangle
-> + * @y: pixel y-coordination of the fill rectangle
-> + * @w: width of the fill rectangle
-> + * @h: height of the fill rectangle
-> + *
-> + * This functions draws a solid rectangle with random colors using the drawing
-> + * context @cr.
-> + */
-> +void igt_paint_color_rand(cairo_t *cr, int x, int y, int w, int h)
-> +{
-> +	double r = rand() / (double)RAND_MAX;
-> +	double g = rand() / (double)RAND_MAX;
-> +	double b = rand() / (double)RAND_MAX;
-> +
-> +	igt_paint_color(cr, x, y, w, h, r, g, b);
-> +}
-> +
->  /**
->   *
->   * igt_fill_cts_color_square_framebuffer:
-> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-> index 623a8caa..b3f096fe 100644
-> --- a/lib/igt_fb.h
-> +++ b/lib/igt_fb.h
-> @@ -191,6 +191,7 @@ cairo_t *igt_get_cairo_ctx(int fd, struct igt_fb *fb);
->  void igt_put_cairo_ctx(cairo_t *cr);
->  void igt_paint_color(cairo_t *cr, int x, int y, int w, int h,
->  			 double r, double g, double b);
-> +void igt_paint_color_rand(cairo_t *cr, int x, int y, int w, int h);
->  void igt_paint_color_alpha(cairo_t *cr, int x, int y, int w, int h,
->  			       double r, double g, double b, double a);
->  void igt_paint_color_gradient(cairo_t *cr, int x, int y, int w, int h,
-> -- 
-> 2.36.0
-> 
+2.36.1
