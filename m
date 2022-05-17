@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B07A10E325
- for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 09:23:35 +0000 (UTC)
-Message-ID: <4f292456-4f07-02a4-64ea-420b7f3a8a26@intel.com>
-Date: Tue, 17 May 2022 14:53:22 +0530
-Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220516104127.25657-1-nidhi1.gupta@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20220516104127.25657-1-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9773410E44B
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 10:56:50 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 17 May 2022 16:24:48 +0530
+Message-Id: <20220517105448.23117-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_concurrent: Skip the
- subtest if the resolution is not supported
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_legacy_colorkey: Create
+ dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,52 +21,85 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 5/16/2022 4:11 PM, Nidhi Gupta wrote:
-> The kms_concurrent is about testing mode setting with
-> reducing the resolution and then again increasing it,
-> for this the test will take the high resolution supported
-> by the connector and then calculate the lowest resolution,
-> if the calculated resolution is not supported by the connector
-> it will assign the default resolution of 1024x 768 without
-> checking.
->
-> Added check to skip the subtest if the default resolution is not supported
-> by the connector, to achieve that we are skipping if, mode_default->vdisplay < 1024"
-> becuase if the default resolution is greater then the highest
-> resolution supported by the connector then the test should skip.
+Modified kms_legacy_colorkey to include dynamic test cases.
 
-Hi,
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/i915/kms_legacy_colorkey.c | 50 ++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 15 deletions(-)
 
-Please update the commit message to something like, "Added check to skip 
-the subtest if the current mode is smaller than 1024 mode". We're 
-basically skipping the test because we couldn't find a mode lower than 
-the current mode.
-In most cases it would be true that current mode would be the highest, 
-but need not be always true. So better to make it clear in the commit 
-message.
-
-With this updated, the patch LGTM.
-
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-
-Thanks,
-Karthik.B.S
->
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/kms_concurrent.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-> index 82b2021e..0b696e63 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -252,6 +252,7 @@ get_lowres_mode(data_t *data, const drmModeModeInfo *mode_default,
->   			return igt_memdup(mode, sizeof(*mode));
->   	}
->   
-> +	igt_skip_on_f(mode_default->vdisplay < 1024, "No suitable resolution was found\n");
->   	return igt_std_1024_mode_get(igt_output_preferred_vrefresh(output));
->   }
->   
-
+diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
+index de9610a7..8c609d4f 100644
+--- a/tests/i915/kms_legacy_colorkey.c
++++ b/tests/i915/kms_legacy_colorkey.c
+@@ -38,33 +38,53 @@ static void test_plane(uint32_t plane_id, int expected_ret)
+ 	struct drm_intel_sprite_colorkey ckey = {
+ 		.plane_id = plane_id,
+ 	};
+-
+ 	igt_assert(drmCommandWrite(drm_fd, DRM_I915_SET_SPRITE_COLORKEY, &ckey,
+ 				   sizeof(ckey)) == expected_ret);
+ }
+ 
+-igt_simple_main
++igt_main
+ {
+-	drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 
+-	kmstest_set_vt_graphics_mode();
++	igt_fixture {
+ 
+-	igt_display_require(&display, drm_fd);
++		drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 
+-	for_each_pipe(&display, p) {
+-		for_each_plane_on_pipe(&display, p, plane) {
+-			bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
+-			                 plane->type == DRM_PLANE_TYPE_CURSOR);
+-			test_plane(plane->drm_plane->plane_id,
+-				   is_valid ? -ENOENT : 0);
++		kmstest_set_vt_graphics_mode();
+ 
+-			max_id = max(max_id, plane->drm_plane->plane_id);
++		igt_display_require(&display, drm_fd);
++		for_each_pipe(&display, p) {
++			for_each_plane_on_pipe(&display, p, plane) {
++				max_id = max(max_id, plane->drm_plane->plane_id);
++			}
+ 		}
++
+ 	}
++	igt_describe("check valid and invalid plane ID's\n");
+ 
++	igt_subtest_with_dynamic("basic") {
++		for_each_pipe(&display, p) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(p)) {
++				for_each_plane_on_pipe(&display, p, plane) {
++					bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
++							 plane->type == DRM_PLANE_TYPE_CURSOR);
++
++					test_plane(plane->drm_plane->plane_id,
++						   is_valid ? -ENOENT : 0);
++				}
++			}
++		}
++	}
+ 	/* try some invalid IDs too */
+-	test_plane(0, -ENOENT);
+-	test_plane(max_id + 1, -ENOENT);
++	igt_describe("check invalid plane id's zero and outrange\n");
++	igt_subtest_with_dynamic("invalid") {
++		igt_dynamic("zero")
++			test_plane(0, -ENOENT);
++		igt_dynamic("outrange")
++			test_plane(max_id + 1, -ENOENT);
++	}
+ 
+-	igt_display_fini(&display);
++	igt_fixture {
++		igt_display_fini(&display);
++		close(drm_fd);
++	}
+ }
+-- 
+2.25.1
