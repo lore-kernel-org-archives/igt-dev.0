@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBDF1112B7B
- for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 07:28:11 +0000 (UTC)
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Petri Latvala <petri.latvala@intel.com>
-Date: Tue, 17 May 2022 09:27:56 +0200
-Message-Id: <20220517072803.186989-3-mauro.chehab@linux.intel.com>
-In-Reply-To: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
-References: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99E9F10E318
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 07:48:37 +0000 (UTC)
+Date: Tue, 17 May 2022 10:48:26 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <YoNTStoMBn3nRWO0@intel.com>
+References: <20220516035255.28288-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 2/9] lib/igt_kmod: always fill who when
- unloading audio driver
+In-Reply-To: <20220516035255.28288-1-karthik.b.s@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_invalid_mode: Skip
+ clock-too-high subtest on DSC panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,62 +21,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+On Mon, May 16, 2022 at 09:22:55AM +0530, Karthik B S wrote:
+> Max clock limit calculation isn't valid with DSC.
 
-As we'll use this information at core_hotunplug to announce
-when an audio module is unloaded, fill it even if return code
-is zero.
+What does it have to do with DSC?
 
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- lib/igt_aux.c  | 2 +-
- lib/igt_kmod.c | 7 +++----
- 2 files changed, 4 insertions(+), 5 deletions(-)
+> Skip the test on DSC panels.
+> 
+> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/4402
+> 
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>  tests/kms_invalid_mode.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+> index bb92a94e..cf011a17 100644
+> --- a/tests/kms_invalid_mode.c
+> +++ b/tests/kms_invalid_mode.c
+> @@ -73,6 +73,8 @@ adjust_mode_clock_too_high(data_t *data, drmModeModeInfoPtr mode)
+>  	int max_dotclock = data->max_dotclock;
+>  
+>  	igt_require(max_dotclock != 0);
+> +	igt_require(!igt_is_dsc_supported(data->drm_fd,
+> +					  data->output->config.connector));
+>  
+>  	/*
+>  	 * FIXME When we have a fixed mode, the kernel will ignore
+> -- 
+> 2.22.0
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index f56b5a06f100..0d90ebb5b6ec 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -1422,7 +1422,7 @@ static void pulseaudio_unload_module(proc_t *proc_info)
- 		homedir = pw->pw_dir;
- 		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
- 
--		igt_info("Ask pulseaudio to stop using audio device\n");
-+		igt_info("Request pulseaudio to stop using audio device\n");
- 
- 		setgid(proc_info->egid);
- 		setuid(proc_info->euid);
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 133d19048a9b..d282be70f102 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -400,16 +400,15 @@ int igt_audio_driver_unload(const char **who)
- 
- 	for (const char **m = sound; *m; m++) {
- 		if (igt_kmod_is_loaded(*m)) {
-+			if (who)
-+				*who = *m;
- 			if (igt_lsof_kill_audio_processes())
- 				return EACCES;
- 
- 			kick_snd_hda_intel();
- 			ret = igt_kmod_unload(*m, 0);
--			if (ret) {
--				if (who)
--					*who = *m;
-+			if (ret)
- 				return ret;
--			}
- 		}
- 	}
- 	return 0;
 -- 
-2.36.1
+Ville Syrjälä
+Intel
