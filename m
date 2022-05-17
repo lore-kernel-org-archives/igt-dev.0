@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3B7D113228
- for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 15:40:50 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B07911323B
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 15:41:13 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Tue, 17 May 2022 17:40:37 +0200
-Message-Id: <20220517154044.226733-3-mauro.chehab@linux.intel.com>
+Date: Tue, 17 May 2022 17:40:42 +0200
+Message-Id: <20220517154044.226733-8-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220517154044.226733-1-mauro.chehab@linux.intel.com>
 References: <20220517154044.226733-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 2/9] lib/igt_kmod: always fill who when
- unloading audio driver
+Subject: [igt-dev] [PATCH i-g-t v6 7/9] lib/igt_core: export kill_children()
+ function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,54 +26,81 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-As we'll use this information at core_hotunplug to announce
-when an audio module is unloaded, fill it even if return code
-is zero.
+This function is needed outside igt_core. So, make it exportable,
+and allow passing different signs to the children.
 
 Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_aux.c  | 2 +-
- lib/igt_kmod.c | 7 +++----
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ lib/igt_core.c | 12 ++++++------
+ lib/igt_core.h |  1 +
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index f56b5a06f100..0d90ebb5b6ec 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -1422,7 +1422,7 @@ static void pulseaudio_unload_module(proc_t *proc_info)
- 		homedir = pw->pw_dir;
- 		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 6dad3c84858f..b6bd67ab400f 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -2028,11 +2028,11 @@ void __igt_fail_assert(const char *domain, const char *file, const int line,
+ 	igt_fail(IGT_EXIT_FAILURE);
+ }
  
--		igt_info("Ask pulseaudio to stop using audio device\n");
-+		igt_info("Request pulseaudio to stop using audio device\n");
- 
- 		setgid(proc_info->egid);
- 		setuid(proc_info->euid);
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 133d19048a9b..d282be70f102 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -400,16 +400,15 @@ int igt_audio_driver_unload(const char **who)
- 
- 	for (const char **m = sound; *m; m++) {
- 		if (igt_kmod_is_loaded(*m)) {
-+			if (who)
-+				*who = *m;
- 			if (igt_lsof_kill_audio_processes())
- 				return EACCES;
- 
- 			kick_snd_hda_intel();
- 			ret = igt_kmod_unload(*m, 0);
--			if (ret) {
--				if (who)
--					*who = *m;
-+			if (ret)
- 				return ret;
--			}
- 		}
+-static void kill_children(void)
++void igt_kill_children(int signal)
+ {
+ 	for (int c = 0; c < num_test_children; c++) {
+ 		if (test_children[c] > 0)
+-			kill(test_children[c], SIGKILL);
++			kill(test_children[c], signal);
  	}
- 	return 0;
+ }
+ 
+@@ -2060,7 +2060,7 @@ void __igt_abort(const char *domain, const char *file, const int line,
+ 	}
+ 
+ 	/* just try our best, we are aborting the execution anyway */
+-	kill_children();
++	igt_kill_children(SIGKILL);
+ 
+ 	print_backtrace();
+ 
+@@ -2124,7 +2124,7 @@ void igt_exit(void)
+ 			 command_str, igt_exitcode);
+ 	igt_debug("Exiting with status code %d\n", igt_exitcode);
+ 
+-	kill_children();
++	igt_kill_children(SIGKILL);
+ 	assert(!num_test_children);
+ 
+ 	assert(waitpid(-1, &tmp, WNOHANG) == -1 && errno == ECHILD);
+@@ -2390,7 +2390,7 @@ int __igt_waitchildren(void)
+ 				err = 256;
+ 			}
+ 
+-			kill_children();
++			igt_kill_children(SIGKILL);
+ 		}
+ 
+ 		count++;
+@@ -2424,7 +2424,7 @@ static void igt_alarm_killchildren(int signal)
+ {
+ 	igt_info("Timed out waiting for children\n");
+ 
+-	kill_children();
++	igt_kill_children(SIGKILL);
+ }
+ 
+ /**
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 78dc6202ced4..526282faff24 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1103,6 +1103,7 @@ bool __igt_fork(void);
+ int __igt_waitchildren(void);
+ void igt_waitchildren(void);
+ void igt_waitchildren_timeout(int seconds, const char *reason);
++void igt_kill_children(int signal);
+ 
+ /**
+  * igt_helper_process:
 -- 
 2.36.1
