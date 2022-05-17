@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 807D8112B7B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A89CF112B89
  for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 07:28:12 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Tue, 17 May 2022 09:28:03 +0200
-Message-Id: <20220517072803.186989-10-mauro.chehab@linux.intel.com>
+Date: Tue, 17 May 2022 09:27:57 +0200
+Message-Id: <20220517072803.186989-4-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
 References: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 9/9] lib/igt_aux: get rid of passing
- pipewire-pulse pid on functions
+Subject: [igt-dev] [PATCH i-g-t v4 3/9] lib/igt_kmod: improve audio unbind
+ logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,191 +28,253 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The logic already stores pw-reserve PID on a static var. Store
-also the pipewire-pulse pid, in order to keep passing the arguments
-on all functions.
+The dependencies between audio and DRM drivers are not trivial.
 
-Suggested-by: Andi Shyti <andi.shyti@linux.intel.com>
+On several CPUs, the logic inside snd-hda-intel, for instance, tries to
+hook into i915 driver, via drm_audio_component logic. That also happens
+when there's no runtime PM.
+
+When the audio driver is bound into i915, removing or unbinding i915
+without first removing the audio driver produce Kernel errors.
+
+So, the audio driver(s) should be removed first, and this can only
+happen after pulseaudio, pipewire-pulse, audioctl and any other
+userspace program stops using it.
+
+This is more prune to failures. So, the best is to only try to stop
+the audio driver when it is known to have dependencies on the video
+driver.
+
+Before an upcoming Kernel patch, there's no way to detect if the
+audio driver required a DRM one. So, the safest way is to always
+remove the audio drivers that are known to cause issues.
+
+After the new Kernel, the logic can be more selective, only removing
+the audio driver if /proc/modules shows dependencies with the DRM
+driver.
+
+Reviewed-by Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/igt_aux.c  | 24 ++++++++++++------------
- lib/igt_aux.h  |  6 +++---
- lib/igt_kmod.c | 14 ++++++--------
- 3 files changed, 21 insertions(+), 23 deletions(-)
+ lib/igt_kmod.c | 192 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 191 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index ff0d948361fd..755bffbc6d56 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -1435,7 +1435,10 @@ static void pulseaudio_unload_module(proc_t *proc_info)
- 	igt_waitchildren();
- }
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index d282be70f102..ca74c602ce66 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -24,6 +24,7 @@
+ #include <ctype.h>
+ #include <signal.h>
+ #include <errno.h>
++#include <sys/utsname.h>
  
--static void pipewire_reserve_wait(int pipewire_pulse_pid)
-+static int pipewire_pulse_pid = 0;
-+static int pipewire_pw_reserve_pid = 0;
-+
-+static void pipewire_reserve_wait(void)
- {
- 	char xdg_dir[PATH_MAX];
- 	const char *homedir;
-@@ -1480,12 +1483,10 @@ static void pipewire_reserve_wait(int pipewire_pulse_pid)
- 	}
- }
- 
--static int pipewire_pw_reserve_pid = 0;
--
- /* Maximum time waiting for pw-reserve to start running */
- #define PIPEWIRE_RESERVE_MAX_TIME 1000 /* milisseconds */
- 
--int pipewire_pulse_start_reserve(int pipewire_pulse_pid)
-+int pipewire_pulse_start_reserve(void)
- {
- 	bool is_pw_reserve_running = false;
- 	proc_t *proc_info;
-@@ -1495,7 +1496,7 @@ int pipewire_pulse_start_reserve(int pipewire_pulse_pid)
- 	if (!pipewire_pulse_pid)
- 		return 0;
- 
--	pipewire_reserve_wait(pipewire_pulse_pid);
-+	pipewire_reserve_wait();
- 
- 	/*
- 	 * Note: using pw-reserve to stop using audio only works with
-@@ -1534,7 +1535,7 @@ int pipewire_pulse_start_reserve(int pipewire_pulse_pid)
+ #include "igt_aux.h"
+ #include "igt_core.h"
+@@ -389,7 +390,7 @@ igt_i915_driver_load(const char *opts)
  	return 0;
  }
  
--void pipewire_pulse_stop_reserve(int pipewire_pulse_pid)
-+void pipewire_pulse_stop_reserve(void)
+-int igt_audio_driver_unload(const char **who)
++static int igt_always_unload_audio_driver(const char **who)
  {
- 	if (!pipewire_pulse_pid)
- 		return;
-@@ -1563,8 +1564,7 @@ void pipewire_pulse_stop_reserve(int pipewire_pulse_pid)
-  * If the check fails, it means that the process can simply be killed.
-  */
- static int
--__igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path,
--			       int *pipewire_pulse_pid)
-+__igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path)
- {
- 	const char *audio_dev = "/dev/snd/";
- 	char path[PATH_MAX * 2];
-@@ -1592,7 +1592,7 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path,
- 	if (!strcmp(proc_info->cmd, "pipewire-pulse")) {
- 		igt_info("process %d (%s) is using audio device. Should be requested to stop using them.\n",
- 			 proc_info->tid, proc_info->cmd);
--		*pipewire_pulse_pid = proc_info->tid;
-+		pipewire_pulse_pid = proc_info->tid;
- 		return 0;
- 	}
- 	/*
-@@ -1674,7 +1674,7 @@ __igt_lsof_audio_and_kill_proc(proc_t *proc_info, char *proc_path,
-  * daemons are respanned if they got killed.
-  */
- int
--igt_lsof_kill_audio_processes(int *pipewire_pulse_pid)
-+igt_lsof_kill_audio_processes(void)
- {
- 	char path[PATH_MAX];
- 	proc_t *proc_info;
-@@ -1683,13 +1683,13 @@ igt_lsof_kill_audio_processes(int *pipewire_pulse_pid)
- 
- 	proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
- 	igt_assert(proc != NULL);
--	*pipewire_pulse_pid = 0;
-+	pipewire_pulse_pid = 0;
- 
- 	while ((proc_info = readproc(proc, NULL))) {
- 		if (snprintf(path, sizeof(path), "/proc/%d/fd", proc_info->tid) < 1)
- 			fail++;
- 		else
--			fail += __igt_lsof_audio_and_kill_proc(proc_info, path, pipewire_pulse_pid);
-+			fail += __igt_lsof_audio_and_kill_proc(proc_info, path);
- 
- 		freeproc(proc_info);
- 	}
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index d8b05088f0ba..16a9785cd6df 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -306,9 +306,9 @@ bool igt_allow_unlimited_files(void);
- int igt_is_process_running(const char *comm);
- int igt_terminate_process(int sig, const char *comm);
- void igt_lsof(const char *dpath);
--int igt_lsof_kill_audio_processes(int *pipewire_pulse_pid);
--int pipewire_pulse_start_reserve(int pipewire_pulse_pid);
--void pipewire_pulse_stop_reserve(int pipewire_pulse_pid);
-+int igt_lsof_kill_audio_processes(void);
-+int pipewire_pulse_start_reserve(void);
-+void pipewire_pulse_stop_reserve(void);
- 
- #define igt_hweight(x) \
- 	__builtin_choose_expr(sizeof(x) == 8, \
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 1f967b6b5d3e..2e431be63746 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -392,7 +392,6 @@ igt_i915_driver_load(const char *opts)
- 
- static int igt_always_unload_audio_driver(char **who)
- {
--	int pipewire_pulse_pid;
  	int ret;
  	const char *sound[] = {
- 		"snd_hda_intel",
-@@ -415,7 +414,7 @@ static int igt_always_unload_audio_driver(char **who)
- 				*who = strdup(*m);
- 			}
+@@ -414,6 +415,195 @@ int igt_audio_driver_unload(const char **who)
+ 	return 0;
+ }
  
--			ret = igt_lsof_kill_audio_processes(&pipewire_pulse_pid);
-+			ret = igt_lsof_kill_audio_processes();
- 			if (ret) {
- 				igt_warn("Could not stop %d audio process(es)\n", ret);
- 				igt_kmod_list_loaded();
-@@ -423,12 +422,12 @@ static int igt_always_unload_audio_driver(char **who)
- 				return 0;
- 			}
- 
--			ret = pipewire_pulse_start_reserve(pipewire_pulse_pid);
-+			ret = pipewire_pulse_start_reserve();
- 			if (ret)
- 				igt_warn("Failed to notify pipewire_pulse\n");
- 			kick_snd_hda_intel();
- 			ret = igt_kmod_unload(*m, 0);
--			pipewire_pulse_stop_reserve(pipewire_pulse_pid);
-+			pipewire_pulse_stop_reserve();
- 			if (ret) {
- 				igt_warn("Could not unload audio driver %s\n", *m);
- 				igt_kmod_list_loaded();
-@@ -573,7 +572,6 @@ int igt_audio_driver_unload(char **who)
- {
- 	const char *drm_driver = "i915";
- 	unsigned int num_mod, i, j;
--	int pipewire_pulse_pid = 0;
- 	struct module_ref *mod;
- 	int pos = -1;
- 	int ret = 0;
-@@ -619,17 +617,17 @@ int igt_audio_driver_unload(char **who)
- 		 * first, in order to make it possible to unload the driver
- 		 */
- 		if (strstr(mod[pos].name, "snd")) {
--			if (igt_lsof_kill_audio_processes(&pipewire_pulse_pid)) {
++struct module_ref {
++	char *name;
++	unsigned long mem;
++	unsigned int ref_count;
++	unsigned int num_required;
++	unsigned int *required_by;
++};
++
++static struct module_ref *read_module_dependencies(unsigned int *num_mod)
++{
++	FILE *fp = fopen("/proc/modules", "r");
++	struct module_ref *mod = NULL;
++	size_t line_buf_size = 0;
++	char *required_by, *p;
++	unsigned n_mod = 0;
++	unsigned num_req;
++	char *line = NULL;
++	int len = 0;
++	int i, ret;
++
++	igt_assert(fp);
++
++	while ((len = getline(&line, &line_buf_size, fp)) > 0) {
++		mod = realloc(mod, (n_mod + 1) * sizeof(*mod));
++		igt_assert(mod);
++		mod[n_mod].required_by = NULL;
++
++		p = strtok(line, " ");
++		mod[n_mod].name = strdup(p);
++
++		p = strtok(NULL, " ");
++		ret = sscanf(p, "%lu", &mod[n_mod].mem);
++		igt_assert(ret == 1);
++
++		p = strtok(NULL, " ");
++		ret = sscanf(p, "%u", &mod[n_mod].ref_count);
++		igt_assert(ret == 1);
++
++		num_req = 0;
++		required_by = strtok(NULL, " ");
++		if (strcmp(required_by, "-")) {
++			p = strtok(required_by, ",");
++			while (p) {
++				for (i = 0; i < n_mod; i++)
++					if (!strcmp(p, mod[i].name))
++						break;
++
++				igt_assert(i < n_mod);
++
++				mod[n_mod].required_by = realloc(mod[n_mod].required_by,
++								 (num_req + 1) * sizeof(unsigned int));
++				mod[n_mod].required_by[num_req] = i;
++				num_req++;
++				p = strtok(NULL, ",");
++			}
++		}
++		mod[n_mod].num_required = num_req;
++		n_mod++;
++	}
++	free(line);
++	fclose(fp);
++
++	*num_mod = n_mod;
++	return mod;
++}
++
++static void free_module_ref(struct module_ref *mod, unsigned int num_mod)
++{
++	int i;
++
++	for (i = 0; i < num_mod; i++) {
++		free(mod[i].name);
++		free(mod[i].required_by);
++	}
++	free(mod);
++}
++
++static int igt_unload_driver(struct module_ref *mod, unsigned int num_mod,
++			     unsigned int pos)
++{
++	int ret, i;
++
++	/* Recursively remove depending modules, if any */
++	for (i = 0; i < mod[pos].num_required; i++) {
++		ret = igt_unload_driver(mod, num_mod,
++					mod[num_mod].required_by[i]);
++		if (ret)
++			return ret;
++	}
++
++	return igt_kmod_unload(mod[pos].name, 0);
++}
++
++#define LINUX_VERSION(major, minor, patch)			\
++		     ((major) << 16 | (minor) << 8 | (patch))
++
++static int linux_kernel_version(void)
++{
++	struct utsname utsname;
++	int ver[3] = { 0 };
++	int i = 0;
++	int n = 0;
++	char *p;
++
++	if (uname(&utsname))
++		return 0;
++
++	p = utsname.release;
++
++	while (*p && i < 3) {
++		if (isdigit(*p)) {
++			n = n * 10 + (*p - '0');
++			p++;
++			continue;
++		}
++		if (n > 255)
++			n = 255;
++		ver[i] = n;
++		i++;
++		n = 0;
++
++		if (*p != '.')
++			break;
++		p++;
++	}
++
++	return LINUX_VERSION(ver[0], ver[1], ver[2]);
++}
++
++int igt_audio_driver_unload(const char **who)
++{
++	const char *drm_driver = "i915";
++	unsigned int num_mod, i, j;
++	struct module_ref *mod;
++	int pos = -1;
++	int ret = 0;
++
++	/*
++	 * On older Kernels, there's no way to check if the audio driver
++	 * binds into the DRM one. So, always remove audio drivers that
++	 * might be binding.
++	 */
++	if (linux_kernel_version() < LINUX_VERSION(5, 20, 0))
++		return igt_always_unload_audio_driver(who);
++
++	/*
++	 * Newer Kernels gained support for showing the dependencies between
++	 * audio and DRM drivers via /proc/modules and lsmod. Use it to
++	 * detect if removing the audio driver is needed, properly unloading
++	 * any audio processes that could be using the audio driver and
++	 * handling module dependencies. Such solution should be generic
++	 * enough to work with newer SOC/SOF drivers if ever needed.
++	 */
++
++	mod = read_module_dependencies(&num_mod);
++
++	for (i = 0; i < num_mod; i++)
++		if (!strcmp(mod[i].name, drm_driver))
++			break;
++
++	if (i == num_mod) {
++		ret = 0;
++		goto ret;
++	}
++
++	/* Recursively remove all drivers that depend on drm_driver */
++	for (j = 0; j < mod[i].num_required; j++) {
++		pos = mod[i].required_by[j];
++		if (who)
++			*who = strdup(mod[pos].name);
++		/*
++		 * If a sound driver depends on drm_driver, kill audio processes
++		 * first, in order to make it possible to unload the driver
++		 */
++		if (strstr(mod[pos].name, "snd")) {
 +			if (igt_lsof_kill_audio_processes()) {
- 				ret = EACCES;
- 				goto ret;
- 			}
- 		}
- 
--		ret = pipewire_pulse_start_reserve(pipewire_pulse_pid);
-+		ret = pipewire_pulse_start_reserve();
- 		if (ret)
- 			igt_warn("Failed to notify pipewire_pulse\n");
- 		ret = igt_unload_driver(mod, num_mod, pos);
--		pipewire_pulse_stop_reserve(pipewire_pulse_pid);
-+		pipewire_pulse_stop_reserve();
- 		if (ret)
- 			break;
- 	}
++				ret = EACCES;
++				goto ret;
++			}
++		}
++		ret = igt_unload_driver(mod, num_mod, pos);
++	}
++
++ret:
++	free_module_ref(mod, num_mod);
++
++	return ret;
++}
++
+ int __igt_i915_driver_unload(const char **who)
+ {
+ 	int ret;
 -- 
 2.36.1
