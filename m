@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C766211300E
- for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 10:34:57 +0000 (UTC)
-Date: Tue, 17 May 2022 12:34:50 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A00E10E1EA
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 10:53:22 +0000 (UTC)
+Date: Tue, 17 May 2022 12:53:16 +0200
 From: Andi Shyti <andi.shyti@linux.intel.com>
-Message-ID: <YoN6StkBiQcqIyGr@intel.intel>
+Message-ID: <YoN+nPGPIcBdiUnR@intel.intel>
 References: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
- <20220517072803.186989-9-mauro.chehab@linux.intel.com>
+ <20220517072803.186989-10-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220517072803.186989-9-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 8/9] lib/igt_kmod: properly handle
- pipewire-pulse
+In-Reply-To: <20220517072803.186989-10-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 9/9] lib/igt_aux: get rid of passing
+ pipewire-pulse pid on functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,55 +28,18 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Mauro,
 
-> +static void pipewire_reserve_wait(int pipewire_pulse_pid)
-> +{
-> +	char xdg_dir[PATH_MAX];
-> +	const char *homedir;
-> +	struct passwd *pw;
-> +	proc_t *proc_info;
-> +	PROCTAB *proc;
-> +
-> +	igt_fork(child, 1) {
-> +		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
-> +
-> +		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
-> +		igt_assert(proc != NULL);
-> +
-> +		while ((proc_info = readproc(proc, NULL))) {
-> +			if (pipewire_pulse_pid == proc_info->tid)
-> +				break;
-> +			freeproc(proc_info);
-> +		}
-> +		closeproc(proc);
-> +
-> +		/* Sanity check: if it can't find the process, it means it has gone */
-> +		if (pipewire_pulse_pid != proc_info->tid)
-> +			exit(0);
-> +
-> +		pw = getpwuid(proc_info->euid);
-> +		homedir = pw->pw_dir;
-> +		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
-> +		setgid(proc_info->egid);
-> +		setuid(proc_info->euid);
-> +		clearenv();
-> +		setenv("HOME", homedir, 1);
-> +		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
-> +		freeproc(proc_info);
-> +
-> +		/*
-> +		 * pw-reserve will run in background. It will only exit when
-> +		 * igt_kill_children() is called later on. So, it shouldn't
-> +		 * call igt_waitchildren(). Instead, just exit with the return
-> +		 * code from pw-reserve.
-> +		 */
-> +		exit(system("pw-reserve -n Audio0 -r"));
+On Tue, May 17, 2022 at 09:28:03AM +0200, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> The logic already stores pw-reserve PID on a static var. Store
+> also the pipewire-pulse pid, in order to keep passing the arguments
+> on all functions.
+> 
+> Suggested-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Thanks for the comment! And I also think think it's safe!
-
-igt_fork() calls exit() anyway but you call it earlier, so that
-the former will not have time to be called.
+Looks better :) Thanks!
 
 Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
-Thanks,
 Andi
