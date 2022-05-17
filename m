@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2700344278595822109=="
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD42510E18C
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 11:38:37 +0000 (UTC)
+Message-ID: <3550400e-c700-62a0-fa73-2b33ec0b8dfe@intel.com>
+Date: Tue, 17 May 2022 17:08:02 +0530
+Content-Language: en-US
+To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220516151255.13153-1-anshuman.gupta@intel.com>
+ <20220516151255.13153-5-anshuman.gupta@intel.com>
+From: "Nilawar, Badal" <badal.nilawar@intel.com>
+In-Reply-To: <20220516151255.13153-5-anshuman.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Tue, 17 May 2022 11:36:39 -0000
-Message-ID: <165278739918.31033.17377142289978965009@emeril.freedesktop.org>
-References: <20220517105448.23117-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220517105448.23117-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/kms=5Flegacy=5Fcolorkey=3A_Create_dynamic_subtests?=
+Subject: Re: [igt-dev] [PATCH i-g-t v6 04/10] lib: Optional
+ autosuspend_delay_ms configuration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,298 +22,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2700344278595822109==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/i915/kms_legacy_colorkey: Create dynamic subtests
-URL   : https://patchwork.freedesktop.org/series/104072/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_6476 -> IGTPW_7117
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_7117 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7117, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/index.html
-
-Participating hosts (43 -> 39)
-------------------------------
-
-  Missing    (4): bat-dg2-8 fi-rkl-11600 bat-adlm-1 bat-adlp-4 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7117:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1:
-    - fi-bwr-2160:        [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7117 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-bdw-5557u:       NOTRUN -> [INCOMPLETE][3] ([i915#3921])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html
-    - bat-dg1-6:          [PASS][4] -> [DMESG-FAIL][5] ([i915#4494] / [i915#4957])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-pnv-d510:        [PASS][6] -> [DMESG-FAIL][7] ([i915#4528])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-pnv-d510/igt@i915_selftest@live@requests.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-pnv-d510/igt@i915_selftest@live@requests.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bsw-n3050/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-snb-2600:        NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][10] ([fdo#109271])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bsw-n3050/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {fi-ehl-2}:         [DMESG-WARN][11] ([i915#5122]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - fi-bsw-n3050:       [DMESG-FAIL][13] -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-bsw-n3050/igt@i915_selftest@live@gt_lrc.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bsw-n3050/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [INCOMPLETE][15] ([i915#3921]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@hugepages:
-    - fi-bdw-5557u:       [INCOMPLETE][17] -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-bdw-5557u/igt@i915_selftest@live@hugepages.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bdw-5557u/igt@i915_selftest@live@hugepages.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
-    - {bat-adlp-6}:       [DMESG-WARN][19] ([i915#3576]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6476 -> IGTPW_7117
-
-  CI-20190529: 20190529
-  CI_DRM_11663: 369f5a5daf29d74c920f418bc73c3eb5b97ddf44 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7117: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/index.html
-  IGT_6476: 08aa9296163b94cf4c529fc890ae3e90e21c3cdb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_legacy_colorkey@basic
-+igt@kms_legacy_colorkey@invalid
--igt@kms_legacy_colorkey
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/index.html
-
---===============2700344278595822109==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/kms_legacy_colorkey: Create dynamic subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104072/">https://patchwork.freedesktop.org/series/104072/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6476 -&gt; IGTPW_7117</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7117 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7117, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/index.html</p>
-<h2>Participating hosts (43 -&gt; 39)</h2>
-<p>Missing    (4): bat-dg2-8 fi-rkl-11600 bat-adlm-1 bat-adlp-4 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7117:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1:<ul>
-<li>fi-bwr-2160:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7117 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</p>
-</li>
-<li>
-<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bsw-n3050/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bsw-n3050/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5122">i915#5122</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-bsw-n3050/igt@i915_selftest@live@gt_lrc.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bsw-n3050/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hugepages:</p>
-<ul>
-<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/fi-bdw-5557u/igt@i915_selftest@live@hugepages.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/fi-bdw-5557u/igt@i915_selftest@live@hugepages.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6476/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6476 -&gt; IGTPW_7117</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11663: 369f5a5daf29d74c920f418bc73c3eb5b97ddf44 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7117: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7117/index.html<br />
-  IGT_6476: 08aa9296163b94cf4c529fc890ae3e90e21c3cdb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_legacy_colorkey@basic<br />
-+igt@kms_legacy_colorkey@invalid<br />
--igt@kms_legacy_colorkey</p>
-
-</body>
-</html>
-
---===============2700344278595822109==--
+On 16-05-2022 20:42, Anshuman Gupta wrote:
+> Add an option to configure autosuspend_delay_ms as i915 read
+> autosuspend_delay_ms to all PCI devices under GFX root port.
+> 
+> configuring autosuspend_delay_ms as optional.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+LGTM:
+Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+> ---
+>   lib/igt_pm.c | 48 +++++++++++++++++++++++++++++++++++++++---------
+>   lib/igt_pm.h |  3 ++-
+>   2 files changed, 41 insertions(+), 10 deletions(-)
+> 
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index 4768deefc8..6ebbad330c 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -988,11 +988,25 @@ static void igt_pm_write_power_attr(int fd, const char *val, int len)
+>   	igt_assert(strncmp(buf, val, len) == 0);
+>   }
+>   
+> +static int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev)
+> +{
+> +	char delay_str[64];
+> +	int delay, delay_fd;
+> +
+> +	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
+> +	if (igt_pm_read_power_attr(delay_fd, delay_str, 64, true))
+> +		igt_assert(sscanf(delay_str, "%d", &delay) > 0);
+> +
+> +	return delay;
+> +}
+> +
+>   static void
+> -igt_pm_setup_pci_dev_power_attrs(struct pci_device *pci_dev, struct igt_pm_pci_dev_pwrattr *pwrattr)
+> +igt_pm_setup_pci_dev_power_attrs(struct pci_device *pci_dev,
+> +				 struct igt_pm_pci_dev_pwrattr *pwrattr, int delay_ms)
+>   {
+>   	int control_fd, delay_fd, control_size, delay_size;
+>   	char *control, *delay;
+> +	char buff[64];
+>   
+>   	delay_fd = igt_pm_get_power_attr_fd(pci_dev, "autosuspend_delay_ms");
+>   	control_fd = igt_pm_get_power_attr_fd(pci_dev, "control");
+> @@ -1022,7 +1036,12 @@ igt_pm_setup_pci_dev_power_attrs(struct pci_device *pci_dev, struct igt_pm_pci_d
+>   
+>   write_power_attr:
+>   
+> -	igt_pm_write_power_attr(delay_fd, "0\n", 2);
+> +	if (delay_ms >= 0) {
+> +		int wc;
+> +		wc = snprintf(buff, 64, "%d\n", delay_ms);
+> +		igt_pm_write_power_attr(delay_fd, buff, wc);
+> +	}
+> +
+>   	igt_pm_write_power_attr(control_fd, "auto\n", 5);
+>   
+>   	close(delay_fd);
+> @@ -1030,7 +1049,7 @@ write_power_attr:
+>   }
+>   
+>   static void
+> -igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs)
+> +igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs, int delay)
+>   {
+>   	int primary, secondary, subordinate, ret;
+>   	struct pci_device_iterator *iter;
+> @@ -1052,11 +1071,15 @@ igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs)
+>   	igt_assert(iter);
+>   
+>   	/* Setup power attrs for PCI root port */
+> -	igt_pm_setup_pci_dev_power_attrs(pci_dev, save_attrs ? &__pci_dev_pwrattr[i++] : NULL);
+> +	igt_pm_setup_pci_dev_power_attrs(pci_dev,
+> +					 save_attrs ? &__pci_dev_pwrattr[i++] : NULL,
+> +					 delay);
+> +
+>   	while ((dev = pci_device_next(iter)) != NULL) {
+>   		if (dev->bus >= secondary && dev->bus <= subordinate) {
+>   			igt_pm_setup_pci_dev_power_attrs(dev,
+> -							 save_attrs ? &__pci_dev_pwrattr[i++] : NULL);
+> +							 save_attrs ? &__pci_dev_pwrattr[i++] : NULL,
+> +							 delay);
+>   			if (save_attrs)
+>   				igt_assert(i <  MAX_PCI_DEVICES);
+>   		}
+> @@ -1067,14 +1090,21 @@ igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs)
+>   
+>   /**
+>    * igt_pm_enable_pci_card_runtime_pm:
+> - * @pci_dev: root port pci_dev.
+> + * @root: root port pci_dev.
+> + * @i915: i915 pci_dev.
+>    * Enable runtime PM for all PCI endpoints devices for a given root port by
+>    * setting power/control attr to "auto" and setting autosuspend_delay_ms
+>    * to zero.
+>    */
+> -void igt_pm_enable_pci_card_runtime_pm(struct pci_device *pci_dev)
+> +void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
+> +				       struct pci_device *i915)
+>   {
+> -	igt_pm_setup_pci_card_power_attrs(pci_dev, false);
+> +	int delay = -1;
+> +
+> +	if (i915)
+> +		delay = igt_pm_get_autosuspend_delay(i915);
+> +
+> +	igt_pm_setup_pci_card_power_attrs(root, false, delay);
+>   	pci_system_cleanup();
+>   }
+>   
+> @@ -1089,7 +1119,7 @@ void igt_pm_enable_pci_card_runtime_pm(struct pci_device *pci_dev)
+>   void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev)
+>   {
+>   	memset(__pci_dev_pwrattr, 0, sizeof(__pci_dev_pwrattr));
+> -	igt_pm_setup_pci_card_power_attrs(pci_dev, true);
+> +	igt_pm_setup_pci_card_power_attrs(pci_dev, true, 0);
+>   }
+>   
+>   static void
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index c53dae2c31..f28b6ebfde 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -74,7 +74,8 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
+>   bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
+>   enum igt_acpi_d_state
+>   igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
+> -void igt_pm_enable_pci_card_runtime_pm(struct pci_device *pci_dev);
+> +void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
+> +				       struct pci_device *i915);
+>   void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
+>   void igt_pm_restore_pci_card_runtime_pm(void);
+>   void igt_pm_print_pci_card_runtime_status(void);
