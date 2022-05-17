@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9773410E44B
- for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 10:56:50 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 May 2022 16:24:48 +0530
-Message-Id: <20220517105448.23117-1-mohammed.thasleem@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1079A10ED5B
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 May 2022 11:04:31 +0000 (UTC)
+Date: Tue, 17 May 2022 13:04:24 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Message-ID: <20220517130424.759ba5ef@maurocar-mobl2>
+In-Reply-To: <YoN3yImlikekSbzh@intel.intel>
+References: <20220517072803.186989-1-mauro.chehab@linux.intel.com>
+ <20220517072803.186989-5-mauro.chehab@linux.intel.com>
+ <YoN3yImlikekSbzh@intel.intel>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_legacy_colorkey: Create
- dynamic subtests
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v4 4/9] lib/igt_kmod: don't leak who
+ from module unload routines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,89 +22,215 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Ch Sai Gowtham <sai.gowtham.ch@intel.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_legacy_colorkey to include dynamic test cases.
+On Tue, 17 May 2022 12:24:08 +0200
+Andi Shyti <andi.shyti@linux.intel.com> wrote:
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/i915/kms_legacy_colorkey.c | 50 ++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 15 deletions(-)
+> Hi Mauro,
+> 
+> On Tue, May 17, 2022 at 09:27:58AM +0200, Mauro Carvalho Chehab wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > 
+> > Add code to free allocated strings at the module unload routines
+> > from igt_kmod.
+> > 
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > ---
+> >  lib/igt_kmod.c        | 36 +++++++++++++++++++++++++-----------
+> >  lib/igt_kmod.h        |  4 ++--
+> >  tests/i915/perf_pmu.c |  4 +++-
+> >  3 files changed, 30 insertions(+), 14 deletions(-)
+> > 
+> > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> > index ca74c602ce66..3e9302686844 100644
+> > --- a/lib/igt_kmod.c
+> > +++ b/lib/igt_kmod.c
+> > @@ -390,7 +390,7 @@ igt_i915_driver_load(const char *opts)
+> >  	return 0;
+> >  }
+> >  
+> > -static int igt_always_unload_audio_driver(const char **who)
+> > +static int igt_always_unload_audio_driver(char **who)
+> >  {
+> >  	int ret;
+> >  	const char *sound[] = {
+> > @@ -401,8 +401,11 @@ static int igt_always_unload_audio_driver(const char **who)
+> >  
+> >  	for (const char **m = sound; *m; m++) {
+> >  		if (igt_kmod_is_loaded(*m)) {
+> > -			if (who)
+> > -				*who = *m;
+> > +			if (who) {
+> > +				if (*who)
+> > +					free(*who);  
+> 
+> I think free() is NULL safe. At least that's what the
+> documentation says(*).
 
-diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
-index de9610a7..8c609d4f 100644
---- a/tests/i915/kms_legacy_colorkey.c
-+++ b/tests/i915/kms_legacy_colorkey.c
-@@ -38,33 +38,53 @@ static void test_plane(uint32_t plane_id, int expected_ret)
- 	struct drm_intel_sprite_colorkey ckey = {
- 		.plane_id = plane_id,
- 	};
--
- 	igt_assert(drmCommandWrite(drm_fd, DRM_I915_SET_SPRITE_COLORKEY, &ckey,
- 				   sizeof(ckey)) == expected_ret);
- }
- 
--igt_simple_main
-+igt_main
- {
--	drm_fd = drm_open_driver_master(DRIVER_INTEL);
- 
--	kmstest_set_vt_graphics_mode();
-+	igt_fixture {
- 
--	igt_display_require(&display, drm_fd);
-+		drm_fd = drm_open_driver_master(DRIVER_INTEL);
- 
--	for_each_pipe(&display, p) {
--		for_each_plane_on_pipe(&display, p, plane) {
--			bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
--			                 plane->type == DRM_PLANE_TYPE_CURSOR);
--			test_plane(plane->drm_plane->plane_id,
--				   is_valid ? -ENOENT : 0);
-+		kmstest_set_vt_graphics_mode();
- 
--			max_id = max(max_id, plane->drm_plane->plane_id);
-+		igt_display_require(&display, drm_fd);
-+		for_each_pipe(&display, p) {
-+			for_each_plane_on_pipe(&display, p, plane) {
-+				max_id = max(max_id, plane->drm_plane->plane_id);
-+			}
- 		}
-+
- 	}
-+	igt_describe("check valid and invalid plane ID's\n");
- 
-+	igt_subtest_with_dynamic("basic") {
-+		for_each_pipe(&display, p) {
-+			igt_dynamic_f("pipe-%s", kmstest_pipe_name(p)) {
-+				for_each_plane_on_pipe(&display, p, plane) {
-+					bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
-+							 plane->type == DRM_PLANE_TYPE_CURSOR);
-+
-+					test_plane(plane->drm_plane->plane_id,
-+						   is_valid ? -ENOENT : 0);
-+				}
-+			}
-+		}
-+	}
- 	/* try some invalid IDs too */
--	test_plane(0, -ENOENT);
--	test_plane(max_id + 1, -ENOENT);
-+	igt_describe("check invalid plane id's zero and outrange\n");
-+	igt_subtest_with_dynamic("invalid") {
-+		igt_dynamic("zero")
-+			test_plane(0, -ENOENT);
-+		igt_dynamic("outrange")
-+			test_plane(max_id + 1, -ENOENT);
-+	}
- 
--	igt_display_fini(&display);
-+	igt_fixture {
-+		igt_display_fini(&display);
-+		close(drm_fd);
-+	}
- }
--- 
-2.25.1
+Maybe on some versions of glibc, but I'm pretty sure I got already
+troubles with free(NULL).
+
+> We could eventually make an igt_strdup_after_free(ptr) function
+> similar to this:
+> 
+>   char *igt_strdup_after_free(char **ptr, char *m)
+>   {
+>   	free(*ptr); /* don't know if it's required a double ** */
+>   	return strdup(m);
+>   }
+> 
+> and place it before patch 3. Then we just replace
+> /strdup/igt_strdup_after_free/ .
+
+I would prefer to define it as something like:
+
+static void *strealloc(char *origptr, char *strdata)
+{
+    size_t nbytes = strlen(strdata) + 1;
+    char *newptr = realloc(origptr, nbytes);
+    memcpy(newptr, strdata, nbytes);
+    return newptr;
+}
+
+Yet, it sounds overkill to me ;-)
+
+> 
+> This way we also have a correct bisectability.
+> 
+> What do you think? You can choose a better name, I'm not good at
+> naming functions.
+> 
+> Andi
+> 
+> (*) If ptr is NULL, no operation is performed.
+> 
+> > +				*who = strdup(*m);
+> > +			}
+> >  			if (igt_lsof_kill_audio_processes())
+> >  				return EACCES;
+> >  
+> > @@ -544,7 +547,7 @@ static int linux_kernel_version(void)
+> >  	return LINUX_VERSION(ver[0], ver[1], ver[2]);
+> >  }
+> >  
+> > -int igt_audio_driver_unload(const char **who)
+> > +int igt_audio_driver_unload(char **who)
+> >  {
+> >  	const char *drm_driver = "i915";
+> >  	unsigned int num_mod, i, j;
+> > @@ -583,8 +586,11 @@ int igt_audio_driver_unload(const char **who)
+> >  	/* Recursively remove all drivers that depend on drm_driver */
+> >  	for (j = 0; j < mod[i].num_required; j++) {
+> >  		pos = mod[i].required_by[j];
+> > -		if (who)
+> > +		if (who) {
+> > +			if (*who)
+> > +				free(who);
+> >  			*who = strdup(mod[pos].name);
+> > +		}
+> >  		/*
+> >  		 * If a sound driver depends on drm_driver, kill audio processes
+> >  		 * first, in order to make it possible to unload the driver
+> > @@ -604,7 +610,7 @@ ret:
+> >  	return ret;
+> >  }
+> >  
+> > -int __igt_i915_driver_unload(const char **who)
+> > +int __igt_i915_driver_unload(char **who)
+> >  {
+> >  	int ret;
+> >  
+> > @@ -631,8 +637,12 @@ int __igt_i915_driver_unload(const char **who)
+> >  
+> >  		ret = igt_kmod_unload(*m, 0);
+> >  		if (ret) {
+> > -			if (who)
+> > -				*who = *m;
+> > +			if (who) {
+> > +				if (*who)
+> > +					free(*who);
+> > +
+> > +				*who = strdup(*m);
+> > +			}
+> >  			return ret;
+> >  		}
+> >  	}
+> > @@ -640,8 +650,11 @@ int __igt_i915_driver_unload(const char **who)
+> >  	if (igt_kmod_is_loaded("i915")) {
+> >  		ret = igt_kmod_unload("i915", 0);
+> >  		if (ret) {
+> > -			if (who)
+> > -				*who = "i915";
+> > +			if (who) {
+> > +				if (*who)
+> > +					free(*who);
+> > +				*who = strdup("i915");
+> > +			}
+> >  			return ret;
+> >  		}
+> >  	}
+> > @@ -658,7 +671,7 @@ int __igt_i915_driver_unload(const char **who)
+> >  int
+> >  igt_i915_driver_unload(void)
+> >  {
+> > -	const char *who;
+> > +	char *who = NULL;
+> >  	int ret;
+> >  
+> >  	ret = __igt_i915_driver_unload(&who);
+> > @@ -667,6 +680,7 @@ igt_i915_driver_unload(void)
+> >  		igt_kmod_list_loaded();
+> >  		igt_lsof("/dev/dri");
+> >  		igt_lsof("/dev/snd");
+> > +		free(who);
+> >  		return ret;
+> >  	}
+> >  
+> > diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+> > index 15f0be31e8e4..f98dd29fb175 100644
+> > --- a/lib/igt_kmod.h
+> > +++ b/lib/igt_kmod.h
+> > @@ -36,11 +36,11 @@ bool igt_kmod_has_param(const char *mod_name, const char *param);
+> >  int igt_kmod_load(const char *mod_name, const char *opts);
+> >  int igt_kmod_unload(const char *mod_name, unsigned int flags);
+> >  
+> > -int igt_audio_driver_unload(const char **whom);
+> > +int igt_audio_driver_unload(char **whom);
+> >  
+> >  int igt_i915_driver_load(const char *opts);
+> >  int igt_i915_driver_unload(void);
+> > -int __igt_i915_driver_unload(const char **whom);
+> > +int __igt_i915_driver_unload(char **whom);
+> >  
+> >  int igt_amdgpu_driver_load(const char *opts);
+> >  int igt_amdgpu_driver_unload(void);
+> > diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+> > index c48cc07df0d2..ce047eab8296 100644
+> > --- a/tests/i915/perf_pmu.c
+> > +++ b/tests/i915/perf_pmu.c
+> > @@ -2047,7 +2047,7 @@ static void test_unload(unsigned int num_engines)
+> >  		int fd[4 + num_engines * 3], i;
+> >  		uint64_t *buf;
+> >  		int count = 0, ret;
+> > -		const char *who;
+> > +		char *who = NULL;
+> >  		int i915;
+> >  
+> >  		i915 = __drm_open_driver(DRIVER_INTEL);
+> > @@ -2104,6 +2104,8 @@ static void test_unload(unsigned int num_engines)
+> >  		pmu_read_multi(fd[0], count, buf);
+> >  		ret = __igt_i915_driver_unload(&who);
+> >  		igt_assert(ret != 0 && !strcmp(who, "i915"));
+> > +		if (who)
+> > +			free(who);
+> >  		pmu_read_multi(fd[0], count, buf);
+> >  
+> >  		igt_debug("Close perf\n");
+> > -- 
+> > 2.36.1  
