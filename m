@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8CE5113E37
- for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 06:28:07 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Date: Wed, 18 May 2022 06:28:02 +0000
-Message-ID: <508c7e9e8506471eb9cf047ac6ad9d81@intel.com>
-References: <20220511113734.27776-1-anshuman.gupta@intel.com>
- <20220511113734.27776-5-anshuman.gupta@intel.com>
- <87o7zwf5to.wl-ashutosh.dixit@intel.com>
-In-Reply-To: <87o7zwf5to.wl-ashutosh.dixit@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18C7E10E953
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 08:21:28 +0000 (UTC)
+Message-ID: <8f3c6093-72f2-419d-7c79-9a16d071f6ec@intel.com>
+Date: Wed, 18 May 2022 13:51:08 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220427082209.7276-1-karthik.b.s@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220427082209.7276-1-karthik.b.s@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 4/4] i915_pm_rpm: rpm resume by user
- forcewake
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_joiner: Convert test to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,133 +21,413 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>, "Wilson,
- Chris P" <chris.p.wilson@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nilawar,
- Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Wed-27-04-2022 01:52 pm, Karthik B S wrote:
+> Covert the tests to dynamic subtests at pipe level.
+> 
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/i915/kms_big_joiner.c | 218 +++++++++++++++++++-----------------
+>   1 file changed, 118 insertions(+), 100 deletions(-)
+> 
+> diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
+> index d7fa2e53..9922e43c 100644
+> --- a/tests/i915/kms_big_joiner.c
+> +++ b/tests/i915/kms_big_joiner.c
+> @@ -35,6 +35,8 @@ typedef struct {
+>   	igt_display_t display;
+>   	struct igt_fb fb;
+>   	int n_pipes;
+> +	enum pipe pipe1;
+> +	enum pipe pipe2;
+>   	struct output_data {
+>   		uint32_t id;
+>   		int mode_number;
+> @@ -46,10 +48,12 @@ static void test_invalid_modeset(data_t *data)
+>   	drmModeModeInfo *mode;
+>   	igt_display_t *display = &data->display;
+>   	igt_output_t *output, *big_joiner_output = NULL, *second_output = NULL;
+> -	int i, ret;
+> +	int ret;
+>   	igt_pipe_t *pipe;
+>   	igt_plane_t *plane;
+>   
+> +	igt_display_reset(display);
+> +
+>   	for_each_connected_output(display, output) {
+>   		mode = &output->config.connector->modes[0];
+>   
+> @@ -60,100 +64,92 @@ static void test_invalid_modeset(data_t *data)
+>   		}
+>   	}
+>   
+> -	for_each_pipe(display, i) {
+> -		if (i < (data->n_pipes - 1)) {
+> -			igt_output_set_pipe(big_joiner_output, i);
+> +	igt_output_set_pipe(big_joiner_output, data->pipe1);
+>   
+> -			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+> -			igt_output_override_mode(big_joiner_output, mode);
+> +	mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+> +	igt_output_override_mode(big_joiner_output, mode);
+>   
+> -			pipe = &display->pipes[i];
+> -			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +	pipe = &display->pipes[data->pipe1];
+> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -			igt_plane_set_fb(plane, &data->fb);
+> -			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> -			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_fb(plane, &data->fb);
+> +	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+>   
+> -			igt_display_commit2(display, COMMIT_ATOMIC);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
 
+As we are using atomic path, do we really need this commit?
 
-> -----Original Message-----
-> From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
-> Sent: Tuesday, May 17, 2022 10:35 PM
-> To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Nilawar, Badal <badal.nilawar@intel.co=
-m>;
-> Ewins, Jon <jon.ewins@intel.com>; Latvala, Petri <petri.latvala@intel.com=
->;
-> Tangudu, Tilak <tilak.tangudu@intel.com>; Wilson, Chris P
-> <chris.p.wilson@intel.com>
-> Subject: Re: [PATCH i-g-t v2 4/4] i915_pm_rpm: rpm resume by user forcewa=
-ke
->=20
-> On Wed, 11 May 2022 04:37:34 -0700, Anshuman Gupta wrote:
-> >
-> > Few gem rpm tests relies on enabling kms crtc in order to trigger rpm
-> > resume but on headless platforms these tests skip. Let it trigger the
-> > rpm resume by taking user forcewake.
-> >
-> > v2:
-> > - removed has_runtime_pm cond from
-> >   enable_one_screen_or_forcewake_and_wait(). [Ashutosh]
-> > - removed if (ms_data.res) cond from basic_subtest(). [Ashutosh]
-> > - clear forcewake in both only for headless. [Ashutosh]
-> >
-> > Cc: Chris Wilson <chris.p.wilson@intel.com>
-> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > ---
-> >  tests/i915/i915_pm_rpm.c | 80
-> > ++++++++++++++++++++++++++++++----------
-> >  1 file changed, 61 insertions(+), 19 deletions(-)
-> >
-> > diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c index
-> > a6035e60b..de71dd41c 100644
-> > --- a/tests/i915/i915_pm_rpm.c
-> > +++ b/tests/i915/i915_pm_rpm.c
-> > @@ -99,6 +99,7 @@ struct mode_set_data {
-> >	igt_display_t display;
-> >
-> >	uint32_t devid;
-> > +	int fw_fd;
-> >  };
-> >
-> >  /* Stuff we query at different times so we can compare. */  @@ -369,6
-> >+370,44 @@ static void enable_one_screen(struct mode_set_data *data)
-> >	igt_assert(wait_for_active()); \
-> >  } while (0)
-> >
-> > +static void
-> > +enable_one_screen_or_forcewake_and_wait(struct mode_set_data *data) {
-> > +	bool headless;
-> > +
-> > +	/* Try to resume by enabling any type of display */
-> > +	headless =3D !enable_one_screen_with_type(data, SCREEN_TYPE_ANY);
-> > +
-> > +	/*
-> > +	 * Get User Forcewake to trigger rpm resume in case of headless
-> > +	 * as well as no display being connected.
-> > +	 */
-> > +	if (headless) {
-> > +		data->fw_fd =3D igt_open_forcewake_handle(drm_fd);
-> > +		igt_require(data->fw_fd > 0);
-> > +	}
-> > +	igt_assert(wait_for_active());
-> > +}
-> > +
-> > +static void clear_forcewake(struct mode_set_data *data) {
-> > +	if (data->fw_fd <=3D 0)
-> > +		return;
-> > +
-> > +	data->fw_fd =3D close(data->fw_fd);
-> > +	igt_assert_eq(data->fw_fd, 0);
-> > +}
-> > +
-> > +static void
-> > +disable_all_screens_or_clr_forcewake_and_wait(struct mode_set_data
-> > +*data) {
-> > +	if (!default_mode_params)
->=20
-> Why introduce this new unrelated check here? Now someone needs to check i=
-f
-> this check is valid for headless. If we are introducing this here can we =
-also
-> introduce it in enable_one_screen_or_forcewake_and_wait()?
-This check is already present in enable_one_screen_with_type() in switch ca=
-se.
-Just introduced this to make both enable_one_screen_or_forcewake_and_wait()=
- /disable_all_screens_or_clr_forcewake_and_wait()
-symmetric to address the comment.
->=20
-> Can we not just do:
->=20
-> 	if (data->fw_fd)
->                 clear_forcewake(data);
->=20
-> as I was suggesting, or even unconditional is ok since clear_forcewake() =
-already
-> has the check. Let's just drop the if () here then as you previously had?
-Sure I will drop this check as it is not needed.
-Thanks,
-Anshuman Gupta.
->=20
-> Also I have another comment. The kernel increments/decrements a reference
-> count when "i915_forcewake_user" debugfs is open/closed. So closing the f=
-ile
-> doesn't necessary clear forcewake if a previous fd is open. How about cha=
-nging
-> function names with get/put to make this clear. E.g.
->=20
-> * enable_one_screen_or_forcewake_get_and_wait
-> * forcewake_put instead of clear_forcewake
-> * disable_all_screens_or_forcewake_put_and_wait
->=20
-> But not strictly needed, you decide, just a suggestion.
->=20
-> Rest everything looks good.
->=20
-> With the if () dropped this is:
->=20
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>   
+> -			igt_output_set_pipe(second_output, i + 1);
+> +	igt_output_set_pipe(second_output, data->pipe2);
+>   
+> -			mode = igt_output_get_mode(second_output);
+> +	mode = igt_output_get_mode(second_output);
+>   
+> -			pipe = &display->pipes[i + 1];
+> -			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +	pipe = &display->pipes[data->pipe2];
+> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -			igt_plane_set_fb(plane, &data->fb);
+> -			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> -			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_fb(plane, &data->fb);
+> +	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+>   
+> -			/* This commit is expectd to fail as this pipe is being used for big joiner */
+> -			ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
+> -							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -			igt_assert_lt(ret, 0);
+> +	/* This commit is expectd to fail as this pipe is being used for big joiner */
+> +	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
+> +					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +	igt_assert_lt(ret, 0);
+>   
+> -			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+> -			igt_output_set_pipe(second_output, PIPE_NONE);
+> +	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+> +	igt_output_set_pipe(second_output, PIPE_NONE);
+>   
+> -			pipe = &display->pipes[i];
+> -			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +	pipe = &display->pipes[data->pipe1];
+> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -			/*
+> -			 * Do not explicitly set the plane of the second output to NULL,
+> -			 * as it is the adjacent pipe to the big joiner output and
+> -			 * setting the big joiner plane to NULL will take care of this.
+> -			 */
+> -			igt_plane_set_fb(plane, NULL);
+> -			igt_display_commit2(display, COMMIT_ATOMIC);
+> -			igt_output_override_mode(big_joiner_output, NULL);
+> -		}
+> -	}
+> +	/*
+> +	 * Do not explicitly set the plane of the second output to NULL,
+> +	 * as it is the adjacent pipe to the big joiner output and
+> +	 * setting the big joiner plane to NULL will take care of this.
+> +	 */
+> +	igt_plane_set_fb(plane, NULL);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +	igt_output_override_mode(big_joiner_output, NULL);
+>   
+> -	for_each_pipe(display, i) {
+> -		if (i < (data->n_pipes - 1)) {
+> -			igt_output_set_pipe(second_output, i + 1);
+> +	igt_output_set_pipe(second_output, data->pipe2);
+>   
+> -			mode = igt_output_get_mode(second_output);
+> +	mode = igt_output_get_mode(second_output);
+>   
+> -			pipe = &display->pipes[i + 1];
+> -			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +	pipe = &display->pipes[data->pipe2];
+> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -			igt_plane_set_fb(plane, &data->fb);
+> -			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> -			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_fb(plane, &data->fb);
+> +	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+>   
+> -			igt_display_commit2(display, COMMIT_ATOMIC);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+
+Same here.
+
+>   
+> -			igt_output_set_pipe(big_joiner_output, i);
+> +	igt_output_set_pipe(big_joiner_output, data->pipe1);
+>   
+> -			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+> -			igt_output_override_mode(big_joiner_output, mode);
+> +	mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+> +	igt_output_override_mode(big_joiner_output, mode);
+>   
+> -			pipe = &display->pipes[i];
+> -			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +	pipe = &display->pipes[data->pipe1];
+> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -			igt_plane_set_fb(plane, &data->fb);
+> -			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> -			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_fb(plane, &data->fb);
+> +	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+>   
+> -			/* This commit is expected to fail as the adjacent pipe is already in use*/
+> -			ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
+> -							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -			igt_assert_lt(ret, 0);
+> +	/* This commit is expected to fail as the adjacent pipe is already in use*/
+> +	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
+> +					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +	igt_assert_lt(ret, 0);
+>   
+> -			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+> -			igt_output_set_pipe(second_output, PIPE_NONE);
+> -			igt_plane_set_fb(plane, NULL);
+> +	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+> +	igt_output_set_pipe(second_output, PIPE_NONE);
+> +	igt_plane_set_fb(plane, NULL);
+>   
+> -			pipe = &display->pipes[i + 1];
+> -			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> -			igt_plane_set_fb(plane, NULL);
+> +	pipe = &display->pipes[data->pipe2];
+> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +	igt_plane_set_fb(plane, NULL);
+>   
+> -			igt_display_commit2(display, COMMIT_ATOMIC);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+>   
+> -			igt_output_override_mode(big_joiner_output, NULL);
+> -		}
+> -	}
+> +	igt_output_override_mode(big_joiner_output, NULL);
+>   }
+>   
+>   static void test_basic_modeset(data_t *data)
+> @@ -161,10 +157,11 @@ static void test_basic_modeset(data_t *data)
+>   	drmModeModeInfo *mode;
+>   	igt_output_t *output, *big_joiner_output = NULL;
+>   	igt_display_t *display = &data->display;
+> -	int i;
+>   	igt_pipe_t *pipe;
+>   	igt_plane_t *plane;
+>   
+> +	igt_display_reset(display);
+> +
+>   	for_each_connected_output(display, output) {
+>   		if (data->big_joiner_output[0].id == output->id) {
+>   			big_joiner_output = output;
+> @@ -172,27 +169,23 @@ static void test_basic_modeset(data_t *data)
+>   		}
+>   	}
+>   
+> -	for_each_pipe(display, i) {
+> -		if (i < (data->n_pipes - 1)) {
+> -			igt_output_set_pipe(big_joiner_output, i);
+> +	igt_output_set_pipe(big_joiner_output, data->pipe1);
+>   
+> -			mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+> -			igt_output_override_mode(big_joiner_output, mode);
+> +	mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
+> +	igt_output_override_mode(big_joiner_output, mode);
+>   
+> -			pipe = &display->pipes[i];
+> -			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +	pipe = &display->pipes[data->pipe1];
+> +	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+> -			igt_plane_set_fb(plane, &data->fb);
+> -			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> -			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_fb(plane, &data->fb);
+> +	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> +	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+>   
+> -			igt_display_commit2(display, COMMIT_ATOMIC);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+>   
+> -			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+> -			igt_plane_set_fb(plane, NULL);
+> -			igt_display_commit2(display, COMMIT_ATOMIC);
+> -		}
+> -	}
+> +	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
+> +	igt_plane_set_fb(plane, NULL);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+>   }
+>   
+>   static void test_dual_display(data_t *data)
+> @@ -204,6 +197,8 @@ static void test_dual_display(data_t *data)
+>   	igt_plane_t *plane;
+>   	int count = 0;
+>   
+> +	igt_display_reset(display);
+> +
+>   	for_each_connected_output(display, output) {
+>   		if (data->big_joiner_output[count].id == output->id) {
+>   			big_joiner_output[count] = output;
+> @@ -214,14 +209,14 @@ static void test_dual_display(data_t *data)
+>   			break;
+>   	}
+>   
+> -	igt_output_set_pipe(big_joiner_output[0], PIPE_A);
+> -	igt_output_set_pipe(big_joiner_output[1], PIPE_C);
+> +	igt_output_set_pipe(big_joiner_output[0], data->pipe1);
+> +	igt_output_set_pipe(big_joiner_output[1], data->pipe2);
+>   
+>   	/* Set up first big joiner output on Pipe A*/
+>   	mode = &big_joiner_output[0]->config.connector->modes[data->big_joiner_output[0].mode_number];
+>   	igt_output_override_mode(big_joiner_output[0], mode);
+>   
+> -	pipe = &display->pipes[PIPE_A];
+> +	pipe = &display->pipes[data->pipe1];
+>   	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+>   	igt_plane_set_fb(plane, &data->fb);
+> @@ -232,7 +227,7 @@ static void test_dual_display(data_t *data)
+>   	mode = &big_joiner_output[1]->config.connector->modes[data->big_joiner_output[1].mode_number];
+>   	igt_output_override_mode(big_joiner_output[1], mode);
+>   
+> -	pipe = &display->pipes[PIPE_C];
+> +	pipe = &display->pipes[data->pipe2];
+>   	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+>   	igt_plane_set_fb(plane, &data->fb);
+> @@ -244,8 +239,8 @@ static void test_dual_display(data_t *data)
+>   	/* Clean up */
+>   	igt_output_set_pipe(big_joiner_output[0], PIPE_NONE);
+>   	igt_output_set_pipe(big_joiner_output[1], PIPE_NONE);
+> -	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[PIPE_A], DRM_PLANE_TYPE_PRIMARY), NULL);
+> -	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[PIPE_C], DRM_PLANE_TYPE_PRIMARY), NULL);
+> +	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[data->pipe1], DRM_PLANE_TYPE_PRIMARY), NULL);
+> +	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[data->pipe2], DRM_PLANE_TYPE_PRIMARY), NULL);
+
+As we are preserving the primary plane in variable plane, I think we can 
+have one more variable plane2 and use as below:
+
+igt_plane_set_fb(plane, NULL);
+igt_plane_set_fb(plane2, NULL);
+
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>   }
+>   
+> @@ -254,8 +249,9 @@ igt_main
+>   	data_t data;
+>   	igt_output_t *output;
+>   	drmModeModeInfo *mode;
+> -	int valid_output = 0, i, count = 0;
+> +	int valid_output = 0, i, count = 0, j = 0;
+>   	uint16_t width = 0, height = 0;
+> +	enum pipe pipe_seq[IGT_MAX_PIPES];
+>   
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+
+Please add below items to igt_fixture.
+
+igt_display_require_output();
+igt_require(display->atomic);
+
+> @@ -282,8 +278,11 @@ igt_main
+>   		}
+>   
+>   		data.n_pipes = 0;
+> -		for_each_pipe(&data.display, i)
+> +		for_each_pipe(&data.display, i) {
+>   			data.n_pipes++;
+> +			pipe_seq[j] = i;
+> +			j++;
+> +		}
+>   
+>   		igt_require_f(count > 0, "No output with 5k+ mode found\n");
+>   
+> @@ -292,21 +291,40 @@ igt_main
+>   	}
+>   
+>   	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+> -	igt_subtest("basic")
+> -		test_basic_modeset(&data);
+> +	igt_subtest_with_dynamic("basic") {
+> +		for (i = 0; i < data.n_pipes - 1; i++) {
+> +			if (i < (data.n_pipes - 1)) {
+
+This check is redundant.
+
+> +				data.pipe1 = pipe_seq[i];
+> +				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe_seq[i]))
+> +					test_basic_modeset(&data);
+> +			}
+> +		}
+> +	}
+>   
+>   	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
+>   		     "when the pipe is active with a big joiner modeset");
+> -	igt_subtest("invalid-modeset") {
+> +	igt_subtest_with_dynamic("invalid-modeset") {
+>   		igt_require_f(valid_output > 1, "No valid Second output found\n");
+> -		test_invalid_modeset(&data);
+> +		for (i = 0; i < data.n_pipes - 1; i++) {
+> +			if (i < (data.n_pipes - 1)) {
+
+Same here.
+
+> +				data.pipe1 = pipe_seq[i];
+> +				data.pipe2 = pipe_seq[i + 1];
+> +				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe_seq[i]))
+
+Can we add second pipe name to the subtest?
+
+> +					test_invalid_modeset(&data);
+> +			}
+> +		}
+>   	}
+>   
+>   	igt_describe("Verify simultaneous modeset on 2 big joiner outputs");
+> -	igt_subtest("2x-modeset") {
+> +	igt_subtest_with_dynamic("2x-modeset") {
+>   		igt_require_f(count > 1, "2 outputs with big joiner modes are required\n");
+>   		igt_require_f(data.n_pipes > 3, "Minumum of 4 pipes are required\n");
+> -		test_dual_display(&data);
+> +		for (i = 0; (i + 2) < data.n_pipes - 1; i++) {
+
+consider adl_p, which is having 4 active pipes (A, B, C, D)
+
+With this logic, we can run this test with Pipe-A-C only but Pipe-C-A is 
+also a valid combo.
+
+Are we not loosing the coverage?
+
+> +			data.pipe1 = pipe_seq[i];
+> +			data.pipe2 = pipe_seq[i + 2];
+> +			igt_dynamic_f("pipe-%s%s", kmstest_pipe_name(pipe_seq[i]), kmstest_pipe_name(pipe_seq[i + 2]))
+
+Nit: s/"pipe-%s%s"/"pipe-%s-%s"/
+
+> +				test_dual_display(&data);
+> +		}
+>   	}
+>   
+>   	igt_fixture {
