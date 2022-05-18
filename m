@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7758210E2C5
- for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 11:55:47 +0000 (UTC)
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 18 May 2022 14:55:05 +0300
-Message-Id: <20220518115505.207813-4-jouni.hogander@intel.com>
-In-Reply-To: <20220518115505.207813-1-jouni.hogander@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4518410E8F6
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 12:20:00 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 18 May 2022 12:19:52 +0000
+Message-ID: <MWHPR1101MB215723CA155A363D02E1A543EFD19@MWHPR1101MB2157.namprd11.prod.outlook.com>
 References: <20220518115505.207813-1-jouni.hogander@intel.com>
+ <20220518115505.207813-2-jouni.hogander@intel.com>
+In-Reply-To: <20220518115505.207813-2-jouni.hogander@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/i915/kms_psr2_sf: add sel
- fetch/big fb test
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] tests/kms_psr2_sf: Move
+ continuous testcase preparation for new tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,353 +27,100 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new testcase for testing selective fetch using big framebuffer.
-New testcase is using much bigger fb than what is the visible area
-and setting visible offset to half of the width and the height.
-This reveals issues in selective fetch area calculation:
-
-https://gitlab.freedesktop.org/drm/intel/-/issues/5440
-
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
----
- tests/i915/kms_psr2_sf.c | 152 ++++++++++++++++++++++++++++-----------
- 1 file changed, 109 insertions(+), 43 deletions(-)
-
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index 75232973..1ccbd11a 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -73,6 +73,7 @@ typedef struct {
- 	struct igt_fb *fb_continuous;
- 	uint32_t primary_format;
- 	int damage_area_count;
-+	int big_fb_width, big_fb_height;
- 	struct drm_mode_rect plane_update_clip[MAX_DAMAGE_AREAS];
- 	struct drm_mode_rect plane_move_clip;
- 	struct drm_mode_rect cursor_clip;
-@@ -80,6 +81,7 @@ typedef struct {
- 	enum plane_move_postion pos;
- 	int test_plane_id;
- 	igt_plane_t *test_plane;
-+	bool big_fb_test;
- 	cairo_t *cr;
- 	uint32_t screen_changes;
- 	int cur_x, cur_y;
-@@ -152,7 +154,7 @@ static void set_clip(struct drm_mode_rect *clip, int x, int y, int width,
- }
- 
- static void plane_update_setup_squares(data_t *data, igt_fb_t *fb, uint32_t h,
--				       uint32_t v)
-+				       uint32_t v, int pos_x, int pos_y)
- {
- 	int x, y;
- 	int width = SQUARE_SIZE;
-@@ -161,36 +163,36 @@ static void plane_update_setup_squares(data_t *data, igt_fb_t *fb, uint32_t h,
- 	switch (data->damage_area_count) {
- 	case 5:
- 		/*Bottom right corner*/
--		x = h - SQUARE_SIZE;
--		y = v - SQUARE_SIZE;
-+		x = pos_x + h - SQUARE_SIZE;
-+		y = pos_y + v - SQUARE_SIZE;
- 
- 		draw_rect(data, fb, x, y, width, height, 1.0, 1.0, 1.0, 1.0);
- 		set_clip(&data->plane_update_clip[4], x, y, width, height);
- 	case 4:
- 		/*Bottom left corner*/
--		x = 0;
--		y = v - SQUARE_SIZE;
-+		x = pos_x;
-+		y = pos_y + v - SQUARE_SIZE;
- 
- 		draw_rect(data, fb, x, y, width, height, 1.0, 1.0, 1.0, 1.0);
- 		set_clip(&data->plane_update_clip[3], x, y, width, height);
- 	case 3:
- 		/*Top right corner*/
--		x = h - SQUARE_SIZE;
--		y = 0;
-+		x = pos_x + h - SQUARE_SIZE;
-+		y = pos_y;
- 
- 		draw_rect(data, fb, x, y, width, height, 1.0, 1.0, 1.0, 1.0);
- 		set_clip(&data->plane_update_clip[2], x, y, width, height);
- 	case 2:
- 		/*Top left corner*/
--		x = 0;
--		y = 0;
-+		x = pos_x;
-+		y = pos_y;
- 
- 		draw_rect(data, fb, x, y, width, height, 1.0, 1.0, 1.0, 1.0);
- 		set_clip(&data->plane_update_clip[1], x, y, width, height);
- 	case 1:
- 		/*Center*/
--		x = h/2 - SQUARE_SIZE/2;
--		y = v/2 - SQUARE_SIZE/2;
-+		x = pos_x + h / 2 - SQUARE_SIZE / 2;
-+		y = pos_y + v / 2 - SQUARE_SIZE / 2;
- 
- 		draw_rect(data, fb, x, y, width, height, 1.0, 1.0, 1.0, 1.0);
- 		set_clip(&data->plane_update_clip[0], x, y, width, height);
-@@ -201,30 +203,30 @@ static void plane_update_setup_squares(data_t *data, igt_fb_t *fb, uint32_t h,
- }
- 
- static void plane_move_setup_square(data_t *data, igt_fb_t *fb, uint32_t h,
--				       uint32_t v)
-+				    uint32_t v, int pos_x, int pos_y)
- {
- 	int x = 0, y = 0;
- 
- 	switch (data->pos) {
- 	case POS_TOP_LEFT:
- 		/*Bottom right corner*/
--		x = h - SQUARE_SIZE;
--		y = v - SQUARE_SIZE;
-+		x = pos_x + h - SQUARE_SIZE;
-+		y = pos_y + v - SQUARE_SIZE;
- 		break;
- 	case POS_TOP_RIGHT:
- 		/*Bottom left corner*/
--		x = 0;
--		y = v - SQUARE_SIZE;
-+		x = pos_x;
-+		y = pos_y + v - SQUARE_SIZE;
- 		break;
- 	case POS_BOTTOM_LEFT:
- 		/*Top right corner*/
--		x = h - SQUARE_SIZE;
--		y = 0;
-+		x = pos_x + h - SQUARE_SIZE;
-+		y = pos_y + 0;
- 		break;
- 	case POS_BOTTOM_RIGHT:
- 		/*Top left corner*/
--		x = 0;
--		y = 0;
-+		x = pos_x;
-+		y = pos_y;
- 		break;
- 	default:
- 		igt_assert(false);
-@@ -238,10 +240,23 @@ static void plane_move_setup_square(data_t *data, igt_fb_t *fb, uint32_t h,
- static void prepare(data_t *data)
- {
- 	igt_plane_t *primary, *sprite = NULL, *cursor = NULL;
-+	int fb_w, fb_h, x, y, view_w, view_h;
-+
-+	if (data->big_fb_test) {
-+		fb_w = data->big_fb_width;
-+		fb_h = data->big_fb_height;
-+		x = fb_w / 2;
-+		y = fb_h / 2;
-+		view_w = data->mode->hdisplay;
-+		view_h = data->mode->vdisplay;
-+	} else {
-+		fb_w = view_w = data->mode->hdisplay;
-+		fb_h = view_h = data->mode->vdisplay;
-+		x = y = 0;
-+	}
- 
- 	/* all green frame */
--	igt_create_color_fb(data->drm_fd,
--			    data->mode->hdisplay, data->mode->vdisplay,
-+	igt_create_color_fb(data->drm_fd, fb_w, fb_h,
- 			    data->primary_format,
- 			    DRM_FORMAT_MOD_LINEAR,
- 			    0.0, 1.0, 0.0,
-@@ -256,16 +271,14 @@ static void prepare(data_t *data)
- 						   DRM_PLANE_TYPE_OVERLAY);
- 		/*All blue plane*/
- 		igt_create_color_fb(data->drm_fd,
--				    data->mode->hdisplay/2,
--				    data->mode->vdisplay/2,
-+				    fb_w / 2, fb_h / 2,
- 				    DRM_FORMAT_XRGB8888,
- 				    DRM_FORMAT_MOD_LINEAR,
- 				    0.0, 0.0, 1.0,
- 				    &data->fb_overlay);
- 
- 		igt_create_color_fb(data->drm_fd,
--				    data->mode->hdisplay/2,
--				    data->mode->vdisplay/2,
-+				    fb_w / 2, fb_h / 2,
- 				    DRM_FORMAT_XRGB8888,
- 				    DRM_FORMAT_MOD_LINEAR,
- 				    0.0, 0.0, 1.0,
-@@ -275,30 +288,32 @@ static void prepare(data_t *data)
- 
- 		if (data->op == PLANE_MOVE) {
- 			plane_move_setup_square(data, &data->fb_test,
--					   data->mode->hdisplay/2,
--					   data->mode->vdisplay/2);
-+						view_w / 2, view_h / 2,
-+						x, y);
- 
- 		} else {
- 			plane_update_setup_squares(data, &data->fb_test,
--					   data->mode->hdisplay/2,
--					   data->mode->vdisplay/2);
-+						   view_w / 2, view_h / 2,
-+						   x, y);
- 		}
- 
- 		igt_plane_set_fb(sprite, &data->fb_overlay);
-+		igt_fb_set_position(&data->fb_overlay, sprite, x, y);
-+		igt_fb_set_size(&data->fb_overlay, primary, view_w / 2,
-+				view_h / 2);
-+		igt_plane_set_size(sprite, view_w / 2, view_h / 2);
- 		data->test_plane = sprite;
- 		break;
- 
- 	case DRM_PLANE_TYPE_PRIMARY:
--		igt_create_color_fb(data->drm_fd,
--			    data->mode->hdisplay, data->mode->vdisplay,
--			    DRM_FORMAT_XRGB8888,
--			    DRM_FORMAT_MOD_LINEAR,
--			    0.0, 1.0, 0.0,
--			    &data->fb_test);
-+		igt_create_color_fb(data->drm_fd, fb_w, fb_h,
-+				    DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR,
-+				    0.0, 1.0, 0.0,
-+				    &data->fb_test);
- 
- 		plane_update_setup_squares(data, &data->fb_test,
--					   data->mode->hdisplay,
--					   data->mode->vdisplay);
-+					   view_w, view_h, x, y);
- 		data->fb_continuous = &data->fb_primary;
- 		data->test_plane = primary;
- 
-@@ -306,15 +321,17 @@ static void prepare(data_t *data)
- 			sprite = igt_output_get_plane_type(data->output,
- 						   DRM_PLANE_TYPE_OVERLAY);
- 
--			igt_create_color_fb(data->drm_fd,
--					    data->mode->hdisplay,
--					    data->mode->vdisplay,
-+			igt_create_color_fb(data->drm_fd, fb_w, fb_h,
- 					    DRM_FORMAT_XRGB8888,
- 					    DRM_FORMAT_MOD_LINEAR,
- 					    0.0, 0.0, 1.0,
- 					    &data->fb_overlay);
- 
- 			igt_plane_set_fb(sprite, &data->fb_overlay);
-+			igt_fb_set_position(&data->fb_overlay, sprite, x, y);
-+			igt_fb_set_size(&data->fb_overlay, primary, view_w,
-+					view_h);
-+			igt_plane_set_size(sprite, view_w, view_h);
- 			igt_plane_set_prop_value(sprite, IGT_PLANE_ALPHA,
- 						 0x6060);
- 		}
-@@ -349,7 +366,11 @@ static void prepare(data_t *data)
- 	}
- 
- 	igt_plane_set_fb(primary, &data->fb_primary);
--
-+	igt_fb_set_position(&data->fb_primary, primary, x, y);
-+	igt_fb_set_size(&data->fb_overlay, primary, view_w,
-+			view_h);
-+	igt_plane_set_size(primary, view_w, view_h);
-+	igt_plane_set_position(primary, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- }
- 
-@@ -516,14 +537,27 @@ static void damaged_plane_move(data_t *data)
- 	igt_plane_t *test_plane = data->test_plane;
- 	uint32_t h = data->mode->hdisplay;
- 	uint32_t v = data->mode->vdisplay;
-+	int x, y;
- 
--	igt_plane_set_fb(test_plane, &data->fb_test);
-+	if (data->big_fb_test) {
-+		x = data->big_fb_width / 2;
-+		y = data->big_fb_height / 2;
-+	} else {
-+		x = y = 0;
-+	}
- 
- 	if (data->test_plane_id == DRM_PLANE_TYPE_OVERLAY) {
- 		h = h/2;
- 		v = v/2;
- 	}
- 
-+	igt_plane_set_fb(test_plane, &data->fb_test);
-+
-+	igt_fb_set_position(&data->fb_test, test_plane, x,
-+			    y);
-+	igt_fb_set_size(&data->fb_test, test_plane, h, v);
-+	igt_plane_set_size(test_plane, h, v);
-+
- 	igt_plane_replace_prop_blob(test_plane, IGT_PLANE_FB_DAMAGE_CLIPS,
- 				    &data->plane_move_clip,
- 				    sizeof(struct drm_mode_rect));
-@@ -678,6 +712,14 @@ static void damaged_plane_update(data_t *data)
- 	igt_plane_t *test_plane = data->test_plane;
- 	uint32_t h = data->mode->hdisplay;
- 	uint32_t v = data->mode->vdisplay;
-+	int x, y;
-+
-+	if (data->big_fb_test) {
-+		x = data->big_fb_width / 2;
-+		y = data->big_fb_height / 2;
-+	} else {
-+		x = y = 0;
-+	}
- 
- 	if (data->test_plane_id == DRM_PLANE_TYPE_OVERLAY) {
- 		h = h/2;
-@@ -702,6 +744,9 @@ static void damaged_plane_update(data_t *data)
- 						    data->damage_area_count);
- 	}
- 
-+	igt_fb_set_position(data->fb_continuous, test_plane, x, y);
-+	igt_fb_set_size(data->fb_continuous, test_plane, h, v);
-+	igt_plane_set_size(test_plane, h, v);
- 	igt_plane_set_position(data->test_plane, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
-@@ -787,6 +832,7 @@ igt_main
- 	int i;
- 
- 	igt_fixture {
-+		drmModeResPtr res;
- 		int r;
- 
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-@@ -808,6 +854,12 @@ igt_main
- 		data.op = PLANE_UPDATE;
- 		data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
- 		data.primary_format = DRM_FORMAT_XRGB8888;
-+
-+		res = drmModeGetResources(data.drm_fd);
-+		data.big_fb_width = res->max_width;
-+		data.big_fb_height = res->max_height;
-+		igt_info("Big framebuffer size %dx%d\n",
-+			 data.big_fb_width, data.big_fb_height);
- 		prepare(&data);
- 		r = psr_wait_entry(data.debugfs_fd, PSR_MODE_2);
- 		if (!r)
-@@ -833,6 +885,20 @@ igt_main
- 		}
- 	}
- 
-+	/* Verify primary plane selective fetch with big fb */
-+	data.big_fb_test = 1;
-+	igt_describe("Test that selective fetch works on primary plane with big fb");
-+	igt_subtest_f("primary-%s-sf-dmg-area-big-fb", op_str(data.op)) {
-+		for (i = 1; i <= MAX_DAMAGE_AREAS; i++) {
-+			data.damage_area_count = i;
-+			data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-+			prepare(&data);
-+			run(&data);
-+			cleanup(&data);
-+		}
-+	}
-+	data.big_fb_test = 0;
-+
- 	/* Verify overlay plane selective fetch */
- 	igt_describe("Test that selective fetch works on overlay plane");
- 	igt_subtest_f("overlay-%s-sf-dmg-area", op_str(data.op)) {
--- 
-2.25.1
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
+dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSm91bmkNCj4gSMO2Z2Fu
+ZGVyDQo+IFNlbnQ6IFdlZG5lc2RheSwgTWF5IDE4LCAyMDIyIDI6NTUgUE0NCj4gVG86IGlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1YmplY3Q6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1n
+LXQgdjIgMS8zXSB0ZXN0cy9rbXNfcHNyMl9zZjogTW92ZSBjb250aW51b3VzDQo+IHRlc3RjYXNl
+IHByZXBhcmF0aW9uIGZvciBuZXcgdGVzdHMNCj4gDQo+IE1vZGlmeSBjdXJyZW50IG1vdmUgY29u
+dGludW91cyB0ZXN0Y2FzZSB0byBlYXNlIHVwIGFkZGluZyBuZXcgdGVzdGNhc2VzLg0KPiANCj4g
+UmVtb3ZlIGV4Y2VlZGluZyB2aXNpYmxlIGFyZWEgYXMgdGVzdGNhc2VzIHRvIHBlcmZvcm0gdGhp
+cyBhcmUgYWJvdXQgdG8gYmUNCj4gYWRkZWQgYXMgc2VwYXJhdGUgdGVzdGNhc2VzLg0KPiANCj4g
+djI6IEZpeCBjb21waWxhdGlvbiBlcnJvciBhbmQgd2FybmluZw0KPiANCj4gU2lnbmVkLW9mZi1i
+eTogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+DQoNClJldmlld2Vk
+LWJ5OiBNaWthIEthaG9sYSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPg0KDQo+IC0tLQ0KPiAgdGVz
+dHMvaTkxNS9rbXNfcHNyMl9zZi5jIHwgNzUgKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0t
+LS0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDUzIGluc2VydGlvbnMoKyksIDIyIGRlbGV0
+aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUva21zX3BzcjJfc2YuYyBiL3Rl
+c3RzL2k5MTUva21zX3BzcjJfc2YuYyBpbmRleA0KPiBkNGNkZGI2Mi4uNTAyNGZiMTQgMTAwNjQ0
+DQo+IC0tLSBhL3Rlc3RzL2k5MTUva21zX3BzcjJfc2YuYw0KPiArKysgYi90ZXN0cy9pOTE1L2tt
+c19wc3IyX3NmLmMNCj4gQEAgLTUzLDggKzUzLDExIEBAIGVudW0gcGxhbmVfbW92ZV9wb3N0aW9u
+IHsNCj4gIAlQT1NfVE9QX1JJR0hULA0KPiAgCVBPU19CT1RUT01fTEVGVCwNCj4gIAlQT1NfQk9U
+VE9NX1JJR0hULA0KPiAtCVBPU19CT1RUT01fTEVGVF9ORUdBVElWRSwNCj4gLQlQT1NfVE9QX1JJ
+R0hUX05FR0FUSVZFLA0KPiArCVBPU19DRU5URVIsDQo+ICsJUE9TX1RPUCwNCj4gKwlQT1NfQk9U
+VE9NLA0KPiArCVBPU19MRUZULA0KPiArCVBPU19SSUdIVCwNCj4gIH07DQo+IA0KPiAgdHlwZWRl
+ZiBzdHJ1Y3Qgew0KPiBAQCAtNDExLDExICs0MTQsMTEgQEAgc3RhdGljIHZvaWQgcGxhbmVfbW92
+ZV9leHBlY3RlZF9vdXRwdXQoZW51bQ0KPiBwbGFuZV9tb3ZlX3Bvc3Rpb24gcG9zKQ0KPiAgCW1h
+bnVhbChleHBlY3RlZCk7DQo+ICB9DQo+IA0KPiAtc3RhdGljIHZvaWQgcGxhbmVfbW92ZV9jb250
+aW51b3VzX2V4cGVjdGVkX291dHB1dChlbnVtDQo+IHBsYW5lX21vdmVfcG9zdGlvbiBwb3MpDQo+
+ICtzdGF0aWMgdm9pZCBwbGFuZV9tb3ZlX2NvbnRpbnVvdXNfZXhwZWN0ZWRfb3V0cHV0KGRhdGFf
+dCAqZGF0YSkNCj4gIHsNCj4gIAljaGFyIGV4cGVjdGVkWzEyOF0gPSB7fTsNCj4gDQo+IC0Jc3dp
+dGNoIChwb3MpIHsNCj4gKwlzd2l0Y2ggKGRhdGEtPnBvcykgew0KPiAgCWNhc2UgUE9TX1RPUF9M
+RUZUOg0KPiAgCQlzcHJpbnRmKGV4cGVjdGVkLA0KPiAgCQkJInNjcmVlbiBHcmVlbiB3aXRoIEJs
+dWUgYm94IG9uIHRvcCBsZWZ0IGNvcm5lciIpOyBAQCAtDQo+IDQzMiwxMyArNDM1LDIwIEBAIHN0
+YXRpYyB2b2lkDQo+IHBsYW5lX21vdmVfY29udGludW91c19leHBlY3RlZF9vdXRwdXQoZW51bSBw
+bGFuZV9tb3ZlX3Bvc3Rpb24gcG9zKQ0KPiAgCQlzcHJpbnRmKGV4cGVjdGVkLA0KPiAgCQkJInNj
+cmVlbiBHcmVlbiB3aXRoIEJsdWUgYm94IG9uIGJvdHRvbSByaWdodCBjb3JuZXIiKTsNCj4gIAkJ
+YnJlYWs7DQo+IC0JY2FzZSBQT1NfQk9UVE9NX0xFRlRfTkVHQVRJVkU6DQo+IC0JCXNwcmludGYo
+ZXhwZWN0ZWQsDQo+IC0JCQkic2NyZWVuIEdyZWVuIHdpdGggQmx1ZSBib3ggb24gYm90dG9tIGxl
+ZnQgY29ybmVyDQo+IChwYXJ0bHkgZXhjZWVkaW5nIGFyZWEpIik7DQo+ICsJY2FzZSBQT1NfQ0VO
+VEVSOg0KPiArCQlzcHJpbnRmKGV4cGVjdGVkLCAic2NyZWVuIEdyZWVuIHdpdGggQmx1ZSBib3gg
+b24gY2VudGVyIik7DQo+ICAJCWJyZWFrOw0KPiAtCWNhc2UgUE9TX1RPUF9SSUdIVF9ORUdBVElW
+RToNCj4gLQkJc3ByaW50ZihleHBlY3RlZCwNCj4gLQkJCSJzY3JlZW4gR3JlZW4gd2l0aCBCbHVl
+IGJveCBvbiB0b3AgcmlnaHQgY29ybmVyIChwYXJ0bHkNCj4gZXhjZWVkaW5nIGFyZWEpIik7DQo+
+ICsJY2FzZSBQT1NfVE9QOg0KPiArCQlzcHJpbnRmKGV4cGVjdGVkLCAic2NyZWVuIEdyZWVuIHdp
+dGggQmx1ZSBib3ggb24gdG9wIik7DQo+ICsJCWJyZWFrOw0KPiArCWNhc2UgUE9TX0JPVFRPTToN
+Cj4gKwkJc3ByaW50ZihleHBlY3RlZCwgInNjcmVlbiBHcmVlbiB3aXRoIEJsdWUgYm94IG9uIGJv
+dHRvbSIpOw0KPiArCQlicmVhazsNCj4gKwljYXNlIFBPU19MRUZUOg0KPiArCQlzcHJpbnRmKGV4
+cGVjdGVkLCAic2NyZWVuIEdyZWVuIHdpdGggQmx1ZSBib3ggb24gbGVmdCIpOw0KPiArCQlicmVh
+azsNCj4gKwljYXNlIFBPU19SSUdIVDoNCj4gKwkJc3ByaW50ZihleHBlY3RlZCwgInNjcmVlbiBH
+cmVlbiB3aXRoIEJsdWUgYm94IG9uIHJpZ2h0Iik7DQo+ICAJCWJyZWFrOw0KPiAgCWRlZmF1bHQ6
+DQo+ICAJCWlndF9hc3NlcnQoZmFsc2UpOw0KPiBAQCAtNDY2LDcgKzQ3Niw3IEBAIHN0YXRpYyB2
+b2lkIGV4cGVjdGVkX291dHB1dChkYXRhX3QgKmRhdGEpDQo+ICAJCXBsYW5lX21vdmVfZXhwZWN0
+ZWRfb3V0cHV0KGRhdGEtPnBvcyk7DQo+ICAJCWJyZWFrOw0KPiAgCWNhc2UgUExBTkVfTU9WRV9D
+T05USU5VT1VTOg0KPiAtCQlwbGFuZV9tb3ZlX2NvbnRpbnVvdXNfZXhwZWN0ZWRfb3V0cHV0KGRh
+dGEtPnBvcyk7DQo+ICsJCXBsYW5lX21vdmVfY29udGludW91c19leHBlY3RlZF9vdXRwdXQoZGF0
+YSk7DQo+ICAJCWJyZWFrOw0KPiAgCWNhc2UgUExBTkVfVVBEQVRFOg0KPiAgCQlwbGFuZV91cGRh
+dGVfZXhwZWN0ZWRfb3V0cHV0KGRhdGEtPnRlc3RfcGxhbmVfaWQsDQo+IEBAIC01MzAsOCArNTQw
+LDcgQEAgc3RhdGljIHZvaWQgZGFtYWdlZF9wbGFuZV9tb3ZlKGRhdGFfdCAqZGF0YSkNCj4gDQo+
+ICAJZXhwZWN0ZWRfb3V0cHV0KGRhdGEpOw0KPiAgfQ0KPiAtDQo+IC1zdGF0aWMgdm9pZCBwbGFu
+ZV9tb3ZlX2NvbnRpbnVvdXMoZGF0YV90ICpkYXRhKQ0KPiArc3RhdGljIHZvaWQgZ2V0X3Rhcmdl
+dF9jb29yZHMoZGF0YV90ICpkYXRhLCBpbnQgKngsIGludCAqeSkNCj4gIHsNCj4gIAlpbnQgdGFy
+Z2V0X3gsIHRhcmdldF95Ow0KPiANCj4gQEAgLTU0NCwyOCArNTUzLDUwIEBAIHN0YXRpYyB2b2lk
+IHBsYW5lX21vdmVfY29udGludW91cyhkYXRhX3QgKmRhdGEpDQo+ICAJCXRhcmdldF94ID0gZGF0
+YS0+bW9kZS0+aGRpc3BsYXkgLSBkYXRhLT5mYl90ZXN0LndpZHRoOw0KPiAgCQl0YXJnZXRfeSA9
+IDA7DQo+ICAJCWJyZWFrOw0KPiAtCWNhc2UgUE9TX1RPUF9SSUdIVF9ORUdBVElWRToNCj4gLQkJ
+dGFyZ2V0X3ggPSBkYXRhLT5tb2RlLT5oZGlzcGxheSAtIGRhdGEtPmZiX3Rlc3Qud2lkdGg7DQo+
+IC0JCXRhcmdldF95ID0gLWRhdGEtPmZiX3Rlc3Qud2lkdGggLyAyOw0KPiAtCQlicmVhazsNCj4g
+IAljYXNlIFBPU19CT1RUT01fTEVGVDoNCj4gIAkJdGFyZ2V0X3ggPSAwOw0KPiAgCQl0YXJnZXRf
+eSA9IGRhdGEtPm1vZGUtPnZkaXNwbGF5IC0gZGF0YS0+ZmJfdGVzdC5oZWlnaHQ7DQo+ICAJCWJy
+ZWFrOw0KPiAtCWNhc2UgUE9TX0JPVFRPTV9MRUZUX05FR0FUSVZFOg0KPiAtCQl0YXJnZXRfeCA9
+IC1kYXRhLT5mYl90ZXN0LndpZHRoIC8gMjsNCj4gLQkJdGFyZ2V0X3kgPSBkYXRhLT5tb2RlLT52
+ZGlzcGxheSAtIGRhdGEtPmZiX3Rlc3QuaGVpZ2h0Ow0KPiAtCQlicmVhazsNCj4gIAljYXNlIFBP
+U19CT1RUT01fUklHSFQ6DQo+ICAJCXRhcmdldF94ID0gZGF0YS0+bW9kZS0+aGRpc3BsYXkgLSBk
+YXRhLT5mYl90ZXN0LndpZHRoOw0KPiAgCQl0YXJnZXRfeSA9IGRhdGEtPm1vZGUtPnZkaXNwbGF5
+IC0gZGF0YS0+ZmJfdGVzdC5oZWlnaHQ7DQo+ICAJCWJyZWFrOw0KPiArCWNhc2UgUE9TX0NFTlRF
+UjoNCj4gKwkJdGFyZ2V0X3ggPSBkYXRhLT5tb2RlLT5oZGlzcGxheSAvIDI7DQo+ICsJCXRhcmdl
+dF95ID0gZGF0YS0+bW9kZS0+dmRpc3BsYXkgLyAyOw0KPiArCQlicmVhazsNCj4gKwljYXNlIFBP
+U19CT1RUT006DQo+ICsJCXRhcmdldF94ID0gZGF0YS0+bW9kZS0+aGRpc3BsYXkgLyAyOw0KPiAr
+CQl0YXJnZXRfeSA9IGRhdGEtPm1vZGUtPnZkaXNwbGF5IC0gZGF0YS0+ZmJfdGVzdC5oZWlnaHQ7
+DQo+ICsJCWJyZWFrOw0KPiArCWNhc2UgUE9TX1RPUDoNCj4gKwkJdGFyZ2V0X3ggPSBkYXRhLT5t
+b2RlLT5oZGlzcGxheSAvIDI7DQo+ICsJCXRhcmdldF95ID0gMDsNCj4gKwkJYnJlYWs7DQo+ICsJ
+Y2FzZSBQT1NfUklHSFQ6DQo+ICsJCXRhcmdldF94ID0gZGF0YS0+bW9kZS0+aGRpc3BsYXkgLSBk
+YXRhLT5mYl90ZXN0LndpZHRoOw0KPiArCQl0YXJnZXRfeSA9IGRhdGEtPm1vZGUtPnZkaXNwbGF5
+IC8gMjsNCj4gKwkJYnJlYWs7DQo+ICsJY2FzZSBQT1NfTEVGVDoNCj4gKwkJdGFyZ2V0X3ggPSAw
+Ow0KPiArCQl0YXJnZXRfeSA9IGRhdGEtPm1vZGUtPnZkaXNwbGF5IC8gMjsNCj4gKwkJYnJlYWs7
+DQo+ICAJZGVmYXVsdDoNCj4gIAkJaWd0X2Fzc2VydChmYWxzZSk7DQo+ICAJfQ0KPiANCj4gKwkq
+eCA9IHRhcmdldF94Ow0KPiArCSp5ID0gdGFyZ2V0X3k7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2
+b2lkIHBsYW5lX21vdmVfY29udGludW91cyhkYXRhX3QgKmRhdGEpIHsNCj4gKwlpbnQgdGFyZ2V0
+X3gsIHRhcmdldF95Ow0KPiArDQo+ICAJaWd0X2Fzc2VydChwc3Jfd2FpdF9lbnRyeShkYXRhLT5k
+ZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8yKSk7DQo+IA0KPiArCWdldF90YXJnZXRfY29vcmRzKGRhdGEs
+ICZ0YXJnZXRfeCwgJnRhcmdldF95KTsNCj4gKw0KPiAgCXdoaWxlIChkYXRhLT5jdXJfeCAhPSB0
+YXJnZXRfeCB8fCBkYXRhLT5jdXJfeSAhPSB0YXJnZXRfeSkgew0KPiAgCQlpZiAoZGF0YS0+Y3Vy
+X3ggPCB0YXJnZXRfeCkNCj4gIAkJCWRhdGEtPmN1cl94ICs9IG1pbih0YXJnZXRfeCAtIGRhdGEt
+PmN1cl94LCAyMCk7IEBAIC0NCj4gNjUwLDcgKzY4MSw3IEBAIHN0YXRpYyB2b2lkIHJ1bihkYXRh
+X3QgKmRhdGEpDQo+ICAJCSAqIG92ZXIgaXRlcmF0aW9ucy4NCj4gIAkJICovDQo+ICAJCWRhdGEt
+PmN1cl94ID0gZGF0YS0+Y3VyX3kgPSAwOw0KPiAtCQlmb3IgKGkgPSBQT1NfVE9QX0xFRlQ7IGkg
+PD0gUE9TX1RPUF9SSUdIVF9ORUdBVElWRTsgaSsrKSB7DQo+ICsJCWZvciAoaSA9IFBPU19UT1Bf
+TEVGVDsgaSA8PSBQT1NfUklHSFQ7IGkrKykgew0KPiAgCQkJZGF0YS0+cG9zID0gaTsNCj4gIAkJ
+CXBsYW5lX21vdmVfY29udGludW91cyhkYXRhKTsNCj4gIAkJfQ0KPiAtLQ0KPiAyLjI1LjENCg0K
