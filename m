@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 853EC10E703
- for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 09:00:59 +0000 (UTC)
-Message-ID: <69d219da-c89f-e7ff-c0b2-3692b9ff87fe@intel.com>
-Date: Wed, 18 May 2022 14:30:41 +0530
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19FE510E829
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 10:35:51 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 18 May 2022 10:35:47 +0000
+Message-ID: <MWHPR1101MB21570F9C9535201151151C89EFD19@MWHPR1101MB2157.namprd11.prod.outlook.com>
+References: <20220506071104.2876292-1-jouni.hogander@intel.com>
+ <20220506071104.2876292-2-jouni.hogander@intel.com>
+In-Reply-To: <20220506071104.2876292-2-jouni.hogander@intel.com>
 Content-Language: en-US
-To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220506054100.27458-1-karthik.b.s@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220506054100.27458-1-karthik.b.s@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres: Convert test to
- dynamic
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/kms_psr2_sf: Move continuous
+ testcase preparation for new tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,189 +27,128 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri-06-05-2022 11:11 am, Karthik B S wrote:
-> Covert the existing subtests to dynamic subtests at pipe/output level.
-> Also, move igt_display_reset() to the begining to the function to reset
-
-Typo: s/begining/beginning/g
-
-> display even in case of failures.
-> 
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_plane_lowres.c | 112 ++++++++++++++++++++++++++-------------
->   1 file changed, 75 insertions(+), 37 deletions(-)
-> 
-> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-> index 3f3f77c8..4c660efe 100644
-> --- a/tests/kms_plane_lowres.c
-> +++ b/tests/kms_plane_lowres.c
-> @@ -166,6 +166,7 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
->   	igt_plane_t *primary;
->   	igt_crc_t crc_lowres, crc_hires1, crc_hires2;
->   
-> +	igt_display_reset(&data->display);
-
-As we are iterating over all planes, this reset is not required for each 
-plane. Hence this should be moved to test_planes_on_pipe()
-
-For same pipe/output combination, we are doing igt_output_set_pipe() for 
-each plane. So, we need some cleanup to optimize this logic.
-
->   	igt_output_set_pipe(data->output, data->pipe);
->   
->   	primary = compatible_main_plane(plane, data->output, data->devid);
-> @@ -245,8 +246,6 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
->   	igt_remove_fb(data->drm_fd, &data->ref_hires.fb);
->   	igt_remove_fb(data->drm_fd, &data->ref_lowres.fb);
->   
-> -	igt_display_reset(&data->display);
-> -
->   	return tested;
->   }
->   
-> @@ -256,17 +255,6 @@ test_planes_on_pipe(data_t *data, uint64_t modifier)
->   	igt_plane_t *plane;
->   	unsigned tested = 0;
->   
-> -	igt_require_pipe(&data->display, data->pipe);
-> -	igt_display_require_output_on_pipe(&data->display, data->pipe);
-> -	igt_skip_on(!igt_display_has_format_mod(&data->display,
-> -						DRM_FORMAT_XRGB8888, modifier));
-> -
-> -	data->output = igt_get_single_output_for_pipe(&data->display, data->pipe);
-> -	igt_require(data->output);
-> -
-> -	igt_info("Testing connector %s using pipe %s\n",
-> -		 igt_output_name(data->output), kmstest_pipe_name(data->pipe));
-> -
->   	for_each_plane_on_pipe(&data->display, data->pipe, plane)
->   		tested += test_planes_on_pipe_with_output(data, plane, modifier);
->   
-> @@ -280,6 +268,7 @@ igt_main
->   {
->   	data_t data = {};
->   	enum pipe pipe;
-> +	igt_output_t *output;
->   
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -293,30 +282,79 @@ igt_main
->   		igt_require(data.display.is_atomic);
-
-Please add igt_display_require_output() in igt_fixture.
-
->   	}
->   
-> -	for_each_pipe_static(pipe) {
-> -		data.pipe = pipe;
-> -		igt_describe("Tests the visibility of the planes when switching between "
-> -			     "high and low resolution with tiling as none.");
-> -		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, DRM_FORMAT_MOD_LINEAR);
-> -
-> -		igt_describe("Tests the visibility of the planes when switching between "
-> -			     "high and low resolution with x-tiling.");
-> -		igt_subtest_f("pipe-%s-tiling-x", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, I915_FORMAT_MOD_X_TILED);
-> -
-> -		igt_describe("Tests the visibility of the planes when switching between "
-> -			     "high and low resolution with y-tiling.");
-> -		igt_subtest_f("pipe-%s-tiling-y", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, I915_FORMAT_MOD_Y_TILED);
-> -
-> -		igt_describe("Tests the visibility of the planes when switching between "
-> -			     "high and low resolution with yf-tiling.");
-> -		igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, I915_FORMAT_MOD_Yf_TILED);
-> -
-> -		igt_subtest_f("pipe-%s-tiling-4", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, I915_FORMAT_MOD_4_TILED);
-> +	igt_describe("Tests the visibility of the planes when switching between "
-> +		     "high and low resolution with tiling as none.");
-> +	igt_subtest_with_dynamic("tiling-none") {
-> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
-> +							DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR));
-> +		for_each_pipe(&data.display, pipe) {
-> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-
-igt_get_single_output_for_pipe() ?
-
-> +				data.pipe = pipe;
-> +				data.output = output;
-> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-
-Please update the test name as "<pipe name>-<output name>"
-
-> +					test_planes_on_pipe(&data, DRM_FORMAT_MOD_LINEAR);
-> +			}
-> +		}
-> +	}
-
-I would recommend to use array of structures to maintain the test list 
-and iterate all over those tests.
-
-- Bhanu
-
-> +
-> +	igt_describe("Tests the visibility of the planes when switching between "
-> +		     "high and low resolution with x-tiling.");
-> +	igt_subtest_with_dynamic("tiling-x") {
-> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
-> +							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED));
-> +		for_each_pipe(&data.display, pipe) {
-> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +				data.pipe = pipe;
-> +				data.output = output;
-> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-> +					test_planes_on_pipe(&data, I915_FORMAT_MOD_X_TILED);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_describe("Tests the visibility of the planes when switching between "
-> +		     "high and low resolution with y-tiling.");
-> +	igt_subtest_with_dynamic("tiling-y") {
-> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
-> +							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_Y_TILED));
-> +		for_each_pipe(&data.display, pipe) {
-> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +				data.pipe = pipe;
-> +				data.output = output;
-> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-> +					test_planes_on_pipe(&data, I915_FORMAT_MOD_Y_TILED);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_describe("Tests the visibility of the planes when switching between "
-> +		     "high and low resolution with yf-tiling.");
-> +	igt_subtest_with_dynamic("tiling-yf") {
-> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
-> +							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_Yf_TILED));
-> +		for_each_pipe(&data.display, pipe) {
-> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +				data.pipe = pipe;
-> +				data.output = output;
-> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-> +					test_planes_on_pipe(&data, I915_FORMAT_MOD_Yf_TILED);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_describe("Tests the visibility of the planes when switching between "
-> +		     "high and low resolution with 4-tiling.");
-> +	igt_subtest_with_dynamic("tiling-4") {
-> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
-> +							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_4_TILED));
-> +		for_each_pipe(&data.display, pipe) {
-> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +				data.pipe = pipe;
-> +				data.output = output;
-> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
-> +					test_planes_on_pipe(&data, I915_FORMAT_MOD_4_TILED);
-> +			}
-> +		}
->   	}
->   
->   	igt_fixture {
+VGhlIGNvbXBpbGVyIG5hZ3MgYWJvdXQgY2FsbGluZyBhIHBsYW5lX21vdmVfY29udGludW91c19l
+eHBlY3RlZF9vdXRwdXQoKSB3aXRoIGluY29ycmVjdCBhcmd1bWVudC4NCg0KLi90ZXN0cy9pOTE1
+L2ttc19wc3IyX3NmLmM6IEluIGZ1bmN0aW9uIOKAmHBsYW5lX21vdmVfY29udGludW91c19leHBl
+Y3RlZF9vdXRwdXTigJk6DQouLi90ZXN0cy9pOTE1L2ttc19wc3IyX3NmLmM6NDIwOjY6IHdhcm5p
+bmc6IHZhcmlhYmxlIOKAmHJldOKAmSBzZXQgYnV0IG5vdCB1c2VkIFstV3VudXNlZC1idXQtc2V0
+LXZhcmlhYmxlXQ0KICA0MjAgfCAgaW50IHJldDsNCiAgICAgIHwgICAgICBefn4NCi4uL3Rlc3Rz
+L2k5MTUva21zX3BzcjJfc2YuYzogSW4gZnVuY3Rpb24g4oCYZXhwZWN0ZWRfb3V0cHV04oCZOg0K
+Li4vdGVzdHMvaTkxNS9rbXNfcHNyMl9zZi5jOjQ4MDo0NTogZXJyb3I6IGluY29tcGF0aWJsZSB0
+eXBlIGZvciBhcmd1bWVudCAxIG9mIOKAmHBsYW5lX21vdmVfY29udGludW91c19leHBlY3RlZF9v
+dXRwdXTigJkNCiAgNDgwIHwgICBwbGFuZV9tb3ZlX2NvbnRpbnVvdXNfZXhwZWN0ZWRfb3V0cHV0
+KGRhdGEtPnBvcyk7DQogICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB+fn5+Xn5+fn4NCiAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8DQogICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgZW51bSBwbGFuZV9tb3ZlX3Bvc3Rpb24NCi4uL3Rlc3RzL2k5MTUva21zX3BzcjJf
+c2YuYzo0MTc6NTk6IG5vdGU6IGV4cGVjdGVkIOKAmGRhdGFfdCAq4oCZIGJ1dCBhcmd1bWVudCBp
+cyBvZiB0eXBlIOKAmGVudW0gcGxhbmVfbW92ZV9wb3N0aW9u4oCZDQogIDQxNyB8IHN0YXRpYyB2
+b2lkIHBsYW5lX21vdmVfY29udGludW91c19leHBlY3RlZF9vdXRwdXQoZGF0YV90ICpkYXRhKQ0K
+DQpUaGlzIGlzIGZpeGVkIGxhdGVyIG9uIGluIHRoZSBzZXJpZXMgYnV0IGlmIHdlIHdhbnQgdG8g
+Y29tcGlsZSBlYWNoIHBhdGNoIG9mIHRoZSBzZXJpZXMgc3VjY2Vzc2Z1bGx5ICB3ZSB3b3VsZCBu
+ZWVkIHRvIGNoYW5nZSB0aGUgZnVuY3Rpb24gY2FsbA0KDQpwbGFuZV9tb3ZlX2NvbnRpbnVvdXNf
+ZXhwZWN0ZWRfb3V0cHV0KGRhdGEtPnBvcyk7DQp3aXRoDQpwbGFuZV9tb3ZlX2NvbnRpbnVvdXNf
+ZXhwZWN0ZWRfb3V0cHV0KGRhdGEpOw0KDQpTdGlsbCB0aGUgY29tcGlsZXIgd2FybnMgZm9yIHVu
+dXNlZCB2YXJpYWJsZSAncmV0JyBidXQgdGhhdOKAmXMgYSBtaW5vciB0aGluZy4NCg0KV2l0aCB0
+aGlzIGZ1bmN0aW9uIGNhbGwgZml4LCB0aGlzIGlzDQoNClJldmlld2VkLWJ5OiBNaWthIEthaG9s
+YSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0t
+DQo+IEZyb206IGlndC1kZXYgPGlndC1kZXYtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+
+IE9uIEJlaGFsZiBPZiBKb3VuaQ0KPiBIw7ZnYW5kZXINCj4gU2VudDogRnJpZGF5LCBNYXkgNiwg
+MjAyMiAxMDoxMSBBTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3Vi
+amVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWctdCAxLzNdIHRlc3RzL2ttc19wc3IyX3NmOiBNb3Zl
+IGNvbnRpbnVvdXMNCj4gdGVzdGNhc2UgcHJlcGFyYXRpb24gZm9yIG5ldyB0ZXN0cw0KPiANCj4g
+TW9kaWZ5IGN1cnJlbnQgbW92ZSBjb250aW51b3VzIHRlc3RjYXNlIHRvIGVhc2UgdXAgYWRkaW5n
+IG5ldyB0ZXN0Y2FzZXMuDQo+IA0KPiBSZW1vdmUgZXhjZWVkaW5nIHZpc2libGUgYXJlYSBhcyB0
+ZXN0Y2FzZXMgdG8gcGVyZm9ybSB0aGlzIGFyZSBhYm91dCB0byBiZQ0KPiBhZGRlZCBhcyBzZXBh
+cmF0ZSB0ZXN0Y2FzZXMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpv
+dW5pLmhvZ2FuZGVyQGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9pOTE1L2ttc19wc3IyX3Nm
+LmMgfCA5MCArKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tDQo+ICAxIGZp
+bGUgY2hhbmdlZCwgNjEgaW5zZXJ0aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZm
+IC0tZ2l0IGEvdGVzdHMvaTkxNS9rbXNfcHNyMl9zZi5jIGIvdGVzdHMvaTkxNS9rbXNfcHNyMl9z
+Zi5jIGluZGV4DQo+IGQ0Y2RkYjYyLi5iZjBlYWIyMyAxMDA2NDQNCj4gLS0tIGEvdGVzdHMvaTkx
+NS9rbXNfcHNyMl9zZi5jDQo+ICsrKyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc2YuYw0KPiBAQCAt
+NTMsOCArNTMsMTEgQEAgZW51bSBwbGFuZV9tb3ZlX3Bvc3Rpb24gew0KPiAgCVBPU19UT1BfUklH
+SFQsDQo+ICAJUE9TX0JPVFRPTV9MRUZULA0KPiAgCVBPU19CT1RUT01fUklHSFQsDQo+IC0JUE9T
+X0JPVFRPTV9MRUZUX05FR0FUSVZFLA0KPiAtCVBPU19UT1BfUklHSFRfTkVHQVRJVkUsDQo+ICsJ
+UE9TX0NFTlRFUiwNCj4gKwlQT1NfVE9QLA0KPiArCVBPU19CT1RUT00sDQo+ICsJUE9TX0xFRlQs
+DQo+ICsJUE9TX1JJR0hULA0KPiAgfTsNCj4gDQo+ICB0eXBlZGVmIHN0cnVjdCB7DQo+IEBAIC00
+MTEsMzQgKzQxNCw0MiBAQCBzdGF0aWMgdm9pZCBwbGFuZV9tb3ZlX2V4cGVjdGVkX291dHB1dChl
+bnVtDQo+IHBsYW5lX21vdmVfcG9zdGlvbiBwb3MpDQo+ICAJbWFudWFsKGV4cGVjdGVkKTsNCj4g
+IH0NCj4gDQo+IC1zdGF0aWMgdm9pZCBwbGFuZV9tb3ZlX2NvbnRpbnVvdXNfZXhwZWN0ZWRfb3V0
+cHV0KGVudW0NCj4gcGxhbmVfbW92ZV9wb3N0aW9uIHBvcykNCj4gK3N0YXRpYyB2b2lkIHBsYW5l
+X21vdmVfY29udGludW91c19leHBlY3RlZF9vdXRwdXQoZGF0YV90ICpkYXRhKQ0KPiAgew0KPiAg
+CWNoYXIgZXhwZWN0ZWRbMTI4XSA9IHt9Ow0KPiArCWludCByZXQ7DQo+IA0KPiAtCXN3aXRjaCAo
+cG9zKSB7DQo+ICsJc3dpdGNoIChkYXRhLT5wb3MpIHsNCj4gIAljYXNlIFBPU19UT1BfTEVGVDoN
+Cj4gLQkJc3ByaW50ZihleHBlY3RlZCwNCj4gLQkJCSJzY3JlZW4gR3JlZW4gd2l0aCBCbHVlIGJv
+eCBvbiB0b3AgbGVmdCBjb3JuZXIiKTsNCj4gKwkJcmV0ID0gc3ByaW50ZihleHBlY3RlZCwNCj4g
+KwkJCSAgICAgICJzY3JlZW4gR3JlZW4gd2l0aCBCbHVlIGJveCBvbiB0b3AgbGVmdCBjb3JuZXIi
+KTsNCj4gIAkJYnJlYWs7DQo+ICAJY2FzZSBQT1NfVE9QX1JJR0hUOg0KPiAtCQlzcHJpbnRmKGV4
+cGVjdGVkLA0KPiAtCQkJInNjcmVlbiBHcmVlbiB3aXRoIEJsdWUgYm94IG9uIHRvcCByaWdodCBj
+b3JuZXIiKTsNCj4gKwkJcmV0ID0gc3ByaW50ZihleHBlY3RlZCwNCj4gKwkJCSAgICAgICJzY3Jl
+ZW4gR3JlZW4gd2l0aCBCbHVlIGJveCBvbiB0b3AgcmlnaHQgY29ybmVyIik7DQo+ICAJCWJyZWFr
+Ow0KPiAgCWNhc2UgUE9TX0JPVFRPTV9MRUZUOg0KPiAtCQlzcHJpbnRmKGV4cGVjdGVkLA0KPiAt
+CQkJInNjcmVlbiBHcmVlbiB3aXRoIEJsdWUgYm94IG9uIGJvdHRvbSBsZWZ0IGNvcm5lciIpOw0K
+PiArCQlyZXQgPSBzcHJpbnRmKGV4cGVjdGVkLA0KPiArCQkJICAgICAgInNjcmVlbiBHcmVlbiB3
+aXRoIEJsdWUgYm94IG9uIGJvdHRvbSBsZWZ0DQo+IGNvcm5lciIpOw0KPiAgCQlicmVhazsNCj4g
+IAljYXNlIFBPU19CT1RUT01fUklHSFQ6DQo+IC0JCXNwcmludGYoZXhwZWN0ZWQsDQo+IC0JCQki
+c2NyZWVuIEdyZWVuIHdpdGggQmx1ZSBib3ggb24gYm90dG9tIHJpZ2h0IGNvcm5lciIpOw0KPiAr
+CQlyZXQgPSBzcHJpbnRmKGV4cGVjdGVkLA0KPiArCQkJICAgICAgInNjcmVlbiBHcmVlbiB3aXRo
+IEJsdWUgYm94IG9uIGJvdHRvbSByaWdodA0KPiBjb3JuZXIiKTsNCj4gIAkJYnJlYWs7DQo+IC0J
+Y2FzZSBQT1NfQk9UVE9NX0xFRlRfTkVHQVRJVkU6DQo+IC0JCXNwcmludGYoZXhwZWN0ZWQsDQo+
+IC0JCQkic2NyZWVuIEdyZWVuIHdpdGggQmx1ZSBib3ggb24gYm90dG9tIGxlZnQgY29ybmVyDQo+
+IChwYXJ0bHkgZXhjZWVkaW5nIGFyZWEpIik7DQo+ICsJY2FzZSBQT1NfQ0VOVEVSOg0KPiArCQly
+ZXQgPSBzcHJpbnRmKGV4cGVjdGVkLCAic2NyZWVuIEdyZWVuIHdpdGggQmx1ZSBib3ggb24gY2Vu
+dGVyIik7DQo+ICAJCWJyZWFrOw0KPiAtCWNhc2UgUE9TX1RPUF9SSUdIVF9ORUdBVElWRToNCj4g
+LQkJc3ByaW50ZihleHBlY3RlZCwNCj4gLQkJCSJzY3JlZW4gR3JlZW4gd2l0aCBCbHVlIGJveCBv
+biB0b3AgcmlnaHQgY29ybmVyIChwYXJ0bHkNCj4gZXhjZWVkaW5nIGFyZWEpIik7DQo+ICsJY2Fz
+ZSBQT1NfVE9QOg0KPiArCQlyZXQgPSBzcHJpbnRmKGV4cGVjdGVkLCAic2NyZWVuIEdyZWVuIHdp
+dGggQmx1ZSBib3ggb24gdG9wIik7DQo+ICsJCWJyZWFrOw0KPiArCWNhc2UgUE9TX0JPVFRPTToN
+Cj4gKwkJcmV0ID0gc3ByaW50ZihleHBlY3RlZCwgInNjcmVlbiBHcmVlbiB3aXRoIEJsdWUgYm94
+IG9uDQo+IGJvdHRvbSIpOw0KPiArCQlicmVhazsNCj4gKwljYXNlIFBPU19MRUZUOg0KPiArCQly
+ZXQgPSBzcHJpbnRmKGV4cGVjdGVkLCAic2NyZWVuIEdyZWVuIHdpdGggQmx1ZSBib3ggb24gbGVm
+dCIpOw0KPiArCQlicmVhazsNCj4gKwljYXNlIFBPU19SSUdIVDoNCj4gKwkJcmV0ID0gc3ByaW50
+ZihleHBlY3RlZCwgInNjcmVlbiBHcmVlbiB3aXRoIEJsdWUgYm94IG9uIHJpZ2h0Iik7DQo+ICAJ
+CWJyZWFrOw0KPiAgCWRlZmF1bHQ6DQo+ICAJCWlndF9hc3NlcnQoZmFsc2UpOw0KPiBAQCAtNTMw
+LDggKzU0MSw3IEBAIHN0YXRpYyB2b2lkIGRhbWFnZWRfcGxhbmVfbW92ZShkYXRhX3QgKmRhdGEp
+DQo+IA0KPiAgCWV4cGVjdGVkX291dHB1dChkYXRhKTsNCj4gIH0NCj4gLQ0KPiAtc3RhdGljIHZv
+aWQgcGxhbmVfbW92ZV9jb250aW51b3VzKGRhdGFfdCAqZGF0YSkNCj4gK3N0YXRpYyB2b2lkIGdl
+dF90YXJnZXRfY29vcmRzKGRhdGFfdCAqZGF0YSwgaW50ICp4LCBpbnQgKnkpDQo+ICB7DQo+ICAJ
+aW50IHRhcmdldF94LCB0YXJnZXRfeTsNCj4gDQo+IEBAIC01NDQsMjggKzU1NCw1MCBAQCBzdGF0
+aWMgdm9pZCBwbGFuZV9tb3ZlX2NvbnRpbnVvdXMoZGF0YV90ICpkYXRhKQ0KPiAgCQl0YXJnZXRf
+eCA9IGRhdGEtPm1vZGUtPmhkaXNwbGF5IC0gZGF0YS0+ZmJfdGVzdC53aWR0aDsNCj4gIAkJdGFy
+Z2V0X3kgPSAwOw0KPiAgCQlicmVhazsNCj4gLQljYXNlIFBPU19UT1BfUklHSFRfTkVHQVRJVkU6
+DQo+IC0JCXRhcmdldF94ID0gZGF0YS0+bW9kZS0+aGRpc3BsYXkgLSBkYXRhLT5mYl90ZXN0Lndp
+ZHRoOw0KPiAtCQl0YXJnZXRfeSA9IC1kYXRhLT5mYl90ZXN0LndpZHRoIC8gMjsNCj4gLQkJYnJl
+YWs7DQo+ICAJY2FzZSBQT1NfQk9UVE9NX0xFRlQ6DQo+ICAJCXRhcmdldF94ID0gMDsNCj4gIAkJ
+dGFyZ2V0X3kgPSBkYXRhLT5tb2RlLT52ZGlzcGxheSAtIGRhdGEtPmZiX3Rlc3QuaGVpZ2h0Ow0K
+PiAgCQlicmVhazsNCj4gLQljYXNlIFBPU19CT1RUT01fTEVGVF9ORUdBVElWRToNCj4gLQkJdGFy
+Z2V0X3ggPSAtZGF0YS0+ZmJfdGVzdC53aWR0aCAvIDI7DQo+IC0JCXRhcmdldF95ID0gZGF0YS0+
+bW9kZS0+dmRpc3BsYXkgLSBkYXRhLT5mYl90ZXN0LmhlaWdodDsNCj4gLQkJYnJlYWs7DQo+ICAJ
+Y2FzZSBQT1NfQk9UVE9NX1JJR0hUOg0KPiAgCQl0YXJnZXRfeCA9IGRhdGEtPm1vZGUtPmhkaXNw
+bGF5IC0gZGF0YS0+ZmJfdGVzdC53aWR0aDsNCj4gIAkJdGFyZ2V0X3kgPSBkYXRhLT5tb2RlLT52
+ZGlzcGxheSAtIGRhdGEtPmZiX3Rlc3QuaGVpZ2h0Ow0KPiAgCQlicmVhazsNCj4gKwljYXNlIFBP
+U19DRU5URVI6DQo+ICsJCXRhcmdldF94ID0gZGF0YS0+bW9kZS0+aGRpc3BsYXkgLyAyOw0KPiAr
+CQl0YXJnZXRfeSA9IGRhdGEtPm1vZGUtPnZkaXNwbGF5IC8gMjsNCj4gKwkJYnJlYWs7DQo+ICsJ
+Y2FzZSBQT1NfQk9UVE9NOg0KPiArCQl0YXJnZXRfeCA9IGRhdGEtPm1vZGUtPmhkaXNwbGF5IC8g
+MjsNCj4gKwkJdGFyZ2V0X3kgPSBkYXRhLT5tb2RlLT52ZGlzcGxheSAtIGRhdGEtPmZiX3Rlc3Qu
+aGVpZ2h0Ow0KPiArCQlicmVhazsNCj4gKwljYXNlIFBPU19UT1A6DQo+ICsJCXRhcmdldF94ID0g
+ZGF0YS0+bW9kZS0+aGRpc3BsYXkgLyAyOw0KPiArCQl0YXJnZXRfeSA9IDA7DQo+ICsJCWJyZWFr
+Ow0KPiArCWNhc2UgUE9TX1JJR0hUOg0KPiArCQl0YXJnZXRfeCA9IGRhdGEtPm1vZGUtPmhkaXNw
+bGF5IC0gZGF0YS0+ZmJfdGVzdC53aWR0aDsNCj4gKwkJdGFyZ2V0X3kgPSBkYXRhLT5tb2RlLT52
+ZGlzcGxheSAvIDI7DQo+ICsJCWJyZWFrOw0KPiArCWNhc2UgUE9TX0xFRlQ6DQo+ICsJCXRhcmdl
+dF94ID0gMDsNCj4gKwkJdGFyZ2V0X3kgPSBkYXRhLT5tb2RlLT52ZGlzcGxheSAvIDI7DQo+ICsJ
+CWJyZWFrOw0KPiAgCWRlZmF1bHQ6DQo+ICAJCWlndF9hc3NlcnQoZmFsc2UpOw0KPiAgCX0NCj4g
+DQo+ICsJKnggPSB0YXJnZXRfeDsNCj4gKwkqeSA9IHRhcmdldF95Ow0KPiArfQ0KPiArDQo+ICtz
+dGF0aWMgdm9pZCBwbGFuZV9tb3ZlX2NvbnRpbnVvdXMoZGF0YV90ICpkYXRhKSB7DQo+ICsJaW50
+IHRhcmdldF94LCB0YXJnZXRfeTsNCj4gKw0KPiAgCWlndF9hc3NlcnQocHNyX3dhaXRfZW50cnko
+ZGF0YS0+ZGVidWdmc19mZCwgUFNSX01PREVfMikpOw0KPiANCj4gKwlnZXRfdGFyZ2V0X2Nvb3Jk
+cyhkYXRhLCAmdGFyZ2V0X3gsICZ0YXJnZXRfeSk7DQo+ICsNCj4gIAl3aGlsZSAoZGF0YS0+Y3Vy
+X3ggIT0gdGFyZ2V0X3ggfHwgZGF0YS0+Y3VyX3kgIT0gdGFyZ2V0X3kpIHsNCj4gIAkJaWYgKGRh
+dGEtPmN1cl94IDwgdGFyZ2V0X3gpDQo+ICAJCQlkYXRhLT5jdXJfeCArPSBtaW4odGFyZ2V0X3gg
+LSBkYXRhLT5jdXJfeCwgMjApOyBAQCAtDQo+IDY1MCw3ICs2ODIsNyBAQCBzdGF0aWMgdm9pZCBy
+dW4oZGF0YV90ICpkYXRhKQ0KPiAgCQkgKiBvdmVyIGl0ZXJhdGlvbnMuDQo+ICAJCSAqLw0KPiAg
+CQlkYXRhLT5jdXJfeCA9IGRhdGEtPmN1cl95ID0gMDsNCj4gLQkJZm9yIChpID0gUE9TX1RPUF9M
+RUZUOyBpIDw9IFBPU19UT1BfUklHSFRfTkVHQVRJVkU7IGkrKykgew0KPiArCQlmb3IgKGkgPSBQ
+T1NfVE9QX0xFRlQ7IGkgPD0gUE9TX1JJR0hUOyBpKyspIHsNCj4gIAkJCWRhdGEtPnBvcyA9IGk7
+DQo+ICAJCQlwbGFuZV9tb3ZlX2NvbnRpbnVvdXMoZGF0YSk7DQo+ICAJCX0NCj4gLS0NCj4gMi4y
+NS4xDQoNCg==
