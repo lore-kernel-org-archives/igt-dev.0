@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam08on2078.outbound.protection.outlook.com [40.107.100.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88BAA10E55B
- for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 19:41:49 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 18 May 2022 15:41:37 -0400
-Message-ID: <20220518194137.3452-1-vitaly.prosyak@amd.com>
+Content-Type: multipart/alternative;
+ boundary="===============1386059644382234415=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/amdgpu/amd_basic: refactoring the basic
- tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sai.gowtham.ch@intel.com
+Date: Wed, 18 May 2022 19:47:36 -0000
+Message-ID: <165290325684.21389.16888881119843142914@emeril.freedesktop.org>
+References: <20220518143539.24154-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20220518143539.24154-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fexec=5Fcapture_=3A_Add_support_for_local_memory_=28r?=
+ =?utf-8?q?ev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,4084 +18,2691 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: alexander.deucher@amd.com, christian.koenig@amd.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+--===============1386059644382234415==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-1. Create auxiliary directory amdgpu into igt-gpu-tools/lib/amdgpu
-   Put all helpers and reusable functions into this directory using
-   the following assumptions:
-   - group memory alloc/free functions into separate file amd_memory.c and h.
-   - group command submissions helper functions for GFX, COMPUTE and DMA into
-     separate file amd_command_submission.c and h.
+== Series Details ==
 
-     Question :should i separate these IP's into separate files as well?
+Series: tests/i915/gem_exec_capture : Add support for local memory (rev6)
+URL   : https://patchwork.freedesktop.org/series/95707/
+State : success
 
-   - for compute put nop command submission into separate file amd_compute.c and h.
-   - for graphics put command submission into separate file amd_gfx.c and h.
-   - for fence put command submission into separate file amd_fence.c and h.
+== Summary ==
 
-2. The file igt-gpu-tools/tests/amdgpu/amd_basic.c has only functions responsible
-   for single sub test:
-   - amdgpu_memory_alloc
-   - amdgpu_userptr_test
-   - amdgpu_command_submission_gfx
-   - amdgpu_command_submission_compute
-   - amdgpu_command_submission_multi_fence
-   - amdgpu_command_submission_sdma
-   - amdgpu_semaphore_test
+CI Bug Log - changes from CI_DRM_11674_full -> IGTPW_7133_full
+====================================================
 
-   No helper functions into test.
+Summary
+-------
 
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- lib/amdgpu/amd_PM4.h                |  200 +++++
- lib/amdgpu/amd_command_submission.c |  431 ++++++++++
- lib/amdgpu/amd_command_submission.h |   50 ++
- lib/amdgpu/amd_compute.c            |  106 +++
- lib/amdgpu/amd_compute.h            |   30 +
- lib/amdgpu/amd_family.h             |  160 ++++
- lib/amdgpu/amd_fence.c              |  122 +++
- lib/amdgpu/amd_fence.h              |   32 +
- lib/amdgpu/amd_gfx.c                |  195 +++++
- lib/amdgpu/amd_gfx.h                |   34 +
- lib/amdgpu/amd_ip_blocks.c          |  558 ++++++++++++
- lib/amdgpu/amd_ip_blocks.h          |  112 +++
- lib/amdgpu/amd_memory.c             |  197 +++++
- lib/amdgpu/amd_memory.h             |   61 ++
- lib/amdgpu/amd_sdma.h               |   75 ++
- lib/amdgpu/amdgpu_asic_addr.h       |  171 ++++
- lib/meson.build                     |   10 +
- tests/amdgpu/amd_basic.c            | 1242 +++------------------------
- 18 files changed, 2657 insertions(+), 1129 deletions(-)
- create mode 100644 lib/amdgpu/amd_PM4.h
- create mode 100644 lib/amdgpu/amd_command_submission.c
- create mode 100644 lib/amdgpu/amd_command_submission.h
- create mode 100644 lib/amdgpu/amd_compute.c
- create mode 100644 lib/amdgpu/amd_compute.h
- create mode 100644 lib/amdgpu/amd_family.h
- create mode 100644 lib/amdgpu/amd_fence.c
- create mode 100644 lib/amdgpu/amd_fence.h
- create mode 100644 lib/amdgpu/amd_gfx.c
- create mode 100644 lib/amdgpu/amd_gfx.h
- create mode 100644 lib/amdgpu/amd_ip_blocks.c
- create mode 100644 lib/amdgpu/amd_ip_blocks.h
- create mode 100644 lib/amdgpu/amd_memory.c
- create mode 100644 lib/amdgpu/amd_memory.h
- create mode 100644 lib/amdgpu/amd_sdma.h
- create mode 100644 lib/amdgpu/amdgpu_asic_addr.h
+  **SUCCESS**
 
-diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
-new file mode 100644
-index 00000000..f6b4965d
---- /dev/null
-+++ b/lib/amdgpu/amd_PM4.h
-@@ -0,0 +1,200 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+
-+#ifndef AMD_PM4_H
-+#define AMD_PM4_H
-+
-+/* PM4 */
-+#define	PACKET_TYPE0	0
-+#define	PACKET_TYPE1	1
-+#define	PACKET_TYPE2	2
-+#define	PACKET_TYPE3	3
-+
-+#define CP_PACKET_GET_TYPE(h) (((h) >> 30) & 3)
-+#define CP_PACKET_GET_COUNT(h) (((h) >> 16) & 0x3FFF)
-+#define CP_PACKET0_GET_REG(h) ((h) & 0xFFFF)
-+#define CP_PACKET3_GET_OPCODE(h) (((h) >> 8) & 0xFF)
-+#define PACKET0(reg, n)	((PACKET_TYPE0 << 30) |				\
-+			 ((reg) & 0xFFFF) |			\
-+			 ((n) & 0x3FFF) << 16)
-+#define CP_PACKET2			0x80000000
-+#define		PACKET2_PAD_SHIFT		0
-+#define		PACKET2_PAD_MASK		(0x3fffffff << 0)
-+
-+#define PACKET2(v)	(CP_PACKET2 | REG_SET(PACKET2_PAD, (v)))
-+
-+#define PACKET3(op, n)	((PACKET_TYPE3 << 30) |				\
-+			 (((op) & 0xFF) << 8) |				\
-+			 ((n) & 0x3FFF) << 16)
-+
-+/* Packet 3 types */
-+#define	PACKET3_NOP					0x10
-+
-+#define	PACKET3_WRITE_DATA				0x37
-+#define		WRITE_DATA_DST_SEL(x)                   ((x) << 8)
-+		/* 0 - register
-+		 * 1 - memory (sync - via GRBM)
-+		 * 2 - gl2
-+		 * 3 - gds
-+		 * 4 - reserved
-+		 * 5 - memory (async - direct)
-+		 */
-+#define		WR_ONE_ADDR                             (1 << 16)
-+#define		WR_CONFIRM                              (1 << 20)
-+#define		WRITE_DATA_CACHE_POLICY(x)              ((x) << 25)
-+		/* 0 - LRU
-+		 * 1 - Stream
-+		 */
-+#define		WRITE_DATA_ENGINE_SEL(x)                ((x) << 30)
-+		/* 0 - me
-+		 * 1 - pfp
-+		 * 2 - ce
-+		 */
-+
-+#define	PACKET3_DMA_DATA				0x50
-+/* 1. header
-+ * 2. CONTROL
-+ * 3. SRC_ADDR_LO or DATA [31:0]
-+ * 4. SRC_ADDR_HI [31:0]
-+ * 5. DST_ADDR_LO [31:0]
-+ * 6. DST_ADDR_HI [7:0]
-+ * 7. COMMAND [30:21] | BYTE_COUNT [20:0]
-+ */
-+/* CONTROL */
-+#              define PACKET3_DMA_DATA_ENGINE(x)     ((x) << 0)
-+		/* 0 - ME
-+		 * 1 - PFP
-+		 */
-+#              define PACKET3_DMA_DATA_SRC_CACHE_POLICY(x) ((x) << 13)
-+		/* 0 - LRU
-+		 * 1 - Stream
-+		 * 2 - Bypass
-+		 */
-+#              define PACKET3_DMA_DATA_SRC_VOLATILE (1 << 15)
-+#              define PACKET3_DMA_DATA_DST_SEL(x)  ((x) << 20)
-+		/* 0 - DST_ADDR using DAS
-+		 * 1 - GDS
-+		 * 3 - DST_ADDR using L2
-+		 */
-+#              define PACKET3_DMA_DATA_DST_CACHE_POLICY(x) ((x) << 25)
-+		/* 0 - LRU
-+		 * 1 - Stream
-+		 * 2 - Bypass
-+		 */
-+#              define PACKET3_DMA_DATA_DST_VOLATILE (1 << 27)
-+#              define PACKET3_DMA_DATA_SRC_SEL(x)  ((x) << 29)
-+		/* 0 - SRC_ADDR using SAS
-+		 * 1 - GDS
-+		 * 2 - DATA
-+		 * 3 - SRC_ADDR using L2
-+		 */
-+#              define PACKET3_DMA_DATA_CP_SYNC     (1 << 31)
-+/* COMMAND */
-+#              define PACKET3_DMA_DATA_DIS_WC      (1 << 21)
-+#              define PACKET3_DMA_DATA_CMD_SRC_SWAP(x) ((x) << 22)
-+		/* 0 - none
-+		 * 1 - 8 in 16
-+		 * 2 - 8 in 32
-+		 * 3 - 8 in 64
-+		 */
-+#              define PACKET3_DMA_DATA_CMD_DST_SWAP(x) ((x) << 24)
-+		/* 0 - none
-+		 * 1 - 8 in 16
-+		 * 2 - 8 in 32
-+		 * 3 - 8 in 64
-+		 */
-+#              define PACKET3_DMA_DATA_CMD_SAS     (1 << 26)
-+		/* 0 - memory
-+		 * 1 - register
-+		 */
-+#              define PACKET3_DMA_DATA_CMD_DAS     (1 << 27)
-+		/* 0 - memory
-+		 * 1 - register
-+		 */
-+#              define PACKET3_DMA_DATA_CMD_SAIC    (1 << 28)
-+#              define PACKET3_DMA_DATA_CMD_DAIC    (1 << 29)
-+#              define PACKET3_DMA_DATA_CMD_RAW_WAIT  (1 << 30)
-+
-+
-+#define	PACKET3_ATOMIC_MEM				0x1E
-+#define     TC_OP_ATOMIC_CMPSWAP_RTN_32          0x00000008
-+#define     ATOMIC_MEM_COMMAND(x)               ((x) << 8)
-+            /* 0 - single_pass_atomic.
-+             * 1 - loop_until_compare_satisfied.
-+             */
-+#define     ATOMIC_MEM_CACHEPOLICAY(x)          ((x) << 25)
-+            /* 0 - lru.
-+             * 1 - stream.
-+             */
-+#define     ATOMIC_MEM_ENGINESEL(x)             ((x) << 30)
-+            /* 0 - micro_engine.*/
-+
-+#define SDMA_PACKET_SI(op, b, t, s, cnt)	((((op) & 0xF) << 28) |	\
-+						(((b) & 0x1) << 26) |		\
-+						(((t) & 0x1) << 23) |		\
-+						(((s) & 0x1) << 22) |		\
-+						(((cnt) & 0xFFFFF) << 0))
-+#define	SDMA_OPCODE_COPY_SI	3
-+#define SDMA_OPCODE_CONSTANT_FILL_SI	13
-+#define SDMA_NOP_SI  0xf
-+#define GFX_COMPUTE_NOP_SI 0x80000000
-+#define	PACKET3_DMA_DATA_SI	0x41
-+#              define PACKET3_DMA_DATA_SI_ENGINE(x)     ((x) << 27)
-+		/* 0 - ME
-+		 * 1 - PFP
-+		 */
-+#              define PACKET3_DMA_DATA_SI_DST_SEL(x)  ((x) << 20)
-+		/* 0 - DST_ADDR using DAS
-+		 * 1 - GDS
-+		 * 3 - DST_ADDR using L2
-+		 */
-+#              define PACKET3_DMA_DATA_SI_SRC_SEL(x)  ((x) << 29)
-+		/* 0 - SRC_ADDR using SAS
-+		 * 1 - GDS
-+		 * 2 - DATA
-+		 * 3 - SRC_ADDR using L2
-+		 */
-+#              define PACKET3_DMA_DATA_SI_CP_SYNC     (1 << 31)
-+
-+
-+#define PKT3_CONTEXT_CONTROL                   0x28
-+#define     CONTEXT_CONTROL_LOAD_ENABLE(x)     (((unsigned)(x) & 0x1) << 31)
-+#define     CONTEXT_CONTROL_LOAD_CE_RAM(x)     (((unsigned)(x) & 0x1) << 28)
-+#define     CONTEXT_CONTROL_SHADOW_ENABLE(x)   (((unsigned)(x) & 0x1) << 31)
-+
-+#define PKT3_CLEAR_STATE                       0x12
-+
-+#define PKT3_SET_SH_REG                        0x76
-+#define		PACKET3_SET_SH_REG_START			0x00002c00
-+
-+#define PKT3_SET_SH_REG_INDEX			0x9B
-+
-+#define	PACKET3_DISPATCH_DIRECT				0x15
-+#define PACKET3_EVENT_WRITE				0x46
-+#define PACKET3_ACQUIRE_MEM				0x58
-+#define PACKET3_SET_CONTEXT_REG				0x69
-+#define PACKET3_SET_UCONFIG_REG				0x79
-+#define PACKET3_DRAW_INDEX_AUTO				0x2D
-+
-+#endif
-diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-new file mode 100644
-index 00000000..98784b75
---- /dev/null
-+++ b/lib/amdgpu/amd_command_submission.c
-@@ -0,0 +1,431 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include "lib/amdgpu/amd_memory.h"
-+#include "lib/amdgpu/amd_sdma.h"
-+#include "lib/amdgpu/amd_PM4.h"
-+#include "lib/amdgpu/amd_command_submission.h"
-+
-+
-+void amdgpu_test_exec_cs_helper_old(amdgpu_device_handle device,
-+				amdgpu_context_handle context_handle,
-+				unsigned ip_type,
-+				int instance, uint32_t pm4_dw, uint32_t *pm4_src,
-+				int res_cnt, amdgpu_bo_handle *resources,
-+				struct amdgpu_cs_ib_info *ib_info,
-+				struct amdgpu_cs_request *ibs_request, bool secure)
-+{
-+	int r;
-+	uint32_t expired;
-+	uint32_t *ring_ptr;
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint64_t ib_result_mc_address;
-+	struct amdgpu_cs_fence fence_status = {0};
-+	amdgpu_bo_handle *all_res = alloca(sizeof(resources[0]) * (res_cnt + 1));
-+	amdgpu_va_handle va_handle;
-+
-+	/* prepare CS */
-+	igt_assert(pm4_dw <= 1024);
-+
-+	/* allocate IB */
-+	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_handle, &ib_result_cpu,
-+				    &ib_result_mc_address, &va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	/* copy PM4 packet to ring from caller */
-+	ring_ptr = ib_result_cpu;
-+	memcpy(ring_ptr, pm4_src, pm4_dw * sizeof(*pm4_src));
-+
-+	ib_info->ib_mc_address = ib_result_mc_address;
-+	ib_info->size = pm4_dw;
-+	if (secure)
-+		ib_info->flags |= AMDGPU_IB_FLAGS_SECURE;
-+
-+	ibs_request->ip_type = ip_type;
-+	ibs_request->ring = instance;
-+	ibs_request->number_of_ibs = 1;
-+	ibs_request->ibs = ib_info;
-+	ibs_request->fence_info.handle = NULL;
-+
-+	memcpy(all_res, resources, sizeof(resources[0]) * res_cnt);
-+	all_res[res_cnt] = ib_result_handle;
-+
-+	r = amdgpu_bo_list_create(device, res_cnt+1, all_res,
-+				  NULL, &ibs_request->resources);
-+	igt_assert_eq(r, 0);
-+
-+	/* submit CS */
-+	r = amdgpu_cs_submit(context_handle, 0, ibs_request, 1);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_list_destroy(ibs_request->resources);
-+	igt_assert_eq(r, 0);
-+
-+	fence_status.ip_type = ip_type;
-+	fence_status.ip_instance = 0;
-+	fence_status.ring = ibs_request->ring;
-+	fence_status.context = context_handle;
-+	fence_status.fence = ibs_request->seq_no;
-+
-+	/* wait for IB accomplished */
-+	r = amdgpu_cs_query_fence_status(&fence_status,
-+					 AMDGPU_TIMEOUT_INFINITE,
-+					 0, &expired);
-+	igt_assert_eq(r, 0);
-+	igt_assert_eq(expired, true);
-+
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				 ib_result_mc_address, 4096);
-+}
-+
-+
-+/*
-+ *
-+ * Caller need create/release:
-+ * pm4_src, resources, ib_info, and ibs_request
-+ * submit command stream described in ibs_request and wait for this IB accomplished
-+ */
-+
-+void amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned ip_type,
-+				struct amdgpu_ring_context *ring_context)
-+{
-+	int r;
-+	uint32_t expired;
-+	uint32_t *ring_ptr;
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint64_t ib_result_mc_address;
-+	struct amdgpu_cs_fence fence_status = {0};
-+	amdgpu_va_handle va_handle;
-+
-+	amdgpu_bo_handle *all_res = alloca(sizeof(ring_context->resources[0]) * (ring_context->res_cnt + 1));
-+
-+
-+	/* prepare CS */
-+	igt_assert(ring_context->pm4_dw <= 1024);
-+
-+	/* allocate IB */
-+	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_handle, &ib_result_cpu,
-+				    &ib_result_mc_address, &va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	/* copy PM4 packet to ring from caller */
-+	ring_ptr = ib_result_cpu;
-+	memcpy(ring_ptr, ring_context->pm4, ring_context->pm4_dw * sizeof(*ring_context->pm4));
-+
-+	ring_context->ib_info.ib_mc_address = ib_result_mc_address;
-+	ring_context->ib_info.size = ring_context->pm4_dw;
-+	if (ring_context->secure)
-+		ring_context->ib_info.flags |= AMDGPU_IB_FLAGS_SECURE;
-+
-+	ring_context->ibs_request.ip_type = ip_type;
-+	ring_context->ibs_request.ring = ring_context->ring_id;
-+	ring_context->ibs_request.number_of_ibs = 1;
-+	ring_context->ibs_request.ibs = &ring_context->ib_info;
-+	ring_context->ibs_request.fence_info.handle = NULL;
-+
-+	memcpy(all_res, ring_context->resources, sizeof(ring_context->resources[0]) * ring_context->res_cnt);
-+	all_res[ring_context->res_cnt] = ib_result_handle;
-+
-+	r = amdgpu_bo_list_create(device, ring_context->res_cnt+1, all_res,
-+				  NULL, &ring_context->ibs_request.resources);
-+	igt_assert_eq(r, 0);
-+
-+	/* submit CS */
-+	r = amdgpu_cs_submit(ring_context->context_handle, 0, &ring_context->ibs_request, 1);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_list_destroy(ring_context->ibs_request.resources);
-+	igt_assert_eq(r, 0);
-+
-+	fence_status.ip_type = ip_type;
-+	fence_status.ip_instance = 0;
-+	fence_status.ring = ring_context->ibs_request.ring;
-+	fence_status.context = ring_context->context_handle;
-+	fence_status.fence = ring_context->ibs_request.seq_no;
-+
-+	/* wait for IB accomplished */
-+	r = amdgpu_cs_query_fence_status(&fence_status,
-+					 AMDGPU_TIMEOUT_INFINITE,
-+					 0, &expired);
-+	igt_assert_eq(r, 0);
-+	igt_assert_eq(expired, true);
-+
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				 ib_result_mc_address, 4096);
-+}
-+
-+void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
-+					      const struct amdgpu_ip_block_version *ip_block,
-+					      bool secure)
-+
-+{
-+
-+	const int sdma_write_length = 128;
-+	const int pm4_dw = 256;
-+
-+	struct amdgpu_ring_context *ring_context;
-+	int i, r, loop, ring_id;
-+
-+	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
-+
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	igt_assert(ring_context);
-+	/* setup parameters */
-+	ring_context->write_length =  sdma_write_length;
-+	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
-+	ring_context->secure = secure;
-+	ring_context->pm4_size = pm4_dw;
-+	ring_context->res_cnt = 1;
-+	igt_assert(ring_context->pm4);
-+
-+	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
-+	igt_assert_eq(r, 0);
-+
-+	for (i = 0; secure && (i < 2); i++)
-+		gtt_flags[i] |= AMDGPU_GEM_CREATE_ENCRYPTED;
-+
-+	r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
-+
-+	igt_assert_eq(r, 0);
-+
-+	for (ring_id = 0; (1 << ring_id) & ring_context->hw_ip_info.available_rings; ring_id++) {
-+		loop = 0;
-+		while(loop < 2) {
-+			/* allocate UC bo for sDMA use */
-+			r = amdgpu_bo_alloc_and_map(device,
-+						    ring_context->write_length * sizeof(uint32_t),
-+						    4096, AMDGPU_GEM_DOMAIN_GTT,
-+						    gtt_flags[loop], &ring_context->bo,
-+						    (void**)&ring_context->bo_cpu,
-+						    &ring_context->bo_mc,
-+						    &ring_context->va_handle);
-+			igt_assert_eq(r, 0);
-+
-+			/* clear bo */
-+			memset((void*)ring_context->bo_cpu, 0, ring_context->write_length * sizeof(uint32_t));
-+
-+			ring_context->resources[0] = ring_context->bo;
-+
-+			ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+
-+			ring_context->ring_id = ring_id;
-+
-+			 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+
-+			/* verify if SDMA test result meets with expected */
-+			i = 0;
-+			if (!secure) {
-+				r = ip_block->funcs->compare(ip_block->funcs, ring_context, 1);
-+				igt_assert_eq(r, 0);
-+			} else if (ip_block->type == AMDGPU_HW_IP_GFX) {
-+				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+
-+				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+
-+			} else if (ip_block->type == AMDGPU_HW_IP_DMA) {
-+				/* restore the bo_cpu to compare */
-+				ring_context->bo_cpu_origin = ring_context->bo_cpu[0];
-+				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+
-+				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+
-+				/* restore again, here dest_data should be */
-+				ring_context->bo_cpu_origin = ring_context->bo_cpu[0];
-+				ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+
-+				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+				/* here bo_cpu[0] should be unchanged, still is 0x12345678, otherwise failed*/
-+				igt_assert_eq(ring_context->bo_cpu[0], ring_context->bo_cpu_origin);
-+			}
-+
-+			amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
-+						 ring_context->write_length * sizeof(uint32_t));
-+			loop++;
-+		}
-+	}
-+	/* clean resources */
-+	free(ring_context->pm4);
-+	free(ring_context);
-+	/* end of test */
-+	r = amdgpu_cs_ctx_free(ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+}
-+
-+
-+/**
-+ *
-+ * @param device
-+ * @param ip_type
-+ */
-+void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
-+						 const struct amdgpu_ip_block_version *ip_block)
-+{
-+	const int sdma_write_length = 1024 * 1024;
-+	const int pm4_dw = 256;
-+
-+	struct amdgpu_ring_context *ring_context;
-+	int r, loop;
-+
-+	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
-+
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	ring_context->write_length =  sdma_write_length;
-+	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
-+	ring_context->secure = false;
-+	ring_context->pm4_size = pm4_dw;
-+	ring_context->res_cnt = 1;
-+	igt_assert(ring_context->pm4);
-+
-+	r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	/* prepare resource */
-+	loop = 0;
-+	while(loop < 2) {
-+		/* allocate UC bo for sDMA use */
-+		r = amdgpu_bo_alloc_and_map(device,
-+					    ring_context->write_length, 4096,
-+					    AMDGPU_GEM_DOMAIN_GTT,
-+					    gtt_flags[loop], &ring_context->bo, (void**)&ring_context->bo_cpu,
-+					    &ring_context->bo_mc, &ring_context->va_handle);
-+		igt_assert_eq(r, 0);
-+
-+		/* clear bo */
-+		memset((void*)ring_context->bo_cpu, 0, ring_context->write_length);
-+
-+		ring_context->resources[0] = ring_context->bo;
-+
-+		/* fulfill PM4: test DMA const fill */
-+		ip_block->funcs->const_fill(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+
-+		amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+
-+		/* verify if SDMA test result meets with expected */
-+		r = ip_block->funcs->compare(ip_block->funcs, ring_context, 4);
-+		igt_assert_eq(r, 0);
-+
-+		amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
-+					 ring_context->write_length);
-+		loop++;
-+	}
-+	/* clean resources */
-+	free(ring_context->pm4);
-+
-+	/* end of test */
-+	r = amdgpu_cs_ctx_free(ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+	free(ring_context);
-+}
-+
-+/**
-+ *
-+ * @param device
-+ * @param ip_type
-+ */
-+void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
-+						  const struct amdgpu_ip_block_version *ip_block)
-+{
-+	const int sdma_write_length = 1024;
-+	const int pm4_dw = 256;
-+
-+	struct amdgpu_ring_context *ring_context;
-+	int i, r, loop1, loop2;
-+
-+	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
-+
-+
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	ring_context->write_length =  sdma_write_length;
-+	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
-+	ring_context->secure = false;
-+	ring_context->pm4_size = pm4_dw;
-+	ring_context->res_cnt = 2;
-+	igt_assert(ring_context->pm4);
-+
-+
-+	r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+
-+
-+	loop1 = loop2 = 0;
-+	/* run 9 circle to test all mapping combination */
-+	while(loop1 < 2) {
-+		while(loop2 < 2) {
-+			/* allocate UC bo1for sDMA use */
-+			r = amdgpu_bo_alloc_and_map(device,
-+						    ring_context->write_length, 4096,
-+						    AMDGPU_GEM_DOMAIN_GTT,
-+						    gtt_flags[loop1], &ring_context->bo,
-+						    (void**)&ring_context->bo_cpu, &ring_context->bo_mc,
-+						    &ring_context->va_handle);
-+			igt_assert_eq(r, 0);
-+
-+			/* set bo_cpu */
-+			memset((void*)ring_context->bo_cpu, ip_block->funcs->pattern, ring_context->write_length);
-+
-+			/* allocate UC bo2 for sDMA use */
-+			r = amdgpu_bo_alloc_and_map(device,
-+						    ring_context->write_length, 4096,
-+						    AMDGPU_GEM_DOMAIN_GTT,
-+						    gtt_flags[loop2], &ring_context->bo2,
-+						    (void**)&ring_context->bo2_cpu, &ring_context->bo_mc2,
-+						    &ring_context->va_handle2);
-+			igt_assert_eq(r, 0);
-+
-+			/* clear bo2_cpu */
-+			memset((void*)ring_context->bo2_cpu, 0, ring_context->write_length);
-+
-+			ring_context->resources[0] = ring_context->bo;
-+			ring_context->resources[1] = ring_context->bo2;
-+
-+			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+
-+			amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
-+
-+			/* verify if SDMA test result meets with expected */
-+			i = 0;
-+			while(i < ring_context->write_length/4)
-+				igt_assert_eq(ring_context->bo2_cpu[i++], ip_block->funcs->pattern);
-+
-+			amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
-+						 ring_context->write_length);
-+			amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2, ring_context->bo_mc2,
-+						 ring_context->write_length);
-+			loop2++;
-+		}
-+		loop1++;
-+	}
-+	/* clean resources */
-+	free(ring_context->pm4);
-+
-+	/* end of test */
-+	r = amdgpu_cs_ctx_free(ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+	free(ring_context);
-+}
-diff --git a/lib/amdgpu/amd_command_submission.h b/lib/amdgpu/amd_command_submission.h
-new file mode 100644
-index 00000000..a74ed51b
---- /dev/null
-+++ b/lib/amdgpu/amd_command_submission.h
-@@ -0,0 +1,50 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+
-+#ifndef AMD_COMMAND_SUBMISSION
-+#define AMD_COMMAND_SUBMISSION
-+
-+#include "amd_ip_blocks.h"
-+
-+void amdgpu_test_exec_cs_helper_old(amdgpu_device_handle device,
-+				amdgpu_context_handle context_handle,
-+				unsigned ip_type,
-+				int instance, uint32_t pm4_dw, uint32_t *pm4_src,
-+				int res_cnt, amdgpu_bo_handle *resources,
-+				struct amdgpu_cs_ib_info *ib_info,
-+				struct amdgpu_cs_request *ibs_request, bool secure);
-+
-+void amdgpu_test_exec_cs_helper(amdgpu_device_handle device,
-+				unsigned ip_type, struct amdgpu_ring_context *ring_context);
-+
-+void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
-+						   const struct amdgpu_ip_block_version *ip_block,
-+						   bool secure);
-+
-+void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
-+						 const struct amdgpu_ip_block_version *ip_block);
-+
-+void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
-+						 const struct amdgpu_ip_block_version *ip_block);
-+#endif
-diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
-new file mode 100644
-index 00000000..a6bdfdb1
---- /dev/null
-+++ b/lib/amdgpu/amd_compute.c
-@@ -0,0 +1,106 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include "amd_PM4.h"
-+#include "amd_memory.h"
-+#include "amd_compute.h"
-+
-+/**
-+ *
-+ * @param device
-+ */
-+void amdgpu_command_submission_compute_nop(amdgpu_device_handle device)
-+{
-+	amdgpu_context_handle context_handle;
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint64_t ib_result_mc_address;
-+	struct amdgpu_cs_request ibs_request;
-+	struct amdgpu_cs_ib_info ib_info;
-+	struct amdgpu_cs_fence fence_status;
-+	struct drm_amdgpu_info_hw_ip info;
-+	uint32_t *ptr;
-+	uint32_t expired;
-+	int r, instance;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle;
-+
-+	r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_COMPUTE, 0, &info);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_cs_ctx_create(device, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	for (instance = 0; info.available_rings & (1 << instance); instance++) {
-+		r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+					    AMDGPU_GEM_DOMAIN_GTT, 0,
-+					    &ib_result_handle, &ib_result_cpu,
-+					    &ib_result_mc_address, &va_handle);
-+		igt_assert_eq(r, 0);
-+
-+		r = amdgpu_get_bo_list(device, ib_result_handle, NULL,
-+				       &bo_list);
-+		igt_assert_eq(r, 0);
-+
-+		ptr = ib_result_cpu;
-+		memset(ptr, 0, 16);
-+		ptr[0] = PACKET3(PACKET3_NOP, 14);
-+
-+		memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
-+		ib_info.ib_mc_address = ib_result_mc_address;
-+		ib_info.size = 16;
-+
-+		memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
-+		ibs_request.ip_type = AMDGPU_HW_IP_COMPUTE;
-+		ibs_request.ring = instance;
-+		ibs_request.number_of_ibs = 1;
-+		ibs_request.ibs = &ib_info;
-+		ibs_request.resources = bo_list;
-+		ibs_request.fence_info.handle = NULL;
-+
-+		memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
-+		r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
-+		igt_assert_eq(r, 0);
-+
-+		fence_status.context = context_handle;
-+		fence_status.ip_type = AMDGPU_HW_IP_COMPUTE;
-+		fence_status.ip_instance = 0;
-+		fence_status.ring = instance;
-+		fence_status.fence = ibs_request.seq_no;
-+
-+		r = amdgpu_cs_query_fence_status(&fence_status,
-+						 AMDGPU_TIMEOUT_INFINITE,
-+						 0, &expired);
-+		igt_assert_eq(r, 0);
-+
-+		r = amdgpu_bo_list_destroy(bo_list);
-+		igt_assert_eq(r, 0);
-+
-+		amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+					 ib_result_mc_address, 4096);
-+	}
-+
-+	r = amdgpu_cs_ctx_free(context_handle);
-+	igt_assert_eq(r, 0);
-+}
-+
-diff --git a/lib/amdgpu/amd_compute.h b/lib/amdgpu/amd_compute.h
-new file mode 100644
-index 00000000..9154bd9d
---- /dev/null
-+++ b/lib/amdgpu/amd_compute.h
-@@ -0,0 +1,30 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef AMD_COMPUTE_H
-+#define AMD_COMPUTE_H
-+
-+
-+void amdgpu_command_submission_compute_nop(amdgpu_device_handle device);
-+
-+#endif
-diff --git a/lib/amdgpu/amd_family.h b/lib/amdgpu/amd_family.h
-new file mode 100644
-index 00000000..1165c64d
---- /dev/null
-+++ b/lib/amdgpu/amd_family.h
-@@ -0,0 +1,160 @@
-+/*
-+ * Copyright 2008 Corbin Simpson <MostAwesomeDude@gmail.com>
-+ * Copyright 2010 Marek Olšák <maraeo@gmail.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * on the rights to use, copy, modify, merge, publish, distribute, sub
-+ * license, and/or sell copies of the Software, and to permit persons to whom
-+ * the Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHOR(S) AND/OR THEIR SUPPLIERS BE LIABLE FOR ANY CLAIM,
-+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-+ * USE OR OTHER DEALINGS IN THE SOFTWARE. */
-+
-+#ifndef AMD_FAMILY_H
-+#define AMD_FAMILY_H
-+
-+#ifdef __cplusplus
-+extern "C" {
-+#endif
-+
-+enum radeon_family
-+{
-+   CHIP_UNKNOWN = 0,
-+   CHIP_R300, /* R3xx-based cores. (GFX2) */
-+   CHIP_R350,
-+   CHIP_RV350,
-+   CHIP_RV370,
-+   CHIP_RV380,
-+   CHIP_RS400,
-+   CHIP_RC410,
-+   CHIP_RS480,
-+   CHIP_R420, /* R4xx-based cores. (GFX2) */
-+   CHIP_R423,
-+   CHIP_R430,
-+   CHIP_R480,
-+   CHIP_R481,
-+   CHIP_RV410,
-+   CHIP_RS600,
-+   CHIP_RS690,
-+   CHIP_RS740,
-+   CHIP_RV515, /* R5xx-based cores. (GFX2) */
-+   CHIP_R520,
-+   CHIP_RV530,
-+   CHIP_R580,
-+   CHIP_RV560,
-+   CHIP_RV570,
-+   CHIP_R600, /* GFX3 (R6xx) */
-+   CHIP_RV610,
-+   CHIP_RV630,
-+   CHIP_RV670,
-+   CHIP_RV620,
-+   CHIP_RV635,
-+   CHIP_RS780,
-+   CHIP_RS880,
-+   CHIP_RV770, /* GFX3 (R7xx) */
-+   CHIP_RV730,
-+   CHIP_RV710,
-+   CHIP_RV740,
-+   CHIP_CEDAR, /* GFX4 (Evergreen) */
-+   CHIP_REDWOOD,
-+   CHIP_JUNIPER,
-+   CHIP_CYPRESS,
-+   CHIP_HEMLOCK,
-+   CHIP_PALM,
-+   CHIP_SUMO,
-+   CHIP_SUMO2,
-+   CHIP_BARTS,
-+   CHIP_TURKS,
-+   CHIP_CAICOS,
-+   CHIP_CAYMAN, /* GFX5 (Northern Islands) */
-+   CHIP_ARUBA,
-+   CHIP_TAHITI, /* GFX6 (Southern Islands) */
-+   CHIP_PITCAIRN,
-+   CHIP_VERDE,
-+   CHIP_OLAND,
-+   CHIP_HAINAN,
-+   CHIP_BONAIRE, /* GFX7 (Sea Islands) */
-+   CHIP_KAVERI,
-+   CHIP_KABINI,
-+   CHIP_HAWAII,
-+   CHIP_TONGA, /* GFX8 (Volcanic Islands & Polaris) */
-+   CHIP_ICELAND,
-+   CHIP_CARRIZO,
-+   CHIP_FIJI,
-+   CHIP_STONEY,
-+   CHIP_POLARIS10,
-+   CHIP_POLARIS11,
-+   CHIP_POLARIS12,
-+   CHIP_VEGAM,
-+   CHIP_VEGA10, /* GFX9 (Vega) */
-+   CHIP_VEGA12,
-+   CHIP_VEGA20,
-+   CHIP_RAVEN,
-+   CHIP_RAVEN2,
-+   CHIP_RENOIR,
-+   CHIP_ARCTURUS,
-+   CHIP_ALDEBARAN,
-+   CHIP_NAVI10,
-+   CHIP_NAVI12,
-+   CHIP_NAVI14,
-+   CHIP_SIENNA_CICHLID,
-+   CHIP_NAVY_FLOUNDER,
-+   CHIP_VANGOGH,
-+   CHIP_DIMGREY_CAVEFISH,
-+   CHIP_BEIGE_GOBY,
-+   CHIP_YELLOW_CARP,
-+   CHIP_LAST,
-+};
-+
-+enum chip_class
-+{
-+   CLASS_UNKNOWN = 0,
-+   R300,
-+   R400,
-+   R500,
-+   R600,
-+   R700,
-+   EVERGREEN,
-+   CAYMAN,
-+   GFX6,
-+   GFX7,
-+   GFX8,
-+   GFX9,
-+   GFX10,
-+   GFX10_3,
-+
-+   NUM_GFX_VERSIONS,
-+};
-+
-+enum ring_type
-+{
-+   RING_GFX = 0,
-+   RING_COMPUTE,
-+   RING_DMA,
-+   RING_UVD,
-+   RING_VCE,
-+   RING_UVD_ENC,
-+   RING_VCN_DEC,
-+   RING_VCN_ENC,
-+   RING_VCN_JPEG,
-+   NUM_RING_TYPES,
-+};
-+
-+const char *ac_get_family_name(enum radeon_family family);
-+
-+#ifdef __cplusplus
-+}
-+#endif
-+
-+#endif
-diff --git a/lib/amdgpu/amd_fence.c b/lib/amdgpu/amd_fence.c
-new file mode 100644
-index 00000000..cd4d251f
---- /dev/null
-+++ b/lib/amdgpu/amd_fence.c
-@@ -0,0 +1,122 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include "amd_memory.h"
-+#include "amd_fence.h"
-+
-+
-+/**
-+ * MULTI FENCE
-+ * @param device
-+ * @param wait_all
-+ */
-+void amdgpu_command_submission_multi_fence_wait_all(amdgpu_device_handle device,
-+						    bool wait_all)
-+{
-+	amdgpu_context_handle context_handle;
-+	amdgpu_bo_handle ib_result_handle, ib_result_ce_handle;
-+	void *ib_result_cpu, *ib_result_ce_cpu;
-+	uint64_t ib_result_mc_address, ib_result_ce_mc_address;
-+	struct amdgpu_cs_request ibs_request[2] = {};
-+	struct amdgpu_cs_ib_info ib_info[2];
-+	struct amdgpu_cs_fence fence_status[2] = {};
-+	uint32_t *ptr;
-+	uint32_t expired;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle, va_handle_ce;
-+	int r;
-+	int i, ib_cs_num = 2;
-+
-+	r = amdgpu_cs_ctx_create(device, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_handle, &ib_result_cpu,
-+				    &ib_result_mc_address, &va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_ce_handle, &ib_result_ce_cpu,
-+				    &ib_result_ce_mc_address, &va_handle_ce);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_get_bo_list(device, ib_result_handle,
-+			       ib_result_ce_handle, &bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	memset(ib_info, 0, 2 * sizeof(struct amdgpu_cs_ib_info));
-+
-+	/* IT_SET_CE_DE_COUNTERS */
-+	ptr = ib_result_ce_cpu;
-+	ptr[0] = 0xc0008900;
-+	ptr[1] = 0;
-+	ptr[2] = 0xc0008400;
-+	ptr[3] = 1;
-+	ib_info[0].ib_mc_address = ib_result_ce_mc_address;
-+	ib_info[0].size = 4;
-+	ib_info[0].flags = AMDGPU_IB_FLAG_CE;
-+
-+	/* IT_WAIT_ON_CE_COUNTER */
-+	ptr = ib_result_cpu;
-+	ptr[0] = 0xc0008600;
-+	ptr[1] = 0x00000001;
-+	ib_info[1].ib_mc_address = ib_result_mc_address;
-+	ib_info[1].size = 2;
-+
-+	for (i = 0; i < ib_cs_num; i++) {
-+		ibs_request[i].ip_type = AMDGPU_HW_IP_GFX;
-+		ibs_request[i].number_of_ibs = 2;
-+		ibs_request[i].ibs = ib_info;
-+		ibs_request[i].resources = bo_list;
-+		ibs_request[i].fence_info.handle = NULL;
-+	}
-+
-+	r = amdgpu_cs_submit(context_handle, 0,ibs_request, ib_cs_num);
-+
-+	igt_assert_eq(r, 0);
-+
-+	for (i = 0; i < ib_cs_num; i++) {
-+		fence_status[i].context = context_handle;
-+		fence_status[i].ip_type = AMDGPU_HW_IP_GFX;
-+		fence_status[i].fence = ibs_request[i].seq_no;
-+	}
-+
-+	r = amdgpu_cs_wait_fences(fence_status, ib_cs_num, wait_all,
-+				  AMDGPU_TIMEOUT_INFINITE,
-+				  &expired, NULL);
-+	igt_assert_eq(r, 0);
-+
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				 ib_result_mc_address, 4096);
-+
-+	amdgpu_bo_unmap_and_free(ib_result_ce_handle, va_handle_ce,
-+				 ib_result_ce_mc_address, 4096);
-+
-+	r = amdgpu_bo_list_destroy(bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_cs_ctx_free(context_handle);
-+	igt_assert_eq(r, 0);
-+}
-diff --git a/lib/amdgpu/amd_fence.h b/lib/amdgpu/amd_fence.h
-new file mode 100644
-index 00000000..1ea43896
---- /dev/null
-+++ b/lib/amdgpu/amd_fence.h
-@@ -0,0 +1,32 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef AMD_FENCE_H
-+#define AMD_FENCE_H
-+
-+
-+void amdgpu_command_submission_multi_fence_wait_all(amdgpu_device_handle device,
-+						    bool wait_all);
-+
-+
-+#endif
-diff --git a/lib/amdgpu/amd_gfx.c b/lib/amdgpu/amd_gfx.c
-new file mode 100644
-index 00000000..02ff24ab
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx.c
-@@ -0,0 +1,195 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+
-+#include "amd_memory.h"
-+#include "amd_gfx.h"
-+
-+/**
-+ *
-+ * @param device
-+ */
-+void amdgpu_command_submission_gfx_separate_ibs(amdgpu_device_handle device)
-+{
-+	amdgpu_context_handle context_handle;
-+	amdgpu_bo_handle ib_result_handle, ib_result_ce_handle;
-+	void *ib_result_cpu, *ib_result_ce_cpu;
-+	uint64_t ib_result_mc_address, ib_result_ce_mc_address;
-+	struct amdgpu_cs_request ibs_request = {0};
-+	struct amdgpu_cs_ib_info ib_info[2];
-+	struct amdgpu_cs_fence fence_status = {0};
-+	uint32_t *ptr;
-+	uint32_t expired;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle, va_handle_ce;
-+	int r;
-+
-+	r = amdgpu_cs_ctx_create(device, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_handle, &ib_result_cpu,
-+				    &ib_result_mc_address, &va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_ce_handle, &ib_result_ce_cpu,
-+				    &ib_result_ce_mc_address, &va_handle_ce);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_get_bo_list(device, ib_result_handle,
-+			       ib_result_ce_handle, &bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	memset(ib_info, 0, 2 * sizeof(struct amdgpu_cs_ib_info));
-+
-+	/* IT_SET_CE_DE_COUNTERS */
-+	ptr = ib_result_ce_cpu;
-+	ptr[0] = 0xc0008900;
-+	ptr[1] = 0;
-+	ptr[2] = 0xc0008400;
-+	ptr[3] = 1;
-+	ib_info[0].ib_mc_address = ib_result_ce_mc_address;
-+	ib_info[0].size = 4;
-+	ib_info[0].flags = AMDGPU_IB_FLAG_CE;
-+
-+	/* IT_WAIT_ON_CE_COUNTER */
-+	ptr = ib_result_cpu;
-+	ptr[0] = 0xc0008600;
-+	ptr[1] = 0x00000001;
-+	ib_info[1].ib_mc_address = ib_result_mc_address;
-+	ib_info[1].size = 2;
-+
-+	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
-+	ibs_request.number_of_ibs = 2;
-+	ibs_request.ibs = ib_info;
-+	ibs_request.resources = bo_list;
-+	ibs_request.fence_info.handle = NULL;
-+
-+	r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
-+
-+	igt_assert_eq(r, 0);
-+
-+	fence_status.context = context_handle;
-+	fence_status.ip_type = AMDGPU_HW_IP_GFX;
-+	fence_status.ip_instance = 0;
-+	fence_status.fence = ibs_request.seq_no;
-+
-+	r = amdgpu_cs_query_fence_status(&fence_status,
-+					 AMDGPU_TIMEOUT_INFINITE,
-+					 0, &expired);
-+	igt_assert_eq(r, 0);
-+
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				 ib_result_mc_address, 4096);
-+	amdgpu_bo_unmap_and_free(ib_result_ce_handle, va_handle_ce,
-+				 ib_result_ce_mc_address, 4096);
-+
-+	r = amdgpu_bo_list_destroy(bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_cs_ctx_free(context_handle);
-+	igt_assert_eq(r, 0);
-+}
-+
-+/**
-+ *
-+ * @param device
-+ */
-+void amdgpu_command_submission_gfx_shared_ib(amdgpu_device_handle device)
-+{
-+	amdgpu_context_handle context_handle;
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint64_t ib_result_mc_address;
-+	struct amdgpu_cs_request ibs_request = {0};
-+	struct amdgpu_cs_ib_info ib_info[2];
-+	struct amdgpu_cs_fence fence_status = {0};
-+	uint32_t *ptr;
-+	uint32_t expired;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle;
-+	int r;
-+
-+	r = amdgpu_cs_ctx_create(device, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ib_result_handle, &ib_result_cpu,
-+				    &ib_result_mc_address, &va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_get_bo_list(device, ib_result_handle, NULL,
-+			       &bo_list);
-+	igt_assert_eq(r, 0);
-+	r = sizeof(ib_info);
-+	memset(ib_info, 0, 2 * sizeof(struct amdgpu_cs_ib_info));
-+
-+	/* IT_SET_CE_DE_COUNTERS */
-+	ptr = ib_result_cpu;
-+	ptr[0] = 0xc0008900;
-+	ptr[1] = 0;
-+	ptr[2] = 0xc0008400;
-+	ptr[3] = 1;
-+	ib_info[0].ib_mc_address = ib_result_mc_address;
-+	ib_info[0].size = 4;
-+	ib_info[0].flags = AMDGPU_IB_FLAG_CE;
-+
-+	ptr = (uint32_t *)ib_result_cpu + 4;
-+	ptr[0] = 0xc0008600;
-+	ptr[1] = 0x00000001;
-+	ib_info[1].ib_mc_address = ib_result_mc_address + 16;
-+	ib_info[1].size = 2;
-+
-+	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
-+	ibs_request.number_of_ibs = 2;
-+	ibs_request.ibs = ib_info;
-+	ibs_request.resources = bo_list;
-+	ibs_request.fence_info.handle = NULL;
-+
-+	r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
-+
-+	igt_assert_eq(r, 0);
-+
-+	fence_status.context = context_handle;
-+	fence_status.ip_type = AMDGPU_HW_IP_GFX;
-+	fence_status.ip_instance = 0;
-+	fence_status.fence = ibs_request.seq_no;
-+
-+	r = amdgpu_cs_query_fence_status(&fence_status,
-+					 AMDGPU_TIMEOUT_INFINITE,
-+					 0, &expired);
-+	igt_assert_eq(r, 0);
-+
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				 ib_result_mc_address, 4096);
-+
-+	r = amdgpu_bo_list_destroy(bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_cs_ctx_free(context_handle);
-+	igt_assert_eq(r, 0);
-+}
-diff --git a/lib/amdgpu/amd_gfx.h b/lib/amdgpu/amd_gfx.h
-new file mode 100644
-index 00000000..a5feb4d8
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx.h
-@@ -0,0 +1,34 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef AMD_GFX_H
-+#define AMD_GFX_H
-+
-+#include "amd_ip_blocks.h"
-+
-+
-+void amdgpu_command_submission_gfx_separate_ibs(amdgpu_device_handle device);
-+
-+void amdgpu_command_submission_gfx_shared_ib(amdgpu_device_handle device);
-+
-+#endif
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-new file mode 100644
-index 00000000..44582b15
---- /dev/null
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -0,0 +1,558 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include "amd_memory.h"
-+#include "amd_ip_blocks.h"
-+#include "amd_PM4.h"
-+#include "amd_sdma.h"
-+#include <amdgpu.h>
-+
-+
-+#include <amdgpu_drm.h>
-+#include "amdgpu_asic_addr.h"
-+#include "amd_family.h"
-+
-+/*
-+ * SDMA functions:
-+ * - write_linear
-+ * - const_fill
-+ * - copy_linear
-+ */
-+static int
-+sdma_ring_write_linear(const struct amdgpu_ip_funcs *func,
-+		       const struct amdgpu_ring_context *ring_context,
-+		       uint32_t *pm4_dw)
-+{
-+	uint32_t i, j;
-+
-+	i = 0;
-+	j = 0;
-+	if (ring_context->secure == false) {
-+		if (func->family_id == AMDGPU_FAMILY_SI)
-+			ring_context->pm4[i++] = SDMA_PACKET_SI(SDMA_OPCODE_WRITE, 0, 0, 0,
-+						 ring_context->write_length);
-+		else
-+			ring_context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_WRITE,
-+						 SDMA_WRITE_SUB_OPCODE_LINEAR,
-+						 ring_context->secure ? SDMA_ATOMIC_TMZ(1) : 0);
-+
-+		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
-+		if (func->family_id >= AMDGPU_FAMILY_AI)
-+			ring_context->pm4[i++] = ring_context->write_length - 1;
-+		else
-+			ring_context->pm4[i++] = ring_context->write_length;
-+
-+		while(j++ < ring_context->write_length)
-+			ring_context->pm4[i++] = func->deadbeaf;
-+	} else {
-+		memset(ring_context->pm4, 0, ring_context->pm4_size * sizeof(uint32_t));
-+
-+		/* atomic opcode for 32b w/ RTN and ATOMIC_SWAPCMP_RTN
-+		 * loop, 1-loop_until_compare_satisfied.
-+		 * single_pass_atomic, 0-lru
-+		 */
-+		ring_context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_ATOMIC,
-+					       0,
-+					       SDMA_ATOMIC_LOOP(1) |
-+					       SDMA_ATOMIC_TMZ(1) |
-+					       SDMA_ATOMIC_OPCODE(TC_OP_ATOMIC_CMPSWAP_RTN_32));
-+		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
-+		ring_context->pm4[i++] = 0x12345678;
-+		ring_context->pm4[i++] = 0x0;
-+		ring_context->pm4[i++] = func->deadbeaf;
-+		ring_context->pm4[i++] = 0x0;
-+		ring_context->pm4[i++] = 0x100;
-+	}
-+
-+ 	*pm4_dw = i;
-+
-+	return 0;
-+}
-+
-+static int
-+sdma_ring_const_fill(const struct amdgpu_ip_funcs *func,
-+		     const struct amdgpu_ring_context *context,
-+		     uint32_t *pm4_dw)
-+{
-+	uint32_t i;
-+
-+	i = 0;
-+	if (func->family_id == AMDGPU_FAMILY_SI) {
-+		context->pm4[i++] = SDMA_PACKET_SI(SDMA_OPCODE_CONSTANT_FILL_SI,
-+						   0, 0, 0, context->write_length / 4);
-+		context->pm4[i++] = 0xfffffffc & context->bo_mc;
-+		context->pm4[i++] = 0xdeadbeaf;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 16;
-+	} else {
-+		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_CONSTANT_FILL, 0,
-+						SDMA_CONSTANT_FILL_EXTRA_SIZE(2));
-+		context->pm4[i++] = 0xffffffff & context->bo_mc;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
-+		context->pm4[i++] = func->deadbeaf;
-+
-+		if (func->family_id >= AMDGPU_FAMILY_AI)
-+			context->pm4[i++] = context->write_length - 1;
-+		else
-+			context->pm4[i++] = context->write_length;
-+	}
-+	*pm4_dw = i;
-+
-+	return 0;
-+}
-+
-+static int
-+sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
-+		      const struct amdgpu_ring_context *context,
-+		      uint32_t *pm4_dw)
-+{
-+	uint32_t i;
-+
-+	i = 0;
-+	/*
-+	context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY, SDMA_COPY_SUB_OPCODE_LINEAR, 0);
-+	if (func->family_id >= AMDGPU_FAMILY_AI)
-+		context->pm4[i++] = context->write_length - 1;
-+	else
-+		context->pm4[i++] = context->write_length;
-+ 	context->pm4[i++] = 0;
-+ 	context->pm4[i++] = 0xfffffffc & context->bo_mc;
-+ 	context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
-+ 	context->pm4[i++] = 0xfffffffc & context->bo_mc2;
-+ 	context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+ 	context->pm4[i++] = context->write_length;*/
-+
-+	if (func->family_id == AMDGPU_FAMILY_SI) {
-+		context->pm4[i++] = SDMA_PACKET_SI(SDMA_OPCODE_COPY_SI,
-+					  0, 0, 0,
-+					  context->write_length);
-+		context->pm4[i++] = 0xffffffff & context->bo_mc;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
-+		context->pm4[i++] = 0xffffffff & context->bo_mc2;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+	} else {
-+		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY,
-+				       SDMA_COPY_SUB_OPCODE_LINEAR,
-+				       0);
-+		if (func->family_id >= AMDGPU_FAMILY_AI)
-+			context->pm4[i++] = context->write_length - 1;
-+		else
-+			context->pm4[i++] = context->write_length;
-+		context->pm4[i++] = 0;
-+		context->pm4[i++] = 0xffffffff & context->bo_mc;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
-+		context->pm4[i++] = 0xffffffff & context->bo_mc2;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+	}
-+
-+ 	*pm4_dw = i;
-+
-+	return 0;
-+}
-+
-+/*
-+ * GFX and COMPUTE functions:
-+ * - write_linear
-+ * - const_fill
-+ * - copy_linear
-+ */
-+
-+
-+static int
-+gfx_ring_write_linear(const struct amdgpu_ip_funcs *func,
-+		      const struct amdgpu_ring_context *ring_context,
-+		      uint32_t *pm4_dw)
-+ {
-+ 	uint32_t i, j;
-+
-+ 	i = 0;
-+ 	j = 0;
-+
-+ 	if (ring_context->secure == false) {
-+ 		ring_context->pm4[i++] = PACKET3(PACKET3_WRITE_DATA, 2 +  ring_context->write_length);
-+ 		ring_context->pm4[i++] = WRITE_DATA_DST_SEL(5) | WR_CONFIRM;
-+ 		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+ 		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
-+ 		while(j++ < ring_context->write_length)
-+ 			ring_context->pm4[i++] = func->deadbeaf;
-+ 	} else {
-+		memset(ring_context->pm4, 0, ring_context->pm4_size * sizeof(uint32_t));
-+		ring_context->pm4[i++] = PACKET3(PACKET3_ATOMIC_MEM, 7);
-+
-+		/* atomic opcode for 32b w/ RTN and ATOMIC_SWAPCMP_RTN
-+		 * command, 1-loop_until_compare_satisfied.
-+		 * single_pass_atomic, 0-lru
-+		 * engine_sel, 0-micro_engine
-+		 */
-+		ring_context->pm4[i++] = (TC_OP_ATOMIC_CMPSWAP_RTN_32 |
-+					ATOMIC_MEM_COMMAND(1) |
-+					ATOMIC_MEM_CACHEPOLICAY(0) |
-+					ATOMIC_MEM_ENGINESEL(0));
-+		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
-+		ring_context->pm4[i++] = 0x12345678;
-+		ring_context->pm4[i++] = 0x0;
-+		ring_context->pm4[i++] = 0xdeadbeaf;
-+		ring_context->pm4[i++] = 0x0;
-+		ring_context->pm4[i++] = 0x100;
-+ 	}
-+
-+ 	*pm4_dw = i;
-+
-+ 	return 0;
-+ }
-+
-+ static int
-+ gfx_ring_const_fill(const struct amdgpu_ip_funcs *func,
-+		     const struct amdgpu_ring_context *ring_context,
-+		     uint32_t *pm4_dw)
-+ {
-+ 	uint32_t i;
-+
-+ 	i = 0;
-+	if (func->family_id == AMDGPU_FAMILY_SI) {
-+		ring_context->pm4[i++] = PACKET3(PACKET3_DMA_DATA_SI, 4);
-+		ring_context->pm4[i++] = func->deadbeaf;
-+		ring_context->pm4[i++] = PACKET3_DMA_DATA_SI_ENGINE(0) |
-+					 PACKET3_DMA_DATA_SI_DST_SEL(0) |
-+					 PACKET3_DMA_DATA_SI_SRC_SEL(2) |
-+					 PACKET3_DMA_DATA_SI_CP_SYNC;
-+		ring_context->pm4[i++] = 0xffffffff & ring_context->bo_mc;
-+		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
-+		ring_context->pm4[i++] = ring_context->write_length;
-+	} else {
-+		ring_context->pm4[i++] = PACKET3(PACKET3_DMA_DATA, 5);
-+		ring_context->pm4[i++] = PACKET3_DMA_DATA_ENGINE(0) |
-+					 PACKET3_DMA_DATA_DST_SEL(0) |
-+					 PACKET3_DMA_DATA_SRC_SEL(2) |
-+					 PACKET3_DMA_DATA_CP_SYNC;
-+		ring_context->pm4[i++] = func->deadbeaf;
-+		ring_context->pm4[i++] = 0;
-+		ring_context->pm4[i++] = 0xfffffffc & ring_context->bo_mc;
-+		ring_context->pm4[i++] = (0xffffffff00000000 & ring_context->bo_mc) >> 32;
-+		ring_context->pm4[i++] = ring_context->write_length;
-+	}
-+ 	*pm4_dw = i;
-+
-+ 	return 0;
-+ }
-+
-+static int
-+gfx_ring_copy_linear(const struct amdgpu_ip_funcs *func,
-+		     const struct amdgpu_ring_context *context,
-+		     uint32_t *pm4_dw)
-+{
-+ 	uint32_t i;
-+
-+ 	i = 0;
-+ 	/*context->pm4[i++] = PACKET3(PACKET3_DMA_DATA, 5);
-+ 	context->pm4[i++] =  PACKET3_DMA_DATA_ENGINE(0) | PACKET3_DMA_DATA_DST_SEL(0) |
-+			     PACKET3_DMA_DATA_SRC_SEL(0) |
-+			     PACKET3_DMA_DATA_CP_SYNC;
-+ 	context->pm4[i++] = 0xfffffffc & context->bo_mc;
-+ 	context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
-+ 	context->pm4[i++] = 0xfffffffc & context->bo_mc2;
-+ 	context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+ 	context->pm4[i++] = context->write_length;*/
-+	if (func->family_id == AMDGPU_FAMILY_SI) {
-+		context->pm4[i++] = PACKET3(PACKET3_DMA_DATA_SI, 4);
-+		context->pm4[i++] = 0xfffffffc & context->bo_mc;
-+		context->pm4[i++] = PACKET3_DMA_DATA_SI_ENGINE(0) |
-+			   PACKET3_DMA_DATA_SI_DST_SEL(0) |
-+			   PACKET3_DMA_DATA_SI_SRC_SEL(0) |
-+			   PACKET3_DMA_DATA_SI_CP_SYNC |
-+			   (0xffff00000000 & context->bo_mc) >> 32;
-+		context->pm4[i++] = 0xfffffffc & context->bo_mc2;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+		context->pm4[i++] = context->write_length;
-+	} else {
-+		context->pm4[i++] = PACKET3(PACKET3_DMA_DATA, 5);
-+		context->pm4[i++] = PACKET3_DMA_DATA_ENGINE(0) |
-+			   PACKET3_DMA_DATA_DST_SEL(0) |
-+			   PACKET3_DMA_DATA_SRC_SEL(0) |
-+			   PACKET3_DMA_DATA_CP_SYNC;
-+		context->pm4[i++] = 0xfffffffc & context->bo_mc;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc) >> 32;
-+		context->pm4[i++] = 0xfffffffc & context->bo_mc2;
-+		context->pm4[i++] = (0xffffffff00000000 & context->bo_mc2) >> 32;
-+		context->pm4[i++] = context->write_length;
-+	}
-+
-+ 	*pm4_dw = i;
-+
-+	return 0;
-+}
-+
-+static int
-+x_compare(const struct amdgpu_ip_funcs *func,
-+	  const struct amdgpu_ring_context *ring_context, int div)
-+{
-+	int i = 0, ret = 0;
-+
-+	int num_compare = ring_context->write_length/div;
-+
-+	while(i < num_compare) {
-+		if (ring_context->bo_cpu[i++] != func->deadbeaf) {
-+			ret = -1;
-+			break;
-+		}
-+	}
-+	return ret;
-+}
-+
-+static const struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
-+	.family_id = FAMILY_VI,
-+	.align_mask = 0xff,
-+	.nop = 0x80000000,
-+	.deadbeaf = 0xdeadbeaf,
-+	.pattern = 0xaaaaaaaa,
-+	.write_linear = gfx_ring_write_linear,
-+	.const_fill = gfx_ring_const_fill,
-+	.copy_linear = gfx_ring_copy_linear,
-+	.compare = x_compare
-+};
-+
-+
-+static const struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
-+	.family_id = FAMILY_VI,
-+	.align_mask = 0xff,
-+	.nop = 0x80000000,
-+	.deadbeaf = 0xdeadbeaf,
-+	.pattern = 0xaaaaaaaa,
-+	.write_linear = sdma_ring_write_linear,
-+	.const_fill = sdma_ring_const_fill,
-+	.copy_linear = sdma_ring_copy_linear,
-+	.compare = x_compare
-+};
-+
-+
-+const struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
-+	.type = AMD_IP_GFX,
-+	.major = 8,
-+	.minor = 0,
-+	.rev = 0,
-+	.funcs = &gfx_v8_x_ip_funcs
-+};
-+
-+const struct amdgpu_ip_block_version compute_v8_x_ip_block = {
-+	.type = AMD_IP_COMPUTE,
-+	.major = 8,
-+	.minor = 0,
-+	.rev = 0,
-+	.funcs = &gfx_v8_x_ip_funcs
-+};
-+
-+const struct amdgpu_ip_block_version sdma_v3_x_ip_block = {
-+	.type = AMD_IP_DMA,
-+	.major = 3,
-+	.minor = 0,
-+	.rev = 0,
-+	.funcs = &sdma_v3_x_ip_funcs
-+};
-+
-+struct chip_info {
-+	  const char *name;
-+	  enum radeon_family family;
-+	  enum chip_class chip_class;
-+	  amdgpu_device_handle dev;
-+};
-+
-+/* we may improve later */
-+struct amdgpu_ip_blocks_device amdgpu_ips;
-+struct chip_info g_chip;
-+
-+static int
-+amdgpu_device_ip_block_add(const struct amdgpu_ip_block_version *ip_block_version)
-+{
-+	if (amdgpu_ips.num_ip_blocks >= AMD_IP_MAX)
-+		return -1;
-+
-+	amdgpu_ips.ip_blocks[amdgpu_ips.num_ip_blocks++] = ip_block_version;
-+
-+	return 0;
-+}
-+
-+const struct amdgpu_ip_block_version *
-+get_ip_block(amdgpu_device_handle device, enum amd_ip_block_type type)
-+{
-+	int i;
-+
-+	if (g_chip.dev != device)
-+		return NULL;
-+
-+	for(i = 0; i <  amdgpu_ips.num_ip_blocks; i++)
-+		if (amdgpu_ips.ip_blocks[i]->type == type)
-+			return amdgpu_ips.ip_blocks[i];
-+	return NULL;
-+}
-+
-+
-+
-+
-+
-+/*
-+ * GFX: 8.x
-+ * COMPUTE: 8.x
-+ * SDMA 3.x
-+ *
-+ * GFX9:
-+ * COMPUTE: 9.x
-+ * SDMA 4.x
-+ *
-+ * GFX10.1:
-+ * COMPUTE: 10.1
-+ * SDMA 5.0
-+ *
-+ * GFX10.3:
-+ * COMPUTE: 10.3
-+ * SDMA 5.2
-+ *
-+ * copy function from mesa
-+ *  should be called once per test
-+ */
-+int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_info *amdinfo,
-+			   amdgpu_device_handle device)
-+{
-+#define identify_chip2(asic, chipname)			\
-+   if (ASICREV_IS(amdinfo->chip_external_rev, asic)) {	\
-+      info->family = CHIP_##chipname;			\
-+      info->name = #chipname;				\
-+   }
-+#define identify_chip(chipname) identify_chip2(chipname, chipname)
-+
-+	struct chip_info *info = &g_chip;
-+
-+	switch (amdinfo->family_id) {
-+	case AMDGPU_FAMILY_SI:
-+		identify_chip(TAHITI);
-+		identify_chip(PITCAIRN);
-+		identify_chip2(CAPEVERDE, VERDE);
-+		identify_chip(OLAND);
-+		identify_chip(HAINAN);
-+		break;
-+	case FAMILY_CI:
-+		identify_chip(BONAIRE);
-+		identify_chip(HAWAII);
-+		break;
-+	case FAMILY_KV:
-+		identify_chip2(SPECTRE, KAVERI);
-+		identify_chip2(SPOOKY, KAVERI);
-+		identify_chip2(KALINDI, KABINI);
-+		identify_chip2(GODAVARI, KABINI);
-+		break;
-+	case FAMILY_VI:
-+		identify_chip(ICELAND);
-+		identify_chip(TONGA);
-+		identify_chip(FIJI);
-+		identify_chip(POLARIS10);
-+		identify_chip(POLARIS11);
-+		identify_chip(POLARIS12);
-+		identify_chip(VEGAM);
-+		break;
-+	case FAMILY_CZ:
-+		identify_chip(CARRIZO);
-+		identify_chip(STONEY);
-+		break;
-+	case FAMILY_AI:
-+		identify_chip(VEGA10);
-+		identify_chip(VEGA12);
-+		identify_chip(VEGA20);
-+		identify_chip(ARCTURUS);
-+		identify_chip(ALDEBARAN);
-+		break;
-+	case FAMILY_RV:
-+		identify_chip(RAVEN);
-+		identify_chip(RAVEN2);
-+		identify_chip(RENOIR);
-+		break;
-+	case FAMILY_NV:
-+		identify_chip(NAVI10);
-+		identify_chip(NAVI12);
-+		identify_chip(NAVI14);
-+		identify_chip(SIENNA_CICHLID);
-+		identify_chip(NAVY_FLOUNDER);
-+		identify_chip(DIMGREY_CAVEFISH);
-+		identify_chip(BEIGE_GOBY);
-+		break;
-+	case FAMILY_VGH:
-+		identify_chip(VANGOGH);
-+		break;
-+	case FAMILY_YC:
-+		identify_chip(YELLOW_CARP);
-+		break;
-+	}
-+	if (!info->name) {
-+		igt_info("amdgpu: unknown (family_id, chip_external_rev): (%u, %u)\n",
-+			 amdinfo->family_id, amdinfo->chip_external_rev);
-+		return -1;
-+	}
-+
-+	if (info->family >= CHIP_SIENNA_CICHLID)
-+		info->chip_class = GFX10_3;
-+	else if (info->family >= CHIP_NAVI10)
-+		info->chip_class = GFX10;
-+	else if (info->family >= CHIP_VEGA10)
-+		info->chip_class = GFX9;
-+	else if (info->family >= CHIP_TONGA)
-+		info->chip_class = GFX8;
-+	else if (info->family >= CHIP_BONAIRE)
-+		info->chip_class = GFX7;
-+	else if (info->family >= CHIP_TAHITI)
-+		info->chip_class = GFX6;
-+	else {
-+		igt_info("amdgpu: Unknown family.\n");
-+		return -1;
-+	}
-+
-+	switch(info->chip_class) {
-+	case GFX6:
-+		break;
-+	case GFX7:
-+		break;
-+	case GFX8:
-+		amdgpu_device_ip_block_add(&gfx_v8_x_ip_block);
-+		amdgpu_device_ip_block_add(&compute_v8_x_ip_block);
-+		amdgpu_device_ip_block_add(&sdma_v3_x_ip_block);
-+		/* extra precaution if re-factor again */
-+		igt_assert_eq(gfx_v8_x_ip_block.major, 8);
-+		igt_assert_eq(compute_v8_x_ip_block.major, 8);
-+		igt_assert_eq(sdma_v3_x_ip_block.major, 3);
-+
-+		igt_assert_eq(gfx_v8_x_ip_block.funcs->family_id, FAMILY_VI);
-+		igt_assert_eq(sdma_v3_x_ip_block.funcs->family_id, FAMILY_VI);
-+		break;
-+	case GFX9:
-+		break;
-+	case GFX10:
-+		break;
-+	case GFX10_3:
-+		break;
-+	default:
-+		igt_info("amdgpu: GFX or old.\n");
-+		return -1;
-+	 }
-+	info->dev = device;
-+
-+	return 0;
-+}
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-new file mode 100644
-index 00000000..fdff8617
---- /dev/null
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -0,0 +1,112 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef AMD_IP_BLOCKS_H
-+#define AMD_IP_BLOCKS_H
-+
-+enum amd_ip_block_type {
-+	AMD_IP_GFX,
-+	AMD_IP_COMPUTE,
-+	AMD_IP_DMA,
-+	AMD_IP_UVD,
-+	AMD_IP_VCE,
-+	AMD_IP_MAX,
-+};
-+
-+
-+/* aux struct to hold misc parameters for convenience to maintain */
-+struct amdgpu_ring_context {
-+
-+	int ring_id; /* ring_id from amdgpu_query_hw_ip_info */
-+	int res_cnt; /* num of bo in amdgpu_bo_handle resources[2] */
-+
-+	uint32_t write_length;  /* length of data */
-+	uint32_t *pm4; 		/* data of the packet */
-+	uint32_t pm4_size; 	/* max allocated packet size */
-+	bool secure; 		/* secure or not */
-+
-+	uint64_t bo_mc;		/* result from amdgpu_bo_alloc_and_map */
-+	uint64_t bo_mc2;	/* result from amdgpu_bo_alloc_and_map */
-+
-+	uint32_t pm4_dw;	/* actual size of pm4 */
-+
-+	volatile uint32_t *bo_cpu;
-+	volatile uint32_t *bo2_cpu;
-+
-+	uint32_t bo_cpu_origin;
-+
-+	amdgpu_bo_handle bo;
-+	amdgpu_bo_handle bo2;
-+
-+	amdgpu_context_handle context_handle;
-+	struct drm_amdgpu_info_hw_ip hw_ip_info;  /* result of amdgpu_query_hw_ip_info */
-+
-+	amdgpu_bo_handle resources[2]; /* amdgpu_bo_alloc_and_map */
-+	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
-+	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
-+
-+	struct amdgpu_cs_ib_info ib_info;     /* amdgpu_bo_list_create */
-+	struct amdgpu_cs_request ibs_request; /* amdgpu_cs_query_fence_status */
-+};
-+
-+struct amdgpu_ip_funcs {
-+	uint32_t	family_id;
-+	uint32_t	align_mask;
-+	uint32_t	nop;
-+	uint32_t	deadbeaf;
-+	uint32_t	pattern;
-+	/* functions */
-+	int (*write_linear)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
-+	int (*const_fill)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
-+	int (*copy_linear)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
-+	int (*compare)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
-+};
-+
-+extern const struct amdgpu_ip_block_version gfx_v6_0_ip_block;
-+
-+struct amdgpu_ip_block_version {
-+	const enum amd_ip_block_type type;
-+	const int major;
-+	const int minor;
-+	const int rev;
-+	const struct amdgpu_ip_funcs *funcs;
-+};
-+
-+/* global holder for the array of in use ip blocks */
-+
-+struct amdgpu_ip_blocks_device {
-+	const struct amdgpu_ip_block_version *ip_blocks[AMD_IP_MAX];
-+	int			num_ip_blocks;
-+};
-+
-+extern  struct amdgpu_ip_blocks_device amdgpu_ips;
-+
-+int
-+setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_info *amdinfo,
-+		       amdgpu_device_handle device);
-+
-+const struct amdgpu_ip_block_version *
-+get_ip_block(amdgpu_device_handle device, enum amd_ip_block_type type);
-+
-+
-+#endif
-diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
-new file mode 100644
-index 00000000..a908ddf4
---- /dev/null
-+++ b/lib/amdgpu/amd_memory.c
-@@ -0,0 +1,197 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+
-+#include "amd_memory.h"
-+
-+/**
-+ *
-+ * @param device_handle
-+ * @param size
-+ * @param alignment
-+ * @param type
-+ * @param flags
-+ * @param vmc_addr
-+ * @param va_handle
-+ * @return
-+ */
-+ amdgpu_bo_handle
-+ gpu_mem_alloc(amdgpu_device_handle device_handle,
-+				      uint64_t size,
-+				      uint64_t alignment,
-+				      uint32_t type,
-+				      uint64_t flags,
-+				      uint64_t *vmc_addr,
-+				      amdgpu_va_handle *va_handle)
-+{
-+	struct amdgpu_bo_alloc_request req = {
-+		.alloc_size = size,
-+		.phys_alignment = alignment,
-+		.preferred_heap = type,
-+		.flags = flags,
-+	};
-+	amdgpu_bo_handle buf_handle;
-+	int r;
-+
-+	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_va_range_alloc(device_handle,
-+				  amdgpu_gpu_va_range_general,
-+				  size, alignment, 0, vmc_addr,
-+				  va_handle, 0);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_va_op(buf_handle, 0, size, *vmc_addr, 0, AMDGPU_VA_OP_MAP);
-+	igt_assert_eq(r, 0);
-+
-+	return buf_handle;
-+}
-+
-+ /**
-+  *
-+  * @param bo
-+  * @param va_handle
-+  * @param vmc_addr
-+  * @param size
-+  */
-+ void
-+ gpu_mem_free(amdgpu_bo_handle bo,
-+			 amdgpu_va_handle va_handle,
-+			 uint64_t vmc_addr,
-+			 uint64_t size)
-+{
-+	int r;
-+
-+	r = amdgpu_bo_va_op(bo, 0, size, vmc_addr, 0, AMDGPU_VA_OP_UNMAP);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_va_range_free(va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_free(bo);
-+	igt_assert_eq(r, 0);
-+}
-+
-+/**
-+ *
-+ * @param dev
-+ * @param size
-+ * @param alignment
-+ * @param heap
-+ * @param flags
-+ * @param bo
-+ * @param cpu
-+ * @param mc_address
-+ * @param va_handle
-+ * @return
-+ */
-+int
-+amdgpu_bo_alloc_and_map(amdgpu_device_handle dev, unsigned size,
-+			unsigned alignment, unsigned heap, uint64_t flags,
-+			amdgpu_bo_handle *bo, void **cpu, uint64_t *mc_address,
-+			amdgpu_va_handle *va_handle)
-+{
-+	struct amdgpu_bo_alloc_request request = {
-+		.alloc_size = size,
-+		.phys_alignment = alignment,
-+		.preferred_heap = heap,
-+		.flags = flags,
-+	};
-+	amdgpu_bo_handle buf_handle;
-+	amdgpu_va_handle handle;
-+	uint64_t vmc_addr;
-+	int r;
-+
-+	r = amdgpu_bo_alloc(dev, &request, &buf_handle);
-+	if (r)
-+		return r;
-+
-+	r = amdgpu_va_range_alloc(dev,
-+				  amdgpu_gpu_va_range_general,
-+				  size, alignment, 0, &vmc_addr,
-+				  &handle, 0);
-+	if (r)
-+		goto error_va_alloc;
-+
-+	r = amdgpu_bo_va_op(buf_handle, 0, size, vmc_addr, 0, AMDGPU_VA_OP_MAP);
-+	if (r)
-+		goto error_va_map;
-+
-+	r = amdgpu_bo_cpu_map(buf_handle, cpu);
-+	if (r)
-+		goto error_cpu_map;
-+
-+	*bo = buf_handle;
-+	*mc_address = vmc_addr;
-+	*va_handle = handle;
-+
-+	return 0;
-+
-+error_cpu_map:
-+	amdgpu_bo_cpu_unmap(buf_handle);
-+
-+error_va_map:
-+	amdgpu_bo_va_op(buf_handle, 0, size, vmc_addr, 0, AMDGPU_VA_OP_UNMAP);
-+
-+error_va_alloc:
-+	amdgpu_bo_free(buf_handle);
-+	return r;
-+}
-+
-+/**
-+ *
-+ * @param bo
-+ * @param va_handle
-+ * @param mc_addr
-+ * @param size
-+ */
-+void
-+amdgpu_bo_unmap_and_free(amdgpu_bo_handle bo, amdgpu_va_handle va_handle,
-+			 uint64_t mc_addr, uint64_t size)
-+{
-+	amdgpu_bo_cpu_unmap(bo);
-+	amdgpu_bo_va_op(bo, 0, size, mc_addr, 0, AMDGPU_VA_OP_UNMAP);
-+	amdgpu_va_range_free(va_handle);
-+	amdgpu_bo_free(bo);
-+}
-+
-+/**
-+ *
-+ * @param dev
-+ * @param bo1
-+ * @param bo2
-+ * @param list
-+ * @return
-+ */
-+int
-+amdgpu_get_bo_list(amdgpu_device_handle dev, amdgpu_bo_handle bo1,
-+		   amdgpu_bo_handle bo2, amdgpu_bo_list_handle *list)
-+{
-+	amdgpu_bo_handle resources[] = {bo1, bo2};
-+
-+	return amdgpu_bo_list_create(dev, bo2 ? 2 : 1, resources, NULL, list);
-+}
-+
-+
-+
-diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
-new file mode 100644
-index 00000000..fd30ba40
---- /dev/null
-+++ b/lib/amdgpu/amd_memory.h
-@@ -0,0 +1,61 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef AMD_MEMORY_H
-+#define AMD_MEMORY_H
-+
-+#include "drmtest.h"
-+#include <amdgpu.h>
-+#include <amdgpu_drm.h>
-+
-+
-+amdgpu_bo_handle
-+gpu_mem_alloc(amdgpu_device_handle device_handle,
-+				      uint64_t size,
-+				      uint64_t alignment,
-+				      uint32_t type,
-+				      uint64_t flags,
-+				      uint64_t *vmc_addr,
-+				      amdgpu_va_handle *va_handle);
-+
-+void
-+gpu_mem_free(amdgpu_bo_handle bo,
-+			 amdgpu_va_handle va_handle,
-+			 uint64_t vmc_addr,
-+			 uint64_t size);
-+
-+int
-+amdgpu_bo_alloc_and_map(amdgpu_device_handle dev, unsigned size,
-+			unsigned alignment, unsigned heap, uint64_t flags,
-+			amdgpu_bo_handle *bo, void **cpu, uint64_t *mc_address,
-+			amdgpu_va_handle *va_handle);
-+
-+void
-+amdgpu_bo_unmap_and_free(amdgpu_bo_handle bo, amdgpu_va_handle va_handle,
-+			 uint64_t mc_addr, uint64_t size);
-+
-+int
-+amdgpu_get_bo_list(amdgpu_device_handle dev, amdgpu_bo_handle bo1,
-+		   amdgpu_bo_handle bo2, amdgpu_bo_list_handle *list);
-+
-+#endif
-diff --git a/lib/amdgpu/amd_sdma.h b/lib/amdgpu/amd_sdma.h
-new file mode 100644
-index 00000000..cd7317c6
---- /dev/null
-+++ b/lib/amdgpu/amd_sdma.h
-@@ -0,0 +1,75 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+
-+#ifndef AMD_SDMA_H
-+#define AMD_SDMA_H
-+
-+#define SDMA_PKT_HEADER_op_offset 0
-+#define SDMA_PKT_HEADER_op_mask   0x000000FF
-+#define SDMA_PKT_HEADER_op_shift  0
-+#define SDMA_PKT_HEADER_OP(x) (((x) & SDMA_PKT_HEADER_op_mask) << SDMA_PKT_HEADER_op_shift)
-+#define SDMA_OPCODE_CONSTANT_FILL  11
-+#       define SDMA_CONSTANT_FILL_EXTRA_SIZE(x)           ((x) << 14)
-+	/* 0 = byte fill
-+	 * 2 = DW fill
-+	 */
-+#define SDMA_PACKET(op, sub_op, e)	((((e) & 0xFFFF) << 16) |	\
-+					(((sub_op) & 0xFF) << 8) |	\
-+					(((op) & 0xFF) << 0))
-+#define	SDMA_OPCODE_WRITE				  2
-+#       define SDMA_WRITE_SUB_OPCODE_LINEAR               0
-+#       define SDMA_WRTIE_SUB_OPCODE_TILED                1
-+
-+#define	SDMA_OPCODE_COPY				  1
-+#       define SDMA_COPY_SUB_OPCODE_LINEAR                0
-+
-+#define SDMA_NOP  0x0
-+
-+
-+
-+/* taken from basic_tests.c and amdgpu_stress.c */
-+
-+#define SDMA_PACKET_SI(op, b, t, s, cnt)	((((op) & 0xF) << 28) | \
-+						(((b) & 0x1) << 26) |	\
-+						(((t) & 0x1) << 23) |	\
-+						(((s) & 0x1) << 22) |	\
-+						(((cnt) & 0xFFFFF) << 0))
-+#define SDMA_OPCODE_COPY_SI     3
-+
-+
-+#define	SDMA_OPCODE_ATOMIC				  10
-+#		define SDMA_ATOMIC_LOOP(x)               ((x) << 0)
-+        /* 0 - single_pass_atomic.
-+         * 1 - loop_until_compare_satisfied.
-+         */
-+#		define SDMA_ATOMIC_TMZ(x)                ((x) << 2)
-+		/* 0 - non-TMZ.
-+		 * 1 - TMZ.
-+	     */
-+#		define SDMA_ATOMIC_OPCODE(x)             ((x) << 9)
-+		/* TC_OP_ATOMIC_CMPSWAP_RTN_32 0x00000008
-+		 * same as Packet 3
-+		 */
-+
-+#endif
-diff --git a/lib/amdgpu/amdgpu_asic_addr.h b/lib/amdgpu/amdgpu_asic_addr.h
-new file mode 100644
-index 00000000..1133fd02
---- /dev/null
-+++ b/lib/amdgpu/amdgpu_asic_addr.h
-@@ -0,0 +1,171 @@
-+/**
-+***********************************************************************************************************************
-+*
-+* Copyright © 2007-2021 Advanced Micro Devices, Inc.
-+* All Rights Reserved.
-+*
-+* Permission is hereby granted, free of charge, to any person obtaining a
-+* copy of this software and associated documentation files (the "Software"),
-+* to deal in the Software without restriction, including without limitation
-+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+* and/or sell copies of the Software, and to permit persons to whom the
-+* Software is furnished to do so, subject to the following conditions:
-+*
-+* The above copyright notice and this permission notice shall be included in
-+* all copies or substantial portions of the Software.
-+*
-+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+* THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+* OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+* OTHER DEALINGS IN THE SOFTWARE
-+*
-+***********************************************************************************************************************
-+*/
-+
-+#ifndef _AMDGPU_ASIC_ADDR_H
-+#define _AMDGPU_ASIC_ADDR_H
-+
-+#define ATI_VENDOR_ID         0x1002
-+#define AMD_VENDOR_ID         0x1022
-+
-+// AMDGPU_VENDOR_IS_AMD(vendorId)
-+#define AMDGPU_VENDOR_IS_AMD(v) ((v == ATI_VENDOR_ID) || (v == AMD_VENDOR_ID))
-+
-+#define FAMILY_UNKNOWN 0x00
-+#define FAMILY_TN      0x69
-+#define FAMILY_SI      0x6E
-+#define FAMILY_CI      0x78
-+#define FAMILY_KV      0x7D
-+#define FAMILY_VI      0x82
-+#define FAMILY_POLARIS 0x82
-+#define FAMILY_CZ      0x87
-+#define FAMILY_AI      0x8D
-+#define FAMILY_RV      0x8E
-+#define FAMILY_NV      0x8F
-+#define FAMILY_VGH     0x90
-+#define FAMILY_YC      0x92
-+
-+// AMDGPU_FAMILY_IS(familyId, familyName)
-+#define FAMILY_IS(f, fn)     (f == FAMILY_##fn)
-+#define FAMILY_IS_TN(f)      FAMILY_IS(f, TN)
-+#define FAMILY_IS_SI(f)      FAMILY_IS(f, SI)
-+#define FAMILY_IS_CI(f)      FAMILY_IS(f, CI)
-+#define FAMILY_IS_KV(f)      FAMILY_IS(f, KV)
-+#define FAMILY_IS_VI(f)      FAMILY_IS(f, VI)
-+#define FAMILY_IS_POLARIS(f) FAMILY_IS(f, POLARIS)
-+#define FAMILY_IS_CZ(f)      FAMILY_IS(f, CZ)
-+#define FAMILY_IS_AI(f)      FAMILY_IS(f, AI)
-+#define FAMILY_IS_RV(f)      FAMILY_IS(f, RV)
-+#define FAMILY_IS_NV(f)      FAMILY_IS(f, NV)
-+#define FAMILY_IS_YC(f)      FAMILY_IS(f, YC)
-+
-+#define AMDGPU_UNKNOWN          0xFF
-+
-+#define AMDGPU_TAHITI_RANGE     0x05, 0x14
-+#define AMDGPU_PITCAIRN_RANGE   0x15, 0x28
-+#define AMDGPU_CAPEVERDE_RANGE  0x29, 0x3C
-+#define AMDGPU_OLAND_RANGE      0x3C, 0x46
-+#define AMDGPU_HAINAN_RANGE     0x46, 0xFF
-+
-+#define AMDGPU_BONAIRE_RANGE    0x14, 0x28
-+#define AMDGPU_HAWAII_RANGE     0x28, 0x3C
-+
-+#define AMDGPU_SPECTRE_RANGE    0x01, 0x41
-+#define AMDGPU_SPOOKY_RANGE     0x41, 0x81
-+#define AMDGPU_KALINDI_RANGE    0x81, 0xA1
-+#define AMDGPU_GODAVARI_RANGE   0xA1, 0xFF
-+
-+#define AMDGPU_ICELAND_RANGE    0x01, 0x14
-+#define AMDGPU_TONGA_RANGE      0x14, 0x28
-+#define AMDGPU_FIJI_RANGE       0x3C, 0x50
-+#define AMDGPU_POLARIS10_RANGE  0x50, 0x5A
-+#define AMDGPU_POLARIS11_RANGE  0x5A, 0x64
-+#define AMDGPU_POLARIS12_RANGE  0x64, 0x6E
-+#define AMDGPU_VEGAM_RANGE      0x6E, 0xFF
-+
-+#define AMDGPU_CARRIZO_RANGE    0x01, 0x21
-+#define AMDGPU_STONEY_RANGE     0x61, 0xFF
-+
-+#define AMDGPU_VEGA10_RANGE     0x01, 0x14
-+#define AMDGPU_VEGA12_RANGE     0x14, 0x28
-+#define AMDGPU_VEGA20_RANGE     0x28, 0x32
-+#define AMDGPU_ARCTURUS_RANGE   0x32, 0x3C
-+#define AMDGPU_ALDEBARAN_RANGE  0x3C, 0xFF
-+
-+#define AMDGPU_RAVEN_RANGE      0x01, 0x81
-+#define AMDGPU_RAVEN2_RANGE     0x81, 0x91
-+#define AMDGPU_RENOIR_RANGE     0x91, 0xFF
-+
-+#define AMDGPU_NAVI10_RANGE     0x01, 0x0A
-+#define AMDGPU_NAVI12_RANGE     0x0A, 0x14
-+#define AMDGPU_NAVI14_RANGE     0x14, 0x28
-+#define AMDGPU_SIENNA_CICHLID_RANGE     0x28, 0x32
-+#define AMDGPU_NAVY_FLOUNDER_RANGE      0x32, 0x3C
-+#define AMDGPU_DIMGREY_CAVEFISH_RANGE   0x3C, 0x46
-+#define AMDGPU_BEIGE_GOBY_RANGE         0x46, 0x50
-+
-+#define AMDGPU_VANGOGH_RANGE    0x01, 0xFF
-+
-+#define AMDGPU_YELLOW_CARP_RANGE 0x01, 0xFF
-+
-+#define AMDGPU_EXPAND_FIX(x) x
-+#define AMDGPU_RANGE_HELPER(val, min, max) ((val >= min) && (val < max))
-+#define AMDGPU_IN_RANGE(val, ...)   AMDGPU_EXPAND_FIX(AMDGPU_RANGE_HELPER(val, __VA_ARGS__))
-+
-+
-+// ASICREV_IS(eRevisionId, revisionName)
-+#define ASICREV_IS(r, rn)              AMDGPU_IN_RANGE(r, AMDGPU_##rn##_RANGE)
-+#define ASICREV_IS_TAHITI_P(r)         ASICREV_IS(r, TAHITI)
-+#define ASICREV_IS_PITCAIRN_PM(r)      ASICREV_IS(r, PITCAIRN)
-+#define ASICREV_IS_CAPEVERDE_M(r)      ASICREV_IS(r, CAPEVERDE)
-+#define ASICREV_IS_OLAND_M(r)          ASICREV_IS(r, OLAND)
-+#define ASICREV_IS_HAINAN_V(r)         ASICREV_IS(r, HAINAN)
-+
-+#define ASICREV_IS_BONAIRE_M(r)        ASICREV_IS(r, BONAIRE)
-+#define ASICREV_IS_HAWAII_P(r)         ASICREV_IS(r, HAWAII)
-+
-+#define ASICREV_IS_SPECTRE(r)          ASICREV_IS(r, SPECTRE)
-+#define ASICREV_IS_SPOOKY(r)           ASICREV_IS(r, SPOOKY)
-+#define ASICREV_IS_KALINDI(r)          ASICREV_IS(r, KALINDI)
-+#define ASICREV_IS_KALINDI_GODAVARI(r) ASICREV_IS(r, GODAVARI)
-+
-+#define ASICREV_IS_ICELAND_M(r)        ASICREV_IS(r, ICELAND)
-+#define ASICREV_IS_TONGA_P(r)          ASICREV_IS(r, TONGA)
-+#define ASICREV_IS_FIJI_P(r)           ASICREV_IS(r, FIJI)
-+
-+#define ASICREV_IS_POLARIS10_P(r)      ASICREV_IS(r, POLARIS10)
-+#define ASICREV_IS_POLARIS11_M(r)      ASICREV_IS(r, POLARIS11)
-+#define ASICREV_IS_POLARIS12_V(r)      ASICREV_IS(r, POLARIS12)
-+#define ASICREV_IS_VEGAM_P(r)          ASICREV_IS(r, VEGAM)
-+
-+#define ASICREV_IS_CARRIZO(r)          ASICREV_IS(r, CARRIZO)
-+#define ASICREV_IS_STONEY(r)           ASICREV_IS(r, STONEY)
-+
-+#define ASICREV_IS_VEGA10_M(r)         ASICREV_IS(r, VEGA10)
-+#define ASICREV_IS_VEGA10_P(r)         ASICREV_IS(r, VEGA10)
-+#define ASICREV_IS_VEGA12_P(r)         ASICREV_IS(r, VEGA12)
-+#define ASICREV_IS_VEGA12_p(r)         ASICREV_IS(r, VEGA12)
-+#define ASICREV_IS_VEGA20_P(r)         ASICREV_IS(r, VEGA20)
-+#define ASICREV_IS_ARCTURUS(r)         ASICREV_IS(r, ARCTURUS)
-+#define ASICREV_IS_ALDEBARAN(r)        ASICREV_IS(r, ALDEBARAN)
-+
-+#define ASICREV_IS_RAVEN(r)            ASICREV_IS(r, RAVEN)
-+#define ASICREV_IS_RAVEN2(r)           ASICREV_IS(r, RAVEN2)
-+#define ASICREV_IS_RENOIR(r)           ASICREV_IS(r, RENOIR)
-+
-+#define ASICREV_IS_NAVI10_P(r)         ASICREV_IS(r, NAVI10)
-+#define ASICREV_IS_NAVI12_P(r)         ASICREV_IS(r, NAVI12)
-+#define ASICREV_IS_NAVI14_M(r)         ASICREV_IS(r, NAVI14)
-+#define ASICREV_IS_SIENNA_CICHLID(r)   ASICREV_IS(r, SIENNA_CICHLID)
-+#define ASICREV_IS_NAVY_FLOUNDER(r)    ASICREV_IS(r, NAVY_FLOUNDER)
-+#define ASICREV_IS_DIMGREY_CAVEFISH(r) ASICREV_IS(r, DIMGREY_CAVEFISH)
-+#define ASICREV_IS_BEIGE_GOBY(r)       ASICREV_IS(r, BEIGE_GOBY)
-+
-+#define ASICREV_IS_VANGOGH(r)          ASICREV_IS(r, VANGOGH)
-+
-+#define ASICREV_IS_YELLOW_CARP(r)      ASICREV_IS(r, YELLOW_CARP)
-+
-+#endif // _AMDGPU_ASIC_ADDR_H
-diff --git a/lib/meson.build b/lib/meson.build
-index ccee7a59..5fc45a88 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -1,6 +1,12 @@
- lib_sources = [
- 	'drmtest.c',
- 	'huc_copy.c',
-+	'amdgpu/amd_memory.c',
-+	'amdgpu/amd_command_submission.c',
-+	'amdgpu/amd_compute.c',
-+	'amdgpu/amd_gfx.c',
-+	'amdgpu/amd_fence.c',
-+	'amdgpu/amd_ip_blocks.c',
- 	'i915/gem.c',
- 	'i915/gem_context.c',
- 	'i915/gem_create.c',
-@@ -122,6 +128,10 @@ if libdrm_nouveau.found()
- 	]
- endif
- 
-+if libdrm_amdgpu.found()
-+	lib_deps += libdrm_amdgpu
-+endif
-+
- if libunwind.found()
- 	lib_deps += libunwind
- else
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 6c9609b9..4981c4cc 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -1,5 +1,6 @@
- /*
-  * Copyright 2014 Advanced Micro Devices, Inc.
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a
-  * copy of this software and associated documentation files (the "Software"),
-@@ -22,282 +23,24 @@
-  * Based on libdrm/tests/amdgpu/basic_tests.c
-  */
- 
--#include "config.h"
--
--#include <stdio.h>
--#include <stdlib.h>
--#include <unistd.h>
--#ifdef HAVE_ALLOCA_H
--# include <alloca.h>
--#endif
--
--#include "drmtest.h"
--
--#include <amdgpu.h>
--#include <amdgpu_drm.h>
--
--static amdgpu_device_handle device;
--
--static void amdgpu_command_submission_write_linear_helper(unsigned ip_type);
--static void amdgpu_command_submission_const_fill_helper(unsigned ip_type);
--static void amdgpu_command_submission_copy_linear_helper(unsigned ip_type);
-+#include "lib/amdgpu/amd_memory.h"
-+#include "lib/amdgpu/amd_sdma.h"
-+#include "lib/amdgpu/amd_PM4.h"
-+#include "lib/amdgpu/amd_command_submission.h"
-+#include "lib/amdgpu/amd_compute.h"
-+#include "lib/amdgpu/amd_gfx.h"
-+#include "lib/amdgpu/amd_fence.h"
- 
- #define BUFFER_SIZE (8 * 1024)
--#define SDMA_PKT_HEADER_op_offset 0
--#define SDMA_PKT_HEADER_op_mask   0x000000FF
--#define SDMA_PKT_HEADER_op_shift  0
--#define SDMA_PKT_HEADER_OP(x) (((x) & SDMA_PKT_HEADER_op_mask) << SDMA_PKT_HEADER_op_shift)
--#define SDMA_OPCODE_CONSTANT_FILL  11
--#       define SDMA_CONSTANT_FILL_EXTRA_SIZE(x)           ((x) << 14)
--	/* 0 = byte fill
--	 * 2 = DW fill
--	 */
--#define SDMA_PACKET(op, sub_op, e)	((((e) & 0xFFFF) << 16) |	\
--					(((sub_op) & 0xFF) << 8) |	\
--					(((op) & 0xFF) << 0))
--#define	SDMA_OPCODE_WRITE				  2
--#       define SDMA_WRITE_SUB_OPCODE_LINEAR               0
--#       define SDMA_WRTIE_SUB_OPCODE_TILED                1
--
--#define	SDMA_OPCODE_COPY				  1
--#       define SDMA_COPY_SUB_OPCODE_LINEAR                0
- 
- #define GFX_COMPUTE_NOP  0xffff1000
--#define SDMA_NOP  0x0
--
--/* PM4 */
--#define	PACKET_TYPE0	0
--#define	PACKET_TYPE1	1
--#define	PACKET_TYPE2	2
--#define	PACKET_TYPE3	3
--
--#define CP_PACKET_GET_TYPE(h) (((h) >> 30) & 3)
--#define CP_PACKET_GET_COUNT(h) (((h) >> 16) & 0x3FFF)
--#define CP_PACKET0_GET_REG(h) ((h) & 0xFFFF)
--#define CP_PACKET3_GET_OPCODE(h) (((h) >> 8) & 0xFF)
--#define PACKET0(reg, n)	((PACKET_TYPE0 << 30) |				\
--			 ((reg) & 0xFFFF) |			\
--			 ((n) & 0x3FFF) << 16)
--#define CP_PACKET2			0x80000000
--#define		PACKET2_PAD_SHIFT		0
--#define		PACKET2_PAD_MASK		(0x3fffffff << 0)
--
--#define PACKET2(v)	(CP_PACKET2 | REG_SET(PACKET2_PAD, (v)))
--
--#define PACKET3(op, n)	((PACKET_TYPE3 << 30) |				\
--			 (((op) & 0xFF) << 8) |				\
--			 ((n) & 0x3FFF) << 16)
--
--/* Packet 3 types */
--#define	PACKET3_NOP					0x10
--
--#define	PACKET3_WRITE_DATA				0x37
--#define		WRITE_DATA_DST_SEL(x)                   ((x) << 8)
--		/* 0 - register
--		 * 1 - memory (sync - via GRBM)
--		 * 2 - gl2
--		 * 3 - gds
--		 * 4 - reserved
--		 * 5 - memory (async - direct)
--		 */
--#define		WR_ONE_ADDR                             (1 << 16)
--#define		WR_CONFIRM                              (1 << 20)
--#define		WRITE_DATA_CACHE_POLICY(x)              ((x) << 25)
--		/* 0 - LRU
--		 * 1 - Stream
--		 */
--#define		WRITE_DATA_ENGINE_SEL(x)                ((x) << 30)
--		/* 0 - me
--		 * 1 - pfp
--		 * 2 - ce
--		 */
--
--#define	PACKET3_DMA_DATA				0x50
--/* 1. header
-- * 2. CONTROL
-- * 3. SRC_ADDR_LO or DATA [31:0]
-- * 4. SRC_ADDR_HI [31:0]
-- * 5. DST_ADDR_LO [31:0]
-- * 6. DST_ADDR_HI [7:0]
-- * 7. COMMAND [30:21] | BYTE_COUNT [20:0]
-- */
--/* CONTROL */
--#              define PACKET3_DMA_DATA_ENGINE(x)     ((x) << 0)
--		/* 0 - ME
--		 * 1 - PFP
--		 */
--#              define PACKET3_DMA_DATA_SRC_CACHE_POLICY(x) ((x) << 13)
--		/* 0 - LRU
--		 * 1 - Stream
--		 * 2 - Bypass
--		 */
--#              define PACKET3_DMA_DATA_SRC_VOLATILE (1 << 15)
--#              define PACKET3_DMA_DATA_DST_SEL(x)  ((x) << 20)
--		/* 0 - DST_ADDR using DAS
--		 * 1 - GDS
--		 * 3 - DST_ADDR using L2
--		 */
--#              define PACKET3_DMA_DATA_DST_CACHE_POLICY(x) ((x) << 25)
--		/* 0 - LRU
--		 * 1 - Stream
--		 * 2 - Bypass
--		 */
--#              define PACKET3_DMA_DATA_DST_VOLATILE (1 << 27)
--#              define PACKET3_DMA_DATA_SRC_SEL(x)  ((x) << 29)
--		/* 0 - SRC_ADDR using SAS
--		 * 1 - GDS
--		 * 2 - DATA
--		 * 3 - SRC_ADDR using L2
--		 */
--#              define PACKET3_DMA_DATA_CP_SYNC     (1 << 31)
--/* COMMAND */
--#              define PACKET3_DMA_DATA_DIS_WC      (1 << 21)
--#              define PACKET3_DMA_DATA_CMD_SRC_SWAP(x) ((x) << 22)
--		/* 0 - none
--		 * 1 - 8 in 16
--		 * 2 - 8 in 32
--		 * 3 - 8 in 64
--		 */
--#              define PACKET3_DMA_DATA_CMD_DST_SWAP(x) ((x) << 24)
--		/* 0 - none
--		 * 1 - 8 in 16
--		 * 2 - 8 in 32
--		 * 3 - 8 in 64
--		 */
--#              define PACKET3_DMA_DATA_CMD_SAS     (1 << 26)
--		/* 0 - memory
--		 * 1 - register
--		 */
--#              define PACKET3_DMA_DATA_CMD_DAS     (1 << 27)
--		/* 0 - memory
--		 * 1 - register
--		 */
--#              define PACKET3_DMA_DATA_CMD_SAIC    (1 << 28)
--#              define PACKET3_DMA_DATA_CMD_DAIC    (1 << 29)
--#              define PACKET3_DMA_DATA_CMD_RAW_WAIT  (1 << 30)
--
--static amdgpu_bo_handle gpu_mem_alloc(amdgpu_device_handle device_handle,
--				      uint64_t size,
--				      uint64_t alignment,
--				      uint32_t type,
--				      uint64_t flags,
--				      uint64_t *vmc_addr,
--				      amdgpu_va_handle *va_handle)
--{
--	struct amdgpu_bo_alloc_request req = {
--		.alloc_size = size,
--		.phys_alignment = alignment,
--		.preferred_heap = type,
--		.flags = flags,
--	};
--	amdgpu_bo_handle buf_handle;
--	int r;
--
--	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_va_range_alloc(device_handle,
--				  amdgpu_gpu_va_range_general,
--				  size, alignment, 0, vmc_addr,
--				  va_handle, 0);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_bo_va_op(buf_handle, 0, size, *vmc_addr, 0, AMDGPU_VA_OP_MAP);
--	igt_assert_eq(r, 0);
--
--	return buf_handle;
--}
--
--static void gpu_mem_free(amdgpu_bo_handle bo,
--			 amdgpu_va_handle va_handle,
--			 uint64_t vmc_addr,
--			 uint64_t size)
--{
--	int r;
--
--	r = amdgpu_bo_va_op(bo, 0, size, vmc_addr, 0, AMDGPU_VA_OP_UNMAP);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_va_range_free(va_handle);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_bo_free(bo);
--	igt_assert_eq(r, 0);
--}
--
--static int
--amdgpu_bo_alloc_and_map(amdgpu_device_handle dev, unsigned size,
--			unsigned alignment, unsigned heap, uint64_t flags,
--			amdgpu_bo_handle *bo, void **cpu, uint64_t *mc_address,
--			amdgpu_va_handle *va_handle)
--{
--	struct amdgpu_bo_alloc_request request = {
--		.alloc_size = size,
--		.phys_alignment = alignment,
--		.preferred_heap = heap,
--		.flags = flags,
--	};
--	amdgpu_bo_handle buf_handle;
--	amdgpu_va_handle handle;
--	uint64_t vmc_addr;
--	int r;
--
--	r = amdgpu_bo_alloc(dev, &request, &buf_handle);
--	if (r)
--		return r;
--
--	r = amdgpu_va_range_alloc(dev,
--				  amdgpu_gpu_va_range_general,
--				  size, alignment, 0, &vmc_addr,
--				  &handle, 0);
--	if (r)
--		goto error_va_alloc;
--
--	r = amdgpu_bo_va_op(buf_handle, 0, size, vmc_addr, 0, AMDGPU_VA_OP_MAP);
--	if (r)
--		goto error_va_map;
--
--	r = amdgpu_bo_cpu_map(buf_handle, cpu);
--	if (r)
--		goto error_cpu_map;
--
--	*bo = buf_handle;
--	*mc_address = vmc_addr;
--	*va_handle = handle;
--
--	return 0;
--
--error_cpu_map:
--	amdgpu_bo_cpu_unmap(buf_handle);
- 
--error_va_map:
--	amdgpu_bo_va_op(buf_handle, 0, size, vmc_addr, 0, AMDGPU_VA_OP_UNMAP);
- 
--error_va_alloc:
--	amdgpu_bo_free(buf_handle);
--	return r;
--}
--
--static void
--amdgpu_bo_unmap_and_free(amdgpu_bo_handle bo, amdgpu_va_handle va_handle,
--			 uint64_t mc_addr, uint64_t size)
--{
--	amdgpu_bo_cpu_unmap(bo);
--	amdgpu_bo_va_op(bo, 0, size, mc_addr, 0, AMDGPU_VA_OP_UNMAP);
--	amdgpu_va_range_free(va_handle);
--	amdgpu_bo_free(bo);
--}
--
--static int
--amdgpu_get_bo_list(amdgpu_device_handle dev, amdgpu_bo_handle bo1,
--		   amdgpu_bo_handle bo2, amdgpu_bo_list_handle *list)
--{
--	amdgpu_bo_handle resources[] = {bo1, bo2};
--
--	return amdgpu_bo_list_create(dev, bo2 ? 2 : 1, resources, NULL, list);
--}
--
--static void amdgpu_memory_alloc(void)
-+/**
-+ * MEM ALLOC TEST
-+ * @param device
-+ */
-+static void amdgpu_memory_alloc(amdgpu_device_handle device)
- {
- 	amdgpu_bo_handle bo;
- 	amdgpu_va_handle va_handle;
-@@ -339,197 +82,57 @@ static void amdgpu_memory_alloc(void)
- 	gpu_mem_free(bo, va_handle, bo_mc, 4096);
- }
- 
--static void amdgpu_command_submission_gfx_separate_ibs(void)
--{
--	amdgpu_context_handle context_handle;
--	amdgpu_bo_handle ib_result_handle, ib_result_ce_handle;
--	void *ib_result_cpu, *ib_result_ce_cpu;
--	uint64_t ib_result_mc_address, ib_result_ce_mc_address;
--	struct amdgpu_cs_request ibs_request = {0};
--	struct amdgpu_cs_ib_info ib_info[2];
--	struct amdgpu_cs_fence fence_status = {0};
--	uint32_t *ptr;
--	uint32_t expired;
--	amdgpu_bo_list_handle bo_list;
--	amdgpu_va_handle va_handle, va_handle_ce;
--	int r;
--
--	r = amdgpu_cs_ctx_create(device, &context_handle);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
--				    AMDGPU_GEM_DOMAIN_GTT, 0,
--				    &ib_result_handle, &ib_result_cpu,
--				    &ib_result_mc_address, &va_handle);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
--				    AMDGPU_GEM_DOMAIN_GTT, 0,
--				    &ib_result_ce_handle, &ib_result_ce_cpu,
--				    &ib_result_ce_mc_address, &va_handle_ce);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_get_bo_list(device, ib_result_handle,
--			       ib_result_ce_handle, &bo_list);
--	igt_assert_eq(r, 0);
--
--	memset(ib_info, 0, 2 * sizeof(struct amdgpu_cs_ib_info));
--
--	/* IT_SET_CE_DE_COUNTERS */
--	ptr = ib_result_ce_cpu;
--	ptr[0] = 0xc0008900;
--	ptr[1] = 0;
--	ptr[2] = 0xc0008400;
--	ptr[3] = 1;
--	ib_info[0].ib_mc_address = ib_result_ce_mc_address;
--	ib_info[0].size = 4;
--	ib_info[0].flags = AMDGPU_IB_FLAG_CE;
--
--	/* IT_WAIT_ON_CE_COUNTER */
--	ptr = ib_result_cpu;
--	ptr[0] = 0xc0008600;
--	ptr[1] = 0x00000001;
--	ib_info[1].ib_mc_address = ib_result_mc_address;
--	ib_info[1].size = 2;
--
--	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
--	ibs_request.number_of_ibs = 2;
--	ibs_request.ibs = ib_info;
--	ibs_request.resources = bo_list;
--	ibs_request.fence_info.handle = NULL;
--
--	r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
--
--	igt_assert_eq(r, 0);
- 
--	fence_status.context = context_handle;
--	fence_status.ip_type = AMDGPU_HW_IP_GFX;
--	fence_status.ip_instance = 0;
--	fence_status.fence = ibs_request.seq_no;
--
--	r = amdgpu_cs_query_fence_status(&fence_status,
--					 AMDGPU_TIMEOUT_INFINITE,
--					 0, &expired);
--	igt_assert_eq(r, 0);
--
--	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
--				 ib_result_mc_address, 4096);
--	amdgpu_bo_unmap_and_free(ib_result_ce_handle, va_handle_ce,
--				 ib_result_ce_mc_address, 4096);
--
--	r = amdgpu_bo_list_destroy(bo_list);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_cs_ctx_free(context_handle);
--	igt_assert_eq(r, 0);
--}
--
--static void amdgpu_command_submission_gfx_shared_ib(void)
--{
--	amdgpu_context_handle context_handle;
--	amdgpu_bo_handle ib_result_handle;
--	void *ib_result_cpu;
--	uint64_t ib_result_mc_address;
--	struct amdgpu_cs_request ibs_request = {0};
--	struct amdgpu_cs_ib_info ib_info[2];
--	struct amdgpu_cs_fence fence_status = {0};
--	uint32_t *ptr;
--	uint32_t expired;
--	amdgpu_bo_list_handle bo_list;
--	amdgpu_va_handle va_handle;
--	int r;
--
--	r = amdgpu_cs_ctx_create(device, &context_handle);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
--				    AMDGPU_GEM_DOMAIN_GTT, 0,
--				    &ib_result_handle, &ib_result_cpu,
--				    &ib_result_mc_address, &va_handle);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_get_bo_list(device, ib_result_handle, NULL,
--			       &bo_list);
--	igt_assert_eq(r, 0);
--
--	memset(ib_info, 0, 2 * sizeof(struct amdgpu_cs_ib_info));
--
--	/* IT_SET_CE_DE_COUNTERS */
--	ptr = ib_result_cpu;
--	ptr[0] = 0xc0008900;
--	ptr[1] = 0;
--	ptr[2] = 0xc0008400;
--	ptr[3] = 1;
--	ib_info[0].ib_mc_address = ib_result_mc_address;
--	ib_info[0].size = 4;
--	ib_info[0].flags = AMDGPU_IB_FLAG_CE;
--
--	ptr = (uint32_t *)ib_result_cpu + 4;
--	ptr[0] = 0xc0008600;
--	ptr[1] = 0x00000001;
--	ib_info[1].ib_mc_address = ib_result_mc_address + 16;
--	ib_info[1].size = 2;
--
--	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
--	ibs_request.number_of_ibs = 2;
--	ibs_request.ibs = ib_info;
--	ibs_request.resources = bo_list;
--	ibs_request.fence_info.handle = NULL;
--
--	r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
--
--	igt_assert_eq(r, 0);
--
--	fence_status.context = context_handle;
--	fence_status.ip_type = AMDGPU_HW_IP_GFX;
--	fence_status.ip_instance = 0;
--	fence_status.fence = ibs_request.seq_no;
--
--	r = amdgpu_cs_query_fence_status(&fence_status,
--					 AMDGPU_TIMEOUT_INFINITE,
--					 0, &expired);
--	igt_assert_eq(r, 0);
--
--	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
--				 ib_result_mc_address, 4096);
--
--	r = amdgpu_bo_list_destroy(bo_list);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_cs_ctx_free(context_handle);
--	igt_assert_eq(r, 0);
--}
--
--static void amdgpu_command_submission_gfx_cp_write_data(void)
--{
--	amdgpu_command_submission_write_linear_helper(AMDGPU_HW_IP_GFX);
--}
--
--static void amdgpu_command_submission_gfx_cp_const_fill(void)
--{
--	amdgpu_command_submission_const_fill_helper(AMDGPU_HW_IP_GFX);
--}
--
--static void amdgpu_command_submission_gfx_cp_copy_data(void)
-+/**
-+ * AMDGPU_HW_IP_GFX
-+ * @param device
-+ */
-+static void amdgpu_command_submission_gfx(amdgpu_device_handle device)
- {
--	amdgpu_command_submission_copy_linear_helper(AMDGPU_HW_IP_GFX);
-+	/* write data using the CP */
-+	amdgpu_command_submission_write_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX), false);
-+	/* const fill using the CP */
-+	amdgpu_command_submission_const_fill_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX));
-+	/* copy data using the CP */
-+	amdgpu_command_submission_copy_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_GFX));
-+	/* separate IB buffers for multi-IB submission */
-+	amdgpu_command_submission_gfx_separate_ibs(device);
-+	/* shared IB buffer for multi-IB submission */
-+	amdgpu_command_submission_gfx_shared_ib(device);
- }
- 
--static void amdgpu_command_submission_gfx(void)
-+/**
-+ * AMDGPU_HW_IP_COMPUTE
-+ * @param device
-+ */
-+static void amdgpu_command_submission_compute(amdgpu_device_handle device)
- {
- 	/* write data using the CP */
--	amdgpu_command_submission_gfx_cp_write_data();
-+	amdgpu_command_submission_write_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_COMPUTE), false);
- 	/* const fill using the CP */
--	amdgpu_command_submission_gfx_cp_const_fill();
-+	amdgpu_command_submission_const_fill_helper(device, get_ip_block(device, AMDGPU_HW_IP_COMPUTE));
- 	/* copy data using the CP */
--	amdgpu_command_submission_gfx_cp_copy_data();
--	/* separate IB buffers for multi-IB submission */
--	amdgpu_command_submission_gfx_separate_ibs();
--	/* shared IB buffer for multi-IB submission */
--	amdgpu_command_submission_gfx_shared_ib();
-+	amdgpu_command_submission_copy_linear_helper(device, get_ip_block(device, AMDGPU_HW_IP_COMPUTE));
-+	/* nop test */
-+	amdgpu_command_submission_compute_nop(device);
- }
- 
--static void amdgpu_semaphore_test(void)
-+/**
-+ * AMDGPU_HW_IP_DMA
-+ * @param device
-+ */
-+static void amdgpu_command_submission_sdma(amdgpu_device_handle device)
-+{
-+	amdgpu_command_submission_write_linear_helper(device,  get_ip_block(device, AMDGPU_HW_IP_DMA), false);
-+	amdgpu_command_submission_const_fill_helper(device,  get_ip_block(device, AMDGPU_HW_IP_DMA));
-+	amdgpu_command_submission_copy_linear_helper(device,  get_ip_block(device, AMDGPU_HW_IP_DMA));
-+}
-+
-+/**
-+ * SEMAPHORE
-+ * @param device
-+ */
-+static void amdgpu_semaphore_test(amdgpu_device_handle device)
- {
- 	amdgpu_context_handle context_handle[2];
- 	amdgpu_semaphore_handle sem;
-@@ -658,717 +261,92 @@ static void amdgpu_semaphore_test(void)
- 	igt_assert_eq(r, 0);
- }
- 
--static void amdgpu_command_submission_compute_nop(void)
--{
--	amdgpu_context_handle context_handle;
--	amdgpu_bo_handle ib_result_handle;
--	void *ib_result_cpu;
--	uint64_t ib_result_mc_address;
--	struct amdgpu_cs_request ibs_request;
--	struct amdgpu_cs_ib_info ib_info;
--	struct amdgpu_cs_fence fence_status;
--	struct drm_amdgpu_info_hw_ip info;
--	uint32_t *ptr;
--	uint32_t expired;
--	int r, instance;
--	amdgpu_bo_list_handle bo_list;
--	amdgpu_va_handle va_handle;
--
--	r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_COMPUTE, 0, &info);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_cs_ctx_create(device, &context_handle);
--	igt_assert_eq(r, 0);
--
--	for (instance = 0; info.available_rings & (1 << instance); instance++) {
--		r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
--					    AMDGPU_GEM_DOMAIN_GTT, 0,
--					    &ib_result_handle, &ib_result_cpu,
--					    &ib_result_mc_address, &va_handle);
--		igt_assert_eq(r, 0);
--
--		r = amdgpu_get_bo_list(device, ib_result_handle, NULL,
--				       &bo_list);
--		igt_assert_eq(r, 0);
--
--		ptr = ib_result_cpu;
--		memset(ptr, 0, 16);
--		ptr[0] = PACKET3(PACKET3_NOP, 14);
--
--		memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
--		ib_info.ib_mc_address = ib_result_mc_address;
--		ib_info.size = 16;
--
--		memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
--		ibs_request.ip_type = AMDGPU_HW_IP_COMPUTE;
--		ibs_request.ring = instance;
--		ibs_request.number_of_ibs = 1;
--		ibs_request.ibs = &ib_info;
--		ibs_request.resources = bo_list;
--		ibs_request.fence_info.handle = NULL;
--
--		memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
--		r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
--		igt_assert_eq(r, 0);
--
--		fence_status.context = context_handle;
--		fence_status.ip_type = AMDGPU_HW_IP_COMPUTE;
--		fence_status.ip_instance = 0;
--		fence_status.ring = instance;
--		fence_status.fence = ibs_request.seq_no;
--
--		r = amdgpu_cs_query_fence_status(&fence_status,
--						 AMDGPU_TIMEOUT_INFINITE,
--						 0, &expired);
--		igt_assert_eq(r, 0);
--
--		r = amdgpu_bo_list_destroy(bo_list);
--		igt_assert_eq(r, 0);
--
--		amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
--					 ib_result_mc_address, 4096);
--	}
--
--	r = amdgpu_cs_ctx_free(context_handle);
--	igt_assert_eq(r, 0);
--}
--
--static void amdgpu_command_submission_compute_cp_write_data(void)
--{
--	amdgpu_command_submission_write_linear_helper(AMDGPU_HW_IP_COMPUTE);
--}
--
--static void amdgpu_command_submission_compute_cp_const_fill(void)
--{
--	amdgpu_command_submission_const_fill_helper(AMDGPU_HW_IP_COMPUTE);
--}
--
--static void amdgpu_command_submission_compute_cp_copy_data(void)
--{
--	amdgpu_command_submission_copy_linear_helper(AMDGPU_HW_IP_COMPUTE);
--}
--
--static void amdgpu_command_submission_compute(void)
--{
--	/* write data using the CP */
--	amdgpu_command_submission_compute_cp_write_data();
--	/* const fill using the CP */
--	amdgpu_command_submission_compute_cp_const_fill();
--	/* copy data using the CP */
--	amdgpu_command_submission_compute_cp_copy_data();
--	/* nop test */
--	amdgpu_command_submission_compute_nop();
--}
- 
--/*
-- * caller need create/release:
-- * pm4_src, resources, ib_info, and ibs_request
-- * submit command stream described in ibs_request and wait for this IB accomplished
-+/**
-+ * MULTI FENCE
-+ * @param device
-  */
--static void amdgpu_test_exec_cs_helper(amdgpu_context_handle context_handle,
--				       unsigned ip_type,
--				       int instance, int pm4_dw, uint32_t *pm4_src,
--				       int res_cnt, amdgpu_bo_handle *resources,
--				       struct amdgpu_cs_ib_info *ib_info,
--				       struct amdgpu_cs_request *ibs_request)
--{
--	int r;
--	uint32_t expired;
--	uint32_t *ring_ptr;
--	amdgpu_bo_handle ib_result_handle;
--	void *ib_result_cpu;
--	uint64_t ib_result_mc_address;
--	struct amdgpu_cs_fence fence_status = {0};
--	amdgpu_bo_handle *all_res = alloca(sizeof(resources[0]) * (res_cnt + 1));
--	amdgpu_va_handle va_handle;
--
--	/* prepare CS */
--	igt_assert(pm4_dw <= 1024);
--
--	/* allocate IB */
--	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
--				    AMDGPU_GEM_DOMAIN_GTT, 0,
--				    &ib_result_handle, &ib_result_cpu,
--				    &ib_result_mc_address, &va_handle);
--	igt_assert_eq(r, 0);
--
--	/* copy PM4 packet to ring from caller */
--	ring_ptr = ib_result_cpu;
--	memcpy(ring_ptr, pm4_src, pm4_dw * sizeof(*pm4_src));
--
--	ib_info->ib_mc_address = ib_result_mc_address;
--	ib_info->size = pm4_dw;
--
--	ibs_request->ip_type = ip_type;
--	ibs_request->ring = instance;
--	ibs_request->number_of_ibs = 1;
--	ibs_request->ibs = ib_info;
--	ibs_request->fence_info.handle = NULL;
--
--	memcpy(all_res, resources, sizeof(resources[0]) * res_cnt);
--	all_res[res_cnt] = ib_result_handle;
--
--	r = amdgpu_bo_list_create(device, res_cnt+1, all_res,
--				  NULL, &ibs_request->resources);
--	igt_assert_eq(r, 0);
--
--	/* submit CS */
--	r = amdgpu_cs_submit(context_handle, 0, ibs_request, 1);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_bo_list_destroy(ibs_request->resources);
--	igt_assert_eq(r, 0);
--
--	fence_status.ip_type = ip_type;
--	fence_status.ip_instance = 0;
--	fence_status.ring = ibs_request->ring;
--	fence_status.context = context_handle;
--	fence_status.fence = ibs_request->seq_no;
--
--	/* wait for IB accomplished */
--	r = amdgpu_cs_query_fence_status(&fence_status,
--					 AMDGPU_TIMEOUT_INFINITE,
--					 0, &expired);
--	igt_assert_eq(r, 0);
--	igt_assert_eq(expired, true);
--
--	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
--				 ib_result_mc_address, 4096);
--}
--
--static void amdgpu_command_submission_write_linear_helper(unsigned ip_type)
--{
--	const int sdma_write_length = 128;
--	const int pm4_dw = 256;
--	amdgpu_context_handle context_handle;
--	amdgpu_bo_handle bo;
--	amdgpu_bo_handle *resources;
--	uint32_t *pm4;
--	struct amdgpu_cs_ib_info *ib_info;
--	struct amdgpu_cs_request *ibs_request;
--	struct amdgpu_gpu_info gpu_info = {0};
--	uint64_t bo_mc;
--	volatile uint32_t *bo_cpu;
--	int i, j, r, loop;
--	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
--	amdgpu_va_handle va_handle;
--
--	r = amdgpu_query_gpu_info(device, &gpu_info);
--	igt_assert_eq(r, 0);
--
--	pm4 = calloc(pm4_dw, sizeof(*pm4));
--	igt_assert(pm4);
--
--	ib_info = calloc(1, sizeof(*ib_info));
--	igt_assert(ib_info);
--
--	ibs_request = calloc(1, sizeof(*ibs_request));
--	igt_assert(ibs_request);
--
--	r = amdgpu_cs_ctx_create(device, &context_handle);
--	igt_assert_eq(r, 0);
--
--	/* prepare resource */
--	resources = calloc(1, sizeof(amdgpu_bo_handle));
--	igt_assert(resources);
--
--	loop = 0;
--	while(loop < 2) {
--		/* allocate UC bo for sDMA use */
--		r = amdgpu_bo_alloc_and_map(device,
--					    sdma_write_length * sizeof(uint32_t),
--					    4096, AMDGPU_GEM_DOMAIN_GTT,
--					    gtt_flags[loop], &bo, (void**)&bo_cpu,
--					    &bo_mc, &va_handle);
--		igt_assert_eq(r, 0);
--
--		/* clear bo */
--		memset((void*)bo_cpu, 0, sdma_write_length * sizeof(uint32_t));
--
--
--		resources[0] = bo;
--
--		/* fulfill PM4: test DMA write-linear */
--		i = j = 0;
--		if (ip_type == AMDGPU_HW_IP_DMA) {
--			pm4[i++] = SDMA_PACKET(SDMA_OPCODE_WRITE,
--					       SDMA_WRITE_SUB_OPCODE_LINEAR, 0);
--			pm4[i++] = 0xffffffff & bo_mc;
--			pm4[i++] = (0xffffffff00000000 & bo_mc) >> 32;
--			if (gpu_info.family_id >= AMDGPU_FAMILY_AI)
--				pm4[i++] = sdma_write_length - 1;
--			else
--				pm4[i++] = sdma_write_length;
--			while(j++ < sdma_write_length)
--				pm4[i++] = 0xdeadbeaf;
--		} else if ((ip_type == AMDGPU_HW_IP_GFX) ||
--			   (ip_type == AMDGPU_HW_IP_COMPUTE)) {
--			pm4[i++] = PACKET3(PACKET3_WRITE_DATA, 2 + sdma_write_length);
--			pm4[i++] = WRITE_DATA_DST_SEL(5) | WR_CONFIRM;
--			pm4[i++] = 0xfffffffc & bo_mc;
--			pm4[i++] = (0xffffffff00000000 & bo_mc) >> 32;
--			while(j++ < sdma_write_length)
--				pm4[i++] = 0xdeadbeaf;
--		}
--
--		amdgpu_test_exec_cs_helper(context_handle,
--					   ip_type, 0,
--					   i, pm4,
--					   1, resources,
--					   ib_info, ibs_request);
--
--		/* verify if SDMA test result meets with expected */
--		i = 0;
--		while(i < sdma_write_length) {
--			igt_assert_eq(bo_cpu[i++], 0xdeadbeaf);
--		}
--
--		amdgpu_bo_unmap_and_free(bo, va_handle, bo_mc,
--					 sdma_write_length * sizeof(uint32_t));
--		loop++;
--	}
--	/* clean resources */
--	free(resources);
--	free(ibs_request);
--	free(ib_info);
--	free(pm4);
--
--	/* end of test */
--	r = amdgpu_cs_ctx_free(context_handle);
--	igt_assert_eq(r, 0);
--}
--
--static void amdgpu_command_submission_sdma_write_linear(void)
-+static void amdgpu_command_submission_multi_fence(amdgpu_device_handle device)
- {
--	amdgpu_command_submission_write_linear_helper(AMDGPU_HW_IP_DMA);
-+	amdgpu_command_submission_multi_fence_wait_all(device, true);
-+	amdgpu_command_submission_multi_fence_wait_all(device, false);
- }
- 
--static void amdgpu_command_submission_const_fill_helper(unsigned ip_type)
-+static void amdgpu_userptr_test(amdgpu_device_handle device)
- {
--	const int sdma_write_length = 1024 * 1024;
- 	const int pm4_dw = 256;
--	amdgpu_context_handle context_handle;
--	amdgpu_bo_handle bo;
--	amdgpu_bo_handle *resources;
--	uint32_t *pm4;
--	struct amdgpu_cs_ib_info *ib_info;
--	struct amdgpu_cs_request *ibs_request;
--	struct amdgpu_gpu_info gpu_info = {0};
--	uint64_t bo_mc;
--	volatile uint32_t *bo_cpu;
--	int i, j, r, loop;
--	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
--	amdgpu_va_handle va_handle;
--
--	r = amdgpu_query_gpu_info(device, &gpu_info);
--	igt_assert_eq(r, 0);
--
--	pm4 = calloc(pm4_dw, sizeof(*pm4));
--	igt_assert(pm4);
--
--	ib_info = calloc(1, sizeof(*ib_info));
--	igt_assert(ib_info);
-+	const int sdma_write_length = 4;
- 
--	ibs_request = calloc(1, sizeof(*ibs_request));
--	igt_assert(ibs_request);
--
--	r = amdgpu_cs_ctx_create(device, &context_handle);
--	igt_assert_eq(r, 0);
--
--	/* prepare resource */
--	resources = calloc(1, sizeof(amdgpu_bo_handle));
--	igt_assert(resources);
--
--	loop = 0;
--	while(loop < 2) {
--		/* allocate UC bo for sDMA use */
--		r = amdgpu_bo_alloc_and_map(device,
--					    sdma_write_length, 4096,
--					    AMDGPU_GEM_DOMAIN_GTT,
--					    gtt_flags[loop], &bo, (void**)&bo_cpu,
--					    &bo_mc, &va_handle);
--		igt_assert_eq(r, 0);
--
--		/* clear bo */
--		memset((void*)bo_cpu, 0, sdma_write_length);
--
--		resources[0] = bo;
--
--		/* fulfill PM4: test DMA const fill */
--		i = j = 0;
--		if (ip_type == AMDGPU_HW_IP_DMA) {
--			pm4[i++] = SDMA_PACKET(SDMA_OPCODE_CONSTANT_FILL, 0,
--					       SDMA_CONSTANT_FILL_EXTRA_SIZE(2));
--			pm4[i++] = 0xffffffff & bo_mc;
--			pm4[i++] = (0xffffffff00000000 & bo_mc) >> 32;
--			pm4[i++] = 0xdeadbeaf;
--			if (gpu_info.family_id >= AMDGPU_FAMILY_AI)
--				pm4[i++] = sdma_write_length - 1;
--			else
--				pm4[i++] = sdma_write_length;
--		} else if ((ip_type == AMDGPU_HW_IP_GFX) ||
--			   (ip_type == AMDGPU_HW_IP_COMPUTE)) {
--			pm4[i++] = PACKET3(PACKET3_DMA_DATA, 5);
--			pm4[i++] = PACKET3_DMA_DATA_ENGINE(0) |
--				PACKET3_DMA_DATA_DST_SEL(0) |
--				PACKET3_DMA_DATA_SRC_SEL(2) |
--				PACKET3_DMA_DATA_CP_SYNC;
--			pm4[i++] = 0xdeadbeaf;
--			pm4[i++] = 0;
--			pm4[i++] = 0xfffffffc & bo_mc;
--			pm4[i++] = (0xffffffff00000000 & bo_mc) >> 32;
--			pm4[i++] = sdma_write_length;
--		}
--
--		amdgpu_test_exec_cs_helper(context_handle,
--					   ip_type, 0,
--					   i, pm4,
--					   1, resources,
--					   ib_info, ibs_request);
--
--		/* verify if SDMA test result meets with expected */
--		i = 0;
--		while(i < (sdma_write_length / 4)) {
--			igt_assert_eq(bo_cpu[i++], 0xdeadbeaf);
--		}
--
--		amdgpu_bo_unmap_and_free(bo, va_handle, bo_mc,
--					 sdma_write_length);
--		loop++;
--	}
--	/* clean resources */
--	free(resources);
--	free(ibs_request);
--	free(ib_info);
--	free(pm4);
--
--	/* end of test */
--	r = amdgpu_cs_ctx_free(context_handle);
--	igt_assert_eq(r, 0);
--}
--
--static void amdgpu_command_submission_sdma_const_fill(void)
--{
--	amdgpu_command_submission_const_fill_helper(AMDGPU_HW_IP_DMA);
--}
--
--static void amdgpu_command_submission_copy_linear_helper(unsigned ip_type)
--{
--	const int sdma_write_length = 1024;
--	const int pm4_dw = 256;
--	amdgpu_context_handle context_handle;
--	amdgpu_bo_handle bo1, bo2;
--	amdgpu_bo_handle *resources;
--	uint32_t *pm4;
--	struct amdgpu_cs_ib_info *ib_info;
--	struct amdgpu_cs_request *ibs_request;
--	struct amdgpu_gpu_info gpu_info = {0};
--	uint64_t bo1_mc, bo2_mc;
--	volatile unsigned char *bo1_cpu, *bo2_cpu;
--	int i, j, r, loop1, loop2;
--	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
--	amdgpu_va_handle bo1_va_handle, bo2_va_handle;
--
--	r = amdgpu_query_gpu_info(device, &gpu_info);
--	igt_assert_eq(r, 0);
--
--	pm4 = calloc(pm4_dw, sizeof(*pm4));
--	igt_assert(pm4);
--
--	ib_info = calloc(1, sizeof(*ib_info));
--	igt_assert(ib_info);
--
--	ibs_request = calloc(1, sizeof(*ibs_request));
--	igt_assert(ibs_request);
--
--	r = amdgpu_cs_ctx_create(device, &context_handle);
--	igt_assert_eq(r, 0);
--
--	/* prepare resource */
--	resources = calloc(2, sizeof(amdgpu_bo_handle));
--	igt_assert(resources);
--
--	loop1 = loop2 = 0;
--	/* run 9 circle to test all mapping combination */
--	while(loop1 < 2) {
--		while(loop2 < 2) {
--			/* allocate UC bo1for sDMA use */
--			r = amdgpu_bo_alloc_and_map(device,
--						    sdma_write_length, 4096,
--						    AMDGPU_GEM_DOMAIN_GTT,
--						    gtt_flags[loop1], &bo1,
--						    (void**)&bo1_cpu, &bo1_mc,
--						    &bo1_va_handle);
--			igt_assert_eq(r, 0);
--
--			/* set bo1 */
--			memset((void*)bo1_cpu, 0xaa, sdma_write_length);
--
--			/* allocate UC bo2 for sDMA use */
--			r = amdgpu_bo_alloc_and_map(device,
--						    sdma_write_length, 4096,
--						    AMDGPU_GEM_DOMAIN_GTT,
--						    gtt_flags[loop2], &bo2,
--						    (void**)&bo2_cpu, &bo2_mc,
--						    &bo2_va_handle);
--			igt_assert_eq(r, 0);
--
--			/* clear bo2 */
--			memset((void*)bo2_cpu, 0, sdma_write_length);
--
--			resources[0] = bo1;
--			resources[1] = bo2;
--
--			/* fulfill PM4: test DMA copy linear */
--			i = j = 0;
--			if (ip_type == AMDGPU_HW_IP_DMA) {
--				pm4[i++] = SDMA_PACKET(SDMA_OPCODE_COPY, SDMA_COPY_SUB_OPCODE_LINEAR, 0);
--				if (gpu_info.family_id >= AMDGPU_FAMILY_AI)
--					pm4[i++] = sdma_write_length - 1;
--				else
--					pm4[i++] = sdma_write_length;
--				pm4[i++] = 0;
--				pm4[i++] = 0xffffffff & bo1_mc;
--				pm4[i++] = (0xffffffff00000000 & bo1_mc) >> 32;
--				pm4[i++] = 0xffffffff & bo2_mc;
--				pm4[i++] = (0xffffffff00000000 & bo2_mc) >> 32;
--			} else if ((ip_type == AMDGPU_HW_IP_GFX) ||
--				   (ip_type == AMDGPU_HW_IP_COMPUTE)) {
--				pm4[i++] = PACKET3(PACKET3_DMA_DATA, 5);
--				pm4[i++] = PACKET3_DMA_DATA_ENGINE(0) |
--					PACKET3_DMA_DATA_DST_SEL(0) |
--					PACKET3_DMA_DATA_SRC_SEL(0) |
--					PACKET3_DMA_DATA_CP_SYNC;
--				pm4[i++] = 0xfffffffc & bo1_mc;
--				pm4[i++] = (0xffffffff00000000 & bo1_mc) >> 32;
--				pm4[i++] = 0xfffffffc & bo2_mc;
--				pm4[i++] = (0xffffffff00000000 & bo2_mc) >> 32;
--				pm4[i++] = sdma_write_length;
--			}
--
--			amdgpu_test_exec_cs_helper(context_handle,
--						   ip_type, 0,
--						   i, pm4,
--						   2, resources,
--						   ib_info, ibs_request);
--
--			/* verify if SDMA test result meets with expected */
--			i = 0;
--			while(i < sdma_write_length) {
--				igt_assert_eq(bo2_cpu[i++], 0xaa);
--			}
--
--			amdgpu_bo_unmap_and_free(bo1, bo1_va_handle, bo1_mc,
--						 sdma_write_length);
--			amdgpu_bo_unmap_and_free(bo2, bo2_va_handle, bo2_mc,
--						 sdma_write_length);
--			loop2++;
--		}
--		loop1++;
--	}
--	/* clean resources */
--	free(resources);
--	free(ibs_request);
--	free(ib_info);
--	free(pm4);
--
--	/* end of test */
--	r = amdgpu_cs_ctx_free(context_handle);
--	igt_assert_eq(r, 0);
--}
--
--static void amdgpu_command_submission_sdma_copy_linear(void)
--{
--	amdgpu_command_submission_copy_linear_helper(AMDGPU_HW_IP_DMA);
--}
--
--static void amdgpu_command_submission_sdma(void)
--{
--	amdgpu_command_submission_sdma_write_linear();
--	amdgpu_command_submission_sdma_const_fill();
--	amdgpu_command_submission_sdma_copy_linear();
--}
--
--static void amdgpu_command_submission_multi_fence_wait_all(bool wait_all)
--{
--	amdgpu_context_handle context_handle;
--	amdgpu_bo_handle ib_result_handle, ib_result_ce_handle;
--	void *ib_result_cpu, *ib_result_ce_cpu;
--	uint64_t ib_result_mc_address, ib_result_ce_mc_address;
--	struct amdgpu_cs_request ibs_request[2] = {};
--	struct amdgpu_cs_ib_info ib_info[2];
--	struct amdgpu_cs_fence fence_status[2] = {};
--	uint32_t *ptr;
--	uint32_t expired;
--	amdgpu_bo_list_handle bo_list;
--	amdgpu_va_handle va_handle, va_handle_ce;
-+	struct amdgpu_ring_context *ring_context;
- 	int r;
--	int i, ib_cs_num = 2;
- 
--	r = amdgpu_cs_ctx_create(device, &context_handle);
--	igt_assert_eq(r, 0);
-+	const struct amdgpu_ip_block_version * ip_block = get_ip_block(device, AMDGPU_HW_IP_DMA);
-+	igt_assert(ip_block);
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	igt_assert(ring_context);
- 
--	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
--				    AMDGPU_GEM_DOMAIN_GTT, 0,
--				    &ib_result_handle, &ib_result_cpu,
--				    &ib_result_mc_address, &va_handle);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
--				    AMDGPU_GEM_DOMAIN_GTT, 0,
--				    &ib_result_ce_handle, &ib_result_ce_cpu,
--				    &ib_result_ce_mc_address, &va_handle_ce);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_get_bo_list(device, ib_result_handle,
--			       ib_result_ce_handle, &bo_list);
--	igt_assert_eq(r, 0);
-+	/* setup parameters */
- 
--	memset(ib_info, 0, 2 * sizeof(struct amdgpu_cs_ib_info));
--
--	/* IT_SET_CE_DE_COUNTERS */
--	ptr = ib_result_ce_cpu;
--	ptr[0] = 0xc0008900;
--	ptr[1] = 0;
--	ptr[2] = 0xc0008400;
--	ptr[3] = 1;
--	ib_info[0].ib_mc_address = ib_result_ce_mc_address;
--	ib_info[0].size = 4;
--	ib_info[0].flags = AMDGPU_IB_FLAG_CE;
--
--	/* IT_WAIT_ON_CE_COUNTER */
--	ptr = ib_result_cpu;
--	ptr[0] = 0xc0008600;
--	ptr[1] = 0x00000001;
--	ib_info[1].ib_mc_address = ib_result_mc_address;
--	ib_info[1].size = 2;
--
--	for (i = 0; i < ib_cs_num; i++) {
--		ibs_request[i].ip_type = AMDGPU_HW_IP_GFX;
--		ibs_request[i].number_of_ibs = 2;
--		ibs_request[i].ibs = ib_info;
--		ibs_request[i].resources = bo_list;
--		ibs_request[i].fence_info.handle = NULL;
--	}
--
--	r = amdgpu_cs_submit(context_handle, 0,ibs_request, ib_cs_num);
-+	ring_context->write_length =  sdma_write_length;
-+	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
-+	ring_context->secure = false;
-+	ring_context->pm4_size = pm4_dw;
-+	ring_context->res_cnt = 1;
-+	igt_assert(ring_context->pm4);
- 
-+	r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
- 	igt_assert_eq(r, 0);
- 
--	for (i = 0; i < ib_cs_num; i++) {
--		fence_status[i].context = context_handle;
--		fence_status[i].ip_type = AMDGPU_HW_IP_GFX;
--		fence_status[i].fence = ibs_request[i].seq_no;
--	}
-+	posix_memalign((void**)&ring_context->bo_cpu, sysconf(_SC_PAGE_SIZE), BUFFER_SIZE);
-+	igt_assert(ring_context->bo_cpu);
-+	memset((void*)ring_context->bo_cpu, 0, BUFFER_SIZE);
- 
--	r = amdgpu_cs_wait_fences(fence_status, ib_cs_num, wait_all,
--				  AMDGPU_TIMEOUT_INFINITE,
--				  &expired, NULL);
-+	r = amdgpu_create_bo_from_user_mem(device,
-+					   (void*)ring_context->bo_cpu,
-+					   BUFFER_SIZE, &ring_context->bo);
- 	igt_assert_eq(r, 0);
- 
--	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
--				 ib_result_mc_address, 4096);
-+	ring_context->resources[0] = ring_context->bo;
- 
--	amdgpu_bo_unmap_and_free(ib_result_ce_handle, va_handle_ce,
--				 ib_result_ce_mc_address, 4096);
- 
--	r = amdgpu_bo_list_destroy(bo_list);
--	igt_assert_eq(r, 0);
-+	r = amdgpu_va_range_alloc(device,
-+				  amdgpu_gpu_va_range_general,
-+				  BUFFER_SIZE, 1, 0, &ring_context->bo_mc,
-+				  &ring_context->va_handle, 0);
- 
--	r = amdgpu_cs_ctx_free(context_handle);
- 	igt_assert_eq(r, 0);
--}
- 
--static void amdgpu_command_submission_multi_fence(void)
--{
--	amdgpu_command_submission_multi_fence_wait_all(true);
--	amdgpu_command_submission_multi_fence_wait_all(false);
--}
--
--static void amdgpu_userptr_test(void)
--{
--	int i, r, j;
--	uint32_t *pm4 = NULL;
--	uint64_t bo_mc;
--	void *ptr = NULL;
--	int pm4_dw = 256;
--	int sdma_write_length = 4;
--	amdgpu_bo_handle handle;
--	amdgpu_context_handle context_handle;
--	struct amdgpu_cs_ib_info *ib_info;
--	struct amdgpu_cs_request *ibs_request;
--	amdgpu_bo_handle buf_handle;
--	amdgpu_va_handle va_handle;
-+	r = amdgpu_bo_va_op(ring_context->bo, 0, BUFFER_SIZE, ring_context->bo_mc, 0, AMDGPU_VA_OP_MAP);
- 
--	pm4 = calloc(pm4_dw, sizeof(*pm4));
--	igt_assert(pm4);
--
--	ib_info = calloc(1, sizeof(*ib_info));
--	igt_assert(ib_info);
--
--	ibs_request = calloc(1, sizeof(*ibs_request));
--	igt_assert(ibs_request);
--
--	r = amdgpu_cs_ctx_create(device, &context_handle);
- 	igt_assert_eq(r, 0);
- 
--	posix_memalign(&ptr, sysconf(_SC_PAGE_SIZE), BUFFER_SIZE);
--	igt_assert(ptr);
--	memset(ptr, 0, BUFFER_SIZE);
-+	ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
--	r = amdgpu_create_bo_from_user_mem(device,
--					   ptr, BUFFER_SIZE, &buf_handle);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_va_range_alloc(device,
--				  amdgpu_gpu_va_range_general,
--				  BUFFER_SIZE, 1, 0, &bo_mc,
--				  &va_handle, 0);
--	igt_assert_eq(r, 0);
-+	 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context);
- 
--	r = amdgpu_bo_va_op(buf_handle, 0, BUFFER_SIZE, bo_mc, 0, AMDGPU_VA_OP_MAP);
-+	r = ip_block->funcs->compare(ip_block->funcs, ring_context, 1);
- 	igt_assert_eq(r, 0);
- 
--	handle = buf_handle;
--
--	j = i = 0;
--	pm4[i++] = SDMA_PACKET(SDMA_OPCODE_WRITE,
--			       SDMA_WRITE_SUB_OPCODE_LINEAR, 0);
--	pm4[i++] = 0xffffffff & bo_mc;
--	pm4[i++] = (0xffffffff00000000 & bo_mc) >> 32;
--	pm4[i++] = sdma_write_length;
--
--	while (j++ < sdma_write_length)
--		pm4[i++] = 0xdeadbeaf;
--
--	amdgpu_test_exec_cs_helper(context_handle,
--				   AMDGPU_HW_IP_DMA, 0,
--				   i, pm4,
--				   1, &handle,
--				   ib_info, ibs_request);
--	i = 0;
--	while (i < sdma_write_length) {
--		igt_assert_eq(((int*)ptr)[i++], 0xdeadbeaf);
--	}
--	free(ibs_request);
--	free(ib_info);
--	free(pm4);
--
--	r = amdgpu_bo_va_op(buf_handle, 0, BUFFER_SIZE, bo_mc, 0, AMDGPU_VA_OP_UNMAP);
-+	r = amdgpu_bo_va_op(ring_context->bo, 0, BUFFER_SIZE, ring_context->bo_mc, 0, AMDGPU_VA_OP_UNMAP);
- 	igt_assert_eq(r, 0);
--	r = amdgpu_va_range_free(va_handle);
-+	r = amdgpu_va_range_free(ring_context->va_handle);
- 	igt_assert_eq(r, 0);
--	r = amdgpu_bo_free(buf_handle);
-+	r = amdgpu_bo_free(ring_context->bo);
- 	igt_assert_eq(r, 0);
--	free(ptr);
- 
--	r = amdgpu_cs_ctx_free(context_handle);
-+	r = amdgpu_cs_ctx_free(ring_context->context_handle);
- 	igt_assert_eq(r, 0);
-+
-+	free(ring_context->pm4);
-+	free(ring_context);
- }
- 
- igt_main
- {
-+	amdgpu_device_handle device;
-+	struct amdgpu_gpu_info gpu_info = {0};
- 	int fd = -1;
-+	int r;
- 
- 	igt_fixture {
- 		uint32_t major, minor;
-@@ -1381,28 +359,34 @@ igt_main
- 
- 		igt_info("Initialized amdgpu, driver version %d.%d\n",
- 			 major, minor);
-+
-+		r = amdgpu_query_gpu_info(device, &gpu_info);
-+		igt_assert_eq(r, 0);
-+		r = setup_amdgpu_ip_blocks( major, minor,  &gpu_info, device);
-+		igt_assert_eq(r, 0);
-+
- 	}
- 
- 	igt_subtest("memory-alloc")
--		amdgpu_memory_alloc();
-+		amdgpu_memory_alloc(device);
- 
- 	igt_subtest("userptr")
--		amdgpu_userptr_test();
-+		amdgpu_userptr_test(device);
- 
- 	igt_subtest("cs-gfx")
--		amdgpu_command_submission_gfx();
-+		amdgpu_command_submission_gfx(device);
- 
- 	igt_subtest("cs-compute")
--		amdgpu_command_submission_compute();
-+		amdgpu_command_submission_compute(device);
- 
- 	igt_subtest("cs-multi-fence")
--		amdgpu_command_submission_multi_fence();
-+		amdgpu_command_submission_multi_fence(device);
- 
- 	igt_subtest("cs-sdma")
--		amdgpu_command_submission_sdma();
-+		amdgpu_command_submission_sdma(device);
- 
- 	igt_subtest("semaphore")
--		amdgpu_semaphore_test();
-+		amdgpu_semaphore_test(device);
- 
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
--- 
-2.25.1
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/index.html
+
+Participating hosts (11 -> 10)
+------------------------------
+
+  Additional (2): shard-dg1 shard-tglu 
+  Missing    (3): pig-skl-6260u pig-kbl-iris pig-glk-j5005 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7133_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@feature_discovery@display-3x:
+    - shard-iclb:         NOTRUN -> [SKIP][1] ([i915#1839])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb5/igt@feature_discovery@display-3x.html
+
+  * igt@gem_create@create-massive:
+    - shard-kbl:          NOTRUN -> [DMESG-WARN][2] ([i915#4991])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@gem_create@create-massive.html
+    - shard-tglb:         NOTRUN -> [DMESG-WARN][3] ([i915#4991])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@gem_create@create-massive.html
+
+  * igt@gem_ctx_persistence@legacy-engines-cleanup:
+    - shard-snb:          NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#1099])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-snb5/igt@gem_ctx_persistence@legacy-engines-cleanup.html
+
+  * igt@gem_ctx_sseu@mmap-args:
+    - shard-tglb:         NOTRUN -> [SKIP][5] ([i915#280])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@gem_ctx_sseu@mmap-args.html
+
+  * igt@gem_exec_fair@basic-deadline:
+    - shard-kbl:          NOTRUN -> [FAIL][6] ([i915#2846])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@gem_exec_fair@basic-deadline.html
+
+  * igt@gem_exec_fair@basic-none-share@rcs0:
+    - shard-tglb:         NOTRUN -> [FAIL][7] ([i915#2842])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb1/igt@gem_exec_fair@basic-none-share@rcs0.html
+
+  * igt@gem_exec_fair@basic-none@vcs1:
+    - shard-iclb:         NOTRUN -> [FAIL][8] ([i915#2842])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb4/igt@gem_exec_fair@basic-none@vcs1.html
+
+  * igt@gem_exec_fair@basic-pace@vecs0:
+    - shard-glk:          [PASS][9] -> [FAIL][10] ([i915#2842]) +2 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk6/igt@gem_exec_fair@basic-pace@vecs0.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk9/igt@gem_exec_fair@basic-pace@vecs0.html
+
+  * igt@gem_exec_flush@basic-uc-prw-default:
+    - shard-snb:          [PASS][11] -> [SKIP][12] ([fdo#109271]) +2 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-snb5/igt@gem_exec_flush@basic-uc-prw-default.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-snb6/igt@gem_exec_flush@basic-uc-prw-default.html
+
+  * igt@gem_exec_params@no-vebox:
+    - shard-iclb:         NOTRUN -> [SKIP][13] ([fdo#109283])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb8/igt@gem_exec_params@no-vebox.html
+    - shard-tglb:         NOTRUN -> [SKIP][14] ([fdo#109283] / [i915#4877])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@gem_exec_params@no-vebox.html
+
+  * igt@gem_exec_whisper@basic-queues-forked-all:
+    - shard-glk:          [PASS][15] -> [DMESG-WARN][16] ([i915#118])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk1/igt@gem_exec_whisper@basic-queues-forked-all.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk1/igt@gem_exec_whisper@basic-queues-forked-all.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - shard-tglb:         [PASS][17] -> [SKIP][18] ([i915#2190])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-tglb5/igt@gem_huc_copy@huc-copy.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-verify:
+    - shard-kbl:          NOTRUN -> [SKIP][19] ([fdo#109271] / [i915#4613]) +1 similar issue
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl7/igt@gem_lmem_swapping@parallel-random-verify.html
+    - shard-iclb:         NOTRUN -> [SKIP][20] ([i915#4613]) +1 similar issue
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@gem_lmem_swapping@parallel-random-verify.html
+
+  * igt@gem_lmem_swapping@parallel-random-verify-ccs:
+    - shard-glk:          NOTRUN -> [SKIP][21] ([fdo#109271] / [i915#4613]) +1 similar issue
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk4/igt@gem_lmem_swapping@parallel-random-verify-ccs.html
+    - shard-apl:          NOTRUN -> [SKIP][22] ([fdo#109271] / [i915#4613]) +1 similar issue
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@gem_lmem_swapping@parallel-random-verify-ccs.html
+
+  * igt@gem_pread@exhaustion:
+    - shard-tglb:         NOTRUN -> [WARN][23] ([i915#2658])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@gem_pread@exhaustion.html
+    - shard-iclb:         NOTRUN -> [WARN][24] ([i915#2658])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@gem_pread@exhaustion.html
+    - shard-kbl:          NOTRUN -> [WARN][25] ([i915#2658])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@gem_pread@exhaustion.html
+
+  * igt@gem_pxp@create-regular-buffer:
+    - shard-tglb:         NOTRUN -> [SKIP][26] ([i915#4270]) +3 similar issues
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@gem_pxp@create-regular-buffer.html
+
+  * igt@gem_pxp@dmabuf-shared-protected-dst-is-context-refcounted:
+    - shard-iclb:         NOTRUN -> [SKIP][27] ([i915#4270]) +2 similar issues
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@gem_pxp@dmabuf-shared-protected-dst-is-context-refcounted.html
+
+  * igt@gem_render_copy@yf-tiled-mc-ccs-to-vebox-yf-tiled:
+    - shard-iclb:         NOTRUN -> [SKIP][28] ([i915#768]) +1 similar issue
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb4/igt@gem_render_copy@yf-tiled-mc-ccs-to-vebox-yf-tiled.html
+
+  * igt@gem_userptr_blits@access-control:
+    - shard-tglb:         NOTRUN -> [SKIP][29] ([i915#3297]) +2 similar issues
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@gem_userptr_blits@access-control.html
+    - shard-iclb:         NOTRUN -> [SKIP][30] ([i915#3297]) +2 similar issues
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@gem_userptr_blits@access-control.html
+
+  * igt@gem_userptr_blits@input-checking:
+    - shard-apl:          NOTRUN -> [DMESG-WARN][31] ([i915#4991])
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl7/igt@gem_userptr_blits@input-checking.html
+
+  * igt@gen3_render_tiledx_blits:
+    - shard-iclb:         NOTRUN -> [SKIP][32] ([fdo#109289]) +4 similar issues
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@gen3_render_tiledx_blits.html
+
+  * igt@gen7_exec_parse@cmd-crossing-page:
+    - shard-tglb:         NOTRUN -> [SKIP][33] ([fdo#109289]) +3 similar issues
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@gen7_exec_parse@cmd-crossing-page.html
+
+  * igt@gen9_exec_parse@allowed-all:
+    - shard-iclb:         NOTRUN -> [SKIP][34] ([i915#2856]) +2 similar issues
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb4/igt@gen9_exec_parse@allowed-all.html
+    - shard-tglb:         NOTRUN -> [SKIP][35] ([i915#2527] / [i915#2856]) +3 similar issues
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@gen9_exec_parse@allowed-all.html
+    - shard-apl:          [PASS][36] -> [DMESG-WARN][37] ([i915#5566] / [i915#716])
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl7/igt@gen9_exec_parse@allowed-all.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@gen9_exec_parse@allowed-all.html
+
+  * igt@gen9_exec_parse@batch-invalid-length:
+    - shard-snb:          NOTRUN -> [SKIP][38] ([fdo#109271]) +188 similar issues
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-snb2/igt@gen9_exec_parse@batch-invalid-length.html
+
+  * igt@i915_pm_dc@dc9-dpms:
+    - shard-tglb:         NOTRUN -> [SKIP][39] ([i915#4281])
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb1/igt@i915_pm_dc@dc9-dpms.html
+
+  * igt@i915_pm_lpsp@screens-disabled:
+    - shard-tglb:         NOTRUN -> [SKIP][40] ([i915#1902])
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@i915_pm_lpsp@screens-disabled.html
+
+  * igt@kms_big_fb@4-tiled-64bpp-rotate-180:
+    - shard-iclb:         NOTRUN -> [SKIP][41] ([i915#5286]) +2 similar issues
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_big_fb@4-tiled-64bpp-rotate-180.html
+
+  * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:
+    - shard-tglb:         NOTRUN -> [SKIP][42] ([i915#5286]) +3 similar issues
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip.html
+
+  * igt@kms_big_fb@y-tiled-64bpp-rotate-270:
+    - shard-tglb:         NOTRUN -> [SKIP][43] ([fdo#111614]) +1 similar issue
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_big_fb@y-tiled-64bpp-rotate-270.html
+    - shard-iclb:         NOTRUN -> [SKIP][44] ([fdo#110725] / [fdo#111614])
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_big_fb@y-tiled-64bpp-rotate-270.html
+
+  * igt@kms_big_fb@yf-tiled-8bpp-rotate-180:
+    - shard-tglb:         NOTRUN -> [SKIP][45] ([fdo#111615]) +4 similar issues
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb1/igt@kms_big_fb@yf-tiled-8bpp-rotate-180.html
+    - shard-iclb:         NOTRUN -> [SKIP][46] ([fdo#110723]) +2 similar issues
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_big_fb@yf-tiled-8bpp-rotate-180.html
+
+  * igt@kms_ccs@pipe-a-bad-pixel-format-y_tiled_ccs:
+    - shard-tglb:         NOTRUN -> [SKIP][47] ([i915#3689]) +7 similar issues
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_ccs@pipe-a-bad-pixel-format-y_tiled_ccs.html
+
+  * igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_mc_ccs:
+    - shard-apl:          NOTRUN -> [SKIP][48] ([fdo#109271] / [i915#3886]) +5 similar issues
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_mc_ccs.html
+    - shard-glk:          NOTRUN -> [SKIP][49] ([fdo#109271] / [i915#3886]) +2 similar issues
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk5/igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_mc_ccs.html
+
+  * igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs:
+    - shard-iclb:         NOTRUN -> [SKIP][50] ([fdo#109278] / [i915#3886]) +5 similar issues
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs.html
+    - shard-kbl:          NOTRUN -> [SKIP][51] ([fdo#109271] / [i915#3886]) +9 similar issues
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl7/igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs.html
+
+  * igt@kms_ccs@pipe-b-bad-aux-stride-y_tiled_gen12_mc_ccs:
+    - shard-tglb:         NOTRUN -> [SKIP][52] ([i915#3689] / [i915#3886]) +3 similar issues
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@kms_ccs@pipe-b-bad-aux-stride-y_tiled_gen12_mc_ccs.html
+
+  * igt@kms_ccs@pipe-c-missing-ccs-buffer-yf_tiled_ccs:
+    - shard-tglb:         NOTRUN -> [SKIP][53] ([fdo#111615] / [i915#3689]) +2 similar issues
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_ccs@pipe-c-missing-ccs-buffer-yf_tiled_ccs.html
+
+  * igt@kms_ccs@pipe-d-crc-primary-basic-y_tiled_gen12_mc_ccs:
+    - shard-iclb:         NOTRUN -> [SKIP][54] ([fdo#109278]) +37 similar issues
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_ccs@pipe-d-crc-primary-basic-y_tiled_gen12_mc_ccs.html
+
+  * igt@kms_cdclk@plane-scaling:
+    - shard-iclb:         NOTRUN -> [SKIP][55] ([i915#3742])
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb8/igt@kms_cdclk@plane-scaling.html
+    - shard-tglb:         NOTRUN -> [SKIP][56] ([i915#3742])
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_cdclk@plane-scaling.html
+
+  * igt@kms_chamelium@dp-hpd-with-enabled-mode:
+    - shard-snb:          NOTRUN -> [SKIP][57] ([fdo#109271] / [fdo#111827]) +3 similar issues
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-snb7/igt@kms_chamelium@dp-hpd-with-enabled-mode.html
+
+  * igt@kms_chamelium@vga-hpd-with-enabled-mode:
+    - shard-iclb:         NOTRUN -> [SKIP][58] ([fdo#109284] / [fdo#111827]) +7 similar issues
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_chamelium@vga-hpd-with-enabled-mode.html
+
+  * igt@kms_color_chamelium@pipe-a-ctm-green-to-red:
+    - shard-glk:          NOTRUN -> [SKIP][59] ([fdo#109271] / [fdo#111827]) +5 similar issues
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk7/igt@kms_color_chamelium@pipe-a-ctm-green-to-red.html
+
+  * igt@kms_color_chamelium@pipe-b-degamma:
+    - shard-kbl:          NOTRUN -> [SKIP][60] ([fdo#109271] / [fdo#111827]) +13 similar issues
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@kms_color_chamelium@pipe-b-degamma.html
+
+  * igt@kms_color_chamelium@pipe-d-ctm-limited-range:
+    - shard-apl:          NOTRUN -> [SKIP][61] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl8/igt@kms_color_chamelium@pipe-d-ctm-limited-range.html
+
+  * igt@kms_color_chamelium@pipe-d-ctm-max:
+    - shard-iclb:         NOTRUN -> [SKIP][62] ([fdo#109278] / [fdo#109284] / [fdo#111827])
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb8/igt@kms_color_chamelium@pipe-d-ctm-max.html
+
+  * igt@kms_color_chamelium@pipe-d-ctm-red-to-blue:
+    - shard-tglb:         NOTRUN -> [SKIP][63] ([fdo#109284] / [fdo#111827]) +11 similar issues
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@kms_color_chamelium@pipe-d-ctm-red-to-blue.html
+
+  * igt@kms_content_protection@dp-mst-lic-type-0:
+    - shard-tglb:         NOTRUN -> [SKIP][64] ([i915#3116] / [i915#3299])
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@kms_content_protection@dp-mst-lic-type-0.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-32x10-offscreen:
+    - shard-tglb:         NOTRUN -> [SKIP][65] ([i915#3359]) +7 similar issues
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_cursor_crc@pipe-a-cursor-32x10-offscreen.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-32x32-sliding:
+    - shard-tglb:         NOTRUN -> [SKIP][66] ([i915#3319]) +3 similar issues
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb5/igt@kms_cursor_crc@pipe-a-cursor-32x32-sliding.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-512x512-sliding:
+    - shard-iclb:         NOTRUN -> [SKIP][67] ([fdo#109278] / [fdo#109279]) +4 similar issues
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb8/igt@kms_cursor_crc@pipe-a-cursor-512x512-sliding.html
+
+  * igt@kms_cursor_crc@pipe-c-cursor-512x512-random:
+    - shard-tglb:         NOTRUN -> [SKIP][68] ([fdo#109279] / [i915#3359]) +7 similar issues
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@kms_cursor_crc@pipe-c-cursor-512x512-random.html
+
+  * igt@kms_cursor_legacy@2x-cursor-vs-flip-legacy:
+    - shard-iclb:         NOTRUN -> [SKIP][69] ([fdo#109274] / [fdo#109278]) +3 similar issues
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_cursor_legacy@2x-cursor-vs-flip-legacy.html
+
+  * igt@kms_cursor_legacy@pipe-d-torture-bo:
+    - shard-kbl:          NOTRUN -> [SKIP][70] ([fdo#109271] / [i915#533]) +1 similar issue
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl1/igt@kms_cursor_legacy@pipe-d-torture-bo.html
+
+  * igt@kms_draw_crc@draw-method-xrgb8888-mmap-cpu-4tiled:
+    - shard-tglb:         NOTRUN -> [SKIP][71] ([i915#5287])
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_draw_crc@draw-method-xrgb8888-mmap-cpu-4tiled.html
+    - shard-iclb:         NOTRUN -> [SKIP][72] ([i915#5287])
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_draw_crc@draw-method-xrgb8888-mmap-cpu-4tiled.html
+
+  * igt@kms_dsc@xrgb8888-dsc-compression:
+    - shard-tglb:         NOTRUN -> [SKIP][73] ([i915#3828])
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_dsc@xrgb8888-dsc-compression.html
+    - shard-iclb:         NOTRUN -> [SKIP][74] ([i915#3828])
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb8/igt@kms_dsc@xrgb8888-dsc-compression.html
+
+  * igt@kms_fbcon_fbt@fbc-suspend:
+    - shard-kbl:          NOTRUN -> [FAIL][75] ([i915#4767])
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@kms_fbcon_fbt@fbc-suspend.html
+
+  * igt@kms_flip@2x-flip-vs-dpms:
+    - shard-iclb:         NOTRUN -> [SKIP][76] ([fdo#109274]) +5 similar issues
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb5/igt@kms_flip@2x-flip-vs-dpms.html
+
+  * igt@kms_flip@2x-plain-flip-ts-check:
+    - shard-tglb:         NOTRUN -> [SKIP][77] ([fdo#109274] / [fdo#111825]) +10 similar issues
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb5/igt@kms_flip@2x-plain-flip-ts-check.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling:
+    - shard-tglb:         NOTRUN -> [SKIP][78] ([i915#2587])
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling:
+    - shard-iclb:         [PASS][79] -> [SKIP][80] ([i915#3701]) +1 similar issue
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb5/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling.html
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling.html
+
+  * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-upscaling:
+    - shard-glk:          [PASS][81] -> [FAIL][82] ([i915#4911])
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk3/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-upscaling.html
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk8/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-upscaling.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-onoff:
+    - shard-tglb:         NOTRUN -> [SKIP][83] ([fdo#109280] / [fdo#111825]) +22 similar issues
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-onoff.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-shrfb-fliptrack-mmap-gtt:
+    - shard-iclb:         NOTRUN -> [SKIP][84] ([fdo#109280]) +24 similar issues
+   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_frontbuffer_tracking@fbc-2p-shrfb-fliptrack-mmap-gtt.html
+
+  * igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-wc:
+    - shard-kbl:          NOTRUN -> [SKIP][85] ([fdo#109271]) +188 similar issues
+   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-wc.html
+
+  * igt@kms_multipipe_modeset@basic-max-pipe-crc-check:
+    - shard-tglb:         NOTRUN -> [SKIP][86] ([i915#1839]) +1 similar issue
+   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@kms_multipipe_modeset@basic-max-pipe-crc-check.html
+
+  * igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-d:
+    - shard-glk:          NOTRUN -> [SKIP][87] ([fdo#109271] / [i915#533])
+   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk6/igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-d.html
+    - shard-apl:          NOTRUN -> [SKIP][88] ([fdo#109271] / [i915#533])
+   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-d.html
+
+  * igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb:
+    - shard-glk:          NOTRUN -> [FAIL][89] ([fdo#108145] / [i915#265]) +1 similar issue
+   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk7/igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb.html
+
+  * igt@kms_plane_alpha_blend@pipe-b-constant-alpha-max:
+    - shard-apl:          NOTRUN -> [FAIL][90] ([fdo#108145] / [i915#265]) +1 similar issue
+   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl2/igt@kms_plane_alpha_blend@pipe-b-constant-alpha-max.html
+
+  * igt@kms_plane_alpha_blend@pipe-c-alpha-basic:
+    - shard-kbl:          NOTRUN -> [FAIL][91] ([fdo#108145] / [i915#265]) +1 similar issue
+   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@kms_plane_alpha_blend@pipe-c-alpha-basic.html
+
+  * igt@kms_plane_lowres@pipe-c-tiling-y:
+    - shard-iclb:         NOTRUN -> [SKIP][92] ([i915#3536]) +1 similar issue
+   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_plane_lowres@pipe-c-tiling-y.html
+
+  * igt@kms_plane_lowres@pipe-c-tiling-yf:
+    - shard-tglb:         NOTRUN -> [SKIP][93] ([fdo#111615] / [fdo#112054])
+   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@kms_plane_lowres@pipe-c-tiling-yf.html
+
+  * igt@kms_plane_lowres@pipe-d-tiling-4:
+    - shard-tglb:         NOTRUN -> [SKIP][94] ([i915#5288])
+   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_plane_lowres@pipe-d-tiling-4.html
+
+  * igt@kms_plane_scaling@downscale-with-modifier-factor-0-25@pipe-c-edp-1-downscale-with-modifier:
+    - shard-iclb:         NOTRUN -> [SKIP][95] ([i915#5176]) +2 similar issues
+   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_plane_scaling@downscale-with-modifier-factor-0-25@pipe-c-edp-1-downscale-with-modifier.html
+
+  * igt@kms_plane_scaling@downscale-with-modifier-factor-0-25@pipe-d-edp-1-downscale-with-modifier:
+    - shard-tglb:         NOTRUN -> [SKIP][96] ([i915#5176]) +3 similar issues
+   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_plane_scaling@downscale-with-modifier-factor-0-25@pipe-d-edp-1-downscale-with-modifier.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-b-edp-1-planes-upscale-downscale:
+    - shard-iclb:         NOTRUN -> [SKIP][97] ([i915#5235]) +2 similar issues
+   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb1/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-b-edp-1-planes-upscale-downscale.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-b-hdmi-a-2-planes-upscale-downscale:
+    - shard-glk:          NOTRUN -> [SKIP][98] ([fdo#109271]) +115 similar issues
+   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk3/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-b-hdmi-a-2-planes-upscale-downscale.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-d-edp-1-planes-upscale-downscale:
+    - shard-tglb:         NOTRUN -> [SKIP][99] ([i915#5235]) +3 similar issues
+   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-d-edp-1-planes-upscale-downscale.html
+
+  * igt@kms_psr2_su@page_flip-p010:
+    - shard-tglb:         NOTRUN -> [SKIP][100] ([i915#1911])
+   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_psr2_su@page_flip-p010.html
+    - shard-kbl:          NOTRUN -> [SKIP][101] ([fdo#109271] / [i915#658])
+   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@kms_psr2_su@page_flip-p010.html
+    - shard-glk:          NOTRUN -> [SKIP][102] ([fdo#109271] / [i915#658])
+   [102]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk8/igt@kms_psr2_su@page_flip-p010.html
+    - shard-iclb:         NOTRUN -> [SKIP][103] ([fdo#109642] / [fdo#111068] / [i915#658])
+   [103]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb1/igt@kms_psr2_su@page_flip-p010.html
+    - shard-apl:          NOTRUN -> [SKIP][104] ([fdo#109271] / [i915#658])
+   [104]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl8/igt@kms_psr2_su@page_flip-p010.html
+
+  * igt@kms_psr@psr2_primary_blt:
+    - shard-iclb:         NOTRUN -> [SKIP][105] ([fdo#109441])
+   [105]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_psr@psr2_primary_blt.html
+
+  * igt@kms_psr@psr2_sprite_mmap_gtt:
+    - shard-iclb:         [PASS][106] -> [SKIP][107] ([fdo#109441])
+   [106]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb2/igt@kms_psr@psr2_sprite_mmap_gtt.html
+   [107]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb4/igt@kms_psr@psr2_sprite_mmap_gtt.html
+
+  * igt@kms_psr_stress_test@invalidate-primary-flip-overlay:
+    - shard-tglb:         [PASS][108] -> [SKIP][109] ([i915#5519])
+   [108]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-tglb8/igt@kms_psr_stress_test@invalidate-primary-flip-overlay.html
+   [109]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@kms_psr_stress_test@invalidate-primary-flip-overlay.html
+
+  * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0:
+    - shard-tglb:         NOTRUN -> [SKIP][110] ([fdo#111615] / [i915#5289])
+   [110]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0.html
+
+  * igt@kms_scaling_modes@scaling-mode-none@edp-1-pipe-a:
+    - shard-tglb:         NOTRUN -> [SKIP][111] ([i915#5030]) +3 similar issues
+   [111]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_scaling_modes@scaling-mode-none@edp-1-pipe-a.html
+
+  * igt@kms_scaling_modes@scaling-mode-none@edp-1-pipe-c:
+    - shard-iclb:         NOTRUN -> [SKIP][112] ([i915#5030]) +2 similar issues
+   [112]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_scaling_modes@scaling-mode-none@edp-1-pipe-c.html
+
+  * igt@kms_setmode@invalid-clone-single-crtc-stealing:
+    - shard-iclb:         NOTRUN -> [SKIP][113] ([i915#3555]) +3 similar issues
+   [113]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_setmode@invalid-clone-single-crtc-stealing.html
+
+  * igt@kms_sysfs_edid_timing:
+    - shard-apl:          NOTRUN -> [FAIL][114] ([IGT#2])
+   [114]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl3/igt@kms_sysfs_edid_timing.html
+
+  * igt@kms_tv_load_detect@load-detect:
+    - shard-tglb:         NOTRUN -> [SKIP][115] ([fdo#109309])
+   [115]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb1/igt@kms_tv_load_detect@load-detect.html
+
+  * igt@kms_vblank@pipe-b-ts-continuation-suspend:
+    - shard-apl:          [PASS][116] -> [DMESG-WARN][117] ([i915#180]) +2 similar issues
+   [116]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl3/igt@kms_vblank@pipe-b-ts-continuation-suspend.html
+   [117]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl7/igt@kms_vblank@pipe-b-ts-continuation-suspend.html
+
+  * igt@kms_vrr@flip-basic:
+    - shard-tglb:         NOTRUN -> [SKIP][118] ([i915#3555]) +1 similar issue
+   [118]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@kms_vrr@flip-basic.html
+
+  * igt@kms_writeback@writeback-pixel-formats:
+    - shard-apl:          NOTRUN -> [SKIP][119] ([fdo#109271] / [i915#2437])
+   [119]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@kms_writeback@writeback-pixel-formats.html
+
+  * igt@nouveau_crc@pipe-b-ctx-flip-skip-current-frame:
+    - shard-apl:          NOTRUN -> [SKIP][120] ([fdo#109271]) +123 similar issues
+   [120]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl2/igt@nouveau_crc@pipe-b-ctx-flip-skip-current-frame.html
+    - shard-tglb:         NOTRUN -> [SKIP][121] ([i915#2530]) +2 similar issues
+   [121]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@nouveau_crc@pipe-b-ctx-flip-skip-current-frame.html
+
+  * igt@nouveau_crc@pipe-c-ctx-flip-detection:
+    - shard-iclb:         NOTRUN -> [SKIP][122] ([i915#2530]) +1 similar issue
+   [122]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@nouveau_crc@pipe-c-ctx-flip-detection.html
+
+  * igt@prime_nv_api@i915_nv_import_twice_check_flink_name:
+    - shard-iclb:         NOTRUN -> [SKIP][123] ([fdo#109291]) +3 similar issues
+   [123]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@prime_nv_api@i915_nv_import_twice_check_flink_name.html
+
+  * igt@prime_nv_pcopy@test1_micro:
+    - shard-tglb:         NOTRUN -> [SKIP][124] ([fdo#109291]) +4 similar issues
+   [124]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@prime_nv_pcopy@test1_micro.html
+
+  * igt@syncobj_timeline@invalid-transfer-non-existent-point:
+    - shard-apl:          NOTRUN -> [DMESG-WARN][125] ([i915#5098])
+   [125]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@syncobj_timeline@invalid-transfer-non-existent-point.html
+    - shard-iclb:         NOTRUN -> [DMESG-WARN][126] ([i915#5098])
+   [126]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@syncobj_timeline@invalid-transfer-non-existent-point.html
+    - shard-glk:          NOTRUN -> [DMESG-WARN][127] ([i915#5098])
+   [127]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk2/igt@syncobj_timeline@invalid-transfer-non-existent-point.html
+    - shard-kbl:          NOTRUN -> [DMESG-WARN][128] ([i915#5098])
+   [128]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@syncobj_timeline@invalid-transfer-non-existent-point.html
+    - shard-tglb:         NOTRUN -> [DMESG-WARN][129] ([i915#5098])
+   [129]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@syncobj_timeline@invalid-transfer-non-existent-point.html
+    - shard-snb:          NOTRUN -> [DMESG-WARN][130] ([i915#5098])
+   [130]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-snb6/igt@syncobj_timeline@invalid-transfer-non-existent-point.html
+
+  * igt@sysfs_clients@sema-10:
+    - shard-apl:          NOTRUN -> [SKIP][131] ([fdo#109271] / [i915#2994]) +1 similar issue
+   [131]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl4/igt@sysfs_clients@sema-10.html
+
+  * igt@sysfs_clients@split-50:
+    - shard-kbl:          NOTRUN -> [SKIP][132] ([fdo#109271] / [i915#2994]) +1 similar issue
+   [132]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@sysfs_clients@split-50.html
+    - shard-iclb:         NOTRUN -> [SKIP][133] ([i915#2994]) +1 similar issue
+   [133]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@sysfs_clients@split-50.html
+    - shard-tglb:         NOTRUN -> [SKIP][134] ([i915#2994])
+   [134]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@sysfs_clients@split-50.html
+    - shard-glk:          NOTRUN -> [SKIP][135] ([fdo#109271] / [i915#2994])
+   [135]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk7/igt@sysfs_clients@split-50.html
+
+  
+#### Possible fixes ####
+
+  * igt@drm_read@short-buffer-block:
+    - {shard-rkl}:        [SKIP][136] ([i915#4098]) -> [PASS][137]
+   [136]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-4/igt@drm_read@short-buffer-block.html
+   [137]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@drm_read@short-buffer-block.html
+
+  * igt@fbdev@nullptr:
+    - {shard-rkl}:        [SKIP][138] ([i915#2582]) -> [PASS][139]
+   [138]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-2/igt@fbdev@nullptr.html
+   [139]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@fbdev@nullptr.html
+
+  * igt@gem_exec_fair@basic-none@vcs0:
+    - shard-kbl:          [FAIL][140] ([i915#2842]) -> [PASS][141] +2 similar issues
+   [140]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl1/igt@gem_exec_fair@basic-none@vcs0.html
+   [141]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl1/igt@gem_exec_fair@basic-none@vcs0.html
+
+  * igt@gem_exec_fair@basic-pace-solo@rcs0:
+    - shard-apl:          [FAIL][142] ([i915#2842]) -> [PASS][143]
+   [142]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl2/igt@gem_exec_fair@basic-pace-solo@rcs0.html
+   [143]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl7/igt@gem_exec_fair@basic-pace-solo@rcs0.html
+
+  * igt@gem_exec_flush@basic-wb-rw-before-default:
+    - shard-snb:          [SKIP][144] ([fdo#109271]) -> [PASS][145] +1 similar issue
+   [144]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-snb6/igt@gem_exec_flush@basic-wb-rw-before-default.html
+   [145]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-snb4/igt@gem_exec_flush@basic-wb-rw-before-default.html
+
+  * igt@gem_exec_whisper@basic-fds-forked:
+    - shard-glk:          [DMESG-WARN][146] ([i915#118]) -> [PASS][147]
+   [146]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk2/igt@gem_exec_whisper@basic-fds-forked.html
+   [147]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk2/igt@gem_exec_whisper@basic-fds-forked.html
+
+  * igt@gen9_exec_parse@allowed-all:
+    - shard-glk:          [DMESG-WARN][148] ([i915#5566] / [i915#716]) -> [PASS][149]
+   [148]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk5/igt@gen9_exec_parse@allowed-all.html
+   [149]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk5/igt@gen9_exec_parse@allowed-all.html
+
+  * igt@gen9_exec_parse@allowed-single:
+    - shard-kbl:          [DMESG-WARN][150] ([i915#5566] / [i915#716]) -> [PASS][151]
+   [150]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl4/igt@gen9_exec_parse@allowed-single.html
+   [151]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@gen9_exec_parse@allowed-single.html
+
+  * igt@i915_pm_dc@dc6-psr:
+    - shard-iclb:         [FAIL][152] ([i915#454]) -> [PASS][153]
+   [152]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb3/igt@i915_pm_dc@dc6-psr.html
+   [153]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@i915_pm_dc@dc6-psr.html
+
+  * igt@i915_pm_rpm@pm-tiling:
+    - {shard-rkl}:        [SKIP][154] ([fdo#109308]) -> [PASS][155]
+   [154]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-1/igt@i915_pm_rpm@pm-tiling.html
+   [155]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@i915_pm_rpm@pm-tiling.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - shard-snb:          [INCOMPLETE][156] ([i915#3921]) -> [PASS][157]
+   [156]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-snb7/igt@i915_selftest@live@hangcheck.html
+   [157]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-snb6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_cursor_crc@pipe-b-cursor-128x128-rapid-movement:
+    - {shard-rkl}:        [SKIP][158] ([fdo#112022] / [i915#4070]) -> [PASS][159] +1 similar issue
+   [158]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-2/igt@kms_cursor_crc@pipe-b-cursor-128x128-rapid-movement.html
+   [159]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_cursor_crc@pipe-b-cursor-128x128-rapid-movement.html
+
+  * igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legacy:
+    - shard-glk:          [FAIL][160] ([i915#72]) -> [PASS][161]
+   [160]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk1/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legacy.html
+   [161]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk1/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legacy.html
+
+  * igt@kms_cursor_legacy@flip-vs-cursor-atomic:
+    - {shard-rkl}:        [SKIP][162] ([fdo#111825] / [i915#4070]) -> [PASS][163]
+   [162]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-1/igt@kms_cursor_legacy@flip-vs-cursor-atomic.html
+   [163]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_cursor_legacy@flip-vs-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:
+    - shard-glk:          [FAIL][164] ([i915#2346] / [i915#533]) -> [PASS][165]
+   [164]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk2/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
+   [165]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk7/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
+
+  * igt@kms_draw_crc@draw-method-rgb565-blt-untiled:
+    - {shard-rkl}:        [SKIP][166] ([i915#4098] / [i915#4369]) -> [PASS][167]
+   [166]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-4/igt@kms_draw_crc@draw-method-rgb565-blt-untiled.html
+   [167]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_draw_crc@draw-method-rgb565-blt-untiled.html
+
+  * igt@kms_draw_crc@draw-method-rgb565-render-xtiled:
+    - {shard-rkl}:        ([PASS][168], [SKIP][169]) ([i915#4098] / [i915#4369]) -> [PASS][170]
+   [168]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-6/igt@kms_draw_crc@draw-method-rgb565-render-xtiled.html
+   [169]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-4/igt@kms_draw_crc@draw-method-rgb565-render-xtiled.html
+   [170]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_draw_crc@draw-method-rgb565-render-xtiled.html
+
+  * igt@kms_draw_crc@draw-method-xrgb8888-blt-ytiled:
+    - {shard-rkl}:        [SKIP][171] ([fdo#111314] / [i915#4098] / [i915#4369]) -> [PASS][172] +1 similar issue
+   [171]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-2/igt@kms_draw_crc@draw-method-xrgb8888-blt-ytiled.html
+   [172]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_draw_crc@draw-method-xrgb8888-blt-ytiled.html
+
+  * igt@kms_flip@flip-vs-expired-vblank-interruptible@a-dp1:
+    - shard-apl:          [FAIL][173] ([i915#79]) -> [PASS][174]
+   [173]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl7/igt@kms_flip@flip-vs-expired-vblank-interruptible@a-dp1.html
+   [174]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@kms_flip@flip-vs-expired-vblank-interruptible@a-dp1.html
+
+  * igt@kms_flip@flip-vs-suspend@a-dp1:
+    - shard-apl:          [DMESG-WARN][175] ([i915#180]) -> [PASS][176] +1 similar issue
+   [175]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl8/igt@kms_flip@flip-vs-suspend@a-dp1.html
+   [176]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl4/igt@kms_flip@flip-vs-suspend@a-dp1.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite:
+    - {shard-rkl}:        [SKIP][177] ([i915#1849] / [i915#4098]) -> [PASS][178] +8 similar issues
+   [177]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-2/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite.html
+   [178]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-render:
+    - shard-iclb:         [FAIL][179] ([i915#1888] / [i915#2546]) -> [PASS][180]
+   [179]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb6/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-render.html
+   [180]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-render.html
+
+  * igt@kms_frontbuffer_tracking@psr-slowdraw:
+    - {shard-rkl}:        ([PASS][181], [SKIP][182]) ([i915#1849] / [i915#4098]) -> [PASS][183]
+   [181]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-slowdraw.html
+   [182]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-4/igt@kms_frontbuffer_tracking@psr-slowdraw.html
+   [183]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-slowdraw.html
+
+  * igt@kms_psr@psr2_primary_mmap_gtt:
+    - shard-iclb:         [SKIP][184] ([fdo#109441]) -> [PASS][185]
+   [184]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb1/igt@kms_psr@psr2_primary_mmap_gtt.html
+   [185]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_psr@psr2_primary_mmap_gtt.html
+
+  * igt@kms_rotation_crc@sprite-rotation-180:
+    - shard-glk:          [FAIL][186] ([i915#1888] / [i915#65]) -> [PASS][187]
+   [186]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk8/igt@kms_rotation_crc@sprite-rotation-180.html
+   [187]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk4/igt@kms_rotation_crc@sprite-rotation-180.html
+
+  * igt@kms_vblank@pipe-a-wait-forked-busy-hang:
+    - {shard-rkl}:        [SKIP][188] ([i915#1845] / [i915#4098]) -> [PASS][189] +3 similar issues
+   [188]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-2/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html
+   [189]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html
+
+  * igt@kms_vblank@pipe-b-query-idle-hang:
+    - {shard-rkl}:        ([SKIP][190], [SKIP][191]) ([i915#1845] / [i915#4098]) -> [PASS][192]
+   [190]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-4/igt@kms_vblank@pipe-b-query-idle-hang.html
+   [191]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-rkl-1/igt@kms_vblank@pipe-b-query-idle-hang.html
+   [192]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_vblank@pipe-b-query-idle-hang.html
+
+  * igt@perf@polling-parameterized:
+    - shard-glk:          [FAIL][193] ([i915#5639]) -> [PASS][194]
+   [193]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk6/igt@perf@polling-parameterized.html
+   [194]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk7/igt@perf@polling-parameterized.html
+
+  
+#### Warnings ####
+
+  * igt@gem_exec_balancer@parallel-contexts:
+    - shard-iclb:         [DMESG-WARN][195] ([i915#5614]) -> [SKIP][196] ([i915#4525])
+   [195]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb4/igt@gem_exec_balancer@parallel-contexts.html
+   [196]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@gem_exec_balancer@parallel-contexts.html
+
+  * igt@gem_exec_balancer@parallel-keep-submit-fence:
+    - shard-iclb:         [SKIP][197] ([i915#4525]) -> [DMESG-WARN][198] ([i915#5614])
+   [197]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb6/igt@gem_exec_balancer@parallel-keep-submit-fence.html
+   [198]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@gem_exec_balancer@parallel-keep-submit-fence.html
+
+  * igt@gem_exec_balancer@parallel-ordering:
+    - shard-iclb:         [DMESG-FAIL][199] ([i915#5614]) -> [SKIP][200] ([i915#4525])
+   [199]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb1/igt@gem_exec_balancer@parallel-ordering.html
+   [200]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb8/igt@gem_exec_balancer@parallel-ordering.html
+
+  * igt@gem_exec_fair@basic-none-rrul@rcs0:
+    - shard-iclb:         [FAIL][201] ([i915#2852]) -> [FAIL][202] ([i915#2842])
+   [201]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb8/igt@gem_exec_fair@basic-none-rrul@rcs0.html
+   [202]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@gem_exec_fair@basic-none-rrul@rcs0.html
+
+  * igt@gem_exec_fair@basic-pace-solo@rcs0:
+    - shard-glk:          [FAIL][203] ([i915#2851]) -> [FAIL][204] ([i915#2842])
+   [203]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-glk1/igt@gem_exec_fair@basic-pace-solo@rcs0.html
+   [204]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk7/igt@gem_exec_fair@basic-pace-solo@rcs0.html
+
+  * igt@kms_psr2_sf@cursor-plane-move-continuous-sf:
+    - shard-iclb:         [SKIP][205] ([i915#2920]) -> [SKIP][206] ([i915#658])
+   [205]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb2/igt@kms_psr2_sf@cursor-plane-move-continuous-sf.html
+   [206]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_psr2_sf@cursor-plane-move-continuous-sf.html
+
+  * igt@kms_psr2_sf@overlay-plane-move-continuous-sf:
+    - shard-iclb:         [SKIP][207] ([i915#658]) -> [SKIP][208] ([i915#2920])
+   [207]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb1/igt@kms_psr2_sf@overlay-plane-move-continuous-sf.html
+   [208]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_psr2_sf@overlay-plane-move-continuous-sf.html
+
+  * igt@kms_psr2_sf@overlay-plane-update-continuous-sf:
+    - shard-iclb:         [SKIP][209] ([fdo#111068] / [i915#658]) -> [SKIP][210] ([i915#2920]) +1 similar issue
+   [209]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb8/igt@kms_psr2_sf@overlay-plane-update-continuous-sf.html
+   [210]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_psr2_sf@overlay-plane-update-continuous-sf.html
+
+  * igt@kms_psr2_sf@overlay-plane-update-sf-dmg-area:
+    - shard-iclb:         [SKIP][211] ([i915#2920]) -> [SKIP][212] ([fdo#111068] / [i915#658])
+   [211]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-iclb2/igt@kms_psr2_sf@overlay-plane-update-sf-dmg-area.html
+   [212]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_psr2_sf@overlay-plane-update-sf-dmg-area.html
+
+  * igt@runner@aborted:
+    - shard-kbl:          ([FAIL][213], [FAIL][214], [FAIL][215], [FAIL][216], [FAIL][217], [FAIL][218], [FAIL][219], [FAIL][220], [FAIL][221], [FAIL][222]) ([fdo#109271] / [i915#3002] / [i915#4312] / [i915#5257] / [i915#716]) -> ([FAIL][223], [FAIL][224], [FAIL][225], [FAIL][226], [FAIL][227], [FAIL][228], [FAIL][229], [FAIL][230], [FAIL][231], [FAIL][232]) ([i915#3002] / [i915#4312] / [i915#5257])
+   [213]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl6/igt@runner@aborted.html
+   [214]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl7/igt@runner@aborted.html
+   [215]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl1/igt@runner@aborted.html
+   [216]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl3/igt@runner@aborted.html
+   [217]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl6/igt@runner@aborted.html
+   [218]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl4/igt@runner@aborted.html
+   [219]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl7/igt@runner@aborted.html
+   [220]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl3/igt@runner@aborted.html
+   [221]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl7/igt@runner@aborted.html
+   [222]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl6/igt@runner@aborted.html
+   [223]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@runner@aborted.html
+   [224]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@runner@aborted.html
+   [225]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@runner@aborted.html
+   [226]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@runner@aborted.html
+   [227]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@runner@aborted.html
+   [228]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@runner@aborted.html
+   [229]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@runner@aborted.html
+   [230]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl7/igt@runner@aborted.html
+   [231]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@runner@aborted.html
+   [232]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@runner@aborted.html
+    - shard-apl:          ([FAIL][233], [FAIL][234], [FAIL][235], [FAIL][236], [FAIL][237], [FAIL][238], [FAIL][239]) ([i915#180] / [i915#3002] / [i915#4312] / [i915#5257]) -> ([FAIL][240], [FAIL][241], [FAIL][242], [FAIL][243], [FAIL][244], [FAIL][245], [FAIL][246], [FAIL][247], [FAIL][248]) ([fdo#109271] / [i915#180] / [i915#3002] / [i915#4312] / [i915#5257])
+   [233]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl3/igt@runner@aborted.html
+   [234]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl1/igt@runner@aborted.html
+   [235]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl8/igt@runner@aborted.html
+   [236]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl2/igt@runner@aborted.html
+   [237]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl8/igt@runner@aborted.html
+   [238]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl4/igt@runner@aborted.html
+   [239]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl3/igt@runner@aborted.html
+   [240]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl2/igt@runner@aborted.html
+   [241]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl4/igt@runner@aborted.html
+   [242]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl7/igt@runner@aborted.html
+   [243]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl4/igt@runner@aborted.html
+   [244]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@runner@aborted.html
+   [245]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl1/igt@runner@aborted.html
+   [246]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@runner@aborted.html
+   [247]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl7/igt@runner@aborted.html
+   [248]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl1/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#2]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/2
+  [fdo#108145]: https://bugs.freedesktop.org/show_bug.cgi?id=108145
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109279]: https://bugs.freedesktop.org/show_bug.cgi?id=109279
+  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
+  [fdo#109283]: https://bugs.freedesktop.org/show_bug.cgi?id=109283
+  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
+  [fdo#109291]: https://bugs.freedesktop.org/show_bug.cgi?id=109291
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#109300]: https://bugs.freedesktop.org/show_bug.cgi?id=109300
+  [fdo#109302]: https://bugs.freedesktop.org/show_bug.cgi?id=109302
+  [fdo#109303]: https://bugs.freedesktop.org/show_bug.cgi?id=109303
+  [fdo#109307]: https://bugs.freedesktop.org/show_bug.cgi?id=109307
+  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
+  [fdo#109309]: https://bugs.freedesktop.org/show_bug.cgi?id=109309
+  [fdo#109312]: https://bugs.freedesktop.org/show_bug.cgi?id=109312
+  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
+  [fdo#109506]: https://bugs.freedesktop.org/show_bug.cgi?id=109506
+  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#110254]: https://bugs.freedesktop.org/show_bug.cgi?id=110254
+  [fdo#110723]: https://bugs.freedesktop.org/show_bug.cgi?id=110723
+  [fdo#110725]: https://bugs.freedesktop.org/show_bug.cgi?id=110725
+  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
+  [fdo#111314]: https://bugs.freedesktop.org/show_bug.cgi?id=111314
+  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
+  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
+  [fdo#111644]: https://bugs.freedesktop.org/show_bug.cgi?id=111644
+  [fdo#111656]: https://bugs.freedesktop.org/show_bug.cgi?id=111656
+  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [fdo#112022]: https://bugs.freedesktop.org/show_bug.cgi?id=112022
+  [fdo#112054]: https://bugs.freedesktop.org/show_bug.cgi?id=112054
+  [fdo#112283]: https://bugs.freedesktop.org/show_bug.cgi?id=112283
+  [i915#1063]: https://gitlab.freedesktop.org/drm/intel/issues/1063
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1099]: https://gitlab.freedesktop.org/drm/intel/issues/1099
+  [i915#1149]: https://gitlab.freedesktop.org/drm/intel/issues/1149
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#118]: https://gitlab.freedesktop.org/drm/intel/issues/118
+  [i915#132]: https://gitlab.freedesktop.org/drm/intel/issues/132
+  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
+  [i915#1722]: https://gitlab.freedesktop.org/drm/intel/issues/1722
+  [i915#1755]: https://gitlab.freedesktop.org/drm/intel/issues/1755
+  [i915#1769]: https://gitlab.freedesktop.org/drm/intel/issues/1769
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
+  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+  [i915#1839]: https://gitlab.freedesktop.org/drm/intel/issues/1839
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#1850]: https://gitlab.freedesktop.org/drm/intel/issues/1850
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#1902]: https://gitlab.freedesktop.org/drm/intel/issues/1902
+  [i915#1911]: https://gitlab.freedesktop.org/drm/intel/issues/1911
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+  [i915#2433]: https://gitlab.freedesktop.org/drm/intel/issues/2433
+  [i915#2434]: https://gitlab.freedesktop.org/drm/intel/issues/2434
+  [i915#2435]: https://gitlab.freedesktop.org/drm/intel/issues/2435
+  [i915#2436]: https://gitlab.freedesktop.org/drm/intel/issues/2436
+  [i915#2437]: https://gitlab.freedesktop.org/drm/intel/issues/2437
+  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
+  [i915#2530]: https://gitlab.freedesktop.org/drm/intel/issues/2530
+  [i915#2546]: https://gitlab.freedesktop.org/drm/intel/issues/2546
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#2587]: https://gitlab.freedesktop.org/drm/intel/issues/2587
+  [i915#265]: https://gitlab.freedesktop.org/drm/intel/issues/265
+  [i915#2658]: https://gitlab.freedesktop.org/drm/intel/issues/2658
+  [i915#2681]: https://gitlab.freedesktop.org/drm/intel/issues/2681
+  [i915#2705]: https://gitlab.freedesktop.org/drm/intel/issues/2705
+  [i915#280]: https://gitlab.freedesktop.org/drm/intel/issues/280
+  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
+  [i915#2846]: https://gitlab.freedesktop.org/drm/intel/issues/2846
+  [i915#2851]: https://gitlab.freedesktop.org/drm/intel/issues/2851
+  [i915#2852]: https://gitlab.freedesktop.org/drm/intel/issues/2852
+  [i915#2856]: https://gitlab.freedesktop.org/drm/intel/issues/2856
+  [i915#2920]: https://gitlab.freedesktop.org/drm/intel/issues/2920
+  [i915#2994]: https://gitlab.freedesktop.org/drm/intel/issues/2994
+  [i915#3002]: https://gitlab.freedesktop.org/drm/intel/issues/3002
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3063]: https://gitlab.freedesktop.org/drm/intel/issues/3063
+  [i915#3116]: https://gitlab.freedesktop.org/drm/intel/issues/3116
+  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
+  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
+  [i915#3318]: https://gitlab.freedesktop.org/drm/intel/issues/3318
+  [i915#3319]: https://gitlab.freedesktop.org/drm/intel/issues/3319
+  [i915#3323]: https://gitlab.freedesktop.org/drm/intel/issues/3323
+  [i915#3359]: https://gitlab.freedesktop.org/drm/intel/issues/3359
+  [i915#3361]: https://gitlab.freedesktop.org/drm/intel/issues/3361
+  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
+  [i915#3464]: https://gitlab.freedesktop.org/drm/intel/issues/3464
+  [i915#3528]: https://gitlab.freedesktop.org/drm/intel/issues/3528
+  [i915#3536]: https://gitlab.freedesktop.org/drm/intel/issues/3536
+  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3558]: https://gitlab.freedesktop.org/drm/intel/issues/3558
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
+  [i915#3639]: https://gitlab.freedesktop.org/drm/intel/issues/3639
+  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
+  [i915#3701]: https://gitlab.freedesktop.org/drm/intel/issues/3701
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3734]: https://gitlab.freedesktop.org/drm/intel/issues/3734
+  [i915#3742]: https://gitlab.freedesktop.org/drm/intel/issues/3742
+  [i915#3804]: https://gitlab.freedesktop.org/drm/intel/issues/3804
+  [i915#3826]: https://gitlab.freedesktop.org/drm/intel/issues/3826
+  [i915#3828]: https://gitlab.freedesktop.org/drm/intel/issues/3828
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#3936]: https://gitlab.freedesktop.org/drm/intel/issues/3936
+  [i915#3952]: https://gitlab.freedesktop.org/drm/intel/issues/3952
+  [i915#3966]: https://gitlab.freedesktop.org/drm/intel/issues/3966
+  [i915#4016]: https://gitlab.freedesktop.org/drm/intel/issues/4016
+  [i915#4036]: https://gitlab.freedesktop.org/drm/intel/issues/4036
+  [i915#404]: https://gitlab.freedesktop.org/drm/intel/issues/404
+  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#426]: https://gitlab.freedesktop.org/drm/intel/issues/426
+  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
+  [i915#4278]: https://gitlab.freedesktop.org/drm/intel/issues/4278
+  [i915#4281]: https://gitlab.freedesktop.org/drm/intel/issues/4281
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4369]: https://gitlab.freedesktop.org/drm/intel/issues/4369
+  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
+  [i915#4525]: https://gitlab.freedesktop.org/drm/intel/issues/4525
+  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
+  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
+  [i915#4565]: https://gitlab.freedesktop.org/drm/intel/issues/4565
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4767]: https://gitlab.freedesktop.org/drm/intel/issues/4767
+  [i915#4771]: https://gitlab.freedesktop.org/drm/intel/issues/4771
+  [i915#4812]: https://gitlab.freedesktop.org/drm/intel/issues/4812
+  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
+  [i915#4842]: https://gitlab.freedesktop.org/drm/intel/issues/4842
+  [i915#4852]: https://gitlab.freedesktop.org/drm/intel/issues/4852
+  [i915#4853]: https://gitlab.freedesktop.org/drm/intel/issues/4853
+  [i915#4854]: https://gitlab.freedesktop.org/drm/intel/issues/4854
+  [i915#4855]: https://gitlab.freedesktop.org/drm/intel/issues/4855
+  [i915#4859]: https://gitlab.freedesktop.org/drm/intel/issues/4859
+  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
+  [i915#4877]: https://gitlab.freedesktop.org/drm/intel/issues/4877
+  [i915#4880]: https://gitlab.freedesktop.org/drm/intel/issues/4880
+  [i915#4881]: https://gitlab.freedesktop.org/drm/intel/issues/4881
+  [i915#4883]: https://gitlab.freedesktop.org/drm/intel/issues/4883
+  [i915#4884]: https://gitlab.freedesktop.org/drm/intel/issues/4884
+  [i915#4885]: https://gitlab.freedesktop.org/drm/intel/issues/4885
+  [i915#4886]: https://gitlab.freedesktop.org/drm/intel/issues/4886
+  [i915#4893]: https://gitlab.freedesktop.org/drm/intel/issues/4893
+  [i915#4911]: https://gitlab.freedesktop.org/drm/intel/issues/4911
+  [i915#4929]: https://gitlab.freedesktop.org/drm/intel/issues/4929
+  [i915#4991]: https://gitlab.freedesktop.org/drm/intel/issues/4991
+  [i915#5030]: https://gitlab.freedesktop.org/drm/intel/issues/5030
+  [i915#5076]: https://gitlab.freedesktop.org/drm/intel/issues/5076
+  [i915#5098]: https://gitlab.freedesktop.org/drm/intel/issues/5098
+  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
+  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
+  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
+  [i915#5266]: https://gitlab.freedesktop.org/drm/intel/issues/5266
+  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
+  [i915#5287]: https://gitlab.freedesktop.org/drm/intel/issues/5287
+  [i915#5288]: https://gitlab.freedesktop.org/drm/intel/issues/5288
+  [i915#5289]: https://gitlab.freedesktop.org/drm/intel/issues/5289
+  [i915#5325]: https://gitlab.freedesktop.org/drm/intel/issues/5325
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5461]: https://gitlab.freedesktop.org/drm/intel/issues/5461
+  [i915#5519]: https://gitlab.freedesktop.org/drm/intel/issues/5519
+  [i915#5563]: https://gitlab.freedesktop.org/drm/intel/issues/5563
+  [i915#5566]: https://gitlab.freedesktop.org/drm/intel/issues/5566
+  [i915#5614]: https://gitlab.freedesktop.org/drm/intel/issues/5614
+  [i915#5639]: https://gitlab.freedesktop.org/drm/intel/issues/5639
+  [i915#5691]: https://gitlab.freedesktop.org/drm/intel/issues/5691
+  [i915#5723]: https://gitlab.freedesktop.org/drm/intel/issues/5723
+  [i915#5784]: https://gitlab.freedesktop.org/drm/intel/issues/5784
+  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
+  [i915#6011]: https://gitlab.freedesktop.org/drm/intel/issues/6011
+  [i915#6029]: https://gitlab.freedesktop.org/drm/intel/issues/6029
+  [i915#65]: https://gitlab.freedesktop.org/drm/intel/issues/65
+  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
+  [i915#716]: https://gitlab.freedesktop.org/drm/intel/issues/716
+  [i915#72]: https://gitlab.freedesktop.org/drm/intel/issues/72
+  [i915#768]: https://gitlab.freedesktop.org/drm/intel/issues/768
+  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6479 -> IGTPW_7133
+  * Piglit: piglit_4509 -> None
+
+  CI-20190529: 20190529
+  CI_DRM_11674: 3e53b0d858897e3c1e7c6a661219823df2326b77 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7133: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/index.html
+  IGT_6479: 78115aa8c8bcfc7784c7fc8dcaefcc2bce970b99 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/index.html
+
+--===============1386059644382234415==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+
+
+<!DOCTYPE html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id=3D"css-table-select" type=3D"text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_capture : Add support fo=
+r local memory (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
+ries/95707/">https://patchwork.freedesktop.org/series/95707/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/index.html">https://intel-gfx-ci.01.org/tree/drm-ti=
+p/IGTPW_7133/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11674_full -&gt; IGTPW_7133_full</=
+h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/index.=
+html</p>
+<h2>Participating hosts (11 -&gt; 10)</h2>
+<p>Additional (2): shard-dg1 shard-tglu <br />
+  Missing    (3): pig-skl-6260u pig-kbl-iris pig-glk-j5005 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7133_full that come from known issue=
+s:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@feature_discovery@display-3x:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb5/igt@feature_discovery@display-3x.html"=
+>SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/1839"=
+>i915#1839</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_create@create-massive:</p>
+<ul>
+<li>
+<p>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-kbl3/igt@gem_create@create-massive.html">DMES=
+G-WARN</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4991=
+">i915#4991</a>)</p>
+</li>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb7/igt@gem_create@create-massive.html">DME=
+SG-WARN</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/499=
+1">i915#4991</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_persistence@legacy-engines-cleanup:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-snb5/igt@gem_ctx_persistence@legacy-engines-=
+cleanup.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cg=
+i?id=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.org/d=
+rm/intel/issues/1099">i915#1099</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_sseu@mmap-args:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@gem_ctx_sseu@mmap-args.html">SKIP<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/280">i915#2=
+80</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-deadline:</p>
+<ul>
+<li>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@gem_exec_fair@basic-deadline.html">=
+FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2846">=
+i915#2846</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-none-share@rcs0:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb1/igt@gem_exec_fair@basic-none-share@rcs=
+0.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issue=
+s/2842">i915#2842</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-none@vcs1:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb4/igt@gem_exec_fair@basic-none@vcs1.html=
+">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2842=
+">i915#2842</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace@vecs0:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk6/igt@gem_exec_fair@basic-pace@vecs0.html">PASS</a> =
+-&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-=
+glk9/igt@gem_exec_fair@basic-pace@vecs0.html">FAIL</a> (<a href=3D"https://=
+gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) +2 similar iss=
+ues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_flush@basic-uc-prw-default:</p>
+<ul>
+<li>shard-snb:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-snb5/igt@gem_exec_flush@basic-uc-prw-default.html">PASS=
+</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/s=
+hard-snb6/igt@gem_exec_flush@basic-uc-prw-default.html">SKIP</a> (<a href=
+=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271">fdo#109271</a>) =
++2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_params@no-vebox:</p>
+<ul>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb8/igt@gem_exec_params@no-vebox.html">SKIP=
+</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109283">fdo=
+#109283</a>)</p>
+</li>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb2/igt@gem_exec_params@no-vebox.html">SKIP=
+</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109283">fdo=
+#109283</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/48=
+77">i915#4877</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-queues-forked-all:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk1/igt@gem_exec_whisper@basic-queues-forked-all.html"=
+>PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7=
+133/shard-glk1/igt@gem_exec_whisper@basic-queues-forked-all.html">DMESG-WAR=
+N</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/118">i915=
+#118</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>shard-tglb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-tglb5/igt@gem_huc_copy@huc-copy.html">PASS</a> -&gt; <a=
+ href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-tglb7/ig=
+t@gem_huc_copy@huc-copy.html">SKIP</a> (<a href=3D"https://gitlab.freedeskt=
+op.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-verify:</p>
+<ul>
+<li>
+<p>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-kbl7/igt@gem_lmem_swapping@parallel-random-ve=
+rify.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?i=
+d=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/=
+intel/issues/4613">i915#4613</a>) +1 similar issue</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb7/igt@gem_lmem_swapping@parallel-random-v=
+erify.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/i=
+ssues/4613">i915#4613</a>) +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-verify-ccs:</p>
+<ul>
+<li>
+<p>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-glk4/igt@gem_lmem_swapping@parallel-random-ve=
+rify-ccs.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.c=
+gi?id=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.org/=
+drm/intel/issues/4613">i915#4613</a>) +1 similar issue</p>
+</li>
+<li>
+<p>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-apl6/igt@gem_lmem_swapping@parallel-random-ve=
+rify-ccs.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.c=
+gi?id=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.org/=
+drm/intel/issues/4613">i915#4613</a>) +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pread@exhaustion:</p>
+<ul>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb8/igt@gem_pread@exhaustion.html">WARN</a>=
+ (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2658">i915#265=
+8</a>)</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb2/igt@gem_pread@exhaustion.html">WARN</a>=
+ (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2658">i915#265=
+8</a>)</p>
+</li>
+<li>
+<p>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-kbl6/igt@gem_pread@exhaustion.html">WARN</a> =
+(<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2658">i915#2658=
+</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pxp@create-regular-buffer:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@gem_pxp@create-regular-buffer.html=
+">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4270=
+">i915#4270</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_pxp@dmabuf-shared-protected-dst-is-context-refcounted:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@gem_pxp@dmabuf-shared-protected-ds=
+t-is-context-refcounted.html">SKIP</a> (<a href=3D"https://gitlab.freedeskt=
+op.org/drm/intel/issues/4270">i915#4270</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_copy@yf-tiled-mc-ccs-to-vebox-yf-tiled:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb4/igt@gem_render_copy@yf-tiled-mc-ccs-to=
+-vebox-yf-tiled.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/d=
+rm/intel/issues/768">i915#768</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@access-control:</p>
+<ul>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb8/igt@gem_userptr_blits@access-control.ht=
+ml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/32=
+97">i915#3297</a>) +2 similar issues</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb2/igt@gem_userptr_blits@access-control.ht=
+ml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/32=
+97">i915#3297</a>) +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@input-checking:</p>
+<ul>
+<li>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-apl7/igt@gem_userptr_blits@input-checking.ht=
+ml">DMESG-WARN</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/iss=
+ues/4991">i915#4991</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gen3_render_tiledx_blits:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@gen3_render_tiledx_blits.html">SKI=
+P</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109289">fd=
+o#109289</a>) +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gen7_exec_parse@cmd-crossing-page:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@gen7_exec_parse@cmd-crossing-page.=
+html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D1=
+09289">fdo#109289</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@allowed-all:</p>
+<ul>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb4/igt@gen9_exec_parse@allowed-all.html">S=
+KIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2856">i=
+915#2856</a>) +2 similar issues</p>
+</li>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb7/igt@gen9_exec_parse@allowed-all.html">S=
+KIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2527">i=
+915#2527</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2=
+856">i915#2856</a>) +3 similar issues</p>
+</li>
+<li>
+<p>shard-apl:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/=
+CI_DRM_11674/shard-apl7/igt@gen9_exec_parse@allowed-all.html">PASS</a> -&gt=
+; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6=
+/igt@gen9_exec_parse@allowed-all.html">DMESG-WARN</a> (<a href=3D"https://g=
+itlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a> / <a href=3D"htt=
+ps://gitlab.freedesktop.org/drm/intel/issues/716">i915#716</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@batch-invalid-length:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-snb2/igt@gen9_exec_parse@batch-invalid-lengt=
+h.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=
+=3D109271">fdo#109271</a>) +188 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_dc@dc9-dpms:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb1/igt@i915_pm_dc@dc9-dpms.html">SKIP</a>=
+ (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4281">i915#428=
+1</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_lpsp@screens-disabled:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@i915_pm_lpsp@screens-disabled.html=
+">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/1902=
+">i915#1902</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@4-tiled-64bpp-rotate-180:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_big_fb@4-tiled-64bpp-rotate-18=
+0.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issue=
+s/5286">i915#5286</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@kms_big_fb@4-tiled-max-hw-stride-3=
+2bpp-rotate-0-hflip-async-flip.html">SKIP</a> (<a href=3D"https://gitlab.fr=
+eedesktop.org/drm/intel/issues/5286">i915#5286</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@y-tiled-64bpp-rotate-270:</p>
+<ul>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_big_fb@y-tiled-64bpp-rotate-270=
+.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D=
+111614">fdo#111614</a>) +1 similar issue</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_big_fb@y-tiled-64bpp-rotate-270=
+.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D=
+110725">fdo#110725</a> / <a href=3D"https://bugs.freedesktop.org/show_bug.c=
+gi?id=3D111614">fdo#111614</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@yf-tiled-8bpp-rotate-180:</p>
+<ul>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb1/igt@kms_big_fb@yf-tiled-8bpp-rotate-180=
+.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D=
+111615">fdo#111615</a>) +4 similar issues</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_big_fb@yf-tiled-8bpp-rotate-180=
+.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D=
+110723">fdo#110723</a>) +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@pipe-a-bad-pixel-format-y_tiled_ccs:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_ccs@pipe-a-bad-pixel-format-y_=
+tiled_ccs.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/int=
+el/issues/3689">i915#3689</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_mc_ccs:</p>
+<ul>
+<li>
+<p>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-apl6/igt@kms_ccs@pipe-a-ccs-on-another-bo-y_t=
+iled_gen12_mc_ccs.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/s=
+how_bug.cgi?id=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedes=
+ktop.org/drm/intel/issues/3886">i915#3886</a>) +5 similar issues</p>
+</li>
+<li>
+<p>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-glk5/igt@kms_ccs@pipe-a-ccs-on-another-bo-y_t=
+iled_gen12_mc_ccs.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/s=
+how_bug.cgi?id=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedes=
+ktop.org/drm/intel/issues/3886">i915#3886</a>) +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs:</p>
+<ul>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_ccs@pipe-a-crc-sprite-planes-ba=
+sic-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href=3D"https://bugs.freedeskto=
+p.org/show_bug.cgi?id=3D109278">fdo#109278</a> / <a href=3D"https://gitlab.=
+freedesktop.org/drm/intel/issues/3886">i915#3886</a>) +5 similar issues</p>
+</li>
+<li>
+<p>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-kbl7/igt@kms_ccs@pipe-a-crc-sprite-planes-bas=
+ic-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href=3D"https://bugs.freedesktop=
+.org/show_bug.cgi?id=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.f=
+reedesktop.org/drm/intel/issues/3886">i915#3886</a>) +9 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@pipe-b-bad-aux-stride-y_tiled_gen12_mc_ccs:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@kms_ccs@pipe-b-bad-aux-stride-y_ti=
+led_gen12_mc_ccs.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/=
+drm/intel/issues/3689">i915#3689</a> / <a href=3D"https://gitlab.freedeskto=
+p.org/drm/intel/issues/3886">i915#3886</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@pipe-c-missing-ccs-buffer-yf_tiled_ccs:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_ccs@pipe-c-missing-ccs-buffer-=
+yf_tiled_ccs.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_b=
+ug.cgi?id=3D111615">fdo#111615</a> / <a href=3D"https://gitlab.freedesktop.=
+org/drm/intel/issues/3689">i915#3689</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@pipe-d-crc-primary-basic-y_tiled_gen12_mc_ccs:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_ccs@pipe-d-crc-primary-basic-y=
+_tiled_gen12_mc_ccs.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org=
+/show_bug.cgi?id=3D109278">fdo#109278</a>) +37 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cdclk@plane-scaling:</p>
+<ul>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb8/igt@kms_cdclk@plane-scaling.html">SKIP<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/3742">i915#=
+3742</a>)</p>
+</li>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_cdclk@plane-scaling.html">SKIP<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/3742">i915#=
+3742</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-hpd-with-enabled-mode:</p>
+<ul>
+<li>shard-snb:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-snb7/igt@kms_chamelium@dp-hpd-with-enabled-m=
+ode.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=
+=3D109271">fdo#109271</a> / <a href=3D"https://bugs.freedesktop.org/show_bu=
+g.cgi?id=3D111827">fdo#111827</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-hpd-with-enabled-mode:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_chamelium@vga-hpd-with-enabled=
+-mode.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?=
+id=3D109284">fdo#109284</a> / <a href=3D"https://bugs.freedesktop.org/show_=
+bug.cgi?id=3D111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_chamelium@pipe-a-ctm-green-to-red:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-glk7/igt@kms_color_chamelium@pipe-a-ctm-gree=
+n-to-red.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.c=
+gi?id=3D109271">fdo#109271</a> / <a href=3D"https://bugs.freedesktop.org/sh=
+ow_bug.cgi?id=3D111827">fdo#111827</a>) +5 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_chamelium@pipe-b-degamma:</p>
+<ul>
+<li>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@kms_color_chamelium@pipe-b-degamma.=
+html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D1=
+09271">fdo#109271</a> / <a href=3D"https://bugs.freedesktop.org/show_bug.cg=
+i?id=3D111827">fdo#111827</a>) +13 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_chamelium@pipe-d-ctm-limited-range:</p>
+<ul>
+<li>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-apl8/igt@kms_color_chamelium@pipe-d-ctm-limi=
+ted-range.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.=
+cgi?id=3D109271">fdo#109271</a> / <a href=3D"https://bugs.freedesktop.org/s=
+how_bug.cgi?id=3D111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_chamelium@pipe-d-ctm-max:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb8/igt@kms_color_chamelium@pipe-d-ctm-max=
+.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D=
+109278">fdo#109278</a> / <a href=3D"https://bugs.freedesktop.org/show_bug.c=
+gi?id=3D109284">fdo#109284</a> / <a href=3D"https://bugs.freedesktop.org/sh=
+ow_bug.cgi?id=3D111827">fdo#111827</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_chamelium@pipe-d-ctm-red-to-blue:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@kms_color_chamelium@pipe-d-ctm-red=
+-to-blue.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.c=
+gi?id=3D109284">fdo#109284</a> / <a href=3D"https://bugs.freedesktop.org/sh=
+ow_bug.cgi?id=3D111827">fdo#111827</a>) +11 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-lic-type-0:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@kms_content_protection@dp-mst-lic-=
+type-0.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/=
+issues/3116">i915#3116</a> / <a href=3D"https://gitlab.freedesktop.org/drm/=
+intel/issues/3299">i915#3299</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@pipe-a-cursor-32x10-offscreen:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_cursor_crc@pipe-a-cursor-32x10=
+-offscreen.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/in=
+tel/issues/3359">i915#3359</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@pipe-a-cursor-32x32-sliding:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb5/igt@kms_cursor_crc@pipe-a-cursor-32x32=
+-sliding.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/inte=
+l/issues/3319">i915#3319</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@pipe-a-cursor-512x512-sliding:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb8/igt@kms_cursor_crc@pipe-a-cursor-512x5=
+12-sliding.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug=
+.cgi?id=3D109278">fdo#109278</a> / <a href=3D"https://bugs.freedesktop.org/=
+show_bug.cgi?id=3D109279">fdo#109279</a>) +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@pipe-c-cursor-512x512-random:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@kms_cursor_crc@pipe-c-cursor-512x5=
+12-random.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.=
+cgi?id=3D109279">fdo#109279</a> / <a href=3D"https://gitlab.freedesktop.org=
+/drm/intel/issues/3359">i915#3359</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@2x-cursor-vs-flip-legacy:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_cursor_legacy@2x-cursor-vs-fli=
+p-legacy.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.c=
+gi?id=3D109274">fdo#109274</a> / <a href=3D"https://bugs.freedesktop.org/sh=
+ow_bug.cgi?id=3D109278">fdo#109278</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@pipe-d-torture-bo:</p>
+<ul>
+<li>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-kbl1/igt@kms_cursor_legacy@pipe-d-torture-bo=
+.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D=
+109271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/inte=
+l/issues/533">i915#533</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_draw_crc@draw-method-xrgb8888-mmap-cpu-4tiled:</p>
+<ul>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_draw_crc@draw-method-xrgb8888-m=
+map-cpu-4tiled.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/dr=
+m/intel/issues/5287">i915#5287</a>)</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_draw_crc@draw-method-xrgb8888-m=
+map-cpu-4tiled.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/dr=
+m/intel/issues/5287">i915#5287</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@xrgb8888-dsc-compression:</p>
+<ul>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_dsc@xrgb8888-dsc-compression.ht=
+ml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/38=
+28">i915#3828</a>)</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb8/igt@kms_dsc@xrgb8888-dsc-compression.ht=
+ml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/38=
+28">i915#3828</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_fbcon_fbt@fbc-suspend:</p>
+<ul>
+<li>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@kms_fbcon_fbt@fbc-suspend.html">FAI=
+L</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4767">i91=
+5#4767</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-dpms:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb5/igt@kms_flip@2x-flip-vs-dpms.html">SKI=
+P</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109274">fd=
+o#109274</a>) +5 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-plain-flip-ts-check:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb5/igt@kms_flip@2x-plain-flip-ts-check.ht=
+ml">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109=
+274">fdo#109274</a> / <a href=3D"https://bugs.freedesktop.org/show_bug.cgi?=
+id=3D111825">fdo#111825</a>) +10 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling:<=
+/p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@kms_flip_scaled_crc@flip-32bpp-yti=
+le-to-32bpp-ytileccs-downscaling.html">SKIP</a> (<a href=3D"https://gitlab.=
+freedesktop.org/drm/intel/issues/2587">i915#2587</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-downscaling:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb5/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp=
+-ytile-downscaling.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.=
+org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_flip_scaled_crc@flip-32bpp-=
+ytile-to-64bpp-ytile-downscaling.html">SKIP</a> (<a href=3D"https://gitlab.=
+freedesktop.org/drm/intel/issues/3701">i915#3701</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-ytile-upscaling:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk3/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-64bpp-=
+ytile-upscaling.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-glk8/igt@kms_flip_scaled_crc@flip-32bpp-ytil=
+e-to-64bpp-ytile-upscaling.html">FAIL</a> (<a href=3D"https://gitlab.freede=
+sktop.org/drm/intel/issues/4911">i915#4911</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-onoff:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_frontbuffer_tracking@fbc-2p-sc=
+ndscrn-cur-indfb-onoff.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.=
+org/show_bug.cgi?id=3D109280">fdo#109280</a> / <a href=3D"https://bugs.free=
+desktop.org/show_bug.cgi?id=3D111825">fdo#111825</a>) +22 similar issues</l=
+i>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-shrfb-fliptrack-mmap-gtt:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_frontbuffer_tracking@fbc-2p-sh=
+rfb-fliptrack-mmap-gtt.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.=
+org/show_bug.cgi?id=3D109280">fdo#109280</a>) +24 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-rgb101010-draw-mmap-wc:</p>
+<ul>
+<li>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@kms_frontbuffer_tracking@psr-rgb101=
+010-draw-mmap-wc.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/sh=
+ow_bug.cgi?id=3D109271">fdo#109271</a>) +188 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_multipipe_modeset@basic-max-pipe-crc-check:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb8/igt@kms_multipipe_modeset@basic-max-pi=
+pe-crc-check.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/=
+intel/issues/1839">i915#1839</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-d:</p>
+<ul>
+<li>
+<p>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-glk6/igt@kms_pipe_crc_basic@disable-crc-after=
+-crtc-pipe-d.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_b=
+ug.cgi?id=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.=
+org/drm/intel/issues/533">i915#533</a>)</p>
+</li>
+<li>
+<p>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-apl6/igt@kms_pipe_crc_basic@disable-crc-after=
+-crtc-pipe-d.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_b=
+ug.cgi?id=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.=
+org/drm/intel/issues/533">i915#533</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-glk7/igt@kms_plane_alpha_blend@pipe-a-alpha-=
+opaque-fb.html">FAIL</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.=
+cgi?id=3D108145">fdo#108145</a> / <a href=3D"https://gitlab.freedesktop.org=
+/drm/intel/issues/265">i915#265</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_alpha_blend@pipe-b-constant-alpha-max:</p>
+<ul>
+<li>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-apl2/igt@kms_plane_alpha_blend@pipe-b-consta=
+nt-alpha-max.html">FAIL</a> (<a href=3D"https://bugs.freedesktop.org/show_b=
+ug.cgi?id=3D108145">fdo#108145</a> / <a href=3D"https://gitlab.freedesktop.=
+org/drm/intel/issues/265">i915#265</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_alpha_blend@pipe-c-alpha-basic:</p>
+<ul>
+<li>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-kbl4/igt@kms_plane_alpha_blend@pipe-c-alpha-=
+basic.html">FAIL</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?=
+id=3D108145">fdo#108145</a> / <a href=3D"https://gitlab.freedesktop.org/drm=
+/intel/issues/265">i915#265</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_lowres@pipe-c-tiling-y:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_plane_lowres@pipe-c-tiling-y.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/3=
+536">i915#3536</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_lowres@pipe-c-tiling-yf:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb7/igt@kms_plane_lowres@pipe-c-tiling-yf.=
+html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D1=
+11615">fdo#111615</a> / <a href=3D"https://bugs.freedesktop.org/show_bug.cg=
+i?id=3D112054">fdo#112054</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_lowres@pipe-d-tiling-4:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb2/igt@kms_plane_lowres@pipe-d-tiling-4.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/5=
+288">i915#5288</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@downscale-with-modifier-factor-0-25@pipe-c-edp-1-d=
+ownscale-with-modifier:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_plane_scaling@downscale-with-m=
+odifier-factor-0-25@pipe-c-edp-1-downscale-with-modifier.html">SKIP</a> (<a=
+ href=3D"https://gitlab.freedesktop.org/drm/intel/issues/5176">i915#5176</a=
+>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@downscale-with-modifier-factor-0-25@pipe-d-edp-1-d=
+ownscale-with-modifier:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_plane_scaling@downscale-with-m=
+odifier-factor-0-25@pipe-d-edp-1-downscale-with-modifier.html">SKIP</a> (<a=
+ href=3D"https://gitlab.freedesktop.org/drm/intel/issues/5176">i915#5176</a=
+>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-b-=
+edp-1-planes-upscale-downscale:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb1/igt@kms_plane_scaling@planes-unity-sca=
+ling-downscale-factor-0-25@pipe-b-edp-1-planes-upscale-downscale.html">SKIP=
+</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/5235">i915=
+#5235</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-b-=
+hdmi-a-2-planes-upscale-downscale:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-glk3/igt@kms_plane_scaling@planes-unity-scal=
+ing-downscale-factor-0-25@pipe-b-hdmi-a-2-planes-upscale-downscale.html">SK=
+IP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271">f=
+do#109271</a>) +115 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-d-=
+edp-1-planes-upscale-downscale:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@kms_plane_scaling@planes-unity-sca=
+ling-downscale-factor-0-25@pipe-d-edp-1-planes-upscale-downscale.html">SKIP=
+</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/5235">i915=
+#5235</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_su@page_flip-p010:</p>
+<ul>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_psr2_su@page_flip-p010.html">SK=
+IP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/1911">i9=
+15#1911</a>)</p>
+</li>
+<li>
+<p>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-kbl4/igt@kms_psr2_su@page_flip-p010.html">SKI=
+P</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271">fd=
+o#109271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/6=
+58">i915#658</a>)</p>
+</li>
+<li>
+<p>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-glk8/igt@kms_psr2_su@page_flip-p010.html">SKI=
+P</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271">fd=
+o#109271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/6=
+58">i915#658</a>)</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb1/igt@kms_psr2_su@page_flip-p010.html">SK=
+IP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109642">f=
+do#109642</a> / <a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D1=
+11068">fdo#111068</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel=
+/issues/658">i915#658</a>)</p>
+</li>
+<li>
+<p>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-apl8/igt@kms_psr2_su@page_flip-p010.html">SKI=
+P</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271">fd=
+o#109271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/6=
+58">i915#658</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2_primary_blt:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@kms_psr@psr2_primary_blt.html">SKI=
+P</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109441">fd=
+o#109441</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2_sprite_mmap_gtt:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb2/igt@kms_psr@psr2_sprite_mmap_gtt.html">PASS</a> -=
+&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-i=
+clb4/igt@kms_psr@psr2_sprite_mmap_gtt.html">SKIP</a> (<a href=3D"https://bu=
+gs.freedesktop.org/show_bug.cgi?id=3D109441">fdo#109441</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr_stress_test@invalidate-primary-flip-overlay:</p>
+<ul>
+<li>shard-tglb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-tglb8/igt@kms_psr_stress_test@invalidate-primary-flip-o=
+verlay.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm=
+-tip/IGTPW_7133/shard-tglb8/igt@kms_psr_stress_test@invalidate-primary-flip=
+-overlay.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/inte=
+l/issues/5519">i915#5519</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_rotation_crc@primary-yf-tiled-=
+reflect-x-0.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bu=
+g.cgi?id=3D111615">fdo#111615</a> / <a href=3D"https://gitlab.freedesktop.o=
+rg/drm/intel/issues/5289">i915#5289</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_scaling_modes@scaling-mode-none@edp-1-pipe-a:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb3/igt@kms_scaling_modes@scaling-mode-non=
+e@edp-1-pipe-a.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/dr=
+m/intel/issues/5030">i915#5030</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_scaling_modes@scaling-mode-none@edp-1-pipe-c:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb6/igt@kms_scaling_modes@scaling-mode-non=
+e@edp-1-pipe-c.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/dr=
+m/intel/issues/5030">i915#5030</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@invalid-clone-single-crtc-stealing:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@kms_setmode@invalid-clone-single-c=
+rtc-stealing.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/=
+intel/issues/3555">i915#3555</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_sysfs_edid_timing:</p>
+<ul>
+<li>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-apl3/igt@kms_sysfs_edid_timing.html">FAIL</a=
+> (<a href=3D"https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/2">IG=
+T#2</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_tv_load_detect@load-detect:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb1/igt@kms_tv_load_detect@load-detect.htm=
+l">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D1093=
+09">fdo#109309</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-b-ts-continuation-suspend:</p>
+<ul>
+<li>shard-apl:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-apl3/igt@kms_vblank@pipe-b-ts-continuation-suspend.html=
+">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_=
+7133/shard-apl7/igt@kms_vblank@pipe-b-ts-continuation-suspend.html">DMESG-W=
+ARN</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/180">i9=
+15#180</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-basic:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@kms_vrr@flip-basic.html">SKIP</a> =
+(<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555=
+</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_writeback@writeback-pixel-formats:</p>
+<ul>
+<li>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-apl6/igt@kms_writeback@writeback-pixel-forma=
+ts.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=
+=3D109271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/i=
+ntel/issues/2437">i915#2437</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@nouveau_crc@pipe-b-ctx-flip-skip-current-frame:</p>
+<ul>
+<li>
+<p>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-apl2/igt@nouveau_crc@pipe-b-ctx-flip-skip-cur=
+rent-frame.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug=
+.cgi?id=3D109271">fdo#109271</a>) +123 similar issues</p>
+</li>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb8/igt@nouveau_crc@pipe-b-ctx-flip-skip-cu=
+rrent-frame.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/i=
+ntel/issues/2530">i915#2530</a>) +2 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@nouveau_crc@pipe-c-ctx-flip-detection:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb3/igt@nouveau_crc@pipe-c-ctx-flip-detect=
+ion.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/iss=
+ues/2530">i915#2530</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_nv_api@i915_nv_import_twice_check_flink_name:</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb7/igt@prime_nv_api@i915_nv_import_twice_=
+check_flink_name.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/sh=
+ow_bug.cgi?id=3D109291">fdo#109291</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_nv_pcopy@test1_micro:</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-tglb6/igt@prime_nv_pcopy@test1_micro.html">S=
+KIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109291">=
+fdo#109291</a>) +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-transfer-non-existent-point:</p>
+<ul>
+<li>
+<p>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-apl6/igt@syncobj_timeline@invalid-transfer-no=
+n-existent-point.html">DMESG-WARN</a> (<a href=3D"https://gitlab.freedeskto=
+p.org/drm/intel/issues/5098">i915#5098</a>)</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb7/igt@syncobj_timeline@invalid-transfer-n=
+on-existent-point.html">DMESG-WARN</a> (<a href=3D"https://gitlab.freedeskt=
+op.org/drm/intel/issues/5098">i915#5098</a>)</p>
+</li>
+<li>
+<p>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-glk2/igt@syncobj_timeline@invalid-transfer-no=
+n-existent-point.html">DMESG-WARN</a> (<a href=3D"https://gitlab.freedeskto=
+p.org/drm/intel/issues/5098">i915#5098</a>)</p>
+</li>
+<li>
+<p>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-kbl6/igt@syncobj_timeline@invalid-transfer-no=
+n-existent-point.html">DMESG-WARN</a> (<a href=3D"https://gitlab.freedeskto=
+p.org/drm/intel/issues/5098">i915#5098</a>)</p>
+</li>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb3/igt@syncobj_timeline@invalid-transfer-n=
+on-existent-point.html">DMESG-WARN</a> (<a href=3D"https://gitlab.freedeskt=
+op.org/drm/intel/issues/5098">i915#5098</a>)</p>
+</li>
+<li>
+<p>shard-snb:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-snb6/igt@syncobj_timeline@invalid-transfer-no=
+n-existent-point.html">DMESG-WARN</a> (<a href=3D"https://gitlab.freedeskto=
+p.org/drm/intel/issues/5098">i915#5098</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@sysfs_clients@sema-10:</p>
+<ul>
+<li>shard-apl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-apl4/igt@sysfs_clients@sema-10.html">SKIP</a=
+> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271">fdo#10=
+9271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2994"=
+>i915#2994</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@sysfs_clients@split-50:</p>
+<ul>
+<li>
+<p>shard-kbl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-kbl4/igt@sysfs_clients@split-50.html">SKIP</a=
+> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271">fdo#10=
+9271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2994"=
+>i915#2994</a>) +1 similar issue</p>
+</li>
+<li>
+<p>shard-iclb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-iclb2/igt@sysfs_clients@split-50.html">SKIP</=
+a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2994">i915#2=
+994</a>) +1 similar issue</p>
+</li>
+<li>
+<p>shard-tglb:         NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-tglb7/igt@sysfs_clients@split-50.html">SKIP</=
+a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2994">i915#2=
+994</a>)</p>
+</li>
+<li>
+<p>shard-glk:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org/=
+tree/drm-tip/IGTPW_7133/shard-glk7/igt@sysfs_clients@split-50.html">SKIP</a=
+> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271">fdo#10=
+9271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2994"=
+>i915#2994</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@drm_read@short-buffer-block:</p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-4/igt@drm_read@short-buffer-block.html">SKIP</a> (<=
+a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</=
+a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/sh=
+ard-rkl-6/igt@drm_read@short-buffer-block.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@nullptr:</p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-2/igt@fbdev@nullptr.html">SKIP</a> (<a href=3D"http=
+s://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a h=
+ref=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@=
+fbdev@nullptr.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-none@vcs0:</p>
+<ul>
+<li>shard-kbl:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-kbl1/igt@gem_exec_fair@basic-none@vcs0.html">FAIL</a> (=
+<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842<=
+/a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/s=
+hard-kbl1/igt@gem_exec_fair@basic-none@vcs0.html">PASS</a> +2 similar issue=
+s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace-solo@rcs0:</p>
+<ul>
+<li>shard-apl:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-apl2/igt@gem_exec_fair@basic-pace-solo@rcs0.html">FAIL<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#=
+2842</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7=
+133/shard-apl7/igt@gem_exec_fair@basic-pace-solo@rcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_flush@basic-wb-rw-before-default:</p>
+<ul>
+<li>shard-snb:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-snb6/igt@gem_exec_flush@basic-wb-rw-before-default.html=
+">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D10927=
+1">fdo#109271</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-ti=
+p/IGTPW_7133/shard-snb4/igt@gem_exec_flush@basic-wb-rw-before-default.html"=
+>PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_whisper@basic-fds-forked:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk2/igt@gem_exec_whisper@basic-fds-forked.html">DMESG-=
+WARN</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/118">i=
+915#118</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTP=
+W_7133/shard-glk2/igt@gem_exec_whisper@basic-fds-forked.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@allowed-all:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk5/igt@gen9_exec_parse@allowed-all.html">DMESG-WARN</=
+a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5=
+566</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/716">i=
+915#716</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTP=
+W_7133/shard-glk5/igt@gen9_exec_parse@allowed-all.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@allowed-single:</p>
+<ul>
+<li>shard-kbl:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-kbl4/igt@gen9_exec_parse@allowed-single.html">DMESG-WAR=
+N</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/5566">i91=
+5#5566</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/716=
+">i915#716</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/I=
+GTPW_7133/shard-kbl6/igt@gen9_exec_parse@allowed-single.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_dc@dc6-psr:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb3/igt@i915_pm_dc@dc6-psr.html">FAIL</a> (<a href=3D=
+"https://gitlab.freedesktop.org/drm/intel/issues/454">i915#454</a>) -&gt; <=
+a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/i=
+gt@i915_pm_dc@dc6-psr.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@pm-tiling:</p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-1/igt@i915_pm_rpm@pm-tiling.html">SKIP</a> (<a href=
+=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109308">fdo#109308</a>) =
+-&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-=
+rkl-6/igt@i915_pm_rpm@pm-tiling.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>shard-snb:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-snb7/igt@i915_selftest@live@hangcheck.html">INCOMPLETE<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#=
+3921</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7=
+133/shard-snb6/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@pipe-b-cursor-128x128-rapid-movement:</p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-2/igt@kms_cursor_crc@pipe-b-cursor-128x128-rapid-mo=
+vement.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi=
+?id=3D112022">fdo#112022</a> / <a href=3D"https://gitlab.freedesktop.org/dr=
+m/intel/issues/4070">i915#4070</a>) -&gt; <a href=3D"https://intel-gfx-ci.0=
+1.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_cursor_crc@pipe-b-cursor-=
+128x128-rapid-movement.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legacy:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk1/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legac=
+y.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issue=
+s/72">i915#72</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-ti=
+p/IGTPW_7133/shard-glk1/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legacy=
+.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic:</p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-1/igt@kms_cursor_legacy@flip-vs-cursor-atomic.html"=
+>SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D111825=
+">fdo#111825</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issu=
+es/4070">i915#4070</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/d=
+rm-tip/IGTPW_7133/shard-rkl-6/igt@kms_cursor_legacy@flip-vs-cursor-atomic.h=
+tml">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk2/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transi=
+tions-varying-size.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.or=
+g/drm/intel/issues/2346">i915#2346</a> / <a href=3D"https://gitlab.freedesk=
+top.org/drm/intel/issues/533">i915#533</a>) -&gt; <a href=3D"https://intel-=
+gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-glk7/igt@kms_cursor_legacy@flip=
+-vs-cursor-atomic-transitions-varying-size.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_draw_crc@draw-method-rgb565-blt-untiled:</p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-4/igt@kms_draw_crc@draw-method-rgb565-blt-untiled.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4=
+098">i915#4098</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/is=
+sues/4369">i915#4369</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree=
+/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_draw_crc@draw-method-rgb565-blt-unt=
+iled.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_draw_crc@draw-method-rgb565-render-xtiled:</p>
+<ul>
+<li>{shard-rkl}:        (<a href=3D"https://intel-gfx-ci.01.org/tree/drm-ti=
+p/CI_DRM_11674/shard-rkl-6/igt@kms_draw_crc@draw-method-rgb565-render-xtile=
+d.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI_DR=
+M_11674/shard-rkl-4/igt@kms_draw_crc@draw-method-rgb565-render-xtiled.html"=
+>SKIP</a>) (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4098=
+">i915#4098</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issue=
+s/4369">i915#4369</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/dr=
+m-tip/IGTPW_7133/shard-rkl-6/igt@kms_draw_crc@draw-method-rgb565-render-xti=
+led.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_draw_crc@draw-method-xrgb8888-blt-ytiled:</p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-2/igt@kms_draw_crc@draw-method-xrgb8888-blt-ytiled.=
+html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D1=
+11314">fdo#111314</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel=
+/issues/4098">i915#4098</a> / <a href=3D"https://gitlab.freedesktop.org/drm=
+/intel/issues/4369">i915#4369</a>) -&gt; <a href=3D"https://intel-gfx-ci.01=
+.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_draw_crc@draw-method-xrgb8=
+888-blt-ytiled.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@a-dp1:</p>
+<ul>
+<li>shard-apl:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-apl7/igt@kms_flip@flip-vs-expired-vblank-interruptible@=
+a-dp1.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/i=
+ssues/79">i915#79</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/dr=
+m-tip/IGTPW_7133/shard-apl6/igt@kms_flip@flip-vs-expired-vblank-interruptib=
+le@a-dp1.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-suspend@a-dp1:</p>
+<ul>
+<li>shard-apl:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-apl8/igt@kms_flip@flip-vs-suspend@a-dp1.html">DMESG-WAR=
+N</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/180">i915=
+#180</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7=
+133/shard-apl4/igt@kms_flip@flip-vs-suspend@a-dp1.html">PASS</a> +1 similar=
+ issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite:</=
+p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-2/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-c=
+ur-indfb-draw-pwrite.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.=
+org/drm/intel/issues/1849">i915#1849</a> / <a href=3D"https://gitlab.freede=
+sktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href=3D"https://in=
+tel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-rkl-6/igt@kms_frontbuffer_t=
+racking@fbcpsr-1p-primscrn-cur-indfb-draw-pwrite.html">PASS</a> +8 similar =
+issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-render:</=
+p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb6/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-s=
+pr-indfb-draw-render.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.=
+org/drm/intel/issues/1888">i915#1888</a> / <a href=3D"https://gitlab.freede=
+sktop.org/drm/intel/issues/2546">i915#2546</a>) -&gt; <a href=3D"https://in=
+tel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_frontbuffer_t=
+racking@fbcpsr-1p-primscrn-spr-indfb-draw-render.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-slowdraw:</p>
+<ul>
+<li>{shard-rkl}:        (<a href=3D"https://intel-gfx-ci.01.org/tree/drm-ti=
+p/CI_DRM_11674/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-slowdraw.html">=
+PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/=
+shard-rkl-4/igt@kms_frontbuffer_tracking@psr-slowdraw.html">SKIP</a>) (<a h=
+ref=3D"https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> =
+/ <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#409=
+8</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133=
+/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-slowdraw.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2_primary_mmap_gtt:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb1/igt@kms_psr@psr2_primary_mmap_gtt.html">SKIP</a> =
+(<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109441">fdo#1094=
+41</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_713=
+3/shard-iclb2/igt@kms_psr@psr2_primary_mmap_gtt.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_rotation_crc@sprite-rotation-180:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk8/igt@kms_rotation_crc@sprite-rotation-180.html">FAI=
+L</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/1888">i91=
+5#1888</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/65"=
+>i915#65</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGT=
+PW_7133/shard-glk4/igt@kms_rotation_crc@sprite-rotation-180.html">PASS</a><=
+/li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-a-wait-forked-busy-hang:</p>
+<ul>
+<li>{shard-rkl}:        <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-rkl-2/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html"=
+>SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/1845"=
+>i915#1845</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issues=
+/4098">i915#4098</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm=
+-tip/IGTPW_7133/shard-rkl-6/igt@kms_vblank@pipe-a-wait-forked-busy-hang.htm=
+l">PASS</a> +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-b-query-idle-hang:</p>
+<ul>
+<li>{shard-rkl}:        (<a href=3D"https://intel-gfx-ci.01.org/tree/drm-ti=
+p/CI_DRM_11674/shard-rkl-4/igt@kms_vblank@pipe-b-query-idle-hang.html">SKIP=
+</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shar=
+d-rkl-1/igt@kms_vblank@pipe-b-query-idle-hang.html">SKIP</a>) (<a href=3D"h=
+ttps://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a hre=
+f=3D"https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -=
+&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-r=
+kl-6/igt@kms_vblank@pipe-b-query-idle-hang.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@perf@polling-parameterized:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk6/igt@perf@polling-parameterized.html">FAIL</a> (<a =
+href=3D"https://gitlab.freedesktop.org/drm/intel/issues/5639">i915#5639</a>=
+) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shar=
+d-glk7/igt@perf@polling-parameterized.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@gem_exec_balancer@parallel-contexts:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb4/igt@gem_exec_balancer@parallel-contexts.html">DME=
+SG-WARN</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/561=
+4">i915#5614</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/IGTPW_7133/shard-iclb3/igt@gem_exec_balancer@parallel-contexts.html">SKIP<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4525">i915#=
+4525</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_balancer@parallel-keep-submit-fence:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb6/igt@gem_exec_balancer@parallel-keep-submit-fence.=
+html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/=
+4525">i915#4525</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-=
+tip/IGTPW_7133/shard-iclb2/igt@gem_exec_balancer@parallel-keep-submit-fence=
+.html">DMESG-WARN</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/=
+issues/5614">i915#5614</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_balancer@parallel-ordering:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb1/igt@gem_exec_balancer@parallel-ordering.html">DME=
+SG-FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/561=
+4">i915#5614</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/IGTPW_7133/shard-iclb8/igt@gem_exec_balancer@parallel-ordering.html">SKIP<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/4525">i915#=
+4525</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-none-rrul@rcs0:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb8/igt@gem_exec_fair@basic-none-rrul@rcs0.html">FAIL=
+</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2852">i915=
+#2852</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_=
+7133/shard-iclb3/igt@gem_exec_fair@basic-none-rrul@rcs0.html">FAIL</a> (<a =
+href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>=
+)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace-solo@rcs0:</p>
+<ul>
+<li>shard-glk:          <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-glk1/igt@gem_exec_fair@basic-pace-solo@rcs0.html">FAIL<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2851">i915#=
+2851</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7=
+133/shard-glk7/igt@gem_exec_fair@basic-pace-solo@rcs0.html">FAIL</a> (<a hr=
+ef=3D"https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>)<=
+/li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@cursor-plane-move-continuous-sf:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb2/igt@kms_psr2_sf@cursor-plane-move-continuous-sf.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2=
+920">i915#2920</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-t=
+ip/IGTPW_7133/shard-iclb3/igt@kms_psr2_sf@cursor-plane-move-continuous-sf.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/6=
+58">i915#658</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@overlay-plane-move-continuous-sf:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb1/igt@kms_psr2_sf@overlay-plane-move-continuous-sf.=
+html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/=
+658">i915#658</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-ti=
+p/IGTPW_7133/shard-iclb2/igt@kms_psr2_sf@overlay-plane-move-continuous-sf.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/2=
+920">i915#2920</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@overlay-plane-update-continuous-sf:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb8/igt@kms_psr2_sf@overlay-plane-update-continuous-s=
+f.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=
+=3D111068">fdo#111068</a> / <a href=3D"https://gitlab.freedesktop.org/drm/i=
+ntel/issues/658">i915#658</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/drm-tip/IGTPW_7133/shard-iclb2/igt@kms_psr2_sf@overlay-plane-update-c=
+ontinuous-sf.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/=
+intel/issues/2920">i915#2920</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@overlay-plane-update-sf-dmg-area:</p>
+<ul>
+<li>shard-iclb:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-iclb2/igt@kms_psr2_sf@overlay-plane-update-sf-dmg-area.=
+html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/=
+2920">i915#2920</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-=
+tip/IGTPW_7133/shard-iclb6/igt@kms_psr2_sf@overlay-plane-update-sf-dmg-area=
+.html">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D=
+111068">fdo#111068</a> / <a href=3D"https://gitlab.freedesktop.org/drm/inte=
+l/issues/658">i915#658</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>shard-kbl:          (<a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-kbl6/igt@runner@aborted.html">FAIL</a>, <a href=3D"http=
+s://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl7/igt@runner@abo=
+rted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI=
+_DRM_11674/shard-kbl1/igt@runner@aborted.html">FAIL</a>, <a href=3D"https:/=
+/intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl3/igt@runner@aborte=
+d.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI_DR=
+M_11674/shard-kbl6/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://in=
+tel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl4/igt@runner@aborted.h=
+tml">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_1=
+1674/shard-kbl7/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel=
+-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl3/igt@runner@aborted.html=
+">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_1167=
+4/shard-kbl7/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gf=
+x-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-kbl6/igt@runner@aborted.html">F=
+AIL</a>) (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109271"=
+>fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/issue=
+s/3002">i915#3002</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel=
+/issues/4312">i915#4312</a> / <a href=3D"https://gitlab.freedesktop.org/drm=
+/intel/issues/5257">i915#5257</a> / <a href=3D"https://gitlab.freedesktop.o=
+rg/drm/intel/issues/716">i915#716</a>) -&gt; (<a href=3D"https://intel-gfx-=
+ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@runner@aborted.html">FAIL<=
+/a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-k=
+bl4/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.o=
+rg/tree/drm-tip/IGTPW_7133/shard-kbl6/igt@runner@aborted.html">FAIL</a>, <a=
+ href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt=
+@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
+/drm-tip/IGTPW_7133/shard-kbl4/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@runn=
+er@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-=
+tip/IGTPW_7133/shard-kbl6/igt@runner@aborted.html">FAIL</a>, <a href=3D"htt=
+ps://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl7/igt@runner@abor=
+ted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGT=
+PW_7133/shard-kbl4/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://in=
+tel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-kbl3/igt@runner@aborted.htm=
+l">FAIL</a>) (<a href=3D"https://gitlab.freedesktop.org/drm/intel/issues/30=
+02">i915#3002</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/iss=
+ues/4312">i915#4312</a> / <a href=3D"https://gitlab.freedesktop.org/drm/int=
+el/issues/5257">i915#5257</a>)</p>
+</li>
+<li>
+<p>shard-apl:          (<a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
+/CI_DRM_11674/shard-apl3/igt@runner@aborted.html">FAIL</a>, <a href=3D"http=
+s://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl1/igt@runner@abo=
+rted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI=
+_DRM_11674/shard-apl8/igt@runner@aborted.html">FAIL</a>, <a href=3D"https:/=
+/intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl2/igt@runner@aborte=
+d.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI_DR=
+M_11674/shard-apl8/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://in=
+tel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11674/shard-apl4/igt@runner@aborted.h=
+tml">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_1=
+1674/shard-apl3/igt@runner@aborted.html">FAIL</a>) (<a href=3D"https://gitl=
+ab.freedesktop.org/drm/intel/issues/180">i915#180</a> / <a href=3D"https://=
+gitlab.freedesktop.org/drm/intel/issues/3002">i915#3002</a> / <a href=3D"ht=
+tps://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href=
+=3D"https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>) -&=
+gt; (<a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-a=
+pl2/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.o=
+rg/tree/drm-tip/IGTPW_7133/shard-apl4/igt@runner@aborted.html">FAIL</a>, <a=
+ href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl7/igt=
+@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
+/drm-tip/IGTPW_7133/shard-apl4/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@runn=
+er@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-=
+tip/IGTPW_7133/shard-apl1/igt@runner@aborted.html">FAIL</a>, <a href=3D"htt=
+ps://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl6/igt@runner@abor=
+ted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGT=
+PW_7133/shard-apl7/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://in=
+tel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/shard-apl1/igt@runner@aborted.htm=
+l">FAIL</a>) (<a href=3D"https://bugs.freedesktop.org/show_bug.cgi?id=3D109=
+271">fdo#109271</a> / <a href=3D"https://gitlab.freedesktop.org/drm/intel/i=
+ssues/180">i915#180</a> / <a href=3D"https://gitlab.freedesktop.org/drm/int=
+el/issues/3002">i915#3002</a> / <a href=3D"https://gitlab.freedesktop.org/d=
+rm/intel/issues/4312">i915#4312</a> / <a href=3D"https://gitlab.freedesktop=
+.org/drm/intel/issues/5257">i915#5257</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when comput=
+ing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6479 -&gt; IGTPW_7133</li>
+<li>Piglit: piglit_4509 -&gt; None</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11674: 3e53b0d858897e3c1e7c6a661219823df2326b77 @ git://anongit.fr=
+eedesktop.org/gfx-ci/linux<br />
+  IGTPW_7133: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7133/index.htm=
+l<br />
+  IGT_6479: 78115aa8c8bcfc7784c7fc8dcaefcc2bce970b99 @ https://gitlab.freed=
+esktop.org/drm/igt-gpu-tools.git<br />
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.fre=
+edesktop.org/piglit</p>
+
+</body>
+</html>
+
+--===============1386059644382234415==--
