@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C26410E29E
- for <igt-dev@lists.freedesktop.org>; Thu, 19 May 2022 20:07:36 +0000 (UTC)
-From: "Coelho, Luciano" <luciano.coelho@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 19 May 2022 20:07:15 +0000
-Message-ID: <71bb09734b9e8f29c02b8189fcadc07495a00264.camel@intel.com>
-References: <20220519141745.118599-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220519141745.118599-1-zbigniew.kempczynski@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 853EC10E703
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 May 2022 09:00:59 +0000 (UTC)
+Message-ID: <69d219da-c89f-e7ff-c0b2-3692b9ff87fe@intel.com>
+Date: Wed, 18 May 2022 14:30:41 +0530
 Content-Language: en-US
-Content-Type: multipart/alternative;
- boundary="_000_71bb09734b9e8f29c02b8189fcadc07495a00264camelintelcom_"
+To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220506054100.27458-1-karthik.b.s@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220506054100.27458-1-karthik.b.s@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: For i915 devices
- run allocator in multiprocess mode
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres: Convert test to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,56 +25,189 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_71bb09734b9e8f29c02b8189fcadc07495a00264camelintelcom_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+On Fri-06-05-2022 11:11 am, Karthik B S wrote:
+> Covert the existing subtests to dynamic subtests at pipe/output level.
+> Also, move igt_display_reset() to the begining to the function to reset
 
-T24gVGh1LCAyMDIyLTA1LTE5IGF0IDE2OjE3ICswMjAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kg
-d3JvdGU6DQoNClRlc3QgY2FsbHMgaWd0X2ZvcmsoKSBzbyBmb3IgaTkxNSByZXF1aXJlcyBvZmZz
-ZXQgYWxsb2NhdGlvbiBhcmJpdHJhdGlvbg0KDQooYWxsb2NhdG9yIGluIG11bHRpcHJvY2VzcyBt
-b2RlKSBlc3BlY2lhbGx5IHdoZW4gc2FtZSBkcm0gZmQgaXMgdXNlZA0KDQppbiBjaGlsZHJlbi4g
-RGVkaWNhdGVkIHRocmVhZCAoaW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdGFydCgpKQ0K
-DQppcyByZXF1aXJlZCB0byBiZSBzdGFydGVkIG9uIHRoZSB2ZXJ5IGJlZ2lubmluZyB0byBoYW5k
-bGUgb2Zmc2V0DQoNCmFsbG9jYXRpb25zIGFzIHdlbGwgYXMgc3RvcHBpbmcgaXQgKGludGVsX2Fs
-bG9jYXRvcl9tdWx0aXByb2Nlc3Nfc3RvcCgpKQ0KDQpiZWZvcmUgdGVzdCBleGl0cy4NCg0KDQpT
-aWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tp
-QGludGVsLmNvbTxtYWlsdG86emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPj4NCg0KQ2M6
-IEx1Y2lhbm8gQ29lbGhvIDxsdWNpYW5vLmNvZWxob0BpbnRlbC5jb208bWFpbHRvOmx1Y2lhbm8u
-Y29lbGhvQGludGVsLmNvbT4+DQoNCkNjOiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFAaW50
-ZWwuY29tPG1haWx0bzpzd2F0aTIuc2hhcm1hQGludGVsLmNvbT4+DQoNClRlc3RlZC1ieTogTHVj
-YSBDb2VsaG8gPGx1Y2lhbm8uY29lbGhvQGludGVsLmNvbTxtYWlsdG86bHVjaWFuby5jb2VsaG9A
-aW50ZWwuY29tPj4NCg0KVGhhbmtzIGZvciB0aGUgcXVpY2sgZml4IQ0KDQotLQ0KQ2hlZXJzLA0K
-THVjYS4NCg==
+Typo: s/begining/beginning/g
 
---_000_71bb09734b9e8f29c02b8189fcadc07495a00264camelintelcom_
-Content-Type: text/html; charset="utf-8"
-Content-ID: <EEF52ED1ECF1704C8E19209E3FCC7E17@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+> display even in case of failures.
+> 
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/kms_plane_lowres.c | 112 ++++++++++++++++++++++++++-------------
+>   1 file changed, 75 insertions(+), 37 deletions(-)
+> 
+> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+> index 3f3f77c8..4c660efe 100644
+> --- a/tests/kms_plane_lowres.c
+> +++ b/tests/kms_plane_lowres.c
+> @@ -166,6 +166,7 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
+>   	igt_plane_t *primary;
+>   	igt_crc_t crc_lowres, crc_hires1, crc_hires2;
+>   
+> +	igt_display_reset(&data->display);
 
-PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
-dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjwvaGVhZD4NCjxib2R5Pg0KPGRpdj5PbiBUaHUs
-IDIwMjItMDUtMTkgYXQgMTY6MTcgKzAyMDAsIFpiaWduaWV3IEtlbXBjennFhHNraSB3cm90ZTo8
-L2Rpdj4NCjxibG9ja3F1b3RlIHR5cGU9ImNpdGUiIHN0eWxlPSJtYXJnaW46MCAwIDAgLjhleDsg
-Ym9yZGVyLWxlZnQ6MnB4ICM3MjlmY2Ygc29saWQ7cGFkZGluZy1sZWZ0OjFleCI+DQo8cHJlPlRl
-c3QgY2FsbHMgaWd0X2ZvcmsoKSBzbyBmb3IgaTkxNSByZXF1aXJlcyBvZmZzZXQgYWxsb2NhdGlv
-biBhcmJpdHJhdGlvbjwvcHJlPg0KPHByZT4oYWxsb2NhdG9yIGluIG11bHRpcHJvY2VzcyBtb2Rl
-KSBlc3BlY2lhbGx5IHdoZW4gc2FtZSBkcm0gZmQgaXMgdXNlZDwvcHJlPg0KPHByZT5pbiBjaGls
-ZHJlbi4gRGVkaWNhdGVkIHRocmVhZCAoaW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdGFy
-dCgpKTwvcHJlPg0KPHByZT5pcyByZXF1aXJlZCB0byBiZSBzdGFydGVkIG9uIHRoZSB2ZXJ5IGJl
-Z2lubmluZyB0byBoYW5kbGUgb2Zmc2V0PC9wcmU+DQo8cHJlPmFsbG9jYXRpb25zIGFzIHdlbGwg
-YXMgc3RvcHBpbmcgaXQgKGludGVsX2FsbG9jYXRvcl9tdWx0aXByb2Nlc3Nfc3RvcCgpKTwvcHJl
-Pg0KPHByZT5iZWZvcmUgdGVzdCBleGl0cy48L3ByZT4NCjxwcmU+PGJyPjwvcHJlPg0KPHByZT5T
-aWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgJmx0OzxhIGhyZWY9Im1haWx0bzp6
-Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20iPnpiaWduaWV3LmtlbXBjenluc2tpQGludGVs
-LmNvbTwvYT4mZ3Q7PC9wcmU+DQo8cHJlPkNjOiBMdWNpYW5vIENvZWxobyAmbHQ7PGEgaHJlZj0i
-bWFpbHRvOmx1Y2lhbm8uY29lbGhvQGludGVsLmNvbSI+bHVjaWFuby5jb2VsaG9AaW50ZWwuY29t
-PC9hPiZndDs8L3ByZT4NCjxwcmU+Q2M6IFN3YXRpIFNoYXJtYSAmbHQ7PGEgaHJlZj0ibWFpbHRv
-OnN3YXRpMi5zaGFybWFAaW50ZWwuY29tIj5zd2F0aTIuc2hhcm1hQGludGVsLmNvbTwvYT4mZ3Q7
-PC9wcmU+DQo8L2Jsb2NrcXVvdGU+DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj5UZXN0ZWQtYnk6
-IEx1Y2EgQ29lbGhvICZsdDs8YSBocmVmPSJtYWlsdG86bHVjaWFuby5jb2VsaG9AaW50ZWwuY29t
-Ij5sdWNpYW5vLmNvZWxob0BpbnRlbC5jb208L2E+Jmd0OzwvZGl2Pg0KPGRpdj48YnI+DQo8L2Rp
-dj4NCjxkaXY+VGhhbmtzIGZvciB0aGUgcXVpY2sgZml4ITwvZGl2Pg0KPGRpdj48YnI+DQo8L2Rp
-dj4NCjxkaXY+LS08L2Rpdj4NCjxkaXY+Q2hlZXJzLDwvZGl2Pg0KPGRpdj5MdWNhLjwvZGl2Pg0K
-PGRpdj48c3Bhbj48L3NwYW4+PC9kaXY+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
+As we are iterating over all planes, this reset is not required for each 
+plane. Hence this should be moved to test_planes_on_pipe()
 
---_000_71bb09734b9e8f29c02b8189fcadc07495a00264camelintelcom_--
+For same pipe/output combination, we are doing igt_output_set_pipe() for 
+each plane. So, we need some cleanup to optimize this logic.
+
+>   	igt_output_set_pipe(data->output, data->pipe);
+>   
+>   	primary = compatible_main_plane(plane, data->output, data->devid);
+> @@ -245,8 +246,6 @@ test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modif
+>   	igt_remove_fb(data->drm_fd, &data->ref_hires.fb);
+>   	igt_remove_fb(data->drm_fd, &data->ref_lowres.fb);
+>   
+> -	igt_display_reset(&data->display);
+> -
+>   	return tested;
+>   }
+>   
+> @@ -256,17 +255,6 @@ test_planes_on_pipe(data_t *data, uint64_t modifier)
+>   	igt_plane_t *plane;
+>   	unsigned tested = 0;
+>   
+> -	igt_require_pipe(&data->display, data->pipe);
+> -	igt_display_require_output_on_pipe(&data->display, data->pipe);
+> -	igt_skip_on(!igt_display_has_format_mod(&data->display,
+> -						DRM_FORMAT_XRGB8888, modifier));
+> -
+> -	data->output = igt_get_single_output_for_pipe(&data->display, data->pipe);
+> -	igt_require(data->output);
+> -
+> -	igt_info("Testing connector %s using pipe %s\n",
+> -		 igt_output_name(data->output), kmstest_pipe_name(data->pipe));
+> -
+>   	for_each_plane_on_pipe(&data->display, data->pipe, plane)
+>   		tested += test_planes_on_pipe_with_output(data, plane, modifier);
+>   
+> @@ -280,6 +268,7 @@ igt_main
+>   {
+>   	data_t data = {};
+>   	enum pipe pipe;
+> +	igt_output_t *output;
+>   
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -293,30 +282,79 @@ igt_main
+>   		igt_require(data.display.is_atomic);
+
+Please add igt_display_require_output() in igt_fixture.
+
+>   	}
+>   
+> -	for_each_pipe_static(pipe) {
+> -		data.pipe = pipe;
+> -		igt_describe("Tests the visibility of the planes when switching between "
+> -			     "high and low resolution with tiling as none.");
+> -		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
+> -			test_planes_on_pipe(&data, DRM_FORMAT_MOD_LINEAR);
+> -
+> -		igt_describe("Tests the visibility of the planes when switching between "
+> -			     "high and low resolution with x-tiling.");
+> -		igt_subtest_f("pipe-%s-tiling-x", kmstest_pipe_name(pipe))
+> -			test_planes_on_pipe(&data, I915_FORMAT_MOD_X_TILED);
+> -
+> -		igt_describe("Tests the visibility of the planes when switching between "
+> -			     "high and low resolution with y-tiling.");
+> -		igt_subtest_f("pipe-%s-tiling-y", kmstest_pipe_name(pipe))
+> -			test_planes_on_pipe(&data, I915_FORMAT_MOD_Y_TILED);
+> -
+> -		igt_describe("Tests the visibility of the planes when switching between "
+> -			     "high and low resolution with yf-tiling.");
+> -		igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
+> -			test_planes_on_pipe(&data, I915_FORMAT_MOD_Yf_TILED);
+> -
+> -		igt_subtest_f("pipe-%s-tiling-4", kmstest_pipe_name(pipe))
+> -			test_planes_on_pipe(&data, I915_FORMAT_MOD_4_TILED);
+> +	igt_describe("Tests the visibility of the planes when switching between "
+> +		     "high and low resolution with tiling as none.");
+> +	igt_subtest_with_dynamic("tiling-none") {
+> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
+> +							DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR));
+> +		for_each_pipe(&data.display, pipe) {
+> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
+
+igt_get_single_output_for_pipe() ?
+
+> +				data.pipe = pipe;
+> +				data.output = output;
+> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
+
+Please update the test name as "<pipe name>-<output name>"
+
+> +					test_planes_on_pipe(&data, DRM_FORMAT_MOD_LINEAR);
+> +			}
+> +		}
+> +	}
+
+I would recommend to use array of structures to maintain the test list 
+and iterate all over those tests.
+
+- Bhanu
+
+> +
+> +	igt_describe("Tests the visibility of the planes when switching between "
+> +		     "high and low resolution with x-tiling.");
+> +	igt_subtest_with_dynamic("tiling-x") {
+> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
+> +							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_X_TILED));
+> +		for_each_pipe(&data.display, pipe) {
+> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> +				data.pipe = pipe;
+> +				data.output = output;
+> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
+> +					test_planes_on_pipe(&data, I915_FORMAT_MOD_X_TILED);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_describe("Tests the visibility of the planes when switching between "
+> +		     "high and low resolution with y-tiling.");
+> +	igt_subtest_with_dynamic("tiling-y") {
+> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
+> +							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_Y_TILED));
+> +		for_each_pipe(&data.display, pipe) {
+> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> +				data.pipe = pipe;
+> +				data.output = output;
+> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
+> +					test_planes_on_pipe(&data, I915_FORMAT_MOD_Y_TILED);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_describe("Tests the visibility of the planes when switching between "
+> +		     "high and low resolution with yf-tiling.");
+> +	igt_subtest_with_dynamic("tiling-yf") {
+> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
+> +							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_Yf_TILED));
+> +		for_each_pipe(&data.display, pipe) {
+> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> +				data.pipe = pipe;
+> +				data.output = output;
+> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
+> +					test_planes_on_pipe(&data, I915_FORMAT_MOD_Yf_TILED);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_describe("Tests the visibility of the planes when switching between "
+> +		     "high and low resolution with 4-tiling.");
+> +	igt_subtest_with_dynamic("tiling-4") {
+> +		igt_skip_on(!igt_display_has_format_mod(&data.display,
+> +							DRM_FORMAT_XRGB8888, I915_FORMAT_MOD_4_TILED));
+> +		for_each_pipe(&data.display, pipe) {
+> +			for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> +				data.pipe = pipe;
+> +				data.output = output;
+> +				igt_dynamic_f("%s-pipe-%s", data.output->name, kmstest_pipe_name(pipe))
+> +					test_planes_on_pipe(&data, I915_FORMAT_MOD_4_TILED);
+> +			}
+> +		}
+>   	}
+>   
+>   	igt_fixture {
