@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64B5910F616
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 12:01:31 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC30D11A283
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 May 2022 11:24:55 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 31 May 2022 17:28:03 +0530
-Message-Id: <20220531115805.3941871-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220531115805.3941871-1-bhanuprakash.modem@intel.com>
-References: <20220531115805.3941871-1-bhanuprakash.modem@intel.com>
+Date: Thu, 19 May 2022 13:24:49 +0200
+Message-Id: <20220519112449.25819-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [V4 1/3] lib/igt_kms: Add helper functions to sort drm
- modes
+Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_close_race: Adopt to use
+ softpin
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,168 +22,146 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add helper function to sort drm modes based on the clock, resolution
-in both ascending & descending order.
+For newer gens there will be no relocations, so adopt test to
+run using soft-pinned addresses. Also while at this, refactor
+code to run on discrete DG2.
 
-V2:
-* Minor changes
-V3:
-* Added documentaion for helper functions
+v2: refactor to run on DG2 and older gens (Zbigniew review)
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
 ---
- lib/igt_kms.c | 90 ++++++++++++++++++++++++++++++++++++++++++---------
- lib/igt_kms.h | 10 ++++++
- 2 files changed, 85 insertions(+), 15 deletions(-)
+ tests/i915/gem_close_race.c | 56 +++++++++++++++++++++++++++----------
+ 1 file changed, 42 insertions(+), 14 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index a25fac74..af4fb85b 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1477,6 +1477,78 @@ void kmstest_force_edid(int drm_fd, drmModeConnector *connector,
- 	igt_assert(ret != -1);
+diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
+index ab444945..1cd5d309 100644
+--- a/tests/i915/gem_close_race.c
++++ b/tests/i915/gem_close_race.c
+@@ -28,6 +28,7 @@
+ #include <pthread.h>
+ #include <unistd.h>
+ #include <signal.h>
++#include <stdbool.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -43,6 +44,7 @@
+ #include "drm.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "i915/gem_mman.h"
+ #include "igt.h"
+ 
+ #define OBJECT_SIZE (256 * 1024)
+@@ -53,6 +55,9 @@
+ 
+ static uint32_t devid;
+ static bool has_64bit_relocations;
++static bool has_softpin;
++static uint64_t exec_addr;
++static uint64_t data_addr;
+ 
+ #define sigev_notify_thread_id _sigev_un._tid
+ 
+@@ -61,9 +66,9 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_exec_object2 gem_exec[2];
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+-	struct drm_i915_gem_pwrite gem_pwrite;
+ 	struct drm_i915_gem_create create;
+ 	uint32_t buf[16], *b = buf;
++	int err;
+ 
+ 	memset(reloc, 0, sizeof(reloc));
+ 
+@@ -79,9 +84,9 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	reloc[0].target_handle = handle;
+ 	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
+ 	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
+-	*b++ = 0;
++	*b++ = data_addr;
+ 	if (has_64bit_relocations)
+-		*b++ = 0;
++		*b++ = CANONICAL(data_addr) >> 32;
+ 
+ 	*b++ = 512 << 16;
+ 	*b++ = 4*1024;
+@@ -90,9 +95,9 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	reloc[1].target_handle = handle;
+ 	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
+ 	reloc[1].write_domain = 0;
+-	*b++ = 0;
++	*b++ = data_addr;
+ 	if (has_64bit_relocations)
+-		*b++ = 0;
++		*b++ = CANONICAL(data_addr) >> 32;
+ 
+ 	*b++ = MI_BATCH_BUFFER_END;
+ 	*b++ = 0;
+@@ -105,8 +110,17 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	create.size = 4096;
+ 	drmIoctl(fd, DRM_IOCTL_I915_GEM_CREATE, &create);
+ 	gem_exec[1].handle = create.handle;
+-	gem_exec[1].relocation_count = 2;
+-	gem_exec[1].relocs_ptr = to_user_pointer(reloc);
++	if (has_softpin) {
++		gem_exec[1].offset = CANONICAL(exec_addr);
++		gem_exec[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++		execbuf.flags |= I915_EXEC_NO_RELOC;
++		gem_exec[0].offset = CANONICAL(data_addr);
++		gem_exec[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
++				     EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++	} else {
++		gem_exec[1].relocation_count = 2;
++		gem_exec[1].relocs_ptr = to_user_pointer(reloc);
++	}
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(gem_exec);
+@@ -116,15 +130,22 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 		execbuf.flags |= I915_EXEC_BLT;
+ 	execbuf.rsvd1 = ctx;
+ 
+-	memset(&gem_pwrite, 0, sizeof(gem_pwrite));
+-	gem_pwrite.handle = create.handle;
+-	gem_pwrite.offset = 0;
+-	gem_pwrite.size = sizeof(buf);
+-	gem_pwrite.data_ptr = to_user_pointer(buf);
+-	if (drmIoctl(fd, DRM_IOCTL_I915_GEM_PWRITE, &gem_pwrite) == 0) {
++	err = __gem_write(fd, create.handle, 0, buf, sizeof(buf));
++	if (err == -EOPNOTSUPP) {
++		void *ptr;
++
++		ptr = __gem_mmap__device_coherent(fd, create.handle, 0, sizeof(buf), PROT_WRITE);
++		if (!ptr) {
++			err = errno;
++		} else {
++			memcpy(ptr, buf, sizeof(buf));
++			gem_munmap(ptr, sizeof(buf));
++		}
++	}
++
++	if (!err)
+ 		while (loops-- && __gem_execbuf(fd, &execbuf) == 0)
+ 			;
+-	}
+ 
+ 	drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &create.handle);
  }
+@@ -256,6 +277,13 @@ igt_main
  
-+/**
-+ * sort_drm_modes_by_clk_dsc:
-+ * @a: first element
-+ * @b: second element
-+ *
-+ * Comparator function for sorting DRM modes in descending order by clock.
-+ */
-+int sort_drm_modes_by_clk_dsc(const void *a, const void *b)
-+{
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
-+
-+	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
-+}
-+
-+/**
-+ * sort_drm_modes_by_clk_asc:
-+ * @a: first element
-+ * @b: second element
-+ *
-+ * Comparator function for sorting DRM modes in ascending order by clock.
-+ */
-+int sort_drm_modes_by_clk_asc(const void *a, const void *b)
-+{
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
-+
-+	return (mode1->clock > mode2->clock) - (mode2->clock > mode1->clock);
-+}
-+
-+/**
-+ * sort_drm_modes_by_res_dsc:
-+ * @a: first element
-+ * @b: second element
-+ *
-+ * Comparator function for sorting DRM modes in descending order by resolution.
-+ */
-+int sort_drm_modes_by_res_dsc(const void *a, const void *b)
-+{
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
-+
-+	return (mode1->hdisplay < mode2->hdisplay) - (mode2->hdisplay < mode1->hdisplay);
-+}
-+
-+/**
-+ * sort_drm_modes_by_res_asc:
-+ * @a: first element
-+ * @b: second element
-+ *
-+ * Comparator function for sorting DRM modes in ascending order by resolution.
-+ */
-+int sort_drm_modes_by_res_asc(const void *a, const void *b)
-+{
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
-+
-+	return (mode1->hdisplay > mode2->hdisplay) - (mode2->hdisplay > mode1->hdisplay);
-+}
-+
-+/**
-+ * igt_sort_connector_modes:
-+ * @connector: libdrm connector
-+ * @comparator: comparison function to compare two elements
-+ *
-+ * Sorts connector modes based on the @comparator.
-+ */
-+void igt_sort_connector_modes(drmModeConnector *connector,
-+			      int (*comparator)(const void *, const void*))
-+{
-+	qsort(connector->modes,
-+	      connector->count_modes,
-+	      sizeof(drmModeModeInfo),
-+	      comparator);
-+}
-+
- /**
-  * kmstest_get_connector_default_mode:
-  * @drm_fd: DRM fd
-@@ -4204,16 +4276,6 @@ void igt_output_set_pipe(igt_output_t *output, enum pipe pipe)
- 	}
- }
+ 		devid = intel_get_drm_devid(fd);
+ 		has_64bit_relocations = intel_gen(devid) >= 8;
++		has_softpin = !gem_has_relocations(fd);
++		if (has_softpin) {
++			exec_addr = gem_detect_safe_start_offset(fd);
++			data_addr = gem_detect_safe_alignment(fd);
++			exec_addr = max_t(exec_addr, exec_addr, data_addr);
++			data_addr += exec_addr;
++		}
  
--#define for_each_connector_mode(output)		\
--	for (int i__ = 0;  i__ < output->config.connector->count_modes; i__++)
--
--static int sort_drm_modes(const void *a, const void *b)
--{
--	const drmModeModeInfo *mode1 = a, *mode2 = b;
--
--	return (mode1->clock < mode2->clock) - (mode2->clock < mode1->clock);
--}
--
- static
- bool __override_all_active_output_modes_to_fit_bw(igt_display_t *display,
- 						  igt_output_t *outputs[IGT_MAX_PIPES],
-@@ -4230,7 +4292,7 @@ bool __override_all_active_output_modes_to_fit_bw(igt_display_t *display,
- 	for_each_connector_mode(output) {
- 		int ret;
- 
--		igt_output_override_mode(output, &output->config.connector->modes[i__]);
-+		igt_output_override_mode(output, &output->config.connector->modes[j__]);
- 
- 		if (__override_all_active_output_modes_to_fit_bw(display, outputs, n_outputs, base + 1))
- 			return true;
-@@ -4271,10 +4333,8 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display)
- 			continue;
- 
- 		/* Sort the modes in descending order by clock freq. */
--		qsort(output->config.connector->modes,
--		      output->config.connector->count_modes,
--		      sizeof(drmModeModeInfo),
--		      sort_drm_modes);
-+		igt_sort_connector_modes(output->config.connector,
-+					 sort_drm_modes_by_clk_dsc);
- 
- 		outputs[n_outputs++] = output;
- 	}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index ba0bf4d6..0f12d825 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -637,6 +637,9 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
- 	for (int j__ = 0; assert(igt_can_fail()), (plane) = &(display)->pipes[(pipe)].planes[j__], \
- 		     j__ < (display)->pipes[(pipe)].n_planes; j__++)
- 
-+#define for_each_connector_mode(output)		\
-+	for (int j__ = 0;  j__ < output->config.connector->count_modes; j__++)
-+
- #define IGT_FIXED(i,f)	((i) << 16 | (f))
- 
- /**
-@@ -957,4 +960,11 @@ void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
- bool igt_check_output_bpc_equal(int drmfd, enum pipe pipe,
- 				char *output_name, unsigned int bpc);
- 
-+int sort_drm_modes_by_clk_dsc(const void *a, const void *b);
-+int sort_drm_modes_by_clk_asc(const void *a, const void *b);
-+int sort_drm_modes_by_res_dsc(const void *a, const void *b);
-+int sort_drm_modes_by_res_asc(const void *a, const void *b);
-+void igt_sort_connector_modes(drmModeConnector *connector,
-+		int (*comparator)(const void *, const void*));
-+
- #endif /* __IGT_KMS_H__ */
+ 		igt_fork_hang_detector(fd);
+ 		close(fd);
 -- 
-2.35.1
+2.34.1
