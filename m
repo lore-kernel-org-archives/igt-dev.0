@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95BE710F431
- for <igt-dev@lists.freedesktop.org>; Thu, 19 May 2022 08:25:14 +0000 (UTC)
-Date: Thu, 19 May 2022 11:22:50 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>
-Message-ID: <YoX+Wv2H5PY58Yg9@platvala-desk.ger.corp.intel.com>
-References: <20220315065509.398990-1-bhanuprakash.modem@intel.com>
- <YjB7y8eD3eBxELul@platvala-desk.ger.corp.intel.com>
- <1f59b2c7-e201-7ead-4861-942340d06b89@intel.com>
- <ed653bad-6527-5935-2eee-772050d148ac@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B814411AE8E
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 May 2022 08:32:38 +0000 (UTC)
+Date: Thu, 19 May 2022 10:32:34 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: sai.gowtham.ch@intel.com
+Message-ID: <YoYAosUtcwoFq+B2@zkempczy-mobl2>
+References: <20220518143539.24154-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ed653bad-6527-5935-2eee-772050d148ac@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915_module_load: Unload the module
- before exiting the subtest
+In-Reply-To: <20220518143539.24154-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_capture : Add
+ support for local memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,96 +21,307 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, May 19, 2022 at 01:00:21PM +0530, Sharma, Swati2 wrote:
-> Hi Bhanu,
+On Wed, May 18, 2022 at 08:05:39PM +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > 
-> Overall patch LGTM.
-> Minor changes.
-> 1. Change subject to tests/i915/i915_module_load
-> 2. Please add fixes tag.
+> v1: Adding local memory support to many-4K-zero subtest
+>     and used new macro for_each_memory_region for memory regioning.
 > 
-> With this fixed.
-> Reviewed-by:
-> Swati Sharma <swati2.sharma@intel.com>
-
-NAK on the patch, it's just hiding the real problem. The real cause
-needs to be found and understood before "fixing" it by slapping
-unloads to places.
-
-What this patch effectively does is adding an unload right before
-another unload. Why does that help?
-
-
-
--- 
-Petri Latvala
-
-
-
+> v2: Add 48b exec flag for execbuf.
 > 
-> On 15-Mar-22 5:35 PM, Modem, Bhanuprakash wrote:
-> > On Tue-15-03-2022 05:13 pm, Petri Latvala wrote:
-> > > On Tue, Mar 15, 2022 at 12:25:09PM +0530, Bhanuprakash Modem wrote:
-> > > > On DP-MST setup, after execution of "reload" subtest, i915
-> > > > became unloadable. And this is effecting the next subtest
-> > > > "reload-no-display".
-> > > > 
-> > > > Observing below error, if we run all subtests of i915_module_load
-> > > > (or) run "reload" & "reload-no-display" in same order using the
-> > > > igt_runner. But not seen any issue if we run each subtest individually.
-> > > > 
-> > > > $ ./igt_runner -o -l verbose -s --test-list tests.txt
-> > > > --use-watchdog ../tests/ results/
-> > > > (or)
-> > > > $ ./build/tests/i915_module_load
-> > > > †† Starting subtest: reload
-> > > > †† ...
-> > > > †† Subtest reload: SUCCESS (3.780s)
-> > > > 
-> > > > †† Starting subtest: reload-no-display
-> > > > †† (i915_module_load:42617) igt_kmod-WARNING: Could not unload i915
-> > > > †† Module†††††††††††††††††† Used by
-> > > > †† i915†††††††††††††††††††† 1
-> > > > †† ...
-> > > > †† Reloading i915 with disable_display=1
-> > > > †† Module i915 already inserted
-> > > > †† Could not load i915
-> > > > †† Subtest reload-no-display: FAIL (1.998s)
-> > > > 
-> > > > $ ./build/tests/i915_module_load --r reload
-> > > > †† Starting subtest: reload
-> > > > †† ...
-> > > > †† Subtest reload: SUCCESS (5.562s)
-> > > > $ ./build/tests/i915_module_load --r reload-no-display
-> > > > †† Starting subtest: reload-no-display
-> > > > †† ...
-> > > > †† Subtest reload-no-display: SUCCESS (7.995s)
-> > > > 
-> > > > This patch will unload the module before exiting the subtest. So
-> > > > that we can make sure that the module is unloaded.
-> > > 
-> > > Does it succeed in there? Or does this just make sure that the failure
-> > > is caught in the right place? What is actually holding the reference
-> > > to i915.ko?
-> > 
-> > Not sure who is holding the ref to i915. lsmod showing it is used by 1
-> > but not showing who actually holding it.
-> > 
-> > Module†††††††††††††††††† Used by
-> > i915†††††††††††††††††††† 1
-> > 
-> > But with this fix, there is no such failures mentioned in commit msg.
-> > 
-> > - Bhanu
-> > 
-> > > 
-> > > 
-> > 
+> v3: Iterate make-4k-incremental subtest over memory region and
+>     also reducing the number of objects created in lmem so that
+>     allocations in lmem is done adequate based on the allocation size
+>     available , as lmem is occupied by flatccs + gtt.
 > 
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Cc: Zbigniew Kempczy≈Ñski <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/i915/gem_exec_capture.c | 98 ++++++++++++++++++++---------------
+>  1 file changed, 57 insertions(+), 41 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+> index 60f8df04..001b9893 100644
+> --- a/tests/i915/gem_exec_capture.c
+> +++ b/tests/i915/gem_exec_capture.c
+> @@ -250,7 +250,8 @@ static void wait_to_die(int fence_out)
+>  
+>  static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  		       const struct intel_execution_engine2 *e,
+> -		       uint32_t target, uint64_t target_size, uint32_t region)
+> +		       uint32_t target, uint64_t target_size,
+> +		       struct drm_i915_gem_memory_class_instance *region)
+>  {
+>  	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+>  	struct drm_i915_gem_exec_object2 obj[4];
+> @@ -268,13 +269,13 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	saved_engine = configure_hangs(fd, e, ctx->id);
+>  
+>  	memset(obj, 0, sizeof(obj));
+> -	obj[SCRATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
+> +	obj[SCRATCH].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
+>  	obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
+>  	obj[CAPTURE].handle = target;
+>  	obj[CAPTURE].flags = EXEC_OBJECT_CAPTURE;
+>  	obj[NOCAPTURE].handle = gem_create(fd, 4096);
+>  
+> -	obj[BATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
+> +	obj[BATCH].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
+>  	obj[BATCH].relocs_ptr = (uintptr_t)reloc;
+>  	obj[BATCH].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
+>  
+> @@ -384,12 +385,13 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  }
+>  
+>  static void capture(int fd, int dir, const intel_ctx_t *ctx,
+> -		    const struct intel_execution_engine2 *e, uint32_t region)
+> +			const struct intel_execution_engine2 *e,
+> +			struct drm_i915_gem_memory_class_instance *region)
+>  {
+>  	uint32_t handle;
+>  	uint64_t ahnd, obj_size = 4096;
+>  
+> -	igt_assert_eq(__gem_create_in_memory_regions(fd, &handle, &obj_size, region), 0);
+> +	igt_assert_eq(__gem_create_in_memory_region_list(fd, &handle, &obj_size, region, 1), 0);
+>  	ahnd = get_reloc_ahnd(fd, ctx->id);
+>  
+>  	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, region);
+> @@ -415,7 +417,8 @@ static struct offset *
+>  __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	   const struct intel_execution_engine2 *e,
+>  	   unsigned int size, int count,
+> -	   unsigned int flags, int *_fence_out)
+> +	   unsigned int flags, int *_fence_out,
+> +	   struct drm_i915_gem_memory_class_instance *region)
+>  #define INCREMENTAL 0x1
+>  #define ASYNC 0x2
+>  {
+> @@ -436,9 +439,10 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	obj = calloc(count + 2, sizeof(*obj));
+>  	igt_assert(obj);
+>  
+> -	obj[0].handle = gem_create(fd, 4096);
+> +	obj[0].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
+>  	obj[0].offset = get_offset(ahnd, obj[0].handle, 4096, 0);
+> -	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
+> +	obj[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_WRITE |
+> +						(ahnd ? EXEC_OBJECT_PINNED : 0);
+>  
+>  	for (i = 0; i < count; i++) {
+>  		obj[i + 1].handle = gem_create(fd, size);
+> @@ -459,11 +463,12 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  		}
+>  	}
+>  
+> -	obj[count + 1].handle = gem_create(fd, 4096);
+> +	obj[count + 1].handle = gem_create_in_memory_region_list(fd, 4096, region, 1);
+>  	obj[count + 1].relocs_ptr = (uintptr_t)reloc;
+>  	obj[count + 1].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
+>  	obj[count + 1].offset = get_offset(ahnd, obj[count + 1].handle, 4096, 0);
+> -	obj[count + 1].flags = ahnd ? EXEC_OBJECT_PINNED : 0;
+> +	obj[count + 1].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS |
+> +					ahnd ? EXEC_OBJECT_PINNED : 0;
+
+Missing brackets.
+
+>  
+>  	memset(reloc, 0, sizeof(reloc));
+>  	reloc[0].target_handle = obj[count + 1].handle; /* recurse */
+> @@ -585,29 +590,39 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  		saved = configure_hangs(fd, e, ctx->id); \
+>  	} while(0)
+>  
+> -static void many(int fd, int dir, uint64_t size, unsigned int flags)
+> +static void many(int fd, int dir, uint64_t size, unsigned int flags,
+> +			struct drm_i915_gem_memory_class_instance *region)
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	const intel_ctx_t *ctx;
+> -	uint64_t ram, gtt, ahnd;
+> +	uint64_t ram, gtt, ahnd, lmem_size;
+>  	unsigned long count, blobs;
+>  	struct offset *offsets;
+>  	struct gem_engine_properties saved_engine;
+> +	struct drm_i915_query_memory_regions *info;
+>  
+>  	find_first_available_engine(fd, ctx, e, saved_engine);
+>  
+>  	gtt = gem_aperture_size(fd) / size;
+> -	ram = (intel_get_avail_ram_mb() << 20) / size;
+> +	ram = (intel_get_avail_ram_mb() << 20) / (size * 32);
+>  	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
+>  		  gtt, ram);
+>  
+> -	count = min(gtt, ram) / 4;
+> -	igt_require(count > 1);
+> +	info = gem_get_query_memory_regions(fd);
+> +	lmem_size = gpu_meminfo_region_total_size(info, I915_MEMORY_CLASS_DEVICE) / (size * 16);
+> +
+> +	if (region->memory_class == I915_MEMORY_CLASS_SYSTEM)
+> +		count = min(gtt, ram) / 2;
+> +	else
+> +		count = min(gtt, lmem_size) / 4;
+> +
+> +	igt_require(count >= 1);
+
+On machine I'm testing it I'm able to enter neverending eviction.
+I think we should separate count calculation regarding integrated and discrete.
+I mean we should leave previous count calculation intact for integrated,
+for discrete we should limit both smem and lmem objects number to for example
+1/n (n could be passed as an argument) and do count = min(16K, 1/n) for lmem
+and min(64K, 1/n) for smem.
+
+--
+Zbigniew
+
+>  
+>  	intel_require_memory(count, size, CHECK_RAM);
+>  	ahnd = get_reloc_ahnd(fd, ctx->id);
+>  
+> -	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
+> +	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL,
+> +			region);
+>  
+>  	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
+>  	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
+> @@ -620,7 +635,8 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
+>  }
+>  
+>  static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+> -		    const struct intel_execution_engine2 *e)
+> +		    const struct intel_execution_engine2 *e,
+> +		    struct drm_i915_gem_memory_class_instance *region)
+>  {
+>  	const uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	struct drm_i915_gem_exec_object2 obj = {
+> @@ -677,7 +693,8 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+>  		/* Reopen the allocator in the new process. */
+>  		ahnd = get_reloc_ahnd(fd, ctx2->id);
+>  
+> -		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
+> +		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC,
+> +					&fence_out, region));
+>  		put_ahnd(ahnd);
+>  
+>  		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
+> @@ -708,7 +725,8 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
+>  	put_ahnd(ahnd);
+>  }
+>  
+> -static void userptr(int fd, int dir)
+> +static void userptr(int fd, int dir,
+> +			struct drm_i915_gem_memory_class_instance *region)
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	const intel_ctx_t *ctx;
+> @@ -716,7 +734,7 @@ static void userptr(int fd, int dir)
+>  	uint64_t ahnd;
+>  	void *ptr;
+>  	int obj_size = 4096;
+> -	uint32_t system_region = INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0);
+> +
+>  	struct gem_engine_properties saved_engine;
+>  
+>  	find_first_available_engine(fd, ctx, e, saved_engine);
+> @@ -726,7 +744,7 @@ static void userptr(int fd, int dir)
+>  	igt_require(__gem_userptr(fd, ptr, obj_size, 0, 0, &handle) == 0);
+>  	ahnd = get_reloc_ahnd(fd, ctx->id);
+>  
+> -	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, system_region);
+> +	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, region);
+>  
+>  	gem_close(fd, handle);
+>  	put_ahnd(ahnd);
+> @@ -764,9 +782,10 @@ igt_main
+>  	int fd = -1;
+>  	int dir = -1;
+>  	struct drm_i915_query_memory_regions *query_info;
+> -	struct igt_collection *regions, *set;
+> -	char *sub_name;
+> -	uint32_t region;
+> +	struct drm_i915_gem_memory_class_instance region_smem = {
+> +		.memory_class = I915_MEMORY_CLASS_SYSTEM,
+> +		.memory_instance = 0,
+> +	};
+>  
+>  	igt_fixture {
+>  		int gen;
+> @@ -788,56 +807,53 @@ igt_main
+>  		igt_require(safer_strlen(igt_sysfs_get(dir, "error")) > 0);
+>  		query_info = gem_get_query_memory_regions(fd);
+>  		igt_assert(query_info);
+> -		set = get_memory_region_set(query_info,
+> -				I915_SYSTEM_MEMORY,
+> -				I915_DEVICE_MEMORY);
+>  	}
+>  
+>  	test_each_engine("capture", fd, ctx, e) {
+> -		for_each_combination(regions, 1, set) {
+> -			sub_name = memregion_dynamic_subtest_name(regions);
+> -			region = igt_collection_get_value(regions, 0);
+> -			igt_dynamic_f("%s-%s", e->name, sub_name)
+> -				capture(fd, dir, ctx, e, region);
+> -			free(sub_name);
+> +		for_each_memory_region(r, fd) {
+> +			igt_dynamic_f("%s-%s", e->name, r->name)
+> +				capture(fd, dir, ctx, e, &r->ci);
+>  		}
+>  	}
+>  
+> -	igt_subtest_f("many-4K-zero") {
+> +	igt_subtest_with_dynamic("many-4K-zero") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 1<<12, 0);
+> +		many(fd, dir, 1<<12, 0, &region_smem);
+>  	}
+>  
+>  	igt_subtest_f("many-4K-incremental") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 1<<12, INCREMENTAL);
+> +		for_each_memory_region(r, fd) {
+> +			igt_dynamic_f("%s", r->name)
+> +				many(fd, dir, 1<<12, INCREMENTAL, &r->ci);
+> +		}
+>  	}
+>  
+>  	igt_subtest_f("many-2M-zero") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 2<<20, 0);
+> +		many(fd, dir, 2<<20, 0, &region_smem);
+>  	}
+>  
+>  	igt_subtest_f("many-2M-incremental") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 2<<20, INCREMENTAL);
+> +		many(fd, dir, 2<<20, INCREMENTAL, &region_smem);
+>  	}
+>  
+>  	igt_subtest_f("many-256M-incremental") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		many(fd, dir, 256<<20, INCREMENTAL);
+> +		many(fd, dir, 256<<20, INCREMENTAL, &region_smem);
+>  	}
+>  
+>  	/* And check we can read from different types of objects */
+>  
+>  	igt_subtest_f("userptr") {
+>  		igt_require(gem_can_store_dword(fd, 0));
+> -		userptr(fd, dir);
+> +		userptr(fd, dir, &region_smem);
+>  	}
+>  
+>  	test_each_engine("pi", fd, ctx, e)
+>  		igt_dynamic_f("%s", (e)->name)
+> -			prioinv(fd, dir, ctx, e);
+> +			prioinv(fd, dir, ctx, e, &region_smem);
+>  
+>  	igt_fixture {
+>  		close(dir);
 > -- 
-> ~Swati Sharma
+> 2.35.1
+> 
