@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43BD811A36F
- for <igt-dev@lists.freedesktop.org>; Thu, 19 May 2022 11:36:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C081211A375
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 May 2022 11:36:03 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 19 May 2022 17:05:40 +0530
-Message-Id: <20220519113542.31219-3-anshuman.gupta@intel.com>
+Date: Thu, 19 May 2022 17:05:41 +0530
+Message-Id: <20220519113542.31219-4-anshuman.gupta@intel.com>
 In-Reply-To: <20220519113542.31219-1-anshuman.gupta@intel.com>
 References: <20220519113542.31219-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/4] i915_pm_rpm:
- s/display_disabled/display_enabled
+Subject: [igt-dev] [PATCH i-g-t v3 3/4] test: i915_pm_rpm: conditional
+ initialization of igt_display_t
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,116 +24,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Change var display_disabled to display_enabled, also
-modify the passed argument and condition accordingly.
+Initialize igt_display_t display only in case of there are
+valid drm kms resources.
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+v2:
+- Move igt_display_fini under the 'if (data->res)' cond. [Ashutosh]
+
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ tests/i915/i915_pm_rpm.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 383263a1d2..31ce89ffa7 100644
+index 31ce89ffa7..b63367725b 100644
 --- a/tests/i915/i915_pm_rpm.c
 +++ b/tests/i915/i915_pm_rpm.c
-@@ -784,7 +784,7 @@ static void dump_file(int dir, const char *filename)
- 	free(contents);
+@@ -406,9 +406,9 @@ static void init_mode_set_data(struct mode_set_data *data)
+ 		}
+ 
+ 		kmstest_set_vt_graphics_mode();
++		igt_display_require(&data->display, drm_fd);
+ 	}
+ 
+-	igt_display_require(&data->display, drm_fd);
+ 	init_modeset_cached_params(&ms_data);
  }
  
--static bool setup_environment(bool display_disabled)
-+static bool setup_environment(bool display_enabled)
- {
- 	if (has_runtime_pm)
- 		goto out;
-@@ -798,7 +798,7 @@ static bool setup_environment(bool display_disabled)
- 
- 	ms_data.devid = intel_get_drm_devid(drm_fd);
- 
--	if (!display_disabled)
-+	if (display_enabled)
- 		init_mode_set_data(&ms_data);
- 
- 	igt_pm_enable_sata_link_power_management();
-@@ -812,14 +812,14 @@ static bool setup_environment(bool display_disabled)
- 	igt_require(igt_pm_dmc_loaded(debugfs));
- 
- out:
--	if (!display_disabled)
-+	if (display_enabled)
- 		disable_all_screens(&ms_data);
- 	dump_file(debugfs, "i915_runtime_pm_status");
- 
- 	return wait_for_suspended();
+@@ -420,9 +420,8 @@ static void fini_mode_set_data(struct mode_set_data *data)
+ 			drmModeFreePropertyBlob(data->edids[i]);
+ 		}
+ 		drmModeFreeResources(data->res);
++		igt_display_fini(&data->display);
+ 	}
+-
+-	igt_display_fini(&data->display);
  }
  
--static void teardown_environment(bool display_disabled)
-+static void teardown_environment(bool display_enabled)
- {
- 	close(msr_fd);
- 	if (has_pc8)
-@@ -829,7 +829,7 @@ static void teardown_environment(bool display_disabled)
- 
- 	igt_pm_restore_sata_link_power_management();
- 
--	if (!display_disabled)
-+	if (display_enabled)
- 		fini_mode_set_data(&ms_data);
- 
- 	close(debugfs);
-@@ -2051,7 +2051,7 @@ static struct option long_options[] = {
- igt_main_args("", long_options, help_str, opt_handler, NULL)
- {
- 	igt_subtest("basic-rte") {
--		igt_assert(setup_environment(false));
-+		igt_assert(setup_environment(true));
- 		basic_subtest();
- 	}
- 
-@@ -2059,7 +2059,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	 * PC8+. We don't want bug reports from cases where the machine is just
- 	 * not properly configured. */
- 	igt_fixture {
--		igt_require(setup_environment(false));
-+		igt_require(setup_environment(true));
- 	}
- 
- 	if (stay)
-@@ -2203,7 +2203,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_fixture
--		teardown_environment(false);
-+		teardown_environment(true);
- 
- 	igt_subtest("module-reload") {
- 		igt_debug("Reload w/o display\n");
-@@ -2212,9 +2212,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_kmsg(KMSG_INFO "Reloading i915 w/o display\n");
- 		igt_assert_eq(igt_i915_driver_load("disable_display=1 mmio_debug=-1"), 0);
- 
--		igt_assert(setup_environment(true));
-+		igt_assert(setup_environment(false));
- 		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
--		teardown_environment(true);
-+		teardown_environment(false);
- 
- 		igt_debug("Reload as normal\n");
- 		igt_i915_driver_unload();
-@@ -2222,11 +2222,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_kmsg(KMSG_INFO "Reloading i915 as normal\n");
- 		igt_assert_eq(igt_i915_driver_load("mmio_debug=-1"), 0);
- 
--		igt_assert(setup_environment(false));
-+		igt_assert(setup_environment(true));
- 		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
- 		if (enable_one_screen_with_type(&ms_data, SCREEN_TYPE_ANY))
- 			drm_resources_equal_subtest();
--		teardown_environment(false);
-+		teardown_environment(true);
- 
- 		/* Remove our mmio_debugging module */
- 		igt_i915_driver_unload();
+ static void get_drm_info(struct compare_data *data)
 -- 
 2.26.2
