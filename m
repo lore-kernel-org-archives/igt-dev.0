@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1976F11A56D
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 May 2022 11:57:21 +0000 (UTC)
+Date: Thu, 19 May 2022 13:57:17 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YoYwnQHjNJCF8Cy3@kamilkon-desk1>
+References: <20220518135908.23918-1-sai.gowtham.ch@intel.com>
+ <20220518135908.23918-2-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Date: Thu, 19 May 2022 11:44:47 -0000
-Message-ID: <165296068777.515.306712448954039439@emeril.freedesktop.org>
-References: <20220519112449.25819-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20220519112449.25819-1-kamil.konieczny@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/i915/gem=5Fclose=5Frace=3A_Adopt_to_use_softpin_=28rev2=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220518135908.23918-2-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_exec_gttfill: Added test
+ description for test case.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +21,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 2022-05-18 at 19:29:07 +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> 
+> Added test description to all the available subtests.
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Series: tests/i915/gem_close_race: Adopt to use softpin (rev2)
-URL   : https://patchwork.freedesktop.org/series/104147/
-State : warning
+Lgtm,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
+--
+Kamil
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/590616 for the overview.
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/22898720):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                289
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1652960605:step_script
-  section_start:1652960605:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1728 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=22898720 responseStatus=201 Created token=yit6yyLm
-  section_end:1652960614:upload_artifacts_on_failure
-  section_start:1652960614:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1652960615:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/590616
+> ---
+>  tests/i915/gem_exec_gttfill.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
+> index ebe6d2d3..4557142d 100644
+> --- a/tests/i915/gem_exec_gttfill.c
+> +++ b/tests/i915/gem_exec_gttfill.c
+> @@ -236,9 +236,12 @@ igt_main
+>  		intel_allocator_multiprocess_start();
+>  	}
+>  
+> +	igt_describe("Checks if it can handle enough batches to fill gtt");
+>  	igt_subtest("basic") /* just enough to run a single pass */
+>  		fillgtt(i915, ctx, ALL_ENGINES, 1);
+>  
+> +	igt_describe("Checks the correctness of handling enough batches "
+> +		     "to fill gtt for each engine");
+>  	igt_subtest_with_dynamic("engines") {
+>  		for_each_ctx_engine(i915, ctx, e) {
+>  			if (!gem_class_can_store_dword(i915, e->class))
+> @@ -249,6 +252,8 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_describe("Stress test check behaviour/correctness of handling"
+> +		     " batches to fill gtt");
+>  	igt_subtest("all")
+>  		fillgtt(i915, ctx, ALL_ENGINES, 20);
+>  
+> -- 
+> 2.35.1
+> 
