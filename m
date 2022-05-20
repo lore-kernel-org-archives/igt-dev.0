@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87C7610E854
- for <igt-dev@lists.freedesktop.org>; Fri, 20 May 2022 10:40:00 +0000 (UTC)
-From: Ryszard Knop <ryszard.knop@intel.com>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Fri, 20 May 2022 12:39:45 +0200
-Message-Id: <20220520103945.279113-1-ryszard.knop@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3721676627346220599=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_chamelium: Check if port
- adapters are in use
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Fri, 20 May 2022 10:44:50 -0000
+Message-ID: <165304349079.19818.9640737070969070984@emeril.freedesktop.org>
+References: <20220520090717.25767-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220520090717.25767-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fconcurrent=3A_Skip_the_subtest_if_the_resolution_is_not_s?=
+ =?utf-8?q?upported_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,147 +18,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If a DUT has Chamelium ports connected via an adapter (for example, DP
-on the Chamelium side -> DP-HDMI adapter -> HDMI on the DUT), this will
-usually cause many tests to fail. If mismatching port types are found
-on both sides, the tests will now be aborted with a warning.
+--===============3721676627346220599==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This behavior can be overridden with a new AdapterAllowed config value,
-which must be set in [Chamelium:PORT] blocks in .igtrc.
+== Series Details ==
 
-Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
----
- docs/chamelium.txt  | 18 ++++++++++++++----
- lib/igt_chamelium.c | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 49 insertions(+), 4 deletions(-)
+Series: tests/kms_concurrent: Skip the subtest if the resolution is not supported (rev4)
+URL   : https://patchwork.freedesktop.org/series/103569/
+State : failure
 
-diff --git a/docs/chamelium.txt b/docs/chamelium.txt
-index 32c296f7..7484a3f8 100644
---- a/docs/chamelium.txt
-+++ b/docs/chamelium.txt
-@@ -94,7 +94,8 @@ example (only Chamelium.URL is mandatory):
-     URL=http://192.168.1.2:9992
- 
-     # The rest of the sections are used for defining connector mappings. This
--    # is optional, the mappings will be discovered automatically.
-+    # is optional if the same connector type (ex. DP-DP) is used on both sides,
-+    # the mappings will be discovered automatically.
- 
-     # The name of the DRM connector
-     # The DP-1 of [Chamelium:DP-1] and the HDMI-A-1 of [Chamelium:HDMI-A-1] indicate
-@@ -102,13 +103,22 @@ example (only Chamelium.URL is mandatory):
-     [Chamelium:DP-1]
-     # The ChameliumPortID indicates physical port (device) id of a Chamelium Board.
-     # A Chamelium daemon program defines these port ids as
--    # DP1 (located next to the HDMI port) = 1
--    # DP2 (located next to the VGA connector) = 2
--    # HDMI = 3 and VGA = 4
-+    # - DP1 (located next to the HDMI port) = 1
-+    # - DP2 (located next to the VGA connector) = 2
-+    # - HDMI = 3
-+    # - VGA = 4
-     # The port ids are defined at:
-     # https://chromium.googlesource.com/chromiumos/platform/chameleon/+/master/chameleond/utils/ids.py
-     ChameliumPortID=1
- 
-+    [Chamelium:HDMI-A-1]
-+    # Notice that the DRM side has HDMI, but Chamelium has DP on port 2.
-+    # This is possible via an HDMI-DP adapter, but such scenarios often cause
-+    # issues, so by default we fail if mismatching connector types are found.
-+    # If AdapterAllowed is set to 1, the tests will proceed with a warning.
-+    ChameliumPortID=2
-+    AdapterAllowed=1
-+
-     [Chamelium:HDMI-A-2]
-     ChameliumPortID=3
- 
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index b4d838bb..55cbfa12 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -26,6 +26,7 @@
- 
- #include "config.h"
- 
-+#include <stdbool.h>
- #include <string.h>
- #include <errno.h>
- #include <math.h>
-@@ -103,6 +104,7 @@ struct chamelium_port {
- 	int id;
- 	int connector_id;
- 	char *name;
-+	bool adapter_allowed;
- };
- 
- struct chamelium_frame_dump {
-@@ -2324,6 +2326,9 @@ static bool chamelium_read_port_mappings(struct chamelium *chamelium,
- 			goto out;
- 		}
- 
-+		port->adapter_allowed = g_key_file_get_boolean(igt_key_file, group,
-+		                                               "AdapterAllowed", &error);
-+
- 		for (j = 0;
- 		     j < res->count_connectors && !port->connector_id;
- 		     j++) {
-@@ -2557,6 +2562,7 @@ static bool chamelium_autodiscover(struct chamelium *chamelium, int drm_fd)
- 		port->id = port_id;
- 		port->type = chamelium_get_port_type(chamelium, port);
- 		port->connector_id = conn_id;
-+		port->adapter_allowed = false;
- 
- 		connector = drmModeGetConnectorCurrent(drm_fd, conn_id);
- 		snprintf(conn_name, sizeof(conn_name), "%s-%u",
-@@ -2703,6 +2709,7 @@ error:
- struct chamelium *chamelium_init(int drm_fd)
- {
- 	struct chamelium *chamelium = chamelium_init_rpc_only();
-+	bool mismatching_ports_found = false;
- 
- 	if (chamelium == NULL)
- 		return NULL;
-@@ -2734,9 +2741,37 @@ struct chamelium *chamelium_init(int drm_fd)
- 		}
- 	}
- 
-+	for (int i = 0; i < chamelium->port_count; i++) {
-+		bool type_mismatch = false;
-+		struct chamelium_port * port = &chamelium->ports[i];
-+		drmModeConnectorPtr connector =
-+			drmModeGetConnectorCurrent(drm_fd, port->connector_id);
-+
-+		igt_assert(connector != NULL);
-+
-+		type_mismatch = port->type != connector->connector_type;
-+
-+		if (type_mismatch)
-+			igt_info("Chamelium port %d is %s, but the DRM connector is %s\n",
-+				 port->id, kmstest_connector_type_str(port->type),
-+				 kmstest_connector_type_str(connector->connector_type));
-+
-+		if (type_mismatch && !port->adapter_allowed)
-+			mismatching_ports_found = true;
-+
-+		drmModeFreeConnector(connector);
-+	}
-+
- 	cleanup_instance = chamelium;
- 	igt_install_exit_handler(chamelium_exit_handler);
- 
-+	igt_abort_on_f(mismatching_ports_found,
-+		       "Chamelium port(s) with mismatching connector type on the "
-+		       "DRM side found - this will most likely cause test failures. "
-+		       "If you want to proceed with this this configuration, set the "
-+		       "port mapping manually in .igtrc with AdapterAllowed=1. See "
-+		       "docs/chamelium.txt for more information.\n");
-+
- 	return chamelium;
- error:
- 	close(chamelium->drm_fd);
--- 
-2.36.1
+== Summary ==
+
+Series 103569 revision 4 was fully merged or fully failed: no git log
+
+
+
+--===============3721676627346220599==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_concurrent: Skip the subtest if the resolution is not supported (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103569/">https://patchwork.freedesktop.org/series/103569/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 103569 revision 4 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============3721676627346220599==--
