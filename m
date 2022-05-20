@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3721676627346220599=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Fri, 20 May 2022 10:44:50 -0000
-Message-ID: <165304349079.19818.9640737070969070984@emeril.freedesktop.org>
-References: <20220520090717.25767-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20220520090717.25767-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fconcurrent=3A_Skip_the_subtest_if_the_resolution_is_not_s?=
- =?utf-8?q?upported_=28rev4=29?=
+To: "Ryszard Knop" <ryszard.knop@intel.com>
+Date: Fri, 20 May 2022 10:54:00 -0000
+Message-ID: <165304404074.19817.1791112399786528072@emeril.freedesktop.org>
+References: <20220520103945.279113-1-ryszard.knop@intel.com>
+In-Reply-To: <20220520103945.279113-1-ryszard.knop@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fchamelium=3A_Check_if_port_adapters_are_in_use_=28re?=
+ =?utf-8?b?djIp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,53 +24,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3721676627346220599==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/kms_concurrent: Skip the subtest if the resolution is not supported (rev4)
-URL   : https://patchwork.freedesktop.org/series/103569/
-State : failure
+Series: tests/kms_chamelium: Check if port adapters are in use (rev2)
+URL   : https://patchwork.freedesktop.org/series/104121/
+State : warning
 
 == Summary ==
 
-Series 103569 revision 4 was fully merged or fully failed: no git log
+Pipeline status: FAILED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/591663 for the overview.
 
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/22961150):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                289
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1653043879:step_script
+  section_start:1653043879:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1728 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=22961150 responseStatus=201 Created token=gssyAm2m
+  section_end:1653043890:upload_artifacts_on_failure
+  section_start:1653043890:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1653043891:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
---===============3721676627346220599==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+== Logs ==
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_concurrent: Skip the subtest if the resolution is not supported (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/103569/">https://patchwork.freedesktop.org/series/103569/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-</table>
-
-
-    <p>Series 103569 revision 4 was fully merged or fully failed: no git log</p>
-
-</body>
-</html>
-
---===============3721676627346220599==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/591663
