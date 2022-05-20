@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F73E11A92D
- for <igt-dev@lists.freedesktop.org>; Fri, 20 May 2022 08:53:04 +0000 (UTC)
-Date: Fri, 20 May 2022 11:50:41 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <YodWYddLAUcHAW4+@platvala-desk.ger.corp.intel.com>
-References: <20220519141745.118599-1-zbigniew.kempczynski@intel.com>
- <YoctjVGJEqJf+d+Y@platvala-desk.ger.corp.intel.com>
- <Yoc/FpEt0u7qU9vf@zkempczy-mobl2>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3DA8810E6E3
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 May 2022 09:30:08 +0000 (UTC)
+From: "Knop, Ryszard" <ryszard.knop@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Date: Fri, 20 May 2022 09:30:02 +0000
+Message-ID: <40c24e9f2cc06a973cb3d06f69b888c677b36e54.camel@intel.com>
+References: <20220518112308.79136-1-ryszard.knop@intel.com>
+ <YoYpKbjCCKZWC0cL@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YoYpKbjCCKZWC0cL@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <42248D55B1E6014F92E7D6653179EA03@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Yoc/FpEt0u7qU9vf@zkempczy-mobl2>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: For i915 devices
- run allocator in multiprocess mode
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_chamelium: Check if port
+ adapters are in use
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,50 +23,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Luciano Coelho <luciano.coelho@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 20, 2022 at 09:11:18AM +0200, Zbigniew Kempczyński wrote:
-> On Fri, May 20, 2022 at 08:56:29AM +0300, Petri Latvala wrote:
-> > On Thu, May 19, 2022 at 04:17:45PM +0200, Zbigniew Kempczyński wrote:
-> > > Test calls igt_fork() so for i915 requires offset allocation arbitration
-> > > (allocator in multiprocess mode) especially when same drm fd is used
-> > > in children. Dedicated thread (intel_allocator_multiprocess_start())
-> > > is required to be started on the very beginning to handle offset
-> > > allocations as well as stopping it (intel_allocator_multiprocess_stop())
-> > > before test exits.
-> > > 
-> > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > > Cc: Luciano Coelho <luciano.coelho@intel.com>
-> > > Cc: Swati Sharma <swati2.sharma@intel.com>
-> > 
-> > Acked-by: Petri Latvala <petri.latvala@intel.com>
-> > 
-> > Now, having said that:
-> > 
-> > The test itself doesn't touch the allocator at all, it's done by
-> > igt_fb.c's blitcopy() under the hood. Did you check if there's any
-> > other tests that could have this problem? Suggesting a common way to
-> > have tests communicate their intention to fork is overkill at this
-> > point, unless the problem is widespread.
-> 
-> Take a look to kms_busy.c function flip_to_fb.c. There's igt_fork()
-> but we don't need to run additional allocator thread. 
-> 
-> I think we can try:
-> 1. run multiprocess allocator thread on all igt run but this is imo
->    overkill, especially if test works on separate vm's it can "detach"
->    and become standalone allocator,
-> 2. add some debug information instead of segfaulting that multiprocess
->    allocator is likely required in the test. IGT already got similar
->    code (like internal_assert in igt_describe_f()).
-
-Debug information sounds really good. It's easy to detect the crashing
-case in the allocator code after all, from what I remember about the
-backtrace.
-
-
--- 
-Petri Latvala
+T24gVGh1LCAyMDIyLTA1LTE5IGF0IDE0OjI1ICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOgo+
+IE9uIFdlZCwgTWF5IDE4LCAyMDIyIGF0IDAxOjIzOjA4UE0gKzAyMDAsIFJ5c3phcmQgS25vcCB3
+cm90ZToKPiA+IElmIGEgRFVUIGhhcyBDaGFtZWxpdW0gcG9ydHMgY29ubmVjdGVkIHZpYSBhbiBh
+ZGFwdGVyIChmb3IgZXhhbXBsZSwKPiA+IERQCj4gPiBvbiB0aGUgQ2hhbWVsaXVtIHNpZGUgLT4g
+RFAtSERNSSBhZGFwdGVyIC0+IEhETUkgb24gdGhlIERVVCksIHRoaXMKPiA+IHdpbGwKPiA+IHVz
+dWFsbHkgY2F1c2UgbWFueSB0ZXN0cyB0byBmYWlsLiBJZiBtaXNtYXRjaGluZyBwb3J0IHR5cGVz
+IGFyZQo+ID4gZm91bmQKPiA+IG9uIGJvdGggc2lkZXMsIHRoZSB0ZXN0cyB3aWxsIG5vdyBiZSBh
+Ym9ydGVkIHdpdGggYSB3YXJuaW5nLgo+ID4gCj4gPiBUaGlzIGJlaGF2aW9yIGNhbiBiZSBvdmVy
+cmlkZGVuIHdpdGggYSBuZXcgQWRhcHRlckFsbG93ZWQgY29uZmlnCj4gPiB2YWx1ZSwKPiA+IHdo
+aWNoIG11c3QgYmUgc2V0IGluIFtDaGFtZWxpdW06UE9SVF0gYmxvY2tzIGluIC5pZ3RyYy4KPiAK
+PiBZb3VyIHNpZ25lZC1vZmYtYnkgaXMgbWlzc2luZy4KCk9vcHMsIHRoYXQncyByaWdodCwgd2ls
+bCByZS1zZW5kIHYyIHdpdGggdGhhdC4KCgo+ID4gLS0tCj4gPiDCoGRvY3MvY2hhbWVsaXVtLnR4
+dMKgIHwgMTggKysrKysrKysrKysrKystLS0tCj4gPiDCoGxpYi9pZ3RfY2hhbWVsaXVtLmMgfCAz
+NSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ID4gwqAyIGZpbGVzIGNoYW5n
+ZWQsIDQ5IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQg
+YS9kb2NzL2NoYW1lbGl1bS50eHQgYi9kb2NzL2NoYW1lbGl1bS50eHQKPiA+IGluZGV4IDMyYzI5
+NmY3Li43NDg0YTNmOCAxMDA2NDQKPiA+IC0tLSBhL2RvY3MvY2hhbWVsaXVtLnR4dAo+ID4gKysr
+IGIvZG9jcy9jaGFtZWxpdW0udHh0Cj4gPiBAQCAtOTQsNyArOTQsOCBAQCBleGFtcGxlIChvbmx5
+IENoYW1lbGl1bS5VUkwgaXMgbWFuZGF0b3J5KToKPiA+IMKgwqDCoMKgIFVSTD1odHRwOi8vMTky
+LjE2OC4xLjI6OTk5Mgo+ID4gwqAKPiA+IMKgwqDCoMKgICMgVGhlIHJlc3Qgb2YgdGhlIHNlY3Rp
+b25zIGFyZSB1c2VkIGZvciBkZWZpbmluZyBjb25uZWN0b3IKPiA+IG1hcHBpbmdzLiBUaGlzCj4g
+PiAtwqDCoMKgICMgaXMgb3B0aW9uYWwsIHRoZSBtYXBwaW5ncyB3aWxsIGJlIGRpc2NvdmVyZWQg
+YXV0b21hdGljYWxseS4KPiA+ICvCoMKgwqAgIyBpcyBvcHRpb25hbCBpZiB0aGUgc2FtZSBjb25u
+ZWN0b3IgdHlwZSAoZXguIERQLURQKSBpcyB1c2VkCj4gPiBvbiBib3RoIHNpZGVzLAo+ID4gK8Kg
+wqDCoCAjIHRoZSBtYXBwaW5ncyB3aWxsIGJlIGRpc2NvdmVyZWQgYXV0b21hdGljYWxseS4KPiA+
+IMKgCj4gPiDCoMKgwqDCoCAjIFRoZSBuYW1lIG9mIHRoZSBEUk0gY29ubmVjdG9yCj4gPiDCoMKg
+wqDCoCAjIFRoZSBEUC0xIG9mIFtDaGFtZWxpdW06RFAtMV0gYW5kIHRoZSBIRE1JLUEtMSBvZgo+
+ID4gW0NoYW1lbGl1bTpIRE1JLUEtMV0gaW5kaWNhdGUKPiA+IEBAIC0xMDIsMTMgKzEwMywyMiBA
+QCBleGFtcGxlIChvbmx5IENoYW1lbGl1bS5VUkwgaXMgbWFuZGF0b3J5KToKPiA+IMKgwqDCoMKg
+IFtDaGFtZWxpdW06RFAtMV0KPiA+IMKgwqDCoMKgICMgVGhlIENoYW1lbGl1bVBvcnRJRCBpbmRp
+Y2F0ZXMgcGh5c2ljYWwgcG9ydCAoZGV2aWNlKSBpZCBvZiBhCj4gPiBDaGFtZWxpdW0gQm9hcmQu
+Cj4gPiDCoMKgwqDCoCAjIEEgQ2hhbWVsaXVtIGRhZW1vbiBwcm9ncmFtIGRlZmluZXMgdGhlc2Ug
+cG9ydCBpZHMgYXMKPiA+IC3CoMKgwqAgIyBEUDEgKGxvY2F0ZWQgbmV4dCB0byB0aGUgSERNSSBw
+b3J0KSA9IDEKPiA+IC3CoMKgwqAgIyBEUDIgKGxvY2F0ZWQgbmV4dCB0byB0aGUgVkdBIGNvbm5l
+Y3RvcikgPSAyCj4gPiAtwqDCoMKgICMgSERNSSA9IDMgYW5kIFZHQSA9IDQKPiA+ICvCoMKgwqAg
+IyAtIERQMSAobG9jYXRlZCBuZXh0IHRvIHRoZSBIRE1JIHBvcnQpID0gMQo+ID4gK8KgwqDCoCAj
+IC0gRFAyIChsb2NhdGVkIG5leHQgdG8gdGhlIFZHQSBjb25uZWN0b3IpID0gMgo+ID4gK8KgwqDC
+oCAjIC0gSERNSSA9IDMKPiA+ICvCoMKgwqAgIyAtIFZHQSA9IDQKPiA+IMKgwqDCoMKgICMgVGhl
+IHBvcnQgaWRzIGFyZSBkZWZpbmVkIGF0Ogo+ID4gwqDCoMKgwqAgIwo+ID4gaHR0cHM6Ly9jaHJv
+bWl1bS5nb29nbGVzb3VyY2UuY29tL2Nocm9taXVtb3MvcGxhdGZvcm0vY2hhbWVsZW9uLysvbWFz
+dGVyL2NoYW1lbGVvbmQvdXRpbHMvaWRzLnB5Cj4gPiDCoMKgwqDCoCBDaGFtZWxpdW1Qb3J0SUQ9
+MQo+ID4gwqAKPiA+ICvCoMKgwqAgW0NoYW1lbGl1bTpIRE1JLUEtMV0KPiA+ICvCoMKgwqAgIyBO
+b3RpY2UgdGhhdCB0aGUgRFJNIHNpZGUgaGFzIEhETUksIGJ1dCBDaGFtZWxpdW0gaGFzIERQIG9u
+Cj4gPiBwb3J0IDIuCj4gPiArwqDCoMKgICMgVGhpcyBpcyBwb3NzaWJsZSB2aWEgYW4gSERNSS1E
+UCBhZGFwdGVyLCBidXQgc3VjaCBzY2VuYXJpb3MKPiA+IG9mdGVuIGNhdXNlCj4gPiArwqDCoMKg
+ICMgaXNzdWVzLCBzbyBieSBkZWZhdWx0IHdlIGZhaWwgaWYgbWlzbWF0Y2hpbmcgY29ubmVjdG9y
+IHR5cGVzCj4gPiBhcmUgZm91bmQuCj4gPiArwqDCoMKgICMgSWYgQWRhcHRlckFsbG93ZWQgaXMg
+c2V0IHRvIDEsIHRoZSB0ZXN0cyB3aWxsIHByb2NlZWQgd2l0aCBhCj4gPiB3YXJuaW5nLgo+ID4g
+K8KgwqDCoCBDaGFtZWxpdW1Qb3J0SUQ9Mgo+ID4gK8KgwqDCoCBBZGFwdGVyQWxsb3dlZD0xCj4g
+PiArCj4gPiDCoMKgwqDCoCBbQ2hhbWVsaXVtOkhETUktQS0yXQo+ID4gwqDCoMKgwqAgQ2hhbWVs
+aXVtUG9ydElEPTMKPiA+IMKgCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9jaGFtZWxpdW0uYyBi
+L2xpYi9pZ3RfY2hhbWVsaXVtLmMKPiA+IGluZGV4IGI0ZDgzOGJiLi41NWNiZmExMiAxMDA2NDQK
+PiA+IC0tLSBhL2xpYi9pZ3RfY2hhbWVsaXVtLmMKPiA+ICsrKyBiL2xpYi9pZ3RfY2hhbWVsaXVt
+LmMKPiA+IEBAIC0yNiw2ICsyNiw3IEBACj4gPiDCoAo+ID4gwqAjaW5jbHVkZSAiY29uZmlnLmgi
+Cj4gPiDCoAo+ID4gKyNpbmNsdWRlIDxzdGRib29sLmg+Cj4gPiDCoCNpbmNsdWRlIDxzdHJpbmcu
+aD4KPiA+IMKgI2luY2x1ZGUgPGVycm5vLmg+Cj4gPiDCoCNpbmNsdWRlIDxtYXRoLmg+Cj4gPiBA
+QCAtMTAzLDYgKzEwNCw3IEBAIHN0cnVjdCBjaGFtZWxpdW1fcG9ydCB7Cj4gPiDCoMKgwqDCoMKg
+wqDCoMKgaW50IGlkOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGludCBjb25uZWN0b3JfaWQ7Cj4gPiDC
+oMKgwqDCoMKgwqDCoMKgY2hhciAqbmFtZTsKPiA+ICvCoMKgwqDCoMKgwqDCoGJvb2wgYWRhcHRl
+cl9hbGxvd2VkOwo+ID4gwqB9Owo+ID4gwqAKPiA+IMKgc3RydWN0IGNoYW1lbGl1bV9mcmFtZV9k
+dW1wIHsKPiA+IEBAIC0yMzI0LDYgKzIzMjYsOSBAQCBzdGF0aWMgYm9vbAo+ID4gY2hhbWVsaXVt
+X3JlYWRfcG9ydF9tYXBwaW5ncyhzdHJ1Y3QgY2hhbWVsaXVtICpjaGFtZWxpdW0sCj4gPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBnb3RvIG91dDsKPiA+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gwqAKPiA+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBwb3J0LT5hZGFwdGVyX2FsbG93ZWQgPQo+ID4gZ19rZXlfZmls
+ZV9nZXRfYm9vbGVhbihpZ3Rfa2V5X2ZpbGUsIGdyb3VwLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gPiAiQWRh
+cHRlckFsbG93ZWQiLCAmZXJyb3IpOwo+ID4gKwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBmb3IgKGogPSAwOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBqIDwgcmVzLT5jb3VudF9jb25uZWN0b3JzICYmICFwb3J0LQo+ID4gPmNvbm5lY3Rv
+cl9pZDsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaisrKSB7
+Cj4gPiBAQCAtMjU1Nyw2ICsyNTYyLDcgQEAgc3RhdGljIGJvb2wgY2hhbWVsaXVtX2F1dG9kaXNj
+b3ZlcihzdHJ1Y3QKPiA+IGNoYW1lbGl1bSAqY2hhbWVsaXVtLCBpbnQgZHJtX2ZkKQo+ID4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwb3J0LT5pZCA9IHBvcnRfaWQ7Cj4gPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBvcnQtPnR5cGUgPSBjaGFtZWxpdW1fZ2V0X3Bv
+cnRfdHlwZShjaGFtZWxpdW0sCj4gPiBwb3J0KTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgcG9ydC0+Y29ubmVjdG9yX2lkID0gY29ubl9pZDsKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBwb3J0LT5hZGFwdGVyX2FsbG93ZWQgPSBmYWxzZTsKPiA+IMKgCj4g
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbm5lY3RvciA9IGRybU1vZGVHZXRD
+b25uZWN0b3JDdXJyZW50KGRybV9mZCwKPiA+IGNvbm5faWQpOwo+ID4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBzbnByaW50Zihjb25uX25hbWUsIHNpemVvZihjb25uX25hbWUpLCAi
+JXMtJXUiLAo+ID4gQEAgLTI3MDMsNiArMjcwOSw3IEBAIGVycm9yOgo+ID4gwqBzdHJ1Y3QgY2hh
+bWVsaXVtICpjaGFtZWxpdW1faW5pdChpbnQgZHJtX2ZkKQo+ID4gwqB7Cj4gPiDCoMKgwqDCoMKg
+wqDCoMKgc3RydWN0IGNoYW1lbGl1bSAqY2hhbWVsaXVtID0gY2hhbWVsaXVtX2luaXRfcnBjX29u
+bHkoKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGJvb2wgbWlzbWF0Y2hpbmdfcG9ydHNfZm91bmQgPSBm
+YWxzZTsKPiA+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKgaWYgKGNoYW1lbGl1bSA9PSBOVUxMKQo+
+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gTlVMTDsKPiA+IEBAIC0y
+NzM0LDkgKzI3NDEsMzcgQEAgc3RydWN0IGNoYW1lbGl1bSAqY2hhbWVsaXVtX2luaXQoaW50IGRy
+bV9mZCkKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gwqDCoMKgwqDC
+oMKgwqDCoH0KPiA+IMKgCj4gPiArwqDCoMKgwqDCoMKgwqBmb3IgKGludCBpID0gMDsgaSA8IGNo
+YW1lbGl1bS0+cG9ydF9jb3VudDsgaSsrKSB7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgYm9vbCB0eXBlX21pc21hdGNoID0gZmFsc2U7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgc3RydWN0IGNoYW1lbGl1bV9wb3J0ICogcG9ydCA9ICZjaGFtZWxpdW0tCj4g
+PiA+cG9ydHNbaV07Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZHJtTW9kZUNv
+bm5lY3RvclB0ciBjb25uZWN0b3IgPQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBkcm1Nb2RlR2V0Q29ubmVjdG9yQ3VycmVudChkcm1fZmQsIHBvcnQt
+Cj4gPiA+Y29ubmVjdG9yX2lkKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBpZ3RfYXNzZXJ0KGNvbm5lY3RvciAhPSBOVUxMKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqB0eXBlX21pc21hdGNoID0gcG9ydC0+dHlwZSAhPSBjb25uZWN0
+b3ItCj4gPiA+Y29ubmVjdG9yX3R5cGU7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgaWYgKHR5cGVfbWlzbWF0Y2gpCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9pbmZvKCJDaGFtZWxpdW0gcG9ydCAlZCBpcyAlcywg
+YnV0IHRoZQo+ID4gRFJNIGNvbm5lY3RvciBpcyAlc1xuIiwKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBwb3J0LT5pZCwK
+PiA+IGttc3Rlc3RfY29ubmVjdG9yX3R5cGVfc3RyKHBvcnQtPnR5cGUpLAo+ID4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4g
+PiBrbXN0ZXN0X2Nvbm5lY3Rvcl90eXBlX3N0cihjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlKSk7
+Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKHR5cGVfbWlzbWF0
+Y2ggJiYgIXBvcnQtPmFkYXB0ZXJfYWxsb3dlZCkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbWlzbWF0Y2hpbmdfcG9ydHNfZm91bmQgPSB0cnVlOwo+
+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRybU1vZGVGcmVlQ29ubmVj
+dG9yKGNvbm5lY3Rvcik7Cj4gPiArwqDCoMKgwqDCoMKgwqB9Cj4gPiArCj4gPiDCoMKgwqDCoMKg
+wqDCoMKgY2xlYW51cF9pbnN0YW5jZSA9IGNoYW1lbGl1bTsKPiA+IMKgwqDCoMKgwqDCoMKgwqBp
+Z3RfaW5zdGFsbF9leGl0X2hhbmRsZXIoY2hhbWVsaXVtX2V4aXRfaGFuZGxlcik7Cj4gPiDCoAo+
+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fib3J0X29uX2YobWlzbWF0Y2hpbmdfcG9ydHNfZm91bmQs
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJDaGFtZWxp
+dW0gcG9ydChzKSB3aXRoIG1pc21hdGNoaW5nCj4gPiBjb25uZWN0b3IgdHlwZSBvbiB0aGUgIgo+
+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiRFJNIHNpZGUg
+Zm91bmQgLSB0aGlzIHdpbGwgbW9zdCBsaWtlbHkKPiA+IGNhdXNlIHRlc3QgZmFpbHVyZXMuICIK
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIklmIHlvdSB3
+YW50IHRvIHByb2NlZWQgd2l0aCB0aGlzIHRoaXMKPiA+IGNvbmZpZ3VyYXRpb24sIHNldCB0aGUg
+Igo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAicG9ydCBt
+YXBwaW5nIG1hbnVhbGx5IGluIC5pZ3RyYyB3aXRoCj4gPiBBZGFwdGVyQWxsb3dlZD0xLiBTZWUg
+Igo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiZG9jcy9j
+aGFtZWxpdW0udHh0IGZvciBtb3JlCj4gPiBpbmZvcm1hdGlvbi5cbiIpOwo+IAo+IFRoaXMgYWJv
+cnQgc2hvdWxkIHByb2JhYmx5IGJlIGJlZm9yZSB0aGUgZXhpdCBoYW5kbGVyIGluc3RhbGxhdGlv
+bgo+IGFib3ZlLgoKVGhlIGV4aXQgaGFuZGxlciBiYXNpY2FsbHkgcnVucyB0aGUgc2FtZSBjbGVh
+bnVwIGFzIHRoZSBlcnJvciBoYW5kbGVyLApidXQgYWxzbyBwbHVncyBpbiBwb3J0cyB0aGF0IGNv
+dWxkIGJlIGxlZnQgaW4gYSB3b25reSBzdGF0ZSBhZnRlcgphdXRvZGV0ZWN0aW9uIGFuZCBkZXN0
+cm95cyBhbGxvY2F0ZWQgRURJRHMuIFdvdWxkIGl0IG5vdCBiZSBiZXR0ZXIgdG8Kc3RpbGwgcnVu
+IHRoYXQ/CgpUaGFua3MsIFJ5c3phcmQK
