@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84CB710E07A
- for <igt-dev@lists.freedesktop.org>; Mon, 23 May 2022 12:19:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D493E10E0AB
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 May 2022 12:19:21 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  sai.gowtham.ch@intel.com
-Date: Mon, 23 May 2022 17:49:14 +0530
-Message-Id: <20220523121916.25932-1-sai.gowtham.ch@intel.com>
+Date: Mon, 23 May 2022 17:49:15 +0530
+Message-Id: <20220523121916.25932-2-sai.gowtham.ch@intel.com>
+In-Reply-To: <20220523121916.25932-1-sai.gowtham.ch@intel.com>
+References: <20220523121916.25932-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] HAX add description to gem_exec_create
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_exec_create: Added test
+ description for test case.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,15 +26,62 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Add test description to gem_exec_create
+Added test description for all the subtests that are available.
 
-Sai Gowtham Ch (2):
-  i915/gem_exec_create: Added test description for test case.
-  HAX: don't do full run
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+---
+ tests/i915/gem_exec_create.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
- tests/i915/gem_exec_create.c          |  10 ++
- tests/intel-ci/fast-feedback.testlist | 184 --------------------------
- 2 files changed, 10 insertions(+), 184 deletions(-)
-
+diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
+index 78d5ffb3..fd09ef02 100644
+--- a/tests/i915/gem_exec_create.c
++++ b/tests/i915/gem_exec_create.c
+@@ -47,6 +47,10 @@
+ #include "i915_drm.h"
+ #include "i915/intel_memory_region.h"
+ 
++IGT_TEST_DESCRIPTION("\n This test overloads the driver with transient active "
++		"objects and checks if we don't kill the system under the "
++		"mempressure. Some of the symptoms this test look for include "
++		"mysterious hangs.");
+ #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+ 
+ static double elapsed(const struct timespec *start, const struct timespec *end)
+@@ -166,6 +170,7 @@ igt_main
+ 					    I915_DEVICE_MEMORY);
+ 	}
+ 
++	igt_describe("Checks if we kill the systems by overloading it with active objects");
+ 	igt_subtest_with_dynamic("legacy")
+ 		for_each_combination(regions, 1, set) {
+ 			char *sub_name = memregion_dynamic_subtest_name(regions);
+@@ -177,6 +182,7 @@ igt_main
+ 			free(sub_name);
+ 		}
+ 
++	igt_describe("Quick sanitycheck of the above test setup iterating over engines");
+ 	igt_subtest_with_dynamic("basic")
+ 		for_each_combination(regions, 1, set) {
+ 			char *sub_name = memregion_dynamic_subtest_name(regions);
+@@ -188,6 +194,7 @@ igt_main
+ 			free(sub_name);
+ 		}
+ 
++	igt_describe("This test does a concurrent execution");
+ 	igt_subtest_with_dynamic("forked")
+ 		for_each_combination(regions, 1, set) {
+ 			char *sub_name = memregion_dynamic_subtest_name(regions);
+@@ -199,6 +206,9 @@ igt_main
+ 			free(sub_name);
+ 		}
+ 
++
++	igt_describe("This test does a forced reclaim, behaving like a bad application"
++		     " leaking its bo cache");
+ 	igt_subtest_with_dynamic("madvise")
+ 		for_each_combination(regions, 1, set) {
+ 			char *sub_name = memregion_dynamic_subtest_name(regions);
 -- 
 2.35.1
