@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD60210E1F3
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 May 2022 11:43:44 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 23 May 2022 17:14:19 +0530
+Message-Id: <20220523114422.19112-2-jeevan.b@intel.com>
+In-Reply-To: <20220523114422.19112-1-jeevan.b@intel.com>
+References: <20220523114422.19112-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Mon, 23 May 2022 11:31:27 -0000
-Message-ID: <165330548771.9279.10562052460673522570@emeril.freedesktop.org>
-References: <20220523080932.9326-1-swati2.sharma@intel.com>
-In-Reply-To: <20220523080932.9326-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2Cv2=2C1/2=5D_tests/kms=5Fplane=5F?=
- =?utf-8?q?scaling=3A_Fix_indentation?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v5 1/4] drm/fourcc: Import drm_fourcc header
+ from 9035039e1ed69
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,45 +19,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+commit 9035039e1ed691cd893777a42e048003a2f349d6
+Author: Mika Kahola <mika.kahola@intel.com>
+Date:   Mon Apr 11 17:34:04 2022 +0300
 
-Series: series starting with [i-g-t,v2,1/2] tests/kms_plane_scaling: Fix indentation
-URL   : https://patchwork.freedesktop.org/series/104272/
-State : warning
+    drm/fourcc: Introduce format modifier for DG2 clear color
 
-== Summary ==
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+---
+ include/drm-uapi/drm_fourcc.h | 36 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/593695 for the overview.
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/23034864):
-  [459/461] Linking target tools/null_state_gen/intel_null_state_gen.
-  [460/461] Compiling C object 'tools/f9d35d4@@intel_gpu_top@exe/intel_gpu_top.c.o'.
-  [461/461] Linking target tools/intel_gpu_top.
-  section_end:1653305098:step_script
-  section_start:1653305098:upload_artifacts_on_success
-  Uploading artifacts for successful job
-  Uploading artifacts...
-  build: found 714 matching files and directories    
-  WARNING: Uploading artifacts as "archive" to coordinator... POST https://gitlab.freedesktop.org/api/v4/jobs/23034864/artifacts?artifact_format=zip&artifact_type=archive: 500 Internal Server Error  id=23034864 responseStatus=500 Internal Server Error status=500 token=zBNiXp4W
-  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
-  WARNING: Uploading artifacts as "archive" to coordinator... POST https://gitlab.freedesktop.org/api/v4/jobs/23034864/artifacts?artifact_format=zip&artifact_type=archive: 500 Internal Server Error  id=23034864 responseStatus=500 Internal Server Error status=500 token=zBNiXp4W
-  WARNING: Retrying...                                context=artifacts-uploader error=invalid argument
-  WARNING: Uploading artifacts as "archive" to coordinator... POST https://gitlab.freedesktop.org/api/v4/jobs/23034864/artifacts?artifact_format=zip&artifact_type=archive: 500 Internal Server Error  id=23034864 responseStatus=500 Internal Server Error status=500 token=zBNiXp4W
-  FATAL: invalid argument                            
-  section_end:1653305108:upload_artifacts_on_success
-  section_start:1653305108:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1653305109:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/593695
+diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
+index d8f7cad9..78bebdea 100644
+--- a/include/drm-uapi/drm_fourcc.h
++++ b/include/drm-uapi/drm_fourcc.h
+@@ -583,6 +583,42 @@ extern "C" {
+  */
+ #define I915_FORMAT_MOD_4_TILED         fourcc_mod_code(INTEL, 9)
+ 
++/*
++ * Intel color control surfaces (CCS) for DG2 render compression.
++ *
++ * The main surface is Tile 4 and at plane index 0. The CCS data is stored
++ * outside of the GEM object in a reserved memory area dedicated for the
++ * storage of the CCS data for all RC/RC_CC/MC compressible GEM objects. The
++ * main surface pitch is required to be a multiple of four Tile 4 widths.
++ */
++#define I915_FORMAT_MOD_4_TILED_DG2_RC_CCS fourcc_mod_code(INTEL, 10)
++
++/*
++ * Intel color control surfaces (CCS) for DG2 media compression.
++ *
++ * The main surface is Tile 4 and at plane index 0. For semi-planar formats
++ * like NV12, the Y and UV planes are Tile 4 and are located at plane indices
++ * 0 and 1, respectively. The CCS for all planes are stored outside of the
++ * GEM object in a reserved memory area dedicated for the storage of the
++ * CCS data for all RC/RC_CC/MC compressible GEM objects. The main surface
++ * pitch is required to be a multiple of four Tile 4 widths.
++ */
++#define I915_FORMAT_MOD_4_TILED_DG2_MC_CCS fourcc_mod_code(INTEL, 11)
++
++/*
++ * Intel Color Control Surface with Clear Color (CCS) for DG2 render compression.
++ *
++ * The main surface is Tile 4 and at plane index 0. The CCS data is stored
++ * outside of the GEM object in a reserved memory area dedicated for the
++ * storage of the CCS data for all RC/RC_CC/MC compressible GEM objects. The
++ * main surface pitch is required to be a multiple of four Tile 4 widths. The
++ * clear color is stored at plane index 1 and the pitch should be ignored. The
++ * format of the 256 bits of clear color data matches the one used for the
++ * I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC modifier, see its description
++ * for details.
++ */
++#define I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC fourcc_mod_code(INTEL, 12)
++
+ /*
+  * Tiled, NV12MT, grouped in 64 (pixels) x 32 (lines) -sized macroblocks
+  *
+-- 
+2.36.0
