@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56AC010E092
- for <igt-dev@lists.freedesktop.org>; Fri, 20 May 2022 09:45:52 +0000 (UTC)
-From: "Coelho, Luciano" <luciano.coelho@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Latvala, Petri"
- <petri.latvala@intel.com>
-Date: Fri, 20 May 2022 09:45:46 +0000
-Message-ID: <ef7d4cde934ac646550916e02a71d584a847f7ed.camel@intel.com>
-References: <20220519141745.118599-1-zbigniew.kempczynski@intel.com>
- <YoctjVGJEqJf+d+Y@platvala-desk.ger.corp.intel.com>
- <Yoc/FpEt0u7qU9vf@zkempczy-mobl2>
- <YodWYddLAUcHAW4+@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YodWYddLAUcHAW4+@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <13E9E2C93DDC3249A5F3E7DDE29EC678@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2F8F10E7C3
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 May 2022 08:09:23 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 23 May 2022 13:39:31 +0530
+Message-Id: <20220523080932.9326-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: For i915 devices
- run allocator in multiprocess mode
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 1/2] tests/kms_plane_scaling: Fix
+ indentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,54 +17,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIyLTA1LTIwIGF0IDExOjUwICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOg0K
-PiBPbiBGcmksIE1heSAyMCwgMjAyMiBhdCAwOToxMToxOEFNICswMjAwLCBaYmlnbmlldyBLZW1w
-Y3p5xYRza2kgd3JvdGU6DQo+ID4gT24gRnJpLCBNYXkgMjAsIDIwMjIgYXQgMDg6NTY6MjlBTSAr
-MDMwMCwgUGV0cmkgTGF0dmFsYSB3cm90ZToNCj4gPiA+IE9uIFRodSwgTWF5IDE5LCAyMDIyIGF0
-IDA0OjE3OjQ1UE0gKzAyMDAsIFpiaWduaWV3IEtlbXBjennFhHNraSB3cm90ZToNCj4gPiA+ID4g
-VGVzdCBjYWxscyBpZ3RfZm9yaygpIHNvIGZvciBpOTE1IHJlcXVpcmVzIG9mZnNldCBhbGxvY2F0
-aW9uIGFyYml0cmF0aW9uDQo+ID4gPiA+IChhbGxvY2F0b3IgaW4gbXVsdGlwcm9jZXNzIG1vZGUp
-IGVzcGVjaWFsbHkgd2hlbiBzYW1lIGRybSBmZCBpcyB1c2VkDQo+ID4gPiA+IGluIGNoaWxkcmVu
-LiBEZWRpY2F0ZWQgdGhyZWFkIChpbnRlbF9hbGxvY2F0b3JfbXVsdGlwcm9jZXNzX3N0YXJ0KCkp
-DQo+ID4gPiA+IGlzIHJlcXVpcmVkIHRvIGJlIHN0YXJ0ZWQgb24gdGhlIHZlcnkgYmVnaW5uaW5n
-IHRvIGhhbmRsZSBvZmZzZXQNCj4gPiA+ID4gYWxsb2NhdGlvbnMgYXMgd2VsbCBhcyBzdG9wcGlu
-ZyBpdCAoaW50ZWxfYWxsb2NhdG9yX211bHRpcHJvY2Vzc19zdG9wKCkpDQo+ID4gPiA+IGJlZm9y
-ZSB0ZXN0IGV4aXRzLg0KPiA+ID4gPiANCj4gPiA+ID4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcg
-S2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+ID4gPiA+IENj
-OiBMdWNpYW5vIENvZWxobyA8bHVjaWFuby5jb2VsaG9AaW50ZWwuY29tPg0KPiA+ID4gPiBDYzog
-U3dhdGkgU2hhcm1hIDxzd2F0aTIuc2hhcm1hQGludGVsLmNvbT4NCj4gPiA+IA0KPiA+ID4gQWNr
-ZWQtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPg0KPiA+ID4gDQo+
-ID4gPiBOb3csIGhhdmluZyBzYWlkIHRoYXQ6DQo+ID4gPiANCj4gPiA+IFRoZSB0ZXN0IGl0c2Vs
-ZiBkb2Vzbid0IHRvdWNoIHRoZSBhbGxvY2F0b3IgYXQgYWxsLCBpdCdzIGRvbmUgYnkNCj4gPiA+
-IGlndF9mYi5jJ3MgYmxpdGNvcHkoKSB1bmRlciB0aGUgaG9vZC4gRGlkIHlvdSBjaGVjayBpZiB0
-aGVyZSdzIGFueQ0KPiA+ID4gb3RoZXIgdGVzdHMgdGhhdCBjb3VsZCBoYXZlIHRoaXMgcHJvYmxl
-bT8gU3VnZ2VzdGluZyBhIGNvbW1vbiB3YXkgdG8NCj4gPiA+IGhhdmUgdGVzdHMgY29tbXVuaWNh
-dGUgdGhlaXIgaW50ZW50aW9uIHRvIGZvcmsgaXMgb3ZlcmtpbGwgYXQgdGhpcw0KPiA+ID4gcG9p
-bnQsIHVubGVzcyB0aGUgcHJvYmxlbSBpcyB3aWRlc3ByZWFkLg0KPiA+IA0KPiA+IFRha2UgYSBs
-b29rIHRvIGttc19idXN5LmMgZnVuY3Rpb24gZmxpcF90b19mYi5jLiBUaGVyZSdzIGlndF9mb3Jr
-KCkNCj4gPiBidXQgd2UgZG9uJ3QgbmVlZCB0byBydW4gYWRkaXRpb25hbCBhbGxvY2F0b3IgdGhy
-ZWFkLiANCj4gPiANCj4gPiBJIHRoaW5rIHdlIGNhbiB0cnk6DQo+ID4gMS4gcnVuIG11bHRpcHJv
-Y2VzcyBhbGxvY2F0b3IgdGhyZWFkIG9uIGFsbCBpZ3QgcnVuIGJ1dCB0aGlzIGlzIGltbw0KPiA+
-ICAgIG92ZXJraWxsLCBlc3BlY2lhbGx5IGlmIHRlc3Qgd29ya3Mgb24gc2VwYXJhdGUgdm0ncyBp
-dCBjYW4gImRldGFjaCINCj4gPiAgICBhbmQgYmVjb21lIHN0YW5kYWxvbmUgYWxsb2NhdG9yLA0K
-PiA+IDIuIGFkZCBzb21lIGRlYnVnIGluZm9ybWF0aW9uIGluc3RlYWQgb2Ygc2VnZmF1bHRpbmcg
-dGhhdCBtdWx0aXByb2Nlc3MNCj4gPiAgICBhbGxvY2F0b3IgaXMgbGlrZWx5IHJlcXVpcmVkIGlu
-IHRoZSB0ZXN0LiBJR1QgYWxyZWFkeSBnb3Qgc2ltaWxhcg0KPiA+ICAgIGNvZGUgKGxpa2UgaW50
-ZXJuYWxfYXNzZXJ0IGluIGlndF9kZXNjcmliZV9mKCkpLg0KPiANCj4gRGVidWcgaW5mb3JtYXRp
-b24gc291bmRzIHJlYWxseSBnb29kLiBJdCdzIGVhc3kgdG8gZGV0ZWN0IHRoZSBjcmFzaGluZw0K
-PiBjYXNlIGluIHRoZSBhbGxvY2F0b3IgY29kZSBhZnRlciBhbGwsIGZyb20gd2hhdCBJIHJlbWVt
-YmVyIGFib3V0IHRoZQ0KPiBiYWNrdHJhY2UuDQoNCkknbSBub3TCoGZhbWlsaWFyIHdpdGggYW55
-IG9mIHRoaXMsIGJ1dCBpdCBzZWVtcyB0aGF0IGNoZWNraW5nIGZvciBhDQpOVUxMLXBvaW50ZXIg
-aW4gbXNncXVldWVfc2VuZF9yZXEoKSBhbmQgcmV0dXJuaW5nIGFuIGVycm9yIHdvdWxkIGJlDQpz
-dXBlci1zaW1wbGUsIHNpbmNlIGl0IGFscmVhZHkgaWd0X3dhcm4oKXMgb24gZXJyb3JzLiAgVGhh
-dCBzaG91bGQNCm9idmlvdXNseSBiZSBkb25lIGluIG90aGVyIHBsYWNlcyB3aGVyZSBuZWVkZWQs
-IGJ1dCBzZWVtcyB0byBiZSBwcmV0dHkNCnN0cmFpZ2h0LWZvcndhcmQgdG8gbWUuDQoNClRoaXMg
-d291bGQgb2J2aW91c2x5IG5vdCBmaXggdGhlIHByb2JsZW0gb2Ygbm90IGluaXRpYWxpemluZyB0
-aGlzIGluDQpjZXJ0YWluIHRlc3RzLCBidXQgaXQgd291bGQgYXQgbGVhc3QgbWFrZSBpdCBwcmV0
-dHkgY2xlYXIgd2hhdCBpcyBnb2luZw0Kb24gYXQgZmlyc3QgZ2xhbmNlLg0KDQotLQ0KQ2hlZXJz
-LA0KTHVjYS4NCg==
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_plane_scaling.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 301cf4e0..a1a883b3 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -279,13 +279,13 @@ static void test_scaler_with_modifier_pipe(data_t *d,
+ 		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+ 			uint64_t modifier = modifiers[i];
+ 
+-				if (igt_plane_has_format_mod(plane, format, modifier))
+-					check_scaling_pipe_plane_rot(d, plane,
+-								     format, modifier,
+-								     width, height,
+-								     is_upscale,
+-								     pipe, output,
+-								     IGT_ROTATION_0);
++			if (igt_plane_has_format_mod(plane, format, modifier))
++				check_scaling_pipe_plane_rot(d, plane,
++							     format, modifier,
++							     width, height,
++							     is_upscale,
++							     pipe, output,
++							     IGT_ROTATION_0);
+ 		}
+ 	}
+ }
+@@ -312,13 +312,13 @@ static void test_scaler_with_rotation_pipe(data_t *d,
+ 		for (int i = 0; i < ARRAY_SIZE(rotations); i++) {
+ 			igt_rotation_t rot = rotations[i];
+ 
+-				if (igt_plane_has_rotation(plane, rot))
+-					check_scaling_pipe_plane_rot(d, plane,
+-								     format, modifier,
+-								     width, height,
+-								     is_upscale,
+-								     pipe, output,
+-								     rot);
++			if (igt_plane_has_rotation(plane, rot))
++				check_scaling_pipe_plane_rot(d, plane,
++							     format, modifier,
++							     width, height,
++							     is_upscale,
++							     pipe, output,
++							     rot);
+ 		}
+ 	}
+ }
+-- 
+2.25.1
