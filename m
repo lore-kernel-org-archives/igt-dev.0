@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E569510E10B
- for <igt-dev@lists.freedesktop.org>; Mon, 23 May 2022 09:57:46 +0000 (UTC)
-Date: Mon, 23 May 2022 11:57:42 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <YotalpJ0OW7TFc3Y@zkempczy-mobl2>
-References: <20220519112449.25819-1-kamil.konieczny@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BC5210E348
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 May 2022 09:44:30 +0000 (UTC)
+Message-ID: <63ef1ef4-b0b3-9d92-4bfb-f58300d0bcfd@intel.com>
+Date: Mon, 23 May 2022 15:14:16 +0530
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220421120547.2708659-1-bhanuprakash.modem@intel.com>
+ <20220523081305.3622374-1-bhanuprakash.modem@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20220523081305.3622374-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220519112449.25819-1-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_close_race: Adopt to
- use softpin
+Subject: Re: [igt-dev] [i-g-t V2] tests/kms_flip: Fix mode selection for Nx
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,161 +23,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, May 19, 2022 at 01:24:49PM +0200, Kamil Konieczny wrote:
-> For newer gens there will be no relocations, so adopt test to
-> run using soft-pinned addresses. Also while at this, refactor
-> code to run on discrete DG2.
-> 
-> v2: refactor to run on DG2 and older gens (Zbigniew review)
-> 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+LGTM.
 
-LGTM,
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
+On 5/23/2022 1:43 PM, Bhanuprakash Modem wrote:
+> This patch will find the connector/mode combination that fits
+> into the bandwidth when more than one monitor is connected.
+>
+> Example:
+>     When two monitors connected through MST, the second monitor
+>     also tries to use the same mode. So two such modes may not
+>     fit into the link bandwidth. So, iterate through connected
+>     outputs & modes and find a combination of modes those fit
+>     into the link BW.
+>
+> V2:
+> * Exit if suitable modes not found in retry.
+> * New function to re-use the code.
+>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  tests/i915/gem_close_race.c | 56 +++++++++++++++++++++++++++----------
->  1 file changed, 42 insertions(+), 14 deletions(-)
-> 
-> diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
-> index ab444945..1cd5d309 100644
-> --- a/tests/i915/gem_close_race.c
-> +++ b/tests/i915/gem_close_race.c
-> @@ -28,6 +28,7 @@
->  #include <pthread.h>
->  #include <unistd.h>
->  #include <signal.h>
-> +#include <stdbool.h>
->  #include <stdlib.h>
->  #include <stdint.h>
->  #include <stdio.h>
-> @@ -43,6 +44,7 @@
->  #include "drm.h"
->  #include "i915/gem.h"
->  #include "i915/gem_create.h"
-> +#include "i915/gem_mman.h"
->  #include "igt.h"
->  
->  #define OBJECT_SIZE (256 * 1024)
-> @@ -53,6 +55,9 @@
->  
->  static uint32_t devid;
->  static bool has_64bit_relocations;
-> +static bool has_softpin;
-> +static uint64_t exec_addr;
-> +static uint64_t data_addr;
->  
->  #define sigev_notify_thread_id _sigev_un._tid
->  
-> @@ -61,9 +66,9 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
->  	struct drm_i915_gem_relocation_entry reloc[2];
->  	struct drm_i915_gem_exec_object2 gem_exec[2];
->  	struct drm_i915_gem_execbuffer2 execbuf;
-> -	struct drm_i915_gem_pwrite gem_pwrite;
->  	struct drm_i915_gem_create create;
->  	uint32_t buf[16], *b = buf;
-> +	int err;
->  
->  	memset(reloc, 0, sizeof(reloc));
->  
-> @@ -79,9 +84,9 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
->  	reloc[0].target_handle = handle;
->  	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
->  	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
-> -	*b++ = 0;
-> +	*b++ = data_addr;
->  	if (has_64bit_relocations)
-> -		*b++ = 0;
-> +		*b++ = CANONICAL(data_addr) >> 32;
->  
->  	*b++ = 512 << 16;
->  	*b++ = 4*1024;
-> @@ -90,9 +95,9 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
->  	reloc[1].target_handle = handle;
->  	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
->  	reloc[1].write_domain = 0;
-> -	*b++ = 0;
-> +	*b++ = data_addr;
->  	if (has_64bit_relocations)
-> -		*b++ = 0;
-> +		*b++ = CANONICAL(data_addr) >> 32;
->  
->  	*b++ = MI_BATCH_BUFFER_END;
->  	*b++ = 0;
-> @@ -105,8 +110,17 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
->  	create.size = 4096;
->  	drmIoctl(fd, DRM_IOCTL_I915_GEM_CREATE, &create);
->  	gem_exec[1].handle = create.handle;
-> -	gem_exec[1].relocation_count = 2;
-> -	gem_exec[1].relocs_ptr = to_user_pointer(reloc);
-> +	if (has_softpin) {
-> +		gem_exec[1].offset = CANONICAL(exec_addr);
-> +		gem_exec[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		execbuf.flags |= I915_EXEC_NO_RELOC;
-> +		gem_exec[0].offset = CANONICAL(data_addr);
-> +		gem_exec[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-> +				     EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +	} else {
-> +		gem_exec[1].relocation_count = 2;
-> +		gem_exec[1].relocs_ptr = to_user_pointer(reloc);
-> +	}
->  
->  	memset(&execbuf, 0, sizeof(execbuf));
->  	execbuf.buffers_ptr = to_user_pointer(gem_exec);
-> @@ -116,15 +130,22 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
->  		execbuf.flags |= I915_EXEC_BLT;
->  	execbuf.rsvd1 = ctx;
->  
-> -	memset(&gem_pwrite, 0, sizeof(gem_pwrite));
-> -	gem_pwrite.handle = create.handle;
-> -	gem_pwrite.offset = 0;
-> -	gem_pwrite.size = sizeof(buf);
-> -	gem_pwrite.data_ptr = to_user_pointer(buf);
-> -	if (drmIoctl(fd, DRM_IOCTL_I915_GEM_PWRITE, &gem_pwrite) == 0) {
-> +	err = __gem_write(fd, create.handle, 0, buf, sizeof(buf));
-> +	if (err == -EOPNOTSUPP) {
-> +		void *ptr;
+>   tests/kms_flip.c | 109 ++++++++++++++++++++++++++++++++++++-----------
+>   1 file changed, 84 insertions(+), 25 deletions(-)
+>
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index 773e6597..5985e012 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -932,12 +932,36 @@ static bool mode_compatible(const drmModeModeInfo *a, const drmModeModeInfo *b)
+>   	return true;
+>   }
+>   
+> +static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
+> +				 drmModeConnector *c1, drmModeConnector *c2)
+> +{
+> +	int n, m;
 > +
-> +		ptr = __gem_mmap__device_coherent(fd, create.handle, 0, sizeof(buf), PROT_WRITE);
-> +		if (!ptr) {
-> +			err = errno;
-> +		} else {
-> +			memcpy(ptr, buf, sizeof(buf));
-> +			gem_munmap(ptr, sizeof(buf));
+> +	*a = c1->modes[0];
+> +	*b = c2->modes[0];
+> +
+> +	if (!mode_compatible(a, b)) {
+> +		for (n = 0; n < c1->count_modes; n++) {
+> +			*a = c1->modes[n];
+> +			for (m = 0; m < c2->count_modes; m++) {
+> +				*b = c2->modes[m];
+> +				if (mode_compatible(a, b))
+> +					return;
+> +			}
 > +		}
+> +
+> +		/* hope for the best! */
+> +		*a = *b = c1->modes[0];
 > +	}
 > +
-> +	if (!err)
->  		while (loops-- && __gem_execbuf(fd, &execbuf) == 0)
->  			;
+> +	return;
+> +}
+> +
+>   static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
+>   					   struct test_output *o)
+>   {
+>   	struct kmstest_connector_config config[2];
+> -	drmModeModeInfo *mode[2];
+> -	int n, m;
+> +	drmModeModeInfo mode[2];
+>   
+>   	if (!kmstest_get_connector_config(drm_fd, o->_connector[0],
+>   					  1 << crtc_idx0, &config[0]))
+> @@ -949,39 +973,25 @@ static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
+>   		return;
+>   	}
+>   
+> -	mode[0] = &config[0].default_mode;
+> -	mode[1] = &config[1].default_mode;
+> -	if (!mode_compatible(mode[0], mode[1])) {
+> -		for (n = 0; n < config[0].connector->count_modes; n++) {
+> -			mode[0] = &config[0].connector->modes[n];
+> -			for (m = 0; m < config[1].connector->count_modes; m++) {
+> -				mode[1] = &config[1].connector->modes[m];
+> -				if (mode_compatible(mode[0], mode[1]))
+> -					goto found;
+> -			}
+> -		}
+> -
+> -		/* hope for the best! */
+> -		mode[1] = mode[0] = &config[0].default_mode;
 > -	}
->  
->  	drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &create.handle);
->  }
-> @@ -256,6 +277,13 @@ igt_main
->  
->  		devid = intel_get_drm_devid(fd);
->  		has_64bit_relocations = intel_gen(devid) >= 8;
-> +		has_softpin = !gem_has_relocations(fd);
-> +		if (has_softpin) {
-> +			exec_addr = gem_detect_safe_start_offset(fd);
-> +			data_addr = gem_detect_safe_alignment(fd);
-> +			exec_addr = max_t(exec_addr, exec_addr, data_addr);
-> +			data_addr += exec_addr;
+> +	get_compatible_modes(&mode[0], &mode[1],
+> +			     config[0].connector, config[1].connector);
+>   
+> -found:
+>   	o->pipe = config[0].pipe;
+> -	o->fb_width = mode[0]->hdisplay;
+> -	o->fb_height = mode[0]->vdisplay;
+> +	o->fb_width = mode[0].hdisplay;
+> +	o->fb_height = mode[0].vdisplay;
+>   	o->mode_valid = 1;
+>   
+>   	o->kconnector[0] = config[0].connector;
+>   	o->kencoder[0] = config[0].encoder;
+>   	o->_crtc[0] = config[0].crtc->crtc_id;
+>   	o->_pipe[0] = config[0].pipe;
+> -	o->kmode[0] = *mode[0];
+> +	o->kmode[0] = mode[0];
+>   
+>   	o->kconnector[1] = config[1].connector;
+>   	o->kencoder[1] = config[1].encoder;
+>   	o->_crtc[1] = config[1].crtc->crtc_id;
+>   	o->_pipe[1] = config[1].pipe;
+> -	o->kmode[1] = *mode[1];
+> +	o->kmode[1] = mode[1];
+>   
+>   	drmModeFreeCrtc(config[0].crtc);
+>   	drmModeFreeCrtc(config[1].crtc);
+> @@ -1302,6 +1312,33 @@ static void discard_any_stale_events(void) {
+>   	}
+>   }
+>   
+> +static int sort_drm_modes(const void *a, const void *b)
+> +{
+> +	const drmModeModeInfo *mode1 = a, *mode2 = b;
+> +
+> +	return (mode2->clock < mode1->clock) - (mode1->clock < mode2->clock);
+> +}
+> +
+> +static void get_suitable_modes(struct test_output *o)
+> +{
+> +	drmModeModeInfo mode[2];
+> +	int i;
+> +
+> +	for (i = 0; i < RUN_PAIR; i++) {
+> +		qsort(o->kconnector[i]->modes,
+> +		      o->kconnector[i]->count_modes,
+> +		      sizeof(drmModeModeInfo),
+> +		      sort_drm_modes);
+> +	}
+> +
+> +	get_compatible_modes(&mode[0], &mode[1],
+> +			     o->kconnector[0], o->kconnector[1]);
+> +
+> +	o->fb_width = mode[0].hdisplay;
+> +	o->fb_height = mode[0].vdisplay;
+> +	o->kmode[0] = mode[0];
+> +	o->kmode[1] = mode[1];
+> +}
+>   
+>   static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+>   				   int crtc_count, int duration_ms)
+> @@ -1309,12 +1346,13 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+>   	struct udev_monitor *mon = igt_watch_uevents();
+>   	unsigned bo_size = 0;
+>   	bool vblank = true;
+> -	bool retried = false;
+> +	bool retried = false, restart = false;
+>   	bool state_ok;
+>   	unsigned elapsed;
+>   	uint64_t modifier;
+> -	int i;
+> +	int i, ret;
+>   
+> +restart:
+>   	last_connector = o->kconnector[0];
+>   
+>   	if (o->flags & TEST_PAN)
+> @@ -1366,7 +1404,28 @@ retry:
+>   
+>   	igt_flush_uevents(mon);
+>   
+> -	igt_assert(!set_mode(o, o->fb_ids[0], 0, 0));
+> +	ret = set_mode(o, o->fb_ids[0], 0, 0);
+> +
+> +	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
+> +	if (ret < 0 && errno == ENOSPC &&
+> +	    crtc_count == RUN_PAIR) {
+> +
+> +		if (restart) {
+> +			igt_info("No suitable modes found to fit into the link BW.\n");
+> +			goto out;
 > +		}
->  
->  		igt_fork_hang_detector(fd);
->  		close(fd);
-> -- 
-> 2.34.1
-> 
+> +
+> +		get_suitable_modes(o);
+> +
+> +		igt_remove_fb(drm_fd, &o->fb_info[2]);
+> +		igt_remove_fb(drm_fd, &o->fb_info[1]);
+> +		igt_remove_fb(drm_fd, &o->fb_info[0]);
+> +
+> +		restart = true;
+> +		goto restart;
+> +	}
+> +
+> +	igt_assert(!ret);
+>   	igt_assert(fb_is_bound(o, o->fb_ids[0]));
+>   
+>   	vblank = kms_has_vblank(drm_fd);
