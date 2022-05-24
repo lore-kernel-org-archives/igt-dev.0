@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 149CC10F8C4
- for <igt-dev@lists.freedesktop.org>; Tue, 24 May 2022 12:12:45 +0000 (UTC)
-From: Ananya Sharma <ananya.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 24 May 2022 17:37:22 +0530
-Message-Id: <20220524120722.1756689-3-ananya.sharma@intel.com>
-In-Reply-To: <20220524120722.1756689-1-ananya.sharma@intel.com>
-References: <20220524120722.1756689-1-ananya.sharma@intel.com>
-MIME-Version: 1.0
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2083.outbound.protection.outlook.com [40.107.94.83])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5B5B10F9DE
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 May 2022 13:14:18 +0000 (UTC)
+Message-ID: <e9eb514c-5e31-2b8d-3285-58a809ce3352@amd.com>
+Date: Tue, 24 May 2022 09:14:13 -0400
+Content-Language: en-US
+To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+References: <20220520203531.14394-1-andrealmeid@igalia.com>
+From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20220520203531.14394-1-andrealmeid@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/kms_universal_plane:sanitize
- the system state between subtests
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/2] tests/kms_async_flips: Expand
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,107 +22,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: nidhi1.gupta@intel.com
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com,
+ kernel-dev@igalia.com, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before running the subtestwe need to sanitize the system state
-to default,used igt_display_reset() to sanitize the state.
+Hi Lakshmi,
 
-Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
----
- tests/kms_universal_plane.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+I noticed a gitlab warning in this patch:
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 2bc722d2..72e4832c 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -107,7 +107,7 @@ functional_test_fini(functional_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -135,6 +135,7 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int num_primary = 0, num_cursor = 0;
- 	int i;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(display, pipe);
- 
- 	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
-@@ -345,7 +346,7 @@ sanity_test_fini(sanity_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->undersized_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -364,6 +365,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int i;
- 	int expect;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(&data->display, pipe);
- 
- 	igt_output_set_pipe(output, pipe);
-@@ -462,7 +464,7 @@ pageflip_test_fini(pageflip_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -477,6 +479,7 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	fd_set fds;
- 	int ret = 0;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(&data->display, pipe);
- 
- 	igt_output_set_pipe(output, pipe);
-@@ -544,7 +547,7 @@ cursor_leak_test_fini(data_t *data,
- 	for (i = 0; i < 10; i++)
- 		igt_remove_fb(data->drm_fd, &curs[i]);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- }
- 
- static int
-@@ -578,6 +581,7 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int r, g, b;
- 	int count1, count2;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(display, pipe);
- 	igt_require(display->has_cursor_plane);
- 	igt_require_intel(data->drm_fd);
-@@ -690,7 +694,7 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->smallred_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->smallblue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -706,6 +710,7 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 	int ret = 0;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_intel(data->drm_fd);
- 	igt_skip_on(data->display_ver < 9);
- 	igt_require_pipe(&data->display, pipe);
--- 
-2.25.1
+https://patchwork.freedesktop.org/series/104037/
+
+I think it is a false positive, but I want to check with you before I 
+merge it. What do you think?
+
+Thanks
+Siqueira
+
+On 2022-05-20 16:35, André Almeida wrote:
+> Hi,
+> 
+> This patchset enables kms_async_flips to run in more vendors. It was
+> tested at i915, amdgpu and vc4.
+> 
+> The first patch adds a helper to keep the same behavior of the test
+> while keeping things simple, and the second patch make the test work on
+> more platforms.
+> 
+> Changes from v1:
+> - Fix function comment typo
+> 
+> André Almeida (2):
+>    lib/igt_fb: Add support for drawing rectangles with random colors
+>    tests/kms_async_flips: Support more vendors
+> 
+>   lib/igt_fb.c            | 20 ++++++++++++++++++
+>   lib/igt_fb.h            |  1 +
+>   tests/kms_async_flips.c | 47 ++++++++++++++++++++++++-----------------
+>   3 files changed, 49 insertions(+), 19 deletions(-)
+> 
