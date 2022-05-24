@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0418710E65D
- for <igt-dev@lists.freedesktop.org>; Tue, 24 May 2022 11:18:41 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 24 May 2022 13:18:36 +0200
-Message-Id: <20220524111836.152123-1-zbigniew.kempczynski@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ADD610F529
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 May 2022 10:00:39 +0000 (UTC)
+Message-ID: <87eb6fae-3c7f-0345-2ca4-3e849e9ddc5f@intel.com>
+Date: Tue, 24 May 2022 15:30:21 +0530
+Content-Language: en-US
+To: Ananya Sharma <ananya.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220426190112.254042-1-ananya.sharma@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220426190112.254042-1-ananya.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/intel_batchbuffer: Use detected start
- offset in intel-bb instead 0x0
+Subject: Re: [igt-dev] [PATCH i-g-t v1] tests/kms: IGT cleanup by sanitizing
+ the system state
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,45 +25,139 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On some platforms (like on ATS) 0x0 may not be available so allocator
-should be instantiated with safe start offset to avoid getting -ENOSPC.
-Change require also relaxation of automatic range selection in the
-allocator.
+Hi Ananya,
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- lib/intel_allocator.c   | 2 +-
- lib/intel_batchbuffer.c | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+Can you please float dynamic subtets & cleanup in single series?
+[Patch 1/2]: Dynamic subtests
+[Patch 2/2]: Cleanup
 
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index 340b888286..7882e484b5 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -909,7 +909,7 @@ static uint64_t __intel_allocator_open_full(int fd, uint32_t ctx,
- 	struct alloc_resp resp;
- 	uint64_t gtt_size;
- 
--	if (!start && !end) {
-+	if (!end) {
- 		igt_assert_f(can_report_gtt_size(fd), "Invalid fd\n");
- 		gtt_size = gem_aperture_size(fd);
- 		if (!gem_uses_full_ppgtt(fd))
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 8680c9ba93..555618e463 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -1359,6 +1359,9 @@ __intel_bb_create(int i915, uint32_t ctx, uint32_t size, bool do_relocs,
- 	if (!ibb->uses_full_ppgtt)
- 		do_relocs = true;
- 
-+	/* Use safe start offset instead assuming 0x0 is safe */
-+	start = max_t(uint64_t, start, gem_detect_safe_start_offset(i915));
-+
- 	/* if relocs are set we won't use an allocator */
- 	if (do_relocs)
- 		allocator_type = INTEL_ALLOCATOR_NONE;
--- 
-2.32.0
+So that it would be easy to review.
+
+- Bhanu
+
+On Wed-27-04-2022 12:31 am, Ananya Sharma wrote:
+> Before running the subtest we need to sanitize the system state to
+> default, Therefore using igt_display_reset() to sanitize the state.
+> 
+> Below tests are modified:
+> 	tests/i915/kms_fence_pin_leak.c
+> 	tests/kms_universal_plane.c
+> 
+> Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
+> ---
+>   tests/i915/kms_fence_pin_leak.c |  5 +++--
+>   tests/kms_universal_plane.c     | 15 ++++++++++-----
+>   2 files changed, 13 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
+> index 16eb595f..906b3708 100644
+> --- a/tests/i915/kms_fence_pin_leak.c
+> +++ b/tests/i915/kms_fence_pin_leak.c
+> @@ -124,6 +124,7 @@ static void run_single_test(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	struct igt_fb fb[2];
+>   	int i;
+>   
+> +	igt_display_reset(display);
+>   	igt_output_set_pipe(output, pipe);
+>   
+>   	mode = igt_output_get_mode(output);
+> @@ -180,8 +181,8 @@ static void run_single_test(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	}
+>   
+>   	igt_plane_set_fb(primary, NULL);
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> -	igt_display_commit(display);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   
+>   	igt_remove_fb(data->drm_fd, &fb[1]);
+>   	igt_remove_fb(data->drm_fd, &fb[0]);
+> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+> index 3cb6d704..1a6502a4 100644
+> --- a/tests/kms_universal_plane.c
+> +++ b/tests/kms_universal_plane.c
+> @@ -107,7 +107,7 @@ functional_test_fini(functional_test_t *test, igt_output_t *output)
+>   	igt_remove_fb(test->data->drm_fd, &test->red_fb);
+>   	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
+>   
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+>   }
+>   
+> @@ -135,6 +135,7 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	int num_primary = 0, num_cursor = 0;
+>   	int i;
+>   
+> +	igt_display_reset(display);
+>   	igt_require_pipe(display, pipe);
+>   
+>   	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
+> @@ -345,7 +346,7 @@ sanity_test_fini(sanity_test_t *test, igt_output_t *output)
+>   	igt_remove_fb(test->data->drm_fd, &test->undersized_fb);
+>   	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
+>   
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+>   }
+>   
+> @@ -364,6 +365,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	int i;
+>   	int expect;
+>   
+> +	igt_display_reset(&data->display);
+>   	igt_require_pipe(&data->display, pipe);
+>   
+>   	igt_output_set_pipe(output, pipe);
+> @@ -462,7 +464,7 @@ pageflip_test_fini(pageflip_test_t *test, igt_output_t *output)
+>   	igt_remove_fb(test->data->drm_fd, &test->red_fb);
+>   	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
+>   
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+>   }
+>   
+> @@ -477,6 +479,7 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	fd_set fds;
+>   	int ret = 0;
+>   
+> +	igt_display_reset(&data->display);
+>   	igt_require_pipe(&data->display, pipe);
+>   
+>   	igt_output_set_pipe(output, pipe);
+> @@ -544,7 +547,7 @@ cursor_leak_test_fini(data_t *data,
+>   	for (i = 0; i < 10; i++)
+>   		igt_remove_fb(data->drm_fd, &curs[i]);
+>   
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   }
+>   
+>   static int
+> @@ -578,6 +581,7 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	int r, g, b;
+>   	int count1, count2;
+>   
+> +	igt_display_reset(display);
+>   	igt_require_pipe(display, pipe);
+>   	igt_require(display->has_cursor_plane);
+>   	igt_require_intel(data->drm_fd);
+> @@ -690,7 +694,7 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
+>   	igt_remove_fb(test->data->drm_fd, &test->smallred_fb);
+>   	igt_remove_fb(test->data->drm_fd, &test->smallblue_fb);
+>   
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+>   }
+>   
+> @@ -706,6 +710,7 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>   
+>   	int ret = 0;
+>   
+> +	igt_display_reset(&data->display);
+>   	igt_require_intel(data->drm_fd);
+>   	igt_skip_on(data->display_ver < 9);
+>   	igt_require_pipe(&data->display, pipe);
