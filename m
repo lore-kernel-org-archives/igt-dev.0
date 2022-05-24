@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E12EE10E340
- for <igt-dev@lists.freedesktop.org>; Tue, 24 May 2022 11:49:59 +0000 (UTC)
-From: Ananya Sharma <ananya.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 24 May 2022 17:14:37 +0530
-Message-Id: <20220524114437.1755739-3-ananya.sharma@intel.com>
-In-Reply-To: <20220524114437.1755739-1-ananya.sharma@intel.com>
-References: <20220524114437.1755739-1-ananya.sharma@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0F4010F774
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 May 2022 12:07:27 +0000 (UTC)
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Petri Latvala <petri.latvala@intel.com>
+Date: Tue, 24 May 2022 14:07:16 +0200
+Message-Id: <20220524120717.748348-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20220524120717.748348-1-mauro.chehab@linux.intel.com>
+References: <20220524120717.748348-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/kms_universal_plane:sanitize
- the system state between subtests
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/igt_core: use print_backtrace() on
+ internal_assert()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,107 +20,168 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: nidhi1.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before running the subtestwe need to sanitize the system state
-to default,used igt_display_reset() to sanitize the state.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
+When internal_assert() hits, it is desired to know what part
+of the code actually hit the issue.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_universal_plane.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ lib/igt_core.c | 124 +++++++++++++++++++++++++------------------------
+ 1 file changed, 63 insertions(+), 61 deletions(-)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 2bc722d2..72e4832c 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -107,7 +107,7 @@ functional_test_fini(functional_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index b7116f4e5433..e7425326b7f0 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -351,6 +351,67 @@ static bool stderr_needs_sentinel = false;
  
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+ static int _igt_dynamic_tests_executed = -1;
+ 
++static void print_backtrace(void)
++{
++	unw_cursor_t cursor;
++	unw_context_t uc;
++	int stack_num = 0;
++
++	Dwfl_Callbacks cbs = {
++		.find_elf = dwfl_linux_proc_find_elf,
++		.find_debuginfo = dwfl_standard_find_debuginfo,
++	};
++
++	Dwfl *dwfl = dwfl_begin(&cbs);
++
++	if (dwfl_linux_proc_report(dwfl, getpid())) {
++		dwfl_end(dwfl);
++		dwfl = NULL;
++	} else
++		dwfl_report_end(dwfl, NULL, NULL);
++
++	igt_info("Stack trace:\n");
++
++	unw_getcontext(&uc);
++	unw_init_local(&cursor, &uc);
++	while (unw_step(&cursor) > 0) {
++		char name[255];
++		unw_word_t off, ip;
++		Dwfl_Module *mod = NULL;
++
++		unw_get_reg(&cursor, UNW_REG_IP, &ip);
++
++		if (dwfl)
++			mod = dwfl_addrmodule(dwfl, ip);
++
++		if (mod) {
++			const char *src, *dwfl_name;
++			Dwfl_Line *line;
++			int lineno;
++			GElf_Sym sym;
++
++			line = dwfl_module_getsrc(mod, ip);
++			dwfl_name = dwfl_module_addrsym(mod, ip, &sym, NULL);
++
++			if (line && dwfl_name) {
++				src = dwfl_lineinfo(line, NULL, &lineno, NULL, NULL, NULL);
++				igt_info("  #%d %s:%d %s()\n", stack_num++, src, lineno, dwfl_name);
++				continue;
++			}
++		}
++
++		if (unw_get_proc_name(&cursor, name, 255, &off) < 0)
++			igt_info("  #%d [<unknown>+0x%x]\n", stack_num++,
++				 (unsigned int) ip);
++		else
++			igt_info("  #%d [%s+0x%x]\n", stack_num++, name,
++				 (unsigned int) off);
++	}
++
++	if (dwfl)
++		dwfl_end(dwfl);
++}
++
+ __attribute__((format(printf, 2, 3)))
+ static void internal_assert(bool cond, const char *format, ...)
+ {
+@@ -362,6 +423,8 @@ static void internal_assert(bool cond, const char *format, ...)
+ 		va_end(ap);
+ 		fprintf(stderr, "please refer to lib/igt_core documentation\n");
+ 
++		print_backtrace();
++
+ 		assert(0);
+ 	}
+ }
+@@ -1766,67 +1829,6 @@ static void write_stderr(const char *str)
+ 	__write_stderr(str, strlen(str));
  }
  
-@@ -135,6 +135,7 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int num_primary = 0, num_cursor = 0;
- 	int i;
+-static void print_backtrace(void)
+-{
+-	unw_cursor_t cursor;
+-	unw_context_t uc;
+-	int stack_num = 0;
+-
+-	Dwfl_Callbacks cbs = {
+-		.find_elf = dwfl_linux_proc_find_elf,
+-		.find_debuginfo = dwfl_standard_find_debuginfo,
+-	};
+-
+-	Dwfl *dwfl = dwfl_begin(&cbs);
+-
+-	if (dwfl_linux_proc_report(dwfl, getpid())) {
+-		dwfl_end(dwfl);
+-		dwfl = NULL;
+-	} else
+-		dwfl_report_end(dwfl, NULL, NULL);
+-
+-	igt_info("Stack trace:\n");
+-
+-	unw_getcontext(&uc);
+-	unw_init_local(&cursor, &uc);
+-	while (unw_step(&cursor) > 0) {
+-		char name[255];
+-		unw_word_t off, ip;
+-		Dwfl_Module *mod = NULL;
+-
+-		unw_get_reg(&cursor, UNW_REG_IP, &ip);
+-
+-		if (dwfl)
+-			mod = dwfl_addrmodule(dwfl, ip);
+-
+-		if (mod) {
+-			const char *src, *dwfl_name;
+-			Dwfl_Line *line;
+-			int lineno;
+-			GElf_Sym sym;
+-
+-			line = dwfl_module_getsrc(mod, ip);
+-			dwfl_name = dwfl_module_addrsym(mod, ip, &sym, NULL);
+-
+-			if (line && dwfl_name) {
+-				src = dwfl_lineinfo(line, NULL, &lineno, NULL, NULL, NULL);
+-				igt_info("  #%d %s:%d %s()\n", stack_num++, src, lineno, dwfl_name);
+-				continue;
+-			}
+-		}
+-
+-		if (unw_get_proc_name(&cursor, name, 255, &off) < 0)
+-			igt_info("  #%d [<unknown>+0x%x]\n", stack_num++,
+-				 (unsigned int) ip);
+-		else
+-			igt_info("  #%d [%s+0x%x]\n", stack_num++, name,
+-				 (unsigned int) off);
+-	}
+-
+-	if (dwfl)
+-		dwfl_end(dwfl);
+-}
+-
+ static const char hex[] = "0123456789abcdef";
  
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(display, pipe);
- 
- 	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
-@@ -345,7 +346,7 @@ sanity_test_fini(sanity_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->undersized_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -364,6 +365,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int i;
- 	int expect;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(&data->display, pipe);
- 
- 	igt_output_set_pipe(output, pipe);
-@@ -462,7 +464,7 @@ pageflip_test_fini(pageflip_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -477,6 +479,7 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	fd_set fds;
- 	int ret = 0;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(&data->display, pipe);
- 
- 	igt_output_set_pipe(output, pipe);
-@@ -544,7 +547,7 @@ cursor_leak_test_fini(data_t *data,
- 	for (i = 0; i < 10; i++)
- 		igt_remove_fb(data->drm_fd, &curs[i]);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- }
- 
- static int
-@@ -578,6 +581,7 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int r, g, b;
- 	int count1, count2;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_pipe(display, pipe);
- 	igt_require(display->has_cursor_plane);
- 	igt_require_intel(data->drm_fd);
-@@ -690,7 +694,7 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->smallred_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->smallblue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -706,6 +710,7 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 	int ret = 0;
- 
-+	igt_display_reset(&data->display);
- 	igt_require_intel(data->drm_fd);
- 	igt_skip_on(data->display_ver < 9);
- 	igt_require_pipe(&data->display, pipe);
+ static void
 -- 
-2.25.1
+2.36.1
