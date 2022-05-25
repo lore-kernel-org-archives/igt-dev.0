@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0346310F8EE
- for <igt-dev@lists.freedesktop.org>; Wed, 25 May 2022 14:40:54 +0000 (UTC)
-From: "Knop, Ryszard" <ryszard.knop@intel.com>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Date: Wed, 25 May 2022 14:40:52 +0000
-Message-ID: <390af309756eecfba100134069b73aca61c47973.camel@intel.com>
-References: <20220525142134.1015217-1-ryszard.knop@intel.com>
- <Yo49OvAQnYEqMu1P@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <Yo49OvAQnYEqMu1P@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5C33F6E934465640BAF6F600D6F8208D@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B86310E092
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 May 2022 15:00:47 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 25 May 2022 17:00:41 +0200
+Message-Id: <20220525150041.29238-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_module_load: Add the "load"
- test
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4] tests/i915/gem_close_race: Adopt to use
+ softpin
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,64 +18,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIyLTA1LTI1IGF0IDE3OjI5ICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOgo+
-IE9uIFdlZCwgTWF5IDI1LCAyMDIyIGF0IDA0OjIxOjM0UE0gKzAyMDAsIFJ5c3phcmQgS25vcCB3
-cm90ZToKPiA+IEFkZCBhIGZha2UgdGVzdCB0aGF0Ogo+ID4gLSBBc3NlcnRzIGk5MTUgYW5kIGFz
-c29jaWF0ZWQgZHJpdmVycyBhcmUgbm90IHlldCBsb2FkZWQ7Cj4gPiAtIExvYWRzIHRoZSBpOTE1
-IGRyaXZlciBpZiB0aGF0J3Mgbm90IHRoZSBjYXNlIHlldDsKPiA+IC0gUGVyZm9ybXMgYSBzbWFs
-bCBzZXQgb2Ygc2FuaXR5IHRlc3RzIHRvIG1ha2Ugc3VyZSB0aGUgR1BVIGlzCj4gPiB0aGVyZS4K
-PiA+IAo+ID4gVGhlIHJlbG9hZCB0ZXN0IG5vdyBhbHNvIHBlcmZvcm1zIHRoZSBzYW1lIGNoZWNr
-cy4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogUnlzemFyZCBLbm9wIDxyeXN6YXJkLmtub3BAaW50
-ZWwuY29tPgo+ID4gLS0tCj4gPiDCoHRlc3RzL2k5MTUvaTkxNV9tb2R1bGVfbG9hZC5jIHwgNTIg
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKystLQo+ID4gLS0tLQo+ID4gwqAxIGZpbGUgY2hh
-bmdlZCwgNDMgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKPiA+IAo+ID4gZGlmZiAtLWdp
-dCBhL3Rlc3RzL2k5MTUvaTkxNV9tb2R1bGVfbG9hZC5jCj4gPiBiL3Rlc3RzL2k5MTUvaTkxNV9t
-b2R1bGVfbG9hZC5jCj4gPiBpbmRleCBmNWY5OGFjYy4uNDY2MDhhYTggMTAwNjQ0Cj4gPiAtLS0g
-YS90ZXN0cy9pOTE1L2k5MTVfbW9kdWxlX2xvYWQuYwo+ID4gKysrIGIvdGVzdHMvaTkxNS9pOTE1
-X21vZHVsZV9sb2FkLmMKPiA+IEBAIC0zMCw2ICszMCw3IEBACj4gPiDCoCNpbmNsdWRlIDxzeXMv
-aW9jdGwuaD4KPiA+IMKgI2luY2x1ZGUgPGZjbnRsLmg+Cj4gPiDCoAo+ID4gKyNpbmNsdWRlICJp
-OTE1L2dlbS5oIgo+ID4gwqAjaW5jbHVkZSAiaTkxNS9nZW1fY3JlYXRlLmgiCj4gPiDCoCNpbmNs
-dWRlICJpZ3RfZGVidWdmcy5oIgo+ID4gwqAjaW5jbHVkZSAiaWd0X2F1eC5oIgo+ID4gQEAgLTIz
-NiwyMSArMjM3LDU0IEBAIGhkYV9keW5hbWljX2RlYnVnKGJvb2wgZW5hYmxlKQo+ID4gwqDCoMKg
-wqDCoMKgwqDCoGZjbG9zZShmcCk7Cj4gPiDCoH0KPiA+IMKgCj4gPiArc3RhdGljIHZvaWQgbG9h
-ZF9hbmRfY2hlY2tfaTkxNSh2b2lkKQo+ID4gK3sKPiA+ICvCoMKgwqDCoMKgwqDCoGludCBlcnJv
-cjsKPiA+ICvCoMKgwqDCoMKgwqDCoGludCBkcm1fZmQ7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKg
-wqBoZGFfZHluYW1pY19kZWJ1Zyh0cnVlKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGVycm9yID0gaWd0
-X2k5MTVfZHJpdmVyX2xvYWQoTlVMTCk7Cj4gPiArwqDCoMKgwqDCoMKgwqBoZGFfZHluYW1pY19k
-ZWJ1ZyhmYWxzZSk7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKGVycm9y
-LCAwKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoC8qIGRyaXZlciBpcyByZWFkeSwgY2hlY2sg
-aWYgaXQncyBib3VuZCAqLwo+ID4gK8KgwqDCoMKgwqDCoMKgZHJtX2ZkID0gX19kcm1fb3Blbl9k
-cml2ZXIoRFJJVkVSX0lOVEVMKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGlndF9mYWlsX29uX2YoZHJt
-X2ZkIDwgMCwgIkNhbm5vdCBvcGVuIHRoZSBpOTE1IERSTSBkcml2ZXIKPiA+IGFmdGVyIG1vZHBy
-b2JpbmcgaTkxNS5cbiIpOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgLyogbWFrZSBzdXJlIHRo
-ZSBHUFUgaXMgaWRsZSAqLwo+ID4gK8KgwqDCoMKgwqDCoMKgZ2VtX3F1aWVzY2VudF9ncHUoZHJt
-X2ZkKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGNsb3NlKGRybV9mZCk7Cj4gPiArCj4gPiArwqDCoMKg
-wqDCoMKgwqAvKiBtYWtlIHN1cmUgd2UgY2FuIGRvIGJhc2ljIG1lbW9yeSBvcHMgKi8KPiA+ICvC
-oMKgwqDCoMKgwqDCoGdlbV9zYW5pdHljaGVjaygpOwo+ID4gK30KPiA+ICsKPiA+IMKgaWd0X21h
-aW4KPiA+IMKgewo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJBc3NlcnQgdGhhdCBp
-OTE1IGFuZCBmcmllbmRzIGFyZSBub3QgeWV0Cj4gPiBsb2FkZWQsIHRoZW4gbG9hZCB0aGVtLiIp
-Owo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoImxvYWQiKSB7Cj4gPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgY29uc3QgY2hhciAqIHVud2FudGVkX2RyaXZlcnNbXSA9IHsK
-PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgImk5MTUi
-LAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAiaW50
-ZWwtZ3R0IiwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgInNuZF9oZGFfaW50ZWwiLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAic25kX2hkbWlfbHBlX2F1ZGlvIiwKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgTlVMTAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoH07Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-Zm9yIChpbnQgaSA9IDA7IHVud2FudGVkX2RyaXZlcnNbaV0gIT0gTlVMTDsgaSsrKSB7Cj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hYm9ydF9v
-bl9mKGlndF9rbW9kX2lzX2xvYWRlZCh1bndhbnRlZF8KPiA+IGRyaXZlcnNbaV0pLAo+ID4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgICIlcyBpcyBhbHJlYWR5IGxvYWRlZCFcbiIsCj4gPiB1bndhbnRlZF9k
-cml2ZXJzW2ldKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gCj4gRG9u
-J3QgYWJvcnQgaGVyZSwgYSBza2lwIGlzIGVub3VnaC4KClRvbWkgbWVudGlvbmVkIGhlIHdvdWxk
-IHByZWZlciB0aGlzIHRvIGJlIGEgaGFyZCBmYWlsdXJlIGlmIHRoZSBtb2R1bGUKaXMgYWxyZWFk
-eSBsb2FkZWQgLSBAcmVsb2FkIHRlc3QgZG9lcyBub3QgZmFpbCBpZiBpdCdzIGxvYWRlZCBhbHJl
-YWR5LgpTaG91bGQgSSBzd2FwIGl0IHRvIGEgc2tpcCBhbnl3YXlzPwoKVGhhbmtzLCBSeXN6YXJk
-Cg==
+For newer gens there will be no relocations, so adopt test to
+run using soft-pinned addresses. Refactor code to run on
+discrete DG2, where there are no pwrite ioctl. Use calculated
+offsets for older gens so it will avoid applying relocations by
+i915 kernel driver.
+
+v2: refactor to run on DG2 and older gens (Zbigniew review)
+v3: use calculated offsets for older gens (Chris comments)
+v4: move setting NO_RELOC flag out of if-block (Zbigniew)
+    update commit message about DG2 refactoring
+
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_close_race.c | 56 +++++++++++++++++++++++++++----------
+ 1 file changed, 42 insertions(+), 14 deletions(-)
+
+diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
+index ab444945..93ae07ed 100644
+--- a/tests/i915/gem_close_race.c
++++ b/tests/i915/gem_close_race.c
+@@ -28,6 +28,7 @@
+ #include <pthread.h>
+ #include <unistd.h>
+ #include <signal.h>
++#include <stdbool.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -43,6 +44,7 @@
+ #include "drm.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "i915/gem_mman.h"
+ #include "igt.h"
+ 
+ #define OBJECT_SIZE (256 * 1024)
+@@ -53,6 +55,9 @@
+ 
+ static uint32_t devid;
+ static bool has_64bit_relocations;
++static bool has_softpin;
++static uint64_t exec_addr;
++static uint64_t data_addr;
+ 
+ #define sigev_notify_thread_id _sigev_un._tid
+ 
+@@ -61,9 +66,9 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_exec_object2 gem_exec[2];
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+-	struct drm_i915_gem_pwrite gem_pwrite;
+ 	struct drm_i915_gem_create create;
+ 	uint32_t buf[16], *b = buf;
++	int err;
+ 
+ 	memset(reloc, 0, sizeof(reloc));
+ 
+@@ -79,9 +84,10 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	reloc[0].target_handle = handle;
+ 	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
+ 	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
+-	*b++ = 0;
++	reloc[0].presumed_offset = data_addr;
++	*b++ = data_addr;
+ 	if (has_64bit_relocations)
+-		*b++ = 0;
++		*b++ = CANONICAL(data_addr) >> 32;
+ 
+ 	*b++ = 512 << 16;
+ 	*b++ = 4*1024;
+@@ -90,9 +96,10 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	reloc[1].target_handle = handle;
+ 	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
+ 	reloc[1].write_domain = 0;
+-	*b++ = 0;
++	reloc[1].presumed_offset = data_addr;
++	*b++ = data_addr;
+ 	if (has_64bit_relocations)
+-		*b++ = 0;
++		*b++ = CANONICAL(data_addr) >> 32;
+ 
+ 	*b++ = MI_BATCH_BUFFER_END;
+ 	*b++ = 0;
+@@ -105,10 +112,19 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	create.size = 4096;
+ 	drmIoctl(fd, DRM_IOCTL_I915_GEM_CREATE, &create);
+ 	gem_exec[1].handle = create.handle;
+-	gem_exec[1].relocation_count = 2;
+-	gem_exec[1].relocs_ptr = to_user_pointer(reloc);
++	gem_exec[1].offset = CANONICAL(exec_addr);
++	gem_exec[0].offset = CANONICAL(data_addr);
++	if (has_softpin) {
++		gem_exec[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++		gem_exec[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
++				     EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++	} else {
++		gem_exec[1].relocation_count = 2;
++		gem_exec[1].relocs_ptr = to_user_pointer(reloc);
++	}
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.flags |= I915_EXEC_NO_RELOC;
+ 	execbuf.buffers_ptr = to_user_pointer(gem_exec);
+ 	execbuf.buffer_count = 2;
+ 	execbuf.batch_len = (b - buf) * sizeof(*b);
+@@ -116,15 +132,22 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 		execbuf.flags |= I915_EXEC_BLT;
+ 	execbuf.rsvd1 = ctx;
+ 
+-	memset(&gem_pwrite, 0, sizeof(gem_pwrite));
+-	gem_pwrite.handle = create.handle;
+-	gem_pwrite.offset = 0;
+-	gem_pwrite.size = sizeof(buf);
+-	gem_pwrite.data_ptr = to_user_pointer(buf);
+-	if (drmIoctl(fd, DRM_IOCTL_I915_GEM_PWRITE, &gem_pwrite) == 0) {
++	err = __gem_write(fd, create.handle, 0, buf, sizeof(buf));
++	if (err == -EOPNOTSUPP) {
++		void *ptr;
++
++		ptr = __gem_mmap__device_coherent(fd, create.handle, 0, sizeof(buf), PROT_WRITE);
++		if (!ptr) {
++			err = errno;
++		} else {
++			memcpy(ptr, buf, sizeof(buf));
++			gem_munmap(ptr, sizeof(buf));
++		}
++	}
++
++	if (!err)
+ 		while (loops-- && __gem_execbuf(fd, &execbuf) == 0)
+ 			;
+-	}
+ 
+ 	drmIoctl(fd, DRM_IOCTL_GEM_CLOSE, &create.handle);
+ }
+@@ -256,6 +279,11 @@ igt_main
+ 
+ 		devid = intel_get_drm_devid(fd);
+ 		has_64bit_relocations = intel_gen(devid) >= 8;
++		has_softpin = !gem_has_relocations(fd);
++		exec_addr = gem_detect_safe_start_offset(fd);
++		data_addr = gem_detect_safe_alignment(fd);
++		exec_addr = max_t(exec_addr, exec_addr, data_addr);
++		data_addr += exec_addr;
+ 
+ 		igt_fork_hang_detector(fd);
+ 		close(fd);
+-- 
+2.34.1
