@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com
- [IPv6:2607:f8b0:4864:20::f2d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E512610E4AB
- for <igt-dev@lists.freedesktop.org>; Wed, 25 May 2022 19:18:12 +0000 (UTC)
-Received: by mail-qv1-xf2d.google.com with SMTP id r1so2370426qvz.8
- for <igt-dev@lists.freedesktop.org>; Wed, 25 May 2022 12:18:12 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 25 May 2022 15:18:01 -0400
-Message-Id: <20220525191801.2746592-1-markyacoub@chromium.org>
+Content-Type: multipart/alternative;
+ boundary="===============4266361973069161868=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] kms_prop_blob: Add new subtest for write-only
- blobs
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Wed, 25 May 2022 19:48:06 -0000
+Message-ID: <165350808681.16573.7135753048169015733@emeril.freedesktop.org>
+References: <20220525150041.29238-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220525150041.29238-1-kamil.konieczny@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fclose=5Frace=3A_Adopt_to_use_softpin_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,134 +17,238 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[Why]
-Some blobs support secret data injected into the kernel that should be
-retrieved back to user space (like HDCP key provisioned from a server
-and injected to the kernel)
+--===============4266361973069161868==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[How]
-Create a blob using the write only flag and validate that the data it
-holds can't be read again by the user space.
-Compare this behavior against a blob created without the flag.
+== Series Details ==
 
-TEST=blob-write-only
-TESTED-ON=Trogdor
+Series: tests/i915/gem_close_race: Adopt to use softpin (rev5)
+URL   : https://patchwork.freedesktop.org/series/104147/
+State : success
 
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
----
- include/drm-uapi/drm_mode.h |  6 ++++++
- tests/kms_prop_blob.c       | 39 +++++++++++++++++++++++++++++++++++--
- 2 files changed, 43 insertions(+), 2 deletions(-)
+== Summary ==
 
-diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index e4a2570a..38d6c1f0 100644
---- a/include/drm-uapi/drm_mode.h
-+++ b/include/drm-uapi/drm_mode.h
-@@ -1075,6 +1075,9 @@ struct drm_format_modifier {
- 	__u64 modifier;
- };
- 
-+#define DRM_MODE_CREATE_BLOB_WRITE_ONLY                                        \
-+       (1 << 0) /* data of the blob can't be read by user space */
-+
- /**
-  * struct drm_mode_create_blob - Create New blob property
-  *
-@@ -1088,6 +1091,9 @@ struct drm_mode_create_blob {
- 	__u32 length;
- 	/** @blob_id: Return: new property ID. */
- 	__u32 blob_id;
-+	/** Flags for special handling. */
-+       __u32 flags;
-+       __u32 pad;
- };
- 
- /**
-diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
-index 96aa6d8d..c130a432 100644
---- a/tests/kms_prop_blob.c
-+++ b/tests/kms_prop_blob.c
-@@ -75,6 +75,7 @@ validate_prop(int fd, uint32_t prop_id)
- {
- 	struct drm_mode_get_blob get;
- 	struct drm_mode_modeinfo ret_mode;
-+	ret_mode.clock = 0;
- 
- 	get.blob_id = prop_id;
- 	get.length = 0;
-@@ -94,12 +95,13 @@ validate_prop(int fd, uint32_t prop_id)
- }
- 
- static uint32_t
--create_prop(int fd)
-+create_prop_with_flags(int fd, uint32_t flags)
- {
- 	struct drm_mode_create_blob create;
- 
- 	create.length = sizeof(test_mode_valid);
--	create.data = (uintptr_t) &test_mode_valid;
-+	create.data = (uintptr_t)&test_mode_valid;
-+	create.flags = flags;
- 
- 	do_ioctl(fd, DRM_IOCTL_MODE_CREATEPROPBLOB, &create);
- 	igt_assert_neq_u32(create.blob_id, 0);
-@@ -107,6 +109,12 @@ create_prop(int fd)
- 	return create.blob_id;
- }
- 
-+static uint32_t
-+create_prop(int fd)
-+{
-+	return create_prop_with_flags(fd, 0);
-+}
-+
- static int
- destroy_prop(int fd, uint32_t prop_id)
- {
-@@ -223,6 +231,29 @@ test_multiple(int fd)
- 		igt_assert_eq(validate_prop(fd, prop_ids[i]), ENOENT);
- }
- 
-+/* Create 2 blobs, a write-only and a read-write blob.
-+   The only difference is the flag.
-+   Check that we can't read the value of the blob with the write-only flag.
-+*/
-+static void
-+test_write_only(int fd) {
-+	uint32_t rw_blob_id, wo_blob_id;
-+	int wo_ret = 0;
-+
-+	rw_blob_id = create_prop_with_flags(fd, 0);
-+	wo_blob_id = create_prop_with_flags(fd, DRM_MODE_CREATE_BLOB_WRITE_ONLY);
-+
-+	igt_assert_eq(validate_prop(fd, rw_blob_id), 0);
-+
-+	wo_ret = validate_prop(fd, wo_blob_id);
-+	/* The correct length should be copied to the length field. */
-+	igt_assert_neq(wo_ret, ENOMEM);
-+	igt_assert_eq(wo_ret, EINVAL);
-+
-+	igt_assert_eq(destroy_prop(fd, rw_blob_id), 0);
-+	igt_assert_eq(destroy_prop(fd, wo_blob_id), 0);
-+}
-+
- static void
- test_core(int fd)
- {
-@@ -335,6 +366,10 @@ igt_main
- 	igt_subtest("blob-multiple")
- 		test_multiple(fd);
- 
-+	igt_describe("Test validates Write-only blobs can't be read back by user space.");
-+	igt_subtest("blob-write-only")
-+		test_write_only(fd);
-+
- 	prop_tests(fd);
- 
- 	igt_fixture
--- 
-2.36.1.124.g0e6072fb45-goog
+CI Bug Log - changes from CI_DRM_11700 -> IGTPW_7170
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/index.html
+
+Participating hosts (46 -> 45)
+------------------------------
+
+  Missing    (1): fi-kbl-soraka 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7170 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-g3258:       [PASS][1] -> [INCOMPLETE][2] ([i915#4785])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_busy@basic@modeset:
+    - bat-adlp-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#3576])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adlp-4/igt@kms_busy@basic@modeset.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adlp-4/igt@kms_busy@basic@modeset.html
+
+  * igt@runner@aborted:
+    - fi-hsw-g3258:       NOTRUN -> [FAIL][5] ([fdo#109271] / [i915#4312])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/fi-hsw-g3258/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][6] ([i915#4494] / [i915#4957]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@hugepages:
+    - {bat-adln-1}:       [DMESG-WARN][8] -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adln-1/igt@i915_selftest@live@hugepages.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adln-1/igt@i915_selftest@live@hugepages.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-adlp-4:         [DMESG-FAIL][10] -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adlp-4/igt@i915_selftest@live@requests.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adlp-4/igt@i915_selftest@live@requests.html
+
+  * igt@kms_busy@basic@flip:
+    - bat-adlp-4:         [DMESG-WARN][12] ([i915#3576]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adlp-4/igt@kms_busy@basic@flip.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adlp-4/igt@kms_busy@basic@flip.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
+    - {bat-adlp-6}:       [DMESG-WARN][14] ([i915#3576]) -> [PASS][15] +1 similar issue
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - fi-tgl-u2:          [DMESG-WARN][16] ([i915#402]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6492 -> IGTPW_7170
+
+  CI-20190529: 20190529
+  CI_DRM_11700: f5895776c32b7fc5c196fafef3f5dab7e5ad19c6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7170: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/index.html
+  IGT_6492: ef18e59c374472e961a3a145724e7381eb4800aa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/index.html
+
+--===============4266361973069161868==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_close_race: Adopt to use softpin (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104147/">https://patchwork.freedesktop.org/series/104147/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11700 -&gt; IGTPW_7170</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/index.html</p>
+<h2>Participating hosts (46 -&gt; 45)</h2>
+<p>Missing    (1): fi-kbl-soraka </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7170 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@modeset:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adlp-4/igt@kms_busy@basic@modeset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adlp-4/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hugepages:</p>
+<ul>
+<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adln-1/igt@i915_selftest@live@hugepages.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adln-1/igt@i915_selftest@live@hugepages.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adlp-4/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adlp-4/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adlp-4/igt@kms_busy@basic@flip.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@a-edp1:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11700/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6492 -&gt; IGTPW_7170</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11700: f5895776c32b7fc5c196fafef3f5dab7e5ad19c6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7170: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7170/index.html<br />
+  IGT_6492: ef18e59c374472e961a3a145724e7381eb4800aa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4266361973069161868==--
