@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3CB610F46E
- for <igt-dev@lists.freedesktop.org>; Wed, 25 May 2022 12:59:51 +0000 (UTC)
-Date: Wed, 25 May 2022 15:57:34 +0300
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CE5210F50B
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 May 2022 13:01:38 +0000 (UTC)
+Date: Wed, 25 May 2022 15:59:20 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <Yo4nvho0QLxbMR49@platvala-desk.ger.corp.intel.com>
+Message-ID: <Yo4oKKNKkFNoN47B@platvala-desk.ger.corp.intel.com>
 References: <20220524120717.748348-1-mauro.chehab@linux.intel.com>
- <20220524120717.748348-2-mauro.chehab@linux.intel.com>
+ <20220524120717.748348-3-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220524120717.748348-2-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_core: use print_backtrace()
- on internal_assert()
+In-Reply-To: <20220524120717.748348-3-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_aux: fix kselftest module
+ unload
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,170 +26,78 @@ To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 24, 2022 at 02:07:16PM +0200, Mauro Carvalho Chehab wrote:
+On Tue, May 24, 2022 at 02:07:17PM +0200, Mauro Carvalho Chehab wrote:
 > From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> When internal_assert() hits, it is desired to know what part
-> of the code actually hit the issue.
+> Most of the time, i915 module unload happens inside a subtest.
+> So, using igt_fork() is OK. However, on i915_selftest, this
+> is called earlier, at igt_kselftest_begin. This causes an
+> error on IGT:
+> 
+> 	forking is only allowed in subtests or igt_simple_main
+> 	please refer to lib/igt_core documentation
+> 
+> As igt_fork() can only be used inside subtests. So, use
+> igt_fork_helper() instead.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-
 > ---
->  lib/igt_core.c | 124 +++++++++++++++++++++++++------------------------
->  1 file changed, 63 insertions(+), 61 deletions(-)
+>  lib/igt_aux.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 > 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index b7116f4e5433..e7425326b7f0 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -351,6 +351,67 @@ static bool stderr_needs_sentinel = false;
+> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+> index 751c8a29e514..9431960f2632 100644
+> --- a/lib/igt_aux.c
+> +++ b/lib/igt_aux.c
+> @@ -1465,11 +1465,12 @@ igt_lsof(const char *dpath)
 >  
->  static int _igt_dynamic_tests_executed = -1;
->  
-> +static void print_backtrace(void)
-> +{
-> +	unw_cursor_t cursor;
-> +	unw_context_t uc;
-> +	int stack_num = 0;
-> +
-> +	Dwfl_Callbacks cbs = {
-> +		.find_elf = dwfl_linux_proc_find_elf,
-> +		.find_debuginfo = dwfl_standard_find_debuginfo,
-> +	};
-> +
-> +	Dwfl *dwfl = dwfl_begin(&cbs);
-> +
-> +	if (dwfl_linux_proc_report(dwfl, getpid())) {
-> +		dwfl_end(dwfl);
-> +		dwfl = NULL;
-> +	} else
-> +		dwfl_report_end(dwfl, NULL, NULL);
-> +
-> +	igt_info("Stack trace:\n");
-> +
-> +	unw_getcontext(&uc);
-> +	unw_init_local(&cursor, &uc);
-> +	while (unw_step(&cursor) > 0) {
-> +		char name[255];
-> +		unw_word_t off, ip;
-> +		Dwfl_Module *mod = NULL;
-> +
-> +		unw_get_reg(&cursor, UNW_REG_IP, &ip);
-> +
-> +		if (dwfl)
-> +			mod = dwfl_addrmodule(dwfl, ip);
-> +
-> +		if (mod) {
-> +			const char *src, *dwfl_name;
-> +			Dwfl_Line *line;
-> +			int lineno;
-> +			GElf_Sym sym;
-> +
-> +			line = dwfl_module_getsrc(mod, ip);
-> +			dwfl_name = dwfl_module_addrsym(mod, ip, &sym, NULL);
-> +
-> +			if (line && dwfl_name) {
-> +				src = dwfl_lineinfo(line, NULL, &lineno, NULL, NULL, NULL);
-> +				igt_info("  #%d %s:%d %s()\n", stack_num++, src, lineno, dwfl_name);
-> +				continue;
-> +			}
-> +		}
-> +
-> +		if (unw_get_proc_name(&cursor, name, 255, &off) < 0)
-> +			igt_info("  #%d [<unknown>+0x%x]\n", stack_num++,
-> +				 (unsigned int) ip);
-> +		else
-> +			igt_info("  #%d [%s+0x%x]\n", stack_num++, name,
-> +				 (unsigned int) off);
-> +	}
-> +
-> +	if (dwfl)
-> +		dwfl_end(dwfl);
-> +}
-> +
->  __attribute__((format(printf, 2, 3)))
->  static void internal_assert(bool cond, const char *format, ...)
+>  static void pulseaudio_unload_module(proc_t *proc_info)
 >  {
-> @@ -362,6 +423,8 @@ static void internal_assert(bool cond, const char *format, ...)
->  		va_end(ap);
->  		fprintf(stderr, "please refer to lib/igt_core documentation\n");
+> +	struct igt_helper_process pa_proc = {};
+>  	char xdg_dir[PATH_MAX];
+>  	const char *homedir;
+>  	struct passwd *pw;
 >  
-> +		print_backtrace();
-> +
->  		assert(0);
+> -	igt_fork(child, 1) {
+> +	igt_fork_helper(&pa_proc) {
+>  		pw = getpwuid(proc_info->euid);
+>  		homedir = pw->pw_dir;
+>  		snprintf(xdg_dir, sizeof(xdg_dir), "/run/user/%d", proc_info->euid);
+> @@ -1484,11 +1485,12 @@ static void pulseaudio_unload_module(proc_t *proc_info)
+>  
+>  		system("for i in $(pacmd list-sources|grep module:|cut -d : -f 2); do pactl unload-module $i; done");
 >  	}
->  }
-> @@ -1766,67 +1829,6 @@ static void write_stderr(const char *str)
->  	__write_stderr(str, strlen(str));
+> -	igt_waitchildren();
+> +	igt_wait_helper(&pa_proc);
 >  }
 >  
-> -static void print_backtrace(void)
-> -{
-> -	unw_cursor_t cursor;
-> -	unw_context_t uc;
-> -	int stack_num = 0;
-> -
-> -	Dwfl_Callbacks cbs = {
-> -		.find_elf = dwfl_linux_proc_find_elf,
-> -		.find_debuginfo = dwfl_standard_find_debuginfo,
-> -	};
-> -
-> -	Dwfl *dwfl = dwfl_begin(&cbs);
-> -
-> -	if (dwfl_linux_proc_report(dwfl, getpid())) {
-> -		dwfl_end(dwfl);
-> -		dwfl = NULL;
-> -	} else
-> -		dwfl_report_end(dwfl, NULL, NULL);
-> -
-> -	igt_info("Stack trace:\n");
-> -
-> -	unw_getcontext(&uc);
-> -	unw_init_local(&cursor, &uc);
-> -	while (unw_step(&cursor) > 0) {
-> -		char name[255];
-> -		unw_word_t off, ip;
-> -		Dwfl_Module *mod = NULL;
-> -
-> -		unw_get_reg(&cursor, UNW_REG_IP, &ip);
-> -
-> -		if (dwfl)
-> -			mod = dwfl_addrmodule(dwfl, ip);
-> -
-> -		if (mod) {
-> -			const char *src, *dwfl_name;
-> -			Dwfl_Line *line;
-> -			int lineno;
-> -			GElf_Sym sym;
-> -
-> -			line = dwfl_module_getsrc(mod, ip);
-> -			dwfl_name = dwfl_module_addrsym(mod, ip, &sym, NULL);
-> -
-> -			if (line && dwfl_name) {
-> -				src = dwfl_lineinfo(line, NULL, &lineno, NULL, NULL, NULL);
-> -				igt_info("  #%d %s:%d %s()\n", stack_num++, src, lineno, dwfl_name);
-> -				continue;
-> -			}
-> -		}
-> -
-> -		if (unw_get_proc_name(&cursor, name, 255, &off) < 0)
-> -			igt_info("  #%d [<unknown>+0x%x]\n", stack_num++,
-> -				 (unsigned int) ip);
-> -		else
-> -			igt_info("  #%d [%s+0x%x]\n", stack_num++, name,
-> -				 (unsigned int) off);
-> -	}
-> -
-> -	if (dwfl)
-> -		dwfl_end(dwfl);
-> -}
-> -
->  static const char hex[] = "0123456789abcdef";
+>  static int pipewire_pulse_pid = 0;
+>  static int pipewire_pw_reserve_pid = 0;
+> +static struct igt_helper_process pw_reserve_proc = {};
 >  
->  static void
+>  static void pipewire_reserve_wait(void)
+>  {
+> @@ -1498,7 +1500,7 @@ static void pipewire_reserve_wait(void)
+>  	proc_t *proc_info;
+>  	PROCTAB *proc;
+>  
+> -	igt_fork(child, 1) {
+> +	igt_fork_helper(&pw_reserve_proc) {
+>  		igt_info("Preventing pipewire-pulse to use the audio drivers\n");
+>  
+>  		proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+> @@ -1592,7 +1594,7 @@ void pipewire_pulse_stop_reserve(void)
+>  	if (!pipewire_pulse_pid)
+>  		return;
+>  
+> -	igt_kill_children(SIGTERM);
+> +	igt_stop_helper(&pw_reserve_proc);
+>  }
+>  
+>  /**
 > -- 
 > 2.36.1
 > 
