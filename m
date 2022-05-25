@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17C4210F7FF
- for <igt-dev@lists.freedesktop.org>; Wed, 25 May 2022 14:31:53 +0000 (UTC)
-Date: Wed, 25 May 2022 17:29:14 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Ryszard Knop <ryszard.knop@intel.com>
-Message-ID: <Yo49OvAQnYEqMu1P@platvala-desk.ger.corp.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0346310F8EE
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 May 2022 14:40:54 +0000 (UTC)
+From: "Knop, Ryszard" <ryszard.knop@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Date: Wed, 25 May 2022 14:40:52 +0000
+Message-ID: <390af309756eecfba100134069b73aca61c47973.camel@intel.com>
 References: <20220525142134.1015217-1-ryszard.knop@intel.com>
+ <Yo49OvAQnYEqMu1P@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <Yo49OvAQnYEqMu1P@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5C33F6E934465640BAF6F600D6F8208D@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220525142134.1015217-1-ryszard.knop@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_module_load: Add the "load"
  test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,107 +23,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 25, 2022 at 04:21:34PM +0200, Ryszard Knop wrote:
-> Add a fake test that:
-> - Asserts i915 and associated drivers are not yet loaded;
-> - Loads the i915 driver if that's not the case yet;
-> - Performs a small set of sanity tests to make sure the GPU is there.
-> 
-> The reload test now also performs the same checks.
-> 
-> Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
-> ---
->  tests/i915/i915_module_load.c | 52 +++++++++++++++++++++++++++++------
->  1 file changed, 43 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-> index f5f98acc..46608aa8 100644
-> --- a/tests/i915/i915_module_load.c
-> +++ b/tests/i915/i915_module_load.c
-> @@ -30,6 +30,7 @@
->  #include <sys/ioctl.h>
->  #include <fcntl.h>
->  
-> +#include "i915/gem.h"
->  #include "i915/gem_create.h"
->  #include "igt_debugfs.h"
->  #include "igt_aux.h"
-> @@ -236,21 +237,54 @@ hda_dynamic_debug(bool enable)
->  	fclose(fp);
->  }
->  
-> +static void load_and_check_i915(void)
-> +{
-> +	int error;
-> +	int drm_fd;
-> +
-> +	hda_dynamic_debug(true);
-> +	error = igt_i915_driver_load(NULL);
-> +	hda_dynamic_debug(false);
-> +
-> +	igt_assert_eq(error, 0);
-> +
-> +	/* driver is ready, check if it's bound */
-> +	drm_fd = __drm_open_driver(DRIVER_INTEL);
-> +	igt_fail_on_f(drm_fd < 0, "Cannot open the i915 DRM driver after modprobing i915.\n");
-> +
-> +	/* make sure the GPU is idle */
-> +	gem_quiescent_gpu(drm_fd);
-> +	close(drm_fd);
-> +
-> +	/* make sure we can do basic memory ops */
-> +	gem_sanitycheck();
-> +}
-> +
->  igt_main
->  {
-> +	igt_describe("Assert that i915 and friends are not yet loaded, then load them.");
-> +	igt_subtest("load") {
-> +		const char * unwanted_drivers[] = {
-> +			"i915",
-> +			"intel-gtt",
-> +			"snd_hda_intel",
-> +			"snd_hdmi_lpe_audio",
-> +			NULL
-> +		};
-> +
-> +		for (int i = 0; unwanted_drivers[i] != NULL; i++) {
-> +			igt_abort_on_f(igt_kmod_is_loaded(unwanted_drivers[i]),
-> +			               "%s is already loaded!\n", unwanted_drivers[i]);
-> +		}
-
-Don't abort here, a skip is enough.
-
--- 
-Petri Latvala
-
-
-> +
-> +		load_and_check_i915();
-> +	}
-> +
->  	igt_describe("Verify the basic functionality of i915 driver after it's reloaded.");
->  	igt_subtest("reload") {
-> -		int load_error;
-> -
->  		igt_i915_driver_unload();
->  
-> -		hda_dynamic_debug(true);
-> -		load_error = igt_i915_driver_load(NULL);
-> -		hda_dynamic_debug(false);
-> -
-> -		igt_assert_eq(load_error, 0);
-> -
-> -		gem_sanitycheck();
-> +		load_and_check_i915();
->  
->  		/* only default modparams, can leave module loaded */
->  	}
-> -- 
-> 2.36.1
-> 
+T24gV2VkLCAyMDIyLTA1LTI1IGF0IDE3OjI5ICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOgo+
+IE9uIFdlZCwgTWF5IDI1LCAyMDIyIGF0IDA0OjIxOjM0UE0gKzAyMDAsIFJ5c3phcmQgS25vcCB3
+cm90ZToKPiA+IEFkZCBhIGZha2UgdGVzdCB0aGF0Ogo+ID4gLSBBc3NlcnRzIGk5MTUgYW5kIGFz
+c29jaWF0ZWQgZHJpdmVycyBhcmUgbm90IHlldCBsb2FkZWQ7Cj4gPiAtIExvYWRzIHRoZSBpOTE1
+IGRyaXZlciBpZiB0aGF0J3Mgbm90IHRoZSBjYXNlIHlldDsKPiA+IC0gUGVyZm9ybXMgYSBzbWFs
+bCBzZXQgb2Ygc2FuaXR5IHRlc3RzIHRvIG1ha2Ugc3VyZSB0aGUgR1BVIGlzCj4gPiB0aGVyZS4K
+PiA+IAo+ID4gVGhlIHJlbG9hZCB0ZXN0IG5vdyBhbHNvIHBlcmZvcm1zIHRoZSBzYW1lIGNoZWNr
+cy4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogUnlzemFyZCBLbm9wIDxyeXN6YXJkLmtub3BAaW50
+ZWwuY29tPgo+ID4gLS0tCj4gPiDCoHRlc3RzL2k5MTUvaTkxNV9tb2R1bGVfbG9hZC5jIHwgNTIg
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKystLQo+ID4gLS0tLQo+ID4gwqAxIGZpbGUgY2hh
+bmdlZCwgNDMgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKPiA+IAo+ID4gZGlmZiAtLWdp
+dCBhL3Rlc3RzL2k5MTUvaTkxNV9tb2R1bGVfbG9hZC5jCj4gPiBiL3Rlc3RzL2k5MTUvaTkxNV9t
+b2R1bGVfbG9hZC5jCj4gPiBpbmRleCBmNWY5OGFjYy4uNDY2MDhhYTggMTAwNjQ0Cj4gPiAtLS0g
+YS90ZXN0cy9pOTE1L2k5MTVfbW9kdWxlX2xvYWQuYwo+ID4gKysrIGIvdGVzdHMvaTkxNS9pOTE1
+X21vZHVsZV9sb2FkLmMKPiA+IEBAIC0zMCw2ICszMCw3IEBACj4gPiDCoCNpbmNsdWRlIDxzeXMv
+aW9jdGwuaD4KPiA+IMKgI2luY2x1ZGUgPGZjbnRsLmg+Cj4gPiDCoAo+ID4gKyNpbmNsdWRlICJp
+OTE1L2dlbS5oIgo+ID4gwqAjaW5jbHVkZSAiaTkxNS9nZW1fY3JlYXRlLmgiCj4gPiDCoCNpbmNs
+dWRlICJpZ3RfZGVidWdmcy5oIgo+ID4gwqAjaW5jbHVkZSAiaWd0X2F1eC5oIgo+ID4gQEAgLTIz
+NiwyMSArMjM3LDU0IEBAIGhkYV9keW5hbWljX2RlYnVnKGJvb2wgZW5hYmxlKQo+ID4gwqDCoMKg
+wqDCoMKgwqDCoGZjbG9zZShmcCk7Cj4gPiDCoH0KPiA+IMKgCj4gPiArc3RhdGljIHZvaWQgbG9h
+ZF9hbmRfY2hlY2tfaTkxNSh2b2lkKQo+ID4gK3sKPiA+ICvCoMKgwqDCoMKgwqDCoGludCBlcnJv
+cjsKPiA+ICvCoMKgwqDCoMKgwqDCoGludCBkcm1fZmQ7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKg
+wqBoZGFfZHluYW1pY19kZWJ1Zyh0cnVlKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGVycm9yID0gaWd0
+X2k5MTVfZHJpdmVyX2xvYWQoTlVMTCk7Cj4gPiArwqDCoMKgwqDCoMKgwqBoZGFfZHluYW1pY19k
+ZWJ1ZyhmYWxzZSk7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKGVycm9y
+LCAwKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoC8qIGRyaXZlciBpcyByZWFkeSwgY2hlY2sg
+aWYgaXQncyBib3VuZCAqLwo+ID4gK8KgwqDCoMKgwqDCoMKgZHJtX2ZkID0gX19kcm1fb3Blbl9k
+cml2ZXIoRFJJVkVSX0lOVEVMKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGlndF9mYWlsX29uX2YoZHJt
+X2ZkIDwgMCwgIkNhbm5vdCBvcGVuIHRoZSBpOTE1IERSTSBkcml2ZXIKPiA+IGFmdGVyIG1vZHBy
+b2JpbmcgaTkxNS5cbiIpOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgLyogbWFrZSBzdXJlIHRo
+ZSBHUFUgaXMgaWRsZSAqLwo+ID4gK8KgwqDCoMKgwqDCoMKgZ2VtX3F1aWVzY2VudF9ncHUoZHJt
+X2ZkKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGNsb3NlKGRybV9mZCk7Cj4gPiArCj4gPiArwqDCoMKg
+wqDCoMKgwqAvKiBtYWtlIHN1cmUgd2UgY2FuIGRvIGJhc2ljIG1lbW9yeSBvcHMgKi8KPiA+ICvC
+oMKgwqDCoMKgwqDCoGdlbV9zYW5pdHljaGVjaygpOwo+ID4gK30KPiA+ICsKPiA+IMKgaWd0X21h
+aW4KPiA+IMKgewo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJBc3NlcnQgdGhhdCBp
+OTE1IGFuZCBmcmllbmRzIGFyZSBub3QgeWV0Cj4gPiBsb2FkZWQsIHRoZW4gbG9hZCB0aGVtLiIp
+Owo+ID4gK8KgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoImxvYWQiKSB7Cj4gPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgY29uc3QgY2hhciAqIHVud2FudGVkX2RyaXZlcnNbXSA9IHsK
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgImk5MTUi
+LAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAiaW50
+ZWwtZ3R0IiwKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgInNuZF9oZGFfaW50ZWwiLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAic25kX2hkbWlfbHBlX2F1ZGlvIiwKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgTlVMTAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoH07Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+Zm9yIChpbnQgaSA9IDA7IHVud2FudGVkX2RyaXZlcnNbaV0gIT0gTlVMTDsgaSsrKSB7Cj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hYm9ydF9v
+bl9mKGlndF9rbW9kX2lzX2xvYWRlZCh1bndhbnRlZF8KPiA+IGRyaXZlcnNbaV0pLAo+ID4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgICIlcyBpcyBhbHJlYWR5IGxvYWRlZCFcbiIsCj4gPiB1bndhbnRlZF9k
+cml2ZXJzW2ldKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gCj4gRG9u
+J3QgYWJvcnQgaGVyZSwgYSBza2lwIGlzIGVub3VnaC4KClRvbWkgbWVudGlvbmVkIGhlIHdvdWxk
+IHByZWZlciB0aGlzIHRvIGJlIGEgaGFyZCBmYWlsdXJlIGlmIHRoZSBtb2R1bGUKaXMgYWxyZWFk
+eSBsb2FkZWQgLSBAcmVsb2FkIHRlc3QgZG9lcyBub3QgZmFpbCBpZiBpdCdzIGxvYWRlZCBhbHJl
+YWR5LgpTaG91bGQgSSBzd2FwIGl0IHRvIGEgc2tpcCBhbnl3YXlzPwoKVGhhbmtzLCBSeXN6YXJk
+Cg==
