@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5AE3A10E43A
- for <igt-dev@lists.freedesktop.org>; Thu, 26 May 2022 16:14:46 +0000 (UTC)
-Received: by mail-pl1-x635.google.com with SMTP id a17so1832575plb.4
- for <igt-dev@lists.freedesktop.org>; Thu, 26 May 2022 09:14:46 -0700 (PDT)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51C4A10E42B
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 May 2022 16:14:49 +0000 (UTC)
+Received: by mail-pf1-x42a.google.com with SMTP id h13so2065798pfq.5
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 May 2022 09:14:49 -0700 (PDT)
 From: Rob Clark <robdclark@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 26 May 2022 09:14:43 -0700
-Message-Id: <20220526161445.1819128-1-robdclark@gmail.com>
+Date: Thu, 26 May 2022 09:14:44 -0700
+Message-Id: <20220526161445.1819128-2-robdclark@gmail.com>
+In-Reply-To: <20220526161445.1819128-1-robdclark@gmail.com>
+References: <20220526161445.1819128-1-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt 0/2] A couple memory helper cleanups
+Subject: [igt-dev] [PATCH igt 1/2] lib/igt_debugfs: Drop-caches support for
+ msm
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,65 +29,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Rob Clark <robdclark@chromium.org>
 
-Some prep work for a shrinker test that I'm working on.  The second
-patch is a bit churny so I figured I'd go ahead and send these out now.
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+---
+ lib/igt_debugfs.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-Rob Clark (2):
-  lib/igt_debugfs: Drop-caches support for msm
-  igt: Promote/rename OS helpers
-
- lib/i915/intel_memory_region.c        |  2 +-
- lib/igt_aux.c                         |  2 +-
- lib/igt_aux.h                         | 18 +----
- lib/igt_debugfs.c                     | 16 ++++-
- lib/{intel_os.c => igt_os.c}          | 97 ++++++++++++++-------------
- lib/igt_os.h                          | 45 +++++++++++++
- lib/meson.build                       |  2 +-
- tests/dumb_buffer.c                   |  2 +-
- tests/eviction_common.c               | 16 ++---
- tests/i915/gem_busy.c                 |  2 +-
- tests/i915/gem_concurrent_all.c       |  8 +--
- tests/i915/gem_create.c               |  2 +-
- tests/i915/gem_ctx_create.c           |  4 +-
- tests/i915/gem_ctx_exec.c             |  2 +-
- tests/i915/gem_evict_alignment.c      |  4 +-
- tests/i915/gem_evict_everything.c     |  8 +--
- tests/i915/gem_exec_alignment.c       |  8 +--
- tests/i915/gem_exec_await.c           |  2 +-
- tests/i915/gem_exec_big.c             |  6 +-
- tests/i915/gem_exec_capture.c         |  8 +--
- tests/i915/gem_exec_gttfill.c         |  2 +-
- tests/i915/gem_exec_params.c          |  2 +-
- tests/i915/gem_exec_reloc.c           |  2 +-
- tests/i915/gem_linear_blits.c         |  2 +-
- tests/i915/gem_lmem_swapping.c        |  6 +-
- tests/i915/gem_mmap.c                 |  4 +-
- tests/i915/gem_mmap_gtt.c             |  6 +-
- tests/i915/gem_mmap_offset.c          |  2 +-
- tests/i915/gem_ppgtt.c                |  4 +-
- tests/i915/gem_pwrite.c               |  8 +--
- tests/i915/gem_render_linear_blits.c  | 10 +--
- tests/i915/gem_render_tiled_blits.c   | 10 +--
- tests/i915/gem_shrink.c               |  6 +-
- tests/i915/gem_softpin.c              |  4 +-
- tests/i915/gem_tiled_blits.c          |  2 +-
- tests/i915/gem_tiled_fence_blits.c    |  2 +-
- tests/i915/gem_tiled_pread_pwrite.c   |  2 +-
- tests/i915/gem_tiled_swapping.c       | 20 +++---
- tests/i915/gem_userptr_blits.c        | 20 +++---
- tests/i915/gen3_mixed_blits.c         |  2 +-
- tests/i915/gen3_render_linear_blits.c |  2 +-
- tests/i915/gen3_render_mixed_blits.c  |  2 +-
- tests/i915/gen3_render_tiledx_blits.c |  2 +-
- tests/i915/gen3_render_tiledy_blits.c |  2 +-
- tests/i915/gen7_exec_parse.c          |  2 +-
- tests/i915/gen9_exec_parse.c          |  6 +-
- tests/i915/i915_suspend.c             |  6 +-
- tests/i915/kms_big_fb.c               |  2 +-
- tests/prime_mmap_coherency.c          | 10 +--
- 49 files changed, 226 insertions(+), 178 deletions(-)
- rename lib/{intel_os.c => igt_os.c} (85%)
- create mode 100644 lib/igt_os.h
-
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 7211c410..7e7ccf22 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -1139,8 +1139,20 @@ void igt_drop_caches_set(int drm_fd, uint64_t val)
+ 	int dir;
+ 
+ 	dir = igt_debugfs_dir(drm_fd);
+-	igt_assert(igt_sysfs_printf(dir, "i915_gem_drop_caches",
+-				    "0x%" PRIx64, val) > 0);
++	if (is_i915_device(drm_fd)) {
++		igt_assert(igt_sysfs_printf(dir, "i915_gem_drop_caches",
++					    "0x%" PRIx64, val) > 0);
++	} else if (is_msm_device(drm_fd)) {
++		/*
++		 * msm doesn't currently have debugs that supports fine grained
++		 * control of *what* to drop, just # of objects to scan (equiv
++		 * to shrink_control::nr_to_scan).  To meet that limit it will
++		 * first try shrinking, and then dropping idle.  So just tell
++		 * it to try and drop as many objects as possible:
++		 */
++		igt_assert(igt_sysfs_printf(dir, "shrink", "0x%" PRIx64,
++					    ~(uint64_t)0) > 0);
++	}
+ 	close(dir);
+ }
+ 
 -- 
 2.35.3
