@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Sarvela, Tomi P" <tomi.p.sarvela@intel.com>
-To: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 27 May 2022 09:47:07 +0000
-Message-ID: <CO6PR11MB56362A89E66B2EB94660D626DED89@CO6PR11MB5636.namprd11.prod.outlook.com>
-References: <CO6PR11MB56360FE2C5052E4214390547DED39@CO6PR11MB5636.namprd11.prod.outlook.com>
-In-Reply-To: <CO6PR11MB56360FE2C5052E4214390547DED39@CO6PR11MB5636.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: multipart/alternative;
- boundary="_000_CO6PR11MB56362A89E66B2EB94660D626DED89CO6PR11MB5636namp_"
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 27 May 2022 11:50:40 +0100
+Message-Id: <20220527105042.2233128-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [CI] Maintenance: Intel-GFX-CI down on weekend
- 27.5.-29.5.
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_device_scan: Free filtered
+ devices in igt_devices_free
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,176 +14,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_CO6PR11MB56362A89E66B2EB94660D626DED89CO6PR11MB5636namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-GFX-CI will be quieting down today for hardware migration.
-New builds will be stopped soon to drain the shard queue.
-Existing results on https://intel-gfx-ci.01.org/ will be available
-during migration.
+Fix a possible oversight.
 
-CI data migration is estimated to take two days. After syncing,
-functional testing will proceed. If tests pass, partial functionality
-(DRM-Tip) is restored on Sunday and full functionality on Monday.
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ lib/igt_device_scan.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Tomi
-
-
-From: Sarvela, Tomi P
-Sent: Friday, May 20, 2022 11:38 AM
-
-This is early warning about GFX-CI going down for maintenance
-on next week weekend Fri 27.5. to Sun 29.5.
-
-GFX-CI will be migrating to new hardware starting Friday 27.5. and
-estimated downtime is at least 48h (CIBuglog database dump/import).
-During downtime, no new builds are done and no testing is performed.
-
-If all goes well, CI will be running on new server on Monday 30.5.
-If not, the old server is rolled back by changing IP and the services
-will be restarted on old hardware.
-
-Visible improvement will be doubling of disk space, which
-allows us to have more history stored.
-
-Weekends usually are quiet on mailing lists, so I hope this
-won't be too much of an inconvenience.
-
-Best Regards,
-
-Tomi Sarvela
---
-Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-
-
---_000_CO6PR11MB56362A89E66B2EB94660D626DED89CO6PR11MB5636namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;
-	mso-fareast-language:EN-US;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:#0563C1;
-	text-decoration:underline;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-size:10.0pt;}
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"FI" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:bre=
-ak-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal"><span lang=3D"EN-US">GFX-CI will be quieting down to=
-day for hardware migration.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">New builds will be stopped soon=
- to drain the shard queue.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">Existing results on <a href=3D"=
-https://intel-gfx-ci.01.org/">
-https://intel-gfx-ci.01.org/</a> will be available<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">during migration.<o:p></o:p></s=
-pan></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">CI data migration is estimated =
-to take two days. After syncing,<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">functional testing will proceed=
-. If tests pass, partial functionality<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">(DRM-Tip) is restored on Sunday=
- and full functionality on Monday.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">Tomi<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<div style=3D"border:none;border-left:solid blue 1.5pt;padding:0cm 0cm 0cm =
-4.0pt">
-<p class=3D"MsoNormal"><b><span lang=3D"EN-US" style=3D"mso-fareast-languag=
-e:FI">From:</span></b><span lang=3D"EN-US" style=3D"mso-fareast-language:FI=
-"> Sarvela, Tomi P
-<br>
-<b>Sent:</b> Friday, May 20, 2022 11:38 AM<br>
-<br>
-</span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">This is early warning about GFX=
--CI going down for maintenance<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">on next week weekend Fri 27.5. =
-to Sun 29.5.
-<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">GFX-CI will be migrating to new=
- hardware starting Friday 27.5. and<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">estimated downtime is at least =
-48h (CIBuglog database dump/import).<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">During downtime, no new builds =
-are done and no testing is performed.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">If all goes well, CI will be ru=
-nning on new server on Monday 30.5.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">If not, the old server is rolle=
-d back by changing IP and the services<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">will be restarted on old hardwa=
-re.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">Visible improvement will be dou=
-bling of disk space, which<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">allows us to have more history =
-stored.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">Weekends usually are quiet on m=
-ailing lists, so I hope this<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">won&#8217;t be too much of an i=
-nconvenience.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">Best Regards,<o:p></o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">Tomi Sarvela<o:p></o:p></span><=
-/p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US" style=3D"mso-fareast-language:F=
-I">--<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-IE" style=3D"font-size:9.5pt;font-f=
-amily:&quot;Arial&quot;,sans-serif;color:black;background:white;mso-fareast=
--language:EN-IE">Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 =
-Espoo</span><span lang=3D"EN-IE" style=3D"mso-fareast-language:EN-IE"><o:p>=
-</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-</div>
-</div>
-</body>
-</html>
-
---_000_CO6PR11MB56362A89E66B2EB94660D626DED89CO6PR11MB5636namp_--
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index 3c23fe0eb520..a30433ae2cff 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -814,6 +814,11 @@ void igt_devices_free(void)
+ 		igt_device_free(dev);
+ 		free(dev);
+ 	}
++
++	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.filtered, link) {
++		igt_list_del(&dev->link);
++		free(dev);
++	}
+ }
+ 
+ /**
+-- 
+2.32.0
