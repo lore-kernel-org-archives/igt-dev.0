@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2051.outbound.protection.outlook.com [40.107.220.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70EB810E25D
- for <igt-dev@lists.freedesktop.org>; Thu, 26 May 2022 16:28:19 +0000 (UTC)
-From: "Kim, Sung joon" <Sungjoon.Kim@amd.com>
-To: Melissa Wen <mwen@igalia.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Thu, 26 May 2022 16:28:15 +0000
-Message-ID: <MN2PR12MB3054254D1331EDFFBAA5080097D99@MN2PR12MB3054.namprd12.prod.outlook.com>
-References: <20220525170939.141509-1-mwen@igalia.com>
-In-Reply-To: <20220525170939.141509-1-mwen@igalia.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] test/kms_plane_alpha_blend: clearer
- validation for coverage-7efc
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: janga.rahul.kumar@intel.com
+Date: Sat, 28 May 2022 15:01:14 -0000
+Message-ID: <165375007495.24491.8517609776052850909@emeril.freedesktop.org>
+References: <20220527121207.766721-1-janga.rahul.kumar@intel.com>
+In-Reply-To: <20220527121207.766721-1-janga.rahul.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBIQVgg?=
+ =?utf-8?q?add_test_description_to_gem=5Frender=5Ftiled=5Fblits?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,96 +17,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "petri.latvala@intel.com" <petri.latvala@intel.com>,
- "markyacoub@google.com" <markyacoub@google.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[AMD Official Use Only - General]
+=3D=3D Series Details =3D=3D
 
-Looks good to me.
-One suggestion would be adding some information (e.g. commit id, etc...) ab=
-out the change that enabled Coverage alpha blend mode made in the kernel in=
- your description?
+Series: HAX add test description to gem_render_tiled_blits
+URL   : https://patchwork.freedesktop.org/series/104470/
+State : failure
 
-Reviewed-by: Sung Joon Kim <sungkim@amd.com>
+=3D=3D Summary =3D=3D
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Melissa Wen
-> Sent: Wednesday, May 25, 2022 1:10 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: petri.latvala@intel.com; markyacoub@google.com
-> Subject: [igt-dev] [PATCH i-g-t] test/kms_plane_alpha_blend: clearer
-> validation for coverage-7efc
->
-> Inspired by previous change in alpha-7efc, get a clearer validation for
-> the swappable property of plane_alpha and fg.alpha in the coverage blend
-> formula. Get rid of the 8-increment alpha loop by refactoring
-> coverage-7efc in favor of one-shot check format, avoiding doubts related
-> to bit precision and rounding issue.
->
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
-> ---
->  tests/kms_plane_alpha_blend.c | 23 +++++++++++------------
->  1 file changed, 11 insertions(+), 12 deletions(-)
->
-> diff --git a/tests/kms_plane_alpha_blend.c
-> b/tests/kms_plane_alpha_blend.c
-> index 8e54dfd6..001a1479 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -420,20 +420,18 @@ static void coverage_7efc(data_t *data, enum pipe
-> pipe, igt_plane_t *plane)
->       igt_pipe_crc_start(data->pipe_crc);
->
->       /* for coverage, plane alpha and fb alpha should be swappable, so
-> swap fb and alpha */
-> -     for (i =3D 0; i < 256; i +=3D 8) {
-> -             igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, ((i/2)
-> << 8) | (i/2));
-> -             igt_plane_set_fb(plane, &data->argb_fb_cov_fc);
-> -             igt_display_commit2(display, COMMIT_ATOMIC);
-> +     igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e7e);
-> +     igt_plane_set_fb(plane, &data->argb_fb_cov_fc);
-> +     igt_display_commit2(display, COMMIT_ATOMIC);
->
-> -             igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
-> &ref_crc);
-> +     igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
-> &ref_crc);
->
-> -             igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, (i << 8)
-> | i);
-> -             igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
-> -             igt_display_commit2(display, COMMIT_ATOMIC);
-> +     igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0xfcfc);
-> +     igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
-> +     igt_display_commit2(display, COMMIT_ATOMIC);
->
-> -             igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
-> &crc);
-> -             igt_assert_crc_equal(&ref_crc, &crc);
-> -     }
-> +     igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
-> +     igt_assert_crc_equal(&ref_crc, &crc);
->
->       igt_pipe_crc_stop(data->pipe_crc);
->  }
-> @@ -537,7 +535,8 @@ static void run_subtests(data_t *data, enum pipe
-> pipe)
->       igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
->               run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc=
-);
->
-> -     igt_describe("Tests pipe coverage blending properties.");
-> +     igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha
-> and "
-> +                  "plane_alpha are swappable on coverage blend mode.");
->       igt_subtest_f("pipe-%s-coverage-7efc", kmstest_pipe_name(pipe))
->               run_test_on_pipe_planes(data, pipe, true, true,
-> coverage_7efc);
->
-> --
-> 2.35.1
+IGT patchset build failed on latest successful build
+58a5a2d5be19b916311541401aaa48b787f9a185 lib/igt_kms: Set pipe->plane_prima=
+ry to driver-assigned primary plane when there are multiple possible primar=
+y planes
+
+[422/645] Linking target tests/gem_exec_store
+[423/645] Linking target tests/gem_exec_suspend
+[424/645] Linking target tests/gem_fenced_exec_thrash
+[425/645] Linking target tests/gem_fd_exhaustion
+[426/645] Linking target tests/gem_fence_thrash
+[427/645] Linking target tests/gem_fence_upload
+[428/645] Linking target tests/gem_flink_basic
+[429/645] Linking target tests/gem_flink_race
+[430/645] Linking target tests/gem_gpgpu_fill
+[431/645] Linking target tests/gem_gtt_cpu_tlb
+[432/645] Linking target tests/gem_gtt_hog
+[433/645] Linking target tests/gem_gtt_speed
+[434/645] Linking target tests/gem_huc_copy
+[435/645] Linking target tests/gem_linear_blits
+[436/645] Linking target tests/gem_lmem_swapping
+[437/645] Linking target tests/gem_lut_handle
+[438/645] Linking target tests/gem_madvise
+[439/645] Linking target tests/gem_media_fill
+[440/645] Linking target tests/gem_media_vme
+[441/645] Linking target tests/gem_partial_pwrite_pread
+[442/645] Linking target tests/gem_mmap_gtt
+[443/645] Linking target tests/gem_mmap
+[444/645] Linking target tests/gem_mmap_wc
+[445/645] Linking target tests/gem_pipe_control_store_loop
+[446/645] Linking target tests/gem_ppgtt
+[447/645] Linking target tests/gem_pread
+[448/645] Linking target tests/gem_pread_after_blit
+[449/645] Linking target tests/gem_pwrite
+[450/645] Linking target tests/gem_pwrite_snooped
+[451/645] Linking target tests/gem_pxp
+[452/645] Linking target tests/gem_read_read_speed
+[453/645] Linking target tests/gem_readwrite
+[454/645] Compiling C object tests/gem_render_tiled_blits.p/i915_gem_render=
+_tiled_blits.c.o
+FAILED: tests/gem_render_tiled_blits.p/i915_gem_render_tiled_blits.c.o=20
+ccache cc -Itests/gem_render_tiled_blits.p -Itests -I../tests -I../include/=
+drm-uapi -I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I.=
+ -I.. -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-=
+gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/us=
+r/include/libpng16 -I/usr/include/libpng12 -I/usr/include/libdrm -I/usr/inc=
+lude/libdrm/nouveau -I/usr/include/x86_64-linux-gnu -I/usr/include/alsa -I/=
+usr/include -I/home/cidrm/kernel_headers/include -fdiagnostics-color=3Dalwa=
+ys -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g=
+ -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast =
+-Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlog=
+ical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noretur=
+n -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-ar=
+ith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused=
+ -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -W=
+no-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -=
+Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplic=
+it -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=
+=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=
+=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite=
+-strings -fno-builtin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ =
+tests/gem_render_tiled_blits.p/i915_gem_render_tiled_blits.c.o -MF tests/ge=
+m_render_tiled_blits.p/i915_gem_render_tiled_blits.c.o.d -o tests/gem_rende=
+r_tiled_blits.p/i915_gem_render_tiled_blits.c.o -c ../tests/i915/gem_render=
+_tiled_blits.c
+../tests/i915/gem_render_tiled_blits.c:61:1: error: expected =E2=80=98,=E2=
+=80=99 or =E2=80=98;=E2=80=99 before =E2=80=98static=E2=80=99
+ static igt_render_copyfunc_t render_copy;
+ ^~~~~~
+../tests/i915/gem_render_tiled_blits.c: In function =E2=80=98check_buf=E2=
+=80=99:
+../tests/i915/gem_render_tiled_blits.c:73:2: error: implicit declaration of=
+ function =E2=80=98render_copy=E2=80=99 [-Werror=3Dimplicit-function-declar=
+ation]
+  render_copy(ibb, buf, 0, 0, WIDTH, HEIGHT, &linear, 0, 0);
+  ^~~~~~~~~~~
+../tests/i915/gem_render_tiled_blits.c:73:2: warning: nested extern declara=
+tion of =E2=80=98render_copy=E2=80=99 [-Wnested-externs]
+../tests/i915/gem_render_tiled_blits.c: In function =E2=80=98run_test=E2=80=
+=99:
+../tests/i915/gem_render_tiled_blits.c:106:2: error: =E2=80=98render_copy=
+=E2=80=99 undeclared (first use in this function)
+  render_copy =3D igt_get_render_copyfunc(devid);
+  ^~~~~~~~~~~
+../tests/i915/gem_render_tiled_blits.c:106:2: note: each undeclared identif=
+ier is reported only once for each function it appears in
+cc1: some warnings being treated as errors
+ninja: build stopped: subcommand failed.
+
