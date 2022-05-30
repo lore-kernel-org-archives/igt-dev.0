@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2073.outbound.protection.outlook.com [40.107.92.73])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9701A10FAD3
- for <igt-dev@lists.freedesktop.org>; Mon, 30 May 2022 18:37:55 +0000 (UTC)
-Message-ID: <71f599ff-7108-ffa5-88dd-9d73d2c8ed22@amd.com>
-Date: Mon, 30 May 2022 14:37:51 -0400
-Content-Language: en-US
-To: Melissa Wen <mwen@igalia.com>, igt-dev@lists.freedesktop.org
-References: <20220530112045.1196027-1-mwen@igalia.com>
-From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20220530112045.1196027-1-mwen@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0276310F761
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 May 2022 18:39:12 +0000 (UTC)
+Date: Mon, 30 May 2022 20:39:08 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YpUPTDm0vTGiYR5G@kamilkon-desk1>
+References: <20220530064012.1027500-1-janga.rahul.kumar@intel.com>
+ <20220530064012.1027500-2-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] test/kms_plane_alpha_blend: clearer
- validation for coverage-7efc
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220530064012.1027500-2-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/i915/gem_render_tiled_blits : Added
+ subtests description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,78 +21,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sungjoon.Kim@amd.com, petri.latvala@intel.com, markyacoub@google.com
+Cc: sai.gowtham.ch@intel.com, janga.rahul.kumar@intel.com,
+ ramadevi.gandi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Janga,
 
+On 2022-05-30 at 12:10:11 +0530, janga.rahul.kumar@intel.com wrote:
+> From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
+> 
+> Added test description to all the available subtests and
+> Updated file name in the file description comments.
+- ^
+s/Updated/fix/
 
-On 2022-05-30 07:20, Melissa Wen wrote:
-> Inspired by previous change in alpha-7efc[1], get a clearer validation
-> for the swappable property of plane_alpha and fg.alpha in the coverage
-> blend formula. Get rid of the 8-increment alpha loop by refactoring
-> coverage-7efc to a one-shot assert format, avoiding doubts related to
-> bit precision and rounding issue.
+Put description here what did you changed from previous version,
+see other patch series with v2 (or larger version).
+
 > 
-> [1] Commit f9efaee9565f ("tests/kms_plane_alpha_blend: refactor
-> alpha-7efc for clearer validation")
-> 
-> v2:
-> - add commit reference to alpha-7efc change
-> 
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
-> Reviewed-by: Sung Joon Kim <sungkim@amd.com>
+> Signed-off-by: Kumar, Janga Rahul <janga.rahul.kumar@intel.com>
+---------------- ^
+
+Please re-arrange you name in s-o-b to:
+
+Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
+Please add all addresses used for cc or to here (except this
+mailinglist), for example see patch 1/2 in this series:
+
+HAX add description to gem_exec_basic
+https://patchwork.freedesktop.org/series/103196/
+
 > ---
->   tests/kms_plane_alpha_blend.c | 23 +++++++++++------------
->   1 file changed, 11 insertions(+), 12 deletions(-)
+>  tests/i915/gem_render_tiled_blits.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-> index 8e54dfd6..001a1479 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -420,20 +420,18 @@ static void coverage_7efc(data_t *data, enum pipe pipe, igt_plane_t *plane)
->   	igt_pipe_crc_start(data->pipe_crc);
->   
->   	/* for coverage, plane alpha and fb alpha should be swappable, so swap fb and alpha */
-> -	for (i = 0; i < 256; i += 8) {
-> -		igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, ((i/2) << 8) | (i/2));
-> -		igt_plane_set_fb(plane, &data->argb_fb_cov_fc);
-> -		igt_display_commit2(display, COMMIT_ATOMIC);
-> +	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e7e);
-> +	igt_plane_set_fb(plane, &data->argb_fb_cov_fc);
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
->   
-> -		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &ref_crc);
-> +	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &ref_crc);
->   
-> -		igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, (i << 8) | i);
-> -		igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
-> -		igt_display_commit2(display, COMMIT_ATOMIC);
-> +	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0xfcfc);
-> +	igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
->   
-> -		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
-> -		igt_assert_crc_equal(&ref_crc, &crc);
-> -	}
-> +	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
-> +	igt_assert_crc_equal(&ref_crc, &crc);
->   
->   	igt_pipe_crc_stop(data->pipe_crc);
->   }
-> @@ -537,7 +535,8 @@ static void run_subtests(data_t *data, enum pipe pipe)
->   	igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
->   		run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc);
->   
-> -	igt_describe("Tests pipe coverage blending properties.");
-> +	igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
-> +		     "plane_alpha are swappable on coverage blend mode.");
->   	igt_subtest_f("pipe-%s-coverage-7efc", kmstest_pipe_name(pipe))
->   		run_test_on_pipe_planes(data, pipe, true, true, coverage_7efc);
->   
+> diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/i915/gem_render_tiled_blits.c
+> index 187714d6..61ae9a80 100644
+> --- a/tests/i915/gem_render_tiled_blits.c
+> +++ b/tests/i915/gem_render_tiled_blits.c
+> @@ -25,7 +25,7 @@
+>   *
+>   */
+>  
+> -/** @file gem_linear_render_blits.c
+> +/** @file gem_render_tiled_blits.c
 
-Applied, Thanks!
+Nice catch.
 
-Best Regards,
-Siqueira
+>   *
+>   * This is a test of doing many blits, with a working set
+>   * larger than the aperture size.
+> @@ -49,6 +49,10 @@
+>  #include "i915/gem.h"
+>  #include "igt.h"
+>  
+> +IGT_TEST_DESCRIPTION("Tests performs Cyclic forward, backward and random blits on tiled buffer "
+
+s/Cyclic/cyclic/
+
+> +		      "objects using render engine with various working set sizes and compares "
+> +		      "the blits outputs with expected outputs. ");
+-------------------------------------------------------------- ^
+
+Remove spaces at strings end.
+
+You can also shorten this a little, like:
+s/the blits outputs with expected outputs. /outputs with expected ones./
+
+or even
+s/compares the blits outputs with expected outputs. /verify outputs./
+
+Your choice (you can also rewrite it to some other form).
+
+> +
+>  #define WIDTH 512
+>  #define STRIDE (WIDTH*4)
+>  #define HEIGHT 512
+> @@ -205,16 +209,20 @@ igt_main
+>  		igt_require(gem_available_fences(fd) > 0);
+>  	}
+>  
+> +	igt_describe("Check with working set size 2.");
+------------------------------------------------- ^
+This number here do not describe anything, maybe just write
+"Run basic check." or "Verify basic functionality." or
+something like that.
+
+>  	igt_subtest("basic") {
+>  		run_test(fd, 2);
+>  	}
+>  
+> +	igt_describe("Check with working set size larger than aperture size.");
+>  	igt_subtest("aperture-thrash") {
+>  		count = 3 * gem_aperture_size(fd) / SIZE / 2;
+>  		intel_require_memory(count, SIZE, CHECK_RAM);
+>  		run_test(fd, count);
+>  	}
+>  
+> +	igt_describe("Check with working set size larger than aperture size and "
+> +		     "helper process to shrink the aperture.");
+
+I am not sure that this shrinks aperture, what I see there is
+drop caches. For more info see commit e8eb9afd4c5 with
+git log -p e8eb9afd4c5
+
+>  	igt_subtest("aperture-shrink") {
+>  		igt_fork_shrink_helper(fd);
+>  
+> @@ -225,6 +233,7 @@ igt_main
+>  		igt_stop_shrink_helper();
+>  	}
+>  
+> +	igt_describe("Check with working set size larger than swap memory size.");
+
+Do we want cause oom here ? imho test wants to use up all memory
+and so system will try to use swap. This is in following line:
+
+		count = ((intel_get_avail_ram_mb() + (swap_mb / 2)) * 1024*1024) / SIZE;
+
+--
+Kamil
+
+>  	igt_subtest("swap-thrash") {
+>  		uint64_t swap_mb = intel_get_total_swap_mb();
+>  		igt_require(swap_mb > 0);
+> -- 
+> 2.25.1
+> 
