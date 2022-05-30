@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4854041822845029398=="
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 888E310F236
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 May 2022 06:44:26 +0000 (UTC)
+Message-ID: <3a936bfe-5d9d-9386-62d3-e42484b6c653@intel.com>
+Date: Mon, 30 May 2022 12:14:13 +0530
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220523101807.3627871-1-bhanuprakash.modem@intel.com>
+ <20220523101807.3627871-2-bhanuprakash.modem@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20220523101807.3627871-2-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
-Date: Mon, 30 May 2022 06:41:01 -0000
-Message-ID: <165389286168.17900.13598910587629094495@emeril.freedesktop.org>
-References: <20220530060701.406219-1-jouni.hogander@intel.com>
-In-Reply-To: <20220530060701.406219-1-jouni.hogander@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRml4ZXMg?=
- =?utf-8?q?for_big=5Ffb_test_handling?=
+Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_hdr: Skip if current &
+ requested BPC doesn't match
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,226 +23,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4854041822845029398==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Bhanu,
 
-== Series Details ==
+Please find some comments inline:
 
-Series: Fixes for big_fb test handling
-URL   : https://patchwork.freedesktop.org/series/104488/
-State : success
+On 5/23/2022 3:48 PM, Bhanuprakash Modem wrote:
+> Due to the limitaion of port clock values supported for HDMI, i915
+Typo : limitation
+> may downgrade the requested bpc for a given mode.
+>
+> This patch will skip the subtest if the requested bpc doesn't match
+> with crtc's current bpc.
 
-== Summary ==
+The max bpc property only ensures that the bpc will not go beyond the 
+value set through this property. It does not guarantee that the same bpc 
+will be used for the given mode.
 
-CI Bug Log - changes from IGT_6496 -> IGTPW_7182
-====================================================
+If clock/bandwidth constraints permit, the max bpc will be used to show 
+the mode, otherwise the bpc will be reduced.
 
-Summary
--------
+As we were discussing offline, if we really want a particular bpc set, 
+we can try reducing the resolution, till we get the bpc that we set in 
+max bpc property.
 
-  **SUCCESS**
+(Again for HDR, I think we cannot go below 4K resolution.)
 
-  No regressions found.
+With this approach, if there exists no valid resolution, for which we 
+get the same bpc as set by max_bpc property,
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/index.html
-
-Participating hosts (47 -> 43)
-------------------------------
-
-  Missing    (4): bat-adlm-1 bat-atsm-1 fi-ilk-650 bat-dg1-5 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7182 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gem:
-    - fi-pnv-d510:        [PASS][1] -> [DMESG-FAIL][2] ([i915#4528])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/fi-pnv-d510/igt@i915_selftest@live@gem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/fi-pnv-d510/igt@i915_selftest@live@gem.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
-    - bat-adlp-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#3576])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-
-  * igt@runner@aborted:
-    - fi-pnv-d510:        NOTRUN -> [FAIL][5] ([fdo#109271] / [i915#2403] / [i915#4312])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/fi-pnv-d510/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - {bat-dg2-8}:        [DMESG-WARN][6] ([i915#5763]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/bat-dg2-8/igt@i915_suspend@basic-s2idle-without-i915.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/bat-dg2-8/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - {bat-adlp-6}:       [DMESG-WARN][8] ([i915#3576]) -> [PASS][9] +2 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#5171]: https://gitlab.freedesktop.org/drm/intel/issues/5171
-  [i915#5174]: https://gitlab.freedesktop.org/drm/intel/issues/5174
-  [i915#5181]: https://gitlab.freedesktop.org/drm/intel/issues/5181
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5606]: https://gitlab.freedesktop.org/drm/intel/issues/5606
-  [i915#5703]: https://gitlab.freedesktop.org/drm/intel/issues/5703
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5775]: https://gitlab.freedesktop.org/drm/intel/issues/5775
-  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
+then we can skip the test.
 
 
-Build changes
--------------
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> CC: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_hdr.c | 43 +++++++++++++++++++++++++++++++++++++------
+>   1 file changed, 37 insertions(+), 6 deletions(-)
+>
+> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+> index fb2e0790..6ad03aa0 100644
+> --- a/tests/kms_hdr.c
+> +++ b/tests/kms_hdr.c
+> @@ -144,8 +144,6 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
+>   	igt_fb_t afb;
+>   	int afb_id, ret;
+>   
+> -	prepare_test(data, output, pipe);
+> -
+>   	/* 10-bit formats are slow, so limit the size. */
+>   	afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
+>   	igt_assert(afb_id);
+> @@ -206,6 +204,27 @@ static bool has_max_bpc(igt_output_t *output)
+>   	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+>   }
+>   
+> +static bool i915_clock_constraint(data_t *data)
+> +{
+> +	drmModeConnector *connector = data->output->config.connector;
+> +
+> +	if (connector->connector_type != DRM_MODE_CONNECTOR_HDMIA &&
+> +	    connector->connector_type != DRM_MODE_CONNECTOR_HDMIB)
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6496 -> IGTPW_7182
+I think this can happen with DP as well. For DP during link training we 
+compute the optimal bpp, link rate and num lanes.
 
-  CI-20190529: 20190529
-  CI_DRM_11705: 18a2e6dbca526f996da04741cf5ef169e810a50e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7182: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/index.html
-  IGT_6496: 58a5a2d5be19b916311541401aaa48b787f9a185 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+We start trying with max bpp (based on max bpc property from connector), 
+and keep on reducing bpp.
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/index.html
-
---===============4854041822845029398==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Fixes for big_fb test handling</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104488/">https://patchwork.freedesktop.org/series/104488/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/index.html</a></td></tr>
-
-</table>
+So in principle this can happen with any connector.
 
 
-    <h1>CI Bug Log - changes from IGT_6496 -&gt; IGTPW_7182</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/index.html</p>
-<h2>Participating hosts (47 -&gt; 43)</h2>
-<p>Missing    (4): bat-adlm-1 bat-atsm-1 fi-ilk-650 bat-dg1-5 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7182 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gem:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/fi-pnv-d510/igt@i915_selftest@live@gem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/bat-adlp-4/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/bat-dg2-8/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/bat-dg2-8/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6496 -&gt; IGTPW_7182</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11705: 18a2e6dbca526f996da04741cf5ef169e810a50e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7182: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7182/index.html<br />
-  IGT_6496: 58a5a2d5be19b916311541401aaa48b787f9a185 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+> +		return true;
+> +
+> +	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+> +	if (!igt_check_output_bpc_equal(data->fd, data->pipe_id,
+> +					data->output->name, 10)) {
 
-</body>
-</html>
+I think if we pass requested bpc as parameter, this can avoid hard 
+coding and function will be future proof.
 
---===============4854041822845029398==--
+
+Regards,
+
+Ankit
+
+
+> +		test_fini(data);
+> +
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>   static void test_bpc_switch(data_t *data, uint32_t flags)
+>   {
+>   	igt_display_t *display = &data->display;
+> @@ -217,8 +236,16 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
+>   		if (!has_max_bpc(output))
+>   			continue;
+>   
+> +		if (igt_get_output_max_bpc(data->fd, output->name) < 10)
+> +			continue;
+> +
+>   		for_each_pipe(display, pipe) {
+>   			if (igt_pipe_connector_valid(pipe, output)) {
+> +				prepare_test(data, output, pipe);
+> +
+> +				if (is_i915_device(data->fd) && !i915_clock_constraint(data))
+> +					break;
+> +
+>   				igt_dynamic_f("pipe-%s-%s",
+>   					      kmstest_pipe_name(pipe), output->name)
+>   					test_bpc_switch_on_output(data, pipe, output, flags);
+> @@ -367,8 +394,6 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+>   	igt_fb_t afb;
+>   	int afb_id;
+>   
+> -	prepare_test(data, output, pipe);
+> -
+>   	/* 10-bit formats are slow, so limit the size. */
+>   	afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
+>   	igt_assert(afb_id);
+> @@ -446,8 +471,6 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+>   	int afb_id;
+>   	struct hdr_output_metadata hdr;
+>   
+> -	prepare_test(data, output, pipe);
+> -
+>   	/* 10-bit formats are slow, so limit the size. */
+>   	afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
+>   	igt_assert(afb_id);
+> @@ -532,8 +555,16 @@ static void test_hdr(data_t *data, uint32_t flags)
+>   		if (!is_panel_hdr(data, output))
+>   			continue;
+>   
+> +		if (igt_get_output_max_bpc(data->fd, output->name) < 10)
+> +			continue;
+> +
+>   		for_each_pipe(display, pipe) {
+>   			if (igt_pipe_connector_valid(pipe, output)) {
+> +				prepare_test(data, output, pipe);
+> +
+> +				if (is_i915_device(data->fd) && !i915_clock_constraint(data))
+> +					break;
+> +
+>   				igt_dynamic_f("pipe-%s-%s",
+>   					      kmstest_pipe_name(pipe), output->name) {
+>   					if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
