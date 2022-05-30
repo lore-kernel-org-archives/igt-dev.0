@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam08on2063.outbound.protection.outlook.com [40.107.102.63])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09D2010E15A
- for <igt-dev@lists.freedesktop.org>; Mon, 30 May 2022 12:57:34 +0000 (UTC)
-From: "Kim, Sung joon" <Sungjoon.Kim@amd.com>
-To: Melissa Wen <mwen@igalia.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 30 May 2022 12:57:31 +0000
-Message-ID: <MN2PR12MB3054531FFBFC566D4FAF113B97DD9@MN2PR12MB3054.namprd12.prod.outlook.com>
-References: <20220530112045.1196027-1-mwen@igalia.com>
-In-Reply-To: <20220530112045.1196027-1-mwen@igalia.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Date: Mon, 30 May 2022 16:17:10 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <YpTD1tdlkwo411FR@platvala-desk.ger.corp.intel.com>
+References: <20220527105042.2233128-1-tvrtko.ursulin@linux.intel.com>
+ <20220527105042.2233128-3-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] test/kms_plane_alpha_blend: clearer
- validation for coverage-7efc
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220527105042.2233128-3-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] intel_gpu_top: Free all memory on
+ exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,102 +19,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "petri.latvala@intel.com" <petri.latvala@intel.com>,
- "markyacoub@google.com" <markyacoub@google.com>
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[AMD Official Use Only - General]
+On Fri, May 27, 2022 at 11:50:42AM +0100, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Be nice and explicitly free all memory on exit.
+> 
+> Also fix a Valgrind reported unitilised conditional jump.
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
 
-Yes, I'm perfectly fine with it, thanks!
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-> -----Original Message-----
-> From: Melissa Wen <mwen@igalia.com>
-> Sent: Monday, May 30, 2022 7:21 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: petri.latvala@intel.com; markyacoub@google.com; Siqueira, Rodrigo
-> <Rodrigo.Siqueira@amd.com>; Kim, Sung joon <Sungjoon.Kim@amd.com>;
-> Melissa Wen <mwen@igalia.com>; Kim, Sung joon
-> <Sungjoon.Kim@amd.com>
-> Subject: [PATCH i-g-t v2] test/kms_plane_alpha_blend: clearer validation =
-for
-> coverage-7efc
->
-> Inspired by previous change in alpha-7efc[1], get a clearer validation fo=
-r the
-> swappable property of plane_alpha and fg.alpha in the coverage blend
-> formula. Get rid of the 8-increment alpha loop by refactoring coverage-7e=
-fc
-> to a one-shot assert format, avoiding doubts related to bit precision and
-> rounding issue.
->
-> [1] Commit f9efaee9565f ("tests/kms_plane_alpha_blend: refactor alpha-
-> 7efc for clearer validation")
->
-> v2:
-> - add commit reference to alpha-7efc change
->
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
-> Reviewed-by: Sung Joon Kim <sungkim@amd.com>
 > ---
->  tests/kms_plane_alpha_blend.c | 23 +++++++++++------------
->  1 file changed, 11 insertions(+), 12 deletions(-)
->
-> diff --git a/tests/kms_plane_alpha_blend.c
-> b/tests/kms_plane_alpha_blend.c index 8e54dfd6..001a1479 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -420,20 +420,18 @@ static void coverage_7efc(data_t *data, enum pipe
-> pipe, igt_plane_t *plane)
->       igt_pipe_crc_start(data->pipe_crc);
->
->       /* for coverage, plane alpha and fb alpha should be swappable, so
-> swap fb and alpha */
-> -     for (i =3D 0; i < 256; i +=3D 8) {
-> -             igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, ((i/2)
-> << 8) | (i/2));
-> -             igt_plane_set_fb(plane, &data->argb_fb_cov_fc);
-> -             igt_display_commit2(display, COMMIT_ATOMIC);
-> +     igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e7e);
-> +     igt_plane_set_fb(plane, &data->argb_fb_cov_fc);
-> +     igt_display_commit2(display, COMMIT_ATOMIC);
->
-> -             igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
-> &ref_crc);
-> +     igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
-> &ref_crc);
->
-> -             igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, (i << 8)
-> | i);
-> -             igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
-> -             igt_display_commit2(display, COMMIT_ATOMIC);
-> +     igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0xfcfc);
-> +     igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
-> +     igt_display_commit2(display, COMMIT_ATOMIC);
->
-> -             igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
-> &crc);
-> -             igt_assert_crc_equal(&ref_crc, &crc);
-> -     }
-> +     igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
-> +     igt_assert_crc_equal(&ref_crc, &crc);
->
->       igt_pipe_crc_stop(data->pipe_crc);
+>  tools/intel_gpu_top.c | 51 +++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 42 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 26986a822bb7..997aff582ff7 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -437,6 +437,36 @@ static struct engines *discover_engines(char *device)
+>  	return engines;
 >  }
-> @@ -537,7 +535,8 @@ static void run_subtests(data_t *data, enum pipe
-> pipe)
->       igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
->               run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc=
-);
->
-> -     igt_describe("Tests pipe coverage blending properties.");
-> +     igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha
-> and "
-> +                  "plane_alpha are swappable on coverage blend mode.");
->       igt_subtest_f("pipe-%s-coverage-7efc", kmstest_pipe_name(pipe))
->               run_test_on_pipe_planes(data, pipe, true, true,
-> coverage_7efc);
->
-> --
-> 2.35.1
+>  
+> +static void free_engines(struct engines *engines)
+> +{
+> +	struct pmu_counter **pmu, *free_list[] = {
+> +		&engines->r_gpu,
+> +		&engines->r_pkg,
+> +		&engines->imc_reads,
+> +		&engines->imc_writes,
+> +		NULL
+> +	};
+> +	unsigned int i;
+> +
+> +	for (pmu = &free_list[0]; *pmu; pmu++) {
+> +		if ((*pmu)->present)
+> +			free((char *)(*pmu)->units);
+> +	}
+> +
+> +	for (i = 0; i < engines->num_engines; i++) {
+> +		struct engine *engine = engine_ptr(engines, i);
+> +
+> +		free((char *)engine->name);
+> +		free((char *)engine->short_name);
+> +		free((char *)engine->display_name);
+> +	}
+> +
+> +	closedir(engines->root);
+> +
+> +	free(engines->class);
+> +	free(engines);
+> +}
+> +
+>  #define _open_pmu(type, cnt, pmu, fd) \
+>  ({ \
+>  	int fd__; \
+> @@ -1073,7 +1103,7 @@ static size_t freadat2buf(char *buf, const size_t sz, DIR *at, const char *name)
+>  	return count;
+>  }
+>  
+> -static struct clients *scan_clients(struct clients *clients)
+> +static struct clients *scan_clients(struct clients *clients, bool display)
+>  {
+>  	struct dirent *proc_dent;
+>  	struct client *c;
+> @@ -1181,7 +1211,7 @@ next:
+>  			break;
+>  	}
+>  
+> -	return display_clients(clients);
+> +	return display ? display_clients(clients) : clients;
+>  }
+>  
+>  static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+> @@ -2391,7 +2421,7 @@ static void process_stdin(unsigned int timeout_us)
+>  
+>  static bool has_drm_fdinfo(const struct igt_device_card *card)
+>  {
+> -	struct drm_client_fdinfo info;
+> +	struct drm_client_fdinfo info = { };
+>  	unsigned int cnt;
+>  	int fd;
+>  
+> @@ -2572,7 +2602,7 @@ int main(int argc, char **argv)
+>  	}
+>  
+>  	pmu_sample(engines);
+> -	scan_clients(clients);
+> +	scan_clients(clients, false);
+>  	codename = igt_device_get_pretty_name(&card, false);
+>  
+>  	while (!stop_top) {
+> @@ -2599,7 +2629,7 @@ int main(int argc, char **argv)
+>  		pmu_sample(engines);
+>  		t = (double)(engines->ts.cur - engines->ts.prev) / 1e9;
+>  
+> -		disp_clients = scan_clients(clients);
+> +		disp_clients = scan_clients(clients, true);
+>  
+>  		if (stop_top)
+>  			break;
+> @@ -2649,21 +2679,24 @@ int main(int argc, char **argv)
+>  			pops->close_struct();
+>  		}
+>  
+> -		if (stop_top)
+> -			break;
+> -
+>  		if (disp_clients != clients)
+>  			free_clients(disp_clients);
+>  
+> +		if (stop_top)
+> +			break;
+> +
+>  		if (output_mode == INTERACTIVE)
+>  			process_stdin(period_us);
+>  		else
+>  			usleep(period_us);
+>  	}
+>  
+> +	if (clients)
+> +		free_clients(clients);
+> +
+>  	free(codename);
+>  err:
+> -	free(engines);
+> +	free_engines(engines);
+>  	free(pmu_device);
+>  exit:
+>  	igt_devices_free();
+> -- 
+> 2.32.0
+> 
