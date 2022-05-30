@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1888910E5EA
- for <igt-dev@lists.freedesktop.org>; Mon, 30 May 2022 12:53:32 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 30 May 2022 12:53:29 +0000
-Message-ID: <4c02dd19adc27b42fa1554402aaf842d4e6783e5.camel@intel.com>
-References: <20220530060701.406219-1-jouni.hogander@intel.com>
-In-Reply-To: <20220530060701.406219-1-jouni.hogander@intel.com>
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam08on2063.outbound.protection.outlook.com [40.107.102.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09D2010E15A
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 May 2022 12:57:34 +0000 (UTC)
+From: "Kim, Sung joon" <Sungjoon.Kim@amd.com>
+To: Melissa Wen <mwen@igalia.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Mon, 30 May 2022 12:57:31 +0000
+Message-ID: <MN2PR12MB3054531FFBFC566D4FAF113B97DD9@MN2PR12MB3054.namprd12.prod.outlook.com>
+References: <20220530112045.1196027-1-mwen@igalia.com>
+In-Reply-To: <20220530112045.1196027-1-mwen@igalia.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E55669D4D351AA41B697B583EFC832C9@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/4] Fixes for big_fb test handling
+Subject: Re: [igt-dev] [PATCH i-g-t v2] test/kms_plane_alpha_blend: clearer
+ validation for coverage-7efc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,22 +23,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "petri.latvala@intel.com" <petri.latvala@intel.com>,
+ "markyacoub@google.com" <markyacoub@google.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDIyLTA1LTMwIGF0IDA5OjA2ICswMzAwLCBKb3VuaSBIw7ZnYW5kZXIgd3JvdGU6
-DQo+IFRoaXMgcGF0Y2ggc2V0IGZpeGVzIGlzc3VlcyBpbiBiaWcgZmIgdGVzdCBoYW5kbGluZyBh
-bmQgZG9lcyBzb21lDQo+IGNsZWFuLXVwcyB0byBtYWtlIGl0IGVhc2llciB0byBhZGQgbmV3IGJp
-ZyBmYiB0ZXN0cyBpbiB0aGUgZnV0dXJlLg0KPiANCj4gQ2M6IE1pa2EgS2Fob2xhIDxtaWthLmth
-aG9sYUBpbnRlbC5jb20+DQo+IENjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXph
-QGludGVsLmNvbT4NCj4gDQo+IEpvdW5pIEjDtmdhbmRlciAoNCk6DQo+ICAgdGVzdHMvaTkxNS9r
-bXNfcHNyMl9zZi5jOiBGaXggZm9yIHNldHRpbmcgd3Jvbmcgc2l6ZSBmb3IgY3Vyc29yIGZiDQo+
-ICAgdGVzdHMvaTkxNV9rbXNfcHNyMl9zZjogU2V0IGJpZ19mYl90ZXN0IGFzIDAgYnkgZGVmYXVs
-dA0KPiAgIHRlc3RzL2k5MTUva21zX3BzcjJfc2Y6IE1ha2Ugc2V0dGluZyBmYiBhbmQgcGxhbmUg
-c3ovcG9zIG1vcmUgY2xlYXINCj4gICB0ZXN0cy9pOTE1L2ttc19wc3IyX3NmOiBGaXggc2V0dGlu
-ZyB3cm9uZyBmYiBzaXplDQo+IA0KPiAgdGVzdHMvaTkxNS9rbXNfcHNyMl9zZi5jIHwgNjUgKysr
-KysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tDQo+IC0tLS0NCj4gIDEgZmlsZSBjaGFu
-Z2VkLCAzOSBpbnNlcnRpb25zKCspLCAyNiBkZWxldGlvbnMoLSkNCj4gDQoNClRoYW5rIHlvdSBm
-b3IgcmV2aWV3cy4gV2hvbGUgc2V0IHB1c2hlZCB0byBtYXN0ZXIuDQoNCkJSLA0KDQpKb3VuaSBI
-w7ZnYW5kZXINCg==
+[AMD Official Use Only - General]
+
+Yes, I'm perfectly fine with it, thanks!
+
+> -----Original Message-----
+> From: Melissa Wen <mwen@igalia.com>
+> Sent: Monday, May 30, 2022 7:21 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: petri.latvala@intel.com; markyacoub@google.com; Siqueira, Rodrigo
+> <Rodrigo.Siqueira@amd.com>; Kim, Sung joon <Sungjoon.Kim@amd.com>;
+> Melissa Wen <mwen@igalia.com>; Kim, Sung joon
+> <Sungjoon.Kim@amd.com>
+> Subject: [PATCH i-g-t v2] test/kms_plane_alpha_blend: clearer validation =
+for
+> coverage-7efc
+>
+> Inspired by previous change in alpha-7efc[1], get a clearer validation fo=
+r the
+> swappable property of plane_alpha and fg.alpha in the coverage blend
+> formula. Get rid of the 8-increment alpha loop by refactoring coverage-7e=
+fc
+> to a one-shot assert format, avoiding doubts related to bit precision and
+> rounding issue.
+>
+> [1] Commit f9efaee9565f ("tests/kms_plane_alpha_blend: refactor alpha-
+> 7efc for clearer validation")
+>
+> v2:
+> - add commit reference to alpha-7efc change
+>
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> Reviewed-by: Sung Joon Kim <sungkim@amd.com>
+> ---
+>  tests/kms_plane_alpha_blend.c | 23 +++++++++++------------
+>  1 file changed, 11 insertions(+), 12 deletions(-)
+>
+> diff --git a/tests/kms_plane_alpha_blend.c
+> b/tests/kms_plane_alpha_blend.c index 8e54dfd6..001a1479 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -420,20 +420,18 @@ static void coverage_7efc(data_t *data, enum pipe
+> pipe, igt_plane_t *plane)
+>       igt_pipe_crc_start(data->pipe_crc);
+>
+>       /* for coverage, plane alpha and fb alpha should be swappable, so
+> swap fb and alpha */
+> -     for (i =3D 0; i < 256; i +=3D 8) {
+> -             igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, ((i/2)
+> << 8) | (i/2));
+> -             igt_plane_set_fb(plane, &data->argb_fb_cov_fc);
+> -             igt_display_commit2(display, COMMIT_ATOMIC);
+> +     igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0x7e7e);
+> +     igt_plane_set_fb(plane, &data->argb_fb_cov_fc);
+> +     igt_display_commit2(display, COMMIT_ATOMIC);
+>
+> -             igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
+> &ref_crc);
+> +     igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
+> &ref_crc);
+>
+> -             igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, (i << 8)
+> | i);
+> -             igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+> -             igt_display_commit2(display, COMMIT_ATOMIC);
+> +     igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0xfcfc);
+> +     igt_plane_set_fb(plane, &data->argb_fb_cov_7e);
+> +     igt_display_commit2(display, COMMIT_ATOMIC);
+>
+> -             igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc,
+> &crc);
+> -             igt_assert_crc_equal(&ref_crc, &crc);
+> -     }
+> +     igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+> +     igt_assert_crc_equal(&ref_crc, &crc);
+>
+>       igt_pipe_crc_stop(data->pipe_crc);
+>  }
+> @@ -537,7 +535,8 @@ static void run_subtests(data_t *data, enum pipe
+> pipe)
+>       igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
+>               run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc=
+);
+>
+> -     igt_describe("Tests pipe coverage blending properties.");
+> +     igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha
+> and "
+> +                  "plane_alpha are swappable on coverage blend mode.");
+>       igt_subtest_f("pipe-%s-coverage-7efc", kmstest_pipe_name(pipe))
+>               run_test_on_pipe_planes(data, pipe, true, true,
+> coverage_7efc);
+>
+> --
+> 2.35.1
