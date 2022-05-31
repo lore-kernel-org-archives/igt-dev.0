@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 25 May 2022 19:37:01 +0100
-Message-Id: <20220525183702.490989-9-matthew.auld@intel.com>
-In-Reply-To: <20220525183702.490989-1-matthew.auld@intel.com>
-References: <20220525183702.490989-1-matthew.auld@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5204481269489221813=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 8/9] tests/i915/capture: handle uapi changes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karolina Drobnik" <karolina.drobnik@intel.com>
+Date: Tue, 31 May 2022 12:23:20 -0000
+Message-ID: <165399980093.17346.12089514356695488575@emeril.freedesktop.org>
+References: <20220531105654.1029576-1-karolina.drobnik@intel.com>
+In-Reply-To: <20220531105654.1029576-1-karolina.drobnik@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915=3A_Use_correct_type_for_gen_parameter?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,253 +17,367 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We should mark the objects that need to be captured with
-NEEDS_CPU_ACCESS to ensure we can capture them if they are allocated in
-lmem. We also need to consider that capture only properly works on
-non-recoverable context, for discrete platforms. We can now also expect
-CPU invisible objects to be skipped, for now at least.
+--===============5204481269489221813==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- tests/i915/gem_exec_capture.c | 143 ++++++++++++++++++++++++++++++++--
- 1 file changed, 135 insertions(+), 8 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 60f8df04..6ee6a155 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -268,13 +268,13 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	saved_engine = configure_hangs(fd, e, ctx->id);
- 
- 	memset(obj, 0, sizeof(obj));
--	obj[SCRATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
-+	obj[SCRATCH].handle = gem_create_with_cpu_access_in_memory_regions(fd, 4096, region);
- 	obj[SCRATCH].flags = EXEC_OBJECT_WRITE;
- 	obj[CAPTURE].handle = target;
- 	obj[CAPTURE].flags = EXEC_OBJECT_CAPTURE;
- 	obj[NOCAPTURE].handle = gem_create(fd, 4096);
- 
--	obj[BATCH].handle = gem_create_in_memory_regions(fd, 4096, region);
-+	obj[BATCH].handle = gem_create_with_cpu_access_in_memory_regions(fd, 4096, region);
- 	obj[BATCH].relocs_ptr = (uintptr_t)reloc;
- 	obj[BATCH].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
- 
-@@ -387,9 +387,9 @@ static void capture(int fd, int dir, const intel_ctx_t *ctx,
- 		    const struct intel_execution_engine2 *e, uint32_t region)
- {
- 	uint32_t handle;
--	uint64_t ahnd, obj_size = 4096;
-+	uint64_t ahnd, obj_size = 16 * 4096;
- 
--	igt_assert_eq(__gem_create_in_memory_regions(fd, &handle, &obj_size, region), 0);
-+	handle = gem_create_with_cpu_access_in_memory_regions(fd, obj_size, region);
- 	ahnd = get_reloc_ahnd(fd, ctx->id);
- 
- 	__capture1(fd, dir, ahnd, ctx, e, handle, obj_size, region);
-@@ -415,7 +415,8 @@ static struct offset *
- __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	   const struct intel_execution_engine2 *e,
- 	   unsigned int size, int count,
--	   unsigned int flags, int *_fence_out)
-+	   unsigned int flags, int *_fence_out, uint32_t region,
-+	   bool force_cpu_access)
- #define INCREMENTAL 0x1
- #define ASYNC 0x2
- {
-@@ -441,7 +442,10 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
- 	obj[0].flags = EXEC_OBJECT_WRITE | (ahnd ? EXEC_OBJECT_PINNED : 0);
- 
- 	for (i = 0; i < count; i++) {
--		obj[i + 1].handle = gem_create(fd, size);
-+		if (force_cpu_access)
-+			obj[i + 1].handle = gem_create_with_cpu_access_in_memory_regions(fd, size, region);
-+		else
-+			obj[i + 1].handle = gem_create_in_memory_regions(fd, size, region);
- 		obj[i + 1].offset = get_offset(ahnd, obj[i + 1].handle, size, 0);
- 		obj[i + 1].flags =
- 			EXEC_OBJECT_CAPTURE | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-@@ -595,6 +599,15 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	struct gem_engine_properties saved_engine;
- 
- 	find_first_available_engine(fd, ctx, e, saved_engine);
-+	if (gem_has_lmem(fd)) {
-+		struct drm_i915_gem_context_param param = {
-+			.ctx_id = ctx->id,
-+			.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+			.value = 0,
-+		};
-+
-+		gem_context_set_param(fd, &param);
-+	}
- 
- 	gtt = gem_aperture_size(fd) / size;
- 	ram = (intel_get_avail_ram_mb() << 20) / size;
-@@ -607,7 +620,8 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	intel_require_memory(count, size, CHECK_RAM);
- 	ahnd = get_reloc_ahnd(fd, ctx->id);
- 
--	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL);
-+	offsets = __captureN(fd, dir, ahnd, ctx, e, size, count, flags, NULL,
-+			     REGION_SMEM, true);
- 
- 	blobs = check_error_state(dir, offsets, count, size, !!(flags & INCREMENTAL));
- 	igt_info("Captured %lu %"PRId64"-blobs out of a total of %lu\n",
-@@ -677,7 +691,8 @@ static void prioinv(int fd, int dir, const intel_ctx_t *ctx,
- 		/* Reopen the allocator in the new process. */
- 		ahnd = get_reloc_ahnd(fd, ctx2->id);
- 
--		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC, &fence_out));
-+		free(__captureN(fd, dir, ahnd, ctx2, e, size, count, ASYNC,
-+				&fence_out, REGION_SMEM, true));
- 		put_ahnd(ahnd);
- 
- 		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-@@ -720,6 +735,15 @@ static void userptr(int fd, int dir)
- 	struct gem_engine_properties saved_engine;
- 
- 	find_first_available_engine(fd, ctx, e, saved_engine);
-+	if (gem_has_lmem(fd)) {
-+		struct drm_i915_gem_context_param param = {
-+			.ctx_id = ctx->id,
-+			.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+			.value = 0,
-+		};
-+
-+		gem_context_set_param(fd, &param);
-+	}
- 
- 	igt_assert(posix_memalign(&ptr, obj_size, obj_size) == 0);
- 	memset(ptr, 0, obj_size);
-@@ -735,6 +759,84 @@ static void userptr(int fd, int dir)
- 	gem_engine_properties_restore(fd, &saved_engine);
- }
- 
-+static uint32_t batch_create_size(int fd, uint64_t size)
-+{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t handle;
-+
-+	handle = gem_create(fd, size);
-+	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-+
-+	return handle;
-+}
-+
-+static void capture_recoverable_discrete(int fd)
-+{
-+	struct drm_i915_gem_exec_object2 exec[2] = {};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&exec),
-+		.buffer_count = 2,
-+	};
-+
-+	/*
-+	 * I915_CONTEXT_PARAM_RECOVERABLE should be enabled by default. On
-+	 * discrete the kernel will only capture objects associated with the
-+	 * batch, if the context we is configured as non-recoverable.
-+	 */
-+
-+	exec[0].handle = gem_create(fd, 4096);
-+	exec[0].flags = EXEC_OBJECT_CAPTURE;
-+	exec[1].handle = batch_create_size(fd, 4096);
-+
-+	igt_assert_neq(__gem_execbuf(fd, &execbuf), 0);
-+}
-+
-+static void capture_invisible(int fd, int dir, const intel_ctx_t *ctx,
-+			      struct gem_memory_region *mr)
-+{
-+	struct gem_engine_properties saved_engine;
-+	const struct intel_execution_engine2 *e;
-+	struct drm_i915_gem_context_param param = {
-+		.ctx_id = ctx->id,
-+		.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+		.value = 0,
-+	};
-+	struct offset *offsets;
-+	uint64_t ahnd;
-+	char *error;
-+
-+	find_first_available_engine(fd, ctx, e, saved_engine);
-+	gem_context_set_param(fd, &param);
-+
-+	ahnd = get_reloc_ahnd(fd, ctx->id);
-+
-+	igt_assert_eq(mr->ci.memory_class, I915_MEMORY_CLASS_DEVICE);
-+
-+	offsets = __captureN(fd, dir, ahnd, ctx, e, 1u << 16, 100, 0, NULL,
-+			     INTEL_MEMORY_REGION_ID(mr->ci.memory_class,
-+						    mr->ci.memory_instance),
-+			     false);
-+
-+	/*
-+	 * Make sure the error capture code doesn't crash-and-burn if it
-+	 * encounters an lmem object that can't be copied using the CPU. In such
-+	 * cases such objects will be skipped, otherwise we should see crashes
-+	 * here.  Allocating a number of small objects should be enough to
-+	 * ensure that at least one or more end being allocated in the CPU
-+	 * invisible portion.
-+	 */
-+
-+	error = igt_sysfs_get(dir, "error");
-+	igt_sysfs_set(dir, "error", "Begone!");
-+	igt_assert(error);
-+	igt_assert(errno != ENOMEM);
-+
-+	gem_engine_properties_restore(fd, &saved_engine);
-+
-+	free(offsets);
-+	put_ahnd(ahnd);
-+}
-+
- static bool has_capture(int fd)
- {
- 	drm_i915_getparam_t gp;
-@@ -781,6 +883,15 @@ igt_main
- 		gem_require_mmap_device_coherent(fd);
- 		igt_require(has_capture(fd));
- 		ctx = intel_ctx_create_all_physical(fd);
-+		if (gem_has_lmem(fd)) {
-+			struct drm_i915_gem_context_param param = {
-+				.ctx_id = ctx->id,
-+				.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+				.value = 0,
-+			};
-+
-+			gem_context_set_param(fd, &param);
-+		}
- 		igt_allow_hang(fd, ctx->id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
- 
- 		dir = igt_sysfs_open(fd);
-@@ -803,6 +914,22 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check that the kernel doesn't crash if the pages can't be copied from the CPU during error capture.");
-+	igt_subtest_f("capture-invisible") {
-+		igt_require(gem_has_lmem(fd));
-+		for_each_memory_region(r, fd) {
-+			igt_require(r->cpu_size && r->cpu_size < r->size);
-+			igt_dynamic_f("%s", r->name)
-+				capture_invisible(fd, dir, ctx, r);
-+		}
-+	}
-+
-+	igt_describe("Verify that the kernel rejects EXEC_OBJECT_CAPTURE with recoverable contexts.");
-+	igt_subtest_f("capture-recoverable-discrete") {
-+		igt_require(gem_has_lmem(fd));
-+		capture_recoverable_discrete(fd);
-+	}
-+
- 	igt_subtest_f("many-4K-zero") {
- 		igt_require(gem_can_store_dword(fd, 0));
- 		many(fd, dir, 1<<12, 0);
--- 
-2.34.3
+Series: tests/i915: Use correct type for gen parameter
+URL   : https://patchwork.freedesktop.org/series/104543/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11710 -> IGTPW_7200
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_7200 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7200, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/index.html
+
+Participating hosts (46 -> 45)
+------------------------------
+
+  Additional (1): fi-icl-u2 
+  Missing    (2): bat-adln-1 bat-adlm-1 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7200:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - fi-icl-u2:          NOTRUN -> [WARN][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html
+
+  
+#### Warnings ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-apl-guc:         [DMESG-WARN][2] ([i915#5595]) -> [DMESG-WARN][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-apl-guc/igt@debugfs_test@read_all_entries.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-apl-guc/igt@debugfs_test@read_all_entries.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7200 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-icl-u2:          NOTRUN -> [SKIP][4] ([i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-icl-u2:          NOTRUN -> [SKIP][5] ([i915#4613]) +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-bdw-5557u:       NOTRUN -> [INCOMPLETE][6] ([i915#3921])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html
+    - bat-dg1-6:          NOTRUN -> [DMESG-FAIL][7] ([i915#4494] / [i915#4957])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [PASS][8] -> [DMESG-FAIL][9] ([i915#4528])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-dg1-6:          NOTRUN -> [INCOMPLETE][10] ([i915#6011])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/bat-dg1-6/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-icl-u2:          NOTRUN -> [SKIP][11] ([i915#5903])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          NOTRUN -> [SKIP][12] ([fdo#111827]) +8 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-icl-u2:          NOTRUN -> [SKIP][13] ([fdo#109285])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-icl-u2:          NOTRUN -> [SKIP][14] ([fdo#109278]) +2 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-icl-u2:          NOTRUN -> [SKIP][15] ([i915#3555])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-icl-u2:          NOTRUN -> [SKIP][16] ([fdo#109295] / [i915#3301])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][17] ([fdo#109271] / [i915#2403] / [i915#4312])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-pnv-d510/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-6:          [INCOMPLETE][18] ([i915#4418]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-tgl-1115g4:      [DMESG-FAIL][20] ([i915#3987]) -> [PASS][21]
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@mman:
+    - fi-bdw-5557u:       [INCOMPLETE][22] ([i915#5704]) -> [PASS][23]
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-bdw-5557u/igt@i915_selftest@live@mman.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-bdw-5557u/igt@i915_selftest@live@mman.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#3987]: https://gitlab.freedesktop.org/drm/intel/issues/3987
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
+  [i915#5595]: https://gitlab.freedesktop.org/drm/intel/issues/5595
+  [i915#5704]: https://gitlab.freedesktop.org/drm/intel/issues/5704
+  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
+  [i915#6011]: https://gitlab.freedesktop.org/drm/intel/issues/6011
+  [i915#6106]: https://gitlab.freedesktop.org/drm/intel/issues/6106
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6500 -> IGTPW_7200
+
+  CI-20190529: 20190529
+  CI_DRM_11710: d2798c4b9213f0d14080bdeef58e692a2c01a0bf @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7200: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/index.html
+  IGT_6500: de4c6076a0f38ad3522b08931748f59d59a925ce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/index.html
+
+--===============5204481269489221813==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915: Use correct type for gen parameter</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104543/">https://patchwork.freedesktop.org/series/104543/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11710 -&gt; IGTPW_7200</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7200 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7200, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/index.html</p>
+<h2>Participating hosts (46 -&gt; 45)</h2>
+<p>Additional (1): fi-icl-u2 <br />
+  Missing    (2): bat-adln-1 bat-adlm-1 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7200:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_force_connector_basic@force-connector-state:<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html">WARN</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@debugfs_test@read_all_entries:<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-apl-guc/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5595">i915#5595</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-apl-guc/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7200 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</p>
+</li>
+<li>
+<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/bat-dg1-6/igt@i915_suspend@basic-s2idle-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6011">i915#6011</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5903">i915#5903</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-icl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3987">i915#3987</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-bdw-5557u/igt@i915_selftest@live@mman.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5704">i915#5704</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/fi-bdw-5557u/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6500 -&gt; IGTPW_7200</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11710: d2798c4b9213f0d14080bdeef58e692a2c01a0bf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7200: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7200/index.html<br />
+  IGT_6500: de4c6076a0f38ad3522b08931748f59d59a925ce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5204481269489221813==--
