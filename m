@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 062CA10EBD1
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 06:08:12 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 31 May 2022 11:06:48 +0530
-Message-Id: <20220531053648.19856-3-karthik.b.s@intel.com>
-In-Reply-To: <20220531053648.19856-1-karthik.b.s@intel.com>
-References: <20220531053648.19856-1-karthik.b.s@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3132789585062599331=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 2/2] tests/kms_async_flips: Test Cleanup
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
+Date: Tue, 31 May 2022 06:19:04 -0000
+Message-ID: <165397794443.17346.17277044284953849936@emeril.freedesktop.org>
+References: <20220531051408.13090-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220531051408.13090-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fconcurrent=3A_Fix_regression_in_test=5Fresolution=5Fwith?=
+ =?utf-8?q?=5Foutput_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,319 +18,228 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
--Replace drm function call with existing library functions
--igt_display_reset() before all subtests
+--===============3132789585062599331==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: -Move conversion to dynamic subtest to a separate patch (Bhanu)
-    -Use igt_output_get_mode to get default mode (Bhanu)
-    -Add 'is_atomic' check before igt_display_commit2 (Bhanu)
+== Series Details ==
 
-v3: -Move test_init after the checks to skip subtest (Bhanu)
-    -Update the logic to call make_fb() in test_init()
+Series: tests/kms_concurrent: Fix regression in test_resolution_with_output (rev3)
+URL   : https://patchwork.freedesktop.org/series/94762/
+State : success
 
-v4: -Move patch after patch to convert tests to dynamic to avoid code
-     duplicaton. (Bhanu)
+== Summary ==
 
-v5: -Update commit message. (Bhanu)
-    -Move skip checks in the dynamic subtests before the start of the
-     subtest to optimize the test. (Bhanu)
-    -Close drm_fd at the end of the subtest.
+CI Bug Log - changes from CI_DRM_11710 -> IGTPW_7191
+====================================================
 
-v6: -Fix identation for braces. (Andre)
+Summary
+-------
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_async_flips.c | 169 +++++++++++++++++++++-------------------
- 1 file changed, 91 insertions(+), 78 deletions(-)
+  **SUCCESS**
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 8b545b77..4a0527dc 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -50,7 +50,6 @@ typedef struct {
- 	uint32_t refresh_rate;
- 	struct igt_fb bufs[4];
- 	igt_display_t display;
--	drmModeConnectorPtr connector;
- 	igt_output_t *output;
- 	unsigned long flip_timestamp_us;
- 	double flip_interval;
-@@ -64,22 +63,6 @@ typedef struct {
- 	bool alternate_sync_async;
- } data_t;
- 
--static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
--{
--	igt_output_t *output;
--	drmModeConnectorPtr ret = NULL;
--
--	for_each_connected_output(&data->display, output) {
--		if (output->config.connector->count_modes > 0) {
--			ret = output->config.connector;
--			break;
--		}
--	}
--
--	igt_assert_f(ret, "Connector NOT found\n");
--	return ret;
--}
--
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
- 			 unsigned int tv_usec, void *_data)
- {
-@@ -133,15 +116,11 @@ static void wait_flip_event(data_t *data)
- }
- 
- static void make_fb(data_t *data, struct igt_fb *fb,
--		    drmModeConnectorPtr connector, int index)
-+		    uint32_t width, uint32_t height, int index)
- {
--	uint32_t width, height;
- 	int rec_width;
- 	cairo_t *cr;
- 
--	width = connector->modes[0].hdisplay;
--	height = connector->modes[0].vdisplay;
--
- 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
- 
- 	if (is_i915_device(data->drm_fd)) {
-@@ -163,13 +142,52 @@ static void require_monotonic_timestamp(int fd)
- 		      "Monotonic timestamps not supported\n");
- }
- 
-+static void test_init(data_t *data)
-+{
-+	int i;
-+	uint32_t width, height;
-+	igt_plane_t *plane;
-+	static uint32_t prev_output_id;
-+	drmModeModeInfo *mode;
-+
-+	igt_display_reset(&data->display);
-+	igt_display_commit(&data->display);
-+
-+	mode = igt_output_get_mode(data->output);
-+	width = mode->hdisplay;
-+	height = mode->vdisplay;
-+
-+	data->crtc_id = data->display.pipes[data->pipe].crtc_id;
-+	data->refresh_rate = mode->vrefresh;
-+
-+	igt_output_set_pipe(data->output, data->pipe);
-+	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	if (prev_output_id != data->output->id) {
-+		prev_output_id = data->output->id;
-+
-+		if (data->bufs[0].fb_id) {
-+			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-+				igt_remove_fb(data->drm_fd, &data->bufs[i]);
-+		}
-+
-+		for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-+			make_fb(data, &data->bufs[i], width, height, i);
-+	}
-+
-+	igt_plane_set_fb(plane, &data->bufs[0]);
-+	igt_plane_set_size(plane, width, height);
-+
-+	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+}
-+
- static void test_async_flip(data_t *data)
- {
- 	int ret, frame;
- 	long long int fps;
- 	struct timeval start, end, diff;
- 
--	require_monotonic_timestamp(data->drm_fd);
-+	test_init(data);
- 
- 	gettimeofday(&start, NULL);
- 	frame = 1;
-@@ -262,7 +280,7 @@ static void test_timestamp(data_t *data)
- 	unsigned int seq, seq1;
- 	int ret;
- 
--	require_monotonic_timestamp(data->drm_fd);
-+	test_init(data);
- 
- 	/*
- 	 * In older platforms(<= gen10), async address update bit is double buffered.
-@@ -321,6 +339,8 @@ static void test_cursor(data_t *data)
- 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
- 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
- 
-+	test_init(data);
-+
- 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_ARGB8888,
- 			    DRM_FORMAT_MOD_LINEAR, 1., 1., 1., &cursor_fb);
- 
-@@ -355,15 +375,13 @@ static void test_invalid(data_t *data)
- 	int ret;
- 	uint32_t width, height;
- 	struct igt_fb fb;
-+	drmModeModeInfo *mode;
- 
--	/* TODO: support more vendors */
--	igt_require(is_i915_device(data->drm_fd));
-+	mode = igt_output_get_mode(data->output);
-+	width = mode->hdisplay;
-+	height = mode->vdisplay;
- 
--	width = data->connector->modes[0].hdisplay;
--	height = data->connector->modes[0].vdisplay;
--
--	igt_require(igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
--					       I915_FORMAT_MOD_Y_TILED));
-+	test_init(data);
- 
- 	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
- 		      I915_FORMAT_MOD_Y_TILED, &fb);
-@@ -379,33 +397,6 @@ static void test_invalid(data_t *data)
- 	igt_remove_fb(data->drm_fd, &fb);
- }
- 
--static void test_init(data_t *data)
--{
--	drmModeResPtr res;
--	int i, ret;
--
--	res = drmModeGetResources(data->drm_fd);
--	igt_assert(res);
--
--	kmstest_unset_all_crtcs(data->drm_fd, res);
--
--	data->connector = find_connector_for_modeset(data);
--	data->crtc_id = kmstest_find_crtc_for_connector(data->drm_fd,
--							res, data->connector, 0);
--
--	data->refresh_rate = data->connector->modes[0].vrefresh;
--
--	for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
--		make_fb(data, &data->bufs[i], data->connector, i);
--
--	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[0].fb_id, 0, 0,
--			     &data->connector->connector_id, 1, &data->connector->modes[0]);
--
--	igt_assert(ret == 0);
--
--	drmModeFreeResources(res);
--}
--
- static void queue_vblank(data_t *data)
- {
- 	int pipe = kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id);
-@@ -491,13 +482,12 @@ static void test_crc(data_t *data)
- 	cairo_t *cr;
- 	int ret;
- 
--	/* Devices without CRC can't run this test */
--	igt_require_pipe_crc(data->drm_fd);
--
- 	data->flip_count = 0;
- 	data->frame_count = 0;
- 	data->flip_pending = false;
- 
-+	test_init(data);
-+
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
- 	igt_paint_color(cr, 0, 0, data->bufs[frame].width, data->bufs[frame].height, 1.0, 0.0, 0.0);
- 
-@@ -505,7 +495,8 @@ static void test_crc(data_t *data)
- 	igt_paint_color(cr, 0, 0, data->bufs[!frame].width, data->bufs[!frame].height, 1.0, 0.0, 0.0);
- 
- 	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id, 0, 0,
--			     &data->connector->connector_id, 1, &data->connector->modes[0]);
-+			     &data->output->config.connector->connector_id, 1,
-+			     &data->output->config.connector->modes[0]);
- 	igt_assert_eq(ret, 0);
- 
- 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
-@@ -577,7 +568,7 @@ static int opt_handler(int opt, int opt_index, void *_data)
- }
- 
- static const char help_str[] =
--"  --e \t\tRun the extended tests\n";
-+	"  --e \t\tRun the extended tests\n";
- 
- static data_t data;
- 
-@@ -598,7 +589,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 	igt_describe("Verify the async flip functionality and the fps during async flips");
- 	igt_subtest_group {
- 		igt_fixture
--			test_init(&data);
-+			require_monotonic_timestamp(data.drm_fd);
- 
- 		igt_describe("Wait for page flip events in between successive asynchronous flips");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
-@@ -615,25 +606,47 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
- 		igt_subtest_with_dynamic("test-time-stamp")
- 			run_test(&data, test_timestamp);
-+	}
- 
--		igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
--		igt_subtest_with_dynamic("test-cursor")
--			run_test(&data, test_cursor);
-+	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
-+	igt_subtest_with_dynamic("test-cursor") {
-+		/*
-+		 * Intel's PSR2 selective fetch adds other planes to state when
-+		 * necessary, causing the async flip to fail because async flip is not
-+		 * supported in cursor plane.
-+		 */
-+		igt_skip_on_f(i915_psr2_selective_fetch_check(data.drm_fd),
-+			      "PSR2 sel fetch causes cursor to be added to primary plane " \
-+			      "pages flips and async flip is not supported in cursor\n");
-+
-+		run_test(&data, test_cursor);
-+	}
- 
--		igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
--		igt_subtest_with_dynamic("invalid-async-flip")
--			run_test(&data, test_invalid);
-+	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
-+	igt_subtest_with_dynamic("invalid-async-flip") {
-+		/* TODO: support more vendors */
-+		igt_require(is_i915_device(data.drm_fd));
-+		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
-+						       I915_FORMAT_MOD_Y_TILED));
- 
--		igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
--		igt_subtest_with_dynamic("crc")
--			run_test(&data, test_crc);
-+		run_test(&data, test_invalid);
-+	}
- 
--		igt_fixture {
--			for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
--				igt_remove_fb(data.drm_fd, &data.bufs[i]);
--		}
-+	igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
-+	igt_subtest_with_dynamic("crc") {
-+		/* Devices without CRC can't run this test */
-+		igt_require_pipe_crc(data.drm_fd);
-+
-+		run_test(&data, test_crc);
- 	}
- 
--	igt_fixture
-+	igt_fixture {
-+		for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
-+			igt_remove_fb(data.drm_fd, &data.bufs[i]);
-+
-+		igt_display_reset(&data.display);
-+		igt_display_commit(&data.display);
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
-+	}
- }
--- 
-2.22.0
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/index.html
+
+Participating hosts (46 -> 44)
+------------------------------
+
+  Missing    (2): bat-adlm-1 fi-rkl-11600 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7191 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gtt:
+    - fi-bdw-5557u:       NOTRUN -> [DMESG-FAIL][1] ([i915#3674])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-bdw-5557u/igt@i915_selftest@live@gtt.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-bdw-5557u:       NOTRUN -> [INCOMPLETE][2] ([i915#3921])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [PASS][3] -> [DMESG-FAIL][4] ([i915#4528])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-dg1-6:          NOTRUN -> [INCOMPLETE][5] ([i915#6011])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/bat-dg1-6/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@runner@aborted:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][6] ([fdo#109271] / [i915#2403] / [i915#4312])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-pnv-d510/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-6:          [INCOMPLETE][7] ([i915#4418]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-tgl-1115g4:      [DMESG-FAIL][9] ([i915#3987]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@mman:
+    - fi-bdw-5557u:       [INCOMPLETE][11] ([i915#5704]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-bdw-5557u/igt@i915_selftest@live@mman.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-bdw-5557u/igt@i915_selftest@live@mman.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#3674]: https://gitlab.freedesktop.org/drm/intel/issues/3674
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#3987]: https://gitlab.freedesktop.org/drm/intel/issues/3987
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
+  [i915#5704]: https://gitlab.freedesktop.org/drm/intel/issues/5704
+  [i915#6011]: https://gitlab.freedesktop.org/drm/intel/issues/6011
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6500 -> IGTPW_7191
+
+  CI-20190529: 20190529
+  CI_DRM_11710: d2798c4b9213f0d14080bdeef58e692a2c01a0bf @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7191: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/index.html
+  IGT_6500: de4c6076a0f38ad3522b08931748f59d59a925ce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/index.html
+
+--===============3132789585062599331==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_concurrent: Fix regression in test_resolution_with_output (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/94762/">https://patchwork.freedesktop.org/series/94762/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11710 -&gt; IGTPW_7191</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/index.html</p>
+<h2>Participating hosts (46 -&gt; 44)</h2>
+<p>Missing    (2): bat-adlm-1 fi-rkl-11600 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7191 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gtt:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-bdw-5557u/igt@i915_selftest@live@gtt.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3674">i915#3674</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/bat-dg1-6/igt@i915_suspend@basic-s2idle-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6011">i915#6011</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3987">i915#3987</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11710/fi-bdw-5557u/igt@i915_selftest@live@mman.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5704">i915#5704</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/fi-bdw-5557u/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6500 -&gt; IGTPW_7191</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11710: d2798c4b9213f0d14080bdeef58e692a2c01a0bf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7191: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7191/index.html<br />
+  IGT_6500: de4c6076a0f38ad3522b08931748f59d59a925ce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3132789585062599331==--
