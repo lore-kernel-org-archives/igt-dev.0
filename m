@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F57410FDD6
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 10:30:49 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E46E410FC00
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 10:30:39 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 31 May 2022 12:30:33 +0200
-Message-Id: <20220531103033.31128-3-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220531103033.31128-1-zbigniew.kempczynski@intel.com>
-References: <20220531103033.31128-1-zbigniew.kempczynski@intel.com>
+Date: Tue, 31 May 2022 12:30:31 +0200
+Message-Id: <20220531103033.31128-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_exec_schedule: Execute
- spinner in valid context
+Subject: [igt-dev] [PATCH i-g-t 0/2] Fix gem_exec_schedule subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,29 +21,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Running spinner in default context is not correct because it can
-contain less engines than spinner expect. Fix this by setting
-appropriate context for this spinner.
-
-Fixes: semaphore-noskip and u-semaphore-noskip
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series with fixing four subtests on DG2.
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_exec_schedule.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index 43d9d06c09..8a2a4c0994 100644
---- a/tests/i915/gem_exec_schedule.c
-+++ b/tests/i915/gem_exec_schedule.c
-@@ -1269,6 +1269,7 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
- 		eb.buffer_count = 2;
- 		eb.buffers_ptr = to_user_pointer(obj);
- 		eb.flags = inner->flags;
-+		eb.rsvd1 = ctx->id;
- 		gem_execbuf(i915, &eb);
- 
- 		igt_spin_set_timeout(chain, NSEC_PER_SEC / 100);
+Zbigniew Kempczyński (2):
+  tests/i915/gem_exec_schedule: Run spinner in non-default context
+  tests/i915/gem_exec_schedule: Execute spinner in valid context
+
+ tests/i915/gem_exec_schedule.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
 -- 
 2.32.0
