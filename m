@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6815F10E050
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 06:52:17 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41B5310E050
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 06:52:25 +0000 (UTC)
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Petri Latvala <petri.latvala@intel.com>
-Date: Tue, 31 May 2022 08:52:11 +0200
-Message-Id: <20220531065211.233242-4-mauro.chehab@linux.intel.com>
+Date: Tue, 31 May 2022 08:52:10 +0200
+Message-Id: <20220531065211.233242-3-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220531065211.233242-1-mauro.chehab@linux.intel.com>
 References: <20220531065211.233242-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] benchmarks/gem_syslatency: make
- realtime mode optional
+Subject: [igt-dev] [PATCH i-g-t v2 2/3] benchmarks/gem_syslatency: don't die
+ with SIGSEGV
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,77 +27,64 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Use a logic similar to the one at gem_latency in order to setup
-the device to realtime, as, depending on the Kernel and on
-CGroup settings, trying to setup realtime may return EPERM.
-For more details, see:
+Fix the pthread_create() logic for it to properly handle temporary
+issues returned with EAGAIN and ensure that thread creation
+won't fail, as, if it fails, it will cause a Segmentation fault:
 
-	https://www.kernel.org/doc/html/latest/scheduler/sched-rt-group.html?highlight=cgroup%20realtime
+	Received signal SIGSEGV.
+	Stack trace:
+	 #0 [fatal_sig_handler+0x163]
+	 #1 [__sigaction+0x50]
+	 #2 [__pthread_clockjoin_ex+0x22]
+	 #3 [main+0x346]
+	 #4 [__libc_start_call_main+0x80]
+	 #5 [__libc_start_main+0x89]
+	 #6 [_start+0x25]
+	Segmentation fault
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- benchmarks/gem_syslatency.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ benchmarks/gem_syslatency.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/benchmarks/gem_syslatency.c b/benchmarks/gem_syslatency.c
-index 4b097e1c9316..db95cbcc6048 100644
+index 035ee9346251..4b097e1c9316 100644
 --- a/benchmarks/gem_syslatency.c
 +++ b/benchmarks/gem_syslatency.c
-@@ -47,6 +47,8 @@
- #include "i915/gem_create.h"
- #include "i915/gem_ring.h"
- 
-+#define REALTIME	0x1
-+
- #define sigev_notify_thread_id _sigev_un._tid
- 
- static volatile int done;
-@@ -234,7 +236,7 @@ static void bind_cpu(pthread_attr_t *attr, int cpu)
- static void rtprio(pthread_attr_t *attr, int prio)
- {
- #ifdef PTHREAD_EXPLICIT_SCHED
--	struct sched_param param = { .sched_priority = 99 };
-+	struct sched_param param = { .sched_priority = prio };
- 	pthread_attr_setinheritsched(attr, PTHREAD_EXPLICIT_SCHED);
- 	pthread_attr_setschedpolicy(attr, SCHED_FIFO);
- 	pthread_attr_setschedparam(attr, &param);
-@@ -344,6 +346,7 @@ int main(int argc, char **argv)
- 	pthread_t bg_fs = 0;
- 	int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	igt_stats_t cycles, mean, max;
-+	unsigned flags = 0;
- 	double min;
- 	int time = 10;
- 	int field = -1;
-@@ -353,7 +356,7 @@ int main(int argc, char **argv)
+@@ -351,7 +351,7 @@ int main(int argc, char **argv)
+ 	bool leak = false;
+ 	bool interrupts = false;
  	long batch = 0;
- 	int ret, n, c;
+-	int n, c;
++	int ret, n, c;
  
--	while ((c = getopt(argc, argv, "r:t:f:bmni1")) != -1) {
-+	while ((c = getopt(argc, argv, "r:t:f:bmni1R")) != -1) {
+ 	while ((c = getopt(argc, argv, "r:t:f:bmni1")) != -1) {
  		switch (c) {
- 		case '1':
- 			ncpus = 1;
-@@ -374,6 +377,10 @@ int main(int argc, char **argv)
- 			/* Duration of each batch (microseconds) */
- 			batch = atoi(optarg);
- 			break;
-+		case 'R':
-+			/* Run the producers at RealTime priority */
-+			flags |= REALTIME;
-+			break;
- 		case 'f':
- 			/* Select an output field */
- 			field = atoi(optarg);
-@@ -419,7 +426,8 @@ int main(int argc, char **argv)
+@@ -409,8 +409,11 @@ int main(int argc, char **argv)
+ 			busy[n].sz = batch;
+ 			busy[n].leak = leak;
+ 			busy[n].interrupts = interrupts;
+-			pthread_create(&busy[n].thread, &attr,
+-				       gem_busyspin, &busy[n]);
++			do {
++				ret = pthread_create(&busy[n].thread, &attr,
++						     gem_busyspin, &busy[n]);
++			} while (ret == EAGAIN);
++			igt_assert_f(!ret, "Can't create task on CPU#%d\n", n);
+ 		}
+ 	}
  
- 	wait = calloc(ncpus, sizeof(*wait));
- 	pthread_attr_init(&attr);
--	rtprio(&attr, 99);
-+	if (flags & REALTIME)
-+		rtprio(&attr, 99);
+@@ -420,7 +423,10 @@ int main(int argc, char **argv)
  	for (n = 0; n < ncpus; n++) {
  		igt_mean_init(&wait[n].mean);
  		bind_cpu(&attr, n);
+-		pthread_create(&wait[n].thread, &attr, sys_fn, &wait[n]);
++		do {
++			ret = pthread_create(&wait[n].thread, &attr, sys_fn, &wait[n]);
++		} while (ret == EAGAIN);
++		igt_assert_f(!ret, "Can't create task on CPU#%d\n", n);
+ 	}
+ 
+ 	sleep(time);
 -- 
 2.36.1
