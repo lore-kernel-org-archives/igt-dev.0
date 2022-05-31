@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0520E11321D
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 14:29:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F16B6113342
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 14:29:49 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Tue, 31 May 2022 16:28:40 +0200
-Message-Id: <20220531142844.278366-10-ryszard.knop@intel.com>
+Date: Tue, 31 May 2022 16:28:41 +0200
+Message-Id: <20220531142844.278366-11-ryszard.knop@intel.com>
 In-Reply-To: <20220531142844.278366-1-ryszard.knop@intel.com>
 References: <20220531142844.278366-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 10/14] tests/kms*: Remove unused headers
+Subject: [igt-dev] [PATCH i-g-t 11/14] tests/*: Remove unused headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,45 +29,255 @@ now gone.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- tests/kms_addfb_basic.c        | 4 ----
- tests/kms_atomic.c             | 2 --
- tests/kms_atomic_transition.c  | 1 -
- tests/kms_bw.c                 | 1 -
- tests/kms_chamelium.c          | 2 --
- tests/kms_content_protection.c | 1 -
- tests/kms_cursor_edge_walk.c   | 1 -
- tests/kms_dither.c             | 2 --
- tests/kms_dp_aux_dev.c         | 4 ----
- tests/kms_flip_event_leak.c    | 3 ---
- tests/kms_getfb.c              | 6 ------
- tests/kms_hdmi_inject.c        | 2 --
- tests/kms_hdr.c                | 2 --
- tests/kms_lease.c              | 6 ------
- tests/kms_panel_fitting.c      | 1 -
- tests/kms_pipe_crc_basic.c     | 1 -
- tests/kms_plane.c              | 1 -
- tests/kms_plane_lowres.c       | 2 --
- tests/kms_plane_multiple.c     | 1 -
- tests/kms_plane_scaling.c      | 1 -
- tests/kms_prime.c              | 2 --
- tests/kms_prop_blob.c          | 2 --
- tests/kms_properties.c         | 2 --
- tests/kms_rmfb.c               | 2 --
- tests/kms_sequence.c           | 3 ---
- tests/kms_setmode.c            | 2 --
- tests/kms_vblank.c             | 3 ---
- tests/kms_writeback.c          | 1 -
- 28 files changed, 61 deletions(-)
+ tests/core_auth.c              | 11 +----------
+ tests/core_getclient.c         |  1 -
+ tests/core_getstats.c          |  1 -
+ tests/core_getversion.c        |  1 -
+ tests/core_hotunplug.c         |  3 ---
+ tests/core_setmaster_vs_auth.c |  2 --
+ tests/debugfs_test.c           |  2 --
+ tests/drm_import_export.c      |  7 -------
+ tests/drm_read.c               |  7 -------
+ tests/dumb_buffer.c            |  4 ----
+ tests/fbdev.c                  |  6 ------
+ tests/msm/msm_mapping.c        |  1 -
+ tests/prime_mmap.c             |  5 -----
+ tests/prime_nv_pcopy.c         |  2 --
+ tests/prime_nv_test.c          |  1 -
+ tests/prime_self_import.c      |  2 --
+ tests/syncobj_timeline.c       |  1 -
+ tests/syncobj_wait.c           |  1 -
+ tests/testdisplay.c            |  6 ------
+ tests/testdisplay_hotplug.c    |  2 --
+ tests/tools_test.c             |  4 ----
+ tests/vgem_slow.c              |  2 --
+ 22 files changed, 1 insertion(+), 71 deletions(-)
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 6b2323a9..3e72c575 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -27,14 +27,10 @@
+diff --git a/tests/core_auth.c b/tests/core_auth.c
+index c9ad3fb9..1dd5f2f8 100644
+--- a/tests/core_auth.c
++++ b/tests/core_auth.c
+@@ -28,24 +28,15 @@
+ #include "igt.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+-#include <stdint.h>
+ #include <stdio.h>
+ #include <string.h>
+-#include <signal.h>
+ #include <fcntl.h>
+-#include <inttypes.h>
+ #include <errno.h>
+-#include <sched.h>
+-#include <sys/mount.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <sys/time.h>
+-#include <sys/poll.h>
+ #include <sys/resource.h>
+ #include "drm.h"
+ 
+ #ifndef __linux__
+-# include <pthread.h>
++#include <pthread.h>
+ #endif
+ 
+ IGT_TEST_DESCRIPTION("Call drmGetMagic() and drmAuthMagic() and see if it behaves.");
+diff --git a/tests/core_getclient.c b/tests/core_getclient.c
+index 40a1c194..7c48851a 100644
+--- a/tests/core_getclient.c
++++ b/tests/core_getclient.c
+@@ -26,7 +26,6 @@
+  */
+ 
+ #include "igt.h"
+-#include <limits.h>
+ #include <sys/ioctl.h>
+ #include <stdlib.h>
+ #include <errno.h>
+diff --git a/tests/core_getstats.c b/tests/core_getstats.c
+index fde27cdc..76195a31 100644
+--- a/tests/core_getstats.c
++++ b/tests/core_getstats.c
+@@ -26,7 +26,6 @@
+  */
+ 
+ #include "igt.h"
+-#include <limits.h>
+ #include <sys/ioctl.h>
+ #include <sys/types.h>
+ 
+diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+index f6953b31..118e5835 100644
+--- a/tests/core_getversion.c
++++ b/tests/core_getversion.c
+@@ -27,7 +27,6 @@
+ 
+ #include "igt.h"
+ #include <string.h>
+-#include <sys/ioctl.h>
+ 
+ IGT_TEST_DESCRIPTION("Tests the DRM_IOCTL_GET_VERSION ioctl and libdrm's "
+ 		     "drmGetVersion() interface to it.");
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index a0d29b79..bf8bc3f2 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -26,10 +26,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+-#include <sys/stat.h>
+-#include <sys/types.h>
+ #include <unistd.h>
+-#include <signal.h>
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+diff --git a/tests/core_setmaster_vs_auth.c b/tests/core_setmaster_vs_auth.c
+index 0b4b8613..03446c33 100644
+--- a/tests/core_setmaster_vs_auth.c
++++ b/tests/core_setmaster_vs_auth.c
+@@ -35,8 +35,6 @@
  
  #include "igt.h"
  #include <unistd.h>
 -#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+ 
+ #include "igt_device.h"
+diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+index 0b4b6e23..e73402ab 100644
+--- a/tests/debugfs_test.c
++++ b/tests/debugfs_test.c
+@@ -20,13 +20,11 @@
+  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  * IN THE SOFTWARE.
+  */
+-#include "config.h"
+ 
+ #include "i915/gem.h"
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ #include <fcntl.h>
+-#include <sys/types.h>
+ #include <dirent.h>
+ 
+ IGT_TEST_DESCRIPTION("Read entries from debugfs and sysfs paths.");
+diff --git a/tests/drm_import_export.c b/tests/drm_import_export.c
+index 06245e8b..c3c0bc20 100644
+--- a/tests/drm_import_export.c
++++ b/tests/drm_import_export.c
+@@ -25,20 +25,13 @@
+  */
+ 
+ #include "igt.h"
+-#include <stdio.h>
+ #include <sys/types.h>
+-#include <sys/stat.h>
+ #include <fcntl.h>
+-#include <stdlib.h>
+ #include <string.h>
+-#include <drm.h>
+-#include <i915_drm.h>
+-#include <xf86drm.h>
+ #include <intel_bufmgr.h>
+ #include <errno.h>
+ #include <pthread.h>
+ #include <unistd.h>
+-#include <sys/syscall.h>
+ 
+ #include "i915/gem.h"
+ 
+diff --git a/tests/drm_read.c b/tests/drm_read.c
+index 3186e609..e3acdd66 100644
+--- a/tests/drm_read.c
++++ b/tests/drm_read.c
+@@ -31,17 +31,10 @@
+ 
+ #include "igt.h"
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdint.h>
+-#include <stdio.h>
+ #include <string.h>
+ #include <signal.h>
+ #include <fcntl.h>
+-#include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <sys/time.h>
+ #include <sys/poll.h>
+ #include <pthread.h>
+ #include "drm.h"
+diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+index cb8d2f51..2e0311c1 100644
+--- a/tests/dumb_buffer.c
++++ b/tests/dumb_buffer.c
+@@ -32,16 +32,12 @@
+  */
+ 
+ #include <errno.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+ #include <pthread.h>
+ #include <signal.h>
+ #include <stdatomic.h>
+-#include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <sys/ioctl.h>
+-#include <sys/stat.h>
+ #include <sys/time.h>
+ 
+ #include <drm.h>
+diff --git a/tests/fbdev.c b/tests/fbdev.c
+index 794882a6..64c86c08 100644
+--- a/tests/fbdev.c
++++ b/tests/fbdev.c
+@@ -21,8 +21,6 @@
+  * IN THE SOFTWARE.
+  */
+ 
+-#include "config.h"
+-
+ #include "igt.h"
+ 
+ #include <errno.h>
+@@ -31,14 +29,10 @@
+ #include <string.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+-#include <sys/stat.h>
+-#include <sys/types.h>
+ #include <unistd.h>
+ 
+ #include <linux/fb.h>
+ 
+-#include "igt.h"
+-
+ #define PANSTEP(panstep_) \
+ 	((panstep_) ? (panstep_) : 1)
+ 
+diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
+index e1474f9f..21775aa8 100644
+--- a/tests/msm/msm_mapping.c
++++ b/tests/msm/msm_mapping.c
+@@ -26,7 +26,6 @@
+ #include <glob.h>
+ #include <string.h>
+ #include <sys/poll.h>
+-#include <sys/stat.h>
+ 
+ #include "igt.h"
+ #include "igt_msm.h"
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index d53185ff..0c075214 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -34,11 +34,7 @@
  #include <stdio.h>
  #include <string.h>
  #include <fcntl.h>
@@ -75,393 +285,160 @@ index 6b2323a9..3e72c575 100644
  #include <errno.h>
 -#include <sys/stat.h>
 -#include <sys/ioctl.h>
- #include "drm.h"
- #include "drm_fourcc.h"
- 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 253829f2..07b6b2ee 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -32,8 +32,6 @@
-  */
- 
- #include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
- #include <stdint.h>
- #include <string.h>
- #include <errno.h>
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 10b21c92..0f31eece 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -30,7 +30,6 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
--#include <time.h>
- #include <poll.h>
- 
- #ifndef DRM_CAP_CURSOR_WIDTH
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index a4553cde..13e4463c 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -22,7 +22,6 @@
- 
- #include "drm_mode.h"
- #include "igt.h"
--#include "drm.h"
- #include <stdio.h>
- #include <xf86drmMode.h>
- 
-diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-index d97b439a..aec82b1c 100644
---- a/tests/kms_chamelium.c
-+++ b/tests/kms_chamelium.c
-@@ -24,9 +24,7 @@
-  *    Lyude Paul <lyude@redhat.com>
-  */
- 
--#include "config.h"
- #include "igt.h"
--#include "igt_vc4.h"
- #include "igt_edid.h"
- #include "igt_eld.h"
- #include "igt_infoframe.h"
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 3041f1cd..5964a6d7 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -24,7 +24,6 @@
- 
- #include <poll.h>
- #include <fcntl.h>
--#include <sys/epoll.h>
- #include <sys/stat.h>
- #include <libudev.h>
- #include "igt.h"
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index b775714f..2baf280e 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -24,7 +24,6 @@
- 
- #include "igt.h"
- #include <errno.h>
--#include <limits.h>
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
-diff --git a/tests/kms_dither.c b/tests/kms_dither.c
-index 21c1618a..83799304 100644
---- a/tests/kms_dither.c
-+++ b/tests/kms_dither.c
-@@ -26,8 +26,6 @@
-  */
- 
- #include "igt.h"
--#include <fcntl.h>
--#include <termios.h>
- #include <unistd.h>
- 
- IGT_TEST_DESCRIPTION("Test Dithering block status");
-diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
-index d3249fa3..e1b26b5b 100644
---- a/tests/kms_dp_aux_dev.c
-+++ b/tests/kms_dp_aux_dev.c
-@@ -22,10 +22,6 @@
-  *
-  */
- 
--#include "config.h"
--
--#include <sys/types.h>
--#include <sys/stat.h>
- #include <fcntl.h>
- #include <dirent.h>
- 
-diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-index ac201293..90c6c547 100644
---- a/tests/kms_flip_event_leak.c
-+++ b/tests/kms_flip_event_leak.c
-@@ -23,9 +23,6 @@
-  */
- 
- #include "igt.h"
--#include <errno.h>
--#include <stdbool.h>
--#include <stdio.h>
- #include <string.h>
- 
- #include "igt_device.h"
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index b3a8d265..534aff78 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -30,18 +30,12 @@
- #include "igt.h"
- #include <unistd.h>
- #include <stdlib.h>
--#include <stdio.h>
- #include <string.h>
--#include <fcntl.h>
- #include <inttypes.h>
- #include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
+-#include <pthread.h>
  
  #include "drm.h"
- #include "drm_fourcc.h"
--#include "i915/gem_create.h"
--#include "igt_device.h"
+ #include "drmtest.h"
+@@ -47,7 +43,6 @@
+ #include "i915_drm.h"
+ #include "i915/gem_create.h"
+ #include "i915/gem_mman.h"
+-#include "igt_debugfs.h"
+ #include "ioctl_wrappers.h"
+ #include "i915/intel_memory_region.h"
  
- IGT_TEST_DESCRIPTION("Tests GETFB and GETFB2 ioctls.");
- 
-diff --git a/tests/kms_hdmi_inject.c b/tests/kms_hdmi_inject.c
-index abae0ab4..051c9b4e 100644
---- a/tests/kms_hdmi_inject.c
-+++ b/tests/kms_hdmi_inject.c
+diff --git a/tests/prime_nv_pcopy.c b/tests/prime_nv_pcopy.c
+index e465e5fc..e98e48ee 100644
+--- a/tests/prime_nv_pcopy.c
++++ b/tests/prime_nv_pcopy.c
 @@ -22,8 +22,6 @@
-  *
-  */
- 
--#include "config.h"
--
- #include <dirent.h>
- 
- #include "igt.h"
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index fb2e0790..0c0a803b 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -21,8 +21,6 @@
-  */
- 
- #include "igt.h"
--#include <fcntl.h>
--#include <termios.h>
- #include <unistd.h>
- #include "igt_edid.h"
- 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 0bf102a6..b5b6ea2e 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -34,14 +34,8 @@
  #include <fcntl.h>
- #include <inttypes.h>
- #include <errno.h>
--#include <time.h>
--#include <sys/poll.h>
--#include <sys/stat.h>
--#include <sys/time.h>
- #include <sys/wait.h>
- 
--#include <libudev.h>
--
- #include <drm.h>
- #include "igt_device.h"
- 
-diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-index 9f607376..7756cfca 100644
---- a/tests/kms_panel_fitting.c
-+++ b/tests/kms_panel_fitting.c
-@@ -23,7 +23,6 @@
-  */
- 
- #include "igt.h"
--#include <math.h>
+ #include <string.h>
  #include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <errno.h>
  
- IGT_TEST_DESCRIPTION("Test display panel fitting");
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 0861c46d..edd8a0bc 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -25,7 +25,6 @@
+ #include "intel_bufmgr.h"
+ #include "nouveau.h"
+diff --git a/tests/prime_nv_test.c b/tests/prime_nv_test.c
+index 81d142f4..eb647668 100644
+--- a/tests/prime_nv_test.c
++++ b/tests/prime_nv_test.c
+@@ -21,7 +21,6 @@
+ #include <fcntl.h>
+ #include <string.h>
+ #include <sys/stat.h>
+-#include <sys/ioctl.h>
+ 
+ #include "intel_bufmgr.h"
+ #include "nouveau.h"
+diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
+index bf548619..1494b86a 100644
+--- a/tests/prime_self_import.c
++++ b/tests/prime_self_import.c
+@@ -34,12 +34,10 @@
  #include "igt.h"
- #include "igt_sysfs.h"
- #include <errno.h>
--#include <stdbool.h>
- #include <stdio.h>
+ #include <unistd.h>
+ #include <stdlib.h>
+-#include <stdio.h>
  #include <string.h>
  #include <fcntl.h>
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index b1be44c3..21e73c3b 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -26,7 +26,6 @@
- 
- #include "igt.h"
- #include "igt_vec.h"
--#include <errno.h>
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index 3f3f77c8..f7e4a890 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -24,11 +24,9 @@
- 
- #include "igt.h"
- #include "drmtest.h"
--#include <errno.h>
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
--#include <time.h>
- 
- IGT_TEST_DESCRIPTION("Test atomic mode setting with a plane by switching between high and low resolutions");
- 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 1679f7ce..edbb5e25 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -24,7 +24,6 @@
- 
- #include "igt.h"
- #include "drmtest.h"
--#include <errno.h>
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index fc8250b5..ce448d5a 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -24,7 +24,6 @@
- 
- #include "igt.h"
- #include "igt_vec.h"
--#include <math.h>
- 
- IGT_TEST_DESCRIPTION("Test display plane scaling");
- 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 1ad4b3a6..c232970e 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -24,8 +24,6 @@
- #include "igt.h"
- #include "igt_device.h"
- 
--#include <sys/ioctl.h>
--#include <sys/poll.h>
- #include <time.h>
- 
- struct dumb_bo {
-diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
-index 96aa6d8d..b9571bb9 100644
---- a/tests/kms_prop_blob.c
-+++ b/tests/kms_prop_blob.c
-@@ -27,8 +27,6 @@
- 
- #include "igt.h"
- #include <errno.h>
--#include <stdbool.h>
--#include <stdio.h>
- #include <string.h>
- 
- IGT_TEST_DESCRIPTION("Tests behaviour of mass-data 'blob' properties.");
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index dd5a93aa..2fae751e 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -25,9 +25,7 @@
- #include "drmtest.h"
- #include <errno.h>
- #include <stdbool.h>
--#include <stdio.h>
- #include <string.h>
--#include <time.h>
- 
- struct additional_test {
- 	const char *name;
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index fcd5cdad..3f5173cb 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -23,11 +23,9 @@
- 
- #include "igt.h"
- #include "drmtest.h"
--#include <errno.h>
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
--#include <time.h>
- 
- #ifndef DRM_CAP_CURSOR_WIDTH
- #define DRM_CAP_CURSOR_WIDTH 0x8
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index 1655d7d1..3f7109f0 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -31,13 +31,10 @@
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
--#include <fcntl.h>
  #include <inttypes.h>
  #include <errno.h>
- #include <time.h>
- #include <sys/poll.h>
 -#include <sys/stat.h>
--#include <sys/time.h>
- #include <sys/wait.h>
+ #include <sys/ioctl.h>
+ #include <pthread.h>
  
- #include <drm.h>
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 8c755091..5e88e939 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -20,7 +20,6 @@
-  * Authors:
-  *    Imre Deak <imre.deak@intel.com>
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index 20375cdd..b4858673 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -26,7 +26,6 @@
+ #include "igt_syncobj.h"
+ #include <unistd.h>
+ #include <time.h>
+-#include <sys/ioctl.h>
+ #include <pthread.h>
+ #include <signal.h>
+ #include "drm.h"
+diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+index 669d0adf..19995544 100644
+--- a/tests/syncobj_wait.c
++++ b/tests/syncobj_wait.c
+@@ -26,7 +26,6 @@
+ #include "igt_syncobj.h"
+ #include <unistd.h>
+ #include <time.h>
+-#include <sys/ioctl.h>
+ #include <pthread.h>
+ #include <signal.h>
+ #include "drm.h"
+diff --git a/tests/testdisplay.c b/tests/testdisplay.c
+index e9fbd260..7d79439e 100644
+--- a/tests/testdisplay.c
++++ b/tests/testdisplay.c
+@@ -45,23 +45,17 @@
+  *  - DP commands (e.g. poweroff)
+  * - verify outputs against VBT/physical connectors
   */
 -#include "config.h"
  
  #include "igt.h"
  #include <cairo.h>
-@@ -28,7 +27,6 @@
+ #include <errno.h>
+ #include <getopt.h>
+ #include <libgen.h>
+-#include <math.h>
  #include <stdint.h>
- #include <unistd.h>
- #include <string.h>
--#include <sys/time.h>
- #include <math.h>
- 
- #define MAX_CONNECTORS  10
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index e65e8522..9f40a67e 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -30,13 +30,10 @@
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
--#include <fcntl.h>
- #include <inttypes.h>
- #include <errno.h>
- #include <time.h>
- #include <sys/poll.h>
--#include <sys/stat.h>
--#include <sys/time.h>
- #include <sys/wait.h>
- 
- #include <drm.h>
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index b6c815db..60828a74 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -24,7 +24,6 @@
- 
- #include <errno.h>
  #include <stdbool.h>
--#include <stdio.h>
- #include <string.h>
+ #include <strings.h>
+ #include <unistd.h>
+ #include <termios.h>
+-#include <sys/poll.h>
+-#include <sys/time.h>
+-#include <sys/ioctl.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
+ 
+ #include "testdisplay.h"
+diff --git a/tests/testdisplay_hotplug.c b/tests/testdisplay_hotplug.c
+index cd784895..f77554ca 100644
+--- a/tests/testdisplay_hotplug.c
++++ b/tests/testdisplay_hotplug.c
+@@ -22,14 +22,12 @@
+  */
  
  #include "igt.h"
+-#include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+ 
+ #include <sys/stat.h>
+ 
+ #include "testdisplay.h"
+-#include "config.h"
+ 
+ 
+ #include <libudev.h>
+diff --git a/tests/tools_test.c b/tests/tools_test.c
+index 237f0433..476b2434 100644
+--- a/tests/tools_test.c
++++ b/tests/tools_test.c
+@@ -20,12 +20,8 @@
+  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  * IN THE SOFTWARE.
+  */
+-#include "config.h"
+ #include "igt.h"
+ #include <stdio.h>
+-#include <sys/types.h>
+-#include <sys/stat.h>
+-#include <fcntl.h>
+ #include <libgen.h>
+ #include <unistd.h>
+ #include <linux/limits.h>
+diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
+index 58b09e42..91fe6f20 100644
+--- a/tests/vgem_slow.c
++++ b/tests/vgem_slow.c
+@@ -28,8 +28,6 @@
+ 
+ #include <sys/mman.h>
+ #include <sys/poll.h>
+-#include <sys/stat.h>
+-#include <dirent.h>
+ 
+ IGT_TEST_DESCRIPTION("Extended sanity check of Virtual GEM module (vGEM).");
+ 
 -- 
 2.36.1
