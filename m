@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C07EA10E81C
- for <igt-dev@lists.freedesktop.org>; Mon, 23 May 2022 08:16:11 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EA3C10F62F
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 12:01:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 23 May 2022 13:43:05 +0530
-Message-Id: <20220523081305.3622374-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220421120547.2708659-1-bhanuprakash.modem@intel.com>
-References: <20220421120547.2708659-1-bhanuprakash.modem@intel.com>
+Date: Tue, 31 May 2022 17:28:05 +0530
+Message-Id: <20220531115805.3941871-4-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220531115805.3941871-1-bhanuprakash.modem@intel.com>
+References: <20220531115805.3941871-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2] tests/kms_flip: Fix mode selection for Nx tests
+Subject: [igt-dev] [V4 3/3] tests/kms_color: Skip if current & requested BPC
+ doesn't match
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,195 +24,94 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will find the connector/mode combination that fits
-into the bandwidth when more than one monitor is connected.
+The "max bpc" property only ensures that the bpc will not go beyond
+the value set through this property. It does not guarantee that the
+same bpc will be used for the given mode.
 
-Example:
-   When two monitors connected through MST, the second monitor
-   also tries to use the same mode. So two such modes may not
-   fit into the link bandwidth. So, iterate through connected
-   outputs & modes and find a combination of modes those fit
-   into the link BW.
+If clock/bandwidth constraints permit, the max bpc will be used to
+show the mode, otherwise the bpc will be reduced. So, if we really
+want a particular bpc set, we can try reducing the resolution, till
+we get the bpc that we set in max bpc property.
+
+This patch will skip the test, if there is no valid resolution to get
+the same bpc as set by max_bpc property.
 
 V2:
-* Exit if suitable modes not found in retry.
-* New function to re-use the code.
+* Refactor the logic
+V3:
+* Minor changes
+V4:
+* Set output to pipe (igt_output_set_pipe)
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+CC: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_flip.c | 109 ++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 84 insertions(+), 25 deletions(-)
+ tests/kms_color.c | 35 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 5 deletions(-)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 773e6597..5985e012 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -932,12 +932,36 @@ static bool mode_compatible(const drmModeModeInfo *a, const drmModeModeInfo *b)
- 	return true;
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 93957f50..ba06947b 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -635,6 +635,28 @@ static void test_pipe_limited_range_ctm(data_t *data,
  }
+ #endif
  
-+static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
-+				 drmModeConnector *c1, drmModeConnector *c2)
++static bool i915_clock_constraint(data_t *data, enum pipe pipe, int bpc)
 +{
-+	int n, m;
++	igt_output_t *output = data->output;
++	drmModeConnector *connector = output->config.connector;
 +
-+	*a = c1->modes[0];
-+	*b = c2->modes[0];
++	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
 +
-+	if (!mode_compatible(a, b)) {
-+		for (n = 0; n < c1->count_modes; n++) {
-+			*a = c1->modes[n];
-+			for (m = 0; m < c2->count_modes; m++) {
-+				*b = c2->modes[m];
-+				if (mode_compatible(a, b))
-+					return;
-+			}
-+		}
++	for_each_connector_mode(output) {
++		igt_output_override_mode(output, &connector->modes[j__]);
++		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
 +
-+		/* hope for the best! */
-+		*a = *b = c1->modes[0];
++		if (!igt_check_output_bpc_equal(data->drm_fd, pipe,
++						data->output->name, bpc))
++			continue;
++
++		return true;
 +	}
 +
-+	return;
++	igt_output_override_mode(output, NULL);
++	return false;
 +}
 +
- static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
- 					   struct test_output *o)
+ static void
+ prep_pipe(data_t *data, enum pipe p)
  {
- 	struct kmstest_connector_config config[2];
--	drmModeModeInfo *mode[2];
--	int n, m;
-+	drmModeModeInfo mode[2];
+@@ -866,6 +888,9 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 	igt_subtest_f("pipe-%s-legacy-gamma-reset", kmstest_pipe_name(p))
+ 		test_pipe_legacy_gamma_reset(data, primary);
  
- 	if (!kmstest_get_connector_config(drm_fd, o->_connector[0],
- 					  1 << crtc_idx0, &config[0]))
-@@ -949,39 +973,25 @@ static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
- 		return;
- 	}
++	igt_fixture
++		igt_require(data->display.is_atomic);
++
+ 	igt_describe("Verify that deep color works correctly");
+ 	igt_subtest_with_dynamic_f("pipe-%s-deep-color", kmstest_pipe_name(p)) {
+ 		igt_output_t *output;
+@@ -896,12 +921,12 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 			data->drm_format = DRM_FORMAT_XRGB2101010;
+ 			data->output = output;
+ 			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+-			igt_display_commit(&data->display);
++			igt_output_set_pipe(output, p);
++			igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
  
--	mode[0] = &config[0].default_mode;
--	mode[1] = &config[1].default_mode;
--	if (!mode_compatible(mode[0], mode[1])) {
--		for (n = 0; n < config[0].connector->count_modes; n++) {
--			mode[0] = &config[0].connector->modes[n];
--			for (m = 0; m < config[1].connector->count_modes; m++) {
--				mode[1] = &config[1].connector->modes[m];
--				if (mode_compatible(mode[0], mode[1]))
--					goto found;
+-			if (!igt_check_output_bpc_equal(data->drm_fd, p, output->name, 10)) {
+-				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
+-				igt_fail_on_f(true, "Failed to set max_bpc as: 10\n");
 -			}
--		}
--
--		/* hope for the best! */
--		mode[1] = mode[0] = &config[0].default_mode;
--	}
-+	get_compatible_modes(&mode[0], &mode[1],
-+			     config[0].connector, config[1].connector);
++			if (is_i915_device(data->drm_fd) &&
++			    !i915_clock_constraint(data, p, 10))
++				continue;
  
--found:
- 	o->pipe = config[0].pipe;
--	o->fb_width = mode[0]->hdisplay;
--	o->fb_height = mode[0]->vdisplay;
-+	o->fb_width = mode[0].hdisplay;
-+	o->fb_height = mode[0].vdisplay;
- 	o->mode_valid = 1;
- 
- 	o->kconnector[0] = config[0].connector;
- 	o->kencoder[0] = config[0].encoder;
- 	o->_crtc[0] = config[0].crtc->crtc_id;
- 	o->_pipe[0] = config[0].pipe;
--	o->kmode[0] = *mode[0];
-+	o->kmode[0] = mode[0];
- 
- 	o->kconnector[1] = config[1].connector;
- 	o->kencoder[1] = config[1].encoder;
- 	o->_crtc[1] = config[1].crtc->crtc_id;
- 	o->_pipe[1] = config[1].pipe;
--	o->kmode[1] = *mode[1];
-+	o->kmode[1] = mode[1];
- 
- 	drmModeFreeCrtc(config[0].crtc);
- 	drmModeFreeCrtc(config[1].crtc);
-@@ -1302,6 +1312,33 @@ static void discard_any_stale_events(void) {
- 	}
- }
- 
-+static int sort_drm_modes(const void *a, const void *b)
-+{
-+	const drmModeModeInfo *mode1 = a, *mode2 = b;
-+
-+	return (mode2->clock < mode1->clock) - (mode1->clock < mode2->clock);
-+}
-+
-+static void get_suitable_modes(struct test_output *o)
-+{
-+	drmModeModeInfo mode[2];
-+	int i;
-+
-+	for (i = 0; i < RUN_PAIR; i++) {
-+		qsort(o->kconnector[i]->modes,
-+		      o->kconnector[i]->count_modes,
-+		      sizeof(drmModeModeInfo),
-+		      sort_drm_modes);
-+	}
-+
-+	get_compatible_modes(&mode[0], &mode[1],
-+			     o->kconnector[0], o->kconnector[1]);
-+
-+	o->fb_width = mode[0].hdisplay;
-+	o->fb_height = mode[0].vdisplay;
-+	o->kmode[0] = mode[0];
-+	o->kmode[1] = mode[1];
-+}
- 
- static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 				   int crtc_count, int duration_ms)
-@@ -1309,12 +1346,13 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
- 	struct udev_monitor *mon = igt_watch_uevents();
- 	unsigned bo_size = 0;
- 	bool vblank = true;
--	bool retried = false;
-+	bool retried = false, restart = false;
- 	bool state_ok;
- 	unsigned elapsed;
- 	uint64_t modifier;
--	int i;
-+	int i, ret;
- 
-+restart:
- 	last_connector = o->kconnector[0];
- 
- 	if (o->flags & TEST_PAN)
-@@ -1366,7 +1404,28 @@ retry:
- 
- 	igt_flush_uevents(mon);
- 
--	igt_assert(!set_mode(o, o->fb_ids[0], 0, 0));
-+	ret = set_mode(o, o->fb_ids[0], 0, 0);
-+
-+	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
-+	if (ret < 0 && errno == ENOSPC &&
-+	    crtc_count == RUN_PAIR) {
-+
-+		if (restart) {
-+			igt_info("No suitable modes found to fit into the link BW.\n");
-+			goto out;
-+		}
-+
-+		get_suitable_modes(o);
-+
-+		igt_remove_fb(drm_fd, &o->fb_info[2]);
-+		igt_remove_fb(drm_fd, &o->fb_info[1]);
-+		igt_remove_fb(drm_fd, &o->fb_info[0]);
-+
-+		restart = true;
-+		goto restart;
-+	}
-+
-+	igt_assert(!ret);
- 	igt_assert(fb_is_bound(o, o->fb_ids[0]));
- 
- 	vblank = kms_has_vblank(drm_fd);
+ 			igt_dynamic_f("gamma-%s", output->name) {
+ 				ret = test_pipe_gamma(data, primary);
 -- 
 2.35.1
