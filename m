@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B4C310F49B
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 09:05:45 +0000 (UTC)
-Message-ID: <5c36945d-571c-ca04-b275-32426b53a3ca@intel.com>
-Date: Tue, 31 May 2022 14:35:33 +0530
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20220531053625.3886441-1-bhanuprakash.modem@intel.com>
- <20220531053625.3886441-4-bhanuprakash.modem@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20220531053625.3886441-4-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68BC210F58D
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 09:13:21 +0000 (UTC)
+Date: Tue, 31 May 2022 12:11:09 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Message-ID: <YpXbrVsKbDWNPoEz@platvala-desk.ger.corp.intel.com>
+References: <20220525191801.2746592-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [V3 3/4] tests/kms_color: Skip if current & requested
- BPC doesn't match
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220525191801.2746592-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH] kms_prop_blob: Add new subtest for write-only
+ blobs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,88 +20,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Looks good to me.
-
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-
-Regards,
-
-Ankit
-
-On 5/31/2022 11:06 AM, Bhanuprakash Modem wrote:
-> The "max bpc" property only ensures that the bpc will not go beyond
-> the value set through this property. It does not guarantee that the
-> same bpc will be used for the given mode.
->
-> If clock/bandwidth constraints permit, the max bpc will be used to
-> show the mode, otherwise the bpc will be reduced. So, if we really
-> want a particular bpc set, we can try reducing the resolution, till
-> we get the bpc that we set in max bpc property.
->
-> This patch will skip the test, if there is no valid resolution to get
-> the same bpc as set by max_bpc property.
->
-> V2:
-> * Refactor the logic
-> V3:
-> * Minor changes
->
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> CC: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+On Wed, May 25, 2022 at 03:18:01PM -0400, Mark Yacoub wrote:
+> [Why]
+> Some blobs support secret data injected into the kernel that should be
+> retrieved back to user space (like HDCP key provisioned from a server
+> and injected to the kernel)
+> 
+> [How]
+> Create a blob using the write only flag and validate that the data it
+> holds can't be read again by the user space.
+> Compare this behavior against a blob created without the flag.
+> 
+> TEST=blob-write-only
+> TESTED-ON=Trogdor
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 > ---
->   tests/kms_color.c | 29 +++++++++++++++++++++++++----
->   1 file changed, 25 insertions(+), 4 deletions(-)
->
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index 93957f50..cb50cbbf 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -635,6 +635,28 @@ static void test_pipe_limited_range_ctm(data_t *data,
->   }
->   #endif
->   
-> +static bool i915_clock_constraint(data_t *data, enum pipe pipe, int bpc)
+>  include/drm-uapi/drm_mode.h |  6 ++++++
+>  tests/kms_prop_blob.c       | 39 +++++++++++++++++++++++++++++++++++--
+>  2 files changed, 43 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
+> index e4a2570a..38d6c1f0 100644
+> --- a/include/drm-uapi/drm_mode.h
+> +++ b/include/drm-uapi/drm_mode.h
+> @@ -1075,6 +1075,9 @@ struct drm_format_modifier {
+>  	__u64 modifier;
+>  };
+>  
+> +#define DRM_MODE_CREATE_BLOB_WRITE_ONLY                                        \
+> +       (1 << 0) /* data of the blob can't be read by user space */
+> +
+>  /**
+>   * struct drm_mode_create_blob - Create New blob property
+>   *
+> @@ -1088,6 +1091,9 @@ struct drm_mode_create_blob {
+>  	__u32 length;
+>  	/** @blob_id: Return: new property ID. */
+>  	__u32 blob_id;
+> +	/** Flags for special handling. */
+> +       __u32 flags;
+> +       __u32 pad;
+>  };
+>  
+>  /**
+
+Have the changes to drm-uapi in a separate commit and state which
+kernel sha they're copied from. And actually copy, no hand editing.
+
+
+> diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
+> index 96aa6d8d..c130a432 100644
+> --- a/tests/kms_prop_blob.c
+> +++ b/tests/kms_prop_blob.c
+> @@ -75,6 +75,7 @@ validate_prop(int fd, uint32_t prop_id)
+>  {
+>  	struct drm_mode_get_blob get;
+>  	struct drm_mode_modeinfo ret_mode;
+> +	ret_mode.clock = 0;
+>  
+>  	get.blob_id = prop_id;
+>  	get.length = 0;
+> @@ -94,12 +95,13 @@ validate_prop(int fd, uint32_t prop_id)
+>  }
+>  
+>  static uint32_t
+> -create_prop(int fd)
+> +create_prop_with_flags(int fd, uint32_t flags)
+>  {
+>  	struct drm_mode_create_blob create;
+>  
+>  	create.length = sizeof(test_mode_valid);
+> -	create.data = (uintptr_t) &test_mode_valid;
+> +	create.data = (uintptr_t)&test_mode_valid;
+> +	create.flags = flags;
+>  
+>  	do_ioctl(fd, DRM_IOCTL_MODE_CREATEPROPBLOB, &create);
+
+How does this behave if the running kernel doesn't have flags support
+at all? Is that discoverable from userspace somehow?
+
+
+-- 
+Petri Latvala
+
+
+
+>  	igt_assert_neq_u32(create.blob_id, 0);
+> @@ -107,6 +109,12 @@ create_prop(int fd)
+>  	return create.blob_id;
+>  }
+>  
+> +static uint32_t
+> +create_prop(int fd)
 > +{
-> +	igt_output_t *output = data->output;
-> +	drmModeConnector *connector = output->config.connector;
-> +
-> +	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
-> +
-> +	for_each_connector_mode(output) {
-> +		igt_output_override_mode(output, &connector->modes[j__]);
-> +		igt_display_commit(&data->display);
-> +
-> +		if (!igt_check_output_bpc_equal(data->drm_fd, pipe,
-> +						data->output->name, bpc))
-> +			continue;
-> +
-> +		return true;
-> +	}
-> +
-> +	igt_output_override_mode(output, NULL);
-> +	return false;
+> +	return create_prop_with_flags(fd, 0);
 > +}
 > +
->   static void
->   prep_pipe(data_t *data, enum pipe p)
->   {
-> @@ -898,10 +920,9 @@ run_tests_for_pipe(data_t *data, enum pipe p)
->   			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
->   			igt_display_commit(&data->display);
->   
-> -			if (!igt_check_output_bpc_equal(data->drm_fd, p, output->name, 10)) {
-> -				igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
-> -				igt_fail_on_f(true, "Failed to set max_bpc as: 10\n");
-> -			}
-> +			if (is_i915_device(data->drm_fd) &&
-> +			    !i915_clock_constraint(data, p, 10))
-> +				continue;
->   
->   			igt_dynamic_f("gamma-%s", output->name) {
->   				ret = test_pipe_gamma(data, primary);
+>  static int
+>  destroy_prop(int fd, uint32_t prop_id)
+>  {
+> @@ -223,6 +231,29 @@ test_multiple(int fd)
+>  		igt_assert_eq(validate_prop(fd, prop_ids[i]), ENOENT);
+>  }
+>  
+> +/* Create 2 blobs, a write-only and a read-write blob.
+> +   The only difference is the flag.
+> +   Check that we can't read the value of the blob with the write-only flag.
+> +*/
+> +static void
+> +test_write_only(int fd) {
+> +	uint32_t rw_blob_id, wo_blob_id;
+> +	int wo_ret = 0;
+> +
+> +	rw_blob_id = create_prop_with_flags(fd, 0);
+> +	wo_blob_id = create_prop_with_flags(fd, DRM_MODE_CREATE_BLOB_WRITE_ONLY);
+> +
+> +	igt_assert_eq(validate_prop(fd, rw_blob_id), 0);
+> +
+> +	wo_ret = validate_prop(fd, wo_blob_id);
+> +	/* The correct length should be copied to the length field. */
+> +	igt_assert_neq(wo_ret, ENOMEM);
+> +	igt_assert_eq(wo_ret, EINVAL);
+> +
+> +	igt_assert_eq(destroy_prop(fd, rw_blob_id), 0);
+> +	igt_assert_eq(destroy_prop(fd, wo_blob_id), 0);
+> +}
+> +
+>  static void
+>  test_core(int fd)
+>  {
+> @@ -335,6 +366,10 @@ igt_main
+>  	igt_subtest("blob-multiple")
+>  		test_multiple(fd);
+>  
+> +	igt_describe("Test validates Write-only blobs can't be read back by user space.");
+> +	igt_subtest("blob-write-only")
+> +		test_write_only(fd);
+> +
+>  	prop_tests(fd);
+>  
+>  	igt_fixture
+> -- 
+> 2.36.1.124.g0e6072fb45-goog
+> 
