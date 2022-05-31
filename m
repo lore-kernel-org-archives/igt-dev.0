@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3672710F847
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Apr 2022 05:19:47 +0000 (UTC)
-From: "Sai Nandan, YedireswarapuX" <yedireswarapux.sai.nandan@intel.com>
-To: Jessica Zhang <quic_jesszhan@quicinc.com>
-Date: Fri, 22 Apr 2022 05:19:44 +0000
-Message-ID: <DM4PR11MB534232F448E6F1DF8E80D66CB3F79@DM4PR11MB5342.namprd11.prod.outlook.com>
-References: <20220421172858.263-1-quic_jesszhan@quicinc.com>
- <165057519298.10764.6605100681028658462@emeril.freedesktop.org>
- <eefee734-f4f1-d912-9ebb-fe4fc3940e1c@quicinc.com>
-In-Reply-To: <eefee734-f4f1-d912-9ebb-fe4fc3940e1c@quicinc.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D12EA10F698
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 10:39:46 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 31 May 2022 15:38:15 +0530
+Message-Id: <20220531100815.32431-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
- =?utf-8?q?eson=3A_Move_MSM-specific_tests_to_their_own_subdirectory_=28re?=
- =?utf-8?b?djUp?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: Move cleanup code to
+ fixture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,46 +17,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Vudum,
- Lakshminarayana" <lakshminarayana.vudum@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgSmVzc2ljYSwNCg0KSSBoYXZlIHJlLXJlcG9ydGVkIHRoZSBmYWlsdXJlLCBodHRwczovL3Bh
-dGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzEwMjg0NC8jcmV2NQ0KDQoNClRoYW5rcywN
-ClNhaSBOYW5kYW4NCg0KDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBKZXNz
-aWNhIFpoYW5nIDxxdWljX2plc3N6aGFuQHF1aWNpbmMuY29tPiANClNlbnQ6IEZyaWRheSwgQXBy
-aWwgMjIsIDIwMjIgNDoxNCBBTQ0KVG86IFNhaSBOYW5kYW4sIFllZGlyZXN3YXJhcHVYIDx5ZWRp
-cmVzd2FyYXB1eC5zYWkubmFuZGFuQGludGVsLmNvbT4NCkNjOiBpZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZw0KU3ViamVjdDogUmU6IOKclyBHaXRMYWIuUGlwZWxpbmU6IHdhcm5pbmcgZm9y
-IG1lc29uOiBNb3ZlIE1TTS1zcGVjaWZpYyB0ZXN0cyB0byB0aGVpciBvd24gc3ViZGlyZWN0b3J5
-IChyZXY1KQ0KDQpIaSBTYWksDQoNCkkndmUgbG9va2VkIG92ZXIgdGhpcyBmYWlsdXJlLCBidXQg
-aXQgZG9lc24ndCBzZWVtIHRvIGJlIHJlbGF0ZWQgdG8gbXkgY2hhbmdlLg0KDQpDYW4geW91IGhl
-bHAgdGFrZSBhIGxvb2s/DQoNClRoYW5rcywNCg0KSmVzc2ljYSBaaGFuZw0KDQpPbiA0LzIxLzIw
-MjIgMjowNiBQTSwgUGF0Y2h3b3JrIHdyb3RlOg0KPiA9PSBTZXJpZXMgRGV0YWlscyA9PQ0KPiAN
-Cj4gU2VyaWVzOiBtZXNvbjogTW92ZSBNU00tc3BlY2lmaWMgdGVzdHMgdG8gdGhlaXIgb3duIHN1
-YmRpcmVjdG9yeSAocmV2NSkNCj4gVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3Rv
-cC5vcmcvc2VyaWVzLzEwMjg0NC8NCj4gU3RhdGUgOiB3YXJuaW5nDQo+IA0KPiA9PSBTdW1tYXJ5
-ID09DQo+IA0KPiBQaXBlbGluZSBzdGF0dXM6IEZBSUxFRC4NCj4gDQo+IHNlZSBodHRwczovL2dp
-dGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vcGlwZWxpbmVzLzU2NjE3
-MiBmb3IgdGhlIG92ZXJ2aWV3Lg0KPiANCj4gdGVzdDpuaW5qYS10ZXN0LWFybTY0IGhhcyBmYWls
-ZWQgKGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9q
-b2JzLzIxNTkzNTQ3KToNCj4gICAgT2s6ICAgICAgICAgICAgICAgICAgIDIyDQo+ICAgIEV4cGVj
-dGVkIEZhaWw6ICAgICAgICAgMw0KPiAgICBGYWlsOiAgICAgICAgICAgICAgICAyODkNCj4gICAg
-VW5leHBlY3RlZCBQYXNzOiAgICAgICAwDQo+ICAgIFNraXBwZWQ6ICAgICAgICAgICAgICAgMA0K
-PiAgICBUaW1lb3V0OiAgICAgICAgICAgICAgIDANCj4gICAgDQo+ICAgIEZ1bGwgbG9nIHdyaXR0
-ZW4gdG8gL2J1aWxkcy9nZngtY2kvaWd0LWNpLXRhZ3MvYnVpbGQvbWVzb24tbG9ncy90ZXN0bG9n
-LnR4dA0KPiAgICBzZWN0aW9uX2VuZDoxNjUwNTc0OTg0OnN0ZXBfc2NyaXB0DQo+ICAgIHNlY3Rp
-b25fc3RhcnQ6MTY1MDU3NDk4NDp1cGxvYWRfYXJ0aWZhY3RzX29uX2ZhaWx1cmUNCj4gICAgVXBs
-b2FkaW5nIGFydGlmYWN0cyBmb3IgZmFpbGVkIGpvYg0KPiAgICBVcGxvYWRpbmcgYXJ0aWZhY3Rz
-Li4uDQo+ICAgIGJ1aWxkOiBmb3VuZCAxNzI1IG1hdGNoaW5nIGZpbGVzIGFuZCBkaXJlY3Rvcmll
-cw0KPiAgICBVcGxvYWRpbmcgYXJ0aWZhY3RzIGFzICJhcmNoaXZlIiB0byBjb29yZGluYXRvci4u
-LiAyMDEgQ3JlYXRlZCAgaWQ9MjE1OTM1NDcgcmVzcG9uc2VTdGF0dXM9MjAxIENyZWF0ZWQgdG9r
-ZW49UGVIeU50d2YNCj4gICAgc2VjdGlvbl9lbmQ6MTY1MDU3NDk5Nzp1cGxvYWRfYXJ0aWZhY3Rz
-X29uX2ZhaWx1cmUNCj4gICAgc2VjdGlvbl9zdGFydDoxNjUwNTc0OTk3OmNsZWFudXBfZmlsZV92
-YXJpYWJsZXMNCj4gICAgQ2xlYW5pbmcgdXAgcHJvamVjdCBkaXJlY3RvcnkgYW5kIGZpbGUgYmFz
-ZWQgdmFyaWFibGVzDQo+ICAgIHNlY3Rpb25fZW5kOjE2NTA1NzQ5OTg6Y2xlYW51cF9maWxlX3Zh
-cmlhYmxlcw0KPiAgICBFUlJPUjogSm9iIGZhaWxlZDogZXhpdCBjb2RlIDENCj4gDQo+ID09IExv
-Z3MgPT0NCj4gDQo+IEZvciBtb3JlIGRldGFpbHMgc2VlOiANCj4gaHR0cHM6Ly9naXRsYWIuZnJl
-ZWRlc2t0b3Aub3JnL2dmeC1jaS9pZ3QtY2ktdGFncy8tL3BpcGVsaW5lcy81NjYxNzINCg==
+When a subtest fails, it exits from the assert and does not run the
+cleanup part of the subtest. To avoid this, move the cleanup code to
+igt_fixture outside the subtest.
+
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/i915/kms_big_fb.c | 38 ++++++++++++++------------------------
+ 1 file changed, 14 insertions(+), 24 deletions(-)
+
+diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+index 7a850401..9d54f9c9 100644
+--- a/tests/i915/kms_big_fb.c
++++ b/tests/i915/kms_big_fb.c
+@@ -264,12 +264,6 @@ static void prep_fb(data_t *data)
+ 	generate_pattern(data, &data->big_fb, 640, 480);
+ }
+ 
+-static void cleanup_fb(data_t *data)
+-{
+-	igt_remove_fb(data->drm_fd, &data->big_fb);
+-	data->big_fb.fb_id = 0;
+-}
+-
+ static void set_c8_lut(data_t *data)
+ {
+ 	igt_pipe_t *pipe = &data->display.pipes[data->pipe];
+@@ -463,14 +457,6 @@ static bool test_pipe(data_t *data)
+ 	if (data->format == DRM_FORMAT_C8)
+ 		unset_lut(data);
+ 
+-	igt_pipe_crc_free(data->pipe_crc);
+-
+-	igt_output_set_pipe(data->output, PIPE_ANY);
+-
+-	igt_remove_fb(data->drm_fd, &data->small_fb);
+-
+-	intel_bb_destroy(data->ibb);
+-
+ 	return ret;
+ }
+ 
+@@ -563,14 +549,6 @@ max_hw_stride_async_flip_test(data_t *data)
+ 	}
+ 	igt_reset_timeout();
+ 
+-	igt_pipe_crc_free(data->pipe_crc);
+-	igt_output_set_pipe(data->output, PIPE_NONE);
+-	igt_remove_fb(data->drm_fd, &data->big_fb);
+-	igt_remove_fb(data->drm_fd, &data->big_fb_flip[0]);
+-	igt_remove_fb(data->drm_fd, &data->big_fb_flip[1]);
+-
+-	intel_bb_destroy(data->ibb);
+-
+ 	return true;
+ }
+ 
+@@ -773,6 +751,18 @@ set_max_hw_stride(data_t *data)
+ 	}
+ }
+ 
++static void test_cleanup(data_t *data)
++{
++	igt_pipe_crc_free(data->pipe_crc);
++	igt_output_set_pipe(data->output, PIPE_NONE);
++	igt_remove_fb(data->drm_fd, &data->big_fb);
++	igt_remove_fb(data->drm_fd, &data->big_fb_flip[0]);
++	igt_remove_fb(data->drm_fd, &data->big_fb_flip[1]);
++	igt_remove_fb(data->drm_fd, &data->small_fb);
++
++	intel_bb_destroy(data->ibb);
++}
++
+ static data_t data = {};
+ 
+ static const struct {
+@@ -918,7 +908,7 @@ igt_main
+ 			}
+ 
+ 			igt_fixture
+-				cleanup_fb(&data);
++				test_cleanup(&data);
+ 		}
+ 	}
+ 
+@@ -975,7 +965,7 @@ igt_main
+ 				}
+ 
+ 				igt_fixture
+-					cleanup_fb(&data);
++					test_cleanup(&data);
+ 			}
+ 		}
+ 	}
+-- 
+2.22.0
