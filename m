@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF31C10F6F7
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 22:14:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E12C910F6F7
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 22:14:56 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  janga.rahul.kumar@intel.com, sai.gowtham.ch@intel.com,
  Priyanka.Dandamudi@intel.com
-Date: Wed,  1 Jun 2022 03:45:24 +0530
-Message-Id: <20220531221526.1192064-1-janga.rahul.kumar@intel.com>
+Date: Wed,  1 Jun 2022 03:45:25 +0530
+Message-Id: <20220531221526.1192064-2-janga.rahul.kumar@intel.com>
+In-Reply-To: <20220531221526.1192064-1-janga.rahul.kumar@intel.com>
+References: <20220531221526.1192064-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 0/2] HAX add test description for gem_tiled_blits
+Subject: [igt-dev] [PATCH 1/2] tests/i915/gem_tiled_blits : Added subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,15 +27,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Add test description for gem_tiled_blits.
+Added test description to all the available subtests.
 
-Janga Rahul Kumar (2):
-  tests/i915/gem_tiled_blits : Added subtests description
-  HAX: don't do full run
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ tests/i915/gem_tiled_blits.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- tests/i915/gem_tiled_blits.c          |   3 +
- tests/intel-ci/fast-feedback.testlist | 185 +-------------------------
- 2 files changed, 4 insertions(+), 184 deletions(-)
-
+diff --git a/tests/i915/gem_tiled_blits.c b/tests/i915/gem_tiled_blits.c
+index d6c91e6f..680967d3 100644
+--- a/tests/i915/gem_tiled_blits.c
++++ b/tests/i915/gem_tiled_blits.c
+@@ -192,9 +192,11 @@ igt_main
+ 		count = (count + ncpus - 1) / ncpus;
+ 	}
+ 
++	igt_describe("Check basic functionality.");
+ 	igt_subtest("basic")
+ 		run_test(fd, 2);
+ 
++	igt_describe("Check with parallel execution.");
+ 	igt_subtest("normal") {
+ 		intel_allocator_multiprocess_start();
+ 		igt_fork(child, ncpus)
+@@ -203,6 +205,7 @@ igt_main
+ 		intel_allocator_multiprocess_stop();
+ 	}
+ 
++	igt_describe("Check with interrupts in parallel execution.");
+ 	igt_subtest("interruptible") {
+ 		intel_allocator_multiprocess_start();
+ 		igt_fork_signal_helper();
 -- 
 2.25.1
