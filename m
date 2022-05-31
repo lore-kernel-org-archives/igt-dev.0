@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D574E113339
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 14:29:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A935113334
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 14:29:44 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Tue, 31 May 2022 16:28:34 +0200
-Message-Id: <20220531142844.278366-4-ryszard.knop@intel.com>
+Date: Tue, 31 May 2022 16:28:35 +0200
+Message-Id: <20220531142844.278366-5-ryszard.knop@intel.com>
 In-Reply-To: <20220531142844.278366-1-ryszard.knop@intel.com>
 References: <20220531142844.278366-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 04/14] overlay: Remove unused headers
+Subject: [igt-dev] [PATCH i-g-t 05/14] runner: Remove unused headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,207 +29,101 @@ now gone.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- overlay/config.c          | 2 --
- overlay/gem-interrupts.c  | 1 -
- overlay/gpu-top.c         | 5 -----
- overlay/kms/kms-overlay.c | 2 --
- overlay/overlay.c         | 2 --
- overlay/power.c           | 3 ---
- overlay/rc6.c             | 1 -
- overlay/x11/dri2.c        | 1 -
- overlay/x11/position.c    | 3 ---
- overlay/x11/x11-overlay.c | 2 --
- overlay/x11/x11-window.c  | 2 --
- 11 files changed, 24 deletions(-)
+ runner/job_list.c          | 2 --
+ runner/resultgen.c         | 1 -
+ runner/results.c           | 2 --
+ runner/resume.c            | 2 --
+ runner/runner.c            | 1 -
+ runner/runner_json_tests.c | 1 -
+ runner/settings.c          | 1 -
+ 7 files changed, 10 deletions(-)
 
-diff --git a/overlay/config.c b/overlay/config.c
-index b6bd8dc3..30c6c1c7 100644
---- a/overlay/config.c
-+++ b/overlay/config.c
-@@ -22,7 +22,6 @@
-  *
-  */
- 
--#include <sys/types.h>
- #include <sys/stat.h>
- #include <sys/mman.h>
- #include <stdlib.h>
-@@ -31,7 +30,6 @@
+diff --git a/runner/job_list.c b/runner/job_list.c
+index 520a98da..3d6ef002 100644
+--- a/runner/job_list.c
++++ b/runner/job_list.c
+@@ -1,12 +1,10 @@
  #include <ctype.h>
- #include <unistd.h>
+ #include <errno.h>
  #include <fcntl.h>
--#include <errno.h>
+-#include <linux/limits.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/stat.h>
+-#include <sys/types.h>
+ #include <unistd.h>
  
- #include "overlay.h"
+ #include "job_list.h"
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 6ecf325b..1d92d303 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -5,7 +5,6 @@
+ #include <string.h>
+ #include <sys/mman.h>
+ #include <sys/stat.h>
+-#include <sys/types.h>
+ #include <unistd.h>
  
-diff --git a/overlay/gem-interrupts.c b/overlay/gem-interrupts.c
-index be73b693..d1de17db 100644
---- a/overlay/gem-interrupts.c
-+++ b/overlay/gem-interrupts.c
-@@ -22,7 +22,6 @@
-  *
-  */
- 
+ #include <json.h>
+diff --git a/runner/results.c b/runner/results.c
+index 3eb7cb15..31510a05 100644
+--- a/runner/results.c
++++ b/runner/results.c
+@@ -1,8 +1,6 @@
+ #include <fcntl.h>
+ #include <stdio.h>
+ #include <stdlib.h>
 -#include <sys/stat.h>
- #include <unistd.h>
- #include <fcntl.h>
- #include <errno.h>
-diff --git a/overlay/gpu-top.c b/overlay/gpu-top.c
-index 32123abd..c073df3f 100644
---- a/overlay/gpu-top.c
-+++ b/overlay/gpu-top.c
-@@ -23,13 +23,8 @@
-  */
- 
- #include <stdint.h>
--#include <stdlib.h>
--#include <stdio.h>
- #include <string.h>
- #include <unistd.h>
--#include <fcntl.h>
--#include <errno.h>
--#include <assert.h>
- 
- #include "igt_perf.h"
- 
-diff --git a/overlay/kms/kms-overlay.c b/overlay/kms/kms-overlay.c
-index cfb3d5ae..4c936c55 100644
---- a/overlay/kms/kms-overlay.c
-+++ b/overlay/kms/kms-overlay.c
-@@ -22,7 +22,6 @@
-  *
-  */
- 
 -#include <sys/types.h>
- #include <sys/mman.h>
- #include <cairo.h>
+ 
+ #include "resultgen.h"
+ 
+diff --git a/runner/resume.c b/runner/resume.c
+index eb8074e3..10cf253c 100644
+--- a/runner/resume.c
++++ b/runner/resume.c
+@@ -2,8 +2,6 @@
+ #include <fcntl.h>
  #include <stdio.h>
-@@ -38,7 +37,6 @@
- #include <xf86drmMode.h>
- #include <i915_drm.h>
- #include "../overlay.h"
--//#include "rgb2yuv.h"
+ #include <string.h>
+-#include <sys/stat.h>
+-#include <sys/types.h>
  
- #ifndef ALIGN
- #define ALIGN(i,m)	(((i) + (m) - 1) & ~((m) - 1))
-diff --git a/overlay/overlay.c b/overlay/overlay.c
-index fdc62091..dc36af1d 100644
---- a/overlay/overlay.c
-+++ b/overlay/overlay.c
-@@ -23,7 +23,6 @@
-  */
+ #include "settings.h"
+ #include "job_list.h"
+diff --git a/runner/runner.c b/runner/runner.c
+index 4855ad64..62c2671c 100644
+--- a/runner/runner.c
++++ b/runner/runner.c
+@@ -1,5 +1,4 @@
+ #include <stdio.h>
+-#include <string.h>
  
+ #include "settings.h"
+ #include "job_list.h"
+diff --git a/runner/runner_json_tests.c b/runner/runner_json_tests.c
+index 7253c906..6b94bc1e 100644
+--- a/runner/runner_json_tests.c
++++ b/runner/runner_json_tests.c
+@@ -1,5 +1,4 @@
  #include <sys/types.h>
--#include <sys/mman.h>
- #include <cairo.h>
+-#include <sys/stat.h>
+ #include <fcntl.h>
+ 
+ #include <json.h>
+diff --git a/runner/settings.c b/runner/settings.c
+index bb63a9f4..313a0c95 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -10,7 +10,6 @@
  #include <stdio.h>
  #include <stdlib.h>
-@@ -39,7 +38,6 @@
- 
- #include "overlay.h"
- #include "chart.h"
--#include "config.h"
- #include "cpu-top.h"
- #include "debugfs.h"
- #include "gem-interrupts.h"
-diff --git a/overlay/power.c b/overlay/power.c
-index 76fafea9..1027b28a 100644
---- a/overlay/power.c
-+++ b/overlay/power.c
-@@ -24,11 +24,9 @@
- 
- #include <stdint.h>
- #include <stdlib.h>
--#include <stdio.h>
  #include <string.h>
- #include <unistd.h>
- #include <fcntl.h>
--#include <time.h>
- #include <errno.h>
- #include <ctype.h>
- #include <locale.h>
-@@ -37,7 +35,6 @@
- #include "igt_perf.h"
- 
- #include "power.h"
--#include "debugfs.h"
- 
- static int
- filename_to_buf(const char *filename, char *buf, unsigned int bufsize)
-diff --git a/overlay/rc6.c b/overlay/rc6.c
-index 69f95f28..33553428 100644
---- a/overlay/rc6.c
-+++ b/overlay/rc6.c
-@@ -24,7 +24,6 @@
- 
- #include <sys/stat.h>
- #include <stdlib.h>
--#include <stdio.h>
- #include <string.h>
- #include <unistd.h>
- #include <fcntl.h>
-diff --git a/overlay/x11/dri2.c b/overlay/x11/dri2.c
-index 6c9e90d6..7459f31a 100644
---- a/overlay/x11/dri2.c
-+++ b/overlay/x11/dri2.c
-@@ -30,7 +30,6 @@
-  *   Kristian Høgsberg (krh@redhat.com)
-  */
- 
--#include <stdio.h>
- #include <X11/Xlibint.h>
- #include <X11/extensions/Xext.h>
- #include <X11/extensions/extutil.h>
-diff --git a/overlay/x11/position.c b/overlay/x11/position.c
-index 9e3db370..e18934d2 100644
---- a/overlay/x11/position.c
-+++ b/overlay/x11/position.c
-@@ -22,15 +22,12 @@
-  *
-  */
- 
--#include "config.h"
--
- #include <X11/Xlib.h>
- #ifdef HAVE_XRANDR
- #include <X11/extensions/Xrandr.h>
- #endif
- #include <string.h>
- #include <stdio.h>
--#include <stdlib.h>
- 
- #include "position.h"
- #include "../overlay.h"
-diff --git a/overlay/x11/x11-overlay.c b/overlay/x11/x11-overlay.c
-index ac6b5f39..f14fc2d9 100644
---- a/overlay/x11/x11-overlay.c
-+++ b/overlay/x11/x11-overlay.c
-@@ -24,10 +24,8 @@
- 
- #include <X11/Xlib.h>
- #include <X11/extensions/Xvlib.h>
 -#include <sys/types.h>
- #include <sys/mman.h>
- #include <cairo.h>
--#include <stdio.h>
- #include <stdlib.h>
- #include <stdbool.h>
- #include <string.h>
-diff --git a/overlay/x11/x11-window.c b/overlay/x11/x11-window.c
-index 6bdc48c2..3d2ed065 100644
---- a/overlay/x11/x11-window.c
-+++ b/overlay/x11/x11-window.c
-@@ -25,11 +25,9 @@
- #include <X11/Xlib.h>
- #include <cairo.h>
- #include <cairo-xlib.h>
--#include <stdio.h>
- #include <stdlib.h>
- #include <stdbool.h>
- #include <string.h>
--#include <unistd.h>
- 
- #include "../overlay.h"
- #include "position.h"
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #include <unistd.h>
 -- 
 2.36.1
