@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68BC210F58D
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 09:13:21 +0000 (UTC)
-Date: Tue, 31 May 2022 12:11:09 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Mark Yacoub <markyacoub@chromium.org>
-Message-ID: <YpXbrVsKbDWNPoEz@platvala-desk.ger.corp.intel.com>
-References: <20220525191801.2746592-1-markyacoub@chromium.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86CBC10F658
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 09:21:15 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 31 May 2022 14:19:28 +0530
+Message-Id: <20220531084929.28679-2-karthik.b.s@intel.com>
+In-Reply-To: <20220531084929.28679-1-karthik.b.s@intel.com>
+References: <20220531084929.28679-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220525191801.2746592-1-markyacoub@chromium.org>
-Subject: Re: [igt-dev] [PATCH] kms_prop_blob: Add new subtest for write-only
- blobs
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v7 1/2] tests/kms_async_flips: Convert tests
+ to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,152 +19,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 25, 2022 at 03:18:01PM -0400, Mark Yacoub wrote:
-> [Why]
-> Some blobs support secret data injected into the kernel that should be
-> retrieved back to user space (like HDCP key provisioned from a server
-> and injected to the kernel)
-> 
-> [How]
-> Create a blob using the write only flag and validate that the data it
-> holds can't be read again by the user space.
-> Compare this behavior against a blob created without the flag.
-> 
-> TEST=blob-write-only
-> TESTED-ON=Trogdor
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> ---
->  include/drm-uapi/drm_mode.h |  6 ++++++
->  tests/kms_prop_blob.c       | 39 +++++++++++++++++++++++++++++++++++--
->  2 files changed, 43 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-> index e4a2570a..38d6c1f0 100644
-> --- a/include/drm-uapi/drm_mode.h
-> +++ b/include/drm-uapi/drm_mode.h
-> @@ -1075,6 +1075,9 @@ struct drm_format_modifier {
->  	__u64 modifier;
->  };
->  
-> +#define DRM_MODE_CREATE_BLOB_WRITE_ONLY                                        \
-> +       (1 << 0) /* data of the blob can't be read by user space */
-> +
->  /**
->   * struct drm_mode_create_blob - Create New blob property
->   *
-> @@ -1088,6 +1091,9 @@ struct drm_mode_create_blob {
->  	__u32 length;
->  	/** @blob_id: Return: new property ID. */
->  	__u32 blob_id;
-> +	/** Flags for special handling. */
-> +       __u32 flags;
-> +       __u32 pad;
->  };
->  
->  /**
+Convert test to dynamic subtests at pipe-output level.
 
-Have the changes to drm-uapi in a separate commit and state which
-kernel sha they're copied from. And actually copy, no hand editing.
+Also, restrict the test to run with one output by default.
+Add support to run on all outputs using the extended flag.
 
+v2: -Get the mode after igt_display_reset() (Bhanu)
 
-> diff --git a/tests/kms_prop_blob.c b/tests/kms_prop_blob.c
-> index 96aa6d8d..c130a432 100644
-> --- a/tests/kms_prop_blob.c
-> +++ b/tests/kms_prop_blob.c
-> @@ -75,6 +75,7 @@ validate_prop(int fd, uint32_t prop_id)
->  {
->  	struct drm_mode_get_blob get;
->  	struct drm_mode_modeinfo ret_mode;
-> +	ret_mode.clock = 0;
->  
->  	get.blob_id = prop_id;
->  	get.length = 0;
-> @@ -94,12 +95,13 @@ validate_prop(int fd, uint32_t prop_id)
->  }
->  
->  static uint32_t
-> -create_prop(int fd)
-> +create_prop_with_flags(int fd, uint32_t flags)
->  {
->  	struct drm_mode_create_blob create;
->  
->  	create.length = sizeof(test_mode_valid);
-> -	create.data = (uintptr_t) &test_mode_valid;
-> +	create.data = (uintptr_t)&test_mode_valid;
-> +	create.flags = flags;
->  
->  	do_ioctl(fd, DRM_IOCTL_MODE_CREATEPROPBLOB, &create);
+v3: -Move patch to start of series to avoid code duplication (Bhanu)
+    -Use for_each_pipe() instead of for_each_pipe_static() (Bhanu)
 
-How does this behave if the running kernel doesn't have flags support
-at all? Is that discoverable from userspace somehow?
+v4: -Add helper to avoid code duplication (Andre)
 
+v5: -Add more details in the commit message (Kamil)
 
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_async_flips.c | 80 +++++++++++++++++++++++++++++++----------
+ 1 file changed, 62 insertions(+), 18 deletions(-)
+
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 1701883b..c9129bb0 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -51,6 +51,7 @@ typedef struct {
+ 	struct igt_fb bufs[4];
+ 	igt_display_t display;
+ 	drmModeConnectorPtr connector;
++	igt_output_t *output;
+ 	unsigned long flip_timestamp_us;
+ 	double flip_interval;
+ 	igt_pipe_crc_t *pipe_crc;
+@@ -58,6 +59,9 @@ typedef struct {
+ 	int flip_count;
+ 	int frame_count;
+ 	bool flip_pending;
++	bool extended;
++	enum pipe pipe;
++	bool alternate_sync_async;
+ } data_t;
+ 
+ static drmModeConnectorPtr find_connector_for_modeset(data_t *data)
+@@ -159,7 +163,7 @@ static void require_monotonic_timestamp(int fd)
+ 		      "Monotonic timestamps not supported\n");
+ }
+ 
+-static void test_async_flip(data_t *data, bool alternate_sync_async)
++static void test_async_flip(data_t *data)
+ {
+ 	int ret, frame;
+ 	long long int fps;
+@@ -172,7 +176,7 @@ static void test_async_flip(data_t *data, bool alternate_sync_async)
+ 	do {
+ 		int flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
+ 
+-		if (alternate_sync_async) {
++		if (data->alternate_sync_async) {
+ 			flags &= ~DRM_MODE_PAGE_FLIP_ASYNC;
+ 
+ 			ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+@@ -216,7 +220,7 @@ static void test_async_flip(data_t *data, bool alternate_sync_async)
+ 		gettimeofday(&end, NULL);
+ 		timersub(&end, &start, &diff);
+ 
+-		if (alternate_sync_async) {
++		if (data->alternate_sync_async) {
+ 			igt_assert_f(data->flip_interval < 1000.0 / (data->refresh_rate * MIN_FLIPS_PER_FRAME),
+ 				     "Flip interval not significantly smaller than vblank interval\n"
+ 				     "Flip interval: %lfms, Refresh Rate = %dHz, Threshold = %d\n",
+@@ -226,7 +230,7 @@ static void test_async_flip(data_t *data, bool alternate_sync_async)
+ 		frame++;
+ 	} while (diff.tv_sec < RUN_TIME);
+ 
+-	if (!alternate_sync_async) {
++	if (!data->alternate_sync_async) {
+ 		fps = frame * 1000 / RUN_TIME;
+ 		igt_assert_f((fps / 1000) > (data->refresh_rate * MIN_FLIPS_PER_FRAME),
+ 			     "FPS should be significantly higher than the refresh rate\n");
+@@ -540,9 +544,45 @@ static void test_crc(data_t *data)
+ 	igt_assert_lt(data->frame_count * 2, data->flip_count);
+ }
+ 
+-igt_main
++static void run_test(data_t *data, void (*test)(data_t *))
++{
++	igt_output_t *output;
++	enum pipe pipe;
++
++	for_each_pipe(&data->display, pipe) {
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
++				data->output = output;
++				data->pipe = pipe;
++				test(data);
++			}
++
++			if (!data->extended)
++				break;
++		}
++	}
++}
++
++static int opt_handler(int opt, int opt_index, void *_data)
++{
++	data_t *data = _data;
++
++	switch (opt) {
++	case 'e':
++		data->extended = true;
++		break;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++static const char help_str[] =
++	"  --e \t\tRun the extended tests\n";
++
++static data_t data;
++
++igt_main_args("e", NULL, help_str, opt_handler, &data)
+ {
+-	static data_t data;
+ 	int i;
+ 
+ 	igt_fixture {
+@@ -561,28 +601,32 @@ igt_main
+ 			test_init(&data);
+ 
+ 		igt_describe("Wait for page flip events in between successive asynchronous flips");
+-		igt_subtest("async-flip-with-page-flip-events")
+-			test_async_flip(&data, false);
++		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
++			data.alternate_sync_async = false;
++			run_test(&data, test_async_flip);
++		}
+ 
+ 		igt_describe("Alternate between sync and async flips");
+-		igt_subtest("alternate-sync-async-flip")
+-			test_async_flip(&data, true);
++		igt_subtest_with_dynamic("alternate-sync-async-flip") {
++			data.alternate_sync_async = true;
++			run_test(&data, test_async_flip);
++		}
+ 
+ 		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
+-		igt_subtest("test-time-stamp")
+-			test_timestamp(&data);
++		igt_subtest_with_dynamic("test-time-stamp")
++			run_test(&data, test_timestamp);
+ 
+ 		igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
+-		igt_subtest("test-cursor")
+-			test_cursor(&data);
++		igt_subtest_with_dynamic("test-cursor")
++			run_test(&data, test_cursor);
+ 
+ 		igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
+-		igt_subtest("invalid-async-flip")
+-			test_invalid(&data);
++		igt_subtest_with_dynamic("invalid-async-flip")
++			run_test(&data, test_invalid);
+ 
+ 		igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
+-		igt_subtest("crc")
+-			test_crc(&data);
++		igt_subtest_with_dynamic("crc")
++			run_test(&data, test_crc);
+ 
+ 		igt_fixture {
+ 			for (i = 0; i < ARRAY_SIZE(data.bufs); i++)
 -- 
-Petri Latvala
-
-
-
->  	igt_assert_neq_u32(create.blob_id, 0);
-> @@ -107,6 +109,12 @@ create_prop(int fd)
->  	return create.blob_id;
->  }
->  
-> +static uint32_t
-> +create_prop(int fd)
-> +{
-> +	return create_prop_with_flags(fd, 0);
-> +}
-> +
->  static int
->  destroy_prop(int fd, uint32_t prop_id)
->  {
-> @@ -223,6 +231,29 @@ test_multiple(int fd)
->  		igt_assert_eq(validate_prop(fd, prop_ids[i]), ENOENT);
->  }
->  
-> +/* Create 2 blobs, a write-only and a read-write blob.
-> +   The only difference is the flag.
-> +   Check that we can't read the value of the blob with the write-only flag.
-> +*/
-> +static void
-> +test_write_only(int fd) {
-> +	uint32_t rw_blob_id, wo_blob_id;
-> +	int wo_ret = 0;
-> +
-> +	rw_blob_id = create_prop_with_flags(fd, 0);
-> +	wo_blob_id = create_prop_with_flags(fd, DRM_MODE_CREATE_BLOB_WRITE_ONLY);
-> +
-> +	igt_assert_eq(validate_prop(fd, rw_blob_id), 0);
-> +
-> +	wo_ret = validate_prop(fd, wo_blob_id);
-> +	/* The correct length should be copied to the length field. */
-> +	igt_assert_neq(wo_ret, ENOMEM);
-> +	igt_assert_eq(wo_ret, EINVAL);
-> +
-> +	igt_assert_eq(destroy_prop(fd, rw_blob_id), 0);
-> +	igt_assert_eq(destroy_prop(fd, wo_blob_id), 0);
-> +}
-> +
->  static void
->  test_core(int fd)
->  {
-> @@ -335,6 +366,10 @@ igt_main
->  	igt_subtest("blob-multiple")
->  		test_multiple(fd);
->  
-> +	igt_describe("Test validates Write-only blobs can't be read back by user space.");
-> +	igt_subtest("blob-write-only")
-> +		test_write_only(fd);
-> +
->  	prop_tests(fd);
->  
->  	igt_fixture
-> -- 
-> 2.36.1.124.g0e6072fb45-goog
-> 
+2.22.0
