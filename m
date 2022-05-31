@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D12EA10F698
- for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 10:39:46 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABBA511288B
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 May 2022 10:57:30 +0000 (UTC)
+From: Karolina Drobnik <karolina.drobnik@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 31 May 2022 15:38:15 +0530
-Message-Id: <20220531100815.32431-1-karthik.b.s@intel.com>
+Date: Tue, 31 May 2022 12:56:54 +0200
+Message-Id: <20220531105654.1029576-1-karolina.drobnik@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: Move cleanup code to
- fixture
+Subject: [igt-dev] [PATCH i-g-t] tests/i915: Use correct type for gen
+ parameter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,98 +22,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When a subtest fails, it exits from the assert and does not run the
-cleanup part of the subtest. To avoid this, move the cleanup code to
-igt_fixture outside the subtest.
+intel_gen is designed to return a big unsigned number for an unknown device.
+The value is interpreted to be the newest generation possible, and the matching
+configuration is used. Some functions incorrectly pass the gen value as a signed
+number, meaning it becomes negative, and the oldest configuration is used
+instead of the newest one. This leads to GPU hangs in some cases.
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Update the definition of submit functions in gem_exec_gttfill and gem_softpin,
+and has_cs_timestamp in gem_ctx_engines to use a correct type for gen parameter.
+
+Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/kms_big_fb.c | 38 ++++++++++++++------------------------
- 1 file changed, 14 insertions(+), 24 deletions(-)
+ tests/i915/gem_ctx_engines.c  | 2 +-
+ tests/i915/gem_exec_gttfill.c | 2 +-
+ tests/i915/gem_softpin.c      | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index 7a850401..9d54f9c9 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -264,12 +264,6 @@ static void prep_fb(data_t *data)
- 	generate_pattern(data, &data->big_fb, 640, 480);
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index 19cf9b05..4b8e5145 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -437,7 +437,7 @@ static uint32_t read_result(int timeline, uint32_t *map, int idx)
+ 	return map[idx];
  }
  
--static void cleanup_fb(data_t *data)
--{
--	igt_remove_fb(data->drm_fd, &data->big_fb);
--	data->big_fb.fb_id = 0;
--}
--
- static void set_c8_lut(data_t *data)
+-static bool has_cs_timestamp(const struct intel_execution_engine2 *e, int gen)
++static bool has_cs_timestamp(const struct intel_execution_engine2 *e, unsigned int gen)
  {
- 	igt_pipe_t *pipe = &data->display.pipes[data->pipe];
-@@ -463,14 +457,6 @@ static bool test_pipe(data_t *data)
- 	if (data->format == DRM_FORMAT_C8)
- 		unset_lut(data);
- 
--	igt_pipe_crc_free(data->pipe_crc);
--
--	igt_output_set_pipe(data->output, PIPE_ANY);
--
--	igt_remove_fb(data->drm_fd, &data->small_fb);
--
--	intel_bb_destroy(data->ibb);
--
- 	return ret;
+ 	if (gen >= 7)
+ 		return true;
+diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
+index ebe6d2d3..037275f5 100644
+--- a/tests/i915/gem_exec_gttfill.c
++++ b/tests/i915/gem_exec_gttfill.c
+@@ -46,7 +46,7 @@ static void xchg_batch(void *array, unsigned int i, unsigned int j)
+ 	batches[j] = tmp;
  }
  
-@@ -563,14 +549,6 @@ max_hw_stride_async_flip_test(data_t *data)
- 	}
- 	igt_reset_timeout();
- 
--	igt_pipe_crc_free(data->pipe_crc);
--	igt_output_set_pipe(data->output, PIPE_NONE);
--	igt_remove_fb(data->drm_fd, &data->big_fb);
--	igt_remove_fb(data->drm_fd, &data->big_fb_flip[0]);
--	igt_remove_fb(data->drm_fd, &data->big_fb_flip[1]);
--
--	intel_bb_destroy(data->ibb);
--
- 	return true;
+-static void submit(int fd, uint64_t ahnd, int gen,
++static void submit(int fd, uint64_t ahnd, unsigned int gen,
+ 		   struct drm_i915_gem_execbuffer2 *eb,
+ 		   struct drm_i915_gem_relocation_entry *reloc,
+ 		   struct batch *batches, unsigned int count)
+diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+index 00912fd3..6c8b46f3 100644
+--- a/tests/i915/gem_softpin.c
++++ b/tests/i915/gem_softpin.c
+@@ -898,7 +898,7 @@ static void xchg_batch(void *array, unsigned int i, unsigned int j)
+ 	batches[j] = tmp;
  }
  
-@@ -773,6 +751,18 @@ set_max_hw_stride(data_t *data)
- 	}
- }
- 
-+static void test_cleanup(data_t *data)
-+{
-+	igt_pipe_crc_free(data->pipe_crc);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+	igt_remove_fb(data->drm_fd, &data->big_fb);
-+	igt_remove_fb(data->drm_fd, &data->big_fb_flip[0]);
-+	igt_remove_fb(data->drm_fd, &data->big_fb_flip[1]);
-+	igt_remove_fb(data->drm_fd, &data->small_fb);
-+
-+	intel_bb_destroy(data->ibb);
-+}
-+
- static data_t data = {};
- 
- static const struct {
-@@ -918,7 +908,7 @@ igt_main
- 			}
- 
- 			igt_fixture
--				cleanup_fb(&data);
-+				test_cleanup(&data);
- 		}
- 	}
- 
-@@ -975,7 +965,7 @@ igt_main
- 				}
- 
- 				igt_fixture
--					cleanup_fb(&data);
-+					test_cleanup(&data);
- 			}
- 		}
- 	}
+-static void submit(int fd, int gen,
++static void submit(int fd, unsigned int gen,
+ 		   struct drm_i915_gem_execbuffer2 *eb,
+ 		   struct batch *batches, unsigned int count,
+ 		   uint64_t ahnd)
 -- 
-2.22.0
+2.25.1
