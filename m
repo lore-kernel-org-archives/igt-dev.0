@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B359112BC6
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jun 2022 08:22:47 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1745112BC6
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jun 2022 08:22:45 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Thu,  2 Jun 2022 10:22:23 +0200
-Message-Id: <20220602082224.387953-3-ryszard.knop@intel.com>
+Date: Thu,  2 Jun 2022 10:22:24 +0200
+Message-Id: <20220602082224.387953-4-ryszard.knop@intel.com>
 In-Reply-To: <20220602082224.387953-1-ryszard.knop@intel.com>
 References: <20220602082224.387953-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] tests/kms_cursor_crc: Increase space
- for the resolution name
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/i915/gem_eio: Fix use after free
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,27 +22,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-While it's rather unlikely we'll ever get a name larger than 16 chars,
-GCC warns about possible truncation here. Let's just give it more space
-to silence the warning.
+ctx is freed right before that line, use dir instead.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- tests/kms_cursor_crc.c | 2 +-
+ tests/i915/gem_eio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 513c9715..e419fc9f 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -691,7 +691,7 @@ static void test_rapid_movement(data_t *data)
- static void run_size_tests(data_t *data, enum pipe pipe,
- 			   int w, int h)
- {
--	char name[16];
-+	char name[24];
+diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
+index 913a21f9..135217e2 100644
+--- a/tests/i915/gem_eio.c
++++ b/tests/i915/gem_eio.c
+@@ -273,7 +273,7 @@ static void hang_handler(union sigval arg)
+ 	free(ctx);
  
- 	if (w == 0 && h == 0)
- 		strcpy(name, "max-size");
+ 	/* flush any excess work before we start timing our reset */
+-	igt_assert(igt_sysfs_printf(ctx->debugfs, "i915_drop_caches",
++	igt_assert(igt_sysfs_printf(dir, "i915_drop_caches",
+ 				    "%d", DROP_RCU));
+ 
+ 	igt_nsec_elapsed(ts);
 -- 
 2.36.1
