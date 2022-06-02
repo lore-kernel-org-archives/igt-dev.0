@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1745112BC6
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jun 2022 08:22:45 +0000 (UTC)
-From: Ryszard Knop <ryszard.knop@intel.com>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Thu,  2 Jun 2022 10:22:24 +0200
-Message-Id: <20220602082224.387953-4-ryszard.knop@intel.com>
-In-Reply-To: <20220602082224.387953-1-ryszard.knop@intel.com>
-References: <20220602082224.387953-1-ryszard.knop@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A56C810E462
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jun 2022 09:19:39 +0000 (UTC)
+Message-ID: <837b4f3d-3e3b-aa8b-2df0-0d5faf90c989@intel.com>
+Date: Thu, 2 Jun 2022 14:49:27 +0530
+Content-Language: en-US
+To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220601190556.26532-1-jeevan.b@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20220601190556.26532-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] tests/i915/gem_eio: Fix use after free
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip: skip test if compatible
+ mode is not found
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,25 +25,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-ctx is freed right before that line, use dir instead.
+On 6/2/2022 12:35 AM, Jeevan B wrote:
+> skip test if the compatible mode is not found instead of
+> forcing the first connector mode on to the other connector.
+>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/kms_flip.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index 5985e012..c5b5741a 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -950,8 +950,7 @@ static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
+>   			}
+>   		}
+>   
+> -		/* hope for the best! */
+> -		*a = *b = c1->modes[0];
+> +		igt_skip("Compatible mode not found.\n");
+>   	}
+>   
+>   	return;
 
-Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
----
- tests/i915/gem_eio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-index 913a21f9..135217e2 100644
---- a/tests/i915/gem_eio.c
-+++ b/tests/i915/gem_eio.c
-@@ -273,7 +273,7 @@ static void hang_handler(union sigval arg)
- 	free(ctx);
- 
- 	/* flush any excess work before we start timing our reset */
--	igt_assert(igt_sysfs_printf(ctx->debugfs, "i915_drop_caches",
-+	igt_assert(igt_sysfs_printf(dir, "i915_drop_caches",
- 				    "%d", DROP_RCU));
- 
- 	igt_nsec_elapsed(ts);
--- 
-2.36.1
