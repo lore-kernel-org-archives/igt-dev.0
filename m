@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAD9F10E617
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 08:50:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B7E510E278
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 08:50:17 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Fri,  3 Jun 2022 10:49:54 +0200
-Message-Id: <20220603084958.35012-2-ryszard.knop@intel.com>
+Date: Fri,  3 Jun 2022 10:49:58 +0200
+Message-Id: <20220603084958.35012-6-ryszard.knop@intel.com>
 In-Reply-To: <20220603084958.35012-1-ryszard.knop@intel.com>
 References: <20220603084958.35012-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/5] lib/i915: Replace igt.h with individual
- header imports
+Subject: [igt-dev] [PATCH i-g-t 5/5] lib, tools: Misc cleanups and typo fixes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,119 +22,87 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Prevents pulling in unnecessary definitions in the library, tools etc.
-Also makes it easier and faster to automatically analyze library files.
-It's fine to use it in tests, benchmarks and the runner.
+A couple of small fixes for annoyances found while introducing the new
+build-time option.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- lib/i915/gem.c        |  6 ++++--
- lib/i915/gem_mman.h   |  1 +
- lib/i915/i915_blt.c   | 17 +++++++++++++++--
- lib/i915/i915_blt.h   |  7 ++++++-
- lib/i915/intel_mocs.c |  6 ++++--
- 5 files changed, 30 insertions(+), 7 deletions(-)
+ lib/igt.h         | 1 -
+ lib/igt_frame.h   | 2 --
+ lib/meson.build   | 6 +++---
+ tools/meson.build | 4 ++--
+ 4 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/lib/i915/gem.c b/lib/i915/gem.c
-index 27b872c2..bb5ee125 100644
---- a/lib/i915/gem.c
-+++ b/lib/i915/gem.c
-@@ -26,10 +26,12 @@
- #include <fcntl.h>
- #include <sys/ioctl.h>
- 
--#include "i915/gem.h"
--#include "igt.h"
-+#include "igt_dummyload.h"
+diff --git a/lib/igt.h b/lib/igt.h
+index 95f60881..6d0ce175 100644
+--- a/lib/igt.h
++++ b/lib/igt.h
+@@ -28,7 +28,6 @@
+ #include "i915_3d.h"
+ #include "igt_aux.h"
+ #include "igt_core.h"
+-#include "igt_core.h"
  #include "igt_debugfs.h"
-+#include "igt_params.h"
- #include "igt_sysfs.h"
-+#include "i915/gem.h"
-+#include "drmtest.h"
+ #include "igt_draw.h"
+ #include "igt_dummyload.h"
+diff --git a/lib/igt_frame.h b/lib/igt_frame.h
+index f44f57d7..5fd59edc 100644
+--- a/lib/igt_frame.h
++++ b/lib/igt_frame.h
+@@ -27,8 +27,6 @@
+ #ifndef IGT_FRAME_H
+ #define IGT_FRAME_H
  
- static void __restore_defaults(int engine)
- {
-diff --git a/lib/i915/gem_mman.h b/lib/i915/gem_mman.h
-index 5966ddb5..a5f12dee 100644
---- a/lib/i915/gem_mman.h
-+++ b/lib/i915/gem_mman.h
-@@ -26,6 +26,7 @@
- #define GEM_MMAN_H
+-#include "config.h"
+-
+ #include <stdbool.h>
  
- #include <stdint.h>
-+#include <stdbool.h>
+ bool igt_frame_dump_is_enabled(void);
+diff --git a/lib/meson.build b/lib/meson.build
+index a6dfc45a..3c51eab0 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -115,7 +115,7 @@ if libdrm_intel.found()
+ 	lib_deps += libdrm_intel
+ else
+ 	lib_sources += 'stubs/drm/intel_bufmgr.c'
+-	inc = [ inc, include_directories('stubs/drm') ]
++	inc += include_directories('stubs/drm')
+ endif
  
- void *gem_mmap__gtt(int fd, uint32_t handle, uint64_t size, unsigned prot);
- void *gem_mmap__cpu(int fd, uint32_t handle, uint64_t offset, uint64_t size, unsigned prot);
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-index d2d13a53..4e255f79 100644
---- a/lib/i915/i915_blt.c
-+++ b/lib/i915/i915_blt.c
-@@ -4,10 +4,23 @@
-  */
+ if libdrm_nouveau.found()
+@@ -191,12 +191,12 @@ lib_igt = declare_dependency(link_with : lib_igt_build,
  
- #include <malloc.h>
-+#include <string.h>
-+#include <inttypes.h>
-+
- #include <cairo.h>
--#include "igt.h"
--#include "gem_create.h"
-+
-+#include "igt_core.h"
-+#include "igt_aux.h"
-+
- #include "i915_blt.h"
-+#include "gem_mman.h"
-+#include "gem_create.h"
-+
-+#include "intel_reg.h"
-+#include "intel_chipset.h"
-+#include "ioctl_wrappers.h"
-+#include "intel_allocator.h"
-+#include "intel_memory_region.h"
+ igt_deps = [ lib_igt ] + lib_deps
  
- #define BITRANGE(start, end) (end - start + 1)
+-lin_igt_chipset_build = static_library('igt_chipset',
++lib_igt_chipset_build = static_library('igt_chipset',
+                                        ['intel_chipset.c',
+                                         'intel_device_info.c'],
+                                        include_directories : inc)
  
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-index e0e8b52b..2fe83900 100644
---- a/lib/i915/i915_blt.h
-+++ b/lib/i915/i915_blt.h
-@@ -42,11 +42,16 @@
-  */
+-lib_igt_chipset = declare_dependency(link_with : lin_igt_chipset_build,
++lib_igt_chipset = declare_dependency(link_with : lib_igt_chipset_build,
+                                      include_directories : inc)
  
- #include <errno.h>
-+#include <stdbool.h>
- #include <sys/ioctl.h>
- #include <sys/time.h>
- #include <malloc.h>
-+
- #include "drm.h"
--#include "igt.h"
-+
-+#include "intel_ctx.h"
-+#include "igt_gt.h"
-+
+ lib_igt_perf_build = static_library('igt_perf',
+diff --git a/tools/meson.build b/tools/meson.build
+index 106a7b04..95546b8a 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -1,11 +1,11 @@
+-tools_progs_noisnt = [
++tools_progs_noinstall = [
+ 	'cnl_compute_wrpll',
+ 	'hsw_compute_wrpll',
+ 	'skl_compute_wrpll',
+ 	'skl_ddb_allocation',
+ ]
  
- #define CCS_RATIO 256
- 
-diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
-index df541ab0..083ed67b 100644
---- a/lib/i915/intel_mocs.c
-+++ b/lib/i915/intel_mocs.c
-@@ -3,9 +3,11 @@
-  * Copyright © 2022 Intel Corporation
-  */
- 
--#include "igt.h"
--#include "i915/gem.h"
-+#include "i915_drm.h"
-+
-+#include "intel_chipset.h"
- #include "intel_mocs.h"
-+#include "i915/gem.h"
- 
- #define DG1_MOCS_UC_IDX				1
- #define DG1_MOCS_WB_IDX				5
+-foreach prog : tools_progs_noisnt
++foreach prog : tools_progs_noinstall
+ 	executable(prog, prog + '.c',
+ 			dependencies : igt_deps,
+ 			install : false)
 -- 
 2.36.1
