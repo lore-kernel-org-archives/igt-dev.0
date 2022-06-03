@@ -1,18 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 152FA10F183
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 11:08:46 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Jun 2022 13:08:28 +0200
-Message-Id: <20220603110828.37759-3-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220603110828.37759-1-zbigniew.kempczynski@intel.com>
-References: <20220603110828.37759-1-zbigniew.kempczynski@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C24C10EDEC
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 11:15:04 +0000 (UTC)
+Message-ID: <4ea98540-5e1f-adb4-14fd-c05941feddaf@intel.com>
+Date: Fri, 3 Jun 2022 16:44:47 +0530
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220601093956.8005-1-karthik.b.s@intel.com>
+ <20220601093956.8005-2-karthik.b.s@intel.com>
+ <95a9d385-b42e-7ce2-2184-902d318c648d@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <95a9d385-b42e-7ce2-2184-902d318c648d@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/api_intel_bb: Add crc32 checking
- test for DG2
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/kms_plane_lowres: Convert
+ test to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,104 +28,157 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add simple test which compares crc32 sums and calculation times on cpu
-and gpu.
+On 6/3/2022 9:55 AM, Modem, Bhanuprakash wrote:
+> On Wed-01-06-2022 03:09 pm, Karthik B S wrote:
+>> Covert the existing subtests to dynamic subtests at pipe/output level.
+>>
+>> v2: -Use array of structures to populate subtests to avoid code
+>>       duplication (Bhanu)
+>>      -Update subtest name (Bhanu)
+>>
+>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+>> ---
+>>   tests/kms_plane_lowres.c | 89 ++++++++++++++++++++++------------------
+>>   1 file changed, 49 insertions(+), 40 deletions(-)
+>>
+>> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+>> index 3f3f77c8..7149bf18 100644
+>> --- a/tests/kms_plane_lowres.c
+>> +++ b/tests/kms_plane_lowres.c
+>> @@ -256,30 +256,58 @@ test_planes_on_pipe(data_t *data, uint64_t 
+>> modifier)
+>>       igt_plane_t *plane;
+>>       unsigned tested = 0;
+>>   -    igt_require_pipe(&data->display, data->pipe);
+>> -    igt_display_require_output_on_pipe(&data->display, data->pipe);
+>> - igt_skip_on(!igt_display_has_format_mod(&data->display,
+>> -                        DRM_FORMAT_XRGB8888, modifier));
+>> +    for_each_plane_on_pipe(&data->display, data->pipe, plane)
+>> +        tested += test_planes_on_pipe_with_output(data, plane, 
+>> modifier);
+>>   -    data->output = igt_get_single_output_for_pipe(&data->display, 
+>> data->pipe);
+>> -    igt_require(data->output);
+>> +    igt_assert(tested > 0);
+>> +}
+>>   -    igt_info("Testing connector %s using pipe %s\n",
+>> -         igt_output_name(data->output), kmstest_pipe_name(data->pipe));
+>> +static void run_test(data_t *data, uint64_t modifier)
+>> +{
+>> +    enum pipe pipe;
+>> +    igt_output_t *output;
+>>   -    for_each_plane_on_pipe(&data->display, data->pipe, plane)
+>> -        tested += test_planes_on_pipe_with_output(data, plane, 
+>> modifier);
+>> + igt_skip_on(!igt_display_has_format_mod(&data->display,
+>> +                        DRM_FORMAT_XRGB8888, modifier));
+>>   -    igt_output_set_pipe(data->output, PIPE_NONE);
+>> -    igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>> +    for_each_pipe(&data->display, pipe) {
+>> +        for_each_valid_output_on_pipe(&data->display, pipe, output) {
+>> +            data->pipe = pipe;
+>> +            data->output = output;
+>>   -    igt_assert(tested > 0);
+>> +            igt_display_reset(&data->display);
+>> +            igt_output_set_pipe(data->output, data->pipe);
+>> +
+>> +            igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> data->output->name)
+>> +                test_planes_on_pipe(data, DRM_FORMAT_MOD_LINEAR);
+>
+> s/DRM_FORMAT_MOD_LINEAR/modifier/
 
-v2: convert to dynamic
+Will fix this.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/api_intel_bb.c | 64 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+>
+>> +        }
+>> +    }
+>>   }
+>>   +static const struct {
+>> +    const char *name;
+>> +    uint64_t modifier;
+>> +} subtests[] = {
+>> +    { .name = "tiling-none",
+>> +      .modifier = DRM_FORMAT_MOD_LINEAR,
+>> +    },
+>> +    { .name = "tiling-x",
+>> +      .modifier = I915_FORMAT_MOD_X_TILED,
+>> +    },
+>> +    { .name = "tiling-y",
+>> +      .modifier = I915_FORMAT_MOD_Y_TILED,
+>> +    },
+>> +    { .name = "tiling-yf",
+>> +      .modifier = I915_FORMAT_MOD_Yf_TILED,
+>> +    },
+>> +    { .name = "tiling-4",
+>> +      .modifier = I915_FORMAT_MOD_4_TILED,
+>> +    },
+>> +};
+>> +
+>>   igt_main
+>>   {
+>>       data_t data = {};
+>> -    enum pipe pipe;
+>>         igt_fixture {
+>>           data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>> @@ -293,33 +321,14 @@ igt_main
+>>           igt_require(data.display.is_atomic);
+>>       }
+>>   -    for_each_pipe_static(pipe) {
+>> -        data.pipe = pipe;
+>> -        igt_describe("Tests the visibility of the planes when 
+>> switching between "
+>> -                 "high and low resolution with tiling as none.");
+>> -        igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
+>> -            test_planes_on_pipe(&data, DRM_FORMAT_MOD_LINEAR);
+>> -
+>> -        igt_describe("Tests the visibility of the planes when 
+>> switching between "
+>> -                 "high and low resolution with x-tiling.");
+>> -        igt_subtest_f("pipe-%s-tiling-x", kmstest_pipe_name(pipe))
+>> -            test_planes_on_pipe(&data, I915_FORMAT_MOD_X_TILED);
+>> -
+>> -        igt_describe("Tests the visibility of the planes when 
+>> switching between "
+>> -                 "high and low resolution with y-tiling.");
+>> -        igt_subtest_f("pipe-%s-tiling-y", kmstest_pipe_name(pipe))
+>> -            test_planes_on_pipe(&data, I915_FORMAT_MOD_Y_TILED);
+>> -
+>> -        igt_describe("Tests the visibility of the planes when 
+>> switching between "
+>> -                 "high and low resolution with yf-tiling.");
+>> -        igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
+>> -            test_planes_on_pipe(&data, I915_FORMAT_MOD_Yf_TILED);
+>> -
+>> -        igt_subtest_f("pipe-%s-tiling-4", kmstest_pipe_name(pipe))
+>> -            test_planes_on_pipe(&data, I915_FORMAT_MOD_4_TILED);
+>> +    for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+>> +        igt_describe_f("Tests the visibility of the planes when 
+>> switching between "
+>> +                   "high and low resolution with %s", 
+>> subtests[i].name);
+>
+> Please add newline '\n'.
+Will add this.
+>
+>
+> With above changes, this patch is
+> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
-index 92f44cecf4..3d34c88bae 100644
---- a/tests/i915/api_intel_bb.c
-+++ b/tests/i915/api_intel_bb.c
-@@ -38,6 +38,7 @@
- #include <zlib.h>
- #include "intel_bufops.h"
- #include "i915/gem_vm.h"
-+#include "i915/i915_crc.h"
- 
- #define PAGE_SIZE 4096
- 
-@@ -1395,6 +1396,54 @@ static void render_ccs(struct buf_ops *bops)
- 	igt_assert_f(fails == 0, "render-ccs fails: %d\n", fails);
- }
- 
-+static double elapsed(const struct timeval *start,
-+		      const struct timeval *end)
-+{
-+	return (1e6*(end->tv_sec - start->tv_sec) + (end->tv_usec - start->tv_usec)) / 1e6;
-+}
-+
-+static void test_crc32(int i915, const intel_ctx_t *ctx,
-+		       const struct intel_execution_engine2 *e,
-+		       struct drm_i915_gem_memory_class_instance *r)
-+{
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
-+	uint32_t data, *ptr;
-+
-+	uint32_t region = INTEL_MEMORY_REGION_ID(r->memory_class,
-+						 r->memory_instance);
-+
-+	igt_info("[engine: %s, region: %s]\n", e->name,
-+		 region == REGION_SMEM ? "smem" : "lmem");
-+	for (int i = 12; i < 21; i++) {
-+		struct timeval start, end;
-+		uint64_t size = 1 << i;
-+		uint32_t cpu_crc, gpu_crc;
-+
-+		double cpu_time, gpu_time;
-+
-+		data = gem_create_in_memory_regions(i915, size, region);
-+		ptr = gem_mmap__device_coherent(i915, data, 0, size, PROT_WRITE);
-+		for (int j = 0; j < size / sizeof(*ptr); j++)
-+			ptr[j] = j;
-+
-+		gettimeofday(&start, NULL);
-+		cpu_crc = cpu_crc32(ptr, size);
-+		gettimeofday(&end, NULL);
-+		cpu_time = elapsed(&start, &end);
-+
-+		gettimeofday(&start, NULL);
-+		gpu_crc = i915_crc32(i915, ahnd, ctx, e, data, size);
-+		gettimeofday(&end, NULL);
-+		gpu_time = elapsed(&start, &end);
-+		igt_info("size: %10lld, cpu crc: 0x%08x (time: %.3f), "
-+				 "gpu crc: 0x%08x (time: %.3f) [ %s ]\n",
-+			 (long long) size, cpu_crc, cpu_time, gpu_crc, gpu_time,
-+			 cpu_crc == gpu_crc ? "EQUAL" : "DIFFERENT");
-+		munmap(ptr, size);
-+		gem_close(i915, data);
-+	}
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-@@ -1552,6 +1601,21 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- 	igt_subtest("render-ccs")
- 		render_ccs(bops);
- 
-+	igt_subtest_with_dynamic_f("crc32") {
-+		const intel_ctx_t *ctx;
-+		const struct intel_execution_engine2 *e;
-+
-+		igt_require(supports_gpu_crc32(i915));
-+
-+		ctx = intel_ctx_create_all_physical(i915);
-+		for_each_ctx_engine(i915, ctx, e) {
-+			for_each_memory_region(r, i915) {
-+				igt_dynamic_f("%s-%s", e->name, r->name)
-+					test_crc32(i915, ctx, e, &r->ci);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		buf_ops_destroy(bops);
- 		close(i915);
--- 
-2.32.0
+Thank you for the rb.
+
+Thanks,
+Karthik.B.S
+>
+> - Bhanu
+>
+>> +
+>> +        igt_subtest_with_dynamic(subtests[i].name)
+>> +            run_test(&data, subtests[i].modifier);
+>>       }
+>>   -    igt_fixture {
+>> +    igt_fixture
+>>           igt_display_fini(&data.display);
+>> -    }
+>>   }
+>
