@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 998091134C3
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 13:05:16 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 138991134A0
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 13:05:09 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Jun 2022 15:05:02 +0200
-Message-Id: <20220603130502.47049-3-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220603130502.47049-1-zbigniew.kempczynski@intel.com>
-References: <20220603130502.47049-1-zbigniew.kempczynski@intel.com>
+Date: Fri,  3 Jun 2022 15:05:00 +0200
+Message-Id: <20220603130502.47049-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/api_intel_bb: Add crc32 checking
- test for DG2
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add crc32 calculation on dg2 gpu
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,108 +21,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add simple test which compares crc32 sums and calculation times on cpu
-and gpu.
+Add crc32 calculation library on gpu (dg2).
 
-v2: convert to dynamic
-v3: add assert when cpu_crc != gpu_crc
+v2: use predication instead of cond_bbe with memory access.
+v3: migrate crc32 tables to separate file to avoid license clashes.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/api_intel_bb.c | 67 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+Zbigniew Kempczyński (2):
+  lib/i915_crc: Introduce crc32 on gpu for DG2
+  tests/api_intel_bb: Add crc32 checking test for DG2
 
-diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
-index 92f44cecf4..3213a1df75 100644
---- a/tests/i915/api_intel_bb.c
-+++ b/tests/i915/api_intel_bb.c
-@@ -38,6 +38,7 @@
- #include <zlib.h>
- #include "intel_bufops.h"
- #include "i915/gem_vm.h"
-+#include "i915/i915_crc.h"
- 
- #define PAGE_SIZE 4096
- 
-@@ -1395,6 +1396,57 @@ static void render_ccs(struct buf_ops *bops)
- 	igt_assert_f(fails == 0, "render-ccs fails: %d\n", fails);
- }
- 
-+static double elapsed(const struct timeval *start,
-+		      const struct timeval *end)
-+{
-+	return (1e6*(end->tv_sec - start->tv_sec) + (end->tv_usec - start->tv_usec)) / 1e6;
-+}
-+
-+static void test_crc32(int i915, const intel_ctx_t *ctx,
-+		       const struct intel_execution_engine2 *e,
-+		       struct drm_i915_gem_memory_class_instance *r)
-+{
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
-+	uint32_t data, *ptr;
-+
-+	uint32_t region = INTEL_MEMORY_REGION_ID(r->memory_class,
-+						 r->memory_instance);
-+
-+	igt_info("[engine: %s, region: %s]\n", e->name,
-+		 region == REGION_SMEM ? "smem" : "lmem");
-+	for (int i = 12; i < 21; i++) {
-+		struct timeval start, end;
-+		uint64_t size = 1 << i;
-+		uint32_t cpu_crc, gpu_crc;
-+
-+		double cpu_time, gpu_time;
-+
-+		data = gem_create_in_memory_regions(i915, size, region);
-+		ptr = gem_mmap__device_coherent(i915, data, 0, size, PROT_WRITE);
-+		for (int j = 0; j < size / sizeof(*ptr); j++)
-+			ptr[j] = j;
-+
-+		gettimeofday(&start, NULL);
-+		cpu_crc = cpu_crc32(ptr, size);
-+		gettimeofday(&end, NULL);
-+		cpu_time = elapsed(&start, &end);
-+
-+		gettimeofday(&start, NULL);
-+		gpu_crc = i915_crc32(i915, ahnd, ctx, e, data, size);
-+		gettimeofday(&end, NULL);
-+		gpu_time = elapsed(&start, &end);
-+		igt_info("size: %10lld, cpu crc: 0x%08x (time: %.3f), "
-+				 "gpu crc: 0x%08x (time: %.3f) [ %s ]\n",
-+			 (long long) size, cpu_crc, cpu_time, gpu_crc, gpu_time,
-+			 cpu_crc == gpu_crc ? "EQUAL" : "DIFFERENT");
-+		munmap(ptr, size);
-+		gem_close(i915, data);
-+		igt_assert(cpu_crc == gpu_crc);
-+	}
-+
-+	put_ahnd(ahnd);
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-@@ -1552,6 +1604,21 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- 	igt_subtest("render-ccs")
- 		render_ccs(bops);
- 
-+	igt_subtest_with_dynamic_f("crc32") {
-+		const intel_ctx_t *ctx;
-+		const struct intel_execution_engine2 *e;
-+
-+		igt_require(supports_gpu_crc32(i915));
-+
-+		ctx = intel_ctx_create_all_physical(i915);
-+		for_each_ctx_engine(i915, ctx, e) {
-+			for_each_memory_region(r, i915) {
-+				igt_dynamic_f("%s-%s", e->name, r->name)
-+					test_crc32(i915, ctx, e, &r->ci);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		buf_ops_destroy(bops);
- 		close(i915);
+ lib/i915/i915_crc.c         | 311 ++++++++++++++++++++++++++++++++++++
+ lib/i915/i915_crc.h         |  17 ++
+ lib/i915/i915_crc32_table.c | 105 ++++++++++++
+ lib/intel_reg.h             |   7 +
+ lib/meson.build             |   1 +
+ tests/i915/api_intel_bb.c   |  67 ++++++++
+ 6 files changed, 508 insertions(+)
+ create mode 100644 lib/i915/i915_crc.c
+ create mode 100644 lib/i915/i915_crc.h
+ create mode 100644 lib/i915/i915_crc32_table.c
+
 -- 
 2.32.0
