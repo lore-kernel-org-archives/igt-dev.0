@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39A54112CB9
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 16:30:49 +0000 (UTC)
-From: "Saarinen, Jani" <jani.saarinen@intel.com>
-To: "Latvala, Petri" <petri.latvala@intel.com>, Jessica Zhang
- <quic_jesszhan@quicinc.com>
-Date: Fri, 3 Jun 2022 16:30:43 +0000
-Message-ID: <DM8PR11MB56559D8E325B1236A9B22F06E0A19@DM8PR11MB5655.namprd11.prod.outlook.com>
-References: <20220517013712.135-1-quic_jesszhan@quicinc.com>
- <Yot/xA5+JWNv01da@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <Yot/xA5+JWNv01da@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============1323199735956404663=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4] lib/igt_kms: Set pipe->plane_primary
- to driver-assigned primary plane when there are multiple possible primary
- planes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik B S" <karthik.b.s@intel.com>
+Date: Fri, 03 Jun 2022 16:44:45 -0000
+Message-ID: <165427468567.17722.3322587343157968157@emeril.freedesktop.org>
+References: <20220603104725.9344-1-karthik.b.s@intel.com>
+In-Reply-To: <20220603104725.9344-1-karthik.b.s@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Flowres=3A_Test_Cleanup_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,299 +17,394 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "robdclark@chromium.org" <robdclark@chromium.org>,
- "quic_aravindh@quicinc.com" <quic_aravindh@quicinc.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Jessica, Petri
-This is now seems to cause regressions=20
+--===============1323199735956404663==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-See:
-https://gitlab.freedesktop.org/drm/intel/issues/6133
-https://gitlab.freedesktop.org/drm/intel/-/issues/6134
-https://gitlab.freedesktop.org/drm/intel/-/issues/6135
-https://gitlab.freedesktop.org/drm/intel/-/issues/6136
-https://gitlab.freedesktop.org/drm/intel/-/issues/6137
+== Series Details ==
 
-First seen at https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6496/git-log-one=
-line.txt
-58a5a2d5b lib/igt_kms: Set pipe->plane_primary to driver-assigned primary p=
-lane when there are multiple possible primary planes
-5b17cb8ea i915/gem_exec_gttfill: Added test description for test case.
-ab8bfe267 i915/gem_pipe_control_store_loop: added description for test case
-0e5b5c505 intel_gpu_top: Don't show client header if no kernel support
+Series: tests/kms_plane_lowres: Test Cleanup (rev2)
+URL   : https://patchwork.freedesktop.org/series/104602/
+State : success
 
-Please revert asap or fix accordingly...
+== Summary ==
 
-Br,
-Jani
+CI Bug Log - changes from CI_DRM_11726 -> IGTPW_7226
+====================================================
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Petri =
-Latvala
-> Sent: maanantai 23. toukokuuta 2022 15.36
-> To: Jessica Zhang <quic_jesszhan@quicinc.com>
-> Cc: igt-dev@lists.freedesktop.org; quic_aravindh@quicinc.com;
-> robdclark@chromium.org
-> Subject: Re: [igt-dev] [PATCH i-g-t v4] lib/igt_kms: Set pipe->plane_prim=
-ary to
-> driver-assigned primary plane when there are multiple possible primary pl=
-anes
->=20
-> On Mon, May 16, 2022 at 06:37:12PM -0700, Jessica Zhang wrote:
-> > Currently, IGT populates pipe->planes using possible_crtcs and assumes
-> > that the first primary plane it encounters is the one being actively
-> > used by the pipe.
-> >
-> > This is not always true in cases where there are multiple possible
-> > primary planes. This will cause problems whenever IGT calls
-> > drmModePageFlip since drmModePageFlip will use the primary plane
-> > assigned to the pipe by the driver to perform the page flip [1]. So a
-> > mismatch between the primary plane used by IGT and the driver can
-> > cause the page flip to fail.
-> >
-> > To fix this, let's implement a helper method to get the primary plane
-> > that's being assigned to the pipe by the driver. We can then call it
-> > during igt_display_require() and, if there's a mismatch between
-> > pipe->plane_primary and the assigned primary plane's index, we can
-> > pipe->swap
-> > the unused primary plane with the driver-assigned primary plane
-> >
-> > [1]
-> > https://gitlab.freedesktop.org/drm/msm/-/blob/msm-next/drivers/gpu/drm
-> > /drm_plane.c#L1234
-> >
-> > Changes since v1:
-> > - Instead of swapping the pointers of the planes within the array, we
-> >   can just change the value of pipe->plane_primary.
-> >
-> > Changes since v2:
-> > - Reverted `if (type =3D=3D DRM_PLANE_TYPE_PRIMARY)` conditional then a=
-dded
-> >   a nested if statement to increment num_primary_planes if plane type i=
-s
-> >   primary.
-> >
-> > Changes since v3:
-> > - Created helper method igt_pipe_has_valid_output and added a check for
-> >   if pipe has valid output before getting the output of a pipe to get
-> >   the assigned primary plane
-> > - Reverted back to using igt_swap to swap the order of the primary
-> >   planes within the pipe->planes array. Some kms_* tests use
-> >   igt_output_get_plane(output, 0) to get the primary plane, so this wil=
-l
-> >   avoid regressions in those tests.
-> > - Updated the plane->index of the primary planes that are being swapped=
-.
-> >
-> > Suggested-by: Rob Clark <robdclark@chromium.org>
-> > Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-> > ---
-> >  lib/igt_kms.c | 110 ++++++++++++++++++++++++++++++++++++++++++++++----
-> >  lib/igt_kms.h |   1 +
-> >  2 files changed, 103 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c index
-> > 7838ff283b62..a97e0b72d6cf 100644
-> > --- a/lib/igt_kms.c
-> > +++ b/lib/igt_kms.c
-> > @@ -751,6 +751,52 @@ igt_fill_pipe_props(igt_display_t *display, igt_pi=
-pe_t
-> *pipe,
-> >  	drmModeFreeObjectProperties(props);
-> >  }
-> >
-> > +static igt_plane_t *igt_get_assigned_primary(igt_output_t *output,
-> > +igt_pipe_t *pipe) {
-> > +	int drm_fd =3D output->display->drm_fd;
-> > +	drmModeModeInfo *mode;
-> > +	struct igt_fb fb;
-> > +	igt_plane_t *plane =3D NULL;
-> > +	uint32_t crtc_id;
-> > +	int i;
-> > +
-> > +	mode =3D igt_output_get_mode(output);
-> > +
-> > +	igt_create_color_fb(drm_fd, mode->hdisplay, mode->vdisplay,
-> > +						DRM_FORMAT_XRGB8888,
-> > +						DRM_FORMAT_MOD_LINEAR,
-> > +						1.0, 1.0, 1.0, &fb);
-> > +
-> > +	crtc_id =3D pipe->crtc_id;
-> > +
-> > +	/*
-> > +	 * Do a legacy SETCRTC to start things off, so that we know that
-> > +	 * the kernel will pick the correct primary plane and attach it
-> > +	 * to the CRTC. This lets us handle the case that there are
-> > +	 * multiple primary planes (one per CRTC), but which can *also*
-> > +	 * be attached to other CRTCs
-> > +	 */
-> > +	igt_assert(drmModeSetCrtc(output->display->drm_fd, crtc_id, fb.fb_id,
-> > +							  0, 0, &output->id, 1,
-> mode) =3D=3D 0);
-> > +
-> > +	for(i =3D 0; i < pipe->n_planes; i++) {
-> > +		if (pipe->planes[i].type !=3D DRM_PLANE_TYPE_PRIMARY)
-> > +			continue;
-> > +
-> > +		if (igt_plane_get_prop(&pipe->planes[i], IGT_PLANE_CRTC_ID) !=3D
-> crtc_id)
-> > +			continue;
-> > +
-> > +		plane =3D &pipe->planes[i];
-> > +		break;
-> > +	}
-> > +
-> > +	/* Removing the FB will also shut down the display for us: */
-> > +	igt_remove_fb(drm_fd, &fb);
-> > +	igt_assert_f(plane, "Valid assigned primary plane for CRTC_ID %d not
-> > +found.\n", crtc_id);
-> > +
-> > +	return plane;
-> > +}
-> > +
-> >  /**
-> >   * kmstest_pipe_name:
-> >   * @pipe: display pipe
-> > @@ -2150,6 +2196,18 @@ __get_crtc_mask_for_pipe(drmModeRes *resources,
-> igt_pipe_t *pipe)
-> >  	return (1 << offset);
-> >  }
-> >
-> > +static bool igt_pipe_has_valid_output(igt_display_t *display, enum
-> > +pipe pipe) {
-> > +	igt_output_t *output;
-> > +
-> > +	igt_require_pipe(display, pipe);
-> > +
-> > +	for_each_valid_output_on_pipe(display, pipe, output)
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
-> > +
-> >  /**
-> >   * igt_display_require:
-> >   * @display: a pointer to an #igt_display_t structure @@ -2272,6
-> > +2330,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
-> >  		pipe->plane_cursor =3D -1;
-> >  		pipe->plane_primary =3D -1;
-> >  		pipe->planes =3D NULL;
-> > +		pipe->num_primary_planes =3D 0;
-> >
-> >  		igt_fill_pipe_props(display, pipe, IGT_NUM_CRTC_PROPS,
-> > igt_crtc_prop_names);
-> >
-> > @@ -2306,12 +2365,20 @@ void igt_display_require(igt_display_t *display=
-, int
-> drm_fd)
-> >  				plane =3D &pipe->planes[0];
-> >  				plane->index =3D 0;
-> >  				pipe->plane_primary =3D 0;
-> > +				pipe->num_primary_planes++;
-> >  			} else if (type =3D=3D DRM_PLANE_TYPE_CURSOR && pipe-
-> >plane_cursor =3D=3D -1) {
-> >  				plane =3D &pipe->planes[last_plane];
-> >  				plane->index =3D last_plane;
-> >  				pipe->plane_cursor =3D last_plane;
-> >  				display->has_cursor_plane =3D true;
-> >  			} else {
-> > +				/*
-> > +				 * Increment num_primary_planes for any extra
-> > +				 * primary plane found.
-> > +				 */
-> > +				if (type =3D=3D DRM_PLANE_TYPE_PRIMARY)
-> > +					pipe->num_primary_planes++;
-> > +
-> >  				plane =3D &pipe->planes[p];
-> >  				plane->index =3D p++;
-> >  			}
-> > @@ -2392,6 +2459,39 @@ void igt_display_require(igt_display_t
-> > *display, int drm_fd)
-> >  out:
-> >  	LOG_UNINDENT(display);
-> >
-> > +	for_each_pipe(display, i) {
-> > +		igt_pipe_t *pipe =3D &display->pipes[i];
-> > +
-> > +		if (!igt_pipe_has_valid_output(display, i))
-> > +			continue;
-> > +
-> > +		igt_output_t *output =3D igt_get_single_output_for_pipe(display, i);
-> > +
-> > +		if (pipe->num_primary_planes > 1) {
-> > +			igt_plane_t *primary =3D &pipe->planes[pipe-
-> >plane_primary];
-> > +			igt_plane_t *assigned_primary =3D
-> igt_get_assigned_primary(output, pipe);
-> > +			int assigned_primary_index =3D assigned_primary->index;
-> > +
-> > +			/*
-> > +			 * If the driver-assigned primary plane isn't at the
-> > +			 * pipe->plane_primary index, swap it with the plane
-> > +			 * that's currently at the plane_primary index and
-> > +			 * update plane->index accordingly.
-> > +			 *
-> > +			 * This way, we can preserve pipe->plane_primary as 0
-> > +			 * so that tests that assume pipe->plane_primary is always
-> 0
-> > +			 * won't break.
-> > +			 */
-> > +			if (assigned_primary_index !=3D pipe->plane_primary) {
-> > +				assigned_primary->index =3D pipe->plane_primary;
-> > +				primary->index =3D assigned_primary_index;
-> > +
-> > +				igt_swap(pipe->planes[assigned_primary_index],
-> > +						pipe->planes[pipe-
-> >plane_primary]);
-> > +			}
-> > +		}
-> > +	}
-> > +
-> >  	if (display->n_pipes && display->n_outputs)
-> >  		igt_enable_connectors(drm_fd);
-> >  	else
-> > @@ -2438,14 +2538,8 @@ void igt_display_require_output(igt_display_t
-> *display)
-> >   */
-> >  void igt_display_require_output_on_pipe(igt_display_t *display, enum
-> > pipe pipe)  {
-> > -	igt_output_t *output;
-> > -
-> > -	igt_require_pipe(display, pipe);
-> > -
-> > -	for_each_valid_output_on_pipe(display, pipe, output)
-> > -		return;
-> > -
-> > -	igt_skip("No valid connector found on pipe %s\n",
-> kmstest_pipe_name(pipe));
-> > +	if (!igt_pipe_has_valid_output(display, pipe))
-> > +		igt_skip("No valid connector found on pipe %s\n",
-> > +kmstest_pipe_name(pipe));
-> >  }
-> >
-> >  /**
-> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h index
-> > e9ecd21e9824..4949b7b39e18 100644
-> > --- a/lib/igt_kms.h
-> > +++ b/lib/igt_kms.h
-> > @@ -383,6 +383,7 @@ struct igt_pipe {
-> >  	bool enabled;
-> >
-> >  	int n_planes;
-> > +	int num_primary_planes;
-> >  	int plane_cursor;
-> >  	int plane_primary;
-> >  	igt_plane_t *planes;
-> > --
-> > 2.31.0
-> >
->=20
->=20
-> The setcrtc dance is now only done when multiple primary planes are
-> detected, good.
->=20
-> Acked-by: Petri Latvala <petri.latvala@intel.com>
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/index.html
+
+Participating hosts (43 -> 45)
+------------------------------
+
+  Additional (3): bat-adln-1 fi-kbl-x1275 bat-atsm-1 
+  Missing    (1): bat-dg2-8 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7226:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {bat-adln-1}:       NOTRUN -> [DMESG-WARN][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/bat-adln-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - {bat-adln-1}:       NOTRUN -> [SKIP][2] +19 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/bat-adln-1/igt@kms_frontbuffer_tracking@basic.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7226 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-tgl-1115g4:      [PASS][5] -> [DMESG-FAIL][6] ([i915#3987])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11726/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-g3258:       [PASS][7] -> [INCOMPLETE][8] ([i915#4785])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11726/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [PASS][9] -> [DMESG-FAIL][10] ([i915#4528])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11726/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@kms_chamelium@dp-hpd-fast:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][11] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@kms_chamelium@dp-hpd-fast.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][12] ([fdo#109271] / [i915#533])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][13] ([fdo#109271]) +12 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-hsw-g3258:       NOTRUN -> [FAIL][14] ([fdo#109271] / [i915#4312])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-hsw-g3258/igt@runner@aborted.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-bdw-5557u:       [INCOMPLETE][15] ([i915#3921]) -> [INCOMPLETE][16] ([i915#3921] / [i915#6105])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11726/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#3987]: https://gitlab.freedesktop.org/drm/intel/issues/3987
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5874]: https://gitlab.freedesktop.org/drm/intel/issues/5874
+  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
+  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
+  [i915#6092]: https://gitlab.freedesktop.org/drm/intel/issues/6092
+  [i915#6093]: https://gitlab.freedesktop.org/drm/intel/issues/6093
+  [i915#6094]: https://gitlab.freedesktop.org/drm/intel/issues/6094
+  [i915#6099]: https://gitlab.freedesktop.org/drm/intel/issues/6099
+  [i915#6105]: https://gitlab.freedesktop.org/drm/intel/issues/6105
+  [i915#6133]: https://gitlab.freedesktop.org/drm/intel/issues/6133
+  [i915#6134]: https://gitlab.freedesktop.org/drm/intel/issues/6134
+  [i915#6135]: https://gitlab.freedesktop.org/drm/intel/issues/6135
+  [i915#6136]: https://gitlab.freedesktop.org/drm/intel/issues/6136
+  [i915#6137]: https://gitlab.freedesktop.org/drm/intel/issues/6137
+  [i915#6138]: https://gitlab.freedesktop.org/drm/intel/issues/6138
+  [i915#6166]: https://gitlab.freedesktop.org/drm/intel/issues/6166
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6505 -> IGTPW_7226
+
+  CI-20190529: 20190529
+  CI_DRM_11726: 74ea63ad8ffc71b8345436147517253dcabd4793 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7226: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/index.html
+  IGT_6505: edb1a467fb622b23b927e28ff603fa43851fea97 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_plane_lowres@tiling-4
++igt@kms_plane_lowres@tiling-none
++igt@kms_plane_lowres@tiling-x
++igt@kms_plane_lowres@tiling-y
++igt@kms_plane_lowres@tiling-yf
+-igt@kms_plane_lowres@pipe-a-tiling-4
+-igt@kms_plane_lowres@pipe-a-tiling-none
+-igt@kms_plane_lowres@pipe-a-tiling-x
+-igt@kms_plane_lowres@pipe-a-tiling-y
+-igt@kms_plane_lowres@pipe-a-tiling-yf
+-igt@kms_plane_lowres@pipe-b-tiling-4
+-igt@kms_plane_lowres@pipe-b-tiling-none
+-igt@kms_plane_lowres@pipe-b-tiling-x
+-igt@kms_plane_lowres@pipe-b-tiling-y
+-igt@kms_plane_lowres@pipe-b-tiling-yf
+-igt@kms_plane_lowres@pipe-c-tiling-4
+-igt@kms_plane_lowres@pipe-c-tiling-none
+-igt@kms_plane_lowres@pipe-c-tiling-x
+-igt@kms_plane_lowres@pipe-c-tiling-y
+-igt@kms_plane_lowres@pipe-c-tiling-yf
+-igt@kms_plane_lowres@pipe-d-tiling-4
+-igt@kms_plane_lowres@pipe-d-tiling-none
+-igt@kms_plane_lowres@pipe-d-tiling-x
+-igt@kms_plane_lowres@pipe-d-tiling-y
+-igt@kms_plane_lowres@pipe-d-tiling-yf
+-igt@kms_plane_lowres@pipe-e-tiling-4
+-igt@kms_plane_lowres@pipe-e-tiling-none
+-igt@kms_plane_lowres@pipe-e-tiling-x
+-igt@kms_plane_lowres@pipe-e-tiling-y
+-igt@kms_plane_lowres@pipe-e-tiling-yf
+-igt@kms_plane_lowres@pipe-f-tiling-4
+-igt@kms_plane_lowres@pipe-f-tiling-none
+-igt@kms_plane_lowres@pipe-f-tiling-x
+-igt@kms_plane_lowres@pipe-f-tiling-y
+-igt@kms_plane_lowres@pipe-f-tiling-yf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/index.html
+
+--===============1323199735956404663==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_lowres: Test Cleanup (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104602/">https://patchwork.freedesktop.org/series/104602/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11726 -&gt; IGTPW_7226</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/index.html</p>
+<h2>Participating hosts (43 -&gt; 45)</h2>
+<p>Additional (3): bat-adln-1 fi-kbl-x1275 bat-atsm-1 <br />
+  Missing    (1): bat-dg2-8 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7226:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>{bat-adln-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/bat-adln-1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>{bat-adln-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/bat-adln-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> +19 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7226 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11726/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-tgl-1115g4/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3987">i915#3987</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11726/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11726/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-hpd-fast:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-kbl-x1275/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +12 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11726/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/fi-bdw-5557u/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6105">i915#6105</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6505 -&gt; IGTPW_7226</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11726: 74ea63ad8ffc71b8345436147517253dcabd4793 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7226: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7226/index.html<br />
+  IGT_6505: edb1a467fb622b23b927e28ff603fa43851fea97 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_plane_lowres@tiling-4<br />
++igt@kms_plane_lowres@tiling-none<br />
++igt@kms_plane_lowres@tiling-x<br />
++igt@kms_plane_lowres@tiling-y<br />
++igt@kms_plane_lowres@tiling-yf<br />
+-igt@kms_plane_lowres@pipe-a-tiling-4<br />
+-igt@kms_plane_lowres@pipe-a-tiling-none<br />
+-igt@kms_plane_lowres@pipe-a-tiling-x<br />
+-igt@kms_plane_lowres@pipe-a-tiling-y<br />
+-igt@kms_plane_lowres@pipe-a-tiling-yf<br />
+-igt@kms_plane_lowres@pipe-b-tiling-4<br />
+-igt@kms_plane_lowres@pipe-b-tiling-none<br />
+-igt@kms_plane_lowres@pipe-b-tiling-x<br />
+-igt@kms_plane_lowres@pipe-b-tiling-y<br />
+-igt@kms_plane_lowres@pipe-b-tiling-yf<br />
+-igt@kms_plane_lowres@pipe-c-tiling-4<br />
+-igt@kms_plane_lowres@pipe-c-tiling-none<br />
+-igt@kms_plane_lowres@pipe-c-tiling-x<br />
+-igt@kms_plane_lowres@pipe-c-tiling-y<br />
+-igt@kms_plane_lowres@pipe-c-tiling-yf<br />
+-igt@kms_plane_lowres@pipe-d-tiling-4<br />
+-igt@kms_plane_lowres@pipe-d-tiling-none<br />
+-igt@kms_plane_lowres@pipe-d-tiling-x<br />
+-igt@kms_plane_lowres@pipe-d-tiling-y<br />
+-igt@kms_plane_lowres@pipe-d-tiling-yf<br />
+-igt@kms_plane_lowres@pipe-e-tiling-4<br />
+-igt@kms_plane_lowres@pipe-e-tiling-none<br />
+-igt@kms_plane_lowres@pipe-e-tiling-x<br />
+-igt@kms_plane_lowres@pipe-e-tiling-y<br />
+-igt@kms_plane_lowres@pipe-e-tiling-yf<br />
+-igt@kms_plane_lowres@pipe-f-tiling-4<br />
+-igt@kms_plane_lowres@pipe-f-tiling-none<br />
+-igt@kms_plane_lowres@pipe-f-tiling-x<br />
+-igt@kms_plane_lowres@pipe-f-tiling-y<br />
+-igt@kms_plane_lowres@pipe-f-tiling-yf</p>
+
+</body>
+</html>
+
+--===============1323199735956404663==--
