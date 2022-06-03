@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A5A210E71D
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 08:50:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 277E210E778
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jun 2022 08:50:15 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Fri,  3 Jun 2022 10:49:55 +0200
-Message-Id: <20220603084958.35012-3-ryszard.knop@intel.com>
+Date: Fri,  3 Jun 2022 10:49:56 +0200
+Message-Id: <20220603084958.35012-4-ryszard.knop@intel.com>
 In-Reply-To: <20220603084958.35012-1-ryszard.knop@intel.com>
 References: <20220603084958.35012-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/5] lib/igt*,
- lib/intel*: Replace igt.h with individual header imports
+Subject: [igt-dev] [PATCH i-g-t 3/5] tools,
+ lib: Replace igt.h with individual header imports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,215 +29,293 @@ It's fine to use it in tests, benchmarks and the runner.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- lib/igt_amd.c                    | 8 ++++++--
- lib/igt_amd.h                    | 3 ++-
- lib/igt_collection.c             | 3 ++-
- lib/igt_device.c                 | 9 +++++++--
- lib/igt_nouveau.c                | 2 +-
- lib/igt_syncobj.c                | 3 ++-
- lib/intel_allocator.c            | 9 ++++++++-
- lib/intel_allocator_msgchannel.c | 6 +++++-
- lib/intel_allocator_random.c     | 6 +++++-
- lib/intel_allocator_reloc.c      | 5 ++++-
- lib/intel_bufops.c               | 7 +++++--
- 11 files changed, 47 insertions(+), 14 deletions(-)
+ lib/nouveau/cea0b5.c              |  2 +-
+ lib/veboxcopy_gen12.c             |  2 +-
+ tools/amd_hdmi_compliance.c       |  4 +++-
+ tools/igt_compliance_utils.c      |  2 +-
+ tools/igt_dp_compliance_hotplug.c |  6 ++++--
+ tools/intel_dp_compliance.c       |  8 ++++++--
+ tools/intel_gem_info.c            |  4 +++-
+ tools/intel_guc_logger.c          |  3 ++-
+ tools/intel_gvtg_test.c           |  3 ++-
+ tools/intel_pm_rpm.c              |  8 +++++++-
+ tools/intel_reg.c                 | 14 ++++++++++----
+ tools/intel_residency.c           |  4 +++-
+ tools/lsgpu.c                     |  5 +++--
+ tools/msm_dp_compliance.c         |  4 +++-
+ 14 files changed, 49 insertions(+), 20 deletions(-)
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index bef9c193..74a180b1 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -23,10 +23,14 @@
- #include <fcntl.h>
- #include <sys/stat.h>
+diff --git a/lib/nouveau/cea0b5.c b/lib/nouveau/cea0b5.c
+index 2df80b05..6b0630af 100644
+--- a/lib/nouveau/cea0b5.c
++++ b/lib/nouveau/cea0b5.c
+@@ -22,7 +22,7 @@
  
-+#include <amdgpu_drm.h>
-+
-+#include "igt_core.h"
- #include "igt_amd.h"
+ #include <inttypes.h>
+ 
 -#include "igt.h"
-+#include "igt_kms.h"
- #include "igt_sysfs.h"
--#include <amdgpu_drm.h>
-+#include "igt_debugfs.h"
-+#include "drmtest.h"
++#include "igt_fb.h"
+ #include "igt_nouveau.h"
  
- #define X0 1
- #define X1 2
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 428bfe6f..901a19c7 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -24,8 +24,9 @@
- #define IGT_AMD_H
- 
- #include <stdint.h>
--#include "igt.h"
-+
- #include "igt_fb.h"
-+#include "igt_kms.h"
- #include "igt_psr.h"
- 
- /* Read & Write DSC parameters */
-diff --git a/lib/igt_collection.c b/lib/igt_collection.c
-index 35e09c89..1511ded9 100644
---- a/lib/igt_collection.c
-+++ b/lib/igt_collection.c
-@@ -21,7 +21,8 @@
+ #include "nouveau/nvif/push906f.h"
+diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
+index 38878e49..be6803f1 100644
+--- a/lib/veboxcopy_gen12.c
++++ b/lib/veboxcopy_gen12.c
+@@ -21,8 +21,8 @@
   * IN THE SOFTWARE.
   */
  
 -#include "igt.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
- #include "igt_collection.h"
+ #include "intel_aux_pgtable.h"
++#include "intel_chipset.h"
+ #include "veboxcopy.h"
  
- /**
-diff --git a/lib/igt_device.c b/lib/igt_device.c
-index 83ae7b21..526049a7 100644
---- a/lib/igt_device.c
-+++ b/lib/igt_device.c
-@@ -22,10 +22,15 @@
+ #define YCRCB_NORMAL	0
+diff --git a/tools/amd_hdmi_compliance.c b/tools/amd_hdmi_compliance.c
+index 1a759299..b70fbd1d 100644
+--- a/tools/amd_hdmi_compliance.c
++++ b/tools/amd_hdmi_compliance.c
+@@ -20,7 +20,9 @@
+  * OTHER DEALINGS IN THE SOFTWARE.
+  */
+ 
+-#include "igt.h"
++#include "igt_core.h"
++#include "igt_kms.h"
++#include "drmtest.h"
+ 
+ /* Common test data */
+ typedef struct data {
+diff --git a/tools/igt_compliance_utils.c b/tools/igt_compliance_utils.c
+index e206740d..d84bab8d 100644
+--- a/tools/igt_compliance_utils.c
++++ b/tools/igt_compliance_utils.c
+@@ -23,12 +23,12 @@
+  * IN THE SOFTWARE.
+  */
+ 
+-#include "igt.h"
+ #include <string.h>
+ #include <signal.h>
+ #include <termios.h>
+ #include <libgen.h>
+ 
++#include "igt_core.h"
+ #include "igt_dp_compliance.h"
+ 
+ static int tio_fd;
+diff --git a/tools/igt_dp_compliance_hotplug.c b/tools/igt_dp_compliance_hotplug.c
+index 3e0cf3d5..69229dd0 100644
+--- a/tools/igt_dp_compliance_hotplug.c
++++ b/tools/igt_dp_compliance_hotplug.c
+@@ -23,14 +23,16 @@
+  * IN THE SOFTWARE.
+  */
+ 
+-#include "igt.h"
+ #include <string.h>
+ #include <stdlib.h>
+ 
+ #include <sys/stat.h>
+ 
+-#include "igt_dp_compliance.h"
+ #include <libudev.h>
++
++#include "igt_core.h"
++#include "igt_dp_compliance.h"
++
+ static struct udev_monitor *uevent_monitor;
+ static struct udev *udev;
+ static GIOChannel *udevchannel;
+diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
+index 7390348f..f86ec369 100644
+--- a/tools/intel_dp_compliance.c
++++ b/tools/intel_dp_compliance.c
+@@ -106,8 +106,8 @@
+  * DRM modeset example
   *
   */
- #include <fcntl.h>
--
-+#include <errno.h>
- #include <sys/stat.h>
- #include <sys/sysmacros.h>
 -#include "igt.h"
+ #include <errno.h>
++#include <stdlib.h>
+ #include <getopt.h>
+ #include <stdint.h>
+ #include <stdbool.h>
+@@ -117,8 +117,12 @@
+ #include <fcntl.h>
+ 
+ #include "igt_dp_compliance.h"
++#include "igt_core.h"
++#include "igt_kms.h"
++#include "drmtest.h"
++#include "intel_chipset.h"
+ 
+-#include <stdlib.h>
++#include "i915/gem_mman.h"
+ 
+ /* User Input definitions */
+ #define HELP_DESCRIPTION 1
+diff --git a/tools/intel_gem_info.c b/tools/intel_gem_info.c
+index 3700d20e..0763d0e6 100644
+--- a/tools/intel_gem_info.c
++++ b/tools/intel_gem_info.c
+@@ -1,9 +1,11 @@
+-#include "igt.h"
+ #include <sys/ioctl.h>
+ #include <errno.h>
+ #include <signal.h>
 +
-+#include <pciaccess.h>
-+#include <xf86drm.h>
-+
+ #include <i915_drm.h>
+ 
++#include "igt_core.h"
++#include "drmtest.h"
+ 
+ int main(void)
+ {
+diff --git a/tools/intel_guc_logger.c b/tools/intel_guc_logger.c
+index ec76eb30..7fb8611b 100644
+--- a/tools/intel_guc_logger.c
++++ b/tools/intel_guc_logger.c
+@@ -36,7 +36,8 @@
+ #include <sys/mman.h>
+ #include <pthread.h>
+ 
+-#include "igt.h"
 +#include "igt_core.h"
 +#include "igt_debugfs.h"
- #include "igt_device.h"
- #include "igt_sysfs.h"
  
-diff --git a/lib/igt_nouveau.c b/lib/igt_nouveau.c
-index 0a1326e9..0a47dc52 100644
---- a/lib/igt_nouveau.c
-+++ b/lib/igt_nouveau.c
-@@ -27,7 +27,7 @@
- #include <nouveau/nouveau.h>
- #include <nouveau/nvif/class.h>
+ #define MB(x) ((uint64_t)(x) * 1024 * 1024)
+ #ifndef PAGE_SIZE
+diff --git a/tools/intel_gvtg_test.c b/tools/intel_gvtg_test.c
+index 4ede5f08..dac5e5b1 100644
+--- a/tools/intel_gvtg_test.c
++++ b/tools/intel_gvtg_test.c
+@@ -29,7 +29,6 @@
+  * Enable more GVT-g related test cases.
+  */
  
 -#include "igt.h"
-+#include "igt_fb.h"
- #include "igt_list.h"
- #include "igt_nouveau.h"
- 
-diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
-index a24ed10b..fe086e0f 100644
---- a/lib/igt_syncobj.c
-+++ b/lib/igt_syncobj.c
-@@ -24,8 +24,9 @@
  #include <errno.h>
- #include <xf86drm.h>
+ #include <getopt.h>
+ #include <strings.h>
+@@ -40,6 +39,8 @@
+ #include <pwd.h>
+ #include <dirent.h>
  
--#include "igt.h"
 +#include "igt_core.h"
- #include "igt_syncobj.h"
-+#include "ioctl_wrappers.h"
++
+ #define RANDOM(x) (rand() % x)
  
- /**
-  * SECTION:igt_syncobj
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index 717d7fc5..46417b83 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -12,11 +12,18 @@
- #include <signal.h>
+ 
+diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
+index 85ae115a..4851dc06 100644
+--- a/tools/intel_pm_rpm.c
++++ b/tools/intel_pm_rpm.c
+@@ -26,11 +26,17 @@
  #include <stdlib.h>
+ #include <string.h>
+ #include <stdbool.h>
+-#include "igt.h"
++
++#include "igt_core.h"
+ #include "igt_device.h"
+ #include "igt_device_scan.h"
++#include "igt_kms.h"
+ #include "igt_pm.h"
+ 
++#include "intel_chipset.h"
++
++#include <drm.h>
++
+ #define DONT_SET_AUTOSUSPEND_DELAY (1 << 0)
+ #define SET_I915_AUTOSUSPEND_DELAY (1 << 1)
+ 
+diff --git a/tools/intel_reg.c b/tools/intel_reg.c
+index 6ff34b4e..392d11a8 100644
+--- a/tools/intel_reg.c
++++ b/tools/intel_reg.c
+@@ -31,14 +31,20 @@
+ #include <sys/stat.h>
  #include <unistd.h>
--#include "igt.h"
-+#include <errno.h>
-+
- #include "igt_map.h"
-+#include "ioctl_wrappers.h"
-+
- #include "intel_allocator.h"
- #include "intel_allocator_msgchannel.h"
- 
-+#include "i915/gem_mman.h"
-+#include "i915/gem_context.h"
-+#include "i915/intel_memory_region.h"
-+
- //#define ALLOCDBG
- #ifdef ALLOCDBG
- #define alloc_info igt_info
-diff --git a/lib/intel_allocator_msgchannel.c b/lib/intel_allocator_msgchannel.c
-index d1f6486c..2a45bf80 100644
---- a/lib/intel_allocator_msgchannel.c
-+++ b/lib/intel_allocator_msgchannel.c
-@@ -6,8 +6,12 @@
- #include <sys/types.h>
- #include <sys/ipc.h>
- #include <sys/msg.h>
-+#include <stdbool.h>
-+#include <string.h>
-+#include <errno.h>
- #include <fcntl.h>
--#include "igt.h"
-+
-+#include "igt_core.h"
- #include "intel_allocator_msgchannel.h"
- 
- extern __thread pid_t child_tid;
-diff --git a/lib/intel_allocator_random.c b/lib/intel_allocator_random.c
-index 9ed92383..d0a59dd2 100644
---- a/lib/intel_allocator_random.c
-+++ b/lib/intel_allocator_random.c
-@@ -4,8 +4,12 @@
-  */
- 
- #include <stdlib.h>
--#include "igt.h"
-+#include <inttypes.h>
-+
-+#include "igt_aux.h"
- #include "igt_rand.h"
-+#include "drmtest.h"
-+#include "ioctl_wrappers.h"
- #include "intel_allocator.h"
- 
- struct intel_allocator *
-diff --git a/lib/intel_allocator_reloc.c b/lib/intel_allocator_reloc.c
-index bf4d9c43..4db8ae4b 100644
---- a/lib/intel_allocator_reloc.c
-+++ b/lib/intel_allocator_reloc.c
-@@ -4,8 +4,11 @@
-  */
- 
- #include <stdlib.h>
--#include "igt.h"
-+
-+#include "igt_aux.h"
- #include "igt_rand.h"
-+#include "drmtest.h"
-+#include "ioctl_wrappers.h"
- #include "intel_allocator.h"
- 
- struct intel_allocator *
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 05c0b0d4..00024bdc 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -25,10 +25,13 @@
- #include <sys/ioctl.h>
- #include <cairo.h>
  
 -#include "i915/gem_create.h"
 -#include "igt.h"
- #include "igt_x86.h"
- #include "intel_bufops.h"
-+#include "intel_chipset.h"
-+#include "ioctl_wrappers.h"
++#include "i915_drm.h"
 +
+ #include "igt_gt.h"
+-#include "intel_io.h"
+-#include "intel_chipset.h"
++#include "drmtest.h"
++#include "ioctl_wrappers.h"
+ 
++#include "intel_io.h"
++#include "intel_reg.h"
+ #include "intel_reg_spec.h"
++#include "intel_chipset.h"
+ 
 +#include "i915/gem_mman.h"
 +#include "i915/gem_create.h"
++#include "i915/gem_engine_topology.h"
  
+ #ifdef HAVE_SYS_IO_H
+ #include <sys/io.h>
+diff --git a/tools/intel_residency.c b/tools/intel_residency.c
+index 1d329e1f..cf46ed3e 100644
+--- a/tools/intel_residency.c
++++ b/tools/intel_residency.c
+@@ -32,7 +32,9 @@
+ #include <signal.h>
+ #include <time.h>
+ #include <getopt.h>
+-#include "igt.h"
++
++#include "igt_kms.h"
++#include "igt_draw.h"
+ 
+ #define IA32_TIME_STAMP_COUNTER		0x10
+ 
+diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+index fefb13be..4e7ac5da 100644
+--- a/tools/lsgpu.c
++++ b/tools/lsgpu.c
+@@ -22,12 +22,13 @@
+  *
+  */
+ 
+-#include "igt_device_scan.h"
+-#include "igt.h"
+ #include <string.h>
+ #include <signal.h>
+ #include <glib.h>
+ 
++#include "igt_device_scan.h"
++#include "igt_core.h"
++
  /**
-  * SECTION:intel_bufops
+  * SECTION:lsgpu
+  * @short_description: lsgpu
+diff --git a/tools/msm_dp_compliance.c b/tools/msm_dp_compliance.c
+index e7d4524e..9b11110c 100644
+--- a/tools/msm_dp_compliance.c
++++ b/tools/msm_dp_compliance.c
+@@ -107,7 +107,6 @@
+  * DRM modeset example
+  *
+  */
+-#include "igt.h"
+ #include <errno.h>
+ #include <getopt.h>
+ #include <stdint.h>
+@@ -117,6 +116,9 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ 
++#include "igt_core.h"
++#include "igt_kms.h"
++#include "drmtest.h"
+ #include "igt_dp_compliance.h"
+ 
+ #include <stdlib.h>
 -- 
 2.36.1
