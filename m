@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C99710F915
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jun 2022 09:05:17 +0000 (UTC)
-Received: by mail-lf1-x12d.google.com with SMTP id c2so2839523lfk.0
- for <igt-dev@lists.freedesktop.org>; Mon, 06 Jun 2022 02:05:17 -0700 (PDT)
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com
+ [IPv6:2a00:1450:4864:20::22d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FBAF10F915
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jun 2022 09:05:16 +0000 (UTC)
+Received: by mail-lj1-x22d.google.com with SMTP id y15so9653136ljc.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 06 Jun 2022 02:05:16 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  6 Jun 2022 12:05:11 +0300
-Message-Id: <20220606090511.26339-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220606090511.26339-1-juhapekka.heikkila@gmail.com>
-References: <20220606090511.26339-1-juhapekka.heikkila@gmail.com>
+Date: Mon,  6 Jun 2022 12:05:10 +0300
+Message-Id: <20220606090511.26339-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib/intel_chipset: restore usage of
- has_flatccs flag
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_ccs: Fix 4tiled rc ccs
+ and color clear tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,38 +24,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When older patches had been merged on top of newer patches
-has_flatccs flag usage had gotten lost, put it back here.
-While at it also set has_flatccs flag to take only one bit
-since it is of boolean type.
+4tiled rc ccs and color clear tests were testing wrong things
+because wrong modifier was used for choosing test path.
 
-CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_chipset.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tests/i915/kms_ccs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 815474086..de4749e14 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -41,7 +41,7 @@ struct intel_device_info {
- 	unsigned display_ver;
- 	unsigned gt; /* 0 if unknown */
- 	bool has_4tile : 1;
--	bool has_flatccs;
-+	bool has_flatccs : 1;
- 	bool is_mobile : 1;
- 	bool is_whitney : 1;
- 	bool is_almador : 1;
-@@ -221,7 +221,6 @@ void intel_check_pch(void);
+diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+index 39bf6d58b..4df611f77 100644
+--- a/tests/i915/kms_ccs.c
++++ b/tests/i915/kms_ccs.c
+@@ -161,7 +161,7 @@ create_fb_prepare_add(int drm_fd, int width, int height,
+ static bool is_ccs_cc_modifier(uint64_t modifier)
+ {
+ 	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
+-		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS;
++		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC;
+ }
  
- #define HAS_4TILE(devid)	(intel_get_device_info(devid)->has_4tile)
- 
--/* use HAS_4TILE here as all devices with 4-tile have flat ccs. */
--#define HAS_FLATCCS(devid)	HAS_4TILE(devid)
-+#define HAS_FLATCCS(devid)	(intel_get_device_info(devid)->has_flatccs)
- 
- #endif /* _INTEL_CHIPSET_H */
+ /*
 -- 
 2.28.0
