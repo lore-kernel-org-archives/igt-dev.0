@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65DAF1120EF
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 05:05:00 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Jun 2022 07:04:41 +0200
-Message-Id: <20220607050441.4479-5-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220607050441.4479-1-zbigniew.kempczynski@intel.com>
-References: <20220607050441.4479-1-zbigniew.kempczynski@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C87EA10ED8A
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jun 2022 07:55:24 +0000 (UTC)
+Date: Mon, 6 Jun 2022 10:51:07 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+Message-ID: <Yp2x61wwuFbKE5aZ@platvala-desk.ger.corp.intel.com>
+References: <20220520011226.24017-1-nidhi1.gupta@intel.com>
+ <20220520011226.24017-2-nidhi1.gupta@intel.com>
+ <YocvKicRCAmZY0aR@platvala-desk.ger.corp.intel.com>
+ <PH7PR11MB60063398DB84553A1CD21ADDC5A29@PH7PR11MB6006.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] tests/api_intel_bb: Add crc32 checking
- test for DG2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PH7PR11MB60063398DB84553A1CD21ADDC5A29@PH7PR11MB6006.namprd11.prod.outlook.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_invalid_mode : Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,118 +23,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add simple test which compares crc32 sums and calculation times on cpu
-and gpu.
+On Mon, Jun 06, 2022 at 08:36:08AM +0300, Gupta, Nidhi1 wrote:
+> Hi Petri,
+> 
+> Thanks for the review.
+> 
+> We are trying to convert all the tests in IGT into dynamic tests, for better reporting and get more data just from the name of the subtest to ease the debugging process.
+> 
+> Trying to do the same with this test, this test will be executed on every pipe with valid output.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/api_intel_bb.c | 69 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+Doing that for a test that doesn't even care about pipes is not
+achieving anything.
 
-diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
-index 92f44cecf4..13189c08a0 100644
---- a/tests/i915/api_intel_bb.c
-+++ b/tests/i915/api_intel_bb.c
-@@ -22,6 +22,7 @@
-  */
- 
- #include "igt.h"
-+#include "igt_crc.h"
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include <unistd.h>
-@@ -38,6 +39,7 @@
- #include <zlib.h>
- #include "intel_bufops.h"
- #include "i915/gem_vm.h"
-+#include "i915/i915_crc.h"
- 
- #define PAGE_SIZE 4096
- 
-@@ -1395,6 +1397,57 @@ static void render_ccs(struct buf_ops *bops)
- 	igt_assert_f(fails == 0, "render-ccs fails: %d\n", fails);
- }
- 
-+static double elapsed(const struct timeval *start,
-+		      const struct timeval *end)
-+{
-+	return (1e6*(end->tv_sec - start->tv_sec) + (end->tv_usec - start->tv_usec)) / 1e6;
-+}
-+
-+static void test_crc32(int i915, const intel_ctx_t *ctx,
-+		       const struct intel_execution_engine2 *e,
-+		       struct drm_i915_gem_memory_class_instance *r)
-+{
-+	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
-+	uint32_t data, *ptr;
-+
-+	uint32_t region = INTEL_MEMORY_REGION_ID(r->memory_class,
-+						 r->memory_instance);
-+
-+	igt_info("[engine: %s, region: %s]\n", e->name,
-+		 region == REGION_SMEM ? "smem" : "lmem");
-+	for (int i = 12; i < 21; i++) {
-+		struct timeval start, end;
-+		uint64_t size = 1 << i;
-+		uint32_t cpu_crc, gpu_crc;
-+
-+		double cpu_time, gpu_time;
-+
-+		data = gem_create_in_memory_regions(i915, size, region);
-+		ptr = gem_mmap__device_coherent(i915, data, 0, size, PROT_WRITE);
-+		for (int j = 0; j < size / sizeof(*ptr); j++)
-+			ptr[j] = j;
-+
-+		gettimeofday(&start, NULL);
-+		cpu_crc = igt_cpu_crc32(ptr, size);
-+		gettimeofday(&end, NULL);
-+		cpu_time = elapsed(&start, &end);
-+
-+		gettimeofday(&start, NULL);
-+		gpu_crc = i915_crc32(i915, ahnd, ctx, e, data, size);
-+		gettimeofday(&end, NULL);
-+		gpu_time = elapsed(&start, &end);
-+		igt_info("size: %10lld, cpu crc: 0x%08x (time: %.3f), "
-+				 "gpu crc: 0x%08x (time: %.3f) [ %s ]\n",
-+			 (long long) size, cpu_crc, cpu_time, gpu_crc, gpu_time,
-+			 cpu_crc == gpu_crc ? "EQUAL" : "DIFFERENT");
-+		munmap(ptr, size);
-+		gem_close(i915, data);
-+		igt_assert(cpu_crc == gpu_crc);
-+	}
-+
-+	put_ahnd(ahnd);
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-@@ -1552,6 +1605,22 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
- 	igt_subtest("render-ccs")
- 		render_ccs(bops);
- 
-+	igt_describe("Compare cpu and gpu crc32 sums on input object");
-+	igt_subtest_with_dynamic_f("crc32") {
-+		const intel_ctx_t *ctx;
-+		const struct intel_execution_engine2 *e;
-+
-+		igt_require(supports_i915_crc32(i915));
-+
-+		ctx = intel_ctx_create_all_physical(i915);
-+		for_each_ctx_engine(i915, ctx, e) {
-+			for_each_memory_region(r, i915) {
-+				igt_dynamic_f("%s-%s", e->name, r->name)
-+					test_crc32(i915, ctx, e, &r->ci);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		buf_ops_destroy(bops);
- 		close(i915);
+
 -- 
-2.32.0
+Petri Latvala
+
+
+
+> 
+> 
+> 
+> -----Original Message-----
+> From: Latvala, Petri <petri.latvala@intel.com>
+> Sent: Friday, May 20, 2022 11:33 AM
+> To: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+> Cc: igt-dev@lists.freedesktop.org
+> Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_invalid_mode : Convert tests to dynamic
+> 
+> On Fri, May 20, 2022 at 06:42:25AM +0530, Nidhi Gupta wrote:
+> > Modified kms_invalid_mode to include dynamic test cases for better
+> > reporting of the results.
+> >
+> > Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> > ---
+> >  tests/kms_invalid_mode.c | 19 ++++++++++++++-----
+> >  1 file changed, 14 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c index
+> > bb92a94e..bb524037 100644
+> > --- a/tests/kms_invalid_mode.c
+> > +++ b/tests/kms_invalid_mode.c
+> > @@ -296,8 +296,11 @@ static const struct {
+> >
+> >  static data_t data;
+> >
+> > -igt_main
+> > -{
+> > +igt_main {
+> > +
+> > +igt_output_t *output;
+> > +enum pipe pipe;
+> > +
+> >       igt_fixture {
+> >               data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> >
+> > @@ -312,9 +315,15 @@ igt_main
+> >       }
+> >
+> >       for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+> > -             igt_subtest(subtests[i].name) {
+> > -                     data.adjust_mode = subtests[i].adjust_mode;
+> > -                     test(&data);
+> > +             igt_subtest_with_dynamic(subtests[i].name) {
+> > +                     for_each_pipe(&data.display, pipe) {
+> > +                             for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> > +                                     igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+> > +                                             data.adjust_mode = subtests[i].adjust_mode;
+> > +                                             test(&data);
+> > +                                     }
+> > +                             }
+> 
+> What is the goal of this change? All this does is repeat the _same_ operations n number of times.
+> 
+> 
+> --
+> Petri Latvala
