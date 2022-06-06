@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E699B10F76A
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jun 2022 08:04:14 +0000 (UTC)
-Date: Mon, 6 Jun 2022 11:01:47 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Jessica Zhang <quic_jesszhan@quicinc.com>
-Message-ID: <Yp20a/lRcTpJQgus@platvala-desk.ger.corp.intel.com>
-References: <20220531220313.9537-1-quic_jesszhan@quicinc.com>
- <Ypiy61MS536or/rv@platvala-desk.ger.corp.intel.com>
- <6e243c6f-d771-72fb-0d6a-a60942e2c46b@quicinc.com>
- <Ypm1aKs8hCcacXdx@platvala-desk.ger.corp.intel.com>
- <f0f0e2cc-ac1b-cdbf-6829-5cb1b810ab82@quicinc.com>
+Date: Mon, 6 Jun 2022 10:06:21 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Yp21fUojunr++dhc@kamilkon-desk1>
+References: <20220603162552.2254187-1-John.C.Harrison@Intel.com>
+ <20220603162552.2254187-3-John.C.Harrison@Intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f0f0e2cc-ac1b-cdbf-6829-5cb1b810ab82@quicinc.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v1] tests/kms_pipe_crc_basic: Support
- custom CRC sources
+In-Reply-To: <20220603162552.2254187-3-John.C.Harrison@Intel.com>
+Subject: Re: [igt-dev] [PATCH v5 i-g-t 2/3] tests/i915/query: Add
+ descriptions to existing tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,156 +18,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, quic_aravindh@quicinc.com
+Cc: Intel-GFX@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 03, 2022 at 10:06:55AM -0700, Jessica Zhang wrote:
+On 2022-06-03 at 09:25:51 -0700, John.C.Harrison@Intel.com wrote:
+> From: John Harrison <John.C.Harrison@Intel.com>
 > 
+> None of the query tests had a description. So make some up.
 > 
-> On 6/3/2022 12:16 AM, Petri Latvala wrote:
-> > On Thu, Jun 02, 2022 at 01:41:16PM -0700, Jessica Zhang wrote:
-> > > 
-> > > 
-> > > On 6/2/2022 5:54 AM, Petri Latvala wrote:
-> > > > On Tue, May 31, 2022 at 03:03:13PM -0700, Jessica Zhang wrote:
-> > > > > Add a custom command line option that allows user to set a custom CRC
-> > > > > source. This will allow different drivers to test their own CRC sources
-> > > > > instead of just the "auto" option.
-> > > > > 
-> > > > > Example usage: `./kms_pipe_crc_basic -s intf`
-> > > > > 
-> > > > > Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-> > > > > ---
-> > > > >    tests/kms_pipe_crc_basic.c | 28 ++++++++++++++++++++++------
-> > > > >    1 file changed, 22 insertions(+), 6 deletions(-)
-> > > > 
-> > > > While this sounds useful, why only kms_pipe_crc_basic?
-> > > > 
-> > > > How about checking an environment variable in igt_pipe_crc_new*() and
-> > > > overriding the source string based on that, if the parameter is
-> > > > "auto"? That would bring this capability to other tests as well.
-> > > 
-> > > Hey Petri,
-> > > 
-> > > The intention of this patch is to have *a* way to validate the custom CRC
-> > > source. If we implement an environmental variable, we would have to run all
-> > > the CRC-related tests manually for validation.
-> > 
-> > What's the difference though? Between running
-> > 
-> > ./kms_pipe_crc_basic -s intf
-> > 
-> > vs.
-> > 
-> > IGT_OVERRIDE_CRC_METHOD=intf ./kms_pipe_crc_basic
-> > 
-> > 
-> > Or do you mean you want to first validate whether intf works for you
-> > at all?
+> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+> ---
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+>  tests/i915/i915_query.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> Yea, we added this patch mainly so we can do basic validation that the intf
-> driver code works.
-
-Even so a more generic method for selecting the crc method would be
-better, not just for one test. I'm sure this won't be the last time
-someone wants to create a new method and needs to test it.
-
-Consider selecting the crc method with an environment variable like
-above, or if a command line flag is better for you, add it for all
-tests in igt_core.c
-
-
-
--- 
-Petri Latvala
-
-
-
-
-
+> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+> index 246a979af72a..35a91d245ec1 100644
+> --- a/tests/i915/i915_query.c
+> +++ b/tests/i915/i915_query.c
+> @@ -923,34 +923,41 @@ igt_main
+>  		devid = intel_get_drm_devid(fd);
+>  	}
+>  
+> +	igt_describe("Test reponse to an invalid query call");
+>  	igt_subtest("query-garbage")
+>  		test_query_garbage(fd);
+>  
+> +	igt_describe("Test response to invalid DRM_I915_QUERY_TOPOLOGY_INFO query");
+>  	igt_subtest("query-topology-garbage-items") {
+>  		igt_require(query_topology_supported(fd));
+>  		test_query_topology_garbage_items(fd);
+>  	}
+>  
+> +	igt_describe("Guardband test for DRM_I915_QUERY_TOPOLOGY_INFO query");
+>  	igt_subtest("query-topology-kernel-writes") {
+>  		igt_require(query_topology_supported(fd));
+>  		test_query_topology_kernel_writes(fd);
+>  	}
+>  
+> +	igt_describe("Verify DRM_I915_QUERY_TOPOLOGY_INFO query fails when it is not supported");
+>  	igt_subtest("query-topology-unsupported") {
+>  		igt_require(!query_topology_supported(fd));
+>  		test_query_topology_unsupported(fd);
+>  	}
+>  
+> +	igt_describe("Compare new DRM_I915_QUERY_TOPOLOGY_INFO query with legacy (sub)slice getparams");
+>  	igt_subtest("query-topology-coherent-slice-mask") {
+>  		igt_require(query_topology_supported(fd));
+>  		test_query_topology_coherent_slice_mask(fd);
+>  	}
+>  
+> +	igt_describe("More compare new DRM_I915_QUERY_TOPOLOGY_INFO query with legacy (sub)slice getparams");
+>  	igt_subtest("query-topology-matches-eu-total") {
+>  		igt_require(query_topology_supported(fd));
+>  		test_query_topology_matches_eu_total(fd);
+>  	}
+>  
+> +	igt_describe("Verify DRM_I915_QUERY_TOPOLOGY_INFO query against hardcoded known values for certain platforms");
+>  	igt_subtest("query-topology-known-pci-ids") {
+>  		igt_require(query_topology_supported(fd));
+>  		igt_require(IS_HASWELL(devid) || IS_BROADWELL(devid) ||
+> @@ -959,16 +966,19 @@ igt_main
+>  		test_query_topology_known_pci_ids(fd, devid);
+>  	}
+>  
+> +	igt_describe("Test DRM_I915_QUERY_GEOMETRY_SUBSLICES query");
+>  	igt_subtest("test-query-geometry-subslices") {
+>  		igt_require(query_geometry_subslices_supported(fd));
+>  		test_query_geometry_subslices(fd);
+>  	}
+>  
+> +	igt_describe("Dodgy returned data tests for DRM_I915_QUERY_MEMORY_REGIONS");
+>  	igt_subtest("query-regions-garbage-items") {
+>  		igt_require(query_regions_supported(fd));
+>  		test_query_regions_garbage_items(fd);
+>  	}
+>  
+> +	igt_describe("Basic tests for DRM_I915_QUERY_MEMORY_REGIONS");
+>  	igt_subtest("query-regions-sanity-check") {
+>  		igt_require(query_regions_supported(fd));
+>  		test_query_regions_sanity_check(fd);
+> @@ -979,9 +989,11 @@ igt_main
+>  			igt_require(query_engine_info_supported(fd));
+>  		}
+>  
+> +		igt_describe("Negative tests for DRM_I915_QUERY_ENGINE_INFO");
+>  		igt_subtest("engine-info-invalid")
+>  			engines_invalid(fd);
+>  
+> +		igt_describe("Positive tests for DRM_I915_QUERY_ENGINE_INFO");
+>  		igt_subtest("engine-info")
+>  			engines(fd);
+>  	}
+> -- 
+> 2.36.0
 > 
-> Thanks,
-> 
-> Jessica Zhang
-> 
-> > 
-> > -- 
-> > Petri Latvala
-> > 
-> > 
-> > 
-> > > 
-> > > Thanks,
-> > > 
-> > > Jessica Zhang
-> > > 
-> > > > 
-> > > > 
-> > > > -- 
-> > > > Petri Latvala
-> > > > 
-> > > > 
-> > > > > 
-> > > > > diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> > > > > index 0861c46dbd9b..6a593aec4c6c 100644
-> > > > > --- a/tests/kms_pipe_crc_basic.c
-> > > > > +++ b/tests/kms_pipe_crc_basic.c
-> > > > > @@ -36,6 +36,7 @@ typedef struct {
-> > > > >    	int debugfs;
-> > > > >    	igt_display_t display;
-> > > > >    	struct igt_fb fb;
-> > > > > +	char *crc_source;
-> > > > >    } data_t;
-> > > > >    static struct {
-> > > > > @@ -104,7 +105,7 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
-> > > > >    		if (flags & TEST_NONBLOCK) {
-> > > > >    			igt_pipe_crc_t *pipe_crc;
-> > > > > -			pipe_crc = igt_pipe_crc_new_nonblock(data->drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-> > > > > +			pipe_crc = igt_pipe_crc_new_nonblock(data->drm_fd, pipe, data->crc_source);
-> > > > >    			igt_wait_for_vblank(data->drm_fd, display->pipes[pipe].crtc_offset);
-> > > > >    			igt_pipe_crc_start(pipe_crc);
-> > > > > @@ -119,7 +120,7 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
-> > > > >    		} else {
-> > > > >    			igt_pipe_crc_t *pipe_crc;
-> > > > > -			pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-> > > > > +			pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, data->crc_source);
-> > > > >    			igt_pipe_crc_start(pipe_crc);
-> > > > >    			n_crcs = igt_pipe_crc_get_crcs(pipe_crc, N_CRCS, &crcs);
-> > > > > @@ -202,8 +203,7 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
-> > > > >    	igt_plane_set_fb(primary, &fb0);
-> > > > >    	igt_display_commit(display);
-> > > > > -	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
-> > > > > -				    INTEL_PIPE_CRC_SOURCE_AUTO);
-> > > > > +	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, data->crc_source);
-> > > > >    	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
-> > > > >    	/* Flip FB1 with the Primary plane & compare the CRC with ref CRC. */
-> > > > > @@ -265,9 +265,25 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe)
-> > > > >    	igt_remove_fb(data->drm_fd, &data->fb);
-> > > > >    }
-> > > > > -data_t data = {0, };
-> > > > > +data_t data = {0, .crc_source = "auto"};
-> > > > > -igt_main
-> > > > > +static int opt_handler(int opt, int opt_index, void *_data)
-> > > > > +{
-> > > > > +	switch (opt) {
-> > > > > +	case 's':
-> > > > > +		data.crc_source = optarg;
-> > > > > +		igt_debug("Setting CRC source to %s\n", data.crc_source);
-> > > > > +		break;
-> > > > > +	}
-> > > > > +
-> > > > > +	return IGT_OPT_HANDLER_SUCCESS;
-> > > > > +}
-> > > > > +
-> > > > > +static const char help_str[] =
-> > > > > +	"  -s\tPass in a custom source for crc test (default is \"auto\")\n";
-> > > > > +
-> > > > > +
-> > > > > +igt_main_args("s:", NULL, help_str, opt_handler, NULL)
-> > > > >    {
-> > > > >    	enum pipe pipe;
-> > > > > -- 
-> > > > > 2.31.0
-> > > > > 
