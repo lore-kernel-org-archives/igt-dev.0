@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E65AF1126AB
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jun 2022 05:36:12 +0000 (UTC)
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Date: Mon, 6 Jun 2022 05:36:08 +0000
-Message-ID: <PH7PR11MB60063398DB84553A1CD21ADDC5A29@PH7PR11MB6006.namprd11.prod.outlook.com>
-References: <20220520011226.24017-1-nidhi1.gupta@intel.com>
- <20220520011226.24017-2-nidhi1.gupta@intel.com>
- <YocvKicRCAmZY0aR@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YocvKicRCAmZY0aR@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D204910F64D
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jun 2022 06:26:50 +0000 (UTC)
+Date: Mon, 6 Jun 2022 08:26:38 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Message-ID: <Yp2eHrFJPrLHX4vR@zkempczy-mobl2>
+References: <20220603075325.16381-1-zbigniew.kempczynski@intel.com>
+ <20220603075325.16381-3-zbigniew.kempczynski@intel.com>
+ <YpoiBpC8L9thG7DU@kamilkon-desk1>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_invalid_mode : Convert tests to
- dynamic
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YpoiBpC8L9thG7DU@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_exec_schedule:
+ Execute spinner in valid context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,79 +24,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Petri,
+On Fri, Jun 03, 2022 at 05:00:22PM +0200, Kamil Konieczny wrote:
+> Hi Zbigniew,
+> 
+> On 2022-06-03 at 09:53:25 +0200, Zbigniew Kempczyński wrote:
+> > Running spinner in default context is not correct because it can
+> > contain less engines than spinner expect. Fix this by setting
+> > two contexts with identical set of engines.
+> > 
+> > Fixes: semaphore-noskip and u-semaphore-noskip
+> 
+> Please add here what did you changed in v2.
+> 
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  tests/i915/gem_exec_schedule.c | 21 ++++++++++++---------
+> >  1 file changed, 12 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+> > index 43d9d06c09..db3637e88a 100644
+> > --- a/tests/i915/gem_exec_schedule.c
+> > +++ b/tests/i915/gem_exec_schedule.c
+> > @@ -1200,16 +1200,17 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
+> >  {
+> >  	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+> >  	const struct intel_execution_engine2 *outer, *inner;
+> > -	const intel_ctx_t *ctx;
+> > +	const intel_ctx_t *ctx0, *ctx1;
+> >  	uint64_t ahnd;
+> >  
+> >  	igt_require(gen >= 6); /* MI_STORE_DWORD_IMM convenience */
+> >  
+> > -	ctx = intel_ctx_create(i915, cfg);
+> > -	ahnd = get_reloc_ahnd(i915, ctx->id);
+> > +	ctx0 = intel_ctx_create(i915, cfg);
+> > +	ctx1 = intel_ctx_create(i915, cfg);
+> > +	ahnd = get_reloc_ahnd(i915, ctx0->id);
+> >  
+> > -	for_each_ctx_engine(i915, ctx, outer) {
+> > -	for_each_ctx_engine(i915, ctx, inner) {
+> > +	for_each_ctx_engine(i915, ctx0, outer) {
+> > +	for_each_ctx_engine(i915, ctx0, inner) {
+> 
+> I do not quite understand the difference here between old code,
+> maybe in second for_each use ctx1, inner ?
 
-Thanks for the review.
+Take a look how this test looked like at b0789992cefc3b08fb5fd891522a116b367c3963.
 
-We are trying to convert all the tests in IGT into dynamic tests, for bette=
-r reporting and get more data just from the name of the subtest to ease the=
- debugging process.
+> 
+> >  		struct drm_i915_gem_exec_object2 obj[3];
+> >  		struct drm_i915_gem_execbuffer2 eb;
+> >  		uint32_t handle, *cs, *map;
+> > @@ -1219,10 +1220,10 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
+> >  		    !gem_class_can_store_dword(i915, inner->class))
+> >  			continue;
+> >  
+> > -		chain = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+> > +		chain = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx0,
+> >  				       .engine = outer->flags, .flags = flags);
+> >  
+> > -		spin = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
+> > +		spin = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx0,
+> >  				      .engine = inner->flags, .flags = flags);
+> >  		igt_spin_end(spin); /* we just want its address for later */
+> >  		gem_sync(i915, spin->handle);
+> > @@ -1256,7 +1257,7 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
+> >  		memset(&eb, 0, sizeof(eb));
+> >  		eb.buffer_count = 3;
+> >  		eb.buffers_ptr = to_user_pointer(obj);
+> > -		eb.rsvd1 = ctx->id;
+> > +		eb.rsvd1 = ctx1->id;
+> 
+> Here is the only use of ctx1, and then:
+> 
+> >  		eb.flags = inner->flags;
+> 
+> You use flags from ctx0 here ? (see above comment on for_each)
 
-Trying to do the same with this test, this test will be executed on every p=
-ipe with valid output.
+In this test most important is two context have same engines. In former version of
+test we got engine clone ioctl(), here we just create two contexts with same 
+engine set. Doesn't matter you'll choose ctx0 or ctx1 for for_each_ctx_engine(),
+you'll iterate over same set.
 
+Before intel_ctx_t times, test created new context with engines cloned from default
+context. Right now default context use is limited and for this test we need to create
+two contexts which engine pattern comes from 'cfg'.
 
+In original code 'chain' + 'spin' were executed in default context, same as last
+execbuf spinner. In cloned context only spinner which is in code starting at comment
 
------Original Message-----
-From: Latvala, Petri <petri.latvala@intel.com>=20
-Sent: Friday, May 20, 2022 11:33 AM
-To: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_invalid_mode : Convert tests t=
-o dynamic
+/* port0: implicit semaphore from engine */
 
-On Fri, May 20, 2022 at 06:42:25AM +0530, Nidhi Gupta wrote:
-> Modified kms_invalid_mode to include dynamic test cases for better=20
-> reporting of the results.
->=20
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->  tests/kms_invalid_mode.c | 19 ++++++++++++++-----
->  1 file changed, 14 insertions(+), 5 deletions(-)
->=20
-> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c index=20
-> bb92a94e..bb524037 100644
-> --- a/tests/kms_invalid_mode.c
-> +++ b/tests/kms_invalid_mode.c
-> @@ -296,8 +296,11 @@ static const struct {
-> =20
->  static data_t data;
-> =20
-> -igt_main
-> -{
-> +igt_main {
-> +
-> +igt_output_t *output;
-> +enum pipe pipe;
-> +
->  	igt_fixture {
->  		data.drm_fd =3D drm_open_driver_master(DRIVER_ANY);
-> =20
-> @@ -312,9 +315,15 @@ igt_main
->  	}
-> =20
->  	for (int i =3D 0; i < ARRAY_SIZE(subtests); i++) {
-> -		igt_subtest(subtests[i].name) {
-> -			data.adjust_mode =3D subtests[i].adjust_mode;
-> -			test(&data);
-> +		igt_subtest_with_dynamic(subtests[i].name) {
-> +			for_each_pipe(&data.display, pipe) {
-> +				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) =
-{
-> +						data.adjust_mode =3D subtests[i].adjust_mode;
-> +						test(&data);
-> +					}
-> +				}
-
-What is the goal of this change? All this does is repeat the _same_ operati=
-ons n number of times.
-
+was started in cloned context.
 
 --
-Petri Latvala
+Zbigniew
+
+> 
+> Regards,
+> Kamil
+> 
+> >  		gem_execbuf(i915, &eb);
+> >  
+> > @@ -1269,6 +1270,7 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
+> >  		eb.buffer_count = 2;
+> >  		eb.buffers_ptr = to_user_pointer(obj);
+> >  		eb.flags = inner->flags;
+> > +		eb.rsvd1 = ctx0->id;
+> >  		gem_execbuf(i915, &eb);
+> >  
+> >  		igt_spin_set_timeout(chain, NSEC_PER_SEC / 100);
+> > @@ -1280,7 +1282,8 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
+> >  	}
+> >  	}
+> >  
+> > -	intel_ctx_destroy(i915, ctx);
+> > +	intel_ctx_destroy(i915, ctx0);
+> > +	intel_ctx_destroy(i915, ctx1);
+> >  	put_ahnd(ahnd);
+> >  }
+> >  
+> > -- 
+> > 2.32.0
+> > 
