@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C68112B143
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 08:32:11 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23A5812B148
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 08:32:18 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Jun 2022 10:31:59 +0200
-Message-Id: <20220607083201.116570-2-zbigniew.kempczynski@intel.com>
+Date: Tue,  7 Jun 2022 10:32:01 +0200
+Message-Id: <20220607083201.116570-4-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220607083201.116570-1-zbigniew.kempczynski@intel.com>
 References: <20220607083201.116570-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] tests/i915/gem_exec_schedule: Run
- spinner in non-default context
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/i915/gem_exec_schedule: Add 48b
+ address flag in store-dword
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,64 +24,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Engine passed to the subtest comes from configuration which is build
-on top of all-physical-engines context. Add dedicated context for
-the spinner which is compatibile with this engine.
+On discrete detected default alignment may be bigger than single page
+so it is likely we enter offsets > 32b. To avoid getting -EINVAL adding
+flag EXEC_OBJECT_SUPPORTS_48B_ADDRESS is now necessary.
 
-Fixes: pi-shared-iova and pi-distinct-iova
+Fixes: deep, smoketest, smoketest-all
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/gem_exec_schedule.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/i915/gem_exec_schedule.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index cf2625cbf5..43d9d06c09 100644
+index db3637e88a..6c11e92af4 100644
 --- a/tests/i915/gem_exec_schedule.c
 +++ b/tests/i915/gem_exec_schedule.c
-@@ -2703,6 +2703,7 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
- 			 unsigned int engine, unsigned int flags)
- {
- 	intel_ctx_cfg_t ufd_cfg = *cfg;
-+	const intel_ctx_t *spinctx;
- 	struct uffdio_api api = { .api = UFFD_API };
- 	struct uffdio_register reg;
- 	struct uffdio_copy copy;
-@@ -2712,7 +2713,7 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
- 	pthread_t hi, lo;
- 	char poison[4096];
- 	int ufd;
--	uint64_t ahnd = get_reloc_ahnd(i915, 0);
-+	uint64_t ahnd;
+@@ -123,13 +123,13 @@ static uint32_t __store_dword(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	obj[2].handle = gem_create(fd, 4096);
+ 	if (ahnd) {
+ 		obj[0].offset = cork_offset;
+-		obj[0].flags |= EXEC_OBJECT_PINNED;
++		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 		obj[1].offset = target_offset;
+-		obj[1].flags |= EXEC_OBJECT_PINNED;
++		obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 		if (write_domain)
+ 			obj[1].flags |= EXEC_OBJECT_WRITE;
+ 		obj[2].offset = get_offset(ahnd, obj[2].handle, 4096, 0);
+-		obj[2].flags |= EXEC_OBJECT_PINNED;
++		obj[2].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 	} else {
+ 		obj[0].offset = cork << 20;
+ 		obj[1].offset = target << 20;
+@@ -2179,6 +2179,7 @@ static void wide(int fd, const intel_ctx_cfg_t *cfg, unsigned ring)
+ 	int fence;
+ 	uint64_t ahnd = get_reloc_ahnd(fd, 0), result_offset;
  
- 	/*
- 	 * In this scenario, we have a pair of contending contexts that
-@@ -2740,6 +2741,8 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
- 	if ((flags & SHARED) && gem_uses_full_ppgtt(i915))
- 		ufd_cfg.vm = gem_vm_create(i915);
- 
-+	spinctx = intel_ctx_create(i915, cfg);
-+	ahnd = get_reloc_ahnd(i915, spinctx->id);
- 	t.i915 = i915;
- 	t.cfg = &ufd_cfg;
- 	t.engine = engine;
-@@ -2782,7 +2785,7 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
- 	 * the local tasklet will not run until after all signals have been
- 	 * delivered... but another tasklet might).
- 	 */
--	spin = igt_spin_new(i915, .ahnd = ahnd, .engine = engine);
-+	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = spinctx, .engine = engine);
- 	for (int i = 0; i < MAX_ELSP_QLEN; i++) {
- 		const intel_ctx_t *ctx = create_highest_priority(i915, cfg);
- 		spin->execbuf.rsvd1 = ctx->id;
-@@ -2815,6 +2818,7 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
- 	pthread_mutex_unlock(&t.mutex);
- 	igt_debugfs_dump(i915, "i915_engine_info");
- 	igt_spin_free(i915, spin);
-+	intel_ctx_destroy(i915, spinctx);
- 	put_offset(ahnd, t.scratch);
- 	put_offset(ahnd, t.batch);
- 	put_ahnd(ahnd);
++
+ 	ctx = malloc(sizeof(*ctx)*MAX_CONTEXTS);
+ 	for (int n = 0; n < MAX_CONTEXTS; n++)
+ 		ctx[n] = intel_ctx_create(fd, cfg);
 -- 
 2.32.0
