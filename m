@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2AED312A92B
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 05:24:25 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Jun 2022 07:24:08 +0200
-Message-Id: <20220607052411.7357-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220607052411.7357-1-zbigniew.kempczynski@intel.com>
-References: <20220607052411.7357-1-zbigniew.kempczynski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3503281659462747516=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/4] lib/intel_reg: Add common MI_* macros
- to remove duplicates
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 07 Jun 2022 06:14:24 -0000
+Message-ID: <165458246489.8647.7839103361946072455@emeril.freedesktop.org>
+References: <20220607052411.7357-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220607052411.7357-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGNy?=
+ =?utf-8?q?c32_calculation_on_dg2_gpu_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,383 +17,198 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In few tests we got some MI_* duplicates (MI_MATH for example).
-Add common definitions in intel_reg.h and remove local definitions
-in the tests.
+--===============3503281659462747516==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- benchmarks/gem_wsim.c        | 34 ++++-------------------------
- lib/intel_reg.h              | 42 ++++++++++++++++++++++++++++++++++++
- tests/i915/gem_exec_fair.c   | 27 -----------------------
- tests/i915/gem_exec_fence.c  | 31 --------------------------
- tests/i915/gem_watchdog.c    | 27 -----------------------
- tests/i915/gem_workarounds.c |  7 +++---
- tests/i915/gen7_exec_parse.c |  8 +++----
- tests/i915/gen9_exec_parse.c | 11 ++++------
- 8 files changed, 57 insertions(+), 130 deletions(-)
+== Series Details ==
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index d14352225e..aadd2737cd 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -279,36 +279,7 @@ static uint64_t ns_to_ctx_ticks(uint64_t ns)
- 	return div64_u64_round_up(ns * f, NSEC_PER_SEC);
- }
- 
--#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
--
--#define MI_ARB_CHECK MI_INSTR(0x5, 0)
--
--#define MI_MATH(x)                      MI_INSTR(0x1a, (x) - 1)
--#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
--/* Opcodes for MI_MATH_INSTR */
--#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
--#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
--#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
--#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
--#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
--#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
--#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
--#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
--#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
--#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
--#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
--#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
--/* Registers used as operands in MI_MATH_INSTR */
--#define   MI_MATH_REG(x)                (x)
--#define   MI_MATH_REG_SRCA              0x20
--#define   MI_MATH_REG_SRCB              0x21
--#define   MI_MATH_REG_ACCU              0x31
--#define   MI_MATH_REG_ZF                0x32
--#define   MI_MATH_REG_CF                0x33
--
- #define MI_STORE_DWORD_INDEX	MI_INSTR(0x21, 1)
--#define MI_STORE_REGISTER_MEM	MI_INSTR(0x24, 0)
--#define MI_LOAD_REGISTER_REG    MI_INSTR(0x2A, 1)
- #define   MI_CS_MMIO_DST BIT(19)
- #define   MI_CS_MMIO_SRC BIT(18)
- 
-@@ -1487,7 +1458,10 @@ static unsigned int create_bb(struct w_step *w, int self)
- 	*cs++ = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
- 
- 	/* Save delta for indirect read by COND_BBE */
--	*cs++ = MI_STORE_REGISTER_MEM | (1 + use_64b) | MI_CS_MMIO_DST;
-+	if (use_64b)
-+		*cs++ = MI_STORE_REGISTER_MEM_GEN8 | MI_CS_MMIO_DST;
-+	else
-+		*cs++ = MI_STORE_REGISTER_MEM | MI_CS_MMIO_DST;
- 	*cs++ = CS_GPR(NOW_TS);
- 	w->reloc[r].target_handle = self;
- 	w->reloc[r].offset = offset_in_page(cs);
-diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index cb62728896..b8d97a07c9 100644
---- a/lib/intel_reg.h
-+++ b/lib/intel_reg.h
-@@ -2625,6 +2625,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- #define MI_LOAD_REGISTER_IMM		((0x22 << 23) | 1)
- #define MI_LOAD_REGISTER_MEM_GEN8	((0x29 << 23) | (4 - 2))
- #define   MI_MMIO_REMAP_ENABLE_GEN12	(1 << 17)
-+#define MI_LOAD_REGISTER_REG		((0x2A << 23) | 1)
-+#define MI_STORE_REGISTER_MEM		((0x24 << 23) | (3 - 2))
-+#define MI_STORE_REGISTER_MEM_GEN8	((0x24 << 23) | (4 - 2))
- 
- /* Flush */
- #define MI_FLUSH			(0x04<<23)
-@@ -2642,6 +2645,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- #define MI_NOOP_WRITE_ID		(1<<22)
- #define MI_NOOP_ID_MASK			(1<<22 - 1)
- 
-+/* ARB Check */
-+#define MI_ARB_CHECK                    (0x5 << 23)
-+
- #define STATE3D_COLOR_FACTOR	((0x3<<29)|(0x1d<<24)|(0x01<<16))
- 
- /* Atomics */
-@@ -2656,12 +2662,48 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- #define   MI_BATCH_PREDICATE       (1 << 15) /* HSW+ on RCS only*/
- #define MI_BATCH_BUFFER_END	(0xA << 23)
- #define MI_COND_BATCH_BUFFER_END	(0x36 << 23)
-+#define   MAD_GT_IDD                    (0 << 12)
-+#define   MAD_GT_OR_EQ_IDD              (1 << 12)
-+#define   MAD_LT_IDD                    (2 << 12)
-+#define   MAD_LT_OR_EQ_IDD              (3 << 12)
-+#define   MAD_EQ_IDD                    (4 << 12)
-+#define   MAD_NEQ_IDD                   (5 << 12)
- #define MI_DO_COMPARE                   (1 << 21)
- 
- #define MI_BATCH_NON_SECURE		(1)
- #define MI_BATCH_NON_SECURE_I965	(1 << 8)
- #define MI_BATCH_NON_SECURE_HSW		(1<<13) /* Additional bit for RCS */
- 
-+/* Math */
-+#define MI_INSTR(opcode, flags)         (((opcode) << 23) | (flags))
-+#define MI_MATH(x)                      MI_INSTR(0x1a, (x) - 1)
-+#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
-+/* Opcodes for MI_MATH_INSTR */
-+#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
-+#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
-+#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
-+#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
-+#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
-+#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
-+#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
-+#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
-+#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
-+#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
-+#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
-+#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
-+/* DG2+ */
-+#define   MI_MATH_SHL                   MI_MATH_INSTR(0x105, 0x0, 0x0)
-+#define   MI_MATH_SHR                   MI_MATH_INSTR(0x106, 0x0, 0x0)
-+#define   MI_MATH_SAR                   MI_MATH_INSTR(0x107, 0x0, 0x0)
-+
-+/* Registers used as operands in MI_MATH_INSTR */
-+#define   MI_MATH_REG(x)                (x)
-+#define   MI_MATH_REG_SRCA              0x20
-+#define   MI_MATH_REG_SRCB              0x21
-+#define   MI_MATH_REG_ACCU              0x31
-+#define   MI_MATH_REG_ZF                0x32
-+#define   MI_MATH_REG_CF                0x33
-+
- #define MAX_DISPLAY_PIPES	2
- 
- typedef enum {
-diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
-index 935f9c4a0b..89921697f7 100644
---- a/tests/i915/gem_exec_fair.c
-+++ b/tests/i915/gem_exec_fair.c
-@@ -112,33 +112,6 @@ static uint64_t ticks_to_ns(int i915, uint64_t ticks)
- 				  read_timestamp_frequency(i915));
- }
- 
--#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
--
--#define MI_MATH(x)                      MI_INSTR(0x1a, (x) - 1)
--#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
--/* Opcodes for MI_MATH_INSTR */
--#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
--#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
--#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
--#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
--#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
--#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
--#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
--#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
--#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
--#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
--#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
--#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
--/* Registers used as operands in MI_MATH_INSTR */
--#define   MI_MATH_REG(x)                (x)
--#define   MI_MATH_REG_SRCA              0x20
--#define   MI_MATH_REG_SRCB              0x21
--#define   MI_MATH_REG_ACCU              0x31
--#define   MI_MATH_REG_ZF                0x32
--#define   MI_MATH_REG_CF                0x33
--
--#define MI_LOAD_REGISTER_REG    MI_INSTR(0x2A, 1)
--
- static void delay(int i915,
- 		  const struct intel_execution_engine2 *e,
- 		  uint32_t handle,
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 47ddf3083d..f20d7d94ff 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -2366,37 +2366,6 @@ static void test_syncobj_timeline_multiple_ext_nodes(int fd)
- 		syncobj_destroy(fd, syncobjs[i]);
- }
- 
--#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
--
--/* #define MI_LOAD_REGISTER_MEM	   (MI_INSTR(0x29, 1) */
--/* #define MI_LOAD_REGISTER_MEM_GEN8  MI_INSTR(0x29, 2) */
--
--#define MI_LOAD_REGISTER_REG       MI_INSTR(0x2A, 1)
--
--#define MI_STORE_REGISTER_MEM      MI_INSTR(0x24, 1)
--#define MI_STORE_REGISTER_MEM_GEN8 MI_INSTR(0x24, 2)
--
--#define MI_MATH(x)                 MI_INSTR(0x1a, (x) - 1)
--#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
--/* Opcodes for MI_MATH_INSTR */
--#define   MI_MATH_NOOP			MI_MATH_INSTR(0x00,  0x0, 0x0)
--#define   MI_MATH_LOAD(op1, op2)	MI_MATH_INSTR(0x80,  op1, op2)
--#define   MI_MATH_LOADINV(op1, op2)	MI_MATH_INSTR(0x480, op1, op2)
--#define   MI_MATH_ADD			MI_MATH_INSTR(0x100, 0x0, 0x0)
--#define   MI_MATH_SUB			MI_MATH_INSTR(0x101, 0x0, 0x0)
--#define   MI_MATH_AND			MI_MATH_INSTR(0x102, 0x0, 0x0)
--#define   MI_MATH_OR			MI_MATH_INSTR(0x103, 0x0, 0x0)
--#define   MI_MATH_XOR			MI_MATH_INSTR(0x104, 0x0, 0x0)
--#define   MI_MATH_STORE(op1, op2)	MI_MATH_INSTR(0x180, op1, op2)
--#define   MI_MATH_STOREINV(op1, op2)	MI_MATH_INSTR(0x580, op1, op2)
--/* Registers used as operands in MI_MATH_INSTR */
--#define   MI_MATH_REG(x)		(x)
--#define   MI_MATH_REG_SRCA		0x20
--#define   MI_MATH_REG_SRCB		0x21
--#define   MI_MATH_REG_ACCU		0x31
--#define   MI_MATH_REG_ZF		0x32
--#define   MI_MATH_REG_CF		0x33
--
- #define HSW_CS_GPR(n)                   (0x600 + 8*(n))
- #define RING_TIMESTAMP                  (0x358)
- #define MI_PREDICATE_RESULT_1           (0x41c)
-diff --git a/tests/i915/gem_watchdog.c b/tests/i915/gem_watchdog.c
-index fc1ba00712..01eb007694 100644
---- a/tests/i915/gem_watchdog.c
-+++ b/tests/i915/gem_watchdog.c
-@@ -270,33 +270,6 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
- 	igt_assert_eq(count, expect);
- }
- 
--#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
--
--#define MI_MATH(x)                      MI_INSTR(0x1a, (x) - 1)
--#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
--/* Opcodes for MI_MATH_INSTR */
--#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
--#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
--#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
--#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
--#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
--#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
--#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
--#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
--#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
--#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
--#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
--#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
--/* Registers used as operands in MI_MATH_INSTR */
--#define   MI_MATH_REG(x)                (x)
--#define   MI_MATH_REG_SRCA              0x20
--#define   MI_MATH_REG_SRCB              0x21
--#define   MI_MATH_REG_ACCU              0x31
--#define   MI_MATH_REG_ZF                0x32
--#define   MI_MATH_REG_CF                0x33
--
--#define MI_LOAD_REGISTER_REG    MI_INSTR(0x2A, 1)
--
- static unsigned int offset_in_page(void *addr)
- {
- 	return (uintptr_t)addr & 4095;
-diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-index 70967b3ff5..12c70b2011 100644
---- a/tests/i915/gem_workarounds.c
-+++ b/tests/i915/gem_workarounds.c
-@@ -83,8 +83,6 @@ static bool write_only(const uint32_t addr)
- 	return false;
- }
- 
--#define MI_STORE_REGISTER_MEM (0x24 << 23)
--
- static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
- {
- 	struct drm_i915_gem_exec_object2 obj[2];
-@@ -122,7 +120,10 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
- 	out = base =
- 		gem_mmap__cpu(i915, obj[1].handle, 0, batch_sz, PROT_WRITE);
- 	for (int i = 0; i < num_wa_regs; i++) {
--		*out++ = MI_STORE_REGISTER_MEM | ((gen >= 8 ? 4 : 2) - 2);
-+		if (gen >= 8)
-+			*out++ = MI_STORE_REGISTER_MEM_GEN8;
-+		else
-+			*out++ = MI_STORE_REGISTER_MEM;
- 		*out++ = wa_regs[i].addr;
- 		reloc[i].target_handle = obj[0].handle;
- 		reloc[i].offset = (out - base) * sizeof(*out);
-diff --git a/tests/i915/gen7_exec_parse.c b/tests/i915/gen7_exec_parse.c
-index c83a791126..c3c2a7a296 100644
---- a/tests/i915/gen7_exec_parse.c
-+++ b/tests/i915/gen7_exec_parse.c
-@@ -48,8 +48,6 @@
- #define INSTR_CLIENT_SHIFT	29
- #define   INSTR_INVALID_CLIENT  0x7
- 
--#define MI_LOAD_REGISTER_REG (0x2a << 23)
--#define MI_STORE_REGISTER_MEM (0x24 << 23)
- #define MI_ARB_ON_OFF (0x8 << 23)
- #define MI_DISPLAY_FLIP ((0x14 << 23) | 1)
- 
-@@ -374,19 +372,19 @@ static void test_allocations(int fd)
- static void hsw_load_register_reg(void)
- {
- 	uint32_t init_gpr0[16] = {
--		MI_LOAD_REGISTER_IMM | (3 - 2),
-+		MI_LOAD_REGISTER_IMM,
- 		HSW_CS_GPR0,
- 		0xabcdabc0, /* leave [1:0] zero */
- 		MI_BATCH_BUFFER_END,
- 	};
- 	uint32_t store_gpr0[16] = {
--		MI_STORE_REGISTER_MEM | (3 - 2),
-+		MI_STORE_REGISTER_MEM,
- 		HSW_CS_GPR0,
- 		0, /* reloc*/
- 		MI_BATCH_BUFFER_END,
- 	};
- 	uint32_t do_lrr[16] = {
--		MI_LOAD_REGISTER_REG | (3 - 2),
-+		MI_LOAD_REGISTER_REG,
- 		0, /* [1] = src */
- 		HSW_CS_GPR0, /* dst */
- 		MI_BATCH_BUFFER_END,
-diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
-index fa61693cfc..1d9cd37104 100644
---- a/tests/i915/gen9_exec_parse.c
-+++ b/tests/i915/gen9_exec_parse.c
-@@ -38,12 +38,9 @@
- #define INSTR_CLIENT_SHIFT	29
- #define   INSTR_INVALID_CLIENT  0x7
- 
--#define MI_LOAD_REGISTER_REG (0x2a << 23)
--#define MI_STORE_REGISTER_MEM (0x24 << 23)
- #define MI_ARB_ON_OFF (0x8 << 23)
- #define MI_USER_INTERRUPT (0x02 << 23)
- #define MI_FLUSH_DW (0x26 << 23)
--#define MI_ARB_CHECK (0x05 << 23)
- #define MI_REPORT_HEAD (0x07 << 23)
- #define MI_SUSPEND_FLUSH (0x0b << 23)
- #define MI_LOAD_SCAN_LINES_EXCL (0x13 << 23)
-@@ -689,7 +686,7 @@ static void test_cmd_crossing_page(const int i915, const uint32_t handle)
- 		MI_BATCH_BUFFER_END,
- 	};
- 	const uint32_t store_reg[] = {
--		MI_STORE_REGISTER_MEM | (4 - 2),
-+		MI_STORE_REGISTER_MEM_GEN8,
- 		BCS_GPR(0),
- 		0, /* reloc */
- 		0, /* reloc */
-@@ -728,7 +725,7 @@ static void test_invalid_length(const int i915, const uint32_t handle)
- 	};
- 
- 	const uint32_t store_reg[] = {
--		MI_STORE_REGISTER_MEM | (4 - 2),
-+		MI_STORE_REGISTER_MEM_GEN8,
- 		BCS_GPR(0),
- 		0, /* reloc */
- 		0, /* reloc */
-@@ -841,7 +838,7 @@ static void test_register(const int i915, const uint32_t handle,
- 	};
- 
- 	const uint32_t store_reg[] = {
--		MI_STORE_REGISTER_MEM | (4 - 2),
-+		MI_STORE_REGISTER_MEM_GEN8,
- 		r->addr,
- 		0, /* reloc */
- 		0, /* reloc */
-@@ -880,7 +877,7 @@ static long int read_reg(const int i915, const uint32_t handle,
- 			 const uint32_t addr)
- {
- 	const uint32_t store_reg[] = {
--		MI_STORE_REGISTER_MEM | (4 - 2),
-+		MI_STORE_REGISTER_MEM_GEN8,
- 		addr,
- 		0, /* reloc */
- 		0, /* reloc */
--- 
-2.32.0
+Series: Add crc32 calculation on dg2 gpu (rev5)
+URL   : https://patchwork.freedesktop.org/series/104657/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11729 -> IGTPW_7240
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/index.html
+
+Participating hosts (41 -> 40)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (2): bat-dg2-9 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7240 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][3] ([i915#1886])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827]) +7 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][5] ([fdo#109271]) +9 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#533])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6509 -> IGTPW_7240
+
+  CI-20190529: 20190529
+  CI_DRM_11729: fb41937d097981b11a2856d507c2f1b9064bef76 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7240: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/index.html
+  IGT_6509: 24bad3ce51c57c907307f84aa9202d04b80ad2a3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@api_intel_bb@crc32
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/index.html
+
+--===============3503281659462747516==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add crc32 calculation on dg2 gpu (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104657/">https://patchwork.freedesktop.org/series/104657/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11729 -&gt; IGTPW_7240</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/index.html</p>
+<h2>Participating hosts (41 -&gt; 40)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (2): bat-dg2-9 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7240 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6509 -&gt; IGTPW_7240</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11729: fb41937d097981b11a2856d507c2f1b9064bef76 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7240: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7240/index.html<br />
+  IGT_6509: 24bad3ce51c57c907307f84aa9202d04b80ad2a3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@api_intel_bb@crc32</p>
+
+</body>
+</html>
+
+--===============3503281659462747516==--
