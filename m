@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0ABAD12A92C
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 05:24:31 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AED312A92B
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 05:24:25 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Jun 2022 07:24:10 +0200
-Message-Id: <20220607052411.7357-4-zbigniew.kempczynski@intel.com>
+Date: Tue,  7 Jun 2022 07:24:08 +0200
+Message-Id: <20220607052411.7357-2-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220607052411.7357-1-zbigniew.kempczynski@intel.com>
 References: <20220607052411.7357-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] lib/i915_crc: Introduce crc32 on gpu
- for DG2
+Subject: [igt-dev] [PATCH i-g-t 1/4] lib/intel_reg: Add common MI_* macros
+ to remove duplicates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,412 +24,379 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding crc32 calculation on gpu gives us new possibility to verify data
-integrity without relying on trust cpu mapping is correct.
-
-Patch introduces calculating crc32 on DG2 only. On older gens ALU
-(MI_MATH) doesn't support bit-shifting instructions as well as multiply
-or divide. Emulating n-bit shifts cost hundred of instructions with
-predicated SRM (works on render engine only). Another limitation is lack
-of indexed load / store. On DG2 we can use WPARID and CS_MI_ADDRESS_OFFSET
-to achieve indexed operation on memory.
-
-Due to performance reasons (cpu crc32 calculation even on WC memory is
-still much faster than on gpu, also depends on calculated object memory
-region) calculation will complete in reasonable of time only for few MiB.
-
-v2: - use registers relative to engine to allow run on all engines (Chris)
-    - use predication instead of memory access to get better performance
-      (Chris)
-    - add location where crc32 implementation comes from (Petri)
-
-v4: - use common crc32 table from igt_crc
-    - add docs
+In few tests we got some MI_* duplicates (MI_MATH for example).
+Add common definitions in intel_reg.h and remove local definitions
+in the tests.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
- lib/i915/i915_crc.c                           | 297 ++++++++++++++++++
- lib/i915/i915_crc.h                           |  27 ++
- lib/intel_reg.h                               |   3 +
- lib/meson.build                               |   1 +
- 5 files changed, 329 insertions(+)
- create mode 100644 lib/i915/i915_crc.c
- create mode 100644 lib/i915/i915_crc.h
+ benchmarks/gem_wsim.c        | 34 ++++-------------------------
+ lib/intel_reg.h              | 42 ++++++++++++++++++++++++++++++++++++
+ tests/i915/gem_exec_fair.c   | 27 -----------------------
+ tests/i915/gem_exec_fence.c  | 31 --------------------------
+ tests/i915/gem_watchdog.c    | 27 -----------------------
+ tests/i915/gem_workarounds.c |  7 +++---
+ tests/i915/gen7_exec_parse.c |  8 +++----
+ tests/i915/gen9_exec_parse.c | 11 ++++------
+ 8 files changed, 57 insertions(+), 130 deletions(-)
 
-diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-index b78f1eb6ff..a19f786e84 100644
---- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-+++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-@@ -63,6 +63,7 @@
-     <xi:include href="xml/gem_scheduler.xml"/>
-     <xi:include href="xml/gem_submission.xml"/>
-     <xi:include href="xml/i915_blt.xml"/>
-+    <xi:include href="xml/i915_crc.xml"/>
-     <xi:include href="xml/intel_ctx.xml"/>
-   </chapter>
-   <xi:include href="xml/igt_test_programs.xml"/>
-diff --git a/lib/i915/i915_crc.c b/lib/i915/i915_crc.c
-new file mode 100644
-index 0000000000..4c6e488c23
---- /dev/null
-+++ b/lib/i915/i915_crc.c
-@@ -0,0 +1,297 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+#include <stddef.h>
-+#include <stdint.h>
-+#include "drmtest.h"
-+#include "gem_create.h"
-+#include "gem_engine_topology.h"
-+#include "gem_mman.h"
-+#include "i830_reg.h"
-+#include "i915_drm.h"
-+#include "intel_reg.h"
-+#include "intel_chipset.h"
-+#include "ioctl_wrappers.h"
-+#include "intel_allocator.h"
-+#include "igt_crc.h"
-+#include "i915/i915_crc.h"
-+
-+#define CS_GPR(x)                       (0x600 + 8 * (x))
-+#define GPR(x)                          CS_GPR(x)
-+#define R(x)                            (x)
-+#define USERDATA(offset, idx)	        ((offset) + (0x100 + (idx)) * 4)
-+#define OFFSET(obj_offset, current, start) \
-+	((obj_offset) + (current - start) * 4)
-+
-+#define MI_PREDICATE_RESULT             0x3B8
-+#define WPARID                          0x21C
-+#define CS_MI_ADDRESS_OFFSET            0x3B4
-+
-+#define LOAD_REGISTER_REG(__reg_src, __reg_dst) do { \
-+		*bb++ = MI_LOAD_REGISTER_REG | BIT(19) | BIT(18); \
-+		*bb++ = (__reg_src); \
-+		*bb++ = (__reg_dst); \
-+	} while (0)
-+
-+#define LOAD_REGISTER_IMM32(__reg, __imm1) do { \
-+		*bb++ = MI_LOAD_REGISTER_IMM | BIT(19); \
-+		*bb++ = (__reg); \
-+		*bb++ = (__imm1); \
-+	} while (0)
-+
-+#define LOAD_REGISTER_IMM64(__reg, __imm1, __imm2) do { \
-+		*bb++ = (MI_LOAD_REGISTER_IMM + 2) | BIT(19); \
-+		*bb++ = (__reg); \
-+		*bb++ = (__imm1); \
-+		*bb++ = (__reg) + 4; \
-+		*bb++ = (__imm2); \
-+	} while (0)
-+
-+#define LOAD_REGISTER_MEM(__reg, __offset) do { \
-+		*bb++ = MI_LOAD_REGISTER_MEM_GEN8 | BIT(19); \
-+		*bb++ = (__reg); \
-+		*bb++ = (__offset); \
-+		*bb++ = (__offset) >> 32; \
-+	} while (0)
-+
-+#define LOAD_REGISTER_MEM_WPARID(__reg, __offset) do { \
-+		*bb++ = MI_LOAD_REGISTER_MEM_GEN8 | BIT(19) | BIT(16); \
-+		*bb++ = (__reg); \
-+		*bb++ = (__offset); \
-+		*bb++ = (__offset) >> 32; \
-+	} while (0)
-+
-+#define STORE_REGISTER_MEM(__reg, __offset) do { \
-+		*bb++ = MI_STORE_REGISTER_MEM_GEN8 | BIT(19); \
-+		*bb++ = (__reg); \
-+		*bb++ = (__offset); \
-+		*bb++ = (__offset) >> 32; \
-+	} while (0)
-+
-+#define STORE_REGISTER_MEM_PREDICATED(__reg, __offset) do { \
-+		*bb++ = MI_STORE_REGISTER_MEM_GEN8 | BIT(19) | (BIT(21); \
-+		*bb++ = (__reg); \
-+		*bb++ = (__offset); \
-+		*bb++ = (__offset) >> 32; \
-+	} while (0)
-+
-+#define COND_BBE(__value, __offset, __condition) do { \
-+		*bb++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | (__condition) | 2; \
-+		*bb++ = (__value); \
-+		*bb++ = (__offset); \
-+		*bb++ = (__offset) >> 32; \
-+	} while (0)
-+
-+#define MATH_4_STORE(__r1, __r2, __op, __r3) do { \
-+		*bb++ = MI_MATH(4); \
-+		*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(__r1)); \
-+		*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(__r2)); \
-+		*bb++ = (__op); \
-+		*bb++ = MI_MATH_STORE(MI_MATH_REG(__r3), MI_MATH_REG_ACCU); \
-+	} while (0)
-+
-+#define BBSIZE 4096
-+
-+/* Aliasing for easier refactoring */
-+#define GPR_SIZE	GPR(0)
-+#define R_SIZE		R(0)
-+
-+#define GPR_CRC		GPR(1)
-+#define R_CRC		R(1)
-+
-+#define GPR_INDATA_IDX  GPR(2)
-+#define R_INDATA_IDX	R(2)
-+
-+#define GPR_TABLE_IDX   GPR(3)
-+#define R_TABLE_IDX	R(3)
-+
-+#define GPR_CURR_DW	GPR(4)
-+#define R_CURR_DW	R(4)
-+
-+#define GPR_CONST_2	GPR(5)
-+#define R_CONST_2	R(5)
-+
-+#define GPR_CONST_4	GPR(6)
-+#define R_CONST_4	R(6)
-+
-+#define GPR_CONST_8	GPR(7)
-+#define R_CONST_8	R(7)
-+
-+#define GPR_CONST_ff	GPR(8)
-+#define R_CONST_ff	R(8)
-+
-+#define GPR_ffffffff    GPR(9)
-+#define R_ffffffff	R(9)
-+
-+#define GPR_TMP_1	GPR(10)
-+#define R_TMP_1		R(10)
-+
-+#define GPR_TMP_2	GPR(11)
-+#define R_TMP_2		R(11)
-+
-+static void fill_batch(int i915, uint32_t bb_handle, uint64_t bb_offset,
-+		       uint64_t table_offset, uint64_t data_offset, uint32_t data_size)
-+{
-+	uint32_t *bb, *batch, *jmp;
-+	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
-+	const int use_64b = gen >= 8;
-+	uint64_t offset;
-+	uint64_t crc = USERDATA(table_offset, 0);
-+
-+	igt_assert(data_size % 4 == 0);
-+
-+	batch = gem_mmap__device_coherent(i915, bb_handle, 0, BBSIZE,
-+					  PROT_READ | PROT_WRITE);
-+	memset(batch, 0, BBSIZE);
-+
-+	bb = batch;
-+
-+	LOAD_REGISTER_IMM64(GPR_SIZE, data_size, 0);
-+	LOAD_REGISTER_IMM64(GPR_CRC, ~0U, 0);		/* crc start - 0xffffffff */
-+	LOAD_REGISTER_IMM64(GPR_INDATA_IDX, 0, 0);	/* data_offset index (0) */
-+	LOAD_REGISTER_IMM64(GPR_CONST_2, 2, 0);		/* const value 2 */
-+	LOAD_REGISTER_IMM64(GPR_CONST_4, 4, 0);		/* const value 4 */
-+	LOAD_REGISTER_IMM64(GPR_CONST_8, 8, 0);		/* const value 8 */
-+	LOAD_REGISTER_IMM64(GPR_CONST_ff, 0xff, 0);	/* const value 0xff */
-+	LOAD_REGISTER_IMM64(GPR_ffffffff, ~0U, 0);	/* const value 0xffffffff */
-+
-+	/* for indexed reads from memory */
-+	LOAD_REGISTER_IMM32(WPARID, 1);
-+
-+	jmp = bb;
-+
-+	*bb++ = MI_SET_PREDICATE;
-+	*bb++ = MI_ARB_CHECK;
-+
-+	LOAD_REGISTER_REG(GPR_INDATA_IDX, CS_MI_ADDRESS_OFFSET);
-+	LOAD_REGISTER_MEM_WPARID(GPR_CURR_DW, data_offset);
-+
-+	for (int byte = 0; byte < 4; byte++) {
-+		if (byte != 0)
-+			MATH_4_STORE(R_CURR_DW, R_CONST_8,
-+				     MI_MATH_SHR, R_CURR_DW); /* dw >> 8 */
-+
-+		/* crc = crc32_tab[(crc ^ *p++) & 0xFF] ^ (crc >> 8); */
-+		MATH_4_STORE(R_CURR_DW, R_CONST_ff,
-+			     MI_MATH_AND, R_TMP_1); /* dw & 0xff */
-+		MATH_4_STORE(R_CRC, R_TMP_1,
-+			     MI_MATH_XOR, R_TMP_1); /* crc ^ tmp */
-+		MATH_4_STORE(R_TMP_1, R_CONST_ff,
-+			     MI_MATH_AND, R_TMP_1); /* tmp & 0xff */
-+		MATH_4_STORE(R_TMP_1, R_CONST_2,
-+			     MI_MATH_SHL, R_TABLE_IDX); /* tmp << 2 (crc idx) */
-+
-+		LOAD_REGISTER_REG(GPR_TABLE_IDX, CS_MI_ADDRESS_OFFSET);
-+		LOAD_REGISTER_MEM_WPARID(GPR_TMP_1, table_offset);
-+
-+		MATH_4_STORE(R_CRC, R_CONST_8,
-+			     MI_MATH_SHR, R_TMP_2); /* crc >> 8 (shift) */
-+		MATH_4_STORE(R_TMP_2, R_TMP_1,
-+			     MI_MATH_XOR, R_CRC); /* crc = tab[v] ^ shift */
-+	}
-+
-+	/* increment data index */
-+	MATH_4_STORE(R_INDATA_IDX, R_CONST_4, MI_MATH_ADD, R_INDATA_IDX);
-+
-+	/* loop until R_SIZE == 0, R_SIZE = R_SIZE - R_CONST_4 */
-+
-+	*bb++ = MI_MATH(5);
-+	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(R_SIZE));
-+	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(R_CONST_4));
-+	*bb++ = MI_MATH_SUB;
-+	*bb++ = MI_MATH_STORE(MI_MATH_REG(R_SIZE), MI_MATH_REG_ACCU);
-+	*bb++ = MI_MATH_STORE(MI_MATH_REG(R_TMP_2), MI_MATH_REG_ZF);
-+	LOAD_REGISTER_REG(GPR_TMP_2, MI_PREDICATE_RESULT);
-+
-+	*bb++ = MI_BATCH_BUFFER_START | BIT(15) | BIT(8) | use_64b;
-+	offset = OFFSET(bb_offset, jmp, batch);
-+	*bb++ = offset;
-+	*bb++ = offset >> 32;
-+
-+	*bb++ = MI_SET_PREDICATE;
-+
-+	MATH_4_STORE(R_CRC, R_ffffffff, MI_MATH_XOR, R_TMP_1);
-+	STORE_REGISTER_MEM(GPR_TMP_1, crc);
-+
-+	*bb++ = MI_BATCH_BUFFER_END;
-+
-+	gem_munmap(batch, BBSIZE);
-+}
-+
-+/**
-+ * i915_crc32:
-+ * @i915: drm fd
-+ * @ahnd: allocator handle
-+ * @ctx: intel context
-+ * @e: engine on which crc32 calculation will be executed
-+ * @data_handle: bo which is subject of crc32 calculation
-+ * @data_size: length of bo data to calculate (must be multiple of 4)
-+ *
-+ * Function calculates crc32 for @data_handle with size @data_size.
-+ *
-+ * Returns: uint32_t crc32.
-+ *
-+ **/
-+uint32_t i915_crc32(int i915, uint64_t ahnd, const intel_ctx_t *ctx,
-+		    const struct intel_execution_engine2 *e,
-+		    uint32_t data_handle, uint32_t data_size)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	uint64_t bb_offset, table_offset, data_offset;
-+	uint32_t bb, table, crc, table_size = 4096;
-+	uint32_t *ptr;
-+
-+	igt_assert(data_size % 4 == 0);
-+
-+	table = gem_create_in_memory_regions(i915, table_size, REGION_LMEM(0));
-+	gem_write(i915, table, 0, igt_crc32_tab, sizeof(igt_crc32_tab));
-+
-+	table_offset = get_offset(ahnd, table, table_size, 0);
-+	data_offset = get_offset(ahnd, data_handle, data_size, 0);
-+
-+	obj[0].offset = table_offset;
-+	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
-+	obj[0].handle = table;
-+
-+	obj[1].offset = data_offset;
-+	obj[1].flags = EXEC_OBJECT_PINNED;
-+	obj[1].handle = data_handle;
-+
-+	bb = gem_create_in_memory_regions(i915, BBSIZE, REGION_LMEM(0));
-+	bb_offset = get_offset(ahnd, bb, BBSIZE, 0);
-+	fill_batch(i915, bb, bb_offset, table_offset, data_offset, data_size);
-+	obj[2].offset = bb_offset;
-+	obj[2].flags = EXEC_OBJECT_PINNED;
-+	obj[2].handle = bb;
-+	execbuf.buffer_count = 3;
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.flags = e->flags;
-+	execbuf.rsvd1 = ctx->id;
-+	gem_execbuf(i915, &execbuf);
-+	gem_sync(i915, table);
-+
-+	ptr = gem_mmap__device_coherent(i915, table, 0, table_size, PROT_READ);
-+	crc = ptr[0x100];
-+	gem_munmap(ptr, table_size);
-+	gem_close(i915, table);
-+	gem_close(i915, bb);
-+
-+	return crc;
-+}
-+
-+/**
-+ * supports_i915_crc32:
-+ * @i915: drm fd
-+ *
-+ * Returns: flag if i915_crc32() is able to generate crc32 on gpu.
-+ *
-+ **/
-+bool supports_i915_crc32(int i915)
-+{
-+	uint16_t devid = intel_get_drm_devid(i915);
-+
-+	return IS_DG2(devid);
-+}
-diff --git a/lib/i915/i915_crc.h b/lib/i915/i915_crc.h
-new file mode 100644
-index 0000000000..3bd7411690
---- /dev/null
-+++ b/lib/i915/i915_crc.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+#ifndef _I915_CRC_H_
-+#define _I915_CRC_H_
-+
-+#include <stdint.h>
-+#include "intel_ctx.h"
-+
-+/**
-+ * SECTION:i915_crc
-+ * @short_description: i915 gpu crc
-+ * @title: I915 GPU CRC
-+ * @include: i915_crc.h
-+ *
-+ * # Introduction
-+ *
-+ * Intel gpu crc calculation implementation.
-+ */
-+
-+uint32_t i915_crc32(int i915, uint64_t ahnd, const intel_ctx_t *ctx,
-+		    const struct intel_execution_engine2 *e,
-+		    uint32_t data_handle, uint32_t data_size);
-+bool supports_i915_crc32(int i915);
-+
-+#endif /* _I915_CRC_ */
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index d14352225e..aadd2737cd 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -279,36 +279,7 @@ static uint64_t ns_to_ctx_ticks(uint64_t ns)
+ 	return div64_u64_round_up(ns * f, NSEC_PER_SEC);
+ }
+ 
+-#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
+-
+-#define MI_ARB_CHECK MI_INSTR(0x5, 0)
+-
+-#define MI_MATH(x)                      MI_INSTR(0x1a, (x) - 1)
+-#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
+-/* Opcodes for MI_MATH_INSTR */
+-#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
+-#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
+-#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
+-#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
+-#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
+-#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
+-#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
+-#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
+-#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
+-#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
+-#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
+-#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
+-/* Registers used as operands in MI_MATH_INSTR */
+-#define   MI_MATH_REG(x)                (x)
+-#define   MI_MATH_REG_SRCA              0x20
+-#define   MI_MATH_REG_SRCB              0x21
+-#define   MI_MATH_REG_ACCU              0x31
+-#define   MI_MATH_REG_ZF                0x32
+-#define   MI_MATH_REG_CF                0x33
+-
+ #define MI_STORE_DWORD_INDEX	MI_INSTR(0x21, 1)
+-#define MI_STORE_REGISTER_MEM	MI_INSTR(0x24, 0)
+-#define MI_LOAD_REGISTER_REG    MI_INSTR(0x2A, 1)
+ #define   MI_CS_MMIO_DST BIT(19)
+ #define   MI_CS_MMIO_SRC BIT(18)
+ 
+@@ -1487,7 +1458,10 @@ static unsigned int create_bb(struct w_step *w, int self)
+ 	*cs++ = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
+ 
+ 	/* Save delta for indirect read by COND_BBE */
+-	*cs++ = MI_STORE_REGISTER_MEM | (1 + use_64b) | MI_CS_MMIO_DST;
++	if (use_64b)
++		*cs++ = MI_STORE_REGISTER_MEM_GEN8 | MI_CS_MMIO_DST;
++	else
++		*cs++ = MI_STORE_REGISTER_MEM | MI_CS_MMIO_DST;
+ 	*cs++ = CS_GPR(NOW_TS);
+ 	w->reloc[r].target_handle = self;
+ 	w->reloc[r].offset = offset_in_page(cs);
 diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index b8d97a07c9..104a73f073 100644
+index cb62728896..b8d97a07c9 100644
 --- a/lib/intel_reg.h
 +++ b/lib/intel_reg.h
-@@ -2704,6 +2704,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- #define   MI_MATH_REG_ZF                0x32
- #define   MI_MATH_REG_CF                0x33
+@@ -2625,6 +2625,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define MI_LOAD_REGISTER_IMM		((0x22 << 23) | 1)
+ #define MI_LOAD_REGISTER_MEM_GEN8	((0x29 << 23) | (4 - 2))
+ #define   MI_MMIO_REMAP_ENABLE_GEN12	(1 << 17)
++#define MI_LOAD_REGISTER_REG		((0x2A << 23) | 1)
++#define MI_STORE_REGISTER_MEM		((0x24 << 23) | (3 - 2))
++#define MI_STORE_REGISTER_MEM_GEN8	((0x24 << 23) | (4 - 2))
  
+ /* Flush */
+ #define MI_FLUSH			(0x04<<23)
+@@ -2642,6 +2645,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define MI_NOOP_WRITE_ID		(1<<22)
+ #define MI_NOOP_ID_MASK			(1<<22 - 1)
+ 
++/* ARB Check */
++#define MI_ARB_CHECK                    (0x5 << 23)
++
+ #define STATE3D_COLOR_FACTOR	((0x3<<29)|(0x1d<<24)|(0x01<<16))
+ 
+ /* Atomics */
+@@ -2656,12 +2662,48 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define   MI_BATCH_PREDICATE       (1 << 15) /* HSW+ on RCS only*/
+ #define MI_BATCH_BUFFER_END	(0xA << 23)
+ #define MI_COND_BATCH_BUFFER_END	(0x36 << 23)
++#define   MAD_GT_IDD                    (0 << 12)
++#define   MAD_GT_OR_EQ_IDD              (1 << 12)
++#define   MAD_LT_IDD                    (2 << 12)
++#define   MAD_LT_OR_EQ_IDD              (3 << 12)
++#define   MAD_EQ_IDD                    (4 << 12)
++#define   MAD_NEQ_IDD                   (5 << 12)
+ #define MI_DO_COMPARE                   (1 << 21)
+ 
+ #define MI_BATCH_NON_SECURE		(1)
+ #define MI_BATCH_NON_SECURE_I965	(1 << 8)
+ #define MI_BATCH_NON_SECURE_HSW		(1<<13) /* Additional bit for RCS */
+ 
++/* Math */
++#define MI_INSTR(opcode, flags)         (((opcode) << 23) | (flags))
++#define MI_MATH(x)                      MI_INSTR(0x1a, (x) - 1)
++#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
++/* Opcodes for MI_MATH_INSTR */
++#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
++#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
++#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
++#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
++#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
++#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
++#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
++#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
++#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
++#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
++#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
++#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
 +/* DG2+ */
-+#define MI_SET_PREDICATE                MI_INSTR(0x1, 0)
++#define   MI_MATH_SHL                   MI_MATH_INSTR(0x105, 0x0, 0x0)
++#define   MI_MATH_SHR                   MI_MATH_INSTR(0x106, 0x0, 0x0)
++#define   MI_MATH_SAR                   MI_MATH_INSTR(0x107, 0x0, 0x0)
++
++/* Registers used as operands in MI_MATH_INSTR */
++#define   MI_MATH_REG(x)                (x)
++#define   MI_MATH_REG_SRCA              0x20
++#define   MI_MATH_REG_SRCB              0x21
++#define   MI_MATH_REG_ACCU              0x31
++#define   MI_MATH_REG_ZF                0x32
++#define   MI_MATH_REG_CF                0x33
 +
  #define MAX_DISPLAY_PIPES	2
  
  typedef enum {
-diff --git a/lib/meson.build b/lib/meson.build
-index cc2b2abee6..12b2cc5d78 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -13,6 +13,7 @@ lib_sources = [
- 	'i915/intel_memory_region.c',
- 	'i915/intel_mocs.c',
- 	'i915/i915_blt.c',
-+	'i915/i915_crc.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
- 	'igt_crc.c',
+diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
+index 935f9c4a0b..89921697f7 100644
+--- a/tests/i915/gem_exec_fair.c
++++ b/tests/i915/gem_exec_fair.c
+@@ -112,33 +112,6 @@ static uint64_t ticks_to_ns(int i915, uint64_t ticks)
+ 				  read_timestamp_frequency(i915));
+ }
+ 
+-#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
+-
+-#define MI_MATH(x)                      MI_INSTR(0x1a, (x) - 1)
+-#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
+-/* Opcodes for MI_MATH_INSTR */
+-#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
+-#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
+-#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
+-#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
+-#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
+-#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
+-#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
+-#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
+-#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
+-#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
+-#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
+-#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
+-/* Registers used as operands in MI_MATH_INSTR */
+-#define   MI_MATH_REG(x)                (x)
+-#define   MI_MATH_REG_SRCA              0x20
+-#define   MI_MATH_REG_SRCB              0x21
+-#define   MI_MATH_REG_ACCU              0x31
+-#define   MI_MATH_REG_ZF                0x32
+-#define   MI_MATH_REG_CF                0x33
+-
+-#define MI_LOAD_REGISTER_REG    MI_INSTR(0x2A, 1)
+-
+ static void delay(int i915,
+ 		  const struct intel_execution_engine2 *e,
+ 		  uint32_t handle,
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index 47ddf3083d..f20d7d94ff 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -2366,37 +2366,6 @@ static void test_syncobj_timeline_multiple_ext_nodes(int fd)
+ 		syncobj_destroy(fd, syncobjs[i]);
+ }
+ 
+-#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
+-
+-/* #define MI_LOAD_REGISTER_MEM	   (MI_INSTR(0x29, 1) */
+-/* #define MI_LOAD_REGISTER_MEM_GEN8  MI_INSTR(0x29, 2) */
+-
+-#define MI_LOAD_REGISTER_REG       MI_INSTR(0x2A, 1)
+-
+-#define MI_STORE_REGISTER_MEM      MI_INSTR(0x24, 1)
+-#define MI_STORE_REGISTER_MEM_GEN8 MI_INSTR(0x24, 2)
+-
+-#define MI_MATH(x)                 MI_INSTR(0x1a, (x) - 1)
+-#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
+-/* Opcodes for MI_MATH_INSTR */
+-#define   MI_MATH_NOOP			MI_MATH_INSTR(0x00,  0x0, 0x0)
+-#define   MI_MATH_LOAD(op1, op2)	MI_MATH_INSTR(0x80,  op1, op2)
+-#define   MI_MATH_LOADINV(op1, op2)	MI_MATH_INSTR(0x480, op1, op2)
+-#define   MI_MATH_ADD			MI_MATH_INSTR(0x100, 0x0, 0x0)
+-#define   MI_MATH_SUB			MI_MATH_INSTR(0x101, 0x0, 0x0)
+-#define   MI_MATH_AND			MI_MATH_INSTR(0x102, 0x0, 0x0)
+-#define   MI_MATH_OR			MI_MATH_INSTR(0x103, 0x0, 0x0)
+-#define   MI_MATH_XOR			MI_MATH_INSTR(0x104, 0x0, 0x0)
+-#define   MI_MATH_STORE(op1, op2)	MI_MATH_INSTR(0x180, op1, op2)
+-#define   MI_MATH_STOREINV(op1, op2)	MI_MATH_INSTR(0x580, op1, op2)
+-/* Registers used as operands in MI_MATH_INSTR */
+-#define   MI_MATH_REG(x)		(x)
+-#define   MI_MATH_REG_SRCA		0x20
+-#define   MI_MATH_REG_SRCB		0x21
+-#define   MI_MATH_REG_ACCU		0x31
+-#define   MI_MATH_REG_ZF		0x32
+-#define   MI_MATH_REG_CF		0x33
+-
+ #define HSW_CS_GPR(n)                   (0x600 + 8*(n))
+ #define RING_TIMESTAMP                  (0x358)
+ #define MI_PREDICATE_RESULT_1           (0x41c)
+diff --git a/tests/i915/gem_watchdog.c b/tests/i915/gem_watchdog.c
+index fc1ba00712..01eb007694 100644
+--- a/tests/i915/gem_watchdog.c
++++ b/tests/i915/gem_watchdog.c
+@@ -270,33 +270,6 @@ static void virtual(int i915, const intel_ctx_cfg_t *base_cfg)
+ 	igt_assert_eq(count, expect);
+ }
+ 
+-#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
+-
+-#define MI_MATH(x)                      MI_INSTR(0x1a, (x) - 1)
+-#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
+-/* Opcodes for MI_MATH_INSTR */
+-#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
+-#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
+-#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
+-#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
+-#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
+-#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
+-#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
+-#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
+-#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
+-#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
+-#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
+-#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
+-/* Registers used as operands in MI_MATH_INSTR */
+-#define   MI_MATH_REG(x)                (x)
+-#define   MI_MATH_REG_SRCA              0x20
+-#define   MI_MATH_REG_SRCB              0x21
+-#define   MI_MATH_REG_ACCU              0x31
+-#define   MI_MATH_REG_ZF                0x32
+-#define   MI_MATH_REG_CF                0x33
+-
+-#define MI_LOAD_REGISTER_REG    MI_INSTR(0x2A, 1)
+-
+ static unsigned int offset_in_page(void *addr)
+ {
+ 	return (uintptr_t)addr & 4095;
+diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
+index 70967b3ff5..12c70b2011 100644
+--- a/tests/i915/gem_workarounds.c
++++ b/tests/i915/gem_workarounds.c
+@@ -83,8 +83,6 @@ static bool write_only(const uint32_t addr)
+ 	return false;
+ }
+ 
+-#define MI_STORE_REGISTER_MEM (0x24 << 23)
+-
+ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
+ {
+ 	struct drm_i915_gem_exec_object2 obj[2];
+@@ -122,7 +120,10 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
+ 	out = base =
+ 		gem_mmap__cpu(i915, obj[1].handle, 0, batch_sz, PROT_WRITE);
+ 	for (int i = 0; i < num_wa_regs; i++) {
+-		*out++ = MI_STORE_REGISTER_MEM | ((gen >= 8 ? 4 : 2) - 2);
++		if (gen >= 8)
++			*out++ = MI_STORE_REGISTER_MEM_GEN8;
++		else
++			*out++ = MI_STORE_REGISTER_MEM;
+ 		*out++ = wa_regs[i].addr;
+ 		reloc[i].target_handle = obj[0].handle;
+ 		reloc[i].offset = (out - base) * sizeof(*out);
+diff --git a/tests/i915/gen7_exec_parse.c b/tests/i915/gen7_exec_parse.c
+index c83a791126..c3c2a7a296 100644
+--- a/tests/i915/gen7_exec_parse.c
++++ b/tests/i915/gen7_exec_parse.c
+@@ -48,8 +48,6 @@
+ #define INSTR_CLIENT_SHIFT	29
+ #define   INSTR_INVALID_CLIENT  0x7
+ 
+-#define MI_LOAD_REGISTER_REG (0x2a << 23)
+-#define MI_STORE_REGISTER_MEM (0x24 << 23)
+ #define MI_ARB_ON_OFF (0x8 << 23)
+ #define MI_DISPLAY_FLIP ((0x14 << 23) | 1)
+ 
+@@ -374,19 +372,19 @@ static void test_allocations(int fd)
+ static void hsw_load_register_reg(void)
+ {
+ 	uint32_t init_gpr0[16] = {
+-		MI_LOAD_REGISTER_IMM | (3 - 2),
++		MI_LOAD_REGISTER_IMM,
+ 		HSW_CS_GPR0,
+ 		0xabcdabc0, /* leave [1:0] zero */
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 	uint32_t store_gpr0[16] = {
+-		MI_STORE_REGISTER_MEM | (3 - 2),
++		MI_STORE_REGISTER_MEM,
+ 		HSW_CS_GPR0,
+ 		0, /* reloc*/
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 	uint32_t do_lrr[16] = {
+-		MI_LOAD_REGISTER_REG | (3 - 2),
++		MI_LOAD_REGISTER_REG,
+ 		0, /* [1] = src */
+ 		HSW_CS_GPR0, /* dst */
+ 		MI_BATCH_BUFFER_END,
+diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
+index fa61693cfc..1d9cd37104 100644
+--- a/tests/i915/gen9_exec_parse.c
++++ b/tests/i915/gen9_exec_parse.c
+@@ -38,12 +38,9 @@
+ #define INSTR_CLIENT_SHIFT	29
+ #define   INSTR_INVALID_CLIENT  0x7
+ 
+-#define MI_LOAD_REGISTER_REG (0x2a << 23)
+-#define MI_STORE_REGISTER_MEM (0x24 << 23)
+ #define MI_ARB_ON_OFF (0x8 << 23)
+ #define MI_USER_INTERRUPT (0x02 << 23)
+ #define MI_FLUSH_DW (0x26 << 23)
+-#define MI_ARB_CHECK (0x05 << 23)
+ #define MI_REPORT_HEAD (0x07 << 23)
+ #define MI_SUSPEND_FLUSH (0x0b << 23)
+ #define MI_LOAD_SCAN_LINES_EXCL (0x13 << 23)
+@@ -689,7 +686,7 @@ static void test_cmd_crossing_page(const int i915, const uint32_t handle)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 	const uint32_t store_reg[] = {
+-		MI_STORE_REGISTER_MEM | (4 - 2),
++		MI_STORE_REGISTER_MEM_GEN8,
+ 		BCS_GPR(0),
+ 		0, /* reloc */
+ 		0, /* reloc */
+@@ -728,7 +725,7 @@ static void test_invalid_length(const int i915, const uint32_t handle)
+ 	};
+ 
+ 	const uint32_t store_reg[] = {
+-		MI_STORE_REGISTER_MEM | (4 - 2),
++		MI_STORE_REGISTER_MEM_GEN8,
+ 		BCS_GPR(0),
+ 		0, /* reloc */
+ 		0, /* reloc */
+@@ -841,7 +838,7 @@ static void test_register(const int i915, const uint32_t handle,
+ 	};
+ 
+ 	const uint32_t store_reg[] = {
+-		MI_STORE_REGISTER_MEM | (4 - 2),
++		MI_STORE_REGISTER_MEM_GEN8,
+ 		r->addr,
+ 		0, /* reloc */
+ 		0, /* reloc */
+@@ -880,7 +877,7 @@ static long int read_reg(const int i915, const uint32_t handle,
+ 			 const uint32_t addr)
+ {
+ 	const uint32_t store_reg[] = {
+-		MI_STORE_REGISTER_MEM | (4 - 2),
++		MI_STORE_REGISTER_MEM_GEN8,
+ 		addr,
+ 		0, /* reloc */
+ 		0, /* reloc */
 -- 
 2.32.0
