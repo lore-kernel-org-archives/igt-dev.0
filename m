@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5C1410E0CB
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 14:31:34 +0000 (UTC)
-From: Ramalingam C <ramalingam.c@intel.com>
-To: igt-dev <igt-dev@lists.freedesktop.org>
-Date: Tue,  7 Jun 2022 20:02:30 +0530
-Message-Id: <20220607143230.27024-1-ramalingam.c@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21BF910ED41
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 14:40:38 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  7 Jun 2022 16:39:53 +0200
+Message-Id: <20220607143953.5247-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] prime_busy: Replace open-coded spinner with
- igt_spin_t
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Fix execution of
+ parallel-submit on dg2+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,217 +17,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@intel.com>
+Cc: nirmoy.das@intel.com, chris@chris-wilson.co.uk
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris.p.wilson@intel.com>
 
-Now that we can create arbitrary dependencies with the igt_spin_t dummy
-load, we can replace the custom spinner in prime_busy.
+From dg2, there are multiple compute engines which conflict with the
+parallel-submit restriction; check for the illegal engine class prior to
+running the test.
 
+And from dg2, MI_ATOMIC is only valid for use with system memory for
+INC, DEC and MOV operation, not the ADD used in the test workload.
+Replace the ADD+1 with an INC, so that the same workload runs on all
+platforms.
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6157
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 ---
- tests/prime_busy.c | 137 +++++++++------------------------------------
- 1 file changed, 25 insertions(+), 112 deletions(-)
+ lib/intel_reg.h                |  3 ++-
+ tests/i915/gem_exec_balancer.c | 49 +++++++++++++++++++++++++---------
+ 2 files changed, 38 insertions(+), 14 deletions(-)
 
-diff --git a/tests/prime_busy.c b/tests/prime_busy.c
-index 0b657b67a03e..41ef666a6e84 100644
---- a/tests/prime_busy.c
-+++ b/tests/prime_busy.c
-@@ -42,112 +42,37 @@ static bool prime_busy(struct pollfd *pfd, bool excl)
+diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+index cb6272889..e26ee82a5 100644
+--- a/lib/intel_reg.h
++++ b/lib/intel_reg.h
+@@ -2645,8 +2645,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define STATE3D_COLOR_FACTOR	((0x3<<29)|(0x1d<<24)|(0x01<<16))
  
- static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
- {
--	const int gen = intel_gen(intel_get_drm_devid(fd));
--	const uint32_t _bbe = MI_BATCH_BUFFER_END;
--	struct drm_i915_gem_exec_object2 obj[2];
--	struct pollfd pfd[2];
- #define SCRATCH 0
- #define BATCH 1
--	struct drm_i915_gem_relocation_entry store[1024+1];
--	struct drm_i915_gem_execbuffer2 execbuf;
--	unsigned size = ALIGN(ARRAY_SIZE(store)*16 + 4, 4096);
--	struct timespec tv;
--	uint32_t *batch, *bbe;
--	int i, count, timeout;
-+	uint32_t handle = gem_create(fd, 4096);
-+	struct pollfd pfd[2] = {};
-+	uint64_t ahnd;
-+	igt_spin_t *spin;
-+	int timeout;
+ /* Atomics */
+-#define MI_ATOMIC			((0x2f << 23) | 2)
++#define MI_ATOMIC			((0x2f << 23) | 1)
+ #define   MI_ATOMIC_INLINE_DATA         (1 << 18)
++#define   MI_ATOMIC_INC                 (0x5 << 8)
+ #define   MI_ATOMIC_ADD                 (0x7 << 8)
  
- 	gem_quiescent_gpu(fd);
+ /* Batch */
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 857d00856..186975c46 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -2895,12 +2895,10 @@ static void parallel_thread(int i915, unsigned int flags,
+ 	ctx = intel_ctx_create(i915, &cfg);
  
--	memset(&execbuf, 0, sizeof(execbuf));
--	execbuf.buffers_ptr = to_user_pointer(obj);
--	execbuf.buffer_count = 2;
--	execbuf.flags = ring;
--	if (gen < 6)
--		execbuf.flags |= I915_EXEC_SECURE;
--	execbuf.rsvd1 = ctx->id;
--
--	memset(obj, 0, sizeof(obj));
--	obj[SCRATCH].handle = gem_create(fd, 4096);
--
--	obj[BATCH].handle = gem_create(fd, size);
--	obj[BATCH].offset = 1 << 20;
--	gem_write(fd, obj[BATCH].handle, 0, &_bbe, sizeof(_bbe));
--	igt_require(__gem_execbuf(fd, &execbuf) == 0); /* prebind the buffers */
--
--	obj[BATCH].relocs_ptr = to_user_pointer(store);
--	obj[BATCH].relocation_count = ARRAY_SIZE(store);
--	memset(store, 0, sizeof(store));
-+	ahnd = get_reloc_ahnd(fd, ctx->id);
-+	spin = igt_spin_new(fd,
-+			    .ahnd = ahnd,
-+			    .ctx = ctx, .engine = ring,
-+			    .dependency = handle,
-+			    .flags = (flags & HANG ? IGT_SPIN_NO_PREEMPTION : 0));
-+	igt_spin_end(spin);
-+	gem_sync(fd, spin->handle);
+ 	i = 0;
+-	batch[i] = MI_ATOMIC | MI_ATOMIC_INLINE_DATA |
+-		MI_ATOMIC_ADD;
++	batch[i] = MI_ATOMIC | MI_ATOMIC_INC;
+ #define TARGET_BO_OFFSET	(0x1 << 16)
+ 	batch[++i] = TARGET_BO_OFFSET;
+ 	batch[++i] = 0;
+-	batch[++i] = 1;
+ 	batch[++i] = MI_BATCH_BUFFER_END;
  
- 	if (flags & BEFORE) {
--		memset(pfd, 0, sizeof(pfd));
--		pfd[SCRATCH].fd = prime_handle_to_fd(fd, obj[SCRATCH].handle);
--		pfd[BATCH].fd = prime_handle_to_fd(fd, obj[BATCH].handle);
--	}
--
--	batch = gem_mmap__device_coherent(fd, obj[BATCH].handle, 0, size, PROT_WRITE);
--	gem_set_domain(fd, obj[BATCH].handle,
--			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
--
--	i = 0;
--	for (count = 0; count < 1024; count++) {
--		uint64_t offset;
--
--		store[count].target_handle = obj[SCRATCH].handle;
--		store[count].presumed_offset = obj[SCRATCH].offset;
--		store[count].offset = sizeof(uint32_t) * (i + 1);
--		store[count].delta = sizeof(uint32_t) * count;
--		store[count].read_domains = I915_GEM_DOMAIN_RENDER;
--		store[count].write_domain = I915_GEM_DOMAIN_RENDER;
--
--		offset = store[count].presumed_offset + store[count].delta;
--
--		batch[i] = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
--		if (gen >= 8) {
--			batch[++i] = offset;
--			batch[++i] = offset >> 32;
--		} else if (gen >= 4) {
--			batch[++i] = 0;
--			batch[++i] = offset;
--			store[count].offset += sizeof(uint32_t);
--		} else {
--			batch[i]--;
--			batch[++i] = offset;
--		}
--		batch[++i] = count;
--		i++;
--	}
-+		pfd[SCRATCH].fd = prime_handle_to_fd(fd, spin->obj[SCRATCH].handle);
-+		pfd[BATCH].fd = prime_handle_to_fd(fd, spin->obj[BATCH].handle);
+ 	memset(obj, 0, sizeof(obj));
+@@ -2978,7 +2976,9 @@ static void parallel(int i915, unsigned int flags)
  
--	bbe = &batch[i];
--	store[count].target_handle = obj[BATCH].handle; /* recurse */
--	store[count].presumed_offset = obj[BATCH].offset;
--	store[count].offset = sizeof(uint32_t) * (i + 1);
--	store[count].delta = 0;
--	store[count].read_domains = I915_GEM_DOMAIN_COMMAND;
--	store[count].write_domain = 0;
--	batch[i] = MI_BATCH_BUFFER_START;
--	if (gen >= 8) {
--		batch[i] |= 1 << 8 | 1;
--		batch[++i] = obj[BATCH].offset;
--		batch[++i] = obj[BATCH].offset >> 32;
--	} else if (gen >= 6) {
--		batch[i] |= 1 << 8;
--		batch[++i] = obj[BATCH].offset;
--	} else {
--		batch[i] |= 2 << 6;
--		batch[++i] = obj[BATCH].offset;
--		if (gen < 4) {
--			batch[i] |= 1;
--			store[count].delta = 1;
--		}
+ 	for (class = 0; class < 32; class++) {
+ 		struct i915_engine_class_instance *siblings;
+-		unsigned int count, bb_per_execbuf;
++		const intel_ctx_t *ctx;
++		intel_ctx_cfg_t cfg;
++		unsigned int count;
+ 
+ 		siblings = list_engines(i915, 1u << class, &count);
+ 		if (!siblings)
+@@ -2990,10 +2990,19 @@ static void parallel(int i915, unsigned int flags)
+ 		}
+ 
+ 		logical_sort_siblings(i915, siblings, count);
+-		bb_per_execbuf = count;
+ 
+-		parallel_thread(i915, flags, siblings,
+-				count, bb_per_execbuf);
++		memset(&cfg, 0, sizeof(cfg));
++		cfg.parallel = true;
++		cfg.num_engines = 1;
++		cfg.width = 2;
++		memcpy(cfg.engines, siblings, sizeof(*siblings) * 2);
++		if (__intel_ctx_create(i915, &cfg, &ctx)) {
++			free(siblings);
++			continue;
++		}
++		intel_ctx_destroy(i915, ctx);
++
++		parallel_thread(i915, flags, siblings, count, count);
+ 
+ 		free(siblings);
  	}
--	i++;
+@@ -3005,7 +3014,8 @@ static void parallel_balancer(int i915, unsigned int flags)
  
--	igt_assert(i < size/sizeof(*batch));
--	igt_require(__gem_execbuf(fd, &execbuf) == 0);
-+	igt_spin_reset(spin);
-+	gem_execbuf(fd, &spin->execbuf);
+ 	for (class = 0; class < 32; class++) {
+ 		struct i915_engine_class_instance *siblings;
+-		unsigned int bb_per_execbuf;
++		const intel_ctx_t *ctx;
++		intel_ctx_cfg_t cfg;
+ 		unsigned int count;
  
- 	if (flags & AFTER) {
--		memset(pfd, 0, sizeof(pfd));
--		pfd[SCRATCH].fd = prime_handle_to_fd(fd, obj[SCRATCH].handle);
--		pfd[BATCH].fd = prime_handle_to_fd(fd, obj[BATCH].handle);
-+		pfd[SCRATCH].fd = prime_handle_to_fd(fd, spin->obj[SCRATCH].handle);
-+		pfd[BATCH].fd = prime_handle_to_fd(fd, spin->obj[BATCH].handle);
- 	}
+ 		siblings = list_engines(i915, 1u << class, &count);
+@@ -3019,7 +3029,19 @@ static void parallel_balancer(int i915, unsigned int flags)
  
- 	igt_assert(prime_busy(&pfd[SCRATCH], false));
-@@ -158,8 +83,7 @@ static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
+ 		logical_sort_siblings(i915, siblings, count);
  
- 	timeout = 120;
- 	if ((flags & HANG) == 0) {
--		*bbe = MI_BATCH_BUFFER_END;
--		__sync_synchronize();
-+		igt_spin_end(spin);
- 		timeout = 1;
- 	}
+-		for (bb_per_execbuf = 2; count / bb_per_execbuf > 1;
++		memset(&cfg, 0, sizeof(cfg));
++		cfg.parallel = true;
++		cfg.num_engines = 1;
++		cfg.width = 2;
++		memcpy(cfg.engines, siblings, sizeof(*siblings) * 2);
++		if (__intel_ctx_create(i915, &cfg, &ctx)) {
++			free(siblings);
++			continue;
++		}
++		intel_ctx_destroy(i915, ctx);
++
++		for (unsigned int bb_per_execbuf = 2;
++		     count / bb_per_execbuf > 1;
+ 		     ++bb_per_execbuf) {
+ 			igt_fork(child, count / bb_per_execbuf)
+ 				parallel_thread(i915,
+@@ -3108,13 +3130,14 @@ static void parallel_ordering(int i915, unsigned int flags)
+ 		cfg.width = count;
+ 		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
  
-@@ -168,23 +92,18 @@ static void busy(int fd, const intel_ctx_t *ctx, unsigned ring, unsigned flags)
- 		pfd[BATCH].events = POLLOUT;
- 		igt_assert(poll(pfd, 1, timeout * 1000) == 1);
- 	} else {
--		memset(&tv, 0, sizeof(tv));
-+		struct timespec tv = {};
- 		while (prime_busy(&pfd[BATCH], true))
- 			igt_assert(igt_seconds_elapsed(&tv) < timeout);
- 	}
- 	igt_assert(!prime_busy(&pfd[SCRATCH], true));
+-		ctx = intel_ctx_create(i915, &cfg);
++		if (__intel_ctx_create(i915, &cfg, &ctx)) {
++			free(siblings);
++			continue;
++		}
  
--	munmap(batch, size);
--	batch = gem_mmap__device_coherent(fd, obj[SCRATCH].handle, 0, 4096, PROT_READ);
--	for (i = 0; i < 1024; i++)
--		igt_assert_eq_u32(batch[i], i);
--	munmap(batch, 4096);
--
--	gem_close(fd, obj[BATCH].handle);
--	gem_close(fd, obj[SCRATCH].handle);
-+	igt_spin_free(fd, spin);
-+	gem_close(fd, handle);
+-		batch[i] = MI_ATOMIC | MI_ATOMIC_INLINE_DATA |
+-			MI_ATOMIC_ADD;
++		batch[i] = MI_ATOMIC | MI_ATOMIC_INC;
+ 		batch[++i] = TARGET_BO_OFFSET;
+ 		batch[++i] = 0;
+-		batch[++i] = 1;
+ 		batch[++i] = MI_BATCH_BUFFER_END;
  
- 	close(pfd[BATCH].fd);
- 	close(pfd[SCRATCH].fd);
-+	intel_allocator_close(ahnd);
- }
- 
- static void test_mode(int fd, const intel_ctx_t *ctx, unsigned int flags)
-@@ -198,12 +117,6 @@ static void test_mode(int fd, const intel_ctx_t *ctx, unsigned int flags)
- 		hang = igt_allow_hang(fd, ctx->id, 0);
- 
- 	for_each_ctx_engine(fd, ctx, e) {
--		if (!gem_class_can_store_dword(fd, e->class))
--			continue;
--
--		if (!gem_class_has_mutable_submission(fd, e->class))
--			continue;
--
- 		igt_dynamic_f("%s", e->name)
- 			busy(fd, ctx, e->flags, flags);
- 	}
-@@ -220,7 +133,7 @@ igt_main
- 	int fd = -1;
- 
- 	igt_fixture {
--		fd = drm_open_driver_master(DRIVER_INTEL);
-+		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(fd);
- 		ctx = intel_ctx_create_all_physical(fd);
- 	}
+ 		memset(obj, 0, sizeof(obj));
 -- 
-2.20.1
+2.35.1
