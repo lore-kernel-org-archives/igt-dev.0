@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 778CE10E49B
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 09:01:56 +0000 (UTC)
-Date: Tue, 7 Jun 2022 11:01:39 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E90112AB9E
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 09:13:22 +0000 (UTC)
+Date: Tue, 7 Jun 2022 11:13:18 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Yp8T83Uq1BA3MHdR@kamilkon-desk1>
+Message-ID: <Yp8WrhuU4O5p6B/E@kamilkon-desk1>
 References: <20220607083201.116570-1-zbigniew.kempczynski@intel.com>
- <20220607083201.116570-3-zbigniew.kempczynski@intel.com>
+ <20220607083201.116570-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220607083201.116570-3-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/i915/gem_exec_schedule:
- Execute spinner in valid context
+In-Reply-To: <20220607083201.116570-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/i915/gem_exec_schedule: Run
+ spinner in non-default context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,12 +26,12 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2022-06-07 at 10:32:00 +0200, Zbigniew Kempczyński wrote:
-> Running spinner in default context is not correct because it can
-> contain less engines than spinner expect. Fix this by setting
-> two contexts with identical set of engines.
+On 2022-06-07 at 10:31:59 +0200, Zbigniew Kempczyński wrote:
+> Engine passed to the subtest comes from configuration which is build
+> on top of all-physical-engines context. Add dedicated context for
+> the spinner which is compatibile with this engine.
 > 
-> Fixes: semaphore-noskip and u-semaphore-noskip
+> Fixes: pi-shared-iova and pi-distinct-iova
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -39,76 +39,56 @@ On 2022-06-07 at 10:32:00 +0200, Zbigniew Kempczyński wrote:
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/i915/gem_exec_schedule.c | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
+>  tests/i915/gem_exec_schedule.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
 > diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-> index 43d9d06c09..db3637e88a 100644
+> index cf2625cbf5..43d9d06c09 100644
 > --- a/tests/i915/gem_exec_schedule.c
 > +++ b/tests/i915/gem_exec_schedule.c
-> @@ -1200,16 +1200,17 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
+> @@ -2703,6 +2703,7 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
+>  			 unsigned int engine, unsigned int flags)
 >  {
->  	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
->  	const struct intel_execution_engine2 *outer, *inner;
-> -	const intel_ctx_t *ctx;
-> +	const intel_ctx_t *ctx0, *ctx1;
->  	uint64_t ahnd;
+>  	intel_ctx_cfg_t ufd_cfg = *cfg;
+> +	const intel_ctx_t *spinctx;
+>  	struct uffdio_api api = { .api = UFFD_API };
+>  	struct uffdio_register reg;
+>  	struct uffdio_copy copy;
+> @@ -2712,7 +2713,7 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
+>  	pthread_t hi, lo;
+>  	char poison[4096];
+>  	int ufd;
+> -	uint64_t ahnd = get_reloc_ahnd(i915, 0);
+> +	uint64_t ahnd;
 >  
->  	igt_require(gen >= 6); /* MI_STORE_DWORD_IMM convenience */
+>  	/*
+>  	 * In this scenario, we have a pair of contending contexts that
+> @@ -2740,6 +2741,8 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
+>  	if ((flags & SHARED) && gem_uses_full_ppgtt(i915))
+>  		ufd_cfg.vm = gem_vm_create(i915);
 >  
-> -	ctx = intel_ctx_create(i915, cfg);
-> -	ahnd = get_reloc_ahnd(i915, ctx->id);
-> +	ctx0 = intel_ctx_create(i915, cfg);
-> +	ctx1 = intel_ctx_create(i915, cfg);
-> +	ahnd = get_reloc_ahnd(i915, ctx0->id);
->  
-> -	for_each_ctx_engine(i915, ctx, outer) {
-> -	for_each_ctx_engine(i915, ctx, inner) {
-> +	for_each_ctx_engine(i915, ctx0, outer) {
-> +	for_each_ctx_engine(i915, ctx0, inner) {
->  		struct drm_i915_gem_exec_object2 obj[3];
->  		struct drm_i915_gem_execbuffer2 eb;
->  		uint32_t handle, *cs, *map;
-> @@ -1219,10 +1220,10 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
->  		    !gem_class_can_store_dword(i915, inner->class))
->  			continue;
->  
-> -		chain = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
-> +		chain = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx0,
->  				       .engine = outer->flags, .flags = flags);
->  
-> -		spin = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
-> +		spin = __igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx0,
->  				      .engine = inner->flags, .flags = flags);
->  		igt_spin_end(spin); /* we just want its address for later */
->  		gem_sync(i915, spin->handle);
-> @@ -1256,7 +1257,7 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
->  		memset(&eb, 0, sizeof(eb));
->  		eb.buffer_count = 3;
->  		eb.buffers_ptr = to_user_pointer(obj);
-> -		eb.rsvd1 = ctx->id;
-> +		eb.rsvd1 = ctx1->id;
->  		eb.flags = inner->flags;
->  		gem_execbuf(i915, &eb);
->  
-> @@ -1269,6 +1270,7 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
->  		eb.buffer_count = 2;
->  		eb.buffers_ptr = to_user_pointer(obj);
->  		eb.flags = inner->flags;
-> +		eb.rsvd1 = ctx0->id;
->  		gem_execbuf(i915, &eb);
->  
->  		igt_spin_set_timeout(chain, NSEC_PER_SEC / 100);
-> @@ -1280,7 +1282,8 @@ static void semaphore_noskip(int i915, const intel_ctx_cfg_t *cfg,
->  	}
->  	}
->  
-> -	intel_ctx_destroy(i915, ctx);
-> +	intel_ctx_destroy(i915, ctx0);
-> +	intel_ctx_destroy(i915, ctx1);
+> +	spinctx = intel_ctx_create(i915, cfg);
+> +	ahnd = get_reloc_ahnd(i915, spinctx->id);
+>  	t.i915 = i915;
+>  	t.cfg = &ufd_cfg;
+>  	t.engine = engine;
+> @@ -2782,7 +2785,7 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
+>  	 * the local tasklet will not run until after all signals have been
+>  	 * delivered... but another tasklet might).
+>  	 */
+> -	spin = igt_spin_new(i915, .ahnd = ahnd, .engine = engine);
+> +	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = spinctx, .engine = engine);
+>  	for (int i = 0; i < MAX_ELSP_QLEN; i++) {
+>  		const intel_ctx_t *ctx = create_highest_priority(i915, cfg);
+>  		spin->execbuf.rsvd1 = ctx->id;
+> @@ -2815,6 +2818,7 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
+>  	pthread_mutex_unlock(&t.mutex);
+>  	igt_debugfs_dump(i915, "i915_engine_info");
+>  	igt_spin_free(i915, spin);
+> +	intel_ctx_destroy(i915, spinctx);
+>  	put_offset(ahnd, t.scratch);
+>  	put_offset(ahnd, t.batch);
 >  	put_ahnd(ahnd);
->  }
->  
 > -- 
 > 2.32.0
 > 
