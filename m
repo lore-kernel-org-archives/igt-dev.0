@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25630112E7E
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jun 2022 07:46:19 +0000 (UTC)
-Date: Mon, 6 Jun 2022 09:46:14 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65DAF1120EF
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jun 2022 05:05:00 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Yp2wxrIM5fPFuyQc@kamilkon-desk1>
-References: <20220531211136.1182626-2-janga.rahul.kumar@intel.com>
+Date: Tue,  7 Jun 2022 07:04:41 +0200
+Message-Id: <20220607050441.4479-5-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220607050441.4479-1-zbigniew.kempczynski@intel.com>
+References: <20220607050441.4479-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220531211136.1182626-2-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [1/2] tests/i915/gem_render_tiled_blits : Added
- subtests description
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/api_intel_bb: Add crc32 checking
+ test for DG2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,86 +20,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janga,
+Add simple test which compares crc32 sums and calculation times on cpu
+and gpu.
 
-please rebase and send again, you can keep r-b tag.
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/api_intel_bb.c | 69 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-Regards,
-Kamil
-
-On 2022-06-01 at 02:41:35 +0530, janga.rahul.kumar@intel.com wrote:
-> From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-> 
-> Added test description to all the available subtests and
-> fix file name in the file description comments.
-> 
-> v2: Fix syntax issues.
-> v3: Modified subtest description.
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/i915/gem_render_tiled_blits.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/i915/gem_render_tiled_blits.c
-> index 187714d6..5ccb195e 100644
-> --- a/tests/i915/gem_render_tiled_blits.c
-> +++ b/tests/i915/gem_render_tiled_blits.c
-> @@ -25,7 +25,7 @@
->   *
->   */
->  
-> -/** @file gem_linear_render_blits.c
-> +/** @file gem_render_tiled_blits.c
->   *
->   * This is a test of doing many blits, with a working set
->   * larger than the aperture size.
-> @@ -49,6 +49,10 @@
->  #include "i915/gem.h"
->  #include "igt.h"
->  
-> +IGT_TEST_DESCRIPTION("Tests performs cyclic forward, backward and random blits on tiled buffer "
-> +		      "objects using render engine with various working set sizes and compares "
-> +		      "outputs with expected ones.");
-> +
->  #define WIDTH 512
->  #define STRIDE (WIDTH*4)
->  #define HEIGHT 512
-> @@ -205,16 +209,20 @@ igt_main
->  		igt_require(gem_available_fences(fd) > 0);
->  	}
->  
-> +	igt_describe("Check basic functionality.");
->  	igt_subtest("basic") {
->  		run_test(fd, 2);
->  	}
->  
-> +	igt_describe("Check with working set size larger than aperture size.");
->  	igt_subtest("aperture-thrash") {
->  		count = 3 * gem_aperture_size(fd) / SIZE / 2;
->  		intel_require_memory(count, SIZE, CHECK_RAM);
->  		run_test(fd, count);
->  	}
->  
-> +	igt_describe("Check with working set size larger than aperture size and "
-> +		     "a helper process to shrink buffer object caches.");
->  	igt_subtest("aperture-shrink") {
->  		igt_fork_shrink_helper(fd);
->  
-> @@ -225,6 +233,8 @@ igt_main
->  		igt_stop_shrink_helper();
->  	}
->  
-> +	igt_describe("Check with working set size larger than system memory size "
-> +		     "resulting in usage and thrashing of swap space.");
->  	igt_subtest("swap-thrash") {
->  		uint64_t swap_mb = intel_get_total_swap_mb();
->  		igt_require(swap_mb > 0);
+diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+index 92f44cecf4..13189c08a0 100644
+--- a/tests/i915/api_intel_bb.c
++++ b/tests/i915/api_intel_bb.c
+@@ -22,6 +22,7 @@
+  */
+ 
+ #include "igt.h"
++#include "igt_crc.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include <unistd.h>
+@@ -38,6 +39,7 @@
+ #include <zlib.h>
+ #include "intel_bufops.h"
+ #include "i915/gem_vm.h"
++#include "i915/i915_crc.h"
+ 
+ #define PAGE_SIZE 4096
+ 
+@@ -1395,6 +1397,57 @@ static void render_ccs(struct buf_ops *bops)
+ 	igt_assert_f(fails == 0, "render-ccs fails: %d\n", fails);
+ }
+ 
++static double elapsed(const struct timeval *start,
++		      const struct timeval *end)
++{
++	return (1e6*(end->tv_sec - start->tv_sec) + (end->tv_usec - start->tv_usec)) / 1e6;
++}
++
++static void test_crc32(int i915, const intel_ctx_t *ctx,
++		       const struct intel_execution_engine2 *e,
++		       struct drm_i915_gem_memory_class_instance *r)
++{
++	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
++	uint32_t data, *ptr;
++
++	uint32_t region = INTEL_MEMORY_REGION_ID(r->memory_class,
++						 r->memory_instance);
++
++	igt_info("[engine: %s, region: %s]\n", e->name,
++		 region == REGION_SMEM ? "smem" : "lmem");
++	for (int i = 12; i < 21; i++) {
++		struct timeval start, end;
++		uint64_t size = 1 << i;
++		uint32_t cpu_crc, gpu_crc;
++
++		double cpu_time, gpu_time;
++
++		data = gem_create_in_memory_regions(i915, size, region);
++		ptr = gem_mmap__device_coherent(i915, data, 0, size, PROT_WRITE);
++		for (int j = 0; j < size / sizeof(*ptr); j++)
++			ptr[j] = j;
++
++		gettimeofday(&start, NULL);
++		cpu_crc = igt_cpu_crc32(ptr, size);
++		gettimeofday(&end, NULL);
++		cpu_time = elapsed(&start, &end);
++
++		gettimeofday(&start, NULL);
++		gpu_crc = i915_crc32(i915, ahnd, ctx, e, data, size);
++		gettimeofday(&end, NULL);
++		gpu_time = elapsed(&start, &end);
++		igt_info("size: %10lld, cpu crc: 0x%08x (time: %.3f), "
++				 "gpu crc: 0x%08x (time: %.3f) [ %s ]\n",
++			 (long long) size, cpu_crc, cpu_time, gpu_crc, gpu_time,
++			 cpu_crc == gpu_crc ? "EQUAL" : "DIFFERENT");
++		munmap(ptr, size);
++		gem_close(i915, data);
++		igt_assert(cpu_crc == gpu_crc);
++	}
++
++	put_ahnd(ahnd);
++}
++
+ static int opt_handler(int opt, int opt_index, void *data)
+ {
+ 	switch (opt) {
+@@ -1552,6 +1605,22 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
+ 	igt_subtest("render-ccs")
+ 		render_ccs(bops);
+ 
++	igt_describe("Compare cpu and gpu crc32 sums on input object");
++	igt_subtest_with_dynamic_f("crc32") {
++		const intel_ctx_t *ctx;
++		const struct intel_execution_engine2 *e;
++
++		igt_require(supports_i915_crc32(i915));
++
++		ctx = intel_ctx_create_all_physical(i915);
++		for_each_ctx_engine(i915, ctx, e) {
++			for_each_memory_region(r, i915) {
++				igt_dynamic_f("%s-%s", e->name, r->name)
++					test_crc32(i915, ctx, e, &r->ci);
++			}
++		}
++	}
++
+ 	igt_fixture {
+ 		buf_ops_destroy(bops);
+ 		close(i915);
+-- 
+2.32.0
