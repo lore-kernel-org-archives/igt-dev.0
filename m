@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3FB210FED5
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jun 2022 13:21:32 +0000 (UTC)
+Message-ID: <7833fd84-5bcf-3f75-959c-791dd3c3492a@intel.com>
+Date: Wed, 8 Jun 2022 18:51:24 +0530
 MIME-Version: 1.0
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20220517120245.3521494-1-bhanuprakash.modem@intel.com>
+ <20220517120245.3521494-2-bhanuprakash.modem@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20220517120245.3521494-2-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arun R Murthy" <arun.r.murthy@intel.com>
-Date: Wed, 08 Jun 2022 12:14:18 -0000
-Message-ID: <165469045864.15583.17949912337968818520@emeril.freedesktop.org>
-References: <20220608060737.3839351-1-arun.r.murthy@intel.com>
-In-Reply-To: <20220608060737.3839351-1-arun.r.murthy@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fasync=5Fflips=3A_first_async_flip_discarded_on_i915_?=
- =?utf-8?b?KHJldjMp?=
+Subject: Re: [igt-dev] [V5 01/11] tests/kms_pipe_crc_basic: Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,45 +23,242 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: tests/kms_async_flips: first async flip discarded on i915 (rev3)
-URL   : https://patchwork.freedesktop.org/series/104875/
-State : warning
 
-== Summary ==
+On 17-May-22 5:32 PM, Bhanuprakash Modem wrote:
+> Convert the existing subtests to dynamic subtests at pipe level.
+> 
+> V2:
+> * Fix typos: s/hand/hang/, s/TEST_NONE/TEST_BASIC, etc..
+> V3:
+> * Add output->name to the dynamic subtest
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_pipe_crc_basic.c | 140 +++++++++++++++++++++----------------
+>   1 file changed, 78 insertions(+), 62 deletions(-)
+> 
+> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+> index 0861c46d..a9fbfc32 100644
+> --- a/tests/kms_pipe_crc_basic.c
+> +++ b/tests/kms_pipe_crc_basic.c
+> @@ -59,22 +59,23 @@ static void test_bad_source(data_t *data)
+>   
+>   #define N_CRCS	3
+>   
+> -#define TEST_SEQUENCE (1<<0)
+> -#define TEST_NONBLOCK (1<<1)
+> +enum {
+> +	TEST_BASIC = 0,
+> +	TEST_SEQUENCE = 1 << 0,
+> +	TEST_NONBLOCK = 1 << 1,
+> +	TEST_SUSPEND = 1 << 2,
+> +	TEST_HANG = 1 << 3,
+> +};
+>   
+> -static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
+> +static void test_read_crc(data_t *data, enum pipe pipe,
+> +			  igt_output_t *output, unsigned flags)
+>   {
+>   	igt_display_t *display = &data->display;
+> -	igt_output_t *output;
+>   	igt_plane_t *primary;
+>   	drmModeModeInfo *mode;
+>   	igt_crc_t *crcs = NULL;
+>   	int c, j;
+>   
+> -	igt_require_pipe(display, pipe);
+> -	igt_display_require_output_on_pipe(display, pipe);
+> -	output = igt_get_single_output_for_pipe(display, pipe);
+> -
+>   	igt_display_reset(display);
+>   	igt_output_set_pipe(output, pipe);
+>   
+> @@ -164,7 +165,7 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
+>    *
+>    *   No CRC mismatch should happen
+>    */
+> -static void test_compare_crc(data_t *data, enum pipe pipe)
+> +static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_plane_t *primary;
+> @@ -172,11 +173,6 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
+>   	igt_crc_t ref_crc, crc;
+>   	igt_pipe_crc_t *pipe_crc = NULL;
+>   	struct igt_fb fb0, fb1;
+> -	igt_output_t *output;
+> -
+> -	igt_require_pipe(display, pipe);
+> -	igt_display_require_output_on_pipe(display, pipe);
+> -	output = igt_get_single_output_for_pipe(display, pipe);
+>   
+>   	igt_display_reset(display);
+>   	igt_output_set_pipe(output, pipe);
+> @@ -223,18 +219,14 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
+>   	igt_remove_fb(data->drm_fd, &fb1);
+>   }
+>   
+> -static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe)
+> +static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+> +					igt_output_t *output)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_pipe_crc_t *pipe_crc;
+>   	drmModeModeInfo *mode;
+> -	igt_output_t *output;
+>   	igt_crc_t crc[2];
+>   
+> -	igt_require_pipe(display, pipe);
+> -	igt_display_require_output_on_pipe(display, pipe);
+> -	output = igt_get_single_output_for_pipe(display, pipe);
+> -
+>   	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
+>   
+>   	igt_display_reset(display);
+> @@ -270,6 +262,25 @@ data_t data = {0, };
+>   igt_main
+>   {
+>   	enum pipe pipe;
+> +	struct {
+> +		const char *name;
+> +		unsigned flags;
+> +		const char *desc;
+> +	} tests[] = {
+> +		{ "read-crc", TEST_BASIC,
+> +			"Test for pipe CRC reads." },
+> +		{ "read-crc-frame-sequence", TEST_SEQUENCE,
+> +			"Tests the pipe CRC read and ensure frame sequence." },
+> +		{ "nonblocking-crc", TEST_NONBLOCK,
+> +			"Test for O_NONBLOCK CRC reads." },
+> +		{ "nonblocking-crc-frame-sequence", TEST_SEQUENCE | TEST_NONBLOCK,
+> +			"Test for O_NONBLOCK CRC reads and ensure frame sequence." },
+> +		{ "suspend-read-crc", TEST_SUSPEND,
+> +			"Suspend test for pipe CRC reads." },
+> +		{ "hang-read-crc", TEST_HANG,
+> +			"Hang test for pipe CRC read." },
+> +	};
+> +	int i;
+>   
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -279,6 +290,7 @@ igt_main
+>   		igt_require_pipe_crc(data.drm_fd);
+>   
+>   		igt_display_require(&data.display, data.drm_fd);
+> +		igt_display_require_output(&data.display);
+>   		data.debugfs = igt_debugfs_dir(data.drm_fd);
+>   	}
+>   
+> @@ -286,54 +298,58 @@ igt_main
+>   	igt_subtest("bad-source")
+>   		test_bad_source(&data);
+>   
+> -	for_each_pipe_static(pipe) {
+> -		igt_describe("Test for pipe CRC reads.");
+> -		igt_subtest_f("read-crc-pipe-%s", kmstest_pipe_name(pipe))
+> -			test_read_crc(&data, pipe, 0);
+> -
+> -		igt_describe("Tests the pipe CRC read and ensure frame sequence.");
+> -		igt_subtest_f("read-crc-pipe-%s-frame-sequence", kmstest_pipe_name(pipe))
+> -			test_read_crc(&data, pipe, TEST_SEQUENCE);
+> -
+> -		igt_describe("Test for O_NONBLOCK CRC reads.");
+> -		igt_subtest_f("nonblocking-crc-pipe-%s", kmstest_pipe_name(pipe))
+> -			test_read_crc(&data, pipe, TEST_NONBLOCK);
+> -
+> -		igt_describe("Test for O_NONBLOCK CRC reads and ensure frame sequence.");
+> -		igt_subtest_f("nonblocking-crc-pipe-%s-frame-sequence", kmstest_pipe_name(pipe))
+> -			test_read_crc(&data, pipe, TEST_SEQUENCE | TEST_NONBLOCK);
+> -
+> -		igt_describe("Suspend test for pipe CRC reads");
+> -		igt_subtest_f("suspend-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
+> -			test_read_crc(&data, pipe, 0);
+> -
+> -			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> -						      SUSPEND_TEST_NONE);
+> -
+> -			test_read_crc(&data, pipe, 0);
+> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+> +		igt_describe(tests[i].desc);
+> +		igt_subtest_with_dynamic(tests[i].name) {
+> +			for_each_pipe(&data.display, pipe) {
+> +				igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
+> +
+> +				igt_require(output);
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+> +					if (tests[i].flags & TEST_SUSPEND) {
+> +						test_read_crc(&data, pipe, output, 0);
+> +
+> +						igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> +									      SUSPEND_TEST_NONE);
+> +
+> +						test_read_crc(&data, pipe, output, 0);
+> +					} else if (tests[i].flags & TEST_SUSPEND) {
 
-Pipeline status: FAILED.
+Do you mean TEST_HANG here?
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/607408 for the overview.
+> +						igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
+> +
+> +						test_read_crc(&data, pipe, output, 0);
+> +						igt_force_gpu_reset(data.drm_fd);
+> +						test_read_crc(&data, pipe, output, 0);
+> +
+> +						igt_disallow_hang(data.drm_fd, hang);
+> +					} else {
+> +						test_read_crc(&data, pipe, output, tests[i].flags);
+> +					}
+> +				}
+> +			}
+>   		}
+> +	}
+>   
+> -		igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
+> -			     "does not cause issues.");
+> -		igt_subtest_f("disable-crc-after-crtc-pipe-%s", kmstest_pipe_name(pipe))
+> -			test_disable_crc_after_crtc(&data, pipe);
+> -
+> -		igt_describe("Hang test for pipe CRC read");
+> -		igt_subtest_f("hang-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
+> -			igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
+> -
+> -			test_read_crc(&data, pipe, 0);
+> +	igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
+> +		     "does not cause issues.");
+> +	igt_subtest_with_dynamic("disable-crc-after-crtc") {
+> +		for_each_pipe(&data.display, pipe) {
+> +			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
+>   
+> -			igt_force_gpu_reset(data.drm_fd);
+> +			igt_require(output);
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+> +				test_disable_crc_after_crtc(&data, pipe, output);
+> +		}
+> +	}
+>   
+> -			test_read_crc(&data, pipe, 0);
+> +	igt_describe("Basic sanity check for CRC mismatches");
+> +	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+> +		for_each_pipe(&data.display, pipe) {
+> +			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
+>   
+> -			igt_disallow_hang(data.drm_fd, hang);
+> +			igt_require(output);
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+> +				test_compare_crc(&data, pipe, output);
+>   		}
+> -
+> -		igt_describe("Basic sanity check for CRC mismatches");
+> -		igt_subtest_f("compare-crc-sanitycheck-pipe-%s", kmstest_pipe_name(pipe))
+> -			test_compare_crc(&data, pipe);
+>   	}
+>   
+>   	igt_fixture {
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/23732302):
-  ec512b0677af8babf0c3ca6db7bd7c84d7134058005f78d05a3de67fb4cb0af9
-  STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
-  bdb6892aef1dc0719277111711c05b56632e1d2e13c66715102c8aa8e4feda56
-  STEP 7: CMD docker-help.sh
-  STEP 8: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-b9fbec4040014f8fb154e2abd1b9e276960d17c2
-  83ab03688cdf4e2f2f085faadd9ecc8b11ac2934f8f26ec14f42f405550045c0
-  Getting image source signatures
-  Copying blob sha256:1660f04368ca052925a688801d695246acfe25aba8658f9cfdb98ea2ea1b95f2
-  Copying blob sha256:1aeaa55c6f5c4bc94eb32ceff887852e303db981bcf35fd9ef081d8f1d062232
-  Copying blob sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079
-  Copying config sha256:83ab03688cdf4e2f2f085faadd9ecc8b11ac2934f8f26ec14f42f405550045c0
-  Writing manifest to image destination
-  Storing signatures
-  time="2022-06-08T12:04:59Z" level=fatal msg="Error initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-b9fbec4040014f8fb154e2abd1b9e276960d17c2: unexpected http code: 504 (Gateway Timeout), URL: https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Agfx-ci%2Figt-ci-tags%2Figt%3Apull&service=container_registry" 
-  section_end:1654689899:step_script
-  section_start:1654689899:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1654689900:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/607408
+-- 
+~Swati Sharma
