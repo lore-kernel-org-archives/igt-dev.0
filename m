@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE23F10E149
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jun 2022 08:56:31 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48E9410E341
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jun 2022 09:04:00 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+To: Luca Coelho <luca@coelho.fi>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Wed, 8 Jun 2022 08:56:30 +0000
-Message-ID: <d2d2c3b0212946399df836f54aef4f9e@intel.com>
-References: <20220608045405.1445705-1-riana.tauro@intel.com>
- <20220608045405.1445705-2-riana.tauro@intel.com>
-In-Reply-To: <20220608045405.1445705-2-riana.tauro@intel.com>
+Date: Wed, 8 Jun 2022 09:03:57 +0000
+Message-ID: <MWHPR1101MB2157B315265FDDE8629BE4CDEFA49@MWHPR1101MB2157.namprd11.prod.outlook.com>
+References: <20220607074240.1202404-1-luca@coelho.fi>
+ <20220607074240.1202404-3-luca@coelho.fi>
+In-Reply-To: <20220607074240.1202404-3-luca@coelho.fi>
 Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/i915/pm_rc6_residency: Extend
- rc6-idle test on remaining engines
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/kms_sysfs_edid_timing: fail
+ if probing a single connector takes too long
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,94 +27,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Tauro, Riana <riana.tauro@intel.com>
-> Sent: Wednesday, June 8, 2022 10:24 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>
-> Subject: [PATCH i-g-t 1/1] tests/i915/pm_rc6_residency: Extend rc6-idle t=
-est on
-> remaining engines
->=20
-> rc6-idle should set up bg_load() on single instance of every engine
-Please create a dynamic test for single instance of each engine.
-We need to know which engine is failing the test.
-Regards,
-Anshuman Gupta.
->=20
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->  tests/i915/i915_pm_rc6_residency.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/i915/i915_pm_rc6_residency.c
-> b/tests/i915/i915_pm_rc6_residency.c
-> index cf9eae90..1668372a 100644
-> --- a/tests/i915/i915_pm_rc6_residency.c
-> +++ b/tests/i915/i915_pm_rc6_residency.c
-> @@ -292,9 +292,10 @@ static void sighandler(int sig)  {  }
->=20
-> -static void bg_load(int i915, unsigned int flags, unsigned long *ctl)
-> +static void bg_load(int i915, const intel_ctx_t *ctx, unsigned int
-> +flags, unsigned long *ctl)
->  {
->  	const bool has_execlists =3D intel_gen(intel_get_drm_devid(i915)) >=3D =
-8;
-> +	const struct intel_execution_engine2 *e;
->  	struct drm_i915_gem_exec_object2 obj =3D {
->  		.handle =3D batch_create(i915),
->  	};
-> @@ -313,7 +314,13 @@ static void bg_load(int i915, unsigned int flags,
-> unsigned long *ctl)
->=20
->  		igt_nsec_elapsed(&tv);
->=20
-> -		gem_execbuf(i915, &execbuf);
-> +		for_each_ctx_engine(i915, ctx, e) {
-> +			if (e->instance =3D=3D 0) {
-> +				execbuf.flags =3D e->flags;
-> +				gem_execbuf(i915, &execbuf);
-> +			}
-> +		}
-> +
->  		submit =3D igt_nsec_elapsed(&tv);
->  		if (flags & WAITBOOST) {
->  			gem_sync(i915, obj.handle);
-> @@ -362,6 +369,7 @@ static void rc6_idle(int i915)  {
->  	const int64_t duration_ns =3D SLEEP_DURATION *
-> (int64_t)NSEC_PER_SEC;
->  	const int tolerance =3D 20; /* Some RC6 is better than none! */
-> +	const intel_ctx_t *ctx;
->  	const unsigned int gen =3D intel_gen(intel_get_drm_devid(i915));
->  	struct {
->  		const char *name;
-> @@ -379,6 +387,7 @@ static void rc6_idle(int i915)
->  	struct rapl rapl;
->  	int fd;
->=20
-> +	ctx =3D intel_ctx_create_all_physical(i915);
->  	fd =3D open_pmu(i915, I915_PMU_RC6_RESIDENCY);
->  	igt_drop_caches_set(i915, DROP_IDLE);
->  	igt_require(__pmu_wait_for_rc6(fd));
-> @@ -404,7 +413,7 @@ static void rc6_idle(int i915)
->  	for (int p =3D 0; p < ARRAY_SIZE(phases); p++) {
->  		memset(done, 0, 2 * sizeof(*done));
->  		igt_fork(child, 1) /* Setup up a very light load */
-> -			bg_load(i915, phases[p].flags, done);
-> +			bg_load(i915, ctx, phases[p].flags, done);
->=20
->  		rapl_read(&rapl, &sample[0]);
->  		cycles =3D -READ_ONCE(done[1]);
-> @@ -436,6 +445,7 @@ static void rc6_idle(int i915)
->  	}
->=20
->  	munmap(done, 4096);
-> +	intel_ctx_destroy(i915, ctx);
->  	close(fd);
->=20
->  	rapl_close(&rapl);
-> --
-> 2.25.1
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
+dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgTHVjYQ0KPiBDb2VsaG8N
+Cj4gU2VudDogVHVlc2RheSwgSnVuZSA3LCAyMDIyIDEwOjQzIEFNDQo+IFRvOiBpZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiBbaWd0LWRldl0gW1BBVENIIGktZy10IDIv
+NF0gdGVzdHMva21zX3N5c2ZzX2VkaWRfdGltaW5nOiBmYWlsIGlmIHByb2JpbmcgYQ0KPiBzaW5n
+bGUgY29ubmVjdG9yIHRha2VzIHRvbyBsb25nDQo+IA0KPiBGcm9tOiBMdWNhIENvZWxobyA8bHVj
+aWFuby5jb2VsaG9AaW50ZWwuY29tPg0KPiANCj4gVGhlcmUncyBubyBwb2ludCBpbiBqdXN0IHdh
+cm5pbmcgaWYgcHJvYmluZyBhIHNpbmdsZSBjb25uZWN0b3IgdGFrZXMgdG9vIGxvbmcuICBJZiBh
+DQo+IHRlc3QgZmluZHMgYW55IGlzc3VlcywgaXQgc2hvdWxkIGp1c3QgZmFpbC4NCj4gDQo+IENv
+bnZlcnQgdGhlIHdhcm5pbmcgaW50byBhbiBhc3NlcnRpb24uDQo+IA0KDQpSZXZpZXdlZC1ieTog
+TWlrYSBLYWhvbGEgPG1pa2Eua2Fob2xhQGludGVsLmNvbT4NCg0KPiBTaWduZWQtb2ZmLWJ5OiBM
+dWNhIENvZWxobyA8bHVjaWFuby5jb2VsaG9AaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRlc3RzL2tt
+c19zeXNmc19lZGlkX3RpbWluZy5jIHwgMTAgKysrKystLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQs
+IDUgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0
+cy9rbXNfc3lzZnNfZWRpZF90aW1pbmcuYyBiL3Rlc3RzL2ttc19zeXNmc19lZGlkX3RpbWluZy5j
+DQo+IGluZGV4IDAyOGE1MzIzYzBiMi4uZWEwZTE2OWU2ZWQ5IDEwMDY0NA0KPiAtLS0gYS90ZXN0
+cy9rbXNfc3lzZnNfZWRpZF90aW1pbmcuYw0KPiArKysgYi90ZXN0cy9rbXNfc3lzZnNfZWRpZF90
+aW1pbmcuYw0KPiBAQCAtODEsMTEgKzgxLDExIEBAIGlndF9zaW1wbGVfbWFpbg0KPiAgCQkJICBt
+ZWFuLm1heCwgbWVhbi5tYXggLyAxZTMsIG1lYW4ubWF4IC8gMWU2LA0KPiAgCQkJICBtZWFuLm1l
+YW4sIG1lYW4ubWVhbiAvIDFlMywgbWVhbi5tZWFuIC8gMWU2KTsNCj4gDQo+IC0JCWlmIChtZWFu
+Lm1heCA+IChUSFJFU0hPTERfUEVSX0NPTk5FQ1RPUiAqIDFlNikpIHsNCj4gLQkJCWlndF93YXJu
+KCIlczogcHJvYmUgdGltZSBleGNlZWQgJWRtcywgbWF4PSUuMmZtcywNCj4gYXZnPSUuMmZtc1xu
+IiwNCj4gLQkJCQkgZGUtPmRfbmFtZSwgVEhSRVNIT0xEX1BFUl9DT05ORUNUT1IsDQo+IC0JCQkJ
+IG1lYW4ubWF4IC8gMWU2LCBtZWFuLm1lYW4gLyAxZTYpOw0KPiAtCQl9DQo+ICsJCWlndF9hc3Nl
+cnRfZihtZWFuLm1heCA8IFRIUkVTSE9MRF9QRVJfQ09OTkVDVE9SICogMWU2LA0KPiArCQkJICAg
+ICAiJXM6IHByb2JlIHRpbWUgZXhjZWVkICVkbXMsIG1heD0lLjJmbXMsDQo+IGF2Zz0lLjJmbXNc
+biIsDQo+ICsJCQkgICAgIGRlLT5kX25hbWUsIFRIUkVTSE9MRF9QRVJfQ09OTkVDVE9SLA0KPiAr
+CQkJICAgICBtZWFuLm1heCAvIDFlNiwgbWVhbi5tZWFuIC8gMWU2KTsNCj4gKw0KPiAgCQlpZ3Rf
+YXNzZXJ0X2YobWVhbi5tZWFuIDwgKFRIUkVTSE9MRF9UT1RBTCAqIDFlNiksDQo+ICAJCQkgICAg
+ICIlczogYXZlcmFnZSBwcm9iZSB0aW1lIGV4Y2VlZGVkICVkbXMsDQo+IG1heD0lLjJmbXMsIGF2
+Zz0lLjJmbXNcbiIsDQo+ICAJCQkgICAgIGRlLT5kX25hbWUsIFRIUkVTSE9MRF9UT1RBTCwNCj4g
+LS0NCj4gMi4zNi4xDQoNCg==
