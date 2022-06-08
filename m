@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCC8910E591
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jun 2022 08:41:25 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Jun 2022 14:07:47 +0530
-Message-Id: <20220608083747.17387-1-jeevan.b@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE23F10E149
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jun 2022 08:56:31 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Wed, 8 Jun 2022 08:56:30 +0000
+Message-ID: <d2d2c3b0212946399df836f54aef4f9e@intel.com>
+References: <20220608045405.1445705-1-riana.tauro@intel.com>
+ <20220608045405.1445705-2-riana.tauro@intel.com>
+In-Reply-To: <20220608045405.1445705-2-riana.tauro@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/kms_rotation_crc: Limit the test
- combinations on simulation to avoid timeout
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/i915/pm_rc6_residency: Extend
+ rc6-idle test on remaining engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,49 +27,94 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is simulation specific patch to limit the combination to avoid
-timeout.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_rotation_crc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 50869a08..22066159 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -724,15 +724,22 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 		igt_pipe_crc_start(data->pipe_crc);
- 
- 		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
-+			if (igt_run_in_simulation() && planeconfigs[i].rotation == IGT_ROTATION_0)
-+				continue;
- 			p[0].width = (uint64_t)(planeconfigs[i].width * used_w);
- 			p[0].height = (uint64_t)(planeconfigs[i].height * used_h);
- 			p[0].modifier = planeconfigs[i].modifier;
- 			pointlocation(data, (planeinfos *)&p, mode, 0);
- 
- 			for (k = 0; k < ARRAY_SIZE(formatlist); k++) {
-+				if (igt_run_in_simulation() && formatlist[k] == DRM_FORMAT_P010)
-+					continue;
- 				p[0].format = formatlist[k];
- 
- 				for (j = 0; j < ARRAY_SIZE(planeconfigs); j++) {
-+					if (igt_run_in_simulation() &&
-+					    planeconfigs[j].rotation == IGT_ROTATION_0)
-+						continue;
- 					p[1].width = (uint64_t)(planeconfigs[j].width * used_w);
- 					p[1].height = (uint64_t)(planeconfigs[j].height * used_h);
- 					p[1].modifier = planeconfigs[j].modifier;
-@@ -740,6 +747,8 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 						      mode, 1);
- 
- 					for (l = 0; l < ARRAY_SIZE(formatlist); l++) {
-+						if (igt_run_in_simulation() && formatlist[l] == DRM_FORMAT_NV12)
-+							continue;
- 						p[1].format = formatlist[l];
- 						/*
- 						 * RGB565 90/270 degrees rotation is supported
--- 
-2.36.0
+> -----Original Message-----
+> From: Tauro, Riana <riana.tauro@intel.com>
+> Sent: Wednesday, June 8, 2022 10:24 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
+> <anshuman.gupta@intel.com>
+> Subject: [PATCH i-g-t 1/1] tests/i915/pm_rc6_residency: Extend rc6-idle t=
+est on
+> remaining engines
+>=20
+> rc6-idle should set up bg_load() on single instance of every engine
+Please create a dynamic test for single instance of each engine.
+We need to know which engine is failing the test.
+Regards,
+Anshuman Gupta.
+>=20
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> ---
+>  tests/i915/i915_pm_rc6_residency.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/tests/i915/i915_pm_rc6_residency.c
+> b/tests/i915/i915_pm_rc6_residency.c
+> index cf9eae90..1668372a 100644
+> --- a/tests/i915/i915_pm_rc6_residency.c
+> +++ b/tests/i915/i915_pm_rc6_residency.c
+> @@ -292,9 +292,10 @@ static void sighandler(int sig)  {  }
+>=20
+> -static void bg_load(int i915, unsigned int flags, unsigned long *ctl)
+> +static void bg_load(int i915, const intel_ctx_t *ctx, unsigned int
+> +flags, unsigned long *ctl)
+>  {
+>  	const bool has_execlists =3D intel_gen(intel_get_drm_devid(i915)) >=3D =
+8;
+> +	const struct intel_execution_engine2 *e;
+>  	struct drm_i915_gem_exec_object2 obj =3D {
+>  		.handle =3D batch_create(i915),
+>  	};
+> @@ -313,7 +314,13 @@ static void bg_load(int i915, unsigned int flags,
+> unsigned long *ctl)
+>=20
+>  		igt_nsec_elapsed(&tv);
+>=20
+> -		gem_execbuf(i915, &execbuf);
+> +		for_each_ctx_engine(i915, ctx, e) {
+> +			if (e->instance =3D=3D 0) {
+> +				execbuf.flags =3D e->flags;
+> +				gem_execbuf(i915, &execbuf);
+> +			}
+> +		}
+> +
+>  		submit =3D igt_nsec_elapsed(&tv);
+>  		if (flags & WAITBOOST) {
+>  			gem_sync(i915, obj.handle);
+> @@ -362,6 +369,7 @@ static void rc6_idle(int i915)  {
+>  	const int64_t duration_ns =3D SLEEP_DURATION *
+> (int64_t)NSEC_PER_SEC;
+>  	const int tolerance =3D 20; /* Some RC6 is better than none! */
+> +	const intel_ctx_t *ctx;
+>  	const unsigned int gen =3D intel_gen(intel_get_drm_devid(i915));
+>  	struct {
+>  		const char *name;
+> @@ -379,6 +387,7 @@ static void rc6_idle(int i915)
+>  	struct rapl rapl;
+>  	int fd;
+>=20
+> +	ctx =3D intel_ctx_create_all_physical(i915);
+>  	fd =3D open_pmu(i915, I915_PMU_RC6_RESIDENCY);
+>  	igt_drop_caches_set(i915, DROP_IDLE);
+>  	igt_require(__pmu_wait_for_rc6(fd));
+> @@ -404,7 +413,7 @@ static void rc6_idle(int i915)
+>  	for (int p =3D 0; p < ARRAY_SIZE(phases); p++) {
+>  		memset(done, 0, 2 * sizeof(*done));
+>  		igt_fork(child, 1) /* Setup up a very light load */
+> -			bg_load(i915, phases[p].flags, done);
+> +			bg_load(i915, ctx, phases[p].flags, done);
+>=20
+>  		rapl_read(&rapl, &sample[0]);
+>  		cycles =3D -READ_ONCE(done[1]);
+> @@ -436,6 +445,7 @@ static void rc6_idle(int i915)
+>  	}
+>=20
+>  	munmap(done, 4096);
+> +	intel_ctx_destroy(i915, ctx);
+>  	close(fd);
+>=20
+>  	rapl_close(&rapl);
+> --
+> 2.25.1
