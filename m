@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Arun R Murthy <arun.r.murthy@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Jun 2022 11:37:37 +0530
-Message-Id: <20220608060737.3839351-1-arun.r.murthy@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/kms_async_flips: first async flip discarded
- on i915
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Arun R Murthy" <arun.r.murthy@intel.com>
+Date: Wed, 08 Jun 2022 06:29:38 -0000
+Message-ID: <165466977883.15584.3036490246604082885@emeril.freedesktop.org>
+References: <20220608060737.3839351-1-arun.r.murthy@intel.com>
+In-Reply-To: <20220608060737.3839351-1-arun.r.murthy@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fasync=5Fflips=3A_first_async_flip_discarded_on_i915?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,54 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Arun R Murthy <arun.r.murthy@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The i915 KMD will use the first async flip to update the watermarks as
-per the watermark optimization in DISPLAY13. Hence the actual async flip
-will happen from the subsequent flips.
-For alternate sync async test, a dummy async flip has to be done to
-allow the KMD to perform the watermark related updates before writing to
-the surface base address.
+== Series Details ==
 
-Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
----
- tests/kms_async_flips.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+Series: tests/kms_async_flips: first async flip discarded on i915
+URL   : https://patchwork.freedesktop.org/series/104875/
+State : warning
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 1701883b..b9e67454 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -189,19 +189,20 @@ static void test_async_flip(data_t *data, bool alternate_sync_async)
- 			 * In older platforms (<= Gen10), async address update bit is double buffered.
- 			 * So flip timestamp can be verified only from the second flip.
- 			 * The first async flip just enables the async address update.
-+			 * In platforms greater than DISPLAY13 thr first async flip will be discarded
-+			 * in order to change the watermark levels as per the optimization. Hence the
-+			 * subsequent async flips will actually do the asynchronous flips.
- 			 */
- 			if (is_i915_device(data->drm_fd)) {
- 				uint32_t devid = intel_get_drm_devid(data->drm_fd);
- 
--				if (IS_GEN9(devid) || IS_GEN10(devid)) {
--					ret = drmModePageFlip(data->drm_fd, data->crtc_id,
--							      data->bufs[frame % 4].fb_id,
--							      flags, data);
-+				ret = drmModePageFlip(data->drm_fd, data->crtc_id,
-+						      data->bufs[frame % 4].fb_id,
-+						      flags, data);
- 
--					igt_assert(ret == 0);
-+				igt_assert(ret == 0);
- 
--					wait_flip_event(data);
--				}
-+				wait_flip_event(data);
- 			}
- 		}
- 
--- 
-2.25.1
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/607119 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/23714008):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                289
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1654669638:step_script
+  section_start:1654669638:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1743 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=23714008 responseStatus=201 Created token=R8mkXU9U
+  section_end:1654669649:upload_artifacts_on_failure
+  section_start:1654669649:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1654669649:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/607119
