@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26DAF113F3E
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jun 2022 09:57:21 +0000 (UTC)
-Date: Thu, 9 Jun 2022 12:55:16 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Luca Coelho <luca@coelho.fi>, Mika Kahola <mika.kahola@intel.com>
-Message-ID: <YqHDhE1svBRjcZSq@platvala-desk.ger.corp.intel.com>
-References: <20220607074240.1202404-1-luca@coelho.fi>
- <20220607074240.1202404-3-luca@coelho.fi>
- <YqGiH9LNcDIJDFW/@platvala-desk.ger.corp.intel.com>
- <dd334dda4779fbad3598af9baf29bb07ebfac2f8.camel@coelho.fi>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15EED113CF6
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jun 2022 10:40:52 +0000 (UTC)
+Date: Thu, 9 Jun 2022 12:40:48 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YqHOMHBHfq/23SvL@kamilkon-desk1>
+References: <20220609052819.1980745-1-janga.rahul.kumar@intel.com>
+ <20220609052819.1980745-2-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <dd334dda4779fbad3598af9baf29bb07ebfac2f8.camel@coelho.fi>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/kms_sysfs_edid_timing: fail
- if probing a single connector takes too long
+In-Reply-To: <20220609052819.1980745-2-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/i915/gem_exec_suspend : Added
+ subtests description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,77 +21,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 09, 2022 at 11:49:47AM +0300, Luca Coelho wrote:
-> On Thu, 2022-06-09 at 10:32 +0300, Petri Latvala wrote:
-> > On Tue, Jun 07, 2022 at 10:42:38AM +0300, Luca Coelho wrote:
-> > > From: Luca Coelho <luciano.coelho@intel.com>
-> > > 
-> > > There's no point in just warning if probing a single connector takes
-> > > too long.  If a test finds any issues, it should just fail.
-> > > 
-> > > Convert the warning into an assertion.
-> > > 
-> > > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> > > ---
-> > >  tests/kms_sysfs_edid_timing.c | 10 +++++-----
-> > >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
-> > > index 028a5323c0b2..ea0e169e6ed9 100644
-> > > --- a/tests/kms_sysfs_edid_timing.c
-> > > +++ b/tests/kms_sysfs_edid_timing.c
-> > > @@ -81,11 +81,11 @@ igt_simple_main
-> > >  			  mean.max, mean.max / 1e3, mean.max / 1e6,
-> > >  			  mean.mean, mean.mean / 1e3, mean.mean / 1e6);
-> > >  
-> > > -		if (mean.max > (THRESHOLD_PER_CONNECTOR * 1e6)) {
-> > > -			igt_warn("%s: probe time exceed %dms, max=%.2fms, avg=%.2fms\n",
-> > > -				 de->d_name, THRESHOLD_PER_CONNECTOR,
-> > > -				 mean.max / 1e6, mean.mean / 1e6);
-> > > -		}
-> > > +		igt_assert_f(mean.max < THRESHOLD_PER_CONNECTOR * 1e6,
-> > > +			     "%s: probe time exceed %dms, max=%.2fms, avg=%.2fms\n",
-> > > +			     de->d_name, THRESHOLD_PER_CONNECTOR,
-> > > +			     mean.max / 1e6, mean.mean / 1e6);
-> > > +
-> > 
-> > 
-> > 120ms on KBL:
-> > https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7242/shard-kbl4/igt@kms_sysfs_edid_timing.html
-> > 
-> > 
-> > 80-ish ms on APL:
-> > https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7242/shard-apl4/igt@kms_sysfs_edid_timing.html
-> 
-> Thanks for checking these values IRL.
-> 
-> 
-> > As for whether that makes this IGT patch an acceptable change, depends
-> > on whether those times are considered anomalies that someone plans to
-> > fix somehow...
-> 
-> I don't really know what is considered a reasonable time for this.  We
-> used to have 10 ms which was not enough for almost any platform,
-> AFAICT.  So the tests were already failing (with warnings).
-> 
-> I think it doesn't make sense to differentiate between warning and
-> assertion failures if both cause the tests to fail.  It is just
-> confusing.  Is a warning a failure or not? Can it be ignored? IMHO a
-> test results should be black and white: fails or doesn't fail.
-> 
-> In any case, I agree that we should find reasonable values that will
-> work with all platforms.  120 ms sounds really high to me, though.  But
-> I don't really know if this can be fixed.
+Hi Janga,
 
+On 2022-06-09 at 10:58:18 +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> Added test description to basic subtests.
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> ---
+>  tests/i915/gem_exec_suspend.c | 33 ++++++++++++++++++++++-----------
+>  1 file changed, 22 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+> index 401026ef..495748ec 100644
+> --- a/tests/i915/gem_exec_suspend.c
+> +++ b/tests/i915/gem_exec_suspend.c
+> @@ -37,6 +37,8 @@
+>  #include "igt_gt.h"
+>  #include "igt_sysfs.h"
+>  
+> +IGT_TEST_DESCRIPTION("Tests execute batches using execbuf ioctl across various suspend resume "
+> +		     "states and validates the execution result by comparing with expected ones.");
 
-Fair assessment. Mika, do you remember the history of this test enough
-to judge? Or have any insight on selecting a "reasonable" time.
+Please change this description, you do not need to write down
+what exact step there is in code source (which we can read it),
+write what is purpose of these tests here.
 
+I suggest reading commit descriptions with:
 
--- 
-Petri Latvala
+git log tests/i915/gem_exec_suspend.c
+
+git log 741bf7064c467d -- tests/gem_exec_suspend.c
+
+>  #define NOSLEEP 0
+>  #define IDLE 1
+>  #define SUSPEND_DEVICES 2
+> @@ -296,19 +298,26 @@ igt_main
+>  		const char *name;
+>  		unsigned int flags;
+>  		void (*fn)(int, const intel_ctx_t *, unsigned, unsigned, uint32_t);
+> +		const char *describe;
+>  	} *test, tests_all_engines[] = {
+> -		{ "basic", NOSLEEP, run_test },
+> -		{ "basic-S0", IDLE, run_test },
+> -		{ "basic-S3-devices", SUSPEND_DEVICES, run_test },
+> -		{ "basic-S3", SUSPEND, run_test },
+> -		{ "basic-S4-devices", HIBERNATE_DEVICES, run_test },
+> -		{ "basic-S4", HIBERNATE, run_test },
+> +		{ "basic", NOSLEEP, run_test, "Check basic functionality." },
+----------------------------------------------------------------------- ^
+imho you can add "without s/r" here,
+s/functionality./functionality without any suspend/resume cycle./
+
+> +		{ "basic-S0", IDLE, run_test, "Check with suspend-to-idle target state." },
+> +		{ "basic-S3-devices", SUSPEND_DEVICES, run_test, "Check with suspend-to-mem target "
+> +						"state and suspend sequence termination point set "
+> +						"to device suspend state." },
+
+Please improve this description, see commit bbb950302f7c8405faa9c8018541501ee7bd335f
+tests/gem_exec_suspend: Add basic S3/S4-devices subtests
+
+> +		{ "basic-S3", SUSPEND, run_test, "Check with suspend-to-mem target state, perform "
+> +						 "a full suspend/resume cycle." },
+
+These looks a little redundant, maybe something like:
+Check full cycle of suspend-to-mem.
+
+> +		{ "basic-S4-devices", HIBERNATE_DEVICES, run_test, "Check with suspend-to-disk "
+> +						"target state and suspend sequence termination "
+> +						"point set to device suspend state." },
+
+Change this, maybe
+Check suspend-to-disk with device only.
+
+> +		{ "basic-S4", HIBERNATE, run_test, "Check with suspend-to-disk target state, "
+> +						"perform a full suspend/resume cycle." },
+
+Please improve this one.
+
+>  		{ }
+>  	}, tests_power_hang[] = {
+> -		{ "hang-S3", SUSPEND | HANG, run_test },
+> -		{ "hang-S4", HIBERNATE | HANG, run_test },
+> -		{ "power-S0", IDLE, power_test },
+> -		{ "power-S3", SUSPEND, power_test },
+> +		{ "hang-S3", SUSPEND | HANG, run_test, "" },
+> +		{ "hang-S4", HIBERNATE | HANG, run_test, "" },
+> +		{ "power-S0", IDLE, power_test, "" },
+> +		{ "power-S3", SUSPEND, power_test, "" },
+
+Please also fill these descriptions here.
+
+Run test with --describe option, e.g.
+sudo ./gem_exec_suspend --describe
+to see what other descriptions are missing.
+
+Regards,
+Kamil
+>  		{ }
+>  	};
+>  	const struct intel_execution_engine2 *e;
+> @@ -359,8 +368,10 @@ igt_main
+>  		} \
+>  	}
+>  
+> -	for (test = tests_all_engines; test->name; test++)
+> +	for (test = tests_all_engines; test->name; test++) {
+> +		igt_describe(test->describe);
+>  		subtest_for_each_combination(test->name, intel_ctx_0(fd), test->flags, test->fn);
+> +	}
+>  
+>  	for (m = modes; m->suffix; m++) {
+>  		igt_subtest_with_dynamic_f("fixed%s", m->suffix) {
+> -- 
+> 2.25.1
+> 
