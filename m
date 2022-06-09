@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56228112282
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jun 2022 07:34:52 +0000 (UTC)
+Date: Thu, 9 Jun 2022 10:32:47 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Luca Coelho <luca@coelho.fi>
+Message-ID: <YqGiH9LNcDIJDFW/@platvala-desk.ger.corp.intel.com>
+References: <20220607074240.1202404-1-luca@coelho.fi>
+ <20220607074240.1202404-3-luca@coelho.fi>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rohith Iyer" <quic_rohiiyer@quicinc.com>
-Date: Wed, 08 Jun 2022 20:26:11 -0000
-Message-ID: <165471997158.15585.3251904238437434706@emeril.freedesktop.org>
-References: <20220607213629.5031-1-quic_rohiiyer@quicinc.com>
-In-Reply-To: <20220607213629.5031-1-quic_rohiiyer@quicinc.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fwriteback=3A_Iterate_over_only_non-null_pipes_=28rev?=
- =?utf-8?q?2=29?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220607074240.1202404-3-luca@coelho.fi>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/kms_sysfs_edid_timing: fail
+ if probing a single connector takes too long
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,45 +21,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, Jun 07, 2022 at 10:42:38AM +0300, Luca Coelho wrote:
+> From: Luca Coelho <luciano.coelho@intel.com>
+> 
+> There's no point in just warning if probing a single connector takes
+> too long.  If a test finds any issues, it should just fail.
+> 
+> Convert the warning into an assertion.
+> 
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> ---
+>  tests/kms_sysfs_edid_timing.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
+> index 028a5323c0b2..ea0e169e6ed9 100644
+> --- a/tests/kms_sysfs_edid_timing.c
+> +++ b/tests/kms_sysfs_edid_timing.c
+> @@ -81,11 +81,11 @@ igt_simple_main
+>  			  mean.max, mean.max / 1e3, mean.max / 1e6,
+>  			  mean.mean, mean.mean / 1e3, mean.mean / 1e6);
+>  
+> -		if (mean.max > (THRESHOLD_PER_CONNECTOR * 1e6)) {
+> -			igt_warn("%s: probe time exceed %dms, max=%.2fms, avg=%.2fms\n",
+> -				 de->d_name, THRESHOLD_PER_CONNECTOR,
+> -				 mean.max / 1e6, mean.mean / 1e6);
+> -		}
+> +		igt_assert_f(mean.max < THRESHOLD_PER_CONNECTOR * 1e6,
+> +			     "%s: probe time exceed %dms, max=%.2fms, avg=%.2fms\n",
+> +			     de->d_name, THRESHOLD_PER_CONNECTOR,
+> +			     mean.max / 1e6, mean.mean / 1e6);
+> +
 
-Series: tests/kms_writeback: Iterate over only non-null pipes (rev2)
-URL   : https://patchwork.freedesktop.org/series/104857/
-State : warning
 
-== Summary ==
+120ms on KBL:
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7242/shard-kbl4/igt@kms_sysfs_edid_timing.html
 
-Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/607890 for the overview.
+80-ish ms on APL:
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7242/shard-apl4/igt@kms_sysfs_edid_timing.html
 
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/23765178):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                289
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1654719768:step_script
-  section_start:1654719768:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1744 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=23765178 responseStatus=201 Created token=onZ8Wx_x
-  section_end:1654719778:upload_artifacts_on_failure
-  section_start:1654719778:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1654719781:cleanup_file_variables
-  ERROR: Job failed: exit code 1
 
-== Logs ==
+As for whether that makes this IGT patch an acceptable change, depends
+on whether those times are considered anomalies that someone plans to
+fix somehow...
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/607890
+-- 
+Petri Latvala
+
+
+
+
+>  		igt_assert_f(mean.mean < (THRESHOLD_TOTAL * 1e6),
+>  			     "%s: average probe time exceeded %dms, max=%.2fms, avg=%.2fms\n",
+>  			     de->d_name, THRESHOLD_TOTAL,
+> -- 
+> 2.36.1
+> 
