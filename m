@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8E39112015
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jun 2022 07:30:38 +0000 (UTC)
-Date: Thu, 9 Jun 2022 10:28:33 +0300
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E3631133B2
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Jun 2022 07:37:58 +0000 (UTC)
+Date: Thu, 9 Jun 2022 10:35:22 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-To: Luca Coelho <luca@coelho.fi>
-Message-ID: <YqGhIZIV/5lim4vd@platvala-desk.ger.corp.intel.com>
-References: <20220607074240.1202404-1-luca@coelho.fi>
- <20220607074240.1202404-5-luca@coelho.fi>
+To: Rohith Iyer <quic_rohiiyer@quicinc.com>
+Message-ID: <YqGiujHSDJOt4LGi@platvala-desk.ger.corp.intel.com>
+References: <20220607213629.5031-1-quic_rohiiyer@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220607074240.1202404-5-luca@coelho.fi>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_sysfs_edid_timing: add
- total mean assertion threshold
+In-Reply-To: <20220607213629.5031-1-quic_rohiiyer@quicinc.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v1] tests/kms_writeback: Iterate over
+ only non-null pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,81 +20,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, quic_aravindh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 07, 2022 at 10:42:40AM +0300, Luca Coelho wrote:
-> From: Luca Coelho <luciano.coelho@intel.com>
+On Tue, Jun 07, 2022 at 02:36:29PM -0700, Rohith Iyer wrote:
+> Currently, kms_writeback_get_output iterates over all entries of
+> display->pipes, regardless of if the pipe is valid. This could lead to a
+> null dereference in igt_output_set_pipe() as the loop does not check for
+> null pipes. To avoid this issue, use the for_each_pipe method to iterate
+> over only non-null pipes.
 > 
-> Add an assertion to make sure that the mean time it takes to probe all
-> connectors doesn't exceed 30 ms.  This is an arbitrary but reasonable
-> amount of time.
-> 
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-
-
-37ms on GLK:
-https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7242/shard-glk9/igt@kms_sysfs_edid_timing.html
-
--- 
-Petri Latvala
-
-
+> Signed-off-by: Rohith Iyer <quic_rohiiyer@quicinc.com>
 > ---
->  tests/kms_sysfs_edid_timing.c | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
+>  tests/kms_writeback.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
-> index 4255cae3be17..680e4ef5985e 100644
-> --- a/tests/kms_sysfs_edid_timing.c
-> +++ b/tests/kms_sysfs_edid_timing.c
-> @@ -28,21 +28,27 @@
->  
->  #define THRESHOLD_PER_CONNECTOR		50
->  #define THRESHOLD_PER_CONNECTOR_MEAN	40
-> +#define THRESHOLD_ALL_CONNECTORS_MEAN	30
->  #define CHECK_TIMES			15
->  
->  IGT_TEST_DESCRIPTION("This test checks the time it takes to reprobe each "
->  		     "connector and fails if either the time it takes for "
->  		     "one reprobe is too long or if the mean time it takes "
-> -		     "to reprode one connector is too long.");
-> +		     "to reprode one connector is too long.  Additionally, "
-> +		     "make sure that the mean time for all connectors is "
-> +		     "not too long.");
->  
->  igt_simple_main
+> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+> index b6c815db..d416d510 100644
+> --- a/tests/kms_writeback.c
+> +++ b/tests/kms_writeback.c
+> @@ -110,21 +110,21 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output)
+>  static igt_output_t *kms_writeback_get_output(igt_display_t *display)
 >  {
->  	DIR *dirp;
->  	struct dirent *de;
-> +	struct igt_mean all_mean;
+>  	int i;
+> +	enum pipe pipe;
 >  
->  	dirp = opendir("/sys/class/drm");
->  	igt_assert(dirp != NULL);
+>  	for (i = 0; i < display->n_outputs; i++) {
+>  		igt_output_t *output = &display->outputs[i];
+> -		int j;
 >  
-> +	igt_mean_init(&all_mean);
-> +
->  	while ((de = readdir(dirp))) {
->  		struct igt_mean mean = {};
->  		struct stat st;
-> @@ -88,7 +94,14 @@ igt_simple_main
->  			     "%s: mean probe time exceeded %dms, max=%.2fms, avg=%.2fms\n",
->  			     de->d_name, THRESHOLD_PER_CONNECTOR_MEAN,
->  			     mean.max / 1e6, mean.mean / 1e6);
-> +
-> +		igt_mean_add(&all_mean, mean.mean);
->  	}
-> -	closedir(dirp);
+>  		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
+>  			continue;
 >  
-> +	igt_assert_f(all_mean.mean < THRESHOLD_ALL_CONNECTORS_MEAN * 1e6,
-> +		     "Mean of all connector means exceeds %dms, max=%.2fms, mean=%.2fms\n",
-> +		     THRESHOLD_ALL_CONNECTORS_MEAN, all_mean.max / 1e6,
-> +		     all_mean.mean / 1e6);
-> +
-> +	closedir(dirp);
->  }
+> -		for (j = 0; j < igt_display_get_n_pipes(display); j++) {
+> -			igt_output_set_pipe(output, j);
+> +		for_each_pipe(display, pipe){
+
+Space needed before the {
+
+with that editorial change, this is
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+
+> +			igt_output_set_pipe(output, pipe);
+>  
+>  			if (check_writeback_config(display, output)) {
+>  				igt_debug("Using connector %u:%s on pipe %d\n",
+>  					  output->config.connector->connector_id,
+> -					  output->name, j);
+> +					  output->name, pipe);
+>  				return output;
+>  			}
+>  		}
 > -- 
-> 2.36.1
+> 2.17.1
 > 
