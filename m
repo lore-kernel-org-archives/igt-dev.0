@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com
  [66.111.4.27])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A412810F005
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 12:16:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5935A10EFD3
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 12:16:53 +0000 (UTC)
 From: Maxime Ripard <maxime@cerno.tech>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
  Arkadiusz Hiler <arek@hiler.eu>
-Date: Fri, 10 Jun 2022 14:16:44 +0200
-Message-Id: <20220610121647.975942-1-maxime@cerno.tech>
-Content-Type: text/plain; charset="utf-8"
+Date: Fri, 10 Jun 2022 14:16:46 +0200
+Message-Id: <20220610121647.975942-3-maxime@cerno.tech>
+In-Reply-To: <20220610121647.975942-1-maxime@cerno.tech>
+References: <20220610121647.975942-1-maxime@cerno.tech>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/3] Writeback fixes and improvements
+Subject: [igt-dev] [PATCH i-g-t v3 2/3] lib/igt_fb: Ignore the X component
+ when computing CRC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,48 +21,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Pekka Paalanen <ppaalanen@gmail.com>, Maxime Ripard <maxime@cerno.tech>
+Cc: Pekka Paalanen <ppaalanen@gmail.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Maxime Ripard <maxime@cerno.tech>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+The igt_fb_get_fnv1a_crc() function will compute a FNV-1a hash over the
+content of the framebuffer. The sole user of this function is the
+writeback test suite, which will use it to compare an XRGB8888 buffer
+used in input to an XRGB8888 buffer filled by the writeback connector.
 
-Here's a series addressing the writeback-check-output test not passing
-on vc4. This is due to the fact that the writeback controller will force
-the X component to 0, while we expect the output and input buffers to be
-identical, and the input buffer has 0xff.
+However, that function uses each bytes of each buffers to compute the
+hash, and therefore the writeback code assumes that the hardware will
+preserve the content of the X component through the writeback pipeline,
+which isn't true for all hardware. VC4 doesn't for example.
 
-This series tackles this by adding some support to dump the faulty
-frames in PNG and raw, which proved to be useful while debugging this
-series. Then, we rework the hash function to ignore the X component of
-our buffer and only hash the pixels themselves.
+Since that function is only ever used for XRGB8888 buffers, let's just
+set the most significant to 0 (which is the X padding) for each pixel
+when computing the hash, and thus ignore whatever the hardware will
+return here.
 
-Finally, we change the input buffer X value to a garbage, different from
-0 and 0xff, value to make sure the hardware properly ignores the
-component and doesn't treat it as alpha.
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+---
+ lib/igt_fb.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-Let me know what you think,
-Maxime
-
-Changes from v2:
-  - Rebased on master
-  - Dropped the frame dumping patches
-
-Changes from v1:
-  - Rebased on master
-  - Added maintainers to the recipients
-
-Maxime Ripard (3):
-  tests/kms_writeback: Use endianness accessor to fill pixels
-  lib/igt_fb: Ignore the X component when computing CRC
-  tests/kms_writeback: Use a garbage X value to create fill our test
-    buffer
-
- lib/igt_core.h        |  9 +++++++++
- lib/igt_fb.c          | 20 ++++++++++++++++----
- tests/kms_writeback.c |  4 ++--
- 3 files changed, 27 insertions(+), 6 deletions(-)
-
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index fa31c43cb64e..7a73181168a7 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -4433,15 +4433,19 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ {
+ 	const uint32_t FNV1a_OFFSET_BIAS = 2166136261;
+ 	const uint32_t FNV1a_PRIME = 16777619;
++	uint32_t *line = NULL;
+ 	uint32_t hash;
+ 	void *map;
+-	char *ptr, *line = NULL;
++	char *ptr;
+ 	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
+ 	uint32_t stride = calc_plane_stride(fb, 0);
+ 
+ 	if (fb->num_planes != 1)
+ 		return -EINVAL;
+ 
++	if (fb->drm_format != DRM_FORMAT_XRGB8888)
++		return -EINVAL;
++
+ 	ptr = igt_fb_map_buffer(fb->fd, fb);
+ 	igt_assert(ptr);
+ 	map = ptr;
+@@ -4463,9 +4467,17 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 
+ 		igt_memcpy_from_wc(line, ptr, fb->width * cpp);
+ 
+-		for (x = 0; x < fb->width * cpp; x++) {
+-			hash ^= line[x];
+-			hash *= FNV1a_PRIME;
++		for (x = 0; x < fb->width; x++) {
++			unsigned int i;
++			uint32_t pixel = le32_to_cpu(line[x]);
++			pixel &= 0x00ffffff;
++
++			for (i = 0; i < sizeof(pixel); i++) {
++				uint8_t component = (pixel >> (i * 8)) & 0xff;
++
++				hash ^= component;
++				hash *= FNV1a_PRIME;
++			}
+ 		}
+ 	}
+ 
 -- 
 2.36.1
