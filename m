@@ -1,14 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Arun R Murthy <arun.r.murthy@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Jun 2022 13:18:53 +0530
-Message-Id: <20220610074853.3937294-1-arun.r.murthy@intel.com>
-In-Reply-To: <20220608060737.3839351-1-arun.r.murthy@intel.com>
-References: <20220608060737.3839351-1-arun.r.murthy@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CD2910F1AD
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 07:53:35 +0000 (UTC)
+Date: Fri, 10 Jun 2022 10:51:30 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Message-ID: <YqL4AmVoq17wtnX0@platvala-desk.ger.corp.intel.com>
+References: <20220520011226.24017-1-nidhi1.gupta@intel.com>
+ <20220520011226.24017-2-nidhi1.gupta@intel.com>
+ <YocvKicRCAmZY0aR@platvala-desk.ger.corp.intel.com>
+ <PH7PR11MB60063398DB84553A1CD21ADDC5A29@PH7PR11MB6006.namprd11.prod.outlook.com>
+ <Yp2x61wwuFbKE5aZ@platvala-desk.ger.corp.intel.com>
+ <683aff1b-4784-bd67-ed14-3f8b12ceb507@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: first async flip
- discarded on i915
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <683aff1b-4784-bd67-ed14-3f8b12ceb507@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_invalid_mode : Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,42 +25,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Arun R Murthy <arun.r.murthy@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
+ Nidhi1" <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The i915 KMD will use the first async flip to update the watermarks as
-per the watermark optimization in DISPLAY13. Hence the actual async flip
-will happen from the subsequent flips.
-For alternate sync async test, a dummy async flip has to be done to
-allow the KMD to perform the watermark related updates before writing to
-the surface base address.
+On Fri, Jun 10, 2022 at 10:51:18AM +0530, Modem, Bhanuprakash wrote:
+> On Mon-06-06-2022 01:21 pm, Petri Latvala wrote:
+> > On Mon, Jun 06, 2022 at 08:36:08AM +0300, Gupta, Nidhi1 wrote:
+> > > Hi Petri,
+> > > 
+> > > Thanks for the review.
+> > > 
+> > > We are trying to convert all the tests in IGT into dynamic tests, for better reporting and get more data just from the name of the subtest to ease the debugging process.
+> > > 
+> > > Trying to do the same with this test, this test will be executed on every pipe with valid output.
+> > 
+> > Doing that for a test that doesn't even care about pipes is not
+> > achieving anything.
+> 
+> In this test, we are trying to set invalid output mode on each pipe.
+> 
+> So, this subtest is running on all pipe/output combinations. Hence, it is
+> reasonable to have dynamic subtests. Thoughts?
 
-Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
----
- tests/kms_async_flips.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Yeah, I was lazy and didn't look at the test. The comment stands
+though; the loop over the pipes is still there in the test function,
+what this patch does is just add another loop that does nothing but
+repeat the same test. That then does another loop. Ignoring the pipe
+that's given, because it's not even given to the test function.
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 4a0527dc..695aea74 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -211,11 +211,14 @@ static void test_async_flip(data_t *data)
- 			 * In older platforms (<= Gen10), async address update bit is double buffered.
- 			 * So flip timestamp can be verified only from the second flip.
- 			 * The first async flip just enables the async address update.
-+			 * In platforms greater than DISPLAY13 the first async flip will be discarded
-+			 * in order to change the watermark levels as per the optimization. Hence the
-+			 * subsequent async flips will actually do the asynchronous flips.
- 			 */
- 			if (is_i915_device(data->drm_fd)) {
- 				uint32_t devid = intel_get_drm_devid(data->drm_fd);
- 
--				if (IS_GEN9(devid) || IS_GEN10(devid)) {
-+				if (IS_GEN9(devid) || IS_GEN10(devid) || AT_LEAST_GEN(devid, 12)) {
- 					ret = drmModePageFlip(data->drm_fd, data->crtc_id,
- 							      data->bufs[frame % 4].fb_id,
- 							      flags, data);
+
 -- 
-2.25.1
+Petri Latvala
+
+
+> 
+> - Bhanu
+> 
+> > 
+> > 
+> 
