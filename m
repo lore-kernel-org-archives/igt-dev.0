@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E44D11BA4A
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 04:34:59 +0000 (UTC)
-Date: Fri, 10 Jun 2022 06:34:51 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YqLJ6+dVdvi7YE/k@zkempczy-mobl2>
-References: <20220607052411.7357-1-zbigniew.kempczynski@intel.com>
- <20220607052411.7357-5-zbigniew.kempczynski@intel.com>
- <YqHC1jgqpbLTo/n5@platvala-desk.ger.corp.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YqHC1jgqpbLTo/n5@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/api_intel_bb: Add crc32
- checking test for DG2
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Fri, 10 Jun 2022 04:40:24 -0000
+Message-ID: <165483602409.16747.7433557662174212770@emeril.freedesktop.org>
+References: <20220610043131.3452-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220610043131.3452-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=3A_IGT_test_cleanup?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,145 +17,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 09, 2022 at 12:52:22PM +0300, Petri Latvala wrote:
-> On Tue, Jun 07, 2022 at 07:24:11AM +0200, Zbigniew Kempczyński wrote:
-> > Add simple test which compares crc32 sums and calculation times on cpu
-> > and gpu.
-> > 
-> > v2: - addressing review comments - igt_debug + igt_time_elapsed (Kamil)
-> >     - exercise crc for size smaller than page size
-> > 
-> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > ---
-> >  tests/i915/api_intel_bb.c | 63 +++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 63 insertions(+)
-> > 
-> > diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
-> > index 92f44cecf4..d6998af692 100644
-> > --- a/tests/i915/api_intel_bb.c
-> > +++ b/tests/i915/api_intel_bb.c
-> > @@ -22,6 +22,7 @@
-> >   */
-> >  
-> >  #include "igt.h"
-> > +#include "igt_crc.h"
-> >  #include "i915/gem.h"
-> >  #include "i915/gem_create.h"
-> >  #include <unistd.h>
-> > @@ -38,6 +39,7 @@
-> >  #include <zlib.h>
-> >  #include "intel_bufops.h"
-> >  #include "i915/gem_vm.h"
-> > +#include "i915/i915_crc.h"
-> >  
-> >  #define PAGE_SIZE 4096
-> >  
-> > @@ -1395,6 +1397,51 @@ static void render_ccs(struct buf_ops *bops)
-> >  	igt_assert_f(fails == 0, "render-ccs fails: %d\n", fails);
-> >  }
-> >  
-> > +static void test_crc32(int i915, const intel_ctx_t *ctx,
-> > +		       const struct intel_execution_engine2 *e,
-> > +		       struct drm_i915_gem_memory_class_instance *r)
-> > +{
-> > +	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
-> > +	uint32_t data, *ptr;
-> > +
-> > +	uint32_t region = INTEL_MEMORY_REGION_ID(r->memory_class,
-> > +						 r->memory_instance);
-> > +
-> > +	igt_debug("[engine: %s, region: %s]\n", e->name,
-> > +		  region == REGION_SMEM ? "smem" : "lmem");
-> > +	for (int i = 2; i < 21; i += 2) {
-> > +		struct timespec start, end;
-> > +		uint64_t size = 1 << i;
-> > +		uint32_t cpu_crc, gpu_crc;
-> > +
-> > +		double cpu_time, gpu_time;
-> > +
-> > +		data = gem_create_in_memory_regions(i915, size, region);
-> > +		ptr = gem_mmap__device_coherent(i915, data, 0, size, PROT_WRITE);
-> > +		for (int j = 0; j < size / sizeof(*ptr); j++)
-> > +			ptr[j] = j;
-> > +
-> > +		clock_gettime(CLOCK_MONOTONIC, &start);
-> > +		cpu_crc = igt_cpu_crc32(ptr, size);
-> > +		clock_gettime(CLOCK_MONOTONIC, &end);
-> > +		cpu_time = igt_time_elapsed(&start, &end);
-> > +		munmap(ptr, size);
-> > +
-> > +		clock_gettime(CLOCK_MONOTONIC, &start);
-> > +		gpu_crc = i915_crc32(i915, ahnd, ctx, e, data, size);
-> > +		clock_gettime(CLOCK_MONOTONIC, &end);
-> > +		gpu_time = igt_time_elapsed(&start, &end);
-> 
-> Mandatory question: Explain choice of CLOCK_MONOTONIC
-> vs. CLOCK_MONOTONIC_RAW vs. CLOCK_MONOTONIC_COARSE. And as a
-> corollary, why igt_gettime's choice of monotonic clock type is not
-> sufficient.
+=3D=3D Series Details =3D=3D
 
-Ok, I've read the git log of igt_gettime() + man page and it seems
-the effect which we want to avoid is adjusting the time during test
-run. Especially if result of test may depend on time comparison. 
+Series: tests/kms: IGT test cleanup
+URL   : https://patchwork.freedesktop.org/series/104958/
+State : failure
 
-Why then there were no global replacement of clock_gettime(MONOTONIC)
-broadly used in many tests?
+=3D=3D Summary =3D=3D
 
-Of course I'm going to use igt_gettime() now, so thanks for the review
-and comment.
+IGT patchset build failed on latest successful build
+0189ca288f7188e60f5eda356b190040bf8ec704 i915/gem_pipe_control_store_loop: =
+Adopt to softpin
 
---
-Zbigniew
+[468/656] Linking target tests/gem_request_retire
+[469/656] Linking target tests/gem_ringfill
+[470/656] Linking target tests/gem_set_tiling_vs_blt
+[471/656] Linking target tests/gem_set_tiling_vs_gtt
+[472/656] Linking target tests/gem_set_tiling_vs_pwrite
+[473/656] Linking target tests/gem_spin_batch
+[474/656] Linking target tests/gem_shrink
+[475/656] Linking target tests/gem_softpin
+[476/656] Linking target tests/gem_tiled_partial_pwrite_pread
+[477/656] Linking target tests/gem_streaming_writes
+[478/656] Linking target tests/gem_sync
+[479/656] Linking target tests/gem_tiled_blits
+[480/656] Linking target tests/gem_tiled_fence_blits
+[481/656] Linking target tests/gem_tiled_pread_basic
+[482/656] Linking target tests/gem_tiled_pread_pwrite
+[483/656] Linking target tests/gem_tiled_swapping
+[484/656] Linking target tests/gem_tiled_wb
+[485/656] Linking target tests/gem_tiled_wc
+[486/656] Linking target tests/gem_tiling_max_stride
+[487/656] Linking target tests/gem_unfence_active_buffers
+[488/656] Linking target tests/gem_userptr_blits
+[489/656] Linking target tests/gem_unref_active_buffers
+[490/656] Linking target tests/gem_watchdog
+[491/656] Linking target tests/gem_vm_create
+[492/656] Linking target tests/gem_wait
+[493/656] Linking target tests/gem_workarounds
+[494/656] Linking target tests/i915_fb_tiling
+[495/656] Linking target tests/i915_getparams_basic
+[496/656] Linking target tests/i915_hangman
+[497/656] Linking target tests/i915_module_load
+[498/656] Linking target tests/i915_pciid
+[499/656] Linking target tests/i915_pm_backlight
+[500/656] Linking target tests/i915_pm_rpm
+[501/656] Linking target tests/i915_pm_lpsp
+[502/656] Linking target tests/i915_pm_dc
+[503/656] Linking target tests/i915_pm_rps
+[504/656] Linking target tests/i915_pm_sseu
+[505/656] Linking target tests/i915_query
+[506/656] Linking target tests/i915_selftest
+[507/656] Linking target tests/kms_big_joiner
+[508/656] Linking target tests/i915_suspend
+[509/656] Compiling C object tests/kms_draw_crc.p/i915_kms_draw_crc.c.o
+FAILED: tests/kms_draw_crc.p/i915_kms_draw_crc.c.o=20
+ccache cc -Itests/kms_draw_crc.p -Itests -I../tests -I../include/drm-uapi -=
+I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I.. -I/u=
+sr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2=
+.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/=
+libpng16 -I/usr/include/libpng12 -I/usr/include/libdrm -I/usr/include/libdr=
+m/nouveau -I/usr/include/x86_64-linux-gnu -I/usr/include/alsa -I/usr/includ=
+e -I/home/cidrm/kernel_headers/include -fdiagnostics-color=3Dalways -D_FILE=
+_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SO=
+URCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarat=
+ion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -W=
+missing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissin=
+g-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredu=
+ndant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clob=
+bered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer=
+-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused=
+-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=
+=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing=
+-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-ty=
+pe -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fn=
+o-builtin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ tests/kms_dr=
+aw_crc.p/i915_kms_draw_crc.c.o -MF tests/kms_draw_crc.p/i915_kms_draw_crc.c=
+.o.d -o tests/kms_draw_crc.p/i915_kms_draw_crc.c.o -c ../tests/i915/kms_dra=
+w_crc.c
+../tests/i915/kms_draw_crc.c: In function =E2=80=98setup_environment=E2=80=
+=99:
+../tests/i915/kms_draw_crc.c:268:20: error: =E2=80=98display=E2=80=99 undec=
+lared (first use in this function)
+  igt_display_reset(display);
+                    ^~~~~~~
+../tests/i915/kms_draw_crc.c:268:20: note: each undeclared identifier is re=
+ported only once for each function it appears in
+ninja: build stopped: subcommand failed.
 
-> 
-> 
-> -- 
-> Petri Latvala
-> 
-> 
-> 
-> > +		igt_debug("size: %10lld, cpu crc: 0x%08x (time: %.3f), "
-> > +			  "gpu crc: 0x%08x (time: %.3f) [ %s ]\n",
-> > +			  (long long) size, cpu_crc, cpu_time, gpu_crc, gpu_time,
-> > +			  cpu_crc == gpu_crc ? "EQUAL" : "DIFFERENT");
-> > +		gem_close(i915, data);
-> > +		igt_assert(cpu_crc == gpu_crc);
-> > +	}
-> > +
-> > +	put_ahnd(ahnd);
-> > +}
-> > +
-> >  static int opt_handler(int opt, int opt_index, void *data)
-> >  {
-> >  	switch (opt) {
-> > @@ -1552,6 +1599,22 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
-> >  	igt_subtest("render-ccs")
-> >  		render_ccs(bops);
-> >  
-> > +	igt_describe("Compare cpu and gpu crc32 sums on input object");
-> > +	igt_subtest_with_dynamic_f("crc32") {
-> > +		const intel_ctx_t *ctx;
-> > +		const struct intel_execution_engine2 *e;
-> > +
-> > +		igt_require(supports_i915_crc32(i915));
-> > +
-> > +		ctx = intel_ctx_create_all_physical(i915);
-> > +		for_each_ctx_engine(i915, ctx, e) {
-> > +			for_each_memory_region(r, i915) {
-> > +				igt_dynamic_f("%s-%s", e->name, r->name)
-> > +					test_crc32(i915, ctx, e, &r->ci);
-> > +			}
-> > +		}
-> > +	}
-> > +
-> >  	igt_fixture {
-> >  		buf_ops_destroy(bops);
-> >  		close(i915);
-> > -- 
-> > 2.32.0
-> > 
