@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78BA111AD5B
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 04:28:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F74A11AC73
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 04:28:32 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Jun 2022 10:01:30 +0530
-Message-Id: <20220610043131.3452-2-nidhi1.gupta@intel.com>
-In-Reply-To: <20220610043131.3452-1-nidhi1.gupta@intel.com>
-References: <20220610043131.3452-1-nidhi1.gupta@intel.com>
+Date: Fri, 10 Jun 2022 10:01:29 +0530
+Message-Id: <20220610043131.3452-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/2] tests/i915/kms_draw_crc.c: Convert test to
- dynamic
+Subject: [igt-dev] [PATCH 0/2] tests/kms: IGT test cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,34 +21,15 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Covert the existing subtests to dynamic subtests.
+In below test, convert all possible subtests to dynamic and
+sanitize the system state before starting/exiting the subtest.
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/i915/kms_draw_crc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Nidhi Gupta (2):
+  tests/i915/kms_draw_crc.c: Convert test to dynamic
+  tests/i915/kms_draw_crc: Test Cleanup
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index 33fefed4..3e68479e 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -340,7 +340,7 @@ igt_main
- 	for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
- 		igt_describe("This subtest verfies igt_draw library works "
- 			     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
--		igt_subtest_f("draw-method-%s-%s-%s",
-+		igt_subtest_with_dynamic_f("draw-method-%s-%s-%s",
- 			      format_str(format_idx),
- 			      igt_draw_get_method_name(method),
- 			      modifier_str(modifier_idx))
-@@ -350,7 +350,7 @@ igt_main
- 
- 	igt_describe("This subtest verifies CRC after filling fb with x-tiling "
- 		     "or none.");
--	igt_subtest("fill-fb")
-+	igt_subtest_with_dynamic("fill-fb")
- 		fill_fb_subtest();
- 
- 	igt_fixture
+ tests/i915/kms_draw_crc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
 -- 
 2.26.2
