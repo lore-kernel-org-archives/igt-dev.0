@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C8C910EA47
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 12:49:06 +0000 (UTC)
-Date: Fri, 10 Jun 2022 14:49:02 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YqM9vuQPzhgb/vwA@kamilkon-desk1>
-References: <20220610054834.469387-1-sinjan.kumar@intel.com>
- <20220610054834.469387-2-sinjan.kumar@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A14F810EEA1
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 12:59:17 +0000 (UTC)
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Fri, 10 Jun 2022 14:59:13 +0200
+Message-ID: <4108975.ghgXmdF2J7@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <YqM1PSROt/HVArcc@kamilkon-desk1>
+References: <20220610113335.573064-1-janusz.krzysztofik@linux.intel.com>
+ <YqM1PSROt/HVArcc@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220610054834.469387-2-sinjan.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/2] i915/gem_exec_await: Add subtests
- description
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_memory_region: Fix missing
+ header inclusion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,77 +27,85 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Sinjan,
+Hi Kamil,
 
-On 2022-06-10 at 11:18:33 +0530, sinjan.kumar@intel.com wrote:
-> From: Sinjan Kumar <sinjan.kumar@intel.com>
-> 
-> Add subtest description for the following subtest
-> 1. wide-all
-> 2. wide-context
+On Friday, 10 June 2022 14:12:45 CEST Kamil Konieczny wrote:
+> Hi Janusz,
+>=20
+> On 2022-06-10 at 13:33:35 +0200, Janusz Krzysztofik wrote:
+> > IGT commit 68efa99c62e2 ("i915/gem_eio: Exercise object creation while
+> > wedged") extended lib/i915/intel_memory_region.h header with a definiti=
+on
+> > of new struct gem_memory_region.  That structure contains a member of t=
+ype
+> > struct drm_i915_gem_memory_class_instance, but definition of that type =
+is
+> > not available unless "i915_drm.h" header is included.  Include the miss=
+ing
+> > header.
+> >=20
+> > ../lib/i915/intel_memory_region.h:118:44: error: field =E2=80=98ci=E2=
+=80=99 has incomplete type
+> >   118 |  struct drm_i915_gem_memory_class_instance ci;
+>=20
+> I don't see this error when I recompile i-g-t ?
 
-You do not need to add this here, it will be better placed in
-cover letter.
+As Petri already stated, current users do include i915_drm.h, explicitly or=
+=20
+implicitly, prior to intel_memory_region.h, that's why you can't see the=20
+error.  New code I'm working on doesn't require i915_drm.h but needs=20
+intel_memory_region.h.  Future code may have similar requirements.
 
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> Signed-off-by: Sinjan Kumar <sinjan.kumar@intel.com>
-> ---
->  tests/i915/gem_exec_await.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
-> index 4935cf39..dc8d0255 100644
-> --- a/tests/i915/gem_exec_await.c
-> +++ b/tests/i915/gem_exec_await.c
-> @@ -276,9 +276,13 @@ igt_main
->  		igt_fork_hang_detector(device);
->  	}
+> >=20
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  lib/i915/intel_memory_region.h | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> >=20
+> > diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_reg=
+ion.h
+> > index f9af9401ea..a874172401 100644
+> > --- a/lib/i915/intel_memory_region.h
+> > +++ b/lib/i915/intel_memory_region.h
+> > @@ -20,6 +20,7 @@
+> >   * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER=
+ DEALINGS
+> >   * IN THE SOFTWARE.
+> >   */
+> > +#include "i915_drm.h"
+> >  #include "igt_collection.h"
+> > =20
+> >  #ifndef INTEL_MEMORY_REGION_H
+> > @@ -62,8 +63,6 @@ unsigned int gem_get_lmem_region_count(int fd);
+> > =20
+> >  bool gem_has_lmem(int fd);
+> > =20
+> > -struct drm_i915_gem_memory_class_instance;
+> > -
+>=20
+> Maybe this change caused error ?
 
-Please add also global description of this test, please see for
-other tests descrption, like gem_exec_basic.
+This forward declaration was needed by definitions of functions which accep=
+t a=20
+pointer to struct drm_i915_gem_memory_class_instance.  My patch removes it =
+as=20
+no longer needed since now definition of the structure, needed by the chang=
+e=20
+introduced by commit commit 68efa99c62e2 ("i915/gem_eio: Exercise object
+creation while wedged"), is pulled from i915_drm.h.
 
->  
-> +        igt_describe("Test to catch GPU hang by executing batch buffer "
-> +                     "in a loop for the given timeout period.");
+Thanks,
+Janusz
 
-Please change this description, look at commit messages in git,
-git log tests/i915/gem_exec_await.c
+>=20
+> Regards,
+> Kamil
+>=20
+> >  int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint6=
+4_t *size,
+> >  				       struct drm_i915_gem_memory_class_instance *mem_regions,
+> >  				       int num_regions);
+>=20
 
-and when you see commit about moving tests into i195 folder,
-use its hash to search further:
 
-git log 741bf7064c46 -- tests/gem_exec_await.c
 
->  	igt_subtest("wide-all")
->  		wide(device, ctx, ring_size, TIMEOUT, 0);
->  
-> +        igt_describe("Test to catch GPU hang by creating context and executing "
-> +                     "batch buffer in a loop for the given timeout period.");
-
-Same here, change it.
-
-One last thing, use checkpatch script from linux kernel to catch
-possible errors, here you used spaces at begin of line instead of
-tabs, see log from checkpatch:
-
-checkpatch 0002-i915-Add-subtests-description.patch
-
-ERROR: code indent should use tabs where possible
-#25: FILE: tests/i915/gem_exec_await.c:279:
-+        igt_describe("Test to catch GPU hang by executing batch buffer "$
-
-WARNING: please, no spaces at the start of a line
-#25: FILE: tests/i915/gem_exec_await.c:279:
-+        igt_describe("Test to catch GPU hang by executing batch buffer "$
-
-Regards,
-Kamil
-
->  	igt_subtest("wide-contexts") {
->  		gem_require_contexts(device);
->  		wide(device, ctx, ring_size, TIMEOUT, CONTEXTS);
-> -- 
-> 2.25.1
-> 
