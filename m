@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEFF912B5C9
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 07:17:45 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	swati2.sharma@intel.com
-Date: Fri, 10 Jun 2022 12:44:05 +0530
-Message-Id: <20220610071407.4075402-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220610071407.4075402-1-bhanuprakash.modem@intel.com>
-References: <20220610071407.4075402-1-bhanuprakash.modem@intel.com>
+From: Arun R Murthy <arun.r.murthy@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 10 Jun 2022 13:18:53 +0530
+Message-Id: <20220610074853.3937294-1-arun.r.murthy@intel.com>
+In-Reply-To: <20220608060737.3839351-1-arun.r.murthy@intel.com>
+References: <20220608060737.3839351-1-arun.r.murthy@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 1/3] tests/kms_cursor_legacy: Convert tests to
- dynamic
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: first async flip
+ discarded on i915
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,346 +16,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org, Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert the existing subtests to dynamic subtests.
+The i915 KMD will use the first async flip to update the watermarks as
+per the watermark optimization in DISPLAY13. Hence the actual async flip
+will happen from the subsequent flips.
+For alternate sync async test, a dummy async flip has to be done to
+allow the KMD to perform the watermark related updates before writing to
+the surface base address.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
 ---
- tests/kms_cursor_legacy.c | 259 +++++++++++++++++++++-----------------
- 1 file changed, 141 insertions(+), 118 deletions(-)
+ tests/kms_async_flips.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 47b9b4e1..8f5e5fd2 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1424,6 +1424,15 @@ igt_main
- 	igt_display_t display = { .drm_fd = -1 };
- 	bool intel_psr2_restore = false;
- 	int i;
-+	const char *modes[flip_test_last+1] = {
-+		"legacy",
-+		"varying-size",
-+		"toggle",
-+		"atomic",
-+		"atomic-transitions",
-+		"atomic-transitions-varying-size"
-+	};
-+	const char *prefix[2] = {"basic", "short"};
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 4a0527dc..695aea74 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -211,11 +211,14 @@ static void test_async_flip(data_t *data)
+ 			 * In older platforms (<= Gen10), async address update bit is double buffered.
+ 			 * So flip timestamp can be verified only from the second flip.
+ 			 * The first async flip just enables the async address update.
++			 * In platforms greater than DISPLAY13 the first async flip will be discarded
++			 * in order to change the watermark levels as per the optimization. Hence the
++			 * subsequent async flips will actually do the asynchronous flips.
+ 			 */
+ 			if (is_i915_device(data->drm_fd)) {
+ 				uint32_t devid = intel_get_drm_devid(data->drm_fd);
  
- 	igt_fixture {
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -1438,55 +1447,42 @@ igt_main
- 		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd);
- 	}
- 
--	/*Test description for pipe-* and all-pipe-* tests*/
- 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
--		     "on single pipe with different modes, priority and number of processes");
-+		     "on single/all pipes with different modes, priority and number of processes");
- 	igt_subtest_group {
- 		enum pipe n;
--		for_each_pipe_static(n) {
--			errno = 0;
--
--			igt_fixture {
--				igt_require_pipe(&display, n);
--			}
-+		struct {
-+			const char *name;
-+			int ncpus;
-+			unsigned flags;
-+		} tests[] = {
-+			{ "single-bo", 1, DRM_MODE_CURSOR_BO },
-+			{ "single-move", 1, DRM_MODE_CURSOR_MOVE },
-+			{ "forked-bo", ncpus, DRM_MODE_CURSOR_BO },
-+			{ "forked-move", ncpus, DRM_MODE_CURSOR_MOVE },
-+			{ "torture-bo", -ncpus, DRM_MODE_CURSOR_BO },
-+			{ "torture-move", -ncpus, DRM_MODE_CURSOR_MOVE },
-+		};
- 
--			igt_subtest_f("pipe-%s-single-bo", kmstest_pipe_name(n))
--				stress(&display, n, 1, DRM_MODE_CURSOR_BO, 20);
--			igt_subtest_f("pipe-%s-single-move", kmstest_pipe_name(n))
--				stress(&display, n, 1, DRM_MODE_CURSOR_MOVE, 20);
-+		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+			igt_subtest_with_dynamic(tests[i].name) {
-+				for_each_pipe(&display, n) {
-+					errno = 0;
- 
--			igt_subtest_f("pipe-%s-forked-bo", kmstest_pipe_name(n))
--				stress(&display, n, ncpus, DRM_MODE_CURSOR_BO, 20);
--			igt_subtest_f("pipe-%s-forked-move", kmstest_pipe_name(n))
--				stress(&display, n, ncpus, DRM_MODE_CURSOR_MOVE, 20);
-+					igt_dynamic_f("pipe-%s", kmstest_pipe_name(n))
-+						stress(&display, n, tests[i].ncpus, tests[i].flags, 20);
-+				}
- 
--			igt_subtest_f("pipe-%s-torture-bo", kmstest_pipe_name(n))
--				stress(&display, n, -ncpus, DRM_MODE_CURSOR_BO, 20);
--			igt_subtest_f("pipe-%s-torture-move", kmstest_pipe_name(n))
--				stress(&display, n, -ncpus, DRM_MODE_CURSOR_MOVE, 20);
-+				errno = 0;
-+				igt_dynamic("all-pipes")
-+					stress(&display, -1, tests[i].ncpus, tests[i].flags, 20);
-+			}
- 		}
- 	}
- 
--	/*Test description for pipe-* and all-pipe-* tests*/
- 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
- 		    "on all pipes with different modes, priority and number of processes");
- 	igt_subtest_group {
--
--		igt_subtest("all-pipes-single-bo")
--			stress(&display, -1, 1, DRM_MODE_CURSOR_BO, 20);
--		igt_subtest("all-pipes-single-move")
--			stress(&display, -1, 1, DRM_MODE_CURSOR_MOVE, 20);
--
--		igt_subtest("all-pipes-forked-bo")
--			stress(&display, -1, ncpus, DRM_MODE_CURSOR_BO, 20);
--		igt_subtest("all-pipes-forked-move")
--			stress(&display, -1, ncpus, DRM_MODE_CURSOR_MOVE, 20);
--
--		igt_subtest("all-pipes-torture-bo")
--			stress(&display, -1, -ncpus, DRM_MODE_CURSOR_BO, 20);
--		igt_subtest("all-pipes-torture-move")
--			stress(&display, -1, -ncpus, DRM_MODE_CURSOR_MOVE, 20);
--
- 		igt_subtest("nonblocking-modeset-vs-cursor-atomic")
- 			nonblocking_modeset_vs_cursor(&display, 1);
- 
-@@ -1494,43 +1490,54 @@ igt_main
- 			nonblocking_modeset_vs_cursor(&display, 16);
- 	}
- 
--	/*Test Description for 2x-* tests*/
- 	igt_describe("This test executes flips on both CRTCs "
- 		     "while running cursor updates in parallel");
- 	igt_subtest_group {
-+		struct {
-+			const char *name;
-+			int nloops;
-+			bool modeset;
-+			bool atomic;
-+		} tests[] = {
-+			{ "2x-flip-vs-cursor-legacy", 8, false, false },
-+			{ "2x-flip-vs-cursor-atomic", 8, false, true },
-+			{ "2x-long-flip-vs-cursor-legacy", 150, false, false },
-+			{ "2x-long-flip-vs-cursor-atomic", 150, false, true },
-+			{ "2x-nonblocking-modeset-vs-cursor-atomic", 4, true, true },
-+			{ "2x-long-nonblocking-modeset-vs-cursor-atomic", 15, true, true },
-+		};
- 
--		igt_subtest("2x-flip-vs-cursor-legacy")
--			two_screens_flip_vs_cursor(&display, 8, false, false);
--
--		igt_subtest("2x-flip-vs-cursor-atomic")
--			two_screens_flip_vs_cursor(&display, 8, false, true);
--
--		igt_subtest("2x-cursor-vs-flip-legacy")
--			two_screens_cursor_vs_flip(&display, 8, false);
--
--		igt_subtest("2x-long-flip-vs-cursor-legacy")
--			two_screens_flip_vs_cursor(&display, 150, false, false);
--
--		igt_subtest("2x-long-flip-vs-cursor-atomic")
--			two_screens_flip_vs_cursor(&display, 150, false, true);
--
--		igt_subtest("2x-long-cursor-vs-flip-legacy")
--			two_screens_cursor_vs_flip(&display, 50, false);
--
--		igt_subtest("2x-nonblocking-modeset-vs-cursor-atomic")
--			two_screens_flip_vs_cursor(&display, 4, true, true);
--
--		igt_subtest("2x-cursor-vs-flip-atomic")
--			two_screens_cursor_vs_flip(&display, 8, true);
-+		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+			igt_subtest(tests[i].name)
-+				two_screens_flip_vs_cursor(&display,
-+							   tests[i].nloops,
-+							   tests[i].modeset,
-+							   tests[i].atomic);
-+		}
-+	}
- 
--		igt_subtest("2x-long-nonblocking-modeset-vs-cursor-atomic")
--			two_screens_flip_vs_cursor(&display, 15, true, true);
-+	igt_describe("This test executes flips on both CRTCs "
-+		     "while running cursor updates in parallel");
-+	igt_subtest_group {
-+		struct {
-+			const char *name;
-+			int nloops;
-+			bool atomic;
-+		} tests[] = {
-+			{ "2x-cursor-vs-flip-legacy", 8, false },
-+			{ "2x-long-cursor-vs-flip-legacy", 50, false },
-+			{ "2x-cursor-vs-flip-atomic", 8, true },
-+			{ "2x-long-cursor-vs-flip-atomic", 50, true },
-+		};
- 
--		igt_subtest("2x-long-cursor-vs-flip-atomic")
--			two_screens_cursor_vs_flip(&display, 50, true);
-+		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+			igt_subtest(tests[i].name)
-+				two_screens_cursor_vs_flip(&display,
-+							   tests[i].nloops,
-+							   tests[i].atomic);
-+		}
- 	}
- 
--	/*Test description for cursor-crc tests*/
- 	igt_describe("Test will first does a page flip and then cursor update");
- 	igt_subtest_group {
- 		igt_fixture
-@@ -1543,7 +1550,6 @@ igt_main
- 			flip_vs_cursor_crc(&display, true);
- 	}
- 
--	/*Test description for busy-crc tests*/
- 	igt_describe("this test perform a busy bo update followed by a cursor update");
- 	igt_subtest_group {
- 		igt_fixture
-@@ -1556,69 +1562,86 @@ igt_main
- 			flip_vs_cursor_busy_crc(&display, true);
- 	}
- 
--	for (i = 0; i <= flip_test_last; i++) {
--		const char *modes[flip_test_last+1] = {
--			"legacy",
--			"varying-size",
--			"toggle",
--			"atomic",
--			"atomic-transitions",
--			"atomic-transitions-varying-size"
--		};
--		const char *prefix = "short-";
-+	for (i = 0; i < ARRAY_SIZE(prefix); i++) {
-+		int j;
- 
--		switch (i) {
--		case flip_test_legacy:
--		case flip_test_varying_size:
--		case flip_test_atomic:
--			prefix = "basic-";
--			break;
--		default: break;
--		}
-+		igt_describe("Adds variety of tests:\n"
-+			"* varying-size: change the size of cursor b/w 64*64 to maxw x maxh.\n"
-+			"* atomic-transition: alternates between a full screen sprite plane "
-+				"and full screen primary plane.\n"
-+			"* toggle: which toggles cursor visibility and make sure cursor moves between updates.");
-+		igt_subtest_group {
-+			igt_subtest_with_dynamic_f("%s-flip-before-cursor", prefix[i]) {
-+				for (j = 0; j <= flip_test_last; j++) {
-+					igt_dynamic_f("%s", modes[j])
-+						basic_flip_cursor(&display, j, FLIP_BEFORE_CURSOR, 0);
-+				}
-+			}
- 
--	igt_describe("Adds variety of tests: "
--		     "varying-size: change the size of cursor b/w 64*64 to maxw x maxh. "
--		     "atomic-transition: alternates between a full screen sprite plane. "
--						"and full screen primary plane. "
--		     "toggle: which toggles cursor visibility and make sure cursor moves between updates.");
--	igt_subtest_group {
--		igt_subtest_f("%sflip-before-cursor-%s", prefix, modes[i])
--			basic_flip_cursor(&display, i, FLIP_BEFORE_CURSOR, 0);
--
--		igt_subtest_f("%sbusy-flip-before-cursor-%s", prefix, modes[i]) {
--			igt_require(!cursor_slowpath(&display, i));
--			igt_require_gem(display.drm_fd);
--			basic_flip_cursor(&display, i, FLIP_BEFORE_CURSOR,
--					  BASIC_BUSY);
--		}
--	}
-+			igt_subtest_with_dynamic_f("%s-busy-flip-before-cursor", prefix[i]) {
-+				igt_require(!cursor_slowpath(&display, i));
-+				igt_require_gem(display.drm_fd);
- 
--		igt_describe("The essence of the basic test is that neither the cursor nor the "
--			     "nonblocking flip stall the application of the next");
--		igt_subtest_group {
-+				for (j = 0; j <= flip_test_last; j++) {
-+					igt_dynamic_f("%s", modes[j])
-+						basic_flip_cursor(&display, j, FLIP_BEFORE_CURSOR, BASIC_BUSY);
-+				}
-+			}
- 
--			igt_subtest_f("%sflip-after-cursor-%s", prefix, modes[i])
--				basic_flip_cursor(&display, i, FLIP_AFTER_CURSOR, 0);
-+			igt_subtest_with_dynamic_f("%s-flip-after-cursor", prefix[i]) {
-+				for (j = 0; j <= flip_test_last; j++) {
-+					igt_dynamic_f("%s", modes[j])
-+						basic_flip_cursor(&display, j, FLIP_AFTER_CURSOR, 0);
-+				}
-+			}
-+		}
-+	}
- 
--			igt_subtest_f("flip-vs-cursor-%s", modes[i])
--				flip_vs_cursor(&display, i, 150);
-+	igt_describe("The essence of the basic test is that neither the cursor nor the "
-+		     "nonblocking flip stall the application of the next");
-+	igt_subtest_group {
-+		igt_subtest_with_dynamic("flip-vs-cursor") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip_vs_cursor(&display, i, 150);
-+			}
-+		}
- 
--			igt_subtest_f("cursor-vs-flip-%s", modes[i])
--				cursor_vs_flip(&display, i, 50);
-+		igt_subtest_with_dynamic("cursor-vs-flip") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					cursor_vs_flip(&display, i, 50);
-+			}
-+		}
- 
--			igt_subtest_f("cursorA-vs-flipA-%s", modes[i])
--				flip(&display, 0, 0, 10, i);
-+		igt_subtest_with_dynamic("cursorA-vs-flipA") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip(&display, 0, 0, 10, i);
-+			}
-+		}
- 
--			igt_subtest_f("cursorA-vs-flipB-%s", modes[i])
--				flip(&display, 0, 1, 10, i);
-+		igt_subtest_with_dynamic("cursorA-vs-flipB") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip(&display, 0, 1, 10, i);
-+			}
-+		}
- 
--			igt_subtest_f("cursorB-vs-flipA-%s", modes[i])
--				flip(&display, 1, 0, 10, i);
-+		igt_subtest_with_dynamic("cursorB-vs-flipA") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip(&display, 1, 0, 10, i);
-+			}
-+		}
- 
--			igt_subtest_f("cursorB-vs-flipB-%s", modes[i])
--				flip(&display, 1, 1, 10, i);
-+		igt_subtest_with_dynamic("cursorB-vs-flipB") {
-+			for (i = 0; i <= flip_test_last; i++) {
-+				igt_dynamic_f("%s", modes[i])
-+					flip(&display, 1, 1, 10, i);
- 			}
- 		}
-+	}
- 
- 	igt_fixture {
- 		if (intel_psr2_restore)
+-				if (IS_GEN9(devid) || IS_GEN10(devid)) {
++				if (IS_GEN9(devid) || IS_GEN10(devid) || AT_LEAST_GEN(devid, 12)) {
+ 					ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+ 							      data->bufs[frame % 4].fb_id,
+ 							      flags, data);
 -- 
-2.35.1
+2.25.1
