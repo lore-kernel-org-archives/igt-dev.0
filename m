@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8159372404525004574=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3286112573
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 08:38:40 +0000 (UTC)
+Date: Fri, 10 Jun 2022 11:34:25 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <YqMCEfQlWt2oHCHH@platvala-desk.ger.corp.intel.com>
+References: <20220607052411.7357-1-zbigniew.kempczynski@intel.com>
+ <20220607052411.7357-5-zbigniew.kempczynski@intel.com>
+ <YqHC1jgqpbLTo/n5@platvala-desk.ger.corp.intel.com>
+ <YqLJ6+dVdvi7YE/k@zkempczy-mobl2>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sinjan.kumar@intel.com
-Date: Fri, 10 Jun 2022 08:27:15 -0000
-Message-ID: <165484963505.16746.16281633199766881373@emeril.freedesktop.org>
-References: <20220610054834.469387-1-sinjan.kumar@intel.com>
-In-Reply-To: <20220610054834.469387-1-sinjan.kumar@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIHN1?=
- =?utf-8?q?btests_description?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YqLJ6+dVdvi7YE/k@zkempczy-mobl2>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/api_intel_bb: Add crc32
+ checking test for DG2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,378 +24,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8159372404525004574==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Jun 10, 2022 at 06:34:51AM +0200, Zbigniew Kempczyński wrote:
+> On Thu, Jun 09, 2022 at 12:52:22PM +0300, Petri Latvala wrote:
+> > On Tue, Jun 07, 2022 at 07:24:11AM +0200, Zbigniew Kempczyński wrote:
+> > > Add simple test which compares crc32 sums and calculation times on cpu
+> > > and gpu.
+> > > 
+> > > v2: - addressing review comments - igt_debug + igt_time_elapsed (Kamil)
+> > >     - exercise crc for size smaller than page size
+> > > 
+> > > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > > ---
+> > >  tests/i915/api_intel_bb.c | 63 +++++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 63 insertions(+)
+> > > 
+> > > diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+> > > index 92f44cecf4..d6998af692 100644
+> > > --- a/tests/i915/api_intel_bb.c
+> > > +++ b/tests/i915/api_intel_bb.c
+> > > @@ -22,6 +22,7 @@
+> > >   */
+> > >  
+> > >  #include "igt.h"
+> > > +#include "igt_crc.h"
+> > >  #include "i915/gem.h"
+> > >  #include "i915/gem_create.h"
+> > >  #include <unistd.h>
+> > > @@ -38,6 +39,7 @@
+> > >  #include <zlib.h>
+> > >  #include "intel_bufops.h"
+> > >  #include "i915/gem_vm.h"
+> > > +#include "i915/i915_crc.h"
+> > >  
+> > >  #define PAGE_SIZE 4096
+> > >  
+> > > @@ -1395,6 +1397,51 @@ static void render_ccs(struct buf_ops *bops)
+> > >  	igt_assert_f(fails == 0, "render-ccs fails: %d\n", fails);
+> > >  }
+> > >  
+> > > +static void test_crc32(int i915, const intel_ctx_t *ctx,
+> > > +		       const struct intel_execution_engine2 *e,
+> > > +		       struct drm_i915_gem_memory_class_instance *r)
+> > > +{
+> > > +	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
+> > > +	uint32_t data, *ptr;
+> > > +
+> > > +	uint32_t region = INTEL_MEMORY_REGION_ID(r->memory_class,
+> > > +						 r->memory_instance);
+> > > +
+> > > +	igt_debug("[engine: %s, region: %s]\n", e->name,
+> > > +		  region == REGION_SMEM ? "smem" : "lmem");
+> > > +	for (int i = 2; i < 21; i += 2) {
+> > > +		struct timespec start, end;
+> > > +		uint64_t size = 1 << i;
+> > > +		uint32_t cpu_crc, gpu_crc;
+> > > +
+> > > +		double cpu_time, gpu_time;
+> > > +
+> > > +		data = gem_create_in_memory_regions(i915, size, region);
+> > > +		ptr = gem_mmap__device_coherent(i915, data, 0, size, PROT_WRITE);
+> > > +		for (int j = 0; j < size / sizeof(*ptr); j++)
+> > > +			ptr[j] = j;
+> > > +
+> > > +		clock_gettime(CLOCK_MONOTONIC, &start);
+> > > +		cpu_crc = igt_cpu_crc32(ptr, size);
+> > > +		clock_gettime(CLOCK_MONOTONIC, &end);
+> > > +		cpu_time = igt_time_elapsed(&start, &end);
+> > > +		munmap(ptr, size);
+> > > +
+> > > +		clock_gettime(CLOCK_MONOTONIC, &start);
+> > > +		gpu_crc = i915_crc32(i915, ahnd, ctx, e, data, size);
+> > > +		clock_gettime(CLOCK_MONOTONIC, &end);
+> > > +		gpu_time = igt_time_elapsed(&start, &end);
+> > 
+> > Mandatory question: Explain choice of CLOCK_MONOTONIC
+> > vs. CLOCK_MONOTONIC_RAW vs. CLOCK_MONOTONIC_COARSE. And as a
+> > corollary, why igt_gettime's choice of monotonic clock type is not
+> > sufficient.
+> 
+> Ok, I've read the git log of igt_gettime() + man page and it seems
+> the effect which we want to avoid is adjusting the time during test
+> run. Especially if result of test may depend on time comparison. 
+> 
+> Why then there were no global replacement of clock_gettime(MONOTONIC)
+> broadly used in many tests?
 
-== Series Details ==
-
-Series: Add subtests description
-URL   : https://patchwork.freedesktop.org/series/104959/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11751 -> IGTPW_7271
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_7271 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7271, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/index.html
-
-Participating hosts (41 -> 42)
-------------------------------
-
-  Additional (2): fi-kbl-soraka bat-adls-5 
-  Missing    (1): fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7271:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@meta_test@fail-result (NEW):
-    - {bat-jsl-2}:        NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-jsl-2/igt@meta_test@fail-result.html
-    - fi-ilk-650:         NOTRUN -> [FAIL][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-ilk-650/igt@meta_test@fail-result.html
-    - {bat-jsl-1}:        NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-jsl-1/igt@meta_test@fail-result.html
-    - fi-tgl-1115g4:      NOTRUN -> [FAIL][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-tgl-1115g4/igt@meta_test@fail-result.html
-    - {fi-jsl-1}:         NOTRUN -> [FAIL][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-jsl-1/igt@meta_test@fail-result.html
-    - fi-blb-e6850:       NOTRUN -> [FAIL][6]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-blb-e6850/igt@meta_test@fail-result.html
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-bsw-n3050/igt@meta_test@fail-result.html
-    - {bat-adlp-6}:       NOTRUN -> [FAIL][8]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-adlp-6/igt@meta_test@fail-result.html
-    - fi-skl-6600u:       NOTRUN -> [FAIL][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-skl-6600u/igt@meta_test@fail-result.html
-    - fi-glk-dsi:         NOTRUN -> [FAIL][10]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-glk-dsi/igt@meta_test@fail-result.html
-    - {fi-ehl-2}:         NOTRUN -> [FAIL][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-ehl-2/igt@meta_test@fail-result.html
-    - fi-apl-guc:         NOTRUN -> [FAIL][12]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-apl-guc/igt@meta_test@fail-result.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][13]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-pnv-d510/igt@meta_test@fail-result.html
-    - fi-snb-2520m:       NOTRUN -> [FAIL][14]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-snb-2520m/igt@meta_test@fail-result.html
-    - fi-glk-j4005:       NOTRUN -> [FAIL][15]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-glk-j4005/igt@meta_test@fail-result.html
-    - fi-rkl-guc:         NOTRUN -> [FAIL][16]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-rkl-guc/igt@meta_test@fail-result.html
-    - fi-skl-guc:         NOTRUN -> [FAIL][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-skl-guc/igt@meta_test@fail-result.html
-    - fi-kbl-soraka:      NOTRUN -> [FAIL][18]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-kbl-soraka/igt@meta_test@fail-result.html
-    - bat-dg1-6:          NOTRUN -> [FAIL][19]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-dg1-6/igt@meta_test@fail-result.html
-    - fi-kbl-7567u:       NOTRUN -> [FAIL][20]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-kbl-7567u/igt@meta_test@fail-result.html
-    - fi-cfl-8700k:       NOTRUN -> [FAIL][21]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-cfl-8700k/igt@meta_test@fail-result.html
-    - {fi-tgl-dsi}:       NOTRUN -> [FAIL][22]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-tgl-dsi/igt@meta_test@fail-result.html
-    - fi-bsw-nick:        NOTRUN -> [FAIL][23]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-bsw-nick/igt@meta_test@fail-result.html
-    - fi-rkl-11600:       NOTRUN -> [FAIL][24]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-rkl-11600/igt@meta_test@fail-result.html
-    - fi-hsw-g3258:       NOTRUN -> [FAIL][25]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-hsw-g3258/igt@meta_test@fail-result.html
-    - {bat-adls-5}:       NOTRUN -> [FAIL][26]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-adls-5/igt@meta_test@fail-result.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][27]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-bdw-gvtdvm/igt@meta_test@fail-result.html
-    - fi-bsw-kefka:       NOTRUN -> [FAIL][28]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-bsw-kefka/igt@meta_test@fail-result.html
-    - fi-adl-ddr5:        NOTRUN -> [FAIL][29]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-adl-ddr5/igt@meta_test@fail-result.html
-    - fi-cfl-guc:         NOTRUN -> [FAIL][30]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-cfl-guc/igt@meta_test@fail-result.html
-    - {bat-dg2-9}:        NOTRUN -> [FAIL][31]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-dg2-9/igt@meta_test@fail-result.html
-    - fi-hsw-4770:        NOTRUN -> [FAIL][32]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-hsw-4770/igt@meta_test@fail-result.html
-    - fi-skl-6700k2:      NOTRUN -> [FAIL][33]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-skl-6700k2/igt@meta_test@fail-result.html
-    - fi-cfl-8109u:       NOTRUN -> [FAIL][34]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-cfl-8109u/igt@meta_test@fail-result.html
-    - bat-adlp-4:         NOTRUN -> [FAIL][35]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-adlp-4/igt@meta_test@fail-result.html
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][36]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-kbl-8809g/igt@meta_test@fail-result.html
-    - {bat-rpls-2}:       NOTRUN -> [FAIL][37]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-rpls-2/igt@meta_test@fail-result.html
-    - fi-ivb-3770:        NOTRUN -> [FAIL][38]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-ivb-3770/igt@meta_test@fail-result.html
-    - fi-elk-e7500:       NOTRUN -> [FAIL][39]
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-elk-e7500/igt@meta_test@fail-result.html
-    - {bat-dg2-8}:        NOTRUN -> [FAIL][40]
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-dg2-8/igt@meta_test@fail-result.html
-    - fi-kbl-guc:         NOTRUN -> [FAIL][41]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-kbl-guc/igt@meta_test@fail-result.html
-    - fi-snb-2600:        NOTRUN -> [FAIL][42]
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-snb-2600/igt@meta_test@fail-result.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_11751 and IGTPW_7271:
-
-### New IGT tests (1) ###
-
-  * igt@meta_test@fail-result:
-    - Statuses : 42 fail(s)
-    - Exec time: [0.00, 0.19] s
-
-  
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+The typical reason: Legacy.
 
 
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6518 -> IGTPW_7271
-
-  CI-20190529: 20190529
-  CI_DRM_11751: a3f181e83855047cd3f93f21beeee04caf942794 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7271: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/index.html
-  IGT_6518: 0189ca288f7188e60f5eda356b190040bf8ec704 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/index.html
-
---===============8159372404525004574==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+-- 
+Petri Latvala
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add subtests description</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104959/">https://patchwork.freedesktop.org/series/104959/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11751 -&gt; IGTPW_7271</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7271 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7271, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/index.html</p>
-<h2>Participating hosts (41 -&gt; 42)</h2>
-<p>Additional (2): fi-kbl-soraka bat-adls-5 <br />
-  Missing    (1): fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7271:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@meta_test@fail-result (NEW):</p>
-<ul>
-<li>
-<p>{bat-jsl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-jsl-2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-ilk-650/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-jsl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-jsl-1/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-tgl-1115g4/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-jsl-1/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-blb-e6850/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-bsw-n3050/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-adlp-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-adlp-6/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-skl-6600u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-glk-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-ehl-2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-apl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-pnv-d510/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-snb-2520m/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-glk-j4005/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-rkl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-skl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-kbl-soraka/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-dg1-6/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-kbl-7567u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-cfl-8700k/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-tgl-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-bsw-nick/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-rkl-11600/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-hsw-g3258/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-adls-5}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-adls-5/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-bdw-gvtdvm/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-bsw-kefka/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-adl-ddr5:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-adl-ddr5/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-cfl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-dg2-9}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-dg2-9/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-hsw-4770/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-skl-6700k2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-cfl-8109u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-adlp-4/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-kbl-8809g/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-rpls-2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-ivb-3770/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-elk-e7500/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/bat-dg2-8/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-kbl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/fi-snb-2600/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_11751 and IGTPW_7271:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@meta_test@fail-result:<ul>
-<li>Statuses : 42 fail(s)</li>
-<li>Exec time: [0.00, 0.19] s</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6518 -&gt; IGTPW_7271</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11751: a3f181e83855047cd3f93f21beeee04caf942794 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7271: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7271/index.html<br />
-  IGT_6518: 0189ca288f7188e60f5eda356b190040bf8ec704 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8159372404525004574==--
+> 
+> Of course I'm going to use igt_gettime() now, so thanks for the review
+> and comment.
+> 
+> --
+> Zbigniew
+> 
+> > 
+> > 
+> > -- 
+> > Petri Latvala
+> > 
+> > 
+> > 
+> > > +		igt_debug("size: %10lld, cpu crc: 0x%08x (time: %.3f), "
+> > > +			  "gpu crc: 0x%08x (time: %.3f) [ %s ]\n",
+> > > +			  (long long) size, cpu_crc, cpu_time, gpu_crc, gpu_time,
+> > > +			  cpu_crc == gpu_crc ? "EQUAL" : "DIFFERENT");
+> > > +		gem_close(i915, data);
+> > > +		igt_assert(cpu_crc == gpu_crc);
+> > > +	}
+> > > +
+> > > +	put_ahnd(ahnd);
+> > > +}
+> > > +
+> > >  static int opt_handler(int opt, int opt_index, void *data)
+> > >  {
+> > >  	switch (opt) {
+> > > @@ -1552,6 +1599,22 @@ igt_main_args("dpib", NULL, help_str, opt_handler, NULL)
+> > >  	igt_subtest("render-ccs")
+> > >  		render_ccs(bops);
+> > >  
+> > > +	igt_describe("Compare cpu and gpu crc32 sums on input object");
+> > > +	igt_subtest_with_dynamic_f("crc32") {
+> > > +		const intel_ctx_t *ctx;
+> > > +		const struct intel_execution_engine2 *e;
+> > > +
+> > > +		igt_require(supports_i915_crc32(i915));
+> > > +
+> > > +		ctx = intel_ctx_create_all_physical(i915);
+> > > +		for_each_ctx_engine(i915, ctx, e) {
+> > > +			for_each_memory_region(r, i915) {
+> > > +				igt_dynamic_f("%s-%s", e->name, r->name)
+> > > +					test_crc32(i915, ctx, e, &r->ci);
+> > > +			}
+> > > +		}
+> > > +	}
+> > > +
+> > >  	igt_fixture {
+> > >  		buf_ops_destroy(bops);
+> > >  		close(i915);
+> > > -- 
+> > > 2.32.0
+> > > 
