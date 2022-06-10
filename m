@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <f2be75d2-dc19-f5f5-49c8-00a2d2271805@intel.com>
-Date: Fri, 10 Jun 2022 15:49:59 +0530
-Content-Language: en-US
-To: Arun R Murthy <arun.r.murthy@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220608060737.3839351-1-arun.r.murthy@intel.com>
- <20220610074853.3937294-1-arun.r.murthy@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20220610074853.3937294-1-arun.r.murthy@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF8BD10E03F
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jun 2022 10:26:34 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 10 Jun 2022 12:26:27 +0200
+Message-Id: <20220610102627.29585-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: first async flip
- discarded on i915
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: fix
+ parallel_ordering with no-reloc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,43 +17,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org
+Cc: chris.p.wilson@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 6/10/2022 1:18 PM, Arun R Murthy wrote:
-> The i915 KMD will use the first async flip to update the watermarks as
-> per the watermark optimization in DISPLAY13. Hence the actual async flip
-> will happen from the subsequent flips.
-> For alternate sync async test, a dummy async flip has to be done to
-> allow the KMD to perform the watermark related updates before writing to
-> the surface base address.
->
-> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_async_flips.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index 4a0527dc..695aea74 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -211,11 +211,14 @@ static void test_async_flip(data_t *data)
->   			 * In older platforms (<= Gen10), async address update bit is double buffered.
->   			 * So flip timestamp can be verified only from the second flip.
->   			 * The first async flip just enables the async address update.
-> +			 * In platforms greater than DISPLAY13 the first async flip will be discarded
-> +			 * in order to change the watermark levels as per the optimization. Hence the
-> +			 * subsequent async flips will actually do the asynchronous flips.
->   			 */
->   			if (is_i915_device(data->drm_fd)) {
->   				uint32_t devid = intel_get_drm_devid(data->drm_fd);
->   
-> -				if (IS_GEN9(devid) || IS_GEN10(devid)) {
-> +				if (IS_GEN9(devid) || IS_GEN10(devid) || AT_LEAST_GEN(devid, 12)) {
->   					ret = drmModePageFlip(data->drm_fd, data->crtc_id,
->   							      data->bufs[frame % 4].fb_id,
->   							      flags, data);
+Make sure to allocate ahnd so that spinner starts with no-reloc
+execbuf otherwise this will fail on platforms with relocation disabled.
 
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6117
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/i915/gem_exec_balancer.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 186975c46..636c96f9e 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -3108,6 +3108,7 @@ static void parallel_ordering(int i915, unsigned int flags)
+ 		unsigned int count;
+ 		int i = 0, fence = 0;
+ 		uint32_t batch[16];
++		uint64_t ahnd;
+ 		struct drm_i915_gem_execbuffer2 execbuf;
+ 		struct drm_i915_gem_exec_object2 obj[32];
+ 		igt_spin_t *spin;
+@@ -3162,7 +3163,9 @@ static void parallel_ordering(int i915, unsigned int flags)
+ 
+ 		/* Block parallel submission */
+ 		spin_ctx = ctx_create_engines(i915, siblings, count);
++		ahnd = get_simple_ahnd(i915, spin_ctx->id);
+ 		spin = __igt_spin_new(i915,
++				      .ahnd = ahnd,
+ 				      .ctx = spin_ctx,
+ 				      .engine = 0,
+ 				      .flags = IGT_SPIN_FENCE_OUT |
+-- 
+2.35.1
