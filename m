@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============4062796592133283346=="
+ boundary="===============3734164656543880161=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Fri, 10 Jun 2022 16:01:11 -0000
-Message-ID: <165487687163.16749.17560115693388655038@emeril.freedesktop.org>
-References: <20220610090910.4089211-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220610090910.4089211-1-bhanuprakash.modem@intel.com>
+Date: Fri, 10 Jun 2022 16:05:42 -0000
+Message-ID: <165487714246.16747.6313783203093416037@emeril.freedesktop.org>
+References: <20220610091153.4089928-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220610091153.4089928-1-bhanuprakash.modem@intel.com>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcursor=5Flegacy=3A_IGT_test_cleanup?=
+ =?utf-8?q?kms=5Fpipe=5Fcrc=5Fbasic=3A_IGT_test_cleanup_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +23,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4062796592133283346==
+--===============3734164656543880161==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_cursor_legacy: IGT test cleanup
-URL   : https://patchwork.freedesktop.org/series/104973/
+Series: tests/kms_pipe_crc_basic: IGT test cleanup (rev3)
+URL   : https://patchwork.freedesktop.org/series/104916/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_11752 -> IGTPW_7279
+CI Bug Log - changes from CI_DRM_11752 -> IGTPW_7280
 ====================================================
 
 Summary
@@ -44,39 +44,37 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with IGTPW_7279 absolutely need to be
+  Serious unknown changes coming with IGTPW_7280 absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7279, please notify your bug team to allow them
+  introduced in IGTPW_7280, please notify your bug team to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/index.html
 
-Participating hosts (42 -> 42)
+Participating hosts (42 -> 40)
 ------------------------------
 
-  Additional (2): bat-dg2-8 fi-icl-u2 
-  Missing    (2): bat-rpls-2 bat-dg2-9 
+  Additional (1): bat-dg2-8 
+  Missing    (3): bat-dg2-9 bat-adlp-4 fi-bsw-n3050 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_7279:
+  Here are the unknown changes that may have been introduced in IGTPW_7280:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-icl-u2:          NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+  * {igt@kms_pipe_crc_basic@hang-read-crc} (NEW):
+    - {bat-atsm-1}:       NOTRUN -> [SKIP][1] +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-atsm-1/igt@kms_pipe_crc_basic@hang-read-crc.html
 
-  * {igt@kms_cursor_legacy@basic-flip-before-cursor} (NEW):
-    - bat-dg1-5:          NOTRUN -> [SKIP][2] +2 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-dg1-5/igt@kms_cursor_legacy@basic-flip-before-cursor.html
-    - {bat-atsm-1}:       NOTRUN -> [SKIP][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-atsm-1/igt@kms_cursor_legacy@basic-flip-before-cursor.html
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-dg1-5:          NOTRUN -> [SKIP][2] +5 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-dg1-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
 
   
 #### Suppressed ####
@@ -84,246 +82,878 @@ Possible new issues
   The following results come from untrusted machines, tests, or statuses.
   They do not affect the overall result.
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - {bat-atsm-1}:       NOTRUN -> [SKIP][4] +1 similar issue
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-atsm-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - {fi-ehl-2}:         NOTRUN -> [SKIP][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-ehl-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - {bat-atsm-1}:       NOTRUN -> [SKIP][3] +4 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-atsm-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
 
   
 New tests
 ---------
 
-  New tests have been introduced between CI_DRM_11752 and IGTPW_7279:
+  New tests have been introduced between CI_DRM_11752 and IGTPW_7280:
 
-### New IGT tests (7) ###
+### New IGT tests (188) ###
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic:
-    - Statuses : 8 pass(s) 3 skip(s)
-    - Exec time: [0.00, 2.20] s
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.40, 0.44] s
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - Statuses : 8 pass(s) 3 skip(s)
-    - Exec time: [0.00, 2.29] s
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.83] s
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - Statuses : 8 pass(s) 3 skip(s)
-    - Exec time: [0.00, 2.30] s
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.34, 0.73] s
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@legacy:
-    - Statuses : 11 pass(s)
-    - Exec time: [0.93, 1.46] s
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [0.51, 1.08] s
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@toggle:
-    - Statuses : 11 pass(s)
-    - Exec time: [0.96, 2.26] s
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-hdmi-a-1:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.32, 0.44] s
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@varying-size:
-    - Statuses : 11 pass(s)
-    - Exec time: [0.96, 2.20] s
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.35, 0.57] s
 
-  * igt@kms_cursor_legacy@basic-flip-before-cursor:
-    - Statuses : 8 skip(s)
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.51] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-vga-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.26, 0.37] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.35, 0.39] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-dp-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.27, 0.36] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.49] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.82, 1.07] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [1.30, 1.92] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-hdmi-a-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.28, 0.39] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-hdmi-a-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.29, 0.58] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.86] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-vga-1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.26, 0.45] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.39, 0.41] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.82, 1.07] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-edp-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [1.26, 1.69] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-hdmi-a-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.28, 0.35] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.28, 0.55] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-vga-1:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.26, 0.29] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.40] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dsi-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.06] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.41] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-hdmi-a-2:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.30, 0.42] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - Statuses : 7 skip(s)
     - Exec time: [0.0] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.02, 1.03] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.45, 2.15] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [1.99, 3.14] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-hdmi-a-1:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.79, 1.10] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.94, 1.39] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.83] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-vga-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.72, 1.15] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.90, 0.95] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.75, 0.91] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.87, 2.31] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [2.71, 4.04] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-hdmi-a-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.73, 1.0] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-hdmi-a-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.87, 1.29] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.40] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-vga-1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.71, 1.23] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.95, 1.01] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.87, 2.40] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-edp-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [2.68, 3.70] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.75, 0.98] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.81, 1.30] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-vga-1:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.71, 0.75] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.96] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dsi-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.39] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.95] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-hdmi-a-2:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.88, 1.18] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.57, 0.60] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.75] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.54, 0.89] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [0.63, 1.23] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-hdmi-a-1:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.48, 0.61] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.53, 0.74] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.68] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-vga-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.43, 0.55] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.51, 0.53] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.44, 0.52] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.90] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.00, 1.18] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [1.41, 2.07] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-hdmi-a-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.44, 0.53] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-hdmi-a-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.46, 0.72] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.26] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-vga-1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.42, 0.65] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.52, 0.58] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.0, 1.16] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-edp-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [1.40, 1.92] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-hdmi-a-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.44, 0.52] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.44, 0.68] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-vga-1:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.42, 0.45] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.54] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dsi-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.20] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.54] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-hdmi-a-2:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.46, 0.56] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.57, 0.58] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.81] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.54, 0.90] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [0.63, 1.25] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-hdmi-a-1:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.48, 0.60] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.54, 0.75] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.69] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-vga-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.44, 0.55] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.51, 0.53] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.44, 0.52] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.94] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.99, 1.23] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [1.41, 2.08] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-hdmi-a-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.44, 0.55] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-hdmi-a-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.46, 0.72] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.30] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-vga-1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.42, 0.61] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.53, 0.58] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [1.00, 1.17] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-edp-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [1.40, 1.91] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-hdmi-a-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.44, 0.51] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.44, 0.71] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-vga-1:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.42, 0.44] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.54] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dsi-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.14] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.53] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-hdmi-a-2:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.46, 0.57] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.50, 0.52] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.61] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.47, 0.85] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [0.60, 1.20] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-hdmi-a-1:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.41, 0.53] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.46, 0.66] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.60] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-vga-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.37, 0.50] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.46, 0.48] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.37, 0.45] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.64] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.94, 1.16] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [1.35, 1.99] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-hdmi-a-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.35, 0.49] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-hdmi-a-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.39, 0.62] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.18] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-vga-1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.35, 0.57] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.46, 0.51] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.93, 1.26] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-edp-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [1.33, 1.86] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-hdmi-a-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.37, 0.44] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.37, 0.67] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-vga-1:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.35, 0.38] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.47] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-dsi-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.12] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-hdmi-a-2:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.39, 0.49] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-a-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.50, 0.52] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-a-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.62] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-a-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.47, 0.86] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-a-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [0.58, 1.21] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-a-hdmi-a-1:
+    - Statuses : 6 pass(s)
+    - Exec time: [0.42, 0.54] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-a-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.48, 0.65] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-a-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.63] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-a-vga-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.36, 0.49] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.44, 0.48] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.37, 0.45] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-5:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.64] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.93, 1.15] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-edp-1:
+    - Statuses : 8 pass(s)
+    - Exec time: [1.37, 2.07] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-hdmi-a-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.35, 0.51] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-hdmi-a-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.39, 0.63] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.23] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-vga-1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.35, 0.55] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-c-dp-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.47, 0.50] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-c-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.93, 1.18] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-c-edp-1:
+    - Statuses : 7 pass(s)
+    - Exec time: [1.33, 1.88] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-c-hdmi-a-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.37, 0.44] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-c-hdmi-a-2:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.37, 0.68] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-c-vga-1:
+    - Statuses : 3 pass(s)
+    - Exec time: [0.36, 0.38] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-d-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.47] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-d-dsi-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.14] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-d-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-d-hdmi-a-2:
+    - Statuses : 2 pass(s)
+    - Exec time: [0.39, 0.49] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.92] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [4.69, 5.14] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-edp-1:
+    - Statuses : 6 pass(s)
+    - Exec time: [2.92, 7.42] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [1.86, 12.70] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [2.10, 4.79] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [5.04] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-vga-1:
+    - Statuses : 4 pass(s)
+    - Exec time: [1.76, 3.27] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.24] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-dp-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [2.03, 2.87] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [5.17, 5.82] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-edp-1:
+    - Statuses : 6 pass(s)
+    - Exec time: [3.55, 14.38] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [1.67, 11.88] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2:
+    - Statuses : 2 pass(s)
+    - Exec time: [2.00, 4.58] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [5.67] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-vga-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [2.05, 3.27] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.94] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dsi-1:
+    - Statuses : 2 pass(s)
+    - Exec time: [5.15, 5.25] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-edp-1:
+    - Statuses : 5 pass(s)
+    - Exec time: [3.58, 14.40] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-1:
+    - Statuses : 4 pass(s)
+    - Exec time: [1.75, 11.73] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-2:
+    - Statuses : 3 pass(s)
+    - Exec time: [2.00, 4.90] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:
+    - Statuses : 3 pass(s)
+    - Exec time: [1.72, 3.28] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dsi-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [5.40] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-edp-1:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.70] s
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
 
   
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_7279 that come from known issues:
+  Here are the changes found in IGTPW_7280 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-icl-u2:          NOTRUN -> [SKIP][6] ([i915#2190])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-icl-u2:          NOTRUN -> [SKIP][7] ([i915#4613]) +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [PASS][8] -> [INCOMPLETE][9] ([i915#5847])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+  * igt@i915_selftest@live@gem:
+    - fi-pnv-d510:        NOTRUN -> [DMESG-FAIL][4] ([i915#4528])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-pnv-d510/igt@i915_selftest@live@gem.html
 
   * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [PASS][10] -> [INCOMPLETE][11] ([i915#4785])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+    - fi-snb-2600:        [PASS][5] -> [INCOMPLETE][6] ([i915#3921])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
 
   * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [PASS][12] -> [DMESG-FAIL][13] ([i915#4528])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-blb-e6850/igt@i915_selftest@live@requests.html
+    - fi-blb-e6850:       [PASS][7] -> [DMESG-FAIL][8] ([i915#4528])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-blb-e6850/igt@i915_selftest@live@requests.html
 
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-icl-u2:          NOTRUN -> [SKIP][14] ([i915#5903])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@i915_suspend@basic-s3-without-i915.html
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][9] ([fdo#109271]) +5 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-bdw-gvtdvm/igt@kms_pipe_crc_basic@nonblocking-crc.html
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][10] ([fdo#109271]) +6 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-kbl-8809g/igt@kms_pipe_crc_basic@nonblocking-crc.html
 
-  * igt@kms_busy@basic@modeset:
-    - bat-adlp-4:         [PASS][15] -> [DMESG-WARN][16] ([i915#3576]) +1 similar issue
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-adlp-4/igt@kms_busy@basic@modeset.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-adlp-4/igt@kms_busy@basic@modeset.html
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][11] ([fdo#109271]) +6 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-kbl-7567u/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
 
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-icl-u2:          NOTRUN -> [SKIP][17] ([fdo#111827]) +8 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - fi-bsw-nick:        NOTRUN -> [SKIP][12] ([fdo#109271]) +6 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-bsw-nick/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][18] ([fdo#109271])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-cfl-8700k/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-bsw-nick:        NOTRUN -> [SKIP][19] ([fdo#109271]) +2 similar issues
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-bsw-nick/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-glk-dsi:         NOTRUN -> [SKIP][20] ([fdo#109271])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-glk-dsi/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - bat-adlp-4:         NOTRUN -> [SKIP][21] ([i915#4103])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-adlp-4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][22] ([fdo#109271]) +2 similar issues
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-kbl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-glk-j4005:       NOTRUN -> [SKIP][23] ([fdo#109271])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-skl-6700k2:      NOTRUN -> [SKIP][24] ([fdo#109271])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-skl-6700k2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][25] ([i915#4103])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][26] ([i915#4103])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-adl-ddr5:        NOTRUN -> [SKIP][27] ([i915#4103])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-adl-ddr5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-cfl-guc:         NOTRUN -> [SKIP][28] ([fdo#109271])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-cfl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][29] ([fdo#109271])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-cfl-8109u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-skl-6600u:       NOTRUN -> [SKIP][30] ([fdo#109271])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-skl-6600u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-rkl-guc:         NOTRUN -> [SKIP][31] ([i915#4103])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-rkl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-skl-guc:         NOTRUN -> [SKIP][32] ([fdo#109271])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-skl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][33] ([fdo#109271])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - bat-dg1-6:          NOTRUN -> [SKIP][34] ([i915#4103])
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-dg1-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-
-  * {igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size} (NEW):
-    - fi-blb-e6850:       NOTRUN -> [SKIP][35] ([fdo#109271]) +8 similar issues
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-blb-e6850/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][36] ([fdo#109271]) +2 similar issues
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-kbl-8809g/igt@kms_cursor_legacy@basic-flip-after-cursor.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][37] ([fdo#109271]) +2 similar issues
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-bdw-gvtdvm/igt@kms_cursor_legacy@basic-flip-after-cursor.html
-
-  * {igt@kms_cursor_legacy@basic-flip-before-cursor} (NEW):
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][38] ([fdo#109271]) +2 similar issues
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-kbl-7567u/igt@kms_cursor_legacy@basic-flip-before-cursor.html
-    - {bat-dg2-8}:        NOTRUN -> [SKIP][39] ([i915#5354])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-dg2-8/igt@kms_cursor_legacy@basic-flip-before-cursor.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor@atomic:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][40] ([fdo#109271]) +8 similar issues
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-pnv-d510/igt@kms_cursor_legacy@basic-flip-before-cursor@atomic.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-elk-e7500:       NOTRUN -> [SKIP][41] ([fdo#109271]) +8 similar issues
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-elk-e7500/igt@kms_cursor_legacy@basic-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - fi-icl-u2:          NOTRUN -> [WARN][42] ([i915#6008])
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-icl-u2:          NOTRUN -> [SKIP][43] ([fdo#109285])
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-icl-u2:          NOTRUN -> [SKIP][44] ([fdo#109278])
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-icl-u2:          NOTRUN -> [SKIP][45] ([i915#3555])
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-icl-u2:          NOTRUN -> [SKIP][46] ([fdo#109295] / [i915#3301])
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][47] ([fdo#109271] / [i915#4312] / [i915#5594])
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-hsw-4770/igt@runner@aborted.html
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][48] ([fdo#109271] / [i915#3428] / [i915#4312])
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-bsw-n3050/igt@runner@aborted.html
+  * {igt@kms_pipe_crc_basic@suspend-read-crc} (NEW):
+    - {bat-dg2-8}:        NOTRUN -> [SKIP][13] ([i915#5354]) +1 similar issue
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-dg2-8/igt@kms_pipe_crc_basic@suspend-read-crc.html
 
   
 #### Possible fixes ####
 
-  * igt@fbdev@read:
-    - {bat-atsm-1}:       [SKIP][49] -> [PASS][50] +4 similar issues
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-atsm-1/igt@fbdev@read.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-atsm-1/igt@fbdev@read.html
+  * igt@fbdev@eof:
+    - {bat-atsm-1}:       [SKIP][14] -> [PASS][15] +4 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-atsm-1/igt@fbdev@eof.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-atsm-1/igt@fbdev@eof.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][16] ([i915#4494] / [i915#4957]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [DMESG-FAIL][18] ([i915#4528]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-pnv-d510/igt@i915_selftest@live@requests.html
 
   * igt@kms_busy@basic@flip:
-    - {bat-adlp-6}:       [DMESG-WARN][51] ([i915#3576]) -> [PASS][52]
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-adlp-6/igt@kms_busy@basic@flip.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-adlp-6/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
-    - bat-adlp-4:         [DMESG-WARN][53] ([i915#3576]) -> [PASS][54]
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+    - {bat-adlp-6}:       [DMESG-WARN][20] ([i915#3576]) -> [PASS][21]
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-adlp-6/igt@kms_busy@basic@flip.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-adlp-6/igt@kms_busy@basic@flip.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=109278
   [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
   [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
   [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
   [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
   [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
   [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
   [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
   [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3428]: https://gitlab.freedesktop.org/drm/intel/issues/3428
   [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
   [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
   [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
   [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
   [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
   [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
   [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
   [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
   [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
   [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
   [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
   [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
   [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
   [i915#5174]: https://gitlab.freedesktop.org/drm/intel/issues/5174
   [i915#5181]: https://gitlab.freedesktop.org/drm/intel/issues/5181
   [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
   [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
   [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
   [i915#5606]: https://gitlab.freedesktop.org/drm/intel/issues/5606
   [i915#5703]: https://gitlab.freedesktop.org/drm/intel/issues/5703
   [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
   [i915#5775]: https://gitlab.freedesktop.org/drm/intel/issues/5775
-  [i915#5847]: https://gitlab.freedesktop.org/drm/intel/issues/5847
+  [i915#5885]: https://gitlab.freedesktop.org/drm/intel/issues/5885
   [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
-  [i915#6008]: https://gitlab.freedesktop.org/drm/intel/issues/6008
+  [i915#5950]: https://gitlab.freedesktop.org/drm/intel/issues/5950
   [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
   [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
   [i915#6092]: https://gitlab.freedesktop.org/drm/intel/issues/6092
@@ -338,25 +968,79 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_6518 -> IGTPW_7279
+  * IGT: IGT_6518 -> IGTPW_7280
 
   CI-20190529: 20190529
   CI_DRM_11752: 75ccb392dacda10127700cb2a03160f5dd9f475c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7279: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/index.html
+  IGTPW_7280: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/index.html
   IGT_6518: 0189ca288f7188e60f5eda356b190040bf8ec704 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 
 Testlist changes
 ----------------
 
-+++ 18 lines
---- 96 lines
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck
++igt@kms_pipe_crc_basic@disable-crc-after-crtc
++igt@kms_pipe_crc_basic@hang-read-crc
++igt@kms_pipe_crc_basic@nonblocking-crc
++igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
++igt@kms_pipe_crc_basic@read-crc
++igt@kms_pipe_crc_basic@read-crc-frame-sequence
++igt@kms_pipe_crc_basic@suspend-read-crc
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-e
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-f
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-a
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-b
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-c
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-d
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-e
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-f
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-b
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-c
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-d
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-e
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-f
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-b
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-b-frame-sequence
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-c
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-c-frame-sequence
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-d
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-d-frame-sequence
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-e
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-e-frame-sequence
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-f
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-f-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-a
+-igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-b
+-igt@kms_pipe_crc_basic@read-crc-pipe-b-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-c
+-igt@kms_pipe_crc_basic@read-crc-pipe-c-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-d
+-igt@kms_pipe_crc_basic@read-crc-pipe-d-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-e
+-igt@kms_pipe_crc_basic@read-crc-pipe-e-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-f
+-igt@kms_pipe_crc_basic@read-crc-pipe-f-frame-sequence
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-c
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-d
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-e
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-f
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/index.html
 
---===============4062796592133283346==
+--===============3734164656543880161==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -376,47 +1060,42 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_legacy: IGT test cleanup</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104973/">https://patchwork.freedesktop.org/series/104973/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_pipe_crc_basic: IGT test cleanup (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/104916/">https://patchwork.freedesktop.org/series/104916/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_11752 -&gt; IGTPW_7279</h1>
+    <h1>CI Bug Log - changes from CI_DRM_11752 -&gt; IGTPW_7280</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7279 absolutely need to be<br />
+<p>Serious unknown changes coming with IGTPW_7280 absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7279, please notify your bug team to allow them<br />
+  introduced in IGTPW_7280, please notify your bug team to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/index.html</p>
-<h2>Participating hosts (42 -&gt; 42)</h2>
-<p>Additional (2): bat-dg2-8 fi-icl-u2 <br />
-  Missing    (2): bat-rpls-2 bat-dg2-9 </p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Additional (1): bat-dg2-8 <br />
+  Missing    (3): bat-dg2-9 bat-adlp-4 fi-bsw-n3050 </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7279:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7280:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
+<p>{igt@kms_pipe_crc_basic@hang-read-crc} (NEW):</p>
 <ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a></li>
+<li>{bat-atsm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-atsm-1/igt@kms_pipe_crc_basic@hang-read-crc.html">SKIP</a> +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_cursor_legacy@basic-flip-before-cursor} (NEW):</p>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
 <ul>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-dg1-5/igt@kms_cursor_legacy@basic-flip-before-cursor.html">SKIP</a> +2 similar issues</p>
-</li>
-<li>
-<p>{bat-atsm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-atsm-1/igt@kms_cursor_legacy@basic-flip-before-cursor.html">SKIP</a></p>
-</li>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-dg1-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> +5 similar issues</li>
 </ul>
 </li>
 </ul>
@@ -424,281 +1103,1409 @@ Content-Transfer-Encoding: 7bit
 <p>The following results come from untrusted machines, tests, or statuses.<br />
   They do not affect the overall result.</p>
 <ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>
-<p>{bat-atsm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-atsm-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> +1 similar issue</p>
-</li>
-<li>
-<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-ehl-2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a></p>
-</li>
+<li>igt@kms_pipe_crc_basic@read-crc-frame-sequence:<ul>
+<li>{bat-atsm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-atsm-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> +4 similar issues</li>
 </ul>
 </li>
 </ul>
 <h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_11752 and IGTPW_7279:</p>
-<h3>New IGT tests (7)</h3>
+<p>New tests have been introduced between CI_DRM_11752 and IGTPW_7280:</p>
+<h3>New IGT tests (188)</h3>
 <ul>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic:</p>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-dp-1:</p>
 <ul>
-<li>Statuses : 8 pass(s) 3 skip(s)</li>
-<li>Exec time: [0.00, 2.20] s</li>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.40, 0.44] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-dp-5:</p>
 <ul>
-<li>Statuses : 8 pass(s) 3 skip(s)</li>
-<li>Exec time: [0.00, 2.29] s</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.83] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-dsi-1:</p>
 <ul>
-<li>Statuses : 8 pass(s) 3 skip(s)</li>
-<li>Exec time: [0.00, 2.30] s</li>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.34, 0.73] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@legacy:</p>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-edp-1:</p>
 <ul>
-<li>Statuses : 11 pass(s)</li>
-<li>Exec time: [0.93, 1.46] s</li>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [0.51, 1.08] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@toggle:</p>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-hdmi-a-1:</p>
 <ul>
-<li>Statuses : 11 pass(s)</li>
-<li>Exec time: [0.96, 2.26] s</li>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.32, 0.44] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@varying-size:</p>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-hdmi-a-2:</p>
 <ul>
-<li>Statuses : 11 pass(s)</li>
-<li>Exec time: [0.96, 2.20] s</li>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.35, 0.57] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor:</p>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-lvds-1:</p>
 <ul>
-<li>Statuses : 8 skip(s)</li>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.51] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-a-vga-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.26, 0.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.35, 0.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-dp-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.27, 0.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.82, 1.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [1.30, 1.92] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.28, 0.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.29, 0.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.86] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-b-vga-1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.26, 0.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.39, 0.41] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.82, 1.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-edp-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [1.26, 1.69] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.28, 0.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.28, 0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-c-vga-1:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.26, 0.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-dsi-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.41] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck@pipe-d-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.30, 0.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
 <li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.02, 1.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.45, 2.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [1.99, 3.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.79, 1.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.94, 1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.83] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-vga-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.72, 1.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.90, 0.95] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.75, 0.91] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.87, 2.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [2.71, 4.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.73, 1.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.87, 1.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-vga-1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.71, 1.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.95, 1.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.87, 2.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-edp-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [2.68, 3.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.75, 0.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.81, 1.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.71, 0.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-dsi-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.95] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-d-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.88, 1.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.57, 0.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.54, 0.89] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [0.63, 1.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.48, 0.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.53, 0.74] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-a-vga-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.43, 0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.51, 0.53] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.44, 0.52] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.90] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.00, 1.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [1.41, 2.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.44, 0.53] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.46, 0.72] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.26] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-vga-1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.42, 0.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.52, 0.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.0, 1.16] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-edp-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [1.40, 1.92] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.44, 0.52] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.44, 0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-vga-1:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.42, 0.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-dsi-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-d-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.46, 0.56] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.57, 0.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.81] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.54, 0.90] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [0.63, 1.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.48, 0.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.54, 0.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.69] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-a-vga-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.44, 0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.51, 0.53] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.44, 0.52] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.94] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.99, 1.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [1.41, 2.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.44, 0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.46, 0.72] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-vga-1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.42, 0.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.53, 0.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [1.00, 1.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-edp-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [1.40, 1.91] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.44, 0.51] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.44, 0.71] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-c-vga-1:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.42, 0.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-dsi-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.53] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-d-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.46, 0.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.50, 0.52] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.47, 0.85] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [0.60, 1.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.41, 0.53] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.46, 0.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-a-vga-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.37, 0.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.46, 0.48] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.37, 0.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.64] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.94, 1.16] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [1.35, 1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.35, 0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.39, 0.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-vga-1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.35, 0.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.46, 0.51] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.93, 1.26] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-edp-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [1.33, 1.86] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.37, 0.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.37, 0.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-c-vga-1:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.35, 0.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-dsi-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-d-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.39, 0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.50, 0.52] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.47, 0.86] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [0.58, 1.21] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [0.42, 0.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.48, 0.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-a-vga-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.36, 0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.44, 0.48] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.37, 0.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-5:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.64] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.93, 1.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-edp-1:</p>
+<ul>
+<li>Statuses : 8 pass(s)</li>
+<li>Exec time: [1.37, 2.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [0.35, 0.51] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.39, 0.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-vga-1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.35, 0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-c-dp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.47, 0.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-c-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.93, 1.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-c-edp-1:</p>
+<ul>
+<li>Statuses : 7 pass(s)</li>
+<li>Exec time: [1.33, 1.88] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.37, 0.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.37, 0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [0.36, 0.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-d-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-d-dsi-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-d-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-d-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [0.39, 0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.92] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [4.69, 5.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [2.92, 7.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [1.86, 12.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [2.10, 4.79] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [5.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-vga-1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [1.76, 3.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-dp-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [2.03, 2.87] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [5.17, 5.82] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-edp-1:</p>
+<ul>
+<li>Statuses : 6 pass(s)</li>
+<li>Exec time: [3.55, 14.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [1.67, 11.88] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [2.00, 4.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [5.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-vga-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [2.05, 3.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.94] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dsi-1:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [5.15, 5.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-edp-1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [3.58, 14.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [1.75, 11.73] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [2.00, 4.90] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-vga-1:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [1.72, 3.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dsi-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [5.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-edp-1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7279 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_7280 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@gem_huc_copy@huc-copy:</p>
+<p>igt@i915_selftest@live@gem:</p>
 <ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5847">i915#5847</a>)</li>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@i915_selftest@live@hangcheck:</p>
 <ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@i915_selftest@live@requests:</p>
 <ul>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5903">i915#5903</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@modeset:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-adlp-4/igt@kms_busy@basic@modeset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-adlp-4/igt@kms_busy@basic@modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
 <ul>
 <li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-cfl-8700k/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-bdw-gvtdvm/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +5 similar issues</p>
 </li>
 <li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-bsw-nick/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
-</li>
-<li>
-<p>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-glk-dsi/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-adlp-4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</p>
-</li>
-<li>
-<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-kbl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
-</li>
-<li>
-<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-skl-6700k2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</p>
-</li>
-<li>
-<p>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</p>
-</li>
-<li>
-<p>fi-adl-ddr5:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-adl-ddr5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</p>
-</li>
-<li>
-<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-cfl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-cfl-8109u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-skl-6600u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-rkl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</p>
-</li>
-<li>
-<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-skl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-dg1-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</p>
+<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-kbl-8809g/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 similar issues</p>
 </li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size} (NEW):</p>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
 <ul>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-blb-e6850/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-kbl-7567u/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor:</p>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
 <ul>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-kbl-8809g/igt@kms_cursor_legacy@basic-flip-after-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
-</li>
-<li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-bdw-gvtdvm/igt@kms_cursor_legacy@basic-flip-after-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
-</li>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-bsw-nick/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +6 similar issues</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_cursor_legacy@basic-flip-before-cursor} (NEW):</p>
+<p>{igt@kms_pipe_crc_basic@suspend-read-crc} (NEW):</p>
 <ul>
-<li>
-<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-kbl-7567u/igt@kms_cursor_legacy@basic-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
-</li>
-<li>
-<p>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-dg2-8/igt@kms_cursor_legacy@basic-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor@atomic:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-pnv-d510/igt@kms_cursor_legacy@basic-flip-before-cursor@atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-elk-e7500/igt@kms_cursor_legacy@basic-flip-before-cursor@atomic-transitions-varying-size.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6008">i915#6008</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109278">fdo#109278</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-icl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a>)</p>
-</li>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
+<li>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-dg2-8/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +1 similar issue</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>
-<p>igt@fbdev@read:</p>
+<p>igt@fbdev@eof:</p>
 <ul>
-<li>{bat-atsm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-atsm-1/igt@fbdev@read.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-atsm-1/igt@fbdev@read.html">PASS</a> +4 similar issues</li>
+<li>{bat-atsm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-atsm-1/igt@fbdev@eof.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-atsm-1/igt@fbdev@eof.html">PASS</a> +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
 </ul>
 </li>
 <li>
 <p>igt@kms_busy@basic@flip:</p>
 <ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">PASS</a></li>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11752/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></li>
 </ul>
 </li>
 </ul>
@@ -707,17 +2514,71 @@ Content-Transfer-Encoding: 7bit
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6518 -&gt; IGTPW_7279</li>
+<li>IGT: IGT_6518 -&gt; IGTPW_7280</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_11752: 75ccb392dacda10127700cb2a03160f5dd9f475c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7279: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7279/index.html<br />
+  IGTPW_7280: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7280/index.html<br />
   IGT_6518: 0189ca288f7188e60f5eda356b190040bf8ec704 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 <h2>Testlist changes</h2>
-<p>+++ 18 lines<br />
---- 96 lines</p>
+<p>+igt@kms_pipe_crc_basic@compare-crc-sanitycheck<br />
++igt@kms_pipe_crc_basic@disable-crc-after-crtc<br />
++igt@kms_pipe_crc_basic@hang-read-crc<br />
++igt@kms_pipe_crc_basic@nonblocking-crc<br />
++igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence<br />
++igt@kms_pipe_crc_basic@read-crc<br />
++igt@kms_pipe_crc_basic@read-crc-frame-sequence<br />
++igt@kms_pipe_crc_basic@suspend-read-crc<br />
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a<br />
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b<br />
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c<br />
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d<br />
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-e<br />
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-f<br />
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-a<br />
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-b<br />
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-c<br />
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-d<br />
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-e<br />
+-igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-f<br />
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-a<br />
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-b<br />
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-c<br />
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-d<br />
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-e<br />
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-f<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-b<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-b-frame-sequence<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-c<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-c-frame-sequence<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-d<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-d-frame-sequence<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-e<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-e-frame-sequence<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-f<br />
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-f-frame-sequence<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-a<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-b<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-b-frame-sequence<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-c<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-c-frame-sequence<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-d<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-d-frame-sequence<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-e<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-e-frame-sequence<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-f<br />
+-igt@kms_pipe_crc_basic@read-crc-pipe-f-frame-sequence<br />
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a<br />
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b<br />
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-c<br />
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-d<br />
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-e<br />
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-f</p>
 
 </body>
 </html>
 
---===============4062796592133283346==--
+--===============3734164656543880161==--
