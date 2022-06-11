@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com
- [IPv6:2607:f8b0:4864:20::c36])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0BFE10E171
- for <igt-dev@lists.freedesktop.org>; Sat, 11 Jun 2022 19:04:45 +0000 (UTC)
-Received: by mail-oo1-xc36.google.com with SMTP id
- v33-20020a4a9764000000b0035f814bb06eso477068ooi.11
- for <igt-dev@lists.freedesktop.org>; Sat, 11 Jun 2022 12:04:45 -0700 (PDT)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <maira.canal@usp.br>
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com
+ [IPv6:2a00:1450:4864:20::330])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8748310E208
+ for <igt-dev@lists.freedesktop.org>; Sat, 11 Jun 2022 20:38:50 +0000 (UTC)
+Received: by mail-wm1-x330.google.com with SMTP id q15so1074905wmj.2
+ for <igt-dev@lists.freedesktop.org>; Sat, 11 Jun 2022 13:38:50 -0700 (PDT)
+Received: from jheikkil-mobl.home (77-105-100-22.lpok.fi. [77.105.100.22])
+ by smtp.gmail.com with ESMTPSA id
+ a10-20020a056000100a00b0020d106c0386sm3444017wrx.89.2022.06.11.13.38.46
+ for <igt-dev@lists.freedesktop.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 11 Jun 2022 13:38:48 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 11 Jun 2022 16:03:10 -0300
-Message-Id: <20220611190310.654069-1-maira.canal@usp.br>
+Date: Sat, 11 Jun 2022 23:38:45 +0300
+Message-Id: <20220611203845.15118-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/amdgpu: Skip multihead MPO tests on
- single display
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_fb: Allow XY_FAST_COPY_BLT on DG2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,92 +25,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: magalilemes00@gmail.com, tales.aparecida@gmail.com,
- =?UTF-8?q?Ma=C3=ADra=20Canal?= <maira.canal@usp.br>,
- Alexander Deucher <alexander.deucher@amd.com>,
- Isabella Basso <isabbasso@riseup.net>, andrealmeid@riseup.net,
- Bhawanpreet.Lakha@amd.com, Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[Why]
-If only one output is connected, all the igt@amdgpu/amd_plane "-multihead"
-subtests will result in CRASH, such as can be seen in:
+From: Imre Deak <imre.deak@intel.com>
 
-Starting subtest: mpo-scale-nv12-multihead
-Received signal SIGSEGV.
-Stack trace:
- #0 [fatal_sig_handler+0x163]
- #1 [__sigaction+0x50]
- #2 [force_output_mode+0xa]
- #3 [test_display_mpo+0x20b]
- #4 [__igt_unique____real_main725+0x106d]
- #5 [main+0x23]
- #6 [__libc_start_call_main+0x80]
- #7 [__libc_start_main+0x89]
- #8 [_start+0x25]
-Subtest mpo-scale-nv12-multihead: CRASH (0.009s)
+Allow XY_FAST_COPY_BLT on DG2. This fixes x-tiled blits on DG2.
 
-In single-display systems, the "-multihead" subtests should SKIP.
-
-[How]
-Count the number of connected outputs on the system and compare it to the
-ideal number depending on the subtest, using igt_skip_on to assure that
-multiheaded subtests will SKIP on single display systems.
-
-Signed-off-by: Maíra Canal <maira.canal@usp.br>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5450
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5409
 ---
- tests/amdgpu/amd_plane.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ lib/igt_fb.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index faaa1b87..4b2bee49 100644
---- a/tests/amdgpu/amd_plane.c
-+++ b/tests/amdgpu/amd_plane.c
-@@ -449,9 +449,11 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index fa31c43c..1b9131f2 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2430,7 +2430,8 @@ struct fb_blit_upload {
+ 
+ static bool fast_blit_ok(const struct igt_fb *fb)
  {
+-	int ver = intel_display_ver(intel_get_drm_devid(fb->fd));
++	int dev_id = intel_get_drm_devid(fb->fd);
++	int ver = intel_display_ver(dev_id);
  
- 	igt_display_t *display = &data->display;
-+	igt_output_t *output;
- 	uint32_t regamma_lut_size;
- 	lut_t lut;
- 	struct fbc fb[4];
-+	int valid_outputs = 0;
- 	int videos[][2]= {
- 		{426, 240},
- 		{640, 360},
-@@ -464,6 +466,13 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+ 	if (ver < 9)
+ 		return false;
+@@ -2438,6 +2439,9 @@ static bool fast_blit_ok(const struct igt_fb *fb)
+ 	if (ver < 12)
+ 		return true;
  
- 	test_init(data);
++	if (ver >= 13 && !IS_ALDERLAKE_P(dev_id))
++		return true;
++
+ 	return fb->modifier != I915_FORMAT_MOD_X_TILED;
+ }
  
-+	/* Skip if there is less valid outputs than the required. */
-+	for_each_connected_output(display, output)
-+		valid_outputs++;
-+
-+	igt_skip_on_f(valid_outputs < display_count,
-+			"Valid outputs (%d) should be equal or greater than %d\n", valid_outputs, display_count);
-+
- 	regamma_lut_size = igt_pipe_obj_get_prop(data->pipe[0], IGT_CRTC_GAMMA_LUT_SIZE);
- 	igt_assert_lt(0, regamma_lut_size);
- 	lut_init(&lut, regamma_lut_size);
-@@ -586,9 +595,17 @@ static void test_mpo_swizzle_toggle_multihead(data_t *data)
- {
- 	struct amdgpu_bo_metadata meta = {};
- 	igt_display_t *display = &data->display;
-+	igt_output_t *output;
- 	igt_fb_t fb_1280_xr24_tiled, fb_1280_ar24_tiled, fb_1920_xb24_tiled,
- 		fb_1920_xb24_linear, fb_1920_xr24_tiled;
- 	int w, h;
-+	int valid_outputs = 0;
-+
-+	/* Skip if only one display is connected. */
-+	for_each_connected_output(display, output)
-+		valid_outputs++;
-+
-+	igt_skip_on_f(valid_outputs == 1, "Must have more than one output connected\n");
- 
- 	w = 2400;
- 	h = 1350;
 -- 
-2.36.1
+2.25.1
