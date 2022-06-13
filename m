@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C2D510E5B5
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jun 2022 15:15:58 +0000 (UTC)
-Date: Mon, 13 Jun 2022 17:15:54 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YqdUqpunywSXmBgs@kamilkon-desk1>
-References: <20220531065211.233242-4-mauro.chehab@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220531065211.233242-4-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [i-g-t, v2,
- 3/3] benchmarks/gem_syslatency: make realtime mode optional
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Ma=C3=ADra_Canal?= <maira.canal@usp.br>
+Date: Mon, 13 Jun 2022 17:05:15 -0000
+Message-ID: <165513991560.9735.17237178568101556072@emeril.freedesktop.org>
+References: <20220611190310.654069-1-maira.canal@usp.br>
+In-Reply-To: <20220611190310.654069-1-maira.canal@usp.br>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/amdgpu=3A_Skip_multihead_MPO_tests_on_single_display?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,92 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Mauro Carvalho Chehab <mauro.chehab@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mauro,
+== Series Details ==
 
-On 2022-05-31 at 08:52:11 +0200, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> Use a logic similar to the one at gem_latency in order to setup
-> the device to realtime, as, depending on the Kernel and on
-> CGroup settings, trying to setup realtime may return EPERM.
-> For more details, see:
-> 
-> 	https://www.kernel.org/doc/html/latest/scheduler/sched-rt-group.html?highlight=cgroup%20realtime
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> ---
->  benchmarks/gem_syslatency.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/benchmarks/gem_syslatency.c b/benchmarks/gem_syslatency.c
-> index 4b097e1c9316..db95cbcc6048 100644
-> --- a/benchmarks/gem_syslatency.c
-> +++ b/benchmarks/gem_syslatency.c
-> @@ -47,6 +47,8 @@
->  #include "i915/gem_create.h"
->  #include "i915/gem_ring.h"
->  
-> +#define REALTIME	0x1
-> +
->  #define sigev_notify_thread_id _sigev_un._tid
->  
->  static volatile int done;
-> @@ -234,7 +236,7 @@ static void bind_cpu(pthread_attr_t *attr, int cpu)
->  static void rtprio(pthread_attr_t *attr, int prio)
->  {
->  #ifdef PTHREAD_EXPLICIT_SCHED
-> -	struct sched_param param = { .sched_priority = 99 };
-> +	struct sched_param param = { .sched_priority = prio };
->  	pthread_attr_setinheritsched(attr, PTHREAD_EXPLICIT_SCHED);
->  	pthread_attr_setschedpolicy(attr, SCHED_FIFO);
->  	pthread_attr_setschedparam(attr, &param);
+Series: tests/amdgpu: Skip multihead MPO tests on single display
+URL   : https://patchwork.freedesktop.org/series/105024/
+State : warning
 
-So the problem still remains here, when you will use -R option
-it can still fail here, there are no error checks.
+== Summary ==
 
-Regards,
-Kamil
+Pipeline status: FAILED.
 
-> @@ -344,6 +346,7 @@ int main(int argc, char **argv)
->  	pthread_t bg_fs = 0;
->  	int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
->  	igt_stats_t cycles, mean, max;
-> +	unsigned flags = 0;
->  	double min;
->  	int time = 10;
->  	int field = -1;
-> @@ -353,7 +356,7 @@ int main(int argc, char **argv)
->  	long batch = 0;
->  	int ret, n, c;
->  
-> -	while ((c = getopt(argc, argv, "r:t:f:bmni1")) != -1) {
-> +	while ((c = getopt(argc, argv, "r:t:f:bmni1R")) != -1) {
->  		switch (c) {
->  		case '1':
->  			ncpus = 1;
-> @@ -374,6 +377,10 @@ int main(int argc, char **argv)
->  			/* Duration of each batch (microseconds) */
->  			batch = atoi(optarg);
->  			break;
-> +		case 'R':
-> +			/* Run the producers at RealTime priority */
-> +			flags |= REALTIME;
-> +			break;
->  		case 'f':
->  			/* Select an output field */
->  			field = atoi(optarg);
-> @@ -419,7 +426,8 @@ int main(int argc, char **argv)
->  
->  	wait = calloc(ncpus, sizeof(*wait));
->  	pthread_attr_init(&attr);
-> -	rtprio(&attr, 99);
-> +	if (flags & REALTIME)
-> +		rtprio(&attr, 99);
->  	for (n = 0; n < ncpus; n++) {
->  		igt_mean_init(&wait[n].mean);
->  		bind_cpu(&attr, n);
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/611199 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/23950219):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                290
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1655139609:step_script
+  section_start:1655139609:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1752 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=23950219 responseStatus=201 Created token=1GbHzWoR
+  section_end:1655139619:upload_artifacts_on_failure
+  section_start:1655139619:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1655139619:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/611199
