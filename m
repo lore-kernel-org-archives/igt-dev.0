@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A306910E659
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jun 2022 17:19:07 +0000 (UTC)
-From: "Hung, Alex" <Alex.Hung@amd.com>
-To: =?iso-8859-1?Q?Ma=EDra_Canal?= <maira.canal@usp.br>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 13 Jun 2022 17:19:05 +0000
-Message-ID: <DM6PR12MB3051717E2B99B8ED7246D150F7AB9@DM6PR12MB3051.namprd12.prod.outlook.com>
+Content-Type: multipart/alternative;
+ boundary="===============1849302242923678901=="
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hung, Alex" <alex.hung@amd.com>
+Date: Mon, 13 Jun 2022 17:27:23 -0000
+Message-ID: <165514124365.9735.4494492723903326340@emeril.freedesktop.org>
 References: <20220611190310.654069-1-maira.canal@usp.br>
 In-Reply-To: <20220611190310.654069-1-maira.canal@usp.br>
-Content-Language: en-GB
-Content-Type: multipart/alternative;
- boundary="_000_DM6PR12MB3051717E2B99B8ED7246D150F7AB9DM6PR12MB3051namp_"
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: Skip multihead MPO tests
- on single display
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?amdgpu=3A_Skip_multihead_MPO_tests_on_single_display?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,288 +17,231 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "magalilemes00@gmail.com" <magalilemes00@gmail.com>,
- "tales.aparecida@gmail.com" <tales.aparecida@gmail.com>, "Deucher,
- Alexander" <Alexander.Deucher@amd.com>, Isabella Basso <isabbasso@riseup.net>,
- "andrealmeid@riseup.net" <andrealmeid@riseup.net>, "Lakha,
- Bhawanpreet" <Bhawanpreet.Lakha@amd.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_DM6PR12MB3051717E2B99B8ED7246D150F7AB9DM6PR12MB3051namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+--===============1849302242923678901==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[AMD Official Use Only - General]
+== Series Details ==
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
+Series: tests/amdgpu: Skip multihead MPO tests on single display
+URL   : https://patchwork.freedesktop.org/series/105024/
+State : success
 
-________________________________
-From: igt-dev <igt-dev-bounces@lists.freedesktop.org> on behalf of Ma=EDra =
-Canal <maira.canal@usp.br>
-Sent: 11 June 2022 13:03
-To: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
-Cc: magalilemes00@gmail.com <magalilemes00@gmail.com>; tales.aparecida@gmai=
-l.com <tales.aparecida@gmail.com>; Ma=EDra Canal <maira.canal@usp.br>; Deuc=
-her, Alexander <Alexander.Deucher@amd.com>; Isabella Basso <isabbasso@riseu=
-p.net>; andrealmeid@riseup.net <andrealmeid@riseup.net>; Lakha, Bhawanpreet=
- <Bhawanpreet.Lakha@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/amdgpu: Skip multihead MPO tests on =
-single display
+== Summary ==
 
-[Why]
-If only one output is connected, all the igt@amdgpu/amd_plane "-multihead"
-subtests will result in CRASH, such as can be seen in:
+CI Bug Log - changes from CI_DRM_11754 -> IGTPW_7286
+====================================================
 
-Starting subtest: mpo-scale-nv12-multihead
-Received signal SIGSEGV.
-Stack trace:
- #0 [fatal_sig_handler+0x163]
- #1 [__sigaction+0x50]
- #2 [force_output_mode+0xa]
- #3 [test_display_mpo+0x20b]
- #4 [__igt_unique____real_main725+0x106d]
- #5 [main+0x23]
- #6 [__libc_start_call_main+0x80]
- #7 [__libc_start_main+0x89]
- #8 [_start+0x25]
-Subtest mpo-scale-nv12-multihead: CRASH (0.009s)
+Summary
+-------
 
-In single-display systems, the "-multihead" subtests should SKIP.
+  **SUCCESS**
 
-[How]
-Count the number of connected outputs on the system and compare it to the
-ideal number depending on the subtest, using igt_skip_on to assure that
-multiheaded subtests will SKIP on single display systems.
+  No regressions found.
 
-Signed-off-by: Ma=EDra Canal <maira.canal@usp.br>
----
- tests/amdgpu/amd_plane.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/index.html
 
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index faaa1b87..4b2bee49 100644
---- a/tests/amdgpu/amd_plane.c
-+++ b/tests/amdgpu/amd_plane.c
-@@ -449,9 +449,11 @@ static void test_display_mpo(data_t *data, enum test t=
-est, uint32_t format, int
- {
+Participating hosts (42 -> 42)
+------------------------------
 
-         igt_display_t *display =3D &data->display;
-+       igt_output_t *output;
-         uint32_t regamma_lut_size;
-         lut_t lut;
-         struct fbc fb[4];
-+       int valid_outputs =3D 0;
-         int videos[][2]=3D {
-                 {426, 240},
-                 {640, 360},
-@@ -464,6 +466,13 @@ static void test_display_mpo(data_t *data, enum test t=
-est, uint32_t format, int
+  No changes in participating hosts
 
-         test_init(data);
+Known issues
+------------
 
-+       /* Skip if there is less valid outputs than the required. */
-+       for_each_connected_output(display, output)
-+               valid_outputs++;
-+
-+       igt_skip_on_f(valid_outputs < display_count,
-+                       "Valid outputs (%d) should be equal or greater than=
- %d\n", valid_outputs, display_count);
-+
-         regamma_lut_size =3D igt_pipe_obj_get_prop(data->pipe[0], IGT_CRTC=
-_GAMMA_LUT_SIZE);
-         igt_assert_lt(0, regamma_lut_size);
-         lut_init(&lut, regamma_lut_size);
-@@ -586,9 +595,17 @@ static void test_mpo_swizzle_toggle_multihead(data_t *=
-data)
- {
-         struct amdgpu_bo_metadata meta =3D {};
-         igt_display_t *display =3D &data->display;
-+       igt_output_t *output;
-         igt_fb_t fb_1280_xr24_tiled, fb_1280_ar24_tiled, fb_1920_xb24_tile=
-d,
-                 fb_1920_xb24_linear, fb_1920_xr24_tiled;
-         int w, h;
-+       int valid_outputs =3D 0;
-+
-+       /* Skip if only one display is connected. */
-+       for_each_connected_output(display, output)
-+               valid_outputs++;
-+
-+       igt_skip_on_f(valid_outputs =3D=3D 1, "Must have more than one outp=
-ut connected\n");
+  Here are the changes found in IGTPW_7286 that come from known issues:
 
-         w =3D 2400;
-         h =3D 1350;
---
-2.36.1
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gem:
+    - fi-pnv-d510:        NOTRUN -> [DMESG-FAIL][1] ([i915#4528])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/fi-pnv-d510/igt@i915_selftest@live@gem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][2] -> [DMESG-FAIL][3] ([i915#4494] / [i915#4957])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-edp1:
+    - fi-tgl-u2:          [PASS][4] -> [DMESG-WARN][5] ([i915#402])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
+    - bat-adlp-4:         [PASS][6] -> [DMESG-WARN][7] ([i915#3576])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@coherency:
+    - {bat-dg2-9}:        [DMESG-WARN][8] ([i915#5763]) -> [PASS][9] +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-dg2-9/igt@i915_selftest@live@coherency.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-dg2-9/igt@i915_selftest@live@coherency.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [DMESG-FAIL][10] ([i915#4528]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
+    - {bat-adlp-6}:       [DMESG-WARN][12] ([i915#3576]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+
+  
+#### Warnings ####
+
+  * igt@kms_busy@basic@flip:
+    - bat-adlp-4:         [DMESG-WARN][14] ([i915#1982] / [i915#3576]) -> [DMESG-WARN][15] ([i915#3576])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-adlp-4/igt@kms_busy@basic@flip.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-adlp-4/igt@kms_busy@basic@flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
 
 
---_000_DM6PR12MB3051717E2B99B8ED7246D150F7AB9DM6PR12MB3051namp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Build changes
+-------------
 
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6522 -> IGTPW_7286
+
+  CI-20190529: 20190529
+  CI_DRM_11754: 4e9541c681f87ea7e24e09609a17a7e39c670d27 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7286: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/index.html
+  IGT_6522: 5be5a1a1f168a59614101b77385f05f12ec7d30a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/index.html
+
+--===============1849302242923678901==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
 </head>
-<body dir=3D"ltr">
-<p style=3D"font-family:Arial;font-size:10pt;color:#0000FF;margin:5pt;" ali=
-gn=3D"Left">
-[AMD Official Use Only - General]<br>
-</p>
-<br>
-<div>
-<div style=3D"font-family: &quot;Segoe UI&quot;, &quot;Segoe UI Web (West E=
-uropean)&quot;, &quot;Helvetica Neue&quot;, sans-serif; font-size: 12pt; co=
-lor: rgb(0, 0, 0);" class=3D"elementToProof">
-Reviewed-by: Alex Hung &lt;alex.hung@amd.com&gt;<br>
-</div>
-<div id=3D"appendonsend"></div>
-<div style=3D"font-family:&quot;Segoe UI&quot;,&quot;Segoe UI Web (West Eur=
-opean)&quot;,&quot;Helvetica Neue&quot;,sans-serif; font-size:12pt; color:r=
-gb(0,0,0)" class=3D"elementToProof">
-<br>
-</div>
-<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
-<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" co=
-lor=3D"#000000" style=3D"font-size:11pt" class=3D"elementToProof"><b>From:<=
-/b> igt-dev &lt;igt-dev-bounces@lists.freedesktop.org&gt; on behalf of Ma=
-=EDra Canal &lt;maira.canal@usp.br&gt;<br>
-<b>Sent:</b> 11 June 2022 13:03<br>
-<b>To:</b> igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&=
-gt;<br>
-<b>Cc:</b> magalilemes00@gmail.com &lt;magalilemes00@gmail.com&gt;; tales.a=
-parecida@gmail.com &lt;tales.aparecida@gmail.com&gt;; Ma=EDra Canal &lt;mai=
-ra.canal@usp.br&gt;; Deucher, Alexander &lt;Alexander.Deucher@amd.com&gt;; =
-Isabella Basso &lt;isabbasso@riseup.net&gt;; andrealmeid@riseup.net
- &lt;andrealmeid@riseup.net&gt;; Lakha, Bhawanpreet &lt;Bhawanpreet.Lakha@a=
-md.com&gt;; Koenig, Christian &lt;Christian.Koenig@amd.com&gt;<br>
-<b>Subject:</b> [igt-dev] [PATCH i-g-t] tests/amdgpu: Skip multihead MPO te=
-sts on single display</font>
-<div>&nbsp;</div>
-</div>
-<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt"=
->
-<div class=3D"PlainText elementToProof">[Why]<br>
-If only one output is connected, all the igt@amdgpu/amd_plane &quot;-multih=
-ead&quot;<br>
-subtests will result in CRASH, such as can be seen in:<br>
-<br>
-Starting subtest: mpo-scale-nv12-multihead<br>
-Received signal SIGSEGV.<br>
-Stack trace:<br>
-&nbsp;#0 [fatal_sig_handler+0x163]<br>
-&nbsp;#1 [__sigaction+0x50]<br>
-&nbsp;#2 [force_output_mode+0xa]<br>
-&nbsp;#3 [test_display_mpo+0x20b]<br>
-&nbsp;#4 [__igt_unique____real_main725+0x106d]<br>
-&nbsp;#5 [main+0x23]<br>
-&nbsp;#6 [__libc_start_call_main+0x80]<br>
-&nbsp;#7 [__libc_start_main+0x89]<br>
-&nbsp;#8 [_start+0x25]<br>
-Subtest mpo-scale-nv12-multihead: CRASH (0.009s)<br>
-<br>
-In single-display systems, the &quot;-multihead&quot; subtests should SKIP.=
-<br>
-<br>
-[How]<br>
-Count the number of connected outputs on the system and compare it to the<b=
-r>
-ideal number depending on the subtest, using igt_skip_on to assure that<br>
-multiheaded subtests will SKIP on single display systems.<br>
-<br>
-Signed-off-by: Ma=EDra Canal &lt;maira.canal@usp.br&gt;<br>
----<br>
-&nbsp;tests/amdgpu/amd_plane.c | 17 +++++++++++++++++<br>
-&nbsp;1 file changed, 17 insertions(+)<br>
-<br>
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c<br>
-index faaa1b87..4b2bee49 100644<br>
---- a/tests/amdgpu/amd_plane.c<br>
-+++ b/tests/amdgpu/amd_plane.c<br>
-@@ -449,9 +449,11 @@ static void test_display_mpo(data_t *data, enum test t=
-est, uint32_t format, int<br>
-&nbsp;{<br>
-&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_t *display =3D=
- &amp;data-&gt;display;<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; uint32_t regamma_lut_size;=
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lut_t lut;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; struct fbc fb[4];<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int valid_outputs =3D 0;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int videos[][2]=3D {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp; {426, 240},<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp; {640, 360},<br>
-@@ -464,6 +466,13 @@ static void test_display_mpo(data_t *data, enum test t=
-est, uint32_t format, int<br>
-&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test_init(data);<br>
-&nbsp;<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Skip if there is less valid output=
-s than the required. */<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_connected_output(display, ou=
-tput)<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp; valid_outputs++;<br>
-+<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_skip_on_f(valid_outputs &lt; disp=
-lay_count,<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Valid outp=
-uts (%d) should be equal or greater than %d\n&quot;, valid_outputs, display=
-_count);<br>
-+<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; regamma_lut_size =3D igt_p=
-ipe_obj_get_prop(data-&gt;pipe[0], IGT_CRTC_GAMMA_LUT_SIZE);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_lt(0, regamma_l=
-ut_size);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lut_init(&amp;lut, regamma=
-_lut_size);<br>
-@@ -586,9 +595,17 @@ static void test_mpo_swizzle_toggle_multihead(data_t *=
-data)<br>
-&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; struct amdgpu_bo_metadata =
-meta =3D {};<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_t *display =3D=
- &amp;data-&gt;display;<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_fb_t fb_1280_xr24_tile=
-d, fb_1280_ar24_tiled, fb_1920_xb24_tiled,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp; fb_1920_xb24_linear, fb_1920_xr24_tiled;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int w, h;<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int valid_outputs =3D 0;<br>
-+<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Skip if only one display is connec=
-ted. */<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_connected_output(display, ou=
-tput)<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp; valid_outputs++;<br>
-+<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_skip_on_f(valid_outputs =3D=3D 1,=
- &quot;Must have more than one output connected\n&quot;);<br>
-&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; w =3D 2400;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; h =3D 1350;<br>
--- <br>
-2.36.1<br>
-<br>
-</div>
-</span></font></div>
-</div>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: Skip multihead MPO tests on single display</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105024/">https://patchwork.freedesktop.org/series/105024/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11754 -&gt; IGTPW_7286</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/index.html</p>
+<h2>Participating hosts (42 -&gt; 42)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7286 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gem:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@a-edp1:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/fi-tgl-u2/igt@kms_flip@basic-flip-vs-dpms@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@coherency:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-dg2-9/igt@i915_selftest@live@coherency.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-dg2-9/igt@i915_selftest@live@coherency.html">PASS</a> +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_busy@basic@flip:<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11754/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6522 -&gt; IGTPW_7286</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11754: 4e9541c681f87ea7e24e09609a17a7e39c670d27 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7286: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7286/index.html<br />
+  IGT_6522: 5be5a1a1f168a59614101b77385f05f12ec7d30a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
 </body>
 </html>
 
---_000_DM6PR12MB3051717E2B99B8ED7246D150F7AB9DM6PR12MB3051namp_--
+--===============1849302242923678901==--
