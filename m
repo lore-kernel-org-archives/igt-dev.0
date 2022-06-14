@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9ADB211361A
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:31:51 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75043113621
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:31:54 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jun 2022 02:30:53 +0300
-Message-Id: <20220614233100.13834-17-ville.syrjala@linux.intel.com>
+Date: Wed, 15 Jun 2022 02:30:54 +0300
+Message-Id: <20220614233100.13834-18-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 References: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 16/23] tools/intel_vbt_decode: Convert LFP
- data pointers to be relative to the data block
+Subject: [igt-dev] [PATCH i-g-t 17/23] tools/intel_vbt_decode: Simplify LVDS
+ data block parsing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,93 +26,91 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-For some crazy reason the LFP data pointer offsets are specified
-as relative to the BDB header. That won't work with out private
-BDB block copies, so let's convert them to be relative to the
-start of the LFP data block.
+Get rid of the mess in the LVDS data block parsing and juse
+use the offsets straight from the LVDS data table pointers
+block.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 53 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ tools/intel_vbt_decode.c | 40 ++++++++++++----------------------------
+ 1 file changed, 12 insertions(+), 28 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 740940f9f29a..8f80c79ace4c 100644
+index 8f80c79ace4c..ef00a173d7af 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -132,6 +132,21 @@ static const void *find_raw_section(const struct context *context, int section_i
- 	return NULL;
- }
- 
-+/*
-+ * Offset from the start of BDB to the start of the
-+ * block data (just past the block header).
-+ */
-+static u32 raw_block_offset(const struct context *context, enum bdb_block_id section_id)
-+{
-+	const void *block;
-+
-+	block = find_raw_section(context, section_id);
-+	if (!block)
-+		return 0;
-+
-+	return block - (const void *)context->bdb;
-+}
-+
- static const void *block_data(const struct bdb_block *block)
+@@ -883,40 +883,24 @@ static void dump_lvds_ptr_data(struct context *context,
+ static void dump_lvds_data(struct context *context,
+ 			   const struct bdb_block *block)
  {
- 	return block->data + 3;
-@@ -181,6 +196,37 @@ static size_t block_min_size(const struct context *context, int section_id)
- 	}
- }
+-	const struct bdb_lvds_lfp_data *lvds_data = block_data(block);
+ 	struct bdb_block *ptrs_block;
+ 	const struct bdb_lvds_lfp_data_ptrs *ptrs;
+-	int num_entries;
+ 	int i;
+ 	int hdisplay, hsyncstart, hsyncend, htotal;
+ 	int vdisplay, vsyncstart, vsyncend, vtotal;
+ 	float clock;
+-	int lfp_data_size, dvo_offset;
  
-+/* make the data table offsets relative to the data block */
-+static bool fixup_lfp_data_ptrs(const struct context *context,
-+				void *ptrs_block)
-+{
-+	struct bdb_lvds_lfp_data_ptrs *ptrs = ptrs_block;
-+	u32 offset;
-+	int i;
-+
-+	offset = raw_block_offset(context, BDB_LVDS_LFP_DATA);
-+
+ 	ptrs_block = find_section(context, BDB_LVDS_LFP_DATA_PTRS);
+-	if (!ptrs_block) {
+-		printf("No LVDS ptr block\n");
++	if (!ptrs_block)
+ 		return;
+-	}
+ 
+ 	ptrs = block_data(ptrs_block);
+ 
+-	lfp_data_size =
+-	    ptrs->ptr[1].fp_timing.offset - ptrs->ptr[0].fp_timing.offset;
+-	dvo_offset =
+-	    ptrs->ptr[0].dvo_timing.offset - ptrs->ptr[0].fp_timing.offset;
+-
+-	num_entries = block->size / lfp_data_size;
+-
+-	printf("  Number of entries: %d (preferred block marked with '*')\n",
+-	       num_entries);
+-
+-	for (i = 0; i < num_entries; i++) {
+-		const uint8_t *lfp_data_ptr =
+-		    (const uint8_t *) lvds_data->data + lfp_data_size * i;
+-		const uint8_t *timing_data = lfp_data_ptr + dvo_offset;
+-		const struct lvds_lfp_data_entry *lfp_data =
+-		    (const struct lvds_lfp_data_entry *)lfp_data_ptr;
 +	for (i = 0; i < 16; i++) {
-+		if (ptrs->ptr[i].fp_timing.offset < offset ||
-+		    ptrs->ptr[i].dvo_timing.offset < offset ||
-+		    ptrs->ptr[i].panel_pnp_id.offset < offset)
-+			return false;
-+
-+		ptrs->ptr[i].fp_timing.offset -= offset;
-+		ptrs->ptr[i].dvo_timing.offset -= offset;
-+		ptrs->ptr[i].panel_pnp_id.offset -= offset;
-+	}
-+
-+	if (ptrs->panel_name.table_size) {
-+		if (ptrs->panel_name.offset < offset)
-+			return false;
-+
-+		ptrs->panel_name.offset -= offset;
-+	}
-+
-+	return true;
-+}
-+
- static struct bdb_block *find_section(const struct context *context, int section_id)
- {
- 	size_t min_size = block_min_size(context, section_id);
-@@ -202,6 +248,13 @@ static struct bdb_block *find_section(const struct context *context, int section
- 	block->size = size;
- 	memcpy(block->data, data - 3, 3 + size);
++		const struct lvds_fp_timing *fp_timing =
++			block_data(block) + ptrs->ptr[i].fp_timing.offset;
++		const uint8_t *timing_data =
++			block_data(block) + ptrs->ptr[i].dvo_timing.offset;
  
-+	if (section_id == BDB_LVDS_LFP_DATA_PTRS &&
-+	    !fixup_lfp_data_ptrs(context, 3 + block->data)) {
-+		fprintf(stderr, "VBT has malformed LFP data table pointers\n");
-+		free(block);
-+		return NULL;
-+	}
-+
- 	return block;
- }
+ 		if (i != context->panel_type && !context->dump_all_panel_types)
+ 			continue;
+@@ -934,19 +918,19 @@ static void dump_lvds_data(struct context *context,
  
+ 		printf("\tPanel %d%s\n", i, context->panel_type == i ? " *" : "");
+ 		printf("\t\t%dx%d clock %d\n",
+-		       lfp_data->fp_timing.x_res, lfp_data->fp_timing.y_res,
++		       fp_timing->x_res, fp_timing->y_res,
+ 		       _PIXEL_CLOCK(timing_data));
+ 		printf("\t\tinfo:\n");
+ 		printf("\t\t  LVDS: 0x%08lx\n",
+-		       (unsigned long)lfp_data->fp_timing.lvds_reg_val);
++		       (unsigned long)fp_timing->lvds_reg_val);
+ 		printf("\t\t  PP_ON_DELAYS: 0x%08lx\n",
+-		       (unsigned long)lfp_data->fp_timing.pp_on_reg_val);
++		       (unsigned long)fp_timing->pp_on_reg_val);
+ 		printf("\t\t  PP_OFF_DELAYS: 0x%08lx\n",
+-		       (unsigned long)lfp_data->fp_timing.pp_off_reg_val);
++		       (unsigned long)fp_timing->pp_off_reg_val);
+ 		printf("\t\t  PP_DIVISOR: 0x%08lx\n",
+-		       (unsigned long)lfp_data->fp_timing.pp_cycle_reg_val);
++		       (unsigned long)fp_timing->pp_cycle_reg_val);
+ 		printf("\t\t  PFIT: 0x%08lx\n",
+-		       (unsigned long)lfp_data->fp_timing.pfit_reg_val);
++		       (unsigned long)fp_timing->pfit_reg_val);
+ 		printf("\t\ttimings: %d %d %d %d %d %d %d %d %.2f (%s)\n",
+ 		       hdisplay, hsyncstart, hsyncend, htotal,
+ 		       vdisplay, vsyncstart, vsyncend, vtotal, clock,
 -- 
 2.35.1
