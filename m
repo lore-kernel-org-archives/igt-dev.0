@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98625113633
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:32:09 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEE16113616
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:31:45 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jun 2022 02:30:59 +0300
-Message-Id: <20220614233100.13834-23-ville.syrjala@linux.intel.com>
+Date: Wed, 15 Jun 2022 02:30:51 +0300
+Message-Id: <20220614233100.13834-15-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 References: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 22/23] tools/intel_vbt_decode: Generate LVDS
- data table pointes if not provided
+Subject: [igt-dev] [PATCH i-g-t 14/23] tools/intel_vbt_decode: Make copies
+ of the BDB blocks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,193 +26,283 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Modern VBTs (at least observed on TGL machines) no longer provide the
-LVDS data table pointers block. Thus we can't currently decode the
-contents of the LVDS data table block.
-
-I see two options how to handle this:
-1) Just hardocode the offsets/sizes (+ some checks to make sure the
-   hardcoded values makes sense)
-2) Deduce the offsets/sizes from the actual LVDS data table block
-   contents
-
-I've chosen option 2 here. The fp_timing table 0xffff terminator
-is what allows us to do this. We just look up the first two
-of those from the LVDS data block and calculate the offsets/sizes
-from there. Only the fp_timing entries should have a variable size,
-and the dvo_timings and panel_pnp_id have fixed size (in fact IIRC
-they are 1:1 match for the equivalent EDID stuff).
-
-This is the same thing we do in the kernel parser as well since
-commit a87d0a847607 ("drm/i915/bios: Generate LFP data table
-pointers if the VBT lacks them")
+Make a copy of the BDB blocks. For the moment we just do a
+1:1 copy but later on we can specify a minimum size for
+the copy and stop worrying about going out of bounds during
+parsing in case the version checks are wrong of the VBT is
+malformed.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 128 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 127 insertions(+), 1 deletion(-)
+ tools/intel_vbt_decode.c | 92 +++++++++++++++++++++++++---------------
+ 1 file changed, 57 insertions(+), 35 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 2ec9990279d9..e45bab4a3e01 100644
+index deeb82050528..48755164ec91 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -189,6 +189,121 @@ static size_t lfp_data_min_size(const struct context *context)
- 	return size;
+@@ -69,7 +69,7 @@ typedef uint64_t u64;
+ struct bdb_block {
+ 	uint8_t id;
+ 	uint32_t size;
+-	const void *data;
++	uint8_t data[];
+ };
+ 
+ struct context {
+@@ -93,11 +93,16 @@ static uint32_t _get_blocksize(const uint8_t *block_base)
+ 		return *((const uint16_t *)(block_base + 1));
  }
  
-+static const uint8_t *find_fp_timing_terminator(const uint8_t *data, int size)
+-static struct bdb_block *find_section(struct context *context, int section_id)
++/* Get BDB block size give a pointer to data after Block ID and Block Size. */
++static u32 get_blocksize(const void *block_data)
 +{
++	return _get_blocksize(block_data - 3);
++}
++
++static const void *find_raw_section(const struct context *context, int section_id)
+ {
+ 	const struct bdb_header *bdb = context->bdb;
+ 	int length = context->size;
+-	struct bdb_block *block;
+ 	const uint8_t *base = (const uint8_t *)bdb;
+ 	int index = 0;
+ 	uint32_t total, current_size;
+@@ -109,12 +114,6 @@ static struct bdb_block *find_section(struct context *context, int section_id)
+ 	if (total > length)
+ 		total = length;
+ 
+-	block = malloc(sizeof(*block));
+-	if (!block) {
+-		fprintf(stderr, "out of memory\n");
+-		exit(EXIT_FAILURE);
+-	}
+-
+ 	/* walk the sections looking for section_id */
+ 	while (index + 3 < total) {
+ 		current_id = *(base + index);
+@@ -124,20 +123,43 @@ static struct bdb_block *find_section(struct context *context, int section_id)
+ 		if (index + current_size > total)
+ 			return NULL;
+ 
+-		if (current_id == section_id) {
+-			block->id = current_id;
+-			block->size = current_size;
+-			block->data = base + index;
+-			return block;
+-		}
++		if (current_id == section_id)
++			return base + index;
+ 
+ 		index += current_size;
+ 	}
+ 
+-	free(block);
+ 	return NULL;
+ }
+ 
++static const void *block_data(const struct bdb_block *block)
++{
++	return block->data + 3;
++}
++
++static struct bdb_block *find_section(const struct context *context, int section_id)
++{
++	struct bdb_block *block;
++	const void *data;
++	size_t size;
++
++	data = find_raw_section(context, section_id);
 +	if (!data)
 +		return NULL;
 +
-+	for (int i = 0; i < size - 1; i++) {
-+		if (data[i] == 0xff && data[i+1] == 0xff)
-+			return &data[i];
-+	}
++	size = get_blocksize(data);
 +
-+	return NULL;
-+}
-+
-+static int make_lvds_data_ptr(struct lvds_lfp_data_ptr_table *table,
-+			      int table_size, int total_size)
-+{
-+	if (total_size < table_size)
-+		return total_size;
-+
-+	table->table_size = table_size;
-+	table->offset = total_size - table_size;
-+
-+	return total_size - table_size;
-+}
-+
-+static void next_lvds_data_ptr(struct lvds_lfp_data_ptr_table *next,
-+			       const struct lvds_lfp_data_ptr_table *prev,
-+			       int size)
-+{
-+	next->table_size = prev->table_size;
-+	next->offset = prev->offset + size;
-+}
-+
-+static void *generate_lvds_data_ptrs(const struct context *context)
-+{
-+	int size, table_size, block_size, offset;
-+	const void *t0, *t1, *block;
-+	struct bdb_lvds_lfp_data_ptrs *ptrs;
-+	void *ptrs_block;
-+
-+	block = find_raw_section(context, BDB_LVDS_LFP_DATA);
++	block = calloc(1, sizeof(*block) + 3 + size);
 +	if (!block)
 +		return NULL;
 +
-+	block_size = get_blocksize(block);
++	block->id = section_id;
++	block->size = size;
++	memcpy(block->data, data - 3, 3 + size);
 +
-+	size = block_size;
-+	t0 = find_fp_timing_terminator(block, size);
-+	if (!t0)
-+		return NULL;
-+
-+	size -= t0 - block - 2;
-+	t1 = find_fp_timing_terminator(t0 + 2, size);
-+	if (!t1)
-+		return NULL;
-+
-+	size = t1 - t0;
-+	if (size * 16 > block_size)
-+		return NULL;
-+
-+	ptrs_block = calloc(1, sizeof(*ptrs) + 3);
-+	if (!ptrs_block)
-+		return NULL;
-+
-+	*(uint8_t *)(ptrs_block + 0) = BDB_LVDS_LFP_DATA_PTRS;
-+	*(uint16_t *)(ptrs_block + 1) = sizeof(*ptrs);
-+	ptrs = ptrs_block + 3;
-+
-+	table_size = sizeof(struct lvds_pnp_id);
-+	size = make_lvds_data_ptr(&ptrs->ptr[0].panel_pnp_id, table_size, size);
-+
-+	table_size = sizeof(struct lvds_dvo_timing);
-+	size = make_lvds_data_ptr(&ptrs->ptr[0].dvo_timing, table_size, size);
-+
-+	table_size = t0 - block + 2;
-+	size = make_lvds_data_ptr(&ptrs->ptr[0].fp_timing, table_size, size);
-+
-+	if (ptrs->ptr[0].fp_timing.table_size)
-+		ptrs->lvds_entries++;
-+	if (ptrs->ptr[0].dvo_timing.table_size)
-+		ptrs->lvds_entries++;
-+	if (ptrs->ptr[0].panel_pnp_id.table_size)
-+		ptrs->lvds_entries++;
-+
-+	if (size != 0 || ptrs->lvds_entries != 3)
-+		return NULL;
-+
-+	size = t1 - t0;
-+	for (int i = 1; i < 16; i++) {
-+		next_lvds_data_ptr(&ptrs->ptr[i].fp_timing, &ptrs->ptr[i-1].fp_timing, size);
-+		next_lvds_data_ptr(&ptrs->ptr[i].dvo_timing, &ptrs->ptr[i-1].dvo_timing, size);
-+		next_lvds_data_ptr(&ptrs->ptr[i].panel_pnp_id, &ptrs->ptr[i-1].panel_pnp_id, size);
-+	}
-+
-+	size = t1 - t0;
-+	table_size = sizeof(struct lvds_lfp_panel_name);
-+
-+	if (16 * (size + table_size) <= block_size) {
-+		ptrs->panel_name.table_size = table_size;
-+		ptrs->panel_name.offset = size * 16;
-+	}
-+
-+	offset = block - (const void *)context->bdb;
-+	for (int i = 0; i < 16; i++) {
-+		ptrs->ptr[i].fp_timing.offset += offset;
-+		ptrs->ptr[i].dvo_timing.offset += offset;
-+		ptrs->ptr[i].panel_pnp_id.offset += offset;
-+	}
-+
-+	if (ptrs->panel_name.offset)
-+		ptrs->panel_name.offset += offset;
-+
-+	return ptrs_block;
++	return block;
 +}
 +
- static size_t block_min_size(const struct context *context, int section_id)
+ static int decode_ssc_freq(struct context *context, bool alternate)
  {
- 	switch (section_id) {
-@@ -345,23 +460,34 @@ static struct bdb_block *find_section(const struct context *context, int section
+ 	switch (intel_gen(context->devid)) {
+@@ -154,7 +176,7 @@ static int decode_ssc_freq(struct context *context, bool alternate)
+ static void dump_general_features(struct context *context,
+ 				  const struct bdb_block *block)
  {
- 	size_t min_size = block_min_size(context, section_id);
- 	struct bdb_block *block;
-+	void *temp_block = NULL;
- 	const void *data;
- 	size_t size;
+-	const struct bdb_general_features *features = block->data;
++	const struct bdb_general_features *features = block_data(block);
  
- 	data = find_raw_section(context, section_id);
-+	if (!data && section_id == BDB_LVDS_LFP_DATA_PTRS) {
-+		printf("Generating LVDS data table pointers\n");
-+		temp_block = generate_lvds_data_ptrs(context);
-+		if (temp_block)
-+			data = temp_block + 3;
-+	}
- 	if (!data)
- 		return NULL;
+ 	printf("\tPanel fitting: ");
+ 	switch (features->panel_fitting) {
+@@ -221,7 +243,7 @@ static void dump_general_features(struct context *context,
+ static void dump_backlight_info(struct context *context,
+ 				const struct bdb_block *block)
+ {
+-	const struct bdb_lfp_backlight_data *backlight = block->data;
++	const struct bdb_lfp_backlight_data *backlight = block_data(block);
+ 	const struct lfp_backlight_data_entry *blc;
+ 	const struct lfp_backlight_control_method *control;
+ 	int i;
+@@ -602,7 +624,7 @@ static void dump_child_devices(struct context *context, const uint8_t *devices,
+ static void dump_general_definitions(struct context *context,
+ 				     const struct bdb_block *block)
+ {
+-	const struct bdb_general_definitions *defs = block->data;
++	const struct bdb_general_definitions *defs = block_data(block);
+ 	int child_dev_num;
  
- 	size = get_blocksize(data);
+ 	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
+@@ -625,7 +647,7 @@ static void dump_general_definitions(struct context *context,
+ static void dump_legacy_child_devices(struct context *context,
+ 				      const struct bdb_block *block)
+ {
+-	const struct bdb_legacy_child_devices *defs = block->data;
++	const struct bdb_legacy_child_devices *defs = block_data(block);
+ 	int child_dev_num;
  
- 	block = calloc(1, sizeof(*block) + 3 + max(size, min_size));
--	if (!block)
-+	if (!block) {
-+		free(temp_block);
- 		return NULL;
-+	}
+ 	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
+@@ -668,7 +690,7 @@ static const char * const pos_type[] = {
+ static void dump_lvds_options(struct context *context,
+ 			      const struct bdb_block *block)
+ {
+-	const struct bdb_lvds_options *options = block->data;
++	const struct bdb_lvds_options *options = block_data(block);
  
- 	block->id = section_id;
- 	block->size = size;
- 	memcpy(block->data, data - 3, 3 + size);
+ 	if (context->panel_type == options->panel_type)
+ 		printf("\tPanel type: %d\n", options->panel_type);
+@@ -755,7 +777,7 @@ static void dump_lvds_options(struct context *context,
+ static void dump_lvds_ptr_data(struct context *context,
+ 			       const struct bdb_block *block)
+ {
+-	const struct bdb_lvds_lfp_data_ptrs *ptrs = block->data;
++	const struct bdb_lvds_lfp_data_ptrs *ptrs = block_data(block);
  
-+	free(temp_block);
-+
- 	if (section_id == BDB_LVDS_LFP_DATA_PTRS &&
- 	    !fixup_lfp_data_ptrs(context, 3 + block->data)) {
- 		fprintf(stderr, "VBT has malformed LFP data table pointers\n");
+ 	printf("\tNumber of entries: %d\n", ptrs->lvds_entries);
+ }
+@@ -763,7 +785,7 @@ static void dump_lvds_ptr_data(struct context *context,
+ static void dump_lvds_data(struct context *context,
+ 			   const struct bdb_block *block)
+ {
+-	const struct bdb_lvds_lfp_data *lvds_data = block->data;
++	const struct bdb_lvds_lfp_data *lvds_data = block_data(block);
+ 	struct bdb_block *ptrs_block;
+ 	const struct bdb_lvds_lfp_data_ptrs *ptrs;
+ 	int num_entries;
+@@ -779,7 +801,7 @@ static void dump_lvds_data(struct context *context,
+ 		return;
+ 	}
+ 
+-	ptrs = ptrs_block->data;
++	ptrs = block_data(ptrs_block);
+ 
+ 	lfp_data_size =
+ 	    ptrs->ptr[1].fp_timing.offset - ptrs->ptr[0].fp_timing.offset;
+@@ -840,7 +862,7 @@ static void dump_lvds_data(struct context *context,
+ static void dump_driver_feature(struct context *context,
+ 				const struct bdb_block *block)
+ {
+-	const struct bdb_driver_features *feature = block->data;
++	const struct bdb_driver_features *feature = block_data(block);
+ 
+ 	printf("\tBoot Device Algorithm: %s\n", feature->boot_dev_algorithm ?
+ 	       "driver default" : "os default");
+@@ -909,7 +931,7 @@ static void dump_driver_feature(struct context *context,
+ static void dump_edp(struct context *context,
+ 		     const struct bdb_block *block)
+ {
+-	const struct bdb_edp *edp = block->data;
++	const struct bdb_edp *edp = block_data(block);
+ 	int bpp, msa;
+ 	int i;
+ 
+@@ -1128,7 +1150,7 @@ static void dump_edp(struct context *context,
+ static void dump_psr(struct context *context,
+ 		     const struct bdb_block *block)
+ {
+-	const struct bdb_psr *psr_block = block->data;
++	const struct bdb_psr *psr_block = block_data(block);
+ 	int i;
+ 	uint32_t psr2_tp_time;
+ 
+@@ -1190,7 +1212,7 @@ static void dump_psr(struct context *context,
+ static void dump_lfp_power(struct context *context,
+ 			   const struct bdb_block *block)
+ {
+-	const struct bdb_lfp_power *lfp_block = block->data;
++	const struct bdb_lfp_power *lfp_block = block_data(block);
+ 	int i;
+ 
+ 	printf("\tALS enable: %s\n",
+@@ -1302,7 +1324,7 @@ print_detail_timing_data(const struct lvds_dvo_timing *dvo_timing)
+ static void dump_sdvo_panel_dtds(struct context *context,
+ 				 const struct bdb_block *block)
+ {
+-	const struct lvds_dvo_timing *dvo_timing = block->data;
++	const struct lvds_dvo_timing *dvo_timing = block_data(block);
+ 	int n, count;
+ 
+ 	count = block->size / sizeof(struct lvds_dvo_timing);
+@@ -1315,7 +1337,7 @@ static void dump_sdvo_panel_dtds(struct context *context,
+ static void dump_sdvo_lvds_options(struct context *context,
+ 				   const struct bdb_block *block)
+ {
+-	const struct bdb_sdvo_lvds_options *options = block->data;
++	const struct bdb_sdvo_lvds_options *options = block_data(block);
+ 
+ 	printf("\tbacklight: %d\n", options->panel_backlight);
+ 	printf("\th40 type: %d\n", options->h40_set_panel_type);
+@@ -1337,7 +1359,7 @@ static void dump_sdvo_lvds_options(struct context *context,
+ static void dump_mipi_config(struct context *context,
+ 			     const struct bdb_block *block)
+ {
+-	const struct bdb_mipi_config *start = block->data;
++	const struct bdb_mipi_config *start = block_data(block);
+ 	const struct mipi_config *config;
+ 	const struct mipi_pps_data *pps;
+ 
+@@ -1742,7 +1764,7 @@ static int goto_next_sequence_v3(const uint8_t *data, int index, int total)
+ static void dump_mipi_sequence(struct context *context,
+ 			       const struct bdb_block *block)
+ {
+-	const struct bdb_mipi_sequence *sequence = block->data;
++	const struct bdb_mipi_sequence *sequence = block_data(block);
+ 	const uint8_t *data;
+ 	uint32_t seq_size;
+ 	int index = 0, i;
+@@ -1843,7 +1865,7 @@ static const char *dsc_max_bpp(u8 value)
+ static void dump_compression_parameters(struct context *context,
+ 					const struct bdb_block *block)
+ {
+-	const struct bdb_compression_parameters *dsc = block->data;
++	const struct bdb_compression_parameters *dsc = block_data(block);
+ 	const struct dsc_compression_parameters_entry *data;
+ 	int i;
+ 
+@@ -1890,7 +1912,7 @@ static int get_panel_type(struct context *context)
+ 	if (!block)
+ 		return -1;
+ 
+-	options = block->data;
++	options = block_data(block);
+ 	panel_type = options->panel_type;
+ 
+ 	free(block);
+@@ -2031,7 +2053,7 @@ static void hex_dump(const void *data, uint32_t size)
+ 
+ static void hex_dump_block(const struct bdb_block *block)
+ {
+-	hex_dump(block->data - 3, 3 + block->size);
++	hex_dump(block->data, 3 + block->size);
+ }
+ 
+ static bool dump_section(struct context *context, int section_id)
 -- 
 2.35.1
