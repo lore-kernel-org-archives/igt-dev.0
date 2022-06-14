@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D333113623
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:31:57 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F12C11360C
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:31:39 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jun 2022 02:30:55 +0300
-Message-Id: <20220614233100.13834-19-ville.syrjala@linux.intel.com>
+Date: Wed, 15 Jun 2022 02:30:49 +0300
+Message-Id: <20220614233100.13834-13-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 References: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 18/23] tools/intel_vbt_decode: Dump the
- panel PNP ID
+Subject: [igt-dev] [PATCH i-g-t 12/23] tools/intel_vbt_decode: Parse the new
+ eDP max link rate
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,68 +26,31 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Decode the panel PNP ID from the LVDS data block.
+VBT version 244 onwards have a new eDP max link rate field.
+Parse it.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ tools/intel_vbt_decode.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index ef00a173d7af..e49831e2529d 100644
+index deaae9130b65..cc9dd929db66 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -33,6 +33,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <unistd.h>
-+#include <arpa/inet.h>
- #include <sys/mman.h>
- #include <sys/stat.h>
- #include <sys/types.h>
-@@ -880,6 +881,18 @@ static void dump_lvds_ptr_data(struct context *context,
- 	printf("\tNumber of entries: %d\n", ptrs->lvds_entries);
+@@ -1115,6 +1115,13 @@ static void dump_edp(struct context *context,
+ 			printf("\t\teDP fast link training data rate: %g Gbps (0x%02x)\n",
+ 			       rate / 5000.0f, rate);
+ 		}
++
++		if (context->bdb->version >= 244) {
++			u16 rate = edp->edp_max_port_link_rate[i];
++
++			printf("\t\teDP max port link rate: %g Gbps (0x%02x)\n",
++			       rate / 5000.0f, rate);
++		}
+ 	}
  }
  
-+static char *decode_pnp_id(u16 mfg_name, char str[4])
-+{
-+	mfg_name = ntohs(mfg_name);
-+
-+	str[0] = '@' + ((mfg_name >> 10) & 0x1f);
-+	str[1] = '@' + ((mfg_name >> 5) & 0x1f);
-+	str[2] = '@' + ((mfg_name >> 0) & 0x1f);
-+	str[3] = '\0';
-+
-+	return str;
-+}
-+
- static void dump_lvds_data(struct context *context,
- 			   const struct bdb_block *block)
- {
-@@ -901,6 +914,9 @@ static void dump_lvds_data(struct context *context,
- 			block_data(block) + ptrs->ptr[i].fp_timing.offset;
- 		const uint8_t *timing_data =
- 			block_data(block) + ptrs->ptr[i].dvo_timing.offset;
-+		const struct lvds_pnp_id *pnp_id =
-+			block_data(block) + ptrs->ptr[i].panel_pnp_id.offset;
-+		char mfg[4];
- 
- 		if (i != context->panel_type && !context->dump_all_panel_types)
- 			continue;
-@@ -936,6 +952,14 @@ static void dump_lvds_data(struct context *context,
- 		       vdisplay, vsyncstart, vsyncend, vtotal, clock,
- 		       (hsyncend > htotal || vsyncend > vtotal) ?
- 		       "BAD!" : "good");
-+
-+		printf("\t\tPnP ID:\n");
-+		printf("\t\t  Mfg name: %s (0x%x)\n",
-+		       decode_pnp_id(pnp_id->mfg_name, mfg), pnp_id->mfg_name);
-+		printf("\t\t  Product code: %u\n", pnp_id->product_code);
-+		printf("\t\t  Serial: %u\n", pnp_id->serial);
-+		printf("\t\t  Mfg week: %d\n", pnp_id->mfg_week);
-+		printf("\t\t  Mfg year: %d\n", 1990 + pnp_id->mfg_year);
- 	}
- 
- 	free(ptrs_block);
 -- 
 2.35.1
