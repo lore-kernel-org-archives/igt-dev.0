@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB7D310F51A
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 09:19:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9C9E10F51A
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 09:19:38 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Jun 2022 14:50:24 +0530
-Message-Id: <20220614092025.11404-2-swati2.sharma@intel.com>
+Date: Tue, 14 Jun 2022 14:50:25 +0530
+Message-Id: <20220614092025.11404-3-swati2.sharma@intel.com>
 In-Reply-To: <20220614092025.11404-1-swati2.sharma@intel.com>
 References: <20220614092025.11404-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 1/2] lib/igt_kms: Add scaling filter property
+Subject: [igt-dev] [v3 2/2] tests/kms_scaling_filters: New IGT to validate
+ scaling filters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,71 +24,253 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+SCALING_FILTER can be used either as plane scaler property
+or CRTC scaler property.
+The value of this property can be one of the following:
+    Default:
+             Driver's default scaling filter
+    Nearest Neighbor:
+             Nearest Neighbor scaling filter
+If NN is used for scaling, sharpness is preserved
+whereas if we use default scaling we can see blurriness
+at edges.
+
+Four subtests are written upscale/downscale with NN and default
+scaling filters.
+
+v2: no need to set pipe scaler filter property
+v3: -addition of new lines to improve readability
+    -use of SPDX licence placeholder
+    -close(data.drm_fd)
+
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_kms.c | 8 ++++++++
- lib/igt_kms.h | 2 ++
- 2 files changed, 10 insertions(+)
+ lib/igt_kms.c               |  16 ++++
+ lib/igt_kms.h               |   1 +
+ tests/kms_scaling_filters.c | 163 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 4 files changed, 181 insertions(+)
+ create mode 100644 tests/kms_scaling_filters.c
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 36dfcfcb..2a9376ae 100644
+index 2a9376ae..6dca1724 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -581,6 +581,7 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
- 	[IGT_PLANE_ALPHA] = "alpha",
- 	[IGT_PLANE_ZPOS] = "zpos",
- 	[IGT_PLANE_FB_DAMAGE_CLIPS] = "FB_DAMAGE_CLIPS",
-+	[IGT_PLANE_SCALING_FILTER] = "SCALING_FILTER",
- };
- 
- const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
-@@ -593,6 +594,7 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
- 	[IGT_CRTC_ACTIVE] = "ACTIVE",
- 	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
- 	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
-+	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
- };
- 
- const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
-@@ -2122,6 +2124,9 @@ static void igt_plane_reset(igt_plane_t *plane)
- 	if (igt_plane_has_prop(plane, IGT_PLANE_FB_DAMAGE_CLIPS))
- 		igt_plane_set_prop_value(plane, IGT_PLANE_FB_DAMAGE_CLIPS, 0);
- 
-+	if (igt_plane_has_prop(plane, IGT_PLANE_SCALING_FILTER))
-+		igt_plane_set_prop_enum(plane, IGT_PLANE_SCALING_FILTER, "Default");
-+
- 	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
- 	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
- 	plane->gem_handle = 0;
-@@ -2142,6 +2147,9 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
- 	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_DEGAMMA_LUT))
- 		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_DEGAMMA_LUT, 0);
- 
-+	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_SCALING_FILTER))
-+		igt_pipe_obj_set_prop_enum(pipe, IGT_CRTC_SCALING_FILTER, "Default");
-+
- 	pipe->out_fence_fd = -1;
+@@ -912,6 +912,22 @@ const char *kmstest_connector_status_str(int status)
+ 	return find_type_name(connector_status_names, status);
  }
  
++enum drm_scaling_filter {
++	DRM_SCALING_FILTER_DEFAULT,
++	DRM_SCALING_FILTER_NEAREST_NEIGHBOR,
++};
++
++static const struct type_name drm_scaling_filter[] = {
++	{ DRM_SCALING_FILTER_DEFAULT, "Default" },
++	{ DRM_SCALING_FILTER_NEAREST_NEIGHBOR, "Nearest Neighbor" },
++	{}
++};
++
++const char *kmstest_scaling_filter_str(int filter)
++{
++	return find_type_name(drm_scaling_filter, filter);
++}
++
+ static const struct type_name connector_type_names[] = {
+ 	{ DRM_MODE_CONNECTOR_Unknown, "Unknown" },
+ 	{ DRM_MODE_CONNECTOR_VGA, "VGA" },
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 0f12d825..46754b67 100644
+index 46754b67..7f17a1af 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -125,6 +125,7 @@ enum igt_atomic_crtc_properties {
-        IGT_CRTC_ACTIVE,
-        IGT_CRTC_OUT_FENCE_PTR,
-        IGT_CRTC_VRR_ENABLED,
-+       IGT_CRTC_SCALING_FILTER,
-        IGT_NUM_CRTC_PROPS
- };
+@@ -107,6 +107,7 @@ enum igt_custom_edid_type {
+ const char *kmstest_encoder_type_str(int type);
+ const char *kmstest_connector_status_str(int status);
+ const char *kmstest_connector_type_str(int type);
++const char *kmstest_scaling_filter_str(int filter);
  
-@@ -301,6 +302,7 @@ enum igt_atomic_plane_properties {
-        IGT_PLANE_ALPHA,
-        IGT_PLANE_ZPOS,
-        IGT_PLANE_FB_DAMAGE_CLIPS,
-+       IGT_PLANE_SCALING_FILTER,
-        IGT_NUM_PLANE_PROPS
- };
+ void kmstest_dump_mode(drmModeModeInfo *mode);
  
+diff --git a/tests/kms_scaling_filters.c b/tests/kms_scaling_filters.c
+new file mode 100644
+index 00000000..e9f9d089
+--- /dev/null
++++ b/tests/kms_scaling_filters.c
+@@ -0,0 +1,163 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#include "igt.h"
++#include "igt_kms.h"
++
++IGT_TEST_DESCRIPTION("Test display scaling filters");
++
++enum {
++	DRM_SCALING_FILTER_DEFAULT,
++	DRM_SCALING_FILTER_NEAREST_NEIGHBOR,
++};
++
++typedef struct data {
++	igt_display_t display;
++	int drm_fd;
++} data_t;
++
++typedef struct {
++	float r;
++	float g;
++	float b;
++} rgb_color_t;
++
++static void set_color(rgb_color_t *color, float r, float g, float b)
++{
++	color->r = r;
++	color->g = g;
++	color->b = b;
++}
++
++#define RGB_COLOR(color) \
++	color.r, color.g, color.b
++
++static void
++paint_squares(data_t *data, struct igt_fb *fb, float o)
++{
++	cairo_t *cr;
++	unsigned int w = fb->width;
++	unsigned int h = fb->height;
++	rgb_color_t tl, tr, bl, br;
++
++	cr = igt_get_cairo_ctx(data->drm_fd, fb);
++
++	set_color(&tl, o, 0.0f, 0.0f);
++	set_color(&tr, 0.0f, o, 0.0f);
++	set_color(&br, o, o, o);
++	set_color(&bl, 0.0f, 0.0f, o);
++
++	igt_paint_color(cr, 0, 0, w / 2, h / 2, RGB_COLOR(tl));
++	igt_paint_color(cr, w / 2, 0, w / 2, h / 2, RGB_COLOR(tr));
++	igt_paint_color(cr, 0, h / 2, w / 2, h / 2, RGB_COLOR(bl));
++	igt_paint_color(cr, w / 2, h / 2, w / 2, h / 2, RGB_COLOR(br));
++
++	igt_put_cairo_ctx(cr);
++}
++
++#define IS_FACTOR 2
++static void test_scaling_filter_on_output(data_t *data, const enum pipe pipe,
++					  igt_output_t *output, igt_plane_t *plane, int flags,
++					  bool is_upscale)
++{
++	igt_display_t *display = &data->display;
++	const float flip_opacity = 1;
++	drmModeModeInfo *mode;
++	struct igt_fb fb;
++	int w, h, ret;
++
++	igt_output_set_pipe(output, pipe);
++	mode = igt_output_get_mode(output);
++
++	if (is_upscale) {
++		w = mode->hdisplay / IS_FACTOR;
++		h = mode->vdisplay / IS_FACTOR;
++	} else {
++		w = mode->hdisplay;
++		h = mode->vdisplay;
++	}
++
++	igt_create_fb(display->drm_fd, w, h,
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE, &fb);
++	paint_squares(data, &fb, flip_opacity);
++
++	igt_plane_set_prop_enum(plane, IGT_PLANE_SCALING_FILTER, kmstest_scaling_filter_str(flags));
++
++	igt_plane_set_fb(plane, &fb);
++	igt_plane_set_position(plane, 0, 0);
++
++	if (is_upscale)
++		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
++	else
++		igt_plane_set_size(plane, mode->hdisplay * 0.75, mode->vdisplay * 0.75);
++
++	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
++
++	igt_plane_set_fb(plane, NULL);
++	igt_plane_set_position(plane, 0, 0);
++	igt_remove_fb(display->drm_fd, &fb);
++
++	igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
++		      "Unsupported scaling factor with fb size %dx%d\n", w, h);
++	igt_assert_eq(ret, 0);
++}
++
++static void test_scaling_filter(data_t *data, int flags, bool is_upscale)
++{
++	igt_display_t *display = &data->display;
++	igt_output_t *output;
++	igt_plane_t *plane;
++	enum pipe pipe;
++
++	for_each_pipe_with_valid_output(display, pipe, output) {
++		for_each_plane_on_pipe(display, pipe, plane) {
++			if (!igt_plane_has_prop(plane, IGT_PLANE_SCALING_FILTER))
++				continue;
++
++			igt_dynamic_f("pipe-%s-%s-plane-%u", kmstest_pipe_name(pipe), output->name, plane->index)
++				test_scaling_filter_on_output(data, pipe, output, plane, flags, is_upscale);
++
++			igt_display_reset(display);
++		}
++	}
++}
++
++igt_main
++{
++	data_t data = {};
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		igt_require(data.drm_fd >= 0);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.drm_fd);
++		igt_require(data.display.is_atomic);
++
++		igt_display_require_output(&data.display);
++	}
++
++	igt_describe("Tests default scaling filter, upscale");
++	igt_subtest_with_dynamic("scaling-filter-default-upscale")
++		test_scaling_filter(&data, DRM_SCALING_FILTER_DEFAULT, true);
++
++	igt_describe("Tests default scaling filter, downscale");
++	igt_subtest_with_dynamic("scaling-filter-default-downscale")
++		test_scaling_filter(&data, DRM_SCALING_FILTER_DEFAULT, false);
++
++	igt_describe("Tests nearest neighbor scaling filter, upscale");
++	igt_subtest_with_dynamic("scaling-filter-nn-upscale")
++		test_scaling_filter(&data, DRM_SCALING_FILTER_NEAREST_NEIGHBOR, true);
++
++	igt_describe("Tests nearest neighbor scaling filter, downscale");
++	igt_subtest_with_dynamic("scaling-filter-nn-downscale")
++		test_scaling_filter(&data, DRM_SCALING_FILTER_NEAREST_NEIGHBOR, false);
++
++	igt_fixture {
++		igt_display_fini(&data.display);
++		close(data.drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index b548dc3b..e5d605fa 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -53,6 +53,7 @@ test_progs = [
+ 	'kms_properties',
+ 	'kms_rmfb',
+ 	'kms_rotation_crc',
++	'kms_scaling_filters',
+ 	'kms_scaling_modes',
+ 	'kms_selftest',
+ 	'kms_sequence',
 -- 
 2.25.1
