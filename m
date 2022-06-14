@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64EBA11361F
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:31:48 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ADB211361A
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:31:51 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jun 2022 02:30:52 +0300
-Message-Id: <20220614233100.13834-16-ville.syrjala@linux.intel.com>
+Date: Wed, 15 Jun 2022 02:30:53 +0300
+Message-Id: <20220614233100.13834-17-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 References: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 15/23] tools/intel_vbt_decode: Specify a
- minimum size for the BDB block copy
+Subject: [igt-dev] [PATCH i-g-t 16/23] tools/intel_vbt_decode: Convert LFP
+ data pointers to be relative to the data block
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,87 +26,93 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Guarantee that we have enough memory allocated for the structure
-we use to decode the BDB blocks. We no longer have to worry about
-going out of bounds in case of malformed VBT or incorrect version
-checks.
-
-The BDB_SDVO_PANEL_DTDS and BDB_GENERIC_DTD code looks a bit
-bit suspicious so those probably need a full review. Also
-BDB_LVDS_LFP_DATA and BDB_LVDS_LFP_DATA_PTRS will need further
-work due to the variable size nature of the data.
+For some crazy reason the LFP data pointer offsets are specified
+as relative to the BDB header. That won't work with out private
+BDB block copies, so let's convert them to be relative to the
+start of the LFP data block.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 47 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ tools/intel_vbt_decode.c | 53 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 48755164ec91..740940f9f29a 100644
+index 740940f9f29a..8f80c79ace4c 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -137,8 +137,53 @@ static const void *block_data(const struct bdb_block *block)
- 	return block->data + 3;
+@@ -132,6 +132,21 @@ static const void *find_raw_section(const struct context *context, int section_i
+ 	return NULL;
  }
  
-+static size_t block_min_size(const struct context *context, int section_id)
++/*
++ * Offset from the start of BDB to the start of the
++ * block data (just past the block header).
++ */
++static u32 raw_block_offset(const struct context *context, enum bdb_block_id section_id)
 +{
-+	switch (section_id) {
-+	case BDB_GENERAL_FEATURES:
-+		return sizeof(struct bdb_general_features);
-+	case BDB_GENERAL_DEFINITIONS:
-+		return sizeof(struct bdb_general_definitions);
-+	case BDB_PSR:
-+		return sizeof(struct bdb_psr);
-+	case BDB_CHILD_DEVICE_TABLE:
-+		return sizeof(struct bdb_legacy_child_devices);
-+	case BDB_DRIVER_FEATURES:
-+		return sizeof(struct bdb_driver_features);
-+	case BDB_SDVO_LVDS_OPTIONS:
-+		return sizeof(struct bdb_sdvo_lvds_options);
-+	case BDB_SDVO_PANEL_DTDS:
-+		/* FIXME? */
++	const void *block;
++
++	block = find_raw_section(context, section_id);
++	if (!block)
 +		return 0;
-+	case BDB_EDP:
-+		return sizeof(struct bdb_edp);
-+	case BDB_LVDS_OPTIONS:
-+		return sizeof(struct bdb_lvds_options);
-+	case BDB_LVDS_LFP_DATA_PTRS:
-+		return sizeof(struct bdb_lvds_lfp_data_ptrs);
-+	case BDB_LVDS_LFP_DATA:
-+		return sizeof(struct bdb_lvds_lfp_data);
-+	case BDB_LVDS_BACKLIGHT:
-+		return sizeof(struct bdb_lfp_backlight_data);
-+	case BDB_LFP_POWER:
-+		return sizeof(struct bdb_lfp_power);
-+	case BDB_MIPI_CONFIG:
-+		return sizeof(struct bdb_mipi_config);
-+	case BDB_MIPI_SEQUENCE:
-+		return sizeof(struct bdb_mipi_sequence);
-+	case BDB_COMPRESSION_PARAMETERS:
-+		return sizeof(struct bdb_compression_parameters);
-+	case BDB_GENERIC_DTD:
-+		/* FIXME check spec */
-+		return sizeof(struct bdb_generic_dtd);
-+	default:
-+		return 0;
++
++	return block - (const void *)context->bdb;
++}
++
+ static const void *block_data(const struct bdb_block *block)
+ {
+ 	return block->data + 3;
+@@ -181,6 +196,37 @@ static size_t block_min_size(const struct context *context, int section_id)
+ 	}
+ }
+ 
++/* make the data table offsets relative to the data block */
++static bool fixup_lfp_data_ptrs(const struct context *context,
++				void *ptrs_block)
++{
++	struct bdb_lvds_lfp_data_ptrs *ptrs = ptrs_block;
++	u32 offset;
++	int i;
++
++	offset = raw_block_offset(context, BDB_LVDS_LFP_DATA);
++
++	for (i = 0; i < 16; i++) {
++		if (ptrs->ptr[i].fp_timing.offset < offset ||
++		    ptrs->ptr[i].dvo_timing.offset < offset ||
++		    ptrs->ptr[i].panel_pnp_id.offset < offset)
++			return false;
++
++		ptrs->ptr[i].fp_timing.offset -= offset;
++		ptrs->ptr[i].dvo_timing.offset -= offset;
++		ptrs->ptr[i].panel_pnp_id.offset -= offset;
 +	}
++
++	if (ptrs->panel_name.table_size) {
++		if (ptrs->panel_name.offset < offset)
++			return false;
++
++		ptrs->panel_name.offset -= offset;
++	}
++
++	return true;
 +}
 +
  static struct bdb_block *find_section(const struct context *context, int section_id)
  {
-+	size_t min_size = block_min_size(context, section_id);
- 	struct bdb_block *block;
- 	const void *data;
- 	size_t size;
-@@ -149,7 +194,7 @@ static struct bdb_block *find_section(const struct context *context, int section
+ 	size_t min_size = block_min_size(context, section_id);
+@@ -202,6 +248,13 @@ static struct bdb_block *find_section(const struct context *context, int section
+ 	block->size = size;
+ 	memcpy(block->data, data - 3, 3 + size);
  
- 	size = get_blocksize(data);
- 
--	block = calloc(1, sizeof(*block) + 3 + size);
-+	block = calloc(1, sizeof(*block) + 3 + max(size, min_size));
- 	if (!block)
- 		return NULL;
++	if (section_id == BDB_LVDS_LFP_DATA_PTRS &&
++	    !fixup_lfp_data_ptrs(context, 3 + block->data)) {
++		fprintf(stderr, "VBT has malformed LFP data table pointers\n");
++		free(block);
++		return NULL;
++	}
++
+ 	return block;
+ }
  
 -- 
 2.35.1
