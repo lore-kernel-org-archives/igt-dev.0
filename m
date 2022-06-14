@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8442910E8AF
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 09:19:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB7D310F51A
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 09:19:36 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Jun 2022 14:50:23 +0530
-Message-Id: <20220614092025.11404-1-swati2.sharma@intel.com>
+Date: Tue, 14 Jun 2022 14:50:24 +0530
+Message-Id: <20220614092025.11404-2-swati2.sharma@intel.com>
+In-Reply-To: <20220614092025.11404-1-swati2.sharma@intel.com>
+References: <20220614092025.11404-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v3 0/2] Addition of test to validate scaling filters
+Subject: [igt-dev] [v3 1/2] lib/igt_kms: Add scaling filter property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,18 +22,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-New tests are added to validate scaling filters.
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ lib/igt_kms.c | 8 ++++++++
+ lib/igt_kms.h | 2 ++
+ 2 files changed, 10 insertions(+)
 
-Swati Sharma (2):
-  lib/igt_kms: Add scaling filter property
-  tests/kms_scaling_filters: New IGT to validate scaling filters
-
- lib/igt_kms.c               |  24 ++++++
- lib/igt_kms.h               |   3 +
- tests/kms_scaling_filters.c | 163 ++++++++++++++++++++++++++++++++++++
- tests/meson.build           |   1 +
- 4 files changed, 191 insertions(+)
- create mode 100644 tests/kms_scaling_filters.c
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 36dfcfcb..2a9376ae 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -581,6 +581,7 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
+ 	[IGT_PLANE_ALPHA] = "alpha",
+ 	[IGT_PLANE_ZPOS] = "zpos",
+ 	[IGT_PLANE_FB_DAMAGE_CLIPS] = "FB_DAMAGE_CLIPS",
++	[IGT_PLANE_SCALING_FILTER] = "SCALING_FILTER",
+ };
+ 
+ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+@@ -593,6 +594,7 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+ 	[IGT_CRTC_ACTIVE] = "ACTIVE",
+ 	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
+ 	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
++	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
+ };
+ 
+ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+@@ -2122,6 +2124,9 @@ static void igt_plane_reset(igt_plane_t *plane)
+ 	if (igt_plane_has_prop(plane, IGT_PLANE_FB_DAMAGE_CLIPS))
+ 		igt_plane_set_prop_value(plane, IGT_PLANE_FB_DAMAGE_CLIPS, 0);
+ 
++	if (igt_plane_has_prop(plane, IGT_PLANE_SCALING_FILTER))
++		igt_plane_set_prop_enum(plane, IGT_PLANE_SCALING_FILTER, "Default");
++
+ 	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
+ 	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
+ 	plane->gem_handle = 0;
+@@ -2142,6 +2147,9 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
+ 	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_DEGAMMA_LUT))
+ 		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_DEGAMMA_LUT, 0);
+ 
++	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_SCALING_FILTER))
++		igt_pipe_obj_set_prop_enum(pipe, IGT_CRTC_SCALING_FILTER, "Default");
++
+ 	pipe->out_fence_fd = -1;
+ }
+ 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 0f12d825..46754b67 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -125,6 +125,7 @@ enum igt_atomic_crtc_properties {
+        IGT_CRTC_ACTIVE,
+        IGT_CRTC_OUT_FENCE_PTR,
+        IGT_CRTC_VRR_ENABLED,
++       IGT_CRTC_SCALING_FILTER,
+        IGT_NUM_CRTC_PROPS
+ };
+ 
+@@ -301,6 +302,7 @@ enum igt_atomic_plane_properties {
+        IGT_PLANE_ALPHA,
+        IGT_PLANE_ZPOS,
+        IGT_PLANE_FB_DAMAGE_CLIPS,
++       IGT_PLANE_SCALING_FILTER,
+        IGT_NUM_PLANE_PROPS
+ };
+ 
 -- 
 2.25.1
