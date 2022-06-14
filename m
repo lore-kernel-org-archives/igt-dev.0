@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63AAC11362A
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:32:03 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98625113633
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 23:32:09 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jun 2022 02:30:56 +0300
-Message-Id: <20220614233100.13834-20-ville.syrjala@linux.intel.com>
+Date: Wed, 15 Jun 2022 02:30:59 +0300
+Message-Id: <20220614233100.13834-23-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 References: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 19/23] tools/intel_vbt_decode: Decode the
- end of the LFP data
+Subject: [igt-dev] [PATCH i-g-t 22/23] tools/intel_vbt_decode: Generate LVDS
+ data table pointes if not provided
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,117 +26,193 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Decode the tail end of the LFP data, if available.
+Modern VBTs (at least observed on TGL machines) no longer provide the
+LVDS data table pointers block. Thus we can't currently decode the
+contents of the LVDS data table block.
+
+I see two options how to handle this:
+1) Just hardocode the offsets/sizes (+ some checks to make sure the
+   hardcoded values makes sense)
+2) Deduce the offsets/sizes from the actual LVDS data table block
+   contents
+
+I've chosen option 2 here. The fp_timing table 0xffff terminator
+is what allows us to do this. We just look up the first two
+of those from the LVDS data block and calculate the offsets/sizes
+from there. Only the fp_timing entries should have a variable size,
+and the dvo_timings and panel_pnp_id have fixed size (in fact IIRC
+they are 1:1 match for the equivalent EDID stuff).
+
+This is the same thing we do in the kernel parser as well since
+commit a87d0a847607 ("drm/i915/bios: Generate LFP data table
+pointers if the VBT lacks them")
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 73 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 72 insertions(+), 1 deletion(-)
+ tools/intel_vbt_decode.c | 128 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 127 insertions(+), 1 deletion(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index e49831e2529d..574aa25530fd 100644
+index 2ec9990279d9..e45bab4a3e01 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -153,6 +153,30 @@ static const void *block_data(const struct bdb_block *block)
- 	return block->data + 3;
+@@ -189,6 +189,121 @@ static size_t lfp_data_min_size(const struct context *context)
+ 	return size;
  }
  
-+static struct bdb_block *find_section(const struct context *context, int section_id);
-+
-+static size_t lfp_data_min_size(const struct context *context)
++static const uint8_t *find_fp_timing_terminator(const uint8_t *data, int size)
 +{
-+	const struct bdb_lvds_lfp_data_ptrs *ptrs;
-+	struct bdb_block *ptrs_block;
-+	size_t size;
++	if (!data)
++		return NULL;
 +
-+	ptrs_block = find_section(context, BDB_LVDS_LFP_DATA_PTRS);
++	for (int i = 0; i < size - 1; i++) {
++		if (data[i] == 0xff && data[i+1] == 0xff)
++			return &data[i];
++	}
++
++	return NULL;
++}
++
++static int make_lvds_data_ptr(struct lvds_lfp_data_ptr_table *table,
++			      int table_size, int total_size)
++{
++	if (total_size < table_size)
++		return total_size;
++
++	table->table_size = table_size;
++	table->offset = total_size - table_size;
++
++	return total_size - table_size;
++}
++
++static void next_lvds_data_ptr(struct lvds_lfp_data_ptr_table *next,
++			       const struct lvds_lfp_data_ptr_table *prev,
++			       int size)
++{
++	next->table_size = prev->table_size;
++	next->offset = prev->offset + size;
++}
++
++static void *generate_lvds_data_ptrs(const struct context *context)
++{
++	int size, table_size, block_size, offset;
++	const void *t0, *t1, *block;
++	struct bdb_lvds_lfp_data_ptrs *ptrs;
++	void *ptrs_block;
++
++	block = find_raw_section(context, BDB_LVDS_LFP_DATA);
++	if (!block)
++		return NULL;
++
++	block_size = get_blocksize(block);
++
++	size = block_size;
++	t0 = find_fp_timing_terminator(block, size);
++	if (!t0)
++		return NULL;
++
++	size -= t0 - block - 2;
++	t1 = find_fp_timing_terminator(t0 + 2, size);
++	if (!t1)
++		return NULL;
++
++	size = t1 - t0;
++	if (size * 16 > block_size)
++		return NULL;
++
++	ptrs_block = calloc(1, sizeof(*ptrs) + 3);
 +	if (!ptrs_block)
-+		return 0;
++		return NULL;
 +
-+	ptrs = block_data(ptrs_block);
++	*(uint8_t *)(ptrs_block + 0) = BDB_LVDS_LFP_DATA_PTRS;
++	*(uint16_t *)(ptrs_block + 1) = sizeof(*ptrs);
++	ptrs = ptrs_block + 3;
 +
-+	size = sizeof(struct bdb_lvds_lfp_data);
-+	if (ptrs->panel_name.table_size)
-+		size = max(size, ptrs->panel_name.offset +
-+			   sizeof(struct bdb_lvds_lfp_data_tail));
++	table_size = sizeof(struct lvds_pnp_id);
++	size = make_lvds_data_ptr(&ptrs->ptr[0].panel_pnp_id, table_size, size);
 +
-+	free(ptrs_block);
++	table_size = sizeof(struct lvds_dvo_timing);
++	size = make_lvds_data_ptr(&ptrs->ptr[0].dvo_timing, table_size, size);
 +
-+	return size;
++	table_size = t0 - block + 2;
++	size = make_lvds_data_ptr(&ptrs->ptr[0].fp_timing, table_size, size);
++
++	if (ptrs->ptr[0].fp_timing.table_size)
++		ptrs->lvds_entries++;
++	if (ptrs->ptr[0].dvo_timing.table_size)
++		ptrs->lvds_entries++;
++	if (ptrs->ptr[0].panel_pnp_id.table_size)
++		ptrs->lvds_entries++;
++
++	if (size != 0 || ptrs->lvds_entries != 3)
++		return NULL;
++
++	size = t1 - t0;
++	for (int i = 1; i < 16; i++) {
++		next_lvds_data_ptr(&ptrs->ptr[i].fp_timing, &ptrs->ptr[i-1].fp_timing, size);
++		next_lvds_data_ptr(&ptrs->ptr[i].dvo_timing, &ptrs->ptr[i-1].dvo_timing, size);
++		next_lvds_data_ptr(&ptrs->ptr[i].panel_pnp_id, &ptrs->ptr[i-1].panel_pnp_id, size);
++	}
++
++	size = t1 - t0;
++	table_size = sizeof(struct lvds_lfp_panel_name);
++
++	if (16 * (size + table_size) <= block_size) {
++		ptrs->panel_name.table_size = table_size;
++		ptrs->panel_name.offset = size * 16;
++	}
++
++	offset = block - (const void *)context->bdb;
++	for (int i = 0; i < 16; i++) {
++		ptrs->ptr[i].fp_timing.offset += offset;
++		ptrs->ptr[i].dvo_timing.offset += offset;
++		ptrs->ptr[i].panel_pnp_id.offset += offset;
++	}
++
++	if (ptrs->panel_name.offset)
++		ptrs->panel_name.offset += offset;
++
++	return ptrs_block;
 +}
 +
  static size_t block_min_size(const struct context *context, int section_id)
  {
  	switch (section_id) {
-@@ -178,7 +202,7 @@ static size_t block_min_size(const struct context *context, int section_id)
- 	case BDB_LVDS_LFP_DATA_PTRS:
- 		return sizeof(struct bdb_lvds_lfp_data_ptrs);
- 	case BDB_LVDS_LFP_DATA:
--		return sizeof(struct bdb_lvds_lfp_data);
-+		return lfp_data_min_size(context);
- 	case BDB_LVDS_BACKLIGHT:
- 		return sizeof(struct bdb_lfp_backlight_data);
- 	case BDB_LFP_POWER:
-@@ -916,6 +940,8 @@ static void dump_lvds_data(struct context *context,
- 			block_data(block) + ptrs->ptr[i].dvo_timing.offset;
- 		const struct lvds_pnp_id *pnp_id =
- 			block_data(block) + ptrs->ptr[i].panel_pnp_id.offset;
-+		const struct bdb_lvds_lfp_data_tail *tail =
-+			block_data(block) + ptrs->panel_name.offset;
- 		char mfg[4];
+@@ -345,23 +460,34 @@ static struct bdb_block *find_section(const struct context *context, int section
+ {
+ 	size_t min_size = block_min_size(context, section_id);
+ 	struct bdb_block *block;
++	void *temp_block = NULL;
+ 	const void *data;
+ 	size_t size;
  
- 		if (i != context->panel_type && !context->dump_all_panel_types)
-@@ -960,6 +986,51 @@ static void dump_lvds_data(struct context *context,
- 		printf("\t\t  Serial: %u\n", pnp_id->serial);
- 		printf("\t\t  Mfg week: %d\n", pnp_id->mfg_week);
- 		printf("\t\t  Mfg year: %d\n", 1990 + pnp_id->mfg_year);
-+
-+		if (!ptrs->panel_name.table_size)
-+			continue;
-+
-+		printf("\t\tPanel name: %.*s\n",
-+		       (int)sizeof(tail->panel_name[0].name), tail->panel_name[i].name);
-+
-+		if (context->bdb->version < 187)
-+			continue;
-+
-+		printf("\t\tScaling enable: %s\n",
-+		       YESNO((tail->scaling_enable >> i) & 1));
-+
-+		if (context->bdb->version < 188)
-+			continue;
-+
-+		printf("\t\tSeamless DRRS min refresh rate: %d\n",
-+		       tail->seamless_drrs_min_refresh_rate[i]);
-+
-+		if (context->bdb->version < 208)
-+			continue;
-+
-+		printf("\t\tPixel overlap count: %d\n",
-+		       tail->pixel_overlap_count[i]);
-+
-+		if (context->bdb->version < 227)
-+			continue;
-+
-+		printf("\t\tBlack border:\n");
-+		printf("\t\t  Top: %d\n", tail->black_border[i].top);
-+		printf("\t\t  Bottom: %d\n", tail->black_border[i].top);
-+		printf("\t\t  Left: %d\n", tail->black_border[i].left);
-+		printf("\t\t  Right: %d\n", tail->black_border[i].right);
-+
-+		if (context->bdb->version < 231)
-+			continue;
-+
-+		printf("\t\tDual LFP port sync enable: %s\n",
-+		       YESNO((tail->dual_lfp_port_sync_enable >> i) & 1));
-+
-+		if (context->bdb->version < 245)
-+			continue;
-+
-+		printf("\t\tGPU dithering for banding artifacts: %s\n",
-+		       YESNO((tail->gpu_dithering_for_banding_artifacts >> i) & 1));
- 	}
+ 	data = find_raw_section(context, section_id);
++	if (!data && section_id == BDB_LVDS_LFP_DATA_PTRS) {
++		printf("Generating LVDS data table pointers\n");
++		temp_block = generate_lvds_data_ptrs(context);
++		if (temp_block)
++			data = temp_block + 3;
++	}
+ 	if (!data)
+ 		return NULL;
  
- 	free(ptrs_block);
+ 	size = get_blocksize(data);
+ 
+ 	block = calloc(1, sizeof(*block) + 3 + max(size, min_size));
+-	if (!block)
++	if (!block) {
++		free(temp_block);
+ 		return NULL;
++	}
+ 
+ 	block->id = section_id;
+ 	block->size = size;
+ 	memcpy(block->data, data - 3, 3 + size);
+ 
++	free(temp_block);
++
+ 	if (section_id == BDB_LVDS_LFP_DATA_PTRS &&
+ 	    !fixup_lfp_data_ptrs(context, 3 + block->data)) {
+ 		fprintf(stderr, "VBT has malformed LFP data table pointers\n");
 -- 
 2.35.1
