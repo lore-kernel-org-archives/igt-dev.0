@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF59110FF2B
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 05:46:12 +0000 (UTC)
-Message-ID: <e1599ec3-bef7-1d66-0df7-bc2b4325f01f@intel.com>
-Date: Tue, 14 Jun 2022 11:15:51 +0530
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 192F810F96B
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jun 2022 06:15:14 +0000 (UTC)
+Message-ID: <98edbf33-fc1c-5eb0-9649-7aa96ec90854@intel.com>
+Date: Tue, 14 Jun 2022 11:44:48 +0530
 Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220610120639.13832-1-swati2.sharma@intel.com>
+To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220613101750.31129-1-karthik.b.s@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220610120639.13832-1-swati2.sharma@intel.com>
+In-Reply-To: <20220613101750.31129-1-karthik.b.s@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v3] tests/i915/kms_dsc: Validate dsc with diff plane
- formats
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: Test Refactoring
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,186 +24,241 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri-10-06-2022 05:36 pm, Swati Sharma wrote:
-> Already existing subtest is modified so that dsc can be validated
-> using different plane modifiers. Few 8/10/16 bpc RGB and YUV formats
-> are added.
+On Mon-13-06-2022 03:47 pm, Karthik B S wrote:
+> Add igt_display_reset in test_init().
+> Add new function to call all the subtests to avoid code duplication.
 > 
-> v2: minor fixes
-> v3: -renaming
->      -addition of new planar format test
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/i915/kms_dsc.c | 68 +++++++++++++++++++++++++++++++-------------
->   1 file changed, 48 insertions(+), 20 deletions(-)
+>   tests/kms_plane.c | 117 ++++++++++++++++------------------------------
+>   1 file changed, 40 insertions(+), 77 deletions(-)
 > 
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index c94c64c4..7fe7d3d8 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -47,11 +47,11 @@
->   IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index b1be44c3..b9a25762 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -61,6 +61,7 @@ typedef struct {
+>   	int num_colors;
+>   	uint32_t crop;
+>   	bool extended;
+> +	unsigned int flags;
+>   } data_t;
 >   
->   #define HDISPLAY_5K	5120
-> -#define XRGB8888_DRM_FORMAT_MIN_BPP	8
-> +#define MIN_BPP		8
->   
->   enum dsc_test_type {
-> -	TEST_BASIC_DSC_ENABLE,
-> -	TEST_DSC_COMPRESSION_BPP
-> +	TEST_BASIC_DSC,
-> +	TEST_DSC_BPP
->   };
->   
->   typedef struct {
-> @@ -68,6 +68,17 @@ typedef struct {
->   bool force_dsc_en_orig;
->   int force_dsc_restore_fd = -1;
->   
-> +const struct {
-> +	const int format;
-> +	const char format_str[20];
-> +} test_list[] = {
-> +	{DRM_FORMAT_XRGB8888, "XRGB8888"},
-> +	{DRM_FORMAT_XYUV8888, "XYUV8888"},
-> +	{DRM_FORMAT_XRGB2101010, "XRGB2101010"},
-> +	{DRM_FORMAT_XRGB16161616F, "XRGB16161616F"},
-> +	{DRM_FORMAT_YUYV, "YUYV"},
-> +};
-> +
->   static inline void manual(const char *expected)
+>   static bool all_pipes;
+> @@ -74,7 +75,9 @@ static color_t blue  = { 0.0f, 0.0f, 1.0f };
+>    */
+>   static void test_init(data_t *data, enum pipe pipe)
 >   {
->   	igt_debug_interactive_mode_check("all", expected);
-> @@ -171,7 +182,7 @@ static bool check_big_joiner_test_constraint(data_t *data,
->   	igt_output_t *output = data->output;
->   	drmModeModeInfo *mode = get_highres_mode(output);
->   
-> -	if (test_type == TEST_DSC_COMPRESSION_BPP &&
-> +	if (test_type == TEST_DSC_BPP &&
->   	    mode->hdisplay >= HDISPLAY_5K) {
->   		igt_debug("Bigjoiner does not support force bpp on %s\n",
->   			   output->name);
-> @@ -224,7 +235,7 @@ static void test_cleanup(data_t *data)
+> +	igt_require(data->display.pipes[pipe].n_planes > 0);
+>   	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
+> +	igt_display_reset(&data->display);
 >   }
 >   
->   /* re-probe connectors and do a modeset with DSC */
-> -static void update_display(data_t *data, enum dsc_test_type test_type)
-> +static void update_display(data_t *data, enum dsc_test_type test_type, unsigned int plane_format)
->   {
->   	bool enabled;
->   	igt_plane_t *primary;
-> @@ -240,7 +251,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
->   	save_force_dsc_en(data);
->   	force_dsc_enable(data);
->   
-> -	if (test_type == TEST_DSC_COMPRESSION_BPP) {
-> +	if (test_type == TEST_DSC_BPP) {
->   		igt_debug("Trying to set BPP to %d\n", data->compression_bpp);
->   		force_dsc_enable_bpp(data);
->   	}
-> @@ -252,10 +263,14 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
->   	igt_output_override_mode(output, mode);
->   
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
-> +		    DRM_FORMAT_MOD_LINEAR));
-> +
->   	igt_create_pattern_fb(data->drm_fd,
->   			      mode->hdisplay,
->   			      mode->vdisplay,
-> -			      DRM_FORMAT_XRGB8888,
-> +			      plane_format,
->   			      DRM_FORMAT_MOD_LINEAR,
->   			      &data->fb_test_pattern);
->   
-> @@ -281,11 +296,12 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
->   	test_cleanup(data);
+>   static void test_fini(data_t *data)
+> @@ -264,7 +267,7 @@ test_plane_position_with_output(data_t *data,
 >   }
 >   
-> -static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp)
-> +static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp, unsigned int plane_format)
+>   static void
+> -test_plane_position(data_t *data, enum pipe pipe, unsigned int flags)
+> +test_plane_position(data_t *data, enum pipe pipe)
 >   {
->   	igt_display_t *display = &data->display;
+>   	int n_planes = data->display.pipes[pipe].n_planes;
 >   	igt_output_t *output;
-> -	char test_name[10];
-> +	char name1[20];
-> +	char name2[20];
+> @@ -274,12 +277,12 @@ test_plane_position(data_t *data, enum pipe pipe, unsigned int flags)
+>   	igt_require(output);
+>   
+>   	test_init(data, pipe);
+> -	test_grab_crc(data, output, pipe, &green, flags, &reference_crc);
+> +	test_grab_crc(data, output, pipe, &green, data->flags, &reference_crc);
+>   
+>   	for (int plane = 1; plane < n_planes; plane++)
+>   		test_plane_position_with_output(data, pipe, plane,
+>   						output, &reference_crc,
+> -						flags);
+> +						data->flags);
+>   
+>   	test_fini(data);
+>   }
+> @@ -372,7 +375,7 @@ test_plane_panning_with_output(data_t *data,
+>   }
+>   
+>   static void
+> -test_plane_panning(data_t *data, enum pipe pipe, unsigned int flags)
+> +test_plane_panning(data_t *data, enum pipe pipe)
+>   {
+>   	igt_output_t *output;
+>   	igt_crc_t ref_crc;
+> @@ -382,12 +385,12 @@ test_plane_panning(data_t *data, enum pipe pipe, unsigned int flags)
+>   
+>   	test_init(data, pipe);
+>   
+> -	if (flags & TEST_PANNING_TOP_LEFT)
+> -		test_grab_crc(data, output, pipe, &red, flags, &ref_crc);
+> +	if (data->flags & TEST_PANNING_TOP_LEFT)
+> +		test_grab_crc(data, output, pipe, &red, data->flags, &ref_crc);
+>   	else
+> -		test_grab_crc(data, output, pipe, &blue, flags, &ref_crc);
+> +		test_grab_crc(data, output, pipe, &blue, data->flags, &ref_crc);
+>   
+> -	test_plane_panning_with_output(data, pipe, output, &ref_crc, flags);
+> +	test_plane_panning_with_output(data, pipe, output, &ref_crc, data->flags);
+>   
+>   	test_fini(data);
+>   }
+> @@ -1097,110 +1100,70 @@ static bool is_pipe_limit_reached(int count) {
+>   	return count >= CRTC_RESTRICT_CNT && !all_pipes;
+>   }
+>   
+> -static void
+> -run_tests_for_pipe_plane(data_t *data)
+> +static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+>   {
 >   	enum pipe pipe;
->   
->   	for_each_pipe_with_valid_output(display, pipe, output) {
-> @@ -305,10 +321,11 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp)
->   		if (!check_big_joiner_pipe_constraint(data))
->   			continue;
->   
-> -		snprintf(test_name, sizeof(test_name), "-%dbpp", data->compression_bpp);
-> +		snprintf(name1, sizeof(name1), "-%dbpp", data->compression_bpp);
-> +		snprintf(name2, sizeof(name2), "-%s", igt_format_str(plane_format));
->   		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name,
-> -			     (test_type == TEST_DSC_COMPRESSION_BPP) ? test_name : "")
-> -			update_display(data, test_type);
-> +			     (test_type == TEST_DSC_BPP) ? name1 : name2)
+>   	int count;
+> -	igt_fixture {
+> -		igt_require_pipe(&data->display, pipe);
+> -		igt_require(data->display.pipes[pipe].n_planes > 0);
+> +	count = 0;
 
-Can we move this check to where you constructing the test name? So that 
-we can manage with single variable for test name.	
+Nit: Initialize the variable count at declaration.
 
-> +			update_display(data, test_type, plane_format);
+> +	for_each_pipe(&data->display, pipe) {
+> +		igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> +			test(data, pipe);
+> +
+> +		if (is_pipe_limit_reached(++count))
+> +			break;
+>   	}
+> +}
+>   
+> +static void
+> +run_tests_for_pipe_plane(data_t *data)
+> +{
+>   	igt_describe("verify the pixel formats for given plane and pipe");
+> -	igt_subtest_with_dynamic_f("pixel-format") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> -				test_pixel_formats(data, pipe);
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> -	}
+> +	igt_subtest_with_dynamic_f("pixel-format")
+> +		run_test(data, test_pixel_formats);
+
+I didn't check all tests, but realized that in test_pixel_formats(), we 
+need to call test_init() before using igt_output_set_pipe().
+
+Can you please make sure the above point in all subtests?
+
+> +
+>   	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
+>   	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
+> -				data->crop = 4;
+> -				test_pixel_formats(data, pipe);
+> -			}
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> +		data->crop = 4;
+> +		run_test(data, test_pixel_formats);
+>   	}
+>   
+>   	data->crop = 0;
+>   	igt_describe("verify plane position using two planes to create a fully covered screen");
+>   	igt_subtest_with_dynamic_f("plane-position-covered") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> -				test_plane_position(data, pipe, 0);
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> +		data->flags = 0;
+> +		run_test(data, test_plane_position);
+>   	}
+>   
+>   	igt_describe("verify plane position using two planes to create a partially covered screen");
+>   	igt_subtest_with_dynamic_f("plane-position-hole") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> -				test_plane_position(data, pipe,
+> -				TEST_POSITION_PARTIALLY_COVERED);
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> +		data->flags = TEST_POSITION_PARTIALLY_COVERED;
+
+Do we need to clear these flags? Will it effect if we run these subtests 
+in reverse order?
+
+Overall, this patch looks good to me.
+
+- Bhanu
+
+> +		run_test(data, test_plane_position);
+>   	}
+>   
+>   	igt_describe("verify plane position using two planes to create a partially covered screen and"
+>   		       "check for DPMS");
+>   	igt_subtest_with_dynamic_f("plane-position-hole-dpms") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> -				test_plane_position(data, pipe,
+> -				TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS);
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> +		data->flags = TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS;
+> +		run_test(data, test_plane_position);
+>   	}
+>   
+>   	igt_describe("verify plane panning at top-left position using primary plane");
+>   	igt_subtest_with_dynamic_f("plane-panning-top-left") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> -				test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> +		data->flags = TEST_PANNING_TOP_LEFT;
+> +		run_test(data, test_plane_panning);
+>   	}
+>   
+>   	igt_describe("verify plane panning at bottom-right position using primary plane");
+>   	igt_subtest_with_dynamic_f("plane-panning-bottom-right") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> -				test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> +		data->flags = TEST_PANNING_BOTTOM_RIGHT;
+> +		run_test(data, test_plane_panning);
+>   	}
+>   
+>   	igt_describe("verify plane panning at bottom-right position using primary plane and executes system"
+>   		       "suspend cycles");
+>   	igt_subtest_with_dynamic_f("plane-panning-bottom-right-suspend") {
+> -		count = 0;
+> -		for_each_pipe(&data->display, pipe) {
+> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+> -				test_plane_panning(data, pipe,
+> -				TEST_PANNING_BOTTOM_RIGHT |
+> -				TEST_SUSPEND_RESUME);
+> -			if (is_pipe_limit_reached(++count))
+> -				break;
+> -		}
+> +		data->flags = TEST_PANNING_BOTTOM_RIGHT | TEST_SUSPEND_RESUME;
+> +		run_test(data, test_plane_panning);
 >   	}
 >   }
 >   
-> @@ -332,25 +349,36 @@ igt_main
->   	igt_describe("Tests basic display stream compression functionality if supported "
->   		     "by a connector by forcing DSC on all connectors that support it "
->   		     "with default parameters");
-> -	igt_subtest_with_dynamic("basic-dsc-enable")
-> -			test_dsc(&data, TEST_BASIC_DSC_ENABLE, 0);
-> +	igt_subtest_with_dynamic("basic-dsc")
-> +			test_dsc(&data, TEST_BASIC_DSC, 0, DRM_FORMAT_XRGB8888);
-
-Why do we need this extra subtest, as we are doing the same with 
-"dsc-with-formats"?
-
-IMO, we just need to drop "basic-dsc".
-
-> +
-> +	igt_describe("Tests basic display stream compression functionality if supported "
-> +		     "by a connector by forcing DSC on all connectors that support it "
-> +		     "with default parameters and creating fb with diff formats");
-> +	igt_subtest_with_dynamic("dsc-with-formats") {
-> +		for (int k = 0; k < ARRAY_SIZE(test_list); k++)
-> +			test_dsc(&data, TEST_BASIC_DSC, 0, test_list[k].format);
-> +	}
->   
->   	igt_fixture
->   		igt_require(intel_display_ver(data.devid) >= 13);
->   
-> +	/* output bpp/compressed bpp supported is 8 to 23 (pipe_bpp -1)
-> +	 * i.e. 8 to 23. so, here we are considering compressed bpp as min(8), mean (8+23/2)
-> +	 * and max(23).
-> +	 */
->   	igt_describe("Tests basic display stream compression functionality if supported "
->   		     "by a connector by forcing DSC on all connectors that support it "
->   		     "with certain BPP as the output BPP for the connector");
-> -	igt_subtest_with_dynamic("XRGB8888-dsc-compression") {
-> +	igt_subtest_with_dynamic("dsc-with-bpp") {
->   		uint32_t bpp_list[] = {
-> -			XRGB8888_DRM_FORMAT_MIN_BPP,
-> -			(XRGB8888_DRM_FORMAT_MIN_BPP  +
-> -			(XRGB8888_DRM_FORMAT_MIN_BPP * 3) - 1) / 2,
-> -			(XRGB8888_DRM_FORMAT_MIN_BPP * 3) - 1
-> +			MIN_BPP,
-> +			(MIN_BPP  + (MIN_BPP * 3) - 1) / 2,
-> +			(MIN_BPP * 3) - 1
->   		};
->   
->   		for (int j = 0; j < ARRAY_SIZE(bpp_list); j++)
-> -			test_dsc(&data, TEST_DSC_COMPRESSION_BPP, bpp_list[j]);
-> +			test_dsc(&data, TEST_DSC_BPP, bpp_list[j], DRM_FORMAT_XRGB8888);
-
-Why are we limiting this test to XRGB8888 only? Is it overkill to run on 
-all formats mentioned in test_list[]?
-
->   	}
->   
->   	igt_fixture {
