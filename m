@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B85489E03
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 09:45:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDAE910F598
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 09:58:15 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jun 2022 15:16:36 +0530
-Message-Id: <20220615094636.23398-1-swati2.sharma@intel.com>
+Date: Wed, 15 Jun 2022 15:29:05 +0530
+Message-Id: <20220615095906.23688-2-swati2.sharma@intel.com>
+In-Reply-To: <20220615095906.23688-1-swati2.sharma@intel.com>
+References: <20220615095906.23688-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_panel_fitting: Convert test to
- dynamic
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_flip_scaled_crc: Convert
+ tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,283 +23,143 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Covert the existing subtests to dynamic subtests at pipe/output level.
+
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_panel_fitting.c | 209 +++++++++++++++++++-------------------
- 1 file changed, 104 insertions(+), 105 deletions(-)
+ tests/i915/kms_flip_scaled_crc.c | 69 ++++++++------------------------
+ 1 file changed, 16 insertions(+), 53 deletions(-)
 
-diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-index 9f607376..a75aa629 100644
---- a/tests/kms_panel_fitting.c
-+++ b/tests/kms_panel_fitting.c
-@@ -28,6 +28,11 @@
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index 9740715f..6cf3a64b 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -163,8 +163,6 @@ const struct {
+ 	},
+ };
  
- IGT_TEST_DESCRIPTION("Test display panel fitting");
- 
-+enum test_type {
-+	TEST_LEGACY,
-+	TEST_ATOMIC,
-+};
-+
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
-@@ -80,109 +85,96 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	igt_display_commit2(display, s);
- }
- 
--static void test_panel_fitting(data_t *d)
-+static void
-+test_panel_fitting_legacy(data_t *d, igt_display_t *display,
-+			  const enum pipe pipe, igt_output_t *output)
+-enum subrval {CONNECTORFAIL, CONNECTORSUCCESS, TESTSKIP, NOREQUESTEDFORMATONPIPE};
+-
+ static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+ 		     uint32_t height, uint64_t format, uint64_t modifier)
  {
--	igt_display_t *display = &d->display;
--	igt_output_t *output;
--	enum pipe pipe;
--	int valid_tests = 0;
-+	drmModeModeInfo *mode, native_mode;
-+	bool is_plane_scaling_active = true;
- 
--	for_each_pipe_with_valid_output(display, pipe, output) {
--		drmModeModeInfo *mode, native_mode;
--		bool is_plane_scaling_active = true;
--
--		/* Check that the "scaling mode" property has been set. */
--		if (!igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE))
--			continue;
--
--		cleanup_crtc(d);
--		igt_output_set_pipe(output, pipe);
--
--		mode = igt_output_get_mode(output);
--		native_mode = *mode;
--
--		/* allocate fb2 with image */
--		igt_create_pattern_fb(d->drm_fd, mode->hdisplay / 2, mode->vdisplay / 2,
--				      DRM_FORMAT_XRGB8888,
--				      DRM_FORMAT_MOD_LINEAR, &d->fb2);
-+	igt_output_set_pipe(output, pipe);
- 
--		/* Set up display to enable panel fitting */
--		if (is_amdgpu_device(display->drm_fd)) {
--			mode->hdisplay = 800;
--			mode->vdisplay = 600;
--		} else {
--			mode->hdisplay = 640;
--			mode->vdisplay = 480;
--		}
--		d->plane1 = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--		prepare_crtc(d, output, pipe, d->plane1, mode, COMMIT_LEGACY);
-+	mode = igt_output_get_mode(output);
-+	native_mode = *mode;
- 
--		/* disable panel fitting */
--		prepare_crtc(d, output, pipe, d->plane1, &native_mode, COMMIT_LEGACY);
-+	/* allocate fb2 with image */
-+	igt_create_pattern_fb(d->drm_fd, mode->hdisplay / 2, mode->vdisplay / 2,
-+			      DRM_FORMAT_XRGB8888,
-+			      DRM_FORMAT_MOD_LINEAR, &d->fb2);
- 
--		/* enable panel fitting */
-+	/* set up display to enable panel fitting */
-+	if (is_amdgpu_device(display->drm_fd)) {
- 		mode->hdisplay = 800;
- 		mode->vdisplay = 600;
--		prepare_crtc(d, output, pipe, d->plane1, mode, COMMIT_LEGACY);
--
--		/* disable panel fitting */
--		prepare_crtc(d, output, pipe, d->plane1, &native_mode, COMMIT_LEGACY);
-+	} else {
-+		mode->hdisplay = 640;
-+		mode->vdisplay = 480;
-+	}
-+	d->plane1 = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	prepare_crtc(d, output, pipe, d->plane1, mode, COMMIT_LEGACY);
- 
--		/* Set up fb2->plane2 mapping. */
--		d->plane2 = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
--		igt_plane_set_fb(d->plane2, &d->fb2);
-+	/* disable panel fitting */
-+	prepare_crtc(d, output, pipe, d->plane1, &native_mode, COMMIT_LEGACY);
- 
--		/* enable sprite plane */
--		igt_fb_set_position(&d->fb2, d->plane2, 100, 100);
--		igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
--		igt_plane_set_position(d->plane2, 100, 100);
-+	/* enable panel fitting */
-+	mode->hdisplay = 800;
-+	mode->vdisplay = 600;
-+	prepare_crtc(d, output, pipe, d->plane1, mode, COMMIT_LEGACY);
- 
--		if (is_i915_device(display->drm_fd)) {
--			uint32_t devid = intel_get_drm_devid(display->drm_fd);
--			/*
--			 * Most of gen7 and all of gen8 doesn't support plane scaling
--			 * at all.
--			 *
--			 * gen9 pipe C has only 1 scaler shared with the crtc, which
--			 * means pipe scaling can't work simultaneously with panel
--			 * fitting.
--			 *
--			 * Since this is the legacy path, userspace has to know about
--			 * the HW limitations, whereas atomic can ask.
--			 */
--			if (IS_GEN8(devid) ||
--				(IS_GEN7(devid) && !IS_IVYBRIDGE(devid)) ||
--				(IS_GEN9(devid) && pipe == PIPE_C)) {
--				is_plane_scaling_active = false;
--			}
--		}
--		if (is_plane_scaling_active) {
--			/*
--			 * different than visible area of fb => plane scaling
--			 * active
--			 */
--			igt_plane_set_size(d->plane2,
--					   mode->hdisplay-200,
--					   mode->vdisplay-200);
--		}
--		else {
--			/* same as visible area of fb => no scaling */
--			igt_plane_set_size(d->plane2,
--				d->fb2.width - 200,
--				d->fb2.height - 200);
--		}
-+	/* disable panel fitting */
-+	prepare_crtc(d, output, pipe, d->plane1, &native_mode, COMMIT_LEGACY);
- 
--		/* Plane scaling active (if possible), pfit off */
--		igt_display_commit2(display, COMMIT_UNIVERSAL);
-+	/* set up fb2->plane2 mapping. */
-+	d->plane2 = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
-+	igt_plane_set_fb(d->plane2, &d->fb2);
- 
--		/* enable panel fitting along with sprite scaling */
--		mode->hdisplay = 1024;
--		mode->vdisplay = 768;
--		prepare_crtc(d, output, pipe, d->plane1, mode, COMMIT_LEGACY);
-+	/* enable sprite plane */
-+	igt_fb_set_position(&d->fb2, d->plane2, 100, 100);
-+	igt_fb_set_size(&d->fb2, d->plane2, d->fb2.width-200, d->fb2.height-200);
-+	igt_plane_set_position(d->plane2, 100, 100);
- 
--		valid_tests++;
-+	if (is_i915_device(display->drm_fd)) {
-+		uint32_t devid = intel_get_drm_devid(display->drm_fd);
-+		/*
-+		 * Most of gen7 and all of gen8 doesn't support plane scaling
-+		 * at all.
-+		 *
-+		 * gen9 pipe C has only 1 scaler shared with the crtc, which
-+		 * means pipe scaling can't work simultaneously with panel
-+		 * fitting.
-+		 *
-+		 * Since this is the legacy path, userspace has to know about
-+		 * the HW limitations, whereas atomic can ask.
-+		 */
-+		if (IS_GEN8(devid) ||
-+			(IS_GEN7(devid) && !IS_IVYBRIDGE(devid)) ||
-+			(IS_GEN9(devid) && pipe == PIPE_C)) {
-+			is_plane_scaling_active = false;
-+		}
-+	}
-+	if (is_plane_scaling_active) {
-+		/*
-+		 * different than visible area of fb => plane scaling
-+		 * active
-+		 */
-+		igt_plane_set_size(d->plane2,
-+				   mode->hdisplay-200,
-+				   mode->vdisplay-200);
- 	}
--	igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
-+	else {
-+		/* same as visible area of fb => no scaling */
-+		igt_plane_set_size(d->plane2,
-+			d->fb2.width - 200,
-+			d->fb2.height - 200);
-+	}
-+
-+	/* Plane scaling active (if possible), pfit off */
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
-+
-+	/* enable panel fitting along with sprite scaling */
-+	mode->hdisplay = 1024;
-+	mode->vdisplay = 768;
-+	prepare_crtc(d, output, pipe, d->plane1, mode, COMMIT_LEGACY);
+@@ -220,8 +218,8 @@ static void clear_lut(data_t *data, enum pipe pipe)
+ 	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
  }
  
- static void
-@@ -234,34 +226,41 @@ test_panel_fitting_fastset(igt_display_t *display, const enum pipe pipe, igt_out
- 	igt_display_commit_atomic(display, 0, NULL);
- }
- 
--static void test_atomic_fastset(data_t *data)
-+static void test_panel_fitting(data_t *data, enum test_type type)
+-static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+-					enum pipe pipe, igt_output_t *output)
++static void test_flip_to_scaled(data_t *data, uint32_t index,
++				enum pipe pipe, igt_output_t *output)
  {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
- 	enum pipe pipe;
--	int valid_tests = 0;
- 	struct stat sb;
+ 	igt_plane_t *primary;
+ 	igt_crc_t small_crc, big_crc;
+@@ -257,11 +255,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 	igt_output_set_pipe(output, pipe);
  
--	igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
-+	if (type == TEST_ATOMIC) {
-+		igt_require_f(is_i915_device(display->drm_fd), "not valid for non-i915 devices\n");
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	if (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
++	igt_skip_on_f (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
+ 				      data->small_fb.modifier) ||
+-	    !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
+-				      data->big_fb.modifier))
+-		return NOREQUESTEDFORMATONPIPE;
++		       !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
++				      data->big_fb.modifier), "No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
  
--	if (is_i915_device(display->drm_fd)) {
--		/* Until this is force enabled, force modeset evasion. */
--		if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
--			igt_set_module_param_int(data->drm_fd, "fastboot", 1);
-+		if (is_i915_device(display->drm_fd)) {
-+			/* Until this is force enabled, force modeset evasion. */
-+			if (stat("/sys/module/i915/parameters/fastboot", &sb) == 0)
-+				igt_set_module_param_int(data->drm_fd, "fastboot", 1);
-+
-+			igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
-+		}
+ 	set_lut(data, pipe);
+ 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+@@ -295,20 +292,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 	igt_plane_set_size(primary, data->attemptmodewidth,
+ 			   data->attemptmodeheight);
+ 	ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	switch (ret) {
+-	case -ERANGE:
+-		igt_debug("Platform scaling limits exceeded, skipping.\n");
+-		return TESTSKIP;
+-	case -EINVAL:
+-		if (!modetoset) {
+-			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
++	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
++	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+ 				  data->attemptmodeheight);
+-			return CONNECTORFAIL;
+-		}
+-		/* fallthrough */
+-	default:
+-		igt_assert_eq(ret, 0);
+-	}
++	igt_assert_eq(ret, 0);
  
--		igt_require(intel_display_ver(intel_get_drm_devid(display->drm_fd)) >= 5);
-+		igt_require(display->is_atomic);
- 	}
+ 	igt_pipe_crc_start(data->pipe_crc);
+ 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
+@@ -319,21 +306,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 	ret = igt_display_try_commit_atomic(&data->display,
+ 					    DRM_MODE_ATOMIC_ALLOW_MODESET  |
+ 					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
+-
+-	switch (ret) {
+-	case -ERANGE:
+-		igt_debug("Platform scaling limits exceeded, skipping.\n");
+-		return TESTSKIP;
+-	case -EINVAL:
+-		if (!modetoset) {
+-			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
++	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
++	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+ 				  data->attemptmodeheight);
+-			return CONNECTORFAIL;
+-		}
+-		/* fallthrough */
+-	default:
+-		igt_assert_eq(ret, 0);
+-	}
++	igt_assert_eq(ret, 0);
  
--	igt_require(display->is_atomic);
- 	for_each_pipe_with_valid_output(display, pipe, output) {
-+		/* Check that the "scaling mode" property has been set. */
- 		if (!igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE))
- 			continue;
+ 	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
  
- 		cleanup_crtc(data);
--		test_panel_fitting_fastset(display, pipe, output);
--		valid_tests++;
-+
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+			if (type == TEST_ATOMIC)
-+				test_panel_fitting_fastset(display, pipe, output);
-+			if (type == TEST_LEGACY)
-+				test_panel_fitting_legacy(data, display, pipe, output);
-+		}
- 	}
--	igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
+@@ -349,8 +325,6 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-
+-	return CONNECTORSUCCESS;
  }
  
  igt_main
-@@ -275,12 +274,12 @@ igt_main
+@@ -379,28 +353,17 @@ igt_main
+ 
+ 	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+ 		igt_describe(flip_scenario_test[index].describe);
+-		igt_subtest(flip_scenario_test[index].name) {
+-			int validtests = 0;
++		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
+ 			free_fbs(&data);
+-			for_each_pipe_static(pipe) {
+-				enum subrval rval = CONNECTORSUCCESS;
++			for_each_pipe(&data.display, pipe) {
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+-					rval = test_flip_to_scaled(&data, index, pipe, output);
+-
+-					igt_require(rval != TESTSKIP);
+-
+-					// break out to test next pipe
+-					if (rval == CONNECTORSUCCESS) {
+-						validtests++;
+-						break;
+-					}
++					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++						test_flip_to_scaled(&data, index, pipe, output);
+ 				}
+-				if (rval == NOREQUESTEDFORMATONPIPE)
+-					igt_debug("No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
+ 			}
+-			igt_require_f(validtests > 0, "No valid pipe/connector/format/mod combination found\n");
+ 		}
  	}
- 
- 	igt_describe("Tests panel fitting usages with legacy style commit.");
--	igt_subtest("legacy")
--		test_panel_fitting(&data);
-+	igt_subtest_with_dynamic("legacy")
-+		test_panel_fitting(&data, TEST_LEGACY);
- 
- 	igt_describe("Tests panel fitting usages with atomic fastset.");
--	igt_subtest("atomic-fastset")
--		test_atomic_fastset(&data);
-+	igt_subtest_with_dynamic("atomic-fastset")
-+		test_panel_fitting(&data, TEST_ATOMIC);
- 
- 	igt_fixture
- 		igt_display_fini(&data.display);
++
+ 	igt_fixture {
+ 		free_fbs(&data);
+ 		if (data.pipe_crc) {
 -- 
 2.25.1
