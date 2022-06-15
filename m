@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D14F910F015
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 06:40:43 +0000 (UTC)
-Date: Wed, 15 Jun 2022 09:38:43 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: priyanka.dandamudi@intel.com
-Message-ID: <Yql+c50Ppwc8j0SH@platvala-desk.ger.corp.intel.com>
-References: <20220615054146.1175662-1-priyanka.dandamudi@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A77310F2B9
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 06:44:30 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+In-Reply-To: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
+References: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
+Date: Wed, 15 Jun 2022 09:44:26 +0300
+Message-ID: <87edzqxw6t.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220615054146.1175662-1-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/i915/i915_module_load: Test resizable
- bar support
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t 00/23] tools/intel_vbt_decode: Improve
+ the parser
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,130 +21,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 15, 2022 at 11:11:46AM +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> New test named resize bar has been added which tests whether
-> bar gets resized with different supported sizes.
-> 
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/i915/i915_module_load.c | 64 +++++++++++++++++++++++++++++++++++
->  1 file changed, 64 insertions(+)
-> 
-> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-> index f5f98acc2..b334ef612 100644
-> --- a/tests/i915/i915_module_load.c
-> +++ b/tests/i915/i915_module_load.c
-> @@ -37,6 +37,9 @@
->  #include "igt_sysfs.h"
->  #include "igt_core.h"
->  
-> +#define BAR_SIZE_SHIFT 20
-> +#define BYTE 1024
-> +
->  IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
->  
->  static void store_all(int i915)
-> @@ -236,6 +239,28 @@ hda_dynamic_debug(bool enable)
->  	fclose(fp);
->  }
->  
-> +static int driver_load_unload(struct drm_i915_query_memory_regions **regions, uint32_t lmem_bar_size)
-> +{
-> +	int i915 = -1;
-> +	char lmem_bar[64];
-> +
-> +	igt_i915_driver_unload();
-> +	if (lmem_bar_size == 0)
-> +		igt_assert_eq(igt_i915_driver_load(NULL), 0);
-> +	else {
-> +		sprintf(lmem_bar, "lmem_bar_size=%u", lmem_bar_size);
-> +		igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
-> +	}
-> +
-> +	i915 = __drm_open_driver(DRIVER_INTEL);
-> +	igt_require_fd(i915);
-> +	igt_require(gem_has_lmem(i915));
-> +	*regions = gem_get_query_memory_regions(i915);
-> +	igt_require(*regions);
-> +
-> +	return i915;
-> +}
-> +
->  igt_main
->  {
->  	igt_describe("Verify the basic functionality of i915 driver after it's reloaded.");
-> @@ -286,5 +311,44 @@ igt_main
->  		/* inject_fault() leaves the module unloaded */
->  	}
->  
-> +	igt_subtest("resize-bar") {
-> +		struct drm_i915_query_memory_regions *regions;
-> +		struct drm_i915_memory_region_info *region;
-> +		uint32_t lmem_bar_size;
-> +		uint32_t small_bar;
-> +		bool bar_check = false;
-> +		int i915 = -1;
-> +
-> +		i915 = driver_load_unload(&regions, 0);
+On Wed, 15 Jun 2022, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Change the igt VBT parser to make copies of the BDB data blocks
+> (just as we do in the kernel parser now). This makes it less
+> hazardous/confusing if your block definition don't happent to
+> match reality.=20
+>
+> Eg. with the current scheme we could very easily misinterpret
+> random bits from other blocks/etc. as our block data by just
+> using an overly large structure for decoding. With the block
+> copies being  at least as big as out struct definitions the
+> worst that can happen is that we just decode some extra zeroes
+> rather than some random other bits.
+>
+> The other thing I'm bringing over is the data pointer generation
+> stuff for modern VBTS (which lack the LFP data table pointes block).
+> That lets us keep decoding the LFP data block in exactly the
+> same way on old and new VBTs.
+>
+> And naturally we have massive gaps in what data the tool actually
+> parses from the VBT. So lots of patches to just parse more stuff.
+> I didn't do an exhaustive study on this topic, so still probably
+> missing some useful things.
 
-Before the unload, do this:
+I glanced through all this, and it LGTM, but can't claim I did a
+detailed, thorough review. I also don't think it should really be
+necessary for this particular tool. If the changes work for you, it's
+good enough for me.
 
-i915 = drm_open_driver(DRIVER_INTEL);
-igt_require(gem_has_lmem(i915);
-close(i915);
+Cc: Petri, good to go with that?
 
-That way we can avoid an unnecessary reload cycle on integrated.
+BR,
+Jani.
 
-Which kernel version has the lmem_bar_size parameter? You might want
-to check its existence too. gem_lmem_swapping has an example of how
-it's done, with the param "lmem_size".
+>
+> Ville Syrj=C3=A4l=C3=A4 (23):
+>   tools/intel_vbt_decode: update vbt defs from kernel
+>   tools/intel_vbt_decode: Decode more DVO ports
+>   tools/intel_vbt_decode: Decode mode HDMI data rates
+>   tools/intel_vbt_decode: Clean up SSC freq decoding
+>   tools/intel_vbt_decode: Decode DP max link rate
+>   tools/intel_vbt_decode: Unify panel type handling
+>   tools/intel_vbt_decode: Dump the block size
+>   tools/intel_vbt_decode: Decode the LFP power block
+>   tools/intel_vbt_decode: Dump the LVDS panel options
+>   tools/intel_vbt_decode: Decode new fast link training rate
+>   tools/intel_vbt_decode: Parse the old fast link training rate
+>     correctly
+>   tools/intel_vbt_decode: Parse the new eDP max link rate
+>   tools/intel_vbt_decode: Include BDB block header in hex dump
+>   tools/intel_vbt_decode: Make copies of the BDB blocks
+>   tools/intel_vbt_decode: Specify a minimum size for the BDB block copy
+>   tools/intel_vbt_decode: Convert LFP data pointers to be relative to
+>     the data block
+>   tools/intel_vbt_decode: Simplify LVDS data block parsing
+>   tools/intel_vbt_decode: Dump the panel PNP ID
+>   tools/intel_vbt_decode: Decode the end of the LFP data
+>   tools/intel_vbt_decode: Dump the LVDS data ptrs
+>   tools/intel_vbt_decode: Validate LVDS data table pointers
+>   tools/intel_vbt_decode: Generate LVDS data table pointes if not
+>     provided
+>   tools/intel_vbt_decode: Warn if we lack the full definiton of the BDB
+>     block
+>
+>  tools/intel_vbt_decode.c | 919 ++++++++++++++++++++++++++++++++++-----
+>  tools/intel_vbt_defs.h   | 254 ++++++++---
+>  2 files changed, 1018 insertions(+), 155 deletions(-)
 
-
--- 
-Petri Latvala
-
-
-
-> +
-> +		for (unsigned int i = 0; i < (regions)->num_regions; i++)
-> +			for_each_if(((region) = &(regions)->regions[i])->region.memory_class == I915_MEMORY_CLASS_DEVICE) {
-> +				lmem_bar_size = ceil((float)(region->probed_size >> BAR_SIZE_SHIFT)/BYTE)*BYTE;
-> +				small_bar = (region->rsvd1[0] >> BAR_SIZE_SHIFT);
-> +				if (small_bar < lmem_bar_size)
-> +					bar_check = true;
-> +			}
-> +		while (lmem_bar_size >= 256) {
-> +
-> +			close(i915);
-> +
-> +			i915 = driver_load_unload(&regions, lmem_bar_size);
-> +
-> +			for (unsigned int i = 0; i < (regions)->num_regions; i++)
-> +				for_each_if(((region) = &(regions)->regions[i])->region.memory_class == I915_MEMORY_CLASS_DEVICE) {
-> +					igt_assert_f(((region->probed_size >> BAR_SIZE_SHIFT) == lmem_bar_size),
-> +							 "Failed to set bar size");
-> +					if (bar_check)
-> +						igt_assert_f((small_bar == (region->rsvd1[0] >> BAR_SIZE_SHIFT)),
-> +								 "Small bar is not set properly");
-> +					else
-> +						igt_assert_f(region->probed_size == region->rsvd1[0], "Small bar and"
-> +								" lmem bar values need to be same");
-> +			}
-> +		lmem_bar_size = lmem_bar_size >> 1;
-> +		}
-> +		igt_i915_driver_unload();
-> +	}
-> +
->  	/* Subtests should unload the module themselves if they use modparams */
->  }
-> -- 
-> 2.27.0
-> 
+--=20
+Jani Nikula, Intel Open Source Graphics Center
