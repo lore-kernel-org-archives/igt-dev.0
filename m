@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32ABA10E3BC
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 09:33:22 +0000 (UTC)
+From: Karolina Drobnik <karolina.drobnik@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 15 Jun 2022 11:32:47 +0200
+Message-Id: <20220615093247.414156-1-karolina.drobnik@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: priyanka.dandamudi@intel.com
-Date: Wed, 15 Jun 2022 08:42:18 -0000
-Message-ID: <165528253877.14602.15335286213227669149@emeril.freedesktop.org>
-References: <20220615055147.1175944-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20220615055147.1175944-1-priyanka.dandamudi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBIQVgg?=
- =?utf-8?q?add_description_to_gem=5Fclose=5Frace_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/i915: Fix ATS-M definitions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,29 +16,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Instead of using a separate "is_ats_m" flag, reuse "is_dg2" in ATS-M
+intel_device_info definition. Delete is_ats_m in intel_device_info struct
+definition and IS_ATS_M() macro, as they are no longer needed.
 
-Series: HAX add description to gem_close_race (rev3)
-URL   : https://patchwork.freedesktop.org/series/104408/
-State : failure
+Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+---
+ lib/intel_chipset.h     | 2 --
+ lib/intel_device_info.c | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-== Summary ==
-
-Applying: i915/gem_close_race: added description for test case
-Applying: HAX: don't do full run
-Using index info to reconstruct a base tree...
-M	tests/intel-ci/fast-feedback.testlist
-Falling back to patching base and 3-way merge...
-Auto-merging tests/intel-ci/fast-feedback.testlist
-CONFLICT (content): Merge conflict in tests/intel-ci/fast-feedback.testlist
-Patch failed at 0002 HAX: don't do full run
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index de4749e1..06f73211 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -84,7 +84,6 @@ struct intel_device_info {
+ 	bool is_raptorlake_s : 1;
+ 	bool is_alderlake_p : 1;
+ 	bool is_alderlake_n : 1;
+-	bool is_ats_m : 1;
+ 	const char *codename;
+ };
+ 
+@@ -191,7 +190,6 @@ void intel_check_pch(void);
+ #define IS_RAPTORLAKE_S(devid)	(intel_get_device_info(devid)->is_raptorlake_s)
+ #define IS_ALDERLAKE_P(devid)	(intel_get_device_info(devid)->is_alderlake_p)
+ #define IS_ALDERLAKE_N(devid)	(intel_get_device_info(devid)->is_alderlake_n)
+-#define IS_ATS_M(devid)	(intel_get_device_info(devid)->is_ats_m)
+ 
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+ #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 5b1da33f..bfdd9fa5 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -430,7 +430,7 @@ static const struct intel_device_info intel_alderlake_n_info = {
+ static const struct intel_device_info intel_ats_m_info = {
+ 	.graphics_ver = 12,
+ 	.display_ver = 0, /* no display support */
+-	.is_ats_m = true,
++	.is_dg2 = true,
+ 	.has_4tile = true,
+ 	.codename = "ats_m",
+ 	.has_flatccs = true,
+-- 
+2.25.1
