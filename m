@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E82A410E8B2
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 05:52:01 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: matthew.auld@intel.com, priyanka.dandamudi@intel.com,
- igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jun 2022 11:11:46 +0530
-Message-Id: <20220615054146.1175662-1-priyanka.dandamudi@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 733CC10E121
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 06:00:07 +0000 (UTC)
+Date: Wed, 15 Jun 2022 08:58:07 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <Yql071lV42jIAS6/@platvala-desk.ger.corp.intel.com>
+References: <20220613030412.7076-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] tests/i915/i915_module_load: Test resizable bar
- support
+In-Reply-To: <20220613030412.7076-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/sysfs_heartbeat_interval:
+ Avoid signal delivery race
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,108 +21,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+On Mon, Jun 13, 2022 at 05:04:12AM +0200, Zbigniew Kempczyński wrote:
+> As Petri noticed there's signal delivery race which might lead to
+> situation when two children send SIGALRM to master process not in
+> the same time. Signal from first child just awake master process
+> which reinstalls previous signal handler. Second signal is then
+> handled by default handler so we got process exit and failure.
+> Lets move signal reinstall to moment when children will just exit.
+> 
+> Allocator warning which notices there's existing ipc queue is
+> then an effect, not the reason. Unfortunately multiprocess start/stop
+> were called in the test, not in the fixture, so test failure doesn't
+> call multiprocess stop at all (and we see there's dangling queue).
+> 
+> Deeper look to client() implementation allows to remove multiprocess
+> allocator dependency. Function runs in its own separated context
+> so we don't need to arbitrate and just call intel_allocator_init()
+> to become standalone allocator.
+> 
+> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/4055
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
 
-New test named resize bar has been added which tests whether
-bar gets resized with different supported sizes.
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-Cc: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/i915/i915_module_load.c | 64 +++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
-
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index f5f98acc2..b334ef612 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -37,6 +37,9 @@
- #include "igt_sysfs.h"
- #include "igt_core.h"
- 
-+#define BAR_SIZE_SHIFT 20
-+#define BYTE 1024
-+
- IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
- 
- static void store_all(int i915)
-@@ -236,6 +239,28 @@ hda_dynamic_debug(bool enable)
- 	fclose(fp);
- }
- 
-+static int driver_load_unload(struct drm_i915_query_memory_regions **regions, uint32_t lmem_bar_size)
-+{
-+	int i915 = -1;
-+	char lmem_bar[64];
-+
-+	igt_i915_driver_unload();
-+	if (lmem_bar_size == 0)
-+		igt_assert_eq(igt_i915_driver_load(NULL), 0);
-+	else {
-+		sprintf(lmem_bar, "lmem_bar_size=%u", lmem_bar_size);
-+		igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
-+	}
-+
-+	i915 = __drm_open_driver(DRIVER_INTEL);
-+	igt_require_fd(i915);
-+	igt_require(gem_has_lmem(i915));
-+	*regions = gem_get_query_memory_regions(i915);
-+	igt_require(*regions);
-+
-+	return i915;
-+}
-+
- igt_main
- {
- 	igt_describe("Verify the basic functionality of i915 driver after it's reloaded.");
-@@ -286,5 +311,44 @@ igt_main
- 		/* inject_fault() leaves the module unloaded */
- 	}
- 
-+	igt_subtest("resize-bar") {
-+		struct drm_i915_query_memory_regions *regions;
-+		struct drm_i915_memory_region_info *region;
-+		uint32_t lmem_bar_size;
-+		uint32_t small_bar;
-+		bool bar_check = false;
-+		int i915 = -1;
-+
-+		i915 = driver_load_unload(&regions, 0);
-+
-+		for (unsigned int i = 0; i < (regions)->num_regions; i++)
-+			for_each_if(((region) = &(regions)->regions[i])->region.memory_class == I915_MEMORY_CLASS_DEVICE) {
-+				lmem_bar_size = ceil((float)(region->probed_size >> BAR_SIZE_SHIFT)/BYTE)*BYTE;
-+				small_bar = (region->rsvd1[0] >> BAR_SIZE_SHIFT);
-+				if (small_bar < lmem_bar_size)
-+					bar_check = true;
-+			}
-+		while (lmem_bar_size >= 256) {
-+
-+			close(i915);
-+
-+			i915 = driver_load_unload(&regions, lmem_bar_size);
-+
-+			for (unsigned int i = 0; i < (regions)->num_regions; i++)
-+				for_each_if(((region) = &(regions)->regions[i])->region.memory_class == I915_MEMORY_CLASS_DEVICE) {
-+					igt_assert_f(((region->probed_size >> BAR_SIZE_SHIFT) == lmem_bar_size),
-+							 "Failed to set bar size");
-+					if (bar_check)
-+						igt_assert_f((small_bar == (region->rsvd1[0] >> BAR_SIZE_SHIFT)),
-+								 "Small bar is not set properly");
-+					else
-+						igt_assert_f(region->probed_size == region->rsvd1[0], "Small bar and"
-+								" lmem bar values need to be same");
-+			}
-+		lmem_bar_size = lmem_bar_size >> 1;
-+		}
-+		igt_i915_driver_unload();
-+	}
-+
- 	/* Subtests should unload the module themselves if they use modparams */
- }
--- 
-2.27.0
+> ---
+>  tests/i915/sysfs_heartbeat_interval.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
+> index bc8d1b3c0a..8cebf6270f 100644
+> --- a/tests/i915/sysfs_heartbeat_interval.c
+> +++ b/tests/i915/sysfs_heartbeat_interval.c
+> @@ -364,8 +364,6 @@ static void __test_mixed(int i915, int engine,
+>  	 * terminate the hog leaving the good client to run.
+>  	 */
+>  
+> -	intel_allocator_multiprocess_start();
+> -
+>  	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
+>  	igt_debug("Initial %s:%u\n", ATTR, saved);
+>  	gem_quiescent_gpu(i915);
+> @@ -375,22 +373,25 @@ static void __test_mixed(int i915, int engine,
+>  
+>  	set_heartbeat(engine, heartbeat);
+>  
+> -	igt_fork(child, 1) /* good client */
+> +	igt_fork(child, 1) /* good client */ {
+> +		intel_allocator_init();
+>  		client(i915, engine, shared, good, 1);
+> -	igt_fork(child, 1) /* bad client */
+> +	}
+> +	igt_fork(child, 1) /* bad client */ {
+> +		intel_allocator_init();
+>  		client(i915, engine, shared, bad, -EIO);
+> +	}
+>  
+>  	old = signal(SIGALRM, sighandler);
+>  	sleep(duration);
+> -	signal(SIGALRM, old);
+>  
+>  	*shared = true;
+>  	igt_waitchildren();
+>  	munmap(shared, 4096);
+> +	signal(SIGALRM, old);
+>  
+>  	gem_quiescent_gpu(i915);
+>  	set_heartbeat(engine, saved);
+> -	intel_allocator_multiprocess_stop();
+>  }
+>  
+>  static void test_mixed(int i915, int engine)
+> -- 
+> 2.32.0
+> 
