@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1954101078109279828=="
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 315B410E073
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 11:20:20 +0000 (UTC)
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Date: Wed, 15 Jun 2022 11:20:17 +0000
+Message-ID: <DM6PR11MB4492BA2AA8E5F425989AA80C8DAD9@DM6PR11MB4492.namprd11.prod.outlook.com>
+References: <20220615054146.1175662-1-priyanka.dandamudi@intel.com>
+ <Yql+c50Ppwc8j0SH@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <Yql+c50Ppwc8j0SH@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Wed, 15 Jun 2022 11:18:31 -0000
-Message-ID: <165529191163.14603.8776569392523995301@emeril.freedesktop.org>
-References: <20220615095906.23688-1-swati2.sharma@intel.com>
-In-Reply-To: <20220615095906.23688-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/kms=5Fflip=5Fscaled=5Fcrc=3A_New_tests?=
+Subject: Re: [igt-dev] [PATCH] tests/i915/i915_module_load: Test resizable
+ bar support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,290 +22,163 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1954101078109279828==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/i915/kms_flip_scaled_crc: New tests
-URL   : https://patchwork.freedesktop.org/series/105148/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11759 -> IGTPW_7317
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/index.html
-
-Participating hosts (44 -> 42)
-------------------------------
-
-  Missing    (2): fi-bdw-samus bat-dg1-5 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7317 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-kbl-soraka:      [PASS][1] -> [INCOMPLETE][2] ([i915#794])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-
-  * igt@kms_busy@basic@flip:
-    - bat-adlp-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#3576]) +2 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/bat-adlp-4/igt@kms_busy@basic@flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/bat-adlp-4/igt@kms_busy@basic@flip.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - fi-tgl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#402]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-adlp-4:         [DMESG-WARN][7] ([i915#3576]) -> [PASS][8] +2 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/bat-adlp-4/igt@i915_pm_rpm@module-reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/bat-adlp-4/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-cfl-guc:         [DMESG-FAIL][9] ([i915#5334]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/fi-cfl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/fi-cfl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_timelines:
-    - {bat-dg2-9}:        [DMESG-WARN][11] ([i915#5763]) -> [PASS][12] +1 similar issue
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/bat-dg2-9/igt@i915_selftest@live@gt_timelines.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/bat-dg2-9/igt@i915_selftest@live@gt_timelines.html
-
-  * igt@kms_busy@basic@flip:
-    - {bat-adlp-6}:       [DMESG-WARN][13] ([i915#3576]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/bat-adlp-6/igt@kms_busy@basic@flip.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/bat-adlp-6/igt@kms_busy@basic@flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5885]: https://gitlab.freedesktop.org/drm/intel/issues/5885
-  [i915#794]: https://gitlab.freedesktop.org/drm/intel/issues/794
 
 
-Build changes
--------------
+> -----Original Message-----
+> From: Latvala, Petri <petri.latvala@intel.com>
+> Sent: 15 June 2022 12:09 PM
+> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
+> Cc: Auld, Matthew <matthew.auld@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: Re: [igt-dev] [PATCH] tests/i915/i915_module_load: Test resizabl=
+e bar
+> support
+>=20
+> On Wed, Jun 15, 2022 at 11:11:46AM +0530, priyanka.dandamudi@intel.com
+> wrote:
+> > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> >
+> > New test named resize bar has been added which tests whether bar gets
+> > resized with different supported sizes.
+> >
+> > Cc: Matthew Auld <matthew.auld@intel.com>
+> > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> > ---
+> >  tests/i915/i915_module_load.c | 64
+> > +++++++++++++++++++++++++++++++++++
+> >  1 file changed, 64 insertions(+)
+> >
+> > diff --git a/tests/i915/i915_module_load.c
+> > b/tests/i915/i915_module_load.c index f5f98acc2..b334ef612 100644
+> > --- a/tests/i915/i915_module_load.c
+> > +++ b/tests/i915/i915_module_load.c
+> > @@ -37,6 +37,9 @@
+> >  #include "igt_sysfs.h"
+> >  #include "igt_core.h"
+> >
+> > +#define BAR_SIZE_SHIFT 20
+> > +#define BYTE 1024
+> > +
+> >  IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
+> >
+> >  static void store_all(int i915)
+> > @@ -236,6 +239,28 @@ hda_dynamic_debug(bool enable)
+> >  	fclose(fp);
+> >  }
+> >
+> > +static int driver_load_unload(struct drm_i915_query_memory_regions
+> > +**regions, uint32_t lmem_bar_size) {
+> > +	int i915 =3D -1;
+> > +	char lmem_bar[64];
+> > +
+> > +	igt_i915_driver_unload();
+> > +	if (lmem_bar_size =3D=3D 0)
+> > +		igt_assert_eq(igt_i915_driver_load(NULL), 0);
+> > +	else {
+> > +		sprintf(lmem_bar, "lmem_bar_size=3D%u", lmem_bar_size);
+> > +		igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
+> > +	}
+> > +
+> > +	i915 =3D __drm_open_driver(DRIVER_INTEL);
+> > +	igt_require_fd(i915);
+> > +	igt_require(gem_has_lmem(i915));
+> > +	*regions =3D gem_get_query_memory_regions(i915);
+> > +	igt_require(*regions);
+> > +
+> > +	return i915;
+> > +}
+> > +
+> >  igt_main
+> >  {
+> >  	igt_describe("Verify the basic functionality of i915 driver after
+> > it's reloaded."); @@ -286,5 +311,44 @@ igt_main
+> >  		/* inject_fault() leaves the module unloaded */
+> >  	}
+> >
+> > +	igt_subtest("resize-bar") {
+> > +		struct drm_i915_query_memory_regions *regions;
+> > +		struct drm_i915_memory_region_info *region;
+> > +		uint32_t lmem_bar_size;
+> > +		uint32_t small_bar;
+> > +		bool bar_check =3D false;
+> > +		int i915 =3D -1;
+> > +
+> > +		i915 =3D driver_load_unload(&regions, 0);
+>=20
+> Before the unload, do this:
+>=20
+> i915 =3D drm_open_driver(DRIVER_INTEL);
+> igt_require(gem_has_lmem(i915);
+> close(i915);
+>=20
+[Dandamudi, Priyanka]=20
+The above work iam doing in driver_load_unload method.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6529 -> IGTPW_7317
-
-  CI-20190529: 20190529
-  CI_DRM_11759: fa66b647ce886c01bbe1e9f3017a141e90d87539 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7317: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/index.html
-  IGT_6529: b96bf5a0307fc0bdbf6c8e86872817306e102883 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-linear-to-64bpp-linear-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-linear-to-64bpp-linear-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-downscaling
-+igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-16bpp-4tile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-16bpp-4tile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-linear-to-16bpp-linear-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-linear-to-16bpp-linear-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-linear-to-32bpp-linear-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-linear-to-32bpp-linear-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-32bpp-xtile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-32bpp-xtile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-16bpp-yftile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-16bpp-yftile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-downscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/index.html
-
---===============1954101078109279828==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/kms_flip_scaled_crc: New tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105148/">https://patchwork.freedesktop.org/series/105148/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11759 -&gt; IGTPW_7317</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/index.html</p>
-<h2>Participating hosts (44 -&gt; 42)</h2>
-<p>Missing    (2): fi-bdw-samus bat-dg1-5 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7317 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/794">i915#794</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/bat-adlp-4/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/bat-adlp-4/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/bat-adlp-4/igt@i915_pm_rpm@module-reload.html">PASS</a> +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/fi-cfl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/fi-cfl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_timelines:</p>
-<ul>
-<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/bat-dg2-9/igt@i915_selftest@live@gt_timelines.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/bat-dg2-9/igt@i915_selftest@live@gt_timelines.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11759/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6529 -&gt; IGTPW_7317</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11759: fa66b647ce886c01bbe1e9f3017a141e90d87539 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7317: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7317/index.html<br />
-  IGT_6529: b96bf5a0307fc0bdbf6c8e86872817306e102883 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-linear-to-64bpp-linear-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-linear-to-64bpp-linear-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-16bpp-4tile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-16bpp-4tile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-linear-to-16bpp-linear-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-linear-to-16bpp-linear-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-linear-to-32bpp-linear-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-linear-to-32bpp-linear-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-32bpp-xtile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-32bpp-xtile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-16bpp-yftile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-16bpp-yftile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-downscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling<br />
-+igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling<br />
--igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling</p>
-
-</body>
-</html>
-
---===============1954101078109279828==--
+> That way we can avoid an unnecessary reload cycle on integrated.
+>=20
+> Which kernel version has the lmem_bar_size parameter? You might want to
+> check its existence too. gem_lmem_swapping has an example of how it's don=
+e,
+> with the param "lmem_size".
+>=20
+>=20
+> --
+> Petri Latvala
+>=20
+[Dandamudi, Priyanka]=20
+lmem_size will also allow to resize the bar eg:62MB which is not expected a=
+s 256MB is the minimum size.
+lmem_bar_size is a new modparam which is being added from the driver side t=
+o test different supported sizes.
+>=20
+>=20
+> > +
+> > +		for (unsigned int i =3D 0; i < (regions)->num_regions; i++)
+> > +			for_each_if(((region) =3D &(regions)->regions[i])-
+> >region.memory_class =3D=3D I915_MEMORY_CLASS_DEVICE) {
+> > +				lmem_bar_size =3D ceil((float)(region-
+> >probed_size >> BAR_SIZE_SHIFT)/BYTE)*BYTE;
+> > +				small_bar =3D (region->rsvd1[0] >>
+> BAR_SIZE_SHIFT);
+> > +				if (small_bar < lmem_bar_size)
+> > +					bar_check =3D true;
+> > +			}
+> > +		while (lmem_bar_size >=3D 256) {
+> > +
+> > +			close(i915);
+> > +
+> > +			i915 =3D driver_load_unload(&regions, lmem_bar_size);
+> > +
+> > +			for (unsigned int i =3D 0; i < (regions)->num_regions; i++)
+> > +				for_each_if(((region) =3D &(regions)->regions[i])-
+> >region.memory_class =3D=3D I915_MEMORY_CLASS_DEVICE) {
+> > +					igt_assert_f(((region->probed_size >>
+> BAR_SIZE_SHIFT) =3D=3D lmem_bar_size),
+> > +							 "Failed to set bar
+> size");
+> > +					if (bar_check)
+> > +						igt_assert_f((small_bar =3D=3D
+> (region->rsvd1[0] >> BAR_SIZE_SHIFT)),
+> > +								 "Small bar is
+> not set properly");
+> > +					else
+> > +						igt_assert_f(region-
+> >probed_size =3D=3D region->rsvd1[0], "Small bar and"
+> > +								" lmem bar
+> values need to be same");
+> > +			}
+> > +		lmem_bar_size =3D lmem_bar_size >> 1;
+> > +		}
+> > +		igt_i915_driver_unload();
+> > +	}
+> > +
+> >  	/* Subtests should unload the module themselves if they use
+> modparams */
+> >  }
+> > --
+> > 2.27.0
+> >
