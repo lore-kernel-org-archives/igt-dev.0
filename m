@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1324019163918762213=="
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 16 Jun 2022 15:06:35 +0100
+Message-Id: <20220616140637.559194-7-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20220616140637.559194-1-tvrtko.ursulin@linux.intel.com>
+References: <20220616140637.559194-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
-Date: Thu, 16 Jun 2022 07:16:46 -0000
-Message-ID: <165536380654.17456.16996887811549623357@emeril.freedesktop.org>
-References: <20220616063123.11029-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20220616063123.11029-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSEFYIGFk?=
- =?utf-8?q?d_description_to_gem=5Ftiled=5Fpread=5Fbasic?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 6/8] libdrmclient/intel_gpu_top: Decouple
+ hardcoded engine assumptions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,406 +16,455 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1324019163918762213==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-== Series Details ==
+Intel_gpu_top gets it's main engine configuration data via PMU probe and
+uses that for per client view as well. Furthemore code so far assumed only
+clients belonging from a single DRM card would be tracked in a single
+clients list.
 
-Series: HAX add description to gem_tiled_pread_basic
-URL   : https://patchwork.freedesktop.org/series/105203/
-State : failure
+Break this inter-dependency by moving the engine data to be per client and
+also have libdrmclient probe the engine configuration independently using
+the previously added libdrmfdinfo facilities.
 
-== Summary ==
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ lib/igt_drm_clients.c |  38 +++++++++++--
+ lib/igt_drm_clients.h |  14 ++---
+ tools/intel_gpu_top.c | 127 +++++++++++++++++++++++++++++++-----------
+ 3 files changed, 134 insertions(+), 45 deletions(-)
 
-CI Bug Log - changes from IGT_6531 -> IGTPW_7322
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_7322 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7322, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/index.html
-
-Participating hosts (41 -> 43)
-------------------------------
-
-  Additional (3): bat-atsm-1 fi-apl-guc fi-tgl-u2 
-  Missing    (1): fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7322:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@meta_test@fail-result (NEW):
-    - {bat-jsl-2}:        NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-jsl-2/igt@meta_test@fail-result.html
-    - fi-ilk-650:         NOTRUN -> [FAIL][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-ilk-650/igt@meta_test@fail-result.html
-    - fi-tgl-u2:          NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-tgl-u2/igt@meta_test@fail-result.html
-    - {bat-jsl-1}:        NOTRUN -> [FAIL][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-jsl-1/igt@meta_test@fail-result.html
-    - fi-bxt-dsi:         NOTRUN -> [FAIL][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bxt-dsi/igt@meta_test@fail-result.html
-    - {fi-jsl-1}:         NOTRUN -> [FAIL][6]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-jsl-1/igt@meta_test@fail-result.html
-    - fi-blb-e6850:       NOTRUN -> [FAIL][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-blb-e6850/igt@meta_test@fail-result.html
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][8]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bsw-n3050/igt@meta_test@fail-result.html
-    - {bat-adlp-6}:       NOTRUN -> [FAIL][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-adlp-6/igt@meta_test@fail-result.html
-    - fi-skl-6600u:       NOTRUN -> [FAIL][10]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-skl-6600u/igt@meta_test@fail-result.html
-    - fi-glk-dsi:         NOTRUN -> [FAIL][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-glk-dsi/igt@meta_test@fail-result.html
-    - {fi-ehl-2}:         NOTRUN -> [FAIL][12]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-ehl-2/igt@meta_test@fail-result.html
-    - fi-apl-guc:         NOTRUN -> [FAIL][13]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-apl-guc/igt@meta_test@fail-result.html
-    - bat-dg1-5:          NOTRUN -> [FAIL][14]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-dg1-5/igt@meta_test@fail-result.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][15]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-pnv-d510/igt@meta_test@fail-result.html
-    - fi-snb-2520m:       NOTRUN -> [FAIL][16]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-snb-2520m/igt@meta_test@fail-result.html
-    - fi-glk-j4005:       NOTRUN -> [FAIL][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-glk-j4005/igt@meta_test@fail-result.html
-    - fi-rkl-guc:         NOTRUN -> [FAIL][18]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-rkl-guc/igt@meta_test@fail-result.html
-    - fi-skl-guc:         NOTRUN -> [FAIL][19]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-skl-guc/igt@meta_test@fail-result.html
-    - fi-kbl-soraka:      NOTRUN -> [FAIL][20]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-kbl-soraka/igt@meta_test@fail-result.html
-    - bat-dg1-6:          NOTRUN -> [FAIL][21]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-dg1-6/igt@meta_test@fail-result.html
-    - fi-kbl-7567u:       NOTRUN -> [FAIL][22]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-kbl-7567u/igt@meta_test@fail-result.html
-    - fi-cfl-8700k:       NOTRUN -> [FAIL][23]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-cfl-8700k/igt@meta_test@fail-result.html
-    - {fi-tgl-dsi}:       NOTRUN -> [FAIL][24]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-tgl-dsi/igt@meta_test@fail-result.html
-    - fi-bsw-nick:        NOTRUN -> [FAIL][25]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bsw-nick/igt@meta_test@fail-result.html
-    - fi-rkl-11600:       NOTRUN -> [FAIL][26]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-rkl-11600/igt@meta_test@fail-result.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][27]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bdw-gvtdvm/igt@meta_test@fail-result.html
-    - fi-bsw-kefka:       NOTRUN -> [FAIL][28]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bsw-kefka/igt@meta_test@fail-result.html
-    - fi-adl-ddr5:        NOTRUN -> [FAIL][29]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-adl-ddr5/igt@meta_test@fail-result.html
-    - fi-cfl-guc:         NOTRUN -> [FAIL][30]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-cfl-guc/igt@meta_test@fail-result.html
-    - {bat-dg2-9}:        NOTRUN -> [FAIL][31]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-dg2-9/igt@meta_test@fail-result.html
-    - fi-skl-6700k2:      NOTRUN -> [FAIL][32]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-skl-6700k2/igt@meta_test@fail-result.html
-    - fi-cfl-8109u:       NOTRUN -> [FAIL][33]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-cfl-8109u/igt@meta_test@fail-result.html
-    - bat-adlp-4:         NOTRUN -> [FAIL][34]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-adlp-4/igt@meta_test@fail-result.html
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][35]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-kbl-8809g/igt@meta_test@fail-result.html
-    - fi-ivb-3770:        NOTRUN -> [FAIL][36]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-ivb-3770/igt@meta_test@fail-result.html
-    - fi-elk-e7500:       NOTRUN -> [FAIL][37]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-elk-e7500/igt@meta_test@fail-result.html
-    - {bat-dg2-8}:        NOTRUN -> [FAIL][38]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-dg2-8/igt@meta_test@fail-result.html
-    - fi-kbl-guc:         NOTRUN -> [FAIL][39]
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-kbl-guc/igt@meta_test@fail-result.html
-    - fi-snb-2600:        NOTRUN -> [FAIL][40]
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-snb-2600/igt@meta_test@fail-result.html
-
-  * igt@runner@aborted:
-    - fi-hsw-g3258:       NOTRUN -> [FAIL][41]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-hsw-g3258/igt@runner@aborted.html
-
-  
-New tests
----------
-
-  New tests have been introduced between IGT_6531 and IGTPW_7322:
-
-### New IGT tests (1) ###
-
-  * igt@meta_test@fail-result:
-    - Statuses : 40 fail(s)
-    - Exec time: [0.00, 0.24] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7322 that come from known issues:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        [FAIL][42] ([i915#4312] / [i915#5594]) -> [FAIL][43] ([i915#5594])
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6531/fi-hsw-4770/igt@runner@aborted.html
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-hsw-4770/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
-  [i915#6244]: https://gitlab.freedesktop.org/drm/intel/issues/6244
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6531 -> IGTPW_7322
-
-  CI-20190529: 20190529
-  CI_DRM_11763: 28dae5c6593607d377d2a2b1473b041a300e7e78 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7322: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/index.html
-  IGT_6531: 6a784f0136ea53e044f6ec866bc9837d839869d5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/index.html
-
---===============1324019163918762213==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>HAX add description to gem_tiled_pread_basic</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105203/">https://patchwork.freedesktop.org/series/105203/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6531 -&gt; IGTPW_7322</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7322 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7322, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/index.html</p>
-<h2>Participating hosts (41 -&gt; 43)</h2>
-<p>Additional (3): bat-atsm-1 fi-apl-guc fi-tgl-u2 <br />
-  Missing    (1): fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7322:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@meta_test@fail-result (NEW):</p>
-<ul>
-<li>
-<p>{bat-jsl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-jsl-2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-ilk-650/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-tgl-u2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-jsl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-jsl-1/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bxt-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bxt-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-jsl-1/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-blb-e6850/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bsw-n3050/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-adlp-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-adlp-6/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-skl-6600u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-glk-dsi:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-glk-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-ehl-2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-apl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-dg1-5/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-pnv-d510/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-snb-2520m/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-glk-j4005/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-rkl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-skl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-kbl-soraka/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-dg1-6/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-kbl-7567u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-cfl-8700k/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-tgl-dsi/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bsw-nick/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-rkl-11600/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bdw-gvtdvm/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-bsw-kefka/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-adl-ddr5:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-adl-ddr5/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-cfl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-dg2-9}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-dg2-9/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-skl-6700k2/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-cfl-8109u/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-adlp-4/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-kbl-8809g/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-ivb-3770/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-elk-e7500/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/bat-dg2-8/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-kbl-guc/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-snb-2600/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between IGT_6531 and IGTPW_7322:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@meta_test@fail-result:<ul>
-<li>Statuses : 40 fail(s)</li>
-<li>Exec time: [0.00, 0.24] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7322 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6531/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6531 -&gt; IGTPW_7322</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11763: 28dae5c6593607d377d2a2b1473b041a300e7e78 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7322: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7322/index.html<br />
-  IGT_6531: 6a784f0136ea53e044f6ec866bc9837d839869d5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1324019163918762213==--
+diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
+index e11c8b18188f..d507c07fec87 100644
+--- a/lib/igt_drm_clients.c
++++ b/lib/igt_drm_clients.c
+@@ -97,7 +97,7 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
+ 	c->last_runtime = 0;
+ 	c->total_runtime = 0;
+ 
+-	for (i = 0; i < c->clients->num_classes; i++) {
++	for (i = 0; i <= c->engines->max_engine_id; i++) {
+ 		assert(i < ARRAY_SIZE(info->busy));
+ 
+ 		if (info->busy[i] < c->last[i])
+@@ -119,6 +119,7 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+ 		   unsigned int pid, char *name, unsigned int drm_minor)
+ {
+ 	struct igt_drm_client *c;
++	unsigned int i;
+ 
+ 	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE,
+ 				     drm_minor, info->id));
+@@ -144,8 +145,28 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+ 	c->id = info->id;
+ 	c->drm_minor = drm_minor;
+ 	c->clients = clients;
+-	c->val = calloc(clients->num_classes, sizeof(c->val));
+-	c->last = calloc(clients->num_classes, sizeof(c->last));
++	c->engines = malloc(sizeof(*c->engines));
++	assert(c->engines);
++	memset(c->engines, 0, sizeof(*c->engines));
++	c->engines->capacity = calloc(info->last_engine_index + 1,
++				      sizeof(*c->engines->capacity));
++	assert(c->engines->capacity);
++	c->engines->names = calloc(info->last_engine_index + 1,
++				   sizeof(*c->engines->names));
++	assert(c->engines->names);
++
++	for (i = 0; i <= info->last_engine_index; i++) {
++		if (!info->capacity[i])
++			continue;
++
++		c->engines->capacity[i] = info->capacity[i];
++		c->engines->names[i] = strdup(info->names[i]);
++		assert(c->engines->names[i]);
++		c->engines->num_engines++;
++		c->engines->max_engine_id = i;
++	}
++	c->val = calloc(c->engines->max_engine_id + 1, sizeof(c->val));
++	c->last = calloc(c->engines->max_engine_id + 1, sizeof(c->last));
+ 	assert(c->val && c->last);
+ 
+ 	igt_drm_client_update(c, pid, name, info);
+@@ -154,6 +175,15 @@ igt_drm_client_add(struct igt_drm_clients *clients,
+ static
+ void igt_drm_client_free(struct igt_drm_client *c, bool clear)
+ {
++	unsigned int i;
++
++	if (c->engines) {
++		for (i = 0; i <= c->engines->max_engine_id; i++)
++			free(c->engines->names[i]);
++		free(c->engines->capacity);
++		free(c->engines->names);
++	}
++	free(c->engines);
+ 	free(c->val);
+ 	free(c->last);
+ 
+@@ -323,7 +353,7 @@ static bool is_drm_fd(int fd_dir, const char *name, unsigned int *minor)
+  *
+  * If @name_map is not provided engine names will be auto-detected (this is
+  * less performant) and indices will correspond with auto-detected names as
+- * listed int clients->engine_class[].
++ * listed int clients->engines->names[].
+  */
+ struct igt_drm_clients *
+ igt_drm_clients_scan(struct igt_drm_clients *clients,
+diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+index ffa219c9c9fd..0a903b431eaa 100644
+--- a/lib/igt_drm_clients.h
++++ b/lib/igt_drm_clients.h
+@@ -31,10 +31,12 @@ enum igt_drm_client_status {
+ 	IGT_DRM_CLIENT_PROBE
+ };
+ 
+-struct igt_drm_client_engine_class {
+-	unsigned int engine_class;
+-	const char *name;
+-	unsigned int num_engines;
++struct igt_drm_client_engines {
++	unsigned int num_engines; /* Number of discovered active engines. */
++	unsigned int max_engine_id; /* Largest engine index discovered.
++				       (Can differ from num_engines - 1 when using the engine map facility.) */
++	unsigned int *capacity; /* Array of engine capacities as parsed from fdinfo. */
++	char **names; /* Array of engine names, either auto-detected or from the passed in engine map. */
+ };
+ 
+ struct igt_drm_clients;
+@@ -43,6 +45,7 @@ struct igt_drm_client {
+ 	struct igt_drm_clients *clients; /* Owning list. */
+ 
+ 	enum igt_drm_client_status status;
++	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
+ 	unsigned int id; /* DRM client id from fdinfo. */
+ 	unsigned int drm_minor; /* DRM minor of this client. */
+ 	unsigned int pid; /* PID which has this DRM fd open. */
+@@ -59,9 +62,6 @@ struct igt_drm_clients {
+ 	unsigned int num_clients;
+ 	unsigned int active_clients;
+ 
+-	unsigned int num_classes;
+-	struct igt_drm_client_engine_class *engine_class;
+-
+ 	void *private_data;
+ 
+ 	struct igt_drm_client *client; /* Must be last. */
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 38147ee82b6c..e92a7fb69b48 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -66,6 +66,12 @@ struct pmu_counter {
+ 	bool present;
+ };
+ 
++struct engine_class {
++	unsigned int engine_class;
++	const char *name;
++	unsigned int num_engines;
++};
++
+ struct engine {
+ 	const char *name;
+ 	char *display_name;
+@@ -84,7 +90,7 @@ struct engine {
+ struct engines {
+ 	unsigned int num_engines;
+ 	unsigned int num_classes;
+-	struct igt_drm_client_engine_class *class;
++	struct engine_class *class;
+ 	unsigned int num_counters;
+ 	DIR *root;
+ 	int fd;
+@@ -116,6 +122,11 @@ struct engines {
+ 
+ };
+ 
++struct intel_clients {
++	const char *pci_slot;
++	struct igt_drm_client_engines classes;
++};
++
+ static struct termios termios_orig;
+ 
+ __attribute__((format(scanf,3,4)))
+@@ -763,9 +774,8 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
+ 	ac = calloc(clients->num_clients, sizeof(*c));
+ 	assert(ac);
+ 
+-	aggregated->num_classes = clients->num_classes;
+-	aggregated->engine_class = clients->engine_class;
+ 	aggregated->private_data = clients->private_data;
++
+ 	aggregated->client = ac;
+ 
+ 	igt_for_each_drm_client(clients, c, tmp) {
+@@ -786,7 +796,8 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
+ 			ac->pid = c->pid;
+ 			strcpy(ac->name, c->name);
+ 			strcpy(ac->print_name, c->print_name);
+-			ac->val = calloc(clients->num_classes,
++			ac->engines = c->engines;
++			ac->val = calloc(c->engines->max_engine_id + 1,
+ 					 sizeof(ac->val[0]));
+ 			assert(ac->val);
+ 			ac->samples = 1;
+@@ -801,7 +812,7 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
+ 		ac->total_runtime += c->total_runtime;
+ 		ac->last_runtime += c->last_runtime;
+ 
+-		for (i = 0; i < clients->num_classes; i++)
++		for (i = 0; i <= c->engines->max_engine_id; i++)
+ 			ac->val[i] += c->val[i];
+ 	}
+ 
+@@ -822,7 +833,7 @@ static void free_display_clients(struct igt_drm_clients *clients)
+ 	/*
+ 	 * Don't call igt_drm_clients_free or igt_drm_client_free since
+ 	 * "display" clients are not proper clients and have un-initialized
+-	 * fields which we don't want the library to try and free.
++	 * or borrowed fields which we don't want the library to try and free.
+ 	 */
+ 	igt_for_each_drm_client(clients, c, tmp)
+ 		free(c->val);
+@@ -1533,15 +1544,15 @@ print_engines_footer(struct engines *engines, double t,
+ 
+ static int class_cmp(const void *_a, const void *_b)
+ {
+-	const struct igt_drm_client_engine_class *a = _a;
+-	const struct igt_drm_client_engine_class *b = _b;
++	const struct engine_class *a = _a;
++	const struct engine_class *b = _b;
+ 
+ 	return a->engine_class - b->engine_class;
+ }
+ 
+ static void init_engine_classes(struct engines *engines)
+ {
+-	struct igt_drm_client_engine_class *classes;
++	struct engine_class *classes;
+ 	unsigned int i, num;
+ 	int max = -1;
+ 
+@@ -1713,6 +1724,8 @@ static int
+ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 		     int con_w, int con_h, int *class_w)
+ {
++	struct intel_clients *iclients = clients->private_data;
++
+ 	if (output_mode == INTERACTIVE) {
+ 		const char *pidname = "   PID              NAME ";
+ 		unsigned int num_active = 0;
+@@ -1727,25 +1740,25 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 		if (lines++ >= con_h || len >= con_w)
+ 			return lines;
+ 
+-		if (clients->num_classes) {
++		if (iclients->classes.num_engines) {
+ 			unsigned int i;
+ 			int width;
+ 
+-			for (i = 0; i < clients->num_classes; i++) {
+-				if (clients->engine_class[i].num_engines)
++			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
++				if (iclients->classes.capacity[i])
+ 					num_active++;
+ 			}
+ 
+ 			*class_w = width = (con_w - len) / num_active;
+ 
+-			for (i = 0; i < clients->num_classes; i++) {
+-				const char *name = clients->engine_class[i].name;
++			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
++				const char *name = iclients->classes.names[i];
+ 				int name_len = strlen(name);
+ 				int pad = (width - name_len) / 2;
+ 				int spaces = width - pad - name_len;
+ 
+-				if (!clients->engine_class[i].num_engines)
+-					continue; /* Assert in the ideal world. */
++				if (!iclients->classes.capacity[i])
++					continue;
+ 
+ 				if (pad < 0 || spaces < 0)
+ 					continue;
+@@ -1760,7 +1773,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
+ 		n_spaces(con_w - len);
+ 		printf("\033[0m\n");
+ 	} else {
+-		if (clients->num_classes)
++		if (iclients->classes.num_engines)
+ 			pops->open_struct("clients");
+ 	}
+ 
+@@ -1775,6 +1788,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 	     int con_w, int con_h, unsigned int period_us, int *class_w)
+ {
+ 	struct igt_drm_clients *clients = c->clients;
++	struct intel_clients *iclients = clients->private_data;
+ 	unsigned int i;
+ 
+ 	if (output_mode == INTERACTIVE) {
+@@ -1785,14 +1799,16 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 
+ 		printf("%6u %17s ", c->pid, c->print_name);
+ 
+-		for (i = 0; c->samples > 1 && i < clients->num_classes; i++) {
++		for (i = 0;
++		     c->samples > 1 && i <= iclients->classes.max_engine_id;
++		     i++) {
+ 			double pct;
+ 
+-			if (!clients->engine_class[i].num_engines)
+-				continue; /* Assert in the ideal world. */
++			if (!iclients->classes.capacity[i])
++				continue;
+ 
+ 			pct = (double)c->val[i] / period_us / 1e3 * 100 /
+-			      clients->engine_class[i].num_engines;
++			      iclients->classes.capacity[i];
+ 
+ 			/*
+ 			 * Guard against possible time-drift between sampling
+@@ -1820,11 +1836,11 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
+ 		if (c->samples > 1) {
+ 			pops->open_struct("engine-classes");
+ 
+-			for (i = 0; i < clients->num_classes; i++) {
++			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
+ 				double pct;
+ 
+ 				snprintf(buf, sizeof(buf), "%s",
+-					clients->engine_class[i].name);
++					 iclients->classes.names[i]);
+ 				pops->open_struct(buf);
+ 
+ 				pct = (double)c->val[i] / period_us / 1e3 * 100;
+@@ -1853,7 +1869,9 @@ print_clients_footer(struct igt_drm_clients *clients, double t,
+ 		if (lines++ < con_h)
+ 			printf("\n");
+ 	} else {
+-		if (clients->num_classes)
++		struct intel_clients *iclients = clients->private_data;
++
++		if (iclients->classes.num_engines)
+ 			pops->close_struct();
+ 	}
+ 
+@@ -2070,14 +2088,54 @@ static void show_help_screen(void)
+ static bool client_match(const struct igt_drm_clients *clients,
+ 			 const struct drm_client_fdinfo *info)
+ {
++	struct intel_clients *iclients = clients->private_data;
++
+ 	if (strcmp(info->driver, "i915"))
+ 		return false;
+-	if (strcmp(info->pdev, clients->private_data))
++	if (strcmp(info->pdev, iclients->pci_slot))
+ 		return false;
+ 
+ 	return true;
+ }
+ 
++static void
++intel_init_clients(struct intel_clients *iclients,
++		   const struct igt_device_card *card, struct engines *engines)
++{
++	unsigned int i;
++
++	iclients->pci_slot = strdup(card->pci_slot_name[0] ?
++				    card->pci_slot_name : IGPU_PCI);
++	assert(iclients->pci_slot);
++
++	iclients->classes.num_engines = engines->num_classes;
++	iclients->classes.max_engine_id = engines->num_classes - 1;
++
++	iclients->classes.capacity = calloc(engines->num_classes,
++					    sizeof(*iclients->classes.capacity));
++	assert(iclients->classes.capacity);
++	iclients->classes.names = calloc(engines->num_classes,
++					 sizeof(*iclients->classes.names));
++	assert(iclients->classes.names);
++
++	for (i = 0; i < engines->num_classes; i++) {
++		if (!engines->class[i].num_engines)
++			continue;
++
++		iclients->classes.num_engines++;
++		iclients->classes.max_engine_id = i;
++		iclients->classes.capacity[i] = engines->class[i].num_engines;
++		iclients->classes.names[i] = strdup(engines->class[i].name);
++	}
++}
++
++static void intel_free_clients(struct intel_clients *iclients)
++{
++	free((void *)iclients->pci_slot);
++	free(iclients->classes.capacity);
++	free(iclients->classes.names);
++}
++
+ int main(int argc, char **argv)
+ {
+ 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+@@ -2089,6 +2147,7 @@ int main(int argc, char **argv)
+ 		"video-enhance",
+ 		"compute",
+ 	};
++	struct intel_clients iclients;
+ 	int con_w = -1, con_h = -1;
+ 	char *output_path = NULL;
+ 	struct engines *engines;
+@@ -2199,6 +2258,8 @@ int main(int argc, char **argv)
+ 	else
+ 		pmu_device = strdup("i915");
+ 
++	codename = igt_device_get_pretty_name(&card, false);
++
+ 	engines = discover_engines(pmu_device);
+ 	if (!engines) {
+ 		fprintf(stderr,
+@@ -2227,20 +2288,16 @@ int main(int argc, char **argv)
+ 
+ 	ret = EXIT_SUCCESS;
+ 
+-	if (has_drm_fdinfo(&card))
+-		clients = igt_drm_clients_init(strdup(card.pci_slot_name[0] ?
+-						      card.pci_slot_name :
+-						      IGPU_PCI));
+ 	init_engine_classes(engines);
+-	if (clients) {
+-		clients->num_classes = engines->num_classes;
+-		clients->engine_class = engines->class;
++
++	if (has_drm_fdinfo(&card)) {
++		intel_init_clients(&iclients, &card, engines);
++		clients = igt_drm_clients_init(&iclients);
+ 	}
+ 
+ 	pmu_sample(engines);
+ 	igt_drm_clients_scan(clients, client_match, engine_map,
+ 			     ARRAY_SIZE(engine_map));
+-	codename = igt_device_get_pretty_name(&card, false);
+ 
+ 	while (!stop_top) {
+ 		struct igt_drm_clients *disp_clients;
+@@ -2332,8 +2389,10 @@ int main(int argc, char **argv)
+ 			usleep(period_us);
+ 	}
+ 
+-	if (clients)
++	if (clients) {
+ 		igt_drm_clients_free(clients);
++		intel_free_clients(&iclients);
++	}
+ 
+ 	free(codename);
+ err:
+-- 
+2.34.1
