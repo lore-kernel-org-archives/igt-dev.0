@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A04A411A4F6
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 12:38:29 +0000 (UTC)
-Date: Thu, 16 Jun 2022 15:36:30 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: priyanka.dandamudi@intel.com
-Message-ID: <YqsjzpDSJH1FD600@platvala-desk.ger.corp.intel.com>
-References: <20220616120558.1190406-1-priyanka.dandamudi@intel.com>
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com
+ [IPv6:2a00:1450:4864:20::42d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09B2F113284
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 12:59:05 +0000 (UTC)
+Received: by mail-wr1-x42d.google.com with SMTP id u8so1758262wrm.13
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 05:59:04 -0700 (PDT)
+Message-ID: <74265f0b-82e9-fb68-74ae-f01c0426b770@gmail.com>
+Date: Thu, 16 Jun 2022 15:58:56 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220616120558.1190406-1-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/i915/i915_module_load: Test resizable
- bar support
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220615095906.23688-1-swati2.sharma@intel.com>
+ <20220615095906.23688-2-swati2.sharma@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20220615095906.23688-2-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_flip_scaled_crc:
+ Convert tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,159 +25,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 16, 2022 at 05:35:58PM +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+On 15.6.2022 12.59, Swati Sharma wrote:
+> Covert the existing subtests to dynamic subtests at pipe/output level.
 > 
-> New test named resize bar has been added which tests whether
-> bar gets resized with different supported sizes.
-> 
-> v2: Added code to check for bad bar sizes.
-> Modified code to check for support of lmem_bar_size modparam.(Petri)
-> 
-> Note:Test gets executed when
-> 1. modparam lmem_bar_size gets added.
-> 2. small bar bits gets enabled.
-> 
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/i915/i915_module_load.c | 89 +++++++++++++++++++++++++++++++++++
->  1 file changed, 89 insertions(+)
+>   tests/i915/kms_flip_scaled_crc.c | 69 ++++++++------------------------
+>   1 file changed, 16 insertions(+), 53 deletions(-)
 > 
-> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-> index f5f98acc2..5a653711b 100644
-> --- a/tests/i915/i915_module_load.c
-> +++ b/tests/i915/i915_module_load.c
-> @@ -31,12 +31,17 @@
->  #include <fcntl.h>
->  
->  #include "i915/gem_create.h"
-> +#include "i915/gem.h"
->  #include "igt_debugfs.h"
->  #include "igt_aux.h"
->  #include "igt_kmod.h"
->  #include "igt_sysfs.h"
->  #include "igt_core.h"
->  
-> +#define BAR_SIZE_SHIFT 20
-> +#define MIN_BAR_SIZE 256
-> +#define BYTE 1024
-> +
->  IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
->  
->  static void store_all(int i915)
-> @@ -236,6 +241,48 @@ hda_dynamic_debug(bool enable)
->  	fclose(fp);
->  }
->  
-> +static uint32_t  driver_load_unload(uint32_t lmem_bar_size, bool check_support)
-> +{
-> +	struct drm_i915_query_memory_regions *regions;
-> +	struct drm_i915_memory_region_info *region;
-> +	int i915 = -1;
-> +	char lmem_bar[64];
-> +
-> +	igt_i915_driver_unload();
-> +	if (lmem_bar_size == 0)
-> +		igt_assert_eq(igt_i915_driver_load(NULL), 0);
-> +	else {
-> +		sprintf(lmem_bar, "lmem_bar_size=%u", lmem_bar_size);
-> +		igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
-> +	}
-> +
-> +	i915 = __drm_open_driver(DRIVER_INTEL);
-> +	igt_require_fd(i915);
-> +	igt_require_gem(i915);
-> +	igt_require(gem_has_lmem(i915));
-> +
-> +	if (check_support) {
-> +		char *tmp;
-> +
-> +		tmp = __igt_params_get(i915, "lmem_bar_size");
-> +		if (!tmp)
-> +			igt_skip("lmem_bar_size modparam not supported on this kernel."
-> +					"Skipping the test.");
-> +		free(tmp);
-> +	}
-> +
-> +	regions = gem_get_query_memory_regions(i915);
-> +	igt_require(regions);
-> +
-> +	for (unsigned int i = 0; i < (regions)->num_regions; i++)
-> +		for_each_if(((region) = &(regions)->regions[i])->region.memory_class ==
-> +				I915_MEMORY_CLASS_DEVICE)
-> +			lmem_bar_size = (region->rsvd1[0] >> BAR_SIZE_SHIFT);
-> +	close(i915);
-> +
-> +	return lmem_bar_size;
-> +}
-> +
->  igt_main
->  {
->  	igt_describe("Verify the basic functionality of i915 driver after it's reloaded.");
-> @@ -285,6 +332,48 @@ igt_main
->  
->  		/* inject_fault() leaves the module unloaded */
->  	}
-> +	igt_subtest("resize-bar") {
-> +		uint32_t result_bar_size;
-> +		uint32_t lmem_bar_size;
-> +		int i915 = -1;
-> +
-> +		if (igt_kmod_is_loaded("i915")) {
-> +			i915 = __drm_open_driver(DRIVER_INTEL);
-> +			igt_require_fd(i915);
-> +			igt_require_gem(i915);
-> +			igt_require(gem_has_lmem(i915));
-> +			close(i915);
-> +		}
-> +
-> +		/* Test for lmem_bar_size modparam support */
-> +		lmem_bar_size = driver_load_unload(MIN_BAR_SIZE, true);
-> +		igt_assert_eq(lmem_bar_size, MIN_BAR_SIZE);
-> +
-> +		lmem_bar_size = driver_load_unload(0, false);
-> +
-> +		lmem_bar_size = ceil((float)(lmem_bar_size)/BYTE)*BYTE;
-> +
-> +		igt_skip_on_f(lmem_bar_size == MIN_BAR_SIZE, "Bar is already set to minimum size.");
-> +
-> +		while (lmem_bar_size > MIN_BAR_SIZE) {
-> +			lmem_bar_size = lmem_bar_size >> 1;
-> +
-> +			result_bar_size = driver_load_unload(lmem_bar_size, false);
-> +
-> +			igt_assert_f(lmem_bar_size == result_bar_size, "Bar couldn't be resized.");
-> +		}
-> +
-> +		/* Test with unsupported sizes */
-> +		lmem_bar_size = 80;
-> +		result_bar_size = driver_load_unload(lmem_bar_size, false);
-> +		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.");
-> +
-> +		lmem_bar_size = 16400;
-> +		result_bar_size = driver_load_unload(lmem_bar_size, false);
-> +		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.");
+> diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+> index 9740715f..6cf3a64b 100644
+> --- a/tests/i915/kms_flip_scaled_crc.c
+> +++ b/tests/i915/kms_flip_scaled_crc.c
+> @@ -163,8 +163,6 @@ const struct {
+>   	},
+>   };
+>   
+> -enum subrval {CONNECTORFAIL, CONNECTORSUCCESS, TESTSKIP, NOREQUESTEDFORMATONPIPE};
+> -
+>   static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+>   		     uint32_t height, uint64_t format, uint64_t modifier)
+>   {
+> @@ -220,8 +218,8 @@ static void clear_lut(data_t *data, enum pipe pipe)
+>   	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
+>   }
+>   
+> -static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+> -					enum pipe pipe, igt_output_t *output)
+> +static void test_flip_to_scaled(data_t *data, uint32_t index,
+> +				enum pipe pipe, igt_output_t *output)
+>   {
+>   	igt_plane_t *primary;
+>   	igt_crc_t small_crc, big_crc;
+> @@ -257,11 +255,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+>   	igt_output_set_pipe(output, pipe);
+>   
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> -	if (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
+> +	igt_skip_on_f (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
+>   				      data->small_fb.modifier) ||
+> -	    !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
+> -				      data->big_fb.modifier))
+> -		return NOREQUESTEDFORMATONPIPE;
+> +		       !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
+> +				      data->big_fb.modifier), "No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
+>   
+>   	set_lut(data, pipe);
+>   	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+> @@ -295,20 +292,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+>   	igt_plane_set_size(primary, data->attemptmodewidth,
+>   			   data->attemptmodeheight);
+>   	ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	switch (ret) {
+> -	case -ERANGE:
+> -		igt_debug("Platform scaling limits exceeded, skipping.\n");
+> -		return TESTSKIP;
+> -	case -EINVAL:
+> -		if (!modetoset) {
+> -			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+> +	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
+> +	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+>   				  data->attemptmodeheight);
+> -			return CONNECTORFAIL;
+> -		}
+> -		/* fallthrough */
+> -	default:
+> -		igt_assert_eq(ret, 0);
+> -	}
+> +	igt_assert_eq(ret, 0);
+>   
+>   	igt_pipe_crc_start(data->pipe_crc);
+>   	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
+> @@ -319,21 +306,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+>   	ret = igt_display_try_commit_atomic(&data->display,
+>   					    DRM_MODE_ATOMIC_ALLOW_MODESET  |
+>   					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
+> -
+> -	switch (ret) {
+> -	case -ERANGE:
+> -		igt_debug("Platform scaling limits exceeded, skipping.\n");
+> -		return TESTSKIP;
+> -	case -EINVAL:
+> -		if (!modetoset) {
+> -			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+> +	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
+> +	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+>   				  data->attemptmodeheight);
+> -			return CONNECTORFAIL;
+> -		}
+> -		/* fallthrough */
+> -	default:
+> -		igt_assert_eq(ret, 0);
+> -	}
+> +	igt_assert_eq(ret, 0);
+>   
+>   	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+>   
+> @@ -349,8 +325,6 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+>   	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_plane_set_fb(primary, NULL);
+>   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> -
+> -	return CONNECTORSUCCESS;
+>   }
+>   
+>   igt_main
+> @@ -379,28 +353,17 @@ igt_main
+>   
+>   	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+>   		igt_describe(flip_scenario_test[index].describe);
+> -		igt_subtest(flip_scenario_test[index].name) {
+> -			int validtests = 0;
+> +		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
+>   			free_fbs(&data);
+> -			for_each_pipe_static(pipe) {
+> -				enum subrval rval = CONNECTORSUCCESS;
+> +			for_each_pipe(&data.display, pipe) {
+>   				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> -					rval = test_flip_to_scaled(&data, index, pipe, output);
+> -
+> -					igt_require(rval != TESTSKIP);
+> -
+> -					// break out to test next pipe
+> -					if (rval == CONNECTORSUCCESS) {
+> -						validtests++;
+> -						break;
 
-All these assert and skip messages need to end in \n
+This above part with CONNECTORSUCCESS make it so once test has been run 
+successfully on chosen pipe this pipe will not be tested again as this 
+test is testing pipe feature. I don't think this need to be run 
+separately for each connector using all pipes.
 
-
--- 
-Petri Latvala
-
-
-
+> -					}
+> +					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+> +						test_flip_to_scaled(&data, index, pipe, output);
+>   				}
+> -				if (rval == NOREQUESTEDFORMATONPIPE)
+> -					igt_debug("No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
+>   			}
+> -			igt_require_f(validtests > 0, "No valid pipe/connector/format/mod combination found\n");
+>   		}
+>   	}
 > +
-> +		igt_i915_driver_unload();
-> +	}
->  
->  	/* Subtests should unload the module themselves if they use modparams */
->  }
-> -- 
-> 2.27.0
-> 
+>   	igt_fixture {
+>   		free_fbs(&data);
+>   		if (data.pipe_crc) {
