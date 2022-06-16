@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3306490331647003312=="
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com
+ [IPv6:2a00:1450:4864:20::42a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81C18112F01
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 14:46:28 +0000 (UTC)
+Received: by mail-wr1-x42a.google.com with SMTP id x17so2176428wrg.6
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 07:46:28 -0700 (PDT)
+Message-ID: <8719b7e7-7ff6-bfb2-3f2f-331388807556@gmail.com>
+Date: Thu, 16 Jun 2022 17:46:20 +0300
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
-Date: Thu, 16 Jun 2022 14:27:34 -0000
-Message-ID: <165538965431.17456.4690062598331623605@emeril.freedesktop.org>
-References: <20220616133203.278584-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20220616133203.278584-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?drm=5Ffdinfo=3A_Test_virtual_engines?=
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220615095906.23688-1-swati2.sharma@intel.com>
+ <20220615095906.23688-3-swati2.sharma@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20220615095906.23688-3-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/kms_flip_scaled_crc: Add
+ new tests covering modifiers and pixel-formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,256 +25,389 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3306490331647003312==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/drm_fdinfo: Test virtual engines
-URL   : https://patchwork.freedesktop.org/series/105227/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_11767 -> IGTPW_7326
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/index.html
-
-Participating hosts (42 -> 43)
-------------------------------
-
-  Additional (2): bat-dg2-9 bat-atsm-1 
-  Missing    (1): fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7326:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@core_hotunplug@unbind-rebind:
-    - {bat-jsl-2}:        [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/bat-jsl-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/bat-jsl-2/igt@core_hotunplug@unbind-rebind.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7326 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_busy@basic@flip:
-    - bat-adlp-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#3576]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/bat-adlp-4/igt@kms_busy@basic@flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/bat-adlp-4/igt@kms_busy@basic@flip.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - fi-tgl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#402]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {fi-ehl-2}:         [DMESG-WARN][7] ([i915#5122]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:
-    - bat-adlp-4:         [DMESG-WARN][9] ([i915#3576]) -> [PASS][10] +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
-  [i915#5174]: https://gitlab.freedesktop.org/drm/intel/issues/5174
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5885]: https://gitlab.freedesktop.org/drm/intel/issues/5885
-  [i915#6227]: https://gitlab.freedesktop.org/drm/intel/issues/6227
-  [i915#6244]: https://gitlab.freedesktop.org/drm/intel/issues/6244
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6533 -> IGTPW_7326
-
-  CI-20190529: 20190529
-  CI_DRM_11767: 822a8442835012ce405080cb40f6317ef1e854ac @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7326: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/index.html
-  IGT_6533: 6b5107d91827962808441db6b98e478aa9e67bdb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@drm_fdinfo@virtual-busy
-+igt@drm_fdinfo@virtual-busy-all
-+igt@drm_fdinfo@virtual-busy-hang
-+igt@drm_fdinfo@virtual-busy-hang-all
-+igt@drm_fdinfo@virtual-busy-idle
-+igt@drm_fdinfo@virtual-busy-idle-all
-+igt@drm_fdinfo@virtual-idle
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/index.html
-
---===============3306490331647003312==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 15.6.2022 12.59, Swati Sharma wrote:
+> New test cases are added covering various modifiers and
+> pixel-formats.
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/i915/kms_flip_scaled_crc.c | 258 ++++++++++++++++++++++++++++++-
+>   1 file changed, 257 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+> index 6cf3a64b..ca70588d 100644
+> --- a/tests/i915/kms_flip_scaled_crc.c
+> +++ b/tests/i915/kms_flip_scaled_crc.c
+> @@ -57,6 +57,38 @@ const struct {
+>   		1.0,
+>   		2.0,
+>   	},
+> +	{
+> +		"flip-32bpp-yftile-to-64bpp-yftile-downscaling",
+> +		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-32bpp-xtile-to-64bpp-xtile-downscaling",
+> +		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-32bpp-4tile-to-64bpp-4tile-downscaling",
+> +		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-32bpp-linear-to-64bpp-linear-downscaling",
+> +		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB8888,
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
+> +		1.0,
+> +		2.0,
+> +	},
+>   	{
+>   		"flip-64bpp-ytile-to-32bpp-ytile-downscaling",
+>   		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> @@ -65,6 +97,38 @@ const struct {
+>   		1.0,
+>   		2.0,
+>   	},
+> +	{
+> +		"flip-64bpp-yftile-to-32bpp-yftile-downscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-64bpp-xtile-to-32bpp-xtile-downscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB8888,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-64bpp-4tile-to-32bpp-4tile-downscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-64bpp-linear-to-32bpp-linear-downscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB8888,
+> +		1.0,
+> +		2.0,
+> +	},
+>   	{
+>   		"flip-64bpp-ytile-to-16bpp-ytile-downscaling",
+>   		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
+> @@ -73,6 +137,38 @@ const struct {
+>   		1.0,
+>   		2.0,
+>   	},
+> +	{
+> +		"flip-64bpp-yftile-to-16bpp-yftile-downscaling",
+> +		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_RGB565,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-64bpp-xtile-to-16bpp-xtile-downscaling",
+> +		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_RGB565,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-64bpp-4tile-to-16bpp-4tile-downscaling",
+> +		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_RGB565,
+> +		1.0,
+> +		2.0,
+> +	},
+> +	{
+> +		"flip-64bpp-linear-to-16bpp-linear-downscaling",
+> +		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_RGB565,
+> +		1.0,
+> +		2.0,
+> +	},
+>   	{
+>   		"flip-32bpp-ytileccs-to-64bpp-ytile-downscaling",
+>   		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+> @@ -81,6 +177,14 @@ const struct {
+>   		1.0,
+>   		2.0,
+>   	},
+> +	{
+> +		"flip-32bpp-yftileccs-to-64bpp-yftile-downscaling",
+^
+flip-32bpp-yftileccs-to-64bpp-ytile-downscaling? Mismatch with modifier 
+and test name.
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+> +		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED_CCS, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
+> +		1.0,
+> +		2.0,
+> +	},
+>   	{
+>   		"flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling",
+>   		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> @@ -89,6 +193,14 @@ const struct {
+>   		1.0,
+>   		2.0,
+>   	},
+> +	{
+> +		"flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling",
+> +		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, DRM_FORMAT_XRGB8888,
+> +		1.0,
+> +		2.0,
+> +	},
+>   	{
+>   		"flip-32bpp-ytile-to-32bpp-ytileccs-downscaling",
+>   		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> @@ -97,6 +209,14 @@ const struct {
+>   		1.0,
+>   		2.0,
+>   	},
+> +	{
+> +		"flip-32bpp-yftile-to-32bpp-yftileccs-downscaling",
+> +		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_Yf_TILED_CCS, DRM_FORMAT_XRGB8888,
+> +		1.0,
+> +		2.0,
+> +	},
+>   	{
+>   		"flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling",
+>   		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> @@ -105,6 +225,14 @@ const struct {
+>   		1.0,
+>   		2.0,
+>   	},
+> +	{
+> +		"flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, DRM_FORMAT_XRGB8888,
+> +		1.0,
+> +		2.0,
+> +	},
+>   	{
+>   		"flip-32bpp-ytile-to-64bpp-ytile-upscaling",
+>   		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+> @@ -113,6 +241,38 @@ const struct {
+>   		0.5,
+>   		1.0,
+>   	},
+> +	{
+> +		"flip-32bpp-yftile-to-64bpp-yftile-upscaling",
 
+should this be called down scaling test as its going from upscaled to 
+non scaled?
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/drm_fdinfo: Test virtual engines</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105227/">https://patchwork.freedesktop.org/series/105227/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+> +		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+^
+upscaled to non scaled? This same comment seem to apply to all below 
+added tests.
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11767 -&gt; IGTPW_7326</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/index.html</p>
-<h2>Participating hosts (42 -&gt; 43)</h2>
-<p>Additional (2): bat-dg2-9 bat-atsm-1 <br />
-  Missing    (1): fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7326:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>{bat-jsl-2}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/bat-jsl-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/bat-jsl-2/igt@core_hotunplug@unbind-rebind.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7326 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/bat-adlp-4/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5122">i915#5122</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/fi-ehl-2/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11767/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/bat-adlp-4/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6533 -&gt; IGTPW_7326</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11767: 822a8442835012ce405080cb40f6317ef1e854ac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7326: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7326/index.html<br />
-  IGT_6533: 6b5107d91827962808441db6b98e478aa9e67bdb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@drm_fdinfo@virtual-busy<br />
-+igt@drm_fdinfo@virtual-busy-all<br />
-+igt@drm_fdinfo@virtual-busy-hang<br />
-+igt@drm_fdinfo@virtual-busy-hang-all<br />
-+igt@drm_fdinfo@virtual-busy-idle<br />
-+igt@drm_fdinfo@virtual-busy-idle-all<br />
-+igt@drm_fdinfo@virtual-idle</p>
-
-</body>
-</html>
-
---===============3306490331647003312==--
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-32bpp-xtile-to-64bpp-xtile-upscaling",
+> +		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-32bpp-4tile-to-64bpp-4tile-upscaling",
+> +		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-32bpp-linear-to-64bpp-linear-upscaling",
+> +		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB8888,
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
+> +		0.5,
+> +		1.0,
+> +	},
+>   	{
+>   		"flip-64bpp-ytile-to-32bpp-ytile-upscaling",
+>   		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> @@ -121,6 +281,38 @@ const struct {
+>   		0.5,
+>   		1.0,
+>   	},
+> +	{
+> +		"flip-64bpp-yftile-to-32bpp-yftile-upscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-64bpp-xtile-to-32bpp-xtile-upscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB8888,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-64bpp-4tile-to-32bpp-4tile-upscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-64bpp-linear-to-32bpp-linear-upscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB8888,
+> +		0.5,
+> +		1.0,
+> +	},
+>   	{
+>   		"flip-64bpp-ytile-to-16bpp-ytile-upscaling",
+>   		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
+> @@ -129,6 +321,38 @@ const struct {
+>   		0.5,
+>   		1.0,
+>   	},
+> +	{
+> +		"flip-64bpp-yftile-to-16bpp-yftile-upscaling",
+> +		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_RGB565,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-64bpp-xtile-to-16bpp-xtile-upscaling",
+> +		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_RGB565,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-64bpp-4tile-to-16bpp-4tile-upscaling",
+> +		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_RGB565,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-64bpp-linear-to-16bpp-linear-upscaling",
+> +		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
+> +		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_RGB565,
+> +		0.5,
+> +		1.0,
+> +	},
+>   	{
+>   		"flip-32bpp-ytileccs-to-64bpp-ytile-upscaling",
+>   		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+> @@ -137,6 +361,14 @@ const struct {
+>   		0.5,
+>   		1.0,
+>   	},
+> +	{
+> +		"flip-32bpp-yftileccs-to-64bpp-yftile-upscaling",
+> +		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED_CCS, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
+> +		0.5,
+> +		1.0,
+> +	},
+>   	{
+>   		"flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling",
+>   		"Flip from 32bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> @@ -145,6 +377,14 @@ const struct {
+>   		0.5,
+>   		1.0,
+>   	},
+> +	{
+> +		"flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling",
+> +		"Flip from 32bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, DRM_FORMAT_XRGB8888,
+> +		0.5,
+> +		1.0,
+> +	},
+>   	{
+>   		"flip-32bpp-ytile-to-32bpp-ytileccs-upscaling",
+>   		"Flip from 32bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> @@ -154,13 +394,29 @@ const struct {
+>   		1.0,
+>   	},
+>   	{
+> -		"flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling",
+> +		"flip-32bpp-yftile-to-32bpp-yftileccs-upscaling",
+> +		"Flip from 32bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
+> +		I915_FORMAT_MOD_Yf_TILED_CCS, DRM_FORMAT_XRGB8888,
+> +		0.5,
+> +		1.0,
+> +	},
+> +	{
+> +		"flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling",
+>   		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+>   		I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
+>   		I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888,
+>   		0.5,
+>   		1.0,
+>   	},
+> +	{
+> +		"flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling",
+> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
+> +		I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, DRM_FORMAT_XRGB8888,
+> +		0.5,
+> +		1.0,
+> +	},
+>   };
+>   
+>   static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
