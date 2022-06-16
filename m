@@ -1,23 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com
- [IPv6:2a00:1450:4864:20::42d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09B2F113284
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 12:59:05 +0000 (UTC)
-Received: by mail-wr1-x42d.google.com with SMTP id u8so1758262wrm.13
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 05:59:04 -0700 (PDT)
-Message-ID: <74265f0b-82e9-fb68-74ae-f01c0426b770@gmail.com>
-Date: Thu, 16 Jun 2022 15:58:56 +0300
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 16 Jun 2022 14:32:03 +0100
+Message-Id: <20220616133203.278584-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220615095906.23688-1-swati2.sharma@intel.com>
- <20220615095906.23688-2-swati2.sharma@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220615095906.23688-2-swati2.sharma@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_flip_scaled_crc:
- Convert tests to dynamic
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/drm_fdinfo: Test virtual engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,153 +13,361 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 15.6.2022 12.59, Swati Sharma wrote:
-> Covert the existing subtests to dynamic subtests at pipe/output level.
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/i915/kms_flip_scaled_crc.c | 69 ++++++++------------------------
->   1 file changed, 16 insertions(+), 53 deletions(-)
-> 
-> diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-> index 9740715f..6cf3a64b 100644
-> --- a/tests/i915/kms_flip_scaled_crc.c
-> +++ b/tests/i915/kms_flip_scaled_crc.c
-> @@ -163,8 +163,6 @@ const struct {
->   	},
->   };
->   
-> -enum subrval {CONNECTORFAIL, CONNECTORSUCCESS, TESTSKIP, NOREQUESTEDFORMATONPIPE};
-> -
->   static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
->   		     uint32_t height, uint64_t format, uint64_t modifier)
->   {
-> @@ -220,8 +218,8 @@ static void clear_lut(data_t *data, enum pipe pipe)
->   	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
->   }
->   
-> -static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
-> -					enum pipe pipe, igt_output_t *output)
-> +static void test_flip_to_scaled(data_t *data, uint32_t index,
-> +				enum pipe pipe, igt_output_t *output)
->   {
->   	igt_plane_t *primary;
->   	igt_crc_t small_crc, big_crc;
-> @@ -257,11 +255,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
->   	igt_output_set_pipe(output, pipe);
->   
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> -	if (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
-> +	igt_skip_on_f (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
->   				      data->small_fb.modifier) ||
-> -	    !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
-> -				      data->big_fb.modifier))
-> -		return NOREQUESTEDFORMATONPIPE;
-> +		       !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
-> +				      data->big_fb.modifier), "No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
->   
->   	set_lut(data, pipe);
->   	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
-> @@ -295,20 +292,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
->   	igt_plane_set_size(primary, data->attemptmodewidth,
->   			   data->attemptmodeheight);
->   	ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> -	switch (ret) {
-> -	case -ERANGE:
-> -		igt_debug("Platform scaling limits exceeded, skipping.\n");
-> -		return TESTSKIP;
-> -	case -EINVAL:
-> -		if (!modetoset) {
-> -			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
-> +	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
-> +	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
->   				  data->attemptmodeheight);
-> -			return CONNECTORFAIL;
-> -		}
-> -		/* fallthrough */
-> -	default:
-> -		igt_assert_eq(ret, 0);
-> -	}
-> +	igt_assert_eq(ret, 0);
->   
->   	igt_pipe_crc_start(data->pipe_crc);
->   	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
-> @@ -319,21 +306,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
->   	ret = igt_display_try_commit_atomic(&data->display,
->   					    DRM_MODE_ATOMIC_ALLOW_MODESET  |
->   					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> -
-> -	switch (ret) {
-> -	case -ERANGE:
-> -		igt_debug("Platform scaling limits exceeded, skipping.\n");
-> -		return TESTSKIP;
-> -	case -EINVAL:
-> -		if (!modetoset) {
-> -			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
-> +	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
-> +	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
->   				  data->attemptmodeheight);
-> -			return CONNECTORFAIL;
-> -		}
-> -		/* fallthrough */
-> -	default:
-> -		igt_assert_eq(ret, 0);
-> -	}
-> +	igt_assert_eq(ret, 0);
->   
->   	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
->   
-> @@ -349,8 +325,6 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
->   	igt_output_set_pipe(output, PIPE_NONE);
->   	igt_plane_set_fb(primary, NULL);
->   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> -
-> -	return CONNECTORSUCCESS;
->   }
->   
->   igt_main
-> @@ -379,28 +353,17 @@ igt_main
->   
->   	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
->   		igt_describe(flip_scenario_test[index].describe);
-> -		igt_subtest(flip_scenario_test[index].name) {
-> -			int validtests = 0;
-> +		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
->   			free_fbs(&data);
-> -			for_each_pipe_static(pipe) {
-> -				enum subrval rval = CONNECTORSUCCESS;
-> +			for_each_pipe(&data.display, pipe) {
->   				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> -					rval = test_flip_to_scaled(&data, index, pipe, output);
-> -
-> -					igt_require(rval != TESTSKIP);
-> -
-> -					// break out to test next pipe
-> -					if (rval == CONNECTORSUCCESS) {
-> -						validtests++;
-> -						break;
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-This above part with CONNECTORSUCCESS make it so once test has been run 
-successfully on chosen pipe this pipe will not be tested again as this 
-test is testing pipe feature. I don't think this need to be run 
-separately for each connector using all pipes.
+We need some coverage of the virtual engines.
 
-> -					}
-> +					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +						test_flip_to_scaled(&data, index, pipe, output);
->   				}
-> -				if (rval == NOREQUESTEDFORMATONPIPE)
-> -					igt_debug("No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
->   			}
-> -			igt_require_f(validtests > 0, "No valid pipe/connector/format/mod combination found\n");
->   		}
->   	}
-> +
->   	igt_fixture {
->   		free_fbs(&data);
->   		if (data.pipe_crc) {
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/i915/drm_fdinfo.c | 284 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 282 insertions(+), 2 deletions(-)
+
+diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
+index 3475d35b23b9..0a42370d54ce 100644
+--- a/tests/i915/drm_fdinfo.c
++++ b/tests/i915/drm_fdinfo.c
+@@ -27,6 +27,7 @@
+ #include "igt_device.h"
+ #include "igt_drm_fdinfo.h"
+ #include "i915/gem.h"
++#include "i915/gem_vm.h"
+ #include "intel_ctx.h"
+ 
+ IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
+@@ -90,10 +91,10 @@ static igt_spin_t *__spin_poll(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
+ 	struct igt_spin_factory opts = {
+ 		.ahnd = ahnd,
+ 		.ctx = ctx,
+-		.engine = e->flags,
++		.engine = e ? e->flags : 0,
+ 	};
+ 
+-	if (gem_class_can_store_dword(fd, e->class))
++	if (!e || gem_class_can_store_dword(fd, e->class))
+ 		opts.flags |= IGT_SPIN_POLL_RUN;
+ 
+ 	return __igt_spin_factory(fd, &opts);
+@@ -440,6 +441,265 @@ all_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+ 	gem_quiescent_gpu(gem_fd);
+ }
+ 
++static struct i915_engine_class_instance *
++list_engines(const intel_ctx_cfg_t *cfg,
++	     unsigned int class, unsigned int *out)
++{
++	struct i915_engine_class_instance *ci;
++	unsigned int count = 0, i;
++
++	ci = malloc(cfg->num_engines * sizeof(*ci));
++	igt_assert(ci);
++
++	for (i = 0; i < cfg->num_engines; i++) {
++		if (class == cfg->engines[i].engine_class)
++			ci[count++] = cfg->engines[i];
++	}
++
++	if (!count) {
++		free(ci);
++		ci = NULL;
++	}
++
++	*out = count;
++	return ci;
++}
++
++static size_t sizeof_load_balance(int count)
++{
++	return offsetof(struct i915_context_engines_load_balance,
++			engines[count]);
++}
++
++static size_t sizeof_param_engines(int count)
++{
++	return offsetof(struct i915_context_param_engines,
++			engines[count]);
++}
++
++#define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
++
++static int __set_load_balancer(int i915, uint32_t ctx,
++			       const struct i915_engine_class_instance *ci,
++			       unsigned int count,
++			       void *ext)
++{
++	struct i915_context_engines_load_balance *balancer =
++		alloca0(sizeof_load_balance(count));
++	struct i915_context_param_engines *engines =
++		alloca0(sizeof_param_engines(count + 1));
++	struct drm_i915_gem_context_param p = {
++		.ctx_id = ctx,
++		.param = I915_CONTEXT_PARAM_ENGINES,
++		.size = sizeof_param_engines(count + 1),
++		.value = to_user_pointer(engines)
++	};
++
++	balancer->base.name = I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE;
++	balancer->base.next_extension = to_user_pointer(ext);
++
++	igt_assert(count);
++	balancer->num_siblings = count;
++	memcpy(balancer->engines, ci, count * sizeof(*ci));
++
++	engines->extensions = to_user_pointer(balancer);
++	engines->engines[0].engine_class =
++		I915_ENGINE_CLASS_INVALID;
++	engines->engines[0].engine_instance =
++		I915_ENGINE_CLASS_INVALID_NONE;
++	memcpy(engines->engines + 1, ci, count * sizeof(*ci));
++
++	return __gem_context_set_param(i915, &p);
++}
++
++static void set_load_balancer(int i915, uint32_t ctx,
++			      const struct i915_engine_class_instance *ci,
++			      unsigned int count,
++			      void *ext)
++{
++	igt_assert_eq(__set_load_balancer(i915, ctx, ci, count, ext), 0);
++}
++
++static void
++virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
++{
++	intel_ctx_cfg_t cfg = {};
++
++	cfg.vm = gem_vm_create(i915);
++
++	for (int class = 0; class < 32; class++) {
++		struct i915_engine_class_instance *ci;
++		unsigned int count;
++
++		if (!gem_class_can_store_dword(i915, class))
++			continue;
++
++		ci = list_engines(base_cfg, class, &count);
++		if (!ci)
++			continue;
++
++		for (unsigned int pass = 0; pass < count; pass++) {
++			const intel_ctx_t *ctx;
++			unsigned long slept;
++			uint64_t ahnd, val;
++			igt_spin_t *spin;
++
++			igt_assert(sizeof(*ci) == sizeof(int));
++			igt_permute_array(ci, count, igt_exchange_int);
++
++			igt_debug("class %u, pass %u/%u...\n", class, pass, count);
++
++			ctx = intel_ctx_create(i915, &cfg);
++			ahnd = get_reloc_ahnd(i915, ctx->id);
++
++			set_load_balancer(i915, ctx->id, ci, count, NULL);
++
++			if (flags & TEST_BUSY)
++				spin = spin_sync(i915, ahnd, ctx, NULL);
++			else
++				spin = NULL;
++
++			val = read_busy(i915, class);
++			slept = measured_usleep(batch_duration_ns / 1000);
++			if (flags & TEST_TRAILING_IDLE)
++				end_spin(i915, spin, flags);
++			val = read_busy(i915, class) - val;
++
++			if (flags & FLAG_HANG)
++				igt_force_gpu_reset(i915);
++			else
++				end_spin(i915, spin, FLAG_SYNC);
++
++			assert_within_epsilon(val,
++					      flags & TEST_BUSY ?
++					      slept : 0.0f,
++					      tolerance);
++
++			/* Check for idle after hang. */
++			if (flags & FLAG_HANG) {
++				gem_quiescent_gpu(i915);
++				igt_assert(!gem_bo_busy(i915, spin->handle));
++
++				val = read_busy(i915, class);
++				slept = measured_usleep(batch_duration_ns /
++							1000);
++				val = read_busy(i915, class) - val;
++
++				assert_within_epsilon(val, 0, tolerance);
++			}
++
++			igt_spin_free(i915, spin);
++			put_ahnd(ahnd);
++			intel_ctx_destroy(i915, ctx);
++
++			gem_quiescent_gpu(i915);
++		}
++
++		free(ci);
++	}
++}
++
++static void
++__virt_submit_spin(int i915, igt_spin_t *spin,
++		   const intel_ctx_t *ctx,
++		   int offset)
++{
++	struct drm_i915_gem_execbuffer2 eb = spin->execbuf;
++
++	eb.flags &= ~(0x3f | I915_EXEC_BSD_MASK);
++	eb.flags |= I915_EXEC_NO_RELOC;
++	eb.batch_start_offset += offset;
++	eb.rsvd1 = ctx->id;
++
++	gem_execbuf(i915, &eb);
++}
++
++static void
++virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
++{
++	const unsigned int num_engines = base_cfg->num_engines;
++	intel_ctx_cfg_t cfg = {};
++
++	cfg.vm = gem_vm_create(i915);
++
++	for (int class = 0; class < 32; class++) {
++		struct i915_engine_class_instance *ci;
++		const intel_ctx_t *ctx[num_engines];
++		igt_spin_t *spin = NULL;
++		unsigned int count;
++		unsigned long slept;
++		uint64_t val;
++
++		if (!gem_class_can_store_dword(i915, class))
++			continue;
++
++		ci = list_engines(base_cfg, class, &count);
++		if (!ci)
++			continue;
++		igt_assert(count <= num_engines);
++
++		if (count < 2)
++			continue;
++
++		igt_debug("class %u, %u engines...\n", class, count);
++
++		for (unsigned int i = 0; i < count; i++) {
++			uint64_t ahnd;
++
++			igt_assert(sizeof(*ci) == sizeof(int));
++			igt_permute_array(ci, count, igt_exchange_int);
++
++			ctx[i] = intel_ctx_create(i915, &cfg);
++			ahnd = get_reloc_ahnd(i915, ctx[i]->id);
++
++			set_load_balancer(i915, ctx[i]->id, ci, count, NULL);
++
++			if (spin)
++				__virt_submit_spin(i915, spin, ctx[i], 64);
++			else
++				spin = __spin_poll(i915, ahnd, ctx[i], NULL);
++		}
++
++		/* Small delay to allow engines to start. */
++		usleep(__spin_wait(i915, spin) * count / 1e3);
++
++		val = read_busy(i915, class);
++		slept = measured_usleep(batch_duration_ns / 1000);
++		if (flags & TEST_TRAILING_IDLE)
++			end_spin(i915, spin, flags);
++		val = read_busy(i915, class) - val;
++
++		if (flags & FLAG_HANG)
++			igt_force_gpu_reset(i915);
++		else
++			end_spin(i915, spin, FLAG_SYNC);
++
++		assert_within_epsilon(val, slept * count, tolerance);
++
++		/* Check for idle after hang. */
++		if (flags & FLAG_HANG) {
++			gem_quiescent_gpu(i915);
++			igt_assert(!gem_bo_busy(i915, spin->handle));
++
++			val = read_busy(i915, class);
++			slept = measured_usleep(batch_duration_ns /
++						1000);
++			val = read_busy(i915, class) - val;
++
++			assert_within_epsilon(val, 0, tolerance);
++		}
++
++		put_ahnd(spin->opts.ahnd);
++		igt_spin_free(i915, spin);
++		for (unsigned int i = 0; i < count; i++)
++			intel_ctx_destroy(i915, ctx[i]);
++
++		gem_quiescent_gpu(i915);
++
++		free(ci);
++	}
++}
++
+ #define test_each_engine(T, i915, ctx, e) \
+ 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
+ 		igt_dynamic_f("%s", e->name)
+@@ -489,15 +749,24 @@ igt_main
+ 	test_each_engine("idle", i915, ctx, e)
+ 		single(i915, ctx, e, 0);
+ 
++	igt_subtest("virtual-idle")
++		virtual(i915, &ctx->cfg, 0);
++
+ 	/**
+ 	 * Test that a single engine reports load correctly.
+ 	 */
+ 	test_each_engine("busy", i915, ctx, e)
+ 		single(i915, ctx, e, TEST_BUSY);
+ 
++	igt_subtest("virtual-busy")
++		virtual(i915, &ctx->cfg, TEST_BUSY);
++
+ 	test_each_engine("busy-idle", i915, ctx, e)
+ 		single(i915, ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
+ 
++	igt_subtest("virtual-busy-idle")
++		virtual(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
++
+ 	test_each_engine("busy-hang", i915, ctx, e) {
+ 		igt_hang_t hang = igt_allow_hang(i915, ctx->id, 0);
+ 
+@@ -506,6 +775,9 @@ igt_main
+ 		igt_disallow_hang(i915, hang);
+ 	}
+ 
++	igt_subtest("virtual-busy-hang")
++		virtual(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
++
+ 	/**
+ 	 * Test that when one engine is loaded other report no
+ 	 * load.
+@@ -544,6 +816,14 @@ igt_main
+ 		all_busy_check_all(i915, ctx, num_engines, classes, num_classes,
+ 				   TEST_BUSY | TEST_TRAILING_IDLE);
+ 
++	igt_subtest("virtual-busy-all")
++		virtual_all(i915, &ctx->cfg, TEST_BUSY);
++
++	igt_subtest("virtual-busy-idle-all")
++		virtual_all(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
++
++	igt_subtest("virtual-busy-hang-all")
++		virtual_all(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
+ 	/**
+ 	 * Test for no cross-client contamination.
+ 	 */
+-- 
+2.34.1
