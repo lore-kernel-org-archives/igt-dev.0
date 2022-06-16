@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B90610F253
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 08:28:08 +0000 (UTC)
-Message-ID: <63c1d58d-a8a4-278c-48fd-3e801216104e@intel.com>
-Date: Thu, 16 Jun 2022 13:58:02 +0530
-MIME-Version: 1.0
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 117AA113B69
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 08:55:59 +0000 (UTC)
+Message-ID: <32a2c998-4a80-0fd3-07f8-b6e53e954035@intel.com>
+Date: Thu, 16 Jun 2022 14:25:45 +0530
 Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20220613062447.21577-1-karthik.b.s@intel.com>
  <Yqb8T0PUOfFEgb7U@zkempczy-mobl2>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
 In-Reply-To: <Yqb8T0PUOfFEgb7U@zkempczy-mobl2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: Move
  intel_ibb_destroy out of test_cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -28,31 +27,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
-
-On 13-Jun-22 2:28 PM, Zbigniew Kempczyński wrote:
+On 6/13/2022 2:28 PM, Zbigniew Kempczyński wrote:
 > On Mon, Jun 13, 2022 at 11:54:47AM +0530, Karthik B S wrote:
 >> All the clean up functions were moved to fixture in patch "2aff4179".
 >> But this causes an assert in intel_bb_destory() after the test passes,
 >> on configurations having eDP connected.
 >>
 >> So moving the intel_bb_destroy() call back to the original function.
-> 
 > Yes, calling intel_bb_destroy() in fixture is problematic. When test completes
 > we clean the allocator and initialize it from scratch for next test.
-> 
+>
 > With intel-bb and softpin during intel_bb_create() we open allocator (get ahnd)
 > which is not valid after test completes. So intel_bb_destroy() in fixture
 > will try to free all offsets for attached intel_bufs. Unfortunately allocator
 > was already reinitialized and there's no ahnd in it.
-> 
+Thank you for the details. I was wondering how exactly this was breaking 
+the test.
+>
 > Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
+
+Thanks for the ack.
+
+Thanks,
+Karthik.B.S
+>
 > --
 > Zbigniew
-> 
->>
+>
 >> Fixes: 2aff41793e5f ("tests/i915/kms_big_fb: Move cleanup code to fixture")
 >>
 >> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
@@ -93,6 +94,3 @@ On 13-Jun-22 2:28 PM, Zbigniew Kempczyński wrote:
 >> -- 
 >> 2.22.0
 >>
-
--- 
-~Swati Sharma
