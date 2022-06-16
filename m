@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1736326956472999716=="
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B1FB11A498
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 12:05:58 +0000 (UTC)
+Message-ID: <e86c5a64-f441-af7e-5eb2-fba0e2b18b9a@intel.com>
+Date: Thu, 16 Jun 2022 17:35:37 +0530
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220614121810.12157-1-swati2.sharma@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220614121810.12157-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Thu, 16 Jun 2022 10:50:29 -0000
-Message-ID: <165537662921.17458.15649737805334800303@emeril.freedesktop.org>
-References: <20220611203845.15118-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220611203845.15118-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Ffb=3A_Allow_XY=5FFAST=5FCOPY=5FBLT_on_DG2_=28rev4=29?=
+Subject: Re: [igt-dev] [v3] tests/i915/kms_dsc: Validate dsc with diff plane
+ formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,317 +21,188 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1736326956472999716==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue-14-06-2022 05:48 pm, Swati Sharma wrote:
+> Already existing subtest is modified so that dsc can be validated
+> using different plane modifiers. Few 8/10/16 bpc RGB and YUV formats
+> are added.
+> 
+> v2: -minor fixes
+> v3: -renaming
+>      -addition of new planar format test
+> v4: -removing XRGB8888 from format_list
+>      -test name managed with single var
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/i915/kms_dsc.c | 71 +++++++++++++++++++++++++++++++-------------
+>   1 file changed, 50 insertions(+), 21 deletions(-)
+> 
+> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+> index c94c64c4..0ebd7316 100644
+> --- a/tests/i915/kms_dsc.c
+> +++ b/tests/i915/kms_dsc.c
+> @@ -47,11 +47,11 @@
+>   IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+>   
+>   #define HDISPLAY_5K	5120
+> -#define XRGB8888_DRM_FORMAT_MIN_BPP	8
+> +#define MIN_BPP		8
+>   
+>   enum dsc_test_type {
+> -	TEST_BASIC_DSC_ENABLE,
+> -	TEST_DSC_COMPRESSION_BPP
+> +	TEST_BASIC_DSC,
+> +	TEST_DSC_BPP
+>   };
+>   
+>   typedef struct {
+> @@ -68,6 +68,16 @@ typedef struct {
+>   bool force_dsc_en_orig;
+>   int force_dsc_restore_fd = -1;
+>   
+> +const struct {
+> +	const int format;
+> +	const char format_str[20];
+> +} test_list[] = {
+> +	{DRM_FORMAT_XYUV8888, "XYUV8888"},
+> +	{DRM_FORMAT_XRGB2101010, "XRGB2101010"},
+> +	{DRM_FORMAT_XRGB16161616F, "XRGB16161616F"},
+> +	{DRM_FORMAT_YUYV, "YUYV"},
+> +};
+> +
+>   static inline void manual(const char *expected)
+>   {
+>   	igt_debug_interactive_mode_check("all", expected);
+> @@ -171,7 +181,7 @@ static bool check_big_joiner_test_constraint(data_t *data,
+>   	igt_output_t *output = data->output;
+>   	drmModeModeInfo *mode = get_highres_mode(output);
+>   
+> -	if (test_type == TEST_DSC_COMPRESSION_BPP &&
+> +	if (test_type == TEST_DSC_BPP &&
+>   	    mode->hdisplay >= HDISPLAY_5K) {
+>   		igt_debug("Bigjoiner does not support force bpp on %s\n",
+>   			   output->name);
+> @@ -224,7 +234,7 @@ static void test_cleanup(data_t *data)
+>   }
+>   
+>   /* re-probe connectors and do a modeset with DSC */
+> -static void update_display(data_t *data, enum dsc_test_type test_type)
+> +static void update_display(data_t *data, enum dsc_test_type test_type, unsigned int plane_format)
+>   {
+>   	bool enabled;
+>   	igt_plane_t *primary;
+> @@ -240,7 +250,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+>   	save_force_dsc_en(data);
+>   	force_dsc_enable(data);
+>   
+> -	if (test_type == TEST_DSC_COMPRESSION_BPP) {
+> +	if (test_type == TEST_DSC_BPP) {
+>   		igt_debug("Trying to set BPP to %d\n", data->compression_bpp);
+>   		force_dsc_enable_bpp(data);
+>   	}
+> @@ -252,10 +262,14 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+>   	igt_output_override_mode(output, mode);
+>   
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
+> +		    DRM_FORMAT_MOD_LINEAR));
+> +
+>   	igt_create_pattern_fb(data->drm_fd,
+>   			      mode->hdisplay,
+>   			      mode->vdisplay,
+> -			      DRM_FORMAT_XRGB8888,
+> +			      plane_format,
+>   			      DRM_FORMAT_MOD_LINEAR,
+>   			      &data->fb_test_pattern);
+>   
+> @@ -281,11 +295,11 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+>   	test_cleanup(data);
+>   }
+>   
+> -static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp)
+> +static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp, unsigned int plane_format)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_output_t *output;
+> -	char test_name[10];
+> +	char name[20];
+>   	enum pipe pipe;
+>   
+>   	for_each_pipe_with_valid_output(display, pipe, output) {
+> @@ -305,10 +319,13 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp)
+>   		if (!check_big_joiner_pipe_constraint(data))
+>   			continue;
+>   
+> -		snprintf(test_name, sizeof(test_name), "-%dbpp", data->compression_bpp);
+> -		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name,
+> -			     (test_type == TEST_DSC_COMPRESSION_BPP) ? test_name : "")
+> -			update_display(data, test_type);
+> +		if (test_type == TEST_DSC_BPP)
+> +			snprintf(name, sizeof(name), "-%dbpp", data->compression_bpp);
+> +		else
+> +			snprintf(name, sizeof(name), "-%s", igt_format_str(plane_format));
+> +
+> +		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
+> +			update_display(data, test_type, plane_format);
+>   	}
+>   }
+>   
+> @@ -332,25 +349,37 @@ igt_main
+>   	igt_describe("Tests basic display stream compression functionality if supported "
+>   		     "by a connector by forcing DSC on all connectors that support it "
+>   		     "with default parameters");
+> -	igt_subtest_with_dynamic("basic-dsc-enable")
+> -			test_dsc(&data, TEST_BASIC_DSC_ENABLE, 0);
+> +	igt_subtest_with_dynamic("basic-dsc")
+> +			test_dsc(&data, TEST_BASIC_DSC, 0, DRM_FORMAT_XRGB8888);
+> +
+> +	igt_describe("Tests basic display stream compression functionality if supported "
+> +		     "by a connector by forcing DSC on all connectors that support it "
+> +		     "with default parameters and creating fb with diff formats");
+> +	igt_subtest_with_dynamic("dsc-with-formats") {
+> +		for (int k = 0; k < ARRAY_SIZE(test_list); k++)
+> +			test_dsc(&data, TEST_BASIC_DSC, 0, test_list[k].format);
+> +	}
 
-== Series Details ==
+Can you get Ack-by from Manasi or Ankit for this new subtest?
 
-Series: lib/igt_fb: Allow XY_FAST_COPY_BLT on DG2 (rev4)
-URL   : https://patchwork.freedesktop.org/series/105025/
-State : success
+Overall, this patch LGTM.
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-== Summary ==
+- Bhanu
 
-CI Bug Log - changes from CI_DRM_11766 -> IGTPW_7323
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/index.html
-
-Participating hosts (42 -> 41)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (2): fi-ehl-2 fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7323 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-WARN][3] ([i915#1982])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [PASS][4] -> [INCOMPLETE][5] ([i915#5847])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][6] ([i915#1886])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-pnv-d510:        [PASS][7] -> [DMESG-FAIL][8] ([i915#4528])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-pnv-d510/igt@i915_selftest@live@requests.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-pnv-d510/igt@i915_selftest@live@requests.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +7 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][10] ([fdo#109271]) +9 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - fi-tgl-u2:          [PASS][11] -> [DMESG-WARN][12] ([i915#402])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][13] ([fdo#109271] / [i915#533])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html
-
-  * igt@runner@aborted:
-    - fi-skl-6600u:       NOTRUN -> [FAIL][14] ([i915#2029] / [i915#4312])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-skl-6600u/igt@runner@aborted.html
-    - fi-bsw-nick:        NOTRUN -> [FAIL][15] ([fdo#109271] / [i915#3428] / [i915#4312])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-bsw-nick/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rps@basic-api:
-    - fi-glk-j4005:       [DMESG-WARN][16] ([i915#118]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-glk-j4005/igt@i915_pm_rps@basic-api.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-glk-j4005/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@coherency:
-    - {bat-dg2-9}:        [DMESG-WARN][18] ([i915#5763]) -> [PASS][19] +3 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/bat-dg2-9/igt@i915_selftest@live@coherency.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/bat-dg2-9/igt@i915_selftest@live@coherency.html
-
-  * igt@kms_busy@basic@flip:
-    - bat-adlp-4:         [DMESG-WARN][20] ([i915#3576]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/bat-adlp-4/igt@kms_busy@basic@flip.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/bat-adlp-4/igt@kms_busy@basic@flip.html
-
-  * igt@kms_flip@basic-plain-flip@a-edp1:
-    - fi-tgl-u2:          [DMESG-WARN][22] ([i915#402]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#118]: https://gitlab.freedesktop.org/drm/intel/issues/118
-  [i915#1759]: https://gitlab.freedesktop.org/drm/intel/issues/1759
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#3428]: https://gitlab.freedesktop.org/drm/intel/issues/3428
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5847]: https://gitlab.freedesktop.org/drm/intel/issues/5847
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6533 -> IGTPW_7323
-
-  CI-20190529: 20190529
-  CI_DRM_11766: e0f4ae0988dac59813432134dfdf8d6a7a631b63 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7323: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/index.html
-  IGT_6533: 6b5107d91827962808441db6b98e478aa9e67bdb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/index.html
-
---===============1736326956472999716==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_fb: Allow XY_FAST_COPY_BLT on DG2 (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105025/">https://patchwork.freedesktop.org/series/105025/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11766 -&gt; IGTPW_7323</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/index.html</p>
-<h2>Participating hosts (42 -&gt; 41)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (2): fi-ehl-2 fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7323 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5847">i915#5847</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-kbl-soraka/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/533">i915#533</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-skl-6600u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2029">i915#2029</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3428">i915#3428</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-glk-j4005/igt@i915_pm_rps@basic-api.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/118">i915#118</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-glk-j4005/igt@i915_pm_rps@basic-api.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@coherency:</p>
-<ul>
-<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/bat-dg2-9/igt@i915_selftest@live@coherency.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/bat-dg2-9/igt@i915_selftest@live@coherency.html">PASS</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/bat-adlp-4/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11766/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6533 -&gt; IGTPW_7323</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11766: e0f4ae0988dac59813432134dfdf8d6a7a631b63 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7323: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7323/index.html<br />
-  IGT_6533: 6b5107d91827962808441db6b98e478aa9e67bdb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1736326956472999716==--
+>   
+>   	igt_fixture
+>   		igt_require(intel_display_ver(data.devid) >= 13);
+>   
+> +	/*
+> +	 * Output bpp/compressed bpp supported is 8 to 23 (pipe_bpp - 1)
+> +	 * i.e. 8 to 23. So, here we are considering compressed bpp as min(8), mean (8+23/2)
+> +	 * and max(23).
+> +	 */
+>   	igt_describe("Tests basic display stream compression functionality if supported "
+>   		     "by a connector by forcing DSC on all connectors that support it "
+>   		     "with certain BPP as the output BPP for the connector");
+> -	igt_subtest_with_dynamic("XRGB8888-dsc-compression") {
+> +	igt_subtest_with_dynamic("dsc-with-bpp") {
+>   		uint32_t bpp_list[] = {
+> -			XRGB8888_DRM_FORMAT_MIN_BPP,
+> -			(XRGB8888_DRM_FORMAT_MIN_BPP  +
+> -			(XRGB8888_DRM_FORMAT_MIN_BPP * 3) - 1) / 2,
+> -			(XRGB8888_DRM_FORMAT_MIN_BPP * 3) - 1
+> +			MIN_BPP,
+> +			(MIN_BPP  + (MIN_BPP * 3) - 1) / 2,
+> +			(MIN_BPP * 3) - 1
+>   		};
+>   
+>   		for (int j = 0; j < ARRAY_SIZE(bpp_list); j++)
+> -			test_dsc(&data, TEST_DSC_COMPRESSION_BPP, bpp_list[j]);
+> +			test_dsc(&data, TEST_DSC_BPP, bpp_list[j], DRM_FORMAT_XRGB8888);
+>   	}
+>   
+>   	igt_fixture {
