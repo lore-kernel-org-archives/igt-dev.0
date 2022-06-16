@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B1FB11A498
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 12:05:58 +0000 (UTC)
-Message-ID: <e86c5a64-f441-af7e-5eb2-fba0e2b18b9a@intel.com>
-Date: Thu, 16 Jun 2022 17:35:37 +0530
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220614121810.12157-1-swati2.sharma@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220614121810.12157-1-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42ED9112E6D
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 12:16:16 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+To: matthew.auld@intel.com, priyanka.dandamudi@intel.com,
+ igt-dev@lists.freedesktop.org
+Date: Thu, 16 Jun 2022 17:35:58 +0530
+Message-Id: <20220616120558.1190406-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [v3] tests/i915/kms_dsc: Validate dsc with diff plane
- formats
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH] tests/i915/i915_module_load: Test resizable bar
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,184 +22,143 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue-14-06-2022 05:48 pm, Swati Sharma wrote:
-> Already existing subtest is modified so that dsc can be validated
-> using different plane modifiers. Few 8/10/16 bpc RGB and YUV formats
-> are added.
-> 
-> v2: -minor fixes
-> v3: -renaming
->      -addition of new planar format test
-> v4: -removing XRGB8888 from format_list
->      -test name managed with single var
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/i915/kms_dsc.c | 71 +++++++++++++++++++++++++++++++-------------
->   1 file changed, 50 insertions(+), 21 deletions(-)
-> 
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index c94c64c4..0ebd7316 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -47,11 +47,11 @@
->   IGT_TEST_DESCRIPTION("Test to validate display stream compression");
->   
->   #define HDISPLAY_5K	5120
-> -#define XRGB8888_DRM_FORMAT_MIN_BPP	8
-> +#define MIN_BPP		8
->   
->   enum dsc_test_type {
-> -	TEST_BASIC_DSC_ENABLE,
-> -	TEST_DSC_COMPRESSION_BPP
-> +	TEST_BASIC_DSC,
-> +	TEST_DSC_BPP
->   };
->   
->   typedef struct {
-> @@ -68,6 +68,16 @@ typedef struct {
->   bool force_dsc_en_orig;
->   int force_dsc_restore_fd = -1;
->   
-> +const struct {
-> +	const int format;
-> +	const char format_str[20];
-> +} test_list[] = {
-> +	{DRM_FORMAT_XYUV8888, "XYUV8888"},
-> +	{DRM_FORMAT_XRGB2101010, "XRGB2101010"},
-> +	{DRM_FORMAT_XRGB16161616F, "XRGB16161616F"},
-> +	{DRM_FORMAT_YUYV, "YUYV"},
-> +};
-> +
->   static inline void manual(const char *expected)
->   {
->   	igt_debug_interactive_mode_check("all", expected);
-> @@ -171,7 +181,7 @@ static bool check_big_joiner_test_constraint(data_t *data,
->   	igt_output_t *output = data->output;
->   	drmModeModeInfo *mode = get_highres_mode(output);
->   
-> -	if (test_type == TEST_DSC_COMPRESSION_BPP &&
-> +	if (test_type == TEST_DSC_BPP &&
->   	    mode->hdisplay >= HDISPLAY_5K) {
->   		igt_debug("Bigjoiner does not support force bpp on %s\n",
->   			   output->name);
-> @@ -224,7 +234,7 @@ static void test_cleanup(data_t *data)
->   }
->   
->   /* re-probe connectors and do a modeset with DSC */
-> -static void update_display(data_t *data, enum dsc_test_type test_type)
-> +static void update_display(data_t *data, enum dsc_test_type test_type, unsigned int plane_format)
->   {
->   	bool enabled;
->   	igt_plane_t *primary;
-> @@ -240,7 +250,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
->   	save_force_dsc_en(data);
->   	force_dsc_enable(data);
->   
-> -	if (test_type == TEST_DSC_COMPRESSION_BPP) {
-> +	if (test_type == TEST_DSC_BPP) {
->   		igt_debug("Trying to set BPP to %d\n", data->compression_bpp);
->   		force_dsc_enable_bpp(data);
->   	}
-> @@ -252,10 +262,14 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
->   	igt_output_override_mode(output, mode);
->   
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
-> +		    DRM_FORMAT_MOD_LINEAR));
-> +
->   	igt_create_pattern_fb(data->drm_fd,
->   			      mode->hdisplay,
->   			      mode->vdisplay,
-> -			      DRM_FORMAT_XRGB8888,
-> +			      plane_format,
->   			      DRM_FORMAT_MOD_LINEAR,
->   			      &data->fb_test_pattern);
->   
-> @@ -281,11 +295,11 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
->   	test_cleanup(data);
->   }
->   
-> -static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp)
-> +static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp, unsigned int plane_format)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
-> -	char test_name[10];
-> +	char name[20];
->   	enum pipe pipe;
->   
->   	for_each_pipe_with_valid_output(display, pipe, output) {
-> @@ -305,10 +319,13 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp)
->   		if (!check_big_joiner_pipe_constraint(data))
->   			continue;
->   
-> -		snprintf(test_name, sizeof(test_name), "-%dbpp", data->compression_bpp);
-> -		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name,
-> -			     (test_type == TEST_DSC_COMPRESSION_BPP) ? test_name : "")
-> -			update_display(data, test_type);
-> +		if (test_type == TEST_DSC_BPP)
-> +			snprintf(name, sizeof(name), "-%dbpp", data->compression_bpp);
-> +		else
-> +			snprintf(name, sizeof(name), "-%s", igt_format_str(plane_format));
-> +
-> +		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
-> +			update_display(data, test_type, plane_format);
->   	}
->   }
->   
-> @@ -332,25 +349,37 @@ igt_main
->   	igt_describe("Tests basic display stream compression functionality if supported "
->   		     "by a connector by forcing DSC on all connectors that support it "
->   		     "with default parameters");
-> -	igt_subtest_with_dynamic("basic-dsc-enable")
-> -			test_dsc(&data, TEST_BASIC_DSC_ENABLE, 0);
-> +	igt_subtest_with_dynamic("basic-dsc")
-> +			test_dsc(&data, TEST_BASIC_DSC, 0, DRM_FORMAT_XRGB8888);
-> +
-> +	igt_describe("Tests basic display stream compression functionality if supported "
-> +		     "by a connector by forcing DSC on all connectors that support it "
-> +		     "with default parameters and creating fb with diff formats");
-> +	igt_subtest_with_dynamic("dsc-with-formats") {
-> +		for (int k = 0; k < ARRAY_SIZE(test_list); k++)
-> +			test_dsc(&data, TEST_BASIC_DSC, 0, test_list[k].format);
-> +	}
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Can you get Ack-by from Manasi or Ankit for this new subtest?
+New test named resize bar has been added which tests whether
+bar gets resized with different supported sizes.
 
-Overall, this patch LGTM.
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+v2: Added code to check for bad bar sizes.
+Modified code to check for support of lmem_bar_size modparam.(Petri)
 
-- Bhanu
+Note:Test gets executed when
+1. modparam lmem_bar_size gets added.
+2. small bar bits gets enabled.
 
->   
->   	igt_fixture
->   		igt_require(intel_display_ver(data.devid) >= 13);
->   
-> +	/*
-> +	 * Output bpp/compressed bpp supported is 8 to 23 (pipe_bpp - 1)
-> +	 * i.e. 8 to 23. So, here we are considering compressed bpp as min(8), mean (8+23/2)
-> +	 * and max(23).
-> +	 */
->   	igt_describe("Tests basic display stream compression functionality if supported "
->   		     "by a connector by forcing DSC on all connectors that support it "
->   		     "with certain BPP as the output BPP for the connector");
-> -	igt_subtest_with_dynamic("XRGB8888-dsc-compression") {
-> +	igt_subtest_with_dynamic("dsc-with-bpp") {
->   		uint32_t bpp_list[] = {
-> -			XRGB8888_DRM_FORMAT_MIN_BPP,
-> -			(XRGB8888_DRM_FORMAT_MIN_BPP  +
-> -			(XRGB8888_DRM_FORMAT_MIN_BPP * 3) - 1) / 2,
-> -			(XRGB8888_DRM_FORMAT_MIN_BPP * 3) - 1
-> +			MIN_BPP,
-> +			(MIN_BPP  + (MIN_BPP * 3) - 1) / 2,
-> +			(MIN_BPP * 3) - 1
->   		};
->   
->   		for (int j = 0; j < ARRAY_SIZE(bpp_list); j++)
-> -			test_dsc(&data, TEST_DSC_COMPRESSION_BPP, bpp_list[j]);
-> +			test_dsc(&data, TEST_DSC_BPP, bpp_list[j], DRM_FORMAT_XRGB8888);
->   	}
->   
->   	igt_fixture {
+Cc: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/i915/i915_module_load.c | 89 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
+
+diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
+index f5f98acc2..5a653711b 100644
+--- a/tests/i915/i915_module_load.c
++++ b/tests/i915/i915_module_load.c
+@@ -31,12 +31,17 @@
+ #include <fcntl.h>
+ 
+ #include "i915/gem_create.h"
++#include "i915/gem.h"
+ #include "igt_debugfs.h"
+ #include "igt_aux.h"
+ #include "igt_kmod.h"
+ #include "igt_sysfs.h"
+ #include "igt_core.h"
+ 
++#define BAR_SIZE_SHIFT 20
++#define MIN_BAR_SIZE 256
++#define BYTE 1024
++
+ IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
+ 
+ static void store_all(int i915)
+@@ -236,6 +241,48 @@ hda_dynamic_debug(bool enable)
+ 	fclose(fp);
+ }
+ 
++static uint32_t  driver_load_unload(uint32_t lmem_bar_size, bool check_support)
++{
++	struct drm_i915_query_memory_regions *regions;
++	struct drm_i915_memory_region_info *region;
++	int i915 = -1;
++	char lmem_bar[64];
++
++	igt_i915_driver_unload();
++	if (lmem_bar_size == 0)
++		igt_assert_eq(igt_i915_driver_load(NULL), 0);
++	else {
++		sprintf(lmem_bar, "lmem_bar_size=%u", lmem_bar_size);
++		igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
++	}
++
++	i915 = __drm_open_driver(DRIVER_INTEL);
++	igt_require_fd(i915);
++	igt_require_gem(i915);
++	igt_require(gem_has_lmem(i915));
++
++	if (check_support) {
++		char *tmp;
++
++		tmp = __igt_params_get(i915, "lmem_bar_size");
++		if (!tmp)
++			igt_skip("lmem_bar_size modparam not supported on this kernel."
++					"Skipping the test.");
++		free(tmp);
++	}
++
++	regions = gem_get_query_memory_regions(i915);
++	igt_require(regions);
++
++	for (unsigned int i = 0; i < (regions)->num_regions; i++)
++		for_each_if(((region) = &(regions)->regions[i])->region.memory_class ==
++				I915_MEMORY_CLASS_DEVICE)
++			lmem_bar_size = (region->rsvd1[0] >> BAR_SIZE_SHIFT);
++	close(i915);
++
++	return lmem_bar_size;
++}
++
+ igt_main
+ {
+ 	igt_describe("Verify the basic functionality of i915 driver after it's reloaded.");
+@@ -285,6 +332,48 @@ igt_main
+ 
+ 		/* inject_fault() leaves the module unloaded */
+ 	}
++	igt_subtest("resize-bar") {
++		uint32_t result_bar_size;
++		uint32_t lmem_bar_size;
++		int i915 = -1;
++
++		if (igt_kmod_is_loaded("i915")) {
++			i915 = __drm_open_driver(DRIVER_INTEL);
++			igt_require_fd(i915);
++			igt_require_gem(i915);
++			igt_require(gem_has_lmem(i915));
++			close(i915);
++		}
++
++		/* Test for lmem_bar_size modparam support */
++		lmem_bar_size = driver_load_unload(MIN_BAR_SIZE, true);
++		igt_assert_eq(lmem_bar_size, MIN_BAR_SIZE);
++
++		lmem_bar_size = driver_load_unload(0, false);
++
++		lmem_bar_size = ceil((float)(lmem_bar_size)/BYTE)*BYTE;
++
++		igt_skip_on_f(lmem_bar_size == MIN_BAR_SIZE, "Bar is already set to minimum size.");
++
++		while (lmem_bar_size > MIN_BAR_SIZE) {
++			lmem_bar_size = lmem_bar_size >> 1;
++
++			result_bar_size = driver_load_unload(lmem_bar_size, false);
++
++			igt_assert_f(lmem_bar_size == result_bar_size, "Bar couldn't be resized.");
++		}
++
++		/* Test with unsupported sizes */
++		lmem_bar_size = 80;
++		result_bar_size = driver_load_unload(lmem_bar_size, false);
++		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.");
++
++		lmem_bar_size = 16400;
++		result_bar_size = driver_load_unload(lmem_bar_size, false);
++		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.");
++
++		igt_i915_driver_unload();
++	}
+ 
+ 	/* Subtests should unload the module themselves if they use modparams */
+ }
+-- 
+2.27.0
