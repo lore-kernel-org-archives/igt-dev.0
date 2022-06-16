@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 117AA113B69
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 08:55:59 +0000 (UTC)
-Message-ID: <32a2c998-4a80-0fd3-07f8-b6e53e954035@intel.com>
-Date: Thu, 16 Jun 2022 14:25:45 +0530
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 768C9113B6E
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jun 2022 08:56:51 +0000 (UTC)
+Message-ID: <9b7ee966-78b1-6c8c-613a-40181b092b39@intel.com>
+Date: Thu, 16 Jun 2022 14:26:39 +0530
 Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <20220613062447.21577-1-karthik.b.s@intel.com>
  <Yqb8T0PUOfFEgb7U@zkempczy-mobl2>
+ <63c1d58d-a8a4-278c-48fd-3e801216104e@intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <Yqb8T0PUOfFEgb7U@zkempczy-mobl2>
+In-Reply-To: <63c1d58d-a8a4-278c-48fd-3e801216104e@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
@@ -27,70 +29,76 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 6/13/2022 2:28 PM, Zbigniew Kempczyński wrote:
-> On Mon, Jun 13, 2022 at 11:54:47AM +0530, Karthik B S wrote:
->> All the clean up functions were moved to fixture in patch "2aff4179".
->> But this causes an assert in intel_bb_destory() after the test passes,
->> on configurations having eDP connected.
->>
->> So moving the intel_bb_destroy() call back to the original function.
-> Yes, calling intel_bb_destroy() in fixture is problematic. When test completes
-> we clean the allocator and initialize it from scratch for next test.
->
-> With intel-bb and softpin during intel_bb_create() we open allocator (get ahnd)
-> which is not valid after test completes. So intel_bb_destroy() in fixture
-> will try to free all offsets for attached intel_bufs. Unfortunately allocator
-> was already reinitialized and there's no ahnd in it.
-Thank you for the details. I was wondering how exactly this was breaking 
-the test.
->
-> Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+On 6/16/2022 1:58 PM, Sharma, Swati2 wrote:
+> LGTM
+> Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
 
-Thanks for the ack.
+Hi Swati,
+
+Thanks for the rb. Pushed the patch.
 
 Thanks,
 Karthik.B.S
 >
-> --
-> Zbigniew
->
->> Fixes: 2aff41793e5f ("tests/i915/kms_big_fb: Move cleanup code to fixture")
+> On 13-Jun-22 2:28 PM, Zbigniew Kempczyński wrote:
+>> On Mon, Jun 13, 2022 at 11:54:47AM +0530, Karthik B S wrote:
+>>> All the clean up functions were moved to fixture in patch "2aff4179".
+>>> But this causes an assert in intel_bb_destory() after the test passes,
+>>> on configurations having eDP connected.
+>>>
+>>> So moving the intel_bb_destroy() call back to the original function.
 >>
->> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
->> ---
->>   tests/i915/kms_big_fb.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
+>> Yes, calling intel_bb_destroy() in fixture is problematic. When test 
+>> completes
+>> we clean the allocator and initialize it from scratch for next test.
 >>
->> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
->> index abf974bb..d50fde45 100644
->> --- a/tests/i915/kms_big_fb.c
->> +++ b/tests/i915/kms_big_fb.c
->> @@ -457,6 +457,8 @@ static bool test_pipe(data_t *data)
->>   	if (data->format == DRM_FORMAT_C8)
->>   		unset_lut(data);
->>   
->> +	intel_bb_destroy(data->ibb);
->> +
->>   	return ret;
->>   }
->>   
->> @@ -549,6 +551,8 @@ max_hw_stride_async_flip_test(data_t *data)
->>   	}
->>   	igt_reset_timeout();
->>   
->> +	intel_bb_destroy(data->ibb);
->> +
->>   	return true;
->>   }
->>   
->> @@ -763,7 +767,6 @@ static void test_cleanup(data_t *data)
->>   	igt_remove_fb(data->drm_fd, &data->big_fb_flip[1]);
->>   	igt_remove_fb(data->drm_fd, &data->small_fb);
->>   
->> -	intel_bb_destroy(data->ibb);
->>   	data->output = NULL;
->>   }
->>   
+>> With intel-bb and softpin during intel_bb_create() we open allocator 
+>> (get ahnd)
+>> which is not valid after test completes. So intel_bb_destroy() in 
+>> fixture
+>> will try to free all offsets for attached intel_bufs. Unfortunately 
+>> allocator
+>> was already reinitialized and there's no ahnd in it.
+>>
+>> Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>>
 >> -- 
->> 2.22.0
+>> Zbigniew
 >>
+>>>
+>>> Fixes: 2aff41793e5f ("tests/i915/kms_big_fb: Move cleanup code to 
+>>> fixture")
+>>>
+>>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+>>> ---
+>>>   tests/i915/kms_big_fb.c | 5 ++++-
+>>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+>>> index abf974bb..d50fde45 100644
+>>> --- a/tests/i915/kms_big_fb.c
+>>> +++ b/tests/i915/kms_big_fb.c
+>>> @@ -457,6 +457,8 @@ static bool test_pipe(data_t *data)
+>>>       if (data->format == DRM_FORMAT_C8)
+>>>           unset_lut(data);
+>>>   +    intel_bb_destroy(data->ibb);
+>>> +
+>>>       return ret;
+>>>   }
+>>>   @@ -549,6 +551,8 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>       }
+>>>       igt_reset_timeout();
+>>>   +    intel_bb_destroy(data->ibb);
+>>> +
+>>>       return true;
+>>>   }
+>>>   @@ -763,7 +767,6 @@ static void test_cleanup(data_t *data)
+>>>       igt_remove_fb(data->drm_fd, &data->big_fb_flip[1]);
+>>>       igt_remove_fb(data->drm_fd, &data->small_fb);
+>>>   -    intel_bb_destroy(data->ibb);
+>>>       data->output = NULL;
+>>>   }
+>>>   --
+>>> 2.22.0
+>>>
+>
