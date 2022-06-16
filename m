@@ -1,11 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 16 Jun 2022 14:32:03 +0100
-Message-Id: <20220616133203.278584-1-tvrtko.ursulin@linux.intel.com>
+Date: Thu, 16 Jun 2022 15:06:31 +0100
+Message-Id: <20220616140637.559194-3-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20220616140637.559194-1-tvrtko.ursulin@linux.intel.com>
+References: <20220616140637.559194-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/drm_fdinfo: Test virtual engines
+Subject: [igt-dev] [PATCH i-g-t 2/8] libdrmfdinfo: Allow specifying custom
+ engine map
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,354 +23,336 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-We need some coverage of the virtual engines.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Instead of hard coding the engine names, allow a map of names to indices
+to either be passed in or it gets auto-detected (less efficient) while
+parsing.
 ---
- tests/i915/drm_fdinfo.c | 284 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 282 insertions(+), 2 deletions(-)
+ lib/igt_drm_clients.c   | 18 +++++++++++++---
+ lib/igt_drm_clients.h   |  3 ++-
+ lib/igt_drm_fdinfo.c    | 48 +++++++++++++++++++++++++++--------------
+ lib/igt_drm_fdinfo.h    | 15 ++++++++++---
+ tests/i915/drm_fdinfo.c | 19 ++++++++++++----
+ tools/intel_gpu_top.c   | 16 +++++++++++---
+ 6 files changed, 89 insertions(+), 30 deletions(-)
 
-diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
-index 3475d35b23b9..0a42370d54ce 100644
---- a/tests/i915/drm_fdinfo.c
-+++ b/tests/i915/drm_fdinfo.c
-@@ -27,6 +27,7 @@
- #include "igt_device.h"
- #include "igt_drm_fdinfo.h"
- #include "i915/gem.h"
-+#include "i915/gem_vm.h"
- #include "intel_ctx.h"
+diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
+index 45de2d0f1cc5..eabd43773f2d 100644
+--- a/lib/igt_drm_clients.c
++++ b/lib/igt_drm_clients.c
+@@ -302,14 +302,26 @@ static bool is_drm_fd(int fd_dir, const char *name)
+  * igt_drm_clients_scan:
+  * @clients: Previously initialised clients object
+  * @filter_client: Callback for client filtering
++ * @name_map: Array of engine name strings
++ * @map_entries: Number of items in the @name_map array
+  *
+  * Scan all open file descriptors from all processes in order to find all DRM
+  * clients and manage our internal list.
++ *
++ * If @name_map is provided each found engine in the fdinfo struct must
++ * correspond to one of the provided names. In this case the index of the engine
++ * stats tracked in struct igt_drm_client will be tracked under the same index
++ * as the engine name provided.
++ *
++ * If @name_map is not provided engine names will be auto-detected (this is
++ * less performant) and indices will correspond with auto-detected names as
++ * listed int clients->engine_class[].
+  */
+ struct igt_drm_clients *
+ igt_drm_clients_scan(struct igt_drm_clients *clients,
+ 		     bool (*filter_client)(const struct igt_drm_clients *,
+-					   const struct drm_client_fdinfo *))
++					   const struct drm_client_fdinfo *),
++		     const char **name_map, unsigned int map_entries)
+ {
+ 	struct dirent *proc_dent;
+ 	struct igt_drm_client *c;
+@@ -385,8 +397,8 @@ igt_drm_clients_scan(struct igt_drm_clients *clients,
+ 				continue;
  
- IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
-@@ -90,10 +91,10 @@ static igt_spin_t *__spin_poll(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
- 	struct igt_spin_factory opts = {
- 		.ahnd = ahnd,
- 		.ctx = ctx,
--		.engine = e->flags,
-+		.engine = e ? e->flags : 0,
- 	};
+ 			if (!__igt_parse_drm_fdinfo(dirfd(fdinfo_dir),
+-						    fdinfo_dent->d_name,
+-						    &info))
++						    fdinfo_dent->d_name, &info,
++						    name_map, map_entries))
+ 				continue;
  
--	if (gem_class_can_store_dword(fd, e->class))
-+	if (!e || gem_class_can_store_dword(fd, e->class))
- 		opts.flags |= IGT_SPIN_POLL_RUN;
+ 			if (filter_client && !filter_client(clients, &info))
+diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
+index 969793d5b51e..bced19adb055 100644
+--- a/lib/igt_drm_clients.h
++++ b/lib/igt_drm_clients.h
+@@ -76,7 +76,8 @@ void igt_drm_clients_free(struct igt_drm_clients *clients);
+ struct igt_drm_clients *
+ igt_drm_clients_scan(struct igt_drm_clients *clients,
+ 		     bool (*filter_client)(const struct igt_drm_clients *,
+-					   const struct drm_client_fdinfo *));
++					   const struct drm_client_fdinfo *),
++		     const char **name_map, unsigned int map_entries);
  
- 	return __igt_spin_factory(fd, &opts);
-@@ -440,6 +441,265 @@ all_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
- 	gem_quiescent_gpu(gem_fd);
+ struct igt_drm_clients *
+ igt_drm_clients_sort(struct igt_drm_clients *clients,
+diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+index 250d9e8917f2..68c89ad2c17e 100644
+--- a/lib/igt_drm_fdinfo.c
++++ b/lib/igt_drm_fdinfo.c
+@@ -22,6 +22,7 @@
+  *
+  */
+ 
++#include <assert.h>
+ #include <ctype.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -53,14 +54,10 @@ static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
  }
  
-+static struct i915_engine_class_instance *
-+list_engines(const intel_ctx_cfg_t *cfg,
-+	     unsigned int class, unsigned int *out)
-+{
-+	struct i915_engine_class_instance *ci;
-+	unsigned int count = 0, i;
-+
-+	ci = malloc(cfg->num_engines * sizeof(*ci));
-+	igt_assert(ci);
-+
-+	for (i = 0; i < cfg->num_engines; i++) {
-+		if (class == cfg->engines[i].engine_class)
-+			ci[count++] = cfg->engines[i];
-+	}
-+
-+	if (!count) {
-+		free(ci);
-+		ci = NULL;
-+	}
-+
-+	*out = count;
-+	return ci;
-+}
-+
-+static size_t sizeof_load_balance(int count)
-+{
-+	return offsetof(struct i915_context_engines_load_balance,
-+			engines[count]);
-+}
-+
-+static size_t sizeof_param_engines(int count)
-+{
-+	return offsetof(struct i915_context_param_engines,
-+			engines[count]);
-+}
-+
-+#define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
-+
-+static int __set_load_balancer(int i915, uint32_t ctx,
-+			       const struct i915_engine_class_instance *ci,
-+			       unsigned int count,
-+			       void *ext)
-+{
-+	struct i915_context_engines_load_balance *balancer =
-+		alloca0(sizeof_load_balance(count));
-+	struct i915_context_param_engines *engines =
-+		alloca0(sizeof_param_engines(count + 1));
-+	struct drm_i915_gem_context_param p = {
-+		.ctx_id = ctx,
-+		.param = I915_CONTEXT_PARAM_ENGINES,
-+		.size = sizeof_param_engines(count + 1),
-+		.value = to_user_pointer(engines)
-+	};
-+
-+	balancer->base.name = I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE;
-+	balancer->base.next_extension = to_user_pointer(ext);
-+
-+	igt_assert(count);
-+	balancer->num_siblings = count;
-+	memcpy(balancer->engines, ci, count * sizeof(*ci));
-+
-+	engines->extensions = to_user_pointer(balancer);
-+	engines->engines[0].engine_class =
-+		I915_ENGINE_CLASS_INVALID;
-+	engines->engines[0].engine_instance =
-+		I915_ENGINE_CLASS_INVALID_NONE;
-+	memcpy(engines->engines + 1, ci, count * sizeof(*ci));
-+
-+	return __gem_context_set_param(i915, &p);
-+}
-+
-+static void set_load_balancer(int i915, uint32_t ctx,
-+			      const struct i915_engine_class_instance *ci,
-+			      unsigned int count,
-+			      void *ext)
-+{
-+	igt_assert_eq(__set_load_balancer(i915, ctx, ci, count, ext), 0);
-+}
-+
-+static void
-+virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
-+{
-+	intel_ctx_cfg_t cfg = {};
-+
-+	cfg.vm = gem_vm_create(i915);
-+
-+	for (int class = 0; class < 32; class++) {
-+		struct i915_engine_class_instance *ci;
-+		unsigned int count;
-+
-+		if (!gem_class_can_store_dword(i915, class))
-+			continue;
-+
-+		ci = list_engines(base_cfg, class, &count);
-+		if (!ci)
-+			continue;
-+
-+		for (unsigned int pass = 0; pass < count; pass++) {
-+			const intel_ctx_t *ctx;
-+			unsigned long slept;
-+			uint64_t ahnd, val;
-+			igt_spin_t *spin;
-+
-+			igt_assert(sizeof(*ci) == sizeof(int));
-+			igt_permute_array(ci, count, igt_exchange_int);
-+
-+			igt_debug("class %u, pass %u/%u...\n", class, pass, count);
-+
-+			ctx = intel_ctx_create(i915, &cfg);
-+			ahnd = get_reloc_ahnd(i915, ctx->id);
-+
-+			set_load_balancer(i915, ctx->id, ci, count, NULL);
-+
-+			if (flags & TEST_BUSY)
-+				spin = spin_sync(i915, ahnd, ctx, NULL);
-+			else
-+				spin = NULL;
-+
-+			val = read_busy(i915, class);
-+			slept = measured_usleep(batch_duration_ns / 1000);
-+			if (flags & TEST_TRAILING_IDLE)
-+				end_spin(i915, spin, flags);
-+			val = read_busy(i915, class) - val;
-+
-+			if (flags & FLAG_HANG)
-+				igt_force_gpu_reset(i915);
-+			else
-+				end_spin(i915, spin, FLAG_SYNC);
-+
-+			assert_within_epsilon(val,
-+					      flags & TEST_BUSY ?
-+					      slept : 0.0f,
-+					      tolerance);
-+
-+			/* Check for idle after hang. */
-+			if (flags & FLAG_HANG) {
-+				gem_quiescent_gpu(i915);
-+				igt_assert(!gem_bo_busy(i915, spin->handle));
-+
-+				val = read_busy(i915, class);
-+				slept = measured_usleep(batch_duration_ns /
-+							1000);
-+				val = read_busy(i915, class) - val;
-+
-+				assert_within_epsilon(val, 0, tolerance);
+ static int parse_engine(char *line, struct drm_client_fdinfo *info,
+-			size_t prefix_len, uint64_t *val)
++			size_t prefix_len,
++			const char **name_map, unsigned int map_entries,
++			uint64_t *val)
+ {
+-	static const char *e2class[] = {
+-		"render",
+-		"copy",
+-		"video",
+-		"video-enhance",
+-	};
+ 	ssize_t name_len;
+ 	char *name, *p;
+ 	int found = -1;
+@@ -76,10 +73,26 @@ static int parse_engine(char *line, struct drm_client_fdinfo *info,
+ 
+ 	name = line + prefix_len;
+ 
+-	for (i = 0; i < ARRAY_SIZE(e2class); i++) {
+-		if (!strncmp(name, e2class[i], name_len)) {
+-			found = i;
+-			break;
++	if (name_map) {
++		for (i = 0; i < map_entries; i++) {
++			if (!strncmp(name, name_map[i], name_len)) {
++				found = i;
++				break;
 +			}
-+
-+			igt_spin_free(i915, spin);
-+			put_ahnd(ahnd);
-+			intel_ctx_destroy(i915, ctx);
-+
-+			gem_quiescent_gpu(i915);
++		}
++	} else {
++		for (i = 0; i < info->num_engines; i++) {
++			if (!strncmp(name, info->names[i], name_len)) {
++				found = i;
++				break;
++			}
 +		}
 +
-+		free(ci);
-+	}
-+}
-+
-+static void
-+__virt_submit_spin(int i915, igt_spin_t *spin,
-+		   const intel_ctx_t *ctx,
-+		   int offset)
-+{
-+	struct drm_i915_gem_execbuffer2 eb = spin->execbuf;
-+
-+	eb.flags &= ~(0x3f | I915_EXEC_BSD_MASK);
-+	eb.flags |= I915_EXEC_NO_RELOC;
-+	eb.batch_start_offset += offset;
-+	eb.rsvd1 = ctx->id;
-+
-+	gem_execbuf(i915, &eb);
-+}
-+
-+static void
-+virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
-+{
-+	const unsigned int num_engines = base_cfg->num_engines;
-+	intel_ctx_cfg_t cfg = {};
-+
-+	cfg.vm = gem_vm_create(i915);
-+
-+	for (int class = 0; class < 32; class++) {
-+		struct i915_engine_class_instance *ci;
-+		const intel_ctx_t *ctx[num_engines];
-+		igt_spin_t *spin = NULL;
-+		unsigned int count;
-+		unsigned long slept;
-+		uint64_t val;
-+
-+		if (!gem_class_can_store_dword(i915, class))
-+			continue;
-+
-+		ci = list_engines(base_cfg, class, &count);
-+		if (!ci)
-+			continue;
-+		igt_assert(count <= num_engines);
-+
-+		if (count < 2)
-+			continue;
-+
-+		igt_debug("class %u, %u engines...\n", class, count);
-+
-+		for (unsigned int i = 0; i < count; i++) {
-+			uint64_t ahnd;
-+
-+			igt_assert(sizeof(*ci) == sizeof(int));
-+			igt_permute_array(ci, count, igt_exchange_int);
-+
-+			ctx[i] = intel_ctx_create(i915, &cfg);
-+			ahnd = get_reloc_ahnd(i915, ctx[i]->id);
-+
-+			set_load_balancer(i915, ctx[i]->id, ci, count, NULL);
-+
-+			if (spin)
-+				__virt_submit_spin(i915, spin, ctx[i], 64);
-+			else
-+				spin = __spin_poll(i915, ahnd, ctx[i], NULL);
-+		}
-+
-+		/* Small delay to allow engines to start. */
-+		usleep(__spin_wait(i915, spin) * count / 1e3);
-+
-+		val = read_busy(i915, class);
-+		slept = measured_usleep(batch_duration_ns / 1000);
-+		if (flags & TEST_TRAILING_IDLE)
-+			end_spin(i915, spin, flags);
-+		val = read_busy(i915, class) - val;
-+
-+		if (flags & FLAG_HANG)
-+			igt_force_gpu_reset(i915);
-+		else
-+			end_spin(i915, spin, FLAG_SYNC);
-+
-+		assert_within_epsilon(val, slept * count, tolerance);
-+
-+		/* Check for idle after hang. */
-+		if (flags & FLAG_HANG) {
-+			gem_quiescent_gpu(i915);
-+			igt_assert(!gem_bo_busy(i915, spin->handle));
-+
-+			val = read_busy(i915, class);
-+			slept = measured_usleep(batch_duration_ns /
-+						1000);
-+			val = read_busy(i915, class) - val;
-+
-+			assert_within_epsilon(val, 0, tolerance);
-+		}
-+
-+		put_ahnd(spin->opts.ahnd);
-+		igt_spin_free(i915, spin);
-+		for (unsigned int i = 0; i < count; i++)
-+			intel_ctx_destroy(i915, ctx[i]);
-+
-+		gem_quiescent_gpu(i915);
-+
-+		free(ci);
-+	}
-+}
-+
- #define test_each_engine(T, i915, ctx, e) \
- 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
- 		igt_dynamic_f("%s", e->name)
-@@ -489,15 +749,24 @@ igt_main
- 	test_each_engine("idle", i915, ctx, e)
- 		single(i915, ctx, e, 0);
- 
-+	igt_subtest("virtual-idle")
-+		virtual(i915, &ctx->cfg, 0);
-+
- 	/**
- 	 * Test that a single engine reports load correctly.
- 	 */
- 	test_each_engine("busy", i915, ctx, e)
- 		single(i915, ctx, e, TEST_BUSY);
- 
-+	igt_subtest("virtual-busy")
-+		virtual(i915, &ctx->cfg, TEST_BUSY);
-+
- 	test_each_engine("busy-idle", i915, ctx, e)
- 		single(i915, ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
- 
-+	igt_subtest("virtual-busy-idle")
-+		virtual(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
-+
- 	test_each_engine("busy-hang", i915, ctx, e) {
- 		igt_hang_t hang = igt_allow_hang(i915, ctx->id, 0);
- 
-@@ -506,6 +775,9 @@ igt_main
- 		igt_disallow_hang(i915, hang);
++		if (found < 0) {
++			assert((info->num_engines + 1) < ARRAY_SIZE(info->names));
++			assert((strlen(name) + 1) < sizeof(info->names[0]));
++			strncpy(info->names[info->num_engines], name, name_len);
++			found = info->num_engines;
+ 		}
  	}
  
-+	igt_subtest("virtual-busy-hang")
-+		virtual(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
-+
- 	/**
- 	 * Test that when one engine is loaded other report no
- 	 * load.
-@@ -544,6 +816,14 @@ igt_main
- 		all_busy_check_all(i915, ctx, num_engines, classes, num_classes,
- 				   TEST_BUSY | TEST_TRAILING_IDLE);
+@@ -112,7 +125,8 @@ static const char *find_kv(const char *buf, const char *key, size_t keylen)
+ }
  
-+	igt_subtest("virtual-busy-all")
-+		virtual_all(i915, &ctx->cfg, TEST_BUSY);
+ unsigned int
+-__igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
++__igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
++		       const char **name_map, unsigned int map_entries)
+ {
+ 	char buf[4096], *_buf = buf;
+ 	char *l, *ctx = NULL;
+@@ -142,7 +156,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
+ 		} else if (!strncmp(l, "drm-engine-", 11) &&
+ 			   strncmp(l, "drm-engine-capacity-", 20)) {
+ 			idx = parse_engine(l, info, strlen("drm-engine-"),
+-					   &val);
++					   name_map, map_entries, &val);
+ 			if (idx >= 0) {
+ 				if (!info->capacity[idx])
+ 					info->capacity[idx] = 1;
+@@ -152,7 +166,7 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
+ 		} else if (!strncmp(l, "drm-engine-capacity-", 20)) {
+ 			idx = parse_engine(l, info,
+ 					   strlen("drm-engine-capacity-"),
+-					   &val);
++					   name_map, map_entries, &val);
+ 			if (idx >= 0) {
+ 				info->capacity[idx] = val;
+ 				num_capacity++;
+@@ -166,7 +180,9 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info)
+ 	return good + info->num_engines + num_capacity;
+ }
+ 
+-unsigned int igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info)
++unsigned int
++igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
++		     const char **name_map, unsigned int map_entries)
+ {
+ 	unsigned int res;
+ 	char fd[64];
+@@ -180,7 +196,7 @@ unsigned int igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info)
+ 	if (dir < 0)
+ 		return false;
+ 
+-	res = __igt_parse_drm_fdinfo(dir, fd, info);
++	res = __igt_parse_drm_fdinfo(dir, fd, info, name_map, map_entries);
+ 
+ 	close(dir);
+ 
+diff --git a/lib/igt_drm_fdinfo.h b/lib/igt_drm_fdinfo.h
+index 8759471615bd..fa4982f4030e 100644
+--- a/lib/igt_drm_fdinfo.h
++++ b/lib/igt_drm_fdinfo.h
+@@ -39,6 +39,7 @@ struct drm_client_fdinfo {
+ 
+ 	unsigned int num_engines;
+ 	unsigned int capacity[DRM_CLIENT_FDINFO_MAX_ENGINES];
++	char names[DRM_CLIENT_FDINFO_MAX_ENGINES][256];
+ 	uint64_t busy[DRM_CLIENT_FDINFO_MAX_ENGINES];
+ };
+ 
+@@ -47,11 +48,15 @@ struct drm_client_fdinfo {
+  *
+  * @drm_fd: DRM file descriptor
+  * @info: Structure to populate with read data. Must be zeroed.
++ * @name_map: Optional array of strings representing engine names
++ * @map_entries: Number of strings in the names array
+  *
+  * Returns the number of valid drm fdinfo keys found or zero if not all
+  * mandatory keys were present or no engines found.
+  */
+-unsigned int igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info);
++unsigned int
++igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info,
++		     const char **name_map, unsigned int map_entries);
+ 
+ /**
+  * __igt_parse_drm_fdinfo: Parses the drm fdinfo file
+@@ -59,11 +64,15 @@ unsigned int igt_parse_drm_fdinfo(int drm_fd, struct drm_client_fdinfo *info);
+  * @dir: File descriptor pointing to /proc/pid/fdinfo directory
+  * @fd: String representation of the file descriptor number to parse.
+  * @info: Structure to populate with read data. Must be zeroed.
++ * @name_map: Optional array of strings representing engine names
++ * @map_entries: Number of strings in the names array
+  *
+  * Returns the number of valid drm fdinfo keys found or zero if not all
+  * mandatory keys were present or no engines found.
+  */
+-unsigned int __igt_parse_drm_fdinfo(int dir, const char *fd,
+-				    struct drm_client_fdinfo *info);
++unsigned int
++__igt_parse_drm_fdinfo(int dir, const char *fd,
++		       struct drm_client_fdinfo *info,
++		       const char **name_map, unsigned int map_entries);
+ 
+ #endif /* IGT_DRM_FDINFO_H */
+diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
+index 0a42370d54ce..ec2d4fd52dbe 100644
+--- a/tests/i915/drm_fdinfo.c
++++ b/tests/i915/drm_fdinfo.c
+@@ -35,6 +35,14 @@ IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
+ const double tolerance = 0.05f;
+ const unsigned long batch_duration_ns = 500e6;
+ 
++static const char *engine_map[] = {
++	"render",
++	"copy",
++	"video",
++	"video-enhance",
++	"compute",
++};
 +
-+	igt_subtest("virtual-busy-idle-all")
-+		virtual_all(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
-+
-+	igt_subtest("virtual-busy-hang-all")
-+		virtual_all(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
- 	/**
- 	 * Test for no cross-client contamination.
- 	 */
+ #define __assert_within_epsilon(x, ref, tol_up, tol_down) \
+ 	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+ 		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+@@ -51,7 +59,8 @@ static void basics(int i915, unsigned int num_classes)
+ 	struct drm_client_fdinfo info = { };
+ 	unsigned int ret;
+ 
+-	ret = igt_parse_drm_fdinfo(i915, &info);
++	ret = igt_parse_drm_fdinfo(i915, &info, engine_map,
++				   ARRAY_SIZE(engine_map));
+ 	igt_assert(ret);
+ 
+ 	igt_assert(!strcmp(info.driver, "i915"));
+@@ -182,7 +191,8 @@ static uint64_t read_busy(int i915, unsigned int class)
+ {
+ 	struct drm_client_fdinfo info = { };
+ 
+-	igt_assert(igt_parse_drm_fdinfo(i915, &info));
++	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
++					ARRAY_SIZE(engine_map)));
+ 
+ 	return info.busy[class];
+ }
+@@ -268,7 +278,8 @@ static void read_busy_all(int i915, uint64_t *val)
+ {
+ 	struct drm_client_fdinfo info = { };
+ 
+-	igt_assert(igt_parse_drm_fdinfo(i915, &info));
++	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
++					ARRAY_SIZE(engine_map)));
+ 
+ 	memcpy(val, info.busy, sizeof(info.busy));
+ }
+@@ -719,7 +730,7 @@ igt_main
+ 		i915 = __drm_open_driver(DRIVER_INTEL);
+ 
+ 		igt_require_gem(i915);
+-		igt_require(igt_parse_drm_fdinfo(i915, &info));
++		igt_require(igt_parse_drm_fdinfo(i915, &info, NULL, 0));
+ 
+ 		ctx = intel_ctx_create_all_physical(i915);
+ 
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 3f6781ac09f0..38147ee82b6c 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -2046,7 +2046,7 @@ static bool has_drm_fdinfo(const struct igt_device_card *card)
+ 	if (fd < 0)
+ 		return false;
+ 
+-	cnt = igt_parse_drm_fdinfo(fd, &info);
++	cnt = igt_parse_drm_fdinfo(fd, &info, NULL, 0);
+ 
+ 	close(fd);
+ 
+@@ -2082,6 +2082,13 @@ int main(int argc, char **argv)
+ {
+ 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
+ 	struct igt_drm_clients *clients = NULL;
++	static const char *engine_map[] = {
++		"render",
++		"copy",
++		"video",
++		"video-enhance",
++		"compute",
++	};
+ 	int con_w = -1, con_h = -1;
+ 	char *output_path = NULL;
+ 	struct engines *engines;
+@@ -2231,7 +2238,8 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	pmu_sample(engines);
+-	igt_drm_clients_scan(clients, client_match);
++	igt_drm_clients_scan(clients, client_match, engine_map,
++			     ARRAY_SIZE(engine_map));
+ 	codename = igt_device_get_pretty_name(&card, false);
+ 
+ 	while (!stop_top) {
+@@ -2263,7 +2271,9 @@ int main(int argc, char **argv)
+ 
+ 		disp_clients =
+ 			display_clients(igt_drm_clients_scan(clients,
+-							     client_match));
++							     client_match,
++							     engine_map,
++							     ARRAY_SIZE(engine_map)));
+ 
+ 		while (!consumed) {
+ 			pops->open_struct(NULL);
 -- 
 2.34.1
