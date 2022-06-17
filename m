@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
- [IPv6:2a00:1450:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FDD610F616
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 07:56:28 +0000 (UTC)
-Received: by mail-wr1-x434.google.com with SMTP id c21so4713808wrb.1
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 00:56:27 -0700 (PDT)
-Message-ID: <dfef7194-fe91-35af-0eb2-324de8e83cb6@gmail.com>
-Date: Fri, 17 Jun 2022 10:56:19 +0300
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82AEC10E4FE
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 08:14:10 +0000 (UTC)
+Date: Fri, 17 Jun 2022 11:12:12 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Message-ID: <Yqw3XKQlSVy74dP2@platvala-desk.ger.corp.intel.com>
+References: <20220616215654.5522-1-nidhi1.gupta@intel.com>
+ <20220616215654.5522-2-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Rob Clark <robdclark@gmail.com>, igt-dev@lists.freedesktop.org
-References: <20220616225510.3305267-1-robdclark@gmail.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220616225510.3305267-1-robdclark@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH igt] tests/kms_getfb: Fix on non-i915 devices
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220616215654.5522-2-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_draw_crc.c: Convert
+ tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,35 +21,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: Rob Clark <robdclark@chromium.org>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-On 17.6.2022 1.55, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
+On Fri, Jun 17, 2022 at 03:26:53AM +0530, Nidhi Gupta wrote:
+> Convert the existing subtests to dynamic subtests at pipe level.
 > 
-> intel_get_drm_devid() will assert that it is i915.. so we need to
-> require that first in order for getfb-reject-ccs to skip instead of
-> crash.
-> 
-> Signed-off-by: Rob Clark <robdclark@chromium.org>
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 > ---
->   tests/kms_getfb.c | 1 +
->   1 file changed, 1 insertion(+)
+>  tests/i915/kms_draw_crc.c | 26 ++++++++++++++++++++------
+>  1 file changed, 20 insertions(+), 6 deletions(-)
 > 
-> diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-> index b3a8d265..2e4552a0 100644
-> --- a/tests/kms_getfb.c
-> +++ b/tests/kms_getfb.c
-> @@ -265,6 +265,7 @@ static void test_duplicate_handles(int fd)
->   		struct drm_mode_fb_cmd2 add_ccs = { };
->   		struct drm_mode_fb_cmd get = { };
->   
-> +		igt_require(is_i915_device(fd));
->   		igt_require_f(!HAS_FLATCCS(intel_get_drm_devid(fd)),
->   			      "skip because flat ccs has only one buffer.\n");
->   
+> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+> index 33fefed4..04cae0aa 100644
+> --- a/tests/i915/kms_draw_crc.c
+> +++ b/tests/i915/kms_draw_crc.c
+> @@ -40,6 +40,7 @@ drmModeResPtr drm_res;
+>  drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
+>  struct buf_ops *bops;
+>  igt_pipe_crc_t *pipe_crc;
+> +igt_display_t display;
+>  
+>  static const uint32_t formats[] = {
+>  	DRM_FORMAT_XRGB8888,
+> @@ -265,6 +266,7 @@ static void setup_environment(void)
+>  	drm_fd = drm_open_driver_master(DRIVER_INTEL);
+>  	igt_require(drm_fd >= 0);
+>  
+> +	igt_display_require(&display, drm_fd);
+>  	drm_res = drmModeGetResources(drm_fd);
+>  	igt_require(drm_res);
+>  	igt_assert(drm_res->count_connectors <= MAX_CONNECTORS);
+> @@ -331,6 +333,8 @@ igt_main
+>  {
+>  	enum igt_draw_method method;
+>  	int format_idx, modifier_idx;
+> +	igt_output_t *output;
+> +	enum pipe pipe;
+>  
+>  	igt_fixture
+>  		setup_environment();
+> @@ -340,18 +344,28 @@ igt_main
+>  	for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+>  		igt_describe("This subtest verfies igt_draw library works "
+>  			     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
+> -		igt_subtest_f("draw-method-%s-%s-%s",
+> +		igt_subtest_with_dynamic_f("draw-method-%s-%s-%s",
+>  			      format_str(format_idx),
+>  			      igt_draw_get_method_name(method),
+> -			      modifier_str(modifier_idx))
+> -			draw_method_subtest(method, format_idx,
+> -					    modifiers[modifier_idx]);
+> +			      modifier_str(modifier_idx)) {
+> +			for_each_pipe_with_valid_output(&display, pipe, output) {
+> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+> +					draw_method_subtest(method, format_idx,
+> +					    	    modifiers[modifier_idx]);
+> +				}
+
+There's an easy thumb rule to follow: If you're looping over all
+output/pipe combinations, and you're not even passing the output and
+pipe to the test, you're just repeating the same operation n times.
+
+
+> +			}
+> +		}
+>  	} } }
+>  
+>  	igt_describe("This subtest verifies CRC after filling fb with x-tiling "
+>  		     "or none.");
+> -	igt_subtest("fill-fb")
+> -		fill_fb_subtest();
+> +	igt_subtest_with_dynamic("fill-fb") {
+> +		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+> +				fill_fb_subtest();
+> +			}
+
+Same here.
+
+
+
+-- 
+Petri Latvala
+
+
+
+> +		}
+> +	}
+>  
+>  	igt_fixture
+>  		teardown_environment();
+> -- 
+> 2.26.2
+> 
