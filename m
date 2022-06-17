@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69D0410E933
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 15:56:32 +0000 (UTC)
-Received: from mx0.riseup.net (mx0-pn.riseup.net [10.0.1.42])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
- client-signature RSA-PSS (2048 bits) client-digest SHA256)
- (Client CN "mx0.riseup.net", Issuer "R3" (not verified))
- by mx1.riseup.net (Postfix) with ESMTPS id 4LPk2z59KlzDrfk
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 15:48:11 +0000 (UTC)
-From: Isabella Basso <isabbasso@riseup.net>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 17 Jun 2022 12:47:52 -0300
-Message-Id: <20220617154753.30175-2-isabbasso@riseup.net>
-In-Reply-To: <20220617154753.30175-1-isabbasso@riseup.net>
-References: <20220617154753.30175-1-isabbasso@riseup.net>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53D7B10EB0A
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 16:57:26 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
+ priyanka.dandamudi@intel.com
+Date: Fri, 17 Jun 2022 17:38:22 +0530
+Message-Id: <20220617120822.1208890-3-priyanka.dandamudi@intel.com>
+In-Reply-To: <20220617120822.1208890-1-priyanka.dandamudi@intel.com>
+References: <20220617120822.1208890-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] igt_kmod: add compatibility for KUnit
+Subject: [igt-dev] [PATCH 2/2] HAX: don't do full run
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,334 +19,210 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kunit-dev@googlegroups.com, magalilemes00@gmail.com, maira.canal@usp.br,
- Daniel Latypov <dlatypov@google.com>, n@nfraprado.net,
- leandro.ribeiro@collabora.com, David Gow <davidgow@google.com>,
- tales.aparecida@gmail.com, Isabella Basso <isabbasso@riseup.net>,
- andrealmeid@riseup.net, brendanhiggins@google.com,
- Trevor Woerner <twoerner@gmail.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This adds functions for both executing the tests as well as parsing (K)TAP
-kmsg output, as per the KTAP spec [1].
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-[1] https://www.kernel.org/doc/html/latest/dev-tools/ktap.html
+Just for test description, no full run is necessary.
 
-Signed-off-by: Isabella Basso <isabbasso@riseup.net>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- lib/igt_kmod.c | 269 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kmod.h |   3 +
- 2 files changed, 272 insertions(+)
+ tests/intel-ci/fast-feedback.testlist | 184 +-------------------------
+ 1 file changed, 1 insertion(+), 183 deletions(-)
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index dfdcfcc5..d38cd221 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -25,6 +25,7 @@
- #include <signal.h>
- #include <errno.h>
- #include <sys/utsname.h>
-+#include <limits.h>
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 9c5dee44..be145995 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -2,186 +2,4 @@
+ igt@i915_module_load@load
  
- #include "igt_aux.h"
- #include "igt_core.h"
-@@ -32,6 +33,8 @@
- #include "igt_sysfs.h"
- #include "igt_taints.h"
- 
-+#define BUF_LEN 4096
-+
- /**
-  * SECTION:igt_kmod
-  * @short_description: Wrappers around libkmod for module loading/unloading
-@@ -372,6 +375,272 @@ static void *strdup_realloc(char *origptr, const char *strdata)
- 	return newptr;
- }
- 
-+static void find_next_tap_subtest(char *record, int *ret, bool is_subtest)
-+{
-+	char test_count_ptr[12];
-+	const char *test_search_str, *ver_search_str, *lend,
-+	      *ver_res_ptr, *test_res_ptr;
-+	int test_count_strlen;
-+	long test_count;
-+
-+	/* total tests will appear as 0..N at the beginning of a run */
-+	test_search_str = "..";
-+	ver_search_str = "TAP version ";
-+
-+	ver_res_ptr = strstr(record, ver_search_str);
-+	test_res_ptr = strstr(record, test_search_str);
-+
-+	*ret = -1;
-+
-+	if (test_res_ptr == NULL)
-+		return;
-+
-+	test_res_ptr += strlen(test_search_str);
-+	lend = strchrnul(test_res_ptr, '\n');
-+	/* in case line > 4096 */
-+	if (*lend == '\0') {
-+		igt_info("%s\n", record);
-+		return;
-+	}
-+
-+	test_count_strlen = (int)(lend - test_res_ptr);
-+	if (test_count_strlen > sizeof(test_count_ptr) - 1)
-+		return;
-+	strncpy(test_count_ptr, test_res_ptr, test_count_strlen);
-+
-+	test_count_ptr[test_count_strlen] = '\0';
-+	test_count = strtol(test_count_ptr, NULL, 10);
-+	if (test_count == LONG_MIN || test_count == LONG_MAX)
-+		return;
-+
-+	/* "(K)TAP version XX" should be the first line on all (sub)tests as per
-+	 * https://www.kernel.org/doc/html/latest/dev-tools/ktap.html#version-lines
-+	 * but actually isn't, as it currently depends on who writes the test
-+	 * to print this */
-+	if (ver_res_ptr == NULL)
-+		igt_info("Missing test version string\n");
-+
-+	if (is_subtest)
-+		igt_info("running %d subtests...\n", (int)test_count);
-+	else
-+		igt_info("running %d tests...\n", (int)test_count);
-+
-+	*ret = (int)test_count;
-+	return;
-+}
-+
-+static void print_tap(int fd, char *record, int *sublevel, bool *failed_tests)
-+{
-+	const char *test_fail_search_str;
-+	ssize_t r;
-+	/* for each sublevel we have 2 spaces indent */
-+	const int indent_len = (*sublevel + 1) * 2;;
-+
-+	test_fail_search_str = "not ok ";
-+
-+	for (; *sublevel > 0;) {
-+		const char *lend, *test_fail_res, *lstart, *i_end;
-+		int *ret, retval, llen;
-+
-+		ret = &retval;
-+
-+		lend = strchrnul(record, '\n');
-+
-+		if (*lend != '\0')
-+			lseek(fd, (int)(lend - record), SEEK_CUR);
-+
-+		r = read(fd, record, BUF_LEN);
-+
-+		if (r <= 0) {
-+			switch (errno) {
-+			case EINTR:
-+				continue;
-+			case EPIPE:
-+				igt_warn("kmsg truncated: too many messages. You may want to increase log_buf_len in kmcdline\n");
-+				continue;
-+			case !EAGAIN:
-+				igt_warn("kmsg truncated: unknown error (%m)\n");
-+			default:
-+				break;
-+			}
-+			break;
-+		}
-+
-+		find_next_tap_subtest(record, ret, true);
-+		if (*ret != -1) {
-+			(*sublevel)++;
-+			print_tap(fd, record, sublevel, failed_tests);
-+		}
-+
-+		lend = strchrnul(record, '\n');
-+
-+		/* in case line > 4096 */
-+		if (*lend == '\0') {
-+			igt_info("%s\n", record);
-+			continue;
-+		}
-+
-+		lstart = strchrnul(record, ';');
-+
-+		/* check if we're still in a subtest */
-+		if (*lstart == '\0') {
-+			igt_warn("kmsg truncated: output malformed (%m)\n");
-+			igt_fail(IGT_EXIT_FAILURE);
-+		} else {
-+			lstart++;
-+			i_end = lstart;
-+			while (isspace(*i_end))
-+				i_end++;
-+			llen = (int)(i_end - lstart);
-+			if (llen != indent_len)
-+				break;
-+		}
-+
-+		test_fail_res = strstr(record, test_fail_search_str);
-+		if (test_fail_res != NULL) {
-+			igt_warn("kmsg> %.*s\n",
-+				 (int)(lend - lstart) - 1, lstart);
-+			*failed_tests = true;
-+			continue;
-+		}
-+
-+		igt_info("kmsg> %.*s\n",
-+			 (int)(lend - lstart) - 1, lstart);
-+	}
-+	(*sublevel)--;
-+}
-+
-+static void parse_kmsg_for_tap(int fd)
-+{
-+	char record[BUF_LEN + 1];
-+	int test_sublevel;
-+	bool failed_tests, skip, found_tests;
-+
-+	test_sublevel = 0;
-+
-+	skip = true;
-+	failed_tests = false;
-+	found_tests = false;
-+
-+	if (fd == -1) {
-+		igt_warn("Unable to retrieve kernel log (from /dev/kmsg)\n");
-+		return;
-+	}
-+
-+	record[BUF_LEN] = '\0';
-+
-+	while (true) {
-+		const char *lend;
-+		int *ret, retval;
-+		ssize_t r;
-+		ret = &retval;
-+
-+		lend = strchrnul(record, '\n');
-+
-+		if (!skip && *lend != '\0')
-+			lseek(fd, (int) (lend - record), SEEK_CUR);
-+
-+		r = read(fd, record, BUF_LEN);
-+
-+		if (!skip)
-+			lend = strchrnul(record, '\n');
-+		else
-+			skip = false;
-+
-+		if (r <= 0) {
-+			switch (errno) {
-+			case EINTR:
-+				continue;
-+			case EPIPE:
-+				igt_warn("kmsg truncated: too many messages. You may want to increase log_buf_len in kmcdline\n");
-+				continue;
-+			case !EAGAIN:
-+				igt_warn("kmsg truncated: unknown error (%m)\n");
-+			default:
-+				break;
-+			}
-+			break;
-+		}
-+
-+		find_next_tap_subtest(record, ret, false);
-+		if (*ret != -1) {
-+			found_tests = true;
-+			test_sublevel++;
-+			print_tap(fd, record, &test_sublevel, &failed_tests);
-+		}
-+	}
-+
-+	if (failed_tests || !found_tests)
-+		igt_fail(IGT_EXIT_FAILURE);
-+	else
-+		igt_success();
-+}
-+
-+/**
-+ * igt_kunit: tests a kunit module
-+ * @mod_name: the name of the module
-+ * @options: options to load the module
-+ * @req_mods: array with additional dependencies to run the KUnit test
-+ * @req_mod_len: size of req_mods array
-+ *
-+ * Loads the kunit module, parses its dmesg output, then unloads it
-+ */
-+void igt_kunit(const char *mod_name, const char *options,
-+	       const char **req_mods, int req_mod_len)
-+{
-+	int kmsg_fd, cmi = 0;
-+	struct igt_kselftest tst;
-+	const char *norm_name;
-+
-+	/* get normalized module name */
-+	igt_require(igt_kselftest_init(&tst, mod_name) == 0);
-+
-+	norm_name = kmod_module_get_name(tst.kmod);
-+
-+	if (!igt_kmod_is_loaded(norm_name)) {
-+		for (cmi = 0; cmi < req_mod_len; cmi++) {
-+			if (igt_kmod_load(req_mods[cmi], NULL))
-+				goto unload;
-+		}
-+
-+		/* The kunit module is required for running any kunit tests */
-+		if (!igt_kmod_is_loaded("kunit"))
-+			igt_require(igt_kmod_load("kunit", NULL) == 0);
-+
-+	} else {
-+		/* Unload module if loaded (maybe previous run bailed out?) */
-+		igt_kmod_unload(mod_name, 0);
-+	}
-+
-+	kmsg_fd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
-+
-+	if (kmsg_fd < 0) {
-+		igt_warn("Could not open /dev/kmsg");
-+		goto unload;
-+	}
-+
-+	if (lseek(kmsg_fd, 0, SEEK_END)) {
-+		igt_warn("Could not seek the end of /dev/kmsg");
-+		close(kmsg_fd);
-+		goto unload;
-+	}
-+
-+	igt_require(igt_kmod_load(mod_name, options) == 0);
-+
-+	parse_kmsg_for_tap(kmsg_fd);
-+
-+	igt_kmod_unload(mod_name, 0);
-+
-+	close(kmsg_fd);
-+unload:
-+	for (cmi--; cmi >= 0; cmi--) {
-+		igt_kmod_unload(req_mods[cmi], 0);
-+	}
-+
-+	if (igt_kmod_is_loaded("kunit"))
-+		igt_require(igt_kmod_load("kunit", NULL) == 0);
-+}
-+
- /**
-  * igt_i915_driver_load:
-  * @opts: options to pass to i915 driver
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index f98dd29f..6d8b5968 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -38,6 +38,9 @@ int igt_kmod_unload(const char *mod_name, unsigned int flags);
- 
- int igt_audio_driver_unload(char **whom);
- 
-+void igt_kunit(const char *mod_name, const char *options,
-+	       const char **req_mods, int req_mod_len);
-+
- int igt_i915_driver_load(const char *opts);
- int igt_i915_driver_unload(void);
- int __igt_i915_driver_unload(char **whom);
+ # Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-a
+-igt@kms_pipe_crc_basic@read-crc-pipe-b
+-igt@kms_pipe_crc_basic@read-crc-pipe-c
+-igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
+-
+-# System wide suspend tests
+-igt@i915_suspend@basic-s2idle-without-i915
+-igt@i915_suspend@basic-s3-without-i915
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
++igt@meta_test@fail-result
 -- 
-2.36.1
+2.25.1
