@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <af41c69f-c79c-e7e0-43a1-053dd08faaa8@linux.intel.com>
-Date: Fri, 17 Jun 2022 11:09:57 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 217FD11ACC8
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 11:07:47 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 17 Jun 2022 16:38:27 +0530
+Message-Id: <20220617110828.26508-2-swati2.sharma@intel.com>
+In-Reply-To: <20220617110828.26508-1-swati2.sharma@intel.com>
+References: <20220617110828.26508-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>,
- igt-dev@lists.freedesktop.org
-References: <20220616140637.559194-1-tvrtko.ursulin@linux.intel.com>
- <20220616140637.559194-9-tvrtko.ursulin@linux.intel.com>
- <10f7350c-af49-c5b9-9fe5-bfd32131ac79@gmail.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <10f7350c-af49-c5b9-9fe5-bfd32131ac79@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 8/8] gputop: Basic vendor agnostic GPU
- top tool
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_flip_scaled_crc: Convert
+ tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,339 +19,221 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Intel-gfx@lists.freedesktop.org,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Convert the existing subtests to dynamic subtests at pipe/output level.
 
-On 17/06/2022 08:20, Christian König wrote:
-> Am 16.06.22 um 16:06 schrieb Tvrtko Ursulin:
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> Rudimentary vendor agnostic example of how lib_igt_drm_clients can be 
->> used
->> to display a sorted by card and usage list of processes using GPUs.
->>
->> Borrows a bit of code from intel_gpu_top but for now omits the fancy
->> features like interactive functionality, card selection, client
->> aggregation, sort modes, JSON output  and pretty engine names. Also no
->> support for global GPU or system metrics.
->>
->> On the other hand it shows clients from all DRM cards which
->> intel_gpu_top does not do.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> Cc: Rob Clark <robdclark@chromium.org>
->> Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
-> 
-> LGTM, Acked-by: Christian König <christian.koenig@amd.com>
+v2: Refactored code in such a manner that once test has been run
+    successfully on chosen pipe this pipe will not be tested again
+    as this test is testing pipe feature. No need to be run
+    separately for each connector using all pipes.
 
-Thanks Christian,
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/i915/kms_flip_scaled_crc.c | 117 +++++++++++++------------------
+ 1 file changed, 50 insertions(+), 67 deletions(-)
 
-It is a very rudimentary tool, more a reference really. I keep hoping 
-some UI/desktop folks actually pick up the idea and implement something 
-nicer elsewhere. Or maybe it ends up me spending a little bit more time 
-on it, to carry over some more functionality from intel_gpu_top.
-
-I see amdgpu patches are in - presumably that means gputop parses it and 
-understands fine?
-
-Regards,
-
-Tvrtko
-
->> ---
->>   tools/gputop.c    | 260 ++++++++++++++++++++++++++++++++++++++++++++++
->>   tools/meson.build |   5 +
->>   2 files changed, 265 insertions(+)
->>   create mode 100644 tools/gputop.c
->>
->> diff --git a/tools/gputop.c b/tools/gputop.c
->> new file mode 100644
->> index 000000000000..d259cac1ab17
->> --- /dev/null
->> +++ b/tools/gputop.c
->> @@ -0,0 +1,260 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2022 Intel Corporation
->> + */
->> +
->> +#include <assert.h>
->> +#include <ctype.h>
->> +#include <dirent.h>
->> +#include <errno.h>
->> +#include <fcntl.h>
->> +#include <inttypes.h>
->> +#include <limits.h>
->> +#include <locale.h>
->> +#include <math.h>
->> +#include <poll.h>
->> +#include <signal.h>
->> +#include <stdint.h>
->> +#include <stdio.h>
->> +#include <stdlib.h>
->> +#include <string.h>
->> +#include <sys/ioctl.h>
->> +#include <sys/stat.h>
->> +#include <sys/types.h>
->> +#include <unistd.h>
->> +#include <termios.h>
->> +#include <sys/sysmacros.h>
->> +#include <stdbool.h>
->> +
->> +#include "igt_drm_clients.h"
->> +#include "igt_drm_fdinfo.h"
->> +
->> +static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", 
->> "█" };
->> +
->> +static void n_spaces(const unsigned int n)
->> +{
->> +    unsigned int i;
->> +
->> +    for (i = 0; i < n; i++)
->> +        putchar(' ');
->> +}
->> +
->> +static void print_percentage_bar(double percent, int max_len)
->> +{
->> +    int bar_len, i, len = max_len - 2;
->> +    const int w = 8;
->> +
->> +    assert(max_len > 0);
->> +
->> +    bar_len = ceil(w * percent * len / 100.0);
->> +    if (bar_len > w * len)
->> +        bar_len = w * len;
->> +
->> +    putchar('|');
->> +
->> +    for (i = bar_len; i >= w; i -= w)
->> +        printf("%s", bars[w]);
->> +    if (i)
->> +        printf("%s", bars[i]);
->> +
->> +    len -= (bar_len + (w - 1)) / w;
->> +    n_spaces(len);
->> +
->> +    putchar('|');
->> +}
->> +
->> +static int
->> +print_client_header(struct igt_drm_client *c, int lines, int con_w, 
->> int con_h,
->> +            int *engine_w)
->> +{
->> +    const char *pidname = "    PID               NAME ";
->> +    int ret, len = strlen(pidname);
->> +
->> +    if (lines++ >= con_h || len >= con_w)
->> +        return lines;
->> +    printf("\033[7m");
->> +    ret = printf("DRM minor %u", c->drm_minor);
->> +    n_spaces(con_w - ret);
->> +
->> +    if (lines++ >= con_h)
->> +        return lines;
->> +    printf("\n%s", pidname);
->> +
->> +    if (c->engines->num_engines) {
->> +        unsigned int i;
->> +        int width;
->> +
->> +        *engine_w = width = (con_w - len) / c->engines->num_engines;
->> +
->> +        for (i = 0; i <= c->engines->max_engine_id; i++) {
->> +            const char *name = c->engines->names[i];
->> +            int name_len = strlen(name);
->> +            int pad = (width - name_len) / 2;
->> +            int spaces = width - pad - name_len;
->> +
->> +            if (!name)
->> +                continue;
->> +
->> +            if (pad < 0 || spaces < 0)
->> +                continue;
->> +
->> +            n_spaces(pad);
->> +            printf("%s", name);
->> +            n_spaces(spaces);
->> +            len += pad + name_len + spaces;
->> +        }
->> +    }
->> +
->> +    n_spaces(con_w - len);
->> +    printf("\033[0m\n");
->> +
->> +    return lines;
->> +}
->> +
->> +
->> +static bool
->> +newheader(const struct igt_drm_client *c, const struct igt_drm_client 
->> *pc)
->> +{
->> +    return !pc || c->drm_minor != pc->drm_minor;
->> +}
->> +
->> +static int
->> +print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
->> +         double t, int lines, int con_w, int con_h,
->> +         unsigned int period_us, int *engine_w)
->> +{
->> +    unsigned int i;
->> +
->> +    /* Filter out idle clients. */
->> +    if (!c->total_runtime || c->samples < 2)
->> +        return lines;
->> +
->> +    /* Print header when moving to a different DRM card. */
->> +    if (newheader(c, *prevc)) {
->> +        lines = print_client_header(c, lines, con_w, con_h, engine_w);
->> +        if (lines >= con_h)
->> +            return lines;
->> +    }
->> +
->> +    *prevc = c;
->> +
->> +    printf("%8u %17s ", c->pid, c->print_name);
->> +    lines++;
->> +
->> +    for (i = 0; c->samples > 1 && i <= c->engines->max_engine_id; i++) {
->> +        double pct;
->> +
->> +        if (!c->engines->capacity[i])
->> +            continue;
->> +
->> +        pct = (double)c->val[i] / period_us / 1e3 * 100 /
->> +              c->engines->capacity[i];
->> +
->> +        /*
->> +         * Guard against fluctuations between our scanning period and
->> +         * GPU times as exported by the kernel in fdinfo.
->> +         */
->> +        if (pct > 100.0)
->> +            pct = 100.0;
->> +
->> +        print_percentage_bar(pct, *engine_w);
->> +    }
->> +
->> +    putchar('\n');
->> +
->> +    return lines;
->> +}
->> +
->> +static int
->> +__client_id_cmp(const struct igt_drm_client *a,
->> +        const struct igt_drm_client *b)
->> +{
->> +    if (a->id > b->id)
->> +        return 1;
->> +    else if (a->id < b->id)
->> +        return -1;
->> +    else
->> +        return 0;
->> +}
->> +
->> +static int client_cmp(const void *_a, const void *_b, void *unused)
->> +{
->> +    const struct igt_drm_client *a = _a;
->> +    const struct igt_drm_client *b = _b;
->> +    long val_a, val_b;
->> +
->> +    /* DRM cards into consecutive buckets first. */
->> +    val_a = a->drm_minor;
->> +    val_b = b->drm_minor;
->> +    if (val_a > val_b)
->> +        return 1;
->> +    else if (val_b > val_a)
->> +        return -1;
->> +
->> +    /*
->> +     * Within buckets sort by last sampling period aggregated 
->> runtime, with
->> +     * client id as a tie-breaker.
->> +     */
->> +    val_a = a->last_runtime;
->> +    val_b = b->last_runtime;
->> +    if (val_a == val_b)
->> +        return __client_id_cmp(a, b);
->> +    else if (val_b > val_a)
->> +        return 1;
->> +    else
->> +        return -1;
->> +
->> +}
->> +
->> +int main(int argc, char **argv)
->> +{
->> +    unsigned int period_us = 2e6;
->> +    struct igt_drm_clients *clients = NULL;
->> +    int con_w = -1, con_h = -1;
->> +
->> +    clients = igt_drm_clients_init(NULL);
->> +    if (!clients)
->> +        exit(1);
->> +
->> +    igt_drm_clients_scan(clients, NULL, NULL, 0);
->> +
->> +    for (;;) {
->> +        struct igt_drm_client *c, *prevc = NULL;
->> +        int i, engine_w = 0, lines = 0;
->> +        struct winsize ws;
->> +
->> +        if (ioctl(0, TIOCGWINSZ, &ws) != -1) {
->> +            con_w = ws.ws_col;
->> +            con_h = ws.ws_row;
->> +            if (con_w == 0 && con_h == 0) {
->> +                /* Serial console. */
->> +                con_w = 80;
->> +                con_h = 24;
->> +            }
->> +        }
->> +
->> +        igt_drm_clients_scan(clients, NULL, NULL, 0);
->> +        igt_drm_clients_sort(clients, client_cmp);
->> +
->> +        printf("\033[H\033[J");
->> +
->> +        igt_for_each_drm_client(clients, c, i) {
->> +            assert(c->status != IGT_DRM_CLIENT_PROBE);
->> +            if (c->status != IGT_DRM_CLIENT_ALIVE)
->> +                break; /* Active clients are first in the array. */
->> +
->> +            lines = print_client(c, &prevc, (double)period_us / 1e6,
->> +                         lines, con_w, con_h, period_us,
->> +                         &engine_w);
->> +            if (lines >= con_h)
->> +                break;
->> +        }
->> +
->> +        if (lines++ < con_h)
->> +            printf("\n");
->> +
->> +        usleep(period_us);
->> +    }
->> +
->> +    return 0;
->> +}
->> diff --git a/tools/meson.build b/tools/meson.build
->> index ade00ee4df61..d5cb459b619d 100644
->> --- a/tools/meson.build
->> +++ b/tools/meson.build
->> @@ -70,6 +70,11 @@ if libudev.found()
->>              install : true)
->>   endif
->> +executable('gputop', 'gputop.c',
->> +           install : true,
->> +           install_rpath : bindir_rpathdir,
->> +           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,math])
->> +
->>   intel_l3_parity_src = [ 'intel_l3_parity.c', 
->> 'intel_l3_udev_listener.c' ]
->>   executable('intel_l3_parity', sources : intel_l3_parity_src,
->>          dependencies : tool_deps,
-> 
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index 9740715f..8d995d00 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -163,8 +163,6 @@ const struct {
+ 	},
+ };
+ 
+-enum subrval {CONNECTORFAIL, CONNECTORSUCCESS, TESTSKIP, NOREQUESTEDFORMATONPIPE};
+-
+ static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+ 		     uint32_t height, uint64_t format, uint64_t modifier)
+ {
+@@ -220,12 +218,12 @@ static void clear_lut(data_t *data, enum pipe pipe)
+ 	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
+ }
+ 
+-static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+-					enum pipe pipe, igt_output_t *output)
++static void test_flip_to_scaled(data_t *data, uint32_t index,
++				enum pipe pipe, igt_output_t *output,
++				drmModeModeInfoPtr modetoset)
+ {
+ 	igt_plane_t *primary;
+ 	igt_crc_t small_crc, big_crc;
+-	drmModeModeInfoPtr modetoset = NULL;
+ 	struct drm_event_vblank ev;
+ 	int ret;
+ 
+@@ -257,11 +255,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 	igt_output_set_pipe(output, pipe);
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	if (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
++	igt_skip_on_f (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
+ 				      data->small_fb.modifier) ||
+-	    !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
+-				      data->big_fb.modifier))
+-		return NOREQUESTEDFORMATONPIPE;
++		       !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
++				      data->big_fb.modifier), "No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
+ 
+ 	set_lut(data, pipe);
+ 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+@@ -273,21 +270,7 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
+ 					  INTEL_PIPE_CRC_SOURCE_AUTO);
+ 
+-	for (int i = 0; i < output->config.connector->count_modes; i++) {
+-		if (output->config.connector->modes[i].hdisplay == data->attemptmodewidth &&
+-		   output->config.connector->modes[i].vdisplay == data->attemptmodeheight) {
+-			if (modetoset &&
+-			    modetoset->vrefresh < output->config.connector->modes[i].vrefresh)
+-				continue;
+-
+-			modetoset = &output->config.connector->modes[i];
+-		}
+-	}
+-
+-	if (!modetoset)
+-		igt_debug("%dp mode was not found from connector, will try with default. This may cause cdclk to fail this test on this connector.\n",
+-			  data->attemptmodeheight);
+-	else
++	if (modetoset)
+ 		igt_output_override_mode(output, modetoset);
+ 
+ 	igt_plane_set_position(primary, 0, 0);
+@@ -295,20 +278,11 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 	igt_plane_set_size(primary, data->attemptmodewidth,
+ 			   data->attemptmodeheight);
+ 	ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	switch (ret) {
+-	case -ERANGE:
+-		igt_debug("Platform scaling limits exceeded, skipping.\n");
+-		return TESTSKIP;
+-	case -EINVAL:
+-		if (!modetoset) {
+-			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+-				  data->attemptmodeheight);
+-			return CONNECTORFAIL;
+-		}
+-		/* fallthrough */
+-	default:
+-		igt_assert_eq(ret, 0);
+-	}
++
++	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
++	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
++			data->attemptmodeheight);
++	igt_assert_eq(ret, 0);
+ 
+ 	igt_pipe_crc_start(data->pipe_crc);
+ 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
+@@ -320,20 +294,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 					    DRM_MODE_ATOMIC_ALLOW_MODESET  |
+ 					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
+ 
+-	switch (ret) {
+-	case -ERANGE:
+-		igt_debug("Platform scaling limits exceeded, skipping.\n");
+-		return TESTSKIP;
+-	case -EINVAL:
+-		if (!modetoset) {
+-			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+-				  data->attemptmodeheight);
+-			return CONNECTORFAIL;
+-		}
+-		/* fallthrough */
+-	default:
+-		igt_assert_eq(ret, 0);
+-	}
++	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
++	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
++			data->attemptmodeheight);
++	igt_assert_eq(ret, 0);
+ 
+ 	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+ 
+@@ -349,8 +313,24 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++}
+ 
+-	return CONNECTORSUCCESS;
++static drmModeModeInfoPtr find_mode(data_t *data, igt_output_t *output)
++{
++	drmModeModeInfoPtr modetoset = NULL;
++
++	for (int i = 0; i < output->config.connector->count_modes; i++) {
++		if (output->config.connector->modes[i].hdisplay == data->attemptmodewidth &&
++		    output->config.connector->modes[i].vdisplay == data->attemptmodeheight) {
++			if (modetoset &&
++			    modetoset->vrefresh < output->config.connector->modes[i].vrefresh)
++				continue;
++
++			modetoset = &output->config.connector->modes[i];
++		}
++	}
++
++	return modetoset;
+ }
+ 
+ igt_main
+@@ -358,6 +338,7 @@ igt_main
+ 	enum pipe pipe;
+ 	data_t data = {};
+ 	igt_output_t *output;
++	drmModeModeInfoPtr modetoset = NULL;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+@@ -379,28 +360,30 @@ igt_main
+ 
+ 	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+ 		igt_describe(flip_scenario_test[index].describe);
+-		igt_subtest(flip_scenario_test[index].name) {
+-			int validtests = 0;
++		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
+ 			free_fbs(&data);
+-			for_each_pipe_static(pipe) {
+-				enum subrval rval = CONNECTORSUCCESS;
++			for_each_pipe(&data.display, pipe) {
++				bool found = false;
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+-					rval = test_flip_to_scaled(&data, index, pipe, output);
+-
+-					igt_require(rval != TESTSKIP);
+-
+-					// break out to test next pipe
+-					if (rval == CONNECTORSUCCESS) {
+-						validtests++;
++					modetoset = find_mode(&data, output);
++					if (modetoset) {
++						found = true;
++						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
++							test_flip_to_scaled(&data, index, pipe, output, modetoset);
+ 						break;
+ 					}
+ 				}
+-				if (rval == NOREQUESTEDFORMATONPIPE)
+-					igt_debug("No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
++				if (!found) {
++					for_each_valid_output_on_pipe(&data.display, pipe, output) {
++						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
++							test_flip_to_scaled(&data, index, pipe, output, NULL);
++					}
++				}
++				break;
+ 			}
+-			igt_require_f(validtests > 0, "No valid pipe/connector/format/mod combination found\n");
+ 		}
+ 	}
++
+ 	igt_fixture {
+ 		free_fbs(&data);
+ 		if (data.pipe_crc) {
+-- 
+2.25.1
