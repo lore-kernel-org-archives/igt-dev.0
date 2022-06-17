@@ -1,14 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C37F10E9BF
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 15:56:32 +0000 (UTC)
-From: Isabella Basso <isabbasso@riseup.net>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 17 Jun 2022 12:47:51 -0300
-Message-Id: <20220617154753.30175-1-isabbasso@riseup.net>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 675DF10E117
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jun 2022 17:36:44 +0000 (UTC)
+From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Date: Fri, 17 Jun 2022 14:10:13 +0000
+Message-ID: <PH7PR11MB6006B1298FC67548D7D34485C5AF9@PH7PR11MB6006.namprd11.prod.outlook.com>
+References: <20220617041547.28298-1-nidhi1.gupta@intel.com>
+ <20220617041547.28298-2-nidhi1.gupta@intel.com>
+ <Yqw4ts0Pmh8laXtx@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <Yqw4ts0Pmh8laXtx@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] Add support for KUnit tests
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode.c: Convert
+ tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,51 +23,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: kunit-dev@googlegroups.com, magalilemes00@gmail.com, maira.canal@usp.br,
- Daniel Latypov <dlatypov@google.com>, n@nfraprado.net,
- leandro.ribeiro@collabora.com, David Gow <davidgow@google.com>,
- tales.aparecida@gmail.com, Isabella Basso <isabbasso@riseup.net>,
- andrealmeid@riseup.net, brendanhiggins@google.com,
- Trevor Woerner <twoerner@gmail.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch series was first developed as part of the LKCamp hackathon
-that happened last year[1], mainly focusing on refactoring DRM tests to
-use KUnit.
+Hi Petri,
 
-KUnit[2][3] is a unified test framework that provides helper tools,
-simplifying their development and execution. Using an x86-64 machine
-it's possible to run tests in the host's kernel natively using user-mode
-Linux[4] (aka UML), which simplifies usage in a wide variety of
-scenarios, including integration to CI.
+Thanks for the review, my plan was to remove this loop only but somehow whi=
+le floating the patch missed to do so, I will float the new version for tha=
+t.
 
-As the tool's adoption widens into graphics testing territory, I and
-LKCamp members figured it would be important to support it in IGT, as
-it's a core tool for GPU drivers maintainers.
+Nidhi
 
-I have then added KUnit support into IGT mainly following the KTAP
-specs, and it can be tested using patch 2/2 in this series together with
-an AMDGPU patch series[5] available at [6].
+-----Original Message-----
+From: Latvala, Petri <petri.latvala@intel.com>=20
+Sent: Friday, June 17, 2022 1:48 PM
+To: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org; Modem, Bhanuprakash <bhanuprakash.modem@=
+intel.com>
+Subject: Re: [PATCH i-g-t 1/2] tests/kms_invalid_mode.c: Convert tests to d=
+ynamic
 
-[1]: https://groups.google.com/g/kunit-dev/c/YqFR1q2uZvk/m/IbvItSfHBAAJ
-[2]: https://kunit.dev
-[3]: https://docs.kernel.org/dev-tools/kunit/index.html
-[4]: http://user-mode-linux.sourceforge.net
-[5]: https://lore.kernel.org/dri-devel/20220608010709.272962-1-maira.canal@usp.br/
-[6]: https://gitlab.freedesktop.org/isinyaaa/linux/-/tree/kunit-prototype2
+On Fri, Jun 17, 2022 at 09:45:45AM +0530, Nidhi Gupta wrote:
+> Convert the existing subtests to dynamic subtests at pipe level.
+>=20
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>  tests/kms_invalid_mode.c | 45=20
+> ++++++++++++++++++++--------------------
+>  1 file changed, 23 insertions(+), 22 deletions(-)
+>=20
+> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c index=20
+> 630798d8..00de1150 100644
+> --- a/tests/kms_invalid_mode.c
+> +++ b/tests/kms_invalid_mode.c
+> @@ -32,6 +32,7 @@ typedef struct _data data_t;
+> =20
+>  struct _data {
+>  	int drm_fd;
+> +	enum pipe pipe;
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	drmModeResPtr res;
+> @@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInf=
+oPtr mode)
+>  	return true;
+>  }
+> =20
+> -static int
+> +static void
+>  test_output(data_t *data)
+>  {
+>  	igt_output_t *output =3D data->output;
+>  	drmModeModeInfo mode;
+>  	struct igt_fb fb;
+> -	int i;
+> +	int i, valid_connectors =3D 0;
+> +	uint32_t crtc_id;
+> =20
+>  	/*
+>  	 * FIXME test every mode we have to be more
+>  	 * sure everything is really getting rejected?
+>  	 */
+>  	mode =3D *igt_output_get_mode(output);
+> -	if (!data->adjust_mode(data, &mode))
+> -		return 0;
+> +	igt_skip_on(!data->adjust_mode(data, &mode));
+> =20
+>  	igt_create_fb(data->drm_fd,
+>  		      max_t(uint16_t, mode.hdisplay, 64), @@ -202,13 +203,11 @@=20
+> test_output(data_t *data)
+> =20
+>  	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+> =20
+> +	crtc_id =3D data->display.pipes[data->pipe].crtc_id;
+> +
+>  	for (i =3D 0; i < data->res->count_crtcs; i++) {
+>  		int ret;
 
-Isabella Basso (2):
-  igt_kmod: add compatibility for KUnit
-  tests/amdgpu/amd_kunit: add KUnit AMDGPU tests
+If this function now operates on the passed pipe, why is this loop still he=
+re?
 
- lib/igt_kmod.c           | 269 +++++++++++++++++++++++++++++++++++++++
- lib/igt_kmod.h           |   3 +
- tests/amdgpu/amd_kunit.c |  34 +++++
- tests/amdgpu/meson.build |   1 +
- 4 files changed, 307 insertions(+)
- create mode 100644 tests/amdgpu/amd_kunit.c
 
--- 
-2.36.1
+--
+Petri Latvala
+
+
+
+> -
+> -		igt_info("Checking pipe %c connector %s with mode %s\n",
+> -			 'A'+i, output->name, mode.name);
+> -
+> -		ret =3D drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
+> +		ret =3D drmModeSetCrtc(data->drm_fd, crtc_id,
+>  				     fb.fb_id, 0, 0,
+>  				     &output->id, 1, &mode);
+>  		igt_assert_lt(ret, 0);
+> @@ -216,18 +215,10 @@ test_output(data_t *data)
+> =20
+>  	igt_remove_fb(data->drm_fd, &fb);
+> =20
+> -	return 1;
+> -}
+> -
+> -static void test(data_t *data)
+> -{
+> -	int valid_connectors =3D 0;
+> -
+> -	for_each_connected_output(&data->display, data->output) {
+> -		valid_connectors +=3D test_output(data);
+> -	}
+> +	valid_connectors++;
+> =20
+>  	igt_require_f(valid_connectors, "No suitable connectors found\n");
+> +
+>  }
+> =20
+>  static int i915_max_dotclock(data_t *data)
+> @@ -297,6 +288,10 @@ static data_t data;
+> =20
+>  igt_main
+>  {
+> +
+> +	enum pipe pipe;
+> +        igt_output_t *output;
+> +
+>  	igt_fixture {
+>  		data.drm_fd =3D drm_open_driver_master(DRIVER_ANY);
+> =20
+> @@ -311,9 +306,15 @@ igt_main
+>  	}
+> =20
+>  	for (int i =3D 0; i < ARRAY_SIZE(subtests); i++) {
+> -		igt_subtest(subtests[i].name) {
+> -			data.adjust_mode =3D subtests[i].adjust_mode;
+> -			test(&data);
+> +		igt_subtest_with_dynamic(subtests[i].name) {
+> +			for_each_pipe_with_valid_output(&data.display, pipe, output) {
+> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_na=
+me(pipe)) {
+> +					data.output =3D output;
+> +					data.pipe =3D pipe;
+> +					data.adjust_mode =3D subtests[i].adjust_mode;
+> +					test_output(&data);
+> +				}
+> +			}
+>  		}
+>  	}
+> =20
+> --=20
+> 2.26.2
+>=20
