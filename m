@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDAE910F598
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jun 2022 09:58:15 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F21CA10E298
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jun 2022 07:01:07 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 15 Jun 2022 15:29:05 +0530
-Message-Id: <20220615095906.23688-2-swati2.sharma@intel.com>
-In-Reply-To: <20220615095906.23688-1-swati2.sharma@intel.com>
-References: <20220615095906.23688-1-swati2.sharma@intel.com>
+Date: Mon, 20 Jun 2022 12:26:56 +0530
+Message-Id: <20220620065657.1818332-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_flip_scaled_crc: Convert
- tests to dynamic
+Subject: [igt-dev] [PATCH i-g-t v3 0/1] Extend rc6-idle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,143 +20,16 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Covert the existing subtests to dynamic subtests at pipe/output level.
+Run rc6_idle on a single instance of every engine.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/kms_flip_scaled_crc.c | 69 ++++++++------------------------
- 1 file changed, 16 insertions(+), 53 deletions(-)
+Rev2 : add dynamic subtest (Anshuman)
+Rev3 : use intel_ctx calls from igt_fixture (Anshuman)
 
-diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-index 9740715f..6cf3a64b 100644
---- a/tests/i915/kms_flip_scaled_crc.c
-+++ b/tests/i915/kms_flip_scaled_crc.c
-@@ -163,8 +163,6 @@ const struct {
- 	},
- };
- 
--enum subrval {CONNECTORFAIL, CONNECTORSUCCESS, TESTSKIP, NOREQUESTEDFORMATONPIPE};
--
- static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
- 		     uint32_t height, uint64_t format, uint64_t modifier)
- {
-@@ -220,8 +218,8 @@ static void clear_lut(data_t *data, enum pipe pipe)
- 	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
- }
- 
--static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
--					enum pipe pipe, igt_output_t *output)
-+static void test_flip_to_scaled(data_t *data, uint32_t index,
-+				enum pipe pipe, igt_output_t *output)
- {
- 	igt_plane_t *primary;
- 	igt_crc_t small_crc, big_crc;
-@@ -257,11 +255,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
- 	igt_output_set_pipe(output, pipe);
- 
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	if (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
-+	igt_skip_on_f (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
- 				      data->small_fb.modifier) ||
--	    !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
--				      data->big_fb.modifier))
--		return NOREQUESTEDFORMATONPIPE;
-+		       !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
-+				      data->big_fb.modifier), "No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
- 
- 	set_lut(data, pipe);
- 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
-@@ -295,20 +292,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
- 	igt_plane_set_size(primary, data->attemptmodewidth,
- 			   data->attemptmodeheight);
- 	ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
--	switch (ret) {
--	case -ERANGE:
--		igt_debug("Platform scaling limits exceeded, skipping.\n");
--		return TESTSKIP;
--	case -EINVAL:
--		if (!modetoset) {
--			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
-+	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
-+	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
- 				  data->attemptmodeheight);
--			return CONNECTORFAIL;
--		}
--		/* fallthrough */
--	default:
--		igt_assert_eq(ret, 0);
--	}
-+	igt_assert_eq(ret, 0);
- 
- 	igt_pipe_crc_start(data->pipe_crc);
- 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
-@@ -319,21 +306,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
- 	ret = igt_display_try_commit_atomic(&data->display,
- 					    DRM_MODE_ATOMIC_ALLOW_MODESET  |
- 					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
--
--	switch (ret) {
--	case -ERANGE:
--		igt_debug("Platform scaling limits exceeded, skipping.\n");
--		return TESTSKIP;
--	case -EINVAL:
--		if (!modetoset) {
--			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
-+	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
-+	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
- 				  data->attemptmodeheight);
--			return CONNECTORFAIL;
--		}
--		/* fallthrough */
--	default:
--		igt_assert_eq(ret, 0);
--	}
-+	igt_assert_eq(ret, 0);
- 
- 	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
- 
-@@ -349,8 +325,6 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_plane_set_fb(primary, NULL);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
--
--	return CONNECTORSUCCESS;
- }
- 
- igt_main
-@@ -379,28 +353,17 @@ igt_main
- 
- 	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
- 		igt_describe(flip_scenario_test[index].describe);
--		igt_subtest(flip_scenario_test[index].name) {
--			int validtests = 0;
-+		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
- 			free_fbs(&data);
--			for_each_pipe_static(pipe) {
--				enum subrval rval = CONNECTORSUCCESS;
-+			for_each_pipe(&data.display, pipe) {
- 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
--					rval = test_flip_to_scaled(&data, index, pipe, output);
--
--					igt_require(rval != TESTSKIP);
--
--					// break out to test next pipe
--					if (rval == CONNECTORSUCCESS) {
--						validtests++;
--						break;
--					}
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-+						test_flip_to_scaled(&data, index, pipe, output);
- 				}
--				if (rval == NOREQUESTEDFORMATONPIPE)
--					igt_debug("No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
- 			}
--			igt_require_f(validtests > 0, "No valid pipe/connector/format/mod combination found\n");
- 		}
- 	}
-+
- 	igt_fixture {
- 		free_fbs(&data);
- 		if (data.pipe_crc) {
+Riana Tauro (1):
+  tests/i915/pm_rc6_residency: Extend rc6-idle test on remaining engines
+
+ tests/i915/i915_pm_rc6_residency.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
+
 -- 
 2.25.1
