@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27CE310E298
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jun 2022 07:01:09 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Jun 2022 12:26:57 +0530
-Message-Id: <20220620065657.1818332-2-riana.tauro@intel.com>
-In-Reply-To: <20220620065657.1818332-1-riana.tauro@intel.com>
-References: <20220620065657.1818332-1-riana.tauro@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 637E710E8C6
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jun 2022 07:03:59 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
+ sai.gowtham.ch@intel.com
+Date: Mon, 20 Jun 2022 12:33:20 +0530
+Message-Id: <20220620070321.24580-2-sai.gowtham.ch@intel.com>
+In-Reply-To: <20220620070321.24580-1-sai.gowtham.ch@intel.com>
+References: <20220620070321.24580-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/1] tests/i915/pm_rc6_residency: Extend
- rc6-idle test on remaining engines
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_softpin: Added test
+ description for test case.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,133 +24,131 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-rc6_idle should run on a single instance of every engine
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-v2: add dynamic subtest (Anshuman)
-v3: use intel_ctx calls from igt_fixture for rc6_fence (Anshuman)
+Added test description for test and to all the subtests that are
+available.
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/i915/i915_pm_rc6_residency.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ tests/i915/gem_softpin.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
-index cf9eae90..043370cc 100644
---- a/tests/i915/i915_pm_rc6_residency.c
-+++ b/tests/i915/i915_pm_rc6_residency.c
-@@ -292,7 +292,7 @@ static void sighandler(int sig)
- {
- }
+diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+index b851c90e..417359d1 100644
+--- a/tests/i915/gem_softpin.c
++++ b/tests/i915/gem_softpin.c
+@@ -32,6 +32,10 @@
+ #include "igt_rand.h"
+ #include "intel_allocator.h"
  
--static void bg_load(int i915, unsigned int flags, unsigned long *ctl)
-+static void bg_load(int i915, uint64_t engine_flags, unsigned int flags, unsigned long *ctl)
- {
- 	const bool has_execlists = intel_gen(intel_get_drm_devid(i915)) >= 8;
- 	struct drm_i915_gem_exec_object2 obj = {
-@@ -301,6 +301,7 @@ static void bg_load(int i915, unsigned int flags, unsigned long *ctl)
- 	struct drm_i915_gem_execbuffer2 execbuf = {
- 		.buffers_ptr = to_user_pointer(&obj),
- 		.buffer_count = 1,
-+		.flags = engine_flags,
- 	};
- 	struct sigaction act = {
- 		.sa_handler = sighandler
-@@ -358,7 +359,7 @@ static void kill_children(int sig)
- 	signal(sig, old);
- }
++IGT_TEST_DESCRIPTION("Tests softpin feature, which contains error, normal usage"
++		     " scenarios and couple of stress tests which copy buffers"
++		     " between CPU and GPU.");
++
+ #define EXEC_OBJECT_PINNED	(1<<4)
+ #define EXEC_OBJECT_SUPPORTS_48B_ADDRESS (1<<3)
  
--static void rc6_idle(int i915)
-+static void rc6_idle(int i915, uint64_t flags)
- {
- 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
- 	const int tolerance = 20; /* Some RC6 is better than none! */
-@@ -404,7 +405,7 @@ static void rc6_idle(int i915)
- 	for (int p = 0; p < ARRAY_SIZE(phases); p++) {
- 		memset(done, 0, 2 * sizeof(*done));
- 		igt_fork(child, 1) /* Setup up a very light load */
--			bg_load(i915, phases[p].flags, done);
-+			bg_load(i915, flags, phases[p].flags, done);
- 
- 		rapl_read(&rapl, &sample[0]);
- 		cycles = -READ_ONCE(done[1]);
-@@ -449,13 +450,12 @@ static void rc6_idle(int i915)
- 	}
- }
- 
--static void rc6_fence(int i915)
-+static void rc6_fence(int i915, const intel_ctx_t *ctx)
- {
- 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
- 	const int tolerance = 20; /* Some RC6 is better than none! */
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
- 	const struct intel_execution_engine2 *e;
--	const intel_ctx_t *ctx;
- 	struct power_sample sample[2];
- 	unsigned long slept;
- 	uint64_t rc6, ts[2], ahnd;
-@@ -485,7 +485,6 @@ static void rc6_fence(int i915)
- 	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
- 
- 	/* Submit but delay execution, we should be idle and conserving power */
--	ctx = intel_ctx_create_all_physical(i915);
- 	ahnd = get_reloc_ahnd(i915, ctx->id);
- 	for_each_ctx_engine(i915, ctx, e) {
- 		igt_spin_t *spin;
-@@ -524,7 +523,6 @@ static void rc6_fence(int i915)
- 		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
- 		gem_quiescent_gpu(i915);
- 	}
--	intel_ctx_destroy(i915, ctx);
- 	put_ahnd(ahnd);
- 
- 	rapl_close(&rapl);
-@@ -534,24 +532,32 @@ static void rc6_fence(int i915)
- igt_main
- {
- 	int i915 = -1;
-+	const intel_ctx_t *ctx;
-+	const struct intel_execution_engine2 *e;
- 
- 	/* Use drm_open_driver to verify device existence */
- 	igt_fixture {
- 		i915 = drm_open_driver(DRIVER_INTEL);
-+		ctx = intel_ctx_create_all_physical(i915);
+@@ -1248,6 +1252,7 @@ igt_main
+ 		ctx = intel_ctx_create_all_physical(fd);
  	}
  
--	igt_subtest("rc6-idle") {
-+	igt_subtest_with_dynamic("rc6-idle") {
- 		igt_require_gem(i915);
- 		gem_quiescent_gpu(i915);
++	igt_describe("Check softpinnnig with invalid inputs.");
+ 	igt_subtest("invalid")
+ 		test_invalid(fd);
  
--		rc6_idle(i915);
-+		for_each_ctx_engine(i915, ctx, e) {
-+			if (e->instance == 0) {
-+				igt_dynamic_f("%s", e->name)
-+					rc6_idle(i915, e->flags);
-+			}
-+		}
+@@ -1258,30 +1263,44 @@ igt_main
+ 			igt_require(gem_uses_full_ppgtt(fd));
+ 		}
+ 
++		igt_describe("Check full placement control under full-ppgtt");
+ 		igt_subtest("zero")
+ 			test_zero(fd);
+ 
++		igt_describe("Check the last 32b page is excluded");
+ 		igt_subtest("32b-excludes-last-page")
+ 			test_32b_last_page(fd);
+ 
++		igt_describe("Check the total occupancy by using pad-to-size to fill"
++			     " the entire GTT.");
+ 		igt_subtest("full")
+ 			test_full(fd);
+ 
++		igt_describe("Check that we can place objects at start/end of the GTT"
++			     " using the allocator");
+ 		igt_subtest("allocator-basic")
+ 			test_allocator_basic(fd, false);
+ 
++		igt_describe("Check that if we can reserve a space for a object"
++			     " starting from a given offset");
+ 		igt_subtest("allocator-basic-reserve")
+ 			test_allocator_basic(fd, true);
+ 
++		igt_describe("Check that we can combine manual placement with automatic"
++			     " GTT placement");
+ 		igt_subtest("allocator-nopin")
+ 			test_allocator_nopin(fd, false);
+ 
++		igt_describe("Check that we can combine manual placement with automatic"
++			     " GTT placement and reserves/unreserves space for objects");
+ 		igt_subtest("allocator-nopin-reserve")
+ 			test_allocator_nopin(fd, true);
+ 
++		igt_describe("Check if multiple process can be allocted");
+ 		igt_subtest("allocator-fork")
+ 			test_allocator_fork(fd);
+ 
++		igt_describe("Exercise eviction with softpinning");
+ 		test_each_engine("allocator-evict", fd, ctx, e)
+ 			test_allocator_evict(fd, ctx, e->flags, 20);
+ 
+@@ -1294,28 +1313,46 @@ igt_main
+ 	igt_subtest("safe-alignment")
+ 		safe_alignment(fd);
+ 
++	igt_describe("Check softpinning of a gem buffer object ");
+ 	igt_subtest("softpin")
+ 		test_softpin(fd);
++
++	igt_describe("Checks the behaviour by runing on all possible"
++		     " page alligned overlaps");
+ 	igt_subtest("overlap")
+ 		test_overlap(fd);
++
++	igt_describe("Check that if the user demands the vma be replaced, they are.");
+ 	igt_subtest("reverse")
+ 		test_reverse(fd);
+ 
++	igt_describe("Check that no relocation support works");
+ 	igt_subtest("noreloc")
+ 		test_noreloc(fd, NOSLEEP, 0);
++
++	igt_describe("Check no relocation support with interruptible");
+ 	igt_subtest("noreloc-interruptible")
+ 		test_noreloc(fd, NOSLEEP, INTERRUPTIBLE);
++
++	igt_describe("Check norelocations hold versus suspend/resume");
+ 	igt_subtest("noreloc-S3")
+ 		test_noreloc(fd, SUSPEND, 0);
++
++	igt_describe("Check norelocations hold versus suspend/resume");
+ 	igt_subtest("noreloc-S4")
+ 		test_noreloc(fd, HIBERNATE, 0);
+ 
+ 	for (int signal = 0; signal <= 1; signal++) {
++		igt_describe("This test checks the behaviour of softpin with busy batch");
+ 		igt_subtest_f("evict-active%s", signal ? "-interruptible" : "")
+ 			test_evict_active(fd, signal);
++
++		igt_describe("Snoop test by forcibly injecting signals");
+ 		igt_subtest_f("evict-snoop%s", signal ? "-interruptible" : "")
+ 			test_evict_snoop(fd, signal);
  	}
++
++	igt_describe("Checks behaviour of softpin with hung batch");
+ 	igt_subtest("evict-hang")
+ 		test_evict_hang(fd);
  
- 	igt_subtest("rc6-fence") {
- 		igt_require_gem(i915);
- 		gem_quiescent_gpu(i915);
- 
--		rc6_fence(i915);
-+		rc6_fence(i915, ctx);
- 	}
- 
- 	igt_subtest_group {
-@@ -592,7 +598,9 @@ igt_main
- 			close(sysfs);
- 	}
- 
--	igt_fixture
-+	igt_fixture {
-+		intel_ctx_destroy(i915, ctx);
- 		close(i915);
-+	}
- 
- }
 -- 
-2.25.1
+2.35.1
