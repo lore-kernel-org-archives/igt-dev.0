@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 060DB10EBB6
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 09:15:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE24110EBB6
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 09:15:48 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  sai.gowtham.ch@intel.com, Priyanka.Dandamudi@intel.com
-Date: Wed, 22 Jun 2022 14:45:20 +0530
-Message-Id: <20220622091522.3247322-1-janga.rahul.kumar@intel.com>
+Date: Wed, 22 Jun 2022 14:45:21 +0530
+Message-Id: <20220622091522.3247322-2-janga.rahul.kumar@intel.com>
+In-Reply-To: <20220622091522.3247322-1-janga.rahul.kumar@intel.com>
+References: <20220622091522.3247322-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 0/2] HAX add test description to gem_exec_suspend
+Subject: [igt-dev] [PATCH 1/2] tests/i915/gem_exec_suspend : Added subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,15 +26,121 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Add test description to gem_exec_suspend
+Added test description to all the available subtests.
 
-Janga Rahul Kumar (2):
-  tests/i915/gem_exec_suspend : Added subtests description
-  HAX: don't do full run
+v2 : Modified subtest description and added description
+     to all the subtests.
 
- tests/i915/gem_exec_suspend.c         |  50 ++++---
- tests/intel-ci/fast-feedback.testlist | 183 +-------------------------
- 2 files changed, 35 insertions(+), 198 deletions(-)
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+---
+ tests/i915/gem_exec_suspend.c | 50 ++++++++++++++++++++++++-----------
+ 1 file changed, 34 insertions(+), 16 deletions(-)
 
+diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
+index 401026ef..55529bb8 100644
+--- a/tests/i915/gem_exec_suspend.c
++++ b/tests/i915/gem_exec_suspend.c
+@@ -37,6 +37,9 @@
+ #include "igt_gt.h"
+ #include "igt_sysfs.h"
+ 
++IGT_TEST_DESCRIPTION("Exercise simple exec-and-read, measure power across various "
++		     "suspend/resume cycles.");
++
+ #define NOSLEEP 0
+ #define IDLE 1
+ #define SUSPEND_DEVICES 2
+@@ -286,29 +289,37 @@ igt_main
+ 	const struct {
+ 		const char *suffix;
+ 		unsigned mode;
++		const char *describe;
+ 	} modes[] = {
+-		{ "", NOSLEEP },
+-		{ "-S3", SUSPEND },
+-		{ "-S4", HIBERNATE },
+-		{ NULL, 0 }
++		{ "", NOSLEEP, "without suspend/resume cycle" },
++		{ "-S3", SUSPEND, "suspend-to-mem" },
++		{ "-S4", HIBERNATE, "suspend-to-device" },
++		{ NULL, 0, "" }
+ 	}, *m;
+ 	struct test {
+ 		const char *name;
+ 		unsigned int flags;
+ 		void (*fn)(int, const intel_ctx_t *, unsigned, unsigned, uint32_t);
++		const char *describe;
+ 	} *test, tests_all_engines[] = {
+-		{ "basic", NOSLEEP, run_test },
+-		{ "basic-S0", IDLE, run_test },
+-		{ "basic-S3-devices", SUSPEND_DEVICES, run_test },
+-		{ "basic-S3", SUSPEND, run_test },
+-		{ "basic-S4-devices", HIBERNATE_DEVICES, run_test },
+-		{ "basic-S4", HIBERNATE, run_test },
++		{ "basic", NOSLEEP, run_test, "Check basic functionality without any "
++					      "suspend/resume cycle." },
++		{ "basic-S0", IDLE, run_test, "Check with suspend-to-idle target state." },
++		{ "basic-S3-devices", SUSPEND_DEVICES, run_test, "Check with suspend-to-mem "
++								 "with device only." },
++		{ "basic-S3", SUSPEND, run_test, "Check full cycle of suspend-to-mem." },
++		{ "basic-S4-devices", HIBERNATE_DEVICES, run_test, "Check with suspend-to-disk "
++								   "with device only." },
++		{ "basic-S4", HIBERNATE, run_test, "Check full cycle of suspend-to-disk." },
+ 		{ }
+ 	}, tests_power_hang[] = {
+-		{ "hang-S3", SUSPEND | HANG, run_test },
+-		{ "hang-S4", HIBERNATE | HANG, run_test },
+-		{ "power-S0", IDLE, power_test },
+-		{ "power-S3", SUSPEND, power_test },
++		{ "hang-S3", SUSPEND | HANG, run_test, "Check performing full cycle of "
++						"susepnd-to-mem with a pending GPU hang." },
++		{ "hang-S4", HIBERNATE | HANG, run_test, "Check performing full cycle of "
++						"suspend-to-disk with a pending GPU hang." },
++		{ "power-S0", IDLE, power_test, "Check power consumption during idle state." },
++		{ "power-S3", SUSPEND, power_test, "Check power consumption during "
++						   "suspend state." },
+ 		{ }
+ 	};
+ 	const struct intel_execution_engine2 *e;
+@@ -359,20 +370,25 @@ igt_main
+ 		} \
+ 	}
+ 
+-	for (test = tests_all_engines; test->name; test++)
++	for (test = tests_all_engines; test->name; test++) {
++		igt_describe(test->describe);
+ 		subtest_for_each_combination(test->name, intel_ctx_0(fd), test->flags, test->fn);
++	}
+ 
+ 	for (m = modes; m->suffix; m++) {
++		igt_describe_f("Check %s state with fixed object.", m->describe);
+ 		igt_subtest_with_dynamic_f("fixed%s", m->suffix) {
+ 			igt_require(gem_has_lmem(fd));
+ 			for_each_ctx_engine_combination(m->mode);
+ 		}
+ 
++		igt_describe_f("Check %s state with uncached object.", m->describe);
+ 		igt_subtest_with_dynamic_f("uncached%s", m->suffix) {
+ 			igt_require(!gem_has_lmem(fd));
+ 			for_each_ctx_engine_combination(m->mode | UNCACHED);
+ 		}
+ 
++		igt_describe_f("Check %s state with cached object.", m->describe);
+ 		igt_subtest_with_dynamic_f("cached%s", m->suffix) {
+ 			igt_require(!gem_has_lmem(fd));
+ 			for_each_ctx_engine_combination(m->mode | CACHED);
+@@ -384,8 +400,10 @@ igt_main
+ 		hang = igt_allow_hang(fd, 0, 0);
+ 	}
+ 
+-	for (test = tests_power_hang; test->name; test++)
++	for (test = tests_power_hang; test->name; test++) {
++		igt_describe(test->describe);
+ 		subtest_for_each_combination(test->name, intel_ctx_0(fd), test->flags, test->fn);
++	}
+ 
+ 	igt_fixture {
+ 		free(query_info);
 -- 
 2.25.1
