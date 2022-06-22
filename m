@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A98B10ECCF
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 09:40:42 +0000 (UTC)
-From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 22 Jun 2022 09:40:32 +0000
-Message-ID: <MW3PR11MB4748A3089CB2947517284264AEB29@MW3PR11MB4748.namprd11.prod.outlook.com>
-References: <20220609052819.1980745-1-janga.rahul.kumar@intel.com>
- <20220609052819.1980745-2-janga.rahul.kumar@intel.com>
- <YqHOMHBHfq/23SvL@kamilkon-desk1>
-In-Reply-To: <YqHOMHBHfq/23SvL@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3BA010F50C
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 09:42:27 +0000 (UTC)
+Date: Wed, 22 Jun 2022 12:40:33 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Message-ID: <YrLjkQkSIDP2oT92@platvala-desk.ger.corp.intel.com>
+References: <20220620091052.16625-1-nidhi1.gupta@intel.com>
+ <20220620091052.16625-2-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/2] tests/i915/gem_exec_suspend : Added
- subtests description
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220620091052.16625-2-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode.c: Convert
+ tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,93 +21,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
-IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiAwOSBKdW5lIDIwMjIg
-MTY6MTENCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBLdW1hciwg
-SmFuZ2EgUmFodWwgPGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6
-IFtQQVRDSCAxLzJdIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfc3VzcGVuZCA6IEFkZGVkIHN1YnRlc3Rz
-DQo+IGRlc2NyaXB0aW9uDQo+IA0KPiBIaSBKYW5nYSwNCj4gDQo+IE9uIDIwMjItMDYtMDkgYXQg
-MTA6NTg6MTggKzA1MzAsIGphbmdhLnJhaHVsLmt1bWFyQGludGVsLmNvbSB3cm90ZToNCj4gPiBG
-cm9tOiBKYW5nYSBSYWh1bCBLdW1hciA8amFuZ2EucmFodWwua3VtYXJAaW50ZWwuY29tPg0KPiA+
-DQo+ID4gQWRkZWQgdGVzdCBkZXNjcmlwdGlvbiB0byBiYXNpYyBzdWJ0ZXN0cy4NCj4gPg0KPiA+
-IENjOiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+
-ID4gU2lnbmVkLW9mZi1ieTogSmFuZ2EgUmFodWwgS3VtYXIgPGphbmdhLnJhaHVsLmt1bWFyQGlu
-dGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMvaTkxNS9nZW1fZXhlY19zdXNwZW5kLmMgfCAz
-MyArKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQs
-IDIyIGluc2VydGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBh
-L3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfc3VzcGVuZC5jDQo+ID4gYi90ZXN0cy9pOTE1L2dlbV9leGVj
-X3N1c3BlbmQuYyBpbmRleCA0MDEwMjZlZi4uNDk1NzQ4ZWMgMTAwNjQ0DQo+ID4gLS0tIGEvdGVz
-dHMvaTkxNS9nZW1fZXhlY19zdXNwZW5kLmMNCj4gPiArKysgYi90ZXN0cy9pOTE1L2dlbV9leGVj
-X3N1c3BlbmQuYw0KPiA+IEBAIC0zNyw2ICszNyw4IEBADQo+ID4gICNpbmNsdWRlICJpZ3RfZ3Qu
-aCINCj4gPiAgI2luY2x1ZGUgImlndF9zeXNmcy5oIg0KPiA+DQo+ID4gK0lHVF9URVNUX0RFU0NS
-SVBUSU9OKCJUZXN0cyBleGVjdXRlIGJhdGNoZXMgdXNpbmcgZXhlY2J1ZiBpb2N0bCBhY3Jvc3MN
-Cj4gdmFyaW91cyBzdXNwZW5kIHJlc3VtZSAiDQo+ID4gKwkJICAgICAic3RhdGVzIGFuZCB2YWxp
-ZGF0ZXMgdGhlIGV4ZWN1dGlvbiByZXN1bHQgYnkgY29tcGFyaW5nIHdpdGgNCj4gPiArZXhwZWN0
-ZWQgb25lcy4iKTsNCj4gDQo+IFBsZWFzZSBjaGFuZ2UgdGhpcyBkZXNjcmlwdGlvbiwgeW91IGRv
-IG5vdCBuZWVkIHRvIHdyaXRlIGRvd24gd2hhdCBleGFjdCBzdGVwDQo+IHRoZXJlIGlzIGluIGNv
-ZGUgc291cmNlICh3aGljaCB3ZSBjYW4gcmVhZCBpdCksIHdyaXRlIHdoYXQgaXMgcHVycG9zZSBv
-ZiB0aGVzZQ0KPiB0ZXN0cyBoZXJlLg0KPiANCj4gSSBzdWdnZXN0IHJlYWRpbmcgY29tbWl0IGRl
-c2NyaXB0aW9ucyB3aXRoOg0KPiANCj4gZ2l0IGxvZyB0ZXN0cy9pOTE1L2dlbV9leGVjX3N1c3Bl
-bmQuYw0KPiANCj4gZ2l0IGxvZyA3NDFiZjcwNjRjNDY3ZCAtLSB0ZXN0cy9nZW1fZXhlY19zdXNw
-ZW5kLmMNCj4gDQo+ID4gICNkZWZpbmUgTk9TTEVFUCAwDQo+ID4gICNkZWZpbmUgSURMRSAxDQo+
-ID4gICNkZWZpbmUgU1VTUEVORF9ERVZJQ0VTIDINCj4gPiBAQCAtMjk2LDE5ICsyOTgsMjYgQEAg
-aWd0X21haW4NCj4gPiAgCQljb25zdCBjaGFyICpuYW1lOw0KPiA+ICAJCXVuc2lnbmVkIGludCBm
-bGFnczsNCj4gPiAgCQl2b2lkICgqZm4pKGludCwgY29uc3QgaW50ZWxfY3R4X3QgKiwgdW5zaWdu
-ZWQsIHVuc2lnbmVkLCB1aW50MzJfdCk7DQo+ID4gKwkJY29uc3QgY2hhciAqZGVzY3JpYmU7DQo+
-ID4gIAl9ICp0ZXN0LCB0ZXN0c19hbGxfZW5naW5lc1tdID0gew0KPiA+IC0JCXsgImJhc2ljIiwg
-Tk9TTEVFUCwgcnVuX3Rlc3QgfSwNCj4gPiAtCQl7ICJiYXNpYy1TMCIsIElETEUsIHJ1bl90ZXN0
-IH0sDQo+ID4gLQkJeyAiYmFzaWMtUzMtZGV2aWNlcyIsIFNVU1BFTkRfREVWSUNFUywgcnVuX3Rl
-c3QgfSwNCj4gPiAtCQl7ICJiYXNpYy1TMyIsIFNVU1BFTkQsIHJ1bl90ZXN0IH0sDQo+ID4gLQkJ
-eyAiYmFzaWMtUzQtZGV2aWNlcyIsIEhJQkVSTkFURV9ERVZJQ0VTLCBydW5fdGVzdCB9LA0KPiA+
-IC0JCXsgImJhc2ljLVM0IiwgSElCRVJOQVRFLCBydW5fdGVzdCB9LA0KPiA+ICsJCXsgImJhc2lj
-IiwgTk9TTEVFUCwgcnVuX3Rlc3QsICJDaGVjayBiYXNpYyBmdW5jdGlvbmFsaXR5LiIgfSwNCj4g
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0gXiBpbWhvIHlvdSBjYW4gYWRkDQo+ICJ3aXRob3V0IHMvciIgaGVyZSwg
-cy9mdW5jdGlvbmFsaXR5Li9mdW5jdGlvbmFsaXR5IHdpdGhvdXQgYW55IHN1c3BlbmQvcmVzdW1l
-DQo+IGN5Y2xlLi8NCj4gDQo+ID4gKwkJeyAiYmFzaWMtUzAiLCBJRExFLCBydW5fdGVzdCwgIkNo
-ZWNrIHdpdGggc3VzcGVuZC10by1pZGxlIHRhcmdldA0KPiBzdGF0ZS4iIH0sDQo+ID4gKwkJeyAi
-YmFzaWMtUzMtZGV2aWNlcyIsIFNVU1BFTkRfREVWSUNFUywgcnVuX3Rlc3QsICJDaGVjayB3aXRo
-DQo+IHN1c3BlbmQtdG8tbWVtIHRhcmdldCAiDQo+ID4gKwkJCQkJCSJzdGF0ZSBhbmQgc3VzcGVu
-ZCBzZXF1ZW5jZQ0KPiB0ZXJtaW5hdGlvbiBwb2ludCBzZXQgIg0KPiA+ICsJCQkJCQkidG8gZGV2
-aWNlIHN1c3BlbmQgc3RhdGUuIiB9LA0KPiANCj4gUGxlYXNlIGltcHJvdmUgdGhpcyBkZXNjcmlw
-dGlvbiwgc2VlIGNvbW1pdA0KPiBiYmI5NTAzMDJmN2M4NDA1ZmFhOWM4MDE4NTQxNTAxZWU3YmQz
-MzVmDQo+IHRlc3RzL2dlbV9leGVjX3N1c3BlbmQ6IEFkZCBiYXNpYyBTMy9TNC1kZXZpY2VzIHN1
-YnRlc3RzDQo+IA0KPiA+ICsJCXsgImJhc2ljLVMzIiwgU1VTUEVORCwgcnVuX3Rlc3QsICJDaGVj
-ayB3aXRoIHN1c3BlbmQtdG8tbWVtDQo+IHRhcmdldCBzdGF0ZSwgcGVyZm9ybSAiDQo+ID4gKwkJ
-CQkJCSAiYSBmdWxsIHN1c3BlbmQvcmVzdW1lIGN5Y2xlLiINCj4gfSwNCj4gDQo+IFRoZXNlIGxv
-b2tzIGEgbGl0dGxlIHJlZHVuZGFudCwgbWF5YmUgc29tZXRoaW5nIGxpa2U6DQo+IENoZWNrIGZ1
-bGwgY3ljbGUgb2Ygc3VzcGVuZC10by1tZW0uDQo+IA0KPiA+ICsJCXsgImJhc2ljLVM0LWRldmlj
-ZXMiLCBISUJFUk5BVEVfREVWSUNFUywgcnVuX3Rlc3QsICJDaGVjaw0KPiB3aXRoIHN1c3BlbmQt
-dG8tZGlzayAiDQo+ID4gKwkJCQkJCSJ0YXJnZXQgc3RhdGUgYW5kIHN1c3BlbmQNCj4gc2VxdWVu
-Y2UgdGVybWluYXRpb24gIg0KPiA+ICsJCQkJCQkicG9pbnQgc2V0IHRvIGRldmljZSBzdXNwZW5k
-DQo+IHN0YXRlLiIgfSwNCj4gDQo+IENoYW5nZSB0aGlzLCBtYXliZQ0KPiBDaGVjayBzdXNwZW5k
-LXRvLWRpc2sgd2l0aCBkZXZpY2Ugb25seS4NCj4gDQo+ID4gKwkJeyAiYmFzaWMtUzQiLCBISUJF
-Uk5BVEUsIHJ1bl90ZXN0LCAiQ2hlY2sgd2l0aCBzdXNwZW5kLXRvLWRpc2sNCj4gdGFyZ2V0IHN0
-YXRlLCAiDQo+ID4gKwkJCQkJCSJwZXJmb3JtIGEgZnVsbA0KPiBzdXNwZW5kL3Jlc3VtZSBjeWNs
-ZS4iIH0sDQo+IA0KPiBQbGVhc2UgaW1wcm92ZSB0aGlzIG9uZS4NCj4gDQo+ID4gIAkJeyB9DQo+
-ID4gIAl9LCB0ZXN0c19wb3dlcl9oYW5nW10gPSB7DQo+ID4gLQkJeyAiaGFuZy1TMyIsIFNVU1BF
-TkQgfCBIQU5HLCBydW5fdGVzdCB9LA0KPiA+IC0JCXsgImhhbmctUzQiLCBISUJFUk5BVEUgfCBI
-QU5HLCBydW5fdGVzdCB9LA0KPiA+IC0JCXsgInBvd2VyLVMwIiwgSURMRSwgcG93ZXJfdGVzdCB9
-LA0KPiA+IC0JCXsgInBvd2VyLVMzIiwgU1VTUEVORCwgcG93ZXJfdGVzdCB9LA0KPiA+ICsJCXsg
-ImhhbmctUzMiLCBTVVNQRU5EIHwgSEFORywgcnVuX3Rlc3QsICIiIH0sDQo+ID4gKwkJeyAiaGFu
-Zy1TNCIsIEhJQkVSTkFURSB8IEhBTkcsIHJ1bl90ZXN0LCAiIiB9LA0KPiA+ICsJCXsgInBvd2Vy
-LVMwIiwgSURMRSwgcG93ZXJfdGVzdCwgIiIgfSwNCj4gPiArCQl7ICJwb3dlci1TMyIsIFNVU1BF
-TkQsIHBvd2VyX3Rlc3QsICIiIH0sDQo+IA0KPiBQbGVhc2UgYWxzbyBmaWxsIHRoZXNlIGRlc2Ny
-aXB0aW9ucyBoZXJlLg0KW0phbmdhIFJhaHVsIEt1bWFyXSBBZGRlZCBkZXNjcmlwdGlvbnMgZm9y
-IGFib3ZlIHRlc3RzIGluIHJldiAyLg0KPiANCj4gUnVuIHRlc3Qgd2l0aCAtLWRlc2NyaWJlIG9w
-dGlvbiwgZS5nLg0KPiBzdWRvIC4vZ2VtX2V4ZWNfc3VzcGVuZCAtLWRlc2NyaWJlDQo+IHRvIHNl
-ZSB3aGF0IG90aGVyIGRlc2NyaXB0aW9ucyBhcmUgbWlzc2luZy4NCj4gDQo+IFJlZ2FyZHMsDQo+
-IEthbWlsDQo+ID4gIAkJeyB9DQo+ID4gIAl9Ow0KPiA+ICAJY29uc3Qgc3RydWN0IGludGVsX2V4
-ZWN1dGlvbl9lbmdpbmUyICplOyBAQCAtMzU5LDggKzM2OCwxMCBAQA0KPiA+IGlndF9tYWluDQo+
-ID4gIAkJfSBcDQo+ID4gIAl9DQo+ID4NCj4gPiAtCWZvciAodGVzdCA9IHRlc3RzX2FsbF9lbmdp
-bmVzOyB0ZXN0LT5uYW1lOyB0ZXN0KyspDQo+ID4gKwlmb3IgKHRlc3QgPSB0ZXN0c19hbGxfZW5n
-aW5lczsgdGVzdC0+bmFtZTsgdGVzdCsrKSB7DQo+ID4gKwkJaWd0X2Rlc2NyaWJlKHRlc3QtPmRl
-c2NyaWJlKTsNCj4gPiAgCQlzdWJ0ZXN0X2Zvcl9lYWNoX2NvbWJpbmF0aW9uKHRlc3QtPm5hbWUs
-IGludGVsX2N0eF8wKGZkKSwNCj4gPiB0ZXN0LT5mbGFncywgdGVzdC0+Zm4pOw0KPiA+ICsJfQ0K
-PiA+DQo+ID4gIAlmb3IgKG0gPSBtb2RlczsgbS0+c3VmZml4OyBtKyspIHsNCj4gPiAgCQlpZ3Rf
-c3VidGVzdF93aXRoX2R5bmFtaWNfZigiZml4ZWQlcyIsIG0tPnN1ZmZpeCkgew0KPiA+IC0tDQo+
-ID4gMi4yNS4xDQo+ID4NCltKYW5nYSBSYWh1bCBLdW1hcl0gDQpSZWdhcmRzLA0KUmFodWwNCg==
+On Mon, Jun 20, 2022 at 02:40:50PM +0530, Nidhi Gupta wrote:
+> Convert the existing subtests to dynamic subtests at pipe level.
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>  tests/kms_invalid_mode.c | 53 +++++++++++++++++-----------------------
+>  1 file changed, 23 insertions(+), 30 deletions(-)
+> 
+> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+> index 630798d8..3d583202 100644
+> --- a/tests/kms_invalid_mode.c
+> +++ b/tests/kms_invalid_mode.c
+> @@ -32,6 +32,7 @@ typedef struct _data data_t;
+>  
+>  struct _data {
+>  	int drm_fd;
+> +	enum pipe pipe;
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	drmModeResPtr res;
+> @@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInfoPtr mode)
+>  	return true;
+>  }
+>  
+> -static int
+> +static void
+>  test_output(data_t *data)
+>  {
+>  	igt_output_t *output = data->output;
+>  	drmModeModeInfo mode;
+>  	struct igt_fb fb;
+> -	int i;
+> +	int ret;
+> +	uint32_t crtc_id;
+>  
+>  	/*
+>  	 * FIXME test every mode we have to be more
+>  	 * sure everything is really getting rejected?
+>  	 */
+>  	mode = *igt_output_get_mode(output);
+> -	if (!data->adjust_mode(data, &mode))
+> -		return 0;
+> +	igt_skip_on(!data->adjust_mode(data, &mode));
+
+This may be a nitpick but prefer fail/skip constructs that don't need
+negation. Here that would be
+
+igt_require(data->adjust_mode(data, &mode));
+
+
+>  
+>  	igt_create_fb(data->drm_fd,
+>  		      max_t(uint16_t, mode.hdisplay, 64),
+
+Previously this fb allocation was done once for all pipes, now it's
+done once per pipe. What's the effect on total runtime?
+
+
+> @@ -202,32 +203,14 @@ test_output(data_t *data)
+>  
+>  	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+>  
+> -	for (i = 0; i < data->res->count_crtcs; i++) {
+> -		int ret;
+> -
+> -		igt_info("Checking pipe %c connector %s with mode %s\n",
+> -			 'A'+i, output->name, mode.name);
+> +	crtc_id = data->display.pipes[data->pipe].crtc_id;
+>  
+> -		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
+> -				     fb.fb_id, 0, 0,
+> -				     &output->id, 1, &mode);
+> -		igt_assert_lt(ret, 0);
+> -	}
+> +	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+> +			     fb.fb_id, 0, 0,
+> +			     &output->id, 1, &mode);
+> +	igt_assert_lt(ret, 0);
+>  
+>  	igt_remove_fb(data->drm_fd, &fb);
+> -
+> -	return 1;
+> -}
+> -
+> -static void test(data_t *data)
+> -{
+> -	int valid_connectors = 0;
+> -
+> -	for_each_connected_output(&data->display, data->output) {
+> -		valid_connectors += test_output(data);
+> -	}
+> -
+> -	igt_require_f(valid_connectors, "No suitable connectors found\n");
+>  }
+>  
+>  static int i915_max_dotclock(data_t *data)
+> @@ -297,6 +280,10 @@ static data_t data;
+>  
+>  igt_main
+>  {
+> +
+> +	enum pipe pipe;
+> +        igt_output_t *output;
+> +
+
+Something's off with this indentation.
+
+
+-- 
+Petri Latvala
+
+
+>  	igt_fixture {
+>  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>  
+> @@ -311,9 +298,15 @@ igt_main
+>  	}
+>  
+>  	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+> -		igt_subtest(subtests[i].name) {
+> -			data.adjust_mode = subtests[i].adjust_mode;
+> -			test(&data);
+> +		igt_subtest_with_dynamic(subtests[i].name) {
+> +			for_each_pipe_with_valid_output(&data.display, pipe, output) {
+> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+> +					data.output = output;
+> +					data.pipe = pipe;
+> +					data.adjust_mode = subtests[i].adjust_mode;
+> +					test_output(&data);
+> +				}
+> +			}
+>  		}
+>  	}
+>  
+> -- 
+> 2.26.2
+> 
