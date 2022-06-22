@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0C6010EB19
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 10:06:50 +0000 (UTC)
-Message-ID: <b3767972-a0e6-2fa2-6e73-69ae61681063@intel.com>
-Date: Wed, 22 Jun 2022 15:36:30 +0530
-Content-Language: en-US
-To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220621175706.23060-1-jeevan.b@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220621175706.23060-1-jeevan.b@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 526C110EC0F
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 11:01:29 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+In-Reply-To: <YqmWLK1rB5h5bukr@platvala-desk.ger.corp.intel.com>
+References: <20220614233100.13834-1-ville.syrjala@linux.intel.com>
+ <87edzqxw6t.fsf@intel.com>
+ <YqmWLK1rB5h5bukr@platvala-desk.ger.corp.intel.com>
+Date: Wed, 22 Jun 2022 14:01:25 +0300
+Message-ID: <87czf1rmgq.fsf@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add test for
- clone mode
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t 00/23] tools/intel_vbt_decode: Improve
+ the parser
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,122 +22,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue-21-06-2022 11:27 pm, Jeevan B wrote:
-> Add test for validation of clone mode.
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->   tests/kms_display_modes.c | 83 +++++++++++++++++++++++++++++++++++++++
->   1 file changed, 83 insertions(+)
-> 
-> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-> index eff30cbb..af299dc0 100644
-> --- a/tests/kms_display_modes.c
-> +++ b/tests/kms_display_modes.c
-> @@ -129,6 +129,80 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
->   	igt_assert_crc_equal(&crc[1], &ref_crc[1]);
->   }
->   
-> +static void run_clonemode_basic(data_t *data, int pipe1, int pipe2)
-> +{
-> +	struct igt_fb fbs[2];
-> +	drmModeModeInfo *mode[2];
-> +	igt_output_t *output, *clone_output[2];
-> +	igt_display_t *display = &data->display;
-> +	igt_plane_t *plane[2];
-> +	igt_pipe_crc_t *pipe_crc[2] = { 0 };
-> +	igt_crc_t ref_crc[2], crc[2];
-> +	int count = 0;
-> +
-> +	for_each_connected_output(display, output) {
-> +		clone_output[count] = output;
-> +		count++;
-> +
-> +		if (count > 1)
-> +			break;
-> +	}
-> +
-> +	igt_output_set_pipe(clone_output[0], pipe1);
-> +	igt_output_set_pipe(clone_output[1], pipe2);
-> +
-> +	mode[0] = igt_output_get_mode(clone_output[0]);
-> +	mode[1] = igt_output_get_mode(clone_output[1]);
-> +
-> +	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, INTEL_PIPE_CRC_SOURCE_AUTO);
-> +	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, INTEL_PIPE_CRC_SOURCE_AUTO);
-> +
-> +	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[0]->vdisplay,
-> +			    DRM_FORMAT_XRGB8888, 0, 1, 0, 0, &fbs[0]);
-> +
-> +	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[1]->vdisplay,
-> +			    DRM_FORMAT_XRGB8888, 0, 1, 0, 0, &fbs[1]);
-> +
-> +	plane[0] = igt_pipe_get_plane_type(&display->pipes[pipe1], DRM_PLANE_TYPE_PRIMARY);
-> +	plane[1] = igt_pipe_get_plane_type(&display->pipes[pipe2], DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_plane_set_fb(plane[0], &fbs[0]);
-> +	igt_plane_set_fb(plane[1], &fbs[1]);
-> +
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
-> +	igt_pipe_crc_collect_crc(pipe_crc[1], &ref_crc[1]);
-> +
-> +	igt_plane_set_fb(plane[0], &fbs[0]);
-> +	igt_plane_set_fb(plane[1], &fbs[1]);
-> +
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
-> +	igt_pipe_crc_collect_crc(pipe_crc[1], &crc[1]);
-> +
-> +	/*Clean up*/
-> +	igt_remove_fb(data->drm_fd, &fbs[0]);
-> +	igt_remove_fb(data->drm_fd, &fbs[1]);
-> +
-> +	igt_pipe_crc_free(pipe_crc[0]);
-> +	igt_pipe_crc_free(pipe_crc[1]);
-> +
-> +	igt_output_set_pipe(clone_output[0], PIPE_NONE);
-> +	igt_output_set_pipe(clone_output[1], PIPE_NONE);
-> +
-> +	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe1],
-> +			 DRM_PLANE_TYPE_PRIMARY), NULL);
-> +	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe2],
-> +			 DRM_PLANE_TYPE_PRIMARY), NULL);
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +	/*Compare CRC*/
-> +	igt_assert_crc_equal(&crc[0], &ref_crc[0]);
-> +	igt_assert_crc_equal(&crc[1], &ref_crc[1]);
-> +}
-> +
->   igt_main
->   {
->   	data_t data;
-> @@ -167,6 +241,15 @@ igt_main
->   		}
->   	}
->   
-> +	igt_describe("Test for validating display clone mode with a pair of connected displays");
-> +	igt_subtest_with_dynamic("clone-mode-basic") {
-> +		for (i = 0; i < data.n_pipes - 1; i++) {
-> +			igt_dynamic_f("pipe-%s%s", kmstest_pipe_name(pipe[i]),
-> +					kmstest_pipe_name(pipe[i+1]));
-> +			run_clonemode_basic(&data, pipe[i], pipe[i+1]);
+On Wed, 15 Jun 2022, Petri Latvala <petri.latvala@intel.com> wrote:
+> On Wed, Jun 15, 2022 at 09:44:26AM +0300, Jani Nikula wrote:
+>> On Wed, 15 Jun 2022, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+>> > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>> >
+>> > Change the igt VBT parser to make copies of the BDB data blocks
+>> > (just as we do in the kernel parser now). This makes it less
+>> > hazardous/confusing if your block definition don't happent to
+>> > match reality.=20
+>> >
+>> > Eg. with the current scheme we could very easily misinterpret
+>> > random bits from other blocks/etc. as our block data by just
+>> > using an overly large structure for decoding. With the block
+>> > copies being  at least as big as out struct definitions the
+>> > worst that can happen is that we just decode some extra zeroes
+>> > rather than some random other bits.
+>> >
+>> > The other thing I'm bringing over is the data pointer generation
+>> > stuff for modern VBTS (which lack the LFP data table pointes block).
+>> > That lets us keep decoding the LFP data block in exactly the
+>> > same way on old and new VBTs.
+>> >
+>> > And naturally we have massive gaps in what data the tool actually
+>> > parses from the VBT. So lots of patches to just parse more stuff.
+>> > I didn't do an exhaustive study on this topic, so still probably
+>> > missing some useful things.
+>>=20
+>> I glanced through all this, and it LGTM, but can't claim I did a
+>> detailed, thorough review. I also don't think it should really be
+>> necessary for this particular tool. If the changes work for you, it's
+>> good enough for me.
+>>=20
+>> Cc: Petri, good to go with that?
+>
+> Yeah, ack.
 
-I guess, kms_setmode is already covering this (ofcourse without crc). 
-Can you please check once?
+Ville, I think you can just merge.
 
-- Bhanu
+You can put
 
-> +		}
-> +	}
-> +
->   	igt_fixture {
->   		igt_display_fini(&data.display);
->   	}
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+
+on it, but with the caveat above.
+
+--=20
+Jani Nikula, Intel Open Source Graphics Center
