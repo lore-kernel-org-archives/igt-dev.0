@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C51241134FB
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 04:18:17 +0000 (UTC)
-Message-ID: <da18a00c-d674-b4a9-1d05-02cb3d071183@intel.com>
-Date: Wed, 22 Jun 2022 09:47:54 +0530
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B09DE10E37B
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 10:46:51 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 22 Jun 2022 10:46:50 +0000
+Message-ID: <d6266a9f80b84b9c8f27a65218b2bf88@intel.com>
+References: <20220621175706.23060-1-jeevan.b@intel.com>
+ <b3767972-a0e6-2fa2-6e73-69ae61681063@intel.com>
+In-Reply-To: <b3767972-a0e6-2fa2-6e73-69ae61681063@intel.com>
 Content-Language: en-US
-To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220614082525.6197-1-karthik.b.s@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220614082525.6197-1-karthik.b.s@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane: Test Refactoring
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add test for
+ clone mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,251 +27,82 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue-14-06-2022 01:55 pm, Karthik B S wrote:
-> Add igt_display_reset in test_init().
-> Add new function to call all the subtests to avoid code duplication.
-> 
-> v2: -Call test_init() before igt_output_set_pipe() (Bhanu)
->      -Declare and initialize 'count' variable together (Bhanu)
-> 
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
-- Bhanu
-
-> ---
->   tests/kms_plane.c | 123 ++++++++++++++++------------------------------
->   1 file changed, 43 insertions(+), 80 deletions(-)
-> 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index b1be44c3..c885a813 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -61,6 +61,7 @@ typedef struct {
->   	int num_colors;
->   	uint32_t crop;
->   	bool extended;
-> +	unsigned int flags;
->   } data_t;
->   
->   static bool all_pipes;
-> @@ -74,7 +75,9 @@ static color_t blue  = { 0.0f, 0.0f, 1.0f };
->    */
->   static void test_init(data_t *data, enum pipe pipe)
->   {
-> +	igt_require(data->display.pipes[pipe].n_planes > 0);
->   	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-> +	igt_display_reset(&data->display);
->   }
->   
->   static void test_fini(data_t *data)
-> @@ -264,7 +267,7 @@ test_plane_position_with_output(data_t *data,
->   }
->   
->   static void
-> -test_plane_position(data_t *data, enum pipe pipe, unsigned int flags)
-> +test_plane_position(data_t *data, enum pipe pipe)
->   {
->   	int n_planes = data->display.pipes[pipe].n_planes;
->   	igt_output_t *output;
-> @@ -274,12 +277,12 @@ test_plane_position(data_t *data, enum pipe pipe, unsigned int flags)
->   	igt_require(output);
->   
->   	test_init(data, pipe);
-> -	test_grab_crc(data, output, pipe, &green, flags, &reference_crc);
-> +	test_grab_crc(data, output, pipe, &green, data->flags, &reference_crc);
->   
->   	for (int plane = 1; plane < n_planes; plane++)
->   		test_plane_position_with_output(data, pipe, plane,
->   						output, &reference_crc,
-> -						flags);
-> +						data->flags);
->   
->   	test_fini(data);
->   }
-> @@ -372,7 +375,7 @@ test_plane_panning_with_output(data_t *data,
->   }
->   
->   static void
-> -test_plane_panning(data_t *data, enum pipe pipe, unsigned int flags)
-> +test_plane_panning(data_t *data, enum pipe pipe)
->   {
->   	igt_output_t *output;
->   	igt_crc_t ref_crc;
-> @@ -382,12 +385,12 @@ test_plane_panning(data_t *data, enum pipe pipe, unsigned int flags)
->   
->   	test_init(data, pipe);
->   
-> -	if (flags & TEST_PANNING_TOP_LEFT)
-> -		test_grab_crc(data, output, pipe, &red, flags, &ref_crc);
-> +	if (data->flags & TEST_PANNING_TOP_LEFT)
-> +		test_grab_crc(data, output, pipe, &red, data->flags, &ref_crc);
->   	else
-> -		test_grab_crc(data, output, pipe, &blue, flags, &ref_crc);
-> +		test_grab_crc(data, output, pipe, &blue, data->flags, &ref_crc);
->   
-> -	test_plane_panning_with_output(data, pipe, output, &ref_crc, flags);
-> +	test_plane_panning_with_output(data, pipe, output, &ref_crc, data->flags);
->   
->   	test_fini(data);
->   }
-> @@ -1055,6 +1058,8 @@ test_pixel_formats(data_t *data, enum pipe pipe)
->   		data->num_colors = ARRAY_SIZE(colors_reduced);
->   	}
->   
-> +	test_init(data, pipe);
-> +
->   	output = igt_get_single_output_for_pipe(&data->display, pipe);
->   	igt_require(output);
->   
-> @@ -1071,8 +1076,6 @@ test_pixel_formats(data_t *data, enum pipe pipe)
->   
->   	set_legacy_lut(data, pipe, LUT_MASK);
->   
-> -	test_init(data, pipe);
-> -
->   	result = true;
->   	for_each_plane_on_pipe(&data->display, pipe, plane) {
->   		if (skip_plane(data, plane))
-> @@ -1097,110 +1100,70 @@ static bool is_pipe_limit_reached(int count) {
->   	return count >= CRTC_RESTRICT_CNT && !all_pipes;
->   }
->   
-> -static void
-> -run_tests_for_pipe_plane(data_t *data)
-> +static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
->   {
->   	enum pipe pipe;
-> -	int count;
-> -	igt_fixture {
-> -		igt_require_pipe(&data->display, pipe);
-> -		igt_require(data->display.pipes[pipe].n_planes > 0);
-> +	int count = 0;
-> +
-> +	for_each_pipe(&data->display, pipe) {
-> +		igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> +			test(data, pipe);
-> +
-> +		if (is_pipe_limit_reached(++count))
-> +			break;
->   	}
-> +}
->   
-> +static void
-> +run_tests_for_pipe_plane(data_t *data)
-> +{
->   	igt_describe("verify the pixel formats for given plane and pipe");
-> -	igt_subtest_with_dynamic_f("pixel-format") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> -				test_pixel_formats(data, pipe);
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> -	}
-> +	igt_subtest_with_dynamic_f("pixel-format")
-> +		run_test(data, test_pixel_formats);
-> +
->   	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
->   	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe)) {
-> -				data->crop = 4;
-> -				test_pixel_formats(data, pipe);
-> -			}
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> +		data->crop = 4;
-> +		run_test(data, test_pixel_formats);
->   	}
->   
->   	data->crop = 0;
->   	igt_describe("verify plane position using two planes to create a fully covered screen");
->   	igt_subtest_with_dynamic_f("plane-position-covered") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> -				test_plane_position(data, pipe, 0);
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> +		data->flags = 0;
-> +		run_test(data, test_plane_position);
->   	}
->   
->   	igt_describe("verify plane position using two planes to create a partially covered screen");
->   	igt_subtest_with_dynamic_f("plane-position-hole") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> -				test_plane_position(data, pipe,
-> -				TEST_POSITION_PARTIALLY_COVERED);
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> +		data->flags = TEST_POSITION_PARTIALLY_COVERED;
-> +		run_test(data, test_plane_position);
->   	}
->   
->   	igt_describe("verify plane position using two planes to create a partially covered screen and"
->   		       "check for DPMS");
->   	igt_subtest_with_dynamic_f("plane-position-hole-dpms") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> -				test_plane_position(data, pipe,
-> -				TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS);
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> +		data->flags = TEST_POSITION_PARTIALLY_COVERED | TEST_DPMS;
-> +		run_test(data, test_plane_position);
->   	}
->   
->   	igt_describe("verify plane panning at top-left position using primary plane");
->   	igt_subtest_with_dynamic_f("plane-panning-top-left") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> -				test_plane_panning(data, pipe, TEST_PANNING_TOP_LEFT);
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> +		data->flags = TEST_PANNING_TOP_LEFT;
-> +		run_test(data, test_plane_panning);
->   	}
->   
->   	igt_describe("verify plane panning at bottom-right position using primary plane");
->   	igt_subtest_with_dynamic_f("plane-panning-bottom-right") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> -				test_plane_panning(data, pipe, TEST_PANNING_BOTTOM_RIGHT);
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> +		data->flags = TEST_PANNING_BOTTOM_RIGHT;
-> +		run_test(data, test_plane_panning);
->   	}
->   
->   	igt_describe("verify plane panning at bottom-right position using primary plane and executes system"
->   		       "suspend cycles");
->   	igt_subtest_with_dynamic_f("plane-panning-bottom-right-suspend") {
-> -		count = 0;
-> -		for_each_pipe(&data->display, pipe) {
-> -			igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
-> -				test_plane_panning(data, pipe,
-> -				TEST_PANNING_BOTTOM_RIGHT |
-> -				TEST_SUSPEND_RESUME);
-> -			if (is_pipe_limit_reached(++count))
-> -				break;
-> -		}
-> +		data->flags = TEST_PANNING_BOTTOM_RIGHT | TEST_SUSPEND_RESUME;
-> +		run_test(data, test_plane_panning);
->   	}
->   }
->   
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTW9kZW0sIEJoYW51cHJh
+a2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBK
+dW5lIDIyLCAyMDIyIDM6MzcgUE0NCj4gVG86IEIsIEplZXZhbiA8amVldmFuLmJAaW50ZWwuY29t
+PjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2
+XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19kaXNwbGF5X21vZGVzOiBBZGQgdGVzdCBmb3INCj4g
+Y2xvbmUgbW9kZQ0KPiANCj4gT24gVHVlLTIxLTA2LTIwMjIgMTE6MjcgcG0sIEplZXZhbiBCIHdy
+b3RlOg0KPiA+IEFkZCB0ZXN0IGZvciB2YWxpZGF0aW9uIG9mIGNsb25lIG1vZGUuDQo+ID4NCj4g
+PiBTaWduZWQtb2ZmLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50ZWwuY29tPg0KPiA+IC0tLQ0K
+PiA+ICAgdGVzdHMva21zX2Rpc3BsYXlfbW9kZXMuYyB8IDgzDQo+ICsrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDgzIGluc2VydGlv
+bnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZGlzcGxheV9tb2Rlcy5jIGIv
+dGVzdHMva21zX2Rpc3BsYXlfbW9kZXMuYw0KPiA+IGluZGV4IGVmZjMwY2JiLi5hZjI5OWRjMCAx
+MDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfZGlzcGxheV9tb2Rlcy5jDQo+ID4gKysrIGIvdGVz
+dHMva21zX2Rpc3BsYXlfbW9kZXMuYw0KPiA+IEBAIC0xMjksNiArMTI5LDgwIEBAIHN0YXRpYyB2
+b2lkIHJ1bl9leHRlbmRlZG1vZGVfYmFzaWMoZGF0YV90DQo+ICpkYXRhLCBpbnQgcGlwZTEsIGlu
+dCBwaXBlMikNCj4gPiAgIAlpZ3RfYXNzZXJ0X2NyY19lcXVhbCgmY3JjWzFdLCAmcmVmX2NyY1sx
+XSk7DQo+ID4gICB9DQo+ID4NCj4gPiArc3RhdGljIHZvaWQgcnVuX2Nsb25lbW9kZV9iYXNpYyhk
+YXRhX3QgKmRhdGEsIGludCBwaXBlMSwgaW50IHBpcGUyKSB7DQo+ID4gKwlzdHJ1Y3QgaWd0X2Zi
+IGZic1syXTsNCj4gPiArCWRybU1vZGVNb2RlSW5mbyAqbW9kZVsyXTsNCj4gPiArCWlndF9vdXRw
+dXRfdCAqb3V0cHV0LCAqY2xvbmVfb3V0cHV0WzJdOw0KPiA+ICsJaWd0X2Rpc3BsYXlfdCAqZGlz
+cGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPiA+ICsJaWd0X3BsYW5lX3QgKnBsYW5lWzJdOw0KPiA+
+ICsJaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjWzJdID0geyAwIH07DQo+ID4gKwlpZ3RfY3JjX3Qg
+cmVmX2NyY1syXSwgY3JjWzJdOw0KPiA+ICsJaW50IGNvdW50ID0gMDsNCj4gPiArDQo+ID4gKwlm
+b3JfZWFjaF9jb25uZWN0ZWRfb3V0cHV0KGRpc3BsYXksIG91dHB1dCkgew0KPiA+ICsJCWNsb25l
+X291dHB1dFtjb3VudF0gPSBvdXRwdXQ7DQo+ID4gKwkJY291bnQrKzsNCj4gPiArDQo+ID4gKwkJ
+aWYgKGNvdW50ID4gMSkNCj4gPiArCQkJYnJlYWs7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJaWd0
+X291dHB1dF9zZXRfcGlwZShjbG9uZV9vdXRwdXRbMF0sIHBpcGUxKTsNCj4gPiArCWlndF9vdXRw
+dXRfc2V0X3BpcGUoY2xvbmVfb3V0cHV0WzFdLCBwaXBlMik7DQo+ID4gKw0KPiA+ICsJbW9kZVsw
+XSA9IGlndF9vdXRwdXRfZ2V0X21vZGUoY2xvbmVfb3V0cHV0WzBdKTsNCj4gPiArCW1vZGVbMV0g
+PSBpZ3Rfb3V0cHV0X2dldF9tb2RlKGNsb25lX291dHB1dFsxXSk7DQo+ID4gKw0KPiA+ICsJcGlw
+ZV9jcmNbMF0gPSBpZ3RfcGlwZV9jcmNfbmV3KGRhdGEtPmRybV9mZCwgcGlwZTEsDQo+IElOVEVM
+X1BJUEVfQ1JDX1NPVVJDRV9BVVRPKTsNCj4gPiArCXBpcGVfY3JjWzFdID0gaWd0X3BpcGVfY3Jj
+X25ldyhkYXRhLT5kcm1fZmQsIHBpcGUyLA0KPiA+ICtJTlRFTF9QSVBFX0NSQ19TT1VSQ0VfQVVU
+Tyk7DQo+ID4gKw0KPiA+ICsJaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsIG1vZGVb
+MF0tPmhkaXNwbGF5LCBtb2RlWzBdLQ0KPiA+dmRpc3BsYXksDQo+ID4gKwkJCSAgICBEUk1fRk9S
+TUFUX1hSR0I4ODg4LCAwLCAxLCAwLCAwLCAmZmJzWzBdKTsNCj4gPiArDQo+ID4gKwlpZ3RfY3Jl
+YXRlX2NvbG9yX2ZiKGRhdGEtPmRybV9mZCwgbW9kZVswXS0+aGRpc3BsYXksIG1vZGVbMV0tDQo+
+ID52ZGlzcGxheSwNCj4gPiArCQkJICAgIERSTV9GT1JNQVRfWFJHQjg4ODgsIDAsIDEsIDAsIDAs
+ICZmYnNbMV0pOw0KPiA+ICsNCj4gPiArCXBsYW5lWzBdID0gaWd0X3BpcGVfZ2V0X3BsYW5lX3R5
+cGUoJmRpc3BsYXktPnBpcGVzW3BpcGUxXSwNCj4gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7DQo+
+ID4gKwlwbGFuZVsxXSA9IGlndF9waXBlX2dldF9wbGFuZV90eXBlKCZkaXNwbGF5LT5waXBlc1tw
+aXBlMl0sDQo+ID4gK0RSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiA+ICsNCj4gPiArCWlndF9w
+bGFuZV9zZXRfZmIocGxhbmVbMF0sICZmYnNbMF0pOw0KPiA+ICsJaWd0X3BsYW5lX3NldF9mYihw
+bGFuZVsxXSwgJmZic1sxXSk7DQo+ID4gKw0KPiA+ICsJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNw
+bGF5LCBDT01NSVRfQVRPTUlDKTsNCj4gPiArDQo+ID4gKwlpZ3RfcGlwZV9jcmNfY29sbGVjdF9j
+cmMocGlwZV9jcmNbMF0sICZyZWZfY3JjWzBdKTsNCj4gPiArCWlndF9waXBlX2NyY19jb2xsZWN0
+X2NyYyhwaXBlX2NyY1sxXSwgJnJlZl9jcmNbMV0pOw0KPiA+ICsNCj4gPiArCWlndF9wbGFuZV9z
+ZXRfZmIocGxhbmVbMF0sICZmYnNbMF0pOw0KPiA+ICsJaWd0X3BsYW5lX3NldF9mYihwbGFuZVsx
+XSwgJmZic1sxXSk7DQo+ID4gKw0KPiA+ICsJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNwbGF5LCBD
+T01NSVRfQVRPTUlDKTsNCj4gPiArDQo+ID4gKwlpZ3RfcGlwZV9jcmNfY29sbGVjdF9jcmMocGlw
+ZV9jcmNbMF0sICZjcmNbMF0pOw0KPiA+ICsJaWd0X3BpcGVfY3JjX2NvbGxlY3RfY3JjKHBpcGVf
+Y3JjWzFdLCAmY3JjWzFdKTsNCj4gPiArDQo+ID4gKwkvKkNsZWFuIHVwKi8NCj4gPiArCWlndF9y
+ZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmJzWzBdKTsNCj4gPiArCWlndF9yZW1vdmVfZmIoZGF0
+YS0+ZHJtX2ZkLCAmZmJzWzFdKTsNCj4gPiArDQo+ID4gKwlpZ3RfcGlwZV9jcmNfZnJlZShwaXBl
+X2NyY1swXSk7DQo+ID4gKwlpZ3RfcGlwZV9jcmNfZnJlZShwaXBlX2NyY1sxXSk7DQo+ID4gKw0K
+PiA+ICsJaWd0X291dHB1dF9zZXRfcGlwZShjbG9uZV9vdXRwdXRbMF0sIFBJUEVfTk9ORSk7DQo+
+ID4gKwlpZ3Rfb3V0cHV0X3NldF9waXBlKGNsb25lX291dHB1dFsxXSwgUElQRV9OT05FKTsNCj4g
+PiArDQo+ID4gKwlpZ3RfcGxhbmVfc2V0X2ZiKGlndF9waXBlX2dldF9wbGFuZV90eXBlKCZkaXNw
+bGF5LT5waXBlc1twaXBlMV0sDQo+ID4gKwkJCSBEUk1fUExBTkVfVFlQRV9QUklNQVJZKSwgTlVM
+TCk7DQo+ID4gKwlpZ3RfcGxhbmVfc2V0X2ZiKGlndF9waXBlX2dldF9wbGFuZV90eXBlKCZkaXNw
+bGF5LT5waXBlc1twaXBlMl0sDQo+ID4gKwkJCSBEUk1fUExBTkVfVFlQRV9QUklNQVJZKSwgTlVM
+TCk7DQo+ID4gKwlpZ3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXksIENPTU1JVF9BVE9NSUMpOw0K
+PiA+ICsNCj4gPiArCS8qQ29tcGFyZSBDUkMqLw0KPiA+ICsJaWd0X2Fzc2VydF9jcmNfZXF1YWwo
+JmNyY1swXSwgJnJlZl9jcmNbMF0pOw0KPiA+ICsJaWd0X2Fzc2VydF9jcmNfZXF1YWwoJmNyY1sx
+XSwgJnJlZl9jcmNbMV0pOyB9DQo+ID4gKw0KPiA+ICAgaWd0X21haW4NCj4gPiAgIHsNCj4gPiAg
+IAlkYXRhX3QgZGF0YTsNCj4gPiBAQCAtMTY3LDYgKzI0MSwxNSBAQCBpZ3RfbWFpbg0KPiA+ICAg
+CQl9DQo+ID4gICAJfQ0KPiA+DQo+ID4gKwlpZ3RfZGVzY3JpYmUoIlRlc3QgZm9yIHZhbGlkYXRp
+bmcgZGlzcGxheSBjbG9uZSBtb2RlIHdpdGggYSBwYWlyIG9mDQo+IGNvbm5lY3RlZCBkaXNwbGF5
+cyIpOw0KPiA+ICsJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJjbG9uZS1tb2RlLWJhc2ljIikg
+ew0KPiA+ICsJCWZvciAoaSA9IDA7IGkgPCBkYXRhLm5fcGlwZXMgLSAxOyBpKyspIHsNCj4gPiAr
+CQkJaWd0X2R5bmFtaWNfZigicGlwZS0lcyVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZVtp
+XSksDQo+ID4gKwkJCQkJa21zdGVzdF9waXBlX25hbWUocGlwZVtpKzFdKSk7DQo+ID4gKwkJCXJ1
+bl9jbG9uZW1vZGVfYmFzaWMoJmRhdGEsIHBpcGVbaV0sIHBpcGVbaSsxXSk7DQo+IA0KPiBJIGd1
+ZXNzLCBrbXNfc2V0bW9kZSBpcyBhbHJlYWR5IGNvdmVyaW5nIHRoaXMgKG9mY291cnNlIHdpdGhv
+dXQgY3JjKS4NCj4gQ2FuIHlvdSBwbGVhc2UgY2hlY2sgb25jZT8NCj4gDQo+IC0gQmhhbnUNCg0K
+WWVzLCB5b3UgYXJlIGNvcnJlY3QuIA0KTmV4dCBwbGFuIGlzIHRvIG1vdmUgYWxsIGRpc3BsYXkg
+bW9kZSB0ZXN0cyBoZXJlLg0KDQpUaGFua3MgDQpKZWV2YW4gQg0KPiANCj4gPiArCQl9DQo+ID4g
+Kwl9DQo+ID4gKw0KPiA+ICAgCWlndF9maXh0dXJlIHsNCj4gPiAgIAkJaWd0X2Rpc3BsYXlfZmlu
+aSgmZGF0YS5kaXNwbGF5KTsNCj4gPiAgIAl9DQoNCg==
