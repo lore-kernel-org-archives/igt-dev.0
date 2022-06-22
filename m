@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B09DE10E37B
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 10:46:51 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 22 Jun 2022 10:46:50 +0000
-Message-ID: <d6266a9f80b84b9c8f27a65218b2bf88@intel.com>
-References: <20220621175706.23060-1-jeevan.b@intel.com>
- <b3767972-a0e6-2fa2-6e73-69ae61681063@intel.com>
-In-Reply-To: <b3767972-a0e6-2fa2-6e73-69ae61681063@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 469D0113ACA
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 06:27:06 +0000 (UTC)
+Message-ID: <d0929a13-2b36-404c-1b9b-7e4a083ef5a5@intel.com>
+Date: Wed, 22 Jun 2022 11:56:39 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220615061123.4158764-1-bhanuprakash.modem@intel.com>
+ <c0e30271-6b70-e189-80ac-ea73280fa76d@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <c0e30271-6b70-e189-80ac-ea73280fa76d@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add test for
- clone mode
+Subject: Re: [igt-dev] [i-g-t] tests/kms_dither: Skip if current & requested
+ BPC doesn't match
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,82 +27,205 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTW9kZW0sIEJoYW51cHJh
-a2FzaCA8YmhhbnVwcmFrYXNoLm1vZGVtQGludGVsLmNvbT4NCj4gU2VudDogV2VkbmVzZGF5LCBK
-dW5lIDIyLCAyMDIyIDM6MzcgUE0NCj4gVG86IEIsIEplZXZhbiA8amVldmFuLmJAaW50ZWwuY29t
-PjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2
-XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19kaXNwbGF5X21vZGVzOiBBZGQgdGVzdCBmb3INCj4g
-Y2xvbmUgbW9kZQ0KPiANCj4gT24gVHVlLTIxLTA2LTIwMjIgMTE6MjcgcG0sIEplZXZhbiBCIHdy
-b3RlOg0KPiA+IEFkZCB0ZXN0IGZvciB2YWxpZGF0aW9uIG9mIGNsb25lIG1vZGUuDQo+ID4NCj4g
-PiBTaWduZWQtb2ZmLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50ZWwuY29tPg0KPiA+IC0tLQ0K
-PiA+ICAgdGVzdHMva21zX2Rpc3BsYXlfbW9kZXMuYyB8IDgzDQo+ICsrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDgzIGluc2VydGlv
-bnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZGlzcGxheV9tb2Rlcy5jIGIv
-dGVzdHMva21zX2Rpc3BsYXlfbW9kZXMuYw0KPiA+IGluZGV4IGVmZjMwY2JiLi5hZjI5OWRjMCAx
-MDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfZGlzcGxheV9tb2Rlcy5jDQo+ID4gKysrIGIvdGVz
-dHMva21zX2Rpc3BsYXlfbW9kZXMuYw0KPiA+IEBAIC0xMjksNiArMTI5LDgwIEBAIHN0YXRpYyB2
-b2lkIHJ1bl9leHRlbmRlZG1vZGVfYmFzaWMoZGF0YV90DQo+ICpkYXRhLCBpbnQgcGlwZTEsIGlu
-dCBwaXBlMikNCj4gPiAgIAlpZ3RfYXNzZXJ0X2NyY19lcXVhbCgmY3JjWzFdLCAmcmVmX2NyY1sx
-XSk7DQo+ID4gICB9DQo+ID4NCj4gPiArc3RhdGljIHZvaWQgcnVuX2Nsb25lbW9kZV9iYXNpYyhk
-YXRhX3QgKmRhdGEsIGludCBwaXBlMSwgaW50IHBpcGUyKSB7DQo+ID4gKwlzdHJ1Y3QgaWd0X2Zi
-IGZic1syXTsNCj4gPiArCWRybU1vZGVNb2RlSW5mbyAqbW9kZVsyXTsNCj4gPiArCWlndF9vdXRw
-dXRfdCAqb3V0cHV0LCAqY2xvbmVfb3V0cHV0WzJdOw0KPiA+ICsJaWd0X2Rpc3BsYXlfdCAqZGlz
-cGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPiA+ICsJaWd0X3BsYW5lX3QgKnBsYW5lWzJdOw0KPiA+
-ICsJaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjWzJdID0geyAwIH07DQo+ID4gKwlpZ3RfY3JjX3Qg
-cmVmX2NyY1syXSwgY3JjWzJdOw0KPiA+ICsJaW50IGNvdW50ID0gMDsNCj4gPiArDQo+ID4gKwlm
-b3JfZWFjaF9jb25uZWN0ZWRfb3V0cHV0KGRpc3BsYXksIG91dHB1dCkgew0KPiA+ICsJCWNsb25l
-X291dHB1dFtjb3VudF0gPSBvdXRwdXQ7DQo+ID4gKwkJY291bnQrKzsNCj4gPiArDQo+ID4gKwkJ
-aWYgKGNvdW50ID4gMSkNCj4gPiArCQkJYnJlYWs7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJaWd0
-X291dHB1dF9zZXRfcGlwZShjbG9uZV9vdXRwdXRbMF0sIHBpcGUxKTsNCj4gPiArCWlndF9vdXRw
-dXRfc2V0X3BpcGUoY2xvbmVfb3V0cHV0WzFdLCBwaXBlMik7DQo+ID4gKw0KPiA+ICsJbW9kZVsw
-XSA9IGlndF9vdXRwdXRfZ2V0X21vZGUoY2xvbmVfb3V0cHV0WzBdKTsNCj4gPiArCW1vZGVbMV0g
-PSBpZ3Rfb3V0cHV0X2dldF9tb2RlKGNsb25lX291dHB1dFsxXSk7DQo+ID4gKw0KPiA+ICsJcGlw
-ZV9jcmNbMF0gPSBpZ3RfcGlwZV9jcmNfbmV3KGRhdGEtPmRybV9mZCwgcGlwZTEsDQo+IElOVEVM
-X1BJUEVfQ1JDX1NPVVJDRV9BVVRPKTsNCj4gPiArCXBpcGVfY3JjWzFdID0gaWd0X3BpcGVfY3Jj
-X25ldyhkYXRhLT5kcm1fZmQsIHBpcGUyLA0KPiA+ICtJTlRFTF9QSVBFX0NSQ19TT1VSQ0VfQVVU
-Tyk7DQo+ID4gKw0KPiA+ICsJaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsIG1vZGVb
-MF0tPmhkaXNwbGF5LCBtb2RlWzBdLQ0KPiA+dmRpc3BsYXksDQo+ID4gKwkJCSAgICBEUk1fRk9S
-TUFUX1hSR0I4ODg4LCAwLCAxLCAwLCAwLCAmZmJzWzBdKTsNCj4gPiArDQo+ID4gKwlpZ3RfY3Jl
-YXRlX2NvbG9yX2ZiKGRhdGEtPmRybV9mZCwgbW9kZVswXS0+aGRpc3BsYXksIG1vZGVbMV0tDQo+
-ID52ZGlzcGxheSwNCj4gPiArCQkJICAgIERSTV9GT1JNQVRfWFJHQjg4ODgsIDAsIDEsIDAsIDAs
-ICZmYnNbMV0pOw0KPiA+ICsNCj4gPiArCXBsYW5lWzBdID0gaWd0X3BpcGVfZ2V0X3BsYW5lX3R5
-cGUoJmRpc3BsYXktPnBpcGVzW3BpcGUxXSwNCj4gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7DQo+
-ID4gKwlwbGFuZVsxXSA9IGlndF9waXBlX2dldF9wbGFuZV90eXBlKCZkaXNwbGF5LT5waXBlc1tw
-aXBlMl0sDQo+ID4gK0RSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiA+ICsNCj4gPiArCWlndF9w
-bGFuZV9zZXRfZmIocGxhbmVbMF0sICZmYnNbMF0pOw0KPiA+ICsJaWd0X3BsYW5lX3NldF9mYihw
-bGFuZVsxXSwgJmZic1sxXSk7DQo+ID4gKw0KPiA+ICsJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNw
-bGF5LCBDT01NSVRfQVRPTUlDKTsNCj4gPiArDQo+ID4gKwlpZ3RfcGlwZV9jcmNfY29sbGVjdF9j
-cmMocGlwZV9jcmNbMF0sICZyZWZfY3JjWzBdKTsNCj4gPiArCWlndF9waXBlX2NyY19jb2xsZWN0
-X2NyYyhwaXBlX2NyY1sxXSwgJnJlZl9jcmNbMV0pOw0KPiA+ICsNCj4gPiArCWlndF9wbGFuZV9z
-ZXRfZmIocGxhbmVbMF0sICZmYnNbMF0pOw0KPiA+ICsJaWd0X3BsYW5lX3NldF9mYihwbGFuZVsx
-XSwgJmZic1sxXSk7DQo+ID4gKw0KPiA+ICsJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNwbGF5LCBD
-T01NSVRfQVRPTUlDKTsNCj4gPiArDQo+ID4gKwlpZ3RfcGlwZV9jcmNfY29sbGVjdF9jcmMocGlw
-ZV9jcmNbMF0sICZjcmNbMF0pOw0KPiA+ICsJaWd0X3BpcGVfY3JjX2NvbGxlY3RfY3JjKHBpcGVf
-Y3JjWzFdLCAmY3JjWzFdKTsNCj4gPiArDQo+ID4gKwkvKkNsZWFuIHVwKi8NCj4gPiArCWlndF9y
-ZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmJzWzBdKTsNCj4gPiArCWlndF9yZW1vdmVfZmIoZGF0
-YS0+ZHJtX2ZkLCAmZmJzWzFdKTsNCj4gPiArDQo+ID4gKwlpZ3RfcGlwZV9jcmNfZnJlZShwaXBl
-X2NyY1swXSk7DQo+ID4gKwlpZ3RfcGlwZV9jcmNfZnJlZShwaXBlX2NyY1sxXSk7DQo+ID4gKw0K
-PiA+ICsJaWd0X291dHB1dF9zZXRfcGlwZShjbG9uZV9vdXRwdXRbMF0sIFBJUEVfTk9ORSk7DQo+
-ID4gKwlpZ3Rfb3V0cHV0X3NldF9waXBlKGNsb25lX291dHB1dFsxXSwgUElQRV9OT05FKTsNCj4g
-PiArDQo+ID4gKwlpZ3RfcGxhbmVfc2V0X2ZiKGlndF9waXBlX2dldF9wbGFuZV90eXBlKCZkaXNw
-bGF5LT5waXBlc1twaXBlMV0sDQo+ID4gKwkJCSBEUk1fUExBTkVfVFlQRV9QUklNQVJZKSwgTlVM
-TCk7DQo+ID4gKwlpZ3RfcGxhbmVfc2V0X2ZiKGlndF9waXBlX2dldF9wbGFuZV90eXBlKCZkaXNw
-bGF5LT5waXBlc1twaXBlMl0sDQo+ID4gKwkJCSBEUk1fUExBTkVfVFlQRV9QUklNQVJZKSwgTlVM
-TCk7DQo+ID4gKwlpZ3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXksIENPTU1JVF9BVE9NSUMpOw0K
-PiA+ICsNCj4gPiArCS8qQ29tcGFyZSBDUkMqLw0KPiA+ICsJaWd0X2Fzc2VydF9jcmNfZXF1YWwo
-JmNyY1swXSwgJnJlZl9jcmNbMF0pOw0KPiA+ICsJaWd0X2Fzc2VydF9jcmNfZXF1YWwoJmNyY1sx
-XSwgJnJlZl9jcmNbMV0pOyB9DQo+ID4gKw0KPiA+ICAgaWd0X21haW4NCj4gPiAgIHsNCj4gPiAg
-IAlkYXRhX3QgZGF0YTsNCj4gPiBAQCAtMTY3LDYgKzI0MSwxNSBAQCBpZ3RfbWFpbg0KPiA+ICAg
-CQl9DQo+ID4gICAJfQ0KPiA+DQo+ID4gKwlpZ3RfZGVzY3JpYmUoIlRlc3QgZm9yIHZhbGlkYXRp
-bmcgZGlzcGxheSBjbG9uZSBtb2RlIHdpdGggYSBwYWlyIG9mDQo+IGNvbm5lY3RlZCBkaXNwbGF5
-cyIpOw0KPiA+ICsJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJjbG9uZS1tb2RlLWJhc2ljIikg
-ew0KPiA+ICsJCWZvciAoaSA9IDA7IGkgPCBkYXRhLm5fcGlwZXMgLSAxOyBpKyspIHsNCj4gPiAr
-CQkJaWd0X2R5bmFtaWNfZigicGlwZS0lcyVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZVtp
-XSksDQo+ID4gKwkJCQkJa21zdGVzdF9waXBlX25hbWUocGlwZVtpKzFdKSk7DQo+ID4gKwkJCXJ1
-bl9jbG9uZW1vZGVfYmFzaWMoJmRhdGEsIHBpcGVbaV0sIHBpcGVbaSsxXSk7DQo+IA0KPiBJIGd1
-ZXNzLCBrbXNfc2V0bW9kZSBpcyBhbHJlYWR5IGNvdmVyaW5nIHRoaXMgKG9mY291cnNlIHdpdGhv
-dXQgY3JjKS4NCj4gQ2FuIHlvdSBwbGVhc2UgY2hlY2sgb25jZT8NCj4gDQo+IC0gQmhhbnUNCg0K
-WWVzLCB5b3UgYXJlIGNvcnJlY3QuIA0KTmV4dCBwbGFuIGlzIHRvIG1vdmUgYWxsIGRpc3BsYXkg
-bW9kZSB0ZXN0cyBoZXJlLg0KDQpUaGFua3MgDQpKZWV2YW4gQg0KPiANCj4gPiArCQl9DQo+ID4g
-Kwl9DQo+ID4gKw0KPiA+ICAgCWlndF9maXh0dXJlIHsNCj4gPiAgIAkJaWd0X2Rpc3BsYXlfZmlu
-aSgmZGF0YS5kaXNwbGF5KTsNCj4gPiAgIAl9DQoNCg==
+On Tue-21-06-2022 12:09 pm, Nautiyal, Ankit K wrote:
+> Hi Bhanu,
+> 
+> Please find the comments inline.
+> 
+> On 6/15/2022 11:41 AM, Bhanuprakash Modem wrote:
+>> The "max bpc" property only ensures that the bpc will not go beyond
+>> the value set through this property. It does not guarantee that the
+>> same bpc will be used for the given mode.
+>>
+>> If clock/bandwidth constraints permit, the max bpc will be used to
+>> show the mode, otherwise the bpc will be reduced. So, if we really
+>> want a particular bpc set, we can try reducing the resolution, till
+>> we get the bpc that we set in max bpc property.
+>>
+>> This patch will skip the test, if there is no valid resolution to get
+>> the same bpc as set by max_bpc property.
+>>
+>> Cc: Swati Sharma <swati2.sharma@intel.com>
+>> CC: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/kms_dither.c | 72 ++++++++++++++++++++++++----------------------
+>>   1 file changed, 37 insertions(+), 35 deletions(-)
+>>
+>> diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+>> index c72f83be..02896b37 100644
+>> --- a/tests/kms_dither.c
+>> +++ b/tests/kms_dither.c
+>> @@ -46,10 +46,6 @@ IGT_TEST_DESCRIPTION("Test Dithering block status");
+>>   typedef struct data {
+>>       igt_display_t display;
+>>       igt_plane_t *primary;
+>> -    igt_output_t *output;
+>> -    igt_pipe_t *pipe;
+>> -    drmModeModeInfo *mode;
+>> -    enum pipe pipe_id;
+> 
+> Perhaps commit message can have a line for this change as well.
+> 
+> 
+>>       int drm_fd;
+>>       igt_fb_t fb;
+>>   } data_t;
+>> @@ -60,30 +56,23 @@ typedef struct {
+>>   } dither_status_t;
+>>   /* Prepare test data. */
+>> -static void prepare_test(data_t *data, igt_output_t *output, enum 
+>> pipe pipe)
+>> +static void prepare_test(data_t *data, igt_output_t *output, enum 
+>> pipe p)
+>>   {
+>>       igt_display_t *display = &data->display;
+>> +    igt_pipe_t *pipe = &data->display.pipes[p];
+>> -    data->pipe_id = pipe;
+>> -    data->pipe = &data->display.pipes[data->pipe_id];
+>> -    igt_assert(data->pipe);
+>> +    igt_assert(pipe);
+>>       igt_display_reset(display);
+>> -    data->output = output;
+>> -    igt_assert(data->output);
+>> -
+>> -    data->mode = igt_output_get_mode(data->output);
+>> -    igt_assert(data->mode);
+>> -
+>>       data->primary =
+>> -        igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+>> +        igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>> -    igt_output_set_pipe(data->output, data->pipe_id);
+>> +    igt_output_set_pipe(output, p);
+>>   }
+>>   /* Returns the current state of dithering from the crtc debugfs. */
+>> -static dither_status_t get_dither_state(data_t *data)
+>> +static dither_status_t get_dither_state(data_t *data, enum pipe pipe)
+>>   {
+>>       char buf[512], tmp[5];
+>>       char *start_loc;
+>> @@ -103,11 +92,34 @@ static dither_status_t get_dither_state(data_t 
+>> *data)
+>>       igt_assert_eq(sscanf(start_loc, ", dither=%s", tmp), 1);
+>>       status.dither = !strcmp(tmp, "yes,");
+>> -    status.bpc = igt_get_pipe_current_bpc(data->drm_fd, data->pipe_id);
+>> +    status.bpc = igt_get_pipe_current_bpc(data->drm_fd, pipe);
+>>       return status;
+>>   }
+>> +static bool i915_clock_constraint(data_t *data, enum pipe pipe,
+>> +                  igt_output_t *output, int bpc)
+>> +{
+>> +    drmModeConnector *connector = output->config.connector;
+>> +    igt_display_t *display = &data->display;
+>> +
+>> +    igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
+>> +
+>> +    for_each_connector_mode(output) {
+>> +        igt_output_override_mode(output, &connector->modes[j__]);
+>> +        igt_display_commit2(display, display->is_atomic ? 
+>> COMMIT_ATOMIC : COMMIT_LEGACY);
+> 
+> I think this should be igt_display_try_commit2, otherwise the test will 
+> fail and not try different modes.
+
+Thanks for the review Ankit.
+
+NO, Commit should pass for every mode, but "current bpc" (which is 
+pipe_bpp/3) might be less than the requested. So that we can iterate 
+over all available modes until it matches with requested bpc.
+
+Commit failures due to some other reasons are not expected to catch here.
+
+- Bhanu
+
+> 
+> Otherwise patch seems to be fine to me.
+> 
+> Regards,
+> 
+> Ankit
+> 
+> 
+>> +
+>> +        if (!igt_check_output_bpc_equal(data->drm_fd, pipe,
+>> +                        output->name, bpc))
+>> +            continue;
+>> +
+>> +        return true;
+>> +    }
+>> +
+>> +    igt_output_override_mode(output, NULL);
+>> +    return false;
+>> +}
+>> +
+>>   static void test_dithering(data_t *data, enum pipe pipe,
+>>                  igt_output_t *output,
+>>                  int fb_bpc, int fb_format,
+>> @@ -121,14 +133,12 @@ static void test_dithering(data_t *data, enum 
+>> pipe pipe,
+>>               output->name, kmstest_pipe_name(pipe));
+>>       prepare_test(data, output, pipe);
+>> -    igt_assert(igt_create_fb(data->drm_fd, data->mode->hdisplay,
+>> -                 data->mode->vdisplay, fb_format,
+>> +    igt_assert(igt_create_fb(data->drm_fd, 512, 512, fb_format,
+>>                    DRM_FORMAT_MOD_LINEAR, &data->fb));
+>>       igt_plane_set_fb(data->primary, &data->fb);
+>> -    igt_plane_set_size(data->primary, data->mode->hdisplay, 
+>> data->mode->vdisplay);
+>>       bpc = igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+>> -    igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 
+>> output_bpc);
+>> +    igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 
+>> output_bpc);
+>>       if (display->is_atomic)
+>>           ret = igt_display_try_commit_atomic(display,
+>> @@ -141,12 +151,9 @@ static void test_dithering(data_t *data, enum 
+>> pipe pipe,
+>>       igt_require_f(!ret, "%s don't support %d-bpc\n",
+>>                   output->name, output_bpc);
+>> -    igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : 
+>> COMMIT_LEGACY);
+>> -
+>> -    if (!igt_check_output_bpc_equal(data->drm_fd, pipe, output->name, 
+>> output_bpc)) {
+>> -        igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, bpc);
+>> -        igt_fail_on_f(true, "Failed to set max_bpc as: %d\n", 
+>> output_bpc);
+>> -    }
+>> +    igt_require_f(i915_clock_constraint(data, pipe, output, output_bpc),
+>> +            "No supported mode found to use %d-bpc on %s\n",
+>> +            output_bpc, output->name);
+>>       /*
+>>        * Check the status of Dithering block:
+>> @@ -155,7 +162,7 @@ static void test_dithering(data_t *data, enum pipe 
+>> pipe,
+>>        * If fb_bpc is greater than output_bpc, Dithering should be 
+>> enabled
+>>        * Else disabled
+>>        */
+>> -    status = get_dither_state(data);
+>> +    status = get_dither_state(data, pipe);
+>>       igt_info("FB BPC:%d, Panel BPC:%d, Pipe BPC:%d, Expected 
+>> Dither:%s, Actual result:%s\n",
+>>             fb_bpc, output_bpc, status.bpc,
+>> @@ -167,17 +174,12 @@ static void test_dithering(data_t *data, enum 
+>> pipe pipe,
+>>       * Otherwise, previously updated value will stay forever and
+>>       * may cause the failures for next/other subtests.
+>>       */
+>> -    igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, bpc);
+>> +    igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, bpc);
+>>       igt_plane_set_fb(data->primary, NULL);
+>>       igt_output_set_pipe(output, PIPE_NONE);
+>>       igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC 
+>> : COMMIT_LEGACY);
+>>       igt_remove_fb(data->drm_fd, &data->fb);
+>> -    /* Check if crtc bpc is updated with requested one. */
+>> -    igt_require_f((status.bpc == output_bpc),
+>> -            "%s can support max %u-bpc, but requested %d-bpc\n",
+>> -                output->name, status.bpc, output_bpc);
+>> -
+>>       /* Compute the result. */
+>>       if (fb_bpc > output_bpc)
+>>           igt_assert_f(status.dither, "(fb_%dbpc > output_%dbpc): 
+>> Dither should be enabled\n",
