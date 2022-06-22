@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 586E410FB41
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 15:46:31 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Jun 2022 21:18:37 +0530
-Message-Id: <20220622154837.20582-3-nidhi1.gupta@intel.com>
-In-Reply-To: <20220622154837.20582-1-nidhi1.gupta@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D85D11358F
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 15:53:25 +0000 (UTC)
+Date: Wed, 22 Jun 2022 18:51:31 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Message-ID: <YrM6g7aeGSgQTwCn@platvala-desk.ger.corp.intel.com>
 References: <20220622154837.20582-1-nidhi1.gupta@intel.com>
+ <20220622154837.20582-2-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_invalid_mode: Test Cleanup
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220622154837.20582-2-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode: Convert
+ tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,30 +21,128 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>, petri.latvala@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sanitize the system state before starting the subtest.
+On Wed, Jun 22, 2022 at 09:18:36PM +0530, Nidhi Gupta wrote:
+> Convert the existing subtests to dynamic subtests at pipe level.
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_invalid_mode.c | 2 ++
- 1 file changed, 2 insertions(+)
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index 7e1f683b..eb46b6e7 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -187,6 +187,8 @@ test_output(data_t *data)
- 	int ret;
- 	uint32_t crtc_id;
- 
-+	igt_display_reset(&data->display);
-+
- 	/*
- 	 * FIXME test every mode we have to be more
- 	 * sure everything is really getting rejected?
--- 
-2.26.2
+> ---
+>  tests/kms_invalid_mode.c | 53 +++++++++++++++++-----------------------
+>  1 file changed, 23 insertions(+), 30 deletions(-)
+> 
+> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+> index 630798d8..7e1f683b 100644
+> --- a/tests/kms_invalid_mode.c
+> +++ b/tests/kms_invalid_mode.c
+> @@ -32,6 +32,7 @@ typedef struct _data data_t;
+>  
+>  struct _data {
+>  	int drm_fd;
+> +	enum pipe pipe;
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	drmModeResPtr res;
+> @@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInfoPtr mode)
+>  	return true;
+>  }
+>  
+> -static int
+> +static void
+>  test_output(data_t *data)
+>  {
+>  	igt_output_t *output = data->output;
+>  	drmModeModeInfo mode;
+>  	struct igt_fb fb;
+> -	int i;
+> +	int ret;
+> +	uint32_t crtc_id;
+>  
+>  	/*
+>  	 * FIXME test every mode we have to be more
+>  	 * sure everything is really getting rejected?
+>  	 */
+>  	mode = *igt_output_get_mode(output);
+> -	if (!data->adjust_mode(data, &mode))
+> -		return 0;
+> +	igt_require(data->adjust_mode(data, &mode));
+>  
+>  	igt_create_fb(data->drm_fd,
+>  		      max_t(uint16_t, mode.hdisplay, 64),
+> @@ -202,32 +203,14 @@ test_output(data_t *data)
+>  
+>  	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+>  
+> -	for (i = 0; i < data->res->count_crtcs; i++) {
+> -		int ret;
+> -
+> -		igt_info("Checking pipe %c connector %s with mode %s\n",
+> -			 'A'+i, output->name, mode.name);
+> +	crtc_id = data->display.pipes[data->pipe].crtc_id;
+>  
+> -		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
+> -				     fb.fb_id, 0, 0,
+> -				     &output->id, 1, &mode);
+> -		igt_assert_lt(ret, 0);
+> -	}
+> +	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+> +			     fb.fb_id, 0, 0,
+> +			     &output->id, 1, &mode);
+> +	igt_assert_lt(ret, 0);
+>  
+>  	igt_remove_fb(data->drm_fd, &fb);
+> -
+> -	return 1;
+> -}
+> -
+> -static void test(data_t *data)
+> -{
+> -	int valid_connectors = 0;
+> -
+> -	for_each_connected_output(&data->display, data->output) {
+> -		valid_connectors += test_output(data);
+> -	}
+> -
+> -	igt_require_f(valid_connectors, "No suitable connectors found\n");
+>  }
+>  
+>  static int i915_max_dotclock(data_t *data)
+> @@ -297,6 +280,10 @@ static data_t data;
+>  
+>  igt_main
+>  {
+> +
+> +	enum pipe pipe;
+> +	igt_output_t *output;
+> +
+>  	igt_fixture {
+>  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>  
+> @@ -311,9 +298,15 @@ igt_main
+>  	}
+>  
+>  	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+> -		igt_subtest(subtests[i].name) {
+> -			data.adjust_mode = subtests[i].adjust_mode;
+> -			test(&data);
+> +		igt_subtest_with_dynamic(subtests[i].name) {
+> +			for_each_pipe_with_valid_output(&data.display, pipe, output) {
+> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+> +					data.output = output;
+> +					data.pipe = pipe;
+> +					data.adjust_mode = subtests[i].adjust_mode;
+> +					test_output(&data);
+> +				}
+> +			}
+>  		}
+>  	}
+>  
+> -- 
+> 2.26.2
+> 
