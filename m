@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04F4711348D
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 08:07:06 +0000 (UTC)
-Date: Wed, 22 Jun 2022 10:06:54 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YrLNnn/0clZPrhoi@kamilkon-desk1>
-References: <20220620110046.3057440-1-janga.rahul.kumar@intel.com>
- <20220620110046.3057440-2-janga.rahul.kumar@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A94810E71B
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 08:24:56 +0000 (UTC)
+Message-ID: <b4b9c4f3-b098-cfcd-30c4-e20f0bab5acf@intel.com>
+Date: Wed, 22 Jun 2022 13:54:43 +0530
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220615061123.4158764-1-bhanuprakash.modem@intel.com>
+ <c0e30271-6b70-e189-80ac-ea73280fa76d@intel.com>
+ <d0929a13-2b36-404c-1b9b-7e4a083ef5a5@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <d0929a13-2b36-404c-1b9b-7e4a083ef5a5@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220620110046.3057440-2-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/2] tests/prime_vgem : Added subtests
- description
+Subject: Re: [igt-dev] [i-g-t] tests/kms_dither: Skip if current & requested
+ BPC doesn't match
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,75 +24,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janga,
 
-On 2022-06-20 at 16:30:45 +0530, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> 
-> Added test description to basic subtests.
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> ---
->  tests/prime_vgem.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-> index 5fa6e537..4eae723f 100644
-> --- a/tests/prime_vgem.c
-> +++ b/tests/prime_vgem.c
-> @@ -1128,15 +1128,19 @@ igt_main
->  		gem_require_mmap_device_coherent(i915);
->  	}
->  
-> +	igt_describe("Examine read acess path.");
------------------------------------ ^
-s/acess/access/
+On 6/22/2022 11:56 AM, Modem, Bhanuprakash wrote:
+> On Tue-21-06-2022 12:09 pm, Nautiyal, Ankit K wrote:
+>> Hi Bhanu,
+>>
+>> Please find the comments inline.
+>>
+>> On 6/15/2022 11:41 AM, Bhanuprakash Modem wrote:
+>>> The "max bpc" property only ensures that the bpc will not go beyond
+>>> the value set through this property. It does not guarantee that the
+>>> same bpc will be used for the given mode.
+>>>
+>>> If clock/bandwidth constraints permit, the max bpc will be used to
+>>> show the mode, otherwise the bpc will be reduced. So, if we really
+>>> want a particular bpc set, we can try reducing the resolution, till
+>>> we get the bpc that we set in max bpc property.
+>>>
+>>> This patch will skip the test, if there is no valid resolution to get
+>>> the same bpc as set by max_bpc property.
+>>>
+>>> Cc: Swati Sharma <swati2.sharma@intel.com>
+>>> CC: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>> ---
+>>>   tests/kms_dither.c | 72 
+>>> ++++++++++++++++++++++++----------------------
+>>>   1 file changed, 37 insertions(+), 35 deletions(-)
+>>>
+>>> diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+>>> index c72f83be..02896b37 100644
+>>> --- a/tests/kms_dither.c
+>>> +++ b/tests/kms_dither.c
+>>> @@ -46,10 +46,6 @@ IGT_TEST_DESCRIPTION("Test Dithering block status");
+>>>   typedef struct data {
+>>>       igt_display_t display;
+>>>       igt_plane_t *primary;
+>>> -    igt_output_t *output;
+>>> -    igt_pipe_t *pipe;
+>>> -    drmModeModeInfo *mode;
+>>> -    enum pipe pipe_id;
+>>
+>> Perhaps commit message can have a line for this change as well.
+>>
+>>
+>>>       int drm_fd;
+>>>       igt_fb_t fb;
+>>>   } data_t;
+>>> @@ -60,30 +56,23 @@ typedef struct {
+>>>   } dither_status_t;
+>>>   /* Prepare test data. */
+>>> -static void prepare_test(data_t *data, igt_output_t *output, enum 
+>>> pipe pipe)
+>>> +static void prepare_test(data_t *data, igt_output_t *output, enum 
+>>> pipe p)
+>>>   {
+>>>       igt_display_t *display = &data->display;
+>>> +    igt_pipe_t *pipe = &data->display.pipes[p];
+>>> -    data->pipe_id = pipe;
+>>> -    data->pipe = &data->display.pipes[data->pipe_id];
+>>> -    igt_assert(data->pipe);
+>>> +    igt_assert(pipe);
+>>>       igt_display_reset(display);
+>>> -    data->output = output;
+>>> -    igt_assert(data->output);
+>>> -
+>>> -    data->mode = igt_output_get_mode(data->output);
+>>> -    igt_assert(data->mode);
+>>> -
+>>>       data->primary =
+>>> -        igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+>>> +        igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>>> -    igt_output_set_pipe(data->output, data->pipe_id);
+>>> +    igt_output_set_pipe(output, p);
+>>>   }
+>>>   /* Returns the current state of dithering from the crtc debugfs. */
+>>> -static dither_status_t get_dither_state(data_t *data)
+>>> +static dither_status_t get_dither_state(data_t *data, enum pipe pipe)
+>>>   {
+>>>       char buf[512], tmp[5];
+>>>       char *start_loc;
+>>> @@ -103,11 +92,34 @@ static dither_status_t get_dither_state(data_t 
+>>> *data)
+>>>       igt_assert_eq(sscanf(start_loc, ", dither=%s", tmp), 1);
+>>>       status.dither = !strcmp(tmp, "yes,");
+>>> -    status.bpc = igt_get_pipe_current_bpc(data->drm_fd, 
+>>> data->pipe_id);
+>>> +    status.bpc = igt_get_pipe_current_bpc(data->drm_fd, pipe);
+>>>       return status;
+>>>   }
+>>> +static bool i915_clock_constraint(data_t *data, enum pipe pipe,
+>>> +                  igt_output_t *output, int bpc)
+>>> +{
+>>> +    drmModeConnector *connector = output->config.connector;
+>>> +    igt_display_t *display = &data->display;
+>>> +
+>>> +    igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
+>>> +
+>>> +    for_each_connector_mode(output) {
+>>> +        igt_output_override_mode(output, &connector->modes[j__]);
+>>> +        igt_display_commit2(display, display->is_atomic ? 
+>>> COMMIT_ATOMIC : COMMIT_LEGACY);
+>>
+>> I think this should be igt_display_try_commit2, otherwise the test 
+>> will fail and not try different modes.
+>
+> Thanks for the review Ankit.
+>
+> NO, Commit should pass for every mode, but "current bpc" (which is 
+> pipe_bpp/3) might be less than the requested. So that we can iterate 
+> over all available modes until it matches with requested bpc.
+>
+> Commit failures due to some other reasons are not expected to catch here.
+>
+> - Bhanu
 
->  	igt_subtest("basic-read")
->  		test_read(vgem, i915);
->  
-> +	igt_describe("Examine write acess path.");
+Yes you are right indeed, the modeset is not expected to fail here. I 
+stand corrected.
 
-Same here.
+The patch looks good to me.
 
->  	igt_subtest("basic-write")
->  		test_write(vgem, i915);
->  
-> +	igt_describe("Check that we wrap the vgem mmap with userptr.");
->  	igt_subtest("basic-userptr")
->  		test_userptr(vgem, i915);
->  
-> +	igt_describe("Examine acess path through gtt.");
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-Same here.
-
->  	igt_subtest("basic-gtt") {
->  		gem_require_mappable_ggtt(i915);
->  		test_gtt(vgem, i915);
-> @@ -1180,8 +1184,11 @@ igt_main
->  			igt_require(vgem_has_fences(vgem));
->  		}
->  
-> +		igt_describe("Examine read acess path fencing.");
-
-Same here.
-
-Regards,
-Kamil
-
->  		igt_subtest("basic-fence-read")
->  			test_fence_read(i915, vgem);
-> +
-> +		igt_describe("Examine gtt access path fencing.");
->  		igt_subtest("basic-fence-mmap") {
->  			gem_require_mappable_ggtt(i915);
->  			test_fence_mmap(i915, vgem);
-> -- 
-> 2.25.1
-> 
+>
+>>
+>> Otherwise patch seems to be fine to me.
+>>
+>> Regards,
+>>
+>> Ankit
+>>
+>>
+>>> +
+>>> +        if (!igt_check_output_bpc_equal(data->drm_fd, pipe,
+>>> +                        output->name, bpc))
+>>> +            continue;
+>>> +
+>>> +        return true;
+>>> +    }
+>>> +
+>>> +    igt_output_override_mode(output, NULL);
+>>> +    return false;
+>>> +}
+>>> +
+>>>   static void test_dithering(data_t *data, enum pipe pipe,
+>>>                  igt_output_t *output,
+>>>                  int fb_bpc, int fb_format,
+>>> @@ -121,14 +133,12 @@ static void test_dithering(data_t *data, enum 
+>>> pipe pipe,
+>>>               output->name, kmstest_pipe_name(pipe));
+>>>       prepare_test(data, output, pipe);
+>>> -    igt_assert(igt_create_fb(data->drm_fd, data->mode->hdisplay,
+>>> -                 data->mode->vdisplay, fb_format,
+>>> +    igt_assert(igt_create_fb(data->drm_fd, 512, 512, fb_format,
+>>>                    DRM_FORMAT_MOD_LINEAR, &data->fb));
+>>>       igt_plane_set_fb(data->primary, &data->fb);
+>>> -    igt_plane_set_size(data->primary, data->mode->hdisplay, 
+>>> data->mode->vdisplay);
+>>>       bpc = igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+>>> -    igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 
+>>> output_bpc);
+>>> +    igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 
+>>> output_bpc);
+>>>       if (display->is_atomic)
+>>>           ret = igt_display_try_commit_atomic(display,
+>>> @@ -141,12 +151,9 @@ static void test_dithering(data_t *data, enum 
+>>> pipe pipe,
+>>>       igt_require_f(!ret, "%s don't support %d-bpc\n",
+>>>                   output->name, output_bpc);
+>>> -    igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC 
+>>> : COMMIT_LEGACY);
+>>> -
+>>> -    if (!igt_check_output_bpc_equal(data->drm_fd, pipe, 
+>>> output->name, output_bpc)) {
+>>> -        igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, bpc);
+>>> -        igt_fail_on_f(true, "Failed to set max_bpc as: %d\n", 
+>>> output_bpc);
+>>> -    }
+>>> +    igt_require_f(i915_clock_constraint(data, pipe, output, 
+>>> output_bpc),
+>>> +            "No supported mode found to use %d-bpc on %s\n",
+>>> +            output_bpc, output->name);
+>>>       /*
+>>>        * Check the status of Dithering block:
+>>> @@ -155,7 +162,7 @@ static void test_dithering(data_t *data, enum 
+>>> pipe pipe,
+>>>        * If fb_bpc is greater than output_bpc, Dithering should be 
+>>> enabled
+>>>        * Else disabled
+>>>        */
+>>> -    status = get_dither_state(data);
+>>> +    status = get_dither_state(data, pipe);
+>>>       igt_info("FB BPC:%d, Panel BPC:%d, Pipe BPC:%d, Expected 
+>>> Dither:%s, Actual result:%s\n",
+>>>             fb_bpc, output_bpc, status.bpc,
+>>> @@ -167,17 +174,12 @@ static void test_dithering(data_t *data, enum 
+>>> pipe pipe,
+>>>       * Otherwise, previously updated value will stay forever and
+>>>       * may cause the failures for next/other subtests.
+>>>       */
+>>> -    igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 
+>>> bpc);
+>>> +    igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, bpc);
+>>>       igt_plane_set_fb(data->primary, NULL);
+>>>       igt_output_set_pipe(output, PIPE_NONE);
+>>>       igt_display_commit2(display, display->is_atomic ? 
+>>> COMMIT_ATOMIC : COMMIT_LEGACY);
+>>>       igt_remove_fb(data->drm_fd, &data->fb);
+>>> -    /* Check if crtc bpc is updated with requested one. */
+>>> -    igt_require_f((status.bpc == output_bpc),
+>>> -            "%s can support max %u-bpc, but requested %d-bpc\n",
+>>> -                output->name, status.bpc, output_bpc);
+>>> -
+>>>       /* Compute the result. */
+>>>       if (fb_bpc > output_bpc)
+>>>           igt_assert_f(status.dither, "(fb_%dbpc > output_%dbpc): 
+>>> Dither should be enabled\n",
+>
