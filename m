@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3BA010F50C
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 09:42:27 +0000 (UTC)
-Date: Wed, 22 Jun 2022 12:40:33 +0300
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F71810E7A3
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 09:58:14 +0000 (UTC)
+Date: Wed, 22 Jun 2022 12:56:20 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-To: Nidhi Gupta <nidhi1.gupta@intel.com>
-Message-ID: <YrLjkQkSIDP2oT92@platvala-desk.ger.corp.intel.com>
-References: <20220620091052.16625-1-nidhi1.gupta@intel.com>
- <20220620091052.16625-2-nidhi1.gupta@intel.com>
+To: Swati Sharma <swati2.sharma@intel.com>
+Message-ID: <YrLnRDUok1OvSqN5@platvala-desk.ger.corp.intel.com>
+References: <20220622074348.31284-1-swati2.sharma@intel.com>
+ <20220622074348.31284-2-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220620091052.16625-2-nidhi1.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode.c: Convert
- tests to dynamic
+In-Reply-To: <20220622074348.31284-2-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [v4 PATCH i-g-t 1/2] tests/i915/kms_flip_scaled_crc:
+ Convert tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,140 +26,248 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jun 20, 2022 at 02:40:50PM +0530, Nidhi Gupta wrote:
-> Convert the existing subtests to dynamic subtests at pipe level.
+On Wed, Jun 22, 2022 at 01:13:47PM +0530, Swati Sharma wrote:
+> Convert the existing subtests to dynamic subtests at pipe/output level.
 > 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> v2: Refactored code in such a manner that once test has been run
+>     successfully on chosen pipe this pipe will not be tested again
+>     as this test is testing pipe feature. No need to be run
+>     separately for each connector using all pipes.
+> v3: Changed seq to avoid modetoset as a dangling ptr
+> v4: On eDP 1080p with 144Hz vrefresh, test fails with cdclk
+>     lim, however it passes with 90Hz vrefresh. Added the check
+>     to handle this scenario.
+> 
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/kms_invalid_mode.c | 53 +++++++++++++++++-----------------------
->  1 file changed, 23 insertions(+), 30 deletions(-)
+>  tests/i915/kms_flip_scaled_crc.c | 120 +++++++++++++------------------
+>  1 file changed, 51 insertions(+), 69 deletions(-)
 > 
-> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-> index 630798d8..3d583202 100644
-> --- a/tests/kms_invalid_mode.c
-> +++ b/tests/kms_invalid_mode.c
-> @@ -32,6 +32,7 @@ typedef struct _data data_t;
+> diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+> index 9740715f..208b748a 100644
+> --- a/tests/i915/kms_flip_scaled_crc.c
+> +++ b/tests/i915/kms_flip_scaled_crc.c
+> @@ -163,8 +163,6 @@ const struct {
+>  	},
+>  };
 >  
->  struct _data {
->  	int drm_fd;
-> +	enum pipe pipe;
->  	igt_display_t display;
->  	igt_output_t *output;
->  	drmModeResPtr res;
-> @@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInfoPtr mode)
->  	return true;
->  }
->  
-> -static int
-> +static void
->  test_output(data_t *data)
+> -enum subrval {CONNECTORFAIL, CONNECTORSUCCESS, TESTSKIP, NOREQUESTEDFORMATONPIPE};
+> -
+>  static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+>  		     uint32_t height, uint64_t format, uint64_t modifier)
 >  {
->  	igt_output_t *output = data->output;
->  	drmModeModeInfo mode;
->  	struct igt_fb fb;
-> -	int i;
-> +	int ret;
-> +	uint32_t crtc_id;
->  
->  	/*
->  	 * FIXME test every mode we have to be more
->  	 * sure everything is really getting rejected?
->  	 */
->  	mode = *igt_output_get_mode(output);
-> -	if (!data->adjust_mode(data, &mode))
-> -		return 0;
-> +	igt_skip_on(!data->adjust_mode(data, &mode));
-
-This may be a nitpick but prefer fail/skip constructs that don't need
-negation. Here that would be
-
-igt_require(data->adjust_mode(data, &mode));
-
-
->  
->  	igt_create_fb(data->drm_fd,
->  		      max_t(uint16_t, mode.hdisplay, 64),
-
-Previously this fb allocation was done once for all pipes, now it's
-done once per pipe. What's the effect on total runtime?
-
-
-> @@ -202,32 +203,14 @@ test_output(data_t *data)
->  
->  	kmstest_unset_all_crtcs(data->drm_fd, data->res);
->  
-> -	for (i = 0; i < data->res->count_crtcs; i++) {
-> -		int ret;
-> -
-> -		igt_info("Checking pipe %c connector %s with mode %s\n",
-> -			 'A'+i, output->name, mode.name);
-> +	crtc_id = data->display.pipes[data->pipe].crtc_id;
->  
-> -		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
-> -				     fb.fb_id, 0, 0,
-> -				     &output->id, 1, &mode);
-> -		igt_assert_lt(ret, 0);
-> -	}
-> +	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
-> +			     fb.fb_id, 0, 0,
-> +			     &output->id, 1, &mode);
-> +	igt_assert_lt(ret, 0);
->  
->  	igt_remove_fb(data->drm_fd, &fb);
-> -
-> -	return 1;
-> -}
-> -
-> -static void test(data_t *data)
-> -{
-> -	int valid_connectors = 0;
-> -
-> -	for_each_connected_output(&data->display, data->output) {
-> -		valid_connectors += test_output(data);
-> -	}
-> -
-> -	igt_require_f(valid_connectors, "No suitable connectors found\n");
+> @@ -220,12 +218,12 @@ static void clear_lut(data_t *data, enum pipe pipe)
+>  	igt_pipe_obj_set_prop_value(pipe_obj, IGT_CRTC_GAMMA_LUT, 0);
 >  }
 >  
->  static int i915_max_dotclock(data_t *data)
-> @@ -297,6 +280,10 @@ static data_t data;
+> -static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+> -					enum pipe pipe, igt_output_t *output)
+> +static void test_flip_to_scaled(data_t *data, uint32_t index,
+> +				enum pipe pipe, igt_output_t *output,
+> +				drmModeModeInfoPtr modetoset)
+>  {
+>  	igt_plane_t *primary;
+>  	igt_crc_t small_crc, big_crc;
+> -	drmModeModeInfoPtr modetoset = NULL;
+>  	struct drm_event_vblank ev;
+>  	int ret;
+>  
+> @@ -254,14 +252,15 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+>  				data->big_fb.height);
+>  	}
+>  
+> +	if (modetoset)
+> +		igt_output_override_mode(output, modetoset);
+>  	igt_output_set_pipe(output, pipe);
+
+Double checked what override_mode is doing and whether it's valid to
+call before set_pipe; it is, and does the right thing.
+
+Add a comment here that explains that setting a pipe invalidates the
+modetoset pointer so no one will use it later. Assign it to NULL also.
+
+>  
+>  	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> -	if (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
+> +	igt_skip_on_f (!igt_plane_has_format_mod(primary, data->small_fb.drm_format,
+                   ^^^^^^
+
+Remove this extra space.
+
+
+>  				      data->small_fb.modifier) ||
+> -	    !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
+> -				      data->big_fb.modifier))
+> -		return NOREQUESTEDFORMATONPIPE;
+> +		       !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
+> +				      data->big_fb.modifier), "No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
+>  
+>  	set_lut(data, pipe);
+>  	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+> @@ -273,42 +272,16 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+>  	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
+>  					  INTEL_PIPE_CRC_SOURCE_AUTO);
+>  
+> -	for (int i = 0; i < output->config.connector->count_modes; i++) {
+> -		if (output->config.connector->modes[i].hdisplay == data->attemptmodewidth &&
+> -		   output->config.connector->modes[i].vdisplay == data->attemptmodeheight) {
+> -			if (modetoset &&
+> -			    modetoset->vrefresh < output->config.connector->modes[i].vrefresh)
+> -				continue;
+> -
+> -			modetoset = &output->config.connector->modes[i];
+> -		}
+> -	}
+> -
+> -	if (!modetoset)
+> -		igt_debug("%dp mode was not found from connector, will try with default. This may cause cdclk to fail this test on this connector.\n",
+> -			  data->attemptmodeheight);
+> -	else
+> -		igt_output_override_mode(output, modetoset);
+> -
+>  	igt_plane_set_position(primary, 0, 0);
+>  	igt_plane_set_fb(primary, &data->small_fb);
+>  	igt_plane_set_size(primary, data->attemptmodewidth,
+>  			   data->attemptmodeheight);
+>  	ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -	switch (ret) {
+> -	case -ERANGE:
+> -		igt_debug("Platform scaling limits exceeded, skipping.\n");
+> -		return TESTSKIP;
+> -	case -EINVAL:
+> -		if (!modetoset) {
+> -			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+> -				  data->attemptmodeheight);
+> -			return CONNECTORFAIL;
+> -		}
+> -		/* fallthrough */
+> -	default:
+> -		igt_assert_eq(ret, 0);
+> -	}
+> +
+> +	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
+> +	igt_skip_on_f((ret == -EINVAL) && !modetoset, "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+> +			data->attemptmodeheight);
+
+Reword this skip line, since we're testing the attemptmode and default
+mode separately now.
+
+
+> +	igt_assert_eq(ret, 0);
+>  
+>  	igt_pipe_crc_start(data->pipe_crc);
+>  	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &small_crc);
+> @@ -320,20 +293,10 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+>  					    DRM_MODE_ATOMIC_ALLOW_MODESET  |
+>  					    DRM_MODE_PAGE_FLIP_EVENT, NULL);
+>  
+> -	switch (ret) {
+> -	case -ERANGE:
+> -		igt_debug("Platform scaling limits exceeded, skipping.\n");
+> -		return TESTSKIP;
+> -	case -EINVAL:
+> -		if (!modetoset) {
+> -			igt_debug("No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+> -				  data->attemptmodeheight);
+> -			return CONNECTORFAIL;
+> -		}
+> -		/* fallthrough */
+> -	default:
+> -		igt_assert_eq(ret, 0);
+> -	}
+> +	igt_skip_on_f(ret == -ERANGE, "Platform scaling limits exceeded, skipping.\n");
+> +	igt_skip_on_f((ret == -EINVAL) && (!modetoset || modetoset->vrefresh > 90), "No %dp and default mode too big, cdclk limits exceeded. Check next connector\n",
+> +			data->attemptmodeheight);
+
+Same here.
+
+> +	igt_assert_eq(ret, 0);
+>  
+>  	igt_assert(read(data->drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+>  
+> @@ -349,8 +312,24 @@ static enum subrval test_flip_to_scaled(data_t *data, uint32_t index,
+>  	igt_output_set_pipe(output, PIPE_NONE);
+>  	igt_plane_set_fb(primary, NULL);
+>  	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +}
+> +
+> +static drmModeModeInfoPtr find_mode(data_t *data, igt_output_t *output)
+> +{
+> +	drmModeModeInfoPtr modetoset = NULL;
+> +
+> +	for (int i = 0; i < output->config.connector->count_modes; i++) {
+> +		if (output->config.connector->modes[i].hdisplay == data->attemptmodewidth &&
+> +		    output->config.connector->modes[i].vdisplay == data->attemptmodeheight) {
+> +			if (modetoset &&
+> +			    modetoset->vrefresh < output->config.connector->modes[i].vrefresh)
+> +				continue;
+>  
+> -	return CONNECTORSUCCESS;
+> +			modetoset = &output->config.connector->modes[i];
+> +		}
+> +	}
+> +
+> +	return modetoset;
+>  }
 >  
 >  igt_main
->  {
-> +
-> +	enum pipe pipe;
-> +        igt_output_t *output;
-> +
+> @@ -358,6 +337,7 @@ igt_main
+>  	enum pipe pipe;
+>  	data_t data = {};
+>  	igt_output_t *output;
+> +	drmModeModeInfoPtr modetoset = NULL;
+>  
+>  	igt_fixture {
+>  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> @@ -379,28 +359,30 @@ igt_main
+>  
+>  	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+>  		igt_describe(flip_scenario_test[index].describe);
+> -		igt_subtest(flip_scenario_test[index].name) {
+> -			int validtests = 0;
+> +		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
+>  			free_fbs(&data);
+> -			for_each_pipe_static(pipe) {
+> -				enum subrval rval = CONNECTORSUCCESS;
+> +			for_each_pipe(&data.display, pipe) {
+> +				bool found = false;
+>  				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> -					rval = test_flip_to_scaled(&data, index, pipe, output);
+> -
+> -					igt_require(rval != TESTSKIP);
+> -
+> -					// break out to test next pipe
+> -					if (rval == CONNECTORSUCCESS) {
+> -						validtests++;
+> +					modetoset = find_mode(&data, output);
+> +					if (modetoset) {
+> +						found = true;
+> +						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
+> +							test_flip_to_scaled(&data, index, pipe, output, modetoset);
+>  						break;
+>  					}
+>  				}
+> -				if (rval == NOREQUESTEDFORMATONPIPE)
+> -					igt_debug("No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
+> +				if (!found) {
+> +					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> +						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
+> +							test_flip_to_scaled(&data, index, pipe, output, NULL);
+> +					}
+> +				}
+> +				break;
 
-Something's off with this indentation.
+This flow looks insane but keeps the original spirit and intention of
+the code flow. Also I suggested it so naturally I'm fine with it.
+
+With the above comments addressed, this is
+Acked-by: Petri Latvala <petri.latvala@intel.com>
+
+A full review from someone for the test code changes would be nice,
+it's possible that I missed some quirks that need handling.
 
 
 -- 
 Petri Latvala
-
-
->  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->  
-> @@ -311,9 +298,15 @@ igt_main
->  	}
->  
->  	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-> -		igt_subtest(subtests[i].name) {
-> -			data.adjust_mode = subtests[i].adjust_mode;
-> -			test(&data);
-> +		igt_subtest_with_dynamic(subtests[i].name) {
-> +			for_each_pipe_with_valid_output(&data.display, pipe, output) {
-> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
-> +					data.output = output;
-> +					data.pipe = pipe;
-> +					data.adjust_mode = subtests[i].adjust_mode;
-> +					test_output(&data);
-> +				}
-> +			}
->  		}
->  	}
->  
-> -- 
-> 2.26.2
-> 
