@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D85D11358F
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 15:53:25 +0000 (UTC)
-Date: Wed, 22 Jun 2022 18:51:31 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Nidhi Gupta <nidhi1.gupta@intel.com>
-Message-ID: <YrM6g7aeGSgQTwCn@platvala-desk.ger.corp.intel.com>
-References: <20220622154837.20582-1-nidhi1.gupta@intel.com>
- <20220622154837.20582-2-nidhi1.gupta@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C624610E89E
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 16:14:21 +0000 (UTC)
+Date: Wed, 22 Jun 2022 18:14:18 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YrM/2kUGqfTUWiwg@kamilkon-desk1>
+References: <20220620070321.24580-1-sai.gowtham.ch@intel.com>
+ <20220620070321.24580-2-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220622154837.20582-2-nidhi1.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode: Convert
- tests to dynamic
+In-Reply-To: <20220620070321.24580-2-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_softpin: Added test
+ description for test case.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,128 +21,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 22, 2022 at 09:18:36PM +0530, Nidhi Gupta wrote:
-> Convert the existing subtests to dynamic subtests at pipe level.
+Hi Sai,
+
+On 2022-06-20 at 12:33:20 +0530, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
+> Added test description for test and to all the subtests that are
+> available.
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > ---
->  tests/kms_invalid_mode.c | 53 +++++++++++++++++-----------------------
->  1 file changed, 23 insertions(+), 30 deletions(-)
+>  tests/i915/gem_softpin.c | 37 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
 > 
-> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-> index 630798d8..7e1f683b 100644
-> --- a/tests/kms_invalid_mode.c
-> +++ b/tests/kms_invalid_mode.c
-> @@ -32,6 +32,7 @@ typedef struct _data data_t;
+> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+> index b851c90e..417359d1 100644
+> --- a/tests/i915/gem_softpin.c
+> +++ b/tests/i915/gem_softpin.c
+> @@ -32,6 +32,10 @@
+>  #include "igt_rand.h"
+>  #include "intel_allocator.h"
 >  
->  struct _data {
->  	int drm_fd;
-> +	enum pipe pipe;
->  	igt_display_t display;
->  	igt_output_t *output;
->  	drmModeResPtr res;
-> @@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInfoPtr mode)
->  	return true;
->  }
->  
-> -static int
-> +static void
->  test_output(data_t *data)
->  {
->  	igt_output_t *output = data->output;
->  	drmModeModeInfo mode;
->  	struct igt_fb fb;
-> -	int i;
-> +	int ret;
-> +	uint32_t crtc_id;
->  
->  	/*
->  	 * FIXME test every mode we have to be more
->  	 * sure everything is really getting rejected?
->  	 */
->  	mode = *igt_output_get_mode(output);
-> -	if (!data->adjust_mode(data, &mode))
-> -		return 0;
-> +	igt_require(data->adjust_mode(data, &mode));
->  
->  	igt_create_fb(data->drm_fd,
->  		      max_t(uint16_t, mode.hdisplay, 64),
-> @@ -202,32 +203,14 @@ test_output(data_t *data)
->  
->  	kmstest_unset_all_crtcs(data->drm_fd, data->res);
->  
-> -	for (i = 0; i < data->res->count_crtcs; i++) {
-> -		int ret;
-> -
-> -		igt_info("Checking pipe %c connector %s with mode %s\n",
-> -			 'A'+i, output->name, mode.name);
-> +	crtc_id = data->display.pipes[data->pipe].crtc_id;
->  
-> -		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
-> -				     fb.fb_id, 0, 0,
-> -				     &output->id, 1, &mode);
-> -		igt_assert_lt(ret, 0);
-> -	}
-> +	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
-> +			     fb.fb_id, 0, 0,
-> +			     &output->id, 1, &mode);
-> +	igt_assert_lt(ret, 0);
->  
->  	igt_remove_fb(data->drm_fd, &fb);
-> -
-> -	return 1;
-> -}
-> -
-> -static void test(data_t *data)
-> -{
-> -	int valid_connectors = 0;
-> -
-> -	for_each_connected_output(&data->display, data->output) {
-> -		valid_connectors += test_output(data);
-> -	}
-> -
-> -	igt_require_f(valid_connectors, "No suitable connectors found\n");
->  }
->  
->  static int i915_max_dotclock(data_t *data)
-> @@ -297,6 +280,10 @@ static data_t data;
->  
->  igt_main
->  {
+> +IGT_TEST_DESCRIPTION("Tests softpin feature, which contains error, normal usage"
+---------------------------------------------- ^
+This reads strange, please rewrite, maybe you want to write
+error checks for invalid input ?
+
+Maybe also add here that sofpin is also known as no-reloc ? So
+s/softpin/softpin aka no-relocations (no-reloc)/
+
+> +		     " scenarios and couple of stress tests which copy buffers"
+> +		     " between CPU and GPU.");
+
+Which are these stress tests ? Is it eviction ?
+
 > +
-> +	enum pipe pipe;
-> +	igt_output_t *output;
-> +
->  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>  #define EXEC_OBJECT_PINNED	(1<<4)
+>  #define EXEC_OBJECT_SUPPORTS_48B_ADDRESS (1<<3)
 >  
-> @@ -311,9 +298,15 @@ igt_main
+> @@ -1248,6 +1252,7 @@ igt_main
+>  		ctx = intel_ctx_create_all_physical(fd);
 >  	}
 >  
->  	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-> -		igt_subtest(subtests[i].name) {
-> -			data.adjust_mode = subtests[i].adjust_mode;
-> -			test(&data);
-> +		igt_subtest_with_dynamic(subtests[i].name) {
-> +			for_each_pipe_with_valid_output(&data.display, pipe, output) {
-> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
-> +					data.output = output;
-> +					data.pipe = pipe;
-> +					data.adjust_mode = subtests[i].adjust_mode;
-> +					test_output(&data);
-> +				}
-> +			}
+> +	igt_describe("Check softpinnnig with invalid inputs.");
+
+Rewrite this, for example:
+"Check that invalid inputs are handled correctly." ?
+
+>  	igt_subtest("invalid")
+>  		test_invalid(fd);
+>  
+> @@ -1258,30 +1263,44 @@ igt_main
+>  			igt_require(gem_uses_full_ppgtt(fd));
 >  		}
+>  
+> +		igt_describe("Check full placement control under full-ppgtt");
+
+Put dot at end of sentence (here and almost all below).
+s/full-ppgtt/full-ppGTT/
+
+>  		igt_subtest("zero")
+>  			test_zero(fd);
+>  
+> +		igt_describe("Check the last 32b page is excluded");
+>  		igt_subtest("32b-excludes-last-page")
+>  			test_32b_last_page(fd);
+>  
+> +		igt_describe("Check the total occupancy by using pad-to-size to fill"
+> +			     " the entire GTT.");
+>  		igt_subtest("full")
+>  			test_full(fd);
+>  
+> +		igt_describe("Check that we can place objects at start/end of the GTT"
+> +			     " using the allocator");
+>  		igt_subtest("allocator-basic")
+>  			test_allocator_basic(fd, false);
+>  
+> +		igt_describe("Check that if we can reserve a space for a object"
+---------------------------------------------------------------------- ^
+s/a object/an object/
+
+> +			     " starting from a given offset");
+>  		igt_subtest("allocator-basic-reserve")
+>  			test_allocator_basic(fd, true);
+>  
+> +		igt_describe("Check that we can combine manual placement with automatic"
+> +			     " GTT placement");
+>  		igt_subtest("allocator-nopin")
+>  			test_allocator_nopin(fd, false);
+>  
+> +		igt_describe("Check that we can combine manual placement with automatic"
+> +			     " GTT placement and reserves/unreserves space for objects");
+>  		igt_subtest("allocator-nopin-reserve")
+>  			test_allocator_nopin(fd, true);
+>  
+> +		igt_describe("Check if multiple process can be allocted");
+------------------------------------------------------- ^
+s/process can be allocated/processes can use allocator./
+
+>  		igt_subtest("allocator-fork")
+>  			test_allocator_fork(fd);
+>  
+> +		igt_describe("Exercise eviction with softpinning");
+>  		test_each_engine("allocator-evict", fd, ctx, e)
+>  			test_allocator_evict(fd, ctx, e->flags, 20);
+>  
+> @@ -1294,28 +1313,46 @@ igt_main
+>  	igt_subtest("safe-alignment")
+>  		safe_alignment(fd);
+>  
+> +	igt_describe("Check softpinning of a gem buffer object ");
+------------------------------------------------------------- ^
+Remove space from end.
+
+>  	igt_subtest("softpin")
+>  		test_softpin(fd);
+> +
+> +	igt_describe("Checks the behaviour by runing on all possible"
+
+s/Checks the behaviour by runing on all possible/Check all/
+
+> +		     " page alligned overlaps");
+---------------------------- ^
+s/alligned/aligned/
+
+>  	igt_subtest("overlap")
+>  		test_overlap(fd);
+> +
+> +	igt_describe("Check that if the user demands the vma be replaced, they are.");
+
+Hmm, is user changing vma to second one ? Or reverses algo ?
+
+>  	igt_subtest("reverse")
+>  		test_reverse(fd);
+>  
+> +	igt_describe("Check that no relocation support works");
+-------------------------------- ^--^
+Please keep no-reloc word here and below.
+
+>  	igt_subtest("noreloc")
+>  		test_noreloc(fd, NOSLEEP, 0);
+> +
+> +	igt_describe("Check no relocation support with interruptible");
+>  	igt_subtest("noreloc-interruptible")
+>  		test_noreloc(fd, NOSLEEP, INTERRUPTIBLE);
+> +
+> +	igt_describe("Check norelocations hold versus suspend/resume");
+--------------------------- ^
+no-relocs
+
+s/hold versus/survives after suspend to RAM/resume cycle./
+
+>  	igt_subtest("noreloc-S3")
+>  		test_noreloc(fd, SUSPEND, 0);
+> +
+> +	igt_describe("Check norelocations hold versus suspend/resume");
+
+s/hold versus/survive after suspend to disk/resume cycle./
+
+>  	igt_subtest("noreloc-S4")
+>  		test_noreloc(fd, HIBERNATE, 0);
+>  
+>  	for (int signal = 0; signal <= 1; signal++) {
+> +		igt_describe("This test checks the behaviour of softpin with busy batch");
+
+Maybe improve with igt_describe_f() ?
+This is eviction, so it is a kind of stress test.
+
+>  		igt_subtest_f("evict-active%s", signal ? "-interruptible" : "")
+>  			test_evict_active(fd, signal);
+> +
+> +		igt_describe("Snoop test by forcibly injecting signals");
+
+Same here.
+
+Regards,
+Kamil
+
+>  		igt_subtest_f("evict-snoop%s", signal ? "-interruptible" : "")
+>  			test_evict_snoop(fd, signal);
 >  	}
+> +
+> +	igt_describe("Checks behaviour of softpin with hung batch");
+>  	igt_subtest("evict-hang")
+>  		test_evict_hang(fd);
 >  
 > -- 
-> 2.26.2
+> 2.35.1
 > 
