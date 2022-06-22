@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD01A113451
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 08:06:47 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04F4711348D
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 08:07:06 +0000 (UTC)
+Date: Wed, 22 Jun 2022 10:06:54 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Jun 2022 13:33:12 +0530
-Message-Id: <20220622080312.31625-1-jeevan.b@intel.com>
+Message-ID: <YrLNnn/0clZPrhoi@kamilkon-desk1>
+References: <20220620110046.3057440-1-janga.rahul.kumar@intel.com>
+ <20220620110046.3057440-2-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_flip: Skip test only for
- invalid combination
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220620110046.3057440-2-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/prime_vgem : Added subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +21,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-currently the entire test is skipping. adding this fix to skip test
-only for invalid cases and run on other valid display combination.
+Hi Janga,
 
-v2: add RUN_PAIR check to avoid crash on single display.
-v3: add flag to check for valid display combination.(Karthik)
+On 2022-06-20 at 16:30:45 +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> 
+> Added test description to basic subtests.
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> ---
+>  tests/prime_vgem.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> index 5fa6e537..4eae723f 100644
+> --- a/tests/prime_vgem.c
+> +++ b/tests/prime_vgem.c
+> @@ -1128,15 +1128,19 @@ igt_main
+>  		gem_require_mmap_device_coherent(i915);
+>  	}
+>  
+> +	igt_describe("Examine read acess path.");
+----------------------------------- ^
+s/acess/access/
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_flip.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+>  	igt_subtest("basic-read")
+>  		test_read(vgem, i915);
+>  
+> +	igt_describe("Examine write acess path.");
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index c5b5741a..90b3e352 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -932,7 +932,7 @@ static bool mode_compatible(const drmModeModeInfo *a, const drmModeModeInfo *b)
- 	return true;
- }
- 
--static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
-+static bool get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
- 				 drmModeConnector *c1, drmModeConnector *c2)
- {
- 	int n, m;
-@@ -946,14 +946,13 @@ static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
- 			for (m = 0; m < c2->count_modes; m++) {
- 				*b = c2->modes[m];
- 				if (mode_compatible(a, b))
--					return;
-+					return true;
- 			}
- 		}
--
--		igt_skip("Compatible mode not found.\n");
-+		return false;
- 	}
- 
--	return;
-+	return true;
- }
- 
- static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
-@@ -972,13 +971,12 @@ static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
- 		return;
- 	}
- 
--	get_compatible_modes(&mode[0], &mode[1],
--			     config[0].connector, config[1].connector);
-+	o->mode_valid = get_compatible_modes(&mode[0], &mode[1],
-+					     config[0].connector, config[1].connector);
- 
- 	o->pipe = config[0].pipe;
- 	o->fb_width = mode[0].hdisplay;
- 	o->fb_height = mode[0].vdisplay;
--	o->mode_valid = 1;
- 
- 	o->kconnector[0] = config[0].connector;
- 	o->kencoder[0] = config[0].encoder;
--- 
-2.36.0
+Same here.
+
+>  	igt_subtest("basic-write")
+>  		test_write(vgem, i915);
+>  
+> +	igt_describe("Check that we wrap the vgem mmap with userptr.");
+>  	igt_subtest("basic-userptr")
+>  		test_userptr(vgem, i915);
+>  
+> +	igt_describe("Examine acess path through gtt.");
+
+Same here.
+
+>  	igt_subtest("basic-gtt") {
+>  		gem_require_mappable_ggtt(i915);
+>  		test_gtt(vgem, i915);
+> @@ -1180,8 +1184,11 @@ igt_main
+>  			igt_require(vgem_has_fences(vgem));
+>  		}
+>  
+> +		igt_describe("Examine read acess path fencing.");
+
+Same here.
+
+Regards,
+Kamil
+
+>  		igt_subtest("basic-fence-read")
+>  			test_fence_read(i915, vgem);
+> +
+> +		igt_describe("Examine gtt access path fencing.");
+>  		igt_subtest("basic-fence-mmap") {
+>  			gem_require_mappable_ggtt(i915);
+>  			test_fence_mmap(i915, vgem);
+> -- 
+> 2.25.1
+> 
