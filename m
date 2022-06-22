@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com
- [IPv6:2607:f8b0:4864:20::729])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99C6510E3C0
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 12:57:43 +0000 (UTC)
-Received: by mail-qk1-x729.google.com with SMTP id x75so12404358qkb.12
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 05:57:43 -0700 (PDT)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96B2F10EC05
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 14:08:07 +0000 (UTC)
+Date: Wed, 22 Jun 2022 16:08:04 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YrMiRGbttx8pYN4x@kamilkon-desk1>
+References: <20220616035821.880966-1-sinjan.kumar@intel.com>
+ <20220616035821.880966-2-sinjan.kumar@intel.com>
 MIME-Version: 1.0
-References: <20220616120558.1190406-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20220616120558.1190406-1-priyanka.dandamudi@intel.com>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Wed, 22 Jun 2022 13:57:16 +0100
-Message-ID: <CAM0jSHNEqgNYVT=QVCzd9GbtNQ2nfc3Xzvv-qK6DodqcNT5LDw@mail.gmail.com>
-To: priyanka.dandamudi@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH] tests/i915/i915_module_load: Test resizable
- bar support
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220616035821.880966-2-sinjan.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/i915/gem_busy : Added subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,179 +21,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 16 Jun 2022 at 13:16, <priyanka.dandamudi@intel.com> wrote:
->
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->
-> New test named resize bar has been added which tests whether
-> bar gets resized with different supported sizes.
->
-> v2: Added code to check for bad bar sizes.
-> Modified code to check for support of lmem_bar_size modparam.(Petri)
->
-> Note:Test gets executed when
-> 1. modparam lmem_bar_size gets added.
-> 2. small bar bits gets enabled.
->
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Hi Sinjan,
+
+On 2022-06-16 at 09:28:20 +0530, sinjan.kumar@intel.com wrote:
+> From: Sinjan Kumar <sinjan.kumar@intel.com>
+> 
+> added subtest description to gem_busy tests
+- ^
+
+Start from capital letter, s/added/Added/ and add dot at the end
+of sentence.
+
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Sinjan Kumar <sinjan.kumar@intel.com>
 > ---
->  tests/i915/i915_module_load.c | 89 +++++++++++++++++++++++++++++++++++
->  1 file changed, 89 insertions(+)
->
-> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-> index f5f98acc2..5a653711b 100644
-> --- a/tests/i915/i915_module_load.c
-> +++ b/tests/i915/i915_module_load.c
-> @@ -31,12 +31,17 @@
->  #include <fcntl.h>
->
->  #include "i915/gem_create.h"
-> +#include "i915/gem.h"
->  #include "igt_debugfs.h"
->  #include "igt_aux.h"
->  #include "igt_kmod.h"
->  #include "igt_sysfs.h"
->  #include "igt_core.h"
->
-> +#define BAR_SIZE_SHIFT 20
-> +#define MIN_BAR_SIZE 256
-> +#define BYTE 1024
-> +
->  IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
->
->  static void store_all(int i915)
-> @@ -236,6 +241,48 @@ hda_dynamic_debug(bool enable)
->         fclose(fp);
->  }
->
-> +static uint32_t  driver_load_unload(uint32_t lmem_bar_size, bool check_support)
+>  tests/i915/gem_busy.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
+> diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
+> index 603691f2..7a4c5c50 100644
+> --- a/tests/i915/gem_busy.c
+> +++ b/tests/i915/gem_busy.c
+> @@ -447,6 +447,8 @@ igt_main
+>  			igt_fork_hang_detector(fd);
+>  		}
+>  
+> +		igt_describe("Basic test to check busyness of each engine "
 
-driver_load_with_lmem_bar_size(size_mb, check_support)
+This part is ok.
 
-?
+> +			     "context in parallel");
 
-> +{
-> +       struct drm_i915_query_memory_regions *regions;
-> +       struct drm_i915_memory_region_info *region;
-> +       int i915 = -1;
-> +       char lmem_bar[64];
-> +
-> +       igt_i915_driver_unload();
-> +       if (lmem_bar_size == 0)
-> +               igt_assert_eq(igt_i915_driver_load(NULL), 0);
-> +       else {
-> +               sprintf(lmem_bar, "lmem_bar_size=%u", lmem_bar_size);
-> +               igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
-> +       }
-> +
-> +       i915 = __drm_open_driver(DRIVER_INTEL);
-> +       igt_require_fd(i915);
-> +       igt_require_gem(i915);
-> +       igt_require(gem_has_lmem(i915));
-> +
-> +       if (check_support) {
-> +               char *tmp;
-> +
-> +               tmp = __igt_params_get(i915, "lmem_bar_size");
-> +               if (!tmp)
-> +                       igt_skip("lmem_bar_size modparam not supported on this kernel."
-> +                                       "Skipping the test.");
+Drop this part, all tests use the same context.
+Put also dot at the end of description (and also do this below).
 
-We don't normally split long lines if it's just a string.
+>  		igt_subtest_with_dynamic("busy") {
+>  			igt_dynamic("all") {
+>  				gem_quiescent_gpu(fd);
+> @@ -461,6 +463,8 @@ igt_main
+>  			}
+>  		}
+>  
+> +		igt_describe("Test to check race condition by randomly closing "
+> +			     "the handle using gem_close");
+>  		igt_subtest("close-race")
+>  			close_race(fd, ctx);
+>  
+> @@ -482,12 +486,17 @@ igt_main
+>  				gem_require_mmap_device_coherent(fd);
+>  			}
+>  
+> +			igt_describe("Extended test to check busyness of engine "
+> +				     "classes [Read/Write]");
 
-> +               free(tmp);
-> +       }
-> +
-> +       regions = gem_get_query_memory_regions(i915);
-> +       igt_require(regions);
-> +
-> +       for (unsigned int i = 0; i < (regions)->num_regions; i++)
-> +               for_each_if(((region) = &(regions)->regions[i])->region.memory_class ==
-> +                               I915_MEMORY_CLASS_DEVICE)
 
-I guess we need to add a skip here if the cpu_size is zero, which
-would indicate an older kernel?
+Hmm, this [Read/Write] looks strange, maybe something like:
 
-Also for_each_memory_region() is a lot nicer here.
+s/engine classes [Read/Write]/busyness of dwstore-capable engines./
 
-You just need: https://patchwork.freedesktop.org/patch/490396/?series=104368&rev=2
+Do this also below (where you are using this).
 
-> +                       lmem_bar_size = (region->rsvd1[0] >> BAR_SIZE_SHIFT);
+>  			test_each_engine_store("extended", fd, ctx, e) {
+>  				gem_quiescent_gpu(fd);
+>  				one(fd, ctx, e, 0);
+>  				gem_quiescent_gpu(fd);
+>  			}
+>  
+> +			igt_describe("Extended test to check busyness of engine "
+> +				     "classes [Read/Write] while doing parallel "
 
-It's a bit unclear how lmem_bar_size would work on multi-tile,
-assuming we even care. One of the tiles would have
-probed_cpu_visible_size = 0, which likely leads to failing to load the
-module, since I assume we always require at least some amount of
-per-tile lmem that can be accessed by the CPU during initialization. I
-think for now make the test skip if we detect more than a single lmem
-instance?
+Same r/w here.
 
-> +       close(i915);
-> +
-> +       return lmem_bar_size;
-> +}
-> +
->  igt_main
->  {
->         igt_describe("Verify the basic functionality of i915 driver after it's reloaded.");
-> @@ -285,6 +332,48 @@ igt_main
->
->                 /* inject_fault() leaves the module unloaded */
->         }
-> +       igt_subtest("resize-bar") {
-> +               uint32_t result_bar_size;
-> +               uint32_t lmem_bar_size;
-> +               int i915 = -1;
-> +
-> +               if (igt_kmod_is_loaded("i915")) {
-> +                       i915 = __drm_open_driver(DRIVER_INTEL);
-> +                       igt_require_fd(i915);
-> +                       igt_require_gem(i915);
-> +                       igt_require(gem_has_lmem(i915));
-> +                       close(i915);
-> +               }
-> +
-> +               /* Test for lmem_bar_size modparam support */
-> +               lmem_bar_size = driver_load_unload(MIN_BAR_SIZE, true);
-> +               igt_assert_eq(lmem_bar_size, MIN_BAR_SIZE);
-> +
-> +               lmem_bar_size = driver_load_unload(0, false);
-> +
-> +               lmem_bar_size = ceil((float)(lmem_bar_size)/BYTE)*BYTE;
+> +				     "execution");
+>  			test_each_engine_store("parallel", fd, ctx, e) {
+>  				gem_quiescent_gpu(fd);
+>  				one(fd, ctx, e, PARALLEL);
+> @@ -501,6 +510,9 @@ igt_main
+>  				igt_require(has_semaphores(fd));
+>  			}
+>  
+> +		igt_describe("Test to check wait signal mechanism by submitting "
+> +			     "a new batch when engine is busy in executing "
+> +			     "previous batch");
 
-Shouldn't this be rounddown_pow_of_two() ?
+Please try to improve this, we test busy-ioctl here.
 
-> +
-> +               igt_skip_on_f(lmem_bar_size == MIN_BAR_SIZE, "Bar is already set to minimum size.");
-> +
-> +               while (lmem_bar_size > MIN_BAR_SIZE) {
-> +                       lmem_bar_size = lmem_bar_size >> 1;
-> +
-> +                       result_bar_size = driver_load_unload(lmem_bar_size, false);
-> +
-> +                       igt_assert_f(lmem_bar_size == result_bar_size, "Bar couldn't be resized.");
-> +               }
-> +
-> +               /* Test with unsupported sizes */
-> +               lmem_bar_size = 80;
-> +               result_bar_size = driver_load_unload(lmem_bar_size, false);
-> +               igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.");
-> +
-> +               lmem_bar_size = 16400;
-> +               result_bar_size = driver_load_unload(lmem_bar_size, false);
-> +               igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.");
-> +
-> +               igt_i915_driver_unload();
-> +       }
->
->         /* Subtests should unload the module themselves if they use modparams */
->  }
-> --
-> 2.27.0
->
+>  			test_each_engine("semaphore", fd, ctx, e) {
+>  				gem_quiescent_gpu(fd);
+>  				semaphore(fd, ctx, e);
+> @@ -520,6 +532,9 @@ igt_main
+>  			hang = igt_allow_hang(fd, ctx->id, 0);
+>  		}
+>  
+> +		igt_describe("Basic test to check hang state beahaviour of "
+> +			     "engine by checking task completion with "
+> +			     "increased timeout");
+
+Drop words starting with "by checking ...".
+Please read comments for igt_describe in lib/igt_core.h for
+general help how to describe sub/tests.
+
+>  		test_each_engine("hang", fd, ctx, e) {
+>  			gem_quiescent_gpu(fd);
+>  			basic(fd, ctx, e, HANG);
+> @@ -532,6 +547,10 @@ igt_main
+>  				gem_require_mmap_device_coherent(fd);
+>  			}
+>  
+> +			igt_describe("Extended test to check hang state "
+> +				     "behaviour of engine class [Read/Write] "
+
+Same r/w here.
+
+> +				     "by checking task completion with "
+
+Same here - drop this.
+
+Regards,
+Kamil
+
+> +				     "increased timeout");
+>  			test_each_engine_store("hang-extended", fd, ctx, e) {
+>  				gem_quiescent_gpu(fd);
+>  				one(fd, ctx, e, HANG);
+> -- 
+> 2.25.1
+> 
