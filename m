@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96B2F10EC05
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 14:08:07 +0000 (UTC)
-Date: Wed, 22 Jun 2022 16:08:04 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0063710EE26
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jun 2022 15:46:30 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YrMiRGbttx8pYN4x@kamilkon-desk1>
-References: <20220616035821.880966-1-sinjan.kumar@intel.com>
- <20220616035821.880966-2-sinjan.kumar@intel.com>
+Date: Wed, 22 Jun 2022 21:18:36 +0530
+Message-Id: <20220622154837.20582-2-nidhi1.gupta@intel.com>
+In-Reply-To: <20220622154837.20582-1-nidhi1.gupta@intel.com>
+References: <20220622154837.20582-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220616035821.880966-2-sinjan.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/2] tests/i915/gem_busy : Added subtests
- description
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode: Convert tests
+ to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,134 +19,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Sinjan,
+Convert the existing subtests to dynamic subtests at pipe level.
 
-On 2022-06-16 at 09:28:20 +0530, sinjan.kumar@intel.com wrote:
-> From: Sinjan Kumar <sinjan.kumar@intel.com>
-> 
-> added subtest description to gem_busy tests
-- ^
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_invalid_mode.c | 53 +++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 30 deletions(-)
 
-Start from capital letter, s/added/Added/ and add dot at the end
-of sentence.
-
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Sinjan Kumar <sinjan.kumar@intel.com>
-> ---
->  tests/i915/gem_busy.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
-> index 603691f2..7a4c5c50 100644
-> --- a/tests/i915/gem_busy.c
-> +++ b/tests/i915/gem_busy.c
-> @@ -447,6 +447,8 @@ igt_main
->  			igt_fork_hang_detector(fd);
->  		}
->  
-> +		igt_describe("Basic test to check busyness of each engine "
-
-This part is ok.
-
-> +			     "context in parallel");
-
-Drop this part, all tests use the same context.
-Put also dot at the end of description (and also do this below).
-
->  		igt_subtest_with_dynamic("busy") {
->  			igt_dynamic("all") {
->  				gem_quiescent_gpu(fd);
-> @@ -461,6 +463,8 @@ igt_main
->  			}
->  		}
->  
-> +		igt_describe("Test to check race condition by randomly closing "
-> +			     "the handle using gem_close");
->  		igt_subtest("close-race")
->  			close_race(fd, ctx);
->  
-> @@ -482,12 +486,17 @@ igt_main
->  				gem_require_mmap_device_coherent(fd);
->  			}
->  
-> +			igt_describe("Extended test to check busyness of engine "
-> +				     "classes [Read/Write]");
-
-
-Hmm, this [Read/Write] looks strange, maybe something like:
-
-s/engine classes [Read/Write]/busyness of dwstore-capable engines./
-
-Do this also below (where you are using this).
-
->  			test_each_engine_store("extended", fd, ctx, e) {
->  				gem_quiescent_gpu(fd);
->  				one(fd, ctx, e, 0);
->  				gem_quiescent_gpu(fd);
->  			}
->  
-> +			igt_describe("Extended test to check busyness of engine "
-> +				     "classes [Read/Write] while doing parallel "
-
-Same r/w here.
-
-> +				     "execution");
->  			test_each_engine_store("parallel", fd, ctx, e) {
->  				gem_quiescent_gpu(fd);
->  				one(fd, ctx, e, PARALLEL);
-> @@ -501,6 +510,9 @@ igt_main
->  				igt_require(has_semaphores(fd));
->  			}
->  
-> +		igt_describe("Test to check wait signal mechanism by submitting "
-> +			     "a new batch when engine is busy in executing "
-> +			     "previous batch");
-
-Please try to improve this, we test busy-ioctl here.
-
->  			test_each_engine("semaphore", fd, ctx, e) {
->  				gem_quiescent_gpu(fd);
->  				semaphore(fd, ctx, e);
-> @@ -520,6 +532,9 @@ igt_main
->  			hang = igt_allow_hang(fd, ctx->id, 0);
->  		}
->  
-> +		igt_describe("Basic test to check hang state beahaviour of "
-> +			     "engine by checking task completion with "
-> +			     "increased timeout");
-
-Drop words starting with "by checking ...".
-Please read comments for igt_describe in lib/igt_core.h for
-general help how to describe sub/tests.
-
->  		test_each_engine("hang", fd, ctx, e) {
->  			gem_quiescent_gpu(fd);
->  			basic(fd, ctx, e, HANG);
-> @@ -532,6 +547,10 @@ igt_main
->  				gem_require_mmap_device_coherent(fd);
->  			}
->  
-> +			igt_describe("Extended test to check hang state "
-> +				     "behaviour of engine class [Read/Write] "
-
-Same r/w here.
-
-> +				     "by checking task completion with "
-
-Same here - drop this.
-
-Regards,
-Kamil
-
-> +				     "increased timeout");
->  			test_each_engine_store("hang-extended", fd, ctx, e) {
->  				gem_quiescent_gpu(fd);
->  				one(fd, ctx, e, HANG);
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 630798d8..7e1f683b 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -32,6 +32,7 @@ typedef struct _data data_t;
+ 
+ struct _data {
+ 	int drm_fd;
++	enum pipe pipe;
+ 	igt_display_t display;
+ 	igt_output_t *output;
+ 	drmModeResPtr res;
+@@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInfoPtr mode)
+ 	return true;
+ }
+ 
+-static int
++static void
+ test_output(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo mode;
+ 	struct igt_fb fb;
+-	int i;
++	int ret;
++	uint32_t crtc_id;
+ 
+ 	/*
+ 	 * FIXME test every mode we have to be more
+ 	 * sure everything is really getting rejected?
+ 	 */
+ 	mode = *igt_output_get_mode(output);
+-	if (!data->adjust_mode(data, &mode))
+-		return 0;
++	igt_require(data->adjust_mode(data, &mode));
+ 
+ 	igt_create_fb(data->drm_fd,
+ 		      max_t(uint16_t, mode.hdisplay, 64),
+@@ -202,32 +203,14 @@ test_output(data_t *data)
+ 
+ 	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+ 
+-	for (i = 0; i < data->res->count_crtcs; i++) {
+-		int ret;
+-
+-		igt_info("Checking pipe %c connector %s with mode %s\n",
+-			 'A'+i, output->name, mode.name);
++	crtc_id = data->display.pipes[data->pipe].crtc_id;
+ 
+-		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
+-				     fb.fb_id, 0, 0,
+-				     &output->id, 1, &mode);
+-		igt_assert_lt(ret, 0);
+-	}
++	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
++			     fb.fb_id, 0, 0,
++			     &output->id, 1, &mode);
++	igt_assert_lt(ret, 0);
+ 
+ 	igt_remove_fb(data->drm_fd, &fb);
+-
+-	return 1;
+-}
+-
+-static void test(data_t *data)
+-{
+-	int valid_connectors = 0;
+-
+-	for_each_connected_output(&data->display, data->output) {
+-		valid_connectors += test_output(data);
+-	}
+-
+-	igt_require_f(valid_connectors, "No suitable connectors found\n");
+ }
+ 
+ static int i915_max_dotclock(data_t *data)
+@@ -297,6 +280,10 @@ static data_t data;
+ 
+ igt_main
+ {
++
++	enum pipe pipe;
++	igt_output_t *output;
++
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
+@@ -311,9 +298,15 @@ igt_main
+ 	}
+ 
+ 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+-		igt_subtest(subtests[i].name) {
+-			data.adjust_mode = subtests[i].adjust_mode;
+-			test(&data);
++		igt_subtest_with_dynamic(subtests[i].name) {
++			for_each_pipe_with_valid_output(&data.display, pipe, output) {
++				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
++					data.output = output;
++					data.pipe = pipe;
++					data.adjust_mode = subtests[i].adjust_mode;
++					test_output(&data);
++				}
++			}
+ 		}
+ 	}
+ 
+-- 
+2.26.2
