@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54F3610F7AB
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 01:30:19 +0000 (UTC)
-From: Rohith Iyer <quic_rohiiyer@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 22 Jun 2022 18:30:03 -0700
-Message-ID: <20220623013003.20471-1-quic_rohiiyer@quicinc.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80A9710E047
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 13:50:42 +0000 (UTC)
+Date: Thu, 23 Jun 2022 15:50:38 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YrRvrqR1iBxKJutI@kamilkon-desk1>
+References: <20220617120822.1208890-1-priyanka.dandamudi@intel.com>
+ <20220617120822.1208890-2-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_writeback: Enhance
- kms_writeback for custom modes
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220617120822.1208890-2-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] i915/gem_mmap_gtt: added description for
+ test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,310 +21,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, quic_aravindh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enhance kms_writeback to add support for the below options:
+Hi Priyanka,
 
-- View all writeback modes
-Usage: "./kms_writeback --list-modes"
+small nits, see below.
 
-- Test a standard mode from connector list
-Usage: "./kms_writeback --standard <mode_index>"
+On 2022-06-17 at 17:38:21 +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Added global description and subtest description.
+------------------------------------- ^ --------- ^
+Please use plurals here: subtests descriptions.
 
-- Test a custom mode from user input
-Usage: "./kms_writeback --custom <mode_parameters>"
-Refer to --help for exact syntax
+Small nits, see below.
 
-- Dump the writeback output buffer to png file
-Usage: "./kms_writeback --dump"
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/i915/gem_mmap_gtt.c | 52 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+> 
+> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+> index 6db82229..dab06ef0 100644
+> --- a/tests/i915/gem_mmap_gtt.c
+> +++ b/tests/i915/gem_mmap_gtt.c
+> @@ -54,6 +54,8 @@
+>  
+>  #define abs(x) ((x) >= 0 ? (x) : -(x))
+>  
+> +IGT_TEST_DESCRIPTION("Ensure that all operations around MMAP_GTT IOCTL works.");
+> +
 
-Changes made in V2:
-- Removed variable redeclaration
-- Changed sscanf format types
+I would prefer s/IOCTL/ioctl/
 
-Signed-off-by: Rohith Iyer <quic_rohiiyer@quicinc.com>
----
- tests/kms_writeback.c | 183 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 161 insertions(+), 22 deletions(-)
+>  static int OBJECT_SIZE = 16*1024*1024;
+>  
+>  static void
+> @@ -1272,6 +1274,7 @@ igt_main
+>  		gem_require_mappable_ggtt(fd);
+>  	}
+>  
+> +	igt_describe("Verify mapping to invalid gem objects.");
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 6efc72df..4f343b48 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -26,11 +26,13 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <string.h>
-+#include <limits.h>
- 
- #include "igt.h"
- #include "igt_core.h"
- #include "igt_fb.h"
- #include "sw_sync.h"
-+#include "igt_chamelium.h"
- 
- IGT_TEST_DESCRIPTION(
-    "This test validates the expected behavior of the writeback connectors "
-@@ -39,6 +41,17 @@ IGT_TEST_DESCRIPTION(
-    "by using CRC."
- );
- 
-+typedef struct {
-+	bool standard_mode;
-+	bool custom_mode;
-+	bool list_modes;
-+	bool dump_check;
-+	int mode_index;
-+	drmModeModeInfo user_mode;
-+} data_t;
-+
-+static data_t data;
-+
- static drmModePropertyBlobRes *get_writeback_formats_blob(igt_output_t *output)
- {
- 	drmModePropertyBlobRes *blob = NULL;
-@@ -58,29 +71,15 @@ static drmModePropertyBlobRes *get_writeback_formats_blob(igt_output_t *output)
- 	return blob;
- }
- 
--static bool check_writeback_config(igt_display_t *display, igt_output_t *output)
-+static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
-+				drmModeModeInfo override_mode)
- {
- 	igt_fb_t input_fb, output_fb;
- 	igt_plane_t *plane;
- 	uint32_t writeback_format = DRM_FORMAT_XRGB8888;
- 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
- 	int width, height, ret;
--	drmModeModeInfo override_mode = {
--		.clock = 25175,
--		.hdisplay = 640,
--		.hsync_start = 656,
--		.hsync_end = 752,
--		.htotal = 800,
--		.hskew = 0,
--		.vdisplay = 480,
--		.vsync_start = 490,
--		.vsync_end = 492,
--		.vtotal = 525,
--		.vscan = 0,
--		.vrefresh = 60,
--		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
--		.name = {"640x480-60"},
--	};
-+
- 	igt_output_override_mode(output, &override_mode);
- 
- 	width = override_mode.hdisplay;
-@@ -109,8 +108,25 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output)
- 
- static igt_output_t *kms_writeback_get_output(igt_display_t *display)
- {
--	int i;
- 	enum pipe pipe;
-+	int i;
-+
-+	drmModeModeInfo override_mode = {
-+		.clock = 25175,
-+		.hdisplay = 640,
-+		.hsync_start = 656,
-+		.hsync_end = 752,
-+		.htotal = 800,
-+		.hskew = 0,
-+		.vdisplay = 480,
-+		.vsync_start = 490,
-+		.vsync_end = 492,
-+		.vtotal = 525,
-+		.vscan = 0,
-+		.vrefresh = 60,
-+		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
-+		.name = {"640x480-60"},
-+	};
- 
- 	for (i = 0; i < display->n_outputs; i++) {
- 		igt_output_t *output = &display->outputs[i];
-@@ -121,7 +137,12 @@ static igt_output_t *kms_writeback_get_output(igt_display_t *display)
- 		for_each_pipe(display, pipe) {
- 			igt_output_set_pipe(output, pipe);
- 
--			if (check_writeback_config(display, output)) {
-+			if (data.custom_mode)
-+				override_mode = data.user_mode;
-+			if (data.standard_mode)
-+				override_mode = output->config.connector->modes[data.mode_index];
-+
-+			if (check_writeback_config(display, output, override_mode)) {
- 				igt_debug("Using connector %u:%s on pipe %d\n",
- 					  output->config.connector->connector_id,
- 					  output->name, pipe);
-@@ -347,7 +368,114 @@ static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
- 	igt_remove_fb(output_fb->fd, &second_out_fb);
- }
- 
--igt_main
-+static void do_single_commit(igt_output_t *output, igt_plane_t *plane, igt_fb_t *in_fb,
-+					igt_fb_t *out_fb)
-+{
-+	uint32_t in_fb_color = 0xffff0000;
-+
-+	fill_fb(in_fb, in_fb_color);
-+
-+	igt_plane_set_fb(plane, in_fb);
-+	igt_output_set_writeback_fb(output, out_fb);
-+
-+	igt_display_commit_atomic(output->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	if (out_fb)
-+		get_and_wait_out_fence(output);
-+}
-+
-+static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt_plane_t *plane,
-+					igt_fb_t *input_fb, drmModeModeInfo *mode)
-+{
-+	cairo_surface_t *fb_surface_out;
-+	char filename_out[PATH_MAX];
-+	cairo_status_t status;
-+	char *id;
-+	unsigned int fb_id;
-+	igt_fb_t output_fb;
-+
-+	id = getenv("IGT_FRAME_DUMP_PATH");
-+	fb_id = igt_create_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+				igt_fb_mod_to_tiling(0), &output_fb);
-+	igt_require(fb_id > 0);
-+
-+	do_single_commit(output, plane, input_fb, &output_fb);
-+
-+	fb_surface_out = igt_get_cairo_surface(display->drm_fd, &output_fb);
-+	snprintf(filename_out, PATH_MAX, "%s/%s.png", id, "frame-out");
-+	status = cairo_surface_write_to_png(fb_surface_out, filename_out);
-+	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
-+
-+	igt_remove_fb(display->drm_fd, &output_fb);
-+}
-+
-+static igt_output_t *list_writeback_modes(igt_display_t *display)
-+{
-+	for (int i = 0; i < display->n_outputs; i++) {
-+		igt_output_t *output = &display->outputs[i];
-+
-+		if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK) {
-+			for (int j = 0; j < output->config.connector->count_modes; j++) {
-+				igt_info("[%d]", j);
-+				kmstest_dump_mode(&output->config.connector->modes[j]);
-+			}
-+			break;
-+		}
-+	}
-+	return NULL;
-+}
-+
-+static int parse_mode_string(char *optarg)
-+{
-+	return sscanf(optarg, "%u:%hu:%hu:%hu:%hu:%hu:%hu:%hu:%hu:%hu:%hu:%u:%u:%u:%s", &data.user_mode.clock,
-+			&data.user_mode.hdisplay, &data.user_mode.hsync_start,
-+			&data.user_mode.hsync_end, &data.user_mode.htotal,
-+			&data.user_mode.hskew, &data.user_mode.vdisplay,
-+			&data.user_mode.vsync_start, &data.user_mode.vsync_end,
-+			&data.user_mode.vtotal, &data.user_mode.vscan,
-+			&data.user_mode.vrefresh, &data.user_mode.type,
-+			&data.user_mode.flags, data.user_mode.name);
-+}
-+
-+static int opt_handler(int option, int option_index, void *_data)
-+{
-+	switch (option) {
-+	case 'l':
-+		data.list_modes = true;
-+		break;
-+	case 's':
-+		data.standard_mode = true;
-+		data.mode_index = atoi(optarg);
-+		break;
-+	case 'c':
-+		data.custom_mode = true;
-+		igt_assert(parse_mode_string(optarg) > 0);
-+		break;
-+	case 'd':
-+		data.dump_check = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	" --list-modes | -l List of writeback connector modes\n"
-+	" --standard | -s Commits a standard mode\n"
-+	" --custom | -c Commits a custom mode inputted by user <clock:hdisplay:hsyncstart:hsyncend:"
-+	"htotal:hskew:vdisplay:vsyncstart:vsyncend:vtotal:vscan:vrefresh:flags:name>\n"
-+	" --dump | -d Prints buffer to file - Use command: export IGT_FRAME_DUMP_PATH=\"<filepath>\""
-+	" before running dump. Will skip all other tests.\n";
-+
-+static const struct option long_options[] = {
-+	{ .name = "list-modes", .has_arg = false, .val = 'l', },
-+	{ .name = "standard", .has_arg = true, .val = 's', },
-+	{ .name = "custom", .has_arg = true, .val = 'c', },
-+	{ .name = "dump", .has_arg = false, .val = 'd', },
-+	{}
-+};
-+
-+igt_main_args("s:c:dl", long_options, help_str, opt_handler, NULL)
- {
- 	igt_display_t display;
- 	igt_output_t *output;
-@@ -386,15 +514,23 @@ igt_main
- 				      &input_fb);
- 		igt_assert(fb_id >= 0);
- 		igt_plane_set_fb(plane, &input_fb);
--	}
- 
-+		if (data.list_modes)
-+			list_writeback_modes(&display);
-+		if (data.dump_check)
-+			commit_and_dump_fb(&display, output, plane, &input_fb, &mode);
-+	}
-+	 /*
-+	  * When dump_check or list_modes flag is high, then the following subtests will be skipped
-+	  * as we do not want to do CRC validation.
-+	  */
- 	igt_describe("Check the writeback format");
- 	igt_subtest("writeback-pixel-formats") {
-+		igt_skip_on(data.dump_check || data.list_modes);
- 		drmModePropertyBlobRes *formats_blob = get_writeback_formats_blob(output);
- 		const char *valid_chars = "01234568 ABCGNRUVXY";
- 		unsigned int i;
- 		char *c;
--
- 		/*
- 		 * We don't have a comprehensive list of formats, so just check
- 		 * that the blob length is sensible and that it doesn't contain
-@@ -412,6 +548,7 @@ igt_main
- 		     "(output framebuffer and fence); this test goes through"
- 		     "the combination of possible bad options");
- 	igt_subtest("writeback-invalid-parameters") {
-+		igt_skip_on(data.dump_check || data.list_modes);
- 		igt_fb_t invalid_output_fb;
- 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay / 2,
- 				      mode.vdisplay / 2,
-@@ -427,6 +564,7 @@ igt_main
- 
- 	igt_describe("Validate WRITEBACK_FB_ID with valid and invalid options");
- 	igt_subtest("writeback-fb-id") {
-+		igt_skip_on(data.dump_check || data.list_modes);
- 		igt_fb_t output_fb;
- 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
- 				      DRM_FORMAT_XRGB8888,
-@@ -441,6 +579,7 @@ igt_main
- 
- 	igt_describe("Check writeback output with CRC validation");
- 	igt_subtest("writeback-check-output") {
-+		igt_skip_on(data.dump_check || data.list_modes);
- 		igt_fb_t output_fb;
- 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
- 				      DRM_FORMAT_XRGB8888,
--- 
-2.17.1
+Add "fails" at end, s/objects./objects fails./
+
+>  	igt_subtest("bad-object") {
+>  		uint32_t real_handle = gem_create(fd, 4096);
+>  		uint32_t handles[20];
+> @@ -1293,77 +1296,126 @@ igt_main
+>  		gem_close(fd, real_handle);
+>  	}
+>  
+> +	igt_describe("Test basic working of GEM_MMAP_GTT ioctl.");
+--------------------- ^
+
+imho better start with "Basic checks of ",
+s/Test basic working/Basic checks/
+
+>  	igt_subtest("basic")
+>  		test_access(fd);
+> +	igt_describe("Test mmaping less than the full object.");
+>  	igt_subtest("basic-short")
+>  		test_short(fd);
+> +	igt_describe("Test copying between 2 GTT mmappings.");
+
+Spell this "2", s/2/two/
+also s/copying/copy/
+
+>  	igt_subtest("basic-copy")
+>  		test_copy(fd);
+> +	igt_describe("Test to read content from GTT mmapped.");
+
+s/GTT mmapped./mmapped GTT object./
+
+>  	igt_subtest("basic-read")
+>  		test_read(fd);
+> +	igt_describe("Test to write content to GTT mmapped.");
+
+Same here.
+
+>  	igt_subtest("basic-write")
+>  		test_write(fd);
+> +	igt_describe("Test creates a prefault object into GTT and "
+> +			"writes into it from another GTT mmapped.");
+>  	igt_subtest("basic-write-gtt")
+>  		test_write_gtt(fd);
+> +	igt_describe("Inspect a GTT mmap using ptrace().");
+>  	igt_subtest("ptrace")
+>  		test_ptrace(fd);
+> +	igt_describe("Check whether a write through the GTT is immediately visible to the CPU.");
+>  	igt_subtest("coherency")
+>  		test_coherency(fd);
+> +	igt_describe("Check the userspace clflushing of the GTT mmap.");
+>  	igt_subtest("clflush")
+>  		test_clflush(fd);
+> +	igt_describe("Check read/writes across a GPU reset.");
+>  	igt_subtest("hang")
+>  		test_hang(fd);
+> +	igt_describe("Exercise the GTT mmap revocation for a reset on a busy object.");
+>  	igt_subtest("hang-busy")
+>  		test_hang_busy(fd);
+> +	igt_describe("Mix a busy hang with GTT and userptr.");
+>  	igt_subtest("hang-user")
+>  		test_hang_user(fd);
+> +	igt_describe("Check basic read->write orderof a GTT mmapped buffer object.");
+
+s/orderof/order of/
+
+>  	igt_subtest("basic-read-write")
+>  		test_read_write(fd, READ_BEFORE_WRITE);
+> +	igt_describe("Check basic write->read order of a GTT mmapped buffer object.");
+
+Here you can use short version so s/buffer object./bo./
+and then use it also below. It is up to you, both are good.
+
+>  	igt_subtest("basic-write-read")
+>  		test_read_write(fd, READ_AFTER_WRITE);
+> +	igt_describe("Check distinct read->write order of a GTT mmapped buffer object.");
+>  	igt_subtest("basic-read-write-distinct")
+>  		test_read_write2(fd, READ_BEFORE_WRITE);
+> +	igt_describe("Check distinct write->read order of a GTT mmapped buffer object.");
+>  	igt_subtest("basic-write-read-distinct")
+>  		test_read_write2(fd, READ_AFTER_WRITE);
+> +	igt_describe("Excercise concurrent pagefaulting of a gtt mmaped object.");
+------------------------------------------------------------ ^ - ^ ---- ^
+s/gtt/GTT/
+s/mmaped/mmapped/
+
+Do you mean buffer object ?
+
+>  	igt_subtest("fault-concurrent")
+>  		test_fault_concurrent(fd, I915_TILING_NONE);
+> +	igt_describe("Excercise concurrent pagefaulting of a X-tiled gtt mmaped object.");
+
+s/gtt/GTT/
+
+>  	igt_subtest("fault-concurrent-X")
+>  		test_fault_concurrent(fd, I915_TILING_X);
+> +	igt_describe("Excercise concurrent pagefaulting of a Y-tiled gtt mmaped object.");
+
+s/gtt/GTT/
+
+>  	igt_subtest("fault-concurrent-Y")
+>  		test_fault_concurrent(fd, I915_TILING_Y);
+> +	igt_describe("Check coherency between GTT and CPU mmappings with LLC.");
+>  	igt_subtest("basic-write-cpu-read-gtt")
+>  		test_write_cpu_read_gtt(fd);
+> +	igt_describe("Check the performance of WC writes with WC reads of GTT "
+> +			"and WC writes of GTT with WB writes of CPU.");
+>  	igt_subtest("basic-wc")
+>  		test_wc(fd);
+> +	igt_describe("Test mmap_offset lifetime, closing the object on"
+> +			" another file should not affect the local mmap_offset.");
+>  	igt_subtest("isolation")
+>  		test_isolation(fd);
+> +	igt_describe("Test mmap_gtt extension validity.");
+
+s/mmap_gtt/MMAP_GTT/
+
+>  	igt_subtest("zero-extend")
+>  		test_zero_extend(fd);
+> +	igt_describe("Test to check that a few threads opening and closing handles"
+> +			" cause explosion in other threads in the process of mmaping that handle.");
+>  	igt_subtest("close-race")
+>  		test_close_race(fd);
+> +	igt_describe("Test to check that a few threads opening and closing flink handles"
+> +			" cause explosion in other threads in the process of mmaping that handle.");
+>  	igt_subtest("flink-race")
+>  		test_flink_race(fd);
+> +	igt_describe("Check that the initial pagefault is non-blocking.");
+>  	igt_subtest("pf-nonblock")
+>  		test_pf_nonblock(fd);
+>  
+> +	igt_describe("Check mmap access to a small buffer object by CPU directly"
+> +		       " and through GTT in sequence.");
+>  	igt_subtest("basic-small-bo")
+>  		test_huge_bo(fd, -1, I915_TILING_NONE);
+> +	igt_describe("Check mmap access to a small X-tiled buffer object by CPU "
+> +			"directly and through GTT in sequence.");
+>  	igt_subtest("basic-small-bo-tiledX")
+>  		test_huge_bo(fd, -1, I915_TILING_X);
+> +	igt_describe("Check mmap access to a small Y-tiled buffer object by CPU "
+> +			"directly and through GTT in sequence.");
+>  	igt_subtest("basic-small-bo-tiledY")
+>  		test_huge_bo(fd, -1, I915_TILING_Y);
+>  
+> +	igt_describe("Check mmap access to a big buffer object by CPU directly "
+> +			"and through GTT in sequence.");
+>  	igt_subtest("big-bo")
+>  		test_huge_bo(fd, 0, I915_TILING_NONE);
+> +	igt_describe("Check mmap access to a big X-tiled buffer object by CPU "
+> +			"directly and through GTT in sequence.");
+>  	igt_subtest("big-bo-tiledX")
+>  		test_huge_bo(fd, 0, I915_TILING_X);
+> +	igt_describe("Check mmap access to a big Y-tiled buffer object by CPU "
+> +			"directly and through GTT in sequence.");
+>  	igt_subtest("big-bo-tiledY")
+>  		test_huge_bo(fd, 0, I915_TILING_Y);
+>  
+> +	igt_describe("Check mmap access to a huge buffer object by CPU directly "
+> +			"and through GTT in sequence.");
+>  	igt_subtest("huge-bo")
+>  		test_huge_bo(fd, 1, I915_TILING_NONE);
+> +	igt_describe("Check mmap access to a huge X-tiled buffer object by CPU "
+> +			"directly and through GTT in sequence.");
+>  	igt_subtest("huge-bo-tiledX")
+>  		test_huge_bo(fd, 1, I915_TILING_X);
+> +	igt_describe("Check mmap access to a big Y-tiled buffer object by CPU "
+
+s/big/huge/
+
+Regards,
+Kamil
+
+> +			"directly and through GTT in sequence.");
+>  	igt_subtest("huge-bo-tiledY")
+>  		test_huge_bo(fd, 1, I915_TILING_Y);
+>  
+> -- 
+> 2.25.1
+> 
