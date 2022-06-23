@@ -1,24 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E402113F9B
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 09:07:32 +0000 (UTC)
-Message-ID: <e152fb1c-e7d0-2427-5564-37df417c5772@intel.com>
-Date: Thu, 23 Jun 2022 14:37:12 +0530
-Content-Language: en-US
-To: Petri Latvala <petri.latvala@intel.com>
-References: <20220622154837.20582-1-nidhi1.gupta@intel.com>
- <20220622154837.20582-2-nidhi1.gupta@intel.com>
- <5ccc3c41-c403-3e88-e45c-405c8e30af24@intel.com>
- <PH7PR11MB600613CB5A61601B3D50376DC5B59@PH7PR11MB6006.namprd11.prod.outlook.com>
- <4c36f9e7-3103-35b2-3fd8-efcfde22904e@intel.com>
- <YrQVy1l/4gh9vHqB@platvala-desk.ger.corp.intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <YrQVy1l/4gh9vHqB@platvala-desk.ger.corp.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3489F11A059
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 09:33:23 +0000 (UTC)
+From: sinjan.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
+ kamil.konieczny@linux.intel.com, janga.rahul.kumar@intel.com,
+ ramadevi.gandi@intel.com, priyanka.dandamudi@intel.com,
+ sinjan.kumar@intel.com
+Date: Thu, 23 Jun 2022 15:02:10 +0530
+Message-Id: <20220623093210.1345241-2-sinjan.kumar@intel.com>
+In-Reply-To: <20220623093210.1345241-1-sinjan.kumar@intel.com>
+References: <20220623093210.1345241-1-sinjan.kumar@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode: Convert
- tests to dynamic
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH 1/1] tests/i915/gem_busy : Added subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,33 +22,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
- Nidhi1" <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu-23-06-2022 12:57 pm, Petri Latvala wrote:
-> On Thu, Jun 23, 2022 at 11:43:01AM +0530, Modem, Bhanuprakash wrote:
->> On Thu-23-06-2022 11:25 am, Gupta, Nidhi1 wrote:
->>> Hi Bhanu,
->>>
->>> In many tests we are using drm calls, like drmModePageFlip, drmModeSetCrtc, if I will replace it with igt wrapper it will increase the code lines, should I still change it?
->>
->> It's fine to increase the number of lines of code. The idea is to use IGT
->> wrappers wherever it's possible, since IGT helpers were developed
->> purposefully and more handy.
->>
->> Ofcourse, in some tests it is not possible to use these IGT helpers, ex:
->> kms_setmode.
->>
->> @Petri, any thoughts?
-> 
-> When possible, igt wrappers should be preferred, yes.
+From: Sinjan Kumar <sinjan.kumar@intel.com>
 
-Thanks Petri,
+Added subtest description to gem_busy tests
 
-@Nidhi, please plan to fix as part of cleanup.
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Sinjan Kumar <sinjan.kumar@intel.com>
+---
+ tests/i915/gem_busy.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-> 
-> 
+diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
+index 603691f2..63028069 100644
+--- a/tests/i915/gem_busy.c
++++ b/tests/i915/gem_busy.c
+@@ -447,6 +447,7 @@ igt_main
+ 			igt_fork_hang_detector(fd);
+ 		}
+ 
++		igt_describe("Basic test to check busyness of each engine.");
+ 		igt_subtest_with_dynamic("busy") {
+ 			igt_dynamic("all") {
+ 				gem_quiescent_gpu(fd);
+@@ -461,6 +462,8 @@ igt_main
+ 			}
+ 		}
+ 
++		igt_describe("Test to check race condition by randomly closing "
++			     "the handle using gem_close.");
+ 		igt_subtest("close-race")
+ 			close_race(fd, ctx);
+ 
+@@ -482,12 +485,17 @@ igt_main
+ 				gem_require_mmap_device_coherent(fd);
+ 			}
+ 
++			igt_describe("Extended test to check busyness of "
++				     "dwstore-capable engines.");
+ 			test_each_engine_store("extended", fd, ctx, e) {
+ 				gem_quiescent_gpu(fd);
+ 				one(fd, ctx, e, 0);
+ 				gem_quiescent_gpu(fd);
+ 			}
+ 
++			igt_describe("Extended test to check busyness of engine "
++				     "busyness of dwstore-capable engines while "
++				     "doing parallel execution.");
+ 			test_each_engine_store("parallel", fd, ctx, e) {
+ 				gem_quiescent_gpu(fd);
+ 				one(fd, ctx, e, PARALLEL);
+@@ -501,6 +509,9 @@ igt_main
+ 				igt_require(has_semaphores(fd));
+ 			}
+ 
++		igt_describe("Test to check busyness of engine on submitting "
++			     "a new batch while engine is busy in executing "
++			     "previous batch.");
+ 			test_each_engine("semaphore", fd, ctx, e) {
+ 				gem_quiescent_gpu(fd);
+ 				semaphore(fd, ctx, e);
+@@ -520,6 +531,8 @@ igt_main
+ 			hang = igt_allow_hang(fd, ctx->id, 0);
+ 		}
+ 
++		igt_describe("Basic test to check hang state beahaviour of "
++			     "engine with increased timeout.");
+ 		test_each_engine("hang", fd, ctx, e) {
+ 			gem_quiescent_gpu(fd);
+ 			basic(fd, ctx, e, HANG);
+@@ -532,6 +545,9 @@ igt_main
+ 				gem_require_mmap_device_coherent(fd);
+ 			}
+ 
++			igt_describe("Extended test to check hang state "
++				     "behaviour of dwstore-capable engines "
++				     " with increased timeout.");
+ 			test_each_engine_store("hang-extended", fd, ctx, e) {
+ 				gem_quiescent_gpu(fd);
+ 				one(fd, ctx, e, HANG);
+-- 
+2.25.1
