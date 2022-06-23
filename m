@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 659C510E5F6
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 13:02:48 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Thu, 23 Jun 2022 18:22:38 +0530
-Message-Id: <20220623125239.21836-2-mohammed.thasleem@intel.com>
-In-Reply-To: <20220623125239.21836-1-mohammed.thasleem@intel.com>
-References: <20220623125239.21836-1-mohammed.thasleem@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADEE610E9C6
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 13:06:12 +0000 (UTC)
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 23 Jun 2022 13:05:57 +0000
+Message-ID: <PH0PR11MB48064283E6FEEAD5B9AC1080E4B59@PH0PR11MB4806.namprd11.prod.outlook.com>
+References: <20220615105333.70867-1-mohammed.thasleem@intel.com>
+ <20220615105333.70867-2-mohammed.thasleem@intel.com>
+ <Yqn/tD2BCoRkIjoB@kamilkon-desk1>
+In-Reply-To: <Yqn/tD2BCoRkIjoB@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 1/2] tests/kms_rmfb: Create dynamic subtests
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_rmfb: Create dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,89 +24,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: nidhi1.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_rmfb to include dynamic test cases.
-
-v2: addressed indentation, test description moved into struct
-    and added global description to test.
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/kms_rmfb.c | 37 +++++++++++++++++++++++++++----------
- 1 file changed, 27 insertions(+), 10 deletions(-)
-
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index fcd5cdad..72e58042 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -36,6 +36,9 @@
- #define DRM_CAP_CURSOR_HEIGHT 0x9
- #endif
- 
-+IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
-+		     "the framebuffers should be removed from the crtc.");
-+
- struct rmfb_data {
- 	int drm_fd;
- 	igt_display_t display;
-@@ -151,14 +154,29 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
- 	igt_output_t *output;
- 	enum pipe pipe;
- 
--	for_each_pipe_with_single_output(&data->display, pipe, output)
--		test_rmfb(data, output, pipe, reopen);
-+	for_each_pipe_with_single_output(&data->display, pipe, output) {
-+		igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
-+			      kmstest_pipe_name(pipe))
-+			test_rmfb(data, output, pipe, reopen);
-+	}
- }
- 
- igt_main
- {
-+	int i;
- 	struct rmfb_data data = {};
- 
-+	const struct {
-+		bool flags;
-+		const char *name;
-+		const char *description;
-+	} tests[] = {
-+		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all"
-+				       "planes so test this and make sure it works."},
-+		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all planes"
-+				    "so test this and make sure it works with fd close and reopen."},
-+	};
-+
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
-@@ -168,15 +186,14 @@ igt_main
- 		igt_display_require_output(&data.display);
- 	}
- 
--	igt_describe("RMFB is supposed to free the framebuffers from any and all "
--		     "planes so test this and make sure it works.");
--	igt_subtest_f("rmfb-ioctl")
--		run_rmfb_test(&data, false);
-+	for (i = 0; i < ARRAY_SIZE(tests); i++) {
- 
--	igt_describe("RMFB is supposed to free the framebuffers from any and all planes "
--		     "so test this and make sure it works with fd close and reopen.");
--	igt_subtest_f("close-fd")
--		run_rmfb_test(&data, true);
-+		igt_describe(tests[i].description);
-+		igt_subtest_with_dynamic(tests[i].name) {
-+			run_rmfb_test(&data, tests[i].flags);
-+
-+		}
-+	}
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
--- 
-2.25.1
+SGkgS2FtaWwsDQoNClRoYW5rcyBmb3IgdGhlIHJldmlldyBjb21tZW50cy4NCkkgaGF2ZSBhZGRy
+ZXNzZWQgaW4gdjIuDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBLYW1pbCBL
+b25pZWN6bnkgPGthbWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+IA0KU2VudDogV2VkbmVz
+ZGF5LCBKdW5lIDE1LCAyMDIyIDk6MjAgUE0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZw0KQ2M6IFRoYXNsZWVtLCBNb2hhbW1lZCA8bW9oYW1tZWQudGhhc2xlZW1AaW50ZWwuY29t
+Pg0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXQgMS8yXSB0ZXN0cy9rbXNfcm1m
+YjogQ3JlYXRlIGR5bmFtaWMgc3VidGVzdHMNCg0KSGkgTW9oYW1tZWQsDQoNCk1heSB5b3UgYWxz
+byBhZGQgZ2xvYmFsIGRlc2NyaXB0aW9uIHRvIHRlc3QgPw0KDQpPbiAyMDIyLTA2LTE1IGF0IDE2
+OjIzOjMyICswNTMwLCBNb2hhbW1lZCBUaGFzbGVlbSB3cm90ZToNCj4gTW9kaWZpZWQga21zX3Jt
+ZmIgdG8gaW5jbHVkZSBkeW5hbWljIHRlc3QgY2FzZXMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBN
+b2hhbW1lZCBUaGFzbGVlbSA8bW9oYW1tZWQudGhhc2xlZW1AaW50ZWwuY29tPg0KPiAtLS0NCj4g
+IHRlc3RzL2ttc19ybWZiLmMgfCAzMSArKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tDQo+
+ICAxIGZpbGUgY2hhbmdlZCwgMjIgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkNCj4gDQo+
+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcm1mYi5jIGIvdGVzdHMva21zX3JtZmIuYyBpbmRleCAN
+Cj4gZmNkNWNkYWQuLjUzMTcyZGVkIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9rbXNfcm1mYi5jDQo+
+ICsrKyBiL3Rlc3RzL2ttc19ybWZiLmMNCj4gQEAgLTE1MSwxNCArMTUxLDI2IEBAIHJ1bl9ybWZi
+X3Rlc3Qoc3RydWN0IHJtZmJfZGF0YSAqZGF0YSwgYm9vbCByZW9wZW4pDQo+ICAJaWd0X291dHB1
+dF90ICpvdXRwdXQ7DQo+ICAJZW51bSBwaXBlIHBpcGU7DQo+ICANCj4gLQlmb3JfZWFjaF9waXBl
+X3dpdGhfc2luZ2xlX291dHB1dCgmZGF0YS0+ZGlzcGxheSwgcGlwZSwgb3V0cHV0KQ0KPiArCWZv
+cl9lYWNoX3BpcGVfd2l0aF9zaW5nbGVfb3V0cHV0KCZkYXRhLT5kaXNwbGF5LCBwaXBlLCBvdXRw
+dXQpIHsNCj4gKwkJaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcyIsIGlndF9vdXRwdXRfbmFtZShv
+dXRwdXQpLA0KPiArCQkJICAgICAga21zdGVzdF9waXBlX25hbWUocGlwZSkpDQo+ICAJCXRlc3Rf
+cm1mYihkYXRhLCBvdXRwdXQsIHBpcGUsIHJlb3Blbik7DQotLS0tLS0tLS0tLS0tLS0gXg0KDQpJ
+bmRlbnQgdGhpcyBjYWxsIChhZGQgdGFiIGhlcmUpLg0KDQo+ICsJfQ0KPiAgfQ0KPiAgDQo+ICBp
+Z3RfbWFpbg0KPiAgew0KPiArCWludCBpOw0KPiAgCXN0cnVjdCBybWZiX2RhdGEgZGF0YSA9IHt9
+Ow0KPiAgDQo+ICsJY29uc3Qgc3RydWN0IHsNCj4gKwkJYm9vbCBmbGFnczsNCj4gKwkJY29uc3Qg
+Y2hhciAqbmFtZTsNCg0KQWRkIGRlc2NyaXB0aW9uIGhlcmU6DQoJCWNvbnN0IGNoYXIgKmRlc2Ny
+aXB0aW9uOw0KDQo+ICsJfSB0ZXN0c1tdID0gew0KPiArCQl7IGZhbHNlLCAicm1mYi1pb2N0bCIg
+fSwNCg0KQW5kIHB1dCB0aGVtIGFmdGVyIG5hbWVzLg0KDQo+ICsJCXsgdHJ1ZSwgImNsb3NlLWZk
+IiB9LA0KPiArCX07DQo+ICsNCj4gIAlpZ3RfZml4dHVyZSB7DQo+ICAJCWRhdGEuZHJtX2ZkID0g
+ZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsNCj4gIA0KPiBAQCAtMTY4LDE1ICsx
+ODAsMTYgQEAgaWd0X21haW4NCj4gIAkJaWd0X2Rpc3BsYXlfcmVxdWlyZV9vdXRwdXQoJmRhdGEu
+ZGlzcGxheSk7DQo+ICAJfQ0KPiAgDQo+IC0JaWd0X2Rlc2NyaWJlKCJSTUZCIGlzIHN1cHBvc2Vk
+IHRvIGZyZWUgdGhlIGZyYW1lYnVmZmVycyBmcm9tIGFueSBhbmQgYWxsICINCj4gLQkJICAgICAi
+cGxhbmVzIHNvIHRlc3QgdGhpcyBhbmQgbWFrZSBzdXJlIGl0IHdvcmtzLiIpOw0KDQpNb3ZlIHRo
+aXMgZGVzY3JpcHRpb24gaW50byBzdHJ1Y3QuDQoNCj4gLQlpZ3Rfc3VidGVzdF9mKCJybWZiLWlv
+Y3RsIikNCj4gLQkJcnVuX3JtZmJfdGVzdCgmZGF0YSwgZmFsc2UpOw0KPiArCWZvciAoaSA9IDA7
+IGkgPCBBUlJBWV9TSVpFKHRlc3RzKTsgaSsrKSB7DQo+ICsNCj4gKwkJaWd0X2Rlc2NyaWJlKCJS
+TUZCIGlzIHN1cHBvc2VkIHRvIGZyZWUgdGhlIGZyYW1lYnVmZmVycyBmcm9tIGFueSBhbmQgYWxs
+ICINCg0KSGVyZSB5b3UgY2FuIHVzZSBpZ3RfZGVzY3JpYmVfZigpIHdpdGggdGVzdHNbaV0uZGVz
+Y3JpcHRpb24uDQoNClJlZ2FyZHMsDQpLYW1pbA0KDQo+ICsJCQkgICAgICJwbGFuZXMgc28gdGVz
+dCB0aGlzIGFuZCBtYWtlIHN1cmUgaXQgd29ya3Mgd2l0aCBybWZiLWlvY3RsLCINCj4gKwkJCSAg
+ICAgImZkIGNsb3NlIGFuZCByZW9wZW4uIik7DQo+ICsJCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1p
+Yyh0ZXN0c1tpXS5uYW1lKSB7DQo+ICsJCQlydW5fcm1mYl90ZXN0KCZkYXRhLCB0ZXN0c1tpXS5m
+bGFncyk7DQo+ICANCj4gLQlpZ3RfZGVzY3JpYmUoIlJNRkIgaXMgc3VwcG9zZWQgdG8gZnJlZSB0
+aGUgZnJhbWVidWZmZXJzIGZyb20gYW55IGFuZCBhbGwgcGxhbmVzICINCj4gLQkJICAgICAic28g
+dGVzdCB0aGlzIGFuZCBtYWtlIHN1cmUgaXQgd29ya3Mgd2l0aCBmZCBjbG9zZSBhbmQgcmVvcGVu
+LiIpOw0KPiAtCWlndF9zdWJ0ZXN0X2YoImNsb3NlLWZkIikNCj4gLQkJcnVuX3JtZmJfdGVzdCgm
+ZGF0YSwgdHJ1ZSk7DQo+ICsJCX0NCj4gKwl9DQo+ICANCj4gIAlpZ3RfZml4dHVyZSB7DQo+ICAJ
+CWlndF9kaXNwbGF5X2ZpbmkoJmRhdGEuZGlzcGxheSk7DQo+IC0tDQo+IDIuMjUuMQ0KPiANCg==
