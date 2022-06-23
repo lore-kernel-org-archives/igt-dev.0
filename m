@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5584000146146781575=="
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0ABEF11276E
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 02:41:24 +0000 (UTC)
+Message-ID: <5ccc3c41-c403-3e88-e45c-405c8e30af24@intel.com>
+Date: Thu, 23 Jun 2022 08:11:06 +0530
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220622154837.20582-1-nidhi1.gupta@intel.com>
+ <20220622154837.20582-2-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220622154837.20582-2-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rohith Iyer" <quic_rohiiyer@quicinc.com>
-Date: Thu, 23 Jun 2022 02:11:14 -0000
-Message-ID: <165595027495.17070.15270115214821419247@emeril.freedesktop.org>
-References: <20220623013003.20471-1-quic_rohiiyer@quicinc.com>
-In-Reply-To: <20220623013003.20471-1-quic_rohiiyer@quicinc.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fwriteback=3A_Enhance_kms=5Fwriteback_for_custom_modes_=28?=
- =?utf-8?q?rev2=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode: Convert
+ tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,214 +22,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5584000146146781575==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed-22-06-2022 09:18 pm, Nidhi Gupta wrote:
+> Convert the existing subtests to dynamic subtests at pipe level.
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/kms_invalid_mode.c | 53 +++++++++++++++++-----------------------
+>   1 file changed, 23 insertions(+), 30 deletions(-)
+> 
+> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+> index 630798d8..7e1f683b 100644
+> --- a/tests/kms_invalid_mode.c
+> +++ b/tests/kms_invalid_mode.c
+> @@ -32,6 +32,7 @@ typedef struct _data data_t;
+>   
+>   struct _data {
+>   	int drm_fd;
+> +	enum pipe pipe;
+>   	igt_display_t display;
+>   	igt_output_t *output;
+>   	drmModeResPtr res;
+> @@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInfoPtr mode)
+>   	return true;
+>   }
+>   
+> -static int
+> +static void
+>   test_output(data_t *data)
+>   {
+>   	igt_output_t *output = data->output;
+>   	drmModeModeInfo mode;
+>   	struct igt_fb fb;
+> -	int i;
+> +	int ret;
+> +	uint32_t crtc_id;
+>   
+>   	/*
+>   	 * FIXME test every mode we have to be more
+>   	 * sure everything is really getting rejected?
+>   	 */
+>   	mode = *igt_output_get_mode(output);
+> -	if (!data->adjust_mode(data, &mode))
+> -		return 0;
+> +	igt_require(data->adjust_mode(data, &mode));
+>   
+>   	igt_create_fb(data->drm_fd,
+>   		      max_t(uint16_t, mode.hdisplay, 64),
+> @@ -202,32 +203,14 @@ test_output(data_t *data)
+>   
+>   	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+>   
+> -	for (i = 0; i < data->res->count_crtcs; i++) {
+> -		int ret;
+> -
+> -		igt_info("Checking pipe %c connector %s with mode %s\n",
+> -			 'A'+i, output->name, mode.name);
+> +	crtc_id = data->display.pipes[data->pipe].crtc_id;
+>   
+> -		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
+> -				     fb.fb_id, 0, 0,
+> -				     &output->id, 1, &mode);
+> -		igt_assert_lt(ret, 0);
+> -	}
+> +	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+> +			     fb.fb_id, 0, 0,
+> +			     &output->id, 1, &mode);
 
-== Series Details ==
+Instead of using drm calls, is it possible to use igt kms wrappers?
 
-Series: tests/kms_writeback: Enhance kms_writeback for custom modes (rev2)
-URL   : https://patchwork.freedesktop.org/series/105522/
-State : success
+igt_output_set_pipe();
+try_commit();
 
-== Summary ==
+- Bhanu
 
-CI Bug Log - changes from CI_DRM_11795 -> IGTPW_7366
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-dg2-8 fi-rkl-11600 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7366 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-snb-2600:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#111827])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - fi-tgl-u2:          [PASS][2] -> [DMESG-WARN][3] ([i915#402])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [INCOMPLETE][4] ([i915#3921]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-    - bat-dg1-6:          [DMESG-FAIL][6] ([i915#4494] / [i915#4957]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_busy@basic@flip:
-    - {bat-adlp-6}:       [DMESG-WARN][8] ([i915#1982] / [i915#3576]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-adlp-6/igt@kms_busy@basic@flip.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-adlp-6/igt@kms_busy@basic@flip.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
-    - {bat-adlp-6}:       [DMESG-WARN][10] ([i915#3576]) -> [PASS][11] +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
-
-  * igt@kms_flip@basic-plain-flip@a-edp1:
-    - fi-tgl-u2:          [DMESG-WARN][12] ([i915#402]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6541 -> IGTPW_7366
-
-  CI-20190529: 20190529
-  CI_DRM_11795: 5a84eaf663caab407f4baf1cd854f1ebd5980d61 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7366: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html
-  IGT_6541: 02153f109bd422d93cfce7f5aa9d7b0e22fab13c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html
-
---===============5584000146146781575==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_writeback: Enhance kms_writeback for custom modes (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105522/">https://patchwork.freedesktop.org/series/105522/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11795 -&gt; IGTPW_7366</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-8 fi-rkl-11600 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7366 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-<li>
-<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6541 -&gt; IGTPW_7366</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11795: 5a84eaf663caab407f4baf1cd854f1ebd5980d61 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7366: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html<br />
-  IGT_6541: 02153f109bd422d93cfce7f5aa9d7b0e22fab13c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5584000146146781575==--
+> +	igt_assert_lt(ret, 0);
+>   
+>   	igt_remove_fb(data->drm_fd, &fb);
+> -
+> -	return 1;
+> -}
+> -
+> -static void test(data_t *data)
+> -{
+> -	int valid_connectors = 0;
+> -
+> -	for_each_connected_output(&data->display, data->output) {
+> -		valid_connectors += test_output(data);
+> -	}
+> -
+> -	igt_require_f(valid_connectors, "No suitable connectors found\n");
+>   }
+>   
+>   static int i915_max_dotclock(data_t *data)
+> @@ -297,6 +280,10 @@ static data_t data;
+>   
+>   igt_main
+>   {
+> +
+> +	enum pipe pipe;
+> +	igt_output_t *output;
+> +
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   
+> @@ -311,9 +298,15 @@ igt_main
+>   	}
+>   
+>   	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+> -		igt_subtest(subtests[i].name) {
+> -			data.adjust_mode = subtests[i].adjust_mode;
+> -			test(&data);
+> +		igt_subtest_with_dynamic(subtests[i].name) {
+> +			for_each_pipe_with_valid_output(&data.display, pipe, output) {
+> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+> +					data.output = output;
+> +					data.pipe = pipe;
+> +					data.adjust_mode = subtests[i].adjust_mode;
+> +					test_output(&data);
+> +				}
+> +			}
+>   		}
+>   	}
+>   
