@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E722210E193
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 15:53:44 +0000 (UTC)
-Date: Thu, 23 Jun 2022 17:53:40 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8858A10E02D
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 16:03:18 +0000 (UTC)
+Date: Thu, 23 Jun 2022 18:02:32 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YrSMhG0q3CRtMJKj@kamilkon-desk1>
-References: <20220622091522.3247322-1-janga.rahul.kumar@intel.com>
- <20220622091522.3247322-2-janga.rahul.kumar@intel.com>
+Message-ID: <YrSOmNjoHeivn/CC@kamilkon-desk1>
+References: <20220623121253.1352382-1-sinjan.kumar@intel.com>
+ <20220623121253.1352382-2-sinjan.kumar@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220622091522.3247322-2-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/2] tests/i915/gem_exec_suspend : Added
- subtests description
+In-Reply-To: <20220623121253.1352382-2-sinjan.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/i915/gem_busy : Added subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,154 +21,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janga,
+Hi Sinjan,
 
-On 2022-06-22 at 14:45:21 +0530, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On 2022-06-23 at 17:42:52 +0530, sinjan.kumar@intel.com wrote:
+> From: Sinjan Kumar <sinjan.kumar@intel.com>
 > 
-> Added test description to all the available subtests.
-> 
-> v2 : Modified subtest description and added description
->      to all the subtests.
+> Added subtest description to gem_busy tests
 > 
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Signed-off-by: Sinjan Kumar <sinjan.kumar@intel.com>
 > ---
->  tests/i915/gem_exec_suspend.c | 50 ++++++++++++++++++++++++-----------
->  1 file changed, 34 insertions(+), 16 deletions(-)
+>  tests/i915/gem_busy.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
-> diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
-> index 401026ef..55529bb8 100644
-> --- a/tests/i915/gem_exec_suspend.c
-> +++ b/tests/i915/gem_exec_suspend.c
-> @@ -37,6 +37,9 @@
->  #include "igt_gt.h"
->  #include "igt_sysfs.h"
+> diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
+> index 603691f2..63028069 100644
+> --- a/tests/i915/gem_busy.c
+> +++ b/tests/i915/gem_busy.c
+> @@ -447,6 +447,7 @@ igt_main
+>  			igt_fork_hang_detector(fd);
+>  		}
 >  
-> +IGT_TEST_DESCRIPTION("Exercise simple exec-and-read, measure power across various "
-> +		     "suspend/resume cycles.");
-> +
+> +		igt_describe("Basic test to check busyness of each engine.");
+>  		igt_subtest_with_dynamic("busy") {
+>  			igt_dynamic("all") {
+>  				gem_quiescent_gpu(fd);
+> @@ -461,6 +462,8 @@ igt_main
+>  			}
+>  		}
+>  
+> +		igt_describe("Test to check race condition by randomly closing "
+> +			     "the handle using gem_close.");
+>  		igt_subtest("close-race")
+>  			close_race(fd, ctx);
+>  
+> @@ -482,12 +485,17 @@ igt_main
+>  				gem_require_mmap_device_coherent(fd);
+>  			}
+>  
+> +			igt_describe("Extended test to check busyness of "
+> +				     "dwstore-capable engines.");
+>  			test_each_engine_store("extended", fd, ctx, e) {
+>  				gem_quiescent_gpu(fd);
+>  				one(fd, ctx, e, 0);
+>  				gem_quiescent_gpu(fd);
+>  			}
+>  
+> +			igt_describe("Extended test to check busyness of engine "
+------------------------------------------------------------------------ ^
+> +				     "busyness of dwstore-capable engines while "
+------------------------------------- ^ ------ ^
 
-Looks better, there is still some place for improve, imho
-s/simple exec-and-read, measure power/execbufs runs/
+Drop these three repeated words.
 
->  #define NOSLEEP 0
->  #define IDLE 1
->  #define SUSPEND_DEVICES 2
-> @@ -286,29 +289,37 @@ igt_main
->  	const struct {
->  		const char *suffix;
->  		unsigned mode;
-> +		const char *describe;
->  	} modes[] = {
-> -		{ "", NOSLEEP },
-> -		{ "-S3", SUSPEND },
-> -		{ "-S4", HIBERNATE },
-> -		{ NULL, 0 }
-> +		{ "", NOSLEEP, "without suspend/resume cycle" },
-> +		{ "-S3", SUSPEND, "suspend-to-mem" },
-> +		{ "-S4", HIBERNATE, "suspend-to-device" },
-
-s/device/disk/
-
-> +		{ NULL, 0, "" }
->  	}, *m;
->  	struct test {
->  		const char *name;
->  		unsigned int flags;
->  		void (*fn)(int, const intel_ctx_t *, unsigned, unsigned, uint32_t);
-> +		const char *describe;
->  	} *test, tests_all_engines[] = {
-> -		{ "basic", NOSLEEP, run_test },
-> -		{ "basic-S0", IDLE, run_test },
-> -		{ "basic-S3-devices", SUSPEND_DEVICES, run_test },
-> -		{ "basic-S3", SUSPEND, run_test },
-> -		{ "basic-S4-devices", HIBERNATE_DEVICES, run_test },
-> -		{ "basic-S4", HIBERNATE, run_test },
-> +		{ "basic", NOSLEEP, run_test, "Check basic functionality without any "
-> +					      "suspend/resume cycle." },
-> +		{ "basic-S0", IDLE, run_test, "Check with suspend-to-idle target state." },
-> +		{ "basic-S3-devices", SUSPEND_DEVICES, run_test, "Check with suspend-to-mem "
-> +								 "with device only." },
-
-s/device/devices/
-
-> +		{ "basic-S3", SUSPEND, run_test, "Check full cycle of suspend-to-mem." },
-> +		{ "basic-S4-devices", HIBERNATE_DEVICES, run_test, "Check with suspend-to-disk "
-> +								   "with device only." },
-
-s/device/devices/
-
-> +		{ "basic-S4", HIBERNATE, run_test, "Check full cycle of suspend-to-disk." },
->  		{ }
->  	}, tests_power_hang[] = {
-> -		{ "hang-S3", SUSPEND | HANG, run_test },
-> -		{ "hang-S4", HIBERNATE | HANG, run_test },
-> -		{ "power-S0", IDLE, power_test },
-> -		{ "power-S3", SUSPEND, power_test },
-> +		{ "hang-S3", SUSPEND | HANG, run_test, "Check performing full cycle of "
-> +						"susepnd-to-mem with a pending GPU hang." },
-
-s/susepnd/suspend/
-
-> +		{ "hang-S4", HIBERNATE | HANG, run_test, "Check performing full cycle of "
-> +						"suspend-to-disk with a pending GPU hang." },
-> +		{ "power-S0", IDLE, power_test, "Check power consumption during idle state." },
-> +		{ "power-S3", SUSPEND, power_test, "Check power consumption during "
-> +						   "suspend state." },
-
-s/suspend/suspend-to-mem/
+> +				     "doing parallel execution.");
+>  			test_each_engine_store("parallel", fd, ctx, e) {
+>  				gem_quiescent_gpu(fd);
+>  				one(fd, ctx, e, PARALLEL);
+> @@ -501,6 +509,9 @@ igt_main
+>  				igt_require(has_semaphores(fd));
+>  			}
+>  
+> +		igt_describe("Test to check busyness of engine on submitting "
+> +			     "a new batch while engine is busy in executing "
+> +			     "previous batch.");
+>  			test_each_engine("semaphore", fd, ctx, e) {
+>  				gem_quiescent_gpu(fd);
+>  				semaphore(fd, ctx, e);
+> @@ -520,6 +531,8 @@ igt_main
+>  			hang = igt_allow_hang(fd, ctx->id, 0);
+>  		}
+>  
+> +		igt_describe("Basic test to check hang state beahaviour of "
+-------------------------------------------------------------- ^
+s/beahaviour/behaviour/
 
 Regards,
 Kamil
 
->  		{ }
->  	};
->  	const struct intel_execution_engine2 *e;
-> @@ -359,20 +370,25 @@ igt_main
->  		} \
->  	}
+> +			     "engine with increased timeout.");
+>  		test_each_engine("hang", fd, ctx, e) {
+>  			gem_quiescent_gpu(fd);
+>  			basic(fd, ctx, e, HANG);
+> @@ -532,6 +545,9 @@ igt_main
+>  				gem_require_mmap_device_coherent(fd);
+>  			}
 >  
-> -	for (test = tests_all_engines; test->name; test++)
-> +	for (test = tests_all_engines; test->name; test++) {
-> +		igt_describe(test->describe);
->  		subtest_for_each_combination(test->name, intel_ctx_0(fd), test->flags, test->fn);
-> +	}
->  
->  	for (m = modes; m->suffix; m++) {
-> +		igt_describe_f("Check %s state with fixed object.", m->describe);
->  		igt_subtest_with_dynamic_f("fixed%s", m->suffix) {
->  			igt_require(gem_has_lmem(fd));
->  			for_each_ctx_engine_combination(m->mode);
->  		}
->  
-> +		igt_describe_f("Check %s state with uncached object.", m->describe);
->  		igt_subtest_with_dynamic_f("uncached%s", m->suffix) {
->  			igt_require(!gem_has_lmem(fd));
->  			for_each_ctx_engine_combination(m->mode | UNCACHED);
->  		}
->  
-> +		igt_describe_f("Check %s state with cached object.", m->describe);
->  		igt_subtest_with_dynamic_f("cached%s", m->suffix) {
->  			igt_require(!gem_has_lmem(fd));
->  			for_each_ctx_engine_combination(m->mode | CACHED);
-> @@ -384,8 +400,10 @@ igt_main
->  		hang = igt_allow_hang(fd, 0, 0);
->  	}
->  
-> -	for (test = tests_power_hang; test->name; test++)
-> +	for (test = tests_power_hang; test->name; test++) {
-> +		igt_describe(test->describe);
->  		subtest_for_each_combination(test->name, intel_ctx_0(fd), test->flags, test->fn);
-> +	}
->  
->  	igt_fixture {
->  		free(query_info);
+> +			igt_describe("Extended test to check hang state "
+> +				     "behaviour of dwstore-capable engines "
+> +				     " with increased timeout.");
+>  			test_each_engine_store("hang-extended", fd, ctx, e) {
+>  				gem_quiescent_gpu(fd);
+>  				one(fd, ctx, e, HANG);
 > -- 
 > 2.25.1
 > 
