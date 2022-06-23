@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80A9710E047
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 13:50:42 +0000 (UTC)
-Date: Thu, 23 Jun 2022 15:50:38 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YrRvrqR1iBxKJutI@kamilkon-desk1>
-References: <20220617120822.1208890-1-priyanka.dandamudi@intel.com>
- <20220617120822.1208890-2-priyanka.dandamudi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5584000146146781575=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220617120822.1208890-2-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/2] i915/gem_mmap_gtt: added description for
- test case
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Rohith Iyer" <quic_rohiiyer@quicinc.com>
+Date: Thu, 23 Jun 2022 02:11:14 -0000
+Message-ID: <165595027495.17070.15270115214821419247@emeril.freedesktop.org>
+References: <20220623013003.20471-1-quic_rohiiyer@quicinc.com>
+In-Reply-To: <20220623013003.20471-1-quic_rohiiyer@quicinc.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fwriteback=3A_Enhance_kms=5Fwriteback_for_custom_modes_=28?=
+ =?utf-8?q?rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,227 +18,214 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Priyanka,
+--===============5584000146146781575==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-small nits, see below.
+== Series Details ==
 
-On 2022-06-17 at 17:38:21 +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> Added global description and subtest description.
-------------------------------------- ^ --------- ^
-Please use plurals here: subtests descriptions.
+Series: tests/kms_writeback: Enhance kms_writeback for custom modes (rev2)
+URL   : https://patchwork.freedesktop.org/series/105522/
+State : success
 
-Small nits, see below.
+== Summary ==
 
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/i915/gem_mmap_gtt.c | 52 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 52 insertions(+)
-> 
-> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-> index 6db82229..dab06ef0 100644
-> --- a/tests/i915/gem_mmap_gtt.c
-> +++ b/tests/i915/gem_mmap_gtt.c
-> @@ -54,6 +54,8 @@
->  
->  #define abs(x) ((x) >= 0 ? (x) : -(x))
->  
-> +IGT_TEST_DESCRIPTION("Ensure that all operations around MMAP_GTT IOCTL works.");
-> +
+CI Bug Log - changes from CI_DRM_11795 -> IGTPW_7366
+====================================================
 
-I would prefer s/IOCTL/ioctl/
+Summary
+-------
 
->  static int OBJECT_SIZE = 16*1024*1024;
->  
->  static void
-> @@ -1272,6 +1274,7 @@ igt_main
->  		gem_require_mappable_ggtt(fd);
->  	}
->  
-> +	igt_describe("Verify mapping to invalid gem objects.");
+  **SUCCESS**
 
-Add "fails" at end, s/objects./objects fails./
+  No regressions found.
 
->  	igt_subtest("bad-object") {
->  		uint32_t real_handle = gem_create(fd, 4096);
->  		uint32_t handles[20];
-> @@ -1293,77 +1296,126 @@ igt_main
->  		gem_close(fd, real_handle);
->  	}
->  
-> +	igt_describe("Test basic working of GEM_MMAP_GTT ioctl.");
---------------------- ^
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html
 
-imho better start with "Basic checks of ",
-s/Test basic working/Basic checks/
+Participating hosts (39 -> 37)
+------------------------------
 
->  	igt_subtest("basic")
->  		test_access(fd);
-> +	igt_describe("Test mmaping less than the full object.");
->  	igt_subtest("basic-short")
->  		test_short(fd);
-> +	igt_describe("Test copying between 2 GTT mmappings.");
+  Missing    (2): bat-dg2-8 fi-rkl-11600 
 
-Spell this "2", s/2/two/
-also s/copying/copy/
+Known issues
+------------
 
->  	igt_subtest("basic-copy")
->  		test_copy(fd);
-> +	igt_describe("Test to read content from GTT mmapped.");
+  Here are the changes found in IGTPW_7366 that come from known issues:
 
-s/GTT mmapped./mmapped GTT object./
+### IGT changes ###
 
->  	igt_subtest("basic-read")
->  		test_read(fd);
-> +	igt_describe("Test to write content to GTT mmapped.");
+#### Issues hit ####
 
-Same here.
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-snb-2600:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#111827])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html
 
->  	igt_subtest("basic-write")
->  		test_write(fd);
-> +	igt_describe("Test creates a prefault object into GTT and "
-> +			"writes into it from another GTT mmapped.");
->  	igt_subtest("basic-write-gtt")
->  		test_write_gtt(fd);
-> +	igt_describe("Inspect a GTT mmap using ptrace().");
->  	igt_subtest("ptrace")
->  		test_ptrace(fd);
-> +	igt_describe("Check whether a write through the GTT is immediately visible to the CPU.");
->  	igt_subtest("coherency")
->  		test_coherency(fd);
-> +	igt_describe("Check the userspace clflushing of the GTT mmap.");
->  	igt_subtest("clflush")
->  		test_clflush(fd);
-> +	igt_describe("Check read/writes across a GPU reset.");
->  	igt_subtest("hang")
->  		test_hang(fd);
-> +	igt_describe("Exercise the GTT mmap revocation for a reset on a busy object.");
->  	igt_subtest("hang-busy")
->  		test_hang_busy(fd);
-> +	igt_describe("Mix a busy hang with GTT and userptr.");
->  	igt_subtest("hang-user")
->  		test_hang_user(fd);
-> +	igt_describe("Check basic read->write orderof a GTT mmapped buffer object.");
+  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
+    - fi-tgl-u2:          [PASS][2] -> [DMESG-WARN][3] ([i915#402])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
 
-s/orderof/order of/
+  
+#### Possible fixes ####
 
->  	igt_subtest("basic-read-write")
->  		test_read_write(fd, READ_BEFORE_WRITE);
-> +	igt_describe("Check basic write->read order of a GTT mmapped buffer object.");
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [INCOMPLETE][4] ([i915#3921]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+    - bat-dg1-6:          [DMESG-FAIL][6] ([i915#4494] / [i915#4957]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
 
-Here you can use short version so s/buffer object./bo./
-and then use it also below. It is up to you, both are good.
+  * igt@kms_busy@basic@flip:
+    - {bat-adlp-6}:       [DMESG-WARN][8] ([i915#1982] / [i915#3576]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-adlp-6/igt@kms_busy@basic@flip.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-adlp-6/igt@kms_busy@basic@flip.html
 
->  	igt_subtest("basic-write-read")
->  		test_read_write(fd, READ_AFTER_WRITE);
-> +	igt_describe("Check distinct read->write order of a GTT mmapped buffer object.");
->  	igt_subtest("basic-read-write-distinct")
->  		test_read_write2(fd, READ_BEFORE_WRITE);
-> +	igt_describe("Check distinct write->read order of a GTT mmapped buffer object.");
->  	igt_subtest("basic-write-read-distinct")
->  		test_read_write2(fd, READ_AFTER_WRITE);
-> +	igt_describe("Excercise concurrent pagefaulting of a gtt mmaped object.");
------------------------------------------------------------- ^ - ^ ---- ^
-s/gtt/GTT/
-s/mmaped/mmapped/
+  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
+    - {bat-adlp-6}:       [DMESG-WARN][10] ([i915#3576]) -> [PASS][11] +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
 
-Do you mean buffer object ?
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - fi-tgl-u2:          [DMESG-WARN][12] ([i915#402]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
 
->  	igt_subtest("fault-concurrent")
->  		test_fault_concurrent(fd, I915_TILING_NONE);
-> +	igt_describe("Excercise concurrent pagefaulting of a X-tiled gtt mmaped object.");
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-s/gtt/GTT/
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
 
->  	igt_subtest("fault-concurrent-X")
->  		test_fault_concurrent(fd, I915_TILING_X);
-> +	igt_describe("Excercise concurrent pagefaulting of a Y-tiled gtt mmaped object.");
 
-s/gtt/GTT/
+Build changes
+-------------
 
->  	igt_subtest("fault-concurrent-Y")
->  		test_fault_concurrent(fd, I915_TILING_Y);
-> +	igt_describe("Check coherency between GTT and CPU mmappings with LLC.");
->  	igt_subtest("basic-write-cpu-read-gtt")
->  		test_write_cpu_read_gtt(fd);
-> +	igt_describe("Check the performance of WC writes with WC reads of GTT "
-> +			"and WC writes of GTT with WB writes of CPU.");
->  	igt_subtest("basic-wc")
->  		test_wc(fd);
-> +	igt_describe("Test mmap_offset lifetime, closing the object on"
-> +			" another file should not affect the local mmap_offset.");
->  	igt_subtest("isolation")
->  		test_isolation(fd);
-> +	igt_describe("Test mmap_gtt extension validity.");
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6541 -> IGTPW_7366
 
-s/mmap_gtt/MMAP_GTT/
+  CI-20190529: 20190529
+  CI_DRM_11795: 5a84eaf663caab407f4baf1cd854f1ebd5980d61 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7366: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html
+  IGT_6541: 02153f109bd422d93cfce7f5aa9d7b0e22fab13c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
->  	igt_subtest("zero-extend")
->  		test_zero_extend(fd);
-> +	igt_describe("Test to check that a few threads opening and closing handles"
-> +			" cause explosion in other threads in the process of mmaping that handle.");
->  	igt_subtest("close-race")
->  		test_close_race(fd);
-> +	igt_describe("Test to check that a few threads opening and closing flink handles"
-> +			" cause explosion in other threads in the process of mmaping that handle.");
->  	igt_subtest("flink-race")
->  		test_flink_race(fd);
-> +	igt_describe("Check that the initial pagefault is non-blocking.");
->  	igt_subtest("pf-nonblock")
->  		test_pf_nonblock(fd);
->  
-> +	igt_describe("Check mmap access to a small buffer object by CPU directly"
-> +		       " and through GTT in sequence.");
->  	igt_subtest("basic-small-bo")
->  		test_huge_bo(fd, -1, I915_TILING_NONE);
-> +	igt_describe("Check mmap access to a small X-tiled buffer object by CPU "
-> +			"directly and through GTT in sequence.");
->  	igt_subtest("basic-small-bo-tiledX")
->  		test_huge_bo(fd, -1, I915_TILING_X);
-> +	igt_describe("Check mmap access to a small Y-tiled buffer object by CPU "
-> +			"directly and through GTT in sequence.");
->  	igt_subtest("basic-small-bo-tiledY")
->  		test_huge_bo(fd, -1, I915_TILING_Y);
->  
-> +	igt_describe("Check mmap access to a big buffer object by CPU directly "
-> +			"and through GTT in sequence.");
->  	igt_subtest("big-bo")
->  		test_huge_bo(fd, 0, I915_TILING_NONE);
-> +	igt_describe("Check mmap access to a big X-tiled buffer object by CPU "
-> +			"directly and through GTT in sequence.");
->  	igt_subtest("big-bo-tiledX")
->  		test_huge_bo(fd, 0, I915_TILING_X);
-> +	igt_describe("Check mmap access to a big Y-tiled buffer object by CPU "
-> +			"directly and through GTT in sequence.");
->  	igt_subtest("big-bo-tiledY")
->  		test_huge_bo(fd, 0, I915_TILING_Y);
->  
-> +	igt_describe("Check mmap access to a huge buffer object by CPU directly "
-> +			"and through GTT in sequence.");
->  	igt_subtest("huge-bo")
->  		test_huge_bo(fd, 1, I915_TILING_NONE);
-> +	igt_describe("Check mmap access to a huge X-tiled buffer object by CPU "
-> +			"directly and through GTT in sequence.");
->  	igt_subtest("huge-bo-tiledX")
->  		test_huge_bo(fd, 1, I915_TILING_X);
-> +	igt_describe("Check mmap access to a big Y-tiled buffer object by CPU "
+== Logs ==
 
-s/big/huge/
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html
 
-Regards,
-Kamil
+--===============5584000146146781575==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> +			"directly and through GTT in sequence.");
->  	igt_subtest("huge-bo-tiledY")
->  		test_huge_bo(fd, 1, I915_TILING_Y);
->  
-> -- 
-> 2.25.1
-> 
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_writeback: Enhance kms_writeback for custom modes (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105522/">https://patchwork.freedesktop.org/series/105522/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11795 -&gt; IGTPW_7366</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html</p>
+<h2>Participating hosts (39 -&gt; 37)</h2>
+<p>Missing    (2): bat-dg2-8 fi-rkl-11600 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7366 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+<li>
+<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-adlp-6/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-adlp-6/igt@kms_busy@basic@flip.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@a-edp1:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11795/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6541 -&gt; IGTPW_7366</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11795: 5a84eaf663caab407f4baf1cd854f1ebd5980d61 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7366: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7366/index.html<br />
+  IGT_6541: 02153f109bd422d93cfce7f5aa9d7b0e22fab13c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5584000146146781575==--
