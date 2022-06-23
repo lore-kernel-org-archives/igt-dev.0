@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4885410FDB9
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 05:55:10 +0000 (UTC)
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 23 Jun 2022 05:55:02 +0000
-Message-ID: <PH7PR11MB600613CB5A61601B3D50376DC5B59@PH7PR11MB6006.namprd11.prod.outlook.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6072113E3B
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 06:13:25 +0000 (UTC)
+Message-ID: <4c36f9e7-3103-35b2-3fd8-efcfde22904e@intel.com>
+Date: Thu, 23 Jun 2022 11:43:01 +0530
+Content-Language: en-US
+To: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>, "Latvala, Petri" <petri.latvala@intel.com>
 References: <20220622154837.20582-1-nidhi1.gupta@intel.com>
  <20220622154837.20582-2-nidhi1.gupta@intel.com>
  <5ccc3c41-c403-3e88-e45c-405c8e30af24@intel.com>
-In-Reply-To: <5ccc3c41-c403-3e88-e45c-405c8e30af24@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <PH7PR11MB600613CB5A61601B3D50376DC5B59@PH7PR11MB6006.namprd11.prod.outlook.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <PH7PR11MB600613CB5A61601B3D50376DC5B59@PH7PR11MB6006.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode: Convert
  tests to dynamic
@@ -24,77 +25,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQmhhbnUsDQoNCkluIG1hbnkgdGVzdHMgd2UgYXJlIHVzaW5nIGRybSBjYWxscywgbGlrZSBk
-cm1Nb2RlUGFnZUZsaXAsIGRybU1vZGVTZXRDcnRjLCBpZiBJIHdpbGwgcmVwbGFjZSBpdCB3aXRo
-IGlndCB3cmFwcGVyIGl0IHdpbGwgaW5jcmVhc2UgdGhlIGNvZGUgbGluZXMsIHNob3VsZCBJIHN0
-aWxsIGNoYW5nZSBpdD8NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IE1vZGVt
-LCBCaGFudXByYWthc2ggPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+IA0KU2VudDogVGh1
-cnNkYXksIEp1bmUgMjMsIDIwMjIgODoxMSBBTQ0KVG86IEd1cHRhLCBOaWRoaTEgPG5pZGhpMS5n
-dXB0YUBpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IExhdHZh
-bGEsIFBldHJpIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NClN1YmplY3Q6IFJlOiBbUEFUQ0gg
-aS1nLXQgMS8yXSB0ZXN0cy9rbXNfaW52YWxpZF9tb2RlOiBDb252ZXJ0IHRlc3RzIHRvIGR5bmFt
-aWMNCg0KT24gV2VkLTIyLTA2LTIwMjIgMDk6MTggcG0sIE5pZGhpIEd1cHRhIHdyb3RlOg0KPiBD
-b252ZXJ0IHRoZSBleGlzdGluZyBzdWJ0ZXN0cyB0byBkeW5hbWljIHN1YnRlc3RzIGF0IHBpcGUg
-bGV2ZWwuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGlu
-dGVsLmNvbT4NCj4gLS0tDQo+ICAgdGVzdHMva21zX2ludmFsaWRfbW9kZS5jIHwgNTMgKysrKysr
-KysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAy
-MyBpbnNlcnRpb25zKCspLCAzMCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0
-cy9rbXNfaW52YWxpZF9tb2RlLmMgYi90ZXN0cy9rbXNfaW52YWxpZF9tb2RlLmMgaW5kZXggDQo+
-IDYzMDc5OGQ4Li43ZTFmNjgzYiAxMDA2NDQNCj4gLS0tIGEvdGVzdHMva21zX2ludmFsaWRfbW9k
-ZS5jDQo+ICsrKyBiL3Rlc3RzL2ttc19pbnZhbGlkX21vZGUuYw0KPiBAQCAtMzIsNiArMzIsNyBA
-QCB0eXBlZGVmIHN0cnVjdCBfZGF0YSBkYXRhX3Q7DQo+ICAgDQo+ICAgc3RydWN0IF9kYXRhIHsN
-Cj4gICAJaW50IGRybV9mZDsNCj4gKwllbnVtIHBpcGUgcGlwZTsNCj4gICAJaWd0X2Rpc3BsYXlf
-dCBkaXNwbGF5Ow0KPiAgIAlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsNCj4gICAJZHJtTW9kZVJlc1B0
-ciByZXM7DQo+IEBAIC0xNzcsMjEgKzE3OCwyMSBAQCBhZGp1c3RfbW9kZV9iYWRfdnRvdGFsKGRh
-dGFfdCAqZGF0YSwgZHJtTW9kZU1vZGVJbmZvUHRyIG1vZGUpDQo+ICAgCXJldHVybiB0cnVlOw0K
-PiAgIH0NCj4gICANCj4gLXN0YXRpYyBpbnQNCj4gK3N0YXRpYyB2b2lkDQo+ICAgdGVzdF9vdXRw
-dXQoZGF0YV90ICpkYXRhKQ0KPiAgIHsNCj4gICAJaWd0X291dHB1dF90ICpvdXRwdXQgPSBkYXRh
-LT5vdXRwdXQ7DQo+ICAgCWRybU1vZGVNb2RlSW5mbyBtb2RlOw0KPiAgIAlzdHJ1Y3QgaWd0X2Zi
-IGZiOw0KPiAtCWludCBpOw0KPiArCWludCByZXQ7DQo+ICsJdWludDMyX3QgY3J0Y19pZDsNCj4g
-ICANCj4gICAJLyoNCj4gICAJICogRklYTUUgdGVzdCBldmVyeSBtb2RlIHdlIGhhdmUgdG8gYmUg
-bW9yZQ0KPiAgIAkgKiBzdXJlIGV2ZXJ5dGhpbmcgaXMgcmVhbGx5IGdldHRpbmcgcmVqZWN0ZWQ/
-DQo+ICAgCSAqLw0KPiAgIAltb2RlID0gKmlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsNCj4g
-LQlpZiAoIWRhdGEtPmFkanVzdF9tb2RlKGRhdGEsICZtb2RlKSkNCj4gLQkJcmV0dXJuIDA7DQo+
-ICsJaWd0X3JlcXVpcmUoZGF0YS0+YWRqdXN0X21vZGUoZGF0YSwgJm1vZGUpKTsNCj4gICANCj4g
-ICAJaWd0X2NyZWF0ZV9mYihkYXRhLT5kcm1fZmQsDQo+ICAgCQkgICAgICBtYXhfdCh1aW50MTZf
-dCwgbW9kZS5oZGlzcGxheSwgNjQpLCBAQCAtMjAyLDMyICsyMDMsMTQgQEAgDQo+IHRlc3Rfb3V0
-cHV0KGRhdGFfdCAqZGF0YSkNCj4gICANCj4gICAJa21zdGVzdF91bnNldF9hbGxfY3J0Y3MoZGF0
-YS0+ZHJtX2ZkLCBkYXRhLT5yZXMpOw0KPiAgIA0KPiAtCWZvciAoaSA9IDA7IGkgPCBkYXRhLT5y
-ZXMtPmNvdW50X2NydGNzOyBpKyspIHsNCj4gLQkJaW50IHJldDsNCj4gLQ0KPiAtCQlpZ3RfaW5m
-bygiQ2hlY2tpbmcgcGlwZSAlYyBjb25uZWN0b3IgJXMgd2l0aCBtb2RlICVzXG4iLA0KPiAtCQkJ
-ICdBJytpLCBvdXRwdXQtPm5hbWUsIG1vZGUubmFtZSk7DQo+ICsJY3J0Y19pZCA9IGRhdGEtPmRp
-c3BsYXkucGlwZXNbZGF0YS0+cGlwZV0uY3J0Y19pZDsNCj4gICANCj4gLQkJcmV0ID0gZHJtTW9k
-ZVNldENydGMoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5yZXMtPmNydGNzW2ldLA0KPiAtCQkJCSAgICAg
-ZmIuZmJfaWQsIDAsIDAsDQo+IC0JCQkJICAgICAmb3V0cHV0LT5pZCwgMSwgJm1vZGUpOw0KPiAt
-CQlpZ3RfYXNzZXJ0X2x0KHJldCwgMCk7DQo+IC0JfQ0KPiArCXJldCA9IGRybU1vZGVTZXRDcnRj
-KGRhdGEtPmRybV9mZCwgY3J0Y19pZCwNCj4gKwkJCSAgICAgZmIuZmJfaWQsIDAsIDAsDQo+ICsJ
-CQkgICAgICZvdXRwdXQtPmlkLCAxLCAmbW9kZSk7DQoNCkluc3RlYWQgb2YgdXNpbmcgZHJtIGNh
-bGxzLCBpcyBpdCBwb3NzaWJsZSB0byB1c2UgaWd0IGttcyB3cmFwcGVycz8NCg0KaWd0X291dHB1
-dF9zZXRfcGlwZSgpOw0KdHJ5X2NvbW1pdCgpOw0KDQotIEJoYW51DQoNCj4gKwlpZ3RfYXNzZXJ0
-X2x0KHJldCwgMCk7DQo+ICAgDQo+ICAgCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmIp
-Ow0KPiAtDQo+IC0JcmV0dXJuIDE7DQo+IC19DQo+IC0NCj4gLXN0YXRpYyB2b2lkIHRlc3QoZGF0
-YV90ICpkYXRhKQ0KPiAtew0KPiAtCWludCB2YWxpZF9jb25uZWN0b3JzID0gMDsNCj4gLQ0KPiAt
-CWZvcl9lYWNoX2Nvbm5lY3RlZF9vdXRwdXQoJmRhdGEtPmRpc3BsYXksIGRhdGEtPm91dHB1dCkg
-ew0KPiAtCQl2YWxpZF9jb25uZWN0b3JzICs9IHRlc3Rfb3V0cHV0KGRhdGEpOw0KPiAtCX0NCj4g
-LQ0KPiAtCWlndF9yZXF1aXJlX2YodmFsaWRfY29ubmVjdG9ycywgIk5vIHN1aXRhYmxlIGNvbm5l
-Y3RvcnMgZm91bmRcbiIpOw0KPiAgIH0NCj4gICANCj4gICBzdGF0aWMgaW50IGk5MTVfbWF4X2Rv
-dGNsb2NrKGRhdGFfdCAqZGF0YSkgQEAgLTI5Nyw2ICsyODAsMTAgQEAgDQo+IHN0YXRpYyBkYXRh
-X3QgZGF0YTsNCj4gICANCj4gICBpZ3RfbWFpbg0KPiAgIHsNCj4gKw0KPiArCWVudW0gcGlwZSBw
-aXBlOw0KPiArCWlndF9vdXRwdXRfdCAqb3V0cHV0Ow0KPiArDQo+ICAgCWlndF9maXh0dXJlIHsN
-Cj4gICAJCWRhdGEuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsN
-Cj4gICANCj4gQEAgLTMxMSw5ICsyOTgsMTUgQEAgaWd0X21haW4NCj4gICAJfQ0KPiAgIA0KPiAg
-IAlmb3IgKGludCBpID0gMDsgaSA8IEFSUkFZX1NJWkUoc3VidGVzdHMpOyBpKyspIHsNCj4gLQkJ
-aWd0X3N1YnRlc3Qoc3VidGVzdHNbaV0ubmFtZSkgew0KPiAtCQkJZGF0YS5hZGp1c3RfbW9kZSA9
-IHN1YnRlc3RzW2ldLmFkanVzdF9tb2RlOw0KPiAtCQkJdGVzdCgmZGF0YSk7DQo+ICsJCWlndF9z
-dWJ0ZXN0X3dpdGhfZHluYW1pYyhzdWJ0ZXN0c1tpXS5uYW1lKSB7DQo+ICsJCQlmb3JfZWFjaF9w
-aXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkYXRhLmRpc3BsYXksIHBpcGUsIG91dHB1dCkgew0KPiAr
-CQkJCWlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMiLCBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSwg
-a21zdGVzdF9waXBlX25hbWUocGlwZSkpIHsNCj4gKwkJCQkJZGF0YS5vdXRwdXQgPSBvdXRwdXQ7
-DQo+ICsJCQkJCWRhdGEucGlwZSA9IHBpcGU7DQo+ICsJCQkJCWRhdGEuYWRqdXN0X21vZGUgPSBz
-dWJ0ZXN0c1tpXS5hZGp1c3RfbW9kZTsNCj4gKwkJCQkJdGVzdF9vdXRwdXQoJmRhdGEpOw0KPiAr
-CQkJCX0NCj4gKwkJCX0NCj4gICAJCX0NCj4gICAJfQ0KPiAgIA0KDQo=
+On Thu-23-06-2022 11:25 am, Gupta, Nidhi1 wrote:
+> Hi Bhanu,
+> 
+> In many tests we are using drm calls, like drmModePageFlip, drmModeSetCrtc, if I will replace it with igt wrapper it will increase the code lines, should I still change it?
+
+It's fine to increase the number of lines of code. The idea is to use 
+IGT wrappers wherever it's possible, since IGT helpers were developed 
+purposefully and more handy.
+
+Ofcourse, in some tests it is not possible to use these IGT helpers, ex: 
+kms_setmode.
+
+@Petri, any thoughts?
+
+- Bhanu
+
+> 
+> -----Original Message-----
+> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Sent: Thursday, June 23, 2022 8:11 AM
+> To: Gupta, Nidhi1 <nidhi1.gupta@intel.com>; igt-dev@lists.freedesktop.org
+> Cc: Latvala, Petri <petri.latvala@intel.com>
+> Subject: Re: [PATCH i-g-t 1/2] tests/kms_invalid_mode: Convert tests to dynamic
+> 
+> On Wed-22-06-2022 09:18 pm, Nidhi Gupta wrote:
+>> Convert the existing subtests to dynamic subtests at pipe level.
+>>
+>> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+>> ---
+>>    tests/kms_invalid_mode.c | 53 +++++++++++++++++-----------------------
+>>    1 file changed, 23 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c index
+>> 630798d8..7e1f683b 100644
+>> --- a/tests/kms_invalid_mode.c
+>> +++ b/tests/kms_invalid_mode.c
+>> @@ -32,6 +32,7 @@ typedef struct _data data_t;
+>>    
+>>    struct _data {
+>>    	int drm_fd;
+>> +	enum pipe pipe;
+>>    	igt_display_t display;
+>>    	igt_output_t *output;
+>>    	drmModeResPtr res;
+>> @@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInfoPtr mode)
+>>    	return true;
+>>    }
+>>    
+>> -static int
+>> +static void
+>>    test_output(data_t *data)
+>>    {
+>>    	igt_output_t *output = data->output;
+>>    	drmModeModeInfo mode;
+>>    	struct igt_fb fb;
+>> -	int i;
+>> +	int ret;
+>> +	uint32_t crtc_id;
+>>    
+>>    	/*
+>>    	 * FIXME test every mode we have to be more
+>>    	 * sure everything is really getting rejected?
+>>    	 */
+>>    	mode = *igt_output_get_mode(output);
+>> -	if (!data->adjust_mode(data, &mode))
+>> -		return 0;
+>> +	igt_require(data->adjust_mode(data, &mode));
+>>    
+>>    	igt_create_fb(data->drm_fd,
+>>    		      max_t(uint16_t, mode.hdisplay, 64), @@ -202,32 +203,14 @@
+>> test_output(data_t *data)
+>>    
+>>    	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+>>    
+>> -	for (i = 0; i < data->res->count_crtcs; i++) {
+>> -		int ret;
+>> -
+>> -		igt_info("Checking pipe %c connector %s with mode %s\n",
+>> -			 'A'+i, output->name, mode.name);
+>> +	crtc_id = data->display.pipes[data->pipe].crtc_id;
+>>    
+>> -		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
+>> -				     fb.fb_id, 0, 0,
+>> -				     &output->id, 1, &mode);
+>> -		igt_assert_lt(ret, 0);
+>> -	}
+>> +	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+>> +			     fb.fb_id, 0, 0,
+>> +			     &output->id, 1, &mode);
+> 
+> Instead of using drm calls, is it possible to use igt kms wrappers?
+> 
+> igt_output_set_pipe();
+> try_commit();
+> 
+> - Bhanu
+> 
+>> +	igt_assert_lt(ret, 0);
+>>    
+>>    	igt_remove_fb(data->drm_fd, &fb);
+>> -
+>> -	return 1;
+>> -}
+>> -
+>> -static void test(data_t *data)
+>> -{
+>> -	int valid_connectors = 0;
+>> -
+>> -	for_each_connected_output(&data->display, data->output) {
+>> -		valid_connectors += test_output(data);
+>> -	}
+>> -
+>> -	igt_require_f(valid_connectors, "No suitable connectors found\n");
+>>    }
+>>    
+>>    static int i915_max_dotclock(data_t *data) @@ -297,6 +280,10 @@
+>> static data_t data;
+>>    
+>>    igt_main
+>>    {
+>> +
+>> +	enum pipe pipe;
+>> +	igt_output_t *output;
+>> +
+>>    	igt_fixture {
+>>    		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>>    
+>> @@ -311,9 +298,15 @@ igt_main
+>>    	}
+>>    
+>>    	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+>> -		igt_subtest(subtests[i].name) {
+>> -			data.adjust_mode = subtests[i].adjust_mode;
+>> -			test(&data);
+>> +		igt_subtest_with_dynamic(subtests[i].name) {
+>> +			for_each_pipe_with_valid_output(&data.display, pipe, output) {
+>> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+>> +					data.output = output;
+>> +					data.pipe = pipe;
+>> +					data.adjust_mode = subtests[i].adjust_mode;
+>> +					test_output(&data);
+>> +				}
+>> +			}
+>>    		}
+>>    	}
+>>    
+> 
