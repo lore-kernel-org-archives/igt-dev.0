@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5383649377523417078=="
+Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83A6D10E06C
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jun 2022 00:45:44 +0000 (UTC)
+From: Rohith Iyer <quic_rohiiyer@quicinc.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Wed, 22 Jun 2022 17:45:22 -0700
+Message-ID: <20220623004522.23997-1-quic_rohiiyer@quicinc.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jessica Zhang" <quic_jesszhan@quicinc.com>
-Date: Wed, 22 Jun 2022 19:20:03 -0000
-Message-ID: <165592560330.15063.8478949801383145318@emeril.freedesktop.org>
-References: <20220622163915.364-1-quic_jesszhan@quicinc.com>
-In-Reply-To: <20220622163915.364-1-quic_jesszhan@quicinc.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fwriteback=3A_Detach_pipe_only_for_valid_FB=5FID_=28rev2?=
- =?utf-8?q?=29?=
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t v1] tests/kms_writeback: Enhance
+ kms_writeback for custom modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,322 +17,307 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com, quic_aravindh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5383649377523417078==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Enhance kms_writeback to add support for the below options:
 
-== Series Details ==
+- View all writeback modes
+Usage: "./kms_writeback --list-modes"
 
-Series: tests/kms_writeback: Detach pipe only for valid FB_ID (rev2)
-URL   : https://patchwork.freedesktop.org/series/105450/
-State : success
+- Test a standard mode from connector list
+Usage: "./kms_writeback --standard <mode_index>"
 
-== Summary ==
+- Test a custom mode from user input
+Usage: "./kms_writeback --custom <mode_parameters>"
+Refer to --help for exact syntax
 
-CI Bug Log - changes from IGT_6541 -> IGTPW_7363
-====================================================
+- Dump the writeback output buffer to png file
+Usage: "./kms_writeback --dump"
 
-Summary
--------
+Signed-off-by: Rohith Iyer <quic_rohiiyer@quicinc.com>
+---
+ tests/kms_writeback.c | 182 +++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 161 insertions(+), 21 deletions(-)
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/index.html
-
-Participating hosts (41 -> 37)
-------------------------------
-
-  Missing    (4): fi-cml-u2 fi-blb-e6850 fi-rkl-11600 bat-dg2-8 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7363 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-icl-u2:          NOTRUN -> [SKIP][1] ([i915#4613]) +3 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [PASS][2] -> [INCOMPLETE][3] ([i915#4785])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-    - fi-hsw-g3258:       [PASS][4] -> [INCOMPLETE][5] ([i915#4785])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-    - bat-dg1-5:          [PASS][6] -> [DMESG-FAIL][7] ([i915#4494] / [i915#4957])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-icl-u2:          NOTRUN -> [SKIP][8] ([i915#5903])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-snb-2600:        NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-icl-u2:          NOTRUN -> [SKIP][10] ([fdo#111827])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - fi-tgl-u2:          [PASS][11] -> [DMESG-WARN][12] ([i915#402])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - fi-icl-u2:          NOTRUN -> [WARN][13] ([i915#6008])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-icl-u2:          NOTRUN -> [SKIP][14] ([fdo#109285])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-icl-u2:          NOTRUN -> [SKIP][15] ([i915#3555])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-tgl-u2:          NOTRUN -> [SKIP][16] ([fdo#109295] / [i915#3301])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-tgl-u2/igt@prime_vgem@basic-userptr.html
-    - fi-icl-u2:          NOTRUN -> [SKIP][17] ([fdo#109295] / [i915#3301])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][18] ([fdo#109271] / [i915#4312] / [i915#5594] / [i915#6246])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-hsw-4770/igt@runner@aborted.html
-    - fi-hsw-g3258:       NOTRUN -> [FAIL][19] ([fdo#109271] / [i915#4312] / [i915#6246])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-hsw-g3258/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-snb-2600:        [INCOMPLETE][20] ([i915#3921]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - fi-tgl-u2:          [DMESG-WARN][22] ([i915#402]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-tgl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-tgl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html
-
-  * igt@kms_flip@basic-plain-flip@a-dp2:
-    - fi-icl-u2:          [DMESG-WARN][24] ([i915#4890]) -> [PASS][25]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-icl-u2/igt@kms_flip@basic-plain-flip@a-dp2.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_flip@basic-plain-flip@a-dp2.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4890]: https://gitlab.freedesktop.org/drm/intel/issues/4890
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
-  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
-  [i915#6008]: https://gitlab.freedesktop.org/drm/intel/issues/6008
-  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6541 -> IGTPW_7363
-
-  CI-20190529: 20190529
-  CI_DRM_11794: 529f44f159dbe70ba69b6f730280d5db9b7338bc @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7363: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/index.html
-  IGT_6541: 02153f109bd422d93cfce7f5aa9d7b0e22fab13c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/index.html
-
---===============5383649377523417078==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_writeback: Detach pipe only for valid FB_ID (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105450/">https://patchwork.freedesktop.org/series/105450/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6541 -&gt; IGTPW_7363</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/index.html</p>
-<h2>Participating hosts (41 -&gt; 37)</h2>
-<p>Missing    (4): fi-cml-u2 fi-blb-e6850 fi-rkl-11600 bat-dg2-8 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7363 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
-</li>
-<li>
-<p>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
-</li>
-<li>
-<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5903">i915#5903</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-<li>
-<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-tgl-u2/igt@kms_flip@basic-flip-vs-modeset@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6008">i915#6008</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>
-<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-tgl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</p>
-</li>
-<li>
-<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
-</li>
-<li>
-<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-tgl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-tgl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@a-dp2:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6541/fi-icl-u2/igt@kms_flip@basic-plain-flip@a-dp2.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4890">i915#4890</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/fi-icl-u2/igt@kms_flip@basic-plain-flip@a-dp2.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6541 -&gt; IGTPW_7363</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11794: 529f44f159dbe70ba69b6f730280d5db9b7338bc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7363: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7363/index.html<br />
-  IGT_6541: 02153f109bd422d93cfce7f5aa9d7b0e22fab13c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5383649377523417078==--
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index 6efc72df..72040d44 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -26,11 +26,13 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
++#include <limits.h>
+ 
+ #include "igt.h"
+ #include "igt_core.h"
+ #include "igt_fb.h"
+ #include "sw_sync.h"
++#include "igt_chamelium.h"
+ 
+ IGT_TEST_DESCRIPTION(
+    "This test validates the expected behavior of the writeback connectors "
+@@ -39,6 +41,17 @@ IGT_TEST_DESCRIPTION(
+    "by using CRC."
+ );
+ 
++typedef struct {
++	bool standard_mode;
++	bool custom_mode;
++	bool list_modes;
++	bool dump_check;
++	int mode_index;
++	drmModeModeInfo user_mode;
++} data_t;
++
++static data_t data;
++
+ static drmModePropertyBlobRes *get_writeback_formats_blob(igt_output_t *output)
+ {
+ 	drmModePropertyBlobRes *blob = NULL;
+@@ -58,29 +71,15 @@ static drmModePropertyBlobRes *get_writeback_formats_blob(igt_output_t *output)
+ 	return blob;
+ }
+ 
+-static bool check_writeback_config(igt_display_t *display, igt_output_t *output)
++static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
++				drmModeModeInfo override_mode)
+ {
+ 	igt_fb_t input_fb, output_fb;
+ 	igt_plane_t *plane;
+ 	uint32_t writeback_format = DRM_FORMAT_XRGB8888;
+ 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
+ 	int width, height, ret;
+-	drmModeModeInfo override_mode = {
+-		.clock = 25175,
+-		.hdisplay = 640,
+-		.hsync_start = 656,
+-		.hsync_end = 752,
+-		.htotal = 800,
+-		.hskew = 0,
+-		.vdisplay = 480,
+-		.vsync_start = 490,
+-		.vsync_end = 492,
+-		.vtotal = 525,
+-		.vscan = 0,
+-		.vrefresh = 60,
+-		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+-		.name = {"640x480-60"},
+-	};
++
+ 	igt_output_override_mode(output, &override_mode);
+ 
+ 	width = override_mode.hdisplay;
+@@ -109,9 +108,27 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output)
+ 
+ static igt_output_t *kms_writeback_get_output(igt_display_t *display)
+ {
++	enum pipe pipe;
+ 	int i;
+ 	enum pipe pipe;
+ 
++	drmModeModeInfo override_mode = {
++		.clock = 25175,
++		.hdisplay = 640,
++		.hsync_start = 656,
++		.hsync_end = 752,
++		.htotal = 800,
++		.hskew = 0,
++		.vdisplay = 480,
++		.vsync_start = 490,
++		.vsync_end = 492,
++		.vtotal = 525,
++		.vscan = 0,
++		.vrefresh = 60,
++		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
++		.name = {"640x480-60"},
++	};
++
+ 	for (i = 0; i < display->n_outputs; i++) {
+ 		igt_output_t *output = &display->outputs[i];
+ 
+@@ -121,7 +138,12 @@ static igt_output_t *kms_writeback_get_output(igt_display_t *display)
+ 		for_each_pipe(display, pipe) {
+ 			igt_output_set_pipe(output, pipe);
+ 
+-			if (check_writeback_config(display, output)) {
++			if (data.custom_mode)
++				override_mode = data.user_mode;
++			if (data.standard_mode)
++				override_mode = output->config.connector->modes[data.mode_index];
++
++			if (check_writeback_config(display, output, override_mode)) {
+ 				igt_debug("Using connector %u:%s on pipe %d\n",
+ 					  output->config.connector->connector_id,
+ 					  output->name, pipe);
+@@ -347,7 +369,114 @@ static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
+ 	igt_remove_fb(output_fb->fd, &second_out_fb);
+ }
+ 
+-igt_main
++static void do_single_commit(igt_output_t *output, igt_plane_t *plane, igt_fb_t *in_fb,
++					igt_fb_t *out_fb)
++{
++	uint32_t in_fb_color = 0xffff0000;
++
++	fill_fb(in_fb, in_fb_color);
++
++	igt_plane_set_fb(plane, in_fb);
++	igt_output_set_writeback_fb(output, out_fb);
++
++	igt_display_commit_atomic(output->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (out_fb)
++		get_and_wait_out_fence(output);
++}
++
++static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt_plane_t *plane,
++					igt_fb_t *input_fb, drmModeModeInfo *mode)
++{
++	cairo_surface_t *fb_surface_out;
++	char filename_out[PATH_MAX];
++	cairo_status_t status;
++	char *id;
++	unsigned int fb_id;
++	igt_fb_t output_fb;
++
++	id = getenv("IGT_FRAME_DUMP_PATH");
++	fb_id = igt_create_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
++				igt_fb_mod_to_tiling(0), &output_fb);
++	igt_require(fb_id > 0);
++
++	do_single_commit(output, plane, input_fb, &output_fb);
++
++	fb_surface_out = igt_get_cairo_surface(display->drm_fd, &output_fb);
++	snprintf(filename_out, PATH_MAX, "%s/%s.png", id, "frame-out");
++	status = cairo_surface_write_to_png(fb_surface_out, filename_out);
++	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
++
++	igt_remove_fb(display->drm_fd, &output_fb);
++}
++
++static igt_output_t *list_writeback_modes(igt_display_t *display)
++{
++	for (int i = 0; i < display->n_outputs; i++) {
++		igt_output_t *output = &display->outputs[i];
++
++		if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK) {
++			for (int j = 0; j < output->config.connector->count_modes; j++) {
++				igt_info("[%d]", j);
++				kmstest_dump_mode(&output->config.connector->modes[j]);
++			}
++			break;
++		}
++	}
++	return NULL;
++}
++
++static int parse_mode_string(char *optarg)
++{
++	return sscanf(optarg, "%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%u:%s", &data.user_mode.clock,
++			&data.user_mode.hdisplay, &data.user_mode.hsync_start,
++			&data.user_mode.hsync_end, &data.user_mode.htotal,
++			&data.user_mode.hskew, &data.user_mode.vdisplay,
++			&data.user_mode.vsync_start, &data.user_mode.vsync_end,
++			&data.user_mode.vtotal, &data.user_mode.vscan,
++			&data.user_mode.vrefresh, &data.user_mode.type,
++			&data.user_mode.flags, &data.user_mode.name);
++}
++
++static int opt_handler(int option, int option_index, void *_data)
++{
++	switch (option) {
++	case 'l':
++		data.list_modes = true;
++		break;
++	case 's':
++		data.standard_mode = true;
++		data.mode_index = atoi(optarg);
++		break;
++	case 'c':
++		data.custom_mode = true;
++		igt_assert(parse_mode_string(optarg) > 0);
++		break;
++	case 'd':
++		data.dump_check = true;
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	" --list-modes | -l List of writeback connector modes\n"
++	" --standard | -s Commits a standard mode\n"
++	" --custom | -c Commits a custom mode inputted by user <clock:hdisplay:hsyncstart:hsyncend:"
++	"htotal:hskew:vdisplay:vsyncstart:vsyncend:vtotal:vscan:vrefresh:flags:name>\n"
++	" --dump | -d Prints buffer to file - Use command: export IGT_FRAME_DUMP_PATH=\"<filepath>\""
++	" before running dump. Will skip all other tests.\n";
++
++static const struct option long_options[] = {
++	{ .name = "list-modes", .has_arg = false, .val = 'l', },
++	{ .name = "standard", .has_arg = true, .val = 's', },
++	{ .name = "custom", .has_arg = true, .val = 'c', },
++	{ .name = "dump", .has_arg = false, .val = 'd', },
++	{}
++};
++
++igt_main_args("s:c:dl", long_options, help_str, opt_handler, NULL)
+ {
+ 	igt_display_t display;
+ 	igt_output_t *output;
+@@ -386,15 +515,23 @@ igt_main
+ 				      &input_fb);
+ 		igt_assert(fb_id >= 0);
+ 		igt_plane_set_fb(plane, &input_fb);
+-	}
+ 
++		if (data.list_modes)
++			list_writeback_modes(&display);
++		if (data.dump_check)
++			commit_and_dump_fb(&display, output, plane, &input_fb, &mode);
++	}
++	 /*
++	  * When dump_check or list_modes flag is high, then the following subtests will be skipped
++	  * as we do not want to do CRC validation.
++	  */
+ 	igt_describe("Check the writeback format");
+ 	igt_subtest("writeback-pixel-formats") {
++		igt_skip_on(data.dump_check || data.list_modes);
+ 		drmModePropertyBlobRes *formats_blob = get_writeback_formats_blob(output);
+ 		const char *valid_chars = "01234568 ABCGNRUVXY";
+ 		unsigned int i;
+ 		char *c;
+-
+ 		/*
+ 		 * We don't have a comprehensive list of formats, so just check
+ 		 * that the blob length is sensible and that it doesn't contain
+@@ -412,6 +549,7 @@ igt_main
+ 		     "(output framebuffer and fence); this test goes through"
+ 		     "the combination of possible bad options");
+ 	igt_subtest("writeback-invalid-parameters") {
++		igt_skip_on(data.dump_check || data.list_modes);
+ 		igt_fb_t invalid_output_fb;
+ 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay / 2,
+ 				      mode.vdisplay / 2,
+@@ -427,6 +565,7 @@ igt_main
+ 
+ 	igt_describe("Validate WRITEBACK_FB_ID with valid and invalid options");
+ 	igt_subtest("writeback-fb-id") {
++		igt_skip_on(data.dump_check || data.list_modes);
+ 		igt_fb_t output_fb;
+ 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+@@ -441,6 +580,7 @@ igt_main
+ 
+ 	igt_describe("Check writeback output with CRC validation");
+ 	igt_subtest("writeback-check-output") {
++		igt_skip_on(data.dump_check || data.list_modes);
+ 		igt_fb_t output_fb;
+ 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
+ 				      DRM_FORMAT_XRGB8888,
+-- 
+2.17.1
