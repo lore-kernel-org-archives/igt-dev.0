@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E382710F72D
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Jun 2022 04:56:46 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Jun 2022 10:30:00 +0530
-Message-Id: <20220624050000.22886-1-nidhi1.gupta@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CAA910F8A3
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Jun 2022 05:09:57 +0000 (UTC)
+Message-ID: <859c6652-d4b8-dd8d-2860-e2fbe884d196@intel.com>
+Date: Fri, 24 Jun 2022 10:39:38 +0530
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220623235728.5749-1-nidhi1.gupta@intel.com>
+ <20220623235728.5749-3-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220623235728.5749-3-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Fix regression in
- test_resolution_with_output
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_invalid_mode: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +21,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Fix regression caused by commit 14ad49f5b6ed861eda93e9d6b6ed0f3c77d228d1
-to skip the subtest if the suitable resolution is not found.
+On Fri-24-06-2022 05:27 am, Nidhi Gupta wrote:
+> Sanitize the system state before starting the subtest.
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/kms_invalid_mode.c | 11 +++--------
+>   1 file changed, 3 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+> index 7e1f683b..423d360f 100644
+> --- a/tests/kms_invalid_mode.c
+> +++ b/tests/kms_invalid_mode.c
+> @@ -184,9 +184,9 @@ test_output(data_t *data)
+>   	igt_output_t *output = data->output;
+>   	drmModeModeInfo mode;
+>   	struct igt_fb fb;
+> -	int ret;
+> -	uint32_t crtc_id;
+>   
+> +	igt_display_reset(&data->display);
+> +	igt_output_set_pipe(output, data->pipe);
+>   	/*
+>   	 * FIXME test every mode we have to be more
+>   	 * sure everything is really getting rejected?
 
-The kms_concurrent is about testing mode setting with
-reducing the resolution and then again increasing it,
-for this the test will take the high resolution supported
-by the connector and then calculate the lowest resolution,
-if the calculated resolution is not supported by the connector
-it will assign the default resolution of 1024x 768 without
-checking.
+mode = *igt_output_get_mode(output);
+igt_require(data->adjust_mode(data, &mode));
 
-Added check to skip the subtest if the current mode is smaller
-than 1024 mode (igt_skip_on_f(mode_default->hdisplay < 1024))
-becuase if the default resolution is greater then the highest
-resolution supported by the connector then the test should skip.
+As we are adjusting the mode, I guess we must override with the updated one.
 
-Fixes: 14ad49f5b6ed861eda93e9d6b6ed0f3c77d228d1
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_concurrent.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+hmm, we are always trying with default mode. How about trying with few 
+override modes?
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index d4536e3b..6f8ffd4a 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -252,7 +252,7 @@ get_lowres_mode(data_t *data, const drmModeModeInfo *mode_default,
- 			return igt_memdup(mode, sizeof(*mode));
- 	}
- 
--	igt_skip_on_f(mode_default->vdisplay < 1024, "No suitable resolution was found\n");
-+	igt_skip_on_f(mode_default->hdisplay < 1024, "No suitable resolution was found\n");
- 	return igt_std_1024_mode_get(igt_output_preferred_vrefresh(output));
- }
- 
--- 
-2.26.2
+> @@ -203,12 +203,7 @@ test_output(data_t *data)
+>   
+>   	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+
+This is redundant to igt_display_reset(), also it'll unset all crtcs 
+before commit, so we'll endup to commit with out crtc. Please drop it.
+
+Also, data->res is no more required as we are using IGT wrappers.
+
+And please add igt_display_require_output() to igt_fixture.
+
+>   
+> -	crtc_id = data->display.pipes[data->pipe].crtc_id;
+> -
+> -	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+> -			     fb.fb_id, 0, 0,
+> -			     &output->id, 1, &mode);
+> -	igt_assert_lt(ret, 0);
+> +	igt_display_commit(&data->display);
+
+Cleanup is required here.
+igt_output_set_pipe(output, PIPE_NONE);
+
+>   
+>   	igt_remove_fb(data->drm_fd, &fb);
+>   }
