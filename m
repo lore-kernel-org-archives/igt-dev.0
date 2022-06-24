@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D852110E6F5
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Jun 2022 11:02:08 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 24 Jun 2022 16:28:41 +0530
+Message-Id: <20220624105841.22411-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Date: Fri, 24 Jun 2022 07:13:22 -0000
-Message-ID: <165605480213.16789.17842358702063144150@emeril.freedesktop.org>
-References: <20220624070644.3428270-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20220624070644.3428270-1-janga.rahul.kumar@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBIQVgg?=
- =?utf-8?q?add_test_description_to_gem=5Fexec=5Fsuspend_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v6] tests/kms_flip: Skip test only for
+ invalid combination
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,29 +17,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+currently the entire test is skipping. adding this fix to skip test
+only for invalid cases and run on other valid display combination.
 
-Series: HAX add test description to gem_exec_suspend (rev3)
-URL   : https://patchwork.freedesktop.org/series/104915/
-State : failure
+v2: add RUN_PAIR check to avoid crash on single display.
+v3: add flag to check for valid display combination.(Karthik)
+v4: if no valid mode is found then flow should go to 'out'.(Karthik)
 
-== Summary ==
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_flip.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-Applying: tests/i915/gem_exec_suspend : Added subtests description
-Applying: HAX: don't do full run
-Using index info to reconstruct a base tree...
-M	tests/intel-ci/fast-feedback.testlist
-Falling back to patching base and 3-way merge...
-Auto-merging tests/intel-ci/fast-feedback.testlist
-CONFLICT (content): Merge conflict in tests/intel-ci/fast-feedback.testlist
-Patch failed at 0002 HAX: don't do full run
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index c5b5741a..d4339449 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -932,7 +932,7 @@ static bool mode_compatible(const drmModeModeInfo *a, const drmModeModeInfo *b)
+ 	return true;
+ }
+ 
+-static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
++static bool get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
+ 				 drmModeConnector *c1, drmModeConnector *c2)
+ {
+ 	int n, m;
+@@ -946,14 +946,13 @@ static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
+ 			for (m = 0; m < c2->count_modes; m++) {
+ 				*b = c2->modes[m];
+ 				if (mode_compatible(a, b))
+-					return;
++					return true;
+ 			}
+ 		}
+-
+-		igt_skip("Compatible mode not found.\n");
++		return false;
+ 	}
+ 
+-	return;
++	return true;
+ }
+ 
+ static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
+@@ -972,13 +971,12 @@ static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
+ 		return;
+ 	}
+ 
+-	get_compatible_modes(&mode[0], &mode[1],
+-			     config[0].connector, config[1].connector);
++	o->mode_valid = get_compatible_modes(&mode[0], &mode[1],
++					     config[0].connector, config[1].connector);
+ 
+ 	o->pipe = config[0].pipe;
+ 	o->fb_width = mode[0].hdisplay;
+ 	o->fb_height = mode[0].vdisplay;
+-	o->mode_valid = 1;
+ 
+ 	o->kconnector[0] = config[0].connector;
+ 	o->kencoder[0] = config[0].encoder;
+@@ -1330,8 +1328,8 @@ static void get_suitable_modes(struct test_output *o)
+ 		      sort_drm_modes);
+ 	}
+ 
+-	get_compatible_modes(&mode[0], &mode[1],
+-			     o->kconnector[0], o->kconnector[1]);
++	o->mode_valid = get_compatible_modes(&mode[0], &mode[1],
++					     o->kconnector[0], o->kconnector[1]);
+ 
+ 	o->fb_width = mode[0].hdisplay;
+ 	o->fb_height = mode[0].vdisplay;
+@@ -1415,13 +1413,16 @@ retry:
+ 		}
+ 
+ 		get_suitable_modes(o);
++		if (o->mode_valid) {
++			igt_remove_fb(drm_fd, &o->fb_info[2]);
++			igt_remove_fb(drm_fd, &o->fb_info[1]);
++			igt_remove_fb(drm_fd, &o->fb_info[0]);
+ 
+-		igt_remove_fb(drm_fd, &o->fb_info[2]);
+-		igt_remove_fb(drm_fd, &o->fb_info[1]);
+-		igt_remove_fb(drm_fd, &o->fb_info[0]);
++			restart = true;
++			goto restart;
++		}
+ 
+-		restart = true;
+-		goto restart;
++		goto out;
+ 	}
+ 
+ 	igt_assert(!ret);
+-- 
+2.36.0
