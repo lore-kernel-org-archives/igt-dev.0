@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7287810F28C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9209310F119
  for <igt-dev@lists.freedesktop.org>; Sat, 25 Jun 2022 04:36:11 +0000 (UTC)
 From: priyanka.dandamudi@intel.com
 To: kamil.konieczny@linux.intel.com, igt-dev@lists.freedesktop.org,
  priyanka.dandamudi@intel.com
-Date: Sat, 25 Jun 2022 09:55:27 +0530
-Message-Id: <20220625042528.1465047-2-priyanka.dandamudi@intel.com>
+Date: Sat, 25 Jun 2022 09:55:28 +0530
+Message-Id: <20220625042528.1465047-3-priyanka.dandamudi@intel.com>
 In-Reply-To: <20220625042528.1465047-1-priyanka.dandamudi@intel.com>
 References: <20220625042528.1465047-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_mmap_gtt: added description
- for test case
+Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: don't do full run
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,163 +25,195 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Added global description and subtest descriptions.
+Just for test description, no full run is necessary.
 
-v2:Minor corrections.
-
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/i915/gem_mmap_gtt.c | 52 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ tests/intel-ci/fast-feedback.testlist | 176 +-------------------------
+ 1 file changed, 1 insertion(+), 175 deletions(-)
 
-diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-index 6db82229..1453e9a5 100644
---- a/tests/i915/gem_mmap_gtt.c
-+++ b/tests/i915/gem_mmap_gtt.c
-@@ -54,6 +54,8 @@
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bd5538a0..1d57372d 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,177 +1,3 @@
+-# Try to load the driver if it's not available yet.
+-igt@i915_module_load@load
+-
+ # Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor
+-igt@kms_cursor_legacy@basic-flip-after-cursor
+-igt@kms_cursor_legacy@basic-flip-before-cursor
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
  
- #define abs(x) ((x) >= 0 ? (x) : -(x))
- 
-+IGT_TEST_DESCRIPTION("Ensure that all operations around MMAP_GTT ioctl works.");
-+
- static int OBJECT_SIZE = 16*1024*1024;
- 
- static void
-@@ -1272,6 +1274,7 @@ igt_main
- 		gem_require_mappable_ggtt(fd);
- 	}
- 
-+	igt_describe("Verify mapping to invalid gem objects fails.");
- 	igt_subtest("bad-object") {
- 		uint32_t real_handle = gem_create(fd, 4096);
- 		uint32_t handles[20];
-@@ -1293,77 +1296,126 @@ igt_main
- 		gem_close(fd, real_handle);
- 	}
- 
-+	igt_describe("Basic checks of GEM_MMAP_GTT ioctl.");
- 	igt_subtest("basic")
- 		test_access(fd);
-+	igt_describe("Test mmaping less than the full object.");
- 	igt_subtest("basic-short")
- 		test_short(fd);
-+	igt_describe("Test copy between two GTT mmappings.");
- 	igt_subtest("basic-copy")
- 		test_copy(fd);
-+	igt_describe("Test to read content from GTT mmapped object.");
- 	igt_subtest("basic-read")
- 		test_read(fd);
-+	igt_describe("Test to write content to GTT mmapped object.");
- 	igt_subtest("basic-write")
- 		test_write(fd);
-+	igt_describe("Test creates a prefault object into GTT and "
-+			"writes into it from another GTT mmapped.");
- 	igt_subtest("basic-write-gtt")
- 		test_write_gtt(fd);
-+	igt_describe("Inspect a GTT mmap using ptrace().");
- 	igt_subtest("ptrace")
- 		test_ptrace(fd);
-+	igt_describe("Check whether a write through the GTT is immediately visible to the CPU.");
- 	igt_subtest("coherency")
- 		test_coherency(fd);
-+	igt_describe("Check the userspace clflushing of the GTT mmap.");
- 	igt_subtest("clflush")
- 		test_clflush(fd);
-+	igt_describe("Check read/writes across a GPU reset.");
- 	igt_subtest("hang")
- 		test_hang(fd);
-+	igt_describe("Exercise the GTT mmap revocation for a reset on a busy object.");
- 	igt_subtest("hang-busy")
- 		test_hang_busy(fd);
-+	igt_describe("Mix a busy hang with GTT and userptr.");
- 	igt_subtest("hang-user")
- 		test_hang_user(fd);
-+	igt_describe("Check basic read->write orderof a GTT mmapped bo.");
- 	igt_subtest("basic-read-write")
- 		test_read_write(fd, READ_BEFORE_WRITE);
-+	igt_describe("Check basic write->read order of a GTT mmapped bo.");
- 	igt_subtest("basic-write-read")
- 		test_read_write(fd, READ_AFTER_WRITE);
-+	igt_describe("Check distinct read->write order of a GTT mmapped bo.");
- 	igt_subtest("basic-read-write-distinct")
- 		test_read_write2(fd, READ_BEFORE_WRITE);
-+	igt_describe("Check distinct write->read order of a GTT mmapped bo.");
- 	igt_subtest("basic-write-read-distinct")
- 		test_read_write2(fd, READ_AFTER_WRITE);
-+	igt_describe("Excercise concurrent pagefaulting of a GTT mmaped bo.");
- 	igt_subtest("fault-concurrent")
- 		test_fault_concurrent(fd, I915_TILING_NONE);
-+	igt_describe("Excercise concurrent pagefaulting of a X-tiled GTT mmaped bo.");
- 	igt_subtest("fault-concurrent-X")
- 		test_fault_concurrent(fd, I915_TILING_X);
-+	igt_describe("Excercise concurrent pagefaulting of a Y-tiled GTT mmaped bo.");
- 	igt_subtest("fault-concurrent-Y")
- 		test_fault_concurrent(fd, I915_TILING_Y);
-+	igt_describe("Check coherency between GTT and CPU mmappings with LLC.");
- 	igt_subtest("basic-write-cpu-read-gtt")
- 		test_write_cpu_read_gtt(fd);
-+	igt_describe("Check the performance of WC writes with WC reads of GTT "
-+			"and WC writes of GTT with WB writes of CPU.");
- 	igt_subtest("basic-wc")
- 		test_wc(fd);
-+	igt_describe("Test mmap_offset lifetime, closing the object on"
-+			" another file should not affect the local mmap_offset.");
- 	igt_subtest("isolation")
- 		test_isolation(fd);
-+	igt_describe("Test MMAP_GTT extension validity.");
- 	igt_subtest("zero-extend")
- 		test_zero_extend(fd);
-+	igt_describe("Test to check that a few threads opening and closing handles"
-+			" cause explosion in other threads in the process of mmaping that handle.");
- 	igt_subtest("close-race")
- 		test_close_race(fd);
-+	igt_describe("Test to check that a few threads opening and closing flink handles"
-+			" cause explosion in other threads in the process of mmaping that handle.");
- 	igt_subtest("flink-race")
- 		test_flink_race(fd);
-+	igt_describe("Check that the initial pagefault is non-blocking.");
- 	igt_subtest("pf-nonblock")
- 		test_pf_nonblock(fd);
- 
-+	igt_describe("Check mmap access to a small buffer object by CPU directly"
-+		       " and through GTT in sequence.");
- 	igt_subtest("basic-small-bo")
- 		test_huge_bo(fd, -1, I915_TILING_NONE);
-+	igt_describe("Check mmap access to a small X-tiled buffer object by CPU "
-+			"directly and through GTT in sequence.");
- 	igt_subtest("basic-small-bo-tiledX")
- 		test_huge_bo(fd, -1, I915_TILING_X);
-+	igt_describe("Check mmap access to a small Y-tiled buffer object by CPU "
-+			"directly and through GTT in sequence.");
- 	igt_subtest("basic-small-bo-tiledY")
- 		test_huge_bo(fd, -1, I915_TILING_Y);
- 
-+	igt_describe("Check mmap access to a big buffer object by CPU directly "
-+			"and through GTT in sequence.");
- 	igt_subtest("big-bo")
- 		test_huge_bo(fd, 0, I915_TILING_NONE);
-+	igt_describe("Check mmap access to a big X-tiled buffer object by CPU "
-+			"directly and through GTT in sequence.");
- 	igt_subtest("big-bo-tiledX")
- 		test_huge_bo(fd, 0, I915_TILING_X);
-+	igt_describe("Check mmap access to a big Y-tiled buffer object by CPU "
-+			"directly and through GTT in sequence.");
- 	igt_subtest("big-bo-tiledY")
- 		test_huge_bo(fd, 0, I915_TILING_Y);
- 
-+	igt_describe("Check mmap access to a huge buffer object by CPU directly "
-+			"and through GTT in sequence.");
- 	igt_subtest("huge-bo")
- 		test_huge_bo(fd, 1, I915_TILING_NONE);
-+	igt_describe("Check mmap access to a huge X-tiled buffer object by CPU "
-+			"directly and through GTT in sequence.");
- 	igt_subtest("huge-bo-tiledX")
- 		test_huge_bo(fd, 1, I915_TILING_X);
-+	igt_describe("Check mmap access to a huge Y-tiled buffer object by CPU "
-+			"directly and through GTT in sequence.");
- 	igt_subtest("huge-bo-tiledY")
- 		test_huge_bo(fd, 1, I915_TILING_Y);
- 
+-# System wide suspend tests
+-igt@i915_suspend@basic-s2idle-without-i915
+-igt@i915_suspend@basic-s3-without-i915
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_pipe_crc_basic@suspend-read-crc
++igt@meta_test@fail-result
 -- 
 2.25.1
