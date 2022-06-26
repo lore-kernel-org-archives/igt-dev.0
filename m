@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D44A110E06A
- for <igt-dev@lists.freedesktop.org>; Sun, 26 Jun 2022 18:08:35 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B6C810E06A
+ for <igt-dev@lists.freedesktop.org>; Sun, 26 Jun 2022 18:43:31 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  sai.gowtham.ch@intel.com
-Date: Sun, 26 Jun 2022 23:37:50 +0530
-Message-Id: <20220626180750.23747-3-sai.gowtham.ch@intel.com>
-In-Reply-To: <20220626180750.23747-1-sai.gowtham.ch@intel.com>
-References: <20220626180750.23747-1-sai.gowtham.ch@intel.com>
+Date: Mon, 27 Jun 2022 00:12:45 +0530
+Message-Id: <20220626184245.24068-3-sai.gowtham.ch@intel.com>
+In-Reply-To: <20220626184245.24068-1-sai.gowtham.ch@intel.com>
+References: <20220626184245.24068-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: don't do full run
@@ -25,18 +25,18 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Just for test description, no full run is necessary.
+Just for test description, no full run is necessary
 
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 178 +-------------------------
- 1 file changed, 1 insertion(+), 177 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 177 --------------------------
+ 1 file changed, 177 deletions(-)
 
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index bd5538a0..9f8e18ce 100644
+index bd5538a0..e69de29b 100644
 --- a/tests/intel-ci/fast-feedback.testlist
 +++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,177 +1 @@
+@@ -1,177 +0,0 @@
 -# Try to load the driver if it's not available yet.
 -igt@i915_module_load@load
 -
@@ -214,6 +214,5 @@ index bd5538a0..9f8e18ce 100644
 -igt@gem_exec_suspend@basic-s3
 -igt@kms_chamelium@common-hpd-after-suspend
 -igt@kms_pipe_crc_basic@suspend-read-crc
-+igt@meta_test@fail-result
 -- 
 2.35.1
