@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E04110F921
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 16:45:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33EFB10F824
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 16:45:10 +0000 (UTC)
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Jun 2022 22:11:55 +0530
-Message-Id: <20220627164156.15646-2-mohammed.thasleem@intel.com>
+Date: Mon, 27 Jun 2022 22:11:56 +0530
+Message-Id: <20220627164156.15646-3-mohammed.thasleem@intel.com>
 In-Reply-To: <20220627164156.15646-1-mohammed.thasleem@intel.com>
 References: <20220627164156.15646-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 1/2] tests/i915/kms_legacy_colorkey: Create
- dynamic subtests
+Subject: [igt-dev] [PATCH v2 2/2] tests/i915/kms_legacy_colorkey: Test
+ Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,81 +24,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_legacy_colorkey to include dynamic test cases.
-
-v2: Updated igt_dynamic subtest names of invalid-plane.
+Sanitize the system state before starting the subtest.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/i915/kms_legacy_colorkey.c | 48 ++++++++++++++++++++++----------
- 1 file changed, 34 insertions(+), 14 deletions(-)
+ tests/i915/kms_legacy_colorkey.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
-index de9610a7..92be2567 100644
+index 92be2567..71b1bbb9 100644
 --- a/tests/i915/kms_legacy_colorkey.c
 +++ b/tests/i915/kms_legacy_colorkey.c
-@@ -43,28 +43,48 @@ static void test_plane(uint32_t plane_id, int expected_ret)
- 				   sizeof(ckey)) == expected_ret);
- }
+@@ -51,6 +51,9 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
  
--igt_simple_main
-+igt_main
- {
--	drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+	igt_fixture {
-+		drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 		igt_display_require(&display, drm_fd);
++		igt_display_require_output(&display);
++		igt_display_reset(&display);
++		igt_display_commit(&display);
+ 		for_each_pipe(&display, p) {
+ 			for_each_plane_on_pipe(&display, p, plane) {
+ 				max_id = max(max_id, plane->drm_plane->plane_id);
+@@ -86,5 +89,6 @@ igt_main
  
--	kmstest_set_vt_graphics_mode();
-+		kmstest_set_vt_graphics_mode();
- 
--	igt_display_require(&display, drm_fd);
-+		igt_display_require(&display, drm_fd);
-+		for_each_pipe(&display, p) {
-+			for_each_plane_on_pipe(&display, p, plane) {
-+				max_id = max(max_id, plane->drm_plane->plane_id);
-+			}
-+		}
-+
-+	}
- 
--	for_each_pipe(&display, p) {
--		for_each_plane_on_pipe(&display, p, plane) {
--			bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
--			                 plane->type == DRM_PLANE_TYPE_CURSOR);
--			test_plane(plane->drm_plane->plane_id,
--				   is_valid ? -ENOENT : 0);
-+	igt_describe("check valid plane ID's\n");
-+	igt_subtest_with_dynamic("valid-plane") {
-+		for_each_pipe(&display, p) {
-+			igt_dynamic_f("pipe-%s", kmstest_pipe_name(p)) {
-+				for_each_plane_on_pipe(&display, p, plane) {
-+					bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
-+							 plane->type == DRM_PLANE_TYPE_CURSOR);
- 
--			max_id = max(max_id, plane->drm_plane->plane_id);
-+					test_plane(plane->drm_plane->plane_id,
-+						   is_valid ? -ENOENT : 0);
-+					max_id = max(max_id, plane->drm_plane->plane_id);
-+				}
-+			}
- 		}
+ 	igt_fixture {
+ 		igt_display_fini(&display);
++		close(drm_fd);
  	}
- 
- 	/* try some invalid IDs too */
--	test_plane(0, -ENOENT);
--	test_plane(max_id + 1, -ENOENT);
-+	igt_describe("check invalid plane id's, zero and outrange\n");
-+	igt_subtest_with_dynamic("invalid-plane") {
-+		igt_dynamic("zero-id")
-+			test_plane(0, -ENOENT);
-+		igt_dynamic("outrange-id")
-+			test_plane(max_id + 1, -ENOENT);
-+	}
- 
--	igt_display_fini(&display);
-+	igt_fixture {
-+		igt_display_fini(&display);
-+	}
  }
 -- 
 2.25.1
