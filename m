@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC3B711ABF5
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 18:40:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAD0311AA8A
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 18:40:46 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Jun 2022 00:11:36 +0530
-Message-Id: <20220627184140.7529-1-swati2.sharma@intel.com>
+Date: Tue, 28 Jun 2022 00:11:38 +0530
+Message-Id: <20220627184140.7529-3-swati2.sharma@intel.com>
+In-Reply-To: <20220627184140.7529-1-swati2.sharma@intel.com>
+References: <20220627184140.7529-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v5 PATCH i-g-t 0/4] tests/i915/kms_flip_scaled_crc: New
- tests
+Subject: [igt-dev] [v2 PATCH i-g-t 2/4] tests/i915/kms_flip_scaled_crc: Add
+ new tests covering modifiers and pixel-formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,23 +23,374 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tests covering pixel formats and tiling.
-Convert subtest to dynamic subtests.
+New test cases are added covering various modifiers and
+pixel-formats.
 
-Also, 2 additional patches are added to validate
-NN scaling filter.
+v2: fixed typo
 
-Swati Sharma (4):
-  tests/i915/kms_flip_scaled_crc: Convert tests to dynamic
-  tests/i915/kms_flip_scaled_crc: Add new tests covering modifiers and
-    pixel-formats
-  lib/igt_kms: Add scaling filter property
-  tests/kms_flip_scaled_crc: Validate NN scaling filter
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/i915/kms_flip_scaled_crc.c | 258 ++++++++++++++++++++++++++++++-
+ 1 file changed, 257 insertions(+), 1 deletion(-)
 
- lib/igt_kms.c                    |  24 ++
- lib/igt_kms.h                    |   3 +
- tests/i915/kms_flip_scaled_crc.c | 423 +++++++++++++++++++++++++------
- 3 files changed, 379 insertions(+), 71 deletions(-)
-
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index d6edb01c..88640da2 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -57,6 +57,38 @@ const struct {
+ 		1.0,
+ 		2.0,
+ 	},
++	{
++		"flip-32bpp-yftile-to-64bpp-yftile-downscaling",
++		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-32bpp-xtile-to-64bpp-xtile-downscaling",
++		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-32bpp-4tile-to-64bpp-4tile-downscaling",
++		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-32bpp-linear-to-64bpp-linear-downscaling",
++		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB8888,
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
++	},
+ 	{
+ 		"flip-64bpp-ytile-to-32bpp-ytile-downscaling",
+ 		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+@@ -65,6 +97,38 @@ const struct {
+ 		1.0,
+ 		2.0,
+ 	},
++	{
++		"flip-64bpp-yftile-to-32bpp-yftile-downscaling",
++		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-64bpp-xtile-to-32bpp-xtile-downscaling",
++		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-64bpp-4tile-to-32bpp-4tile-downscaling",
++		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-64bpp-linear-to-32bpp-linear-downscaling",
++		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
++	},
+ 	{
+ 		"flip-64bpp-ytile-to-16bpp-ytile-downscaling",
+ 		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
+@@ -73,6 +137,38 @@ const struct {
+ 		1.0,
+ 		2.0,
+ 	},
++	{
++		"flip-64bpp-yftile-to-16bpp-yftile-downscaling",
++		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_RGB565,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-64bpp-xtile-to-16bpp-xtile-downscaling",
++		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_RGB565,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-64bpp-4tile-to-16bpp-4tile-downscaling",
++		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_RGB565,
++		1.0,
++		2.0,
++	},
++	{
++		"flip-64bpp-linear-to-16bpp-linear-downscaling",
++		"Flip from 64bpp non scaled fb to 16bpp downscaled fb to stress CD clock programming",
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_RGB565,
++		1.0,
++		2.0,
++	},
+ 	{
+ 		"flip-32bpp-ytileccs-to-64bpp-ytile-downscaling",
+ 		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
+@@ -81,6 +177,14 @@ const struct {
+ 		1.0,
+ 		2.0,
+ 	},
++	{
++		"flip-32bpp-yftileccs-to-64bpp-yftile-downscaling",
++		"Flip from 32bpp non scaled fb to 64bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED_CCS, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
++		1.0,
++		2.0,
++	},
+ 	{
+ 		"flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling",
+ 		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+@@ -89,6 +193,14 @@ const struct {
+ 		1.0,
+ 		2.0,
+ 	},
++	{
++		"flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling",
++		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
++	},
+ 	{
+ 		"flip-32bpp-ytile-to-32bpp-ytileccs-downscaling",
+ 		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+@@ -97,6 +209,14 @@ const struct {
+ 		1.0,
+ 		2.0,
+ 	},
++	{
++		"flip-32bpp-yftile-to-32bpp-yftileccs-downscaling",
++		"Flip from 32bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_Yf_TILED_CCS, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
++	},
+ 	{
+ 		"flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling",
+ 		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
+@@ -105,6 +225,14 @@ const struct {
+ 		1.0,
+ 		2.0,
+ 	},
++	{
++		"flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling",
++		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, DRM_FORMAT_XRGB8888,
++		1.0,
++		2.0,
++	},
+ 	{
+ 		"flip-32bpp-ytile-to-64bpp-ytile-upscaling",
+ 		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+@@ -113,6 +241,38 @@ const struct {
+ 		0.5,
+ 		1.0,
+ 	},
++	{
++		"flip-32bpp-yftile-to-64bpp-yftile-upscaling",
++		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-32bpp-xtile-to-64bpp-xtile-upscaling",
++		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-32bpp-4tile-to-64bpp-4tile-upscaling",
++		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-32bpp-linear-to-64bpp-linear-upscaling",
++		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB8888,
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
++		0.5,
++		1.0,
++	},
+ 	{
+ 		"flip-64bpp-ytile-to-32bpp-ytile-upscaling",
+ 		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+@@ -121,6 +281,38 @@ const struct {
+ 		0.5,
+ 		1.0,
+ 	},
++	{
++		"flip-64bpp-yftile-to-32bpp-yftile-upscaling",
++		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-64bpp-xtile-to-32bpp-xtile-upscaling",
++		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB8888,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-64bpp-4tile-to-32bpp-4tile-upscaling",
++		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-64bpp-linear-to-32bpp-linear-upscaling",
++		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB8888,
++		0.5,
++		1.0,
++	},
+ 	{
+ 		"flip-64bpp-ytile-to-16bpp-ytile-upscaling",
+ 		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
+@@ -129,6 +321,38 @@ const struct {
+ 		0.5,
+ 		1.0,
+ 	},
++	{
++		"flip-64bpp-yftile-to-16bpp-yftile-upscaling",
++		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_RGB565,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-64bpp-xtile-to-16bpp-xtile-upscaling",
++		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_X_TILED, DRM_FORMAT_RGB565,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-64bpp-4tile-to-16bpp-4tile-upscaling",
++		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_RGB565,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-64bpp-linear-to-16bpp-linear-upscaling",
++		"Flip from 64bpp non scaled fb to 16bpp upscaled fb to stress CD clock programming",
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_XRGB16161616F,
++		DRM_FORMAT_MOD_LINEAR, DRM_FORMAT_RGB565,
++		0.5,
++		1.0,
++	},
+ 	{
+ 		"flip-32bpp-ytileccs-to-64bpp-ytile-upscaling",
+ 		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
+@@ -137,6 +361,14 @@ const struct {
+ 		0.5,
+ 		1.0,
+ 	},
++	{
++		"flip-32bpp-yftileccs-to-64bpp-yftile-upscaling",
++		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED_CCS, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB16161616F,
++		0.5,
++		1.0,
++	},
+ 	{
+ 		"flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling",
+ 		"Flip from 32bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+@@ -145,6 +377,14 @@ const struct {
+ 		0.5,
+ 		1.0,
+ 	},
++	{
++		"flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling",
++		"Flip from 32bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, DRM_FORMAT_XRGB8888,
++		0.5,
++		1.0,
++	},
+ 	{
+ 		"flip-32bpp-ytile-to-32bpp-ytileccs-upscaling",
+ 		"Flip from 32bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+@@ -154,13 +394,29 @@ const struct {
+ 		1.0,
+ 	},
+ 	{
+-		"flip-64bpp-ytile-to-32bpp-ytilercccs-upscaling",
++		"flip-32bpp-yftile-to-32bpp-yftileccs-upscaling",
++		"Flip from 32bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_Yf_TILED, DRM_FORMAT_XRGB8888,
++		I915_FORMAT_MOD_Yf_TILED_CCS, DRM_FORMAT_XRGB8888,
++		0.5,
++		1.0,
++	},
++	{
++		"flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling",
+ 		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
+ 		I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F,
+ 		I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888,
+ 		0.5,
+ 		1.0,
+ 	},
++	{
++		"flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling",
++		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
++		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
++		I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, DRM_FORMAT_XRGB8888,
++		0.5,
++		1.0,
++	},
+ };
+ 
+ static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
 -- 
 2.25.1
