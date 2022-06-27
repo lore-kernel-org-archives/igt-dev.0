@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 551F410F511
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 07:04:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D278910F511
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 07:04:15 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Jun 2022 12:37:09 +0530
-Message-Id: <20220627070710.13641-2-nidhi1.gupta@intel.com>
+Date: Mon, 27 Jun 2022 12:37:10 +0530
+Message-Id: <20220627070710.13641-3-nidhi1.gupta@intel.com>
 In-Reply-To: <20220627070710.13641-1-nidhi1.gupta@intel.com>
 References: <20220627070710.13641-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_invalid_mode: Convert tests
- to dynamic
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_invalid_mode: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,127 +18,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>,
- Petri Latvala <petri.latvala@intel.com>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert the existing subtests to dynamic subtests at pipe level.
+Sanitize the system state before starting the subtest.
 
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/kms_invalid_mode.c | 54 ++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 30 deletions(-)
+ tests/kms_invalid_mode.c | 38 +++++++++++---------------------------
+ 1 file changed, 11 insertions(+), 27 deletions(-)
 
 diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index 630798d8..b79fc78a 100644
+index b79fc78a..0d76adc1 100644
 --- a/tests/kms_invalid_mode.c
 +++ b/tests/kms_invalid_mode.c
-@@ -32,6 +32,7 @@ typedef struct _data data_t;
- 
- struct _data {
- 	int drm_fd;
-+	enum pipe pipe;
+@@ -35,7 +35,6 @@ struct _data {
+ 	enum pipe pipe;
  	igt_display_t display;
  	igt_output_t *output;
- 	drmModeResPtr res;
-@@ -177,21 +178,21 @@ adjust_mode_bad_vtotal(data_t *data, drmModeModeInfoPtr mode)
- 	return true;
- }
- 
--static int
-+static void
+-	drmModeResPtr res;
+ 	int max_dotclock;
+ 	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
+ };
+@@ -182,35 +181,23 @@ static void
  test_output(data_t *data)
  {
  	igt_output_t *output = data->output;
- 	drmModeModeInfo mode;
- 	struct igt_fb fb;
--	int i;
-+	int ret;
-+	uint32_t crtc_id;
+-	drmModeModeInfo mode;
+-	struct igt_fb fb;
+-	int ret;
+-	uint32_t crtc_id;
++	drmModeConnector *connector = output->config.connector;
  
++	igt_display_reset(&data->display);
++	igt_output_set_pipe(output, data->pipe);
  	/*
  	 * FIXME test every mode we have to be more
- 	 * sure everything is really getting rejected?
+-	 * sure everything is really getting rejected?
++	 e sure everything is really getting rejected?
  	 */
- 	mode = *igt_output_get_mode(output);
--	if (!data->adjust_mode(data, &mode))
--		return 0;
-+	igt_require(data->adjust_mode(data, &mode));
+-	mode = *igt_output_get_mode(output);
+-	igt_require(data->adjust_mode(data, &mode));
++	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
  
- 	igt_create_fb(data->drm_fd,
- 		      max_t(uint16_t, mode.hdisplay, 64),
-@@ -202,32 +203,14 @@ test_output(data_t *data)
+-	igt_create_fb(data->drm_fd,
+-		      max_t(uint16_t, mode.hdisplay, 64),
+-		      max_t(uint16_t, mode.vdisplay, 64),
+-		      DRM_FORMAT_XRGB8888,
+-		      DRM_FORMAT_MOD_LINEAR,
+-		      &fb);
+-
+-	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+-
+-	crtc_id = data->display.pipes[data->pipe].crtc_id;
+-
+-	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+-			     fb.fb_id, 0, 0,
+-			     &output->id, 1, &mode);
+-	igt_assert_lt(ret, 0);
++	for_each_connector_mode(output) {
++		igt_output_override_mode(output, &connector->modes[j__]);
++		igt_require(data->adjust_mode(data, &connector->modes[j__]));
++		igt_display_commit2(&data->display, &data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++	}
  
- 	kmstest_unset_all_crtcs(data->drm_fd, data->res);
- 
--	for (i = 0; i < data->res->count_crtcs; i++) {
--		int ret;
--
--		igt_info("Checking pipe %c connector %s with mode %s\n",
--			 'A'+i, output->name, mode.name);
-+	crtc_id = data->display.pipes[data->pipe].crtc_id;
- 
--		ret = drmModeSetCrtc(data->drm_fd, data->res->crtcs[i],
--				     fb.fb_id, 0, 0,
--				     &output->id, 1, &mode);
--		igt_assert_lt(ret, 0);
--	}
-+	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
-+			     fb.fb_id, 0, 0,
-+			     &output->id, 1, &mode);
-+	igt_assert_lt(ret, 0);
- 
- 	igt_remove_fb(data->drm_fd, &fb);
--
--	return 1;
--}
--
--static void test(data_t *data)
--{
--	int valid_connectors = 0;
--
--	for_each_connected_output(&data->display, data->output) {
--		valid_connectors += test_output(data);
--	}
--
--	igt_require_f(valid_connectors, "No suitable connectors found\n");
+-	igt_remove_fb(data->drm_fd, &fb);
++	igt_output_override_mode(output, NULL);
  }
  
  static int i915_max_dotclock(data_t *data)
-@@ -297,6 +280,10 @@ static data_t data;
+@@ -290,8 +277,6 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
  
- igt_main
- {
-+
-+	enum pipe pipe;
-+	igt_output_t *output;
-+
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_display_require(&data.display, data.drm_fd);
+-		data.res = drmModeGetResources(data.drm_fd);
+-		igt_assert(data.res);
  
-@@ -310,10 +297,17 @@ igt_main
+ 		data.max_dotclock = i915_max_dotclock(&data);
  		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
+@@ -314,6 +299,5 @@ igt_main
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		igt_reset_connectors();
+-		drmModeFreeResources(data.res);
  	}
- 
-+	igt_describe("Test all modesets are rejected when the requested mode is invalid");
- 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
--		igt_subtest(subtests[i].name) {
--			data.adjust_mode = subtests[i].adjust_mode;
--			test(&data);
-+		igt_subtest_with_dynamic(subtests[i].name) {
-+			for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
-+					data.output = output;
-+					data.pipe = pipe;
-+					data.adjust_mode = subtests[i].adjust_mode;
-+					test_output(&data);
-+				}
-+			}
- 		}
- 	}
- 
+ }
 -- 
 2.26.2
