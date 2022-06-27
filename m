@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99A5A10E500
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 18:03:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B76010EF38
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 18:03:59 +0000 (UTC)
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@intel.com
-Date: Mon, 27 Jun 2022 23:30:43 +0530
-Message-Id: <20220627180044.24156-2-mohammed.thasleem@intel.com>
+Date: Mon, 27 Jun 2022 23:30:44 +0530
+Message-Id: <20220627180044.24156-3-mohammed.thasleem@intel.com>
 In-Reply-To: <20220627180044.24156-1-mohammed.thasleem@intel.com>
 References: <20220627180044.24156-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 1/2] tests/kms_rmfb: Create dynamic subtests
+Subject: [igt-dev] [PATCH v2 2/2] tests/kms_rmfb: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,84 +24,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_rmfb to include dynamic test cases.
-
-v2: addressed indentation, test description moved into struct
-    and added global description to test.
-v3: minor changes.
+Sanitize the system state before starting the subtest.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_rmfb.c | 37 +++++++++++++++++++++++++++----------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ tests/kms_rmfb.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index fcd5cdad..89f7c80c 100644
+index 89f7c80c..008ce0b2 100644
 --- a/tests/kms_rmfb.c
 +++ b/tests/kms_rmfb.c
-@@ -36,6 +36,9 @@
- #define DRM_CAP_CURSOR_HEIGHT 0x9
- #endif
- 
-+IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
-+		     "the framebuffers should be removed from the crtc.");
-+
- struct rmfb_data {
- 	int drm_fd;
- 	igt_display_t display;
-@@ -151,13 +154,28 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
- 	igt_output_t *output;
- 	enum pipe pipe;
- 
--	for_each_pipe_with_single_output(&data->display, pipe, output)
--		test_rmfb(data, output, pipe, reopen);
-+	for_each_pipe_with_single_output(&data->display, pipe, output) {
-+		igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
-+			      kmstest_pipe_name(pipe))
-+			test_rmfb(data, output, pipe, reopen);
-+	}
- }
- 
- igt_main
+@@ -57,12 +57,14 @@ static void
+ test_rmfb(struct rmfb_data *data, igt_output_t *output, enum pipe pipe, bool reopen)
  {
-+	const struct {
-+		bool flags;
-+		const char *name;
-+		const char *description;
-+	} tests[] = {
-+		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all "
-+				       "planes so test this and make sure it works."},
-+		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all "
-+				    "planes so test this and make sure it works with fd close "
-+				    "and reopen."},
-+	};
- 	struct rmfb_data data = {};
-+	int i;
+ 	struct igt_fb fb, argb_fb;
++	igt_display_t *display = &data->display;
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *plane;
+ 	drmModeCrtc *crtc;
+ 	uint64_t cursor_width, cursor_height;
+ 	int num_active_planes = 0;
  
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -168,15 +186,14 @@ igt_main
- 		igt_display_require_output(&data.display);
++	igt_display_reset(display);
+ 	igt_output_set_pipe(output, pipe);
+ 
+ 	mode = igt_output_get_mode(output);
+@@ -145,7 +147,7 @@ test_rmfb(struct rmfb_data *data, igt_output_t *output, enum pipe pipe, bool reo
+ 		drmModeFreePlane(planeres);
  	}
  
--	igt_describe("RMFB is supposed to free the framebuffers from any and all "
--		     "planes so test this and make sure it works.");
--	igt_subtest_f("rmfb-ioctl")
--		run_rmfb_test(&data, false);
-+	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+
-+		igt_describe(tests[i].description);
-+		igt_subtest_with_dynamic(tests[i].name) {
-+			run_rmfb_test(&data, tests[i].flags);
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ }
  
--	igt_describe("RMFB is supposed to free the framebuffers from any and all planes "
--		     "so test this and make sure it works with fd close and reopen.");
--	igt_subtest_f("close-fd")
--		run_rmfb_test(&data, true);
-+		}
-+	}
+ static void
+@@ -184,6 +186,9 @@ igt_main
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
++		igt_display_reset(&data.display);
++		igt_display_commit2(&data.display, data.display.is_atomic ?
++				    COMMIT_ATOMIC : COMMIT_LEGACY);
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+@@ -197,5 +202,6 @@ igt_main
  
  	igt_fixture {
  		igt_display_fini(&data.display);
++		close(data.drm_fd);
+ 	}
+ }
 -- 
 2.25.1
