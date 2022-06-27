@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB2B4113D58
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 11:08:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C70D113D29
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 11:08:47 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  sai.gowtham.ch@intel.com
-Date: Mon, 27 Jun 2022 16:38:00 +0530
-Message-Id: <20220627110801.30227-2-sai.gowtham.ch@intel.com>
+Date: Mon, 27 Jun 2022 16:38:01 +0530
+Message-Id: <20220627110801.30227-3-sai.gowtham.ch@intel.com>
 In-Reply-To: <20220627110801.30227-1-sai.gowtham.ch@intel.com>
 References: <20220627110801.30227-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_sync: Added test
- description for test case.
+Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: don't do full run
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,164 +25,195 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Added test description for test and to all the subtests that are
-available.
+Just for test description, no full run is necessary.
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/i915/gem_sync.c | 92 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 69 insertions(+), 23 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 178 +-------------------------
+ 1 file changed, 1 insertion(+), 177 deletions(-)
 
-diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-index 8c435845..8c9ad641 100644
---- a/tests/i915/gem_sync.c
-+++ b/tests/i915/gem_sync.c
-@@ -1208,32 +1208,60 @@ igt_main
- 			     int num_children, int timeout);
- 		int num_children;
- 		int timeout;
-+		const char *describe;
- 	} all[] = {
--		{ "basic-each", sync_ring, 1, 2 },
--		{ "basic-store-each", store_ring, 1, 2 },
--		{ "basic-many-each", store_many, 0, 2 },
--		{ "switch-each", switch_ring, 1, 20 },
--		{ "forked-switch-each", switch_ring, ncpus, 20 },
--		{ "forked-each", sync_ring, ncpus, 20 },
--		{ "forked-store-each", store_ring, ncpus, 20 },
--		{ "active-each", active_ring, 0, 20 },
--		{ "wakeup-each", wakeup_ring, 20, 1 },
--		{ "active-wakeup-each", active_wakeup_ring, 20, 1 },
--		{ "double-wakeup-each", wakeup_ring, 20, 2 },
-+		{ "basic-each", sync_ring, 1, 2,
-+			"Check synchronisation of ring."},
-+		{ "basic-store-each", store_ring, 1, 2,
-+			"Check that store synchronisation works."},
-+		{ "basic-many-each", store_many, 0, 2,
-+			"Try and create race condition see if we"
-+			" can catch interrupts."},
-+		{ "switch-each", switch_ring, 1, 20,
-+			"Check sync after context switch."},
-+		{ "forked-switch-each", switch_ring, ncpus, 20,
-+			"Check sync after context switch parallelly."},
-+		{ "forked-each", sync_ring, ncpus, 20,
-+			"Forked varient of sync_ring, which checks synchronisation"
-+			" of ring with parallel executions."},
-+		{ "forked-store-each", store_ring, ncpus, 20,
-+			"Forked varient of store_ring, check parallel store"
-+			" synchronisation works."},
-+		{ "active-each", active_ring, 0, 20,
-+			"Exercise waiting while keeping the GPU busy."},
-+		{ "wakeup-each", wakeup_ring, 20, 1,
-+			"Check Alternate stress for nop+sync."},
-+		{ "active-wakeup-each", active_wakeup_ring, 20, 1,
-+			"Measure wakeup latency while also scheduling the next batch."},
-+		{ "double-wakeup-each", wakeup_ring, 20, 2,
-+			"Stress test for nop+sync"},
- 		{}
- 	}, individual[] = {
--		{ "default", sync_ring, 1, 20 },
--		{ "idle", idle_ring, 0, 20 },
--		{ "active", active_ring, 0, 20 },
--		{ "wakeup", wakeup_ring, 20, 1 },
--		{ "active-wakeup", active_wakeup_ring, 20, 1 },
--		{ "double-wakeup", wakeup_ring, 20, 2 },
--		{ "store", store_ring, 1, 20 },
--		{ "switch", switch_ring, 1, 20 },
--		{ "forked-switch", switch_ring, ncpus, 20 },
--		{ "many", store_many, 0, 20 },
--		{ "forked", sync_ring, ncpus, 20 },
--		{ "forked-store", store_ring, ncpus, 20 },
-+		{ "default", sync_ring, 1, 20,
-+			"Check synchronisation of rings for each engine."},
-+		{ "idle", idle_ring, 0, 20,
-+			"Exercise and measure idle requests."},
-+		{ "active", active_ring, 0, 20,
-+			"Exercise waiting while keeping the GPU busy."},
-+		{ "wakeup", wakeup_ring, 20, 1, 
-+			"Check Alternate stress for nop+sync."},
-+		{ "active-wakeup", active_wakeup_ring, 20, 1,
-+			"Measure wakeup latency while also scheduling the next batch."},
-+		{ "double-wakeup", wakeup_ring, 20, 2,
-+			"Stress test for nop + sync"},
-+		{ "store", store_ring, 1, 20,
-+			"Check that store synchronisation works."},
-+		{ "switch", switch_ring, 1, 20,
-+			"Check sync after context switch."},
-+		{ "forked-switch", switch_ring, ncpus, 20,
-+			"Check sync after context switch parallelly."},
-+		{ "many", store_many, 0, 20,
-+			"Try and create race condition and see if we catch interrupts."},
-+		{ "forked", sync_ring, ncpus, 20, 
-+			"Check synchronisation of ring with parallel executions."},
-+		{ "forked-store", store_ring, ncpus, 20,
-+			"Check store synchronisation works with parallel multiple"
-+			" executions."},
- 		{}
- 	};
- #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
-@@ -1255,6 +1283,7 @@ igt_main
- 
- 	/* Legacy for selecting rings. */
- 	for_each_test(t, individual) {
-+		igt_describe_f("For each legacy engine %s", t->describe);
- 		igt_subtest_with_dynamic_f("legacy-%s", t->name) {
- 			for (const struct intel_execution_ring *l = intel_execution_rings; l->name; l++) {
- 				igt_dynamic_f("%s", l->name) {
-@@ -1265,27 +1294,38 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Basic test to wait upon a batch on all rings.");
- 	igt_subtest("basic-all")
- 		sync_all(fd, ctx, 1, 2);
-+
-+	igt_describe("Extended version of store synchronisation test.");
- 	igt_subtest("basic-store-all")
- 		store_all(fd, ctx, 1, 2);
- 
-+	igt_describe("Extended version of existing basic-all test.");
- 	igt_subtest("all")
- 		sync_all(fd, ctx, 1, 20);
-+	igt_describe("Extended version of existing basic-store-all test.");
- 	igt_subtest("store-all")
- 		store_all(fd, ctx, 1, 20);
-+
-+	igt_describe("Parallel execution of batch on all rings and then wait.");
- 	igt_subtest("forked-all")
- 		sync_all(fd, ctx, ncpus, 20);
-+
-+	igt_describe("Parallel execution of store synchronisation.");
- 	igt_subtest("forked-store-all")
- 		store_all(fd, ctx, ncpus, 20);
- 
- 	for_each_test(t, all) {
-+		igt_describe(t->describe);
- 		igt_subtest_f("%s", t->name)
- 			t->func(fd, ctx, ALL_ENGINES, t->num_children, t->timeout);
- 	}
- 
- 	/* New way of selecting engines. */
- 	for_each_test(t, individual) {
-+		igt_describe_f("For each engine %s", t->describe);
- 		igt_subtest_with_dynamic_f("%s", t->name) {
- 			for_each_ctx_engine(fd, ctx, e) {
- 				igt_dynamic_f("%s", e->name) {
-@@ -1303,8 +1343,14 @@ igt_main
- 			igt_require(gem_scheduler_has_preemption(fd));
- 		}
- 
-+		igt_describe("Check and measure how well we can submit a second"
-+			     " high priority task when the engine is already"
-+			     " busy with a low priority task on all engines.");
- 		igt_subtest("preempt-all")
- 			preempt(fd, ctx, ALL_ENGINES, 1, 20);
-+
-+		igt_describe("For each context engine check how priority of task are"
-+			     " submitted when engine is already busy.");
- 		igt_subtest_with_dynamic("preempt") {
- 			for_each_ctx_engine(fd, ctx, e) {
- 				igt_dynamic_f("%s", e->name)
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bd5538a0..9f8e18ce 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,177 +1 @@
+-# Try to load the driver if it's not available yet.
+-igt@i915_module_load@load
+-
+-# Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor
+-igt@kms_cursor_legacy@basic-flip-after-cursor
+-igt@kms_cursor_legacy@basic-flip-before-cursor
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
+-
+-# System wide suspend tests
+-igt@i915_suspend@basic-s2idle-without-i915
+-igt@i915_suspend@basic-s3-without-i915
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_pipe_crc_basic@suspend-read-crc
++igt@meta_test@fail-result
 -- 
 2.35.1
