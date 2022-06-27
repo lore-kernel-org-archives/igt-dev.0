@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E04110F921
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jun 2022 16:45:08 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Jun 2022 17:10:03 +0100
-Message-Id: <20220627161004.70153-2-matthew.auld@intel.com>
-In-Reply-To: <20220627161004.70153-1-matthew.auld@intel.com>
-References: <20220627161004.70153-1-matthew.auld@intel.com>
+Date: Mon, 27 Jun 2022 22:11:55 +0530
+Message-Id: <20220627164156.15646-2-mohammed.thasleem@intel.com>
+In-Reply-To: <20220627164156.15646-1-mohammed.thasleem@intel.com>
+References: <20220627164156.15646-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/i915/kms_mmap_write_crc: handle
- missing gem_get_caching()
+Subject: [igt-dev] [PATCH v2 1/2] tests/i915/kms_legacy_colorkey: Create
+ dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,54 +19,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org
+Cc: nidhi1.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The kernel is meant to force the caching level for the object to
-CACHE_NONE or CACHE_WT when first scanning out the object, since the
-display engine is not coherent (assuming userspace hasn't already done
-this). On discrete we no longer support set/get_caching, but we can only
-do the scanout from lmem, which can only be mapped as WC and so should
-always be coherent for scanout. Adjust the test and ensure it still
-passes as expected.
+Modified kms_legacy_colorkey to include dynamic test cases.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5303
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+v2: Updated igt_dynamic subtest names of invalid-plane.
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/i915/kms_mmap_write_crc.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tests/i915/kms_legacy_colorkey.c | 48 ++++++++++++++++++++++----------
+ 1 file changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index b17e5fdb..da7312d6 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -78,7 +78,6 @@ static void test(data_t *data)
- 	drmModeModeInfo *mode;
- 	cairo_t *cr;
- 	char *ptr;
--	uint32_t caching;
- 	void *buf;
- 	igt_crc_t crc;
+diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
+index de9610a7..92be2567 100644
+--- a/tests/i915/kms_legacy_colorkey.c
++++ b/tests/i915/kms_legacy_colorkey.c
+@@ -43,28 +43,48 @@ static void test_plane(uint32_t plane_id, int expected_ret)
+ 				   sizeof(ckey)) == expected_ret);
+ }
  
-@@ -102,9 +101,13 @@ static void test(data_t *data)
- 	igt_plane_set_fb(data->primary, &data->fb[0]);
- 	igt_display_commit(display);
+-igt_simple_main
++igt_main
+ {
+-	drm_fd = drm_open_driver_master(DRIVER_INTEL);
++	igt_fixture {
++		drm_fd = drm_open_driver_master(DRIVER_INTEL);
  
--	/* make sure caching mode has become UC/WT */
--	caching = gem_get_caching(data->drm_fd, fb->gem_handle);
--	igt_assert(caching == I915_CACHING_NONE || caching == I915_CACHING_DISPLAY);
-+	if (!gem_has_lmem(data->drm_fd)) {
-+		uint32_t caching;
+-	kmstest_set_vt_graphics_mode();
++		kmstest_set_vt_graphics_mode();
+ 
+-	igt_display_require(&display, drm_fd);
++		igt_display_require(&display, drm_fd);
++		for_each_pipe(&display, p) {
++			for_each_plane_on_pipe(&display, p, plane) {
++				max_id = max(max_id, plane->drm_plane->plane_id);
++			}
++		}
 +
-+		/* make sure caching mode has become UC/WT */
-+		caching = gem_get_caching(data->drm_fd, fb->gem_handle);
-+		igt_assert(caching == I915_CACHING_NONE || caching == I915_CACHING_DISPLAY);
 +	}
  
- 	/*
- 	 * firstly demonstrate the need for DMA_BUF_SYNC_START ("begin_cpu_access")
+-	for_each_pipe(&display, p) {
+-		for_each_plane_on_pipe(&display, p, plane) {
+-			bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
+-			                 plane->type == DRM_PLANE_TYPE_CURSOR);
+-			test_plane(plane->drm_plane->plane_id,
+-				   is_valid ? -ENOENT : 0);
++	igt_describe("check valid plane ID's\n");
++	igt_subtest_with_dynamic("valid-plane") {
++		for_each_pipe(&display, p) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(p)) {
++				for_each_plane_on_pipe(&display, p, plane) {
++					bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
++							 plane->type == DRM_PLANE_TYPE_CURSOR);
+ 
+-			max_id = max(max_id, plane->drm_plane->plane_id);
++					test_plane(plane->drm_plane->plane_id,
++						   is_valid ? -ENOENT : 0);
++					max_id = max(max_id, plane->drm_plane->plane_id);
++				}
++			}
+ 		}
+ 	}
+ 
+ 	/* try some invalid IDs too */
+-	test_plane(0, -ENOENT);
+-	test_plane(max_id + 1, -ENOENT);
++	igt_describe("check invalid plane id's, zero and outrange\n");
++	igt_subtest_with_dynamic("invalid-plane") {
++		igt_dynamic("zero-id")
++			test_plane(0, -ENOENT);
++		igt_dynamic("outrange-id")
++			test_plane(max_id + 1, -ENOENT);
++	}
+ 
+-	igt_display_fini(&display);
++	igt_fixture {
++		igt_display_fini(&display);
++	}
+ }
 -- 
-2.36.1
+2.25.1
