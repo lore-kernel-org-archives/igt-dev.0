@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0AFF11BB69
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 07:51:00 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D96DC11BB85
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 07:50:59 +0000 (UTC)
+Date: Tue, 28 Jun 2022 09:50:56 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Jun 2022 13:17:44 +0530
-Message-Id: <20220628074744.32025-3-mohammed.thasleem@intel.com>
-In-Reply-To: <20220628074744.32025-1-mohammed.thasleem@intel.com>
-References: <20220628074744.32025-1-mohammed.thasleem@intel.com>
+Message-ID: <Yrqy4Fm46EbfIf+T@kamilkon-desk1>
+References: <20220628045123.1586448-1-priyanka.dandamudi@intel.com>
+ <20220628045123.1586448-2-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 2/2] tests/kms_rmfb: Test Cleanup
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220628045123.1586448-2-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_ringfill : Added
+ test description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,62 +21,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: nidhi1.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sanitize the system state before starting the subtest.
+Hi Priyanka,
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/kms_rmfb.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+On 2022-06-28 at 10:21:22 +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Added global description and description to all the available subtests.
+> 
+> v2: Minor corrections.
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/i915/gem_ringfill.c | 30 +++++++++++++++++++++---------
+>  1 file changed, 21 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+> index ecfa0bea..e097c874 100644
+> --- a/tests/i915/gem_ringfill.c
+> +++ b/tests/i915/gem_ringfill.c
+> @@ -51,6 +51,8 @@
+>  #define HIBERNATE 0x40
+>  #define NEWFD 0x80
+>  
+> +IGT_TEST_DESCRIPTION("Exercise many tiny batchbuffer operations, in the hope of catching"
+> +		     " failure to manage the ring properly near full.");
+>  static unsigned int ring_size;
+>  
+>  static void check_bo(int fd, uint32_t handle)
+> @@ -291,16 +293,23 @@ igt_main
+>  		const char *suffix;
+>  		unsigned flags;
+>  		unsigned timeout;
+> +		const char *description;
+>  	} modes[] = {
+> -		{ "basic", 0, 0 },
+> -		{ "interruptible", INTERRUPTIBLE, 1 },
+> -		{ "hang", HANG, 10 },
+> -		{ "child", CHILD, 0 },
+> -		{ "forked", FORKED, 0 },
+> -		{ "fd", FORKED | NEWFD, 0 },
+> -		{ "bomb", BOMB | NEWFD | INTERRUPTIBLE, 150 },
+> -		{ "S3", BOMB | SUSPEND, 30 },
+> -		{ "S4", BOMB | HIBERNATE, 30 },
+> +		{ "basic", 0, 0, "Basic check how the driver handles a full ring"},
+> +		{ "interruptible", INTERRUPTIBLE, 1, "Exercise all potential injection sites by "
+> +						     "using igt_sigiter interface to repeat the "
+> +						     "ringfill testing"},
+> +		{ "hang", HANG, 10, "Exercise many batchbuffer operations along with"
+> +				    " a hang batch until ring is full"},
+------------------------------------ ^
+Please be consistent, use either space at end of string or at
+beginning. See your description above on interruptible. I would
+prefer at beginning but it is your choice.
 
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index 614bbac9..82826399 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -57,12 +57,14 @@ static void
- test_rmfb(struct rmfb_data *data, igt_output_t *output, enum pipe pipe, bool reopen)
- {
- 	struct igt_fb fb, argb_fb;
-+	igt_display_t *display = &data->display;
- 	drmModeModeInfo *mode;
- 	igt_plane_t *plane;
- 	drmModeCrtc *crtc;
- 	uint64_t cursor_width, cursor_height;
- 	int num_active_planes = 0;
- 
-+	igt_display_reset(display);
- 	igt_output_set_pipe(output, pipe);
- 
- 	mode = igt_output_get_mode(output);
-@@ -145,7 +147,7 @@ test_rmfb(struct rmfb_data *data, igt_output_t *output, enum pipe pipe, bool reo
- 		drmModeFreePlane(planeres);
- 	}
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- }
- 
- static void
-@@ -184,6 +186,9 @@ igt_main
- 
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
-+		igt_display_reset(&data.display);
-+		igt_display_commit2(&data.display, data.display.is_atomic ?
-+				    COMMIT_ATOMIC : COMMIT_LEGACY);
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-@@ -196,5 +201,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
- 	}
- }
--- 
-2.25.1
+> +		{ "child", CHILD, 0, "Check to fill the ring parallely using fork" },
+> +		{ "forked", FORKED, 0, "Check to fill the ring parallely using fork" },
+> +		{ "fd", FORKED | NEWFD, 0, "Fills the ring upto maximim parallely using"
+> +					   " fork with different fd's" },
+> +		{ "bomb", BOMB | NEWFD | INTERRUPTIBLE, 150, "Fills the ring upto maximim parallely"
+> +							     " using fork with different fd's along "
+
+Same here, use one at begin or one at end, not both.
+
+Rest looks good, after corrections you can add my r-b tag.
+
+Regards,
+Kamil
+
+> +							     "with interruptions" },
+> +		{ "S3", BOMB | SUSPEND, 30, "Handle a full ring across suspend cycle"},
+> +		{ "S4", BOMB | HIBERNATE, 30, "Handle a full ring across hibernate cycle"},
+>  		{ NULL }
+>  	}, *m;
+>  	bool master = false;
+> @@ -330,6 +339,7 @@ igt_main
+>  
+>  	/* Legacy path for selecting "rings". */
+>  	for (m = modes; m->suffix; m++) {
+> +		igt_describe_f("%s - on legacy ring.", m->description);
+>  		igt_subtest_with_dynamic_f("legacy-%s", m->suffix) {
+>  			igt_skip_on(m->flags & NEWFD && master);
+>  
+> @@ -350,6 +360,7 @@ igt_main
+>  
+>  	/* New interface for selecting "engines". */
+>  	for (m = modes; m->suffix; m++) {
+> +		igt_describe_f("%s.", m->description);
+>  		igt_subtest_with_dynamic_f("engines-%s", m->suffix) {
+>  			const struct intel_execution_engine2 *e;
+>  
+> @@ -371,6 +382,7 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_describe("Basic check to fill the ring upto maximum on all engines simultaneously.");
+>  	igt_subtest("basic-all") {
+>  		const struct intel_execution_engine2 *e;
+>  		intel_allocator_multiprocess_start();
+> -- 
+> 2.25.1
+> 
