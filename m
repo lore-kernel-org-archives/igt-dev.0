@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E2F410F89F
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 13:44:28 +0000 (UTC)
-From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
- sai.gowtham.ch@intel.com
-Date: Tue, 28 Jun 2022 19:13:40 +0530
-Message-Id: <20220628134341.3363-2-sai.gowtham.ch@intel.com>
-In-Reply-To: <20220628134341.3363-1-sai.gowtham.ch@intel.com>
-References: <20220628134341.3363-1-sai.gowtham.ch@intel.com>
-MIME-Version: 1.0
+Message-ID: <1eb06a00-9a46-0452-6a8d-45104dfcde96@intel.com>
+Date: Tue, 28 Jun 2022 16:59:41 +0300
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220627161004.70153-1-matthew.auld@intel.com>
+ <edb8ed97-fee9-1e86-9339-979fd97b3f95@intel.com>
+ <5db0e882-3691-882f-23a4-86238b55401b@intel.com>
+From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+In-Reply-To: <5db0e882-3691-882f-23a4-86238b55401b@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_sync: Added test
- description for test case.
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/i915/gem_eio: fix uaf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,171 +19,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Added test description for test and to all the subtests that are
-available.
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_sync.c | 92 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 69 insertions(+), 23 deletions(-)
+On 6/28/22 3:47 PM, Matthew Auld wrote:
+> On 28/06/2022 11:24, Gwan-gyeong Mun wrote:
+>> Looks good to me.
+>>
+>> Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+>>
+>> However, the use after free build issue did not occur only with the "$ 
+>> meson build && ninja -C build" build command guided by the igt 
+>> README.md. How did you check it?
+> 
+> Hmm, I assume it's just a difference in compiler version or so. I have: 
+> gcc (GCC) 12.1.1 20220507 (Red Hat 12.1.1-1).
+> 
+Thanks for sharing your compiling environment info.
+My gcc says its version is 11.1.0.
+I'll try with the version you mentioned.
 
-diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-index 8c435845..8ee33c77 100644
---- a/tests/i915/gem_sync.c
-+++ b/tests/i915/gem_sync.c
-@@ -1208,32 +1208,60 @@ igt_main
- 			     int num_children, int timeout);
- 		int num_children;
- 		int timeout;
-+		const char *describe;
- 	} all[] = {
--		{ "basic-each", sync_ring, 1, 2 },
--		{ "basic-store-each", store_ring, 1, 2 },
--		{ "basic-many-each", store_many, 0, 2 },
--		{ "switch-each", switch_ring, 1, 20 },
--		{ "forked-switch-each", switch_ring, ncpus, 20 },
--		{ "forked-each", sync_ring, ncpus, 20 },
--		{ "forked-store-each", store_ring, ncpus, 20 },
--		{ "active-each", active_ring, 0, 20 },
--		{ "wakeup-each", wakeup_ring, 20, 1 },
--		{ "active-wakeup-each", active_wakeup_ring, 20, 1 },
--		{ "double-wakeup-each", wakeup_ring, 20, 2 },
-+		{ "basic-each", sync_ring, 1, 2,
-+			"Check synchronisation of ring" },
-+		{ "basic-store-each", store_ring, 1, 2,
-+			"Check that store synchronisation works" },
-+		{ "basic-many-each", store_many, 0, 2,
-+			"Create race condition and see if we can"
-+			" catch interrupts" },
-+		{ "switch-each", switch_ring, 1, 20,
-+			"Check sync after context switch" },
-+		{ "forked-switch-each", switch_ring, ncpus, 20,
-+			"Check sync after context switch parallelly" },
-+		{ "forked-each", sync_ring, ncpus, 20,
-+			"Forked variant of sync_ring, which checks synchronisation"
-+			" of ring with parallel executions" },
-+		{ "forked-store-each", store_ring, ncpus, 20,
-+			"Forked variant of store_ring, check if parallel store"
-+			" synchronisation works" },
-+		{ "active-each", active_ring, 0, 20,
-+			"Exercise waiting while keeping the GPU busy" },
-+		{ "wakeup-each", wakeup_ring, 20, 1,
-+			"Stress test for nop + sync" },
-+		{ "active-wakeup-each", active_wakeup_ring, 20, 1,
-+			"Measure wakeup latency while also scheduling the next batch" },
-+		{ "double-wakeup-each", wakeup_ring, 20, 2,
-+			"Double stress test for nop + sync" },
- 		{}
- 	}, individual[] = {
--		{ "default", sync_ring, 1, 20 },
--		{ "idle", idle_ring, 0, 20 },
--		{ "active", active_ring, 0, 20 },
--		{ "wakeup", wakeup_ring, 20, 1 },
--		{ "active-wakeup", active_wakeup_ring, 20, 1 },
--		{ "double-wakeup", wakeup_ring, 20, 2 },
--		{ "store", store_ring, 1, 20 },
--		{ "switch", switch_ring, 1, 20 },
--		{ "forked-switch", switch_ring, ncpus, 20 },
--		{ "many", store_many, 0, 20 },
--		{ "forked", sync_ring, ncpus, 20 },
--		{ "forked-store", store_ring, ncpus, 20 },
-+		{ "default", sync_ring, 1, 20,
-+			"Check synchronisation of rings" },
-+		{ "idle", idle_ring, 0, 20,
-+			"Exercise and measure idle requests" },
-+		{ "active", active_ring, 0, 20,
-+			"Exercise waiting while keeping the GPU busy" },
-+		{ "wakeup", wakeup_ring, 20, 1,
-+			"Stress for nop + sync" },
-+		{ "active-wakeup", active_wakeup_ring, 20, 1,
-+			"Measure wakeup latency while also scheduling the next batch" },
-+		{ "double-wakeup", wakeup_ring, 20, 2,
-+			"Double stress test for nop + sync" },
-+		{ "store", store_ring, 1, 20,
-+			"Check that store synchronisation works" },
-+		{ "switch", switch_ring, 1, 20,
-+			"Check sync after context switch" },
-+		{ "forked-switch", switch_ring, ncpus, 20,
-+			"Check sync after context switch parallelly" },
-+		{ "many", store_many, 0, 20,
-+			"Create race condition and see if we can catch interrupts" },
-+		{ "forked", sync_ring, ncpus, 20,
-+			"Check synchronisation of ring with parallel executions" },
-+		{ "forked-store", store_ring, ncpus, 20,
-+			"Check store synchronisation works with parallel multiple"
-+			" executions" },
- 		{}
- 	};
- #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
-@@ -1255,6 +1283,7 @@ igt_main
- 
- 	/* Legacy for selecting rings. */
- 	for_each_test(t, individual) {
-+		igt_describe_f("%s for each legacy engine.", t->describe);
- 		igt_subtest_with_dynamic_f("legacy-%s", t->name) {
- 			for (const struct intel_execution_ring *l = intel_execution_rings; l->name; l++) {
- 				igt_dynamic_f("%s", l->name) {
-@@ -1265,27 +1294,38 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Basic test to wait upon a batch on all rings.");
- 	igt_subtest("basic-all")
- 		sync_all(fd, ctx, 1, 2);
-+
-+	igt_describe("Basic version of store synchronisation test.");
- 	igt_subtest("basic-store-all")
- 		store_all(fd, ctx, 1, 2);
- 
-+	igt_describe("Extended version of existing basic-all test.");
- 	igt_subtest("all")
- 		sync_all(fd, ctx, 1, 20);
-+	igt_describe("Extended version of existing basic-store-all test.");
- 	igt_subtest("store-all")
- 		store_all(fd, ctx, 1, 20);
-+
-+	igt_describe("Parallel execution of batch on all rings and then wait.");
- 	igt_subtest("forked-all")
- 		sync_all(fd, ctx, ncpus, 20);
-+
-+	igt_describe("Parallel execution of store synchronisation.");
- 	igt_subtest("forked-store-all")
- 		store_all(fd, ctx, ncpus, 20);
- 
- 	for_each_test(t, all) {
-+		igt_describe_f("%s.", t->describe);
- 		igt_subtest_f("%s", t->name)
- 			t->func(fd, ctx, ALL_ENGINES, t->num_children, t->timeout);
- 	}
- 
- 	/* New way of selecting engines. */
- 	for_each_test(t, individual) {
-+		igt_describe_f("%s on each engine.", t->describe);
- 		igt_subtest_with_dynamic_f("%s", t->name) {
- 			for_each_ctx_engine(fd, ctx, e) {
- 				igt_dynamic_f("%s", e->name) {
-@@ -1303,8 +1343,14 @@ igt_main
- 			igt_require(gem_scheduler_has_preemption(fd));
- 		}
- 
-+		igt_describe("Check and measure how well we can submit a second"
-+			     " high priority task when the engine is already"
-+			     " busy with a low priority task on all engines.");
- 		igt_subtest("preempt-all")
- 			preempt(fd, ctx, ALL_ENGINES, 1, 20);
-+
-+		igt_describe("For each context engine check how priority of task are"
-+			     " submitted when engine is already busy.");
- 		igt_subtest_with_dynamic("preempt") {
- 			for_each_ctx_engine(fd, ctx, e) {
- 				igt_dynamic_f("%s", e->name)
--- 
-2.35.1
+$ gcc -v
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/lto-wrapper
+Target: x86_64-pc-linux-gnu
+Configured with: /build/gcc/src/gcc/configure --prefix=/usr 
+--libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man 
+--infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ 
+--enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d --with-isl 
+--with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit 
+--enable-cet=auto --enable-checking=release --enable-clocale=gnu 
+--enable-default-pie --enable-default-ssp --enable-gnu-indirect-function 
+--enable-gnu-unique-object --enable-install-libiberty 
+--enable-linker-build-id --enable-lto --enable-multilib --enable-plugin 
+--enable-shared --enable-threads=posix --disable-libssp 
+--disable-libstdcxx-pch --disable-libunwind-exceptions --disable-werror 
+gdc_include_dir=/usr/include/dlang/gdc
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 11.1.0 (GCC)
+
+
+Thanks,
+G.G.
+
+>>
+>> Br,
+>>
+>> G.G.
+>>
+>>
+>> On 6/27/22 7:10 PM, Matthew Auld wrote:
+>>> ../tests/i915/gem_eio.c:277:20: warning: pointer ‘ctx’ used after 
+>>> ‘free’ [-Wuse-after-free]
+>>>    277 |         igt_assert(igt_sysfs_printf(ctx->debugfs, 
+>>> "i915_drop_caches",
+>>> ../lib/igt_core.h:667:20: note: in definition of macro ‘igt_assert’
+>>>    667 |         do { if (!(expr)) \
+>>>        |                    ^~~~
+>>> ../tests/i915/gem_eio.c:274:9: note: call to ‘free’ here
+>>>    274 |         free(ctx);
+>>>
+>>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>>> Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+>>> ---
+>>>   tests/i915/gem_eio.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
+>>> index 913a21f9..6cbae6eb 100644
+>>> --- a/tests/i915/gem_eio.c
+>>> +++ b/tests/i915/gem_eio.c
+>>> @@ -270,11 +270,11 @@ static void hang_handler(union sigval arg)
+>>>             igt_nsec_elapsed(&ctx->delay) / 1000.0);
+>>>       igt_assert_eq(timer_delete(ctx->timer), 0);
+>>> -    free(ctx);
+>>>       /* flush any excess work before we start timing our reset */
+>>>       igt_assert(igt_sysfs_printf(ctx->debugfs, "i915_drop_caches",
+>>>                       "%d", DROP_RCU));
+>>> +    free(ctx);
+>>>       igt_nsec_elapsed(ts);
+>>>       igt_assert(igt_sysfs_printf(dir, "i915_wedged", "%llu", -1ull));
+>>>
