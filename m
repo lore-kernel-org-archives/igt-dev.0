@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7458910E5DC
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Jun 2022 11:31:15 +0000 (UTC)
-Message-ID: <1c405f2e-dbe5-0b78-bfa8-b090df11b333@intel.com>
-Date: Fri, 24 Jun 2022 17:01:03 +0530
-Content-Language: en-US
-To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220624105841.22411-1-jeevan.b@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20220624105841.22411-1-jeevan.b@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9885510EFD9
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 15:32:34 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Jun 2022 21:05:53 +0530
+Message-Id: <20220628153553.2083-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220628133220.26100-3-nidhi1.gupta@intel.com>
+References: <20220628133220.26100-3-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v6] tests/kms_flip: Skip test only for
- invalid combination
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_invalid_mode: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,102 +18,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 6/24/2022 4:28 PM, Jeevan B wrote:
-> currently the entire test is skipping. adding this fix to skip test
-> only for invalid cases and run on other valid display combination.
->
-> v2: add RUN_PAIR check to avoid crash on single display.
-> v3: add flag to check for valid display combination.(Karthik)
-> v4: if no valid mode is found then flow should go to 'out'.(Karthik)
->
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_flip.c | 31 ++++++++++++++++---------------
->   1 file changed, 16 insertions(+), 15 deletions(-)
->
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> index c5b5741a..d4339449 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -932,7 +932,7 @@ static bool mode_compatible(const drmModeModeInfo *a, const drmModeModeInfo *b)
->   	return true;
->   }
->   
-> -static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
-> +static bool get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
->   				 drmModeConnector *c1, drmModeConnector *c2)
->   {
->   	int n, m;
-> @@ -946,14 +946,13 @@ static void get_compatible_modes(drmModeModeInfo *a, drmModeModeInfo *b,
->   			for (m = 0; m < c2->count_modes; m++) {
->   				*b = c2->modes[m];
->   				if (mode_compatible(a, b))
-> -					return;
-> +					return true;
->   			}
->   		}
-> -
-> -		igt_skip("Compatible mode not found.\n");
-> +		return false;
->   	}
->   
-> -	return;
-> +	return true;
->   }
->   
->   static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
-> @@ -972,13 +971,12 @@ static void connector_find_compatible_mode(int crtc_idx0, int crtc_idx1,
->   		return;
->   	}
->   
-> -	get_compatible_modes(&mode[0], &mode[1],
-> -			     config[0].connector, config[1].connector);
-> +	o->mode_valid = get_compatible_modes(&mode[0], &mode[1],
-> +					     config[0].connector, config[1].connector);
->   
->   	o->pipe = config[0].pipe;
->   	o->fb_width = mode[0].hdisplay;
->   	o->fb_height = mode[0].vdisplay;
-> -	o->mode_valid = 1;
->   
->   	o->kconnector[0] = config[0].connector;
->   	o->kencoder[0] = config[0].encoder;
-> @@ -1330,8 +1328,8 @@ static void get_suitable_modes(struct test_output *o)
->   		      sort_drm_modes);
->   	}
->   
-> -	get_compatible_modes(&mode[0], &mode[1],
-> -			     o->kconnector[0], o->kconnector[1]);
-> +	o->mode_valid = get_compatible_modes(&mode[0], &mode[1],
-> +					     o->kconnector[0], o->kconnector[1]);
->   
->   	o->fb_width = mode[0].hdisplay;
->   	o->fb_height = mode[0].vdisplay;
-> @@ -1415,13 +1413,16 @@ retry:
->   		}
->   
->   		get_suitable_modes(o);
-> +		if (o->mode_valid) {
-> +			igt_remove_fb(drm_fd, &o->fb_info[2]);
-> +			igt_remove_fb(drm_fd, &o->fb_info[1]);
-> +			igt_remove_fb(drm_fd, &o->fb_info[0]);
->   
-> -		igt_remove_fb(drm_fd, &o->fb_info[2]);
-> -		igt_remove_fb(drm_fd, &o->fb_info[1]);
-> -		igt_remove_fb(drm_fd, &o->fb_info[0]);
-> +			restart = true;
-> +			goto restart;
-> +		}
->   
-> -		restart = true;
-> -		goto restart;
-> +		goto out;
->   	}
->   
->   	igt_assert(!ret);
+Sanitize the system state before starting the subtest.
 
+v2: test every mode listed by connector to be more
+    sure everything is really getting rejected.
+    (Modem Bhanuprakash)
+
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_invalid_mode.c | 38 +++++++++++++-------------------------
+ 1 file changed, 13 insertions(+), 25 deletions(-)
+
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 0287ee02..6df952df 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -35,7 +35,6 @@ struct _data {
+ 	enum pipe pipe;
+ 	igt_display_t display;
+ 	igt_output_t *output;
+-	drmModeResPtr res;
+ 	int max_dotclock;
+ 	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
+ };
+@@ -182,35 +181,26 @@ static void
+ test_output(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+-	drmModeModeInfo mode;
+ 	struct igt_fb fb;
+-	int ret;
+-	uint32_t crtc_id;
++	drmModeConnector *connector = output->config.connector;
+ 
+-	/*
+-	 * FIXME test every mode we have to be more
+-	 * sure everything is really getting rejected?
+-	 */
+-	mode = *igt_output_get_mode(output);
+-	igt_require(data->adjust_mode(data, &mode));
++	igt_output_set_pipe(output, data->pipe);
+ 
+-	igt_create_fb(data->drm_fd,
+-		      max_t(uint16_t, mode.hdisplay, 64),
+-		      max_t(uint16_t, mode.vdisplay, 64),
+-		      DRM_FORMAT_XRGB8888,
++	igt_create_fb(data->drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
+ 		      DRM_FORMAT_MOD_LINEAR,
+ 		      &fb);
+ 
+-	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+-
+-	crtc_id = data->display.pipes[data->pipe].crtc_id;
+-
+-	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+-			     fb.fb_id, 0, 0,
+-			     &output->id, 1, &mode);
+-	igt_assert_lt(ret, 0);
++	for_each_connector_mode(output) {
++		igt_require(data->adjust_mode(data, &connector->modes[j__]));
++		igt_output_override_mode(output, &connector->modes[j__]);
++		igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++	}
+ 
+ 	igt_remove_fb(data->drm_fd, &fb);
++	igt_output_override_mode(output, NULL);
++	/*unset_all_crtcs*/
++	igt_display_reset(&data->display);
++	igt_display_commit(&data->display);
+ }
+ 
+ static int i915_max_dotclock(data_t *data)
+@@ -290,11 +280,10 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+-		data.res = drmModeGetResources(data.drm_fd);
+-		igt_assert(data.res);
+ 
+ 		data.max_dotclock = i915_max_dotclock(&data);
+ 		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
++		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_describe("Make sure all modesets are rejected when the requested mode is invalid");
+@@ -314,6 +303,5 @@ igt_main
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		igt_reset_connectors();
+-		drmModeFreeResources(data.res);
+ 	}
+ }
+-- 
+2.26.2
