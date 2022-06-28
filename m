@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D96DC11BB85
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 07:50:59 +0000 (UTC)
-Date: Tue, 28 Jun 2022 09:50:56 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7026B11BB69
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 07:50:58 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Yrqy4Fm46EbfIf+T@kamilkon-desk1>
-References: <20220628045123.1586448-1-priyanka.dandamudi@intel.com>
- <20220628045123.1586448-2-priyanka.dandamudi@intel.com>
+Date: Tue, 28 Jun 2022 13:17:43 +0530
+Message-Id: <20220628074744.32025-2-mohammed.thasleem@intel.com>
+In-Reply-To: <20220628074744.32025-1-mohammed.thasleem@intel.com>
+References: <20220628074744.32025-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220628045123.1586448-2-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_ringfill : Added
- test description
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v4 1/2] tests/kms_rmfb: Create dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,108 +18,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: nidhi1.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Priyanka,
+Modified kms_rmfb to include dynamic test cases.
 
-On 2022-06-28 at 10:21:22 +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> Added global description and description to all the available subtests.
-> 
-> v2: Minor corrections.
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/i915/gem_ringfill.c | 30 +++++++++++++++++++++---------
->  1 file changed, 21 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-> index ecfa0bea..e097c874 100644
-> --- a/tests/i915/gem_ringfill.c
-> +++ b/tests/i915/gem_ringfill.c
-> @@ -51,6 +51,8 @@
->  #define HIBERNATE 0x40
->  #define NEWFD 0x80
->  
-> +IGT_TEST_DESCRIPTION("Exercise many tiny batchbuffer operations, in the hope of catching"
-> +		     " failure to manage the ring properly near full.");
->  static unsigned int ring_size;
->  
->  static void check_bo(int fd, uint32_t handle)
-> @@ -291,16 +293,23 @@ igt_main
->  		const char *suffix;
->  		unsigned flags;
->  		unsigned timeout;
-> +		const char *description;
->  	} modes[] = {
-> -		{ "basic", 0, 0 },
-> -		{ "interruptible", INTERRUPTIBLE, 1 },
-> -		{ "hang", HANG, 10 },
-> -		{ "child", CHILD, 0 },
-> -		{ "forked", FORKED, 0 },
-> -		{ "fd", FORKED | NEWFD, 0 },
-> -		{ "bomb", BOMB | NEWFD | INTERRUPTIBLE, 150 },
-> -		{ "S3", BOMB | SUSPEND, 30 },
-> -		{ "S4", BOMB | HIBERNATE, 30 },
-> +		{ "basic", 0, 0, "Basic check how the driver handles a full ring"},
-> +		{ "interruptible", INTERRUPTIBLE, 1, "Exercise all potential injection sites by "
-> +						     "using igt_sigiter interface to repeat the "
-> +						     "ringfill testing"},
-> +		{ "hang", HANG, 10, "Exercise many batchbuffer operations along with"
-> +				    " a hang batch until ring is full"},
------------------------------------- ^
-Please be consistent, use either space at end of string or at
-beginning. See your description above on interruptible. I would
-prefer at beginning but it is your choice.
+v2: addressed indentation, test description moved into struct
+    and added global description to test.
+v3: minor changes.
+v4: removed space.
 
-> +		{ "child", CHILD, 0, "Check to fill the ring parallely using fork" },
-> +		{ "forked", FORKED, 0, "Check to fill the ring parallely using fork" },
-> +		{ "fd", FORKED | NEWFD, 0, "Fills the ring upto maximim parallely using"
-> +					   " fork with different fd's" },
-> +		{ "bomb", BOMB | NEWFD | INTERRUPTIBLE, 150, "Fills the ring upto maximim parallely"
-> +							     " using fork with different fd's along "
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/kms_rmfb.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-Same here, use one at begin or one at end, not both.
-
-Rest looks good, after corrections you can add my r-b tag.
-
-Regards,
-Kamil
-
-> +							     "with interruptions" },
-> +		{ "S3", BOMB | SUSPEND, 30, "Handle a full ring across suspend cycle"},
-> +		{ "S4", BOMB | HIBERNATE, 30, "Handle a full ring across hibernate cycle"},
->  		{ NULL }
->  	}, *m;
->  	bool master = false;
-> @@ -330,6 +339,7 @@ igt_main
->  
->  	/* Legacy path for selecting "rings". */
->  	for (m = modes; m->suffix; m++) {
-> +		igt_describe_f("%s - on legacy ring.", m->description);
->  		igt_subtest_with_dynamic_f("legacy-%s", m->suffix) {
->  			igt_skip_on(m->flags & NEWFD && master);
->  
-> @@ -350,6 +360,7 @@ igt_main
->  
->  	/* New interface for selecting "engines". */
->  	for (m = modes; m->suffix; m++) {
-> +		igt_describe_f("%s.", m->description);
->  		igt_subtest_with_dynamic_f("engines-%s", m->suffix) {
->  			const struct intel_execution_engine2 *e;
->  
-> @@ -371,6 +382,7 @@ igt_main
->  		}
->  	}
->  
-> +	igt_describe("Basic check to fill the ring upto maximum on all engines simultaneously.");
->  	igt_subtest("basic-all") {
->  		const struct intel_execution_engine2 *e;
->  		intel_allocator_multiprocess_start();
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index fcd5cdad..614bbac9 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -36,6 +36,9 @@
+ #define DRM_CAP_CURSOR_HEIGHT 0x9
+ #endif
+ 
++IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
++		     "the framebuffers should be removed from the crtc.");
++
+ struct rmfb_data {
+ 	int drm_fd;
+ 	igt_display_t display;
+@@ -151,13 +154,28 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
+ 	igt_output_t *output;
+ 	enum pipe pipe;
+ 
+-	for_each_pipe_with_single_output(&data->display, pipe, output)
+-		test_rmfb(data, output, pipe, reopen);
++	for_each_pipe_with_single_output(&data->display, pipe, output) {
++		igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
++			      kmstest_pipe_name(pipe))
++			test_rmfb(data, output, pipe, reopen);
++	}
+ }
+ 
+ igt_main
+ {
++	const struct {
++		bool flags;
++		const char *name;
++		const char *description;
++	} tests[] = {
++		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all "
++				       "planes so test this and make sure it works."},
++		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all "
++				    "planes so test this and make sure it works with fd close "
++				    "and reopen."},
++	};
+ 	struct rmfb_data data = {};
++	int i;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -168,15 +186,13 @@ igt_main
+ 		igt_display_require_output(&data.display);
+ 	}
+ 
+-	igt_describe("RMFB is supposed to free the framebuffers from any and all "
+-		     "planes so test this and make sure it works.");
+-	igt_subtest_f("rmfb-ioctl")
+-		run_rmfb_test(&data, false);
++	for (i = 0; i < ARRAY_SIZE(tests); i++) {
++		igt_describe(tests[i].description);
++		igt_subtest_with_dynamic(tests[i].name) {
++			run_rmfb_test(&data, tests[i].flags);
+ 
+-	igt_describe("RMFB is supposed to free the framebuffers from any and all planes "
+-		     "so test this and make sure it works with fd close and reopen.");
+-	igt_subtest_f("close-fd")
+-		run_rmfb_test(&data, true);
++		}
++	}
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+-- 
+2.25.1
