@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A9EA12AB6A
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 11:27:56 +0000 (UTC)
-Date: Tue, 28 Jun 2022 13:27:52 +0200
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91E6412ADC8
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 11:58:44 +0000 (UTC)
+Date: Tue, 28 Jun 2022 13:58:40 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YrrluM5dM0FAUx++@kamilkon-desk1>
-References: <20220628085401.20109-1-sai.gowtham.ch@intel.com>
- <20220628085401.20109-2-sai.gowtham.ch@intel.com>
+Message-ID: <Yrrs8AXu5UHyBsRY@kamilkon-desk1>
+References: <20220628080054.1655626-1-priyanka.dandamudi@intel.com>
+ <20220628080054.1655626-2-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220628085401.20109-2-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/gem_sync: Added test
- description for test case.
+In-Reply-To: <20220628080054.1655626-2-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_mmap_gtt: added
+ description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,186 +21,239 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Sai,
-
-On 2022-06-28 at 14:24:00 +0530, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+On 2022-06-28 at 13:30:53 +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> Added test description for test and to all the subtests that are
-> available.
+> Added global description and subtest descriptions.
+> 
+> v2:Minor corrections.
+> 
+> v3: Added descriptions to copy subtests.
 > 
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  tests/i915/gem_sync.c | 92 ++++++++++++++++++++++++++++++++-----------
->  1 file changed, 69 insertions(+), 23 deletions(-)
+>  tests/i915/gem_mmap_gtt.c | 81 +++++++++++++++++++++++++++++++++++----
+>  1 file changed, 73 insertions(+), 8 deletions(-)
 > 
-> diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-> index 8c435845..6e38871d 100644
-> --- a/tests/i915/gem_sync.c
-> +++ b/tests/i915/gem_sync.c
-> @@ -1208,32 +1208,60 @@ igt_main
->  			     int num_children, int timeout);
->  		int num_children;
->  		int timeout;
-> +		const char *describe;
->  	} all[] = {
-> -		{ "basic-each", sync_ring, 1, 2 },
-> -		{ "basic-store-each", store_ring, 1, 2 },
-> -		{ "basic-many-each", store_many, 0, 2 },
-> -		{ "switch-each", switch_ring, 1, 20 },
-> -		{ "forked-switch-each", switch_ring, ncpus, 20 },
-> -		{ "forked-each", sync_ring, ncpus, 20 },
-> -		{ "forked-store-each", store_ring, ncpus, 20 },
-> -		{ "active-each", active_ring, 0, 20 },
-> -		{ "wakeup-each", wakeup_ring, 20, 1 },
-> -		{ "active-wakeup-each", active_wakeup_ring, 20, 1 },
-> -		{ "double-wakeup-each", wakeup_ring, 20, 2 },
-> +		{ "basic-each", sync_ring, 1, 2,
-> +			"Check synchronisation of ring" },
-> +		{ "basic-store-each", store_ring, 1, 2,
-> +			"Check that store synchronisation works" },
-> +		{ "basic-many-each", store_many, 0, 2,
-> +			"Create race condition and see if we can"
-> +			" catch interrupts" },
-> +		{ "switch-each", switch_ring, 1, 20,
-> +			"Check sync after context switch" },
-> +		{ "forked-switch-each", switch_ring, ncpus, 20,
-> +			"Check sync after context switch parallelly" },
-> +		{ "forked-each", sync_ring, ncpus, 20,
-> +			"Forked variant of sync_ring, which checks synchronisation"
-> +			" of ring with parallel executions" },
-> +		{ "forked-store-each", store_ring, ncpus, 20,
-> +			"Forked variant of store_ring, check if parallel store"
-> +			" synchronisation works" },
-> +		{ "active-each", active_ring, 0, 20,
-> +			"Exercise waiting while keeping the GPU busy" },
-> +		{ "wakeup-each", wakeup_ring, 20, 1,
-> +			"Stress test for nop + sync" },
-> +		{ "active-wakeup-each", active_wakeup_ring, 20, 1,
-> +			"Measure wakeup latency while also scheduling the next batch" },
-> +		{ "double-wakeup-each", wakeup_ring, 20, 2,
-> +			"Double stress test for nop + sync" },
->  		{}
->  	}, individual[] = {
-> -		{ "default", sync_ring, 1, 20 },
-> -		{ "idle", idle_ring, 0, 20 },
-> -		{ "active", active_ring, 0, 20 },
-> -		{ "wakeup", wakeup_ring, 20, 1 },
-> -		{ "active-wakeup", active_wakeup_ring, 20, 1 },
-> -		{ "double-wakeup", wakeup_ring, 20, 2 },
-> -		{ "store", store_ring, 1, 20 },
-> -		{ "switch", switch_ring, 1, 20 },
-> -		{ "forked-switch", switch_ring, ncpus, 20 },
-> -		{ "many", store_many, 0, 20 },
-> -		{ "forked", sync_ring, ncpus, 20 },
-> -		{ "forked-store", store_ring, ncpus, 20 },
-> +		{ "default", sync_ring, 1, 20,
-> +			"Check synchronisation of rings" },
-> +		{ "idle", idle_ring, 0, 20,
-> +			"Exercise and measure idle requests" },
-> +		{ "active", active_ring, 0, 20,
-> +			"Exercise waiting while keeping the GPU busy" },
-> +		{ "wakeup", wakeup_ring, 20, 1,
-> +			"Stress for nop + sync" },
-> +		{ "active-wakeup", active_wakeup_ring, 20, 1,
-> +			"Measure wakeup latency while also scheduling the next batch" },
-> +		{ "double-wakeup", wakeup_ring, 20, 2,
-> +			"Double Stress test for nop + sync" },
-------------------------------- ^
-s/Stress/stress/
-
-> +		{ "store", store_ring, 1, 20,
-> +			"Check that store synchronisation works" },
-> +		{ "switch", switch_ring, 1, 20,
-> +			"Check sync after context switch" },
-> +		{ "forked-switch", switch_ring, ncpus, 20,
-> +			"Check sync after context switch parallelly" },
-> +		{ "many", store_many, 0, 20,
-> +			"Create race condition and see if we catch interrupts" },
------------------------------------------------------------ ^
-s/we/we can/
-
-With that fixed you can add my r-b tag.
-
-Regards,
-Kamil
-
-> +		{ "forked", sync_ring, ncpus, 20,
-> +			"Check synchronisation of ring with parallel executions" },
-> +		{ "forked-store", store_ring, ncpus, 20,
-> +			"Check store synchronisation works with parallel multiple"
-> +			" executions" },
->  		{}
->  	};
->  #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
-> @@ -1255,6 +1283,7 @@ igt_main
+> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+> index 6db82229..e39b9047 100644
+> --- a/tests/i915/gem_mmap_gtt.c
+> +++ b/tests/i915/gem_mmap_gtt.c
+> @@ -54,6 +54,8 @@
 >  
->  	/* Legacy for selecting rings. */
->  	for_each_test(t, individual) {
-> +		igt_describe_f("%s for each legacy engine.", t->describe);
->  		igt_subtest_with_dynamic_f("legacy-%s", t->name) {
->  			for (const struct intel_execution_ring *l = intel_execution_rings; l->name; l++) {
->  				igt_dynamic_f("%s", l->name) {
-> @@ -1265,27 +1294,38 @@ igt_main
->  		}
+>  #define abs(x) ((x) >= 0 ? (x) : -(x))
+>  
+> +IGT_TEST_DESCRIPTION("Ensure that all operations around MMAP_GTT ioctl works.");
+> +
+>  static int OBJECT_SIZE = 16*1024*1024;
+>  
+>  static void
+> @@ -1272,6 +1274,7 @@ igt_main
+>  		gem_require_mappable_ggtt(fd);
 >  	}
 >  
-> +	igt_describe("Basic test to wait upon a batch on all rings.");
->  	igt_subtest("basic-all")
->  		sync_all(fd, ctx, 1, 2);
-> +
-> +	igt_describe("Basic version of store synchronisation test.");
->  	igt_subtest("basic-store-all")
->  		store_all(fd, ctx, 1, 2);
->  
-> +	igt_describe("Extended version of existing basic-all test.");
->  	igt_subtest("all")
->  		sync_all(fd, ctx, 1, 20);
-> +	igt_describe("Extended version of existing basic-store-all test.");
->  	igt_subtest("store-all")
->  		store_all(fd, ctx, 1, 20);
-> +
-> +	igt_describe("Parallel execution of batch on all rings and then wait.");
->  	igt_subtest("forked-all")
->  		sync_all(fd, ctx, ncpus, 20);
-> +
-> +	igt_describe("Parallel execution of store synchronisation.");
->  	igt_subtest("forked-store-all")
->  		store_all(fd, ctx, ncpus, 20);
->  
->  	for_each_test(t, all) {
-> +		igt_describe_f("%s.", t->describe);
->  		igt_subtest_f("%s", t->name)
->  			t->func(fd, ctx, ALL_ENGINES, t->num_children, t->timeout);
+> +	igt_describe("Verify mapping to invalid gem objects fails.");
+>  	igt_subtest("bad-object") {
+>  		uint32_t real_handle = gem_create(fd, 4096);
+>  		uint32_t handles[20];
+> @@ -1293,77 +1296,126 @@ igt_main
+>  		gem_close(fd, real_handle);
 >  	}
 >  
->  	/* New way of selecting engines. */
->  	for_each_test(t, individual) {
-> +		igt_describe_f("%s on each engine.", t->describe);
->  		igt_subtest_with_dynamic_f("%s", t->name) {
->  			for_each_ctx_engine(fd, ctx, e) {
->  				igt_dynamic_f("%s", e->name) {
-> @@ -1303,8 +1343,14 @@ igt_main
->  			igt_require(gem_scheduler_has_preemption(fd));
->  		}
+> +	igt_describe("Basic checks of GEM_MMAP_GTT ioctl.");
+>  	igt_subtest("basic")
+>  		test_access(fd);
+> +	igt_describe("Test mmaping less than the full object.");
+>  	igt_subtest("basic-short")
+>  		test_short(fd);
+> +	igt_describe("Test copy between two GTT mmappings.");
+>  	igt_subtest("basic-copy")
+>  		test_copy(fd);
+> +	igt_describe("Test to read content from GTT mmapped object.");
+>  	igt_subtest("basic-read")
+>  		test_read(fd);
+> +	igt_describe("Test to write content to GTT mmapped object.");
+>  	igt_subtest("basic-write")
+>  		test_write(fd);
+> +	igt_describe("Test creates a prefault object into GTT and "
+> +		     "writes into it from another GTT mmapped.");
+>  	igt_subtest("basic-write-gtt")
+>  		test_write_gtt(fd);
+> +	igt_describe("Inspect a GTT mmap using ptrace().");
+>  	igt_subtest("ptrace")
+>  		test_ptrace(fd);
+> +	igt_describe("Check whether a write through the GTT is immediately visible to the CPU.");
+>  	igt_subtest("coherency")
+>  		test_coherency(fd);
+> +	igt_describe("Check the userspace clflushing of the GTT mmap.");
+>  	igt_subtest("clflush")
+>  		test_clflush(fd);
+> +	igt_describe("Check read/writes across a GPU reset.");
+>  	igt_subtest("hang")
+>  		test_hang(fd);
+> +	igt_describe("Exercise the GTT mmap revocation for a reset on a busy object.");
+>  	igt_subtest("hang-busy")
+>  		test_hang_busy(fd);
+> +	igt_describe("Mix a busy hang with GTT and userptr.");
+>  	igt_subtest("hang-user")
+>  		test_hang_user(fd);
+> +	igt_describe("Check basic read->write order of a GTT mmapped bo.");
+>  	igt_subtest("basic-read-write")
+>  		test_read_write(fd, READ_BEFORE_WRITE);
+> +	igt_describe("Check basic write->read order of a GTT mmapped bo.");
+>  	igt_subtest("basic-write-read")
+>  		test_read_write(fd, READ_AFTER_WRITE);
+> +	igt_describe("Check distinct read->write order of a GTT mmapped bo.");
+>  	igt_subtest("basic-read-write-distinct")
+>  		test_read_write2(fd, READ_BEFORE_WRITE);
+> +	igt_describe("Check distinct write->read order of a GTT mmapped bo.");
+>  	igt_subtest("basic-write-read-distinct")
+>  		test_read_write2(fd, READ_AFTER_WRITE);
+> +	igt_describe("Excercise concurrent pagefaulting of a GTT mmaped bo.");
+>  	igt_subtest("fault-concurrent")
+>  		test_fault_concurrent(fd, I915_TILING_NONE);
+> +	igt_describe("Excercise concurrent pagefaulting of a X-tiled GTT mmaped bo.");
+>  	igt_subtest("fault-concurrent-X")
+>  		test_fault_concurrent(fd, I915_TILING_X);
+> +	igt_describe("Excercise concurrent pagefaulting of a Y-tiled GTT mmaped bo.");
+>  	igt_subtest("fault-concurrent-Y")
+>  		test_fault_concurrent(fd, I915_TILING_Y);
+> +	igt_describe("Check coherency between GTT and CPU mmappings with LLC.");
+>  	igt_subtest("basic-write-cpu-read-gtt")
+>  		test_write_cpu_read_gtt(fd);
+> +	igt_describe("Check the performance of WC writes with WC reads of GTT "
+> +		     "and WC writes of GTT with WB writes of CPU.");
+>  	igt_subtest("basic-wc")
+>  		test_wc(fd);
+> +	igt_describe("Test mmap_offset lifetime, closing the object on"
+> +		     " another file should not affect the local mmap_offset.");
+>  	igt_subtest("isolation")
+>  		test_isolation(fd);
+> +	igt_describe("Test MMAP_GTT extension validity.");
+>  	igt_subtest("zero-extend")
+>  		test_zero_extend(fd);
+> +	igt_describe("Test to check that a few threads opening and closing handles"
+> +		     " cause explosion in other threads in the process of mmaping that handle.");
+>  	igt_subtest("close-race")
+>  		test_close_race(fd);
+> +	igt_describe("Test to check that a few threads opening and closing flink handles"
+> +		     " cause explosion in other threads in the process of mmaping that handle.");
+>  	igt_subtest("flink-race")
+>  		test_flink_race(fd);
+> +	igt_describe("Check that the initial pagefault is non-blocking.");
+>  	igt_subtest("pf-nonblock")
+>  		test_pf_nonblock(fd);
 >  
-> +		igt_describe("Check and measure how well we can submit a second"
-> +			     " high priority task when the engine is already"
-> +			     " busy with a low priority task on all engines.");
->  		igt_subtest("preempt-all")
->  			preempt(fd, ctx, ALL_ENGINES, 1, 20);
-> +
-> +		igt_describe("For each context engine check how priority of task are"
-> +			     " submitted when engine is already busy.");
->  		igt_subtest_with_dynamic("preempt") {
->  			for_each_ctx_engine(fd, ctx, e) {
->  				igt_dynamic_f("%s", e->name)
+> +	igt_describe("Check mmap access to a small buffer object by CPU directly"
+> +		     " and through GTT in sequence.");
+>  	igt_subtest("basic-small-bo")
+>  		test_huge_bo(fd, -1, I915_TILING_NONE);
+> +	igt_describe("Check mmap access to a small X-tiled buffer object by CPU "
+> +		     "directly and through GTT in sequence.");
+>  	igt_subtest("basic-small-bo-tiledX")
+>  		test_huge_bo(fd, -1, I915_TILING_X);
+> +	igt_describe("Check mmap access to a small Y-tiled buffer object by CPU "
+> +		     "directly and through GTT in sequence.");
+>  	igt_subtest("basic-small-bo-tiledY")
+>  		test_huge_bo(fd, -1, I915_TILING_Y);
+>  
+> +	igt_describe("Check mmap access to a big buffer object by CPU directly "
+> +		     "and through GTT in sequence.");
+>  	igt_subtest("big-bo")
+>  		test_huge_bo(fd, 0, I915_TILING_NONE);
+> +	igt_describe("Check mmap access to a big X-tiled buffer object by CPU "
+> +		     "directly and through GTT in sequence.");
+>  	igt_subtest("big-bo-tiledX")
+>  		test_huge_bo(fd, 0, I915_TILING_X);
+> +	igt_describe("Check mmap access to a big Y-tiled buffer object by CPU "
+> +		     "directly and through GTT in sequence.");
+>  	igt_subtest("big-bo-tiledY")
+>  		test_huge_bo(fd, 0, I915_TILING_Y);
+>  
+> +	igt_describe("Check mmap access to a huge buffer object by CPU directly "
+> +		     "and through GTT in sequence.");
+>  	igt_subtest("huge-bo")
+>  		test_huge_bo(fd, 1, I915_TILING_NONE);
+> +	igt_describe("Check mmap access to a huge X-tiled buffer object by CPU "
+> +		     "directly and through GTT in sequence.");
+>  	igt_subtest("huge-bo-tiledX")
+>  		test_huge_bo(fd, 1, I915_TILING_X);
+> +	igt_describe("Check mmap access to a huge Y-tiled buffer object by CPU "
+> +		     "directly and through GTT in sequence.");
+>  	igt_subtest("huge-bo-tiledY")
+>  		test_huge_bo(fd, 1, I915_TILING_Y);
+>  
+> @@ -1371,27 +1423,33 @@ igt_main
+>  		const struct copy_size {
+>  			const char *prefix;
+>  			int size;
+> +			const char *description;
+>  		} copy_sizes[] = {
+> -			{ "basic-small", -2 },
+> -			{ "medium", -1 },
+> -			{ "big", 0 },
+> -			{ "huge", 1 },
+> -			{ "swap", 2 },
+> +			{ "basic-small", -2, "small bo's." },
+> +			{ "medium", -1, "medium bo's." },
+> +			{ "big", 0, "big bo's." },
+> +			{ "huge", 1, "huge bo's." },
+> +			{ "swap", 2, "huge bo's larger than physical memory"
+> +				     " and resulting in thrashing of swap space." },
+>  			{ }
+>  		};
+>  		const struct copy_mode {
+>  			const char *suffix;
+>  			int tiling_x, tiling_y;
+> +			const char *description;
+>  		} copy_modes[] = {
+> -			{ "", I915_TILING_NONE, I915_TILING_NONE},
+> -			{ "-XY", I915_TILING_X, I915_TILING_Y},
+> -			{ "-odd", -I915_TILING_X, -I915_TILING_Y},
+> +			{ "", I915_TILING_NONE, I915_TILING_NONE, "normal"},
+> +			{ "-XY", I915_TILING_X, I915_TILING_Y, "tiled"},
+> +			{ "-odd", -I915_TILING_X, -I915_TILING_Y, "odd tiled"},
+>  			{}
+>  		};
+>  		const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+>  
+>  		for (const struct copy_size *s = copy_sizes; s->prefix; s++)
+>  			for (const struct copy_mode *m = copy_modes; m->suffix; m++) {
+> +				igt_describe_f("Check page by page copying between two GTT"
+> +					       " mmapped %s-%s", m->description,
+> +					       s->description);
+>  				igt_subtest_f("%s-copy%s", s->prefix, m->suffix)
+>  					test_huge_copy(fd,
+>  						       s->size,
+> @@ -1399,6 +1457,10 @@ igt_main
+>  						       m->tiling_y,
+>  						       1);
+>  
+> +				igt_describe_f("Add forked contention with lighter variant"
+> +					       " (single cpu) and check page by page copying"
+> +					       " between two GTT mmapped %s-%s",
+> +					       m->description, s->description);
+>  				igt_subtest_f("cpuset-%s-copy%s", s->prefix, m->suffix) {
+>  					cpu_set_t cpu, old;
+>  
+> @@ -1416,6 +1478,9 @@ igt_main
+>  					igt_assert(sched_setaffinity(0, sizeof(old), &old) == 0);
+>  				}
+>  
+> +				igt_describe_f("Add forked contention and check page by page"
+> +					       " copying between two GTT mmapped %s-%s",
+> +					       m->description, s->description);
+>  				igt_subtest_f("forked-%s-copy%s", s->prefix, m->suffix)
+>  					test_huge_copy(fd,
+>  						       s->size,
 > -- 
-> 2.35.1
+> 2.25.1
 > 
