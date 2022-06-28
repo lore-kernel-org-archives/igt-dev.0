@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0D01112060
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 10:04:08 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A874411BE39
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 08:11:32 +0000 (UTC)
+Date: Tue, 28 Jun 2022 10:11:28 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Jun 2022 15:32:19 +0530
-Message-Id: <20220628100219.246526-1-bhanuprakash.modem@intel.com>
+Message-ID: <Yrq3sCcMl9vPcc62@kamilkon-desk1>
+References: <20220627201223.8570-1-zbigniew.kempczynski@intel.com>
+ <20220627201223.8570-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] tests/kms_pipe_crc_basic: Avoid skips in dynamic
- subtets
+In-Reply-To: <20220627201223.8570-2-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] lib/igt_device_scan: Add sriov
+ selector
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,61 +26,219 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of Skipping the dynamic subtest, just don't trigger the test.
+Hi Zbigniew,
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_pipe_crc_basic.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+On 2022-06-27 at 22:12:23 +0200, Zbigniew Kempczyński wrote:
+> From: Łukasz Łaguna <lukasz.laguna@intel.com>
+> 
+> Add sriov selector to allow pf/vf selection.
+> 
+> Signed-off-by: Łukasz Łaguna <lukasz.laguna@intel.com>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> ---
+>  lib/igt_device_scan.c | 148 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 148 insertions(+)
+> 
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index a1cee7a42a..67ddf56eb2 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -128,6 +128,35 @@
+>   *   return you same device regardless the order of enumeration.
+>   *
+>   *   Simple syntactic sugar over using the sysfs paths.
+> + *
+> + * - sriov: select pf or vf
+> + *   |[<!-- language="plain" -->
+> + *   sriov:[vendor=%04x/name][,device=%04x][,card=%d][,pf=%d][,vf=%d]
+> + *   ]|
+> + *
+> + *   Filter extends pci selector to allow pf/vf selection:
+> + *
+> + *   |[<!-- language="plain" -->
+> + *   sriov:vendor=Intel,device=1234,card=0,vf=2
+> + *   ]|
+> + *
+> + *   When vf is not defined, pf will be selected:
+> + *
+> + *   |[<!-- language="plain" -->
+> + *   sriov:vendor=Intel,device=1234,card=0
+> + *   ]|
+> + *
+> + *   In case a device has more than one pf, you can also select a specific pf
+> + *   or a vf associated with a specific pf:
+> + *
+> + *   |[<!-- language="plain" -->
+> + *   sriov:vendor=Intel,device=1234,card=0,pf=1
+> + *   ]|
+> + *
+> + *   |[<!-- language="plain" -->
+> + *   sriov:vendor=Intel,device=1234,card=0,pf=1,vf=0
+> + *   ]|
+> + *
+>   */
+>  
+>  #ifdef DEBUG_DEVICE_SCAN
+> @@ -1152,6 +1181,8 @@ struct filter {
+>  		char *slot;
+>  		char *drm;
+>  		char *driver;
+> +		char *pf;
+> +		char *vf;
+>  	} data;
+>  };
+>  
+> @@ -1169,6 +1200,8 @@ static void fill_filter_data(struct filter *filter, const char *key, const char
+>  	__fill_key(slot);
+>  	__fill_key(drm);
+>  	__fill_key(driver);
+> +	__fill_key(pf);
+> +	__fill_key(vf);
+>  #undef __fill_key
+>  
+>  }
+> @@ -1315,6 +1348,115 @@ static struct igt_list_head *filter_pci(const struct filter_class *fcls,
+>  	return &igt_devs.filtered;
+>  }
+>  
+> +static bool is_pf(struct igt_device *dev)
+> +{
+> +	if (get_attr(dev, "sriov_numvfs") == NULL)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +static bool is_vf(struct igt_device *dev)
+> +{
+> +	if (get_attr(dev, "physfn") == NULL)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +/* Find appropriate pci device matching vendor/device/card/pf/vf filter arguments.
+---- ^
+I would prefer
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 0f34f807..2ff40f72 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -276,6 +276,7 @@ data_t data = {0, };
- igt_main
- {
- 	enum pipe pipe;
-+	igt_output_t *output;
- 	struct {
- 		const char *name;
- 		unsigned flags;
-@@ -317,10 +318,7 @@ igt_main
- 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
- 		igt_describe(tests[i].desc);
- 		igt_subtest_with_dynamic(tests[i].name) {
--			for_each_pipe(&data.display, pipe) {
--				igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
--
--				igt_require(output);
-+			for_each_pipe_with_single_output(&data.display, pipe, output) {
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
- 					if (tests[i].flags & TEST_SUSPEND) {
- 						test_read_crc(&data, pipe, output, 0);
-@@ -348,10 +346,7 @@ igt_main
- 	igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
- 		     "does not cause issues.");
- 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
--		for_each_pipe(&data.display, pipe) {
--			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
--
--			igt_require(output);
-+		for_each_pipe_with_single_output(&data.display, pipe, output) {
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 				test_disable_crc_after_crtc(&data, pipe, output);
- 		}
-@@ -359,10 +354,7 @@ igt_main
- 
- 	igt_describe("Basic sanity check for CRC mismatches");
- 	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
--		for_each_pipe(&data.display, pipe) {
--			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
--
--			igt_require(output);
-+		for_each_pipe_with_single_output(&data.display, pipe, output) {
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 				test_compare_crc(&data, pipe, output);
- 		}
--- 
-2.35.1
+/*
+ * Find ...
+ */
+
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+--
+Kamil
+
+> + */
+> +static struct igt_list_head *filter_sriov(const struct filter_class *fcls,
+> +					const struct filter *filter)
+> +{
+> +	struct igt_device *dev, *dup;
+> +	int card = -1, pf = -1, vf = -1;
+> +	char *pf_pci_slot_name = NULL;
+> +	(void) fcls;
+> +
+> +	DBG("filter sriov\n");
+> +
+> +	if (filter->data.card) {
+> +		sscanf(filter->data.card, "%d", &card);
+> +		if (card < 0) {
+> +			return &igt_devs.filtered;
+> +		}
+> +	} else {
+> +		card = 0;
+> +	}
+> +
+> +	if (filter->data.pf) {
+> +		sscanf(filter->data.pf, "%d", &pf);
+> +		if (pf < 0) {
+> +			return &igt_devs.filtered;
+> +		}
+> +	} else {
+> +		pf = 0;
+> +	}
+> +
+> +	if (filter->data.vf) {
+> +		sscanf(filter->data.vf, "%d", &vf);
+> +		if (vf < 0) {
+> +			return &igt_devs.filtered;
+> +		}
+> +	}
+> +
+> +	igt_list_for_each_entry(dev, &igt_devs.all, link) {
+> +		if (!is_pci_subsystem(dev))
+> +			continue;
+> +
+> +		/* Skip if 'vendor' doesn't match (hex or name) */
+> +		if (filter->data.vendor && !is_vendor_matched(dev, filter->data.vendor))
+> +			continue;
+> +
+> +		/* Skip if 'device' doesn't match */
+> +		if (filter->data.device && strcasecmp(filter->data.device, dev->device))
+> +			continue;
+> +
+> +		/* We get n-th card */
+> +		if (!card) {
+> +			if (!pf) {
+> +				if (is_pf(dev))
+> +					pf_pci_slot_name = dev->pci_slot_name;
+> +
+> +				/* vf parameter was not passed, get pf */
+> +				if (vf < 0) {
+> +					if (!is_pf(dev))
+> +						continue;
+> +
+> +					dup = duplicate_device(dev);
+> +					igt_list_add_tail(&dup->link, &igt_devs.filtered);
+> +					break;
+> +				} else {
+> +					/* Skip if vf is not associated with defined pf */
+> +					if (!strequal(get_attr(dev, "physfn"), pf_pci_slot_name))
+> +						continue;
+> +
+> +					if (!vf) {
+> +						if (!is_vf(dev))
+> +							continue;
+> +
+> +						dup = duplicate_device(dev);
+> +						igt_list_add_tail(&dup->link, &igt_devs.filtered);
+> +						break;
+> +					}
+> +					if (is_vf(dev)) {
+> +						vf--;
+> +						continue;
+> +					}
+> +				}
+> +			}
+> +			if (is_pf(dev)) {
+> +				pf--;
+> +				continue;
+> +			}
+> +		}
+> +		card--;
+> +	}
+> +
+> +	return &igt_devs.filtered;
+> +}
+> +
+>  static bool sys_path_valid(const struct filter_class *fcls,
+>  			   const struct filter *filter)
+>  {
+> @@ -1350,6 +1492,12 @@ static struct filter_class filter_definition_list[] = {
+>  		.help = "pci:[vendor=%04x/name][,device=%04x][,card=%d] | [slot=%04x:%02x:%02x.%x]",
+>  		.detail = "vendor is hex number or vendor name\n",
+>  	},
+> +	{
+> +		.name = "sriov",
+> +		.filter_function = filter_sriov,
+> +		.help = "sriov:[vendor=%04x/name][,device=%04x][,card=%d][,pf=%d][,vf=%d]",
+> +		.detail = "find pf or vf\n",
+> +	},
+>  	{
+>  		.name = NULL,
+>  	},
+> -- 
+> 2.34.1
+> 
