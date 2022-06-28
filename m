@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A556F10F8EF
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 14:04:26 +0000 (UTC)
-Message-ID: <0db5a71f-5726-c734-983c-75f2e426d625@intel.com>
-Date: Tue, 28 Jun 2022 19:34:14 +0530
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23F6310FABE
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 14:18:00 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Jun 2022 19:51:18 +0530
+Message-Id: <20220628142118.30532-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220628133220.26100-3-nidhi1.gupta@intel.com>
+References: <20220628133220.26100-3-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20220628100219.246526-1-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220628100219.246526-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] tests/kms_pipe_crc_basic: Avoid skips in
- dynamic subtets
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_invalid_mode: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,71 +18,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch LGTM.
-With clean CI results.
-Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
+Sanitize the system state before starting the subtest.
 
-On 28-Jun-22 3:32 PM, Bhanuprakash Modem wrote:
-> Instead of Skipping the dynamic subtest, just don't trigger the test.
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_pipe_crc_basic.c | 16 ++++------------
->   1 file changed, 4 insertions(+), 12 deletions(-)
-> 
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 0f34f807..2ff40f72 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -276,6 +276,7 @@ data_t data = {0, };
->   igt_main
->   {
->   	enum pipe pipe;
-> +	igt_output_t *output;
->   	struct {
->   		const char *name;
->   		unsigned flags;
-> @@ -317,10 +318,7 @@ igt_main
->   	for (i = 0; i < ARRAY_SIZE(tests); i++) {
->   		igt_describe(tests[i].desc);
->   		igt_subtest_with_dynamic(tests[i].name) {
-> -			for_each_pipe(&data.display, pipe) {
-> -				igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
-> -
-> -				igt_require(output);
-> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
->   				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
->   					if (tests[i].flags & TEST_SUSPEND) {
->   						test_read_crc(&data, pipe, output, 0);
-> @@ -348,10 +346,7 @@ igt_main
->   	igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
->   		     "does not cause issues.");
->   	igt_subtest_with_dynamic("disable-crc-after-crtc") {
-> -		for_each_pipe(&data.display, pipe) {
-> -			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
-> -
-> -			igt_require(output);
-> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
->   				test_disable_crc_after_crtc(&data, pipe, output);
->   		}
-> @@ -359,10 +354,7 @@ igt_main
->   
->   	igt_describe("Basic sanity check for CRC mismatches");
->   	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
-> -		for_each_pipe(&data.display, pipe) {
-> -			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
-> -
-> -			igt_require(output);
-> +		for_each_pipe_with_single_output(&data.display, pipe, output) {
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
->   				test_compare_crc(&data, pipe, output);
->   		}
+v2: test every mode listed by connector to be more
+    sure everything is really getting rejected.
+    (Modem Bhanuprakash)
 
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_invalid_mode.c | 38 +++++++++++++-------------------------
+ 1 file changed, 13 insertions(+), 25 deletions(-)
+
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 0287ee02..920c10d3 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -35,7 +35,6 @@ struct _data {
+ 	enum pipe pipe;
+ 	igt_display_t display;
+ 	igt_output_t *output;
+-	drmModeResPtr res;
+ 	int max_dotclock;
+ 	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
+ };
+@@ -182,35 +181,26 @@ static void
+ test_output(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+-	drmModeModeInfo mode;
+ 	struct igt_fb fb;
+-	int ret;
+-	uint32_t crtc_id;
++	drmModeConnector *connector = output->config.connector;
+ 
+-	/*
+-	 * FIXME test every mode we have to be more
+-	 * sure everything is really getting rejected?
+-	 */
+-	mode = *igt_output_get_mode(output);
+-	igt_require(data->adjust_mode(data, &mode));
++	igt_output_set_pipe(output, data->pipe);
+ 
+-	igt_create_fb(data->drm_fd,
+-		      max_t(uint16_t, mode.hdisplay, 64),
+-		      max_t(uint16_t, mode.vdisplay, 64),
+-		      DRM_FORMAT_XRGB8888,
++	igt_create_fb(data->drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
+ 		      DRM_FORMAT_MOD_LINEAR,
+ 		      &fb);
+ 
+-	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+-
+-	crtc_id = data->display.pipes[data->pipe].crtc_id;
+-
+-	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+-			     fb.fb_id, 0, 0,
+-			     &output->id, 1, &mode);
+-	igt_assert_lt(ret, 0);
++	for_each_connector_mode(output) {
++		igt_require(data->adjust_mode(data, &connector->modes[j__]));
++		igt_output_override_mode(output, &connector->modes[j__]);
++		igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++	}
+ 
+ 	igt_remove_fb(data->drm_fd, &fb);
++	igt_output_override_mode(output, NULL);
++	/*unset_all_crtcs*/
++	igt_display_reset(&data->display);
++	igt_display_commit(&data->display);
+ }
+ 
+ static int i915_max_dotclock(data_t *data)
+@@ -290,11 +280,10 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+-		data.res = drmModeGetResources(data.drm_fd);
+-		igt_assert(data.res);
+ 
+ 		data.max_dotclock = i915_max_dotclock(&data);
+ 		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
++		igt_display_require_output_on_pipe(&data.display, pipe);
+ 	}
+ 
+ 	igt_describe("Make sure all modesets are rejected when the requested mode is invalid");
+@@ -314,6 +303,5 @@ igt_main
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		igt_reset_connectors();
+-		drmModeFreeResources(data.res);
+ 	}
+ }
 -- 
-~Swati Sharma
+2.26.2
