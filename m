@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 774F0113ADE
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 08:20:37 +0000 (UTC)
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 28 Jun 2022 08:20:32 +0000
-Message-ID: <PH0PR11MB4806886AC04C6C86EA3ACF76E4B89@PH0PR11MB4806.namprd11.prod.outlook.com>
-References: <20220627180044.24156-1-mohammed.thasleem@intel.com>
- <20220627180044.24156-2-mohammed.thasleem@intel.com>
- <YrqjqySimL/TCVNb@kamilkon-desk1>
-In-Reply-To: <YrqjqySimL/TCVNb@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/alternative;
+ boundary="===============2966679907400263198=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 1/2] tests/kms_rmfb: Create dynamic subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+Date: Tue, 28 Jun 2022 08:27:42 -0000
+Message-ID: <165640486252.14503.3611543478063117907@emeril.freedesktop.org>
+References: <20220628074744.32025-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20220628074744.32025-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Frmfb=3A_IGT_test_cleanup_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,67 +17,286 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgS2FtaWwsDQoNClRoYW5rcyBmb3IgcmV2aWV3cy4NCkFkZHJlc3NlZCBjb21tZW50cyBhdCB2
-NC4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IEthbWlsIEtvbmllY3pueSA8
-a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT4gDQpTZW50OiBUdWVzZGF5LCBKdW5lIDI4
-LCAyMDIyIDEyOjE2IFBNDQpUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBU
-aGFzbGVlbSwgTW9oYW1tZWQgPG1vaGFtbWVkLnRoYXNsZWVtQGludGVsLmNvbT4NClN1YmplY3Q6
-IFJlOiBbaWd0LWRldl0gW1BBVENIIHYyIDEvMl0gdGVzdHMva21zX3JtZmI6IENyZWF0ZSBkeW5h
-bWljIHN1YnRlc3RzDQoNCkhpIE1vaGFtbWVkLA0KDQpPbiAyMDIyLTA2LTI3IGF0IDIzOjMwOjQz
-ICswNTMwLCBNb2hhbW1lZCBUaGFzbGVlbSB3cm90ZToNCj4gTW9kaWZpZWQga21zX3JtZmIgdG8g
-aW5jbHVkZSBkeW5hbWljIHRlc3QgY2FzZXMuDQo+IA0KPiB2MjogYWRkcmVzc2VkIGluZGVudGF0
-aW9uLCB0ZXN0IGRlc2NyaXB0aW9uIG1vdmVkIGludG8gc3RydWN0DQo+ICAgICBhbmQgYWRkZWQg
-Z2xvYmFsIGRlc2NyaXB0aW9uIHRvIHRlc3QuDQo+IHYzOiBtaW5vciBjaGFuZ2VzLg0KPiANCj4g
-U2lnbmVkLW9mZi1ieTogTW9oYW1tZWQgVGhhc2xlZW0gPG1vaGFtbWVkLnRoYXNsZWVtQGludGVs
-LmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9rbXNfcm1mYi5jIHwgMzcgKysrKysrKysrKysrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDI3IGluc2VydGlvbnMoKyks
-IDEwIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19ybWZiLmMgYi90
-ZXN0cy9rbXNfcm1mYi5jIGluZGV4IA0KPiBmY2Q1Y2RhZC4uODlmN2M4MGMgMTAwNjQ0DQo+IC0t
-LSBhL3Rlc3RzL2ttc19ybWZiLmMNCj4gKysrIGIvdGVzdHMva21zX3JtZmIuYw0KPiBAQCAtMzYs
-NiArMzYsOSBAQA0KPiAgI2RlZmluZSBEUk1fQ0FQX0NVUlNPUl9IRUlHSFQgMHg5DQo+ICAjZW5k
-aWYNCj4gIA0KPiArSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRoaXMgdGVzdHMgcm1mYiBhbmQgY2xv
-c2UtZmQgYmVoYXZpb3IuIEluIHRoZXNlIGNhc2VzIg0KPiArCQkgICAgICJ0aGUgZnJhbWVidWZm
-ZXJzIHNob3VsZCBiZSByZW1vdmVkIGZyb20gdGhlIGNydGMuIik7DQo+ICsNCj4gIHN0cnVjdCBy
-bWZiX2RhdGEgew0KPiAgCWludCBkcm1fZmQ7DQo+ICAJaWd0X2Rpc3BsYXlfdCBkaXNwbGF5Ow0K
-PiBAQCAtMTUxLDEzICsxNTQsMjggQEAgcnVuX3JtZmJfdGVzdChzdHJ1Y3Qgcm1mYl9kYXRhICpk
-YXRhLCBib29sIHJlb3BlbikNCj4gIAlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsNCj4gIAllbnVtIHBp
-cGUgcGlwZTsNCj4gIA0KPiAtCWZvcl9lYWNoX3BpcGVfd2l0aF9zaW5nbGVfb3V0cHV0KCZkYXRh
-LT5kaXNwbGF5LCBwaXBlLCBvdXRwdXQpDQo+IC0JCXRlc3Rfcm1mYihkYXRhLCBvdXRwdXQsIHBp
-cGUsIHJlb3Blbik7DQo+ICsJZm9yX2VhY2hfcGlwZV93aXRoX3NpbmdsZV9vdXRwdXQoJmRhdGEt
-PmRpc3BsYXksIHBpcGUsIG91dHB1dCkgew0KPiArCQlpZ3RfZHluYW1pY19mKCIlcy1waXBlLSVz
-IiwgaWd0X291dHB1dF9uYW1lKG91dHB1dCksDQo+ICsJCQkgICAgICBrbXN0ZXN0X3BpcGVfbmFt
-ZShwaXBlKSkNCj4gKwkJCXRlc3Rfcm1mYihkYXRhLCBvdXRwdXQsIHBpcGUsIHJlb3Blbik7DQo+
-ICsJfQ0KPiAgfQ0KPiAgDQo+ICBpZ3RfbWFpbg0KPiAgew0KPiArCWNvbnN0IHN0cnVjdCB7DQo+
-ICsJCWJvb2wgZmxhZ3M7DQo+ICsJCWNvbnN0IGNoYXIgKm5hbWU7DQo+ICsJCWNvbnN0IGNoYXIg
-KmRlc2NyaXB0aW9uOw0KPiArCX0gdGVzdHNbXSA9IHsNCj4gKwkJeyBmYWxzZSwgInJtZmItaW9j
-dGwiLCAiUk1GQiBpcyBzdXBwb3NlZCB0byBmcmVlIHRoZSBmcmFtZWJ1ZmZlcnMgZnJvbSBhbnkg
-YW5kIGFsbCAiDQo+ICsJCQkJICAgICAgICJwbGFuZXMgc28gdGVzdCB0aGlzIGFuZCBtYWtlIHN1
-cmUgaXQgd29ya3MuIn0sDQo+ICsJCXsgdHJ1ZSwgImNsb3NlLWZkIiwgIlJNRkIgaXMgc3VwcG9z
-ZWQgdG8gZnJlZSB0aGUgZnJhbWVidWZmZXJzIGZyb20gYW55IGFuZCBhbGwgIg0KPiArCQkJCSAg
-ICAicGxhbmVzIHNvIHRlc3QgdGhpcyBhbmQgbWFrZSBzdXJlIGl0IHdvcmtzIHdpdGggZmQgY2xv
-c2UgIg0KPiArCQkJCSAgICAiYW5kIHJlb3Blbi4ifSwNCj4gKwl9Ow0KPiAgCXN0cnVjdCBybWZi
-X2RhdGEgZGF0YSA9IHt9Ow0KPiArCWludCBpOw0KPiAgDQo+ICAJaWd0X2ZpeHR1cmUgew0KPiAg
-CQlkYXRhLmRybV9mZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0FOWSk7DQo+IEBA
-IC0xNjgsMTUgKzE4NiwxNCBAQCBpZ3RfbWFpbg0KPiAgCQlpZ3RfZGlzcGxheV9yZXF1aXJlX291
-dHB1dCgmZGF0YS5kaXNwbGF5KTsNCj4gIAl9DQo+ICANCj4gLQlpZ3RfZGVzY3JpYmUoIlJNRkIg
-aXMgc3VwcG9zZWQgdG8gZnJlZSB0aGUgZnJhbWVidWZmZXJzIGZyb20gYW55IGFuZCBhbGwgIg0K
-PiAtCQkgICAgICJwbGFuZXMgc28gdGVzdCB0aGlzIGFuZCBtYWtlIHN1cmUgaXQgd29ya3MuIik7
-DQo+IC0JaWd0X3N1YnRlc3RfZigicm1mYi1pb2N0bCIpDQo+IC0JCXJ1bl9ybWZiX3Rlc3QoJmRh
-dGEsIGZhbHNlKTsNCj4gKwlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRSh0ZXN0cyk7IGkrKykg
-ew0KPiArDQoNClJlbW92ZSB0aGlzIGVtcHkgbGluZS4gV2l0aCB0aGF0IGZpeGVkIHlvdSBjYW4g
-YWRkIG15IHItYiB0YWcuDQpQbGVhc2UgdXNlIEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVj
-em55QGxpbnV4LmludGVsLmNvbT4gaW4gci1iIHRhZywgYWxzbyB3aGVuIHNlbmRpbmcgcGxlYXNl
-IHB1dCBtYWlsaW5nIGxpc3QgaW4gVG8gYW5kIGFsbCBvdGhlciBhZGRyZXNzZXMgaW4gQ2MgZmll
-bGQuDQoNClJlZ2FyZHMsDQpLYW1pbA0KDQo+ICsJCWlndF9kZXNjcmliZSh0ZXN0c1tpXS5kZXNj
-cmlwdGlvbik7DQo+ICsJCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYyh0ZXN0c1tpXS5uYW1lKSB7
-DQo+ICsJCQlydW5fcm1mYl90ZXN0KCZkYXRhLCB0ZXN0c1tpXS5mbGFncyk7DQo+ICANCj4gLQlp
-Z3RfZGVzY3JpYmUoIlJNRkIgaXMgc3VwcG9zZWQgdG8gZnJlZSB0aGUgZnJhbWVidWZmZXJzIGZy
-b20gYW55IGFuZCBhbGwgcGxhbmVzICINCj4gLQkJICAgICAic28gdGVzdCB0aGlzIGFuZCBtYWtl
-IHN1cmUgaXQgd29ya3Mgd2l0aCBmZCBjbG9zZSBhbmQgcmVvcGVuLiIpOw0KPiAtCWlndF9zdWJ0
-ZXN0X2YoImNsb3NlLWZkIikNCj4gLQkJcnVuX3JtZmJfdGVzdCgmZGF0YSwgdHJ1ZSk7DQo+ICsJ
-CX0NCj4gKwl9DQo+ICANCj4gIAlpZ3RfZml4dHVyZSB7DQo+ICAJCWlndF9kaXNwbGF5X2Zpbmko
-JmRhdGEuZGlzcGxheSk7DQo+IC0tDQo+IDIuMjUuMQ0KPiANCg==
+--===============2966679907400263198==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/kms_rmfb: IGT test cleanup (rev4)
+URL   : https://patchwork.freedesktop.org/series/105149/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6544 -> IGTPW_7413
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_7413 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7413, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): fi-icl-u2 fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7413:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_parallel@engines@fds:
+    - fi-glk-j4005:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-glk-j4005/igt@gem_exec_parallel@engines@fds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-glk-j4005/igt@gem_exec_parallel@engines@fds.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7413 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gem:
+    - fi-pnv-d510:        NOTRUN -> [DMESG-FAIL][3] ([i915#4528])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-pnv-d510/igt@i915_selftest@live@gem.html
+
+  * igt@i915_selftest@live@gtt:
+    - fi-bdw-5557u:       [PASS][4] -> [INCOMPLETE][5] ([i915#5685])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-bdw-5557u/igt@i915_selftest@live@gtt.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-bdw-5557u/igt@i915_selftest@live@gtt.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][6] -> [DMESG-FAIL][7] ([i915#4494] / [i915#4957])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [PASS][8] -> [FAIL][9] ([i915#6298])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - fi-tgl-u2:          [PASS][10] -> [DMESG-WARN][11] ([i915#402]) +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  * igt@runner@aborted:
+    - fi-glk-j4005:       NOTRUN -> [FAIL][12] ([i915#4312])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-glk-j4005/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@coherency:
+    - {bat-dg2-9}:        [DMESG-WARN][13] ([i915#5763]) -> [PASS][14] +13 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/bat-dg2-9/igt@i915_selftest@live@coherency.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/bat-dg2-9/igt@i915_selftest@live@coherency.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [DMESG-FAIL][15] ([i915#4528]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@kms_busy@basic@flip:
+    - {bat-adln-1}:       [DMESG-WARN][17] ([i915#3576]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/bat-adln-1/igt@kms_busy@basic@flip.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/bat-adln-1/igt@kms_busy@basic@flip.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
+    - {bat-adlp-6}:       [DMESG-WARN][19] ([i915#3576]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5685]: https://gitlab.freedesktop.org/drm/intel/issues/5685
+  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6299]: https://gitlab.freedesktop.org/drm/intel/issues/6299
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6544 -> IGTPW_7413
+
+  CI-20190529: 20190529
+  CI_DRM_11817: 001d43f0d51677c2f8a45e95dcaf63a95c3934e9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7413: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/index.html
+  IGT_6544: 7043ebd7313dbceb3d931aa2dbc0d67288982d40 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/index.html
+
+--===============2966679907400263198==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_rmfb: IGT test cleanup (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105149/">https://patchwork.freedesktop.org/series/105149/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6544 -&gt; IGTPW_7413</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7413 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7413, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): fi-icl-u2 fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7413:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@gem_exec_parallel@engines@fds:<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-glk-j4005/igt@gem_exec_parallel@engines@fds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-glk-j4005/igt@gem_exec_parallel@engines@fds.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7413 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gem:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gtt:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-bdw-5557u/igt@i915_selftest@live@gtt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-bdw-5557u/igt@i915_selftest@live@gtt.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5685">i915#5685</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@a-edp1:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-tgl-u2/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-glk-j4005/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@coherency:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/bat-dg2-9/igt@i915_selftest@live@coherency.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/bat-dg2-9/igt@i915_selftest@live@coherency.html">PASS</a> +13 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/bat-adln-1/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/bat-adln-1/igt@kms_busy@basic@flip.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6544/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6544 -&gt; IGTPW_7413</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11817: 001d43f0d51677c2f8a45e95dcaf63a95c3934e9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7413: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7413/index.html<br />
+  IGT_6544: 7043ebd7313dbceb3d931aa2dbc0d67288982d40 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2966679907400263198==--
