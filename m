@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Jun 2022 14:13:16 +0100
+Message-Id: <20220628131318.197965-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arun R Murthy" <arun.r.murthy@intel.com>
-Date: Tue, 28 Jun 2022 13:11:07 -0000
-Message-ID: <165642186718.14504.18347261880436609776@emeril.freedesktop.org>
-References: <20220628110409.768308-1-arun.r.murthy@intel.com>
-In-Reply-To: <20220628110409.768308-1-arun.r.murthy@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/i915/kms=5Fbig=5Ffb=3A_trigger_async_flip_with_a_dummy_fli?=
- =?utf-8?q?p?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_device_scan: fix dangling
+ pointer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,45 +15,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+It looks like the linkto is out of scope:
 
-Series: tests/i915/kms_big_fb: trigger async flip with a dummy flip
-URL   : https://patchwork.freedesktop.org/series/105726/
-State : warning
+../lib/igt_device_scan.c: In function ‘igt_device_add_attr’:
+../lib/igt_device_scan.c:368:57: warning: dangling pointer ‘v’ to ‘linkto’ may be used [-Wdangling-pointer=]
+  368 |         g_hash_table_insert(dev->attrs_ht, strdup(key), strdup(v));
+      |                                                         ^~~~~~~~~
+../lib/igt_device_scan.c:351:22: note: ‘linkto’ declared here
+  351 |                 char linkto[PATH_MAX];
 
-== Summary ==
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+---
+ lib/igt_device_scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/624197 for the overview.
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/24662438):
-  Using docker image sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-dff17605d184c7417a6a220ec8464b43d0e07823 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal@sha256:8b51a86fd81e64c501c9521c37fc8ad6f2550976931c510eb0ff4f6a328d477a ...
-  section_end:1656421636:prepare_executor
-  section_start:1656421636:prepare_script
-  Preparing environment
-  Running on runner-thys1ka2-project-3185-concurrent-0 via gst-htz-2...
-  section_end:1656421637:prepare_script
-  section_start:1656421637:get_sources
-  Getting source from Git repository
-  $ eval "$CI_PRE_CLONE_SCRIPT"
-  Fetching changes...
-  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Created fresh repository.
-  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
-  fatal: the remote end hung up unexpectedly
-  section_end:1656421699:get_sources
-  section_start:1656421699:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1656421700:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/624197
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index a1cee7a4..5d1d4258 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -338,6 +338,7 @@ static void igt_device_add_attr(struct igt_device *dev,
+ 				const char *key, const char *value)
+ {
+ 	const char *v = value;
++	char linkto[PATH_MAX];
+ 
+ 	if (!key)
+ 		return;
+@@ -348,7 +349,6 @@ static void igt_device_add_attr(struct igt_device *dev,
+ 	if (!v) {
+ 		struct stat st;
+ 		char path[PATH_MAX];
+-		char linkto[PATH_MAX];
+ 		int len;
+ 
+ 		snprintf(path, sizeof(path), "%s/%s", dev->syspath, key);
+-- 
+2.36.1
