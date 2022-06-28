@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A916010FF9A
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 12:19:08 +0000 (UTC)
-Date: Tue, 28 Jun 2022 14:19:04 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YrrxuPoWtICtW6aS@kamilkon-desk1>
-References: <20220628062336.3797258-1-janga.rahul.kumar@intel.com>
- <20220628062336.3797258-2-janga.rahul.kumar@intel.com>
+Message-ID: <22b1a0d6-35c9-73ba-8115-f7bf6bc72f61@intel.com>
+Date: Tue, 28 Jun 2022 15:26:56 +0300
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220627161004.70153-1-matthew.auld@intel.com>
+ <20220627161004.70153-2-matthew.auld@intel.com>
+From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+In-Reply-To: <20220627161004.70153-2-matthew.auld@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220628062336.3797258-2-janga.rahul.kumar@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/2] tests/prime_vgem : Add subtests
- description
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/i915/kms_mmap_write_crc:
+ handle missing gem_get_caching()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,156 +19,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janga,
+Looks good to me.
 
-On 2022-06-28 at 11:53:35 +0530, janga.rahul.kumar@intel.com wrote:
-> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+
+On 6/27/22 7:10 PM, Matthew Auld wrote:
+> The kernel is meant to force the caching level for the object to
+> CACHE_NONE or CACHE_WT when first scanning out the object, since the
+> display engine is not coherent (assuming userspace hasn't already done
+> this). On discrete we no longer support set/get_caching, but we can only
+> do the scanout from lmem, which can only be mapped as WC and so should
+> always be coherent for scanout. Adjust the test and ensure it still
+> passes as expected.
 > 
-> Add test description to all the available subtests and
-> corrected a little old descriptions.
-> 
-> v2 : Add description to all subtests.
-> v3 : Modified subtest description.
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5303
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 > ---
->  tests/prime_vgem.c | 32 +++++++++++++++++++++++++-------
->  1 file changed, 25 insertions(+), 7 deletions(-)
+>   tests/i915/kms_mmap_write_crc.c | 11 +++++++----
+>   1 file changed, 7 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-> index 5fa6e537..a8df6413 100644
-> --- a/tests/prime_vgem.c
-> +++ b/tests/prime_vgem.c
-> @@ -1128,33 +1128,39 @@ igt_main
->  		gem_require_mmap_device_coherent(i915);
->  	}
->  
-> +	igt_describe("Examine read access path.");
->  	igt_subtest("basic-read")
->  		test_read(vgem, i915);
->  
-> +	igt_describe("Examine write access path.");
->  	igt_subtest("basic-write")
->  		test_write(vgem, i915);
->  
-> +	igt_describe("Check that we wrap the vgem mmap with userptr.");
->  	igt_subtest("basic-userptr")
->  		test_userptr(vgem, i915);
->  
-> +	igt_describe("Examine access path through GTT.");
->  	igt_subtest("basic-gtt") {
->  		gem_require_mappable_ggtt(i915);
->  		test_gtt(vgem, i915);
->  	}
->  
-> -	igt_describe("Examine blitter access path");
-> +	igt_describe("Examine blitter access path.");
->  	igt_subtest("basic-blt")
->  		test_blt(vgem, i915);
->  
-> +	igt_describe("Examine link establishment between shrinker and vgem bo.");
->  	igt_subtest("shrink")
->  		test_shrink(vgem, i915);
->  
-> +	igt_describe("Examine concurrent access of vgem bo.");
->  	igt_subtest("coherency-gtt") {
->  		gem_require_mappable_ggtt(i915);
->  		test_gtt_interleaved(vgem, i915);
->  	}
->  
-> -	igt_describe("Examine blitter access path WC coherency");
-> +	igt_describe("Examine blitter access path WC coherency.");
->  	igt_subtest("coherency-blt")
->  		test_blt_interleaved(vgem, i915);
->  
-> @@ -1163,15 +1169,18 @@ igt_main
->  			const char *name;
->  			void (*fn)(int i915, int vgem, const intel_ctx_t *ctx,
->  				   unsigned int engine);
-> +			const char *describe;
->  		} tests[] = {
-> -			{ "sync", test_sync },
-> -			{ "busy", test_busy },
-> -			{ "wait", test_wait },
-> +			{ "sync", test_sync, "Examine sync on vegem fence." },
--------------------------------------------------------------- ^
-s/vegem/vgem/
-
-> +			{ "busy", test_busy, "Examine busy check of polling for vgem fence." },
-> +			{ "wait", test_wait, "Examine wait on vgem fence." },
->  			{ }
->  		};
->  
-> -		for(const typeof(*tests) *t = tests; t->name; t++)
-> +		for(const typeof(*tests) *t = tests; t->name; t++){
------------------- ^ -------------------------------------------- ^
-Put spaces before, like this:
-		for (const typeof(*tests) *t = tests; t->name; t++) {
-
-Please use checkpatch from Linux kernel to catch such bugs.
-
-Regards,
-Kamil
-
-> +			igt_describe(t->describe);
->  			test_each_engine(t->name, vgem, i915, t->fn);
-> +		}
->  	}
->  
->  	/* Fence testing */
-> @@ -1180,17 +1189,21 @@ igt_main
->  			igt_require(vgem_has_fences(vgem));
->  		}
->  
-> +		igt_describe("Examine read access path fencing.");
->  		igt_subtest("basic-fence-read")
->  			test_fence_read(i915, vgem);
+> diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+> index b17e5fdb..da7312d6 100644
+> --- a/tests/i915/kms_mmap_write_crc.c
+> +++ b/tests/i915/kms_mmap_write_crc.c
+> @@ -78,7 +78,6 @@ static void test(data_t *data)
+>   	drmModeModeInfo *mode;
+>   	cairo_t *cr;
+>   	char *ptr;
+> -	uint32_t caching;
+>   	void *buf;
+>   	igt_crc_t crc;
+>   
+> @@ -102,9 +101,13 @@ static void test(data_t *data)
+>   	igt_plane_set_fb(data->primary, &data->fb[0]);
+>   	igt_display_commit(display);
+>   
+> -	/* make sure caching mode has become UC/WT */
+> -	caching = gem_get_caching(data->drm_fd, fb->gem_handle);
+> -	igt_assert(caching == I915_CACHING_NONE || caching == I915_CACHING_DISPLAY);
+> +	if (!gem_has_lmem(data->drm_fd)) {
+> +		uint32_t caching;
 > +
-> +		igt_describe("Examine GTT access path fencing.");
->  		igt_subtest("basic-fence-mmap") {
->  			gem_require_mappable_ggtt(i915);
->  			test_fence_mmap(i915, vgem);
->  		}
->  
-> -		igt_describe("Examine blitter access path fencing");
-> +		igt_describe("Examine blitter access path fencing.");
->  		igt_subtest("basic-fence-blt")
->  			test_fence_blt(i915, vgem);
->  
-> +		igt_describe("Examine vgem bo front/back flip fencing.");
->  		igt_subtest("basic-fence-flip")
->  			test_flip(i915, vgem, 0);
->  
-> @@ -1199,11 +1212,15 @@ igt_main
->  				igt_require(vgem_fence_has_flag(vgem, WIP_VGEM_FENCE_NOTIMEOUT));
->  			}
->  
-> +			igt_describe("Examine read access path fencing with a pending gpu hang.");
->  			igt_subtest("fence-read-hang")
->  				test_fence_hang(i915, vgem, 0);
-> +
-> +			igt_describe("Examine write access path fencing with a pending gpu hang.");
->  			igt_subtest("fence-write-hang")
->  				test_fence_hang(i915, vgem, VGEM_FENCE_WRITE);
->  
-> +			igt_describe("Examine vgem bo front/back flip fencing with a pending gpu hang.");
->  			igt_subtest("fence-flip-hang")
->  				test_flip(i915, vgem, WIP_VGEM_FENCE_NOTIMEOUT);
->  		}
-> @@ -1216,6 +1233,7 @@ igt_main
->  			intel_allocator_multiprocess_start();
->  		}
->  
-> +		igt_describe("Examine basic dma-buf fence interop.");
->  		test_each_engine("fence-wait", vgem, i915, test_fence_wait);
->  
->  		igt_fixture {
-> -- 
-> 2.25.1
+> +		/* make sure caching mode has become UC/WT */
+> +		caching = gem_get_caching(data->drm_fd, fb->gem_handle);
+> +		igt_assert(caching == I915_CACHING_NONE || caching == I915_CACHING_DISPLAY);
+> +	}
+>   
+>   	/*
+>   	 * firstly demonstrate the need for DMA_BUF_SYNC_START ("begin_cpu_access")
 > 
