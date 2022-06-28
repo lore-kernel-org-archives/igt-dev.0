@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <5db0e882-3691-882f-23a4-86238b55401b@intel.com>
-Date: Tue, 28 Jun 2022 13:47:58 +0100
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A515112B3D
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 13:06:21 +0000 (UTC)
+Date: Tue, 28 Jun 2022 15:05:52 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Yrr8sAD69/6kK2wa@kamilkon-desk1>
+References: <20220628124532.3826811-1-janga.rahul.kumar@intel.com>
+ <20220628124532.3826811-2-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
-Content-Language: en-GB
-To: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220627161004.70153-1-matthew.auld@intel.com>
- <edb8ed97-fee9-1e86-9339-979fd97b3f95@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <edb8ed97-fee9-1e86-9339-979fd97b3f95@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/i915/gem_eio: fix uaf
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220628124532.3826811-2-janga.rahul.kumar@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] tests/prime_vgem : Add subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,58 +21,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org
+Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 28/06/2022 11:24, Gwan-gyeong Mun wrote:
-> Looks good to me.
+On 2022-06-28 at 18:15:31 +0530, janga.rahul.kumar@intel.com wrote:
+> From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 > 
-> Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+> Add test description to all the available subtests and
+> corrected a little old descriptions.
 > 
-> However, the use after free build issue did not occur only with the "$ 
-> meson build && ninja -C build" build command guided by the igt 
-> README.md. How did you check it?
+> v2 : Add description to all subtests.
+> v3 : Modified subtest description.
+> v4 : Minor corrections.
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Hmm, I assume it's just a difference in compiler version or so. I have: 
-gcc (GCC) 12.1.1 20220507 (Red Hat 12.1.1-1).
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> ---
+>  tests/prime_vgem.c | 33 ++++++++++++++++++++++++++-------
+>  1 file changed, 26 insertions(+), 7 deletions(-)
 > 
-> Br,
+> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> index 5fa6e537..95c8e4fe 100644
+> --- a/tests/prime_vgem.c
+> +++ b/tests/prime_vgem.c
+> @@ -1128,33 +1128,39 @@ igt_main
+>  		gem_require_mmap_device_coherent(i915);
+>  	}
+>  
+> +	igt_describe("Examine read access path.");
+>  	igt_subtest("basic-read")
+>  		test_read(vgem, i915);
+>  
+> +	igt_describe("Examine write access path.");
+>  	igt_subtest("basic-write")
+>  		test_write(vgem, i915);
+>  
+> +	igt_describe("Check that we wrap the vgem mmap with userptr.");
+>  	igt_subtest("basic-userptr")
+>  		test_userptr(vgem, i915);
+>  
+> +	igt_describe("Examine access path through GTT.");
+>  	igt_subtest("basic-gtt") {
+>  		gem_require_mappable_ggtt(i915);
+>  		test_gtt(vgem, i915);
+>  	}
+>  
+> -	igt_describe("Examine blitter access path");
+> +	igt_describe("Examine blitter access path.");
+>  	igt_subtest("basic-blt")
+>  		test_blt(vgem, i915);
+>  
+> +	igt_describe("Examine link establishment between shrinker and vgem bo.");
+>  	igt_subtest("shrink")
+>  		test_shrink(vgem, i915);
+>  
+> +	igt_describe("Examine concurrent access of vgem bo.");
+>  	igt_subtest("coherency-gtt") {
+>  		gem_require_mappable_ggtt(i915);
+>  		test_gtt_interleaved(vgem, i915);
+>  	}
+>  
+> -	igt_describe("Examine blitter access path WC coherency");
+> +	igt_describe("Examine blitter access path WC coherency.");
+>  	igt_subtest("coherency-blt")
+>  		test_blt_interleaved(vgem, i915);
+>  
+> @@ -1163,15 +1169,18 @@ igt_main
+>  			const char *name;
+>  			void (*fn)(int i915, int vgem, const intel_ctx_t *ctx,
+>  				   unsigned int engine);
+> +			const char *describe;
+>  		} tests[] = {
+> -			{ "sync", test_sync },
+> -			{ "busy", test_busy },
+> -			{ "wait", test_wait },
+> +			{ "sync", test_sync, "Examine sync on vgem fence." },
+> +			{ "busy", test_busy, "Examine busy check of polling for vgem fence." },
+> +			{ "wait", test_wait, "Examine wait on vgem fence." },
+>  			{ }
+>  		};
+>  
+> -		for(const typeof(*tests) *t = tests; t->name; t++)
+> +		for (const typeof(*tests) *t = tests; t->name; t++) {
+> +			igt_describe(t->describe);
+>  			test_each_engine(t->name, vgem, i915, t->fn);
+> +		}
+>  	}
+>  
+>  	/* Fence testing */
+> @@ -1180,17 +1189,21 @@ igt_main
+>  			igt_require(vgem_has_fences(vgem));
+>  		}
+>  
+> +		igt_describe("Examine read access path fencing.");
+>  		igt_subtest("basic-fence-read")
+>  			test_fence_read(i915, vgem);
+> +
+> +		igt_describe("Examine GTT access path fencing.");
+>  		igt_subtest("basic-fence-mmap") {
+>  			gem_require_mappable_ggtt(i915);
+>  			test_fence_mmap(i915, vgem);
+>  		}
+>  
+> -		igt_describe("Examine blitter access path fencing");
+> +		igt_describe("Examine blitter access path fencing.");
+>  		igt_subtest("basic-fence-blt")
+>  			test_fence_blt(i915, vgem);
+>  
+> +		igt_describe("Examine vgem bo front/back flip fencing.");
+>  		igt_subtest("basic-fence-flip")
+>  			test_flip(i915, vgem, 0);
+>  
+> @@ -1199,11 +1212,16 @@ igt_main
+>  				igt_require(vgem_fence_has_flag(vgem, WIP_VGEM_FENCE_NOTIMEOUT));
+>  			}
+>  
+> +			igt_describe("Examine read access path fencing with a pending gpu hang.");
+>  			igt_subtest("fence-read-hang")
+>  				test_fence_hang(i915, vgem, 0);
+> +
+> +			igt_describe("Examine write access path fencing with a pending gpu hang.");
+>  			igt_subtest("fence-write-hang")
+>  				test_fence_hang(i915, vgem, VGEM_FENCE_WRITE);
+>  
+> +			igt_describe("Examine vgem bo front/back flip fencing with a pending gpu"
+> +				     " hang.");
+>  			igt_subtest("fence-flip-hang")
+>  				test_flip(i915, vgem, WIP_VGEM_FENCE_NOTIMEOUT);
+>  		}
+> @@ -1216,6 +1234,7 @@ igt_main
+>  			intel_allocator_multiprocess_start();
+>  		}
+>  
+> +		igt_describe("Examine basic dma-buf fence interop.");
+>  		test_each_engine("fence-wait", vgem, i915, test_fence_wait);
+>  
+>  		igt_fixture {
+> -- 
+> 2.25.1
 > 
-> G.G.
-> 
-> 
-> On 6/27/22 7:10 PM, Matthew Auld wrote:
->> ../tests/i915/gem_eio.c:277:20: warning: pointer ‘ctx’ used after 
->> ‘free’ [-Wuse-after-free]
->>    277 |         igt_assert(igt_sysfs_printf(ctx->debugfs, 
->> "i915_drop_caches",
->> ../lib/igt_core.h:667:20: note: in definition of macro ‘igt_assert’
->>    667 |         do { if (!(expr)) \
->>        |                    ^~~~
->> ../tests/i915/gem_eio.c:274:9: note: call to ‘free’ here
->>    274 |         free(ctx);
->>
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
->> ---
->>   tests/i915/gem_eio.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
->> index 913a21f9..6cbae6eb 100644
->> --- a/tests/i915/gem_eio.c
->> +++ b/tests/i915/gem_eio.c
->> @@ -270,11 +270,11 @@ static void hang_handler(union sigval arg)
->>             igt_nsec_elapsed(&ctx->delay) / 1000.0);
->>       igt_assert_eq(timer_delete(ctx->timer), 0);
->> -    free(ctx);
->>       /* flush any excess work before we start timing our reset */
->>       igt_assert(igt_sysfs_printf(ctx->debugfs, "i915_drop_caches",
->>                       "%d", DROP_RCU));
->> +    free(ctx);
->>       igt_nsec_elapsed(ts);
->>       igt_assert(igt_sysfs_printf(dir, "i915_wedged", "%llu", -1ull));
->>
