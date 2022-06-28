@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E5FB11ACF3
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 06:46:06 +0000 (UTC)
-Date: Tue, 28 Jun 2022 08:46:03 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YrqjqySimL/TCVNb@kamilkon-desk1>
-References: <20220627180044.24156-1-mohammed.thasleem@intel.com>
- <20220627180044.24156-2-mohammed.thasleem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7845079912791094886=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220627180044.24156-2-mohammed.thasleem@intel.com>
-Subject: Re: [igt-dev] [PATCH v2 1/2] tests/kms_rmfb: Create dynamic subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Tue, 28 Jun 2022 07:12:26 -0000
+Message-ID: <165640034605.14501.6988236774811500013@emeril.freedesktop.org>
+References: <20220628060730.15700-1-jeevan.b@intel.com>
+In-Reply-To: <20220628060730.15700-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fflip=3A_Skip_test_only_for_invalid_combination_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,101 +17,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mohammed,
+--===============7845079912791094886==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2022-06-27 at 23:30:43 +0530, Mohammed Thasleem wrote:
-> Modified kms_rmfb to include dynamic test cases.
-> 
-> v2: addressed indentation, test description moved into struct
->     and added global description to test.
-> v3: minor changes.
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->  tests/kms_rmfb.c | 37 +++++++++++++++++++++++++++----------
->  1 file changed, 27 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-> index fcd5cdad..89f7c80c 100644
-> --- a/tests/kms_rmfb.c
-> +++ b/tests/kms_rmfb.c
-> @@ -36,6 +36,9 @@
->  #define DRM_CAP_CURSOR_HEIGHT 0x9
->  #endif
->  
-> +IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
-> +		     "the framebuffers should be removed from the crtc.");
-> +
->  struct rmfb_data {
->  	int drm_fd;
->  	igt_display_t display;
-> @@ -151,13 +154,28 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
->  	igt_output_t *output;
->  	enum pipe pipe;
->  
-> -	for_each_pipe_with_single_output(&data->display, pipe, output)
-> -		test_rmfb(data, output, pipe, reopen);
-> +	for_each_pipe_with_single_output(&data->display, pipe, output) {
-> +		igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
-> +			      kmstest_pipe_name(pipe))
-> +			test_rmfb(data, output, pipe, reopen);
-> +	}
->  }
->  
->  igt_main
->  {
-> +	const struct {
-> +		bool flags;
-> +		const char *name;
-> +		const char *description;
-> +	} tests[] = {
-> +		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all "
-> +				       "planes so test this and make sure it works."},
-> +		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all "
-> +				    "planes so test this and make sure it works with fd close "
-> +				    "and reopen."},
-> +	};
->  	struct rmfb_data data = {};
-> +	int i;
->  
->  	igt_fixture {
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -168,15 +186,14 @@ igt_main
->  		igt_display_require_output(&data.display);
->  	}
->  
-> -	igt_describe("RMFB is supposed to free the framebuffers from any and all "
-> -		     "planes so test this and make sure it works.");
-> -	igt_subtest_f("rmfb-ioctl")
-> -		run_rmfb_test(&data, false);
-> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-> +
+== Series Details ==
 
-Remove this empy line. With that fixed you can add my r-b tag.
-Please use Kamil Konieczny <kamil.konieczny@linux.intel.com>
-in r-b tag, also when sending please put mailing list in To
-and all other addresses in Cc field.
+Series: tests/kms_flip: Skip test only for invalid combination (rev7)
+URL   : https://patchwork.freedesktop.org/series/105386/
+State : failure
 
-Regards,
-Kamil
+== Summary ==
 
-> +		igt_describe(tests[i].description);
-> +		igt_subtest_with_dynamic(tests[i].name) {
-> +			run_rmfb_test(&data, tests[i].flags);
->  
-> -	igt_describe("RMFB is supposed to free the framebuffers from any and all planes "
-> -		     "so test this and make sure it works with fd close and reopen.");
-> -	igt_subtest_f("close-fd")
-> -		run_rmfb_test(&data, true);
-> +		}
-> +	}
->  
->  	igt_fixture {
->  		igt_display_fini(&data.display);
-> -- 
-> 2.25.1
-> 
+Series 105386 revision 7 was fully merged or fully failed: no git log
+
+
+
+--===============7845079912791094886==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_flip: Skip test only for invalid combination (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105386/">https://patchwork.freedesktop.org/series/105386/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 105386 revision 7 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============7845079912791094886==--
