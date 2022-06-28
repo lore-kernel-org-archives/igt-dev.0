@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0D01112060
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jun 2022 10:04:08 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Jun 2022 15:32:19 +0530
+Message-Id: <20220628100219.246526-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Tue, 28 Jun 2022 07:59:48 -0000
-Message-ID: <165640318817.14502.5196142199713882091@emeril.freedesktop.org>
-References: <20220628074744.32025-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220628074744.32025-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Frmfb=3A_IGT_test_cleanup_=28rev4=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t] tests/kms_pipe_crc_basic: Avoid skips in dynamic
+ subtets
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +17,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Instead of Skipping the dynamic subtest, just don't trigger the test.
 
-Series: tests/kms_rmfb: IGT test cleanup (rev4)
-URL   : https://patchwork.freedesktop.org/series/105149/
-State : warning
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_pipe_crc_basic.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/623876 for the overview.
-
-build-containers:build-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/24644563):
-  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
-  section_end:1656402821:prepare_executor
-  section_start:1656402821:prepare_script
-  Preparing environment
-  Running on runner-thys1ka2-project-3185-concurrent-0 via gst-htz-2...
-  section_end:1656402822:prepare_script
-  section_start:1656402822:get_sources
-  Getting source from Git repository
-  $ eval "$CI_PRE_CLONE_SCRIPT"
-  Fetching changes...
-  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Created fresh repository.
-  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
-  fatal: the remote end hung up unexpectedly
-  section_end:1656402884:get_sources
-  section_start:1656402884:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1656402884:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/623876
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 0f34f807..2ff40f72 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -276,6 +276,7 @@ data_t data = {0, };
+ igt_main
+ {
+ 	enum pipe pipe;
++	igt_output_t *output;
+ 	struct {
+ 		const char *name;
+ 		unsigned flags;
+@@ -317,10 +318,7 @@ igt_main
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+ 		igt_describe(tests[i].desc);
+ 		igt_subtest_with_dynamic(tests[i].name) {
+-			for_each_pipe(&data.display, pipe) {
+-				igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
+-
+-				igt_require(output);
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 					if (tests[i].flags & TEST_SUSPEND) {
+ 						test_read_crc(&data, pipe, output, 0);
+@@ -348,10 +346,7 @@ igt_main
+ 	igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
+ 		     "does not cause issues.");
+ 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
+-		for_each_pipe(&data.display, pipe) {
+-			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
+-
+-			igt_require(output);
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_disable_crc_after_crtc(&data, pipe, output);
+ 		}
+@@ -359,10 +354,7 @@ igt_main
+ 
+ 	igt_describe("Basic sanity check for CRC mismatches");
+ 	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+-		for_each_pipe(&data.display, pipe) {
+-			igt_output_t *output = igt_get_single_output_for_pipe(&data.display, pipe);
+-
+-			igt_require(output);
++		for_each_pipe_with_single_output(&data.display, pipe, output) {
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_compare_crc(&data, pipe, output);
+ 		}
+-- 
+2.35.1
