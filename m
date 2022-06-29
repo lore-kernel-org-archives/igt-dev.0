@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC64D10E73C
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 21:01:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B7F810E73C
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 21:01:09 +0000 (UTC)
 From: janga.rahul.kumar@intel.com
 To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
  sai.gowtham.ch@intel.com
-Date: Thu, 30 Jun 2022 02:30:20 +0530
-Message-Id: <20220629210021.3961403-2-janga.rahul.kumar@intel.com>
+Date: Thu, 30 Jun 2022 02:30:21 +0530
+Message-Id: <20220629210021.3961403-3-janga.rahul.kumar@intel.com>
 In-Reply-To: <20220629210021.3961403-1-janga.rahul.kumar@intel.com>
 References: <20220629210021.3961403-1-janga.rahul.kumar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/2] tests/i915/gem_exec_fence : Add subtests
- description
+Subject: [igt-dev] [PATCH 2/2] HAX: don't do full run
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,215 +25,193 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 
-Add test description to all the available subtests.
-
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Just for test description, no full run is neccessary.
 ---
- tests/i915/gem_exec_fence.c | 47 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ tests/intel-ci/fast-feedback.testlist | 178 +-------------------------
+ 1 file changed, 1 insertion(+), 177 deletions(-)
 
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index a6499a68..503faa98 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -2807,6 +2807,8 @@ static void teardown_timeline_chain_engines(struct inter_engine_context *context
- 	free(context->batches);
- }
- 
-+static const char *test_syncobj_timeline_chain_engines_desc =
-+	"Engine chaining tests to verify ordering of timeline syncobjs through execbuf.";
- static void test_syncobj_timeline_chain_engines(int fd, const intel_ctx_cfg_t *cfg)
- {
- 	struct inter_engine_context ctx;
-@@ -2867,6 +2869,9 @@ static void test_syncobj_timeline_chain_engines(int fd, const intel_ctx_cfg_t *c
- 	teardown_timeline_chain_engines(&ctx);
- }
- 
-+static const char *test_syncobj_stationary_timeline_chain_engines_desc =
-+	"Engine chaining tests to verify ordering of timeline syncobj with stationary timeline"
-+	" points.";
- static void test_syncobj_stationary_timeline_chain_engines(int fd, const intel_ctx_cfg_t *cfg)
- {
- 	struct inter_engine_context ctx;
-@@ -2928,6 +2933,9 @@ static void test_syncobj_stationary_timeline_chain_engines(int fd, const intel_c
- 	teardown_timeline_chain_engines(&ctx);
- }
- 
-+static const char *test_syncobj_backward_timeline_chain_engines_desc =
-+	"Engine chaining tests to verify ordering of timeline syncobjs with backward timeline"
-+	" points.";
- static void test_syncobj_backward_timeline_chain_engines(int fd, const intel_ctx_cfg_t *cfg)
- {
- 	struct inter_engine_context ctx;
-@@ -3088,12 +3096,16 @@ igt_main
- 								 NONBLOCK);
- 				}
- 			}
-+			igt_describe("Check in-fence is not overwritten with out-fence on each"
-+				     " engine.");
- 			igt_subtest_with_dynamic("keep-in-fence") {
- 				for_each_ctx_engine(i915, ctx, e) {
- 					igt_dynamic_f("%s", e->name)
- 						test_keep_in_fence(i915, ctx, e);
- 				}
- 			}
-+			igt_describe("Check for EXCE_FENCE_SUBMIT in parallel execution scenarios"
-+				     " on each engine.");
- 			igt_subtest_with_dynamic("parallel") {
- 				igt_require(has_submit_fence(i915));
- 				for_each_ctx_engine(i915, ctx, e) {
-@@ -3104,6 +3116,7 @@ igt_main
- 				}
- 			}
- 
-+			igt_describe("Check blocking bonded fences on each engine.");
- 			igt_subtest_with_dynamic("concurrent") {
- 				igt_require(has_submit_fence(i915));
- 				igt_require(gem_scheduler_has_semaphores(i915));
-@@ -3114,6 +3127,7 @@ igt_main
- 				}
- 			}
- 
-+			igt_describe("Check timeslicing on submit-fence.");
- 			igt_subtest_with_dynamic("submit") {
- 				igt_require(gem_scheduler_has_semaphores(i915));
- 				igt_require(gem_scheduler_has_preemption(i915));
-@@ -3125,6 +3139,8 @@ igt_main
- 				}
- 			}
- 
-+			igt_describe("Check timeslicing on submit-fence by submitting coupled"
-+				     " batches.");
- 			igt_subtest_with_dynamic("submit3") {
- 				igt_require(gem_scheduler_has_semaphores(i915));
- 				igt_require(gem_scheduler_has_preemption(i915));
-@@ -3136,6 +3152,8 @@ igt_main
- 				}
- 			}
- 
-+			igt_describe("Check timeslicing on submit-fence by submitting more"
-+				     " coupled batches than can possibly fit into the ELSP.");
- 			igt_subtest_with_dynamic("submit67") {
- 				igt_require(gem_scheduler_has_semaphores(i915));
- 				igt_require(gem_scheduler_has_preemption(i915));
-@@ -3147,6 +3165,8 @@ igt_main
- 				}
- 			}
- 
-+			igt_describe("Check launching a chain of spinners across all engines using"
-+				     " submit-fence.");
- 			igt_subtest("submit-chain") {
- 				igt_require(has_submit_fence(i915));
- 				test_submit_chain(i915, ctx);
-@@ -3166,24 +3186,32 @@ igt_main
- 				intel_allocator_multiprocess_start();
- 			}
- 
-+			igt_describe("Check for explicit fence on each busy engine with a pending"
-+				     " gpu hang.");
- 			igt_subtest_with_dynamic("busy-hang") {
- 				for_each_ctx_engine(i915, ctx, e) {
- 					igt_dynamic_f("%s", e->name)
- 						test_fence_busy(i915, ctx, e, HANG);
- 				}
- 			}
-+			igt_describe("Check for explicit fence with additional wait time on each"
-+				     " busy engine with a pending gpu hang.");
- 			igt_subtest_with_dynamic("wait-hang") {
- 				for_each_ctx_engine(i915, ctx, e) {
- 					igt_dynamic_f("%s", e->name)
- 						test_fence_busy(i915, ctx, e, HANG | WAIT);
- 				}
- 			}
-+			igt_describe("Check for explicit fence with async wait on each engine with"
-+				     " a pending gpu hang.");
- 			igt_subtest_with_dynamic("await-hang") {
- 				for_each_ctx_engine(i915, ctx, e) {
- 					igt_dynamic_f("%s", e->name)
- 						test_fence_await(i915, ctx, e, HANG);
- 				}
- 			}
-+			igt_describe("Check for explicit fence with non-blocking wait on each"
-+				     " engine with a pending gpu hang.");
- 			igt_subtest_with_dynamic("nb-await-hang") {
- 				for_each_ctx_engine(i915, ctx, e) {
- 					igt_dynamic_f("%s", e->name)
-@@ -3209,9 +3237,11 @@ igt_main
- 			gem_require_contexts(i915);
- 		}
- 
-+		igt_describe("Verifies accumulation of long history of fences.");
- 		igt_subtest("long-history")
- 			test_long_history(i915, ctx, ring_size, 0);
- 
-+		igt_describe("Verifies long history of fences are expired.");
- 		igt_subtest("expired-history")
- 			test_long_history(i915, ctx, ring_size, EXPIRED);
- 	}
-@@ -3224,33 +3254,47 @@ igt_main
- 			intel_allocator_multiprocess_start();
- 		}
- 
-+		igt_describe("Verifies invalid fence-array pointers are rejected.");
- 		igt_subtest("invalid-fence-array")
- 			test_invalid_fence_array(i915);
- 
-+		igt_describe("Verifies that a syncobj passed into execbuf but with no signal/wait"
-+			     " flag is left untouched.");
- 		igt_subtest("syncobj-unused-fence")
- 			test_syncobj_unused_fence(i915);
- 
-+		igt_describe("Verifies that submitting an execbuf with a wait on a syncobj that"
-+			     " doesn't exists is rejected.");
- 		igt_subtest("syncobj-invalid-wait")
- 			test_syncobj_invalid_wait(i915);
- 
-+		igt_describe("Verifies that invalid fence flags in fence-array are rejected.");
- 		igt_subtest("syncobj-invalid-flags")
- 			test_syncobj_invalid_flags(i915);
- 
-+		igt_describe("Verifies proper signaling of a fence-array syncobj through execbuf.");
- 		igt_subtest("syncobj-signal")
- 			test_syncobj_signal(i915);
- 
-+		igt_describe("Verifies that waiting on a timeline syncobj point between engines"
-+			     " works.");
- 		igt_subtest("syncobj-wait")
- 			test_syncobj_wait(i915, ctx);
- 
-+		igt_describe("Verify exporting of fence-array syncobj signaled by i915.");
- 		igt_subtest("syncobj-export")
- 			test_syncobj_export(i915);
- 
-+		igt_describe("Verifies that waiting & signaling a same fence-array syncobj within"
-+			     " the same execbuf works.");
- 		igt_subtest("syncobj-repeat")
- 			test_syncobj_repeat(i915);
- 
-+		igt_describe("Verifies creating of a syncobj from explicit fence.");
- 		igt_subtest("syncobj-import")
- 			test_syncobj_import(i915);
- 
-+		igt_describe("Verifies two clients racing for syncobj using channel.");
- 		igt_subtest("syncobj-channel")
- 			test_syncobj_channel(i915);
- 
-@@ -3313,12 +3357,15 @@ igt_main
- 				igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
- 			}
- 
-+			igt_describe(test_syncobj_timeline_chain_engines_desc);
- 			igt_subtest("syncobj-timeline-chain-engines")
- 				test_syncobj_timeline_chain_engines(i915, &ctx->cfg);
- 
-+			igt_describe(test_syncobj_stationary_timeline_chain_engines_desc);
- 			igt_subtest("syncobj-stationary-timeline-chain-engines")
- 				test_syncobj_stationary_timeline_chain_engines(i915, &ctx->cfg);
- 
-+			igt_describe(test_syncobj_backward_timeline_chain_engines_desc);
- 			igt_subtest("syncobj-backward-timeline-chain-engines")
- 				test_syncobj_backward_timeline_chain_engines(i915, &ctx->cfg);
- 		}
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bd5538a0..9f8e18ce 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,177 +1 @@
+-# Try to load the driver if it's not available yet.
+-igt@i915_module_load@load
+-
+-# Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor
+-igt@kms_cursor_legacy@basic-flip-after-cursor
+-igt@kms_cursor_legacy@basic-flip-before-cursor
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
+-
+-# System wide suspend tests
+-igt@i915_suspend@basic-s2idle-without-i915
+-igt@i915_suspend@basic-s3-without-i915
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_pipe_crc_basic@suspend-read-crc
++igt@meta_test@fail-result
 -- 
 2.25.1
