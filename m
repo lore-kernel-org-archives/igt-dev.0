@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C19B911A35C
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 06:42:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 340E411A460
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 06:42:18 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  sai.gowtham.ch@intel.com
-Date: Wed, 29 Jun 2022 12:11:27 +0530
-Message-Id: <20220629064128.9291-2-sai.gowtham.ch@intel.com>
+Date: Wed, 29 Jun 2022 12:11:28 +0530
+Message-Id: <20220629064128.9291-3-sai.gowtham.ch@intel.com>
 In-Reply-To: <20220629064128.9291-1-sai.gowtham.ch@intel.com>
 References: <20220629064128.9291-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_softpin: Added test
- description for test case.
+Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: don't do full run
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,135 +25,195 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Added test description for test and to all the subtests that are
-available.
+Just for test description, no full run is necessary.
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/i915/gem_softpin.c | 40 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 178 +-------------------------
+ 1 file changed, 1 insertion(+), 177 deletions(-)
 
-diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-index b851c90e..153f5f6b 100644
---- a/tests/i915/gem_softpin.c
-+++ b/tests/i915/gem_softpin.c
-@@ -32,6 +32,10 @@
- #include "igt_rand.h"
- #include "intel_allocator.h"
- 
-+IGT_TEST_DESCRIPTION("Tests softpin feature with normal usage, invalid inputs"
-+		     " scenarios and couple of eviction tests which copy buffers"
-+		     " between CPU and GPU.");
-+
- #define EXEC_OBJECT_PINNED	(1<<4)
- #define EXEC_OBJECT_SUPPORTS_48B_ADDRESS (1<<3)
- 
-@@ -1248,6 +1252,7 @@ igt_main
- 		ctx = intel_ctx_create_all_physical(fd);
- 	}
- 
-+	igt_describe("Check that invalid inputs are handled correctly.");
- 	igt_subtest("invalid")
- 		test_invalid(fd);
- 
-@@ -1258,64 +1263,95 @@ igt_main
- 			igt_require(gem_uses_full_ppgtt(fd));
- 		}
- 
-+		igt_describe("Check full placement control under full-ppGTT.");
- 		igt_subtest("zero")
- 			test_zero(fd);
- 
-+		igt_describe("Check the last 32b page is excluded.");
- 		igt_subtest("32b-excludes-last-page")
- 			test_32b_last_page(fd);
- 
-+		igt_describe("Check the total occupancy by using pad-to-size to fill"
-+			     " the entire GTT.");
- 		igt_subtest("full")
- 			test_full(fd);
- 
-+		igt_describe("Check that we can place objects at start/end of the GTT"
-+			     " using the allocator.");
- 		igt_subtest("allocator-basic")
- 			test_allocator_basic(fd, false);
- 
-+		igt_describe("Check that if we can reserve a space for an object"
-+			     " starting from a given offset.");
- 		igt_subtest("allocator-basic-reserve")
- 			test_allocator_basic(fd, true);
- 
-+		igt_describe("Check that we can combine manual placement with automatic"
-+			     " GTT placement.");
- 		igt_subtest("allocator-nopin")
- 			test_allocator_nopin(fd, false);
- 
-+		igt_describe("Check that we can combine manual placement with automatic"
-+			     " GTT placement and reserves/unreserves space for objects.");
- 		igt_subtest("allocator-nopin-reserve")
- 			test_allocator_nopin(fd, true);
- 
-+		igt_describe("Check if multiple processes can use alloctor.");
- 		igt_subtest("allocator-fork")
- 			test_allocator_fork(fd);
- 
-+		igt_describe("Exercise eviction with softpinning.");
- 		test_each_engine("allocator-evict", fd, ctx, e)
- 			test_allocator_evict(fd, ctx, e->flags, 20);
- 
--		igt_describe("Use same offset for all engines and for different handles");
-+		igt_describe("Use same offset for all engines and for different handles.");
- 		igt_subtest("evict-single-offset")
- 			evict_single_offset(fd, ctx, 20);
- 	}
- 
--	igt_describe("Check start offset and alignment detection");
-+	igt_describe("Check start offset and alignment detection.");
- 	igt_subtest("safe-alignment")
- 		safe_alignment(fd);
- 
-+	igt_describe("Check softpinning of a gem buffer object.");
- 	igt_subtest("softpin")
- 		test_softpin(fd);
-+
-+	igt_describe("Check all the possible pages aligned overlaps.");
- 	igt_subtest("overlap")
- 		test_overlap(fd);
-+
-+	igt_describe("Check that if the user demands the vma will be swapped.");
- 	igt_subtest("reverse")
- 		test_reverse(fd);
- 
-+	igt_describe("Check that noreloc support works.");
- 	igt_subtest("noreloc")
- 		test_noreloc(fd, NOSLEEP, 0);
-+
-+	igt_describe("Check noreloc support with interruptible.");
- 	igt_subtest("noreloc-interruptible")
- 		test_noreloc(fd, NOSLEEP, INTERRUPTIBLE);
-+
-+	igt_describe("Check noreloc survives after suspend to RAM/resume cycle.");
- 	igt_subtest("noreloc-S3")
- 		test_noreloc(fd, SUSPEND, 0);
-+
-+	igt_describe("Check noreloc survives after suspend to disk/resume cycle.");
- 	igt_subtest("noreloc-S4")
- 		test_noreloc(fd, HIBERNATE, 0);
- 
- 	for (int signal = 0; signal <= 1; signal++) {
-+		igt_describe_f("Check eviction with active bo %s.", signal ? "with interrupts" : "");
- 		igt_subtest_f("evict-active%s", signal ? "-interruptible" : "")
- 			test_evict_active(fd, signal);
-+
-+		igt_describe_f("Check eviction against snooping %s.", signal ? "with interrupts" : "");
- 		igt_subtest_f("evict-snoop%s", signal ? "-interruptible" : "")
- 			test_evict_snoop(fd, signal);
- 	}
-+
-+	igt_describe("Check eviction of softpinned bo with hung batch.");
- 	igt_subtest("evict-hang")
- 		test_evict_hang(fd);
- 
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bd5538a0..9f8e18ce 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,177 +1 @@
+-# Try to load the driver if it's not available yet.
+-igt@i915_module_load@load
+-
+-# Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor
+-igt@kms_cursor_legacy@basic-flip-after-cursor
+-igt@kms_cursor_legacy@basic-flip-before-cursor
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
+-
+-# System wide suspend tests
+-igt@i915_suspend@basic-s2idle-without-i915
+-igt@i915_suspend@basic-s3-without-i915
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_pipe_crc_basic@suspend-read-crc
++igt@meta_test@fail-result
 -- 
 2.35.1
