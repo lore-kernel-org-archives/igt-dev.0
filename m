@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3D8210E336
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 16:00:16 +0000 (UTC)
-Date: Wed, 29 Jun 2022 18:00:11 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Ryszard Knop <ryszard.knop@intel.com>
-Message-ID: <20220629180011.3553f31f@maurocar-mobl2>
-In-Reply-To: <20220628094435.854519-4-ryszard.knop@intel.com>
-References: <20220628094435.854519-1-ryszard.knop@intel.com>
- <20220628094435.854519-4-ryszard.knop@intel.com>
+Message-ID: <57e33def-e5a6-1adc-ff9f-2cec251d676c@intel.com>
+Date: Wed, 29 Jun 2022 11:55:05 +0300
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220628131318.197965-1-matthew.auld@intel.com>
+ <20220628131318.197965-3-matthew.auld@intel.com>
+From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+In-Reply-To: <20220628131318.197965-3-matthew.auld@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 3/7] igt_list: Add the
- igt_list_empty_or_null helper
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 3/3]
+ tests/amdgpu/amdgpu_command_submission: fix uaf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,62 +19,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 28 Jun 2022 11:44:31 +0200
-Ryszard Knop <ryszard.knop@intel.com> wrote:
+Looks good to me.
 
-> Checks if the list is empty or uninitialized.
+Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 
-Looking at patch 4/7, I understand why you want this function:
 
-	static bool add_env_var(struct igt_list_head *env_vars, char *env_kv) {
-		char *current_env_value, *kv_split;
-		struct environment_variable *var = NULL;
-...
-		if (igt_list_empty_or_null(env_vars))
-			IGT_INIT_LIST_HEAD(env_vars);
-
-Yet, I don't like the idea of conditionally initializing env_vars.
-
-IMO, the best would be to always call IGT_INIT_LIST_HEAD(env_vars),
-dropping the conditional check at add_env_var().
-
-Regards,
-Mauro
-
+On 6/28/22 4:13 PM, Matthew Auld wrote:
+> ../lib/amdgpu/amd_command_submission.c: In function ‘amdgpu_command_submission_write_linear_helper’:
+> ../lib/amdgpu/amd_command_submission.c:201:13: warning: pointer ‘ring_context’ used after ‘free’ [-Wuse-after-free]
+>    201 |         r = amdgpu_cs_ctx_free(ring_context->context_handle);
+>        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ../lib/amdgpu/amd_command_submission.c:199:9: note: call to ‘free’ here
+>    199 |         free(ring_context);
+>        |         ^~~~~~~~~~~~~~~~~~
 > 
-> Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
 > ---
->  lib/igt_list.c | 5 +++++
->  lib/igt_list.h | 1 +
->  2 files changed, 6 insertions(+)
+>   lib/amdgpu/amd_command_submission.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/lib/igt_list.c b/lib/igt_list.c
-> index 37ae139c..dc94fad8 100644
-> --- a/lib/igt_list.c
-> +++ b/lib/igt_list.c
-> @@ -81,3 +81,8 @@ bool igt_list_empty(const struct igt_list_head *head)
->  {
->  	return head->next == head;
->  }
-> +
-> +bool igt_list_empty_or_null(const struct igt_list_head *head)
-> +{
-> +	return head->next == NULL || head->prev == NULL || igt_list_empty(head);
-> +}
-> diff --git a/lib/igt_list.h b/lib/igt_list.h
-> index be63fd80..4efb7a22 100644
-> --- a/lib/igt_list.h
-> +++ b/lib/igt_list.h
-> @@ -80,6 +80,7 @@ void igt_list_move(struct igt_list_head *elem, struct igt_list_head *list);
->  void igt_list_move_tail(struct igt_list_head *elem, struct igt_list_head *list);
->  int igt_list_length(const struct igt_list_head *head);
->  bool igt_list_empty(const struct igt_list_head *head);
-> +bool igt_list_empty_or_null(const struct igt_list_head *head);
->  
->  #define igt_container_of(ptr, sample, member)				\
->  	(__typeof__(sample))((char *)(ptr) -				\
+> diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+> index 4dc4df95..16939653 100644
+> --- a/lib/amdgpu/amd_command_submission.c
+> +++ b/lib/amdgpu/amd_command_submission.c
+> @@ -196,10 +196,10 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+>   	}
+>   	/* clean resources */
+>   	free(ring_context->pm4);
+> -	free(ring_context);
+>   	/* end of test */
+>   	r = amdgpu_cs_ctx_free(ring_context->context_handle);
+>   	igt_assert_eq(r, 0);
+> +	free(ring_context);
+>   }
+>   
+>   
+> 
