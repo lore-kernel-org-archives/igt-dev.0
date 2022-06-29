@@ -1,24 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com
- [IPv6:2a00:1450:4864:20::334])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4137814A61E
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 12:37:04 +0000 (UTC)
-Received: by mail-wm1-x334.google.com with SMTP id
- u12-20020a05600c210c00b003a02b16d2b8so9504710wml.2
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 05:37:04 -0700 (PDT)
-Message-ID: <cd36f981-1cb5-1c06-2c40-af4da13b88d5@gmail.com>
-Date: Wed, 29 Jun 2022 15:36:56 +0300
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com
+ [IPv6:2a00:1450:4864:20::32b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C401314A621
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 12:37:43 +0000 (UTC)
+Received: by mail-wm1-x32b.google.com with SMTP id
+ be14-20020a05600c1e8e00b003a04a458c54so5513779wmb.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jun 2022 05:37:43 -0700 (PDT)
+Message-ID: <622c846d-132c-e383-ae95-fe87c43c7ffd@gmail.com>
+Date: Wed, 29 Jun 2022 15:37:36 +0300
 MIME-Version: 1.0
 Content-Language: en-US
 To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
 References: <20220628185128.19692-1-swati2.sharma@intel.com>
- <20220628185128.19692-4-swati2.sharma@intel.com>
+ <20220628185128.19692-5-swati2.sharma@intel.com>
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220628185128.19692-4-swati2.sharma@intel.com>
+In-Reply-To: <20220628185128.19692-5-swati2.sharma@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [v2 PATCH i-g-t 3/4] lib/igt_kms: Add scaling filter
- property
+Subject: Re: [igt-dev] [v5 PATCH i-g-t 4/4] tests/kms_flip_scaled_crc:
+ Validate NN scaling filter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,119 +27,136 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: juhapekka.heikkila@gmail.com
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 28.6.2022 21.51, Swati Sharma wrote:
-> Added "scaling filter" as pipe and plane property.
+> SCALING_FILTER can be used either as plane scaler property
+> or CRTC scaler property.
+> The value of this property can be one of the following:
+>      Default:
+>               Driver's default scaling filter
+>      Nearest Neighbor:
+>               Nearest Neighbor scaling filter
+> If NN is used for scaling, sharpness is preserved
+> whereas if we use default scaling we can see blurriness
+> at edges.
 > 
-> v2: -Moved lib changes from 4/4 to 3/4
->      -Renaming filter enum
+> v2: -no need to set pipe scaler filter property
+> v3: -addition of new lines to improve readability
+>      -use of SPDX licence placeholder
+>      -close(data.drm_fd)
+> v4: -instead of creating new i-g-t, tweaked kms_flip_scaled_crc
+>       to validate both default and nn scaling filters
+> v5: -removed duplicate block
+>      -added platform check for nn
 > 
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->   lib/igt_kms.c | 30 ++++++++++++++++++++++++++++++
->   lib/igt_kms.h |  3 +++
->   2 files changed, 33 insertions(+)
+>   tests/i915/kms_flip_scaled_crc.c | 48 ++++++++++++++++++--------------
+>   1 file changed, 27 insertions(+), 21 deletions(-)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index bd606548..fdb13177 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -581,6 +581,7 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
->   	[IGT_PLANE_ALPHA] = "alpha",
->   	[IGT_PLANE_ZPOS] = "zpos",
->   	[IGT_PLANE_FB_DAMAGE_CLIPS] = "FB_DAMAGE_CLIPS",
-> +	[IGT_PLANE_SCALING_FILTER] = "SCALING_FILTER",
->   };
+> diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+> index 88640da2..f241806d 100644
+> --- a/tests/i915/kms_flip_scaled_crc.c
+> +++ b/tests/i915/kms_flip_scaled_crc.c
+> @@ -476,7 +476,7 @@ static void clear_lut(data_t *data, enum pipe pipe)
 >   
->   const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
-> @@ -593,6 +594,7 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
->   	[IGT_CRTC_ACTIVE] = "ACTIVE",
->   	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
->   	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
-> +	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
->   };
+>   static void test_flip_to_scaled(data_t *data, uint32_t index,
+>   				enum pipe pipe, igt_output_t *output,
+> -				drmModeModeInfoPtr modetoset)
+> +				drmModeModeInfoPtr modetoset, int flags)
+>   {
+>   	igt_plane_t *primary;
+>   	igt_crc_t small_crc, big_crc;
+> @@ -518,6 +518,7 @@ static void test_flip_to_scaled(data_t *data, uint32_t index,
+>   	igt_output_set_pipe(output, pipe);
 >   
->   const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
-> @@ -910,6 +912,28 @@ const char *kmstest_connector_status_str(int status)
->   	return find_type_name(connector_status_names, status);
->   }
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +	igt_skip_on_f(!igt_plane_has_prop(primary, IGT_PLANE_SCALING_FILTER), "Plane scaling filter prop not supported");
+>   	igt_skip_on_f(!igt_plane_has_format_mod(primary, data->small_fb.drm_format, data->small_fb.modifier) ||
+>   		      !igt_plane_has_format_mod(primary, data->big_fb.drm_format,
+>   		      data->big_fb.modifier), "No requested format/modifier on pipe %s\n", kmstest_pipe_name(pipe));
+> @@ -532,6 +533,8 @@ static void test_flip_to_scaled(data_t *data, uint32_t index,
+>   	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
+>   					  INTEL_PIPE_CRC_SOURCE_AUTO);
 >   
-> +enum scaling_filter {
-> +       SCALING_FILTER_DEFAULT,
-> +       SCALING_FILTER_NEAREST_NEIGHBOR,
-^^
-nit, misalignment with spaces.
+> +	igt_plane_set_prop_enum(primary, IGT_PLANE_SCALING_FILTER, kmstest_scaling_filter_str(flags));
+> +
+>   	igt_plane_set_position(primary, 0, 0);
+>   	igt_plane_set_fb(primary, &data->small_fb);
+>   	igt_plane_set_size(primary, data->attemptmodewidth,
+> @@ -601,7 +604,6 @@ igt_main
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+>   		data.gen = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+> -		igt_require(data.gen >= 9);
+>   		igt_display_require(&data.display, data.drm_fd);
+>   		igt_require(data.display.is_atomic);
+>   		igt_require_pipe_crc(data.drm_fd);
+> @@ -616,28 +618,32 @@ igt_main
+>   		}
+>   	}
+>   
+> -	for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+> -		igt_describe(flip_scenario_test[index].describe);
+> -		igt_subtest_with_dynamic(flip_scenario_test[index].name) {
+> -			free_fbs(&data);
+> -			for_each_pipe(&data.display, pipe) {
+> -				bool found = false;
+> -				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> -					modetoset = find_mode(&data, output);
+> -					if (modetoset) {
+> -						found = true;
+> -						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
+> -							test_flip_to_scaled(&data, index, pipe, output, modetoset);
+> -						break;
+> -					}
+> -				}
+> -				if (!found) {
+> +	igt_describe("Tests scaler using default and nearest neighbor plane scaling filters");
+> +	for (int filter = 0; filter < 2; filter++) 
 
-> +};
-> +
-> +static const struct type_name scaling_filter_names[] = {
-> +	{ SCALING_FILTER_DEFAULT, "Default" },
-> +	{ SCALING_FILTER_NEAREST_NEIGHBOR, "Nearest Neighbor" },
-> +	{}
-> +};
-> +
-> +/**
-> + * kmstest_scaling_filter_str:
-> + * @filter: SCALING_FILTER_* filter value
-> + *
-> + * Returns: A string representing the scaling filter @filter.
-> + */
-> +const char *kmstest_scaling_filter_str(int filter)
-> +{
-> +	return find_type_name(scaling_filter_names, filter);
-> +}
-> +
->   static const struct type_name connector_type_names[] = {
->   	{ DRM_MODE_CONNECTOR_Unknown, "Unknown" },
->   	{ DRM_MODE_CONNECTOR_VGA, "VGA" },
-> @@ -2122,6 +2146,9 @@ static void igt_plane_reset(igt_plane_t *plane)
->   	if (igt_plane_has_prop(plane, IGT_PLANE_FB_DAMAGE_CLIPS))
->   		igt_plane_set_prop_value(plane, IGT_PLANE_FB_DAMAGE_CLIPS, 0);
->   
-> +	if (igt_plane_has_prop(plane, IGT_PLANE_SCALING_FILTER))
-> +		igt_plane_set_prop_enum(plane, IGT_PLANE_SCALING_FILTER, "Default");
-> +
->   	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
->   	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
->   	plane->gem_handle = 0;
-> @@ -2142,6 +2169,9 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
->   	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_DEGAMMA_LUT))
->   		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_DEGAMMA_LUT, 0);
->   
-> +	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_SCALING_FILTER))
-> +		igt_pipe_obj_set_prop_enum(pipe, IGT_CRTC_SCALING_FILTER, "Default");
-> +
->   	pipe->out_fence_fd = -1;
->   }
->   
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 3e674e74..4b67708d 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -107,6 +107,7 @@ enum igt_custom_edid_type {
->   const char *kmstest_encoder_type_str(int type);
->   const char *kmstest_connector_status_str(int status);
->   const char *kmstest_connector_type_str(int type);
-> +const char *kmstest_scaling_filter_str(int filter);
->   
->   void kmstest_dump_mode(drmModeModeInfo *mode);
->   #define MAX_HDISPLAY_PER_PIPE 5120
-> @@ -126,6 +127,7 @@ enum igt_atomic_crtc_properties {
->          IGT_CRTC_ACTIVE,
->          IGT_CRTC_OUT_FENCE_PTR,
->          IGT_CRTC_VRR_ENABLED,
-> +       IGT_CRTC_SCALING_FILTER,
->          IGT_NUM_CRTC_PROPS
->   };
->   
-> @@ -302,6 +304,7 @@ enum igt_atomic_plane_properties {
->          IGT_PLANE_ALPHA,
->          IGT_PLANE_ZPOS,
->          IGT_PLANE_FB_DAMAGE_CLIPS,
-> +       IGT_PLANE_SCALING_FILTER,
->          IGT_NUM_PLANE_PROPS
->   };
->   
+I'd still bake these filters into single (dynamic sub-)test if that is 
+easily workable.
+
+> +		for (int index = 0; index < ARRAY_SIZE(flip_scenario_test); index++) {
+> +			igt_describe(flip_scenario_test[index].describe);
+> +			igt_require(filter ? data.gen >= 10 : data.gen >= 9);
+Above igt_require need to be moved one line below, inside 
+igt_subtest_with_dynamic_f to fix that "ninja -C build test"
+
+Other than these things patch did look ok to me.
+
+> +			igt_subtest_with_dynamic_f("%s-%s", filter ? "nn" : "default", flip_scenario_test[index].name) {
+> +				free_fbs(&data);
+> +				for_each_pipe(&data.display, pipe) {
+> +					bool found = false;
+>   					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> -						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
+> -							test_flip_to_scaled(&data, index, pipe, output, NULL);
+> +						modetoset = find_mode(&data, output);
+> +						if (modetoset) {
+> +							found = true;
+> +							igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
+> +								test_flip_to_scaled(&data, index, pipe, output, modetoset, filter);
+> +							break;
+> +						}
+> +					}
+> +					if (!found) {
+> +						for_each_valid_output_on_pipe(&data.display, pipe, output) {
+> +							igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
+> +								test_flip_to_scaled(&data, index, pipe, output, NULL, filter);
+> +						}
+>   					}
+> +					break;
+>   				}
+> -				break;
+>   			}
+>   		}
+>   	}
