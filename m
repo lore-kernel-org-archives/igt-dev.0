@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3A4811AD34
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jun 2022 13:16:59 +0000 (UTC)
+From: "Knop, Ryszard" <ryszard.knop@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "maira.canal@usp.br" <maira.canal@usp.br>
+Date: Thu, 30 Jun 2022 13:16:56 +0000
+Message-ID: <263593b91682f3f289f40ebc3d7ab93361e91778.camel@intel.com>
+References: <20220628094435.854519-3-ryszard.knop@intel.com>
+ <20220628235143.79978-1-maira.canal@usp.br>
+In-Reply-To: <20220628235143.79978-1-maira.canal@usp.br>
+Content-Language: en-US
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <8E7FD01E5D24884D8D7FE4ABCE1C9205@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Thu, 30 Jun 2022 12:46:19 -0000
-Message-ID: <165659317936.26513.11849077369052128613@emeril.freedesktop.org>
-References: <20220630101513.24054-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220630101513.24054-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/4=5D_tests/i915/kms=5Fflip=5Fs?=
- =?utf-8?q?caled=5Fcrc=3A_Convert_tests_to_dynamic?=
+Subject: Re: [igt-dev] [i-g-t,2/7] runner: make the usage function variadic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,45 +23,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: series starting with [i-g-t,1/4] tests/i915/kms_flip_scaled_crc: Convert tests to dynamic
-URL   : https://patchwork.freedesktop.org/series/105815/
-State : warning
-
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/626239 for the overview.
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/24772298):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                290
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1656593139:step_script
-  section_start:1656593139:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1752 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=24772298 responseStatus=201 Created token=EnBoo9ps
-  section_end:1656593150:upload_artifacts_on_failure
-  section_start:1656593150:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1656593150:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/626239
+T24gVHVlLCAyMDIyLTA2LTI4IGF0IDIwOjUxIC0wMzAwLCBNYcOtcmEgQ2FuYWwgd3JvdGU6Cj4g
+T24gNi8yOC8yMiAxMTo0NCwgUnlzemFyZCBLbm9wIHdyb3RlOgo+ID4gRm9yIGVhc2llciBlcnJv
+ciBsb2dnaW5nLCBtYWtlIHRoZSB1c2FnZSgpIGZ1bmN0aW9uIHZhcmlhZGljIGFuZAo+ID4gcGFz
+cwo+ID4gaXRzIGFyZ3VtZW50cyB0byB2ZnByaW50Zi4gQWRkaXRpb25hbGx5LCByZW9yZGVyIGl0
+cyBhcmd1bWVudHMgc28KPiA+IHRoYXQKPiA+IGl0IHZpc3VhbGx5IG1hdGNoZXMgYWxsIHRoZSBw
+cmludGYgZnVuY3Rpb25zLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBSeXN6YXJkIEtub3AgPHJ5
+c3phcmQua25vcEBpbnRlbC5jb20+Cj4gPiAtLS0KPiAKPiBIaSwKPiAKPiBPdmVyYWxsIHRoaXMg
+bG9va3MgZ29vZCwganVzdCBhIHNtYWxsIHR5cG8uCj4gCj4gPiBAQCAtODA2LDI0ICs4MDgsMTkg
+QEAgYm9vbCBzZXJpYWxpemVfc2V0dGluZ3Moc3RydWN0IHNldHRpbmdzCj4gPiAqc2V0dGluZ3Mp
+Cj4gPiDCoAo+ID4gwqDCoMKgwqDCoMKgwqDCoGlmICghc2V0dGluZ3MtPm92ZXJ3cml0ZSAmJgo+
+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmYWNjZXNzYXQoZGlyZmQsIHNldHRpbmdzX2ZpbGVu
+YW1lLCBGX09LLCAwKSA9PSAwKSB7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+dXNhZ2UoIlNldHRpbmdzIG1ldGFkYXRhIGFscmVhZHkgZXhpc3RzIGFuZCBub3QKPiA+IG92ZXJ3
+cml0aW5nIiwgc3RkZXJyKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1c2Fn
+ZShzdGRlcnIsICJTZXR0aW5ncyBtZXRhZGF0YSBhbHJlYWR5IGV4aXN0cyBhbmQKPiA+IG5vdCBv
+dmVyd3JpdGluZyIpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4g
+ZmFsc2U7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gwqAKPiA+IMKgwqDCoMKgwqDCoMKgwqBp
+ZiAoc2V0dGluZ3MtPm92ZXJ3cml0ZSAmJgo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB1bmxp
+bmthdChkaXJmZCwgc2V0dGluZ3NfZmlsZW5hbWUsIDApICE9IDAgJiYKPiA+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAgZXJybm8gIT0gRU5PRU5UKSB7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgdXNhZ2UoIkVycm9yIHJlbW92aW5nIG9sZCBzZXR0aW5ncyBtZXRhZGF0YSIsCj4g
+PiBzdGRlcnIpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVzYWdlKHN0ZGVy
+ciwgIkVycm9yIHJlbW92aW5nIG9sZCBzZXR0aW5ncwo+ID4gbWV0YWRhdGEiKTsKPiA+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIGZhbHNlOwo+ID4gwqDCoMKgwqDCoMKg
+wqDCoH0KPiA+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKgaWYgKChmZCA9IG9wZW5hdChkaXJmZCwg
+c2V0dGluZ3NfZmlsZW5hbWUsIE9fQ1JFQVQgfCBPX0VYQ0wKPiA+IHwgT19XUk9OTFksIDA2NjYp
+KSA8IDApIHsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjaGFyICptc2c7Cj4g
+PiAtCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYXNwcmludGYoJm1zZywgIkNy
+ZWF0aW5nIHNldHRpbmdzIHNlcmlhbGl6YXRpb24KPiA+IGZpbGUgZmFpbGVkOiAlcyIsIHN0cmVy
+cm9yKGVycm5vKSk7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdXNhZ2UobXNn
+LCBzdGRlcnIpOwo+ID4gLQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZyZWUo
+bXNnKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1c2FnZShtc2csICJDcmVh
+dGluZyBzZXR0aW5ncyBzZXJpYWxpemF0aW9uIGZpbGUKPiA+IGZhaWxlZDogJXMiLCBzdHJlcnJv
+cihlcnJubykpOwo+IAo+IEkgYmVsaWV2ZSB0aGlzIHNob3VsZCBiZToKPiDCoMKgwqAgdXNhZ2Uo
+c3RkZXJyLCAiQ3JlYXRpbmcgc2V0dGluZ3Mgc2VyaWFsaXphdGlvbiBmaWxlIGZhaWxlZDogJXMi
+LAo+IHN0cmVycm9yKGVycm5vKSk7CgpUaGF0J3MgcmlnaHQsIHNvcnJ5LCBtaXNzZWQgdGhpcyBv
+bmUgd2hpbGUgc3BsaXR0aW5nIHRoZSBwYXRjaC4KClRoYW5rcywgUnlzemFyZAoKPiAKPiBSZXZp
+ZXdlZC1ieTogTWHDrXJhIENhbmFsIDxtYWlyYS5jYW5hbEB1c3AuYnI+Cj4gCj4gQmVzdCBSZWdh
+cmRzLAo+IC0gTWHDrXJhIENhbmFsCj4gCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGNsb3NlKGRpcmZkKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0
+dXJuIGZhbHNlOwo+ID4gwqAgfQoK
