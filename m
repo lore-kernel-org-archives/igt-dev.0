@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C146E10E2B6
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Jan 2023 05:59:45 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 6 Jan 2023 05:59:41 +0000
-Message-ID: <DM4PR11MB63125A46946578A41333312390FB9@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20221226175429.570-1-jeevan.b@intel.com>
- <Y7RwKQBwb/o7Y+7L@kamilkon-desk1>
-In-Reply-To: <Y7RwKQBwb/o7Y+7L@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 359B310E2CE
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Jan 2023 07:16:59 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 30 Jun 2022 11:27:34 +0530
+Message-Id: <20220630055734.7624-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20221220135734.6354-1-mohammed.thasleem@intel.com>
+References: <20221220135734.6354-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4] lib/igt_draw: Change MOCS settings
- for MTL
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc : Check DC5 state
+ with externel active panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,75 +19,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "De Marchi, Lucas" <lucas.demarchi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBLYW1pbCBLb25pZWN6bnkgPGth
-bWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEphbnVhcnkg
-MywgMjAyMyAxMTo0MyBQTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
-Q2M6IEIsIEplZXZhbiA8amVldmFuLmJAaW50ZWwuY29tPjsgRGUgTWFyY2hpLCBMdWNhcw0KPiA8
-bHVjYXMuZGVtYXJjaGlAaW50ZWwuY29tPjsgS2VtcGN6eW5za2ksIFpiaWduaWV3DQo+IDx6Ymln
-bmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BB
-VENIIGktZy10IHY0XSBsaWIvaWd0X2RyYXc6IENoYW5nZSBNT0NTIHNldHRpbmdzIGZvcg0KPiBN
-VEwNCj4gDQo+IEhpLA0KPiANCj4gT24gMjAyMi0xMi0yNiBhdCAyMzoyNDoyOSArMDUzMCwgSmVl
-dmFuIEIgd3JvdGU6DQo+ID4gT24gTVRMLCB3ZSB3YW50IHRoZSB0YWJsZSBlbnRyeSBsYWJlbGxl
-ZCAiVUMgKEdPOk1lbSkiDQo+ID4gd2hpY2ggaGFzIGluZGV4IDUuICBUaGlzIG1lYW5zIHRoYXQg
-dGhlIE1PQ1MgdmFsdWUgaXMgMTAuDQo+ID4NCj4gPiB2MjogQWRkIGRlZmluZSBmb3IgTU9DUyBz
-ZXR0aW5ncy4gKEx1Y2FzKQ0KPiA+IHYzOiBFeHRlbmRpbmcgZ2V0X21vY3NfaW5kZXggYW5kIHVz
-aW5nIGdldF9tb2NzX2luZGV4DQo+ID4gICAgIHRvIGdldCBtb2NzIHZhbC4gKFpiaWduaWV3KQ0K
-PiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSmVldmFuIEIgPGplZXZhbi5iQGludGVsLmNvbT4NCj4g
-PiAtLS0NCj4gPiAgbGliL2k5MTUvaW50ZWxfbW9jcy5jIHwgMTIgKysrKysrKystLS0tDQo+ID4g
-IGxpYi9pZ3RfZHJhdy5jICAgICAgICB8ICA0ICsrLS0NCj4gPiAgMiBmaWxlcyBjaGFuZ2VkLCAx
-MCBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2xp
-Yi9pOTE1L2ludGVsX21vY3MuYyBiL2xpYi9pOTE1L2ludGVsX21vY3MuYyBpbmRleA0KPiA+IGRm
-NTQxYWIwLi5mNzU3YmZiYiAxMDA2NDQNCj4gPiAtLS0gYS9saWIvaTkxNS9pbnRlbF9tb2NzLmMN
-Cj4gPiArKysgYi9saWIvaTkxNS9pbnRlbF9tb2NzLmMNCj4gPiBAQCAtMTEsNiArMTEsOCBAQA0K
-PiA+ICAjZGVmaW5lIERHMV9NT0NTX1dCX0lEWAkJCQk1DQo+ID4gICNkZWZpbmUgREcyX01PQ1Nf
-VUNfSURYCQkJCTENCj4gPiAgI2RlZmluZSBERzJfTU9DU19XQl9JRFgJCQkJMw0KPiA+ICsjZGVm
-aW5lIE1UTF9NT0NTX1VDX0lEWAkJCQk1DQo+ID4gKyNkZWZpbmUgTVRMX01PQ1NfV0JfSURYCQkJ
-CTEwDQo+ID4gICNkZWZpbmUgR0VOMTJfTU9DU19VQ19JRFgJCQkzDQo+ID4gICNkZWZpbmUgR0VO
-MTJfTU9DU19XQl9JRFgJCQkyDQo+ID4gICNkZWZpbmUgWFlfQkxPQ0tfQ09QWV9CTFRfTU9DU19T
-SElGVAkJMjENCj4gPiBAQCAtMzIsMTMgKzM0LDE1IEBAIHN0YXRpYyB2b2lkIGdldF9tb2NzX2lu
-ZGV4KGludCBmZCwgc3RydWN0DQo+IGRybV9pOTE1X21vY3NfaW5kZXggKm1vY3MpDQo+ID4gIAkg
-KiBUaGlzIGhlbHBlciBmdW5jdGlvbiBpcyBwcm92aWRpbmcgY3VycmVudCBVQyBhcyB3ZWxsDQo+
-ID4gIAkgKiBhcyBXQiBNT0NTIGluZGV4IGJhc2VkIG9uIHBsYXRmb3JtLg0KPiA+ICAJICovDQo+
-ID4gLQlpZiAoSVNfREcxKGRldmlkKSkgew0KPiA+IC0JCW1vY3MtPnVjX2luZGV4ID0gREcxX01P
-Q1NfVUNfSURYOw0KPiA+IC0JCW1vY3MtPndiX2luZGV4ID0gREcxX01PQ1NfV0JfSURYOw0KPiAN
-Cj4gUGxlYXNlIGtlZXAgb2xkIGNvZGUsIERHMSBmaXJzdC4NCg0KQmFzZWQgb24gbGFzdCByZXZp
-c2lvbiBjb21tZW50cyBJIGZpeGVkIHRoZSBvcmRlci4gKE1UTCxERzIsREcxLEdlbjEyKSANCklz
-IGl0IG9rID8/IA0KPiANCj4gPiArCWlmIChJU19NRVRFT1JMQUtFKGRldmlkKSkgew0KPiA+ICsg
-ICAgICAgICAgICAgICAgbW9jcy0+dWNfaW5kZXggPSBNVExfTU9DU19VQ19JRFg7DQo+ID4gKyAg
-ICAgICAgICAgICAgICBtb2NzLT53Yl9pbmRleCA9IE1UTF9NT0NTX1dCX0lEWDsNCj4gPiAgCX0g
-ZWxzZSBpZiAoSVNfREcyKGRldmlkKSkgew0KPiA+ICAJCW1vY3MtPnVjX2luZGV4ID0gREcyX01P
-Q1NfVUNfSURYOw0KPiA+ICAJCW1vY3MtPndiX2luZGV4ID0gREcyX01PQ1NfV0JfSURYOw0KPiA+
-IC0NCj4gPiArCX0gZWxzZSBpZiAoSVNfREcxKGRldmlkKSkgew0KPiANCj4gSGVyZSBwdXQgbmV3
-IG9uZSBmb3IgTVRMIChpbnN0ZWFkIG9mIG1vdmluZyBERzEgYXJvdW5kKS4NCj4gDQo+ID4gKwkJ
-bW9jcy0+dWNfaW5kZXggPSBERzFfTU9DU19VQ19JRFg7DQo+ID4gKwkJbW9jcy0+d2JfaW5kZXgg
-PSBERzFfTU9DU19XQl9JRFg7DQo+ID4gIAl9IGVsc2UgaWYgKElTX0dFTjEyKGRldmlkKSkgew0K
-PiA+ICAJCW1vY3MtPnVjX2luZGV4ID0gR0VOMTJfTU9DU19VQ19JRFg7DQo+ID4gIAkJbW9jcy0+
-d2JfaW5kZXggPSBHRU4xMl9NT0NTX1dCX0lEWDsgZGlmZiAtLWdpdA0KPiBhL2xpYi9pZ3RfZHJh
-dy5jDQo+ID4gYi9saWIvaWd0X2RyYXcuYyBpbmRleCA5NzVkNjVjZC4uNThjZTA1MzkgMTAwNjQ0
-DQo+ID4gLS0tIGEvbGliL2lndF9kcmF3LmMNCj4gPiArKysgYi9saWIvaWd0X2RyYXcuYw0KPiA+
-IEBAIC0zNiw2ICszNiw3IEBADQo+ID4gICNpbmNsdWRlICJpODMwX3JlZy5oIg0KPiA+ICAjaW5j
-bHVkZSAiaTkxNS9nZW1fY3JlYXRlLmgiDQo+ID4gICNpbmNsdWRlICJpOTE1L2dlbV9tbWFuLmgi
-DQo+ID4gKyNpbmNsdWRlICJpOTE1L2ludGVsX21vY3MuaCINCj4gPg0KPiA+ICAjaWZuZGVmIFBB
-R0VfQUxJR04NCj4gPiAgI2lmbmRlZiBQQUdFX1NJWkUNCj4gPiBAQCAtNzAyLDggKzcwMyw3IEBA
-IHN0YXRpYyB2b2lkIGRyYXdfcmVjdF9ibHQoaW50IGZkLCBzdHJ1Y3QgY21kX2RhdGENCj4gKmNt
-ZF9kYXRhLA0KPiA+ICAJCXBpdGNoID0gdGlsaW5nID8gYnVmLT5zdHJpZGUgLyA0IDogYnVmLT5z
-dHJpZGU7DQo+ID4NCj4gPiAgCQlpbnRlbF9iYl9vdXQoaWJiLCBYWV9GQVNUX0NPTE9SX0JMVCB8
-IGJsdF9jbWRfZGVwdGgpOw0KPiA+IC0JCS8qIERHMiBNT0NTIGVudHJ5IDIgaXMgIlVDIC0gTm9u
-LUNvaGVyZW50OyBHTzpNZW1vcnkiICovDQo+ID4gLQkJaW50ZWxfYmJfb3V0KGliYiwgYmx0X2Nt
-ZF90aWxpbmcgfCAyIDw8IDIxIHwgKHBpdGNoLTEpKTsNCj4gDQo+IElmIHlvdSBsb29rIGF0IERH
-MiBkZWZpbml0aW9ucyB5b3Ugd2lsbCBzZWUgdGhlcmUgaXMgMSBhbmQgMyBzbyB0aGlzIGNoYW5n
-ZSBub3cNCj4gbG9va3MgbGlrZSBhIGZpeCBmb3IgREcyID8NCj4gTWF5YmUgdGhpcyBvbmUgc2hv
-dWxkIGdvIGZpcnN0IGFzIGEgZml4LCB0aGVuIGFkZGluZyBNVEwgZGVmcyA/DQo+IE9yIGF0IGxl
-YXN0IG1lbnRpb24gdGhpcyBmaXggaW4gY29tbWl0IGRlc2NyaXB0aW9uLg0KPiANClN1cmUsIEkg
-d2lsbCBzcGxpdCB0aGlzIGludG8gMiBwYXRjaGVzLiANCg0KVGhhbmtzIA0KSmVldmFuIEIgDQog
-DQo+IFJlZ2FyZHMsDQo+IEthbWlsDQo+IA0KPiA+ICsJCWludGVsX2JiX291dChpYmIsIGJsdF9j
-bWRfdGlsaW5nIHwgaW50ZWxfZ2V0X3VjX21vY3MoZmQpIDw8IDIxDQo+IHwNCj4gPiArKHBpdGNo
-LTEpKTsNCj4gPiAgCQlpbnRlbF9iYl9vdXQoaWJiLCAocmVjdC0+eSA8PCAxNikgfCByZWN0LT54
-KTsNCj4gPiAgCQlpbnRlbF9iYl9vdXQoaWJiLCAoKHJlY3QtPnkgKyByZWN0LT5oKSA8PCAxNikg
-fCAocmVjdC0+eCArIHJlY3QtDQo+ID53KSk7DQo+ID4gIAkJaW50ZWxfYmJfZW1pdF9yZWxvY19m
-ZW5jZWQoaWJiLCBkc3QtPmhhbmRsZSwgMCwNCj4gPiAtLQ0KPiA+IDIuMzYuMA0KPiA+DQo=
+This test validates negative scenario of DC5 state by keeping
+all connectors's DPMS property set to ON.
+
+v2: Added function to check externel panel and skip test if not found.
+v3: Moved check_external_panel inside igt_require_f and removed
+    igt_skip_on_f.
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 45 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index ba49d014..e29f9eb8 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -246,6 +246,13 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
+ 		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
+ }
+ 
++static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
++{
++	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
++			"%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
++			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
++}
++
+ static void setup_videoplayback(data_t *data)
+ {
+ 	color_t red_green_blue[] = {
+@@ -411,6 +418,18 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
+ 	cleanup_dc_dpms(data);
+ }
+ 
++static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
++{
++	uint32_t dc_counter;
++
++	require_dc_counter(data->debugfs_fd, dc_flag);
++	setup_dc_dpms(data);
++	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
++	dpms_on(data);
++	check_dc_counter_negative(data, dc_flag, dc_counter);
++	cleanup_dc_dpms(data);
++}
++
+ static bool support_dc6(int debugfs_fd)
+ {
+ 	char buf[4096];
+@@ -485,6 +504,23 @@ static void test_dc9_dpms(data_t *data)
+ 	setup_dc9_dpms(data, dc_target);
+ }
+ 
++static int check_external_panel(igt_display_t *display)
++{
++	igt_output_t *output = NULL;
++	int external_panel = 0;
++
++	for_each_connected_output(display, output) {
++		drmModeConnectorPtr c = output->config.connector;
++
++		if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
++		    c->connection == DRM_MODE_CONNECTED) {
++			external_panel++;
++		}
++	}
++
++	return external_panel;
++}
++
+ static void kms_poll_state_restore(int sig)
+ {
+ 	int sysfs_fd;
+@@ -552,6 +588,15 @@ igt_main
+ 		test_dc_state_dpms(&data, CHECK_DC5);
+ 	}
+ 
++	igt_describe("This test validates negative scenario of DC5 display "
++		     "engine entry to DC5 state while all connectors's DPMS "
++		     "property set to ON");
++	igt_subtest("dc5-dpms-negative") {
++		igt_require_f(check_external_panel(&data.display),
++			      "External panel not detected, skip execution\n");
++		test_dc_state_dpms_negative(&data, CHECK_DC5);
++	}
++
+ 	igt_describe("This test validates display engine entry to DC5 state "
+ 		     "while all connectors's DPMS property set to OFF");
+ 	igt_subtest("dc6-dpms") {
+-- 
+2.25.1
