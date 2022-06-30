@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3A4811AD34
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jun 2022 13:16:59 +0000 (UTC)
-From: "Knop, Ryszard" <ryszard.knop@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "maira.canal@usp.br" <maira.canal@usp.br>
-Date: Thu, 30 Jun 2022 13:16:56 +0000
-Message-ID: <263593b91682f3f289f40ebc3d7ab93361e91778.camel@intel.com>
-References: <20220628094435.854519-3-ryszard.knop@intel.com>
- <20220628235143.79978-1-maira.canal@usp.br>
-In-Reply-To: <20220628235143.79978-1-maira.canal@usp.br>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8E7FD01E5D24884D8D7FE4ABCE1C9205@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D29910FFCE
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jun 2022 13:34:29 +0000 (UTC)
+Message-ID: <aa85589c-802a-958e-ce65-1cbfbcde7e56@intel.com>
+Date: Thu, 30 Jun 2022 14:34:25 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t,2/7] runner: make the usage function variadic
+Content-Language: en-GB
+To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org
+References: <20220628130412.1723424-1-priyanka.dandamudi@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20220628130412.1723424-1-priyanka.dandamudi@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t,
+ v3] tests/i915/i915_module_load: Test resizable bar support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,44 +25,148 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIyLTA2LTI4IGF0IDIwOjUxIC0wMzAwLCBNYcOtcmEgQ2FuYWwgd3JvdGU6Cj4g
-T24gNi8yOC8yMiAxMTo0NCwgUnlzemFyZCBLbm9wIHdyb3RlOgo+ID4gRm9yIGVhc2llciBlcnJv
-ciBsb2dnaW5nLCBtYWtlIHRoZSB1c2FnZSgpIGZ1bmN0aW9uIHZhcmlhZGljIGFuZAo+ID4gcGFz
-cwo+ID4gaXRzIGFyZ3VtZW50cyB0byB2ZnByaW50Zi4gQWRkaXRpb25hbGx5LCByZW9yZGVyIGl0
-cyBhcmd1bWVudHMgc28KPiA+IHRoYXQKPiA+IGl0IHZpc3VhbGx5IG1hdGNoZXMgYWxsIHRoZSBw
-cmludGYgZnVuY3Rpb25zLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBSeXN6YXJkIEtub3AgPHJ5
-c3phcmQua25vcEBpbnRlbC5jb20+Cj4gPiAtLS0KPiAKPiBIaSwKPiAKPiBPdmVyYWxsIHRoaXMg
-bG9va3MgZ29vZCwganVzdCBhIHNtYWxsIHR5cG8uCj4gCj4gPiBAQCAtODA2LDI0ICs4MDgsMTkg
-QEAgYm9vbCBzZXJpYWxpemVfc2V0dGluZ3Moc3RydWN0IHNldHRpbmdzCj4gPiAqc2V0dGluZ3Mp
-Cj4gPiDCoAo+ID4gwqDCoMKgwqDCoMKgwqDCoGlmICghc2V0dGluZ3MtPm92ZXJ3cml0ZSAmJgo+
-ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmYWNjZXNzYXQoZGlyZmQsIHNldHRpbmdzX2ZpbGVu
-YW1lLCBGX09LLCAwKSA9PSAwKSB7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-dXNhZ2UoIlNldHRpbmdzIG1ldGFkYXRhIGFscmVhZHkgZXhpc3RzIGFuZCBub3QKPiA+IG92ZXJ3
-cml0aW5nIiwgc3RkZXJyKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1c2Fn
-ZShzdGRlcnIsICJTZXR0aW5ncyBtZXRhZGF0YSBhbHJlYWR5IGV4aXN0cyBhbmQKPiA+IG5vdCBv
-dmVyd3JpdGluZyIpOwo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4g
-ZmFsc2U7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgfQo+ID4gwqAKPiA+IMKgwqDCoMKgwqDCoMKgwqBp
-ZiAoc2V0dGluZ3MtPm92ZXJ3cml0ZSAmJgo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB1bmxp
-bmthdChkaXJmZCwgc2V0dGluZ3NfZmlsZW5hbWUsIDApICE9IDAgJiYKPiA+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgZXJybm8gIT0gRU5PRU5UKSB7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgdXNhZ2UoIkVycm9yIHJlbW92aW5nIG9sZCBzZXR0aW5ncyBtZXRhZGF0YSIsCj4g
-PiBzdGRlcnIpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVzYWdlKHN0ZGVy
-ciwgIkVycm9yIHJlbW92aW5nIG9sZCBzZXR0aW5ncwo+ID4gbWV0YWRhdGEiKTsKPiA+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIGZhbHNlOwo+ID4gwqDCoMKgwqDCoMKg
-wqDCoH0KPiA+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKgaWYgKChmZCA9IG9wZW5hdChkaXJmZCwg
-c2V0dGluZ3NfZmlsZW5hbWUsIE9fQ1JFQVQgfCBPX0VYQ0wKPiA+IHwgT19XUk9OTFksIDA2NjYp
-KSA8IDApIHsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjaGFyICptc2c7Cj4g
-PiAtCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYXNwcmludGYoJm1zZywgIkNy
-ZWF0aW5nIHNldHRpbmdzIHNlcmlhbGl6YXRpb24KPiA+IGZpbGUgZmFpbGVkOiAlcyIsIHN0cmVy
-cm9yKGVycm5vKSk7Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdXNhZ2UobXNn
-LCBzdGRlcnIpOwo+ID4gLQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZyZWUo
-bXNnKTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1c2FnZShtc2csICJDcmVh
-dGluZyBzZXR0aW5ncyBzZXJpYWxpemF0aW9uIGZpbGUKPiA+IGZhaWxlZDogJXMiLCBzdHJlcnJv
-cihlcnJubykpOwo+IAo+IEkgYmVsaWV2ZSB0aGlzIHNob3VsZCBiZToKPiDCoMKgwqAgdXNhZ2Uo
-c3RkZXJyLCAiQ3JlYXRpbmcgc2V0dGluZ3Mgc2VyaWFsaXphdGlvbiBmaWxlIGZhaWxlZDogJXMi
-LAo+IHN0cmVycm9yKGVycm5vKSk7CgpUaGF0J3MgcmlnaHQsIHNvcnJ5LCBtaXNzZWQgdGhpcyBv
-bmUgd2hpbGUgc3BsaXR0aW5nIHRoZSBwYXRjaC4KClRoYW5rcywgUnlzemFyZAoKPiAKPiBSZXZp
-ZXdlZC1ieTogTWHDrXJhIENhbmFsIDxtYWlyYS5jYW5hbEB1c3AuYnI+Cj4gCj4gQmVzdCBSZWdh
-cmRzLAo+IC0gTWHDrXJhIENhbmFsCj4gCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGNsb3NlKGRpcmZkKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0
-dXJuIGZhbHNlOwo+ID4gwqAgfQoK
+On 28/06/2022 14:04, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> New test named resize bar has been added which tests whether
+> bar gets resized with different supported sizes.
+> 
+> v2: Added code to check for bad bar sizes.
+> Modified code to check for support of lmem_bar_size modparam.(Petri)
+> 
+> v3: Added test description.(Kamil)
+> Updated driver_load_unload() name to driver_load_with_lmem_bar_size().
+> Used for_each_memory_region() to check for lmem instance and some minor
+> code modifications.(Matt)
+> 
+> Note:Test gets executed when
+> 1. modparam lmem_bar_size gets added.
+> 2. small bar bits gets enabled.
+> 
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>   tests/i915/i915_module_load.c | 87 +++++++++++++++++++++++++++++++++++
+>   1 file changed, 87 insertions(+)
+> 
+> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
+> index 4705f3d6..cd036b95 100644
+> --- a/tests/i915/i915_module_load.c
+> +++ b/tests/i915/i915_module_load.c
+> @@ -38,6 +38,9 @@
+>   #include "igt_sysfs.h"
+>   #include "igt_core.h"
+>   
+> +#define BAR_SIZE_SHIFT 20
+> +#define MIN_BAR_SIZE 256
+> +
+>   IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
+>   
+>   static void store_all(int i915)
+> @@ -260,6 +263,45 @@ static void load_and_check_i915(void)
+>   	gem_sanitycheck();
+>   }
+>   
+> +static uint32_t  driver_load_with_lmem_bar_size(uint32_t lmem_bar_size, bool check_support)
+> +{
+> +	int i915 = -1;
+> +	char lmem_bar[64];
+> +
+> +	igt_i915_driver_unload();
+> +	if (lmem_bar_size == 0)
+> +		igt_assert_eq(igt_i915_driver_load(NULL), 0);
+> +	else {
+> +		sprintf(lmem_bar, "lmem_bar_size=%u", lmem_bar_size);
+> +		igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
+> +	}
+> +
+> +	i915 = __drm_open_driver(DRIVER_INTEL);
+> +	igt_require_fd(i915);
+> +	igt_require_gem(i915);
+> +	igt_require(gem_has_lmem(i915));
+> +
+> +	if (check_support) {
+> +		char *tmp;
+> +
+> +		tmp = __igt_params_get(i915, "lmem_bar_size");
+> +		if (!tmp)
+> +			igt_skip("lmem_bar_size modparam not supported on this kernel. Skipping the test.\n");
+> +		free(tmp);
+> +	}
+> +
+> +	for_each_memory_region(r, i915)
+
+Add some braces here.
+
+> +		if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE) {
+> +			lmem_bar_size = (r->cpu_size >> BAR_SIZE_SHIFT);
+
+I just pushed the IGT changes for this (cpu_size), so hopefully this 
+will now build and skip when run. Can you resend?
+
+Otherwise assuming this works as expected,
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+
+> +
+> +			igt_skip_on_f(lmem_bar_size == 0, "CPU visible size should be greater than zero. Skipping for older kernel.\n");
+> +		}
+> +
+> +	close(i915);
+> +
+> +	return lmem_bar_size;
+> +}
+> +
+>   igt_main
+>   {
+>   	igt_describe("Check if i915 and friends are not yet loaded, then load them.");
+> @@ -320,5 +362,50 @@ igt_main
+>   		/* inject_fault() leaves the module unloaded */
+>   	}
+>   
+> +	igt_describe("Check whether lmem bar size can be resized to only supported sizes.");
+> +	igt_subtest("resize-bar") {
+> +		uint32_t result_bar_size;
+> +		uint32_t lmem_bar_size;
+> +		int i915 = -1;
+> +
+> +		if (igt_kmod_is_loaded("i915")) {
+> +			i915 = __drm_open_driver(DRIVER_INTEL);
+> +			igt_require_fd(i915);
+> +			igt_require_gem(i915);
+> +			igt_require(gem_has_lmem(i915));
+> +			igt_skip_on_f(igt_sysfs_get_num_gt(i915) > 1, "Skips for more than one lmem instance.\n");
+> +			close(i915);
+> +		}
+> +
+> +		/* Test for lmem_bar_size modparam support */
+> +		lmem_bar_size = driver_load_with_lmem_bar_size(MIN_BAR_SIZE, true);
+> +		igt_assert_eq(lmem_bar_size, MIN_BAR_SIZE);
+> +
+> +		lmem_bar_size = driver_load_with_lmem_bar_size(0, false);
+> +
+> +		lmem_bar_size = roundup_power_of_two(lmem_bar_size);
+> +
+> +		igt_skip_on_f(lmem_bar_size == MIN_BAR_SIZE, "Bar is already set to minimum size.\n");
+> +
+> +		while (lmem_bar_size > MIN_BAR_SIZE) {
+> +			lmem_bar_size = lmem_bar_size >> 1;
+> +
+> +			result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
+> +
+> +			igt_assert_f(lmem_bar_size == result_bar_size, "Bar couldn't be resized.\n");
+> +		}
+> +
+> +		/* Test with unsupported sizes */
+> +		lmem_bar_size = 80;
+> +		result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
+> +		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.\n");
+> +
+> +		lmem_bar_size = 16400;
+> +		result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
+> +		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.\n");
+> +
+> +		igt_i915_driver_unload();
+> +	}
+> +
+>   	/* Subtests should unload the module themselves if they use modparams */
+>   }
