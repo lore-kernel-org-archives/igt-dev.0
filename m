@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D29910FFCE
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jun 2022 13:34:29 +0000 (UTC)
-Message-ID: <aa85589c-802a-958e-ce65-1cbfbcde7e56@intel.com>
-Date: Thu, 30 Jun 2022 14:34:25 +0100
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE3B311B4B3
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jun 2022 14:19:49 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 30 Jun 2022 19:53:06 +0530
+Message-Id: <20220630142306.2883-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220628153553.2083-1-nidhi1.gupta@intel.com>
+References: <20220628153553.2083-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Language: en-GB
-To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org
-References: <20220628130412.1723424-1-priyanka.dandamudi@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20220628130412.1723424-1-priyanka.dandamudi@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t,
- v3] tests/i915/i915_module_load: Test resizable bar support
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_invalid_mode: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,152 +18,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 28/06/2022 14:04, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> New test named resize bar has been added which tests whether
-> bar gets resized with different supported sizes.
-> 
-> v2: Added code to check for bad bar sizes.
-> Modified code to check for support of lmem_bar_size modparam.(Petri)
-> 
-> v3: Added test description.(Kamil)
-> Updated driver_load_unload() name to driver_load_with_lmem_bar_size().
-> Used for_each_memory_region() to check for lmem instance and some minor
-> code modifications.(Matt)
-> 
-> Note:Test gets executed when
-> 1. modparam lmem_bar_size gets added.
-> 2. small bar bits gets enabled.
-> 
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->   tests/i915/i915_module_load.c | 87 +++++++++++++++++++++++++++++++++++
->   1 file changed, 87 insertions(+)
-> 
-> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-> index 4705f3d6..cd036b95 100644
-> --- a/tests/i915/i915_module_load.c
-> +++ b/tests/i915/i915_module_load.c
-> @@ -38,6 +38,9 @@
->   #include "igt_sysfs.h"
->   #include "igt_core.h"
->   
-> +#define BAR_SIZE_SHIFT 20
-> +#define MIN_BAR_SIZE 256
-> +
->   IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
->   
->   static void store_all(int i915)
-> @@ -260,6 +263,45 @@ static void load_and_check_i915(void)
->   	gem_sanitycheck();
->   }
->   
-> +static uint32_t  driver_load_with_lmem_bar_size(uint32_t lmem_bar_size, bool check_support)
-> +{
-> +	int i915 = -1;
-> +	char lmem_bar[64];
-> +
-> +	igt_i915_driver_unload();
-> +	if (lmem_bar_size == 0)
-> +		igt_assert_eq(igt_i915_driver_load(NULL), 0);
-> +	else {
-> +		sprintf(lmem_bar, "lmem_bar_size=%u", lmem_bar_size);
-> +		igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
-> +	}
-> +
-> +	i915 = __drm_open_driver(DRIVER_INTEL);
-> +	igt_require_fd(i915);
-> +	igt_require_gem(i915);
-> +	igt_require(gem_has_lmem(i915));
-> +
-> +	if (check_support) {
-> +		char *tmp;
-> +
-> +		tmp = __igt_params_get(i915, "lmem_bar_size");
-> +		if (!tmp)
-> +			igt_skip("lmem_bar_size modparam not supported on this kernel. Skipping the test.\n");
-> +		free(tmp);
-> +	}
-> +
-> +	for_each_memory_region(r, i915)
+Sanitize the system state before starting the subtest.
 
-Add some braces here.
+v2: test every mode listed by connector to be more
+    sure everything is really getting rejected.
+    (Modem Bhanuprakash)
 
-> +		if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE) {
-> +			lmem_bar_size = (r->cpu_size >> BAR_SIZE_SHIFT);
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_invalid_mode.c | 39 +++++++++++++++------------------------
+ 1 file changed, 15 insertions(+), 24 deletions(-)
 
-I just pushed the IGT changes for this (cpu_size), so hopefully this 
-will now build and skip when run. Can you resend?
-
-Otherwise assuming this works as expected,
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-
-> +
-> +			igt_skip_on_f(lmem_bar_size == 0, "CPU visible size should be greater than zero. Skipping for older kernel.\n");
-> +		}
-> +
-> +	close(i915);
-> +
-> +	return lmem_bar_size;
-> +}
-> +
->   igt_main
->   {
->   	igt_describe("Check if i915 and friends are not yet loaded, then load them.");
-> @@ -320,5 +362,50 @@ igt_main
->   		/* inject_fault() leaves the module unloaded */
->   	}
->   
-> +	igt_describe("Check whether lmem bar size can be resized to only supported sizes.");
-> +	igt_subtest("resize-bar") {
-> +		uint32_t result_bar_size;
-> +		uint32_t lmem_bar_size;
-> +		int i915 = -1;
-> +
-> +		if (igt_kmod_is_loaded("i915")) {
-> +			i915 = __drm_open_driver(DRIVER_INTEL);
-> +			igt_require_fd(i915);
-> +			igt_require_gem(i915);
-> +			igt_require(gem_has_lmem(i915));
-> +			igt_skip_on_f(igt_sysfs_get_num_gt(i915) > 1, "Skips for more than one lmem instance.\n");
-> +			close(i915);
-> +		}
-> +
-> +		/* Test for lmem_bar_size modparam support */
-> +		lmem_bar_size = driver_load_with_lmem_bar_size(MIN_BAR_SIZE, true);
-> +		igt_assert_eq(lmem_bar_size, MIN_BAR_SIZE);
-> +
-> +		lmem_bar_size = driver_load_with_lmem_bar_size(0, false);
-> +
-> +		lmem_bar_size = roundup_power_of_two(lmem_bar_size);
-> +
-> +		igt_skip_on_f(lmem_bar_size == MIN_BAR_SIZE, "Bar is already set to minimum size.\n");
-> +
-> +		while (lmem_bar_size > MIN_BAR_SIZE) {
-> +			lmem_bar_size = lmem_bar_size >> 1;
-> +
-> +			result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
-> +
-> +			igt_assert_f(lmem_bar_size == result_bar_size, "Bar couldn't be resized.\n");
-> +		}
-> +
-> +		/* Test with unsupported sizes */
-> +		lmem_bar_size = 80;
-> +		result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
-> +		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.\n");
-> +
-> +		lmem_bar_size = 16400;
-> +		result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
-> +		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.\n");
-> +
-> +		igt_i915_driver_unload();
-> +	}
-> +
->   	/* Subtests should unload the module themselves if they use modparams */
->   }
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 0287ee02..28e1ad4b 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -35,7 +35,6 @@ struct _data {
+ 	enum pipe pipe;
+ 	igt_display_t display;
+ 	igt_output_t *output;
+-	drmModeResPtr res;
+ 	int max_dotclock;
+ 	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
+ };
+@@ -182,35 +181,29 @@ static void
+ test_output(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+-	drmModeModeInfo mode;
+ 	struct igt_fb fb;
+ 	int ret;
+-	uint32_t crtc_id;
++	drmModeModeInfo *mode;
+ 
+-	/*
+-	 * FIXME test every mode we have to be more
+-	 * sure everything is really getting rejected?
+-	 */
+-	mode = *igt_output_get_mode(output);
+-	igt_require(data->adjust_mode(data, &mode));
++	igt_output_set_pipe(output, data->pipe);
+ 
+-	igt_create_fb(data->drm_fd,
+-		      max_t(uint16_t, mode.hdisplay, 64),
+-		      max_t(uint16_t, mode.vdisplay, 64),
+-		      DRM_FORMAT_XRGB8888,
++	igt_create_fb(data->drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
+ 		      DRM_FORMAT_MOD_LINEAR,
+ 		      &fb);
+ 
+-	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+-
+-	crtc_id = data->display.pipes[data->pipe].crtc_id;
+-
+-	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+-			     fb.fb_id, 0, 0,
+-			     &output->id, 1, &mode);
+-	igt_assert_lt(ret, 0);
++	for_each_connector_mode(output) {
++		mode = &output->config.connector->modes[j__];
++		igt_require(data->adjust_mode(data, mode));
++		igt_output_override_mode(output, mode);
++		ret = igt_display_try_commit2(&data->display, &data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++		igt_assert(ret == -EINVAL);
++	}
+ 
+ 	igt_remove_fb(data->drm_fd, &fb);
++	igt_output_override_mode(output, NULL);
++	/*unset_all_crtcs*/
++	igt_display_reset(&data->display);
++	igt_display_commit(&data->display);
+ }
+ 
+ static int i915_max_dotclock(data_t *data)
+@@ -290,11 +283,10 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+-		data.res = drmModeGetResources(data.drm_fd);
+-		igt_assert(data.res);
+ 
+ 		data.max_dotclock = i915_max_dotclock(&data);
+ 		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
++		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	igt_describe("Make sure all modesets are rejected when the requested mode is invalid");
+@@ -314,6 +306,5 @@ igt_main
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		igt_reset_connectors();
+-		drmModeFreeResources(data.res);
+ 	}
+ }
+-- 
+2.26.2
