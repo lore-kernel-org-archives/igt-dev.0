@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1anam02on2080.outbound.protection.outlook.com [40.107.96.80])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF68010E029
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Jul 2022 02:49:55 +0000 (UTC)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2042.outbound.protection.outlook.com [40.107.243.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C28F10E49A
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Jul 2022 02:50:00 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 30 Jun 2022 22:49:17 -0400
-Message-ID: <20220701024922.28556-2-vitaly.prosyak@amd.com>
+Date: Thu, 30 Jun 2022 22:49:18 -0400
+Message-ID: <20220701024922.28556-3-vitaly.prosyak@amd.com>
 In-Reply-To: <20220701024922.28556-1-vitaly.prosyak@amd.com>
 References: <20220701024922.28556-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/7] lib/amdgpu: add bo allocation helper function
+Subject: [igt-dev] [PATCH 3/7] tests/amdgpu: add memory eviction test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,70 +27,145 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
+Allocate max possible VRAM and GTT memory and
+then do DMA transfer between buffers combinations
+which causes the evictions.
+
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_memory.c | 33 +++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_memory.h |  4 ++++
- 2 files changed, 37 insertions(+)
+ tests/amdgpu/amd_basic.c | 113 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
 
-diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
-index b0fa18c6..344551fc 100644
---- a/lib/amdgpu/amd_memory.c
-+++ b/lib/amdgpu/amd_memory.c
-@@ -69,6 +69,39 @@
- 	return buf_handle;
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index db531f29..679a8b0f 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -341,6 +341,116 @@ static void amdgpu_userptr_test(amdgpu_device_handle device)
+ 	free(ring_context);
  }
  
-+ /**
-+  *
-+  * @param dev
-+  * @param size
-+  * @param alignment
-+  * @param heap
-+  * @param flags
-+  * @param bo
-+  * @return
-+  */
-+int
-+amdgpu_bo_alloc_wrap(amdgpu_device_handle dev, unsigned size,
-+		     unsigned alignment, unsigned heap, uint64_t flags,
-+		     amdgpu_bo_handle *bo)
++static void
++amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
 +{
-+	amdgpu_bo_handle buf_handle;
-+	int r;
-+	struct amdgpu_bo_alloc_request req = {
-+		.alloc_size = size,
-+		.phys_alignment = alignment,
-+		.preferred_heap = heap,
-+		.flags = flags,
-+	};
++	const int sdma_write_length = 1024;
++	const int pm4_dw = 256;
 +
-+	r = amdgpu_bo_alloc(dev, &req, &buf_handle);
-+	if (r)
-+		return r;
++	struct amdgpu_ring_context *ring_context;
++	struct amdgpu_heap_info vram_info, gtt_info;
++	int r, loop1, loop2;
 +
-+	*bo = buf_handle;
 +
-+	return 0;
++	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
++
++	const struct amdgpu_ip_block_version * ip_block = get_ip_block(device_handle, AMDGPU_HW_IP_DMA);
++	igt_assert(ip_block);
++
++	ring_context = calloc(1, sizeof(*ring_context));
++	ring_context->write_length =  sdma_write_length;
++	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
++	ring_context->secure = false;
++	ring_context->pm4_size = pm4_dw;
++	ring_context->res_cnt = 4;
++	igt_assert(ring_context->pm4);
++
++	r = amdgpu_cs_ctx_create(device_handle, &ring_context->context_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_query_heap_info(device_handle, AMDGPU_GEM_DOMAIN_VRAM,
++				   0, &vram_info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_wrap(device_handle, vram_info.max_allocation, 4096,
++				 AMDGPU_GEM_DOMAIN_VRAM, 0, &ring_context->boa_vram[0]);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_alloc_wrap(device_handle, vram_info.max_allocation, 4096,
++				 AMDGPU_GEM_DOMAIN_VRAM, 0, &ring_context->boa_vram[1]);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_query_heap_info(device_handle, AMDGPU_GEM_DOMAIN_GTT,
++				   0, &gtt_info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_wrap(device_handle, gtt_info.max_allocation, 4096,
++				 AMDGPU_GEM_DOMAIN_GTT, 0, &ring_context->boa_gtt[0]);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_alloc_wrap(device_handle, gtt_info.max_allocation, 4096,
++				 AMDGPU_GEM_DOMAIN_GTT, 0, &ring_context->boa_gtt[1]);
++	igt_assert_eq(r, 0);
++
++
++
++	loop1 = loop2 = 0;
++	/* run 9 circle to test all mapping combination */
++	while(loop1 < 2) {
++		while(loop2 < 2) {
++			/* allocate UC bo1for sDMA use */
++			r = amdgpu_bo_alloc_and_map(device_handle,
++						    sdma_write_length, 4096,
++						    AMDGPU_GEM_DOMAIN_GTT,
++						    gtt_flags[loop1],  &ring_context->bo,
++						    (void**)&ring_context->bo_cpu, &ring_context->bo_mc,
++						    &ring_context->va_handle);
++			igt_assert_eq(r, 0);
++
++			/* set bo1 */
++			memset((void*)ring_context->bo_cpu, ip_block->funcs->pattern, ring_context->write_length);
++
++			/* allocate UC bo2 for sDMA use */
++			r = amdgpu_bo_alloc_and_map(device_handle,
++						    sdma_write_length, 4096,
++						    AMDGPU_GEM_DOMAIN_GTT,
++						    gtt_flags[loop2], &ring_context->bo2,
++						    (void**)&ring_context->bo2_cpu, &ring_context->bo_mc2,
++						    &ring_context->va_handle2);
++			igt_assert_eq(r, 0);
++
++			/* clear bo2 */
++			memset((void*)ring_context->bo2_cpu, 0, ring_context->write_length);
++
++			ring_context->resources[0] = ring_context->bo;
++			ring_context->resources[1] = ring_context->bo2;
++
++			ring_context->resources[2] = ring_context->boa_vram[loop2];
++			ring_context->resources[3] = ring_context->boa_gtt[loop2];
++			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
++			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context);
++			/* fulfill PM4: test DMA copy linear */
++			r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, sdma_write_length);
++			amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
++						 ring_context->write_length);
++			amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2, ring_context->bo_mc2,
++						 ring_context->write_length);
++
++			loop2++;
++		}
++		loop2 = 0;
++		loop1++;
++	}
++	amdgpu_bo_free(ring_context->boa_vram[0]);
++	amdgpu_bo_free(ring_context->boa_vram[1]);
++	amdgpu_bo_free(ring_context->boa_gtt[0]);
++	amdgpu_bo_free(ring_context->boa_gtt[1]);
++	/* clean resources */
++
++	/* end of test */
++	r = amdgpu_cs_ctx_free(ring_context->context_handle);
++	igt_assert_eq(r, 0);
++	free(ring_context);
 +}
 +
-  /**
-   *
-   * @param bo
-diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
-index d7f32926..80bf979f 100644
---- a/lib/amdgpu/amd_memory.h
-+++ b/lib/amdgpu/amd_memory.h
-@@ -38,6 +38,10 @@ gpu_mem_alloc(amdgpu_device_handle device_handle,
- 				      uint64_t flags,
- 				      uint64_t *vmc_addr,
- 				      amdgpu_va_handle *va_handle);
-+int
-+amdgpu_bo_alloc_wrap(amdgpu_device_handle dev, unsigned size,
-+		     unsigned alignment, unsigned heap, uint64_t flags,
-+		     amdgpu_bo_handle *bo);
+ igt_main
+ {
+ 	amdgpu_device_handle device;
+@@ -388,6 +498,9 @@ igt_main
+ 	igt_subtest("semaphore")
+ 		amdgpu_semaphore_test(device);
  
- void
- gpu_mem_free(amdgpu_bo_handle bo,
++	igt_subtest("eviction_test")
++		amdgpu_bo_eviction_test(device);
++
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		close(fd);
 -- 
 2.25.1
