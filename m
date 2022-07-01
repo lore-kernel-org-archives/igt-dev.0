@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1265410FCFB
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Jul 2022 06:11:43 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 1 Jul 2022 06:11:32 +0000
-Message-ID: <MWHPR1101MB2157BEDB3E1777B0613B3180EFBD9@MWHPR1101MB2157.namprd11.prod.outlook.com>
-References: <20220630101513.24054-1-juhapekka.heikkila@gmail.com>
- <20220630101513.24054-4-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20220630101513.24054-4-juhapekka.heikkila@gmail.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13DEF10FF93
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Jul 2022 06:39:19 +0000 (UTC)
+Message-ID: <6f002776-3b07-e027-85f7-37bbc3c0b818@intel.com>
+Date: Fri, 1 Jul 2022 12:09:00 +0530
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220628153553.2083-1-nidhi1.gupta@intel.com>
+ <20220630142306.2883-1-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220630142306.2883-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/kms_flip_scaled_crc: Validate
- NN scaling filter
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_invalid_mode: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,125 +25,106 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
-dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSnVoYS0NCj4gUGVra2Eg
-SGVpa2tpbGENCj4gU2VudDogVGh1cnNkYXksIEp1bmUgMzAsIDIwMjIgMToxNSBQTQ0KPiBUbzog
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRD
-SCBpLWctdCA0LzRdIHRlc3RzL2ttc19mbGlwX3NjYWxlZF9jcmM6IFZhbGlkYXRlIE5ODQo+IHNj
-YWxpbmcgZmlsdGVyDQo+IA0KPiBGcm9tOiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFAaW50
-ZWwuY29tPg0KPiANCj4gU0NBTElOR19GSUxURVIgY2FuIGJlIHVzZWQgZWl0aGVyIGFzIHBsYW5l
-IHNjYWxlciBwcm9wZXJ0eSBvciBDUlRDIHNjYWxlcg0KPiBwcm9wZXJ0eS4NCj4gVGhlIHZhbHVl
-IG9mIHRoaXMgcHJvcGVydHkgY2FuIGJlIG9uZSBvZiB0aGUgZm9sbG93aW5nOg0KPiAgICAgRGVm
-YXVsdDoNCj4gICAgICAgICAgICAgIERyaXZlcidzIGRlZmF1bHQgc2NhbGluZyBmaWx0ZXINCj4g
-ICAgIE5lYXJlc3QgTmVpZ2hib3I6DQo+ICAgICAgICAgICAgICBOZWFyZXN0IE5laWdoYm9yIHNj
-YWxpbmcgZmlsdGVyIElmIE5OIGlzIHVzZWQgZm9yIHNjYWxpbmcsIHNoYXJwbmVzcyBpcw0KPiBw
-cmVzZXJ2ZWQgd2hlcmVhcyBpZiB3ZSB1c2UgZGVmYXVsdCBzY2FsaW5nIHdlIGNhbiBzZWUgYmx1
-cnJpbmVzcyBhdCBlZGdlcy4NCj4gDQo+IHYyOiAtbm8gbmVlZCB0byBzZXQgcGlwZSBzY2FsZXIg
-ZmlsdGVyIHByb3BlcnR5DQo+IHYzOiAtYWRkaXRpb24gb2YgbmV3IGxpbmVzIHRvIGltcHJvdmUg
-cmVhZGFiaWxpdHkNCj4gICAgIC11c2Ugb2YgU1BEWCBsaWNlbmNlIHBsYWNlaG9sZGVyDQo+ICAg
-ICAtY2xvc2UoZGF0YS5kcm1fZmQpDQo+IHY0OiAtaW5zdGVhZCBvZiBjcmVhdGluZyBuZXcgaS1n
-LXQsIHR3ZWFrZWQga21zX2ZsaXBfc2NhbGVkX2NyYw0KPiAgICAgIHRvIHZhbGlkYXRlIGJvdGgg
-ZGVmYXVsdCBhbmQgbm4gc2NhbGluZyBmaWx0ZXJzDQo+IHY1OiAtcmVtb3ZlZCBkdXBsaWNhdGUg
-YmxvY2sNCj4gICAgIC1hZGRlZCBwbGF0Zm9ybSBjaGVjayBmb3Igbm4NCj4gdjY6KGp1aGEpOiAt
-RG9uJ3Qgc2tpcCBvbiBtaXNzbmcgcHJvcGVydHksIGFzc2VydCBvbiB3aGVyZQ0KPiAgICAgIGV4
-cGVjdCB0byBmaW5kIGl0Lg0KPiAgICAgLSBBbGxvdyB0ZXN0IHRvIHJ1biBjb3JyZWN0bHkgb24g
-YWxsIGdlbjkgdXB3YXJkcyBwYWx0Zm9ybXMuDQo+ICAgICAtIHJ1biBkZWZhdWx0IGFuZCBOTiBm
-aWx0ZXJzIG9uIHNhbWUgdGVzdC4NCj4gDQoNClJldmlld2VkLWJ5OiBNaWthIEthaG9sYSA8bWlr
-YS5rYWhvbGFAaW50ZWwuY29tPg0KDQo+IFNpZ25lZC1vZmYtYnk6IFN3YXRpIFNoYXJtYSA8c3dh
-dGkyLnNoYXJtYUBpbnRlbC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IEp1aGEtUGVra2EgSGVpa2tp
-bGEgPGp1aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+DQo+IC0tLQ0KPiAgdGVzdHMvaTkxNS9r
-bXNfZmxpcF9zY2FsZWRfY3JjLmMgfCA0NyArKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0t
-LQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDM2IGluc2VydGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQ0K
-PiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUva21zX2ZsaXBfc2NhbGVkX2NyYy5jIGIvdGVz
-dHMvaTkxNS9rbXNfZmxpcF9zY2FsZWRfY3JjLmMNCj4gaW5kZXggODg2NDBkYTIuLjc2NGViNzBm
-IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19mbGlwX3NjYWxlZF9jcmMuYw0KPiArKysg
-Yi90ZXN0cy9pOTE1L2ttc19mbGlwX3NjYWxlZF9jcmMuYw0KPiBAQCAtMzcsNiArMzcsNyBAQCB0
-eXBlZGVmIHN0cnVjdCB7DQo+ICAJaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjOw0KPiAgCXVpbnQz
-Ml90IGF0dGVtcHRtb2Rld2lkdGg7DQo+ICAJdWludDMyX3QgYXR0ZW1wdG1vZGVoZWlnaHQ7DQo+
-ICsJZHJtTW9kZU1vZGVJbmZvIG1vZGU7DQo+ICB9IGRhdGFfdDsNCj4gDQo+ICBjb25zdCBzdHJ1
-Y3Qgew0KPiBAQCAtNDc2LDcgKzQ3Nyw3IEBAIHN0YXRpYyB2b2lkIGNsZWFyX2x1dChkYXRhX3Qg
-KmRhdGEsIGVudW0gcGlwZSBwaXBlKQ0KPiANCj4gIHN0YXRpYyB2b2lkIHRlc3RfZmxpcF90b19z
-Y2FsZWQoZGF0YV90ICpkYXRhLCB1aW50MzJfdCBpbmRleCwNCj4gIAkJCQllbnVtIHBpcGUgcGlw
-ZSwgaWd0X291dHB1dF90ICpvdXRwdXQsDQo+IC0JCQkJZHJtTW9kZU1vZGVJbmZvUHRyIG1vZGV0
-b3NldCkNCj4gKwkJCQlkcm1Nb2RlTW9kZUluZm9QdHIgbW9kZXRvc2V0LCBpbnQgZmxhZ3MpDQo+
-ICB7DQo+ICAJaWd0X3BsYW5lX3QgKnByaW1hcnk7DQo+ICAJaWd0X2NyY190IHNtYWxsX2NyYywg
-YmlnX2NyYzsNCj4gQEAgLTUxMCwxNCArNTExLDIwIEBAIHN0YXRpYyB2b2lkIHRlc3RfZmxpcF90
-b19zY2FsZWQoZGF0YV90ICpkYXRhLCB1aW50MzJfdA0KPiBpbmRleCwNCj4gDQo+ICAJaWYgKG1v
-ZGV0b3NldCkNCj4gIAkJaWd0X291dHB1dF9vdmVycmlkZV9tb2RlKG91dHB1dCwgbW9kZXRvc2V0
-KTsNCj4gLQkvKg0KPiAtCSAqIFNldHRpbmcgYSBwaXBlIGludmFsaWRhdGVzIHRoZSBtb2RldG9z
-ZXQgcG9pbnRlci4NCj4gLQkgKiBTbywgbW9kZSBpcyBvdmVycmlkZW4gZmlyc3QgYW5kIHRoZW4g
-cGlwZSBpcyBzZXQuDQo+IC0JICogRG9uJ3QgY2hhbmdlIHRoaXMgc2VxdWVuY2UuDQo+IC0JICov
-DQo+ICsNCj4gIAlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgcGlwZSk7DQo+IA0KPiAgCXBy
-aW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKG91dHB1dCwNCj4gRFJNX1BMQU5FX1RZ
-UEVfUFJJTUFSWSk7DQo+ICsNCj4gKwlpZiAoZGF0YS0+Z2VuID49IDExKSB7DQo+ICsJCWlndF9h
-c3NlcnRfZihpZ3RfcGxhbmVfaGFzX3Byb3AocHJpbWFyeSwNCj4gSUdUX1BMQU5FX1NDQUxJTkdf
-RklMVEVSKSwNCj4gKwkJCSAgICAgIlBsYW5lIHNjYWxpbmcgZmlsdGVyIHByb3Agbm90IHN1cHBv
-cnRlZCFcbiIpOw0KPiArCQlpZ3RfcGxhbmVfc2V0X3Byb3BfZW51bShwcmltYXJ5LA0KPiBJR1Rf
-UExBTkVfU0NBTElOR19GSUxURVIsDQo+ICsJCQkJCWttc3Rlc3Rfc2NhbGluZ19maWx0ZXJfc3Ry
-KGZsYWdzKSk7DQo+ICsJfSBlbHNlIHsNCj4gKwkJaWd0X2RlYnVnKCJQbGFuZSBzY2FsaW5nIGZp
-bHRlciBwcm9wIG5vdCBzdXBwb3J0ZWQgb24gZ2VuIDwgMTEsDQo+IHJ1bm5pbmcgd2l0aCBkZWZh
-dWx0XG4iKTsNCj4gKwl9DQo+ICsNCj4gIAlpZ3Rfc2tpcF9vbl9mKCFpZ3RfcGxhbmVfaGFzX2Zv
-cm1hdF9tb2QocHJpbWFyeSwgZGF0YS0NCj4gPnNtYWxsX2ZiLmRybV9mb3JtYXQsIGRhdGEtPnNt
-YWxsX2ZiLm1vZGlmaWVyKSB8fA0KPiAgCQkgICAgICAhaWd0X3BsYW5lX2hhc19mb3JtYXRfbW9k
-KHByaW1hcnksIGRhdGEtDQo+ID5iaWdfZmIuZHJtX2Zvcm1hdCwNCj4gIAkJICAgICAgZGF0YS0+
-YmlnX2ZiLm1vZGlmaWVyKSwgIk5vIHJlcXVlc3RlZCBmb3JtYXQvbW9kaWZpZXIgb24NCj4gcGlw
-ZSAlc1xuIiwga21zdGVzdF9waXBlX25hbWUocGlwZSkpOyBAQCAtNTM5LDcgKzU0Niw4IEBAIHN0
-YXRpYyB2b2lkDQo+IHRlc3RfZmxpcF90b19zY2FsZWQoZGF0YV90ICpkYXRhLCB1aW50MzJfdCBp
-bmRleCwNCj4gIAlyZXQgPSBpZ3RfZGlzcGxheV90cnlfY29tbWl0X2F0b21pYygmZGF0YS0+ZGlz
-cGxheSwNCj4gRFJNX01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQsIE5VTEwpOw0KPiANCj4gIAlp
-Z3Rfc2tpcF9vbl9mKHJldCA9PSAtRVJBTkdFLCAiUGxhdGZvcm0gc2NhbGluZyBsaW1pdHMgZXhj
-ZWVkZWQsDQo+IHNraXBwaW5nLlxuIik7DQo+IC0JaWd0X3NraXBfb25fZigocmV0ID09IC1FSU5W
-QUwpICYmICghbW9kZXRvc2V0IHx8IG1vZGV0b3NldC0+dnJlZnJlc2gNCj4gPiA5MCksICJWYWxp
-ZC9kZWZhdWx0IG1vZGUgdG9vIGJpZywgY2RjbGsgbGltaXRzIGV4Y2VlZGVkLiBDaGVjayBuZXh0
-DQo+IGNvbm5lY3RvclxuIik7DQo+ICsJaWd0X3NraXBfb25fZigocmV0ID09IC1FSU5WQUwpICYm
-ICghbW9kZXRvc2V0IHx8IG1vZGV0b3NldC0+dnJlZnJlc2gNCj4gPiA5MCksDQo+ICsJCSAgICAg
-ICJWYWxpZC9kZWZhdWx0IG1vZGUgdG9vIGJpZywgY2RjbGsgbGltaXRzIGV4Y2VlZGVkLiBDaGVj
-aw0KPiBuZXh0DQo+ICtjb25uZWN0b3JcbiIpOw0KPiAgCWlndF9hc3NlcnRfZXEocmV0LCAwKTsN
-Cj4gDQo+ICAJaWd0X3BpcGVfY3JjX3N0YXJ0KGRhdGEtPnBpcGVfY3JjKTsNCj4gQEAgLTU1Myw3
-ICs1NjEsOCBAQCBzdGF0aWMgdm9pZCB0ZXN0X2ZsaXBfdG9fc2NhbGVkKGRhdGFfdCAqZGF0YSwg
-dWludDMyX3QNCj4gaW5kZXgsDQo+ICAJCQkJCSAgICBEUk1fTU9ERV9QQUdFX0ZMSVBfRVZFTlQs
-DQo+IE5VTEwpOw0KPiANCj4gIAlpZ3Rfc2tpcF9vbl9mKHJldCA9PSAtRVJBTkdFLCAiUGxhdGZv
-cm0gc2NhbGluZyBsaW1pdHMgZXhjZWVkZWQsDQo+IHNraXBwaW5nLlxuIik7DQo+IC0JaWd0X3Nr
-aXBfb25fZigocmV0ID09IC1FSU5WQUwpICYmICghbW9kZXRvc2V0IHx8IG1vZGV0b3NldC0+dnJl
-ZnJlc2gNCj4gPiA5MCksICJWYWxpZC9kZWZhdWx0IG1vZGUgdG9vIGJpZywgY2RjbGsgbGltaXRz
-IGV4Y2VlZGVkLiBDaGVjayBuZXh0DQo+IGNvbm5lY3RvclxuIik7DQo+ICsJaWd0X3NraXBfb25f
-ZigocmV0ID09IC1FSU5WQUwpICYmICghbW9kZXRvc2V0IHx8IG1vZGV0b3NldC0+dnJlZnJlc2gN
-Cj4gPiA5MCksDQo+ICsJCSAgICAgICJWYWxpZC9kZWZhdWx0IG1vZGUgdG9vIGJpZywgY2RjbGsg
-bGltaXRzIGV4Y2VlZGVkLiBDaGVjaw0KPiBuZXh0DQo+ICtjb25uZWN0b3JcbiIpOw0KPiAgCWln
-dF9hc3NlcnRfZXEocmV0LCAwKTsNCj4gDQo+ICAJaWd0X2Fzc2VydChyZWFkKGRhdGEtPmRybV9m
-ZCwgJmV2LCBzaXplb2YoZXYpKSA9PSBzaXplb2YoZXYpKTsgQEAgLQ0KPiA1ODQsMTMgKzU5Mywy
-OCBAQCBzdGF0aWMgZHJtTW9kZU1vZGVJbmZvUHRyIGZpbmRfbW9kZShkYXRhX3QgKmRhdGEsDQo+
-IGlndF9vdXRwdXRfdCAqb3V0cHV0KQ0KPiAgCQkJICAgIG1vZGV0b3NldC0+dnJlZnJlc2ggPCBv
-dXRwdXQtPmNvbmZpZy5jb25uZWN0b3ItDQo+ID5tb2Rlc1tpXS52cmVmcmVzaCkNCj4gIAkJCQlj
-b250aW51ZTsNCj4gDQo+IC0JCQltb2RldG9zZXQgPSAmb3V0cHV0LT5jb25maWcuY29ubmVjdG9y
-LT5tb2Rlc1tpXTsNCj4gKwkJCWRhdGEtPm1vZGUgPSBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3It
-Pm1vZGVzW2ldOw0KPiArCQkJbW9kZXRvc2V0ID0gJmRhdGEtPm1vZGU7DQo+ICAJCX0NCj4gIAl9
-DQo+IA0KPiAgCXJldHVybiBtb2RldG9zZXQ7DQo+ICB9DQo+IA0KPiArc3RhdGljIHZvaWQgcnVu
-X3Rlc3RzKGRhdGFfdCAqZGF0YSwgdWludDMyX3QgaW5kZXgsIGVudW0gcGlwZSBwaXBlLA0KPiAr
-CQkgICAgICBpZ3Rfb3V0cHV0X3QgKiBvdXRwdXQsIGRybU1vZGVNb2RlSW5mb1B0ciBtb2RldG9z
-ZXQpIHsNCj4gKwl0ZXN0X2ZsaXBfdG9fc2NhbGVkKGRhdGEsIGluZGV4LCBwaXBlLCBvdXRwdXQs
-IG1vZGV0b3NldCwgMCk7DQo+ICsNCj4gKwkvKg0KPiArCSAqIHRlc3QgTmVhcmVzdCBOZWlnaGJv
-ciBmaWx0ZXIuIEZvciBzY2FsZXIgaW5kZXhlcyBzZWUNCj4gKwkgKiBzY2FsaW5nX2ZpbHRlcl9u
-YW1lcyBzdHJ1Y3R1cmUgaW4gaWd0X2ttcy5jDQo+ICsJICogUGxhdGZvcm0gc2NhbGluZyBmaWx0
-ZXIgcHJvcGVydHkgaXMgc3VwcG9ydGVkIG9ubHkgZ2VuID49IDExLg0KPiArCSAqLw0KPiArCWlm
-IChkYXRhLT5nZW4gPj0gMTEpDQo+ICsJCXRlc3RfZmxpcF90b19zY2FsZWQoZGF0YSwgaW5kZXgs
-IHBpcGUsIG91dHB1dCwgbW9kZXRvc2V0LCAxKTsgfQ0KPiArDQo+ICBpZ3RfbWFpbg0KPiAgew0K
-PiAgCWVudW0gcGlwZSBwaXBlOw0KPiBAQCAtNjE2LDYgKzY0MCw3IEBAIGlndF9tYWluDQo+ICAJ
-CX0NCj4gIAl9DQo+IA0KPiArCWlndF9kZXNjcmliZSgiVGVzdHMgc2NhbGVyIHVzaW5nIGRlZmF1
-bHQgYW5kIG5lYXJlc3QgbmVpZ2hib3IgcGxhbmUNCj4gK3NjYWxpbmcgZmlsdGVycyIpOw0KPiAg
-CWZvciAoaW50IGluZGV4ID0gMDsgaW5kZXggPCBBUlJBWV9TSVpFKGZsaXBfc2NlbmFyaW9fdGVz
-dCk7IGluZGV4KyspIHsNCj4gIAkJaWd0X2Rlc2NyaWJlKGZsaXBfc2NlbmFyaW9fdGVzdFtpbmRl
-eF0uZGVzY3JpYmUpOw0KPiAgCQlpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoZmxpcF9zY2VuYXJp
-b190ZXN0W2luZGV4XS5uYW1lKSB7DQo+IEBAIC02MjcsMTQgKzY1MiwxNCBAQCBpZ3RfbWFpbg0K
-PiAgCQkJCQlpZiAobW9kZXRvc2V0KSB7DQo+ICAJCQkJCQlmb3VuZCA9IHRydWU7DQo+ICAJCQkJ
-CQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzLXZhbGlkLQ0KPiBtb2RlIiwga21zdGVzdF9waXBlX25h
-bWUocGlwZSkpDQo+IC0NCj4gCXRlc3RfZmxpcF90b19zY2FsZWQoJmRhdGEsIGluZGV4LCBwaXBl
-LCBvdXRwdXQsIG1vZGV0b3NldCk7DQo+ICsJCQkJCQkJcnVuX3Rlc3RzKCZkYXRhLA0KPiBpbmRl
-eCwgcGlwZSwgb3V0cHV0LCBtb2RldG9zZXQpOw0KPiAgCQkJCQkJYnJlYWs7DQo+ICAJCQkJCX0N
-Cj4gIAkJCQl9DQo+ICAJCQkJaWYgKCFmb3VuZCkgew0KPiANCj4gCWZvcl9lYWNoX3ZhbGlkX291
-dHB1dF9vbl9waXBlKCZkYXRhLmRpc3BsYXksIHBpcGUsIG91dHB1dCkgew0KPiAgCQkJCQkJaWd0
-X2R5bmFtaWNfZigicGlwZS0lcy0NCj4gZGVmYXVsdC1tb2RlIiwga21zdGVzdF9waXBlX25hbWUo
-cGlwZSkpDQo+IC0NCj4gCXRlc3RfZmxpcF90b19zY2FsZWQoJmRhdGEsIGluZGV4LCBwaXBlLCBv
-dXRwdXQsIE5VTEwpOw0KPiArCQkJCQkJCXJ1bl90ZXN0cygmZGF0YSwNCj4gaW5kZXgsIHBpcGUs
-IG91dHB1dCwgbW9kZXRvc2V0KTsNCj4gIAkJCQkJfQ0KPiAgCQkJCX0NCj4gIAkJCQlicmVhazsN
-Cj4gLS0NCj4gMi4yNS4xDQoNCg==
+On Thu-30-06-2022 07:53 pm, Nidhi Gupta wrote:
+> Sanitize the system state before starting the subtest.
+
+Please add a word about the things doing in this patch, since we are 
+doing many things in this patch.
+
+With above change, this patch is
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+- Bhanu
+
+> 
+> v2: test every mode listed by connector to be more
+>      sure everything is really getting rejected.
+>      (Modem Bhanuprakash)
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/kms_invalid_mode.c | 39 +++++++++++++++------------------------
+>   1 file changed, 15 insertions(+), 24 deletions(-)
+> 
+> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+> index 0287ee02..28e1ad4b 100644
+> --- a/tests/kms_invalid_mode.c
+> +++ b/tests/kms_invalid_mode.c
+> @@ -35,7 +35,6 @@ struct _data {
+>   	enum pipe pipe;
+>   	igt_display_t display;
+>   	igt_output_t *output;
+> -	drmModeResPtr res;
+>   	int max_dotclock;
+>   	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
+>   };
+> @@ -182,35 +181,29 @@ static void
+>   test_output(data_t *data)
+>   {
+>   	igt_output_t *output = data->output;
+> -	drmModeModeInfo mode;
+>   	struct igt_fb fb;
+>   	int ret;
+> -	uint32_t crtc_id;
+> +	drmModeModeInfo *mode;
+>   
+> -	/*
+> -	 * FIXME test every mode we have to be more
+> -	 * sure everything is really getting rejected?
+> -	 */
+> -	mode = *igt_output_get_mode(output);
+> -	igt_require(data->adjust_mode(data, &mode));
+> +	igt_output_set_pipe(output, data->pipe);
+>   
+> -	igt_create_fb(data->drm_fd,
+> -		      max_t(uint16_t, mode.hdisplay, 64),
+> -		      max_t(uint16_t, mode.vdisplay, 64),
+> -		      DRM_FORMAT_XRGB8888,
+> +	igt_create_fb(data->drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
+>   		      DRM_FORMAT_MOD_LINEAR,
+>   		      &fb);
+>   
+> -	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+> -
+> -	crtc_id = data->display.pipes[data->pipe].crtc_id;
+> -
+> -	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+> -			     fb.fb_id, 0, 0,
+> -			     &output->id, 1, &mode);
+> -	igt_assert_lt(ret, 0);
+> +	for_each_connector_mode(output) {
+> +		mode = &output->config.connector->modes[j__];
+> +		igt_require(data->adjust_mode(data, mode));
+> +		igt_output_override_mode(output, mode);
+> +		ret = igt_display_try_commit2(&data->display, &data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+> +		igt_assert(ret == -EINVAL);
+> +	}
+>   
+>   	igt_remove_fb(data->drm_fd, &fb);
+> +	igt_output_override_mode(output, NULL);
+> +	/*unset_all_crtcs*/
+> +	igt_display_reset(&data->display);
+> +	igt_display_commit(&data->display);
+>   }
+>   
+>   static int i915_max_dotclock(data_t *data)
+> @@ -290,11 +283,10 @@ igt_main
+>   		kmstest_set_vt_graphics_mode();
+>   
+>   		igt_display_require(&data.display, data.drm_fd);
+> -		data.res = drmModeGetResources(data.drm_fd);
+> -		igt_assert(data.res);
+>   
+>   		data.max_dotclock = i915_max_dotclock(&data);
+>   		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
+> +		igt_display_require_output(&data.display);
+>   	}
+>   
+>   	igt_describe("Make sure all modesets are rejected when the requested mode is invalid");
+> @@ -314,6 +306,5 @@ igt_main
+>   	igt_fixture {
+>   		igt_display_fini(&data.display);
+>   		igt_reset_connectors();
+> -		drmModeFreeResources(data.res);
+>   	}
+>   }
