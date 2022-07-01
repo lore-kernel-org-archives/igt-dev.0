@@ -1,18 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2087.outbound.protection.outlook.com [40.107.244.87])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D09910E641
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Jul 2022 02:50:13 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 30 Jun 2022 22:49:22 -0400
-Message-ID: <20220701024922.28556-7-vitaly.prosyak@amd.com>
-In-Reply-To: <20220701024922.28556-1-vitaly.prosyak@amd.com>
-References: <20220701024922.28556-1-vitaly.prosyak@amd.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F68710E5C1
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Jul 2022 03:01:04 +0000 (UTC)
+Message-ID: <7a0953bc-5ccd-ff04-91f4-b34fe65dbbcd@intel.com>
+Date: Fri, 1 Jul 2022 08:30:30 +0530
+Content-Language: en-US
+To: <igt-dev@lists.freedesktop.org>, Lakshminarayana Vudum
+ <lakshminarayana.vudum@intel.com>
+References: <20220630085523.291024-1-bhanuprakash.modem@intel.com>
+ <165663985707.30282.14168029812224292267@emeril.freedesktop.org>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <165663985707.30282.14168029812224292267@emeril.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 7/7] tests/amdgpu: add sync dependency test
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcolor=3A_IGT_test_cleanup_=28rev11=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,222 +24,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: alexander.deucher@amd.com, christian.koenig@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hi Lakshmi,
 
-The second command is waiting for shader rendering to complete
+On Fri-01-07-2022 07:14 am, Patchwork wrote:
+> *Patch Details*
+> *Series:*	tests/kms_color: IGT test cleanup (rev11)
+> *URL:*	https://patchwork.freedesktop.org/series/104972/ 
+> <https://patchwork.freedesktop.org/series/104972/>
+> *State:*	failure
+> *Details:* 
+> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/index.html 
+> <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/index.html>
+> 
+> 
+>   CI Bug Log - changes from CI_DRM_11837 -> IGTPW_7448
+> 
+> 
+>     Summary
+> 
+> *FAILURE*
+> 
+> Serious unknown changes coming with IGTPW_7448 absolutely need to be
+> verified manually.
+> 
+> If you think the reported changes have nothing to do with the changes
+> introduced in IGTPW_7448, please notify your bug team to allow them
+> to document this new failure mode, which will reduce false positives in CI.
+> 
+> External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/index.html
+> 
+> 
+>     Participating hosts (42 -> 41)
+> 
+> Missing (1): bat-dg2-9
+> 
+> 
+>     Possible new issues
+> 
+> Here are the unknown changes that may have been introduced in IGTPW_7448:
+> 
+> 
+>       IGT changes
+> 
+> 
+>         Possible regressions
+> 
+>   * igt@i915_selftest@live@vma:
+>       o fi-bdw-5557u: NOTRUN -> INCOMPLETE
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-bdw-5557u/igt@i915_selftest@live@vma.html>
 
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- tests/amdgpu/amd_basic.c | 178 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 177 insertions(+), 1 deletion(-)
+This failure is not related to my patch, please help to re-report.
 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 679a8b0f..ae424e81 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -29,7 +29,7 @@
- #include "lib/amdgpu/amd_command_submission.h"
- #include "lib/amdgpu/amd_compute.h"
- #include "lib/amdgpu/amd_gfx.h"
--
-+#include "lib/amdgpu/amd_shaders.h"
- 
- #define BUFFER_SIZE (8 * 1024)
- 
-@@ -451,6 +451,178 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
- 	free(ring_context);
- }
- 
-+static void
-+amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
-+{
-+	const unsigned const_size = 8192;
-+	const unsigned const_alignment = 4096;
-+
-+	amdgpu_context_handle context_handle[2];
-+
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint64_t ib_result_mc_address;
-+	struct amdgpu_cs_request ibs_request;
-+	struct amdgpu_cs_ib_info ib_info;
-+	struct amdgpu_cs_fence fence_status;
-+	uint32_t expired;
-+	int r;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle;
-+	uint64_t seq_no;
-+
-+	uint32_t cdw_old;
-+
-+	uint32_t size_bytes, code_offset, data_offset;
-+	const uint32_t *shader;
-+
-+	struct amdgpu_cmd_base * base = get_cmd_base();
-+
-+	r = amdgpu_cs_ctx_create(device_handle, &context_handle[0]);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_cs_ctx_create(device_handle, &context_handle[1]);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map(device_handle, const_size, const_alignment,
-+			AMDGPU_GEM_DOMAIN_GTT, 0,
-+			&ib_result_handle, &ib_result_cpu,
-+			&ib_result_mc_address, &va_handle);
-+
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
-+			       &bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	shader = get_shader_bin(&size_bytes, &code_offset, &data_offset);
-+
-+	/* assign cmd buffer */
-+	base->attach_buf(base, ib_result_cpu, const_size);
-+
-+	base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
-+	base->emit(base, 0x80000000);
-+	base->emit(base, 0x80000000);
-+
-+	base->emit(base, PACKET3(PKT3_CLEAR_STATE, 0));
-+	base->emit(base, 0x80000000);
-+
-+	/* Program compute regs */
-+	/* TODO ASIC registers do based on predefined offsets */
-+	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
-+	base->emit(base, mmCOMPUTE_PGM_LO - PACKET3_SET_SH_REG_START);
-+	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 8);
-+	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 40);
-+
-+	base->emit(base,PACKET3(PKT3_SET_SH_REG, 2));
-+	base->emit(base, mmCOMPUTE_PGM_RSRC1 - PACKET3_SET_SH_REG_START);
-+
-+	base->emit(base, 0x002c0040);
-+	base->emit(base, 0x00000010);
-+
-+	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
-+	base->emit(base, mmCOMPUTE_TMPRING_SIZE - PACKET3_SET_SH_REG_START);
-+	base->emit(base, 0x00000100);
-+
-+	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
-+	base->emit(base, mmCOMPUTE_USER_DATA_0 - PACKET3_SET_SH_REG_START);
-+	base->emit(base, 0xffffffff & (ib_result_mc_address + data_offset * 4));
-+	base->emit(base, (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
-+
-+	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
-+	base->emit(base, mmCOMPUTE_RESOURCE_LIMITS - PACKET3_SET_SH_REG_START);
-+	base->emit(base, 0);
-+
-+	base->emit(base, PACKET3(PKT3_SET_SH_REG, 3));
-+	base->emit(base, mmCOMPUTE_NUM_THREAD_X - PACKET3_SET_SH_REG_START);
-+	base->emit(base, 1);
-+	base->emit(base, 1);
-+	base->emit(base, 1);
-+
-+	/* Dispatch */
-+	base->emit(base, PACKET3(PACKET3_DISPATCH_DIRECT, 3));
-+	base->emit(base, 1);
-+	base->emit(base, 1);
-+	base->emit(base, 1);
-+	base->emit(base, 0x00000045);
-+	append_cmd_base(base, 7, GFX_COMPUTE_NOP);
-+
-+	base->emit_buf(base, shader, code_offset,size_bytes);
-+
-+	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
-+	ib_info.ib_mc_address = ib_result_mc_address;
-+	ib_info.size = base->cdw;;
-+
-+	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
-+	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
-+	ibs_request.ring = 0;
-+	ibs_request.number_of_ibs = 1;
-+	ibs_request.ibs = &ib_info;
-+	ibs_request.resources = bo_list;
-+	ibs_request.fence_info.handle = NULL;
-+
-+	r = amdgpu_cs_submit(context_handle[1], 0,&ibs_request, 1);
-+	igt_assert_eq(r, 0);
-+	seq_no = ibs_request.seq_no;
-+
-+	cdw_old = base->cdw;
-+
-+	base->emit(base, PACKET3(PACKET3_WRITE_DATA, 3));
-+	base->emit(base, WRITE_DATA_DST_SEL(5) | WR_CONFIRM);
-+	base->emit(base,  0xfffffffc & (ib_result_mc_address + data_offset * 4));
-+	base->emit(base,  (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
-+	base->emit(base,  99);
-+	append_cmd_base(base, 7, GFX_COMPUTE_NOP);
-+
-+	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
-+	ib_info.ib_mc_address = ib_result_mc_address + cdw_old * 4;
-+	ib_info.size = base->cdw - cdw_old;
-+
-+	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
-+	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
-+	ibs_request.ring = 0;
-+	ibs_request.number_of_ibs = 1;
-+	ibs_request.ibs = &ib_info;
-+	ibs_request.resources = bo_list;
-+	ibs_request.fence_info.handle = NULL;
-+
-+	ibs_request.number_of_dependencies = 1;
-+
-+	ibs_request.dependencies = calloc(1, sizeof(*ibs_request.dependencies));
-+	ibs_request.dependencies[0].context = context_handle[1];
-+	ibs_request.dependencies[0].ip_instance = 0;
-+	ibs_request.dependencies[0].ring = 0;
-+	ibs_request.dependencies[0].fence = seq_no;
-+
-+	r = amdgpu_cs_submit(context_handle[0], 0,&ibs_request, 1);
-+	igt_assert_eq(r, 0);
-+
-+	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
-+	fence_status.context = context_handle[0];
-+	fence_status.ip_type = AMDGPU_HW_IP_GFX;
-+	fence_status.ip_instance = 0;
-+	fence_status.ring = 0;
-+	fence_status.fence = ibs_request.seq_no;
-+
-+	r = amdgpu_cs_query_fence_status(&fence_status,
-+		       AMDGPU_TIMEOUT_INFINITE,0, &expired);
-+	igt_assert_eq(r, 0);
-+
-+	/* Expect the second command to wait for shader to complete */
-+	igt_assert_eq(base->buf[data_offset], 99);
-+
-+	r = amdgpu_bo_list_destroy(bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	 amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				     ib_result_mc_address, const_alignment);
-+
-+	amdgpu_cs_ctx_free(context_handle[0]);
-+	amdgpu_cs_ctx_free(context_handle[1]);
-+
-+	free(ibs_request.dependencies);
-+	free_cmd_base(base);
-+}
-+
- igt_main
- {
- 	amdgpu_device_handle device;
-@@ -501,6 +673,10 @@ igt_main
- 	igt_subtest("eviction_test")
- 		amdgpu_bo_eviction_test(device);
- 
-+	igt_subtest("sync_dependency_test")
-+		amdgpu_sync_dependency_test(device);
-+
-+
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
- 		close(fd);
--- 
-2.25.1
+- Bhanu
+
+> 
+> 
+>     Known issues
+> 
+> Here are the changes found in IGTPW_7448 that come from known issues:
+> 
+> 
+>       IGT changes
+> 
+> 
+>         Issues hit
+> 
+>   *
+> 
+>     igt@i915_pm_rpm@module-reload:
+> 
+>       o fi-cfl-8109u: PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html>
+>         -> DMESG-FAIL
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html>
+>         (i915#62 <https://gitlab.freedesktop.org/drm/intel/issues/62>)
+>   *
+> 
+>     igt@i915_selftest@live@hangcheck:
+> 
+>       o bat-dg1-6: PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/bat-dg1-6/igt@i915_selftest@live@hangcheck.html>
+>         -> DMESG-FAIL
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/bat-dg1-6/igt@i915_selftest@live@hangcheck.html>
+>         (i915#4494
+>         <https://gitlab.freedesktop.org/drm/intel/issues/4494> /
+>         i915#4957 <https://gitlab.freedesktop.org/drm/intel/issues/4957>)
+>   *
+> 
+>     igt@i915_selftest@live@late_gt_pm:
+> 
+>       o fi-cfl-8109u: PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html>
+>         -> DMESG-WARN
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html>
+>         (i915#5904
+>         <https://gitlab.freedesktop.org/drm/intel/issues/5904>) +28
+>         similar issues
+>   *
+> 
+>     igt@i915_selftest@live@requests:
+> 
+>       o
+> 
+>         fi-pnv-d510: PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-pnv-d510/igt@i915_selftest@live@requests.html>
+>         -> DMESG-FAIL
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-pnv-d510/igt@i915_selftest@live@requests.html>
+>         (i915#4528 <https://gitlab.freedesktop.org/drm/intel/issues/4528>)
+> 
+>       o
+> 
+>         fi-blb-e6850: PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-blb-e6850/igt@i915_selftest@live@requests.html>
+>         -> DMESG-FAIL
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-blb-e6850/igt@i915_selftest@live@requests.html>
+>         (i915#4528 <https://gitlab.freedesktop.org/drm/intel/issues/4528>)
+> 
+>   *
+> 
+>     igt@i915_suspend@basic-s2idle-without-i915:
+> 
+>       o fi-cfl-8109u: PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html>
+>         -> DMESG-WARN
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html>
+>         (i915#5904
+>         <https://gitlab.freedesktop.org/drm/intel/issues/5904> / i915#62
+>         <https://gitlab.freedesktop.org/drm/intel/issues/62>)
+>   *
+> 
+>     igt@kms_busy@basic@flip:
+> 
+>       o fi-tgl-u2: PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-tgl-u2/igt@kms_busy@basic@flip.html>
+>         -> DMESG-WARN
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-tgl-u2/igt@kms_busy@basic@flip.html>
+>         (i915#402 <https://gitlab.freedesktop.org/drm/intel/issues/402>)
+>         +1 similar issue
+>   *
+> 
+>     igt@kms_chamelium@common-hpd-after-suspend:
+> 
+>       o fi-rkl-guc: NOTRUN -> SKIP
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-rkl-guc/igt@kms_chamelium@common-hpd-after-suspend.html>
+>         (fdo#111827 <https://bugs.freedesktop.org/show_bug.cgi?id=111827>)
+>   *
+> 
+>     igt@kms_frontbuffer_tracking@basic:
+> 
+>       o fi-cfl-8109u: PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html>
+>         -> DMESG-WARN
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html>
+>         (i915#62 <https://gitlab.freedesktop.org/drm/intel/issues/62>)
+>         +12 similar issues
+>   *
+> 
+>     igt@runner@aborted:
+> 
+>       o fi-blb-e6850: NOTRUN -> FAIL
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-blb-e6850/igt@runner@aborted.html>
+>         (fdo#109271
+>         <https://bugs.freedesktop.org/show_bug.cgi?id=109271> /
+>         i915#2403 <https://gitlab.freedesktop.org/drm/intel/issues/2403>
+>         / i915#4312 <https://gitlab.freedesktop.org/drm/intel/issues/4312>)
+> 
+> 
+>         Possible fixes
+> 
+>   *
+> 
+>     igt@i915_selftest@live@gt_lrc:
+> 
+>       o fi-rkl-guc: INCOMPLETE
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html>
+>         (i915#4983
+>         <https://gitlab.freedesktop.org/drm/intel/issues/4983>) -> PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html>
+>   *
+> 
+>     igt@i915_selftest@live@hangcheck:
+> 
+>       o bat-dg1-5: DMESG-FAIL
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/bat-dg1-5/igt@i915_selftest@live@hangcheck.html>
+>         (i915#4494
+>         <https://gitlab.freedesktop.org/drm/intel/issues/4494> /
+>         i915#4957
+>         <https://gitlab.freedesktop.org/drm/intel/issues/4957>) -> PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/bat-dg1-5/igt@i915_selftest@live@hangcheck.html>
+>   *
+> 
+>     igt@i915_selftest@live@workarounds:
+> 
+>       o fi-bdw-5557u: INCOMPLETE
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-bdw-5557u/igt@i915_selftest@live@workarounds.html>
+>         (i915#6307
+>         <https://gitlab.freedesktop.org/drm/intel/issues/6307>) -> PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-bdw-5557u/igt@i915_selftest@live@workarounds.html>
+>   *
+> 
+>     igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+> 
+>       o fi-bsw-kefka: FAIL
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11837/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html>
+>         (i915#6298
+>         <https://gitlab.freedesktop.org/drm/intel/issues/6298>) -> PASS
+>         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html>
+> 
+> {name}: This element is suppressed. This means it is ignored when computing
+> the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+> 
+>     Build changes
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_6553 -> IGTPW_7448
+> 
+> CI-20190529: 20190529
+> CI_DRM_11837: e19040cd831f5ac1c94bb265ebd846c94f6fed80 @ 
+> git://anongit.freedesktop.org/gfx-ci/linux
+> IGTPW_7448: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7448/index.html
+> IGT_6553: 3cf110f8dcd1f4f02cf84339664b413abdaebf7d @ 
+> https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> 
+>     Testlist changes
+> 
+> +++ 16 lines
+> --- 96 lines
+> 
