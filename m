@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2045.outbound.protection.outlook.com [40.107.94.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3E9510E029
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Jul 2022 02:49:40 +0000 (UTC)
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-sn1anam02on2080.outbound.protection.outlook.com [40.107.96.80])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF68010E029
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Jul 2022 02:49:55 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 30 Jun 2022 22:49:16 -0400
-Message-ID: <20220701024922.28556-1-vitaly.prosyak@amd.com>
+Date: Thu, 30 Jun 2022 22:49:17 -0400
+Message-ID: <20220701024922.28556-2-vitaly.prosyak@amd.com>
+In-Reply-To: <20220701024922.28556-1-vitaly.prosyak@amd.com>
+References: <20220701024922.28556-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 1/7] lib/amdgpu: increase number of resources
+Subject: [igt-dev] [PATCH 2/7] lib/amdgpu: add bo allocation helper function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,32 +27,70 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Add arrays of bo's for VRAM and GTT.
-Eviction test uses 4 bo resources.
-
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_ip_blocks.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ lib/amdgpu/amd_memory.c | 33 +++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_memory.h |  4 ++++
+ 2 files changed, 37 insertions(+)
 
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index cb7d1474..c16ad179 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -58,11 +58,13 @@ struct amdgpu_ring_context {
+diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
+index b0fa18c6..344551fc 100644
+--- a/lib/amdgpu/amd_memory.c
++++ b/lib/amdgpu/amd_memory.c
+@@ -69,6 +69,39 @@
+ 	return buf_handle;
+ }
  
- 	amdgpu_bo_handle bo;
- 	amdgpu_bo_handle bo2;
-+	amdgpu_bo_handle boa_vram[2];
-+	amdgpu_bo_handle boa_gtt[2];
++ /**
++  *
++  * @param dev
++  * @param size
++  * @param alignment
++  * @param heap
++  * @param flags
++  * @param bo
++  * @return
++  */
++int
++amdgpu_bo_alloc_wrap(amdgpu_device_handle dev, unsigned size,
++		     unsigned alignment, unsigned heap, uint64_t flags,
++		     amdgpu_bo_handle *bo)
++{
++	amdgpu_bo_handle buf_handle;
++	int r;
++	struct amdgpu_bo_alloc_request req = {
++		.alloc_size = size,
++		.phys_alignment = alignment,
++		.preferred_heap = heap,
++		.flags = flags,
++	};
++
++	r = amdgpu_bo_alloc(dev, &req, &buf_handle);
++	if (r)
++		return r;
++
++	*bo = buf_handle;
++
++	return 0;
++}
++
+  /**
+   *
+   * @param bo
+diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
+index d7f32926..80bf979f 100644
+--- a/lib/amdgpu/amd_memory.h
++++ b/lib/amdgpu/amd_memory.h
+@@ -38,6 +38,10 @@ gpu_mem_alloc(amdgpu_device_handle device_handle,
+ 				      uint64_t flags,
+ 				      uint64_t *vmc_addr,
+ 				      amdgpu_va_handle *va_handle);
++int
++amdgpu_bo_alloc_wrap(amdgpu_device_handle dev, unsigned size,
++		     unsigned alignment, unsigned heap, uint64_t flags,
++		     amdgpu_bo_handle *bo);
  
- 	amdgpu_context_handle context_handle;
- 	struct drm_amdgpu_info_hw_ip hw_ip_info;  /* result of amdgpu_query_hw_ip_info */
- 
--	amdgpu_bo_handle resources[2]; /* amdgpu_bo_alloc_and_map */
-+	amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
- 	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
- 	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
- 
+ void
+ gpu_mem_free(amdgpu_bo_handle bo,
 -- 
 2.25.1
