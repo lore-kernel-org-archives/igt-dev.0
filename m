@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE3BF10E0F2
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Jul 2022 13:11:30 +0000 (UTC)
-Date: Mon, 4 Jul 2022 16:11:22 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Message-ID: <YsLm+rHvka+aVPQG@intel.com>
-References: <cover.1656731010.git.ashutosh.dixit@intel.com>
- <1b3c9a560bb9f087c346cea0699d6e6add02eab9.1656731010.git.ashutosh.dixit@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A35388B40E
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Jul 2022 16:34:43 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	karthik.b.s@intel.com
+Date: Mon,  4 Jul 2022 22:02:42 +0530
+Message-Id: <20220704163242.373772-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1b3c9a560bb9f087c346cea0699d6e6add02eab9.1656731010.git.ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/kms_cursor_crc: Fix
- -Wformat-truncation
+Subject: [igt-dev] [i-g-t] tests/kms_dither: Set max_bpc before exiting the
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,50 +18,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jul 01, 2022 at 08:05:36PM -0700, Ashutosh Dixit wrote:
-> [72/1181] Compiling C object tests/kms_cursor_crc.p/kms_cursor_crc.c.o
-> ../tests/kms_cursor_crc.c: In function ‘run_size_tests.constprop’:
-> ../tests/kms_cursor_crc.c:702:50: warning: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size between 4 and 14 [-Wformat-truncation=]
->   702 |                 snprintf(name, sizeof(name), "%dx%d", w, h);
->       |                                                  ^~
-> ../tests/kms_cursor_crc.c:702:46: note: directive argument in the range [-2147483648, 1024]
->   702 |                 snprintf(name, sizeof(name), "%dx%d", w, h);
->       |                                              ^~~~~~~
+Before exiting the subtest, we must reset the connector's "max_bpc"
+property to it's default value, else it may effect the consequent
+subtests.
 
-Weird that it almost managed to figure out the upper limit
-(just off by ^2 for some reason) but totally failed at the lower
-limit.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_dither.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Anyways, series is
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-
-> 
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  tests/kms_cursor_crc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index 5c90537b2337..588063555c67 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -693,7 +693,7 @@ static void test_rapid_movement(data_t *data)
->  static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->  			   int w, int h)
->  {
-> -	char name[16];
-> +	char name[32];
->  	enum pipe pipe;
->  
->  	if (w == 0 && h == 0)
-> -- 
-> 2.34.1
-
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index 02896b37..f180c873 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -128,6 +128,7 @@ static void test_dithering(data_t *data, enum pipe pipe,
+ 	igt_display_t *display = &data->display;
+ 	dither_status_t status;
+ 	int bpc, ret;
++	bool constraint;
+ 
+ 	igt_info("Dithering test execution on %s PIPE_%s\n",
+ 			output->name, kmstest_pipe_name(pipe));
+@@ -148,6 +149,13 @@ static void test_dithering(data_t *data, enum pipe pipe,
+ 	else
+ 		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+ 
++	if (ret)
++		goto cleanup;
++
++	constraint = i915_clock_constraint(data, pipe, output, output_bpc);
++	if (!constraint)
++		goto cleanup;
++
+ 	igt_require_f(!ret, "%s don't support %d-bpc\n",
+ 				output->name, output_bpc);
+ 
+@@ -174,12 +182,17 @@ static void test_dithering(data_t *data, enum pipe pipe,
+ 	* Otherwise, previously updated value will stay forever and
+ 	* may cause the failures for next/other subtests.
+ 	*/
++cleanup:
+ 	igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, bpc);
+ 	igt_plane_set_fb(data->primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ 
++	igt_require_f(!ret, "%s don't support %d-bpc\n", output->name, output_bpc);
++	igt_require_f(constraint, "No supported mode found to use %d-bpc on %s\n",
++				  output_bpc, output->name);
++
+ 	/* Compute the result. */
+ 	if (fb_bpc > output_bpc)
+ 		igt_assert_f(status.dither, "(fb_%dbpc > output_%dbpc): Dither should be enabled\n",
 -- 
-Ville Syrjälä
-Intel
+2.35.1
