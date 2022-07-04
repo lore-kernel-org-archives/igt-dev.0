@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B98B10E0F7
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Jul 2022 13:34:51 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D491310E068
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Jul 2022 14:19:51 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  4 Jul 2022 19:02:49 +0530
-Message-Id: <20220704133249.335053-2-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220704133249.335053-1-bhanuprakash.modem@intel.com>
-References: <20220704133249.335053-1-bhanuprakash.modem@intel.com>
+Date: Mon,  4 Jul 2022 18:20:08 +0530
+Message-Id: <20220704125008.150389-2-riana.tauro@intel.com>
+In-Reply-To: <20220704125008.150389-1-riana.tauro@intel.com>
+References: <20220704125008.150389-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 2/2] tests/kms: Fix to use max_bpc constraint
- helper
+Subject: [igt-dev] [PATCH i-g-t 1/1] tests/i915/i915_pm_rc6_residency: Use
+ the correct context in rc6-idle
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,186 +19,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@linux.intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of writing our own wrapper, use the helper from lib.
+Use the correct context id in execbuf of rc6-idle test
 
-V2:
-* Rebase
-
-Cc: Swati Sharma <swati2.sharma@intel.com>
-CC: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/kms_color.c  | 24 +-----------------------
- tests/kms_dither.c | 25 +------------------------
- tests/kms_hdr.c    | 44 +++++++++++++++-----------------------------
- 3 files changed, 17 insertions(+), 76 deletions(-)
+ tests/i915/i915_pm_rc6_residency.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 0b03fb9a..2d751027 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -651,28 +651,6 @@ static void test_pipe_limited_range_ctm(data_t *data,
- }
- #endif
- 
--static bool i915_clock_constraint(data_t *data, enum pipe pipe, int bpc)
--{
--	igt_output_t *output = data->output;
--	drmModeConnector *connector = output->config.connector;
--
--	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
--
--	for_each_connector_mode(output) {
--		igt_output_override_mode(output, &connector->modes[j__]);
--		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
--
--		if (!igt_check_output_bpc_equal(data->drm_fd, pipe,
--						data->output->name, bpc))
--			continue;
--
--		return true;
--	}
--
--	igt_output_override_mode(output, NULL);
--	return false;
--}
--
- static void
- prep_pipe(data_t *data, enum pipe p)
+diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
+index e377e70c..67d25918 100644
+--- a/tests/i915/i915_pm_rc6_residency.c
++++ b/tests/i915/i915_pm_rc6_residency.c
+@@ -292,7 +292,7 @@ static void sighandler(int sig)
  {
-@@ -835,7 +813,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 
- 		if (is_i915_device(data->drm_fd) &&
--		    !i915_clock_constraint(data, p, 10))
-+		    !igt_max_bpc_constraint(&data->display, p, output, 10))
- 			continue;
- 
- 		data->color_depth = 10;
-diff --git a/tests/kms_dither.c b/tests/kms_dither.c
-index 02896b37..a7cff353 100644
---- a/tests/kms_dither.c
-+++ b/tests/kms_dither.c
-@@ -97,29 +97,6 @@ static dither_status_t get_dither_state(data_t *data, enum pipe pipe)
- 	return status;
  }
  
--static bool i915_clock_constraint(data_t *data, enum pipe pipe,
--				  igt_output_t *output, int bpc)
--{
--	drmModeConnector *connector = output->config.connector;
--	igt_display_t *display = &data->display;
--
--	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
--
--	for_each_connector_mode(output) {
--		igt_output_override_mode(output, &connector->modes[j__]);
--		igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
--
--		if (!igt_check_output_bpc_equal(data->drm_fd, pipe,
--						output->name, bpc))
--			continue;
--
--		return true;
--	}
--
--	igt_output_override_mode(output, NULL);
--	return false;
--}
--
- static void test_dithering(data_t *data, enum pipe pipe,
- 			   igt_output_t *output,
- 			   int fb_bpc, int fb_format,
-@@ -151,7 +128,7 @@ static void test_dithering(data_t *data, enum pipe pipe,
- 	igt_require_f(!ret, "%s don't support %d-bpc\n",
- 				output->name, output_bpc);
- 
--	igt_require_f(i915_clock_constraint(data, pipe, output, output_bpc),
-+	igt_require_f(igt_max_bpc_constraint(display, pipe, output, output_bpc),
- 			"No supported mode found to use %d-bpc on %s\n",
- 			output_bpc, output->name);
- 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 6790f26f..e2650f51 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -130,6 +130,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 					  INTEL_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
- 
- 	data->w = data->mode->hdisplay;
- 	data->h = data->mode->vdisplay;
-@@ -204,33 +205,6 @@ static bool has_max_bpc(igt_output_t *output)
- 	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
- }
- 
--static bool i915_clock_constraint(data_t *data, int bpc)
--{
--	igt_output_t *output = data->output;
--	drmModeConnector *connector = output->config.connector;
--
--	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, bpc);
--	igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
--
--	for_each_connector_mode(output) {
--		igt_output_override_mode(output, &connector->modes[j__]);
--		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
--
--		if (!igt_check_output_bpc_equal(data->fd, data->pipe_id,
--						data->output->name, bpc))
--			continue;
--
--		data->mode = igt_output_get_mode(output);
--		data->w = data->mode->hdisplay;
--		data->h = data->mode->vdisplay;
--
--		return true;
--	}
--
--	test_fini(data);
--	return false;
--}
--
- static void test_bpc_switch(data_t *data, uint32_t flags)
+-static void bg_load(int i915, uint64_t engine_flags, unsigned int flags, unsigned long *ctl)
++static void bg_load(int i915, uint32_t ctx_id, uint64_t engine_flags, unsigned int flags, unsigned long *ctl)
  {
- 	igt_display_t *display = &data->display;
-@@ -250,8 +224,14 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 				prepare_test(data, output, pipe);
+ 	const bool has_execlists = intel_gen(intel_get_drm_devid(i915)) >= 8;
+ 	struct drm_i915_gem_exec_object2 obj = {
+@@ -302,6 +302,7 @@ static void bg_load(int i915, uint64_t engine_flags, unsigned int flags, unsigne
+ 		.buffers_ptr = to_user_pointer(&obj),
+ 		.buffer_count = 1,
+ 		.flags = engine_flags,
++		.rsvd1 = ctx_id,
+ 	};
+ 	struct sigaction act = {
+ 		.sa_handler = sighandler
+@@ -359,7 +360,7 @@ static void kill_children(int sig)
+ 	signal(sig, old);
+ }
  
- 				if (is_i915_device(data->fd) &&
--				    !i915_clock_constraint(data, 10))
-+				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
-+					test_fini(data);
- 					break;
-+				}
-+
-+				data->mode = igt_output_get_mode(output);
-+				data->w = data->mode->hdisplay;
-+				data->h = data->mode->vdisplay;
+-static void rc6_idle(int i915, uint64_t flags)
++static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
+ {
+ 	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+ 	const int tolerance = 20; /* Some RC6 is better than none! */
+@@ -405,7 +406,7 @@ static void rc6_idle(int i915, uint64_t flags)
+ 	for (int p = 0; p < ARRAY_SIZE(phases); p++) {
+ 		memset(done, 0, 2 * sizeof(*done));
+ 		igt_fork(child, 1) /* Setup up a very light load */
+-			bg_load(i915, flags, phases[p].flags, done);
++			bg_load(i915, ctx_id, flags, phases[p].flags, done);
  
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe), output->name)
-@@ -570,8 +550,14 @@ static void test_hdr(data_t *data, uint32_t flags)
- 				prepare_test(data, output, pipe);
- 
- 				if (is_i915_device(data->fd) &&
--				    !i915_clock_constraint(data, 10))
-+				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
-+					test_fini(data);
- 					break;
-+				}
-+
-+				data->mode = igt_output_get_mode(output);
-+				data->w = data->mode->hdisplay;
-+				data->h = data->mode->vdisplay;
- 
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe), output->name) {
+ 		rapl_read(&rapl, &sample[0]);
+ 		cycles = -READ_ONCE(done[1]);
+@@ -549,7 +550,7 @@ igt_main
+ 		for_each_ctx_engine(i915, ctx, e) {
+ 			if (e->instance == 0) {
+ 				igt_dynamic_f("%s", e->name)
+-					rc6_idle(i915, e->flags);
++					rc6_idle(i915, ctx->id, e->flags);
+ 			}
+ 		}
+ 	}
 -- 
-2.35.1
+2.25.1
