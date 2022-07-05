@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C86D10E04C
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Jul 2022 10:37:46 +0000 (UTC)
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  5 Jul 2022 12:35:51 +0200
-Message-Id: <20220705103551.3720180-1-karolina.drobnik@intel.com>
+Message-ID: <9bc05a2b-771c-0d64-00c5-dc6432d2eecc@intel.com>
+Date: Tue, 5 Jul 2022 15:19:56 +0530
+Content-Language: en-US
+To: "Murthy, Arun R" <arun.r.murthy@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20220628110409.768308-1-arun.r.murthy@intel.com>
+ <b3935ec4-c239-0db0-33b4-9de43bbf7965@intel.com>
+ <DM6PR11MB3177AC16AD97327BCBEA3C39BA819@DM6PR11MB3177.namprd11.prod.outlook.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <DM6PR11MB3177AC16AD97327BCBEA3C39BA819@DM6PR11MB3177.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/i915_pm_rps: Check impact of fence
- ordering on waitboosting
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: trigger async
+ flip with a dummy flip
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,156 +21,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
- Chris Wilson <chris@chris-wilson.co.uk>
+Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+On 7/5/2022 3:08 PM, Murthy, Arun R wrote:
+>> On 6/28/2022 4:34 PM, Arun R Murthy wrote:
+>>> In oder to trigger the async flip, a dummy flip is required after sync
+>>> flip so as to update the watermarks for async in KMD which happens as
+>>> part of this dummy flip. Thereafter async memory update will act as a
+>>> trigger register.
+>>> Capturing the CRC is done after the async flip as async flip at some
+>>> times can consume fairly a vblank period time.
+>>>
+>>> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+>>> ---
+>>>    tests/i915/kms_big_fb.c | 29 +++++++++++++++++++----------
+>>>    1 file changed, 19 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c index
+>>> d50fde45..6caf3c31 100644
+>>> --- a/tests/i915/kms_big_fb.c
+>>> +++ b/tests/i915/kms_big_fb.c
+>>> @@ -465,7 +465,7 @@ static bool test_pipe(data_t *data)
+>>>    static bool
+>>>    max_hw_stride_async_flip_test(data_t *data)
+>>>    {
+>>> -	uint32_t ret, startframe;
+>>> +	uint32_t ret, frame;
+>>>    	const uint32_t w = data->output->config.default_mode.hdisplay,
+>>>    		       h = data->output->config.default_mode.vdisplay;
+>>>    	igt_plane_t *primary;
+>>> @@ -519,7 +519,19 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>
+>> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>>>    		igt_wait_for_vblank(data->drm_fd, data-
+>>> display.pipes[primary->pipe->pipe].crtc_offset);
+>>> -		startframe = kmstest_get_vblank(data->drm_fd, data->pipe,
+>> 0) + 1;
+>>> +		/*
+>>> +		 * In older platforms (<= Gen10), async address update bit is
+>> double buffered.
+>>> +		 * So flip timestamp can be verified only from the second flip.
+>>> +		 * The first async flip just enables the async address update.
+>>> +		 * In platforms greater than DISPLAY13 the first async flip will
+>> be discarded
+>>> +		 * in order to change the watermark levels as per the
+>> optimization. Hence the
+>>> +		 * subsequent async flips will actually do the asynchronous
+>> flips.
+>>> +		 */
+>>> +		ret = drmModePageFlip(data->drm_fd, data->output-
+>>> config.crtc->crtc_id,
+>>> +						      data->big_fb_flip[i].fb_id,
+>>> +
+>> DRM_MODE_PAGE_FLIP_ASYNC, NULL);
+>>> +		igt_wait_for_vblank(data->drm_fd, data-
+>>> display.pipes[primary->pipe->pipe].crtc_offset);
+>>> +		frame = kmstest_get_vblank(data->drm_fd, data->pipe, 0) +
+>> 1;
+>>
+>> Hi,
+>>
+>> Should this be added inside a gen check similar to kms_async_flips?
+> Yes sorry missed it!
+>
+>>>    		for (int j = 0; j < 2; j++) {
+>>>    			do {
+>>> @@ -528,23 +540,20 @@ max_hw_stride_async_flip_test(data_t *data)
+>>>
+>> DRM_MODE_PAGE_FLIP_ASYNC, NULL);
+>>>    			} while (ret == -EBUSY);
+>>>    			igt_assert(ret == 0);
+>>> +			igt_pipe_crc_get_for_frame(data->drm_fd, data-
+>>> pipe_crc,
+>>> +					   frame, &compare_crc);
+>>>
+>>> +			frame = kmstest_get_vblank(data->drm_fd, data-
+>>> pipe, 0) + 1;
+>>>    			do {
+>>>    				ret = drmModePageFlip(data->drm_fd, data-
+>>> output->config.crtc->crtc_id,
+>>>    						      data->big_fb.fb_id,
+>>>
+>> DRM_MODE_PAGE_FLIP_ASYNC, NULL);
+>>>    			} while (ret == -EBUSY);
+>>>    			igt_assert(ret == 0);
+>>> +			igt_pipe_crc_get_for_frame(data->drm_fd, data-
+>>> pipe_crc,
+>>> +					   frame, &async_crc);
+>> We should be moving this IMHO. By waiting for vblank after each async flip
+>> to capture CRC, what is the intended result? Seems to be completely
+>> changing the existing test logic.
+> We are getting the vblank count and based on that getting the crc. Now we know for async flip at
+> certain times it can consume a time equivalent to a vblank period. So in those scenarios getting crc
+> based on the vblank goes for a toss. Hence capturing the vblank start time stamp at the beginning
+> of each flip.
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+Hi,
 
-Currently the wait boost heuristic is evaluated at the start of each
-fence wait for a series within dma-resv. There is no strict ordering of
-fences defined by dma-resv, and so it turns out that the same operation
-under different circumstances can result in different heuristics being
-applied, and dramatic performance variations in user applications.
+But what is the the reference CRC we're expecting? The original logic is 
+designed to match on one iteration and mismatch on the next using a 
+combination of fb's by using async flips. But with these changes that 
+whole logic goes for a toss?
 
-Link: https://gitlab.freedesktop.org/drm/intel/-/issues/6284
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
----
- tests/i915/i915_pm_rps.c | 101 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 95 insertions(+), 6 deletions(-)
+>
+>> Also, seems like we are overwriting the CRC captured for j = 0, as comparison
+>> is done outside this loop. Is this done on purpose?
+> Now with the changing the vblank start frame capture being added before the async flip, CRC can
+> be captured outside the loop as well, but makes no sense. To maintain this order moving the CRC
+> Capture also after each frame.
 
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index b37f15c2..d931ed78 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -37,6 +37,7 @@
- #include <sys/wait.h>
- 
- #include "i915/gem.h"
-+#include "i915/gem_create.h"
- #include "igt.h"
- #include "igt_dummyload.h"
- #include "igt_sysfs.h"
-@@ -614,14 +615,98 @@ static void waitboost(int fd, bool reset)
- 	igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
- }
- 
-+static uint64_t __fence_order(int i915,
-+			      struct drm_i915_gem_exec_object2 *obj,
-+			      struct drm_i915_gem_execbuffer2 *eb,
-+			      uint64_t flags0, uint64_t flags1)
-+{
-+	struct timespec tv;
-+
-+	gem_quiescent_gpu(i915);
-+	igt_gettime(&tv);
-+
-+	obj->flags = flags0;
-+	gem_execbuf(i915, eb);
-+	obj->flags = flags1;
-+	gem_execbuf(i915, eb);
-+	gem_sync(i915, obj->handle);
-+
-+	return igt_nsec_elapsed(&tv);
-+}
-+
-+static void fence_order(int i915)
-+{
-+	const uint64_t sz = 1 << 20;
-+	struct drm_i915_gem_exec_object2 obj[2] = {
-+		{ .handle = gem_create(i915, 4096) },
-+		{ .handle = gem_create(i915, sz) },
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(obj),
-+		.buffer_count = ARRAY_SIZE(obj),
-+	};
-+	uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint64_t wr, rw;
-+	int min, max;
-+	int sysfs;
-+
-+	/*
-+	 * Check the order of fences found during GEM_WAIT does not affect
-+	 * waitboosting.
-+	 *
-+	 * Internally, implicit fences are tracked within a dma-resv which
-+	 * imposes no order on the individually fences tracked within. Since
-+	 * there is no defined order, the sequence of waits (and the associated
-+	 * waitboosts) is also undefined, undermining the consistency of the
-+	 * waitboost heuristic.
-+	 *
-+	 * In particular, we can influence the sequence of fence storage
-+	 * within dma-resv by mixing read/write semantics for implicit fences.
-+	 * We can exploit this property of dma-resv to exercise that no matter
-+	 * the stored order, the heuristic is applied consistently for the
-+	 * user's GEM_WAIT ioctl.
-+	 */
-+
-+	sysfs = igt_sysfs_open(i915);
-+	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
-+	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
-+	igt_require(max > min);
-+
-+	/* Only allow ourselves to upclock via waitboosting */
-+	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
-+	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
-+	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
-+
-+	gem_write(i915, obj[1].handle, sz - sizeof(bbe), &bbe, sizeof(bbe));
-+
-+	/* Warm up to bind the vma */
-+	__fence_order(i915, &obj[0], &execbuf, 0, 0);
-+
-+	wr = __fence_order(i915, &obj[0], &execbuf, EXEC_OBJECT_WRITE, 0);
-+	igt_info("Write-then-read: %.1fus\n", wr * 1e-3);
-+
-+	rw = __fence_order(i915, &obj[0], &execbuf, 0, EXEC_OBJECT_WRITE);
-+	igt_info("Read-then-write: %.1fus\n", rw * 1e-3);
-+
-+	gem_close(i915, obj[0].handle);
-+	gem_close(i915, obj[1].handle);
-+
-+	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
-+	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
-+
-+	igt_assert(4 * rw > 3 * wr && 4 * wr > 3 * rw);
-+}
-+
- static void pm_rps_exit_handler(int sig)
- {
--	if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
--		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
--		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--	} else {
--		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+	if (sysfs_files[MAX].filp) {
-+		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
-+			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-+		} else {
-+			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-+			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+		}
- 	}
- 
- 	if (lh.igt_proc.running)
-@@ -683,6 +768,10 @@ igt_main
- 	igt_subtest("waitboost")
- 		waitboost(drm_fd, false);
- 
-+	/* Checks if the order of fences does not affect waitboosting */
-+	igt_subtest("fence-order")
-+		fence_order(drm_fd);
-+
- 	/* Test boost frequency after GPU reset */
- 	igt_subtest("reset") {
- 		igt_hang_t hang = igt_allow_hang(drm_fd, 0, 0);
--- 
-2.25.1
+The CRC comparison is still outside the loop, so no point capturing 
+CRC's if we finally discard it anyway?
+
+Thanks,
+Karthik.B.S
+> Thanks and Regards,
+> Arun R Murthy
+> --------------------
+
