@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E727D94592
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Jul 2022 19:58:04 +0000 (UTC)
-Date: Tue, 5 Jul 2022 21:58:00 +0200
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60CF814B9CF
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Jul 2022 20:12:47 +0000 (UTC)
+Date: Tue, 5 Jul 2022 22:12:42 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: "Knop, Ryszard" <ryszard.knop@intel.com>
-Message-ID: <20220705215800.2c9165a6@maurocar-mobl2>
-In-Reply-To: <b1e8327b02fbbda0e180b217735b460c6f307f6b.camel@intel.com>
+Message-ID: <20220705221242.3ef9787e@maurocar-mobl2>
+In-Reply-To: <6622adedd2931cbd6d4e0c3eb46a2d3f72343351.camel@intel.com>
 References: <20220628094435.854519-1-ryszard.knop@intel.com>
- <20220628094435.854519-5-ryszard.knop@intel.com>
- <20220629181334.60fc4f83@maurocar-mobl2>
- <b1e8327b02fbbda0e180b217735b460c6f307f6b.camel@intel.com>
+ <20220628094435.854519-6-ryszard.knop@intel.com>
+ <20220629183619.03808eb8@maurocar-mobl2>
+ <6622adedd2931cbd6d4e0c3eb46a2d3f72343351.camel@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t 4/7] runner: Add the --environment flag
+Subject: Re: [igt-dev] [PATCH i-g-t 5/7] runner: Serialize the provided
+ environment flags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,238 +28,237 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 30 Jun 2022 13:40:47 +0000
+On Thu, 30 Jun 2022 13:57:16 +0000
 "Knop, Ryszard" <ryszard.knop@intel.com> wrote:
 
-> On Wed, 2022-06-29 at 18:13 +0200, Mauro Carvalho Chehab wrote:
-> > On Tue, 28 Jun 2022 11:44:32 +0200
-> > Ryszard Knop <ryszard.knop@intel.com> wrote:
-> >  =20
-> > > Allows specifying additional environment variables to be set for
-> > > the
-> > > launched test processes. This commit introduces the argument
-> > > parsing.
-> > >=20
-> > > Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
-> > > ---
-> > > =C2=A0runner/settings.c | 116
-> > > +++++++++++++++++++++++++++++++++++++++++++++-
-> > > =C2=A0runner/settings.h |=C2=A0=C2=A0 9 ++++
-> > > =C2=A02 files changed, 124 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/runner/settings.c b/runner/settings.c
-> > > index d153954a..de339484 100644
-> > > --- a/runner/settings.c
-> > > +++ b/runner/settings.c
-> > > @@ -35,6 +35,7 @@ enum {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0OPT_DRY_RUN =3D 'd',
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0OPT_INCLUDE =3D 't',
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0OPT_EXCLUDE =3D 'x',
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0OPT_ENVIRONMENT =3D 'e',
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0OPT_SYNC =3D 's',
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0OPT_LOG_LEVEL =3D 'l',
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0OPT_OVERWRITE =3D 'o',
-> > > @@ -389,6 +390,113 @@ static void free_regexes(struct regex_list
-> > > *regexes)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0free(regexes->regexes=
-);
-> > > =C2=A0}
+
 > > > =C2=A0
-> > > +/**
-> > > + * string_trim_and_duplicate() - returns a duplicated, trimmed
-> > > string
-> > > + * @string: string to trim and duplicate
-> > > + *=20
-> > > + * If the provided string is NULL, a NULL is returned. In any
-> > > other case, a
-> > > + * newly-allocated string of length up to strlen(string) is
-> > > returned. The
-> > > + * returned string has its whitespace removed (as detected by
-> > > isspace), while
-> > > + * the original string is left unmodified.
-> > > + */
-> > > +static char *string_trim_and_duplicate(const char *string) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0size_t length;
+> > > +static bool should_skip_env_line(char *line) {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char *trimmed_line;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0bool is_comment, missing_s=
+plit;
 > > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (string =3D=3D NULL)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (line =3D=3D NULL)
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return NULL;
+=C2=A0=C2=A0=C2=A0=C2=A0return true;
 > > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0length =3D strlen(string);
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (length > 0 && isspa=
-ce(string[0])) {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0trimmed_line =3D string_tr=
+im_and_duplicate(line); =20
+> >=20
+> > Why do you need to trim whitespaces here? =20
+>=20
+> We check if a line is a comment if it's empty, contains only whitespace
+> or starts with a '#' below. If it contains just whitespace, trimming it
+> gets you an empty string. If there's whitespace before '#', I'd like to
+> treat it as a comment too.
+>=20
+> This can be useful if you're manually editing the environment file for
+> quick iteration.
+
+If the idea is to get env vars from the file, I would implement it on
+a different way:
+
+	--environment <filename>
+
+or
+
+	-- env-file <filename>
+
+The way your current code implements, the file seems to be used only
+at recover time, so it doesn=C2=B4t make much sense, IMHO, to allow it to
+be edited.
+
+Yet, I don't see much sense on having a function to skip. I mean, the file
+parser could just be something similar to:
+
+	while(fgets(line, sizeof(line), fp)) {
+		p =3D line;
+		while (*p =3D=3D ' '||*p =3D=3D '\t')
+			p++;
+		if (*p =3D=3D "#")
+			continue;
+
+		key =3D p;
+		p =3D strpbrk(key, "\n\t =3D");
+		if (*value !=3D '=3D')
+			value =3D NULL;
+		else
+			value =3D p + 1;
+		*p =3D '\0';
+
+		add_key_value(key, value);
+	}
+
+(or something similar, using strtok)
+
+>=20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (trimmed_line =3D=3D NU=
+LL)
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0string++;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0length--;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+=C2=A0=C2=A0=C2=A0=C2=A0return true;
 > > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (length > 0 && isspa=
-ce(string[length - 1])) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0length--;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0is_comment =3D strlen(trim=
+med_line) =3D=3D 0 || trimmed_line[0]
+> > > =3D=3D '#';
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0missing_split =3D strchr(t=
+rimmed_line, '=3D') =3D=3D NULL;
 > > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return strndup(string, len=
-gth);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0free(trimmed_line);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return is_comment || missi=
+ng_split;
 > > > +}
 > > > +
 > > > +/**
-> > > + * add_env_var() - Adds a new environment variable to the runner
-> > > settings.
-> > > + * @env_vars: Pointer to the env var list head from the settings.
-> > > + * @env_kv: Environment variable key-value pair string to add.
-> > > + *
-> > > + * env_kv must be a string like "KEY=3DVALUE" or just "KEY" if the
-> > > value is to
-> > > + * be loaded from the runner's environment variables. In the
-> > > latter case, if
-> > > + * the requested variable is not set, the operation will fail.
+> > > + * read_env_vars_from_file() - load env vars from a file
+> > > + * @env_vars: list head to add env var entries to
+> > > + * @dirfd: file descriptor of the directory containing env vars
 > > > + *=20
-> > > + * An empty variable may be set by providing an env_kv of "KEY=3D"
-> > > or setting
-> > > + * an empty variable for the runner process, then providing just
-> > > "KEY".
+> > > + * Loads the environment.txt file and adds each line-separated
+> > > KEY=3DVALUE pair
+> > > + * into the provided env_vars list. Lines not containing the '=3D'
+> > > K-V separator
+> > > + * or starting with a '#' are ignored.
+> > > + *=20
+> > > + * The function returns true if the env vars were read
+> > > successfully, or there
+> > > + * was nothing to be read.
 > > > + */
-> > > +static bool add_env_var(struct igt_list_head *env_vars, char
-> > > *env_kv) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char *current_env_value, *=
-kv_split;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct environment_variabl=
-e *var =3D NULL;
+> > > +static bool read_env_vars_from_file(struct igt_list_head
+> > > *env_vars, FILE *f)
+> > > +{
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0char *line =3D NULL;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ssize_t line_length;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0size_t line_buffer_length =
+=3D 0;
 > > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (env_vars =3D=3D NULL |=
-| env_kv =3D=3D NULL || strlen(env_kv) =3D=3D
-> > > 0)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while ((line_length =3D ge=
+tline(&line, &line_buffer_length,
+> > > f)) !=3D -1) {
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0goto error; =20
-> >=20
-> > As you had already allocated env_vars at this point, as otherwise
-> > env_vars
-> > would be NULL, the best is to just call IGT_INIT_LIST_HEAD(env_vars)
-> > when=20
-> > it was allocated.
-> >  =20
+=C2=A0=C2=A0=C2=A0=C2=A0if (should_skip_env_line(line))
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0con=
+tinue;
 > > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0env_kv =3D strdup(env_kv);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kv_split =3D strchr(env_kv=
-, '=3D'); =20
-> >=20
-> > Better to use strtok().
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (kv_split =3D=3D env_kv=
-) {
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0fprintf(stderr, "Missing key for --environment
-> > > \"%s\"\n", env_kv);
+=C2=A0=C2=A0=C2=A0=C2=A0/* Strip the line feed, but keep trailing
+> > > whitespace */
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0goto error;
+=C2=A0=C2=A0=C2=A0=C2=A0if (line_length > 0 && line[line_length - 2] =3D=3D
+> > > '\n')
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0lin=
+e[line_length - 2] =3D '\0';
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0add_env_var(env_vars, line);
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
 > > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0var =3D malloc(sizeof(stru=
-ct environment_variable));
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (kv_split !=3D NULL) {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* input file can be empty=
+ */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (line !=3D NULL)
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0/* value provided - copy string contents after '=3D'
-> > > */
+=C2=A0=C2=A0=C2=A0=C2=A0free(line);
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return true;
+> > > +}
+> > > +
+> > > =C2=A0bool read_settings_from_dir(struct settings *settings, int dirf=
+d)
+> > > =C2=A0{
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int fd;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0FILE *f;
+> > > =C2=A0
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0clear_settings(settin=
+gs);
+> > > =C2=A0
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if ((fd =3D openat(dirfd, =
+settings_filename, O_RDONLY)) < 0)
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return false;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* settings are always the=
+re */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ =20
+> >=20
+> > Why are you adding a '{' here? =20
+>=20
+> The block below (which checks for env_filename existence) does almost
+> exactly the same thing, with different args and read_env_vars instead
+> of read_settings. They neatly align visually this way. I can revert
+> this if you'd like.
+
+I don't see the need of using it, and this makes it harder to review, IMO.
+
+Keep it simple.
+
+Regards,
+Mauro
+
+>=20
+> Thanks, Ryszard
+>=20
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0kv_split[0] =3D NULL;
+=C2=A0=C2=A0=C2=A0=C2=A0if ((f =3D fopenat_read(dirfd, settings_filename)) =
+=3D=3D
+> > > NULL)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret=
+urn false;
+> > > =C2=A0
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0f =3D fdopen(fd, "r");
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!f) {
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0close(fd);
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return false;
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0if (!read_settings_from_file(settings, f)) {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0fcl=
+ose(f);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret=
+urn false;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > =C2=A0
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!read_settings_from_fi=
+le(settings, f)) {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0fclose(f);
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return false;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > =C2=A0
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0fclose(f);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* env file may not exist =
+if no --environment was set */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (file_exists_at(dirfd, =
+env_filename)) {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0if ((f =3D fopenat_read(dirfd, env_filename)) =3D=3D
+> > > NULL)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret=
+urn false;
 > > > +
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0var->key =3D string_trim_and_duplicate(env_kv);
+=C2=A0=C2=A0=C2=A0=C2=A0if (!read_env_vars_from_file(&settings->env_vars,
+> > > f)) {
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0var->value =3D strdup(kv_split + 1); /* Can be empt=
-y,
-> > > that's okay */
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0fcl=
+ose(f);
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0/* use the runner's environment, if set */
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0current_env_value =3D getenv(env_kv);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0if (current_env_value =3D=3D NULL) {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0fpr=
-intf(stderr, "No value provided for --
-> > > environment \"%s\" and "
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 "variable is not set for
-> > > igt_runner\n", env_kv);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0got=
-o error;
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret=
+urn false;
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
 =C2=A0=C2=A0=C2=A0=C2=A0}
 > > > +
 > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0var->key =3D string_trim_and_duplicate(env_kv);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0var->value =3D strdup(current_env_value);
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} =20
-> >=20
-> >=20
-> > It sounds weird to accept things like:
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0"ENV=3D=C2=A0=C2=A0=C2=
-=A0=C2=A0 var"
-> > or even:
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0"=C2=A0=C2=A0 ENV=3Dvar"
-> >=20
-> > So, I would code the above with something based on this:
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0key =3D strtok(env_kv, =
-", \n\t=3D");
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!key || !*key)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0goto err;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0value =3D strtok(NULL, =
-", \n\t");
-> >=20
-> > Simpler, easier to understand and will give errors if spaces are
-> > found where they shouldn't be. It can even be used inside a loop,
-> > if someone would want to use it as:
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0--environment "VAR1=3Df=
-oo, VAR2=3Dbar" =20
+=C2=A0=C2=A0=C2=A0=C2=A0fclose(f);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > =C2=A0
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return true;
+> > > =C2=A0} =20
 >=20
-> Using strtok on the value does not handle cases where, for example, you
-> can have spaces or equals sign in the value itself:
->=20
->     -e "DATA_PATH=3D/mnt/Pendrive 2GB/build/..."
->     -e "SUBPROCESS_ARGS=3D--arg1=3D123 --another-arg=3D456"
-
-You could then use strpbrk(), which should still simplify the parser.
-
-	p =3D strpbrk(key, " \n\t=3D");
-	if (*p =3D=3D '=3D')
-		value =3D p++;
-	else
-		value =3D NULL;
-	*p =3D '\0';
-
-Although, in this case, one -e per parameter would be needed.
-
->=20
-> An alternative solution would be to enable shell-like parsing with
-> quotes, escape chars, etc, but that sounds like a lot more work.
-
-Agreed.
-
-> As for the key, I thought about a case where you might have a script
-> that just applies env vars from a file or script which can be aligned:
->=20
->     BINARIES=3D/opt/igt/...
->         DATA=3D/mnt/stuff/...
->=20
-> Most software would convert "    DATA" into "DATA" automatically.
-> Whenever it's good practice or not is another discussion, but I'd like
-> this arg to do the sane thing by default. But it looks like strtok will
-> simplify key lookups, so I'll try to do that here.
-
-Ok.
-
-Regards,
-Mauro
