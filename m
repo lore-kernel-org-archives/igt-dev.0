@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Message-ID: <8c1cdbb6-4efd-11b4-48bd-1093fae6736c@intel.com>
+Date: Tue, 5 Jul 2022 13:22:56 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rohith Iyer" <quic_rohiiyer@quicinc.com>
-Date: Wed, 13 Jul 2022 23:00:21 -0000
-Message-ID: <165775322100.737.14541595180757248354@emeril.freedesktop.org>
-References: <20220713222235.11655-1-quic_rohiiyer@quicinc.com>
-In-Reply-To: <20220713222235.11655-1-quic_rohiiyer@quicinc.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_k?=
- =?utf-8?q?ms=5Fwriteback_enhancements_=28rev2=29?=
+Content-Language: en-US
+To: Karthik B S <karthik.b.s@intel.com>, "Murthy, Arun R"
+ <arun.r.murthy@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+References: <20220628110409.768308-1-arun.r.murthy@intel.com>
+ <b3935ec4-c239-0db0-33b4-9de43bbf7965@intel.com>
+ <DM6PR11MB3177AC16AD97327BCBEA3C39BA819@DM6PR11MB3177.namprd11.prod.outlook.com>
+ <9bc05a2b-771c-0d64-00c5-dc6432d2eecc@intel.com>
+From: =?UTF-8?Q?Juha-Pekka_Heikkil=c3=a4?= <juha-pekka.heikkila@intel.com>
+In-Reply-To: <9bc05a2b-771c-0d64-00c5-dc6432d2eecc@intel.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: trigger async
+ flip with a dummy flip
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,163 +23,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
-
-Series: kms_writeback enhancements (rev2)
-URL   : https://patchwork.freedesktop.org/series/106318/
-State : warning
-
-=3D=3D Summary =3D=3D
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/637361 fo=
-r the overview.
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/25328863):
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:237: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_testdisplay_descr=
-iption.xml, and no fallback was found
-  warning: failed to load external entity "/builds/gfx-ci/igt-ci-tags/docs/=
-reference/igt-gpu-tools/igt_test_programs_tools_programs.xml"
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:245: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_tools_programs.xm=
-l, and no fallback was found
-  warning: failed to load external entity "/builds/gfx-ci/igt-ci-tags/docs/=
-reference/igt-gpu-tools/igt_test_programs_tools_description.xml"
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:246: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_tools_description=
-.xml, and no fallback was found
-  warning: failed to load external entity "/builds/gfx-ci/igt-ci-tags/docs/=
-reference/igt-gpu-tools/igt_test_programs_vgem_programs.xml"
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:254: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_vgem_programs.xml=
-, and no fallback was found
-  warning: failed to load external entity "/builds/gfx-ci/igt-ci-tags/docs/=
-reference/igt-gpu-tools/igt_test_programs_vgem_description.xml"
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:255: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_vgem_description.=
-xml, and no fallback was found
- =20
- =20
-  FAILED: meson-install=20
-  /usr/bin/meson install --no-rebuild
-  ninja: build stopped: subcommand failed.
-  section_end:1657753090:step_script
-  section_start:1657753090:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1657753091:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/25328865):
-  ../xml/igt_kms.xml:4207: parser error : Premature end of data in tag refs=
-ect2 line 3579
- =20
-  ^
-  ../xml/igt_kms.xml:4207: parser error : Premature end of data in tag refs=
-ect1 line 393
- =20
-  ^
-  ../xml/igt_kms.xml:4207: parser error : Premature end of data in tag refe=
-ntry line 8
- =20
-  ^
-  ../igt-gpu-tools-docs.xml:36: element include: XInclude error : could not=
- load ../xml/igt_kms.xml, and no fallback was found
- =20
-  FAILED: meson-igt-gpu-tools-doc=20
-  /usr/bin/python3 /usr/local/bin/meson --internal commandrunner /builds/gf=
-x-ci/igt-ci-tags /builds/gfx-ci/igt-ci-tags/build docs/reference/igt-gpu-to=
-ols /usr/bin/python3 /usr/local/bin/meson /usr/bin/python3 /usr/local/bin/m=
-eson --internal gtkdoc --sourcedir=3D/builds/gfx-ci/igt-ci-tags --builddir=
-=3D/builds/gfx-ci/igt-ci-tags/build --subdir=3Ddocs/reference/igt-gpu-tools=
- --headerdirs=3D/builds/gfx-ci/igt-ci-tags/lib@@/builds/gfx-ci/igt-ci-tags/=
-build/lib --mainfile=3Digt-gpu-tools-docs.xml --modulename=3Digt-gpu-tools =
---mode=3Dauto --scanargs=3D--rebuild-sections --mkdbargs=3D--output-format=
-=3Dxml --content-files=3D/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-=
-tools/igt_test_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/referenc=
-e/igt-gpu-tools/igt_test_programs_amdgpu_programs.xml@@/builds/gfx-ci/igt-c=
-i-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_amdgpu_descript=
-ion.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_=
-test_programs_core_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/refe=
-rence/igt-gpu-tools/igt_test_programs_core_description.xml@@/builds/gfx-ci/=
-igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_debugfs_pr=
-ograms.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/i=
-gt_test_programs_debugfs_description.xml@@/builds/gfx-ci/igt-ci-tags/build/=
-docs/reference/igt-gpu-tools/igt_test_programs_drm_programs.xml@@/builds/gf=
-x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_drm_d=
-escription.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
-ls/igt_test_programs_gem_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/doc=
-s/reference/igt-gpu-tools/igt_test_programs_gem_description.xml@@/builds/gf=
-x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_gen3_=
-programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools=
-/igt_test_programs_gen3_description.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
-ocs/reference/igt-gpu-tools/igt_test_programs_gen7_programs.xml@@/builds/gf=
-x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_gen7_=
-description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-to=
-ols/igt_test_programs_i915_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
-ocs/reference/igt-gpu-tools/igt_test_programs_i915_description.xml@@/builds=
-/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_km=
-s_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
-ls/igt_test_programs_kms_description.xml@@/builds/gfx-ci/igt-ci-tags/build/=
-docs/reference/igt-gpu-tools/igt_test_programs_meta_programs.xml@@/builds/g=
-fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_meta=
-_description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-t=
-ools/igt_test_programs_perf_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/=
-docs/reference/igt-gpu-tools/igt_test_programs_perf_description.xml@@/build=
-s/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_p=
-m_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
-ls/igt_test_programs_pm_description.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
-ocs/reference/igt-gpu-tools/igt_test_programs_prime_programs.xml@@/builds/g=
-fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_prim=
-e_description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-=
-tools/igt_test_programs_sw_sync_programs.xml@@/builds/gfx-ci/igt-ci-tags/bu=
-ild/docs/reference/igt-gpu-tools/igt_test_programs_sw_sync_description.xml@=
-@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_pro=
-grams_testdisplay_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/refer=
-ence/igt-gpu-tools/igt_test_programs_testdisplay_description.xml@@/builds/g=
-fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_tool=
-s_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
-ls/igt_test_programs_tools_description.xml@@/builds/gfx-ci/igt-ci-tags/buil=
-d/docs/reference/igt-gpu-tools/igt_test_programs_vgem_programs.xml@@/builds=
-/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_vg=
-em_description.xml --ignore-headers=3Dgen6_render.h@@gen7_media.h@@gen7_ren=
-der.h@@gen8_media.h@@gen8_render.h@@gpgpu_fill.h@@i830_reg.h@@i915_3d.h@@i9=
-15_pciids.h@@i915_reg.h@@igt_edid_template.h@@intel_reg.h@@debug.h@@instdon=
-e.h@@media_fill.h@@rendercopy.h@@media_spin.h@@media_fill_gen9.h@@gen9_rend=
-er.h@@version.h '--cflags=3D-I./include/drm-uapi -I../include/drm-uapi -I./=
-include/linux-uapi -I../include/linux-uapi -I./lib -I../lib -I./lib/stubs/s=
-yscalls -I../lib/stubs/syscalls -I./. -I../. -I/usr/include/cairo -I/usr/in=
-clude/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr=
-/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/inc=
-lude/libdrm/nouveau -I/usr/include/valgrind' '--ldflags=3D-L/builds/gfx-ci/=
-igt-ci-tags/build/lib -Wl,-rpath,/builds/gfx-ci/igt-ci-tags/build/lib -ligt=
- -lcairo -lglib-2.0 -ldrm -ldw -lelf -lkmod -lprocps -ludev -lm -lpciaccess=
- -lpixman-1 -lrt -lz -ldrm_intel -ldrm_nouveau -ldrm_amdgpu -lunwind -lgsl =
--lgslcblas -lasound -lxmlrpc -lxmlrpc_util -lxmlrpc_client' --cc=3Dcc --ld=
-=3Dcc
-  ninja: build stopped: subcommand failed.
-  section_end:1657753093:step_script
-  section_start:1657753093:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1657753093:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-=3D=3D Logs =3D=3D
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/637361
+SGksCgpPbiA1LjcuMjAyMiAxMi40OSwgS2FydGhpayBCIFMgd3JvdGU6Cj4gT24gNy81LzIwMjIg
+MzowOCBQTSwgTXVydGh5LCBBcnVuIFIgd3JvdGU6Cj4+PiBPbiA2LzI4LzIwMjIgNDozNCBQTSwg
+QXJ1biBSIE11cnRoeSB3cm90ZToKPj4+PiBJbiBvZGVyIHRvIHRyaWdnZXIgdGhlIGFzeW5jIGZs
+aXAsIGEgZHVtbXkgZmxpcCBpcyByZXF1aXJlZCBhZnRlciBzeW5jCj4+Pj4gZmxpcCBzbyBhcyB0
+byB1cGRhdGUgdGhlIHdhdGVybWFya3MgZm9yIGFzeW5jIGluIEtNRCB3aGljaCBoYXBwZW5zIGFz
+Cj4+Pj4gcGFydCBvZiB0aGlzIGR1bW15IGZsaXAuIFRoZXJlYWZ0ZXIgYXN5bmMgbWVtb3J5IHVw
+ZGF0ZSB3aWxsIGFjdCBhcyBhCj4+Pj4gdHJpZ2dlciByZWdpc3Rlci4KPj4+PiBDYXB0dXJpbmcg
+dGhlIENSQyBpcyBkb25lIGFmdGVyIHRoZSBhc3luYyBmbGlwIGFzIGFzeW5jIGZsaXAgYXQgc29t
+ZQo+Pj4+IHRpbWVzIGNhbiBjb25zdW1lIGZhaXJseSBhIHZibGFuayBwZXJpb2QgdGltZS4KPj4+
+Pgo+Pj4+IFNpZ25lZC1vZmYtYnk6IEFydW4gUiBNdXJ0aHkgPGFydW4uci5tdXJ0aHlAaW50ZWwu
+Y29tPgo+Pj4+IC0tLQo+Pj4+IMKgwqAgdGVzdHMvaTkxNS9rbXNfYmlnX2ZiLmMgfCAyOSArKysr
+KysrKysrKysrKysrKysrLS0tLS0tLS0tLQo+Pj4+IMKgwqAgMSBmaWxlIGNoYW5nZWQsIDE5IGlu
+c2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQo+Pj4+Cj4+Pj4gZGlmZiAtLWdpdCBhL3Rlc3Rz
+L2k5MTUva21zX2JpZ19mYi5jIGIvdGVzdHMvaTkxNS9rbXNfYmlnX2ZiLmMgaW5kZXgKPj4+PiBk
+NTBmZGU0NS4uNmNhZjNjMzEgMTAwNjQ0Cj4+Pj4gLS0tIGEvdGVzdHMvaTkxNS9rbXNfYmlnX2Zi
+LmMKPj4+PiArKysgYi90ZXN0cy9pOTE1L2ttc19iaWdfZmIuYwo+Pj4+IEBAIC00NjUsNyArNDY1
+LDcgQEAgc3RhdGljIGJvb2wgdGVzdF9waXBlKGRhdGFfdCAqZGF0YSkKPj4+PiDCoMKgIHN0YXRp
+YyBib29sCj4+Pj4gwqDCoCBtYXhfaHdfc3RyaWRlX2FzeW5jX2ZsaXBfdGVzdChkYXRhX3QgKmRh
+dGEpCj4+Pj4gwqDCoCB7Cj4+Pj4gLcKgwqDCoCB1aW50MzJfdCByZXQsIHN0YXJ0ZnJhbWU7Cj4+
+Pj4gK8KgwqDCoCB1aW50MzJfdCByZXQsIGZyYW1lOwo+Pj4+IMKgwqDCoMKgwqDCoCBjb25zdCB1
+aW50MzJfdCB3ID0gZGF0YS0+b3V0cHV0LT5jb25maWcuZGVmYXVsdF9tb2RlLmhkaXNwbGF5LAo+
+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaCA9IGRhdGEtPm91dHB1dC0+
+Y29uZmlnLmRlZmF1bHRfbW9kZS52ZGlzcGxheTsKPj4+PiDCoMKgwqDCoMKgwqAgaWd0X3BsYW5l
+X3QgKnByaW1hcnk7Cj4+Pj4gQEAgLTUxOSw3ICs1MTksMTkgQEAgbWF4X2h3X3N0cmlkZV9hc3lu
+Y19mbGlwX3Rlc3QoZGF0YV90ICpkYXRhKQo+Pj4+Cj4+PiBEUk1fTU9ERV9BVE9NSUNfQUxMT1df
+TU9ERVNFVCwgTlVMTCk7Cj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWd0X3dhaXRfZm9yX3Zi
+bGFuayhkYXRhLT5kcm1fZmQsIGRhdGEtCj4+Pj4gZGlzcGxheS5waXBlc1twcmltYXJ5LT5waXBl
+LT5waXBlXS5jcnRjX29mZnNldCk7Cj4+Pj4gLcKgwqDCoMKgwqDCoMKgIHN0YXJ0ZnJhbWUgPSBr
+bXN0ZXN0X2dldF92YmxhbmsoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5waXBlLAo+Pj4gMCkgKyAxOwo+
+Pj4+ICvCoMKgwqDCoMKgwqDCoCAvKgo+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgICogSW4gb2xkZXIg
+cGxhdGZvcm1zICg8PSBHZW4xMCksIGFzeW5jIGFkZHJlc3MgdXBkYXRlIGJpdCBpcwo+Pj4gZG91
+YmxlIGJ1ZmZlcmVkLgo+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgICogU28gZmxpcCB0aW1lc3RhbXAg
+Y2FuIGJlIHZlcmlmaWVkIG9ubHkgZnJvbSB0aGUgc2Vjb25kIAo+Pj4+IGZsaXAuCj4+Pj4gK8Kg
+wqDCoMKgwqDCoMKgwqAgKiBUaGUgZmlyc3QgYXN5bmMgZmxpcCBqdXN0IGVuYWJsZXMgdGhlIGFz
+eW5jIGFkZHJlc3MgdXBkYXRlLgo+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgICogSW4gcGxhdGZvcm1z
+IGdyZWF0ZXIgdGhhbiBESVNQTEFZMTMgdGhlIGZpcnN0IGFzeW5jIGZsaXAgCj4+Pj4gd2lsbAo+
+Pj4gYmUgZGlzY2FyZGVkCj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqAgKiBpbiBvcmRlciB0byBjaGFu
+Z2UgdGhlIHdhdGVybWFyayBsZXZlbHMgYXMgcGVyIHRoZQo+Pj4gb3B0aW1pemF0aW9uLiBIZW5j
+ZSB0aGUKPj4+PiArwqDCoMKgwqDCoMKgwqDCoCAqIHN1YnNlcXVlbnQgYXN5bmMgZmxpcHMgd2ls
+bCBhY3R1YWxseSBkbyB0aGUgYXN5bmNocm9ub3VzCj4+PiBmbGlwcy4KPj4+PiArwqDCoMKgwqDC
+oMKgwqDCoCAqLwo+Pj4+ICvCoMKgwqDCoMKgwqDCoCByZXQgPSBkcm1Nb2RlUGFnZUZsaXAoZGF0
+YS0+ZHJtX2ZkLCBkYXRhLT5vdXRwdXQtCj4+Pj4gY29uZmlnLmNydGMtPmNydGNfaWQsCj4+Pj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgZGF0YS0+YmlnX2ZiX2ZsaXBbaV0uZmJfaWQsCj4+Pj4gKwo+Pj4gRFJNX01PREVfUEFHRV9G
+TElQX0FTWU5DLCBOVUxMKTsKPj4+PiArwqDCoMKgwqDCoMKgwqAgaWd0X3dhaXRfZm9yX3ZibGFu
+ayhkYXRhLT5kcm1fZmQsIGRhdGEtCj4+Pj4gZGlzcGxheS5waXBlc1twcmltYXJ5LT5waXBlLT5w
+aXBlXS5jcnRjX29mZnNldCk7Cj4+Pj4gK8KgwqDCoMKgwqDCoMKgIGZyYW1lID0ga21zdGVzdF9n
+ZXRfdmJsYW5rKGRhdGEtPmRybV9mZCwgZGF0YS0+cGlwZSwgMCkgKwo+Pj4gMTsKPj4+Cj4+PiBI
+aSwKPj4+Cj4+PiBTaG91bGQgdGhpcyBiZSBhZGRlZCBpbnNpZGUgYSBnZW4gY2hlY2sgc2ltaWxh
+ciB0byBrbXNfYXN5bmNfZmxpcHM/Cj4+IFllcyBzb3JyeSBtaXNzZWQgaXQhCj4+Cj4+Pj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgZm9yIChpbnQgaiA9IDA7IGogPCAyOyBqKyspIHsKPj4+PiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRvIHsKPj4+PiBAQCAtNTI4LDIzICs1NDAsMjAgQEAg
+bWF4X2h3X3N0cmlkZV9hc3luY19mbGlwX3Rlc3QoZGF0YV90ICpkYXRhKQo+Pj4+Cj4+PiBEUk1f
+TU9ERV9QQUdFX0ZMSVBfQVNZTkMsIE5VTEwpOwo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgfSB3aGlsZSAocmV0ID09IC1FQlVTWSk7Cj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBpZ3RfYXNzZXJ0KHJldCA9PSAwKTsKPj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBpZ3RfcGlwZV9jcmNfZ2V0X2Zvcl9mcmFtZShkYXRhLT5kcm1fZmQsIGRhdGEtCj4+Pj4gcGlw
+ZV9jcmMsCj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IGZyYW1lLCAmY29tcGFyZV9jcmMpOwo+Pj4+Cj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+ZnJhbWUgPSBrbXN0ZXN0X2dldF92YmxhbmsoZGF0YS0+ZHJtX2ZkLCBkYXRhLQo+Pj4+IHBpcGUs
+IDApICsgMTsKPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRvIHsKPj4+PiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0ID0gZHJtTW9kZVBhZ2VGbGlwKGRh
+dGEtPmRybV9mZCwgZGF0YS0KPj4+PiBvdXRwdXQtPmNvbmZpZy5jcnRjLT5jcnRjX2lkLAo+Pj4+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgZGF0YS0+YmlnX2ZiLmZiX2lkLAo+Pj4+Cj4+PiBEUk1fTU9ERV9QQUdFX0ZMSVBf
+QVNZTkMsIE5VTEwpOwo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfSB3aGlsZSAo
+cmV0ID09IC1FQlVTWSk7Cj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3RfYXNz
+ZXJ0KHJldCA9PSAwKTsKPj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3RfcGlwZV9jcmNf
+Z2V0X2Zvcl9mcmFtZShkYXRhLT5kcm1fZmQsIGRhdGEtCj4+Pj4gcGlwZV9jcmMsCj4+Pj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGZyYW1lLCAmYXN5bmNf
+Y3JjKTsKPj4+IFdlIHNob3VsZCBiZSBtb3ZpbmcgdGhpcyBJTUhPLiBCeSB3YWl0aW5nIGZvciB2
+YmxhbmsgYWZ0ZXIgZWFjaCBhc3luYyAKPj4+IGZsaXAKPj4+IHRvIGNhcHR1cmUgQ1JDLCB3aGF0
+IGlzIHRoZSBpbnRlbmRlZCByZXN1bHQ/IFNlZW1zIHRvIGJlIGNvbXBsZXRlbHkKPj4+IGNoYW5n
+aW5nIHRoZSBleGlzdGluZyB0ZXN0IGxvZ2ljLgo+PiBXZSBhcmUgZ2V0dGluZyB0aGUgdmJsYW5r
+IGNvdW50IGFuZCBiYXNlZCBvbiB0aGF0IGdldHRpbmcgdGhlIGNyYy4gTm93IAo+PiB3ZSBrbm93
+IGZvciBhc3luYyBmbGlwIGF0Cj4+IGNlcnRhaW4gdGltZXMgaXQgY2FuIGNvbnN1bWUgYSB0aW1l
+IGVxdWl2YWxlbnQgdG8gYSB2YmxhbmsgcGVyaW9kLiBTbyAKPj4gaW4gdGhvc2Ugc2NlbmFyaW9z
+IGdldHRpbmcgY3JjCj4+IGJhc2VkIG9uIHRoZSB2YmxhbmsgZ29lcyBmb3IgYSB0b3NzLiBIZW5j
+ZSBjYXB0dXJpbmcgdGhlIHZibGFuayBzdGFydCAKPj4gdGltZSBzdGFtcCBhdCB0aGUgYmVnaW5u
+aW5nCj4+IG9mIGVhY2ggZmxpcC4KPiAKPiBIaSwKPiAKPiBCdXQgd2hhdCBpcyB0aGUgdGhlIHJl
+ZmVyZW5jZSBDUkMgd2UncmUgZXhwZWN0aW5nPyBUaGUgb3JpZ2luYWwgbG9naWMgaXMgCj4gZGVz
+aWduZWQgdG8gbWF0Y2ggb24gb25lIGl0ZXJhdGlvbiBhbmQgbWlzbWF0Y2ggb24gdGhlIG5leHQg
+dXNpbmcgYSAKPiBjb21iaW5hdGlvbiBvZiBmYidzIGJ5IHVzaW5nIGFzeW5jIGZsaXBzLiBCdXQg
+d2l0aCB0aGVzZSBjaGFuZ2VzIHRoYXQgCj4gd2hvbGUgbG9naWMgZ29lcyBmb3IgYSB0b3NzPwo+
+IAo+Pgo+Pj4gQWxzbywgc2VlbXMgbGlrZSB3ZSBhcmUgb3ZlcndyaXRpbmcgdGhlIENSQyBjYXB0
+dXJlZCBmb3IgaiA9IDAsIGFzIAo+Pj4gY29tcGFyaXNvbgo+Pj4gaXMgZG9uZSBvdXRzaWRlIHRo
+aXMgbG9vcC4gSXMgdGhpcyBkb25lIG9uIHB1cnBvc2U/Cj4+IE5vdyB3aXRoIHRoZSBjaGFuZ2lu
+ZyB0aGUgdmJsYW5rIHN0YXJ0IGZyYW1lIGNhcHR1cmUgYmVpbmcgYWRkZWQgCj4+IGJlZm9yZSB0
+aGUgYXN5bmMgZmxpcCwgQ1JDIGNhbgo+PiBiZSBjYXB0dXJlZCBvdXRzaWRlIHRoZSBsb29wIGFz
+IHdlbGwsIGJ1dCBtYWtlcyBubyBzZW5zZS4gVG8gbWFpbnRhaW4gCj4+IHRoaXMgb3JkZXIgbW92
+aW5nIHRoZSBDUkMKPj4gQ2FwdHVyZSBhbHNvIGFmdGVyIGVhY2ggZnJhbWUuCj4gCj4gVGhlIENS
+QyBjb21wYXJpc29uIGlzIHN0aWxsIG91dHNpZGUgdGhlIGxvb3AsIHNvIG5vIHBvaW50IGNhcHR1
+cmluZyAKPiBDUkMncyBpZiB3ZSBmaW5hbGx5IGRpc2NhcmQgaXQgYW55d2F5Pwo+IAoKSSB0aGlu
+ayBnZW5lcmFsbHkgdGhlIGlkZWEgQXJ1biBpcyBjaGFuZ2luZyBpcyBjb3JyZWN0IGJ1dCBoZSdz
+IG1pc3NlZCAKaG93IHRoZSB0ZXN0IHdvcmsuCgpJIHNlZSB0aGVyZSdzIFZpbGxlJ3MgY2hhbmdl
+IG9uIGtlcm5lbCBzaWRlIGZvciBkaXNwbGF5X3ZlciA+PTEzIGZpcnN0IAphc3luY19mbGlwIGlz
+IHVuY29uZGl0aW9uYWxseSAoaW50ZW50aW9uYWxseSkgbWlzc2VkLCB0aGlzIGlzIGF0IAppbnRl
+bF9wbGFuZV9kb19hc3luY19mbGlwKC4uKSBzbyB0aGlzIHRlc3Qgd2lsbCBuZWVkIGFkanVzdG1l
+bnQKCldoYXQgQXJ1biBzZWVtIHRvIGhhdmUgbWlzc2VkIGlzIG9uIHRlc3QgdGhvc2UgbmVzdGVk
+IGxvb3BzIGhvdyB0aGV5IAp3b3JrLCB0aGF0IHBhcnQgcHJvYmFibHkgc2hvdWxkJ3ZlIG9yaWdp
+bmFsbHkgYmVlbiBjb21tZW50ZWQgaW4gY29kZSBiaXQgCmJldHRlci4KCk9uIG9yaWdpbmFsIGNv
+ZGUgdGhlcmUncyBhZnRlciBsb29wIGZvciBqIHR3byB0aW1lIAppZ3RfcGlwZV9jcmNfZ2V0X2Zv
+cl9mcmFtZSguLiksIGZpcnN0IHdpbGwgY2FwdHVyZSBjcmMgZnJvbSBkdXJhdGlvbiBvZiAKbG9v
+cCBvZiBqLCBzZWNvbmQgd2lsbCAqd2FpdCogYW5kIGNhcHR1cmUgY3VycmVudCBjcmMgd2hpbGUg
+dGhlcmUncyAKZnJhbWVidWZmZXIgImJpZ19mYiIgb24gc2NyZWVuICh3YWl0IGlzIGFib3V0IDEs
+NSBmcmFtZXMpLiBJbnNpZGUgaiAKbG9vcCwgYWdhaW5zdCBpIGlzIGFzeW5jIGZsaXBwZWQgd2l0
+aCBmYiBmcm9tICJiaWdfZmJfZmxpcFtpXSIgd2hlcmUgb25lIApvbmUgZmIgbG9vayBleGFjdGx5
+IGxpa2UgImJpZ19mYiIgYW5kIGNoZWNrIHdpdGggdGhpcyBjcmMgZG9lc24ndCBjaGFuZ2UgCndo
+ZW4gZmxpcCB3aXRoIHNhbWUgY29udGVudC4gVGhlbiBhbm90aGVyICJiaWdfZmJfZmxpcFtpXSIg
+aXMgZ3JlZW4gCmNvbG9yIGFuZCBjaGVjayBjcmMgd2lsbCBjaGFuZ2UuCgpOb3cgd2hlbiBpbnNp
+ZGUgImoiIGxvb3AgQXJ1biBhZGRlZCBpZ3RfcGlwZV9jcmNfZ2V0X2Zvcl9mcmFtZSguLikgdGhp
+cyAKdGVzdCBiZWNvbWVzIGNvbXBsZXRlbHkgZGlmZmVyZW50IGJlY2F1c2UgYXN5bmMgZmxpcHBp
+bmcgbm8gbW9yZSBpcyAKdGVzdGVkIGRvIHBlcmZvcm0gYmFjayduJ2ZvcnRoIGZsaXBwaW5nLgoK
+L0p1aGEtUGVra2EKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludGVsIEZpbmxhbmQgT3kKUmVnaXN0ZXJlZCBBZGRy
+ZXNzOiBQTCAyODEsIDAwMTgxIEhlbHNpbmtpIApCdXNpbmVzcyBJZGVudGl0eSBDb2RlOiAwMzU3
+NjA2IC0gNCAKRG9taWNpbGVkIGluIEhlbHNpbmtpIAoKVGhpcyBlLW1haWwgYW5kIGFueSBhdHRh
+Y2htZW50cyBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgbWF0ZXJpYWwgZm9yCnRoZSBzb2xlIHVz
+ZSBvZiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpLiBBbnkgcmV2aWV3IG9yIGRpc3RyaWJ1dGlv
+bgpieSBvdGhlcnMgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4gSWYgeW91IGFyZSBub3QgdGhlIGlu
+dGVuZGVkCnJlY2lwaWVudCwgcGxlYXNlIGNvbnRhY3QgdGhlIHNlbmRlciBhbmQgZGVsZXRlIGFs
+bCBjb3BpZXMuCg==
