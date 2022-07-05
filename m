@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85A3510E021
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Jul 2022 07:47:48 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	karthik.b.s@intel.com
-Date: Tue,  5 Jul 2022 10:12:28 +0530
-Message-Id: <20220705044228.391917-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220704163242.373772-1-bhanuprakash.modem@intel.com>
-References: <20220704163242.373772-1-bhanuprakash.modem@intel.com>
+From: "Murthy, Arun R" <arun.r.murthy@intel.com>
+To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Tue, 5 Jul 2022 09:38:41 +0000
+Message-ID: <DM6PR11MB3177AC16AD97327BCBEA3C39BA819@DM6PR11MB3177.namprd11.prod.outlook.com>
+References: <20220628110409.768308-1-arun.r.murthy@intel.com>
+ <b3935ec4-c239-0db0-33b4-9de43bbf7965@intel.com>
+In-Reply-To: <b3935ec4-c239-0db0-33b4-9de43bbf7965@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2] tests/kms_dither: Set max_bpc before exiting
- the subtest
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: trigger async
+ flip with a dummy flip
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,75 +20,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Before exiting the subtest, we must reset the connector's "max_bpc"
-property to it's default value, else it may effect the consequent
-subtests.
-
-V2:
-* Don't trigger a subtest if requested bpc > connecot's max_bpc.
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_dither.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/tests/kms_dither.c b/tests/kms_dither.c
-index 02896b37..ace89062 100644
---- a/tests/kms_dither.c
-+++ b/tests/kms_dither.c
-@@ -128,6 +128,7 @@ static void test_dithering(data_t *data, enum pipe pipe,
- 	igt_display_t *display = &data->display;
- 	dither_status_t status;
- 	int bpc, ret;
-+	bool constraint;
- 
- 	igt_info("Dithering test execution on %s PIPE_%s\n",
- 			output->name, kmstest_pipe_name(pipe));
-@@ -148,6 +149,13 @@ static void test_dithering(data_t *data, enum pipe pipe,
- 	else
- 		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
- 
-+	if (ret)
-+		goto cleanup;
-+
-+	constraint = i915_clock_constraint(data, pipe, output, output_bpc);
-+	if (!constraint)
-+		goto cleanup;
-+
- 	igt_require_f(!ret, "%s don't support %d-bpc\n",
- 				output->name, output_bpc);
- 
-@@ -174,12 +182,17 @@ static void test_dithering(data_t *data, enum pipe pipe,
- 	* Otherwise, previously updated value will stay forever and
- 	* may cause the failures for next/other subtests.
- 	*/
-+cleanup:
- 	igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, bpc);
- 	igt_plane_set_fb(data->primary, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 	igt_remove_fb(data->drm_fd, &data->fb);
- 
-+	igt_require_f(!ret, "%s don't support %d-bpc\n", output->name, output_bpc);
-+	igt_require_f(constraint, "No supported mode found to use %d-bpc on %s\n",
-+				  output_bpc, output->name);
-+
- 	/* Compute the result. */
- 	if (fb_bpc > output_bpc)
- 		igt_assert_f(status.dither, "(fb_%dbpc > output_%dbpc): Dither should be enabled\n",
-@@ -210,6 +223,9 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
- 		if (!is_supported(output))
- 			continue;
- 
-+		if (igt_get_output_max_bpc(data->drm_fd, output->name) < output_bpc)
-+			continue;
-+
- 		for_each_pipe(display, pipe) {
- 			if (igt_pipe_connector_valid(pipe, output)) {
- 				igt_dynamic_f("pipe-%s-%s",
--- 
-2.35.1
+PiBPbiA2LzI4LzIwMjIgNDozNCBQTSwgQXJ1biBSIE11cnRoeSB3cm90ZToNCj4gPiBJbiBvZGVy
+IHRvIHRyaWdnZXIgdGhlIGFzeW5jIGZsaXAsIGEgZHVtbXkgZmxpcCBpcyByZXF1aXJlZCBhZnRl
+ciBzeW5jDQo+ID4gZmxpcCBzbyBhcyB0byB1cGRhdGUgdGhlIHdhdGVybWFya3MgZm9yIGFzeW5j
+IGluIEtNRCB3aGljaCBoYXBwZW5zIGFzDQo+ID4gcGFydCBvZiB0aGlzIGR1bW15IGZsaXAuIFRo
+ZXJlYWZ0ZXIgYXN5bmMgbWVtb3J5IHVwZGF0ZSB3aWxsIGFjdCBhcyBhDQo+ID4gdHJpZ2dlciBy
+ZWdpc3Rlci4NCj4gPiBDYXB0dXJpbmcgdGhlIENSQyBpcyBkb25lIGFmdGVyIHRoZSBhc3luYyBm
+bGlwIGFzIGFzeW5jIGZsaXAgYXQgc29tZQ0KPiA+IHRpbWVzIGNhbiBjb25zdW1lIGZhaXJseSBh
+IHZibGFuayBwZXJpb2QgdGltZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEFydW4gUiBNdXJ0
+aHkgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICAgdGVzdHMvaTkxNS9r
+bXNfYmlnX2ZiLmMgfCAyOSArKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLQ0KPiA+ICAgMSBm
+aWxlIGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4g
+ZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUva21zX2JpZ19mYi5jIGIvdGVzdHMvaTkxNS9rbXNfYmln
+X2ZiLmMgaW5kZXgNCj4gPiBkNTBmZGU0NS4uNmNhZjNjMzEgMTAwNjQ0DQo+ID4gLS0tIGEvdGVz
+dHMvaTkxNS9rbXNfYmlnX2ZiLmMNCj4gPiArKysgYi90ZXN0cy9pOTE1L2ttc19iaWdfZmIuYw0K
+PiA+IEBAIC00NjUsNyArNDY1LDcgQEAgc3RhdGljIGJvb2wgdGVzdF9waXBlKGRhdGFfdCAqZGF0
+YSkNCj4gPiAgIHN0YXRpYyBib29sDQo+ID4gICBtYXhfaHdfc3RyaWRlX2FzeW5jX2ZsaXBfdGVz
+dChkYXRhX3QgKmRhdGEpDQo+ID4gICB7DQo+ID4gLQl1aW50MzJfdCByZXQsIHN0YXJ0ZnJhbWU7
+DQo+ID4gKwl1aW50MzJfdCByZXQsIGZyYW1lOw0KPiA+ICAgCWNvbnN0IHVpbnQzMl90IHcgPSBk
+YXRhLT5vdXRwdXQtPmNvbmZpZy5kZWZhdWx0X21vZGUuaGRpc3BsYXksDQo+ID4gICAJCSAgICAg
+ICBoID0gZGF0YS0+b3V0cHV0LT5jb25maWcuZGVmYXVsdF9tb2RlLnZkaXNwbGF5Ow0KPiA+ICAg
+CWlndF9wbGFuZV90ICpwcmltYXJ5Ow0KPiA+IEBAIC01MTksNyArNTE5LDE5IEBAIG1heF9od19z
+dHJpZGVfYXN5bmNfZmxpcF90ZXN0KGRhdGFfdCAqZGF0YSkNCj4gPg0KPiBEUk1fTU9ERV9BVE9N
+SUNfQUxMT1dfTU9ERVNFVCwgTlVMTCk7DQo+ID4NCj4gPiAgIAkJaWd0X3dhaXRfZm9yX3ZibGFu
+ayhkYXRhLT5kcm1fZmQsIGRhdGEtDQo+ID5kaXNwbGF5LnBpcGVzW3ByaW1hcnktPnBpcGUtPnBp
+cGVdLmNydGNfb2Zmc2V0KTsNCj4gPiAtCQlzdGFydGZyYW1lID0ga21zdGVzdF9nZXRfdmJsYW5r
+KGRhdGEtPmRybV9mZCwgZGF0YS0+cGlwZSwNCj4gMCkgKyAxOw0KPiA+ICsJCS8qDQo+ID4gKwkJ
+ICogSW4gb2xkZXIgcGxhdGZvcm1zICg8PSBHZW4xMCksIGFzeW5jIGFkZHJlc3MgdXBkYXRlIGJp
+dCBpcw0KPiBkb3VibGUgYnVmZmVyZWQuDQo+ID4gKwkJICogU28gZmxpcCB0aW1lc3RhbXAgY2Fu
+IGJlIHZlcmlmaWVkIG9ubHkgZnJvbSB0aGUgc2Vjb25kIGZsaXAuDQo+ID4gKwkJICogVGhlIGZp
+cnN0IGFzeW5jIGZsaXAganVzdCBlbmFibGVzIHRoZSBhc3luYyBhZGRyZXNzIHVwZGF0ZS4NCj4g
+PiArCQkgKiBJbiBwbGF0Zm9ybXMgZ3JlYXRlciB0aGFuIERJU1BMQVkxMyB0aGUgZmlyc3QgYXN5
+bmMgZmxpcCB3aWxsDQo+IGJlIGRpc2NhcmRlZA0KPiA+ICsJCSAqIGluIG9yZGVyIHRvIGNoYW5n
+ZSB0aGUgd2F0ZXJtYXJrIGxldmVscyBhcyBwZXIgdGhlDQo+IG9wdGltaXphdGlvbi4gSGVuY2Ug
+dGhlDQo+ID4gKwkJICogc3Vic2VxdWVudCBhc3luYyBmbGlwcyB3aWxsIGFjdHVhbGx5IGRvIHRo
+ZSBhc3luY2hyb25vdXMNCj4gZmxpcHMuDQo+ID4gKwkJICovDQo+ID4gKwkJcmV0ID0gZHJtTW9k
+ZVBhZ2VGbGlwKGRhdGEtPmRybV9mZCwgZGF0YS0+b3V0cHV0LQ0KPiA+Y29uZmlnLmNydGMtPmNy
+dGNfaWQsDQo+ID4gKwkJCQkJCSAgICAgIGRhdGEtPmJpZ19mYl9mbGlwW2ldLmZiX2lkLA0KPiA+
+ICsNCj4gRFJNX01PREVfUEFHRV9GTElQX0FTWU5DLCBOVUxMKTsNCj4gPiArCQlpZ3Rfd2FpdF9m
+b3JfdmJsYW5rKGRhdGEtPmRybV9mZCwgZGF0YS0NCj4gPmRpc3BsYXkucGlwZXNbcHJpbWFyeS0+
+cGlwZS0+cGlwZV0uY3J0Y19vZmZzZXQpOw0KPiA+ICsJCWZyYW1lID0ga21zdGVzdF9nZXRfdmJs
+YW5rKGRhdGEtPmRybV9mZCwgZGF0YS0+cGlwZSwgMCkgKw0KPiAxOw0KPiANCj4gSGksDQo+IA0K
+PiBTaG91bGQgdGhpcyBiZSBhZGRlZCBpbnNpZGUgYSBnZW4gY2hlY2sgc2ltaWxhciB0byBrbXNf
+YXN5bmNfZmxpcHM/DQoNClllcyBzb3JyeSBtaXNzZWQgaXQhDQoNCj4gDQo+ID4NCj4gPiAgIAkJ
+Zm9yIChpbnQgaiA9IDA7IGogPCAyOyBqKyspIHsNCj4gPiAgIAkJCWRvIHsNCj4gPiBAQCAtNTI4
+LDIzICs1NDAsMjAgQEAgbWF4X2h3X3N0cmlkZV9hc3luY19mbGlwX3Rlc3QoZGF0YV90ICpkYXRh
+KQ0KPiA+DQo+IERSTV9NT0RFX1BBR0VfRkxJUF9BU1lOQywgTlVMTCk7DQo+ID4gICAJCQl9IHdo
+aWxlIChyZXQgPT0gLUVCVVNZKTsNCj4gPiAgIAkJCWlndF9hc3NlcnQocmV0ID09IDApOw0KPiA+
+ICsJCQlpZ3RfcGlwZV9jcmNfZ2V0X2Zvcl9mcmFtZShkYXRhLT5kcm1fZmQsIGRhdGEtDQo+ID5w
+aXBlX2NyYywNCj4gPiArCQkJCQkgICBmcmFtZSwgJmNvbXBhcmVfY3JjKTsNCj4gPg0KPiA+ICsJ
+CQlmcmFtZSA9IGttc3Rlc3RfZ2V0X3ZibGFuayhkYXRhLT5kcm1fZmQsIGRhdGEtDQo+ID5waXBl
+LCAwKSArIDE7DQo+ID4gICAJCQlkbyB7DQo+ID4gICAJCQkJcmV0ID0gZHJtTW9kZVBhZ2VGbGlw
+KGRhdGEtPmRybV9mZCwgZGF0YS0NCj4gPm91dHB1dC0+Y29uZmlnLmNydGMtPmNydGNfaWQsDQo+
+ID4gICAJCQkJCQkgICAgICBkYXRhLT5iaWdfZmIuZmJfaWQsDQo+ID4NCj4gRFJNX01PREVfUEFH
+RV9GTElQX0FTWU5DLCBOVUxMKTsNCj4gPiAgIAkJCX0gd2hpbGUgKHJldCA9PSAtRUJVU1kpOw0K
+PiA+ICAgCQkJaWd0X2Fzc2VydChyZXQgPT0gMCk7DQo+ID4gKwkJCWlndF9waXBlX2NyY19nZXRf
+Zm9yX2ZyYW1lKGRhdGEtPmRybV9mZCwgZGF0YS0NCj4gPnBpcGVfY3JjLA0KPiA+ICsJCQkJCSAg
+IGZyYW1lLCAmYXN5bmNfY3JjKTsNCj4gDQo+IFdlIHNob3VsZCBiZSBtb3ZpbmcgdGhpcyBJTUhP
+LiBCeSB3YWl0aW5nIGZvciB2YmxhbmsgYWZ0ZXIgZWFjaCBhc3luYyBmbGlwDQo+IHRvIGNhcHR1
+cmUgQ1JDLCB3aGF0IGlzIHRoZSBpbnRlbmRlZCByZXN1bHQ/IFNlZW1zIHRvIGJlIGNvbXBsZXRl
+bHkNCj4gY2hhbmdpbmcgdGhlIGV4aXN0aW5nIHRlc3QgbG9naWMuDQoNCldlIGFyZSBnZXR0aW5n
+IHRoZSB2YmxhbmsgY291bnQgYW5kIGJhc2VkIG9uIHRoYXQgZ2V0dGluZyB0aGUgY3JjLiBOb3cg
+d2Uga25vdyBmb3IgYXN5bmMgZmxpcCBhdA0KY2VydGFpbiB0aW1lcyBpdCBjYW4gY29uc3VtZSBh
+IHRpbWUgZXF1aXZhbGVudCB0byBhIHZibGFuayBwZXJpb2QuIFNvIGluIHRob3NlIHNjZW5hcmlv
+cyBnZXR0aW5nIGNyYw0KYmFzZWQgb24gdGhlIHZibGFuayBnb2VzIGZvciBhIHRvc3MuIEhlbmNl
+IGNhcHR1cmluZyB0aGUgdmJsYW5rIHN0YXJ0IHRpbWUgc3RhbXAgYXQgdGhlIGJlZ2lubmluZw0K
+b2YgZWFjaCBmbGlwLg0KDQo+IA0KPiBBbHNvLCBzZWVtcyBsaWtlIHdlIGFyZSBvdmVyd3JpdGlu
+ZyB0aGUgQ1JDIGNhcHR1cmVkIGZvciBqID0gMCwgYXMgY29tcGFyaXNvbg0KPiBpcyBkb25lIG91
+dHNpZGUgdGhpcyBsb29wLiBJcyB0aGlzIGRvbmUgb24gcHVycG9zZT8NCg0KTm93IHdpdGggdGhl
+IGNoYW5naW5nIHRoZSB2Ymxhbmsgc3RhcnQgZnJhbWUgY2FwdHVyZSBiZWluZyBhZGRlZCBiZWZv
+cmUgdGhlIGFzeW5jIGZsaXAsIENSQyBjYW4NCmJlIGNhcHR1cmVkIG91dHNpZGUgdGhlIGxvb3Ag
+YXMgd2VsbCwgYnV0IG1ha2VzIG5vIHNlbnNlLiBUbyBtYWludGFpbiB0aGlzIG9yZGVyIG1vdmlu
+ZyB0aGUgQ1JDDQpDYXB0dXJlIGFsc28gYWZ0ZXIgZWFjaCBmcmFtZS4NCg0KVGhhbmtzIGFuZCBS
+ZWdhcmRzLA0KQXJ1biBSIE11cnRoeQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg==
