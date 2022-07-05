@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Tue, 5 Jul 2022 09:38:41 +0000
-Message-ID: <DM6PR11MB3177AC16AD97327BCBEA3C39BA819@DM6PR11MB3177.namprd11.prod.outlook.com>
-References: <20220628110409.768308-1-arun.r.murthy@intel.com>
- <b3935ec4-c239-0db0-33b4-9de43bbf7965@intel.com>
-In-Reply-To: <b3935ec4-c239-0db0-33b4-9de43bbf7965@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C86D10E04C
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Jul 2022 10:37:46 +0000 (UTC)
+From: Karolina Drobnik <karolina.drobnik@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  5 Jul 2022 12:35:51 +0200
+Message-Id: <20220705103551.3720180-1-karolina.drobnik@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: trigger async
- flip with a dummy flip
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] i915/i915_pm_rps: Check impact of fence
+ ordering on waitboosting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,82 +17,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+ Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiBPbiA2LzI4LzIwMjIgNDozNCBQTSwgQXJ1biBSIE11cnRoeSB3cm90ZToNCj4gPiBJbiBvZGVy
-IHRvIHRyaWdnZXIgdGhlIGFzeW5jIGZsaXAsIGEgZHVtbXkgZmxpcCBpcyByZXF1aXJlZCBhZnRl
-ciBzeW5jDQo+ID4gZmxpcCBzbyBhcyB0byB1cGRhdGUgdGhlIHdhdGVybWFya3MgZm9yIGFzeW5j
-IGluIEtNRCB3aGljaCBoYXBwZW5zIGFzDQo+ID4gcGFydCBvZiB0aGlzIGR1bW15IGZsaXAuIFRo
-ZXJlYWZ0ZXIgYXN5bmMgbWVtb3J5IHVwZGF0ZSB3aWxsIGFjdCBhcyBhDQo+ID4gdHJpZ2dlciBy
-ZWdpc3Rlci4NCj4gPiBDYXB0dXJpbmcgdGhlIENSQyBpcyBkb25lIGFmdGVyIHRoZSBhc3luYyBm
-bGlwIGFzIGFzeW5jIGZsaXAgYXQgc29tZQ0KPiA+IHRpbWVzIGNhbiBjb25zdW1lIGZhaXJseSBh
-IHZibGFuayBwZXJpb2QgdGltZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEFydW4gUiBNdXJ0
-aHkgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICAgdGVzdHMvaTkxNS9r
-bXNfYmlnX2ZiLmMgfCAyOSArKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLQ0KPiA+ICAgMSBm
-aWxlIGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4g
-ZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUva21zX2JpZ19mYi5jIGIvdGVzdHMvaTkxNS9rbXNfYmln
-X2ZiLmMgaW5kZXgNCj4gPiBkNTBmZGU0NS4uNmNhZjNjMzEgMTAwNjQ0DQo+ID4gLS0tIGEvdGVz
-dHMvaTkxNS9rbXNfYmlnX2ZiLmMNCj4gPiArKysgYi90ZXN0cy9pOTE1L2ttc19iaWdfZmIuYw0K
-PiA+IEBAIC00NjUsNyArNDY1LDcgQEAgc3RhdGljIGJvb2wgdGVzdF9waXBlKGRhdGFfdCAqZGF0
-YSkNCj4gPiAgIHN0YXRpYyBib29sDQo+ID4gICBtYXhfaHdfc3RyaWRlX2FzeW5jX2ZsaXBfdGVz
-dChkYXRhX3QgKmRhdGEpDQo+ID4gICB7DQo+ID4gLQl1aW50MzJfdCByZXQsIHN0YXJ0ZnJhbWU7
-DQo+ID4gKwl1aW50MzJfdCByZXQsIGZyYW1lOw0KPiA+ICAgCWNvbnN0IHVpbnQzMl90IHcgPSBk
-YXRhLT5vdXRwdXQtPmNvbmZpZy5kZWZhdWx0X21vZGUuaGRpc3BsYXksDQo+ID4gICAJCSAgICAg
-ICBoID0gZGF0YS0+b3V0cHV0LT5jb25maWcuZGVmYXVsdF9tb2RlLnZkaXNwbGF5Ow0KPiA+ICAg
-CWlndF9wbGFuZV90ICpwcmltYXJ5Ow0KPiA+IEBAIC01MTksNyArNTE5LDE5IEBAIG1heF9od19z
-dHJpZGVfYXN5bmNfZmxpcF90ZXN0KGRhdGFfdCAqZGF0YSkNCj4gPg0KPiBEUk1fTU9ERV9BVE9N
-SUNfQUxMT1dfTU9ERVNFVCwgTlVMTCk7DQo+ID4NCj4gPiAgIAkJaWd0X3dhaXRfZm9yX3ZibGFu
-ayhkYXRhLT5kcm1fZmQsIGRhdGEtDQo+ID5kaXNwbGF5LnBpcGVzW3ByaW1hcnktPnBpcGUtPnBp
-cGVdLmNydGNfb2Zmc2V0KTsNCj4gPiAtCQlzdGFydGZyYW1lID0ga21zdGVzdF9nZXRfdmJsYW5r
-KGRhdGEtPmRybV9mZCwgZGF0YS0+cGlwZSwNCj4gMCkgKyAxOw0KPiA+ICsJCS8qDQo+ID4gKwkJ
-ICogSW4gb2xkZXIgcGxhdGZvcm1zICg8PSBHZW4xMCksIGFzeW5jIGFkZHJlc3MgdXBkYXRlIGJp
-dCBpcw0KPiBkb3VibGUgYnVmZmVyZWQuDQo+ID4gKwkJICogU28gZmxpcCB0aW1lc3RhbXAgY2Fu
-IGJlIHZlcmlmaWVkIG9ubHkgZnJvbSB0aGUgc2Vjb25kIGZsaXAuDQo+ID4gKwkJICogVGhlIGZp
-cnN0IGFzeW5jIGZsaXAganVzdCBlbmFibGVzIHRoZSBhc3luYyBhZGRyZXNzIHVwZGF0ZS4NCj4g
-PiArCQkgKiBJbiBwbGF0Zm9ybXMgZ3JlYXRlciB0aGFuIERJU1BMQVkxMyB0aGUgZmlyc3QgYXN5
-bmMgZmxpcCB3aWxsDQo+IGJlIGRpc2NhcmRlZA0KPiA+ICsJCSAqIGluIG9yZGVyIHRvIGNoYW5n
-ZSB0aGUgd2F0ZXJtYXJrIGxldmVscyBhcyBwZXIgdGhlDQo+IG9wdGltaXphdGlvbi4gSGVuY2Ug
-dGhlDQo+ID4gKwkJICogc3Vic2VxdWVudCBhc3luYyBmbGlwcyB3aWxsIGFjdHVhbGx5IGRvIHRo
-ZSBhc3luY2hyb25vdXMNCj4gZmxpcHMuDQo+ID4gKwkJICovDQo+ID4gKwkJcmV0ID0gZHJtTW9k
-ZVBhZ2VGbGlwKGRhdGEtPmRybV9mZCwgZGF0YS0+b3V0cHV0LQ0KPiA+Y29uZmlnLmNydGMtPmNy
-dGNfaWQsDQo+ID4gKwkJCQkJCSAgICAgIGRhdGEtPmJpZ19mYl9mbGlwW2ldLmZiX2lkLA0KPiA+
-ICsNCj4gRFJNX01PREVfUEFHRV9GTElQX0FTWU5DLCBOVUxMKTsNCj4gPiArCQlpZ3Rfd2FpdF9m
-b3JfdmJsYW5rKGRhdGEtPmRybV9mZCwgZGF0YS0NCj4gPmRpc3BsYXkucGlwZXNbcHJpbWFyeS0+
-cGlwZS0+cGlwZV0uY3J0Y19vZmZzZXQpOw0KPiA+ICsJCWZyYW1lID0ga21zdGVzdF9nZXRfdmJs
-YW5rKGRhdGEtPmRybV9mZCwgZGF0YS0+cGlwZSwgMCkgKw0KPiAxOw0KPiANCj4gSGksDQo+IA0K
-PiBTaG91bGQgdGhpcyBiZSBhZGRlZCBpbnNpZGUgYSBnZW4gY2hlY2sgc2ltaWxhciB0byBrbXNf
-YXN5bmNfZmxpcHM/DQoNClllcyBzb3JyeSBtaXNzZWQgaXQhDQoNCj4gDQo+ID4NCj4gPiAgIAkJ
-Zm9yIChpbnQgaiA9IDA7IGogPCAyOyBqKyspIHsNCj4gPiAgIAkJCWRvIHsNCj4gPiBAQCAtNTI4
-LDIzICs1NDAsMjAgQEAgbWF4X2h3X3N0cmlkZV9hc3luY19mbGlwX3Rlc3QoZGF0YV90ICpkYXRh
-KQ0KPiA+DQo+IERSTV9NT0RFX1BBR0VfRkxJUF9BU1lOQywgTlVMTCk7DQo+ID4gICAJCQl9IHdo
-aWxlIChyZXQgPT0gLUVCVVNZKTsNCj4gPiAgIAkJCWlndF9hc3NlcnQocmV0ID09IDApOw0KPiA+
-ICsJCQlpZ3RfcGlwZV9jcmNfZ2V0X2Zvcl9mcmFtZShkYXRhLT5kcm1fZmQsIGRhdGEtDQo+ID5w
-aXBlX2NyYywNCj4gPiArCQkJCQkgICBmcmFtZSwgJmNvbXBhcmVfY3JjKTsNCj4gPg0KPiA+ICsJ
-CQlmcmFtZSA9IGttc3Rlc3RfZ2V0X3ZibGFuayhkYXRhLT5kcm1fZmQsIGRhdGEtDQo+ID5waXBl
-LCAwKSArIDE7DQo+ID4gICAJCQlkbyB7DQo+ID4gICAJCQkJcmV0ID0gZHJtTW9kZVBhZ2VGbGlw
-KGRhdGEtPmRybV9mZCwgZGF0YS0NCj4gPm91dHB1dC0+Y29uZmlnLmNydGMtPmNydGNfaWQsDQo+
-ID4gICAJCQkJCQkgICAgICBkYXRhLT5iaWdfZmIuZmJfaWQsDQo+ID4NCj4gRFJNX01PREVfUEFH
-RV9GTElQX0FTWU5DLCBOVUxMKTsNCj4gPiAgIAkJCX0gd2hpbGUgKHJldCA9PSAtRUJVU1kpOw0K
-PiA+ICAgCQkJaWd0X2Fzc2VydChyZXQgPT0gMCk7DQo+ID4gKwkJCWlndF9waXBlX2NyY19nZXRf
-Zm9yX2ZyYW1lKGRhdGEtPmRybV9mZCwgZGF0YS0NCj4gPnBpcGVfY3JjLA0KPiA+ICsJCQkJCSAg
-IGZyYW1lLCAmYXN5bmNfY3JjKTsNCj4gDQo+IFdlIHNob3VsZCBiZSBtb3ZpbmcgdGhpcyBJTUhP
-LiBCeSB3YWl0aW5nIGZvciB2YmxhbmsgYWZ0ZXIgZWFjaCBhc3luYyBmbGlwDQo+IHRvIGNhcHR1
-cmUgQ1JDLCB3aGF0IGlzIHRoZSBpbnRlbmRlZCByZXN1bHQ/IFNlZW1zIHRvIGJlIGNvbXBsZXRl
-bHkNCj4gY2hhbmdpbmcgdGhlIGV4aXN0aW5nIHRlc3QgbG9naWMuDQoNCldlIGFyZSBnZXR0aW5n
-IHRoZSB2YmxhbmsgY291bnQgYW5kIGJhc2VkIG9uIHRoYXQgZ2V0dGluZyB0aGUgY3JjLiBOb3cg
-d2Uga25vdyBmb3IgYXN5bmMgZmxpcCBhdA0KY2VydGFpbiB0aW1lcyBpdCBjYW4gY29uc3VtZSBh
-IHRpbWUgZXF1aXZhbGVudCB0byBhIHZibGFuayBwZXJpb2QuIFNvIGluIHRob3NlIHNjZW5hcmlv
-cyBnZXR0aW5nIGNyYw0KYmFzZWQgb24gdGhlIHZibGFuayBnb2VzIGZvciBhIHRvc3MuIEhlbmNl
-IGNhcHR1cmluZyB0aGUgdmJsYW5rIHN0YXJ0IHRpbWUgc3RhbXAgYXQgdGhlIGJlZ2lubmluZw0K
-b2YgZWFjaCBmbGlwLg0KDQo+IA0KPiBBbHNvLCBzZWVtcyBsaWtlIHdlIGFyZSBvdmVyd3JpdGlu
-ZyB0aGUgQ1JDIGNhcHR1cmVkIGZvciBqID0gMCwgYXMgY29tcGFyaXNvbg0KPiBpcyBkb25lIG91
-dHNpZGUgdGhpcyBsb29wLiBJcyB0aGlzIGRvbmUgb24gcHVycG9zZT8NCg0KTm93IHdpdGggdGhl
-IGNoYW5naW5nIHRoZSB2Ymxhbmsgc3RhcnQgZnJhbWUgY2FwdHVyZSBiZWluZyBhZGRlZCBiZWZv
-cmUgdGhlIGFzeW5jIGZsaXAsIENSQyBjYW4NCmJlIGNhcHR1cmVkIG91dHNpZGUgdGhlIGxvb3Ag
-YXMgd2VsbCwgYnV0IG1ha2VzIG5vIHNlbnNlLiBUbyBtYWludGFpbiB0aGlzIG9yZGVyIG1vdmlu
-ZyB0aGUgQ1JDDQpDYXB0dXJlIGFsc28gYWZ0ZXIgZWFjaCBmcmFtZS4NCg0KVGhhbmtzIGFuZCBS
-ZWdhcmRzLA0KQXJ1biBSIE11cnRoeQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg==
+From: Chris Wilson <chris@chris-wilson.co.uk>
+
+From: Chris Wilson <chris@chris-wilson.co.uk>
+
+Currently the wait boost heuristic is evaluated at the start of each
+fence wait for a series within dma-resv. There is no strict ordering of
+fences defined by dma-resv, and so it turns out that the same operation
+under different circumstances can result in different heuristics being
+applied, and dramatic performance variations in user applications.
+
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/6284
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+---
+ tests/i915/i915_pm_rps.c | 101 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 95 insertions(+), 6 deletions(-)
+
+diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+index b37f15c2..d931ed78 100644
+--- a/tests/i915/i915_pm_rps.c
++++ b/tests/i915/i915_pm_rps.c
+@@ -37,6 +37,7 @@
+ #include <sys/wait.h>
+ 
+ #include "i915/gem.h"
++#include "i915/gem_create.h"
+ #include "igt.h"
+ #include "igt_dummyload.h"
+ #include "igt_sysfs.h"
+@@ -614,14 +615,98 @@ static void waitboost(int fd, bool reset)
+ 	igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
+ }
+ 
++static uint64_t __fence_order(int i915,
++			      struct drm_i915_gem_exec_object2 *obj,
++			      struct drm_i915_gem_execbuffer2 *eb,
++			      uint64_t flags0, uint64_t flags1)
++{
++	struct timespec tv;
++
++	gem_quiescent_gpu(i915);
++	igt_gettime(&tv);
++
++	obj->flags = flags0;
++	gem_execbuf(i915, eb);
++	obj->flags = flags1;
++	gem_execbuf(i915, eb);
++	gem_sync(i915, obj->handle);
++
++	return igt_nsec_elapsed(&tv);
++}
++
++static void fence_order(int i915)
++{
++	const uint64_t sz = 1 << 20;
++	struct drm_i915_gem_exec_object2 obj[2] = {
++		{ .handle = gem_create(i915, 4096) },
++		{ .handle = gem_create(i915, sz) },
++	};
++	struct drm_i915_gem_execbuffer2 execbuf = {
++		.buffers_ptr = to_user_pointer(obj),
++		.buffer_count = ARRAY_SIZE(obj),
++	};
++	uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint64_t wr, rw;
++	int min, max;
++	int sysfs;
++
++	/*
++	 * Check the order of fences found during GEM_WAIT does not affect
++	 * waitboosting.
++	 *
++	 * Internally, implicit fences are tracked within a dma-resv which
++	 * imposes no order on the individually fences tracked within. Since
++	 * there is no defined order, the sequence of waits (and the associated
++	 * waitboosts) is also undefined, undermining the consistency of the
++	 * waitboost heuristic.
++	 *
++	 * In particular, we can influence the sequence of fence storage
++	 * within dma-resv by mixing read/write semantics for implicit fences.
++	 * We can exploit this property of dma-resv to exercise that no matter
++	 * the stored order, the heuristic is applied consistently for the
++	 * user's GEM_WAIT ioctl.
++	 */
++
++	sysfs = igt_sysfs_open(i915);
++	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
++	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
++	igt_require(max > min);
++
++	/* Only allow ourselves to upclock via waitboosting */
++	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
++	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
++	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
++
++	gem_write(i915, obj[1].handle, sz - sizeof(bbe), &bbe, sizeof(bbe));
++
++	/* Warm up to bind the vma */
++	__fence_order(i915, &obj[0], &execbuf, 0, 0);
++
++	wr = __fence_order(i915, &obj[0], &execbuf, EXEC_OBJECT_WRITE, 0);
++	igt_info("Write-then-read: %.1fus\n", wr * 1e-3);
++
++	rw = __fence_order(i915, &obj[0], &execbuf, 0, EXEC_OBJECT_WRITE);
++	igt_info("Read-then-write: %.1fus\n", rw * 1e-3);
++
++	gem_close(i915, obj[0].handle);
++	gem_close(i915, obj[1].handle);
++
++	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
++	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
++
++	igt_assert(4 * rw > 3 * wr && 4 * wr > 3 * rw);
++}
++
+ static void pm_rps_exit_handler(int sig)
+ {
+-	if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
+-		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
+-		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
+-	} else {
+-		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
+-		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
++	if (sysfs_files[MAX].filp) {
++		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
++			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
++			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
++		} else {
++			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
++			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
++		}
+ 	}
+ 
+ 	if (lh.igt_proc.running)
+@@ -683,6 +768,10 @@ igt_main
+ 	igt_subtest("waitboost")
+ 		waitboost(drm_fd, false);
+ 
++	/* Checks if the order of fences does not affect waitboosting */
++	igt_subtest("fence-order")
++		fence_order(drm_fd);
++
+ 	/* Test boost frequency after GPU reset */
+ 	igt_subtest("reset") {
+ 		igt_hang_t hang = igt_allow_hang(drm_fd, 0, 0);
+-- 
+2.25.1
