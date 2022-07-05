@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
+ [199.106.114.39])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 598B010E6A5
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Jul 2022 16:04:42 +0000 (UTC)
+Message-ID: <20ab8890-9222-cbf7-acaf-2cdfda7e3e5e@quicinc.com>
+Date: Tue, 5 Jul 2022 09:04:36 -0700
 MIME-Version: 1.0
+Content-Language: en-US
+To: Rob Clark <robdclark@gmail.com>, <igt-dev@lists.freedesktop.org>
+References: <20220627210534.258721-1-robdclark@gmail.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20220627210534.258721-1-robdclark@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?xYF1a2FzeiDFgWFndW5h?= <lukasz.laguna@intel.com>
-Date: Tue, 05 Jul 2022 15:22:04 -0000
-Message-ID: <165703452490.2013.16645064028615799505@emeril.freedesktop.org>
-References: <20220705150542.21155-1-lukasz.laguna@intel.com>
-In-Reply-To: <20220705150542.21155-1-lukasz.laguna@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
- =?utf-8?q?ib/igt=5Fdevice=5Fscan=3A_Add_sriov_selector?=
+Subject: Re: [igt-dev] [PATCH igt] tests/msm: Fix mapping test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +21,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: lib/igt_device_scan: Add sriov selector
-URL   : https://patchwork.freedesktop.org/series/105935/
-State : warning
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/630124 for the overview.
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/24935464):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                290
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1657034369:step_script
-  section_start:1657034369:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1752 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=24935464 responseStatus=201 Created token=z8pGYYiL
-  section_end:1657034379:upload_artifacts_on_failure
-  section_start:1657034379:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1657034379:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/630124
+On 6/27/2022 2:05 PM, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
+> 
+> The format of the fault-info in the devcore is a bit different from what
+> it was looking for.
+> 
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> ---
+>   tests/msm/msm_mapping.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
+> index e1474f9f..21cdc8e1 100644
+> --- a/tests/msm/msm_mapping.c
+> +++ b/tests/msm/msm_mapping.c
+> @@ -211,10 +211,10 @@ do_mapping_test(struct msm_pipe *pipe, const char *buffername, bool write)
+>   	/* Make sure the devcore is from iova fault: */
+>   	igt_fail_on(!strstr(devcore, "fault-info"));
+>   
+> -	s = strstr(devcore, "  - far: ");
+> +	s = strstr(devcore, "  - iova=");
+>   	igt_fail_on(!s);
+>   
+> -	ret = sscanf(s, "  - far: %"PRIx64, &fault_addr);
+> +	ret = sscanf(s, "  - iova=%"PRIx64, &fault_addr);
+>   	igt_fail_on(ret != 1);
+>   	igt_fail_on(addr != fault_addr);
+>   }
