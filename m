@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <4a178210-d9f9-1fd8-8fbf-171000ac77e9@gmail.com>
-Date: Tue, 5 Jul 2022 13:58:25 +0300
-MIME-Version: 1.0
-Content-Language: en-US
-To: "Murthy, Arun R" <arun.r.murthy@intel.com>,
- "B S, Karthik" <karthik.b.s@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+From: "Murthy, Arun R" <arun.r.murthy@intel.com>
+To: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>, "B S, Karthik"
+ <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Tue, 5 Jul 2022 10:28:23 +0000
+Message-ID: <DM6PR11MB3177B1A2F56960E08C49C64EBA819@DM6PR11MB3177.namprd11.prod.outlook.com>
 References: <20220628110409.768308-1-arun.r.murthy@intel.com>
  <b3935ec4-c239-0db0-33b4-9de43bbf7965@intel.com>
  <DM6PR11MB3177AC16AD97327BCBEA3C39BA819@DM6PR11MB3177.namprd11.prod.outlook.com>
  <9bc05a2b-771c-0d64-00c5-dc6432d2eecc@intel.com>
  <8c1cdbb6-4efd-11b4-48bd-1093fae6736c@intel.com>
- <DM6PR11MB3177B1A2F56960E08C49C64EBA819@DM6PR11MB3177.namprd11.prod.outlook.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <DM6PR11MB3177B1A2F56960E08C49C64EBA819@DM6PR11MB3177.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <8c1cdbb6-4efd-11b4-48bd-1093fae6736c@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: trigger async
  flip with a dummy flip
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -25,222 +24,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
-
-On 5.7.2022 13.28, Murthy, Arun R wrote:
->> On 5.7.2022 12.49, Karthik B S wrote:
->>> On 7/5/2022 3:08 PM, Murthy, Arun R wrote:
->>>>> On 6/28/2022 4:34 PM, Arun R Murthy wrote:
->>>>>> In oder to trigger the async flip, a dummy flip is required after
->>>>>> sync flip so as to update the watermarks for async in KMD which
->>>>>> happens as part of this dummy flip. Thereafter async memory update
->>>>>> will act as a trigger register.
->>>>>> Capturing the CRC is done after the async flip as async flip at
->>>>>> some times can consume fairly a vblank period time.
->>>>>>
->>>>>> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
->>>>>> ---
->>>>>>     tests/i915/kms_big_fb.c | 29 +++++++++++++++++++----------
->>>>>>     1 file changed, 19 insertions(+), 10 deletions(-)
->>>>>>
->>>>>> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
->>>>>> index
->>>>>> d50fde45..6caf3c31 100644
->>>>>> --- a/tests/i915/kms_big_fb.c
->>>>>> +++ b/tests/i915/kms_big_fb.c
->>>>>> @@ -465,7 +465,7 @@ static bool test_pipe(data_t *data)
->>>>>>     static bool
->>>>>>     max_hw_stride_async_flip_test(data_t *data)
->>>>>>     {
->>>>>> -    uint32_t ret, startframe;
->>>>>> +    uint32_t ret, frame;
->>>>>>         const uint32_t w =
->>>>>> data->output->config.default_mode.hdisplay,
->>>>>>                    h = data->output->config.default_mode.vdisplay;
->>>>>>         igt_plane_t *primary;
->>>>>> @@ -519,7 +519,19 @@ max_hw_stride_async_flip_test(data_t *data)
->>>>>>
->>>>> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->>>>>>             igt_wait_for_vblank(data->drm_fd, data-
->>>>>> display.pipes[primary->pipe->pipe].crtc_offset);
->>>>>> -        startframe = kmstest_get_vblank(data->drm_fd, data->pipe,
->>>>> 0) + 1;
->>>>>> +        /*
->>>>>> +         * In older platforms (<= Gen10), async address update bit
->>>>>> +is
->>>>> double buffered.
->>>>>> +         * So flip timestamp can be verified only from the second
->>>>>> flip.
->>>>>> +         * The first async flip just enables the async address update.
->>>>>> +         * In platforms greater than DISPLAY13 the first async
->>>>>> +flip
->>>>>> will
->>>>> be discarded
->>>>>> +         * in order to change the watermark levels as per the
->>>>> optimization. Hence the
->>>>>> +         * subsequent async flips will actually do the
->>>>>> +asynchronous
->>>>> flips.
->>>>>> +         */
->>>>>> +        ret = drmModePageFlip(data->drm_fd, data->output-
->>>>>> config.crtc->crtc_id,
->>>>>> +                              data->big_fb_flip[i].fb_id,
->>>>>> +
->>>>> DRM_MODE_PAGE_FLIP_ASYNC, NULL);
->>>>>> +        igt_wait_for_vblank(data->drm_fd, data-
->>>>>> display.pipes[primary->pipe->pipe].crtc_offset);
->>>>>> +        frame = kmstest_get_vblank(data->drm_fd, data->pipe, 0) +
->>>>> 1;
->>>>>
->>>>> Hi,
->>>>>
->>>>> Should this be added inside a gen check similar to kms_async_flips?
->>>> Yes sorry missed it!
->>>>
->>>>>>             for (int j = 0; j < 2; j++) {
->>>>>>                 do {
->>>>>> @@ -528,23 +540,20 @@ max_hw_stride_async_flip_test(data_t
->> *data)
->>>>>>
->>>>> DRM_MODE_PAGE_FLIP_ASYNC, NULL);
->>>>>>                 } while (ret == -EBUSY);
->>>>>>                 igt_assert(ret == 0);
->>>>>> +            igt_pipe_crc_get_for_frame(data->drm_fd, data-
->>>>>> pipe_crc,
->>>>>> +                       frame, &compare_crc);
->>>>>>
->>>>>> +            frame = kmstest_get_vblank(data->drm_fd, data-
->>>>>> pipe, 0) + 1;
->>>>>>                 do {
->>>>>>                     ret = drmModePageFlip(data->drm_fd, data-
->>>>>> output->config.crtc->crtc_id,
->>>>>>                                   data->big_fb.fb_id,
->>>>>>
->>>>> DRM_MODE_PAGE_FLIP_ASYNC, NULL);
->>>>>>                 } while (ret == -EBUSY);
->>>>>>                 igt_assert(ret == 0);
->>>>>> +            igt_pipe_crc_get_for_frame(data->drm_fd, data-
->>>>>> pipe_crc,
->>>>>> +                       frame, &async_crc);
->>>>> We should be moving this IMHO. By waiting for vblank after each
->>>>> async flip to capture CRC, what is the intended result? Seems to be
->>>>> completely changing the existing test logic.
->>>> We are getting the vblank count and based on that getting the crc.
->>>> Now we know for async flip at certain times it can consume a time
->>>> equivalent to a vblank period. So in those scenarios getting crc
->>>> based on the vblank goes for a toss. Hence capturing the vblank start
->>>> time stamp at the beginning of each flip.
->>>
->>> Hi,
->>>
->>> But what is the the reference CRC we're expecting? The original logic
->>> is designed to match on one iteration and mismatch on the next using a
->>> combination of fb's by using async flips. But with these changes that
->>> whole logic goes for a toss?
->>>
->>>>
->>>>> Also, seems like we are overwriting the CRC captured for j = 0, as
->>>>> comparison is done outside this loop. Is this done on purpose?
->>>> Now with the changing the vblank start frame capture being added
->>>> before the async flip, CRC can be captured outside the loop as well,
->>>> but makes no sense. To maintain this order moving the CRC Capture
->>>> also after each frame.
->>>
->>> The CRC comparison is still outside the loop, so no point capturing
->>> CRC's if we finally discard it anyway?
->>>
->>
->> I think generally the idea Arun is changing is correct but he's missed how the
->> test work.
->>
->> I see there's Ville's change on kernel side for display_ver >=13 first async_flip
->> is unconditionally (intentionally) missed, this is at
->> intel_plane_do_async_flip(..) so this test will need adjustment
->>
->> What Arun seem to have missed is on test those nested loops how they
->> work, that part probably should've originally been commented in code bit
->> better.
->>
->> On original code there's after loop for j two time
->> igt_pipe_crc_get_for_frame(..), first will capture crc from duration of loop of
->> j, second will *wait* and capture current crc while there's framebuffer
->> "big_fb" on screen (wait is about 1,5 frames). Inside j loop, against i is async
->> flipped with fb from "big_fb_flip[i]" where one one fb look exactly like
->> "big_fb" and check with this crc doesn't change when flip with same content.
->> Then another "big_fb_flip[i]" is green color and check crc will change.
->>
->> Now when inside "j" loop Arun added igt_pipe_crc_get_for_frame(..) this test
->> becomes completely different because async flipping no more is tested do
->> perform back'n'forth flipping.
->>
-> 
-> Thanks for your comments JP, atleast its clear that this fix is required. But as commented
-> I am not aware of the concept behind this test, It would be better if someone can take up this
-> fix and correct the CRC capture sequence as well.
-
-I think you are on the right track, just those inner loops are now 
-mishandled.
-
-I suspect you'd get effect you are after with something like below 
-diff(totally untested). What the essential change is I added into that 
-inner loop one extra async flip to "big_fb" in the beginning with hope 
-that'll take care of display_ver>=13 .. but this change will invalidate 
-"startframe" on display_ver>=13 so instead of get crc for chosen frames, 
-drain crcs away before test and then get single crc two times. With this 
-change probably that assert for "lost frames" will need to be adjusted 
-too or just throw away. ..and you may need to add one extra 
-igt_pipe_crc_get_single(..) before those two which will get the actual 
-test crcs.
-
-/Juha-Pekka
-
-
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index d50fde45..edcceaf1 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -518,10 +518,17 @@ max_hw_stride_async_flip_test(data_t *data)
-                 igt_display_commit_atomic(&data->display,
- 
-DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-
-+               igt_pipe_crc_drain(data->pipe_crc);
-                 igt_wait_for_vblank(data->drm_fd, 
-data->display.pipes[primary->pipe->pipe].crtc_offset);
-                 startframe = kmstest_get_vblank(data->drm_fd, 
-data->pipe, 0) + 1;
-
-                 for (int j = 0; j < 2; j++) {
-+                       do {
-+                               ret = drmModePageFlip(data->drm_fd, 
-data->output->config.crtc->crtc_id,
-+                                                     data->big_fb.fb_id,
-+ 
-DRM_MODE_PAGE_FLIP_ASYNC, NULL);
-+                       } while (ret == -EBUSY);
-+
-                         do {
-                                 ret = drmModePageFlip(data->drm_fd, 
-data->output->config.crtc->crtc_id,
- 
-data->big_fb_flip[i].fb_id,
-@@ -537,10 +544,8 @@ max_hw_stride_async_flip_test(data_t *data)
-                         igt_assert(ret == 0);
-                 }
-
--               igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc,
--                                          startframe, &compare_crc);
--               igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc,
--                                          startframe + 1, &async_crc);
-+               igt_pipe_crc_get_single(data->pipe_crc, &compare_crc);
-+               igt_pipe_crc_get_single(data->pipe_crc, &async_crc);
-
-                 igt_assert_f(kmstest_get_vblank(data->drm_fd, 
-data->pipe, 0) -
-                              startframe == 1, "lost frames\n");
+PiBPbiA1LjcuMjAyMiAxMi40OSwgS2FydGhpayBCIFMgd3JvdGU6DQo+ID4gT24gNy81LzIwMjIg
+MzowOCBQTSwgTXVydGh5LCBBcnVuIFIgd3JvdGU6DQo+ID4+PiBPbiA2LzI4LzIwMjIgNDozNCBQ
+TSwgQXJ1biBSIE11cnRoeSB3cm90ZToNCj4gPj4+PiBJbiBvZGVyIHRvIHRyaWdnZXIgdGhlIGFz
+eW5jIGZsaXAsIGEgZHVtbXkgZmxpcCBpcyByZXF1aXJlZCBhZnRlcg0KPiA+Pj4+IHN5bmMgZmxp
+cCBzbyBhcyB0byB1cGRhdGUgdGhlIHdhdGVybWFya3MgZm9yIGFzeW5jIGluIEtNRCB3aGljaA0K
+PiA+Pj4+IGhhcHBlbnMgYXMgcGFydCBvZiB0aGlzIGR1bW15IGZsaXAuIFRoZXJlYWZ0ZXIgYXN5
+bmMgbWVtb3J5IHVwZGF0ZQ0KPiA+Pj4+IHdpbGwgYWN0IGFzIGEgdHJpZ2dlciByZWdpc3Rlci4N
+Cj4gPj4+PiBDYXB0dXJpbmcgdGhlIENSQyBpcyBkb25lIGFmdGVyIHRoZSBhc3luYyBmbGlwIGFz
+IGFzeW5jIGZsaXAgYXQNCj4gPj4+PiBzb21lIHRpbWVzIGNhbiBjb25zdW1lIGZhaXJseSBhIHZi
+bGFuayBwZXJpb2QgdGltZS4NCj4gPj4+Pg0KPiA+Pj4+IFNpZ25lZC1vZmYtYnk6IEFydW4gUiBN
+dXJ0aHkgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPg0KPiA+Pj4+IC0tLQ0KPiA+Pj4+IMKgwqAg
+dGVzdHMvaTkxNS9rbXNfYmlnX2ZiLmMgfCAyOSArKysrKysrKysrKysrKysrKysrLS0tLS0tLS0t
+LQ0KPiA+Pj4+IMKgwqAgMSBmaWxlIGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyksIDEwIGRlbGV0
+aW9ucygtKQ0KPiA+Pj4+DQo+ID4+Pj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUva21zX2JpZ19m
+Yi5jIGIvdGVzdHMvaTkxNS9rbXNfYmlnX2ZiLmMNCj4gPj4+PiBpbmRleA0KPiA+Pj4+IGQ1MGZk
+ZTQ1Li42Y2FmM2MzMSAxMDA2NDQNCj4gPj4+PiAtLS0gYS90ZXN0cy9pOTE1L2ttc19iaWdfZmIu
+Yw0KPiA+Pj4+ICsrKyBiL3Rlc3RzL2k5MTUva21zX2JpZ19mYi5jDQo+ID4+Pj4gQEAgLTQ2NSw3
+ICs0NjUsNyBAQCBzdGF0aWMgYm9vbCB0ZXN0X3BpcGUoZGF0YV90ICpkYXRhKQ0KPiA+Pj4+IMKg
+wqAgc3RhdGljIGJvb2wNCj4gPj4+PiDCoMKgIG1heF9od19zdHJpZGVfYXN5bmNfZmxpcF90ZXN0
+KGRhdGFfdCAqZGF0YSkNCj4gPj4+PiDCoMKgIHsNCj4gPj4+PiAtwqDCoMKgIHVpbnQzMl90IHJl
+dCwgc3RhcnRmcmFtZTsNCj4gPj4+PiArwqDCoMKgIHVpbnQzMl90IHJldCwgZnJhbWU7DQo+ID4+
+Pj4gwqDCoMKgwqDCoMKgIGNvbnN0IHVpbnQzMl90IHcgPQ0KPiA+Pj4+IGRhdGEtPm91dHB1dC0+
+Y29uZmlnLmRlZmF1bHRfbW9kZS5oZGlzcGxheSwNCj4gPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIGggPSBkYXRhLT5vdXRwdXQtPmNvbmZpZy5kZWZhdWx0X21vZGUudmRp
+c3BsYXk7DQo+ID4+Pj4gwqDCoMKgwqDCoMKgIGlndF9wbGFuZV90ICpwcmltYXJ5Ow0KPiA+Pj4+
+IEBAIC01MTksNyArNTE5LDE5IEBAIG1heF9od19zdHJpZGVfYXN5bmNfZmxpcF90ZXN0KGRhdGFf
+dCAqZGF0YSkNCj4gPj4+Pg0KPiA+Pj4gRFJNX01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQsIE5V
+TEwpOw0KPiA+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF93YWl0X2Zvcl92YmxhbmsoZGF0
+YS0+ZHJtX2ZkLCBkYXRhLQ0KPiA+Pj4+IGRpc3BsYXkucGlwZXNbcHJpbWFyeS0+cGlwZS0+cGlw
+ZV0uY3J0Y19vZmZzZXQpOw0KPiA+Pj4+IC3CoMKgwqDCoMKgwqDCoCBzdGFydGZyYW1lID0ga21z
+dGVzdF9nZXRfdmJsYW5rKGRhdGEtPmRybV9mZCwgZGF0YS0+cGlwZSwNCj4gPj4+IDApICsgMTsN
+Cj4gPj4+PiArwqDCoMKgwqDCoMKgwqAgLyoNCj4gPj4+PiArwqDCoMKgwqDCoMKgwqDCoCAqIElu
+IG9sZGVyIHBsYXRmb3JtcyAoPD0gR2VuMTApLCBhc3luYyBhZGRyZXNzIHVwZGF0ZSBiaXQNCj4g
+Pj4+PiAraXMNCj4gPj4+IGRvdWJsZSBidWZmZXJlZC4NCj4gPj4+PiArwqDCoMKgwqDCoMKgwqDC
+oCAqIFNvIGZsaXAgdGltZXN0YW1wIGNhbiBiZSB2ZXJpZmllZCBvbmx5IGZyb20gdGhlIHNlY29u
+ZA0KPiA+Pj4+IGZsaXAuDQo+ID4+Pj4gK8KgwqDCoMKgwqDCoMKgwqAgKiBUaGUgZmlyc3QgYXN5
+bmMgZmxpcCBqdXN0IGVuYWJsZXMgdGhlIGFzeW5jIGFkZHJlc3MgdXBkYXRlLg0KPiA+Pj4+ICvC
+oMKgwqDCoMKgwqDCoMKgICogSW4gcGxhdGZvcm1zIGdyZWF0ZXIgdGhhbiBESVNQTEFZMTMgdGhl
+IGZpcnN0IGFzeW5jDQo+ID4+Pj4gK2ZsaXANCj4gPj4+PiB3aWxsDQo+ID4+PiBiZSBkaXNjYXJk
+ZWQNCj4gPj4+PiArwqDCoMKgwqDCoMKgwqDCoCAqIGluIG9yZGVyIHRvIGNoYW5nZSB0aGUgd2F0
+ZXJtYXJrIGxldmVscyBhcyBwZXIgdGhlDQo+ID4+PiBvcHRpbWl6YXRpb24uIEhlbmNlIHRoZQ0K
+PiA+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgICogc3Vic2VxdWVudCBhc3luYyBmbGlwcyB3aWxsIGFj
+dHVhbGx5IGRvIHRoZQ0KPiA+Pj4+ICthc3luY2hyb25vdXMNCj4gPj4+IGZsaXBzLg0KPiA+Pj4+
+ICvCoMKgwqDCoMKgwqDCoMKgICovDQo+ID4+Pj4gK8KgwqDCoMKgwqDCoMKgIHJldCA9IGRybU1v
+ZGVQYWdlRmxpcChkYXRhLT5kcm1fZmQsIGRhdGEtPm91dHB1dC0NCj4gPj4+PiBjb25maWcuY3J0
+Yy0+Y3J0Y19pZCwNCj4gPj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLT5iaWdfZmJfZmxpcFtpXS5mYl9pZCwNCj4gPj4+
+PiArDQo+ID4+PiBEUk1fTU9ERV9QQUdFX0ZMSVBfQVNZTkMsIE5VTEwpOw0KPiA+Pj4+ICvCoMKg
+wqDCoMKgwqDCoCBpZ3Rfd2FpdF9mb3JfdmJsYW5rKGRhdGEtPmRybV9mZCwgZGF0YS0NCj4gPj4+
+PiBkaXNwbGF5LnBpcGVzW3ByaW1hcnktPnBpcGUtPnBpcGVdLmNydGNfb2Zmc2V0KTsNCj4gPj4+
+PiArwqDCoMKgwqDCoMKgwqAgZnJhbWUgPSBrbXN0ZXN0X2dldF92YmxhbmsoZGF0YS0+ZHJtX2Zk
+LCBkYXRhLT5waXBlLCAwKSArDQo+ID4+PiAxOw0KPiA+Pj4NCj4gPj4+IEhpLA0KPiA+Pj4NCj4g
+Pj4+IFNob3VsZCB0aGlzIGJlIGFkZGVkIGluc2lkZSBhIGdlbiBjaGVjayBzaW1pbGFyIHRvIGtt
+c19hc3luY19mbGlwcz8NCj4gPj4gWWVzIHNvcnJ5IG1pc3NlZCBpdCENCj4gPj4NCj4gPj4+PiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBmb3IgKGludCBqID0gMDsgaiA8IDI7IGorKykgew0KPiA+Pj4+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZG8gew0KPiA+Pj4+IEBAIC01MjgsMjMgKzU0
+MCwyMCBAQCBtYXhfaHdfc3RyaWRlX2FzeW5jX2ZsaXBfdGVzdChkYXRhX3QNCj4gKmRhdGEpDQo+
+ID4+Pj4NCj4gPj4+IERSTV9NT0RFX1BBR0VfRkxJUF9BU1lOQywgTlVMTCk7DQo+ID4+Pj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9IHdoaWxlIChyZXQgPT0gLUVCVVNZKTsNCj4gPj4+
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9hc3NlcnQocmV0ID09IDApOw0KPiA+
+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9waXBlX2NyY19nZXRfZm9yX2ZyYW1lKGRh
+dGEtPmRybV9mZCwgZGF0YS0NCj4gPj4+PiBwaXBlX2NyYywNCj4gPj4+PiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJhbWUsICZjb21wYXJlX2NyYyk7DQo+
+ID4+Pj4NCj4gPj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmcmFtZSA9IGttc3Rlc3RfZ2V0
+X3ZibGFuayhkYXRhLT5kcm1fZmQsIGRhdGEtDQo+ID4+Pj4gcGlwZSwgMCkgKyAxOw0KPiA+Pj4+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZG8gew0KPiA+Pj4+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXQgPSBkcm1Nb2RlUGFnZUZsaXAoZGF0YS0+ZHJtX2Zk
+LCBkYXRhLQ0KPiA+Pj4+IG91dHB1dC0+Y29uZmlnLmNydGMtPmNydGNfaWQsDQo+ID4+Pj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBkYXRhLT5iaWdfZmIuZmJfaWQsDQo+ID4+Pj4NCj4gPj4+IERSTV9NT0RFX1BBR0VfRkxJ
+UF9BU1lOQywgTlVMTCk7DQo+ID4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9IHdo
+aWxlIChyZXQgPT0gLUVCVVNZKTsNCj4gPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IGlndF9hc3NlcnQocmV0ID09IDApOw0KPiA+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGln
+dF9waXBlX2NyY19nZXRfZm9yX2ZyYW1lKGRhdGEtPmRybV9mZCwgZGF0YS0NCj4gPj4+PiBwaXBl
+X2NyYywNCj4gPj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgZnJhbWUsICZhc3luY19jcmMpOw0KPiA+Pj4gV2Ugc2hvdWxkIGJlIG1vdmluZyB0aGlzIElN
+SE8uIEJ5IHdhaXRpbmcgZm9yIHZibGFuayBhZnRlciBlYWNoDQo+ID4+PiBhc3luYyBmbGlwIHRv
+IGNhcHR1cmUgQ1JDLCB3aGF0IGlzIHRoZSBpbnRlbmRlZCByZXN1bHQ/IFNlZW1zIHRvIGJlDQo+
+ID4+PiBjb21wbGV0ZWx5IGNoYW5naW5nIHRoZSBleGlzdGluZyB0ZXN0IGxvZ2ljLg0KPiA+PiBX
+ZSBhcmUgZ2V0dGluZyB0aGUgdmJsYW5rIGNvdW50IGFuZCBiYXNlZCBvbiB0aGF0IGdldHRpbmcg
+dGhlIGNyYy4NCj4gPj4gTm93IHdlIGtub3cgZm9yIGFzeW5jIGZsaXAgYXQgY2VydGFpbiB0aW1l
+cyBpdCBjYW4gY29uc3VtZSBhIHRpbWUNCj4gPj4gZXF1aXZhbGVudCB0byBhIHZibGFuayBwZXJp
+b2QuIFNvIGluIHRob3NlIHNjZW5hcmlvcyBnZXR0aW5nIGNyYw0KPiA+PiBiYXNlZCBvbiB0aGUg
+dmJsYW5rIGdvZXMgZm9yIGEgdG9zcy4gSGVuY2UgY2FwdHVyaW5nIHRoZSB2Ymxhbmsgc3RhcnQN
+Cj4gPj4gdGltZSBzdGFtcCBhdCB0aGUgYmVnaW5uaW5nIG9mIGVhY2ggZmxpcC4NCj4gPg0KPiA+
+IEhpLA0KPiA+DQo+ID4gQnV0IHdoYXQgaXMgdGhlIHRoZSByZWZlcmVuY2UgQ1JDIHdlJ3JlIGV4
+cGVjdGluZz8gVGhlIG9yaWdpbmFsIGxvZ2ljDQo+ID4gaXMgZGVzaWduZWQgdG8gbWF0Y2ggb24g
+b25lIGl0ZXJhdGlvbiBhbmQgbWlzbWF0Y2ggb24gdGhlIG5leHQgdXNpbmcgYQ0KPiA+IGNvbWJp
+bmF0aW9uIG9mIGZiJ3MgYnkgdXNpbmcgYXN5bmMgZmxpcHMuIEJ1dCB3aXRoIHRoZXNlIGNoYW5n
+ZXMgdGhhdA0KPiA+IHdob2xlIGxvZ2ljIGdvZXMgZm9yIGEgdG9zcz8NCj4gPg0KPiA+Pg0KPiA+
+Pj4gQWxzbywgc2VlbXMgbGlrZSB3ZSBhcmUgb3ZlcndyaXRpbmcgdGhlIENSQyBjYXB0dXJlZCBm
+b3IgaiA9IDAsIGFzDQo+ID4+PiBjb21wYXJpc29uIGlzIGRvbmUgb3V0c2lkZSB0aGlzIGxvb3Au
+IElzIHRoaXMgZG9uZSBvbiBwdXJwb3NlPw0KPiA+PiBOb3cgd2l0aCB0aGUgY2hhbmdpbmcgdGhl
+IHZibGFuayBzdGFydCBmcmFtZSBjYXB0dXJlIGJlaW5nIGFkZGVkDQo+ID4+IGJlZm9yZSB0aGUg
+YXN5bmMgZmxpcCwgQ1JDIGNhbiBiZSBjYXB0dXJlZCBvdXRzaWRlIHRoZSBsb29wIGFzIHdlbGws
+DQo+ID4+IGJ1dCBtYWtlcyBubyBzZW5zZS4gVG8gbWFpbnRhaW4gdGhpcyBvcmRlciBtb3Zpbmcg
+dGhlIENSQyBDYXB0dXJlDQo+ID4+IGFsc28gYWZ0ZXIgZWFjaCBmcmFtZS4NCj4gPg0KPiA+IFRo
+ZSBDUkMgY29tcGFyaXNvbiBpcyBzdGlsbCBvdXRzaWRlIHRoZSBsb29wLCBzbyBubyBwb2ludCBj
+YXB0dXJpbmcNCj4gPiBDUkMncyBpZiB3ZSBmaW5hbGx5IGRpc2NhcmQgaXQgYW55d2F5Pw0KPiA+
+DQo+IA0KPiBJIHRoaW5rIGdlbmVyYWxseSB0aGUgaWRlYSBBcnVuIGlzIGNoYW5naW5nIGlzIGNv
+cnJlY3QgYnV0IGhlJ3MgbWlzc2VkIGhvdyB0aGUNCj4gdGVzdCB3b3JrLg0KPiANCj4gSSBzZWUg
+dGhlcmUncyBWaWxsZSdzIGNoYW5nZSBvbiBrZXJuZWwgc2lkZSBmb3IgZGlzcGxheV92ZXIgPj0x
+MyBmaXJzdCBhc3luY19mbGlwDQo+IGlzIHVuY29uZGl0aW9uYWxseSAoaW50ZW50aW9uYWxseSkg
+bWlzc2VkLCB0aGlzIGlzIGF0DQo+IGludGVsX3BsYW5lX2RvX2FzeW5jX2ZsaXAoLi4pIHNvIHRo
+aXMgdGVzdCB3aWxsIG5lZWQgYWRqdXN0bWVudA0KPiANCj4gV2hhdCBBcnVuIHNlZW0gdG8gaGF2
+ZSBtaXNzZWQgaXMgb24gdGVzdCB0aG9zZSBuZXN0ZWQgbG9vcHMgaG93IHRoZXkNCj4gd29yaywg
+dGhhdCBwYXJ0IHByb2JhYmx5IHNob3VsZCd2ZSBvcmlnaW5hbGx5IGJlZW4gY29tbWVudGVkIGlu
+IGNvZGUgYml0DQo+IGJldHRlci4NCj4gDQo+IE9uIG9yaWdpbmFsIGNvZGUgdGhlcmUncyBhZnRl
+ciBsb29wIGZvciBqIHR3byB0aW1lDQo+IGlndF9waXBlX2NyY19nZXRfZm9yX2ZyYW1lKC4uKSwg
+Zmlyc3Qgd2lsbCBjYXB0dXJlIGNyYyBmcm9tIGR1cmF0aW9uIG9mIGxvb3Agb2YNCj4gaiwgc2Vj
+b25kIHdpbGwgKndhaXQqIGFuZCBjYXB0dXJlIGN1cnJlbnQgY3JjIHdoaWxlIHRoZXJlJ3MgZnJh
+bWVidWZmZXINCj4gImJpZ19mYiIgb24gc2NyZWVuICh3YWl0IGlzIGFib3V0IDEsNSBmcmFtZXMp
+LiBJbnNpZGUgaiBsb29wLCBhZ2FpbnN0IGkgaXMgYXN5bmMNCj4gZmxpcHBlZCB3aXRoIGZiIGZy
+b20gImJpZ19mYl9mbGlwW2ldIiB3aGVyZSBvbmUgb25lIGZiIGxvb2sgZXhhY3RseSBsaWtlDQo+
+ICJiaWdfZmIiIGFuZCBjaGVjayB3aXRoIHRoaXMgY3JjIGRvZXNuJ3QgY2hhbmdlIHdoZW4gZmxp
+cCB3aXRoIHNhbWUgY29udGVudC4NCj4gVGhlbiBhbm90aGVyICJiaWdfZmJfZmxpcFtpXSIgaXMg
+Z3JlZW4gY29sb3IgYW5kIGNoZWNrIGNyYyB3aWxsIGNoYW5nZS4NCj4gDQo+IE5vdyB3aGVuIGlu
+c2lkZSAiaiIgbG9vcCBBcnVuIGFkZGVkIGlndF9waXBlX2NyY19nZXRfZm9yX2ZyYW1lKC4uKSB0
+aGlzIHRlc3QNCj4gYmVjb21lcyBjb21wbGV0ZWx5IGRpZmZlcmVudCBiZWNhdXNlIGFzeW5jIGZs
+aXBwaW5nIG5vIG1vcmUgaXMgdGVzdGVkIGRvDQo+IHBlcmZvcm0gYmFjayduJ2ZvcnRoIGZsaXBw
+aW5nLg0KPiANCg0KVGhhbmtzIGZvciB5b3VyIGNvbW1lbnRzIEpQLCBhdGxlYXN0IGl0cyBjbGVh
+ciB0aGF0IHRoaXMgZml4IGlzIHJlcXVpcmVkLiBCdXQgYXMgY29tbWVudGVkDQpJIGFtIG5vdCBh
+d2FyZSBvZiB0aGUgY29uY2VwdCBiZWhpbmQgdGhpcyB0ZXN0LCBJdCB3b3VsZCBiZSBiZXR0ZXIg
+aWYgc29tZW9uZSBjYW4gdGFrZSB1cCB0aGlzDQpmaXggYW5kIGNvcnJlY3QgdGhlIENSQyBjYXB0
+dXJlIHNlcXVlbmNlIGFzIHdlbGwuDQoNClRoYW5rcyBhbmQgUmVnYXJkcywNCkFydW4gUiBNdXJ0
+aHkNCi0tLS0tLS0tLS0tLS0tLS0tLS0tDQo=
