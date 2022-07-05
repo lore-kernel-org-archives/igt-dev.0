@@ -1,21 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17A2010E021
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Jul 2022 08:23:29 +0000 (UTC)
-Message-ID: <cc14faea-8c58-3f92-6a81-d97fe8834779@intel.com>
-Date: Tue, 5 Jul 2022 13:53:02 +0530
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20220704163242.373772-1-bhanuprakash.modem@intel.com>
- <20220705044228.391917-1-bhanuprakash.modem@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20220705044228.391917-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  5 Jul 2022 11:15:42 +0100
+Message-Id: <20220705101542.116141-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V2] tests/kms_dither: Set max_bpc before
- exiting the subtest
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915_query: tweak the unallocated
+ tracking test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,80 +14,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 7/5/2022 10:12 AM, Bhanuprakash Modem wrote:
-> Before exiting the subtest, we must reset the connector's "max_bpc"
-> property to it's default value, else it may effect the consequent
-> subtests.
->
-> V2:
-> * Don't trigger a subtest if requested bpc > connecot's max_bpc.
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Make sure we always print the seed. Also make sure we use the correct
+helpers for the igt_assert when comparing values of type uint64.
 
-Nit: Please update commit subject. 'Set' -> 'Reset'.
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
+---
+ tests/i915/i915_query.c | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-
-> ---
->   tests/kms_dither.c | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
->
-> diff --git a/tests/kms_dither.c b/tests/kms_dither.c
-> index 02896b37..ace89062 100644
-> --- a/tests/kms_dither.c
-> +++ b/tests/kms_dither.c
-> @@ -128,6 +128,7 @@ static void test_dithering(data_t *data, enum pipe pipe,
->   	igt_display_t *display = &data->display;
->   	dither_status_t status;
->   	int bpc, ret;
-> +	bool constraint;
->   
->   	igt_info("Dithering test execution on %s PIPE_%s\n",
->   			output->name, kmstest_pipe_name(pipe));
-> @@ -148,6 +149,13 @@ static void test_dithering(data_t *data, enum pipe pipe,
->   	else
->   		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
->   
-> +	if (ret)
-> +		goto cleanup;
-> +
-> +	constraint = i915_clock_constraint(data, pipe, output, output_bpc);
-> +	if (!constraint)
-> +		goto cleanup;
-> +
->   	igt_require_f(!ret, "%s don't support %d-bpc\n",
->   				output->name, output_bpc);
->   
-> @@ -174,12 +182,17 @@ static void test_dithering(data_t *data, enum pipe pipe,
->   	* Otherwise, previously updated value will stay forever and
->   	* may cause the failures for next/other subtests.
->   	*/
-> +cleanup:
->   	igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, bpc);
->   	igt_plane_set_fb(data->primary, NULL);
->   	igt_output_set_pipe(output, PIPE_NONE);
->   	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   	igt_remove_fb(data->drm_fd, &data->fb);
->   
-> +	igt_require_f(!ret, "%s don't support %d-bpc\n", output->name, output_bpc);
-> +	igt_require_f(constraint, "No supported mode found to use %d-bpc on %s\n",
-> +				  output_bpc, output->name);
-> +
->   	/* Compute the result. */
->   	if (fb_bpc > output_bpc)
->   		igt_assert_f(status.dither, "(fb_%dbpc > output_%dbpc): Dither should be enabled\n",
-> @@ -210,6 +223,9 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
->   		if (!is_supported(output))
->   			continue;
->   
-> +		if (igt_get_output_max_bpc(data->drm_fd, output->name) < output_bpc)
-> +			continue;
-> +
->   		for_each_pipe(display, pipe) {
->   			if (igt_pipe_connector_valid(pipe, output)) {
->   				igt_dynamic_f("pipe-%s-%s",
-
+diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+index 840b4864..4abd3edc 100644
+--- a/tests/i915/i915_query.c
++++ b/tests/i915/i915_query.c
+@@ -784,9 +784,11 @@ static void fill_unallocated(int fd, struct drm_i915_query_item *item, int idx,
+ 	struct igt_list_head handles;
+ 	uint32_t num_handles;
+ 	uint64_t rem, total;
++	unsigned int seed;
+ 	int id;
+ 
+-	srand(time(NULL));
++	seed = time(NULL);
++	srand(seed);
+ 
+ 	IGT_INIT_LIST_HEAD(&handles);
+ 
+@@ -829,28 +831,28 @@ static void fill_unallocated(int fd, struct drm_i915_query_item *item, int idx,
+ 
+ 	upload(fd, &handles, num_handles);
+ 
++	igt_debug("fill completed with seed=%u, cpu_access=%d, idx=%d, total=%"PRIu64"KiB, num_handles=%u\n",
++		  seed, cpu_access, idx, total >> 10, num_handles);
++
+ 	old_info = new_info;
+ 	memset(regions, 0, item->length);
+ 	i915_query_items(fd, item, 1);
+ 	new_info = regions->regions[idx];
+ 
+-	igt_assert_lte(new_info.unallocated_size,
+-		       new_info.probed_size - total);
+-	igt_assert_lt(new_info.unallocated_size, old_info.unallocated_size);
++	igt_assert_lte_u64(new_info.unallocated_size,
++			   new_info.probed_size - total);
++	igt_assert_lt_u64(new_info.unallocated_size, old_info.unallocated_size);
+ 	if (new_info.probed_cpu_visible_size ==
+ 	    new_info.probed_size) { /* full BAR */
+-		igt_assert_eq(new_info.unallocated_cpu_visible_size,
+-			      new_info.unallocated_size);
++		igt_assert_eq_u64(new_info.unallocated_cpu_visible_size,
++				  new_info.unallocated_size);
+ 	} else if (cpu_access) {
+-		igt_assert_lt(new_info.unallocated_cpu_visible_size,
+-			      old_info.unallocated_cpu_visible_size);
+-		igt_assert_lte(new_info.unallocated_cpu_visible_size,
+-			       new_info.probed_cpu_visible_size - total);
++		igt_assert_lt_u64(new_info.unallocated_cpu_visible_size,
++				  old_info.unallocated_cpu_visible_size);
++		igt_assert_lte_u64(new_info.unallocated_cpu_visible_size,
++				   new_info.probed_cpu_visible_size - total);
+ 	}
+ 
+-	igt_debug("fill completed with idx=%d, total=%"PRIu64"KiB, num_handles=%u\n",
+-		  idx, total >> 10, num_handles);
+-
+ 	igt_list_for_each_entry_safe(iter, tmp, &handles, link) {
+ 		gem_close(fd, iter->handle);
+ 		free(iter);
+@@ -863,11 +865,11 @@ static void fill_unallocated(int fd, struct drm_i915_query_item *item, int idx,
+ 	i915_query_items(fd, item, 1);
+ 	new_info = regions->regions[idx];
+ 
+-	igt_assert(new_info.unallocated_size >=
+-		   old_info.unallocated_size + total);
++	igt_assert_lt_u64(old_info.unallocated_size + total,
++			  new_info.unallocated_size);
+ 	if (cpu_access)
+-		igt_assert(new_info.unallocated_cpu_visible_size >=
+-			   old_info.unallocated_cpu_visible_size + total);
++		igt_assert_lt_u64(old_info.unallocated_cpu_visible_size + total,
++				  new_info.unallocated_cpu_visible_size);
+ }
+ 
+ static void test_query_regions_unallocated(int fd)
+-- 
+2.36.1
