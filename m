@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61D4110F4A9
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 18:00:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37F8D10F673
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 18:00:29 +0000 (UTC)
 From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Jul 2022 20:00:15 +0200
-Message-Id: <20220706180017.7297-1-nirmoy.das@intel.com>
+Date: Wed,  6 Jul 2022 20:00:17 +0200
+Message-Id: <20220706180017.7297-3-nirmoy.das@intel.com>
+In-Reply-To: <20220706180017.7297-1-nirmoy.das@intel.com>
+References: <20220706180017.7297-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/i915: Add graphics release
- subversion to device info
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Subject: [igt-dev] [PATCH i-g-t 3/3] i915/gem_exec_capture: fix
+ needs_recoverable_ctx
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,60 +25,41 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmVjb3JkIHRoZSBtaW5vciBpbmNyZW1lbnRhbCBjaGFuZ2VzIGJldHdlZW4gdGhlIG1ham9yIGdl
-bjEyIHBsYXRmb3JtcyBhcwphIHJlbGVhc2UgdmVyc2lvbi4KCnYyOiBhZGQgbWlzc2luZyAiLCIg
-dG8gbGFzdCBzdHJ1Y3QgbWVtYmVyIGFuZCBtb3ZlCmdyYXBoaWNzX3JlbCBuZXh0IHRvIGdyYXBo
-aWNzX3Zlci4KdjM6IGFkZCBncmFwaGljc19yZWwgZm9yIGF0cy1tIGFuZCBvdGhlciBtaW5vciBm
-aXhlcy4KCkFja2VkLWJ5OiBNYXR0aGV3IEF1bGQgPG1hdHRoZXcuYXVsZEBpbnRlbC5jb20+ClJl
-dmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGlu
-dGVsLmNvbT4KU3VnZ2VzdGVkLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzLnAud2lsc29uQGludGVs
-LmNvbT4KU2lnbmVkLW9mZi1ieTogTmlybW95IERhcyA8bmlybW95LmRhc0BpbnRlbC5jb20+Ci0t
-LQogbGliL2ludGVsX2NoaXBzZXQuaCAgICAgfCAgNCArKysrCiBsaWIvaW50ZWxfZGV2aWNlX2lu
-Zm8uYyB8IDEwICsrKysrKysrKysKIDIgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKQoK
-ZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9jaGlwc2V0LmggYi9saWIvaW50ZWxfY2hpcHNldC5oCmlu
-ZGV4IDA2ZjczMjExMC4uZDdhNmZmMTkwIDEwMDY0NAotLS0gYS9saWIvaW50ZWxfY2hpcHNldC5o
-CisrKyBiL2xpYi9pbnRlbF9jaGlwc2V0LmgKQEAgLTM4LDYgKzM4LDcgQEAgdWludDMyX3QgaW50
-ZWxfZ2V0X2RybV9kZXZpZChpbnQgZmQpOwogCiBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gewog
-CXVuc2lnbmVkIGdyYXBoaWNzX3ZlcjsKKwl1bnNpZ25lZCBncmFwaGljc19yZWw7CiAJdW5zaWdu
-ZWQgZGlzcGxheV92ZXI7CiAJdW5zaWduZWQgZ3Q7IC8qIDAgaWYgdW5rbm93biAqLwogCWJvb2wg
-aGFzXzR0aWxlIDogMTsKQEAgLTkwLDYgKzkxLDcgQEAgc3RydWN0IGludGVsX2RldmljZV9pbmZv
-IHsKIGNvbnN0IHN0cnVjdCBpbnRlbF9kZXZpY2VfaW5mbyAqaW50ZWxfZ2V0X2RldmljZV9pbmZv
-KHVpbnQxNl90IGRldmlkKSBfX2F0dHJpYnV0ZV9fKChwdXJlKSk7CiAKIHVuc2lnbmVkIGludGVs
-X2dlbih1aW50MTZfdCBkZXZpZCkgX19hdHRyaWJ1dGVfXygocHVyZSkpOwordW5zaWduZWQgaW50
-ZWxfZ3JhcGhpY3NfdmVyKHVpbnQxNl90IGRldmlkKSBfX2F0dHJpYnV0ZV9fKChwdXJlKSk7CiB1
-bnNpZ25lZCBpbnRlbF9kaXNwbGF5X3Zlcih1aW50MTZfdCBkZXZpZCkgX19hdHRyaWJ1dGVfXygo
-cHVyZSkpOwogCiBleHRlcm4gZW51bSBwY2hfdHlwZSBpbnRlbF9wY2g7CkBAIC0xMDcsNiArMTA5
-LDggQEAgdm9pZCBpbnRlbF9jaGVja19wY2godm9pZCk7CiAjZGVmaW5lIEhBU19DUFQgKGludGVs
-X3BjaCA9PSBQQ0hfQ1BUKQogI2RlZmluZSBIQVNfTFBUIChpbnRlbF9wY2ggPT0gUENIX0xQVCkK
-IAorI2RlZmluZSBJUF9WRVIodmVyLCByZWwpCQkoKHZlcikgPDwgOCB8IChyZWwpKQorCiAvKiBF
-eGNsdWRlIGNoaXBzZXQgI2RlZmluZXMsIHRoZXkganVzdCBhZGQgbm9pc2UgKi8KICNpZm5kZWYg
-X19HVEtfRE9DX0lHTk9SRV9fCiAKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5j
-IGIvbGliL2ludGVsX2RldmljZV9pbmZvLmMKaW5kZXggYmZkZDlmYTVjLi5lYmZjZWE3MzcgMTAw
-NjQ0Ci0tLSBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jCisrKyBiL2xpYi9pbnRlbF9kZXZpY2Vf
-aW5mby5jCkBAIC0zODUsNiArMzg1LDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBpbnRlbF9kZXZp
-Y2VfaW5mbyBpbnRlbF9yb2NrZXRsYWtlX2luZm8gPSB7CiAKIHN0YXRpYyBjb25zdCBzdHJ1Y3Qg
-aW50ZWxfZGV2aWNlX2luZm8gaW50ZWxfZGcxX2luZm8gPSB7CiAJLmdyYXBoaWNzX3ZlciA9IDEy
-LAorCS5ncmFwaGljc19yZWwgPSAxMCwKIAkuZGlzcGxheV92ZXIgPSAxMiwKIAkuaXNfZGcxID0g
-dHJ1ZSwKIAkuY29kZW5hbWUgPSAiZGcxIgpAQCAtMzkyLDYgKzM5Myw3IEBAIHN0YXRpYyBjb25z
-dCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gaW50ZWxfZGcxX2luZm8gPSB7CiAKIHN0YXRpYyBj
-b25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gaW50ZWxfZGcyX2luZm8gPSB7CiAJLmdyYXBo
-aWNzX3ZlciA9IDEyLAorCS5ncmFwaGljc19yZWwgPSA1NSwKIAkuZGlzcGxheV92ZXIgPSAxMywK
-IAkuaGFzXzR0aWxlID0gdHJ1ZSwKIAkuaXNfZGcyID0gdHJ1ZSwKQEAgLTQyOSw2ICs0MzEsNyBA
-QCBzdGF0aWMgY29uc3Qgc3RydWN0IGludGVsX2RldmljZV9pbmZvIGludGVsX2FsZGVybGFrZV9u
-X2luZm8gPSB7CiAKIHN0YXRpYyBjb25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gaW50ZWxf
-YXRzX21faW5mbyA9IHsKIAkuZ3JhcGhpY3NfdmVyID0gMTIsCisJLmdyYXBoaWNzX3JlbCA9IDU1
-LAogCS5kaXNwbGF5X3ZlciA9IDAsIC8qIG5vIGRpc3BsYXkgc3VwcG9ydCAqLwogCS5pc19kZzIg
-PSB0cnVlLAogCS5oYXNfNHRpbGUgPSB0cnVlLApAQCAtNTgzLDYgKzU4NiwxMyBAQCB1bnNpZ25l
-ZCBpbnRlbF9nZW4odWludDE2X3QgZGV2aWQpCiAJcmV0dXJuIGludGVsX2dldF9kZXZpY2VfaW5m
-byhkZXZpZCktPmdyYXBoaWNzX3ZlciA/OiAtMXU7CiB9CiAKK3Vuc2lnbmVkIGludGVsX2dyYXBo
-aWNzX3Zlcih1aW50MTZfdCBkZXZpZCkKK3sKKwljb25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2lu
-Zm8gKmluZm8gPSBpbnRlbF9nZXRfZGV2aWNlX2luZm8oZGV2aWQpOworCisJcmV0dXJuIElQX1ZF
-UihpbmZvLT5ncmFwaGljc192ZXIsIGluZm8tPmdyYXBoaWNzX3JlbCk7Cit9CisKIC8qKgogICog
-aW50ZWxfZGlzcGxheV92ZXI6CiAgKiBAZGV2aWQ6IHBjaSBkZXZpY2UgaWQKLS0gCjIuMzUuMQoK
-SW50ZWwgRGV1dHNjaGxhbmQgR21iSApSZWdpc3RlcmVkIEFkZHJlc3M6IEFtIENhbXBlb24gMTAs
-IDg1NTc5IE5ldWJpYmVyZywgR2VybWFueQpUZWw6ICs0OSA4OSA5OSA4ODUzLTAsIHd3dy5pbnRl
-bC5kZSA8aHR0cDovL3d3dy5pbnRlbC5kZT4KTWFuYWdpbmcgRGlyZWN0b3JzOiBDaHJpc3RpbiBF
-aXNlbnNjaG1pZCwgU2hhcm9uIEhlY2ssIFRpZmZhbnkgRG9vbiBTaWx2YSAgCkNoYWlycGVyc29u
-IG9mIHRoZSBTdXBlcnZpc29yeSBCb2FyZDogTmljb2xlIExhdQpSZWdpc3RlcmVkIE9mZmljZTog
-TXVuaWNoCkNvbW1lcmNpYWwgUmVnaXN0ZXI6IEFtdHNnZXJpY2h0IE11ZW5jaGVuIEhSQiAxODY5
-MjgK
+needs_recoverable_ctx() should check for graphics_ver instead of
+display_ver. Use intel_graphics_ver() now that we have it.
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6356
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/i915/gem_exec_capture.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+index a25f529bc..6950b2d2c 100644
+--- a/tests/i915/gem_exec_capture.c
++++ b/tests/i915/gem_exec_capture.c
+@@ -607,10 +607,13 @@ static bool kernel_supports_probed_size(int fd)
+ 
+ static bool needs_recoverable_ctx(int fd)
+ {
++	uint16_t devid;
++
+ 	if (!kernel_supports_probed_size(fd))
+ 		return false;
+ 
+-	return gem_has_lmem(fd) || intel_display_ver(intel_get_drm_devid(fd)) > 12;
++	devid = intel_get_drm_devid(fd);
++	return gem_has_lmem(fd) ||  intel_graphics_ver(devid) > IP_VER(12, 0);
+ }
+ 
+ #define find_first_available_engine(fd, ctx, e, saved) \
+-- 
+2.35.1
+
+Intel Deutschland GmbH
+Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
+Tel: +49 89 99 8853-0, www.intel.de <http://www.intel.de>
+Managing Directors: Christin Eisenschmid, Sharon Heck, Tiffany Doon Silva  
+Chairperson of the Supervisory Board: Nicole Lau
+Registered Office: Munich
+Commercial Register: Amtsgericht Muenchen HRB 186928
