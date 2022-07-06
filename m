@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 200761124FD
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 08:35:29 +0000 (UTC)
-Date: Wed, 6 Jul 2022 10:35:25 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YsVJTYpfAZw0VTkO@kamilkon-desk1>
-References: <20220706034846.441338-1-bhanuprakash.modem@intel.com>
+Message-ID: <78ab7dc3-dc9c-def1-e1bc-2a3f36b9c7d5@linux.intel.com>
+Date: Wed, 6 Jul 2022 11:02:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220706034846.441338-1-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t] tests/kms_color: Fix memory leaks
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+References: <20220705101542.116141-1-matthew.auld@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20220705101542.116141-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_query: tweak the unallocated
+ tracking test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,51 +18,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Bhanuprakash,
 
-On 2022-07-06 at 09:18:46 +0530, Bhanuprakash Modem wrote:
-> Free allocated memory before return.
-> 
-> Fixes: d61e4598
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+On 7/5/2022 12:15 PM, Matthew Auld wrote:
+> Make sure we always print the seed. Also make sure we use the correct
+> helpers for the igt_assert when comparing values of type uint64.
+>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
 > ---
->  tests/kms_color.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index 0b03fb9a..a9d55d44 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -427,13 +427,14 @@ static bool test_pipe_legacy_gamma_reset(data_t *data,
->  			   lut[i].blue == 0xffff);
->  	drmModeFreePropertyBlob(blob);
-
-There are malloc for red_lut and two others, imho they should be
-cleaned up before end: label.
-
->  
-> +end:
->  	igt_plane_set_fb(primary, NULL);
->  	igt_output_set_pipe(output, PIPE_NONE);
->  	igt_display_commit(&data->display);
->  
->  	free_lut(degamma_linear);
->  	free_lut(gamma_zero);
-> -end:
+>   tests/i915/i915_query.c | 36 +++++++++++++++++++-----------------
+>   1 file changed, 19 insertions(+), 17 deletions(-)
+>
+> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+> index 840b4864..4abd3edc 100644
+> --- a/tests/i915/i915_query.c
+> +++ b/tests/i915/i915_query.c
+> @@ -784,9 +784,11 @@ static void fill_unallocated(int fd, struct drm_i915_query_item *item, int idx,
+>   	struct igt_list_head handles;
+>   	uint32_t num_handles;
+>   	uint64_t rem, total;
+> +	unsigned int seed;
+>   	int id;
+>   
+> -	srand(time(NULL));
+> +	seed = time(NULL);
+> +	srand(seed);
+>   
+>   	IGT_INIT_LIST_HEAD(&handles);
+>   
+> @@ -829,28 +831,28 @@ static void fill_unallocated(int fd, struct drm_i915_query_item *item, int idx,
+>   
+>   	upload(fd, &handles, num_handles);
+>   
+> +	igt_debug("fill completed with seed=%u, cpu_access=%d, idx=%d, total=%"PRIu64"KiB, num_handles=%u\n",
+> +		  seed, cpu_access, idx, total >> 10, num_handles);
 > +
+>   	old_info = new_info;
+>   	memset(regions, 0, item->length);
+>   	i915_query_items(fd, item, 1);
+>   	new_info = regions->regions[idx];
+>   
+> -	igt_assert_lte(new_info.unallocated_size,
+> -		       new_info.probed_size - total);
+> -	igt_assert_lt(new_info.unallocated_size, old_info.unallocated_size);
+> +	igt_assert_lte_u64(new_info.unallocated_size,
+> +			   new_info.probed_size - total);
+> +	igt_assert_lt_u64(new_info.unallocated_size, old_info.unallocated_size);
+>   	if (new_info.probed_cpu_visible_size ==
+>   	    new_info.probed_size) { /* full BAR */
+> -		igt_assert_eq(new_info.unallocated_cpu_visible_size,
+> -			      new_info.unallocated_size);
+> +		igt_assert_eq_u64(new_info.unallocated_cpu_visible_size,
+> +				  new_info.unallocated_size);
+>   	} else if (cpu_access) {
+> -		igt_assert_lt(new_info.unallocated_cpu_visible_size,
+> -			      old_info.unallocated_cpu_visible_size);
+> -		igt_assert_lte(new_info.unallocated_cpu_visible_size,
+> -			       new_info.probed_cpu_visible_size - total);
+> +		igt_assert_lt_u64(new_info.unallocated_cpu_visible_size,
+> +				  old_info.unallocated_cpu_visible_size);
+> +		igt_assert_lte_u64(new_info.unallocated_cpu_visible_size,
+> +				   new_info.probed_cpu_visible_size - total);
+>   	}
+>   
+> -	igt_debug("fill completed with idx=%d, total=%"PRIu64"KiB, num_handles=%u\n",
+> -		  idx, total >> 10, num_handles);
+> -
+>   	igt_list_for_each_entry_safe(iter, tmp, &handles, link) {
+>   		gem_close(fd, iter->handle);
+>   		free(iter);
+> @@ -863,11 +865,11 @@ static void fill_unallocated(int fd, struct drm_i915_query_item *item, int idx,
+>   	i915_query_items(fd, item, 1);
+>   	new_info = regions->regions[idx];
+>   
+> -	igt_assert(new_info.unallocated_size >=
+> -		   old_info.unallocated_size + total);
+> +	igt_assert_lt_u64(old_info.unallocated_size + total,
+> +			  new_info.unallocated_size);
 
-Remove this empty line.
+Hi Matt,
 
-Regards,
-Kamil
 
->  	return ret;
->  }
->  
-> -- 
-> 2.35.1
-> 
+Shouldn't this be igt_assert_lte_u64()?
+
+>   	if (cpu_access)
+> -		igt_assert(new_info.unallocated_cpu_visible_size >=
+> -			   old_info.unallocated_cpu_visible_size + total);
+> +		igt_assert_lt_u64(old_info.unallocated_cpu_visible_size + total,
+> +				  new_info.unallocated_cpu_visible_size);
+
+same live above.
+
+
+Nirmoy
+
+>   }
+>   
+>   static void test_query_regions_unallocated(int fd)
