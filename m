@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com
- [IPv6:2a00:1450:4864:20::22e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35B52112DF1
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 09:18:15 +0000 (UTC)
-Received: by mail-lj1-x22e.google.com with SMTP id l7so16919532ljj.4
- for <igt-dev@lists.freedesktop.org>; Wed, 06 Jul 2022 02:18:15 -0700 (PDT)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61B26112F7B
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 09:27:47 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  6 Jul 2022 14:27:46 +0530
+Message-Id: <20220706085746.32363-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-References: <20220701122939.11193-1-nirmoy.das@intel.com>
-In-Reply-To: <20220701122939.11193-1-nirmoy.das@intel.com>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Wed, 6 Jul 2022 10:17:46 +0100
-Message-ID: <CAM0jSHMzBdOjsby5-KRdK0kunMf6PBUYYyUqKP0vMWx0V=0VtA@mail.gmail.com>
-To: Nirmoy Das <nirmoy.das@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] lib/i915: Add graphics release
- subversion to device info
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: Move output check to
+ the beginning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,108 +17,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 1 Jul 2022 at 13:30, Nirmoy Das <nirmoy.das@intel.com> wrote:
->
-> Record the minor inremental changes between the major gen12 platforms as
-> a release version.
+This test is failing on headless configurations as the check to verify
+if the output is present is at the end of the fixture after other checks.
+Move output check to the beginning of the fixture to avoid this failure
+and skip the test gracefully.
 
-incremental?
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/kms_cursor_crc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
->
-> v2: add missing "," to last struct member and move
-> graphics_rel next to graphics_ver.
->
-> Suggested-by: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->  lib/intel_chipset.h     |  4 ++++
->  lib/intel_device_info.c | 11 ++++++++++-
->  2 files changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-> index 06f732110..d7a6ff190 100644
-> --- a/lib/intel_chipset.h
-> +++ b/lib/intel_chipset.h
-> @@ -38,6 +38,7 @@ uint32_t intel_get_drm_devid(int fd);
->
->  struct intel_device_info {
->         unsigned graphics_ver;
-> +       unsigned graphics_rel;
->         unsigned display_ver;
->         unsigned gt; /* 0 if unknown */
->         bool has_4tile : 1;
-> @@ -90,6 +91,7 @@ struct intel_device_info {
->  const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
->
->  unsigned intel_gen(uint16_t devid) __attribute__((pure));
-> +unsigned intel_graphics_ver(uint16_t devid) __attribute__((pure));
->  unsigned intel_display_ver(uint16_t devid) __attribute__((pure));
->
->  extern enum pch_type intel_pch;
-> @@ -107,6 +109,8 @@ void intel_check_pch(void);
->  #define HAS_CPT (intel_pch == PCH_CPT)
->  #define HAS_LPT (intel_pch == PCH_LPT)
->
-> +#define IP_VER(ver, rel)               ((ver) << 8 | (rel))
-> +
->  /* Exclude chipset #defines, they just add noise */
->  #ifndef __GTK_DOC_IGNORE__
->
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index bfdd9fa5c..536707252 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -385,13 +385,15 @@ static const struct intel_device_info intel_rocketlake_info = {
->
->  static const struct intel_device_info intel_dg1_info = {
->         .graphics_ver = 12,
-> +       .graphics_rel = 10,
->         .display_ver = 12,
->         .is_dg1 = true,
-> -       .codename = "dg1"
-> +       .codename = "dg1",
->  };
->
->  static const struct intel_device_info intel_dg2_info = {
->         .graphics_ver = 12,
-> +       .graphics_rel = 55,
->         .display_ver = 13,
->         .has_4tile = true,
->         .is_dg2 = true,
-> @@ -583,6 +585,13 @@ unsigned intel_gen(uint16_t devid)
->         return intel_get_device_info(devid)->graphics_ver ?: -1u;
->  }
-
-We should also update ats_m with _rel?
-
->
-> +unsigned intel_graphics_ver(uint16_t devid)
-> +{
-> +       const struct intel_device_info *info = intel_get_device_info(devid);
-> +
-> +       return IP_VER(info->graphics_ver, info->graphics_rel);
-> +}
-
-I was just looking for such a helper,
-Acked-by: Matthew Auld <matthew.auld@intel.com>
-
-> +
->  /**
->   * intel_display_ver:
->   * @devid: pci device id
-> --
-> 2.35.1
->
-> Intel Deutschland GmbH
-> Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
-> Tel: +49 89 99 8853-0, www.intel.de <http://www.intel.de>
-> Managing Directors: Christin Eisenschmid, Sharon Heck, Tiffany Doon Silva
-> Chairperson of the Supervisory Board: Nicole Lau
-> Registered Office: Munich
-> Commercial Register: Amtsgericht Muenchen HRB 186928
->
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 5c90537b..51bd3c8e 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -873,6 +873,9 @@ igt_main
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
++		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
++
+ 		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width);
+ 		igt_assert(ret == 0 || errno == EINVAL);
+ 		/* Not making use of cursor_height since it is same as width, still reading */
+@@ -882,9 +885,6 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_require_pipe_crc(data.drm_fd);
+-
+-		igt_display_require(&data.display, data.drm_fd);
+-		igt_display_require_output(&data.display);
+ 	}
+ 
+ 	data.cursor_max_w = cursor_width;
+-- 
+2.22.0
