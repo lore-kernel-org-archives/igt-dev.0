@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61B26112F7B
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 09:27:47 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Jul 2022 14:27:46 +0530
-Message-Id: <20220706085746.32363-1-karthik.b.s@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1FCF10ED6C
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 09:35:09 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@linux.intel.com
+Date: Wed,  6 Jul 2022 15:02:53 +0530
+Message-Id: <20220706093253.494798-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220706034846.441338-1-bhanuprakash.modem@intel.com>
+References: <20220706034846.441338-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: Move output check to
- the beginning
+Subject: [igt-dev] [i-g-t V2] tests/kms_color: Fix memory leaks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,39 +23,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test is failing on headless configurations as the check to verify
-if the output is present is at the end of the fixture after other checks.
-Move output check to the beginning of the fixture to avoid this failure
-and skip the test gracefully.
+Free allocated memory before return.
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Fixes: d61e4598
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_crc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/kms_color.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 5c90537b..51bd3c8e 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -873,6 +873,9 @@ igt_main
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 0b03fb9a..6ea721f1 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -397,8 +397,13 @@ static bool test_pipe_legacy_gamma_reset(data_t *data,
+ 	drmModeFreeCrtc(kms_crtc);
  
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
+ 	red_lut = malloc(sizeof(uint16_t) * legacy_lut_size);
++	igt_assert(red_lut);
 +
- 		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width);
- 		igt_assert(ret == 0 || errno == EINVAL);
- 		/* Not making use of cursor_height since it is same as width, still reading */
-@@ -882,9 +885,6 @@ igt_main
- 		kmstest_set_vt_graphics_mode();
+ 	green_lut = malloc(sizeof(uint16_t) * legacy_lut_size);
++	igt_assert(green_lut);
++
+ 	blue_lut = malloc(sizeof(uint16_t) * legacy_lut_size);
++	igt_assert(blue_lut);
  
- 		igt_require_pipe_crc(data.drm_fd);
--
--		igt_display_require(&data.display, data.drm_fd);
--		igt_display_require_output(&data.display);
- 	}
+ 	for (i = 0; i < legacy_lut_size; i++)
+ 		red_lut[i] = green_lut[i] = blue_lut[i] = 0xffff;
+@@ -427,13 +432,17 @@ static bool test_pipe_legacy_gamma_reset(data_t *data,
+ 			   lut[i].blue == 0xffff);
+ 	drmModeFreePropertyBlob(blob);
  
- 	data.cursor_max_w = cursor_width;
++	free(red_lut);
++	free(green_lut);
++	free(blue_lut);
++
++end:
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit(&data->display);
+ 
+ 	free_lut(degamma_linear);
+ 	free_lut(gamma_zero);
+-end:
+ 	return ret;
+ }
+ 
 -- 
-2.22.0
+2.35.1
