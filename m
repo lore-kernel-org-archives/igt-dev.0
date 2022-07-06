@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6B1C11A162
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 11:47:47 +0000 (UTC)
-Date: Wed, 6 Jul 2022 13:47:31 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Nirmoy Das <nirmoy.das@intel.com>
-Message-ID: <YsV2Uzn9Z5W5Dn7P@zkempczy-mobl2>
-References: <20220701122939.11193-1-nirmoy.das@intel.com>
- <20220701122939.11193-2-nirmoy.das@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDA8D11A4CB
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 12:01:53 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  6 Jul 2022 14:01:42 +0200
+Message-Id: <20220706120143.1268-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220701122939.11193-2-nirmoy.das@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] i915/gem_exec_fence: Support dg2+
- batch predication
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/i915: Add graphics release
+ subversion to device info
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,105 +18,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, chris.p.wilson@intel.com
+Cc: matthew.auld@intel.com, chris.p.wilson@intel.com, nirmoy.das@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jul 01, 2022 at 02:29:39PM +0200, Nirmoy Das wrote:
-> From: Chris Wilson <chris.p.wilson@intel.com>
-> 
-> On dg2+, MI_BATCH_BUFFER_START | MI_USE_PREDICATE switches to using the
-> MI_SET_PREDICATE_RESULT register and requires bit 0 to be set to skip
-> the looping MI_BATCH_BUFFER_START.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5463
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->  tests/i915/gem_exec_fence.c | 39 +++++++++++++++++++++++++++++--------
->  1 file changed, 31 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> index a6499a68a..d46914c2f 100644
-> --- a/tests/i915/gem_exec_fence.c
-> +++ b/tests/i915/gem_exec_fence.c
-> @@ -2369,6 +2369,7 @@ static void test_syncobj_timeline_multiple_ext_nodes(int fd)
->  #define HSW_CS_GPR(n)                   (0x600 + 8*(n))
->  #define RING_TIMESTAMP                  (0x358)
->  #define MI_PREDICATE_RESULT_1           (0x41c)
-> +#define MI_SET_PREDICATE_RESULT         (0x3b8)
->  
->  #define WAIT_BB_OFFSET			(64 << 20)
->  #define COUNTER_OFFSET			(65 << 20)
-> @@ -2467,6 +2468,13 @@ get_cs_timestamp_frequency(int fd)
->  	igt_skip("Kernel with PARAM_CS_TIMESTAMP_FREQUENCY support required\n");
->  }
->  
-> +static bool use_set_predicate_result(int i915)
-> +{
-> +	uint16_t devid = intel_get_drm_devid(i915);
-> +
-> +	return intel_graphics_ver(devid) >= IP_VER(12, 50);
-> +}
-> +
->  static struct drm_i915_gem_exec_object2
->  build_wait_bb(int i915,
->  	      const struct intel_execution_engine2 *engine,
-> @@ -2523,21 +2531,36 @@ build_wait_bb(int i915,
->  	*bb++ = MI_MATH_SUB;
->  	*bb++ = MI_MATH_STORE(MI_MATH_REG(3), MI_MATH_REG_ACCU);
->  
-> -	*bb++ = MI_MATH(4);
-> -	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-> -	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(3));
-> -	*bb++ = MI_MATH_ADD;
-> -	*bb++ = MI_MATH_STOREINV(MI_MATH_REG(4), MI_MATH_REG_CF);
-> +	if (use_set_predicate_result(i915)) {
-> +		*bb++ = MI_MATH(4);
-> +		*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-> +		*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(3));
-> +		*bb++ = MI_MATH_ADD;
-> +		*bb++ = MI_MATH_STORE(MI_MATH_REG(4), MI_MATH_REG_CF);
->  
-> -	*bb++ = MI_LOAD_REGISTER_REG;
-> -	*bb++ = mmio_base + HSW_CS_GPR(4);
-> -	*bb++ = mmio_base + MI_PREDICATE_RESULT_1;
-> +		*bb++ = MI_LOAD_REGISTER_REG;
-> +		*bb++ = mmio_base + HSW_CS_GPR(4);
-> +		*bb++ = mmio_base + MI_SET_PREDICATE_RESULT;
-> +	} else {
-> +		*bb++ = MI_MATH(4);
-> +		*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-> +		*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(3));
-> +		*bb++ = MI_MATH_ADD;
-> +		*bb++ = MI_MATH_STOREINV(MI_MATH_REG(4), MI_MATH_REG_CF);
-> +
-> +		*bb++ = MI_LOAD_REGISTER_REG;
-> +		*bb++ = mmio_base + HSW_CS_GPR(4);
-> +		*bb++ = mmio_base + MI_PREDICATE_RESULT_1;
-> +	}
->  
->  	*bb++ = MI_BATCH_BUFFER_START | MI_BATCH_PREDICATE | 1;
->  	relocs->offset = offset_in_page(bb);
->  	*bb++ = obj.offset + relocs->delta;
->  	*bb++ = obj.offset >> 32;
->  
-> +	if (use_set_predicate_result(i915))
-> +		*bb++ = 1 << 23; // MI_SET_PREDICATE
-> +
-
-This raise the bar.
-
-Looks good for me:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
->  	*bb++ = MI_BATCH_BUFFER_END;
->  
->  	munmap(map, 4096);
-> -- 
-> 2.35.1
-> 
+UmVjb3JkIHRoZSBtaW5vciBpbmNyZW1lbnRhbCBjaGFuZ2VzIGJldHdlZW4gdGhlIG1ham9yIGdl
+bjEyIHBsYXRmb3JtcyBhcwphIHJlbGVhc2UgdmVyc2lvbi4KCnYyOiBhZGQgbWlzc2luZyAiLCIg
+dG8gbGFzdCBzdHJ1Y3QgbWVtYmVyIGFuZCBtb3ZlCmdyYXBoaWNzX3JlbCBuZXh0IHRvIGdyYXBo
+aWNzX3Zlci4KdjM6IGFkZCBncmFwaGljc19yZWwgZm9yIGF0cy1tIGFuZCBvdGhlciBtaW5vciBm
+aXhlcy4KCkFja2VkLWJ5OiBNYXR0aGV3IEF1bGQgPG1hdHRoZXcuYXVsZEBpbnRlbC5jb20+ClJl
+dmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGlu
+dGVsLmNvbT4KU3VnZ2VzdGVkLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzLnAud2lsc29uQGludGVs
+LmNvbT4KU2lnbmVkLW9mZi1ieTogTmlybW95IERhcyA8bmlybW95LmRhc0BpbnRlbC5jb20+Ci0t
+LQogbGliL2ludGVsX2NoaXBzZXQuaCAgICAgfCAgNCArKysrCiBsaWIvaW50ZWxfZGV2aWNlX2lu
+Zm8uYyB8IDEwICsrKysrKysrKysKIDIgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKQoK
+ZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9jaGlwc2V0LmggYi9saWIvaW50ZWxfY2hpcHNldC5oCmlu
+ZGV4IDA2ZjczMjExMC4uZDdhNmZmMTkwIDEwMDY0NAotLS0gYS9saWIvaW50ZWxfY2hpcHNldC5o
+CisrKyBiL2xpYi9pbnRlbF9jaGlwc2V0LmgKQEAgLTM4LDYgKzM4LDcgQEAgdWludDMyX3QgaW50
+ZWxfZ2V0X2RybV9kZXZpZChpbnQgZmQpOwogCiBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gewog
+CXVuc2lnbmVkIGdyYXBoaWNzX3ZlcjsKKwl1bnNpZ25lZCBncmFwaGljc19yZWw7CiAJdW5zaWdu
+ZWQgZGlzcGxheV92ZXI7CiAJdW5zaWduZWQgZ3Q7IC8qIDAgaWYgdW5rbm93biAqLwogCWJvb2wg
+aGFzXzR0aWxlIDogMTsKQEAgLTkwLDYgKzkxLDcgQEAgc3RydWN0IGludGVsX2RldmljZV9pbmZv
+IHsKIGNvbnN0IHN0cnVjdCBpbnRlbF9kZXZpY2VfaW5mbyAqaW50ZWxfZ2V0X2RldmljZV9pbmZv
+KHVpbnQxNl90IGRldmlkKSBfX2F0dHJpYnV0ZV9fKChwdXJlKSk7CiAKIHVuc2lnbmVkIGludGVs
+X2dlbih1aW50MTZfdCBkZXZpZCkgX19hdHRyaWJ1dGVfXygocHVyZSkpOwordW5zaWduZWQgaW50
+ZWxfZ3JhcGhpY3NfdmVyKHVpbnQxNl90IGRldmlkKSBfX2F0dHJpYnV0ZV9fKChwdXJlKSk7CiB1
+bnNpZ25lZCBpbnRlbF9kaXNwbGF5X3Zlcih1aW50MTZfdCBkZXZpZCkgX19hdHRyaWJ1dGVfXygo
+cHVyZSkpOwogCiBleHRlcm4gZW51bSBwY2hfdHlwZSBpbnRlbF9wY2g7CkBAIC0xMDcsNiArMTA5
+LDggQEAgdm9pZCBpbnRlbF9jaGVja19wY2godm9pZCk7CiAjZGVmaW5lIEhBU19DUFQgKGludGVs
+X3BjaCA9PSBQQ0hfQ1BUKQogI2RlZmluZSBIQVNfTFBUIChpbnRlbF9wY2ggPT0gUENIX0xQVCkK
+IAorI2RlZmluZSBJUF9WRVIodmVyLCByZWwpCQkoKHZlcikgPDwgOCB8IChyZWwpKQorCiAvKiBF
+eGNsdWRlIGNoaXBzZXQgI2RlZmluZXMsIHRoZXkganVzdCBhZGQgbm9pc2UgKi8KICNpZm5kZWYg
+X19HVEtfRE9DX0lHTk9SRV9fCiAKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5j
+IGIvbGliL2ludGVsX2RldmljZV9pbmZvLmMKaW5kZXggYmZkZDlmYTVjLi5lYmZjZWE3MzcgMTAw
+NjQ0Ci0tLSBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jCisrKyBiL2xpYi9pbnRlbF9kZXZpY2Vf
+aW5mby5jCkBAIC0zODUsNiArMzg1LDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBpbnRlbF9kZXZp
+Y2VfaW5mbyBpbnRlbF9yb2NrZXRsYWtlX2luZm8gPSB7CiAKIHN0YXRpYyBjb25zdCBzdHJ1Y3Qg
+aW50ZWxfZGV2aWNlX2luZm8gaW50ZWxfZGcxX2luZm8gPSB7CiAJLmdyYXBoaWNzX3ZlciA9IDEy
+LAorCS5ncmFwaGljc19yZWwgPSAxMCwKIAkuZGlzcGxheV92ZXIgPSAxMiwKIAkuaXNfZGcxID0g
+dHJ1ZSwKIAkuY29kZW5hbWUgPSAiZGcxIgpAQCAtMzkyLDYgKzM5Myw3IEBAIHN0YXRpYyBjb25z
+dCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gaW50ZWxfZGcxX2luZm8gPSB7CiAKIHN0YXRpYyBj
+b25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gaW50ZWxfZGcyX2luZm8gPSB7CiAJLmdyYXBo
+aWNzX3ZlciA9IDEyLAorCS5ncmFwaGljc19yZWwgPSA1NSwKIAkuZGlzcGxheV92ZXIgPSAxMywK
+IAkuaGFzXzR0aWxlID0gdHJ1ZSwKIAkuaXNfZGcyID0gdHJ1ZSwKQEAgLTQyOSw2ICs0MzEsNyBA
+QCBzdGF0aWMgY29uc3Qgc3RydWN0IGludGVsX2RldmljZV9pbmZvIGludGVsX2FsZGVybGFrZV9u
+X2luZm8gPSB7CiAKIHN0YXRpYyBjb25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2luZm8gaW50ZWxf
+YXRzX21faW5mbyA9IHsKIAkuZ3JhcGhpY3NfdmVyID0gMTIsCisJLmdyYXBoaWNzX3JlbCA9IDU1
+LAogCS5kaXNwbGF5X3ZlciA9IDAsIC8qIG5vIGRpc3BsYXkgc3VwcG9ydCAqLwogCS5pc19kZzIg
+PSB0cnVlLAogCS5oYXNfNHRpbGUgPSB0cnVlLApAQCAtNTgzLDYgKzU4NiwxMyBAQCB1bnNpZ25l
+ZCBpbnRlbF9nZW4odWludDE2X3QgZGV2aWQpCiAJcmV0dXJuIGludGVsX2dldF9kZXZpY2VfaW5m
+byhkZXZpZCktPmdyYXBoaWNzX3ZlciA/OiAtMXU7CiB9CiAKK3Vuc2lnbmVkIGludGVsX2dyYXBo
+aWNzX3Zlcih1aW50MTZfdCBkZXZpZCkKK3sKKwljb25zdCBzdHJ1Y3QgaW50ZWxfZGV2aWNlX2lu
+Zm8gKmluZm8gPSBpbnRlbF9nZXRfZGV2aWNlX2luZm8oZGV2aWQpOworCisJcmV0dXJuIElQX1ZF
+UihpbmZvLT5ncmFwaGljc192ZXIsIGluZm8tPmdyYXBoaWNzX3JlbCk7Cit9CisKIC8qKgogICog
+aW50ZWxfZGlzcGxheV92ZXI6CiAgKiBAZGV2aWQ6IHBjaSBkZXZpY2UgaWQKLS0gCjIuMzUuMQoK
+SW50ZWwgRGV1dHNjaGxhbmQgR21iSApSZWdpc3RlcmVkIEFkZHJlc3M6IEFtIENhbXBlb24gMTAs
+IDg1NTc5IE5ldWJpYmVyZywgR2VybWFueQpUZWw6ICs0OSA4OSA5OSA4ODUzLTAsIHd3dy5pbnRl
+bC5kZSA8aHR0cDovL3d3dy5pbnRlbC5kZT4KTWFuYWdpbmcgRGlyZWN0b3JzOiBDaHJpc3RpbiBF
+aXNlbnNjaG1pZCwgU2hhcm9uIEhlY2ssIFRpZmZhbnkgRG9vbiBTaWx2YSAgCkNoYWlycGVyc29u
+IG9mIHRoZSBTdXBlcnZpc29yeSBCb2FyZDogTmljb2xlIExhdQpSZWdpc3RlcmVkIE9mZmljZTog
+TXVuaWNoCkNvbW1lcmNpYWwgUmVnaXN0ZXI6IEFtdHNnZXJpY2h0IE11ZW5jaGVuIEhSQiAxODY5
+MjgK
