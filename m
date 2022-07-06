@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37F8D10F673
- for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 18:00:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76D3D10F4A9
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 Jul 2022 18:00:27 +0000 (UTC)
 From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  6 Jul 2022 20:00:17 +0200
-Message-Id: <20220706180017.7297-3-nirmoy.das@intel.com>
+Date: Wed,  6 Jul 2022 20:00:16 +0200
+Message-Id: <20220706180017.7297-2-nirmoy.das@intel.com>
 In-Reply-To: <20220706180017.7297-1-nirmoy.das@intel.com>
 References: <20220706180017.7297-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] i915/gem_exec_capture: fix
- needs_recoverable_ctx
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Subject: [igt-dev] [PATCH i-g-t 2/3] i915/gem_exec_fence: Support dg2+ batch
+ predication
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,41 +25,63 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-needs_recoverable_ctx() should check for graphics_ver instead of
-display_ver. Use intel_graphics_ver() now that we have it.
-
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6356
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/i915/gem_exec_capture.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index a25f529bc..6950b2d2c 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -607,10 +607,13 @@ static bool kernel_supports_probed_size(int fd)
- 
- static bool needs_recoverable_ctx(int fd)
- {
-+	uint16_t devid;
-+
- 	if (!kernel_supports_probed_size(fd))
- 		return false;
- 
--	return gem_has_lmem(fd) || intel_display_ver(intel_get_drm_devid(fd)) > 12;
-+	devid = intel_get_drm_devid(fd);
-+	return gem_has_lmem(fd) ||  intel_graphics_ver(devid) > IP_VER(12, 0);
- }
- 
- #define find_first_available_engine(fd, ctx, e, saved) \
--- 
-2.35.1
-
-Intel Deutschland GmbH
-Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
-Tel: +49 89 99 8853-0, www.intel.de <http://www.intel.de>
-Managing Directors: Christin Eisenschmid, Sharon Heck, Tiffany Doon Silva  
-Chairperson of the Supervisory Board: Nicole Lau
-Registered Office: Munich
-Commercial Register: Amtsgericht Muenchen HRB 186928
+RnJvbTogQ2hyaXMgV2lsc29uIDxjaHJpcy5wLndpbHNvbkBpbnRlbC5jb20+CgpPbiBkZzIrLCBN
+SV9CQVRDSF9CVUZGRVJfU1RBUlQgfCBNSV9VU0VfUFJFRElDQVRFIHN3aXRjaGVzIHRvIHVzaW5n
+IHRoZQpNSV9TRVRfUFJFRElDQVRFX1JFU1VMVCByZWdpc3RlciBhbmQgcmVxdWlyZXMgYml0IDAg
+dG8gYmUgc2V0IHRvIHNraXAKdGhlIGxvb3BpbmcgTUlfQkFUQ0hfQlVGRkVSX1NUQVJULgoKQ2xv
+c2VzOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsLy0vaXNzdWVzLzU0
+NjMKUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5z
+a2lAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzLnAud2lsc29u
+QGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogTmlybW95IERhcyA8bmlybW95LmRhc0BpbnRlbC5j
+b20+Ci0tLQogdGVzdHMvaTkxNS9nZW1fZXhlY19mZW5jZS5jIHwgMzkgKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKystLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDMxIGluc2VydGlvbnMoKyks
+IDggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19mZW5jZS5j
+IGIvdGVzdHMvaTkxNS9nZW1fZXhlY19mZW5jZS5jCmluZGV4IGE2NDk5YTY4YS4uZDQ2OTE0YzJm
+IDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9leGVjX2ZlbmNlLmMKKysrIGIvdGVzdHMvaTkx
+NS9nZW1fZXhlY19mZW5jZS5jCkBAIC0yMzY5LDYgKzIzNjksNyBAQCBzdGF0aWMgdm9pZCB0ZXN0
+X3N5bmNvYmpfdGltZWxpbmVfbXVsdGlwbGVfZXh0X25vZGVzKGludCBmZCkKICNkZWZpbmUgSFNX
+X0NTX0dQUihuKSAgICAgICAgICAgICAgICAgICAoMHg2MDAgKyA4KihuKSkKICNkZWZpbmUgUklO
+R19USU1FU1RBTVAgICAgICAgICAgICAgICAgICAoMHgzNTgpCiAjZGVmaW5lIE1JX1BSRURJQ0FU
+RV9SRVNVTFRfMSAgICAgICAgICAgKDB4NDFjKQorI2RlZmluZSBNSV9TRVRfUFJFRElDQVRFX1JF
+U1VMVCAgICAgICAgICgweDNiOCkKIAogI2RlZmluZSBXQUlUX0JCX09GRlNFVAkJCSg2NCA8PCAy
+MCkKICNkZWZpbmUgQ09VTlRFUl9PRkZTRVQJCQkoNjUgPDwgMjApCkBAIC0yNDY3LDYgKzI0Njgs
+MTMgQEAgZ2V0X2NzX3RpbWVzdGFtcF9mcmVxdWVuY3koaW50IGZkKQogCWlndF9za2lwKCJLZXJu
+ZWwgd2l0aCBQQVJBTV9DU19USU1FU1RBTVBfRlJFUVVFTkNZIHN1cHBvcnQgcmVxdWlyZWRcbiIp
+OwogfQogCitzdGF0aWMgYm9vbCB1c2Vfc2V0X3ByZWRpY2F0ZV9yZXN1bHQoaW50IGk5MTUpCit7
+CisJdWludDE2X3QgZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGk5MTUpOworCisJcmV0dXJu
+IGludGVsX2dyYXBoaWNzX3ZlcihkZXZpZCkgPj0gSVBfVkVSKDEyLCA1MCk7Cit9CisKIHN0YXRp
+YyBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MgogYnVpbGRfd2FpdF9iYihpbnQgaTkx
+NSwKIAkgICAgICBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKmVuZ2luZSwK
+QEAgLTI1MjMsMjEgKzI1MzEsMzYgQEAgYnVpbGRfd2FpdF9iYihpbnQgaTkxNSwKIAkqYmIrKyA9
+IE1JX01BVEhfU1VCOwogCSpiYisrID0gTUlfTUFUSF9TVE9SRShNSV9NQVRIX1JFRygzKSwgTUlf
+TUFUSF9SRUdfQUNDVSk7CiAKLQkqYmIrKyA9IE1JX01BVEgoNCk7Ci0JKmJiKysgPSBNSV9NQVRI
+X0xPQUQoTUlfTUFUSF9SRUdfU1JDQSwgTUlfTUFUSF9SRUcoMCkpOwotCSpiYisrID0gTUlfTUFU
+SF9MT0FEKE1JX01BVEhfUkVHX1NSQ0IsIE1JX01BVEhfUkVHKDMpKTsKLQkqYmIrKyA9IE1JX01B
+VEhfQUREOwotCSpiYisrID0gTUlfTUFUSF9TVE9SRUlOVihNSV9NQVRIX1JFRyg0KSwgTUlfTUFU
+SF9SRUdfQ0YpOworCWlmICh1c2Vfc2V0X3ByZWRpY2F0ZV9yZXN1bHQoaTkxNSkpIHsKKwkJKmJi
+KysgPSBNSV9NQVRIKDQpOworCQkqYmIrKyA9IE1JX01BVEhfTE9BRChNSV9NQVRIX1JFR19TUkNB
+LCBNSV9NQVRIX1JFRygwKSk7CisJCSpiYisrID0gTUlfTUFUSF9MT0FEKE1JX01BVEhfUkVHX1NS
+Q0IsIE1JX01BVEhfUkVHKDMpKTsKKwkJKmJiKysgPSBNSV9NQVRIX0FERDsKKwkJKmJiKysgPSBN
+SV9NQVRIX1NUT1JFKE1JX01BVEhfUkVHKDQpLCBNSV9NQVRIX1JFR19DRik7CiAKLQkqYmIrKyA9
+IE1JX0xPQURfUkVHSVNURVJfUkVHOwotCSpiYisrID0gbW1pb19iYXNlICsgSFNXX0NTX0dQUig0
+KTsKLQkqYmIrKyA9IG1taW9fYmFzZSArIE1JX1BSRURJQ0FURV9SRVNVTFRfMTsKKwkJKmJiKysg
+PSBNSV9MT0FEX1JFR0lTVEVSX1JFRzsKKwkJKmJiKysgPSBtbWlvX2Jhc2UgKyBIU1dfQ1NfR1BS
+KDQpOworCQkqYmIrKyA9IG1taW9fYmFzZSArIE1JX1NFVF9QUkVESUNBVEVfUkVTVUxUOworCX0g
+ZWxzZSB7CisJCSpiYisrID0gTUlfTUFUSCg0KTsKKwkJKmJiKysgPSBNSV9NQVRIX0xPQUQoTUlf
+TUFUSF9SRUdfU1JDQSwgTUlfTUFUSF9SRUcoMCkpOworCQkqYmIrKyA9IE1JX01BVEhfTE9BRChN
+SV9NQVRIX1JFR19TUkNCLCBNSV9NQVRIX1JFRygzKSk7CisJCSpiYisrID0gTUlfTUFUSF9BREQ7
+CisJCSpiYisrID0gTUlfTUFUSF9TVE9SRUlOVihNSV9NQVRIX1JFRyg0KSwgTUlfTUFUSF9SRUdf
+Q0YpOworCisJCSpiYisrID0gTUlfTE9BRF9SRUdJU1RFUl9SRUc7CisJCSpiYisrID0gbW1pb19i
+YXNlICsgSFNXX0NTX0dQUig0KTsKKwkJKmJiKysgPSBtbWlvX2Jhc2UgKyBNSV9QUkVESUNBVEVf
+UkVTVUxUXzE7CisJfQogCiAJKmJiKysgPSBNSV9CQVRDSF9CVUZGRVJfU1RBUlQgfCBNSV9CQVRD
+SF9QUkVESUNBVEUgfCAxOwogCXJlbG9jcy0+b2Zmc2V0ID0gb2Zmc2V0X2luX3BhZ2UoYmIpOwog
+CSpiYisrID0gb2JqLm9mZnNldCArIHJlbG9jcy0+ZGVsdGE7CiAJKmJiKysgPSBvYmoub2Zmc2V0
+ID4+IDMyOwogCisJaWYgKHVzZV9zZXRfcHJlZGljYXRlX3Jlc3VsdChpOTE1KSkKKwkJKmJiKysg
+PSAxIDw8IDIzOyAvLyBNSV9TRVRfUFJFRElDQVRFCisKIAkqYmIrKyA9IE1JX0JBVENIX0JVRkZF
+Ul9FTkQ7CiAKIAltdW5tYXAobWFwLCA0MDk2KTsKLS0gCjIuMzUuMQoKSW50ZWwgRGV1dHNjaGxh
+bmQgR21iSApSZWdpc3RlcmVkIEFkZHJlc3M6IEFtIENhbXBlb24gMTAsIDg1NTc5IE5ldWJpYmVy
+ZywgR2VybWFueQpUZWw6ICs0OSA4OSA5OSA4ODUzLTAsIHd3dy5pbnRlbC5kZSA8aHR0cDovL3d3
+dy5pbnRlbC5kZT4KTWFuYWdpbmcgRGlyZWN0b3JzOiBDaHJpc3RpbiBFaXNlbnNjaG1pZCwgU2hh
+cm9uIEhlY2ssIFRpZmZhbnkgRG9vbiBTaWx2YSAgCkNoYWlycGVyc29uIG9mIHRoZSBTdXBlcnZp
+c29yeSBCb2FyZDogTmljb2xlIExhdQpSZWdpc3RlcmVkIE9mZmljZTogTXVuaWNoCkNvbW1lcmNp
+YWwgUmVnaXN0ZXI6IEFtdHNnZXJpY2h0IE11ZW5jaGVuIEhSQiAxODY5MjgK
