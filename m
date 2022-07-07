@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2072.outbound.protection.outlook.com [40.107.223.72])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EB5114A998
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 20:38:09 +0000 (UTC)
+From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+To: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 7 Jul 2022 20:38:07 +0000
+Message-ID: <BL1PR12MB5144C46B3DD89991690CDB71F7839@BL1PR12MB5144.namprd12.prod.outlook.com>
+References: <20220707182207.3736-1-vitaly.prosyak@amd.com>
+ <20220707182207.3736-6-vitaly.prosyak@amd.com>
+In-Reply-To: <20220707182207.3736-6-vitaly.prosyak@amd.com>
+Content-Language: en-US
 Content-Type: multipart/alternative;
- boundary="===============0996691623623882911=="
+ boundary="_000_BL1PR12MB5144C46B3DD89991690CDB71F7839BL1PR12MB5144namp_"
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Thu, 07 Jul 2022 12:35:56 -0000
-Message-ID: <165719735668.2214.15311900879698509596@emeril.freedesktop.org>
-References: <20220630145816.68461-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220630145816.68461-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/kms=5Flegacy=5Fcolorkey=3A_IGT_test_Cleanup_=28rev4=29?=
+Subject: Re: [igt-dev] [PATCH 6/7] lib/amdgpu: add shaders in binary form
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,230 +23,396 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Olsak, Marek" <Marek.Olsak@amd.com>, "Koenig,
+ Christian" <Christian.Koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0996691623623882911==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--_000_BL1PR12MB5144C46B3DD89991690CDB71F7839BL1PR12MB5144namp_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-== Series Details ==
+[AMD Official Use Only - General]
 
-Series: tests/i915/kms_legacy_colorkey: IGT test Cleanup (rev4)
-URL   : https://patchwork.freedesktop.org/series/105222/
-State : success
+Maybe you want to name the file for the gfx family where the shaders are re=
+levant?  E.g., gfx8_shaders.c, gfc9_shaders.c. etc.?
 
-== Summary ==
+Alex
 
-CI Bug Log - changes from CI_DRM_11857 -> IGTPW_7477
-====================================================
+________________________________
+From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
+Sent: Thursday, July 7, 2022 2:22 PM
+To: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
+Cc: Olsak, Marek <Marek.Olsak@amd.com>; Koenig, Christian <Christian.Koenig=
+@amd.com>; Deucher, Alexander <Alexander.Deucher@amd.com>; Prosyak, Vitaly =
+<Vitaly.Prosyak@amd.com>
+Subject: [PATCH 6/7] lib/amdgpu: add shaders in binary form
 
-Summary
--------
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-  **SUCCESS**
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ lib/amdgpu/amd_shaders.c | 51 ++++++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_shaders.h | 32 +++++++++++++++++++++++++
+ lib/meson.build          |  1 +
+ 3 files changed, 84 insertions(+)
+ create mode 100644 lib/amdgpu/amd_shaders.c
+ create mode 100644 lib/amdgpu/amd_shaders.h
 
-  No regressions found.
+diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c
+new file mode 100644
+index 00000000..31722744
+--- /dev/null
++++ b/lib/amdgpu/amd_shaders.c
+@@ -0,0 +1,51 @@
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *  *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software=
+"),
++ * to deal in the Software without restriction, including without limitati=
+on
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense=
+,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included=
+ in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS=
+ OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY=
+,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHAL=
+L
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES O=
+R
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ *
++ */
++
++#include "amd_shaders.h"
++
++
++#define CODE_OFFSET 512
++#define DATA_OFFSET 1024
++
++#define SWAP_32(num) (((num & 0xff000000) >> 24) | \
++                     ((num & 0x0000ff00) << 8) | \
++                     ((num & 0x00ff0000) >> 8) | \
++                     ((num & 0x000000ff) << 24))
++
++
++static  uint32_t shader_bin[] =3D {
++       SWAP_32(0x800082be), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP=
+_32(0x040085bf),
++       SWAP_32(0x02810281), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP=
+_32(0xfcff84bf),
++       SWAP_32(0xff0083be), SWAP_32(0x00f00000), SWAP_32(0xc10082be), SWAP=
+_32(0xaa02007e),
++       SWAP_32(0x000070e0), SWAP_32(0x00000080), SWAP_32(0x000081bf)
++};
++
++const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offse=
+t, uint32_t *data_offset)
++{
++       *size_bytes =3D sizeof(shader_bin);
++       *code_offset =3D  CODE_OFFSET;
++       *data_offset =3D DATA_OFFSET;
++       return shader_bin;
++}
+diff --git a/lib/amdgpu/amd_shaders.h b/lib/amdgpu/amd_shaders.h
+new file mode 100644
+index 00000000..1abb23ac
+--- /dev/null
++++ b/lib/amdgpu/amd_shaders.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software=
+"),
++ * to deal in the Software without restriction, including without limitati=
+on
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense=
+,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included=
+ in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS=
+ OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY=
+,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHAL=
+L
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES O=
+R
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ *
++ */
++#ifndef AMD_SHADERS_H
++#define AMD_SHADERS_H
++
++#include "drmtest.h"
++
++const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offse=
+t, uint32_t *data_offset);
++
++#endif
+diff --git a/lib/meson.build b/lib/meson.build
+index 12b2cc5d..98c2803b 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -132,6 +132,7 @@ if libdrm_amdgpu.found()
+                 'amdgpu/amd_compute.c',
+                 'amdgpu/amd_gfx.c',
+                 'amdgpu/amd_ip_blocks.c',
++               'amdgpu/amd_shaders.c',
+         ]
+ endif
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/index.html
-
-Participating hosts (45 -> 34)
-------------------------------
-
-  Missing    (11): fi-bdw-samus bat-dg1-6 bat-dg1-5 bat-dg2-9 bat-adlp-6 bat-adlp-4 fi-ctg-p8600 bat-adln-1 bat-rpls-1 bat-rpls-2 bat-jsl-1 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7477 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gem:
-    - fi-blb-e6850:       NOTRUN -> [DMESG-FAIL][1] ([i915#4528])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-blb-e6850/igt@i915_selftest@live@gem.html
-    - fi-pnv-d510:        NOTRUN -> [DMESG-FAIL][2] ([i915#4528])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-pnv-d510/igt@i915_selftest@live@gem.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-ivb-3770:        NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-ivb-3770/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-snb-2600:        NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-kefka:       [PASS][5] -> [FAIL][6] ([i915#6298])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-ivb-3770:        [INCOMPLETE][7] ([i915#3303] / [i915#5370]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
-    - fi-snb-2600:        [INCOMPLETE][9] ([i915#3921]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [DMESG-FAIL][11] ([i915#4528]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-blb-e6850/igt@i915_selftest@live@requests.html
-    - fi-pnv-d510:        [DMESG-FAIL][13] ([i915#4528]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-pnv-d510/igt@i915_selftest@live@requests.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-pnv-d510/igt@i915_selftest@live@requests.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#3921]: https://gitlab.freedesktop.org/drm/intel/issues/3921
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#5370]: https://gitlab.freedesktop.org/drm/intel/issues/5370
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+--
+2.25.1
 
 
-Build changes
--------------
+--_000_BL1PR12MB5144C46B3DD89991690CDB71F7839BL1PR12MB5144namp_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6561 -> IGTPW_7477
-
-  CI-20190529: 20190529
-  CI_DRM_11857: de2555fd1402a79eb3c89db3f62944fec2026c8f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7477: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/index.html
-  IGT_6561: 4b673211d1645eaafa9da32eece4c274d8cd6c41 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_legacy_colorkey@basic
-+igt@kms_legacy_colorkey@invalid-plane
--igt@kms_legacy_colorkey
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/index.html
-
---===============0996691623623882911==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
 </head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/kms_legacy_colorkey: IGT test Cleanup (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105222/">https://patchwork.freedesktop.org/series/105222/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11857 -&gt; IGTPW_7477</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/index.html</p>
-<h2>Participating hosts (45 -&gt; 34)</h2>
-<p>Missing    (11): fi-bdw-samus bat-dg1-6 bat-dg1-5 bat-dg2-9 bat-adlp-6 bat-adlp-4 fi-ctg-p8600 bat-adln-1 bat-rpls-1 bat-rpls-2 bat-jsl-1 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7477 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gem:</p>
-<ul>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-blb-e6850/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-ivb-3770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-snb-2600/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5370">i915#5370</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-<li>
-<p>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3921">i915#3921</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>
-<p>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a></p>
-</li>
-<li>
-<p>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11857/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6561 -&gt; IGTPW_7477</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11857: de2555fd1402a79eb3c89db3f62944fec2026c8f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7477: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7477/index.html<br />
-  IGT_6561: 4b673211d1645eaafa9da32eece4c274d8cd6c41 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_legacy_colorkey@basic<br />
-+igt@kms_legacy_colorkey@invalid-plane<br />
--igt@kms_legacy_colorkey</p>
-
+<body dir=3D"ltr">
+<p style=3D"font-family:Arial;font-size:10pt;color:#0000FF;margin:5pt;" ali=
+gn=3D"Left">
+[AMD Official Use Only - General]<br>
+</p>
+<br>
+<div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Maybe you want to name the file for the gfx family where the shaders are re=
+levant?&nbsp; E.g., gfx8_shaders.c, gfc9_shaders.c. etc.?</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Alex</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div id=3D"appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
+yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> vitaly.prosyak@amd.co=
+m &lt;vitaly.prosyak@amd.com&gt;<br>
+<b>Sent:</b> Thursday, July 7, 2022 2:22 PM<br>
+<b>To:</b> igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&=
+gt;<br>
+<b>Cc:</b> Olsak, Marek &lt;Marek.Olsak@amd.com&gt;; Koenig, Christian &lt;=
+Christian.Koenig@amd.com&gt;; Deucher, Alexander &lt;Alexander.Deucher@amd.=
+com&gt;; Prosyak, Vitaly &lt;Vitaly.Prosyak@amd.com&gt;<br>
+<b>Subject:</b> [PATCH 6/7] lib/amdgpu: add shaders in binary form</font>
+<div>&nbsp;</div>
+</div>
+<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
+">
+<div class=3D"PlainText">From: Vitaly Prosyak &lt;vitaly.prosyak@amd.com&gt=
+;<br>
+<br>
+Signed-off-by: Vitaly Prosyak &lt;vitaly.prosyak@amd.com&gt;<br>
+---<br>
+&nbsp;lib/amdgpu/amd_shaders.c | 51 +++++++++++++++++++++++++++++++++++++++=
++<br>
+&nbsp;lib/amdgpu/amd_shaders.h | 32 +++++++++++++++++++++++++<br>
+&nbsp;lib/meson.build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ |&nbsp; 1 +<br>
+&nbsp;3 files changed, 84 insertions(+)<br>
+&nbsp;create mode 100644 lib/amdgpu/amd_shaders.c<br>
+&nbsp;create mode 100644 lib/amdgpu/amd_shaders.h<br>
+<br>
+diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c<br>
+new file mode 100644<br>
+index 00000000..31722744<br>
+--- /dev/null<br>
++++ b/lib/amdgpu/amd_shaders.c<br>
+@@ -0,0 +1,51 @@<br>
++/*<br>
++ * Copyright 2014 Advanced Micro Devices, Inc.<br>
++ * Copyright 2022 Advanced Micro Devices, Inc.<br>
++ *&nbsp; *<br>
++ * Permission is hereby granted, free of charge, to any person obtaining a=
+<br>
++ * copy of this software and associated documentation files (the &quot;Sof=
+tware&quot;),<br>
++ * to deal in the Software without restriction, including without limitati=
+on<br>
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense=
+,<br>
++ * and/or sell copies of the Software, and to permit persons to whom the<b=
+r>
++ * Software is furnished to do so, subject to the following conditions:<br=
+>
++ *<br>
++ * The above copyright notice and this permission notice shall be included=
+ in<br>
++ * all copies or substantial portions of the Software.<br>
++ *<br>
++ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIN=
+D, EXPRESS OR<br>
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY=
+,<br>
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.&nbsp; IN NO EVENT=
+ SHALL<br>
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES O=
+R<br>
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,<b=
+r>
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR<b=
+r>
++ * OTHER DEALINGS IN THE SOFTWARE.<br>
++ *<br>
++ *<br>
++ */<br>
++<br>
++#include &quot;amd_shaders.h&quot;<br>
++<br>
++<br>
++#define CODE_OFFSET 512<br>
++#define DATA_OFFSET 1024<br>
++<br>
++#define SWAP_32(num) (((num &amp; 0xff000000) &gt;&gt; 24) | \<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ((num &amp; 0x0000ff00) &lt;=
+&lt; 8) | \<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ((num &amp; 0x00ff0000) &gt;=
+&gt; 8) | \<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ((num &amp; 0x000000ff) &lt;=
+&lt; 24))<br>
++<br>
++<br>
++static&nbsp; uint32_t shader_bin[] =3D {<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWAP_32(0x800082be), SWAP_32(0x02ff08=
+bf), SWAP_32(0x7f969800), SWAP_32(0x040085bf),<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWAP_32(0x02810281), SWAP_32(0x02ff08=
+bf), SWAP_32(0x7f969800), SWAP_32(0xfcff84bf),<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWAP_32(0xff0083be), SWAP_32(0x00f000=
+00), SWAP_32(0xc10082be), SWAP_32(0xaa02007e),<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWAP_32(0x000070e0), SWAP_32(0x000000=
+80), SWAP_32(0x000081bf)<br>
++};<br>
++<br>
++const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offse=
+t, uint32_t *data_offset)<br>
++{<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *size_bytes =3D sizeof(shader_bin);<b=
+r>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *code_offset =3D&nbsp; CODE_OFFSET;<b=
+r>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *data_offset =3D DATA_OFFSET;<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return shader_bin;<br>
++}<br>
+diff --git a/lib/amdgpu/amd_shaders.h b/lib/amdgpu/amd_shaders.h<br>
+new file mode 100644<br>
+index 00000000..1abb23ac<br>
+--- /dev/null<br>
++++ b/lib/amdgpu/amd_shaders.h<br>
+@@ -0,0 +1,32 @@<br>
++/*<br>
++ * Copyright 2014 Advanced Micro Devices, Inc.<br>
++ * Copyright 2022 Advanced Micro Devices, Inc.<br>
++ *<br>
++ * Permission is hereby granted, free of charge, to any person obtaining a=
+<br>
++ * copy of this software and associated documentation files (the &quot;Sof=
+tware&quot;),<br>
++ * to deal in the Software without restriction, including without limitati=
+on<br>
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense=
+,<br>
++ * and/or sell copies of the Software, and to permit persons to whom the<b=
+r>
++ * Software is furnished to do so, subject to the following conditions:<br=
+>
++ *<br>
++ * The above copyright notice and this permission notice shall be included=
+ in<br>
++ * all copies or substantial portions of the Software.<br>
++ *<br>
++ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIN=
+D, EXPRESS OR<br>
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY=
+,<br>
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.&nbsp; IN NO EVENT=
+ SHALL<br>
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES O=
+R<br>
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,<b=
+r>
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR<b=
+r>
++ * OTHER DEALINGS IN THE SOFTWARE.<br>
++ *<br>
++ *<br>
++ */<br>
++#ifndef AMD_SHADERS_H<br>
++#define AMD_SHADERS_H<br>
++<br>
++#include &quot;drmtest.h&quot;<br>
++<br>
++const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offse=
+t, uint32_t *data_offset);<br>
++<br>
++#endif<br>
+diff --git a/lib/meson.build b/lib/meson.build<br>
+index 12b2cc5d..98c2803b 100644<br>
+--- a/lib/meson.build<br>
++++ b/lib/meson.build<br>
+@@ -132,6 +132,7 @@ if libdrm_amdgpu.found()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; 'amdgpu/amd_compute.c',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; 'amdgpu/amd_gfx.c',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; 'amdgpu/amd_ip_blocks.c',<br>
++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; 'amdgpu/amd_shaders.c',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]<br>
+&nbsp;endif<br>
+&nbsp;<br>
+-- <br>
+2.25.1<br>
+<br>
+</div>
+</span></font></div>
+</div>
 </body>
 </html>
 
---===============0996691623623882911==--
+--_000_BL1PR12MB5144C46B3DD89991690CDB71F7839BL1PR12MB5144namp_--
