@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD1F714A79D
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 08:56:13 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 211D411B298
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 09:25:40 +0000 (UTC)
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Jul 2022 14:22:41 +0530
-Message-Id: <20220707085241.13162-3-mohammed.thasleem@intel.com>
-In-Reply-To: <20220707085241.13162-1-mohammed.thasleem@intel.com>
-References: <20220707085241.13162-1-mohammed.thasleem@intel.com>
+Date: Thu,  7 Jul 2022 14:52:11 +0530
+Message-Id: <20220707092211.16895-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20220630145816.68461-2-mohammed.thasleem@intel.com>
+References: <20220630145816.68461-2-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v6 2/2] tests/kms_rmfb: Test Cleanup
+Subject: [igt-dev] [PATCH v4 1/1] tests/i915/kms_legacy_colorkey: Create
+ dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,55 +19,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Gupta@freedesktop.org, nidhi1.gupta@intel.com
+Cc: nidhi1.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sanitize the system state before starting the subtest.
+Modified kms_legacy_colorkey to include dynamic test cases.
 
-v2: removed display reset and commit2 from igt_main.
+v2: Updated igt_dynamic subtest names of invalid-plane.
+v3: Minor changes.
+v4: Changes in discription.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Gupta, Nidhi1 <nidhi1.gupta@intel.com>
 ---
- tests/kms_rmfb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/i915/kms_legacy_colorkey.c | 50 +++++++++++++++++++++++---------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
 
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index fb659054..7e43e1bd 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -57,12 +57,14 @@ static void
- test_rmfb(struct rmfb_data *data, igt_output_t *output, enum pipe pipe, bool reopen)
- {
- 	struct igt_fb fb, argb_fb;
-+	igt_display_t *display = &data->display;
- 	drmModeModeInfo *mode;
- 	igt_plane_t *plane;
- 	drmModeCrtc *crtc;
- 	uint64_t cursor_width, cursor_height;
- 	int num_active_planes = 0;
- 
-+	igt_display_reset(display);
- 	igt_output_set_pipe(output, pipe);
- 
- 	mode = igt_output_get_mode(output);
-@@ -145,7 +147,7 @@ test_rmfb(struct rmfb_data *data, igt_output_t *output, enum pipe pipe, bool reo
- 		drmModeFreePlane(planeres);
- 	}
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
+diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
+index de9610a7..5b2fd64b 100644
+--- a/tests/i915/kms_legacy_colorkey.c
++++ b/tests/i915/kms_legacy_colorkey.c
+@@ -43,28 +43,50 @@ static void test_plane(uint32_t plane_id, int expected_ret)
+ 				   sizeof(ckey)) == expected_ret);
  }
  
- static void
-@@ -196,5 +198,6 @@ igt_main
+-igt_simple_main
++igt_main
+ {
+-	drm_fd = drm_open_driver_master(DRIVER_INTEL);
++	igt_fixture {
++		drm_fd = drm_open_driver_master(DRIVER_INTEL);
  
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
+-	kmstest_set_vt_graphics_mode();
++		kmstest_set_vt_graphics_mode();
+ 
+-	igt_display_require(&display, drm_fd);
++		igt_display_require(&display, drm_fd);
++		for_each_pipe(&display, p) {
++			for_each_plane_on_pipe(&display, p, plane) {
++				max_id = max(max_id, plane->drm_plane->plane_id);
++			}
++		}
++
++	}
+ 
+-	for_each_pipe(&display, p) {
+-		for_each_plane_on_pipe(&display, p, plane) {
+-			bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
+-			                 plane->type == DRM_PLANE_TYPE_CURSOR);
+-			test_plane(plane->drm_plane->plane_id,
+-				   is_valid ? -ENOENT : 0);
++	igt_describe("Test to check the legacy set colorkey ioctl "
++		     "only works for sprite planes.\n");
++	igt_subtest_with_dynamic("basic") {
++		for_each_pipe(&display, p) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(p)) {
++				for_each_plane_on_pipe(&display, p, plane) {
++					bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
++							 plane->type == DRM_PLANE_TYPE_CURSOR);
+ 
+-			max_id = max(max_id, plane->drm_plane->plane_id);
++					test_plane(plane->drm_plane->plane_id,
++						   is_valid ? -ENOENT : 0);
++					max_id = max(max_id, plane->drm_plane->plane_id);
++				}
++			}
+ 		}
  	}
+ 
+ 	/* try some invalid IDs too */
+-	test_plane(0, -ENOENT);
+-	test_plane(max_id + 1, -ENOENT);
++	igt_describe("Check invalid plane id's, zero and outrange\n");
++	igt_subtest_with_dynamic("invalid-plane") {
++		igt_dynamic("zero-id")
++			test_plane(0, -ENOENT);
++		igt_dynamic("outrange-id")
++			test_plane(max_id + 1, -ENOENT);
++	}
+ 
+-	igt_display_fini(&display);
++	igt_fixture {
++		igt_display_fini(&display);
++		close(drm_fd);
++	}
  }
 -- 
 2.25.1
