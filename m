@@ -1,9 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9ED711A5AB
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 04:42:10 +0000 (UTC)
-Message-ID: <fd39961d-3a94-d406-e349-f0d729dfc48d@intel.com>
-Date: Thu, 7 Jul 2022 10:11:38 +0530
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C99411B6B6
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 05:00:08 +0000 (UTC)
+Message-ID: <15c32c55-b11d-71d8-c4b2-2fb514750cbe@intel.com>
+Date: Thu, 7 Jul 2022 10:29:46 +0530
 Content-Language: en-US
 To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
  <igt-dev@lists.freedesktop.org>
@@ -64,6 +64,11 @@ On Thu-30-06-2022 11:22 am, Mohammed Thasleem wrote:
 > +	for_each_pipe_with_single_output(&data->display, pipe, output) {
 > +		igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
 > +			      kmstest_pipe_name(pipe))
+
+Please update subtest name as <pipe_name>-<output_name>.
+
+- Bhanu
+
 > +			test_rmfb(data, output, pipe, reopen);
 > +	}
 >   }
@@ -72,11 +77,6 @@ On Thu-30-06-2022 11:22 am, Mohammed Thasleem wrote:
 >   {
 > +	const struct {
 > +		bool flags;
-
-Nit: Can you please rename this as reopen?
-
-- Bhanu
-
 > +		const char *name;
 > +		const char *description;
 > +	} tests[] = {
