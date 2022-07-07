@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0754D14A794
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 08:56:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4815514A792
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 08:56:11 +0000 (UTC)
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Jul 2022 14:22:39 +0530
-Message-Id: <20220707085241.13162-1-mohammed.thasleem@intel.com>
+Date: Thu,  7 Jul 2022 14:22:40 +0530
+Message-Id: <20220707085241.13162-2-mohammed.thasleem@intel.com>
+In-Reply-To: <20220707085241.13162-1-mohammed.thasleem@intel.com>
+References: <20220707085241.13162-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v6 0/2] tests/kms_rmfb: IGT test cleanup
+Subject: [igt-dev] [PATCH v6 1/2] tests/kms_rmfb: Create dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,15 +23,86 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert all possible subtests to dynamic and sanitize the system
-state before starting/exiting the subtest.
+Modified kms_rmfb to include dynamic test cases.
 
-Mohammed Thasleem (2):
-  tests/kms_rmfb: Create dynamic subtests
-  tests/kms_rmfb: Test Cleanup
+v2: addressed indentation, test description moved into struct
+    and added global description to test.
+v3: minor changes.
+v4: removed space.
+v5: renamed flags with reopen and minor changes in igt_dynamic_f.
 
- tests/kms_rmfb.c | 41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/kms_rmfb.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index fcd5cdad..fb659054 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -36,6 +36,9 @@
+ #define DRM_CAP_CURSOR_HEIGHT 0x9
+ #endif
+ 
++IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
++		     "the framebuffers should be removed from the crtc.");
++
+ struct rmfb_data {
+ 	int drm_fd;
+ 	igt_display_t display;
+@@ -151,13 +154,28 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
+ 	igt_output_t *output;
+ 	enum pipe pipe;
+ 
+-	for_each_pipe_with_single_output(&data->display, pipe, output)
+-		test_rmfb(data, output, pipe, reopen);
++	for_each_pipe_with_single_output(&data->display, pipe, output) {
++		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
++			      igt_output_name(output))
++			test_rmfb(data, output, pipe, reopen);
++	}
+ }
+ 
+ igt_main
+ {
++	const struct {
++		bool reopen;
++		const char *name;
++		const char *description;
++	} tests[] = {
++		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all "
++				       "planes so test this and make sure it works."},
++		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all "
++				    "planes so test this and make sure it works with fd close "
++				    "and reopen."},
++	};
+ 	struct rmfb_data data = {};
++	int i;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -168,15 +186,13 @@ igt_main
+ 		igt_display_require_output(&data.display);
+ 	}
+ 
+-	igt_describe("RMFB is supposed to free the framebuffers from any and all "
+-		     "planes so test this and make sure it works.");
+-	igt_subtest_f("rmfb-ioctl")
+-		run_rmfb_test(&data, false);
++	for (i = 0; i < ARRAY_SIZE(tests); i++) {
++		igt_describe(tests[i].description);
++		igt_subtest_with_dynamic(tests[i].name) {
++			run_rmfb_test(&data, tests[i].reopen);
+ 
+-	igt_describe("RMFB is supposed to free the framebuffers from any and all planes "
+-		     "so test this and make sure it works with fd close and reopen.");
+-	igt_subtest_f("close-fd")
+-		run_rmfb_test(&data, true);
++		}
++	}
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
 -- 
 2.25.1
