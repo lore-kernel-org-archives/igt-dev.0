@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A49D10F54F
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 17:47:37 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  7 Jul 2022 23:14:03 +0530
-Message-Id: <20220707174403.31879-3-mohammed.thasleem@intel.com>
-In-Reply-To: <20220707174403.31879-1-mohammed.thasleem@intel.com>
-References: <20220707174403.31879-1-mohammed.thasleem@intel.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2061.outbound.protection.outlook.com [40.107.93.61])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C86711AEE1
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Jul 2022 18:22:21 +0000 (UTC)
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Thu, 7 Jul 2022 14:22:01 -0400
+Message-ID: <20220707182207.3736-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 2/2] tests/i915/kms_mmap_write_crc: Test Cleanup
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 1/7] lib/amdgpu: increase number of resources
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,57 +18,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: nidhi1.gupta@intel.com
+Cc: alexander.deucher@amd.com, marek.olsak@amd.com, christian.koenig@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sanitize the system state before starting the subtest.
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-v2: Minor changes.
+Add arrays of bo's for VRAM and GTT.
+Eviction test uses 4 bo resources.
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- tests/i915/kms_mmap_write_crc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ lib/amdgpu/amd_ip_blocks.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index c732308c..2f116a5e 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -169,6 +169,8 @@ static void prepare_crtc(data_t *data)
- 	igt_output_t *output = data->output;
- 	drmModeModeInfo *mode;
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index cb7d1474..c16ad179 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -58,11 +58,13 @@ struct amdgpu_ring_context {
  
-+	igt_display_reset(display);
-+
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
+ 	amdgpu_bo_handle bo;
+ 	amdgpu_bo_handle bo2;
++	amdgpu_bo_handle boa_vram[2];
++	amdgpu_bo_handle boa_gtt[2];
  
-@@ -204,7 +206,7 @@ static void cleanup_crtc(data_t *data)
+ 	amdgpu_context_handle context_handle;
+ 	struct drm_amdgpu_info_hw_ip hw_ip_info;  /* result of amdgpu_query_hw_ip_info */
  
- 	igt_plane_set_fb(data->primary, NULL);
+-	amdgpu_bo_handle resources[2]; /* amdgpu_bo_alloc_and_map */
++	amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
+ 	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
+ 	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
  
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit(display);
- 
- 	igt_remove_fb(data->drm_fd, &data->fb[0]);
-@@ -262,6 +264,7 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
- 		igt_require_pipe_crc(data.drm_fd);
- 
- 		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
- 
- 		fork_cpuhog_helper();
- 	}
-@@ -287,6 +290,7 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
- 
- 		igt_stop_helper(&hog);
- 	}
 -- 
 2.25.1
