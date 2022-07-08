@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 494AE10E53D
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Jul 2022 05:29:01 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  8 Jul 2022 10:59:06 +0530
-Message-Id: <20220708052906.1896-1-swati2.sharma@intel.com>
-MIME-Version: 1.0
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2064.outbound.protection.outlook.com [40.107.237.64])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17CAD10E51F
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Jul 2022 06:20:53 +0000 (UTC)
+Message-ID: <f1c609cc-4453-13e4-fa78-f1ca5cbd4354@amd.com>
+Date: Fri, 8 Jul 2022 08:20:44 +0200
+Content-Language: en-US
+To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
+References: <20220707182811.3805-1-vitaly.prosyak@amd.com>
+From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20220707182811.3805-1-vitaly.prosyak@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc: Skip test if DP res. <
- 5K
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH 1/7] lib/amdgpu: increase number of resources
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,65 +21,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: alexander.deucher@amd.com, marek.olsak@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-While rewriting the kms_dsc IGT; missed one condition.
-Skip test if connector type is DP and resolution
-is less than 5K since force dsc enable supports resolutions
-above 5K in DP.
+Am 07.07.22 um 20:28 schrieb vitaly.prosyak@amd.com:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>
+> Add arrays of bo's for VRAM and GTT.
+> Eviction test uses 4 bo resources.
+>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/kms_dsc.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+Of hand that looks totally clean and well organized.
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 3506fcb52..d8f924a93 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -165,6 +165,23 @@ static bool check_dsc_on_connector(data_t *data)
- 	return true;
- }
- 
-+/* Force dsc enable supports resolutions above 5K in DP */
-+static bool check_5k_dp_test_constraint(data_t *data)
-+{
-+	igt_output_t *output = data->output;
-+	drmModeConnector *connector = output->config.connector;
-+	drmModeModeInfo *mode = get_highres_mode(output);
-+
-+	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
-+	    mode->hdisplay < 5120) {
-+		igt_debug("Force dsc enable does not support res. < 5k in %s\n",
-+			   output->name);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static bool check_big_joiner_test_constraint(data_t *data,
- 					     enum dsc_test_type test_type)
- {
-@@ -285,6 +302,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
- 	test_cleanup(data);
- }
- 
-+
- static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp, unsigned int plane_format)
- {
- 	igt_display_t *display = &data->display;
-@@ -300,6 +318,9 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp, unsign
- 		if (!check_dsc_on_connector(data))
- 			continue;
- 
-+		if (!check_5k_dp_test_constraint(data))
-+			continue;
-+
- 		if (!check_big_joiner_test_constraint(data, test_type))
- 			continue;
- 
--- 
-2.25.1
+Feel free to add an Acked-by: Christian König <christian.koenig@amd.com> 
+to the whole series.
+
+Regards,
+Christian.
+
+> ---
+>   lib/amdgpu/amd_ip_blocks.h | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+> index cb7d1474..c16ad179 100644
+> --- a/lib/amdgpu/amd_ip_blocks.h
+> +++ b/lib/amdgpu/amd_ip_blocks.h
+> @@ -58,11 +58,13 @@ struct amdgpu_ring_context {
+>   
+>   	amdgpu_bo_handle bo;
+>   	amdgpu_bo_handle bo2;
+> +	amdgpu_bo_handle boa_vram[2];
+> +	amdgpu_bo_handle boa_gtt[2];
+>   
+>   	amdgpu_context_handle context_handle;
+>   	struct drm_amdgpu_info_hw_ip hw_ip_info;  /* result of amdgpu_query_hw_ip_info */
+>   
+> -	amdgpu_bo_handle resources[2]; /* amdgpu_bo_alloc_and_map */
+> +	amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
+>   	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
+>   	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
+>   
