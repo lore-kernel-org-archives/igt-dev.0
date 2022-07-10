@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D27DC18A0CD
- for <igt-dev@lists.freedesktop.org>; Sun, 10 Jul 2022 17:56:16 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-To: matthew.auld@intel.com, priyanka.dandamudi@intel.com,
- igt-dev@lists.freedesktop.org
-Date: Sun, 10 Jul 2022 23:15:07 +0530
-Message-Id: <20220710174507.2465336-1-priyanka.dandamudi@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2607855885024945966=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t,
- v4] tests/i915/i915_module_load: Test resizable bar support
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Date: Sun, 10 Jul 2022 18:48:29 -0000
+Message-ID: <165747890984.6684.4838869766511721383@emeril.freedesktop.org>
+References: <20220710174507.2465336-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20220710174507.2465336-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/i915=5Fmodule=5Fload=3A_Test_resizable_bar_support_=28rev4?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,141 +18,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+--===============2607855885024945966==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-New test named resize bar has been added which tests whether
-bar gets resized with different supported sizes.
+== Series Details ==
 
-v2: Added code to check for bad bar sizes.
-Modified code to check for support of lmem_bar_size modparam.(Petri)
+Series: tests/i915/i915_module_load: Test resizable bar support (rev4)
+URL   : https://patchwork.freedesktop.org/series/105141/
+State : success
 
-v3: Added test description.(Kamil)
-Updated driver_load_unload() name to driver_load_with_lmem_bar_size().
-Used for_each_memory_region() to check for lmem instance and some minor
-code modifications.(Matt)
+== Summary ==
 
-Cc: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
----
- tests/i915/i915_module_load.c | 88 +++++++++++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
+CI Bug Log - changes from CI_DRM_11862 -> IGTPW_7492
+====================================================
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index 4705f3d6..05863c47 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -38,6 +38,9 @@
- #include "igt_sysfs.h"
- #include "igt_core.h"
- 
-+#define BAR_SIZE_SHIFT 20
-+#define MIN_BAR_SIZE 256
-+
- IGT_TEST_DESCRIPTION("Tests the i915 module loading.");
- 
- static void store_all(int i915)
-@@ -260,6 +263,46 @@ static void load_and_check_i915(void)
- 	gem_sanitycheck();
- }
- 
-+static uint32_t  driver_load_with_lmem_bar_size(uint32_t lmem_bar_size, bool check_support)
-+{
-+	int i915 = -1;
-+	char lmem_bar[64];
-+
-+	igt_i915_driver_unload();
-+	if (lmem_bar_size == 0)
-+		igt_assert_eq(igt_i915_driver_load(NULL), 0);
-+	else {
-+		sprintf(lmem_bar, "lmem_bar_size=%u", lmem_bar_size);
-+		igt_assert_eq(igt_i915_driver_load(lmem_bar), 0);
-+	}
-+
-+	i915 = __drm_open_driver(DRIVER_INTEL);
-+	igt_require_fd(i915);
-+	igt_require_gem(i915);
-+	igt_require(gem_has_lmem(i915));
-+
-+	if (check_support) {
-+		char *tmp;
-+
-+		tmp = __igt_params_get(i915, "lmem_bar_size");
-+		if (!tmp)
-+			igt_skip("lmem_bar_size modparam not supported on this kernel. Skipping the test.\n");
-+		free(tmp);
-+	}
-+
-+	for_each_memory_region(r, i915) {
-+		if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE) {
-+			lmem_bar_size = (r->cpu_size >> BAR_SIZE_SHIFT);
-+
-+			igt_skip_on_f(lmem_bar_size == 0, "CPU visible size should be greater than zero. Skipping for older kernel.\n");
-+		}
-+	}
-+
-+	close(i915);
-+
-+	return lmem_bar_size;
-+}
-+
- igt_main
- {
- 	igt_describe("Check if i915 and friends are not yet loaded, then load them.");
-@@ -320,5 +363,50 @@ igt_main
- 		/* inject_fault() leaves the module unloaded */
- 	}
- 
-+	igt_describe("Check whether lmem bar size can be resized to only supported sizes.");
-+	igt_subtest("resize-bar") {
-+		uint32_t result_bar_size;
-+		uint32_t lmem_bar_size;
-+		int i915 = -1;
-+
-+		if (igt_kmod_is_loaded("i915")) {
-+			i915 = __drm_open_driver(DRIVER_INTEL);
-+			igt_require_fd(i915);
-+			igt_require_gem(i915);
-+			igt_require(gem_has_lmem(i915));
-+			igt_skip_on_f(igt_sysfs_get_num_gt(i915) > 1, "Skips for more than one lmem instance.\n");
-+			close(i915);
-+		}
-+
-+		/* Test for lmem_bar_size modparam support */
-+		lmem_bar_size = driver_load_with_lmem_bar_size(MIN_BAR_SIZE, true);
-+		igt_assert_eq(lmem_bar_size, MIN_BAR_SIZE);
-+
-+		lmem_bar_size = driver_load_with_lmem_bar_size(0, false);
-+
-+		lmem_bar_size = roundup_power_of_two(lmem_bar_size);
-+
-+		igt_skip_on_f(lmem_bar_size == MIN_BAR_SIZE, "Bar is already set to minimum size.\n");
-+
-+		while (lmem_bar_size > MIN_BAR_SIZE) {
-+			lmem_bar_size = lmem_bar_size >> 1;
-+
-+			result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
-+
-+			igt_assert_f(lmem_bar_size == result_bar_size, "Bar couldn't be resized.\n");
-+		}
-+
-+		/* Test with unsupported sizes */
-+		lmem_bar_size = 80;
-+		result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
-+		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.\n");
-+
-+		lmem_bar_size = 16400;
-+		result_bar_size = driver_load_with_lmem_bar_size(lmem_bar_size, false);
-+		igt_assert_f(lmem_bar_size != result_bar_size, "Bar resized to unsupported size.\n");
-+
-+		igt_i915_driver_unload();
-+	}
-+
- 	/* Subtests should unload the module themselves if they use modparams */
- }
--- 
-2.27.0
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/index.html
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Additional (1): bat-dg2-9 
+  Missing    (7): fi-kbl-soraka fi-cml-u2 fi-rkl-11600 fi-hsw-4200u fi-icl-u2 fi-ctg-p8600 bat-adln-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7492 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][1] -> [INCOMPLETE][2] ([i915#4785])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11862/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_busy@basic@flip:
+    - bat-adlp-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#3576]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11862/bat-adlp-4/igt@kms_busy@basic@flip.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/bat-adlp-4/igt@kms_busy@basic@flip.html
+
+  * igt@runner@aborted:
+    - fi-hsw-4770:        NOTRUN -> [FAIL][5] ([fdo#109271] / [i915#4312] / [i915#5594] / [i915#6246])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/fi-hsw-4770/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [DMESG-FAIL][6] ([i915#4494] / [i915#4957]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11862/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
+    - {bat-adlp-6}:       [DMESG-WARN][8] ([i915#3576]) -> [PASS][9] +1 similar issue
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11862/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3576]: https://gitlab.freedesktop.org/drm/intel/issues/3576
+  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
+  [i915#5174]: https://gitlab.freedesktop.org/drm/intel/issues/5174
+  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
+  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
+  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
+  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
+  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6563 -> IGTPW_7492
+
+  CI-20190529: 20190529
+  CI_DRM_11862: ffee806d103b9604db7eb9cd689c098aca1ffa96 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7492: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/index.html
+  IGT_6563: 7d43b49bf10788d4870668f93a800888fc8ab339 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@i915_module_load@resize-bar
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/index.html
+
+--===============2607855885024945966==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/i915_module_load: Test resizable bar support (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/105141/">https://patchwork.freedesktop.org/series/105141/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11862 -&gt; IGTPW_7492</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/index.html</p>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Additional (1): bat-dg2-9 <br />
+  Missing    (7): fi-kbl-soraka fi-cml-u2 fi-rkl-11600 fi-hsw-4200u fi-icl-u2 fi-ctg-p8600 bat-adln-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7492 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11862/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11862/bat-adlp-4/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/bat-adlp-4/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11862/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-edp1:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11862/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3576">i915#3576</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/bat-adlp-6/igt@kms_flip@basic-flip-vs-modeset@b-edp1.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6563 -&gt; IGTPW_7492</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11862: ffee806d103b9604db7eb9cd689c098aca1ffa96 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7492: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7492/index.html<br />
+  IGT_6563: 7d43b49bf10788d4870668f93a800888fc8ab339 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@i915_module_load@resize-bar</p>
+
+</body>
+</html>
+
+--===============2607855885024945966==--
