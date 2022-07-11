@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75CB98E99B
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Jul 2022 14:00:46 +0000 (UTC)
-From: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B69614ABDE
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Jul 2022 14:14:12 +0000 (UTC)
+Date: Mon, 11 Jul 2022 10:14:05 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
  "Srivatsa, Anusha" <anusha.srivatsa@intel.com>, "Gupta, Anshuman"
  <anshuman.gupta@intel.com>
-Date: Mon, 11 Jul 2022 14:00:42 +0000
-Message-ID: <7bcf69369cce79fcf56dbfb6009579529859487b.camel@intel.com>
+Message-ID: <YswwLe67ReJKGUSy@intel.com>
 References: <20220708181744.398984-1-anusha.srivatsa@intel.com>
  <19d53e1a0dee4cb28ddbc68ec7859d65@intel.com>
-In-Reply-To: <19d53e1a0dee4cb28ddbc68ec7859d65@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <729AC7FABE69EB45BBD801D2E4EF61BA@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <7bcf69369cce79fcf56dbfb6009579529859487b.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7bcf69369cce79fcf56dbfb6009579529859487b.camel@intel.com>
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [i-g-t] tests/i915/i915_pm_dc: Remove PC8+ dependency
  from DC9
@@ -29,46 +29,78 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDIyLTA3LTExIGF0IDA0OjExICswMDAwLCBHdXB0YSwgQW5zaHVtYW4gd3JvdGU6
-DQo+IA0KPiANCj4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+IEZyb206IFNyaXZh
-dHNhLCBBbnVzaGEgPGFudXNoYS5zcml2YXRzYUBpbnRlbC5jb20+DQo+ID4gU2VudDogRnJpZGF5
-LCBKdWx5IDgsIDIwMjIgMTE6NDggUE0NCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmcNCj4gPiBDYzogU3JpdmF0c2EsIEFudXNoYSA8YW51c2hhLnNyaXZhdHNhQGludGVsLmNv
-bT47IERlYWssIEltcmUNCj4gPiA8aW1yZS5kZWFrQGludGVsLmNvbT47IEd1cHRhLCBBbnNodW1h
-biA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwuY29tPjsNCj4gPiBWaXZpLA0KPiA+IFJvZHJpZ28gPHJv
-ZHJpZ28udml2aUBpbnRlbC5jb20+DQo+ID4gU3ViamVjdDogW2ktZy10XSB0ZXN0cy9pOTE1L2k5
-MTVfcG1fZGM6IFJlbW92ZSBQQzgrIGRlcGVuZGVuY3kgZnJvbQ0KPiA+IERDOQ0KPiA+IA0KPiA+
-IERpZmZlcmVudCBmcm9tIERDNiwgREM5IGRvZXMgbm90IGRlcGVuZCBvbiBCSU9TL1BDVSB0byBl
-eGVjdXRlIHNhdmUNCj4gPiBhbmQNCj4gPiByZXN0b3JlIG9yIGFueSBvdGhlciBzZXF1ZW5jZSB3
-aGVuIGdvaW5nIHRvIFBDOS9QQzEwDQo+IENvbW1pdCBtZXNzYWdlIHNob3VsZCBleHBsYWluIHRo
-aXMgaXMgYSBjaGFuZ2UgZm9yIGFsbCBER0ZYIHBsYXRmb3JtLg0KDQp5ZWFwLiB0aGUgY29tbWl0
-IG1lc3NhZ2UgbmVlZHMgdG8gY2hhbmdlIGFzIHdlbGwuDQoNCmFuZCBJJ2Qgc2F5IHByZWZlcmFi
-bHkgd2Ugd291bGQgaGF2ZSB0aGF0IElTX0RHRlggcGF0Y2ggaW4gcGxhY2UgYW5kDQp1c2UgdGhh
-dCBpbnN0ZWFkIG9mIGluZGl2aWR1YWwgcGxhdGZvcm1zLg0KDQpUaGF0IHBhdGNoIGdvdCBuYWNr
-ZWQgYmVjYXVzZSBoYXNfbG1lbSBpcyBwcmVmZXJyZWQsIGJ1dCBpbiB0aGlzDQpjYXNlIHRoZSBs
-bWVtIGNoZWNrIG1ha2VzIG5vdCBtdWNoIHNlbnNlIGFuZCB0aGUgY2xlYW4gd2F5IGlzIHRoZQ0K
-SVNfREdGWC4gU28gbWF5YmUgd2UgaGF2ZSBhIGdvb2QgcmVhc29uIGFmdGVyIGFsbC4uDQoNCg0K
-PiBUaGFua3MsDQo+IEFuc2h1bWFuIEd1cHRhLg0KPiA+IA0KPiA+IERDOSBhY3R1YWxseSBkZXBl
-bmRzIG9uIEQzIGFuZCBQQ09ERSBzaW1wbHkgcmVtb3ZlIHBvd2VyIGlmIFNXDQo+ID4gYWxsb3dl
-ZA0KPiA+IA0KPiA+IHYyOiByZXNyaWN0IHRoZSBjaGVjayBmb3IgaWdmeCBvbmx5Lg0KPiA+IA0K
-PiA+IENjOiBJbXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+DQo+ID4gQ2M6IEFuc2h1bWFu
-IEd1cHRhIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+DQo+ID4gQ2M6IEFudXNoYSBTcml2YXRz
-YSA8YW51c2hhLnNyaXZhdHNhQGludGVsLmNvbT4NCj4gPiBDYzogUm9kcmlnbyBWaXZpIDxyb2Ry
-aWdvLnZpdmlAaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFJvZHJpZ28gVml2aSA8cm9k
-cmlnby52aXZpQGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBBbnVzaGEgU3JpdmF0c2Eg
-PGFudXNoYS5zcml2YXRzYUBpbnRlbC5jb20+KHYyKQ0KPiA+IC0tLQ0KPiA+IMKgdGVzdHMvaTkx
-NS9pOTE1X3BtX2RjLmMgfCA1ICsrKy0tDQo+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRp
-b25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1
-L2k5MTVfcG1fZGMuYyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jDQo+ID4gaW5kZXgNCj4gPiBh
-NzgwZjJjYi4uNTEzMjczNGIgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvaTkxNS9pOTE1X3BtX2Rj
-LmMNCj4gPiArKysgYi90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYw0KPiA+IEBAIC01MzIsOCArNTMy
-LDkgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gPiANCj4gPiDCoGlndF9k
-ZXNjcmliZSgiVGhpcyB0ZXN0IHZhbGlkYXRlcyBkaXNwbGF5IGVuZ2luZSBlbnRyeSB0byBEQzkN
-Cj4gPiBzdGF0ZSIpOw0KPiA+IMKgaWd0X3N1YnRlc3QoImRjOS1kcG1zIikgew0KPiA+IC0NCj4g
-PiBpZ3RfcmVxdWlyZV9mKGlndF9wbV9wYzhfcGx1c19yZXNpZGVuY2llc19lbmFibGVkKGRhdGEu
-bXNyX2ZkKSwNCj4gPiAtIlBDOCsgcmVzaWRlbmNpZXMgbm90IHN1cHBvcnRlZFxuIik7DQo+ID4g
-K2lmICghKElTX0RHMShkYXRhLmRldmlkKSB8fCBJU19ERzIoZGF0YS5kZXZpZCkpKQ0KPiA+ICsN
-Cj4gPiBpZ3RfcmVxdWlyZV9mKGlndF9wbV9wYzhfcGx1c19yZXNpZGVuY2llc19lbmFibGVkKGRh
-dGEubXNyX2ZkKSwNCj4gPiArwqDCoMKgwqDCoCAiUEM4KyByZXNpZGVuY2llcyBub3Qgc3VwcG9y
-dGVkXG4iKTsNCj4gPiDCoHRlc3RfZGM5X2RwbXMoJmRhdGEpOw0KPiA+IMKgfQ0KPiA+IA0KPiA+
-IC0tDQo+ID4gMi4yNS4xDQo+IA0KDQo=
+On Mon, Jul 11, 2022 at 02:00:42PM +0000, Vivi, Rodrigo wrote:
+> On Mon, 2022-07-11 at 04:11 +0000, Gupta, Anshuman wrote:
+> > 
+> > 
+> > > -----Original Message-----
+> > > From: Srivatsa, Anusha <anusha.srivatsa@intel.com>
+> > > Sent: Friday, July 8, 2022 11:48 PM
+> > > To: igt-dev@lists.freedesktop.org
+> > > Cc: Srivatsa, Anusha <anusha.srivatsa@intel.com>; Deak, Imre
+> > > <imre.deak@intel.com>; Gupta, Anshuman <anshuman.gupta@intel.com>;
+> > > Vivi,
+> > > Rodrigo <rodrigo.vivi@intel.com>
+> > > Subject: [i-g-t] tests/i915/i915_pm_dc: Remove PC8+ dependency from
+> > > DC9
+> > > 
+> > > Different from DC6, DC9 does not depend on BIOS/PCU to execute save
+> > > and
+> > > restore or any other sequence when going to PC9/PC10
+> > Commit message should explain this is a change for all DGFX platform.
+> 
+> yeap. the commit message needs to change as well.
+
+I meant to say commit subject...
+
+> 
+> and I'd say preferably we would have that IS_DGFX patch in place and
+> use that instead of individual platforms.
+> 
+> That patch got nacked because has_lmem is preferred, but in this
+> case the lmem check makes not much sense and the clean way is the
+> IS_DGFX. So maybe we have a good reason after all..
+> 
+> 
+> > Thanks,
+> > Anshuman Gupta.
+> > > 
+> > > DC9 actually depends on D3 and PCODE simply remove power if SW
+> > > allowed
+> > > 
+> > > v2: resrict the check for igfx only.
+> > > 
+> > > Cc: Imre Deak <imre.deak@intel.com>
+> > > Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+> > > Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>
+> > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > Signed-off-by: Anusha Srivatsa <anusha.srivatsa@intel.com>(v2)
+> > > ---
+> > >  tests/i915/i915_pm_dc.c | 5 +++--
+> > >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> > > index
+> > > a780f2cb..5132734b 100644
+> > > --- a/tests/i915/i915_pm_dc.c
+> > > +++ b/tests/i915/i915_pm_dc.c
+> > > @@ -532,8 +532,9 @@ int main(int argc, char *argv[])
+> > > 
+> > >  igt_describe("This test validates display engine entry to DC9
+> > > state");
+> > >  igt_subtest("dc9-dpms") {
+> > > -
+> > > igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+> > > -"PC8+ residencies not supported\n");
+> > > +if (!(IS_DG1(data.devid) || IS_DG2(data.devid)))
+> > > +
+> > > igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+> > > +      "PC8+ residencies not supported\n");
+> > >  test_dc9_dpms(&data);
+> > >  }
+> > > 
+> > > --
+> > > 2.25.1
+> > 
+> 
