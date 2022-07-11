@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFFD114A53A
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Jul 2022 08:52:36 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5866F14A6C9
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Jul 2022 08:52:40 +0000 (UTC)
+Date: Mon, 11 Jul 2022 10:52:36 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 11 Jul 2022 14:22:14 +0530
-Message-Id: <20220711085214.359128-2-riana.tauro@intel.com>
-In-Reply-To: <20220711085214.359128-1-riana.tauro@intel.com>
-References: <20220711085214.359128-1-riana.tauro@intel.com>
+Message-ID: <Ysvk1CGZz6JeqK4U@kamilkon-desk1>
+References: <20220707065939.33453-1-zbigniew.kempczynski@intel.com>
+ <20220707065939.33453-4-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] tests/i915/i915_pm_rc6_residency: Use
- correct type for power in rc6-fence
+In-Reply-To: <20220707065939.33453-4-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/6] tools/lsgpu: Add codename switch
+ (-c)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,26 +26,64 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use the correct type in rc6-fence for power to prevent truncating
-value to 0.
+On 2022-07-07 at 08:59:36 +0200, Zbigniew Kempczyński wrote:
+> Add -c switch which will change default (pretty) platform name to
+> codename only. It may be useful for writing device selection filter.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/i915/i915_pm_rc6_residency.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
-index 67d25918..cf7a92b9 100644
---- a/tests/i915/i915_pm_rc6_residency.c
-+++ b/tests/i915/i915_pm_rc6_residency.c
-@@ -509,7 +509,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 		igt_debug("%s: slept=%lu perf=%"PRIu64", rc6=%"PRIu64"\n",
- 			  e->name, slept, ts[1] - ts[0], rc6);
- 		if (rapl_read(&rapl, &sample[1]))  {
--			uint64_t power = power_J(&rapl, &sample[0], &sample[1]);
-+			double power = power_J(&rapl, &sample[0], &sample[1]);
- 			igt_info("Total energy used for %s: %.1fmJ (%.1fmW)\n",
- 				 e->name,
- 				 power * 1e3,
--- 
-2.25.1
+> ---
+>  tools/lsgpu.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+> index 27e76f2616..da84e20505 100644
+> --- a/tools/lsgpu.c
+> +++ b/tools/lsgpu.c
+> @@ -73,6 +73,7 @@ enum {
+>  	OPT_PRINT_SIMPLE   = 's',
+>  	OPT_PRINT_DETAIL   = 'p',
+>  	OPT_NUMERIC        = 'n',
+> +	OPT_CODENAME       = 'c',
+>  	OPT_LIST_VENDORS   = 'v',
+>  	OPT_LIST_FILTERS   = 'l',
+>  	OPT_DEVICE         = 'd',
+> @@ -88,6 +89,7 @@ static const char *usage_str =
+>  	"usage: lsgpu [options]\n\n"
+>  	"Options:\n"
+>  	"  -n, --numeric               Print vendor/device as hex\n"
+> +	"  -c, --codename              Print codename instead pretty device name\n"
+>  	"  -s, --print-simple          Print simple (legacy) device details\n"
+>  	"  -p, --print-details         Print devices with details\n"
+>  	"  -v, --list-vendors          List recognized vendors\n"
+> @@ -163,6 +165,7 @@ int main(int argc, char *argv[])
+>  		{"sysfs",             no_argument,       NULL, 1},
+>  		{"pci",               no_argument,       NULL, 2},
+>  		{"numeric",           no_argument,       NULL, OPT_NUMERIC},
+> +		{"codename",          no_argument,       NULL, OPT_CODENAME},
+>  		{"print-simple",      no_argument,       NULL, OPT_PRINT_SIMPLE},
+>  		{"print-detail",      no_argument,       NULL, OPT_PRINT_DETAIL},
+>  		{"list-vendors",      no_argument,       NULL, OPT_LIST_VENDORS},
+> @@ -177,13 +180,16 @@ int main(int argc, char *argv[])
+>  			.type = IGT_PRINT_USER,
+>  	};
+>  
+> -	while ((c = getopt_long(argc, argv, "nspvld:h",
+> +	while ((c = getopt_long(argc, argv, "ncspvld:h",
+>  				long_options, &index)) != -1) {
+>  		switch(c) {
+>  
+>  		case OPT_NUMERIC:
+>  			fmt.numeric = true;
+>  			break;
+> +		case OPT_CODENAME:
+> +			fmt.codename = true;
+> +			break;
+>  		case OPT_PRINT_SIMPLE:
+>  			fmt.type = IGT_PRINT_SIMPLE;
+>  			break;
+> -- 
+> 2.34.1
+> 
