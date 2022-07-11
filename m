@@ -1,19 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15AAB113612
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Jul 2022 13:53:37 +0000 (UTC)
-Message-ID: <7f25a80d-1bdf-cae7-c345-8579a7a5a9a2@intel.com>
-Date: Mon, 11 Jul 2022 14:53:33 +0100
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75CB98E99B
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Jul 2022 14:00:46 +0000 (UTC)
+From: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Srivatsa, Anusha" <anusha.srivatsa@intel.com>, "Gupta, Anshuman"
+ <anshuman.gupta@intel.com>
+Date: Mon, 11 Jul 2022 14:00:42 +0000
+Message-ID: <7bcf69369cce79fcf56dbfb6009579529859487b.camel@intel.com>
+References: <20220708181744.398984-1-anusha.srivatsa@intel.com>
+ <19d53e1a0dee4cb28ddbc68ec7859d65@intel.com>
+In-Reply-To: <19d53e1a0dee4cb28ddbc68ec7859d65@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <729AC7FABE69EB45BBD801D2E4EF61BA@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Language: en-GB
-To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220711120750.657-1-nirmoy.das@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20220711120750.657-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_query: fix cache type
- iteration
+Subject: Re: [igt-dev] [i-g-t] tests/i915/i915_pm_dc: Remove PC8+ dependency
+ from DC9
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,36 +25,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 11/07/2022 13:07, Nirmoy Das wrote:
-> Iterate over each cache types otherwise this will get
-> stuck in infinite loop if the value starts with 0 1st bit.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6249
-> Suggested-by: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-
-Acked-by: Matthew Auld <matthew.auld@intel.com>
-
-> ---
->   tests/i915/i915_query.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-> index b33ffecff..ca500d2be 100644
-> --- a/tests/i915/i915_query.c
-> +++ b/tests/i915/i915_query.c
-> @@ -1348,8 +1348,7 @@ static void query_parse_and_validate_hwconfig_table(int i915)
->   			if (!value)
->   				igt_info("-\n");
->   
-> -			j = 0;
-> -			while (value) {
-> +			for (j = 0; value; j++) {
->   				if (value & BIT(j)) {
->   					value &= ~BIT(j);
->   					igt_assert(j < __INTEL_HWCONFIG_CACHE_TYPE_LIMIT);
+T24gTW9uLCAyMDIyLTA3LTExIGF0IDA0OjExICswMDAwLCBHdXB0YSwgQW5zaHVtYW4gd3JvdGU6
+DQo+IA0KPiANCj4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+IEZyb206IFNyaXZh
+dHNhLCBBbnVzaGEgPGFudXNoYS5zcml2YXRzYUBpbnRlbC5jb20+DQo+ID4gU2VudDogRnJpZGF5
+LCBKdWx5IDgsIDIwMjIgMTE6NDggUE0NCj4gPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
+cC5vcmcNCj4gPiBDYzogU3JpdmF0c2EsIEFudXNoYSA8YW51c2hhLnNyaXZhdHNhQGludGVsLmNv
+bT47IERlYWssIEltcmUNCj4gPiA8aW1yZS5kZWFrQGludGVsLmNvbT47IEd1cHRhLCBBbnNodW1h
+biA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwuY29tPjsNCj4gPiBWaXZpLA0KPiA+IFJvZHJpZ28gPHJv
+ZHJpZ28udml2aUBpbnRlbC5jb20+DQo+ID4gU3ViamVjdDogW2ktZy10XSB0ZXN0cy9pOTE1L2k5
+MTVfcG1fZGM6IFJlbW92ZSBQQzgrIGRlcGVuZGVuY3kgZnJvbQ0KPiA+IERDOQ0KPiA+IA0KPiA+
+IERpZmZlcmVudCBmcm9tIERDNiwgREM5IGRvZXMgbm90IGRlcGVuZCBvbiBCSU9TL1BDVSB0byBl
+eGVjdXRlIHNhdmUNCj4gPiBhbmQNCj4gPiByZXN0b3JlIG9yIGFueSBvdGhlciBzZXF1ZW5jZSB3
+aGVuIGdvaW5nIHRvIFBDOS9QQzEwDQo+IENvbW1pdCBtZXNzYWdlIHNob3VsZCBleHBsYWluIHRo
+aXMgaXMgYSBjaGFuZ2UgZm9yIGFsbCBER0ZYIHBsYXRmb3JtLg0KDQp5ZWFwLiB0aGUgY29tbWl0
+IG1lc3NhZ2UgbmVlZHMgdG8gY2hhbmdlIGFzIHdlbGwuDQoNCmFuZCBJJ2Qgc2F5IHByZWZlcmFi
+bHkgd2Ugd291bGQgaGF2ZSB0aGF0IElTX0RHRlggcGF0Y2ggaW4gcGxhY2UgYW5kDQp1c2UgdGhh
+dCBpbnN0ZWFkIG9mIGluZGl2aWR1YWwgcGxhdGZvcm1zLg0KDQpUaGF0IHBhdGNoIGdvdCBuYWNr
+ZWQgYmVjYXVzZSBoYXNfbG1lbSBpcyBwcmVmZXJyZWQsIGJ1dCBpbiB0aGlzDQpjYXNlIHRoZSBs
+bWVtIGNoZWNrIG1ha2VzIG5vdCBtdWNoIHNlbnNlIGFuZCB0aGUgY2xlYW4gd2F5IGlzIHRoZQ0K
+SVNfREdGWC4gU28gbWF5YmUgd2UgaGF2ZSBhIGdvb2QgcmVhc29uIGFmdGVyIGFsbC4uDQoNCg0K
+PiBUaGFua3MsDQo+IEFuc2h1bWFuIEd1cHRhLg0KPiA+IA0KPiA+IERDOSBhY3R1YWxseSBkZXBl
+bmRzIG9uIEQzIGFuZCBQQ09ERSBzaW1wbHkgcmVtb3ZlIHBvd2VyIGlmIFNXDQo+ID4gYWxsb3dl
+ZA0KPiA+IA0KPiA+IHYyOiByZXNyaWN0IHRoZSBjaGVjayBmb3IgaWdmeCBvbmx5Lg0KPiA+IA0K
+PiA+IENjOiBJbXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+DQo+ID4gQ2M6IEFuc2h1bWFu
+IEd1cHRhIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+DQo+ID4gQ2M6IEFudXNoYSBTcml2YXRz
+YSA8YW51c2hhLnNyaXZhdHNhQGludGVsLmNvbT4NCj4gPiBDYzogUm9kcmlnbyBWaXZpIDxyb2Ry
+aWdvLnZpdmlAaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFJvZHJpZ28gVml2aSA8cm9k
+cmlnby52aXZpQGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBBbnVzaGEgU3JpdmF0c2Eg
+PGFudXNoYS5zcml2YXRzYUBpbnRlbC5jb20+KHYyKQ0KPiA+IC0tLQ0KPiA+IMKgdGVzdHMvaTkx
+NS9pOTE1X3BtX2RjLmMgfCA1ICsrKy0tDQo+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRp
+b25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1
+L2k5MTVfcG1fZGMuYyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jDQo+ID4gaW5kZXgNCj4gPiBh
+NzgwZjJjYi4uNTEzMjczNGIgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvaTkxNS9pOTE1X3BtX2Rj
+LmMNCj4gPiArKysgYi90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYw0KPiA+IEBAIC01MzIsOCArNTMy
+LDkgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gPiANCj4gPiDCoGlndF9k
+ZXNjcmliZSgiVGhpcyB0ZXN0IHZhbGlkYXRlcyBkaXNwbGF5IGVuZ2luZSBlbnRyeSB0byBEQzkN
+Cj4gPiBzdGF0ZSIpOw0KPiA+IMKgaWd0X3N1YnRlc3QoImRjOS1kcG1zIikgew0KPiA+IC0NCj4g
+PiBpZ3RfcmVxdWlyZV9mKGlndF9wbV9wYzhfcGx1c19yZXNpZGVuY2llc19lbmFibGVkKGRhdGEu
+bXNyX2ZkKSwNCj4gPiAtIlBDOCsgcmVzaWRlbmNpZXMgbm90IHN1cHBvcnRlZFxuIik7DQo+ID4g
+K2lmICghKElTX0RHMShkYXRhLmRldmlkKSB8fCBJU19ERzIoZGF0YS5kZXZpZCkpKQ0KPiA+ICsN
+Cj4gPiBpZ3RfcmVxdWlyZV9mKGlndF9wbV9wYzhfcGx1c19yZXNpZGVuY2llc19lbmFibGVkKGRh
+dGEubXNyX2ZkKSwNCj4gPiArwqDCoMKgwqDCoCAiUEM4KyByZXNpZGVuY2llcyBub3Qgc3VwcG9y
+dGVkXG4iKTsNCj4gPiDCoHRlc3RfZGM5X2RwbXMoJmRhdGEpOw0KPiA+IMKgfQ0KPiA+IA0KPiA+
+IC0tDQo+ID4gMi4yNS4xDQo+IA0KDQo=
