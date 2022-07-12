@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1A9994DA5
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Jul 2022 14:56:57 +0000 (UTC)
-Date: Tue, 12 Jul 2022 16:56:53 +0200
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CD1B10EA59
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Jul 2022 15:02:55 +0000 (UTC)
+Date: Tue, 12 Jul 2022 17:02:29 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Ys2LtVoxy2WkybP4@kamilkon-desk1>
+Message-ID: <Ys2NBTjCKZbOzc2s@kamilkon-desk1>
 References: <20220712095707.22168-1-zbigniew.kempczynski@intel.com>
- <20220712095707.22168-3-zbigniew.kempczynski@intel.com>
+ <20220712095707.22168-6-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220712095707.22168-3-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/6] lib/igt_device_scan: Introduce
- codename for platform selection
+In-Reply-To: <20220712095707.22168-6-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 5/6] lib/igt_device_scan: Add
+ discrete/integrated pseudo-codenames
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,125 +28,137 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Zbigniew,
 
-two small nits, see below.
-
-On 2022-07-12 at 11:57:03 +0200, Zbigniew Kempczyński wrote:
-> Platform rare is defined by single pci device id. Adding platform group
-> selection will make device selection more convenient. Now instead using
+On 2022-07-12 at 11:57:06 +0200, Zbigniew Kempczyński wrote:
+> For simply selection where test should just run on dedicated card type
+> pci + sriov selectors can now use:
 > 
-> pci:vendor=8086,device=0x1927
-> pci:vendor=intel,device=0x1927
+> pci:vendor=8086,device=integrated
+> pci:vendor=intel,device=integrated
 > 
-> we may pass:
+> or
 > 
-> pci:vendor=8086,device=skylake
-> pci:vendor=intel,device=skylake
+> pci:vendor=8086,device=discrete
+> pci:vendor=intel,device=discrete
+> 
+> or (when there're more discrete cards)
+> 
+> pci:vendor=8086,device=discrete,card=n
+> pci:vendor=intel,device=discrete,card=n
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
 > ---
-> v2: Remove passing numeric from codename function (Kamil)
-> ---
->  lib/igt_device_scan.c | 85 +++++++++++++++++++++++++++++++++++++++----
->  lib/igt_device_scan.h |  1 +
->  2 files changed, 79 insertions(+), 7 deletions(-)
+>  lib/igt_device_scan.c | 75 +++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 72 insertions(+), 3 deletions(-)
 > 
 > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 83a488aa7c..80c3ce3307 100644
+> index 044bb75c6a..5566e028d1 100644
 > --- a/lib/igt_device_scan.c
 > +++ b/lib/igt_device_scan.c
-> @@ -85,7 +85,7 @@
->   *
->   * - pci: select device using PCI slot or vendor and device properties
->   *   |[<!-- language="plain" -->
-> - *   pci:[vendor=%04x/name][,device=%04x][,card=%d] | [slot=%04x:%02x:%02x.%x]
-> + *   pci:[vendor=%04x/name][,device=%04x/codename][,card=%d] | [slot=%04x:%02x:%02x.%x]
->   *   ]|
->   *
->   *   Filter allows device selection using vendor (hex or name), device id
---------------------------------------------------------------------------- ^
-
-imho it is worth adding here the same "device id (hex or codename)".
-
-> @@ -117,6 +117,12 @@
+> @@ -118,12 +118,19 @@
 >   *
 >   *   It selects the second one.
 >   *
-> + *   We may use device codename instead pci device id:
------------------------------------------ ^
-Insert "of" here, s/instead pci/instead of pci/
+> - *   We may use device codename instead pci device id:
+> + *   We may use device codename or pseudo-codename (integrated/discrete)
+> + *   instead pci device id:
+-------------- ^
+s/instead pci/instead of pci/
 
 With that fixed
-
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
+>   *
+>   *   |[<!-- language="plain" -->
+>   *   pci:vendor=8086,device=skylake
+>   *   ]|
+>   *
+> + *   or
 > + *
 > + *   |[<!-- language="plain" -->
-> + *   pci:vendor=8086,device=skylake
+> + *   pci:vendor=8086,device=integrated
 > + *   ]|
 > + *
 >   *   Another possibility is to select device using a PCI slot:
 >   *
 >   *   |[<!-- language="plain" -->
-> @@ -131,7 +137,7 @@
->   *
->   * - sriov: select pf or vf
->   *   |[<!-- language="plain" -->
-> - *   sriov:[vendor=%04x/name][,device=%04x][,card=%d][,pf=%d][,vf=%d]
-> + *   sriov:[vendor=%04x/name][,device=%04x/codename][,card=%d][,pf=%d][,vf=%d]
->   *   ]|
->   *
->   *   Filter extends pci selector to allow pf/vf selection:
-> @@ -205,6 +211,8 @@ struct igt_device {
->  	char *pci_slot_name;
+> @@ -179,6 +186,15 @@
+>  #define DBG(...) {}
+>  #endif
+>  
+> +enum dev_type {
+> +	DEVTYPE_ALL,
+> +	DEVTYPE_INTEGRATED,
+> +	DEVTYPE_DISCRETE,
+> +};
+> +
+> +#define STR_INTEGRATED "integrated"
+> +#define STR_DISCRETE "discrete"
+> +
+>  static inline bool strequal(const char *a, const char *b)
+>  {
+>  	if (a == NULL || b == NULL)
+> @@ -213,6 +229,7 @@ struct igt_device {
 >  	int gpu_index; /* For more than one GPU with same vendor and device. */
 >  
-> +	char *codename; /* For grouping by codename */
-> +
+>  	char *codename; /* For grouping by codename */
+> +	enum dev_type dev_type; /* For grouping by integrated/discrete */
+>  
 >  	struct igt_list_head link;
 >  };
+> @@ -225,6 +242,7 @@ static struct {
+>  } igt_devs;
 >  
-> @@ -248,13 +256,30 @@ static char *devname_intel(uint16_t vendor, uint16_t device)
->  	return s;
+>  typedef char *(*devname_fn)(uint16_t, uint16_t);
+> +typedef enum dev_type (*devtype_fn)(uint16_t, uint16_t, const char *);
+>  
+>  static char *devname_hex(uint16_t vendor, uint16_t device)
+>  {
+> @@ -273,14 +291,35 @@ static char *codename_intel(uint16_t vendor, uint16_t device)
+>  	return codename;
 >  }
 >  
-> +static char *codename_intel(uint16_t vendor, uint16_t device)
+> +static enum dev_type devtype_intel(uint16_t vendor, uint16_t device, const char *pci_slot)
 > +{
-> +	const struct intel_device_info *info = intel_get_device_info(device);
-> +	char *codename = NULL;
+> +	(void) vendor;
+> +	(void) device;
 > +
-> +	if (info->codename) {
-> +		codename = strdup(info->codename);
-> +		igt_assert(codename);
-> +	}
+> +	if (!strncmp(pci_slot, INTEGRATED_I915_GPU_PCI_ID, PCI_SLOT_NAME_SIZE))
+> +		return DEVTYPE_INTEGRATED;
 > +
-> +	if (!codename)
-> +		codename = devname_hex(vendor, device);
+> +	return DEVTYPE_DISCRETE;
+> +}
 > +
-> +	return codename;
+> +static enum dev_type devtype_all(uint16_t vendor, uint16_t device, const char *pci_slot)
+> +{
+> +	(void) vendor;
+> +	(void) device;
+> +	(void) pci_slot;
+> +
+> +	return DEVTYPE_ALL;
 > +}
 > +
 >  static struct {
 >  	const char *name;
 >  	const char *vendor_id;
 >  	devname_fn devname;
-> +	devname_fn codename;
+>  	devname_fn codename;
+> +	devtype_fn devtype;
 >  } pci_vendor_mapping[] = {
-> -	{ "intel", "8086", devname_intel },
-> -	{ "amd", "1002", devname_hex },
-> +	{ "intel", "8086", devname_intel, codename_intel },
-> +	{ "amd", "1002", devname_hex, devname_hex },
+> -	{ "intel", "8086", devname_intel, codename_intel },
+> -	{ "amd", "1002", devname_hex, devname_hex },
+> +	{ "intel", "8086", devname_intel, codename_intel, devtype_intel },
+> +	{ "amd", "1002", devname_hex, devname_hex, devtype_all },
 >  	{ NULL, },
 >  };
 >  
-> @@ -283,6 +308,20 @@ static devname_fn get_pci_vendor_device_fn(uint16_t vendor)
+> @@ -323,6 +362,20 @@ static devname_fn get_pci_vendor_device_codename_fn(uint16_t vendor)
 >  	return devname_hex;
 >  }
 >  
-> +static devname_fn get_pci_vendor_device_codename_fn(uint16_t vendor)
+> +static devtype_fn get_pci_vendor_device_devtype_fn(uint16_t vendor)
 > +{
 > +	char vendorstr[5];
 > +
@@ -154,130 +166,52 @@ Kamil
 > +
 > +	for (typeof(*pci_vendor_mapping) *vm = pci_vendor_mapping; vm->name; vm++) {
 > +		if (!strcasecmp(vendorstr, vm->vendor_id))
-> +			return vm->codename;
+> +			return vm->devtype;
 > +	}
 > +
-> +	return devname_hex;
+> +	return devtype_all;
 > +}
 > +
 >  static void get_pci_vendor_device(const struct igt_device *dev,
 >  				  uint16_t *vendorp, uint16_t *devicep)
 >  {
-> @@ -305,6 +344,15 @@ static char *__pci_pretty_name(uint16_t vendor, uint16_t device, bool numeric)
+> @@ -354,6 +407,15 @@ static char *__pci_codename(uint16_t vendor, uint16_t device)
 >  	return fn(vendor, device);
 >  }
 >  
-> +static char *__pci_codename(uint16_t vendor, uint16_t device)
+> +static enum dev_type __pci_devtype(uint16_t vendor, uint16_t device, const char *pci_slot)
 > +{
-> +	devname_fn fn;
+> +	devtype_fn fn;
 > +
-> +	fn = get_pci_vendor_device_codename_fn(vendor);
+> +	fn = get_pci_vendor_device_devtype_fn(vendor);
 > +
-> +	return fn(vendor, device);
+> +	return fn(vendor, device, pci_slot);
 > +}
 > +
 >  /* Reading sysattr values can take time (even seconds),
 >   * we want to avoid reading such keys.
 >   */
-> @@ -514,8 +562,12 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
->  	get_attrs(dev, idev);
->  
->  	if (is_pci_subsystem(idev)) {
-> +		uint16_t vendor, device;
-> +
->  		set_vendor_device(idev);
+> @@ -569,6 +631,7 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
 >  		set_pci_slot_name(idev);
-> +		get_pci_vendor_device(idev, &vendor, &device);
-> +		idev->codename = __pci_codename(vendor, device);
+>  		get_pci_vendor_device(idev, &vendor, &device);
+>  		idev->codename = __pci_codename(vendor, device);
+> +		idev->dev_type = __pci_devtype(vendor, device, idev->pci_slot_name);
 >  	}
 >  
 >  	return idev;
-> @@ -558,6 +610,19 @@ static bool is_vendor_matched(struct igt_device *dev, const char *vendor)
->  	return !strcasecmp(dev->vendor, vendor_id);
->  }
+> @@ -620,6 +683,12 @@ static bool is_device_matched(struct igt_device *dev, const char *device)
+>  	if (!strcasecmp(dev->device, device))
+>  		return true;
 >  
-> +static bool is_device_matched(struct igt_device *dev, const char *device)
-> +{
-> +	if (!dev->device || !device)
-> +		return false;
-> +
-> +	/* First we compare device id, like 1926 */
-> +	if (!strcasecmp(dev->device, device))
+> +	/* Try "integrated" and "discrete" */
+> +	if (dev->dev_type == DEVTYPE_INTEGRATED && !strcasecmp(device, STR_INTEGRATED))
+> +		return true;
+> +	else if (dev->dev_type == DEVTYPE_DISCRETE && !strcasecmp(device, STR_DISCRETE))
 > +		return true;
 > +
-> +	/* Try codename */
-> +	return !strcasecmp(dev->codename, device);
-> +}
-> +
->  static char *safe_strncpy(char *dst, const char *src, int n)
->  {
->  	char *s;
-> @@ -824,6 +889,7 @@ static void scan_drm_devices(void)
->  
->  static void igt_device_free(struct igt_device *dev)
->  {
-> +	free(dev->codename);
->  	free(dev->devnode);
->  	free(dev->subsystem);
->  	free(dev->syspath);
-> @@ -935,6 +1001,7 @@ igt_devs_print_simple(struct igt_list_head *view,
->  			if (is_pci_subsystem(dev)) {
->  				_pr_simple("vendor", dev->vendor);
->  				_pr_simple("device", dev->device);
-> +				_pr_simple("codename", dev->codename);
->  			}
->  		}
->  		printf("\n");
-> @@ -1022,7 +1089,10 @@ igt_devs_print_user(struct igt_list_head *view,
->  			char *devname;
->  
->  			get_pci_vendor_device(pci_dev, &vendor, &device);
-> -			devname = __pci_pretty_name(vendor, device, fmt->numeric);
-> +			if (fmt->codename)
-> +				devname = __pci_codename(vendor, device);
-> +			else
-> +				devname = __pci_pretty_name(vendor, device, fmt->numeric);
->  
->  			__print_filter(filter, sizeof(filter), fmt, pci_dev,
->  				       false);
-> @@ -1106,6 +1176,7 @@ igt_devs_print_detail(struct igt_list_head *view,
->  		if (!is_drm_subsystem(dev)) {
->  			_print_key_value("card device", dev->drm_card);
->  			_print_key_value("render device", dev->drm_render);
-> +			_print_key_value("codename", dev->codename);
->  		}
->  
->  		printf("\n[properties]\n");
-> @@ -1332,7 +1403,7 @@ static struct igt_list_head *filter_pci(const struct filter_class *fcls,
->  			continue;
->  
->  		/* Skip if 'device' doesn't match */
-> -		if (filter->data.device && strcasecmp(filter->data.device, dev->device))
-> +		if (filter->data.device && !is_device_matched(dev, filter->data.device))
->  			continue;
->  
->  		/* We get n-th card */
-> @@ -1412,7 +1483,7 @@ static struct igt_list_head *filter_sriov(const struct filter_class *fcls,
->  			continue;
->  
->  		/* Skip if 'device' doesn't match */
-> -		if (filter->data.device && strcasecmp(filter->data.device, dev->device))
-> +		if (filter->data.device && !is_device_matched(dev, filter->data.device))
->  			continue;
->  
->  		/* We get n-th card */
-> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-> index 5f583a0666..e6b0f1b90a 100644
-> --- a/lib/igt_device_scan.h
-> +++ b/lib/igt_device_scan.h
-> @@ -50,6 +50,7 @@ struct igt_devices_print_format {
->  	enum igt_devices_print_type   type;
->  	enum igt_devices_print_option option;
->  	bool numeric;
-> +	bool codename;
->  };
->  
->  #define INTEGRATED_I915_GPU_PCI_ID "0000:00:02.0"
+>  	/* Try codename */
+>  	return !strcasecmp(dev->codename, device);
+>  }
 > -- 
 > 2.34.1
 > 
