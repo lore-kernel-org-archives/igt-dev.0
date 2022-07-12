@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4FBB93F92
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Jul 2022 09:57:31 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 965AF93FAB
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Jul 2022 09:57:27 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 12 Jul 2022 11:57:05 +0200
-Message-Id: <20220712095707.22168-5-zbigniew.kempczynski@intel.com>
+Date: Tue, 12 Jul 2022 11:57:04 +0200
+Message-Id: <20220712095707.22168-4-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220712095707.22168-1-zbigniew.kempczynski@intel.com>
 References: <20220712095707.22168-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 4/6] lib/igt_device_scan: Align
- microseconds to six leading zeros
+Subject: [igt-dev] [PATCH i-g-t v2 3/6] tools/lsgpu: Add codename switch (-c)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,35 +23,60 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Previous format was not correct when DBG() was in use leading to
-not properly aligned output.
+Add -c switch which will change default (pretty) platform name to
+codename only. It may be useful for writing device selection filter.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_device_scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/lsgpu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index 80c3ce3307..044bb75c6a 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -34,6 +34,7 @@
- #include <libudev.h>
- #include <linux/limits.h>
- #include <sys/stat.h>
-+#include <sys/time.h>
- #include <sys/types.h>
+diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+index 27e76f2616..da84e20505 100644
+--- a/tools/lsgpu.c
++++ b/tools/lsgpu.c
+@@ -73,6 +73,7 @@ enum {
+ 	OPT_PRINT_SIMPLE   = 's',
+ 	OPT_PRINT_DETAIL   = 'p',
+ 	OPT_NUMERIC        = 'n',
++	OPT_CODENAME       = 'c',
+ 	OPT_LIST_VENDORS   = 'v',
+ 	OPT_LIST_FILTERS   = 'l',
+ 	OPT_DEVICE         = 'd',
+@@ -88,6 +89,7 @@ static const char *usage_str =
+ 	"usage: lsgpu [options]\n\n"
+ 	"Options:\n"
+ 	"  -n, --numeric               Print vendor/device as hex\n"
++	"  -c, --codename              Print codename instead pretty device name\n"
+ 	"  -s, --print-simple          Print simple (legacy) device details\n"
+ 	"  -p, --print-details         Print devices with details\n"
+ 	"  -v, --list-vendors          List recognized vendors\n"
+@@ -163,6 +165,7 @@ int main(int argc, char *argv[])
+ 		{"sysfs",             no_argument,       NULL, 1},
+ 		{"pci",               no_argument,       NULL, 2},
+ 		{"numeric",           no_argument,       NULL, OPT_NUMERIC},
++		{"codename",          no_argument,       NULL, OPT_CODENAME},
+ 		{"print-simple",      no_argument,       NULL, OPT_PRINT_SIMPLE},
+ 		{"print-detail",      no_argument,       NULL, OPT_PRINT_DETAIL},
+ 		{"list-vendors",      no_argument,       NULL, OPT_LIST_VENDORS},
+@@ -177,13 +180,16 @@ int main(int argc, char *argv[])
+ 			.type = IGT_PRINT_USER,
+ 	};
  
- /**
-@@ -170,7 +171,7 @@
- { \
- 	struct timeval tm; \
- 	gettimeofday(&tm, NULL); \
--	printf("%10ld.%03ld: ", tm.tv_sec, tm.tv_usec); \
-+	printf("%10ld.%06ld: ", tm.tv_sec, tm.tv_usec); \
- 	printf(__VA_ARGS__); \
- }
+-	while ((c = getopt_long(argc, argv, "nspvld:h",
++	while ((c = getopt_long(argc, argv, "ncspvld:h",
+ 				long_options, &index)) != -1) {
+ 		switch(c) {
  
+ 		case OPT_NUMERIC:
+ 			fmt.numeric = true;
+ 			break;
++		case OPT_CODENAME:
++			fmt.codename = true;
++			break;
+ 		case OPT_PRINT_SIMPLE:
+ 			fmt.type = IGT_PRINT_SIMPLE;
+ 			break;
 -- 
 2.34.1
