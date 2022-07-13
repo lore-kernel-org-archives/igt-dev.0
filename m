@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com
- [IPv6:2001:4860:4864:20::34])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B317397829
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Jul 2022 23:45:52 +0000 (UTC)
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-10bffc214ffso12267154fac.1
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Jul 2022 16:45:52 -0700 (PDT)
-Message-ID: <d26f8d7f-4ca3-18ed-f3b6-81b032f0068b@usp.br>
-Date: Tue, 12 Jul 2022 20:45:44 -0300
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60F5418AF05
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 05:50:35 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	swati2.sharma@intel.com
+Date: Wed, 13 Jul 2022 11:18:05 +0530
+Message-Id: <20220713054805.633767-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: igt-dev@lists.freedesktop.org
-References: <20220611190310.654069-1-maira.canal@usp.br>
-From: =?UTF-8?Q?Ma=c3=adra_Canal?= <maira.canal@usp.br>
-In-Reply-To: <20220611190310.654069-1-maira.canal@usp.br>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu: Skip multihead MPO tests
- on single display
+Subject: [igt-dev] [i-g-t] tests/kms_cursor_edge_walk: Fix the usage of
+ single output on pipe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,97 +18,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: magalilemes00@gmail.com, tales.aparecida@gmail.com,
- Alexander Deucher <alexander.deucher@amd.com>,
- Isabella Basso <isabbasso@riseup.net>, andrealmeid@riseup.net,
- Bhawanpreet.Lakha@amd.com, Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+igt_get_single_output_for_pipe may return NULL if there is no compatable
+output found on a selected pipe.
 
-Any chance this commit be merged into master?
+Instead use for_each_pipe_with_single_output() to iterate all possible
+combinations.
 
-Best Regards,
-- Maíra Canal
+Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6279
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_cursor_edge_walk.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-On 6/11/22 16:03, Maíra Canal wrote:
-> [Why]
-> If only one output is connected, all the igt@amdgpu/amd_plane "-multihead"
-> subtests will result in CRASH, such as can be seen in:
-> 
-> Starting subtest: mpo-scale-nv12-multihead
-> Received signal SIGSEGV.
-> Stack trace:
->  #0 [fatal_sig_handler+0x163]
->  #1 [__sigaction+0x50]
->  #2 [force_output_mode+0xa]
->  #3 [test_display_mpo+0x20b]
->  #4 [__igt_unique____real_main725+0x106d]
->  #5 [main+0x23]
->  #6 [__libc_start_call_main+0x80]
->  #7 [__libc_start_main+0x89]
->  #8 [_start+0x25]
-> Subtest mpo-scale-nv12-multihead: CRASH (0.009s)
-> 
-> In single-display systems, the "-multihead" subtests should SKIP.
-> 
-> [How]
-> Count the number of connected outputs on the system and compare it to the
-> ideal number depending on the subtest, using igt_skip_on to assure that
-> multiheaded subtests will SKIP on single display systems.
-> 
-> Signed-off-by: Maíra Canal <maira.canal@usp.br>
-> ---
->  tests/amdgpu/amd_plane.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
-> 
-> diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-> index faaa1b87..4b2bee49 100644
-> --- a/tests/amdgpu/amd_plane.c
-> +++ b/tests/amdgpu/amd_plane.c
-> @@ -449,9 +449,11 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
->  {
->  
->  	igt_display_t *display = &data->display;
-> +	igt_output_t *output;
->  	uint32_t regamma_lut_size;
->  	lut_t lut;
->  	struct fbc fb[4];
-> +	int valid_outputs = 0;
->  	int videos[][2]= {
->  		{426, 240},
->  		{640, 360},
-> @@ -464,6 +466,13 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
->  
->  	test_init(data);
->  
-> +	/* Skip if there is less valid outputs than the required. */
-> +	for_each_connected_output(display, output)
-> +		valid_outputs++;
-> +
-> +	igt_skip_on_f(valid_outputs < display_count,
-> +			"Valid outputs (%d) should be equal or greater than %d\n", valid_outputs, display_count);
-> +
->  	regamma_lut_size = igt_pipe_obj_get_prop(data->pipe[0], IGT_CRTC_GAMMA_LUT_SIZE);
->  	igt_assert_lt(0, regamma_lut_size);
->  	lut_init(&lut, regamma_lut_size);
-> @@ -586,9 +595,17 @@ static void test_mpo_swizzle_toggle_multihead(data_t *data)
->  {
->  	struct amdgpu_bo_metadata meta = {};
->  	igt_display_t *display = &data->display;
-> +	igt_output_t *output;
->  	igt_fb_t fb_1280_xr24_tiled, fb_1280_ar24_tiled, fb_1920_xb24_tiled,
->  		fb_1920_xb24_linear, fb_1920_xr24_tiled;
->  	int w, h;
-> +	int valid_outputs = 0;
-> +
-> +	/* Skip if only one display is connected. */
-> +	for_each_connected_output(display, output)
-> +		valid_outputs++;
-> +
-> +	igt_skip_on_f(valid_outputs == 1, "Must have more than one output connected\n");
->  
->  	w = 2400;
->  	h = 1350;
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index af3769db..b75fc216 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -346,9 +346,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_subtest_group {
+ 		for (i = 0; i < ARRAY_SIZE(tests); i++) {
+ 			igt_subtest_with_dynamic(tests[i].name) {
+-				for_each_pipe(&data.display, data.pipe) {
+-					data.output = igt_get_single_output_for_pipe(&data.display, data.pipe);
+-
++				for_each_pipe_with_single_output(&data.display, data.pipe, data.output) {
+ 					for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
+ 						data.curh = data.curw;
+ 						igt_require(data.curw <= max_curw && data.curh <= max_curh);
+-- 
+2.35.1
