@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1755E8B396
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 18:21:33 +0000 (UTC)
-Message-ID: <9e334a24-0351-46b7-0004-088b94b427a0@intel.com>
-Date: Wed, 13 Jul 2022 20:21:24 +0200
-Content-Language: en-US
-From: "Das, Nirmoy" <nirmoy.das@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-References: <20220713181637.10707-1-nirmoy.das@intel.com>
-In-Reply-To: <20220713181637.10707-1-nirmoy.das@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0D908AB91
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 18:16:46 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 13 Jul 2022 20:16:37 +0200
+Message-Id: <20220713181637.10707-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 loaded
- properly
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Subject: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 loaded properly
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,35 +22,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBpcyBoYXJkIHRvIHJlcHJvZHVjZSBvbmx5IGhhcHBlbmVkIG9uY2Ugd2hlcmUgZHJpdmVy
-IHdhcyBsb2FkZWQgYnV0IAp0aGVyZSB3YXMKCm5vIC9kZXYvZHJpIGRldmljZS4KCkNoZWNrIApo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVF82NTgwL3NoYXJkLXJr
-bC01L2lndEBwZXJmQGJsb2NraW5nLmh0bWwKCmh0dHA6Ly9nZngtY2kuZmkuaW50ZWwuY29tL2Np
-YnVnbG9nLW5nL2lzc3VlLzYyNTA/cXVlcnlfa2V5PTRiNjE3Zjk2NzgyOTdhZDk1YjMyYjdiZDNj
-MjcwMDIxNGZhNWNiNzYKCmZvciBtb3JlIGRldGFpbHMKCgpSZWdhcmRzLAoKTmlybW95CgpPbiA3
-LzEzLzIwMjIgODoxNiBQTSwgTmlybW95IERhcyB3cm90ZToKPiBQcmV2aW91cyB0ZXN0IG1heSBs
-ZWF2ZSBpbmNvbXBsZXRlIGk5MTUgc3RhdGUuCj4gbWFrZSB0aGlzIG1vcmUgcmVzaWxpZW50IG15
-IHVubG9hZCBhbmQgcmVsb2FkaW5nIGk5MTUuCj4KPiBSZWZlcmVuY2U6IGh0dHBzOi8vZ2l0bGFi
-LmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvLS9pc3N1ZXMvNTYwOAo+IFNpZ25lZC1vZmYtYnk6
-IE5pcm1veSBEYXMgPG5pcm1veS5kYXNAaW50ZWwuY29tPgo+IC0tLQo+ICAgdGVzdHMvaTkxNS9w
-ZXJmLmMgfCA1ICsrKy0tCj4gICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAyIGRl
-bGV0aW9ucygtKQo+Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvcGVyZi5jIGIvdGVzdHMvaTkx
-NS9wZXJmLmMKPiBpbmRleCBlNjQxZDVkMmQuLjljMzZhYWMzNCAxMDA2NDQKPiAtLS0gYS90ZXN0
-cy9pOTE1L3BlcmYuYwo+ICsrKyBiL3Rlc3RzL2k5MTUvcGVyZi5jCj4gQEAgLTQxLDggKzQxLDgg
-QEAKPiAgICNpbmNsdWRlICJpOTE1L2dlbS5oIgo+ICAgI2luY2x1ZGUgImk5MTUvcGVyZi5oIgo+
-ICAgI2luY2x1ZGUgImlndC5oIgo+ICsjaW5jbHVkZSAiaWd0X2ttb2QuaCIKPiAgICNpbmNsdWRl
-ICJpZ3Rfc3lzZnMuaCIKPiAtI2luY2x1ZGUgImRybS5oIgo+ICAgCj4gICBJR1RfVEVTVF9ERVND
-UklQVElPTigiVGVzdCB0aGUgaTkxNSBwZXJmIG1ldHJpY3Mgc3RyZWFtaW5nIGludGVyZmFjZSIp
-Owo+ICAgCj4gQEAgLTQ5MTYsNyArNDkxNiw4IEBAIGlndF9tYWluCj4gICAJCSAqIGxvYWRpbmcv
-dW5sb2FkaW5nIGk5MTUuIExvYWQgaTkxNSBoZXJlIGJlZm9yZSB3ZSBzdGF0IHRoZQo+ICAgCQkg
-KiBmaWxlcy4KPiAgIAkJICovCj4gLQkJZHJtX2xvYWRfbW9kdWxlKERSSVZFUl9JTlRFTCk7Cj4g
-KwkJaWd0X2k5MTVfZHJpdmVyX3VubG9hZCgpOwo+ICsJCWlndF9hc3NlcnRfZXEoaWd0X2k5MTVf
-ZHJpdmVyX2xvYWQoTlVMTCksIDApOwo+ICAgCj4gICAJCWlndF9yZXF1aXJlKHN0YXQoIi9wcm9j
-L3N5cy9kZXYvaTkxNS9wZXJmX3N0cmVhbV9wYXJhbm9pZCIsICZzYikKPiAgIAkJCSAgICA9PSAw
-KTsKSW50ZWwgRGV1dHNjaGxhbmQgR21iSApSZWdpc3RlcmVkIEFkZHJlc3M6IEFtIENhbXBlb24g
-MTAsIDg1NTc5IE5ldWJpYmVyZywgR2VybWFueQpUZWw6ICs0OSA4OSA5OSA4ODUzLTAsIHd3dy5p
-bnRlbC5kZSA8aHR0cDovL3d3dy5pbnRlbC5kZT4KTWFuYWdpbmcgRGlyZWN0b3JzOiBDaHJpc3Rp
-biBFaXNlbnNjaG1pZCwgU2hhcm9uIEhlY2ssIFRpZmZhbnkgRG9vbiBTaWx2YSAgCkNoYWlycGVy
-c29uIG9mIHRoZSBTdXBlcnZpc29yeSBCb2FyZDogTmljb2xlIExhdQpSZWdpc3RlcmVkIE9mZmlj
-ZTogTXVuaWNoCkNvbW1lcmNpYWwgUmVnaXN0ZXI6IEFtdHNnZXJpY2h0IE11ZW5jaGVuIEhSQiAx
-ODY5MjgK
+Previous test may leave incomplete i915 state.
+make this more resilient my unload and reloading i915.
+
+Reference: https://gitlab.freedesktop.org/drm/intel/-/issues/5608
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/i915/perf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index e641d5d2d..9c36aac34 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -41,8 +41,8 @@
+ #include "i915/gem.h"
+ #include "i915/perf.h"
+ #include "igt.h"
++#include "igt_kmod.h"
+ #include "igt_sysfs.h"
+-#include "drm.h"
+ 
+ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
+ 
+@@ -4916,7 +4916,8 @@ igt_main
+ 		 * loading/unloading i915. Load i915 here before we stat the
+ 		 * files.
+ 		 */
+-		drm_load_module(DRIVER_INTEL);
++		igt_i915_driver_unload();
++		igt_assert_eq(igt_i915_driver_load(NULL), 0);
+ 
+ 		igt_require(stat("/proc/sys/dev/i915/perf_stream_paranoid", &sb)
+ 			    == 0);
+-- 
+2.35.1
+
+Intel Deutschland GmbH
+Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
+Tel: +49 89 99 8853-0, www.intel.de <http://www.intel.de>
+Managing Directors: Christin Eisenschmid, Sharon Heck, Tiffany Doon Silva  
+Chairperson of the Supervisory Board: Nicole Lau
+Registered Office: Munich
+Commercial Register: Amtsgericht Muenchen HRB 186928
