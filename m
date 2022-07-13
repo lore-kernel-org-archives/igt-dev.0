@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7337112B42
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 15:57:57 +0000 (UTC)
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 365C19B1BA
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 15:55:03 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Jul 2022 11:52:31 -0400
-Message-Id: <20220713155233.1155128-2-rodrigo.vivi@intel.com>
-In-Reply-To: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
-References: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
+Date: Wed, 13 Jul 2022 17:48:16 +0200
+Message-Id: <20220713154816.39383-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] tests/i915/i915_suspend: Be more
- specific on the S3 mem_sleep requirement.
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_hangman: add DG2 wa for
+ hang subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,38 +17,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-1. We are not using DISK
-2. DISK has no dependency on mem_sleep.
+DG2 requires a workaround that prevents context switches on CCS when
+RCS is not idle. That breaks the hangman test because a hang on RCS
+means CCS cannot switch. Thus, the well behaved background task on CCS
+is seen as hanging and thus the test fails. The same problem is seen
+on RCS when CCS is hang, so do not use the other one when causing hang.
 
-Let's be clear on what exactly we are trying to do.
-
-Cc: Riana Tauro <riana.tauro@intel.com>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5884
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/i915_suspend.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/i915/i915_hangman.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-index f992d447..222a8e4a 100644
---- a/tests/i915/i915_suspend.c
-+++ b/tests/i915/i915_suspend.c
-@@ -209,8 +209,9 @@ test_suspend_without_i915(int state)
- 	igt_kmsg(KMSG_INFO "Unloading i915\n");
- 	igt_assert_eq(igt_i915_driver_unload(),0);
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index 687dee14..9e244a10 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -304,11 +304,17 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	igt_spin_t *spin, *next;
+ 	IGT_LIST_HEAD(list);
+ 	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
++	int skip_class = -1;
+ 	int num_ctx;
  
--	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_S2IDLE && state > SUSPEND_STATE_FREEZE,
--		      "Platform default mem_sleep state is s2idle\n");
-+	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_S2IDLE &&
-+		      state == SUSPEND_STATE_MEM,
-+		      "S3 not possible: platform default mem_sleep state is s2idle\n");
- 	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
  
- 	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
++	/* Wa_14014494547:DG2 hang on RCS means CCS cannot switch */
++	if (IS_DG2(intel_get_drm_devid(device)))
++		skip_class = e->class == I915_ENGINE_CLASS_RENDER ? I915_ENGINE_CLASS_COMPUTE :
++					 I915_ENGINE_CLASS_RENDER;
++
+ 	/*
+ 	 * Fill all engines with background load.
+ 	 * This verifies that independent engines are unaffected and gives
+@@ -317,6 +323,9 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	 */
+ 	num_ctx = 0;
+ 	for_each_ctx_engine(device, ctx, other) {
++		if (other->class == skip_class)
++			continue;
++
+ 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
+ 		context_unban(device, local_ctx[num_ctx]->id);
+ 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
 -- 
-2.35.3
+2.34.1
