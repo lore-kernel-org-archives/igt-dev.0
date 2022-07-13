@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B699411BF02
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 07:45:04 +0000 (UTC)
-Message-ID: <29367be8-e3f9-ed9d-041c-0db98ae95d53@intel.com>
-Date: Wed, 13 Jul 2022 13:14:59 +0530
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D38A694CC4
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 08:19:22 +0000 (UTC)
+Message-ID: <b8b8b819-df5a-614a-05b6-9bccec28b689@intel.com>
+Date: Wed, 13 Jul 2022 13:49:17 +0530
 MIME-Version: 1.0
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20220711141940.610063-1-bhanuprakash.modem@intel.com>
+References: <20220713054805.633767-1-bhanuprakash.modem@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220711141940.610063-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220713054805.633767-1-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_legacy: Avoid usage of same
- pipe on multiple outputs
+Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_edge_walk: Fix the usage of
+ single output on pipe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,28 +29,34 @@ List-ID: <igt-dev@lists.freedesktop.org>
 LGTM
 Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
 
-On 11-Jul-22 7:49 PM, Bhanuprakash Modem wrote:
-> Sanitize the system state before starting the subtest.
+On 13-Jul-22 11:18 AM, Bhanuprakash Modem wrote:
+> igt_get_single_output_for_pipe may return NULL if there is no compatable
+> output found on a selected pipe.
 > 
-> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6198
+> Instead use for_each_pipe_with_single_output() to iterate all possible
+> combinations.
+> 
+> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6279
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_cursor_legacy.c | 2 ++
->   1 file changed, 2 insertions(+)
+>   tests/kms_cursor_edge_walk.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index fc4a291d..c5b2bd30 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -429,6 +429,8 @@ static void flip(igt_display_t *display,
->   	results = mmap(NULL, PAGE_SIZE, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->   	igt_assert(results != MAP_FAILED);
->   
-> +	igt_display_reset(display);
-> +
->   	flip_pipe = find_connected_pipe(display, !!flip_pipe);
->   	cursor_pipe = find_connected_pipe(display, !!cursor_pipe);
->   
+> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+> index af3769db..b75fc216 100644
+> --- a/tests/kms_cursor_edge_walk.c
+> +++ b/tests/kms_cursor_edge_walk.c
+> @@ -346,9 +346,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   	igt_subtest_group {
+>   		for (i = 0; i < ARRAY_SIZE(tests); i++) {
+>   			igt_subtest_with_dynamic(tests[i].name) {
+> -				for_each_pipe(&data.display, data.pipe) {
+> -					data.output = igt_get_single_output_for_pipe(&data.display, data.pipe);
+> -
+> +				for_each_pipe_with_single_output(&data.display, data.pipe, data.output) {
+>   					for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
+>   						data.curh = data.curw;
+>   						igt_require(data.curw <= max_curw && data.curh <= max_curh);
 
 -- 
 ~Swati Sharma
