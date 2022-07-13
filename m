@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 365C19B1BA
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 15:55:03 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 666FD9B98A
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 15:56:29 +0000 (UTC)
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Jul 2022 17:48:16 +0200
-Message-Id: <20220713154816.39383-1-kamil.konieczny@linux.intel.com>
+Date: Wed, 13 Jul 2022 11:52:33 -0400
+Message-Id: <20220713155233.1155128-4-rodrigo.vivi@intel.com>
+In-Reply-To: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
+References: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_hangman: add DG2 wa for
- hang subtest
+Subject: [igt-dev] [PATCH i-g-t 4/4] test/i915/i915_suspend: Use
+ SUSPEND_STATE_S3 to enforce S3.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,55 +19,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DG2 requires a workaround that prevents context switches on CCS when
-RCS is not idle. That breaks the hangman test because a hang on RCS
-means CCS cannot switch. Thus, the well behaved background task on CCS
-is seen as hanging and thus the test fails. The same problem is seen
-on RCS when CCS is hang, so do not use the other one when causing hang.
+Now that we have the ability to enforce the S3, let's use it
+and avoid the extra check in the test.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5884
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Riana Tauro <riana.tauro@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/i915/i915_hangman.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ lib/igt_aux.c             | 14 +++-----------
+ lib/igt_aux.h             |  2 --
+ tests/i915/i915_suspend.c |  5 +----
+ 3 files changed, 4 insertions(+), 17 deletions(-)
 
-diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-index 687dee14..9e244a10 100644
---- a/tests/i915/i915_hangman.c
-+++ b/tests/i915/i915_hangman.c
-@@ -304,11 +304,17 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	igt_spin_t *spin, *next;
- 	IGT_LIST_HEAD(list);
- 	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
-+	int skip_class = -1;
- 	int num_ctx;
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 69ae9b58..268bad7c 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -841,15 +841,7 @@ static uint32_t get_supported_suspend_states(int power_dir)
+ 	return state_mask;
+ }
  
- 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
- 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
+-/**
+- * igt_get_memsleep_state
+- *
+- * Reads the value of /sys/power/mem_sleep and
+- * returns the current suspend state associated with 'mem'.
+- *
+- * Returns : an #igt_mem_sleep state, current suspend state associated with 'mem'.
+- */
+-int igt_get_memsleep_state(void)
++static int get_mem_sleep(void)
+ {
+ 	char *mem_sleep_states;
+ 	char *mem_sleep_state;
+@@ -938,9 +930,9 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+ 	orig_test = get_suspend_test(power_dir);
  
-+	/* Wa_14014494547:DG2 hang on RCS means CCS cannot switch */
-+	if (IS_DG2(intel_get_drm_devid(device)))
-+		skip_class = e->class == I915_ENGINE_CLASS_RENDER ? I915_ENGINE_CLASS_COMPUTE :
-+					 I915_ENGINE_CLASS_RENDER;
-+
- 	/*
- 	 * Fill all engines with background load.
- 	 * This verifies that independent engines are unaffected and gives
-@@ -317,6 +323,9 @@ test_engine_hang(const intel_ctx_t *ctx,
- 	 */
- 	num_ctx = 0;
- 	for_each_ctx_engine(device, ctx, other) {
-+		if (other->class == skip_class)
-+			continue;
-+
- 		local_ctx[num_ctx] = intel_ctx_create(device, &ctx->cfg);
- 		context_unban(device, local_ctx[num_ctx]->id);
- 		ahndN = get_reloc_ahnd(device, local_ctx[num_ctx]->id);
+ 	if (state == SUSPEND_STATE_S3) {
+-		orig_mem_sleep = igt_get_memsleep_state();
++		orig_mem_sleep = get_mem_sleep();
+ 		set_mem_sleep(power_dir, MEM_SLEEP_DEEP);
+-		igt_skip_on_f(igt_get_memsleep_state() != MEM_SLEEP_DEEP,
++		igt_skip_on_f(get_mem_sleep() != MEM_SLEEP_DEEP,
+ 			      "S3 not possible in this system.\n");
+ 	}
+ 
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index b1e48b0f..89437a90 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -216,8 +216,6 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+ void igt_set_autoresume_delay(int delay_secs);
+ int igt_get_autoresume_delay(enum igt_suspend_state state);
+ 
+-int igt_get_memsleep_state(void);
+-
+ /* dropping priviledges */
+ void igt_drop_root(void);
+ 
+diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+index 222a8e4a..94935595 100644
+--- a/tests/i915/i915_suspend.c
++++ b/tests/i915/i915_suspend.c
+@@ -209,9 +209,6 @@ test_suspend_without_i915(int state)
+ 	igt_kmsg(KMSG_INFO "Unloading i915\n");
+ 	igt_assert_eq(igt_i915_driver_unload(),0);
+ 
+-	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_S2IDLE &&
+-		      state == SUSPEND_STATE_MEM,
+-		      "S3 not possible: platform default mem_sleep state is s2idle\n");
+ 	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
+ 
+ 	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
+@@ -228,7 +225,7 @@ igt_main
+ 
+ 	igt_describe("Validate S3 without i915 module");
+ 	igt_subtest("basic-s3-without-i915")
+-		test_suspend_without_i915(SUSPEND_STATE_MEM);
++		test_suspend_without_i915(SUSPEND_STATE_S3);
+ 
+ 	igt_fixture
+ 		fd = drm_open_driver(DRIVER_INTEL);
 -- 
-2.34.1
+2.35.3
