@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 666FD9B98A
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 15:56:29 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01B2412B337
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 15:57:57 +0000 (UTC)
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Jul 2022 11:52:33 -0400
-Message-Id: <20220713155233.1155128-4-rodrigo.vivi@intel.com>
-In-Reply-To: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
-References: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
+Date: Wed, 13 Jul 2022 11:52:30 -0400
+Message-Id: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] test/i915/i915_suspend: Use
- SUSPEND_STATE_S3 to enforce S3.
+Subject: [igt-dev] [PATCH i-g-t 1/4] lib/igt_aux: Let's use the official
+ mem_sleep names
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,86 +22,73 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Now that we have the ability to enforce the S3, let's use it
-and avoid the extra check in the test.
+Mixing the names with the state names can cause confusion.
+Let's stick with the official names.
 
 Cc: Riana Tauro <riana.tauro@intel.com>
 Cc: Anshuman Gupta <anshuman.gupta@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/igt_aux.c             | 14 +++-----------
- lib/igt_aux.h             |  2 --
- tests/i915/i915_suspend.c |  5 +----
- 3 files changed, 4 insertions(+), 17 deletions(-)
+ lib/igt_aux.c             | 8 ++++----
+ lib/igt_aux.h             | 6 +++---
+ tests/i915/i915_suspend.c | 2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index 69ae9b58..268bad7c 100644
+index 35c67f10..5129d9f0 100644
 --- a/lib/igt_aux.c
 +++ b/lib/igt_aux.c
-@@ -841,15 +841,7 @@ static uint32_t get_supported_suspend_states(int power_dir)
- 	return state_mask;
- }
+@@ -712,9 +712,9 @@ static const char *suspend_test_name[] = {
+ };
  
--/**
-- * igt_get_memsleep_state
-- *
-- * Reads the value of /sys/power/mem_sleep and
-- * returns the current suspend state associated with 'mem'.
-- *
-- * Returns : an #igt_mem_sleep state, current suspend state associated with 'mem'.
-- */
--int igt_get_memsleep_state(void)
-+static int get_mem_sleep(void)
- {
- 	char *mem_sleep_states;
- 	char *mem_sleep_state;
-@@ -938,9 +930,9 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
- 	orig_test = get_suspend_test(power_dir);
+ static const char *mem_sleep_name[] = {
+-	[MEM_SLEEP_FREEZE] = "s2idle",
+-	[MEM_SLEEP_STANDBY] = "shallow",
+-	[MEM_SLEEP_MEM] = "deep"
++	[MEM_SLEEP_S2IDLE] = "s2idle",
++	[MEM_SLEEP_SHALLOW] = "shallow",
++	[MEM_SLEEP_DEEP] = "deep"
+ };
  
- 	if (state == SUSPEND_STATE_S3) {
--		orig_mem_sleep = igt_get_memsleep_state();
-+		orig_mem_sleep = get_mem_sleep();
- 		set_mem_sleep(power_dir, MEM_SLEEP_DEEP);
--		igt_skip_on_f(igt_get_memsleep_state() != MEM_SLEEP_DEEP,
-+		igt_skip_on_f(get_mem_sleep() != MEM_SLEEP_DEEP,
- 			      "S3 not possible in this system.\n");
+ static enum igt_suspend_test get_suspend_test(int power_dir)
+@@ -993,7 +993,7 @@ int igt_get_memsleep_state(void)
+ 		return MEM_SLEEP_NONE;
  	}
  
+-	for (mem_sleep = MEM_SLEEP_FREEZE; mem_sleep < MEM_SLEEP_NUM; mem_sleep++) {
++	for (mem_sleep = MEM_SLEEP_S2IDLE; mem_sleep < MEM_SLEEP_NUM; mem_sleep++) {
+ 		if (strcmp(mem_sleep_name[mem_sleep], mem_sleep_state) == 0)
+ 			break;
+ 	}
 diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index b1e48b0f..89437a90 100644
+index af663d2c..9d5b7bd2 100644
 --- a/lib/igt_aux.h
 +++ b/lib/igt_aux.h
-@@ -216,8 +216,6 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
- void igt_set_autoresume_delay(int delay_secs);
- int igt_get_autoresume_delay(enum igt_suspend_state state);
+@@ -196,9 +196,9 @@ enum igt_suspend_test {
+  */
+ enum igt_mem_sleep {
+ 	MEM_SLEEP_NONE,
+-	MEM_SLEEP_FREEZE,
+-	MEM_SLEEP_STANDBY,
+-	MEM_SLEEP_MEM,
++	MEM_SLEEP_S2IDLE,
++	MEM_SLEEP_SHALLOW,
++	MEM_SLEEP_DEEP,
  
--int igt_get_memsleep_state(void);
--
- /* dropping priviledges */
- void igt_drop_root(void);
- 
+ 	/*<private>*/
+ 	MEM_SLEEP_NUM,
 diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-index 222a8e4a..94935595 100644
+index 23e451d3..f992d447 100644
 --- a/tests/i915/i915_suspend.c
 +++ b/tests/i915/i915_suspend.c
-@@ -209,9 +209,6 @@ test_suspend_without_i915(int state)
+@@ -209,7 +209,7 @@ test_suspend_without_i915(int state)
  	igt_kmsg(KMSG_INFO "Unloading i915\n");
  	igt_assert_eq(igt_i915_driver_unload(),0);
  
--	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_S2IDLE &&
--		      state == SUSPEND_STATE_MEM,
--		      "S3 not possible: platform default mem_sleep state is s2idle\n");
+-	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_FREEZE && state > SUSPEND_STATE_FREEZE,
++	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_S2IDLE && state > SUSPEND_STATE_FREEZE,
+ 		      "Platform default mem_sleep state is s2idle\n");
  	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
  
- 	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
-@@ -228,7 +225,7 @@ igt_main
- 
- 	igt_describe("Validate S3 without i915 module");
- 	igt_subtest("basic-s3-without-i915")
--		test_suspend_without_i915(SUSPEND_STATE_MEM);
-+		test_suspend_without_i915(SUSPEND_STATE_S3);
- 
- 	igt_fixture
- 		fd = drm_open_driver(DRIVER_INTEL);
 -- 
 2.35.3
