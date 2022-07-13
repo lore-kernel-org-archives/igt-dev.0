@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5408867226096827923=="
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 23B4111369B
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 15:57:58 +0000 (UTC)
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 13 Jul 2022 11:52:32 -0400
+Message-Id: <20220713155233.1155128-3-rodrigo.vivi@intel.com>
+In-Reply-To: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
+References: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Das, Nirmoy" <nirmoy.das@intel.com>
-Date: Wed, 13 Jul 2022 14:58:12 -0000
-Message-ID: <165772429239.740.12912233905623051018@emeril.freedesktop.org>
-References: <20220712135024.5571-1-nirmoy.das@intel.com>
-In-Reply-To: <20220712135024.5571-1-nirmoy.das@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915=5Fquery=3A_fix_cache_type_iteration_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 3/4] lib/igt_aux: Introduce the ability to
+ force S3 suspend state.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,280 +19,244 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5408867226096827923==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Testing both Suspend-to-Idle and Suspend-to-RAM is critical.
+So far our test suite are relying on the system's default
+for the "suspend-to-mem", what reduces our ability to cover
+multiple scenarios or requires manual intervention.
+This also brings confusions in some debugging scenarios.
 
-== Series Details ==
+For the Suspend-to-Idle it is easy. The FREEZE state already
+enforces it. However, there's only one way to enforce the
+Suspend-to-RAM (aka S3) which is using MEM state with mem_sleep
+at "deep".
 
-Series: tests/i915_query: fix cache type iteration (rev2)
-URL   : https://patchwork.freedesktop.org/series/106195/
-State : success
+However, let's not break the whole world overnight. Let's
+first introduce the ability to force the Suspend-to-RAM.
+Then convert the tests as needed.
 
-== Summary ==
+So, the SUSPEND_STATE_MEM will continue to exist and do
+exactly what is expected when you set "mem" to /sys/power/state,
+which is respect whatever is in the /sys/power/mem_sleep.
 
-CI Bug Log - changes from CI_DRM_11876 -> IGTPW_7501
-====================================================
+Let's introduce a new SUSPEND_STATE_S3 state aiming to force
+the Suspend-to-RAM, by changing both /sys/power/state and
+/sys/power/mem_sleep.
 
-Summary
--------
+Cc: Riana Tauro <riana.tauro@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ lib/igt_aux.c | 118 ++++++++++++++++++++++++++++++--------------------
+ lib/igt_aux.h |  19 +++++---
+ 2 files changed, 84 insertions(+), 53 deletions(-)
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html
-
-Participating hosts (43 -> 41)
-------------------------------
-
-  Missing    (2): fi-ctg-p8600 fi-hsw-4200u 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7501 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-bdw-gvtdvm:      [PASS][1] -> [INCOMPLETE][2] ([i915#6431])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-bdw-gvtdvm/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bdw-gvtdvm/igt@i915_selftest@live@hangcheck.html
-    - fi-hsw-4770:        [PASS][3] -> [INCOMPLETE][4] ([i915#4785])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-    - fi-hsw-g3258:       [PASS][5] -> [INCOMPLETE][6] ([i915#4785])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bsw-n3050/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][8] ([fdo#109271])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-blb-e6850/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][9] ([fdo#109271] / [i915#4312] / [i915#5594] / [i915#6246])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-4770/igt@runner@aborted.html
-    - fi-hsw-g3258:       NOTRUN -> [FAIL][10] ([fdo#109271] / [i915#4312] / [i915#6246])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-g3258/igt@runner@aborted.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][11] ([i915#4312])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bdw-gvtdvm/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@reload:
-    - {bat-adln-1}:       [DMESG-WARN][12] ([i915#6297]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-adln-1/igt@i915_module_load@reload.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-adln-1/igt@i915_module_load@reload.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - {bat-rpls-2}:       [DMESG-WARN][14] ([i915#5537]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [INCOMPLETE][16] ([i915#5847]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          [DMESG-FAIL][18] ([i915#4494] / [i915#4957]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [DMESG-FAIL][20] ([i915#4528]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-blb-e6850/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@reset:
-    - {bat-rpls-2}:       [DMESG-FAIL][22] ([i915#4983]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-rpls-2/igt@i915_selftest@live@reset.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-rpls-2/igt@i915_selftest@live@reset.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5847]: https://gitlab.freedesktop.org/drm/intel/issues/5847
-  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
-  [i915#6297]: https://gitlab.freedesktop.org/drm/intel/issues/6297
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6431]: https://gitlab.freedesktop.org/drm/intel/issues/6431
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6578 -> IGTPW_7501
-
-  CI-20190529: 20190529
-  CI_DRM_11876: 2305e0d006655ed3797e530403df777699c67ec8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7501: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html
-  IGT_6578: 7d289d89131ec37c1145bcdb86149914587d7406 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html
-
---===============5408867226096827923==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915_query: fix cache type iteration (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106195/">https://patchwork.freedesktop.org/series/106195/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11876 -&gt; IGTPW_7501</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html</p>
-<h2>Participating hosts (43 -&gt; 41)</h2>
-<p>Missing    (2): fi-ctg-p8600 fi-hsw-4200u </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7501 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-bdw-gvtdvm:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-bdw-gvtdvm/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bdw-gvtdvm/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6431">i915#6431</a>)</p>
-</li>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
-</li>
-<li>
-<p>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bsw-n3050/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-blb-e6850/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
-</li>
-<li>
-<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
-</li>
-<li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bdw-gvtdvm/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-adln-1/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6297">i915#6297</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-adln-1/igt@i915_module_load@reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5537">i915#5537</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5847">i915#5847</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-rpls-2/igt@i915_selftest@live@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6578 -&gt; IGTPW_7501</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11876: 2305e0d006655ed3797e530403df777699c67ec8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7501: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html<br />
-  IGT_6578: 7d289d89131ec37c1145bcdb86149914587d7406 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5408867226096827923==--
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 5129d9f0..69ae9b58 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -698,7 +698,8 @@ static int autoresume_delay;
+ static const char *suspend_state_name[] = {
+ 	[SUSPEND_STATE_FREEZE] = "freeze",
+ 	[SUSPEND_STATE_STANDBY] = "standby",
+-	[SUSPEND_STATE_MEM] = "mem",
++	[SUSPEND_STATE_S3] = "mem", /* Forces Suspend-to-Ram (S3) */
++	[SUSPEND_STATE_MEM] = "mem", /* Respects system default */
+ 	[SUSPEND_STATE_DISK] = "disk",
+ };
+ 
+@@ -840,6 +841,63 @@ static uint32_t get_supported_suspend_states(int power_dir)
+ 	return state_mask;
+ }
+ 
++/**
++ * igt_get_memsleep_state
++ *
++ * Reads the value of /sys/power/mem_sleep and
++ * returns the current suspend state associated with 'mem'.
++ *
++ * Returns : an #igt_mem_sleep state, current suspend state associated with 'mem'.
++ */
++int igt_get_memsleep_state(void)
++{
++	char *mem_sleep_states;
++	char *mem_sleep_state;
++	enum igt_mem_sleep mem_sleep;
++	int power_dir;
++
++	igt_require((power_dir = open("/sys/power", O_RDONLY)) >= 0);
++
++	if (faccessat(power_dir, "mem_sleep", R_OK, 0))
++		return MEM_SLEEP_NONE;
++
++	igt_assert((mem_sleep_states = igt_sysfs_get(power_dir, "mem_sleep")));
++	for (mem_sleep_state = strtok(mem_sleep_states, " "); mem_sleep_state;
++	     mem_sleep_state = strtok(NULL, " ")) {
++		if (mem_sleep_state[0] == '[') {
++			mem_sleep_state[strlen(mem_sleep_state) - 1] = '\0';
++			mem_sleep_state++;
++			break;
++		}
++	}
++
++	if (!mem_sleep_state) {
++		free(mem_sleep_states);
++		return MEM_SLEEP_NONE;
++	}
++
++	for (mem_sleep = MEM_SLEEP_S2IDLE; mem_sleep < MEM_SLEEP_NUM; mem_sleep++) {
++		if (strcmp(mem_sleep_name[mem_sleep], mem_sleep_state) == 0)
++			break;
++	}
++
++	igt_assert_f(mem_sleep < MEM_SLEEP_NUM, "Invalid mem_sleep state\n");
++
++	free(mem_sleep_states);
++	close(power_dir);
++	return mem_sleep;
++}
++
++static void set_mem_sleep(int power_dir, enum igt_mem_sleep sleep)
++{
++	igt_assert(sleep < MEM_SLEEP_NUM);
++
++	igt_assert_eq(faccessat(power_dir, "mem_sleep", W_OK, 0), 0);
++
++	igt_assert(igt_sysfs_set(power_dir, "mem_sleep",
++				 mem_sleep_name[sleep]));
++}
++
+ /**
+  * igt_system_suspend_autoresume:
+  * @state: an #igt_suspend_state, the target suspend state
+@@ -866,6 +924,7 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+ {
+ 	int power_dir;
+ 	enum igt_suspend_test orig_test;
++	enum igt_mem_sleep orig_mem_sleep = MEM_SLEEP_NONE;
+ 
+ 	igt_require((power_dir = open("/sys/power", O_RDONLY)) >= 0);
+ 	igt_require(get_supported_suspend_states(power_dir) & (1 << state));
+@@ -877,6 +936,14 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+ 		      "Suspend to disk requires swap space.\n");
+ 
+ 	orig_test = get_suspend_test(power_dir);
++
++	if (state == SUSPEND_STATE_S3) {
++		orig_mem_sleep = igt_get_memsleep_state();
++		set_mem_sleep(power_dir, MEM_SLEEP_DEEP);
++		igt_skip_on_f(igt_get_memsleep_state() != MEM_SLEEP_DEEP,
++			      "S3 not possible in this system.\n");
++	}
++
+ 	set_suspend_test(power_dir, test);
+ 
+ 	if (test == SUSPEND_TEST_NONE)
+@@ -884,6 +951,9 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+ 	else
+ 		suspend_via_sysfs(power_dir, state);
+ 
++	if (orig_mem_sleep)
++		set_mem_sleep(power_dir, orig_mem_sleep);
++
+ 	set_suspend_test(power_dir, orig_test);
+ 	close(power_dir);
+ }
+@@ -958,52 +1028,6 @@ int igt_get_autoresume_delay(enum igt_suspend_state state)
+ 	return delay;
+ }
+ 
+-/**
+- * igt_get_memsleep_state
+- *
+- * Reads the value of /sys/power/mem_sleep and
+- * returns the current suspend state associated with 'mem'.
+- *
+- * Returns : an #igt_mem_sleep state, current suspend state associated with 'mem'.
+- */
+-int igt_get_memsleep_state(void)
+-{
+-	char *mem_sleep_states;
+-	char *mem_sleep_state;
+-	enum igt_mem_sleep mem_sleep;
+-	int power_dir;
+-
+-	igt_require((power_dir = open("/sys/power", O_RDONLY)) >= 0);
+-
+-	if (faccessat(power_dir, "mem_sleep", R_OK, 0))
+-		return MEM_SLEEP_NONE;
+-
+-	igt_assert((mem_sleep_states = igt_sysfs_get(power_dir, "mem_sleep")));
+-	for (mem_sleep_state = strtok(mem_sleep_states, " "); mem_sleep_state;
+-	     mem_sleep_state = strtok(NULL, " ")) {
+-		if (mem_sleep_state[0] == '[') {
+-			mem_sleep_state[strlen(mem_sleep_state) - 1] = '\0';
+-			mem_sleep_state++;
+-			break;
+-		}
+-	}
+-
+-	if (!mem_sleep_state) {
+-		free(mem_sleep_states);
+-		return MEM_SLEEP_NONE;
+-	}
+-
+-	for (mem_sleep = MEM_SLEEP_S2IDLE; mem_sleep < MEM_SLEEP_NUM; mem_sleep++) {
+-		if (strcmp(mem_sleep_name[mem_sleep], mem_sleep_state) == 0)
+-			break;
+-	}
+-
+-	igt_assert_f(mem_sleep < MEM_SLEEP_NUM, "Invalid mem_sleep state\n");
+-
+-	free(mem_sleep_states);
+-	close(power_dir);
+-	return mem_sleep;
+-}
+ /**
+  * igt_drop_root:
+  *
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index 9d5b7bd2..b1e48b0f 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -135,13 +135,19 @@ bool igt_aub_dump_enabled(void);
+ 
+ /**
+  *  igt_suspend_state:
+- *  @SUSPEND_STATE_FREEZE: suspend-to-idle target state, aka S0ix or freeze,
++ *  @SUSPEND_STATE_FREEZE: Suspend-To-Idle target state, aka S0ix or freeze,
+  *			   first non-hibernation state
+- *  @SUSPEND_STATE_STANDBY: standby target state, aka S1, second
++ *  @SUSPEND_STATE_STANDBY: "Power-On Suspend" target state, aka S1, second
+  *			    non-hibernation state
+- *  @SUSPEND_STATE_MEM: suspend-to-mem target state aka S3, third
+- *			non-hibernation state
+- *  @SUSPEND_STATE_DISK: suspend-to-disk target state, aka S4 or hibernation
++ *  @SUSPEND_STATE_S3: Suspend-To-RAM: It enforces a "deep" state to mem_sleep,
++ *		       what forces the system to go to the third
++ *		       non-hibernation state, aka S3.
++ *  @SUSPEND_STATE_MEM: A memory sleep (non-hibernation) target state,
++ *			respecting the system's mem_sleep default:
++ *				s2idle: Suspend-To-Idle target state
++ *				shallow: "Power-On Suspend"
++ *				deep: Suspend-To-RAM
++ *  @SUSPEND_STATE_DISK: Suspend-To-Disk target state, aka S4 or hibernation
+  *
+  *  Target suspend states used with igt_system_suspend_autoresume().
+  *  See /sys/power/state for the available states on a given machine.
+@@ -149,7 +155,8 @@ bool igt_aub_dump_enabled(void);
+ enum igt_suspend_state {
+ 	SUSPEND_STATE_FREEZE,
+ 	SUSPEND_STATE_STANDBY,
+-	SUSPEND_STATE_MEM,
++	SUSPEND_STATE_S3, /* Forces Suspend-to-Ram (S3) */
++	SUSPEND_STATE_MEM, /* Respects system default */
+ 	SUSPEND_STATE_DISK,
+ 
+ 	/*< private >*/
+-- 
+2.35.3
