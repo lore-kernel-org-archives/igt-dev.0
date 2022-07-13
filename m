@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01B2412B337
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 15:57:57 +0000 (UTC)
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Jul 2022 11:52:30 -0400
-Message-Id: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com
+ [199.106.114.38])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 243E610E180
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Jul 2022 16:08:29 +0000 (UTC)
+Message-ID: <47a20867-ea9b-14d0-2af5-79470245017b@quicinc.com>
+Date: Wed, 13 Jul 2022 09:08:26 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/4] lib/igt_aux: Let's use the official
- mem_sleep names
+To: Rob Clark <robdclark@gmail.com>
+References: <20220622163915.364-1-quic_jesszhan@quicinc.com>
+ <CAF6AEGudF4G7yQHK+jk_jP0nd62JMoLYL+P29GnfLfG4A3ETZg@mail.gmail.com>
+Content-Language: en-US
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <CAF6AEGudF4G7yQHK+jk_jP0nd62JMoLYL+P29GnfLfG4A3ETZg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_writeback: Detach pipe
+ only for valid FB_ID
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,78 +23,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ "Aravind Venkateswaran \(QUIC\)" <quic_aravindh@quicinc.com>,
+ Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Mixing the names with the state names can cause confusion.
-Let's stick with the official names.
 
-Cc: Riana Tauro <riana.tauro@intel.com>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- lib/igt_aux.c             | 8 ++++----
- lib/igt_aux.h             | 6 +++---
- tests/i915/i915_suspend.c | 2 +-
- 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index 35c67f10..5129d9f0 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -712,9 +712,9 @@ static const char *suspend_test_name[] = {
- };
- 
- static const char *mem_sleep_name[] = {
--	[MEM_SLEEP_FREEZE] = "s2idle",
--	[MEM_SLEEP_STANDBY] = "shallow",
--	[MEM_SLEEP_MEM] = "deep"
-+	[MEM_SLEEP_S2IDLE] = "s2idle",
-+	[MEM_SLEEP_SHALLOW] = "shallow",
-+	[MEM_SLEEP_DEEP] = "deep"
- };
- 
- static enum igt_suspend_test get_suspend_test(int power_dir)
-@@ -993,7 +993,7 @@ int igt_get_memsleep_state(void)
- 		return MEM_SLEEP_NONE;
- 	}
- 
--	for (mem_sleep = MEM_SLEEP_FREEZE; mem_sleep < MEM_SLEEP_NUM; mem_sleep++) {
-+	for (mem_sleep = MEM_SLEEP_S2IDLE; mem_sleep < MEM_SLEEP_NUM; mem_sleep++) {
- 		if (strcmp(mem_sleep_name[mem_sleep], mem_sleep_state) == 0)
- 			break;
- 	}
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index af663d2c..9d5b7bd2 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -196,9 +196,9 @@ enum igt_suspend_test {
-  */
- enum igt_mem_sleep {
- 	MEM_SLEEP_NONE,
--	MEM_SLEEP_FREEZE,
--	MEM_SLEEP_STANDBY,
--	MEM_SLEEP_MEM,
-+	MEM_SLEEP_S2IDLE,
-+	MEM_SLEEP_SHALLOW,
-+	MEM_SLEEP_DEEP,
- 
- 	/*<private>*/
- 	MEM_SLEEP_NUM,
-diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-index 23e451d3..f992d447 100644
---- a/tests/i915/i915_suspend.c
-+++ b/tests/i915/i915_suspend.c
-@@ -209,7 +209,7 @@ test_suspend_without_i915(int state)
- 	igt_kmsg(KMSG_INFO "Unloading i915\n");
- 	igt_assert_eq(igt_i915_driver_unload(),0);
- 
--	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_FREEZE && state > SUSPEND_STATE_FREEZE,
-+	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_S2IDLE && state > SUSPEND_STATE_FREEZE,
- 		      "Platform default mem_sleep state is s2idle\n");
- 	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
- 
--- 
-2.35.3
+On 7/12/2022 6:27 PM, Rob Clark wrote:
+> On Wed, Jun 22, 2022 at 9:39 AM Jessica Zhang <quic_jesszhan@quicinc.com> wrote:
+>>
+>> Currently, the writeback DRM driver will accept a commit on the
+>> writeback connector only if a valid FB_ID is presented. When we run
+>> the "writeback-invalid-parameters" or "writeback-format-pixels" subtests
+>> individually, this will not be true because no successful commit has
+>> happened. So there is no need to clean up the pipes in detach_crtc.
+>>
+>> Only issue a NULL commit if FB_ID is greater than zero. This will make
+>> sure that a cleanup happens only when necessary.
+>>
+>> Changes since V1:
+>> - Fix improper brace style for detach_crtc()
+>> - Rebase onto tip of master
+>>
+>> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+> 
+> Reviewed-by: Rob Clark <robdclark@gmail.com>
+
+Applied. Thanks!
+
+- Jessica Zhang
+
+> 
+>> ---
+>>   tests/kms_writeback.c | 11 ++++++++++-
+>>   1 file changed, 10 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+>> index 6efc72df4327..1a623655da49 100644
+>> --- a/tests/kms_writeback.c
+>> +++ b/tests/kms_writeback.c
+>> @@ -139,7 +139,16 @@ static igt_output_t *kms_writeback_get_output(igt_display_t *display)
+>>          return NULL;
+>>   }
+>>
+>> -static void detach_crtc(igt_display_t *display, igt_output_t *output) {
+>> +static uint64_t get_writeback_fb_id(igt_output_t *output)
+>> +{
+>> +       return igt_output_get_prop(output, IGT_CONNECTOR_WRITEBACK_FB_ID);
+>> +}
+>> +
+>> +static void detach_crtc(igt_display_t *display, igt_output_t *output)
+>> +{
+>> +       if (get_writeback_fb_id(output) == 0)
+>> +               return;
+>> +
+>>          igt_output_set_pipe(output, PIPE_NONE);
+>>          igt_display_commit2(display, COMMIT_ATOMIC);
+>>   }
+>> --
+>> 2.31.0
+>>
