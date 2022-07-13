@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============5408867226096827923=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rohith Iyer" <quic_rohiiyer@quicinc.com>
-Date: Wed, 13 Jul 2022 22:30:04 -0000
-Message-ID: <165775140476.737.6533488718402231709@emeril.freedesktop.org>
-References: <20220713222235.11655-1-quic_rohiiyer@quicinc.com>
-In-Reply-To: <20220713222235.11655-1-quic_rohiiyer@quicinc.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_k?=
- =?utf-8?q?ms=5Fwriteback_enhancements?=
+To: "Das, Nirmoy" <nirmoy.das@intel.com>
+Date: Wed, 13 Jul 2022 14:58:12 -0000
+Message-ID: <165772429239.740.12912233905623051018@emeril.freedesktop.org>
+References: <20220712135024.5571-1-nirmoy.das@intel.com>
+In-Reply-To: <20220712135024.5571-1-nirmoy.das@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915=5Fquery=3A_fix_cache_type_iteration_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,157 +23,274 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============5408867226096827923==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Series: kms_writeback enhancements
-URL   : https://patchwork.freedesktop.org/series/106318/
-State : warning
+== Series Details ==
 
-=3D=3D Summary =3D=3D
+Series: tests/i915_query: fix cache type iteration (rev2)
+URL   : https://patchwork.freedesktop.org/series/106195/
+State : success
 
-Pipeline status: FAILED.
+== Summary ==
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/637343 fo=
-r the overview.
+CI Bug Log - changes from CI_DRM_11876 -> IGTPW_7501
+====================================================
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/25327850):
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:237: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_testdisplay_descr=
-iption.xml, and no fallback was found
-  warning: failed to load external entity "/builds/gfx-ci/igt-ci-tags/docs/=
-reference/igt-gpu-tools/igt_test_programs_tools_programs.xml"
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:245: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_tools_programs.xm=
-l, and no fallback was found
-  warning: failed to load external entity "/builds/gfx-ci/igt-ci-tags/docs/=
-reference/igt-gpu-tools/igt_test_programs_tools_description.xml"
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:246: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_tools_description=
-.xml, and no fallback was found
-  warning: failed to load external entity "/builds/gfx-ci/igt-ci-tags/docs/=
-reference/igt-gpu-tools/igt_test_programs_vgem_programs.xml"
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:254: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_vgem_programs.xml=
-, and no fallback was found
-  warning: failed to load external entity "/builds/gfx-ci/igt-ci-tags/docs/=
-reference/igt-gpu-tools/igt_test_programs_vgem_description.xml"
-  /builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs=
-.xml:255: element include: XInclude error : could not load /builds/gfx-ci/i=
-gt-ci-tags/docs/reference/igt-gpu-tools/igt_test_programs_vgem_description.=
-xml, and no fallback was found
- =20
- =20
-  FAILED: meson-install=20
-  /usr/bin/meson install --no-rebuild
-  ninja: build stopped: subcommand failed.
-  section_end:1657751261:step_script
-  section_start:1657751261:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1657751262:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+Summary
+-------
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/25327852):
-  ../xml/igt_kms.xml:4207: parser error : Premature end of data in tag refs=
-ect2 line 3579
- =20
-  ^
-  ../xml/igt_kms.xml:4207: parser error : Premature end of data in tag refs=
-ect1 line 393
- =20
-  ^
-  ../xml/igt_kms.xml:4207: parser error : Premature end of data in tag refe=
-ntry line 8
- =20
-  ^
-  ../igt-gpu-tools-docs.xml:36: element include: XInclude error : could not=
- load ../xml/igt_kms.xml, and no fallback was found
- =20
-  FAILED: meson-igt-gpu-tools-doc=20
-  /usr/bin/python3 /usr/local/bin/meson --internal commandrunner /builds/gf=
-x-ci/igt-ci-tags /builds/gfx-ci/igt-ci-tags/build docs/reference/igt-gpu-to=
-ols /usr/bin/python3 /usr/local/bin/meson /usr/bin/python3 /usr/local/bin/m=
-eson --internal gtkdoc --sourcedir=3D/builds/gfx-ci/igt-ci-tags --builddir=
-=3D/builds/gfx-ci/igt-ci-tags/build --subdir=3Ddocs/reference/igt-gpu-tools=
- --headerdirs=3D/builds/gfx-ci/igt-ci-tags/lib@@/builds/gfx-ci/igt-ci-tags/=
-build/lib --mainfile=3Digt-gpu-tools-docs.xml --modulename=3Digt-gpu-tools =
---mode=3Dauto --scanargs=3D--rebuild-sections --mkdbargs=3D--output-format=
-=3Dxml --content-files=3D/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-=
-tools/igt_test_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/referenc=
-e/igt-gpu-tools/igt_test_programs_amdgpu_programs.xml@@/builds/gfx-ci/igt-c=
-i-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_amdgpu_descript=
-ion.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_=
-test_programs_core_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/refe=
-rence/igt-gpu-tools/igt_test_programs_core_description.xml@@/builds/gfx-ci/=
-igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_debugfs_pr=
-ograms.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/i=
-gt_test_programs_debugfs_description.xml@@/builds/gfx-ci/igt-ci-tags/build/=
-docs/reference/igt-gpu-tools/igt_test_programs_drm_programs.xml@@/builds/gf=
-x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_drm_d=
-escription.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
-ls/igt_test_programs_gem_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/doc=
-s/reference/igt-gpu-tools/igt_test_programs_gem_description.xml@@/builds/gf=
-x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_gen3_=
-programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools=
-/igt_test_programs_gen3_description.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
-ocs/reference/igt-gpu-tools/igt_test_programs_gen7_programs.xml@@/builds/gf=
-x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_gen7_=
-description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-to=
-ols/igt_test_programs_i915_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
-ocs/reference/igt-gpu-tools/igt_test_programs_i915_description.xml@@/builds=
-/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_km=
-s_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
-ls/igt_test_programs_kms_description.xml@@/builds/gfx-ci/igt-ci-tags/build/=
-docs/reference/igt-gpu-tools/igt_test_programs_meta_programs.xml@@/builds/g=
-fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_meta=
-_description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-t=
-ools/igt_test_programs_perf_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/=
-docs/reference/igt-gpu-tools/igt_test_programs_perf_description.xml@@/build=
-s/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_p=
-m_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
-ls/igt_test_programs_pm_description.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
-ocs/reference/igt-gpu-tools/igt_test_programs_prime_programs.xml@@/builds/g=
-fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_prim=
-e_description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-=
-tools/igt_test_programs_sw_sync_programs.xml@@/builds/gfx-ci/igt-ci-tags/bu=
-ild/docs/reference/igt-gpu-tools/igt_test_programs_sw_sync_description.xml@=
-@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_pro=
-grams_testdisplay_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/refer=
-ence/igt-gpu-tools/igt_test_programs_testdisplay_description.xml@@/builds/g=
-fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_tool=
-s_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
-ls/igt_test_programs_tools_description.xml@@/builds/gfx-ci/igt-ci-tags/buil=
-d/docs/reference/igt-gpu-tools/igt_test_programs_vgem_programs.xml@@/builds=
-/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_vg=
-em_description.xml --ignore-headers=3Dgen6_render.h@@gen7_media.h@@gen7_ren=
-der.h@@gen8_media.h@@gen8_render.h@@gpgpu_fill.h@@i830_reg.h@@i915_3d.h@@i9=
-15_pciids.h@@i915_reg.h@@igt_edid_template.h@@intel_reg.h@@debug.h@@instdon=
-e.h@@media_fill.h@@rendercopy.h@@media_spin.h@@media_fill_gen9.h@@gen9_rend=
-er.h@@version.h '--cflags=3D-I./include/drm-uapi -I../include/drm-uapi -I./=
-include/linux-uapi -I../include/linux-uapi -I./lib -I../lib -I./lib/stubs/s=
-yscalls -I../lib/stubs/syscalls -I./. -I../. -I/usr/include/cairo -I/usr/in=
-clude/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr=
-/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/inc=
-lude/libdrm/nouveau -I/usr/include/valgrind' '--ldflags=3D-L/builds/gfx-ci/=
-igt-ci-tags/build/lib -Wl,-rpath,/builds/gfx-ci/igt-ci-tags/build/lib -ligt=
- -lcairo -lglib-2.0 -ldrm -ldw -lelf -lkmod -lprocps -ludev -lm -lpciaccess=
- -lpixman-1 -lrt -lz -ldrm_intel -ldrm_nouveau -ldrm_amdgpu -lunwind -lgsl =
--lgslcblas -lasound -lxmlrpc -lxmlrpc_util -lxmlrpc_client' --cc=3Dcc --ld=
-=3Dcc
-  ninja: build stopped: subcommand failed.
-  section_end:1657751262:step_script
-  section_start:1657751262:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1657751263:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
 
-=3D=3D Logs =3D=3D
+  No regressions found.
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/637343
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html
+
+Participating hosts (43 -> 41)
+------------------------------
+
+  Missing    (2): fi-ctg-p8600 fi-hsw-4200u 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7501 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-bdw-gvtdvm:      [PASS][1] -> [INCOMPLETE][2] ([i915#6431])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-bdw-gvtdvm/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bdw-gvtdvm/igt@i915_selftest@live@hangcheck.html
+    - fi-hsw-4770:        [PASS][3] -> [INCOMPLETE][4] ([i915#4785])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+    - fi-hsw-g3258:       [PASS][5] -> [INCOMPLETE][6] ([i915#4785])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bsw-n3050/igt@kms_chamelium@common-hpd-after-suspend.html
+    - fi-blb-e6850:       NOTRUN -> [SKIP][8] ([fdo#109271])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-blb-e6850/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@runner@aborted:
+    - fi-hsw-4770:        NOTRUN -> [FAIL][9] ([fdo#109271] / [i915#4312] / [i915#5594] / [i915#6246])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-4770/igt@runner@aborted.html
+    - fi-hsw-g3258:       NOTRUN -> [FAIL][10] ([fdo#109271] / [i915#4312] / [i915#6246])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-g3258/igt@runner@aborted.html
+    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][11] ([i915#4312])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bdw-gvtdvm/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@reload:
+    - {bat-adln-1}:       [DMESG-WARN][12] ([i915#6297]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-adln-1/igt@i915_module_load@reload.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-adln-1/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-rpls-2}:       [DMESG-WARN][14] ([i915#5537]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [INCOMPLETE][16] ([i915#5847]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][18] ([i915#4494] / [i915#4957]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [DMESG-FAIL][20] ([i915#4528]) -> [PASS][21]
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-2}:       [DMESG-FAIL][22] ([i915#4983]) -> [PASS][23]
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
+  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
+  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
+  [i915#5847]: https://gitlab.freedesktop.org/drm/intel/issues/5847
+  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
+  [i915#6297]: https://gitlab.freedesktop.org/drm/intel/issues/6297
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6431]: https://gitlab.freedesktop.org/drm/intel/issues/6431
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6578 -> IGTPW_7501
+
+  CI-20190529: 20190529
+  CI_DRM_11876: 2305e0d006655ed3797e530403df777699c67ec8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7501: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html
+  IGT_6578: 7d289d89131ec37c1145bcdb86149914587d7406 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html
+
+--===============5408867226096827923==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915_query: fix cache type iteration (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106195/">https://patchwork.freedesktop.org/series/106195/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11876 -&gt; IGTPW_7501</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html</p>
+<h2>Participating hosts (43 -&gt; 41)</h2>
+<p>Missing    (2): fi-ctg-p8600 fi-hsw-4200u </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7501 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>fi-bdw-gvtdvm:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-bdw-gvtdvm/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bdw-gvtdvm/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6431">i915#6431</a>)</p>
+</li>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
+</li>
+<li>
+<p>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bsw-n3050/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-blb-e6850/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
+</li>
+<li>
+<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
+</li>
+<li>
+<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bdw-gvtdvm/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-adln-1/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6297">i915#6297</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-adln-1/igt@i915_module_load@reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5537">i915#5537</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5847">i915#5847</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11876/bat-rpls-2/igt@i915_selftest@live@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6578 -&gt; IGTPW_7501</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11876: 2305e0d006655ed3797e530403df777699c67ec8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7501: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7501/index.html<br />
+  IGT_6578: 7d289d89131ec37c1145bcdb86149914587d7406 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5408867226096827923==--
