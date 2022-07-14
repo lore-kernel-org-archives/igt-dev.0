@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2755F93188
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jul 2022 03:45:43 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 413F2A1854
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Jul 2022 04:17:38 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 14 Jul 2022 05:45:32 +0200
-Message-Id: <20220714034533.9912-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220714034533.9912-1-zbigniew.kempczynski@intel.com>
-References: <20220714034533.9912-1-zbigniew.kempczynski@intel.com>
+Date: Thu, 14 Jul 2022 06:17:27 +0200
+Message-Id: <20220714041733.19044-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] i915/i915_module_load: Randomise
- fault injection
+Subject: [igt-dev] [PATCH i-g-t v3 0/6] Add codename in device selection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,71 +17,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+Most important in this series is codename + discrete/integrated 
+device selectors. Device simulation is far away from being perfect
+and I won't insist for merging it - it was written to check some
+artificial multi-gpu setups.
 
-Reduce the number of faults we inject during module reload to bring the
-test runtime back to a reasonable level, and rely on multiple CI runs to
-establish the full picture. This reduces the efficacy of testing (i.e.
-premerge will probably not prevent inclusion of a buggy patch), but
-error handling on module reload is not a critical factor for driver
-health -- a broken patch that explodes in an error path is unlikely to
-prevent CI from detecting critical issues, and with multiple runs we
-should still be able to detect and fix issues before merging.
+v2-v3: addressing review comments (Kamil)
 
-Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6393
+Zbigniew Kempczyński (6):
+  lib/igt_device_scan: Migrate pci assignment
+  lib/igt_device_scan: Introduce codename for platform selection
+  tools/lsgpu: Add codename switch (-c)
+  lib/igt_device_scan: Align microseconds to six leading zeros
+  lib/igt_device_scan: Add discrete/integrated pseudo-codenames
+  lib/igt_device_scan: Simulate udev drm and pci device events
 
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
-v2: Reorganize fault_inject() loop (Kamil)
----
- tests/i915/i915_module_load.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ lib/igt_device_scan.c          | 181 +++++++++++--
+ lib/igt_device_scan.h          |   1 +
+ lib/igt_device_scan_simulate.c | 450 +++++++++++++++++++++++++++++++++
+ tools/lsgpu.c                  |   8 +-
+ 4 files changed, 623 insertions(+), 17 deletions(-)
+ create mode 100644 lib/igt_device_scan_simulate.c
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index 05863c4748..0ce433869d 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -345,20 +345,27 @@ igt_main
- 		     " with fault injection.");
- 	igt_subtest("reload-with-fault-injection") {
- 		const char *param;
--		int i = 0;
-+		int i;
- 
- 		igt_i915_driver_unload();
- 
-+		i = 0;
-+		param = getenv("IGT_SRANDOM");
-+		if (param)
-+			i = atoi(param);
-+		if (!i)
-+			i = time(NULL);
-+		igt_info("Using IGT_SRANDOM=%d for randomised faults\n", i);
-+		srandom(i);
-+
- 		param = "inject_probe_failure";
- 		if (!igt_kmod_has_param("i915", param))
- 			param = "inject_load_failure";
- 		igt_require(igt_kmod_has_param("i915", param));
- 
--		while (inject_fault("i915", param, ++i) == 0)
--			;
--
--		/* We expect to hit at least one fault! */
--		igt_assert(i > 1);
-+		i = 1;
-+		while (inject_fault("i915", param, i) == 0)
-+			i += 1 + random() % 17;
- 
- 		/* inject_fault() leaves the module unloaded */
- 	}
 -- 
 2.34.1
