@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E9BEA35DF
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jul 2022 08:16:12 +0000 (UTC)
-Message-ID: <88dcf1ae-a15c-cf7c-2057-f2af87c08203@intel.com>
-Date: Thu, 14 Jul 2022 10:15:59 +0200
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 110F0A353D
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Jul 2022 08:07:32 +0000 (UTC)
+Date: Thu, 14 Jul 2022 10:07:26 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Ys/Ovq0hK1bu/FiH@kamilkon-desk1>
 References: <20220713181637.10707-1-nirmoy.das@intel.com>
- <Ys/Ovq0hK1bu/FiH@kamilkon-desk1>
-From: "Das, Nirmoy" <nirmoy.das@intel.com>
-In-Reply-To: <Ys/Ovq0hK1bu/FiH@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220713181637.10707-1-nirmoy.das@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 loaded
  properly
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -23,45 +20,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDcvMTQvMjAyMiAxMDowNyBBTSwgS2FtaWwgS29uaWVjem55IHdyb3RlOgo+IEhpIE5pcm1v
-eSwKPgo+IE9uIDIwMjItMDctMTMgYXQgMjA6MTY6MzcgKzAyMDAsIE5pcm1veSBEYXMgd3JvdGU6
-Cj4+IFByZXZpb3VzIHRlc3QgbWF5IGxlYXZlIGluY29tcGxldGUgaTkxNSBzdGF0ZS4KPj4gbWFr
-ZSB0aGlzIG1vcmUgcmVzaWxpZW50IG15IHVubG9hZCBhbmQgcmVsb2FkaW5nIGk5MTUuCj4gLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXgo+IHMvbXkvYnkvCj4KPj4gUmVmZXJlbmNlOiBodHRw
-czovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsLy0vaXNzdWVzLzU2MDgKPj4gU2ln
-bmVkLW9mZi1ieTogTmlybW95IERhcyA8bmlybW95LmRhc0BpbnRlbC5jb20+Cj4+IC0tLQo+PiAg
-IHRlc3RzL2k5MTUvcGVyZi5jIHwgNSArKystLQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2Vy
-dGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L3Bl
-cmYuYyBiL3Rlc3RzL2k5MTUvcGVyZi5jCj4+IGluZGV4IGU2NDFkNWQyZC4uOWMzNmFhYzM0IDEw
-MDY0NAo+PiAtLS0gYS90ZXN0cy9pOTE1L3BlcmYuYwo+PiArKysgYi90ZXN0cy9pOTE1L3BlcmYu
-Ywo+PiBAQCAtNDEsOCArNDEsOCBAQAo+PiAgICNpbmNsdWRlICJpOTE1L2dlbS5oIgo+PiAgICNp
-bmNsdWRlICJpOTE1L3BlcmYuaCIKPj4gICAjaW5jbHVkZSAiaWd0LmgiCj4+ICsjaW5jbHVkZSAi
-aWd0X2ttb2QuaCIKPj4gICAjaW5jbHVkZSAiaWd0X3N5c2ZzLmgiCj4+IC0jaW5jbHVkZSAiZHJt
-LmgiCj4+ICAgCj4+ICAgSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3QgdGhlIGk5MTUgcGVyZiBt
-ZXRyaWNzIHN0cmVhbWluZyBpbnRlcmZhY2UiKTsKPj4gICAKPj4gQEAgLTQ5MTYsNyArNDkxNiw4
-IEBAIGlndF9tYWluCj4+ICAgCQkgKiBsb2FkaW5nL3VubG9hZGluZyBpOTE1LiBMb2FkIGk5MTUg
-aGVyZSBiZWZvcmUgd2Ugc3RhdCB0aGUKPj4gICAJCSAqIGZpbGVzLgo+PiAgIAkJICovCj4+IC0J
-CWRybV9sb2FkX21vZHVsZShEUklWRVJfSU5URUwpOwo+PiArCQlpZ3RfaTkxNV9kcml2ZXJfdW5s
-b2FkKCk7Cj4+ICsJCWlndF9hc3NlcnRfZXEoaWd0X2k5MTVfZHJpdmVyX2xvYWQoTlVMTCksIDAp
-Owo+PiAgIAo+PiAgIAkJaWd0X3JlcXVpcmUoc3RhdCgiL3Byb2Mvc3lzL2Rldi9pOTE1L3BlcmZf
-c3RyZWFtX3BhcmFub2lkIiwgJnNiKQo+PiAgIAkJCSAgICA9PSAwKTsKPj4gLS0gCj4+IDIuMzUu
-MQo+Pgo+IFNlZSBiZWxvdy4KPiAgIAo+PiBJbnRlbCBEZXV0c2NobGFuZCBHbWJICj4+IFJlZ2lz
-dGVyZWQgQWRkcmVzczogQW0gQ2FtcGVvbiAxMCwgODU1NzkgTmV1YmliZXJnLCBHZXJtYW55Cj4+
-IFRlbDogKzQ5IDg5IDk5IDg4NTMtMCwgd3d3LmludGVsLmRlIDxodHRwOi8vd3d3LmludGVsLmRl
-Pgo+PiBNYW5hZ2luZyBEaXJlY3RvcnM6IENocmlzdGluIEVpc2Vuc2NobWlkLCBTaGFyb24gSGVj
-aywgVGlmZmFueSBEb29uIFNpbHZhCj4+IENoYWlycGVyc29uIG9mIHRoZSBTdXBlcnZpc29yeSBC
-b2FyZDogTmljb2xlIExhdQo+PiBSZWdpc3RlcmVkIE9mZmljZTogTXVuaWNoCj4+IENvbW1lcmNp
-YWwgUmVnaXN0ZXI6IEFtdHNnZXJpY2h0IE11ZW5jaGVuIEhSQiAxODY5MjgKPj4KPiBQbGVhc2Ug
-ZG8gbm90IHNlbmQgdGhpcyBpbiBwYXRjaGVzLAoKClRoYW5rcyBLYW1pbC4gSSBzaG91bGQgaGF2
-ZSB0aGlzIGF1dG9tYXRpY8KgIGRpc2NsYWltZXIgcmVtb3ZlZCBzb29uLgoKCk5pcm1veQoKCj4K
-PiBSZWdhcmRzLAo+IEthbWlsCkludGVsIERldXRzY2hsYW5kIEdtYkgKUmVnaXN0ZXJlZCBBZGRy
-ZXNzOiBBbSBDYW1wZW9uIDEwLCA4NTU3OSBOZXViaWJlcmcsIEdlcm1hbnkKVGVsOiArNDkgODkg
-OTkgODg1My0wLCB3d3cuaW50ZWwuZGUgPGh0dHA6Ly93d3cuaW50ZWwuZGU+Ck1hbmFnaW5nIERp
-cmVjdG9yczogQ2hyaXN0aW4gRWlzZW5zY2htaWQsIFNoYXJvbiBIZWNrLCBUaWZmYW55IERvb24g
-U2lsdmEgIApDaGFpcnBlcnNvbiBvZiB0aGUgU3VwZXJ2aXNvcnkgQm9hcmQ6IE5pY29sZSBMYXUK
-UmVnaXN0ZXJlZCBPZmZpY2U6IE11bmljaApDb21tZXJjaWFsIFJlZ2lzdGVyOiBBbXRzZ2VyaWNo
-dCBNdWVuY2hlbiBIUkIgMTg2OTI4Cg==
+Hi Nirmoy,
+
+On 2022-07-13 at 20:16:37 +0200, Nirmoy Das wrote:
+> Previous test may leave incomplete i915 state.
+> make this more resilient my unload and reloading i915.
+-------------------------- ^
+s/my/by/
+
+> 
+> Reference: https://gitlab.freedesktop.org/drm/intel/-/issues/5608
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>  tests/i915/perf.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index e641d5d2d..9c36aac34 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -41,8 +41,8 @@
+>  #include "i915/gem.h"
+>  #include "i915/perf.h"
+>  #include "igt.h"
+> +#include "igt_kmod.h"
+>  #include "igt_sysfs.h"
+> -#include "drm.h"
+>  
+>  IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
+>  
+> @@ -4916,7 +4916,8 @@ igt_main
+>  		 * loading/unloading i915. Load i915 here before we stat the
+>  		 * files.
+>  		 */
+> -		drm_load_module(DRIVER_INTEL);
+> +		igt_i915_driver_unload();
+> +		igt_assert_eq(igt_i915_driver_load(NULL), 0);
+>  
+>  		igt_require(stat("/proc/sys/dev/i915/perf_stream_paranoid", &sb)
+>  			    == 0);
+> -- 
+> 2.35.1
+>
+
+See below.
+ 
+> Intel Deutschland GmbH
+> Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
+> Tel: +49 89 99 8853-0, www.intel.de <http://www.intel.de>
+> Managing Directors: Christin Eisenschmid, Sharon Heck, Tiffany Doon Silva  
+> Chairperson of the Supervisory Board: Nicole Lau
+> Registered Office: Munich
+> Commercial Register: Amtsgericht Muenchen HRB 186928
+> 
+
+Please do not send this in patches,
+
+Regards,
+Kamil
