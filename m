@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4057A11279C
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jul 2022 15:49:53 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B70911379B
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Jul 2022 15:51:24 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kunal1.joshi@intel.com
-Date: Thu, 14 Jul 2022 21:17:38 +0530
-Message-Id: <20220714154738.689323-1-bhanuprakash.modem@intel.com>
+Date: Thu, 14 Jul 2022 21:19:11 +0530
+Message-Id: <20220714154911.689566-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 1/2] tests/kms_color_chamelium: Convert tests to
+Subject: [igt-dev] [i-g-t] tests/kms_color_chamelium: Convert tests to
  dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
