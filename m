@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 117B71133F8
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Jul 2022 12:57:09 +0000 (UTC)
-Message-ID: <6214d987-2cff-f3d8-c2c9-2809e536b2ad@intel.com>
-Date: Fri, 8 Jul 2022 13:56:59 +0100
-MIME-Version: 1.0
-Content-Language: en-GB
-To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220708122704.16216-1-nirmoy.das@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20220708122704.16216-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2E63112B0B
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 08:48:40 +0000 (UTC)
+Message-ID: <18682e7b-70c7-80f1-606d-70ef0429972b@intel.com>
+Date: Fri, 15 Jul 2022 14:18:20 +0530
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220616215654.5522-1-nidhi1.gupta@intel.com>
+ <20220616215654.5522-3-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220616215654.5522-3-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_create: use correct type
- for assert
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/kms_draw_crc.c: Test
+ Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,27 +26,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 08/07/2022 13:27, Nirmoy Das wrote:
-> visible_size is u64 hence use igt_assert_neq_u64 instead
-> of igt_assert_neq.
+On Fri-17-06-2022 03:26 am, Nidhi Gupta wrote:
+> Sanitize the system state before starting the subtest.
 > 
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 > ---
->   tests/i915/gem_create.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   tests/i915/kms_draw_crc.c | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
-> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-> index 1b694c6ad..d2b41e10b 100644
-> --- a/tests/i915/gem_create.c
-> +++ b/tests/i915/gem_create.c
-> @@ -707,7 +707,7 @@ static void create_ext_cpu_access_big(int fd)
+> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+> index 04cae0aa..2fe78c32 100644
+> --- a/tests/i915/kms_draw_crc.c
+> +++ b/tests/i915/kms_draw_crc.c
+> @@ -185,6 +185,7 @@ static void draw_method_subtest(enum igt_draw_method method,
+>   	igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
+>   		    !gem_has_mappable_ggtt(drm_fd));
 >   
->   		lmem_size = qmr.probed_size;
->   		visible_size = qmr.probed_cpu_visible_size;
-> -		igt_assert_neq(visible_size, 0);
-> +		igt_assert_neq_u64(visible_size, 0);
+> +	igt_display_reset(&display);
+
+It won't impact anything, since we are using drm call directly in this test.
+
+- Bhanu
+
+>   	igt_require(format_is_supported(formats[format_index], modifier));
 >   
->   		if (visible_size <= (0.70 * lmem_size)) {
->   			/*
+>   	/* Use IGT_DRAW_MMAP_GTT/WC on an untiled buffer as the parameter for
+> @@ -229,6 +230,8 @@ static void fill_fb_subtest(void)
+>   	igt_crc_t base_crc, crc;
+>   	bool has_4tile = intel_get_device_info(intel_get_drm_devid(drm_fd))->has_4tile;
+>   
+> +	igt_display_reset(&display);
+> +
+>   	igt_create_fb(drm_fd, ms.mode->hdisplay, ms.mode->vdisplay,
+>   		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
+>   
