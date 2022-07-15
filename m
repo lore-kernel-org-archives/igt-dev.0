@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4919C10E05A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 20:25:56 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com
+ [IPv6:2607:f8b0:4864:20::f34])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 534FC10E5CE
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 16:43:21 +0000 (UTC)
+Received: by mail-qv1-xf34.google.com with SMTP id l15so4060362qvo.11
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 09:43:21 -0700 (PDT)
+From: Mark Yacoub <markyacoub@chromium.org>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Jul 2022 23:25:17 +0300
-Message-Id: <20220715202520.23677-12-ville.syrjala@linux.intel.com>
-In-Reply-To: <20220715202520.23677-1-ville.syrjala@linux.intel.com>
-References: <20220715202520.23677-1-ville.syrjala@linux.intel.com>
+Date: Fri, 15 Jul 2022 12:43:02 -0400
+Message-Id: <20220715164302.1631538-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 11/14] tools/intel_vbt_decode: Clean up
- driver features block decoding
+Subject: [igt-dev] [PATCH] docs: Update Chamelium doc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,177 +19,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: petri.latvala@intel.com, anson.jacob@amd.com, seanpaul@chromium.org,
+ ihf@google.com, khaled.almahallawy@intel.com, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Mark Yacoub <markyacoub@google.com>
 
-Print all the stuff from the driver features block, and print
-it in the same order as the spec lists it to make it a bit
-easier to compare the two.
+1. Introduce Chamelium V3 hardware
+2. Update Chamelium ports map
+3. s/ChromiumOS/Chromium OS which the standard way.
 
-Also use consistent naming for a bunch of the fields that
-exist in both the driver features block and the power conservation
-block.
-
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 ---
- tools/intel_vbt_decode.c | 93 ++++++++++++++++++++++++++++++----------
- 1 file changed, 70 insertions(+), 23 deletions(-)
+ docs/chamelium.txt | 76 ++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 56 insertions(+), 20 deletions(-)
 
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 37b195ab8c16..90ae7c667f16 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -1367,23 +1367,28 @@ static void dump_driver_feature(struct context *context,
- {
- 	const struct bdb_driver_features *feature = block_data(block);
+diff --git a/docs/chamelium.txt b/docs/chamelium.txt
+index 7484a3f8..c3ae8d57 100644
+--- a/docs/chamelium.txt
++++ b/docs/chamelium.txt
+@@ -16,7 +16,13 @@ IGT without external hardware.
+ The platform was developed by Google in order to test display and audio-related
+ features of ChromeOS devices. It was initially developed internally by Google as
+ part of the ChromeOS effort under the name Chameleon and was later made external
+-as part of the ChromiumOS effort, under the name Chamelium.
++as part of the Chromium OS effort, under the name Chamelium.
++
++A new Chamelium V3 (Cv3) was released in 2022, which is built with different
++hardware while maintaining software backwards compatibility with v2.
++
++Chamelium V2
++------------
  
--	printf("\tBoot Device Algorithm: %s\n", feature->boot_dev_algorithm ?
--	       "driver default" : "os default");
--	printf("\tBlock display switching when DVD active: %s\n",
--	       YESNO(feature->allow_display_switch_dvd));
--	printf("\tAllow display switching when in Full Screen DOS: %s\n",
--	       YESNO(feature->allow_display_switch_dos));
--	printf("\tHot Plug DVO: %s\n", YESNO(feature->hotplug_dvo));
--	printf("\tDual View Zoom: %s\n", YESNO(feature->dual_view_zoom));
--	printf("\tDriver INT 15h hook: %s\n", YESNO(feature->int15h_hook));
--	printf("\tEnable Sprite in Clone Mode: %s\n",
--	       YESNO(feature->sprite_in_clone));
- 	printf("\tUse 00000110h ID for Primary LFP: %s\n",
- 	       YESNO(feature->primary_lfp_id));
-+	printf("\tEnable Sprite in Clone Mode: %s\n",
-+	       YESNO(feature->sprite_in_clone));
-+	printf("\tDriver INT 15h hook: %s\n",
-+	       YESNO(feature->int15h_hook));
-+	printf("\tDual View Zoom: %s\n",
-+	       YESNO(feature->dual_view_zoom));
-+	printf("\tHot Plug DVO: %s\n",
-+	       YESNO(feature->hotplug_dvo));
-+	printf("\tAllow display switching when in Full Screen DOS: %s\n",
-+	       YESNO(feature->allow_display_switch_dos));
-+	printf("\tAllow display switching when DVD active: %s\n",
-+	       YESNO(feature->allow_display_switch_dvd));
-+	printf("\tBoot Device Algorithm: %s\n",
-+	       feature->boot_dev_algorithm ? "driver default" : "os default");
-+
- 	printf("\tBoot Mode X: %u\n", feature->boot_mode_x);
- 	printf("\tBoot Mode Y: %u\n", feature->boot_mode_y);
- 	printf("\tBoot Mode Bpp: %u\n", feature->boot_mode_bpp);
- 	printf("\tBoot Mode Refresh: %u\n", feature->boot_mode_refresh);
-+
- 	printf("\tEnable LFP as primary: %s\n",
- 	       YESNO(feature->enable_lfp_primary));
- 	printf("\tSelective Mode Pruning: %s\n",
-@@ -1396,9 +1401,8 @@ static void dump_driver_feature(struct context *context,
- 	       YESNO(feature->nt_clone_support));
- 	printf("\tDefault Power Scheme user interface: %s\n",
- 	       feature->power_scheme_ui ? "3rd party" : "CUI");
--	printf
--	    ("\tSprite Display Assignment when Overlay is Active in Clone Mode: %s\n",
--	     feature->sprite_display_assign ? "primary" : "secondary");
-+	printf("\tSprite Display Assignment when Overlay is Active in Clone Mode: %s\n",
-+	       feature->sprite_display_assign ? "primary" : "secondary");
- 	printf("\tDisplay Maintain Aspect Scaling via CUI: %s\n",
- 	       YESNO(feature->cui_aspect_scaling));
- 	printf("\tPreserve Aspect Ratio: %s\n",
-@@ -1406,16 +1410,59 @@ static void dump_driver_feature(struct context *context,
- 	printf("\tEnable SDVO device power down: %s\n",
- 	       YESNO(feature->sdvo_device_power_down));
- 	printf("\tCRT hotplug: %s\n", YESNO(feature->crt_hotplug));
-+
- 	printf("\tLVDS config: %s (0x%x)\n",
- 	       lvds_config[feature->lvds_config], feature->lvds_config);
-+	printf("\tTV hotplug: %s\n",
-+	       YESNO(feature->tv_hotplug));
-+
-+	printf("\tDisplay subsystem enable: %s\n",
-+	       YESNO(feature->display_subsystem_enable));
-+	printf("\tEmbedded platform: %s\n",
-+	       YESNO(feature->embedded_platform));
- 	printf("\tDefine Display statically: %s\n",
- 	       YESNO(feature->static_display));
-+
- 	printf("\tLegacy CRT max X: %d\n", feature->legacy_crt_max_x);
- 	printf("\tLegacy CRT max Y: %d\n", feature->legacy_crt_max_y);
- 	printf("\tLegacy CRT max refresh: %d\n",
- 	       feature->legacy_crt_max_refresh);
--	printf("\tEnable DRRS: %s\n", YESNO(feature->drrs_enabled));
--	printf("\tEnable PSR: %s\n", YESNO(feature->psr_enabled));
-+
-+	printf("\tInternal source termination for HDMI: %s\n",
-+	       YESNO(feature->hdmi_termination));
-+	printf("\tCEA 861-D HDMI support: %s\n",
-+	       YESNO(feature->cea861d_hdmi_support));
-+	printf("\tSelf refresh enable: %s\n",
-+	       YESNO(feature->self_refresh_enable));
-+
-+	printf("\tCustom VBT number: 0x%x\n", feature->custom_vbt_version);
-+
-+	printf("\tPC Features field validity: %s\n",
-+	       YESNO(feature->pc_feature_valid));
-+	printf("\tDynamic Media Refresh Rate Switching (DMRRS): %s\n",
-+	       YESNO(feature->dmrrs_enabled));
-+	printf("\tIntermediate Pixel Storage (IPS): %s\n",
-+	       YESNO(feature->ips_enabled));
-+	printf("\tPanel Self Refresh (PSR): %s\n",
-+	       YESNO(feature->psr_enabled));
-+	printf("\tTurbo Boost Technology: %s\n",
-+	       YESNO(feature->tbt_enabled));
-+	printf("\tGraphics Power Management (GPMT): %s\n",
-+	       YESNO(feature->gpmt_enabled));
-+	printf("\tGraphics Render Standby (RS): %s\n",
-+	       YESNO(feature->grs_enabled));
-+	printf("\tDynamic Refresh Rate Switching (DRRS): %s\n",
-+	       YESNO(feature->drrs_enabled));
-+	printf("\tAutomatic Display Brightness (ADB): %s\n",
-+	       YESNO(feature->adb_enabled));
-+	printf("\tDxgkDDI Backlight Control (DxgkDdiBLC): %s\n",
-+	       YESNO(feature->bltclt_enabled));
-+	printf("\tDisplay Power Saving Technology (DPST): %s\n",
-+	       YESNO(feature->dpst_enabled));
-+	printf("\tSmart 2D Display Technology (S2DDT): %s\n",
-+	       YESNO(feature->s2ddt_enabled));
-+	printf("\tRapid Memory Power Management (RMPM): %s\n",
-+	       YESNO(feature->rmpm_enabled));
- }
+ It consists of a custom-made display emulator board connected to an Arrow SoCKit
+ via a flexible cable, with two DisplayPort connectors, one HDMI and one VGA.
+@@ -25,16 +31,28 @@ The SoCKit uses a Cyclone V SoC, with both a FPGA and an ARM CPU. While the FPGA
+ is used for logic control, the CPU runs daemons that allow the board to be
+ controlled over the network via a XMLRPC interface.
  
- static void dump_edp(struct context *context,
-@@ -1651,19 +1698,19 @@ static void dump_lfp_power(struct context *context,
+-Documentation
++Chamelium V3
++------------
++It consists of a custom-made display emulator board that has an Enclustra FPGA
++module mounted on it, with two DisplayPort and two HDMI connectors.
++
++The Enclustra FPGA Module uses a Arria 10 SoC, with both a FPGA and an ARM CPU.
++While the FPGA is used for logic control, the CPU runs daemons that allow the
++board to be controlled over the network via a XMLRPC interface.
++
++[Current limitation] Cv3 hardware uses an ITE chip which allows only 1 port to
++be plugged in a time. This limitation will be fixed in the upcoming iteration. 
++
++Chamelium V2 Documentation
+ -------------
  
- 		printf("\tPanel %d%s\n", i, context->panel_type == i ? " *" : "");
+ Documentation about the Chamelium is made available by Google through the
+-ChromiumOS projet wiki: https://www.chromium.org/chromium-os/testing/chamelium
++Chromium OS projet wiki: https://www.chromium.org/chromium-os/testing/chamelium
  
--		printf("\t\tDPST: %s\n",
-+		printf("\t\tDisplay Power Saving Technology (DPST): %s\n",
- 		       YESNO(panel_bool(lfp_block->dpst, i)));
--		printf("\t\tPSR: %s\n",
-+		printf("\t\tPanel Self Refresh (PSR): %s\n",
- 		       YESNO(panel_bool(lfp_block->psr, i)));
--		printf("\t\tDRRS: %s\n",
-+		printf("\t\tDynamic Refresh Rate Switching (DRRS): %s\n",
- 		       YESNO(panel_bool(lfp_block->drrs, i)));
- 		printf("\t\tDisplay LACE support: %s\n",
- 		       YESNO(panel_bool(lfp_block->lace_support, i)));
--		printf("\t\tADT: %s\n",
-+		printf("\t\tAssertive Display Technology (ADT): %s\n",
- 		       YESNO(panel_bool(lfp_block->adt, i)));
--		printf("\t\tDMRRS: %s\n",
-+		printf("\t\tDynamic Media Refresh Rate Switching (DMRRS): %s\n",
- 		       YESNO(panel_bool(lfp_block->dmrrs, i)));
--		printf("\t\tADB: %s\n",
-+		printf("\t\tAutomatic Display Brightness (ADB): %s\n",
- 		       YESNO(panel_bool(lfp_block->adb, i)));
- 		printf("\t\tDefault Display LACE enabled: %s\n",
- 		       YESNO(panel_bool(lfp_block->lace_enabled_status, i)));
-@@ -1681,7 +1728,7 @@ static void dump_lfp_power(struct context *context,
- 		if (context->bdb->version < 233)
- 			continue;
+-Deploying the Chamelium With IGT
++Setting up Chamelium V2
+ --------------------------------
  
--		printf("\t\tVRR feature: %s\n",
-+		printf("\t\tVariable Refresh Rate (VRR): %s\n",
- 		       YESNO(panel_bool(lfp_block->vrr_feature_enabled, i)));
+-Instructions from the ChromiumOS wiki detail how to setup the Chamelium:
++Instructions from the Chromium OS wiki detail how to setup the Chamelium:
+ https://www.chromium.org/chromium-os/testing/chamelium#TOC-Setting-up-Chamelium
  
- 		if (context->bdb->version < 247)
+ The should be followed up until the "Setup your Linux host, DUT and the FPGA"
+@@ -57,6 +75,9 @@ and then configure eth0 like so:
+ This document supposes that target PC's network IP has "192.168.1.1/24" and
+ the Chamelium's network IP has "192.168.1.2/24".
+ 
++Deploying the Chamelium With IGT
++--------------------------------
++
+ Chamelium support requires setting up dedicated IGT configuration, as explained
+ in the Core and Chamelium parts of the IGT API Reference in the documentation.
+ 
+@@ -99,16 +120,11 @@ example (only Chamelium.URL is mandatory):
+ 
+     # The name of the DRM connector
+     # The DP-1 of [Chamelium:DP-1] and the HDMI-A-1 of [Chamelium:HDMI-A-1] indicate
+-    # "connector info type" of /sys/kernel/debug/dri/0/i915_display_info.
++    # "connector info type" of /sys/kernel/debug/dri/0/i915_display_info on the DUT.
+     [Chamelium:DP-1]
+     # The ChameliumPortID indicates physical port (device) id of a Chamelium Board.
+-    # A Chamelium daemon program defines these port ids as
+-    # - DP1 (located next to the HDMI port) = 1
+-    # - DP2 (located next to the VGA connector) = 2
+-    # - HDMI = 3
+-    # - VGA = 4
+-    # The port ids are defined at:
+-    # https://chromium.googlesource.com/chromiumos/platform/chameleon/+/master/chameleond/utils/ids.py
++    # For Chamelium daemon program definition of these port IDs, check the Port IDs sections below.
++    # You should only assign the ports that are physically connected to the DUT.
+     ChameliumPortID=1
+ 
+     [Chamelium:HDMI-A-1]
+@@ -125,6 +141,21 @@ example (only Chamelium.URL is mandatory):
+     [Chamelium:VGA-1]
+     ChameliumPortID=4
+ 
++Chamelium V2 Port IDs
++---------------------
++defined at: https://chromium.googlesource.com/chromiumos/platform/chameleon/+/master/chameleond/utils/ids.py
++DP1 (located next to the HDMI port) = 1
++DP2 (located next to the VGA connector) = 2
++HDMI = 3
++VGA = 4
++
++Cv3 Port IDs
++---------------------
++DP1 (top left) = 0
++DP2 (top right) = 1
++HDMI1 (bottom left) = 2
++HDMI2 (bottom right) = 3
++
+ Running the Chamelium With IGT
+ ------------------------------
+ 
+@@ -144,12 +175,18 @@ The XML-RPC Chamelium interface is described here:
+ https://chromium.googlesource.com/chromiumos/platform/chameleon/+/refs/heads/master/chameleond/interface.py
+ 
+ Logs that may be useful for debugging can be obtained either by connecting to
+-the board via SSH or serial console and looking at the daemon logs from
++the board via SSH or serial console and looking at the daemon logs/
++On V2:
++------
+ /var/log, such as:
+ $ tail -f /var/log/chameleon*
++On V3:
++------
++Chameleon v3 uses systemd to manage the chameleond service. The logs can be
++accessed using  `$ journalctl -u chameleond`, or the  .GetChameleonLogs()  XMLRPC call.
+ 
+-Daemon Source, Build and Deploy
+--------------------------------
++Daemon Source, Build and Deploy [V2 only]
++-----------------------------------------
+ 
+ Source code for the daemon running on the Chamelium is available at:
+ https://chromium.googlesource.com/chromiumos/platform/chameleon/
+@@ -185,12 +222,12 @@ file.
+ Contributing Changes to the Daemon
+ ----------------------------------
+ 
+-Contributions to the Chamelium daemon, just like any contribution to ChromiumOS,
++Contributions to the Chamelium daemon, just like any contribution to Chromium OS,
+ are submitted and reviewed at: https://chromium-review.googlesource.com/
+ 
+-The ChromiumOS project provides an extensive developer guide:
++The Chromium OS project provides an extensive developer guide:
+ https://chromium.googlesource.com/chromiumos/docs/+/master/developer_guide.md
+-It assumes running within the ChromiumOS build system. Since this is likely not
++It assumes running within the Chromium OS build system. Since this is likely not
+ the case for contributing to the Chamelium daemon, only the part about
+ uploading changes is relevant:
+ https://chromium.googlesource.com/chromiumos/docs/+/master/developer_guide.md#Upload-your-changes-and-get-a-code-review
+@@ -225,7 +262,6 @@ Future Developments
+ With the current generation of the hardware platform, support for testing a
+ number of additional display features could be included as future developments,
+ including:
+-* Audio capture from HDMI
+ * Check all channels are independent from each other
+ * Playback using more than 2 channels, different sampling rates and different
+   sample sizes
 -- 
-2.35.1
+2.37.0.170.g444d1eabd0-goog
