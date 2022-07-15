@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9131410E05A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 20:25:44 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com
+ [IPv6:2607:f8b0:4864:20::82a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 709AA10E05A
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 19:15:51 +0000 (UTC)
+Received: by mail-qt1-x82a.google.com with SMTP id r21so3790520qtn.11
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 12:15:51 -0700 (PDT)
+From: Mark Yacoub <markyacoub@chromium.org>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 15 Jul 2022 23:25:13 +0300
-Message-Id: <20220715202520.23677-8-ville.syrjala@linux.intel.com>
-In-Reply-To: <20220715202520.23677-1-ville.syrjala@linux.intel.com>
-References: <20220715202520.23677-1-ville.syrjala@linux.intel.com>
+Date: Fri, 15 Jul 2022 15:15:39 -0400
+Message-Id: <20220715191539.1780049-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 07/14] tools/intel_vbt_decode: Extract
- panel_fitting[]
+Subject: [igt-dev] [PATCH] lib/igt_chamelium: Only plug in the ports
+ configured in the config file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,59 +20,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: robdclark@chromium.org, amstan@google.com, petri.latvala@intel.com,
+ ihf@google.com, seanpaul@chromium.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+[Why]
+Some Chamelium setups do not have all ports connected.
+On current Chamelium V3, the hardware is limited to only plug in 1 port
+at time. [hardware bug is to be fixed]
+When all prompted to be connected, plugging any port will unplug
+everything before it, which is not what we want.
 
-Extract the panel_fitting string representation into an array.
-Less clutter in the code this way.
+[How]
+Iterate over the ~/.igtrc config file and only plug the ports there.
+This guarantees that each setup is in control of what makes the most
+sense for it.
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Test: ./kms_chamelium --run-subtest dp-hp
+Tested on: Volteer & cv3
+
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 ---
- tools/intel_vbt_decode.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ lib/igt_chamelium.c | 30 ++++++++++++++++++++----------
+ lib/igt_chamelium.h |  2 +-
+ lib/igt_kms.c       |  2 +-
+ 3 files changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index cffc385306f2..b5b60723baa8 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -530,26 +530,20 @@ static int decode_ssc_freq(struct context *context, bool alternate)
- 	}
+diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+index 55cbfa12..c7b99ebc 100644
+--- a/lib/igt_chamelium.c
++++ b/lib/igt_chamelium.c
+@@ -2830,25 +2830,35 @@ void chamelium_deinit(struct chamelium *chamelium)
+ 	chamelium_deinit_rpc_only(chamelium);
  }
  
-+static const char * const panel_fitting[] = {
-+	[0] = "disabled",
-+	[1] = "text only",
-+	[2] = "graphics only",
-+	[3] = "text & graphics",
-+};
-+
- static void dump_general_features(struct context *context,
- 				  const struct bdb_block *block)
+-bool chamelium_plug_all(struct chamelium *chamelium)
++bool chamelium_plug_all_connected(struct chamelium* chamelium)
  {
- 	const struct bdb_general_features *features = block_data(block);
+-	size_t port_count;
+-	int port_ids[CHAMELIUM_MAX_PORTS];
+-	xmlrpc_value *v;
++	/* Iterate over all ports in the config file and plug them all. */
++	char** group_list = g_key_file_get_groups(igt_key_file, NULL);
++	int i;
++
++	for (i = 0; group_list[i] != NULL; i++) {
++		int port_id;
++		GError* error = NULL;
++		xmlrpc_value* v;
++		char* group = group_list[i];
++
++
++		if (!strstr(group, "Chamelium:"))
++			continue;
++
++		port_id = g_key_file_get_integer(igt_key_file, group,
++			"ChameliumPortID",
++			&error);
  
--	printf("\tPanel fitting: ");
--	switch (features->panel_fitting) {
--	case 0:
--		printf("disabled\n");
--		break;
--	case 1:
--		printf("text only\n");
--		break;
--	case 2:
--		printf("graphics only\n");
--		break;
--	case 3:
--		printf("text & graphics\n");
--		break;
--	}
-+	printf("\tPanel fitting: %s (0x%x)\n",
-+	       panel_fitting[features->panel_fitting], features->panel_fitting);
- 	printf("\tFlexaim: %s\n", YESNO(features->flexaim));
- 	printf("\tMessage: %s\n", YESNO(features->msg_enable));
- 	printf("\tClear screen: %d\n", features->clear_screen);
+-	port_count = chamelium_get_video_ports(chamelium, port_ids);
+-	if (port_count <= 0)
+-		return false;
+ 
+-	for (int i = 0; i < port_count; ++i) {
+-		v = __chamelium_rpc(chamelium, NULL, "Plug", "(i)", port_ids[i]);
++		v = __chamelium_rpc(chamelium, NULL, "Plug", "(i)", port_id);
+ 
+ 		if (v != NULL)
+ 			xmlrpc_DECREF(v);
+ 
+ 		if (chamelium->env.fault_occurred) {
+ 			igt_debug("Chamelium RPC call failed: %s\n",
+-			     chamelium->env.fault_string);
++				chamelium->env.fault_string);
+ 
+ 			return false;
+ 		}
+diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
+index f40e848e..78985469 100644
+--- a/lib/igt_chamelium.h
++++ b/lib/igt_chamelium.h
+@@ -244,7 +244,7 @@ void chamelium_crop_analog_frame(struct chamelium_frame_dump *dump, int width,
+ void chamelium_destroy_frame_dump(struct chamelium_frame_dump *dump);
+ void chamelium_destroy_audio_file(struct chamelium_audio_file *audio_file);
+ void chamelium_infoframe_destroy(struct chamelium_infoframe *infoframe);
+-bool chamelium_plug_all(struct chamelium *chamelium);
++bool chamelium_plug_all_connected(struct chamelium *chamelium);
+ bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
+ 						   int drm_fd);
+ 
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index d8867f09..81eb1881 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -2349,7 +2349,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 		if (chamelium) {
+ 			igt_abort_on_f(!chamelium_wait_reachable(chamelium, 20),
+ 				       "cannot reach the configured chamelium!\n");
+-			igt_abort_on_f(!chamelium_plug_all(chamelium),
++			igt_abort_on_f(!chamelium_plug_all_connected(chamelium),
+ 				       "failed to plug all the chamelium ports!\n");
+ 			igt_abort_on_f(!chamelium_wait_all_configured_ports_connected(chamelium, drm_fd),
+ 				       "not all configured chamelium ports are connected!\n");
 -- 
-2.35.1
+2.37.0.170.g444d1eabd0-goog
