@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90B7211B537
- for <igt-dev@lists.freedesktop.org>; Sun, 17 Jul 2022 20:00:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7625212A339
+ for <igt-dev@lists.freedesktop.org>; Sun, 17 Jul 2022 20:00:02 +0000 (UTC)
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Jul 2022 01:25:53 +0530
-Message-Id: <20220717195554.162231-2-mohammed.thasleem@intel.com>
+Date: Mon, 18 Jul 2022 01:25:54 +0530
+Message-Id: <20220717195554.162231-3-mohammed.thasleem@intel.com>
 In-Reply-To: <20220717195554.162231-1-mohammed.thasleem@intel.com>
 References: <20220717195554.162231-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 1/2] tests/kms_lease: Create dynamic subtests
+Subject: [igt-dev] [PATCH v2 2/2] tests/kms_lease: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,173 +23,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified tests/kms_lease to include dynamic test cases.
+Sanitize the system state before starting the subtest.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_lease.c | 107 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 67 insertions(+), 40 deletions(-)
+ tests/kms_lease.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 0bf102a6..4f614e4e 100644
+index 4f614e4e..46c41fca 100644
 --- a/tests/kms_lease.c
 +++ b/tests/kms_lease.c
-@@ -47,6 +47,8 @@
+@@ -102,6 +102,8 @@ static int prepare_crtc(lease_t *lease, uint32_t connector_id, uint32_t crtc_id)
+ 	if (!output)
+ 		return -ENOENT;
  
- IGT_TEST_DESCRIPTION("Test of CreateLease.");
- 
-+unsigned int valid_tests;
++	igt_display_reset(display);
 +
- typedef struct {
- 	int fd;
- 	uint32_t lessee_id;
-@@ -809,39 +811,31 @@ static void lease_invalid_plane(data_t *data)
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, pipe);
+ 
+@@ -138,7 +140,7 @@ static void cleanup_crtc(lease_t *lease, igt_output_t *output)
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit(display);
  }
  
- 
--static void run_test(data_t *data, void (*testfunc)(data_t *))
-+static void run_test(data_t *data, void (*testfunc)(data_t *), enum pipe p, igt_output_t *output)
- {
- 	lease_t *master = &data->master;
- 	igt_display_t *display = &master->display;
--	igt_output_t *output;
--	enum pipe p;
--	unsigned int valid_tests = 0;
--
--	for_each_pipe_with_valid_output(display, p, output) {
--		igt_info("Beginning %s on pipe %s, connector %s\n",
--			 igt_subtest_name(),
--			 kmstest_pipe_name(p),
--			 igt_output_name(output));
--
--		data->pipe = p;
--		data->crtc_id = pipe_to_crtc_id(display, p);
--		data->connector_id = output->id;
--		data->plane_id =
--			igt_pipe_get_plane_type(&data->master.display.pipes[data->pipe],
--						DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
- 
--		testfunc(data);
-+	igt_info("Beginning %s on pipe %s, connector %s\n",
-+		 igt_subtest_name(),
-+		 kmstest_pipe_name(p),
-+		 igt_output_name(output));
- 
--		igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
--			 igt_subtest_name(),
--			 kmstest_pipe_name(p),
--			 igt_output_name(output));
-+	data->pipe = p;
-+	data->crtc_id = pipe_to_crtc_id(display, p);
-+	data->connector_id = output->id;
-+	data->plane_id =
-+		igt_pipe_get_plane_type(&data->master.display.pipes[data->pipe],
-+					DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
- 
--		valid_tests++;
--	}
-+	testfunc(data);
- 
--	igt_require_f(valid_tests,
--		      "no valid crtc/connector combinations found\n");
-+	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
-+		 igt_subtest_name(),
-+		 kmstest_pipe_name(p),
-+		 igt_output_name(output));
-+
-+	valid_tests++;
- }
- 
- #define assert_double_id_err(ret) \
-@@ -1218,6 +1212,8 @@ static void lease_uevent(data_t *data)
- igt_main
- {
- 	data_t data;
-+	igt_output_t *output;
-+	enum pipe p;
- 	const struct {
- 		const char *name;
- 		void (*func)(data_t *);
-@@ -1255,36 +1251,67 @@ igt_main
- 	for (f = funcs; f->name; f++) {
- 
- 		igt_describe(f->desc);
--		igt_subtest_f("%s", f->name) {
--			run_test(&data, f->func);
-+		igt_subtest_with_dynamic_f("%s", f->name) {
-+			for_each_pipe_with_valid_output(&data.master.display, p, output) {
-+				igt_dynamic_f("%s-pipe-%s", igt_output_name(output),
-+					      kmstest_pipe_name(p)) {
-+					run_test(&data, f->func, p, output);
-+				}
-+			}
-+			igt_require_f(valid_tests,
-+					"no valid crtc/connector combinations found\n");
- 		}
+@@ -1246,6 +1248,7 @@ igt_main
+ 		data.master.fd = drm_open_driver_master(DRIVER_ANY);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.master.display, data.master.fd);
++		igt_display_require_output(&data.master.display);
  	}
  
- 	igt_describe("Tests error handling while creating invalid corner-cases for "
- 		     "create-lease ioctl");
--	igt_subtest("invalid-create-leases")
--		invalid_create_leases(&data);
-+	igt_subtest_with_dynamic_f("invalid-create-leases") {
-+		for_each_pipe_with_valid_output(&data.master.display, p, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p))
-+				invalid_create_leases(&data);
-+		}
-+	}
- 
- 	igt_describe("Tests that  possible_crtcs logically match between master and "
- 		     "lease, and that the values are correctly renumbered on the lease side.");
--	igt_subtest("possible-crtcs-filtering")
--		possible_crtcs_filtering(&data);
-+	igt_subtest_with_dynamic_f("possible-crtcs-filtering") {
-+		for_each_pipe_with_valid_output(&data.master.display, p, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p))
-+				possible_crtcs_filtering(&data);
-+		}
-+	}
- 
- 	igt_describe("Tests the drop/set_master interactions.");
--	igt_subtest("master-vs-lease")
--		master_vs_lease(&data);
-+	igt_subtest_with_dynamic_f("master-vs-lease") {
-+		for_each_pipe_with_valid_output(&data.master.display, p, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p))
-+				master_vs_lease(&data);
-+		}
-+	}
- 
- 	igt_describe("Tests that the 2nd master can only create leases while being active "
- 		     "master, and that leases on the first master don't prevent lease creation "
- 		     "for the 2nd master.");
--	igt_subtest("multimaster-lease")
--		multimaster_lease(&data);
-+	igt_subtest_with_dynamic_f("multimaster-lease") {
-+		for_each_pipe_with_valid_output(&data.master.display, p, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p))
-+				multimaster_lease(&data);
-+		}
-+	}
- 
- 	igt_describe("Tests the implicitly added planes.");
--	igt_subtest("implicit-plane-lease")
--		implicit_plane_lease(&data);
-+	igt_subtest_with_dynamic_f("implicit-plane-lease") {
-+		for_each_pipe_with_valid_output(&data.master.display, p, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p))
-+				implicit_plane_lease(&data);
-+		}
-+	}
- 
- 	igt_describe("Tests all the uevent cases");
--	igt_subtest("lease-uevent")
--		lease_uevent(&data);
-+	igt_subtest_with_dynamic_f("lease-uevent") {
-+		for_each_pipe_with_valid_output(&data.master.display, p, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p))
-+				lease_uevent(&data);
-+		}
+ 	for (f = funcs; f->name; f++) {
+@@ -1314,4 +1317,9 @@ igt_main
+ 				lease_uevent(&data);
+ 		}
+ 	}
++
++	igt_fixture {
++		igt_display_fini(&data.master.display);
++		close(data.master.fd);
 +	}
  }
 -- 
