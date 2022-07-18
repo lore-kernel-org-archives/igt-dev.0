@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <b45b9801-fd41-a78f-e7fa-1c56f7557da0@linux.intel.com>
-Date: Mon, 18 Jul 2022 11:04:14 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FF46AA2BC
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Jul 2022 09:29:00 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 18 Jul 2022 15:02:40 +0530
+Message-Id: <20220718093240.14514-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220715111937.1245586-1-matthew.auld@intel.com>
-From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
-In-Reply-To: <20220715111937.1245586-1-matthew.auld@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_create: use 48b
- addressing
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_invalid_mode: Avoid usage of
+ same pipe on multiple outputs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,35 +17,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Sanitize the system state before starting the subtest.
 
-On 7/15/2022 1:19 PM, Matthew Auld wrote:
-> The object here could be very large (8G+), so make sure we allow using
-> the entire address space, to avoid sometimes hitting -ENOSPC.
->
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6446
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Nirmoy Das <nirmoy.das@linux.intel.com>
-> ---
->   tests/i915/gem_create.c | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-> index 1b694c6a..ff022713 100644
-> --- a/tests/i915/gem_create.c
-> +++ b/tests/i915/gem_create.c
-> @@ -538,7 +538,9 @@ static int upload(int fd, uint32_t handle)
->   	 * for sure placed in one of requested regions.
->   	 */
->   	exec[0].handle = handle;
-> +	exec[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->   	exec[1].handle = batch_create_size(fd, PAGE_SIZE);
-> +	exec[1].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
->   
->   	return __gem_execbuf(fd, &execbuf);
->   }
+Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6435
+Fixes: 6725767a8410 (tests/kms_invalid_mode: Test Cleanup)
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_invalid_mode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 21ee91ab..0ae98a31 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -185,6 +185,7 @@ test_output(data_t *data)
+ 	int ret;
+ 	drmModeModeInfo *mode;
+ 
++	igt_display_reset(&data->display);
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+ 	igt_create_fb(data->drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
+@@ -202,7 +203,6 @@ test_output(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &fb);
+ 	igt_output_override_mode(output, NULL);
+ 	/*unset_all_crtcs*/
+-	igt_display_reset(&data->display);
+ 	igt_display_commit(&data->display);
+ }
+ 
+-- 
+2.26.2
