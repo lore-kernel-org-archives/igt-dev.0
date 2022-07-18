@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A0D918AB97
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Jul 2022 15:18:09 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 18 Jul 2022 15:18:06 +0000
-Message-ID: <DM4PR11MB6213D692CA025D26D6B3CCB2EC8C9@DM4PR11MB6213.namprd11.prod.outlook.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2A6589B78
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Jul 2022 17:11:10 +0000 (UTC)
+Date: Mon, 18 Jul 2022 19:11:06 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YtWUKmtHdsFeJ+C7@kamilkon-desk1>
 References: <20220718071140.20058-1-zbigniew.kempczynski@intel.com>
- <165813134754.9321.1055410482974557139@emeril.freedesktop.org>
- <YtUcvlySLTQq87kt@zkempczy-mobl2>
-In-Reply-To: <YtUcvlySLTQq87kt@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <20220718071140.20058-7-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGNv?=
- =?utf-8?q?dename_in_device_selection_=28rev4=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220718071140.20058-7-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 6/6] lib/igt_device_scan: Simulate
+ udev drm and pci device events
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,97 +26,505 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RmlsZWQgYSBuZXcgaXNzdWUgIGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50
-ZWwvLS9pc3N1ZXMvNjQ1OWFuZCByZS1yZXBvcnRlZC4NCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdl
-LS0tLS0NCkZyb206IEtlbXBjenluc2tpLCBaYmlnbmlldyA8emJpZ25pZXcua2VtcGN6eW5za2lA
-aW50ZWwuY29tPiANClNlbnQ6IE1vbmRheSwgSnVseSAxOCwgMjAyMiAxOjQyIEFNDQpUbzogaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBWdWR1bSwgTGFrc2htaW5hcmF5YW5hIDxs
-YWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPg0KU3ViamVjdDogUmU6IOKclyBGaS5DSS5C
-QVQ6IGZhaWx1cmUgZm9yIEFkZCBjb2RlbmFtZSBpbiBkZXZpY2Ugc2VsZWN0aW9uIChyZXY0KQ0K
-DQpPbiBNb24sIEp1bCAxOCwgMjAyMiBhdCAwODowMjoyN0FNICswMDAwLCBQYXRjaHdvcmsgd3Jv
-dGU6DQo+ICAgIFBhdGNoIERldGFpbHMNCj4gDQo+ICAgIFNlcmllczogIEFkZCBjb2RlbmFtZSBp
-biBkZXZpY2Ugc2VsZWN0aW9uIChyZXY0KSAgICAgICAgICAgICAgICAgICAgICAgIA0KPiAgICBV
-Ukw6ICAgICBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzEwNjAxMi8g
-ICAgICAgICAgICAgICANCj4gICAgU3RhdGU6ICAgZmFpbHVyZSAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+ICAgIERldGFpbHM6IGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNzUzMi9pbmRleC5odG1s
-IA0KPiANCj4gICAgICAgICAgICAgICAgIENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gSUdUXzY1
-ODcgLT4gSUdUUFdfNzUzMg0KPiANCj4gU3VtbWFyeQ0KPiANCj4gICAgRkFJTFVSRQ0KPiANCj4g
-ICAgU2VyaW91cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdfNzUzMiBhYnNvbHV0
-ZWx5IG5lZWQgdG8gYmUNCj4gICAgdmVyaWZpZWQgbWFudWFsbHkuDQo+IA0KPiAgICBJZiB5b3Ug
-dGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNo
-YW5nZXMNCj4gICAgaW50cm9kdWNlZCBpbiBJR1RQV183NTMyLCBwbGVhc2Ugbm90aWZ5IHlvdXIg
-YnVnIHRlYW0gdG8gYWxsb3cgdGhlbQ0KPiAgICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJl
-IG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbg0KPiAgICBDSS4NCj4g
-DQo+ICAgIEV4dGVybmFsIFVSTDoNCj4gICAgaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLXRpcC9JR1RQV183NTMyL2luZGV4Lmh0bWwNCj4gDQo+IFBhcnRpY2lwYXRpbmcgaG9z
-dHMgKDM4IC0+IDQyKQ0KPiANCj4gICAgQWRkaXRpb25hbCAoNSk6IGZpLWJ4dC1kc2kgZmktcmts
-LTExNjAwIGJhdC1kZzItOSBiYXQtYWRsbi0xIGJhdC1qc2wtMw0KPiAgICBNaXNzaW5nICgxKTog
-YmF0LWFkbG0tMQ0KPiANCj4gUG9zc2libGUgbmV3IGlzc3Vlcw0KPiANCj4gICAgSGVyZSBhcmUg
-dGhlIHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQ
-V183NTMyOg0KPiANCj4gICBJR1QgY2hhbmdlcw0KPiANCj4gICAgIFBvc3NpYmxlIHJlZ3Jlc3Np
-b25zDQo+IA0KPiAgICAgICogaWd0QGttc19mbGlwQGJhc2ljLWZsaXAtdnMtd2ZfdmJsYW5rQGIt
-ZHAyOg0KPiAgICAgICAgICAgKiBmaS1pY2wtdTI6IFBBU1MgLT4gSU5DT01QTEVURQ0KDQpVbnJl
-bGF0ZWQgdG8gY2hhbmdlIGluIHNlcmllcy4NCg0KLS0NClpiaWduaWV3DQoNCg0KPiANCj4gS25v
-d24gaXNzdWVzDQo+IA0KPiAgICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV183
-NTMyIHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gDQo+ICAgSUdUIGNoYW5nZXMNCj4g
-DQo+ICAgICBJc3N1ZXMgaGl0DQo+IA0KPiAgICAgICogaWd0QGdlbV9odWNfY29weUBodWMtY29w
-eToNCj4gDQo+ICAgICAgICAgICAqIGZpLWJ4dC1kc2k6IE5PVFJVTiAtPiBTS0lQIChmZG8jMTA5
-MjcxIC8gaTkxNSMyMTkwKQ0KPiANCj4gICAgICAgICAgICogZmktcmtsLTExNjAwOiBOT1RSVU4g
-LT4gU0tJUCAoaTkxNSMyMTkwKQ0KPiANCj4gICAgICAqIGlndEBnZW1fbG1lbV9zd2FwcGluZ0Bi
-YXNpYzoNCj4gDQo+ICAgICAgICAgICAqIGZpLXJrbC0xMTYwMDogTk9UUlVOIC0+IFNLSVAgKGk5
-MTUjNDYxMykgKzMgc2ltaWxhciBpc3N1ZXMNCj4gICAgICAqIGlndEBnZW1fbG1lbV9zd2FwcGlu
-Z0BwYXJhbGxlbC1yYW5kb20tZW5naW5lczoNCj4gDQo+ICAgICAgICAgICAqIGZpLWJ4dC1kc2k6
-IE5PVFJVTiAtPiBTS0lQIChmZG8jMTA5MjcxIC8gaTkxNSM0NjEzKSArMyBzaW1pbGFyDQo+ICAg
-ICAgICAgICAgIGlzc3Vlcw0KPiAgICAgICogaWd0QGdlbV90aWxlZF9ibGl0c0BiYXNpYzoNCj4g
-DQo+ICAgICAgICAgICAqIGZpLWJ4dC1kc2k6IE5PVFJVTiAtPiBTS0lQIChmZG8jMTA5MjcxKSAr
-MTIgc2ltaWxhciBpc3N1ZXMNCj4gICAgICAqIGlndEBnZW1fdGlsZWRfcHJlYWRfYmFzaWM6DQo+
-IA0KPiAgICAgICAgICAgKiBmaS1ya2wtMTE2MDA6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzMyODIp
-DQo+ICAgICAgKiBpZ3RAaTkxNV9wbV9iYWNrbGlnaHRAYmFzaWMtYnJpZ2h0bmVzczoNCj4gDQo+
-ICAgICAgICAgICAqIGZpLXJrbC0xMTYwMDogTk9UUlVOIC0+IFNLSVAgKGk5MTUjMzAxMikNCj4g
-ICAgICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZXhlY2xpc3RzOg0KPiANCj4gICAgICAgICAg
-ICogZmktYnN3LW5pY2s6IFBBU1MgLT4gSU5DT01QTEVURSAoaTkxNSMyOTQwKQ0KPiAgICAgICog
-aWd0QGk5MTVfc3VzcGVuZEBiYXNpYy1zMy13aXRob3V0LWk5MTU6DQo+IA0KPiAgICAgICAgICAg
-KiBmaS1ya2wtMTE2MDA6IE5PVFJVTiAtPiBJTkNPTVBMRVRFIChpOTE1IzU5ODIpDQo+ICAgICAg
-KiBpZ3RAa21zX2NoYW1lbGl1bUBjb21tb24taHBkLWFmdGVyLXN1c3BlbmQ6DQo+IA0KPiAgICAg
-ICAgICAgKiBmaS1oc3ctNDc3MDogTk9UUlVOIC0+IFNLSVAgKGZkbyMxMDkyNzEgLyBmZG8jMTEx
-ODI3KQ0KPiANCj4gICAgICAgICAgICogZmktYmR3LTU1NTd1OiBOT1RSVU4gLT4gU0tJUCAoZmRv
-IzEwOTI3MSAvIGZkbyMxMTE4MjcpDQo+IA0KPiAgICAgICogaWd0QGttc19jaGFtZWxpdW1AaGRt
-aS1lZGlkLXJlYWQ6DQo+IA0KPiAgICAgICAgICAgKiBmaS1ieHQtZHNpOiBOT1RSVU4gLT4gU0tJ
-UCAoZmRvIzEwOTI3MSAvIGZkbyMxMTE4MjcpICs4IHNpbWlsYXINCj4gICAgICAgICAgICAgaXNz
-dWVzDQo+IA0KPiAgICAgICAgICAgKiBmaS1ya2wtMTE2MDA6IE5PVFJVTiAtPiBTS0lQIChmZG8j
-MTExODI3KSArNyBzaW1pbGFyIGlzc3Vlcw0KPiANCj4gICAgICAqIGlndEBrbXNfY3Vyc29yX2xl
-Z2FjeUBiYXNpYy1idXN5LWZsaXAtYmVmb3JlLWN1cnNvcjoNCj4gDQo+ICAgICAgICAgICAqIGZp
-LXJrbC0xMTYwMDogTk9UUlVOIC0+IFNLSVAgKGk5MTUjNDEwMykNCj4gICAgICAqIGlndEBrbXNf
-ZmxpcEBiYXNpYy1mbGlwLXZzLXdmX3ZibGFua0BiLWVkcDE6DQo+IA0KPiAgICAgICAgICAgKiBm
-aS1pY2wtdTI6IFBBU1MgLT4gRE1FU0ctV0FSTiAoaTkxNSM0ODkwKQ0KPiAgICAgICogaWd0QGtt
-c19mb3JjZV9jb25uZWN0b3JfYmFzaWNAZm9yY2UtbG9hZC1kZXRlY3Q6DQo+IA0KPiAgICAgICAg
-ICAgKiBmaS1ya2wtMTE2MDA6IE5PVFJVTiAtPiBTS0lQIChmZG8jMTA5Mjg1IC8gaTkxNSM0MDk4
-KQ0KPiAgICAgICogaWd0QGttc19wc3JAcHJpbWFyeV9wYWdlX2ZsaXA6DQo+IA0KPiAgICAgICAg
-ICAgKiBmaS1ya2wtMTE2MDA6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzEwNzIpICszIHNpbWlsYXIg
-aXNzdWVzDQo+ICAgICAgKiBpZ3RAa21zX3NldG1vZGVAYmFzaWMtY2xvbmUtc2luZ2xlLWNydGM6
-DQo+IA0KPiAgICAgICAgICAgKiBmaS1ya2wtMTE2MDA6IE5PVFJVTiAtPiBTS0lQIChpOTE1IzM1
-NTUgLyBpOTE1IzQwOTgpDQo+ICAgICAgKiBpZ3RAcHJpbWVfdmdlbUBiYXNpYy1yZWFkOg0KPiAN
-Cj4gICAgICAgICAgICogZmktcmtsLTExNjAwOiBOT1RSVU4gLT4gU0tJUCAoZmRvIzEwOTI5NSAv
-IGk5MTUjMzI5MSAvIGk5MTUjMzcwOCkNCj4gICAgICAgICAgICAgKzIgc2ltaWxhciBpc3N1ZXMN
-Cj4gICAgICAqIGlndEBwcmltZV92Z2VtQGJhc2ljLXVzZXJwdHI6DQo+IA0KPiAgICAgICAgICAg
-KiBmaS1ya2wtMTE2MDA6IE5PVFJVTiAtPiBTS0lQIChmZG8jMTA5Mjk1IC8gaTkxNSMzMzAxIC8g
-aTkxNSMzNzA4KQ0KPiAgICAgICogaWd0QHJ1bm5lckBhYm9ydGVkOg0KPiANCj4gICAgICAgICAg
-ICogZmktaWNsLXUyOiBOT1RSVU4gLT4gRkFJTCAoaTkxNSM0MzEyKQ0KPiANCj4gICAgICAgICAg
-ICogZmktYnN3LW5pY2s6IE5PVFJVTiAtPiBGQUlMIChmZG8jMTA5MjcxIC8gaTkxNSM0MzEyKQ0K
-PiANCj4gICAgIFBvc3NpYmxlIGZpeGVzDQo+IA0KPiAgICAgICogaWd0QGk5MTVfc2VsZnRlc3RA
-bGl2ZUBoYW5nY2hlY2s6DQo+ICAgICAgICAgICAqIGZpLWhzdy00NzcwOiBJTkNPTVBMRVRFIChp
-OTE1IzQ3ODUpIC0+IFBBU1MNCj4gDQo+ICAgICBXYXJuaW5ncw0KPiANCj4gICAgICAqIGlndEBp
-OTE1X3NlbGZ0ZXN0QGxpdmVAaGFuZ2NoZWNrOg0KPiAgICAgICAgICAgKiBiYXQtZGcxLTU6IERN
-RVNHLUZBSUwgKGk5MTUjNDQ5NCAvIGk5MTUjNDk1NykgLT4gRE1FU0ctRkFJTA0KPiAgICAgICAg
-ICAgICAoaTkxNSM0OTU3KQ0KPiANCj4gICAge25hbWV9OiBUaGlzIGVsZW1lbnQgaXMgc3VwcHJl
-c3NlZC4gVGhpcyBtZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4NCj4gICAgY29tcHV0aW5nDQo+ICAg
-IHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZBSUxV
-UkUpLg0KPiANCj4gQnVpbGQgY2hhbmdlcw0KPiANCj4gICAgICAqIENJOiBDSS0yMDE5MDUyOSAt
-PiBOb25lDQo+ICAgICAgKiBJR1Q6IElHVF82NTg3IC0+IElHVFBXXzc1MzINCj4gDQo+ICAgIENJ
-LTIwMTkwNTI5OiAyMDE5MDUyOQ0KPiAgICBDSV9EUk1fMTE5MDc6IGI2Y2U2ZWI3ZDhkNmZlYTBl
-Mzg1NjNkYmM3YTQ4ODFhN2UzNjk5MmYgQA0KPiAgICBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9w
-Lm9yZy9nZngtY2kvbGludXgNCj4gICAgSUdUUFdfNzUzMjogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV183NTMyL2luZGV4Lmh0bWwNCj4gICAgSUdUXzY1ODc6
-IGEzN2RmNGI1MzhhZTdiNWJiMWJiNDdiZTQ4MDRiNDc4NzQxMDMyNWQgQA0KPiAgICBodHRwczov
-L2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lndC1ncHUtdG9vbHMuZ2l0DQo=
+Hi Zbigniew,
+
+On 2022-07-18 at 09:11:40 +0200, Zbigniew Kempczyński wrote:
+> For all udev_*() calls used in device scan add its static counterparts.
+> Instead of transplanting real udev data structures (private ones) some
+> primitive replacement were added. Devices are added directly from code
+> - such implementation was a little bit faster than parsing some config
+> files (especially pci slot manipulation to provide some properties which
+> slightly differs).
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+> v4: Address review comments (Kamil)
+> ---
+>  lib/igt_device_scan.c          |   7 +
+>  lib/igt_device_scan_simulate.c | 448 +++++++++++++++++++++++++++++++++
+>  2 files changed, 455 insertions(+)
+>  create mode 100644 lib/igt_device_scan_simulate.c
+> 
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index aad7966764..f4e7659e42 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -904,6 +904,13 @@ static void index_pci_devices(void)
+>   * Function sorts all found devices to keep same order of bus devices
+>   * for providing predictable search.
+>   */
+> +
+> +#ifdef SIMULATE_UDEV_DEVICES
+
+One final note, please change above name into local,
+for example IGT_DEVICE_SCAN_SIMULATE_C.
+With that fixed you can add my r-b note.
+
+Regards,
+Kamil
+
+> +
+> +#include "igt_device_scan_simulate.c"
+> +
+> +#endif
+> +
+>  static void scan_drm_devices(void)
+>  {
+>  	struct udev *udev;
+> diff --git a/lib/igt_device_scan_simulate.c b/lib/igt_device_scan_simulate.c
+> new file mode 100644
+> index 0000000000..b2a57edd1f
+> --- /dev/null
+> +++ b/lib/igt_device_scan_simulate.c
+> @@ -0,0 +1,448 @@
+> +/*
+> + * Example: Skylake
+> +1656514333.437262: --------------------
+> +1656514333.437263: SYSPATH: /sys/devices/pci0000:00/0000:00:02.0/drm/card0
+> +1656514333.437294: SUBSYSTEM: drm
+> +1656514333.437377: prop: CURRENT_TAGS, val: :seat:mutter-device-disable-kms-modifiers:master-of-seat:uaccess:
+> +1656514333.437378: prop: DEVLINKS, val: /dev/dri/by-path/pci-0000:00:02.0-card
+> +1656514333.437378: prop: DEVNAME, val: /dev/dri/card0
+> +1656514333.437379: prop: DEVPATH, val: /devices/pci0000:00/0000:00:02.0/drm/card0
+> +1656514333.437379: prop: DEVTYPE, val: drm_minor
+> +1656514333.437380: prop: ID_FOR_SEAT, val: drm-pci-0000_00_02_0
+> +1656514333.437380: prop: ID_PATH, val: pci-0000:00:02.0
+> +1656514333.437382: prop: ID_PATH_TAG, val: pci-0000_00_02_0
+> +1656514333.437383: prop: MAJOR, val: 226
+> +1656514333.437383: prop: MINOR, val: 0
+> +1656514333.437383: prop: SUBSYSTEM, val: drm
+> +1656514333.437384: prop: TAGS, val: :seat:mutter-device-disable-kms-modifiers:master-of-seat:uaccess:
+> +1656514333.437384: prop: USEC_INITIALIZED, val: 31377470
+> +1656514333.438273: attr: dev, val: 226:0
+> +1656406120.387751: attr: subsystem, val: drm
+> +
+> +1656514333.440217: --------------------
+> +1656514333.440217: parent: 0000:00:02.0
+> +1656514333.440223: subsystem: pci
+> +1656514333.440224: syspath: /sys/devices/pci0000:00/0000:00:02.0
+> +1656514333.440297: prop: DEVPATH, val: /devices/pci0000:00/0000:00:02.0
+> +1656514333.440298: prop: DRIVER, val: i915
+> +1656514333.440298: prop: ID_MODEL_FROM_DATABASE, val: Iris Graphics 540
+> +1656514333.440299: prop: ID_PCI_CLASS_FROM_DATABASE, val: Display controller
+> +1656514333.440299: prop: ID_PCI_INTERFACE_FROM_DATABASE, val: VGA controller
+> +1656514333.440300: prop: ID_PCI_SUBCLASS_FROM_DATABASE, val: VGA compatible controller
+> +1656514333.440300: prop: ID_VENDOR_FROM_DATABASE, val: Intel Corporation
+> +1656514333.440301: prop: MODALIAS, val: pci:v00008086d00001926sv00008086sd00002063bc03sc00i00
+> +1656514333.440302: prop: PCI_CLASS, val: 30000
+> +1656514333.440302: prop: PCI_ID, val: 8086:1926
+> +1656514333.440303: prop: PCI_SLOT_NAME, val: 0000:00:02.0
+> +1656514333.440303: prop: PCI_SUBSYS_ID, val: 8086:2063
+> +1656514333.440304: prop: SUBSYSTEM, val: pci
+> +1656514333.440304: prop: SWITCHEROO_CONTROL_PRODUCT_NAME, val: Iris(R) Graphics 540
+> +1656514333.440305: prop: SWITCHEROO_CONTROL_VENDOR_NAME, val: Intel(R)
+> +1656514333.440306: prop: USEC_INITIALIZED, val: 6111540
+> +1656514333.440692: attr: class, val: 0x030000
+> +1656514333.440750: attr: device, val: 0x1926
+> +1656514333.441116: attr: subsystem, val: pci
+> +1656514333.441130: attr: subsystem_device, val: 0x2063
+> +1656514333.441141: attr: subsystem_vendor, val: 0x8086
+> +1656514333.441162: attr: vendor, val: 0x8086
+> +
+> +1656514333.441271: --------------------
+> +1656514333.441272: SYSPATH: /sys/devices/pci0000:00/0000:00:02.0/drm/renderD128
+> +1656514333.441305: SUBSYSTEM: drm
+> +1656514333.441390: prop: CURRENT_TAGS, val: :seat:mutter-device-disable-kms-modifiers:uaccess:
+> +1656514333.441391: prop: DEVLINKS, val: /dev/dri/by-path/pci-0000:00:02.0-render
+> +1656514333.441391: prop: DEVNAME, val: /dev/dri/renderD128
+> +1656514333.441392: prop: DEVPATH, val: /devices/pci0000:00/0000:00:02.0/drm/renderD128
+> +1656514333.441392: prop: DEVTYPE, val: drm_minor
+> +1656514333.441393: prop: ID_FOR_SEAT, val: drm-pci-0000_00_02_0
+> +1656514333.441393: prop: ID_PATH, val: pci-0000:00:02.0
+> +1656514333.441395: prop: ID_PATH_TAG, val: pci-0000_00_02_0
+> +1656514333.441395: prop: MAJOR, val: 226
+> +1656514333.441396: prop: MINOR, val: 128
+> +1656514333.441396: prop: SUBSYSTEM, val: drm
+> +1656514333.441396: prop: TAGS, val: :seat:mutter-device-disable-kms-modifiers:uaccess:
+> +1656514333.441397: prop: USEC_INITIALIZED, val: 31377515
+> +1656514333.441525: attr: dev, val: 226:128
+> +1656514333.441657: attr: subsystem, val: drm
+> +*/
+> +
+> +enum entry_type {
+> +	TYPE_DEVICE,
+> +	TYPE_PROP,
+> +	TYPE_ATTR,
+> +};
+> +
+> +struct udev_list_entry {
+> +	enum entry_type entry_type;
+> +	int curr;
+> +} _entry_dev, _entry_prop, _entry_attr;
+> +
+> +struct keyval {
+> +	char key[NAME_MAX];
+> +	char val[NAME_MAX];
+> +};
+> +
+> +#define MAXDEVS 16
+> +#define MAXPROPS 16
+> +#define MAXATTRS 8
+> +struct udev_device {
+> +	struct udev_device *parent;
+> +	char syspath[NAME_MAX];
+> +	char devnode[NAME_MAX];
+> +	char subsystem[8];
+> +	struct keyval prop[MAXPROPS];
+> +	struct udev_list_entry *prop_head;
+> +	struct keyval attr[MAXATTRS];
+> +	struct udev_list_entry *attr_head;
+> +	int props;
+> +	int attrs;
+> +};
+> +
+> +struct udev {
+> +	struct udev_device *dev[MAXDEVS];
+> +} _udev;
+> +
+> +struct udev_enumerate {
+> +	struct udev *udev;
+> +} _udev_enumerate;
+> +
+> +static void print_udev_device(const struct udev_device *dev)
+> +{
+> +#ifdef DEBUG_SCAN_SIMULATE
+> +	int i;
+> +
+> +	printf("[%s]\n", dev->syspath);
+> +
+> +	printf("props:\n");
+> +	for (i = 0; i < dev->props; i++)
+> +		printf("   %s: %s\n", dev->prop[i].key, dev->prop[i].val);
+> +
+> +	printf("attrs:\n");
+> +	for (i = 0; i < dev->attrs; i++)
+> +		printf("   %s: %s\n", dev->attr[i].key, dev->attr[i].val);
+> +#endif
+> +}
+> +
+> +#define __ADD_PROP(__dev, __key, __args...) do { \
+> +	struct keyval *kv; \
+> +	igt_assert((__dev)->props <= MAXPROPS); \
+> +	kv = &(__dev)->prop[(__dev)->props]; \
+> +	strncpy(kv->key, (__key), NAME_MAX); \
+> +	snprintf(kv->val, NAME_MAX, args); \
+> +	(__dev)->props++; \
+> +	} while (0)
+> +
+> +#define __ADD_ATTR(__dev, __key, __args...) do { \
+> +	struct keyval *kv; \
+> +	igt_assert((__dev)->attrs <= MAXATTRS); \
+> +	kv = &(__dev)->attr[(__dev)->attrs]; \
+> +	strncpy(kv->key, (__key), NAME_MAX); \
+> +	snprintf(kv->val, NAME_MAX, args); \
+> +	(__dev)->attrs++; \
+> +	} while (0)
+> +
+> +static struct udev_device *
+> +create_pci_udev_device(struct udev *udev,
+> +		       const char *syspath, const char *bdf,
+> +		       uint16_t vendor, uint16_t device, uint16_t subsystem)
+> +{
+> +	struct udev_device *dev;
+> +	char bus[13];
+> +
+> +	igt_assert(strlen(bdf) == 12);
+> +
+> +	dev = calloc(1, sizeof(*dev));
+> +	igt_assert(dev);
+> +
+> +	dev->parent = dev;
+> +	snprintf(dev->syspath, NAME_MAX, "%s", syspath);
+> +	strncpy(dev->subsystem, "pci", 4);
+> +
+> +	/* avoid compiler warning when copying less than 12 */
+> +	strncpy(bus, bdf, 13);
+> +	bus[7] = '\0';
+> +
+> +	__ADD_PROP(dev, "DEVPATH", "/devices/pci%s/%s", bus, bdf);
+> +	__ADD_PROP(dev, "DRIVER", "i915");
+> +	__ADD_PROP(dev, "PCI_CLASS", "30000");
+> +	__ADD_PROP(dev, "PCI_ID", "%04x:%04x", vendor, device);
+> +	__ADD_PROP(dev, "PCI_SLOT_NAME", "%s", bdf);
+> +	__ADD_PROP(dev, "PCI_SUBSYS_ID", "%04x:%04x", vendor, subsystem);
+> +	__ADD_PROP(dev, "SUBSYSTEM", "pci");
+> +
+> +	__ADD_ATTR(dev, "class", "0x030000");
+> +	__ADD_ATTR(dev, "device", "0x%04x", device);
+> +	__ADD_ATTR(dev, "subsystem", "pci");
+> +	__ADD_ATTR(dev, "subsystem_device", "0x%04x", subsystem);
+> +	__ADD_ATTR(dev, "subsystem_vendor", "0x%04x", vendor);
+> +	__ADD_ATTR(dev, "vendor", "0x%04x", vendor);
+> +
+> +	return dev;
+> +}
+> +
+> +static struct udev_device *
+> +create_drm_udev_device(struct udev *udev, struct udev_device *parent,
+> +		       const char *syspath, const char *bdf, int card,
+> +		       int major, int minor)
+> +{
+> +	struct udev_device *dev;
+> +	const char *name = card < 128 ? "card" : "render";
+> +	const char *drmname = card < 128 ? "card" : "renderD";
+> +	char bus[13];
+> +
+> +	igt_assert(strlen(bdf) == 12);
+> +
+> +	dev = calloc(1, sizeof(*dev));
+> +	igt_assert(dev);
+> +
+> +	dev->parent = parent;
+> +	snprintf(dev->syspath, NAME_MAX, "%s", syspath);
+> +	strncpy(dev->subsystem, "drm", 4);
+> +	snprintf(dev->devnode, NAME_MAX, "/dev/dri/%s%d", drmname, card);
+> +
+> +	/* avoid compiler warning when copying less than 12 */
+> +	strncpy(bus, bdf, 13);
+> +	bus[7] = '\0';
+> +
+> +	__ADD_PROP(dev, "DEVLINKS", "/dev/dri/by-path/pci-%s-%s", bdf, name);
+> +	__ADD_PROP(dev, "DEVNAME", "/dev/dri/%s%d", drmname, card);
+> +	__ADD_PROP(dev, "DEVPATH", "/devices/pci%s/%s/drm/%s%d", bus, bdf,
+> +		   drmname, card);
+> +	__ADD_PROP(dev, "DEVTYPE", "drm_minor");
+> +	__ADD_PROP(dev, "ID_PATH", "pci-%s", bdf);
+> +	__ADD_PROP(dev, "MAJOR", "%d", major);
+> +	__ADD_PROP(dev, "MINOR", "%d", minor);
+> +	__ADD_PROP(dev, "SUBSYSTEM", "drm");
+> +
+> +	__ADD_ATTR(dev, "dev", "%d:%d", major, minor);
+> +	__ADD_ATTR(dev, "subsystem", "drm");
+> +
+> +	return dev;
+> +}
+> +
+> +static struct udev_device **add_intel_dev(struct udev *udev, struct udev_device **dev,
+> +					  const char *pci_slot, uint16_t pci_device)
+> +{
+> +	struct udev_device **parent;
+> +	char bd[13], path[NAME_MAX];
+> +	static int card;
+> +
+> +	strncpy(bd, pci_slot, 13);
+> +	bd[7] = 0;
+> +
+> +	parent = dev;
+> +
+> +	snprintf(path, NAME_MAX, "/sys/devices/pci%s/%s", bd, pci_slot);
+> +	*dev++ = create_pci_udev_device(udev, path, pci_slot,
+> +					0x8086, pci_device, 0x2063);
+> +
+> +	snprintf(path, NAME_MAX, "/sys/devices/pci%s/%s/drm/card%d",
+> +		 bd, pci_slot, card);
+> +	*dev++ = create_drm_udev_device(udev, *parent, path, pci_slot,
+> +					card, 226, card);
+> +
+> +	snprintf(path, NAME_MAX, "/sys/devices/pci%s/%s/drm/renderD%d",
+> +		 bd, pci_slot, card + 128);
+> +	*dev++ = create_drm_udev_device(udev, *parent, path, pci_slot,
+> +					card + 128, 226, card + 128);
+> +
+> +	card++;
+> +
+> +	return dev;
+> +}
+> +
+> +struct udev *udev_new(void)
+> +{
+> +	struct udev *udev = &_udev;
+> +	struct udev_device **dev = udev->dev;
+> +
+> +	memset(dev, 0, sizeof(_udev.dev));
+> +
+> +	dev = add_intel_dev(udev, dev, "0000:00:02.0", 0x1926); /* skl */
+> +	dev = add_intel_dev(udev, dev, "0000:01:00.0", 0x56a1); /* dg2 */
+> +	dev = add_intel_dev(udev, dev, "0000:02:02.1", 0x9a40); /* tgl */
+> +	dev = add_intel_dev(udev, dev, "0000:03:01.0", 0x56a0); /* dg2 */
+> +	dev = add_intel_dev(udev, dev, "0000:04:02.0", 0x56a2); /* dg2 */
+> +
+> +	dev = udev->dev;
+> +	while (*dev)
+> +		print_udev_device(*dev++);
+> +
+> +	return &_udev;
+> +}
+> +
+> +struct udev_enumerate *udev_enumerate_new(struct udev *udev)
+> +{
+> +	_udev_enumerate.udev = udev;
+> +
+> +	return &_udev_enumerate;
+> +}
+> +
+> +int udev_enumerate_add_match_subsystem(struct udev_enumerate *udev_enumerate,
+> +				       const char *subsystem)
+> +{
+> +	return 0;
+> +}
+> +
+> +int udev_enumerate_add_match_property(struct udev_enumerate *udev_enumerate,
+> +				      const char *property, const char *value)
+> +{
+> +	return 0;
+> +}
+> +
+> +int udev_enumerate_scan_devices(struct udev_enumerate *udev_enumerate)
+> +{
+> +	return 0;
+> +}
+> +
+> +struct udev_list_entry *
+> +udev_enumerate_get_list_entry(struct udev_enumerate *udev_enumerate)
+> +{
+> +	_entry_dev.entry_type = TYPE_DEVICE;
+> +	_entry_dev.curr = 0;
+> +
+> +	return &_entry_dev;
+> +}
+> +
+> +struct udev_list_entry *
+> +udev_list_entry_get_next(struct udev_list_entry *list_entry)
+> +{
+> +	int curr, currdev = _entry_dev.curr;
+> +
+> +	switch (list_entry->entry_type) {
+> +	case TYPE_DEVICE:
+> +		if (_udev.dev[++list_entry->curr])
+> +			return list_entry;
+> +		break;
+> +	case TYPE_PROP:
+> +		curr = ++list_entry->curr;
+> +		if (curr < _udev.dev[currdev]->props)
+> +			return list_entry;
+> +		break;
+> +	case TYPE_ATTR:
+> +		curr = ++list_entry->curr;
+> +		if (curr < _udev.dev[currdev]->attrs)
+> +			return list_entry;
+> +		break;
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +const char *udev_list_entry_get_name(struct udev_list_entry *list_entry)
+> +{
+> +	int curr, currdev = _entry_dev.curr;
+> +
+> +	switch (list_entry->entry_type) {
+> +	case TYPE_DEVICE:
+> +		return _udev.dev[list_entry->curr]->syspath;
+> +	case TYPE_PROP:
+> +		curr = _entry_prop.curr;
+> +		return _udev.dev[currdev]->prop[curr].key;
+> +	case TYPE_ATTR:
+> +		curr = _entry_attr.curr;
+> +		return _udev.dev[currdev]->attr[curr].key;
+> +	}
+> +
+> +	return "UNKNOWN";
+> +}
+> +
+> +const char *udev_list_entry_get_value(struct udev_list_entry *list_entry)
+> +{
+> +	int curr, currdev = _entry_dev.curr;
+> +
+> +	switch (list_entry->entry_type) {
+> +	case TYPE_DEVICE:
+> +		return "";
+> +	case TYPE_PROP:
+> +		curr = _entry_prop.curr;
+> +		return _udev.dev[currdev]->prop[curr].val;
+> +	case TYPE_ATTR:
+> +		curr = _entry_attr.curr;
+> +		return _udev.dev[currdev]->attr[curr].val;
+> +	}
+> +
+> +	return "UNKNOWN";
+> +}
+> +
+> +struct udev_device *udev_device_new_from_syspath(struct udev *udev,
+> +						 const char *syspath)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < sizeof(udev->dev); i++) {
+> +		if (!udev->dev[i])
+> +			return NULL;
+> +
+> +		if (strcmp(udev->dev[i]->syspath, syspath) == 0)
+> +			return udev->dev[i];
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +const char *udev_device_get_subsystem(struct udev_device *udev_device)
+> +{
+> +	return udev_device->subsystem;
+> +}
+> +
+> +const char *udev_device_get_syspath(struct udev_device *udev_device)
+> +{
+> +	return udev_device->syspath;
+> +}
+> +
+> +const char *udev_device_get_devnode(struct udev_device *udev_device)
+> +{
+> +	if (udev_device->devnode[0] == '\0')
+> +		return NULL;
+> +
+> +	return udev_device->devnode;
+> +}
+> +
+> +struct udev_list_entry *
+> +udev_device_get_properties_list_entry(struct udev_device *udev_device)
+> +{
+> +	_entry_prop.entry_type = TYPE_PROP;
+> +	_entry_prop.curr = 0;
+> +
+> +	return &_entry_prop;
+> +}
+> +
+> +struct udev_list_entry *
+> +udev_device_get_sysattr_list_entry(struct udev_device *udev_device)
+> +{
+> +	_entry_attr.entry_type = TYPE_ATTR;
+> +	_entry_attr.curr = 0;
+> +
+> +	return &_entry_attr;
+> +}
+> +
+> +const char *
+> +udev_device_get_sysattr_value(struct udev_device *udev_device, const char *sysattr)
+> +{
+> +	for (int i = 0; i < udev_device->attrs; i++)
+> +		if (strcmp(udev_device->attr[i].key, sysattr) == 0)
+> +			return udev_device->attr[i].val;
+> +
+> +	return "UNKNOWN";
+> +}
+> +
+> +const char *udev_device_get_sysname(struct udev_device *udev_device)
+> +{
+> +	return udev_device->syspath;
+> +}
+> +
+> +struct udev_device *udev_device_get_parent(struct udev_device *udev_device)
+> +{
+> +	return udev_device->parent;
+> +}
+> +
+> +struct udev_enumerate *udev_enumerate_unref(struct udev_enumerate *udev_enumerate)
+> +{
+> +	return NULL;
+> +}
+> +
+> +struct udev_device *udev_device_unref(struct udev_device *udev_device)
+> +{
+> +	return NULL;
+> +}
+> -- 
+> 2.34.1
+> 
