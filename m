@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D2DEAB3FF
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Jul 2022 07:09:46 +0000 (UTC)
-Date: Mon, 18 Jul 2022 12:39:30 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <20220718070923.GD32110@intel.com>
-References: <20220713155233.1155128-1-rodrigo.vivi@intel.com>
- <20220713155233.1155128-4-rodrigo.vivi@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD021AB45E
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Jul 2022 07:11:48 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 18 Jul 2022 09:11:35 +0200
+Message-Id: <20220718071140.20058-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220718071140.20058-1-zbigniew.kempczynski@intel.com>
+References: <20220718071140.20058-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220713155233.1155128-4-rodrigo.vivi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] test/i915/i915_suspend: Use
- SUSPEND_STATE_S3 to enforce S3.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 1/6] lib/igt_device_scan: Migrate pci
+ assignment
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,95 +20,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2022-07-13 at 11:52:33 -0400, Rodrigo Vivi wrote:
-> Now that we have the ability to enforce the S3, let's use it
-> and avoid the extra check in the test.
-> 
-> Cc: Riana Tauro <riana.tauro@intel.com>
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-LGTM.
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  lib/igt_aux.c             | 14 +++-----------
->  lib/igt_aux.h             |  2 --
->  tests/i915/i915_suspend.c |  5 +----
->  3 files changed, 4 insertions(+), 17 deletions(-)
-> 
-> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> index 69ae9b58..268bad7c 100644
-> --- a/lib/igt_aux.c
-> +++ b/lib/igt_aux.c
-> @@ -841,15 +841,7 @@ static uint32_t get_supported_suspend_states(int power_dir)
->  	return state_mask;
->  }
->  
-> -/**
-> - * igt_get_memsleep_state
-> - *
-> - * Reads the value of /sys/power/mem_sleep and
-> - * returns the current suspend state associated with 'mem'.
-> - *
-> - * Returns : an #igt_mem_sleep state, current suspend state associated with 'mem'.
-> - */
-> -int igt_get_memsleep_state(void)
-> +static int get_mem_sleep(void)
->  {
->  	char *mem_sleep_states;
->  	char *mem_sleep_state;
-> @@ -938,9 +930,9 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
->  	orig_test = get_suspend_test(power_dir);
->  
->  	if (state == SUSPEND_STATE_S3) {
-> -		orig_mem_sleep = igt_get_memsleep_state();
-> +		orig_mem_sleep = get_mem_sleep();
->  		set_mem_sleep(power_dir, MEM_SLEEP_DEEP);
-> -		igt_skip_on_f(igt_get_memsleep_state() != MEM_SLEEP_DEEP,
-> +		igt_skip_on_f(get_mem_sleep() != MEM_SLEEP_DEEP,
->  			      "S3 not possible in this system.\n");
->  	}
->  
-> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-> index b1e48b0f..89437a90 100644
-> --- a/lib/igt_aux.h
-> +++ b/lib/igt_aux.h
-> @@ -216,8 +216,6 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
->  void igt_set_autoresume_delay(int delay_secs);
->  int igt_get_autoresume_delay(enum igt_suspend_state state);
->  
-> -int igt_get_memsleep_state(void);
-> -
->  /* dropping priviledges */
->  void igt_drop_root(void);
->  
-> diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-> index 222a8e4a..94935595 100644
-> --- a/tests/i915/i915_suspend.c
-> +++ b/tests/i915/i915_suspend.c
-> @@ -209,9 +209,6 @@ test_suspend_without_i915(int state)
->  	igt_kmsg(KMSG_INFO "Unloading i915\n");
->  	igt_assert_eq(igt_i915_driver_unload(),0);
->  
-> -	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_S2IDLE &&
-> -		      state == SUSPEND_STATE_MEM,
-> -		      "S3 not possible: platform default mem_sleep state is s2idle\n");
->  	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
->  
->  	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
-> @@ -228,7 +225,7 @@ igt_main
->  
->  	igt_describe("Validate S3 without i915 module");
->  	igt_subtest("basic-s3-without-i915")
-> -		test_suspend_without_i915(SUSPEND_STATE_MEM);
-> +		test_suspend_without_i915(SUSPEND_STATE_S3);
->  
->  	igt_fixture
->  		fd = drm_open_driver(DRIVER_INTEL);
-> -- 
-> 2.35.3
-> 
+Core function of scanning drm devices is scan_drm_devices(). It goes
+over all drm subsystem devices acquiring pci (parent) device from udev
+during dedicated call for drm device.
+
+Extending device selection to multi-gpu setup requires access to such
+machine or simulate udev calls (really replace current udev calls to
+say linker to use static versions of overridden udev functions).
+
+Change migrates some core pci assignment to place where new igt_device is
+registered. It doesn't change code logic, only place where initialization
+is done making my simulation code happy.
+
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/igt_device_scan.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index 5d98381f06..83a488aa7c 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -513,6 +513,11 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
+ 	get_props(dev, idev);
+ 	get_attrs(dev, idev);
+ 
++	if (is_pci_subsystem(idev)) {
++		set_vendor_device(idev);
++		set_pci_slot_name(idev);
++	}
++
+ 	return idev;
+ }
+ 
+@@ -671,10 +676,6 @@ static void update_or_add_parent(struct udev_device *dev,
+ 	parent_idev = igt_device_find(subsystem, syspath);
+ 	if (!parent_idev) {
+ 		parent_idev = igt_device_new_from_udev(parent_dev);
+-		if (is_pci_subsystem(parent_idev)) {
+-			set_vendor_device(parent_idev);
+-			set_pci_slot_name(parent_idev);
+-		}
+ 		igt_list_add_tail(&parent_idev->link, &igt_devs.all);
+ 	}
+ 	devname = udev_device_get_devnode(dev);
+@@ -804,8 +805,8 @@ static void scan_drm_devices(void)
+ 		path = udev_list_entry_get_name(dev_list_entry);
+ 		udev_dev = udev_device_new_from_syspath(udev, path);
+ 		idev = igt_device_new_from_udev(udev_dev);
+-		update_or_add_parent(udev_dev, idev);
+ 		igt_list_add_tail(&idev->link, &igt_devs.all);
++		update_or_add_parent(udev_dev, idev);
+ 
+ 		udev_device_unref(udev_dev);
+ 	}
+-- 
+2.34.1
