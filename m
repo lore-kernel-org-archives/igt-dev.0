@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF47310EA4F
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Jul 2022 22:16:12 +0000 (UTC)
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 18 Jul 2022 15:15:41 -0700
-Message-ID: <20220718221541.144-1-quic_jesszhan@quicinc.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2D501125D9
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Jul 2022 22:32:13 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 18 Jul 2022 15:32:05 -0700
+Message-Id: <20220718223205.1629532-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v1] tests/kms_cursor_legacy: Add check for
- overlay planes
+Subject: [igt-dev] [PATCH i-g-t] tests/perf/i915_ref_count: Skip on
+ __drm_open_driver failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,38 +17,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: quic_aravindh@quicinc.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For the dynamic subtests atomic-transitions and
-atomic-transitions-varying-size, check if the pipe has an overlay plane
-before forking the process.
+Skip early on __drm_open_driver() to generate a consistent failure
+signature for CI (rather than a follow-on igt_assert(is_i915_device(fd))).
 
-This will avoid the test trying to skip within a forked process and
-throwing a SIGABRT.
-
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/kms_cursor_legacy.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/i915/perf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index fc4a291d85b6..06751bac4f40 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -438,6 +438,11 @@ static void flip(igt_display_t *display,
- 	if (mode >= flip_test_atomic)
- 		igt_require(display->is_atomic);
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index e641d5d2db7e..5502a3fb4e59 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -4838,6 +4838,7 @@ test_i915_ref_count(void)
+ 	igt_debug("baseline ref count (drm fd closed) = %u\n", baseline);
  
-+	if (mode == flip_test_atomic_transitions ||
-+		mode == flip_test_atomic_transitions_varying_size)
-+		igt_require(igt_pipe_get_plane_type(&display->pipes[flip_pipe],
-+					DRM_PLANE_TYPE_OVERLAY));
-+
- 	igt_require((output = set_fb_on_crtc(display, flip_pipe, &fb_info)));
- 	if (flip_pipe != cursor_pipe) {
- 		igt_require((output2 = set_fb_on_crtc(display, cursor_pipe, &fb_info2)));
+ 	drm_fd = __drm_open_driver(DRIVER_INTEL);
++	igt_require_intel(drm_fd);
+ 	devid = intel_get_drm_devid(drm_fd);
+ 	sysfs = igt_sysfs_open(drm_fd);
+ 
 -- 
-2.31.0
+2.34.1
