@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A6DE10EFC8
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Jul 2022 04:08:40 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 19 Jul 2022 09:09:09 +0530
-Message-Id: <20220719033909.16196-1-karthik.b.s@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6D8010F295
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Jul 2022 05:00:47 +0000 (UTC)
+Date: Tue, 19 Jul 2022 07:00:43 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Message-ID: <YtY6ewvx47sew8kx@zkempczy-mobl2>
+References: <20220718071140.20058-1-zbigniew.kempczynski@intel.com>
+ <20220718071140.20058-7-zbigniew.kempczynski@intel.com>
+ <YtWUKmtHdsFeJ+C7@kamilkon-desk1>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_prime: Add subtests to validate
- hybrid GPU
+In-Reply-To: <YtWUKmtHdsFeJ+C7@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 6/6] lib/igt_device_scan: Simulate
+ udev drm and pci device events
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,300 +24,520 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add subtests to validate the Hybrid Graphics config with 2 GPUs active.
+On Mon, Jul 18, 2022 at 07:11:06PM +0200, Kamil Konieczny wrote:
+> Hi Zbigniew,
+> 
+> On 2022-07-18 at 09:11:40 +0200, Zbigniew Kempczyński wrote:
+> > For all udev_*() calls used in device scan add its static counterparts.
+> > Instead of transplanting real udev data structures (private ones) some
+> > primitive replacement were added. Devices are added directly from code
+> > - such implementation was a little bit faster than parsing some config
+> > files (especially pci slot manipulation to provide some properties which
+> > slightly differs).
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > ---
+> > v4: Address review comments (Kamil)
+> > ---
+> >  lib/igt_device_scan.c          |   7 +
+> >  lib/igt_device_scan_simulate.c | 448 +++++++++++++++++++++++++++++++++
+> >  2 files changed, 455 insertions(+)
+> >  create mode 100644 lib/igt_device_scan_simulate.c
+> > 
+> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> > index aad7966764..f4e7659e42 100644
+> > --- a/lib/igt_device_scan.c
+> > +++ b/lib/igt_device_scan.c
+> > @@ -904,6 +904,13 @@ static void index_pci_devices(void)
+> >   * Function sorts all found devices to keep same order of bus devices
+> >   * for providing predictable search.
+> >   */
+> > +
+> > +#ifdef SIMULATE_UDEV_DEVICES
+> 
+> One final note, please change above name into local,
+> for example IGT_DEVICE_SCAN_SIMULATE_C.
+> With that fixed you can add my r-b note.
 
-1.basic-crc-hybrid: Render on one GPU and export to second GPU for
-		    scanout.
++Petri
 
-2.basic-modeset-hybrid: Render+scanout on one GPU when second GPU is
-			active.
+Ok, thanks for the review. With merge of this patch I'll wait until Petri
+will be back. I'm going to split this series without this simulation patch.
 
-3.D3hot: Validate PCI state of dGPU is D3 Hot when dGPU is idle and
-         scanout is on iGPU.
+--
+Zbigniew
 
-4.basic-crc-vgem: The existing subtest which uses DRIVER_VGEM
-		  as the virtual second GPU. This is the legacy
-		  subtest which runs even on non-hybrid configurations.
-
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_prime.c | 214 ++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 188 insertions(+), 26 deletions(-)
-
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 1ad4b3a6..4b1a3274 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -23,11 +23,20 @@
- 
- #include "igt.h"
- #include "igt_device.h"
-+#include "igt_debugfs.h"
-+#include "igt_sysfs.h"
-+#include <fcntl.h>
- 
- #include <sys/ioctl.h>
- #include <sys/poll.h>
- #include <time.h>
- 
-+#define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
-+#define KMS_POLL_DISABLE 0
-+
-+bool kms_poll_saved_state;
-+bool kms_poll_disabled;
-+
- struct dumb_bo {
- 	uint32_t handle;
- 	uint32_t width, height;
-@@ -141,10 +150,31 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
- static void import_fb(int importer_fd, struct igt_fb *fb,
- 		      int dmabuf_fd, uint32_t pitch)
- {
--	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {};
-+	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
- 	int ret;
- 
--	fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+	if (is_i915_device(importer_fd)) {
-+		if (gem_has_lmem(importer_fd)) {
-+			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
-+			igt_info("Importer is dGPU\n");
-+			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+			igt_assert(temp_buf_handle > 0);
-+			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
-+								       fb->drm_format, fb->modifier, pitch, NULL, NULL, NULL);
-+			igt_assert(fb->gem_handle > 0);
-+
-+			igt_blitter_src_copy(importer_fd, ahnd, 0, temp_buf_handle, 0, pitch, fb->modifier, 0, 0, fb->size,
-+					     fb->width, fb->height, 32, fb->gem_handle, 0, pitch, fb->modifier, 0, 0, fb->size);
-+
-+			gem_sync(importer_fd, fb->gem_handle);
-+			gem_close(importer_fd, temp_buf_handle);
-+			put_ahnd(ahnd);
-+		} else {
-+			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+		}
-+	} else {
-+		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-+	}
- 
- 	handles[0] = fb->gem_handle;
- 	pitches[0] = pitch;
-@@ -154,7 +184,6 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
- 			    DRM_FORMAT_XRGB8888,
- 			    handles, pitches, offsets,
- 			    &fb->fb_id, 0);
--
- 	igt_assert(ret == 0);
- }
- 
-@@ -217,11 +246,9 @@ static void test_crc(int exporter_fd, int importer_fd)
- 		import_fb(importer_fd, &fb, dmabuf_fd, scratch.pitch);
- 		close(dmabuf_fd);
- 
--
- 		colors[i].prime_crc.name = "prime";
- 		collect_crc_for_fb(importer_fd, &fb, &display, output,
- 				   pipe_crc, colors[i].color, &colors[i].prime_crc);
--
- 		igt_create_color_fb(importer_fd,
- 				    mode->hdisplay, mode->vdisplay,
- 				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-@@ -258,35 +285,170 @@ static void test_crc(int exporter_fd, int importer_fd)
- 	igt_display_fini(&display);
- }
- 
--igt_main
-+static void test_basic_modeset(int drm_fd)
- {
--	igt_fixture
--		kmstest_set_vt_graphics_mode();
-+	igt_display_t display;
-+	igt_output_t *output;
-+	enum pipe pipe;
-+	drmModeModeInfo *mode;
-+	struct igt_fb fb;
-+
-+	igt_device_set_master(drm_fd);
-+	igt_display_require(&display, drm_fd);
-+
-+	output = setup_display(drm_fd, &display, &pipe);
-+	mode = igt_output_get_mode(output);
-+	igt_assert(mode);
-+
-+	igt_create_pattern_fb(drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
-+			      DRM_FORMAT_MOD_LINEAR, &fb);
-+
-+	set_fb(&fb, &display, output);
-+	igt_remove_fb(drm_fd, &fb);
-+	igt_display_fini(&display);
-+}
-+
-+static bool has_connected_output(int drm_fd)
-+{
-+	igt_display_t display;
-+	igt_output_t *output;
-+
-+	igt_device_set_master(drm_fd);
-+	igt_display_require(&display, drm_fd);
-+
-+	for_each_connected_output(&display, output)
-+		return true;
-+
-+	return false;
-+}
-+
-+static void validate_d3_hot(int drm_fd)
-+{
-+	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "GPU idle: yes"));
-+	igt_assert(igt_debugfs_search(drm_fd, "i915_runtime_pm_status", "PCI device power state: D3hot [3]"));
-+}
-+
-+static void kms_poll_state_restore(void)
-+{
-+	int sysfs_fd;
-+
-+	igt_assert((sysfs_fd = open(KMS_HELPER, O_RDONLY)) >= 0);
-+	igt_sysfs_set_boolean(sysfs_fd, "poll", kms_poll_saved_state);
-+	close(sysfs_fd);
- 
--	igt_describe("Make a dumb color buffer, export to another device and"
--		     " compare the CRCs with a buffer native to that device");
--	igt_subtest_with_dynamic("basic-crc") {
--		int first_fd = -1;
--		int second_fd = -1;
-+}
-+
-+static void kms_poll_disable(void)
-+{
-+	int sysfs_fd;
-+
-+	igt_require((sysfs_fd = open(KMS_HELPER, O_RDONLY)) >= 0);
-+	kms_poll_saved_state = igt_sysfs_get_boolean(sysfs_fd, "poll");
-+	igt_sysfs_set_boolean(sysfs_fd, "poll", KMS_POLL_DISABLE);
-+	kms_poll_disabled = true;
-+	close(sysfs_fd);
-+}
-+
-+igt_main
-+{
-+	int first_fd = -1;
-+	int second_fd_vgem = -1;
-+	int second_fd_hybrid = -1;
-+	bool first_output, second_output;
- 
-+	igt_fixture {
-+		kmstest_set_vt_graphics_mode();
- 		/* ANY = anything that is not VGEM */
--		first_fd = __drm_open_driver_another(0, DRIVER_ANY | DRIVER_VGEM);
-+		first_fd = __drm_open_driver_another(0, DRIVER_ANY);
- 		igt_require(first_fd >= 0);
-+		first_output = has_connected_output(first_fd);
-+	}
- 
--		second_fd = __drm_open_driver_another(1, DRIVER_ANY | DRIVER_VGEM);
--		igt_require(second_fd >= 0);
-+	igt_describe("Hybrid GPU subtests");
-+	igt_subtest_group {
-+		igt_fixture {
-+			second_fd_hybrid = __drm_open_driver_another(1, DRIVER_ANY);
-+			igt_require(second_fd_hybrid >= 0);
-+			second_output = has_connected_output(second_fd_hybrid);
-+		}
- 
--		if (has_prime_export(first_fd) &&
--		    has_prime_import(second_fd))
--			igt_dynamic("first-to-second")
--				test_crc(first_fd, second_fd);
-+		igt_describe("Hybrid GPU: Make a dumb color buffer, export to another device and"
-+			     " compare the CRCs with a buffer native to that device");
-+		igt_subtest_with_dynamic("basic-crc-hybrid") {
-+			if (has_prime_export(first_fd) &&
-+			    has_prime_import(second_fd_hybrid) && second_output)
-+				igt_dynamic("first-to-second")
-+					test_crc(first_fd, second_fd_hybrid);
-+
-+			if (has_prime_import(first_fd) &&
-+			    has_prime_export(second_fd_hybrid) && first_output)
-+				igt_dynamic("second-to-first")
-+					test_crc(second_fd_hybrid, first_fd);
-+		}
- 
--		if (has_prime_import(first_fd) &&
--		    has_prime_export(second_fd))
--			igt_dynamic("second-to-first")
--				test_crc(second_fd, first_fd);
-+		igt_describe("Basic modeset on the one device when the other device is active");
-+		igt_subtest_with_dynamic("basic-modeset-hybrid") {
-+			igt_require(second_fd_hybrid >= 0);
-+			if (first_output) {
-+				igt_dynamic("first")
-+					test_basic_modeset(first_fd);
-+			}
- 
--		close(first_fd);
--		close(second_fd);
-+			if (second_output) {
-+				igt_dynamic("second")
-+					test_basic_modeset(second_fd_hybrid);
-+			}
-+		}
-+
-+		igt_describe("Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU");
-+		igt_subtest("D3hot") {
-+			igt_require_f(is_i915_device(second_fd_hybrid), "i915 device required\n");
-+			igt_require_f(gem_has_lmem(second_fd_hybrid), "Second GPU is not dGPU\n");
-+			igt_require_f(first_output, "No display connected to iGPU\n");
-+			igt_require_f(!second_output, "Display connected to dGPU\n");
-+
-+			kms_poll_disable();
-+
-+			igt_set_timeout(10, "Wait for dGPU to enter D3hot before starting the subtest");
-+			while (!igt_debugfs_search(second_fd_hybrid,
-+			       "i915_runtime_pm_status",
-+			       "PCI device power state: D3hot [3]"));
-+			igt_reset_timeout();
-+
-+			test_basic_modeset(first_fd);
-+			validate_d3_hot(second_fd_hybrid);
-+		}
-+
-+		igt_fixture {
-+			if (kms_poll_disabled)
-+				kms_poll_state_restore();
-+
-+			close(second_fd_hybrid);
-+		}
- 	}
-+
-+	igt_describe("VGEM subtests");
-+	igt_subtest_group {
-+		igt_fixture {
-+			second_fd_vgem = __drm_open_driver_another(1, DRIVER_VGEM);
-+			igt_require(second_fd_vgem >= 0);
-+			if (is_i915_device(first_fd))
-+				igt_require(!gem_has_lmem(first_fd));
-+		}
-+
-+		igt_describe("Make a dumb color buffer, export to another device and"
-+			     " compare the CRCs with a buffer native to that device");
-+		igt_subtest_with_dynamic("basic-crc-vgem") {
-+			if (has_prime_import(first_fd) &&
-+			    has_prime_export(second_fd_vgem) && first_output)
-+				igt_dynamic("second-to-first")
-+					test_crc(second_fd_vgem, first_fd);
-+		}
-+
-+		igt_fixture
-+			close(second_fd_vgem);
-+	}
-+
-+	igt_fixture
-+		close(first_fd);
- }
--- 
-2.22.0
+> 
+> Regards,
+> Kamil
+> 
+> > +
+> > +#include "igt_device_scan_simulate.c"
+> > +
+> > +#endif
+> > +
+> >  static void scan_drm_devices(void)
+> >  {
+> >  	struct udev *udev;
+> > diff --git a/lib/igt_device_scan_simulate.c b/lib/igt_device_scan_simulate.c
+> > new file mode 100644
+> > index 0000000000..b2a57edd1f
+> > --- /dev/null
+> > +++ b/lib/igt_device_scan_simulate.c
+> > @@ -0,0 +1,448 @@
+> > +/*
+> > + * Example: Skylake
+> > +1656514333.437262: --------------------
+> > +1656514333.437263: SYSPATH: /sys/devices/pci0000:00/0000:00:02.0/drm/card0
+> > +1656514333.437294: SUBSYSTEM: drm
+> > +1656514333.437377: prop: CURRENT_TAGS, val: :seat:mutter-device-disable-kms-modifiers:master-of-seat:uaccess:
+> > +1656514333.437378: prop: DEVLINKS, val: /dev/dri/by-path/pci-0000:00:02.0-card
+> > +1656514333.437378: prop: DEVNAME, val: /dev/dri/card0
+> > +1656514333.437379: prop: DEVPATH, val: /devices/pci0000:00/0000:00:02.0/drm/card0
+> > +1656514333.437379: prop: DEVTYPE, val: drm_minor
+> > +1656514333.437380: prop: ID_FOR_SEAT, val: drm-pci-0000_00_02_0
+> > +1656514333.437380: prop: ID_PATH, val: pci-0000:00:02.0
+> > +1656514333.437382: prop: ID_PATH_TAG, val: pci-0000_00_02_0
+> > +1656514333.437383: prop: MAJOR, val: 226
+> > +1656514333.437383: prop: MINOR, val: 0
+> > +1656514333.437383: prop: SUBSYSTEM, val: drm
+> > +1656514333.437384: prop: TAGS, val: :seat:mutter-device-disable-kms-modifiers:master-of-seat:uaccess:
+> > +1656514333.437384: prop: USEC_INITIALIZED, val: 31377470
+> > +1656514333.438273: attr: dev, val: 226:0
+> > +1656406120.387751: attr: subsystem, val: drm
+> > +
+> > +1656514333.440217: --------------------
+> > +1656514333.440217: parent: 0000:00:02.0
+> > +1656514333.440223: subsystem: pci
+> > +1656514333.440224: syspath: /sys/devices/pci0000:00/0000:00:02.0
+> > +1656514333.440297: prop: DEVPATH, val: /devices/pci0000:00/0000:00:02.0
+> > +1656514333.440298: prop: DRIVER, val: i915
+> > +1656514333.440298: prop: ID_MODEL_FROM_DATABASE, val: Iris Graphics 540
+> > +1656514333.440299: prop: ID_PCI_CLASS_FROM_DATABASE, val: Display controller
+> > +1656514333.440299: prop: ID_PCI_INTERFACE_FROM_DATABASE, val: VGA controller
+> > +1656514333.440300: prop: ID_PCI_SUBCLASS_FROM_DATABASE, val: VGA compatible controller
+> > +1656514333.440300: prop: ID_VENDOR_FROM_DATABASE, val: Intel Corporation
+> > +1656514333.440301: prop: MODALIAS, val: pci:v00008086d00001926sv00008086sd00002063bc03sc00i00
+> > +1656514333.440302: prop: PCI_CLASS, val: 30000
+> > +1656514333.440302: prop: PCI_ID, val: 8086:1926
+> > +1656514333.440303: prop: PCI_SLOT_NAME, val: 0000:00:02.0
+> > +1656514333.440303: prop: PCI_SUBSYS_ID, val: 8086:2063
+> > +1656514333.440304: prop: SUBSYSTEM, val: pci
+> > +1656514333.440304: prop: SWITCHEROO_CONTROL_PRODUCT_NAME, val: Iris(R) Graphics 540
+> > +1656514333.440305: prop: SWITCHEROO_CONTROL_VENDOR_NAME, val: Intel(R)
+> > +1656514333.440306: prop: USEC_INITIALIZED, val: 6111540
+> > +1656514333.440692: attr: class, val: 0x030000
+> > +1656514333.440750: attr: device, val: 0x1926
+> > +1656514333.441116: attr: subsystem, val: pci
+> > +1656514333.441130: attr: subsystem_device, val: 0x2063
+> > +1656514333.441141: attr: subsystem_vendor, val: 0x8086
+> > +1656514333.441162: attr: vendor, val: 0x8086
+> > +
+> > +1656514333.441271: --------------------
+> > +1656514333.441272: SYSPATH: /sys/devices/pci0000:00/0000:00:02.0/drm/renderD128
+> > +1656514333.441305: SUBSYSTEM: drm
+> > +1656514333.441390: prop: CURRENT_TAGS, val: :seat:mutter-device-disable-kms-modifiers:uaccess:
+> > +1656514333.441391: prop: DEVLINKS, val: /dev/dri/by-path/pci-0000:00:02.0-render
+> > +1656514333.441391: prop: DEVNAME, val: /dev/dri/renderD128
+> > +1656514333.441392: prop: DEVPATH, val: /devices/pci0000:00/0000:00:02.0/drm/renderD128
+> > +1656514333.441392: prop: DEVTYPE, val: drm_minor
+> > +1656514333.441393: prop: ID_FOR_SEAT, val: drm-pci-0000_00_02_0
+> > +1656514333.441393: prop: ID_PATH, val: pci-0000:00:02.0
+> > +1656514333.441395: prop: ID_PATH_TAG, val: pci-0000_00_02_0
+> > +1656514333.441395: prop: MAJOR, val: 226
+> > +1656514333.441396: prop: MINOR, val: 128
+> > +1656514333.441396: prop: SUBSYSTEM, val: drm
+> > +1656514333.441396: prop: TAGS, val: :seat:mutter-device-disable-kms-modifiers:uaccess:
+> > +1656514333.441397: prop: USEC_INITIALIZED, val: 31377515
+> > +1656514333.441525: attr: dev, val: 226:128
+> > +1656514333.441657: attr: subsystem, val: drm
+> > +*/
+> > +
+> > +enum entry_type {
+> > +	TYPE_DEVICE,
+> > +	TYPE_PROP,
+> > +	TYPE_ATTR,
+> > +};
+> > +
+> > +struct udev_list_entry {
+> > +	enum entry_type entry_type;
+> > +	int curr;
+> > +} _entry_dev, _entry_prop, _entry_attr;
+> > +
+> > +struct keyval {
+> > +	char key[NAME_MAX];
+> > +	char val[NAME_MAX];
+> > +};
+> > +
+> > +#define MAXDEVS 16
+> > +#define MAXPROPS 16
+> > +#define MAXATTRS 8
+> > +struct udev_device {
+> > +	struct udev_device *parent;
+> > +	char syspath[NAME_MAX];
+> > +	char devnode[NAME_MAX];
+> > +	char subsystem[8];
+> > +	struct keyval prop[MAXPROPS];
+> > +	struct udev_list_entry *prop_head;
+> > +	struct keyval attr[MAXATTRS];
+> > +	struct udev_list_entry *attr_head;
+> > +	int props;
+> > +	int attrs;
+> > +};
+> > +
+> > +struct udev {
+> > +	struct udev_device *dev[MAXDEVS];
+> > +} _udev;
+> > +
+> > +struct udev_enumerate {
+> > +	struct udev *udev;
+> > +} _udev_enumerate;
+> > +
+> > +static void print_udev_device(const struct udev_device *dev)
+> > +{
+> > +#ifdef DEBUG_SCAN_SIMULATE
+> > +	int i;
+> > +
+> > +	printf("[%s]\n", dev->syspath);
+> > +
+> > +	printf("props:\n");
+> > +	for (i = 0; i < dev->props; i++)
+> > +		printf("   %s: %s\n", dev->prop[i].key, dev->prop[i].val);
+> > +
+> > +	printf("attrs:\n");
+> > +	for (i = 0; i < dev->attrs; i++)
+> > +		printf("   %s: %s\n", dev->attr[i].key, dev->attr[i].val);
+> > +#endif
+> > +}
+> > +
+> > +#define __ADD_PROP(__dev, __key, __args...) do { \
+> > +	struct keyval *kv; \
+> > +	igt_assert((__dev)->props <= MAXPROPS); \
+> > +	kv = &(__dev)->prop[(__dev)->props]; \
+> > +	strncpy(kv->key, (__key), NAME_MAX); \
+> > +	snprintf(kv->val, NAME_MAX, args); \
+> > +	(__dev)->props++; \
+> > +	} while (0)
+> > +
+> > +#define __ADD_ATTR(__dev, __key, __args...) do { \
+> > +	struct keyval *kv; \
+> > +	igt_assert((__dev)->attrs <= MAXATTRS); \
+> > +	kv = &(__dev)->attr[(__dev)->attrs]; \
+> > +	strncpy(kv->key, (__key), NAME_MAX); \
+> > +	snprintf(kv->val, NAME_MAX, args); \
+> > +	(__dev)->attrs++; \
+> > +	} while (0)
+> > +
+> > +static struct udev_device *
+> > +create_pci_udev_device(struct udev *udev,
+> > +		       const char *syspath, const char *bdf,
+> > +		       uint16_t vendor, uint16_t device, uint16_t subsystem)
+> > +{
+> > +	struct udev_device *dev;
+> > +	char bus[13];
+> > +
+> > +	igt_assert(strlen(bdf) == 12);
+> > +
+> > +	dev = calloc(1, sizeof(*dev));
+> > +	igt_assert(dev);
+> > +
+> > +	dev->parent = dev;
+> > +	snprintf(dev->syspath, NAME_MAX, "%s", syspath);
+> > +	strncpy(dev->subsystem, "pci", 4);
+> > +
+> > +	/* avoid compiler warning when copying less than 12 */
+> > +	strncpy(bus, bdf, 13);
+> > +	bus[7] = '\0';
+> > +
+> > +	__ADD_PROP(dev, "DEVPATH", "/devices/pci%s/%s", bus, bdf);
+> > +	__ADD_PROP(dev, "DRIVER", "i915");
+> > +	__ADD_PROP(dev, "PCI_CLASS", "30000");
+> > +	__ADD_PROP(dev, "PCI_ID", "%04x:%04x", vendor, device);
+> > +	__ADD_PROP(dev, "PCI_SLOT_NAME", "%s", bdf);
+> > +	__ADD_PROP(dev, "PCI_SUBSYS_ID", "%04x:%04x", vendor, subsystem);
+> > +	__ADD_PROP(dev, "SUBSYSTEM", "pci");
+> > +
+> > +	__ADD_ATTR(dev, "class", "0x030000");
+> > +	__ADD_ATTR(dev, "device", "0x%04x", device);
+> > +	__ADD_ATTR(dev, "subsystem", "pci");
+> > +	__ADD_ATTR(dev, "subsystem_device", "0x%04x", subsystem);
+> > +	__ADD_ATTR(dev, "subsystem_vendor", "0x%04x", vendor);
+> > +	__ADD_ATTR(dev, "vendor", "0x%04x", vendor);
+> > +
+> > +	return dev;
+> > +}
+> > +
+> > +static struct udev_device *
+> > +create_drm_udev_device(struct udev *udev, struct udev_device *parent,
+> > +		       const char *syspath, const char *bdf, int card,
+> > +		       int major, int minor)
+> > +{
+> > +	struct udev_device *dev;
+> > +	const char *name = card < 128 ? "card" : "render";
+> > +	const char *drmname = card < 128 ? "card" : "renderD";
+> > +	char bus[13];
+> > +
+> > +	igt_assert(strlen(bdf) == 12);
+> > +
+> > +	dev = calloc(1, sizeof(*dev));
+> > +	igt_assert(dev);
+> > +
+> > +	dev->parent = parent;
+> > +	snprintf(dev->syspath, NAME_MAX, "%s", syspath);
+> > +	strncpy(dev->subsystem, "drm", 4);
+> > +	snprintf(dev->devnode, NAME_MAX, "/dev/dri/%s%d", drmname, card);
+> > +
+> > +	/* avoid compiler warning when copying less than 12 */
+> > +	strncpy(bus, bdf, 13);
+> > +	bus[7] = '\0';
+> > +
+> > +	__ADD_PROP(dev, "DEVLINKS", "/dev/dri/by-path/pci-%s-%s", bdf, name);
+> > +	__ADD_PROP(dev, "DEVNAME", "/dev/dri/%s%d", drmname, card);
+> > +	__ADD_PROP(dev, "DEVPATH", "/devices/pci%s/%s/drm/%s%d", bus, bdf,
+> > +		   drmname, card);
+> > +	__ADD_PROP(dev, "DEVTYPE", "drm_minor");
+> > +	__ADD_PROP(dev, "ID_PATH", "pci-%s", bdf);
+> > +	__ADD_PROP(dev, "MAJOR", "%d", major);
+> > +	__ADD_PROP(dev, "MINOR", "%d", minor);
+> > +	__ADD_PROP(dev, "SUBSYSTEM", "drm");
+> > +
+> > +	__ADD_ATTR(dev, "dev", "%d:%d", major, minor);
+> > +	__ADD_ATTR(dev, "subsystem", "drm");
+> > +
+> > +	return dev;
+> > +}
+> > +
+> > +static struct udev_device **add_intel_dev(struct udev *udev, struct udev_device **dev,
+> > +					  const char *pci_slot, uint16_t pci_device)
+> > +{
+> > +	struct udev_device **parent;
+> > +	char bd[13], path[NAME_MAX];
+> > +	static int card;
+> > +
+> > +	strncpy(bd, pci_slot, 13);
+> > +	bd[7] = 0;
+> > +
+> > +	parent = dev;
+> > +
+> > +	snprintf(path, NAME_MAX, "/sys/devices/pci%s/%s", bd, pci_slot);
+> > +	*dev++ = create_pci_udev_device(udev, path, pci_slot,
+> > +					0x8086, pci_device, 0x2063);
+> > +
+> > +	snprintf(path, NAME_MAX, "/sys/devices/pci%s/%s/drm/card%d",
+> > +		 bd, pci_slot, card);
+> > +	*dev++ = create_drm_udev_device(udev, *parent, path, pci_slot,
+> > +					card, 226, card);
+> > +
+> > +	snprintf(path, NAME_MAX, "/sys/devices/pci%s/%s/drm/renderD%d",
+> > +		 bd, pci_slot, card + 128);
+> > +	*dev++ = create_drm_udev_device(udev, *parent, path, pci_slot,
+> > +					card + 128, 226, card + 128);
+> > +
+> > +	card++;
+> > +
+> > +	return dev;
+> > +}
+> > +
+> > +struct udev *udev_new(void)
+> > +{
+> > +	struct udev *udev = &_udev;
+> > +	struct udev_device **dev = udev->dev;
+> > +
+> > +	memset(dev, 0, sizeof(_udev.dev));
+> > +
+> > +	dev = add_intel_dev(udev, dev, "0000:00:02.0", 0x1926); /* skl */
+> > +	dev = add_intel_dev(udev, dev, "0000:01:00.0", 0x56a1); /* dg2 */
+> > +	dev = add_intel_dev(udev, dev, "0000:02:02.1", 0x9a40); /* tgl */
+> > +	dev = add_intel_dev(udev, dev, "0000:03:01.0", 0x56a0); /* dg2 */
+> > +	dev = add_intel_dev(udev, dev, "0000:04:02.0", 0x56a2); /* dg2 */
+> > +
+> > +	dev = udev->dev;
+> > +	while (*dev)
+> > +		print_udev_device(*dev++);
+> > +
+> > +	return &_udev;
+> > +}
+> > +
+> > +struct udev_enumerate *udev_enumerate_new(struct udev *udev)
+> > +{
+> > +	_udev_enumerate.udev = udev;
+> > +
+> > +	return &_udev_enumerate;
+> > +}
+> > +
+> > +int udev_enumerate_add_match_subsystem(struct udev_enumerate *udev_enumerate,
+> > +				       const char *subsystem)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> > +int udev_enumerate_add_match_property(struct udev_enumerate *udev_enumerate,
+> > +				      const char *property, const char *value)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> > +int udev_enumerate_scan_devices(struct udev_enumerate *udev_enumerate)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> > +struct udev_list_entry *
+> > +udev_enumerate_get_list_entry(struct udev_enumerate *udev_enumerate)
+> > +{
+> > +	_entry_dev.entry_type = TYPE_DEVICE;
+> > +	_entry_dev.curr = 0;
+> > +
+> > +	return &_entry_dev;
+> > +}
+> > +
+> > +struct udev_list_entry *
+> > +udev_list_entry_get_next(struct udev_list_entry *list_entry)
+> > +{
+> > +	int curr, currdev = _entry_dev.curr;
+> > +
+> > +	switch (list_entry->entry_type) {
+> > +	case TYPE_DEVICE:
+> > +		if (_udev.dev[++list_entry->curr])
+> > +			return list_entry;
+> > +		break;
+> > +	case TYPE_PROP:
+> > +		curr = ++list_entry->curr;
+> > +		if (curr < _udev.dev[currdev]->props)
+> > +			return list_entry;
+> > +		break;
+> > +	case TYPE_ATTR:
+> > +		curr = ++list_entry->curr;
+> > +		if (curr < _udev.dev[currdev]->attrs)
+> > +			return list_entry;
+> > +		break;
+> > +	}
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +const char *udev_list_entry_get_name(struct udev_list_entry *list_entry)
+> > +{
+> > +	int curr, currdev = _entry_dev.curr;
+> > +
+> > +	switch (list_entry->entry_type) {
+> > +	case TYPE_DEVICE:
+> > +		return _udev.dev[list_entry->curr]->syspath;
+> > +	case TYPE_PROP:
+> > +		curr = _entry_prop.curr;
+> > +		return _udev.dev[currdev]->prop[curr].key;
+> > +	case TYPE_ATTR:
+> > +		curr = _entry_attr.curr;
+> > +		return _udev.dev[currdev]->attr[curr].key;
+> > +	}
+> > +
+> > +	return "UNKNOWN";
+> > +}
+> > +
+> > +const char *udev_list_entry_get_value(struct udev_list_entry *list_entry)
+> > +{
+> > +	int curr, currdev = _entry_dev.curr;
+> > +
+> > +	switch (list_entry->entry_type) {
+> > +	case TYPE_DEVICE:
+> > +		return "";
+> > +	case TYPE_PROP:
+> > +		curr = _entry_prop.curr;
+> > +		return _udev.dev[currdev]->prop[curr].val;
+> > +	case TYPE_ATTR:
+> > +		curr = _entry_attr.curr;
+> > +		return _udev.dev[currdev]->attr[curr].val;
+> > +	}
+> > +
+> > +	return "UNKNOWN";
+> > +}
+> > +
+> > +struct udev_device *udev_device_new_from_syspath(struct udev *udev,
+> > +						 const char *syspath)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i = 0; i < sizeof(udev->dev); i++) {
+> > +		if (!udev->dev[i])
+> > +			return NULL;
+> > +
+> > +		if (strcmp(udev->dev[i]->syspath, syspath) == 0)
+> > +			return udev->dev[i];
+> > +	}
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +const char *udev_device_get_subsystem(struct udev_device *udev_device)
+> > +{
+> > +	return udev_device->subsystem;
+> > +}
+> > +
+> > +const char *udev_device_get_syspath(struct udev_device *udev_device)
+> > +{
+> > +	return udev_device->syspath;
+> > +}
+> > +
+> > +const char *udev_device_get_devnode(struct udev_device *udev_device)
+> > +{
+> > +	if (udev_device->devnode[0] == '\0')
+> > +		return NULL;
+> > +
+> > +	return udev_device->devnode;
+> > +}
+> > +
+> > +struct udev_list_entry *
+> > +udev_device_get_properties_list_entry(struct udev_device *udev_device)
+> > +{
+> > +	_entry_prop.entry_type = TYPE_PROP;
+> > +	_entry_prop.curr = 0;
+> > +
+> > +	return &_entry_prop;
+> > +}
+> > +
+> > +struct udev_list_entry *
+> > +udev_device_get_sysattr_list_entry(struct udev_device *udev_device)
+> > +{
+> > +	_entry_attr.entry_type = TYPE_ATTR;
+> > +	_entry_attr.curr = 0;
+> > +
+> > +	return &_entry_attr;
+> > +}
+> > +
+> > +const char *
+> > +udev_device_get_sysattr_value(struct udev_device *udev_device, const char *sysattr)
+> > +{
+> > +	for (int i = 0; i < udev_device->attrs; i++)
+> > +		if (strcmp(udev_device->attr[i].key, sysattr) == 0)
+> > +			return udev_device->attr[i].val;
+> > +
+> > +	return "UNKNOWN";
+> > +}
+> > +
+> > +const char *udev_device_get_sysname(struct udev_device *udev_device)
+> > +{
+> > +	return udev_device->syspath;
+> > +}
+> > +
+> > +struct udev_device *udev_device_get_parent(struct udev_device *udev_device)
+> > +{
+> > +	return udev_device->parent;
+> > +}
+> > +
+> > +struct udev_enumerate *udev_enumerate_unref(struct udev_enumerate *udev_enumerate)
+> > +{
+> > +	return NULL;
+> > +}
+> > +
+> > +struct udev_device *udev_device_unref(struct udev_device *udev_device)
+> > +{
+> > +	return NULL;
+> > +}
+> > -- 
+> > 2.34.1
+> > 
