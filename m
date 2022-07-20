@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5638869203385896195=="
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam04on2052.outbound.protection.outlook.com [40.107.102.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C15A310E08A
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Jul 2022 16:26:10 +0000 (UTC)
+Message-ID: <afdf7fdc-d3ff-2c28-7a2d-89dc7019fca1@amd.com>
+Date: Wed, 20 Jul 2022 12:26:05 -0400
+Content-Language: en-US
+To: Wayne Lin <Wayne.Lin@amd.com>, igt-dev@lists.freedesktop.org,
+ Lyude Paul <lyude@redhat.com>, "Wentland, Harry" <Harry.Wentland@amd.com>
+References: <20220711035017.3178916-1-Wayne.Lin@amd.com>
+From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20220711035017.3178916-1-Wayne.Lin@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mark Yacoub" <markyacoub@chromium.org>
-Date: Wed, 20 Jul 2022 16:05:15 -0000
-Message-ID: <165833311531.27271.4756061958439696496@emeril.freedesktop.org>
-References: <20220720151940.12723-1-markyacoub@chromium.org>
-In-Reply-To: <20220720151940.12723-1-markyacoub@chromium.org>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2No?=
- =?utf-8?q?amelium=3A_Support_MST_connectors_on_reprobe_by_using_connector?=
- =?utf-8?q?_name?=
+Subject: Re: [igt-dev] [PATCH] test/amdgpu: Add DP mst test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,389 +22,650 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: jerry.zuo@amd.com, hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5638869203385896195==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Wayne,
 
-== Series Details ==
+(+Lyude, +Harry)
 
-Series: lib/chamelium: Support MST connectors on reprobe by using connector name
-URL   : https://patchwork.freedesktop.org/series/106539/
-State : success
+In general, I'm ok with this patch... but tbh, I'm not sure if I 
+understand MST really well to provide a meaningful review, but follows 
+some of my comments, and I also Cc other people that know more about MST.
 
-== Summary ==
+On 2022-07-10 23:50, Wayne Lin wrote:
+> [Why & How]
+> Add new igt test amd_mst for DP mst feature.
+> 
+> MST (Multi-Stream Transport) is the feature introduced from DP 1.2.
+> By mst, source can transport multiple streams to different stream
+> sinks through the same DP Tx.
+> 
+> This new igt test "amd_mst" validate mst feature from two perspectives:
+> 
+> * Trigger soft hotplug to see whether all mst end sinks successfully go
+>    through mst light up procedure
+> * Check if all mst end sinks successfully go through mst light up
+>    procedure after suspend-resume
 
-CI Bug Log - changes from CI_DRM_11928 -> IGTPW_7545
-====================================================
+Maybe you could describe the hardware setup you used to test this patch. 
+I think this could be useful in case we want to enable this test in our CI.
 
-Summary
--------
+> 
+> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+> ---
+>   lib/igt_amd.c            | 160 +++++++++++++++++++++
+>   lib/igt_amd.h            |  43 ++++++
+>   tests/amdgpu/amd_mst.c   | 301 +++++++++++++++++++++++++++++++++++++++
+>   tests/amdgpu/meson.build |   1 +
+>   4 files changed, 505 insertions(+)
+>   create mode 100644 tests/amdgpu/amd_mst.c
+> 
+> diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> index bef9c193..5de26691 100644
+> --- a/lib/igt_amd.c
+> +++ b/lib/igt_amd.c
+> @@ -1175,3 +1175,163 @@ bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm opt
+>   
+>   	return res;
+>   }
+> +
+> +/**
+> + * igt_amd_output_has_mst: check if connector has MST debugfs entries
+> + * @drm_fd: DRM file descriptor
+> + * @connector_name: The connector's name, on which we're reading the status
+> + */
+> +static bool igt_amd_output_has_mst(int drm_fd, char *connector_name)
+> +{
+> +	bool ret = true;
+> +
 
-  **SUCCESS**
+Do we need this ret variable? Maybe you can return the 
+igt_amd_output_has_debugfs directly.
 
-  No regressions found.
+> +	ret = igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_MST_IS_MST_CONNECTOR) &
+> +			igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_MST_PROGRESS_STATUS);
+> +    return ret;
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/index.html
+nit:
+I think you mixed space with tabs here.
 
-Participating hosts (37 -> 42)
-------------------------------
+> +}
+> +
+> +/**
+> + * igt_amd_require_mst: Checks if connectors have mst debugfs entries
+> + * @display: A pointer to an #igt_display_t structure
+> + * @drm_fd: DRM file descriptor
+> + *
+> + * Checks if the AMDGPU driver supports the 'is_mst_connector'
+> + * and 'mst_progress_status' entry for mst. Skip test if there
+> + * are no relevant debugfs entries.
+> + */
+> +void igt_amd_require_mst(igt_display_t *display, int drm_fd)
+> +{
+> +	igt_output_t *output;
+> +
+> +	for_each_connected_output(display, output) {
+> +		if (igt_amd_output_has_mst(drm_fd, output->name))
+> +			return;
+> +	}
 
-  Additional (6): bat-dg2-8 bat-adlm-1 fi-cfl-8700k fi-kbl-x1275 fi-kbl-8809g bat-jsl-1 
-  Missing    (1): fi-rkl-11600 
+nit:
+You can drop `{}` in the for_each part.
 
-Known issues
-------------
+> +
+> +	igt_skip("No MST relevant debugfs support.\n");
+> +}
+> +
+> +/**
+> + * igt_amd_get_mst_role: Get the mst role of this output
+> + * @drm_fd: DRM file descriptor
+> + * @output: the output to be checked
+> + *
+> + * DRM enumerates a drm connector to each MST output port. This is used to
+> + * determine the mst role of this specific output. The mst role in the
+> + * mst topology shoule be 'no', 'root', 'branch' and 'end'
+> + */
+> +enum dp_mst_role igt_amd_get_mst_role(int drm_fd, igt_output_t *output)
+> +{
+> +	int fd, ret;
+> +	char buf[256] = {'\0'};
+> +	int i = 0;
+> +	enum dp_mst_role role = MST_NONE;
+> +
+> +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	if (fd < 0) {
+> +		igt_info("Could not open connector %s debugfs directory\n",
+> +			 output->name);
+> +		return MST_NONE;
+> +	}
+> +
+> +	if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+> +		return MST_NONE;
+> +
+> +	ret = igt_debugfs_simple_read(fd, DEBUGFS_MST_IS_MST_CONNECTOR, buf, sizeof(buf));
+> +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
+> +		     DEBUGFS_MST_IS_MST_CONNECTOR, output->name);
+> +
+> +	close(fd);
+> +
+> +	for (i = 0; i < sizeof(is_mst_connector)/sizeof(char *); i++) {
 
-  Here are the changes found in IGTPW_7545 that come from known issues:
+The first time that I read this `is_mst_connector`, I was a little bit 
+confused... maybe you can rename it to something like 
+`mst_connector_array`. Also, don't we have IGT helpers for this kind of 
+thing?
 
-### IGT changes ###
+> +		if (strstr(buf, is_mst_connector[i])) {
+> +			role = i;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (role != MST_NONE)
+> +		igt_info("Connector %s: is a mst %s",
+> +		 output->name, buf);
+> +	else
+> +		igt_info("Connector %s: is not a mst device\n",
+> +			 output->name);
 
-#### Issues hit ####
+nit:
+Maybe you can keep the igt_info in a single line.
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8700k/igt@gem_huc_copy@huc-copy.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html
+> +
+> +	return role;
+> +}
+> +
+> +/**
+> + * igt_amd_get_mst_progress_status: Get the mst progress status of a mst device
+> + * @drm_fd: DRM file descriptor
+> + * @output: the output to be checked
+> + *
+> + * Get the mst progress status of this specific output. The mst progress status
+> + * is indicated by 'MST_PROBE', 'MST_REMOTE_EDID' , 'MST_ALLOCATE_NEW_PAYLOAD'
+> + * and 'MST_CLEAR_ALLOCATED_PAYLOAD'
 
-  * igt@gem_lmem_swapping@basic:
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8700k/igt@gem_lmem_swapping@basic.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
+Maybe you can add each of these statuses as a bullet and add a tiny 
+summary of the status meaning?
 
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-x1275/igt@gem_lmem_swapping@verify-random.html
+> + */
+> +uint8_t igt_amd_get_mst_progress_status(int drm_fd, igt_output_t *output)
+> +{
+> +	int fd, ret;
+> +	char buf[256] = {'\0'};
+> +	int idx = 0;
+> +	char *token_end;
+> +	uint8_t status = MST_STATUS_DEFAULT;
+> +
+> +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	if (fd < 0) {
+> +		igt_info("Could not open connector %s debugfs directory\n",
+> +			 output->name);
+> +		return MST_STATUS_DEFAULT;
+> +	}
+> +
+> +	if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+> +		return MST_STATUS_DEFAULT;
+> +
+> +	ret = igt_debugfs_simple_read(fd, DEBUGFS_MST_PROGRESS_STATUS, buf, sizeof(buf));
+> +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
+> +		     DEBUGFS_MST_PROGRESS_STATUS, output->name);
+> +
+> +	close(fd);
+> +
+> +	/* Parse values read from file. */
+> +	for (char *token = strtok_r(buf, "\n", &token_end);
+> +	     token != NULL;
+> +	     token = strtok_r(NULL, "\n", &token_end), idx++)
+> +	{
+> +		if (strstr(token, "not") == NULL)
+> +			status |= BIT(idx);
+> +	}
+> +
+> +	return status;
+> +}
+> +
+> +/**
+> + * mst_trigger_hotplug: Trigger mst hotplug
+> + * @drm_fd: DRM file descriptor
+> + * @output: #igt_output_t to check.
+> + *
+> + * Trigger soft hotplug on mst connector. Caller should make sure the
 
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-8809g/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][8] ([fdo#109271])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-blb-e6850/igt@kms_chamelium@common-hpd-after-suspend.html
+just for curiosity, what "soft hotplug" means?
 
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-x1275/igt@kms_chamelium@dp-crc-fast.html
+> + * passed output is mst root by igt_amd_get_mst_role(). We can't generate
+> + * soft hotplug on mst end device.
+> + */
+> +void mst_trigger_hotplug(int drm_fd, igt_output_t *output)
+> +{
+> +    int fd, hpd_fd;
 
-  * igt@kms_chamelium@dp-hpd-fast:
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][10] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8700k/igt@kms_chamelium@dp-hpd-fast.html
+nit:
+Use tab instead of space.
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][11] ([fdo#109271]) +10 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8700k/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][12] ([fdo#109271]) +26 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-8809g/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+> +	int wr_len;
+> +	const char *enable_hpd = "1", *disable_hpd = "0";
+> +
+> +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	igt_assert(fd >= 0);
+> +	hpd_fd = openat(fd, DEBUGFS_HPD_TRIGGER, O_WRONLY);
+> +	close(fd);
+> +	igt_assert(hpd_fd >= 0);
+> +
+> +	wr_len = write(hpd_fd, disable_hpd, strlen(disable_hpd));
+> +	igt_assert_eq(wr_len, strlen(disable_hpd));
+> +
+> +	sleep(3);
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-kefka:       [PASS][13] -> [FAIL][14] ([i915#6298])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+Why did you decide on 3 here? Also, a retry attempt mechanism would be 
+more reliable, no? I mean, something like tries 5 times, and each time 
+you wait X amount of time.
 
-  * igt@prime_vgem@basic-userptr:
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][15] ([fdo#109271]) +11 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-x1275/igt@prime_vgem@basic-userptr.html
+> +
+> +	wr_len = write(hpd_fd, enable_hpd, strlen(enable_hpd));
+> +	igt_assert_eq(wr_len, strlen(enable_hpd));
+> +	close(hpd_fd);
+> +}
+> \ No newline at end of file
+> diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+> index 428bfe6f..b88755b3 100644
+> --- a/lib/igt_amd.h
+> +++ b/lib/igt_amd.h
+> @@ -52,6 +52,12 @@
+>   /* amdgpu DM interface entries */
+>   #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
+>   
+> +/* mst related read only status*/
+> +#define DEBUGFS_MST_IS_MST_CONNECTOR "is_mst_connector"
+> +#define DEBUGFS_MST_PROGRESS_STATUS "mst_progress_status"
+> +
+> +#define BIT(x) (1ul <<(x))
 
-  
-#### Possible fixes ####
+I think i915 also defines this. Maybe it is time to make this generic 
+for the entire IGT.
 
-  * igt@core_hotunplug@unbind-rebind:
-    - {bat-adln-1}:       [DMESG-WARN][16] ([i915#6297]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/bat-adln-1/igt@core_hotunplug@unbind-rebind.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/bat-adln-1/igt@core_hotunplug@unbind-rebind.html
+> +
+>   enum amd_dsc_clock_force {
+>   	DSC_AUTOMATIC = 0,
+>   	DSC_FORCE_ON,
+> @@ -131,6 +137,37 @@ enum amdgpu_debug_visual_confirm {
+>   	VISUAL_CONFIRM_SWIZZLE	= 9
+>   };
+>   
+> +/*
+> + * Enumeration of the role in MST topology
+> + */
 
-  * igt@i915_pm_rpm@module-reload:
-    - fi-cfl-8109u:       [DMESG-FAIL][18] ([i915#62]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
+Maybe this is obvious for everyone that knows MST, but how about adding 
+documentation for each MST topology? Something with a short description.
 
-  * igt@i915_selftest@live@guc:
-    - {bat-dg2-9}:        [DMESG-WARN][20] ([i915#5763]) -> [PASS][21] +7 similar issues
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/bat-dg2-9/igt@i915_selftest@live@guc.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/bat-dg2-9/igt@i915_selftest@live@guc.html
+> +enum dp_mst_role {
+> +	MST_NONE = 0,
+> +	MST_ROOT,
+> +	MST_BRANCH,
+> +	MST_END,
+> +};
+> +
+> +static const char *const is_mst_connector[] = {
+> +    "no",
+> +    "root",
+> +    "branch",
+> +    "end",
+> +};
+> +
+> +/*
+> + * Enumeration of MST progress state. The bit order should align
+> + * with the 'enum mst_progress_statusto' in amdgpu_dm.h of
+> + * upstreamed amdgpu kernel driver
+> + */
+> +enum mst_progress_status {
+> +	MST_STATUS_DEFAULT = 0,
+> +	MST_PROBE = BIT(0),
+> +	MST_REMOTE_EDID = BIT(1),
+> +	MST_ALLOCATE_NEW_PAYLOAD = BIT(2),
+> +	MST_CLEAR_ALLOCATED_PAYLOAD = BIT(3),
+> +	NUM_MST_STATUS = 4,
+> +};
+> +
+>   uint32_t igt_amd_create_bo(int fd, uint64_t size);
+>   void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
+>   unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
+> @@ -192,4 +229,10 @@ int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
+>   bool igt_amd_has_visual_confirm(int drm_fd);
+>   int  igt_amd_get_visual_confirm(int drm_fd);
+>   bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
+> +
+> +/* DP MST debugfs helpers*/
+> +void igt_amd_require_mst(igt_display_t *display, int drm_fd);
+> +enum dp_mst_role igt_amd_get_mst_role(int drm_fd, igt_output_t *output);
+> +uint8_t igt_amd_get_mst_progress_status(int drm_fd, igt_output_t *output);
+> +void mst_trigger_hotplug(int drm_fd, igt_output_t *output);
+>   #endif /* IGT_AMD_H */
+> diff --git a/tests/amdgpu/amd_mst.c b/tests/amdgpu/amd_mst.c
+> new file mode 100644
+> index 00000000..3b65f465
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_mst.c
+> @@ -0,0 +1,301 @@
+> +/*
+> + * Copyright 2022 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + */
+> +
+> +#include "igt.h"
+> +#include "igt_amd.h"
+> +
+> +IGT_TEST_DESCRIPTION("This igt test validates DP MST feature by:"
+> +	"1. Check each mst end sink successfully go through mst light up procedure"
+> +	"after hotplug root branch."
+> +	"2. Check each mst end sink successfully go through mst light up procedure"
+> +	"after suspend-resume");
+> +
+> +/* Maximum pipes on any AMD ASIC. */
+> +#define MAX_PIPES 6
+> +
+> +typedef struct data {
+> +	igt_display_t display;
+> +	igt_plane_t *primary[MAX_PIPES];
+> +	igt_output_t *output_mst_end[MAX_PIPES];
+> +	igt_output_t *output_mst_root[MAX_PIPES];
+> +	igt_pipe_t *pipe[MAX_PIPES];
+> +	igt_fb_t ref_fb[MAX_PIPES];
+> +	drmModeModeInfo mode[MAX_PIPES];
+> +	enum pipe pipe_id[MAX_PIPES];
+> +	int w[MAX_PIPES];
+> +	int h[MAX_PIPES];
+> +	int fd;
+> +	int num_mst_end;
+> +	int usr_num_mst_end;
+> +} data_t;
+> +
+> +static void test_init(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	int i, m, n, max_pipes = display->n_pipes;
+> +	enum dp_mst_role role;
+> +	drmModeConnector *conn;
+> +
+> +	for_each_pipe(display, i) {
+> +		data->pipe_id[i] = PIPE_A + i;
+> +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
+> +		data->primary[i] = igt_pipe_get_plane_type(
+> +			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
+> +	}
+> +
+> +	/* Find mst connected root/end connector*/
+> +	for (i = 0, n = 0, m = 0, data->num_mst_end = 0;
+> +		i < display->n_outputs && n < max_pipes && m < max_pipes; i++) {
+> +		igt_output_t *output = &display->outputs[i];
+> +
+> +		conn = output->config.connector;
+> +		if (conn->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+> +			continue;
+> +
+> +		role = igt_amd_get_mst_role(data->fd, output);
+> +
+> +		switch(role) {
+> +			case MST_ROOT:
+> +				data->output_mst_root[n++] = output;
+> +				break;
+> +			case MST_END:
+> +				if (!igt_output_is_connected(output))
+> +					continue;
+> +				data->output_mst_end[m] = output;
+> +				igt_assert(kmstest_get_connector_default_mode(
+> +				data->fd, output->config.connector, &data->mode[m]));
+> +
+> +				data->w[m] = data->mode[m].hdisplay;
+> +				data->h[m] = data->mode[m].vdisplay;
+> +				m++;
+> +				data->num_mst_end++;
+> +				break;
+> +			default:
+> +				continue;
+> +				break;
+> +		}
+> +	}
+> +
+> +	igt_require(data->output_mst_root[0]);
+> +	igt_require(data->output_mst_end[0]);
+> +	if (data->usr_num_mst_end)
+> +		igt_assert_eq(data->usr_num_mst_end, data->num_mst_end);
+> +	igt_display_reset(display);
+> +}
+> +
+> +static void test_fini(data_t *data)
+> +{
+> +	igt_display_t *display = &data->display;
+> +
+> +	igt_display_reset(display);
+> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> +}
+> +
+> +static bool show_mst_status_result(igt_output_t *output, uint8_t status)
+> +{
+> +	uint8_t bit_idx = 0;
+> +	bool result = true;
+> +
+> +	igt_info("Connector:%s mst progress status:\n", output->name);
+> +
+> +	for (bit_idx = 0; bit_idx < NUM_MST_STATUS; bit_idx++) {
+> +		switch(BIT(bit_idx)) {
+> +			case MST_PROBE:
+> +				if ((status & MST_PROBE) == MST_STATUS_DEFAULT)
+> +					result = false;
+> +				igt_info("Probe:%s\n", (status & MST_PROBE) ? "PASS" : "FAIL");
+> +				break;
+> +			case MST_REMOTE_EDID:
+> +				if ((status & MST_REMOTE_EDID) == MST_STATUS_DEFAULT)
+> +					result = false;
+> +				igt_info("Remote EDID:%s\n", (status & MST_REMOTE_EDID) ? "PASS" : "FAIL");
+> +				break;
+> +			case MST_ALLOCATE_NEW_PAYLOAD:
+> +				if ((status & MST_ALLOCATE_NEW_PAYLOAD) == MST_STATUS_DEFAULT)
+> +					result = false;
+> +				igt_info("Allocate new payload:%s\n",
+> +					(status & MST_ALLOCATE_NEW_PAYLOAD) ? "PASS" : "FAIL");
+> +				break;
+> +			default:
+> +				break;
+> +		}
+> +	}
+> +
+> +	return result;
+> +}
+> +
+> +static void reset_resource(data_t *data)
+> +{
+> +	igt_display_reset(&data->display);
+> +	igt_display_fini(&data->display);
+> +	close(data->fd);
+> +
+> +	memset(data->primary, 0, sizeof(igt_plane_t *)*MAX_PIPES);
+> +	memset(data->output_mst_end, 0, sizeof(igt_output_t *)*MAX_PIPES);
+> +	memset(data->output_mst_root, 0, sizeof(igt_output_t *)*MAX_PIPES);
+> +	memset(data->pipe, 0, sizeof(igt_pipe_t *)*MAX_PIPES);
+> +	memset(data->mode, 0, sizeof(drmModeModeInfo)*MAX_PIPES);
+> +	memset(data->pipe_id, 0, sizeof(enum pipe)*MAX_PIPES);
+> +	memset(data->w, 0, sizeof(int)*MAX_PIPES);
+> +	memset(data->h, 0, sizeof(int)*MAX_PIPES);
+> +
+> +	data->fd = drm_open_driver_master(DRIVER_AMDGPU);
+> +	igt_display_require(&data->display, data->fd);
+> +}
+> +
+> +static void set_up_streams(data_t *data)
+> +{
+> +	igt_output_t *output;
+> +	int i;
+> +
+> +	for (i = 0; i < MAX_PIPES; i++) {
+> +		output = data->output_mst_end[i];
+> +		if (!output || !igt_output_is_connected(output))
+> +			continue;
+> +
+> +		igt_create_pattern_fb(data->fd, data->w[i], data->h[i],
+> +				      DRM_FORMAT_XRGB8888, 0, &data->ref_fb[i]);
+> +		igt_output_set_pipe(output, data->pipe_id[i]);
+> +		igt_plane_set_fb(data->primary[i], &data->ref_fb[i]);
+> +	}
+> +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> +	sleep(5);
+> +}
+> +
+> +static void validate_mst_progress_result(data_t *data)
+> +{
+> +	int i = 0;
+> +	uint8_t status = 0;
+> +	igt_output_t *output;
+> +
+> +	for (i = 0; i < data->num_mst_end; i++) {
+> +		output = data->output_mst_end[i];
+> +
+> +		if (!output)
+> +			continue;
+> +
+> +		status = igt_amd_get_mst_progress_status(data->fd, output);
+> +
+> +		/* make sure all mst end device get lit up correctly*/
+> +		igt_assert(show_mst_status_result(output, status));
+> +	}
+> +}
+> +
+> +static void test_mst_hotplug_basic(data_t *data)
+> +{
+> +	igt_output_t *output;
+> +	int i = 0;
+> +
+> +	test_init(data);
+> +
+> +	/* Setup all end mst output */
+> +	set_up_streams(data);
+> +
+> +	/*confirm mst progress is done*/
+> +	validate_mst_progress_result(data);
+> +
+> +	/* Trigger hotplug*/
+> +	for (i = 0; i < MAX_PIPES; i++) {
+> +		output = data->output_mst_root[i];
+> +
+> +		if (!output)
+> +			continue;
+> +
+> +		mst_trigger_hotplug(data->fd, output);
+> +	}
+> +
+> +	/* mst connectors are dynamically created/destroyed. Need
+> +	 * to free and reallocate resources then commit streams again
+> +	 */
+> +	reset_resource(data);
+> +
+> +	test_init(data);
+> +
+> +	set_up_streams(data);
+> +
+> +	/*confirm mst progress status again*/
+> +	validate_mst_progress_result(data);
+> +
+> +	/*do suspend resume*/
+> +	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
+> +	sleep(5);
 
-  * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [DMESG-FAIL][22] ([i915#4528]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-blb-e6850/igt@i915_selftest@live@requests.html
+Why 5?
 
-  * igt@i915_selftest@live@ring_submission:
-    - fi-cfl-8109u:       [DMESG-WARN][24] ([i915#5904]) -> [PASS][25] +29 similar issues
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html
+Thanks
+Siqueira
 
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - fi-cfl-8109u:       [DMESG-WARN][26] ([i915#5904] / [i915#62]) -> [PASS][27]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-kefka:       [FAIL][28] ([i915#6298]) -> [PASS][29]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-cfl-8109u:       [DMESG-WARN][30] ([i915#62]) -> [PASS][31] +12 similar issues
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3003]: https://gitlab.freedesktop.org/drm/intel/issues/3003
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
-  [i915#5174]: https://gitlab.freedesktop.org/drm/intel/issues/5174
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
-  [i915#5904]: https://gitlab.freedesktop.org/drm/intel/issues/5904
-  [i915#6106]: https://gitlab.freedesktop.org/drm/intel/issues/6106
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#6297]: https://gitlab.freedesktop.org/drm/intel/issues/6297
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6593 -> IGTPW_7545
-
-  CI-20190529: 20190529
-  CI_DRM_11928: 8aa8753730556013fd562e01965e5dd571ae55ea @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7545: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/index.html
-  IGT_6593: 6ac554e19b3bb4232877367911e9185e5d35296f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/index.html
-
---===============5638869203385896195==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/chamelium: Support MST connectors on reprobe by using connector name</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106539/">https://patchwork.freedesktop.org/series/106539/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11928 -&gt; IGTPW_7545</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/index.html</p>
-<h2>Participating hosts (37 -&gt; 42)</h2>
-<p>Additional (6): bat-dg2-8 bat-adlm-1 fi-cfl-8700k fi-kbl-x1275 fi-kbl-8809g bat-jsl-1 <br />
-  Missing    (1): fi-rkl-11600 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7545 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-<li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8700k/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-<li>
-<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-x1275/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8700k/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-x1275/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-8809g/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</p>
-</li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-blb-e6850/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-x1275/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-hpd-fast:</p>
-<ul>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8700k/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8700k/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +10 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-8809g/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-kbl-x1275/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +11 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/bat-adln-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6297">i915#6297</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/bat-adln-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@guc:</p>
-<ul>
-<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/bat-dg2-9/igt@i915_selftest@live@guc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/bat-dg2-9/igt@i915_selftest@live@guc.html">PASS</a> +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@ring_submission:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html">PASS</a> +29 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11928/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> +12 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6593 -&gt; IGTPW_7545</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11928: 8aa8753730556013fd562e01965e5dd571ae55ea @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7545: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7545/index.html<br />
-  IGT_6593: 6ac554e19b3bb4232877367911e9185e5d35296f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5638869203385896195==--
+> +
+> +	/*confirm mst progress status again*/
+> +	validate_mst_progress_result(data);
+> +
+> +	for (i = 0; i < MAX_PIPES; i++) {
+> +		output = data->output_mst_end[i];
+> +
+> +		if (!output)
+> +			continue;
+> +
+> +		igt_remove_fb(data->fd, &data->ref_fb[i]);
+> +	}
+> +
+> +	test_fini(data);
+> +}
+> +
+> +const char *optstr = "hn:";
+> +static void usage(const char *name)
+> +{
+> +	igt_info("Usage: %s options\n", name);
+> +	igt_info("-h			Show help\n");
+> +	igt_info("-n mst_num	Set how many monitors connected in the mst topology\n");
+> +	igt_info("NOTE: if -n is not specified, number of monitors will be detected automatically"
+> +		"by current connection status\n");
+> +}
+> +
+> +int main(int argc, char **argv)
+> +{
+> +	data_t data;
+> +	int c;
+> +
+> +	igt_skip_on_simulation();
+> +
+> +	memset(&data, 0, sizeof(data));
+> +
+> +	data.fd = drm_open_driver_master(DRIVER_AMDGPU);
+> +	kmstest_set_vt_graphics_mode();
+> +
+> +	igt_display_require(&data.display, data.fd);
+> +	igt_require(data.display.is_atomic);
+> +	igt_display_require_output(&data.display);
+> +
+> +	igt_amd_require_hpd(&data.display, data.fd);
+> +	igt_amd_require_mst(&data.display, data.fd);
+> +
+> +	while((c = getopt(argc, argv, optstr)) != -1) {
+> +		switch(c) {
+> +		case 'n':
+> +			data.usr_num_mst_end = atoi(optarg);
+> +			break;
+> +		case 'h':
+> +		default:
+> +			usage(argv[0]);
+> +			exit(EXIT_SUCCESS);
+> +		}
+> +	}
+> +
+> +	test_mst_hotplug_basic(&data);
+> +
+> +	igt_display_fini(&data.display);
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index f4a0b9fd..5964c080 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -21,6 +21,7 @@ if libdrm_amdgpu.found()
+>   			  'amd_psr',
+>   			  'amd_plane',
+>   			  'amd_ilr',
+> +			  'amd_mst',
+>   			]
+>   	amdgpu_deps += libdrm_amdgpu
+>   endif
