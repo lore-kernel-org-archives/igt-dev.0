@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2040.outbound.protection.outlook.com [40.107.237.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8F1A2A2E7
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2052.outbound.protection.outlook.com [40.107.223.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4660F2A2E7
  for <igt-dev@lists.freedesktop.org>; Thu, 21 Jul 2022 00:39:36 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 20 Jul 2022 20:39:18 -0400
-Message-ID: <20220721003922.3679-3-vitaly.prosyak@amd.com>
+Date: Wed, 20 Jul 2022 20:39:21 -0400
+Message-ID: <20220721003922.3679-6-vitaly.prosyak@amd.com>
 In-Reply-To: <20220721003922.3679-1-vitaly.prosyak@amd.com>
 References: <20220721003922.3679-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 3/7] tests/amdgpu: add memory eviction test
+Subject: [igt-dev] [PATCH 6/7] lib/amdgpu: add shaders in binary form
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,145 +27,121 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Allocate max possible VRAM and GTT memory and
-then do DMA transfer between buffers combinations
-which causes the evictions.
-
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- tests/amdgpu/amd_basic.c | 113 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 113 insertions(+)
+ lib/amdgpu/amd_shaders.c | 51 ++++++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_shaders.h | 32 +++++++++++++++++++++++++
+ lib/meson.build          |  1 +
+ 3 files changed, 84 insertions(+)
+ create mode 100644 lib/amdgpu/amd_shaders.c
+ create mode 100644 lib/amdgpu/amd_shaders.h
 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index db531f295..679a8b0fe 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -341,6 +341,116 @@ static void amdgpu_userptr_test(amdgpu_device_handle device)
- 	free(ring_context);
- }
- 
-+static void
-+amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
+diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c
+new file mode 100644
+index 000000000..31722744f
+--- /dev/null
++++ b/lib/amdgpu/amd_shaders.c
+@@ -0,0 +1,51 @@
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *  *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ *
++ */
++
++#include "amd_shaders.h"
++
++
++#define CODE_OFFSET 512
++#define DATA_OFFSET 1024
++
++#define SWAP_32(num) (((num & 0xff000000) >> 24) | \
++		      ((num & 0x0000ff00) << 8) | \
++		      ((num & 0x00ff0000) >> 8) | \
++		      ((num & 0x000000ff) << 24))
++
++
++static  uint32_t shader_bin[] = {
++	SWAP_32(0x800082be), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0x040085bf),
++	SWAP_32(0x02810281), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0xfcff84bf),
++	SWAP_32(0xff0083be), SWAP_32(0x00f00000), SWAP_32(0xc10082be), SWAP_32(0xaa02007e),
++	SWAP_32(0x000070e0), SWAP_32(0x00000080), SWAP_32(0x000081bf)
++};
++
++const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
 +{
-+	const int sdma_write_length = 1024;
-+	const int pm4_dw = 256;
-+
-+	struct amdgpu_ring_context *ring_context;
-+	struct amdgpu_heap_info vram_info, gtt_info;
-+	int r, loop1, loop2;
-+
-+
-+	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
-+
-+	const struct amdgpu_ip_block_version * ip_block = get_ip_block(device_handle, AMDGPU_HW_IP_DMA);
-+	igt_assert(ip_block);
-+
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	ring_context->write_length =  sdma_write_length;
-+	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
-+	ring_context->secure = false;
-+	ring_context->pm4_size = pm4_dw;
-+	ring_context->res_cnt = 4;
-+	igt_assert(ring_context->pm4);
-+
-+	r = amdgpu_cs_ctx_create(device_handle, &ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_query_heap_info(device_handle, AMDGPU_GEM_DOMAIN_VRAM,
-+				   0, &vram_info);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_wrap(device_handle, vram_info.max_allocation, 4096,
-+				 AMDGPU_GEM_DOMAIN_VRAM, 0, &ring_context->boa_vram[0]);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_bo_alloc_wrap(device_handle, vram_info.max_allocation, 4096,
-+				 AMDGPU_GEM_DOMAIN_VRAM, 0, &ring_context->boa_vram[1]);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_query_heap_info(device_handle, AMDGPU_GEM_DOMAIN_GTT,
-+				   0, &gtt_info);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_wrap(device_handle, gtt_info.max_allocation, 4096,
-+				 AMDGPU_GEM_DOMAIN_GTT, 0, &ring_context->boa_gtt[0]);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_bo_alloc_wrap(device_handle, gtt_info.max_allocation, 4096,
-+				 AMDGPU_GEM_DOMAIN_GTT, 0, &ring_context->boa_gtt[1]);
-+	igt_assert_eq(r, 0);
-+
-+
-+
-+	loop1 = loop2 = 0;
-+	/* run 9 circle to test all mapping combination */
-+	while(loop1 < 2) {
-+		while(loop2 < 2) {
-+			/* allocate UC bo1for sDMA use */
-+			r = amdgpu_bo_alloc_and_map(device_handle,
-+						    sdma_write_length, 4096,
-+						    AMDGPU_GEM_DOMAIN_GTT,
-+						    gtt_flags[loop1],  &ring_context->bo,
-+						    (void**)&ring_context->bo_cpu, &ring_context->bo_mc,
-+						    &ring_context->va_handle);
-+			igt_assert_eq(r, 0);
-+
-+			/* set bo1 */
-+			memset((void*)ring_context->bo_cpu, ip_block->funcs->pattern, ring_context->write_length);
-+
-+			/* allocate UC bo2 for sDMA use */
-+			r = amdgpu_bo_alloc_and_map(device_handle,
-+						    sdma_write_length, 4096,
-+						    AMDGPU_GEM_DOMAIN_GTT,
-+						    gtt_flags[loop2], &ring_context->bo2,
-+						    (void**)&ring_context->bo2_cpu, &ring_context->bo_mc2,
-+						    &ring_context->va_handle2);
-+			igt_assert_eq(r, 0);
-+
-+			/* clear bo2 */
-+			memset((void*)ring_context->bo2_cpu, 0, ring_context->write_length);
-+
-+			ring_context->resources[0] = ring_context->bo;
-+			ring_context->resources[1] = ring_context->bo2;
-+
-+			ring_context->resources[2] = ring_context->boa_vram[loop2];
-+			ring_context->resources[3] = ring_context->boa_gtt[loop2];
-+			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
-+			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context);
-+			/* fulfill PM4: test DMA copy linear */
-+			r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, sdma_write_length);
-+			amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
-+						 ring_context->write_length);
-+			amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2, ring_context->bo_mc2,
-+						 ring_context->write_length);
-+
-+			loop2++;
-+		}
-+		loop2 = 0;
-+		loop1++;
-+	}
-+	amdgpu_bo_free(ring_context->boa_vram[0]);
-+	amdgpu_bo_free(ring_context->boa_vram[1]);
-+	amdgpu_bo_free(ring_context->boa_gtt[0]);
-+	amdgpu_bo_free(ring_context->boa_gtt[1]);
-+	/* clean resources */
-+
-+	/* end of test */
-+	r = amdgpu_cs_ctx_free(ring_context->context_handle);
-+	igt_assert_eq(r, 0);
-+	free(ring_context);
++	*size_bytes = sizeof(shader_bin);
++	*code_offset =  CODE_OFFSET;
++	*data_offset = DATA_OFFSET;
++	return shader_bin;
 +}
+diff --git a/lib/amdgpu/amd_shaders.h b/lib/amdgpu/amd_shaders.h
+new file mode 100644
+index 000000000..1abb23ac3
+--- /dev/null
++++ b/lib/amdgpu/amd_shaders.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ *
++ */
++#ifndef AMD_SHADERS_H
++#define AMD_SHADERS_H
 +
- igt_main
- {
- 	amdgpu_device_handle device;
-@@ -388,6 +498,9 @@ igt_main
- 	igt_subtest("semaphore")
- 		amdgpu_semaphore_test(device);
++#include "drmtest.h"
++
++const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
++
++#endif
+diff --git a/lib/meson.build b/lib/meson.build
+index 12b2cc5d7..98c2803b9 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -132,6 +132,7 @@ if libdrm_amdgpu.found()
+ 		'amdgpu/amd_compute.c',
+ 		'amdgpu/amd_gfx.c',
+ 		'amdgpu/amd_ip_blocks.c',
++		'amdgpu/amd_shaders.c',
+ 	]
+ endif
  
-+	igt_subtest("eviction_test")
-+		amdgpu_bo_eviction_test(device);
-+
- 	igt_fixture {
- 		amdgpu_device_deinitialize(device);
- 		close(fd);
 -- 
 2.25.1
