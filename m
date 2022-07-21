@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on2046.outbound.protection.outlook.com [40.107.100.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 529A32A5F1
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28ED02A2E7
  for <igt-dev@lists.freedesktop.org>; Thu, 21 Jul 2022 00:39:37 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 20 Jul 2022 20:39:19 -0400
-Message-ID: <20220721003922.3679-4-vitaly.prosyak@amd.com>
+Date: Wed, 20 Jul 2022 20:39:22 -0400
+Message-ID: <20220721003922.3679-7-vitaly.prosyak@amd.com>
 In-Reply-To: <20220721003922.3679-1-vitaly.prosyak@amd.com>
 References: <20220721003922.3679-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 4/7] lib/amdgpu: add simple buf management to emit
- commands
+Subject: [igt-dev] [PATCH 7/7] tests/amdgpu: add sync dependency test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,144 +27,215 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-There is no binding yet between ASIC reg and buffer
-management. We are going to add based on the next tests.
+The second command is waiting for shader rendering to complete
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_ip_blocks.c | 87 ++++++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_ip_blocks.h | 19 +++++++++
- 2 files changed, 106 insertions(+)
+ tests/amdgpu/amd_basic.c | 178 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 177 insertions(+), 1 deletion(-)
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index 89b19e397..795eb1984 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -406,9 +406,96 @@ get_ip_block(amdgpu_device_handle device, enum amd_ip_block_type type)
- 	return NULL;
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 679a8b0fe..ae424e819 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -29,7 +29,7 @@
+ #include "lib/amdgpu/amd_command_submission.h"
+ #include "lib/amdgpu/amd_compute.h"
+ #include "lib/amdgpu/amd_gfx.h"
+-
++#include "lib/amdgpu/amd_shaders.h"
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
+@@ -451,6 +451,178 @@ amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
+ 	free(ring_context);
  }
  
-+static int
-+cmd_allocate_buf(struct amdgpu_cmd_base  *base, uint32_t size_dw)
-+{
-+	if (size_dw > base->max_dw) {
-+		if (base->buf) {
-+			free(base->buf);
-+			base->buf = NULL;
-+			base->max_dw = 0;
-+			base->cdw = 0;
-+		}
-+		base->buf = calloc(4, size_dw);
-+		if (!base->buf)
-+			return -1;
-+		base->max_dw = size_dw;
-+		base->cdw = 0;
-+	}
-+	return 0;
-+}
-+
-+static int
-+cmd_attach_buf(struct amdgpu_cmd_base  *base, void *ptr, uint32_t size_bytes)
-+{
-+	if (base->buf && base->is_assigned_buf)
-+		return -1;
- 
-+	if (base->buf) {
-+		free(base->buf);
-+		base->buf = NULL;
-+		base->max_dw = 0;
-+		base->cdw = 0;
-+	}
-+	assert(ptr != NULL);
-+	base->buf = (uint32_t *)ptr;
-+	base->max_dw = size_bytes>>2;
-+	base->cdw = 0;
-+	base->is_assigned_buf = true; /* allocated externally , no free */
-+	return 0;
-+}
- 
 +static void
-+cmd_emit(struct amdgpu_cmd_base  *base, uint32_t value)
++amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
 +{
-+	assert(base->cdw <  base->max_dw  );
-+	base->buf[base->cdw++] = value;
++	const unsigned const_size = 8192;
++	const unsigned const_alignment = 4096;
++
++	amdgpu_context_handle context_handle[2];
++
++	amdgpu_bo_handle ib_result_handle;
++	void *ib_result_cpu;
++	uint64_t ib_result_mc_address;
++	struct amdgpu_cs_request ibs_request;
++	struct amdgpu_cs_ib_info ib_info;
++	struct amdgpu_cs_fence fence_status;
++	uint32_t expired;
++	int r;
++	amdgpu_bo_list_handle bo_list;
++	amdgpu_va_handle va_handle;
++	uint64_t seq_no;
++
++	uint32_t cdw_old;
++
++	uint32_t size_bytes, code_offset, data_offset;
++	const uint32_t *shader;
++
++	struct amdgpu_cmd_base * base = get_cmd_base();
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle[0]);
++	igt_assert_eq(r, 0);
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle[1]);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map(device_handle, const_size, const_alignment,
++			AMDGPU_GEM_DOMAIN_GTT, 0,
++			&ib_result_handle, &ib_result_cpu,
++			&ib_result_mc_address, &va_handle);
++
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
++			       &bo_list);
++	igt_assert_eq(r, 0);
++
++	shader = get_shader_bin(&size_bytes, &code_offset, &data_offset);
++
++	/* assign cmd buffer */
++	base->attach_buf(base, ib_result_cpu, const_size);
++
++	base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
++	base->emit(base, 0x80000000);
++	base->emit(base, 0x80000000);
++
++	base->emit(base, PACKET3(PKT3_CLEAR_STATE, 0));
++	base->emit(base, 0x80000000);
++
++	/* Program compute regs */
++	/* TODO ASIC registers do based on predefined offsets */
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, mmCOMPUTE_PGM_LO - PACKET3_SET_SH_REG_START);
++	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 8);
++	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 40);
++
++	base->emit(base,PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, mmCOMPUTE_PGM_RSRC1 - PACKET3_SET_SH_REG_START);
++
++	base->emit(base, 0x002c0040);
++	base->emit(base, 0x00000010);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
++	base->emit(base, mmCOMPUTE_TMPRING_SIZE - PACKET3_SET_SH_REG_START);
++	base->emit(base, 0x00000100);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, mmCOMPUTE_USER_DATA_0 - PACKET3_SET_SH_REG_START);
++	base->emit(base, 0xffffffff & (ib_result_mc_address + data_offset * 4));
++	base->emit(base, (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
++	base->emit(base, mmCOMPUTE_RESOURCE_LIMITS - PACKET3_SET_SH_REG_START);
++	base->emit(base, 0);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 3));
++	base->emit(base, mmCOMPUTE_NUM_THREAD_X - PACKET3_SET_SH_REG_START);
++	base->emit(base, 1);
++	base->emit(base, 1);
++	base->emit(base, 1);
++
++	/* Dispatch */
++	base->emit(base, PACKET3(PACKET3_DISPATCH_DIRECT, 3));
++	base->emit(base, 1);
++	base->emit(base, 1);
++	base->emit(base, 1);
++	base->emit(base, 0x00000045);
++	append_cmd_base(base, 7, GFX_COMPUTE_NOP);
++
++	base->emit_buf(base, shader, code_offset,size_bytes);
++
++	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
++	ib_info.ib_mc_address = ib_result_mc_address;
++	ib_info.size = base->cdw;;
++
++	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
++	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
++	ibs_request.ring = 0;
++	ibs_request.number_of_ibs = 1;
++	ibs_request.ibs = &ib_info;
++	ibs_request.resources = bo_list;
++	ibs_request.fence_info.handle = NULL;
++
++	r = amdgpu_cs_submit(context_handle[1], 0,&ibs_request, 1);
++	igt_assert_eq(r, 0);
++	seq_no = ibs_request.seq_no;
++
++	cdw_old = base->cdw;
++
++	base->emit(base, PACKET3(PACKET3_WRITE_DATA, 3));
++	base->emit(base, WRITE_DATA_DST_SEL(5) | WR_CONFIRM);
++	base->emit(base,  0xfffffffc & (ib_result_mc_address + data_offset * 4));
++	base->emit(base,  (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
++	base->emit(base,  99);
++	append_cmd_base(base, 7, GFX_COMPUTE_NOP);
++
++	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
++	ib_info.ib_mc_address = ib_result_mc_address + cdw_old * 4;
++	ib_info.size = base->cdw - cdw_old;
++
++	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
++	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
++	ibs_request.ring = 0;
++	ibs_request.number_of_ibs = 1;
++	ibs_request.ibs = &ib_info;
++	ibs_request.resources = bo_list;
++	ibs_request.fence_info.handle = NULL;
++
++	ibs_request.number_of_dependencies = 1;
++
++	ibs_request.dependencies = calloc(1, sizeof(*ibs_request.dependencies));
++	ibs_request.dependencies[0].context = context_handle[1];
++	ibs_request.dependencies[0].ip_instance = 0;
++	ibs_request.dependencies[0].ring = 0;
++	ibs_request.dependencies[0].fence = seq_no;
++
++	r = amdgpu_cs_submit(context_handle[0], 0,&ibs_request, 1);
++	igt_assert_eq(r, 0);
++
++	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
++	fence_status.context = context_handle[0];
++	fence_status.ip_type = AMDGPU_HW_IP_GFX;
++	fence_status.ip_instance = 0;
++	fence_status.ring = 0;
++	fence_status.fence = ibs_request.seq_no;
++
++	r = amdgpu_cs_query_fence_status(&fence_status,
++		       AMDGPU_TIMEOUT_INFINITE,0, &expired);
++	igt_assert_eq(r, 0);
++
++	/* Expect the second command to wait for shader to complete */
++	igt_assert_eq(base->buf[data_offset], 99);
++
++	r = amdgpu_bo_list_destroy(bo_list);
++	igt_assert_eq(r, 0);
++
++	 amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
++				     ib_result_mc_address, const_alignment);
++
++	amdgpu_cs_ctx_free(context_handle[0]);
++	amdgpu_cs_ctx_free(context_handle[1]);
++
++	free(ibs_request.dependencies);
++	free_cmd_base(base);
 +}
++
+ igt_main
+ {
+ 	amdgpu_device_handle device;
+@@ -501,6 +673,10 @@ igt_main
+ 	igt_subtest("eviction_test")
+ 		amdgpu_bo_eviction_test(device);
  
-+static void
-+cmd_emit_buf(struct amdgpu_cmd_base  *base, const void *ptr, uint32_t offset_bytes, uint32_t size_bytes)
-+{
-+	/* we assume that caller knows what is doing and we loose the buffer current index */
-+	/* we may do this later abstract the internal index */
-+	assert(base->cdw + ((offset_bytes + size_bytes)>>2) <  base->max_dw  );
-+	memcpy(base->buf + offset_bytes , ptr, size_bytes);
-+}
++	igt_subtest("sync_dependency_test")
++		amdgpu_sync_dependency_test(device);
 +
-+struct amdgpu_cmd_base *
-+get_cmd_base(void)
-+{
-+	struct amdgpu_cmd_base *base = calloc(1 ,sizeof(*base));
 +
-+	base->cdw = 0;
-+	base->max_dw = 0;
-+	base->buf = NULL;
-+	base->is_assigned_buf = false;
-+
-+	base->allocate_buf = cmd_allocate_buf;
-+	base->attach_buf = cmd_attach_buf;
-+	base->emit = cmd_emit;
-+	base->emit_buf = cmd_emit_buf;
-+
-+	return base;
-+}
-+
-+void
-+free_cmd_base(struct amdgpu_cmd_base * base)
-+{
-+	if (base) {
-+		if (base->buf && base->is_assigned_buf == false)
-+			free(base->buf);
-+		free(base);
-+	}
-+
-+}
-+
-+void
-+append_cmd_base(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd)
-+{
-+	while(base->cdw & mask)
-+		base->emit(base, cmd);
-+}
- 
- /*
-  * GFX: 8.x
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index c16ad1794..83809efee 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -112,5 +112,24 @@ setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_info *a
- const struct amdgpu_ip_block_version *
- get_ip_block(amdgpu_device_handle device, enum amd_ip_block_type type);
- 
-+struct amdgpu_cmd_base {
-+	uint32_t cdw;  /* Number of used dwords. */
-+	uint32_t max_dw; /* Maximum number of dwords. */
-+	uint32_t *buf; /* The base pointer of the chunk. */
-+	bool is_assigned_buf;
-+
-+	/* functions */
-+	int (*allocate_buf)(struct amdgpu_cmd_base  *base, uint32_t size);
-+	int (*attach_buf)(struct amdgpu_cmd_base  *base, void *ptr, uint32_t size_bytes);
-+	void (*emit)(struct amdgpu_cmd_base  *base, uint32_t value);
-+	void (*emit_buf)(struct amdgpu_cmd_base  *base, const void *ptr, uint32_t offset_bytes, uint32_t size_bytes);
-+};
-+
-+struct amdgpu_cmd_base* get_cmd_base(void);
-+
-+void free_cmd_base(struct amdgpu_cmd_base *base);
-+
-+void
-+append_cmd_base(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd);
- 
- #endif
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		close(fd);
 -- 
 2.25.1
