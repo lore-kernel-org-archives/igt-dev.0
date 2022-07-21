@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2089.outbound.protection.outlook.com [40.107.244.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3938F2A2E7
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Jul 2022 00:39:41 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2040.outbound.protection.outlook.com [40.107.237.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8F1A2A2E7
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Jul 2022 00:39:36 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 20 Jul 2022 20:39:20 -0400
-Message-ID: <20220721003922.3679-5-vitaly.prosyak@amd.com>
+Date: Wed, 20 Jul 2022 20:39:18 -0400
+Message-ID: <20220721003922.3679-3-vitaly.prosyak@amd.com>
 In-Reply-To: <20220721003922.3679-1-vitaly.prosyak@amd.com>
 References: <20220721003922.3679-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 5/7] lib/amdgpu: add ASIC gfx 8 registers
+Subject: [igt-dev] [PATCH 3/7] tests/amdgpu: add memory eviction test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,53 +27,145 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
+Allocate max possible VRAM and GTT memory and
+then do DMA transfer between buffers combinations
+which causes the evictions.
+
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_PM4.h | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ tests/amdgpu/amd_basic.c | 113 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
 
-diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
-index 7de115c87..dec70c1a4 100644
---- a/lib/amdgpu/amd_PM4.h
-+++ b/lib/amdgpu/amd_PM4.h
-@@ -158,18 +158,29 @@
- #define     CONTEXT_CONTROL_LOAD_CE_RAM(x)     (((unsigned)(x) & 0x1) << 28)
- #define     CONTEXT_CONTROL_SHADOW_ENABLE(x)   (((unsigned)(x) & 0x1) << 31)
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index db531f295..679a8b0fe 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -341,6 +341,116 @@ static void amdgpu_userptr_test(amdgpu_device_handle device)
+ 	free(ring_context);
+ }
  
--#define PKT3_CLEAR_STATE                       0x12
-+#define PKT3_CLEAR_STATE			0x12
- 
--#define PKT3_SET_SH_REG                        0x76
--#define		PACKET3_SET_SH_REG_START			0x00002c00
-+#define PKT3_SET_SH_REG				0x76
-+#define	PACKET3_SET_SH_REG_START		0x00002c00
- 
- #define PKT3_SET_SH_REG_INDEX			0x9B
- 
--#define	PACKET3_DISPATCH_DIRECT				0x15
--#define PACKET3_EVENT_WRITE				0x46
--#define PACKET3_ACQUIRE_MEM				0x58
--#define PACKET3_SET_CONTEXT_REG				0x69
--#define PACKET3_SET_UCONFIG_REG				0x79
--#define PACKET3_DRAW_INDEX_AUTO				0x2D
-+#define	PACKET3_DISPATCH_DIRECT			0x15
-+#define PACKET3_EVENT_WRITE			0x46
-+#define PACKET3_ACQUIRE_MEM			0x58
-+#define PACKET3_SET_CONTEXT_REG			0x69
-+#define PACKET3_SET_UCONFIG_REG			0x79
-+#define PACKET3_DRAW_INDEX_AUTO			0x2D
++static void
++amdgpu_bo_eviction_test(amdgpu_device_handle device_handle)
++{
++	const int sdma_write_length = 1024;
++	const int pm4_dw = 256;
 +
-+/*TODO organize as iit is in MESA*/
-+/* gfx 8 */
-+#define mmCOMPUTE_PGM_LO			0x2e0c
-+#define mmCOMPUTE_PGM_RSRC1			0x2e12
-+#define mmCOMPUTE_TMPRING_SIZE			0x2e18
-+#define mmCOMPUTE_USER_DATA_0			0x2e40
-+#define mmCOMPUTE_USER_DATA_1			0x2e41
-+#define mmCOMPUTE_RESOURCE_LIMITS		0x2e15
-+#define mmCOMPUTE_NUM_THREAD_X			0x2e07
++	struct amdgpu_ring_context *ring_context;
++	struct amdgpu_heap_info vram_info, gtt_info;
++	int r, loop1, loop2;
 +
++
++	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
++
++	const struct amdgpu_ip_block_version * ip_block = get_ip_block(device_handle, AMDGPU_HW_IP_DMA);
++	igt_assert(ip_block);
++
++	ring_context = calloc(1, sizeof(*ring_context));
++	ring_context->write_length =  sdma_write_length;
++	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
++	ring_context->secure = false;
++	ring_context->pm4_size = pm4_dw;
++	ring_context->res_cnt = 4;
++	igt_assert(ring_context->pm4);
++
++	r = amdgpu_cs_ctx_create(device_handle, &ring_context->context_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_query_heap_info(device_handle, AMDGPU_GEM_DOMAIN_VRAM,
++				   0, &vram_info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_wrap(device_handle, vram_info.max_allocation, 4096,
++				 AMDGPU_GEM_DOMAIN_VRAM, 0, &ring_context->boa_vram[0]);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_alloc_wrap(device_handle, vram_info.max_allocation, 4096,
++				 AMDGPU_GEM_DOMAIN_VRAM, 0, &ring_context->boa_vram[1]);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_query_heap_info(device_handle, AMDGPU_GEM_DOMAIN_GTT,
++				   0, &gtt_info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_wrap(device_handle, gtt_info.max_allocation, 4096,
++				 AMDGPU_GEM_DOMAIN_GTT, 0, &ring_context->boa_gtt[0]);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_alloc_wrap(device_handle, gtt_info.max_allocation, 4096,
++				 AMDGPU_GEM_DOMAIN_GTT, 0, &ring_context->boa_gtt[1]);
++	igt_assert_eq(r, 0);
++
++
++
++	loop1 = loop2 = 0;
++	/* run 9 circle to test all mapping combination */
++	while(loop1 < 2) {
++		while(loop2 < 2) {
++			/* allocate UC bo1for sDMA use */
++			r = amdgpu_bo_alloc_and_map(device_handle,
++						    sdma_write_length, 4096,
++						    AMDGPU_GEM_DOMAIN_GTT,
++						    gtt_flags[loop1],  &ring_context->bo,
++						    (void**)&ring_context->bo_cpu, &ring_context->bo_mc,
++						    &ring_context->va_handle);
++			igt_assert_eq(r, 0);
++
++			/* set bo1 */
++			memset((void*)ring_context->bo_cpu, ip_block->funcs->pattern, ring_context->write_length);
++
++			/* allocate UC bo2 for sDMA use */
++			r = amdgpu_bo_alloc_and_map(device_handle,
++						    sdma_write_length, 4096,
++						    AMDGPU_GEM_DOMAIN_GTT,
++						    gtt_flags[loop2], &ring_context->bo2,
++						    (void**)&ring_context->bo2_cpu, &ring_context->bo_mc2,
++						    &ring_context->va_handle2);
++			igt_assert_eq(r, 0);
++
++			/* clear bo2 */
++			memset((void*)ring_context->bo2_cpu, 0, ring_context->write_length);
++
++			ring_context->resources[0] = ring_context->bo;
++			ring_context->resources[1] = ring_context->bo2;
++
++			ring_context->resources[2] = ring_context->boa_vram[loop2];
++			ring_context->resources[3] = ring_context->boa_gtt[loop2];
++			ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
++			amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context);
++			/* fulfill PM4: test DMA copy linear */
++			r = ip_block->funcs->compare_pattern(ip_block->funcs, ring_context, sdma_write_length);
++			amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
++						 ring_context->write_length);
++			amdgpu_bo_unmap_and_free(ring_context->bo2, ring_context->va_handle2, ring_context->bo_mc2,
++						 ring_context->write_length);
++
++			loop2++;
++		}
++		loop2 = 0;
++		loop1++;
++	}
++	amdgpu_bo_free(ring_context->boa_vram[0]);
++	amdgpu_bo_free(ring_context->boa_vram[1]);
++	amdgpu_bo_free(ring_context->boa_gtt[0]);
++	amdgpu_bo_free(ring_context->boa_gtt[1]);
++	/* clean resources */
++
++	/* end of test */
++	r = amdgpu_cs_ctx_free(ring_context->context_handle);
++	igt_assert_eq(r, 0);
++	free(ring_context);
++}
++
+ igt_main
+ {
+ 	amdgpu_device_handle device;
+@@ -388,6 +498,9 @@ igt_main
+ 	igt_subtest("semaphore")
+ 		amdgpu_semaphore_test(device);
  
- #endif
++	igt_subtest("eviction_test")
++		amdgpu_bo_eviction_test(device);
++
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		close(fd);
 -- 
 2.25.1
