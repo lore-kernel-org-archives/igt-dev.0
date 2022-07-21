@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E8E62A2E7
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Jul 2022 00:39:36 +0000 (UTC)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2089.outbound.protection.outlook.com [40.107.244.89])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3938F2A2E7
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Jul 2022 00:39:41 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 20 Jul 2022 20:39:17 -0400
-Message-ID: <20220721003922.3679-2-vitaly.prosyak@amd.com>
+Date: Wed, 20 Jul 2022 20:39:20 -0400
+Message-ID: <20220721003922.3679-5-vitaly.prosyak@amd.com>
 In-Reply-To: <20220721003922.3679-1-vitaly.prosyak@amd.com>
 References: <20220721003922.3679-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/7] lib/amdgpu: add bo allocation helper function
+Subject: [igt-dev] [PATCH 5/7] lib/amdgpu: add ASIC gfx 8 registers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,68 +29,51 @@ From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_memory.c | 33 +++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_memory.h |  4 ++++
- 2 files changed, 37 insertions(+)
+ lib/amdgpu/amd_PM4.h | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
-index b0fa18c6b..344551fcc 100644
---- a/lib/amdgpu/amd_memory.c
-+++ b/lib/amdgpu/amd_memory.c
-@@ -69,6 +69,39 @@
- 	return buf_handle;
- }
+diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
+index 7de115c87..dec70c1a4 100644
+--- a/lib/amdgpu/amd_PM4.h
++++ b/lib/amdgpu/amd_PM4.h
+@@ -158,18 +158,29 @@
+ #define     CONTEXT_CONTROL_LOAD_CE_RAM(x)     (((unsigned)(x) & 0x1) << 28)
+ #define     CONTEXT_CONTROL_SHADOW_ENABLE(x)   (((unsigned)(x) & 0x1) << 31)
  
-+ /**
-+  *
-+  * @param dev
-+  * @param size
-+  * @param alignment
-+  * @param heap
-+  * @param flags
-+  * @param bo
-+  * @return
-+  */
-+int
-+amdgpu_bo_alloc_wrap(amdgpu_device_handle dev, unsigned size,
-+		     unsigned alignment, unsigned heap, uint64_t flags,
-+		     amdgpu_bo_handle *bo)
-+{
-+	amdgpu_bo_handle buf_handle;
-+	int r;
-+	struct amdgpu_bo_alloc_request req = {
-+		.alloc_size = size,
-+		.phys_alignment = alignment,
-+		.preferred_heap = heap,
-+		.flags = flags,
-+	};
-+
-+	r = amdgpu_bo_alloc(dev, &req, &buf_handle);
-+	if (r)
-+		return r;
-+
-+	*bo = buf_handle;
-+
-+	return 0;
-+}
-+
-  /**
-   *
-   * @param bo
-diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
-index d7f32926a..80bf979f4 100644
---- a/lib/amdgpu/amd_memory.h
-+++ b/lib/amdgpu/amd_memory.h
-@@ -38,6 +38,10 @@ gpu_mem_alloc(amdgpu_device_handle device_handle,
- 				      uint64_t flags,
- 				      uint64_t *vmc_addr,
- 				      amdgpu_va_handle *va_handle);
-+int
-+amdgpu_bo_alloc_wrap(amdgpu_device_handle dev, unsigned size,
-+		     unsigned alignment, unsigned heap, uint64_t flags,
-+		     amdgpu_bo_handle *bo);
+-#define PKT3_CLEAR_STATE                       0x12
++#define PKT3_CLEAR_STATE			0x12
  
- void
- gpu_mem_free(amdgpu_bo_handle bo,
+-#define PKT3_SET_SH_REG                        0x76
+-#define		PACKET3_SET_SH_REG_START			0x00002c00
++#define PKT3_SET_SH_REG				0x76
++#define	PACKET3_SET_SH_REG_START		0x00002c00
+ 
+ #define PKT3_SET_SH_REG_INDEX			0x9B
+ 
+-#define	PACKET3_DISPATCH_DIRECT				0x15
+-#define PACKET3_EVENT_WRITE				0x46
+-#define PACKET3_ACQUIRE_MEM				0x58
+-#define PACKET3_SET_CONTEXT_REG				0x69
+-#define PACKET3_SET_UCONFIG_REG				0x79
+-#define PACKET3_DRAW_INDEX_AUTO				0x2D
++#define	PACKET3_DISPATCH_DIRECT			0x15
++#define PACKET3_EVENT_WRITE			0x46
++#define PACKET3_ACQUIRE_MEM			0x58
++#define PACKET3_SET_CONTEXT_REG			0x69
++#define PACKET3_SET_UCONFIG_REG			0x79
++#define PACKET3_DRAW_INDEX_AUTO			0x2D
++
++/*TODO organize as iit is in MESA*/
++/* gfx 8 */
++#define mmCOMPUTE_PGM_LO			0x2e0c
++#define mmCOMPUTE_PGM_RSRC1			0x2e12
++#define mmCOMPUTE_TMPRING_SIZE			0x2e18
++#define mmCOMPUTE_USER_DATA_0			0x2e40
++#define mmCOMPUTE_USER_DATA_1			0x2e41
++#define mmCOMPUTE_RESOURCE_LIMITS		0x2e15
++#define mmCOMPUTE_NUM_THREAD_X			0x2e07
++
+ 
+ #endif
 -- 
 2.25.1
