@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5543D2A6DD
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Jul 2022 13:41:55 +0000 (UTC)
-Date: Fri, 22 Jul 2022 15:41:50 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BEF0395BF2
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Jul 2022 14:05:26 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YtqpHhr0hMPiVqni@kamilkon-desk1>
-References: <cover.1658322887.git.karolina.drobnik@intel.com>
- <d9a1b5eb559af9658a2201397c1fb725102213a7.1658322887.git.karolina.drobnik@intel.com>
+Date: Fri, 22 Jul 2022 19:36:02 +0530
+Message-Id: <20220722140602.4615-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d9a1b5eb559af9658a2201397c1fb725102213a7.1658322887.git.karolina.drobnik@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/gem_exec_fence: Coordinate
- sleep with the start of the request
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc: Modify dsc check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,60 +16,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Modifying the existing test condition to skip tests where we force
+DSC on modes not supporting DSC. While comparing HDISPLAY with 5K;
+we won't be able to validate 4K@120 on DP; which
+do support DSC. So, instead of checking HDISPLAY; we will check
+DOTCLOCK. So, if any mode is having DOTCLOCK < 594MHz; no need to
+apply force dsc enable on such mode and SKIP.
 
-On 2022-07-20 at 16:01:04 +0200, Karolina Drobnik wrote:
-> From: Chris Wilson <chris@chris-wilson.co.uk>
-> 
-> Wait until we know the request is running on the GPU before sleeping
-> and giving a chance for other fences to run ahead.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
-> ---
->  tests/i915/gem_exec_fence.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> index c1bd2a38..5f15fbdd 100644
-> --- a/tests/i915/gem_exec_fence.c
-> +++ b/tests/i915/gem_exec_fence.c
-> @@ -324,7 +324,10 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
->  			    .ahnd = ahnd,
->  			    .ctx = ctx,
->  			    .engine = e->flags,
-> -			    .flags = IGT_SPIN_FENCE_OUT | spin_hang(flags));
-> +			    .flags =
-> +			    IGT_SPIN_FENCE_OUT |
-> +			    IGT_SPIN_POLL_RUN |
-> +			    spin_hang(flags));
+As per CTA-861, mode 3840x2160@60 has dotclock of 594MHz.
 
-Please move these after '=', so it will be
-			    .flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_POLL_RUN |
-			             spin_hang(flags));
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/i915/kms_dsc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-With that fixed,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
---
-Kamil
-
->  	igt_assert(spin->out_fence != -1);
->  
->  	i = 0;
-> @@ -347,6 +350,7 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
->  		i++;
->  	}
->  
-> +	igt_spin_busywait_until_started(spin);
->  	/* Long, but not too long to anger preemption disable checks */
->  	usleep(50 * 1000); /* 50 ms, typical preempt reset is 150+ms */
->  
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index be15238e3..1f507cc92 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -47,6 +47,7 @@
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+ #define HDISPLAY_5K	5120
++#define MAX_DOTCLOCK	594000
+ #define DSC_MIN_BPP	8
+ 
+ enum dsc_test_type {
+@@ -166,15 +167,15 @@ static bool check_dsc_on_connector(data_t *data)
+ }
+ 
+ /* Force dsc enable supports resolutions above 5K in DP */
+-static bool check_5k_dp_test_constraint(data_t *data)
++static bool check_max_dotclock_constraint(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+ 	drmModeConnector *connector = output->config.connector;
+ 	drmModeModeInfo *mode = get_highres_mode(output);
+ 
+ 	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+-	    mode->hdisplay < HDISPLAY_5K) {
+-		igt_debug("Force dsc enable does not support res. < 5K in %s\n",
++	    mode->clock < MAX_DOTCLOCK) {
++		igt_debug("Force dsc enable does not support resolution having dotclock < 594MHz in %s\n",
+ 			   output->name);
+ 		return false;
+ 	}
+@@ -318,7 +319,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp, unsign
+ 		if (!check_dsc_on_connector(data))
+ 			continue;
+ 
+-		if (!check_5k_dp_test_constraint(data))
++		if (!check_max_dotclock_constraint(data))
+ 			continue;
+ 
+ 		if (!check_big_joiner_test_constraint(data, test_type))
+-- 
+2.25.1
