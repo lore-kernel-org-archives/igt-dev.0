@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D829912A113
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Jul 2022 13:36:18 +0000 (UTC)
-Date: Fri, 22 Jul 2022 15:36:14 +0200
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5543D2A6DD
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Jul 2022 13:41:55 +0000 (UTC)
+Date: Fri, 22 Jul 2022 15:41:50 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Ytqnzpv8nfqlAlBG@kamilkon-desk1>
+Message-ID: <YtqpHhr0hMPiVqni@kamilkon-desk1>
 References: <cover.1658322887.git.karolina.drobnik@intel.com>
- <6c9bbab6a9f52ccb2458f80757be4ea5e47a444b.1658322887.git.karolina.drobnik@intel.com>
+ <d9a1b5eb559af9658a2201397c1fb725102213a7.1658322887.git.karolina.drobnik@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6c9bbab6a9f52ccb2458f80757be4ea5e47a444b.1658322887.git.karolina.drobnik@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/gem_exec_fence: Check stored
- values only for valid workloads
+In-Reply-To: <d9a1b5eb559af9658a2201397c1fb725102213a7.1658322887.git.karolina.drobnik@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/gem_exec_fence: Coordinate
+ sleep with the start of the request
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,66 +28,35 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi,
 
-On 2022-07-20 at 16:01:03 +0200, Karolina Drobnik wrote:
+On 2022-07-20 at 16:01:04 +0200, Karolina Drobnik wrote:
 > From: Chris Wilson <chris@chris-wilson.co.uk>
 > 
-> test_fence_await verifies if a fence used to pipeline work signals
-> correctly. await-hang and nb-await-hang test cases inject GPU hang,
-> which causes an erroneous state, meaning the fence will be signaled
-> without execution. The error causes an instant reset of the command
-> streamer for the hanging workload. This revealed a problem with how
-> we verify the fence state and results. The test assumes that the
-> error notification happens after a hang is declared, which takes
-> longer than submitting the next set of fences, making the test pass
-> every time. With the immediate reset, this might not happen, so the
-> assertion fails, as there are no active fences in the GPU hang case.
-> 
-> Move the check for active fence to the path for non-hanging workload,
-> and verify results only in this scenario.
+> Wait until we know the request is running on the GPU before sleeping
+> and giving a chance for other fences to run ahead.
 > 
 > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 > Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
 > ---
->  tests/i915/gem_exec_fence.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+>  tests/i915/gem_exec_fence.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
 > diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> index d46914c2..c1bd2a38 100644
+> index c1bd2a38..5f15fbdd 100644
 > --- a/tests/i915/gem_exec_fence.c
 > +++ b/tests/i915/gem_exec_fence.c
-> @@ -351,17 +351,19 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
->  	usleep(50 * 1000); /* 50 ms, typical preempt reset is 150+ms */
-> 
->  	/* Check for invalidly completing the task early */
+> @@ -324,7 +324,10 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+>  			    .ahnd = ahnd,
+>  			    .ctx = ctx,
+>  			    .engine = e->flags,
+> -			    .flags = IGT_SPIN_FENCE_OUT | spin_hang(flags));
+> +			    .flags =
+> +			    IGT_SPIN_FENCE_OUT |
+> +			    IGT_SPIN_POLL_RUN |
+> +			    spin_hang(flags));
 
-Please move this comment inside if, just before assert.
-
-> -	igt_assert(fence_busy(spin->out_fence));
-> -	for (int n = 0; n < i; n++)
-> -		igt_assert_eq_u32(out[n], 0);
-> +	if ((flags & HANG) == 0) {
-
-This comment belongs here.
-
-> +		igt_assert(fence_busy(spin->out_fence));
-> +		for (int n = 0; n < i; n++)
-> +			igt_assert_eq_u32(out[n], 0);
-> 
-> -	if ((flags & HANG) == 0)
->  		igt_spin_end(spin);
-> +	}
-> 
->  	igt_waitchildren();
-> 
->  	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
-> -	while (i--)
-> +	igt_assert(!fence_busy(spin->out_fence));
-> +	while ((flags & HANG) == 0 && i--)
->  		igt_assert_eq_u32(out[i], i);
-
-Please make this like
-	if ((flags & HANG) == 0)
-		while ...
+Please move these after '=', so it will be
+			    .flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_POLL_RUN |
+			             spin_hang(flags));
 
 With that fixed,
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -95,7 +64,17 @@ Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 --
 Kamil
 
->  	munmap(out, 4096);
-> 
-> --
+>  	igt_assert(spin->out_fence != -1);
+>  
+>  	i = 0;
+> @@ -347,6 +350,7 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+>  		i++;
+>  	}
+>  
+> +	igt_spin_busywait_until_started(spin);
+>  	/* Long, but not too long to anger preemption disable checks */
+>  	usleep(50 * 1000); /* 50 ms, typical preempt reset is 150+ms */
+>  
+> -- 
 > 2.25.1
+> 
