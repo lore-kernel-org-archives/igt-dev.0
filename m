@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2047.outbound.protection.outlook.com [40.107.223.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 509BC14A6B7
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 71AF014A225
  for <igt-dev@lists.freedesktop.org>; Fri, 22 Jul 2022 20:57:00 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 22 Jul 2022 16:56:44 -0400
-Message-ID: <20220722205650.4791-1-vitaly.prosyak@amd.com>
+Date: Fri, 22 Jul 2022 16:56:49 -0400
+Message-ID: <20220722205650.4791-6-vitaly.prosyak@amd.com>
+In-Reply-To: <20220722205650.4791-1-vitaly.prosyak@amd.com>
+References: <20220722205650.4791-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 1/7] lib/amdgpu: increase number of resources
+Subject: [igt-dev] [PATCH 6/7] lib/amdgpu: add shaders in binary form
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,32 +26,121 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Add arrays of bo's for VRAM and GTT.
-Eviction test uses 4 bo resources.
-
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_ip_blocks.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ lib/amdgpu/amd_shaders.c | 51 ++++++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_shaders.h | 32 +++++++++++++++++++++++++
+ lib/meson.build          |  1 +
+ 3 files changed, 84 insertions(+)
+ create mode 100644 lib/amdgpu/amd_shaders.c
+ create mode 100644 lib/amdgpu/amd_shaders.h
 
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index cb7d14747..c16ad1794 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -58,11 +58,13 @@ struct amdgpu_ring_context {
- 
- 	amdgpu_bo_handle bo;
- 	amdgpu_bo_handle bo2;
-+	amdgpu_bo_handle boa_vram[2];
-+	amdgpu_bo_handle boa_gtt[2];
- 
- 	amdgpu_context_handle context_handle;
- 	struct drm_amdgpu_info_hw_ip hw_ip_info;  /* result of amdgpu_query_hw_ip_info */
- 
--	amdgpu_bo_handle resources[2]; /* amdgpu_bo_alloc_and_map */
-+	amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
- 	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
- 	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
+diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c
+new file mode 100644
+index 000000000..31722744f
+--- /dev/null
++++ b/lib/amdgpu/amd_shaders.c
+@@ -0,0 +1,51 @@
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *  *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ *
++ */
++
++#include "amd_shaders.h"
++
++
++#define CODE_OFFSET 512
++#define DATA_OFFSET 1024
++
++#define SWAP_32(num) (((num & 0xff000000) >> 24) | \
++		      ((num & 0x0000ff00) << 8) | \
++		      ((num & 0x00ff0000) >> 8) | \
++		      ((num & 0x000000ff) << 24))
++
++
++static  uint32_t shader_bin[] = {
++	SWAP_32(0x800082be), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0x040085bf),
++	SWAP_32(0x02810281), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0xfcff84bf),
++	SWAP_32(0xff0083be), SWAP_32(0x00f00000), SWAP_32(0xc10082be), SWAP_32(0xaa02007e),
++	SWAP_32(0x000070e0), SWAP_32(0x00000080), SWAP_32(0x000081bf)
++};
++
++const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
++{
++	*size_bytes = sizeof(shader_bin);
++	*code_offset =  CODE_OFFSET;
++	*data_offset = DATA_OFFSET;
++	return shader_bin;
++}
+diff --git a/lib/amdgpu/amd_shaders.h b/lib/amdgpu/amd_shaders.h
+new file mode 100644
+index 000000000..1abb23ac3
+--- /dev/null
++++ b/lib/amdgpu/amd_shaders.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright 2014 Advanced Micro Devices, Inc.
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ *
++ */
++#ifndef AMD_SHADERS_H
++#define AMD_SHADERS_H
++
++#include "drmtest.h"
++
++const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
++
++#endif
+diff --git a/lib/meson.build b/lib/meson.build
+index 12b2cc5d7..98c2803b9 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -132,6 +132,7 @@ if libdrm_amdgpu.found()
+ 		'amdgpu/amd_compute.c',
+ 		'amdgpu/amd_gfx.c',
+ 		'amdgpu/amd_ip_blocks.c',
++		'amdgpu/amd_shaders.c',
+ 	]
+ endif
  
 -- 
 2.25.1
