@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71AF014A225
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2082.outbound.protection.outlook.com [40.107.237.82])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4236F14A615
  for <igt-dev@lists.freedesktop.org>; Fri, 22 Jul 2022 20:57:00 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 22 Jul 2022 16:56:49 -0400
-Message-ID: <20220722205650.4791-6-vitaly.prosyak@amd.com>
+Date: Fri, 22 Jul 2022 16:56:47 -0400
+Message-ID: <20220722205650.4791-4-vitaly.prosyak@amd.com>
 In-Reply-To: <20220722205650.4791-1-vitaly.prosyak@amd.com>
 References: <20220722205650.4791-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 6/7] lib/amdgpu: add shaders in binary form
+Subject: [igt-dev] [PATCH 4/7] lib/amdgpu: add simple buf management to emit
+ commands
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,121 +27,144 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
+There is no binding yet between ASIC reg and buffer
+management. We are going to add based on the next tests.
+
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_shaders.c | 51 ++++++++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_shaders.h | 32 +++++++++++++++++++++++++
- lib/meson.build          |  1 +
- 3 files changed, 84 insertions(+)
- create mode 100644 lib/amdgpu/amd_shaders.c
- create mode 100644 lib/amdgpu/amd_shaders.h
+ lib/amdgpu/amd_ip_blocks.c | 87 ++++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_ip_blocks.h | 19 +++++++++
+ 2 files changed, 106 insertions(+)
 
-diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c
-new file mode 100644
-index 000000000..31722744f
---- /dev/null
-+++ b/lib/amdgpu/amd_shaders.c
-@@ -0,0 +1,51 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *  *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 89b19e397..795eb1984 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -406,9 +406,96 @@ get_ip_block(amdgpu_device_handle device, enum amd_ip_block_type type)
+ 	return NULL;
+ }
+ 
++static int
++cmd_allocate_buf(struct amdgpu_cmd_base  *base, uint32_t size_dw)
++{
++	if (size_dw > base->max_dw) {
++		if (base->buf) {
++			free(base->buf);
++			base->buf = NULL;
++			base->max_dw = 0;
++			base->cdw = 0;
++		}
++		base->buf = calloc(4, size_dw);
++		if (!base->buf)
++			return -1;
++		base->max_dw = size_dw;
++		base->cdw = 0;
++	}
++	return 0;
++}
 +
-+#include "amd_shaders.h"
++static int
++cmd_attach_buf(struct amdgpu_cmd_base  *base, void *ptr, uint32_t size_bytes)
++{
++	if (base->buf && base->is_assigned_buf)
++		return -1;
+ 
++	if (base->buf) {
++		free(base->buf);
++		base->buf = NULL;
++		base->max_dw = 0;
++		base->cdw = 0;
++	}
++	assert(ptr != NULL);
++	base->buf = (uint32_t *)ptr;
++	base->max_dw = size_bytes>>2;
++	base->cdw = 0;
++	base->is_assigned_buf = true; /* allocated externally , no free */
++	return 0;
++}
+ 
++static void
++cmd_emit(struct amdgpu_cmd_base  *base, uint32_t value)
++{
++	assert(base->cdw <  base->max_dw  );
++	base->buf[base->cdw++] = value;
++}
+ 
++static void
++cmd_emit_buf(struct amdgpu_cmd_base  *base, const void *ptr, uint32_t offset_bytes, uint32_t size_bytes)
++{
++	/* we assume that caller knows what is doing and we loose the buffer current index */
++	/* we may do this later abstract the internal index */
++	assert(base->cdw + ((offset_bytes + size_bytes)>>2) <  base->max_dw  );
++	memcpy(base->buf + offset_bytes , ptr, size_bytes);
++}
 +
++struct amdgpu_cmd_base *
++get_cmd_base(void)
++{
++	struct amdgpu_cmd_base *base = calloc(1 ,sizeof(*base));
 +
-+#define CODE_OFFSET 512
-+#define DATA_OFFSET 1024
++	base->cdw = 0;
++	base->max_dw = 0;
++	base->buf = NULL;
++	base->is_assigned_buf = false;
 +
-+#define SWAP_32(num) (((num & 0xff000000) >> 24) | \
-+		      ((num & 0x0000ff00) << 8) | \
-+		      ((num & 0x00ff0000) >> 8) | \
-+		      ((num & 0x000000ff) << 24))
++	base->allocate_buf = cmd_allocate_buf;
++	base->attach_buf = cmd_attach_buf;
++	base->emit = cmd_emit;
++	base->emit_buf = cmd_emit_buf;
 +
++	return base;
++}
 +
-+static  uint32_t shader_bin[] = {
-+	SWAP_32(0x800082be), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0x040085bf),
-+	SWAP_32(0x02810281), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0xfcff84bf),
-+	SWAP_32(0xff0083be), SWAP_32(0x00f00000), SWAP_32(0xc10082be), SWAP_32(0xaa02007e),
-+	SWAP_32(0x000070e0), SWAP_32(0x00000080), SWAP_32(0x000081bf)
++void
++free_cmd_base(struct amdgpu_cmd_base * base)
++{
++	if (base) {
++		if (base->buf && base->is_assigned_buf == false)
++			free(base->buf);
++		free(base);
++	}
++
++}
++
++void
++append_cmd_base(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd)
++{
++	while(base->cdw & mask)
++		base->emit(base, cmd);
++}
+ 
+ /*
+  * GFX: 8.x
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index c16ad1794..83809efee 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -112,5 +112,24 @@ setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_info *a
+ const struct amdgpu_ip_block_version *
+ get_ip_block(amdgpu_device_handle device, enum amd_ip_block_type type);
+ 
++struct amdgpu_cmd_base {
++	uint32_t cdw;  /* Number of used dwords. */
++	uint32_t max_dw; /* Maximum number of dwords. */
++	uint32_t *buf; /* The base pointer of the chunk. */
++	bool is_assigned_buf;
++
++	/* functions */
++	int (*allocate_buf)(struct amdgpu_cmd_base  *base, uint32_t size);
++	int (*attach_buf)(struct amdgpu_cmd_base  *base, void *ptr, uint32_t size_bytes);
++	void (*emit)(struct amdgpu_cmd_base  *base, uint32_t value);
++	void (*emit_buf)(struct amdgpu_cmd_base  *base, const void *ptr, uint32_t offset_bytes, uint32_t size_bytes);
 +};
 +
-+const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
-+{
-+	*size_bytes = sizeof(shader_bin);
-+	*code_offset =  CODE_OFFSET;
-+	*data_offset = DATA_OFFSET;
-+	return shader_bin;
-+}
-diff --git a/lib/amdgpu/amd_shaders.h b/lib/amdgpu/amd_shaders.h
-new file mode 100644
-index 000000000..1abb23ac3
---- /dev/null
-+++ b/lib/amdgpu/amd_shaders.h
-@@ -0,0 +1,32 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef AMD_SHADERS_H
-+#define AMD_SHADERS_H
++struct amdgpu_cmd_base* get_cmd_base(void);
 +
-+#include "drmtest.h"
++void free_cmd_base(struct amdgpu_cmd_base *base);
 +
-+const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
-+
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 12b2cc5d7..98c2803b9 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -132,6 +132,7 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_compute.c',
- 		'amdgpu/amd_gfx.c',
- 		'amdgpu/amd_ip_blocks.c',
-+		'amdgpu/amd_shaders.c',
- 	]
- endif
++void
++append_cmd_base(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd);
  
+ #endif
 -- 
 2.25.1
