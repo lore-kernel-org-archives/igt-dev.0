@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE503113971
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 06:38:18 +0000 (UTC)
-Message-ID: <77b51065-3eb5-09cd-4598-a0ce5611ab12@intel.com>
-Date: Mon, 25 Jul 2022 12:08:10 +0530
-MIME-Version: 1.0
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E2FD11A73A
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 07:24:37 +0000 (UTC)
+Message-ID: <fce95533-bb93-c6b4-a99a-c334f5a316c0@intel.com>
+Date: Mon, 25 Jul 2022 09:24:39 +0200
 Content-Language: en-US
-To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220723191255.2700675-1-lucas.demarchi@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220723191255.2700675-1-lucas.demarchi@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <cover.1658322887.git.karolina.drobnik@intel.com>
+ <d9a1b5eb559af9658a2201397c1fb725102213a7.1658322887.git.karolina.drobnik@intel.com>
+ <YtqpHhr0hMPiVqni@kamilkon-desk1>
+From: Karolina Drobnik <karolina.drobnik@intel.com>
+In-Reply-To: <YtqpHhr0hMPiVqni@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] lib: Force rescan when module is loaded
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/gem_exec_fence: Coordinate
+ sleep with the start of the request
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,43 +23,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Lucas,
+Hi Kamil,
 
-Please add Fixes tag
-https://gitlab.freedesktop.org/drm/intel/-/issues/5174
-
-With that
-Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
-
-On 24-Jul-22 12:42 AM, Lucas De Marchi wrote:
-> Whenever we load a drm module we need to force a rescan of igt devices
-> so we update the list. Otherwise any place trying to open the device and
-> then falling back to loading the driver and loading it, will not have a
-> proper fallback.  Currently this makes igt@i915_pm_rpm@module-reload
-> to skip on DG2 as the previous test makes igt@i915_pm_rpm to cause a
-> module reload.
+On 22.07.2022 15:41, Kamil Konieczny wrote:
+> Hi,
 > 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->   lib/drmtest.c | 1 +
->   1 file changed, 1 insertion(+)
+> On 2022-07-20 at 16:01:04 +0200, Karolina Drobnik wrote:
+>> From: Chris Wilson <chris@chris-wilson.co.uk>
+>>
+>> Wait until we know the request is running on the GPU before sleeping
+>> and giving a chance for other fences to run ahead.
+>>
+>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+>> ---
+>>   tests/i915/gem_exec_fence.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+>> index c1bd2a38..5f15fbdd 100644
+>> --- a/tests/i915/gem_exec_fence.c
+>> +++ b/tests/i915/gem_exec_fence.c
+>> @@ -324,7 +324,10 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+>>   			    .ahnd = ahnd,
+>>   			    .ctx = ctx,
+>>   			    .engine = e->flags,
+>> -			    .flags = IGT_SPIN_FENCE_OUT | spin_hang(flags));
+>> +			    .flags =
+>> +			    IGT_SPIN_FENCE_OUT |
+>> +			    IGT_SPIN_POLL_RUN |
+>> +			    spin_hang(flags));
 > 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 09a9a229..4f9d8a11 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -313,6 +313,7 @@ void drm_load_module(unsigned int chipset)
->   		}
->   	}
->   	pthread_mutex_unlock(&mutex);
-> +	igt_devices_scan(true);
->   }
->   
->   static int __open_driver(const char *base, int offset, unsigned int chipset, int as_idx)
+> Please move these after '=', so it will be
+> 			    .flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_POLL_RUN |
+> 			             spin_hang(flags));
 
--- 
-~Swati Sharma
+I think it's more of a style preference - the author decided to go for 
+it, and it looks good to me. But if you have a specific style guidance 
+that points out that such formatting is undesirable, please share and 
+I'll correct the patch.
+
+Many thanks,
+Karolina
+
+> With that fixed,
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> --
+> Kamil
+> 
+>>   	igt_assert(spin->out_fence != -1);
+>>   
+>>   	i = 0;
+>> @@ -347,6 +350,7 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+>>   		i++;
+>>   	}
+>>   
+>> +	igt_spin_busywait_until_started(spin);
+>>   	/* Long, but not too long to anger preemption disable checks */
+>>   	usleep(50 * 1000); /* 50 ms, typical preempt reset is 150+ms */
+>>   
+>> -- 
+>> 2.25.1
+>>
