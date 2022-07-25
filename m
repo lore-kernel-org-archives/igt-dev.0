@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60AB710F234
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 03:26:33 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-To: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
-Date: Mon, 25 Jul 2022 03:26:29 +0000
-Message-ID: <DM4PR11MB62138CF424E5F9EF4B03F51CEC959@DM4PR11MB6213.namprd11.prod.outlook.com>
-References: <20220721003922.3679-1-vitaly.prosyak@amd.com>
- <c74dde7f-c50b-06a1-ac4e-8615d3ae428f@amd.com>
-In-Reply-To: <c74dde7f-c50b-06a1-ac4e-8615d3ae428f@amd.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F71410E229
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 04:56:24 +0000 (UTC)
+Date: Mon, 25 Jul 2022 06:56:20 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Message-ID: <Yt4idCscZvSRguKQ@zkempczy-mobl2>
+References: <20220721043126.11695-1-zbigniew.kempczynski@intel.com>
+ <20220721043126.11695-3-zbigniew.kempczynski@intel.com>
+ <YtkUAu4vLVEfwLBg@kamilkon-desk1>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/7] lib/amdgpu: increase number of resources
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YtkUAu4vLVEfwLBg@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 2/2] tests/i915/perf_pmu: Add second
+ store dword for looping
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,42 +24,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "alexander.deucher@amd.com" <alexander.deucher@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "marek.olsak@amd.com" <marek.olsak@amd.com>,
- "christian.koenig@amd.com" <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmUtcmVwb3J0ZWQuDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBSb2RyaWdv
-IFNpcXVlaXJhIEpvcmRhbyA8Um9kcmlnby5TaXF1ZWlyYUBhbWQuY29tPiANClNlbnQ6IEZyaWRh
-eSwgSnVseSAyMiwgMjAyMiAxOjI2IFBNDQpUbzogVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFr
-c2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNvbT4NCkNjOiBtYXJlay5vbHNha0BhbWQuY29tOyBj
-aHJpc3RpYW4ua29lbmlnQGFtZC5jb207IGFsZXhhbmRlci5kZXVjaGVyQGFtZC5jb207IGlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyB2aXRhbHkucHJvc3lha0BhbWQuY29tDQpTdWJqZWN0
-OiBSZTogW1BBVENIIDEvN10gbGliL2FtZGdwdTogaW5jcmVhc2UgbnVtYmVyIG9mIHJlc291cmNl
-cw0KDQpIaSBMYWtzaG1pLA0KDQpJIHRoaW5rIHdlIGhhdmUgYSBmYWxzZSBwb3NpdGl2ZSByZXN1
-bHQgZm9yIHRoaXMgcGF0Y2hzZXQuIENvdWxkIHlvdSB0cmlnZ2VyIHRoZSBDSSBhZ2Fpbj8NCg0K
-QnR3LCB0aGlzIGlzIHRoZSBwYXRjaHdvcmsgbGluazoNCg0KICAgIGh0dHBzOi8vcGF0Y2h3b3Jr
-LmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTA2NTU4Lw0KDQpUaGFua3MNClNpcXVlaXJhDQoNCk9u
-IDIwMjItMDctMjAgMjA6MzksIHZpdGFseS5wcm9zeWFrQGFtZC5jb20gd3JvdGU6DQo+IEZyb206
-IFZpdGFseSBQcm9zeWFrIDx2aXRhbHkucHJvc3lha0BhbWQuY29tPg0KPiANCj4gQWRkIGFycmF5
-cyBvZiBibydzIGZvciBWUkFNIGFuZCBHVFQuDQo+IEV2aWN0aW9uIHRlc3QgdXNlcyA0IGJvIHJl
-c291cmNlcy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFZpdGFseSBQcm9zeWFrIDx2aXRhbHkucHJv
-c3lha0BhbWQuY29tPg0KPiAtLS0NCj4gICBsaWIvYW1kZ3B1L2FtZF9pcF9ibG9ja3MuaCB8IDQg
-KysrLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkN
-Cj4gDQo+IGRpZmYgLS1naXQgYS9saWIvYW1kZ3B1L2FtZF9pcF9ibG9ja3MuaCBiL2xpYi9hbWRn
-cHUvYW1kX2lwX2Jsb2Nrcy5oIA0KPiBpbmRleCBjYjdkMTQ3NDcuLmMxNmFkMTc5NCAxMDA2NDQN
-Cj4gLS0tIGEvbGliL2FtZGdwdS9hbWRfaXBfYmxvY2tzLmgNCj4gKysrIGIvbGliL2FtZGdwdS9h
-bWRfaXBfYmxvY2tzLmgNCj4gQEAgLTU4LDExICs1OCwxMyBAQCBzdHJ1Y3QgYW1kZ3B1X3Jpbmdf
-Y29udGV4dCB7DQo+ICAgDQo+ICAgCWFtZGdwdV9ib19oYW5kbGUgYm87DQo+ICAgCWFtZGdwdV9i
-b19oYW5kbGUgYm8yOw0KPiArCWFtZGdwdV9ib19oYW5kbGUgYm9hX3ZyYW1bMl07DQo+ICsJYW1k
-Z3B1X2JvX2hhbmRsZSBib2FfZ3R0WzJdOw0KPiAgIA0KPiAgIAlhbWRncHVfY29udGV4dF9oYW5k
-bGUgY29udGV4dF9oYW5kbGU7DQo+ICAgCXN0cnVjdCBkcm1fYW1kZ3B1X2luZm9faHdfaXAgaHdf
-aXBfaW5mbzsgIC8qIHJlc3VsdCBvZiANCj4gYW1kZ3B1X3F1ZXJ5X2h3X2lwX2luZm8gKi8NCj4g
-ICANCj4gLQlhbWRncHVfYm9faGFuZGxlIHJlc291cmNlc1syXTsgLyogYW1kZ3B1X2JvX2FsbG9j
-X2FuZF9tYXAgKi8NCj4gKwlhbWRncHVfYm9faGFuZGxlIHJlc291cmNlc1s0XTsgLyogYW1kZ3B1
-X2JvX2FsbG9jX2FuZF9tYXAgKi8NCj4gICAJYW1kZ3B1X3ZhX2hhbmRsZSB2YV9oYW5kbGU7ICAg
-IC8qIGFtZGdwdV9ib19hbGxvY19hbmRfbWFwICovDQo+ICAgCWFtZGdwdV92YV9oYW5kbGUgdmFf
-aGFuZGxlMjsgICAvKiBhbWRncHVfYm9fYWxsb2NfYW5kX21hcCAqLw0KPiAgIA0KDQo=
+On Thu, Jul 21, 2022 at 10:53:22AM +0200, Kamil Konieczny wrote:
+> On 2022-07-21 at 06:31:26 +0200, Zbigniew Kempczyński wrote:
+> > On Broadwell/Braswell we observe semaphore wait isn't starting sometimes.
+> > It's hard to say what's the main reason of this behavior - it happens
+> > rare (each 2-3 months). To find out is this delayed write lets add
+> > additional store dword for loop condition. Add also some assertions
+> > to catch unexpected sw/hw behavior.
+> > 
+> > References: https://gitlab.freedesktop.org/drm/intel/-/issues/2383
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > ---
+> 
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Thanks, anyway we reproduced failure on BDW so it seems there's
+write-after-read issue. So I'm not going to merge the series and propose
+new one.
+
+--
+Zbigniew
+
+> 
+> > 
+> > v2: Add timeout to break the loop
+> > v3: Use debug instead warn and remove early assert (Kamil)
+> > ---
+> >  tests/i915/perf_pmu.c | 42 +++++++++++++++++++++++++++++++++---------
+> >  1 file changed, 33 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+> > index 39e9fc5fef..eae69aae24 100644
+> > --- a/tests/i915/perf_pmu.c
+> > +++ b/tests/i915/perf_pmu.c
+> > @@ -812,6 +812,12 @@ create_sema(int gem_fd, uint64_t ahnd,
+> >  		0,
+> >  		1,
+> >  
+> > +		/* Separate write for loop */
+> > +		MI_STORE_DWORD_IMM,
+> > +		0,
+> > +		0,
+> > +		2,
+> > +
+> >  		/* Wait until the semaphore value is set to 0 [by caller] */
+> >  		MI_SEMAPHORE_WAIT | MI_SEMAPHORE_POLL | MI_SEMAPHORE_SAD_NEQ_SDD,
+> >  		1,
+> > @@ -827,17 +833,22 @@ create_sema(int gem_fd, uint64_t ahnd,
+> >  	handle = gem_create(gem_fd, 4096);
+> >  	*poffset = get_offset(ahnd, handle, 4096, 0);
+> >  
+> > -	memset(reloc, 0, 2 * sizeof(*reloc));
+> > +	memset(reloc, 0, 3 * sizeof(*reloc));
+> >  	reloc[0].target_handle = handle;
+> >  	reloc[0].offset = 64 + 1 * sizeof(uint32_t);
+> >  	reloc[1].target_handle = handle;
+> > -	reloc[1].offset = 64 + 6 * sizeof(uint32_t);
+> > +	reloc[1].offset = 64 + 5 * sizeof(uint32_t);
+> > +	reloc[1].delta = 4;
+> > +	reloc[2].target_handle = handle;
+> > +	reloc[2].offset = 64 + 10 * sizeof(uint32_t);
+> >  
+> >  	if (ahnd) {
+> >  		cs[1] = *poffset;
+> >  		cs[2] = *poffset >> 32;
+> > -		cs[6] = *poffset;
+> > -		cs[7] = *poffset >> 32;
+> > +		cs[5] = *poffset + 4;
+> > +		cs[6] = (*poffset + 4) >> 32;
+> > +		cs[10] = *poffset;
+> > +		cs[11] = *poffset >> 32;
+> >  	}
+> >  
+> >  	gem_write(gem_fd, handle, 64, cs, sizeof(cs));
+> > @@ -856,10 +867,10 @@ __sema_busy(int gem_fd, uint64_t ahnd, int pmu, const intel_ctx_t *ctx,
+> >  	};
+> >  	uint64_t total, sema, busy;
+> >  	uint64_t start[2], val[2];
+> > -	struct drm_i915_gem_relocation_entry reloc[2];
+> > +	struct drm_i915_gem_relocation_entry reloc[3];
+> >  	struct drm_i915_gem_exec_object2 obj = {
+> >  		.handle = create_sema(gem_fd, ahnd, reloc, &obj.offset),
+> > -		.relocation_count = !ahnd ? 2 : 0,
+> > +		.relocation_count = !ahnd ? 3 : 0,
+> >  		.relocs_ptr = to_user_pointer(reloc),
+> >  		.flags = !ahnd ? 0 : EXEC_OBJECT_PINNED,
+> >  	};
+> > @@ -872,19 +883,32 @@ __sema_busy(int gem_fd, uint64_t ahnd, int pmu, const intel_ctx_t *ctx,
+> >  	};
+> >  	igt_spin_t *spin;
+> >  	uint32_t *map;
+> > +	struct timespec tv = {};
+> > +	int timeout = 3;
+> >  
+> >  	/* Time spent being busy includes time waiting on semaphores */
+> >  	igt_assert(busy_pct >= sema_pct);
+> >  
+> >  	gem_quiescent_gpu(gem_fd);
+> >  
+> > -	map = gem_mmap__device_coherent(gem_fd, obj.handle, 0, 4096, PROT_WRITE);
+> > +	map = gem_mmap__device_coherent(gem_fd, obj.handle, 0, 4096, PROT_READ | PROT_WRITE);
+> >  	gem_execbuf(gem_fd, &eb);
+> > +	igt_debug("[1] bo_busy = %d, map[0] = %u, map[1] = %u\n",
+> > +		  gem_bo_busy(gem_fd, obj.handle), map[0], map[1]);
+> >  	spin = igt_spin_new(gem_fd, .ahnd = ahnd, .ctx = ctx, .engine = e->flags);
+> >  
+> > -	/* Wait until the batch is executed and the semaphore is busy-waiting */
+> > -	while (!READ_ONCE(*map) && gem_bo_busy(gem_fd, obj.handle))
+> > +	/*
+> > +	 * Wait until the batch is executed and the semaphore is busy-waiting.
+> > +	 * Also stop on timeout.
+> > +	 */
+> > +	igt_nsec_elapsed(&tv);
+> > +	while (READ_ONCE(map[1]) != 2 && gem_bo_busy(gem_fd, obj.handle) &&
+> > +	       igt_seconds_elapsed(&tv) < timeout)
+> >  		;
+> > +	igt_debug("[2] bo_busy = %d, map[0] = %u, map[1] = %u, timeout: [%u/%u]\n",
+> > +		  gem_bo_busy(gem_fd, obj.handle), map[0], map[1],
+> > +		  igt_seconds_elapsed(&tv), timeout);
+> > +	igt_assert(map[0] == 1);
+> >  	igt_assert(gem_bo_busy(gem_fd, obj.handle));
+> >  	gem_close(gem_fd, obj.handle);
+> >  
+> > -- 
+> > 2.34.1
+> > 
