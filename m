@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3FF110E8F4
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 17:06:12 +0000 (UTC)
-Date: Mon, 25 Jul 2022 19:06:09 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Yt7NgeM92uSFDP/m@kamilkon-desk1>
-References: <20220713105342.653916-1-karolina.drobnik@intel.com>
- <YtGkJ8gDkaMJShcz@kamilkon-desk1>
- <8a2994bb-7e1b-1375-b1da-7e0f6ca8d320@intel.com>
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com
+ [IPv6:2a00:1450:4864:20::435])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63E7910E0C3
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 23:08:13 +0000 (UTC)
+Received: by mail-wr1-x435.google.com with SMTP id b26so17957679wrc.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 16:08:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8a2994bb-7e1b-1375-b1da-7e0f6ca8d320@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4] i915/i915_pm_rps: Check impact of
- fence ordering on waitboosting
+References: <20211210172006.28654-1-quic_jesszhan@quicinc.com>
+ <YbyHtDTnWqD9e3QR@intel.com>
+In-Reply-To: <YbyHtDTnWqD9e3QR@intel.com>
+From: Rob Clark <robdclark@gmail.com>
+Date: Mon, 25 Jul 2022 16:07:59 -0700
+Message-ID: <CAF6AEGs7P-e1FT+0topYxEyYnF_nkWMCwktEQtTfynKDkOZN+Q@mail.gmail.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_legacy: Remove vblank
+ counter check immediately after flip_nonblocking
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,363 +24,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: petri.latvala@intel.com, quic_khsieh@quicinc.com, swboyd@chromium.org,
+ igt-dev@lists.freedesktop.org, nganji@codeaurora.org, seanpaul@chromium.org,
+ aravindh@codeaurora.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+On Fri, Dec 17, 2021 at 4:51 AM Ville Syrj=C3=A4l=C3=A4
+<ville.syrjala@linux.intel.com> wrote:
+>
+> On Fri, Dec 10, 2021 at 09:20:06AM -0800, Jessica Zhang wrote:
+> > Currently, there is a check that the vblank counter shouldn't change af=
+ter
+> > a nonblocking page flip and DRM_IOCTL_MODE_CURSOR call. This assumes
+> > that ioctl is performed before the commit from the nonblocking flip is
+> > dequeued.
+> >
+> > The DRM_IOCTL_MODE_CURSOR callstack is as such:
+> >       drm_mode_cursor_ioctl
+> >       drm_mode_cursor_common
+> >       drm_mode_cursor_universal
+> >       __setplane_atomic
+> >       drm_atomic_helper_update_plane
+> >       drm_atomic_commit
+> >
+> > Becuase the commit work queue is scheduled earlier than
+> > DRM_CURSOR_IOCTL, it will finish before the ioctl. Thus, we can't
+> > assume that the current vblank count will match vblank_start after the
+> > cursor ioctl finishes.
+>
+> Your driver is broken. The legacy cursor ioctl is expected to
+> not get stuck behind the page flip.
 
-On 2022-07-18 at 11:46:04 +0200, Karolina Drobnik wrote:
-> Hi,
-> 
-> On 15.07.2022 19:30, Kamil Konieczny wrote:
-> > Hi,
-> > 
-> > On 2022-07-13 at 12:53:42 +0200, Karolina Drobnik wrote:
-> > > From: Chris Wilson <chris@chris-wilson.co.uk>
-> > > 
-> > > Currently the wait boost heuristic is evaluated at the start of each
-> > > fence wait for a series within dma-resv. There is no strict ordering of
-> > > fences defined by dma-resv, and so it turns out that the same operation
-> > > under different circumstances can result in different heuristics being
-> > > applied, and dramatic performance variations in user applications.
-> > > 
-> > > Link: https://gitlab.freedesktop.org/drm/intel/-/issues/6284
-> > > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> > > Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
-> > > ---
-> > > v4:
-> > >    - Added test descriptions with igt_describe()
-> > > v3:
-> > >    - Removed unnecessary calls to gem_write
-> > > v2:
-> > >    - Introduced batch_create() with arbitration points to prevent hangs
-> > >    - Added engine-order subtest
-> > >    - Added reporting of GPU frequency
-> > >    - Changed runtimes and switched prints from us to ms
-> > > 
-> > >   tests/i915/i915_pm_rps.c | 261 ++++++++++++++++++++++++++++++++++++++-
-> > >   1 file changed, 255 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-> > > index b37f15c2..6125ea60 100644
-> > > --- a/tests/i915/i915_pm_rps.c
-> > > +++ b/tests/i915/i915_pm_rps.c
-> > > @@ -37,8 +37,10 @@
-> > >   #include <sys/wait.h>
-> > > 
-> > >   #include "i915/gem.h"
-> > > +#include "i915/gem_create.h"
-> > >   #include "igt.h"
-> > >   #include "igt_dummyload.h"
-> > > +#include "igt_perf.h"
-> > >   #include "igt_sysfs.h"
-> > > 
-> > >   IGT_TEST_DESCRIPTION("Render P-States tests - verify GPU frequency changes");
-> > > @@ -614,14 +616,253 @@ static void waitboost(int fd, bool reset)
-> > >   	igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
-> > >   }
-> > > 
-> > > +static uint32_t batch_create(int i915, uint64_t sz)
-> > > +{
-> > > +	const uint32_t bbe = MI_BATCH_BUFFER_END;
-> > > +	const uint32_t chk = 0x5 << 23;
-> > > +	uint32_t handle = gem_create(i915, sz);
-> > > +
-> > > +	for (uint64_t pg = 4096; pg + 4096 < sz; pg += 4096)
-> > > +		gem_write(i915, handle, pg, &chk, sizeof(chk));
-> > > +
-> > > +	gem_write(i915, handle, sz - sizeof(bbe), &bbe, sizeof(bbe));
-> > > +
-> > > +	return handle;
-> > > +}
-> > > +
-> > > +static uint64_t __fence_order(int i915,
-> > > +			      struct drm_i915_gem_exec_object2 *obj,
-> > > +			      struct drm_i915_gem_execbuffer2 *eb,
-> > > +			      uint64_t flags0, uint64_t flags1,
-> > > +			      double *outf)
-> > > +{
-> > > +	uint64_t before[2], after[2];
-> > > +	struct timespec tv;
-> > > +	int fd;
-> > > +
-> > > +	gem_quiescent_gpu(i915);
-> > > +	fd = perf_i915_open(i915, I915_PMU_ACTUAL_FREQUENCY);
-> > > +
-> > > +	igt_gettime(&tv);
-> > > +
-> > > +	obj->flags = flags0;
-> > > +	gem_execbuf(i915, eb);
-> > > +
-> > > +	obj->flags = flags1;
-> > > +	gem_execbuf(i915, eb);
-> > > +
-> > > +	read(fd, before, sizeof(before));
-> > > +	gem_sync(i915, obj->handle);
-> > > +	read(fd, after, sizeof(after));
-> > 
-> > imho here is better place to read elapsed time.
-> 
-> We would like to measure time of the whole operation, so this is correct as
-> it is now
+Well, perhaps the atomic helpers are broken in that case?  But I don't
+really agree that the legacy cursor was *that* well defined that we
+can call this a driver bug.
 
-ok.
+What I'd propose instead is to do reverse the order of the pageflip
+and cursor updates, so the cursor updates don't get stuck behind the
+pageflip.
 
-> > > +	close(fd);
-> > > +
-> > > +	after[0] -= before[0];
-> > > +	after[1] -= before[1];
-> > > +
-> > > +	*outf = 1e9 * after[0] / after[1];
-> > > +	return igt_nsec_elapsed(&tv);
-> > 
-> > See comment above.
-> > 
-> > > +}
-> > > +
-> > > +static void fence_order(int i915)
-> > > +{
-> > > +	const uint64_t sz = 512ull << 20;
-> > > +	struct drm_i915_gem_exec_object2 obj[2] = {
-> > > +		{ .handle = gem_create(i915, 4096) },
-> > > +		{ .handle = batch_create(i915, sz) },
-> > > +	};
-> > > +	struct drm_i915_gem_execbuffer2 execbuf = {
-> > > +		.buffers_ptr = to_user_pointer(obj),
-> > > +		.buffer_count = ARRAY_SIZE(obj),
-> > > +	};
-> > > +	uint64_t wr, rw;
-> > > +	int min, max;
-> > > +	double freq;
-> > > +	int sysfs;
-> > > +
-> > > +	/*
-> > > +	 * Check the order of fences found during GEM_WAIT does not affect
-> > > +	 * waitboosting.
-> > > +	 *
-> > > +	 * Internally, implicit fences are tracked within a dma-resv which
-> > > +	 * imposes no order on the individually fences tracked within. Since
-> > > +	 * there is no defined order, the sequence of waits (and the associated
-> > > +	 * waitboosts) is also undefined, undermining the consistency of the
-> > > +	 * waitboost heuristic.
-> > > +	 *
-> > > +	 * In particular, we can influence the sequence of fence storage
-> > > +	 * within dma-resv by mixing read/write semantics for implicit fences.
-> > > +	 * We can exploit this property of dma-resv to exercise that no matter
-> > > +	 * the stored order, the heuristic is applied consistently for the
-> > > +	 * user's GEM_WAIT ioctl.
-> > > +	 */
-> > > +
-> > > +	sysfs = igt_sysfs_open(i915);
-> > > +	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
-> > > +	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
-> > > +	igt_require(max > min);
-> > > +
-> > > +	/* Only allow ourselves to upclock via waitboosting */
-> > > +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
-> > > +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
-> > > +	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
-> > > +
-> > > +	/* Warm up to bind the vma */
-> > > +	__fence_order(i915, &obj[0], &execbuf, 0, 0, &freq);
-> > > +
-> > > +	wr = __fence_order(i915, &obj[0], &execbuf, EXEC_OBJECT_WRITE, 0, &freq);
-> > > +	igt_info("Write-then-read: %.2fms @ %.3fMHz\n", wr * 1e-6, freq);
-> > 
-> > imho this should be igt_debug (here and below)
-> > s/igt_print/igt_debug/
-> 
-> This information is essential in verifying the test results, so igt_info is
-> required
-> 
-> All the best,
-> Karolina
+BR,
+-R
 
-Well, verifing is done by igt_asserts, do we intend to look into
-logs for verifing ? If asserts fails then previous debugs will
-be printed. While at this, maybe it is also worth to print out
-min and max freqs.
-
-Regards,
-Kamil
-
-> > > +
-> > > +	rw = __fence_order(i915, &obj[0], &execbuf, 0, EXEC_OBJECT_WRITE, &freq);
-> > > +	igt_info("Read-then-write: %.2fms @ %.3fMHz\n", rw * 1e-6, freq);
-> > > +
-> > > +	gem_close(i915, obj[0].handle);
-> > > +	gem_close(i915, obj[1].handle);
-> > > +
-> > > +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
-> > > +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
-> > > +
-> > > +	igt_assert(4 * rw > 3 * wr && 4 * wr > 3 * rw);
-> > > +}
-> > > +
-> > > +static uint64_t __engine_order(int i915,
-> > > +			       struct drm_i915_gem_exec_object2 *obj,
-> > > +			       struct drm_i915_gem_execbuffer2 *eb,
-> > > +			       unsigned int *engines0,
-> > > +			       unsigned int *engines1,
-> > > +			       unsigned int num_engines,
-> > > +			       double *outf)
-> > > +{
-> > > +	uint64_t before[2], after[2];
-> > > +	struct timespec tv;
-> > > +	int fd;
-> > > +
-> > > +	gem_quiescent_gpu(i915);
-> > > +	fd = perf_i915_open(i915, I915_PMU_ACTUAL_FREQUENCY);
-> > > +
-> > > +	igt_gettime(&tv);
-> > > +
-> > > +	obj->flags = EXEC_OBJECT_WRITE;
-> > > +	for (unsigned int n = 0; n < num_engines; n++) {
-> > > +		eb->flags &= ~63ull;
-> > > +		eb->flags |= engines0[n];
-> > > +		gem_execbuf_wr(i915, eb);
-> > > +	}
-> > > +
-> > > +	obj->flags = 0;
-> > > +	for (unsigned int n = 0; n < num_engines; n++) {
-> > > +		eb->flags &= ~63ull;
-> > > +		eb->flags |= engines1[n];
-> > > +		gem_execbuf(i915, eb);
-> > > +	}
-> > > +
-> > > +	read(fd, before, sizeof(before));
-> > > +	gem_sync(i915, obj->handle);
-> > > +	read(fd, after, sizeof(after));
-> > > +	close(fd);
-> > > +
-> > > +	after[0] -= before[0];
-> > > +	after[1] -= before[1];
-> > > +
-> > > +	*outf = 1e9 * after[0] / after[1];
-> > > +	return igt_nsec_elapsed(&tv);
-> > > +}
-> > > +
-> > > +static void engine_order(int i915)
-> > > +{
-> > > +	const uint64_t sz = 512ull << 20;
-> > > +	struct drm_i915_gem_exec_object2 obj[2] = {
-> > > +		{ .handle = gem_create(i915, 4096) },
-> > > +		{ .handle = batch_create(i915, sz) },
-> > > +	};
-> > > +	struct drm_i915_gem_execbuffer2 execbuf = {
-> > > +		.buffers_ptr = to_user_pointer(obj),
-> > > +		.buffer_count = ARRAY_SIZE(obj),
-> > > +	};
-> > > +	const struct intel_execution_engine2 *e;
-> > > +	unsigned int engines[2], reverse[2];
-> > > +	uint64_t forward, backward, both;
-> > > +	unsigned int num_engines;
-> > > +	const intel_ctx_t *ctx;
-> > > +	int min, max;
-> > > +	double freq;
-> > > +	int sysfs;
-> > > +
-> > > +	/*
-> > > +	 * Check the order of fences found during GEM_WAIT does not affect
-> > > +	 * waitboosting. (See fence_order())
-> > > +	 *
-> > > +	 * Another way we can manipulate the order of fences within the
-> > > +	 * dma-resv is through repeated use of the same contexts.
-> > > +	 */
-> > > +
-> > > +	num_engines = 0;
-> > > +	ctx = intel_ctx_create_all_physical(i915);
-> > > +	for_each_ctx_engine(i915, ctx, e) {
-> > > +		/*
-> > > +		 * Avoid using the cmdparser as it will try to allocate
-> > > +		 * a new shadow batch for each submission -> oom
-> > > +		 */
-> > > +		if (!gem_engine_has_mutable_submission(i915, e->class))
-> > > +			continue;
-> > > +
-> > > +		engines[num_engines++] = e->flags;
-> > > +		if (num_engines == ARRAY_SIZE(engines))
-> > > +			break;
-> > > +	}
-> > > +	igt_require(num_engines > 1);
-> > > +	for (unsigned int n = 0; n < num_engines; n++)
-> > > +		reverse[n] = engines[num_engines - n - 1];
-> > > +	execbuf.rsvd1 = ctx->id;
-> > > +
-> > > +	sysfs = igt_sysfs_open(i915);
-> > > +	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
-> > > +	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
-> > > +	igt_require(max > min);
-> > > +
-> > > +	/* Only allow ourselves to upclock via waitboosting */
-> > > +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
-> > > +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
-> > > +	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
-> > > +
-> > > +	/* Warm up to bind the vma */
-> > > +	gem_execbuf(i915, &execbuf);
-> > > +
-> > > +	forward = __engine_order(i915, &obj[0], &execbuf,
-> > > +				 engines, engines, num_engines,
-> > > +				 &freq);
-> > > +	igt_info("Forwards: %.2fms @ %.3fMhz\n", forward * 1e-6, freq);
-> > > +
-> > > +	backward = __engine_order(i915, &obj[0], &execbuf,
-> > > +				  reverse, reverse, num_engines,
-> > > +				  &freq);
-> > > +	igt_info("Backwards: %.2fms @ %.3fMhz\n", backward * 1e-6, freq);
-> > > +
-> > > +	both = __engine_order(i915, &obj[0], &execbuf,
-> > > +			      engines, reverse, num_engines,
-> > > +			      &freq);
-> > > +	igt_info("Bidirectional: %.2fms @ %.3fMhz\n", both * 1e-6, freq);
-> > > +
-> > > +	gem_close(i915, obj[0].handle);
-> > > +	gem_close(i915, obj[1].handle);
-> > > +	intel_ctx_destroy(i915, ctx);
-> > > +
-> > > +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
-> > > +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
-> > > +
-> > > +	igt_assert(4 * forward > 3 * backward && 4 * backward > 3 * forward);
-> > > +	igt_assert(4 * forward > 3 * both && 4 * both > 3 * forward);
-> > > +}
-> > > +
-> > >   static void pm_rps_exit_handler(int sig)
-> > >   {
-> > > -	if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
-> > > -		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-> > > -		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-> > > -	} else {
-> > > -		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-> > > -		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-> > > +	if (sysfs_files[MAX].filp) {
-> > > +		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
-> > > +			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-> > > +			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-> > > +		} else {
-> > > +			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-> > > +			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-> > > +		}
-> > >   	}
-> > > 
-> > >   	if (lh.igt_proc.running)
-> > > @@ -683,6 +924,14 @@ igt_main
-> > >   	igt_subtest("waitboost")
-> > >   		waitboost(drm_fd, false);
-> > > 
-> > > +	igt_describe("Check if the order of fences does not affect waitboosting");
-> > > +	igt_subtest("fence-order")
-> > > +		fence_order(drm_fd);
-> > > +
-> > > +	igt_describe("Check if context reuse does not affect waitboosting");
-> > > +	igt_subtest("engine-order")
-> > > +		engine_order(drm_fd);
-> > > +
-> > >   	/* Test boost frequency after GPU reset */
-> > >   	igt_subtest("reset") {
-> > >   		igt_hang_t hang = igt_allow_hang(drm_fd, 0, 0);
-> > > --
-> > > 2.25.1
+>
+> >
+> > Tested-on: Chromebook Lazor (Trogdor)
+> >
+> > Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+> > ---
+> >  tests/kms_cursor_legacy.c | 2 --
+> >  1 file changed, 2 deletions(-)
+> >
+> > diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> > index d50155e8..82c01bc8 100644
+> > --- a/tests/kms_cursor_legacy.c
+> > +++ b/tests/kms_cursor_legacy.c
+> > @@ -1307,8 +1307,6 @@ static void flip_vs_cursor_crc(igt_display_t *dis=
+play, bool atomic)
+> >               flip_nonblocking(display, pipe, atomic, &fb_info, NULL);
+> >               do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg[i])=
+;
+> >
+> > -             igt_assert_eq(kmstest_get_vblank(display->drm_fd, pipe, 0=
+), vblank_start);
+> > -
+> >               igt_set_timeout(1, "Stuck page flip");
+> >               igt_ignore_warn(read(display->drm_fd, &vbl, sizeof(vbl)))=
+;
+> >               igt_reset_timeout();
+> > --
+> > 2.31.0
+>
+> --
+> Ville Syrj=C3=A4l=C3=A4
+> Intel
