@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com
- [IPv6:2a00:1450:4864:20::435])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63E7910E0C3
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 23:08:13 +0000 (UTC)
-Received: by mail-wr1-x435.google.com with SMTP id b26so17957679wrc.2
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Jul 2022 16:08:13 -0700 (PDT)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF44118B29C
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Jul 2022 03:13:50 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
+ petri.latvala@intel.com
+Date: Tue, 26 Jul 2022 08:41:16 +0530
+Message-Id: <20220726031116.974261-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-References: <20211210172006.28654-1-quic_jesszhan@quicinc.com>
- <YbyHtDTnWqD9e3QR@intel.com>
-In-Reply-To: <YbyHtDTnWqD9e3QR@intel.com>
-From: Rob Clark <robdclark@gmail.com>
-Date: Mon, 25 Jul 2022 16:07:59 -0700
-Message-ID: <CAF6AEGs7P-e1FT+0topYxEyYnF_nkWMCwktEQtTfynKDkOZN+Q@mail.gmail.com>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_legacy: Remove vblank
- counter check immediately after flip_nonblocking
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t] tests/kms_cursor_crc: Drop max-size test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,79 +17,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, quic_khsieh@quicinc.com, swboyd@chromium.org,
- igt-dev@lists.freedesktop.org, nganji@codeaurora.org, seanpaul@chromium.org,
- aravindh@codeaurora.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 17, 2021 at 4:51 AM Ville Syrj=C3=A4l=C3=A4
-<ville.syrjala@linux.intel.com> wrote:
->
-> On Fri, Dec 10, 2021 at 09:20:06AM -0800, Jessica Zhang wrote:
-> > Currently, there is a check that the vblank counter shouldn't change af=
-ter
-> > a nonblocking page flip and DRM_IOCTL_MODE_CURSOR call. This assumes
-> > that ioctl is performed before the commit from the nonblocking flip is
-> > dequeued.
-> >
-> > The DRM_IOCTL_MODE_CURSOR callstack is as such:
-> >       drm_mode_cursor_ioctl
-> >       drm_mode_cursor_common
-> >       drm_mode_cursor_universal
-> >       __setplane_atomic
-> >       drm_atomic_helper_update_plane
-> >       drm_atomic_commit
-> >
-> > Becuase the commit work queue is scheduled earlier than
-> > DRM_CURSOR_IOCTL, it will finish before the ioctl. Thus, we can't
-> > assume that the current vblank count will match vblank_start after the
-> > cursor ioctl finishes.
->
-> Your driver is broken. The legacy cursor ioctl is expected to
-> not get stuck behind the page flip.
+As we already covering it by the other tests, there is no point in
+doing the "max-size" test. Hence dropping it.
 
-Well, perhaps the atomic helpers are broken in that case?  But I don't
-really agree that the legacy cursor was *that* well defined that we
-can call this a driver bug.
+This patch will also do some cleanup to avoid skips in igt_dynamic.
 
-What I'd propose instead is to do reverse the order of the pageflip
-and cursor updates, so the cursor updates don't get stuck behind the
-pageflip.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_cursor_crc.c | 47 ++++++++++++++++++++----------------------
+ 1 file changed, 22 insertions(+), 25 deletions(-)
 
-BR,
--R
-
->
-> >
-> > Tested-on: Chromebook Lazor (Trogdor)
-> >
-> > Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-> > ---
-> >  tests/kms_cursor_legacy.c | 2 --
-> >  1 file changed, 2 deletions(-)
-> >
-> > diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> > index d50155e8..82c01bc8 100644
-> > --- a/tests/kms_cursor_legacy.c
-> > +++ b/tests/kms_cursor_legacy.c
-> > @@ -1307,8 +1307,6 @@ static void flip_vs_cursor_crc(igt_display_t *dis=
-play, bool atomic)
-> >               flip_nonblocking(display, pipe, atomic, &fb_info, NULL);
-> >               do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg[i])=
-;
-> >
-> > -             igt_assert_eq(kmstest_get_vblank(display->drm_fd, pipe, 0=
-), vblank_start);
-> > -
-> >               igt_set_timeout(1, "Stuck page flip");
-> >               igt_ignore_warn(read(display->drm_fd, &vbl, sizeof(vbl)))=
-;
-> >               igt_reset_timeout();
-> > --
-> > 2.31.0
->
-> --
-> Ville Syrj=C3=A4l=C3=A4
-> Intel
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index f07a045a..14d4c4ca 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -576,7 +576,7 @@ static void test_cursor_opaque(data_t *data)
+ 	test_cursor_alpha(data);
+ }
+ 
+-static void require_cursor_size(data_t *data, int w, int h)
++static bool require_cursor_size(data_t *data, int w, int h)
+ {
+ 	igt_fb_t primary_fb;
+ 	drmModeModeInfo *mode;
+@@ -618,14 +618,11 @@ static void require_cursor_size(data_t *data, int w, int h)
+ 	igt_remove_fb(data->drm_fd, &primary_fb);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+ 
+-	igt_skip_on_f(ret, "Cursor size %dx%d not supported by driver\n", w, h);
++	return !!ret;
+ }
+ 
+ static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int cursor_h)
+ {
+-	if (data->fb.fb_id != 0)
+-		require_cursor_size(data, cursor_w, cursor_h);
+-
+ 	prepare_crtc(data, cursor_w, cursor_h);
+ 	testfunc(data);
+ 	cleanup_crtc(data);
+@@ -696,24 +693,15 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+ 	char name[32];
+ 	enum pipe pipe;
+ 
+-	if (w == 0 && h == 0)
+-		strcpy(name, "max-size");
+-	else
+-		snprintf(name, sizeof(name), "%dx%d", w, h);
+-
+-	if (w == 0 && h == 0) {
+-		w = data->cursor_max_w;
+-		h = data->cursor_max_h;
+-		/*
+-		 * No point in doing the "max-size" test if
+-		 * it was already covered by the other tests.
+-		 */
+-		igt_require_f(w != h || w > 512 || h > 512 ||
+-			      !is_power_of_two(w) || !is_power_of_two(h),
+-			      "Cursor max size %dx%d already covered by other tests\n",
+-			      w, h);
+-	}
++	snprintf(name, sizeof(name), "%dx%d", w, h);
++
+ 	create_cursor_fb(data, w, h);
++	if (require_cursor_size(data, w, h)) {
++		igt_debug("Cursor size %dx%d not supported by driver\n", w, h);
++
++		igt_remove_fb(data->drm_fd, &data->fb);
++		return;
++	}
+ 
+ 	for_each_pipe(&data->display, pipe) {
+ 		data->pipe = pipe;
+@@ -807,6 +795,12 @@ static void run_tests_on_pipe(data_t *data)
+ 			data->pipe = pipe;
+ 			data->flags = TEST_DPMS;
+ 
++			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
++				igt_debug("Cursor size %dx%d not supported by driver\n",
++					  data->cursor_max_w, data->cursor_max_h);
++				continue;
++			}
++
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -822,6 +816,12 @@ static void run_tests_on_pipe(data_t *data)
+ 			data->pipe = pipe;
+ 			data->flags = TEST_SUSPEND;
+ 
++			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
++				igt_debug("Cursor size %dx%d not supported by driver\n",
++					  data->cursor_max_w, data->cursor_max_h);
++				continue;
++			}
++
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -855,9 +855,6 @@ static void run_tests_on_pipe(data_t *data)
+ 					igt_subtest_group
+ 						run_size_tests(data, size_tests[i].testfunc, w, h);
+ 				}
+-
+-				igt_subtest_group
+-					run_size_tests(data, size_tests[i].testfunc, 0, 0);
+ 			}
+ 		}
+ 	}
+-- 
+2.35.1
