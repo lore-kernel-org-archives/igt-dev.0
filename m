@@ -1,29 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-il1-x131.google.com (mail-il1-x131.google.com
- [IPv6:2607:f8b0:4864:20::131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A26310F41C
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 17:56:07 +0000 (UTC)
-Received: by mail-il1-x131.google.com with SMTP id t15so1288607ilm.7
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 10:56:07 -0700 (PDT)
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com.
- [209.85.166.178]) by smtp.gmail.com with ESMTPSA id
- u4-20020a02b1c4000000b00339e18d2c9bsm627635jah.115.2022.07.28.10.56.05
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Jul 2022 10:56:05 -0700 (PDT)
-Received: by mail-il1-f178.google.com with SMTP id n13so1306791ilk.1
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 10:56:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <YuEY1XNsPVb1GzcN@platvala-desk.ger.corp.intel.com>
- <20220727202125.546432-1-jshargo@chromium.org>
- <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com
+ [IPv6:2607:f8b0:4864:20::729])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADB3A12A3FF
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Jul 2022 19:01:03 +0000 (UTC)
+Received: by mail-qk1-x729.google.com with SMTP id m7so11689728qkk.6
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Jul 2022 12:01:03 -0700 (PDT)
 From: Jim Shargo <jshargo@chromium.org>
-Date: Thu, 28 Jul 2022 13:55:53 -0400
-Message-ID: <CACmi3jEmJJr_WxHd4DDn_qE3qLu5rjz_ARLt-MeftqgGw24hQA@mail.gmail.com>
-To: Petri Latvala <petri.latvala@intel.com>
-Content-Type: multipart/alternative; boundary="000000000000540c2805e4e13f71"
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tooling: Add linux's .clang-format
+To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
+ Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>
+Date: Tue, 26 Jul 2022 15:01:00 -0400
+Message-Id: <20220726190100.332383-1-jshargo@chromium.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tooling: Add linux's .clang-format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,615 +20,746 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jim Shargo <jshargo@chromium.org>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Cc: Jim Shargo <jshargo@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---000000000000540c2805e4e13f71
-Content-Type: text/plain; charset="UTF-8"
+As I was authoring my first patchset for IGT, I found myself fighting
+the tooling a bit to get everything right. I had to add a bunch of extra
+command line args to use my linux checkout's formatting rules to get the
+style right.
 
-Ah! Gotcha. v3 incoming.
+I grabbed this from a recent checkout of torvald's repo.
 
-On Thu, Jul 28, 2022 at 3:59 AM Petri Latvala <petri.latvala@intel.com>
-wrote:
+The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e
 
-> On Wed, Jul 27, 2022 at 04:21:25PM -0400, Jim Shargo wrote:
-> > As I was authoring my first patchset for IGT, I found myself fighting
-> > the tooling a bit to get everything right. I had to add a bunch of extra
-> > command line args to use my linux checkout's formatting rules to get the
-> > style right.
-> >
-> > I grabbed this from a recent checkout of torvald's repo.
-> >
-> > The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e
-> >
-> > To make this discoverable to new contributors, this change:
-> >
-> >   - Updates CONTRIBUTING.md with a link to git-clang-format, which is
-> >   a useful tool for using clang-format from git just on a commit's
-> >   changes.
-> >   - Updates .editorconfig with a reference to .clang-format and a
-> >   pointer to CONTRIBUTING.md
-> >
-> > Changes made to the linux kernel style:
-> >
-> >   - Reflowing comments, including multi-line comments (ReflowComments)
-> >   - Support for magic code blocks (ForEachMacros, IfMacros)
-> >
-> > Signed-off-by: Jim Shargo <jshargo@chromium.org>
-> > ---
-> > V1 -> V2: Better support for IGT style and addressing comments
-> >
-> >  .clang-format   | 176 ++++++++++++++++++++++++++++++++++++++++++++++++
-> >  .editorconfig   |   6 +-
-> >  CONTRIBUTING.md |   8 ++-
-> >  3 files changed, 185 insertions(+), 5 deletions(-)
-> >  create mode 100644 .clang-format
-> >
-> > diff --git a/.clang-format b/.clang-format
-> > new file mode 100644
-> > index 00000000..da42bead
-> > --- /dev/null
-> > +++ b/.clang-format
-> > @@ -0,0 +1,176 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +#
-> > +# clang-format configuration file. Intended for clang-format >= 11.
-> > +#
-> > +# For more information, see:
-> > +#
-> > +#   Documentation/process/clang-format.rst
-> > +#   https://clang.llvm.org/docs/ClangFormat.html
-> > +#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
-> > +#
-> > +# This file was pulled from the linux kernel at revision
-> > +# e0dccc3b76fb35bb257b4118367a883073d7390e.
-> > +#
-> > +# Changes made for IGT-specific styles should include a comment noting
-> > +# the previous value with "kernel-value". This makes it clear what we
-> > +# want to keep when updating this file.
-> > +---
-> > +AccessModifierOffset: -4
-> > +AlignAfterOpenBracket: Align
-> > +AlignConsecutiveAssignments: false
-> > +AlignConsecutiveDeclarations: false
-> > +AlignEscapedNewlines: Left
-> > +AlignOperands: true
-> > +AlignTrailingComments: false
-> > +AllowAllParametersOfDeclarationOnNextLine: false
-> > +AllowShortBlocksOnASingleLine: false
-> > +AllowShortCaseLabelsOnASingleLine: false
-> > +AllowShortFunctionsOnASingleLine: None
-> > +AllowShortIfStatementsOnASingleLine: false
-> > +AllowShortLoopsOnASingleLine: false
-> > +AlwaysBreakAfterDefinitionReturnType: None
-> > +AlwaysBreakAfterReturnType: None
-> > +AlwaysBreakBeforeMultilineStrings: false
-> > +AlwaysBreakTemplateDeclarations: false
-> > +BinPackArguments: true
-> > +BinPackParameters: true
-> > +BraceWrapping:
-> > +  AfterClass: false
-> > +  AfterControlStatement: false
-> > +  AfterEnum: false
-> > +  AfterFunction: true
-> > +  AfterNamespace: true
-> > +  AfterObjCDeclaration: false
-> > +  AfterStruct: false
-> > +  AfterUnion: false
-> > +  AfterExternBlock: false
-> > +  BeforeCatch: false
-> > +  BeforeElse: false
-> > +  IndentBraces: false
-> > +  SplitEmptyFunction: true
-> > +  SplitEmptyRecord: true
-> > +  SplitEmptyNamespace: true
-> > +BreakBeforeBinaryOperators: None
-> > +BreakBeforeBraces: Custom
-> > +BreakBeforeInheritanceComma: false
-> > +BreakBeforeTernaryOperators: false
-> > +BreakConstructorInitializersBeforeComma: false
-> > +BreakConstructorInitializers: BeforeComma
-> > +BreakAfterJavaFieldAnnotations: false
-> > +BreakStringLiterals: false
-> > +ColumnLimit: 80
-> > +CommentPragmas: '^ IWYU pragma:'
-> > +CompactNamespaces: false
-> > +ConstructorInitializerAllOnOneLineOrOnePerLine: false
-> > +ConstructorInitializerIndentWidth: 8
-> > +ContinuationIndentWidth: 8
-> > +Cpp11BracedListStyle: false
-> > +DerivePointerAlignment: false
-> > +DisableFormat: false
-> > +ExperimentalAutoDetectBinPacking: false
-> > +FixNamespaceComments: false
-> > +
-> > +# Taken from:
-> > +#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/
-> tools/ \
-> > +#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  -
-> '\1'," \
-> > +#   | LC_ALL=C sort -u
-> > +ForEachMacros: # kernel-value: (long list removed)
-> > +  # IGT rules, found via:
-> > +  # git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/
-> lib/ |
-> > +  #     sed "s,^#define \([^(]\+\).*,'\1'," |
-> > +  #     grep -v "__" |
-> > +  #     sort -u
-> > +  - 'for_each_collection_data'
-> > +  - 'for_each_combination'
-> > +  - 'for_each_connected_output'
-> > +  - 'for_each_connector_mode'
-> > +  - 'for_each_ctx_cfg_engine'
-> > +  - 'for_each_ctx_engine'
-> > +  - 'for_each_format'
-> > +  - 'for_each_if'
-> > +  - 'for_each_memory_region'
-> > +  - 'for_each_mmap_offset_type'
-> > +  - 'for_each_physical_engine'
-> > +  - 'for_each_physical_ring'
-> > +  - 'for_each_pipe'
-> > +  - 'for_each_pipe_static'
-> > +  - 'for_each_pipe_with_single_output'
-> > +  - 'for_each_pipe_with_valid_output'
-> > +  - 'for_each_plane_on_pipe'
-> > +  - 'for_each_prime_number'
-> > +  - 'for_each_ring'
-> > +  - 'for_each_subset'
-> > +  - 'for_each_sysfs_gt_dirfd'
-> > +  - 'for_each_sysfs_gt_path'
-> > +  - 'for_each_valid_output_on_pipe'
-> > +  - 'for_each_variation_nr'
-> > +  - 'for_each_variation_r'
-> > +  - 'igt_list_for_each_entry'
-> > +  - 'igt_list_for_each_entry_reverse'
-> > +  - 'igt_list_for_each_entry_safe'
-> > +  - 'igt_list_for_each_entry_safe_reverse'
-> > +
-> > +IfMacros: # kernel-value: none
-> > +  - 'igt_dynamic'
-> > +  - 'igt_fixture'
-> > +  - 'igt_fork'
-> > +  - 'igt_subtest'
-> > +  - 'igt_subtest_f'
-> > +  - 'igt_subtest_group'
-> > +  - 'igt_subtest_with_dynamic'
-> > +  - 'igt_subtest_with_dynamic_f'
-> > +  - 'igt_until_timeout'
-> > +
-> > +IncludeBlocks: Preserve
-> > +IncludeCategories:
-> > +  - Regex: '.*'
-> > +    Priority: 1
-> > +IncludeIsMainRegex: '(Test)?$'
-> > +IndentCaseLabels: false
-> > +IndentGotoLabels: false
-> > +IndentPPDirectives: None
-> > +IndentWidth: 8
-> > +IndentWrappedFunctionNames: false
-> > +JavaScriptQuotes: Leave
-> > +JavaScriptWrapImports: true
-> > +KeepEmptyLinesAtTheStartOfBlocks: false
-> > +MacroBlockBegin: ''
-> > +MacroBlockEnd: ''
-> > +MaxEmptyLinesToKeep: 1
-> > +NamespaceIndentation: None
-> > +ObjCBinPackProtocolList: Auto
-> > +ObjCBlockIndentWidth: 8
-> > +ObjCSpaceAfterProperty: true
-> > +ObjCSpaceBeforeProtocolList: true
-> > +
-> > +# Taken from git's rules
-> > +PenaltyBreakAssignment: 10
-> > +PenaltyBreakBeforeFirstCallParameter: 30
-> > +PenaltyBreakComment: 10
-> > +PenaltyBreakFirstLessLess: 0
-> > +PenaltyBreakString: 10
-> > +PenaltyExcessCharacter: 100
-> > +PenaltyReturnTypeOnItsOwnLine: 60
-> > +
-> > +PointerAlignment: Right
-> > +ReflowComments: true # kernel-value: false
-> > +SortIncludes: false
-> > +SortUsingDeclarations: false
-> > +SpaceAfterCStyleCast: false
-> > +SpaceAfterTemplateKeyword: true
-> > +SpaceBeforeAssignmentOperators: true
-> > +SpaceBeforeCtorInitializerColon: true
-> > +SpaceBeforeInheritanceColon: true
-> > +SpaceBeforeParens: ControlStatementsExceptForEachMacros
-> > +SpaceBeforeRangeBasedForLoopColon: true
-> > +SpaceInEmptyParentheses: false
-> > +SpacesBeforeTrailingComments: 1
-> > +SpacesInAngles: false
-> > +SpacesInContainerLiterals: false
-> > +SpacesInCStyleCastParentheses: false
-> > +SpacesInParentheses: false
-> > +SpacesInSquareBrackets: false
-> > +Standard: Cpp03
-> > +TabWidth: 8
-> > +UseTab: Always
-> > +...
-> > diff --git a/.editorconfig b/.editorconfig
-> > index 7b7f1375..5c7e31d3 100644
-> > --- a/.editorconfig
-> > +++ b/.editorconfig
-> > @@ -1,5 +1,7 @@
-> > -# To use this config in your editor, follow the instructions at:
-> > -# http://editorconfig.org
-> > +# To use this config in your editor, follow the instructions at
-> > +# http://editorconfig.org. You can also use "clang-format" for new C
-> > +# code (see CONTRIBUTING.md for suggestions and .clang-format for more
-> > +# details).
-> >
-> >  root = true
-> >
-> > diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-> > index 6d1294ad..8d7320b7 100644
-> > --- a/CONTRIBUTING.md
-> > +++ b/CONTRIBUTING.md
-> > @@ -10,8 +10,9 @@ improvements for documentation and new tools and
-> testcases.
-> >  The Code
-> >  --------
-> >
-> > -- The code should follow kernel coding style:
-> > -  https://www.kernel.org/doc/html/latest/process/coding-style.html
-> > +- The code should follow [kernel coding style](coding-style). Before
-> > +  sending out a patch, changes can be formatted with
-> > +  [git-clang-format](git-clang-format).
->
-> I meant pointing to .editorconfig here.
->
->
-> --
-> Petri Latvala
->
->
-> >
-> >  - Testcases (subtests) have to use minus signs (-) as a word separator.
-> >    The generated documentation contains glossary of commonly used terms.
-> > @@ -30,9 +31,10 @@ The Code
-> >    provided by the igt library. The semantic patch lib/igt.cocci can
-> help with
-> >    more automatic conversions.
-> >
-> > +[coding-style]:
-> https://www.kernel.org/doc/html/latest/process/coding-style.html
-> > +[git-clang-format]:
-> https://github.com/llvm-mirror/clang/blob/master/tools/clang-format/git-clang-format
-> >  [igt-describe]:
-> https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-> >
-> > -
-> >  Sending Patches
-> >  ---------------
-> >
-> > --
-> > 2.37.1.359.gd136c6c3e2-goog
-> >
->
+I've also updated CONTRIBUTING.md with a link to git-clang-format, which
+is a useful tool for using clang-format from git just on a commit's
+changes.
 
---000000000000540c2805e4e13f71
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Jim Shargo <jshargo@chromium.org>
+---
+ .clang-format   | 682 ++++++++++++++++++++++++++++++++++++++++++++++++
+ CONTRIBUTING.md |   8 +-
+ 2 files changed, 687 insertions(+), 3 deletions(-)
+ create mode 100644 .clang-format
 
-<div dir=3D"ltr">Ah! Gotcha. v3 incoming.</div><br><div class=3D"gmail_quot=
-e"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 28, 2022 at 3:59 AM Pe=
-tri Latvala &lt;<a href=3D"mailto:petri.latvala@intel.com">petri.latvala@in=
-tel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"=
-margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-lef=
-t:1ex">On Wed, Jul 27, 2022 at 04:21:25PM -0400, Jim Shargo wrote:<br>
-&gt; As I was authoring my first patchset for IGT, I found myself fighting<=
-br>
-&gt; the tooling a bit to get everything right. I had to add a bunch of ext=
-ra<br>
-&gt; command line args to use my linux checkout&#39;s formatting rules to g=
-et the<br>
-&gt; style right.<br>
-&gt; <br>
-&gt; I grabbed this from a recent checkout of torvald&#39;s repo.<br>
-&gt; <br>
-&gt; The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e<br>
-&gt; <br>
-&gt; To make this discoverable to new contributors, this change:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0- Updates CONTRIBUTING.md with a link to git-clang-format,=
- which is<br>
-&gt;=C2=A0 =C2=A0a useful tool for using clang-format from git just on a co=
-mmit&#39;s<br>
-&gt;=C2=A0 =C2=A0changes.<br>
-&gt;=C2=A0 =C2=A0- Updates .editorconfig with a reference to .clang-format =
-and a<br>
-&gt;=C2=A0 =C2=A0pointer to CONTRIBUTING.md<br>
-&gt; <br>
-&gt; Changes made to the linux kernel style:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0- Reflowing comments, including multi-line comments (Reflo=
-wComments)<br>
-&gt;=C2=A0 =C2=A0- Support for magic code blocks (ForEachMacros, IfMacros)<=
-br>
-&gt; <br>
-&gt; Signed-off-by: Jim Shargo &lt;<a href=3D"mailto:jshargo@chromium.org" =
-target=3D"_blank">jshargo@chromium.org</a>&gt;<br>
-&gt; ---<br>
-&gt; V1 -&gt; V2: Better support for IGT style and addressing comments<br>
-&gt; <br>
-&gt;=C2=A0 .clang-format=C2=A0 =C2=A0| 176 ++++++++++++++++++++++++++++++++=
-++++++++++++++++<br>
-&gt;=C2=A0 .editorconfig=C2=A0 =C2=A0|=C2=A0 =C2=A06 +-<br>
-&gt;=C2=A0 CONTRIBUTING.md |=C2=A0 =C2=A08 ++-<br>
-&gt;=C2=A0 3 files changed, 185 insertions(+), 5 deletions(-)<br>
-&gt;=C2=A0 create mode 100644 .clang-format<br>
-&gt; <br>
-&gt; diff --git a/.clang-format b/.clang-format<br>
-&gt; new file mode 100644<br>
-&gt; index 00000000..da42bead<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/.clang-format<br>
-&gt; @@ -0,0 +1,176 @@<br>
-&gt; +# SPDX-License-Identifier: GPL-2.0<br>
-&gt; +#<br>
-&gt; +# clang-format configuration file. Intended for clang-format &gt;=3D =
-11.<br>
-&gt; +#<br>
-&gt; +# For more information, see:<br>
-&gt; +#<br>
-&gt; +#=C2=A0 =C2=A0Documentation/process/clang-format.rst<br>
-&gt; +#=C2=A0 =C2=A0<a href=3D"https://clang.llvm.org/docs/ClangFormat.html=
-" rel=3D"noreferrer" target=3D"_blank">https://clang.llvm.org/docs/ClangFor=
-mat.html</a><br>
-&gt; +#=C2=A0 =C2=A0<a href=3D"https://clang.llvm.org/docs/ClangFormatStyle=
-Options.html" rel=3D"noreferrer" target=3D"_blank">https://clang.llvm.org/d=
-ocs/ClangFormatStyleOptions.html</a><br>
-&gt; +#<br>
-&gt; +# This file was pulled from the linux kernel at revision<br>
-&gt; +# e0dccc3b76fb35bb257b4118367a883073d7390e.<br>
-&gt; +#<br>
-&gt; +# Changes made for IGT-specific styles should include a comment notin=
-g<br>
-&gt; +# the previous value with &quot;kernel-value&quot;. This makes it cle=
-ar what we<br>
-&gt; +# want to keep when updating this file.<br>
-&gt; +---<br>
-&gt; +AccessModifierOffset: -4<br>
-&gt; +AlignAfterOpenBracket: Align<br>
-&gt; +AlignConsecutiveAssignments: false<br>
-&gt; +AlignConsecutiveDeclarations: false<br>
-&gt; +AlignEscapedNewlines: Left<br>
-&gt; +AlignOperands: true<br>
-&gt; +AlignTrailingComments: false<br>
-&gt; +AllowAllParametersOfDeclarationOnNextLine: false<br>
-&gt; +AllowShortBlocksOnASingleLine: false<br>
-&gt; +AllowShortCaseLabelsOnASingleLine: false<br>
-&gt; +AllowShortFunctionsOnASingleLine: None<br>
-&gt; +AllowShortIfStatementsOnASingleLine: false<br>
-&gt; +AllowShortLoopsOnASingleLine: false<br>
-&gt; +AlwaysBreakAfterDefinitionReturnType: None<br>
-&gt; +AlwaysBreakAfterReturnType: None<br>
-&gt; +AlwaysBreakBeforeMultilineStrings: false<br>
-&gt; +AlwaysBreakTemplateDeclarations: false<br>
-&gt; +BinPackArguments: true<br>
-&gt; +BinPackParameters: true<br>
-&gt; +BraceWrapping:<br>
-&gt; +=C2=A0 AfterClass: false<br>
-&gt; +=C2=A0 AfterControlStatement: false<br>
-&gt; +=C2=A0 AfterEnum: false<br>
-&gt; +=C2=A0 AfterFunction: true<br>
-&gt; +=C2=A0 AfterNamespace: true<br>
-&gt; +=C2=A0 AfterObjCDeclaration: false<br>
-&gt; +=C2=A0 AfterStruct: false<br>
-&gt; +=C2=A0 AfterUnion: false<br>
-&gt; +=C2=A0 AfterExternBlock: false<br>
-&gt; +=C2=A0 BeforeCatch: false<br>
-&gt; +=C2=A0 BeforeElse: false<br>
-&gt; +=C2=A0 IndentBraces: false<br>
-&gt; +=C2=A0 SplitEmptyFunction: true<br>
-&gt; +=C2=A0 SplitEmptyRecord: true<br>
-&gt; +=C2=A0 SplitEmptyNamespace: true<br>
-&gt; +BreakBeforeBinaryOperators: None<br>
-&gt; +BreakBeforeBraces: Custom<br>
-&gt; +BreakBeforeInheritanceComma: false<br>
-&gt; +BreakBeforeTernaryOperators: false<br>
-&gt; +BreakConstructorInitializersBeforeComma: false<br>
-&gt; +BreakConstructorInitializers: BeforeComma<br>
-&gt; +BreakAfterJavaFieldAnnotations: false<br>
-&gt; +BreakStringLiterals: false<br>
-&gt; +ColumnLimit: 80<br>
-&gt; +CommentPragmas: &#39;^ IWYU pragma:&#39;<br>
-&gt; +CompactNamespaces: false<br>
-&gt; +ConstructorInitializerAllOnOneLineOrOnePerLine: false<br>
-&gt; +ConstructorInitializerIndentWidth: 8<br>
-&gt; +ContinuationIndentWidth: 8<br>
-&gt; +Cpp11BracedListStyle: false<br>
-&gt; +DerivePointerAlignment: false<br>
-&gt; +DisableFormat: false<br>
-&gt; +ExperimentalAutoDetectBinPacking: false<br>
-&gt; +FixNamespaceComments: false<br>
-&gt; +<br>
-&gt; +# Taken from:<br>
-&gt; +#=C2=A0 =C2=A0git grep -h &#39;^#define [^[:space:]]*for_each[^[:spac=
-e:]]*(&#39; include/ tools/ \<br>
-&gt; +#=C2=A0 =C2=A0| sed &quot;s,^#define \([^[:space:]]*for_each[^[:space=
-:]]*\)(.*$,=C2=A0 - &#39;\1&#39;,&quot; \<br>
-&gt; +#=C2=A0 =C2=A0| LC_ALL=3DC sort -u<br>
-&gt; +ForEachMacros: # kernel-value: (long list removed)<br>
-&gt; +=C2=A0 # IGT rules, found via:<br>
-&gt; +=C2=A0 # git grep -h &#39;^#define [^[:space:]]*for_each[^[:space:]]*=
-(&#39; include/ lib/ |<br>
-&gt; +=C2=A0 #=C2=A0 =C2=A0 =C2=A0sed &quot;s,^#define \([^(]\+\).*,&#39;\1=
-&#39;,&quot; |<br>
-&gt; +=C2=A0 #=C2=A0 =C2=A0 =C2=A0grep -v &quot;__&quot; |<br>
-&gt; +=C2=A0 #=C2=A0 =C2=A0 =C2=A0sort -u=C2=A0 =C2=A0 <br>
-&gt; +=C2=A0 - &#39;for_each_collection_data&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_combination&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_connected_output&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_connector_mode&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_ctx_cfg_engine&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_ctx_engine&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_format&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_if&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_memory_region&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_mmap_offset_type&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_physical_engine&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_physical_ring&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_pipe&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_pipe_static&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_pipe_with_single_output&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_pipe_with_valid_output&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_plane_on_pipe&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_prime_number&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_ring&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_subset&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_sysfs_gt_dirfd&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_sysfs_gt_path&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_valid_output_on_pipe&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_variation_nr&#39;<br>
-&gt; +=C2=A0 - &#39;for_each_variation_r&#39;<br>
-&gt; +=C2=A0 - &#39;igt_list_for_each_entry&#39;<br>
-&gt; +=C2=A0 - &#39;igt_list_for_each_entry_reverse&#39;<br>
-&gt; +=C2=A0 - &#39;igt_list_for_each_entry_safe&#39;<br>
-&gt; +=C2=A0 - &#39;igt_list_for_each_entry_safe_reverse&#39;<br>
-&gt; +<br>
-&gt; +IfMacros: # kernel-value: none<br>
-&gt; +=C2=A0 - &#39;igt_dynamic&#39;<br>
-&gt; +=C2=A0 - &#39;igt_fixture&#39;<br>
-&gt; +=C2=A0 - &#39;igt_fork&#39;<br>
-&gt; +=C2=A0 - &#39;igt_subtest&#39;<br>
-&gt; +=C2=A0 - &#39;igt_subtest_f&#39;<br>
-&gt; +=C2=A0 - &#39;igt_subtest_group&#39;<br>
-&gt; +=C2=A0 - &#39;igt_subtest_with_dynamic&#39;<br>
-&gt; +=C2=A0 - &#39;igt_subtest_with_dynamic_f&#39;<br>
-&gt; +=C2=A0 - &#39;igt_until_timeout&#39;<br>
-&gt; +<br>
-&gt; +IncludeBlocks: Preserve<br>
-&gt; +IncludeCategories:<br>
-&gt; +=C2=A0 - Regex: &#39;.*&#39;<br>
-&gt; +=C2=A0 =C2=A0 Priority: 1<br>
-&gt; +IncludeIsMainRegex: &#39;(Test)?$&#39;<br>
-&gt; +IndentCaseLabels: false<br>
-&gt; +IndentGotoLabels: false<br>
-&gt; +IndentPPDirectives: None<br>
-&gt; +IndentWidth: 8<br>
-&gt; +IndentWrappedFunctionNames: false<br>
-&gt; +JavaScriptQuotes: Leave<br>
-&gt; +JavaScriptWrapImports: true<br>
-&gt; +KeepEmptyLinesAtTheStartOfBlocks: false<br>
-&gt; +MacroBlockBegin: &#39;&#39;<br>
-&gt; +MacroBlockEnd: &#39;&#39;<br>
-&gt; +MaxEmptyLinesToKeep: 1<br>
-&gt; +NamespaceIndentation: None<br>
-&gt; +ObjCBinPackProtocolList: Auto<br>
-&gt; +ObjCBlockIndentWidth: 8<br>
-&gt; +ObjCSpaceAfterProperty: true<br>
-&gt; +ObjCSpaceBeforeProtocolList: true<br>
-&gt; +<br>
-&gt; +# Taken from git&#39;s rules<br>
-&gt; +PenaltyBreakAssignment: 10<br>
-&gt; +PenaltyBreakBeforeFirstCallParameter: 30<br>
-&gt; +PenaltyBreakComment: 10<br>
-&gt; +PenaltyBreakFirstLessLess: 0<br>
-&gt; +PenaltyBreakString: 10<br>
-&gt; +PenaltyExcessCharacter: 100<br>
-&gt; +PenaltyReturnTypeOnItsOwnLine: 60<br>
-&gt; +<br>
-&gt; +PointerAlignment: Right<br>
-&gt; +ReflowComments: true # kernel-value: false<br>
-&gt; +SortIncludes: false<br>
-&gt; +SortUsingDeclarations: false<br>
-&gt; +SpaceAfterCStyleCast: false<br>
-&gt; +SpaceAfterTemplateKeyword: true<br>
-&gt; +SpaceBeforeAssignmentOperators: true<br>
-&gt; +SpaceBeforeCtorInitializerColon: true<br>
-&gt; +SpaceBeforeInheritanceColon: true<br>
-&gt; +SpaceBeforeParens: ControlStatementsExceptForEachMacros<br>
-&gt; +SpaceBeforeRangeBasedForLoopColon: true<br>
-&gt; +SpaceInEmptyParentheses: false<br>
-&gt; +SpacesBeforeTrailingComments: 1<br>
-&gt; +SpacesInAngles: false<br>
-&gt; +SpacesInContainerLiterals: false<br>
-&gt; +SpacesInCStyleCastParentheses: false<br>
-&gt; +SpacesInParentheses: false<br>
-&gt; +SpacesInSquareBrackets: false<br>
-&gt; +Standard: Cpp03<br>
-&gt; +TabWidth: 8<br>
-&gt; +UseTab: Always<br>
-&gt; +...<br>
-&gt; diff --git a/.editorconfig b/.editorconfig<br>
-&gt; index 7b7f1375..5c7e31d3 100644<br>
-&gt; --- a/.editorconfig<br>
-&gt; +++ b/.editorconfig<br>
-&gt; @@ -1,5 +1,7 @@<br>
-&gt; -# To use this config in your editor, follow the instructions at:<br>
-&gt; -# <a href=3D"http://editorconfig.org" rel=3D"noreferrer" target=3D"_b=
-lank">http://editorconfig.org</a><br>
-&gt; +# To use this config in your editor, follow the instructions at<br>
-&gt; +# <a href=3D"http://editorconfig.org" rel=3D"noreferrer" target=3D"_b=
-lank">http://editorconfig.org</a>. You can also use &quot;clang-format&quot=
-; for new C<br>
-&gt; +# code (see CONTRIBUTING.md for suggestions and .clang-format for mor=
-e<br>
-&gt; +# details).<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 root =3D true<br>
-&gt;=C2=A0 <br>
-&gt; diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md<br>
-&gt; index 6d1294ad..8d7320b7 100644<br>
-&gt; --- a/CONTRIBUTING.md<br>
-&gt; +++ b/CONTRIBUTING.md<br>
-&gt; @@ -10,8 +10,9 @@ improvements for documentation and new tools and tes=
-tcases.<br>
-&gt;=C2=A0 The Code<br>
-&gt;=C2=A0 --------<br>
-&gt;=C2=A0 <br>
-&gt; -- The code should follow kernel coding style:<br>
-&gt; -=C2=A0 <a href=3D"https://www.kernel.org/doc/html/latest/process/codi=
-ng-style.html" rel=3D"noreferrer" target=3D"_blank">https://www.kernel.org/=
-doc/html/latest/process/coding-style.html</a><br>
-&gt; +- The code should follow [kernel coding style](coding-style). Before<=
-br>
-&gt; +=C2=A0 sending out a patch, changes can be formatted with<br>
-&gt; +=C2=A0 [git-clang-format](git-clang-format).<br>
-<br>
-I meant pointing to .editorconfig here.<br>
-<br>
-<br>
--- <br>
-Petri Latvala<br>
-<br>
-<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 - Testcases (subtests) have to use minus signs (-) as a word sep=
-arator.<br>
-&gt;=C2=A0 =C2=A0 The generated documentation contains glossary of commonly=
- used terms.<br>
-&gt; @@ -30,9 +31,10 @@ The Code<br>
-&gt;=C2=A0 =C2=A0 provided by the igt library. The semantic patch lib/igt.c=
-occi can help with<br>
-&gt;=C2=A0 =C2=A0 more automatic conversions.<br>
-&gt;=C2=A0 <br>
-&gt; +[coding-style]: <a href=3D"https://www.kernel.org/doc/html/latest/pro=
-cess/coding-style.html" rel=3D"noreferrer" target=3D"_blank">https://www.ke=
-rnel.org/doc/html/latest/process/coding-style.html</a><br>
-&gt; +[git-clang-format]: <a href=3D"https://github.com/llvm-mirror/clang/b=
-lob/master/tools/clang-format/git-clang-format" rel=3D"noreferrer" target=
-=3D"_blank">https://github.com/llvm-mirror/clang/blob/master/tools/clang-fo=
-rmat/git-clang-format</a><br>
-&gt;=C2=A0 [igt-describe]: <a href=3D"https://drm.pages.freedesktop.org/igt=
--gpu-tools/igt-gpu-tools-Core.html#igt-describe" rel=3D"noreferrer" target=
-=3D"_blank">https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-C=
-ore.html#igt-describe</a><br>
-&gt;=C2=A0 <br>
-&gt; -<br>
-&gt;=C2=A0 Sending Patches<br>
-&gt;=C2=A0 ---------------<br>
-&gt;=C2=A0 <br>
-&gt; -- <br>
-&gt; 2.37.1.359.gd136c6c3e2-goog<br>
-&gt; <br>
-</blockquote></div>
-
---000000000000540c2805e4e13f71--
+diff --git a/.clang-format b/.clang-format
+new file mode 100644
+index 00000000..9b87ea1f
+--- /dev/null
++++ b/.clang-format
+@@ -0,0 +1,682 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# clang-format configuration file. Intended for clang-format >= 11.
++#
++# For more information, see:
++#
++#   Documentation/process/clang-format.rst
++#   https://clang.llvm.org/docs/ClangFormat.html
++#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
++#
++---
++AccessModifierOffset: -4
++AlignAfterOpenBracket: Align
++AlignConsecutiveAssignments: false
++AlignConsecutiveDeclarations: false
++AlignEscapedNewlines: Left
++AlignOperands: true
++AlignTrailingComments: false
++AllowAllParametersOfDeclarationOnNextLine: false
++AllowShortBlocksOnASingleLine: false
++AllowShortCaseLabelsOnASingleLine: false
++AllowShortFunctionsOnASingleLine: None
++AllowShortIfStatementsOnASingleLine: false
++AllowShortLoopsOnASingleLine: false
++AlwaysBreakAfterDefinitionReturnType: None
++AlwaysBreakAfterReturnType: None
++AlwaysBreakBeforeMultilineStrings: false
++AlwaysBreakTemplateDeclarations: false
++BinPackArguments: true
++BinPackParameters: true
++BraceWrapping:
++  AfterClass: false
++  AfterControlStatement: false
++  AfterEnum: false
++  AfterFunction: true
++  AfterNamespace: true
++  AfterObjCDeclaration: false
++  AfterStruct: false
++  AfterUnion: false
++  AfterExternBlock: false
++  BeforeCatch: false
++  BeforeElse: false
++  IndentBraces: false
++  SplitEmptyFunction: true
++  SplitEmptyRecord: true
++  SplitEmptyNamespace: true
++BreakBeforeBinaryOperators: None
++BreakBeforeBraces: Custom
++BreakBeforeInheritanceComma: false
++BreakBeforeTernaryOperators: false
++BreakConstructorInitializersBeforeComma: false
++BreakConstructorInitializers: BeforeComma
++BreakAfterJavaFieldAnnotations: false
++BreakStringLiterals: false
++ColumnLimit: 80
++CommentPragmas: '^ IWYU pragma:'
++CompactNamespaces: false
++ConstructorInitializerAllOnOneLineOrOnePerLine: false
++ConstructorInitializerIndentWidth: 8
++ContinuationIndentWidth: 8
++Cpp11BracedListStyle: false
++DerivePointerAlignment: false
++DisableFormat: false
++ExperimentalAutoDetectBinPacking: false
++FixNamespaceComments: false
++
++# Taken from:
++#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ tools/ \
++#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1'," \
++#   | LC_ALL=C sort -u
++ForEachMacros:
++  - '__ata_qc_for_each'
++  - '__bio_for_each_bvec'
++  - '__bio_for_each_segment'
++  - '__evlist__for_each_entry'
++  - '__evlist__for_each_entry_continue'
++  - '__evlist__for_each_entry_from'
++  - '__evlist__for_each_entry_reverse'
++  - '__evlist__for_each_entry_safe'
++  - '__for_each_mem_range'
++  - '__for_each_mem_range_rev'
++  - '__for_each_thread'
++  - '__hlist_for_each_rcu'
++  - '__map__for_each_symbol_by_name'
++  - '__perf_evlist__for_each_entry'
++  - '__perf_evlist__for_each_entry_reverse'
++  - '__perf_evlist__for_each_entry_safe'
++  - '__rq_for_each_bio'
++  - '__shost_for_each_device'
++  - 'apei_estatus_for_each_section'
++  - 'ata_for_each_dev'
++  - 'ata_for_each_link'
++  - 'ata_qc_for_each'
++  - 'ata_qc_for_each_raw'
++  - 'ata_qc_for_each_with_internal'
++  - 'ax25_for_each'
++  - 'ax25_uid_for_each'
++  - 'bio_for_each_bvec'
++  - 'bio_for_each_bvec_all'
++  - 'bio_for_each_folio_all'
++  - 'bio_for_each_integrity_vec'
++  - 'bio_for_each_segment'
++  - 'bio_for_each_segment_all'
++  - 'bio_list_for_each'
++  - 'bip_for_each_vec'
++  - 'bond_for_each_slave'
++  - 'bond_for_each_slave_rcu'
++  - 'bpf__perf_for_each_map'
++  - 'bpf__perf_for_each_map_named'
++  - 'bpf_for_each_spilled_reg'
++  - 'bpf_object__for_each_map'
++  - 'bpf_object__for_each_program'
++  - 'bpf_object__for_each_safe'
++  - 'bpf_perf_object__for_each'
++  - 'btree_for_each_safe128'
++  - 'btree_for_each_safe32'
++  - 'btree_for_each_safe64'
++  - 'btree_for_each_safel'
++  - 'card_for_each_dev'
++  - 'cgroup_taskset_for_each'
++  - 'cgroup_taskset_for_each_leader'
++  - 'cpufreq_for_each_efficient_entry_idx'
++  - 'cpufreq_for_each_entry'
++  - 'cpufreq_for_each_entry_idx'
++  - 'cpufreq_for_each_valid_entry'
++  - 'cpufreq_for_each_valid_entry_idx'
++  - 'css_for_each_child'
++  - 'css_for_each_descendant_post'
++  - 'css_for_each_descendant_pre'
++  - 'damon_for_each_region'
++  - 'damon_for_each_region_safe'
++  - 'damon_for_each_scheme'
++  - 'damon_for_each_scheme_safe'
++  - 'damon_for_each_target'
++  - 'damon_for_each_target_safe'
++  - 'data__for_each_file'
++  - 'data__for_each_file_new'
++  - 'data__for_each_file_start'
++  - 'device_for_each_child_node'
++  - 'displayid_iter_for_each'
++  - 'dma_fence_array_for_each'
++  - 'dma_fence_chain_for_each'
++  - 'dma_fence_unwrap_for_each'
++  - 'dma_resv_for_each_fence'
++  - 'dma_resv_for_each_fence_unlocked'
++  - 'do_for_each_ftrace_op'
++  - 'drm_atomic_crtc_for_each_plane'
++  - 'drm_atomic_crtc_state_for_each_plane'
++  - 'drm_atomic_crtc_state_for_each_plane_state'
++  - 'drm_atomic_for_each_plane_damage'
++  - 'drm_client_for_each_connector_iter'
++  - 'drm_client_for_each_modeset'
++  - 'drm_connector_for_each_possible_encoder'
++  - 'drm_for_each_bridge_in_chain'
++  - 'drm_for_each_connector_iter'
++  - 'drm_for_each_crtc'
++  - 'drm_for_each_crtc_reverse'
++  - 'drm_for_each_encoder'
++  - 'drm_for_each_encoder_mask'
++  - 'drm_for_each_fb'
++  - 'drm_for_each_legacy_plane'
++  - 'drm_for_each_plane'
++  - 'drm_for_each_plane_mask'
++  - 'drm_for_each_privobj'
++  - 'drm_mm_for_each_hole'
++  - 'drm_mm_for_each_node'
++  - 'drm_mm_for_each_node_in_range'
++  - 'drm_mm_for_each_node_safe'
++  - 'dsa_switch_for_each_available_port'
++  - 'dsa_switch_for_each_cpu_port'
++  - 'dsa_switch_for_each_port'
++  - 'dsa_switch_for_each_port_continue_reverse'
++  - 'dsa_switch_for_each_port_safe'
++  - 'dsa_switch_for_each_user_port'
++  - 'dsa_tree_for_each_user_port'
++  - 'dso__for_each_symbol'
++  - 'dsos__for_each_with_build_id'
++  - 'elf_hash_for_each_possible'
++  - 'elf_section__for_each_rel'
++  - 'elf_section__for_each_rela'
++  - 'elf_symtab__for_each_symbol'
++  - 'evlist__for_each_cpu'
++  - 'evlist__for_each_entry'
++  - 'evlist__for_each_entry_continue'
++  - 'evlist__for_each_entry_from'
++  - 'evlist__for_each_entry_reverse'
++  - 'evlist__for_each_entry_safe'
++  - 'flow_action_for_each'
++  - 'for_each_acpi_dev_match'
++  - 'for_each_active_dev_scope'
++  - 'for_each_active_drhd_unit'
++  - 'for_each_active_iommu'
++  - 'for_each_aggr_pgid'
++  - 'for_each_available_child_of_node'
++  - 'for_each_bench'
++  - 'for_each_bio'
++  - 'for_each_board_func_rsrc'
++  - 'for_each_btf_ext_rec'
++  - 'for_each_btf_ext_sec'
++  - 'for_each_bvec'
++  - 'for_each_card_auxs'
++  - 'for_each_card_auxs_safe'
++  - 'for_each_card_components'
++  - 'for_each_card_dapms'
++  - 'for_each_card_pre_auxs'
++  - 'for_each_card_prelinks'
++  - 'for_each_card_rtds'
++  - 'for_each_card_rtds_safe'
++  - 'for_each_card_widgets'
++  - 'for_each_card_widgets_safe'
++  - 'for_each_cgroup_storage_type'
++  - 'for_each_child_of_node'
++  - 'for_each_clear_bit'
++  - 'for_each_clear_bit_from'
++  - 'for_each_clear_bitrange'
++  - 'for_each_clear_bitrange_from'
++  - 'for_each_cmd'
++  - 'for_each_cmsghdr'
++  - 'for_each_collection'
++  - 'for_each_comp_order'
++  - 'for_each_compatible_node'
++  - 'for_each_component_dais'
++  - 'for_each_component_dais_safe'
++  - 'for_each_console'
++  - 'for_each_cpu'
++  - 'for_each_cpu_and'
++  - 'for_each_cpu_not'
++  - 'for_each_cpu_wrap'
++  - 'for_each_dapm_widgets'
++  - 'for_each_dedup_cand'
++  - 'for_each_dev_addr'
++  - 'for_each_dev_scope'
++  - 'for_each_dma_cap_mask'
++  - 'for_each_dpcm_be'
++  - 'for_each_dpcm_be_rollback'
++  - 'for_each_dpcm_be_safe'
++  - 'for_each_dpcm_fe'
++  - 'for_each_drhd_unit'
++  - 'for_each_dss_dev'
++  - 'for_each_efi_memory_desc'
++  - 'for_each_efi_memory_desc_in_map'
++  - 'for_each_element'
++  - 'for_each_element_extid'
++  - 'for_each_element_id'
++  - 'for_each_endpoint_of_node'
++  - 'for_each_event'
++  - 'for_each_event_tps'
++  - 'for_each_evictable_lru'
++  - 'for_each_fib6_node_rt_rcu'
++  - 'for_each_fib6_walker_rt'
++  - 'for_each_free_mem_pfn_range_in_zone'
++  - 'for_each_free_mem_pfn_range_in_zone_from'
++  - 'for_each_free_mem_range'
++  - 'for_each_free_mem_range_reverse'
++  - 'for_each_func_rsrc'
++  - 'for_each_group_evsel'
++  - 'for_each_group_member'
++  - 'for_each_hstate'
++  - 'for_each_if'
++  - 'for_each_inject_fn'
++  - 'for_each_insn'
++  - 'for_each_insn_prefix'
++  - 'for_each_intid'
++  - 'for_each_iommu'
++  - 'for_each_ip_tunnel_rcu'
++  - 'for_each_irq_nr'
++  - 'for_each_lang'
++  - 'for_each_link_codecs'
++  - 'for_each_link_cpus'
++  - 'for_each_link_platforms'
++  - 'for_each_lru'
++  - 'for_each_matching_node'
++  - 'for_each_matching_node_and_match'
++  - 'for_each_mem_pfn_range'
++  - 'for_each_mem_range'
++  - 'for_each_mem_range_rev'
++  - 'for_each_mem_region'
++  - 'for_each_member'
++  - 'for_each_memory'
++  - 'for_each_migratetype_order'
++  - 'for_each_missing_reg'
++  - 'for_each_net'
++  - 'for_each_net_continue_reverse'
++  - 'for_each_net_rcu'
++  - 'for_each_netdev'
++  - 'for_each_netdev_continue'
++  - 'for_each_netdev_continue_rcu'
++  - 'for_each_netdev_continue_reverse'
++  - 'for_each_netdev_feature'
++  - 'for_each_netdev_in_bond_rcu'
++  - 'for_each_netdev_rcu'
++  - 'for_each_netdev_reverse'
++  - 'for_each_netdev_safe'
++  - 'for_each_new_connector_in_state'
++  - 'for_each_new_crtc_in_state'
++  - 'for_each_new_mst_mgr_in_state'
++  - 'for_each_new_plane_in_state'
++  - 'for_each_new_plane_in_state_reverse'
++  - 'for_each_new_private_obj_in_state'
++  - 'for_each_new_reg'
++  - 'for_each_node'
++  - 'for_each_node_by_name'
++  - 'for_each_node_by_type'
++  - 'for_each_node_mask'
++  - 'for_each_node_state'
++  - 'for_each_node_with_cpus'
++  - 'for_each_node_with_property'
++  - 'for_each_nonreserved_multicast_dest_pgid'
++  - 'for_each_of_allnodes'
++  - 'for_each_of_allnodes_from'
++  - 'for_each_of_cpu_node'
++  - 'for_each_of_pci_range'
++  - 'for_each_old_connector_in_state'
++  - 'for_each_old_crtc_in_state'
++  - 'for_each_old_mst_mgr_in_state'
++  - 'for_each_old_plane_in_state'
++  - 'for_each_old_private_obj_in_state'
++  - 'for_each_oldnew_connector_in_state'
++  - 'for_each_oldnew_crtc_in_state'
++  - 'for_each_oldnew_mst_mgr_in_state'
++  - 'for_each_oldnew_plane_in_state'
++  - 'for_each_oldnew_plane_in_state_reverse'
++  - 'for_each_oldnew_private_obj_in_state'
++  - 'for_each_online_cpu'
++  - 'for_each_online_node'
++  - 'for_each_online_pgdat'
++  - 'for_each_path'
++  - 'for_each_pci_bridge'
++  - 'for_each_pci_dev'
++  - 'for_each_pcm_streams'
++  - 'for_each_physmem_range'
++  - 'for_each_populated_zone'
++  - 'for_each_possible_cpu'
++  - 'for_each_present_cpu'
++  - 'for_each_prime_number'
++  - 'for_each_prime_number_from'
++  - 'for_each_probe_cache_entry'
++  - 'for_each_process'
++  - 'for_each_process_thread'
++  - 'for_each_prop_codec_conf'
++  - 'for_each_prop_dai_codec'
++  - 'for_each_prop_dai_cpu'
++  - 'for_each_prop_dlc_codecs'
++  - 'for_each_prop_dlc_cpus'
++  - 'for_each_prop_dlc_platforms'
++  - 'for_each_property_of_node'
++  - 'for_each_reg'
++  - 'for_each_reg_filtered'
++  - 'for_each_registered_fb'
++  - 'for_each_requested_gpio'
++  - 'for_each_requested_gpio_in_range'
++  - 'for_each_reserved_mem_range'
++  - 'for_each_reserved_mem_region'
++  - 'for_each_rtd_codec_dais'
++  - 'for_each_rtd_components'
++  - 'for_each_rtd_cpu_dais'
++  - 'for_each_rtd_dais'
++  - 'for_each_script'
++  - 'for_each_sec'
++  - 'for_each_set_bit'
++  - 'for_each_set_bit_from'
++  - 'for_each_set_bitrange'
++  - 'for_each_set_bitrange_from'
++  - 'for_each_set_clump8'
++  - 'for_each_sg'
++  - 'for_each_sg_dma_page'
++  - 'for_each_sg_page'
++  - 'for_each_sgtable_dma_page'
++  - 'for_each_sgtable_dma_sg'
++  - 'for_each_sgtable_page'
++  - 'for_each_sgtable_sg'
++  - 'for_each_shell_test'
++  - 'for_each_sibling_event'
++  - 'for_each_subelement'
++  - 'for_each_subelement_extid'
++  - 'for_each_subelement_id'
++  - 'for_each_sublist'
++  - 'for_each_subsystem'
++  - 'for_each_supported_activate_fn'
++  - 'for_each_supported_inject_fn'
++  - 'for_each_test'
++  - 'for_each_thread'
++  - 'for_each_token'
++  - 'for_each_unicast_dest_pgid'
++  - 'for_each_vsi'
++  - 'for_each_wakeup_source'
++  - 'for_each_zone'
++  - 'for_each_zone_zonelist'
++  - 'for_each_zone_zonelist_nodemask'
++  - 'func_for_each_insn'
++  - 'fwnode_for_each_available_child_node'
++  - 'fwnode_for_each_child_node'
++  - 'fwnode_graph_for_each_endpoint'
++  - 'gadget_for_each_ep'
++  - 'genradix_for_each'
++  - 'genradix_for_each_from'
++  - 'hash_for_each'
++  - 'hash_for_each_possible'
++  - 'hash_for_each_possible_rcu'
++  - 'hash_for_each_possible_rcu_notrace'
++  - 'hash_for_each_possible_safe'
++  - 'hash_for_each_rcu'
++  - 'hash_for_each_safe'
++  - 'hashmap__for_each_entry'
++  - 'hashmap__for_each_entry_safe'
++  - 'hashmap__for_each_key_entry'
++  - 'hashmap__for_each_key_entry_safe'
++  - 'hctx_for_each_ctx'
++  - 'hists__for_each_format'
++  - 'hists__for_each_sort_list'
++  - 'hlist_bl_for_each_entry'
++  - 'hlist_bl_for_each_entry_rcu'
++  - 'hlist_bl_for_each_entry_safe'
++  - 'hlist_for_each'
++  - 'hlist_for_each_entry'
++  - 'hlist_for_each_entry_continue'
++  - 'hlist_for_each_entry_continue_rcu'
++  - 'hlist_for_each_entry_continue_rcu_bh'
++  - 'hlist_for_each_entry_from'
++  - 'hlist_for_each_entry_from_rcu'
++  - 'hlist_for_each_entry_rcu'
++  - 'hlist_for_each_entry_rcu_bh'
++  - 'hlist_for_each_entry_rcu_notrace'
++  - 'hlist_for_each_entry_safe'
++  - 'hlist_for_each_entry_srcu'
++  - 'hlist_for_each_safe'
++  - 'hlist_nulls_for_each_entry'
++  - 'hlist_nulls_for_each_entry_from'
++  - 'hlist_nulls_for_each_entry_rcu'
++  - 'hlist_nulls_for_each_entry_safe'
++  - 'i3c_bus_for_each_i2cdev'
++  - 'i3c_bus_for_each_i3cdev'
++  - 'idr_for_each_entry'
++  - 'idr_for_each_entry_continue'
++  - 'idr_for_each_entry_continue_ul'
++  - 'idr_for_each_entry_ul'
++  - 'in_dev_for_each_ifa_rcu'
++  - 'in_dev_for_each_ifa_rtnl'
++  - 'inet_bind_bucket_for_each'
++  - 'inet_lhash2_for_each_icsk'
++  - 'inet_lhash2_for_each_icsk_continue'
++  - 'inet_lhash2_for_each_icsk_rcu'
++  - 'intlist__for_each_entry'
++  - 'intlist__for_each_entry_safe'
++  - 'kcore_copy__for_each_phdr'
++  - 'key_for_each'
++  - 'key_for_each_safe'
++  - 'klp_for_each_func'
++  - 'klp_for_each_func_safe'
++  - 'klp_for_each_func_static'
++  - 'klp_for_each_object'
++  - 'klp_for_each_object_safe'
++  - 'klp_for_each_object_static'
++  - 'kunit_suite_for_each_test_case'
++  - 'kvm_for_each_memslot'
++  - 'kvm_for_each_memslot_in_gfn_range'
++  - 'kvm_for_each_vcpu'
++  - 'libbpf_nla_for_each_attr'
++  - 'list_for_each'
++  - 'list_for_each_codec'
++  - 'list_for_each_codec_safe'
++  - 'list_for_each_continue'
++  - 'list_for_each_entry'
++  - 'list_for_each_entry_continue'
++  - 'list_for_each_entry_continue_rcu'
++  - 'list_for_each_entry_continue_reverse'
++  - 'list_for_each_entry_from'
++  - 'list_for_each_entry_from_rcu'
++  - 'list_for_each_entry_from_reverse'
++  - 'list_for_each_entry_lockless'
++  - 'list_for_each_entry_rcu'
++  - 'list_for_each_entry_reverse'
++  - 'list_for_each_entry_safe'
++  - 'list_for_each_entry_safe_continue'
++  - 'list_for_each_entry_safe_from'
++  - 'list_for_each_entry_safe_reverse'
++  - 'list_for_each_entry_srcu'
++  - 'list_for_each_from'
++  - 'list_for_each_prev'
++  - 'list_for_each_prev_safe'
++  - 'list_for_each_safe'
++  - 'llist_for_each'
++  - 'llist_for_each_entry'
++  - 'llist_for_each_entry_safe'
++  - 'llist_for_each_safe'
++  - 'map__for_each_symbol'
++  - 'map__for_each_symbol_by_name'
++  - 'map_for_each_event'
++  - 'map_for_each_metric'
++  - 'maps__for_each_entry'
++  - 'maps__for_each_entry_safe'
++  - 'mci_for_each_dimm'
++  - 'media_device_for_each_entity'
++  - 'media_device_for_each_intf'
++  - 'media_device_for_each_link'
++  - 'media_device_for_each_pad'
++  - 'msi_for_each_desc'
++  - 'nanddev_io_for_each_page'
++  - 'netdev_for_each_lower_dev'
++  - 'netdev_for_each_lower_private'
++  - 'netdev_for_each_lower_private_rcu'
++  - 'netdev_for_each_mc_addr'
++  - 'netdev_for_each_uc_addr'
++  - 'netdev_for_each_upper_dev_rcu'
++  - 'netdev_hw_addr_list_for_each'
++  - 'nft_rule_for_each_expr'
++  - 'nla_for_each_attr'
++  - 'nla_for_each_nested'
++  - 'nlmsg_for_each_attr'
++  - 'nlmsg_for_each_msg'
++  - 'nr_neigh_for_each'
++  - 'nr_neigh_for_each_safe'
++  - 'nr_node_for_each'
++  - 'nr_node_for_each_safe'
++  - 'of_for_each_phandle'
++  - 'of_property_for_each_string'
++  - 'of_property_for_each_u32'
++  - 'pci_bus_for_each_resource'
++  - 'pcl_for_each_chunk'
++  - 'pcl_for_each_segment'
++  - 'pcm_for_each_format'
++  - 'perf_config_items__for_each_entry'
++  - 'perf_config_sections__for_each_entry'
++  - 'perf_config_set__for_each_entry'
++  - 'perf_cpu_map__for_each_cpu'
++  - 'perf_evlist__for_each_entry'
++  - 'perf_evlist__for_each_entry_reverse'
++  - 'perf_evlist__for_each_entry_safe'
++  - 'perf_evlist__for_each_evsel'
++  - 'perf_evlist__for_each_mmap'
++  - 'perf_hpp_list__for_each_format'
++  - 'perf_hpp_list__for_each_format_safe'
++  - 'perf_hpp_list__for_each_sort_list'
++  - 'perf_hpp_list__for_each_sort_list_safe'
++  - 'perf_pmu__for_each_hybrid_pmu'
++  - 'ping_portaddr_for_each_entry'
++  - 'plist_for_each'
++  - 'plist_for_each_continue'
++  - 'plist_for_each_entry'
++  - 'plist_for_each_entry_continue'
++  - 'plist_for_each_entry_safe'
++  - 'plist_for_each_safe'
++  - 'pnp_for_each_card'
++  - 'pnp_for_each_dev'
++  - 'protocol_for_each_card'
++  - 'protocol_for_each_dev'
++  - 'queue_for_each_hw_ctx'
++  - 'radix_tree_for_each_slot'
++  - 'radix_tree_for_each_tagged'
++  - 'rb_for_each'
++  - 'rbtree_postorder_for_each_entry_safe'
++  - 'rdma_for_each_block'
++  - 'rdma_for_each_port'
++  - 'rdma_umem_for_each_dma_block'
++  - 'resort_rb__for_each_entry'
++  - 'resource_list_for_each_entry'
++  - 'resource_list_for_each_entry_safe'
++  - 'rhl_for_each_entry_rcu'
++  - 'rhl_for_each_rcu'
++  - 'rht_for_each'
++  - 'rht_for_each_entry'
++  - 'rht_for_each_entry_from'
++  - 'rht_for_each_entry_rcu'
++  - 'rht_for_each_entry_rcu_from'
++  - 'rht_for_each_entry_safe'
++  - 'rht_for_each_from'
++  - 'rht_for_each_rcu'
++  - 'rht_for_each_rcu_from'
++  - 'rq_for_each_bvec'
++  - 'rq_for_each_segment'
++  - 'rq_list_for_each'
++  - 'rq_list_for_each_safe'
++  - 'scsi_for_each_prot_sg'
++  - 'scsi_for_each_sg'
++  - 'sctp_for_each_hentry'
++  - 'sctp_skb_for_each'
++  - 'sec_for_each_insn'
++  - 'sec_for_each_insn_continue'
++  - 'sec_for_each_insn_from'
++  - 'shdma_for_each_chan'
++  - 'shost_for_each_device'
++  - 'sk_for_each'
++  - 'sk_for_each_bound'
++  - 'sk_for_each_entry_offset_rcu'
++  - 'sk_for_each_from'
++  - 'sk_for_each_rcu'
++  - 'sk_for_each_safe'
++  - 'sk_nulls_for_each'
++  - 'sk_nulls_for_each_from'
++  - 'sk_nulls_for_each_rcu'
++  - 'snd_array_for_each'
++  - 'snd_pcm_group_for_each_entry'
++  - 'snd_soc_dapm_widget_for_each_path'
++  - 'snd_soc_dapm_widget_for_each_path_safe'
++  - 'snd_soc_dapm_widget_for_each_sink_path'
++  - 'snd_soc_dapm_widget_for_each_source_path'
++  - 'strlist__for_each_entry'
++  - 'strlist__for_each_entry_safe'
++  - 'sym_for_each_insn'
++  - 'sym_for_each_insn_continue_reverse'
++  - 'symbols__for_each_entry'
++  - 'tb_property_for_each'
++  - 'tcf_act_for_each_action'
++  - 'tcf_exts_for_each_action'
++  - 'udp_portaddr_for_each_entry'
++  - 'udp_portaddr_for_each_entry_rcu'
++  - 'usb_hub_for_each_child'
++  - 'v4l2_device_for_each_subdev'
++  - 'v4l2_m2m_for_each_dst_buf'
++  - 'v4l2_m2m_for_each_dst_buf_safe'
++  - 'v4l2_m2m_for_each_src_buf'
++  - 'v4l2_m2m_for_each_src_buf_safe'
++  - 'virtio_device_for_each_vq'
++  - 'while_for_each_ftrace_op'
++  - 'xa_for_each'
++  - 'xa_for_each_marked'
++  - 'xa_for_each_range'
++  - 'xa_for_each_start'
++  - 'xas_for_each'
++  - 'xas_for_each_conflict'
++  - 'xas_for_each_marked'
++  - 'xbc_array_for_each_value'
++  - 'xbc_for_each_key_value'
++  - 'xbc_node_for_each_array_value'
++  - 'xbc_node_for_each_child'
++  - 'xbc_node_for_each_key_value'
++  - 'xbc_node_for_each_subkey'
++  - 'zorro_for_each_dev'
++
++IncludeBlocks: Preserve
++IncludeCategories:
++  - Regex: '.*'
++    Priority: 1
++IncludeIsMainRegex: '(Test)?$'
++IndentCaseLabels: false
++IndentGotoLabels: false
++IndentPPDirectives: None
++IndentWidth: 8
++IndentWrappedFunctionNames: false
++JavaScriptQuotes: Leave
++JavaScriptWrapImports: true
++KeepEmptyLinesAtTheStartOfBlocks: false
++MacroBlockBegin: ''
++MacroBlockEnd: ''
++MaxEmptyLinesToKeep: 1
++NamespaceIndentation: None
++ObjCBinPackProtocolList: Auto
++ObjCBlockIndentWidth: 8
++ObjCSpaceAfterProperty: true
++ObjCSpaceBeforeProtocolList: true
++
++# Taken from git's rules
++PenaltyBreakAssignment: 10
++PenaltyBreakBeforeFirstCallParameter: 30
++PenaltyBreakComment: 10
++PenaltyBreakFirstLessLess: 0
++PenaltyBreakString: 10
++PenaltyExcessCharacter: 100
++PenaltyReturnTypeOnItsOwnLine: 60
++
++PointerAlignment: Right
++ReflowComments: false
++SortIncludes: false
++SortUsingDeclarations: false
++SpaceAfterCStyleCast: false
++SpaceAfterTemplateKeyword: true
++SpaceBeforeAssignmentOperators: true
++SpaceBeforeCtorInitializerColon: true
++SpaceBeforeInheritanceColon: true
++SpaceBeforeParens: ControlStatementsExceptForEachMacros
++SpaceBeforeRangeBasedForLoopColon: true
++SpaceInEmptyParentheses: false
++SpacesBeforeTrailingComments: 1
++SpacesInAngles: false
++SpacesInContainerLiterals: false
++SpacesInCStyleCastParentheses: false
++SpacesInParentheses: false
++SpacesInSquareBrackets: false
++Standard: Cpp03
++TabWidth: 8
++UseTab: Always
++...
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 6d1294ad..8d7320b7 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -10,8 +10,9 @@ improvements for documentation and new tools and testcases.
+ The Code
+ --------
+ 
+-- The code should follow kernel coding style:
+-  https://www.kernel.org/doc/html/latest/process/coding-style.html
++- The code should follow [kernel coding style](coding-style). Before
++  sending out a patch, changes can be formatted with
++  [git-clang-format](git-clang-format).
+ 
+ - Testcases (subtests) have to use minus signs (-) as a word separator.
+   The generated documentation contains glossary of commonly used terms.
+@@ -30,9 +31,10 @@ The Code
+   provided by the igt library. The semantic patch lib/igt.cocci can help with
+   more automatic conversions.
+ 
++[coding-style]: https://www.kernel.org/doc/html/latest/process/coding-style.html
++[git-clang-format]: https://github.com/llvm-mirror/clang/blob/master/tools/clang-format/git-clang-format
+ [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+ 
+-
+ Sending Patches
+ ---------------
+ 
+-- 
+2.37.1.359.gd136c6c3e2-goog
