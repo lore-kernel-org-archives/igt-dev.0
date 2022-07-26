@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C44B2BEA9
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Jul 2022 10:13:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9241F2BEAE
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Jul 2022 10:13:17 +0000 (UTC)
 From: Karolina Drobnik <karolina.drobnik@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Jul 2022 12:13:11 +0200
-Message-Id: <b484160b6b2e4bc7c708c92177ccfa8ce0c648b9.1658826356.git.karolina.drobnik@intel.com>
+Date: Tue, 26 Jul 2022 12:13:12 +0200
+Message-Id: <8e33260c9fdfbc3d4508d71903063ebb1a2dcc6c.1658826356.git.karolina.drobnik@intel.com>
 In-Reply-To: <cover.1658826356.git.karolina.drobnik@intel.com>
 References: <cover.1658826356.git.karolina.drobnik@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_exec_fence: Check stored
- values only for valid workloads
+Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/gem_exec_fence: Coordinate
+ sleep with the start of the request
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,56 +27,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris@chris-wilson.co.uk>
 
-test_fence_await verifies if a fence used to pipeline work signals
-correctly. await-hang and nb-await-hang test cases inject GPU hang,
-which causes an erroneous state, meaning the fence will be signaled
-without execution. The error causes an instant reset of the command
-streamer for the hanging workload. This revealed a problem with how
-we verify the fence state and results. The test assumes that the
-error notification happens after a hang is declared, which takes
-longer than submitting the next set of fences, making the test pass
-every time. With the immediate reset, this might not happen, so the
-assertion fails, as there are no active fences in the GPU hang case.
-
-Move the check for active fence to the path for non-hanging workload,
-and verify results only in this scenario.
+Wait until we know the request is running on the GPU before sleeping
+and giving a chance for other fences to run ahead.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
 ---
- tests/i915/gem_exec_fence.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ tests/i915/gem_exec_fence.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index d46914c2..260aa82c 100644
+index 260aa82c..7ff7614d 100644
 --- a/tests/i915/gem_exec_fence.c
 +++ b/tests/i915/gem_exec_fence.c
-@@ -350,18 +350,20 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+@@ -324,7 +324,9 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ 			    .ahnd = ahnd,
+ 			    .ctx = ctx,
+ 			    .engine = e->flags,
+-			    .flags = IGT_SPIN_FENCE_OUT | spin_hang(flags));
++			    .flags = IGT_SPIN_FENCE_OUT |
++				     IGT_SPIN_POLL_RUN |
++				     spin_hang(flags));
+ 	igt_assert(spin->out_fence != -1);
+ 
+ 	i = 0;
+@@ -347,6 +349,7 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ 		i++;
+ 	}
+ 
++	igt_spin_busywait_until_started(spin);
  	/* Long, but not too long to anger preemption disable checks */
  	usleep(50 * 1000); /* 50 ms, typical preempt reset is 150+ms */
- 
--	/* Check for invalidly completing the task early */
--	igt_assert(fence_busy(spin->out_fence));
--	for (int n = 0; n < i; n++)
--		igt_assert_eq_u32(out[n], 0);
-+	if ((flags & HANG) == 0) {
-+		/* Check for invalidly completing the task early */
-+		igt_assert(fence_busy(spin->out_fence));
-+		for (int n = 0; n < i; n++)
-+			igt_assert_eq_u32(out[n], 0);
- 
--	if ((flags & HANG) == 0)
- 		igt_spin_end(spin);
-+	}
- 
- 	igt_waitchildren();
- 
- 	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
--	while (i--)
-+	igt_assert(!fence_busy(spin->out_fence));
-+	while ((flags & HANG) == 0 && i--)
- 		igt_assert_eq_u32(out[i], i);
- 	munmap(out, 4096);
  
 -- 
 2.25.1
