@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22D9AC4FFB
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 18:43:03 +0000 (UTC)
-Message-ID: <4330ad72-d7b5-80eb-0236-83944fd6f063@intel.com>
-Date: Thu, 28 Jul 2022 00:12:57 +0530
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com
+ [IPv6:2607:f8b0:4864:20::1130])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C86B1C55F3
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 19:37:24 +0000 (UTC)
+Received: by mail-yw1-x1130.google.com with SMTP id
+ 00721157ae682-31f41584236so77866837b3.5
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 12:37:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org, petri.latvala@intel.com
-References: <20220726031116.974261-1-bhanuprakash.modem@intel.com>
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20220726031116.974261-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_crc: Drop max-size test
+References: <20220720151940.12723-1-markyacoub@chromium.org>
+ <1a809602f7e0de441abd84633f1bb1cc612b2fa3.camel@redhat.com>
+In-Reply-To: <1a809602f7e0de441abd84633f1bb1cc612b2fa3.camel@redhat.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Wed, 27 Jul 2022 15:37:12 -0400
+Message-ID: <CAJUqKUopDdGowFdmx2+ev9Fo+GrbmUffyn8GfqHYsiG92-dqHw@mail.gmail.com>
+To: Lyude Paul <lyude@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH] lib/chamelium: Support MST connectors on
+ reprobe by using connector name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,122 +24,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: robdclark@chromium.org, petri.latvala@intel.com, markyacoub@google.com,
+ igt-dev@lists.freedesktop.org, seanpaul@chromium.org, ihf@google.com,
+ khaled.almahallawy@intel.com, amstan@chromium.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LGTM
-Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
-
-On 26-Jul-22 8:41 AM, Bhanuprakash Modem wrote:
-> As we already covering it by the other tests, there is no point in
-> doing the "max-size" test. Hence dropping it.
-> 
-> This patch will also do some cleanup to avoid skips in igt_dynamic.
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_cursor_crc.c | 47 ++++++++++++++++++++----------------------
->   1 file changed, 22 insertions(+), 25 deletions(-)
-> 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index f07a045a..14d4c4ca 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -576,7 +576,7 @@ static void test_cursor_opaque(data_t *data)
->   	test_cursor_alpha(data);
->   }
->   
-> -static void require_cursor_size(data_t *data, int w, int h)
-> +static bool require_cursor_size(data_t *data, int w, int h)
->   {
->   	igt_fb_t primary_fb;
->   	drmModeModeInfo *mode;
-> @@ -618,14 +618,11 @@ static void require_cursor_size(data_t *data, int w, int h)
->   	igt_remove_fb(data->drm_fd, &primary_fb);
->   	igt_output_set_pipe(output, PIPE_NONE);
->   
-> -	igt_skip_on_f(ret, "Cursor size %dx%d not supported by driver\n", w, h);
-> +	return !!ret;
->   }
->   
->   static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int cursor_h)
->   {
-> -	if (data->fb.fb_id != 0)
-> -		require_cursor_size(data, cursor_w, cursor_h);
-> -
->   	prepare_crtc(data, cursor_w, cursor_h);
->   	testfunc(data);
->   	cleanup_crtc(data);
-> @@ -696,24 +693,15 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->   	char name[32];
->   	enum pipe pipe;
->   
-> -	if (w == 0 && h == 0)
-> -		strcpy(name, "max-size");
-> -	else
-> -		snprintf(name, sizeof(name), "%dx%d", w, h);
-> -
-> -	if (w == 0 && h == 0) {
-> -		w = data->cursor_max_w;
-> -		h = data->cursor_max_h;
-> -		/*
-> -		 * No point in doing the "max-size" test if
-> -		 * it was already covered by the other tests.
-> -		 */
-> -		igt_require_f(w != h || w > 512 || h > 512 ||
-> -			      !is_power_of_two(w) || !is_power_of_two(h),
-> -			      "Cursor max size %dx%d already covered by other tests\n",
-> -			      w, h);
-> -	}
-> +	snprintf(name, sizeof(name), "%dx%d", w, h);
-> +
->   	create_cursor_fb(data, w, h);
-> +	if (require_cursor_size(data, w, h)) {
-> +		igt_debug("Cursor size %dx%d not supported by driver\n", w, h);
-> +
-> +		igt_remove_fb(data->drm_fd, &data->fb);
-> +		return;
-> +	}
->   
->   	for_each_pipe(&data->display, pipe) {
->   		data->pipe = pipe;
-> @@ -807,6 +795,12 @@ static void run_tests_on_pipe(data_t *data)
->   			data->pipe = pipe;
->   			data->flags = TEST_DPMS;
->   
-> +			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
-> +				igt_debug("Cursor size %dx%d not supported by driver\n",
-> +					  data->cursor_max_w, data->cursor_max_h);
-> +				continue;
-> +			}
-> +
->   			igt_dynamic_f("pipe-%s-%s",
->   				      kmstest_pipe_name(pipe),
->   				      data->output->name)
-> @@ -822,6 +816,12 @@ static void run_tests_on_pipe(data_t *data)
->   			data->pipe = pipe;
->   			data->flags = TEST_SUSPEND;
->   
-> +			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
-> +				igt_debug("Cursor size %dx%d not supported by driver\n",
-> +					  data->cursor_max_w, data->cursor_max_h);
-> +				continue;
-> +			}
-> +
->   			igt_dynamic_f("pipe-%s-%s",
->   				      kmstest_pipe_name(pipe),
->   				      data->output->name)
-> @@ -855,9 +855,6 @@ static void run_tests_on_pipe(data_t *data)
->   					igt_subtest_group
->   						run_size_tests(data, size_tests[i].testfunc, w, h);
->   				}
-> -
-> -				igt_subtest_group
-> -					run_size_tests(data, size_tests[i].testfunc, 0, 0);
->   			}
->   		}
->   	}
-
--- 
-~Swati Sharma
+On Tue, Jul 26, 2022 at 7:26 PM Lyude Paul <lyude@redhat.com> wrote:
+>
+> To make sure I'm understanding this code correctly: it seems like we're
+> looking for a downstream MST port by just checking to see if there's an
+> identically named port connected?
+So, what's happening here is that the DUT and Chamelium are required
+to be in static condition, meaning the same ports are always connected
+at all times.
+Before we run any chamelium test, we set up the igt config and
+specifically match the connected ports as shown in this doc:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/1b5f7f139660ac27f3c8b4c4a2d23fdd9430ccab/docs/chamelium.txt#L112
+Through my testing, i saw that even when the connectors were unplugged
+and disappeared, the connector name assigned in igtrc remained the
+same, hence my assumption.
+Given this situation, let me know if my assumption can still hold true.
+>
+> That's unfortunately not very reliable because connector names can change as
+> well, although the names of connectors that are built into the system
+> shouldn't. What we could -possibly- do is go through connector's path
+> properties, and see if they match the previous connector props of the MST
+> port.
+>
+> If this isn't good enough still, then we probably should add a better
+> connector prop to the kernel then the path prop - preferably one that uses a
+> format like this:
+>
+> ${CONN_NAME}-${MST_RAD}
+>
+> On Wed, 2022-07-20 at 11:19 -0400, Mark Yacoub wrote:
+> > [Why]
+> > On unplug, a lone MST connector can become invalid and disappear from
+> > the list of DRM connectors.
+> > When this happens, we can't check for the connector ID as it's no longer
+> > there to check.
+> > Hence, a connector disappearance indicates a disconnect.
+> >
+> > Furthermore, on a replug, the connector ID can change as well. The only
+> > thing that remains unchageable is the connector name.
+> >
+> > [How]
+> > Do not check for connector connetion state using the connector ID.
+> > Iterate through the current connectors and match with the name.
+> > If a connector disappeared, this means it's now disconnected.
+> > If it's there, return its connection status.
+> > Update the port connector ID with the current connector ID in case it
+> > changed on a replug.
+> >
+> > Tested on Volteer with Chamelium V3 connected via a 2-DP-port CableMatters
+> > hub.
+> > Test: kms_chamelium --run-subtest dp-hpd
+> >
+> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> > ---
+> >  lib/igt_chamelium.c | 52 +++++++++++++++++++++++++++++++++++++++------
+> >  1 file changed, 45 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> > index d78ddd61..b5e9bbfd 100644
+> > --- a/lib/igt_chamelium.c
+> > +++ b/lib/igt_chamelium.c
+> > @@ -266,21 +266,59 @@ chamelium_reprobe_connector(igt_display_t *display,
+> >                             struct chamelium_port *port)
+> >  {
+> >         drmModeConnector *connector;
+> > -       drmModeConnection status;
+> > +       drmModeConnection connection_status;
+> >         igt_output_t *output;
+> > +       drmModeRes* res = drmModeGetResources(display->drm_fd);
+> > +       bool is_connector_found = false;
+> > +       int i;
+> >
+> >         igt_debug("Reprobing %s...\n", chamelium_port_get_name(port));
+> > -       connector = chamelium_port_get_connector(chamelium, port, true);
+> > +       for (i = 0; i < res->count_connectors; ++i) {
+> > +               connector = drmModeGetConnector(display->drm_fd, res-
+> > >connectors[i]);
+> > +               /* If the connector is MST and is now unplugged, the spawned
+> > connectors will no
+> > +                  longer be available but can still be counted as part of
+> > res->count_connectors */
+> > +               if (!connector) {
+> > +                       drmModeFreeConnector(connector);
+> > +                       connector = NULL;
+> > +                       continue;
+> > +               }
+> > +
+> > +               char connector_name[50];
+> > +               snprintf(connector_name, 50, "%s-%u",
+> > +                       kmstest_connector_type_str(connector-
+> > >connector_type),
+> > +                       connector->connector_type_id);
+> > +               if (strcmp(connector_name, port->name) == 0) {
+> > +                       is_connector_found = true;
+> > +                       break;
+> > +               }
+> > +
+> > +               drmModeFreeConnector(connector);
+> > +               connector = NULL;
+> > +       }
+> > +       drmModeFreeResources(res);
+> > +
+> > +       if (!is_connector_found) {
+> > +               igt_debug("Connector is not found. This indicates it's
+> > disconnected.\n");
+> > +               igt_assert(!connector);
+> > +               return DRM_MODE_DISCONNECTED;
+> > +       }
+> > +
+> >         igt_assert(connector);
+> > -       status = connector->connection;
+> > +       connection_status = connector->connection;
+> >
+> > -       /* let's make sure that igt_display is up to date too */
+> > +       /* If we still have a connector, let's make sure that igt_display
+> > and the port are up to date too */
+> >         output = igt_output_from_connector(display, connector);
+> > -       output->force_reprobe = true;
+> > -       igt_output_refresh(output);
+> > +       if (output) {
+> > +               output->force_reprobe = true;
+> > +               igt_output_refresh(output);
+> > +       }
+> > +
+> > +       /* If the topology of the connector is MST, the connector ID could
+> > have changed. Update the
+> > +          chamelium port to the current connector ID. */
+> > +       port->connector_id = connector->connector_id;
+> >
+> >         drmModeFreeConnector(connector);
+> > -       return status;
+> > +       return connection_status;
+> >  }
+> >
+> >  /**
+>
+> --
+> Cheers,
+>  Lyude Paul (she/her)
+>  Software Engineer at Red Hat
+>
