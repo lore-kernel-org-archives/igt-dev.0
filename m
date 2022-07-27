@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com
- [IPv6:2607:f8b0:4864:20::f2b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12DF010E64A
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 17:57:38 +0000 (UTC)
-Received: by mail-qv1-xf2b.google.com with SMTP id v2so1929887qvs.12
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 10:57:38 -0700 (PDT)
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com
+ [IPv6:2607:f8b0:4864:20::731])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06FC9C705E
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 20:21:27 +0000 (UTC)
+Received: by mail-qk1-x731.google.com with SMTP id z18so86457qki.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 13:21:27 -0700 (PDT)
 From: Jim Shargo <jshargo@chromium.org>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
  Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>
-Date: Thu, 28 Jul 2022 13:57:36 -0400
-Message-Id: <20220728175736.1893691-1-jshargo@chromium.org>
-In-Reply-To: <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
-References: <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
+Date: Wed, 27 Jul 2022 16:21:25 -0400
+Message-Id: <20220727202125.546432-1-jshargo@chromium.org>
+In-Reply-To: <YuEY1XNsPVb1GzcN@platvala-desk.ger.corp.intel.com>
+References: <YuEY1XNsPVb1GzcN@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] tooling: Add linux's .clang-format
+Subject: [igt-dev] [PATCH i-g-t v2] tooling: Add linux's .clang-format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -36,12 +36,13 @@ I grabbed this from a recent checkout of torvald's repo.
 
 The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e
 
-To make this discoverable to new contributors, this change also
-updates CONTRIBUTING.md with:
+To make this discoverable to new contributors, this change:
 
-  - A link to git-clang-format, which is a useful tool for using
-  clang-format from git just on a commit's changes
-  - A link to .editorconfig to make it more discoverable
+  - Updates CONTRIBUTING.md with a link to git-clang-format, which is
+  a useful tool for using clang-format from git just on a commit's
+  changes.
+  - Updates .editorconfig with a reference to .clang-format and a
+  pointer to CONTRIBUTING.md
 
 Changes made to the linux kernel style:
 
@@ -50,13 +51,12 @@ Changes made to the linux kernel style:
 
 Signed-off-by: Jim Shargo <jshargo@chromium.org>
 ---
-V2 -> V3: Update CONTRIBUTING.md with a note about .editorconfig,
-          remove reference to .clang-format from the .editorconfig
 V1 -> V2: Better support for IGT style and addressing comments
 
  .clang-format   | 176 ++++++++++++++++++++++++++++++++++++++++++++++++
- CONTRIBUTING.md |   9 ++-
- 2 files changed, 182 insertions(+), 3 deletions(-)
+ .editorconfig   |   6 +-
+ CONTRIBUTING.md |   8 ++-
+ 3 files changed, 185 insertions(+), 5 deletions(-)
  create mode 100644 .clang-format
 
 diff --git a/.clang-format b/.clang-format
@@ -241,11 +241,25 @@ index 00000000..da42bead
 +TabWidth: 8
 +UseTab: Always
 +...
+diff --git a/.editorconfig b/.editorconfig
+index 7b7f1375..5c7e31d3 100644
+--- a/.editorconfig
++++ b/.editorconfig
+@@ -1,5 +1,7 @@
+-# To use this config in your editor, follow the instructions at:
+-# http://editorconfig.org
++# To use this config in your editor, follow the instructions at
++# http://editorconfig.org. You can also use "clang-format" for new C
++# code (see CONTRIBUTING.md for suggestions and .clang-format for more
++# details).
+ 
+ root = true
+ 
 diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index 6d1294ad..f2af5a18 100644
+index 6d1294ad..8d7320b7 100644
 --- a/CONTRIBUTING.md
 +++ b/CONTRIBUTING.md
-@@ -10,8 +10,10 @@ improvements for documentation and new tools and testcases.
+@@ -10,8 +10,9 @@ improvements for documentation and new tools and testcases.
  The Code
  --------
  
@@ -253,12 +267,11 @@ index 6d1294ad..f2af5a18 100644
 -  https://www.kernel.org/doc/html/latest/process/coding-style.html
 +- The code should follow [kernel coding style](coding-style). Before
 +  sending out a patch, changes can be formatted with
-+  [git-clang-format](git-clang-format). Editors can be configured
-+  using .editorconfig for additional style support.
++  [git-clang-format](git-clang-format).
  
  - Testcases (subtests) have to use minus signs (-) as a word separator.
    The generated documentation contains glossary of commonly used terms.
-@@ -30,9 +32,10 @@ The Code
+@@ -30,9 +31,10 @@ The Code
    provided by the igt library. The semantic patch lib/igt.cocci can help with
    more automatic conversions.
  
@@ -271,4 +284,4 @@ index 6d1294ad..f2af5a18 100644
  ---------------
  
 -- 
-2.37.1.455.g008518b4e5-goog
+2.37.1.359.gd136c6c3e2-goog
