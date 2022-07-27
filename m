@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7ED4F14BE56
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 11:58:54 +0000 (UTC)
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Petri Latvala <petri.latvala@intel.com>
-Date: Wed, 27 Jul 2022 13:58:48 +0200
-Message-Id: <ceda16ea0f883037750ee6b60eb6951590865d69.1658923128.git.mchehab@kernel.org>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD97393502
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 12:27:17 +0000 (UTC)
+Message-ID: <5f3bc16e-ac4d-5d51-9653-7478f981615f@intel.com>
+Date: Wed, 27 Jul 2022 14:27:02 +0200
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <20220713105342.653916-1-karolina.drobnik@intel.com>
+ <Yt/GvIdBSkRUAxWU@kamilkon-desk1>
+From: Karolina Drobnik <karolina.drobnik@intel.com>
+In-Reply-To: <Yt/GvIdBSkRUAxWU@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] i915/gem_exec_tlb: Look for stale TLB entries
+Subject: Re: [igt-dev] [PATCH i-g-t v4] i915/i915_pm_rps: Check impact of
+ fence ordering on waitboosting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,1226 +22,372 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+Hi,
 
-When we remove an object from the ppGTT, we replace its PTE by pointing
-the address back to the scratch page. Fresh access to that address will
-then report the absence of the page, and return the scratch page
-instead. However, concurrent access to that address will reuse the TLB
-address cache and so continue to read the stale physical page, unless
-the TLB are flushed (prior to the page going out of scope).
+On 26.07.2022 12:49, Kamil Konieczny wrote:
+> Hi Karolina,
+> 
+> few more nits, see below.
+> 
+> On 2022-07-13 at 12:53:42 +0200, Karolina Drobnik wrote:
+>> From: Chris Wilson <chris@chris-wilson.co.uk>
+>>
+>> Currently the wait boost heuristic is evaluated at the start of each
+>> fence wait for a series within dma-resv. There is no strict ordering of
+>> fences defined by dma-resv, and so it turns out that the same operation
+>> under different circumstances can result in different heuristics being
+>> applied, and dramatic performance variations in user applications.
+>>
+>> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/6284
+>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+>> ---
+>> v4:
+>>    - Added test descriptions with igt_describe()
+>> v3:
+>>    - Removed unnecessary calls to gem_write
+>> v2:
+>>    - Introduced batch_create() with arbitration points to prevent hangs
+>>    - Added engine-order subtest
+>>    - Added reporting of GPU frequency
+>>    - Changed runtimes and switched prints from us to ms
+>>
+>>   tests/i915/i915_pm_rps.c | 261 ++++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 255 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+>> index b37f15c2..6125ea60 100644
+>> --- a/tests/i915/i915_pm_rps.c
+>> +++ b/tests/i915/i915_pm_rps.c
+>> @@ -37,8 +37,10 @@
+>>   #include <sys/wait.h>
+>>
+>>   #include "i915/gem.h"
+>> +#include "i915/gem_create.h"
+>>   #include "igt.h"
+>>   #include "igt_dummyload.h"
+>> +#include "igt_perf.h"
+>>   #include "igt_sysfs.h"
+>>
+>>   IGT_TEST_DESCRIPTION("Render P-States tests - verify GPU frequency changes");
+>> @@ -614,14 +616,253 @@ static void waitboost(int fd, bool reset)
+>>   	igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
+>>   }
+>>
+>> +static uint32_t batch_create(int i915, uint64_t sz)
+>> +{
+>> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
+>> +	const uint32_t chk = 0x5 << 23;
+>> +	uint32_t handle = gem_create(i915, sz);
+>> +
+>> +	for (uint64_t pg = 4096; pg + 4096 < sz; pg += 4096)
+>> +		gem_write(i915, handle, pg, &chk, sizeof(chk));
+>> +
+>> +	gem_write(i915, handle, sz - sizeof(bbe), &bbe, sizeof(bbe));
+>> +
+>> +	return handle;
+>> +}
+>> +
+>> +static uint64_t __fence_order(int i915,
+>> +			      struct drm_i915_gem_exec_object2 *obj,
+>> +			      struct drm_i915_gem_execbuffer2 *eb,
+>> +			      uint64_t flags0, uint64_t flags1,
+>> +			      double *outf)
+>> +{
+>> +	uint64_t before[2], after[2];
+>> +	struct timespec tv;
+>> +	int fd;
+>> +
+>> +	gem_quiescent_gpu(i915);
+>> +	fd = perf_i915_open(i915, I915_PMU_ACTUAL_FREQUENCY);
+>> +
+>> +	igt_gettime(&tv);
+>> +
+>> +	obj->flags = flags0;
+>> +	gem_execbuf(i915, eb);
+>> +
+>> +	obj->flags = flags1;
+>> +	gem_execbuf(i915, eb);
+>> +
+>> +	read(fd, before, sizeof(before));
+>> +	gem_sync(i915, obj->handle);
+>> +	read(fd, after, sizeof(after));
+>> +	close(fd);
+>> +
+>> +	after[0] -= before[0];
+>> +	after[1] -= before[1];
+> 
+> Put igt_assert here (check for zero before divide).
 
-Reported-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- lib/i915/intel_memory_region.c |    4 +-
- lib/i915/intel_memory_region.h |    4 +-
- tests/i915/gem_exec_tlb.c      | 1124 ++++++++++++++++++++++++++++++++
- tests/i915/gem_gpgpu_fill.c    |    2 +
- tests/meson.build              |    1 +
- 5 files changed, 1131 insertions(+), 4 deletions(-)
- create mode 100644 tests/i915/gem_exec_tlb.c
+Hmm, isn't that more of a belts and suspenders approach? It's unlikely 
+we'd get zero here. Also, don't we put asserts towards the end of the 
+test whenever possible?
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 93a18982c140..568bace949f6 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -198,7 +198,7 @@ bool gem_has_lmem(int fd)
- /* A version of gem_create_in_memory_region_list which can be allowed to
-    fail so that the object creation can be retried */
- int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
--				       struct drm_i915_gem_memory_class_instance *mem_regions,
-+				       const struct drm_i915_gem_memory_class_instance *mem_regions,
- 				       int num_regions)
- {
- 	struct drm_i915_gem_create_ext_memory_regions ext_regions = {
-@@ -234,7 +234,7 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
-  * @num_regions: @mem_regions length
-  */
- uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
--					  struct drm_i915_gem_memory_class_instance *mem_regions,
-+					  const struct drm_i915_gem_memory_class_instance *mem_regions,
- 					  int num_regions)
- {
- 	uint32_t handle;
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index e1bfe0ca653a..fd04df83b53b 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -65,11 +65,11 @@ unsigned int gem_get_lmem_region_count(int fd);
- bool gem_has_lmem(int fd);
- 
- int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
--				       struct drm_i915_gem_memory_class_instance *mem_regions,
-+				       const struct drm_i915_gem_memory_class_instance *mem_regions,
- 				       int num_regions);
- 
- uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
--					  struct drm_i915_gem_memory_class_instance *mem_regions,
-+					  const struct drm_i915_gem_memory_class_instance *mem_regions,
- 					  int num_regions);
- 
- /*
-diff --git a/tests/i915/gem_exec_tlb.c b/tests/i915/gem_exec_tlb.c
-new file mode 100644
-index 000000000000..ab5c91d6d8fa
---- /dev/null
-+++ b/tests/i915/gem_exec_tlb.c
-@@ -0,0 +1,1124 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ */
-+
-+#include <fcntl.h>
-+#include <sched.h>
-+#include <sys/ioctl.h>
-+#include <sys/poll.h>
-+#include <sys/socket.h>
-+
-+#include "drmtest.h"
-+#include "i830_reg.h"
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+#include "i915/gem_engine_topology.h"
-+#include "i915/gem_mman.h"
-+#include "i915/intel_memory_region.h"
-+#include "igt_aux.h"
-+#include "igt_gt.h"
-+#include "intel_chipset.h"
-+#include "ioctl_wrappers.h"
-+
-+#define TOLERANCE 20 /* ms, allow for a little propagation delay */
-+#define SZ_512K (512 << 10)
-+#define SZ_1M (1 << 20)
-+#define SZ_2M (2 << 20)
-+
-+#define SHRINK 0x1
-+
-+#define NSEC64 ((uint64_t)NSEC_PER_SEC)
-+
-+#define MI_BATCH_BUFFER_START	 (0x31 << 23)
-+#define MI_COND_BATCH_BUFFER_END (0x36 << 23)
-+#define   MI_DO_COMPARE			(1 << 21)
-+#define MI_STORE_DATA_IMM	(0x20 << 23)
-+#define MI_LOAD_REGISTER_IMM	(0x22 << 23)
-+#define MI_STORE_REGISTER_MEM	(0x24 << 23)
-+#define MI_LOAD_REGISTER_MEM	(0x29 << 23)
-+#define MI_SEMAPHORE_WAIT	(0x1c << 23)
-+#define   MI_SEMAPHORE_POLL             (1 << 15)
-+#define   MI_SEMAPHORE_SAD_GT_SDD       (0 << 12)
-+#define   MI_SEMAPHORE_SAD_GTE_SDD      (1 << 12)
-+#define   MI_SEMAPHORE_SAD_LT_SDD       (2 << 12)
-+#define   MI_SEMAPHORE_SAD_LTE_SDD      (3 << 12)
-+#define   MI_SEMAPHORE_SAD_EQ_SDD       (4 << 12)
-+#define   MI_SEMAPHORE_SAD_NEQ_SDD      (5 << 12)
-+
-+#define MI_MATH                      (0x1a << 23)
-+#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
-+/* Opcodes for MI_MATH_INSTR */
-+#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
-+#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
-+#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
-+#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
-+#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
-+#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
-+#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
-+#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
-+#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
-+#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
-+#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
-+#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
-+/* Registers used as operands in MI_MATH_INSTR */
-+#define   MI_MATH_REG(x)                (x)
-+#define   MI_MATH_REG_SRCA              0x20
-+#define   MI_MATH_REG_SRCB              0x21
-+#define   MI_MATH_REG_ACCU              0x31
-+#define   MI_MATH_REG_ZF                0x32
-+#define   MI_MATH_REG_CF                0x33
-+
-+#define XY_SRC_COPY (2 << 29 | 0x53 << 22)
-+#define XY_COLOR (2 << 29 | 0x50 << 22)
-+
-+#define CS_GPR(x) ((base) + 0x600 + 8 * (x))
-+#define CS_TIMESTAMP ((base) + 0x358)
-+
-+static uint32_t __batch_create(int i915, uint32_t offset)
-+{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t handle;
-+
-+	handle = gem_create(i915, offset + 4);
-+	gem_write(i915, handle, offset, &bbe, sizeof(bbe));
-+
-+	return handle;
-+}
-+
-+static uint32_t batch_create(int i915)
-+{
-+	return __batch_create(i915, 0);
-+}
-+
-+static void bind_at(int i915, const intel_ctx_t *ctx,
-+		    const struct intel_execution_engine2 *e,
-+		    uint32_t handle, uint64_t addr, uint64_t size)
-+{
-+	struct drm_i915_gem_exec_object2 obj[2] = {
-+		{ .handle = handle, .offset = addr, .pad_to_size = size, .flags = EXEC_OBJECT_PINNED },
-+		{ batch_create(i915) }
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(obj),
-+		.buffer_count = ARRAY_SIZE(obj),
-+		.flags = e->flags,
-+		.rsvd1 = ctx->id,
-+	};
-+
-+	gem_execbuf(i915, &execbuf);
-+	gem_sync(i915, obj[1].handle);
-+	gem_close(i915, obj[1].handle);
-+}
-+
-+static unsigned long offset_in_page(void *addr)
-+{
-+	return (uintptr_t)addr & 4095;
-+}
-+
-+static uint32_t __read_at(int i915, const intel_ctx_t *ctx,
-+			  const struct intel_execution_engine2 *e,
-+			  const uint32_t base,
-+			  uint64_t addr, uint64_t from)
-+{
-+	const int gen = intel_gen(intel_get_drm_devid(i915));
-+	const int use_64b_addr = gen >= 8;
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = gem_create(i915, 4096),
-+		.offset = from,
-+		.flags = EXEC_OBJECT_PINNED
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.batch_len = 64,
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+		.flags = e->flags,
-+		.rsvd1 = ctx->id,
-+	};
-+	uint32_t *map =
-+		gem_mmap__device_coherent(i915, obj.handle,
-+					  0, 4096, PROT_WRITE);
-+	uint32_t *cs = map;
-+	uint32_t value;
-+
-+	*cs++ = MI_NOOP | 0x1234;
-+
-+	*cs++ = MI_LOAD_REGISTER_MEM | (1 + use_64b_addr);
-+	*cs++ = CS_GPR(4);
-+	*cs++ = addr;
-+	*cs++ = addr >> 32;
-+
-+	*cs++ = MI_STORE_REGISTER_MEM | (1 + use_64b_addr);
-+	*cs++ = CS_GPR(4);
-+	*cs++ = from;
-+	*cs++ = from >> 32;
-+
-+	*cs++ = MI_BATCH_BUFFER_END;
-+
-+	gem_execbuf(i915, &execbuf);
-+	gem_sync(i915, obj.handle);
-+	gem_close(i915, obj.handle);
-+	value = *map;
-+	munmap(map, 4096);
-+
-+	igt_assert_neq(value, 0x1234);
-+	return value;
-+}
-+
-+static uint32_t read_at(int i915, const intel_ctx_t *ctx,
-+			const struct intel_execution_engine2 *e,
-+			uint64_t addr, uint64_t from)
-+{
-+	return __read_at(i915, ctx, e, gem_engine_mmio_base(i915, e->name),
-+			 addr, from);
-+}
-+
-+static uint32_t copy_from(int i915, const intel_ctx_t *ctx,
-+			  const struct intel_execution_engine2 *e,
-+			  uint64_t addr, uint64_t from)
-+{
-+	const int gen = intel_gen(intel_get_drm_devid(i915));
-+	const int use_64b_addr = gen >= 8;
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = gem_create(i915, 4096),
-+		.offset = from,
-+		.flags = EXEC_OBJECT_PINNED
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.batch_len = 64,
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+		.flags = e->flags,
-+		.rsvd1 = ctx->id,
-+	};
-+	uint32_t *map =
-+		gem_mmap__device_coherent(i915, obj.handle,
-+					  0, 4096, PROT_WRITE);
-+	uint32_t *cs = map;
-+	uint32_t value;
-+
-+	*cs++ = MI_NOOP | 0x1234;
-+
-+	*cs++ = XY_SRC_COPY | (3 << 20) | (6 + 2 * use_64b_addr);
-+	*cs++ = 3 << 24 | 0xcc << 16 | 4096;
-+	*cs++ = 0;
-+	*cs++ = 1 << 16 | 1;
-+	*cs++ = from;
-+	if (use_64b_addr)
-+		*cs++ = from >> 32;
-+	*cs++ = 0;
-+	*cs++ = 4096;
-+	*cs++ = addr;
-+	if (use_64b_addr)
-+		*cs++ = addr >> 32;
-+
-+	*cs++ = MI_BATCH_BUFFER_END;
-+
-+	gem_execbuf(i915, &execbuf);
-+	gem_sync(i915, obj.handle);
-+	gem_close(i915, obj.handle);
-+	value = *map;
-+	munmap(map, 4096);
-+
-+	igt_assert_neq(value, 0x1234);
-+	return value;
-+}
-+
-+static uint64_t find_hole(int i915, const intel_ctx_t *ctx,
-+			  const struct intel_execution_engine2 *e,
-+			  uint64_t size)
-+{
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = __batch_create(i915, 4 * size),
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+		.flags = e->flags,
-+		.rsvd1 = ctx->id,
-+	};
-+	uint64_t hole;
-+
-+	gem_execbuf(i915, &execbuf);
-+	hole = obj.offset + size; /* leave a guard on either side */
-+	gem_close(i915, obj.handle);
-+
-+	obj.handle = batch_create(i915),
-+	obj.offset += 3 * size;
-+	gem_execbuf(i915, &execbuf); /* force an unbind of hole */
-+
-+	gem_sync(i915, obj.handle);
-+	gem_close(i915, obj.handle);
-+
-+	return hole;
-+}
-+
-+static uint32_t stale_create(int i915,
-+			     const struct gem_memory_region *mr,
-+			     uint64_t size, uint8_t val)
-+{
-+	uint32_t handle, *map;
-+
-+	handle = gem_create_in_memory_region_list(i915, size, 0, &mr->ci, 1);
-+
-+	map = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
-+	gem_set_domain(i915, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-+	memset(map, val, size);
-+	munmap(map, size);
-+
-+	return handle;
-+}
-+
-+static uint32_t userptr_create(int i915, uint64_t size, uint8_t val, void **ptr
-+)
-+{
-+	uint32_t handle;
-+
-+	*ptr = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	igt_assert(*ptr != MAP_FAILED);
-+	memset(*ptr, val, size);
-+
-+	gem_userptr(i915, *ptr, 4096, 0, 0, &handle);
-+	return handle;
-+}
-+
-+
-+static bool has_mi_cond_bb_end(int i915)
-+{
-+	uint32_t devid = intel_get_drm_devid(i915);
-+
-+	return intel_gen(devid) >= 6;
-+}
-+
-+static bool has_xy_src_copy(int i915)
-+{
-+	uint32_t devid = intel_get_drm_devid(i915);
-+
-+	return true;
-+	return intel_gen(devid) < 12; // < PVC
-+}
-+
-+static int has_secure_batches(int i915)
-+{
-+	int v = -1;
-+	drm_i915_getparam_t gp = {
-+		.param = I915_PARAM_HAS_SECURE_BATCHES,
-+		.value = &v,
-+	};
-+
-+	drmIoctl(i915, DRM_IOCTL_I915_GETPARAM, &gp);
-+
-+	return v > 0;
-+}
-+
-+static bool has_mi_math(int i915, const struct intel_execution_engine2 *e)
-+{
-+	uint32_t devid = intel_get_drm_devid(i915);
-+
-+	if (intel_gen(devid) >= 8)
-+		return true;
-+
-+	if (!IS_HASWELL(devid))
-+		return false;
-+
-+	if (!has_secure_batches(i915))
-+		return false;
-+
-+	return e == NULL || e->class == I915_ENGINE_CLASS_RENDER;
-+}
-+
-+static void check_mmap(int i915, uint32_t handle, const uint32_t *hwsp)
-+{
-+	unsigned long count = 0;
-+
-+	while (gem_bo_busy(i915, handle)) {
-+		uint32_t *map, sq;
-+
-+		map = mmap(0, 4096, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-+		if (map == MAP_FAILED)
-+			continue;
-+
-+		for (int i = 0; i < 5; i++) {
-+			sq = READ_ONCE(*hwsp);
-+			while (READ_ONCE(*hwsp) == sq && gem_bo_busy(i915, handle))
-+				sched_yield();
-+
-+			sq = READ_ONCE(map[rand() % 1024]);
-+			if (sq)
-+				break;
-+		}
-+
-+		munmap(map, 4096);
-+		igt_assert_f(!sq,
-+			     "Found %x in a new (clear) anonymous mmap after %lu tries!\n",
-+			     sq, count);
-+		count++;
-+	}
-+
-+	igt_info("%s(%d) count:%lu\n", __func__, getpid(), count);
-+}
-+
-+static void check_bo(int i915, uint32_t handle, const uint32_t *hwsp)
-+{
-+	int fd = gem_reopen_driver(i915);
-+	unsigned long count = 0;
-+
-+	while (gem_bo_busy(i915, handle)) {
-+		uint32_t *map, sq;
-+
-+		sq = gem_create(fd, 4096);
-+		map = gem_mmap__device_coherent(fd, sq, 0, 4096, PROT_READ);
-+		gem_close(fd, sq);
-+
-+		for (int i = 0; i < 5; i++) {
-+			sq = READ_ONCE(*hwsp);
-+			while (READ_ONCE(*hwsp) == sq && gem_bo_busy(i915, handle))
-+				sched_yield();
-+
-+			sq = READ_ONCE(map[rand() % 1024]);
-+			if (sq)
-+				break;
-+		}
-+
-+		munmap(map, 4096);
-+		igt_assert_f(!sq,
-+			     "Found %x in a new (clear) buffer after %lu tries!\n",
-+			     sq, count);
-+		count++;
-+
-+	}
-+
-+	igt_info("%s(%d) count:%lu\n", __func__, getpid(), count);
-+}
-+
-+static bool
-+find_engine(int i915, const intel_ctx_t *ctx, int class, int instance,
-+	    struct intel_execution_engine2 *out)
-+{
-+	const struct intel_execution_engine2 *e;
-+
-+	for_each_ctx_engine(i915, ctx, e) {
-+		if (e->class == class && e->instance == instance) {
-+			memcpy(out, e, sizeof(*out));
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
-+static bool find_bcs0(int i915, const intel_ctx_t *ctx, struct intel_execution_engine2 *out)
-+{
-+	return find_engine(i915, ctx, I915_ENGINE_CLASS_COPY, 0, out);
-+}
-+
-+static void writer_at(int i915, const intel_ctx_t *ctx,
-+		      uint32_t handle, uint32_t *map,
-+		      const struct intel_execution_engine2 *e,
-+		      const uint32_t base,
-+		      uint64_t addr, uint64_t from)
-+{
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = handle,
-+		.offset = from,
-+		.flags = EXEC_OBJECT_PINNED
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.batch_start_offset = 256,
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+		.flags = e->flags,
-+		.rsvd1 = ctx->id,
-+	};
-+	const int gen = intel_gen(intel_get_drm_devid(i915));
-+	const int use_64b_addr = gen >= 8;
-+	uint32_t *cs, *jmp;
-+
-+	igt_assert(use_64b_addr || (addr >> 32) == 0);
-+	igt_assert(use_64b_addr || (from >> 32) == 0);
-+
-+	cs = map + execbuf.batch_start_offset / sizeof(*map);
-+
-+	*cs++ = MI_LOAD_REGISTER_IMM | (5 - 2);
-+	*cs++ = CS_GPR(0);
-+	*cs++ = 0;
-+	*cs++ = CS_GPR(0) + 4;
-+	*cs++ = 0;
-+
-+	*cs++ = MI_LOAD_REGISTER_IMM | (5 - 2);
-+	*cs++ = CS_GPR(1);
-+	*cs++ = 1;
-+	*cs++ = CS_GPR(1) + 4;
-+	*cs++ = 0;
-+
-+	while (offset_in_page(cs) & 63)
-+		cs++;
-+	jmp = cs;
-+
-+	/* Keep writing to the victim address */
-+	*cs++ = XY_COLOR | (3 << 20) | (4 + use_64b_addr);
-+	*cs++ = 3 << 24 | 0xf0 << 16 | 4096;
-+	*cs++ = 0;
-+	*cs++ = 1 << 16 | 1024;
-+	*cs++ = addr;
-+	if (use_64b_addr)
-+		*cs++ = addr >> 32;
-+	*cs++ = 0xdeadbeef;
-+
-+	*cs++ = MI_FLUSH_DW;
-+	*cs++ = 0;
-+
-+	/* Increment a seqno for each pass */
-+	*cs++ = MI_MATH | (5 - 2);
-+	*cs++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-+	*cs++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
-+	*cs++ = MI_MATH_ADD;
-+	*cs++ = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
-+
-+	*cs++ = MI_STORE_REGISTER_MEM | (1 + use_64b_addr);
-+	*cs++ = CS_GPR(0);
-+	*cs++ = from;
-+	*cs++ = from >> 32;
-+
-+	map[2] = 0xffffffff;
-+	map[3] = 0xffffffff;
-+	*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | (1 + use_64b_addr);
-+	*cs++ = MI_BATCH_BUFFER_END;
-+	*cs++ = from + 8;
-+	*cs++ = from >> 32;
-+
-+	*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | use_64b_addr;
-+	*cs++ = from + offset_in_page(jmp);
-+	*cs++ = from >> 32;
-+
-+	*cs++ = MI_BATCH_BUFFER_END; /* not reached */
-+
-+	igt_debug("Running writer for %"PRIx64" at %"PRIx64" on %s\n",
-+		  addr, from, e->name);
-+	gem_execbuf(i915, &execbuf);
-+
-+	/* Wait until the batch is executing */
-+	while (!READ_ONCE(*map) && gem_bo_busy(i915, handle))
-+		;
-+	igt_assert(gem_bo_busy(i915, handle));
-+}
-+
-+static void close_clear(int i915, const intel_ctx_t *ctx,
-+			const struct gem_memory_region *mr,
-+			const struct intel_execution_engine2 *bcs0,
-+			const struct intel_execution_engine2 *bind)
-+{
-+	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	const uint32_t base =
-+		gem_engine_mmio_base(i915, intel_gen(intel_get_drm_devid(i915)) >= 8 ? "bcs0" : "rcs0");
-+	uint32_t stale, handle, sample, poison;
-+	uint64_t hole;
-+	uint32_t *map;
-+
-+	stale = stale_create(i915, mr, 4096, 0);
-+
-+	hole = find_hole(i915, ctx, bind, SZ_2M);
-+	poison = read_at(i915, ctx, bind, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
-+
-+	/* Bind and sanitycheck reading the address returns our page */
-+	bind_at(i915, ctx, bcs0, stale, hole, 8192);
-+	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_1M);
-+	igt_assert_eq_u32(sample, 0);
-+
-+	handle = gem_create(i915, 4096);
-+	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
-+
-+	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
-+
-+	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
-+	igt_debug("Closing hole:%"PRIx64" on %s, sample:%x\n", hole, bind->name, sample);
-+	igt_assert_eq_u32(sample, 0xdeadbeef);
-+	gem_close(i915, stale);
-+
-+	igt_fork(child, 2 * ncpus)
-+		check_mmap(i915, handle, map);
-+	igt_fork(child, 2 * ncpus)
-+		check_bo(i915, handle, map);
-+
-+	sleep(10);
-+	map[2] = MI_BATCH_BUFFER_END;
-+
-+	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
-+	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
-+
-+	igt_waitchildren();
-+
-+	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
-+	map[2] = MI_BATCH_BUFFER_END;
-+	poison = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
-+	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
-+	igt_assert_eq_u32(sample, poison);
-+	munmap(map, 4096);
-+	gem_close(i915, handle);
-+}
-+
-+static void madv_clear(int i915, const intel_ctx_t *ctx,
-+		       const struct gem_memory_region *mr,
-+		       const struct intel_execution_engine2 *bcs0,
-+		       const struct intel_execution_engine2 *bind)
-+{
-+	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	const uint32_t base =
-+		gem_engine_mmio_base(i915, intel_gen(intel_get_drm_devid(i915)) >= 8 ? "bcs0" : "rcs0");
-+	uint32_t stale, handle, sample, poison;
-+	uint64_t hole;
-+	uint32_t *map;
-+
-+	stale = stale_create(i915, mr, 4096, 0);
-+
-+	hole = find_hole(i915, ctx, bind, SZ_2M);
-+	poison = read_at(i915, ctx, bind, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
-+
-+	/* Bind and sanitycheck reading the address returns our page */
-+	bind_at(i915, ctx, bcs0, stale, hole, 8192);
-+	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_1M);
-+	igt_assert_eq_u32(sample, 0);
-+
-+	handle = gem_create(i915, 4096);
-+	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
-+
-+	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
-+
-+	/* Unbind hole by overlapping the range with a fresh vma */
-+	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
-+	igt_debug("Evicting hole:%"PRIx64" on %s, sample:%x\n", hole, bind->name, sample);
-+	igt_assert_eq_u32(sample, 0xdeadbeef);
-+	bind_at(i915, ctx, bind, stale, hole + 4096, 0);
-+	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
-+	igt_debug("Checking hole:%"PRIx64", sample:%x\n", hole, sample);
-+	igt_assert_eq_u32(sample, poison);
-+
-+	if (gem_madvise(i915, stale, I915_MADV_DONTNEED))
-+		igt_drop_caches_set(i915, DROP_SHRINK_ALL);
-+
-+	/* Check that we did indeed purge the stale buffer */
-+	igt_assert(!gem_madvise(i915, stale, I915_MADV_DONTNEED));
-+
-+	igt_fork(child, 2 * ncpus)
-+		check_mmap(i915, handle, map);
-+	igt_fork(child, 2 * ncpus)
-+		check_bo(i915, handle, map);
-+
-+	sleep(10);
-+	map[2] = MI_BATCH_BUFFER_END;
-+
-+	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
-+	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
-+
-+	igt_waitchildren();
-+
-+	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
-+	map[2] = MI_BATCH_BUFFER_END;
-+	poison = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
-+	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
-+	igt_assert_eq_u32(sample, poison);
-+	munmap(map, 4096);
-+	gem_close(i915, handle);
-+	gem_close(i915, stale);
-+}
-+
-+static void userptr_clear(int i915, const intel_ctx_t *ctx,
-+			  const struct intel_execution_engine2 *bcs0,
-+			  const struct intel_execution_engine2 *bind,
-+			  unsigned int flags)
-+{
-+	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	const uint32_t base =
-+		gem_engine_mmio_base(i915, intel_gen(intel_get_drm_devid(i915)) >= 8 ? "bcs0" : "rcs0");
-+	uint32_t stale, handle, sample, poison;
-+	uint64_t hole;
-+	uint32_t *map;
-+	void *ptr;
-+
-+	stale = userptr_create(i915, 4096, 0, &ptr);
-+
-+	hole = find_hole(i915, ctx, bind, SZ_2M);
-+	poison = read_at(i915, ctx, bind, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
-+
-+	/* Bind and sanitycheck reading the address returns our page */
-+	bind_at(i915, ctx, bcs0, stale, hole, 8192);
-+	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_1M);
-+	igt_assert_eq_u32(sample, 0);
-+
-+	handle = gem_create(i915, 4096);
-+	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
-+
-+	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
-+
-+	/* Unbind hole by overlapping the range with a fresh vma */
-+	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
-+	igt_debug("Evicting hole:%"PRIx64" on %s, sample:%x\n", hole, bind->name, sample);
-+	igt_assert_eq_u32(sample, 0xdeadbeef);
-+	bind_at(i915, ctx, bind, stale, hole + 4096, 0);
-+	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
-+	igt_debug("Checking hole:%"PRIx64", sample:%x\n", hole, sample);
-+	igt_assert_eq_u32(sample, poison);
-+	munmap(ptr, 4096);
-+	if (flags & SHRINK)
-+		igt_drop_caches_set(i915, DROP_SHRINK_ALL);
-+
-+	igt_fork(child, 2 * ncpus)
-+		check_mmap(i915, handle, map);
-+	igt_fork(child, 2 * ncpus)
-+		check_bo(i915, handle, map);
-+
-+	sleep(10);
-+	map[2] = MI_BATCH_BUFFER_END;
-+
-+	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
-+	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
-+
-+	igt_waitchildren();
-+
-+	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
-+	map[2] = MI_BATCH_BUFFER_END;
-+	poison = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
-+	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
-+	igt_assert_eq_u32(sample, poison);
-+	munmap(map, 4096);
-+	gem_close(i915, handle);
-+	gem_close(i915, stale);
-+}
-+
-+static void clear_tlb(int i915)
-+{
-+	struct intel_execution_engine2 bcs0, bind;
-+	const intel_ctx_t *ctx;
-+
-+	/* See if we can retain a TLB entry past address reuse. */
-+
-+	igt_fixture {
-+		const struct intel_execution_engine2 *e;
-+		bool found;
-+
-+		igt_require(has_xy_src_copy(i915));
-+		igt_require(has_mi_cond_bb_end(i915));
-+
-+		ctx = intel_ctx_create_all_physical(i915);
-+
-+		igt_require(find_bcs0(i915, ctx, &bcs0));
-+		igt_require(has_mi_math(i915, &bcs0));
-+
-+		found = false;
-+		for_each_ctx_engine(i915, ctx, e) {
-+			if (e->flags != bcs0.flags) {
-+				memcpy(&bind, e, sizeof(bind));
-+				found = true;
-+				break;
-+			}
-+		}
-+		igt_require(found);
-+		igt_debug("Writing with %s, issuing binds with %s\n",
-+			  bcs0.name, bind.name);
-+	}
-+
-+	igt_subtest_with_dynamic("close-clear") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				close_clear(i915, ctx, r, &bcs0, &bind);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("madv-clear") {
-+		for_each_memory_region(r, i915) {
-+			if (r->ci.memory_class) /* XXX how to purge lmem? */
-+				continue;
-+
-+			igt_dynamic_f("%s", r->name)
-+				madv_clear(i915, ctx, r, &bcs0, &bind);
-+		}
-+	}
-+
-+	igt_subtest("u-unmap-clear")
-+		userptr_clear(i915, ctx, &bcs0, &bind, 0);
-+	igt_subtest("u-shrink-clear")
-+		userptr_clear(i915, ctx, &bcs0, &bind, SHRINK);
-+}
-+
-+static void dumb_writer_at(int i915, const intel_ctx_t *ctx,
-+			   uint32_t handle, uint32_t *map,
-+			   const struct intel_execution_engine2 *e,
-+			   uint64_t addr, uint64_t from)
-+{
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = handle,
-+		.offset = from,
-+		.flags = EXEC_OBJECT_PINNED
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+		.flags = e->flags,
-+		.rsvd1 = ctx->id,
-+	};
-+	const int gen = intel_gen(intel_get_drm_devid(i915));
-+	const bool uses_parser = gem_has_cmdparser(i915);
-+	const int use_flush_dw = gen >= 6;
-+	const int use_64b_addr = gen >= 8;
-+	uint32_t *cs, *jmp;
-+
-+	igt_assert(use_64b_addr || (addr >> 32) == 0);
-+	igt_assert(use_64b_addr || (from >> 32) == 0);
-+
-+	if (uses_parser)
-+		execbuf.batch_start_offset = 256;
-+
-+	cs = map + execbuf.batch_start_offset / sizeof(*map);
-+	jmp = cs;
-+
-+	/* Keep writing to the victim address */
-+	*cs++ = XY_COLOR | (3 << 20) | (4 + use_64b_addr);
-+	*cs++ = 3 << 24 | 0xf0 << 16 | 4096;
-+	*cs++ = 0;
-+	*cs++ = 1 << 16 | 1024;
-+	*cs++ = addr;
-+	if (use_64b_addr)
-+		*cs++ = addr >> 32;
-+	*cs++ = 0xdeadbeef;
-+
-+	if (use_flush_dw) {
-+		*cs++ = MI_FLUSH_DW;
-+		*cs++ = 0;
-+	} else {
-+		*cs++ = MI_FLUSH;
-+	}
-+
-+	if (uses_parser) {
-+		map[0] = 0xffffffff;
-+		map[1] = 0xffffffff;
-+		*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | (1 + use_64b_addr);
-+		*cs++ = MI_BATCH_BUFFER_END;
-+		*cs++ = from;
-+		*cs++ = from >> 32;
-+	}
-+
-+	*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | use_64b_addr;
-+	*cs++ = from + offset_in_page(jmp);
-+	*cs++ = from >> 32;
-+
-+	*cs++ = MI_BATCH_BUFFER_END; /* not reached */
-+
-+	igt_debug("Running writer for %"PRIx64" at %"PRIx64" on %s\n",
-+		  addr, from, e->name);
-+	gem_execbuf(i915, &execbuf);
-+}
-+
-+static void dumb_mmap(int i915, uint32_t handle)
-+{
-+	unsigned long count = 0;
-+
-+	while (gem_bo_busy(i915, handle)) {
-+		uint32_t *map, sq;
-+
-+		map = mmap(0, 4096, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-+		if (map == MAP_FAILED)
-+			continue;
-+
-+		for (int i = 0; i < 5; i++) {
-+			usleep(1000);
-+			sq = READ_ONCE(map[rand() % 1024]);
-+			if (sq)
-+				break;
-+		}
-+
-+		munmap(map, 4096);
-+		igt_assert_f(!sq,
-+			     "Found %x in a new (clear) anonymous mmap! after %lu tries\n",
-+			     sq, count);
-+		count++;
-+	}
-+
-+	igt_info("%s(%d) count:%lu\n", __func__, getpid(), count);
-+}
-+
-+static void dumb_bo(int i915, uint32_t handle)
-+{
-+	int fd = gem_reopen_driver(i915);
-+	unsigned long count = 0;
-+
-+	while (gem_bo_busy(i915, handle)) {
-+		uint32_t *map, sq;
-+
-+		sq = gem_create(fd, 4096);
-+		map = gem_mmap__device_coherent(fd, sq, 0, 4096, PROT_READ);
-+		gem_close(fd, sq);
-+
-+		for (int i = 0; i < 5; i++) {
-+			usleep(1000);
-+			sq = READ_ONCE(map[rand() % 1024]);
-+			if (sq)
-+				break;
-+		}
-+
-+		munmap(map, 4096);
-+		igt_assert_f(!sq,
-+			     "Found %x in a new (clear) buffer after %lu tries!\n",
-+			     sq, count);
-+		count++;
-+	}
-+
-+	igt_info("%s(%d) count:%lu\n", __func__, getpid(), count);
-+}
-+
-+static void __spin_until_write(uint32_t *map)
-+{
-+	while (!READ_ONCE(*map))
-+		sched_yield();
-+}
-+
-+static void spin_until_write(int i915, uint32_t handle)
-+{
-+	uint32_t *map;
-+
-+	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_READ);
-+	__spin_until_write(map);
-+	munmap(map, 4096);
-+}
-+
-+static void close_dumb(int i915, const intel_ctx_t *ctx,
-+		       const struct gem_memory_region *mr,
-+		       const struct intel_execution_engine2 *bcs0)
-+{
-+	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	uint32_t stale, handle, sample, poison;
-+	uint64_t hole;
-+	uint32_t *map;
-+
-+	stale = stale_create(i915, mr, 4096, 0);
-+
-+	hole = find_hole(i915, ctx, bcs0, SZ_2M);
-+	poison = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
-+
-+	/* Bind and sanitycheck reading the address returns our page */
-+	bind_at(i915, ctx, bcs0, stale, hole, 8192);
-+	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" replaced with value:%x\n", hole, sample);
-+	igt_assert_eq_u32(sample, 0);
-+
-+	handle = gem_create(i915, 4096);
-+	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
-+
-+	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
-+	spin_until_write(i915, stale);
-+	igt_debug("Closing stale object\n");
-+	gem_close(i915, stale);
-+
-+	igt_fork(child, 2 * ncpus)
-+		dumb_mmap(i915, handle);
-+	igt_fork(child, 2 * ncpus)
-+		dumb_bo(i915, handle);
-+
-+	sleep(10);
-+	*map = MI_BATCH_BUFFER_END;
-+
-+	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_512K);
-+	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
-+
-+	igt_waitchildren();
-+
-+	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
-+	*map = MI_BATCH_BUFFER_END;
-+	poison = read_at(i915, ctx, bcs0, hole, hole + SZ_512K);
-+	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
-+	igt_assert_eq_u32(sample, poison);
-+	munmap(map, 4096);
-+	gem_close(i915, handle);
-+}
-+
-+static void madv_dumb(int i915, const intel_ctx_t *ctx,
-+		      const struct gem_memory_region *mr,
-+		      const struct intel_execution_engine2 *bcs0)
-+{
-+	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	uint32_t stale, handle, sample, poison;
-+	uint64_t hole;
-+	uint32_t *map;
-+
-+	stale = stale_create(i915, mr, 4096, 0);
-+
-+	hole = find_hole(i915, ctx, bcs0, SZ_2M);
-+	poison = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
-+
-+	/* Bind and sanitycheck reading the address returns our page */
-+	bind_at(i915, ctx, bcs0, stale, hole, 8192);
-+	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" replaced with value:%x\n", hole, sample);
-+	igt_assert_eq_u32(sample, 0);
-+
-+	handle = gem_create(i915, 4096);
-+	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
-+
-+	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
-+	spin_until_write(i915, stale);
-+	igt_debug("Purging stale object\n");
-+	if (gem_madvise(i915, stale, I915_MADV_DONTNEED))
-+		igt_drop_caches_set(i915, DROP_SHRINK_ALL);
-+
-+	/* Check that we did indeed purge the stale buffer */
-+	igt_assert(!gem_madvise(i915, stale, I915_MADV_DONTNEED));
-+
-+	igt_fork(child, 2 * ncpus)
-+		dumb_mmap(i915, handle);
-+	igt_fork(child, 2 * ncpus)
-+		dumb_bo(i915, handle);
-+
-+	sleep(10);
-+	*map = MI_BATCH_BUFFER_END;
-+
-+	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_512K);
-+	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
-+
-+	igt_waitchildren();
-+
-+	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
-+	*map = MI_BATCH_BUFFER_END;
-+	poison = read_at(i915, ctx, bcs0, hole, hole + SZ_512K);
-+	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
-+	igt_assert_eq_u32(sample, poison);
-+	munmap(map, 4096);
-+	gem_close(i915, stale);
-+	gem_close(i915, handle);
-+}
-+
-+static void userptr_dumb(int i915, const intel_ctx_t *ctx,
-+			 const struct intel_execution_engine2 *bcs0,
-+			 unsigned int flags)
-+{
-+	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	uint32_t stale, handle, sample, poison;
-+	uint64_t hole;
-+	uint32_t *map;
-+	void *ptr;
-+
-+	stale = userptr_create(i915, 4096, 0, &ptr);
-+
-+	hole = find_hole(i915, ctx, bcs0, SZ_2M);
-+	poison = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
-+
-+	/* Bind and sanitycheck reading the address returns our page */
-+	bind_at(i915, ctx, bcs0, stale, hole, 8192);
-+	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
-+	igt_debug("2M hole:%"PRIx64" replaced with value:%x\n", hole, sample);
-+	igt_assert_eq_u32(sample, 0);
-+
-+	handle = gem_create(i915, 4096);
-+	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
-+
-+	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
-+	__spin_until_write(ptr);
-+	igt_debug("Release userptr\n");
-+	munmap(ptr, 4096);
-+	if (flags & SHRINK)
-+		igt_drop_caches_set(i915, DROP_SHRINK_ALL);
-+
-+	igt_fork(child, 2 * ncpus)
-+		dumb_mmap(i915, handle);
-+	igt_fork(child, 2 * ncpus)
-+		dumb_bo(i915, handle);
-+
-+	sleep(10);
-+	*map = MI_BATCH_BUFFER_END;
-+
-+	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_512K);
-+	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
-+
-+	igt_waitchildren();
-+
-+	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
-+	*map = MI_BATCH_BUFFER_END;
-+	poison = read_at(i915, ctx, bcs0, hole, hole + SZ_512K);
-+	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
-+	igt_assert_eq_u32(sample, poison);
-+	munmap(map, 4096);
-+	gem_close(i915, handle);
-+	gem_close(i915, stale);
-+}
-+
-+static bool find_blitter(int i915, const intel_ctx_t *ctx, struct intel_execution_engine2 *out)
-+{
-+	if (find_engine(i915, ctx, I915_ENGINE_CLASS_COPY, 0, out))
-+		return true;
-+
-+	if (intel_gen(intel_get_drm_devid(i915)) >= 6)
-+		return false;
-+
-+	return find_engine(i915, ctx, I915_ENGINE_CLASS_RENDER, 0, out);
-+}
-+
-+static void dumb_tlb(int i915)
-+{
-+	struct intel_execution_engine2 blt;
-+	const intel_ctx_t *ctx;
-+
-+	/*
-+	 * A simplified test for running across all generations. Nothing fancy,
-+	 * just keep writing to stale addresses looking for a retained TLB
-+	 * entry.
-+	 */
-+
-+	igt_fixture {
-+		ctx = intel_ctx_create_all_physical(i915);
-+		igt_require(has_xy_src_copy(i915));
-+		igt_require(find_blitter(i915, ctx, &blt));
-+	}
-+
-+	igt_subtest_with_dynamic("close-dumb") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				close_dumb(i915, ctx, r, &blt);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("madv-dumb") {
-+		for_each_memory_region(r, i915) {
-+			if (r->ci.memory_class) /* XXX how to purge lmem? */
-+				continue;
-+
-+			igt_dynamic_f("%s", r->name)
-+				madv_dumb(i915, ctx, r, &blt);
-+		}
-+	}
-+
-+	igt_subtest("u-unmap-dumb")
-+		userptr_dumb(i915, ctx, &blt, 0);
-+
-+	igt_subtest("u-shrink-dumb")
-+		userptr_dumb(i915, ctx, &blt, SHRINK);
-+
-+	igt_fixture
-+		intel_ctx_destroy(i915, ctx);
-+}
-+
-+igt_main
-+{
-+	int i915 = -1;
-+
-+	igt_fixture {
-+		i915 = drm_open_driver(DRIVER_INTEL);
-+		igt_require_gem(i915);
-+
-+		igt_fork_hang_detector(i915);
-+	}
-+
-+	igt_subtest_group
-+		clear_tlb(i915);
-+
-+	igt_subtest_group
-+		dumb_tlb(i915);
-+
-+	igt_fixture {
-+		igt_stop_hang_detector();
-+		close(i915);
-+	}
-+}
-diff --git a/tests/i915/gem_gpgpu_fill.c b/tests/i915/gem_gpgpu_fill.c
-index 74a227f678e7..397f6c38a879 100644
---- a/tests/i915/gem_gpgpu_fill.c
-+++ b/tests/i915/gem_gpgpu_fill.c
-@@ -152,6 +152,8 @@ igt_main
- 		region_set = get_memory_region_set(region_info,
- 						   I915_SYSTEM_MEMORY,
- 						   I915_DEVICE_MEMORY);
-+
-+		igt_fork_hang_detector(data.drm_fd);
- 	}
- 
- 	igt_subtest_with_dynamic("basic") {
-diff --git a/tests/meson.build b/tests/meson.build
-index b548dc3b4444..6546adb3ed51 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -147,6 +147,7 @@ i915_progs = [
- 	'gem_exec_schedule',
- 	'gem_exec_store',
- 	'gem_exec_suspend',
-+	'gem_exec_tlb',
- 	'gem_exec_whisper',
- 	'gem_fd_exhaustion',
- 	'gem_fence_thrash',
--- 
-2.36.1
+>> +
+>> +	*outf = 1e9 * after[0] / after[1];
+>> +	return igt_nsec_elapsed(&tv);
+>> +}
+>> +
+>> +static void fence_order(int i915)
+>> +{
+>> +	const uint64_t sz = 512ull << 20;
+>> +	struct drm_i915_gem_exec_object2 obj[2] = {
+>> +		{ .handle = gem_create(i915, 4096) },
+>> +		{ .handle = batch_create(i915, sz) },
+>> +	};
+>> +	struct drm_i915_gem_execbuffer2 execbuf = {
+>> +		.buffers_ptr = to_user_pointer(obj),
+>> +		.buffer_count = ARRAY_SIZE(obj),
+>> +	};
+>> +	uint64_t wr, rw;
+>> +	int min, max;
+>> +	double freq;
+>> +	int sysfs;
+>> +
+>> +	/*
+>> +	 * Check the order of fences found during GEM_WAIT does not affect
+>> +	 * waitboosting.
+>> +	 *
+>> +	 * Internally, implicit fences are tracked within a dma-resv which
+>> +	 * imposes no order on the individually fences tracked within. Since
+>> +	 * there is no defined order, the sequence of waits (and the associated
+>> +	 * waitboosts) is also undefined, undermining the consistency of the
+>> +	 * waitboost heuristic.
+>> +	 *
+>> +	 * In particular, we can influence the sequence of fence storage
+>> +	 * within dma-resv by mixing read/write semantics for implicit fences.
+>> +	 * We can exploit this property of dma-resv to exercise that no matter
+>> +	 * the stored order, the heuristic is applied consistently for the
+>> +	 * user's GEM_WAIT ioctl.
+>> +	 */
+>> +
+>> +	sysfs = igt_sysfs_open(i915);
+>> +	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
+>> +	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
+>> +	igt_require(max > min);
+>> +
+>> +	/* Only allow ourselves to upclock via waitboosting */
+>> +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
+>> +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
+>> +	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
+>> +
+>> +	/* Warm up to bind the vma */
+>> +	__fence_order(i915, &obj[0], &execbuf, 0, 0, &freq);
+>> +
+>> +	wr = __fence_order(i915, &obj[0], &execbuf, EXEC_OBJECT_WRITE, 0, &freq);
+>> +	igt_info("Write-then-read: %.2fms @ %.3fMHz\n", wr * 1e-6, freq);
+>> +
+>> +	rw = __fence_order(i915, &obj[0], &execbuf, 0, EXEC_OBJECT_WRITE, &freq);
+>> +	igt_info("Read-then-write: %.2fms @ %.3fMHz\n", rw * 1e-6, freq);
+>> +
+>> +	gem_close(i915, obj[0].handle);
+>> +	gem_close(i915, obj[1].handle);
+> 
+> Close sysfs here.
+
+Good catch. I'll close it before asserts (as agreed).
+
+>> +
+>> +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
+>> +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
+> 
+> Here we should put previous values, not those readed from RPx,
+> but if they are always the same it is ok.
+
+We restore the values we read from sysfs
+
+>> +
+>> +	igt_assert(4 * rw > 3 * wr && 4 * wr > 3 * rw);
+>> +}
+>> +
+>> +static uint64_t __engine_order(int i915,
+>> +			       struct drm_i915_gem_exec_object2 *obj,
+>> +			       struct drm_i915_gem_execbuffer2 *eb,
+>> +			       unsigned int *engines0,
+>> +			       unsigned int *engines1,
+>> +			       unsigned int num_engines,
+>> +			       double *outf)
+>> +{
+>> +	uint64_t before[2], after[2];
+>> +	struct timespec tv;
+>> +	int fd;
+>> +
+>> +	gem_quiescent_gpu(i915);
+>> +	fd = perf_i915_open(i915, I915_PMU_ACTUAL_FREQUENCY);
+>> +
+>> +	igt_gettime(&tv);
+>> +
+>> +	obj->flags = EXEC_OBJECT_WRITE;
+>> +	for (unsigned int n = 0; n < num_engines; n++) {
+>> +		eb->flags &= ~63ull;
+>> +		eb->flags |= engines0[n];
+>> +		gem_execbuf_wr(i915, eb);
+>> +	}
+>> +
+>> +	obj->flags = 0;
+>> +	for (unsigned int n = 0; n < num_engines; n++) {
+>> +		eb->flags &= ~63ull;
+>> +		eb->flags |= engines1[n];
+>> +		gem_execbuf(i915, eb);
+>> +	}
+>> +
+>> +	read(fd, before, sizeof(before));
+>> +	gem_sync(i915, obj->handle);
+>> +	read(fd, after, sizeof(after));
+>> +	close(fd);
+>> +
+>> +	after[0] -= before[0];
+>> +	after[1] -= before[1];
+> 
+> Put igt_assert here (check for zero before divide).
+> 
+>> +
+>> +	*outf = 1e9 * after[0] / after[1];
+>> +	return igt_nsec_elapsed(&tv);
+>> +}
+>> +
+>> +static void engine_order(int i915)
+>> +{
+>> +	const uint64_t sz = 512ull << 20;
+>> +	struct drm_i915_gem_exec_object2 obj[2] = {
+>> +		{ .handle = gem_create(i915, 4096) },
+>> +		{ .handle = batch_create(i915, sz) },
+>> +	};
+>> +	struct drm_i915_gem_execbuffer2 execbuf = {
+>> +		.buffers_ptr = to_user_pointer(obj),
+>> +		.buffer_count = ARRAY_SIZE(obj),
+>> +	};
+>> +	const struct intel_execution_engine2 *e;
+>> +	unsigned int engines[2], reverse[2];
+>> +	uint64_t forward, backward, both;
+>> +	unsigned int num_engines;
+>> +	const intel_ctx_t *ctx;
+>> +	int min, max;
+>> +	double freq;
+>> +	int sysfs;
+>> +
+>> +	/*
+>> +	 * Check the order of fences found during GEM_WAIT does not affect
+>> +	 * waitboosting. (See fence_order())
+>> +	 *
+>> +	 * Another way we can manipulate the order of fences within the
+>> +	 * dma-resv is through repeated use of the same contexts.
+>> +	 */
+>> +
+>> +	num_engines = 0;
+>> +	ctx = intel_ctx_create_all_physical(i915);
+>> +	for_each_ctx_engine(i915, ctx, e) {
+>> +		/*
+>> +		 * Avoid using the cmdparser as it will try to allocate
+>> +		 * a new shadow batch for each submission -> oom
+>> +		 */
+>> +		if (!gem_engine_has_mutable_submission(i915, e->class))
+>> +			continue;
+>> +
+>> +		engines[num_engines++] = e->flags;
+>> +		if (num_engines == ARRAY_SIZE(engines))
+>> +			break;
+>> +	}
+>> +	igt_require(num_engines > 1);
+>> +	for (unsigned int n = 0; n < num_engines; n++)
+>> +		reverse[n] = engines[num_engines - n - 1];
+>> +	execbuf.rsvd1 = ctx->id;
+>> +
+>> +	sysfs = igt_sysfs_open(i915);
+>> +	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
+>> +	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
+>> +	igt_require(max > min);
+>> +
+>> +	/* Only allow ourselves to upclock via waitboosting */
+>> +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
+>> +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
+>> +	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
+>> +
+>> +	/* Warm up to bind the vma */
+>> +	gem_execbuf(i915, &execbuf);
+>> +
+>> +	forward = __engine_order(i915, &obj[0], &execbuf,
+>> +				 engines, engines, num_engines,
+>> +				 &freq);
+>> +	igt_info("Forwards: %.2fms @ %.3fMhz\n", forward * 1e-6, freq);
+>> +
+>> +	backward = __engine_order(i915, &obj[0], &execbuf,
+>> +				  reverse, reverse, num_engines,
+>> +				  &freq);
+>> +	igt_info("Backwards: %.2fms @ %.3fMhz\n", backward * 1e-6, freq);
+>> +
+>> +	both = __engine_order(i915, &obj[0], &execbuf,
+>> +			      engines, reverse, num_engines,
+>> +			      &freq);
+>> +	igt_info("Bidirectional: %.2fms @ %.3fMhz\n", both * 1e-6, freq);
+>> +
+>> +	gem_close(i915, obj[0].handle);
+>> +	gem_close(i915, obj[1].handle);
+> 
+> Close sysfs here.
+
+Ack
+
+> 
+>> +	intel_ctx_destroy(i915, ctx);
+>> +
+>> +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
+>> +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
+>> +
+>> +	igt_assert(4 * forward > 3 * backward && 4 * backward > 3 * forward);
+>> +	igt_assert(4 * forward > 3 * both && 4 * both > 3 * forward);
+>> +}
+>> +
+>>   static void pm_rps_exit_handler(int sig)
+>>   {
+>> -	if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
+>> -		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
+>> -		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
+>> -	} else {
+>> -		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
+>> -		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
+>> +	if (sysfs_files[MAX].filp) {
+>> +		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
+>> +			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
+>> +			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
+>> +		} else {
+>> +			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
+>> +			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
+>> +		}
+> 
+> This change looks unrelated. Please split this as separate patch
+> and post as a fix.
+
+Will do so
+
+Many thanks,
+Karolina
+
+> Regards,
+> Kamil
+> 
+>>   	}
+>>
+>>   	if (lh.igt_proc.running)
+>> @@ -683,6 +924,14 @@ igt_main
+>>   	igt_subtest("waitboost")
+>>   		waitboost(drm_fd, false);
+>>
+>> +	igt_describe("Check if the order of fences does not affect waitboosting");
+>> +	igt_subtest("fence-order")
+>> +		fence_order(drm_fd);
+>> +
+>> +	igt_describe("Check if context reuse does not affect waitboosting");
+>> +	igt_subtest("engine-order")
+>> +		engine_order(drm_fd);
+>> +
+>>   	/* Test boost frequency after GPU reset */
+>>   	igt_subtest("reset") {
+>>   		igt_hang_t hang = igt_allow_hang(drm_fd, 0, 0);
+>> --
+>> 2.25.1
