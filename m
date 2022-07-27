@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2076.outbound.protection.outlook.com [40.107.94.76])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D053711BF95
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 16:27:20 +0000 (UTC)
+From: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>
+To: "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>, "Vudum, Lakshminarayana"
+ <lakshminarayana.vudum@intel.com>
+Date: Wed, 27 Jul 2022 16:27:17 +0000
+Message-ID: <DM5PR12MB1897C8BB3ECA1590DED5608381979@DM5PR12MB1897.namprd12.prod.outlook.com>
+References: <20220721003922.3679-1-vitaly.prosyak@amd.com>
+ <c74dde7f-c50b-06a1-ac4e-8615d3ae428f@amd.com>
+ <DM4PR11MB62138CF424E5F9EF4B03F51CEC959@DM4PR11MB6213.namprd11.prod.outlook.com>
+ <DM5PR12MB1897E27D428388B696C4407D81979@DM5PR12MB1897.namprd12.prod.outlook.com>
+ <aaceb82a-1465-d1c0-b8bd-73a5d1d99a84@amd.com>
+In-Reply-To: <aaceb82a-1465-d1c0-b8bd-73a5d1d99a84@amd.com>
+Content-Language: en-US
 Content-Type: multipart/alternative;
- boundary="===============2788051750553607078=="
+ boundary="_000_DM5PR12MB1897C8BB3ECA1590DED5608381979DM5PR12MB1897namp_"
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Date: Wed, 27 Jul 2022 16:11:08 -0000
-Message-ID: <165893826869.21595.17380833113428867235@emeril.freedesktop.org>
-References: <20220709162305.1958838-1-robdclark@gmail.com>
-In-Reply-To: <20220709162305.1958838-1-robdclark@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fbw=3A_Skip_unsupported_modes_=28rev4=29?=
+Subject: Re: [igt-dev] [PATCH 1/7] lib/amdgpu: increase number of resources
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,496 +26,290 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Olsak,
+ Marek" <Marek.Olsak@amd.com>, "Koenig, Christian" <Christian.Koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2788051750553607078==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--_000_DM5PR12MB1897C8BB3ECA1590DED5608381979DM5PR12MB1897namp_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-== Series Details ==
+[AMD Official Use Only - General]
 
-Series: tests/kms_bw: Skip unsupported modes (rev4)
-URL   : https://patchwork.freedesktop.org/series/106152/
-State : success
+Thanks a lot, Rodrigo!
 
-== Summary ==
+I am preparing more and more patches.
 
-CI Bug Log - changes from IGT_6599 -> IGTPW_7570
-====================================================
+Vitaly
+________________________________
+From: Siqueira, Rodrigo <Rodrigo.Siqueira@amd.com>
+Sent: Wednesday, July 27, 2022 12:47 PM
+To: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Vudum, Lakshminarayana <laksh=
+minarayana.vudum@intel.com>
+Cc: Olsak, Marek <Marek.Olsak@amd.com>; Koenig, Christian <Christian.Koenig=
+@amd.com>; Deucher, Alexander <Alexander.Deucher@amd.com>; igt-dev@lists.fr=
+eedesktop.org <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH 1/7] lib/amdgpu: increase number of resources
 
-Summary
--------
+Thanks Lakshmi for re-report.
 
-  **SUCCESS**
+Vitaly,
+I merged your changes in the upstream, see:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commits/master
 
-  No regressions found.
+Thanks
+Siqueira
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/index.html
-
-Participating hosts (31 -> 40)
-------------------------------
-
-  Additional (10): bat-dg1-5 bat-dg2-8 bat-adlm-1 bat-dg2-9 bat-adlp-6 bat-adlp-4 bat-rplp-1 bat-rpls-1 bat-rpls-2 bat-jsl-1 
-  Missing    (1): fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7570:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - {bat-rpls-1}:       NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-rpls-1/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7570 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@nullptr:
-    - bat-dg1-5:          NOTRUN -> [SKIP][2] ([i915#2582]) +4 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@fbdev@nullptr.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-adlp-4:         NOTRUN -> [SKIP][3] ([i915#4613]) +3 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_mmap@basic:
-    - bat-dg1-5:          NOTRUN -> [SKIP][4] ([i915#4083])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@gem_mmap@basic.html
-
-  * igt@gem_tiled_blits@basic:
-    - bat-dg1-5:          NOTRUN -> [SKIP][5] ([i915#4077]) +2 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@gem_tiled_blits@basic.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-dg1-5:          NOTRUN -> [SKIP][6] ([i915#4079]) +1 similar issue
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@gem_tiled_pread_basic.html
-    - bat-adlp-4:         NOTRUN -> [SKIP][7] ([i915#3282])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - bat-dg1-5:          NOTRUN -> [SKIP][8] ([i915#1155])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@i915_selftest@live@gem:
-    - fi-pnv-d510:        [PASS][9] -> [DMESG-FAIL][10] ([i915#4528])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6599/fi-pnv-d510/igt@i915_selftest@live@gem.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/fi-pnv-d510/igt@i915_selftest@live@gem.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          NOTRUN -> [DMESG-FAIL][11] ([i915#4494] / [i915#4957])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-dg1-5:          NOTRUN -> [INCOMPLETE][12] ([i915#6011])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - bat-adlp-4:         NOTRUN -> [SKIP][13] ([i915#5903])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_addfb_basic@basic-x-tiled-legacy:
-    - bat-dg1-5:          NOTRUN -> [SKIP][14] ([i915#4212]) +7 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_addfb_basic@basic-x-tiled-legacy.html
-
-  * igt@kms_addfb_basic@basic-y-tiled-legacy:
-    - bat-dg1-5:          NOTRUN -> [SKIP][15] ([i915#4215])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_addfb_basic@basic-y-tiled-legacy.html
-
-  * igt@kms_busy@basic:
-    - bat-dg1-5:          NOTRUN -> [SKIP][16] ([i915#1845] / [i915#4303])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_busy@basic.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - bat-adlp-4:         NOTRUN -> [SKIP][17] ([fdo#111827]) +8 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@kms_chamelium@dp-crc-fast.html
-    - bat-dg1-5:          NOTRUN -> [SKIP][18] ([fdo#111827]) +7 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - bat-adlp-4:         NOTRUN -> [SKIP][19] ([i915#4103])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-adlp-4:         NOTRUN -> [SKIP][20] ([i915#4093]) +3 similar issues
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@kms_force_connector_basic@force-load-detect.html
-    - bat-dg1-5:          NOTRUN -> [SKIP][21] ([fdo#109285])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - bat-dg1-5:          NOTRUN -> [SKIP][22] ([i915#4078]) +13 similar issues
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
-
-  * igt@kms_psr@primary_page_flip:
-    - bat-dg1-5:          NOTRUN -> [SKIP][23] ([i915#1072] / [i915#4078]) +3 similar issues
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_psr@primary_page_flip.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-dg1-5:          NOTRUN -> [SKIP][24] ([i915#3555])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html
-    - bat-adlp-4:         NOTRUN -> [SKIP][25] ([i915#3555] / [i915#4579])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - bat-dg1-5:          NOTRUN -> [SKIP][26] ([i915#1845] / [i915#3708])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@prime_vgem@basic-fence-flip.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-dg1-5:          NOTRUN -> [SKIP][27] ([i915#3708]) +2 similar issues
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@prime_vgem@basic-fence-read.html
-
-  * igt@prime_vgem@basic-gtt:
-    - bat-dg1-5:          NOTRUN -> [SKIP][28] ([i915#3708] / [i915#4077]) +1 similar issue
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@prime_vgem@basic-gtt.html
-
-  * igt@prime_vgem@basic-userptr:
-    - bat-adlp-4:         NOTRUN -> [SKIP][29] ([fdo#109295] / [i915#3301] / [i915#3708])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@prime_vgem@basic-userptr.html
-    - bat-dg1-5:          NOTRUN -> [SKIP][30] ([i915#3708] / [i915#4873])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@prime_vgem@basic-userptr.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-adlp-4:         NOTRUN -> [SKIP][31] ([fdo#109295] / [i915#3291] / [i915#3708]) +2 similar issues
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@prime_vgem@basic-write.html
-
-  * igt@runner@aborted:
-    - bat-dg1-5:          NOTRUN -> [FAIL][32] ([i915#4312] / [i915#5257])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@runner@aborted.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][33] ([fdo#109271] / [i915#2403] / [i915#4312])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/fi-pnv-d510/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3003]: https://gitlab.freedesktop.org/drm/intel/issues/3003
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4093]: https://gitlab.freedesktop.org/drm/intel/issues/4093
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4303]: https://gitlab.freedesktop.org/drm/intel/issues/4303
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
-  [i915#5950]: https://gitlab.freedesktop.org/drm/intel/issues/5950
-  [i915#6011]: https://gitlab.freedesktop.org/drm/intel/issues/6011
+On 2022-07-26 23:14, Prosyak, Vitaly wrote:
+> [AMD Official Use Only - General]
+>
+>
+> Hi guys
+>
+> What is wrong with the following patches:
+> https://patchwork.freedesktop.org/series/106558/
+> <https://patchwork.freedesktop.org/series/106558/>
+>
+> Thanks in advance
+>
+> Vitaly
+> ------------------------------------------------------------------------
+> *From:* Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
+> *Sent:* Monday, July 25, 2022 12:26 AM
+> *To:* Siqueira, Rodrigo <Rodrigo.Siqueira@amd.com>
+> *Cc:* Olsak, Marek <Marek.Olsak@amd.com>; Koenig, Christian
+> <Christian.Koenig@amd.com>; Deucher, Alexander
+> <Alexander.Deucher@amd.com>; igt-dev@lists.freedesktop.org
+> <igt-dev@lists.freedesktop.org>; Prosyak, Vitaly <Vitaly.Prosyak@amd.com>
+> *Subject:* RE: [PATCH 1/7] lib/amdgpu: increase number of resources
+> Re-reported.
+>
+> -----Original Message-----
+> From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
+> Sent: Friday, July 22, 2022 1:26 PM
+> To: Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>
+> Cc: marek.olsak@amd.com; christian.koenig@amd.com;
+> alexander.deucher@amd.com; igt-dev@lists.freedesktop.org;
+> vitaly.prosyak@amd.com
+> Subject: Re: [PATCH 1/7] lib/amdgpu: increase number of resources
+>
+> Hi Lakshmi,
+>
+> I think we have a false positive result for this patchset. Could you
+> trigger the CI again?
+>
+> Btw, this is the patchwork link:
+>
+> https://patchwork.freedesktop.org/series/106558/
+> <https://patchwork.freedesktop.org/series/106558/>>
+> Thanks
+> Siqueira
+>
+> On 2022-07-20 20:39, vitaly.prosyak@amd.com wrote:
+>> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>>
+>> Add arrays of bo's for VRAM and GTT.
+>> Eviction test uses 4 bo resources.
+>>
+>> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>> ---
+>>   lib/amdgpu/amd_ip_blocks.h | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+>> index cb7d14747..c16ad1794 100644
+>> --- a/lib/amdgpu/amd_ip_blocks.h
+>> +++ b/lib/amdgpu/amd_ip_blocks.h
+>> @@ -58,11 +58,13 @@ struct amdgpu_ring_context {
+>>
+>>        amdgpu_bo_handle bo;
+>>        amdgpu_bo_handle bo2;
+>> +     amdgpu_bo_handle boa_vram[2];
+>> +     amdgpu_bo_handle boa_gtt[2];
+>>
+>>        amdgpu_context_handle context_handle;
+>>        struct drm_amdgpu_info_hw_ip hw_ip_info;  /* result of
+>> amdgpu_query_hw_ip_info */
+>>
+>> -     amdgpu_bo_handle resources[2]; /* amdgpu_bo_alloc_and_map */
+>> +     amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
+>>        amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
+>>        amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
+>>
+>
 
 
-Build changes
--------------
+--_000_DM5PR12MB1897C8BB3ECA1590DED5608381979DM5PR12MB1897namp_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6599 -> IGTPW_7570
-
-  CI-20190529: 20190529
-  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7570: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/index.html
-  IGT_6599: b43ec6f17e6ae0ee76b958d58579787e61a3b87c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/index.html
-
---===============2788051750553607078==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
 </head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_bw: Skip unsupported modes (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106152/">https://patchwork.freedesktop.org/series/106152/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6599 -&gt; IGTPW_7570</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/index.html</p>
-<h2>Participating hosts (31 -&gt; 40)</h2>
-<p>Additional (10): bat-dg1-5 bat-dg2-8 bat-adlm-1 bat-dg2-9 bat-adlp-6 bat-adlp-4 bat-rplp-1 bat-rpls-1 bat-rpls-2 bat-jsl-1 <br />
-  Missing    (1): fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7570:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@gt_heartbeat:<ul>
-<li>{bat-rpls-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-rpls-1/igt@i915_selftest@live@gt_heartbeat.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7570 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@nullptr:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_mmap@basic:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_blits@basic:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 similar issue</p>
-</li>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6599/fi-pnv-d510/igt@i915_selftest@live@gem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@i915_suspend@basic-s2idle-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6011">i915#6011</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@i915_suspend@basic-s3-without-i915.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5903">i915#5903</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-x-tiled-legacy:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_addfb_basic@basic-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4215">i915#4215</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_busy@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4303">i915#4303</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</p>
-</li>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4093">i915#4093</a>) +3 similar issues</p>
-</li>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>) +13 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</p>
-</li>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4579">i915#4579</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-read:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-gtt:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@prime_vgem@basic-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</p>
-</li>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4873">i915#4873</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-adlp-4/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/bat-dg1-5/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>)</p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6599 -&gt; IGTPW_7570</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7570: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7570/index.html<br />
-  IGT_6599: b43ec6f17e6ae0ee76b958d58579787e61a3b87c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
+<body dir=3D"ltr">
+<p style=3D"font-family:Arial;font-size:10pt;color:#0000FF;margin:5pt;" ali=
+gn=3D"Left">
+[AMD Official Use Only - General]<br>
+</p>
+<br>
+<div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Thanks a lot, Rodrigo!</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+I am preparing more and more patches.<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Vitaly<br>
+</div>
+<div id=3D"appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
+yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> Siqueira, Rodrigo &lt=
+;Rodrigo.Siqueira@amd.com&gt;<br>
+<b>Sent:</b> Wednesday, July 27, 2022 12:47 PM<br>
+<b>To:</b> Prosyak, Vitaly &lt;Vitaly.Prosyak@amd.com&gt;; Vudum, Lakshmina=
+rayana &lt;lakshminarayana.vudum@intel.com&gt;<br>
+<b>Cc:</b> Olsak, Marek &lt;Marek.Olsak@amd.com&gt;; Koenig, Christian &lt;=
+Christian.Koenig@amd.com&gt;; Deucher, Alexander &lt;Alexander.Deucher@amd.=
+com&gt;; igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&gt=
+;<br>
+<b>Subject:</b> Re: [PATCH 1/7] lib/amdgpu: increase number of resources</f=
+ont>
+<div>&nbsp;</div>
+</div>
+<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
+">
+<div class=3D"PlainText">Thanks Lakshmi for re-report.<br>
+<br>
+Vitaly,<br>
+I merged your changes in the upstream, see:<br>
+<a href=3D"https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commits/maste=
+r">https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/commits/master</a><br=
+>
+<br>
+Thanks<br>
+Siqueira<br>
+<br>
+On 2022-07-26 23:14, Prosyak, Vitaly wrote:<br>
+&gt; [AMD Official Use Only - General]<br>
+&gt; <br>
+&gt; <br>
+&gt; Hi guys<br>
+&gt; <br>
+&gt; What is wrong with the following patches:<br>
+&gt; <a href=3D"https://patchwork.freedesktop.org/series/106558/">https://p=
+atchwork.freedesktop.org/series/106558/</a>
+<br>
+&gt; &lt;<a href=3D"https://patchwork.freedesktop.org/series/106558/">https=
+://patchwork.freedesktop.org/series/106558/</a>&gt;<br>
+&gt; <br>
+&gt; Thanks in advance<br>
+&gt; <br>
+&gt; Vitaly<br>
+&gt; ----------------------------------------------------------------------=
+--<br>
+&gt; *From:* Vudum, Lakshminarayana &lt;lakshminarayana.vudum@intel.com&gt;=
+<br>
+&gt; *Sent:* Monday, July 25, 2022 12:26 AM<br>
+&gt; *To:* Siqueira, Rodrigo &lt;Rodrigo.Siqueira@amd.com&gt;<br>
+&gt; *Cc:* Olsak, Marek &lt;Marek.Olsak@amd.com&gt;; Koenig, Christian <br>
+&gt; &lt;Christian.Koenig@amd.com&gt;; Deucher, Alexander <br>
+&gt; &lt;Alexander.Deucher@amd.com&gt;; igt-dev@lists.freedesktop.org <br>
+&gt; &lt;igt-dev@lists.freedesktop.org&gt;; Prosyak, Vitaly &lt;Vitaly.Pros=
+yak@amd.com&gt;<br>
+&gt; *Subject:* RE: [PATCH 1/7] lib/amdgpu: increase number of resources<br=
+>
+&gt; Re-reported.<br>
+&gt; <br>
+&gt; -----Original Message-----<br>
+&gt; From: Rodrigo Siqueira Jordao &lt;Rodrigo.Siqueira@amd.com&gt;<br>
+&gt; Sent: Friday, July 22, 2022 1:26 PM<br>
+&gt; To: Vudum, Lakshminarayana &lt;lakshminarayana.vudum@intel.com&gt;<br>
+&gt; Cc: marek.olsak@amd.com; christian.koenig@amd.com; <br>
+&gt; alexander.deucher@amd.com; igt-dev@lists.freedesktop.org; <br>
+&gt; vitaly.prosyak@amd.com<br>
+&gt; Subject: Re: [PATCH 1/7] lib/amdgpu: increase number of resources<br>
+&gt; <br>
+&gt; Hi Lakshmi,<br>
+&gt; <br>
+&gt; I think we have a false positive result for this patchset. Could you <=
+br>
+&gt; trigger the CI again?<br>
+&gt; <br>
+&gt; Btw, this is the patchwork link:<br>
+&gt; <br>
+&gt; <a href=3D"https://patchwork.freedesktop.org/series/106558/">https://p=
+atchwork.freedesktop.org/series/106558/</a>
+<br>
+&gt; &lt;<a href=3D"https://patchwork.freedesktop.org/series/106558/">https=
+://patchwork.freedesktop.org/series/106558/</a>&gt;&gt;
+<br>
+&gt; Thanks<br>
+&gt; Siqueira<br>
+&gt; <br>
+&gt; On 2022-07-20 20:39, vitaly.prosyak@amd.com wrote:<br>
+&gt;&gt; From: Vitaly Prosyak &lt;vitaly.prosyak@amd.com&gt;<br>
+&gt;&gt; <br>
+&gt;&gt; Add arrays of bo's for VRAM and GTT.<br>
+&gt;&gt; Eviction test uses 4 bo resources.<br>
+&gt;&gt; <br>
+&gt;&gt; Signed-off-by: Vitaly Prosyak &lt;vitaly.prosyak@amd.com&gt;<br>
+&gt;&gt; ---<br>
+&gt;&gt;&nbsp;&nbsp; lib/amdgpu/amd_ip_blocks.h | 4 +++-<br>
+&gt;&gt;&nbsp;&nbsp; 1 file changed, 3 insertions(+), 1 deletion(-)<br>
+&gt;&gt; <br>
+&gt;&gt; diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks=
+.h <br>
+&gt;&gt; index cb7d14747..c16ad1794 100644<br>
+&gt;&gt; --- a/lib/amdgpu/amd_ip_blocks.h<br>
+&gt;&gt; +++ b/lib/amdgpu/amd_ip_blocks.h<br>
+&gt;&gt; @@ -58,11 +58,13 @@ struct amdgpu_ring_context {<br>
+&gt;&gt;&nbsp;&nbsp; <br>
+&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_bo_handle bo;<br>
+&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_bo_handle bo2;<br=
+>
+&gt;&gt; +&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_bo_handle boa_vram[2];<br>
+&gt;&gt; +&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_bo_handle boa_gtt[2];<br>
+&gt;&gt;&nbsp;&nbsp; <br>
+&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_context_handle co=
+ntext_handle;<br>
+&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; struct drm_amdgpu_info_h=
+w_ip hw_ip_info;&nbsp; /* result of <br>
+&gt;&gt; amdgpu_query_hw_ip_info */<br>
+&gt;&gt;&nbsp;&nbsp; <br>
+&gt;&gt; -&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_bo_handle resources[2]; /* amdgpu=
+_bo_alloc_and_map */<br>
+&gt;&gt; +&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_bo_handle resources[4]; /* amdgpu=
+_bo_alloc_and_map */<br>
+&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_va_handle va_hand=
+le;&nbsp;&nbsp;&nbsp; /* amdgpu_bo_alloc_and_map */<br>
+&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; amdgpu_va_handle va_hand=
+le2;&nbsp;&nbsp; /* amdgpu_bo_alloc_and_map */<br>
+&gt;&gt;&nbsp;&nbsp; <br>
+&gt; <br>
+<br>
+</div>
+</span></font></div>
+</div>
 </body>
 </html>
 
---===============2788051750553607078==--
+--_000_DM5PR12MB1897C8BB3ECA1590DED5608381979DM5PR12MB1897namp_--
