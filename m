@@ -1,28 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com
- [IPv6:2607:f8b0:4864:20::e2a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3B4E10E05A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 19:39:57 +0000 (UTC)
-Received: by mail-vs1-xe2a.google.com with SMTP id 125so5134717vsx.7
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 12:39:57 -0700 (PDT)
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com.
- [209.85.217.50]) by smtp.gmail.com with ESMTPSA id
- p21-20020a67f415000000b0034c00d40507sm610581vsn.3.2022.07.15.12.39.56
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Jul 2022 12:39:56 -0700 (PDT)
-Received: by mail-vs1-f50.google.com with SMTP id w188so4984877vsb.6
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Jul 2022 12:39:56 -0700 (PDT)
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com
+ [IPv6:2607:f8b0:4864:20::f2b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12DF010E64A
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 17:57:38 +0000 (UTC)
+Received: by mail-qv1-xf2b.google.com with SMTP id v2so1929887qvs.12
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 10:57:38 -0700 (PDT)
+From: Jim Shargo <jshargo@chromium.org>
+To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
+ Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>
+Date: Thu, 28 Jul 2022 13:57:36 -0400
+Message-Id: <20220728175736.1893691-1-jshargo@chromium.org>
+In-Reply-To: <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
+References: <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-References: <20220715191539.1780049-1-markyacoub@chromium.org>
-In-Reply-To: <20220715191539.1780049-1-markyacoub@chromium.org>
-From: Alexandru M Stan <amstan@chromium.org>
-Date: Fri, 15 Jul 2022 15:39:15 -0400
-Message-ID: <CAHNYxRxGPveoOziHd_OReKJSog=fLKqMLjzPYn4L5LvAkY8wiA@mail.gmail.com>
-To: Mark Yacoub <markyacoub@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH] lib/igt_chamelium: Only plug in the ports
- configured in the config file
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3] tooling: Add linux's .clang-format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,130 +22,253 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: robdclark@chromium.org, petri.latvala@intel.com,
- Ilja Friedel <ihf@google.com>, igt-dev@lists.freedesktop.org,
- seanpaul@chromium.org, Mark Yacoub <markyacoub@google.com>
+Cc: Jim Shargo <jshargo@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jul 15, 2022 at 3:15 PM Mark Yacoub <markyacoub@chromium.org> wrote:
->
-> [Why]
-> Some Chamelium setups do not have all ports connected.
-> On current Chamelium V3, the hardware is limited to only plug in 1 port
-> at time. [hardware bug is to be fixed]
+As I was authoring my first patchset for IGT, I found myself fighting
+the tooling a bit to get everything right. I had to add a bunch of extra
+command line args to use my linux checkout's formatting rules to get the
+style right.
 
-The background for that is if you want to use the ITE path (which is
-the only supported way right now). There exists only one ITE chip on a
-v3, with all 4 ports having some muxing to it. Obviously then only one
-port can be connected.
-There's another video path where the FPGA could decode the video
-directly without the ITE's help. In that case multiple ports could
-work at the same time. This path has not been implemented yet.
+I grabbed this from a recent checkout of torvald's repo.
 
-I wouldn't consider this a hardware bug or that it will ever be fixed
-(eg: if you want to use HDCP you'll be forced to use the ITE path for
-that one test therefore you'll always have this limitation).
+The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e
 
-> When all prompted to be connected, plugging any port will unplug
-> everything before it, which is not what we want.
->
-> [How]
-> Iterate over the ~/.igtrc config file and only plug the ports there.
-> This guarantees that each setup is in control of what makes the most
-> sense for it.
->
-> Test: ./kms_chamelium --run-subtest dp-hp
-> Tested on: Volteer & cv3
->
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> ---
->  lib/igt_chamelium.c | 30 ++++++++++++++++++++----------
->  lib/igt_chamelium.h |  2 +-
->  lib/igt_kms.c       |  2 +-
->  3 files changed, 22 insertions(+), 12 deletions(-)
->
-> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> index 55cbfa12..c7b99ebc 100644
-> --- a/lib/igt_chamelium.c
-> +++ b/lib/igt_chamelium.c
-> @@ -2830,25 +2830,35 @@ void chamelium_deinit(struct chamelium *chamelium)
->         chamelium_deinit_rpc_only(chamelium);
->  }
->
-> -bool chamelium_plug_all(struct chamelium *chamelium)
-> +bool chamelium_plug_all_connected(struct chamelium* chamelium)
->  {
-> -       size_t port_count;
-> -       int port_ids[CHAMELIUM_MAX_PORTS];
-> -       xmlrpc_value *v;
-> +       /* Iterate over all ports in the config file and plug them all. */
-> +       char** group_list = g_key_file_get_groups(igt_key_file, NULL);
-> +       int i;
-> +
-> +       for (i = 0; group_list[i] != NULL; i++) {
-> +               int port_id;
-> +               GError* error = NULL;
-> +               xmlrpc_value* v;
-> +               char* group = group_list[i];
-> +
-> +
-> +               if (!strstr(group, "Chamelium:"))
-> +                       continue;
-> +
-> +               port_id = g_key_file_get_integer(igt_key_file, group,
-> +                       "ChameliumPortID",
-> +                       &error);
->
-> -       port_count = chamelium_get_video_ports(chamelium, port_ids);
-> -       if (port_count <= 0)
-> -               return false;
->
-> -       for (int i = 0; i < port_count; ++i) {
-> -               v = __chamelium_rpc(chamelium, NULL, "Plug", "(i)", port_ids[i]);
-> +               v = __chamelium_rpc(chamelium, NULL, "Plug", "(i)", port_id);
->
->                 if (v != NULL)
->                         xmlrpc_DECREF(v);
->
->                 if (chamelium->env.fault_occurred) {
->                         igt_debug("Chamelium RPC call failed: %s\n",
-> -                            chamelium->env.fault_string);
-> +                               chamelium->env.fault_string);
->
->                         return false;
->                 }
-> diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-> index f40e848e..78985469 100644
-> --- a/lib/igt_chamelium.h
-> +++ b/lib/igt_chamelium.h
-> @@ -244,7 +244,7 @@ void chamelium_crop_analog_frame(struct chamelium_frame_dump *dump, int width,
->  void chamelium_destroy_frame_dump(struct chamelium_frame_dump *dump);
->  void chamelium_destroy_audio_file(struct chamelium_audio_file *audio_file);
->  void chamelium_infoframe_destroy(struct chamelium_infoframe *infoframe);
-> -bool chamelium_plug_all(struct chamelium *chamelium);
-> +bool chamelium_plug_all_connected(struct chamelium *chamelium);
->  bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
->                                                    int drm_fd);
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index d8867f09..81eb1881 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -2349,7 +2349,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->                 if (chamelium) {
->                         igt_abort_on_f(!chamelium_wait_reachable(chamelium, 20),
->                                        "cannot reach the configured chamelium!\n");
-> -                       igt_abort_on_f(!chamelium_plug_all(chamelium),
-> +                       igt_abort_on_f(!chamelium_plug_all_connected(chamelium),
->                                        "failed to plug all the chamelium ports!\n");
->                         igt_abort_on_f(!chamelium_wait_all_configured_ports_connected(chamelium, drm_fd),
->                                        "not all configured chamelium ports are connected!\n");
-> --
-> 2.37.0.170.g444d1eabd0-goog
->
+To make this discoverable to new contributors, this change also
+updates CONTRIBUTING.md with:
 
-This seems prudent, SGTM your "How?" and implementation, just not "Why?".
+  - A link to git-clang-format, which is a useful tool for using
+  clang-format from git just on a commit's changes
+  - A link to .editorconfig to make it more discoverable
 
-Alexandru Stan (amstan)
+Changes made to the linux kernel style:
+
+  - Reflowing comments, including multi-line comments (ReflowComments)
+  - Support for magic code blocks (ForEachMacros, IfMacros)
+
+Signed-off-by: Jim Shargo <jshargo@chromium.org>
+---
+V2 -> V3: Update CONTRIBUTING.md with a note about .editorconfig,
+          remove reference to .clang-format from the .editorconfig
+V1 -> V2: Better support for IGT style and addressing comments
+
+ .clang-format   | 176 ++++++++++++++++++++++++++++++++++++++++++++++++
+ CONTRIBUTING.md |   9 ++-
+ 2 files changed, 182 insertions(+), 3 deletions(-)
+ create mode 100644 .clang-format
+
+diff --git a/.clang-format b/.clang-format
+new file mode 100644
+index 00000000..da42bead
+--- /dev/null
++++ b/.clang-format
+@@ -0,0 +1,176 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# clang-format configuration file. Intended for clang-format >= 11.
++#
++# For more information, see:
++#
++#   Documentation/process/clang-format.rst
++#   https://clang.llvm.org/docs/ClangFormat.html
++#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
++#
++# This file was pulled from the linux kernel at revision
++# e0dccc3b76fb35bb257b4118367a883073d7390e.
++#
++# Changes made for IGT-specific styles should include a comment noting
++# the previous value with "kernel-value". This makes it clear what we
++# want to keep when updating this file.
++---
++AccessModifierOffset: -4
++AlignAfterOpenBracket: Align
++AlignConsecutiveAssignments: false
++AlignConsecutiveDeclarations: false
++AlignEscapedNewlines: Left
++AlignOperands: true
++AlignTrailingComments: false
++AllowAllParametersOfDeclarationOnNextLine: false
++AllowShortBlocksOnASingleLine: false
++AllowShortCaseLabelsOnASingleLine: false
++AllowShortFunctionsOnASingleLine: None
++AllowShortIfStatementsOnASingleLine: false
++AllowShortLoopsOnASingleLine: false
++AlwaysBreakAfterDefinitionReturnType: None
++AlwaysBreakAfterReturnType: None
++AlwaysBreakBeforeMultilineStrings: false
++AlwaysBreakTemplateDeclarations: false
++BinPackArguments: true
++BinPackParameters: true
++BraceWrapping:
++  AfterClass: false
++  AfterControlStatement: false
++  AfterEnum: false
++  AfterFunction: true
++  AfterNamespace: true
++  AfterObjCDeclaration: false
++  AfterStruct: false
++  AfterUnion: false
++  AfterExternBlock: false
++  BeforeCatch: false
++  BeforeElse: false
++  IndentBraces: false
++  SplitEmptyFunction: true
++  SplitEmptyRecord: true
++  SplitEmptyNamespace: true
++BreakBeforeBinaryOperators: None
++BreakBeforeBraces: Custom
++BreakBeforeInheritanceComma: false
++BreakBeforeTernaryOperators: false
++BreakConstructorInitializersBeforeComma: false
++BreakConstructorInitializers: BeforeComma
++BreakAfterJavaFieldAnnotations: false
++BreakStringLiterals: false
++ColumnLimit: 80
++CommentPragmas: '^ IWYU pragma:'
++CompactNamespaces: false
++ConstructorInitializerAllOnOneLineOrOnePerLine: false
++ConstructorInitializerIndentWidth: 8
++ContinuationIndentWidth: 8
++Cpp11BracedListStyle: false
++DerivePointerAlignment: false
++DisableFormat: false
++ExperimentalAutoDetectBinPacking: false
++FixNamespaceComments: false
++
++# Taken from:
++#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ tools/ \
++#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1'," \
++#   | LC_ALL=C sort -u
++ForEachMacros: # kernel-value: (long list removed)
++  # IGT rules, found via:
++  # git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ lib/ |
++  #     sed "s,^#define \([^(]\+\).*,'\1'," |
++  #     grep -v "__" |
++  #     sort -u    
++  - 'for_each_collection_data'
++  - 'for_each_combination'
++  - 'for_each_connected_output'
++  - 'for_each_connector_mode'
++  - 'for_each_ctx_cfg_engine'
++  - 'for_each_ctx_engine'
++  - 'for_each_format'
++  - 'for_each_if'
++  - 'for_each_memory_region'
++  - 'for_each_mmap_offset_type'
++  - 'for_each_physical_engine'
++  - 'for_each_physical_ring'
++  - 'for_each_pipe'
++  - 'for_each_pipe_static'
++  - 'for_each_pipe_with_single_output'
++  - 'for_each_pipe_with_valid_output'
++  - 'for_each_plane_on_pipe'
++  - 'for_each_prime_number'
++  - 'for_each_ring'
++  - 'for_each_subset'
++  - 'for_each_sysfs_gt_dirfd'
++  - 'for_each_sysfs_gt_path'
++  - 'for_each_valid_output_on_pipe'
++  - 'for_each_variation_nr'
++  - 'for_each_variation_r'
++  - 'igt_list_for_each_entry'
++  - 'igt_list_for_each_entry_reverse'
++  - 'igt_list_for_each_entry_safe'
++  - 'igt_list_for_each_entry_safe_reverse'
++
++IfMacros: # kernel-value: none
++  - 'igt_dynamic'
++  - 'igt_fixture'
++  - 'igt_fork'
++  - 'igt_subtest'
++  - 'igt_subtest_f'
++  - 'igt_subtest_group'
++  - 'igt_subtest_with_dynamic'
++  - 'igt_subtest_with_dynamic_f'
++  - 'igt_until_timeout'
++
++IncludeBlocks: Preserve
++IncludeCategories:
++  - Regex: '.*'
++    Priority: 1
++IncludeIsMainRegex: '(Test)?$'
++IndentCaseLabels: false
++IndentGotoLabels: false
++IndentPPDirectives: None
++IndentWidth: 8
++IndentWrappedFunctionNames: false
++JavaScriptQuotes: Leave
++JavaScriptWrapImports: true
++KeepEmptyLinesAtTheStartOfBlocks: false
++MacroBlockBegin: ''
++MacroBlockEnd: ''
++MaxEmptyLinesToKeep: 1
++NamespaceIndentation: None
++ObjCBinPackProtocolList: Auto
++ObjCBlockIndentWidth: 8
++ObjCSpaceAfterProperty: true
++ObjCSpaceBeforeProtocolList: true
++
++# Taken from git's rules
++PenaltyBreakAssignment: 10
++PenaltyBreakBeforeFirstCallParameter: 30
++PenaltyBreakComment: 10
++PenaltyBreakFirstLessLess: 0
++PenaltyBreakString: 10
++PenaltyExcessCharacter: 100
++PenaltyReturnTypeOnItsOwnLine: 60
++
++PointerAlignment: Right
++ReflowComments: true # kernel-value: false
++SortIncludes: false
++SortUsingDeclarations: false
++SpaceAfterCStyleCast: false
++SpaceAfterTemplateKeyword: true
++SpaceBeforeAssignmentOperators: true
++SpaceBeforeCtorInitializerColon: true
++SpaceBeforeInheritanceColon: true
++SpaceBeforeParens: ControlStatementsExceptForEachMacros
++SpaceBeforeRangeBasedForLoopColon: true
++SpaceInEmptyParentheses: false
++SpacesBeforeTrailingComments: 1
++SpacesInAngles: false
++SpacesInContainerLiterals: false
++SpacesInCStyleCastParentheses: false
++SpacesInParentheses: false
++SpacesInSquareBrackets: false
++Standard: Cpp03
++TabWidth: 8
++UseTab: Always
++...
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 6d1294ad..f2af5a18 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -10,8 +10,10 @@ improvements for documentation and new tools and testcases.
+ The Code
+ --------
+ 
+-- The code should follow kernel coding style:
+-  https://www.kernel.org/doc/html/latest/process/coding-style.html
++- The code should follow [kernel coding style](coding-style). Before
++  sending out a patch, changes can be formatted with
++  [git-clang-format](git-clang-format). Editors can be configured
++  using .editorconfig for additional style support.
+ 
+ - Testcases (subtests) have to use minus signs (-) as a word separator.
+   The generated documentation contains glossary of commonly used terms.
+@@ -30,9 +32,10 @@ The Code
+   provided by the igt library. The semantic patch lib/igt.cocci can help with
+   more automatic conversions.
+ 
++[coding-style]: https://www.kernel.org/doc/html/latest/process/coding-style.html
++[git-clang-format]: https://github.com/llvm-mirror/clang/blob/master/tools/clang-format/git-clang-format
+ [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+ 
+-
+ Sending Patches
+ ---------------
+ 
+-- 
+2.37.1.455.g008518b4e5-goog
