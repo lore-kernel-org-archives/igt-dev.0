@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4027653104466390666=="
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4F7D10F3AF
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 07:59:05 +0000 (UTC)
+Date: Thu, 28 Jul 2022 10:55:31 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Jim Shargo <jshargo@chromium.org>
+Message-ID: <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
+References: <YuEY1XNsPVb1GzcN@platvala-desk.ger.corp.intel.com>
+ <20220727202125.546432-1-jshargo@chromium.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 28 Jul 2022 07:34:48 -0000
-Message-ID: <165899368831.21233.3323746141512841626@emeril.freedesktop.org>
-References: <20220728065909.21022-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220728065909.21022-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fdevice=5Fscan=3A_Assert_if_there=27s_no_empty_PCI=5FSLOT=5F?=
- =?utf-8?q?NAME?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220727202125.546432-1-jshargo@chromium.org>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tooling: Add linux's .clang-format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,262 +20,276 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4027653104466390666==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Jul 27, 2022 at 04:21:25PM -0400, Jim Shargo wrote:
+> As I was authoring my first patchset for IGT, I found myself fighting
+> the tooling a bit to get everything right. I had to add a bunch of extra
+> command line args to use my linux checkout's formatting rules to get the
+> style right.
+> 
+> I grabbed this from a recent checkout of torvald's repo.
+> 
+> The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e
+> 
+> To make this discoverable to new contributors, this change:
+> 
+>   - Updates CONTRIBUTING.md with a link to git-clang-format, which is
+>   a useful tool for using clang-format from git just on a commit's
+>   changes.
+>   - Updates .editorconfig with a reference to .clang-format and a
+>   pointer to CONTRIBUTING.md
+> 
+> Changes made to the linux kernel style:
+> 
+>   - Reflowing comments, including multi-line comments (ReflowComments)
+>   - Support for magic code blocks (ForEachMacros, IfMacros)
+> 
+> Signed-off-by: Jim Shargo <jshargo@chromium.org>
+> ---
+> V1 -> V2: Better support for IGT style and addressing comments
+> 
+>  .clang-format   | 176 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  .editorconfig   |   6 +-
+>  CONTRIBUTING.md |   8 ++-
+>  3 files changed, 185 insertions(+), 5 deletions(-)
+>  create mode 100644 .clang-format
+> 
+> diff --git a/.clang-format b/.clang-format
+> new file mode 100644
+> index 00000000..da42bead
+> --- /dev/null
+> +++ b/.clang-format
+> @@ -0,0 +1,176 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# clang-format configuration file. Intended for clang-format >= 11.
+> +#
+> +# For more information, see:
+> +#
+> +#   Documentation/process/clang-format.rst
+> +#   https://clang.llvm.org/docs/ClangFormat.html
+> +#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+> +#
+> +# This file was pulled from the linux kernel at revision
+> +# e0dccc3b76fb35bb257b4118367a883073d7390e.
+> +#
+> +# Changes made for IGT-specific styles should include a comment noting
+> +# the previous value with "kernel-value". This makes it clear what we
+> +# want to keep when updating this file.
+> +---
+> +AccessModifierOffset: -4
+> +AlignAfterOpenBracket: Align
+> +AlignConsecutiveAssignments: false
+> +AlignConsecutiveDeclarations: false
+> +AlignEscapedNewlines: Left
+> +AlignOperands: true
+> +AlignTrailingComments: false
+> +AllowAllParametersOfDeclarationOnNextLine: false
+> +AllowShortBlocksOnASingleLine: false
+> +AllowShortCaseLabelsOnASingleLine: false
+> +AllowShortFunctionsOnASingleLine: None
+> +AllowShortIfStatementsOnASingleLine: false
+> +AllowShortLoopsOnASingleLine: false
+> +AlwaysBreakAfterDefinitionReturnType: None
+> +AlwaysBreakAfterReturnType: None
+> +AlwaysBreakBeforeMultilineStrings: false
+> +AlwaysBreakTemplateDeclarations: false
+> +BinPackArguments: true
+> +BinPackParameters: true
+> +BraceWrapping:
+> +  AfterClass: false
+> +  AfterControlStatement: false
+> +  AfterEnum: false
+> +  AfterFunction: true
+> +  AfterNamespace: true
+> +  AfterObjCDeclaration: false
+> +  AfterStruct: false
+> +  AfterUnion: false
+> +  AfterExternBlock: false
+> +  BeforeCatch: false
+> +  BeforeElse: false
+> +  IndentBraces: false
+> +  SplitEmptyFunction: true
+> +  SplitEmptyRecord: true
+> +  SplitEmptyNamespace: true
+> +BreakBeforeBinaryOperators: None
+> +BreakBeforeBraces: Custom
+> +BreakBeforeInheritanceComma: false
+> +BreakBeforeTernaryOperators: false
+> +BreakConstructorInitializersBeforeComma: false
+> +BreakConstructorInitializers: BeforeComma
+> +BreakAfterJavaFieldAnnotations: false
+> +BreakStringLiterals: false
+> +ColumnLimit: 80
+> +CommentPragmas: '^ IWYU pragma:'
+> +CompactNamespaces: false
+> +ConstructorInitializerAllOnOneLineOrOnePerLine: false
+> +ConstructorInitializerIndentWidth: 8
+> +ContinuationIndentWidth: 8
+> +Cpp11BracedListStyle: false
+> +DerivePointerAlignment: false
+> +DisableFormat: false
+> +ExperimentalAutoDetectBinPacking: false
+> +FixNamespaceComments: false
+> +
+> +# Taken from:
+> +#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ tools/ \
+> +#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1'," \
+> +#   | LC_ALL=C sort -u
+> +ForEachMacros: # kernel-value: (long list removed)
+> +  # IGT rules, found via:
+> +  # git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ lib/ |
+> +  #     sed "s,^#define \([^(]\+\).*,'\1'," |
+> +  #     grep -v "__" |
+> +  #     sort -u    
+> +  - 'for_each_collection_data'
+> +  - 'for_each_combination'
+> +  - 'for_each_connected_output'
+> +  - 'for_each_connector_mode'
+> +  - 'for_each_ctx_cfg_engine'
+> +  - 'for_each_ctx_engine'
+> +  - 'for_each_format'
+> +  - 'for_each_if'
+> +  - 'for_each_memory_region'
+> +  - 'for_each_mmap_offset_type'
+> +  - 'for_each_physical_engine'
+> +  - 'for_each_physical_ring'
+> +  - 'for_each_pipe'
+> +  - 'for_each_pipe_static'
+> +  - 'for_each_pipe_with_single_output'
+> +  - 'for_each_pipe_with_valid_output'
+> +  - 'for_each_plane_on_pipe'
+> +  - 'for_each_prime_number'
+> +  - 'for_each_ring'
+> +  - 'for_each_subset'
+> +  - 'for_each_sysfs_gt_dirfd'
+> +  - 'for_each_sysfs_gt_path'
+> +  - 'for_each_valid_output_on_pipe'
+> +  - 'for_each_variation_nr'
+> +  - 'for_each_variation_r'
+> +  - 'igt_list_for_each_entry'
+> +  - 'igt_list_for_each_entry_reverse'
+> +  - 'igt_list_for_each_entry_safe'
+> +  - 'igt_list_for_each_entry_safe_reverse'
+> +
+> +IfMacros: # kernel-value: none
+> +  - 'igt_dynamic'
+> +  - 'igt_fixture'
+> +  - 'igt_fork'
+> +  - 'igt_subtest'
+> +  - 'igt_subtest_f'
+> +  - 'igt_subtest_group'
+> +  - 'igt_subtest_with_dynamic'
+> +  - 'igt_subtest_with_dynamic_f'
+> +  - 'igt_until_timeout'
+> +
+> +IncludeBlocks: Preserve
+> +IncludeCategories:
+> +  - Regex: '.*'
+> +    Priority: 1
+> +IncludeIsMainRegex: '(Test)?$'
+> +IndentCaseLabels: false
+> +IndentGotoLabels: false
+> +IndentPPDirectives: None
+> +IndentWidth: 8
+> +IndentWrappedFunctionNames: false
+> +JavaScriptQuotes: Leave
+> +JavaScriptWrapImports: true
+> +KeepEmptyLinesAtTheStartOfBlocks: false
+> +MacroBlockBegin: ''
+> +MacroBlockEnd: ''
+> +MaxEmptyLinesToKeep: 1
+> +NamespaceIndentation: None
+> +ObjCBinPackProtocolList: Auto
+> +ObjCBlockIndentWidth: 8
+> +ObjCSpaceAfterProperty: true
+> +ObjCSpaceBeforeProtocolList: true
+> +
+> +# Taken from git's rules
+> +PenaltyBreakAssignment: 10
+> +PenaltyBreakBeforeFirstCallParameter: 30
+> +PenaltyBreakComment: 10
+> +PenaltyBreakFirstLessLess: 0
+> +PenaltyBreakString: 10
+> +PenaltyExcessCharacter: 100
+> +PenaltyReturnTypeOnItsOwnLine: 60
+> +
+> +PointerAlignment: Right
+> +ReflowComments: true # kernel-value: false
+> +SortIncludes: false
+> +SortUsingDeclarations: false
+> +SpaceAfterCStyleCast: false
+> +SpaceAfterTemplateKeyword: true
+> +SpaceBeforeAssignmentOperators: true
+> +SpaceBeforeCtorInitializerColon: true
+> +SpaceBeforeInheritanceColon: true
+> +SpaceBeforeParens: ControlStatementsExceptForEachMacros
+> +SpaceBeforeRangeBasedForLoopColon: true
+> +SpaceInEmptyParentheses: false
+> +SpacesBeforeTrailingComments: 1
+> +SpacesInAngles: false
+> +SpacesInContainerLiterals: false
+> +SpacesInCStyleCastParentheses: false
+> +SpacesInParentheses: false
+> +SpacesInSquareBrackets: false
+> +Standard: Cpp03
+> +TabWidth: 8
+> +UseTab: Always
+> +...
+> diff --git a/.editorconfig b/.editorconfig
+> index 7b7f1375..5c7e31d3 100644
+> --- a/.editorconfig
+> +++ b/.editorconfig
+> @@ -1,5 +1,7 @@
+> -# To use this config in your editor, follow the instructions at:
+> -# http://editorconfig.org
+> +# To use this config in your editor, follow the instructions at
+> +# http://editorconfig.org. You can also use "clang-format" for new C
+> +# code (see CONTRIBUTING.md for suggestions and .clang-format for more
+> +# details).
+>  
+>  root = true
+>  
+> diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+> index 6d1294ad..8d7320b7 100644
+> --- a/CONTRIBUTING.md
+> +++ b/CONTRIBUTING.md
+> @@ -10,8 +10,9 @@ improvements for documentation and new tools and testcases.
+>  The Code
+>  --------
+>  
+> -- The code should follow kernel coding style:
+> -  https://www.kernel.org/doc/html/latest/process/coding-style.html
+> +- The code should follow [kernel coding style](coding-style). Before
+> +  sending out a patch, changes can be formatted with
+> +  [git-clang-format](git-clang-format).
 
-== Series Details ==
-
-Series: lib/igt_device_scan: Assert if there's no empty PCI_SLOT_NAME
-URL   : https://patchwork.freedesktop.org/series/106795/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_6602 -> IGTPW_7575
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_7575 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7575, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/index.html
-
-Participating hosts (35 -> 33)
-------------------------------
-
-  Additional (2): bat-dg2-8 bat-dg2-9 
-  Missing    (4): fi-rkl-11600 bat-jsl-3 fi-bdw-samus fi-pnv-d510 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7575:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor@toggle:
-    - fi-bsw-kefka:       [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-bsw-kefka/igt@kms_cursor_legacy@basic-flip-after-cursor@toggle.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-bsw-kefka/igt@kms_cursor_legacy@basic-flip-after-cursor@toggle.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7575 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-cfl-8109u:       [PASS][3] -> [DMESG-FAIL][4] ([i915#62])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [PASS][5] -> [INCOMPLETE][6] ([i915#4785])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@ring_submission:
-    - fi-cfl-8109u:       [PASS][7] -> [DMESG-WARN][8] ([i915#5904]) +29 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - fi-cfl-8109u:       [PASS][9] -> [DMESG-WARN][10] ([i915#5904] / [i915#62])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-cfl-8109u:       [PASS][11] -> [DMESG-WARN][12] ([i915#62]) +12 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][13] ([fdo#109271] / [i915#4312] / [i915#5594] / [i915#6246])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-hsw-4770/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5836]: https://gitlab.freedesktop.org/drm/intel/issues/5836
-  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
-  [i915#5904]: https://gitlab.freedesktop.org/drm/intel/issues/5904
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
-  [i915#6380]: https://gitlab.freedesktop.org/drm/intel/issues/6380
-  [i915#6477]: https://gitlab.freedesktop.org/drm/intel/issues/6477
+I meant pointing to .editorconfig here.
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6602 -> IGTPW_7575
-
-  CI-20190529: 20190529
-  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7575: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/index.html
-  IGT_6602: 5a8fa05a824032aab4c8980727a075f71065e27c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/index.html
-
---===============4027653104466390666==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+-- 
+Petri Latvala
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_device_scan: Assert if there&#39;s no empty PCI_SLOT_NAME</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106795/">https://patchwork.freedesktop.org/series/106795/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6602 -&gt; IGTPW_7575</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7575 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7575, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/index.html</p>
-<h2>Participating hosts (35 -&gt; 33)</h2>
-<p>Additional (2): bat-dg2-8 bat-dg2-9 <br />
-  Missing    (4): fi-rkl-11600 bat-jsl-3 fi-bdw-samus fi-pnv-d510 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7575:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_cursor_legacy@basic-flip-after-cursor@toggle:<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-bsw-kefka/igt@kms_cursor_legacy@basic-flip-after-cursor@toggle.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-bsw-kefka/igt@kms_cursor_legacy@basic-flip-after-cursor@toggle.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7575 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@ring_submission:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a>) +29 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6602/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) +12 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6602 -&gt; IGTPW_7575</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7575: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7575/index.html<br />
-  IGT_6602: 5a8fa05a824032aab4c8980727a075f71065e27c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4027653104466390666==--
+>  
+>  - Testcases (subtests) have to use minus signs (-) as a word separator.
+>    The generated documentation contains glossary of commonly used terms.
+> @@ -30,9 +31,10 @@ The Code
+>    provided by the igt library. The semantic patch lib/igt.cocci can help with
+>    more automatic conversions.
+>  
+> +[coding-style]: https://www.kernel.org/doc/html/latest/process/coding-style.html
+> +[git-clang-format]: https://github.com/llvm-mirror/clang/blob/master/tools/clang-format/git-clang-format
+>  [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+>  
+> -
+>  Sending Patches
+>  ---------------
+>  
+> -- 
+> 2.37.1.359.gd136c6c3e2-goog
+> 
