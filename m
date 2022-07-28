@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5E6F10E640
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 14:05:10 +0000 (UTC)
-Message-ID: <c5a5d794-76a8-5e2d-3adc-7def108d2137@intel.com>
-Date: Thu, 28 Jul 2022 16:04:59 +0200
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20220713105342.653916-1-karolina.drobnik@intel.com>
- <Yt/GvIdBSkRUAxWU@kamilkon-desk1>
- <5f3bc16e-ac4d-5d51-9653-7478f981615f@intel.com>
- <YuIeu2vSAFE8YnB3@kamilkon-desk1>
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-In-Reply-To: <YuIeu2vSAFE8YnB3@kamilkon-desk1>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============2289851997812181210=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4] i915/i915_pm_rps: Check impact of
- fence ordering on waitboosting
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nirmoy Das" <nirmoy.das@intel.com>
+Date: Thu, 28 Jul 2022 14:05:42 -0000
+Message-ID: <165901714269.21234.14892667296929250921@emeril.freedesktop.org>
+References: <20220728124735.23529-1-nirmoy.das@intel.com>
+In-Reply-To: <20220728124735.23529-1-nirmoy.das@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fctx=5Fexec=3A_Open_master_device_when_setting_error_state?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,409 +17,325 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+--===============2289851997812181210==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 28.07.2022 07:29, Kamil Konieczny wrote:
-> Hi,
-> 
-> On 2022-07-27 at 14:27:02 +0200, Karolina Drobnik wrote:
->> Hi,
->>
->> On 26.07.2022 12:49, Kamil Konieczny wrote:
->>> Hi Karolina,
->>>
->>> few more nits, see below.
->>>
->>> On 2022-07-13 at 12:53:42 +0200, Karolina Drobnik wrote:
->>>> From: Chris Wilson <chris@chris-wilson.co.uk>
->>>>
->>>> Currently the wait boost heuristic is evaluated at the start of each
->>>> fence wait for a series within dma-resv. There is no strict ordering of
->>>> fences defined by dma-resv, and so it turns out that the same operation
->>>> under different circumstances can result in different heuristics being
->>>> applied, and dramatic performance variations in user applications.
->>>>
->>>> Link: https://gitlab.freedesktop.org/drm/intel/-/issues/6284
->>>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
->>>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
->>>> ---
->>>> v4:
->>>>     - Added test descriptions with igt_describe()
->>>> v3:
->>>>     - Removed unnecessary calls to gem_write
->>>> v2:
->>>>     - Introduced batch_create() with arbitration points to prevent hangs
->>>>     - Added engine-order subtest
->>>>     - Added reporting of GPU frequency
->>>>     - Changed runtimes and switched prints from us to ms
->>>>
->>>>    tests/i915/i915_pm_rps.c | 261 ++++++++++++++++++++++++++++++++++++++-
->>>>    1 file changed, 255 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
->>>> index b37f15c2..6125ea60 100644
->>>> --- a/tests/i915/i915_pm_rps.c
->>>> +++ b/tests/i915/i915_pm_rps.c
->>>> @@ -37,8 +37,10 @@
->>>>    #include <sys/wait.h>
->>>>
->>>>    #include "i915/gem.h"
->>>> +#include "i915/gem_create.h"
->>>>    #include "igt.h"
->>>>    #include "igt_dummyload.h"
->>>> +#include "igt_perf.h"
->>>>    #include "igt_sysfs.h"
->>>>
->>>>    IGT_TEST_DESCRIPTION("Render P-States tests - verify GPU frequency changes");
->>>> @@ -614,14 +616,253 @@ static void waitboost(int fd, bool reset)
->>>>    	igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
->>>>    }
->>>>
->>>> +static uint32_t batch_create(int i915, uint64_t sz)
->>>> +{
->>>> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
->>>> +	const uint32_t chk = 0x5 << 23;
->>>> +	uint32_t handle = gem_create(i915, sz);
->>>> +
->>>> +	for (uint64_t pg = 4096; pg + 4096 < sz; pg += 4096)
->>>> +		gem_write(i915, handle, pg, &chk, sizeof(chk));
->>>> +
->>>> +	gem_write(i915, handle, sz - sizeof(bbe), &bbe, sizeof(bbe));
->>>> +
->>>> +	return handle;
->>>> +}
->>>> +
->>>> +static uint64_t __fence_order(int i915,
->>>> +			      struct drm_i915_gem_exec_object2 *obj,
->>>> +			      struct drm_i915_gem_execbuffer2 *eb,
->>>> +			      uint64_t flags0, uint64_t flags1,
->>>> +			      double *outf)
->>>> +{
->>>> +	uint64_t before[2], after[2];
->>>> +	struct timespec tv;
->>>> +	int fd;
->>>> +
->>>> +	gem_quiescent_gpu(i915);
->>>> +	fd = perf_i915_open(i915, I915_PMU_ACTUAL_FREQUENCY);
->>>> +
->>>> +	igt_gettime(&tv);
->>>> +
->>>> +	obj->flags = flags0;
->>>> +	gem_execbuf(i915, eb);
->>>> +
->>>> +	obj->flags = flags1;
->>>> +	gem_execbuf(i915, eb);
->>>> +
->>>> +	read(fd, before, sizeof(before));
->>>> +	gem_sync(i915, obj->handle);
->>>> +	read(fd, after, sizeof(after));
->>>> +	close(fd);
->>>> +
->>>> +	after[0] -= before[0];
->>>> +	after[1] -= before[1];
->>>
->>> Put igt_assert here (check for zero before divide).
->>
->> Hmm, isn't that more of a belts and suspenders approach? It's unlikely we'd
->> get zero here. Also, don't we put asserts towards the end of the test
->> whenever possible?
-> 
-> It is userspace so we can afford some extra checks, so maybe
-> 	if (after[1] == 0)
-> 		return 0;
+== Series Details ==
 
-I agree that it won't cost much, but I just wonder if we're going to end 
-up in such situation.
+Series: i915/gem_ctx_exec: Open master device when setting error state
+URL   : https://patchwork.freedesktop.org/series/106808/
+State : failure
 
->>>> +
->>>> +	*outf = 1e9 * after[0] / after[1];
->>>> +	return igt_nsec_elapsed(&tv);
->>>> +}
->>>> +
->>>> +static void fence_order(int i915)
->>>> +{
->>>> +	const uint64_t sz = 512ull << 20;
->>>> +	struct drm_i915_gem_exec_object2 obj[2] = {
->>>> +		{ .handle = gem_create(i915, 4096) },
->>>> +		{ .handle = batch_create(i915, sz) },
->>>> +	};
->>>> +	struct drm_i915_gem_execbuffer2 execbuf = {
->>>> +		.buffers_ptr = to_user_pointer(obj),
->>>> +		.buffer_count = ARRAY_SIZE(obj),
->>>> +	};
->>>> +	uint64_t wr, rw;
->>>> +	int min, max;
->>>> +	double freq;
->>>> +	int sysfs;
->>>> +
->>>> +	/*
->>>> +	 * Check the order of fences found during GEM_WAIT does not affect
->>>> +	 * waitboosting.
->>>> +	 *
->>>> +	 * Internally, implicit fences are tracked within a dma-resv which
->>>> +	 * imposes no order on the individually fences tracked within. Since
->>>> +	 * there is no defined order, the sequence of waits (and the associated
->>>> +	 * waitboosts) is also undefined, undermining the consistency of the
->>>> +	 * waitboost heuristic.
->>>> +	 *
->>>> +	 * In particular, we can influence the sequence of fence storage
->>>> +	 * within dma-resv by mixing read/write semantics for implicit fences.
->>>> +	 * We can exploit this property of dma-resv to exercise that no matter
->>>> +	 * the stored order, the heuristic is applied consistently for the
->>>> +	 * user's GEM_WAIT ioctl.
->>>> +	 */
->>>> +
->>>> +	sysfs = igt_sysfs_open(i915);
->>>> +	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
->>>> +	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
->>>> +	igt_require(max > min);
->>>> +
->>>> +	/* Only allow ourselves to upclock via waitboosting */
->>>> +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
->>>> +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
->>>> +	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
->>>> +
->>>> +	/* Warm up to bind the vma */
->>>> +	__fence_order(i915, &obj[0], &execbuf, 0, 0, &freq);
->>>> +
->>>> +	wr = __fence_order(i915, &obj[0], &execbuf, EXEC_OBJECT_WRITE, 0, &freq);
->>>> +	igt_info("Write-then-read: %.2fms @ %.3fMHz\n", wr * 1e-6, freq);
->>>> +
->>>> +	rw = __fence_order(i915, &obj[0], &execbuf, 0, EXEC_OBJECT_WRITE, &freq);
->>>> +	igt_info("Read-then-write: %.2fms @ %.3fMHz\n", rw * 1e-6, freq);
->>>> +
->>>> +	gem_close(i915, obj[0].handle);
->>>> +	gem_close(i915, obj[1].handle);
->>>
->>> Close sysfs here.
->>
->> Good catch. I'll close it before asserts (as agreed).
->>
-> 
-> My bad, this close should be after resetting max freq, two lines
-> below. Btw why not reuse code from other tests, reading old freqs
-> at beginnig of test or reusing freqs readed at fixture in
-> igt_main ?
+== Summary ==
 
-No worries. Hm, I'd say it's because of how the fixture is likely to 
-change in the future.
+CI Bug Log - changes from IGT_6603 -> IGTPW_7578
+====================================================
 
->>>> +
->>>> +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
->>>> +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
->>>
->>> Here we should put previous values, not those readed from RPx,
->>> but if they are always the same it is ok.
->>
->> We restore the values we read from sysfs
->>
-> 
-> But we readed RPx values, not gt_min|gt_max freq ones, so here
-> you can use origfreqs[MIN] and origfreqs[MAX] or declare in test
-> 
-> int old_freqs[NUMFREQ];
-> 
-> and read them with read_freqs(old_freqs) and then use for restore.
-I'd keep it as it is
+Summary
+-------
 
-Many thanks,
-Karolina
+  **FAILURE**
 
-> Regards,
-> Kamil
-> 
->>>> +
->>>> +	igt_assert(4 * rw > 3 * wr && 4 * wr > 3 * rw);
->>>> +}
->>>> +
->>>> +static uint64_t __engine_order(int i915,
->>>> +			       struct drm_i915_gem_exec_object2 *obj,
->>>> +			       struct drm_i915_gem_execbuffer2 *eb,
->>>> +			       unsigned int *engines0,
->>>> +			       unsigned int *engines1,
->>>> +			       unsigned int num_engines,
->>>> +			       double *outf)
->>>> +{
->>>> +	uint64_t before[2], after[2];
->>>> +	struct timespec tv;
->>>> +	int fd;
->>>> +
->>>> +	gem_quiescent_gpu(i915);
->>>> +	fd = perf_i915_open(i915, I915_PMU_ACTUAL_FREQUENCY);
->>>> +
->>>> +	igt_gettime(&tv);
->>>> +
->>>> +	obj->flags = EXEC_OBJECT_WRITE;
->>>> +	for (unsigned int n = 0; n < num_engines; n++) {
->>>> +		eb->flags &= ~63ull;
->>>> +		eb->flags |= engines0[n];
->>>> +		gem_execbuf_wr(i915, eb);
->>>> +	}
->>>> +
->>>> +	obj->flags = 0;
->>>> +	for (unsigned int n = 0; n < num_engines; n++) {
->>>> +		eb->flags &= ~63ull;
->>>> +		eb->flags |= engines1[n];
->>>> +		gem_execbuf(i915, eb);
->>>> +	}
->>>> +
->>>> +	read(fd, before, sizeof(before));
->>>> +	gem_sync(i915, obj->handle);
->>>> +	read(fd, after, sizeof(after));
->>>> +	close(fd);
->>>> +
->>>> +	after[0] -= before[0];
->>>> +	after[1] -= before[1];
->>>
->>> Put igt_assert here (check for zero before divide).
->>>
->>>> +
->>>> +	*outf = 1e9 * after[0] / after[1];
->>>> +	return igt_nsec_elapsed(&tv);
->>>> +}
->>>> +
->>>> +static void engine_order(int i915)
->>>> +{
->>>> +	const uint64_t sz = 512ull << 20;
->>>> +	struct drm_i915_gem_exec_object2 obj[2] = {
->>>> +		{ .handle = gem_create(i915, 4096) },
->>>> +		{ .handle = batch_create(i915, sz) },
->>>> +	};
->>>> +	struct drm_i915_gem_execbuffer2 execbuf = {
->>>> +		.buffers_ptr = to_user_pointer(obj),
->>>> +		.buffer_count = ARRAY_SIZE(obj),
->>>> +	};
->>>> +	const struct intel_execution_engine2 *e;
->>>> +	unsigned int engines[2], reverse[2];
->>>> +	uint64_t forward, backward, both;
->>>> +	unsigned int num_engines;
->>>> +	const intel_ctx_t *ctx;
->>>> +	int min, max;
->>>> +	double freq;
->>>> +	int sysfs;
->>>> +
->>>> +	/*
->>>> +	 * Check the order of fences found during GEM_WAIT does not affect
->>>> +	 * waitboosting. (See fence_order())
->>>> +	 *
->>>> +	 * Another way we can manipulate the order of fences within the
->>>> +	 * dma-resv is through repeated use of the same contexts.
->>>> +	 */
->>>> +
->>>> +	num_engines = 0;
->>>> +	ctx = intel_ctx_create_all_physical(i915);
->>>> +	for_each_ctx_engine(i915, ctx, e) {
->>>> +		/*
->>>> +		 * Avoid using the cmdparser as it will try to allocate
->>>> +		 * a new shadow batch for each submission -> oom
->>>> +		 */
->>>> +		if (!gem_engine_has_mutable_submission(i915, e->class))
->>>> +			continue;
->>>> +
->>>> +		engines[num_engines++] = e->flags;
->>>> +		if (num_engines == ARRAY_SIZE(engines))
->>>> +			break;
->>>> +	}
->>>> +	igt_require(num_engines > 1);
->>>> +	for (unsigned int n = 0; n < num_engines; n++)
->>>> +		reverse[n] = engines[num_engines - n - 1];
->>>> +	execbuf.rsvd1 = ctx->id;
->>>> +
->>>> +	sysfs = igt_sysfs_open(i915);
->>>> +	min = igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
->>>> +	max = igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
->>>> +	igt_require(max > min);
->>>> +
->>>> +	/* Only allow ourselves to upclock via waitboosting */
->>>> +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
->>>> +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
->>>> +	igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
->>>> +
->>>> +	/* Warm up to bind the vma */
->>>> +	gem_execbuf(i915, &execbuf);
->>>> +
->>>> +	forward = __engine_order(i915, &obj[0], &execbuf,
->>>> +				 engines, engines, num_engines,
->>>> +				 &freq);
->>>> +	igt_info("Forwards: %.2fms @ %.3fMhz\n", forward * 1e-6, freq);
->>>> +
->>>> +	backward = __engine_order(i915, &obj[0], &execbuf,
->>>> +				  reverse, reverse, num_engines,
->>>> +				  &freq);
->>>> +	igt_info("Backwards: %.2fms @ %.3fMhz\n", backward * 1e-6, freq);
->>>> +
->>>> +	both = __engine_order(i915, &obj[0], &execbuf,
->>>> +			      engines, reverse, num_engines,
->>>> +			      &freq);
->>>> +	igt_info("Bidirectional: %.2fms @ %.3fMhz\n", both * 1e-6, freq);
->>>> +
->>>> +	gem_close(i915, obj[0].handle);
->>>> +	gem_close(i915, obj[1].handle);
->>>
->>> Close sysfs here.
->>
->> Ack
->>
->>>
->>>> +	intel_ctx_destroy(i915, ctx);
->>>> +
->>>> +	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
->>>> +	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
->>>> +
->>>> +	igt_assert(4 * forward > 3 * backward && 4 * backward > 3 * forward);
->>>> +	igt_assert(4 * forward > 3 * both && 4 * both > 3 * forward);
->>>> +}
->>>> +
->>>>    static void pm_rps_exit_handler(int sig)
->>>>    {
->>>> -	if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
->>>> -		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
->>>> -		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
->>>> -	} else {
->>>> -		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
->>>> -		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
->>>> +	if (sysfs_files[MAX].filp) {
->>>> +		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
->>>> +			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
->>>> +			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
->>>> +		} else {
->>>> +			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
->>>> +			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
->>>> +		}
->>>
->>> This change looks unrelated. Please split this as separate patch
->>> and post as a fix.
->>
->> Will do so
->>
->> Many thanks,
->> Karolina
->>
->>> Regards,
->>> Kamil
->>>
->>>>    	}
->>>>
->>>>    	if (lh.igt_proc.running)
->>>> @@ -683,6 +924,14 @@ igt_main
->>>>    	igt_subtest("waitboost")
->>>>    		waitboost(drm_fd, false);
->>>>
->>>> +	igt_describe("Check if the order of fences does not affect waitboosting");
->>>> +	igt_subtest("fence-order")
->>>> +		fence_order(drm_fd);
->>>> +
->>>> +	igt_describe("Check if context reuse does not affect waitboosting");
->>>> +	igt_subtest("engine-order")
->>>> +		engine_order(drm_fd);
->>>> +
->>>>    	/* Test boost frequency after GPU reset */
->>>>    	igt_subtest("reset") {
->>>>    		igt_hang_t hang = igt_allow_hang(drm_fd, 0, 0);
->>>> --
->>>> 2.25.1
+  Serious unknown changes coming with IGTPW_7578 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7578, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Additional (2): fi-kbl-soraka bat-rplp-1 
+  Missing    (3): fi-cml-u2 fi-cfl-8109u fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7578:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@guc_multi_lrc:
+    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@i915_selftest@live@guc_multi_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7578 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271]) +8 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gem:
+    - fi-pnv-d510:        NOTRUN -> [DMESG-FAIL][5] ([i915#4528])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-pnv-d510/igt@i915_selftest@live@gem.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][6] ([i915#1886])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +7 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_ringfill@basic-all:
+    - {bat-dg2-9}:        [FAIL][9] ([i915#5886]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-dg2-9/igt@gem_ringfill@basic-all.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/bat-dg2-9/igt@gem_ringfill@basic-all.html
+
+  * igt@i915_selftest@live@coherency:
+    - {bat-dg2-9}:        [DMESG-WARN][11] ([i915#5763]) -> [PASS][12] +6 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-dg2-9/igt@i915_selftest@live@coherency.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/bat-dg2-9/igt@i915_selftest@live@coherency.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - {bat-rpls-1}:       [INCOMPLETE][13] -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-rpls-1/igt@i915_selftest@live@gt_pm.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/bat-rpls-1/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][15] ([i915#4785]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [DMESG-FAIL][17] ([i915#4528]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [FAIL][19] ([i915#6298]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4093]: https://gitlab.freedesktop.org/drm/intel/issues/4093
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
+  [i915#5886]: https://gitlab.freedesktop.org/drm/intel/issues/5886
+  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6380]: https://gitlab.freedesktop.org/drm/intel/issues/6380
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6603 -> IGTPW_7578
+
+  CI-20190529: 20190529
+  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7578: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/index.html
+  IGT_6603: d851d950cf805f3021d67666db67e24fae1b99ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/index.html
+
+--===============2289851997812181210==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_ctx_exec: Open master device when setting error state</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106808/">https://patchwork.freedesktop.org/series/106808/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6603 -&gt; IGTPW_7578</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7578 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7578, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Additional (2): fi-kbl-soraka bat-rplp-1 <br />
+  Missing    (3): fi-cml-u2 fi-cfl-8109u fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7578:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@guc_multi_lrc:<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@i915_selftest@live@guc_multi_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7578 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_ringfill@basic-all:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-dg2-9/igt@gem_ringfill@basic-all.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5886">i915#5886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/bat-dg2-9/igt@gem_ringfill@basic-all.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@coherency:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-dg2-9/igt@i915_selftest@live@coherency.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/bat-dg2-9/igt@i915_selftest@live@coherency.html">PASS</a> +6 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-rpls-1/igt@i915_selftest@live@gt_pm.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/bat-rpls-1/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6603 -&gt; IGTPW_7578</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7578: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7578/index.html<br />
+  IGT_6603: d851d950cf805f3021d67666db67e24fae1b99ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2289851997812181210==--
