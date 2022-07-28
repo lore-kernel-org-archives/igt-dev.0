@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 860E911B163
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 06:59:34 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B2F611BB3B
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 07:00:04 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Jul 2022 08:59:08 +0200
-Message-Id: <20220728065909.21022-1-zbigniew.kempczynski@intel.com>
+Date: Thu, 28 Jul 2022 08:59:55 +0200
+Message-Id: <20220728065956.21092-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_device_scan: Assert if there's no
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_device_scan: Assert if there's
  empty PCI_SLOT_NAME
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
