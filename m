@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 433EF1128CC
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 14:28:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 257E410F1FF
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 15:00:00 +0000 (UTC)
+Date: Thu, 28 Jul 2022 16:59:53 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YuKkaYMLfgKZHchH@kamilkon-desk1>
+References: <20220728011559.10232-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <YuIeu2vSAFE8YnB3@kamilkon-desk1>
-References: <20220713105342.653916-1-karolina.drobnik@intel.com>
- <Yt/GvIdBSkRUAxWU@kamilkon-desk1>
- <5f3bc16e-ac4d-5d51-9653-7478f981615f@intel.com>
- <YuIeu2vSAFE8YnB3@kamilkon-desk1>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Date: Thu, 28 Jul 2022 15:12:02 +0100
-Message-ID: <165901752241.12256.12138491571584116288@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4] i915/i915_pm_rps: Check impact of
- fence ordering on waitboosting
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220728011559.10232-1-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/hangman: Fix gt hang/error tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,213 +23,194 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Kamil Konieczny (2022-07-28 06:29:31)
-> Hi,
->=20
-> On 2022-07-27 at 14:27:02 +0200, Karolina Drobnik wrote:
-> > Hi,
-> >=20
-> > On 26.07.2022 12:49, Kamil Konieczny wrote:
-> > > Hi Karolina,
-> > >=20
-> > > few more nits, see below.
-> > >=20
-> > > On 2022-07-13 at 12:53:42 +0200, Karolina Drobnik wrote:
-> > > > From: Chris Wilson <chris@chris-wilson.co.uk>
-> > > >=20
-> > > > Currently the wait boost heuristic is evaluated at the start of each
-> > > > fence wait for a series within dma-resv. There is no strict orderin=
-g of
-> > > > fences defined by dma-resv, and so it turns out that the same opera=
-tion
-> > > > under different circumstances can result in different heuristics be=
-ing
-> > > > applied, and dramatic performance variations in user applications.
-> > > >=20
-> > > > Link: https://gitlab.freedesktop.org/drm/intel/-/issues/6284
-> > > > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> > > > Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
-> > > > ---
-> > > > v4:
-> > > >    - Added test descriptions with igt_describe()
-> > > > v3:
-> > > >    - Removed unnecessary calls to gem_write
-> > > > v2:
-> > > >    - Introduced batch_create() with arbitration points to prevent h=
-angs
-> > > >    - Added engine-order subtest
-> > > >    - Added reporting of GPU frequency
-> > > >    - Changed runtimes and switched prints from us to ms
-> > > >=20
-> > > >   tests/i915/i915_pm_rps.c | 261 ++++++++++++++++++++++++++++++++++=
-++++-
-> > > >   1 file changed, 255 insertions(+), 6 deletions(-)
-> > > >=20
-> > > > diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-> > > > index b37f15c2..6125ea60 100644
-> > > > --- a/tests/i915/i915_pm_rps.c
-> > > > +++ b/tests/i915/i915_pm_rps.c
-> > > > @@ -37,8 +37,10 @@
-> > > >   #include <sys/wait.h>
-> > > >=20
-> > > >   #include "i915/gem.h"
-> > > > +#include "i915/gem_create.h"
-> > > >   #include "igt.h"
-> > > >   #include "igt_dummyload.h"
-> > > > +#include "igt_perf.h"
-> > > >   #include "igt_sysfs.h"
-> > > >=20
-> > > >   IGT_TEST_DESCRIPTION("Render P-States tests - verify GPU frequenc=
-y changes");
-> > > > @@ -614,14 +616,253 @@ static void waitboost(int fd, bool reset)
-> > > >           igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
-> > > >   }
-> > > >=20
-> > > > +static uint32_t batch_create(int i915, uint64_t sz)
-> > > > +{
-> > > > + const uint32_t bbe =3D MI_BATCH_BUFFER_END;
-> > > > + const uint32_t chk =3D 0x5 << 23;
-> > > > + uint32_t handle =3D gem_create(i915, sz);
-> > > > +
-> > > > + for (uint64_t pg =3D 4096; pg + 4096 < sz; pg +=3D 4096)
-> > > > +         gem_write(i915, handle, pg, &chk, sizeof(chk));
-> > > > +
-> > > > + gem_write(i915, handle, sz - sizeof(bbe), &bbe, sizeof(bbe));
-> > > > +
-> > > > + return handle;
-> > > > +}
-> > > > +
-> > > > +static uint64_t __fence_order(int i915,
-> > > > +                       struct drm_i915_gem_exec_object2 *obj,
-> > > > +                       struct drm_i915_gem_execbuffer2 *eb,
-> > > > +                       uint64_t flags0, uint64_t flags1,
-> > > > +                       double *outf)
-> > > > +{
-> > > > + uint64_t before[2], after[2];
-> > > > + struct timespec tv;
-> > > > + int fd;
-> > > > +
-> > > > + gem_quiescent_gpu(i915);
-> > > > + fd =3D perf_i915_open(i915, I915_PMU_ACTUAL_FREQUENCY);
-> > > > +
-> > > > + igt_gettime(&tv);
-> > > > +
-> > > > + obj->flags =3D flags0;
-> > > > + gem_execbuf(i915, eb);
-> > > > +
-> > > > + obj->flags =3D flags1;
-> > > > + gem_execbuf(i915, eb);
-> > > > +
-> > > > + read(fd, before, sizeof(before));
-> > > > + gem_sync(i915, obj->handle);
-> > > > + read(fd, after, sizeof(after));
-> > > > + close(fd);
-> > > > +
-> > > > + after[0] -=3D before[0];
-> > > > + after[1] -=3D before[1];
-> > >=20
-> > > Put igt_assert here (check for zero before divide).
-> >=20
-> > Hmm, isn't that more of a belts and suspenders approach? It's unlikely =
-we'd
-> > get zero here. Also, don't we put asserts towards the end of the test
-> > whenever possible?
->=20
-> It is userspace so we can afford some extra checks, so maybe
->         if (after[1] =3D=3D 0)
->                 return 0;
-> >=20
-> > > > +
-> > > > + *outf =3D 1e9 * after[0] / after[1];
-> > > > + return igt_nsec_elapsed(&tv);
-> > > > +}
-> > > > +
-> > > > +static void fence_order(int i915)
-> > > > +{
-> > > > + const uint64_t sz =3D 512ull << 20;
-> > > > + struct drm_i915_gem_exec_object2 obj[2] =3D {
-> > > > +         { .handle =3D gem_create(i915, 4096) },
-> > > > +         { .handle =3D batch_create(i915, sz) },
-> > > > + };
-> > > > + struct drm_i915_gem_execbuffer2 execbuf =3D {
-> > > > +         .buffers_ptr =3D to_user_pointer(obj),
-> > > > +         .buffer_count =3D ARRAY_SIZE(obj),
-> > > > + };
-> > > > + uint64_t wr, rw;
-> > > > + int min, max;
-> > > > + double freq;
-> > > > + int sysfs;
-> > > > +
-> > > > + /*
-> > > > +  * Check the order of fences found during GEM_WAIT does not affect
-> > > > +  * waitboosting.
-> > > > +  *
-> > > > +  * Internally, implicit fences are tracked within a dma-resv which
-> > > > +  * imposes no order on the individually fences tracked within. Si=
-nce
-> > > > +  * there is no defined order, the sequence of waits (and the asso=
-ciated
-> > > > +  * waitboosts) is also undefined, undermining the consistency of =
-the
-> > > > +  * waitboost heuristic.
-> > > > +  *
-> > > > +  * In particular, we can influence the sequence of fence storage
-> > > > +  * within dma-resv by mixing read/write semantics for implicit fe=
-nces.
-> > > > +  * We can exploit this property of dma-resv to exercise that no m=
-atter
-> > > > +  * the stored order, the heuristic is applied consistently for the
-> > > > +  * user's GEM_WAIT ioctl.
-> > > > +  */
-> > > > +
-> > > > + sysfs =3D igt_sysfs_open(i915);
-> > > > + min =3D igt_sysfs_get_u32(sysfs, "gt_RPn_freq_mhz");
-> > > > + max =3D igt_sysfs_get_u32(sysfs, "gt_RP0_freq_mhz");
-> > > > + igt_require(max > min);
-> > > > +
-> > > > + /* Only allow ourselves to upclock via waitboosting */
-> > > > + igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
-> > > > + igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", min);
-> > > > + igt_sysfs_printf(sysfs, "gt_boost_freq_mhz", "%d", max);
-> > > > +
-> > > > + /* Warm up to bind the vma */
-> > > > + __fence_order(i915, &obj[0], &execbuf, 0, 0, &freq);
-> > > > +
-> > > > + wr =3D __fence_order(i915, &obj[0], &execbuf, EXEC_OBJECT_WRITE, =
-0, &freq);
-> > > > + igt_info("Write-then-read: %.2fms @ %.3fMHz\n", wr * 1e-6, freq);
-> > > > +
-> > > > + rw =3D __fence_order(i915, &obj[0], &execbuf, 0, EXEC_OBJECT_WRIT=
-E, &freq);
-> > > > + igt_info("Read-then-write: %.2fms @ %.3fMHz\n", rw * 1e-6, freq);
-> > > > +
-> > > > + gem_close(i915, obj[0].handle);
-> > > > + gem_close(i915, obj[1].handle);
-> > >=20
-> > > Close sysfs here.
-> >=20
-> > Good catch. I'll close it before asserts (as agreed).
-> >=20
->=20
-> My bad, this close should be after resetting max freq, two lines
-> below. Btw why not reuse code from other tests, reading old freqs
-> at beginnig of test or reusing freqs readed at fixture in
-> igt_main ?
->=20
-> > > > +
-> > > > + igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%d", min);
-> > > > + igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%d", max);
-> > >=20
-> > > Here we should put previous values, not those readed from RPx,
-> > > but if they are always the same it is ok.
-> >=20
-> > We restore the values we read from sysfs
-> >=20
->=20
-> But we readed RPx values, not gt_min|gt_max freq ones, so here
-> you can use origfreqs[MIN] and origfreqs[MAX] or declare in test
+Hi Umesh,
 
-Not required. igt owns the device. We completely take over the device,
-restoring default properties, all previous state will be lost. Anything
-that pretends otherwise is misleading.
--Chris
+On 2022-07-28 at 01:15:59 +0000, Umesh Nerlige Ramappa wrote:
+> gt-engine-hang and gt-engine-error tests were still using reset=2
+> setting so that ended up just doing an engine reset. Fix the tests so
+> that they actually do the gt specific reset and set the expectations
+> correctly.
+> 
+> In some rare failures, some of the background spinners show up as
+> innocent and keep spinning after the hang recovery. This can only happen
+> if the spinners did not start for some reason. Check that the spinners
+> actually started before submitting a hanging batch.
+> 
+> For engine specific hang, only one context is marked guilty, but for a
+> gt hang all contexts are marked guilty. Check for different expected
+> behavior for engine vs. gt reset.
+> 
+> v2:
+> - gt-reset resets all contexts on all engines. The execlist implementation
+>   of gt-engine-* tests expected that a preemptible background spinner
+>   running on the target engine should be marked innocent. While i915 can
+>   mark such a context for execlist mode, GuC scheduling does not guarantee
+>   that the background spinner can be marked as innocent. Since the state
+>   of the background spinner depends on the scheduling backend, do no
+>   validate the state of the background spinner for the target engine.
+> 
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>  tests/i915/i915_hangman.c | 84 ++++++++++++++++++++++++---------------
+>  1 file changed, 53 insertions(+), 31 deletions(-)
+> 
+> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+> index c7d69fdd..d7b173ab 100644
+> --- a/tests/i915/i915_hangman.c
+> +++ b/tests/i915/i915_hangman.c
+> @@ -295,9 +295,15 @@ static void context_unban(int fd, unsigned ctx)
+>  	gem_context_set_param(fd, &param);
+>  }
+>  
+> +enum reset_type {
+> +	GT_RESET = 1,
+> +	ENGINE_RESET = 2,
+> +};
+> +
+>  static void
+>  test_engine_hang(const intel_ctx_t *ctx,
+> -		 const struct intel_execution_engine2 *e, unsigned int flags)
+> +		 const struct intel_execution_engine2 *e, unsigned int flags,
+> +		 enum reset_type reset)
+>  {
+>  	const struct intel_execution_engine2 *other;
+>  	const intel_ctx_t *local_ctx[GEM_MAX_ENGINES];
+> @@ -309,6 +315,7 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+>  		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
+>  
+> +	igt_assert(reset == GT_RESET || reset == ENGINE_RESET);
+>  	/*
+>  	 * Fill all engines with background load.
+>  	 * This verifies that independent engines are unaffected and gives
+> @@ -324,7 +331,10 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  				      .ahnd = ahndN,
+>  				      .ctx = local_ctx[num_ctx],
+>  				      .engine = other->flags,
+> -				      .flags = IGT_SPIN_FENCE_OUT);
+> +				      .flags = IGT_SPIN_FENCE_OUT |
+> +					       IGT_SPIN_POLL_RUN);
+> +		igt_spin_busywait_until_started(spin);
+> +
+>  		num_ctx++;
+>  
+>  		igt_list_move(&spin->link, &list);
+> @@ -344,14 +354,43 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  	igt_assert_eq(sync_fence_status(spin->out_fence), -EIO);
+>  	igt_spin_free(device, spin);
+>  
+> -	/* But no other engines/clients should be affected */
+> -	igt_list_for_each_entry_safe(spin, next, &list, link) {
+> +	/*
+> +	 * engine-engine-hang: Other engines/clients should not be affected for
+> +	 * engine reset, so innocent contexts complete successfully once the
+> +	 * spinner is ended.
+> +	 *
+> +	 * gt-engine-hang: All engines/clients are guilty and complete with a
+> +	 * -EIO fence status, however the background task that was submitted to
+> +	 * the target engine is innocent and is expected to complete
+> +	 * successfully.
+> +	 */
+
+imho we should keep test for execlist behaviour. It is not clear
+why background task survives ? You stated "All ... are guilty" ?
+Isn't this a race between completing and resetting GT ?
+
+> +	igt_list_for_each_entry_safe_reverse(spin, next, &list, link) {
+> +		bool innocent = reset == ENGINE_RESET;
+> +		int expect = innocent ? 1 : -EIO;
+> +
+>  		ahndN = spin->opts.ahnd;
+> -		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
+> -		igt_spin_end(spin);
+> +		if (innocent) {
+> +			igt_assert_eq(sync_fence_wait(spin->out_fence, 0), -ETIME);
+> +			igt_spin_end(spin);
+> +		}
+>  
+> -		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
+> -		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
+> +		if (spin->opts.engine == e->flags) {
+> +		/*
+> +		 * gt-reset resets all contexts on all engines. The execlist
+> +		 * implementation of gt-engine-* tests expected that a
+> +		 * preemptible background spinner running on the target engine
+> +		 * should be marked innocent. While i915 can mark such a
+> +		 * context for execlist mode, GuC scheduling does not guarantee
+> +		 * that the background spinner can be marked as innocent. Since
+> +		 * the state of the background spinner depends on the scheduling
+> +		 * backend, do no validate the state of the background spinner
+> +		 * for the target engine.
+> +		 */
+> +			igt_spin_end(spin);
+> +		} else {
+> +			igt_assert_eq(sync_fence_wait(spin->out_fence, 500), 0);
+> +			igt_assert_eq(sync_fence_status(spin->out_fence), expect);
+> +		}
+>  		igt_spin_free(device, spin);
+>  		put_ahnd(ahndN);
+>  	}
+> @@ -439,6 +478,10 @@ static void do_tests(const char *name, const char *prefix,
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	char buff[256];
+> +	enum reset_type reset = ENGINE_RESET;
+> +
+> +	if (!strncmp(prefix, "gt", 2))
+> +		reset = GT_RESET;
+>  
+>  	snprintf(buff, sizeof(buff), "Per engine error capture (%s reset)", name);
+>  	igt_describe(buff);
+> @@ -454,20 +497,9 @@ static void do_tests(const char *name, const char *prefix,
+>  	igt_describe(buff);
+>  	snprintf(buff, sizeof(buff), "%s-engine-hang", prefix);
+>  	igt_subtest_with_dynamic(buff) {
+> -                int has_gpu_reset = 0;
+> -		struct drm_i915_getparam gp = {
+> -			.param = I915_PARAM_HAS_GPU_RESET,
+> -			.value = &has_gpu_reset,
+> -		};
+> -
+> -		igt_require(gem_scheduler_has_preemption(device));
+> -		igt_params_set(device, "reset", "%u", -1);
+> -                ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
+> -		igt_require(has_gpu_reset > 1);
+> -
+>  		for_each_ctx_engine(device, ctx, e) {
+>  			igt_dynamic_f("%s", e->name)
+> -				test_engine_hang(ctx, e, 0);
+> +				test_engine_hang(ctx, e, 0, reset);
+>  		}
+>  	}
+>  
+> @@ -475,19 +507,9 @@ static void do_tests(const char *name, const char *prefix,
+>  	igt_describe(buff);
+>  	snprintf(buff, sizeof(buff), "%s-engine-error", prefix);
+>  	igt_subtest_with_dynamic(buff) {
+> -		int has_gpu_reset = 0;
+> -		struct drm_i915_getparam gp = {
+> -			.param = I915_PARAM_HAS_GPU_RESET,
+> -			.value = &has_gpu_reset,
+> -		};
+> -
+> -		igt_params_set(device, "reset", "%u", -1);
+> -		ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
+> -		igt_require(has_gpu_reset > 1);
+> -
+
+imho we need this code in test_engine_hang for execlist
+subbmission for gt-engine-hang case.
+
+Regards,
+Kamil
+
+>  		for_each_ctx_engine(device, ctx, e) {
+>  			igt_dynamic_f("%s", e->name)
+> -				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS);
+> +				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS, reset);
+>  		}
+>  	}
+>  }
+> -- 
+> 2.25.1
+> 
