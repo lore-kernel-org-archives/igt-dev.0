@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52223113106
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Jul 2022 15:07:27 +0000 (UTC)
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Jul 2022 17:06:58 +0200
-Message-Id: <83b08fadb586f78b59d3402a63a169206fcf8395.1659014747.git.karolina.drobnik@intel.com>
-In-Reply-To: <cover.1659014747.git.karolina.drobnik@intel.com>
-References: <cover.1659014747.git.karolina.drobnik@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E721510E498
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 10:04:17 +0000 (UTC)
+Date: Fri, 29 Jul 2022 13:02:54 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Rohith Iyer <quic_rohiiyer@quicinc.com>
+Message-ID: <YuOwTp1m2YCCUS9u@platvala-desk.ger.corp.intel.com>
+References: <20220728232033.589-1-quic_rohiiyer@quicinc.com>
+ <20220728232033.589-2-quic_rohiiyer@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] i915/i915_pm_rps: Write values in
- pm_rps_exit_handler only for min-max configs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220728232033.589-2-quic_rohiiyer@quicinc.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 1/3] lib/igt_kms: Add helper to parse
+ mode string
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,51 +21,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, quic_aravindh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+On Thu, Jul 28, 2022 at 04:20:31PM -0700, Rohith Iyer wrote:
+> Add helper method to parse a mode string and verify
+> correct number of arguments. This standardizes parsing mode strings.
+> 
+> Changes made in V4:
+>  - Corrected documentation
+>  - Changed *mode_string to a const char from char
+> 
+> Signed-off-by: Rohith Iyer <quic_rohiiyer@quicinc.com>
+> ---
+>  lib/igt_kms.c | 26 ++++++++++++++++++++++++++
+>  lib/igt_kms.h |  1 +
+>  2 files changed, 27 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 14064614..c17c10ea 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -5777,3 +5777,29 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
+>  
+>  	return true;
+>  }
+> +
+> +/**
+> + * igt_parse_mode_string:
+> + * @mode_string: modeline string
+> + * @mode: a pointer to a drm mode structure
+> + *
+> + * Parse mode string and populate mode
+> + *
+> + * Format: <clock(MHz)>,<hdisp>,<hsync-start>,<hsync-end>,<htotal>,<vdisp>,<vsync-start>,
+> + * <vsync-end>,<vtotal>
 
-pm_rps_exit_handler writes min and max frequencies to the corresponding
-sysfs files. In a situation where each test initializes only specific
-handlers, it's possible that the exit handler will dereference a NULL
-value in MIN and MAX file handlers.
+Building docs breaks with this series, because of these <>s afaics. Make this just
 
-To prevent this, check if the exit handler is called by a subtest
-that initialized handlers to files describing frequency constraints.
+* Format: clock(MHz),hdisp,hsync-start,hsync-end,htotal,vdisp,vsync-start,vsync-end,vtotal
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
----
- tests/i915/i915_pm_rps.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index 0af46038..a45a6905 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -859,12 +859,14 @@ static void engine_order(int i915)
 
- static void pm_rps_exit_handler(int sig)
- {
--	if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
--		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
--		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--	} else {
--		writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--		writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+	if (sysfs_files[MAX].filp) {
-+		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
-+			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-+		} else {
-+			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-+			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+		}
- 	}
+-- 
+Petri Latvala
 
- 	if (lh.igt_proc.running)
---
-2.25.1
+
+> + *
+> + * Returns: true if the correct number of arguments are entered, else false.
+> + */
+> +bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
+> +{
+> +	float force_clock;
+> +
+> +	if (sscanf(mode_string, "%f,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu",
+> +	   &force_clock, &mode->hdisplay, &mode->hsync_start, &mode->hsync_end, &mode->htotal,
+> +	   &mode->vdisplay, &mode->vsync_start, &mode->vsync_end, &mode->vtotal) != 9)
+> +		return false;
+> +
+> +	mode->clock = force_clock * 1000;
+> +
+> +	return true;
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 5856a4b3..a2cf0937 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -974,5 +974,6 @@ void igt_sort_connector_modes(drmModeConnector *connector,
+>  bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
+>  		igt_output_t *output, int bpc);
+>  bool igt_check_bigjoiner_support(igt_display_t *display);
+> +bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+>  
+>  #endif /* __IGT_KMS_H__ */
+> -- 
+> 2.31.0
+> 
