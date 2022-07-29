@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com
- [IPv6:2607:f8b0:4864:20::731])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 06FC9C705E
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 20:21:27 +0000 (UTC)
-Received: by mail-qk1-x731.google.com with SMTP id z18so86457qki.2
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Jul 2022 13:21:27 -0700 (PDT)
-From: Jim Shargo <jshargo@chromium.org>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
- Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>
-Date: Wed, 27 Jul 2022 16:21:25 -0400
-Message-Id: <20220727202125.546432-1-jshargo@chromium.org>
-In-Reply-To: <YuEY1XNsPVb1GzcN@platvala-desk.ger.corp.intel.com>
-References: <YuEY1XNsPVb1GzcN@platvala-desk.ger.corp.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4496919598313548741=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tooling: Add linux's .clang-format
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jim Shargo" <jshargo@chromium.org>
+Date: Fri, 29 Jul 2022 09:21:32 -0000
+Message-ID: <165908649263.24433.315609374180181648@emeril.freedesktop.org>
+References: <YuEY1XNsPVb1GzcN@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YuEY1XNsPVb1GzcN@platvala-desk.ger.corp.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbGlu?=
+ =?utf-8?q?g=3A_Add_linux=27s_=2Eclang-format_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,266 +17,345 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jim Shargo <jshargo@chromium.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As I was authoring my first patchset for IGT, I found myself fighting
-the tooling a bit to get everything right. I had to add a bunch of extra
-command line args to use my linux checkout's formatting rules to get the
-style right.
+--===============4496919598313548741==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I grabbed this from a recent checkout of torvald's repo.
+== Series Details ==
 
-The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e
+Series: tooling: Add linux's .clang-format (rev3)
+URL   : https://patchwork.freedesktop.org/series/106835/
+State : success
 
-To make this discoverable to new contributors, this change:
+== Summary ==
 
-  - Updates CONTRIBUTING.md with a link to git-clang-format, which is
-  a useful tool for using clang-format from git just on a commit's
-  changes.
-  - Updates .editorconfig with a reference to .clang-format and a
-  pointer to CONTRIBUTING.md
+CI Bug Log - changes from IGT_6603 -> IGTPW_7582
+====================================================
 
-Changes made to the linux kernel style:
+Summary
+-------
 
-  - Reflowing comments, including multi-line comments (ReflowComments)
-  - Support for magic code blocks (ForEachMacros, IfMacros)
+  **SUCCESS**
 
-Signed-off-by: Jim Shargo <jshargo@chromium.org>
----
-V1 -> V2: Better support for IGT style and addressing comments
+  No regressions found.
 
- .clang-format   | 176 ++++++++++++++++++++++++++++++++++++++++++++++++
- .editorconfig   |   6 +-
- CONTRIBUTING.md |   8 ++-
- 3 files changed, 185 insertions(+), 5 deletions(-)
- create mode 100644 .clang-format
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/index.html
 
-diff --git a/.clang-format b/.clang-format
-new file mode 100644
-index 00000000..da42bead
---- /dev/null
-+++ b/.clang-format
-@@ -0,0 +1,176 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# clang-format configuration file. Intended for clang-format >= 11.
-+#
-+# For more information, see:
-+#
-+#   Documentation/process/clang-format.rst
-+#   https://clang.llvm.org/docs/ClangFormat.html
-+#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
-+#
-+# This file was pulled from the linux kernel at revision
-+# e0dccc3b76fb35bb257b4118367a883073d7390e.
-+#
-+# Changes made for IGT-specific styles should include a comment noting
-+# the previous value with "kernel-value". This makes it clear what we
-+# want to keep when updating this file.
-+---
-+AccessModifierOffset: -4
-+AlignAfterOpenBracket: Align
-+AlignConsecutiveAssignments: false
-+AlignConsecutiveDeclarations: false
-+AlignEscapedNewlines: Left
-+AlignOperands: true
-+AlignTrailingComments: false
-+AllowAllParametersOfDeclarationOnNextLine: false
-+AllowShortBlocksOnASingleLine: false
-+AllowShortCaseLabelsOnASingleLine: false
-+AllowShortFunctionsOnASingleLine: None
-+AllowShortIfStatementsOnASingleLine: false
-+AllowShortLoopsOnASingleLine: false
-+AlwaysBreakAfterDefinitionReturnType: None
-+AlwaysBreakAfterReturnType: None
-+AlwaysBreakBeforeMultilineStrings: false
-+AlwaysBreakTemplateDeclarations: false
-+BinPackArguments: true
-+BinPackParameters: true
-+BraceWrapping:
-+  AfterClass: false
-+  AfterControlStatement: false
-+  AfterEnum: false
-+  AfterFunction: true
-+  AfterNamespace: true
-+  AfterObjCDeclaration: false
-+  AfterStruct: false
-+  AfterUnion: false
-+  AfterExternBlock: false
-+  BeforeCatch: false
-+  BeforeElse: false
-+  IndentBraces: false
-+  SplitEmptyFunction: true
-+  SplitEmptyRecord: true
-+  SplitEmptyNamespace: true
-+BreakBeforeBinaryOperators: None
-+BreakBeforeBraces: Custom
-+BreakBeforeInheritanceComma: false
-+BreakBeforeTernaryOperators: false
-+BreakConstructorInitializersBeforeComma: false
-+BreakConstructorInitializers: BeforeComma
-+BreakAfterJavaFieldAnnotations: false
-+BreakStringLiterals: false
-+ColumnLimit: 80
-+CommentPragmas: '^ IWYU pragma:'
-+CompactNamespaces: false
-+ConstructorInitializerAllOnOneLineOrOnePerLine: false
-+ConstructorInitializerIndentWidth: 8
-+ContinuationIndentWidth: 8
-+Cpp11BracedListStyle: false
-+DerivePointerAlignment: false
-+DisableFormat: false
-+ExperimentalAutoDetectBinPacking: false
-+FixNamespaceComments: false
-+
-+# Taken from:
-+#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ tools/ \
-+#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1'," \
-+#   | LC_ALL=C sort -u
-+ForEachMacros: # kernel-value: (long list removed)
-+  # IGT rules, found via:
-+  # git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ lib/ |
-+  #     sed "s,^#define \([^(]\+\).*,'\1'," |
-+  #     grep -v "__" |
-+  #     sort -u    
-+  - 'for_each_collection_data'
-+  - 'for_each_combination'
-+  - 'for_each_connected_output'
-+  - 'for_each_connector_mode'
-+  - 'for_each_ctx_cfg_engine'
-+  - 'for_each_ctx_engine'
-+  - 'for_each_format'
-+  - 'for_each_if'
-+  - 'for_each_memory_region'
-+  - 'for_each_mmap_offset_type'
-+  - 'for_each_physical_engine'
-+  - 'for_each_physical_ring'
-+  - 'for_each_pipe'
-+  - 'for_each_pipe_static'
-+  - 'for_each_pipe_with_single_output'
-+  - 'for_each_pipe_with_valid_output'
-+  - 'for_each_plane_on_pipe'
-+  - 'for_each_prime_number'
-+  - 'for_each_ring'
-+  - 'for_each_subset'
-+  - 'for_each_sysfs_gt_dirfd'
-+  - 'for_each_sysfs_gt_path'
-+  - 'for_each_valid_output_on_pipe'
-+  - 'for_each_variation_nr'
-+  - 'for_each_variation_r'
-+  - 'igt_list_for_each_entry'
-+  - 'igt_list_for_each_entry_reverse'
-+  - 'igt_list_for_each_entry_safe'
-+  - 'igt_list_for_each_entry_safe_reverse'
-+
-+IfMacros: # kernel-value: none
-+  - 'igt_dynamic'
-+  - 'igt_fixture'
-+  - 'igt_fork'
-+  - 'igt_subtest'
-+  - 'igt_subtest_f'
-+  - 'igt_subtest_group'
-+  - 'igt_subtest_with_dynamic'
-+  - 'igt_subtest_with_dynamic_f'
-+  - 'igt_until_timeout'
-+
-+IncludeBlocks: Preserve
-+IncludeCategories:
-+  - Regex: '.*'
-+    Priority: 1
-+IncludeIsMainRegex: '(Test)?$'
-+IndentCaseLabels: false
-+IndentGotoLabels: false
-+IndentPPDirectives: None
-+IndentWidth: 8
-+IndentWrappedFunctionNames: false
-+JavaScriptQuotes: Leave
-+JavaScriptWrapImports: true
-+KeepEmptyLinesAtTheStartOfBlocks: false
-+MacroBlockBegin: ''
-+MacroBlockEnd: ''
-+MaxEmptyLinesToKeep: 1
-+NamespaceIndentation: None
-+ObjCBinPackProtocolList: Auto
-+ObjCBlockIndentWidth: 8
-+ObjCSpaceAfterProperty: true
-+ObjCSpaceBeforeProtocolList: true
-+
-+# Taken from git's rules
-+PenaltyBreakAssignment: 10
-+PenaltyBreakBeforeFirstCallParameter: 30
-+PenaltyBreakComment: 10
-+PenaltyBreakFirstLessLess: 0
-+PenaltyBreakString: 10
-+PenaltyExcessCharacter: 100
-+PenaltyReturnTypeOnItsOwnLine: 60
-+
-+PointerAlignment: Right
-+ReflowComments: true # kernel-value: false
-+SortIncludes: false
-+SortUsingDeclarations: false
-+SpaceAfterCStyleCast: false
-+SpaceAfterTemplateKeyword: true
-+SpaceBeforeAssignmentOperators: true
-+SpaceBeforeCtorInitializerColon: true
-+SpaceBeforeInheritanceColon: true
-+SpaceBeforeParens: ControlStatementsExceptForEachMacros
-+SpaceBeforeRangeBasedForLoopColon: true
-+SpaceInEmptyParentheses: false
-+SpacesBeforeTrailingComments: 1
-+SpacesInAngles: false
-+SpacesInContainerLiterals: false
-+SpacesInCStyleCastParentheses: false
-+SpacesInParentheses: false
-+SpacesInSquareBrackets: false
-+Standard: Cpp03
-+TabWidth: 8
-+UseTab: Always
-+...
-diff --git a/.editorconfig b/.editorconfig
-index 7b7f1375..5c7e31d3 100644
---- a/.editorconfig
-+++ b/.editorconfig
-@@ -1,5 +1,7 @@
--# To use this config in your editor, follow the instructions at:
--# http://editorconfig.org
-+# To use this config in your editor, follow the instructions at
-+# http://editorconfig.org. You can also use "clang-format" for new C
-+# code (see CONTRIBUTING.md for suggestions and .clang-format for more
-+# details).
- 
- root = true
- 
-diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index 6d1294ad..8d7320b7 100644
---- a/CONTRIBUTING.md
-+++ b/CONTRIBUTING.md
-@@ -10,8 +10,9 @@ improvements for documentation and new tools and testcases.
- The Code
- --------
- 
--- The code should follow kernel coding style:
--  https://www.kernel.org/doc/html/latest/process/coding-style.html
-+- The code should follow [kernel coding style](coding-style). Before
-+  sending out a patch, changes can be formatted with
-+  [git-clang-format](git-clang-format).
- 
- - Testcases (subtests) have to use minus signs (-) as a word separator.
-   The generated documentation contains glossary of commonly used terms.
-@@ -30,9 +31,10 @@ The Code
-   provided by the igt library. The semantic patch lib/igt.cocci can help with
-   more automatic conversions.
- 
-+[coding-style]: https://www.kernel.org/doc/html/latest/process/coding-style.html
-+[git-clang-format]: https://github.com/llvm-mirror/clang/blob/master/tools/clang-format/git-clang-format
- [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
- 
--
- Sending Patches
- ---------------
- 
--- 
-2.37.1.359.gd136c6c3e2-goog
+Participating hosts (42 -> 41)
+------------------------------
+
+  Additional (2): bat-rplp-1 fi-icl-u2 
+  Missing    (3): fi-cml-u2 fi-bxt-dsi fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7582 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-icl-u2:          NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [PASS][2] -> [DMESG-WARN][3] ([i915#5904]) +29 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - fi-cfl-8109u:       [PASS][4] -> [DMESG-WARN][5] ([i915#5904] / [i915#62])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][6] ([fdo#109271] / [fdo#111827])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          NOTRUN -> [SKIP][7] ([fdo#111827]) +7 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
+    - fi-icl-u2:          NOTRUN -> [SKIP][8] ([i915#4103])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - fi-icl-u2:          NOTRUN -> [WARN][9] ([i915#6008])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-icl-u2:          NOTRUN -> [SKIP][10] ([fdo#109285])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cfl-8109u:       [PASS][11] -> [DMESG-FAIL][12] ([i915#62]) +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-2:
+    - fi-icl-u2:          NOTRUN -> [INCOMPLETE][13] ([i915#4890])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-2.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:
+    - fi-cfl-8109u:       [PASS][14] -> [DMESG-WARN][15] ([i915#62]) +10 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-cfl-8109u/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-cfl-8109u/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html
+
+  * igt@runner@aborted:
+    - fi-icl-u2:          NOTRUN -> [FAIL][16] ([i915#4312])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_ringfill@basic-all:
+    - {bat-dg2-9}:        [FAIL][17] ([i915#5886]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-dg2-9/igt@gem_ringfill@basic-all.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/bat-dg2-9/igt@gem_ringfill@basic-all.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - {bat-rpls-1}:       [INCOMPLETE][19] -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-rpls-1/igt@i915_selftest@live@gt_pm.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/bat-rpls-1/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][21] ([i915#4785]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@perf:
+    - {bat-dg2-9}:        [DMESG-WARN][23] ([i915#5763]) -> [PASS][24] +2 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-dg2-9/igt@i915_selftest@live@perf.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/bat-dg2-9/igt@i915_selftest@live@perf.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [FAIL][25] ([i915#6298]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4093]: https://gitlab.freedesktop.org/drm/intel/issues/4093
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4890]: https://gitlab.freedesktop.org/drm/intel/issues/4890
+  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
+  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
+  [i915#5886]: https://gitlab.freedesktop.org/drm/intel/issues/5886
+  [i915#5903]: https://gitlab.freedesktop.org/drm/intel/issues/5903
+  [i915#5904]: https://gitlab.freedesktop.org/drm/intel/issues/5904
+  [i915#5950]: https://gitlab.freedesktop.org/drm/intel/issues/5950
+  [i915#6008]: https://gitlab.freedesktop.org/drm/intel/issues/6008
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6380]: https://gitlab.freedesktop.org/drm/intel/issues/6380
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6603 -> IGTPW_7582
+
+  CI-20190529: 20190529
+  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7582: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/index.html
+  IGT_6603: d851d950cf805f3021d67666db67e24fae1b99ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/index.html
+
+--===============4496919598313548741==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tooling: Add linux&#39;s .clang-format (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106835/">https://patchwork.freedesktop.org/series/106835/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6603 -&gt; IGTPW_7582</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Additional (2): bat-rplp-1 fi-icl-u2 <br />
+  Missing    (3): fi-cml-u2 fi-bxt-dsi fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7582 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a>) +29 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6008">i915#6008</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-2:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-2.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4890">i915#4890</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-cfl-8109u/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-cfl-8109u/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-c-dp-1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) +10 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_ringfill@basic-all:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-dg2-9/igt@gem_ringfill@basic-all.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5886">i915#5886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/bat-dg2-9/igt@gem_ringfill@basic-all.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-rpls-1/igt@i915_selftest@live@gt_pm.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/bat-rpls-1/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@perf:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/bat-dg2-9/igt@i915_selftest@live@perf.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/bat-dg2-9/igt@i915_selftest@live@perf.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6603/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6603 -&gt; IGTPW_7582</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7582: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7582/index.html<br />
+  IGT_6603: d851d950cf805f3021d67666db67e24fae1b99ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4496919598313548741==--
