@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08AB010E28F
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 15:23:05 +0000 (UTC)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Karolina Drobnik <karolina.drobnik@intel.com>
-Date: Fri, 29 Jul 2022 17:23:01 +0200
-Message-ID: <2595594.X9hSmTKtgW@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <c816892d-d233-a825-417f-48df8557d96b@intel.com>
-References: <cover.1658826356.git.karolina.drobnik@intel.com>
- <1869473.taCxCBeP46@jkrzyszt-mobl1.ger.corp.intel.com>
- <c816892d-d233-a825-417f-48df8557d96b@intel.com>
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com
+ [IPv6:2607:f8b0:4864:20::112c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6991010E185
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 14:54:04 +0000 (UTC)
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-2ef5380669cso53559767b3.9
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 07:54:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_exec_fence: Check
- stored values only for valid workloads
+References: <20220715192200.1782193-1-markyacoub@chromium.org>
+ <YuPczW1iwuH0oJnq@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <YuPczW1iwuH0oJnq@platvala-desk.ger.corp.intel.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Fri, 29 Jul 2022 10:53:52 -0400
+Message-ID: <CAJUqKUrm9Yn02vEBSPn2Wpcfr3yBMp1jj49Z2qXej_=o8szv-g@mail.gmail.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH] lib/igt_chamelium: Extend check of valid
+ ports to port=0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,160 +24,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: robdclark@chromium.org, amstan@google.com, ihf@google.com,
+ igt-dev@lists.freedesktop.org, seanpaul@chromium.org, markyacoub@google.com,
+ khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Friday, 29 July 2022 13:32:37 CEST Karolina Drobnik wrote:
-> Hi Janusz,
-> 
-> On 29.07.2022 10:24, Janusz Krzysztofik wrote:
-> > Hi Karolina,
-> > 
-> > On Friday, 29 July 2022 09:38:43 CEST Karolina Drobnik wrote:
-> >> Hi Janusz,
-> >>
-> >> Thanks a lot for taking a look at the patch.
-> >>
-> >> On 28.07.2022 18:56, Janusz Krzysztofik wrote:
-> >>> On Tuesday, 26 July 2022 12:13:11 CEST Karolina Drobnik wrote:
-> >>>> From: Chris Wilson <chris@chris-wilson.co.uk>
-> >>>>
-> >>>> test_fence_await verifies if a fence used to pipeline work signals
-> >>>> correctly. await-hang and nb-await-hang test cases inject GPU hang,
-> >>>> which causes an erroneous state, meaning the fence will be signaled
-> >>>> without execution. The error causes an instant reset of the command
-> >>>> streamer for the hanging workload. This revealed a problem with how
-> >>>> we verify the fence state and results. The test assumes that the
-> >>>> error notification happens after a hang is declared, which takes
-> >>>> longer than submitting the next set of fences, making the test pass
-> >>>> every time. With the immediate reset, this might not happen, so the
-> >>>> assertion fails, as there are no active fences in the GPU hang case.
-> >>>>
-> >>>> Move the check for active fence to the path for non-hanging workload,
-> >>>> and verify results only in this scenario.
-> >>>>
-> >>>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> >>>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
-> >>>> ---
-> >>>>    tests/i915/gem_exec_fence.c | 14 ++++++++------
-> >>>>    1 file changed, 8 insertions(+), 6 deletions(-)
-> >>>>
-> >>>> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> >>>> index d46914c2..260aa82c 100644
-> >>>> --- a/tests/i915/gem_exec_fence.c
-> >>>> +++ b/tests/i915/gem_exec_fence.c
-> >>>> @@ -350,18 +350,20 @@ static void test_fence_await(int fd, const
-> > intel_ctx_t
-> >>> *ctx,
-> >>>>    	/* Long, but not too long to anger preemption disable checks */
-> >>>>    	usleep(50 * 1000); /* 50 ms, typical preempt reset is 150+ms */
-> >>>>    
-> >>>> -	/* Check for invalidly completing the task early */
-> >>>> -	igt_assert(fence_busy(spin->out_fence));
-> >>>> -	for (int n = 0; n < i; n++)
-> >>>> -		igt_assert_eq_u32(out[n], 0);
-> >>>> +	if ((flags & HANG) == 0) {
-> >>>> +		/* Check for invalidly completing the task early */
-> >>>> +		igt_assert(fence_busy(spin->out_fence));
-> >>>> +		for (int n = 0; n < i; n++)
-> >>>> +			igt_assert_eq_u32(out[n], 0);
-> >>>
-> >>> AFAICU, in the 'hang' variant of the scenario we skip the above asserts
-> >>> because the spin batch could have already hanged, then its out fence
-> > already
-> >>> signalled and store batches waiting for that signal already executed.  If
-> >>> that's the case, how do this variant of gem_exec_fence test asserts that
-> > the
-> >>> fence actually worked as expected?
-> >>
-> >> With this change, yes, we would skip them. Still, the store batches
-> >> wouldn't be executed, as we reset the CS on hang as a part of the error
-> >> handling. For valid jobs, we expect to (1) see an active fence at the
-> >> beginning of the request, (2) get a signaled fence after the wait, (3)
-> >> store out[i] == i. With a hang, (1) and (3) would be false.
-> >>
-> >> In this particular loop, we could have garbage here with hang, not 0s
-> >> (although, from my tests it looks like they are zeroed, but maybe I got
-> >> lucky)
-> > 
-> > OK, so I missed the fact that the store batches won't be executed at all due
-> > to reset of the whole command stream that also kills those batches.  But my
-> > question is still valid: as soon as we omit those checks as not valid from
-> > *await-hang variants, how do those variants still exercise fencing?  IOW, how
-> > are those variants supposed to ever fail should something be wrong with i915
-> > implementation of fencing specifically?
-> 
-> They would fail in the case where a hang happened but the fence is still 
-> active, so it's this last assert you're referring to.
-> 
-> >>
-> >>>>    
-> >>>> -	if ((flags & HANG) == 0)
-> >>>>    		igt_spin_end(spin);
-> >>>> +	}
-> >>>>    
-> >>>>    	igt_waitchildren();
-> >>>>    
-> >>>>    	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
-> >>>> -	while (i--)
-> >>>> +	igt_assert(!fence_busy(spin->out_fence));
-> >>>
-> >>> We only check that the out fence of the presumably hanged spin batch no
-> > longer
-> >>> blocks execution of store batches.
-> >>
-> >> This check applies to all workloads, all of them should be done with
-> >> work at this point
-> > 
-> > OK, but since that's the only explicit assert in the *-hang processing path,
-> > does it tell us anything about fencing working or not?  
-> 
-> It says that we were given an active fence, we wait at it and hope it 
-> signals when an error is reported. Like I said, we can't check the 
-> results itself, as they are meaningless with the reset. If we have an 
-> active fence at this point, that's bad, and the test should fail.
-> 
-> > I think it doesn't,
-> > and as long as I'm not wrong, I think such scenarios hardly belong to
-> > gem_exec_fence.  
-> 
-> Hm, I'm not sure if I follow, but this exact transition (from active -> 
-> (record error) -> signal) is one of the possible scenarios we wish to 
-> test. 
-
-OK, so we check if an active fence is signalled on error.  But then, what does 
-'active' mean here?  Do we consider a fence active as soon as it has been 
-exported to userspace?  Or only after it has been imported back from userspace 
-by at least one consumer?  Assuming the former (as I guess), what do we need 
-the store batches for in these now modified *await-hang scenarios?  What extra 
-value do those scenarios provide compared to (nb-)?wait-hang ?
-
-Thanks,
-Janusz
-
-
-> Or, do you mean that this test case doesn't test 
-> drm_i915_gem_exec_fence? This test suite exercises different scenarios 
-> of using fences implemented with sync_files. Maybe this could be split 
-> up, but these seem to be connected, so they ended up in one file.
-> 
-> > Otherwise, I think we should at least add descriptions of
-> > those subtests, providing some information on what is actually exercised.
-> 
-> The hang cases reuse test_fence_await which has _some_ description in 
-> the basic cases. But I agree, it would be nice to have more 
-> documentation for other subtests, but it's out of scope of this fix.
-> 
-> Many thanks,
-> Karolina
-> 
-> > Thanks,
-> > Janusz
-> > 
-> 
-
-
-
+On Fri, Jul 29, 2022 at 9:14 AM Petri Latvala <petri.latvala@intel.com> wrote:
+>
+> On Fri, Jul 15, 2022 at 03:22:00PM -0400, Mark Yacoub wrote:
+> > [Why]
+> > Chamelium V3 has a valid port at 0 so 0 should not be rejected.
+> >
+> > [How]
+> > Check for port values between 0 and CHAMELIUM_MAX_PORTS which should
+> > also include the V2 ports range.
+> >
+> > Test: ./kms_chamelium --run-subtest dp-hp
+> > Tested on: Volteer & cv3
+> >
+> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> > ---
+> >  lib/igt_chamelium.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> > index 55cbfa12..5d68372b 100644
+> > --- a/lib/igt_chamelium.c
+> > +++ b/lib/igt_chamelium.c
+> > @@ -2311,7 +2311,7 @@ static bool chamelium_read_port_mappings(struct chamelium *chamelium,
+> >               port->id = g_key_file_get_integer(igt_key_file, group,
+> >                                                 "ChameliumPortID",
+> >                                                 &error);
+> > -             if (!port->id) {
+> > +             if (port->id < 0 || port->id > CHAMELIUM_MAX_PORTS) {
+>
+> You rather need to check whether 'error' is set to something. 0 might
+> be a valid port id in v3 but it's also what g_key_file_get_integer
+> returns on error.
+Updated om v2: https://patchwork.freedesktop.org/patch/495936/
+Thanks! that was easy.
+>
+>
+> --
+> Petri Latvala
+>
+>
+> >                       igt_warn("Failed to read chamelium port ID for %s: %s\n",
+> >                                map_name, error->message);
+> >                       ret = false;
+> > --
+> > 2.37.0.170.g444d1eabd0-goog
+> >
