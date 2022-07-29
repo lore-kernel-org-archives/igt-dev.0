@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B601F10E823
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 19:26:20 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5352D10E40C
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 19:27:42 +0000 (UTC)
 From: "Nerlige Ramappa, Umesh" <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@linux.intel.com
-Date: Fri, 29 Jul 2022 12:26:13 -0700
-Message-Id: <20220729192613.3355408-1-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 29 Jul 2022 12:27:41 -0700
+Message-Id: <20220729192741.3355557-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t] i915/hangman: Fix gt hang/error tests
