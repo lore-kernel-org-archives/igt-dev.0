@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8840F10E2B0
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 10:06:32 +0000 (UTC)
-Date: Fri, 29 Jul 2022 12:06:28 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E01FB10E314
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 10:22:48 +0000 (UTC)
+Date: Fri, 29 Jul 2022 12:22:43 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YuOxJEDCEqnYLBvr@kamilkon-desk1>
-References: <20220721115508.22527-1-stanislav.lisovskiy@intel.com>
+Message-ID: <YuO08xPrS/fxZ6CZ@kamilkon-desk1>
+References: <ceda16ea0f883037750ee6b60eb6951590865d69.1658923128.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220721115508.22527-1-stanislav.lisovskiy@intel.com>
-Subject: Re: [igt-dev] [PATCH] igt/tests: Add plane stress test
+In-Reply-To: <ceda16ea0f883037750ee6b60eb6951590865d69.1658923128.git.mchehab@kernel.org>
+Subject: Re: [igt-dev] [PATCH] i915/gem_exec_tlb: Look for stale TLB entries
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,979 +20,1248 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Stanislav,
+Hi,
 
-I have some general remarks, not for kms parts.
-imho in subject line put name of test you want to add, so
-instead of "igt/tests: " I would prefer
-"tests/i915/i915_pipe_stress: Add plane pipes stress test"
-or something similar.
+I only glanced over code and have some nits, see below.
 
-On 2022-07-21 at 14:55:08 +0300, Stanislav Lisovskiy wrote:
-> This test attempts to utilize all connected
-> outputs at the same time, using maximum possible
-> resolution and amount of planes, to check whether
-> we are hiting any kind of bandwidth, watermark or
-> other limitations.
+On 2022-07-27 at 13:58:48 +0200, Mauro Carvalho Chehab wrote:
+> From: Chris Wilson <chris@chris-wilson.co.uk>
 > 
-> Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+> When we remove an object from the ppGTT, we replace its PTE by pointing
+> the address back to the scratch page. Fresh access to that address will
+> then report the absence of the page, and return the scratch page
+> instead. However, concurrent access to that address will reuse the TLB
+> address cache and so continue to read the stale physical page, unless
+> the TLB are flushed (prior to the page going out of scope).
+> 
+> Reported-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 > ---
->  tests/i915/i915_pipe_stress.c | 896 ++++++++++++++++++++++++++++++++++
->  tests/meson.build             |   1 +
->  2 files changed, 897 insertions(+)
->  create mode 100644 tests/i915/i915_pipe_stress.c
+>  lib/i915/intel_memory_region.c |    4 +-
+>  lib/i915/intel_memory_region.h |    4 +-
+>  tests/i915/gem_exec_tlb.c      | 1124 ++++++++++++++++++++++++++++++++
+>  tests/i915/gem_gpgpu_fill.c    |    2 +
+>  tests/meson.build              |    1 +
+>  5 files changed, 1131 insertions(+), 4 deletions(-)
+>  create mode 100644 tests/i915/gem_exec_tlb.c
 > 
-> diff --git a/tests/i915/i915_pipe_stress.c b/tests/i915/i915_pipe_stress.c
+> diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+> index 93a18982c140..568bace949f6 100644
+> --- a/lib/i915/intel_memory_region.c
+> +++ b/lib/i915/intel_memory_region.c
+> @@ -198,7 +198,7 @@ bool gem_has_lmem(int fd)
+>  /* A version of gem_create_in_memory_region_list which can be allowed to
+>     fail so that the object creation can be retried */
+>  int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+> -				       struct drm_i915_gem_memory_class_instance *mem_regions,
+> +				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+>  				       int num_regions)
+
+Please split this into separate patch.
+
+>  {
+>  	struct drm_i915_gem_create_ext_memory_regions ext_regions = {
+> @@ -234,7 +234,7 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
+>   * @num_regions: @mem_regions length
+>   */
+>  uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
+> -					  struct drm_i915_gem_memory_class_instance *mem_regions,
+> +					  const struct drm_i915_gem_memory_class_instance *mem_regions,
+>  					  int num_regions)
+>  {
+>  	uint32_t handle;
+> diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+> index e1bfe0ca653a..fd04df83b53b 100644
+> --- a/lib/i915/intel_memory_region.h
+> +++ b/lib/i915/intel_memory_region.h
+> @@ -65,11 +65,11 @@ unsigned int gem_get_lmem_region_count(int fd);
+>  bool gem_has_lmem(int fd);
+>  
+>  int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+> -				       struct drm_i915_gem_memory_class_instance *mem_regions,
+> +				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+>  				       int num_regions);
+>  
+>  uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
+> -					  struct drm_i915_gem_memory_class_instance *mem_regions,
+> +					  const struct drm_i915_gem_memory_class_instance *mem_regions,
+>  					  int num_regions);
+>  
+>  /*
+> diff --git a/tests/i915/gem_exec_tlb.c b/tests/i915/gem_exec_tlb.c
 > new file mode 100644
-> index 0000000000..1ca0f6f6f8
+> index 000000000000..ab5c91d6d8fa
 > --- /dev/null
-> +++ b/tests/i915/i915_pipe_stress.c
-> @@ -0,0 +1,896 @@
+> +++ b/tests/i915/gem_exec_tlb.c
+> @@ -0,0 +1,1124 @@
+> +/* SPDX-License-Identifier: MIT */
 > +/*
-> + * Copyright © 2019 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
+> + * Copyright © 2021 Intel Corporation
 > + */
-
-Please change this into SPDX licence.
-
 > +
-> +#include "igt.h"
-> +#include "igt_rand.h"
-> +#include "gpgpu_fill.h"
+> +#include <fcntl.h>
+> +#include <sched.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/poll.h>
+> +#include <sys/socket.h>
+> +
 > +#include "drmtest.h"
-> +#include "sw_sync.h"
-> +#include <errno.h>
-> +#include <pthread.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <time.h>
-> +#include <poll.h>
-> +#include <pthread.h>
-> +#include <semaphore.h>
+> +#include "i830_reg.h"
 > +#include "i915/gem.h"
-> +
-> +IGT_TEST_DESCRIPTION("Stress test how gpu and cpu behaves if maximum amount of planes, "
-> +		     "cpu and gpu utilization is achieved in order to reveal possible "
-> +		     "bandwidth/watermark and similar problems ");
-------------------------------------------------------------- ^
-Put dot at end of decriptions (here and in other descriptions).
+> +#include "i915/gem_create.h"
+> +#include "i915/gem_engine_topology.h"
+> +#include "i915/gem_mman.h"
+> +#include "i915/intel_memory_region.h"
+> +#include "igt_aux.h"
+> +#include "igt_gt.h"
+> +#include "intel_chipset.h"
+> +#include "ioctl_wrappers.h"
+
+Please add global test description here.
 
 > +
-> +#ifndef DRM_CAP_CURSOR_WIDTH
-> +#define DRM_CAP_CURSOR_WIDTH 0x8
-> +#endif
-> +#ifndef DRM_CAP_CURSOR_HEIGHT
-> +#define DRM_CAP_CURSOR_HEIGHT 0x9
-> +#endif
+> +#define TOLERANCE 20 /* ms, allow for a little propagation delay */
+> +#define SZ_512K (512 << 10)
+> +#define SZ_1M (1 << 20)
+> +#define SZ_2M (2 << 20)
 > +
-> +#define HAS_XELPD(drm_fd) (intel_display_ver(intel_get_drm_devid(drm_fd)) >= 13)
+> +#define SHRINK 0x1
 > +
-> +#define N_BLITS 3
+> +#define NSEC64 ((uint64_t)NSEC_PER_SEC)
 > +
-> +#define N_FORMATS 1
-> +static const uint32_t formats[N_FORMATS] = {
-> +	DRM_FORMAT_XRGB8888,
-> +};
+> +#define MI_BATCH_BUFFER_START	 (0x31 << 23)
+> +#define MI_COND_BATCH_BUFFER_END (0x36 << 23)
+> +#define   MI_DO_COMPARE			(1 << 21)
+> +#define MI_STORE_DATA_IMM	(0x20 << 23)
+> +#define MI_LOAD_REGISTER_IMM	(0x22 << 23)
+> +#define MI_STORE_REGISTER_MEM	(0x24 << 23)
+> +#define MI_LOAD_REGISTER_MEM	(0x29 << 23)
+> +#define MI_SEMAPHORE_WAIT	(0x1c << 23)
+> +#define   MI_SEMAPHORE_POLL             (1 << 15)
+> +#define   MI_SEMAPHORE_SAD_GT_SDD       (0 << 12)
+> +#define   MI_SEMAPHORE_SAD_GTE_SDD      (1 << 12)
+> +#define   MI_SEMAPHORE_SAD_LT_SDD       (2 << 12)
+> +#define   MI_SEMAPHORE_SAD_LTE_SDD      (3 << 12)
+> +#define   MI_SEMAPHORE_SAD_EQ_SDD       (4 << 12)
+> +#define   MI_SEMAPHORE_SAD_NEQ_SDD      (5 << 12)
 > +
-> +#define N_TILING_METHODS 2
-> +static const uint64_t tilings[N_TILING_METHODS] = {
-> +	DRM_FORMAT_MOD_LINEAR,
-> +	I915_FORMAT_MOD_Y_TILED,
-> +};
+> +#define MI_MATH                      (0x1a << 23)
+> +#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
+> +/* Opcodes for MI_MATH_INSTR */
+> +#define   MI_MATH_NOOP                  MI_MATH_INSTR(0x000, 0x0, 0x0)
+> +#define   MI_MATH_LOAD(op1, op2)        MI_MATH_INSTR(0x080, op1, op2)
+> +#define   MI_MATH_LOADINV(op1, op2)     MI_MATH_INSTR(0x480, op1, op2)
+> +#define   MI_MATH_LOAD0(op1)            MI_MATH_INSTR(0x081, op1)
+> +#define   MI_MATH_LOAD1(op1)            MI_MATH_INSTR(0x481, op1)
+> +#define   MI_MATH_ADD                   MI_MATH_INSTR(0x100, 0x0, 0x0)
+> +#define   MI_MATH_SUB                   MI_MATH_INSTR(0x101, 0x0, 0x0)
+> +#define   MI_MATH_AND                   MI_MATH_INSTR(0x102, 0x0, 0x0)
+> +#define   MI_MATH_OR                    MI_MATH_INSTR(0x103, 0x0, 0x0)
+> +#define   MI_MATH_XOR                   MI_MATH_INSTR(0x104, 0x0, 0x0)
+> +#define   MI_MATH_STORE(op1, op2)       MI_MATH_INSTR(0x180, op1, op2)
+> +#define   MI_MATH_STOREINV(op1, op2)    MI_MATH_INSTR(0x580, op1, op2)
+> +/* Registers used as operands in MI_MATH_INSTR */
+> +#define   MI_MATH_REG(x)                (x)
+> +#define   MI_MATH_REG_SRCA              0x20
+> +#define   MI_MATH_REG_SRCB              0x21
+> +#define   MI_MATH_REG_ACCU              0x31
+> +#define   MI_MATH_REG_ZF                0x32
+> +#define   MI_MATH_REG_CF                0x33
 > +
-> +static const char *format_str(int format_index)
+> +#define XY_SRC_COPY (2 << 29 | 0x53 << 22)
+> +#define XY_COLOR (2 << 29 | 0x50 << 22)
+> +
+> +#define CS_GPR(x) ((base) + 0x600 + 8 * (x))
+> +#define CS_TIMESTAMP ((base) + 0x358)
+> +
+> +static uint32_t __batch_create(int i915, uint32_t offset)
 > +{
-> +	switch (formats[format_index]) {
-> +	case DRM_FORMAT_RGB565:
-> +		return "rgb565";
-> +	case DRM_FORMAT_XRGB8888:
-> +		return "xrgb8888";
-> +	case DRM_FORMAT_XRGB2101010:
-> +		return "xrgb2101010";
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +static const char *tiling_str(int tiling_index)
-> +{
-> +	switch (tilings[tiling_index]) {
-> +	case DRM_FORMAT_MOD_LINEAR:
-> +		return "untiled";
-> +	case I915_FORMAT_MOD_X_TILED:
-> +		return "xtiled";
-> +	case I915_FORMAT_MOD_Y_TILED:
-> +		return "ytiled";
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +
-> +#define MAX_CORES 8
-> +#define MAX_PLANES 16
-> +
-> +struct data;
-> +
-> +struct thread_context {
-> +	struct data *data;
-> +	int id;
-> +	void *buf1;
-> +	void *buf2;
-> +};
-> +
-> +struct rect {
-> +	int x;
-> +	int y;
-> +	int w;
-> +	int h;
-> +};
-> +
-> +struct gpu_context {
-> +	struct data *data;
-> +	int pipe;
-> +	int color;
-> +	int num_rectangles;
-> +	struct intel_buf *buf;
-> +	struct igt_fb *fb_ptr;
-> +	struct rect blt_rect;
-> +	struct intel_batchbuffer *batch;
-> +};
-> +
-> +enum {
-> +	RUNNING,
-> +	STOPPED,
-> +	PAUSED,
-> +	LAST_STATE = PAUSED
-> +} thread_state;
-> +
-> +struct data {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	int num_planes[IGT_MAX_PIPES];
-> +	uint32_t format;
-> +	uint64_t modifier;
-> +	uint32_t devid;
-> +	struct buf_ops *bops;
-> +	drm_intel_bufmgr *bufmgr;
-> +	drmModeModeInfo *last_mode[IGT_MAX_PIPES];
-> +	struct igt_fb fb[IGT_MAX_PIPES * MAX_PLANES];
-> +	struct igt_fb cursor_fb[IGT_MAX_PIPES];
-> +	pthread_t cpu_thread[MAX_CORES];
-> +	pthread_t gpu_thread[IGT_MAX_PIPES];
-> +	bool cpu_thread_stop[MAX_CORES];
-> +	int gpu_thread_state[IGT_MAX_PIPES];
-> +	sem_t gpu_thread_pause_ack[IGT_MAX_PIPES];
-> +	struct thread_context cpu_context[MAX_CORES];
-> +	struct gpu_context gpu_context[IGT_MAX_PIPES];
-> +	drmModeModeInfo *highest_mode[IGT_MAX_PIPES];
-> +	drmModeConnectorPtr *connectors;
-> +	drmModeRes *mode_resources;
-> +	int number_of_cores;
-> +	const struct intel_execution_engine2 *engine;
-> +	igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-> +};
-> +
-> +static void stop_gpu_threads(struct data *data);
-> +static void start_gpu_threads(struct data *data);
-> +
-> +struct base_crc {
-> +	bool set;
-> +	igt_crc_t crc;
-> +};
-> +
-> +#define BUF_SIZE (128 * 1024 * 1024)
-> +
-> +static void *cpu_load(void *d)
-> +{
-> +	char *buf1, *buf2;
-> +	struct thread_context *context = (struct thread_context *)d;
-> +	struct data *data = context->data;
-> +
-> +	buf1 = context->buf1;
-> +	buf2 = context->buf2;
-> +
-> +	data->cpu_thread_stop[context->id] = false;
-> +
-> +	igt_info("CPU thread cpu id %d start\n", context->id);
-> +
-> +	/* Just to make CPU busy... */
-> +	while (!data->cpu_thread_stop[context->id]) {
-> +		memcpy(buf1, buf2, BUF_SIZE);
-> +		memcpy(buf2, buf1, BUF_SIZE);
-> +	}
-> +
-> +	igt_info("CPU thread cpu id %d stop\n", context->id);
-> +
-> +	return NULL;
-> +}
-> +
-> +static struct intel_buf *
-> +create_buf(struct data *data, int width, int height, uint32_t region)
-> +{
-> +	struct intel_buf *buf;
+> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
 > +	uint32_t handle;
 > +
-> +	buf = calloc(1, sizeof(*buf));
-> +	igt_assert(buf);
+> +	handle = gem_create(i915, offset + 4);
+> +	gem_write(i915, handle, offset, &bbe, sizeof(bbe));
 > +
-> +	/*
-> +	 * Legacy code uses 32 bpp after buffer creation.
-> +	 * Let's do the same due to keep shader intact.
-> +	 */
-> +	handle = gem_create_in_memory_regions(data->drm_fd, width * height, region);
-> +	intel_buf_init_using_handle(data->bops, handle, buf,
-> +				    width/4, height, 32, 0,
-> +				    I915_TILING_NONE, 0);
-> +
-> +	return buf;
+> +	return handle;
 > +}
 > +
-> +static const struct intel_execution_engine2 *get_execution_engine(struct data *data)
+> +static uint32_t batch_create(int i915)
+> +{
+> +	return __batch_create(i915, 0);
+> +}
+> +
+> +static void bind_at(int i915, const intel_ctx_t *ctx,
+> +		    const struct intel_execution_engine2 *e,
+> +		    uint32_t handle, uint64_t addr, uint64_t size)
+> +{
+> +	struct drm_i915_gem_exec_object2 obj[2] = {
+> +		{ .handle = handle, .offset = addr, .pad_to_size = size, .flags = EXEC_OBJECT_PINNED },
+> +		{ batch_create(i915) }
+> +	};
+> +	struct drm_i915_gem_execbuffer2 execbuf = {
+> +		.buffers_ptr = to_user_pointer(obj),
+> +		.buffer_count = ARRAY_SIZE(obj),
+> +		.flags = e->flags,
+> +		.rsvd1 = ctx->id,
+> +	};
+> +
+> +	gem_execbuf(i915, &execbuf);
+> +	gem_sync(i915, obj[1].handle);
+> +	gem_close(i915, obj[1].handle);
+> +}
+> +
+> +static unsigned long offset_in_page(void *addr)
+> +{
+> +	return (uintptr_t)addr & 4095;
+> +}
+> +
+> +static uint32_t __read_at(int i915, const intel_ctx_t *ctx,
+> +			  const struct intel_execution_engine2 *e,
+> +			  const uint32_t base,
+> +			  uint64_t addr, uint64_t from)
+> +{
+> +	const int gen = intel_gen(intel_get_drm_devid(i915));
+> +	const int use_64b_addr = gen >= 8;
+> +	struct drm_i915_gem_exec_object2 obj = {
+> +		.handle = gem_create(i915, 4096),
+> +		.offset = from,
+> +		.flags = EXEC_OBJECT_PINNED
+> +	};
+> +	struct drm_i915_gem_execbuffer2 execbuf = {
+> +		.batch_len = 64,
+> +		.buffers_ptr = to_user_pointer(&obj),
+> +		.buffer_count = 1,
+> +		.flags = e->flags,
+> +		.rsvd1 = ctx->id,
+> +	};
+> +	uint32_t *map =
+> +		gem_mmap__device_coherent(i915, obj.handle,
+> +					  0, 4096, PROT_WRITE);
+> +	uint32_t *cs = map;
+> +	uint32_t value;
+> +
+> +	*cs++ = MI_NOOP | 0x1234;
+> +
+> +	*cs++ = MI_LOAD_REGISTER_MEM | (1 + use_64b_addr);
+> +	*cs++ = CS_GPR(4);
+> +	*cs++ = addr;
+> +	*cs++ = addr >> 32;
+> +
+> +	*cs++ = MI_STORE_REGISTER_MEM | (1 + use_64b_addr);
+> +	*cs++ = CS_GPR(4);
+> +	*cs++ = from;
+> +	*cs++ = from >> 32;
+> +
+> +	*cs++ = MI_BATCH_BUFFER_END;
+> +
+> +	gem_execbuf(i915, &execbuf);
+> +	gem_sync(i915, obj.handle);
+> +	gem_close(i915, obj.handle);
+> +	value = *map;
+> +	munmap(map, 4096);
+> +
+> +	igt_assert_neq(value, 0x1234);
+> +	return value;
+> +}
+> +
+> +static uint32_t read_at(int i915, const intel_ctx_t *ctx,
+> +			const struct intel_execution_engine2 *e,
+> +			uint64_t addr, uint64_t from)
+> +{
+> +	return __read_at(i915, ctx, e, gem_engine_mmio_base(i915, e->name),
+> +			 addr, from);
+> +}
+> +
+> +static uint32_t copy_from(int i915, const intel_ctx_t *ctx,
+> +			  const struct intel_execution_engine2 *e,
+> +			  uint64_t addr, uint64_t from)
+> +{
+> +	const int gen = intel_gen(intel_get_drm_devid(i915));
+> +	const int use_64b_addr = gen >= 8;
+> +	struct drm_i915_gem_exec_object2 obj = {
+> +		.handle = gem_create(i915, 4096),
+> +		.offset = from,
+> +		.flags = EXEC_OBJECT_PINNED
+> +	};
+> +	struct drm_i915_gem_execbuffer2 execbuf = {
+> +		.batch_len = 64,
+> +		.buffers_ptr = to_user_pointer(&obj),
+> +		.buffer_count = 1,
+> +		.flags = e->flags,
+> +		.rsvd1 = ctx->id,
+> +	};
+> +	uint32_t *map =
+> +		gem_mmap__device_coherent(i915, obj.handle,
+> +					  0, 4096, PROT_WRITE);
+> +	uint32_t *cs = map;
+> +	uint32_t value;
+> +
+> +	*cs++ = MI_NOOP | 0x1234;
+> +
+> +	*cs++ = XY_SRC_COPY | (3 << 20) | (6 + 2 * use_64b_addr);
+> +	*cs++ = 3 << 24 | 0xcc << 16 | 4096;
+> +	*cs++ = 0;
+> +	*cs++ = 1 << 16 | 1;
+> +	*cs++ = from;
+> +	if (use_64b_addr)
+> +		*cs++ = from >> 32;
+> +	*cs++ = 0;
+> +	*cs++ = 4096;
+> +	*cs++ = addr;
+> +	if (use_64b_addr)
+> +		*cs++ = addr >> 32;
+> +
+> +	*cs++ = MI_BATCH_BUFFER_END;
+> +
+> +	gem_execbuf(i915, &execbuf);
+> +	gem_sync(i915, obj.handle);
+> +	gem_close(i915, obj.handle);
+> +	value = *map;
+> +	munmap(map, 4096);
+> +
+> +	igt_assert_neq(value, 0x1234);
+> +	return value;
+> +}
+> +
+> +static uint64_t find_hole(int i915, const intel_ctx_t *ctx,
+> +			  const struct intel_execution_engine2 *e,
+> +			  uint64_t size)
+> +{
+> +	struct drm_i915_gem_exec_object2 obj = {
+> +		.handle = __batch_create(i915, 4 * size),
+> +	};
+> +	struct drm_i915_gem_execbuffer2 execbuf = {
+> +		.buffers_ptr = to_user_pointer(&obj),
+> +		.buffer_count = 1,
+> +		.flags = e->flags,
+> +		.rsvd1 = ctx->id,
+> +	};
+> +	uint64_t hole;
+> +
+> +	gem_execbuf(i915, &execbuf);
+> +	hole = obj.offset + size; /* leave a guard on either side */
+> +	gem_close(i915, obj.handle);
+> +
+> +	obj.handle = batch_create(i915),
+> +	obj.offset += 3 * size;
+> +	gem_execbuf(i915, &execbuf); /* force an unbind of hole */
+> +
+> +	gem_sync(i915, obj.handle);
+> +	gem_close(i915, obj.handle);
+> +
+> +	return hole;
+> +}
+> +
+> +static uint32_t stale_create(int i915,
+> +			     const struct gem_memory_region *mr,
+> +			     uint64_t size, uint8_t val)
+> +{
+> +	uint32_t handle, *map;
+> +
+> +	handle = gem_create_in_memory_region_list(i915, size, 0, &mr->ci, 1);
+> +
+> +	map = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
+> +	gem_set_domain(i915, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+> +	memset(map, val, size);
+> +	munmap(map, size);
+> +
+> +	return handle;
+> +}
+> +
+> +static uint32_t userptr_create(int i915, uint64_t size, uint8_t val, void **ptr
+> +)
+> +{
+> +	uint32_t handle;
+> +
+> +	*ptr = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> +	igt_assert(*ptr != MAP_FAILED);
+> +	memset(*ptr, val, size);
+> +
+> +	gem_userptr(i915, *ptr, 4096, 0, 0, &handle);
+> +	return handle;
+> +}
+> +
+> +
+> +static bool has_mi_cond_bb_end(int i915)
+> +{
+> +	uint32_t devid = intel_get_drm_devid(i915);
+> +
+> +	return intel_gen(devid) >= 6;
+> +}
+> +
+> +static bool has_xy_src_copy(int i915)
+> +{
+> +	uint32_t devid = intel_get_drm_devid(i915);
+> +
+> +	return true;
+> +	return intel_gen(devid) < 12; // < PVC
+> +}
+> +
+> +static int has_secure_batches(int i915)
+> +{
+> +	int v = -1;
+> +	drm_i915_getparam_t gp = {
+> +		.param = I915_PARAM_HAS_SECURE_BATCHES,
+> +		.value = &v,
+> +	};
+> +
+> +	drmIoctl(i915, DRM_IOCTL_I915_GETPARAM, &gp);
+> +
+> +	return v > 0;
+> +}
+> +
+> +static bool has_mi_math(int i915, const struct intel_execution_engine2 *e)
+> +{
+> +	uint32_t devid = intel_get_drm_devid(i915);
+> +
+> +	if (intel_gen(devid) >= 8)
+> +		return true;
+> +
+> +	if (!IS_HASWELL(devid))
+> +		return false;
+> +
+> +	if (!has_secure_batches(i915))
+> +		return false;
+> +
+> +	return e == NULL || e->class == I915_ENGINE_CLASS_RENDER;
+> +}
+> +
+> +static void check_mmap(int i915, uint32_t handle, const uint32_t *hwsp)
+> +{
+> +	unsigned long count = 0;
+> +
+> +	while (gem_bo_busy(i915, handle)) {
+> +		uint32_t *map, sq;
+> +
+> +		map = mmap(0, 4096, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+> +		if (map == MAP_FAILED)
+> +			continue;
+> +
+> +		for (int i = 0; i < 5; i++) {
+> +			sq = READ_ONCE(*hwsp);
+> +			while (READ_ONCE(*hwsp) == sq && gem_bo_busy(i915, handle))
+> +				sched_yield();
+> +
+> +			sq = READ_ONCE(map[rand() % 1024]);
+> +			if (sq)
+> +				break;
+> +		}
+> +
+> +		munmap(map, 4096);
+> +		igt_assert_f(!sq,
+> +			     "Found %x in a new (clear) anonymous mmap after %lu tries!\n",
+> +			     sq, count);
+> +		count++;
+> +	}
+> +
+> +	igt_info("%s(%d) count:%lu\n", __func__, getpid(), count);
+> +}
+> +
+> +static void check_bo(int i915, uint32_t handle, const uint32_t *hwsp)
+> +{
+> +	int fd = gem_reopen_driver(i915);
+> +	unsigned long count = 0;
+> +
+> +	while (gem_bo_busy(i915, handle)) {
+> +		uint32_t *map, sq;
+> +
+> +		sq = gem_create(fd, 4096);
+> +		map = gem_mmap__device_coherent(fd, sq, 0, 4096, PROT_READ);
+> +		gem_close(fd, sq);
+> +
+> +		for (int i = 0; i < 5; i++) {
+> +			sq = READ_ONCE(*hwsp);
+> +			while (READ_ONCE(*hwsp) == sq && gem_bo_busy(i915, handle))
+> +				sched_yield();
+> +
+> +			sq = READ_ONCE(map[rand() % 1024]);
+> +			if (sq)
+> +				break;
+> +		}
+> +
+> +		munmap(map, 4096);
+> +		igt_assert_f(!sq,
+> +			     "Found %x in a new (clear) buffer after %lu tries!\n",
+> +			     sq, count);
+> +		count++;
+> +
+> +	}
+> +
+> +	igt_info("%s(%d) count:%lu\n", __func__, getpid(), count);
+> +}
+> +
+> +static bool
+> +find_engine(int i915, const intel_ctx_t *ctx, int class, int instance,
+> +	    struct intel_execution_engine2 *out)
 > +{
 > +	const struct intel_execution_engine2 *e;
 > +
-> +	for_each_physical_engine(data->drm_fd, e) {
-> +		if (e->class != I915_ENGINE_CLASS_RENDER &&
-> +		    e->class != I915_ENGINE_CLASS_COMPUTE)
-> +			continue;
-> +		return e;
----------------------- ^
-Imho you should here allocate memory and memcpy this, or use this
-loop in place where you need it (and call worker with e).
-
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static void gpgpu_fill(struct data *data, struct intel_buf *buf,
-> +		       igt_fillfunc_t fill, int x, int y, int width,
-> +		       int height, int color)
-> +{
-> +	fill(data->drm_fd, buf, x, y, width, height, color);
-
-Do not make such helper, just use fiil where you need this.
-
-> +}
-> +
-> +static void fill_gpu(struct gpu_context *context,
-> +		     unsigned int x, unsigned int y,
-> +		     unsigned int width, unsigned int height,
-> +		     uint8_t color)
-> +{
-> +	struct data *data = context->data;
-> +	igt_fillfunc_t fill_fn = NULL;
-> +
-> +	fill_fn = igt_get_gpgpu_fillfunc(data->devid);
-> +
-> +	igt_require_f(fill_fn, "no gpgpu-fill function\n");
-> +
-> +	igt_assert(context->buf);
-> +
-> +	gpgpu_fill(data, context->buf, fill_fn, x, y, width, height, color);
-
-Just use fill_fn here or save this fn into your data struct and
-use that where you need it (then you can have a helper).
-
-> +}
-> +
-> +static void *gpu_load(void *ptr)
-> +{
-> +	struct gpu_context *context = (struct gpu_context *)ptr;
-> +	struct data *data = context->data;
-> +	int pipe = context->pipe;
-> +	int rect_divisor;
-> +	int rect_width;
-> +	int rect_height;
-> +	int frame_width;
-> +	int frame_height;
-> +	drmModeModeInfo *mode;
-> +	int frame = 0;
-> +	int x, y;
-> +	int rect;
-> +
-> +	mode = data->highest_mode[pipe];
-> +	if (!mode)
-> +		return NULL;
-> +
-> +	frame_width = mode->hdisplay;
-> +	frame_height = mode->vdisplay;
-> +
-> +	igt_info("GPU thread pipe %d start\n", pipe);
-> +
-> +	context->buf = create_buf(data, data->highest_mode[pipe]->hdisplay,
-> +				  data->highest_mode[pipe]->vdisplay,
-> +				  INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
-> +
-> +	while (data->gpu_thread_state[pipe] != STOPPED) {
-> +
-> +		/* Fill the framebuffer using shader */
-> +		rect = 0;
-> +
-> +		while (rect < context->num_rectangles) {
-> +			/* divide at least by 2 and up to 8 */
-> +			int x_rand, y_rand;
-> +			rect_divisor = 1 << (hars_petruska_f54_1_random_unsafe_max(3) + 1);
-> +
-> +			rect_width = frame_width / rect_divisor;
-> +			rect_height = frame_height / rect_divisor;
-> +
-> +			x_rand = hars_petruska_f54_1_random_unsafe_max(frame_width - rect_width);
-> +			y_rand = hars_petruska_f54_1_random_unsafe_max(frame_height/2 - rect_height);
-> +
-> +			context->blt_rect.x = x + x_rand;
-> +			context->blt_rect.y = y + y_rand;
-> +
-> +			/* Fill randomly sized and positioned rectangles */
-> +			fill_gpu(context, context->blt_rect.x, context->blt_rect.y,
-> +				 context->blt_rect.x + rect_width,
-> +				 context->blt_rect.y + rect_height,
-> +				 context->color);
-> +
-> +			context->color += 4;
-> +
-> +			++rect;
-> +		}
-> +		frame++;
-> +	}
-> +
-> +	intel_buf_close(data->bops, context->buf);
-> +
-> +	igt_info("GPU thread pipe %d stop. Frames rendered: %d\n", pipe, frame);
-
-I would prefer igt_debug, but maybe for kms it is ok?
-
-> +
-> +	return NULL;
-> +}
-> +
-> +static inline uint32_t pipe_select(enum pipe pipe)
-> +{
-> +	if (pipe > 1)
-> +		return pipe << DRM_VBLANK_HIGH_CRTC_SHIFT;
-> +	else if (pipe > 0)
-> +		return DRM_VBLANK_SECONDARY;
-> +	else
-> +		return 0;
-> +}
-> +
-> +static unsigned get_vblank(int fd, enum pipe pipe, unsigned flags)
-> +{
-> +	union drm_wait_vblank vbl;
-> +
-> +	memset(&vbl, 0, sizeof(vbl));
-> +	vbl.request.type = DRM_VBLANK_RELATIVE | pipe_select(pipe) | flags;
-> +	if (drmIoctl(fd, DRM_IOCTL_WAIT_VBLANK, &vbl))
-> +		return 0;
-> +
-> +	return vbl.reply.sequence;
-> +}
-> +
-> +static int commit_mode(struct data *data, igt_output_t *output,
-> +		       enum pipe pipe, drmModeModeInfo *mode)
-> +{
-> +	int ret;
-> +	igt_output_override_mode(output, mode);
-> +	igt_output_set_pipe(output, pipe);
-> +
-> +	ret = igt_display_try_commit_atomic(&data->display,
-> +					    DRM_MODE_ATOMIC_TEST_ONLY |
-> +					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +	if (ret) {
-> +		igt_warn("Could not commit mode: \n");
-> +		kmstest_dump_mode(mode);
-> +		return ret;
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	return 0;
-> +}
-> +
-> +static void cursor_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb,
-> +				int width, int height)
-> +{
-> +	igt_plane_set_fb(plane, fb);
-> +	igt_fb_set_size(fb, plane, width, height);
-> +}
-> +
-> +static void universal_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb,
-> +				int width, int height)
-> +{
-> +	igt_plane_set_fb(plane, fb);
-> +	igt_plane_set_position(plane, 0, 0);
-> +	igt_fb_set_size(fb, plane, width, height);
-> +}
-> +
-> +static bool plane_needs_rotation(int drm_fd, uint64_t modifier, igt_plane_t *plane)
-> +{
-> +	return !HAS_XELPD(drm_fd) && !IS_DG2(intel_get_drm_devid(drm_fd)) &&
-> +		modifier == I915_FORMAT_MOD_Y_TILED &&
-> +		plane->type != DRM_PLANE_TYPE_CURSOR;
-> +}
-> +
-> +static int try_plane_scaling(struct data *data, igt_plane_t *plane,
-> +			     int width, int height)
-> +{
-> +	int ret;
-> +
-> +	if (plane_needs_rotation(data->drm_fd, data->modifier, plane)) {
-> +		igt_plane_set_rotation(plane, IGT_ROTATION_90);
-> +		igt_plane_set_size(plane, height, width);
-> +	} else {
-> +		igt_plane_set_size(plane, width, height);
-> +	}
-> +
-> +	ret = igt_display_try_commit_atomic(&data->display,
-> +					    DRM_MODE_ATOMIC_TEST_ONLY |
-> +					    DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +					    NULL);
-> +
-> +	return ret;
-> +}
-> +
-> +static void cleanup_plane_fbs(struct data *data, enum pipe pipe, int start, int end)
-> +{
-> +	int i = start;
-> +
-> +	while (i < end) {
-> +		igt_remove_fb(data->display.drm_fd,
-> +			      &data->fb[pipe * MAX_PLANES + i]);
-> +		data->fb[pipe * MAX_PLANES + i].fb_id = 0;
-> +		i++;
-> +	}
-> +}
-> +
-> +static int pipe_stress(struct data *data, igt_output_t *output,
-> +		       enum pipe pipe, drmModeModeInfo *mode)
-> +{
-> +	igt_plane_t *plane;
-> +	int i = 0;
-> +	int ret;
-> +	bool new_mode = false;
-> +	uint64_t cursor_width, cursor_height;
-> +
-> +	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width));
-> +	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_HEIGHT, &cursor_height));
-> +
-> +	if (!mode)
-> +		mode = igt_output_get_mode(output);
-> +
-> +	if (data->last_mode[pipe] != mode) {
-> +		ret = commit_mode(data, output, pipe, mode);
-> +
-> +		if (!ret)
-> +			return ret;
-> +
-> +		data->last_mode[pipe] = mode;
-> +		new_mode = true;
-> +	}
-> +
-> +	/*
-> +	 * Looks like we can't have planes on that pipe at all
-> +	 * or mode hasn't changed
-> +	 */
-> +	if (!data->num_planes[pipe] || !new_mode)
-> +		return 0;
-> +
-> +	for_each_plane_on_pipe(&data->display, pipe, plane) {
-> +		int plane_width, plane_height;
-> +		if (plane->type == DRM_PLANE_TYPE_CURSOR) {
-> +			cursor_plane_set_fb(plane, &data->cursor_fb[pipe],
-> +					    cursor_width, cursor_height);
-> +			plane_width = cursor_width;
-> +			plane_height = cursor_height;
-> +		} else {
-> +			universal_plane_set_fb(plane, &data->fb[pipe * MAX_PLANES + i],
-> +					       mode->hdisplay, mode->vdisplay);
-> +
-> +			plane_width = (mode->hdisplay * 3) / 4;
-> +			plane_height = (mode->vdisplay * 3) / 4;
-> +
-> +			ret = try_plane_scaling(data, plane, plane_width, plane_height);
-> +
-> +			while (ret) {
-> +				if (plane_width <= cursor_width || plane_height <= cursor_height)
-> +					break;
-> +
-> +				plane_width /= 2;
-> +				plane_height /= 2;
-> +
-> +				ret = try_plane_scaling(data, plane, plane_width, plane_height);
-> +
-> +				igt_info("Reduced plane %d size to %dx%d\n",
-> +					 plane->index, plane_width, plane_height);
-> +			}
-> +			if (ret) {
-> +				igt_info("Plane %d pipe %d try commit failed, exiting\n", i, pipe);
-> +				data->num_planes[pipe] = i;
-> +				igt_info("Max num planes for pipe %d set to %d\n", pipe, i);
-> +				/*
-> +				 * We have now determined max amount of full sized planes, we will just
-> +				 * keep it in mind and be smarter next time. Also lets remove unneeded fbs.
-> +				 * Don't destroy cursor_fb as will take care about it at the end.
-> +				 */
-> +				igt_plane_set_fb(plane, NULL);
-> +				cleanup_plane_fbs(data, pipe, i, MAX_PLANES);
-> +			}
-> +
-> +			if (++i >= data->num_planes[pipe])
-> +				break;
+> +	for_each_ctx_engine(i915, ctx, e) {
+> +		if (e->class == class && e->instance == instance) {
+> +			memcpy(out, e, sizeof(*out));
+> +			return true;
 > +		}
 > +	}
 > +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	return 0;
+> +	return false;
 > +}
 > +
-> +static __u64 get_mode_data_rate(drmModeModeInfo *mode)
+> +static bool find_bcs0(int i915, const intel_ctx_t *ctx, struct intel_execution_engine2 *out)
 > +{
-> +	__u64 data_rate = (__u64)mode->hdisplay * (__u64)mode->vdisplay * (__u64)mode->vrefresh;
-> +
-> +	return data_rate;
+> +	return find_engine(i915, ctx, I915_ENGINE_CLASS_COPY, 0, out);
 > +}
 > +
-> +
-> +static drmModeModeInfo *find_highest_mode(drmModeConnector *connector)
+> +static void writer_at(int i915, const intel_ctx_t *ctx,
+> +		      uint32_t handle, uint32_t *map,
+> +		      const struct intel_execution_engine2 *e,
+> +		      const uint32_t base,
+> +		      uint64_t addr, uint64_t from)
 > +{
-> +	drmModeModeInfo *highest_mode = NULL;
-> +	int j;
+> +	struct drm_i915_gem_exec_object2 obj = {
+> +		.handle = handle,
+> +		.offset = from,
+> +		.flags = EXEC_OBJECT_PINNED
+> +	};
+> +	struct drm_i915_gem_execbuffer2 execbuf = {
+> +		.batch_start_offset = 256,
+> +		.buffers_ptr = to_user_pointer(&obj),
+> +		.buffer_count = 1,
+> +		.flags = e->flags,
+> +		.rsvd1 = ctx->id,
+> +	};
+> +	const int gen = intel_gen(intel_get_drm_devid(i915));
+> +	const int use_64b_addr = gen >= 8;
+> +	uint32_t *cs, *jmp;
 > +
-> +	for (j = 0; j < connector->count_modes; j++) {
-> +		if (!highest_mode) {
-> +			highest_mode = &connector->modes[j];
-> +		} else if (connector->modes[j].vdisplay && connector->modes[j].hdisplay) {
-> +			__u64 highest_data_rate = get_mode_data_rate(highest_mode);
-> +			__u64 data_rate = get_mode_data_rate(&connector->modes[j]);
-> +			if (highest_data_rate < data_rate)
-> +				highest_mode = &connector->modes[j];
-> +		}
-> +	}
+> +	igt_assert(use_64b_addr || (addr >> 32) == 0);
+> +	igt_assert(use_64b_addr || (from >> 32) == 0);
 > +
-> +	return highest_mode;
+> +	cs = map + execbuf.batch_start_offset / sizeof(*map);
+> +
+> +	*cs++ = MI_LOAD_REGISTER_IMM | (5 - 2);
+> +	*cs++ = CS_GPR(0);
+> +	*cs++ = 0;
+> +	*cs++ = CS_GPR(0) + 4;
+> +	*cs++ = 0;
+> +
+> +	*cs++ = MI_LOAD_REGISTER_IMM | (5 - 2);
+> +	*cs++ = CS_GPR(1);
+> +	*cs++ = 1;
+> +	*cs++ = CS_GPR(1) + 4;
+> +	*cs++ = 0;
+> +
+> +	while (offset_in_page(cs) & 63)
+> +		cs++;
+> +	jmp = cs;
+> +
+> +	/* Keep writing to the victim address */
+> +	*cs++ = XY_COLOR | (3 << 20) | (4 + use_64b_addr);
+> +	*cs++ = 3 << 24 | 0xf0 << 16 | 4096;
+> +	*cs++ = 0;
+> +	*cs++ = 1 << 16 | 1024;
+> +	*cs++ = addr;
+> +	if (use_64b_addr)
+> +		*cs++ = addr >> 32;
+> +	*cs++ = 0xdeadbeef;
+> +
+> +	*cs++ = MI_FLUSH_DW;
+> +	*cs++ = 0;
+> +
+> +	/* Increment a seqno for each pass */
+> +	*cs++ = MI_MATH | (5 - 2);
+> +	*cs++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
+> +	*cs++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
+> +	*cs++ = MI_MATH_ADD;
+> +	*cs++ = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
+> +
+> +	*cs++ = MI_STORE_REGISTER_MEM | (1 + use_64b_addr);
+> +	*cs++ = CS_GPR(0);
+> +	*cs++ = from;
+> +	*cs++ = from >> 32;
+> +
+> +	map[2] = 0xffffffff;
+> +	map[3] = 0xffffffff;
+> +	*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | (1 + use_64b_addr);
+> +	*cs++ = MI_BATCH_BUFFER_END;
+> +	*cs++ = from + 8;
+> +	*cs++ = from >> 32;
+> +
+> +	*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | use_64b_addr;
+> +	*cs++ = from + offset_in_page(jmp);
+> +	*cs++ = from >> 32;
+> +
+> +	*cs++ = MI_BATCH_BUFFER_END; /* not reached */
+> +
+> +	igt_debug("Running writer for %"PRIx64" at %"PRIx64" on %s\n",
+> +		  addr, from, e->name);
+> +	gem_execbuf(i915, &execbuf);
+> +
+> +	/* Wait until the batch is executing */
+> +	while (!READ_ONCE(*map) && gem_bo_busy(i915, handle))
+> +		;
+> +	igt_assert(gem_bo_busy(i915, handle));
 > +}
 > +
-> +typedef drmModeConnector *drmModeConnectorPtr;
-> +
-> +static void fill_connector_to_pipe_array(struct data *data,
-> +					 drmModeRes *mode_resources,
-> +					 drmModeConnectorPtr *connectors)
+> +static void close_clear(int i915, const intel_ctx_t *ctx,
+> +			const struct gem_memory_region *mr,
+> +			const struct intel_execution_engine2 *bcs0,
+> +			const struct intel_execution_engine2 *bind)
 > +{
-> +	int pipe = 0;
-> +	int i;
+> +	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> +	const uint32_t base =
+> +		gem_engine_mmio_base(i915, intel_gen(intel_get_drm_devid(i915)) >= 8 ? "bcs0" : "rcs0");
+> +	uint32_t stale, handle, sample, poison;
+> +	uint64_t hole;
+> +	uint32_t *map;
 > +
-> +	memset(connectors, 0, sizeof(drmModeConnectorPtr) *
-> +	       mode_resources->count_connectors);
+> +	stale = stale_create(i915, mr, 4096, 0);
 > +
-> +	igt_info("Got %d connectors\n", mode_resources->count_connectors);
+> +	hole = find_hole(i915, ctx, bind, SZ_2M);
+> +	poison = read_at(i915, ctx, bind, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
 > +
-> +	for (i = 0; i < mode_resources->count_connectors; i++) {
-> +		drmModeConnector *connector;
+> +	/* Bind and sanitycheck reading the address returns our page */
+> +	bind_at(i915, ctx, bcs0, stale, hole, 8192);
+> +	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_1M);
+> +	igt_assert_eq_u32(sample, 0);
 > +
-> +		connector = drmModeGetConnector(data->drm_fd,
-> +						mode_resources->connectors[i]);
+> +	handle = gem_create(i915, 4096);
+> +	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
 > +
-> +		if (!connector) {
-> +			igt_warn("could not get connector %i: %s\n",
-> +				 mode_resources->connectors[i], strerror(errno));
-> +			continue;
-> +		}
+> +	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
 > +
-> +		if (connector->connection == DRM_MODE_CONNECTED) {
-> +			igt_info("Connector %d connected to pipe %d\n", i, pipe);
-> +			connectors[pipe] = (drmModeConnectorPtr)connector;
-> +			++pipe;
-> +			if (pipe == IGT_MAX_PIPES)
-> +				break;
-> +		} else {
-> +			igt_info("Connector %d connection status %d\n",
-> +				 i, connector->connection);
-> +			drmModeFreeConnector(connector);
-> +		}
-> +	}
+> +	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
+> +	igt_debug("Closing hole:%"PRIx64" on %s, sample:%x\n", hole, bind->name, sample);
+> +	igt_assert_eq_u32(sample, 0xdeadbeef);
+> +	gem_close(i915, stale);
+> +
+> +	igt_fork(child, 2 * ncpus)
+> +		check_mmap(i915, handle, map);
+> +	igt_fork(child, 2 * ncpus)
+> +		check_bo(i915, handle, map);
+> +
+> +	sleep(10);
+> +	map[2] = MI_BATCH_BUFFER_END;
+> +
+> +	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
+> +	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
+> +
+> +	igt_waitchildren();
+> +
+> +	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
+> +	map[2] = MI_BATCH_BUFFER_END;
+> +	poison = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
+> +	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
+> +	igt_assert_eq_u32(sample, poison);
+> +	munmap(map, 4096);
+> +	gem_close(i915, handle);
 > +}
 > +
-> +static void release_connectors(drmModeConnectorPtr *connectors)
+> +static void madv_clear(int i915, const intel_ctx_t *ctx,
+> +		       const struct gem_memory_region *mr,
+> +		       const struct intel_execution_engine2 *bcs0,
+> +		       const struct intel_execution_engine2 *bind)
 > +{
-> +	int i;
+> +	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> +	const uint32_t base =
+> +		gem_engine_mmio_base(i915, intel_gen(intel_get_drm_devid(i915)) >= 8 ? "bcs0" : "rcs0");
+> +	uint32_t stale, handle, sample, poison;
+> +	uint64_t hole;
+> +	uint32_t *map;
 > +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +		if (connectors[i])
-> +			drmModeFreeConnector(connectors[i]);
-> +	}
-> +	free(connectors);
+> +	stale = stale_create(i915, mr, 4096, 0);
+> +
+> +	hole = find_hole(i915, ctx, bind, SZ_2M);
+> +	poison = read_at(i915, ctx, bind, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
+> +
+> +	/* Bind and sanitycheck reading the address returns our page */
+> +	bind_at(i915, ctx, bcs0, stale, hole, 8192);
+> +	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_1M);
+> +	igt_assert_eq_u32(sample, 0);
+> +
+> +	handle = gem_create(i915, 4096);
+> +	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
+> +
+> +	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
+> +
+> +	/* Unbind hole by overlapping the range with a fresh vma */
+> +	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
+> +	igt_debug("Evicting hole:%"PRIx64" on %s, sample:%x\n", hole, bind->name, sample);
+> +	igt_assert_eq_u32(sample, 0xdeadbeef);
+> +	bind_at(i915, ctx, bind, stale, hole + 4096, 0);
+> +	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
+> +	igt_debug("Checking hole:%"PRIx64", sample:%x\n", hole, sample);
+> +	igt_assert_eq_u32(sample, poison);
+> +
+> +	if (gem_madvise(i915, stale, I915_MADV_DONTNEED))
+> +		igt_drop_caches_set(i915, DROP_SHRINK_ALL);
+> +
+> +	/* Check that we did indeed purge the stale buffer */
+> +	igt_assert(!gem_madvise(i915, stale, I915_MADV_DONTNEED));
+> +
+> +	igt_fork(child, 2 * ncpus)
+> +		check_mmap(i915, handle, map);
+> +	igt_fork(child, 2 * ncpus)
+> +		check_bo(i915, handle, map);
+> +
+> +	sleep(10);
+> +	map[2] = MI_BATCH_BUFFER_END;
+> +
+> +	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
+> +	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
+> +
+> +	igt_waitchildren();
+> +
+> +	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
+> +	map[2] = MI_BATCH_BUFFER_END;
+> +	poison = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
+> +	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
+> +	igt_assert_eq_u32(sample, poison);
+> +	munmap(map, 4096);
+> +	gem_close(i915, handle);
+> +	gem_close(i915, stale);
 > +}
 > +
-> +#define MIN_DURATION_SEC 5.0
-> +#define MIN_ITERATIONS 20
-
-Put that at begin of file (prefered) or just before first
-function which will use it.
-
-> +
-> +static void stress_pipes(struct data *data, struct timespec *start,
-> +			 struct timespec *end)
+> +static void userptr_clear(int i915, const intel_ctx_t *ctx,
+> +			  const struct intel_execution_engine2 *bcs0,
+> +			  const struct intel_execution_engine2 *bind,
+> +			  unsigned int flags)
 > +{
-> +	int pipe = 0;
-> +	int ret = 0;
-> +	igt_output_t *output;
-> +	igt_crc_t crc, crc2;
+> +	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> +	const uint32_t base =
+> +		gem_engine_mmio_base(i915, intel_gen(intel_get_drm_devid(i915)) >= 8 ? "bcs0" : "rcs0");
+> +	uint32_t stale, handle, sample, poison;
+> +	uint64_t hole;
+> +	uint32_t *map;
+> +	void *ptr;
 > +
-> +	for_each_connected_output(&data->display, output) {
-> +		if (!data->highest_mode[pipe])
-> +			continue;
+> +	stale = userptr_create(i915, 4096, 0, &ptr);
 > +
-> +		igt_assert_f(data->display.pipes[pipe].n_planes < MAX_PLANES,
-> +			    "Currently we don't support more than %d planes!",
-> +			     MAX_PLANES);
+> +	hole = find_hole(i915, ctx, bind, SZ_2M);
+> +	poison = read_at(i915, ctx, bind, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
 > +
-> +		ret = pipe_stress(data, output, pipe,
-> +				 data->highest_mode[pipe]);
-> +		if (ret)
-> +			break;
+> +	/* Bind and sanitycheck reading the address returns our page */
+> +	bind_at(i915, ctx, bcs0, stale, hole, 8192);
+> +	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_1M);
+> +	igt_assert_eq_u32(sample, 0);
 > +
-> +		igt_pipe_crc_start(data->pipe_crc[pipe]);
-> +		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc[pipe], &crc);
-> +		get_vblank(data->display.drm_fd, pipe,
-> +			   DRM_VBLANK_NEXTONMISS);
-> +		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc[pipe], &crc2);
-> +		igt_pipe_crc_stop(data->pipe_crc[pipe]);
-> +		igt_assert_crc_equal(&crc, &crc2);
+> +	handle = gem_create(i915, 4096);
+> +	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
 > +
-> +		++pipe;
-> +	}
+> +	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
+> +
+> +	/* Unbind hole by overlapping the range with a fresh vma */
+> +	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
+> +	igt_debug("Evicting hole:%"PRIx64" on %s, sample:%x\n", hole, bind->name, sample);
+> +	igt_assert_eq_u32(sample, 0xdeadbeef);
+> +	bind_at(i915, ctx, bind, stale, hole + 4096, 0);
+> +	sample = read_at(i915, ctx, bind, hole, hole + SZ_512K);
+> +	igt_debug("Checking hole:%"PRIx64", sample:%x\n", hole, sample);
+> +	igt_assert_eq_u32(sample, poison);
+> +	munmap(ptr, 4096);
+> +	if (flags & SHRINK)
+> +		igt_drop_caches_set(i915, DROP_SHRINK_ALL);
+> +
+> +	igt_fork(child, 2 * ncpus)
+> +		check_mmap(i915, handle, map);
+> +	igt_fork(child, 2 * ncpus)
+> +		check_bo(i915, handle, map);
+> +
+> +	sleep(10);
+> +	map[2] = MI_BATCH_BUFFER_END;
+> +
+> +	sample = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
+> +	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
+> +
+> +	igt_waitchildren();
+> +
+> +	writer_at(i915, ctx, handle, map, bcs0, base, hole, hole + SZ_1M);
+> +	map[2] = MI_BATCH_BUFFER_END;
+> +	poison = __read_at(i915, ctx, bcs0, base, hole, hole + SZ_512K);
+> +	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
+> +	igt_assert_eq_u32(sample, poison);
+> +	munmap(map, 4096);
+> +	gem_close(i915, handle);
+> +	gem_close(i915, stale);
 > +}
 > +
-> +static void stress(struct data *data)
+> +static void clear_tlb(int i915)
 > +{
-> +	struct timespec start, end;
-> +	int iterations = 0;
-> +	bool need_continue;
+> +	struct intel_execution_engine2 bcs0, bind;
+> +	const intel_ctx_t *ctx;
 > +
-> +	igt_gettime(&start);
-> +
-> +	do {
-> +		igt_gettime(&end);
-> +		stress_pipes(data, &start, &end);
-> +		iterations++;
-> +		need_continue =
-> +			igt_time_elapsed(&start, &end) < MIN_DURATION_SEC;
-> +	} while ((need_continue || iterations < MIN_ITERATIONS));
-> +}
-> +
-> +static void start_gpu_threads(struct data *data)
-> +{
-> +	int i;
-> +
-> +	data->bops = buf_ops_create(data->drm_fd);
-> +	data->engine = get_execution_engine(data);
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +		if (!data->highest_mode[i])
-> +			continue;
-> +		data->gpu_context[i].data = data;
-> +		data->gpu_context[i].pipe = i;
-> +		data->gpu_context[i].fb_ptr = NULL;
-> +		data->gpu_context[i].blt_rect.x = 0;
-> +		data->gpu_context[i].blt_rect.y = 0;
-> +		data->gpu_context[i].blt_rect.w = 0;
-> +		data->gpu_context[i].blt_rect.h = 0;
-> +		data->gpu_context[i].num_rectangles = N_BLITS;
-> +		data->gpu_thread_state[i] = RUNNING;
-> +		data->gpu_context[i].buf = NULL;
-> +		igt_info("Starting GPU thread %d\n", i);
-> +
-> +		pthread_create(&data->gpu_thread[i], NULL, gpu_load,
-> +			       (void *)&data->gpu_context[i]);
-> +
-> +		igt_info("GPU thread %d started\n", i);
-> +	}
-> +}
-> +
-> +static void stop_gpu_threads(struct data *data)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +		if (!data->highest_mode[i])
-> +			continue;
-> +		igt_info("Stoping GPU thread %d\n", i);
-> +		data->gpu_thread_state[i] = STOPPED;
-> +		pthread_join(data->gpu_thread[i], NULL);
-> +		igt_info("Stopped GPU thread %d\n", i);
-> +		data->gpu_context[i].fb_ptr = NULL;\
-> +		data->gpu_context[i].buf = NULL;
-> +	}
-> +
-> +	buf_ops_destroy(data->bops);
-> +}
-> +
-> +static void start_cpu_threads(struct data *data)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < data->number_of_cores; i++) {
-> +		data->cpu_context[i].buf1 = malloc(BUF_SIZE);
-> +		data->cpu_context[i].buf2 = malloc(BUF_SIZE);
-> +		data->cpu_context[i].id = i;
-> +		data->cpu_context[i].data = data;
-> +		pthread_create(&data->cpu_thread[i], NULL, cpu_load,
-> +			       (void *)&data->cpu_context[i]);
-> +	}
-> +}
-> +
-> +static void stop_cpu_threads(struct data *data)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < data->number_of_cores; i++) {
-> +		data->cpu_thread_stop[i] = true;
-> +		pthread_join(data->cpu_thread[i], NULL);
-> +		free(data->cpu_context[i].buf1);
-> +		free(data->cpu_context[i].buf2);
-> +	}
-> +}
-> +
-> +static void create_framebuffers(struct data *data)
-> +{
-> +	int i, j;
-> +	uint64_t cursor_width, cursor_height;
-> +
-> +	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width));
-> +	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_HEIGHT, &cursor_height));
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +		if (!data->highest_mode[i])
-> +			continue;
-> +
-> +		if (!data->cursor_fb[i].fb_id) {
-> +			igt_create_color_fb(data->drm_fd,
-> +					    cursor_width, cursor_height,
-> +					    data->format,
-> +					    data->modifier,
-> +					    1.0, 0.0, 0.0,
-> +					    &data->cursor_fb[i]);
-> +		}
-> +
-> +		for (j = 0; j < data->num_planes[i]; j++) {
-> +			if (!data->fb[i * MAX_PLANES + j].fb_id) {
-> +				igt_create_color_pattern_fb(data->drm_fd,
-> +							    data->highest_mode[i]->hdisplay,
-> +							    data->highest_mode[i]->vdisplay,
-> +							    data->format,
-> +							    data->modifier,
-> +							    0.0, 1.0, 0.0, &data->fb[i * MAX_PLANES + j]);
-> +			}
-> +		}
-> +	}
-> +}
-> +
-> +static void destroy_framebuffers(struct data *data)
-> +{
-> +	int i, j;
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +
-> +		if (!data->highest_mode[i])
-> +			continue;
-> +
-> +		for (j = 0; j < MAX_PLANES; j++) {
-> +			if (data->fb[i * MAX_PLANES + j].fb_id) {
-> +				igt_plane_set_fb(&data->display.pipes[i].planes[j], NULL);
-> +				igt_remove_fb(data->display.drm_fd, &data->fb[i * MAX_PLANES + j]);
-> +				data->fb[i * MAX_PLANES + j].fb_id = 0;
-> +			}
-> +		}
-> +		if (data->cursor_fb[i].fb_id) {
-> +			igt_remove_fb(data->display.drm_fd, &data->cursor_fb[i]);
-> +			data->cursor_fb[i].fb_id = 0;
-> +		}
-> +	}
-> +}
-> +
-> +static void prepare_test(struct data *data)
-> +{
-> +	int i, j;
-> +	int num_connectors;
-> +	int num_cpus = (int) sysconf(_SC_NPROCESSORS_ONLN);
-> +
-> +	data->number_of_cores = min(num_cpus, MAX_CORES);
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +		for (j = 0; j < MAX_PLANES; j++)
-> +			data->fb[i * MAX_PLANES + j].fb_id = 0;
-> +		data->cursor_fb[i].fb_id = 0;
-> +		data->num_planes[i] = -1;
-> +		data->last_mode[i] = NULL;
-> +		sem_init(&data->gpu_thread_pause_ack[i], 0, 0);
-> +	}
-> +
-> +	start_cpu_threads(data);
-> +	data->mode_resources = drmModeGetResources(data->drm_fd);
-> +	if (!data->mode_resources) {
-> +		igt_warn("drmModeGetResources failed: %s\n", strerror(errno));
-> +		return;
-> +	}
-> +
-> +	num_connectors = data->mode_resources->count_connectors;
-> +	num_connectors = max(num_connectors, IGT_MAX_PIPES);
-> +	memset(data->highest_mode, 0, sizeof(drmModeModeInfo *) * IGT_MAX_PIPES);
-> +	data->connectors =
-> +		(drmModeConnectorPtr *)calloc(sizeof(drmModeConnectorPtr) * num_connectors, 1);
-> +	fill_connector_to_pipe_array(data, data->mode_resources, data->connectors);
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +		drmModeConnector *connector = (drmModeConnector *)data->connectors[i];
-> +
-> +		if (!connector)
-> +			continue;
-> +
-> +		if (!data->highest_mode[i]) {
-> +			if (connector->count_modes)
-> +				data->highest_mode[i] = find_highest_mode(connector);
-> +		}
-> +		igt_assert(data->highest_mode[i]);
-> +
-> +		if (data->highest_mode[i]) {
-> +			igt_info("Using mode: \n");
-> +			kmstest_dump_mode(data->highest_mode[i]);
-> +			data->pipe_crc[i] = igt_pipe_crc_new(data->drm_fd, i,
-> +							     INTEL_PIPE_CRC_SOURCE_AUTO);
-> +		} else
-> +			data->pipe_crc[i] = NULL;
-> +
-> +		if (data->num_planes[i] == -1)
-> +			data->num_planes[i] = data->display.pipes[i].n_planes;
-> +
-> +		igt_info("Max number of planes is %d for pipe %d\n",
-> +			 data->num_planes[i], i);
-> +	}
-> +
-> +	create_framebuffers(data);
-> +	start_gpu_threads(data);
-> +}
-> +
-> +static void finish_test(struct data *data)
-> +{
-> +	int i;
-> +
-> +	stop_gpu_threads(data);
-> +
-> +	/*
-> +	 * As we change tiling/format we need a new FB
-> +	 */
-> +	destroy_framebuffers(data);
-> +
-> +	for (i = 0; i < IGT_MAX_PIPES; i++) {
-> +		data->num_planes[i] = -1;
-> +		data->last_mode[i] = NULL;
-> +		if (data->pipe_crc[i])
-> +			igt_pipe_crc_free(data->pipe_crc[i]);
-> +	}
-> +
-> +	stop_cpu_threads(data);
-> +	release_connectors(data->connectors);
-> +	drmModeFreeResources(data->mode_resources);
-> +}
-> +
-> +struct data data = {
-> +	.format = DRM_FORMAT_XRGB8888,
-> +	.modifier = DRM_FORMAT_MOD_LINEAR,
-> +	.devid = 0,
-> +	.bops = NULL
-> +};
-> +
-> +
-> +igt_main {
-> +	uint8_t format_idx = 0, tiling_idx = 0;
+> +	/* See if we can retain a TLB entry past address reuse. */
 > +
 > +	igt_fixture {
-> +		data.drm_fd = data.display.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+> +		const struct intel_execution_engine2 *e;
+> +		bool found;
 > +
-> +		kmstest_set_vt_graphics_mode();
+> +		igt_require(has_xy_src_copy(i915));
+> +		igt_require(has_mi_cond_bb_end(i915));
 > +
-> +		igt_display_require(&data.display, data.display.drm_fd);
-> +		igt_require(data.display.is_atomic);
-> +		igt_display_require_output(&data.display);
-> +		data.devid = intel_get_drm_devid(data.drm_fd);
-> +		igt_require_gem(data.drm_fd);
+> +		ctx = intel_ctx_create_all_physical(i915);
+> +
+> +		igt_require(find_bcs0(i915, ctx, &bcs0));
+> +		igt_require(has_mi_math(i915, &bcs0));
+> +
+> +		found = false;
+> +		for_each_ctx_engine(i915, ctx, e) {
+> +			if (e->flags != bcs0.flags) {
+> +				memcpy(&bind, e, sizeof(bind));
+> +				found = true;
+> +				break;
+> +			}
+> +		}
+> +		igt_require(found);
+> +		igt_debug("Writing with %s, issuing binds with %s\n",
+> +			  bcs0.name, bind.name);
 > +	}
 > +
-> +	for (format_idx = 0; format_idx < N_FORMATS; format_idx++) {
-> +		for (tiling_idx = 0; tiling_idx < N_TILING_METHODS; tiling_idx++) {
-> +			if (!igt_display_has_format_mod(&data.display,
-> +							formats[format_idx],
-> +							tilings[tiling_idx]))
+
+Please add descriptions before new tests.
+
+> +	igt_subtest_with_dynamic("close-clear") {
+> +		for_each_memory_region(r, i915) {
+> +			igt_dynamic_f("%s", r->name)
+> +				close_clear(i915, ctx, r, &bcs0, &bind);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("madv-clear") {
+> +		for_each_memory_region(r, i915) {
+> +			if (r->ci.memory_class) /* XXX how to purge lmem? */
 > +				continue;
 > +
-> +			igt_fixture {
-> +				data.format = formats[format_idx];
-> +				data.modifier = tilings[tiling_idx];
-> +			}
+> +			igt_dynamic_f("%s", r->name)
+> +				madv_clear(i915, ctx, r, &bcs0, &bind);
+> +		}
+> +	}
+> +
+> +	igt_subtest("u-unmap-clear")
+> +		userptr_clear(i915, ctx, &bcs0, &bind, 0);
+> +	igt_subtest("u-shrink-clear")
+> +		userptr_clear(i915, ctx, &bcs0, &bind, SHRINK);
+> +}
+> +
+> +static void dumb_writer_at(int i915, const intel_ctx_t *ctx,
+> +			   uint32_t handle, uint32_t *map,
+> +			   const struct intel_execution_engine2 *e,
+> +			   uint64_t addr, uint64_t from)
+> +{
+> +	struct drm_i915_gem_exec_object2 obj = {
+> +		.handle = handle,
+> +		.offset = from,
+> +		.flags = EXEC_OBJECT_PINNED
+> +	};
+> +	struct drm_i915_gem_execbuffer2 execbuf = {
+> +		.buffers_ptr = to_user_pointer(&obj),
+> +		.buffer_count = 1,
+> +		.flags = e->flags,
+> +		.rsvd1 = ctx->id,
+> +	};
+> +	const int gen = intel_gen(intel_get_drm_devid(i915));
+> +	const bool uses_parser = gem_has_cmdparser(i915);
+> +	const int use_flush_dw = gen >= 6;
+> +	const int use_64b_addr = gen >= 8;
+> +	uint32_t *cs, *jmp;
+> +
+> +	igt_assert(use_64b_addr || (addr >> 32) == 0);
+> +	igt_assert(use_64b_addr || (from >> 32) == 0);
+> +
+> +	if (uses_parser)
+> +		execbuf.batch_start_offset = 256;
+> +
+> +	cs = map + execbuf.batch_start_offset / sizeof(*map);
+> +	jmp = cs;
+> +
+> +	/* Keep writing to the victim address */
+> +	*cs++ = XY_COLOR | (3 << 20) | (4 + use_64b_addr);
+> +	*cs++ = 3 << 24 | 0xf0 << 16 | 4096;
+> +	*cs++ = 0;
+> +	*cs++ = 1 << 16 | 1024;
+> +	*cs++ = addr;
+> +	if (use_64b_addr)
+> +		*cs++ = addr >> 32;
+> +	*cs++ = 0xdeadbeef;
+> +
+> +	if (use_flush_dw) {
+> +		*cs++ = MI_FLUSH_DW;
+> +		*cs++ = 0;
+> +	} else {
+> +		*cs++ = MI_FLUSH;
+> +	}
+> +
+> +	if (uses_parser) {
+> +		map[0] = 0xffffffff;
+> +		map[1] = 0xffffffff;
+> +		*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | (1 + use_64b_addr);
+> +		*cs++ = MI_BATCH_BUFFER_END;
+> +		*cs++ = from;
+> +		*cs++ = from >> 32;
+> +	}
+> +
+> +	*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | use_64b_addr;
+> +	*cs++ = from + offset_in_page(jmp);
+> +	*cs++ = from >> 32;
+> +
+> +	*cs++ = MI_BATCH_BUFFER_END; /* not reached */
+> +
+> +	igt_debug("Running writer for %"PRIx64" at %"PRIx64" on %s\n",
+> +		  addr, from, e->name);
+> +	gem_execbuf(i915, &execbuf);
+> +}
+> +
+> +static void dumb_mmap(int i915, uint32_t handle)
+> +{
+> +	unsigned long count = 0;
+> +
+> +	while (gem_bo_busy(i915, handle)) {
+> +		uint32_t *map, sq;
+> +
+> +		map = mmap(0, 4096, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+> +		if (map == MAP_FAILED)
+> +			continue;
+> +
+> +		for (int i = 0; i < 5; i++) {
+> +			usleep(1000);
+> +			sq = READ_ONCE(map[rand() % 1024]);
+> +			if (sq)
+> +				break;
+> +		}
+> +
+> +		munmap(map, 4096);
+> +		igt_assert_f(!sq,
+> +			     "Found %x in a new (clear) anonymous mmap! after %lu tries\n",
+> +			     sq, count);
+> +		count++;
+> +	}
+> +
+> +	igt_info("%s(%d) count:%lu\n", __func__, getpid(), count);
+> +}
+> +
+> +static void dumb_bo(int i915, uint32_t handle)
+> +{
+> +	int fd = gem_reopen_driver(i915);
+> +	unsigned long count = 0;
+> +
+> +	while (gem_bo_busy(i915, handle)) {
+> +		uint32_t *map, sq;
+> +
+> +		sq = gem_create(fd, 4096);
+> +		map = gem_mmap__device_coherent(fd, sq, 0, 4096, PROT_READ);
+> +		gem_close(fd, sq);
+> +
+> +		for (int i = 0; i < 5; i++) {
+> +			usleep(1000);
+> +			sq = READ_ONCE(map[rand() % 1024]);
+> +			if (sq)
+> +				break;
+> +		}
+> +
+> +		munmap(map, 4096);
+> +		igt_assert_f(!sq,
+> +			     "Found %x in a new (clear) buffer after %lu tries!\n",
+> +			     sq, count);
+> +		count++;
+> +	}
+> +
+> +	igt_info("%s(%d) count:%lu\n", __func__, getpid(), count);
+> +}
+> +
+> +static void __spin_until_write(uint32_t *map)
+> +{
+> +	while (!READ_ONCE(*map))
+> +		sched_yield();
+> +}
+> +
+> +static void spin_until_write(int i915, uint32_t handle)
+> +{
+> +	uint32_t *map;
+> +
+> +	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_READ);
+> +	__spin_until_write(map);
+> +	munmap(map, 4096);
+> +}
+> +
+> +static void close_dumb(int i915, const intel_ctx_t *ctx,
+> +		       const struct gem_memory_region *mr,
+> +		       const struct intel_execution_engine2 *bcs0)
+> +{
+> +	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> +	uint32_t stale, handle, sample, poison;
+> +	uint64_t hole;
+> +	uint32_t *map;
+> +
+> +	stale = stale_create(i915, mr, 4096, 0);
+> +
+> +	hole = find_hole(i915, ctx, bcs0, SZ_2M);
+> +	poison = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
+> +
+> +	/* Bind and sanitycheck reading the address returns our page */
+> +	bind_at(i915, ctx, bcs0, stale, hole, 8192);
+> +	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" replaced with value:%x\n", hole, sample);
+> +	igt_assert_eq_u32(sample, 0);
+> +
+> +	handle = gem_create(i915, 4096);
+> +	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
+> +
+> +	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
+> +	spin_until_write(i915, stale);
+> +	igt_debug("Closing stale object\n");
+> +	gem_close(i915, stale);
+> +
+> +	igt_fork(child, 2 * ncpus)
+> +		dumb_mmap(i915, handle);
+> +	igt_fork(child, 2 * ncpus)
+> +		dumb_bo(i915, handle);
+> +
+> +	sleep(10);
+> +	*map = MI_BATCH_BUFFER_END;
+> +
+> +	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_512K);
+> +	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
+> +
+> +	igt_waitchildren();
+> +
+> +	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
+> +	*map = MI_BATCH_BUFFER_END;
+> +	poison = read_at(i915, ctx, bcs0, hole, hole + SZ_512K);
+> +	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
+> +	igt_assert_eq_u32(sample, poison);
+> +	munmap(map, 4096);
+> +	gem_close(i915, handle);
+> +}
+> +
+> +static void madv_dumb(int i915, const intel_ctx_t *ctx,
+> +		      const struct gem_memory_region *mr,
+> +		      const struct intel_execution_engine2 *bcs0)
+> +{
+> +	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> +	uint32_t stale, handle, sample, poison;
+> +	uint64_t hole;
+> +	uint32_t *map;
+> +
+> +	stale = stale_create(i915, mr, 4096, 0);
+> +
+> +	hole = find_hole(i915, ctx, bcs0, SZ_2M);
+> +	poison = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
+> +
+> +	/* Bind and sanitycheck reading the address returns our page */
+> +	bind_at(i915, ctx, bcs0, stale, hole, 8192);
+> +	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" replaced with value:%x\n", hole, sample);
+> +	igt_assert_eq_u32(sample, 0);
+> +
+> +	handle = gem_create(i915, 4096);
+> +	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
+> +
+> +	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
+> +	spin_until_write(i915, stale);
+> +	igt_debug("Purging stale object\n");
+> +	if (gem_madvise(i915, stale, I915_MADV_DONTNEED))
+> +		igt_drop_caches_set(i915, DROP_SHRINK_ALL);
+> +
+> +	/* Check that we did indeed purge the stale buffer */
+> +	igt_assert(!gem_madvise(i915, stale, I915_MADV_DONTNEED));
+> +
+> +	igt_fork(child, 2 * ncpus)
+> +		dumb_mmap(i915, handle);
+> +	igt_fork(child, 2 * ncpus)
+> +		dumb_bo(i915, handle);
+> +
+> +	sleep(10);
+> +	*map = MI_BATCH_BUFFER_END;
+> +
+> +	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_512K);
+> +	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
+> +
+> +	igt_waitchildren();
+> +
+> +	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
+> +	*map = MI_BATCH_BUFFER_END;
+> +	poison = read_at(i915, ctx, bcs0, hole, hole + SZ_512K);
+> +	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
+> +	igt_assert_eq_u32(sample, poison);
+> +	munmap(map, 4096);
+> +	gem_close(i915, stale);
+> +	gem_close(i915, handle);
+> +}
+> +
+> +static void userptr_dumb(int i915, const intel_ctx_t *ctx,
+> +			 const struct intel_execution_engine2 *bcs0,
+> +			 unsigned int flags)
+> +{
+> +	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> +	uint32_t stale, handle, sample, poison;
+> +	uint64_t hole;
+> +	uint32_t *map;
+> +	void *ptr;
+> +
+> +	stale = userptr_create(i915, 4096, 0, &ptr);
+> +
+> +	hole = find_hole(i915, ctx, bcs0, SZ_2M);
+> +	poison = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" contains poison:%x\n", hole, poison);
+> +
+> +	/* Bind and sanitycheck reading the address returns our page */
+> +	bind_at(i915, ctx, bcs0, stale, hole, 8192);
+> +	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_1M);
+> +	igt_debug("2M hole:%"PRIx64" replaced with value:%x\n", hole, sample);
+> +	igt_assert_eq_u32(sample, 0);
+> +
+> +	handle = gem_create(i915, 4096);
+> +	map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
+> +
+> +	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
+> +	__spin_until_write(ptr);
+> +	igt_debug("Release userptr\n");
+> +	munmap(ptr, 4096);
+> +	if (flags & SHRINK)
+> +		igt_drop_caches_set(i915, DROP_SHRINK_ALL);
+> +
+> +	igt_fork(child, 2 * ncpus)
+> +		dumb_mmap(i915, handle);
+> +	igt_fork(child, 2 * ncpus)
+> +		dumb_bo(i915, handle);
+> +
+> +	sleep(10);
+> +	*map = MI_BATCH_BUFFER_END;
+> +
+> +	sample = copy_from(i915, ctx, bcs0, hole, hole + SZ_512K);
+> +	igt_debug("Rechecking hole:%"PRIx64", sample:%x\n", hole, sample);
+> +
+> +	igt_waitchildren();
+> +
+> +	dumb_writer_at(i915, ctx, handle, map, bcs0, hole, hole + SZ_1M);
+> +	*map = MI_BATCH_BUFFER_END;
+> +	poison = read_at(i915, ctx, bcs0, hole, hole + SZ_512K);
+> +	igt_debug("Scratch overwritten? hole:%"PRIx64", sample:%x\n", hole, poison);
+> +	igt_assert_eq_u32(sample, poison);
+> +	munmap(map, 4096);
+> +	gem_close(i915, handle);
+> +	gem_close(i915, stale);
+> +}
+> +
+> +static bool find_blitter(int i915, const intel_ctx_t *ctx, struct intel_execution_engine2 *out)
+> +{
+> +	if (find_engine(i915, ctx, I915_ENGINE_CLASS_COPY, 0, out))
+> +		return true;
+> +
+> +	if (intel_gen(intel_get_drm_devid(i915)) >= 6)
+> +		return false;
+> +
+> +	return find_engine(i915, ctx, I915_ENGINE_CLASS_RENDER, 0, out);
+> +}
+> +
+> +static void dumb_tlb(int i915)
+> +{
+> +	struct intel_execution_engine2 blt;
+> +	const intel_ctx_t *ctx;
+> +
+> +	/*
+> +	 * A simplified test for running across all generations. Nothing fancy,
+> +	 * just keep writing to stale addresses looking for a retained TLB
+> +	 * entry.
+> +	 */
+> +
+> +	igt_fixture {
+> +		ctx = intel_ctx_create_all_physical(i915);
+> +		igt_require(has_xy_src_copy(i915));
+> +		igt_require(find_blitter(i915, ctx, &blt));
+> +	}
+> +
+> +	igt_subtest_with_dynamic("close-dumb") {
+> +		for_each_memory_region(r, i915) {
+> +			igt_dynamic_f("%s", r->name)
+> +				close_dumb(i915, ctx, r, &blt);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("madv-dumb") {
+> +		for_each_memory_region(r, i915) {
+> +			if (r->ci.memory_class) /* XXX how to purge lmem? */
+> +				continue;
+> +
+> +			igt_dynamic_f("%s", r->name)
+> +				madv_dumb(i915, ctx, r, &blt);
+> +		}
+> +	}
+> +
+> +	igt_subtest("u-unmap-dumb")
+> +		userptr_dumb(i915, ctx, &blt, 0);
+> +
+> +	igt_subtest("u-shrink-dumb")
+> +		userptr_dumb(i915, ctx, &blt, SHRINK);
+> +
+> +	igt_fixture
+> +		intel_ctx_destroy(i915, ctx);
+> +}
+> +
+> +igt_main
+> +{
+> +	int i915 = -1;
+> +
+> +	igt_fixture {
+> +		i915 = drm_open_driver(DRIVER_INTEL);
+> +		igt_require_gem(i915);
+> +
+> +		igt_fork_hang_detector(i915);
+> +	}
+> +
+> +	igt_subtest_group
+> +		clear_tlb(i915);
+> +
+> +	igt_subtest_group
+> +		dumb_tlb(i915);
+> +
+> +	igt_fixture {
+> +		igt_stop_hang_detector();
+> +		close(i915);
+> +	}
+> +}
+> diff --git a/tests/i915/gem_gpgpu_fill.c b/tests/i915/gem_gpgpu_fill.c
+> index 74a227f678e7..397f6c38a879 100644
+> --- a/tests/i915/gem_gpgpu_fill.c
+> +++ b/tests/i915/gem_gpgpu_fill.c
+> @@ -152,6 +152,8 @@ igt_main
+>  		region_set = get_memory_region_set(region_info,
+>  						   I915_SYSTEM_MEMORY,
+>  						   I915_DEVICE_MEMORY);
+> +
+> +		igt_fork_hang_detector(data.drm_fd);
+>  	}
 
-Do not use fixture here, just make that normal code.
-
-Also please use checkpatch from Linux kernel to see if there are
-other problems to fix.
+Split this to separate patch (looks like a fix).
 
 Regards,
 Kamil
 
-> +
-> +			igt_describe("Start pipe stress test, utilizing cpu and gpu "
-> +				     "simultaneously with maximum amount of planes "
-> +				     "and resolution ");
-> +			igt_subtest_f("stress-%s-%s",
-> +				      format_str(format_idx),
-> +				      tiling_str(tiling_idx)) {
-> +				prepare_test(&data);
-> +				stress(&data);
-> +				finish_test(&data);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		igt_display_fini(&data.display);
-> +	}
-> +}
+>  
+>  	igt_subtest_with_dynamic("basic") {
 > diff --git a/tests/meson.build b/tests/meson.build
-> index b548dc3b44..8f217e401c 100644
+> index b548dc3b4444..6546adb3ed51 100644
 > --- a/tests/meson.build
 > +++ b/tests/meson.build
-> @@ -215,6 +215,7 @@ i915_progs = [
->  	'i915_hangman',
->  	'i915_module_load',
->  	'i915_pciid',
-> +	'i915_pipe_stress',
->  	'i915_pm_backlight',
->  	'i915_pm_lpsp',
->  	'i915_pm_rpm',
+> @@ -147,6 +147,7 @@ i915_progs = [
+>  	'gem_exec_schedule',
+>  	'gem_exec_store',
+>  	'gem_exec_suspend',
+> +	'gem_exec_tlb',
+>  	'gem_exec_whisper',
+>  	'gem_fd_exhaustion',
+>  	'gem_fence_thrash',
 > -- 
-> 2.24.1.485.gad05a3d8e5
+> 2.36.1
 > 
