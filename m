@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out.qualcomm.com (alexa-out.qualcomm.com [129.46.98.28])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9355810E570
- for <igt-dev@lists.freedesktop.org>; Sat, 30 Jul 2022 00:35:42 +0000 (UTC)
-From: Rohith Iyer <quic_rohiiyer@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 29 Jul 2022 17:35:05 -0700
-Message-ID: <20220730003506.10659-3-quic_rohiiyer@quicinc.com>
-In-Reply-To: <20220730003506.10659-1-quic_rohiiyer@quicinc.com>
-References: <20220730003506.10659-1-quic_rohiiyer@quicinc.com>
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com
+ [199.106.114.38])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E24310E040
+ for <igt-dev@lists.freedesktop.org>; Sat, 30 Jul 2022 00:38:11 +0000 (UTC)
+Message-ID: <3f0a03a0-1686-5fb2-4418-d7b974e23eaa@quicinc.com>
+Date: Fri, 29 Jul 2022 17:38:09 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v5 2/3] tests/testdisplay: Use
- igt_parse_mode_string for command line arguments
+Content-Language: en-US
+To: Petri Latvala <petri.latvala@intel.com>
+References: <20220728232033.589-1-quic_rohiiyer@quicinc.com>
+ <20220728232033.589-2-quic_rohiiyer@quicinc.com>
+ <YuOwTp1m2YCCUS9u@platvala-desk.ger.corp.intel.com>
+From: Rohith Iyer <quic_rohiiyer@quicinc.com>
+In-Reply-To: <YuOwTp1m2YCCUS9u@platvala-desk.ger.corp.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v4 1/3] lib/igt_kms: Add helper to parse
+ mode string
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,45 +24,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, quic_aravindh@quicinc.com
+Cc: igt-dev@lists.freedesktop.org, quic_aravindh@quicinc.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use igt_parse_mode_string instead of sscanf to parse mode string from command line.
+Hi Petri,
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Rohith Iyer <quic_rohiiyer@quicinc.com>
----
- tests/testdisplay.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+On 7/29/2022 3:02 AM, Petri Latvala wrote:
+> On Thu, Jul 28, 2022 at 04:20:31PM -0700, Rohith Iyer wrote:
+>> Add helper method to parse a mode string and verify
+>> correct number of arguments. This standardizes parsing mode strings.
+>>
+>> Changes made in V4:
+>>   - Corrected documentation
+>>   - Changed *mode_string to a const char from char
+>>
+>> Signed-off-by: Rohith Iyer <quic_rohiiyer@quicinc.com>
+>> ---
+>>   lib/igt_kms.c | 26 ++++++++++++++++++++++++++
+>>   lib/igt_kms.h |  1 +
+>>   2 files changed, 27 insertions(+)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index 14064614..c17c10ea 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -5777,3 +5777,29 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
+>>   
+>>   	return true;
+>>   }
+>> +
+>> +/**
+>> + * igt_parse_mode_string:
+>> + * @mode_string: modeline string
+>> + * @mode: a pointer to a drm mode structure
+>> + *
+>> + * Parse mode string and populate mode
+>> + *
+>> + * Format: <clock(MHz)>,<hdisp>,<hsync-start>,<hsync-end>,<htotal>,<vdisp>,<vsync-start>,
+>> + * <vsync-end>,<vtotal>
+> 
+> Building docs breaks with this series, because of these <>s afaics. Make this just
+> 
+> * Format: clock(MHz),hdisp,hsync-start,hsync-end,htotal,vdisp,vsync-start,vsync-end,vtotal
+> 
+> 
+> 
 
-diff --git a/tests/testdisplay.c b/tests/testdisplay.c
-index e9fbd260..4db182b4 100644
---- a/tests/testdisplay.c
-+++ b/tests/testdisplay.c
-@@ -625,8 +625,6 @@ static const char *help_str =
- 
- static int opt_handler(int opt, int opt_index, void *data)
- {
--	float force_clock;
--
- 	switch (opt) {
- 	case '3':
- 		test_stereo_modes = 1;
-@@ -642,12 +640,8 @@ static int opt_handler(int opt, int opt_index, void *data)
- 		break;
- 	case 'f':
- 		force_mode = 1;
--		if (sscanf(optarg,"%f,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu",
--			   &force_clock,&force_timing.hdisplay, &force_timing.hsync_start,&force_timing.hsync_end,&force_timing.htotal,
--			   &force_timing.vdisplay, &force_timing.vsync_start, &force_timing.vsync_end, &force_timing.vtotal)!= 9)
-+		if (!igt_parse_mode_string(optarg, &force_timing))
- 			return IGT_OPT_HANDLER_ERROR;
--		force_timing.clock = force_clock*1000;
--
- 		break;
- 	case 's':
- 		sleep_between_modes = atoi(optarg);
--- 
-2.31.0
+The change has been made in V5, now there are no errors in builddoc.
+
+Thanks,
+Rohith
