@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B16E9550E
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Aug 2022 18:01:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA6968FF97
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Aug 2022 18:01:49 +0000 (UTC)
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  1 Aug 2022 14:01:43 -0400
-Message-Id: <20220801180145.243227-3-rodrigo.vivi@intel.com>
-In-Reply-To: <20220801180145.243227-1-rodrigo.vivi@intel.com>
-References: <20220801180145.243227-1-rodrigo.vivi@intel.com>
+Date: Mon,  1 Aug 2022 14:01:41 -0400
+Message-Id: <20220801180145.243227-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/5] lib/igt_aux: Check suspend state
- support directly.
+Subject: [igt-dev] [PATCH i-g-t 1/5] lib/igt_aux: Let's use the official
+ mem_sleep names
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,70 +22,74 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let's simplify the suspend state check directly by using
-its name instead of using a mask style. This will allow
-us to introduce a new state cleanly.
+Mixing the names with the state names can cause confusion.
+Let's stick with the official names.
 
+Cc: Riana Tauro <riana.tauro@intel.com>
 Cc: Anshuman Gupta <anshuman.gupta@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- lib/igt_aux.c | 31 +++++++++++++------------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
+ lib/igt_aux.c             | 8 ++++----
+ lib/igt_aux.h             | 6 +++---
+ tests/i915/i915_suspend.c | 2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index 6cdda077..ba8fab64 100644
+index b37bae87..6cdda077 100644
 --- a/lib/igt_aux.c
 +++ b/lib/igt_aux.c
-@@ -815,29 +815,24 @@ static void suspend_via_sysfs(int power_dir, enum igt_suspend_state state)
- 				 suspend_state_name[state]));
- }
+@@ -712,9 +712,9 @@ static const char *suspend_test_name[] = {
+ };
  
--static uint32_t get_supported_suspend_states(int power_dir)
-+static bool is_state_supported(int power_dir, enum igt_suspend_state state)
- {
-+	const char *str;
- 	char *states;
--	char *state_name;
--	uint32_t state_mask;
+ static const char *mem_sleep_name[] = {
+-	[MEM_SLEEP_FREEZE] = "s2idle",
+-	[MEM_SLEEP_STANDBY] = "shallow",
+-	[MEM_SLEEP_MEM] = "deep"
++	[MEM_SLEEP_S2IDLE] = "s2idle",
++	[MEM_SLEEP_SHALLOW] = "shallow",
++	[MEM_SLEEP_DEEP] = "deep"
+ };
  
- 	igt_assert((states = igt_sysfs_get(power_dir, "state")));
--	state_mask = 0;
--	for (state_name = strtok(states, " "); state_name;
--	     state_name = strtok(NULL, " ")) {
--		enum igt_suspend_state state;
--
--		for (state = SUSPEND_STATE_FREEZE; state < SUSPEND_STATE_NUM;
--		     state++)
--			if (strcmp(state_name, suspend_state_name[state]) == 0)
--				break;
--		igt_assert(state < SUSPEND_STATE_NUM);
--		state_mask |= 1 << state;
--	}
+ static enum igt_suspend_test get_suspend_test(int power_dir)
+@@ -993,7 +993,7 @@ int igt_get_memsleep_state(void)
+ 		return MEM_SLEEP_NONE;
+ 	}
  
--	free(states);
-+	fprintf(stderr, "states: %s; state: %s\n",
-+		states, suspend_state_name[state]);
+-	for (mem_sleep = MEM_SLEEP_FREEZE; mem_sleep < MEM_SLEEP_NUM; mem_sleep++) {
++	for (mem_sleep = MEM_SLEEP_S2IDLE; mem_sleep < MEM_SLEEP_NUM; mem_sleep++) {
+ 		if (strcmp(mem_sleep_name[mem_sleep], mem_sleep_state) == 0)
+ 			break;
+ 	}
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index af663d2c..9d5b7bd2 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -196,9 +196,9 @@ enum igt_suspend_test {
+  */
+ enum igt_mem_sleep {
+ 	MEM_SLEEP_NONE,
+-	MEM_SLEEP_FREEZE,
+-	MEM_SLEEP_STANDBY,
+-	MEM_SLEEP_MEM,
++	MEM_SLEEP_S2IDLE,
++	MEM_SLEEP_SHALLOW,
++	MEM_SLEEP_DEEP,
  
--	return state_mask;
-+	str = strstr(states, suspend_state_name[state]);
-+
-+	if (!str)
-+		igt_info("State %s not supported.\nSupported States: %s\n",
-+			 suspend_state_name[state], states);
-+
-+	free(states);
-+	return str;
- }
+ 	/*<private>*/
+ 	MEM_SLEEP_NUM,
+diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+index 23e451d3..f992d447 100644
+--- a/tests/i915/i915_suspend.c
++++ b/tests/i915/i915_suspend.c
+@@ -209,7 +209,7 @@ test_suspend_without_i915(int state)
+ 	igt_kmsg(KMSG_INFO "Unloading i915\n");
+ 	igt_assert_eq(igt_i915_driver_unload(),0);
  
- /**
-@@ -868,7 +863,7 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
- 	enum igt_suspend_test orig_test;
- 
- 	igt_require((power_dir = open("/sys/power", O_RDONLY)) >= 0);
--	igt_require(get_supported_suspend_states(power_dir) & (1 << state));
-+	igt_require(is_state_supported(power_dir, state));
- 	igt_require(test == SUSPEND_TEST_NONE ||
- 		    faccessat(power_dir, "pm_test", R_OK | W_OK, 0) == 0);
+-	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_FREEZE && state > SUSPEND_STATE_FREEZE,
++	igt_skip_on_f(igt_get_memsleep_state() == MEM_SLEEP_S2IDLE && state > SUSPEND_STATE_FREEZE,
+ 		      "Platform default mem_sleep state is s2idle\n");
+ 	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
  
 -- 
 2.35.3
