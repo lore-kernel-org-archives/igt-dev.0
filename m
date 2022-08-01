@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7108009646121798728=="
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6F27A9D77
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Aug 2022 13:39:31 +0000 (UTC)
+Message-ID: <92bf46c8-bcbf-1d87-db3a-109b18acf525@intel.com>
+Date: Mon, 1 Aug 2022 15:39:36 +0200
+Content-Language: en-US
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+References: <cover.1658826356.git.karolina.drobnik@intel.com>
+ <6459819.4vTCxPXJkl@jkrzyszt-mobl1.ger.corp.intel.com>
+ <fb564118-4afb-6f4a-03cc-34e255b871ef@intel.com>
+ <4393065.8F6SAcFxjW@jkrzyszt-mobl1.ger.corp.intel.com>
+From: Karolina Drobnik <karolina.drobnik@intel.com>
+In-Reply-To: <4393065.8F6SAcFxjW@jkrzyszt-mobl1.ger.corp.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Mon, 01 Aug 2022 13:28:26 -0000
-Message-ID: <165936050613.14744.2767459558593534106@emeril.freedesktop.org>
-References: <20220729155405.23029-1-swati2.sharma@intel.com>
-In-Reply-To: <20220729155405.23029-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=3A_Tests_sanitization?=
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_exec_fence: Check
+ stored values only for valid workloads
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,339 +24,193 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7108009646121798728==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+On 01.08.2022 13:54, Janusz Krzysztofik wrote:
+> On Monday, 1 August 2022 11:51:27 CEST Karolina Drobnik wrote:
+>> Hi,
+>>
+>> On 01.08.2022 10:11, Janusz Krzysztofik wrote:
+>>> On Monday, 1 August 2022 07:53:54 CEST Karolina Drobnik wrote:
+>>>> Hi,
+>>>>
+>>>> On 29.07.2022 17:23, Janusz Krzysztofik wrote:
+>>>>> On Friday, 29 July 2022 13:32:37 CEST Karolina Drobnik wrote:
+>>>>>> Hi Janusz,
+>>>>>>
+>>>>>> On 29.07.2022 10:24, Janusz Krzysztofik wrote:
+>>>>>>> Hi Karolina,
+>>>>>>>
+>>>>>>> On Friday, 29 July 2022 09:38:43 CEST Karolina Drobnik wrote:
+>>>>>>>> Hi Janusz,
+>>>>>>>>
+>>>>>>>> Thanks a lot for taking a look at the patch.
+>>>>>>>>
+>>>>>>>> On 28.07.2022 18:56, Janusz Krzysztofik wrote:
+>>>>>>>>> On Tuesday, 26 July 2022 12:13:11 CEST Karolina Drobnik wrote:
+>>>>>>>>>> From: Chris Wilson <chris@chris-wilson.co.uk>
+>>>>>>>>>>
+>>>>>>>>>> test_fence_await verifies if a fence used to pipeline work signals
+>>>>>>>>>> correctly. await-hang and nb-await-hang test cases inject GPU hang,
+>>>>>>>>>> which causes an erroneous state, meaning the fence will be signaled
+>>>>>>>>>> without execution. The error causes an instant reset of the command
+>>>>>>>>>> streamer for the hanging workload. This revealed a problem with how
+>>>>>>>>>> we verify the fence state and results. The test assumes that the
+>>>>>>>>>> error notification happens after a hang is declared, which takes
+>>>>>>>>>> longer than submitting the next set of fences, making the test pass
+>>>>>>>>>> every time. With the immediate reset, this might not happen, so the
+>>>>>>>>>> assertion fails, as there are no active fences in the GPU hang case.
+>>>>>>>>>>
+>>>>>>>>>> Move the check for active fence to the path for non-hanging workload,
+>>>>>>>>>> and verify results only in this scenario.
+>>>>>>>>>>
+>>>>>>>>>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+>>>>>>>>>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+>>>>>>>>>> ---
+>>>>>>>>>>       tests/i915/gem_exec_fence.c | 14 ++++++++------
+>>>>>>>>>>       1 file changed, 8 insertions(+), 6 deletions(-)
+>>>>>>>>>>
+>>>>>>>>>> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/
+>>> gem_exec_fence.c
+>>>>>>>>>> index d46914c2..260aa82c 100644
+>>>>>>>>>> --- a/tests/i915/gem_exec_fence.c
+>>>>>>>>>> +++ b/tests/i915/gem_exec_fence.c
+>>>>>>>>>> @@ -350,18 +350,20 @@ static void test_fence_await(int fd, const
+>>>>>>> intel_ctx_t
+>>>>>>>>> *ctx,
+>>>> (...)
+>>>>>>>>>>       
+>>>>>>>>>> -	if ((flags & HANG) == 0)
+>>>>>>>>>>       		igt_spin_end(spin);
+>>>>>>>>>> +	}
+>>>>>>>>>>       
+>>>>>>>>>>       	igt_waitchildren();
+>>>>>>>>>>       
+>>>>>>>>>>       	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
+>>>>>>>>>> -	while (i--)
+>>>>>>>>>> +	igt_assert(!fence_busy(spin->out_fence));
+>>>>>>>>>
+>>>>>>>>> We only check that the out fence of the presumably hanged spin batch
+>>> no
+>>>>>>> longer
+>>>>>>>>> blocks execution of store batches.
+>>>>>>>>
+>>>>>>>> This check applies to all workloads, all of them should be done with
+>>>>>>>> work at this point
+>>>>>>>
+>>>>>>> OK, but since that's the only explicit assert in the *-hang processing
+>>> path,
+>>>>>>> does it tell us anything about fencing working or not?
+>>>>>>
+>>>>>> It says that we were given an active fence, we wait at it and hope it
+>>>>>> signals when an error is reported. Like I said, we can't check the
+>>>>>> results itself, as they are meaningless with the reset. If we have an
+>>>>>> active fence at this point, that's bad, and the test should fail.
+>>>>>>
+>>>>>>> I think it doesn't,
+>>>>>>> and as long as I'm not wrong, I think such scenarios hardly belong to
+>>>>>>> gem_exec_fence.
+>>>>>>
+>>>>>> Hm, I'm not sure if I follow, but this exact transition (from active ->
+>>>>>> (record error) -> signal) is one of the possible scenarios we wish to
+>>>>>> test.
+>>>>>
+>>>>> OK, so we check if an active fence is signalled on error.  But then, what
+>>> does
+>>>>> 'active' mean here?
+>>>>
+>>>> Active means that the fence was sent and we wait to hear back from the
+>>>> GPU. If you'd like to see what are the state transitions in fences, you
+>>>> can check out Mainline Explicit Fencing series of blog posts/presentation.
+>>>>
+>>>>> Do we consider a fence active as soon as it has been
+>>>>> exported to userspace?  Or only after it has been imported back from
+>>> userspace
+>>>>> by at least one consumer?
+>>>>
+>>>> We assume them to be active as soon as the fence's fd is returned from
+>>>> the driver to userspace (we deal with out-fences here).
+>>>>
+>>>>> Assuming the former (as I guess), what do we need
+>>>>> the store batches for in these now modified *await-hang scenarios?  What
+>>> extra
+>>>>> value do those scenarios provide compared to (nb-)?wait-hang ?
+>>>>
+>>>> Hm, I don't quite understand the question here -- are you asking why do
+>>>> we check the store results? test_fence_await is reused by other
+>>>> subtests, not only the hanging cases, and we expect to see the stores.
+>>>
+>>> The patch introduces two processing paths to test_fence_await(), one of them
+>>> for *-hang variants.  In that *-hang processing path, why do we still submit
+>>> batches that depend on the fence if we don't examine their execution and
+>>> results, only their completion?
+>>
+>> Ah, OK, now I get it. Do you suggest that we should also add a check for
+>> HANG flag for igt_store_word block? But we still need to send something
+>> to test this case.
+> 
+> Why do we need to send something?  What that something should look like?  IOW,
+> what are we trying to exercise with this case?  How is it supposed to be
+> different from wait-hang scenario?
 
-Series: tests/kms: Tests sanitization
-URL   : https://patchwork.freedesktop.org/series/106843/
-State : success
+test_fence_await tests pipelining work (here, writing something to 
+memory in parallel) and cross-checks its status with what's reported by 
+the fence, whereas test_fence_busy checks if the fence signals to 
+userspace after hang (a more general case). I'm sorry, I didn't make 
+this distinction clear in the beginning.
 
-== Summary ==
+>>
+>>> They get completed regardless of fencing working or not, I believe, > then that part of the *-hang processing path
+>>> related to store batches seems useless for me in a test focused on fencing.
+>>
+>> Do they get completed? We'll get a CS reset and this batch won't
+>> complete.
+> 
+> OK, by completed I meant no longer queued nor running.
 
-CI Bug Log - changes from IGT_6604 -> IGTPW_7586
-====================================================
+OK, I see -- yes, that's correct
 
-Summary
--------
+Thanks,
+Karolina
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/index.html
-
-Participating hosts (44 -> 41)
-------------------------------
-
-  Additional (1): fi-rkl-11600 
-  Missing    (4): fi-ctg-p8600 fi-icl-u2 fi-bdw-samus fi-hsw-4200u 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7586 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_tiled_pread_basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][3] ([i915#3282])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][4] ([i915#3012])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-pnv-d510:        [PASS][5] -> [DMESG-FAIL][6] ([i915#4528])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6604/fi-pnv-d510/igt@i915_selftest@live@requests.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-pnv-d510/igt@i915_selftest@live@requests.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-rkl-11600:       NOTRUN -> [INCOMPLETE][7] ([i915#5982])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][8] ([fdo#111827]) +7 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_chamelium@hdmi-edid-read.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][9] ([i915#4103])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-kefka:       [PASS][10] -> [FAIL][11] ([i915#6298])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6604/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][12] ([fdo#109285] / [i915#4098])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_psr@primary_page_flip:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][13] ([i915#1072]) +3 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_psr@primary_page_flip.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][14] ([i915#3555] / [i915#4098])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-read:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][15] ([fdo#109295] / [i915#3291] / [i915#3708]) +2 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@prime_vgem@basic-read.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][16] ([fdo#109295] / [i915#3301] / [i915#3708])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][17] ([fdo#109271] / [i915#4312] / [i915#5594] / [i915#6246])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-hsw-4770/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@guc:
-    - {bat-dg2-9}:        [DMESG-WARN][18] ([i915#5763]) -> [PASS][19] +10 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6604/bat-dg2-9/igt@i915_selftest@live@guc.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/bat-dg2-9/igt@i915_selftest@live@guc.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-6:          [DMESG-FAIL][20] ([i915#4494] / [i915#4957]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6604/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#5270]: https://gitlab.freedesktop.org/drm/intel/issues/5270
-  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
-  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
-  [i915#5950]: https://gitlab.freedesktop.org/drm/intel/issues/5950
-  [i915#5982]: https://gitlab.freedesktop.org/drm/intel/issues/5982
-  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6604 -> IGTPW_7586
-
-  CI-20190529: 20190529
-  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7586: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/index.html
-  IGT_6604: 79f7c56adc6b035c09e0508281daf6231c2604ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/index.html
-
---===============7108009646121798728==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms: Tests sanitization</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106843/">https://patchwork.freedesktop.org/series/106843/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6604 -&gt; IGTPW_7586</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/index.html</p>
-<h2>Participating hosts (44 -&gt; 41)</h2>
-<p>Additional (1): fi-rkl-11600 <br />
-  Missing    (4): fi-ctg-p8600 fi-icl-u2 fi-bdw-samus fi-hsw-4200u </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7586 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6604/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5982">i915#5982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6604/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-read:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-rkl-11600/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@guc:</p>
-<ul>
-<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6604/bat-dg2-9/igt@i915_selftest@live@guc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/bat-dg2-9/igt@i915_selftest@live@guc.html">PASS</a> +10 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6604/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6604 -&gt; IGTPW_7586</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7586: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7586/index.html<br />
-  IGT_6604: 79f7c56adc6b035c09e0508281daf6231c2604ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7108009646121798728==--
+>> Yes, in the case of hangs we just check the fence,
+> 
+> Again, how this is supposed to be different from wait-hang scenario?
+> 
+> Thanks,
+> Janusz
+> 
+>> but in
+>> general we do care about these stores. This patch aims to fix the
+>> problem uncovered during manual testing (*-hang variants are not run in
+>> CI), it does not try to rewrite the test (because that's what would be
+>> required to completely separate these two test cases).
+>>
+>> Many thanks,
+>> Karolina
+>>
+>>> Thanks,
+>>> Janusz
+>>>
+>>>>
+>>>> Many thanks,
+>>>> Karolina
+>>>>
+>>>>> Thanks,
+>>>>> Janusz
+>>>>
+>>>
+>>>
+>>>
+>>>
+>>
+> 
+> 
+> 
+> 
