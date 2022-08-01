@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F7B68F9F1
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Aug 2022 11:54:53 +0000 (UTC)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Karolina Drobnik <karolina.drobnik@intel.com>
-Date: Mon, 01 Aug 2022 13:54:47 +0200
-Message-ID: <4393065.8F6SAcFxjW@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <fb564118-4afb-6f4a-03cc-34e255b871ef@intel.com>
-References: <cover.1658826356.git.karolina.drobnik@intel.com>
- <6459819.4vTCxPXJkl@jkrzyszt-mobl1.ger.corp.intel.com>
- <fb564118-4afb-6f4a-03cc-34e255b871ef@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A468418A27F
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Aug 2022 19:05:07 +0000 (UTC)
+Date: Mon, 1 Aug 2022 12:07:09 -0700
+From: "Navare, Manasi" <manasi.d.navare@intel.com>
+To: Swati Sharma <swati2.sharma@intel.com>
+Message-ID: <20220801190709.GA4174710@mdnavare-mobl1.jf.intel.com>
+References: <20220729155405.23029-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_exec_fence: Check
- stored values only for valid workloads
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220729155405.23029-1-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms: Tests sanitization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,178 +19,335 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Monday, 1 August 2022 11:51:27 CEST Karolina Drobnik wrote:
-> Hi,
+Thanks Swati for this patch.
+Since the display_reset needs to be followed by display_commit, I wonder
+if we should add these two calls to a lib helper and just call that
+everywhere so that its not missed anywhere.
+
+Manasi
+
+On Fri, Jul 29, 2022 at 09:24:05PM +0530, Swati Sharma wrote:
+> At the beginning of the test we need to reset and
+> set the pipe output to NULL so that the CRTCs are freed
+> and then set CRTC. Most of the i-g-t have igt_display_reset()
+> which is resetting basic pipes, connectors and planes to
+> default values; however we are not committing those changes.
+> In this patch, have made those changes which help in sanitizing
+> system state before starting the subtest.
 > 
-> On 01.08.2022 10:11, Janusz Krzysztofik wrote:
-> > On Monday, 1 August 2022 07:53:54 CEST Karolina Drobnik wrote:
-> >> Hi,
-> >>
-> >> On 29.07.2022 17:23, Janusz Krzysztofik wrote:
-> >>> On Friday, 29 July 2022 13:32:37 CEST Karolina Drobnik wrote:
-> >>>> Hi Janusz,
-> >>>>
-> >>>> On 29.07.2022 10:24, Janusz Krzysztofik wrote:
-> >>>>> Hi Karolina,
-> >>>>>
-> >>>>> On Friday, 29 July 2022 09:38:43 CEST Karolina Drobnik wrote:
-> >>>>>> Hi Janusz,
-> >>>>>>
-> >>>>>> Thanks a lot for taking a look at the patch.
-> >>>>>>
-> >>>>>> On 28.07.2022 18:56, Janusz Krzysztofik wrote:
-> >>>>>>> On Tuesday, 26 July 2022 12:13:11 CEST Karolina Drobnik wrote:
-> >>>>>>>> From: Chris Wilson <chris@chris-wilson.co.uk>
-> >>>>>>>>
-> >>>>>>>> test_fence_await verifies if a fence used to pipeline work signals
-> >>>>>>>> correctly. await-hang and nb-await-hang test cases inject GPU hang,
-> >>>>>>>> which causes an erroneous state, meaning the fence will be signaled
-> >>>>>>>> without execution. The error causes an instant reset of the command
-> >>>>>>>> streamer for the hanging workload. This revealed a problem with how
-> >>>>>>>> we verify the fence state and results. The test assumes that the
-> >>>>>>>> error notification happens after a hang is declared, which takes
-> >>>>>>>> longer than submitting the next set of fences, making the test pass
-> >>>>>>>> every time. With the immediate reset, this might not happen, so the
-> >>>>>>>> assertion fails, as there are no active fences in the GPU hang case.
-> >>>>>>>>
-> >>>>>>>> Move the check for active fence to the path for non-hanging workload,
-> >>>>>>>> and verify results only in this scenario.
-> >>>>>>>>
-> >>>>>>>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> >>>>>>>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
-> >>>>>>>> ---
-> >>>>>>>>      tests/i915/gem_exec_fence.c | 14 ++++++++------
-> >>>>>>>>      1 file changed, 8 insertions(+), 6 deletions(-)
-> >>>>>>>>
-> >>>>>>>> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/
-> > gem_exec_fence.c
-> >>>>>>>> index d46914c2..260aa82c 100644
-> >>>>>>>> --- a/tests/i915/gem_exec_fence.c
-> >>>>>>>> +++ b/tests/i915/gem_exec_fence.c
-> >>>>>>>> @@ -350,18 +350,20 @@ static void test_fence_await(int fd, const
-> >>>>> intel_ctx_t
-> >>>>>>> *ctx,
-> >> (...)
-> >>>>>>>>      
-> >>>>>>>> -	if ((flags & HANG) == 0)
-> >>>>>>>>      		igt_spin_end(spin);
-> >>>>>>>> +	}
-> >>>>>>>>      
-> >>>>>>>>      	igt_waitchildren();
-> >>>>>>>>      
-> >>>>>>>>      	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
-> >>>>>>>> -	while (i--)
-> >>>>>>>> +	igt_assert(!fence_busy(spin->out_fence));
-> >>>>>>>
-> >>>>>>> We only check that the out fence of the presumably hanged spin batch
-> > no
-> >>>>> longer
-> >>>>>>> blocks execution of store batches.
-> >>>>>>
-> >>>>>> This check applies to all workloads, all of them should be done with
-> >>>>>> work at this point
-> >>>>>
-> >>>>> OK, but since that's the only explicit assert in the *-hang processing
-> > path,
-> >>>>> does it tell us anything about fencing working or not?
-> >>>>
-> >>>> It says that we were given an active fence, we wait at it and hope it
-> >>>> signals when an error is reported. Like I said, we can't check the
-> >>>> results itself, as they are meaningless with the reset. If we have an
-> >>>> active fence at this point, that's bad, and the test should fail.
-> >>>>
-> >>>>> I think it doesn't,
-> >>>>> and as long as I'm not wrong, I think such scenarios hardly belong to
-> >>>>> gem_exec_fence.
-> >>>>
-> >>>> Hm, I'm not sure if I follow, but this exact transition (from active ->
-> >>>> (record error) -> signal) is one of the possible scenarios we wish to
-> >>>> test.
-> >>>
-> >>> OK, so we check if an active fence is signalled on error.  But then, what
-> > does
-> >>> 'active' mean here?
-> >>
-> >> Active means that the fence was sent and we wait to hear back from the
-> >> GPU. If you'd like to see what are the state transitions in fences, you
-> >> can check out Mainline Explicit Fencing series of blog posts/presentation.
-> >>
-> >>> Do we consider a fence active as soon as it has been
-> >>> exported to userspace?  Or only after it has been imported back from
-> > userspace
-> >>> by at least one consumer?
-> >>
-> >> We assume them to be active as soon as the fence's fd is returned from
-> >> the driver to userspace (we deal with out-fences here).
-> >>
-> >>> Assuming the former (as I guess), what do we need
-> >>> the store batches for in these now modified *await-hang scenarios?  What
-> > extra
-> >>> value do those scenarios provide compared to (nb-)?wait-hang ?
-> >>
-> >> Hm, I don't quite understand the question here -- are you asking why do
-> >> we check the store results? test_fence_await is reused by other
-> >> subtests, not only the hanging cases, and we expect to see the stores.
-> > 
-> > The patch introduces two processing paths to test_fence_await(), one of them
-> > for *-hang variants.  In that *-hang processing path, why do we still submit
-> > batches that depend on the fence if we don't examine their execution and
-> > results, only their completion? 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>  tests/i915/gem_exec_reloc.c      |  1 +
+>  tests/i915/kms_busy.c            |  3 +++
+>  tests/i915/kms_fence_pin_leak.c  |  3 +++
+>  tests/i915/kms_legacy_colorkey.c |  2 ++
+>  tests/i915/kms_mmap_write_crc.c  |  2 +-
+>  tests/i915/kms_pwrite_crc.c      |  3 +++
+>  tests/kms_color.c                |  5 +++++
+>  tests/kms_content_protection.c   |  6 ++++++
+>  tests/kms_cursor_crc.c           |  1 +
+>  tests/kms_flip_event_leak.c      |  3 +++
+>  tests/kms_lease.c                |  3 +++
+>  tests/kms_pipe_crc_basic.c       |  5 +++++
+>  tests/kms_plane.c                |  1 +
+>  tests/kms_prime.c                |  1 +
+>  tests/kms_sequence.c             |  1 +
+>  tests/kms_vblank.c               |  1 +
+>  tests/prime_mmap_kms.c           |  3 +++
+>  18 files changed, 64 insertions(+), 5 deletions(-)
 > 
-> Ah, OK, now I get it. Do you suggest that we should also add a check for 
-> HANG flag for igt_store_word block? But we still need to send something 
-> to test this case.
-
-Why do we need to send something?  What that something should look like?  IOW, 
-what are we trying to exercise with this case?  How is it supposed to be 
-different from wait-hang scenario?
-
+> diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
+> index 1f5d13e4e..7382bbe56 100644
+> --- a/tests/i915/gem_exec_reloc.c
+> +++ b/tests/i915/gem_exec_reloc.c
+> @@ -927,6 +927,7 @@ static void scanout(int i915,
+>  	uint64_t *map;
+>  
+>  	igt_display_reset(dpy);
+> +	igt_display_commit(dpy);
+>  
+>  	output = igt_get_single_output_for_pipe(dpy, PIPE_A);
+>  	igt_require(output);
+> diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+> index 99a07c2ae..d7f0f0144 100644
+> --- a/tests/i915/kms_busy.c
+> +++ b/tests/i915/kms_busy.c
+> @@ -39,6 +39,9 @@ set_fb_on_crtc(igt_display_t *dpy, int pipe, struct igt_fb *fb)
+>  	igt_plane_t *primary;
+>  	igt_output_t *output;
+>  
+> +	igt_display_reset(dpy);
+> +	igt_display_commit(dpy);
+> +
+>  	output = igt_get_single_output_for_pipe(dpy, pipe);
+>  	igt_require(output);
+>  
+> diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
+> index 16eb595fd..68574081f 100644
+> --- a/tests/i915/kms_fence_pin_leak.c
+> +++ b/tests/i915/kms_fence_pin_leak.c
+> @@ -195,6 +195,9 @@ static void run_test(data_t *data)
+>  	igt_output_t *output;
+>  	enum pipe p;
+>  
+> +	igt_display_reset(display);
+> +	igt_display_commit(display);
+> +
+>  	for_each_pipe_with_valid_output(display, p, output) {
+>  		run_single_test(data, p, output);
+>  
+> diff --git a/tests/i915/kms_legacy_colorkey.c b/tests/i915/kms_legacy_colorkey.c
+> index 5b2fd64ba..0fe250ed1 100644
+> --- a/tests/i915/kms_legacy_colorkey.c
+> +++ b/tests/i915/kms_legacy_colorkey.c
+> @@ -63,6 +63,8 @@ igt_main
+>  		     "only works for sprite planes.\n");
+>  	igt_subtest_with_dynamic("basic") {
+>  		for_each_pipe(&display, p) {
+> +			igt_display_reset(&display);
+> +			igt_display_commit(&display);
+>  			igt_dynamic_f("pipe-%s", kmstest_pipe_name(p)) {
+>  				for_each_plane_on_pipe(&display, p, plane) {
+>  					bool is_valid = (plane->type == DRM_PLANE_TYPE_PRIMARY ||
+> diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+> index a57938b5b..129ad1a1c 100644
+> --- a/tests/i915/kms_mmap_write_crc.c
+> +++ b/tests/i915/kms_mmap_write_crc.c
+> @@ -173,6 +173,7 @@ static void prepare_crtc(data_t *data)
+>  	drmModeModeInfo *mode;
+>  
+>  	igt_display_reset(display);
+> +	igt_display_commit(display);
+>  
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, data->pipe);
+> @@ -273,7 +274,6 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
+>  	}
+>  
+>  	igt_describe("Tests that caching mode has become UC/WT and flushed using mmap write");
+> -
+>  	igt_subtest_with_dynamic("main") {
+>  		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+>  			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+> index 584e6a19c..41b233dac 100644
+> --- a/tests/i915/kms_pwrite_crc.c
+> +++ b/tests/i915/kms_pwrite_crc.c
+> @@ -110,6 +110,9 @@ static void prepare_crtc(data_t *data)
+>  	igt_output_t *output = data->output;
+>  	drmModeModeInfo *mode;
+>  
+> +	igt_display_reset(display);
+> +	igt_display_commit(display);
+> +
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, data->pipe);
+>  
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index c202547e5..764c44e59 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -700,6 +700,7 @@ static void test_setup(data_t *data, enum pipe p)
+>  	igt_require(data->output);
+>  
+>  	igt_display_reset(&data->display);
+> +	igt_display_commit(&data->display);
+>  }
+>  
+>  static void test_cleanup(data_t *data)
+> @@ -818,6 +819,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+>  			continue;
+>  
+>  		igt_display_reset(&data->display);
+> +		igt_display_commit(&data->display);
+>  		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+>  		igt_output_set_pipe(output, p);
+>  		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> @@ -836,6 +838,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+>  
+>  		igt_dynamic_f("pipe-%s-%s-gamma", kmstest_pipe_name(p), output->name) {
+>  			igt_display_reset(&data->display);
+> +			igt_display_commit(&data->display);
+>  			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+>  
+>  			ret = test_pipe_gamma(data, data->primary);
+> @@ -846,6 +849,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+>  
+>  		igt_dynamic_f("pipe-%s-%s-degamma", kmstest_pipe_name(p), output->name) {
+>  			igt_display_reset(&data->display);
+> +			igt_display_commit(&data->display);
+>  			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+>  
+>  			ret = test_pipe_degamma(data, data->primary);
+> @@ -856,6 +860,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+>  
+>  		igt_dynamic_f("pipe-%s-%s-ctm", kmstest_pipe_name(p), output->name) {
+>  			igt_display_reset(&data->display);
+> +			igt_display_commit(&data->display);
+>  			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+>  
+>  			ret = test_pipe_ctm(data, data->primary,
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 3041f1cdd..d86b0b7d2 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -510,6 +510,9 @@ test_content_protection(enum igt_commit_style s, int content_type)
+>  		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
+>  			      "mei_hdcp module is not loaded\n");
+>  
+> +	igt_display_reset(display);
+> +	igt_display_commit(display);
+> +
+>  	for_each_connected_output(display, output) {
+>  		if (!output_hdcp_capable(output, content_type))
+>  			continue;
+> @@ -598,6 +601,9 @@ test_content_protection_mst(int content_type)
+>  	enum pipe pipe;
+>  	igt_output_t *mst_output[IGT_MAX_PIPES], *hdcp_mst_output[IGT_MAX_PIPES];
+>  
+> +	igt_display_reset(display);
+> +	igt_display_commit(display);
+> +
+>  	for_each_pipe(display, pipe)
+>  		max_pipe++;
+>  
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index f07a045a3..f39ca9b39 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -465,6 +465,7 @@ static void prepare_crtc(data_t *data, int cursor_w, int cursor_h)
+>  	igt_output_t *output = data->output;
+>  
+>  	igt_display_reset(display);
+> +	igt_display_commit(display);
+>  
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, data->pipe);
+> diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+> index ac201293b..a8a3a45d9 100644
+> --- a/tests/kms_flip_event_leak.c
+> +++ b/tests/kms_flip_event_leak.c
+> @@ -48,6 +48,9 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+>  	struct igt_fb fb[2];
+>  	int fd, ret;
+>  
+> +	igt_display_reset(&data->display);
+> +	igt_display_commit(&data->display);
+> +
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, pipe);
+>  
+> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+> index 0bf102a6d..a506f51a6 100644
+> --- a/tests/kms_lease.c
+> +++ b/tests/kms_lease.c
+> @@ -817,6 +817,9 @@ static void run_test(data_t *data, void (*testfunc)(data_t *))
+>  	enum pipe p;
+>  	unsigned int valid_tests = 0;
+>  
+> +	igt_display_reset(display);
+> +	igt_display_commit(display);
+> +
+>  	for_each_pipe_with_valid_output(display, p, output) {
+>  		igt_info("Beginning %s on pipe %s, connector %s\n",
+>  			 igt_subtest_name(),
+> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+> index 2ff40f72e..56a547a28 100644
+> --- a/tests/kms_pipe_crc_basic.c
+> +++ b/tests/kms_pipe_crc_basic.c
+> @@ -77,6 +77,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+>  	int c, j;
+>  
+>  	igt_display_reset(display);
+> +	igt_display_commit(display);
+>  
+>  	igt_output_set_pipe(output, pipe);
+>  	mode = igt_output_get_mode(output);
+> @@ -182,6 +183,8 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output)
+>  	struct igt_fb fb0, fb1;
+>  
+>  	igt_display_reset(display);
+> +	igt_display_commit(display);
+> +
+>  	igt_output_set_pipe(output, pipe);
+>  
+>  	mode = igt_output_get_mode(output);
+> @@ -238,6 +241,8 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+>  	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
+>  
+>  	igt_display_reset(display);
+> +	igt_display_commit(display);
+> +
+>  	igt_output_set_pipe(output, pipe);
+>  
+>  	mode = igt_output_get_mode(output);
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index c885a813e..cd5ae3858 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -78,6 +78,7 @@ static void test_init(data_t *data, enum pipe pipe)
+>  	igt_require(data->display.pipes[pipe].n_planes > 0);
+>  	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
+>  	igt_display_reset(&data->display);
+> +	igt_display_commit(&data->display);
+>  }
+>  
+>  static void test_fini(data_t *data)
+> diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+> index 1ad4b3a63..6a90ca68f 100644
+> --- a/tests/kms_prime.c
+> +++ b/tests/kms_prime.c
+> @@ -87,6 +87,7 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+>  	igt_require_f(found, "No valid connector/pipe found\n");
+>  
+>  	igt_display_reset(display);
+> +	igt_display_commit(display);
+>  	igt_output_set_pipe(output, *pipe);
+>  	return output;
+>  }
+> diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+> index 1655d7d1b..06d3a516c 100644
+> --- a/tests/kms_sequence.c
+> +++ b/tests/kms_sequence.c
+> @@ -78,6 +78,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+>  	igt_plane_t *primary;
+>  
+>  	igt_display_reset(&data->display);
+> +	igt_display_commit(&data->display);
+>  
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, data->pipe);
+> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+> index e65e8522a..56516753b 100644
+> --- a/tests/kms_vblank.c
+> +++ b/tests/kms_vblank.c
+> @@ -73,6 +73,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+>  	igt_plane_t *primary;
+>  
+>  	igt_display_reset(display);
+> +	igt_display_commit(display);
+>  
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, data->pipe);
+> diff --git a/tests/prime_mmap_kms.c b/tests/prime_mmap_kms.c
+> index 8b127a13c..05ecaa197 100644
+> --- a/tests/prime_mmap_kms.c
+> +++ b/tests/prime_mmap_kms.c
+> @@ -189,6 +189,9 @@ static void run_test(gpu_process_t *gpu)
+>  	igt_output_t *output;
+>  	enum pipe pipe;
+>  
+> +	igt_display_reset(display);
+> +	igt_display_commit(display);
+> +
+>  	for_each_pipe_with_valid_output(display, pipe, output) {
+>  		int prime_fd;
+>  
+> -- 
+> 2.25.1
 > 
-> > They get completed regardless of fencing working or not, I believe, > then that part of the *-hang processing path
-> > related to store batches seems useless for me in a test focused on fencing.
-> 
-> Do they get completed? We'll get a CS reset and this batch won't 
-> complete. 
-
-OK, by completed I meant no longer queued nor running.
-
-> Yes, in the case of hangs we just check the fence, 
-
-Again, how this is supposed to be different from wait-hang scenario?
-
-Thanks,
-Janusz
-
-> but in 
-> general we do care about these stores. This patch aims to fix the 
-> problem uncovered during manual testing (*-hang variants are not run in 
-> CI), it does not try to rewrite the test (because that's what would be 
-> required to completely separate these two test cases).
-> 
-> Many thanks,
-> Karolina
-> 
-> > Thanks,
-> > Janusz
-> > 
-> >>
-> >> Many thanks,
-> >> Karolina
-> >>
-> >>> Thanks,
-> >>> Janusz
-> >>
-> > 
-> > 
-> > 
-> > 
-> 
-
-
-
