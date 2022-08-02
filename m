@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D7ED8EA42
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 09:28:02 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  2 Aug 2022 11:27:56 +0200
-Message-Id: <20220802092756.26693-1-zbigniew.kempczynski@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC66F112E72
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 09:34:29 +0000 (UTC)
+Message-ID: <09427270-6b9b-ddd5-9500-d462d1c40eac@intel.com>
+Date: Tue, 2 Aug 2022 15:03:55 +0530
+Content-Language: en-US
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220801110710.95609-1-mohammed.thasleem@intel.com>
+ <20220801110710.95609-3-mohammed.thasleem@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220801110710.95609-3-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/drmtest: Don't log a warning when drm
- driver is not loaded
+Subject: Re: [igt-dev] [PATCH v3 2/2] tests/kms_lease: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,77 +22,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: nidhi1.gupta@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Some drivers left machine with drm driver unloaded. When IGT_DEVICE is
-set first call to __get_card_for_nth_filter() won't find the drm device
-and outputs a warning.  Lets avoid logging a warning when we're not sure
-drm driver is loaded.
+On Mon-01-08-2022 04:37 pm, Mohammed Thasleem wrote:
+> Sanitize the system state before starting the subtest.
+> 
+> v2: Minor changes.
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>   tests/kms_lease.c | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+> index 6126ded9..1d4ff904 100644
+> --- a/tests/kms_lease.c
+> +++ b/tests/kms_lease.c
 
-Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6498
+Why are we still trying to get a pipe from crtc_id (inside prepare_crtc)
+enum pipe pipe = crtc_id_to_pipe(display, crtc_id);
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
----
- lib/drmtest.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+As we already preserving it in data->pipe, can't we reuse it?
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 4f9d8a11cb..58d2f7f998 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -348,12 +348,15 @@ static int __open_driver_exact(const char *name, unsigned int chipset)
-  *
-  * @card: pointer to the igt_device_card structure to be filled
-  * when a card is found.
-+ * @do_warn: write out a warning when filter cannot match the device. Used for
-+ * case when drm module is not loaded but filter (IGT_DEVICE) is set.
-  *
-  * Returns:
-  * True if card according to the added filter was found,
-  * false othwerwise.
-  */
--static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
-+static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card,
-+				      bool do_warn)
- {
- 	const char *filter;
- 
-@@ -366,7 +369,8 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
- 			return true;
- 		}
- 
--		igt_warn("No card matches the filter!\n");
-+		if (do_warn)
-+			igt_warn("No card matches the filter!\n");
- 	}
- 
- 	return false;
-@@ -434,11 +438,11 @@ int __drm_open_driver_another(int idx, int chipset)
- 		struct igt_device_card card;
- 		bool found;
- 
--		found = __get_card_for_nth_filter(idx, &card);
-+		found = __get_card_for_nth_filter(idx, &card, false);
- 
- 		if (!found) {
- 			drm_load_module(chipset);
--			found = __get_card_for_nth_filter(idx, &card);
-+			found = __get_card_for_nth_filter(idx, &card, true);
- 		}
- 
- 		if (!found || !strlen(card.card))
-@@ -483,7 +487,7 @@ int __drm_open_driver_render(int chipset)
- 		struct igt_device_card card;
- 		bool found;
- 
--		found = __get_card_for_nth_filter(0, &card);
-+		found = __get_card_for_nth_filter(0, &card, true);
- 
- 		if (!found || !strlen(card.render))
- 			return -1;
--- 
-2.34.1
+> @@ -136,7 +136,7 @@ static void cleanup_crtc(lease_t *lease, igt_output_t *output)
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   	igt_plane_set_fb(primary, NULL);
+>   
+> -	igt_output_set_pipe(output, PIPE_ANY);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit(display);
+>   }
+>   
+> @@ -1235,12 +1235,15 @@ igt_main
+>   		data.master.fd = drm_open_driver_master(DRIVER_ANY);
+>   		kmstest_set_vt_graphics_mode();
+>   		igt_display_require(&data.master.display, data.master.fd);
+> +		igt_display_require_output(&data.master.display);
+
+Please fix this, few subtests doesn't required any output.
+
+Example: implicit-plane-lease
+
+>   	}
+>   
+>   	for (f = funcs; f->name; f++) {
+>   
+>   		igt_describe(f->desc);
+>   		igt_subtest_with_dynamic_f("%s", f->name) {
+> +			igt_display_reset(&data.master.display);
+
+Infact this is required for every subtest, hence it should be moved 
+inside of igt_dynamic()
+
+- Bhanu
+
+> +			igt_display_commit(&data.master.display);
+>   			for_each_pipe_with_valid_output(&data.master.display, p, output) {
+>   				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p),
+>   					      igt_output_name(output)) {
+> @@ -1277,4 +1280,9 @@ igt_main
+>   	igt_describe("Tests all the uevent cases");
+>   	igt_subtest("lease-uevent")
+>   		lease_uevent(&data);
+> +
+> +	igt_fixture {
+> +		igt_display_fini(&data.master.display);
+> +		close(data.master.fd);
+> +	}
+>   }
