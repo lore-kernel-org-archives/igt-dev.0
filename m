@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BDF010F5C0
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 12:01:34 +0000 (UTC)
-Date: Tue, 2 Aug 2022 14:01:29 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YukSGWAOi+r9XZwe@zkempczy-mobl2>
-References: <20220728070024.21158-1-zbigniew.kempczynski@intel.com>
- <165901059567.21236.5689506914772546189@emeril.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B21DB14A4BF
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 12:46:44 +0000 (UTC)
+Date: Tue, 2 Aug 2022 15:45:00 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Wayne Lin <Wayne.Lin@amd.com>
+Message-ID: <YukcTGi8U258Yo0B@platvala-desk.ger.corp.intel.com>
+References: <20220802105634.9635-1-Wayne.Lin@amd.com>
+ <YukHmh34mDkzx762@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <165901059567.21236.5689506914772546189@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fdevice=5Fscan=3A_Assert_if_there=27s_empty_PCI=5FSLOT=5FNAM?=
- =?utf-8?q?E_=28rev2=29?=
+In-Reply-To: <YukHmh34mDkzx762@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] test/amdgpu: Add DP mst test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,486 +20,636 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jerry.zuo@amd.com, hersenxs.wu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jul 28, 2022 at 12:16:35PM +0000, Patchwork wrote:
->    Patch Details
+On Tue, Aug 02, 2022 at 02:16:42PM +0300, Petri Latvala wrote:
+> On Tue, Aug 02, 2022 at 06:56:34PM +0800, Wayne Lin wrote:
+> > [Why & How]
+> > Add new igt test amd_mst for DP mst feature.
+> > 
+> > MST (Multi-Stream Transport) is the feature introduced from DP 1.2.
+> > By mst, source can transport multiple streams to different stream
+> > sinks through the same DP Tx.
+> > 
+> > This new igt test "amd_mst" validate mst feature from two perspectives:
+> > 
+> > * Trigger hotplug via debugfs to see whether all mst end sinks
+> >   successfully go through mst light up procedure
+> > * Check if all mst end sinks successfully go through mst light up
+> >   procedure after suspend-resume
+> > 
+> > This tool is developed under the setup below:
+> > * 2xFHD monitors connected after the 3D club mst hub (model CSV-7300).
+> >   Upstream port of 3D club hub is connected directly to ASIC DP port.
+> > 
+> > v2:
+> > - Revise the commit message to describe the hardware setup while
+> >   developing this tool.
+> > - Rename is_mst_connector to mst_roles
+> > - Remove unnecessary variable/space/brackets
+> > - Add more descriptions for MST progress status
+> > - Add option to specify the delay before checking MST progress status
+> > 
+> > Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+> > ---
+> >  lib/igt_amd.c            | 157 +++++++++++++++++++
+> >  lib/igt_amd.h            |  47 ++++++
+> >  tests/amdgpu/amd_mst.c   | 316 +++++++++++++++++++++++++++++++++++++++
+> >  tests/amdgpu/meson.build |   1 +
+> >  4 files changed, 521 insertions(+)
+> >  create mode 100644 tests/amdgpu/amd_mst.c
+> > 
+> > diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+> > index bef9c193..7ad70dc8 100644
+> > --- a/lib/igt_amd.c
+> > +++ b/lib/igt_amd.c
+> > @@ -1175,3 +1175,160 @@ bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm opt
+> >  
+> >  	return res;
+> >  }
+> > +
+> > +/**
+> > + * igt_amd_output_has_mst: check if connector has MST debugfs entries
+> > + * @drm_fd: DRM file descriptor
+> > + * @connector_name: The connector's name, on which we're reading the status
+> > + */
+> > +static bool igt_amd_output_has_mst(int drm_fd, char *connector_name)
+> > +{
+> > +	return igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_MST_IS_MST_CONNECTOR) &
+> > +			igt_amd_output_has_debugfs(drm_fd, connector_name, DEBUGFS_MST_PROGRESS_STATUS);
+> > +}
+> > +
+> > +/**
+> > + * igt_amd_require_mst: Checks if connectors have mst debugfs entries
+> > + * @display: A pointer to an #igt_display_t structure
+> > + * @drm_fd: DRM file descriptor
+> > + *
+> > + * Checks if the AMDGPU driver supports the 'is_mst_connector'
+> > + * and 'mst_progress_status' entry for mst. Skip test if there
+> > + * are no relevant debugfs entries.
+> > + */
+> > +void igt_amd_require_mst(igt_display_t *display, int drm_fd)
+> > +{
+> > +	igt_output_t *output;
+> > +
+> > +	for_each_connected_output(display, output)
+> > +		if (igt_amd_output_has_mst(drm_fd, output->name))
+> > +			return;
+> > +
+> > +	igt_skip("No MST relevant debugfs support.\n");
+> > +}
+> > +
+> > +/**
+> > + * igt_amd_get_mst_role: Get the mst role of this output
+> > + * @drm_fd: DRM file descriptor
+> > + * @output: the output to be checked
+> > + *
+> > + * DRM enumerates a drm connector to each MST output port. This is used to
+> > + * determine the mst role of this specific output. The mst role in the
+> > + * mst topology shoule be 'no', 'root', 'branch' and 'end'
+> > + */
+> > +enum dp_mst_role igt_amd_get_mst_role(int drm_fd, igt_output_t *output)
+> > +{
+> > +	int fd, ret;
+> > +	char buf[256] = {'\0'};
+> > +	int i = 0;
+> > +	enum dp_mst_role role = MST_NONE;
+> > +
+> > +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> > +	if (fd < 0) {
+> > +		igt_info("Could not open connector %s debugfs directory\n",
+> > +			 output->name);
+> > +		return MST_NONE;
+> > +	}
+> > +
+> > +	if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+> > +		return MST_NONE;
+> > +
+> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_MST_IS_MST_CONNECTOR, buf, sizeof(buf));
+> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
+> > +		     DEBUGFS_MST_IS_MST_CONNECTOR, output->name);
+> > +
+> > +	close(fd);
+> > +
+> > +	for (i = 0; i < sizeof(mst_roles)/sizeof(char *); i++) {
+> > +		if (strstr(buf, mst_roles[i])) {
+> > +			role = i;
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	if (role != MST_NONE)
+> > +		igt_info("Connector %s: is a mst %s", output->name, buf);
 > 
->    Series:  lib/igt_device_scan: Assert if there's empty PCI_SLOT_NAME (rev2) 
->    URL:     https://patchwork.freedesktop.org/series/106796/                  
->    State:   failure                                                           
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7576/index.html    
+> You're missing a newline from this print.
 > 
->            CI Bug Log - changes from IGT_6602_full -> IGTPW_7576_full
 > 
-> Summary
+> -- 
+> Petri Latvala
 > 
->    FAILURE
 > 
->    Serious unknown changes coming with IGTPW_7576_full absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_7576_full, please notify your bug team to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7576/index.html
-> 
-> Participating hosts (10 -> 10)
-> 
->    No changes in participating hosts
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in
->    IGTPW_7576_full:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@gem_exec_schedule@smoketest-all:
-> 
->           * shard-kbl: PASS -> INCOMPLETE
->      * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-dp-1:
-> 
->           * shard-kbl: NOTRUN -> INCOMPLETE
+> > +	else
+> > +		igt_info("Connector %s: is not a mst device\n", output->name);
+> > +
+> > +	return role;
+> > +}
+> > +
+> > +/**
+> > + * igt_amd_get_mst_progress_status: Get the mst progress status of a mst device
+> > + * @drm_fd: DRM file descriptor
+> > + * @output: the output to be checked
+> > + *
+> > + * Get the mst progress status of this specific output. The mst progress status
+> > + * is indicated by:
+> > + * MST_PROBE - drm connector got detected by LINK_ADDRESS sideband msg.
+> > + * MST_REMOTE_EDID - successfully read out edid by REMOTE_I2C_READ sideband msg.
+> > + * MST_ALLOCATE_NEW_PAYLOAD - suuccessfully allocate time slots for the stream.
+> > + * MST_CLEAR_ALLOCATED_PAYLOAD - successfully clean out allocated time slots.
+> > + */
+> > +uint8_t igt_amd_get_mst_progress_status(int drm_fd, igt_output_t *output)
+> > +{
+> > +	int fd, ret;
+> > +	char buf[256] = {'\0'};
+> > +	int idx = 0;
+> > +	char *token_end;
+> > +	uint8_t status = MST_STATUS_DEFAULT;
+> > +
+> > +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> > +	if (fd < 0) {
+> > +		igt_info("Could not open connector %s debugfs directory\n",
+> > +			 output->name);
+> > +		return MST_STATUS_DEFAULT;
+> > +	}
+> > +
+> > +	if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+> > +		return MST_STATUS_DEFAULT;
+> > +
+> > +	ret = igt_debugfs_simple_read(fd, DEBUGFS_MST_PROGRESS_STATUS, buf, sizeof(buf));
+> > +	igt_assert_f(ret >= 0, "Reading %s for connector %s failed.\n",
+> > +		     DEBUGFS_MST_PROGRESS_STATUS, output->name);
+> > +
+> > +	close(fd);
+> > +
+> > +	/* Parse values read from file. */
+> > +	for (char *token = strtok_r(buf, "\n", &token_end);
+> > +	     token != NULL;
+> > +	     token = strtok_r(NULL, "\n", &token_end), idx++)
+> > +	{
+> > +		if (strstr(token, "not") == NULL)
+> > +			status |= BIT(idx);
+> > +	}
+> > +
+> > +	return status;
+> > +}
+> > +
+> > +/**
+> > + * mst_trigger_hotplug: Trigger mst hotplug
+> > + * @drm_fd: DRM file descriptor
+> > + * @output: #igt_output_t to check.
+> > + *
+> > + * Trigger soft hotplug on mst connector. Caller should make sure the
+> > + * passed output is mst root by igt_amd_get_mst_role(). We can't generate
+> > + * soft hotplug on mst end device.
+> > + */
+> > +void mst_trigger_hotplug(int drm_fd, igt_output_t *output)
+> > +{
+> > +	int fd, hpd_fd;
+> > +	int wr_len;
+> > +	const char *enable_hpd = "1", *disable_hpd = "0";
+> > +
+> > +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> > +	igt_assert(fd >= 0);
+> > +	hpd_fd = openat(fd, DEBUGFS_HPD_TRIGGER, O_WRONLY);
+> > +	close(fd);
+> > +	igt_assert(hpd_fd >= 0);
+> > +
+> > +	wr_len = write(hpd_fd, disable_hpd, strlen(disable_hpd));
+> > +	igt_assert_eq(wr_len, strlen(disable_hpd));
+> > +
+> > +	sleep(3);
+> > +
+> > +	wr_len = write(hpd_fd, enable_hpd, strlen(enable_hpd));
+> > +	igt_assert_eq(wr_len, strlen(enable_hpd));
+> > +	close(hpd_fd);
+> > +}
+> > \ No newline at end of file
+> > diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+> > index 428bfe6f..2d54ddc3 100644
+> > --- a/lib/igt_amd.h
+> > +++ b/lib/igt_amd.h
+> > @@ -52,6 +52,12 @@
+> >  /* amdgpu DM interface entries */
+> >  #define DEBUGFS_DM_VISUAL_CONFIRM "amdgpu_dm_visual_confirm"
+> >  
+> > +/* mst related read only status*/
+> > +#define DEBUGFS_MST_IS_MST_CONNECTOR "is_mst_connector"
+> > +#define DEBUGFS_MST_PROGRESS_STATUS "mst_progress_status"
+> > +
+> > +#define BIT(x) (1ul <<(x))
+> > +
+> >  enum amd_dsc_clock_force {
+> >  	DSC_AUTOMATIC = 0,
+> >  	DSC_FORCE_ON,
+> > @@ -131,6 +137,41 @@ enum amdgpu_debug_visual_confirm {
+> >  	VISUAL_CONFIRM_SWIZZLE	= 9
+> >  };
+> >  
+> > +/*
+> > + * Enumeration of the role in MST topology:
+> > + * MST_NONE - drm connector is not in a MST topology
+> > + * MST_ROOT - the output DP port locates at stream source.
+> > + * MST_BRANCH - the intermdediate node of a path from root to leaf within a mst topology
+> > + * MST_END - the leaf node of a mst topology
+> > + */
+> > +enum dp_mst_role {
+> > +	MST_NONE = 0,
+> > +	MST_ROOT,
+> > +	MST_BRANCH,
+> > +	MST_END,
+> > +};
+> > +
+> > +static const char *const mst_roles[] = {
+> > +    "no",
+> > +    "root",
+> > +    "branch",
+> > +    "end",
+> > +};
+> > +
+> > +/*
+> > + * Enumeration of MST progress state. The bit order should align
+> > + * with the 'enum mst_progress_statusto' in amdgpu_dm.h of
+> > + * upstreamed amdgpu kernel driver
+> > + */
+> > +enum mst_progress_status {
+> > +	MST_STATUS_DEFAULT = 0,
+> > +	MST_PROBE = BIT(0),
+> > +	MST_REMOTE_EDID = BIT(1),
+> > +	MST_ALLOCATE_NEW_PAYLOAD = BIT(2),
+> > +	MST_CLEAR_ALLOCATED_PAYLOAD = BIT(3),
+> > +	NUM_MST_STATUS = 4,
+> > +};
+> > +
+> >  uint32_t igt_amd_create_bo(int fd, uint64_t size);
+> >  void *igt_amd_mmap_bo(int fd, uint32_t handle, uint64_t size, int prot);
+> >  unsigned int igt_amd_compute_offset(unsigned int* swizzle_pattern,
+> > @@ -192,4 +233,10 @@ int  igt_amd_read_psr_state(int drm_fd, char *connector_name);
+> >  bool igt_amd_has_visual_confirm(int drm_fd);
+> >  int  igt_amd_get_visual_confirm(int drm_fd);
+> >  bool igt_amd_set_visual_confirm(int drm_fd, enum amdgpu_debug_visual_confirm option);
+> > +
+> > +/* DP MST debugfs helpers*/
+> > +void igt_amd_require_mst(igt_display_t *display, int drm_fd);
+> > +enum dp_mst_role igt_amd_get_mst_role(int drm_fd, igt_output_t *output);
+> > +uint8_t igt_amd_get_mst_progress_status(int drm_fd, igt_output_t *output);
+> > +void mst_trigger_hotplug(int drm_fd, igt_output_t *output);
+> >  #endif /* IGT_AMD_H */
+> > diff --git a/tests/amdgpu/amd_mst.c b/tests/amdgpu/amd_mst.c
+> > new file mode 100644
+> > index 00000000..def4edbc
+> > --- /dev/null
+> > +++ b/tests/amdgpu/amd_mst.c
+> > @@ -0,0 +1,316 @@
+> > +/*
+> > + * Copyright 2022 Advanced Micro Devices, Inc.
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice shall be included in
+> > + * all copies or substantial portions of the Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> > + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> > + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> > + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> > + * OTHER DEALINGS IN THE SOFTWARE.
+> > + */
+> > +
+> > +#include "igt.h"
+> > +#include "igt_amd.h"
+> > +
+> > +IGT_TEST_DESCRIPTION("This igt test validates DP MST feature by:"
+> > +	"1. Check each mst end sink successfully go through mst light up procedure"
+> > +	"after hotplug root branch."
+> > +	"2. Check each mst end sink successfully go through mst light up procedure"
+> > +	"after suspend-resume");
+> > +
+> > +/* Maximum pipes on any AMD ASIC. */
+> > +#define MAX_PIPES 6
+> > +
+> > +typedef struct data {
+> > +	igt_display_t display;
+> > +	igt_plane_t *primary[MAX_PIPES];
+> > +	igt_output_t *output_mst_end[MAX_PIPES];
+> > +	igt_output_t *output_mst_root[MAX_PIPES];
+> > +	igt_pipe_t *pipe[MAX_PIPES];
+> > +	igt_fb_t ref_fb[MAX_PIPES];
+> > +	drmModeModeInfo mode[MAX_PIPES];
+> > +	enum pipe pipe_id[MAX_PIPES];
+> > +	int w[MAX_PIPES];
+> > +	int h[MAX_PIPES];
+> > +	int fd;
+> > +	int num_mst_end;
+> > +	int usr_num_mst_end;
+> > +	int delay_for_progress;
+> > +} data_t;
+> > +
+> > +static void test_init(data_t *data)
+> > +{
+> > +	igt_display_t *display = &data->display;
+> > +	int i, m, n, max_pipes = display->n_pipes;
+> > +	enum dp_mst_role role;
+> > +	drmModeConnector *conn;
+> > +
+> > +	for_each_pipe(display, i) {
+> > +		data->pipe_id[i] = PIPE_A + i;
+> > +		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
+> > +		data->primary[i] = igt_pipe_get_plane_type(
+> > +			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
+> > +	}
+> > +
+> > +	/* Find mst connected root/end connector*/
+> > +	for (i = 0, n = 0, m = 0, data->num_mst_end = 0;
+> > +		i < display->n_outputs && n < max_pipes && m < max_pipes; i++) {
+> > +		igt_output_t *output = &display->outputs[i];
+> > +
+> > +		conn = output->config.connector;
+> > +		if (conn->connector_type != DRM_MODE_CONNECTOR_DisplayPort)
+> > +			continue;
+> > +
+> > +		role = igt_amd_get_mst_role(data->fd, output);
+> > +
+> > +		switch(role) {
+> > +			case MST_ROOT:
+> > +				data->output_mst_root[n++] = output;
+> > +				break;
+> > +			case MST_END:
+> > +				if (!igt_output_is_connected(output))
+> > +					continue;
+> > +				data->output_mst_end[m] = output;
+> > +				igt_assert(kmstest_get_connector_default_mode(
+> > +				data->fd, output->config.connector, &data->mode[m]));
+> > +
+> > +				data->w[m] = data->mode[m].hdisplay;
+> > +				data->h[m] = data->mode[m].vdisplay;
+> > +				m++;
+> > +				data->num_mst_end++;
+> > +				break;
+> > +			default:
+> > +				continue;
+> > +				break;
+> > +		}
+> > +	}
+> > +
+> > +	igt_require(data->output_mst_root[0]);
+> > +	igt_require(data->output_mst_end[0]);
+> > +	if (data->usr_num_mst_end)
+> > +		igt_assert_eq(data->usr_num_mst_end, data->num_mst_end);
+> > +	igt_display_reset(display);
+> > +}
+> > +
+> > +static void test_fini(data_t *data)
+> > +{
+> > +	igt_display_t *display = &data->display;
+> > +
+> > +	igt_display_reset(display);
+> > +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> > +}
+> > +
+> > +static bool show_mst_status_result(igt_output_t *output, uint8_t status)
+> > +{
+> > +	uint8_t bit_idx = 0;
+> > +	bool result = true;
+> > +
+> > +	igt_info("Connector:%s mst progress status:\n", output->name);
+> > +
+> > +	for (bit_idx = 0; bit_idx < NUM_MST_STATUS; bit_idx++) {
+> > +		switch(BIT(bit_idx)) {
+> > +			case MST_PROBE:
+> > +				if ((status & MST_PROBE) == MST_STATUS_DEFAULT)
+> > +					result = false;
+> > +				igt_info("Probe:%s\n", (status & MST_PROBE) ? "PASS" : "FAIL");
+> > +				break;
+> > +			case MST_REMOTE_EDID:
+> > +				if ((status & MST_REMOTE_EDID) == MST_STATUS_DEFAULT)
+> > +					result = false;
+> > +				igt_info("Remote EDID:%s\n", (status & MST_REMOTE_EDID) ? "PASS" : "FAIL");
+> > +				break;
+> > +			case MST_ALLOCATE_NEW_PAYLOAD:
+> > +				if ((status & MST_ALLOCATE_NEW_PAYLOAD) == MST_STATUS_DEFAULT)
+> > +					result = false;
+> > +				igt_info("Allocate new payload:%s\n",
+> > +					(status & MST_ALLOCATE_NEW_PAYLOAD) ? "PASS" : "FAIL");
+> > +				break;
+> > +			default:
+> > +				break;
+> > +		}
+> > +	}
+> > +
+> > +	return result;
+> > +}
+> > +
+> > +static void reset_resource(data_t *data)
+> > +{
+> > +	igt_display_reset(&data->display);
+> > +	igt_display_fini(&data->display);
+> > +	close(data->fd);
+> > +
+> > +	memset(data->primary, 0, sizeof(igt_plane_t *)*MAX_PIPES);
+> > +	memset(data->output_mst_end, 0, sizeof(igt_output_t *)*MAX_PIPES);
+> > +	memset(data->output_mst_root, 0, sizeof(igt_output_t *)*MAX_PIPES);
+> > +	memset(data->pipe, 0, sizeof(igt_pipe_t *)*MAX_PIPES);
+> > +	memset(data->mode, 0, sizeof(drmModeModeInfo)*MAX_PIPES);
+> > +	memset(data->pipe_id, 0, sizeof(enum pipe)*MAX_PIPES);
+> > +	memset(data->w, 0, sizeof(int)*MAX_PIPES);
+> > +	memset(data->h, 0, sizeof(int)*MAX_PIPES);
+> > +
+> > +	data->fd = drm_open_driver_master(DRIVER_AMDGPU);
+> > +	igt_display_require(&data->display, data->fd);
+> > +}
+> > +
+> > +static void set_up_streams(data_t *data)
+> > +{
+> > +	igt_output_t *output;
+> > +	int i;
+> > +
+> > +	for (i = 0; i < MAX_PIPES; i++) {
+> > +		output = data->output_mst_end[i];
+> > +		if (!output || !igt_output_is_connected(output))
+> > +			continue;
+> > +
+> > +		igt_create_pattern_fb(data->fd, data->w[i], data->h[i],
+> > +				      DRM_FORMAT_XRGB8888, 0, &data->ref_fb[i]);
+> > +		igt_output_set_pipe(output, data->pipe_id[i]);
+> > +		igt_plane_set_fb(data->primary[i], &data->ref_fb[i]);
+> > +	}
+> > +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+> > +	sleep(5);
+> > +}
+> > +
+> > +static void validate_mst_progress_result(data_t *data)
+> > +{
+> > +	int i = 0;
+> > +	uint8_t status = 0;
+> > +	igt_output_t *output;
+> > +
+> > +	for (i = 0; i < data->num_mst_end; i++) {
+> > +		output = data->output_mst_end[i];
+> > +
+> > +		if (!output)
+> > +			continue;
+> > +
+> > +		status = igt_amd_get_mst_progress_status(data->fd, output);
+> > +
+> > +		/* make sure all mst end device get lit up correctly*/
+> > +		igt_assert(show_mst_status_result(output, status));
+> > +	}
+> > +}
+> > +
+> > +static void test_mst_hotplug_basic(data_t *data)
+> > +{
+> > +	igt_output_t *output;
+> > +	int i = 0;
+> > +
+> > +	test_init(data);
+> > +
+> > +	/* Setup all end mst output */
+> > +	set_up_streams(data);
+> > +
+> > +	/*confirm mst progress is done*/
+> > +	validate_mst_progress_result(data);
+> > +
+> > +	/* Trigger hotplug*/
+> > +	for (i = 0; i < MAX_PIPES; i++) {
+> > +		output = data->output_mst_root[i];
+> > +
+> > +		if (!output)
+> > +			continue;
+> > +
+> > +		mst_trigger_hotplug(data->fd, output);
+> > +	}
+> > +
+> > +	/* mst connectors are dynamically created/destroyed. Need
+> > +	 * to free and reallocate resources then commit streams again
+> > +	 */
+> > +	reset_resource(data);
+> > +
+> > +	test_init(data);
+> > +
+> > +	set_up_streams(data);
+> > +
+> > +	if (data->delay_for_progress)
+> > +		sleep(data->delay_for_progress);
+> > +	else
+> > +		sleep(5);
+> > +	/*confirm mst progress status again*/
+> > +	validate_mst_progress_result(data);
+> > +
+> > +	/*do suspend resume*/
+> > +	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
+> > +
+> > +	if (data->delay_for_progress)
+> > +		sleep(data->delay_for_progress);
+> > +	else
+> > +		sleep(5);
+> > +
+> > +	/*confirm mst progress status again*/
+> > +	validate_mst_progress_result(data);
+> > +
+> > +	for (i = 0; i < MAX_PIPES; i++) {
+> > +		output = data->output_mst_end[i];
+> > +
+> > +		if (!output)
+> > +			continue;
+> > +
+> > +		igt_remove_fb(data->fd, &data->ref_fb[i]);
+> > +	}
+> > +
+> > +	test_fini(data);
+> > +}
+> > +
+> > +const char *optstr = "hn:d:";
+> > +static void usage(const char *name)
+> > +{
+> > +	igt_info("Usage: %s options\n", name);
+> > +	igt_info("-h			Show help\n");
+> > +	igt_info("-n mst_num	Set how many monitors connected in the mst topology\n");
+> > +	igt_info("-d delay		Set delay before checking the mst progress status\n");
+> > +	igt_info("NOTE: if -n is not specified, number of monitors will be detected automatically"
+> > +		"by current connection status\n");
+> > +	igt_info("NOTE: if -d is not specified, delay before checking the mst progress status"
+> > +		"will be set as 5s\n");
+> > +}
+> > +
+> > +int main(int argc, char **argv)
 
-Change is not relatet failures above.
+In addition to the earlier comment, no custom main functions in tests
+please. Use igt_main_args for this. Or igt_simple_main_args if you
+don't plan to have subtests.
 
---
-Zbigniew
+
+-- 
+Petri Latvala
 
 
-> 
-> Known issues
-> 
->    Here are the changes found in IGTPW_7576_full that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@gem_create@create-massive:
-> 
->           * shard-kbl: NOTRUN -> DMESG-WARN (i915#4991)
->      * igt@gem_ctx_persistence@engines-persistence:
-> 
->           * shard-snb: NOTRUN -> SKIP (fdo#109271 / i915#1099)
->      * igt@gem_exec_fair@basic-flow@rcs0:
-> 
->           * shard-tglb: PASS -> FAIL (i915#2842) +1 similar issue
->      * igt@gem_exec_fair@basic-none-vip@rcs0:
-> 
->           * shard-tglb: NOTRUN -> FAIL (i915#2842)
-> 
->           * shard-glk: NOTRUN -> FAIL (i915#2842)
-> 
->           * shard-iclb: NOTRUN -> FAIL (i915#2842)
-> 
->      * igt@gem_exec_fair@basic-none@vcs1:
-> 
->           * shard-kbl: PASS -> FAIL (i915#2842) +4 similar issues
->      * igt@gem_exec_fair@basic-pace-share@rcs0:
-> 
->           * shard-glk: PASS -> FAIL (i915#2842)
->      * igt@gem_exec_fair@basic-pace-solo@rcs0:
-> 
->           * shard-kbl: NOTRUN -> FAIL (i915#2842)
->      * igt@gem_exec_fair@basic-pace@vcs1:
-> 
->           * shard-iclb: PASS -> FAIL (i915#2842) +1 similar issue
->      * igt@gem_exec_fair@basic-throttle@rcs0:
-> 
->           * shard-iclb: PASS -> FAIL (i915#2849)
->      * igt@gem_flink_race@flink_close:
-> 
->           * shard-snb: PASS -> FAIL (i915#6481)
->      * igt@gem_huc_copy@huc-copy:
-> 
->           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#2190)
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#2190)
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#2190)
-> 
->      * igt@gem_lmem_swapping@heavy-verify-multi:
-> 
->           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#4613)
->      * igt@gem_pxp@create-valid-protected-context:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#4270)
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#4270)
-> 
->      * igt@gem_userptr_blits@dmabuf-sync:
-> 
->           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#3323)
->      * igt@gem_workarounds@suspend-resume-context:
-> 
->           * shard-apl: PASS -> DMESG-WARN (i915#180) +3 similar issues
->      * igt@gen9_exec_parse@allowed-all:
-> 
->           * shard-apl: PASS -> DMESG-WARN (i915#5566 / i915#716)
->      * igt@gen9_exec_parse@basic-rejected:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#2527 / i915#2856)
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#2856)
-> 
->      * igt@i915_pm_dc@dc6-dpms:
-> 
->           * shard-iclb: PASS -> FAIL (i915#454) +1 similar issue
->      * igt@i915_pm_dc@dc9-dpms:
-> 
->           * shard-apl: PASS -> SKIP (fdo#109271)
->      * igt@i915_pm_lpsp@kms-lpsp@kms-lpsp-dp:
-> 
->           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#1937)
->      * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-180-hflip:
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#5286)
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#5286)
-> 
->      * igt@kms_big_fb@linear-64bpp-rotate-90:
-> 
->           * shard-tglb: NOTRUN -> SKIP (fdo#111614) +1 similar issue
-> 
->           * shard-iclb: NOTRUN -> SKIP (fdo#110725 / fdo#111614) +1 similar
->             issue
-> 
->      * igt@kms_big_fb@yf-tiled-32bpp-rotate-90:
-> 
->           * shard-tglb: NOTRUN -> SKIP (fdo#111615)
->      * igt@kms_ccs@pipe-a-bad-rotation-90-4_tiled_dg2_mc_ccs:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#6095) +2 similar issues
->      * igt@kms_ccs@pipe-b-crc-sprite-planes-basic-y_tiled_ccs:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#3689)
->      * igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs:
-> 
->           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#3886)
-> 
->           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#3886)
-> 
->      * igt@kms_ccs@pipe-c-crc-sprite-planes-basic-4_tiled_dg2_mc_ccs:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#3689 / i915#6095)
-> 
->           * shard-iclb: NOTRUN -> SKIP (fdo#109278) +6 similar issues
-> 
->      * igt@kms_ccs@pipe-d-crc-primary-basic-yf_tiled_ccs:
-> 
->           * shard-tglb: NOTRUN -> SKIP (fdo#111615 / i915#3689) +1 similar
->             issue
->      * igt@kms_ccs@pipe-d-missing-ccs-buffer-y_tiled_gen12_rc_ccs:
-> 
->           * shard-kbl: NOTRUN -> SKIP (fdo#109271) +152 similar issues
->      * igt@kms_chamelium@dp-hpd-after-suspend:
-> 
->           * shard-tglb: NOTRUN -> SKIP (fdo#109284 / fdo#111827) +3 similar
->             issues
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +3 similar
->             issues
-> 
->           * shard-iclb: NOTRUN -> SKIP (fdo#109284 / fdo#111827) +2 similar
->             issues
-> 
->      * igt@kms_color_chamelium@pipe-a-ctm-limited-range:
-> 
->           * shard-apl: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +4 similar
->             issues
->      * igt@kms_color_chamelium@pipe-a-gamma:
-> 
->           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +11 similar
->             issues
->      * igt@kms_color_chamelium@pipe-d-ctm-negative:
-> 
->           * shard-iclb: NOTRUN -> SKIP (fdo#109278 / fdo#109284 / fdo#111827)
-> 
->           * shard-snb: NOTRUN -> SKIP (fdo#109271 / fdo#111827) +3 similar
->             issues
-> 
->      * igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions:
-> 
->           * shard-glk: PASS -> FAIL (i915#2346) +1 similar issue
->      * igt@kms_draw_crc@draw-method-rgb565-mmap-wc-ytiled:
-> 
->           * shard-glk: PASS -> FAIL (i915#1888 / i915#5160)
->      * igt@kms_draw_crc@draw-method-xrgb8888-render-4tiled:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#5287)
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#5287)
-> 
->      * igt@kms_fbcon_fbt@fbc-suspend:
-> 
->           * shard-apl: PASS -> INCOMPLETE (i915#180 / i915#4939)
->      * igt@kms_flip@2x-flip-vs-rmfb:
-> 
->           * shard-tglb: NOTRUN -> SKIP (fdo#109274 / fdo#111825 / i915#3637)
->             +1 similar issue
-> 
->           * shard-iclb: NOTRUN -> SKIP (fdo#109274) +1 similar issue
-> 
->      * igt@kms_flip@flip-vs-suspend-interruptible@c-dp1:
-> 
->           * shard-kbl: PASS -> DMESG-WARN (i915#180) +2 similar issues
->      * igt@kms_flip@flip-vs-suspend@a-dp1:
-> 
->           * shard-kbl: NOTRUN -> INCOMPLETE (i915#3614)
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-downscaling@pipe-a-valid-mode:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#2672) +1 similar issue
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-upscaling@pipe-a-valid-mode:
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#2672) +5 similar issues
->      * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling@pipe-a-default-mode:
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#2672 / i915#3555)
->      * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-downscaling@pipe-a-default-mode:
-> 
->           * shard-iclb: PASS -> SKIP (i915#3555)
->      * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-cpu:
-> 
->           * shard-tglb: NOTRUN -> SKIP (fdo#109280 / fdo#111825) +8 similar
->             issues
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-wc:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#6497) +2 similar issues
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-mmap-wc:
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271) +47 similar issues
-> 
->           * shard-iclb: NOTRUN -> SKIP (fdo#109280) +8 similar issues
-> 
->      * igt@kms_frontbuffer_tracking@fbcpsr-tiling-4:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#5439)
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#5438)
-> 
->      * igt@kms_plane_alpha_blend@pipe-b-alpha-basic:
-> 
->           * shard-apl: NOTRUN -> FAIL (fdo#108145 / i915#265)
-> 
->           * shard-glk: NOTRUN -> FAIL (fdo#108145 / i915#265)
-> 
->           * shard-kbl: NOTRUN -> FAIL (fdo#108145 / i915#265)
-> 
->      * igt@kms_plane_multiple@atomic-pipe-c-tiling-4:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#5288)
->      * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a-edp-1:
-> 
->           * shard-iclb: PASS -> SKIP (i915#5235) +2 similar issues
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-b-dp-1:
-> 
->           * shard-apl: NOTRUN -> SKIP (fdo#109271) +44 similar issues
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-b-edp-1:
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#5235) +2 similar issues
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-c-edp-1:
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#5235) +3 similar issues
->      * igt@kms_psr2_sf@primary-plane-update-sf-dmg-area-big-fb:
-> 
->           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#658)
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#2920)
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#658)
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#2920)
-> 
->           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#658)
-> 
->      * igt@kms_psr@psr2_primary_mmap_cpu:
-> 
->           * shard-iclb: PASS -> SKIP (fdo#109441) +1 similar issue
->      * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-180:
-> 
->           * shard-tglb: NOTRUN -> SKIP (fdo#111615 / i915#5289)
->      * igt@kms_vrr@flip-basic:
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#3555)
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#3555)
-> 
->      * igt@sysfs_clients@recycle:
-> 
->           * shard-kbl: NOTRUN -> SKIP (fdo#109271 / i915#2994) +1 similar
->             issue
->      * igt@sysfs_clients@sema-50:
-> 
->           * shard-snb: NOTRUN -> SKIP (fdo#109271) +70 similar issues
-> 
->           * shard-apl: NOTRUN -> SKIP (fdo#109271 / i915#2994)
-> 
->           * shard-tglb: NOTRUN -> SKIP (i915#2994)
-> 
->           * shard-glk: NOTRUN -> SKIP (fdo#109271 / i915#2994)
-> 
->           * shard-iclb: NOTRUN -> SKIP (i915#2994)
-> 
->     Possible fixes
-> 
->      * igt@fbdev@pan:
-> 
->           * {shard-rkl}: SKIP (i915#2582) -> PASS
->      * igt@gem_ctx_exec@basic-nohangcheck:
-> 
->           * {shard-rkl}: FAIL (i915#6268) -> PASS
->      * igt@gem_ctx_persistence@engines-hang@bcs0:
-> 
->           * {shard-rkl}: SKIP (i915#6252) -> PASS
->      * igt@gem_ctx_persistence@engines-hang@vcs1:
-> 
->           * {shard-dg1}: FAIL (i915#4883) -> PASS
->      * igt@gem_eio@in-flight-1us:
-> 
->           * shard-tglb: TIMEOUT (i915#3063) -> PASS
->      * igt@gem_eio@in-flight-suspend:
-> 
->           * {shard-rkl}: FAIL (fdo#103375) -> PASS
->      * igt@gem_eio@unwedge-stress:
-> 
->           * {shard-tglu}: TIMEOUT (i915#3063) -> PASS
->      * igt@gem_exec_balancer@parallel-keep-submit-fence:
-> 
->           * shard-iclb: SKIP (i915#4525) -> PASS +1 similar issue
->      * igt@gem_exec_fair@basic-none-share@rcs0:
-> 
->           * shard-glk: FAIL (i915#2842) -> PASS
->      * igt@gem_exec_reloc@basic-gtt-cpu:
-> 
->           * {shard-rkl}: SKIP (i915#3281) -> PASS +7 similar issues
->      * igt@gem_exec_schedule@semaphore-power:
-> 
->           * {shard-rkl}: SKIP (fdo#110254) -> PASS
->      * igt@gem_tiled_partial_pwrite_pread@reads:
-> 
->           * {shard-rkl}: SKIP (i915#3282) -> PASS +3 similar issues
->      * igt@gen9_exec_parse@allowed-all:
-> 
->           * shard-glk: DMESG-WARN (i915#5566 / i915#716) -> PASS
->      * igt@gen9_exec_parse@allowed-single:
-> 
->           * {shard-rkl}: SKIP (i915#2527) -> PASS +1 similar issue
->      * igt@i915_pm_dc@dc9-dpms:
-> 
->           * {shard-rkl}: SKIP (i915#3361) -> PASS
-> 
->           * {shard-tglu}: SKIP (i915#4281) -> PASS
-> 
->      * igt@i915_pm_rps@waitboost:
-> 
->           * {shard-rkl}: FAIL (i915#4016) -> PASS
->      * igt@kms_cursor_crc@cursor-suspend@pipe-c-dp-1:
-> 
->           * shard-apl: DMESG-WARN (i915#180) -> PASS
->      * igt@kms_draw_crc@draw-method-rgb565-render-ytiled:
-> 
->           * shard-glk: FAIL (i915#1888 / i915#5160) -> PASS
->      * igt@kms_draw_crc@draw-method-xrgb2101010-mmap-cpu-ytiled:
-> 
->           * {shard-rkl}: SKIP (i915#4098 / i915#4369) -> PASS +1 similar
->             issue
->      * igt@kms_draw_crc@fill-fb:
-> 
->           * {shard-rkl}: SKIP (fdo#111314 / i915#4098 / i915#4369) -> PASS +1
->             similar issue
->      * igt@kms_frontbuffer_tracking@fbc-suspend:
-> 
->           * shard-kbl: DMESG-WARN (i915#180) -> PASS +4 similar issues
->      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-blt:
-> 
->           * {shard-rkl}: SKIP (i915#1849 / i915#4098) -> PASS +4 similar
->             issues
->      * igt@kms_hdr@bpc-switch-suspend@pipe-a-dp-1:
-> 
->           * shard-apl: FAIL (i915#1188) -> PASS
->      * igt@kms_plane_alpha_blend@pipe-b-coverage-7efc:
-> 
->           * {shard-rkl}: SKIP (i915#1849 / i915#3546 / i915#4070 / i915#4098)
->             -> PASS +1 similar issue
->      * igt@kms_plane_lowres@tiling-y@pipe-b-hdmi-a-1:
-> 
->           * shard-glk: FAIL (i915#1888) -> PASS
->      * igt@kms_properties@plane-properties-legacy:
-> 
->           * {shard-rkl}: SKIP (i915#1849) -> PASS
->      * igt@kms_psr@cursor_mmap_gtt:
-> 
->           * {shard-rkl}: SKIP (i915#1072) -> PASS +1 similar issue
->      * igt@kms_psr@psr2_sprite_blt:
-> 
->           * shard-iclb: SKIP (fdo#109441) -> PASS
->      * igt@kms_vblank@pipe-b-wait-forked-hang:
-> 
->           * {shard-rkl}: SKIP (i915#1845 / i915#4098) -> PASS +16 similar
->             issues
->      * igt@perf@gen12-oa-tlb-invalidate:
-> 
->           * {shard-rkl}: SKIP (fdo#109289) -> PASS
->      * igt@perf@polling:
-> 
->           * {shard-rkl}: FAIL (i915#5639) -> PASS
->      * igt@perf_pmu@busy-double-start@vecs0:
-> 
->           * {shard-dg1}: FAIL (i915#4349) -> PASS +1 similar issue
->      * igt@testdisplay:
-> 
->           * {shard-tglu}: DMESG-WARN (i915#4941) -> PASS
-> 
->     Warnings
-> 
->      * igt@gem_eio@unwedge-stress:
-> 
->           * shard-tglb: FAIL (i915#5784) -> TIMEOUT (i915#3063)
->      * igt@gem_exec_fair@basic-pace@rcs0:
-> 
->           * shard-tglb: FAIL (i915#2842) -> FAIL (i915#2851)
->      * igt@i915_pm_dc@dc3co-vpb-simulation:
-> 
->           * shard-iclb: SKIP (i915#658) -> SKIP (i915#588)
->      * igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-sf:
-> 
->           * shard-iclb: SKIP (i915#2920) -> SKIP (i915#658)
->      * igt@kms_psr2_sf@overlay-primary-update-sf-dmg-area:
-> 
->           * shard-iclb: SKIP (fdo#111068 / i915#658) -> SKIP (i915#2920) +1
->             similar issue
->      * igt@runner@aborted:
-> 
->           * shard-apl: (FAIL, FAIL, FAIL) (i915#3002 / i915#4312 / i915#5257)
->             -> (FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL) (fdo#109271 /
->             i915#180 / i915#3002 / i915#4312 / i915#5257)
-> 
->           * shard-kbl: (FAIL, FAIL, FAIL, FAIL, FAIL, FAIL, FAIL) (fdo#109271
->             / i915#180 / i915#3002 / i915#4312 / i915#5257) -> (FAIL, FAIL,
->             FAIL, FAIL, FAIL) (i915#180 / i915#3002 / i915#4312 / i915#5257)
-> 
->    {name}: This element is suppressed. This means it is ignored when
->    computing
->    the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_6602 -> IGTPW_7576
-> 
->    CI-20190529: 20190529
->    CI_DRM_11946: 0e9c43d76a145712da46e935d429ce2a3eea80e8 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_7576: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7576/index.html
->    IGT_6602: 5a8fa05a824032aab4c8980727a075f71065e27c @
->    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> > +{
+> > +	data_t data;
+> > +	int c;
+> > +
+> > +	igt_skip_on_simulation();
+> > +
+> > +	memset(&data, 0, sizeof(data));
+> > +
+> > +	data.fd = drm_open_driver_master(DRIVER_AMDGPU);
+> > +	kmstest_set_vt_graphics_mode();
+> > +
+> > +	igt_display_require(&data.display, data.fd);
+> > +	igt_require(data.display.is_atomic);
+> > +	igt_display_require_output(&data.display);
+> > +
+> > +	igt_amd_require_hpd(&data.display, data.fd);
+> > +	igt_amd_require_mst(&data.display, data.fd);
+> > +
+> > +	while((c = getopt(argc, argv, optstr)) != -1) {
+> > +		switch(c) {
+> > +		case 'n':
+> > +			data.usr_num_mst_end = atoi(optarg);
+> > +			break;
+> > +		case 'd':
+> > +			data.delay_for_progress = atoi(optarg);
+> > +			break;
+> > +		case 'h':
+> > +		default:
+> > +			usage(argv[0]);
+> > +			exit(EXIT_SUCCESS);
+> > +		}
+> > +	}
+> > +
+> > +	test_mst_hotplug_basic(&data);
+> > +
+> > +	igt_display_fini(&data.display);
+> > +}
+> > diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> > index f4a0b9fd..5964c080 100644
+> > --- a/tests/amdgpu/meson.build
+> > +++ b/tests/amdgpu/meson.build
+> > @@ -21,6 +21,7 @@ if libdrm_amdgpu.found()
+> >  			  'amd_psr',
+> >  			  'amd_plane',
+> >  			  'amd_ilr',
+> > +			  'amd_mst',
+> >  			]
+> >  	amdgpu_deps += libdrm_amdgpu
+> >  endif
+> > -- 
+> > 2.25.1
+> > 
