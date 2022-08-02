@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C83CC8BD83
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 09:39:14 +0000 (UTC)
-Date: Tue, 2 Aug 2022 12:37:55 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <Yujwcwhuwr8S4xU/@platvala-desk.ger.corp.intel.com>
-References: <20220802092756.26693-1-zbigniew.kempczynski@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B1FD10E0EC
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 09:45:47 +0000 (UTC)
+Date: Tue, 2 Aug 2022 11:45:43 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YujyR7jUfgHyTeP0@kamilkon-desk1>
+References: <20220801095806.23914-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220802092756.26693-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/drmtest: Don't log a warning when
- drm driver is not loaded
+In-Reply-To: <20220801095806.23914-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_pipe_control_store_loop: Use a
+ simple spinner to preuse the buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,94 +21,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 02, 2022 at 11:27:56AM +0200, Zbigniew Kempczyński wrote:
-> Some drivers left machine with drm driver unloaded. When IGT_DEVICE is
-> set first call to __get_card_for_nth_filter() won't find the drm device
-> and outputs a warning.  Lets avoid logging a warning when we're not sure
-> drm driver is loaded.
+On 2022-08-01 at 11:58:06 +0200, Zbigniew Kempczyński wrote:
+> From: Chris Wilson <chris.p.wilson@intel.com>
 > 
-> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6498
+> Replace the blit commands that need to be adjusted for different archs,
+> and use the library routines to make a buffer busy for a controlled
+> length of time. This has the added advantage of ensuring that the buffer
+> is busy during the w/a processing inside the execbuf ioctl.
 > 
+> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
+> Tested-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  lib/drmtest.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
+>  tests/i915/gem_pipe_control_store_loop.c | 39 +++++++++---------------
+>  1 file changed, 15 insertions(+), 24 deletions(-)
 > 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 4f9d8a11cb..58d2f7f998 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -348,12 +348,15 @@ static int __open_driver_exact(const char *name, unsigned int chipset)
->   *
->   * @card: pointer to the igt_device_card structure to be filled
->   * when a card is found.
-> + * @do_warn: write out a warning when filter cannot match the device. Used for
-> + * case when drm module is not loaded but filter (IGT_DEVICE) is set.
->   *
->   * Returns:
->   * True if card according to the added filter was found,
->   * false othwerwise.
->   */
-> -static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
-> +static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card,
-> +				      bool do_warn)
->  {
->  	const char *filter;
+> diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/i915/gem_pipe_control_store_loop.c
+> index 20fdc9c155..df3da9f5b2 100644
+> --- a/tests/i915/gem_pipe_control_store_loop.c
+> +++ b/tests/i915/gem_pipe_control_store_loop.c
+> @@ -71,36 +71,25 @@ store_pipe_control_loop(bool preuse_buffer, int timeout)
+>  	ibb = intel_bb_create(buf_ops_get_fd(bops), 4096);
 >  
-> @@ -366,7 +369,8 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
->  			return true;
+>  	igt_until_timeout(timeout) {
+> +		igt_spin_t *spin = NULL;
+> +
+>  		/* we want to check tlb consistency of the pipe_control target,
+>  		 * so get a new buffer every time around */
+>  		target_buf = intel_buf_create(bops, 4096, 1, 8, 0,
+>  					      I915_TILING_NONE,
+>  					      I915_COMPRESSION_NONE);
+>  
+> -		if (preuse_buffer) {
+> -			intel_bb_add_intel_buf(ibb, target_buf, true);
+> -			intel_bb_out(ibb, XY_COLOR_BLT_CMD_NOLEN |
+> -				     COLOR_BLT_WRITE_ALPHA |
+> -				     XY_COLOR_BLT_WRITE_RGB |
+> -				     (4 + (ibb->gen >= 8)));
+> -
+> -			intel_bb_out(ibb, (3 << 24) | (0xf0 << 16) | 64);
+> -			intel_bb_out(ibb, 0);
+> -			intel_bb_out(ibb, 1 << 16 | 1);
+> -
+> -			/*
+> -			 * IMPORTANT: We need to preuse the buffer in a
+> -			 * different domain than what the pipe control write
+> -			 * (and kernel wa) uses!
+> -			 */
+> -			intel_bb_emit_reloc_fenced(ibb, target_buf->handle,
+> -						   I915_GEM_DOMAIN_RENDER,
+> -						   I915_GEM_DOMAIN_RENDER,
+> -						   0, target_buf->addr.offset);
+> -			intel_bb_out(ibb, 0xdeadbeef);
+> -
+> -			intel_bb_flush_blit(ibb);
+> -		}
+> +		/*
+> +		 * IMPORTANT: We need to preuse the buffer in a
+> +		 * different domain than what the pipe control write
+> +		 * (and kernel wa) uses!
+> +		 *
+> +		 * The dependency sets (RENDER, RENDER).
+> +		 */
+> +		if (preuse_buffer)
+> +			spin = igt_spin_new(buf_ops_get_fd(bops),
+> +					    .ahnd = ibb->allocator_handle,
+> +					    .dependency = target_buf->handle);
+>  
+>  		/* gem_storedw_batches_loop.c is a bit overenthusiastic with
+>  		 * creating new batchbuffers - with buffer reuse disabled, the
+> @@ -149,6 +138,8 @@ store_pipe_control_loop(bool preuse_buffer, int timeout)
 >  		}
 >  
-> -		igt_warn("No card matches the filter!\n");
-> +		if (do_warn)
-> +			igt_warn("No card matches the filter!\n");
->  	}
+>  		intel_bb_flush(ibb, 0);
+> +		if (spin)
+> +			igt_spin_free(buf_ops_get_fd(bops), spin);
 >  
->  	return false;
-> @@ -434,11 +438,11 @@ int __drm_open_driver_another(int idx, int chipset)
->  		struct igt_device_card card;
->  		bool found;
+>  		intel_buf_cpu_map(target_buf, 1);
 >  
-> -		found = __get_card_for_nth_filter(idx, &card);
-> +		found = __get_card_for_nth_filter(idx, &card, false);
->  
->  		if (!found) {
->  			drm_load_module(chipset);
-> -			found = __get_card_for_nth_filter(idx, &card);
-> +			found = __get_card_for_nth_filter(idx, &card, true);
-
-If you make get_card_for_nth warn here, you get the warning
-twice. There's a warning printed three lines below (outside of this
-diff's context).
-
->  		}
->  
->  		if (!found || !strlen(card.card))
-> @@ -483,7 +487,7 @@ int __drm_open_driver_render(int chipset)
->  		struct igt_device_card card;
->  		bool found;
->  
-> -		found = __get_card_for_nth_filter(0, &card);
-> +		found = __get_card_for_nth_filter(0, &card, true);
-
-This is the only call site that needs 'true'. Making me think whether
-it's cleaner to just remove the warning from get_card_for_nth
-altogether and just add it here.
-
-
--- 
-Petri Latvala
-
-
->  
->  		if (!found || !strlen(card.render))
->  			return -1;
 > -- 
 > 2.34.1
 > 
