@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC66F112E72
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 09:34:29 +0000 (UTC)
-Message-ID: <09427270-6b9b-ddd5-9500-d462d1c40eac@intel.com>
-Date: Tue, 2 Aug 2022 15:03:55 +0530
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0FD38EC35
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 09:34:37 +0000 (UTC)
+Message-ID: <d9da37be-20dc-ba8d-3ab1-1455a6b2ebd3@intel.com>
+Date: Tue, 2 Aug 2022 15:04:16 +0530
 Content-Language: en-US
 To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20220801110710.95609-1-mohammed.thasleem@intel.com>
- <20220801110710.95609-3-mohammed.thasleem@intel.com>
+ <20220801110710.95609-2-mohammed.thasleem@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220801110710.95609-3-mohammed.thasleem@intel.com>
+In-Reply-To: <20220801110710.95609-2-mohammed.thasleem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 2/2] tests/kms_lease: Test Cleanup
+Subject: Re: [igt-dev] [PATCH v3 1/2] tests/kms_lease: Create dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,68 +29,125 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On Mon-01-08-2022 04:37 pm, Mohammed Thasleem wrote:
-> Sanitize the system state before starting the subtest.
+> Modified tests/kms_lease to include dynamic test cases.
 > 
-> v2: Minor changes.
+> v2: Updated dynamic test cases to all test cases.
+> v3: Removed dynamic test for which it's not required.
 > 
 > Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > ---
->   tests/kms_lease.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
+>   tests/kms_lease.c | 56 +++++++++++++++++++----------------------------
+>   1 file changed, 23 insertions(+), 33 deletions(-)
 > 
 > diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-> index 6126ded9..1d4ff904 100644
+> index 0bf102a6..6126ded9 100644
 > --- a/tests/kms_lease.c
 > +++ b/tests/kms_lease.c
-
-Why are we still trying to get a pipe from crtc_id (inside prepare_crtc)
-enum pipe pipe = crtc_id_to_pipe(display, crtc_id);
-
-As we already preserving it in data->pipe, can't we reuse it?
-
-> @@ -136,7 +136,7 @@ static void cleanup_crtc(lease_t *lease, igt_output_t *output)
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   	igt_plane_set_fb(primary, NULL);
->   
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> +	igt_output_set_pipe(output, PIPE_NONE);
->   	igt_display_commit(display);
+> @@ -809,39 +809,20 @@ static void lease_invalid_plane(data_t *data)
 >   }
 >   
-> @@ -1235,12 +1235,15 @@ igt_main
->   		data.master.fd = drm_open_driver_master(DRIVER_ANY);
->   		kmstest_set_vt_graphics_mode();
->   		igt_display_require(&data.master.display, data.master.fd);
-> +		igt_display_require_output(&data.master.display);
+>   
+> -static void run_test(data_t *data, void (*testfunc)(data_t *))
+> +static void run_test(data_t *data, void (*testfunc)(data_t *), enum pipe p, igt_output_t *output)
+>   {
+>   	lease_t *master = &data->master;
+>   	igt_display_t *display = &master->display;
+> -	igt_output_t *output;
+> -	enum pipe p;
+> -	unsigned int valid_tests = 0;
+> -
+> -	for_each_pipe_with_valid_output(display, p, output) {
+> -		igt_info("Beginning %s on pipe %s, connector %s\n",
+> -			 igt_subtest_name(),
+> -			 kmstest_pipe_name(p),
+> -			 igt_output_name(output));
+> -
+> -		data->pipe = p;
+> -		data->crtc_id = pipe_to_crtc_id(display, p);
+> -		data->connector_id = output->id;
+> -		data->plane_id =
+> -			igt_pipe_get_plane_type(&data->master.display.pipes[data->pipe],
+> -						DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
+>   
+> -		testfunc(data);
+> +	data->pipe = p;
+> +	data->crtc_id = pipe_to_crtc_id(display, p);
+> +	data->connector_id = output->id;
+> +	data->plane_id =
+> +		igt_pipe_get_plane_type(&data->master.display.pipes[data->pipe],
+> +					DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
+>   
+> -		igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
+> -			 igt_subtest_name(),
+> -			 kmstest_pipe_name(p),
+> -			 igt_output_name(output));
+> -
+> -		valid_tests++;
+> -	}
+> +	testfunc(data);
+>   
+> -	igt_require_f(valid_tests,
+> -		      "no valid crtc/connector combinations found\n");
+>   }
+>   
+>   #define assert_double_id_err(ret) \
+> @@ -1028,10 +1009,12 @@ static void possible_crtcs_filtering(data_t *data)
+>   		igt_assert_eq(create_lease(master_fd, &mcl), 0);
+>   		lease_fd = mcl.fd;
+>   
+> -		drmSetClientCap(lease_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+> -
+> -		check_crtc_masks(master_fd, lease_fd, 1 << i);
+> +		igt_dynamic_f("pipe-%s", kmstest_pipe_name(i)) {
 
-Please fix this, few subtests doesn't required any output.
+I think all the stuff inside the below loop should go to igt_dynamic
 
-Example: implicit-plane-lease
+for (i = 0; i < resources->count_crtcs; i++) {}
 
+> +			drmSetClientCap(lease_fd,
+> +					DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+>   
+> +			check_crtc_masks(master_fd, lease_fd, 1 << i);
+> +		}
+>   		close(lease_fd);
 >   	}
 >   
+> @@ -1218,6 +1201,8 @@ static void lease_uevent(data_t *data)
+>   igt_main
+>   {
+>   	data_t data;
+> +	igt_output_t *output;
+> +	enum pipe p;
+>   	const struct {
+>   		const char *name;
+>   		void (*func)(data_t *);
+> @@ -1255,8 +1240,13 @@ igt_main
 >   	for (f = funcs; f->name; f++) {
 >   
 >   		igt_describe(f->desc);
->   		igt_subtest_with_dynamic_f("%s", f->name) {
-> +			igt_display_reset(&data.master.display);
+> -		igt_subtest_f("%s", f->name) {
+> -			run_test(&data, f->func);
+> +		igt_subtest_with_dynamic_f("%s", f->name) {
+> +			for_each_pipe_with_valid_output(&data.master.display, p, output) {
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p),
+> +					      igt_output_name(output)) {
+> +					run_test(&data, f->func, p, output);
+> +				}
+> +			}
+>   		}
+>   	}
+>   
+> @@ -1267,7 +1257,7 @@ igt_main
+>   
+>   	igt_describe("Tests that  possible_crtcs logically match between master and "
+>   		     "lease, and that the values are correctly renumbered on the lease side.");
+> -	igt_subtest("possible-crtcs-filtering")
+> +	igt_subtest_with_dynamic_f("possible-crtcs-filtering")
 
-Infact this is required for every subtest, hence it should be moved 
-inside of igt_dynamic()
+_f variant is not required.
 
 - Bhanu
 
-> +			igt_display_commit(&data.master.display);
->   			for_each_pipe_with_valid_output(&data.master.display, p, output) {
->   				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p),
->   					      igt_output_name(output)) {
-> @@ -1277,4 +1280,9 @@ igt_main
->   	igt_describe("Tests all the uevent cases");
->   	igt_subtest("lease-uevent")
->   		lease_uevent(&data);
-> +
-> +	igt_fixture {
-> +		igt_display_fini(&data.master.display);
-> +		close(data.master.fd);
-> +	}
->   }
+>   		possible_crtcs_filtering(&data);
+>   
+>   	igt_describe("Tests the drop/set_master interactions.");
