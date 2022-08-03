@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C42A11126D3
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 07:45:49 +0000 (UTC)
-Message-ID: <bb93a3cf-17de-67ac-66c9-39d4c24f3e27@intel.com>
-Date: Wed, 3 Aug 2022 09:45:49 +0200
-Content-Language: en-US
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-References: <cover.1658826356.git.karolina.drobnik@intel.com>
- <2468862.4XsnlVU6TS@jkrzyszt-mobl1.ger.corp.intel.com>
- <8384c9cb-e870-6a3a-15cb-c223bf6243eb@intel.com>
- <8978773.CDJkKcVGEf@jkrzyszt-mobl1.ger.corp.intel.com>
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-In-Reply-To: <8978773.CDJkKcVGEf@jkrzyszt-mobl1.ger.corp.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CF8510F7D3
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 08:48:38 +0000 (UTC)
+Date: Wed, 3 Aug 2022 11:47:18 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Tales Aparecida <tales.aparecida@gmail.com>
+Message-ID: <Yuo2FlsJbkxFw9D0@platvala-desk.ger.corp.intel.com>
+References: <20220803052654.98827-1-tales.aparecida@gmail.com>
+ <20220803052654.98827-5-tales.aparecida@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_exec_fence: Check
- stored values only for valid workloads
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220803052654.98827-5-tales.aparecida@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] lib/igt_kmod: add igt_kselftests
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,88 +21,298 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: siqueirajordao@riseup.net, magalilemes00@gmail.com,
+ Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org,
+ Isabella Basso <isabbasso@riseup.net>, andrealmeid@riseup.net,
+ Trevor Woerner <twoerner@gmail.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
-
-On 03.08.2022 09:21, Janusz Krzysztofik wrote:
-> On Tuesday, 2 August 2022 12:20:29 CEST Karolina Drobnik wrote:
->> Hi,
->>
->> On 01.08.2022 16:43, Janusz Krzysztofik wrote:
->>> On Monday, 1 August 2022 15:39:36 CEST Karolina Drobnik wrote:
-
-<big snip>
-
->>>>>>> The patch introduces two processing paths to test_fence_await(), one
-> of them
->>>>>>> for *-hang variants.  In that *-hang processing path, why do we still
-> submit
->>>>>>> batches that depend on the fence if we don't examine their execution
-> and
->>>>>>> results, only their completion?
->>>>>>
->>>>>> Ah, OK, now I get it. Do you suggest that we should also add a check
-> for
->>>>>> HANG flag for igt_store_word block? But we still need to send something
->>>>>> to test this case.
->>>>>
->>>>> Why do we need to send something?  What that something should look like?
-> IOW,
->>>>> what are we trying to exercise with this case?  How is it supposed to be
->>>>> different from wait-hang scenario?
->>>>
->>>> test_fence_await tests pipelining work (here, writing something to
->>>> memory in parallel) and cross-checks its status with what's reported by
->>>> the fence,
->>>
->>> True for *await (no HANG) subtests, but in *await-hang variants I still
-> can't
->>> recognize checks in place as cross-checks and what value they add compared
-> to
->>> wait-hang.
->>
->> wait_hang and await_hang are different in the sense of work they do.
->> test_fence_busy is a test with a simple batch buffer (with no actual
->> writes) that is _iteratively_ executed on different physical engines,
->> whereas test_fence_await spawns work on different engines in _parallel_.
->> It's a different scenario from the fence's perspective, as we have one
->> fence on the spinner and pass it to other engines which (asynchronously)
->> wait on it. The value added here is the check for 1 fence - many engines
->> (wait_hang has 1-1 mapping).
->>
->>> Does a check for invalidated work no longer queued nor running
->>> tell us anything about the fence behavior, i.e., if and how it affected /
->>> interacted with that work?  I think it doesn't, then, I'm not sure if we
-> still
->>> need such limited scenarios.
->>
->> I don't think I quite understand -- we check if we've sent a hanging
->> workload, which is expected to result in an error, there's no additional
->> check for the work itself (how one could check it?). As the error is
->> raised from any of the engines (I'm taking about the await case), the
->> fence is expected to signal, and this is what we check. The fence itself
->> can't interact with that work
->>
->>> Please convince me that we do and I'll be happy
->>> to push the series with my S-o-b: added.
->>
->> I have commit rights now, so I can push it myself,
+On Wed, Aug 03, 2022 at 02:26:54AM -0300, Tales Aparecida wrote:
+> Add documentation for igt_kselftests functions and structs. Also adds
+> comments to non trivial lines.
 > 
-> OK, let's take a different approach then.  Please feel free to push the series
-> with R-b:s collected so far yourself, and I'll try to update and restore
-> disabled checks in a follow-up patch.
+> Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
+> ---
+>  lib/igt_kmod.c | 107 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_kmod.h |  18 +++++++++
+>  2 files changed, 125 insertions(+)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 63636243..852112cc 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -792,6 +792,12 @@ igt_amdgpu_driver_unload(void)
+>  	return IGT_EXIT_SUCCESS;
+>  }
+>  
+> +/*
+> + * kmsg_dump:
+> + * @fd: file descriptor for `/dev/kmsg` opened for reading
+> + *
+> + * Dump kmsg output into stderr.
+> + */
 
-OK, that sounds like a plan, thanks. You can CC the list of people we 
-have here for better visibility (and, hopefully, more feedback).
+The documentation comment needs to begin with /** (two *)
 
-Many thanks,
-Karolina
+>  static void kmsg_dump(int fd)
+>  {
+>  	char record[4096 + 1];
+> @@ -832,6 +838,13 @@ static void kmsg_dump(int fd)
+>  	}
+>  }
+>  
+> +/*
+> + * tests_add:
+> + * @tl: (in): test to be inserted
+> + * @list: (inout): ordered list of tests sorted by test->number
+> + *
+> + * Insert test at the correct position in the ordered list
+> + */
 
-> Thanks,
-> Janusz
+Same for this.
+
+>  static void tests_add(struct igt_kselftest_list *tl, struct igt_list_head *list)
+>  {
+>  	struct igt_kselftest_list *pos;
+> @@ -843,6 +856,14 @@ static void tests_add(struct igt_kselftest_list *tl, struct igt_list_head *list)
+>  	igt_list_add_tail(&tl->link, &pos->link);
+>  }
+>  
+> +/**
+> + * igt_kselftest_get_tests:
+> + * @kmod: (in): kernel module from which to parse module_params' names into IGT tests
+> + * @filter: (in)(nullable): get only tests with a prefix matching this filter
+> + * @tests: (inout): resulting ordered list of tests
+> + *
+> + * Get IGT tests' names from module_params' names, given a module.
+> + */
+>  void igt_kselftest_get_tests(struct kmod_module *kmod,
+>  			     const char *filter,
+>  			     struct igt_list_head *tests)
+> @@ -856,25 +877,33 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
+>  	if (!kmod_module_get_info(kmod, &pre))
+>  		return;
+>  
+> +	/* iter through module infos trying to find tests, which should be
+> +	 * named following the pattern: "igt__{test_number}__{test_name}:bool",
+> +	 * e.g.: "igt__18__perf_engine_cs:bool" */
+
+Multiline comments should have /* and */ on their own lines.
+
+>  	kmod_list_foreach(d, pre) {
+>  		const char *key, *val;
+>  		char *colon;
+>  		int offset;
+>  
+> +		/*  skip any info that is not a module param */
+
+                  ^^  extra space there
+
+>  		key = kmod_module_info_get_key(d);
+>  		if (strcmp(key, "parmtype"))
+>  			continue;
+>  
+> +		/* skip any module param that don't have the IGT test prefix */
+>  		val = kmod_module_info_get_value(d);
+>  		if (!val || strncmp(val, param_prefix, prefix_len))
+>  			continue;
+>  
+> +		/* alloc list-node that will store the module_param name */
+>  		offset = strlen(val) + 1;
+>  		tl = malloc(sizeof(*tl) + offset);
+>  		if (!tl)
+>  			continue;
+>  
+>  		memcpy(tl->param, val, offset);
+> +
+> +		/* find and replace colon with \0 to discard module_param type */
+>  		colon = strchr(tl->param, ':');
+>  		*colon = '\0';
+>  
+> @@ -884,6 +913,7 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
+>  			   &tl->number, &offset) == 1)
+>  			tl->name += offset;
+>  
+> +		/* skip any test that doesn't match the prefix filter */
+>  		if (filter && strncmp(tl->name, filter, strlen(filter))) {
+>  			free(tl);
+>  			continue;
+> @@ -902,6 +932,22 @@ static int open_parameters(const char *module_name)
+>  	return open(path, O_RDONLY);
+>  }
+>  
+> +/**
+> + * igt_kselftest_init:
+> + * @tst: (inout): pointer of #igt_kselftest to be initialized
+> + * @module_name: (in): name of the module with IGT tests declared as module_params
+> + *
+> + * Initialize the given struct igt_kselftest and the inner struct kmod_module.
+> + *
+> + * @Note: This function initialize @tst->kmsg with `-1`, call
+> + * igt_kselftest_begin() to actually open the <filename>/dev/kmsg</filename> stream.
+> + * @tst->module_name should be freed by the caller with free(), @tst->kmod 
+> + * refcount needs to be decremented to be released using
+> + * <function>kmod_module_unref</function>.
+> + *
+> + * Returns: 0 on success, non-zero otherwise. It fails if name is not a valid
+> + * module name or if memory allocation failed.
+> + */
+>  int igt_kselftest_init(struct igt_kselftest *tst,
+>  		       const char *module_name)
+>  {
+> @@ -922,6 +968,17 @@ int igt_kselftest_init(struct igt_kselftest *tst,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * igt_kselftest_begin:
+> + * @tst: (inout): pointer to #igt_kselftest with `kmod_module` handler to unload
+> + * 	and where the file descriptor for <filename>/dev/kmsg</filename> will be
+> + * 	stored.
+> + *
+> + * Unload the module that will be tested and open kmsg to start reading it.
+> + * If module is i915, unloads some of its dependencies as well.
+> + *
+> + * Returns: 0 on success, non-zero otherwise.
+> + */
+>  int igt_kselftest_begin(struct igt_kselftest *tst)
+>  {
+>  	int err;
+> @@ -939,6 +996,21 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
+>  	return 0;
+>  }
+>  
+> +/**
+> + * igt_kselftest_execute:
+> + * @tst: (in): handler for module to be tested and inner kmsg file descriptor
+> + * @tl: (in): contains the name of the test to be executed
+> + * @options: (in)(nullable): Extra parameters for the module. NULL in case no
+> + * 	parameters are to be passed, or a '\0' terminated string otherwise.
+> + * @result: (in)(nullable): NULL if the result of loading the module should be
+> + * 	returned, or a '\0' terminated string with the name of the module_param
+> + * 	holding the test's result, if that should be returned instead.
+> + *
+> + * Execute the given test by loading the module and asserts its success.
+> + *
+> + * Returns: 0 on success, non-zero otherwise. If @result is set, returns the
+> + * value from the given module_param after running the test.
+> + */
+>  int igt_kselftest_execute(struct igt_kselftest *tst,
+>  			  struct igt_kselftest_list *tl,
+>  			  const char *options,
+> @@ -952,6 +1024,7 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
+>  
+>  	lseek(tst->kmsg, 0, SEEK_END);
+>  
+> +	/* prepare modprobe parameters to enable a test with extra options */
+>  	snprintf(buf, sizeof(buf), "%s=1 %s", tl->param, options ?: "");
+>  
+>  	err = modprobe(tst->kmod, buf);
+> @@ -977,18 +1050,40 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
+>  	return err;
+>  }
+>  
+> +/**
+> + * igt_kselftest_end:
+> + * @tst: (in): handler for module to be unloaded and kmsg file descriptor
+> + *
+> + * Unload the module and close the kmsg file descriptor.
+> + */
+>  void igt_kselftest_end(struct igt_kselftest *tst)
+>  {
+>  	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+>  	close(tst->kmsg);
+>  }
+>  
+> +/**
+> + * igt_kselftest_fini:
+> + * @tst: (in): container of items to be freed
+> + *
+> + * Free memory from @tst->module_name and remove reference for @tst->kmod
+> + */
+>  void igt_kselftest_fini(struct igt_kselftest *tst)
+>  {
+>  	free(tst->module_name);
+>  	kmod_module_unref(tst->kmod);
+>  }
+>  
+> +/*
+> + * unfilter:
+> + * @filter: (in)(nullable): prefix to be removed
+> + * @name: (in): string to be trimmed
+> + *
+> + * Remove prefix @filter from @name, removing an additional non-alpha char,
+> + * if there's one.
+> + *
+> + * Returns: a pointer to the resulting string
+> + */
+
+Another doc block without /**
+
+
+-- 
+Petri Latvala
+
+
+>  static const char *unfilter(const char *filter, const char *name)
+>  {
+>  	if (!filter)
+> @@ -1001,6 +1096,18 @@ static const char *unfilter(const char *filter, const char *name)
+>  	return name;
+>  }
+>  
+> +/**
+> + * igt_kselftests:
+> + * @module_name: (in): name of the module to find and run tests for
+> + * @options: (in)(nullable): Extra parameters for the module. NULL in case no
+> + * 	parameters are to be passed, or a '\0' terminated string otherwise.
+> + * @result: (in)(nullable): NULL if the result of loading the module should be
+> + * 	returned, or a '\0' terminated string with the name of the module_param
+> + * 	holding the test's result, if that should be returned instead.
+> + * @filter: (in)(nullable): run only tests with a prefix matching this filter
+> + *
+> + * Find and execute kselftests defined as module_params of the given module.
+> + */
+>  void igt_kselftests(const char *module_name,
+>  		    const char *options,
+>  		    const char *result,
+> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+> index f98dd29f..4f81641b 100644
+> --- a/lib/igt_kmod.h
+> +++ b/lib/igt_kmod.h
+> @@ -50,12 +50,30 @@ void igt_kselftests(const char *module_name,
+>  		    const char *result_option,
+>  		    const char *filter);
+>  
+> +/**
+> + * igt_kselftest:
+> + * @kmod: reference for <structname>kmod_module</structname> used to load and
+> + * 	unload the module
+> + * @module_name: name of the module containing the kselftests for IGT
+> + * @kmsg: holds a file descriptor for <filename>/dev/kmsg</filename>
+> + *
+> + * Handle a kernel module with kselftests and their output
+> + */
+>  struct igt_kselftest {
+>  	struct kmod_module *kmod;
+>  	char *module_name;
+>  	int kmsg;
+>  };
+>  
+> +/**
+> + * igt_kselftest_list:
+> + * @link: doubly linked list attributes
+> + * @number: defines the relative position of each element in the ordered list
+> + * @name: pointer to the test's name, a suffix of <structfield>param</structfield>
+> + * @param: name of the module_param that enables/disables the test
+> + *
+> + * Node of an ordered list of test names
+> + */
+>  struct igt_kselftest_list {
+>  	struct igt_list_head link;
+>  	unsigned int number;
+> -- 
+> 2.37.0
 > 
