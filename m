@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CF8510F7D3
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 08:48:38 +0000 (UTC)
-Date: Wed, 3 Aug 2022 11:47:18 +0300
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E2B111B39F
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 09:28:22 +0000 (UTC)
+Date: Wed, 3 Aug 2022 12:27:01 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-To: Tales Aparecida <tales.aparecida@gmail.com>
-Message-ID: <Yuo2FlsJbkxFw9D0@platvala-desk.ger.corp.intel.com>
-References: <20220803052654.98827-1-tales.aparecida@gmail.com>
- <20220803052654.98827-5-tales.aparecida@gmail.com>
+To: Adrian Larumbe <adrian.larumbe@collabora.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Message-ID: <Yuo/ZbZwC01pFDw1@platvala-desk.ger.corp.intel.com>
+References: <20220516205000.2960491-1-adrian.larumbe@collabora.com>
+ <20220516205000.2960491-2-adrian.larumbe@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220803052654.98827-5-tales.aparecida@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] lib/igt_kmod: add igt_kselftests
- documentation
+In-Reply-To: <20220516205000.2960491-2-adrian.larumbe@collabora.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] i915/gem_ctx_isolation:: change
+ semantics of ctx isolation uAPI
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,298 +22,302 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: siqueirajordao@riseup.net, magalilemes00@gmail.com,
- Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org,
- Isabella Basso <isabbasso@riseup.net>, andrealmeid@riseup.net,
- Trevor Woerner <twoerner@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, bob.beckett@collabora.com, daniel@ffwll.ch
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Aug 03, 2022 at 02:26:54AM -0300, Tales Aparecida wrote:
-> Add documentation for igt_kselftests functions and structs. Also adds
-> comments to non trivial lines.
+On Mon, May 16, 2022 at 09:50:00PM +0100, Adrian Larumbe wrote:
+> ioctl I915_PARAM_HAS_CONTEXT_ISOLATION param is meant to report whether all
+> the engines in the system support context isolation, but the way the return
+> value was being used did not respect the contract on the uAPI.
 > 
-> Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
+> Skip all engine tests for which context isolation is not supported. Also skip
+> tests that involve an engine reset if both RCS and CCS engines are present in
+> the system. This is because they belong to the same reset domain.
+> 
+> Signed-Off-By: Adrian Larumbe <adrian.larumbe@collabora.com>
 > ---
->  lib/igt_kmod.c | 107 +++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_kmod.h |  18 +++++++++
->  2 files changed, 125 insertions(+)
+>  include/drm-uapi/i915_drm.h    |   6 +-
+>  tests/i915/gem_ctx_isolation.c | 101 +++++++++++++++++++++++----------
+>  2 files changed, 72 insertions(+), 35 deletions(-)
 > 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 63636243..852112cc 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -792,6 +792,12 @@ igt_amdgpu_driver_unload(void)
->  	return IGT_EXIT_SUCCESS;
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index f0067d26123e..327465ac3eb1 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -678,11 +678,7 @@ typedef struct drm_i915_irq_wait {
+>   * rather than default HW values. If true, it also ensures (insofar as HW
+>   * supports) that all state set by this context will not leak to any other
+>   * context.
+> - *
+> - * As not every engine across every gen support contexts, the returned
+> - * value reports the support of context isolation for individual engines by
+> - * returning a bitmask of each engine class set to true if that class supports
+> - * isolation.
+> + * 
+>   */
+
+Is this chunk here accidentally? Modifications to files in
+include/drm-uapi/* should only be done by directly copying from the
+kernel.
+
+>  #define I915_PARAM_HAS_CONTEXT_ISOLATION 50
+>  
+> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+> index 4233ea5784dc..ddfae493bc2c 100644
+> --- a/tests/i915/gem_ctx_isolation.c
+> +++ b/tests/i915/gem_ctx_isolation.c
+> @@ -45,6 +45,7 @@ enum {
+>  	VCS2 = ENGINE(I915_ENGINE_CLASS_VIDEO, 2),
+>  	VCS3 = ENGINE(I915_ENGINE_CLASS_VIDEO, 3),
+>  	VECS0 = ENGINE(I915_ENGINE_CLASS_VIDEO_ENHANCE, 0),
+> +	CCS0 = ENGINE(I915_ENGINE_CLASS_COMPUTE, 0),
+>  };
+>  
+>  #define ALL ~0u
+> @@ -627,9 +628,40 @@ static void compare_regs(int fd, const struct intel_execution_engine2 *e,
+>  		     num_errors, who);
 >  }
 >  
-> +/*
-> + * kmsg_dump:
-> + * @fd: file descriptor for `/dev/kmsg` opened for reading
-> + *
-> + * Dump kmsg output into stderr.
-> + */
-
-The documentation comment needs to begin with /** (two *)
-
->  static void kmsg_dump(int fd)
->  {
->  	char record[4096 + 1];
-> @@ -832,6 +838,13 @@ static void kmsg_dump(int fd)
->  	}
->  }
->  
-> +/*
-> + * tests_add:
-> + * @tl: (in): test to be inserted
-> + * @list: (inout): ordered list of tests sorted by test->number
-> + *
-> + * Insert test at the correct position in the ordered list
-> + */
-
-Same for this.
-
->  static void tests_add(struct igt_kselftest_list *tl, struct igt_list_head *list)
->  {
->  	struct igt_kselftest_list *pos;
-> @@ -843,6 +856,14 @@ static void tests_add(struct igt_kselftest_list *tl, struct igt_list_head *list)
->  	igt_list_add_tail(&tl->link, &pos->link);
->  }
->  
-> +/**
-> + * igt_kselftest_get_tests:
-> + * @kmod: (in): kernel module from which to parse module_params' names into IGT tests
-> + * @filter: (in)(nullable): get only tests with a prefix matching this filter
-> + * @tests: (inout): resulting ordered list of tests
-> + *
-> + * Get IGT tests' names from module_params' names, given a module.
-> + */
->  void igt_kselftest_get_tests(struct kmod_module *kmod,
->  			     const char *filter,
->  			     struct igt_list_head *tests)
-> @@ -856,25 +877,33 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
->  	if (!kmod_module_get_info(kmod, &pre))
->  		return;
->  
-> +	/* iter through module infos trying to find tests, which should be
-> +	 * named following the pattern: "igt__{test_number}__{test_name}:bool",
-> +	 * e.g.: "igt__18__perf_engine_cs:bool" */
-
-Multiline comments should have /* and */ on their own lines.
-
->  	kmod_list_foreach(d, pre) {
->  		const char *key, *val;
->  		char *colon;
->  		int offset;
->  
-> +		/*  skip any info that is not a module param */
-
-                  ^^  extra space there
-
->  		key = kmod_module_info_get_key(d);
->  		if (strcmp(key, "parmtype"))
->  			continue;
->  
-> +		/* skip any module param that don't have the IGT test prefix */
->  		val = kmod_module_info_get_value(d);
->  		if (!val || strncmp(val, param_prefix, prefix_len))
->  			continue;
->  
-> +		/* alloc list-node that will store the module_param name */
->  		offset = strlen(val) + 1;
->  		tl = malloc(sizeof(*tl) + offset);
->  		if (!tl)
->  			continue;
->  
->  		memcpy(tl->param, val, offset);
+> +static bool
+> +engine_has_context_isolation(const struct intel_execution_engine2 *e,
+> +			     int gen)
+> +{
+> +	if (gen > 8)
+> +		return true;
 > +
-> +		/* find and replace colon with \0 to discard module_param type */
->  		colon = strchr(tl->param, ':');
->  		*colon = '\0';
->  
-> @@ -884,6 +913,7 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
->  			   &tl->number, &offset) == 1)
->  			tl->name += offset;
->  
-> +		/* skip any test that doesn't match the prefix filter */
->  		if (filter && strncmp(tl->name, filter, strlen(filter))) {
->  			free(tl);
->  			continue;
-> @@ -902,6 +932,22 @@ static int open_parameters(const char *module_name)
->  	return open(path, O_RDONLY);
->  }
->  
-> +/**
-> + * igt_kselftest_init:
-> + * @tst: (inout): pointer of #igt_kselftest to be initialized
-> + * @module_name: (in): name of the module with IGT tests declared as module_params
-> + *
-> + * Initialize the given struct igt_kselftest and the inner struct kmod_module.
-> + *
-> + * @Note: This function initialize @tst->kmsg with `-1`, call
-> + * igt_kselftest_begin() to actually open the <filename>/dev/kmsg</filename> stream.
-> + * @tst->module_name should be freed by the caller with free(), @tst->kmod 
-> + * refcount needs to be decremented to be released using
-> + * <function>kmod_module_unref</function>.
-> + *
-> + * Returns: 0 on success, non-zero otherwise. It fails if name is not a valid
-> + * module name or if memory allocation failed.
-> + */
->  int igt_kselftest_init(struct igt_kselftest *tst,
->  		       const char *module_name)
+> +	if (gen >= 6 && gen <= 8 && e->class == I915_ENGINE_CLASS_RENDER)
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +static bool
+> +has_engine_class(const intel_ctx_cfg_t *cfg, unsigned int class)
+> +{
+> +	const struct i915_engine_class_instance *eci;
+> +	unsigned int i;
+> +
+> +	igt_require(class <= I915_ENGINE_CLASS_COMPUTE);
+> +
+> +	for (i = 0; i < cfg->num_engines; i++) {
+> +		eci = &cfg->engines[i];
+> +		if (eci->engine_class == class)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>  		    const struct intel_execution_engine2 *e,
+> -		    unsigned int flags)
+> +		    unsigned int flags,
+> +		    int gen)
 >  {
-> @@ -922,6 +968,17 @@ int igt_kselftest_init(struct igt_kselftest *tst,
->  	return 0;
->  }
+>  	static const uint32_t values[] = {
+>  		0x0,
+> @@ -646,7 +678,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>  	unsigned int num_values = ARRAY_SIZE(values);
 >  
-> +/**
-> + * igt_kselftest_begin:
-> + * @tst: (inout): pointer to #igt_kselftest with `kmod_module` handler to unload
-> + * 	and where the file descriptor for <filename>/dev/kmsg</filename> will be
-> + * 	stored.
-> + *
-> + * Unload the module that will be tested and open kmsg to start reading it.
-> + * If module is i915, unloads some of its dependencies as well.
-> + *
-> + * Returns: 0 on success, non-zero otherwise.
-> + */
->  int igt_kselftest_begin(struct igt_kselftest *tst)
->  {
->  	int err;
-> @@ -939,6 +996,21 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
->  	return 0;
->  }
->  
-> +/**
-> + * igt_kselftest_execute:
-> + * @tst: (in): handler for module to be tested and inner kmsg file descriptor
-> + * @tl: (in): contains the name of the test to be executed
-> + * @options: (in)(nullable): Extra parameters for the module. NULL in case no
-> + * 	parameters are to be passed, or a '\0' terminated string otherwise.
-> + * @result: (in)(nullable): NULL if the result of loading the module should be
-> + * 	returned, or a '\0' terminated string with the name of the module_param
-> + * 	holding the test's result, if that should be returned instead.
-> + *
-> + * Execute the given test by loading the module and asserts its success.
-> + *
-> + * Returns: 0 on success, non-zero otherwise. If @result is set, returns the
-> + * value from the given module_param after running the test.
-> + */
->  int igt_kselftest_execute(struct igt_kselftest *tst,
->  			  struct igt_kselftest_list *tl,
->  			  const char *options,
-> @@ -952,6 +1024,7 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
->  
->  	lseek(tst->kmsg, 0, SEEK_END);
->  
-> +	/* prepare modprobe parameters to enable a test with extra options */
->  	snprintf(buf, sizeof(buf), "%s=1 %s", tl->param, options ?: "");
->  
->  	err = modprobe(tst->kmod, buf);
-> @@ -977,18 +1050,40 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
->  	return err;
->  }
->  
-> +/**
-> + * igt_kselftest_end:
-> + * @tst: (in): handler for module to be unloaded and kmsg file descriptor
-> + *
-> + * Unload the module and close the kmsg file descriptor.
-> + */
->  void igt_kselftest_end(struct igt_kselftest *tst)
->  {
->  	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
->  	close(tst->kmsg);
->  }
->  
-> +/**
-> + * igt_kselftest_fini:
-> + * @tst: (in): container of items to be freed
-> + *
-> + * Free memory from @tst->module_name and remove reference for @tst->kmod
-> + */
->  void igt_kselftest_fini(struct igt_kselftest *tst)
->  {
->  	free(tst->module_name);
->  	kmod_module_unref(tst->kmod);
->  }
->  
-> +/*
-> + * unfilter:
-> + * @filter: (in)(nullable): prefix to be removed
-> + * @name: (in): string to be trimmed
-> + *
-> + * Remove prefix @filter from @name, removing an additional non-alpha char,
-> + * if there's one.
-> + *
-> + * Returns: a pointer to the resulting string
-> + */
+>  	/* Sigh -- hsw: we need cmdparser access to our own registers! */
+> -	igt_skip_on(intel_gen(intel_get_drm_devid(fd)) < 8);
+> +	igt_skip_on(!engine_has_context_isolation(e, gen));
 
-Another doc block without /**
+The comment explains that hsw (among others) needs to have this test
+skipped, but this allows execution on hsw. Did the reasoning change?
+Either way the comment and the skip line tell different things, one
+needs changing.
+
+Also, avoid unnecessary negation. igt_skip_on(!f) is equivalent to
+igt_require(f).
+
+>  
+>  	gem_quiescent_gpu(fd);
+>  
+> @@ -729,7 +761,8 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>  
+>  static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+>  		      const struct intel_execution_engine2 *e,
+> -		      unsigned int flags)
+> +		      unsigned int flags,
+> +		      int gen)
+>  {
+>  	static const uint32_t values[] = {
+>  		0x0,
+> @@ -743,6 +776,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+>  	unsigned int num_values =
+>  		flags & (DIRTY1 | DIRTY2) ? ARRAY_SIZE(values) : 1;
+>  
+> +	igt_skip_on(!engine_has_context_isolation(e, gen));
+
+Avoid negation, igt_require instead.
+
+> +
+>  	gem_quiescent_gpu(fd);
+>  
+>  	for (int v = 0; v < num_values; v++) {
+> @@ -865,7 +900,8 @@ static void inject_reset_context(int fd, const intel_ctx_cfg_t *cfg,
+>  
+>  static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>  			 const struct intel_execution_engine2 *e,
+> -			 unsigned int flags)
+> +			 unsigned int flags,
+> +			 int gen)
+>  {
+>  	static const uint32_t values[] = {
+>  		0x0,
+> @@ -882,6 +918,8 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>  	uint64_t ahnd[num_values + 1];
+>  	igt_spin_t *spin;
+>  
+> +	igt_skip_on(!engine_has_context_isolation(e, gen));
+
+Avoid negation.
+
+> +
+>  	gem_quiescent_gpu(fd);
+>  
+>  	ctx[num_values] = intel_ctx_create(fd, cfg);
+> @@ -902,8 +940,12 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>  	gem_close(fd, read_regs(fd, ahnd[num_values], ctx[num_values], e, flags));
+>  	igt_spin_free(fd, spin);
+>  
+> -	if (flags & RESET)
+> +	if (flags & RESET) {
+> +		igt_skip_on(has_engine_class(cfg, I915_ENGINE_CLASS_RENDER) &&
+> +			    has_engine_class(cfg, I915_ENGINE_CLASS_COMPUTE));
+> +
+>  		inject_reset_context(fd, cfg, e);
+> +	}
+
+This and the other bits of this patch do what it says on the commit
+message, but I'm unable to judge whether that's correct to do so. Can
+a gem dev take a look at this? Tvrtko maybe (random selection)?
 
 
 -- 
 Petri Latvala
 
 
->  static const char *unfilter(const char *filter, const char *name)
->  {
->  	if (!filter)
-> @@ -1001,6 +1096,18 @@ static const char *unfilter(const char *filter, const char *name)
->  	return name;
+>  
+>  	switch (flags & SLEEP_MASK) {
+>  	case NOSLEEP:
+> @@ -962,7 +1004,7 @@ static unsigned int __has_context_isolation(int fd)
+>  	int value = 0;
+>  
+>  	memset(&gp, 0, sizeof(gp));
+> -	gp.param = 50; /* I915_PARAM_HAS_CONTEXT_ISOLATION */
+> +	gp.param = I915_PARAM_HAS_CONTEXT_ISOLATION;
+>  	gp.value = &value;
+>  
+>  	igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp);
+> @@ -971,21 +1013,19 @@ static unsigned int __has_context_isolation(int fd)
+>  	return value;
 >  }
 >  
-> +/**
-> + * igt_kselftests:
-> + * @module_name: (in): name of the module to find and run tests for
-> + * @options: (in)(nullable): Extra parameters for the module. NULL in case no
-> + * 	parameters are to be passed, or a '\0' terminated string otherwise.
-> + * @result: (in)(nullable): NULL if the result of loading the module should be
-> + * 	returned, or a '\0' terminated string with the name of the module_param
-> + * 	holding the test's result, if that should be returned instead.
-> + * @filter: (in)(nullable): run only tests with a prefix matching this filter
-> + *
-> + * Find and execute kselftests defined as module_params of the given module.
-> + */
->  void igt_kselftests(const char *module_name,
->  		    const char *options,
->  		    const char *result,
-> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-> index f98dd29f..4f81641b 100644
-> --- a/lib/igt_kmod.h
-> +++ b/lib/igt_kmod.h
-> @@ -50,12 +50,30 @@ void igt_kselftests(const char *module_name,
->  		    const char *result_option,
->  		    const char *filter);
+> -#define test_each_engine(e, i915, cfg, mask) \
+> +#define test_each_engine(e, i915, cfg)	  \
+>  	for_each_ctx_cfg_engine(i915, cfg, e) \
+> -		for_each_if(mask & (1 << (e)->class)) \
+> -			igt_dynamic_f("%s", (e)->name)
+> +		igt_dynamic_f("%s", (e)->name)
 >  
-> +/**
-> + * igt_kselftest:
-> + * @kmod: reference for <structname>kmod_module</structname> used to load and
-> + * 	unload the module
-> + * @module_name: name of the module containing the kselftests for IGT
-> + * @kmsg: holds a file descriptor for <filename>/dev/kmsg</filename>
-> + *
-> + * Handle a kernel module with kselftests and their output
-> + */
->  struct igt_kselftest {
->  	struct kmod_module *kmod;
->  	char *module_name;
->  	int kmsg;
->  };
+>  igt_main
+>  {
+> -	unsigned int has_context_isolation = 0;
+> +	bool has_context_isolation = 0;
+>  	const struct intel_execution_engine2 *e;
+>  	intel_ctx_cfg_t cfg;
+>  	int i915 = -1;
+> +	int gen;
 >  
-> +/**
-> + * igt_kselftest_list:
-> + * @link: doubly linked list attributes
-> + * @number: defines the relative position of each element in the ordered list
-> + * @name: pointer to the test's name, a suffix of <structfield>param</structfield>
-> + * @param: name of the module_param that enables/disables the test
-> + *
-> + * Node of an ordered list of test names
-> + */
->  struct igt_kselftest_list {
->  	struct igt_list_head link;
->  	unsigned int number;
+>  	igt_fixture {
+> -		int gen;
+> -
+>  		i915 = drm_open_driver(DRIVER_INTEL);
+>  		igt_require_gem(i915);
+>  		igt_require(gem_has_contexts(i915));
+> @@ -995,6 +1035,7 @@ igt_main
+>  		igt_require(has_context_isolation);
+>  
+>  		gen = intel_gen(intel_get_drm_devid(i915));
+> +		igt_require(gen >= 2);
+>  
+>  		igt_warn_on_f(gen > LAST_KNOWN_GEN,
+>  			      "GEN not recognized! Test needs to be updated to run.\n");
+> @@ -1006,43 +1047,43 @@ igt_main
+>  	}
+>  
+>  	igt_subtest_with_dynamic("nonpriv") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			nonpriv(i915, &cfg, e, 0);
+> +		test_each_engine(e, i915, &cfg)
+> +			nonpriv(i915, &cfg, e, 0, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("nonpriv-switch") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			nonpriv(i915, &cfg, e, DIRTY2);
+> +		test_each_engine(e, i915, &cfg)
+> +			nonpriv(i915, &cfg, e, DIRTY2, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("clean") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			isolation(i915, &cfg, e, 0);
+> +		test_each_engine(e, i915, &cfg)
+> +			isolation(i915, &cfg, e, 0, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("dirty-create") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			isolation(i915, &cfg, e, DIRTY1);
+> +		test_each_engine(e, i915, &cfg)
+> +			isolation(i915, &cfg, e, DIRTY1, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("dirty-switch") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			isolation(i915, &cfg, e, DIRTY2);
+> +		test_each_engine(e, i915, &cfg)
+> +			isolation(i915, &cfg, e, DIRTY2, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("preservation") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			preservation(i915, &cfg, e, 0);
+> +		test_each_engine(e, i915, &cfg)
+> +			preservation(i915, &cfg, e, 0, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("preservation-S3") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			preservation(i915, &cfg, e, S3);
+> +		test_each_engine(e, i915, &cfg)
+> +			preservation(i915, &cfg, e, S3, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("preservation-S4") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			preservation(i915, &cfg, e, S4);
+> +		test_each_engine(e, i915, &cfg)
+> +			preservation(i915, &cfg, e, S4, gen);
+>  	}
+>  
+>  	igt_fixture {
+> @@ -1052,8 +1093,8 @@ igt_main
+>  	igt_subtest_with_dynamic("preservation-reset") {
+>  		igt_hang_t hang = igt_allow_hang(i915, 0, 0);
+>  
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			preservation(i915, &cfg, e, RESET);
+> +		test_each_engine(e, i915, &cfg)
+> +			preservation(i915, &cfg, e, RESET, gen);
+>  
+>  		igt_disallow_hang(i915, hang);
+>  	}
 > -- 
-> 2.37.0
+> 2.35.1
 > 
