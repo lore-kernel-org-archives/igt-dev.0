@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com
- [IPv6:2607:f8b0:4864:20::e33])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E483C10E7E9
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 05:27:11 +0000 (UTC)
-Received: by mail-vs1-xe33.google.com with SMTP id 125so16778725vsd.5
- for <igt-dev@lists.freedesktop.org>; Tue, 02 Aug 2022 22:27:11 -0700 (PDT)
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com
+ [IPv6:2607:f8b0:4864:20::92b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A629310E46A
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 05:27:14 +0000 (UTC)
+Received: by mail-ua1-x92b.google.com with SMTP id f10so6607295uap.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 02 Aug 2022 22:27:14 -0700 (PDT)
 From: Tales Aparecida <tales.aparecida@gmail.com>
 To: igt-dev@lists.freedesktop.org,
 	Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed,  3 Aug 2022 02:26:50 -0300
-Message-Id: <20220803052654.98827-1-tales.aparecida@gmail.com>
+Date: Wed,  3 Aug 2022 02:26:51 -0300
+Message-Id: <20220803052654.98827-2-tales.aparecida@gmail.com>
+In-Reply-To: <20220803052654.98827-1-tales.aparecida@gmail.com>
+References: <20220803052654.98827-1-tales.aparecida@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/4] add kselftest runner documentation
+Subject: [igt-dev] [PATCH i-g-t 1/4] lib/igt_kmod: fix trivial typos
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,24 +29,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In the interest of making the code more accessible, add documentation
-on structs and functions related to the kselftest.
-While writing igt_kselftest_begin() documentation I realized it always
-returned 0. Instead of documenting that behavior, the function now
-returns non-zero if it fails to open /dev/kmsg.
+existance -> existence
+kmcdline -> kcmdline
 
-As an extra, add instructions about writing documentation.
+Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
+---
+ lib/igt_kmod.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Tales Aparecida (4):
-  lib/igt_kmod: fix trivial typos
-  CONTRIBUTING: Add reference for GTKDoc
-  lib/kselftests: return non-zero on open(kmsg) failure
-  lib/igt_kmod: add igt_kselftests documentation
-
- CONTRIBUTING.md |   7 +++
- lib/igt_kmod.c  | 113 +++++++++++++++++++++++++++++++++++++++++++++++-
- lib/igt_kmod.h  |  18 ++++++++
- 3 files changed, 136 insertions(+), 2 deletions(-)
-
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index dfdcfcc5..bde0461a 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -114,7 +114,7 @@ out:
+  *
+  * Returns: True in case the module has been found or false otherwise.
+  *
+- * Function to check the existance of module @mod_name in list of loaded kernel
++ * Function to check the existence of module @mod_name in list of loaded kernel
+  * modules.
+  *
+  */
+@@ -813,7 +813,7 @@ static void kmsg_dump(int fd)
+ 				continue;
+ 
+ 			if (errno == EPIPE) {
+-				igt_warn("kmsg truncated: too many messages. You may want to increase log_buf_len in kmcdline\n");
++				igt_warn("kmsg truncated: too many messages. You may want to increase log_buf_len in kcmdline\n");
+ 				continue;
+ 			}
+ 
 -- 
 2.37.0
