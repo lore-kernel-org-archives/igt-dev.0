@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B4FB10E203
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 07:21:09 +0000 (UTC)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Karolina Drobnik <karolina.drobnik@intel.com>
-Date: Wed, 03 Aug 2022 09:21:03 +0200
-Message-ID: <8978773.CDJkKcVGEf@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <8384c9cb-e870-6a3a-15cb-c223bf6243eb@intel.com>
-References: <cover.1658826356.git.karolina.drobnik@intel.com>
- <2468862.4XsnlVU6TS@jkrzyszt-mobl1.ger.corp.intel.com>
- <8384c9cb-e870-6a3a-15cb-c223bf6243eb@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A1DA10E4E8
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 07:41:10 +0000 (UTC)
+Message-ID: <8e017daa-3499-0abf-208e-3f4ae8a7141e@intel.com>
+Date: Wed, 3 Aug 2022 13:10:53 +0530
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220803042002.1929-1-nidhi1.gupta@intel.com>
+ <20220803042002.1929-3-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220803042002.1929-3-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_exec_fence: Check
- stored values only for valid workloads
+Subject: Re: [igt-dev] [PATCH 2/2] tests/i915/kms_draw_crc: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,237 +21,193 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tuesday, 2 August 2022 12:20:29 CEST Karolina Drobnik wrote:
-> Hi,
+On Wed-03-08-2022 09:50 am, Nidhi Gupta wrote:
+> v2: -Replace drm function call with existing library functions
+>       (Bhanu)
 > 
-> On 01.08.2022 16:43, Janusz Krzysztofik wrote:
-> > On Monday, 1 August 2022 15:39:36 CEST Karolina Drobnik wrote:
-> >> Hi,
-> >>
-> >> On 01.08.2022 13:54, Janusz Krzysztofik wrote:
-> >>> On Monday, 1 August 2022 11:51:27 CEST Karolina Drobnik wrote:
-> >>>> Hi,
-> >>>>
-> >>>> On 01.08.2022 10:11, Janusz Krzysztofik wrote:
-> >>>>> On Monday, 1 August 2022 07:53:54 CEST Karolina Drobnik wrote:
-> >>>>>> Hi,
-> >>>>>>
-> >>>>>> On 29.07.2022 17:23, Janusz Krzysztofik wrote:
-> >>>>>>> On Friday, 29 July 2022 13:32:37 CEST Karolina Drobnik wrote:
-> >>>>>>>> Hi Janusz,
-> >>>>>>>>
-> >>>>>>>> On 29.07.2022 10:24, Janusz Krzysztofik wrote:
-> >>>>>>>>> Hi Karolina,
-> >>>>>>>>>
-> >>>>>>>>> On Friday, 29 July 2022 09:38:43 CEST Karolina Drobnik wrote:
-> >>>>>>>>>> Hi Janusz,
-> >>>>>>>>>>
-> >>>>>>>>>> Thanks a lot for taking a look at the patch.
-> >>>>>>>>>>
-> >>>>>>>>>> On 28.07.2022 18:56, Janusz Krzysztofik wrote:
-> >>>>>>>>>>> On Tuesday, 26 July 2022 12:13:11 CEST Karolina Drobnik wrote:
-> >>>>>>>>>>>> From: Chris Wilson <chris@chris-wilson.co.uk>
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> test_fence_await verifies if a fence used to pipeline work 
-signals
-> >>>>>>>>>>>> correctly. await-hang and nb-await-hang test cases inject GPU 
-hang,
-> >>>>>>>>>>>> which causes an erroneous state, meaning the fence will be 
-signaled
-> >>>>>>>>>>>> without execution. The error causes an instant reset of the 
-command
-> >>>>>>>>>>>> streamer for the hanging workload. This revealed a problem with 
-how
-> >>>>>>>>>>>> we verify the fence state and results. The test assumes that 
-the
-> >>>>>>>>>>>> error notification happens after a hang is declared, which 
-takes
-> >>>>>>>>>>>> longer than submitting the next set of fences, making the test 
-pass
-> >>>>>>>>>>>> every time. With the immediate reset, this might not happen, so 
-the
-> >>>>>>>>>>>> assertion fails, as there are no active fences in the GPU hang 
-case.
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> Move the check for active fence to the path for non-hanging 
-workload,
-> >>>>>>>>>>>> and verify results only in this scenario.
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> >>>>>>>>>>>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
-> >>>>>>>>>>>> ---
-> >>>>>>>>>>>>        tests/i915/gem_exec_fence.c | 14 ++++++++------
-> >>>>>>>>>>>>        1 file changed, 8 insertions(+), 6 deletions(-)
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/
-> >>>>> gem_exec_fence.c
-> >>>>>>>>>>>> index d46914c2..260aa82c 100644
-> >>>>>>>>>>>> --- a/tests/i915/gem_exec_fence.c
-> >>>>>>>>>>>> +++ b/tests/i915/gem_exec_fence.c
-> >>>>>>>>>>>> @@ -350,18 +350,20 @@ static void test_fence_await(int fd, 
-const
-> >>>>>>>>> intel_ctx_t
-> >>>>>>>>>>> *ctx,
-> >>>>>> (...)
-> >>>>>>>>>>>>        
-> >>>>>>>>>>>> -	if ((flags & HANG) == 0)
-> >>>>>>>>>>>>        		igt_spin_end(spin);
-> >>>>>>>>>>>> +	}
-> >>>>>>>>>>>>        
-> >>>>>>>>>>>>        	igt_waitchildren();
-> >>>>>>>>>>>>        
-> >>>>>>>>>>>>        	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
-> >>>>>>>>>>>> -	while (i--)
-> >>>>>>>>>>>> +	igt_assert(!fence_busy(spin->out_fence));
-> >>>>>>>>>>>
-> >>>>>>>>>>> We only check that the out fence of the presumably hanged spin 
-batch
-> >>>>> no
-> >>>>>>>>> longer
-> >>>>>>>>>>> blocks execution of store batches.
-> >>>>>>>>>>
-> >>>>>>>>>> This check applies to all workloads, all of them should be done 
-with
-> >>>>>>>>>> work at this point
-> >>>>>>>>>
-> >>>>>>>>> OK, but since that's the only explicit assert in the *-hang 
-processing
-> >>>>> path,
-> >>>>>>>>> does it tell us anything about fencing working or not?
-> >>>>>>>>
-> >>>>>>>> It says that we were given an active fence, we wait at it and hope 
-it
-> >>>>>>>> signals when an error is reported. Like I said, we can't check the
-> >>>>>>>> results itself, as they are meaningless with the reset. If we have 
-an
-> >>>>>>>> active fence at this point, that's bad, and the test should fail.
-> >>>>>>>>
-> >>>>>>>>> I think it doesn't,
-> >>>>>>>>> and as long as I'm not wrong, I think such scenarios hardly belong 
-to
-> >>>>>>>>> gem_exec_fence.
-> >>>>>>>>
-> >>>>>>>> Hm, I'm not sure if I follow, but this exact transition (from 
-active ->
-> >>>>>>>> (record error) -> signal) is one of the possible scenarios we wish 
-to
-> >>>>>>>> test.
-> >>>>>>>
-> >>>>>>> OK, so we check if an active fence is signalled on error.  But then, 
-what
-> >>>>> does
-> >>>>>>> 'active' mean here?
-> >>>>>>
-> >>>>>> Active means that the fence was sent and we wait to hear back from 
-the
-> >>>>>> GPU. If you'd like to see what are the state transitions in fences, 
-you
-> >>>>>> can check out Mainline Explicit Fencing series of blog posts/
-presentation.
-> >>>>>>
-> >>>>>>> Do we consider a fence active as soon as it has been
-> >>>>>>> exported to userspace?  Or only after it has been imported back from
-> >>>>> userspace
-> >>>>>>> by at least one consumer?
-> >>>>>>
-> >>>>>> We assume them to be active as soon as the fence's fd is returned 
-from
-> >>>>>> the driver to userspace (we deal with out-fences here).
-> >>>>>>
-> >>>>>>> Assuming the former (as I guess), what do we need
-> >>>>>>> the store batches for in these now modified *await-hang scenarios?  
-What
-> >>>>> extra
-> >>>>>>> value do those scenarios provide compared to (nb-)?wait-hang ?
-> >>>>>>
-> >>>>>> Hm, I don't quite understand the question here -- are you asking why 
-do
-> >>>>>> we check the store results? test_fence_await is reused by other
-> >>>>>> subtests, not only the hanging cases, and we expect to see the 
-stores.
-> >>>>>
-> >>>>> The patch introduces two processing paths to test_fence_await(), one 
-of them
-> >>>>> for *-hang variants.  In that *-hang processing path, why do we still 
-submit
-> >>>>> batches that depend on the fence if we don't examine their execution 
-and
-> >>>>> results, only their completion?
-> >>>>
-> >>>> Ah, OK, now I get it. Do you suggest that we should also add a check 
-for
-> >>>> HANG flag for igt_store_word block? But we still need to send something
-> >>>> to test this case.
-> >>>
-> >>> Why do we need to send something?  What that something should look like?  
-IOW,
-> >>> what are we trying to exercise with this case?  How is it supposed to be
-> >>> different from wait-hang scenario?
-> >>
-> >> test_fence_await tests pipelining work (here, writing something to
-> >> memory in parallel) and cross-checks its status with what's reported by
-> >> the fence,
-> > 
-> > True for *await (no HANG) subtests, but in *await-hang variants I still 
-can't
-> > recognize checks in place as cross-checks and what value they add compared 
-to
-> > wait-hang. 
+> v3: -Replace PIPE_A with compatible pipe/output combo.
+>       (Bhanu)
 > 
-> wait_hang and await_hang are different in the sense of work they do.
-> test_fence_busy is a test with a simple batch buffer (with no actual
-> writes) that is _iteratively_ executed on different physical engines,
-> whereas test_fence_await spawns work on different engines in _parallel_.
-> It's a different scenario from the fence's perspective, as we have one
-> fence on the spinner and pass it to other engines which (asynchronously)
-> wait on it. The value added here is the check for 1 fence - many engines
-> (wait_hang has 1-1 mapping).
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/i915/kms_draw_crc.c | 67 ++++++++++++++++-----------------------
+>   1 file changed, 28 insertions(+), 39 deletions(-)
 > 
-> > Does a check for invalidated work no longer queued nor running
-> > tell us anything about the fence behavior, i.e., if and how it affected /
-> > interacted with that work?  I think it doesn't, then, I'm not sure if we 
-still
-> > need such limited scenarios.
-> 
-> I don't think I quite understand -- we check if we've sent a hanging 
-> workload, which is expected to result in an error, there's no additional
-> check for the work itself (how one could check it?). As the error is 
-> raised from any of the engines (I'm taking about the await case), the 
-> fence is expected to signal, and this is what we check. The fence itself 
-> can't interact with that work
-> 
-> > Please convince me that we do and I'll be happy
-> > to push the series with my S-o-b: added.
-> 
-> I have commit rights now, so I can push it myself, 
+> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+> index edab2f3b..c1e395d6 100644
+> --- a/tests/i915/kms_draw_crc.c
+> +++ b/tests/i915/kms_draw_crc.c
+> @@ -31,12 +31,13 @@
+>   
+>   struct modeset_params {
+>   	uint32_t crtc_id;
+> -	uint32_t connector_id;
+>   	drmModeModeInfoPtr mode;
+>   };
+>   
+>   int drm_fd;
+> -drmModeResPtr drm_res;
+> +igt_display_t display;
+> +enum pipe pipe1;
+> +igt_output_t *output;
 
-OK, let's take a different approach then.  Please feel free to push the series 
-with R-b:s collected so far yourself, and I'll try to update and restore 
-disabled checks in a follow-up patch.
+We are nowhere using these pipe & output except setup_environment().
+So, these variables are supposed to be local to setup_environment().
 
-Thanks,
-Janusz
+>   drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
+>   struct buf_ops *bops;
+>   igt_pipe_crc_t *pipe_crc;
+> @@ -64,27 +65,33 @@ struct modeset_params ms;
+>   
+>   static void find_modeset_params(void)
+>   {
+> -	int i;
+>   	uint32_t crtc_id;
+> -	drmModeConnectorPtr connector = NULL;
+> -	drmModeModeInfoPtr mode = NULL;
+> +	drmModeModeInfo *mode;
+>   
+> -	for (i = 0; i < drm_res->count_connectors; i++) {
+> -		drmModeConnectorPtr c = drm_connectors[i];
+> +	igt_display_reset(&display);
+> +	igt_display_commit(&display);
+>   
+> -		if (c->count_modes) {
+> -			connector = c;
+> -			mode = &c->modes[0];
+> -			break;
+> +	for_each_connected_output(&display, output) {
+> +		for_each_pipe(&display, pipe1) {
+> +			if (igt_pipe_connector_valid(pipe1, output))
+> +				/*One pipe is enough*/
+> +				break;
+>   		}
+> +		/*One output is enough*/
+> +		break;
 
+This is wrong. If no pipe is valid for first output, we need to try with 
+next available output.
 
-> but I want to address
-> all the comments before moving on.
-> 
-> If you have further questions or my answers are not satisfactory (which 
-> is fair), you can reach out to the author. He knows all the bits and
-> pieces of this test suite. I'm more of a messenger here.
-> 
-> All the best,
-> Karolina
-> 
-> > Thanks,
-> > Janusz
-> 
+Instead, use for_each_pipe_with_valid_output() or 
+for_each_pipe_with_single_output()
 
+>   	}
+> -	igt_require(connector);
+>   
+> -	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
+> -						  0);
+> +	igt_info("pipe-%s-%s", kmstest_pipe_name(pipe1), output->name);
+> +
+> +	output = igt_get_single_output_for_pipe(&display, pipe1);
+> +	igt_require(output);
+> +	igt_output_set_pipe(output, pipe1);
+> +
+> +	mode = igt_output_get_mode(output);
+>   	igt_assert(mode);
+>   
+> -	ms.connector_id = connector->connector_id;
+> +	crtc_id = display.pipes[pipe1].crtc_id;
+> +
+>   	ms.crtc_id = crtc_id;
 
+crtc_id is nowhere useful, please drop it.
 
+>   	ms.mode = mode;
+>   
+> @@ -144,8 +151,7 @@ static void get_method_crc(enum igt_draw_method method, uint32_t drm_format,
+>   	igt_draw_rect_fb(drm_fd, bops, 0, &fb, method, 1, 1, 15, 15,
+>   			 get_color(drm_format, 0, 1, 1));
+>   
+> -	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
+> -			    &ms.connector_id, 1, ms.mode);
+> +	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+
+hmm, Just realized that we are creating a fb and playing it, but not 
+actually using it.
+
+So, I guess we need to set the fb to any plane before commit. Otherwise, 
+you'll get same CRC for any modifier/method/format combo, since we are 
+not using any framebuffer.
+
+Example: igt_plane_set_fb(primary, &fb);
+
+>   	igt_assert_eq(rc, 0);
+>   
+>   	igt_pipe_crc_collect_crc(pipe_crc, crc);
+> @@ -203,8 +209,7 @@ static void get_fill_crc(uint64_t modifier, igt_crc_t *crc)
+>   
+>   	igt_draw_fill_fb(drm_fd, &fb, 0xFF);
+>   
+> -	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
+> -			    &ms.connector_id, 1, ms.mode);
+> +	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   	igt_assert_eq(rc, 0);
+>   
+>   	igt_pipe_crc_collect_crc(pipe_crc, crc);
+> @@ -227,8 +232,7 @@ static void fill_fb_subtest(void)
+>   							 IGT_DRAW_MMAP_WC,
+>   			 0, 0, fb.width, fb.height, 0xFF);
+>   
+> -	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
+> -			    &ms.connector_id, 1, ms.mode);
+> +	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   	igt_assert_eq(rc, 0);
+>   
+>   	igt_pipe_crc_collect_crc(pipe_crc, &base_crc);
+> @@ -251,40 +255,25 @@ static void fill_fb_subtest(void)
+>   
+>   static void setup_environment(void)
+>   {
+> -	int i;
+> -
+>   	drm_fd = drm_open_driver_master(DRIVER_INTEL);
+>   	igt_require(drm_fd >= 0);
+> -
+> -	drm_res = drmModeGetResources(drm_fd);
+> -	igt_require(drm_res);
+> -	igt_assert(drm_res->count_connectors <= MAX_CONNECTORS);
+> -
+> -	for (i = 0; i < drm_res->count_connectors; i++)
+> -		drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
+> -							       drm_res->connectors[i]);
+> +	igt_display_require(&display, drm_fd);
+> +	igt_display_require_output(&display);
+>   
+>   	kmstest_set_vt_graphics_mode();
+>   
+>   	bops = buf_ops_create(drm_fd);
+>   
+>   	find_modeset_params();
+> -	pipe_crc = igt_pipe_crc_new(drm_fd, kmstest_get_crtc_idx(drm_res, ms.crtc_id),
+> -				    INTEL_PIPE_CRC_SOURCE_AUTO);
+> +	pipe_crc = igt_pipe_crc_new(drm_fd, pipe1, INTEL_PIPE_CRC_SOURCE_AUTO);
+
+We can move this statement to find_modset_parms() and drop pipe1 from 
+global declaration.
+
+>   }
+>   
+>   static void teardown_environment(void)
+>   {
+> -	int i;
+> -
+>   	igt_pipe_crc_free(pipe_crc);
+>   
+>   	buf_ops_destroy(bops);
+>   
+> -	for (i = 0; i < drm_res->count_connectors; i++)
+> -		drmModeFreeConnector(drm_connectors[i]);
+> -
+> -	drmModeFreeResources(drm_res);
+
+igt_output_set_pipe(PIPE_NONE);
+or
+igt_display_reset();
+
+>   	close(drm_fd);
+>   }
+>   
