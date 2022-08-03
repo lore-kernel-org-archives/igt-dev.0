@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com
- [IPv6:2607:f8b0:4864:20::92c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 407D110ED22
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 05:27:23 +0000 (UTC)
-Received: by mail-ua1-x92c.google.com with SMTP id c19so6610549uat.6
- for <igt-dev@lists.freedesktop.org>; Tue, 02 Aug 2022 22:27:23 -0700 (PDT)
-From: Tales Aparecida <tales.aparecida@gmail.com>
-To: igt-dev@lists.freedesktop.org,
-	Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed,  3 Aug 2022 02:26:54 -0300
-Message-Id: <20220803052654.98827-5-tales.aparecida@gmail.com>
-In-Reply-To: <20220803052654.98827-1-tales.aparecida@gmail.com>
-References: <20220803052654.98827-1-tales.aparecida@gmail.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FEF2112E96
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 07:04:26 +0000 (UTC)
+Message-ID: <c3c00cb7-bded-0720-8919-bf9450370cde@intel.com>
+Date: Wed, 3 Aug 2022 12:34:10 +0530
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220803042002.1929-1-nidhi1.gupta@intel.com>
+ <20220803042002.1929-2-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220803042002.1929-2-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] lib/igt_kmod: add igt_kselftests
- documentation
+Subject: Re: [igt-dev] [PATCH 1/2] tests/i915/kms_draw_crc: Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,275 +22,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: siqueirajordao@riseup.net, magalilemes00@gmail.com,
- tales.aparecida@gmail.com, Isabella Basso <isabbasso@riseup.net>,
- andrealmeid@riseup.net, Trevor Woerner <twoerner@gmail.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add documentation for igt_kselftests functions and structs. Also adds
-comments to non trivial lines.
+On Wed-03-08-2022 09:50 am, Nidhi Gupta wrote:
+> Convert the existing subtests to dynamic subtests.
+> 
+> v2: check all per-requisites before starting dynamic
+>      tests, since to avoid skip in igt_dynamic().
+>      (Bhanu)
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/i915/kms_draw_crc.c | 54 ++++++++++++++++++++++++---------------
+>   1 file changed, 33 insertions(+), 21 deletions(-)
+> 
+> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+> index 33fefed4..edab2f3b 100644
+> --- a/tests/i915/kms_draw_crc.c
+> +++ b/tests/i915/kms_draw_crc.c
+> @@ -177,15 +177,6 @@ static void draw_method_subtest(enum igt_draw_method method,
+>   {
+>   	igt_crc_t crc;
+>   
+> -	igt_skip_on(modifier == I915_FORMAT_MOD_4_TILED &&
+> -		    !HAS_4TILE(intel_get_drm_devid(drm_fd)));
+> -
+> -	igt_skip_on(method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd));
+> -	igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
+> -		    !gem_has_mappable_ggtt(drm_fd));
+> -
+> -	igt_require(format_is_supported(formats[format_index], modifier));
+> -
+>   	/* Use IGT_DRAW_MMAP_GTT/WC on an untiled buffer as the parameter for
+>   	 * comparison. Cache the value so we don't recompute it for every single
+>   	 * subtest. */
+> @@ -331,22 +322,43 @@ igt_main
+>   {
+>   	enum igt_draw_method method;
+>   	int format_idx, modifier_idx;
+> +	uint64_t modifier;
+>   
+>   	igt_fixture
+>   		setup_environment();
+>   
+> -	for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+> -	for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+> -	for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+> -		igt_describe("This subtest verfies igt_draw library works "
+> -			     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
+> -		igt_subtest_f("draw-method-%s-%s-%s",
+> -			      format_str(format_idx),
+> -			      igt_draw_get_method_name(method),
+> -			      modifier_str(modifier_idx))
+> -			draw_method_subtest(method, format_idx,
+> -					    modifiers[modifier_idx]);
+> -	} } }
+> +	igt_describe("This subtest verfies igt_draw library works "
+> +		     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
+> +	igt_subtest_with_dynamic("draw-method") {
+> +		for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+> +			for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+> +				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+> +					modifier = modifiers[modifier_idx];
+> +
+> +					if (modifier == I915_FORMAT_MOD_4_TILED &&
+> +					    !HAS_4TILE(intel_get_drm_devid(drm_fd)))
+> +						continue;
+> +
+> +					if (method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd))
+> +						continue;
+> +
+> +					if (method == IGT_DRAW_MMAP_GTT &&
+> +					    !gem_has_mappable_ggtt(drm_fd))
+> +						continue;
+> +
+> +					if (!(format_is_supported(formats[format_idx], modifier)))
+---------------------------------------------^
+NIT: Please drop unnecessary braces.
 
-Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
----
- lib/igt_kmod.c | 107 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kmod.h |  18 +++++++++
- 2 files changed, 125 insertions(+)
+> +						continue;
+> +
+> +					igt_dynamic_f("draw-method-%s-%s-%s",
+-------------------------------------------------------^
+Please drop "draw-method" from dynamic subtest name.
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 63636243..852112cc 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -792,6 +792,12 @@ igt_amdgpu_driver_unload(void)
- 	return IGT_EXIT_SUCCESS;
- }
- 
-+/*
-+ * kmsg_dump:
-+ * @fd: file descriptor for `/dev/kmsg` opened for reading
-+ *
-+ * Dump kmsg output into stderr.
-+ */
- static void kmsg_dump(int fd)
- {
- 	char record[4096 + 1];
-@@ -832,6 +838,13 @@ static void kmsg_dump(int fd)
- 	}
- }
- 
-+/*
-+ * tests_add:
-+ * @tl: (in): test to be inserted
-+ * @list: (inout): ordered list of tests sorted by test->number
-+ *
-+ * Insert test at the correct position in the ordered list
-+ */
- static void tests_add(struct igt_kselftest_list *tl, struct igt_list_head *list)
- {
- 	struct igt_kselftest_list *pos;
-@@ -843,6 +856,14 @@ static void tests_add(struct igt_kselftest_list *tl, struct igt_list_head *list)
- 	igt_list_add_tail(&tl->link, &pos->link);
- }
- 
-+/**
-+ * igt_kselftest_get_tests:
-+ * @kmod: (in): kernel module from which to parse module_params' names into IGT tests
-+ * @filter: (in)(nullable): get only tests with a prefix matching this filter
-+ * @tests: (inout): resulting ordered list of tests
-+ *
-+ * Get IGT tests' names from module_params' names, given a module.
-+ */
- void igt_kselftest_get_tests(struct kmod_module *kmod,
- 			     const char *filter,
- 			     struct igt_list_head *tests)
-@@ -856,25 +877,33 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
- 	if (!kmod_module_get_info(kmod, &pre))
- 		return;
- 
-+	/* iter through module infos trying to find tests, which should be
-+	 * named following the pattern: "igt__{test_number}__{test_name}:bool",
-+	 * e.g.: "igt__18__perf_engine_cs:bool" */
- 	kmod_list_foreach(d, pre) {
- 		const char *key, *val;
- 		char *colon;
- 		int offset;
- 
-+		/*  skip any info that is not a module param */
- 		key = kmod_module_info_get_key(d);
- 		if (strcmp(key, "parmtype"))
- 			continue;
- 
-+		/* skip any module param that don't have the IGT test prefix */
- 		val = kmod_module_info_get_value(d);
- 		if (!val || strncmp(val, param_prefix, prefix_len))
- 			continue;
- 
-+		/* alloc list-node that will store the module_param name */
- 		offset = strlen(val) + 1;
- 		tl = malloc(sizeof(*tl) + offset);
- 		if (!tl)
- 			continue;
- 
- 		memcpy(tl->param, val, offset);
-+
-+		/* find and replace colon with \0 to discard module_param type */
- 		colon = strchr(tl->param, ':');
- 		*colon = '\0';
- 
-@@ -884,6 +913,7 @@ void igt_kselftest_get_tests(struct kmod_module *kmod,
- 			   &tl->number, &offset) == 1)
- 			tl->name += offset;
- 
-+		/* skip any test that doesn't match the prefix filter */
- 		if (filter && strncmp(tl->name, filter, strlen(filter))) {
- 			free(tl);
- 			continue;
-@@ -902,6 +932,22 @@ static int open_parameters(const char *module_name)
- 	return open(path, O_RDONLY);
- }
- 
-+/**
-+ * igt_kselftest_init:
-+ * @tst: (inout): pointer of #igt_kselftest to be initialized
-+ * @module_name: (in): name of the module with IGT tests declared as module_params
-+ *
-+ * Initialize the given struct igt_kselftest and the inner struct kmod_module.
-+ *
-+ * @Note: This function initialize @tst->kmsg with `-1`, call
-+ * igt_kselftest_begin() to actually open the <filename>/dev/kmsg</filename> stream.
-+ * @tst->module_name should be freed by the caller with free(), @tst->kmod 
-+ * refcount needs to be decremented to be released using
-+ * <function>kmod_module_unref</function>.
-+ *
-+ * Returns: 0 on success, non-zero otherwise. It fails if name is not a valid
-+ * module name or if memory allocation failed.
-+ */
- int igt_kselftest_init(struct igt_kselftest *tst,
- 		       const char *module_name)
- {
-@@ -922,6 +968,17 @@ int igt_kselftest_init(struct igt_kselftest *tst,
- 	return 0;
- }
- 
-+/**
-+ * igt_kselftest_begin:
-+ * @tst: (inout): pointer to #igt_kselftest with `kmod_module` handler to unload
-+ * 	and where the file descriptor for <filename>/dev/kmsg</filename> will be
-+ * 	stored.
-+ *
-+ * Unload the module that will be tested and open kmsg to start reading it.
-+ * If module is i915, unloads some of its dependencies as well.
-+ *
-+ * Returns: 0 on success, non-zero otherwise.
-+ */
- int igt_kselftest_begin(struct igt_kselftest *tst)
- {
- 	int err;
-@@ -939,6 +996,21 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
- 	return 0;
- }
- 
-+/**
-+ * igt_kselftest_execute:
-+ * @tst: (in): handler for module to be tested and inner kmsg file descriptor
-+ * @tl: (in): contains the name of the test to be executed
-+ * @options: (in)(nullable): Extra parameters for the module. NULL in case no
-+ * 	parameters are to be passed, or a '\0' terminated string otherwise.
-+ * @result: (in)(nullable): NULL if the result of loading the module should be
-+ * 	returned, or a '\0' terminated string with the name of the module_param
-+ * 	holding the test's result, if that should be returned instead.
-+ *
-+ * Execute the given test by loading the module and asserts its success.
-+ *
-+ * Returns: 0 on success, non-zero otherwise. If @result is set, returns the
-+ * value from the given module_param after running the test.
-+ */
- int igt_kselftest_execute(struct igt_kselftest *tst,
- 			  struct igt_kselftest_list *tl,
- 			  const char *options,
-@@ -952,6 +1024,7 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
- 
- 	lseek(tst->kmsg, 0, SEEK_END);
- 
-+	/* prepare modprobe parameters to enable a test with extra options */
- 	snprintf(buf, sizeof(buf), "%s=1 %s", tl->param, options ?: "");
- 
- 	err = modprobe(tst->kmod, buf);
-@@ -977,18 +1050,40 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
- 	return err;
- }
- 
-+/**
-+ * igt_kselftest_end:
-+ * @tst: (in): handler for module to be unloaded and kmsg file descriptor
-+ *
-+ * Unload the module and close the kmsg file descriptor.
-+ */
- void igt_kselftest_end(struct igt_kselftest *tst)
- {
- 	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
- 	close(tst->kmsg);
- }
- 
-+/**
-+ * igt_kselftest_fini:
-+ * @tst: (in): container of items to be freed
-+ *
-+ * Free memory from @tst->module_name and remove reference for @tst->kmod
-+ */
- void igt_kselftest_fini(struct igt_kselftest *tst)
- {
- 	free(tst->module_name);
- 	kmod_module_unref(tst->kmod);
- }
- 
-+/*
-+ * unfilter:
-+ * @filter: (in)(nullable): prefix to be removed
-+ * @name: (in): string to be trimmed
-+ *
-+ * Remove prefix @filter from @name, removing an additional non-alpha char,
-+ * if there's one.
-+ *
-+ * Returns: a pointer to the resulting string
-+ */
- static const char *unfilter(const char *filter, const char *name)
- {
- 	if (!filter)
-@@ -1001,6 +1096,18 @@ static const char *unfilter(const char *filter, const char *name)
- 	return name;
- }
- 
-+/**
-+ * igt_kselftests:
-+ * @module_name: (in): name of the module to find and run tests for
-+ * @options: (in)(nullable): Extra parameters for the module. NULL in case no
-+ * 	parameters are to be passed, or a '\0' terminated string otherwise.
-+ * @result: (in)(nullable): NULL if the result of loading the module should be
-+ * 	returned, or a '\0' terminated string with the name of the module_param
-+ * 	holding the test's result, if that should be returned instead.
-+ * @filter: (in)(nullable): run only tests with a prefix matching this filter
-+ *
-+ * Find and execute kselftests defined as module_params of the given module.
-+ */
- void igt_kselftests(const char *module_name,
- 		    const char *options,
- 		    const char *result,
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index f98dd29f..4f81641b 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -50,12 +50,30 @@ void igt_kselftests(const char *module_name,
- 		    const char *result_option,
- 		    const char *filter);
- 
-+/**
-+ * igt_kselftest:
-+ * @kmod: reference for <structname>kmod_module</structname> used to load and
-+ * 	unload the module
-+ * @module_name: name of the module containing the kselftests for IGT
-+ * @kmsg: holds a file descriptor for <filename>/dev/kmsg</filename>
-+ *
-+ * Handle a kernel module with kselftests and their output
-+ */
- struct igt_kselftest {
- 	struct kmod_module *kmod;
- 	char *module_name;
- 	int kmsg;
- };
- 
-+/**
-+ * igt_kselftest_list:
-+ * @link: doubly linked list attributes
-+ * @number: defines the relative position of each element in the ordered list
-+ * @name: pointer to the test's name, a suffix of <structfield>param</structfield>
-+ * @param: name of the module_param that enables/disables the test
-+ *
-+ * Node of an ordered list of test names
-+ */
- struct igt_kselftest_list {
- 	struct igt_list_head link;
- 	unsigned int number;
--- 
-2.37.0
+> +						      format_str(format_idx),
+> +						      igt_draw_get_method_name(method),
+> +						      modifier_str(modifier_idx))
+> +						draw_method_subtest(method, format_idx,
+> +								    modifiers[modifier_idx]);--------------------------------------------------------------------^
+We can use "modifier" instead of "modifiers[modifier_idx]".
+
+By addressing above comments, this patch is
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+- Bhanu
+
+> +				}
+> +			}
+> +		}
+> +	}
+>   
+>   	igt_describe("This subtest verifies CRC after filling fb with x-tiling "
+>   		     "or none.");
