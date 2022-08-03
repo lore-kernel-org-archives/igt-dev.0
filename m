@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7B73112C2B
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 04:16:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43E0C18A824
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 04:16:07 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  3 Aug 2022 09:50:02 +0530
-Message-Id: <20220803042002.1929-3-nidhi1.gupta@intel.com>
+Date: Wed,  3 Aug 2022 09:50:01 +0530
+Message-Id: <20220803042002.1929-2-nidhi1.gupta@intel.com>
 In-Reply-To: <20220803042002.1929-1-nidhi1.gupta@intel.com>
 References: <20220803042002.1929-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] tests/i915/kms_draw_crc: Test Cleanup
+Subject: [igt-dev] [PATCH 1/2] tests/i915/kms_draw_crc: Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,157 +24,92 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-v2: -Replace drm function call with existing library functions
-     (Bhanu)
+Convert the existing subtests to dynamic subtests.
 
-v3: -Replace PIPE_A with compatible pipe/output combo.
-     (Bhanu)
+v2: check all per-requisites before starting dynamic
+    tests, since to avoid skip in igt_dynamic().
+    (Bhanu)
 
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 67 ++++++++++++++++-----------------------
- 1 file changed, 28 insertions(+), 39 deletions(-)
+ tests/i915/kms_draw_crc.c | 54 ++++++++++++++++++++++++---------------
+ 1 file changed, 33 insertions(+), 21 deletions(-)
 
 diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index edab2f3b..c1e395d6 100644
+index 33fefed4..edab2f3b 100644
 --- a/tests/i915/kms_draw_crc.c
 +++ b/tests/i915/kms_draw_crc.c
-@@ -31,12 +31,13 @@
- 
- struct modeset_params {
- 	uint32_t crtc_id;
--	uint32_t connector_id;
- 	drmModeModeInfoPtr mode;
- };
- 
- int drm_fd;
--drmModeResPtr drm_res;
-+igt_display_t display;
-+enum pipe pipe1;
-+igt_output_t *output;
- drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
- struct buf_ops *bops;
- igt_pipe_crc_t *pipe_crc;
-@@ -64,27 +65,33 @@ struct modeset_params ms;
- 
- static void find_modeset_params(void)
+@@ -177,15 +177,6 @@ static void draw_method_subtest(enum igt_draw_method method,
  {
--	int i;
- 	uint32_t crtc_id;
--	drmModeConnectorPtr connector = NULL;
--	drmModeModeInfoPtr mode = NULL;
-+	drmModeModeInfo *mode;
+ 	igt_crc_t crc;
  
--	for (i = 0; i < drm_res->count_connectors; i++) {
--		drmModeConnectorPtr c = drm_connectors[i];
-+	igt_display_reset(&display);
-+	igt_display_commit(&display);
- 
--		if (c->count_modes) {
--			connector = c;
--			mode = &c->modes[0];
--			break;
-+	for_each_connected_output(&display, output) {
-+		for_each_pipe(&display, pipe1) {
-+			if (igt_pipe_connector_valid(pipe1, output))
-+				/*One pipe is enough*/
-+				break;
- 		}
-+		/*One output is enough*/
-+		break;
- 	}
--	igt_require(connector);
- 
--	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
--						  0);
-+	igt_info("pipe-%s-%s", kmstest_pipe_name(pipe1), output->name);
-+
-+	output = igt_get_single_output_for_pipe(&display, pipe1);
-+	igt_require(output);
-+	igt_output_set_pipe(output, pipe1);
-+
-+	mode = igt_output_get_mode(output);
- 	igt_assert(mode);
- 
--	ms.connector_id = connector->connector_id;
-+	crtc_id = display.pipes[pipe1].crtc_id;
-+
- 	ms.crtc_id = crtc_id;
- 	ms.mode = mode;
- 
-@@ -144,8 +151,7 @@ static void get_method_crc(enum igt_draw_method method, uint32_t drm_format,
- 	igt_draw_rect_fb(drm_fd, bops, 0, &fb, method, 1, 1, 15, 15,
- 			 get_color(drm_format, 0, 1, 1));
- 
--	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
--			    &ms.connector_id, 1, ms.mode);
-+	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 	igt_assert_eq(rc, 0);
- 
- 	igt_pipe_crc_collect_crc(pipe_crc, crc);
-@@ -203,8 +209,7 @@ static void get_fill_crc(uint64_t modifier, igt_crc_t *crc)
- 
- 	igt_draw_fill_fb(drm_fd, &fb, 0xFF);
- 
--	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
--			    &ms.connector_id, 1, ms.mode);
-+	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 	igt_assert_eq(rc, 0);
- 
- 	igt_pipe_crc_collect_crc(pipe_crc, crc);
-@@ -227,8 +232,7 @@ static void fill_fb_subtest(void)
- 							 IGT_DRAW_MMAP_WC,
- 			 0, 0, fb.width, fb.height, 0xFF);
- 
--	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
--			    &ms.connector_id, 1, ms.mode);
-+	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 	igt_assert_eq(rc, 0);
- 
- 	igt_pipe_crc_collect_crc(pipe_crc, &base_crc);
-@@ -251,40 +255,25 @@ static void fill_fb_subtest(void)
- 
- static void setup_environment(void)
+-	igt_skip_on(modifier == I915_FORMAT_MOD_4_TILED &&
+-		    !HAS_4TILE(intel_get_drm_devid(drm_fd)));
+-
+-	igt_skip_on(method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd));
+-	igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
+-		    !gem_has_mappable_ggtt(drm_fd));
+-
+-	igt_require(format_is_supported(formats[format_index], modifier));
+-
+ 	/* Use IGT_DRAW_MMAP_GTT/WC on an untiled buffer as the parameter for
+ 	 * comparison. Cache the value so we don't recompute it for every single
+ 	 * subtest. */
+@@ -331,22 +322,43 @@ igt_main
  {
--	int i;
--
- 	drm_fd = drm_open_driver_master(DRIVER_INTEL);
- 	igt_require(drm_fd >= 0);
--
--	drm_res = drmModeGetResources(drm_fd);
--	igt_require(drm_res);
--	igt_assert(drm_res->count_connectors <= MAX_CONNECTORS);
--
--	for (i = 0; i < drm_res->count_connectors; i++)
--		drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
--							       drm_res->connectors[i]);
-+	igt_display_require(&display, drm_fd);
-+	igt_display_require_output(&display);
+ 	enum igt_draw_method method;
+ 	int format_idx, modifier_idx;
++	uint64_t modifier;
  
- 	kmstest_set_vt_graphics_mode();
+ 	igt_fixture
+ 		setup_environment();
  
- 	bops = buf_ops_create(drm_fd);
+-	for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+-	for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+-	for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+-		igt_describe("This subtest verfies igt_draw library works "
+-			     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
+-		igt_subtest_f("draw-method-%s-%s-%s",
+-			      format_str(format_idx),
+-			      igt_draw_get_method_name(method),
+-			      modifier_str(modifier_idx))
+-			draw_method_subtest(method, format_idx,
+-					    modifiers[modifier_idx]);
+-	} } }
++	igt_describe("This subtest verfies igt_draw library works "
++		     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
++	igt_subtest_with_dynamic("draw-method") {
++		for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
++			for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
++				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
++					modifier = modifiers[modifier_idx];
++
++					if (modifier == I915_FORMAT_MOD_4_TILED &&
++					    !HAS_4TILE(intel_get_drm_devid(drm_fd)))
++						continue;
++
++					if (method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd))
++						continue;
++
++					if (method == IGT_DRAW_MMAP_GTT &&
++					    !gem_has_mappable_ggtt(drm_fd))
++						continue;
++
++					if (!(format_is_supported(formats[format_idx], modifier)))
++						continue;
++
++					igt_dynamic_f("draw-method-%s-%s-%s",
++						      format_str(format_idx),
++						      igt_draw_get_method_name(method),
++						      modifier_str(modifier_idx))
++						draw_method_subtest(method, format_idx,
++								    modifiers[modifier_idx]);
++				}
++			}
++		}
++	}
  
- 	find_modeset_params();
--	pipe_crc = igt_pipe_crc_new(drm_fd, kmstest_get_crtc_idx(drm_res, ms.crtc_id),
--				    INTEL_PIPE_CRC_SOURCE_AUTO);
-+	pipe_crc = igt_pipe_crc_new(drm_fd, pipe1, INTEL_PIPE_CRC_SOURCE_AUTO);
- }
- 
- static void teardown_environment(void)
- {
--	int i;
--
- 	igt_pipe_crc_free(pipe_crc);
- 
- 	buf_ops_destroy(bops);
- 
--	for (i = 0; i < drm_res->count_connectors; i++)
--		drmModeFreeConnector(drm_connectors[i]);
--
--	drmModeFreeResources(drm_res);
- 	close(drm_fd);
- }
- 
+ 	igt_describe("This subtest verifies CRC after filling fb with x-tiling "
+ 		     "or none.");
 -- 
 2.26.2
