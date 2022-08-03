@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com
- [IPv6:2607:f8b0:4864:20::e2e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6D3410E090
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 05:27:17 +0000 (UTC)
-Received: by mail-vs1-xe2e.google.com with SMTP id x125so16742324vsb.13
- for <igt-dev@lists.freedesktop.org>; Tue, 02 Aug 2022 22:27:17 -0700 (PDT)
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com
+ [IPv6:2607:f8b0:4864:20::e30])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F2FF10E105
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Aug 2022 05:27:20 +0000 (UTC)
+Received: by mail-vs1-xe30.google.com with SMTP id j2so10288039vsp.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 02 Aug 2022 22:27:20 -0700 (PDT)
 From: Tales Aparecida <tales.aparecida@gmail.com>
 To: igt-dev@lists.freedesktop.org,
 	Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed,  3 Aug 2022 02:26:52 -0300
-Message-Id: <20220803052654.98827-3-tales.aparecida@gmail.com>
+Date: Wed,  3 Aug 2022 02:26:53 -0300
+Message-Id: <20220803052654.98827-4-tales.aparecida@gmail.com>
 In-Reply-To: <20220803052654.98827-1-tales.aparecida@gmail.com>
 References: <20220803052654.98827-1-tales.aparecida@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/4] CONTRIBUTING: Add reference for GTKDoc
+Subject: [igt-dev] [PATCH i-g-t 3/4] lib/kselftests: return non-zero on
+ open(kmsg) failure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,37 +30,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add reference links about code documentation.
+Previously igt_kselftest_begin() always returned 0.
+Return non-zero if failed to open kmsg, instead.
 
 Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
 ---
- CONTRIBUTING.md | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/igt_kmod.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index 6d1294ad..2b5a78b5 100644
---- a/CONTRIBUTING.md
-+++ b/CONTRIBUTING.md
-@@ -13,6 +13,12 @@ The Code
- - The code should follow kernel coding style:
-   https://www.kernel.org/doc/html/latest/process/coding-style.html
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index bde0461a..63636243 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -933,6 +933,8 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
+ 	igt_require(err == 0 || err == -ENOENT);
  
-+- The in-code documentation should follow GtkDoc specifications:
-+  https://developer-old.gnome.org/gtk-doc-manual/stable/documenting.html.
-+  For an updated version, you can also download the GtkDoc's
-+  [source code][gtkdoc-repo] and open its manual with `yelp` directly by typing
-+  in a terminal: `yelp file:///absolute/path/to/gtk-doc/help/manual/C/index.docbook`
-+
- - Testcases (subtests) have to use minus signs (-) as a word separator.
-   The generated documentation contains glossary of commonly used terms.
+ 	tst->kmsg = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
++	if (tst->kmsg < 0)
++		return 1;
  
-@@ -31,6 +37,7 @@ The Code
-   more automatic conversions.
- 
- [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-+[gtkdoc-repo]: https://gitlab.gnome.org/GNOME/gtk-doc
- 
- 
- Sending Patches
+ 	return 0;
+ }
 -- 
 2.37.0
