@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5ED07989AF
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Aug 2022 13:26:33 +0000 (UTC)
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  4 Aug 2022 15:26:17 +0200
-Message-Id: <20220804132617.2179474-1-karolina.drobnik@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/i915_pm_rps: Don't use gem_write in
- batch_create
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karolina Drobnik" <karolina.drobnik@intel.com>
+Date: Thu, 04 Aug 2022 13:46:56 -0000
+Message-ID: <165962081645.14885.3894792953424619627@emeril.freedesktop.org>
+References: <20220804132617.2179474-1-karolina.drobnik@intel.com>
+In-Reply-To: <20220804132617.2179474-1-karolina.drobnik@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
+ =?utf-8?q?915/i915=5Fpm=5Frps=3A_Don=27t_use_gem=5Fwrite_in_batch=5Fcreat?=
+ =?utf-8?q?e?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,46 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+== Series Details ==
 
-In fence_order and engine_order we are repeatedly creating big mmaps
-that are very slow when done via gem_write, causing test timeouts.
-Rewrite batch_create to mmap the buffer directly instead of using
-gem_write.
+Series: i915/i915_pm_rps: Don't use gem_write in batch_create
+URL   : https://patchwork.freedesktop.org/series/106977/
+State : warning
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
----
- tests/i915/i915_pm_rps.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index a45a6905..d06ade27 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -621,11 +621,15 @@ static uint32_t batch_create(int i915, uint64_t sz)
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	const uint32_t chk = 0x5 << 23;
- 	uint32_t handle = gem_create(i915, sz);
-+	uint32_t *map;
- 
--	for (uint64_t pg = 4096; pg + 4096 < sz; pg += 4096)
--		gem_write(i915, handle, pg, &chk, sizeof(chk));
-+	map = gem_mmap__device_coherent(i915, handle, 0, sz, PROT_WRITE);
- 
--	gem_write(i915, handle, sz - sizeof(bbe), &bbe, sizeof(bbe));
-+	for (uint64_t pg = 1; pg * 4096 < sz; pg++)
-+		map[(pg * 4096) / sizeof(*map)] = chk;
-+
-+	map[sz / sizeof(*map) - 1] = bbe;
-+	munmap(map, sz);
- 
- 	return handle;
- }
--- 
-2.25.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/655874 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/26337320):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                290
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1659620766:step_script
+  section_start:1659620766:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1755 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=26337320 responseStatus=201 Created token=2zqYUykF
+  section_end:1659620776:upload_artifacts_on_failure
+  section_start:1659620776:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1659620777:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/655874
